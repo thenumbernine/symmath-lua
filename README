@@ -1,0 +1,6 @@
+symbolic math library for lua
+
+capable of solving and simplifying
+could use a good polynomial division routine
+
+I've successfully used this to check my work calculating connection coefficients of metrics for geodesic integration
