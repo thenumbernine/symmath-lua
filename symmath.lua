@@ -20,7 +20,6 @@
 
 --]]
 
-
 module('symmath', package.seeall)
 
 require 'ext'
@@ -193,9 +192,18 @@ end
 
 --]]
 
+-- only wrap parenthesis if any of the contained operations have lower precedence
+local function wrapStrWithParenthesis(node, parentNode)
+	local s = tostring(node)
+	if node.precedence < parentNode.precedence then
+		s = '(' .. s .. ')'
+	end
+	return s
+end
 
 Expression = class()
 
+Expression.precedence = 1
 Expression.name = 'Expression'
 
 function Expression:init(...)
@@ -340,7 +348,7 @@ end
 
 
 Constant = class(Expression)
-
+Constant.precedence = 10	-- high since it can't have child nodes 
 Constant.name = 'Constant'
 
 function Constant:init(value)
@@ -408,6 +416,7 @@ end
 
 
 Function = class(Expression)
+Function.precedence = 10	-- high since it will always show parenthesis
 Function.name = 'Function'
 
 --[[ evaluate functions?
@@ -531,6 +540,7 @@ end
 
 -- could be a function?
 unmOp = class(Expression)
+unmOp.precedence = 4
 
 function unmOp:diff(...)
 	local x = unpack(self.xs)
@@ -570,7 +580,7 @@ function unmOp:__tostring()
 	if verbose then
 		return 'unm('..tostring(self.xs[1])..')'
 	else
-		return '('..'-'..tostring(self.xs[1])..')'
+		return '-'..wrapStrWithParenthesis(self.xs[1], self)
 	end
 end
 
@@ -599,7 +609,15 @@ function BinaryOp:__tostring()
 	if verbose then
 		return 'BinaryOp{'..self.name..'}['..self.xs:map(tostring):concat(', ')..']'
 	else
-		return '('..self.xs:map(tostring):concat(' '..self.name..' ')..')'
+		local sep = self.name
+		if self.implicitName then 
+			sep = ' '
+		elseif not self.omitSpace then 
+			sep = ' ' .. sep .. ' ' 
+		end
+		return self.xs:map(function(x) 
+			return wrapStrWithParenthesis(x, self)
+		end):concat(sep)
 	end
 end
 
@@ -609,6 +627,7 @@ end
 
 
 addOp = class(BinaryOp)
+addOp.precedence = 2
 addOp.name = '+'
 
 function addOp:diff(...)
@@ -965,6 +984,7 @@ addOp.__eq = nodeCommutativeEqual
 
 
 subOp = class(BinaryOp)
+subOp.precedence = 2
 subOp.name = '-'
 
 function subOp:diff(...)
@@ -992,6 +1012,8 @@ end
 
 
 mulOp = class(BinaryOp)
+mulOp.implicitName = true
+mulOp.precedence = 3
 mulOp.name = '*'
 
 function mulOp:diff(...)
@@ -1226,6 +1248,7 @@ mulOp.__eq = nodeCommutativeEqual
 
 
 divOp = class(BinaryOp)
+divOp.precedence = 3
 divOp.name = '/'
 
 function divOp:diff(...)
@@ -1402,6 +1425,8 @@ end
 --]==]
 
 powOp = class(BinaryOp)
+powOp.omitSpace = true
+powOp.precedence = 5
 powOp.name = '^'
 
 --[[
@@ -1508,6 +1533,7 @@ function powOp:expand()
 end
 
 modOp = class(BinaryOp)
+modOp.precedence = 3
 modOp.name = '%'
 
 --[[
@@ -1527,6 +1553,7 @@ end
 
 
 Variable = class(Expression)
+Variable.precedence = 10	-- high since it will never have nested members 
 Variable.name = 'Variable'
 
 function Variable:init(name, value, deferDiff)
@@ -1653,3 +1680,5 @@ end
 function Derivative:compile(vars)
 	error("can't compile differentiation.  replace() your diff'd content first!")
 end
+
+
