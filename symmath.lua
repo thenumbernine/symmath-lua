@@ -291,6 +291,25 @@ function Expression.__concat(a,b)
 	return tostring(a) .. tostring(b)
 end
 
+--[[
+my attempt at prettier printing
+derivative will be:
+	 d
+	--
+	dx
+fraction will be
+	a
+	-
+	b
+power will be
+	 2
+	x
+and when number of lines differ, align the bottom
+--]]
+function Expression:toMultiLineString()
+	return table{tostring(self)}
+end
+
 -- TODO
 -- this is a boolean comparison
 -- make a separate function for that
@@ -1530,6 +1549,22 @@ function powOp:expand()
 		end
 	end
 	return self
+end
+
+function powOp:toMultiLineString()
+	assert(#self.xs == 2)
+	local lhs = self.xs[1]:toMultiLineString()
+	local rhs = self.xs[1]:toMultiLineString()
+	local lhswidth = #lhs[1]
+	local rhswidth = #rhs[1]
+	local ret = table()
+	for i=1,#rhs do
+		ret:insert((' '):rep(lhswidth)..rhs[i])
+	end
+	for i=1,#lhs do
+		ret:insert(lhs[i]..(' '):rep(rhswidth))
+	end
+	return ret
 end
 
 modOp = class(BinaryOp)
