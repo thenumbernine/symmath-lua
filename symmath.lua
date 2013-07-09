@@ -192,14 +192,88 @@ end
 
 --]]
 
+--[[
+produces:
+  bbb
+aabbb
+aabbb
+--]]
+local function multiLinesCombine(lhs, rhs)
+	local res = table()
+	local sides = {lhs, rhs}
+	local maxheight = math.max(#lhs, #rhs)
+	for i=1,maxheight do
+		local line = ''
+		for _,side in ipairs(sides) do
+			local sideIndex = i - math.ceil((maxheight - #side) / 2)
+			if sideIndex >= 1 and sideIndex <= #side then
+				line = line .. side[sideIndex]
+			else
+				line = line .. (' '):rep(#side[1])
+			end
+		end
+		res:insert(line)
+	end
+	return res
+end
+
+--[[
+produces:
+ a
+---
+ b
+--]]
+local function multiLinesFraction(lhs, rhs)
+	local res = table()
+	local width = math.max(#lhs[1], #rhs[1])
+	for i=1,#lhs do
+		res:insert(' '..lhs[i]..(' '):rep(width-#lhs[1]+1))
+	end
+	res:insert(('-'):rep(width+2))
+	for i=1,#rhs do
+		res:insert(' '..rhs[i]..(' '):rep(width-#rhs[1]+1))
+	end
+	return res
+end
+
 -- only wrap parenthesis if any of the contained operations have lower precedence
+local function testWrapStrWithParenthesis(node, parentNode)
+	return node.precedence < parentNode.precedence
+end
+
 local function wrapStrWithParenthesis(node, parentNode)
-	local s = tostring(node)
-	if node.precedence < parentNode.precedence then
+	local s = node:toSingleLineStr()
+	if testWrapStrWithParenthesis(node, parentNode) then
 		s = '(' .. s .. ')'
 	end
 	return s
 end
+
+local function multiLinesWrapStrWithParenthesis(node, parentNode)
+	local res = node:toMultiLines()
+	if testWrapStrWithParenthesis(node, parentNode) then
+		local height = #res
+		local lhs = {}
+		local rhs = {}
+		if height < 3 then
+			lhs[1] = '('
+			rhs[1] = ')'
+		else
+			lhs[1] = ' /'
+			rhs[1] = ' \\'
+			for i=2,height-1 do
+				lhs[i] = '| '
+				rhs[i] = ' |'
+			end
+			lhs[height] = '\\ '
+			rhs[height] = '/ '
+		end
+		res = multiLinesCombine(lhs, res)
+		res = multiLinesCombine(res, rhs)
+	end
+	return res
+end
+
 
 Expression = class()
 
@@ -291,23 +365,13 @@ function Expression.__concat(a,b)
 	return tostring(a) .. tostring(b)
 end
 
---[[
-my attempt at prettier printing
-derivative will be:
-	 d
-	--
-	dx
-fraction will be
-	a
-	-
-	b
-power will be
-	 2
-	x
-and when number of lines differ, align the bottom
---]]
-function Expression:toMultiLineString()
-	return table{tostring(self)}
+function Expression:toMultiLineStr(parts, sep)
+	return '\n'..self:toMultiLines():concat('\n')
+end
+
+function Expression:__tostring()
+	--return self:toSingleLineStr()
+	return self:toMultiLineStr()
 end
 
 -- TODO
@@ -389,15 +453,21 @@ function Constant.__eq(a,b)
 	return va == vb
 end
 
-function Constant:__tostring()
-	if verbose then
-		return 'Constant['..tostring(self.value)..']'
-	else
-		return tostring(self.value)
-	end
+function Constant:toVerboseStr()
+	return 'Constant['..tostring(self.value)..']'
 end
 
-function Constant:compile() return tostring(self) end
+function Constant:toSingleLineStr()
+	return tostring(self.value)
+end
+
+function Constant:toMultiLines()
+	return table{self:toSingleLineStr()}
+end
+
+function Constant:compile() 
+	return tostring(self.value) 
+end
 
 function Constant:diff(...)
 	return Constant(0)
@@ -417,8 +487,12 @@ function Invalid.__eq(a,b)
 	return false
 end
 
-function Invalid:__tostring()
+function Invalid:toSingleLineStr()
 	return 'Invalid'
+end
+
+function Invalid:toMultiLines()
+	return table{self:toSingleLineStr()}
 end
 
 function Invalid:compile()
@@ -452,12 +526,21 @@ function Function:eval()
 	return self.func(unpack(self.xs:map(function(node) return node:eval() end)))
 end
 
-function Function:__tostring()
-	if verbose then
-		return 'Function{'..self.name..'}[' .. tostring(self.xs[1]) .. ']'
-	else
-		return self.name..'(' .. tostring(self.xs[1]) .. ')'
+function Function:toVerboseStr()
+	return 'Function{'..self.name..'}[' .. tostring(self.xs[1]) .. ']'
+end
+
+function Function:toSingleLineStr()
+	return self.name..'(' .. self.xs[1]:toSingleLineStr() .. ')'
+end
+
+function Function:toMultiLines()
+	local s = self.xs[1]:toMultiLines()
+	for i=1,#s-1 do
+		s[i] = (' '):rep(#self.name+1)..s[i]..' '
 	end
+	s[#s] = self.name .. '(' .. s[#s] .. ')'
+	return s
 end
 
 function Function:compile(vars)
@@ -595,12 +678,16 @@ function unmOp:expand()
 	return expand(Constant(-1) * self.xs[1])
 end
 
-function unmOp:__tostring()
-	if verbose then
-		return 'unm('..tostring(self.xs[1])..')'
-	else
-		return '-'..wrapStrWithParenthesis(self.xs[1], self)
-	end
+function unmOp:toVerboseStr()
+	return 'unm('..self.xs[1]:toSingleLineStr()..')'
+end
+
+function unmOp:toSingleLineStr()
+	return '-'..wrapStrWithParenthesis(self.xs[1], self)
+end
+
+function unmOp:toMultiLines()
+	return multiLinesCombine({'-'}, multiLinesWrapStrWithParenthesis(self.xs[1], self))
 end
 
 function unmOp:compile(vars)
@@ -624,20 +711,34 @@ function BinaryOp:expand()
 	return BinaryOp.super.expand(self)
 end
 
-function BinaryOp:__tostring()
-	if verbose then
-		return 'BinaryOp{'..self.name..'}['..self.xs:map(tostring):concat(', ')..']'
-	else
-		local sep = self.name
-		if self.implicitName then 
-			sep = ' '
-		elseif not self.omitSpace then 
-			sep = ' ' .. sep .. ' ' 
-		end
-		return self.xs:map(function(x) 
-			return wrapStrWithParenthesis(x, self)
-		end):concat(sep)
+function BinaryOp:toVerboseStr()
+	return 'BinaryOp{'..self.name..'}['..self.xs:map(tostring):concat(', ')..']'
+end
+
+function BinaryOp:getSepStr()
+	local sep = self.name
+	if self.implicitName then 
+		sep = ' '
+	elseif not self.omitSpace then 
+		sep = ' ' .. sep .. ' ' 
 	end
+	return sep
+end
+
+function BinaryOp:toSingleLineStr()
+	return self.xs:map(function(x) 
+		return wrapStrWithParenthesis(x, self)
+	end):concat(self:getSepStr())
+end
+
+function BinaryOp:toMultiLines()
+	local res = multiLinesWrapStrWithParenthesis(self.xs[1], self)
+	local sep = {self:getSepStr()}
+	for i=2,#self.xs do
+		res = multiLinesCombine(res, sep)
+		res = multiLinesCombine(res, multiLinesWrapStrWithParenthesis(self.xs[i], self))
+	end
+	return res
 end
 
 function BinaryOp:compile(vars)
@@ -1443,6 +1544,11 @@ function divOp:prune()
 end
 --]==]
 
+function divOp:toMultiLines()
+	assert(#self.xs == 2)
+	return multiLinesFraction(self.xs[1]:toMultiLines(), self.xs[2]:toMultiLines())
+end
+
 powOp = class(BinaryOp)
 powOp.omitSpace = true
 powOp.precedence = 5
@@ -1551,20 +1657,20 @@ function powOp:expand()
 	return self
 end
 
-function powOp:toMultiLineString()
+function powOp:toMultiLines()
 	assert(#self.xs == 2)
-	local lhs = self.xs[1]:toMultiLineString()
-	local rhs = self.xs[1]:toMultiLineString()
+	local lhs = multiLinesWrapStrWithParenthesis(self.xs[1], self)
+	local rhs = multiLinesWrapStrWithParenthesis(self.xs[2], self)
 	local lhswidth = #lhs[1]
 	local rhswidth = #rhs[1]
-	local ret = table()
+	local res = table()
 	for i=1,#rhs do
-		ret:insert((' '):rep(lhswidth)..rhs[i])
+		res:insert((' '):rep(lhswidth)..rhs[i])
 	end
 	for i=1,#lhs do
-		ret:insert(lhs[i]..(' '):rep(rhswidth))
+		res:insert(lhs[i]..(' '):rep(rhswidth))
 	end
-	return ret
+	return res
 end
 
 modOp = class(BinaryOp)
@@ -1627,17 +1733,26 @@ function Variable:eval()
 	return v
 end
 
-function Variable:__tostring()
-	local s
-	if verbose then
-		s = 'Variable['..self.name..']'
-	else
-		s = self.name
-	end
+function Variable:toVerboseStr()
+	local s = 'Variable['..self.name..']'
 	if self.value then
 		s = s .. '|' .. self.value
 	end
 	return s
+end
+
+function Variable:toSingleLineStr()
+	local s = self.name
+	if self.value then
+		s = s .. '|' .. self.value
+	end
+	return s
+end
+
+function Variable:toMultiLines()
+	local s = self.name
+	if self.value then s = s .. '|' .. self.value end
+	return table{s}
 end
 
 function Variable:compile(vars)
@@ -1657,6 +1772,7 @@ xs[1] is the expression
 all subsequent xs's are variables
 --]]
 Derivative = class(Expression)
+Derivative.precedence = 5
 
 function Derivative:init(...)
 	local ch = table{...}
@@ -1707,9 +1823,24 @@ function Derivative:prune()
 	return self
 end
 
-function Derivative:__tostring()
-	local diffvar = assert(self.xs[1])
-	return 'd/d{'..table{unpack(self.xs, 2)}:map(tostring):concat(',')..'}['..diffvar..']'
+function Derivative:toVerboseStr()
+	return self:toSingleLineStr()
+end
+
+function Derivative:toSingleLineStr()
+	local diffvar = assert(self.xs[1]):toSingleLineStr()
+	return 'd/d{'..table{unpack(self.xs, 2)}:map(function(x) return x:toSingleLineStr() end):concat(',')..'}['..diffvar..']'
+end
+
+function Derivative:toMultiLines()
+	assert(#self.xs >= 2)
+	local lhs = multiLinesFraction({'d'}, {'d'..table{unpack(self.xs, 2)}:map(function(x) return x.name end):concat()})
+	local rhs = multiLinesWrapStrWithParenthesis(self.xs[1], self)
+	print('lhs')
+	print(lhs:concat('\n'))
+	print('rhs')
+	print(rhs:concat('\n'))
+	return multiLinesCombine(lhs, rhs)
 end
 
 function Derivative:compile(vars)
