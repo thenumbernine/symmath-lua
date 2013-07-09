@@ -260,12 +260,12 @@ local function multiLinesWrapStrWithParenthesis(node, parentNode)
 			rhs[1] = ')'
 		else
 			lhs[1] = ' /'
-			rhs[1] = ' \\'
+			rhs[1] = '\\ '
 			for i=2,height-1 do
 				lhs[i] = '| '
 				rhs[i] = ' |'
 			end
-			lhs[height] = '\\ '
+			lhs[height] = ' \\'
 			rhs[height] = '/ '
 		end
 		res = multiLinesCombine(lhs, res)
