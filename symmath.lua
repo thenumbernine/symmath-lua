@@ -1836,10 +1836,6 @@ function Derivative:toMultiLines()
 	assert(#self.xs >= 2)
 	local lhs = multiLinesFraction({'d'}, {'d'..table{unpack(self.xs, 2)}:map(function(x) return x.name end):concat()})
 	local rhs = multiLinesWrapStrWithParenthesis(self.xs[1], self)
-	print('lhs')
-	print(lhs:concat('\n'))
-	print('rhs')
-	print(rhs:concat('\n'))
 	return multiLinesCombine(lhs, rhs)
 end
 
