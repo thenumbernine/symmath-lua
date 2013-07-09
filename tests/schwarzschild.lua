@@ -50,10 +50,10 @@ my guess of how this fits with cartesian:
 
 
 -- coordinates
-t = symmath.Variable('t')
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-z = symmath.Variable('z')
+t = symmath.Variable('t', nil, true)
+x = symmath.Variable('x', nil, true)
+y = symmath.Variable('y', nil, true)
+z = symmath.Variable('z', nil, true)
 M = symmath.Variable('M')
 coords = {'t', 'x', 'y', 'z'}
 -- algebraic
@@ -144,4 +144,19 @@ for _,u in ipairs(coords) do
 	end
 end
 
+--[[
+x''^u = -G^u_vw x'^v x'^w
+--]]
+for _,u in ipairs(coords) do
+	exec(([[diffxU_$u = symmath.Variable('diffxU_$u',nil,true)]]):gsub('$u',u))
+end
+for _,u in ipairs(coords) do
+	exec(('diff2xU_$u = 0'):gsub('$u',u))
+	for _,v in ipairs(coords) do
+		for _,w in ipairs(coords) do
+			exec(('diff2xU_$u = diff2xU_$u + christoffelULL_$u_$v_$w * diffxU_$v * diffxU_$w'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+		end
+	end
+	printNonZero('diff2xU_$u',{u=u})
+end
 
