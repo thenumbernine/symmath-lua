@@ -192,6 +192,11 @@ end
 
 --]]
 
+local function toMultiLines(x)
+	if x.toMultiLines then return x:toMultiLines() end
+	return table{tostring(x)}
+end
+
 --[[
 produces:
   bbb
@@ -236,9 +241,14 @@ local function multiLinesFraction(lhs, rhs)
 	return res
 end
 
+local function precedence(x)
+	if x.precedence then return x.precedence end
+	return 10
+end
+
 -- only wrap parenthesis if any of the contained operations have lower precedence
 local function testWrapStrWithParenthesis(node, parentNode)
-	return node.precedence < parentNode.precedence
+	return precedence(node) < precedence(parentNode)
 end
 
 local function wrapStrWithParenthesis(node, parentNode)
@@ -250,7 +260,7 @@ local function wrapStrWithParenthesis(node, parentNode)
 end
 
 local function multiLinesWrapStrWithParenthesis(node, parentNode)
-	local res = node:toMultiLines()
+	local res = toMultiLines(node)
 	if testWrapStrWithParenthesis(node, parentNode) then
 		local height = #res
 		local lhs = {}
@@ -366,7 +376,7 @@ function Expression.__concat(a,b)
 end
 
 function Expression:toMultiLineStr(parts, sep)
-	return '\n'..self:toMultiLines():concat('\n')
+	return '\n'..toMultiLines(self):concat('\n')
 end
 
 function Expression:__tostring()
@@ -535,7 +545,7 @@ function Function:toSingleLineStr()
 end
 
 function Function:toMultiLines()
-	local s = self.xs[1]:toMultiLines()
+	local s = toMultiLines(self.xs[1])
 	for i=1,#s-1 do
 		s[i] = (' '):rep(#self.name+1)..s[i]..' '
 	end
@@ -1546,7 +1556,7 @@ end
 
 function divOp:toMultiLines()
 	assert(#self.xs == 2)
-	return multiLinesFraction(self.xs[1]:toMultiLines(), self.xs[2]:toMultiLines())
+	return multiLinesFraction(toMultiLines(self.xs[1]), toMultiLines(self.xs[2]))
 end
 
 powOp = class(BinaryOp)
