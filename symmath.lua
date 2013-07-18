@@ -24,8 +24,8 @@ module('symmath', package.seeall)
 
 require 'ext'
 
-local verbose = false
-
+verbose = false
+simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
 
 function diff(y, ...)
 	return Derivative(y, ...)
@@ -127,7 +127,7 @@ function compile(expr, vars)
 	..') return '..
 		expr:compile(vars)
 	..' end'
-	return assert(loadstring(cmd))()
+	return assert(loadstring(cmd))(), cmd
 end
 
 --[[ potential new system based on breadth-first search ... not finished yet
@@ -537,20 +537,21 @@ function Function:eval()
 end
 
 function Function:toVerboseStr()
-	return 'Function{'..self.name..'}[' .. tostring(self.xs[1]) .. ']'
+	return 'Function{'..self.name..'}[' .. self.xs:map(tostring):concat(', ') .. ']'
 end
 
 function Function:toSingleLineStr()
-	return self.name..'(' .. self.xs[1]:toSingleLineStr() .. ')'
+	return self.name..'(' .. self.xs:map(function(x) return x:toSingleLineStr() end):concat(', ') .. ')'
 end
 
 function Function:toMultiLines()
-	local s = toMultiLines(self.xs[1])
-	for i=1,#s-1 do
-		s[i] = (' '):rep(#self.name+1)..s[i]..' '
+	local res = {self.name..'('}
+	res = multiLinesCombine(res, toMultiLines(self.xs[1]))
+	local sep = {', '}
+	for i=2,#self.xs do
+		res = multiLinesCombine(sep, toMultiLines(self.xs[i]))
 	end
-	s[#s] = self.name .. '(' .. s[#s] .. ')'
-	return s
+	return res
 end
 
 function Function:compile(vars)
@@ -559,13 +560,19 @@ function Function:compile(vars)
 	return s .. '(' .. self.xs:map(function(x) return x:compile(vars) end):concat(',') .. ')'
 end
 
+function Function:prune()
+	local f = self:clone()
+	f.xs = f.xs:map(function(x) return simplify(x) end)
+	return f
+end
+
 sqrt = class(Function)
 sqrt.name = 'sqrt'
 sqrt.inMathPkg = true
 sqrt.func = math.sqrt
 function sqrt:diff(...)
 	local x = unpack(self.xs)
-	return .5 * diff(x,...) / sqrt(x)
+	return Constant(.5) * diff(x,...) / sqrt(x)
 end
 
 log = class(Function)
@@ -646,7 +653,7 @@ atan2.inMathPkg = true
 atan2.func = math.atan2
 function atan2:diff(...)
 	local y, x = unpack(self.xs)
-	return diff(y/x, ...) / (1 + x^2)
+	return diff(y/x, ...) / (1 + (y/x)^2)
 end
 
 
@@ -1588,6 +1595,12 @@ function powOp:prune()
 	for i=1,#self.xs do
 		self.xs[i] = prune(self.xs[i])
 	end
+
+	if simplifyConstantPowers then
+		if self.xs[1]:isa(Constant) and self.xs[2]:isa(Constant) then
+			return Constant(self.xs[1].value ^ self.xs[2].value)
+		end
+	end
 	
 	-- 1^a => 1
 	if self.xs[1] == Constant(1) then return Constant(1) end
@@ -1766,7 +1779,7 @@ function Variable:toMultiLines()
 end
 
 function Variable:compile(vars)
-	if vars:find(nil, function(var) return self.name == var.name end) then
+	if table.find(vars, nil, function(var) return self.name == var.name end) then
 		return self.name
 	end
 	error("tried to compile variable "..self.name.." that wasn't in your function argument variable list")
