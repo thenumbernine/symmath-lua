@@ -84,10 +84,15 @@ end
 
 function exec(expr, vars)
 	if vars then expr = varsub(expr, vars) end
-	local res, err = pcall(assert(loadstring(expr)))
-	if not res then
+	local errmsg
+	xpcall(function()
+		assert(loadstring(expr))()
+	end, function(err)
+		errmsg = err .. '\n' .. debug.traceback()
+	end)
+	if errmsg then
 		print("error on this command: "..tostring(expr))
-		error(err)
+		io.write(errmsg)
 	end
 end
 
