@@ -31,6 +31,7 @@ for all of that, see my 'tensor' package (rather than this, which is 'symmath.te
 module('symmath.tensor', package.seeall)
 
 require 'symmath'
+symmath.toStringMethod = 'singleLine'
 
 --[[
 map of the following format:
@@ -92,7 +93,7 @@ function exec(expr, vars)
 	end)
 	if errmsg then
 		print("error on this command: "..tostring(expr))
-		io.write(errmsg)
+		print(errmsg)
 	end
 end
 

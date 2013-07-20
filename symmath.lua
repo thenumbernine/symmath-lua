@@ -26,6 +26,23 @@ require 'ext'
 
 verbose = false
 simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
+toStringMethod = 'multiLine'	-- or 'singleLine'
+
+
+local globalToString = tostring
+function tostring(o)
+	if toStringMethod == 'singleLine' then
+		if o.toSingleLineStr then
+			return o:toSingleLineStr()
+		end
+	elseif toStringMethod == 'multiLine' then
+		if o.toMultiLineStr then
+			return o:toMultiLineStr()
+		end
+	end
+	return globalToString(o)
+end
+
 
 function diff(y, ...)
 	return Derivative(y, ...)
@@ -99,13 +116,13 @@ function evaluate(expr, evalmap)
 	if evalmap then
 		expr = map(expr, function(node)
 			if node == nil then
-				error("found a nil node in expression "..tostring(expr))
+				error("found a nil node in expression "..globalToString(expr))
 			end
 			if not node:isa(Variable) then return end
 			local newval = evalmap[node.name]
 			if newval == nil then return end
 			if type(newval) ~= 'number' then
-				error("expected the values of the evaluation map to be numbers, but found "..node.name.." = ("..type(newval)..").."..tostring(newval))
+				error("expected the values of the evaluation map to be numbers, but found "..node.name.." = ("..type(newval)..").."..globalToString(newval))
 			end
 			return symmath.Constant(newval)
 		end)
@@ -194,7 +211,7 @@ end
 
 local function toMultiLines(x)
 	if x.toMultiLines then return x:toMultiLines() end
-	return table{tostring(x)}
+	return table{globalToString(x)}
 end
 
 --[[
@@ -372,7 +389,7 @@ function Expression:removeChild(index)
 end
 
 function Expression.__concat(a,b)
-	return tostring(a) .. tostring(b)
+	return globalToString(a) .. globalToString(b)
 end
 
 function Expression:toMultiLineStr(parts, sep)
@@ -380,8 +397,7 @@ function Expression:toMultiLineStr(parts, sep)
 end
 
 function Expression:__tostring()
-	--return self:toSingleLineStr()
-	return self:toMultiLineStr()
+	return tostring(self)
 end
 
 -- TODO
@@ -464,11 +480,11 @@ function Constant.__eq(a,b)
 end
 
 function Constant:toVerboseStr()
-	return 'Constant['..tostring(self.value)..']'
+	return 'Constant['..globalToString(self.value)..']'
 end
 
 function Constant:toSingleLineStr()
-	return tostring(self.value)
+	return globalToString(self.value)
 end
 
 function Constant:toMultiLines()
@@ -476,7 +492,7 @@ function Constant:toMultiLines()
 end
 
 function Constant:compile() 
-	return tostring(self.value) 
+	return globalToString(self.value) 
 end
 
 function Constant:diff(...)
@@ -537,7 +553,7 @@ function Function:eval()
 end
 
 function Function:toVerboseStr()
-	return 'Function{'..self.name..'}[' .. self.xs:map(tostring):concat(', ') .. ']'
+	return 'Function{'..self.name..'}[' .. self.xs:map(globalToString):concat(', ') .. ']'
 end
 
 function Function:toSingleLineStr()
@@ -729,7 +745,7 @@ function BinaryOp:expand()
 end
 
 function BinaryOp:toVerboseStr()
-	return 'BinaryOp{'..self.name..'}['..self.xs:map(tostring):concat(', ')..']'
+	return 'BinaryOp{'..self.name..'}['..self.xs:map(globalToString):concat(', ')..']'
 end
 
 function BinaryOp:getSepStr()
@@ -895,7 +911,7 @@ function addOp:prune()
 				
 		local function prodListToString(list)
 			return '['..table(list):map(function(x)
-				return '{term='..tostring(x.term)..', power='..tostring(x.power)..'}'
+				return '{term='..globalToString(x.term)..', power='..globalToString(x.power)..'}'
 			end):concat(', ')..']'
 		end
 
@@ -930,7 +946,7 @@ function addOp:prune()
 			return mulOp(unpack(list:map(prodListElemToNode)))
 		end
 		
---print('for expr '..tostring(self))
+--print('for expr '..globalToString(self))
 		local prods
 		for i = 1, #self.xs do
 			local x = self.xs[i]
@@ -965,7 +981,7 @@ function addOp:prune()
 					self:setChild(i, prodListToNode(prodList))
 				end
 			end
---print('without factors we are now '..tostring(self))
+--print('without factors we are now '..globalToString(self))
 			
 			return prune(mulOp(unpack(prods:map(function(pr) return pr.term end))) * self)
 		end
@@ -1038,10 +1054,10 @@ function addOp:prune()
 			if not constJ then constJ = Constant(1) end
 			
 			if not fail then
-				--print('optimizing from '..tostring(self))
+				--print('optimizing from '..globalToString(self))
 				self:removeChild(j)
 				self:setChild(i, mulOp(Constant(constI.value + constJ.value), unpack(commonTerms)))
-				--print('optimizing to '..tostring(prune(self)))
+				--print('optimizing to '..globalToString(prune(self)))
 				return prune(self)
 			end
 		end
@@ -1723,7 +1739,7 @@ Variable.name = 'Variable'
 function Variable:init(name, value, deferDiff)
 	self.name = name
 	if not (type(value) == 'number' or type(value) == 'nil') then
-		error("got a bad value "..tostring(value))
+		error("got a bad value "..globalToString(value))
 	end
 	self.value = value
 	self.deferDiff = deferDiff
@@ -1828,7 +1844,7 @@ function Derivative:prune()
 
 	if not (self.xs[1]:isa(Variable) and self.xs[1].deferDiff) then
 	-- ... and if we're not lazy-evaluating the derivative of this with respect to other variables ...
-		assert(self.xs[1].diff, "failed to differentiate "..tostring(self.xs[1]).." with type "..type(self.xs[1]))
+		assert(self.xs[1].diff, "failed to differentiate "..globalToString(self.xs[1]).." with type "..type(self.xs[1]))
 		local result = self.xs[1]:diff(unpack(self.xs, 2))
 		result = simplify(result)
 		return result
