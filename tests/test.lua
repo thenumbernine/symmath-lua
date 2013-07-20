@@ -23,7 +23,7 @@
 
 
 require 'symmath'
-require 'tensor.notebook'	-- TODO put this somewhere else
+require 'symmath.notebook'
 
 -- verify that simplification works
 
