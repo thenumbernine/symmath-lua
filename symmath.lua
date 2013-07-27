@@ -460,6 +460,7 @@ Constant = class(Expression)
 Constant.precedence = 10	-- high since it can't have child nodes 
 Constant.name = 'Constant'
 
+
 function Constant:init(value)
 	if type(value) ~= 'number' then
 		error('tried to init constant with non-number type '..type(value)..debug.traceback())
@@ -1735,6 +1736,7 @@ end
 Variable = class(Expression)
 Variable.precedence = 10	-- high since it will never have nested members 
 Variable.name = 'Variable'
+variable = Variable	-- shorthand / case convention
 
 function Variable:init(name, value, deferDiff)
 	self.name = name
