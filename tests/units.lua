@@ -16,7 +16,13 @@ local megaParsecInM = 3.08567758e+22
 
 m = symmath.variable('m', nil, true)
 
-if run == 'separate' then -- separate units
+if run == 'unified' then -- unified units
+	s = speedOfLightInMPerS * m	-- 1 = c m/s <=> s = c m
+	kg = _(gravitationalConstantInM3PerKgS2 * m^3/s^2)  -- 1 = G m^3/(kg s^2) <=> kg = G m^3/s^2
+	lyr = lightYearInM * m
+	mpc = megaParsecInM * m
+	function show(x) return x end
+else	--default: if run == 'separate' then -- separate units
 	cm = symmath.variable('cm', nil, true)
 	km = symmath.variable('km', nil, true)
 	s = symmath.variable('s', nil, true)
@@ -24,6 +30,7 @@ if run == 'separate' then -- separate units
 	lyr = symmath.variable('lyr', nil, true)
 
 	function unify(x)
+		if type(x) == 'number' then return x end
 		x = symmath.simplify(symmath.replace(x, kg, gravitationalConstantInM3PerKgS2 * m^3 / s^2)) 
 		x = symmath.simplify(symmath.replace(x, s, speedOfLightInMPerS * m))
 		x = symmath.simplify(symmath.replace(x, mpc, megaParsecInM * m))
@@ -61,13 +68,6 @@ if run == 'separate' then -- separate units
 	end
 end
 
-if run == 'unified' then -- unified units
-	s = speedOfLightInMPerS * m	-- 1 = c m/s <=> s = c m
-	kg = _(gravitationalConstantInM3PerKgS2 * m^3/s^2)  -- 1 = G m^3/(kg s^2) <=> kg = G m^3/s^2
-	lyr = lightYearInM * m
-	mpc = megaParsecInM * m
-	function show(x) return x end
-end
 
 
 print('m = ',m)
@@ -100,3 +100,26 @@ sun = {radius = 6.955e+8 * m, mass = 1.989e+30 * kg}
 psr = {radius = 1.8729e-5 * sun.radius, mass = 1.97 * sun.mass}
 process{earth=earth, sun=sun, psr=psr}
 
+--earth embedding diagram formulas
+function z(r)
+	--for radial distance r, radius R, Schwarzschild radius Rs
+	--inside the planet  (r <= R): z(r) = R sqrt(R/Rs) (1 - sqrt(1 - Rs/R (r/R)^2 ))
+	--outside the planet (r >= R): z(r) = R sqrt(R/Rs) (1 - sqrt(1 - Rs/R)) + sqrt(4Rs(r - Rs)) - sqrt(4Rs(R - Rs))
+	local R = earth.radius
+	local Rs = earth.schwarzschildRadius
+	local z
+	if unify(r/m).value < unify(R/m).value then
+		z = (R^3/Rs)^.5 * (1 - (1 - Rs * r^2 / R^3)^.5)
+	else
+		z = (R^3/Rs)^.5 * (1 - (1 - Rs/R)^.5) + (4 * Rs * (r - Rs))^.5 - (4 * Rs * (R - Rs))^.5
+	end
+	print('z('..r..') = '..unify(z))
+end
+
+z(0)
+z(.25 * earth.radius)
+z(.5 * earth.radius)
+z(earth.radius)
+z(2 * earth.radius)
+z(10 * earth.radius)
+z(100 * earth.radius)

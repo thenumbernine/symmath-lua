@@ -22,6 +22,8 @@
 
 require 'symmath'
 
+symmath.toStringMethod = 'singleLine'
+
 function exec(cmd)
 	assert(loadstring(cmd))()
 end

@@ -566,8 +566,10 @@ function Function:toMultiLines()
 	res = multiLinesCombine(res, toMultiLines(self.xs[1]))
 	local sep = {', '}
 	for i=2,#self.xs do
-		res = multiLinesCombine(sep, toMultiLines(self.xs[i]))
+		res = multiLinesCombine(res, sep)
+		res = multiLinesCombine(res, toMultiLines(self.xs[i]))
 	end
+	res = multiLinesCombine(res, {')'})
 	return res
 end
 
