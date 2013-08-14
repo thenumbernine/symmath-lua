@@ -23,11 +23,11 @@ connectionULL_r_phi_phi = -1 cos(phi)^2 r + -1 sin(phi)^2 r
 connectionULL_phi_phi_r = (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r
 connectionULL_phi_r_phi = (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r
 
-dx_dlambda_r = dx_dlambda_r
-dx_dlambda_phi = dx_dlambda_phi
+diffxU_r = diffxU_r
+diffxU_phi = diffxU_phi
 
-d2x_dlambda2_r = -1 dx_dlambda_r (-1 cos(phi)^2 r + -1 sin(phi)^2 r) dx_dlambda_phi
-d2x_dlambda2_phi = -1 dx_dlambda_phi ((sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r) dx_dlambda_r + -1 dx_dlambda_phi^2 ((sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r)
+diff2xU_r = -1 diffxU_r (-1 cos(phi)^2 r + -1 sin(phi)^2 r) diffxU_phi
+diff2xU_phi = -1 diffxU_phi ((sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r) diffxU_r + -1 diffxU_phi^2 ((sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r)
 
 0
 -1
