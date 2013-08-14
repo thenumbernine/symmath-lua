@@ -1,0 +1,33 @@
+metric_x = r cos(phi)
+
+metric_y = r sin(phi)
+
+eLU_r_x = cos(phi)
+eLU_r_y = sin(phi)
+eLU_phi_x = -1 r sin(phi)
+eLU_phi_y = r cos(phi)
+
+gLL_r_r = 1
+gLL_phi_phi = sin(phi)^2 r^2 + cos(phi)^2 r^2
+
+gUU_r_r = 1
+gUU_phi_phi = (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1
+
+gLLL_phi_phi_r = 2 sin(phi)^2 r + 2 cos(phi)^2 r
+
+connectionLLL_r_phi_phi = -1 r sin(phi)^2 + -1 r cos(phi)^2
+connectionLLL_phi_phi_r = r cos(phi)^2 + r sin(phi)^2
+connectionLLL_phi_r_phi = r cos(phi)^2 + r sin(phi)^2
+
+connectionULL_r_phi_phi = -1 cos(phi)^2 r + -1 sin(phi)^2 r
+connectionULL_phi_phi_r = (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r
+connectionULL_phi_r_phi = (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r
+
+dx_dlambda_r = dx_dlambda_r
+dx_dlambda_phi = dx_dlambda_phi
+
+d2x_dlambda2_r = -1 dx_dlambda_r (-1 cos(phi)^2 r + -1 sin(phi)^2 r) dx_dlambda_phi
+d2x_dlambda2_phi = -1 dx_dlambda_phi ((sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r) dx_dlambda_r + -1 dx_dlambda_phi^2 ((sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r)
+
+0
+-1

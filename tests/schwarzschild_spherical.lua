@@ -1,6 +1,6 @@
 --[[
 
-    File: schwarzschild_cartesian.lua
+    File: schwarzschild_spherical.lua
 
     Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
 	  
@@ -60,15 +60,11 @@ my guess of how this fits with cartesian:
 
 -- coordinates
 t = symmath.Variable('t', nil, true)
-x = symmath.Variable('x', nil, true)
-y = symmath.Variable('y', nil, true)
-z = symmath.Variable('z', nil, true)
-M = symmath.Variable('M')
-coords = {'t', 'x', 'y', 'z'}
--- algebraic
---r = (x^2 + y^2 + z^2)^.5
--- deferred:
 r = symmath.Variable('r', nil, true)
+theta = symmath.Variable('theta', nil, true)
+phi = symmath.Variable('phi', nil, true)
+M = symmath.Variable('M')	-- schwarzschild radius = 2*M
+coords = {'t', 'r', 'theta', 'phi'}
 
 -- schwarzschild metric in cartesian coordinates
 
@@ -81,9 +77,9 @@ end
 	
 	-- assign diagonals
 assign('gLL_t_t =  -(1-2*M/r)')
-assign('gLL_x_x = 1/(1-2*M/r)')
-assign('gLL_y_y = 1/(1-2*M/r)')
-assign('gLL_z_z = 1/(1-2*M/r)')
+assign('gLL_r_r = 1/(1-2*M/r)')
+assign('gLL_theta_theta = r^2')
+assign('gLL_phi_phi = r^2 * symmath.sin(theta)^2')
 
 -- metric inverse
 for _,u in ipairs(coords) do
