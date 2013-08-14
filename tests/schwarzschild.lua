@@ -24,8 +24,13 @@ require 'symmath'
 
 symmath.toStringMethod = 'singleLine'
 
-function exec(cmd)
-	assert(loadstring(cmd))()
+function exec(expr, args)
+	if args then
+		for k,v in pairs(args) do
+			expr = expr:gsub('$'..k, v)
+		end
+	end
+	assert(loadstring(expr))()
 end
 
 function assign(cmd)
@@ -38,8 +43,10 @@ function assign(cmd)
 end
 
 function printNonZero(expr, args)
-	for k,v in pairs(args) do
-		expr = expr:gsub('$'..k, v)
+	if args then
+		for k,v in pairs(args) do
+			expr = expr:gsub('$'..k, v)
+		end
 	end
 	exec("if "..expr.." ~= symmath.Constant(0) then print('"..expr.." = '.."..expr..") end")
 end
@@ -68,7 +75,7 @@ r = symmath.Variable('r', nil, true)
 	-- start with zero
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
-		exec(('gLL_$u_$v = symmath.Constant(0)'):gsub('$u',u):gsub('$v',v))
+		exec('gLL_$u_$v = symmath.Constant(0)', {u=u, v=v})
 	end
 end
 	
@@ -82,9 +89,9 @@ assign('gLL_z_z = 1/(1-2*M/r)')
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		if u == v then
-			exec(('gUU_$u_$v = 1 / gLL_$u_$v'):gsub('$u',u):gsub('$v',v))
+			exec('gUU_$u_$v = 1 / gLL_$u_$v', {u=u, v=v})
 		else
-			exec(('gUU_$u_$v = symmath.Constant(0)'):gsub('$u',u):gsub('$v',v))
+			exec('gUU_$u_$v = symmath.Constant(0)', {u=u, v=v})
 		end
 		printNonZero('gUU_$u_$v',{u=u,v=v})
 	end
@@ -105,60 +112,126 @@ for _,u in ipairs(coords) do
 	end
 end
 
+--[[
+partial metric: g_ab,c
+--]]
 print()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
-			exec(('gLLL_$u_$v_$w = symmath.diff(gLL_$u_$v, $w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			exec(('gLLL_$u_$v_$w = symmath.simplify(gLLL_$u_$v_$w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+			exec('gLLL_$u_$v_$w = symmath.diff(gLL_$u_$v, $w)', {u=u, v=v, w=w})
+			exec('gLLL_$u_$v_$w = symmath.simplify(gLLL_$u_$v_$w)', {u=u, v=v, w=w})
 			
 			-- replace symmath.diff(r,t) with 0
-			exec(('gLLL_$u_$v_$w = symmath.replace(gLLL_$u_$v_$w, symmath.Derivative(r, t), symmath.Constant(0))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+			exec('gLLL_$u_$v_$w = symmath.replace(gLLL_$u_$v_$w, symmath.Derivative(r, t), symmath.Constant(0))', {u=u, v=v, w=w})
 			
-			exec(('gLLL_$u_$v_$w = symmath.simplify(gLLL_$u_$v_$w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+			exec('gLLL_$u_$v_$w = symmath.simplify(gLLL_$u_$v_$w)', {u=u, v=v, w=w})
 			
 			printNonZero('gLLL_$u_$v_$w', {u=u,v=v,w=w})
 		end
 	end
 end
 
+--[[
+Christoffel: G_abc = 1/2 (g_ab,c + g_ac,b - g_bc,a) 
+--]]
 print()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
-			exec(('christoffelLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+			exec('christoffelLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))', {u=u, v=v, w=w})
 			printNonZero('christoffelLLL_$u_$v_$w', {u=u,v=v,w=w})
 		end
 	end
 end
 
+--[[
+Christoffel: G^a_bc = g^ae G_ebc
+--]]
 print()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
-			exec(('christoffelULL_$u_$v_$w = 0'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+			exec('christoffelULL_$u_$v_$w = 0', {u=u, v=v, w=w})
 			for _,r in ipairs(coords) do
-				exec(('christoffelULL_$u_$v_$w = christoffelULL_$u_$v_$w + christoffelLLL_$r_$v_$w * gUU_$r_$u'):gsub('$u',u):gsub('$v',v):gsub('$w',w):gsub('$r',r))
+				exec('christoffelULL_$u_$v_$w = christoffelULL_$u_$v_$w + christoffelLLL_$r_$v_$w * gUU_$r_$u', {r=r, u=u, v=v, w=w})
 			end
-			exec(('christoffelULL_$u_$v_$w = symmath.simplify(christoffelULL_$u_$v_$w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+			exec('christoffelULL_$u_$v_$w = symmath.simplify(christoffelULL_$u_$v_$w)', {u=u, v=v, w=w})
 			printNonZero('christoffelULL_$u_$v_$w',{u=u,v=v,w=w})
 		end
 	end
 end
 
 --[[
+Geodesic:
 x''^u = -G^u_vw x'^v x'^w
 --]]
+print()
 for _,u in ipairs(coords) do
-	exec(([[diffxU_$u = symmath.Variable('diffxU_$u',nil,true)]]):gsub('$u',u))
+	exec([[diffxU_$u = symmath.Variable('diffxU_$u',nil,true)]], {u=u})
 end
 for _,u in ipairs(coords) do
-	exec(('diff2xU_$u = 0'):gsub('$u',u))
+	exec('diff2xU_$u = 0', {u=u})
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
-			exec(('diff2xU_$u = diff2xU_$u + christoffelULL_$u_$v_$w * diffxU_$v * diffxU_$w'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+			exec('diff2xU_$u = diff2xU_$u - christoffelULL_$u_$v_$w * diffxU_$v * diffxU_$w', {u=u,v=v,w=w})
 		end
 	end
+	exec('diff2xU_$u = symmath.simplify(diff2xU_$u)', {u=u})
 	printNonZero('diff2xU_$u',{u=u})
+end
+
+--[[
+Christoffel partial:
+G^a_bc,d
+--]]
+print()
+for _,a in ipairs(coords) do
+	for _,b in ipairs(coords) do
+		for _,c in ipairs(coords) do
+			for _,d in ipairs(coords) do
+				exec('christoffelULLL_$a_$b_$c_$d = symmath.diff(christoffelULL_$a_$b_$c, $d)', {a=a,b=b,c=c,d=d})
+				exec('christoffelULLL_$a_$b_$c_$d = symmath.simplify(christoffelULLL_$a_$b_$c_$d)', {a=a,b=b,c=c,d=d})
+				printNonZero('christoffelULLL_$a_$b_$c_$d', {a=a,b=b,c=c,d=d})
+			end
+		end
+	end
+end
+
+--[[
+Riemann:
+R^a_bcd = G^a_bd,c - G^a_bc,d + G^a_uc G^u_bd - G^a_ud G^u_bc
+--]]
+print()
+for _,a in ipairs(coords) do
+	for _,b in ipairs(coords) do
+		for _,c in ipairs(coords) do
+			for _,d in ipairs(coords) do
+				exec('riemannULLL_$a_$b_$c_$d = christoffelULLL_$a_$b_$d_$c - christoffelULLL_$a_$b_$c_$d', {a=a,b=b,c=c,d=d})
+				for _,u in ipairs(coords) do
+					exec('riemannULLL_$a_$b_$c_$d = riemannULLL_$a_$b_$c_$d + christoffelULL_$a_$u_$c * christoffelULL_$u_$b_$d', {a=a,b=b,c=c,d=d,u=u})
+					exec('riemannULLL_$a_$b_$c_$d = riemannULLL_$a_$b_$c_$d - christoffelULL_$a_$u_$d * christoffelULL_$u_$b_$c', {a=a,b=b,c=c,d=d,u=u})
+				end
+				exec('riemannULLL_$a_$b_$c_$d = symmath.simplify(riemannULLL_$a_$b_$c_$d)', {a=a,b=b,c=c,d=d})
+				printNonZero('riemannULLL_$a_$b_$c_$d', {a=a,b=b,c=c,d=d})
+			end
+		end
+	end
+end
+
+--[[
+Ricci:
+R_ab = R^u_aub
+--]]
+print()
+for _,a in ipairs(coords) do
+	for _,b in ipairs(coords) do
+		exec('ricciLL_$a_$b = 0', {a=a,b=b})
+		for _,u in ipairs(coords) do
+			exec('ricciLL_$a_$b = ricciLL_$a_$b + riemannULLL_$u_$a_$u_$b', {a=a,b=b,u=u})
+		end
+		exec('ricciLL_$a_$b = symmath.simplify(ricciLL_$a_$b)', {a=a,b=b})
+		printNonZero('ricciLL_$a_$b', {a=a,b=b})
+	end
 end
 
