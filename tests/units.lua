@@ -69,10 +69,9 @@ else	--default: if run == 'separate' then -- separate units
 end
 
 
-
-print('m = ',m)
-print('s = ',s)
-print('kg = ',kg)
+print('1 m = 1 m')
+print('1 s = '..unify(s/m).value..' m')
+print('1 m = '..unify(m/kg).value..' kg')
 print()
 
 function process(bodies)
