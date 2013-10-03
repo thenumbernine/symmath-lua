@@ -115,6 +115,7 @@ function z(r)
 	print('z('..r..') = '..unify(z))
 end
 
+print('earth embedding at different radii...')
 z(0)
 z(.25 * earth.radius)
 z(.5 * earth.radius)
