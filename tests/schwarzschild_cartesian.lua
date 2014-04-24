@@ -24,7 +24,12 @@
 --[[
 schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
 
-my guess of how this fits with cartesian:
+my incorrect guess of how this converts to Cartesian.
+
+TODO: The correct substitution method is:
+	dr = (x dx + y dy + z dy) / r
+	dtheta = (xz dx + yz dy - (x^2 + y^2) dz) / (r^2 sqrt(x^2 + y^2))
+	dphi = (-y dx + x dy) / (x^2 + y^2)
 --]]
 
 local tensor = require 'symmath.tensor'

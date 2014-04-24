@@ -150,6 +150,9 @@ function getReplVars(varNames, vars)
 	return replvars
 end
 
+-- bug: separate terms should be summed separately, but this sums the whole thing
+--  this appears when a sum term is used
+-- 	i.e. assign'1 + x_$u * x_$u' evaluates to 4 + assign'x_$u * x_$u'
 function assign(expr)
 	
 	local eq = expr:find('=')
