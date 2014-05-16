@@ -27,7 +27,7 @@ require 'ext'
 verbose = false
 simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
 toStringMethod = 'multiLine'	-- or 'singleLine'
-
+usePowerSymbol = true			-- whether to use a^b or pow(a,b).  This is a dirty trick to get around some dirtier regex converting compiled functions from one language to another.  A more proper fix would be to allow different backends to compile to.
 
 local globalToString = tostring
 function tostring(o)
@@ -1589,6 +1589,16 @@ powOp = class(BinaryOp)
 powOp.omitSpace = true
 powOp.precedence = 5
 powOp.name = '^'
+
+--dirty hack in place of to-be modular compile backends:
+function powOp:compile(...)
+	if usePowerSymbol then
+		return BinaryOp.compile(self, ...)
+	else
+		--cheap trick to duplicate Function behavior
+		return Function.compile({name='pow', inMathPkg=true, xs=self.xs}, ...)
+	end
+end
 
 --[[
 d/dx(a^b)
