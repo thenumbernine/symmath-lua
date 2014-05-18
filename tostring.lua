@@ -346,8 +346,41 @@ getmetatable(ToJavaScriptCode).__call = function(self, ...)
 end
 
 
+ToLaTeX = class(ToStringMethod)
 
-
+ToLaTeX.lookupTable = {
+	[Constant] = function(self, expr)
+		return tostring(expr.value) 
+	end,
+	[Invalid] = function(self, expr)
+		return '?'
+	end,
+	[Function] = function(self, expr)
+		return expr.name .. '\\left (' .. expr.xs:map(function(x) return self:apply(x) end):concat(',') .. '\\right )'
+	end,
+	[unmOp] = function(self, expr)
+		return '-{'..self:wrapStrWithParenthesis(expr.xs[1], expr)..'}'
+	end,
+	[BinaryOp] = function(self, expr)
+		return '{'..expr.xs:map(function(x) 
+			return self:wrapStrWithParenthesis(x, expr)
+		end):concat(expr:getSepStr())..'}'
+	end,
+	[divOp] = function(self, expr)
+	end,
+	[Variable] = function(self, expr)
+		local s = expr.name
+		if expr.value then
+			s = s .. '|' .. expr.value
+		end
+		return s
+	end,
+	[Derivative] = function(self, expr) 
+		return '{{d' .. self:apply(expr.xs[1]) .. '} \\over {' .. 
+			table{unpack(expr.xs, 2)}:map(function(x) return 'd' .. self:apply(x) end):concat(',')
+			.. '}}'
+	end
+}
 
 -- change the default as you see fit
 toStringMethod = ToMultiLineString
