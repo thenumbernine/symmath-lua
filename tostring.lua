@@ -157,11 +157,11 @@ ToMultiLineString.lookupTable = {
 	end,
 	[Function] = function(self, expr)
 		local res = {expr.name..'('}
-		res = self:multiLinesCombine(res, toMultiLines(expr.xs[1]))
+		res = self:multiLinesCombine(res, self:apply(expr.xs[1]))
 		local sep = {', '}
 		for i=2,#expr.xs do
 			res = self:multiLinesCombine(res, sep)
-			res = self:multiLinesCombine(res, toMultiLines(expr.xs[i]))
+			res = self:multiLinesCombine(res, self:apply(expr.xs[i]))
 		end
 		res = self:multiLinesCombine(res, {')'})
 		return res
@@ -180,7 +180,7 @@ ToMultiLineString.lookupTable = {
 	end,
 	[divOp] = function(self, expr)
 		assert(#expr.xs == 2)
-		return self:multiLinesFraction(toMultiLines(expr.xs[1]), toMultiLines(expr.xs[2]))
+		return self:multiLinesFraction(self:apply(expr.xs[1]), self:apply(expr.xs[2]))
 	end,
 	[powOp] = function(self, expr)
 		assert(#expr.xs == 2)
