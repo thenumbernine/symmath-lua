@@ -1,0 +1,33 @@
+1 m = 1 m
+1 s = 299792458 m
+1 m = 1.3466837364049e+27 kg
+
+earth radius = 6371 km
+earth mass = 0.44345972543955 cm
+earth embedding radius = 170753383.44642 km
+earth embedding radius to physical radius ratio = 26801.661190773
+earth schwarzschild radius = 0.88691945087909 cm
+earth photon sphere radius = 1.3303791763186 cm
+
+psr radius = 13.0260195 km
+psr mass = 2.9096141091452 km
+psr embedding radius = 19.488790682429 km
+psr embedding radius to physical radius ratio = 1.4961432141591
+psr schwarzschild radius = 5.8192282182905 km
+psr photon sphere radius = 8.7288423274357 km
+
+sun radius = 695500 km
+sun mass = 1.4769614767235 km
+sun embedding radius = 337478507.47345 km
+sun embedding radius to physical radius ratio = 485.23149888346
+sun schwarzschild radius = 2.9539229534469 km
+sun photon sphere radius = 4.4308844301704 km
+
+earth embedding at different radii...
+z(0) = 0
+z(0.25 6371000 m) = 7.4284057617188 m
+z(0.5 6371000 m) = 29.713653564453 m
+z(6371000 m) = 118.85458374023 m
+z(2 6371000 m) = 315.77927861234 m
+z(10 6371000 m) = 1146.8409241201 m
+z(100 6371000 m) = 4397.6192139151 m

@@ -8,26 +8,26 @@ eLU_phi_x = -1 r sin(phi)
 eLU_phi_y = r cos(phi)
 
 gLL_r_r = 1
-gLL_phi_phi = sin(phi)^2 r^2 + cos(phi)^2 r^2
+gLL_phi_phi = r^2
 
 gUU_r_r = 1
-gUU_phi_phi = (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1
+gUU_phi_phi = r^-2
 
-gLLL_phi_phi_r = 2 sin(phi)^2 r + 2 cos(phi)^2 r
+gLLL_phi_phi_r = 2 r
 
-connectionLLL_r_phi_phi = -1 r sin(phi)^2 + -1 r cos(phi)^2
-connectionLLL_phi_phi_r = r cos(phi)^2 + r sin(phi)^2
-connectionLLL_phi_r_phi = r cos(phi)^2 + r sin(phi)^2
+connectionLLL_r_phi_phi = -1 r
+connectionLLL_phi_phi_r = r
+connectionLLL_phi_r_phi = r
 
-connectionULL_r_phi_phi = -1 cos(phi)^2 r + -1 sin(phi)^2 r
-connectionULL_phi_phi_r = (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r
-connectionULL_phi_r_phi = (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r
+connectionULL_r_phi_phi = -1 r
+connectionULL_phi_phi_r = r^-1
+connectionULL_phi_r_phi = r^-1
 
 diffxU_r = diffxU_r
 diffxU_phi = diffxU_phi
 
-diff2xU_r = -1 diffxU_r (-1 cos(phi)^2 r + -1 sin(phi)^2 r) diffxU_phi
-diff2xU_phi = -1 diffxU_phi ((sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r) diffxU_r + -1 diffxU_phi^2 ((sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 sin(phi)^2 r + (sin(phi)^2 r^2 + cos(phi)^2 r^2)^-1 cos(phi)^2 r)
+diff2xU_r = diffxU_r r diffxU_phi
+diff2xU_phi = -1 diffxU_phi r^-1 (diffxU_r + diffxU_phi)
 
 0
 -1

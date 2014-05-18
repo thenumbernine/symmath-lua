@@ -1,0 +1,12 @@
+original equations:
+  d/d{t}[rho] + d/d{x}[rho u] = 0
+  d/d{t}[rho u] + d/d{x}[rho u^2 + (gamma - 1) (rho e - 0.5 rho u u)] = 0
+  d/d{t}[rho e] + d/d{x}[(rho e + (gamma - 1) (rho e - 0.5 rho u u)) u] = 0
+substituting state variables:
+  d/d{t}[q1] + d/d{x}[q1 q2 / q1] = 0
+  d/d{t}[q1 q2 / q1] + d/d{x}[q1 (q2 / q1)^2 + (gamma - 1) (q1 q3 / q1 - 0.5 q1 q2 / q1 q2 / q1)] = 0
+  d/d{t}[q1 q3 / q1] + d/d{x}[(q1 q3 / q1 + (gamma - 1) (q1 q3 / q1 - 0.5 q1 q2 / q1 q2 / q1)) q2 / q1] = 0
+simplify & expand
+  d/d{t}[q1] + d/d{x}[q2] = 0
+  d/d{t}[q2] + gamma (d/d{x}[q3] + q2 q1^-2 (-1 d/d{x}[q2] q1 + 0.5 q2 d/d{x}[q1])) + -1 d/d{x}[q3] + q2 q1^-2 (d/d{x}[q2] q1 + -0.5 q2 d/d{x}[q1]) + q1^-2 q2 (-1 d/d{x}[q1] q2 + 2 q1 d/d{x}[q2]) = 0
+  d/d{t}[q3] + q1^-2 (-1 d/d{x}[q1] q2 (-1 + gamma) (q3 + -0.5 q1^-1 q2^2) + -1 d/d{x}[q1] q2 q3 + q1 d/d{x}[q2] (-1 + gamma) (q3 + -0.5 q1^-1 q2^2) + q1 d/d{x}[q2] q3 + q1 q2 (d/d{x}[q3] + q2 q1^-2 (-1 d/d{x}[q2] q1 gamma + d/d{x}[q2] q1 + 0.5 q2 d/d{x}[q1] gamma + -0.5 q2 d/d{x}[q1]) + d/d{x}[q3] (-1 + gamma))) = 0
