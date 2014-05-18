@@ -295,7 +295,7 @@ ToJavaScriptCode.lookupTable = {
 			end
 			if power < 0 then
 				invert = true
-				value = -value
+				power = -power
 			end	
 			-- sqrt hack
 			if power == .5 then
