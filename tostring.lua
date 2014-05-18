@@ -24,18 +24,18 @@ function ToStringMethod:testWrapStrWithParenthesis(node, parentNode)
 	return precedence(node) < precedence(parentNode)
 end
 
-
--- single-line strings 
-
-ToSingleLineString = class(ToStringMethod)
-
-function ToSingleLineString:wrapStrWithParenthesis(node, parentNode)
+function ToStringMethod:wrapStrWithParenthesis(node, parentNode)
 	local s = ToSingleLineString(node)
 	if self:testWrapStrWithParenthesis(node, parentNode) then
 		s = '(' .. s .. ')'
 	end
 	return s
 end
+
+
+-- single-line strings 
+
+ToSingleLineString = class(ToStringMethod)
 
 ToSingleLineString.lookupTable = {
 	[Constant] = function(self, expr) 
@@ -83,7 +83,7 @@ produces:
 aabbb
 aabbb
 --]]
-function ToMultiLineString:multiLinesCombine(lhs, rhs)
+function ToMultiLineString:combine(lhs, rhs)
 	local res = table()
 	local sides = {lhs, rhs}
 	local maxheight = math.max(#lhs, #rhs)
@@ -108,7 +108,7 @@ produces:
 ---
  b
 --]]
-function ToMultiLineString:multiLinesFraction(lhs, rhs)
+function ToMultiLineString:fraction(lhs, rhs)
 	local res = table()
 	local width = math.max(#lhs[1], #rhs[1])
 	for i=1,#lhs do
@@ -121,7 +121,7 @@ function ToMultiLineString:multiLinesFraction(lhs, rhs)
 	return res
 end
 
-function ToMultiLineString:multiLinesWrapStrWithParenthesis(node, parentNode)
+function ToMultiLineString:wrapStrWithParenthesis(node, parentNode)
 	local res = self:apply(node)
 	if self:testWrapStrWithParenthesis(node, parentNode) then
 		local height = #res
@@ -140,8 +140,8 @@ function ToMultiLineString:multiLinesWrapStrWithParenthesis(node, parentNode)
 			lhs[height] = ' \\'
 			rhs[height] = '/ '
 		end
-		res = self:multiLinesCombine(lhs, res)
-		res = self:multiLinesCombine(res, rhs)
+		res = self:combine(lhs, res)
+		res = self:combine(res, rhs)
 	end
 	return res
 end
@@ -157,35 +157,35 @@ ToMultiLineString.lookupTable = {
 	end,
 	[Function] = function(self, expr)
 		local res = {expr.name..'('}
-		res = self:multiLinesCombine(res, self:apply(expr.xs[1]))
+		res = self:combine(res, self:apply(expr.xs[1]))
 		local sep = {', '}
 		for i=2,#expr.xs do
-			res = self:multiLinesCombine(res, sep)
-			res = self:multiLinesCombine(res, self:apply(expr.xs[i]))
+			res = self:combine(res, sep)
+			res = self:combine(res, self:apply(expr.xs[i]))
 		end
-		res = self:multiLinesCombine(res, {')'})
+		res = self:combine(res, {')'})
 		return res
 	end,
 	[unmOp] = function(self, expr)
-		return self:multiLinesCombine({'-'}, self:multiLinesWrapStrWithParenthesis(expr.xs[1], expr))
+		return self:combine({'-'}, self:wrapStrWithParenthesis(expr.xs[1], expr))
 	end,
 	[BinaryOp] = function(self, expr)
-		local res = self:multiLinesWrapStrWithParenthesis(expr.xs[1], expr)
+		local res = self:wrapStrWithParenthesis(expr.xs[1], expr)
 		local sep = {expr:getSepStr()}
 		for i=2,#expr.xs do
-			res = self:multiLinesCombine(res, sep)
-			res = self:multiLinesCombine(res, self:multiLinesWrapStrWithParenthesis(expr.xs[i], expr))
+			res = self:combine(res, sep)
+			res = self:combine(res, self:wrapStrWithParenthesis(expr.xs[i], expr))
 		end
 		return res
 	end,
 	[divOp] = function(self, expr)
 		assert(#expr.xs == 2)
-		return self:multiLinesFraction(self:apply(expr.xs[1]), self:apply(expr.xs[2]))
+		return self:fraction(self:apply(expr.xs[1]), self:apply(expr.xs[2]))
 	end,
 	[powOp] = function(self, expr)
 		assert(#expr.xs == 2)
-		local lhs = self:multiLinesWrapStrWithParenthesis(expr.xs[1], expr)
-		local rhs = self:multiLinesWrapStrWithParenthesis(expr.xs[2], expr)
+		local lhs = self:wrapStrWithParenthesis(expr.xs[1], expr)
+		local rhs = self:wrapStrWithParenthesis(expr.xs[2], expr)
 		local lhswidth = #lhs[1]
 		local rhswidth = #rhs[1]
 		local res = table()
@@ -204,9 +204,9 @@ ToMultiLineString.lookupTable = {
 	end,
 	[Derivative] = function(self, expr)
 		assert(#expr.xs >= 2)
-		local lhs = self:multiLinesFraction({'d'}, {'d'..table{unpack(expr.xs, 2)}:map(function(x) return x.name end):concat()})
-		local rhs = self:multiLinesWrapStrWithParenthesis(expr.xs[1], expr)
-		return self:multiLinesCombine(lhs, rhs)
+		local lhs = self:fraction({'d'}, {'d'..table{unpack(expr.xs, 2)}:map(function(x) return x.name end):concat()})
+		local rhs = self:wrapStrWithParenthesis(expr.xs[1], expr)
+		return self:combine(lhs, rhs)
 	end,
 }
 
@@ -350,23 +350,24 @@ ToLaTeX = class(ToStringMethod)
 
 ToLaTeX.lookupTable = {
 	[Constant] = function(self, expr)
-		return tostring(expr.value) 
+		return '{' .. tostring(expr.value)  .. '}'
 	end,
 	[Invalid] = function(self, expr)
 		return '?'
 	end,
 	[Function] = function(self, expr)
-		return expr.name .. '\\left (' .. expr.xs:map(function(x) return self:apply(x) end):concat(',') .. '\\right )'
+		return expr.name .. '\\left (' .. expr.xs:map(function(x) return '{' .. self:apply(x) .. '}' end):concat(',') .. '\\right )'
 	end,
 	[unmOp] = function(self, expr)
-		return '-{'..self:wrapStrWithParenthesis(expr.xs[1], expr)..'}'
+		return '{-{'..self:wrapStrWithParenthesis(expr.xs[1], expr)..'}}'
 	end,
 	[BinaryOp] = function(self, expr)
 		return '{'..expr.xs:map(function(x) 
-			return self:wrapStrWithParenthesis(x, expr)
+			return '{' .. self:wrapStrWithParenthesis(x, expr) .. '}'
 		end):concat(expr:getSepStr())..'}'
 	end,
 	[divOp] = function(self, expr)
+		return '{{' .. self:apply(expr.xs[1]) .. '} \\over {' + self:apply(expr.xs[2]) .. '}}'
 	end,
 	[Variable] = function(self, expr)
 		local s = expr.name
@@ -377,10 +378,16 @@ ToLaTeX.lookupTable = {
 	end,
 	[Derivative] = function(self, expr) 
 		return '{{d' .. self:apply(expr.xs[1]) .. '} \\over {' .. 
-			table{unpack(expr.xs, 2)}:map(function(x) return 'd' .. self:apply(x) end):concat(',')
+			table{unpack(expr.xs, 2)}:map(function(x) return 'd{' .. self:apply(x) .. '}' end):concat(',') 
 			.. '}}'
 	end
 }
+
+--singleton -- no instance creation
+getmetatable(ToLaTeX).__call = function(self, ...) 
+	return self:apply(...) 
+end
+
 
 -- change the default as you see fit
 toStringMethod = ToMultiLineString
