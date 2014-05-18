@@ -286,22 +286,38 @@ ToJavaScriptCode.lookupTable = {
 	end,
 	[powOp] = function(self, expr, vars)
 		-- special case for constant integer powers
+		local invert = false 
+		local result
 		if expr.xs[2]:isa(Constant) then
+			local power = expr.xs[2].value
+			if power == 0 then 
+				return '1' 
+			end
+			if power < 0 then
+				invert = true
+				value = -value
+			end	
 			-- sqrt hack
-			if expr.xs[2].value == .5 then
-				return 'Math.sqrt(' .. self:apply(expr.xs[1], vars) .. ')'
+			if power == .5 then
+				result = 'Math.sqrt(' .. self:apply(expr.xs[1], vars) .. ')'
 			-- integer-power hack
-			elseif expr.xs[2].value > 0 and expr.xs[2].value == math.floor(expr.xs[2].value) then
+			elseif power > 0 and power == math.floor(power) then
 				-- TODO declare beforehand as a variable
 				local code = '(' .. self:apply(expr.xs[1], vars) .. ')'
 				local reps = table()
-				for i=1,expr.xs[2].value do
+				for i=1,power do
 					reps:insert(code)
 				end
-				return '(' .. reps:concat(' * ') .. ')'
+				result = '(' .. reps:concat(' * ') .. ')'
 			end
 		end
-		return 'Math.pow(' .. expr.xs:map(function(x) return self:apply(x, vars) end):concat(',')..')'
+		if not result then
+			result = 'Math.pow(' .. expr.xs:map(function(x) return self:apply(x, vars) end):concat(',')..')'
+		end
+		if invert then
+			result = '1 / (' .. result .. ')'
+		end
+		return result
 	end,
 	[Variable] = function(self, expr, vars)
 		if table.find(vars, nil, function(var) return expr.name == var.name end) then
