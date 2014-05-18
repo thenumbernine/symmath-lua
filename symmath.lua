@@ -133,12 +133,7 @@ so if you have any derivs you want as function parameters, use map() or replace(
 	and then put them in the vars list
 --]]
 function compile(expr, vars)
-	local cmd = 'return function('..
-		table.map(vars, function(var) return var.name end):concat(', ')
-	..') return '..
-		expr:compile(vars)
-	..' end'
-	return assert(loadstring(cmd))(), cmd
+	return ToLuaCode:compile(expr, vars)
 end
 
 --[[ potential new system based on breadth-first search ... not finished yet
@@ -386,10 +381,6 @@ function Constant:toVerboseStr()
 	return 'Constant['..tostring(self.value)..']'
 end
 
-function Constant:compile() 
-	return tostring(self.value) 
-end
-
 function Constant:diff(...)
 	return Constant(0)
 end
@@ -406,10 +397,6 @@ Invalid.name = 'Invalid'
 -- true to NaNs
 function Invalid.__eq(a,b)
 	return false
-end
-
-function Invalid:compile()
-	return '(0/0)'
 end
 
 function Invalid:diff(...)
@@ -443,12 +430,6 @@ function Function:toVerboseStr()
 	return 'Function{'..self.name..'}[' .. self.xs:map(tostring):concat(', ') .. ']'
 end
 
-function Function:compile(vars)
-	local s = self.name
-	if self.inMathPkg then s = 'math.' .. s end
-	return s .. '(' .. self.xs:map(function(x) return x:compile(vars) end):concat(',') .. ')'
-end
-
 function Function:prune()
 	local f = self:clone()
 	f.xs = f.xs:map(function(x) return simplify(x) end)
@@ -457,7 +438,6 @@ end
 
 sqrt = class(Function)
 sqrt.name = 'sqrt'
-sqrt.inMathPkg = true
 sqrt.func = math.sqrt
 function sqrt:diff(...)
 	local x = unpack(self.xs)
@@ -466,7 +446,6 @@ end
 
 log = class(Function)
 log.name = 'log'
-log.inMathPkg = true
 log.func = math.log
 function log:diff(...)
 	local x = unpack(self.xs)
@@ -475,7 +454,6 @@ end
 
 exp = class(Function)
 exp.name = 'exp'
-exp.inMathPkg = true
 exp.func = math.exp
 function exp:diff(...)
 	local x = unpack(self.xs)
@@ -484,7 +462,6 @@ end
 
 cos = class(Function)
 cos.name = 'cos'
-cos.inMathPkg = true
 cos.func = math.cos
 function cos:diff(...)
 	local x = unpack(self.xs)
@@ -493,7 +470,6 @@ end
 
 sin = class(Function)
 sin.name = 'sin'
-sin.inMathPkg = true
 sin.func = math.sin
 function sin:diff(...)
 	local x = unpack(self.xs)
@@ -502,7 +478,6 @@ end
 
 tan = class(Function)
 tan.name = 'tan'
-tan.inMathPkg = true
 tan.func = math.tan
 function tan:diff(...)
 	local x = unpack(self.xs)
@@ -511,7 +486,6 @@ end
 
 asin = class(Function)
 asin.name = 'asin'
-asin.inMathPkg = true
 asin.func = math.asin
 function asin:diff(...)
 	local x = unpack(self.xs)
@@ -520,7 +494,6 @@ end
 
 acos = class(Function)
 acos.name = 'acos'
-acos.inMathPkg = true
 acos.func = math.acos
 function acos:diff(...)
 	local x = unpack(self.xs)
@@ -529,7 +502,6 @@ end
 
 atan = class(Function)
 atan.name = 'atan'
-atan.inMathPkg = true
 atan.func = math.atan
 function atan:diff(...)
 	local x = unpack(self.xs)
@@ -538,7 +510,6 @@ end
 
 atan2 = class(Function)
 atan2.name = 'atan2'
-atan2.inMathPkg = true
 atan2.func = math.atan2
 function atan2:diff(...)
 	local y, x = unpack(self.xs)
@@ -588,10 +559,6 @@ function unmOp:toVerboseStr()
 	return 'unm('..self.xs[1]:toSingleLineStr()..')'
 end
 
-function unmOp:compile(vars)
-	return '(-'..self.xs[1]:compile(vars)..')'
-end
-
 
 BinaryOp = class(Expression)
 
@@ -621,10 +588,6 @@ function BinaryOp:getSepStr()
 		sep = ' ' .. sep .. ' ' 
 	end
 	return sep
-end
-
-function BinaryOp:compile(vars)
-	return '('..self.xs:map(function(x) return x:compile(vars) end):concat(' '..self.name..' ')..')'
 end
 
 
@@ -1466,16 +1429,6 @@ powOp.omitSpace = true
 powOp.precedence = 5
 powOp.name = '^'
 
---dirty hack in place of to-be modular compile backends:
-function powOp:compile(...)
-	if usePowerSymbol then
-		return BinaryOp.compile(self, ...)
-	else
-		--cheap trick to duplicate Function behavior
-		return Function.compile({name='pow', inMathPkg=true, xs=self.xs}, ...)
-	end
-end
-
 --[[
 d/dx(a^b)
 d/dx(exp(log(a^b)))
@@ -1654,13 +1607,6 @@ function Variable:toVerboseStr()
 	return s
 end
 
-function Variable:compile(vars)
-	if table.find(vars, nil, function(var) return self.name == var.name end) then
-		return self.name
-	end
-	error("tried to compile variable "..self.name.." that wasn't in your function argument variable list")
-end
-
 function Variable.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
 	return a.name == b.name
@@ -1724,10 +1670,6 @@ end
 
 function Derivative:toVerboseStr()
 	return self:toSingleLineStr()
-end
-
-function Derivative:compile(vars)
-	error("can't compile differentiation.  replace() your diff'd content first!")
 end
 
 -- always need this

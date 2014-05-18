@@ -5,7 +5,7 @@ require 'symmath'	-- needed for symmath classes for lookup table
 -- base class
 ToStringMethod = class()
 
-function ToStringMethod:apply(expr)
+function ToStringMethod:apply(expr, ...)
 	if type(expr) ~= 'table' then return tostring(expr) end
 	local lookup = expr.class
 	if not lookup then return tostring(expr) end
@@ -16,7 +16,7 @@ function ToStringMethod:apply(expr)
 	if not lookup then
 		return tostring(expr)
 	else
-		return (self.lookupTable[lookup])(self, expr)
+		return (self.lookupTable[lookup])(self, expr, ...)
 	end
 end
 
@@ -219,7 +219,120 @@ getmetatable(ToMultiLineString).__call = function(self, ...)
 	return '\n' ..result:concat('\n')
 end
 
--- change as you see fit
-toStringMethod = ToMultiLineString
 
+-- convert to Lua code.  use :compile to generate a function
+ToLuaCode = class(ToStringMethod)
+
+ToLuaCode.lookupTable = {
+	[Constant] = function(self, expr, vars)
+		return tostring(expr.value) 
+	end,
+	[Invalid] = function(self, expr, vars)
+		return '(0/0)'
+	end,
+	[Function] = function(self, expr, vars)
+		return 'math.' .. expr.name .. '(' .. expr.xs:map(function(x) return self:apply(x, vars) end):concat(',') .. ')'
+	end,
+	[unmOp] = function(self, expr, vars)
+		return '(-'..self:apply(expr.xs[1], vars)..')'
+	end,
+	[BinaryOp] = function(self, expr, vars)
+		return '('..expr.xs:map(function(x) return self:apply(x, vars) end):concat(' '..expr.name..' ')..')'
+	end,
+	[Variable] = function(self, expr, vars)
+		if table.find(vars, nil, function(var) return expr.name == var.name end) then
+			return expr.name
+		end
+		error("tried to compile variable "..expr.name.." that wasn't in your function argument variable list")
+	end,
+	[Derivative] = function(self, expr) 
+		error("can't compile differentiation.  replace() your diff'd content first!")
+	end
+}
+
+function ToLuaCode:compile(expr, vars)
+	local cmd = 'return function('..
+		table.map(vars, function(var) return var.name end):concat(', ')
+	..') return '..
+		self:apply(expr, vars)
+	..' end'
+	return assert(loadstring(cmd))(), cmd
+end
+
+--singleton -- no instance creation
+getmetatable(ToLuaCode).__call = function(self, ...) 
+	return self:apply(...) 
+end
+
+
+-- convert to JavaScript code.  use :compile to wrap in a function
+ToJavaScriptCode = class(ToStringMethod)
+
+ToJavaScriptCode.lookupTable = {
+	[Constant] = function(self, expr, vars)
+		return tostring(expr.value) 
+	end,
+	[Invalid] = function(self, expr, vars)
+		return '(0/0)'
+	end,
+	[Function] = function(self, expr, vars)
+		return 'Math.' .. expr.name .. '(' .. expr.xs:map(function(x) return self:apply(x, vars) end):concat(',') .. ')'
+	end,
+	[unmOp] = function(self, expr, vars)
+		return '(-'..self:apply(expr.xs[1], vars)..')'
+	end,
+	[BinaryOp] = function(self, expr, vars)
+		return '('..expr.xs:map(function(x) return self:apply(x, vars) end):concat(' '..expr.name..' ')..')'
+	end,
+	[powOp] = function(self, expr, vars)
+		-- special case for constant integer powers
+		if expr.xs[2]:isa(Constant) then
+			-- sqrt hack
+			if expr.xs[2].value == .5 then
+				return 'Math.sqrt(' .. self:apply(expr.xs[1], vars) .. ')'
+			-- integer-power hack
+			elseif expr.xs[2].value > 0 and expr.xs[2].value == math.floor(expr.xs[2].value) then
+				-- TODO declare beforehand as a variable
+				local code = '(' .. self:apply(expr.xs[1], vars) .. ')'
+				local reps = table()
+				for i=1,expr.xs[2].value do
+					reps:insert(code)
+				end
+				return '(' .. reps:concat(' * ') .. ')'
+			end
+		end
+		return 'Math.pow(' .. expr.xs:map(function(x) return self:apply(x, vars) end):concat(',')..')'
+	end,
+	[Variable] = function(self, expr, vars)
+		if table.find(vars, nil, function(var) return expr.name == var.name end) then
+			return expr.name
+		end
+		error("tried to compile variable "..expr.name.." that wasn't in your function argument variable list")
+	end,
+	[Derivative] = function(self, expr) 
+		error("can't compile differentiation.  replace() your diff'd content first!")
+	end
+}
+
+-- returns code that can be eval()'d to return a function
+function ToJavaScriptCode:compile(expr, vars)
+	local cmd = 'function tmp('..
+		table.map(vars, function(var) return var.name end):concat(', ')
+	..') return '..
+		self:apply(expr, vars)
+	..'}; tmp;'
+	return cmd
+end
+
+--singleton -- no instance creation
+getmetatable(ToJavaScriptCode).__call = function(self, ...) 
+	return self:apply(...) 
+end
+
+
+
+
+
+-- change the default as you see fit
+toStringMethod = ToMultiLineString
 
