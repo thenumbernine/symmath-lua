@@ -318,9 +318,9 @@ ToJavaScriptCode.lookupTable = {
 function ToJavaScriptCode:compile(expr, vars)
 	local cmd = 'function tmp('..
 		table.map(vars, function(var) return var.name end):concat(', ')
-	..') return '..
+	..') { return '..
 		self:apply(expr, vars)
-	..'}; tmp;'
+	..'; }; tmp;'
 	return cmd
 end
 
