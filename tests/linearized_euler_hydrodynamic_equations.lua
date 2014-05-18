@@ -1,7 +1,7 @@
 require 'symmath'
 require 'ext'
 
-symmath.toStringMethod = 'singleLine'
+symmath.toStringMethod = symmath.ToSingleLineString
 symmath.simplifyConstantPowers  = true
 
 local rho = symmath.variable('rho', nil, true)

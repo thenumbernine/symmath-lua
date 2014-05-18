@@ -26,23 +26,7 @@ require 'ext'
 
 verbose = false
 simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
-toStringMethod = 'multiLine'	-- or 'singleLine'
 usePowerSymbol = true			-- whether to use a^b or pow(a,b).  This is a dirty trick to get around some dirtier regex converting compiled functions from one language to another.  A more proper fix would be to allow different backends to compile to.
-
-local globalToString = tostring
-function tostring(o)
-	if toStringMethod == 'singleLine' then
-		if o.toSingleLineStr then
-			return o:toSingleLineStr()
-		end
-	elseif toStringMethod == 'multiLine' then
-		if o.toMultiLineStr then
-			return o:toMultiLineStr()
-		end
-	end
-	return globalToString(o)
-end
-
 
 function diff(y, ...)
 	return Derivative(y, ...)
@@ -126,13 +110,13 @@ function evaluate(expr, evalmap)
 	if evalmap then
 		expr = map(expr, function(node)
 			if node == nil then
-				error("found a nil node in expression "..globalToString(expr))
+				error("found a nil node in expression "..tostring(expr))
 			end
 			if not node:isa(Variable) then return end
 			local newval = evalmap[node.name]
 			if newval == nil then return end
 			if type(newval) ~= 'number' then
-				error("expected the values of the evaluation map to be numbers, but found "..node.name.." = ("..type(newval)..").."..globalToString(newval))
+				error("expected the values of the evaluation map to be numbers, but found "..node.name.." = ("..type(newval)..").."..tostring(newval))
 			end
 			return symmath.Constant(newval)
 		end)
@@ -219,98 +203,10 @@ end
 
 --]]
 
-local function toMultiLines(x)
-	if x.toMultiLines then return x:toMultiLines() end
-	return table{globalToString(x)}
-end
-
---[[
-produces:
-  bbb
-aabbb
-aabbb
---]]
-local function multiLinesCombine(lhs, rhs)
-	local res = table()
-	local sides = {lhs, rhs}
-	local maxheight = math.max(#lhs, #rhs)
-	for i=1,maxheight do
-		local line = ''
-		for _,side in ipairs(sides) do
-			local sideIndex = i - math.ceil((maxheight - #side) / 2)
-			if sideIndex >= 1 and sideIndex <= #side then
-				line = line .. side[sideIndex]
-			else
-				line = line .. (' '):rep(#side[1])
-			end
-		end
-		res:insert(line)
-	end
-	return res
-end
-
---[[
-produces:
- a
----
- b
---]]
-local function multiLinesFraction(lhs, rhs)
-	local res = table()
-	local width = math.max(#lhs[1], #rhs[1])
-	for i=1,#lhs do
-		res:insert(' '..lhs[i]..(' '):rep(width-#lhs[1]+1))
-	end
-	res:insert(('-'):rep(width+2))
-	for i=1,#rhs do
-		res:insert(' '..rhs[i]..(' '):rep(width-#rhs[1]+1))
-	end
-	return res
-end
-
-local function precedence(x)
+function precedence(x)
 	if x.precedence then return x.precedence end
 	return 10
 end
-
--- only wrap parenthesis if any of the contained operations have lower precedence
-local function testWrapStrWithParenthesis(node, parentNode)
-	return precedence(node) < precedence(parentNode)
-end
-
-local function wrapStrWithParenthesis(node, parentNode)
-	local s = node:toSingleLineStr()
-	if testWrapStrWithParenthesis(node, parentNode) then
-		s = '(' .. s .. ')'
-	end
-	return s
-end
-
-local function multiLinesWrapStrWithParenthesis(node, parentNode)
-	local res = toMultiLines(node)
-	if testWrapStrWithParenthesis(node, parentNode) then
-		local height = #res
-		local lhs = {}
-		local rhs = {}
-		if height < 3 then
-			lhs[1] = '('
-			rhs[1] = ')'
-		else
-			lhs[1] = ' /'
-			rhs[1] = '\\ '
-			for i=2,height-1 do
-				lhs[i] = '| '
-				rhs[i] = ' |'
-			end
-			lhs[height] = ' \\'
-			rhs[height] = '/ '
-		end
-		res = multiLinesCombine(lhs, res)
-		res = multiLinesCombine(res, rhs)
-	end
-	return res
-end
-
 
 Expression = class()
 
@@ -399,15 +295,11 @@ function Expression:removeChild(index)
 end
 
 function Expression.__concat(a,b)
-	return globalToString(a) .. globalToString(b)
-end
-
-function Expression:toMultiLineStr(parts, sep)
-	return '\n'..toMultiLines(self):concat('\n')
+	return tostring(a) .. tostring(b)
 end
 
 function Expression:__tostring()
-	return tostring(self)
+	return toStringMethod(self)
 end
 
 -- TODO
@@ -491,19 +383,11 @@ function Constant.__eq(a,b)
 end
 
 function Constant:toVerboseStr()
-	return 'Constant['..globalToString(self.value)..']'
-end
-
-function Constant:toSingleLineStr()
-	return globalToString(self.value)
-end
-
-function Constant:toMultiLines()
-	return table{self:toSingleLineStr()}
+	return 'Constant['..tostring(self.value)..']'
 end
 
 function Constant:compile() 
-	return globalToString(self.value) 
+	return tostring(self.value) 
 end
 
 function Constant:diff(...)
@@ -522,14 +406,6 @@ Invalid.name = 'Invalid'
 -- true to NaNs
 function Invalid.__eq(a,b)
 	return false
-end
-
-function Invalid:toSingleLineStr()
-	return 'Invalid'
-end
-
-function Invalid:toMultiLines()
-	return table{self:toSingleLineStr()}
 end
 
 function Invalid:compile()
@@ -564,23 +440,7 @@ function Function:eval()
 end
 
 function Function:toVerboseStr()
-	return 'Function{'..self.name..'}[' .. self.xs:map(globalToString):concat(', ') .. ']'
-end
-
-function Function:toSingleLineStr()
-	return self.name..'(' .. self.xs:map(function(x) return x:toSingleLineStr() end):concat(', ') .. ')'
-end
-
-function Function:toMultiLines()
-	local res = {self.name..'('}
-	res = multiLinesCombine(res, toMultiLines(self.xs[1]))
-	local sep = {', '}
-	for i=2,#self.xs do
-		res = multiLinesCombine(res, sep)
-		res = multiLinesCombine(res, toMultiLines(self.xs[i]))
-	end
-	res = multiLinesCombine(res, {')'})
-	return res
+	return 'Function{'..self.name..'}[' .. self.xs:map(tostring):concat(', ') .. ']'
 end
 
 function Function:compile(vars)
@@ -728,14 +588,6 @@ function unmOp:toVerboseStr()
 	return 'unm('..self.xs[1]:toSingleLineStr()..')'
 end
 
-function unmOp:toSingleLineStr()
-	return '-'..wrapStrWithParenthesis(self.xs[1], self)
-end
-
-function unmOp:toMultiLines()
-	return multiLinesCombine({'-'}, multiLinesWrapStrWithParenthesis(self.xs[1], self))
-end
-
 function unmOp:compile(vars)
 	return '(-'..self.xs[1]:compile(vars)..')'
 end
@@ -758,7 +610,7 @@ function BinaryOp:expand()
 end
 
 function BinaryOp:toVerboseStr()
-	return 'BinaryOp{'..self.name..'}['..self.xs:map(globalToString):concat(', ')..']'
+	return 'BinaryOp{'..self.name..'}['..self.xs:map(tostring):concat(', ')..']'
 end
 
 function BinaryOp:getSepStr()
@@ -769,22 +621,6 @@ function BinaryOp:getSepStr()
 		sep = ' ' .. sep .. ' ' 
 	end
 	return sep
-end
-
-function BinaryOp:toSingleLineStr()
-	return self.xs:map(function(x) 
-		return wrapStrWithParenthesis(x, self)
-	end):concat(self:getSepStr())
-end
-
-function BinaryOp:toMultiLines()
-	local res = multiLinesWrapStrWithParenthesis(self.xs[1], self)
-	local sep = {self:getSepStr()}
-	for i=2,#self.xs do
-		res = multiLinesCombine(res, sep)
-		res = multiLinesCombine(res, multiLinesWrapStrWithParenthesis(self.xs[i], self))
-	end
-	return res
 end
 
 function BinaryOp:compile(vars)
@@ -951,10 +787,10 @@ function addOp:prune()
 			if not constJ then constJ = Constant(1) end
 			
 			if not fail then
-				--print('optimizing from '..globalToString(self))
+				--print('optimizing from '..tostring(self))
 				self:removeChild(j)
 				self:setChild(i, mulOp(Constant(constI.value + constJ.value), unpack(commonTerms)))
-				--print('optimizing to '..globalToString(prune(self)))
+				--print('optimizing to '..tostring(prune(self)))
 				return prune(self)
 			end
 		end
@@ -1071,7 +907,7 @@ function addOp:factor()
 			
 	local function prodListToString(list)
 		return '['..table(list):map(function(x)
-			return '{term='..globalToString(x.term)..', power='..globalToString(x.power)..'}'
+			return '{term='..tostring(x.term)..', power='..tostring(x.power)..'}'
 		end):concat(', ')..']'
 	end
 
@@ -1112,14 +948,14 @@ function addOp:factor()
 	-- 2) find smallest set of common terms
 	
 	local minProds = prodsList[1]:map(function(prod) return prod.term end)
---print('first min prods',minProds:map(globalToString):concat(', '))
+--print('first min prods',minProds:map(tostring):concat(', '))
 	for i=2,#prodsList do
 		local otherProds = prodsList[i]:map(function(prod) return prod.term end)
---print('filtering out other prods',otherProds:map(globalToString):concat(', '))
+--print('filtering out other prods',otherProds:map(tostring):concat(', '))
 		for j=#minProds,1,-1 do
 			local found = false
 			for k=1,#otherProds do
---print('comparing',globalToString(minProds[j]),'and',globalToString(otherProds[k]),'got',minProds[j] == otherProds[k])
+--print('comparing',tostring(minProds[j]),'and',tostring(otherProds[k]),'got',minProds[j] == otherProds[k])
 				if minProds[j] == otherProds[k] then
 					found = true
 					break
@@ -1131,7 +967,7 @@ function addOp:factor()
 			end
 		end
 	end
---print('min set count',#minProds,'contains',minProds:map(globalToString):concat(', '))
+--print('min set count',#minProds,'contains',minProds:map(tostring):concat(', '))
 	
 	if #minProds == 0 then 
 --print('no min prods')
@@ -1158,7 +994,7 @@ function addOp:factor()
 			end
 		end
 		minPowers[i] = minPower
---print('min power of',globalToString(minProd),'is',minPower)
+--print('min power of',tostring(minProd),'is',minPower)
 		-- 4) factor them out
 		for i=1,#prodsList do
 --print("before simplification, prod:",prodListToString(prodsList[i]))
@@ -1625,11 +1461,6 @@ function divOp:prune()
 end
 --]==]
 
-function divOp:toMultiLines()
-	assert(#self.xs == 2)
-	return multiLinesFraction(toMultiLines(self.xs[1]), toMultiLines(self.xs[2]))
-end
-
 powOp = class(BinaryOp)
 powOp.omitSpace = true
 powOp.precedence = 5
@@ -1754,22 +1585,6 @@ function powOp:expand()
 	return self
 end
 
-function powOp:toMultiLines()
-	assert(#self.xs == 2)
-	local lhs = multiLinesWrapStrWithParenthesis(self.xs[1], self)
-	local rhs = multiLinesWrapStrWithParenthesis(self.xs[2], self)
-	local lhswidth = #lhs[1]
-	local rhswidth = #rhs[1]
-	local res = table()
-	for i=1,#rhs do
-		res:insert((' '):rep(lhswidth)..rhs[i])
-	end
-	for i=1,#lhs do
-		res:insert(lhs[i]..(' '):rep(rhswidth))
-	end
-	return res
-end
-
 modOp = class(BinaryOp)
 modOp.precedence = 3
 modOp.name = '%'
@@ -1798,7 +1613,7 @@ variable = Variable	-- shorthand / case convention
 function Variable:init(name, value, deferDiff)
 	self.name = name
 	if not (type(value) == 'number' or type(value) == 'nil') then
-		error("got a bad value "..globalToString(value))
+		error("got a bad value "..tostring(value))
 	end
 	self.value = value
 	self.deferDiff = deferDiff
@@ -1837,20 +1652,6 @@ function Variable:toVerboseStr()
 		s = s .. '|' .. self.value
 	end
 	return s
-end
-
-function Variable:toSingleLineStr()
-	local s = self.name
-	if self.value then
-		s = s .. '|' .. self.value
-	end
-	return s
-end
-
-function Variable:toMultiLines()
-	local s = self.name
-	if self.value then s = s .. '|' .. self.value end
-	return table{s}
 end
 
 function Variable:compile(vars)
@@ -1903,7 +1704,7 @@ function Derivative:prune()
 
 	if not (self.xs[1]:isa(Variable) and self.xs[1].deferDiff) then
 	-- ... and if we're not lazy-evaluating the derivative of this with respect to other variables ...
-		assert(self.xs[1].diff, "failed to differentiate "..globalToString(self.xs[1]).." with type "..type(self.xs[1]))
+		assert(self.xs[1].diff, "failed to differentiate "..tostring(self.xs[1]).." with type "..type(self.xs[1]))
 		local result = self.xs[1]:diff(unpack(self.xs, 2))
 		result = simplify(result)
 		return result
@@ -1925,20 +1726,11 @@ function Derivative:toVerboseStr()
 	return self:toSingleLineStr()
 end
 
-function Derivative:toSingleLineStr()
-	local diffvar = assert(self.xs[1]):toSingleLineStr()
-	return 'd/d{'..table{unpack(self.xs, 2)}:map(function(x) return x:toSingleLineStr() end):concat(',')..'}['..diffvar..']'
-end
-
-function Derivative:toMultiLines()
-	assert(#self.xs >= 2)
-	local lhs = multiLinesFraction({'d'}, {'d'..table{unpack(self.xs, 2)}:map(function(x) return x.name end):concat()})
-	local rhs = multiLinesWrapStrWithParenthesis(self.xs[1], self)
-	return multiLinesCombine(lhs, rhs)
-end
-
 function Derivative:compile(vars)
 	error("can't compile differentiation.  replace() your diff'd content first!")
 end
 
+-- always need this
+-- but need to define all the above operations first
+require 'symmath.tostring'
 

@@ -2,7 +2,7 @@ local run = ... or 'separate'
 
 require 'symmath'
 
-symmath.toStringMethod = 'singleLine'
+symmath.toStringMethod = symmath.ToSingleLineString
 symmath.simplifyConstantPowers  = true
 
 _ = symmath.simplify

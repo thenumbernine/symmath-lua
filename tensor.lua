@@ -31,7 +31,7 @@ for all of that, see my 'tensor' package (rather than this, which is 'symmath.te
 module('symmath.tensor', package.seeall)
 
 require 'symmath'
-symmath.toStringMethod = 'singleLine'
+symmath.toStringMethod = symmath.ToSingleLineString
 
 --[[
 map of the following format:
