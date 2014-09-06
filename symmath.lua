@@ -27,6 +27,7 @@ require 'ext'
 verbose = false
 simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
 usePowerSymbol = true			-- whether to use a^b or pow(a,b).  This is a dirty trick to get around some dirtier regex converting compiled functions from one language to another.  A more proper fix would be to allow different backends to compile to.
+simplifyDivisionByPower = false	-- whether to treat a/b as a*b^-1
 
 function diff(y, ...)
 	return Derivative(y, ...)
@@ -44,9 +45,9 @@ function expand(x)
 	return x
 end
 
-function factor(x)
+function factor(x, ...)
 	if type(x) ~= 'table' then return x end
-	if x.factor then x = x:factor() or x end
+	if x.factor then x = x:factor(...) or x end
 	return x
 end
 
@@ -127,8 +128,8 @@ end
 
 --[[
 builds a lua function out of the expression
-vars - specifies the list of Variables that will associate with function input parameters
-if there are any Derivatives or Variables (other those listed) then compiling will produce an error
+vars - specifies the list of variables that will associate with function input parameters
+if there are any Derivatives or variables (other those listed) then compiling will produce an error
 so if you have any derivs you want as function parameters, use map() or replace() to replace them for new variables
 	and then put them in the vars list
 --]]
@@ -829,7 +830,11 @@ function addOp:prune()
 	return self
 end
 
-function addOp:factor()
+-- (TODO
+-- factors is optional
+--  without it, best fit
+--  with it, use the requested factors)
+function addOp:factor(factors)
 	-- [[ x*a + x*b => x * (a + b)
 	-- the opposite of this is in mulOp:prune's applyDistribute
 	-- don't leave both of them uncommented or you'll get deadlock
@@ -1265,8 +1270,10 @@ end
 
 -- [==[
 function divOp:prune()
-	return simplify(mulOp(self.xs[1], powOp(self.xs[2], Constant(-1))))
---[=[
+	if simplifyDivisionByPower then
+		return simplify(mulOp(self.xs[1], powOp(self.xs[2], Constant(-1))))
+	end
+
 	-- prune children
 	for i=1,#self.xs do
 		self.xs[i] = prune(self.xs[i])
@@ -1293,12 +1300,13 @@ function divOp:prune()
 	if self.xs[2] == Constant(0) then
 		return Invalid()
 	end
-
-	--[[ Constant / Constant => Constant
-	if self.xs[1]:isa(Constant) and self.xs[2]:isa(Constant) then
-		return Constant(self.xs[1].value / self.xs[2].value)
+	
+	-- Constant / Constant => Constant
+	if simplifyConstantPowers  then
+		if self.xs[1]:isa(Constant) and self.xs[2]:isa(Constant) then
+			return Constant(self.xs[1].value / self.xs[2].value)
+		end
 	end
-	--]]
 	
 	-- 0 / x => 0
 	if self.xs[1]:isa(Constant) then
@@ -1309,7 +1317,7 @@ function divOp:prune()
 	
 	-- (a / b) / c => a / (b * c)
 	if self.xs[1]:isa(divOp) then
-		return prune(self.xs[1].xs[1] / (self.xs[1].xs[2]) / self.xs[2])
+		return prune(self.xs[1].xs[1] / (self.xs[1].xs[2] * self.xs[2]))
 	end
 	
 	-- a / (b / c) => (a * c) / b
@@ -1317,6 +1325,7 @@ function divOp:prune()
 		return prune((self.xs[1] * self.xs[2].xs[1]) / self.xs[2].xs[2])
 	end
 	
+--[[
 	-- (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
 	do
 		local modified
@@ -1389,6 +1398,7 @@ function divOp:prune()
 			return prune(result)
 		end
 	end
+--]]
 
 --[[
 	-- x / x => 1
@@ -1422,7 +1432,6 @@ function divOp:prune()
 	return self
 --]=]
 end
---]==]
 
 powOp = class(BinaryOp)
 powOp.omitSpace = true
@@ -1671,6 +1680,36 @@ end
 function Derivative:toVerboseStr()
 	return self:toSingleLineStr()
 end
+
+-- equality
+-- I would use binary operators for this, but Lua's overloading requires the return value be a boolean
+
+EquationOp = class(BinaryOp)
+EquationOp.__eq = nodeCommutativeEqual
+
+function EquationOp:diff(...)
+	local result = getmetatable(self)()
+	for i=1,#self.xs do
+		result:setChild(i, diff(self.xs[i], ...))
+	end
+	return result
+end
+
+equals = class(EquationOp)
+equals.name = '='
+
+lessThan = class(EquationOp)
+lessThan.name = '<'
+
+greaterThan = class(EquationOp)
+greaterThan.name = '>'
+
+lessThanOrEquals = class(EquationOp)
+lessThanOrEquals.name = '<='
+
+greaterThanOrEquals = class(EquationOp)
+greaterThanOrEquals.name = '>='
+
 
 -- always need this
 -- but need to define all the above operations first
