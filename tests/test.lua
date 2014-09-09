@@ -21,14 +21,13 @@
 --]]
 
 
-
-require 'symmath'
+local symmath = require 'symmath'
 require 'symmath.notebook'
 
 -- verify that simplification works
 
 function assertexpreq(a,b)
-	asserteq(a:expand():prune(), b:expand():prune())
+	asserteq(symmath.prune(symmath.expand(a)), symmath.prune(symmath.expand(b)))
 end
 
 notebook[[

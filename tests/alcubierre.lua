@@ -20,7 +20,8 @@
 
 --]]
 
-require 'symmath'
+-- exec() requires symmath to be in global scope
+symmath = require 'symmath'
 
 function exec(cmd)
 	assert(loadstring(cmd))()

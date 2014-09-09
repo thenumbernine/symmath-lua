@@ -6,3 +6,14 @@ could use a good polynomial division routine
 I've successfully used this to check my work calculating connection coefficients of metrics for geodesic integration
 
 demo at http://christopheremoore.net/symbolic-lua
+
+
+TODO
+
+- remove Constant -- just use lua numbers (which means extra testing for all the isa(Constant)s out there)
+- currently for each new operation I implement it in Expression and override it for all children.
+   however I have a good visitor pattern model going for the tostring.lua serialization classes.
+  the code will be more clean and modular if I replace the OOP with the visitor pattern stuff.
+- tidy() function, post-simplification.  simplification expands -x into -1*x, tidy() would put it back 
+- better simplify() that could actually run multiple iterations and compare start to current state successfully without infinite tail calls
+- replace a variable's "deferDiff" with a list of dependent variables, for which to defer differentiation (reduce to kronecher delta otherwise)

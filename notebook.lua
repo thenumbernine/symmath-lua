@@ -2,7 +2,7 @@
 
     File: notebook.lua
 
-    Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,9 @@
     Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --]]
+
+-- notebook expects symmath to be assigned in global scope
+symmath = require 'symmath'
 
 function asserteq(a,b)
 	if a ~= b then

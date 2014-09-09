@@ -1,0 +1,18 @@
+-- composite:
+return function(x)
+	local expand = require 'symmath.expand'
+	local prune = require 'symmath.prune'
+	local factor = require 'symmath.factor'
+	local lastx
+	for iter=1,10 do	
+		lastx = x
+		x = expand(x)
+		x = prune(x)
+		x = factor(x)
+		x = prune(x)
+		do break end -- calling expand() again after this breaks things ...
+		--if x == lastx then break end
+	end
+	return x
+end
+
