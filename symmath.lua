@@ -195,11 +195,6 @@ symmath.lessThanOrEquals = require 'symmath.lessThanOrEquals'
 symmath.greaterThan = require 'symmath.greaterThan'
 symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
 
-symmath.ToSingleLineString = require 'symmath.ToSingleLineString'
--- always need this
--- but need to define all the above operations first
-require 'symmath.tostring'
-
 -- change the default as you see fit
 symmath.toStringMethod = require 'symmath.ToMultiLineString'
 
