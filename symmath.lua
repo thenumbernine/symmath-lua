@@ -39,7 +39,7 @@ function symmath.replace(expr,find,repl,callback)
 	if expr.xs then
 		local xs = table()
 		for i=1,#expr.xs do
-			local ch = replace(expr.xs[i],find,repl,callback)
+			local ch = symmath.replace(expr.xs[i],find,repl,callback)
 			if ch == find then
 				xs:insert(repl:clone())
 			else

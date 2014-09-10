@@ -6,8 +6,19 @@ Expression.precedence = 1
 Expression.name = 'Expression'
 
 function Expression:init(...)
+	local ch = {...}
 	self.xs = table()
-	self:setChildren(...)
+	for i=1,#ch do
+		local x = ch[i]
+		if type(x) == 'number' then
+			local Constant = require 'symmath.Constant'
+			self.xs[i] = Constant(x)
+		elseif type(x) == 'nil' then
+			error("can't set a nil child")
+		else
+			self.xs[i] = x
+		end
+	end
 end
 
 function Expression:clone()
@@ -47,43 +58,6 @@ function Expression:findChild(node)
 		local parent, index = x:findChild(node)
 		if parent then return parent, index end
 	end
-end
-
--- I don't know that I ever use this, or .parent, anywhere in here ...
-function Expression:setChildren(...)
-	local ch = {...}
-	for i=1,#ch do
-		local x = ch[i]
-		if type(x) == 'number' then
-			local Constant = require 'symmath.Constant'
-			self.xs[i] = Constant(x)
-		elseif type(x) == 'nil' then
-			error("can't set a nil child")
-		else
-			self.xs[i] = x
-		end
-	end
-end
-
--- TODO get rid of this
-function Expression:setChild(index, child)
-	self.xs[index] = child
-end
-
--- TODO get rid of this?
--- notice: table.insert uses the lua C api whic can count nil args, but lua script can't ...
-function Expression:insertChild(...)
-	local index, child = ...
-	if not child then child = index end
-	child.parent = self
-	self.xs:insert(...)
-end
-
--- TODO get rid of this?
-function Expression:removeChild(index)
-	local n = self.xs:remove(index)
-	if n then n.parent = nil end
-	return n
 end
 
 function Expression.__concat(a,b)

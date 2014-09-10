@@ -1,7 +1,6 @@
 require 'ext'
 local BinaryOp = require 'symmath.BinaryOp'
 local diff = require 'symmath.diff'
-local prune = require 'symmath.prune'
 
 local subOp = class(BinaryOp)
 subOp.precedence = 2
@@ -20,14 +19,6 @@ function subOp:eval()
 		result = result - self.xs[i]:eval()
 	end
 	return result
-end
-
-function subOp:prune()
-	for i=1,#self.xs do
-		self.xs[i] = prune(self.xs[i])
-	end
-	
-	return prune(self.xs[1] + (-self.xs[2]))
 end
 
 return subOp

@@ -2,7 +2,6 @@ require 'ext'
 local Expression = require 'symmath.Expression'
 local Constant = require 'symmath.Constant'
 local diff = require 'symmath.diff'
-local prune = require 'symmath.prune'
 local expand = require 'symmath.expand'
 
 local unmOp = class(Expression)
@@ -16,10 +15,6 @@ end
 
 function unmOp:eval()
 	return -self.xs[1]:eval()
-end
-
-function unmOp:prune()
-	return prune(Constant(-1) * self.xs[1])
 end
 
 function unmOp:expand()

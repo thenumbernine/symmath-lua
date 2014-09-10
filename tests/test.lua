@@ -21,42 +21,24 @@
 --]]
 
 
-local symmath = require 'symmath'
 require 'symmath.notebook'
-
--- verify that simplification works
-
-function assertexpreq(a,b)
-	asserteq(symmath.prune(symmath.expand(a)), symmath.prune(symmath.expand(b)))
-end
+Constant = require 'symmath.Constant'
+simplify = require 'symmath.simplify'
 
 notebook[[
+=asserteq(Constant(1), simplify(Constant(1)*Constant(1)))
+=asserteq(Constant(1), simplify(Constant(1)/Constant(1)))
+=(-Constant(1)/Constant(1)):toVerboseStr()
+=asserteq(Constant(1), simplify(-Constant(1)/Constant(1)))
+=asserteq(Constant(1), simplify(Constant(1)/(Constant(1)*Constant(1))))
+
 x = symmath.Variable'x'
 y = symmath.Variable'y'
 
 -- commutativity
-=assertexpreq(x+y, y+x)
-=assertexpreq(x*y, y*x)
+=asserteq(x+y, y+x)
+=asserteq(x*y, y*x)
 
--- factoring out a sum
-=assertexpreq(x-x^2, x*(1-x))
-=assertexpreq(x^2-x^3, x^2*(1-x))
-
--- adding two constant-scalars
-=assertexpreq(2*x+3*x, 5*x)
-
--- adding two variable scalars
-=assertexpreq(2*y*x+3*y, y*(2*x+3))
-
--- factoring out powers
-=assertexpreq(x^2*y+x*y^2, x*y*(x+y))
-
--- division of terms
-=assertexpreq(x/x^2, 1/x)
-=assertexpreq(1/x, 1/x)
-
--- division / factoring out polynomials
-=assertexpreq((x-x^2)/(x^2-x^3), 1/x)
-=assertexpreq((x*(1-x))/(x^2*(1-x)), 1/x)
-
+-- simplify rationals
+=asserteq(symmath.simplify(x/x), Constant(1))
 ]]

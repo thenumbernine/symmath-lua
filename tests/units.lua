@@ -1,8 +1,8 @@
 local run = ... or 'separate'
 
-require 'symmath'
+local symmath = require 'symmath'
 
-symmath.toStringMethod = symmath.ToSingleLineString
+symmath.toStringMethod = require 'symmath.ToSingleLineString'
 symmath.simplifyConstantPowers  = true
 
 _ = symmath.simplify
@@ -14,7 +14,7 @@ local kmInM = 1000
 local lightYearInM = 9.4605284e+15
 local megaParsecInM = 3.08567758e+22
 
-m = symmath.variable('m', nil, true)
+m = symmath.Variable('m', nil, true)
 
 if run == 'unified' then -- unified units
 	s = speedOfLightInMPerS * m	-- 1 = c m/s <=> s = c m
@@ -23,11 +23,11 @@ if run == 'unified' then -- unified units
 	mpc = megaParsecInM * m
 	function show(x) return x end
 else	--default: if run == 'separate' then -- separate units
-	cm = symmath.variable('cm', nil, true)
-	km = symmath.variable('km', nil, true)
-	s = symmath.variable('s', nil, true)
-	kg = symmath.variable('kg', nil, true)
-	lyr = symmath.variable('lyr', nil, true)
+	cm = symmath.Variable('cm', nil, true)
+	km = symmath.Variable('km', nil, true)
+	s = symmath.Variable('s', nil, true)
+	kg = symmath.Variable('kg', nil, true)
+	lyr = symmath.Variable('lyr', nil, true)
 
 	function unify(x)
 		if type(x) == 'number' then return x end
@@ -36,6 +36,7 @@ else	--default: if run == 'separate' then -- separate units
 		x = symmath.simplify(symmath.replace(x, mpc, megaParsecInM * m))
 		x = symmath.simplify(symmath.replace(x, lyr, lightYearInM * m))
 		x = symmath.simplify(symmath.replace(x, cm, cmInM * m))
+		print('unify output',x)
 		return x
 	end
 	function show(x)

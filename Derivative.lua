@@ -22,7 +22,7 @@ function Derivative:init(...)
 end
 
 function Derivative:eval()
-	error("cannot evaluate derivatives.  try calling prune() first")
+	error("cannot evaluate derivatives.  try calling simplify() first")
 end
 
 function Derivative:distribute()
@@ -44,24 +44,6 @@ function Derivative:distribute()
 	end
 	
 	return self:clone()
-end
-
-function Derivative:prune()
-	if self.xs[1]:isa(Constant) then
-		return Constant(0)
-	end
-
-	for i=1,#self.xs do
-		self.xs[i] = simplify(self.xs[i])
-	end
-
-	if self.xs[1]:isa(Derivative) then
-		return simplify(Derivative(self.xs[1].xs[1], unpack(
-			table.append({unpack(self.xs, 2)}, {unpack(self.xs[1].xs, 2)})
-		)))
-	end
-
-	return simplify(self:distribute())
 end
 
 function Derivative:toVerboseStr()
