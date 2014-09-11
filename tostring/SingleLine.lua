@@ -1,9 +1,9 @@
 require 'ext'
 -- single-line strings 
-local ToStringMethod = require 'symmath.ToStringMethod'
-local ToSingleLineString = class(ToStringMethod)
+local ToString = require 'symmath.tostring.ToString'
+local SingleLine = class(ToString)
 
-ToSingleLineString.lookupTable = {
+SingleLine.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr) 
 		return tostring(expr.value) 
 	end,
@@ -35,9 +35,9 @@ ToSingleLineString.lookupTable = {
 }
 
 --singleton -- no instance creation
-getmetatable(ToSingleLineString).__call = function(self, ...) 
+getmetatable(SingleLine).__call = function(self, ...) 
 	return self:apply(...) 
 end
 
-return ToSingleLineString
+return SingleLine
 

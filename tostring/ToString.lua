@@ -3,9 +3,9 @@ require 'ext'
 local precedence = require 'symmath.precedence'
 
 -- base class
-local ToStringMethod = class()
+local ToString = class()
 
-function ToStringMethod:apply(expr, ...)
+function ToString:apply(expr, ...)
 	if type(expr) ~= 'table' then return tostring(expr) end
 	local lookup = expr.class
 	if not lookup then return tostring(expr) end
@@ -20,11 +20,11 @@ function ToStringMethod:apply(expr, ...)
 	end
 end
 
-function ToStringMethod:testWrapStrWithParenthesis(node, parentNode)
+function ToString:testWrapStrWithParenthesis(node, parentNode)
 	return precedence(node) < precedence(parentNode)
 end
 
-function ToStringMethod:wrapStrWithParenthesis(node, parentNode)
+function ToString:wrapStrWithParenthesis(node, parentNode)
 	local s = tostring(node)
 	if self:testWrapStrWithParenthesis(node, parentNode) then
 		s = '(' .. s .. ')'
@@ -32,5 +32,5 @@ function ToStringMethod:wrapStrWithParenthesis(node, parentNode)
 	return s
 end
 
-return ToStringMethod
+return ToString
 

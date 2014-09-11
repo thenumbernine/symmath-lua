@@ -1,11 +1,11 @@
 require 'ext'
 
-local ToStringMethod = require 'symmath.ToStringMethod'
+local ToString = require 'symmath.tostring.ToString'
 
 -- convert to Lua code.  use :compile to generate a function
-local ToLuaCode = class(ToStringMethod)
+local Lua = class(ToString)
 
-ToLuaCode.lookupTable = {
+Lua.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr, vars)
 		return tostring(expr.value) 
 	end,
@@ -32,7 +32,7 @@ ToLuaCode.lookupTable = {
 	end
 }
 
-function ToLuaCode:compile(expr, vars)
+function Lua:compile(expr, vars)
 	local cmd = 'return function('..
 		table.map(vars, function(var) return var.name end):concat(', ')
 	..') return '..
@@ -42,9 +42,9 @@ function ToLuaCode:compile(expr, vars)
 end
 
 --singleton -- no instance creation
-getmetatable(ToLuaCode).__call = function(self, ...) 
+getmetatable(Lua).__call = function(self, ...) 
 	return self:apply(...) 
 end
 
-return ToLuaCode
+return Lua
 

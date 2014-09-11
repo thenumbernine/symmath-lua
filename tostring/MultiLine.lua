@@ -1,10 +1,10 @@
 require 'ext'
 
-local ToStringMethod = require 'symmath.ToStringMethod'
-local ToSingleLineString = require 'symmath.ToSingleLineString'
+local ToString = require 'symmath.tostring.ToString'
+local SingleLine = require 'symmath.tostring.SingleLine'
 
 -- multi-line strings
-local ToMultiLineString = class(ToStringMethod)
+local MultiLine = class(ToString)
 
 --[[
 produces:
@@ -12,7 +12,7 @@ produces:
 aabbb
 aabbb
 --]]
-function ToMultiLineString:combine(lhs, rhs)
+function MultiLine:combine(lhs, rhs)
 	local res = table()
 	local sides = {lhs, rhs}
 	local maxheight = math.max(#lhs, #rhs)
@@ -37,7 +37,7 @@ produces:
 ---
  b
 --]]
-function ToMultiLineString:fraction(lhs, rhs)
+function MultiLine:fraction(lhs, rhs)
 	local res = table()
 	local width = math.max(#lhs[1], #rhs[1])
 	for i=1,#lhs do
@@ -50,7 +50,7 @@ function ToMultiLineString:fraction(lhs, rhs)
 	return res
 end
 
-function ToMultiLineString:wrapStrWithParenthesis(node, parentNode)
+function MultiLine:wrapStrWithParenthesis(node, parentNode)
 	local res = self:apply(node)
 	if self:testWrapStrWithParenthesis(node, parentNode) then
 		local height = #res
@@ -77,12 +77,12 @@ end
 
 
 
-ToMultiLineString.lookupTable = {
+MultiLine.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
-		return table{ToSingleLineString(expr)}
+		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
-		return table{ToSingleLineString(expr)}
+		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local res = {expr.name..'('}
@@ -140,13 +140,13 @@ ToMultiLineString.lookupTable = {
 }
 
 -- while most :apply methods deal in strings,
---  ToMultiLineString:apply passes around an array of strings (per-newline)
+--  MultiLine:apply passes around an array of strings (per-newline)
 -- so we recombine them into one string here at the end
-getmetatable(ToMultiLineString).__call = function(self, ...) 
+getmetatable(MultiLine).__call = function(self, ...) 
 	local result = self:apply(...)
 	if type(result) == 'string' then return '\n'..result end 
 	return '\n' ..result:concat('\n')
 end
 
-return ToMultiLineString
+return MultiLine
 

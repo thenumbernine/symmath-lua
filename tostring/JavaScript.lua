@@ -1,11 +1,11 @@
 require 'ext'
 
-local ToStringMethod = require 'symmath.ToStringMethod'
+local ToString = require 'symmath.tostring.ToString'
 
 -- convert to JavaScript code.  use :compile to wrap in a function
-ToJavaScriptCode = class(ToStringMethod)
+JavaScript = class(ToString)
 
-ToJavaScriptCode.lookupTable = {
+JavaScript.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr, vars)
 		return tostring(expr.value) 
 	end,
@@ -68,7 +68,7 @@ ToJavaScriptCode.lookupTable = {
 }
 
 -- returns code that can be eval()'d to return a function
-function ToJavaScriptCode:compile(expr, vars)
+function JavaScript:compile(expr, vars)
 	local cmd = 'function tmp('..
 		table.map(vars, function(var) return var.name end):concat(', ')
 	..') { return '..
@@ -78,9 +78,9 @@ function ToJavaScriptCode:compile(expr, vars)
 end
 
 --singleton -- no instance creation
-getmetatable(ToJavaScriptCode).__call = function(self, ...) 
+getmetatable(JavaScript).__call = function(self, ...) 
 	return self:apply(...) 
 end
 
-return ToJavaScriptCode
+return JavaScript
 

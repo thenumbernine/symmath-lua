@@ -1,10 +1,10 @@
 require 'ext'
 
-local ToStringMethod = require 'symmath.ToStringMethod'
+local ToString = require 'symmath.tostring.ToString'
 
-local ToLaTeX = class(ToStringMethod)
+local LaTeX = class(ToString)
 
-ToLaTeX.lookupTable = {
+LaTeX.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
 		return '{' .. tostring(expr.value)  .. '}'
 	end,
@@ -47,9 +47,9 @@ ToLaTeX.lookupTable = {
 }
 
 --singleton -- no instance creation
-getmetatable(ToLaTeX).__call = function(self, ...) 
+getmetatable(LaTeX).__call = function(self, ...) 
 	return self:apply(...) 
 end
 
-return ToLaTeX
+return LaTeX
 

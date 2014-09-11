@@ -196,7 +196,7 @@ symmath.greaterThan = require 'symmath.greaterThan'
 symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
 
 -- change the default as you see fit
-symmath.toStringMethod = require 'symmath.ToMultiLineString'
+symmath.toStringMethod = require 'symmath.tostring.MultiLine'
 
 return symmath
 
