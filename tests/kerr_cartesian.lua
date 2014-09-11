@@ -41,6 +41,7 @@ r^2 x^2 + r^2 y^2 + r^2 z^2 + a^2 z^2 = r^4 + a^2 r^2
 	r^2 = 1/2 ((x^2 + y^2 + z^2 + a^2) +- sqrt((x^2 + y^2 + z^2 + a^2)^2 + 4 a^2 z^2))
 --]]
 
+symmath = require 'symmath'
 local tensor = require 'symmath.tensor'
 
 -- coordinates

@@ -12,6 +12,7 @@ function ToString:apply(expr, ...)
 	-- traverse class parentwise til a key in the lookup table is found
 	while not self.lookupTable[lookup] do
 		lookup = lookup.super
+		if not lookup then error("found no way to stringify expr") end
 	end
 	if not lookup then
 		return tostring(expr)

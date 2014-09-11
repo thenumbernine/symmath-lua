@@ -7,80 +7,80 @@ traverses x, child first, maps the nodes if they appear in the lookup table
 the table can be expanded by adding an entry prune.lookupTable[class] to perform the necessary transformation
 --]]
 
-local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
+local Visitor = require 'symmath.Visitor'
+local Prune = class(Visitor)
 
-local prune = {}
+Prune.lookupTable = {
 
-prune.lookupTable = {
-	
-	[require 'symmath.Derivative'] = function(prune, self)
+	[require 'symmath.Derivative'] = function(prune, expr)
 		local Constant = require 'symmath.Constant'
 		local Derivative = require 'symmath.Derivative'
 		local simplify = require 'symmath.simplify'
 
-		if self.xs[1]:isa(Constant) then
+		if expr.xs[1]:isa(Constant) then
 			return Constant(0)
 		end
 
-		if self.xs[1]:isa(Derivative) then
-			return simplify(Derivative(self.xs[1].xs[1], unpack(
-				table.append({unpack(self.xs, 2)}, {unpack(self.xs[1].xs, 2)})
+		if expr.xs[1]:isa(Derivative) then
+			return simplify(Derivative(expr.xs[1].xs[1], unpack(
+				table.append({unpack(expr.xs, 2)}, {unpack(expr.xs[1].xs, 2)})
 			)))
 		end
 	
 		-- might need to be pruned again, might not ...
-		return self:distribute()
+		return expr:distribute()
 	end,
 	
-	[require 'symmath.unmOp'] = function(prune, self)
+	[require 'symmath.unmOp'] = function(prune, expr)
 		local Constant = require 'symmath.Constant'
-		return prune(Constant(-1) * self.xs[1])
+		return prune(Constant(-1) * expr.xs[1])
 	end,
 	
-	[require 'symmath.addOp'] = function(prune, self)
+	[require 'symmath.addOp'] = function(prune, expr)
+		local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 		local Constant = require 'symmath.Constant'
 		local addOp = require 'symmath.addOp'
 		local mulOp = require 'symmath.mulOp'
 		
-		assert(#self.xs > 0)
+		assert(#expr.xs > 0)
 		
-		if #self.xs == 1 then return self.xs[1] end
+		if #expr.xs == 1 then return expr.xs[1] end
 
 		-- flatten additions
-		for i=#self.xs,1,-1 do
-			local ch = self.xs[i]
+		for i=#expr.xs,1,-1 do
+			local ch = expr.xs[i]
 			if ch:isa(addOp) then
 				-- this looks like a job for splice ...
-				self.xs:remove(i)
+				expr.xs:remove(i)
 				for j=#ch.xs,1,-1 do
 					local chch = assert(ch.xs[j])
-					self.xs:insert(i, chch)
+					expr.xs:insert(i, chch)
 				end
 			end
 		end
 		
 		-- push all Constants to the lhs, sum as we go
 		local cval = 0
-		for i=#self.xs,1,-1 do
-			if self.xs[i]:isa(Constant) then
-				cval = cval + self.xs:remove(i).value
+		for i=#expr.xs,1,-1 do
+			if expr.xs[i]:isa(Constant) then
+				cval = cval + expr.xs:remove(i).value
 			end
 		end
 		
 		-- if it's all constants then return what we got
-		if #self.xs == 0 then return Constant(cval) end
+		if #expr.xs == 0 then return Constant(cval) end
 		
 		-- re-insert if we have a Constant
 		if cval ~= 0 then
-			self.xs:insert(1, Constant(cval))
+			expr.xs:insert(1, Constant(cval))
 		else
 			-- if cval is zero and we're not re-inserting a constant
 			-- then see if we have only one term ...
-			if #self.xs == 1 then return prune(self.xs[1]) end
+			if #expr.xs == 1 then return prune(expr.xs[1]) end
 		end
 		
 		-- [[ x * c1 + x * c2 => x * (c1 + c2) ... for constants
-		local muls = self.xs:filter(function(x) return x:isa(mulOp) end)
+		local muls = expr.xs:filter(function(x) return x:isa(mulOp) end)
 		if #muls > 1 then	-- we have more than one multiplication going on ... see if we can combine them
 			local baseConst = 0
 			local baseTerms
@@ -116,16 +116,16 @@ prune.lookupTable = {
 		--    and they have all children in common (with the exception of any constants)
 		--  then combine them, and combine their constants
 		-- x * c1 + x * c2 => x * (c1 + c2) (for c1,c2 constants)
-		for i=1,#self.xs-1 do
-			local xI = self.xs[i]
+		for i=1,#expr.xs-1 do
+			local xI = expr.xs[i]
 			local termsI
 			if xI:isa(mulOp) then
 				termsI = table(xI.xs)
 			else
 				termsI = table{xI}
 			end
-			for j=i+1,#self.xs do
-				local xJ = self.xs[j]
+			for j=i+1,#expr.xs do
+				local xJ = expr.xs[j]
 				local termsJ
 				if xJ:isa(mulOp) then
 					termsJ = table(xJ.xs)
@@ -176,11 +176,11 @@ prune.lookupTable = {
 				if not constJ then constJ = Constant(1) end
 				
 				if not fail then
-					--print('optimizing from '..tostring(self))
-					self.xs:remove(j)
-					self.xs[i] = mulOp(Constant(constI.value + constJ.value), unpack(commonTerms))
-					--print('optimizing to '..tostring(prune(self)))
-					return prune(self)
+					--print('optimizing from '..tostring(expr))
+					expr.xs:remove(j)
+					expr.xs[i] = mulOp(Constant(constI.value + constJ.value), unpack(commonTerms))
+					--print('optimizing to '..tostring(prune(expr)))
+					return prune(expr)
 				end
 			end
 		end
@@ -189,7 +189,7 @@ prune.lookupTable = {
 		--[[ factor out divs ...
 		local denom
 		local denomIndex
-		for i,x in ipairs(self.xs) do
+		for i,x in ipairs(expr.xs) do
 			if not x:isa(divOp) then
 				denom = nil
 				break
@@ -206,8 +206,8 @@ prune.lookupTable = {
 			end
 		end
 		if denom then
-			self.xs:remove(denomIndex)
-			return prune(self / denom)
+			expr.xs:remove(denomIndex)
+			return prune(expr / denom)
 		end
 		--]]
 		
@@ -224,8 +224,8 @@ prune.lookupTable = {
 			local sin = require 'symmath.sin'
 			local cosAngle, sinAngle
 			local cosIndex, sinIndex
-			for i=1,#self.xs do
-				local x = self.xs[i]
+			for i=1,#expr.xs do
+				local x = expr.xs[i]
 				
 				if x:isa(powOp)
 				and x.xs[1]:isa(Function)
@@ -235,9 +235,9 @@ prune.lookupTable = {
 						if sinAngle then
 							if sinAngle == x.xs[1].xs[1] then
 								-- then remove sine and cosine and replace with a '1' and set modified
-								self.xs:remove(i)	-- remove largest index first
-								self.xs[sinIndex] = Constant(1)
-								return prune(self)
+								expr.xs:remove(i)	-- remove largest index first
+								expr.xs[sinIndex] = Constant(1)
+								return prune(expr)
 							end
 						else
 							cosIndex = i
@@ -246,9 +246,9 @@ prune.lookupTable = {
 					elseif x.xs[1]:isa(sin) then
 						if cosAngle then
 							if cosAngle == x.xs[1].xs[1] then
-								self.xs:remove(i)
-								self.xs[cosIndex] = Constant(1)
-								return prune(self)
+								expr.xs:remove(i)
+								expr.xs[cosIndex] = Constant(1)
+								return prune(expr)
 							end
 						else
 							sinIndex = i
@@ -259,31 +259,33 @@ prune.lookupTable = {
 			end
 		end
 		
-		return self
+		return expr
 
 	end,
 	
-	[require 'symmath.subOp'] = function(prune, self)
-		return prune(self.xs[1] + (-self.xs[2]))
+	[require 'symmath.subOp'] = function(prune, expr)
+		return prune(expr.xs[1] + (-expr.xs[2]))
 	end,
 	
-	[require 'symmath.mulOp'] = function(prune, self)
+	[require 'symmath.mulOp'] = function(prune, expr)
 		local Constant = require 'symmath.Constant'
 		local unmOp = require 'symmath.unmOp'
 		local powOp = require 'symmath.powOp'
 		local divOp = require 'symmath.divOp'
+
+		assert(#expr.xs > 0)
 		
-		assert(#self.xs > 0)
+		expr = expr:clone()
 		
 		-- flatten multiplications
-		for i=#self.xs,1,-1 do
-			local ch = self.xs[i]
+		for i=#expr.xs,1,-1 do
+			local ch = expr.xs[i]
 			if ch:isa(mulOp) then
 				-- this looks like a job for splice ...
-				self.xs:remove(i)
+				expr.xs:remove(i)
 				for j=#ch.xs,1,-1 do
 					local chch = ch.xs[j]
-					self.xs:insert(i, chch)
+					expr.xs:insert(i, chch)
 				end
 			end
 		end
@@ -291,48 +293,48 @@ prune.lookupTable = {
 		-- move unary minuses up
 		do
 			local unmOpCount = 0
-			for i=1,#self.xs do
-				local ch = self.xs[i]
+			for i=1,#expr.xs do
+				local ch = expr.xs[i]
 				if ch:isa(unmOp) then
 					unmOpCount = unmOpCount + 1
-					self.xs[i] = ch.xs[1]
+					expr.xs[i] = ch.xs[1]
 				end
 			end
 			if unmOpCount % 2 == 1 then
-				return prune(-self)
+				return -prune(expr)	-- move unm outside and simplify what's left
 			elseif unmOpCount ~= 0 then
-				return prune(self)
+				return prune(expr)	-- got an even number?  remove it and simplify this
 			end
 		end
 
 		-- push all Constants to the lhs, sum as we go
 		local cval = 1
-		for i=#self.xs,1,-1 do
-			if self.xs[i]:isa(Constant) then
-				cval = cval * self.xs:remove(i).value
+		for i=#expr.xs,1,-1 do
+			if expr.xs[i]:isa(Constant) then
+				cval = cval * expr.xs:remove(i).value
 			end
 		end
 
 		-- if it's all constants then return what we got
-		if #self.xs == 0 then return Constant(cval) end
+		if #expr.xs == 0 then return Constant(cval) end
 		
 		if cval == 0 then return Constant(0) end
 		
 		if cval ~= 1 then
-			self.xs:insert(1, Constant(cval))
+			expr.xs:insert(1, Constant(cval))
 		else
-			if #self.xs == 1 then return prune(self.xs[1]) end
+			if #expr.xs == 1 then return prune(expr.xs[1]) end
 		end
 		
-		-- one node left?  use it itself
-		if #self.xs == 1 then return self.xs[1] end
+		-- one node left?  use it itexpr
+		if #expr.xs == 1 then return expr.xs[1] end
 		
 		-- [[ a^m * a^n => a^(m + n)
 		do
 			local modified = false
 			local i = 1
-			while i <= #self.xs do
-				local x = self.xs[i]
+			while i <= #expr.xs do
+				local x = expr.xs[i]
 				local base
 				local power
 				if x:isa(powOp) then
@@ -345,8 +347,8 @@ prune.lookupTable = {
 				
 				if base then
 					local j = i + 1
-					while j <= #self.xs do
-						local x2 = self.xs[j]
+					while j <= #expr.xs do
+						local x2 = expr.xs[j]
 						local base2
 						local power2
 						if x2:isa(powOp) then
@@ -358,106 +360,111 @@ prune.lookupTable = {
 						end
 						if base2 == base then
 							modified = true
-							self.xs:remove(j)
+							expr.xs:remove(j)
 							j = j - 1
 							power = power + power2
 						end
 						j = j + 1
 					end
 					if modified then
-						self.xs[i] = base ^ power
+						expr.xs[i] = base ^ power
 					end
 				end
 				i = i + 1
 			end
 			if modified then
-				return prune(self)
+				return prune(expr)
 			end
 		end
 		--]]
 		
 		-- [[ factor out denominators: a * b * (c / d) => (a * b * c) / d
 		local denoms = table()
-		for i=#self.xs,1,-1 do
-			local x = self.xs[i]
+		for i=#expr.xs,1,-1 do
+			local x = expr.xs[i]
 			if x:isa(divOp) then
-				self.xs[i] = x.xs[1]
+				expr.xs[i] = x.xs[1]
 				denoms:insert(x.xs[2])
 			end
 		end
 		if #denoms > 0 then
-			return prune(self / mulOp(unpack(denoms)))
+			return prune(expr / mulOp(unpack(denoms)))
 		end
 		--]]
 		
 		--[[ moved to expand()
 		do
-			local res = self:applyDistribute()
+			local res = expr:applyDistribute()
 			if res then return res end
 		end
 		--]]
 			
-		return self
+		return expr
 	end,
 	
-	[require 'symmath.divOp'] = function(prune, self)
+	[require 'symmath.divOp'] = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
 		local Constant = require 'symmath.Constant'
 		local unmOp = require 'symmath.unmOp'
 		local divOp = require 'symmath.divOp'
 		
 		if symmath.simplifyDivisionByPower then
-			return simplify(mulOp(self.xs[1], powOp(self.xs[2], Constant(-1))))
+			return simplify(mulOp(expr.xs[1], powOp(expr.xs[2], Constant(-1))))
 		end
 
 		-- move unary minuses up
 		do
 			local unmOpCount = 0
-			for i=1,#self.xs do
-				local ch = self.xs[i]
+			for i=1,#expr.xs do
+				local ch = expr.xs[i]
 				if ch:isa(unmOp) then
 					unmOpCount = unmOpCount + 1
-					self.xs[i] = ch.xs[1]
+					expr.xs[i] = ch.xs[1]
 				end
 			end
 			if unmOpCount % 2 == 1 then
-				return prune(-self)
+				return prune(-expr)
 			elseif unmOpCount ~= 0 then
-				return prune(self)
+				return prune(expr)
 			end
 		end
 		
 		-- x / 0 => Invalid
-		if self.xs[2] == Constant(0) then
+		if expr.xs[2] == Constant(0) then
 			return Invalid()
 		end
 		
 		-- Constant / Constant => Constant
 		if symmath.simplifyConstantPowers  then
-			if self.xs[1]:isa(Constant) and self.xs[2]:isa(Constant) then
-				return Constant(self.xs[1].value / self.xs[2].value)
+			if expr.xs[1]:isa(Constant) and expr.xs[2]:isa(Constant) then
+				return Constant(expr.xs[1].value / expr.xs[2].value)
 			end
+		end
+
+		-- x / 1 => x
+		if expr.xs[2] == Constant(1) then
+			return expr.xs[1]
 		end
 		
 		-- 0 / x => 0
-		if self.xs[1]:isa(Constant) then
-			if self.xs[1].value == 0 then
+		if expr.xs[1] == Constant(0) then
+			if expr.xs[1].value == 0 then
 				return Constant(0)
 			end
 		end
 		
 		-- (a / b) / c => a / (b * c)
-		if self.xs[1]:isa(divOp) then
-			return prune(self.xs[1].xs[1] / (self.xs[1].xs[2] * self.xs[2]))
+		if expr.xs[1]:isa(divOp) then
+			return prune(expr.xs[1].xs[1] / (expr.xs[1].xs[2] * expr.xs[2]))
 		end
 		
 		-- a / (b / c) => (a * c) / b
-		if self.xs[2]:isa(divOp) then
-			return prune((self.xs[1] * self.xs[2].xs[1]) / self.xs[2].xs[2])
+		if expr.xs[2]:isa(divOp) then
+			return prune((expr.xs[1] * expr.xs[2].xs[1]) / expr.xs[2].xs[2])
 		end
 
-		if self.xs[1] == self.xs[2] then
-			return Constant(1)		-- ... for self.xs[1] != 0
+		if expr.xs[1] == expr.xs[2] then
+			return Constant(1)		-- ... for expr.xs[1] != 0
 		end
 
 	--[[
@@ -465,15 +472,15 @@ prune.lookupTable = {
 		do
 			local modified
 			local nums, denoms
-			if self.xs[1]:isa(mulOp) then
-				nums = table(self.xs[1].xs)
+			if expr.xs[1]:isa(mulOp) then
+				nums = table(expr.xs[1].xs)
 			else
-				nums = table{self.xs[1]}
+				nums = table{expr.xs[1]}
 			end
-			if self.xs[2]:isa(mulOp) then
-				denoms = table(self.xs[2].xs)
+			if expr.xs[2]:isa(mulOp) then
+				denoms = table(expr.xs[2].xs)
 			else
-				denoms = table{self.xs[2]}
+				denoms = table{expr.xs[2]}
 			end
 			local function listToBasesAndPowers(list)
 				local bases = table()
@@ -536,130 +543,87 @@ prune.lookupTable = {
 	--]]
 
 	--[[
-		-- x / x => 1
-		if self.xs[1] == self.xs[2] then
-			if self.xs[1] == Constant(0) then
-				-- undefined...
-			else
-				return Constant(1)
-			end
-		end
-		
+	
 		-- x / x^a => x^(1-a)
-		if self.xs[2]:isa(powOp) and self.xs[1] == self.xs[2].xs[1] then
-			return prune(self.xs[1] ^ (1 - self.xs[2].xs[2]))
+		if expr.xs[2]:isa(powOp) and expr.xs[1] == expr.xs[2].xs[1] then
+			return prune(expr.xs[1] ^ (1 - expr.xs[2].xs[2]))
 		end
 		
 		-- x^a / x => x^(a-1)
-		if self.xs[1]:isa(powOp) and self.xs[1].xs[1] == self.xs[2] then
-			return prune(self.xs[1].xs[1] ^ (self.xs[1].xs[2] - 1))
+		if expr.xs[1]:isa(powOp) and expr.xs[1].xs[1] == expr.xs[2] then
+			return prune(expr.xs[1].xs[1] ^ (expr.xs[1].xs[2] - 1))
 		end
 		
 		-- x^a / x^b => x^(a-b)
-		if self.xs[1]:isa(powOp)
-		and self.xs[2]:isa(powOp)
-		and self.xs[1].xs[1] == self.xs[2].xs[1]
+		if expr.xs[1]:isa(powOp)
+		and expr.xs[2]:isa(powOp)
+		and expr.xs[1].xs[1] == expr.xs[2].xs[1]
 		then
-			return prune(self.xs[1].xs[1] ^ (self.xs[1].xs[2] - self.xs[2].xs[2]))
+			return prune(expr.xs[1].xs[1] ^ (expr.xs[1].xs[2] - expr.xs[2].xs[2]))
 		end
 	--]]
 
-		return self
+		return expr
 	end,
 	
-	[require 'symmath.powOp'] = function(prune, self)
+	[require 'symmath.powOp'] = function(prune, expr)
 		local Constant = require 'symmath.Constant'
 		local mulOp = require 'symmath.mulOp'
 		local powOp = require 'symmath.powOp'
 		local symmath = require 'symmath'	-- for debug flags
 		
 		if symmath.simplifyConstantPowers then
-			if self.xs[1]:isa(Constant) and self.xs[2]:isa(Constant) then
-				return Constant(self.xs[1].value ^ self.xs[2].value)
+			if expr.xs[1]:isa(Constant) and expr.xs[2]:isa(Constant) then
+				return Constant(expr.xs[1].value ^ expr.xs[2].value)
 			end
 		end
 		
 		-- 1^a => 1
-		if self.xs[1] == Constant(1) then return Constant(1) end
+		if expr.xs[1] == Constant(1) then return Constant(1) end
 		
 		-- (-1)^odd = -1, (-1)^even = 1
-		if self.xs[1] == Constant(-1) and self.xs[2]:isa(Constant) then
-			local powModTwo = self.xs[2].value % 2
+		if expr.xs[1] == Constant(-1) and expr.xs[2]:isa(Constant) then
+			local powModTwo = expr.xs[2].value % 2
 			if powModTwo == 0 then return Constant(1) end
 			if powModTwo == 1 then return Constant(-1) end
 		end
 		
 		-- a^1 => a
-		if self.xs[2] == Constant(1) then return prune(self.xs[1]) end
+		if expr.xs[2] == Constant(1) then return prune(expr.xs[1]) end
 		
 		-- a^0 => 1
-		if self.xs[2] == Constant(0) then return Constant(1) end
+		if expr.xs[2] == Constant(0) then return Constant(1) end
 		
 		-- (a ^ b) ^ c => a ^ (b * c)
-		if self.xs[1]:isa(powOp) then
-			return prune(self.xs[1].xs[1] ^ (self.xs[1].xs[2] * self.xs[2]))
+		if expr.xs[1]:isa(powOp) then
+			return prune(expr.xs[1].xs[1] ^ (expr.xs[1].xs[2] * expr.xs[2]))
 		end
 		
 		-- (a * b) ^ c => a^c * b^c
-		if self.xs[1]:isa(mulOp) then
-			return prune(mulOp(unpack(self.xs[1].xs:map(function(v) return v ^ self.xs[2] end))))
+		if expr.xs[1]:isa(mulOp) then
+			return prune(mulOp(unpack(expr.xs[1].xs:map(function(v) return v ^ expr.xs[2] end))))
 		end
 		
 		--[[ for simplification's sake ... (like -a => -1 * a)
 		-- x^c => x*x*...*x (c times)
-		if self.xs[2]:isa(Constant)
-		and self.xs[2].value > 0 
-		and self.xs[2].value == math.floor(self.xs[2].value)
+		if expr.xs[2]:isa(Constant)
+		and expr.xs[2].value > 0 
+		and expr.xs[2].value == math.floor(expr.xs[2].value)
 		then
 			local m = mulOp()
-			for i=1,self.xs[2].value do
-				m.xs:insert( self.xs[1]:clone())
+			for i=1,expr.xs[2].value do
+				m.xs:insert( expr.xs[1]:clone())
 			end
 			
 			return prune(m)
 		end
 		--]]
 
-		return self
+		return expr
 
 	end,
 }
 
---[[
-transform expr by whatever rules are provided in lookupTable
---]]
-function prune:apply(expr, ...)
-	local Expression = require 'symmath.Expression'
-	local t = type(expr)
-	if t == 'table' then
-		local m = getmetatable(expr)
-		-- if it's an expression then apply to all children first
-		if m:isa(Expression) then
-			-- I could use symmath.map to do this, but then I'd have to cache ... in a table (and nils might cause me to miss objects unless I called table.maxn ... )
-			if expr.xs then
-				for i=1,#expr.xs do
-					expr.xs[i] = self:apply(expr.xs[i], ...)
-				end
-			end
-		end
-		-- traverse class parentwise til a key in the lookup table is found
-		-- stop at null
-		while m and not self.lookupTable[m] do
-			m = m.super
-		end
-		-- if we found an entry then apply it
-		if self.lookupTable[m] then
-			return self.lookupTable[m](self, expr, ...) or expr
-		end
-	end
-	return expr
-end
-
-setmetatable(prune, {
-	__call = function(self, ...)
-		return self:apply(...)
-	end
-})
-
-return prune
+-- return instanciated singletons of Visitor class children
+return Prune()
 

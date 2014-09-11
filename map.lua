@@ -4,7 +4,7 @@ callback(node) = callback that returns nil if it leaves the tree untouched, retu
 --]]
 local function map(expr, callback)
 	-- clone
-	expr = expr:clone()
+	if expr.clone then expr = expr:clone() end
 	-- process children
 	if expr.xs then
 		for i=1,#expr.xs do

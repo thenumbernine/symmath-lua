@@ -60,6 +60,7 @@ symmath.expand = require 'symmath.expand'
 symmath.factor = require 'symmath.factor'
 symmath.simplify = require 'symmath.simplify'
 
+symmath.Variable = require 'symmath.Variable'
 --[[
 replace variables with names as keys in evalmap with constants of the associated values
 --]]
@@ -69,7 +70,7 @@ function symmath.evaluate(expr, evalmap)
 			if node == nil then
 				error("found a nil node in expression "..tostring(expr))
 			end
-			if not node:isa(Variable) then return end
+			if not node:isa(symmath.Variable) then return end
 			local newval = evalmap[node.name]
 			if newval == nil then return end
 			if type(newval) ~= 'number' then
@@ -184,7 +185,7 @@ symmath.divOp = require 'symmath.divOp'
 symmath.powOp = require 'symmath.powOp'
 symmath.modOp = require 'symmath.modOp'
 
-symmath.Variable = require 'symmath.Variable'
+--symmath.Variable = require 'symmath.Variable'
 symmath.Derivative = require 'symmath.Derivative'
 symmath.diff = require 'symmath.diff'
 
@@ -196,7 +197,7 @@ symmath.greaterThan = require 'symmath.greaterThan'
 symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
 
 -- change the default as you see fit
-symmath.toStringMethod = require 'symmath.tostring.MultiLine'
+symmath.toStringMethod = assert(require 'symmath.tostring.MultiLine')
 
 return symmath
 

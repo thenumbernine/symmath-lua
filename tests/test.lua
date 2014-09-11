@@ -20,16 +20,17 @@
 
 --]]
 
-
+symmath = require 'symmath'
 require 'symmath.notebook'
 Constant = require 'symmath.Constant'
 simplify = require 'symmath.simplify'
 
+symmath.toStringMethod = require 'symmath.tostring.Verbose'
+
 notebook[[
 =asserteq(Constant(1), simplify(Constant(1)*Constant(1)))
 =asserteq(Constant(1), simplify(Constant(1)/Constant(1)))
-=(-Constant(1)/Constant(1)):toVerboseStr()
-=asserteq(Constant(1), simplify(-Constant(1)/Constant(1)))
+=asserteq(Constant(-1), simplify(-Constant(1)/Constant(1)))
 =asserteq(Constant(1), simplify(Constant(1)/(Constant(1)*Constant(1))))
 
 x = symmath.Variable'x'

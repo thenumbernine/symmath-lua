@@ -65,7 +65,7 @@ function Expression.__concat(a,b)
 end
 
 function Expression:__tostring()
-	symmath = require 'symmath'
+	local symmath = require 'symmath'
 	return symmath.toStringMethod(self)
 end
 

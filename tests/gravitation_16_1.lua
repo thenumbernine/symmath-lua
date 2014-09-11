@@ -21,7 +21,7 @@
 --]]
 
 
-
+symmath = require 'symmath'
 local tensor = require 'symmath.tensor'
 
 --this is a halfway step between pure symmath code and symmath+tensor code
