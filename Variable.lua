@@ -44,14 +44,6 @@ function Variable:eval()
 	return v
 end
 
-function Variable:toVerboseStr()
-	local s = 'Variable['..self.name..']'
-	if self.value then
-		s = s .. '|' .. self.value
-	end
-	return s
-end
-
 function Variable.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
 	return a.name == b.name

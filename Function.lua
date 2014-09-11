@@ -21,9 +21,5 @@ function Function:eval()
 	end)))
 end
 
-function Function:toVerboseStr()
-	return 'Function{'..self.name..'}[' .. self.xs:map(tostring):concat(', ') .. ']'
-end
-
 return Function
 

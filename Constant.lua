@@ -26,10 +26,6 @@ function Constant.__eq(a,b)
 	return va == vb
 end
 
-function Constant:toVerboseStr()
-	return 'Constant['..tostring(self.value)..']'
-end
-
 function Constant:diff(...)
 	return Constant(0)
 end

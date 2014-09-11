@@ -21,9 +21,5 @@ function unmOp:expand()
 	return expand(Constant(-1) * self.xs[1])
 end
 
-function unmOp:toVerboseStr()
-	return 'unm('..self.xs[1]:toSingleLineStr()..')'
-end
-
 return unmOp
 

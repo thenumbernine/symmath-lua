@@ -46,9 +46,5 @@ function Derivative:distribute()
 	return self:clone()
 end
 
-function Derivative:toVerboseStr()
-	return self:toSingleLineStr()
-end
-
 return Derivative
 
