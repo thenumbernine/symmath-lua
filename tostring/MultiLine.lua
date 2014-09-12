@@ -51,7 +51,7 @@ function MultiLine:fraction(lhs, rhs)
 end
 
 function MultiLine:wrapStrWithParenthesis(node, parentNode)
-	local res = self:apply(node)
+	local res = self(node)
 	if self:testWrapStrWithParenthesis(node, parentNode) then
 		local height = #res
 		local lhs = {}
@@ -86,11 +86,11 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local res = {expr.name..'('}
-		res = self:combine(res, self:apply(expr.xs[1]))
+		res = self:combine(res, self(expr.xs[1]))
 		local sep = {', '}
 		for i=2,#expr.xs do
 			res = self:combine(res, sep)
-			res = self:combine(res, self:apply(expr.xs[i]))
+			res = self:combine(res, self(expr.xs[i]))
 		end
 		res = self:combine(res, {')'})
 		return res
@@ -109,7 +109,7 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.divOp'] = function(self, expr)
 		assert(#expr.xs == 2)
-		return self:fraction(self:apply(expr.xs[1]), self:apply(expr.xs[2]))
+		return self:fraction(self(expr.xs[1]), self(expr.xs[2]))
 	end,
 	[require 'symmath.powOp'] = function(self, expr)
 		assert(#expr.xs == 2)
@@ -139,14 +139,14 @@ MultiLine.lookupTable = {
 	end,
 }
 
--- while most :apply methods deal in strings,
---  MultiLine:apply passes around an array of strings (per-newline)
+-- while most ToString.__call methods deal in strings,
+--  MultiLine passes around an array of strings (per-newline)
 -- so we recombine them into one string here at the end
-getmetatable(MultiLine).__call = function(self, ...) 
-	local result = self:apply(...)
+MultiLine.__call = function(self, ...) 
+	local result = MultiLine.super.__call(self, ...)
 	if type(result) == 'string' then return '\n'..result end 
 	return '\n' ..result:concat('\n')
 end
 
-return MultiLine
+return MultiLine()
 

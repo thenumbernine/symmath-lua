@@ -25,7 +25,8 @@ require 'symmath.notebook'
 Constant = require 'symmath.Constant'
 simplify = require 'symmath.simplify'
 
-symmath.toStringMethod = require 'symmath.tostring.Verbose'
+--symmath.toStringMethod = require 'symmath.tostring.Verbose'
+symmath.toStringMethod = require 'symmath.tostring.SingleLine'
 
 notebook[[
 =asserteq(Constant(1), simplify(Constant(1)*Constant(1)))
@@ -33,8 +34,9 @@ notebook[[
 =asserteq(Constant(-1), simplify(-Constant(1)/Constant(1)))
 =asserteq(Constant(1), simplify(Constant(1)/(Constant(1)*Constant(1))))
 
-x = symmath.Variable'x'
-y = symmath.Variable'y'
+x = symmath.Variable('x', nil, true)
+y = symmath.Variable('y', nil, true)
+t = symmath.Variable('t', nil, true)
 
 -- commutativity
 =asserteq(x+y, y+x)
@@ -42,4 +44,10 @@ y = symmath.Variable'y'
 
 -- simplify rationals
 =asserteq(symmath.simplify(x/x), Constant(1))
+
+-- differentiation
+expr = simplify(-1 - 2 * x * y^2)
+=expr
+=symmath.diff(expr, t)
+=symmath.simplify(symmath.diff(expr, t))
 ]]

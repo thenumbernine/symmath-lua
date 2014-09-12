@@ -13,13 +13,13 @@ Lua.lookupTable = {
 		return '(0/0)'
 	end,
 	[require 'symmath.Function'] = function(self, expr, vars)
-		return 'math.' .. expr.name .. '(' .. expr.xs:map(function(x) return self:apply(x, vars) end):concat(',') .. ')'
+		return 'math.' .. expr.name .. '(' .. expr.xs:map(function(x) return self(x, vars) end):concat(',') .. ')'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr, vars)
-		return '(-'..self:apply(expr.xs[1], vars)..')'
+		return '(-'..self(expr.xs[1], vars)..')'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr, vars)
-		return '('..expr.xs:map(function(x) return self:apply(x, vars) end):concat(' '..expr.name..' ')..')'
+		return '('..expr.xs:map(function(x) return self(x, vars) end):concat(' '..expr.name..' ')..')'
 	end,
 	[require 'symmath.Variable'] = function(self, expr, vars)
 		if table.find(vars, nil, function(var) return expr.name == var.name end) then
@@ -36,15 +36,10 @@ function Lua:compile(expr, vars)
 	local cmd = 'return function('..
 		table.map(vars, function(var) return var.name end):concat(', ')
 	..') return '..
-		self:apply(expr, vars)
+		self(expr, vars)
 	..' end'
 	return assert(loadstring(cmd))(), cmd
 end
 
---singleton -- no instance creation
-getmetatable(Lua).__call = function(self, ...) 
-	return self:apply(...) 
-end
-
-return Lua
+return Lua()
 

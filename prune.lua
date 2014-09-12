@@ -22,13 +22,18 @@ Prune.lookupTable = {
 		end
 
 		if expr.xs[1]:isa(Derivative) then
-			return simplify(Derivative(expr.xs[1].xs[1], unpack(
+			return prune(Derivative(expr.xs[1].xs[1], unpack(
 				table.append({unpack(expr.xs, 2)}, {unpack(expr.xs[1].xs, 2)})
 			)))
 		end
 	
 		-- might need to be pruned again, might not ...
-		return expr:distribute()
+		local nextExpr = expr:distribute()
+		if nextExpr ~= expr then
+			expr = prune(nextExpr)
+		end
+
+		return expr
 	end,
 	
 	[require 'symmath.unmOp'] = function(prune, expr)
@@ -406,7 +411,9 @@ Prune.lookupTable = {
 		local symmath = require 'symmath'	-- for debug flags ...
 		local Constant = require 'symmath.Constant'
 		local unmOp = require 'symmath.unmOp'
+		local mulOp = require 'symmath.mulOp'
 		local divOp = require 'symmath.divOp'
+		local powOp = require 'symmath.powOp'
 		
 		if symmath.simplifyDivisionByPower then
 			return simplify(mulOp(expr.xs[1], powOp(expr.xs[2], Constant(-1))))
@@ -467,7 +474,7 @@ Prune.lookupTable = {
 			return Constant(1)		-- ... for expr.xs[1] != 0
 		end
 
-	--[[
+	-- [[
 		-- (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
 		do
 			local modified

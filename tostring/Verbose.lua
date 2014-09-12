@@ -11,7 +11,7 @@ Verbose.lookupTable = {
 		return 'Invalid'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
-		return 'unm('..self:apply(expr.xs[1])..')'
+		return 'unm('..self(expr.xs[1])..')'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
 		return 'BinaryOp{'..expr.name..'}['..expr.xs:map(tostring):concat(', ')..']'
@@ -31,10 +31,5 @@ Verbose.lookupTable = {
 	end
 }
 
---singleton -- no instance creation
-getmetatable(Verbose).__call = function(self, ...) 
-	return self:apply(...) 
-end
-
-return Verbose
+return Verbose()
 

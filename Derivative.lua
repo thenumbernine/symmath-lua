@@ -43,7 +43,7 @@ function Derivative:distribute()
 		end
 	end
 	
-	return self:clone()
+	return self
 end
 
 return Derivative

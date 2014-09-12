@@ -5,20 +5,26 @@ local precedence = require 'symmath.precedence'
 -- base class
 local ToString = class()
 
-function ToString:apply(expr, ...)
+local function debugToString(t)
+	if type(t) ~= 'table' then return tostring(t) end
+	local m = getmetatable(t)
+	setmetatable(t, nil)
+	local s = tostring(t)
+	setmetatable(t, m)
+	return s
+end
+
+function ToString:__call(expr, ...)
 	if type(expr) ~= 'table' then return tostring(expr) end
 	local lookup = expr.class
-	if not lookup then return tostring(expr) end
 	-- traverse class parentwise til a key in the lookup table is found
-	while not self.lookupTable[lookup] do
+	while lookup and not self.lookupTable[lookup] do
 		lookup = lookup.super
-		if not lookup then error("found no way to stringify expr") end
 	end
 	if not lookup then
-		return tostring(expr)
-	else
-		return (self.lookupTable[lookup])(self, expr, ...)
+		return toLua(expr)	-- ERROR
 	end
+	return (self.lookupTable[lookup])(self, expr, ...)
 end
 
 function ToString:testWrapStrWithParenthesis(node, parentNode)

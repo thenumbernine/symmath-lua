@@ -4,6 +4,13 @@ local ToString = require 'symmath.tostring.ToString'
 local SingleLine = class(ToString)
 
 SingleLine.lookupTable = {
+	--[[
+	[require 'symmath.Expression'] = function(self, expr)
+		local s = table{}
+		for k,v in pairs(expr) do s:insert(rawtostring(k)..'='..rawtostring(v)) end
+		return 'Expression{'..s:concat(', ')..'}'
+	end,
+	--]]
 	[require 'symmath.Constant'] = function(self, expr) 
 		return tostring(expr.value) 
 	end,
@@ -11,7 +18,7 @@ SingleLine.lookupTable = {
 		return 'Invalid'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return expr.name..'(' .. expr.xs:map(function(x) return self:apply(x) end):concat(', ') .. ')'
+		return expr.name..'(' .. expr.xs:map(function(x) return self(x) end):concat(', ') .. ')'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
 		return '-'..self:wrapStrWithParenthesis(expr.xs[1], expr)
@@ -29,15 +36,10 @@ SingleLine.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
-		local diffvar = self:apply(assert(expr.xs[1]))
-		return 'd/d{'..table{unpack(expr.xs, 2)}:map(function(x) return self:apply(x) end):concat(',')..'}['..diffvar..']'
+		local diffvar = self(assert(expr.xs[1]))
+		return 'd/d{'..table{unpack(expr.xs, 2)}:map(function(x) return self(x) end):concat(',')..'}['..diffvar..']'
 	end
 }
 
---singleton -- no instance creation
-getmetatable(SingleLine).__call = function(self, ...) 
-	return self:apply(...) 
-end
-
-return SingleLine
+return SingleLine()
 
