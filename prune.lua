@@ -15,6 +15,7 @@ local divOp = require 'symmath.divOp'
 local powOp = require 'symmath.powOp'
 local Constant = require 'symmath.Constant'
 local Derivative = require 'symmath.Derivative'
+local Variable = require 'symmath.Variable'
 local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 local Visitor = require 'symmath.Visitor'
 local Prune = class(Visitor)
@@ -33,13 +34,22 @@ Prune.lookupTable = {
 			)))
 		end
 	
-		-- might need to be pruned again, might not ...
-		local nextExpr = expr:distribute()
-		if nextExpr ~= expr then
-			expr = prune(nextExpr)
+		if not (expr.xs[1]:isa(Variable) and expr.xs[1].deferDiff) then
+			-- ... and if we're not lazy-evaluating the derivative of this with respect to other variables ...
+			if not expr.xs[1].diff then
+				error("failed to differentiate "..tostring(expr.xs[1]).." with type "..type(expr.xs[1]))
+			end
+			return prune(expr.xs[1]:diff(unpack(expr.xs, 2)))
 		end
-
-		return expr
+		
+		if expr.xs[1]:isa(Variable) then
+			-- deferred diff ... at least optimize out the dx/dx = 1
+			if #expr.xs == 2 
+			and expr.xs[1] == expr.xs[2]
+			then
+				return Constant(1)
+			end
+		end
 	end,
 	
 	[unmOp] = function(prune, expr)

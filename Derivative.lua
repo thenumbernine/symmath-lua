@@ -25,26 +25,5 @@ function Derivative:eval()
 	error("cannot evaluate derivatives.  try calling simplify() first")
 end
 
-function Derivative:distribute()
-	if not (self.xs[1]:isa(Variable) and self.xs[1].deferDiff) then
-		-- ... and if we're not lazy-evaluating the derivative of this with respect to other variables ...
-		if not self.xs[1].diff then
-			error("failed to differentiate "..tostring(self.xs[1]).." with type "..type(self.xs[1]))
-		end
-		return self.xs[1]:diff(unpack(self.xs, 2))
-	end
-	
-	if self.xs[1]:isa(Variable) then
-		-- deferred diff ... at least optimize out the dx/dx = 1
-		if #self.xs == 2 
-		and self.xs[1] == self.xs[2]
-		then
-			return Constant(1)
-		end
-	end
-	
-	return self
-end
-
 return Derivative
 
