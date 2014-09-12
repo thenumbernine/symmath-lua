@@ -1,7 +1,5 @@
 require 'ext'
 
-local precedence = require 'symmath.precedence'
-
 -- base class
 local ToString = class()
 
@@ -29,6 +27,11 @@ end
 -- this means internally classes should call self:apply() rather than self() to prevent extra intermediate permutations 
 function ToString.__call(self, ...)
 	return self:apply(...)
+end
+
+return function precedence(x)
+	if x.precedence then return x.precedence end
+	return 10
 end
 
 function ToString:testWrapStrWithParenthesis(node, parentNode)
