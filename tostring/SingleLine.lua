@@ -18,7 +18,7 @@ SingleLine.lookupTable = {
 		return 'Invalid'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return expr.name..'(' .. expr.xs:map(function(x) return self(x) end):concat(', ') .. ')'
+		return expr.name..'(' .. expr.xs:map(function(x) return self:apply(x) end):concat(', ') .. ')'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
 		return '-'..self:wrapStrWithParenthesis(expr.xs[1], expr)
@@ -36,8 +36,8 @@ SingleLine.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
-		local diffvar = self(assert(expr.xs[1]))
-		return 'd/d{'..table{unpack(expr.xs, 2)}:map(function(x) return self(x) end):concat(',')..'}['..diffvar..']'
+		local diffvar = self:apply(assert(expr.xs[1]))
+		return 'd/d{'..table{unpack(expr.xs, 2)}:map(function(x) return self:apply(x) end):concat(',')..'}['..diffvar..']'
 	end
 }
 

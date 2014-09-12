@@ -13,6 +13,8 @@ aabbb
 aabbb
 --]]
 function MultiLine:combine(lhs, rhs)
+	if type(lhs) ~= 'table' then error("expected lhs to be table, found "..type(lhs)) end
+	if type(rhs) ~= 'table' then error("expected rhs to be table, found "..type(rhs)) end
 	local res = table()
 	local sides = {lhs, rhs}
 	local maxheight = math.max(#lhs, #rhs)
@@ -51,7 +53,7 @@ function MultiLine:fraction(lhs, rhs)
 end
 
 function MultiLine:wrapStrWithParenthesis(node, parentNode)
-	local res = self(node)
+	local res = self:apply(node)
 	if self:testWrapStrWithParenthesis(node, parentNode) then
 		local height = #res
 		local lhs = {}
@@ -86,11 +88,11 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local res = {expr.name..'('}
-		res = self:combine(res, self(expr.xs[1]))
+		res = self:combine(res, self:apply(expr.xs[1]))
 		local sep = {', '}
 		for i=2,#expr.xs do
 			res = self:combine(res, sep)
-			res = self:combine(res, self(expr.xs[i]))
+			res = self:combine(res, self:apply(expr.xs[i]))
 		end
 		res = self:combine(res, {')'})
 		return res
@@ -109,7 +111,7 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.divOp'] = function(self, expr)
 		assert(#expr.xs == 2)
-		return self:fraction(self(expr.xs[1]), self(expr.xs[2]))
+		return self:fraction(self:apply(expr.xs[1]), self:apply(expr.xs[2]))
 	end,
 	[require 'symmath.powOp'] = function(self, expr)
 		assert(#expr.xs == 2)

@@ -11,7 +11,7 @@ Verbose.lookupTable = {
 		return 'Invalid'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
-		return 'unm('..self(expr.xs[1])..')'
+		return 'unm('..self:apply(expr.xs[1])..')'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
 		return 'BinaryOp{'..expr.name..'}['..expr.xs:map(tostring):concat(', ')..']'

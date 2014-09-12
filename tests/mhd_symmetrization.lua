@@ -1,34 +1,18 @@
 require 'ext'
-require 'symmath'
-symmath.toStringMethod = symmath.ToLaTeX
+local symmath = require 'symmath'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.toStringMethod = MathJax
 symmath.simplifyDivisionByPower = true
 
 local oldPrint = print
 local function print(...)
-	local str = table{...}:map(function(s)
-		if type(s) == 'table'
-		and s.isa
-		and s:isa(symmath.Expression)
-		then
-			return "\\("..tostring(s).."\\)"
-		end
-		return tostring(s)
-	end):concat('\t')
-	oldPrint(str..'<br>')
+	oldPrint(...)
+	oldPrint('<br>')
 end
 
 -- header 
 
-print[[
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>MHD Symmetrization</title>
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    </head>
-    <body>
-]]
+print(MathJax.header)
 
 -- functions
 
@@ -151,11 +135,5 @@ allEqns:map(function(eqn) print(eqn) end)
 
 -- conservative variables
 
+print(MathJax.footer)
 
-
--- footer
-
-print[[
-	</body>
-</html>
-]]

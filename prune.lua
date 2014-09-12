@@ -15,7 +15,6 @@ Prune.lookupTable = {
 	[require 'symmath.Derivative'] = function(prune, expr)
 		local Constant = require 'symmath.Constant'
 		local Derivative = require 'symmath.Derivative'
-		local simplify = require 'symmath.simplify'
 
 		if expr.xs[1]:isa(Constant) then
 			return Constant(0)
@@ -227,6 +226,7 @@ Prune.lookupTable = {
 			local powOp = require 'symmath.powOp'
 			local cos = require 'symmath.cos'
 			local sin = require 'symmath.sin'
+			local Function = require 'symmath.Function'
 			local cosAngle, sinAngle
 			local cosIndex, sinIndex
 			for i=1,#expr.xs do
@@ -416,7 +416,7 @@ Prune.lookupTable = {
 		local powOp = require 'symmath.powOp'
 		
 		if symmath.simplifyDivisionByPower then
-			return simplify(mulOp(expr.xs[1], powOp(expr.xs[2], Constant(-1))))
+			return prune(mulOp(expr.xs[1], powOp(expr.xs[2], Constant(-1))))
 		end
 
 		-- move unary minuses up

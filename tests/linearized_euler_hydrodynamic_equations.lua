@@ -1,41 +1,34 @@
-require 'symmath'
 require 'ext'
 
-symmath.toStringMethod = symmath.ToMultiLineString
+local symmath = require 'symmath'
+symmath.toStringMethod = require 'symmath.tostring.MultiLine'
 symmath.simplifyConstantPowers  = true
 
 -- primitive variables
-local rho = symmath.variable('rho', nil, true)	-- density
-local u = symmath.variable('u', nil, true)		-- velocity
-local v = symmath.variable('v', nil, true)
-local w = symmath.variable('w', nil, true)
-local e = symmath.variable('e', nil, true)		-- total specific energy 
+local rho = symmath.Variable('rho', nil, true)	-- density
+local u = symmath.Variable('u', nil, true)		-- velocity
+local v = symmath.Variable('v', nil, true)
+local w = symmath.Variable('w', nil, true)
+local e = symmath.Variable('e', nil, true)		-- total specific energy 
 
 -- state variable
-local q1 = symmath.variable('q1', nil, true)
-local q2 = symmath.variable('q2', nil, true)
-local q3 = symmath.variable('q3', nil, true)
-local q4 = symmath.variable('q4', nil, true)
-local q5 = symmath.variable('q5', nil, true)
+local q1 = symmath.Variable('q1', nil, true)
+local q2 = symmath.Variable('q2', nil, true)
+local q3 = symmath.Variable('q3', nil, true)
+local q4 = symmath.Variable('q4', nil, true)
+local q5 = symmath.Variable('q5', nil, true)
 
 -- dimension variables
-local t = symmath.variable('t', nil, true)
-local x = symmath.variable('x', nil, true)
-local y = symmath.variable('y', nil, true)
-local z = symmath.variable('z', nil, true)
+local t = symmath.Variable('t', nil, true)
+local x = symmath.Variable('x', nil, true)
+local y = symmath.Variable('y', nil, true)
+local z = symmath.Variable('z', nil, true)
 
-local gamma = symmath.variable('gamma')
+local gamma = symmath.Variable('gamma')
 local ek = .5 * (u * u + v * v + w * w)			-- kinetic specific energy
 local ei = e - .5 * ek							-- internal specific energy
 local P = (gamma - 1) * rho * ei				-- pressure
 local E = rho * e								-- total energy
-
-local function printEqn(eqn)
-	print('  '..eqn..' = 0') 
-end
-
--- TODO
-function symmath.equals(x) return x end
 
 -- ...equal zero
 print('original equations:')
@@ -47,7 +40,7 @@ local eqns = table{
 	symmath.equals(diff(rho * w, t) + diff(rho * w * u    , x) + diff(rho * w * v    , y) + diff(rho * w * w + P, z), 0),
 	symmath.equals(diff(rho * e, t) + diff((E + P) * u    , x) + diff((E + P) * v    , y) + diff((E + P) * w    , z), 0),
 }
-eqns:map(printEqn)
+eqns:map(print)
 
 print('substituting state variables:')
 eqns = eqns:map(function(eqn)
@@ -59,11 +52,11 @@ eqns = eqns:map(function(eqn)
 	--eqn = symmath.simplify(eqn)
 	return eqn
 end)
-eqns:map(printEqn)
+eqns:map(print)
 
 print('simplify & expand')
 eqns = eqns:map(symmath.simplify)
-eqns:map(printEqn)
+eqns:map(print)
 
 print('factor derivatives')
 eqns = eqns:factor(function(eqn)
