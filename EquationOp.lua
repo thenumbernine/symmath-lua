@@ -6,6 +6,7 @@ local nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
 -- I would use binary operators for this, but Lua's overloading requires the return value be a boolean
 local EquationOp = class(BinaryOp)
 EquationOp.__eq = nodeCommutativeEqual
+EquationOp.solve = require 'symmath.solve'
 
 function EquationOp:diff(...)
 	local diff = require 'symmath'.diff
@@ -26,6 +27,9 @@ function EquationOp:switch()
 	return b:equals(a)
 end
 
+-- cause operators to apply immdiately, and to apply to both sides
+
+-- TODO switch equality sign for non-equals equation ops? same with scaling by negatives?
 function EquationOp.__unm(a)
 	a = a:clone()
 	a.xs = a.xs:map(function(x) return -x end)

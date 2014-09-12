@@ -29,6 +29,7 @@ symmath.usePowerSymbol = true			-- whether to use a^b or pow(a,b).  This is a di
 symmath.simplifyDivisionByPower = false	-- whether to treat a/b as a*b^-1
 
 symmath.replace = require 'symmath.replace'
+symmath.solve = require 'symmath.solve'
 symmath.map = require 'symmath.map'
 
 symmath.prune = require 'symmath.prune'
