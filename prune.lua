@@ -396,13 +396,6 @@ Prune.lookupTable = {
 		end
 		--]]
 		
-		--[[ moved to expand()
-		do
-			local res = expr:applyDistribute()
-			if res then return res end
-		end
-		--]]
-			
 		return expr
 	end,
 	
