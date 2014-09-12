@@ -132,7 +132,6 @@ end
 
 --]]
 
-symmath.precedence = require 'symmath.precedence'
 symmath.tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 symmath.nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
 
@@ -163,7 +162,7 @@ symmath.modOp = require 'symmath.modOp'
 
 --symmath.Variable = require 'symmath.Variable'
 symmath.Derivative = require 'symmath.Derivative'
-symmath.diff = require 'symmath.diff'
+symmath.diff = symmath.Derivative	-- shorthand
 
 symmath.EquationOp = require 'symmath.EquationOp'
 symmath.equals = require 'symmath.equals'

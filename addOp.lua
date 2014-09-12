@@ -2,7 +2,6 @@ require 'ext'
 local BinaryOp = require 'symmath.BinaryOp'
 local Function = require 'symmath.Function'
 local Constant = require 'symmath.Constant'
-local diff = require 'symmath.diff'
 local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 
 local addOp = class(BinaryOp)
@@ -10,6 +9,7 @@ addOp.precedence = 2
 addOp.name = '+'
 
 function addOp:diff(...)
+	local diff = require 'symmath'.diff
 	local result = addOp()
 	for i=1,#self.xs do
 		result.xs[i] = diff(self.xs[i], ...)

@@ -1,7 +1,6 @@
 require 'ext'
 local Constant = require 'symmath.Constant'
 local BinaryOp = require 'symmath.BinaryOp'
-local diff = require 'symmath.diff'
 local nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
 
 mulOp = class(BinaryOp)
@@ -10,6 +9,7 @@ mulOp.precedence = 3
 mulOp.name = '*'
 
 function mulOp:diff(...)
+	local diff = require 'symmath'.diff
 	local addOp = require 'symmath.addOp'
 	local sumRes = addOp()
 	for i=1,#self.xs do

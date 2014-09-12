@@ -29,7 +29,7 @@ function ToString.__call(self, ...)
 	return self:apply(...)
 end
 
-return function precedence(x)
+local function precedence(x)
 	if x.precedence then return x.precedence end
 	return 10
 end

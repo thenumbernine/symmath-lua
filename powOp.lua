@@ -3,7 +3,6 @@ require 'ext'
 local Constant = require 'symmath.Constant'
 local BinaryOp = require 'symmath.BinaryOp'
 local log = require 'symmath.log'
-local diff = require 'symmath.diff'
 
 local powOp = class(BinaryOp)
 powOp.omitSpace = true
@@ -20,6 +19,7 @@ a^b * (db/dx * log(a) + da/dx * b / a)
 --]]
 function powOp:diff(...)
 	local a, b = unpack(self.xs)
+	local diff = require 'symmath'.diff
 	local x = a ^ b * (diff(b, ...) * log(a) + diff(a, ...) * b / a)
 --	x = prune(x)
 	return x

@@ -1,6 +1,5 @@
 require 'ext'
 local BinaryOp = require 'symmath.BinaryOp'
-local diff = require 'symmath.diff'
 
 local subOp = class(BinaryOp)
 subOp.precedence = 2
@@ -8,6 +7,7 @@ subOp.name = '-'
 
 function subOp:diff(...)
 	local a, b = unpack(self.xs)
+	local diff = require 'symmath'.diff
 	local x = diff(a,...) - diff(b,...)
 --	x = prune(x)
 	return x
