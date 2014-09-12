@@ -7,14 +7,21 @@ traverses x, child first, maps the nodes if they appear in the lookup table
 the table can be expanded by adding an entry prune.lookupTable[class] to perform the necessary transformation
 --]]
 
+local unmOp = require 'symmath.unmOp'
+local addOp = require 'symmath.addOp'
+local subOp = require 'symmath.subOp'
+local mulOp = require 'symmath.mulOp'
+local divOp = require 'symmath.divOp'
+local powOp = require 'symmath.powOp'
+local Constant = require 'symmath.Constant'
+local Derivative = require 'symmath.Derivative'
+local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 local Visitor = require 'symmath.Visitor'
 local Prune = class(Visitor)
 
 Prune.lookupTable = {
 
-	[require 'symmath.Derivative'] = function(prune, expr)
-		local Constant = require 'symmath.Constant'
-		local Derivative = require 'symmath.Derivative'
+	[Derivative] = function(prune, expr)
 
 		if expr.xs[1]:isa(Constant) then
 			return Constant(0)
@@ -35,16 +42,11 @@ Prune.lookupTable = {
 		return expr
 	end,
 	
-	[require 'symmath.unmOp'] = function(prune, expr)
-		local Constant = require 'symmath.Constant'
+	[unmOp] = function(prune, expr)
 		return prune(Constant(-1) * expr.xs[1])
 	end,
 	
-	[require 'symmath.addOp'] = function(prune, expr)
-		local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
-		local Constant = require 'symmath.Constant'
-		local addOp = require 'symmath.addOp'
-		local mulOp = require 'symmath.mulOp'
+	[addOp] = function(prune, expr)
 		
 		assert(#expr.xs > 0)
 		
@@ -223,7 +225,6 @@ Prune.lookupTable = {
 		-- ... or of cos^2 with 1 - sin^2 and let the rest cancel out  (best to operate on one function rather than two)
 		--  (that 2nd step possibly in a separate simplifyTrig() function of its own?)
 		do
-			local powOp = require 'symmath.powOp'
 			local cos = require 'symmath.cos'
 			local sin = require 'symmath.sin'
 			local Function = require 'symmath.Function'
@@ -268,15 +269,11 @@ Prune.lookupTable = {
 
 	end,
 	
-	[require 'symmath.subOp'] = function(prune, expr)
+	[subOp] = function(prune, expr)
 		return prune(expr.xs[1] + (-expr.xs[2]))
 	end,
 	
-	[require 'symmath.mulOp'] = function(prune, expr)
-		local Constant = require 'symmath.Constant'
-		local unmOp = require 'symmath.unmOp'
-		local powOp = require 'symmath.powOp'
-		local divOp = require 'symmath.divOp'
+	[mulOp] = function(prune, expr)
 
 		assert(#expr.xs > 0)
 		
@@ -409,13 +406,8 @@ Prune.lookupTable = {
 		return expr
 	end,
 	
-	[require 'symmath.divOp'] = function(prune, expr)
+	[divOp] = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
-		local Constant = require 'symmath.Constant'
-		local unmOp = require 'symmath.unmOp'
-		local mulOp = require 'symmath.mulOp'
-		local divOp = require 'symmath.divOp'
-		local powOp = require 'symmath.powOp'
 		
 		if symmath.simplifyDivisionByPower then
 			return prune(mulOp(expr.xs[1], powOp(expr.xs[2], Constant(-1))))
@@ -583,10 +575,7 @@ Prune.lookupTable = {
 		return expr
 	end,
 	
-	[require 'symmath.powOp'] = function(prune, expr)
-		local Constant = require 'symmath.Constant'
-		local mulOp = require 'symmath.mulOp'
-		local powOp = require 'symmath.powOp'
+	[powOp] = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags
 		
 		if symmath.simplifyConstantPowers then
