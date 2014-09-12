@@ -1,14 +1,15 @@
 --[[
 post-simplify change from canonical form to make the equation look more presentable 
 --]]
-
+local unmOp = require 'symmath.unmOp'
+local addOp = require 'symmath.addOp'
+local mulOp = require 'symmath.mulOp'
+local Constant = require 'symmath.Constant'
 local Visitor = require 'symmath.Visitor'
 local Tidy = class(Visitor)
 
 Tidy.lookupTable = {
-	[require 'symmath.mulOp'] = function(tidy, expr)
-		local Constant = require 'symmath.Constant'
-		local unmOp = require 'symmath.unmOp'
+	[mulOp] = function(tidy, expr)
 		-- --x => x
 		if expr.xs[1]:isa(unmOp) then
 			return tidy(expr.xs[1].xs[1]:clone())
@@ -21,10 +22,7 @@ Tidy.lookupTable = {
 			return tidy(-expr)
 		end
 	end,
-	[require 'symmath.addOp'] = function(tidy, expr)
-		local Constant = require 'symmath.Constant'
-		local unmOp = require 'symmath.unmOp'
-		local mulOp = require 'symmath.mulOp'
+	[addOp] = function(tidy, expr)
 		for i=1,#expr.xs-1 do
 			-- x + -y => x - y
 			if expr.xs[i+1]:isa(unmOp) then
