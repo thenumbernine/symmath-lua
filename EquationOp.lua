@@ -22,9 +22,8 @@ function EquationOp:rhs() return self.xs[2] end
 -- a = b => b = a
 -- should probably overload this for >= and <= to switch the sides
 function EquationOp:switch()
-	self = self:clone()
-	self.xs[1], self.xs[2] = self.xs[2], self.xs[1]
-	return self
+	local a,b = unpack(self.xs)
+	return b:equals(a)
 end
 
 function EquationOp.__unm(a)

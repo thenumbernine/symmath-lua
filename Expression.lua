@@ -125,10 +125,11 @@ end
 Expression.replace = require 'symmath.replace'
 Expression.simplify = require 'symmath.simplify'
 -- I have to buffer these by a function to prevent require loop
-Expression.equals = function(...)
-	local equals = require 'symmath.equals'
-	return equals(...)
-end
+Expression.equals = function(...) return (require 'symmath.equals')(...) end
+Expression.greaterThan = function(...) return (require 'symmath.greaterThan')(...) end
+Expression.greaterThanOrEquals = function(...) return (require 'symmath.greaterThanOrEquals')(...) end
+Expression.lessThan = function(...) return (require 'symmath.lessThan')(...) end
+Expression.lessThanOrEquals = function(...) return (require 'symmath.lessThanOrEquals')(...) end
 
 -- ... = list of equations
 function Expression:subst(...)
