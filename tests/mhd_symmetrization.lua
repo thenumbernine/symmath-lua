@@ -1,3 +1,25 @@
+--[[
+
+    File: mhd_symmetrization.lua
+
+    Copyright (C) 2014 Christopher Moore (christopher.e.moore@gmail.com)
+	  
+    This software is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+  
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+  
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write the Free Software Foundation, Inc., 51
+    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+--]]
+
 require 'ext'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
@@ -58,36 +80,35 @@ local vSq = sum(function(i) return vs[i]^2 end, 1, 3)
 
 print('relations')
 
-local Z_from_E_B_rho_mu = symmath.equals(Z, E + 1 / (2 * rho * mu) * BSq)
+local Z_from_E_B_rho_mu = Z:equals(E + 1 / (2 * rho * mu) * BSq)
 print(Z_from_E_B_rho_mu)
 
-local P_from_p_B_mu = symmath.equals(P, p + 1 / (2 * mu) * BSq)
+local P_from_p_B_mu = P:equals(p + 1 / (2 * mu) * BSq)
 print(P_from_p_B_mu)
 
-local p_from_E_rho_v_gamma = symmath.equals(p, (gamma - 1) * rho * (E - 1/symmath.Constant(2) * vSq))
+local p_from_E_rho_v_gamma = p:equals((gamma - 1) * rho * (E - 1/symmath.Constant(2) * vSq))
 print(p_from_E_rho_v_gamma)
 
-local cSq_from_p_rho_gamma = symmath.equals(c^2, gamma * p / rho)
+local cSq_from_p_rho_gamma = (c^2):equals(gamma * p / rho)
 print(cSq_from_p_rho_gamma)
 
 -- equations
 
-local continuityEqn = symmath.equals(symmath.diff(rho, t) + sum(function(j) 
+local continuityEqn = (symmath.diff(rho, t) + sum(function(j) 
 	return symmath.diff(rho*vs[j], xs[j])
-end,1,3), 0)
+end,1,3):equals(0)
 
 print()
 print('continuity')
 print(continuityEqn)
 
 local momentumEqns = range(3):map(function(i)
-	return symmath.equals(
-		symmath.diff(rho * vs[i], t) + sum(function(j)
-			return symmath.diff(rho * vs[i] * vs[j] - 1/mu * Bs[i] * Bs[j], xs[j])
-		end, 1,3)
-		+ symmath.diff(P, xs[i]),
-		-- ... equals ...
-		-1/mu * Bs[i] * divB)
+	return (symmath.diff(rho * vs[i], t) + sum(function(j)
+				return symmath.diff(rho * vs[i] * vs[j] - 1/mu * Bs[i] * Bs[j], xs[j])
+			end, 1,3)
+			+ symmath.diff(P, xs[i])
+		):equals(
+			-1/mu * Bs[i] * divB)
 end)
 
 print()
@@ -95,24 +116,21 @@ print('momentum')
 momentumEqns:map(function(eqn) print(eqn) end)
 
 local magneticFieldEqns = range(3):map(function(i)
-	return symmath.equals(
-		symmath.diff(Bs[i], t) + sum(function(j)
-			return symmath.diff(vs[j] * Bs[i] - vs[i] * Bs[j], xs[j])
-		end, 1,3),
-		-- ... equals ...
-		-vs[i] * divB)
+	return (symmath.diff(Bs[i], t) + sum(function(j)
+				return symmath.diff(vs[j] * Bs[i] - vs[i] * Bs[j], xs[j])
+			end, 1,3)
+		):equals(-vs[i] * divB)
 end)
 
 print()
 print('magnetic field')
 magneticFieldEqns:map(function(eqn) print(eqn) end)
 
-local energyTotalEqn = symmath.equals(
-	symmath.diff(rho * Z, t) + sum(function(j)
+local energyTotalEqn = 
+	(symmath.diff(rho * Z, t) + sum(function(j)
 		return (rho * Z + p) * vs[j] - 1/mu * vDotB * Bs[j]
-	end, 1, 3),
-	-- ... equals ...
-	-1/mu * vDotB * divB)
+	end, 1, 3)
+	):equals(-1/mu * vDotB * divB)
 
 print()
 print('energy total')

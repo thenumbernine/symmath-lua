@@ -2,7 +2,7 @@
 
     File: schwarzschild_cartesian.lua
 
-    Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ TODO: The correct substitution method is:
 	dphi = (-y dx + x dy) / (x^2 + y^2)
 --]]
 
+symmath = require 'symmath'
 local tensor = require 'symmath.tensor'
 
 -- coordinates

@@ -41,6 +41,8 @@ t = symmath.Variable('t', nil, true)
 -- commutativity
 =asserteq(x+y, y+x)
 =asserteq(x*y, y*x)
+=asserteq(x, symmath.simplify(Constant(1)*x))
+=asserteq(Constant(0), symmath.simplify(Constant(0)*x))
 
 -- simplify rationals
 =asserteq(symmath.simplify(x/x), Constant(1))

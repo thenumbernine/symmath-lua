@@ -2,7 +2,7 @@
 
     File: metric.lua
 
-    Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,15 +20,19 @@
 
 --]]
 
-
-
-require 'symmath'
-
+symmath = require 'symmath'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.toStringMethod = MathJax
 
 -- test
 
 function exec(cmd)
 	assert(loadstring(cmd))()
+end
+
+function printbr(...)
+	print(...)
+	print('<br>')
 end
 
 function assign(cmd)
@@ -37,8 +41,10 @@ function assign(cmd)
 	var = var:trim()
 	expr = expr:trim()
 	exec(var .. '=' .. expr)
-	print(var .. ' = ' .. tostring(_G[var]))
+	printbr(var .. ' = ' .. tostring(_G[var]))
 end
+
+print(MathJax.header)
 
 --[[ polar
 r = symmath.Variable('r')
@@ -61,7 +67,7 @@ assign('metric_z = r * symmath.cos(theta)')
 --]]
 
 --[[
-print()
+printbr()
 -- coordinate basis
 for _,u in ipairs(coords) do
 	for _,v in ipairs(srcCoords) do
@@ -82,7 +88,7 @@ end
 --]]
 
 --[[
-print()
+printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		exec(('gLL_$u_$v = 0'):gsub('$u',u):gsub('$v',v))
@@ -107,11 +113,11 @@ function printNonZero(expr, args)
 	for k,v in pairs(args) do
 		expr = expr:gsub('$'..k, v)
 	end
-	exec("if "..expr.." ~= symmath.Constant(0) then print('"..expr.." = '.."..expr..") end")
+	exec("if "..expr.." ~= symmath.Constant(0) then printbr('"..expr.." = '.."..expr..") end")
 end
 
 --[[
-print()
+printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		if u == v then
@@ -129,7 +135,7 @@ end
 --]]
 
 --[[ calc inverse of diagonal matrix
-print()
+printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		if u == v then
@@ -147,17 +153,17 @@ t = symmath.Variable('t', nil, true)
 x = symmath.Variable('x', nil, true)
 y = symmath.Variable('y', nil, true)
 z = symmath.Variable('z', nil, true)
-alpha = symmath.Variable('alpha', nil, true)
+alpha = symmath.Variable('\\alpha', nil, true)
 spatial = {'x','y','z'}
 coords = {'t', 'x', 'y', 'z'}
 for _,u in ipairs(spatial) do
-	exec(([[betaU_$u = symmath.Variable('betaU_$u', nil, true)]]):gsub('$u', u))
-	exec(([[betaL_$u = symmath.Variable('betaL_$u', nil, true)]]):gsub('$u', u))
+	exec(([[betaU_$u = symmath.Variable('\\beta^$u', nil, true)]]):gsub('$u', u))
+	exec(([[betaL_$u = symmath.Variable('\\beta_$u', nil, true)]]):gsub('$u', u))
 end
 for _,u in ipairs(spatial) do
 	for _,v in ipairs(spatial) do
-		exec(([[gammaLL_$u_$v = symmath.Variable('gammaLL_$u_$v', nil, true)]]):gsub('$u', u):gsub('$v', v))
-		exec(([[gammaUU_$u_$v = symmath.Variable('gammaUU_$u_$v', nil, true)]]):gsub('$u', u):gsub('$v', v))
+		exec(([[gammaLL_$u_$v = symmath.Variable('\\gamma_{$u$v}', nil, true)]]):gsub('$u', u):gsub('$v', v))
+		exec(([[gammaUU_$u_$v = symmath.Variable('\\gamma^{$u$v}', nil, true)]]):gsub('$u', u):gsub('$v', v))
 	end
 end
 --[=[
@@ -195,7 +201,7 @@ for _,u in ipairs(spatial) do
 end
 --]]
 
-print()
+printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
@@ -205,7 +211,7 @@ for _,u in ipairs(coords) do
 	end
 end
 
-print()
+printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
@@ -215,7 +221,7 @@ for _,u in ipairs(coords) do
 	end
 end
 
-print()
+printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
@@ -230,7 +236,7 @@ for _,u in ipairs(coords) do
 end
 
 
-print('Phi ~ -1')
+printbr('Phi ~ -1')
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
@@ -239,3 +245,6 @@ for _,u in ipairs(coords) do
 		end
 	end
 end
+
+print(MathJax.footer)
+

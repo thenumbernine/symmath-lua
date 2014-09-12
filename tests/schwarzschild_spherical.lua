@@ -2,7 +2,7 @@
 
     File: schwarzschild_spherical.lua
 
-    Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,10 +22,9 @@
 
 --[[
 schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
-
-my guess of how this fits with cartesian:
 --]]
 
+symmath = require 'symmath'
 local tensor = require 'symmath.tensor'
 
 -- coordinates

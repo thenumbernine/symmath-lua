@@ -33,16 +33,18 @@ LaTeX.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
-		--[[ for single variables 
-		return '{{d' .. self:apply(expr.xs[1]) .. '} \\over {' .. 
-			table{unpack(expr.xs, 2)}:map(function(x) return 'd{' .. self:apply(x) .. '}' end):concat(',') 
-			.. '}}'
-		--]]
-		-- [[ for complex expressions
-		return '{d \\over {' .. 
-			table{unpack(expr.xs, 2)}:map(function(x) return 'd{' .. self:apply(x) .. '}' end):concat(',') 
-			.. '}} \\left (' .. self:apply(expr.xs[1]) .. '\\right )'
-		--]]
+		local Variable = require 'symmath.Variable'
+		-- for single variables 
+		if expr.xs[1]:isa(Variable) then
+			return '{{d' .. self:apply(expr.xs[1]) .. '} \\over {' .. 
+				table{unpack(expr.xs, 2)}:map(function(x) return 'd{' .. self:apply(x) .. '}' end):concat(',') 
+				.. '}}'
+		else
+		-- for complex expressions
+			return '{d \\over {' .. 
+				table{unpack(expr.xs, 2)}:map(function(x) return 'd{' .. self:apply(x) .. '}' end):concat(',') 
+				.. '}} \\left (' .. self:apply(expr.xs[1]) .. '\\right )'
+		end
 	end
 }
 

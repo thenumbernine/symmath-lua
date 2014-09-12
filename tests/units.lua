@@ -2,7 +2,7 @@ local run = ... or 'separate'
 
 local symmath = require 'symmath'
 
-symmath.toStringMethod = require 'symmath.ToSingleLineString'
+symmath.toStringMethod = require 'symmath.tostring.SingleLine'
 symmath.simplifyConstantPowers  = true
 
 _ = symmath.simplify
@@ -71,8 +71,8 @@ end
 
 
 print('1 m = 1 m')
-print('1 s = '..unify(s/m).value..' m')
-print('1 m = '..unify(m/kg).value..' kg')
+print('1 s = '..unify(s/m)..' m')
+print('1 m = '..unify(m/kg)..' kg')
 print()
 
 function process(bodies)

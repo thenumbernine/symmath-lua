@@ -1,27 +1,32 @@
+--[[
+
+    File: matrix_inverse.lua
+
+    Copyright (C) 2014 Christopher Moore (christopher.e.moore@gmail.com)
+	  
+    This software is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+  
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+  
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write the Free Software Foundation, Inc., 51
+    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+--]]
+
 -- Eigenvectors from Trangenstein J. A. "A Numerical Solution of Hyperbolic Partial Differential Equations"
 
-require 'symmath'
+symmath = require 'symmath'
 require 'tensor'
 
 -- ... until tensor incorporates multiline tostring ...
-symmath.toStringMethod = symmath.ToSingleLineString
-
-local function simplify(A)
-	local simplified = tensor.Tensor(A.dim, function(i,j)
-		local v = A[i][j]
-		local srcv
-		repeat
-			srcv = v
-			v = symmath.expand(v)
-			v = symmath.factor(v)
-			v = symmath.prune(v)
-		until v == srcv
-		--print('simplifying '..i..','..j..' from '..A[i][j]..' to '..v)
-		return v
-	end)
-	--print('simplifying from '..A..' to '..simplified)
-	return simplified
-end
+symmath.toStringMethod = require 'symmath.tostring.SingleLine'
 
 local function inverse(A)
 	assert(A.dim[1] == A.dim[2])
@@ -44,8 +49,8 @@ local function inverse(A)
 						A[j][k], A[i][k] = A[i][k], A[j][k]
 						AInv[j][k], AInv[i][k] = AInv[i][k], AInv[j][k]
 					end
-					A = simplify(A)
-					AInv = simplify(AInv)
+					A = symmath.simplify(A)
+					AInv = symmath.simplify(AInv)
 					print('pivot rows '..i..' and '..j..' A='..A..' AInv='..AInv)
 					found = true
 					break
@@ -63,8 +68,8 @@ local function inverse(A)
 				A[i][j] = A[i][j] / s
 				AInv[i][j] = AInv[i][j] / s
 			end
-			A = simplify(A)
-			AInv = simplify(AInv)
+			A = symmath.simplify(A)
+			AInv = symmath.simplify(AInv)
 			print('rescale row '..i..' A='..A..' AInv='..AInv)
 		end
 		-- eliminate columns apart from diagonal
@@ -76,8 +81,8 @@ local function inverse(A)
 						A[j][k] = A[j][k] - s * A[i][k]
 						AInv[j][k] = AInv[j][k] - s * AInv[i][k]
 					end
-					A = simplify(A)
-					AInv = simplify(AInv)
+					A = symmath.simplify(A)
+					AInv = symmath.simplify(AInv)
 					print('removed entry '..j..','..i..' A='..A..' AInv='..AInv)
 				end
 			end

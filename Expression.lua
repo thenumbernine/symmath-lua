@@ -91,11 +91,52 @@ end
 
 -- make sure to require Expression and then require the ops
 function Expression.__unm(a) return (require 'symmath.unmOp')(a) end
-function Expression.__add(a,b) return (require 'symmath.addOp')(a,b) end
-function Expression.__sub(a,b) return (require 'symmath.subOp')(a,b) end
-function Expression.__mul(a,b) return (require 'symmath.mulOp')(a,b) end
-function Expression.__div(a,b) return (require 'symmath.divOp')(a,b) end
-function Expression.__pow(a,b) return (require 'symmath.powOp')(a,b) end
-function Expression.__mod(a,b) return (require 'symmath.modOp')(a,b) end
+function Expression.__add(a,b)
+	local EquationOp = require 'symmath.EquationOp'
+	if b:isa(EquationOp) then return b.__add(a,b) end
+	return (require 'symmath.addOp')(a,b) 
+end
+function Expression.__sub(a,b) 
+	local EquationOp = require 'symmath.EquationOp'
+	if b:isa(EquationOp) then return b.__sub(a,b) end
+	return (require 'symmath.subOp')(a,b) 
+end
+function Expression.__mul(a,b) 
+	local EquationOp = require 'symmath.EquationOp'
+	if b:isa(EquationOp) then return b.__mul(a,b) end
+	return (require 'symmath.mulOp')(a,b) 
+end
+function Expression.__div(a,b) 
+	local EquationOp = require 'symmath.EquationOp'
+	if b:isa(EquationOp) then return b.__div(a,b) end
+	return (require 'symmath.divOp')(a,b) 
+end
+function Expression.__pow(a,b) 
+	local EquationOp = require 'symmath.EquationOp'
+	if type(b) == 'table' and b.isa and b:isa(EquationOp) then return b.__pow(a,b) end
+	return (require 'symmath.powOp')(a,b) 
+end
+function Expression.__mod(a,b) 
+	local EquationOp = require 'symmath.EquationOp'
+	if b:isa(EquationOp) then return b.__mod(a,b) end
+	return (require 'symmath.modOp')(a,b) 
+end
+
+Expression.replace = require 'symmath.replace'
+Expression.simplify = require 'symmath.simplify'
+-- I have to buffer these by a function to prevent require loop
+Expression.equals = function(...)
+	local equals = require 'symmath.equals'
+	return equals(...)
+end
+
+-- ... = list of equations
+function Expression:subst(...)
+	local self = self:clone()
+	for _,eqn in ipairs{...} do
+		self = self:replace(eqn:lhs(), eqn:rhs())
+	end
+	return self
+end
 
 return Expression

@@ -2,7 +2,7 @@
 
     File: tensor.lua 
 
-    Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,10 @@ it isn't a good data structure and doesn't handle index gymnastics or comma or s
 for all of that, see my 'tensor' package (rather than this, which is 'symmath.tensor')
 --]]
 
-require 'symmath'
+local symmath = require 'symmath'
+
+-- tensor isn't too compatible with the MathJax string output (or any other except SingleLine) since it appends tostring'd variables, and MathJax has its \( \) around every tostring() output
+--  TODO make tensor more flexible 
 symmath.toStringMethod = require 'symmath.tostring.SingleLine'
 
 local tensor = {}

@@ -2,7 +2,7 @@
 
     File: alcubierre.lua
 
-    Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,11 +20,17 @@
 
 --]]
 
--- exec() requires symmath to be in global scope
 symmath = require 'symmath'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.toStringMethod = MathJax
 
 function exec(cmd)
 	assert(loadstring(cmd))()
+end
+
+function printbr(...)
+	print(...)
+	print('<br>')
 end
 
 function assign(cmd)
@@ -33,15 +39,17 @@ function assign(cmd)
 	var = var:trim()
 	expr = expr:trim()
 	exec(var .. '=' .. expr)
-	print(var .. ' = ' .. tostring(_G[var]))
+	printbr(var .. ' = ' .. tostring(_G[var]))
 end
 
 function printNonZero(expr, args)
 	for k,v in pairs(args) do
 		expr = expr:gsub('$'..k, v)
 	end
-	exec("if "..expr.." ~= symmath.Constant(0) then print('"..expr.." = '.."..expr..") end")
+	exec("if "..expr.." ~= symmath.Constant(0) then printbr('"..expr.." = '.."..expr..") end")
 end
+
+print(MathJax.header)
 
 --[[
 ADM:
@@ -113,21 +121,21 @@ for _,u in ipairs(spatialCoords) do
 end
 
 
-print('metric')
+printbr('metric')
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		printNonZero('gLL_$u_$v', {u=u,v=v})
 	end
 end
 
-print('inverse')
+printbr('inverse')
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		printNonZero('gUU_$u_$v', {u=u,v=v})
 	end
 end
 
-print()
+printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
@@ -144,7 +152,7 @@ for _,u in ipairs(coords) do
 	end
 end
 
-print()
+printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
@@ -154,7 +162,7 @@ for _,u in ipairs(coords) do
 	end
 end
 
-print()
+printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
@@ -183,4 +191,6 @@ for _,u in ipairs(coords) do
 	end
 	printNonZero('diff2xU_$u',{u=u})
 end
+
+print(MathJax.footer)
 

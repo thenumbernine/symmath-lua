@@ -2,7 +2,7 @@
 
     File: polar_geodesic.lua 
 
-    Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 --]]
 
 
-
+symmath = require 'symmath'
 local tensor = require 'symmath.tensor'
 
 --this is a halfway step between pure symmath code and symmath+tensor code

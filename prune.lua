@@ -392,7 +392,9 @@ Prune.lookupTable = {
 				denoms:insert(x.xs[2])
 			end
 		end
-		if #denoms > 0 then
+		if #denoms == 1 then
+			return prune(expr / denoms[1])
+		elseif #denoms > 1 then
 			return prune(expr / mulOp(unpack(denoms)))
 		end
 		--]]
@@ -441,10 +443,16 @@ Prune.lookupTable = {
 			return Invalid()
 		end
 		
-		-- Constant / Constant => Constant
 		if symmath.simplifyConstantPowers  then
+			-- Constant / Constant => Constant
 			if expr.xs[1]:isa(Constant) and expr.xs[2]:isa(Constant) then
 				return Constant(expr.xs[1].value / expr.xs[2].value)
+			end
+
+			-- mul / Constant = 1/Constant * mul
+			if expr.xs[1]:isa(mulOp) and expr.xs[2]:isa(Constant) then
+				local m = expr.xs[1]:clone()
+				return prune(mulOp(Constant(1/expr.xs[2].value), unpack(m.xs)))
 			end
 		end
 
@@ -467,7 +475,9 @@ Prune.lookupTable = {
 		
 		-- a / (b / c) => (a * c) / b
 		if expr.xs[2]:isa(divOp) then
-			return prune((expr.xs[1] * expr.xs[2].xs[1]) / expr.xs[2].xs[2])
+			local a, b = unpack(expr.xs)
+			local b, c = unpack(b.xs)
+			return prune((a * c) / b)
 		end
 
 		if expr.xs[1] == expr.xs[2] then

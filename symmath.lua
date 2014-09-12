@@ -28,30 +28,7 @@ symmath.simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
 symmath.usePowerSymbol = true			-- whether to use a^b or pow(a,b).  This is a dirty trick to get around some dirtier regex converting compiled functions from one language to another.  A more proper fix would be to allow different backends to compile to.
 symmath.simplifyDivisionByPower = false	-- whether to treat a/b as a*b^-1
 
---[[
-expr = expression to change
-find = sub-expression to find
-repl = sub-expression to replace
-callback(node) = callback per node, returns 'true' if we don't want to find/replace this tree
---]]
-function symmath.replace(expr,find,repl,callback)
-	if callback and callback(expr) then return expr:clone() end
-	if expr.xs then
-		local xs = table()
-		for i=1,#expr.xs do
-			local ch = symmath.replace(expr.xs[i],find,repl,callback)
-			if ch == find then
-				xs:insert(repl:clone())
-			else
-				xs:insert(ch)
-			end
-		end
-		return getmetatable(expr)(unpack(xs))
-	else
-		return expr:clone()
-	end
-end
-
+symmath.replace = require 'symmath.replace'
 symmath.map = require 'symmath.map'
 symmath.applyToAll = require 'symmath.applyToAll'
 

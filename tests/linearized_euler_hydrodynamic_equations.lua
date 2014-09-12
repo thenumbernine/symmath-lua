@@ -1,11 +1,39 @@
+--[[
+
+    File: linearized_euler_hydrodyanamic_equations.lua
+
+    Copyright (C) 2013-2014 Christopher Moore (christopher.e.moore@gmail.com)
+	  
+    This software is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+  
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+  
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write the Free Software Foundation, Inc., 51
+    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+--]]
+
 require 'ext'
 
 local symmath = require 'symmath'
-symmath.toStringMethod = require 'symmath.tostring.MultiLine'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.toStringMethod = MathJax
 symmath.simplifyConstantPowers  = true
 
+local function println(...)
+	print(...)
+	print('<br>')
+end
+
 -- primitive variables
-local rho = symmath.Variable('rho', nil, true)	-- density
+local rho = symmath.Variable('\\rho', nil, true)	-- density
 local u = symmath.Variable('u', nil, true)		-- velocity
 local v = symmath.Variable('v', nil, true)
 local w = symmath.Variable('w', nil, true)
@@ -24,14 +52,16 @@ local x = symmath.Variable('x', nil, true)
 local y = symmath.Variable('y', nil, true)
 local z = symmath.Variable('z', nil, true)
 
-local gamma = symmath.Variable('gamma')
+local gamma = symmath.Variable('\\gamma')
 local ek = .5 * (u * u + v * v + w * w)			-- kinetic specific energy
 local ei = e - .5 * ek							-- internal specific energy
 local P = (gamma - 1) * rho * ei				-- pressure
 local E = rho * e								-- total energy
 
+print(MathJax.header)
+
 -- ...equal zero
-print('original equations:')
+println('original equations:')
 local diff = symmath.diff
 local eqns = table{
 	symmath.equals(diff(rho    , t) + diff(rho * u        , x) + diff(rho * v        , y) + diff(rho * w        , z), 0),
@@ -40,9 +70,13 @@ local eqns = table{
 	symmath.equals(diff(rho * w, t) + diff(rho * w * u    , x) + diff(rho * w * v    , y) + diff(rho * w * w + P, z), 0),
 	symmath.equals(diff(rho * e, t) + diff((E + P) * u    , x) + diff((E + P) * v    , y) + diff((E + P) * w    , z), 0),
 }
-eqns:map(print)
+-- TODO don't simplify differentiation
+eqns = eqns:map(function(eqn) 
+	return symmath.simplify(eqn)--, {exclude={symmath.Derivative}}) 
+end)
+eqns:map(function(eqn) println(eqn) end)
 
-print('substituting state variables:')
+println('substituting state variables:')
 eqns = eqns:map(function(eqn)
 	eqn = symmath.replace(eqn, rho, q1)
 	eqn = symmath.replace(eqn, u, q2 / q1)
@@ -52,15 +86,18 @@ eqns = eqns:map(function(eqn)
 	--eqn = symmath.simplify(eqn)
 	return eqn
 end)
-eqns:map(print)
+eqns:map(function(eqn) println(eqn) end)
 
-print('simplify & expand')
+println('simplify & expand')
 eqns = eqns:map(symmath.simplify)
-eqns:map(print)
+eqns:map(function(eqn) println(eqn) end)
 
-print('factor derivatives')
-eqns = eqns:factor(function(eqn)
-	return eqn:factor{symmath.diff(q1, x), symmath.diff(q2, x), symmath.diff(q3, x)}
+println('factor derivatives')
+eqns = symmath.factor(eqns, function(eqn)
+	return symmath.factor(eqn, {symmath.diff(q1, x), symmath.diff(q2, x), symmath.diff(q3, x)})
 end)
 
+print(MathJax.footer)
+
 -- ... factor?  provide a list of expressions to factor by ... to get our matrix?
+
