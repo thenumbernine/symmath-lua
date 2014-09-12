@@ -30,7 +30,6 @@ symmath.simplifyDivisionByPower = false	-- whether to treat a/b as a*b^-1
 
 symmath.replace = require 'symmath.replace'
 symmath.map = require 'symmath.map'
-symmath.applyToAll = require 'symmath.applyToAll'
 
 symmath.prune = require 'symmath.prune'
 symmath.expand = require 'symmath.expand'

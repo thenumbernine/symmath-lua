@@ -1,6 +1,5 @@
 require 'ext'
 local Expression = require 'symmath.Expression'
-local expand = require 'symmath.expand'
 
 local BinaryOp = class(Expression)
 

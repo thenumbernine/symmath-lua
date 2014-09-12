@@ -35,18 +35,6 @@ function mulOp:eval()
 	return result
 end
 
-function mulOp:expand()
-	local res = self:applyDistribute()
-	if res then return res end
-	return self
-end
-
-function mulOp:expand()
-	local res = self:applyDistribute()
-	if res then return res end
-	return self
-end
-
 --[[
 a * (b + c) * d * e becomes
 (a * b * d * e) + (a * c * d * e)
