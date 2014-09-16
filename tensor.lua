@@ -32,7 +32,16 @@ local symmath = require 'symmath'
 
 -- tensor isn't too compatible with the MathJax string output (or any other except SingleLine) since it appends tostring'd variables, and MathJax has its \( \) around every tostring() output
 --  TODO make tensor more flexible 
-symmath.toStringMethod = require 'symmath.tostring.SingleLine'
+symmath.toStringMethod = require 'symmath.tostring.LaTeX'
+
+local MathJax = require 'symmath.tostring.MathJax'
+print(MathJax.header)
+
+local oldPrint = print
+local function print(...)
+	oldPrint(...)
+	oldPrint('<br>')
+end
 
 local tensor = {}
 
@@ -128,7 +137,7 @@ end
 function tensor.printNonZero(expr, vars)
 	expr = tensor.varsub(expr, vars)
 	local exprstr = tostring(expr)
-	tensor.exec("if "..exprstr.." ~= symmath.Constant(0) then print('"..exprstr.." = '..tostring("..exprstr..")) end")
+	tensor.exec("if "..exprstr.." ~= symmath.Constant(0) then print('\\\\("..exprstr.." = '..tostring("..exprstr..")..'\\\\)<br>') end")
 end
 
 -- get a list of var names

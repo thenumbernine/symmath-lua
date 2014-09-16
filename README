@@ -9,7 +9,7 @@ demo at http://christopheremoore.net/symbolic-lua
 
 
 operations (and their respective operator precedence)
-prune:	div	add mul
+simplify:	div	add mul
 expand:	add div mul
 factor: mul add div
 
@@ -20,3 +20,47 @@ TODO
 - support for numbers rather than only Constant
 - better simplify() that could actually run multiple iterations and compare start to current state successfully without infinite tail calls
 - replace a variable's "deferDiff" with a list of dependent variables, for which to defer differentiation (reduce to kronecher delta otherwise)
+
+- right now prune() does pruning and canonical form.
+	TODO: put pruning ops in prune(), and put canonical form stuff (div add mul) in simplify()
+	- then put add-div-mul stuff in expand(), and put mul-add-div stuff in factor
+	- then remove all recursive references from within all of these and replace it with an external loop than runs until no changes are made
+	- then, when any of simplify(), expand(), or factor() is called, have them go back and forth between their routine and prune()
+- another TODO on rearranging operations:
+	- specify simplify, expand, and factor by their precedence order of div, add, and mul
+	- then provide each with a list of functions that arrange operations accordingly (div-add => add-div, etc)
+	- and have them use the right function depending on their precedence
+
+so div-add => add-div would be (a + b) / (c + d) => a/(c+d) + b/(c+d)
+add-div => div-add would be a/b + c/d => (a * d + b * c) / (b * d)
+
+div-mul => mul-div would be (a * b) / (c * d) => a * b * 1/(c*d) (maybe?)
+mul-div => div-mul would be a * b * 1/(c * d) => (a * b)/(c * d)
+
+add-mul => mul-add would be (a + b)*(c + d) => a*c + a*d + b*c + b*d
+mul-add => add-mul would be factoring: a*c + a*d + b*c + b*d => a*(c + d) + b*(c + d) => (a + b)*(c + d)
+
+then list precedence of operations:
+	simplify.operationOrder = [divOp, addOp, mulOp]
+	expand.operationOrder = [addOp, divOp, mulOp]
+	factor.oeprationOrder = [mulOp, addOp, divOp]
+then for each pair, perform changes accordingly
+	
+	
+	for i=1,#process.operationOrder-1 do
+		for j=i+1,#process.operationOrder do
+			local apply = applyRules[process.operationOrder[i]][process.operationOrder[j]]
+			if apply then 
+				expr = apply(expr) or expr
+			end
+		end
+	end
+
+	simplify: add-div=>div-add, mul-div=>div-mul, mul-add=>add-mul
+	expand: div-add=>add-div, mul-div=>div-mul, mul-add=>add-mul
+	factor: div-add=>add-div, div-mul=>mul-div, add-mul=>mul-add
+
+	the only benefit of this is reducing the duplicate rules:
+		div-add => add-div is found in expand and factor
+		mul-div => div-mul is found in simplify and expand
+		mul-add => add-mul is found in simplify and expand 

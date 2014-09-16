@@ -7,7 +7,7 @@ MathJax.header = [[
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>MHD Symmetrization</title>
+        <title>Symbolic Lua Output</title>
         <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </head>
     <body>

@@ -20,6 +20,58 @@
 
 --]]
 
+--[[
+
+ideal code:
+	
+	-- provide default, provide specific indexes
+	coords('txyz', {ijk = 'xyz'})
+
+	alpha = 1
+
+	-- "dont differentiate / not a constant" is the default?
+	v = var()
+	f = var()
+	
+	-- use tensor's ctor to specify the default contra/co-variance and which indexes to allocate for
+	-- use the coords def to infer rank from these indexes
+	beta = tensor'^i'
+
+	-- for tensor assignment I'd like to use __call with implicit string parameter 
+	-- but the returned object would be assigned with Lua's un-overloadable assignment operation 
+	--beta'^0' = -v*f	-- (ideal but not possible)
+	-- to work around this __newindex could be overloaded
+	beta['^0'] = -v*f
+
+	gamma = tensor'_ij'
+	gamma['_ij'] = delta'_ij'
+	
+	g = tensor'_ab'
+
+	-- how should lowering work?  one way is to use separate variables for betaU and betaL
+	-- lowering/raising with no metric set should throw an error ... or use a default
+	-- circumventing this, explicit lowering should work fine, so long as variables provided are in their defined contra/co-variance:
+	g['_tt'] = -alpha^2 + beta'^i' * beta'^j' * gamma'_ij'
+	g['_it'] = beta'^i' / alpha^2
+	g['_ij'] = gamma'^ij' - beta'^i' * beta'^j' / alpha^2
+
+	printall{['g_ab'] = g}
+	printall{['g^ab'] = g}
+
+	-- stores tensor.metric = g and calculates tensor.metricInv = matrixInverse(g) ... or gauss seidel or whatever 
+	tensor:setMetric(g)
+
+	dg = g'_ab,c'
+	conn = 1/2 * (dg'_abc' + dg'_acb' - dg'_bca')
+	printall{['\\Gamma_abc'] = conn}
+	printall{['\\Gamma^a_bc'] = conn}
+
+	-- or combined:
+	-- conn = 1/2 * (g'_ab,c' + g'_ac,b' - g'_bc,a')
+
+
+--]]
+
 symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.toStringMethod = MathJax
@@ -42,11 +94,12 @@ function assign(cmd)
 	printbr(var .. ' = ' .. tostring(_G[var]))
 end
 
-function printNonZero(expr, args)
+function printNonZero(title, expr, args)
 	for k,v in pairs(args) do
 		expr = expr:gsub('$'..k, v)
+		title = title:gsub('$'..k, v)
 	end
-	exec("if "..expr.." ~= symmath.Constant(0) then printbr('"..expr.." = '.."..expr..") end")
+	exec([[if ]]..expr..[[ ~= symmath.Constant(0) then printbr('\\(]]..title..[[\\) = '..]]..expr..[[) end]])
 end
 
 print(MathJax.header)
@@ -120,18 +173,19 @@ for _,u in ipairs(spatialCoords) do
 	end
 end
 
-
+printbr()
 printbr('metric')
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
-		printNonZero('gLL_$u_$v', {u=u,v=v})
+		printNonZero('g_{$u$v}', 'gLL_$u_$v', {u=u,v=v})
 	end
 end
 
+printbr()
 printbr('inverse')
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
-		printNonZero('gUU_$u_$v', {u=u,v=v})
+		printNonZero('g^{$u$v}', 'gUU_$u_$v', {u=u,v=v})
 	end
 end
 
@@ -147,7 +201,7 @@ for _,u in ipairs(coords) do
 			
 			exec(('gLLL_$u_$v_$w = symmath.simplify(gLLL_$u_$v_$w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
 			
-			printNonZero('gLLL_$u_$v_$w', {u=u,v=v,w=w})
+			printNonZero('g_{$u$v,$w}', 'gLLL_$u_$v_$w', {u=u,v=v,w=w})
 		end
 	end
 end
@@ -157,7 +211,7 @@ for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
 			exec(('christoffelLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero('christoffelLLL_$u_$v_$w', {u=u,v=v,w=w})
+			printNonZero([[\\Gamma_{$u$v$w}]], 'christoffelLLL_$u_$v_$w', {u=u,v=v,w=w})
 		end
 	end
 end
@@ -171,7 +225,7 @@ for _,u in ipairs(coords) do
 				exec(('christoffelULL_$u_$v_$w = christoffelULL_$u_$v_$w + christoffelLLL_$r_$v_$w * gUU_$r_$u'):gsub('$u',u):gsub('$v',v):gsub('$w',w):gsub('$r',r))
 			end
 			exec(('christoffelULL_$u_$v_$w = symmath.simplify(christoffelULL_$u_$v_$w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero('christoffelULL_$u_$v_$w',{u=u,v=v,w=w})
+			printNonZero([[{\\Gamma^$u}_{$v$w}]], 'christoffelULL_$u_$v_$w',{u=u,v=v,w=w})
 		end
 	end
 end
@@ -189,7 +243,7 @@ for _,u in ipairs(coords) do
 			exec(('diff2xU_$u = diff2xU_$u + christoffelULL_$u_$v_$w * diffxU_$v * diffxU_$w'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
 		end
 	end
-	printNonZero('diff2xU_$u',{u=u})
+	printNonZero([[{d^2 x^$u} \\over dt^2]], 'diff2xU_$u',{u=u})
 end
 
 print(MathJax.footer)

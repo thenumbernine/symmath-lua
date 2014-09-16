@@ -25,7 +25,7 @@ Expand.lookupTable = {
 					term.xs[i] = xch:clone()
 					terms:insert(term)
 				end
-				return getmetatable(x)(unpack(terms))
+				return expand(getmetatable(x)(unpack(terms)))
 			
 				--[[
 				local newSelf = getmetatable(x)(unpack(self.xs:filter(function(cx) 

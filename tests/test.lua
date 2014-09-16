@@ -2,7 +2,7 @@
 
     File: test.lua
 
-    Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,16 +23,16 @@
 symmath = require 'symmath'
 require 'symmath.notebook'
 Constant = require 'symmath.Constant'
-simplify = require 'symmath.simplify'
 
---symmath.toStringMethod = require 'symmath.tostring.Verbose'
-symmath.toStringMethod = require 'symmath.tostring.SingleLine'
+symmath.toStringMethod = require 'symmath.tostring.Verbose'
+--symmath.toStringMethod = require 'symmath.tostring.SingleLine'
 
 notebook[[
-=asserteq(Constant(1), simplify(Constant(1)*Constant(1)))
-=asserteq(Constant(1), simplify(Constant(1)/Constant(1)))
-=asserteq(Constant(-1), simplify(-Constant(1)/Constant(1)))
-=asserteq(Constant(1), simplify(Constant(1)/(Constant(1)*Constant(1))))
+-- constant simplificaiton
+=asserteq(Constant(1), (Constant(1)*Constant(1)):simplify())
+=asserteq(Constant(1), (Constant(1)/Constant(1)):simplify())
+=asserteq(Constant(-1), (-Constant(1)/Constant(1)):simplify())
+=asserteq(Constant(1), (Constant(1)/(Constant(1)*Constant(1))):simplify())
 
 x = symmath.Variable('x', nil, true)
 y = symmath.Variable('y', nil, true)
@@ -41,15 +41,22 @@ t = symmath.Variable('t', nil, true)
 -- commutativity
 =asserteq(x+y, y+x)
 =asserteq(x*y, y*x)
-=asserteq(x, symmath.simplify(Constant(1)*x))
-=asserteq(Constant(0), symmath.simplify(Constant(0)*x))
 
--- simplify rationals
-=asserteq(symmath.simplify(x/x), Constant(1))
+-- pruning operations
+=asserteq(x, (Constant(1)*x):simplify())
+=asserteq(Constant(0), (Constant(0)*x):simplify())
+=asserteq(x, (Constant(1)*x):simplify())
+=asserteq((x/x):simplify(), Constant(1))
 
--- differentiation
-expr = simplify(-1 - 2 * x * y^2)
-=expr
-=symmath.diff(expr, t)
-=symmath.simplify(symmath.diff(expr, t))
+=asserteq(x^2, (x*x):simplify())
+
+-- simplify(): div add mul
+=asserteq(((x+1)*y):simplify(), x*y + y)
+=asserteq(((x+1)*(y+1)):simplify(), (x*y + x + y + 1):simplify())
+
+-- expand(): add div mul
+
+-- factor(): mul add div
+
+
 ]]
