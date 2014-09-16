@@ -38,7 +38,7 @@ LaTeX.lookupTable = {
 		if expr.value then
 			s = s .. '|' .. expr.value
 		end
-		return s
+		return '{'..s..'}'
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local Variable = require 'symmath.Variable'

@@ -53,9 +53,9 @@ tensor.assign[[GammaLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLL
 tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
 
 -- now comes the geodesic equation: d^2[x^i]/dt^2 = -conn^i_jk dx^j_dt dx^k/dt
-tensor.assign[[diffxU_$u = symmath.Variable('diffxU_$u', nil, true)]]
+tensor.assign[[diffxU_$u = symmath.Variable('{dx^{$u}}\\over{d\\tau}', nil, true)]]
 tensor.assign[[diff2xU_$u = -GammaULL_$u_$v_$w * diffxU_$u * diffxU_$v]]
 
-printbr(symmath.evaluate(diff2xU_r, {r=1, ['\\phi']=0, diffxU_r=0, diffxU_phi=1}))
-printbr(symmath.evaluate(diff2xU_phi, {r=1, ['\\phi']=0, diffxU_r=0, diffxU_phi=1}))
+printbr(symmath.evaluate(diff2xU_r, {r=1, [phi.name]=0, [diffxU_r.name]=0, [diffxU_phi.name]=1}))
+printbr(symmath.evaluate(diff2xU_phi, {r=1, [phi.name]=0, [diffxU_r.name]=0, [diffxU_phi.name]=1}))
 

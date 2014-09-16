@@ -24,8 +24,7 @@ symmath = require 'symmath'
 require 'symmath.notebook'
 Constant = require 'symmath.Constant'
 
-symmath.toStringMethod = require 'symmath.tostring.Verbose'
---symmath.toStringMethod = require 'symmath.tostring.SingleLine'
+symmath.toStringMethod = require 'symmath.tostring.MathJax'
 
 notebook[[
 -- constant simplificaiton

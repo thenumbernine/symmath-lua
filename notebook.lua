@@ -25,7 +25,7 @@ symmath = require 'symmath'
 
 function asserteq(a,b)
 	if a ~= b then
-		error("\nexpected "..tostring(a).." to equal "..tostring(b))
+		error("expected "..tostring(a).." to equal "..tostring(b))
 	end
 end
 
