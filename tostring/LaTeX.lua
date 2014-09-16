@@ -6,7 +6,13 @@ local LaTeX = class(ToString)
 
 LaTeX.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
-		return tostring(expr.value)
+		local s = tostring(expr.value)
+		local a,b = s:match('([^e]*)e(.*)')
+		if a and b then
+			if b:sub(1,1) == '+' then b = b:sub(2) end
+			return a .. [[\cdot 10^{]]..b..'}'
+		end
+		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
 		return '?'
@@ -22,6 +28,8 @@ LaTeX.lookupTable = {
 			return '{' .. self:wrapStrWithParenthesis(x, expr) .. '}'
 		end):concat(expr:getSepStr())
 	end,
+	-- TODO mulOp if two variables are next to eachother and either has >1 length names then insert a cdot between them
+	--  however don't do this if those >1 length variables are LaTeX strings for single-char greek letters
 	[require 'symmath.divOp'] = function(self, expr)
 		return '{{' .. self:apply(expr.xs[1]) .. '} \\over {' .. self:apply(expr.xs[2]) .. '}}'
 	end,

@@ -56,6 +56,6 @@ tensor.assign[[connectionULL_$u_$v_$w = gUU_$u_$r * connectionLLL_$r_$v_$w]]
 tensor.assign[[diffxU_$u = symmath.Variable('diffxU_$u', nil, true)]]
 tensor.assign[[diff2xU_$u = -connectionULL_$u_$v_$w * diffxU_$u * diffxU_$v]]
 
-print(symmath.evaluate(diff2xU_r, {r=1, phi=0, diffxU_r=0, diffxU_phi=1}))
-print(symmath.evaluate(diff2xU_phi, {r=1, phi=0, diffxU_r=0, diffxU_phi=1}))
+printbr(symmath.evaluate(diff2xU_r, {r=1, phi=0, diffxU_r=0, diffxU_phi=1}))
+printbr(symmath.evaluate(diff2xU_phi, {r=1, phi=0, diffxU_r=0, diffxU_phi=1}))
 

@@ -27,7 +27,7 @@ local MathJax = require 'symmath.tostring.MathJax'
 symmath.toStringMethod = MathJax
 symmath.simplifyConstantPowers  = true
 
-local function println(...)
+local function printbr(...)
 	print(...)
 	print('<br>')
 end
@@ -92,10 +92,12 @@ println('simplify & expand')
 eqns = eqns:map(symmath.simplify)
 eqns:map(function(eqn) println(eqn) end)
 
+--[[
 println('factor derivatives')
 eqns = symmath.factor(eqns, function(eqn)
 	return symmath.factor(eqn, {symmath.diff(q1, x), symmath.diff(q2, x), symmath.diff(q3, x)})
 end)
+--]]
 
 print(MathJax.footer)
 

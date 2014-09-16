@@ -102,8 +102,9 @@ function tensor.exec(expr, vars)
 		errmsg = err .. '\n' .. debug.traceback()
 	end)
 	if errmsg then
-		printbr("error on this command: "..tostring(expr))
-		printbr(errmsg)
+		printbr("error on this command: <pre>"..tostring(expr))
+		print(errmsg)
+		print('</pre>')
 	end
 end
 

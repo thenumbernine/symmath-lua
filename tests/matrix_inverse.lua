@@ -24,16 +24,32 @@
 
 symmath = require 'symmath'
 require 'tensor'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.toStringMethod = MathJax
 
--- ... until tensor incorporates multiline tostring ...
-symmath.toStringMethod = require 'symmath.tostring.SingleLine'
+print(MathJax.header)
+
+local function printbr(...)
+	print(...)
+	print('<br>')
+end
+
+local function simplifyMatrix(a)
+	a = a:clone()
+	for i=1,a.dim[1] do
+		for j=1,a.dim[2] do
+			a[i][j] = symmath.simplify(a[i][j])
+		end
+	end
+	return a
+end
 
 local function inverse(A)
 	assert(A.dim[1] == A.dim[2])
 	local n = A.dim[1]
 
 	A = A:clone()
-	print('A',A)
+	printbr('A = '..A)
 	
 	-- assumes A is a rank-2 tensor
 	local AInv = tensor.ident(2, n)
@@ -49,9 +65,9 @@ local function inverse(A)
 						A[j][k], A[i][k] = A[i][k], A[j][k]
 						AInv[j][k], AInv[i][k] = AInv[i][k], AInv[j][k]
 					end
-					A = symmath.simplify(A)
-					AInv = symmath.simplify(AInv)
-					print('pivot rows '..i..' and '..j..' A='..A..' AInv='..AInv)
+					A = simplifyMatrix(A)
+					AInv = simplifyMatrix(AInv)
+					printbr('pivot rows '..i..' and '..j..' A='..A..' AInv='..AInv)
 					found = true
 					break
 				end
@@ -68,9 +84,9 @@ local function inverse(A)
 				A[i][j] = A[i][j] / s
 				AInv[i][j] = AInv[i][j] / s
 			end
-			A = symmath.simplify(A)
-			AInv = symmath.simplify(AInv)
-			print('rescale row '..i..' A='..A..' AInv='..AInv)
+			A = simplifyMatrix(A)
+			AInv = simplifyMatrix(AInv)
+			printbr('rescale row '..i..' A='..A..' AInv='..AInv)
 		end
 		-- eliminate columns apart from diagonal
 		for j=1,n do
@@ -81,13 +97,16 @@ local function inverse(A)
 						A[j][k] = A[j][k] - s * A[i][k]
 						AInv[j][k] = AInv[j][k] - s * AInv[i][k]
 					end
-					A = symmath.simplify(A)
-					AInv = symmath.simplify(AInv)
-					print('removed entry '..j..','..i..' A='..A..' AInv='..AInv)
+					A = simplifyMatrix(A)
+					AInv = simplifyMatrix(AInv)
+					printbr('removed entry '..j..','..i..' A='..A..' AInv='..AInv)
 				end
 			end
 		end
 	end
+
+	printbr('A = '..A)
+	printbr('AInv = '..AInv)
 end
 
 
@@ -98,8 +117,8 @@ local c = symmath.Variable('c')
 local d = symmath.Variable('d')
 local m = tensor.Tensor(2,2, {{a,b},{c,d}})
 
-print('m = '..m)
-print('m[1,2] = '..m[1][2])
+printbr('m = '..m)
+printbr('m[1,2] = '..m[1][2])
 local mInv = inverse(m)
 --]]
 

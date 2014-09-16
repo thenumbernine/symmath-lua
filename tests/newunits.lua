@@ -1,5 +1,14 @@
 local symmath = require 'symmath'
 symmath.simplifyConstantPowers = true
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.toStringMethod = MathJax
+
+function printbr(...)
+	print(...)
+	print('<br>')
+end
+
+print(MathJax.header)
 
 local c = symmath.Variable('c', nil, true)
 local m = symmath.Variable('m', nil, true)
@@ -7,27 +16,27 @@ local s = symmath.Variable('s', nil, true)
 local G = symmath.Variable('G', nil, true)
 local kg = symmath.Variable('kg')
 
-local c_from_m_s = (c):equals(299792458 * m / s)
-print(c_from_m_s)
+local c_from_m_s = (c):equals(299792458 * (m / s))
+printbr(c_from_m_s)
 
 -- c = 1, solve for s
 --local s_from_m = c_from_m_s:replace(c, 1):solve(s)
 local s_from_m = (c_from_m_s:replace(c, 1) * s):simplify()
-print(s_from_m)
+printbr(s_from_m)
 
 local G_from_m_s_kg = G:equals(6.67384e-11 * m^3 / (kg * s^2))
-print(G_from_m_s_kg)
+printbr(G_from_m_s_kg)
 
 local kg_from_m = (G_from_m_s_kg:replace(G, 1):subst(s_from_m) * kg):simplify()
-print(kg_from_m)
+printbr(kg_from_m)
 
 -- local m_from_kg = kg_from_m:solve(m)
 local m_from_kg = (kg * (1 / (kg_from_m / m))):simplify()
-print(m_from_kg)
+printbr(m_from_kg)
 
 --local s_from_kg = s_from_m:subst(kg_from_m:solve(kg))
 local s_from_kg = s_from_m:subst(m_from_kg):simplify()
-print(s_from_kg)
+printbr(s_from_kg)
 
 --[[
 

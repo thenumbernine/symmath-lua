@@ -26,10 +26,9 @@ local MathJax = require 'symmath.tostring.MathJax'
 symmath.toStringMethod = MathJax
 symmath.simplifyDivisionByPower = true
 
-local oldPrint = print
-local function print(...)
-	oldPrint(...)
-	oldPrint('<br>')
+local function printbr(...)
+	print(...)
+	print('<br>')
 end
 
 -- header 
@@ -56,7 +55,7 @@ end
 do
 	local isGreek = ('rho gamma mu'):split('%s+'):map(function(v) return true,v end)
 	local varNames = 'x y z t rho vx vy vz p P Z E Bx By Bz gamma mu c cs cf ca'
-	print('variables:', varNames)
+	printbr('variables:', varNames)
 	for _,var in ipairs(varNames:split('%s+')) do
 		local varname = var
 		-- LaTeX greek symbols
@@ -78,29 +77,29 @@ local vSq = sum(function(i) return vs[i]^2 end, 1, 3)
 
 -- relations
 
-print('relations')
+printbr('relations')
 
 local Z_from_E_B_rho_mu = Z:equals(E + 1 / (2 * rho * mu) * BSq)
-print(Z_from_E_B_rho_mu)
+printbr(Z_from_E_B_rho_mu)
 
 local P_from_p_B_mu = P:equals(p + 1 / (2 * mu) * BSq)
-print(P_from_p_B_mu)
+printbr(P_from_p_B_mu)
 
 local p_from_E_rho_v_gamma = p:equals((gamma - 1) * rho * (E - 1/symmath.Constant(2) * vSq))
-print(p_from_E_rho_v_gamma)
+printbr(p_from_E_rho_v_gamma)
 
 local cSq_from_p_rho_gamma = (c^2):equals(gamma * p / rho)
-print(cSq_from_p_rho_gamma)
+printbr(cSq_from_p_rho_gamma)
 
 -- equations
 
 local continuityEqn = (symmath.diff(rho, t) + sum(function(j) 
 	return symmath.diff(rho*vs[j], xs[j])
-end,1,3):equals(0)
+end,1,3)):equals(0)
 
-print()
-print('continuity')
-print(continuityEqn)
+printbr()
+printbr('continuity')
+printbr(continuityEqn)
 
 local momentumEqns = range(3):map(function(i)
 	return (symmath.diff(rho * vs[i], t) + sum(function(j)
@@ -111,9 +110,9 @@ local momentumEqns = range(3):map(function(i)
 			-1/mu * Bs[i] * divB)
 end)
 
-print()
-print('momentum')
-momentumEqns:map(function(eqn) print(eqn) end)
+printbr()
+printbr('momentum')
+momentumEqns:map(function(eqn) printbr(eqn) end)
 
 local magneticFieldEqns = range(3):map(function(i)
 	return (symmath.diff(Bs[i], t) + sum(function(j)
@@ -122,9 +121,9 @@ local magneticFieldEqns = range(3):map(function(i)
 		):equals(-vs[i] * divB)
 end)
 
-print()
-print('magnetic field')
-magneticFieldEqns:map(function(eqn) print(eqn) end)
+printbr()
+printbr('magnetic field')
+magneticFieldEqns:map(function(eqn) printbr(eqn) end)
 
 local energyTotalEqn = 
 	(symmath.diff(rho * Z, t) + sum(function(j)
@@ -132,9 +131,9 @@ local energyTotalEqn =
 	end, 1, 3)
 	):equals(-1/mu * vDotB * divB)
 
-print()
-print('energy total')
-print(energyTotalEqn)
+printbr()
+printbr('energy total')
+printbr(energyTotalEqn)
 
 -- expand system
 
@@ -147,9 +146,9 @@ local allEqns = table()
 		return symmath.simplify(eqn)
 	end)
 
-print()
-print('all')
-allEqns:map(function(eqn) print(eqn) end)
+printbr()
+printbr('all')
+allEqns:map(function(eqn) printbr(eqn) end)
 
 -- conservative variables
 
