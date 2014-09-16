@@ -86,9 +86,13 @@ function tensor.lookupVarsForIndexes(names, indexes)
 	return vars
 end
 
+local function filteredString(v)
+	return (tostring(v):gsub('[^a-zA-Z0-9_]', ''))
+end
+
 function tensor.varsub(expr, vars)
 	for k,v in pairs(vars) do
-		expr = expr:gsub('$'..k, tostring(v))
+		expr = expr:gsub('$'..k, filteredString(v))
 	end
 	return expr
 end
@@ -179,7 +183,7 @@ function tensor.printNonZero(expr, vars)
 			end
 			varstr = varstr .. '{'
 		end
-		varstr = varstr .. parts[i+1]
+		varstr = varstr .. parts[i+1] .. ' '
 	end
 	if lastDir then
 		varstr = varstr .. '}'
