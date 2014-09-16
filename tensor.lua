@@ -30,17 +30,15 @@ for all of that, see my 'tensor' package (rather than this, which is 'symmath.te
 
 local symmath = require 'symmath'
 
--- tensor isn't too compatible with the MathJax string output (or any other except SingleLine) since it appends tostring'd variables, and MathJax has its \( \) around every tostring() output
---  TODO make tensor more flexible 
+-- use tostring.LaTeX to avoid the \( \) around equations, then place them ourselves
 symmath.toStringMethod = require 'symmath.tostring.LaTeX'
 
 local MathJax = require 'symmath.tostring.MathJax'
 print(MathJax.header)
 
-local oldPrint = print
-local function print(...)
-	oldPrint(...)
-	oldPrint('<br>')
+function printbr(...)
+	print(...)
+	print('<br>')
 end
 
 local tensor = {}
@@ -104,8 +102,8 @@ function tensor.exec(expr, vars)
 		errmsg = err .. '\n' .. debug.traceback()
 	end)
 	if errmsg then
-		print("error on this command: "..tostring(expr))
-		print(errmsg)
+		printbr("error on this command: "..tostring(expr))
+		printbr(errmsg)
 	end
 end
 
@@ -134,10 +132,59 @@ function tensor.rank(names)
 	end)
 end
 
+local isGreek = ([[
+alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu ksi omicron pi rho sigma tau upsilon phi chi psi omega
+]]):trim():split('%s+'):map(function(letter,index) return true, letter end)
 function tensor.printNonZero(expr, vars)
 	expr = tensor.varsub(expr, vars)
 	local exprstr = tostring(expr)
-	tensor.exec("if "..exprstr.." ~= symmath.Constant(0) then print('\\\\("..exprstr.." = '..tostring("..exprstr..")..'\\\\)<br>') end")
+	local varstr = exprstr
+	local parts = varstr:split('_')
+	local numIndexes = #parts-1
+	-- if we have lower/upper indicators at the end of our variable name
+	local indexDirs = parts[1]:match(  '('..('[LU]'):rep(numIndexes) .. ')$' )
+	if indexDirs then
+		parts[1] = parts[1]:sub(1, #parts[1]-numIndexes)
+	end
+	parts = parts:map(function(part)
+		-- \\ before greek letters 
+		if isGreek[part:lower()] then 
+			part = [[\\]] .. part
+		end
+		return part
+	end)
+	
+	varstr = parts[1]
+	local lastDir
+	for i=1,numIndexes do
+		local indexDir
+		if indexDirs then 
+			indexDir = indexDirs:sub(i,i)
+		else
+			indexDir = 'L'
+		end
+		if indexDir ~= lastDir then
+			if lastDir then
+				varstr = varstr .. '}'
+			end
+			varstr = '{' .. varstr ..'}'
+			lastDir = indexDir
+			if indexDir == 'L' then
+				varstr = varstr .. '_'
+			elseif indexDir == 'U' then
+				varstr = varstr .. '^'
+			else
+				error("got unknown index lower/upper")
+			end
+			varstr = varstr .. '{'
+		end
+		varstr = varstr .. parts[i+1]
+	end
+	if lastDir then
+		varstr = varstr .. '}'
+	end
+
+	tensor.exec("if "..exprstr.." ~= symmath.Constant(0) then printbr('\\\\("..varstr.." = '..tostring("..exprstr..")..'\\\\)') end")
 end
 
 -- get a list of var names
@@ -184,10 +231,10 @@ function tensor.assign(expr)
 		end
 		
 		local replvars = tensor.getReplVars(lhsVarNames, lhsVars)
-		tensor.exec(tensor.varsub(lhs,replvars)..' = symmath.simplify('..sumexprs:concat(' + ')..')')
+		tensor.exec(tensor.varsub(lhs, replvars)..' = symmath.simplify('..sumexprs:concat(' + ')..')')
 		tensor.printNonZero(lhs, replvars)
 	end
-	print()
+	printbr()
 end
 
 return tensor

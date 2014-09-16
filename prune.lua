@@ -24,26 +24,32 @@ Prune.lookupTable = {
 
 	[Derivative] = function(prune, expr)
 
+		-- d/dx c = 0
 		if expr.xs[1]:isa(Constant) then
 			return Constant(0)
 		end
 
+		-- d/dx d/dy = d/dxy
 		if expr.xs[1]:isa(Derivative) then
 			return prune(Derivative(expr.xs[1].xs[1], unpack(
 				table.append({unpack(expr.xs, 2)}, {unpack(expr.xs[1].xs, 2)})
 			)))
 		end
-	
-		if not (expr.xs[1]:isa(Variable) and expr.xs[1].deferDiff) then
+
+		-- apply differentiation
+		-- don't do so if it's a diff of a variable that requests not to
+		if not (expr.xs[1]:isa(Variable) 
+		and expr.xs[1].deferDiff) 
+		then
 			-- ... and if we're not lazy-evaluating the derivative of this with respect to other variables ...
 			if not expr.xs[1].diff then
 				error("failed to differentiate "..tostring(expr.xs[1]).." with type "..type(expr.xs[1]))
 			end
 			return prune(expr.xs[1]:diff(unpack(expr.xs, 2)))
 		end
-		
+	
+		-- dx/dx = 1
 		if expr.xs[1]:isa(Variable) then
-			-- deferred diff ... at least optimize out the dx/dx = 1
 			if #expr.xs == 2 
 			and expr.xs[1] == expr.xs[2]
 			then
@@ -53,6 +59,9 @@ Prune.lookupTable = {
 	end,
 	
 	[unmOp] = function(prune, expr)
+		if expr.xs[1]:isa(unmOp) then
+			return prune(expr.xs[1].xs[1]:clone())
+		end
 		return prune(Constant(-1) * expr.xs[1])
 	end,
 	
@@ -63,15 +72,18 @@ Prune.lookupTable = {
 		if #expr.xs == 1 then return expr.xs[1] end
 
 		-- flatten additions
+		-- (x + y) + z => x + y + z
 		for i=#expr.xs,1,-1 do
 			local ch = expr.xs[i]
 			if ch:isa(addOp) then
+				expr = expr:clone()
 				-- this looks like a job for splice ...
 				expr.xs:remove(i)
 				for j=#ch.xs,1,-1 do
 					local chch = assert(ch.xs[j])
 					expr.xs:insert(i, chch)
 				end
+				return prune(expr)
 			end
 		end
 		
@@ -303,6 +315,7 @@ Prune.lookupTable = {
 		end
 		
 		-- move unary minuses up
+		--[[ pruning unmOp immediately
 		do
 			local unmOpCount = 0
 			for i=1,#expr.xs do
@@ -318,6 +331,7 @@ Prune.lookupTable = {
 				return prune(expr)	-- got an even number?  remove it and simplify this
 			end
 		end
+		--]]
 
 		-- push all Constants to the lhs, sum as we go
 		local cval = 1
@@ -337,10 +351,7 @@ Prune.lookupTable = {
 		else
 			if #expr.xs == 1 then return prune(expr.xs[1]) end
 		end
-		
-		-- one node left?  use it itexpr
-		if #expr.xs == 1 then return expr.xs[1] end
-		
+
 		-- [[ a^m * a^n => a^(m + n)
 		do
 			local modified = false
@@ -415,23 +426,6 @@ Prune.lookupTable = {
 		if symmath.simplifyDivisionByPower then
 			return prune(mulOp(expr.xs[1], powOp(expr.xs[2], Constant(-1))))
 		end
-
-		-- move unary minuses up
-		do
-			local unmOpCount = 0
-			for i=1,#expr.xs do
-				local ch = expr.xs[i]
-				if ch:isa(unmOp) then
-					unmOpCount = unmOpCount + 1
-					expr.xs[i] = ch.xs[1]
-				end
-			end
-			if unmOpCount % 2 == 1 then
-				return prune(-expr)
-			elseif unmOpCount ~= 0 then
-				return prune(expr)
-			end
-		end
 		
 		-- x / 0 => Invalid
 		if expr.xs[2] == Constant(0) then
@@ -454,6 +448,11 @@ Prune.lookupTable = {
 		-- x / 1 => x
 		if expr.xs[2] == Constant(1) then
 			return expr.xs[1]
+		end
+
+		-- x / -1 => -1 * x
+		if expr.xs[2] == Constant(-1) then
+			return Constant(-1) * expr.xs[1]
 		end
 		
 		-- 0 / x => 0

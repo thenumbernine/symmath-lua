@@ -6,7 +6,7 @@ local LaTeX = class(ToString)
 
 LaTeX.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
-		return '{' .. tostring(expr.value)  .. '}'
+		return tostring(expr.value)
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
 		return '?'
@@ -15,12 +15,12 @@ LaTeX.lookupTable = {
 		return expr.name .. '\\left (' .. expr.xs:map(function(x) return '{' .. self:apply(x) .. '}' end):concat(',') .. '\\right )'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
-		return '{-{'..self:wrapStrWithParenthesis(expr.xs[1], expr)..'}}'
+		return '-{'..self:wrapStrWithParenthesis(expr.xs[1], expr)..'}'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
-		return '{'..expr.xs:map(function(x) 
+		return expr.xs:map(function(x) 
 			return '{' .. self:wrapStrWithParenthesis(x, expr) .. '}'
-		end):concat(expr:getSepStr())..'}'
+		end):concat(expr:getSepStr())
 	end,
 	[require 'symmath.divOp'] = function(self, expr)
 		return '{{' .. self:apply(expr.xs[1]) .. '} \\over {' .. self:apply(expr.xs[2]) .. '}}'

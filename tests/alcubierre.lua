@@ -24,9 +24,17 @@
 
 ideal code:
 	
-	-- provide default, provide specific indexes
-	coords('txyz', {ijk = 'xyz'})
-
+	-- provide default, provide specific indexes.
+	-- for assignment strings are fine,
+	-- but for differentiation the variables have to be referenced.
+	-- strings values is fine if the variables are globals
+	--tensor.coords{'txyz', ijk = 'xyz'}
+	-- but if they're not then you'll have to to use a table
+	tensor.coords{{t,x,y,z}, ijk={x,y,z}}
+	-- and then there's the t=0/t=4 issue.
+	-- will the fact that non-i's x is the 2nd and i's x is the 1st element make a difference?
+	-- align coords by associated variables. let the user reference by g'_tt' rather than g[1][1] or g[4][4] or whichever implementation is used.
+	
 	alpha = 1
 
 	-- "dont differentiate / not a constant" is the default?
@@ -39,12 +47,12 @@ ideal code:
 
 	-- for tensor assignment I'd like to use __call with implicit string parameter 
 	-- but the returned object would be assigned with Lua's un-overloadable assignment operation 
-	--beta'^0' = -v*f	-- (ideal but not possible)
+	--beta'^0' = -v*f	-- (ideal but not possible as a setter)
 	-- to work around this __newindex could be overloaded
 	beta['^0'] = -v*f
 
 	gamma = tensor'_ij'
-	gamma['_ij'] = delta'_ij'
+	gamma['_ij'] = tensor.delta'_ij'
 	
 	g = tensor'_ab'
 
@@ -55,21 +63,29 @@ ideal code:
 	g['_it'] = beta'^i' / alpha^2
 	g['_ij'] = gamma'^ij' - beta'^i' * beta'^j' / alpha^2
 
-	printall{['g_ab'] = g}
-	printall{['g^ab'] = g}
+	tensor.print{['g_ab'] = g}
+	tensor.print{['g^ab'] = g}
 
-	-- stores tensor.metric = g and calculates tensor.metricInv = matrixInverse(g) ... or gauss seidel or whatever 
-	tensor:setMetric(g)
+	-- stores g as the metric and calculates tensor.metricInv = matrixInverse(g) ... or gauss seidel or whatever 
+	tensor.metric(g)
 
 	dg = g'_ab,c'
+	tensor.print(['g_ab,c'] = dg)
+	
 	conn = 1/2 * (dg'_abc' + dg'_acb' - dg'_bca')
-	printall{['\\Gamma_abc'] = conn}
-	printall{['\\Gamma^a_bc'] = conn}
+	tensor.print{['\\Gamma_abc'] = conn}
+	tensor.print{['\\Gamma^a_bc'] = conn}
 
 	-- or combined:
 	-- conn = 1/2 * (g'_ab,c' + g'_ac,b' - g'_bc,a')
 
-
+what has to be done to get there?
+- tensor library needs to allow storage in either contra- or co-variant form
+	(right now it only does one and converts to the other immediately)
+- tensor library needs to use __newindex for its assignments, then look at variations between contra- and co- indices to see what to convert 
+	(right now it uses call implicit string params to convert '_ij' to a 'indexed tensor' object, then another '' to collapse it back to a tensor ...
+- tensor needs to use an inverse algorithm (gauss-jordan? somethign that works for symmath as well) for calculating the metric inverse
+- tensor needs to allow indicies to be associated with lists of variables.  to boot, allow index groups to be associated with unique metrics as well.
 --]]
 
 symmath = require 'symmath'
@@ -83,15 +99,6 @@ end
 function printbr(...)
 	print(...)
 	print('<br>')
-end
-
-function assign(cmd)
-	local var, expr = cmd:match('^(.-)=(.-)$')
-	assert(var, "couldn't pick apart "..cmd)
-	var = var:trim()
-	expr = expr:trim()
-	exec(var .. '=' .. expr)
-	printbr(var .. ' = ' .. tostring(_G[var]))
 end
 
 function printNonZero(title, expr, args)
@@ -154,7 +161,7 @@ for _,u in ipairs(spatialCoords) do
 end
 
 	-- start with zero
-assign('gLL_t_t = symmath.simplify(-alpha * alpha + betaSq)')
+exec('gLL_t_t = symmath.simplify(-alpha * alpha + betaSq)')
 for _,u in ipairs(spatialCoords) do
 	exec(('gLL_$u_t = symmath.simplify(betaL_$u)'):gsub('$u',u))
 	exec(('gLL_t_$u = symmath.simplify(betaL_$u)'):gsub('$u',u))
@@ -164,7 +171,7 @@ for _,u in ipairs(spatialCoords) do
 end
 	
 -- metric inverse
-assign('gUU_t_t = symmath.simplify(-1/(alpha * alpha))')
+exec('gUU_t_t = symmath.simplify(-1/(alpha * alpha))')
 for _,u in ipairs(spatialCoords) do
 	exec(('gUU_$u_t = symmath.simplify(betaU_$u / (alpha * alpha))'):gsub('$u',u))
 	exec(('gUU_t_$u = symmath.simplify(betaU_$u / (alpha * alpha))'):gsub('$u',u))
@@ -173,7 +180,6 @@ for _,u in ipairs(spatialCoords) do
 	end
 end
 
-printbr()
 printbr('metric')
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
@@ -230,11 +236,13 @@ for _,u in ipairs(coords) do
 	end
 end
 
+printbr()
+printbr('geodesic')
 --[[
 x''^u = -G^u_vw x'^v x'^w
 --]]
 for _,u in ipairs(coords) do
-	exec(([[diffxU_$u = symmath.Variable('diffxU_$u',nil,true)]]):gsub('$u',u))
+	exec(([[diffxU_$u = symmath.Variable('{d x^$u}\\over {d\\tau}',nil,true)]]):gsub('$u',u))
 end
 for _,u in ipairs(coords) do
 	exec(('diff2xU_$u = 0'):gsub('$u',u))
@@ -243,7 +251,8 @@ for _,u in ipairs(coords) do
 			exec(('diff2xU_$u = diff2xU_$u + christoffelULL_$u_$v_$w * diffxU_$v * diffxU_$w'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
 		end
 	end
-	printNonZero([[{d^2 x^$u} \\over dt^2]], 'diff2xU_$u',{u=u})
+	exec(([[diff2xU_$u = symmath.simplify(diff2xU_$u)]]):gsub('$u',u))
+	printNonZero([[{d^2 x^$u} \\over {d\\tau^2}]], 'diff2xU_$u',{u=u})
 end
 
 print(MathJax.footer)

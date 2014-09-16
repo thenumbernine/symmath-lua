@@ -26,8 +26,8 @@ local tensor = require 'symmath.tensor'
 
 --this is a halfway step between pure symmath code and symmath+tensor code
 
-Phi = symmath.Variable('Phi', nil, true)
-rho = symmath.Variable('rho', nil, true)
+Phi = symmath.Variable('\\Phi', nil, true)
+rho = symmath.Variable('\\rho', nil, true)
 P = symmath.Variable('P', nil, true)
 t = symmath.Variable('t', nil, true)
 x = symmath.Variable('x', nil, true)
@@ -48,27 +48,27 @@ tensor.assign[[gLL_$u_$v = symmath.simplify(eta_$u_$v - delta_$u_$v * symmath.Co
 -- assume diagonal matrix
 tensor.assign[[gUU_$u_$v = symmath.simplify(cond($u==$v, 1/gLL_$u_$v, symmath.Constant(0)))]]
 tensor.assign[[gLLL_$u_$v_$w = symmath.simplify(symmath.diff(gLL_$u_$v, $w))]]
-tensor.assign[[connectionLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))]]
-tensor.assign[[connectionULL_$u_$v_$w = gUU_$u_$r * connectionLLL_$r_$v_$w]]
-print('let Phi ~ 0, but keep dPhi')
+tensor.assign[[GammaLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))]]
+tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
+printbr([[let \(\Phi\) ~ 0, but keep \(d\Phi\)]])
 tensor.assign[[
-	connectionULL_$u_$v_$w = symmath.replace(
-		connectionULL_$u_$v_$w, Phi, symmath.Constant(0), function(v) return v:isa(symmath.Derivative) end
+	GammaULL_$u_$v_$w = symmath.replace(
+		GammaULL_$u_$v_$w, Phi, symmath.Constant(0), function(v) return v:isa(symmath.Derivative) end
 	)
 ]]
 
-tensor.assign[[uU_$u = symmath.Variable('uU_$u', nil, true)]]
-tensor.assign[[vU_$u = cond($u==t, symmath.Constant(1), symmath.Variable('vU_$u', nil, true))]]
-print('matter stress-energy tensor')
+tensor.assign[[uU_$u = symmath.Variable('u^$u', nil, true)]]
+tensor.assign[[vU_$u = cond($u==t, symmath.Constant(1), symmath.Variable('v^$u', nil, true))]]
+printbr('matter stress-energy tensor')
 tensor.assign[[TUU_$u_$v = (rho + P) * uU_$u * uU_$v]]
 
-print('low velocity relativistic approximation')
+printbr('low velocity relativistic approximation')
 for vars in tensor.rank{'u','v','w'} do
 	local u,v,w = unpack(vars)
 	tensor.exec([[TUU_$u_$v = symmath.replace(TUU_$u_$v, uU_$w, vU_$w)]],{u=u,v=v,w=w})
 end
 tensor.assign[[TUU_$u_$v = TUU_$u_$v]]
 
-print('matter constraint')
-tensor.assign[[constraint_$u = symmath.simplify(symmath.diff(TUU_$u_$v, $v) + connectionULL_$u_$a_$v * TUU_$a_$v + connectionULL_$v_$a_$v * TUU_$u_$a)]]
+printbr('matter constraint')
+tensor.assign[[C_$u = symmath.simplify(symmath.diff(TUU_$u_$v, $v) + GammaULL_$u_$a_$v * TUU_$a_$v + GammaULL_$v_$a_$v * TUU_$u_$a)]]
 

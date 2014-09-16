@@ -8,15 +8,17 @@ return function(x, ...)
 	local factor = require 'symmath.factor'
 	local tidy = require 'symmath.tidy'
 	local lastx
-	for iter=1,10 do	
+	local i = 1
+	repeat
 		lastx = x
 		x = expand(x, ...)
 		x = prune(x, ...)
 		--x = factor(x)
 		--x = prune(x)
-		do break end -- calling expand() again after this breaks things ...
-		--if x == lastx then break end
-	end
+		--do break end -- calling expand() again after this breaks things ...
+		i = i + 1
+	until i == 10 or x == lastx
+	if i == 10 then error('simplification loop!') end
 	x = tidy(x, ...)
 	return x
 end
