@@ -1,6 +1,6 @@
 require 'ext'
 
-local Expression = require 'symmath.expression'
+local Expression = require 'symmath.Expression'
 
 local Constant = class(Expression)
 

@@ -1,5 +1,5 @@
 require 'ext'
-local Function = require 'symmath.function'
+local Function = require 'symmath.Function'
 local exp = class(Function)
 exp.name = 'exp'
 exp.func = math.exp

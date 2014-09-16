@@ -1,6 +1,6 @@
 require 'ext'
-local Function = require 'symmath.function'
-local Constant = require 'symmath.constant'
+local Function = require 'symmath.Function'
+local Constant = require 'symmath.Constant'
 local sqrt = class(Function)
 sqrt.name = 'sqrt'
 sqrt.func = math.sqrt

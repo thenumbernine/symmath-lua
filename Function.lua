@@ -1,7 +1,7 @@
 require 'ext'
 
-local Expression = require 'symmath.expression'
-local Constant = require 'symmath.constant'
+local Expression = require 'symmath.Expression'
+local Constant = require 'symmath.Constant'
 
 local Function = class(Expression)
 Function.precedence = 10	-- high since it will always show parenthesis
