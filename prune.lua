@@ -238,6 +238,16 @@ Prune.lookupTable = {
 			return prune(expr / denom)
 		end
 		--]]
+		-- [[ divs: c + a/b => (c * b + a) / b
+		for i,x in ipairs(expr.xs) do
+			if x:isa(divOp) then
+				assert(#x.xs == 2)
+				local a,b = unpack(x.xs)
+				expr.xs:remove(i)
+				return prune((expr * b + a) / b)
+			end
+		end
+		--]]
 		
 		-- trig identities
 
