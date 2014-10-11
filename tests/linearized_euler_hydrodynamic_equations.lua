@@ -61,7 +61,7 @@ local E = rho * e								-- total energy
 print(MathJax.header)
 
 -- ...equal zero
-println('original equations:')
+printbr('original equations:')
 local diff = symmath.diff
 local eqns = table{
 	symmath.equals(diff(rho    , t) + diff(rho * u        , x) + diff(rho * v        , y) + diff(rho * w        , z), 0),
@@ -74,9 +74,9 @@ local eqns = table{
 eqns = eqns:map(function(eqn) 
 	return symmath.simplify(eqn)--, {exclude={symmath.Derivative}}) 
 end)
-eqns:map(function(eqn) println(eqn) end)
+eqns:map(function(eqn) printbr(eqn) end)
 
-println('substituting state variables:')
+printbr('substituting state variables:')
 eqns = eqns:map(function(eqn)
 	eqn = symmath.replace(eqn, rho, q1)
 	eqn = symmath.replace(eqn, u, q2 / q1)
@@ -86,14 +86,14 @@ eqns = eqns:map(function(eqn)
 	--eqn = symmath.simplify(eqn)
 	return eqn
 end)
-eqns:map(function(eqn) println(eqn) end)
+eqns:map(function(eqn) printbr(eqn) end)
 
-println('simplify & expand')
+printbr('simplify & expand')
 eqns = eqns:map(symmath.simplify)
-eqns:map(function(eqn) println(eqn) end)
+eqns:map(function(eqn) printbr(eqn) end)
 
 --[[
-println('factor derivatives')
+printbr('factor derivatives')
 eqns = symmath.factor(eqns, function(eqn)
 	return symmath.factor(eqn, {symmath.diff(q1, x), symmath.diff(q2, x), symmath.diff(q3, x)})
 end)
