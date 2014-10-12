@@ -273,45 +273,91 @@ local original = expr:clone()
 			local cos = require 'symmath.cos'
 			local sin = require 'symmath.sin'
 			local Function = require 'symmath.Function'
-			local cosAngle, sinAngle
-			local cosIndex, sinIndex
-			for i=1,#expr.xs do
-				local x = expr.xs[i]
-				
-				if x:isa(powOp)
-				and x.xs[1]:isa(Function)
-				and x.xs[2] == Constant(2)
-				then
-					if x.xs[1]:isa(cos) then
-						if sinAngle then
-							if sinAngle == x.xs[1].xs[1] then
-								-- then remove sine and cosine and replace with a '1' and set modified
-								expr.xs:remove(i)	-- remove largest index first
-								expr.xs[sinIndex] = Constant(1)
+		
+			local function checkAddOp(ch)
+				local cosAngle, sinAngle
+				local cosIndex, sinIndex
+				for i,x in ipairs(ch.xs) do
+					
+					if x:isa(powOp)
+					and x.xs[1]:isa(Function)
+					and x.xs[2] == Constant(2)
+					then
+						if x.xs[1]:isa(cos) then
+							if sinAngle then
+								if sinAngle == x.xs[1].xs[1] then
+									-- then remove sine and cosine and replace with a '1' and set modified
+									expr.xs:remove(i)	-- remove largest index first
+									expr.xs[sinIndex] = Constant(1)
 --print('cos^2+sin^2=1')
-								return prune(expr)
+									return expr
+								end
+							else
+								cosIndex = i
+								cosAngle = x.xs[1].xs[1]
 							end
-						else
-							cosIndex = i
-							cosAngle = x.xs[1].xs[1]
-						end
-					elseif x.xs[1]:isa(sin) then
-						if cosAngle then
-							if cosAngle == x.xs[1].xs[1] then
-								expr.xs:remove(i)
-								expr.xs[cosIndex] = Constant(1)
+						elseif x.xs[1]:isa(sin) then
+							if cosAngle then
+								if cosAngle == x.xs[1].xs[1] then
+									expr.xs:remove(i)
+									expr.xs[cosIndex] = Constant(1)
 --print('cos^2+sin^2=1')
-								return prune(expr)
+									return expr
+								end
+							else
+								sinIndex = i
+								sinAngle = x.xs[1].xs[1]
 							end
-						else
-							sinIndex = i
-							sinAngle = x.xs[1].xs[1]
 						end
 					end
 				end
 			end
-		end
 		
+			local cos = require 'symmath.cos'
+			local sin = require 'symmath.sin'
+			local Function = require 'symmath.Function'
+			
+			-- using factor outright causes simplification loops ...
+			-- how about only using it if we find a cos or a sin in our tree?
+			local foundTrig = false
+			symmath.map(expr, function(node)
+				if node:isa(cos) or node:isa(sin) then
+					foundTrig = true
+				end
+			end)
+
+			if foundTrig then
+--print('attempting trig simplify on',expr)
+				local result = checkAddOp(expr)
+--print('...got',result)
+				if result then 
+--print('...returning',original,'=>',prune(result))
+					return prune(result) 
+				end
+
+				-- this is factoring ... and pruning ... 
+				-- such that it is recursively calling this function for its simplification
+				local f = (require 'symmath.factor')(expr)
+				if f then return f end
+			end	
+
+--[[
+			if f:isa(mulOp) then	-- should always be a mulOp unless there was nothing to factor
+				for _,ch in ipairs(f.xs) do
+					if ch:isa(addOp) then
+print('attempting trig simplify on factor term',ch)
+						local result = checkAddOp(ch)
+print('...got',result)
+						if result then 
+print('...returning',original,'=>',prune(result))
+							return prune(result) 
+						end
+					end
+				end
+			end
+--]]
+		end
+
 		return expr
 	end,
 	

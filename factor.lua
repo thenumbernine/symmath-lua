@@ -1,5 +1,7 @@
 local addOp = require 'symmath.addOp'
+local mulOp = require 'symmath.mulOp'
 local powOp = require 'symmath.powOp'
+local Constant = require 'symmath.Constant'
 local Visitor = require 'symmath.Visitor'
 local Factor = class(Visitor)
 
@@ -57,7 +59,7 @@ Factor.lookupTable = {
 					return prod.term == prodFind.term
 				end)
 				if i then
-	--print('looking for prune, found '..listToPrune[i].term)
+--print('looking for prune, found '..listToPrune[i].term)
 					local prodPrune = listToPrune[i]
 					prodPrune.power = prune(prodPrune.power - prodFind.power)
 					if prodPrune.power:isa(Constant)
@@ -86,29 +88,29 @@ Factor.lookupTable = {
 		-- 2) find smallest set of common terms
 		
 		local minProds = prodsList[1]:map(function(prod) return prod.term end)
-	--print('first min prods',minProds:map(tostring):concat(', '))
+--print('first min prods',minProds:map(tostring):concat(', '))
 		for i=2,#prodsList do
 			local otherProds = prodsList[i]:map(function(prod) return prod.term end)
-	--print('filtering out other prods',otherProds:map(tostring):concat(', '))
+--print('filtering out other prods',otherProds:map(tostring):concat(', '))
 			for j=#minProds,1,-1 do
 				local found = false
 				for k=1,#otherProds do
-	--print('comparing',tostring(minProds[j]),'and',tostring(otherProds[k]),'got',minProds[j] == otherProds[k])
+--print('comparing',tostring(minProds[j]),'and',tostring(otherProds[k]),'got',minProds[j] == otherProds[k])
 					if minProds[j] == otherProds[k] then
 						found = true
 						break
 					end
 				end
-	--print('found?',found)
+--print('found?',found)
 				if not found then
 					minProds:remove(j)
 				end
 			end
 		end
-	--print('min set count',#minProds,'contains',minProds:map(tostring):concat(', '))
+--print('min set count',#minProds,'contains',minProds:map(tostring):concat(', '))
 		
 		if #minProds == 0 then 
-	--print('no min prods')
+--print('no min prods')
 			return 
 		end
 
@@ -132,27 +134,27 @@ Factor.lookupTable = {
 				end
 			end
 			minPowers[i] = minPower
-	--print('min power of',tostring(minProd),'is',minPower)
+--print('min power of',tostring(minProd),'is',minPower)
 			-- 4) factor them out
 			for i=1,#prodsList do
-	--print("before simplification, prod:",prodListToString(prodsList[i]))
+--print("before simplification, prod:",prodListToString(prodsList[i]))
 				for j=1,#prodsList[i] do
 					if prodsList[i][j].term == minProd then
 						prodsList[i][j].power = prodsList[i][j].power - minPower
 					end
 				end
-	--print("after simplification, prod:",prodListToString(prodsList[i]))
+--print("after simplification, prod:",prodListToString(prodsList[i]))
 			end
 		end
 
 		local terms = minProds:map(function(minProd,i) return minProd ^ minPowers[i] end)
-	--print('terms',terms:map(function(t) return tostring(t) end))
+--print('terms',terms:map(function(t) return tostring(t) end))
 		local lastTerm = addOp(unpack(prodsList:map(prodListToNode)))
-	--print('lastTerm',lastTerm)
+--print('lastTerm',lastTerm)
 		terms:insert(lastTerm)
 		local result = mulOp(unpack(terms))
-	--print('got',result)
-		return result
+--print('got',result)
+		return (require 'symmath.prune')(result)
 	end,
 }
 

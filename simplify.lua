@@ -28,7 +28,7 @@ return function(x, ...)
 		i = i + 1
 	until i == 10 or x == lastx
 	if i == 10 then 
-		error('simplification loop!') 
+		io.stderr:write('simplification loop!\n') 
 	end
 	x = tidy(x, ...)
 	return x
