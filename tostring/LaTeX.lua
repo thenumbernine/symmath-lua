@@ -6,7 +6,7 @@ local LaTeX = class(ToString)
 
 LaTeX.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
-		local s = tostring(expr.value)
+		local s = tostring(expr.value)	
 		local a,b = s:match('([^e]*)e(.*)')
 		if a and b then
 			if b:sub(1,1) == '+' then b = b:sub(2) end

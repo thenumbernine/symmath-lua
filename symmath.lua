@@ -174,6 +174,7 @@ symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
 
 -- change the default as you see fit
 symmath.toStringMethod = assert(require 'symmath.tostring.MultiLine')
+symmath.Verbose = assert(require 'symmath.tostring.Verbose')
 
 return symmath
 

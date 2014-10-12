@@ -1,3 +1,4 @@
+#!/usr/bin/env luajit
 --[[
 
     File: matrix_inverse.lua

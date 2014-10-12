@@ -1,3 +1,4 @@
+#!/usr/bin/env luajit
 --[[
 
     File: alcubierre.lua

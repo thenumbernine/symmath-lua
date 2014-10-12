@@ -1,11 +1,18 @@
+#!/usr/bin/env luajit
 local run = ... or 'separate'
 
 local symmath = require 'symmath'
 
-symmath.toStringMethod = require 'symmath.tostring.SingleLine'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.toStringMethod = MathJax
 symmath.simplifyConstantPowers  = true
 
-_ = symmath.simplify
+local function printbr(...)
+	print(...)
+	print('<br>')
+end
+
+print(MathJax.header)
 
 local speedOfLightInMPerS = 299792458
 local gravitationalConstantInM3PerKgS2 = 6.67384e-11
@@ -18,7 +25,7 @@ m = symmath.Variable('m', nil, true)
 
 if run == 'unified' then -- unified units
 	s = speedOfLightInMPerS * m	-- 1 = c m/s <=> s = c m
-	kg = _(gravitationalConstantInM3PerKgS2 * m^3/s^2)  -- 1 = G m^3/(kg s^2) <=> kg = G m^3/s^2
+	kg = symmath.simplify(gravitationalConstantInM3PerKgS2 * m^3/s^2)  -- 1 = G m^3/(kg s^2) <=> kg = G m^3/s^2
 	lyr = lightYearInM * m
 	mpc = megaParsecInM * m
 	function show(x) return x end
@@ -36,62 +43,62 @@ else	--default: if run == 'separate' then -- separate units
 		x = symmath.simplify(symmath.replace(x, mpc, megaParsecInM * m))
 		x = symmath.simplify(symmath.replace(x, lyr, lightYearInM * m))
 		x = symmath.simplify(symmath.replace(x, cm, cmInM * m))
-		print('unify output',x)
 		return x
 	end
 	function show(x)
 		--[[ convert to meters
-		return tostring(_(unify(x)))
+		return tostring(symmath.simplify(unify(x)))
 		--]]
 		--[[ for showing conversions
-		x = _(x)
+		x = symmath.simplify(x)
 		local sx = tostring(x)
 		local ux = tostring(unify(x))
 		if sx == ux then return sx end
 		return sx .. ' = ' .. ux
 		--]]
 		-- [[ convert to the most appropriate units
-		x = _(unify(x))
+		x = symmath.simplify(unify(x))
 		local amount 
 		amount = x.value
 		if amount then return tostring(amount) end
-		amount = _(unify(x/m)).value		-- keep it in meters
+		amount = symmath.simplify(unify(x/m)) 		-- keep it in meters
+		amount = amount.value
 		if amount > .5 * lightYearInM then
-			return tostring(_(amount/lightYearInM))..' lyr'
+			return tostring(symmath.simplify(amount/lightYearInM))..' lyr'
 		elseif amount > .5 * kmInM then
-			return tostring(_(amount/kmInM))..' km'
+			return tostring(symmath.simplify(amount/kmInM))..' km'
 		elseif amount < 10*cmInM then
-			return tostring(_(amount/cmInM))..' cm'
+			return tostring(symmath.simplify(amount/cmInM))..' cm'
 		else
-			return tostring(_(amount))..' m'
+			return tostring(symmath.simplify(amount))..' m'
 		end
 		--]]
 	end
 end
 
 
-print('1 m = 1 m')
-print('1 s = '..unify(s/m)..' m')
-print('1 m = '..unify(m/kg)..' kg')
-print()
+printbr('1 m = 1 m')
+printbr('1 s = '..unify(s/m)..' m')
+printbr('1 m = '..unify(m/kg)..' kg')
+printbr()
 
 function process(bodies)
 	for name, info in pairs(bodies) do
-		info.radius = _(info.radius)
-		info.mass = _(info.mass)
-		info.embeddingRadius = _((info.radius^3 / (2 * info.mass))^.5)
-		info.photonOuterOrbit = _(info.radius^2 / info.mass)
-		info.schwarzschildRadius = _(info.mass * 2)
-		info.photonSphereRadius = _(info.mass * 3)
+		info.radius = symmath.simplify(info.radius)
+		info.mass = symmath.simplify(info.mass)
+		info.embeddingRadius = symmath.simplify((info.radius^3 / (2 * info.mass))^.5)
+		info.photonOuterOrbit = symmath.simplify(info.radius^2 / info.mass)
+		info.schwarzschildRadius = symmath.simplify(info.mass * 2)
+		info.photonSphereRadius = symmath.simplify(info.mass * 3)
 
-		print(name..' radius = '..show(info.radius))
-		print(name..' mass = '..show(info.mass))
-		print(name..' embedding radius = '..show(info.embeddingRadius))
-		print(name..' embedding radius to physical radius ratio = '..show(info.embeddingRadius / info.radius))
-		--print(name..' photon outer orbit = '..show(info.photonOuterOrbit / lyr)..' lyr') -- not sure about this one ...
-		print(name..' schwarzschild radius = '..show(info.schwarzschildRadius))
-		print(name..' photon sphere radius = '..show(info.photonSphereRadius))
-		print()
+		printbr(name..' radius = '..show(info.radius))
+		printbr(name..' mass = '..show(info.mass))
+		printbr(name..' embedding radius = '..show(info.embeddingRadius))
+		printbr(name..' embedding radius to physical radius ratio = '..show(info.embeddingRadius / info.radius))
+		--printbr(name..' photon outer orbit = '..show(info.photonOuterOrbit / lyr)..' lyr') -- not sure about this one ...
+		printbr(name..' schwarzschild radius = '..show(info.schwarzschildRadius))
+		printbr(name..' photon sphere radius = '..show(info.photonSphereRadius))
+		printbr()
 	end
 end
 
@@ -113,10 +120,10 @@ function z(r)
 	else
 		z = (R^3/Rs)^.5 * (1 - (1 - Rs/R)^.5) + (4 * Rs * (r - Rs))^.5 - (4 * Rs * (R - Rs))^.5
 	end
-	print('z('..r..') = '..unify(z))
+	printbr('z('..r..') = '..unify(z))
 end
 
-print('earth embedding at different radii...')
+printbr('earth embedding at different radii...')
 z(0)
 z(.25 * earth.radius)
 z(.5 * earth.radius)
@@ -124,3 +131,5 @@ z(earth.radius)
 z(2 * earth.radius)
 z(10 * earth.radius)
 z(100 * earth.radius)
+
+print(MathJax.footer)

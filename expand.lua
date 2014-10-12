@@ -5,30 +5,36 @@ local mulOp = require 'symmath.mulOp'
 local powOp = require 'symmath.powOp'
 local Constant = require 'symmath.Constant'
 local Visitor = require 'symmath.Visitor'
+
 local Expand = class(Visitor)
 
 Expand.lookupTable = {
-	[unmOp] = function(expand, self)
-		return expand(Constant(-1) * self.xs[1])
+	[unmOp] = function(expand, expr)
+		return expand(Constant(-1) * expr.xs[1])
 	end,
-	[mulOp] = function(expand, self)
+	[mulOp] = function(expand, expr)
+		expr = expr:clone()
+local original = expr:clone()
+local symmath = require 'symmath'	
 		--[[
 		a * (b + c) * d * e becomes
 		(a * b * d * e) + (a * c * d * e)
 		--]]
 
-		for i,x in ipairs(self.xs) do
+		for i,x in ipairs(expr.xs) do
 			if x:isa(addOp) or x:isa(subOp) then
 				local terms = table()
 				for j,xch in ipairs(x.xs) do
-					local term = self:clone()
+					local term = expr:clone()
 					term.xs[i] = xch:clone()
 					terms:insert(term)
 				end
-				return expand(getmetatable(x)(unpack(terms)))
+				expr = getmetatable(x)(unpack(terms))
+--print('mulOp a*(b+c) => a*b + a*c', symmath.Verbose(original), '=>', symmath.Verbose(expr))
+				return expand(expr)
 			
 				--[[
-				local newSelf = getmetatable(x)(unpack(self.xs:filter(function(cx) 
+				local newSelf = getmetatable(x)(unpack(expr.xs:filter(function(cx) 
 					return cx ~= x
 				end):map(function(cx)
 					return mulOp(x:clone(), cx)
@@ -49,7 +55,7 @@ Expand.lookupTable = {
 		end
 		
 		--[[
-		--do return self end
+		--do return expr end
 
 		-- distribute: a * (m + n) => a * m + a * n
 		-- I have the opposite rule in addOp:prune, commented out
@@ -58,13 +64,13 @@ Expand.lookupTable = {
 		-- how about my canonical form is div, mul-non-const, add, mul-const
 		-- ... such that if we have an add, mul-non-const then we know to perform the addOp:prune() on it
 		-- however trig laws would need add, mul-non-const to optimize out correctly
-		for i,x in ipairs(self.xs) do
+		for i,x in ipairs(expr.xs) do
 			if x:isa(addOp) then
-				self.xs:remove(i)
+				expr.xs:remove(i)
 			
 				local result = addOp()
 				for j,ch in ipairs(x.xs) do
-					result.xs[j] = self * ch
+					result.xs[j] = expr * ch
 				end
 				--result = prune(result)
 				return result
@@ -73,10 +79,15 @@ Expand.lookupTable = {
 		--]]
 
 	end,
-	[powOp] = function(expand, self)
+	[powOp] = function(expand, expr)
+		do return end
+		
+		expr = expr:clone()
+local original = expr:clone()
+local symmath = require 'symmath'	
 		local maxPowerExpand = 10
-		if self.xs[2]:isa(Constant) then
-			local value = self.xs[2].value
+		if expr.xs[2]:isa(Constant) then
+			local value = expr.xs[2].value
 			local absValue = math.abs(value)
 			if absValue < maxPowerExpand then
 				local num, frac, div
@@ -88,19 +99,24 @@ Expand.lookupTable = {
 					frac = value - math.floor(value)
 					num = math.floor(value)
 				else
+--print('powOp a^0 => 1', symmath.Verbose(original), '=>', symmath.Verbose(Constant(1)))
 					return Constant(1)
 				end
 				local terms = table()
 				for i=1,num do
-					terms:insert(self.xs[1]:clone())
+					terms:insert(expr.xs[1]:clone())
 				end
 				if frac ~= 0 then
-					terms:insert(self.xs[1]:clone()^frac)
+					terms:insert(expr.xs[1]:clone()^frac)
 				end
 				if div then
-					return Constant(1)/mulOp(unpack(terms))
+					expr = Constant(1)/mulOp(unpack(terms))
+--print('powOp a^-c => 1/(a*a*a...)', symmath.Verbose(original), '=>', symmath.Verbose(expr))
+					return expr
 				else
-					return mulOp(unpack(terms))
+					expr = mulOp(unpack(terms))
+--print('powOp a^c => a*a*a...', symmath.Verbose(original), '=>', symmath.Verbose(expr))
+					return expr
 				end
 			end
 		end

@@ -1,3 +1,4 @@
+#!/usr/bin/env luajit
 --[[
 
     File: polar_geodesic.lua 

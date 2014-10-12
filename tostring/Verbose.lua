@@ -14,10 +14,10 @@ Verbose.lookupTable = {
 		return 'unm('..self:apply(expr.xs[1])..')'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
-		return 'BinaryOp{'..expr.name..'}['..expr.xs:map(tostring):concat(', ')..']'
+		return 'BinaryOp{'..expr.name..'}['..expr.xs:map(self):concat(', ')..']'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return 'Function{'..expr.name..'}[' .. expr.xs:map(tostring):concat(', ') .. ']'
+		return 'Function{'..expr.name..'}[' .. expr.xs:map(self):concat(', ') .. ']'
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		local s = 'Variable['..expr.name..']'

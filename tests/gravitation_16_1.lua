@@ -1,3 +1,4 @@
+#!/usr/bin/env luajit
 --[[
 
     File: gravitation_16_1.lua

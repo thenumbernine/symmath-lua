@@ -1,3 +1,4 @@
+#!/usr/bin/env luajit
 local symmath = require 'symmath'
 symmath.simplifyConstantPowers = true
 local MathJax = require 'symmath.tostring.MathJax'

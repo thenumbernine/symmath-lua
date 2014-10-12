@@ -66,9 +66,12 @@ Prune.lookupTable = {
 	end,
 	
 	[addOp] = function(prune, expr)
-		
 		assert(#expr.xs > 0)
 		
+		expr = expr:clone()
+local symmath = require 'symmath'
+local original = expr:clone()
+
 		if #expr.xs == 1 then return expr.xs[1] end
 
 		-- flatten additions
@@ -83,6 +86,7 @@ Prune.lookupTable = {
 					local chch = assert(ch.xs[j])
 					expr.xs:insert(i, chch)
 				end
+--print('addOp flatten')
 				return prune(expr)
 			end
 		end
@@ -96,7 +100,10 @@ Prune.lookupTable = {
 		end
 		
 		-- if it's all constants then return what we got
-		if #expr.xs == 0 then return Constant(cval) end
+		if #expr.xs == 0 then 
+--print('addOp const1 + const2 => const', symmath.Verbose(original), '=>', symmath.Verbose(cval))
+			return Constant(cval) 
+		end
 		
 		-- re-insert if we have a Constant
 		if cval ~= 0 then
@@ -104,7 +111,10 @@ Prune.lookupTable = {
 		else
 			-- if cval is zero and we're not re-inserting a constant
 			-- then see if we have only one term ...
-			if #expr.xs == 1 then return prune(expr.xs[1]) end
+			if #expr.xs == 1 then 
+--print('addOp returning zero')
+				return prune(expr.xs[1]) 
+			end
 		end
 		
 		-- [[ x * c1 + x * c2 => x * (c1 + c2) ... for constants
@@ -133,6 +143,7 @@ Prune.lookupTable = {
 				baseConst = baseConst + thisConst
 			end
 			if not didntFind then
+--print('addOp c1*x + c2*x = (c1+c2)*x')
 				return prune(mulOp(baseConst, unpack(baseTerms)))
 			end
 		end
@@ -208,6 +219,7 @@ Prune.lookupTable = {
 					expr.xs:remove(j)
 					expr.xs[i] = mulOp(Constant(constI.value + constJ.value), unpack(commonTerms))
 					--print('optimizing to '..tostring(prune(expr)))
+--print('flattening muls in add')
 					return prune(expr)
 				end
 			end
@@ -244,6 +256,7 @@ Prune.lookupTable = {
 				assert(#x.xs == 2)
 				local a,b = unpack(x.xs)
 				expr.xs:remove(i)
+--print('c+a/b => (c*b+a)/b')
 				return prune((expr * b + a) / b)
 			end
 		end
@@ -275,6 +288,7 @@ Prune.lookupTable = {
 								-- then remove sine and cosine and replace with a '1' and set modified
 								expr.xs:remove(i)	-- remove largest index first
 								expr.xs[sinIndex] = Constant(1)
+--print('cos^2+sin^2=1')
 								return prune(expr)
 							end
 						else
@@ -286,6 +300,7 @@ Prune.lookupTable = {
 							if cosAngle == x.xs[1].xs[1] then
 								expr.xs:remove(i)
 								expr.xs[cosIndex] = Constant(1)
+--print('cos^2+sin^2=1')
 								return prune(expr)
 							end
 						else
@@ -298,7 +313,6 @@ Prune.lookupTable = {
 		end
 		
 		return expr
-
 	end,
 	
 	[subOp] = function(prune, expr)
@@ -310,6 +324,8 @@ Prune.lookupTable = {
 		assert(#expr.xs > 0)
 		
 		expr = expr:clone()
+local symmath = require 'symmath'
+local original = expr:clone()	
 		
 		-- flatten multiplications
 		for i=#expr.xs,1,-1 do
@@ -321,6 +337,8 @@ Prune.lookupTable = {
 					local chch = ch.xs[j]
 					expr.xs:insert(i, chch)
 				end
+--print('mulOp (a*b)*c => a*b*c', symmath.Verbose(original), '=>', symmath.Verbose(expr))
+				return prune(expr)
 			end
 		end
 		
@@ -352,14 +370,23 @@ Prune.lookupTable = {
 		end
 
 		-- if it's all constants then return what we got
-		if #expr.xs == 0 then return Constant(cval) end
+		if #expr.xs == 0 then 
+--print('mulOp returning constant', symmath.Verbose(original), '=>', symmath.Verbose(Constant(cval)))
+			return Constant(cval) 
+		end
 		
-		if cval == 0 then return Constant(0) end
+		if cval == 0 then 
+--print('mulOp returning zero')
+			return Constant(0) 
+		end
 		
 		if cval ~= 1 then
 			expr.xs:insert(1, Constant(cval))
 		else
-			if #expr.xs == 1 then return prune(expr.xs[1]) end
+			if #expr.xs == 1 then 
+--print('mulOp 1*a => a', symmath.Verbose(original), '=>', symmath.Verbose(expr.xs[1]))
+				return prune(expr.xs[1]) 
+			end
 		end
 
 		-- [[ a^m * a^n => a^(m + n)
@@ -406,6 +433,7 @@ Prune.lookupTable = {
 				i = i + 1
 			end
 			if modified then
+--print('mulOp a^m * a^n => a^(m+n)', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 				return prune(expr)
 			end
 		end
@@ -421,8 +449,10 @@ Prune.lookupTable = {
 			end
 		end
 		if #denoms == 1 then
+--print('mulOp a*(b/c) => (a*b)/c')
 			return prune(expr / denoms[1])
 		elseif #denoms > 1 then
+--print('mulOp (a/b)*(c/d) => (a*c)/(b*d)')
 			return prune(expr / mulOp(unpack(denoms)))
 		end
 		--]]
@@ -432,7 +462,7 @@ Prune.lookupTable = {
 	
 	[divOp] = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
-		
+
 		if symmath.simplifyDivisionByPower then
 			return prune(mulOp(expr.xs[1], powOp(expr.xs[2], Constant(-1))))
 		end
@@ -588,8 +618,9 @@ Prune.lookupTable = {
 	end,
 	
 	[powOp] = function(prune, expr)
-		local symmath = require 'symmath'	-- for debug flags
 		
+		local symmath = require 'symmath'	-- for debug flags
+
 		if symmath.simplifyConstantPowers then
 			if expr.xs[1]:isa(Constant) and expr.xs[2]:isa(Constant) then
 				return Constant(expr.xs[1].value ^ expr.xs[2].value)

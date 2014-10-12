@@ -1,3 +1,4 @@
+#!/usr/bin/env luajit
 --[[
 
     File: schwarzschild_cartesian.lua

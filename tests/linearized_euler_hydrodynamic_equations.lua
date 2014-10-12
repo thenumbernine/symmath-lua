@@ -1,3 +1,4 @@
+#!/usr/bin/env luajit
 --[[
 
     File: linearized_euler_hydrodyanamic_equations.lua
