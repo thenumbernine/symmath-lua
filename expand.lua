@@ -16,6 +16,7 @@ Expand.lookupTable = {
 		expr = expr:clone()
 local original = expr:clone()
 local symmath = require 'symmath'	
+		
 		--[[
 		a * (b + c) * d * e becomes
 		(a * b * d * e) + (a * c * d * e)
@@ -53,10 +54,8 @@ local symmath = require 'symmath'
 				--]]
 			end
 		end
-		
+	
 		--[[
-		--do return expr end
-
 		-- distribute: a * (m + n) => a * m + a * n
 		-- I have the opposite rule in addOp:prune, commented out
 		-- to combine them both ...
@@ -79,9 +78,8 @@ local symmath = require 'symmath'
 		--]]
 
 	end,
+--[[
 	[powOp] = function(expand, expr)
-		do return end
-		
 		expr = expr:clone()
 local original = expr:clone()
 local symmath = require 'symmath'	
@@ -121,6 +119,7 @@ local symmath = require 'symmath'
 			end
 		end
 	end,
+--]]
 }
 
 return Expand()

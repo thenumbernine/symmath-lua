@@ -7,12 +7,15 @@ local Factor = class(Visitor)
 
 Factor.lookupTable = {
 	[addOp] = function(factor, self, factors)
+
+-- TODO something in here is no reconstructing powers correctly -- it's leaving off the 2nd child
+do return end
 		-- [[ x*a + x*b => x * (a + b)
 		-- the opposite of this is in mulOp:prune's applyDistribute
 		-- don't leave both of them uncommented or you'll get deadlock
 		-- TODO this is factoring wrong
 		if #self.xs <= 1 then return end
-			
+		
 		local function nodeToProdList(x)
 			local prodList
 			
@@ -26,9 +29,10 @@ Factor.lookupTable = {
 			-- pick out any exponents in any of the products
 			prodList = prodList:map(function(ch)
 				if ch:isa(powOp) then
+					--print(symmath.Verbose(ch))
 					return {
 						term = ch.xs[1],
-						power = ch.xs[2],
+						power = assert(ch.xs[2]),
 					}
 				else
 					return {
@@ -61,7 +65,10 @@ Factor.lookupTable = {
 				if i then
 --print('looking for prune, found '..listToPrune[i].term)
 					local prodPrune = listToPrune[i]
-					prodPrune.power = prune(prodPrune.power - prodFind.power)
+					prodPrune.power = prodPrune.power - prodFind.power
+					local prune = require 'symmath.prune'
+					prodPrune.power = prune(prodPrune.power) or prodPrune.power
+					
 					if prodPrune.power:isa(Constant)
 					and prodPrune.power.value <= 0	-- no factoring negatives ... for now ?
 					then
@@ -141,6 +148,8 @@ Factor.lookupTable = {
 				for j=1,#prodsList[i] do
 					if prodsList[i][j].term == minProd then
 						prodsList[i][j].power = prodsList[i][j].power - minPower
+						local prune = require 'symmath.prune'
+						prodsList[i][j].power = prune(prodsList[i][j].power) or prodsList[i][j].power
 					end
 				end
 --print("after simplification, prod:",prodListToString(prodsList[i]))

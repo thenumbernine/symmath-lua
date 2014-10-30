@@ -142,6 +142,7 @@ Expression.prune = function(...) return (require 'symmath.prune')(...) end
 Expression.simplify = require 'symmath.simplify'
 Expression.expand = function(...) return (require 'symmath.expand')(...) end
 Expression.factor = function(...) return (require 'symmath.factor')(...) end
+Expression.tidy = function(...) return (require 'symmath.tidy')(...) end
 -- I have to buffer these by a function to prevent require loop
 Expression.equals = function(...) return (require 'symmath.equals')(...) end
 Expression.greaterThan = function(...) return (require 'symmath.greaterThan')(...) end

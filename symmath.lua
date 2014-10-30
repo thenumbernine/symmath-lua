@@ -35,6 +35,7 @@ symmath.map = require 'symmath.map'
 symmath.prune = require 'symmath.prune'
 symmath.expand = require 'symmath.expand'
 symmath.factor = require 'symmath.factor'
+symmath.tidy = require 'symmath.tidy'
 symmath.simplify = require 'symmath.simplify'
 
 symmath.Variable = require 'symmath.Variable'

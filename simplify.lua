@@ -13,17 +13,11 @@ return function(x, ...)
 	local lastx
 	local i = 1
 	repeat
---print('=========================')
---print('beginning iteration prior to expand',(require 'symmath.tostring.Verbose'(x)))
---print('=========================')
 		lastx = x
 		x = expand(x, ...)
---print('=========================')
---print('beginning iteration prior to prune',(require 'symmath.tostring.Verbose'(x)))
---print('=========================')
 		x = prune(x, ...)
-		--x = factor(x)
-		--x = prune(x)
+		x = factor(x)
+		x = prune(x)
 		--do break end -- calling expand() again after this breaks things ...
 		i = i + 1
 	until i == 10 or x == lastx

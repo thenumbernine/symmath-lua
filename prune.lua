@@ -496,24 +496,85 @@ local original = expr:clone()
 		end
 		--]]
 		
-		-- [[ factor out denominators: a * b * (c / d) => (a * b * c) / d
-		local denoms = table()
-		for i=#expr.xs,1,-1 do
-			local x = expr.xs[i]
-			if x:isa(divOp) then
-				expr.xs[i] = x.xs[1]
-				denoms:insert(x.xs[2])
+		-- [[ factor out denominators
+		-- a * b * (c / d) => (a * b * c) / d
+		--  generalization:
+		-- a^m * b^n * (c/d)^p = (a^m * b^n * c^p) / d^p
+		do
+			local uniqueDenomIndexes = table()
+			
+			local denoms = table()
+			local powers = table()
+			local bases = table()
+			
+			for i=1,#expr.xs do
+				-- decompose expressions of the form 
+				--  (base / denom) ^ power
+				local base = expr.xs[i]
+				local power = Constant(1)
+				local denom = Constant(1)
+
+				if base:isa(powOp) then
+					base, power = unpack(base.xs)
+				end
+				if base:isa(divOp) then
+					base, denom = unpack(base.xs)
+				end
+				if denom ~= Constant(1) then
+					uniqueDenomIndexes:insert(i)
+				end
+
+				denoms:insert(denom)
+				powers:insert(power)
+				bases:insert(base)
+			end
+			
+			if #uniqueDenomIndexes > 0 then	
+				
+				local num
+				if #bases == 1 then
+					num = bases[1]
+					if powers[1] ~= Constant(1) then
+						num = num ^ powers[1]
+					end
+				else
+					num = mulOp(unpack(bases:map(function(base,i)
+						if powers[i] == Constant(1) then
+							return base
+						else
+							return base ^ powers[i]
+						end
+					end)))
+				end
+				
+				local denom
+				if #uniqueDenomIndexes == 1 then
+--print('mulOp a*(b/c) => (a*b)/c')
+					local i = uniqueDenomIndexes[1]
+					denom = denoms[i]
+					if powers[i] ~= Constant(1) then
+						denom = denom^powers[i]
+					end
+				elseif #denoms > 1 then
+--print('mulOp (a/b)*(c/d) => (a*c)/(b*d)')
+					denom = mulOp(unpack(uniqueDenomIndexes:map(function(i)
+						if powers[i] == Constant(1) then
+							return denoms[i]
+						else
+							return denoms[i]^powers[i]
+						end
+					end)))
+				end
+				
+				local expr = num
+				if denom ~= Constant(1) then
+					expr = expr / denom
+				end
+				return prune(expr)
 			end
 		end
-		if #denoms == 1 then
---print('mulOp a*(b/c) => (a*b)/c')
-			return prune(expr / denoms[1])
-		elseif #denoms > 1 then
---print('mulOp (a/b)*(c/d) => (a*c)/(b*d)')
-			return prune(expr / mulOp(unpack(denoms)))
-		end
 		--]]
-		
+
 		return expr
 	end,
 	

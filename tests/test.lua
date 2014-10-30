@@ -51,7 +51,7 @@ t = symmath.Variable('t', nil, true)
 =asserteq(x^2, (x*x):simplify())
 
 -- simplify(): div add mul
-=asserteq(((x+1)*y):simplify(), x*y + y)
+=asserteq(((x+1)*y):simplify(), (x*y + y):simplify())
 =asserteq(((x+1)*(y+1)):simplify(), (x*y + x + y + 1):simplify())
 
 -- expand(): add div mul
