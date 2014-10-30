@@ -86,7 +86,7 @@ local original = expr:clone()
 					local chch = assert(ch.xs[j])
 					expr.xs:insert(i, chch)
 				end
---print('addOp flatten')
+--print('addOp flatten', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 				return prune(expr)
 			end
 		end
@@ -118,33 +118,44 @@ local original = expr:clone()
 		end
 		
 		-- [[ x * c1 + x * c2 => x * (c1 + c2) ... for constants
-		local muls = expr.xs:filter(function(x) return x:isa(mulOp) end)
-		if #muls > 1 then	-- we have more than one multiplication going on ... see if we can combine them
-			local baseConst = 0
-			local baseTerms
-			local didntFind
-			for _,mul in ipairs(muls) do
-				local nonConstTerms = mul.xs:filter(function(x) return not x:isa(Constant) end)
-				if not baseTerms then
-					baseTerms = nonConstTerms
+		do
+			local muls = table()
+			local nonMuls = table()
+			for i,x in ipairs(expr.xs) do
+				if x:isa(mulOp) then
+					muls:insert(x)
 				else
-					if not tableCommutativeEqual(baseTerms, nonConstTerms) then
-						didntFind = true
-						break
-					end
+					nonMuls:insert(x)
 				end
-				local constTerms = mul.xs:filter(function(x) return x:isa(Constant) end)
-
-				local thisConst = 1
-				for _,const in ipairs(constTerms) do
-					thisConst = thisConst * const.value
-				end
-				
-				baseConst = baseConst + thisConst
 			end
-			if not didntFind then
---print('addOp c1*x + c2*x = (c1+c2)*x')
-				return prune(mulOp(baseConst, unpack(baseTerms)))
+			if #muls > 1 then	-- we have more than one multiplication going on ... see if we can combine them
+				local baseConst = 0
+				local baseTerms
+				local didntFind
+				for _,mul in ipairs(muls) do
+					local nonConstTerms = mul.xs:filter(function(x) return not x:isa(Constant) end)
+					if not baseTerms then
+						baseTerms = nonConstTerms
+					else
+						if not tableCommutativeEqual(baseTerms, nonConstTerms) then
+							didntFind = true
+							break
+						end
+					end
+					local constTerms = mul.xs:filter(function(x) return x:isa(Constant) end)
+
+					local thisConst = 1
+					for _,const in ipairs(constTerms) do
+						thisConst = thisConst * const.value
+					end
+					
+					baseConst = baseConst + thisConst
+				end
+				if not didntFind then
+					local expr = addOp(mulOp(baseConst, unpack(baseTerms)), unpack(nonMuls))
+--print('addOp c1*x + c2*x = (c1+c2)*x', symmath.Verbose(original), '=>', symmath.Verbose(expr))
+					return prune(expr)
+				end
 			end
 		end
 		--]]
@@ -345,11 +356,11 @@ local original = expr:clone()
 			if f:isa(mulOp) then	-- should always be a mulOp unless there was nothing to factor
 				for _,ch in ipairs(f.xs) do
 					if ch:isa(addOp) then
-print('attempting trig simplify on factor term',ch)
+--print('attempting trig simplify on factor term',ch)
 						local result = checkAddOp(ch)
-print('...got',result)
+--print('...got',result)
 						if result then 
-print('...returning',original,'=>',prune(result))
+--print('...returning',original,'=>',prune(result))
 							return prune(result) 
 						end
 					end

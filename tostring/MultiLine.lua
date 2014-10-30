@@ -21,7 +21,7 @@ function MultiLine:combine(lhs, rhs)
 	for i=1,maxheight do
 		local line = ''
 		for _,side in ipairs(sides) do
-			local sideIndex = i - math.floor((maxheight - #side) / 2)
+			local sideIndex = i - math.ceil((maxheight - #side) / 2)
 			if sideIndex >= 1 and sideIndex <= #side then
 				line = line .. side[sideIndex]
 			else

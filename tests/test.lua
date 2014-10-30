@@ -31,7 +31,7 @@ notebook[[
 -- constant simplificaiton
 =asserteq(Constant(1), (Constant(1)*Constant(1)):simplify())
 =asserteq(Constant(1), (Constant(1)/Constant(1)):simplify())
-=asserteq(Constant(-1), (-Constant(1)/Constant(1)):simplify())
+=asserteq(Constant(-1):simplify(), (-Constant(1)/Constant(1)):simplify())	-- without the first 'simplify' we don't get the same canonical form with the unary - on the outside
 =asserteq(Constant(1), (Constant(1)/(Constant(1)*Constant(1))):simplify())
 
 x = symmath.Variable('x', nil, true)

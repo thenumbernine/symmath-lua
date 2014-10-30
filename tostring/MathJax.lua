@@ -8,7 +8,7 @@ MathJax.header = [[
     <head>
         <meta charset="UTF-8">
         <title>Symbolic Lua Output</title>
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </head>
     <body>
 ]]

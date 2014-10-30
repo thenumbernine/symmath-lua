@@ -134,8 +134,14 @@ function Expression.__mod(a,b)
 	return (require 'symmath.modOp')(a,b) 
 end
 
+-- root-level functions that always apply to expressions
 Expression.replace = require 'symmath.replace'
+Expression.solve = require 'symmath.solve'
+Expression.map = require 'symmath.map'
+Expression.prune = function(...) return (require 'symmath.prune')(...) end
 Expression.simplify = require 'symmath.simplify'
+Expression.expand = function(...) return (require 'symmath.expand')(...) end
+Expression.factor = function(...) return (require 'symmath.factor')(...) end
 -- I have to buffer these by a function to prevent require loop
 Expression.equals = function(...) return (require 'symmath.equals')(...) end
 Expression.greaterThan = function(...) return (require 'symmath.greaterThan')(...) end
