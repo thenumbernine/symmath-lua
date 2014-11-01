@@ -27,14 +27,15 @@ local tensor = require 'symmath.tensor'
 
 --this is a halfway step between pure symmath code and symmath+tensor code
 
-Phi = symmath.Variable('\\Phi', nil, true)
-rho = symmath.Variable('\\rho', nil, true)
-P = symmath.Variable('P', nil, true)
-t = symmath.Variable('t', nil, true)
-x = symmath.Variable('x', nil, true)
-y = symmath.Variable('y', nil, true)
-z = symmath.Variable('z', nil, true)
+t = symmath.Variable('t')
+x = symmath.Variable('x')
+y = symmath.Variable('y')
+z = symmath.Variable('z')
 coords = {t, x, y, z}
+
+Phi = symmath.Variable('\\Phi', coords)
+rho = symmath.Variable('\\rho', coords)
+P = symmath.Variable('P', coords)
 
 function cond(expr, ontrue, onfalse)
 	if expr then return ontrue end
@@ -58,8 +59,8 @@ tensor.assign[[
 	)
 ]]
 
-tensor.assign[[uU_$u = symmath.Variable('u^$u', nil, true)]]
-tensor.assign[[vU_$u = cond($u==t, symmath.Constant(1), symmath.Variable('v^$u', nil, true))]]
+tensor.assign[[uU_$u = symmath.Variable('u^$u', coords)]]
+tensor.assign[[vU_$u = cond($u==t, symmath.Constant(1), symmath.Variable('v^$u', coords))]]
 printbr('matter stress-energy tensor')
 tensor.assign[[TUU_$u_$v = (rho + P) * uU_$u * uU_$v]]
 

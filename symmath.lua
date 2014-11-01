@@ -26,7 +26,6 @@ local symmath = {}
 symmath.verbose = false
 symmath.simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
 symmath.usePowerSymbol = true			-- whether to use a^b or pow(a,b).  This is a dirty trick to get around some dirtier regex converting compiled functions from one language to another.  A more proper fix would be to allow different backends to compile to.
-symmath.simplifyDivisionByPower = false	-- whether to treat a/b as a*b^-1
 
 symmath.replace = require 'symmath.replace'
 symmath.solve = require 'symmath.solve'

@@ -84,7 +84,7 @@ for _,u in ipairs(coords) do
 	for _,v in ipairs(srcCoords) do
 		assign(('e_$u = e_$u + e_$u_$v * e_$u_$v'):gsub('$u',u):gsub('$v',v))
 	end
-	assign(('e_$u = e_$u^(1/2)'):gsub('$u',u))
+	assign(('e_$u = e_$u^(symmath.Constant(1)/2)'):gsub('$u',u))
 end
 --]]
 
@@ -102,12 +102,12 @@ end
 --]]
 
 --[[ explicitly provided metric
-Phi = symmath.Variable('Phi', nil, true)
-t = symmath.Variable('t', nil, true)
-x = symmath.Variable('x', nil, true)
-y = symmath.Variable('y', nil, true)
-z = symmath.Variable('z', nil, true)
+t = symmath.Variable('t')
+x = symmath.Variable('x')
+y = symmath.Variable('y')
+z = symmath.Variable('z')
 coords = {'t', 'x', 'y', 'z'}
+Phi = symmath.Variable('Phi', {t,x,y,z})
 --]]
 
 function printNonZero(expr, args)
@@ -150,21 +150,21 @@ end
 --]]
 
 -- [[ ADM
-t = symmath.Variable('t', nil, true)
-x = symmath.Variable('x', nil, true)
-y = symmath.Variable('y', nil, true)
-z = symmath.Variable('z', nil, true)
-alpha = symmath.Variable('\\alpha', nil, true)
+t = symmath.Variable('t')
+x = symmath.Variable('x')
+y = symmath.Variable('y')
+z = symmath.Variable('z')
+alpha = symmath.Variable('\\alpha', {t,x,y,z})
 spatial = {'x','y','z'}
 coords = {'t', 'x', 'y', 'z'}
 for _,u in ipairs(spatial) do
-	exec(([[betaU_$u = symmath.Variable('\\beta^$u', nil, true)]]):gsub('$u', u))
-	exec(([[betaL_$u = symmath.Variable('\\beta_$u', nil, true)]]):gsub('$u', u))
+	exec(([[betaU_$u = symmath.Variable('\\beta^$u', {t,x,y,z})]]):gsub('$u', u))
+	exec(([[betaL_$u = symmath.Variable('\\beta_$u', {t,x,y,z})]]):gsub('$u', u))
 end
 for _,u in ipairs(spatial) do
 	for _,v in ipairs(spatial) do
-		exec(([[gammaLL_$u_$v = symmath.Variable('\\gamma_{$u$v}', nil, true)]]):gsub('$u', u):gsub('$v', v))
-		exec(([[gammaUU_$u_$v = symmath.Variable('\\gamma^{$u$v}', nil, true)]]):gsub('$u', u):gsub('$v', v))
+		exec(([[gammaLL_$u_$v = symmath.Variable('\\gamma_{$u$v}', {t,x,y,z})]]):gsub('$u', u):gsub('$v', v))
+		exec(([[gammaUU_$u_$v = symmath.Variable('\\gamma^{$u$v}', {t,x,y,z})]]):gsub('$u', u):gsub('$v', v))
 	end
 end
 --[=[
@@ -216,7 +216,7 @@ printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
-			exec(('christoffelLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+			exec(('christoffelLLL_$u_$v_$w = symmath.simplify((symmath.Constant(1)/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
 			printNonZero('christoffelLLL_$u_$v_$w', {u=u,v=v,w=w})
 		end
 	end

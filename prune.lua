@@ -284,7 +284,7 @@ local original = expr:clone()
 		end
 		--]]
 		
-		-- trig identities
+		-- trigonometry identities
 
 		-- cos(theta)^2 + sin(theta)^2 => 1
 		-- TODO first get a working factor() function
@@ -593,10 +593,6 @@ local original = expr:clone()
 		local symmath = require 'symmath'	-- for debug flags ...
 		local original = expr:clone()
 		
-		if symmath.simplifyDivisionByPower then
-			return prune(mulOp(expr.xs[1], powOp(expr.xs[2], Constant(-1))))
-		end
-		
 		-- x / 0 => Invalid
 		if expr.xs[2] == Constant(0) then
 			return Invalid()
@@ -648,9 +644,6 @@ local original = expr:clone()
 			return Constant(1)		-- ... for expr.xs[1] != 0
 		end
 
--- there's an error in here
--- just try 2/(2*x*y)
-	-- [[
 		-- (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
 		do
 			local modified
@@ -683,6 +676,75 @@ local original = expr:clone()
 			end
 			local numBases, numPowers = listToBasesAndPowers(nums)
 			local denomBases, denomPowers = listToBasesAndPowers(denoms)
+			
+			-- assume that (frome the mulOp prune) constants have already been combined and moved to front
+			-- here we can remove constant factors 
+			if numBases[1]:isa(Constant) 
+			and numPowers[1]:isa(Constant)
+			and denomBases[1]:isa(Constant) 
+			and denomPowers[1]:isa(Constant)
+			then
+				local function primeFactorization(n)
+					local ps = table()
+					while n > 1 do
+						local found = false
+						for i=2,math.floor(math.sqrt(n)) do
+							if n%i == 0 then
+								n = n/i
+								ps[i] = (ps[i] or 0) + 1
+								found = true
+								break
+							end
+						end
+						if not found then
+							ps[n] = (ps[n] or 0) + 1
+							break
+						end
+					end
+					ps[1] = nil
+					return ps
+				end
+				local pa = primeFactorization(numBases[1].value):map(function(v,k)
+					return v*numPowers[1].value, k
+				end)
+				local pb = primeFactorization(denomBases[1].value):map(function(v,k)
+					return v*denomPowers[1].value, k
+				end)
+			
+				-- now eliminate from one what's in the other
+				local function elimOther(other)
+					return function(v,k)
+						if other[k] then
+							if other[k] == v then
+								other[k] = nil
+								v = nil
+							elseif other[k] > v then
+								other[k] = other[k] - v
+								v = nil
+							elseif other[k] < v then
+								v = v - other[k]
+								other[k] = nil
+							end
+						end
+						return v,k
+					end
+				end
+				pa = pa:map(elimOther(pb))
+				pb = pb:map(elimOther(pa))
+
+				numBases[1].value = 1
+				for k,v in pairs(pa) do
+					numBases[1].value = numBases[1].value * k^v
+				end
+				numPowers[1].value = 1
+				
+				denomBases[1].value = 1
+				for k,v in pairs(pb) do
+					denomBases[1].value = denomBases[1].value * k^v
+				end
+				denomPowers[1].value = 1
+			end
+			
 			for i=1,#nums do
 				local j = 1
 				while j <= #denoms do
@@ -724,11 +786,9 @@ local original = expr:clone()
 					result = num / denom
 				end
 		
---print('our problem', symmath.Verbose(original), '=>', symmath.Verbose(result))
 				return prune(result)
 			end
 		end
-	--]]
 
 	--[[
 	

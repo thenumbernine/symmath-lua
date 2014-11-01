@@ -21,7 +21,7 @@ local kmInM = 1000
 local lightYearInM = 9.4605284e+15
 local megaParsecInM = 3.08567758e+22
 
-m = symmath.Variable('m', nil, true)
+m = symmath.Variable('m')
 
 if run == 'unified' then -- unified units
 	s = speedOfLightInMPerS * m	-- 1 = c m/s <=> s = c m
@@ -30,11 +30,11 @@ if run == 'unified' then -- unified units
 	mpc = megaParsecInM * m
 	function show(x) return x end
 else	--default: if run == 'separate' then -- separate units
-	cm = symmath.Variable('cm', nil, true)
-	km = symmath.Variable('km', nil, true)
-	s = symmath.Variable('s', nil, true)
-	kg = symmath.Variable('kg', nil, true)
-	lyr = symmath.Variable('lyr', nil, true)
+	cm = symmath.Variable('cm')
+	km = symmath.Variable('km')
+	s = symmath.Variable('s')
+	kg = symmath.Variable('kg')
+	lyr = symmath.Variable('lyr')
 
 	function unify(x)
 		if type(x) == 'number' then return x end

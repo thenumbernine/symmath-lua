@@ -8,9 +8,6 @@ local Factor = class(Visitor)
 Factor.lookupTable = {
 	[addOp] = function(factor, self, factors)
 
--- has problems - for some expressions it removes the 2nd child
-do return end
-
 		-- [[ x*a + x*b => x * (a + b)
 		-- the opposite of this is in mulOp:prune's applyDistribute
 		-- don't leave both of them uncommented or you'll get deadlock

@@ -33,29 +33,29 @@ local function printbr(...)
 	print('<br>')
 end
 
--- primitive variables
-local rho = symmath.Variable('\\rho', nil, true)	-- density
-local u = symmath.Variable('u', nil, true)		-- velocity
-local v = symmath.Variable('v', nil, true)
-local w = symmath.Variable('w', nil, true)
-local e = symmath.Variable('e', nil, true)		-- total specific energy 
-
--- state variable
-local q1 = symmath.Variable('q1', nil, true)
-local q2 = symmath.Variable('q2', nil, true)
-local q3 = symmath.Variable('q3', nil, true)
-local q4 = symmath.Variable('q4', nil, true)
-local q5 = symmath.Variable('q5', nil, true)
-
 -- dimension variables
 local t = symmath.Variable('t', nil, true)
 local x = symmath.Variable('x', nil, true)
 local y = symmath.Variable('y', nil, true)
 local z = symmath.Variable('z', nil, true)
 
+-- primitive variables
+local rho = symmath.Variable('\\rho', {t,x,y,z})	-- density
+local u = symmath.Variable('u', {t,x,y,z})		-- velocity
+local v = symmath.Variable('v', {t,x,y,z})
+local w = symmath.Variable('w', {t,x,y,z})
+local e = symmath.Variable('e', {t,x,y,z})		-- total specific energy 
+
+-- state variable
+local q1 = symmath.Variable('q1', {t,x,y,z})
+local q2 = symmath.Variable('q2', {t,x,y,z})
+local q3 = symmath.Variable('q3', {t,x,y,z})
+local q4 = symmath.Variable('q4', {t,x,y,z})
+local q5 = symmath.Variable('q5', {t,x,y,z})
+
 local gamma = symmath.Variable('\\gamma')
-local ek = .5 * (u * u + v * v + w * w)			-- kinetic specific energy
-local ei = e - .5 * ek							-- internal specific energy
+local ek = symmath.Constant(1)/symmath.Constant(2) * (u * u + v * v + w * w)			-- kinetic specific energy
+local ei = e - symmath.Constant(1)/symmath.Constant(2) * ek							-- internal specific energy
 local P = (gamma - 1) * rho * ei				-- pressure
 local E = rho * e								-- total energy
 

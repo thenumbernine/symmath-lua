@@ -40,12 +40,12 @@ g^ab =	[ 	g^uv				-A^u		 ]
 		[	-A^v				A^2 + phi^-2 ]
 --]]
 
-t = symmath.Variable('t', nil, true)
-x = symmath.Variable('x', nil, true)
-y = symmath.Variable('y', nil, true)
-z = symmath.Variable('z', nil, true)
-w = symmath.Variable('w', nil, true)	-- x^5, or the A^mu vector combined with the phi^2 ...
-phi = symmath.Variable('\\phi', nil, true)
+t = symmath.Variable('t')
+x = symmath.Variable('x')
+y = symmath.Variable('y')
+z = symmath.Variable('z')
+w = symmath.Variable('w')	-- x^5, or the A^mu vector combined with the phi^2 ...
+phi = symmath.Variable('\\phi', {t,x,y,z,w})
 
 -- symmath.tensor isn't set up to handle _5 ... since it uses tostring() for concat'ing variable names 
 -- ... yet also uses tostring() for referencing the variable itself ...
@@ -55,15 +55,15 @@ tensor.coords{{t,x,y,z}, abcdef={t,x,y,z,w}}
 -- keeping it 4D at the moment
 -- if one were so inclined they might insert the adm 3+1 metric here ...
 printbr('4D metric tensor')
-tensor.assign[[gLL_$u_$v = symmath.Variable('g_{{$u}{$v}}', nil, true)]]
+tensor.assign[[gLL_$u_$v = symmath.Variable('g_{{$u}{$v}}', {t,x,y,z,w})]]
 printbr('4D metric tensor inverse')
-tensor.assign[[gUU_$u_$v = symmath.Variable('g^{{$u}{$v}}', nil, true)]]
+tensor.assign[[gUU_$u_$v = symmath.Variable('g^{{$u}{$v}}', {t,x,y,z,w})]]
 
 -- EM potential 4-vector
 printbr('EM potential vector')
-tensor.assign[[AL_$u = symmath.Variable('A_{$u}', nil, true)]]
-tensor.assign[[AU_$u = symmath.Variable('A^{$u}', nil, true)]]
-A = symmath.Variable('A', nil, true)	-- helper for representing A^2 = A^u A_u
+tensor.assign[[AL_$u = symmath.Variable('A_{$u}', {t,x,y,z,w})]]
+tensor.assign[[AU_$u = symmath.Variable('A^{$u}', {t,x,y,z,w})]]
+A = symmath.Variable('A', {t,x,y,z,w})	-- helper for representing A^2 = A^u A_u
 
 -- 5D metric tensor
 printbr('5D metric tensor')

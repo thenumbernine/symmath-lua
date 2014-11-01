@@ -25,7 +25,7 @@ symmath = require 'symmath'
 require 'symmath.notebook'
 Constant = require 'symmath.Constant'
 
-symmath.toStringMethod = require 'symmath.tostring.MathJax'
+--symmath.toStringMethod = require 'symmath.tostring.MathJax'
 
 notebook[[
 -- constant simplificaiton
@@ -34,9 +34,9 @@ notebook[[
 =asserteq(Constant(-1):simplify(), (-Constant(1)/Constant(1)):simplify())	-- without the first 'simplify' we don't get the same canonical form with the unary - on the outside
 =asserteq(Constant(1), (Constant(1)/(Constant(1)*Constant(1))):simplify())
 
-x = symmath.Variable('x', nil, true)
-y = symmath.Variable('y', nil, true)
-t = symmath.Variable('t', nil, true)
+x = symmath.Variable('x')
+y = symmath.Variable('y')
+t = symmath.Variable('t')
 
 -- commutativity
 =asserteq(x+y, y+x)
@@ -55,9 +55,17 @@ t = symmath.Variable('t', nil, true)
 =asserteq(((x+1)*(y+1)):simplify(), (x*y + x + y + 1):simplify())
 =asserteq((2/(2*x*y)):simplify(), (1/(x*y)):simplify())
 
+-- factoring integers
+=asserteq((Constant(2)/Constant(2)):simplify(), Constant(1))
+=asserteq((Constant(2)/Constant(4)):simplify(), (Constant(1)/Constant(2)):simplify())
+
 -- expand(): add div mul
 
 -- factor(): mul add div
 
-
+-- trigonometry
+=asserteq((symmath.sin(x)^2+symmath.cos(x)^2):simplify(), Constant(1))
+=asserteq((y*symmath.sin(x)^2+y*symmath.cos(x)^2):simplify(), y)
+=asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2):simplify(), 2*y)	-- works when combining y + y * trig ident
+=asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2):simplify(), 1+y)	-- ... but not when combining 1 + y * trig ident (look in factor.lua)
 ]]

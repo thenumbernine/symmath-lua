@@ -25,7 +25,6 @@ require 'ext'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.toStringMethod = MathJax
-symmath.simplifyDivisionByPower = true
 
 local function printbr(...)
 	print(...)
@@ -63,7 +62,12 @@ do
 		if isGreek[varname] then varname = '\\' .. varname end
 		-- subscript
 		if #varname > 1 and varname:match('[xyz]$') then varname = varname:sub(1,-2)..'_'..varname:sub(-1) end
-		_G[var] = symmath.Variable(varname, nil, true)
+		_G[var] = symmath.Variable(varname)
+	end
+	for _,var in ipairs(varNames:split('%s+')) do
+		if not ({x=1,y=1,z=1,t=1})[var] then
+			_G[var]:depends(x,y,z,t)
+		end
 	end
 end
 
@@ -137,15 +141,27 @@ printbr('energy total')
 printbr(energyTotalEqn)
 
 -- expand system
+continuityEqn:simplify()
 
-local allEqns = table()
-	:append{continuityEqn}
-	:append(momentumEqns)
-	:append(magneticFieldEqns)
-	:append{energyTotalEqn}
-	:map(function(eqn)
-		return symmath.simplify(eqn)
-	end)
+
+local allEqns = table{
+	continuityEqn,
+	momentumEqns[1],
+	momentumEqns[2],
+	momentumEqns[3],
+	magneticFieldEqns[1],
+	magneticFieldEqns[2],
+	magneticFieldEqns[3],
+	energyTotalEqn
+}
+allEqns[1] = allEqns[1]:simplify()
+allEqns[2] = allEqns[2]:simplify()
+allEqns[3] = allEqns[3]:simplify()
+allEqns[4] = allEqns[4]:simplify()
+allEqns[5] = allEqns[5]:simplify()
+allEqns[6] = allEqns[6]:simplify()
+allEqns[7] = allEqns[7]:simplify()
+allEqns[8] = allEqns[8]:simplify()
 
 printbr()
 printbr('all')

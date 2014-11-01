@@ -130,15 +130,15 @@ t = symmath.Variable('t')
 x = symmath.Variable('x')
 y = symmath.Variable('y')
 z = symmath.Variable('z')
-coords = {'t', 'x', 'y', 'z'}
-spatialCoords = {'x', 'y', 'z'}
+coords = table{'t', 'x', 'y', 'z'}
+spatialCoords = table{'x', 'y', 'z'}
 
 -- schwarzschild metric in cartesian coordinates
 
 	-- spatial
 alpha = symmath.Constant(1)
-v = symmath.Variable('v',nil,true)
-f = symmath.Variable('f',nil,true)
+v = symmath.Variable('v', coords:map(function(v) return _G[v] end))
+f = symmath.Variable('f', coords:map(function(v) return _G[v] end))
 betaL_x = -v * f
 betaU_x = -v * f
 betaL_y = symmath.Constant(0)
@@ -203,7 +203,6 @@ for _,u in ipairs(coords) do
 		for _,w in ipairs(coords) do
 			exec(('gLLL_$u_$v_$w = symmath.diff(gLL_$u_$v, $w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
 			exec(('gLLL_$u_$v_$w = symmath.simplify(gLLL_$u_$v_$w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			
 			-- replace symmath.diff(r,t) with 0
 			--exec(('gLLL_$u_$v_$w = symmath.replace(gLLL_$u_$v_$w, symmath.Derivative(r, t), symmath.Constant(0))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
 			
@@ -218,7 +217,7 @@ printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
-			exec(('christoffelLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
+			exec(('christoffelLLL_$u_$v_$w = symmath.simplify((symmath.Constant(1)/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
 			printNonZero([[\\Gamma_{$u$v$w}]], 'christoffelLLL_$u_$v_$w', {u=u,v=v,w=w})
 		end
 	end
@@ -244,7 +243,7 @@ printbr('geodesic')
 x''^u = -G^u_vw x'^v x'^w
 --]]
 for _,u in ipairs(coords) do
-	exec(([[diffxU_$u = symmath.Variable('{d x^$u}\\over {d\\tau}',nil,true)]]):gsub('$u',u))
+	exec(([[diffxU_$u = symmath.Variable('{d x^$u}\\over {d\\tau}')]]):gsub('$u',u))
 end
 for _,u in ipairs(coords) do
 	exec(('diff2xU_$u = 0'):gsub('$u',u))

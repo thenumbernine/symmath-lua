@@ -46,18 +46,19 @@ symmath = require 'symmath'
 local tensor = require 'symmath.tensor'
 
 -- coordinates
-t = symmath.Variable('t', nil, true)
-x = symmath.Variable('x', nil, true)
-y = symmath.Variable('y', nil, true)
-z = symmath.Variable('z', nil, true)
-
-a = symmath.Variable('a')
-r = symmath.Variable('r', nil, true)
-M = symmath.Variable('M')
-Q = symmath.Variable('Q')
+t = symmath.Variable('t')
+x = symmath.Variable('x')
+y = symmath.Variable('y')
+z = symmath.Variable('z')
 
 spatialCoords = {x, y, z}
 coords = {t, x, y, z}
+
+a = symmath.Variable('a', coords)
+r = symmath.Variable('r', coords)
+M = symmath.Variable('M')
+Q = symmath.Variable('Q')
+
 tensor.coords{coords, ijk=spatialCoords}
 
 -- TODO make this symbolic so that it can be properly evaluated
@@ -70,7 +71,7 @@ end
 H = (r * M - Q^2 / 2) / (r^2 + a^2 * z^2 / r^2)
 --]]
 -- [[
-H = symmath.Variable('H', nil, true)
+H = symmath.Variable('H', coords)
 --]]
 
 --[[
@@ -84,8 +85,8 @@ mU_y = lL_y
 mU_z = lL_z
 --]]
 -- [=[
-tensor.assign[[lL_$u = symmath.Variable('l_$u', nil, true)]]
-tensor.assign[[mU_$u = symmath.Variable('m^$u', nil, true)]]
+tensor.assign[[lL_$u = symmath.Variable('l_$u', coords)]]
+tensor.assign[[mU_$u = symmath.Variable('m^$u', coords)]]
 --]=]
 
 -- Minkowski metric
@@ -114,7 +115,7 @@ tensor.assign[[GammaLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLL
 tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
-tensor.assign[[diffxU_$u = symmath.Variable('{d x^$u}\\over{d\\tau}', nil, true)]]
+tensor.assign[[diffxU_$u = symmath.Variable('{d x^$u}\\over{d\\tau}', coords)]]
 tensor.assign[[diff2xU_$u = -GammaULL_$u_$v_$w * diffxU_$u * diffxU_$v]]
 
 do return end

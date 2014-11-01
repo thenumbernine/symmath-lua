@@ -139,9 +139,9 @@ end
 printbr()
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
---tensor.assign[[diffxU_$u = symmath.Variable('{dx^$u}\\over{d\\tau}', nil, true)]]
+--tensor.assign[[diffxU_$u = symmath.Variable('{dx^$u}\\over{d\\tau}', {t,r,theta,phi})]]
 for _,u in ipairs(coords) do
-	_G['diffxU_'..u] = symmath.Variable('{{\\dot x}^'.._G[u]..'}', nil, true)
+	_G['diffxU_'..u] = symmath.Variable('{{\\dot x}^'.._G[u]..'}', {t,r,theta,phi})
 end
 printbr('geodesic equation')
 --tensor.assign[[diff2xU_$u = -GammaULL_$u_$v_$w * diffxU_$u * diffxU_$v]]

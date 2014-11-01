@@ -37,16 +37,16 @@ symmath = require 'symmath'
 local tensor = require 'symmath.tensor'
 
 -- coordinates
-t = symmath.Variable('t', nil, true)
-x = symmath.Variable('x', nil, true)
-y = symmath.Variable('y', nil, true)
-z = symmath.Variable('z', nil, true)
+t = symmath.Variable('t')
+x = symmath.Variable('x')
+y = symmath.Variable('y')
+z = symmath.Variable('z')
 M = symmath.Variable('M')
 
 -- algebraic
 --r = (x^2 + y^2 + z^2)^.5
 -- deferred:
-r = symmath.Variable('r', nil, true)
+r = symmath.Variable('r', {t,x,y,z})
 
 spatialCoords = {x, y, z}
 coords = {t, x, y, z}
@@ -89,7 +89,7 @@ tensor.assign[[GammaLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLL
 tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
-tensor.assign[[diffxU_$u = symmath.Variable('diffxU_$u', nil, true)]]
+tensor.assign[[diffxU_$u = symmath.Variable('diffxU_$u', {t,x,y,z})]]
 tensor.assign[[diff2xU_$u = -GammaULL_$u_$v_$w * diffxU_$u * diffxU_$v]]
 
 -- Christoffel partial: G^a_bc,d
