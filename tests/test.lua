@@ -53,6 +53,7 @@ t = symmath.Variable('t', nil, true)
 -- simplify(): div add mul
 =asserteq(((x+1)*y):simplify(), (x*y + y):simplify())
 =asserteq(((x+1)*(y+1)):simplify(), (x*y + x + y + 1):simplify())
+=asserteq((2/(2*x*y)):simplify(), (1/(x*y)):simplify())
 
 -- expand(): add div mul
 

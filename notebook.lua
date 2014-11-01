@@ -45,7 +45,7 @@ function notebook(cmd)
 				local func = ok
 				local errmsg
 				local result = {xpcall(func, function(err)
-					errmsg = err .. '\n' .. debug.traceback()
+					errmsg = 'line '..line..'\n'..err .. '\n' .. debug.traceback()
 				end)}	-- scope? all global, right? unless 'local' is added on...
 				local duration = os.time() - startTime
 				if errmsg then

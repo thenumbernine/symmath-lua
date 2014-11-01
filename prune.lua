@@ -38,23 +38,33 @@ Prune.lookupTable = {
 
 		-- apply differentiation
 		-- don't do so if it's a diff of a variable that requests not to
-		if not (expr.xs[1]:isa(Variable) 
-		and expr.xs[1].deferDiff) 
+		-- [[
+		if expr.xs[1]:isa(Variable)
 		then
-			-- ... and if we're not lazy-evaluating the derivative of this with respect to other variables ...
-			if not expr.xs[1].diff then
-				error("failed to differentiate "..tostring(expr.xs[1]).." with type "..type(expr.xs[1]))
-			end
-			return prune(expr.xs[1]:diff(unpack(expr.xs, 2)))
-		end
-	
-		-- dx/dx = 1
-		if expr.xs[1]:isa(Variable) then
+			-- dx/dx = 1
 			if #expr.xs == 2 
 			and expr.xs[1] == expr.xs[2]
 			then
 				return Constant(1)
 			end
+			
+			--dx/dy = 0 unless x is a function of y
+			for i=2,#expr.xs do
+				local var = expr.xs[i]
+				if not expr.xs[1].dependentVars:find(var) then
+					return Constant(0)
+				end
+			end			
+		end
+		--]]
+
+		-- don't recursively simplify variables
+		-- makes me think I'm confusing what diff() means on all other expressions (apply derivative) 
+		-- and what diff() means to variables (... the same thing?)
+		if expr.xs[1].diff 
+		and not expr.xs[1]:isa(Variable)
+		then
+			return prune(expr.xs[1]:diff(unpack(expr.xs, 2)))
 		end
 	end,
 	
@@ -267,8 +277,9 @@ local original = expr:clone()
 				assert(#x.xs == 2)
 				local a,b = unpack(x.xs)
 				expr.xs:remove(i)
---print('c+a/b => (c*b+a)/b')
-				return prune((expr * b + a) / b)
+				local expr = (expr * b + a) / b
+--print('c+a/b => (c*b+a)/b', symmath.Verbose(original), '=>', symmath.Verbose(expr))
+				return prune(expr)
 			end
 		end
 		--]]
@@ -580,7 +591,8 @@ local original = expr:clone()
 	
 	[divOp] = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
-
+		local original = expr:clone()
+		
 		if symmath.simplifyDivisionByPower then
 			return prune(mulOp(expr.xs[1], powOp(expr.xs[2], Constant(-1))))
 		end
@@ -636,6 +648,8 @@ local original = expr:clone()
 			return Constant(1)		-- ... for expr.xs[1] != 0
 		end
 
+-- there's an error in here
+-- just try 2/(2*x*y)
 	-- [[
 		-- (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
 		do
@@ -690,11 +704,15 @@ local original = expr:clone()
 				-- can I construct these even if they have no terms?
 				local num
 				if #numBases > 0 then
-					num = mulOp(unpack(numBases:map(function(v,i) return v ^ numPowers[i] end)))
+					num = mulOp(unpack(numBases:map(function(v,i) 
+						return v ^ numPowers[i]
+					end)))
 				end
 				local denom
 				if #denomBases > 0 then
-					denom = mulOp(unpack(denomBases:map(function(v,i) return v ^ numPowers[i] end)))
+					denom = mulOp(unpack(denomBases:map(function(v,i) 
+						return v ^ denomPowers[i]
+					end)))
 				end
 				
 				local result
@@ -705,7 +723,8 @@ local original = expr:clone()
 				else
 					result = num / denom
 				end
-				
+		
+--print('our problem', symmath.Verbose(original), '=>', symmath.Verbose(result))
 				return prune(result)
 			end
 		end
@@ -770,7 +789,12 @@ local original = expr:clone()
 		if expr.xs[1]:isa(mulOp) then
 			return prune(mulOp(unpack(expr.xs[1].xs:map(function(v) return v ^ expr.xs[2] end))))
 		end
-		
+	
+		-- a^(-c) => 1/a^c
+		if expr.xs[2]:isa(Constant) and expr.xs[2].value < 0 then
+			return prune(Constant(1)/(expr.xs[1]^Constant(-expr.xs[2].value)))
+		end
+
 		--[[ for simplification's sake ... (like -a => -1 * a)
 		-- x^c => x*x*...*x (c times)
 		if expr.xs[2]:isa(Constant)

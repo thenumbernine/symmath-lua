@@ -10,8 +10,8 @@ demo at http://christopheremoore.net/symbolic-lua
 
 operations (and their respective operator precedence)
 simplify:	div	add mul
-expand:	add div mul
-factor: mul add div
+expand:		add div mul
+factor: 	mul add div
 
 
 
@@ -23,9 +23,8 @@ TODO
 
 - right now prune() does pruning and canonical form.
 	TODO: put pruning ops in prune(), and put canonical form stuff (div add mul) in simplify()
-	- then put add-div-mul stuff in expand(), and put mul-add-div stuff in factor
-	- then remove all recursive references from within all of these and replace it with an external loop than runs until no changes are made
-	- then, when any of simplify(), expand(), or factor() is called, have them go back and forth between their routine and prune()
+	- then put add-div-mul stuff in expand(), and put mul-add-div stuff in factor()
+	- then, when any of simplify(), expand(), or factor() is called, have them go back and forth between their routine and prune() and finish with tidy()
 - another TODO on rearranging operations:
 	- specify simplify, expand, and factor by their precedence order of div, add, and mul
 	- then provide each with a list of functions that arrange operations accordingly (div-add => add-div, etc)
