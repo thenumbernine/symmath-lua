@@ -700,8 +700,8 @@ local original = expr:clone()
 					else
 						base, power = x, Constant(1)
 					end
-					bases[i] = base
-					powers[i] = power
+					bases[i] = assert(base)
+					powers[i] = assert(power)
 				end
 				return bases, powers
 			end
@@ -740,19 +740,18 @@ local original = expr:clone()
 				end
 			end
 
-			for i=1,#nums do
-				local j = 1
-				while j <= #denoms do
+			-- from this point on, nums and denoms don't match up with numBases (specifically because of the prime factorization of integers)
+			-- so don't worry about and don't use nums and denoms
+
+			for i=1,#numBases do
+				for j=#denomBases,1,-1 do
 					if numBases[i] == denomBases[j] then
 						modified = true
 						local resultPower = numPowers[i] - denomPowers[j]
 						numPowers[i] = resultPower
-						denoms:remove(j)
 						denomBases:remove(j)
 						denomPowers:remove(j)
-						j=j-1
 					end
-					j=j+1
 				end
 			end
 			
@@ -786,7 +785,7 @@ local original = expr:clone()
 			end
 		end
 
-	--[[
+		--[[
 	
 		-- x / x^a => x^(1-a)
 		if expr.xs[2]:isa(powOp) and expr.xs[1] == expr.xs[2].xs[1] then
@@ -805,7 +804,7 @@ local original = expr:clone()
 		then
 			return prune(expr.xs[1].xs[1] ^ (expr.xs[1].xs[2] - expr.xs[2].xs[2]))
 		end
-	--]]
+		--]]
 
 		return expr
 	end,
