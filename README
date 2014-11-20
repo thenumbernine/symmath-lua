@@ -17,6 +17,8 @@ factor: 	mul add div
 
 TODO
 
+- functions that lua has that I don't: abs, ceil, floor, deg, rad, fmod, frexp, log10, min, max
+
 - support for numbers rather than only Constant
 - better simplify() that could actually run multiple iterations and compare start to current state successfully without infinite tail calls
 - replace a variable's "deferDiff" with a list of dependent variables, for which to defer differentiation (reduce to kronecher delta otherwise)

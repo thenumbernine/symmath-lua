@@ -25,8 +25,6 @@ symmath = require 'symmath'
 require 'symmath.notebook'
 Constant = require 'symmath.Constant'
 
---symmath.toStringMethod = require 'symmath.tostring.MathJax'
-
 notebook[[
 -- constant simplificaiton
 =asserteq(Constant(1), (Constant(1)*Constant(1)):simplify())
@@ -54,7 +52,9 @@ t = symmath.Variable('t')
 =asserteq(((x+1)*y):simplify(), (x*y + y):simplify())
 =asserteq(((x+1)*(y+1)):simplify(), (x*y + x + y + 1):simplify())
 =asserteq((2/(2*x*y)):simplify(), (1/(x*y)):simplify())
-
+=asserteq((1-(1-x)):simplify(), x)		-- works
+=asserteq(((1-(1-x))/x):simplify(), Constant(1))	-- doesn't
+	
 -- factoring integers
 =asserteq((Constant(2)/Constant(2)):simplify(), Constant(1))
 =asserteq((Constant(2)/Constant(4)):simplify(), (Constant(1)/Constant(2)):simplify())

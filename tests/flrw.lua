@@ -22,7 +22,7 @@
 --]]
 
 --[[
-flrw in spherical form: -dt^2 + a^2 (dr^2 + r^2 (dtheta^2 + sin(theta)^2 dphi^2)
+flrw in spherical form: -dt^2 + a^2 (dr^2 / (1 - k r^2) + r^2 (dtheta^2 + sin(theta)^2 dphi^2)
 --]]
 
 symmath = require 'symmath'
@@ -42,6 +42,7 @@ phi = Variable('\\phi')
 
 -- metric variables
 a = Variable('a', {t})		-- radius of curvature
+k = Variable('k')			-- constant: +1, 0, -1
 
 -- EFE variables
 rho = Variable('\\rho')
@@ -65,18 +66,6 @@ local function printbr(...)
 	print('<br>')
 end
 
--- TODO something simulating Maxima's depends()
--- until then, override symmath.simplify
-do
-	local oldSimplify = symmath.simplify
-	symmath.simplify = function(x, ...)
-		x = x:replace(a:diff(r), Constant(0))
-		x = x:replace(a:diff(theta), Constant(0))
-		x = x:replace(a:diff(phi), Constant(0))
-		return oldSimplify(x, ...)
-	end
-end
-
 -- schwarzschild metric in cartesian coordinates
 
 -- start with zero
@@ -88,10 +77,10 @@ end
 	
 -- assign diagonals
 printbr('metric')
-gLL_t_t =  Constant(-1):simplify()
-gLL_r_r = (a^2):simplify()
-gLL_theta_theta = (r^2):simplify()
-gLL_phi_phi = (r^2 * symmath.sin(theta)^2):simplify()
+gLL_t_t =  Constant(-1)
+gLL_r_r = (a^2 / (1 - k * r^2))
+gLL_theta_theta = (a^2 * r^2)
+gLL_phi_phi = (a^2 * r^2 * symmath.sin(theta)^2)
 for _,u in ipairs(coords) do
 	printbr('\\(g_{'.._G[u]..' '.._G[u]..'} = '.._G['gLL_'..u..'_'..u]..'\\)')
 end
@@ -255,25 +244,23 @@ for _,a in ipairs(coords) do
 	end
 end
 R = R:simplify()
+
 printbr('\\(R = '..R..'\\)')
 printbr()
 
 -- matter stress-energy tensor
 printbr('Matter stress-energy tensor')
+uL_t = Constant(1)
+uL_r = Constant(0)
+uL_theta = Constant(0)
+uL_phi = Constant(0)
 for _,a in ipairs(coords) do
 	for _,b in ipairs(coords) do
-		_G['TLL_'..a..'_'..b] = Constant(0)
-	end
-end
-TLL_t_t = rho
-TLL_r_r = p
-TLL_theta_theta = p
-TLL_phi_phi = p
-for _,u in ipairs(coords) do
-	for _,v in ipairs(coords) do
-		local x = _G['TLL_'..u..'_'..v]
+		local x = _G['gLL_'..a..'_'..b] * p + _G['uL_'..a] * _G['uL_'..b] * (rho + p)
+		x = x:simplify()
+		_G['TLL_'..a..'_'..b] = x
 		if x ~= Constant(0) then
-			printbr('\\(T_{'.._G[u]..' '.._G[v]..'} = '..x..'\\)')
+			printbr('\\(T_{'.._G[a]..' '.._G[b]..'} = '..x..'\\)')
 		end
 	end
 end
@@ -283,12 +270,31 @@ printbr()
 printbr('Einstein field equations')
 -- G_uv + Lambda g_uv = 8 pi T_mu
 -- R_uv + g_uv (Lambda - 1/2 R) = 8 pi T_uv
+--[[
+T_uv = (rho + p) u_u u_v + p g_uv
+u is normalized <> u_u u_v g^uv = -1
+g^uv = diag(-1, 1, 1/r^2 1/(r^2 sin(theta)^2) )
+
+let u be purely timelike: u_u = [1,0,0,0]
+u_t^2 g^tt = -1 <=> -u_t^2 = -1 <=> u_t = 1
+
+T_uv = 
+[rho + p 0 0 0 ]     [-1  0     0             0           ]
+[      0 0 0 0 ]     [ 0 a^2    0             0           ]
+[      0 0 0 0 ] + p [ 0  0  a^2 r^2          0           ]
+[      0 0 0 0 ]     [ 0  0     0    a^2 r^2 sin(theta)^2 ]
+=
+[rho  0       0             0             ]
+[ 0  p a^2    0             0             ]
+[ 0  0   p a^2 r^2          0             ]
+[ 0  0       0     p a^2 r^2 sin(theta)^2 ]
+--]]
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		local R_uv = _G['RLL_'..u..'_'..v]
 		local g_uv = _G['gLL_'..u..'_'..v]
 	
-		local lhs = R_uv + g_uv * (Lambda - Constant(1)/Constant(2) * R)
+		local lhs = R_uv + g_uv * ( --[[ Lambda --]] - Constant(1)/Constant(2) * R)
 		local rhs = Constant(8) * pi * _G['TLL_'..u..'_'..v]
 		local eqn = lhs:equals(rhs):simplify()
 		

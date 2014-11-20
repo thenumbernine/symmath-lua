@@ -20,6 +20,26 @@ local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 local Visitor = require 'symmath.Visitor'
 local Prune = class(Visitor)
 
+local function primeFactorization(n)
+	local ps = table()
+	while n > 1 do
+		local found = false
+		for i=2,math.floor(math.sqrt(n)) do
+			if n%i == 0 then
+				n = n/i
+				ps:insert(i)
+				found = true
+				break
+			end
+		end
+		if not found then
+			ps:insert(n)
+			break
+		end
+	end
+	return ps
+end
+
 Prune.lookupTable = {
 
 	[Derivative] = function(prune, expr)
@@ -592,6 +612,16 @@ local original = expr:clone()
 	[divOp] = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
 		local original = expr:clone()
+	
+		expr = expr:clone()
+		
+		-- usually visitors only recursively call themselves ...
+		-- why does division need expand and factor called on its children as well?
+		-- this causes lots of simplification loops
+--		expr.xs = expr.xs:map(function(x) 
+--			return symmath.simplify(x) 
+--		end)
+
 		
 		-- x / 0 => Invalid
 		if expr.xs[2] == Constant(0) then
@@ -658,6 +688,7 @@ local original = expr:clone()
 			else
 				denoms = table{expr.xs[2]}
 			end
+			
 			local function listToBasesAndPowers(list)
 				local bases = table()
 				local powers = table()
@@ -674,77 +705,41 @@ local original = expr:clone()
 				end
 				return bases, powers
 			end
+			
 			local numBases, numPowers = listToBasesAndPowers(nums)
 			local denomBases, denomPowers = listToBasesAndPowers(denoms)
-			
-			-- assume that (frome the mulOp prune) constants have already been combined and moved to front
-			-- here we can remove constant factors 
-			if numBases[1]:isa(Constant) 
-			and numPowers[1]:isa(Constant)
-			and denomBases[1]:isa(Constant) 
-			and denomPowers[1]:isa(Constant)
-			then
-				local function primeFactorization(n)
-					local ps = table()
-					while n > 1 do
-						local found = false
-						for i=2,math.floor(math.sqrt(n)) do
-							if n%i == 0 then
-								n = n/i
-								ps[i] = (ps[i] or 0) + 1
-								found = true
-								break
+	
+			-- split any constant integers into its prime factorization
+			for _,info in ipairs{
+				{numBases, numPowers},
+				{denomBases, denomPowers}
+			} do
+				local bases, powers = unpack(info)
+				for i=#bases,1,-1 do
+					local b = bases[i]
+					if b:isa(Constant) 
+					and b.value == math.floor(b.value)	--integer
+					and b.value ~= 0
+					then
+						bases:remove(i)
+						local power = powers:remove(i)
+						if b.value < 0 then	-- insert -1 if necessary
+							bases:insert(i, Constant(-1))
+							powers:insert(i, power:clone())
+						elseif b.value == 1 then
+							bases:insert(i, Constant(1))
+							powers:insert(i, power:clone())
+						else
+							local fs = primeFactorization(math.abs(b.value))	-- 1 returns a nil list
+							for _,f in ipairs(fs) do
+								bases:insert(i, f)
+								powers:insert(i, power:clone())
 							end
 						end
-						if not found then
-							ps[n] = (ps[n] or 0) + 1
-							break
-						end
-					end
-					ps[1] = nil
-					return ps
-				end
-				local pa = primeFactorization(numBases[1].value):map(function(v,k)
-					return v*numPowers[1].value, k
-				end)
-				local pb = primeFactorization(denomBases[1].value):map(function(v,k)
-					return v*denomPowers[1].value, k
-				end)
-			
-				-- now eliminate from one what's in the other
-				local function elimOther(other)
-					return function(v,k)
-						if other[k] then
-							if other[k] == v then
-								other[k] = nil
-								v = nil
-							elseif other[k] > v then
-								other[k] = other[k] - v
-								v = nil
-							elseif other[k] < v then
-								v = v - other[k]
-								other[k] = nil
-							end
-						end
-						return v,k
 					end
 				end
-				pa = pa:map(elimOther(pb))
-				pb = pb:map(elimOther(pa))
-
-				numBases[1].value = 1
-				for k,v in pairs(pa) do
-					numBases[1].value = numBases[1].value * k^v
-				end
-				numPowers[1].value = 1
-				
-				denomBases[1].value = 1
-				for k,v in pairs(pb) do
-					denomBases[1].value = denomBases[1].value * k^v
-				end
-				denomPowers[1].value = 1
 			end
-			
+
 			for i=1,#nums do
 				local j = 1
 				while j <= #denoms do
@@ -760,6 +755,7 @@ local original = expr:clone()
 					j=j+1
 				end
 			end
+			
 			if modified then
 				if #numBases == 0 and #denomBases == 0 then return Constant(1) end
 

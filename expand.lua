@@ -12,6 +12,7 @@ Expand.lookupTable = {
 	[unmOp] = function(expand, expr)
 		return expand(Constant(-1) * expr.xs[1])
 	end,
+	
 	[mulOp] = function(expand, expr)
 		expr = expr:clone()
 local original = expr:clone()
@@ -78,6 +79,7 @@ local symmath = require 'symmath'
 		--]]
 
 	end,
+
 --[[
 	[powOp] = function(expand, expr)
 		expr = expr:clone()

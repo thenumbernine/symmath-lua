@@ -44,14 +44,28 @@ LaTeX.lookupTable = {
 		local Variable = require 'symmath.Variable'
 		-- for single variables 
 		if expr.xs[1]:isa(Variable) then
+			-- TODO option for \partial_x ?
 			return '{{d' .. self:apply(expr.xs[1]) .. '} \\over {' .. 
 				table{unpack(expr.xs, 2)}:map(function(x) return 'd{' .. self:apply(x) .. '}' end):concat(',') 
 				.. '}}'
 		else
 		-- for complex expressions
-			return '{d \\over {' .. 
-				table{unpack(expr.xs, 2)}:map(function(x) return 'd{' .. self:apply(x) .. '}' end):concat(',') 
-				.. '}} \\left (' .. self:apply(expr.xs[1]) .. '\\right )'
+			local s = '{d \\over {'
+			
+			local vars = table(expr.xs)
+			vars:remove(1)	-- remove expression
+			local powerForVars = {}
+			for _,var in ipairs(vars) do
+				powerForVars[var.name] = (powerForVars[var.name] or 0) + 1
+			end
+			for x,power in pairs(powerForVars) do	
+				s = s .. 'd{' .. self:apply(x) .. '}'
+				if power ~= 1 then
+					s = s .. '^' .. power
+				end
+			end
+			s = s .. '}} \\left (' .. self:apply(expr.xs[1]) .. '\\right )'
+			return s
 		end
 	end
 }
