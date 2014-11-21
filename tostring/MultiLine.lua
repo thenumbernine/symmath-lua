@@ -52,9 +52,10 @@ function MultiLine:fraction(lhs, rhs)
 	return res
 end
 
-function MultiLine:wrapStrWithParenthesis(node, parentNode)
+function MultiLine:wrapStrOfChildWithParenthesis(parentNode, childIndex)
+	local node = parentNode.xs[childIndex]
 	local res = self:apply(node)
-	if self:testWrapStrWithParenthesis(node, parentNode) then
+	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
 		local height = #res
 		local lhs = {}
 		local rhs = {}
@@ -98,14 +99,14 @@ MultiLine.lookupTable = {
 		return res
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
-		return self:combine({'-'}, self:wrapStrWithParenthesis(expr.xs[1], expr))
+		return self:combine({'-'}, self:wrapStrOfChildWithParenthesis(expr, 1))
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
-		local res = self:wrapStrWithParenthesis(expr.xs[1], expr)
+		local res = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local sep = {expr:getSepStr()}
 		for i=2,#expr.xs do
 			res = self:combine(res, sep)
-			res = self:combine(res, self:wrapStrWithParenthesis(expr.xs[i], expr))
+			res = self:combine(res, self:wrapStrOfChildWithParenthesis(expr, i))
 		end
 		return res
 	end,
@@ -115,8 +116,8 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.powOp'] = function(self, expr)
 		assert(#expr.xs == 2)
-		local lhs = self:wrapStrWithParenthesis(expr.xs[1], expr)
-		local rhs = self:wrapStrWithParenthesis(expr.xs[2], expr)
+		local lhs = self:wrapStrOfChildWithParenthesis(expr, 1)
+		local rhs = self:wrapStrOfChildWithParenthesis(expr, 2)
 		local lhswidth = #lhs[1]
 		local rhswidth = #rhs[1]
 		local res = table()
@@ -136,7 +137,7 @@ MultiLine.lookupTable = {
 	[require 'symmath.Derivative'] = function(self, expr)
 		assert(#expr.xs >= 2)
 		local lhs = self:fraction({'d'}, {'d'..table{unpack(expr.xs, 2)}:map(function(x) return x.name end):concat()})
-		local rhs = self:wrapStrWithParenthesis(expr.xs[1], expr)
+		local rhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		return self:combine(lhs, rhs)
 	end,
 }

@@ -80,6 +80,10 @@ local symmath = require 'symmath'
 
 	end,
 
+	[subOp] = function(expand, expr)
+		return expand(expr.xs[1] + -addOp(unpack(expr.xs, 2)))
+	end
+
 --[[
 	[powOp] = function(expand, expr)
 		expr = expr:clone()

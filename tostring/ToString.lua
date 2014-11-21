@@ -34,16 +34,23 @@ local function precedence(x)
 	return 10
 end
 
-function ToString:testWrapStrWithParenthesis(node, parentNode)
-	return precedence(node) < precedence(parentNode)
+function ToString:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
+	local subOp = require 'symmath.subOp'
+	if parentNode:isa(subOp) then
+		return precedence(parentNode.xs[childIndex]) <= precedence(parentNode)
+	else
+		return precedence(parentNode.xs[childIndex]) < precedence(parentNode)
+	end
 end
 
-function ToString:wrapStrWithParenthesis(node, parentNode)
+function ToString:wrapStrOfChildWithParenthesis(parentNode, childIndex)
+	local node = parentNode.xs[childIndex]
+	
 	-- tostring() needed to call MultiLine's conversion to tables ...
 	--local s = tostring(node)
 	local s = self:apply(node)
 	
-	if self:testWrapStrWithParenthesis(node, parentNode) then
+	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
 		s = '(' .. s .. ')'
 	end
 	return s

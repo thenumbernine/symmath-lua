@@ -21,11 +21,11 @@ SingleLine.lookupTable = {
 		return expr.name..'(' .. expr.xs:map(function(x) return self:apply(x) end):concat(', ') .. ')'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
-		return '-'..self:wrapStrWithParenthesis(expr.xs[1], expr)
+		return '-'..self:wrapStrOfChildWithParenthesis(expr, 1)
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
-		return expr.xs:map(function(x) 
-			return self:wrapStrWithParenthesis(x, expr)
+		return expr.xs:map(function(x,i)
+			return self:wrapStrOfChildWithParenthesis(expr, i)
 		end):concat(expr:getSepStr())
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
