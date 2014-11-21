@@ -36,7 +36,7 @@ end
 
 function ToString:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local subOp = require 'symmath.subOp'
-	if parentNode:isa(subOp) then
+	if parentNode:isa(subOp) and childIndex > 1 then
 		return precedence(parentNode.xs[childIndex]) <= precedence(parentNode)
 	else
 		return precedence(parentNode.xs[childIndex]) < precedence(parentNode)
