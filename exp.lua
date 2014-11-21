@@ -6,7 +6,7 @@ exp.func = math.exp
 function exp:diff(...)
 	local x = unpack(self.xs)
 	local diff = require 'symmath'.diff
-	return diff(x,...) * x
+	return diff(x,...) * self:clone()
 end
 return exp
 
