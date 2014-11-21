@@ -68,7 +68,7 @@ so if you have any derivs you want as function parameters, use map() or replace(
 	and then put them in the vars list
 --]]
 function symmath.compile(expr, vars)
-	return symmath.ToLuaCode:compile(expr, vars)
+	return (require 'symmath.tostring.Lua'):compile(expr, vars)
 end
 
 --[[ potential new system based on breadth-first search ... not finished yet

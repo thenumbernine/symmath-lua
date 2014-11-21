@@ -138,6 +138,7 @@ end
 Expression.replace = require 'symmath.replace'
 Expression.solve = require 'symmath.solve'
 Expression.map = require 'symmath.map'
+Expression.compile = function(...) return (require 'symmath').compile(...) end
 Expression.prune = function(...) return (require 'symmath.prune')(...) end
 Expression.simplify = require 'symmath.simplify'
 Expression.expand = function(...) return (require 'symmath.expand')(...) end
