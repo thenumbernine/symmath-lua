@@ -9,16 +9,17 @@ xs[1] is the expression
 all subsequent xs's are variables
 --]]
 local Derivative = class(Expression)
-Derivative.precedence = 5
+Derivative.precedence = 4
 
 function Derivative:init(...)
-	local ch = table{...}
-	local y = ch:remove(1)
-	for _,x in ipairs(ch) do
+	local vars = table{...}
+	local expr = assert(vars:remove(1), "can't differentiate nil")
+	assert(#vars > 0, "can't differentiate against nil")
+	for _,x in ipairs(vars) do
 		assert(x and type(x) == 'table' and x.isa and x:isa(Variable), "diff() expected wrt expressions to be a variable")
 	end
-	ch:sort(function(a,b) return a.name < b.name end)
-	Derivative.super.init(self, y, unpack(ch))
+	vars:sort(function(a,b) return a.name < b.name end)
+	Derivative.super.init(self, expr, unpack(vars))
 end
 
 function Derivative:eval()

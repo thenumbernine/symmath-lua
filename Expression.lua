@@ -66,7 +66,7 @@ end
 
 function Expression:__tostring()
 	local symmath = require 'symmath'
-	return symmath.toStringMethod(self)
+	return symmath.tostring(self)
 end
 
 --[[
@@ -138,7 +138,8 @@ end
 Expression.replace = require 'symmath.replace'
 Expression.solve = require 'symmath.solve'
 Expression.map = require 'symmath.map'
-Expression.compile = function(...) return (require 'symmath').compile(...) end
+Expression.compile = function(...) return (require 'symmath').compile(...) end	-- which itself is shorthand for (require 'symmath.tostring.Lua').compile(...)
+Expression.diff = function(...) return (require 'symmath').diff(...) end	-- which itself is shorthand for (require 'symmath.Derivative')(...)
 Expression.prune = function(...) return (require 'symmath.prune')(...) end
 Expression.simplify = require 'symmath.simplify'
 Expression.expand = function(...) return (require 'symmath.expand')(...) end

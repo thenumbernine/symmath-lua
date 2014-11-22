@@ -36,8 +36,24 @@ SingleLine.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
-		local diffvar = self:apply(assert(expr.xs[1]))
-		return 'd/d{'..table{unpack(expr.xs, 2)}:map(function(x) return self:apply(x) end):concat(',')..'}['..diffvar..']'
+		local topText = 'd'
+		local diffVars = expr.xs:sub(2)
+		local diffPower = #diffVars
+		if diffPower > 1 then
+			topText = topText .. '^'..diffPower
+		end	
+		local powersForDeriv = {}
+		for _,var in ipairs(diffVars) do
+			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
+		end
+		local diffexpr = self:apply(assert(expr.xs[1]))
+		return topText..'/{'..table.map(powersForDeriv, function(power, name, newtable)
+			local s = 'd'..name
+			if power > 1 then
+				s = s .. '^' .. power
+			end
+			return s, #newtable+1
+		end):concat(' ')..'}['..diffexpr..']'
 	end
 }
 

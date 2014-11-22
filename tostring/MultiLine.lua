@@ -39,16 +39,26 @@ produces:
 ---
  b
 --]]
-function MultiLine:fraction(lhs, rhs)
+function MultiLine:fraction(top, bottom)
 	local res = table()
-	local width = math.max(#lhs[1], #rhs[1])
-	for i=1,#lhs do
-		res:insert(' '..lhs[i]..(' '):rep(width-#lhs[1]+1))
+	local width = math.max(#top[1], #bottom[1])
+	
+	local topPadding = width - #top[1] + 1
+	local topLeft = math.floor(topPadding/2)
+	local topRight = topPadding - topLeft
+	for i=1,#top do
+		res:insert((' '):rep(topLeft+1)..top[i]..(' '):rep(topRight))
 	end
+	
 	res:insert(('-'):rep(width+2))
-	for i=1,#rhs do
-		res:insert(' '..rhs[i]..(' '):rep(width-#rhs[1]+1))
+	
+	local bottomPadding = width - #bottom[1] + 1
+	local bottomLeft = math.floor(bottomPadding/2)
+	local bottomRight = bottomPadding - bottomLeft
+	for i=1,#bottom do
+		res:insert((' '):rep(bottomLeft+1)..bottom[i]..(' '):rep(bottomRight))
 	end
+	
 	return res
 end
 
@@ -135,8 +145,25 @@ MultiLine.lookupTable = {
 		return table{s}
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
-		assert(#expr.xs >= 2)
-		local lhs = self:fraction({'d'}, {'d'..table{unpack(expr.xs, 2)}:map(function(x) return x.name end):concat()})
+		local topText = 'd'
+		local diffVars = expr.xs:sub(2)
+		local diffPower = #diffVars
+		if diffPower > 1 then
+			topText = topText .. '^'..diffPower
+		end
+		local powersForDeriv = {}
+		for _,var in ipairs(diffVars) do
+			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
+		end
+		local lhs = self:fraction(
+			{topText},
+			{table.map(powersForDeriv, function(power, name, newtable) 
+				local s = 'd'..name
+				if power > 1 then
+					s = s .. '^'..power
+				end
+				return s, #newtable+1
+			end):concat(' ')})
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		return self:combine(lhs, rhs)
 	end,

@@ -4,8 +4,8 @@ local Constant = require 'symmath.Constant'
 local sqrt = class(Function)
 sqrt.name = 'sqrt'
 sqrt.func = math.sqrt
-function sqrt:diff(...)
-	local x = unpack(self.xs)
+function sqrt:evaluateDerivative(...)
+	local x = unpack(self.xs):clone()
 	local diff = require 'symmath'.diff
 	return Constant(.5) * diff(x, ...) / sqrt(x)
 end

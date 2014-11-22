@@ -19,28 +19,6 @@ function Variable:clone()
 	return Variable(self.name, self.dependentVars) 
 end
 
--- [[
-function Variable:diff(...)
-	--[[
-	local diffs = table{...}
-	if #diffs == 1 and diffs[1] == self then
-		return Constant(1)
-	end
-	
-	-- if any variable in ... is not in dependentVars
-	-- then we can assert that the derivative of this with respect to that is zero
-	-- and everything is zero
-	for _,x in ipairs{...} do
-		if not self.dependentVars:find(x) then
-			return Constant(0)
-		end
-	end
-	--]]	
-	local Derivative = require 'symmath.Derivative'
-	return Derivative(self, ...)
-end
---]]
-
 function Variable:eval()
 	error("found a variable that wasn't replace()'d with a constant")
 end

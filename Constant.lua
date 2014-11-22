@@ -26,7 +26,7 @@ function Constant.__eq(a,b)
 	return va == vb
 end
 
-function Constant:diff(...)
+function Constant:evaluateDerivative(...)
 	return Constant(0)
 end
 

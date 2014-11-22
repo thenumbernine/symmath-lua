@@ -8,13 +8,12 @@ local addOp = class(BinaryOp)
 addOp.precedence = 2
 addOp.name = '+'
 
-function addOp:diff(...)
+function addOp:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
 	local result = addOp()
 	for i=1,#self.xs do
-		result.xs[i] = diff(self.xs[i], ...)
+		result.xs[i] = diff(self.xs[i]:clone(), ...)
 	end
---	result = prune(result)
 	return result
 end
 

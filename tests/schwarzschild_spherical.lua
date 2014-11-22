@@ -26,7 +26,7 @@ schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta
 --]]
 
 symmath = require 'symmath'
-symmath.toStringMethod = require 'symmath.tostring.LaTeX'
+symmath.tostring = require 'symmath.tostring.LaTeX'
 local MathJax = require 'symmath.tostring.MathJax'
 
 print(MathJax.header)

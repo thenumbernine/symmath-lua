@@ -8,7 +8,7 @@ mulOp.implicitName = true
 mulOp.precedence = 3
 mulOp.name = '*'
 
-function mulOp:diff(...)
+function mulOp:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
 	local addOp = require 'symmath.addOp'
 	local sumRes = addOp()
@@ -16,14 +16,13 @@ function mulOp:diff(...)
 		local termRes = mulOp()
 		for j=1,#self.xs do
 			if i == j then
-				termRes.xs:insert(diff(self.xs[j], ...))
+				termRes.xs:insert(diff(self.xs[j]:clone(), ...))
 			else
-				termRes.xs:insert(self.xs[j])
+				termRes.xs:insert(self.xs[j]:clone())
 			end
 		end
 		sumRes.xs:insert(termRes)
 	end
---	sumRes = prune(sumRes)
 	return sumRes
 end
 

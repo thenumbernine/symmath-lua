@@ -9,8 +9,9 @@ modOp.name = '%'
 --[[
 d/dx[a%b] is da/dx, except when a = b * k for some integer k
 --]]
-function modOp:diff(...)
+function modOp:evaluateDerivative(...)
 	local a, b = unpack(self.xs)
+	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
 	local x = diff(a, ...)
 	return x

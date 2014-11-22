@@ -26,7 +26,7 @@
 symmath = require 'symmath'
 require 'tensor'
 local MathJax = require 'symmath.tostring.MathJax'
-symmath.toStringMethod = MathJax
+symmath.tostring = MathJax
 
 print(MathJax.header)
 

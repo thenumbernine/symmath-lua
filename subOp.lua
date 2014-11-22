@@ -5,11 +5,11 @@ local subOp = class(BinaryOp)
 subOp.precedence = 2
 subOp.name = '-'
 
-function subOp:diff(...)
+function subOp:evaluateDerivative(...)
 	local a, b = unpack(self.xs)
+	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
 	local x = diff(a,...) - diff(b,...)
---	x = prune(x)
 	return x
 end
 

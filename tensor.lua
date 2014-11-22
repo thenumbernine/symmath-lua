@@ -31,7 +31,7 @@ for all of that, see my 'tensor' package (rather than this, which is 'symmath.te
 local symmath = require 'symmath'
 
 -- use tostring.LaTeX to avoid the \( \) around equations, then place them ourselves
-symmath.toStringMethod = require 'symmath.tostring.LaTeX'
+symmath.tostring = require 'symmath.tostring.LaTeX'
 
 local MathJax = require 'symmath.tostring.MathJax'
 print(MathJax.header)

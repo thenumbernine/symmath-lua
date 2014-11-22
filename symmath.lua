@@ -25,7 +25,6 @@ require 'ext'
 local symmath = {}
 symmath.verbose = false
 symmath.simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
-symmath.usePowerSymbol = true			-- whether to use a^b or pow(a,b).  This is a dirty trick to get around some dirtier regex converting compiled functions from one language to another.  A more proper fix would be to allow different backends to compile to.
 
 symmath.replace = require 'symmath.replace'
 symmath.solve = require 'symmath.solve'
@@ -38,6 +37,11 @@ symmath.tidy = require 'symmath.tidy'
 symmath.simplify = require 'symmath.simplify'
 
 symmath.Variable = require 'symmath.Variable'
+symmath.var = symmath.Variable					--shorthand
+function symmath.vars(...)						--create variables for each string parameter 
+	return table{...}:map(function(x) return symmath.var(x) end):unpack()
+end
+
 --[[
 replace variables with names as keys in evalmap with constants of the associated values
 --]]
@@ -176,7 +180,7 @@ symmath.greaterThan = require 'symmath.greaterThan'
 symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
 
 -- change the default as you see fit
-symmath.toStringMethod = assert(require 'symmath.tostring.MultiLine')
+symmath.tostring = assert(require 'symmath.tostring.MultiLine')
 symmath.Verbose = assert(require 'symmath.tostring.Verbose')
 
 return symmath

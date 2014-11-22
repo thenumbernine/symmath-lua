@@ -4,7 +4,7 @@ local run = ... or 'separate'
 local symmath = require 'symmath'
 
 local MathJax = require 'symmath.tostring.MathJax'
-symmath.toStringMethod = MathJax
+symmath.tostring = MathJax
 symmath.simplifyConstantPowers  = true
 
 local function printbr(...)

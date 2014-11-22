@@ -11,19 +11,19 @@ return function(x, ...)
 	local factor = require 'symmath.factor'
 	local tidy = require 'symmath.tidy'
 	local lastx
-	local i = 1
-	repeat
-		lastx = x
+	--local i = 1
+	--repeat
+	--	lastx = x
 		x = expand(x, ...)
 		x = prune(x, ...)
 		x = factor(x)
 		x = prune(x)
 		--do break end -- calling expand() again after this breaks things ...
-		i = i + 1
-	until i == 10 or x == lastx
-	if i == 10 then 
-		io.stderr:write('simplification loop!\n') 
-	end
+	--	i = i + 1
+	--until i == 10 or x == lastx
+	--if i == 10 then 
+	--	io.stderr:write('simplification loop!\n') 
+	--end
 	x = tidy(x, ...)
 	return x
 end

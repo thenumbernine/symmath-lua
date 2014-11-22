@@ -92,7 +92,7 @@ what has to be done to get there?
 
 symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
-symmath.toStringMethod = MathJax
+symmath.tostring = MathJax
 
 function exec(cmd)
 	assert(loadstring(cmd))()

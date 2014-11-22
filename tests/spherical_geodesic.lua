@@ -30,6 +30,7 @@ local tensor = require 'symmath.tensor'
 
 x = symmath.Variable('x')
 y = symmath.Variable('y')
+z = symmath.Variable('z')
 r = symmath.Variable('r')
 phi = symmath.Variable('\\phi')
 theta = symmath.Variable('\\theta')

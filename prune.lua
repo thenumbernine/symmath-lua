@@ -78,13 +78,13 @@ Prune.lookupTable = {
 		end
 		--]]
 
-		-- don't recursively simplify variables
-		-- makes me think I'm confusing what diff() means on all other expressions (apply derivative) 
-		-- and what diff() means to variables (... the same thing?)
-		if expr.xs[1].diff 
-		and not expr.xs[1]:isa(Variable)
-		then
-			return prune(expr.xs[1]:diff(unpack(expr.xs, 2)))
+		if expr.xs[1].evaluateDerivative then
+			local result = expr.xs[1]:clone()
+			for _,var in ipairs(expr.xs:sub(2)) do
+				-- TODO one at a time ...
+				result = prune(result:evaluateDerivative(var))
+			end
+			return result
 		end
 	end,
 	

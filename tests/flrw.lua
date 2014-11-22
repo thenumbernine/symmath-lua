@@ -26,7 +26,7 @@ flrw in spherical form: -dt^2 + a^2 (dr^2 / (1 - k r^2) + r^2 (dtheta^2 + sin(th
 --]]
 
 symmath = require 'symmath'
-symmath.toStringMethod = require 'symmath.tostring.LaTeX'
+symmath.tostring = require 'symmath.tostring.LaTeX'
 local MathJax = require 'symmath.tostring.MathJax'
 
 local Constant = symmath.Constant

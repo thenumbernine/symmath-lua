@@ -11,7 +11,7 @@ function Invalid.__eq(a,b)
 	return false
 end
 
-function Invalid:diff(...)
+function Invalid:evaluateDerivative(...)
 	return self
 end
 
