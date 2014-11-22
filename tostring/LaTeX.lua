@@ -42,31 +42,41 @@ LaTeX.lookupTable = {
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local Variable = require 'symmath.Variable'
-		-- for single variables 
-		if expr.xs[1]:isa(Variable) then
-			-- TODO option for \partial_x ?
-			return '{{d' .. self:apply(expr.xs[1]) .. '} \\over {' .. 
-				table{unpack(expr.xs, 2)}:map(function(x) return 'd{' .. self:apply(x) .. '}' end):concat(',') 
-				.. '}}'
-		else
-		-- for complex expressions
-			local s = '{d \\over {'
-			
-			local vars = table(expr.xs)
-			vars:remove(1)	-- remove expression
-			local powerForVars = {}
-			for _,var in ipairs(vars) do
-				powerForVars[var.name] = (powerForVars[var.name] or 0) + 1
-			end
-			for x,power in pairs(powerForVars) do	
-				s = s .. 'd{' .. self:apply(x) .. '}'
-				if power ~= 1 then
-					s = s .. '^' .. power
-				end
-			end
-			s = s .. '}} \\left (' .. self:apply(expr.xs[1]) .. '\\right )'
-			return s
+
+		local diffVars = expr.xs:sub(2)
+		local diffPower = #diffVars
+		
+		local diffExpr = expr.xs[1]
+		local diffExprStr = self:apply(diffExpr)
+		local diffExprOnTop = diffExpr:isa(Variable)
+		
+		local s = '{d'
+		if diffPower > 1 then
+			s = s .. '^'..diffPower
 		end
+
+		if diffExprOnTop then
+			s = s .. diffExprStr
+		end
+	
+		s = s .. ' \\over {'
+		
+		local powersForDeriv = {}
+		for _,var in ipairs(diffVars) do
+			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
+		end
+		
+		for name,power in pairs(powersForDeriv) do	
+			s = s .. ' d{' .. name .. '}'
+			if power > 1 then
+				s = s .. '^' .. power
+			end
+		end
+		s = s .. '}}'
+		if not diffExprOnTop then
+			s = s .. '\\left ( ' .. diffExprStr .. ' \\right )'
+		end
+		return s
 	end
 }
 
