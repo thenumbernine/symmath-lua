@@ -1,9 +1,9 @@
 require 'ext'
 
-local ToString = require 'symmath.tostring.ToString'
+local Language = require 'symmath.tostring.Language'
 
 -- convert to Lua code.  use :compile to generate a function
-local Lua = class(ToString)
+local Lua = class(Language)
 
 Lua.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr, vars)
@@ -13,16 +13,22 @@ Lua.lookupTable = {
 		return '(0/0)'
 	end,
 	[require 'symmath.Function'] = function(self, expr, vars)
-		return 'math.' .. expr.name .. '(' .. expr.xs:map(function(x) return self:apply(x, vars) end):concat(',') .. ')'
+		return 'math.' .. expr.name .. '(' .. expr.xs:map(function(x) 
+			return self:apply(x, vars) 
+		end):concat(',') .. ')'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr, vars)
 		return '(-'..self:apply(expr.xs[1], vars)..')'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr, vars)
-		return '('..expr.xs:map(function(x) return self:apply(x, vars) end):concat(' '..expr.name..' ')..')'
+		return '('..expr.xs:map(function(x) 
+			return self:apply(x, vars) 
+		end):concat(' '..expr.name..' ')..')'
 	end,
 	[require 'symmath.Variable'] = function(self, expr, vars)
-		if table.find(vars, nil, function(var) return expr.name == var.name end) then
+		if table.find(vars, nil, function(var) 
+			return expr.name == var.name 
+		end) then
 			return expr.name
 		end
 		error("tried to compile variable "..expr.name.." that wasn't in your function argument variable list")
@@ -32,14 +38,17 @@ Lua.lookupTable = {
 	end
 }
 
-function Lua:compile(expr, vars)
+-- returns (1) the function and (2) the code
+-- see Language:getCompileParameters for a description of paramInputs
+function Lua:compile(expr, paramInputs)
+	local expr, vars = self:prepareForCompile(expr, paramInputs)
 	local cmd = 'return function('..
-		table.map(vars, function(var) return var.name end):concat(', ')
+		vars:map(function(var) return var.name end):concat(', ')
 	..') return '..
 		self:apply(expr, vars)
 	..' end'
 	return assert(loadstring(cmd))(), cmd
 end
 
-return Lua()
+return Lua()	-- singleton
 

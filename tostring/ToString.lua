@@ -1,16 +1,14 @@
+--[[
+base class for all symmath.tostring options
+example usage:
+symmath.tostring = require 'symmath.tostring.***' for *** any subclass of ToString
+
+I made this before I made the symmath.Visitor parent class, so consider merging those.
+--]]
+
 require 'ext'
 
--- base class
 local ToString = class()
-
-local function debugToString(t)
-	if type(t) ~= 'table' then return tostring(t) end
-	local m = getmetatable(t)
-	setmetatable(t, nil)
-	local s = tostring(t)
-	setmetatable(t, m)
-	return s
-end
 
 function ToString:apply(expr, ...)
 	if type(expr) ~= 'table' then return tostring(expr) end

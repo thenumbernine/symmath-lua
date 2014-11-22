@@ -3,6 +3,8 @@ expr = expression to change
 find = sub-expression to find
 repl = sub-expression to replace
 callback(node) = callback per node, returns 'true' if we don't want to find/replace this tree
+
+TODO rewrite to use symmath.map() ?
 --]]
 local function replace(expr, find, repl, callback)
 	local clone = require 'symmath.clone'

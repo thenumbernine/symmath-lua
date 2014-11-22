@@ -65,14 +65,33 @@ function symmath.evaluate(expr, evalmap)
 end
 
 --[[
-builds a lua function out of the expression
-vars - specifies the list of variables that will associate with function input parameters
+builds a function out of the expression
+exprs - specifies the table of expressions that will be associated with function input parameters
+	- can either be a list of expressions -- in which case the text of the expression will be used (i.e. the name of the Variable) 
+	- or can be a table with a key/value pair, mapping the expression (the key) to the string to be used in the function (the value)
+	- ex: 
+		x=symmath.var'x' 
+		(x^2):compile{x} 
+		... produces "function(x) return x^2 end"
+		
+		x=symmath.var'x' 
+		(x^2):copmile{x='y'} 
+		... produces "function(y) return y^2 end"
+		
+		x,t=symmath.vars('x','t') 
+		x:depends(t) 
+		symmath.exp(-x^2):diff(t):simplify():compile{x,{[x:diff(t)]='dx_dt']}}
+		... produces "function(x, dx_dt) return -2 * x * dx_dt * math.exp(-x^2) end"
+
+language - specifies the target language.  options are 'Lua' (default) and 'JavaScript'
+
 if there are any Derivatives or variables (other those listed) then compiling will produce an error
 so if you have any derivs you want as function parameters, use map() or replace() to replace them for new variables
 	and then put them in the vars list
 --]]
-function symmath.compile(expr, vars)
-	return (require 'symmath.tostring.Lua'):compile(expr, vars)
+function symmath.compile(expr, vars, language)
+	language = language or 'Lua'
+	return require('symmath.tostring.'..language):compile(expr, vars)
 end
 
 --[[ potential new system based on breadth-first search ... not finished yet

@@ -22,5 +22,5 @@ function MathJax:__call(...)
 	return '\\(' .. MathJax.super.__call(self, ...) .. '\\)'
 end
 
-return MathJax()
+return MathJax()	-- singleton
 

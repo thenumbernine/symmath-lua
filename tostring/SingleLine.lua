@@ -57,5 +57,5 @@ SingleLine.lookupTable = {
 	end
 }
 
-return SingleLine()
+return SingleLine()		-- singleton
 

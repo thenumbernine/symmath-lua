@@ -178,5 +178,5 @@ MultiLine.__call = function(self, ...)
 	return '\n' ..result:concat('\n')
 end
 
-return MultiLine()
+return MultiLine()	-- singleton
 

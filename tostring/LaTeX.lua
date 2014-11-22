@@ -80,5 +80,5 @@ LaTeX.lookupTable = {
 	end
 }
 
-return LaTeX()
+return LaTeX()	-- singleton
 

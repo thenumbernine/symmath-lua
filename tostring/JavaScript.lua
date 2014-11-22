@@ -1,9 +1,9 @@
 require 'ext'
 
-local ToString = require 'symmath.tostring.ToString'
+local Language = require 'symmath.tostring.Language'
 
 -- convert to JavaScript code.  use :compile to wrap in a function
-local JavaScript = class(ToString)
+local JavaScript = class(Language)
 
 JavaScript.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr, vars)
@@ -68,14 +68,16 @@ JavaScript.lookupTable = {
 }
 
 -- returns code that can be eval()'d to return a function
-function JavaScript:compile(expr, vars)
+-- see Language:getCompileParameters for a description of paramInputs
+function JavaScript:compile(expr, paramInputs)
+	local expr, vars = self:prepareForCompile(expr, paramInputs)
 	local cmd = 'function tmp('..
-		table.map(vars, function(var) return var.name end):concat(', ')
+		vars:map(function(var) return var.name end):concat(', ')
 	..') { return '..
 		self:apply(expr, vars)
 	..'; }; tmp;'
 	return cmd
 end
 
-return JavaScript()
+return JavaScript()		-- singleton
 

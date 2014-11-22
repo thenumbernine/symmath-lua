@@ -722,15 +722,18 @@ local original = expr:clone()
 					and b.value ~= 0
 					then
 						bases:remove(i)
+						local value = b.value
 						local power = powers:remove(i)
-						if b.value < 0 then	-- insert -1 if necessary
+						if value < 0 then	-- insert -1 if necessary
 							bases:insert(i, Constant(-1))
 							powers:insert(i, power:clone())
-						elseif b.value == 1 then
+							value = -value
+						end
+						if value == 1 then
 							bases:insert(i, Constant(1))
 							powers:insert(i, power:clone())
 						else
-							local fs = primeFactorization(math.abs(b.value))	-- 1 returns a nil list
+							local fs = primeFactorization(value)	-- 1 returns a nil list
 							for _,f in ipairs(fs) do
 								bases:insert(i, f)
 								powers:insert(i, power:clone())

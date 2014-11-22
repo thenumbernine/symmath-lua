@@ -31,5 +31,5 @@ Verbose.lookupTable = {
 	end
 }
 
-return Verbose()
+return Verbose()	-- singleton
 
