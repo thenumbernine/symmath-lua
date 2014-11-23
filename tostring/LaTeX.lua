@@ -69,7 +69,7 @@ LaTeX.lookupTable = {
 		for name,power in pairs(powersForDeriv) do	
 			s = s .. ' d{' .. name .. '}'
 			if power > 1 then
-				s = s .. '^' .. power
+				s = s .. '^{' .. power .. '}'
 			end
 		end
 		s = s .. '}}'
