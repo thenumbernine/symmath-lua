@@ -31,7 +31,7 @@ JavaScript.lookupTable = {
 		-- special case for constant integer powers
 		local invert = false 
 		local result
-		if expr[2]:isa(Constant) then
+		if expr[2]:isa(require 'symmath.Constant') then
 			local power = expr[2].value
 			if power == 0 then 
 				return '1' 
