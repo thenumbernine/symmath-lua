@@ -24,7 +24,8 @@ function Expression:clone()
 	if self then
 		local xs = table()
 		for i=1,#self do
-			xs:insert(self[i]:clone())
+			local clone = require 'symmath.clone'
+			xs:insert(clone(self[i]))
 		end
 		return getmetatable(self)(unpack(xs))
 	else

@@ -8,21 +8,19 @@ TODO rewrite to use symmath.map() ?
 --]]
 local function replace(expr, find, repl, callback)
 	local clone = require 'symmath.clone'
+	
+	-- callback saya to short circuit search
 	if callback and callback(expr) then return clone(expr) end
-	if #expr > 0 then
-		local newChildren = table()
-		for i=1,#expr do
-			local ch = replace(expr[i], find, repl, callback)
-			if ch == find then
-				newChildren:insert(clone(repl))
-			else
-				newChildren:insert(ch)
-			end
-		end
-		return getmetatable(expr)(unpack(newChildren))
-	else
-		return clone(expr)
+	
+	-- found find then replace
+	if expr == find then return clone(repl) end
+	
+	-- recursive call
+	expr = clone(expr)
+	for i=1,#expr do
+		expr[i] = replace(expr[i], find, repl, callback)
 	end
+	return expr
 end
 return replace
 
