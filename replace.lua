@@ -7,6 +7,14 @@ callback(node) = callback per node, returns 'true' if we don't want to find/repl
 TODO rewrite to use symmath.map() ?
 --]]
 local function replace(expr, find, repl, callback)
+	local Constant = require 'symmath.Constant'
+	if type(find) == 'number' then
+		find = Constant(find)
+	end
+	if type(repl) == 'number' then
+		repl = Constant(repl)
+	end
+	
 	local clone = require 'symmath.clone'
 	
 	-- callback saya to short circuit search

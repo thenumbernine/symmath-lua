@@ -47,22 +47,25 @@ replace variables with names as keys in evalmap with constants of the associated
 --]]
 function symmath.evaluate(expr, evalmap)
 	if evalmap then
-		expr = symmath.map(expr, function(node)
-			if node == nil then
-				error("found a nil node in expression "..tostring(expr))
+		for k,v in pairs(evalmap) do
+			if type(v) ~= 'number' then
+				error("expected the values of the evaluation map to be numbers, but found "..tostring(k).." = ("..type(v)..").."..tostring(v))
 			end
-			if not node:isa(symmath.Variable) then return end
-			local newval = evalmap[node.name]
-			if newval == nil then return end
-			if type(newval) ~= 'number' then
-				error("expected the values of the evaluation map to be numbers, but found "..node.name.." = ("..type(newval)..").."..tostring(newval))
+			if type(k) == 'table' then
+				expr = expr:replace(k,symmath.Constant(v))
+			elseif type(k) == 'string' then
+				expr = symmath.map(expr, function(node)
+					if not node:isa(symmath.Variable) or node.name ~= k then return end
+					return symmath.Constant(v)
+				end)
 			end
-			return symmath.Constant(newval)
-		end)
+		end
 	end
 	expr = symmath.simplify(expr)
 	return expr:eval()
 end
+-- changing the name
+symmath.eval = symmath.evaluate
 
 --[[
 builds a function out of the expression
