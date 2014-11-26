@@ -15,12 +15,5 @@ function Function:evaluateConstants()
 	end
 end
 
-function Function:eval()
-	return self.func(table.map(self, function(node, k)
-		if type(k) ~= 'number' then return end
-		return node:eval()
-	end):unpack())
-end
-
 return Function
 

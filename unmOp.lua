@@ -11,9 +11,5 @@ function unmOp:evaluateDerivative(...)
 	return -diff(x,...)
 end
 
-function unmOp:eval()
-	return -self[1]:eval()
-end
-
 return unmOp
 

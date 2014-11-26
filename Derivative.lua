@@ -22,9 +22,5 @@ function Derivative:init(...)
 	Derivative.super.init(self, expr, unpack(vars))
 end
 
-function Derivative:eval()
-	error("cannot evaluate derivatives.  try calling simplify() first")
-end
-
 return Derivative
 

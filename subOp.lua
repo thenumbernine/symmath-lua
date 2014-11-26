@@ -13,13 +13,5 @@ function subOp:evaluateDerivative(...)
 	return x
 end
 
-function subOp:eval()
-	local result = self[1]:eval()
-	for i=2,#self do
-		result = result - self[i]:eval()
-	end
-	return result
-end
-
 return subOp
 

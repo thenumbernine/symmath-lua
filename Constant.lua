@@ -30,9 +30,5 @@ function Constant:evaluateDerivative(...)
 	return Constant(0)
 end
 
-function Constant:eval()
-	return self.value
-end
-
 return Constant
 

@@ -14,10 +14,5 @@ function divOp:evaluateDerivative(...)
 	return x
 end
 
-function divOp:eval()
-	local a, b = unpack(self)
-	return a:eval() / b:eval()
-end
-
 return divOp
 

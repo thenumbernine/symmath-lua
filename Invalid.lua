@@ -15,9 +15,5 @@ function Invalid:evaluateDerivative(...)
 	return self
 end
 
-function Invalid:eval()
-	return 0/0	--nan
-end
-
 return Invalid
 

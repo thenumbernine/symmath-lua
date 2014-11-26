@@ -26,14 +26,6 @@ function mulOp:evaluateDerivative(...)
 	return sumRes
 end
 
-function mulOp:eval()
-	local result = 1
-	for _,x in ipairs(self) do
-		result = result * x:eval()
-	end
-	return result
-end
-
 mulOp.__eq = nodeCommutativeEqual
 
 return mulOp

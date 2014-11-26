@@ -138,6 +138,7 @@ end
 Expression.replace = require 'symmath.replace'
 Expression.solve = require 'symmath.solve'
 Expression.map = require 'symmath.map'
+Expression.eval = function(...) return (require 'symmath').eval(...) end	-- which itself is shorthand for (require 'symmath.Derivative')(...)
 Expression.compile = function(...) return (require 'symmath').compile(...) end	-- which itself is shorthand for (require 'symmath.tostring.Lua').compile(...)
 Expression.diff = function(...) return (require 'symmath').diff(...) end	-- which itself is shorthand for (require 'symmath.Derivative')(...)
 Expression.prune = function(...) return (require 'symmath.prune')(...) end

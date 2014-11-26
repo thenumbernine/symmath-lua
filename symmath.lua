@@ -46,23 +46,7 @@ end
 replace variables with names as keys in evalmap with constants of the associated values
 --]]
 function symmath.evaluate(expr, evalmap)
-	if evalmap then
-		for k,v in pairs(evalmap) do
-			if type(v) ~= 'number' then
-				error("expected the values of the evaluation map to be numbers, but found "..tostring(k).." = ("..type(v)..").."..tostring(v))
-			end
-			if type(k) == 'table' then
-				expr = expr:replace(k,symmath.Constant(v))
-			elseif type(k) == 'string' then
-				expr = symmath.map(expr, function(node)
-					if not node:isa(symmath.Variable) or node.name ~= k then return end
-					return symmath.Constant(v)
-				end)
-			end
-		end
-	end
-	expr = symmath.simplify(expr)
-	return expr:eval()
+	return (require 'symmath.eval')(expr, evalmap)
 end
 -- changing the name
 symmath.eval = symmath.evaluate

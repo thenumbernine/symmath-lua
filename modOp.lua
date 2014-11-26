@@ -17,10 +17,5 @@ function modOp:evaluateDerivative(...)
 	return x
 end
 
-function modOp:eval()
-	local a, b = unpack(self)
-	return a:eval() % b:eval()
-end
-
 return modOp
 

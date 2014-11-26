@@ -25,10 +25,5 @@ function powOp:evaluateDerivative(...)
 	return x
 end
 
-function powOp:eval()
-	local a, b = unpack(self)
-	return a:eval() ^ b:eval()
-end
-
 return powOp
 

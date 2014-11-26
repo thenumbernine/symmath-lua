@@ -19,10 +19,6 @@ function Variable:clone()
 	return Variable(self.name, self.dependentVars) 
 end
 
-function Variable:eval()
-	error("found a variable that wasn't replace()'d with a constant")
-end
-
 function Variable.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
 	return a.name == b.name
