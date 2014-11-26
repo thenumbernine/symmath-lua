@@ -13,15 +13,17 @@ Lua.lookupTable = {
 		return '(0/0)'
 	end,
 	[require 'symmath.Function'] = function(self, expr, vars)
-		return 'math.' .. expr.name .. '(' .. expr.xs:map(function(x) 
+		return 'math.' .. expr.name .. '(' .. table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
 			return self:apply(x, vars) 
 		end):concat(',') .. ')'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr, vars)
-		return '(-'..self:apply(expr.xs[1], vars)..')'
+		return '(-'..self:apply(expr[1], vars)..')'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr, vars)
-		return '('..expr.xs:map(function(x) 
+		return '('..table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
 			return self:apply(x, vars) 
 		end):concat(' '..expr.name..' ')..')'
 	end,

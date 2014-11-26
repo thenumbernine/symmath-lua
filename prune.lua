@@ -45,76 +45,76 @@ Prune.lookupTable = {
 	[Derivative] = function(prune, expr)
 
 		-- d/dx c = 0
-		if expr.xs[1]:isa(Constant) then
+		if expr[1]:isa(Constant) then
 			return Constant(0)
 		end
 
 		-- d/dx d/dy = d/dxy
-		if expr.xs[1]:isa(Derivative) then
-			return prune(Derivative(expr.xs[1].xs[1], unpack(
-				table.append({unpack(expr.xs, 2)}, {unpack(expr.xs[1].xs, 2)})
+		if expr[1]:isa(Derivative) then
+			return prune(Derivative(expr[1][1], unpack(
+				table.append({unpack(expr, 2)}, {unpack(expr[1], 2)})
 			)))
 		end
 
 		-- apply differentiation
 		-- don't do so if it's a diff of a variable that requests not to
 		-- [[
-		if expr.xs[1]:isa(Variable)
+		if expr[1]:isa(Variable)
 		then
 			-- dx/dx = 1
-			if #expr.xs == 2 
-			and expr.xs[1] == expr.xs[2]
+			if #expr == 2 
+			and expr[1] == expr[2]
 			then
 				return Constant(1)
 			end
 			
 			--dx/dy = 0 unless x is a function of y
-			for i=2,#expr.xs do
-				local var = expr.xs[i]
-				if not expr.xs[1].dependentVars:find(var) then
+			for i=2,#expr do
+				local var = expr[i]
+				if not expr[1].dependentVars:find(var) then
 					return Constant(0)
 				end
 			end			
 		end
 		--]]
 
-		if expr.xs[1].evaluateDerivative then
-			local result = expr.xs[1]:clone()
-			for _,var in ipairs(expr.xs:sub(2)) do
+		if expr[1].evaluateDerivative then
+			local result = expr[1]:clone()
+			for i=2,#expr do
 				-- TODO one at a time ...
-				result = prune(result:evaluateDerivative(var))
+				result = prune(result:evaluateDerivative(expr[i]))
 			end
 			return result
 		end
 	end,
 	
 	[unmOp] = function(prune, expr)
-		if expr.xs[1]:isa(unmOp) then
-			return prune(expr.xs[1].xs[1]:clone())
+		if expr[1]:isa(unmOp) then
+			return prune(expr[1][1]:clone())
 		end
-		return prune(Constant(-1) * expr.xs[1])
+		return prune(Constant(-1) * expr[1])
 	end,
 	
 	[addOp] = function(prune, expr)
-		assert(#expr.xs > 0)
+		assert(#expr > 0)
 		
 		expr = expr:clone()
 local symmath = require 'symmath'
 local original = expr:clone()
 
-		if #expr.xs == 1 then return expr.xs[1] end
+		if #expr == 1 then return expr[1] end
 
 		-- flatten additions
 		-- (x + y) + z => x + y + z
-		for i=#expr.xs,1,-1 do
-			local ch = expr.xs[i]
+		for i=#expr,1,-1 do
+			local ch = expr[i]
 			if ch:isa(addOp) then
 				expr = expr:clone()
 				-- this looks like a job for splice ...
-				expr.xs:remove(i)
-				for j=#ch.xs,1,-1 do
-					local chch = assert(ch.xs[j])
-					expr.xs:insert(i, chch)
+				table.remove(expr, i)
+				for j=#ch,1,-1 do
+					local chch = assert(ch[j])
+					table.insert(expr, i, chch)
 				end
 --print('addOp flatten', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 				return prune(expr)
@@ -123,27 +123,27 @@ local original = expr:clone()
 		
 		-- push all Constants to the lhs, sum as we go
 		local cval = 0
-		for i=#expr.xs,1,-1 do
-			if expr.xs[i]:isa(Constant) then
-				cval = cval + expr.xs:remove(i).value
+		for i=#expr,1,-1 do
+			if expr[i]:isa(Constant) then
+				cval = cval + table.remove(expr, i).value
 			end
 		end
 		
 		-- if it's all constants then return what we got
-		if #expr.xs == 0 then 
+		if #expr == 0 then 
 --print('addOp const1 + const2 => const', symmath.Verbose(original), '=>', symmath.Verbose(cval))
 			return Constant(cval) 
 		end
 		
 		-- re-insert if we have a Constant
 		if cval ~= 0 then
-			expr.xs:insert(1, Constant(cval))
+			table.insert(expr, 1, Constant(cval))
 		else
 			-- if cval is zero and we're not re-inserting a constant
 			-- then see if we have only one term ...
-			if #expr.xs == 1 then 
+			if #expr == 1 then 
 --print('addOp returning zero')
-				return prune(expr.xs[1]) 
+				return prune(expr[1]) 
 			end
 		end
 		
@@ -151,7 +151,7 @@ local original = expr:clone()
 		do
 			local muls = table()
 			local nonMuls = table()
-			for i,x in ipairs(expr.xs) do
+			for i,x in ipairs(expr) do
 				if x:isa(mulOp) then
 					muls:insert(x)
 				else
@@ -163,7 +163,10 @@ local original = expr:clone()
 				local baseTerms
 				local didntFind
 				for _,mul in ipairs(muls) do
-					local nonConstTerms = mul.xs:filter(function(x) return not x:isa(Constant) end)
+					local nonConstTerms = table.filter(mul, function(x,k) 
+						if type(k) ~= 'number' then return end
+						return not x:isa(Constant) 
+					end)
 					if not baseTerms then
 						baseTerms = nonConstTerms
 					else
@@ -172,7 +175,10 @@ local original = expr:clone()
 							break
 						end
 					end
-					local constTerms = mul.xs:filter(function(x) return x:isa(Constant) end)
+					local constTerms = table.filter(mul, function(x,k) 
+						if type(k) ~= 'number' then return end
+						return x:isa(Constant) 
+					end)
 
 					local thisConst = 1
 					for _,const in ipairs(constTerms) do
@@ -196,19 +202,19 @@ local original = expr:clone()
 		--    and they have all children in common (with the exception of any constants)
 		--  then combine them, and combine their constants
 		-- x * c1 + x * c2 => x * (c1 + c2) (for c1,c2 constants)
-		for i=1,#expr.xs-1 do
-			local xI = expr.xs[i]
+		for i=1,#expr-1 do
+			local xI = expr[i]
 			local termsI
 			if xI:isa(mulOp) then
-				termsI = table(xI.xs)
+				termsI = table(xI)
 			else
 				termsI = table{xI}
 			end
-			for j=i+1,#expr.xs do
-				local xJ = expr.xs[j]
+			for j=i+1,#expr do
+				local xJ = expr[j]
 				local termsJ
 				if xJ:isa(mulOp) then
-					termsJ = table(xJ.xs)
+					termsJ = table(xJ)
 				else
 					termsJ = table{xJ}
 				end
@@ -257,8 +263,8 @@ local original = expr:clone()
 				
 				if not fail then
 					--print('optimizing from '..tostring(expr))
-					expr.xs:remove(j)
-					expr.xs[i] = mulOp(Constant(constI.value + constJ.value), unpack(commonTerms))
+					table.remove(expr, j)
+					expr[i] = mulOp(Constant(constI.value + constJ.value), unpack(commonTerms))
 					--print('optimizing to '..tostring(prune(expr)))
 --print('flattening muls in add')
 					return prune(expr)
@@ -270,16 +276,16 @@ local original = expr:clone()
 		--[[ factor out divs ...
 		local denom
 		local denomIndex
-		for i,x in ipairs(expr.xs) do
+		for i,x in ipairs(expr) do
 			if not x:isa(divOp) then
 				denom = nil
 				break
 			else
 				if not denom then
-					denom = x.xs[2]
+					denom = x[2]
 					denomIndex = i
 				else
-					if x.xs[2] ~= denom then
+					if x[2] ~= denom then
 						denom = nil
 						break
 					end
@@ -287,16 +293,16 @@ local original = expr:clone()
 			end
 		end
 		if denom then
-			expr.xs:remove(denomIndex)
+			table.remove(expr, denomIndex)
 			return prune(expr / denom)
 		end
 		--]]
 		-- [[ divs: c + a/b => (c * b + a) / b
-		for i,x in ipairs(expr.xs) do
+		for i,x in ipairs(expr) do
 			if x:isa(divOp) then
-				assert(#x.xs == 2)
-				local a,b = unpack(x.xs)
-				expr.xs:remove(i)
+				assert(#x == 2)
+				local a,b = unpack(x)
+				table.remove(expr, i)
 				local expr = (expr * b + a) / b
 --print('c+a/b => (c*b+a)/b', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 				return prune(expr)
@@ -319,36 +325,36 @@ local original = expr:clone()
 			local function checkAddOp(ch)
 				local cosAngle, sinAngle
 				local cosIndex, sinIndex
-				for i,x in ipairs(ch.xs) do
+				for i,x in ipairs(ch) do
 					
 					if x:isa(powOp)
-					and x.xs[1]:isa(Function)
-					and x.xs[2] == Constant(2)
+					and x[1]:isa(Function)
+					and x[2] == Constant(2)
 					then
-						if x.xs[1]:isa(cos) then
+						if x[1]:isa(cos) then
 							if sinAngle then
-								if sinAngle == x.xs[1].xs[1] then
+								if sinAngle == x[1][1] then
 									-- then remove sine and cosine and replace with a '1' and set modified
-									expr.xs:remove(i)	-- remove largest index first
-									expr.xs[sinIndex] = Constant(1)
+									table.remove(expr, i)	-- remove largest index first
+									expr[sinIndex] = Constant(1)
 --print('cos^2+sin^2=1')
 									return expr
 								end
 							else
 								cosIndex = i
-								cosAngle = x.xs[1].xs[1]
+								cosAngle = x[1][1]
 							end
-						elseif x.xs[1]:isa(sin) then
+						elseif x[1]:isa(sin) then
 							if cosAngle then
-								if cosAngle == x.xs[1].xs[1] then
-									expr.xs:remove(i)
-									expr.xs[cosIndex] = Constant(1)
+								if cosAngle == x[1][1] then
+									table.remove(expr, i)
+									expr[cosIndex] = Constant(1)
 --print('cos^2+sin^2=1')
 									return expr
 								end
 							else
 								sinIndex = i
-								sinAngle = x.xs[1].xs[1]
+								sinAngle = x[1][1]
 							end
 						end
 					end
@@ -385,7 +391,7 @@ local original = expr:clone()
 
 --[[
 			if f:isa(mulOp) then	-- should always be a mulOp unless there was nothing to factor
-				for _,ch in ipairs(f.xs) do
+				for _,ch in ipairs(f) do
 					if ch:isa(addOp) then
 --print('attempting trig simplify on factor term',ch)
 						local result = checkAddOp(ch)
@@ -404,26 +410,26 @@ local original = expr:clone()
 	end,
 	
 	[subOp] = function(prune, expr)
-		return prune(expr.xs[1] + (-expr.xs[2]))
+		return prune(expr[1] + (-expr[2]))
 	end,
 	
 	[mulOp] = function(prune, expr)
 
-		assert(#expr.xs > 0)
+		assert(#expr > 0)
 		
 		expr = expr:clone()
 local symmath = require 'symmath'
 local original = expr:clone()	
 		
 		-- flatten multiplications
-		for i=#expr.xs,1,-1 do
-			local ch = expr.xs[i]
+		for i=#expr,1,-1 do
+			local ch = expr[i]
 			if ch:isa(mulOp) then
 				-- this looks like a job for splice ...
-				expr.xs:remove(i)
-				for j=#ch.xs,1,-1 do
-					local chch = ch.xs[j]
-					expr.xs:insert(i, chch)
+				table.remove(expr, i)
+				for j=#ch,1,-1 do
+					local chch = ch[j]
+					table.insert(expr, i, chch)
 				end
 --print('mulOp (a*b)*c => a*b*c', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 				return prune(expr)
@@ -434,11 +440,11 @@ local original = expr:clone()
 		--[[ pruning unmOp immediately
 		do
 			local unmOpCount = 0
-			for i=1,#expr.xs do
-				local ch = expr.xs[i]
+			for i=1,#expr do
+				local ch = expr[i]
 				if ch:isa(unmOp) then
 					unmOpCount = unmOpCount + 1
-					expr.xs[i] = ch.xs[1]
+					expr[i] = ch[1]
 				end
 			end
 			if unmOpCount % 2 == 1 then
@@ -451,14 +457,14 @@ local original = expr:clone()
 
 		-- push all Constants to the lhs, sum as we go
 		local cval = 1
-		for i=#expr.xs,1,-1 do
-			if expr.xs[i]:isa(Constant) then
-				cval = cval * expr.xs:remove(i).value
+		for i=#expr,1,-1 do
+			if expr[i]:isa(Constant) then
+				cval = cval * table.remove(expr, i).value
 			end
 		end
 
 		-- if it's all constants then return what we got
-		if #expr.xs == 0 then 
+		if #expr == 0 then 
 --print('mulOp returning constant', symmath.Verbose(original), '=>', symmath.Verbose(Constant(cval)))
 			return Constant(cval) 
 		end
@@ -469,11 +475,11 @@ local original = expr:clone()
 		end
 		
 		if cval ~= 1 then
-			expr.xs:insert(1, Constant(cval))
+			table.insert(expr, 1, Constant(cval))
 		else
-			if #expr.xs == 1 then 
---print('mulOp 1*a => a', symmath.Verbose(original), '=>', symmath.Verbose(expr.xs[1]))
-				return prune(expr.xs[1]) 
+			if #expr == 1 then 
+--print('mulOp 1*a => a', symmath.Verbose(original), '=>', symmath.Verbose(expr[1]))
+				return prune(expr[1]) 
 			end
 		end
 
@@ -481,13 +487,13 @@ local original = expr:clone()
 		do
 			local modified = false
 			local i = 1
-			while i <= #expr.xs do
-				local x = expr.xs[i]
+			while i <= #expr do
+				local x = expr[i]
 				local base
 				local power
 				if x:isa(powOp) then
-					base = x.xs[1]
-					power = x.xs[2]
+					base = x[1]
+					power = x[2]
 				else
 					base = x
 					power = Constant(1)
@@ -495,27 +501,27 @@ local original = expr:clone()
 				
 				if base then
 					local j = i + 1
-					while j <= #expr.xs do
-						local x2 = expr.xs[j]
+					while j <= #expr do
+						local x2 = expr[j]
 						local base2
 						local power2
 						if x2:isa(powOp) then
-							base2 = x2.xs[1]
-							power2 = x2.xs[2]
+							base2 = x2[1]
+							power2 = x2[2]
 						else
 							base2 = x2
 							power2 = Constant(1)
 						end
 						if base2 == base then
 							modified = true
-							expr.xs:remove(j)
+							table.remove(expr, j)
 							j = j - 1
 							power = power + power2
 						end
 						j = j + 1
 					end
 					if modified then
-						expr.xs[i] = base ^ power
+						expr[i] = base ^ power
 					end
 				end
 				i = i + 1
@@ -538,18 +544,18 @@ local original = expr:clone()
 			local powers = table()
 			local bases = table()
 			
-			for i=1,#expr.xs do
+			for i=1,#expr do
 				-- decompose expressions of the form 
 				--  (base / denom) ^ power
-				local base = expr.xs[i]
+				local base = expr[i]
 				local power = Constant(1)
 				local denom = Constant(1)
 
 				if base:isa(powOp) then
-					base, power = unpack(base.xs)
+					base, power = unpack(base)
 				end
 				if base:isa(divOp) then
-					base, denom = unpack(base.xs)
+					base, denom = unpack(base)
 				end
 				if denom ~= Constant(1) then
 					uniqueDenomIndexes:insert(i)
@@ -615,78 +621,70 @@ local original = expr:clone()
 	
 		expr = expr:clone()
 		
-		-- usually visitors only recursively call themselves ...
-		-- why does division need expand and factor called on its children as well?
-		-- this causes lots of simplification loops
---		expr.xs = expr.xs:map(function(x) 
---			return symmath.simplify(x) 
---		end)
-
-		
 		-- x / 0 => Invalid
-		if expr.xs[2] == Constant(0) then
+		if expr[2] == Constant(0) then
 			return Invalid()
 		end
 		
 		if symmath.simplifyConstantPowers  then
 			-- Constant / Constant => Constant
-			if expr.xs[1]:isa(Constant) and expr.xs[2]:isa(Constant) then
-				return Constant(expr.xs[1].value / expr.xs[2].value)
+			if expr[1]:isa(Constant) and expr[2]:isa(Constant) then
+				return Constant(expr[1].value / expr[2].value)
 			end
 
 			-- mul / Constant = 1/Constant * mul
-			if expr.xs[1]:isa(mulOp) and expr.xs[2]:isa(Constant) then
-				local m = expr.xs[1]:clone()
-				return prune(mulOp(Constant(1/expr.xs[2].value), unpack(m.xs)))
+			if expr[1]:isa(mulOp) and expr[2]:isa(Constant) then
+				local m = expr[1]:clone()
+				return prune(mulOp(Constant(1/expr[2].value), unpack(m)))
 			end
 		end
 
 		-- x / 1 => x
-		if expr.xs[2] == Constant(1) then
-			return expr.xs[1]
+		if expr[2] == Constant(1) then
+			return expr[1]
 		end
 
 		-- x / -1 => -1 * x
-		if expr.xs[2] == Constant(-1) then
-			return Constant(-1) * expr.xs[1]
+		if expr[2] == Constant(-1) then
+			return Constant(-1) * expr[1]
 		end
 		
 		-- 0 / x => 0
-		if expr.xs[1] == Constant(0) then
-			if expr.xs[1].value == 0 then
+		if expr[1] == Constant(0) then
+			if expr[1].value == 0 then
 				return Constant(0)
 			end
 		end
 		
 		-- (a / b) / c => a / (b * c)
-		if expr.xs[1]:isa(divOp) then
-			return prune(expr.xs[1].xs[1] / (expr.xs[1].xs[2] * expr.xs[2]))
+		if expr[1]:isa(divOp) then
+			return prune(expr[1][1] / (expr[1][2] * expr[2]))
 		end
 		
 		-- a / (b / c) => (a * c) / b
-		if expr.xs[2]:isa(divOp) then
-			local a, b = unpack(expr.xs)
-			local b, c = unpack(b.xs)
+		if expr[2]:isa(divOp) then
+			local a, b = unpack(expr)
+			local b, c = unpack(b)
 			return prune((a * c) / b)
 		end
 
-		if expr.xs[1] == expr.xs[2] then
-			return Constant(1)		-- ... for expr.xs[1] != 0
+		if expr[1] == expr[2] then
+			return Constant(1)		-- ... for expr[1] != 0
 		end
 
 		-- (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
 		do
 			local modified
 			local nums, denoms
-			if expr.xs[1]:isa(mulOp) then
-				nums = table(expr.xs[1].xs)
+			if expr[1]:isa(mulOp) then
+				nums = table(expr[1])
 			else
-				nums = table{expr.xs[1]}
+				nums = table{expr[1]}
 			end
-			if expr.xs[2]:isa(mulOp) then
-				denoms = table(expr.xs[2].xs)
+			if expr[2]:isa(mulOp) then
+				denoms = table(expr[2])
 			else
-				denoms = table{expr.xs[2]}
+				denoms = table{expr[2]}
 			end
 			
 			local function listToBasesAndPowers(list)
@@ -696,7 +694,7 @@ local original = expr:clone()
 					local x = list[i]
 					local base, power
 					if x:isa(powOp) then
-						base, power = unpack(x.xs)
+						base, power = unpack(x)
 					else
 						base, power = x, Constant(1)
 					end
@@ -791,21 +789,21 @@ local original = expr:clone()
 		--[[
 	
 		-- x / x^a => x^(1-a)
-		if expr.xs[2]:isa(powOp) and expr.xs[1] == expr.xs[2].xs[1] then
-			return prune(expr.xs[1] ^ (1 - expr.xs[2].xs[2]))
+		if expr[2]:isa(powOp) and expr[1] == expr[2][1] then
+			return prune(expr[1] ^ (1 - expr[2][2]))
 		end
 		
 		-- x^a / x => x^(a-1)
-		if expr.xs[1]:isa(powOp) and expr.xs[1].xs[1] == expr.xs[2] then
-			return prune(expr.xs[1].xs[1] ^ (expr.xs[1].xs[2] - 1))
+		if expr[1]:isa(powOp) and expr[1][1] == expr[2] then
+			return prune(expr[1][1] ^ (expr[1][2] - 1))
 		end
 		
 		-- x^a / x^b => x^(a-b)
-		if expr.xs[1]:isa(powOp)
-		and expr.xs[2]:isa(powOp)
-		and expr.xs[1].xs[1] == expr.xs[2].xs[1]
+		if expr[1]:isa(powOp)
+		and expr[2]:isa(powOp)
+		and expr[1][1] == expr[2][1]
 		then
-			return prune(expr.xs[1].xs[1] ^ (expr.xs[1].xs[2] - expr.xs[2].xs[2]))
+			return prune(expr[1][1] ^ (expr[1][2] - expr[2][2]))
 		end
 		--]]
 
@@ -817,51 +815,54 @@ local original = expr:clone()
 		local symmath = require 'symmath'	-- for debug flags
 
 		if symmath.simplifyConstantPowers then
-			if expr.xs[1]:isa(Constant) and expr.xs[2]:isa(Constant) then
-				return Constant(expr.xs[1].value ^ expr.xs[2].value)
+			if expr[1]:isa(Constant) and expr[2]:isa(Constant) then
+				return Constant(expr[1].value ^ expr[2].value)
 			end
 		end
 		
 		-- 1^a => 1
-		if expr.xs[1] == Constant(1) then return Constant(1) end
+		if expr[1] == Constant(1) then return Constant(1) end
 		
 		-- (-1)^odd = -1, (-1)^even = 1
-		if expr.xs[1] == Constant(-1) and expr.xs[2]:isa(Constant) then
-			local powModTwo = expr.xs[2].value % 2
+		if expr[1] == Constant(-1) and expr[2]:isa(Constant) then
+			local powModTwo = expr[2].value % 2
 			if powModTwo == 0 then return Constant(1) end
 			if powModTwo == 1 then return Constant(-1) end
 		end
 		
 		-- a^1 => a
-		if expr.xs[2] == Constant(1) then return prune(expr.xs[1]) end
+		if expr[2] == Constant(1) then return prune(expr[1]) end
 		
 		-- a^0 => 1
-		if expr.xs[2] == Constant(0) then return Constant(1) end
+		if expr[2] == Constant(0) then return Constant(1) end
 		
 		-- (a ^ b) ^ c => a ^ (b * c)
-		if expr.xs[1]:isa(powOp) then
-			return prune(expr.xs[1].xs[1] ^ (expr.xs[1].xs[2] * expr.xs[2]))
+		if expr[1]:isa(powOp) then
+			return prune(expr[1][1] ^ (expr[1][2] * expr[2]))
 		end
 		
 		-- (a * b) ^ c => a^c * b^c
-		if expr.xs[1]:isa(mulOp) then
-			return prune(mulOp(unpack(expr.xs[1].xs:map(function(v) return v ^ expr.xs[2] end))))
+		if expr[1]:isa(mulOp) then
+			return prune(mulOp(table.map(expr[1], function(v,k)
+				if type(k) ~= 'number' then return end
+				return v ^ expr[2]
+			end):unpack()))
 		end
 	
 		-- a^(-c) => 1/a^c
-		if expr.xs[2]:isa(Constant) and expr.xs[2].value < 0 then
-			return prune(Constant(1)/(expr.xs[1]^Constant(-expr.xs[2].value)))
+		if expr[2]:isa(Constant) and expr[2].value < 0 then
+			return prune(Constant(1)/(expr[1]^Constant(-expr[2].value)))
 		end
 
 		--[[ for simplification's sake ... (like -a => -1 * a)
 		-- x^c => x*x*...*x (c times)
-		if expr.xs[2]:isa(Constant)
-		and expr.xs[2].value > 0 
-		and expr.xs[2].value == math.floor(expr.xs[2].value)
+		if expr[2]:isa(Constant)
+		and expr[2].value > 0 
+		and expr[2].value == math.floor(expr[2].value)
 		then
 			local m = mulOp()
-			for i=1,expr.xs[2].value do
-				m.xs:insert( expr.xs[1]:clone())
+			for i=1,expr[2].value do
+				table.insert(m, expr[1]:clone())
 			end
 			
 			return prune(m)

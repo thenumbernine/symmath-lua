@@ -4,7 +4,7 @@ local sinh = class(Function)
 sinh.name = 'sinh'
 sinh.func = math.sinh
 function sinh:evaluateDerivative(...)
-	local x = unpack(self.xs):clone()
+	local x = unpack(self):clone()
 	local cosh = require 'symmath.cosh'
 	local diff = require 'symmath'.diff
 	return diff(x,...) * cosh(x)

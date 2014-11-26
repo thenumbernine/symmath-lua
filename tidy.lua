@@ -17,15 +17,18 @@ Tidy.lookupTable = {
 	end,
 	[unmOp] = function(tidy, expr)
 		-- --x => x
-		if expr.xs[1]:isa(unmOp) then
-			return tidy(expr.xs[1].xs[1]:clone())
+		if expr[1]:isa(unmOp) then
+			return tidy(expr[1][1]:clone())
 		end
 
 		-- distribute through addition/subtraction
-		if expr.xs[1]:isa(addOp) then
-			return addOp(unpack(
-				expr.xs[1].xs:map(function(x) return -x end)
-			))
+		if expr[1]:isa(addOp) then
+			return addOp(
+				table.map(expr[1], function(x,k) 
+					if type(k) ~= 'number' then return end
+					return -x 
+				end):unpack()
+			)
 		end
 	end,
 	[mulOp] = function(tidy, expr)
@@ -33,11 +36,11 @@ Tidy.lookupTable = {
 		-- -x * y * -z => x * y * z
 		do
 			local unmOpCount = 0
-			for i=1,#expr.xs do
-				local ch = expr.xs[i]
+			for i=1,#expr do
+				local ch = expr[i]
 				if ch:isa(unmOp) then
 					unmOpCount = unmOpCount + 1
-					expr.xs[i] = ch.xs[1]
+					expr[i] = ch[1]
 				end
 			end
 			if unmOpCount % 2 == 1 then
@@ -47,16 +50,16 @@ Tidy.lookupTable = {
 			end
 		end
 		
-		local first = expr.xs[1]
+		local first = expr[1]
 		if first:isa(Constant) then
 			-- (has to be solved post-prune() because tidy's Constant+unmOp will have made some new ones)
 			-- 1 * x => x 	
 			if first.value == 1 then
 				expr = expr:clone()
-				expr.xs:remove(1)
+				table.remove(expr, 1)
 				local result
-				if #expr.xs == 1 then
-					result = expr.xs[1]
+				if #expr == 1 then
+					result = expr[1]
 				else
 					result = expr
 				end
@@ -69,13 +72,13 @@ Tidy.lookupTable = {
 		end
 	end,
 	[addOp] = function(tidy, expr)
-		for i=1,#expr.xs-1 do
+		for i=1,#expr-1 do
 			-- x + -y => x - y
-			if expr.xs[i+1]:isa(unmOp) then
+			if expr[i+1]:isa(unmOp) then
 				expr = expr:clone()
-				local a = expr.xs:remove(i)
-				local b = expr.xs:remove(i).xs[1]
-				expr.xs:insert(i, a - b)
+				local a = table.remove(expr, i)
+				local b = table.remove(expr, i)[1]
+				table.insert(expr, i, a - b)
 				return tidy(expr)
 			end
 		end

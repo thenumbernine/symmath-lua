@@ -6,9 +6,9 @@ local function map(expr, callback)
 	-- clone
 	if expr.clone then expr = expr:clone() end
 	-- process children
-	if expr.xs then
-		for i=1,#expr.xs do
-			expr.xs[i] = map(expr.xs[i], callback)
+	if expr then
+		for i=1,#expr do
+			expr[i] = map(expr[i], callback)
 		end
 	end
 	-- process this node

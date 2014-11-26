@@ -28,6 +28,8 @@ function Visitor:__call(expr, args, ...)
 --local Verbose = require 'symmath.tostring.Verbose'
 --local id = hash(expr)
 --print(id, 'begin Visitor', Verbose(expr))
+	local clone = require 'symmath.clone'
+	expr = clone(expr)
 	local t = type(expr)
 	if t == 'table' then
 		local m = getmetatable(expr)
@@ -35,10 +37,10 @@ function Visitor:__call(expr, args, ...)
 		local Expression = require 'symmath.Expression'
 		if m:isa(Expression) then
 			-- I could use symmath.map to do this, but then I'd have to cache ... in a table (and nils might cause me to miss objects unless I called table.maxn a... )
-			if expr.xs then
-				for i=1,#expr.xs do
+			if expr then
+				for i=1,#expr do
 --print(id, 'simplifying child #'..i)
-					expr.xs[i] = self(expr.xs[i], args, ...)
+					expr[i] = self(expr[i], args, ...)
 				end
 			end
 		end

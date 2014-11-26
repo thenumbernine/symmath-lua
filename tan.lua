@@ -4,7 +4,7 @@ local tan = class(Function)
 tan.name = 'tan'
 tan.func = math.tan
 function tan:evaluateDerivative(...)
-	local x = unpack(self.xs):clone()
+	local x = unpack(self):clone()
 	local cos = require 'symmath.cos'
 	local diff = require 'symmath'.diff
 	return diff(x,...) / cos(x)^2

@@ -9,7 +9,7 @@ Constant.name = 'Constant'
 
 function Constant:init(value)
 	if type(value) ~= 'number' then
-		error('tried to init constant with non-number type '..type(value)..debug.traceback())
+		error('tried to init constant with non-number type '..type(value)..' value '..tostring(value))
 	end
 	self.value = value
 end

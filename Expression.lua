@@ -7,25 +7,24 @@ Expression.name = 'Expression'
 
 function Expression:init(...)
 	local ch = {...}
-	self.xs = table()
 	for i=1,#ch do
 		local x = ch[i]
 		if type(x) == 'number' then
 			local Constant = require 'symmath.Constant'
-			self.xs[i] = Constant(x)
+			self[i] = Constant(x)
 		elseif type(x) == 'nil' then
 			error("can't set a nil child")
 		else
-			self.xs[i] = x
+			self[i] = x
 		end
 	end
 end
 
 function Expression:clone()
-	if self.xs then
+	if self then
 		local xs = table()
-		for i=1,#self.xs do
-			xs:insert(self.xs[i]:clone())
+		for i=1,#self do
+			xs:insert(self[i]:clone())
 		end
 		return getmetatable(self)(unpack(xs))
 	else
@@ -39,8 +38,8 @@ function Expression:getAllNodes()
 	-- add current nodes
 	local nodes = table{self}
 	-- add child nodes
-	if self.xs then
-		for _,x in ipairs(self.xs) do
+	if self then
+		for _,x in ipairs(self) do
 			nodes:append(x:getAllNodes())
 		end
 	end
@@ -51,7 +50,7 @@ end
 function Expression:findChild(node)
 	-- how should I distinguish between find saying "not in our tree" and "it is ourself!"
 	if node == self then error("looking for self") end
-	for i,x in ipairs(self.xs) do
+	for i,x in ipairs(self) do
 		-- if it's this node then return its info
 		if x == node then return self, i end
 		-- check children recursively
@@ -78,11 +77,11 @@ for equality and solving, use .equals()
 --]]
 function Expression.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
-	if a.xs == nil ~= b.xs == nil then return false end
-	if a.xs and b.xs then
-		if #a.xs ~= #b.xs then return false end
-		for i=1,#a.xs do
-			if a.xs[i] ~= b.xs[i] then return false end
+	if a == nil ~= b == nil then return false end
+	if a and b then
+		if #a ~= #b then return false end
+		for i=1,#a do
+			if a[i] ~= b[i] then return false end
 		end
 		return true
 	end
@@ -154,11 +153,11 @@ Expression.lessThanOrEquals = function(...) return (require 'symmath.lessThanOrE
 
 -- ... = list of equations
 function Expression:subst(...)
-	local self = self:clone()
+	local result = self:clone()
 	for _,eqn in ipairs{...} do
-		self = self:replace(eqn:lhs(), eqn:rhs())
+		result = result:replace(eqn:lhs(), eqn:rhs())
 	end
-	return self
+	return result
 end
 
 return Expression

@@ -12,23 +12,23 @@ function mulOp:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
 	local addOp = require 'symmath.addOp'
 	local sumRes = addOp()
-	for i=1,#self.xs do
+	for i=1,#self do
 		local termRes = mulOp()
-		for j=1,#self.xs do
+		for j=1,#self do
 			if i == j then
-				termRes.xs:insert(diff(self.xs[j]:clone(), ...))
+				table.insert(termRes, diff(self[j]:clone(), ...))
 			else
-				termRes.xs:insert(self.xs[j]:clone())
+				table.insert(termRes, self[j]:clone())
 			end
 		end
-		sumRes.xs:insert(termRes)
+		table.insert(sumRes, termRes)
 	end
 	return sumRes
 end
 
 function mulOp:eval()
 	local result = 1
-	for _,x in ipairs(self.xs) do
+	for _,x in ipairs(self) do
 		result = result * x:eval()
 	end
 	return result

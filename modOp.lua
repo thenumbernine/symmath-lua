@@ -10,7 +10,7 @@ modOp.name = '%'
 d/dx[a%b] is da/dx, except when a = b * k for some integer k
 --]]
 function modOp:evaluateDerivative(...)
-	local a, b = unpack(self.xs)
+	local a, b = unpack(self)
 	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
 	local x = diff(a, ...)
@@ -18,7 +18,7 @@ function modOp:evaluateDerivative(...)
 end
 
 function modOp:eval()
-	local a, b = unpack(self.xs)
+	local a, b = unpack(self)
 	return a:eval() % b:eval()
 end
 

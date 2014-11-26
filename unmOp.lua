@@ -6,13 +6,13 @@ local unmOp = class(Expression)
 unmOp.precedence = 3	--4	--make it match mul and div so there aren't extra parenthesis around mul and div
 
 function unmOp:evaluateDerivative(...)
-	local x = unpack(self.xs):clone()
+	local x = unpack(self):clone()
 	local diff = require 'symmath'.diff
 	return -diff(x,...)
 end
 
 function unmOp:eval()
-	return -self.xs[1]:eval()
+	return -self[1]:eval()
 end
 
 return unmOp

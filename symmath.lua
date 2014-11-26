@@ -113,7 +113,7 @@ function applyRuleAtNode(expr, node, rule)
 	end
 
 	local parent, index = expr:findChild(node)
-	parent.xs[index] = rule(parent.xs[index])
+	parent[index] = rule(parent[index])
 	return expr
 end
 

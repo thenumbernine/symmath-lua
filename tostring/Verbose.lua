@@ -11,13 +11,19 @@ Verbose.lookupTable = {
 		return 'Invalid'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
-		return 'unm('..self:apply(expr.xs[1])..')'
+		return 'unm('..self:apply(expr[1])..')'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
-		return 'BinaryOp{'..expr.name..'}['..expr.xs:map(self):concat(', ')..']'
+		return 'BinaryOp{'..expr.name..'}['..table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
+			return self(x)
+		end):concat(', ')..']'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return 'Function{'..expr.name..'}[' .. expr.xs:map(self):concat(', ') .. ']'
+		return 'Function{'..expr.name..'}[' .. table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
+			return self(x)
+		end):concat(', ') .. ']'
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		local s = 'Variable['..expr.name..']'
@@ -27,7 +33,10 @@ Verbose.lookupTable = {
 		return s	
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
-		return 'Derivative{'..expr.xs:map(self):concat(', ')..'}'
+		return 'Derivative{'..table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
+			return self(x)
+		end):concat(', ')..'}'
 	end
 }
 

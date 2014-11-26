@@ -11,15 +11,15 @@ addOp.name = '+'
 function addOp:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
 	local result = addOp()
-	for i=1,#self.xs do
-		result.xs[i] = diff(self.xs[i]:clone(), ...)
+	for i=1,#self do
+		result[i] = diff(self[i]:clone(), ...)
 	end
 	return result
 end
 
 function addOp:eval()
 	local result = 0
-	for _,x in ipairs(self.xs) do
+	for _,x in ipairs(self) do
 		result = result + x:eval()
 	end
 	return result

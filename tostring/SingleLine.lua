@@ -18,13 +18,17 @@ SingleLine.lookupTable = {
 		return 'Invalid'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return expr.name..'(' .. expr.xs:map(function(x) return self:apply(x) end):concat(', ') .. ')'
+		return expr.name..'(' .. table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
+			return self:apply(x)
+		end):concat(', ') .. ')'
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
 		return '-'..self:wrapStrOfChildWithParenthesis(expr, 1)
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
-		return expr.xs:map(function(x,i)
+		return expr:map(function(x,i)
+			if type(i) ~= 'number' then return end
 			return self:wrapStrOfChildWithParenthesis(expr, i)
 		end):concat(expr:getSepStr())
 	end,
@@ -37,7 +41,7 @@ SingleLine.lookupTable = {
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local topText = 'd'
-		local diffVars = expr.xs:sub(2)
+		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars
 		if diffPower > 1 then
 			topText = topText .. '^'..diffPower
@@ -46,7 +50,7 @@ SingleLine.lookupTable = {
 		for _,var in ipairs(diffVars) do
 			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
 		end
-		local diffexpr = self:apply(assert(expr.xs[1]))
+		local diffexpr = self:apply(assert(expr[1]))
 		return topText..'/{'..table.map(powersForDeriv, function(power, name, newtable)
 			local s = 'd'..name
 			if power > 1 then

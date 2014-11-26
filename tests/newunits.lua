@@ -18,12 +18,10 @@ local G = symmath.Variable('G', nil, true)
 local kg = symmath.Variable('kg')
 
 local c_from_m_s = (c):equals(299792458 * (m / s))
-printbr(c_from_m_s)
 
 -- c = 1, solve for s
 --local s_from_m = c_from_m_s:replace(c, 1):solve(s)
 local s_from_m = (c_from_m_s:replace(c, 1) * s):simplify()
-printbr(s_from_m)
 
 local G_from_m_s_kg = G:equals(6.67384e-11 * m^3 / (kg * s^2))
 printbr(G_from_m_s_kg)

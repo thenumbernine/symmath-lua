@@ -9,17 +9,17 @@ TODO rewrite to use symmath.map() ?
 local function replace(expr, find, repl, callback)
 	local clone = require 'symmath.clone'
 	if callback and callback(expr) then return clone(expr) end
-	if expr.xs then
-		local xs = table()
-		for i=1,#expr.xs do
-			local ch = replace(expr.xs[i],find,repl,callback)
+	if #expr > 0 then
+		local newChildren = table()
+		for i=1,#expr do
+			local ch = replace(expr[i], find, repl, callback)
 			if ch == find then
-				xs:insert(clone(repl))
+				newChildren:insert(clone(repl))
 			else
-				xs:insert(ch)
+				newChildren:insert(ch)
 			end
 		end
-		return getmetatable(expr)(unpack(xs))
+		return getmetatable(expr)(unpack(newChildren))
 	else
 		return clone(expr)
 	end

@@ -35,14 +35,14 @@ end
 function ToString:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local subOp = require 'symmath.subOp'
 	if parentNode:isa(subOp) and childIndex > 1 then
-		return precedence(parentNode.xs[childIndex]) <= precedence(parentNode)
+		return precedence(parentNode[childIndex]) <= precedence(parentNode)
 	else
-		return precedence(parentNode.xs[childIndex]) < precedence(parentNode)
+		return precedence(parentNode[childIndex]) < precedence(parentNode)
 	end
 end
 
 function ToString:wrapStrOfChildWithParenthesis(parentNode, childIndex)
-	local node = parentNode.xs[childIndex]
+	local node = parentNode[childIndex]
 	
 	-- tostring() needed to call MultiLine's conversion to tables ...
 	--local s = tostring(node)

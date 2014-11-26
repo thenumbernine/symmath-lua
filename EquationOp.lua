@@ -11,19 +11,19 @@ EquationOp.solve = require 'symmath.solve'
 function EquationOp:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
 	local result = getmetatable(self)()
-	for i=1,#self.xs do
-		result.xs[i] = diff(self.xs[i]:clone(), ...)
+	for i=1,#self do
+		result[i] = diff(self[i]:clone(), ...)
 	end
 	return result
 end
 
-function EquationOp:lhs() return self.xs[1] end
-function EquationOp:rhs() return self.xs[2] end
+function EquationOp:lhs() return self[1] end
+function EquationOp:rhs() return self[2] end
 
 -- a = b => b = a
 -- should probably overload this for >= and <= to switch the sides
 function EquationOp:switch()
-	local a,b = unpack(self.xs)
+	local a,b = unpack(self)
 	return b:equals(a)
 end
 
@@ -32,7 +32,9 @@ end
 -- TODO switch equality sign for non-equals equation ops? same with scaling by negatives?
 function EquationOp.__unm(a)
 	a = a:clone()
-	a.xs = a.xs:map(function(x) return -x end)
+	for i=1,#a do
+		a[i] = -a[i]
+	end
 	return a
 end
 
@@ -50,12 +52,16 @@ for _,op in ipairs{
 		if type(b) == 'number' then b = Constant(b) end
 		if a:isa(EquationOp) and not b:isa(EquationOp) then
 			a = a:clone()
-			if a.xs then a.xs = a.xs:map(function(x) return op.f(x, b) end) end
+			for i=1,#a do
+				a[i] = op.f(a[i], b)
+			end
 			return a
 		end
 		if not a:isa(EquationOp) and b:isa(EquationOp) then
 			b = b:clone()
-			if b.xs then b.xs = b.xs:map(function(x) return op.f(a, x) end) end
+			for i=1,#b do
+				b[i] = op.f(a, b[i])
+			end
 			return b
 		end
 	end

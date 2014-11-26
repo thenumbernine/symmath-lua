@@ -1,6 +1,6 @@
 local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 local function nodeCommutativeEqual(a,b)
-	return tableCommutativeEqual(a.xs, b.xs)
+	return tableCommutativeEqual(a, b)
 end
 return nodeCommutativeEqual
 

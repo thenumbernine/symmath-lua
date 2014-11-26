@@ -63,7 +63,7 @@ function MultiLine:fraction(top, bottom)
 end
 
 function MultiLine:wrapStrOfChildWithParenthesis(parentNode, childIndex)
-	local node = parentNode.xs[childIndex]
+	local node = parentNode[childIndex]
 	local res = self:apply(node)
 	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
 		local height = #res
@@ -99,11 +99,11 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local res = {expr.name..'('}
-		res = self:combine(res, self:apply(expr.xs[1]))
+		res = self:combine(res, self:apply(expr[1]))
 		local sep = {', '}
-		for i=2,#expr.xs do
+		for i=2,#expr do
 			res = self:combine(res, sep)
-			res = self:combine(res, self:apply(expr.xs[i]))
+			res = self:combine(res, self:apply(expr[i]))
 		end
 		res = self:combine(res, {')'})
 		return res
@@ -114,18 +114,18 @@ MultiLine.lookupTable = {
 	[require 'symmath.BinaryOp'] = function(self, expr)
 		local res = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local sep = {expr:getSepStr()}
-		for i=2,#expr.xs do
+		for i=2,#expr do
 			res = self:combine(res, sep)
 			res = self:combine(res, self:wrapStrOfChildWithParenthesis(expr, i))
 		end
 		return res
 	end,
 	[require 'symmath.divOp'] = function(self, expr)
-		assert(#expr.xs == 2)
-		return self:fraction(self:apply(expr.xs[1]), self:apply(expr.xs[2]))
+		assert(#expr == 2)
+		return self:fraction(self:apply(expr[1]), self:apply(expr[2]))
 	end,
 	[require 'symmath.powOp'] = function(self, expr)
-		assert(#expr.xs == 2)
+		if #expr ~= 2 then error("expected 2 children but found "..#expr.." in "..toLua(expr)) end
 		local lhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, 2)
 		local lhswidth = #lhs[1]
@@ -146,7 +146,7 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
 		local topText = 'd'
-		local diffVars = expr.xs:sub(2)
+		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars
 		if diffPower > 1 then
 			topText = topText .. '^'..diffPower

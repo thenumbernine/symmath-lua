@@ -6,7 +6,7 @@ subOp.precedence = 2
 subOp.name = '-'
 
 function subOp:evaluateDerivative(...)
-	local a, b = unpack(self.xs)
+	local a, b = unpack(self)
 	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
 	local x = diff(a,...) - diff(b,...)
@@ -14,9 +14,9 @@ function subOp:evaluateDerivative(...)
 end
 
 function subOp:eval()
-	local result = self.xs[1]:eval()
-	for i=2,#self.xs do
-		result = result - self.xs[i]:eval()
+	local result = self[1]:eval()
+	for i=2,#self do
+		result = result - self[i]:eval()
 	end
 	return result
 end

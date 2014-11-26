@@ -8,17 +8,18 @@ Function.precedence = 10	-- high since it will always show parenthesis
 Function.name = 'Function'
 
 function Function:evaluateConstants()
-	for i=1,#self.xs do
-		if self.xs[i]:isa(Constant) then
-			self.xs[i] = Constant(self.func(node.value))
+	for i=1,#self do
+		if self[i]:isa(Constant) then
+			self[i] = Constant(self.func(node.value))
 		end
 	end
 end
 
 function Function:eval()
-	return self.func(unpack(self.xs:map(function(node) 
+	return self.func(table.map(self, function(node, k)
+		if type(k) ~= 'number' then return end
 		return node:eval()
-	end)))
+	end):unpack())
 end
 
 return Function

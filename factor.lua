@@ -12,14 +12,14 @@ Factor.lookupTable = {
 		-- the opposite of this is in mulOp:prune's applyDistribute
 		-- don't leave both of them uncommented or you'll get deadlock
 		-- TODO this is factoring wrong
-		if #self.xs <= 1 then return end
+		if #self <= 1 then return end
 		
 		local function nodeToProdList(x)
 			local prodList
 			
 			-- get products or individual terms
 			if x:isa(mulOp) then
-				prodList = table(x.xs)
+				prodList = table(x)
 			else
 				prodList = table{x}
 			end
@@ -29,8 +29,8 @@ Factor.lookupTable = {
 				if ch:isa(powOp) then
 					--print(symmath.Verbose(ch))
 					return {
-						term = ch.xs[1],
-						power = assert(ch.xs[2]),
+						term = ch[1],
+						power = assert(ch[2]),
 					}
 				else
 					return {
@@ -89,7 +89,10 @@ Factor.lookupTable = {
 		end
 
 		-- 1) get all terms and powers
-		local prodsList = self.xs:map(nodeToProdList)
+		local prodsList = table()
+		for i=1,#self do
+			prodsList[i] = nodeToProdList(self[i])
+		end
 		-- 2) find smallest set of common terms
 		
 		local minProds = prodsList[1]:map(function(prod) return prod.term end)

@@ -10,7 +10,7 @@ local Expand = class(Visitor)
 
 Expand.lookupTable = {
 	[unmOp] = function(expand, expr)
-		return expand(Constant(-1) * expr.xs[1])
+		return expand(Constant(-1) * expr[1])
 	end,
 	
 	[mulOp] = function(expand, expr)
@@ -23,12 +23,12 @@ local symmath = require 'symmath'
 		(a * b * d * e) + (a * c * d * e)
 		--]]
 
-		for i,x in ipairs(expr.xs) do
+		for i,x in ipairs(expr) do
 			if x:isa(addOp) or x:isa(subOp) then
 				local terms = table()
-				for j,xch in ipairs(x.xs) do
+				for j,xch in ipairs(x) do
 					local term = expr:clone()
-					term.xs[i] = xch:clone()
+					term[i] = xch:clone()
 					terms:insert(term)
 				end
 				expr = getmetatable(x)(unpack(terms))
@@ -36,17 +36,19 @@ local symmath = require 'symmath'
 				return expand(expr)
 			
 				--[[
-				local newSelf = getmetatable(x)(unpack(expr.xs:filter(function(cx) 
+				local newSelf = getmetatable(x)(unpack(table.filter(expr, function(cx,k)
+					if type(k) ~= 'number' then return end
 					return cx ~= x
 				end):map(function(cx)
 					return mulOp(x:clone(), cx)
 				end))
 				--]]
 				--[[
-				local removedTerm = newSelf.xs:remove(i)
+				local removedTerm = table.remove(newSelf, i)
 				print('removed ',removedTerm)
 				local newe = expand(addOp(unpack(
-					x.xs:map(function(addX)
+					table.map(x, function(addX,k)
+						if type(k) ~= 'number' then return end
 						return mulOp(addX, unpack(newSelf))
 					end)
 				)))
@@ -64,13 +66,13 @@ local symmath = require 'symmath'
 		-- how about my canonical form is div, mul-non-const, add, mul-const
 		-- ... such that if we have an add, mul-non-const then we know to perform the addOp:prune() on it
 		-- however trig laws would need add, mul-non-const to optimize out correctly
-		for i,x in ipairs(expr.xs) do
+		for i,x in ipairs(expr) do
 			if x:isa(addOp) then
-				expr.xs:remove(i)
+				table.remove(expr, i)
 			
 				local result = addOp()
-				for j,ch in ipairs(x.xs) do
-					result.xs[j] = expr * ch
+				for j,ch in ipairs(x) do
+					result[j] = expr * ch
 				end
 				--result = prune(result)
 				return result
@@ -81,7 +83,7 @@ local symmath = require 'symmath'
 	end,
 
 	[subOp] = function(expand, expr)
-		return expand(expr.xs[1] + -addOp(unpack(expr.xs, 2)))
+		return expand(expr[1] + -addOp(unpack(expr, 2)))
 	end
 
 --[[
@@ -90,8 +92,8 @@ local symmath = require 'symmath'
 local original = expr:clone()
 local symmath = require 'symmath'	
 		local maxPowerExpand = 10
-		if expr.xs[2]:isa(Constant) then
-			local value = expr.xs[2].value
+		if expr[2]:isa(Constant) then
+			local value = expr[2].value
 			local absValue = math.abs(value)
 			if absValue < maxPowerExpand then
 				local num, frac, div
@@ -108,10 +110,10 @@ local symmath = require 'symmath'
 				end
 				local terms = table()
 				for i=1,num do
-					terms:insert(expr.xs[1]:clone())
+					terms:insert(expr[1]:clone())
 				end
 				if frac ~= 0 then
-					terms:insert(expr.xs[1]:clone()^frac)
+					terms:insert(expr[1]:clone()^frac)
 				end
 				if div then
 					expr = Constant(1)/mulOp(unpack(terms))
