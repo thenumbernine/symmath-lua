@@ -23,7 +23,7 @@ JavaScript.lookupTable = {
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr, vars)
 		return '('..table.map(expr, function(x,k)
-			if k ~= 'number' then return end
+			if type(k) ~= 'number' then return end
 			return self:apply(x, vars)
 		end):concat(' '..expr.name..' ')..')'
 	end,
