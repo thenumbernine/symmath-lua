@@ -186,6 +186,7 @@ symmath.greaterThan = require 'symmath.greaterThan'
 symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
 
 -- specific to Matrix
+symmath.Matrix = require 'symmath.Matrix'
 symmath.inverse = require 'symmath.inverse'
 
 -- change the default as you see fit

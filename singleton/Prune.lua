@@ -310,7 +310,73 @@ local original = expr:clone()
 			end
 		end
 		--]]
-		
+
+
+		-- vector and matrix
+		do
+
+			local RowVector = require 'symmath.RowVector'
+			local Matrix = require 'symmath.Matrix'
+
+			local function isVector(x)
+				return type(x) == 'table' and x.isa and x:isa(RowVector)
+			end
+
+			local function isMatrix(x)
+				return type(x) == 'table' and x.isa and x:isa(Matrix)
+			end
+
+			local function vectorAdd(a,b)
+				if #a ~= #b then return end
+				local result = RowVector()
+				for i=1,#a do
+					result[i] = a[i] + b[i]
+				end
+				return prune:apply(result)
+			end
+
+			local function matrixAdd(a,b)
+				if #a ~= #b or #a[1] ~= #b[1] then return end
+				local result = Matrix()
+				for i=1,#a do
+					result[i] = RowVector()
+					for j=1,#a[1] do
+						result[i][j] = a[i][j] + b[i][j]
+					end
+				end
+				return prune:apply(result)
+			end
+
+			-- and now for RowVector+RowVector addition ...
+			if #expr > 1 then
+				for i=#expr,1,-1 do
+					local rhs = expr[i]
+					if isVector(rhs) or isMatrix(rhs) then
+						for j=i-1,1,-1 do
+							local lhs = expr[j]
+							if isVector(lhs) and isVector(rhs) then
+								local result = vectorAdd(lhs, rhs)
+								if result then
+									table.remove(expr, i)
+									expr[j] = result
+									return prune:apply(expr)
+								end
+							elseif isMatrix(lhs) and isMatrix(rhs) then
+								local result = matrixAdd(lhs, rhs)
+								if result then
+									table.remove(expr, i)
+									expr[j] = result
+									return prune:apply(expr)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	
+
+
 		-- trigonometry identities
 
 		-- cos(theta)^2 + sin(theta)^2 => 1
@@ -407,71 +473,6 @@ local original = expr:clone()
 --]]
 		end
 
-		do
-
-			local RowVector = require 'symmath.RowVector'
-
-			local function isVector(x)
-				return type(x) == 'table' and x.isa and x:isa(RowVector)
-			end
-
-			local function addVectorVector(a,b)
-				local result = RowVector()
-				for i=1,#a do
-					result[i] = a[i] + b[i]
-				end
-				return prune:apply(result)
-			end
-
-			local function addScalarVector(a,b)
-				return RowVector(table.map(b, function(x,k)
-					if type(k) ~= 'number' then return end
-					return a + x
-				end):unpack())
-			end
-
-			local function addVectorScalar(a,b)
-				return RowVector(table.map(a, function(x,k)
-					if type(k) ~= 'number' then return end
-					return x + b
-				end):unpack())
-			end
-
-			-- and now for RowVector addition ...
-			-- {x1, x2, x3} + y => {x1 + y, x2 + y, x3 + y}
-			if #expr > 1 then
-				for i=1,#expr do
-					if isVector(expr[i]) then
-						if i == #expr then	-- if it's last then add to the left
-							local lhs = expr[i-1]
-							local rhs = expr[i]
-							if isVector(lhs) then	-- vector-vector addition
-								if #lhs == #rhs then
-									table.remove(expr, i)
-									expr[i-1] = addVectorVector(lhs, rhs)
-									-- else nothing to simplify ... don't re-apply or we'll get a recursive loop
-								end
-							else	-- scalar-vector addition
-								table.remove(expr, i)
-								expr[i-1] = addScalarVector(lhs, rhs)
-							end
-						else				-- otherwise add to the right
-							local rhs = expr[i+1]
-							local lhs = table.remove(expr, i)
-							if isVector(rhs) then
-								expr[i] = addVectorVector(lhs, rhs)
-							else
-								expr[i] = addVectorScalar(lhs, rhs)
-							end
-						end
-						return (require 'symmath.simplify')(expr)
-					end
-				end
-			end
-		end
-	
-		-- TODO this is required for things to work right
-		-- that means somewhere above there's still in-place operations going on
 		return expr
 	end,
 	
@@ -679,8 +680,57 @@ local original = expr:clone()
 		--]]
 
 
-		local Matrix = require 'symmath.Matrix'
-		do	
+		do
+			local RowVector = require 'symmath.RowVector'
+			local Matrix = require 'symmath.Matrix'
+
+			local function isMatrix(x)
+				return type(x) == 'table' and x.isa and x:isa(Matrix)
+			end
+
+			local function matrixMul(a,b)
+				local ah = #a
+				local aw = #a[1]
+				local bh = #b
+				local bw = #b[1]
+				if aw ~= bh then return end
+				local result = Matrix()
+				for i=1,ah do
+					result[i] = RowVector()
+					for j=1,bw do
+						local s
+						for k=1,aw do
+							if not s then
+								s = a[i][k] * b[k][j]
+							else
+								s = s + a[i][k] * b[k][j]
+							end
+						end
+						result[i][j] = s
+					end
+				end
+				return prune:apply(result)
+			end
+
+			-- and now for Matrix*Matrix multiplication ...
+			if #expr > 1 then
+				for i=#expr,1,-1 do
+					local rhs = expr[i]
+					if isMatrix(rhs) then
+						for j=i-1,1,-1 do
+							local lhs = expr[j]
+							if isMatrix(lhs) and isMatrix(rhs) then
+								local result = matrixMul(lhs, rhs)
+								if result then
+									table.remove(expr, i)
+									expr[j] = result
+									return prune:apply(expr)
+								end
+							end
+						end
+					end
+				end
+			end
 		end
 
 		-- TODO this is required for things to work right
