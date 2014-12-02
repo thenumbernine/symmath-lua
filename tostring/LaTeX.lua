@@ -81,7 +81,29 @@ LaTeX.lookupTable = {
 			s = s .. '\\left ( ' .. diffExprStr .. ' \\right )'
 		end
 		return s
-	end
+	end,
+	[require 'symmath.RowVector'] = function(self, expr)
+		local s = table()
+		for i=1,#expr do
+			s:insert(self:apply(expr[i]))
+		end
+		return ' \\left[ \\matrix{ ' .. s:concat(' && ') .. ' } \\right] '
+	end,
+	[require 'symmath.Matrix'] = function(self, expr)
+		local rows = table()
+		for i=1,#expr do
+			if type(expr[i]) ~= 'table' then 
+				error("expected matrix children to be RowVectors (or at least tables), but got ("..type(expr[i])..") "..tostring(expr[i]))
+			end
+			for j=1,#expr[i] do
+				rows[i] = table.map(expr[i], function(x,k)
+					if type(k) ~= 'number' then return end
+					return self:apply(x)
+				end):concat(' && ')
+			end
+		end
+		return ' \\left[ \\matrix{ ' .. rows:concat(' \\\\ ') .. ' } \\right] '
+	end,
 }
 
 return LaTeX()	-- singleton

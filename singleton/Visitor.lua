@@ -21,10 +21,8 @@ transform expr by whatever rules are provided in lookupTable
 Visitor is the metatable of instances of it and all its subclasses.
 Inherit from Visitor, instanciate that class as 'x', and x() will call Visitor:apply (or an overload of it in a child class)
 
-args:
-	exclude = list of metatables to exclude from simplification
 --]]
-function Visitor:__call(expr, args, ...)
+function Visitor:apply(expr, ...)
 --local Verbose = require 'symmath.tostring.Verbose'
 --local id = hash(expr)
 --print(id, 'begin Visitor', Verbose(expr))
@@ -40,7 +38,7 @@ function Visitor:__call(expr, args, ...)
 			if expr then
 				for i=1,#expr do
 --print(id, 'simplifying child #'..i)
-					expr[i] = self(expr[i], args, ...)
+					expr[i] = self:apply(expr[i], ...)
 				end
 			end
 		end
@@ -51,13 +49,16 @@ function Visitor:__call(expr, args, ...)
 		end
 		-- if we found an entry then apply it
 		if self.lookupTable[m] then
-			if not (args and args.exclude and table.find(args.exclude, m)) then
-				expr = self.lookupTable[m](self, expr, args, ...) or expr
-			end
+			expr = self.lookupTable[m](self, expr, ...) or expr
 		end
 	end
 --print(id, 'done pruning with', Verbose(expr))
 	return expr
+end
+
+-- wrapping this so child classes can add prefix/postfix custom code apart from the recursive case
+function Visitor:__call(expr, ...)
+	return self:apply(expr, ...)
 end
 
 return Visitor

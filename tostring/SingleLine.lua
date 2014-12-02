@@ -58,7 +58,19 @@ SingleLine.lookupTable = {
 			end
 			return s, #newtable+1
 		end):concat(' ')..'}['..diffexpr..']'
-	end
+	end,
+	[require 'symmath.RowVector'] = function(self, expr)
+		return '[' .. table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
+			return self:apply(x)
+		end):concat(', ') .. ']'
+	end,
+	[require 'symmath.Matrix'] = function(self, expr)
+		return '[' .. table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
+			return self:apply(x)
+		end):concat(', ') .. ']'
+	end,
 }
 
 return SingleLine()		-- singleton

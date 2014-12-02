@@ -171,3 +171,104 @@ allEqns:map(function(eqn) printbr(eqn) end)
 
 print(MathJax.footer)
 
+--[[
+-- Eigenvectors from Trangenstein J. A. "A Numerical Solution of Hyperbolic Partial Differential Equations"
+
+local bx = symmath.Variable('bx')
+local by = symmath.Variable('by')
+local bz = symmath.Variable('bz')
+local sigma = symmath.Variable('sigma')
+local rho = symmath.Variable('rho')
+local cf = symmath.Variable('cf')
+local c = symmath.Variable('c')
+local cs = symmath.Variable('cs')
+
+local bSq = bx^2 + by^2 + bz^2
+
+local m = tensor.Tensor(8, 8, {
+	{
+		(rho * cf^2 - bSq) / c^2,
+		0,
+		(rho * cs^2 - bSq) / c^2,
+		1,
+		0,
+		(rho * cs^2 - bSq) / c^2,
+		0,
+		(rho * cf^2 - bSq) / c^2
+	},
+	{
+		-cf + bx^2 / (rho * cf),
+		0,
+		-cs + bx^2 / (rho * cs),
+		0,
+		0,
+		cs - bx^2 / (rho * cs),
+		0,
+		cf - bx^2 / (rho * cf),
+	},
+	{
+		bx * by / (rho * cf),
+		bz * sigma,
+		bx * by / (rho * cs),
+		0,
+		0,
+		-bx * by / (rho * cs),
+		-bz * sigma,
+		-bx * by / (rho * cf),
+	},
+	{
+		bx * bz / (rho * cf),
+		-by * sigma,
+		bx * bz / (rho * cs),
+		0,
+		0,
+		-bx * bz / (rho * cs),
+		by * sigma,
+		-bx * bz / (rho * cf),
+	},
+	{
+		0,
+		0,
+		0,
+		0,
+		1,
+		0,
+		0,
+		0,
+	},
+	{
+		by,
+		bz * symmath.sqrt(rho),
+		by,
+		0,
+		0,
+		by,
+		bz * symmath.sqrt(rho),
+		by,
+	},
+	{
+		bz,
+		-by * symmath.sqrt(rho),
+		bz,
+		0,
+		0,
+		bz,
+		-by * symmath.sqrt(rho),
+		bz,
+	},
+	{
+		rho * cf^2 - bSq,
+		0,
+		rho * cs^2 - bSq,
+		0,
+		0,
+		rho * cs^2 - bSq,
+		0,
+		rho * cf^2 - bSq,
+	}
+})
+print(m)
+print(inverse(m))
+--]]
+
+

@@ -152,6 +152,7 @@ Expression.greaterThan = function(...) return (require 'symmath.greaterThan')(..
 Expression.greaterThanOrEquals = function(...) return (require 'symmath.greaterThanOrEquals')(...) end
 Expression.lessThan = function(...) return (require 'symmath.lessThan')(...) end
 Expression.lessThanOrEquals = function(...) return (require 'symmath.lessThanOrEquals')(...) end
+Expression.inverse = function(...) return (require 'symmath.inverse')(...) end
 
 -- ... = list of equations
 function Expression:subst(...)

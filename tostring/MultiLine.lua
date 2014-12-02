@@ -167,6 +167,60 @@ MultiLine.lookupTable = {
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		return self:combine(lhs, rhs)
 	end,
+	[require 'symmath.RowVector'] = function(self, expr)
+		local parts = table()
+		for i=1,#expr do
+			parts[i] = self:apply(expr[i])
+		end
+		
+		local height = select(2, parts:map(function(part) return #part end):sup())
+
+		local sep = table()
+		for i=1,height do
+			sep[i] = ' '
+		end
+
+		local res = parts[1]
+		for i=2,#parts do
+			res = self:combine(res, sep)
+			res = self:combine(res, parts[i])
+		end
+
+		for i=1,height do
+			res[i] = '['..res[i]..']'
+		end
+		
+		return res
+	end,
+	[require 'symmath.Matrix'] = function(self, expr)
+		-- expects all children to be rows ... and bypasses their tostring()
+		
+		local parts = table()
+		for i=1,#expr do
+			parts[i] = self:apply(expr[i])
+		end
+		
+		local width = select(2, parts:map(function(part) return #part[1] end):sup())
+		local sep = (' '):rep(width)
+
+		-- TODO apply per-element without the [] wrapping
+		local res = table()
+		for i=1,#expr do
+			local padding = width - #parts[i][1]
+			local leftWidth = padding - math.floor(padding/2)
+			local rightWidth = padding - leftWidth
+			local left = (' '):rep(leftWidth)
+			local right = (' '):rep(rightWidth)
+			for j=1,#parts[i] do
+				res:insert('[ ' .. left .. parts[i][j] .. right .. ' ]')
+			end
+			if i < #expr then
+				res:insert('[ ' .. sep .. ' ]')
+			end
+		end
+		
+		return res
+	end,
 }
 
 -- while most ToString.__call methods deal in strings,

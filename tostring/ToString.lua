@@ -7,8 +7,16 @@ I made this before I made the symmath.Visitor parent class, so consider merging 
 --]]
 
 require 'ext'
+local Visitor = require 'symmath.singleton.Visitor'
 
-local ToString = class()
+
+-- Visitor...
+--  (1) clones everything that passes through it (to prevent accidental/intentional in-place modifications)
+--  (2) processes bottom-up (rather than ToString's top-down)
+-- so until these can be unified/negotiated I'm keeping ToString separate
+--local ToString = class(Visitor)
+-- [[
+local ToString = class(Visitor)
 
 function ToString:apply(expr, ...)
 	if type(expr) ~= 'table' then return tostring(expr) end
@@ -26,6 +34,7 @@ end
 function ToString.__call(self, ...)
 	return self:apply(...)
 end
+--]]
 
 local function precedence(x)
 	if x.precedence then return x.precedence end
