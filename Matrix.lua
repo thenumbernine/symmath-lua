@@ -4,6 +4,7 @@ local Expression = require 'symmath.Expression'
 local Matrix = class(Expression)
 Matrix.name = 'Matrix'
 Matrix.precedence = 10
+Matrix.mulNonCommutative = true
 
 function Matrix:init(...)
 	local RowVector = require 'symmath.RowVector'

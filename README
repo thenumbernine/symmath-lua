@@ -1,69 +1,21 @@
-symbolic math library for lua
+Symbolic Math library for Lua
 
-capable of solving and simplifying
-could use a good polynomial division routine
+Goals:
 
-I've successfully used this to check my work calculating connection coefficients of metrics for geodesic integration
+- Everything done in pure Lua / Lua syntax.  No/minimal parsing.
+- Originally intended for computational physics.  Implement equations in Lua, perform symbolic manipulation, generate functions (via symmath.compile)
 
-demo at http://christopheremoore.net/symbolic-lua
-
-
-operations (and their respective operator precedence)
-simplify:	div	add mul
-expand:		add div mul
-factor: 	mul add div
-
+Online demo and API at http://christopheremoore.net/symbolic-lua
+Example used at http://christopheremoore.net/metric
 
 
 TODO
 
+
 - solving equalities
-- vectors and matrices.  then take the code in tests/matrix_inverse.lua and make a function out of it
-- integrals.  symbolic, numeric explicit, then eventually get to numeric implicit
+- integrals.  symbolic, numeric explicit, then eventually get to numeric implicit (this involves derivatives based on both the dependent and the state variable)
 
 - functions that lua has that I don't: abs, ceil, floor, deg, rad, fmod, frexp, log10, min, max
 
 - support for numbers rather than only Constant
 
-- right now prune() does pruning and canonical form.
-	TODO: put pruning ops in prune(), and put canonical form stuff (div add mul) in simplify()
-	- then put add-div-mul stuff in expand(), and put mul-add-div stuff in factor()
-	- then, when any of simplify(), expand(), or factor() is called, have them go back and forth between their routine and prune() and finish with tidy()
-- another TODO on rearranging operations:
-	- specify simplify, expand, and factor by their precedence order of div, add, and mul
-	- then provide each with a list of functions that arrange operations accordingly (div-add => add-div, etc)
-	- and have them use the right function depending on their precedence
-
-so div-add => add-div would be (a + b) / (c + d) => a/(c+d) + b/(c+d)
-add-div => div-add would be a/b + c/d => (a * d + b * c) / (b * d)
-
-div-mul => mul-div would be (a * b) / (c * d) => a * b * 1/(c*d) (maybe?)
-mul-div => div-mul would be a * b * 1/(c * d) => (a * b)/(c * d)
-
-add-mul => mul-add would be (a + b)*(c + d) => a*c + a*d + b*c + b*d
-mul-add => add-mul would be factoring: a*c + a*d + b*c + b*d => a*(c + d) + b*(c + d) => (a + b)*(c + d)
-
-then list precedence of operations:
-	simplify.operationOrder = [divOp, addOp, mulOp]
-	expand.operationOrder = [addOp, divOp, mulOp]
-	factor.oeprationOrder = [mulOp, addOp, divOp]
-then for each pair, perform changes accordingly
-	
-	
-	for i=1,#process.operationOrder-1 do
-		for j=i+1,#process.operationOrder do
-			local apply = applyRules[process.operationOrder[i]][process.operationOrder[j]]
-			if apply then 
-				expr = apply(expr) or expr
-			end
-		end
-	end
-
-	simplify: add-div=>div-add, mul-div=>div-mul, mul-add=>add-mul
-	expand: div-add=>add-div, mul-div=>div-mul, mul-add=>add-mul
-	factor: div-add=>add-div, div-mul=>mul-div, add-mul=>mul-add
-
-	the only benefit of this is reducing the duplicate rules:
-		div-add => add-div is found in expand and factor
-		mul-div => div-mul is found in simplify and expand
-		mul-add => add-mul is found in simplify and expand 

@@ -1,15 +1,15 @@
-local function tableCommutativeEqual(ac,bc)
+local function tableCommutativeEqual(a,b)
 	-- order-independent
-	ac = table(ac)
-	bc = table(bc)
-	for ai=#ac,1,-1 do
-		local bi = bc:find(ac[ai])
-		if bi then
-			ac:remove(ai)
-			bc:remove(bi)
+	a = table(a)
+	b = table(b)
+	for i=#a,1,-1 do
+		local j = b:find(a[i])
+		if j then
+			a:remove(i)
+			b:remove(j)
 		end
 	end
-	return #ac == 0 and #bc == 0
+	return #a == 0 and #b == 0
 end
 return tableCommutativeEqual
 

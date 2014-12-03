@@ -105,6 +105,7 @@ local original = expr:clone()
 
 		if #expr == 1 then return expr[1] end
 
+
 		-- flatten additions
 		-- (x + y) + z => x + y + z
 		for i=#expr,1,-1 do
@@ -147,7 +148,72 @@ local original = expr:clone()
 				return prune(expr[1]) 
 			end
 		end
-		
+	
+
+		-- vector and matrix addition
+		do
+
+			local RowVector = require 'symmath.RowVector'
+			local Matrix = require 'symmath.Matrix'
+
+			local function isVector(x)
+				return type(x) == 'table' and x.isa and x:isa(RowVector)
+			end
+
+			local function isMatrix(x)
+				return type(x) == 'table' and x.isa and x:isa(Matrix)
+			end
+
+			local function vectorAdd(a,b)
+				if #a ~= #b then return end
+				local result = RowVector()
+				for i=1,#a do
+					result[i] = a[i] + b[i]
+				end
+				return prune:apply(result)
+			end
+
+			local function matrixAdd(a,b)
+				if #a ~= #b or #a[1] ~= #b[1] then return end
+				local result = Matrix()
+				for i=1,#a do
+					result[i] = RowVector()
+					for j=1,#a[1] do
+						result[i][j] = a[i][j] + b[i][j]
+					end
+				end
+				return prune:apply(result)
+			end
+
+			-- and now for RowVector+RowVector addition ...
+			if #expr > 1 then
+				for i=#expr,1,-1 do
+					local rhs = expr[i]
+					if isVector(rhs) or isMatrix(rhs) then
+						for j=i-1,1,-1 do
+							local lhs = expr[j]
+							if isVector(lhs) and isVector(rhs) then
+								local result = vectorAdd(lhs, rhs)
+								if result then
+									table.remove(expr, i)
+									expr[j] = result
+									return prune:apply(expr)
+								end
+							elseif isMatrix(lhs) and isMatrix(rhs) then
+								local result = matrixAdd(lhs, rhs)
+								if result then
+									table.remove(expr, i)
+									expr[j] = result
+									return prune:apply(expr)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	
+
 		-- [[ x * c1 + x * c2 => x * (c1 + c2) ... for constants
 		do
 			local muls = table()
@@ -310,71 +376,6 @@ local original = expr:clone()
 			end
 		end
 		--]]
-
-
-		-- vector and matrix
-		do
-
-			local RowVector = require 'symmath.RowVector'
-			local Matrix = require 'symmath.Matrix'
-
-			local function isVector(x)
-				return type(x) == 'table' and x.isa and x:isa(RowVector)
-			end
-
-			local function isMatrix(x)
-				return type(x) == 'table' and x.isa and x:isa(Matrix)
-			end
-
-			local function vectorAdd(a,b)
-				if #a ~= #b then return end
-				local result = RowVector()
-				for i=1,#a do
-					result[i] = a[i] + b[i]
-				end
-				return prune:apply(result)
-			end
-
-			local function matrixAdd(a,b)
-				if #a ~= #b or #a[1] ~= #b[1] then return end
-				local result = Matrix()
-				for i=1,#a do
-					result[i] = RowVector()
-					for j=1,#a[1] do
-						result[i][j] = a[i][j] + b[i][j]
-					end
-				end
-				return prune:apply(result)
-			end
-
-			-- and now for RowVector+RowVector addition ...
-			if #expr > 1 then
-				for i=#expr,1,-1 do
-					local rhs = expr[i]
-					if isVector(rhs) or isMatrix(rhs) then
-						for j=i-1,1,-1 do
-							local lhs = expr[j]
-							if isVector(lhs) and isVector(rhs) then
-								local result = vectorAdd(lhs, rhs)
-								if result then
-									table.remove(expr, i)
-									expr[j] = result
-									return prune:apply(expr)
-								end
-							elseif isMatrix(lhs) and isMatrix(rhs) then
-								local result = matrixAdd(lhs, rhs)
-								if result then
-									table.remove(expr, i)
-									expr[j] = result
-									return prune:apply(expr)
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	
 
 
 		-- trigonometry identities
@@ -550,6 +551,63 @@ local original = expr:clone()
 			end
 		end
 
+
+		do
+			local RowVector = require 'symmath.RowVector'
+			local Matrix = require 'symmath.Matrix'
+
+			local function isMatrix(x)
+				return type(x) == 'table' and x.isa and x:isa(Matrix)
+			end
+
+			local function matrixMul(a,b)
+				local ah = #a
+				local aw = #a[1]
+				local bh = #b
+				local bw = #b[1]
+				if aw ~= bh then return end
+				local result = Matrix()
+				for i=1,ah do
+					result[i] = RowVector()
+					for j=1,bw do
+						local s
+						for k=1,aw do
+							if not s then
+								s = a[i][k] * b[k][j]
+							else
+								s = s + a[i][k] * b[k][j]
+							end
+						end
+						result[i][j] = s
+					end
+				end
+				return prune:apply(result)
+			end
+
+			-- and now for Matrix*Matrix multiplication ...
+			if #expr > 1 then
+				for i=#expr,1,-1 do
+					local rhs = expr[i]
+					if isMatrix(rhs) then
+						for j=i-1,1,-1 do
+							local lhs = expr[j]
+							if isMatrix(lhs) and isMatrix(rhs) then
+								local result = matrixMul(lhs, rhs)
+								if result then
+									table.remove(expr, i)
+									expr[j] = result
+									return prune:apply(expr)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+
+
+
+
 		-- [[ a^m * a^n => a^(m + n)
 		do
 			local modified = false
@@ -679,59 +737,6 @@ local original = expr:clone()
 		end
 		--]]
 
-
-		do
-			local RowVector = require 'symmath.RowVector'
-			local Matrix = require 'symmath.Matrix'
-
-			local function isMatrix(x)
-				return type(x) == 'table' and x.isa and x:isa(Matrix)
-			end
-
-			local function matrixMul(a,b)
-				local ah = #a
-				local aw = #a[1]
-				local bh = #b
-				local bw = #b[1]
-				if aw ~= bh then return end
-				local result = Matrix()
-				for i=1,ah do
-					result[i] = RowVector()
-					for j=1,bw do
-						local s
-						for k=1,aw do
-							if not s then
-								s = a[i][k] * b[k][j]
-							else
-								s = s + a[i][k] * b[k][j]
-							end
-						end
-						result[i][j] = s
-					end
-				end
-				return prune:apply(result)
-			end
-
-			-- and now for Matrix*Matrix multiplication ...
-			if #expr > 1 then
-				for i=#expr,1,-1 do
-					local rhs = expr[i]
-					if isMatrix(rhs) then
-						for j=i-1,1,-1 do
-							local lhs = expr[j]
-							if isMatrix(lhs) and isMatrix(rhs) then
-								local result = matrixMul(lhs, rhs)
-								if result then
-									table.remove(expr, i)
-									expr[j] = result
-									return prune:apply(expr)
-								end
-							end
-						end
-					end
-				end
-			end
-		end
 
 		-- TODO this is required for things to work right
 		-- that means somewhere above there's still in-place operations going on
