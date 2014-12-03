@@ -22,6 +22,17 @@
 
 -- notebook expects symmath to be assigned in global scope
 symmath = require 'symmath'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = MathJax
+print(MathJax.header)
+
+local function printbr(...)
+	local args = {...}
+	for i=1,table.maxn(args) do 
+		print(tostring(args[i]):gsub('[\r\n]', '<br>'))
+	end
+	print('<br>')
+end
 
 function asserteq(a,b)
 	if a ~= b then
@@ -33,14 +44,14 @@ function notebook(cmd)
 	for _,line in ipairs(cmd:split('\n')) do
 		line = line:trim()
 		if #line > 0 then
-			print('> '..line)
+			printbr('> '..line)
 			if line:sub(1,1) == '=' then
 				line = 'return '..line:sub(2)
 			end
 			local startTime = os.time()	-- TODO hires timer
 			local ok, err = assert(loadstring(line))
 			if not ok then
-				print(err)
+				printbr(err)
 			else
 				local func = ok
 				local errmsg
@@ -49,16 +60,16 @@ function notebook(cmd)
 				end)}	-- scope? all global, right? unless 'local' is added on...
 				local duration = os.time() - startTime
 				if errmsg then
-					io.write(errmsg)
+					printbr(errmsg)
 				else
 					if #result > 0 then
-						io.write(table.concat(table.map(result, tostring),'\t')..'\t')
+						printbr(table.concat(table.map(result, tostring),'\t')..'\t')
 					end
 				end
-				print('('..duration..' seconds)')
+				printbr('('..duration..' seconds)')
 			end
 		else
-			print()
+			printbr()
 		end
 	end
 end
