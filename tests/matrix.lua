@@ -26,7 +26,6 @@ require 'ext'
 local symmath = require 'symmath'
 local Matrix = require 'symmath.Matrix'
 local RowVector = require 'symmath.RowVector'
-local var = symmath.var
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 
@@ -53,13 +52,14 @@ local m = Matrix({1,2},{3,4})
 printbr('\\(m =\\) '..m)
 printbr('\\( m^{-1} = \\)'..symmath.inverse(m))
 
-local a = var'a'
-local b = var'b'
-local c = var'c'
-local d = var'd'
-local m = Matrix({a,b},{c,d})
 
 printbr('2D variable example:')
+
+local var = symmath.var
+local vars = symmath.vars
+local a, b, c, d = vars('a','b','c','d')
+local m = Matrix({a,b},{c,d})
+
 
 printbr('\\(m =\\) '..m)
 --printbr('m[1,2] = '..m[1][2])
