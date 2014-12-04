@@ -987,7 +987,15 @@ local original = expr:clone()
 				return Constant(expr[1].value ^ expr[2].value)
 			end
 		end
-		
+	
+		-- 0^a = 0 for a>0
+		if expr[1] == Constant(0) 
+		and expr[2]:isa(Constant)
+		and expr[2].value > 0
+		then
+			return Constant(0)
+		end
+
 		-- 1^a => 1
 		if expr[1] == Constant(1) then return Constant(1) end
 		

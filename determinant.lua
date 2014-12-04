@@ -25,7 +25,7 @@ function permutations(args)
 		local subset = table(p)
 		local subindex = table(index)
 		subindex:insert(subset:remove(i))
-		parity = parity * -1
+		parity = parity * -1		-- TODO times -1 or times the distance of the swap?
 		if permutations{
 			elements = subset, 
 			callback = callback, 
