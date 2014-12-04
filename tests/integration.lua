@@ -70,7 +70,29 @@ end
 
 local symmath = require 'symmath'
 local x = symmath.var'x'
-local f = x^2
+local f = x^2	-- our target function
+local df = f:diff(x):simplify()
+local t0 = 0
+local t1 = 1
+local n = 100
+local norm = math.abs
+
+do
+	local dt = (t1 - t0) / n
+	local t = t0
+	local x = f(t)
+	local err = 0
+	for i=1,n do
+		local correctX = f(t)
+		local diffX = x - correctX
+		local normDiff = norm(diffX)
+		err = err + normDiff
+		
+		x = method(t, x, dt, df)
+		t = t + dt
+	end
+end
+
 print('euler', euler(f,x,0,1))
 print('midpoint', midpoint(f,x,0,1))
 print('trapezoid', trapezoid(f,x,0,1))

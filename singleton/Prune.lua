@@ -560,7 +560,7 @@ local original = expr:clone()
 				return type(x) == 'table' and x.isa and x:isa(Matrix)
 			end
 
-			local function matrixMul(a,b)
+			local function matrixMatrixMul(a,b)
 				local ah = #a
 				local aw = #a[1]
 				local bh = #b
@@ -581,23 +581,63 @@ local original = expr:clone()
 						result[i][j] = s
 					end
 				end
-				return prune:apply(result)
+				return result
+			end
+			
+			local function matrixScalarMul(m,s)
+				local result = Matrix()
+				for i=1,#m do
+					result[i] = RowVector()
+					for j=1,#m[1] do
+						result[i][j] = m[i][j] * s
+					end
+				end
+				return result
 			end
 
+			local function scalarMatrixMul(s,m)
+				local result = Matrix()
+				for i=1,#m do
+					result[i] = RowVector()
+					for j=1,#m[1] do
+						result[i][j] = s * m[i][j]
+					end
+				end
+				return result
+			end
+			
 			-- and now for Matrix*Matrix multiplication ...
 			if #expr > 1 then
 				for i=#expr,1,-1 do
 					local rhs = expr[i]
-					if isMatrix(rhs) then
-						for j=i-1,1,-1 do
-							local lhs = expr[j]
-							if isMatrix(lhs) and isMatrix(rhs) then
-								local result = matrixMul(lhs, rhs)
-								if result then
-									table.remove(expr, i)
-									expr[j] = result
-									return prune:apply(expr)
-								end
+					for j=i-1,1,-1 do
+						local lhs = expr[j]
+						local isLhsMat = isMatrix(lhs)
+						local isRhsMat = isMatrix(rhs)
+						if isLhsMat and isRhsMat then
+							local result = matrixMatrixMul(lhs, rhs)
+							if result then
+								table.remove(expr, i)
+								expr[j] = result
+								return prune:apply(expr)
+							end
+						elseif isLhsMat or isRhsMat then	-- matrix-scalar multiplication
+							-- notice I'm not handling Matrix/RowVector multiplication.  
+							-- My rule of thumb for now is "don't instanciate RowVectors -- instanciate nx1 Matrices instead"
+							-- I'm sure that will change once I start introducing tensors.
+							-- See the tests/alcubierre.lua file for thoughts on this.
+							local result 
+							if isLhsMat then
+								result = matrixScalarMul(lhs, rhs)
+							elseif isRhsMat then
+								result = scalarMatrixMul(lhs, rhs)
+							else
+								error("shouldn't get here")
+							end
+							if result then
+								table.remove(expr, i)
+								expr[j] = result
+								return prune:apply(expr)
 							end
 						end
 					end
