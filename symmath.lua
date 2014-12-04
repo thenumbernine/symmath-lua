@@ -188,6 +188,7 @@ symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
 -- specific to Matrix
 symmath.Matrix = require 'symmath.Matrix'
 symmath.inverse = require 'symmath.inverse'
+symmath.determinant = require 'symmath.determinant'
 
 -- change the default as you see fit
 symmath.tostring = assert(require 'symmath.tostring.MultiLine')
