@@ -11,26 +11,38 @@ end
 
 print(MathJax.header)
 
-local c = symmath.Variable('c', nil, true)
-local m = symmath.Variable('m', nil, true)
-local s = symmath.Variable('s', nil, true)
-local G = symmath.Variable('G', nil, true)
-local kg = symmath.Variable('kg')
+local c = symmath.var('c')
+local m = symmath.var('m')
+local s = symmath.var('s')
+local G = symmath.var('G')
+local kg = symmath.var('kg')
 
-local c_from_m_s = (c):equals(299792458 * (m / s))
+-- speed of light
+local c_from_m_s = c:equals(299792458 * (m / s))
+printbr(c_from_m_s)
 
--- c = 1, solve for s
---local s_from_m = c_from_m_s:replace(c, 1):solve(s)
-local s_from_m = (c_from_m_s:replace(c, 1) * s):simplify()
+-- c = 1
+local c_normalized = c:equals(1)
+printbr(c_normalized)
 
-local G_from_m_s_kg = G:equals(6.67384e-11 * m^3 / (kg * s^2))
+-- solve for s
+local s_from_m = c_from_m_s:subst(c_normalized):solve(s)
+printbr(s_from_m)
+
+-- gravity
+local G_from_m_s_kg = G:equals(6.67384e-11 * m^3 / (kg * s^2)):simplify()
 printbr(G_from_m_s_kg)
 
-local kg_from_m = (G_from_m_s_kg:replace(G, 1):subst(s_from_m) * kg):simplify()
+-- G = 1
+local G_normalized = G:equals(1)
+printbr(G_normalized)
+
+-- solve for kg
+local kg_from_m = G_from_m_s_kg:subst(G_normalized):subst(s_from_m):solve(kg)
 printbr(kg_from_m)
 
 -- local m_from_kg = kg_from_m:solve(m)
-local m_from_kg = (kg * (1 / (kg_from_m / m))):simplify()
+local m_from_kg = kg_from_m:solve(m)
 printbr(m_from_kg)
 
 --local s_from_kg = s_from_m:subst(kg_from_m:solve(kg))

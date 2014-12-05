@@ -3,18 +3,30 @@ accepts an equation and a variable
 returns an equation with that variable on the lhs and the rest on the rhs
 --]]
 return function(eqn, x)
+	assert(eqn, 'expected equation or expression to solve for zero')
+	
 	local clone = require 'symmath.clone'
 	local addOp = require 'symmath.addOp'
 	local divOp = require 'symmath.divOp'
 	local powOp = require 'symmath.powOp'
 	local mulOp = require 'symmath.mulOp'
 	local Constant = require 'symmath.Constant'
+	local EquationOp = require 'symmath.EquationOp'	
 	
-	eqn = clone(eqn)
+	local lhs
+	if eqn:isa(EquationOp) then
+		-- move everything to one side of the equation
+		lhs = eqn[1] - eqn[2]
+	else
+		-- or just treat it like it is a lhs == 0
+		lhs = eqn
+	end
 
-	-- 1) move everything to one side of the equation
-	local lhs = (eqn[1] - eqn[2]):simplify()
-	
+	lhs = lhs:simplify()
+	-- ... but don't run tidy ... so, here's a final prune ...
+	local prune = require 'symmath.prune'
+	lhs = prune(lhs)
+
 	--simplify/canoncial form is atm div -> add -> mul
 	-- so a), cross-multiply denominator (if it's there)
 	-- b) solve polynomial 
@@ -124,15 +136,15 @@ return function(eqn, x)
 		local n = table.maxn(coeffs)
 		if n == 0 then return end	-- a = 0 <=> no solutions
 		if n == 1 then		-- c1 x + c0 = 0 <=> x = -c0/c1
-			print('coeffs',table.map(coeffs[1],tostring):concat('\n'),'\nend coeffs')
-			return (-getCoeff(0) / getCoeff(1)):simplify()
+--print('coeffs',table.map(coeffs[1],tostring):concat('\n'),'\nend coeffs')
+			return x:equals(-getCoeff(0) / getCoeff(1)):simplify()
 		end
 		-- this is where factor() comes in handy ...
 		if n == 2 then
 			local a,b,c = getCoeff(2), getCoeff(1), getCoeff(0)
 			local sqrt = require 'symmath.sqrt'
-			return ((-b-sqrt(b^2-4*a*c))/(2*a)):simplify(),
-					((-b+sqrt(b^2-4*a*c))/(2*a)):simplify()
+			return x:equals((-b-sqrt(b^2-4*a*c))/(2*a)):simplify(),
+					x:equals((-b+sqrt(b^2-4*a*c))/(2*a)):simplify()
 		end
 		-- and on ...
 	end
@@ -147,5 +159,4 @@ return function(eqn, x)
 		result = result + getCoeff'extra'
 	end
 
-	return 
 end
