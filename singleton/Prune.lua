@@ -52,7 +52,7 @@ Prune.lookupTable = {
 
 		-- d/dx d/dy = d/dxy
 		if expr[1]:isa(Derivative) then
-			return prune(Derivative(expr[1][1], unpack(
+			return prune:apply(Derivative(expr[1][1], unpack(
 				table.append({unpack(expr, 2)}, {unpack(expr[1], 2)})
 			)))
 		end
@@ -83,7 +83,7 @@ Prune.lookupTable = {
 			local result = expr[1]:clone()
 			for i=2,#expr do
 				-- TODO one at a time ...
-				result = prune(result:evaluateDerivative(expr[i]))
+				result = prune:apply(result:evaluateDerivative(expr[i]))
 			end
 			return result
 		end
@@ -91,9 +91,9 @@ Prune.lookupTable = {
 	
 	[unmOp] = function(prune, expr)
 		if expr[1]:isa(unmOp) then
-			return prune(expr[1][1]:clone())
+			return prune:apply(expr[1][1]:clone())
 		end
-		return prune(Constant(-1) * expr[1])
+		return prune:apply(Constant(-1) * expr[1])
 	end,
 	
 	[addOp] = function(prune, expr, ...)
@@ -119,7 +119,7 @@ local original = expr:clone()
 					table.insert(expr, i, chch)
 				end
 --print('addOp flatten', symmath.Verbose(original), '=>', symmath.Verbose(expr))
-				return prune(expr)
+				return prune:apply(expr)
 			end
 		end
 		
@@ -145,7 +145,7 @@ local original = expr:clone()
 			-- then see if we have only one term ...
 			if #expr == 1 then 
 --print('addOp returning zero')
-				return prune(expr[1]) 
+				return prune:apply(expr[1]) 
 			end
 		end
 	
@@ -257,7 +257,7 @@ local original = expr:clone()
 				if not didntFind then
 					local expr = addOp(mulOp(baseConst, unpack(baseTerms)), unpack(nonMuls))
 --print('addOp c1*x + c2*x = (c1+c2)*x', symmath.Verbose(original), '=>', symmath.Verbose(expr))
-					return prune(expr)
+					return prune:apply(expr)
 				end
 			end
 		end
@@ -332,9 +332,9 @@ local original = expr:clone()
 					--print('optimizing from '..tostring(expr))
 					table.remove(expr, j)
 					expr[i] = mulOp(Constant(constI.value + constJ.value), unpack(commonTerms))
-					--print('optimizing to '..tostring(prune(expr)))
+					--print('optimizing to '..tostring(prune:apply(expr)))
 --print('flattening muls in add')
-					return prune(expr)
+					return prune:apply(expr)
 				end
 			end
 		end
@@ -361,7 +361,7 @@ local original = expr:clone()
 		end
 		if denom then
 			table.remove(expr, denomIndex)
-			return prune(expr / denom)
+			return prune:apply(expr / denom)
 		end
 		--]]
 		-- [[ divs: c + a/b => (c * b + a) / b
@@ -372,7 +372,7 @@ local original = expr:clone()
 				table.remove(expr, i)
 				local expr = (expr * b + a) / b
 --print('c+a/b => (c*b+a)/b', symmath.Verbose(original), '=>', symmath.Verbose(expr))
-				return prune(expr)
+				return prune:apply(expr)
 			end
 		end
 		--]]
@@ -447,8 +447,8 @@ local original = expr:clone()
 				local result = checkAddOp(expr)
 --print('...got',result)
 				if result then 
---print('...returning',original,'=>',prune(result))
-					return prune(result) 
+--print('...returning',original,'=>',prune:apply(result))
+					return prune:apply(result) 
 				end
 
 				-- this is factoring ... and pruning ... 
@@ -465,8 +465,8 @@ local original = expr:clone()
 						local result = checkAddOp(ch)
 --print('...got',result)
 						if result then 
---print('...returning',original,'=>',prune(result))
-							return prune(result) 
+--print('...returning',original,'=>',prune:apply(result))
+							return prune:apply(result) 
 						end
 					end
 				end
@@ -478,7 +478,7 @@ local original = expr:clone()
 	end,
 	
 	[subOp] = function(prune, expr)
-		return prune(expr[1] + (-expr[2]))
+		return prune:apply(expr[1] + (-expr[2]))
 	end,
 	
 	[mulOp] = function(prune, expr)
@@ -500,7 +500,7 @@ local original = expr:clone()
 					table.insert(expr, i, chch)
 				end
 --print('mulOp (a*b)*c => a*b*c', symmath.Verbose(original), '=>', symmath.Verbose(expr))
-				return prune(expr)
+				return prune:apply(expr)
 			end
 		end
 		
@@ -516,9 +516,9 @@ local original = expr:clone()
 				end
 			end
 			if unmOpCount % 2 == 1 then
-				return -prune(expr)	-- move unm outside and simplify what's left
+				return -prune:apply(expr)	-- move unm outside and simplify what's left
 			elseif unmOpCount ~= 0 then
-				return prune(expr)	-- got an even number?  remove it and simplify this
+				return prune:apply(expr)	-- got an even number?  remove it and simplify this
 			end
 		end
 		--]]
@@ -547,7 +547,7 @@ local original = expr:clone()
 		else
 			if #expr == 1 then 
 --print('mulOp 1*a => a', symmath.Verbose(original), '=>', symmath.Verbose(expr[1]))
-				return prune(expr[1]) 
+				return prune:apply(expr[1]) 
 			end
 		end
 
@@ -693,7 +693,7 @@ local original = expr:clone()
 			end
 			if modified then
 --print('mulOp a^m * a^n => a^(m+n)', symmath.Verbose(original), '=>', symmath.Verbose(expr))
-				return prune(expr)
+				return prune:apply(expr)
 			end
 		end
 		--]]
@@ -772,7 +772,7 @@ local original = expr:clone()
 				if denom ~= Constant(1) then
 					expr = expr / denom
 				end
-				return prune(expr)
+				return prune:apply(expr)
 			end
 		end
 		--]]
@@ -803,7 +803,7 @@ local original = expr:clone()
 			-- mul / Constant = 1/Constant * mul
 			if expr[1]:isa(mulOp) and expr[2]:isa(Constant) then
 				local m = expr[1]:clone()
-				return prune(mulOp(Constant(1/expr[2].value), unpack(m)))
+				return prune:apply(mulOp(Constant(1/expr[2].value), unpack(m)))
 			end
 		end
 
@@ -826,14 +826,14 @@ local original = expr:clone()
 		
 		-- (a / b) / c => a / (b * c)
 		if expr[1]:isa(divOp) then
-			return prune(expr[1][1] / (expr[1][2] * expr[2]))
+			return prune:apply(expr[1][1] / (expr[1][2] * expr[2]))
 		end
 		
 		-- a / (b / c) => (a * c) / b
 		if expr[2]:isa(divOp) then
 			local a, b = unpack(expr)
 			local b, c = unpack(b)
-			return prune((a * c) / b)
+			return prune:apply((a * c) / b)
 		end
 
 		if expr[1] == expr[2] then
@@ -950,7 +950,7 @@ local original = expr:clone()
 					result = num / denom
 				end
 		
-				return prune(result)
+				return prune:apply(result)
 			end
 		end
 
@@ -958,12 +958,12 @@ local original = expr:clone()
 	
 		-- x / x^a => x^(1-a)
 		if expr[2]:isa(powOp) and expr[1] == expr[2][1] then
-			return prune(expr[1] ^ (1 - expr[2][2]))
+			return prune:apply(expr[1] ^ (1 - expr[2][2]))
 		end
 		
 		-- x^a / x => x^(a-1)
 		if expr[1]:isa(powOp) and expr[1][1] == expr[2] then
-			return prune(expr[1][1] ^ (expr[1][2] - 1))
+			return prune:apply(expr[1][1] ^ (expr[1][2] - 1))
 		end
 		
 		-- x^a / x^b => x^(a-b)
@@ -971,7 +971,7 @@ local original = expr:clone()
 		and expr[2]:isa(powOp)
 		and expr[1][1] == expr[2][1]
 		then
-			return prune(expr[1][1] ^ (expr[1][2] - expr[2][2]))
+			return prune:apply(expr[1][1] ^ (expr[1][2] - expr[2][2]))
 		end
 		--]]
 
@@ -1007,19 +1007,19 @@ local original = expr:clone()
 		end
 		
 		-- a^1 => a
-		if expr[2] == Constant(1) then return prune(expr[1]) end
+		if expr[2] == Constant(1) then return prune:apply(expr[1]) end
 		
 		-- a^0 => 1
 		if expr[2] == Constant(0) then return Constant(1) end
 		
 		-- (a ^ b) ^ c => a ^ (b * c)
 		if expr[1]:isa(powOp) then
-			return prune(expr[1][1] ^ (expr[1][2] * expr[2]))
+			return prune:apply(expr[1][1] ^ (expr[1][2] * expr[2]))
 		end
 		
 		-- (a * b) ^ c => a^c * b^c
 		if expr[1]:isa(mulOp) then
-			return prune(mulOp(table.map(expr[1], function(v,k)
+			return prune:apply(mulOp(table.map(expr[1], function(v,k)
 				if type(k) ~= 'number' then return end
 				return v ^ expr[2]
 			end):unpack()))
@@ -1027,7 +1027,7 @@ local original = expr:clone()
 	
 		-- a^(-c) => 1/a^c
 		if expr[2]:isa(Constant) and expr[2].value < 0 then
-			return prune(Constant(1)/(expr[1]^Constant(-expr[2].value)))
+			return prune:apply(Constant(1)/(expr[1]^Constant(-expr[2].value)))
 		end
 
 		--[[ for simplification's sake ... (like -a => -1 * a)
@@ -1041,12 +1041,15 @@ local original = expr:clone()
 				table.insert(m, expr[1]:clone())
 			end
 			
-			return prune(m)
+			return prune:apply(m)
 		end
 		--]]
 
 		return expr
+	end,
 
+	[require 'symmath.sqrt'] = function(prune, expr)
+		return prune:apply(expr[1]^divOp(1,2))
 	end,
 }
 

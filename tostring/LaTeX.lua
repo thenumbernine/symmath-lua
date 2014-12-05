@@ -23,6 +23,9 @@ LaTeX.lookupTable = {
 			return '{' .. self:apply(x) .. '}'
 		end):concat(',') .. '\\right )'
 	end,
+	[require 'symmath.sqrt'] = function(self, expr)
+		return '\\sqrt{'..self:apply(expr[1])..'}'
+	end,
 	[require 'symmath.unmOp'] = function(self, expr)
 		return '-{'..self:wrapStrOfChildWithParenthesis(expr, 1)..'}'
 	end,
