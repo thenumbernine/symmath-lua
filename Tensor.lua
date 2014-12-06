@@ -6,6 +6,8 @@ general-purpose rank-1 (successive nesting for rank-n) structure
 to be used as vectors, vectors of them as matrices, etc ...
 --]]
 local Tensor = class(Expression)
+Tensor.name = 'Tensor'
+Tensor.mulNonCommutative = true
 Tensor.precedence = 10
 
 function Tensor:init(...)
