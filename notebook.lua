@@ -28,8 +28,8 @@ print(MathJax.header)
 
 local function printbr(...)
 	local args = {...}
-	for i=1,table.maxn(args) do 
-		print(tostring(args[i]):gsub('[\r\n]', '<br>'))
+	for i=1,table.maxn(args) do
+		print(tostring((args[i]):gsub('[\r\n]', '<br>')))
 	end
 	print('<br>')
 end
@@ -49,7 +49,7 @@ function notebook(cmd)
 				line = 'return '..line:sub(2)
 			end
 			local startTime = os.time()	-- TODO hires timer
-			local ok, err = assert(loadstring(line))
+			local ok, err = loadstring(line)
 			if not ok then
 				printbr(err)
 			else
@@ -62,9 +62,10 @@ function notebook(cmd)
 				if errmsg then
 					printbr(errmsg)
 				else
-					if #result > 0 then
-						printbr(table.concat(table.map(result, tostring),'\t')..'\t')
-					end
+					-- if errmsg wasn't written then result[1] should be true ...
+					assert(table.remove(result, 1) == true)
+					
+					printbr(table.concat(table.map(result, function(s) return tostring(s) end),'\t')..'\t')
 				end
 				printbr('('..duration..' seconds)')
 			end

@@ -23,81 +23,72 @@
 
 
 require 'ext'
-local symmath = require 'symmath'
-local Matrix = require 'symmath.Matrix'
-local Tensor = require 'symmath.Tensor'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
+symmath = require 'symmath'
+require 'symmath.notebook'
+Matrix = require 'symmath.Matrix'
+Tensor = require 'symmath.Tensor'
 
 -- test
 
-print(MathJax.header)
-
-local function printbr(...)
+function printbr(...)
 	print(...)
 	print('<br>')
 end
 
+notebook[[
 
-printbr('vectors')
-local v = Tensor(1,2,3)
-printbr(v)
+-- vectors
+=Tensor(1,2,3)
 
-printbr(Tensor(1,2) + Tensor(3,4))
-printbr((Tensor(1,2) + Tensor(3,4)):simplify())
+=Tensor(1,2) + Tensor(3,4)
+=(Tensor(1,2) + Tensor(3,4)):simplify()
 
-printbr('numeric example:')
+-- numeric example
 
-local m = Matrix({1,2},{3,4})
-printbr('\\(m =\\) '..m)
-printbr('\\( m^{-1} = \\)'..m:inverse())
+=Matrix({1,2},{3,4})
+=Matrix({1,2},{3,4}):inverse()
 
+-- 2D variable example
 
-printbr('2D variable example:')
+var = symmath.var
+vars = symmath.vars
+a, b, c, d = vars('a','b','c','d')
+=Matrix({a,b},{c,d})
+=Matrix({a,b},{c,d}):inverse()
 
-local var = symmath.var
-local vars = symmath.vars
-local a, b, c, d = vars('a','b','c','d')
-local m = Matrix({a,b},{c,d})
+-- 4D translation matrix
 
+=Matrix({1,0,0,var't_x'},{0,1,0,var't_y'},{0,0,1,var't_z'},{0,0,0,1})
+=Matrix({1,0,0,var't_x'},{0,1,0,var't_y'},{0,0,1,var't_z'},{0,0,0,1}):inverse()
 
-printbr('\\(m =\\) '..m)
---printbr('m[1,2] = '..m[1][2])
-printbr('\\( m^{-1} = \\) '..m:inverse():simplify())
+-- 2D rotation matrix
 
-printbr('4D translation matrix:')
-
-local m = Matrix(
-{1,0,0,var't_x'},
-{0,1,0,var't_y'},
-{0,0,1,var't_z'},
-{0,0,0,1})
-printbr('\\(m =\\) '..m)
-printbr('\\( m^{-1} = \\) '..m:inverse())
-
-printbr('2D rotation matrix:')
-local theta = var'\\theta'
-local m = Matrix({symmath.cos(theta), -symmath.sin(theta)}, {symmath.sin(theta), symmath.cos(theta)})
-printbr('\\(m =\\) '..m)
-local mInv = m:inverse()
+theta = var'\\theta'
+m = Matrix({symmath.cos(theta), -symmath.sin(theta)}, {symmath.sin(theta), symmath.cos(theta)})
+mInv = m:inverse()
 mInv = mInv:replace(symmath.sin(theta)^2, 1-symmath.cos(theta)^2):simplify()	-- almost there ... still have to trig simplify this ...
-printbr('\\(m^{-1} = \\)'..mInv)
 
-printbr(m + mInv)
-printbr((m + mInv):simplify())
-printbr(m * mInv)
-printbr((m * mInv):simplify())
-printbr((m*m), (m*m):simplify())
+=m + mInv
+=(m + mInv):simplify()
+=m * mInv
+=(m * mInv):simplify()
+=m*m
+=(m*m):simplify()
 
-local m1 = symmath.Matrix({1,a},{0,1})
-local m2 = symmath.Matrix({1,0},{b,1})
-printbr(m1)
-printbr(m2)
-printbr((m1*m2):equals((m1*m2):simplify()))
-printbr((m2*m1):equals((m2*m1):simplify()))
-printbr(m1:equals(m2), m1==m2)
-printbr((m1*m2):equals(m2*m1), m1*m2==m2*m1)
-printbr((m1*m2):equals(m1*m2), m1*m2==m1*m2)
-printbr((m1*m2):equals(m2*m1):simplify(), (m1*m2):simplify()==(m2*m1):simplify())
-print(MathJax.footer)
+m1 = symmath.Matrix({1,a},{0,1})
+m2 = symmath.Matrix({1,0},{b,1})
+=(m1)
+=(m2)
+=(m1*m2):equals((m1*m2):simplify())
+=(m2*m1):equals((m2*m1):simplify())
+=m1:equals(m2)
+=m1==m2
+=(m1*m2):equals(m2*m1)
+=m1*m2==m2*m1
+=(m1*m2):equals(m1*m2)
+=m1*m2==m1*m2
+=(m1*m2):equals(m2*m1):simplify()
+=(m1*m2):simplify()==(m2*m1):simplify()
+
+]]
 
