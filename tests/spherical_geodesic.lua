@@ -24,7 +24,7 @@
 
 
 symmath = require 'symmath'
-local tensor = require 'symmath.tensor'
+local tensor = require 'symmath.tensorhelp'
 
 --this is a halfway step between pure symmath code and symmath+tensor code
 

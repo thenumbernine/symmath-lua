@@ -34,7 +34,7 @@ TODO: The correct substitution method is:
 --]]
 
 symmath = require 'symmath'
-local tensor = require 'symmath.tensor'
+local tensor = require 'symmath.tensorhelp'
 
 -- coordinates
 t = symmath.Variable('t')

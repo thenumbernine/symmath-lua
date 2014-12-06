@@ -153,59 +153,38 @@ local original = expr:clone()
 		-- vector and matrix addition
 		do
 
-			local RowVector = require 'symmath.RowVector'
-			local Matrix = require 'symmath.Matrix'
+			local Tensor = require 'symmath.Tensor'
 
-			local function isVector(x)
-				return type(x) == 'table' and x.isa and x:isa(RowVector)
+			local function isTensor(x)
+				return type(x) == 'table' and x.isa and x:isa(Tensor)
 			end
 
-			local function isMatrix(x)
-				return type(x) == 'table' and x.isa and x:isa(Matrix)
-			end
-
-			local function vectorAdd(a,b)
+			local function tensorTensorAdd(a,b)
 				if #a ~= #b then return end
-				local result = RowVector()
+				local result = Tensor()
 				for i=1,#a do
 					result[i] = a[i] + b[i]
 				end
 				return prune:apply(result)
 			end
 
-			local function matrixAdd(a,b)
-				if #a ~= #b or #a[1] ~= #b[1] then return end
-				local result = Matrix()
-				for i=1,#a do
-					result[i] = RowVector()
-					for j=1,#a[1] do
-						result[i][j] = a[i][j] + b[i][j]
-					end
-				end
-				return prune:apply(result)
-			end
-
-			-- and now for RowVector+RowVector addition ...
+			-- and now for Tensor+Tensor addition ...
 			if #expr > 1 then
 				for i=#expr,1,-1 do
 					local rhs = expr[i]
-					if isVector(rhs) or isMatrix(rhs) then
+					local rhsIsTensor = isTensor(rhs)
+					if rhsIsTensor then
 						for j=i-1,1,-1 do
 							local lhs = expr[j]
-							if isVector(lhs) and isVector(rhs) then
-								local result = vectorAdd(lhs, rhs)
+							local lhsIsTensor = isTensor(lhs)
+							if lhsIsTensor and rhsIsTensor then 
+								local result = tensorTensorAdd(lhs, rhs)
 								if result then
 									table.remove(expr, i)
 									expr[j] = result
 									return prune:apply(expr)
 								end
-							elseif isMatrix(lhs) and isMatrix(rhs) then
-								local result = matrixAdd(lhs, rhs)
-								if result then
-									table.remove(expr, i)
-									expr[j] = result
-									return prune:apply(expr)
-								end
+							-- else tensor+scalar?  nah, too ambiguous.  are you asking for adding to all elements, or just the diagonals? idk.
 							end
 						end
 					end
@@ -553,23 +532,21 @@ local original = expr:clone()
 
 
 		do
-			local RowVector = require 'symmath.RowVector'
-			local Matrix = require 'symmath.Matrix'
+			local Tensor = require 'symmath.Tensor'
 
-			local function isMatrix(x)
-				return type(x) == 'table' and x.isa and x:isa(Matrix)
+			local function isTensor(x)
+				return type(x) == 'table' and x.isa and x:isa(Tensor)
 			end
 
 			local function matrixMatrixMul(a,b)
-				local ah = #a
-				local aw = #a[1]
-				local bh = #b
-				local bw = #b[1]
+				local adim = a:dim()
+				local bdim = b:dim()
+				if #adim ~= 2 or #bdim ~= 2 then return end	-- only support matrix/matrix multiplication
+				local ah, aw = unpack(adim)
+				local bh, bw = unpack(bdim)
 				if aw ~= bh then return end
-				local result = Matrix()
-				for i=1,ah do
-					result[i] = RowVector()
-					for j=1,bw do
+				return require 'symmath.Matrix'(range(ah):map(function(i)
+					return range(bw):map(function(j)
 						local s
 						for k=1,aw do
 							if not s then
@@ -578,32 +555,21 @@ local original = expr:clone()
 								s = s + a[i][k] * b[k][j]
 							end
 						end
-						result[i][j] = s
-					end
-				end
-				return result
+						return s
+					end)
+				end):unpack())
 			end
 			
-			local function matrixScalarMul(m,s)
-				local result = Matrix()
-				for i=1,#m do
-					result[i] = RowVector()
-					for j=1,#m[1] do
-						result[i][j] = m[i][j] * s
-					end
-				end
-				return result
+			local function tensorScalarMul(m,s)
+				return m:map(function(x)
+					if not x.rank then return s*x end
+				end)
 			end
 
-			local function scalarMatrixMul(s,m)
-				local result = Matrix()
-				for i=1,#m do
-					result[i] = RowVector()
-					for j=1,#m[1] do
-						result[i][j] = s * m[i][j]
-					end
-				end
-				return result
+			local function scalarTensorMul(s,m)
+				return m:map(function(x)
+					if not x.rank then return x*s end
+				end)
 			end
 			
 			-- and now for Matrix*Matrix multiplication ...
@@ -612,25 +578,25 @@ local original = expr:clone()
 					local rhs = expr[i]
 					for j=i-1,1,-1 do
 						local lhs = expr[j]
-						local isLhsMat = isMatrix(lhs)
-						local isRhsMat = isMatrix(rhs)
-						if isLhsMat and isRhsMat then
+						local lhsIsTensor = isTensor(lhs)
+						local rhsIsTensor = isTensor(rhs)
+						if lhsIsTensor and rhsIsTensor then
 							local result = matrixMatrixMul(lhs, rhs)
 							if result then
 								table.remove(expr, i)
 								expr[j] = result
 								return prune:apply(expr)
 							end
-						elseif isLhsMat or isRhsMat then	-- matrix-scalar multiplication
-							-- notice I'm not handling Matrix/RowVector multiplication.  
+						elseif lhsIsTensor or rhsIsTensor then	-- matrix-scalar multiplication
+							-- notice I'm not handling Matrix/Tensor multiplication.  
 							-- My rule of thumb for now is "don't instanciate RowVectors -- instanciate nx1 Matrices instead"
 							-- I'm sure that will change once I start introducing tensors.
 							-- See the tests/alcubierre.lua file for thoughts on this.
 							local result 
-							if isLhsMat then
-								result = matrixScalarMul(lhs, rhs)
-							elseif isRhsMat then
-								result = scalarMatrixMul(lhs, rhs)
+							if lhsIsTensor then
+								result = tensorScalarMul(lhs, rhs)
+							elseif rhsIsTensor then
+								result = scalarTensorMul(lhs, rhs)
 							else
 								error("shouldn't get here")
 							end

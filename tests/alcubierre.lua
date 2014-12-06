@@ -36,6 +36,7 @@ ideal code:
 	-- will the fact that non-i's x is the 2nd and i's x is the 1st element make a difference?
 	-- align coords by associated variables. let the user reference by g'_tt' rather than g[1][1] or g[4][4] or whichever implementation is used.
 	-- ... either use the vars as fields themselves or use the provided list as order index, so 'txyz' would either provide g.t.t, g.t.x, etc or g[1][1] as g_tt, g[1][2] as g_tx, etc
+	--	though that wouldn't be so compatible with allowing matrix indexing ...
 
 	alpha = 1
 

@@ -7,26 +7,24 @@
 -- then there's the question of how to integrate tensors in general
 -- then there's breaking down prune/simplify op visitors into rules, so I could quickly insert a new rule when using matrices 
 return function(A)
+	local Tensor = require 'symmath.Tensor'
 	local Matrix = require 'symmath.Matrix'
 	local Constant = require 'symmath.Constant'
 	local simplify = require 'symmath.simplify'
 	local clone = require 'symmath.clone'
 	
 	if type(A) == 'number' then return 1/Constant(A) end
-	if not (type(A) == 'table' and A.isa and A:isa(Matrix)) then return Constant(1)/A end
+	if not (type(A) == 'table' and A.isa and A:isa(Tensor)) then return Constant(1)/A end
 
-	-- ... and Matrix
-
-	assert(#A == #A[1])	-- assert squre
-	local n = #A
+	-- ... and Tensor
+	local dim = A:dim()
+	assert(#dim == 2 and dim[1] == dim[2], "expected a square rank-2 tensor")
+	local n = dim[1]
 
 	A = clone(A)
 	
 	-- assumes A is a rank-2 tensor
-	local AInv = Matrix(n, n)
-	for i=1,n do
-		AInv[i][i] = Constant(1)
-	end
+	local AInv = Matrix.identity(n)
 
 	for i=1,n do
 		-- if we have a zero on the diagonal...

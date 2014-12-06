@@ -167,7 +167,13 @@ MultiLine.lookupTable = {
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		return self:combine(lhs, rhs)
 	end,
-	[require 'symmath.RowVector'] = function(self, expr)
+	[require 'symmath.Tensor'] = function(self, expr)
+		-- even if it doesn't have a Matrix metatable, if it's rank-2 then display it as a matrix ...
+		-- TODO just put Matrix's entry here and get rid of its empty, let its subclass fall through to here instead
+		if expr.rank == 2 then
+			return self.lookupTable[require 'symmath.Matrix'](self, expr)
+		end
+		
 		local parts = table()
 		for i=1,#expr do
 			parts[i] = self:apply(expr[i])

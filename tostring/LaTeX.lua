@@ -85,7 +85,11 @@ LaTeX.lookupTable = {
 		end
 		return s
 	end,
-	[require 'symmath.RowVector'] = function(self, expr)
+	[require 'symmath.Tensor'] = function(self, expr)
+		-- non-Matrix Tensors that are rank-2 can be displayed as Matrixes
+		if expr.rank == 2 then
+			return self.lookupTable[require 'symmath.Matrix'](self, expr)
+		end
 		local s = table()
 		for i=1,#expr do
 			s:insert(self:apply(expr[i]))
@@ -96,7 +100,7 @@ LaTeX.lookupTable = {
 		local rows = table()
 		for i=1,#expr do
 			if type(expr[i]) ~= 'table' then 
-				error("expected matrix children to be RowVectors (or at least tables), but got ("..type(expr[i])..") "..tostring(expr[i]))
+				error("expected matrix children to be Tensors (or at least tables), but got ("..type(expr[i])..") "..tostring(expr[i]))
 			end
 			for j=1,#expr[i] do
 				rows[i] = table.map(expr[i], function(x,k)

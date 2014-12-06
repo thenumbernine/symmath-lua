@@ -25,7 +25,7 @@
 require 'ext'
 local symmath = require 'symmath'
 local Matrix = require 'symmath.Matrix'
-local RowVector = require 'symmath.RowVector'
+local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 
@@ -40,17 +40,17 @@ end
 
 
 printbr('vectors')
-local v = RowVector(1,2,3)
+local v = Tensor(1,2,3)
 printbr(v)
 
-printbr(RowVector(1,2) + RowVector(3,4))
-printbr((RowVector(1,2) + RowVector(3,4)):simplify())
+printbr(Tensor(1,2) + Tensor(3,4))
+printbr((Tensor(1,2) + Tensor(3,4)):simplify())
 
 printbr('numeric example:')
 
 local m = Matrix({1,2},{3,4})
 printbr('\\(m =\\) '..m)
-printbr('\\( m^{-1} = \\)'..symmath.inverse(m))
+printbr('\\( m^{-1} = \\)'..m:inverse())
 
 
 printbr('2D variable example:')
@@ -63,7 +63,7 @@ local m = Matrix({a,b},{c,d})
 
 printbr('\\(m =\\) '..m)
 --printbr('m[1,2] = '..m[1][2])
-printbr('\\( m^{-1} = \\) '..symmath.inverse(m):simplify())
+printbr('\\( m^{-1} = \\) '..m:inverse():simplify())
 
 printbr('4D translation matrix:')
 
@@ -73,13 +73,13 @@ local m = Matrix(
 {0,0,1,var't_z'},
 {0,0,0,1})
 printbr('\\(m =\\) '..m)
-printbr('\\( m^{-1} = \\) '..symmath.inverse(m))
+printbr('\\( m^{-1} = \\) '..m:inverse())
 
 printbr('2D rotation matrix:')
 local theta = var'\\theta'
 local m = Matrix({symmath.cos(theta), -symmath.sin(theta)}, {symmath.sin(theta), symmath.cos(theta)})
 printbr('\\(m =\\) '..m)
-local mInv = symmath.inverse(m)
+local mInv = m:inverse()
 mInv = mInv:replace(symmath.sin(theta)^2, 1-symmath.cos(theta)^2):simplify()	-- almost there ... still have to trig simplify this ...
 printbr('\\(m^{-1} = \\)'..mInv)
 

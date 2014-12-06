@@ -39,16 +39,28 @@ function permutations(args)
 end
 
 return function(m)
-	local Matrix = require 'symmath.Matrix'
+	local Tensor = require 'symmath.Tensor'
 	local Constant = require 'symmath.Constant'
 
-	-- non-matrix?  return itself
-	if type(m) ~= 'table' or not m.isa or not m:isa(Matrix) then return m end
+	-- non-tensor?  return itself
+	if type(m) ~= 'table' or not m.isa or not m:isa(Tensor) then return m end
 
-	local n = #m
+	local dim = m:dim()
+	local volume = table.combine(dim, function(a,b) return a * b end) or 0
 
-	-- 0x0 matrix?
-	if n == 0 then return Constant(1) end
+	-- 0x0 tensor?  return itself
+	if volume == 0 then return Constant(1) end
+
+	-- tempted to write a volume=1 rank=n return the n-th nested element condition ...
+
+	-- not a rank-2 tensor? return nothing.  maybe error. 
+	if #dim ~= 2 then return end
+
+	-- not square?
+	if dim[1] ~= dim[2] then error("determinant only works on square matrices") end
+
+
+	local n = dim[1]
 
 	-- cycle through all permutations of 1..n for n == #m
 	-- if the # of flips is odd then scale by -1, if even then by +1 
@@ -78,3 +90,4 @@ return function(m)
 	local simplify = require 'symmath.simplify'
 	return simplify(result)
 end
+

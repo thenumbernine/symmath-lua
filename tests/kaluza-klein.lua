@@ -22,7 +22,7 @@
 --]]
 
 symmath = require 'symmath'
-local tensor = require 'symmath.tensor'
+local tensor = require 'symmath.tensorhelp'
 local MathJax = require 'symmath.tostring.MathJax'
 --symmath.tostring = MathJax
 
@@ -47,7 +47,7 @@ z = symmath.Variable('z')
 w = symmath.Variable('w')	-- x^5, or the A^mu vector combined with the phi^2 ...
 phi = symmath.Variable('\\phi', {t,x,y,z,w})
 
--- symmath.tensor isn't set up to handle _5 ... since it uses tostring() for concat'ing variable names 
+-- symmath.tensorhelp isn't set up to handle _5 ... since it uses tostring() for concat'ing variable names 
 -- ... yet also uses tostring() for referencing the variable itself ...
 tensor.coords{{t,x,y,z}, abcdef={t,x,y,z,w}}
 
