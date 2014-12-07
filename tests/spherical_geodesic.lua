@@ -62,6 +62,6 @@ tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
 tensor.assign[[diffxU_$u = symmath.Variable('{dx^{$u}}\\over{d\\tau}', {r,phi,theta})]]
 tensor.assign[[diff2xU_$u = -GammaULL_$u_$v_$w * diffxU_$u * diffxU_$v]]
 
-printbr(symmath.evaluate(diff2xU_theta, {r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1}))
-printbr(symmath.evaluate(diff2xU_phi, {r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1}))
+printbr(diff2xU_theta:eval{r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1})
+printbr(diff2xU_phi:eval{r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1})
 

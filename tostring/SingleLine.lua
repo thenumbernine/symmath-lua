@@ -6,7 +6,7 @@ local SingleLine = class(ToString)
 SingleLine.lookupTable = {
 	--[[
 	[require 'symmath.Expression'] = function(self, expr)
-		local s = table{}
+		local s = table()
 		for k,v in pairs(expr) do s:insert(rawtostring(k)..'='..rawtostring(v)) end
 		return 'Expression{'..s:concat(', ')..'}'
 	end,
@@ -27,7 +27,7 @@ SingleLine.lookupTable = {
 		return '-'..self:wrapStrOfChildWithParenthesis(expr, 1)
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
-		return expr:map(function(x,i)
+		return table.map(expr, function(x,i)
 			if type(i) ~= 'number' then return end
 			return self:wrapStrOfChildWithParenthesis(expr, i)
 		end):concat(expr:getSepStr())

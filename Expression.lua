@@ -90,71 +90,76 @@ function Expression.__eq(a,b)
 end
 
 -- make sure to require Expression and then require the ops
-function Expression.__unm(a) return (require 'symmath.unmOp')(a) end
+function Expression.__unm(a) 
+	return require 'symmath.unmOp'(a) 
+end
 function Expression.__add(a,b)
 	local Constant = require 'symmath.Constant'
 	if type(b) == 'number' then b = Constant(b) end
 	local EquationOp = require 'symmath.EquationOp'
 	if b:isa(EquationOp) then return b.__add(a,b) end
-	return (require 'symmath.addOp')(a,b) 
+	return require 'symmath.addOp'(a,b) 
 end
 function Expression.__sub(a,b) 
 	local Constant = require 'symmath.Constant'
 	if type(b) == 'number' then b = Constant(b) end
 	local EquationOp = require 'symmath.EquationOp'
 	if b:isa(EquationOp) then return b.__sub(a,b) end
-	return (require 'symmath.subOp')(a,b) 
+	return require 'symmath.subOp'(a,b) 
 end
 function Expression.__mul(a,b) 
 	local Constant = require 'symmath.Constant'
 	if type(b) == 'number' then b = Constant(b) end
 	local EquationOp = require 'symmath.EquationOp'
 	if b:isa(EquationOp) then return b.__mul(a,b) end
-	return (require 'symmath.mulOp')(a,b) 
+	return require 'symmath.mulOp'(a,b) 
 end
 function Expression.__div(a,b) 
 	local Constant = require 'symmath.Constant'
 	if type(b) == 'number' then b = Constant(b) end
 	local EquationOp = require 'symmath.EquationOp'
 	if b:isa(EquationOp) then return b.__div(a,b) end
-	return (require 'symmath.divOp')(a,b) 
+	return require 'symmath.divOp'(a,b) 
 end
 function Expression.__pow(a,b) 
 	local Constant = require 'symmath.Constant'
 	if type(b) == 'number' then b = Constant(b) end
 	local EquationOp = require 'symmath.EquationOp'
 	if type(b) == 'table' and b.isa and b:isa(EquationOp) then return b.__pow(a,b) end
-	return (require 'symmath.powOp')(a,b) 
+	return require 'symmath.powOp'(a,b) 
 end
 function Expression.__mod(a,b) 
 	local Constant = require 'symmath.Constant'
 	if type(b) == 'number' then b = Constant(b) end
 	local EquationOp = require 'symmath.EquationOp'
 	if b:isa(EquationOp) then return b.__mod(a,b) end
-	return (require 'symmath.modOp')(a,b) 
+	return require 'symmath.modOp'(a,b) 
 end
 
 -- root-level functions that always apply to expressions
 Expression.replace = require 'symmath.replace'
 Expression.solve = require 'symmath.solve'
 Expression.map = require 'symmath.map'
-Expression.eval = function(...) return (require 'symmath').eval(...) end	-- which itself is shorthand for (require 'symmath.Derivative')(...)
-Expression.compile = function(...) return (require 'symmath').compile(...) end	-- which itself is shorthand for (require 'symmath.tostring.Lua').compile(...)
-Expression.diff = function(...) return (require 'symmath').diff(...) end	-- which itself is shorthand for (require 'symmath.Derivative')(...)
-Expression.prune = function(...) return (require 'symmath.prune')(...) end
+Expression.prune = function(...) return require 'symmath.prune'(...) end
+Expression.expand = function(...) return require 'symmath.expand'(...) end
+Expression.factor = function(...) return require 'symmath.factor'(...) end
+Expression.tidy = function(...) return require 'symmath.tidy'(...) end
 Expression.simplify = require 'symmath.simplify'
-Expression.expand = function(...) return (require 'symmath.expand')(...) end
-Expression.factor = function(...) return (require 'symmath.factor')(...) end
-Expression.tidy = function(...) return (require 'symmath.tidy')(...) end
+Expression.polyCoeffs = function(...) return require 'symmath.polyCoeffs'(...) end
+Expression.eval = function(...) return require 'symmath'.eval(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
+Expression.compile = function(...) return require 'symmath'.compile(...) end	-- which itself is shorthand for require 'symmath.tostring.Lua').compile(...)
+Expression.diff = function(...) return require 'symmath'.diff(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
+--
 -- I have to buffer these by a function to prevent require loop
-Expression.equals = function(...) return (require 'symmath.equals')(...) end
-Expression.greaterThan = function(...) return (require 'symmath.greaterThan')(...) end
-Expression.greaterThanOrEquals = function(...) return (require 'symmath.greaterThanOrEquals')(...) end
-Expression.lessThan = function(...) return (require 'symmath.lessThan')(...) end
-Expression.lessThanOrEquals = function(...) return (require 'symmath.lessThanOrEquals')(...) end
--- linear system stuff:
-Expression.inverse = function(...) return (require 'symmath.inverse')(...) end
-Expression.determinant = function(...) return (require 'symmath.determinant')(...) end
+Expression.equals = function(...) return require 'symmath.equals'(...) end
+Expression.greaterThan = function(...) return require 'symmath.greaterThan'(...) end
+Expression.greaterThanOrEquals = function(...) return require 'symmath.greaterThanOrEquals'(...) end
+Expression.lessThan = function(...) return require 'symmath.lessThan'(...) end
+Expression.lessThanOrEquals = function(...) return require 'symmath.lessThanOrEquals'(...) end
+-- linear system stuff.  do we want these here, or only as a child of Matrix?
+Expression.inverse = function(...) return require 'symmath.matrix.inverse'(...) end
+Expression.determinant = function(...) return require 'symmath.matrix.determinant'(...) end
+Expression.transpose = function(...) return require 'symmath.matrix.transpose'(...) end
 
 -- ... = list of equations
 function Expression:subst(...)

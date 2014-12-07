@@ -16,7 +16,8 @@ function Variable:init(name, dependentVars)
 end
 
 function Variable:clone()
-	return Variable(self.name, self.dependentVars) 
+	-- return variable references ... so if the original gets modified, the rest will be updated as well
+	return self
 end
 
 function Variable.__eq(a,b)

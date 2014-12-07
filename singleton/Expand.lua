@@ -10,7 +10,7 @@ local Expand = class(Visitor)
 
 Expand.lookupTable = {
 	[unmOp] = function(expand, expr)
-		return expand(Constant(-1) * expr[1])
+		return expand:apply(Constant(-1) * expr[1])
 	end,
 	
 	[mulOp] = function(expand, expr)
@@ -33,7 +33,7 @@ local symmath = require 'symmath'
 				end
 				expr = getmetatable(x)(unpack(terms))
 --print('mulOp a*(b+c) => a*b + a*c', symmath.Verbose(original), '=>', symmath.Verbose(expr))
-				return expand(expr)
+				return expand:apply(expr)
 			
 				--[[
 				local newSelf = getmetatable(x)(unpack(table.filter(expr, function(cx,k)
@@ -46,7 +46,7 @@ local symmath = require 'symmath'
 				--[[
 				local removedTerm = table.remove(newSelf, i)
 				print('removed ',removedTerm)
-				local newe = expand(addOp(unpack(
+				local newe = expand:apply(addOp(unpack(
 					table.map(x, function(addX,k)
 						if type(k) ~= 'number' then return end
 						return mulOp(addX, unpack(newSelf))
@@ -83,51 +83,8 @@ local symmath = require 'symmath'
 	end,
 
 	[subOp] = function(expand, expr)
-		return expand(expr[1] + -addOp(unpack(expr, 2)))
-	end
-
---[[
-	[powOp] = function(expand, expr)
-		expr = expr:clone()
-local original = expr:clone()
-local symmath = require 'symmath'	
-		local maxPowerExpand = 10
-		if expr[2]:isa(Constant) then
-			local value = expr[2].value
-			local absValue = math.abs(value)
-			if absValue < maxPowerExpand then
-				local num, frac, div
-				if value < 0 then
-					div = true
-					frac = math.ceil(value) - value
-					num = -math.ceil(value)
-				elseif value > 0 then
-					frac = value - math.floor(value)
-					num = math.floor(value)
-				else
---print('powOp a^0 => 1', symmath.Verbose(original), '=>', symmath.Verbose(Constant(1)))
-					return Constant(1)
-				end
-				local terms = table()
-				for i=1,num do
-					terms:insert(expr[1]:clone())
-				end
-				if frac ~= 0 then
-					terms:insert(expr[1]:clone()^frac)
-				end
-				if div then
-					expr = Constant(1)/mulOp(unpack(terms))
---print('powOp a^-c => 1/(a*a*a...)', symmath.Verbose(original), '=>', symmath.Verbose(expr))
-					return expr
-				else
-					expr = mulOp(unpack(terms))
---print('powOp a^c => a*a*a...', symmath.Verbose(original), '=>', symmath.Verbose(expr))
-					return expr
-				end
-			end
-		end
+		return expand:apply(expr[1] + -addOp(unpack(expr, 2)))
 	end,
---]]
 }
 
 return Expand

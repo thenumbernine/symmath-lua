@@ -35,8 +35,26 @@ LaTeX.lookupTable = {
 			return '{' .. self:wrapStrOfChildWithParenthesis(expr, i) .. '}'
 		end):concat(expr:getSepStr())
 	end,
-	-- TODO mulOp if two variables are next to eachother and either has >1 length names then insert a cdot between them
-	--  however don't do this if those >1 length variables are LaTeX strings for single-char greek letters
+	[require 'symmath.mulOp'] = function(self, expr)
+		-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
+		-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
+		local Variable = require 'symmath.Variable'
+		local res = table()
+		for i=1,#expr do
+			res:insert(self:wrapStrOfChildWithParenthesis(expr, i))
+			if i > 1 
+			and expr[i-1]:isa(Variable)
+			and #expr[i-1].name > 1
+			--and expr[i]:isa(Variable)
+			then
+				res[i-1] = res[i-1] .. '\\cdot'
+			end
+		end
+		for i=1,#res do
+			res[i] = '{'..res[i]..'}'
+		end
+		return res:concat(expr:getSepStr())
+	end,
 	[require 'symmath.divOp'] = function(self, expr)
 		return '{{' .. self:apply(expr[1]) .. '} \\over {' .. self:apply(expr[2]) .. '}}'
 	end,

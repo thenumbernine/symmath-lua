@@ -3,13 +3,14 @@ local symmath = require 'symmath'
 symmath.simplifyConstantPowers = true
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
+print(MathJax.header)
+--symmath.tostring = require 'symmath.tostring.SingleLine' 
 
 function printbr(...)
 	print(...)
 	print('<br>')
 end
 
-print(MathJax.header)
 
 local c = symmath.var('c')
 local m = symmath.var('m')
@@ -19,23 +20,23 @@ local kg = symmath.var('kg')
 
 -- speed of light
 local c_from_m_s = c:equals(299792458 * (m / s))
-printbr(c_from_m_s)
+printbr('c_from_m_s:',c_from_m_s)
 
 -- c = 1
 local c_normalized = c:equals(1)
-printbr(c_normalized)
+printbr('c_normalized:',c_normalized)
 
 -- solve for s
 local s_from_m = c_from_m_s:subst(c_normalized):solve(s)
-printbr(s_from_m)
+printbr('s_from_m:',s_from_m)
 
 -- gravity
 local G_from_m_s_kg = G:equals(6.67384e-11 * m^3 / (kg * s^2)):simplify()
-printbr(G_from_m_s_kg)
+printbr('G_from_m_s_kg:',G_from_m_s_kg)
 
 -- G = 1
 local G_normalized = G:equals(1)
-printbr(G_normalized)
+printbr('G_normalized:',G_normalized)
 
 -- solve for kg
 local kg_from_m = G_from_m_s_kg:subst(G_normalized):subst(s_from_m):solve(kg)

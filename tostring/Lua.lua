@@ -33,10 +33,12 @@ Lua.lookupTable = {
 		end) then
 			return expr.name
 		end
-		error("tried to compile variable "..expr.name.." that wasn't in your function argument variable list")
+		error("tried to compile variable "..expr.name.." that wasn't in your function argument variable list!\n"
+		..(require 'symmath.tostring.MultiLine')(expr))
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
-		error("can't compile differentiation.  replace() your diff'd content first!")
+		error("can't compile differentiation.  replace() your diff'd content first!\n"
+		..(require 'symmath.tostring.MultiLine')(expr))
 	end
 }
 

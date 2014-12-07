@@ -35,21 +35,16 @@ symmath.expand = require 'symmath.expand'
 symmath.factor = require 'symmath.factor'
 symmath.tidy = require 'symmath.tidy'
 symmath.simplify = require 'symmath.simplify'
+symmath.polyCoeffs = require 'symmath.polyCoeffs'
+
+-- replace variables with names as keys in evalmap with constants of the associated values
+symmath.eval = require 'symmath.eval'
 
 symmath.Variable = require 'symmath.Variable'
 symmath.var = symmath.Variable					--shorthand
 function symmath.vars(...)						--create variables for each string parameter 
 	return table{...}:map(function(x) return symmath.var(x) end):unpack()
 end
-
---[[
-replace variables with names as keys in evalmap with constants of the associated values
---]]
-function symmath.evaluate(expr, evalmap)
-	return (require 'symmath.eval')(expr, evalmap)
-end
--- changing the name
-symmath.eval = symmath.evaluate
 
 --[[
 builds a function out of the expression
@@ -173,6 +168,9 @@ symmath.mulOp = require 'symmath.mulOp'
 symmath.divOp = require 'symmath.divOp'
 symmath.powOp = require 'symmath.powOp'
 symmath.modOp = require 'symmath.modOp'
+
+-- for name's sake alone
+symmath.fraction = symmath.divOp
 
 --symmath.Variable = require 'symmath.Variable'
 symmath.Derivative = require 'symmath.Derivative'

@@ -55,7 +55,7 @@ local function trapezoid(f, x, x0, x1, n)
 	return y
 end
 
-local function simpsons(f, x, x0, x1, n)
+local function simpson(f, x, x0, x1, n)
 	n = math.floor((n or 200) / 2) * 2
 	f = f:compile{x}
 	local dx = (x1 - x0) / n
@@ -77,7 +77,15 @@ local t1 = 1
 local n = 100
 local norm = math.abs
 
-do
+local f = f:compile{x}
+local df = df:compile{x}
+
+for _,method in ipairs{
+	euler,
+	midpoint,
+	trapezoid,
+	simpson,
+} do
 	local dt = (t1 - t0) / n
 	local t = t0
 	local x = f(t)
@@ -93,7 +101,3 @@ do
 	end
 end
 
-print('euler', euler(f,x,0,1))
-print('midpoint', midpoint(f,x,0,1))
-print('trapezoid', trapezoid(f,x,0,1))
-print('simpsons', simpsons(f,x,0,1))

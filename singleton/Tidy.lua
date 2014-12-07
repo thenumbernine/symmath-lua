@@ -16,6 +16,10 @@ Tidy.lookupTable = {
 		if expr.value < 0 then
 			return tidy:apply(unmOp(Constant(-expr.value)))
 		end
+		-- for formatting's sake ...
+		if expr.value == 0 then	-- which could possibly be -0 ...
+			return Constant(0)
+		end
 	end,
 	[unmOp] = function(tidy, expr)
 		-- --x => x

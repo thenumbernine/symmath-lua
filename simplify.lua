@@ -22,7 +22,7 @@ return function(x, ...)
 	local i = 0
 	repeat
 		lastx = x	-- lastx = x invokes the simplification loop.  that means one of the next few commands operates in-place.
-		x = expand(x, ...)
+		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
 		x = prune(x, ...)
 		x = factor(x)
 		x = prune(x)
@@ -36,7 +36,7 @@ return function(x, ...)
 	if i == 10 then
 		local Verbose = require 'symmath.tostring.Verbose'
 		for i,x in ipairs(simplifyStack) do
-			io.stderr:write('simplify stack #'..i..'\n'..x..'\n')
+			io.stderr:write('simplify stack #'..i..'\n'..Verbose(x)..'\n')
 		end
 		error("simplification loop")
 	end
