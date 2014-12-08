@@ -170,7 +170,11 @@ symmath.powOp = require 'symmath.powOp'
 symmath.modOp = require 'symmath.modOp'
 
 -- for name's sake alone
+symmath.sum = symmath.addOp
+symmath.product = symmath.mulOp
+symmath.subtract = symmath.subOp
 symmath.fraction = symmath.divOp
+symmath.power = symmath.powOp
 
 --symmath.Variable = require 'symmath.Variable'
 symmath.Derivative = require 'symmath.Derivative'

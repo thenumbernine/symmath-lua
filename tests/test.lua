@@ -59,6 +59,9 @@ t = symmath.Variable('t')
 =asserteq((Constant(2)/Constant(2)):simplify(), Constant(1))
 =asserteq((Constant(2)/Constant(4)):simplify(), (Constant(1)/Constant(2)):simplify())
 
+=asserteq(((2*x + 2*y)/2):simplify(), (x+y):simplify())
+=asserteq(((-2*x + 2*y)/2):simplify(), (-x+y):simplify())
+
 -- expand(): add div mul
 
 -- factor(): mul add div

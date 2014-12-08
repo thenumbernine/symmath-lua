@@ -840,7 +840,7 @@ local original = expr:clone()
 			
 			local numBases, numPowers = listToBasesAndPowers(nums)
 			local denomBases, denomPowers = listToBasesAndPowers(denoms)
-	
+		
 			-- split any constant integers into its prime factorization
 			for _,info in ipairs{
 				{numBases, numPowers},
@@ -850,7 +850,7 @@ local original = expr:clone()
 				for i=#bases,1,-1 do
 					local b = bases[i]
 					if b:isa(Constant) 
-					and b.value == math.floor(b.value)	--integer
+					and b.value == math.floor(b.value + .5)	--integer
 					and b.value ~= 0
 					then
 						bases:remove(i)

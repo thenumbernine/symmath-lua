@@ -40,11 +40,31 @@ Factor.lookupTable = {
 					}
 				end
 			end)
-			
-			prodList = prodList:filter(function(x)
-				return not (x.term:isa(Constant) and x.term.value == 1)
-			end)
-			
+	
+			local newProdList = table()
+			for k,x in ipairs(prodList) do
+				if x.term:isa(Constant) then
+					if x.term.value == 1 then
+						-- do nothing -- remove any 1's
+					elseif x.term.value < 0 then
+						-- if it's a negative constant then split out the minus
+						newProdList:insert{
+							term = Constant(-1),
+							power = x.power:clone(),
+						}
+						newProdList:insert{
+							term = Constant(-x.term.value),
+							power = x.power:clone(),
+						}	-- add the new term
+					else
+						newProdList:insert(x)
+					end
+				else
+					newProdList:insert(x)	-- add the new term
+				end
+			end
+			prodList = newProdList
+
 			return prodList
 		end
 				
