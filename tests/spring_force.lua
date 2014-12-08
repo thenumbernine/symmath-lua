@@ -131,29 +131,61 @@ end)))
 print('<br>')
 
 -- and now each particle has its evolution equations
-print('Hamiltonian', H, '<br>')
+print(symmath.var'H':equals(H),'<br>')
 -- compile evolution equations
-for i,v in ipairs(system.particles) do
+local tVar = symmath.var't'
+local dq_dt_vector_eqn = symmath.Matrix():equals(symmath.Matrix())
+local q_vector = symmath.Matrix()
+for i,v in ipairs(system.particles) do	
 	-- dq/dt = dH/dp is a function of p1..pn ... and maybe q1..qn
 	v.dq_dt = vec()
 	v.dp_dt = vec()
-	v.dq_dt_var = vec()
-	v.dp_dt_var = vec()
+	v.dq_dt_expr = vec()
+	v.dp_dt_expr = vec()
 	for k=1,dim do
 		-- notice: each of these ends up with d[distance]/dq variables
 		-- the best way to deal with them is substituting them for the linear components of their value 
 
 		local dH_dp = H:diff(v.pVar[k]):simplify()
-		v.dq_dt_var[k] = dH_dp
-print('\\({{dq_{'..i..','..k..'}}\\over {dt}} = \\)', v.dq_dt_var[k], '<br>')
+		v.dq_dt_expr[k] = dH_dp
+		local dq_dt_var = v.qVar[k]:diff(tVar)
+print(dq_dt_var:equals(dH_dp),'<br>')
 		v.dq_dt[k] = dH_dp:compile(symbolicParams)
+		table.insert(dq_dt_vector_eqn:lhs(), symmath.Tensor(dq_dt_var))
+		table.insert(dq_dt_vector_eqn:rhs(), symmath.Tensor(dH_dp))
+		table.insert(q_vector, symmath.Tensor(v.qVar[k]))
 	
 		local _dH_dq = (-H):diff(v.qVar[k]):simplify()
-		v.dp_dt_var[k] = _dH_dq
-print('\\({{dp_{'..i..','..k..'}}\\over {dt}} = \\)', v.dp_dt_var[k], '<br>')
+		v.dp_dt_expr[k] = _dH_dq
+		local dp_dt_var = v.pVar[k]:diff(tVar)
+print(dp_dt_var:equals(_dH_dq),'<br>')
 		v.dp_dt[k] = _dH_dq:compile(symbolicParams)
+		table.insert(dq_dt_vector_eqn:lhs(), symmath.Tensor(dp_dt_var))
+		table.insert(dq_dt_vector_eqn:rhs(), symmath.Tensor(_dH_dq))
+		table.insert(q_vector, symmath.Tensor(v.pVar[k]))
 	end
 end
+
+local A_matrix = symmath.Matrix()
+do
+	local function coeff(expr, var)
+		return expr:polyCoeffs(var)[1] 
+			--or error("failed to find coefficient of "..var.." in expression "..expr)
+			or symmath.Constant(0)
+	end
+	local n = #dq_dt_vector_eqn:lhs()
+	for i=1,n do
+		A_matrix[i] = symmath.Tensor()
+		for j=1,n do
+			A_matrix[i][j] = coeff(dq_dt_vector_eqn:rhs()[i][1], q_vector[j][1])
+		end
+		-- TODO b_vector[i][1] = whatever is left
+	end
+end
+
+print(dq_dt_vector_eqn,'<br>')
+-- TODO factor matrix function
+print(dq_dt_vector_eqn:lhs():equals(A_matrix * q_vector),'<br>')
 
 -- and integrate ... forward Euler
 

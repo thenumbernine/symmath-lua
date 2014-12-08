@@ -24,16 +24,19 @@ function Tensor:init(...)
 			self[i] = x
 		end
 	end
+end
 
+-- calculated rank was a great idea, except when the Tensor is dynamically constructed
+function Tensor:rank()
 	-- note to self: empty Tensor objects means no way of representing empty rank>1 objects 
 	-- ... which means special case of type assertion of the determinant being always rank-2 (except for empty matrices)
 	-- ... unless I also introduce "shallow" tensors vs "deep" tensors ... "shallow" being represented only by their indices and contra-/co-variance (and "deep" being these)
-	if #self == 0 then return end
+	if #self == 0 then return 0 end
 
 	-- hmm, how should we determine rank?
 	local minRank, maxRank
 	for i=1,#self do
-		local rank = self[i].rank or 0
+		local rank = self[i].rank and self[i]:rank() or 0
 		if i == 1 then
 			minRank = rank
 			maxRank = rank
@@ -46,7 +49,7 @@ function Tensor:init(...)
 		error("At the moment I don't allow mixed-rank elements in tensors.  I might lighten up on this later.")
 	end
 
-	self.rank = minRank + 1
+	return minRank + 1
 end
 
 function Tensor:dim()
@@ -56,7 +59,8 @@ function Tensor:dim()
 	-- if we have no children then we can't tell any info of rank
 	if #self == 0 then return dim end
 
-	if self.rank == 1 then
+	local rank = self:rank()
+	if rank == 1 then
 		dim[1] = #self
 		return dim
 	end
@@ -64,12 +68,12 @@ function Tensor:dim()
 	-- get first child's dim
 	local subdim_1 = Tensor.dim(self[1])
 
-	assert(#subdim_1 == self.rank-1, "tensor has subtensor with inequal rank")
+	assert(#subdim_1 == rank-1, "tensor has subtensor with inequal rank")
 
 	-- make sure they're equal for all children
 	for j=2,#self do
 		local subdim_j = Tensor.dim(self[j])
-		assert(#subdim_j == self.rank-1, "tensor has subtensor with inequal rank")
+		assert(#subdim_j == rank-1, "tensor has subtensor with inequal rank")
 		
 		for k=1,#subdim_1 do
 			if subdim_1[k] ~= subdim_j[k] then
@@ -79,7 +83,7 @@ function Tensor:dim()
 	end
 
 	-- copy subrank into 
-	for i=1,self.rank-1 do
+	for i=1,rank-1 do
 		dim[i+1] = subdim_1[i]
 	end
 	dim[1] = #self
