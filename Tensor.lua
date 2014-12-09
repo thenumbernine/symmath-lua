@@ -26,6 +26,77 @@ function Tensor:init(...)
 	end
 end
 
+Tensor.__index = function(self, key)
+	-- parent class access
+	local metavalue = getmetatable(self)[key]
+	if metavalue then return metavalue end
+
+	-- get a nested element
+	if type(key) == 'table' then
+		return self:get(key)
+	--elseif type(key) == 'string' then	-- TODO interpret index notation
+	end
+
+	-- self class access
+	return rawget(self, key)
+end
+
+Tensor.__newindex = function(self, key, value)
+	
+	-- I don't think I do much assignment-by-table ...
+	--  except for in the Visitor.lookupTable ...
+	-- otherwise, looks like it's not allowed in Tensors, where I've overridden it to be the setter
+	if type(key) == 'table' then
+		self:set(key, value)
+		return
+	end
+
+	rawset(self, key, value)
+end
+
+function Tensor:get(index)
+	local x = self
+	for i=1,#index do
+		x = x[index[i]]
+	end
+	return x
+end
+
+function Tensor:set(index, value)
+	local x = self
+	for i=1,#index-1 do
+		x = x[index[i]]
+	end
+	x[index[#index]] = value
+	-- TODO return the old, for functionality?
+	-- or just ignore it, since this is predominantly the implementation of __newindex, which has no return type?
+end
+
+-- returns a for loop iterator that cycles across all indexes and values within the tensor
+-- usage: for index,value in t:iter() do ... end
+-- where #index == t:rank() and contains elements 1 <= index[i] <= t:dim()[i]
+function Tensor:iter()
+	local dim = self:dim()
+	local n = #dim
+	
+	local index = {}
+	for i=1,n do
+		index[i] = 1
+	end
+	
+	return coroutine.wrap(function()
+		while true do
+			coroutine.yield(index, self:get(index))
+			for i=1,n do
+				index[i] = index[i] + 1
+				if index[i] <= dim[i] then break end
+				index[i] = 1
+				if i == n then return end
+			end
+		end
+	end)
+end
+
 -- calculated rank was a great idea, except when the Tensor is dynamically constructed
 function Tensor:rank()
 	-- note to self: empty Tensor objects means no way of representing empty rank>1 objects 

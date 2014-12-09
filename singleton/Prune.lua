@@ -559,17 +559,23 @@ local original = expr:clone()
 					end)
 				end):unpack())
 			end
-			
+		
+			-- TODO only map the elements of the tensor
+			-- TODO tensor getter, setter, and iterator
 			local function tensorScalarMul(m,s)
-				return m:map(function(x)
-					if not x.rank then return s*x end
-				end)
+				local result = Tensor()
+				for i=1,#m do
+					result[i] = m[i] * s
+				end
+				return prune:apply(result)
 			end
 
 			local function scalarTensorMul(s,m)
-				return m:map(function(x)
-					if not x.rank then return x*s end
-				end)
+				local result = Tensor()
+				for i=1,#m do
+					result[i] = s * m[i]
+				end
+				return prune:apply(result)
 			end
 			
 			-- and now for Matrix*Matrix multiplication ...

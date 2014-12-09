@@ -8,6 +8,8 @@ x'' = -(k/m)(x-s) =
 
 local dim = 1	-- or 2 or 3 or whatever
 local numParticlesToCreate = 3
+local dt = .1
+local numberOfSteps = 10000
 
 local vec
 if dim >= 2 and dim <= 4 then
@@ -167,6 +169,7 @@ print(dp_dt_var:equals(_dH_dq),'<br>')
 end
 
 local A_matrix = symmath.Matrix()
+local backwardEulerMatrix
 do
 	local function coeff(expr, var)
 		return expr:polyCoeffs(var)[1] 
@@ -181,11 +184,15 @@ do
 		end
 		-- TODO b_vector[i][1] = whatever is left
 	end
+	backwardEulerMatrix = (symmath.Matrix.identity(n) - dt * A_matrix):simplify():inverse()
 end
+
 
 print(dq_dt_vector_eqn,'<br>')
 -- TODO factor matrix function
 print(dq_dt_vector_eqn:lhs():equals(A_matrix * q_vector),'<br>')
+print('Backwards Euler:','<br>')
+print(q_vector:equals(backwardEulerMatrix * q_vector),'<br>')
 
 -- and integrate ... forward Euler
 
@@ -203,10 +210,6 @@ system.particles[1].q[1] = 1
 system.particles[2].q[1] = -1
 system.particles[3].q[1] = 0
 
-local dt = .1
-local n = 10000
-local t = 0
-
 --[[
 
 ODE:
@@ -223,11 +226,13 @@ x(t+dt) - dt * f(t+dt, x(t+dt)) = x(t)
 x_i(t+dt) - dt * f_i(t+dt, x_j(t+dt)) = x_i(t)
 ... makes a nonlinear system ...
 ... assume I - dt * f_i(x_j) (specifically f_i(x_j)) can be linearized as a_ij x_j + b_i 
-
+x_i(t+dt) - dt * a_ij * x_j(t+dt) - dt * b_i = x_i(t)
+x_j(t+dt) = (I_ij - dt * a_ij)^-1 (x_i(t) + dt * b_i)
 
 --]]
 
-for i=1,n do
+local t = 0
+for i=1,numberOfSteps do
 	for _,v in ipairs(system.particles) do
 		-- forward Euler integration
 		for j=1,dim do

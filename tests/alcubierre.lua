@@ -56,7 +56,11 @@ ideal code:
 
 	gamma = tensor'_ij'
 	gamma['_ij'] = tensor.delta'_ij'
-	
+	-- should these need to be separate?  maybe, if gamma needs the information associated with the indexes it is constructed with (metric, dimension, etc) 
+	-- however that info could be deduced by what indexes are used to construct delta as well ...
+	--gamma = tensor.delta'_ij'
+
+
 	g = tensor'_ab'
 
 	-- how should lowering work?  one way is to use separate variables for betaU and betaL

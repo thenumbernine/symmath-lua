@@ -14,9 +14,9 @@ local Visitor = require 'symmath.singleton.Visitor'
 --  (1) clones everything that passes through it (to prevent accidental/intentional in-place modifications)
 --  (2) processes bottom-up (rather than ToString's top-down)
 -- so until these can be unified/negotiated I'm keeping ToString separate
---local ToString = class(Visitor)
+
 -- [[
-local ToString = class(Visitor)
+local ToString = class()
 
 function ToString:apply(expr, ...)
 	if type(expr) ~= 'table' then return tostring(expr) end

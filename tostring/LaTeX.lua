@@ -36,18 +36,25 @@ LaTeX.lookupTable = {
 		end):concat(expr:getSepStr())
 	end,
 	[require 'symmath.mulOp'] = function(self, expr)
-		-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
-		-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
 		local Variable = require 'symmath.Variable'
+		local Constant = require 'symmath.Constant'
 		local res = table()
 		for i=1,#expr do
 			res:insert(self:wrapStrOfChildWithParenthesis(expr, i))
-			if i > 1 
-			and expr[i-1]:isa(Variable)
-			and #expr[i-1].name > 1
-			--and expr[i]:isa(Variable)
-			then
-				res[i-1] = res[i-1] .. '\\cdot'
+			if i > 1 then
+				-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
+				-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
+				if expr[i-1]:isa(Variable)
+				and #expr[i-1].name > 1
+				--and expr[i]:isa(Variable)
+				then
+					res[i-1] = res[i-1] .. '\\cdot'
+				-- insert \cdot between neighboring numbers
+				elseif expr[i-1]:isa(Constant)
+				and expr[i]:isa(Constant)
+				then
+					res[i-1] = res[i-1] .. '\\cdot'
+				end
 			end
 		end
 		for i=1,#res do

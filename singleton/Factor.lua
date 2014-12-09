@@ -147,6 +147,7 @@ Factor.lookupTable = {
 		for i,minProd in ipairs(minProds) do
 			-- 3) find abs min power of all terms
 			local minPower
+			local foundNonConstMinPower
 			for i=1,#prodsList do
 				for j=1,#prodsList[i] do
 					if prodsList[i][j].term == minProd then
@@ -158,9 +159,12 @@ Factor.lookupTable = {
 							end
 						else	-- if it is variable then ... just use the ... first?
 							minPower = prodsList[i][j].power
+							foundNonConstMinPower = true
+							break
 						end
 					end
 				end
+				if foundNonConstMinPower then break end
 			end
 			minPowers[i] = minPower
 --print('min power of',tostring(minProd),'is',minPower)
