@@ -97,6 +97,7 @@ Prune.lookupTable = {
 	end,
 	
 	[addOp] = function(prune, expr, ...)
+
 		assert(#expr > 0)
 		
 		expr = expr:clone()
@@ -241,9 +242,9 @@ local original = expr:clone()
 			end
 		end
 		--]]
-		
+
+		-- TODO shouldn't this be regardless of the outer addOp ?
 		-- turn any a + (b * (c + d)) => a + (b * c) + (b * d)
-		
 		-- [[ if any two children are mulOps,
 		--    and they have all children in common (with the exception of any constants)
 		--  then combine them, and combine their constants
@@ -252,18 +253,24 @@ local original = expr:clone()
 			local xI = expr[i]
 			local termsI
 			if xI:isa(mulOp) then
+--print('x[i] found mulOp')
 				termsI = table(xI)
 			else
+--print("x[i] didn't find mulOp")
 				termsI = table{xI}
 			end
+--print('termsI:',unpack(termsI))
 			for j=i+1,#expr do
 				local xJ = expr[j]
 				local termsJ
 				if xJ:isa(mulOp) then
+--print("x[j] found mulOp")
 					termsJ = table(xJ)
 				else
+--print("x[j] didn't find mulOp")
 					termsJ = table{xJ}
 				end
+--print('termsJ:',unpack(termsJ))
 
 				local fail
 				
@@ -275,8 +282,10 @@ local original = expr:clone()
 						if ch:isa(Constant) then
 							if not constI then
 								constI = Constant(ch.value)
+--print('setting constI to',constI.value)
 							else
-								constI.value = constI.value + ch.value
+								constI.value = constI.value * ch.value
+--print('adding constI to',constI.value)
 							end
 						else
 							fail = true
@@ -287,6 +296,7 @@ local original = expr:clone()
 					end
 				end
 				if not constI then constI = Constant(1) end
+--print('constI is ',constI.value)
 				
 				local constJ
 				if not fail then
@@ -295,8 +305,10 @@ local original = expr:clone()
 							if ch:isa(Constant) then
 								if not constJ then
 									constJ = Constant(ch.value)
+--print('setting constJ to',constJ.value)
 								else
-									constJ.value = constJ.value + ch.value
+									constJ.value = constJ.value * ch.value
+--print('adding constJ to',constJ.value)
 								end
 							else
 								fail = true
@@ -306,12 +318,14 @@ local original = expr:clone()
 					end
 				end
 				if not constJ then constJ = Constant(1) end
+--print('constJ is',constJ.value)
 				
 				if not fail then
-					--print('optimizing from '..tostring(expr))
+--print('optimizing from '..tostring(expr))
 					table.remove(expr, j)
+--print('constI',constI.value,'constJ',constJ.value,'commonTerms',unpack(commonTerms))
 					expr[i] = mulOp(Constant(constI.value + constJ.value), unpack(commonTerms))
-					--print('optimizing to '..tostring(prune:apply(expr)))
+--print('optimizing to '..tostring(prune:apply(expr)))
 --print('flattening muls in add')
 					return prune:apply(expr)
 				end
