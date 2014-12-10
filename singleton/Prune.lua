@@ -775,6 +775,21 @@ local original = expr:clone()
 	
 		expr = expr:clone()
 		
+		-- matrix/scalar
+		do
+			local a, b = unpack(expr)
+			local Tensor = require 'symmath.Tensor'
+			if a:isa(Tensor)
+			and not b:isa(Tensor)
+			then
+				local result = Tensor()
+				for i=1,#a do
+					result[i] = a[i] / b
+				end
+				return prune:apply(result)
+			end
+		end
+
 		-- x / 0 => Invalid
 		if expr[2] == Constant(0) then
 			return Invalid()
@@ -799,8 +814,10 @@ local original = expr:clone()
 		end
 
 		-- x / -1 => -1 * x
-		if expr[2] == Constant(-1) then
-			return Constant(-1) * expr[1]
+		if expr[2]:isa(Constant)
+		and expr[2].value < 0
+		then
+			return prune:apply(Constant(-1) * expr[1] / Constant(-expr[2].value))
 		end
 		
 		-- 0 / x => 0

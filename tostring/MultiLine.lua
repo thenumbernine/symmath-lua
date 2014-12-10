@@ -109,7 +109,10 @@ MultiLine.lookupTable = {
 		return res
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
-		return self:combine({'-'}, self:wrapStrOfChildWithParenthesis(expr, 1))
+		local ch = self:wrapStrOfChildWithParenthesis(expr, 1)
+		local sym = '-'
+		if #ch > 1 then sym = '- ' end	-- so minus-fraction doesn't just blend the minus into the fraction
+		return self:combine({sym}, ch)
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
 		local res = self:wrapStrOfChildWithParenthesis(expr, 1)

@@ -20,8 +20,9 @@ else
 end
 
 local symmath = require 'symmath'
-symmath.tostring = require 'symmath.tostring.MathJax'
-print(require'symmath.tostring.MathJax'.header)
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = MathJax
+print(MathJax.header)
 
 local Particle = class()
 
@@ -133,10 +134,13 @@ end)))
 print('<br>')
 
 -- and now each particle has its evolution equations
+print('Hamiltonian','<br>')
 print(symmath.var'H':equals(H),'<br>')
 -- compile evolution equations
+print('Evolution Equations:','<br>')
 local tVar = symmath.var't'
-local dq_dt_vector_eqn = symmath.Matrix():equals(symmath.Matrix())
+local dq_dt_vector = symmath.Matrix()
+local dq_dt_vector_eqn_rhs = symmath.Matrix()
 local q_vector = symmath.Matrix()
 for i,v in ipairs(system.particles) do	
 	-- dq/dt = dH/dp is a function of p1..pn ... and maybe q1..qn
@@ -153,8 +157,8 @@ for i,v in ipairs(system.particles) do
 		local dq_dt_var = v.qVar[k]:diff(tVar)
 print(dq_dt_var:equals(dH_dp),'<br>')
 		v.dq_dt[k] = dH_dp:compile(symbolicParams)
-		table.insert(dq_dt_vector_eqn:lhs(), symmath.Tensor(dq_dt_var))
-		table.insert(dq_dt_vector_eqn:rhs(), symmath.Tensor(dH_dp))
+		table.insert(dq_dt_vector, symmath.Tensor(dq_dt_var))
+		table.insert(dq_dt_vector_eqn_rhs, symmath.Tensor(dH_dp))
 		table.insert(q_vector, symmath.Tensor(v.qVar[k]))
 	
 		local _dH_dq = (-H):diff(v.qVar[k]):simplify()
@@ -162,37 +166,81 @@ print(dq_dt_var:equals(dH_dp),'<br>')
 		local dp_dt_var = v.pVar[k]:diff(tVar)
 print(dp_dt_var:equals(_dH_dq),'<br>')
 		v.dp_dt[k] = _dH_dq:compile(symbolicParams)
-		table.insert(dq_dt_vector_eqn:lhs(), symmath.Tensor(dp_dt_var))
-		table.insert(dq_dt_vector_eqn:rhs(), symmath.Tensor(_dH_dq))
+		table.insert(dq_dt_vector, symmath.Tensor(dp_dt_var))
+		table.insert(dq_dt_vector_eqn_rhs, symmath.Tensor(_dH_dq))
 		table.insert(q_vector, symmath.Tensor(v.pVar[k]))
 	end
 end
 
+print('...in a vector:','<br>')
+print(dq_dt_vector:equals(dq_dt_vector_eqn_rhs),'<br>')
+-- TODO factor matrix function
+
+local dtVar = symmath.var('\\Delta t')
 local A_matrix = symmath.Matrix()
-local backwardEulerMatrix
 do
 	local function coeff(expr, var)
 		return expr:polyCoeffs(var)[1] 
 			--or error("failed to find coefficient of "..var.." in expression "..expr)
 			or symmath.Constant(0)
 	end
-	local n = #dq_dt_vector_eqn:lhs()
+	local n = #dq_dt_vector
 	for i=1,n do
 		A_matrix[i] = symmath.Tensor()
 		for j=1,n do
-			A_matrix[i][j] = coeff(dq_dt_vector_eqn:rhs()[i][1], q_vector[j][1])
+			A_matrix[i][j] = coeff(dq_dt_vector_eqn_rhs[i][1], q_vector[j][1])
 		end
 		-- TODO b_vector[i][1] = whatever is left
 	end
-	backwardEulerMatrix = (symmath.Matrix.identity(n) - dt * A_matrix):simplify():inverse()
 end
 
+print('...linearized:','<br>')
+print(dq_dt_vector:equals(A_matrix * q_vector),'<br>')
 
-print(dq_dt_vector_eqn,'<br>')
--- TODO factor matrix function
-print(dq_dt_vector_eqn:lhs():equals(A_matrix * q_vector),'<br>')
-print('Backwards Euler:','<br>')
-print(q_vector:equals(backwardEulerMatrix * q_vector),'<br>')
+local q_t_vector = symmath.Matrix()
+local q_t_dt_vector = symmath.Matrix()
+for i=1,#q_vector do
+	q_t_vector[i] = symmath.Tensor(symmath.var(q_vector[i][1].name..'(t)'))
+	q_t_dt_vector[i] = symmath.Tensor(symmath.var(q_vector[i][1].name..'(t+\\Delta t)'))
+end
+
+local discrete_dq_dt_vector = ((q_t_dt_vector - q_t_vector) / dtVar):simplify()
+
+do
+	print('1st order approximate derivative for Forward Euler','<br>')
+	local eqn = (discrete_dq_dt_vector):equals(A_matrix * q_t_vector)
+	print(eqn,'<br>')
+	-- now I need something to convert the a/b's to a*(1/b)'s, so I can use a to-be-made function for extracting matrix coefficients ...
+	-- until then, I'll just start with the non-simplified equation:
+	local eqn = (q_t_dt_vector):equals(q_t_vector + dtVar * A_matrix * q_t_vector)
+	print(eqn,'<br>')
+	-- hmm, todo, factoring out matrices (by introducing identity)
+	-- until then, redo the equation
+	local eqn = (q_t_dt_vector):equals((symmath.Matrix.identity(#q_vector) + dtVar * A_matrix) * q_t_vector)
+	print(eqn,'<br>')
+	-- simplify matrix muls only
+	local eqn = (q_t_dt_vector):equals((symmath.Matrix.identity(#q_vector) + dtVar * A_matrix):simplify() * q_t_vector)
+	print(eqn,'<br>')
+	-- simplify matrix muls only
+	local eqn = (q_t_dt_vector):equals((symmath.Matrix.identity(#q_vector) + dt * A_matrix):simplify() * q_t_vector)
+	print(eqn,'<br>')
+end
+
+do
+	print('1st order approximate derivative for Backwards Euler','<br>')
+	local eqn = (discrete_dq_dt_vector):equals(A_matrix * q_t_dt_vector)
+	print(eqn,'<br>')
+	-- TODO expand() on lhs then matrix factor ...
+	eqn = (q_t_dt_vector - dtVar * A_matrix * q_t_dt_vector):equals(q_t_vector)
+	print(eqn,'<br>')
+	-- TODO vector factor
+	eqn = ((symmath.Matrix.identity(#q_vector) - dtVar * A_matrix) * q_t_dt_vector):equals(q_t_vector)
+	print(eqn,'<br>')
+	eqn = ((symmath.Matrix.identity(#q_vector) - dtVar * A_matrix):simplify() * q_t_dt_vector):equals(q_t_vector)
+	print(eqn,'<br>')
+	eqn = ((symmath.Matrix.identity(#q_vector) - dt * A_matrix):simplify() * q_t_dt_vector):equals(q_t_vector)
+	print(eqn,'<br>')
+end
 
 -- and integrate ... forward Euler
 
@@ -252,4 +300,7 @@ local plot2d = require 'plot2d'
 plot2d(columns:map(function(v,k)
 	return { enabled = true, ts, v}
 end))
+
+print('<br>','<br>')
+print(MathJax.footer)
 

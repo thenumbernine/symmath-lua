@@ -90,5 +90,8 @@ m2 = symmath.Matrix({1,0},{b,1})
 =(m1*m2):equals(m2*m1):simplify()
 =(m1*m2):simplify()==(m2*m1):simplify()
 
+t = var't'
+=(Matrix({a},{b}) + Matrix({c},{d})) / t
+=((Matrix({a},{b}) + Matrix({c},{d})) / t):simplify()
 ]]
 
