@@ -11,7 +11,7 @@ return function(eqn, x)
 	local Constant = require 'symmath.Constant'
 	
 	local lhs
-	local equalityClass = EquationOp
+	local equalityClass = require 'symmath.equals' 
 	if eqn:isa(EquationOp) then
 		equalityClass = getmetatable(eqn)
 		-- move everything to one side of the equation
