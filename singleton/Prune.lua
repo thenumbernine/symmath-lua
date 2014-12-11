@@ -965,11 +965,40 @@ local original = expr:clone()
 	[powOp] = function(prune, expr)
 		
 		local symmath = require 'symmath'	-- for debug flags
+		
+		local function isInteger(x) return x == math.floor(x+.5) end
+		local function isPositiveInteger(x) return isInteger(x) and x > 0 end
 
-		if symmath.simplifyConstantPowers then
-			if expr[1]:isa(Constant) and expr[2]:isa(Constant) then
+		if expr[1]:isa(Constant) and expr[2]:isa(Constant) then
+			if symmath.simplifyConstantPowers
+			-- TODO this replaces some cases below
+			or isInteger(expr[1].value) and isPositiveInteger(expr[2].value)
+			then
 				return Constant(expr[1].value ^ expr[2].value)
 			end
+		end
+	
+		if expr[1]:isa(Constant) and isPositiveInteger(expr[1].value)
+		and (expr[2] == divOp(1,2) or expr[2] == Constant(.5))
+		then
+			local primes = require 'symmath.primeFactors'(expr[1].value)
+			local outside = 1
+			local inside = 1
+			for i=#primes-1,1,-1 do
+				if primes[i] == primes[i+1] then
+					outside = outside * primes[i]
+					primes:remove(i)
+					primes:remove(i)
+				end
+			end
+			local inside = 1
+			for i=1,#primes do
+				inside = inside * primes[i]
+			end
+			if inside == 1 and outside == 1 then return Constant(1) end
+			if outside == 1 then return Constant(inside)^divOp(1,2) end
+			if inside == 1 then return Constant(outside) end
+			return Constant(outside) * Constant(inside) ^ divOp(1,2)
 		end
 	
 		-- 0^a = 0 for a>0
