@@ -21,26 +21,6 @@ local Visitor = require 'symmath.singleton.Visitor'
 
 local Prune = class(Visitor)
 
-local function primeFactorization(n)
-	local ps = table()
-	while n > 1 do
-		local found = false
-		for i=2,math.floor(math.sqrt(n)) do
-			if n%i == 0 then
-				n = n/i
-				ps:insert(i)
-				found = true
-				break
-			end
-		end
-		if not found then
-			ps:insert(n)
-			break
-		end
-	end
-	return ps
-end
-
 Prune.lookupTable = {
 
 	[Derivative] = function(prune, expr)
@@ -902,7 +882,8 @@ local original = expr:clone()
 							bases:insert(i, Constant(1))
 							powers:insert(i, power:clone())
 						else
-							local fs = primeFactorization(value)	-- 1 returns a nil list
+							local primeFactors = require 'symmath.primeFactors'
+							local fs = primeFactors(value)	-- 1 returns a nil list
 							for _,f in ipairs(fs) do
 								bases:insert(i, f)
 								powers:insert(i, power:clone())
