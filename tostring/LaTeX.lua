@@ -38,6 +38,8 @@ LaTeX.lookupTable = {
 	[require 'symmath.mulOp'] = function(self, expr)
 		local Variable = require 'symmath.Variable'
 		local Constant = require 'symmath.Constant'
+		local divOp = require 'symmath.divOp'
+		local powOp = require 'symmath.powOp'
 		local res = table()
 		for i=1,#expr do
 			res:insert(self:wrapStrOfChildWithParenthesis(expr, i))
@@ -50,10 +52,13 @@ LaTeX.lookupTable = {
 				then
 					res[i-1] = res[i-1] .. '\\cdot'
 				-- insert \cdot between neighboring numbers
-				elseif expr[i-1]:isa(Constant)
-				and expr[i]:isa(Constant)
-				then
-					res[i-1] = res[i-1] .. '\\cdot'
+				elseif expr[i-1]:isa(Constant) then
+					if expr[i]:isa(Constant)
+					or expr[i]:isa(divOp)
+					or (expr[i]:isa(powOp) and expr[i][1]:isa(Constant))
+					then
+						res[i-1] = res[i-1] .. '\\cdot'
+					end
 				end
 			end
 		end
