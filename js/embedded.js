@@ -67,7 +67,7 @@ interpretter = new SymLuaEmbeddedLuaInterpreter({
 	packageTests : ['symmath'],
 	autoLaunch : true,
 	done : function() {
-		Lua.execute(mlstr(function(){/*
+		interpretter.execute(mlstr(function(){/*
 -- META!!! This is Lua code interpretted in JavaScript embedded in HTML served from a Lua server
 LUA_IN_HTML = true -- maybe this should set in lua.vm-util.js 
 package.path = package.path .. ';./?/init.lua'
@@ -79,7 +79,7 @@ do
 end
 */}));
 		{
-			Lua.execute(mlstr(function(){/*
+			interpretter.execute(mlstr(function(){/*
 --[[ hide symmath, and don't allow scripts to change ToStringMethod from MathJax
 do
 	local oldsymmath = symmath
