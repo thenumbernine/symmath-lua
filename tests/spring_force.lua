@@ -226,6 +226,7 @@ do
 	print(eqn,'<br>')
 end
 
+local backwardsEulerMatrix
 do
 	print('1st order approximate derivative for Backwards Euler','<br>')
 	local eqn = (discrete_dq_dt_vector):equals(A_matrix * q_t_dt_vector)
@@ -234,11 +235,14 @@ do
 	eqn = (q_t_dt_vector - dtVar * A_matrix * q_t_dt_vector):equals(q_t_vector)
 	print(eqn,'<br>')
 	-- TODO vector factor
-	eqn = ((symmath.Matrix.identity(#q_vector) - dtVar * A_matrix) * q_t_dt_vector):equals(q_t_vector)
+	backwardsEulerMatrix = (symmath.Matrix.identity(#q_vector) - dtVar * A_matrix)
+	eqn = (backwardsEulerMatrix * q_t_dt_vector):equals(q_t_vector)
 	print(eqn,'<br>')
-	eqn = ((symmath.Matrix.identity(#q_vector) - dtVar * A_matrix):simplify() * q_t_dt_vector):equals(q_t_vector)
+	backwardsEulerMatrix = backwardsEulerMatrix:simplify()
+	eqn = (backwardsEulerMatrix * q_t_dt_vector):equals(q_t_vector)
 	print(eqn,'<br>')
-	eqn = ((symmath.Matrix.identity(#q_vector) - dt * A_matrix):simplify() * q_t_dt_vector):equals(q_t_vector)
+	backwardsEulerMatrix = backwardsEulerMatrix:replace(dtVar, dt):simplify()
+	eqn = q_t_dt_vector:equals(backwardsEulerMatrix^(-1) * q_t_vector)
 	print(eqn,'<br>')
 end
 
@@ -289,6 +293,7 @@ for i=1,numberOfSteps do
 			columns[v.qVar[j].name]:insert(v.q[j])
 			columns[v.pVar[j].name]:insert(v.p[j])
 		end
+		-- TODO backward Euler via numeric inverse of the backwards Euler matrix calculated above
 	end
 	t = t + dt
 	ts:insert(t)
