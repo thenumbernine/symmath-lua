@@ -117,7 +117,7 @@ LaTeX.lookupTable = {
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
 		-- non-Matrix Tensors that are rank-2 can be displayed as Matrixes
-		if expr:rank() == 2 then
+		if expr:rank() % 2 == 0 then
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
 		local s = table()
