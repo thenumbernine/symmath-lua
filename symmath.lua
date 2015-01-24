@@ -170,7 +170,6 @@ symmath.powOp = require 'symmath.powOp'
 symmath.modOp = require 'symmath.modOp'
 
 -- for name's sake alone
-symmath.sum = symmath.addOp
 symmath.product = symmath.mulOp
 symmath.subtract = symmath.subOp
 symmath.fraction = symmath.divOp
@@ -186,6 +185,10 @@ symmath.lessThan = require 'symmath.lessThan'
 symmath.lessThanOrEquals = require 'symmath.lessThanOrEquals'
 symmath.greaterThan = require 'symmath.greaterThan'
 symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
+
+-- thinking of lowercasing all of these ...
+symmath.Sum = require 'symmath.Sum'
+symmath.Integral = require 'symmath.Integral'
 
 -- specific to Matrix
 symmath.Vector = require 'symmath.Vector'

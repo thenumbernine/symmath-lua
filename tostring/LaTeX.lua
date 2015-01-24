@@ -141,6 +141,44 @@ LaTeX.lookupTable = {
 		end
 		return ' \\left[ \\matrix{ ' .. rows:concat(' \\\\ ') .. ' } \\right] '
 	end,
+	[require 'symmath.Sum'] = function(self, expr)
+		local s = '\\sum'
+		local sumexpr, var, from, to = unpack(expr)
+		if var or from or to then
+			s = s .. '\\limits'
+			if var or from then
+				s = s .. '_{'
+				if var then
+					s = s .. '{' .. self:apply(var) .. '}'
+				end
+				if from then
+					s = s .. '={' .. self:apply(from) .. '}'
+				end
+				s = s .. '}'
+			end
+			if to then
+				s = s .. '^{' .. self:apply(to) .. '}'
+			end
+		end
+		return s .. self:apply(sumexpr)
+	end,
+	[require 'symmath.Integral'] = function(self, expr)
+		local s = '\\int'
+		local intexpr, var, from, to = unpack(expr)
+		if from or to then
+			s = s .. '\\limits_'
+			if from then
+				s = s .. '{' .. self:apply(from) .. '}'
+			end
+			if to then
+				s = s .. '^{' .. self:apply(to) .. '}'
+			end
+		end
+		if var then
+			s = s .. 'd{'..self:apply(var)..'}'
+		end
+		return s .. self:apply(intexpr)	
+	end,
 }
 
 return LaTeX()	-- singleton
