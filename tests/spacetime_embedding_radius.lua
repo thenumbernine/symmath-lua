@@ -7,11 +7,6 @@ local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 symmath.simplifyConstantPowers  = true
 
-local function printbr(...)
-	print(...)
-	print('<br>')
-end
-
 print(MathJax.header)
 
 local speedOfLightInMPerS = 299792458
@@ -21,7 +16,7 @@ local kmInM = 1000
 local lightYearInM = 9.4605284e+15
 local megaParsecInM = 3.08567758e+22
 
-m = symmath.Variable('m')
+m = symmath.var'm'
 
 if run == 'unified' then -- unified units
 	s = speedOfLightInMPerS * m	-- 1 = c m/s <=> s = c m
@@ -30,11 +25,11 @@ if run == 'unified' then -- unified units
 	mpc = megaParsecInM * m
 	function show(x) return x end
 else	--default: if run == 'separate' then -- separate units
-	cm = symmath.Variable('cm')
-	km = symmath.Variable('km')
-	s = symmath.Variable('s')
-	kg = symmath.Variable('kg')
-	lyr = symmath.Variable('lyr')
+	cm = symmath.var'cm'
+	km = symmath.var'km'
+	s = symmath.var's'
+	kg = symmath.var'kg'
+	lyr = symmath.var'lyr'
 
 	function unify(x)
 		if type(x) == 'number' then return x end
@@ -76,29 +71,39 @@ else	--default: if run == 'separate' then -- separate units
 	end
 end
 
+show = function(...) return ... end
 
-printbr('1 m = 1 m')
-printbr('1 s = '..unify(s/m)..' m')
-printbr('1 m = '..unify(m/kg)..' kg')
-printbr()
+local s = s or symmath.var's'
+
+local c = symmath.var'c'
+local c_from_m_s = c:equals(speedOfLightInMPerS * (m / s))
+print(c_from_m_s)
+local s_from_m = c_from_m_s:subst(c:equals(1)):solve(s)
+print(s_from_m)
+
+local G = G or symmath.var'G'
+local G_from_kg_m_s = G:equals(gravitationalConstantInM3PerKgS2 * (m^3 / (kg * s^2)))
+print(G_from_kg_m_s)
+local kg_from_m = G_from_kg_m_s:subst(G:equals(1)):subst(s_from_m):solve(kg) 
+print(kg_from_m)
 
 function process(bodies)
 	for name, info in pairs(bodies) do
-		info.radius = symmath.simplify(info.radius)
-		info.mass = symmath.simplify(info.mass)
-		info.embeddingRadius = symmath.simplify((info.radius^3 / (2 * info.mass))^.5)
-		info.photonOuterOrbit = symmath.simplify(info.radius^2 / info.mass)
-		info.schwarzschildRadius = symmath.simplify(info.mass * 2)
-		info.photonSphereRadius = symmath.simplify(info.mass * 3)
+		info.radius = info.radius
+		info.mass = info.mass
+		info.embeddingRadius = ((info.radius^3 / (2 * info.mass))^.5):simplify()
+		info.photonOuterOrbit = (info.radius^2 / info.mass):simplify()
+		info.schwarzschildRadius = (info.mass * 2):simplify()
+		info.photonSphereRadius = (info.mass * 3):simplify()
 
-		printbr(name..' radius = '..show(info.radius))
-		printbr(name..' mass = '..show(info.mass))
-		printbr(name..' embedding radius = '..show(info.embeddingRadius))
-		printbr(name..' embedding radius to physical radius ratio = '..show(info.embeddingRadius / info.radius))
-		--printbr(name..' photon outer orbit = '..show(info.photonOuterOrbit / lyr)..' lyr') -- not sure about this one ...
-		printbr(name..' schwarzschild radius = '..show(info.schwarzschildRadius))
-		printbr(name..' photon sphere radius = '..show(info.photonSphereRadius))
-		printbr()
+		print(name..' radius = '..show(info.radius))
+		print(name..' mass = '..show(info.mass))
+		print(name..' embedding radius = '..show(info.embeddingRadius))
+		print(name..' embedding radius to physical radius ratio = '..show(info.embeddingRadius / info.radius))
+		--print(name..' photon outer orbit = '..show(info.photonOuterOrbit / lyr)..' lyr') -- not sure about this one ...
+		print(name..' schwarzschild radius = '..show(info.schwarzschildRadius))
+		print(name..' photon sphere radius = '..show(info.photonSphereRadius))
+		print()
 	end
 end
 
@@ -106,6 +111,7 @@ earth = {radius = 6.371e+6 * m, mass = 5.972e+24 * kg}
 sun = {radius = 6.955e+8 * m, mass = 1.989e+30 * kg}
 psr = {radius = 1.8729e-5 * sun.radius, mass = 1.97 * sun.mass}
 process{earth=earth, sun=sun, psr=psr}
+do return end
 
 --earth embedding diagram formulas
 function z(r)
@@ -120,10 +126,10 @@ function z(r)
 	else
 		z = (R^3/Rs)^.5 * (1 - (1 - Rs/R)^.5) + (4 * Rs * (r - Rs))^.5 - (4 * Rs * (R - Rs))^.5
 	end
-	printbr('z('..r..') = '..unify(z))
+	print('z('..r..') = '..unify(z))
 end
 
-printbr('earth embedding at different radii...')
+print('earth embedding at different radii...')
 z(0)
 z(.25 * earth.radius)
 z(.5 * earth.radius)

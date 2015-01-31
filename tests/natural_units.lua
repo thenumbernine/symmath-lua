@@ -6,49 +6,105 @@ symmath.tostring = MathJax
 print(MathJax.header)
 --symmath.tostring = require 'symmath.tostring.SingleLine' 
 
-function printbr(...)
-	print(...)
-	print('<br>')
-end
-
-
-local c = symmath.var('c')
-local m = symmath.var('m')
-local s = symmath.var('s')
-local G = symmath.var('G')
-local kg = symmath.var('kg')
+local m = symmath.var'm'
+local s = symmath.var's'
+local kg = symmath.var'kg'
+local K = symmath.var'K'
+local eV = symmath.var'eV'
 
 -- speed of light
+local c = symmath.var('c')
 local c_from_m_s = c:equals(299792458 * (m / s))
-printbr('c_from_m_s:',c_from_m_s)
+print(c_from_m_s)
 
 -- c = 1
 local c_normalized = c:equals(1)
-printbr('c_normalized:',c_normalized)
+print(c_normalized)
 
 -- solve for s
 local s_from_m = c_from_m_s:subst(c_normalized):solve(s)
-printbr('s_from_m:',s_from_m)
+print(s_from_m)
 
+-- Planck's constant
+local hBar = symmath.var[[\hbar]]
+local hBar_from_m_s_kg = hBar:equals(1.05457173e-34 * (m^2 * kg / s))
+print(hBar_from_m_s_kg)
+
+-- hBar = 1
+local hBar_normalized = hBar:equals(1)
+print(hBar_normalized)
+
+-- kg in terms of m
+local kg_from_m_s = hBar_from_m_s_kg:subst(hBar_normalized):solve(kg)
+print(kg_from_m_s)
+
+-- substitute s
+local kg_from_m = kg_from_m_s:subst(s_from_m):simplify()
+kg_from_m = ((kg_from_m * m):simplify() / m):simplify() 
+print(kg_from_m)
+
+-- Boltzmann's constant
+local kB = symmath.var[[k_B]]
+local kB_from_kg_m_s_K = kB:equals(1.3806488e-23 * ((m^2 * kg) / (K * s^2)))
+print(kB_from_kg_m_s_K)
+
+-- kB = 1
+local kB_normalized = kB:equals(1)
+print(kB_normalized)
+
+local K_from_kg_m_s = kB_from_kg_m_s_K:subst(kB_normalized):solve(K)
+print(K_from_kg_m_s)
+
+local K_from_m = K_from_kg_m_s:subst(s_from_m):subst(kg_from_m):simplify()
+K_from_m = ((K_from_m * m):simplify() / m):simplify() 
+print(K_from_m)
+
+-- J
+local J = symmath.var'J'
+local J_from_kg_m_s = J:equals((kg * m^2) / s^2)
+print(J_from_kg_m_s)
+
+-- eV
+local eV_from_J = eV:equals(1.60217653e-19 * J)
+eV_from_J:solve(J)
+
+local eV_from_kg_m_s = eV_from_J:subst(J_from_kg_m_s)
+print(eV_from_kg_m_s)
+
+local eV_from_m = eV_from_kg_m_s:subst(kg_from_m):subst(s_from_m):simplify()
+eV_from_m = ((eV_from_m * m):simplify() / m):simplify() 
+print(eV_from_m)
+
+-- and all units in terms of eV
+local m_from_eV = ((eV_from_m * m):simplify() / eV):simplify()
+
+print(kg_from_m:subst(m_from_eV):simplify())
+print(m_from_eV)
+print(K_from_m:subst(m_from_eV):simplify())
+print(s_from_m:subst(m_from_eV):simplify())
+
+--[[
 -- gravity
+local G = symmath.var('G')
 local G_from_m_s_kg = G:equals(6.67384e-11 * m^3 / (kg * s^2)):simplify()
-printbr('G_from_m_s_kg:',G_from_m_s_kg)
+print('G_from_m_s_kg:',G_from_m_s_kg)
 
 -- G = 1
 local G_normalized = G:equals(1)
-printbr('G_normalized:',G_normalized)
+print('G_normalized:',G_normalized)
 
 -- solve for kg
 local kg_from_m = G_from_m_s_kg:subst(G_normalized):subst(s_from_m):solve(kg)
-printbr(kg_from_m)
+print(kg_from_m)
 
 -- local m_from_kg = kg_from_m:solve(m)
 local m_from_kg = kg_from_m:solve(m)
-printbr(m_from_kg)
+print(m_from_kg)
 
 --local s_from_kg = s_from_m:subst(kg_from_m:solve(kg))
 local s_from_kg = s_from_m:subst(m_from_kg):simplify()
-printbr(s_from_kg)
+print(s_from_kg)
+--]]
 
 --[[
 

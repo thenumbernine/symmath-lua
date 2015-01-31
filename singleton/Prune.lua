@@ -893,6 +893,8 @@ local original = expr:clone()
 				end
 			end
 
+			-- TODO if the coefficients are non-integers then just divide them
+
 			-- from this point on, nums and denoms don't match up with numBases (specifically because of the prime factorization of integers)
 			-- so don't worry about and don't use nums and denoms
 
