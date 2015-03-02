@@ -37,8 +37,7 @@ end
 --]]
 
 local function precedence(x)
-	if x.precedence then return x.precedence end
-	return 10
+	return x.precedence or 10
 end
 
 function ToString:testWrapStrOfChildWithParenthesis(parentNode, childIndex)

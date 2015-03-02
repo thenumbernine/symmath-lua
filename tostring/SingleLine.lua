@@ -3,6 +3,26 @@ require 'ext'
 local ToString = require 'symmath.tostring.ToString'
 local SingleLine = class(ToString)
 
+-- all very copied from ToString ... I should make it more OOP somehow ...
+local function precedence(x)
+	return x.precedence or 10
+end
+
+function SingleLine:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
+	local divOp = require 'symmath.divOp'
+	local childNode = parentNode[childIndex]
+	local childPrecedence = precedence(childNode)
+	local parentPrecedence = precedence(parentNode)
+	if parentNode:isa(divOp) then parentPrecedence = parentPrecedence + .5 end
+	if childNode:isa(divOp) then childPrecedence = childPrecedence + .5 end
+	local subOp = require 'symmath.subOp'
+	if parentNode:isa(subOp) and childIndex > 1 then
+		return childPrecedence <= parentPrecedence
+	else
+		return childPrecedence < parentPrecedence
+	end
+end
+
 SingleLine.lookupTable = {
 	--[[
 	[require 'symmath.Expression'] = function(self, expr)

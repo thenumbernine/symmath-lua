@@ -3,7 +3,7 @@ local Constant = require 'symmath.Constant'
 local BinaryOp = require 'symmath.BinaryOp'
 
 local divOp = class(BinaryOp)
-divOp.precedence = 3
+divOp.precedence = 3.5
 divOp.name = '/'
 
 function divOp:evaluateDerivative(...)
