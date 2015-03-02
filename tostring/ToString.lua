@@ -25,7 +25,7 @@ function ToString:apply(expr, ...)
 	while lookup and not self.lookupTable[lookup] do
 		lookup = lookup.super
 	end
-	if not lookup then error("expected to find a lookup") end
+	if not lookup then error("expected to find a lookup for class named "..tostring(expr.name)) end
 	return (self.lookupTable[lookup])(self, expr, ...)
 end
 

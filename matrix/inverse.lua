@@ -28,11 +28,11 @@ return function(A)
 
 	for i=1,n do
 		-- if we have a zero on the diagonal...
-		if A[i][i] == 0 then
+		if A[i][i] == Constant(0) then
 			-- pivot with a row beneath this one
 			local found = false
 			for j=i+1,n do
-				if A[j][i] ~= 0 then
+				if A[j][i] ~= Constant(0) then
 					for k=1,n do
 						A[j][k], A[i][k] = A[i][k], A[j][k]
 						AInv[j][k], AInv[i][k] = AInv[i][k], AInv[j][k]
@@ -48,7 +48,7 @@ return function(A)
 			end
 		end
 		-- rescale diagonal
-		if A[i][i] ~= 1 then
+		if A[i][i] ~= Constant(1) then
 			-- rescale column
 			local s = A[i][i]
 --print('rescaling row '..i..' by \\('..(1/s):simplify()..'\\)<br>')
@@ -63,7 +63,7 @@ return function(A)
 		-- eliminate columns apart from diagonal
 		for j=1,n do
 			if j ~= i then
-				if A[j][i] ~= 0 then
+				if A[j][i] ~= Constant(0) then
 					local s = A[j][i]
 --print('subtracting \\('..s..'\\) to row '..j..'<br>')
 					for k=1,n do

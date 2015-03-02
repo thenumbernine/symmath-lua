@@ -37,7 +37,13 @@ Verbose.lookupTable = {
 			if type(k) ~= 'number' then return end
 			return self(x)
 		end):concat(', ')..'}'
-	end
+	end,
+	[require 'symmath.Tensor'] = function(self, expr)
+		return 'Tensor{'..table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
+			return self(x)
+		end):concat(', ')..'}'
+	end,
 }
 
 return Verbose()	-- singleton

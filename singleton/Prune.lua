@@ -893,6 +893,8 @@ local original = expr:clone()
 				end
 			end
 
+			-- TODO move minus sign to the top
+
 			-- TODO if the coefficients are non-integers then just divide them
 
 			-- from this point on, nums and denoms don't match up with numBases (specifically because of the prime factorization of integers)
@@ -900,7 +902,9 @@ local original = expr:clone()
 
 			for i=1,#numBases do
 				for j=#denomBases,1,-1 do
-					if numBases[i] == denomBases[j] then
+					if numBases[i] ~= Constant(1)
+					and numBases[i] == denomBases[j] 
+					then
 						modified = true
 						local resultPower = numPowers[i] - denomPowers[j]
 						numPowers[i] = resultPower
@@ -935,7 +939,7 @@ local original = expr:clone()
 				else
 					result = num / denom
 				end
-		
+
 				return prune:apply(result)
 			end
 		end
