@@ -39,13 +39,20 @@ Lua.lookupTable = {
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!\n"
 		..(require 'symmath.tostring.MultiLine')(expr))
-	end
+	end,
+	[require 'symmath.Tensor'] = function(self, expr, vars)
+		return '{' .. table.map(expr, function(x,k)
+			if type(k) ~= 'number' then return end
+			return self:apply(x, vars)
+		end):concat(', ') .. '}'
+	end,
 }
 
 -- returns (1) the function and (2) the code
 -- see Language:getCompileParameters for a description of paramInputs
 function Lua:compile(expr, paramInputs)
 	local expr, vars = self:prepareForCompile(expr, paramInputs)
+	assert(vars)
 	local cmd = 'return function('..
 		vars:map(function(var) return var.name end):concat(', ')
 	..') return '..

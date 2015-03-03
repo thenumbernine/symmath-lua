@@ -17,6 +17,7 @@ replaces all non-Variable expressions with Variables of matching names
 then generates the code
 --]]
 function Language:prepareForCompile(expr, paramInputs)
+	assert(paramInputs)
 	local vars = table()
 	for _,paramInput in pairs(paramInputs) do
 		if type(paramInput) == 'table' then
