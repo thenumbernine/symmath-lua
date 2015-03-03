@@ -20,3 +20,5 @@ TODO
 
 - support for numbers rather than only Constant
 
+- integrate with lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
+	i.e. f = function(x) return x^2 end g = symmath:luaDiff(f, x) <=> g = function(x) return 2*x end
