@@ -27,6 +27,10 @@ function EquationOp:switch()
 	return b:equals(a)
 end
 
+function EquationOp:isTrue()
+	return self[1] == self[2]
+end
+
 -- cause operators to apply immdiately, and to apply to both sides
 
 -- TODO switch equality sign for non-equals equation ops? same with scaling by negatives?
