@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 --[[
 
-    File: matrix_inverse.lua
+    File: matrix.lua
 
     Copyright (C) 2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
@@ -93,5 +93,10 @@ m2 = symmath.Matrix({1,0},{b,1})
 t = var't'
 =(Matrix({a},{b}) + Matrix({c},{d})) / t
 =((Matrix({a},{b}) + Matrix({c},{d})) / t):simplify()
+
+-- linear system solver
+
+=Matrix({1,2},{3,4}):inverse(Matrix({5},{6}))
+=(Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6}))):simplify()
 ]]
 

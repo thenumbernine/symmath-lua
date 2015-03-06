@@ -1,12 +1,15 @@
--- TODO how to handle matrix inverses?
--- as a separate function? symmath.inverse.
--- should this also handle non-matrix types?
--- as a modification to the inverse operator? 
--- same question with matrix multiplication
--- same question with per-component matrix multiplication
--- then there's the question of how to integrate tensors in general
--- then there's breaking down prune/simplify op visitors into rules, so I could quickly insert a new rule when using matrices 
-return function(A)
+--[[
+A = matrix to invert
+AInv = vector to solve the linear system inverse of.  default: identity, to produce the ivnerse matrix.
+
+TODO how to handle matrix inverses?
+as a separate function? symmath.inverse.
+same question with matrix multiplication
+same question with per-component matrix multiplication
+then there's the question of how to integrate tensors in general
+then there's breaking down prune/simplify op visitors into rules, so I could quickly insert a new rule when using matrices 
+--]]
+return function(A, AInv)
 	local Tensor = require 'symmath.Tensor'
 	local Matrix = require 'symmath.Matrix'
 	local Constant = require 'symmath.Constant'
@@ -24,7 +27,9 @@ return function(A)
 	A = clone(A)
 	
 	-- assumes A is a rank-2 tensor
-	local AInv = Matrix.identity(n)
+	AInv = AInv and AInv:clone() or Matrix.identity(n)
+	local invdim = AInv:dim()
+	assert(#invdim == 2 and invdim[1] == dim[1], "expected vectors to invert to have same height as linear system")
 
 	for i=1,n do
 		-- if we have a zero on the diagonal...
@@ -35,6 +40,8 @@ return function(A)
 				if A[j][i] ~= Constant(0) then
 					for k=1,n do
 						A[j][k], A[i][k] = A[i][k], A[j][k]
+					end
+					for k=1,invdim[2] do
 						AInv[j][k], AInv[i][k] = AInv[i][k], AInv[j][k]
 					end
 					A = simplify(A)
@@ -54,6 +61,8 @@ return function(A)
 --print('rescaling row '..i..' by \\('..(1/s):simplify()..'\\)<br>')
 			for j=1,n do
 				A[i][j] = A[i][j] / s
+			end
+			for j=1,invdim[2] do
 				AInv[i][j] = AInv[i][j] / s
 			end
 			A = simplify(A)
@@ -68,6 +77,8 @@ return function(A)
 --print('subtracting \\('..s..'\\) to row '..j..'<br>')
 					for k=1,n do
 						A[j][k] = A[j][k] - s * A[i][k]
+					end
+					for k=1,invdim[2] do
 						AInv[j][k] = AInv[j][k] - s * AInv[i][k]
 					end
 					A = simplify(A)
