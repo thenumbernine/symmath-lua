@@ -24,7 +24,7 @@ function EquationOp:rhs() return self[2] end
 -- should probably overload this for >= and <= to switch the sides
 function EquationOp:switch()
 	local a,b = unpack(self)
-	return b:equals(a)
+	return b:clone():equals(a:clone())
 end
 
 function EquationOp:isTrue()

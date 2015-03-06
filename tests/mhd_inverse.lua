@@ -105,40 +105,41 @@ local Y = symmath.Matrix(
 	{rho * cf^2 - BSq, 0, rho * cs^2 - BSq, 0, 0, rho * cs^2 - BSq, 0, rho * cf^2 - BSq}
 )
 
-local yinvij = table()
+local YInvVars = table()
 for i=1,8 do
-	yinvij[i] = table()
+	YInvVars[i] = table()
 	for j=1,8 do
-		yinvij[i][j] = symmath.var('y^{-1}_{'..i..j..'}')
+		YInvVars[i][j] = symmath.var('y^{-1}_{'..i..j..'}')
 	end
 end
--- imposed constraints:
-yinvij[1][1] = 0
-yinvij[1][5] = 0
-yinvij[2][1] = 0
-yinvij[2][5] = 0
-yinvij[3][1] = 0
-yinvij[3][5] = 0
-yinvij[4][1] = 1
-yinvij[4][5] = 0
-yinvij[5][1] = 0
-yinvij[5][2] = 0
-yinvij[5][3] = 0
-yinvij[5][4] = 0
-yinvij[5][5] = 1
-yinvij[5][6] = 0
-yinvij[5][7] = 0
-yinvij[5][8] = 0
-yinvij[6][1] = 0
-yinvij[6][5] = 0
-yinvij[7][1] = 0
-yinvij[7][5] = 0
-yinvij[8][1] = 0
-yinvij[8][5] = 0
+--[[ imposed constraints:
+YInvVars[1][1] = 0
+YInvVars[1][5] = 0
+YInvVars[2][1] = 0
+YInvVars[2][5] = 0
+YInvVars[3][1] = 0
+YInvVars[3][5] = 0
+YInvVars[4][1] = 1
+YInvVars[4][5] = 0
+YInvVars[5][1] = 0
+YInvVars[5][2] = 0
+YInvVars[5][3] = 0
+YInvVars[5][4] = 0
+YInvVars[5][5] = 1
+YInvVars[5][6] = 0
+YInvVars[5][7] = 0
+YInvVars[5][8] = 0
+YInvVars[6][1] = 0
+YInvVars[6][5] = 0
+YInvVars[7][1] = 0
+YInvVars[7][5] = 0
+YInvVars[8][1] = 0
+YInvVars[8][5] = 0
+--]]
 
 --local YInv = Y:inverse()	-- dies
 local YInv = symmath.Matrix(
-	unpack(yinvij)
+	unpack(YInvVars)
 --[[
 	{	0,	0,	0,	0,	0,	0,	0,	0	},	
 	{	0,	1,	0,	0,	0,	0,	0,	0	},	
@@ -184,12 +185,69 @@ print('\\(Y = \\)'..Y..'<br>')
 print('\\(Y^{-1} = \\)'..YInv..'<br>')
 --print('\\(Y^{-1} \\cdot Y = \\)'..Yortho..'<br>')
 
+local constraints = table()
+for _,eqnlist in ipairs{YInvYEqns, YYInvEqns} do
+	for k=#eqnlist,1,-1 do
+		local i,j,eqn = unpack(eqnlist[k])
+		if eqn[2]:isa(symmath.Variable) then
+			eqnlist:remove(k)
+			constraints:insert(eqn:switch())
+		end
+	end
+end
+YInv = YInv:subst(constraints:unpack())
+print('after immediate constraints:<br>')
+print('\\(Y^{-1} = \\)'..YInv..'<br>')
+
+-- apply constraints to remaining eqn lists
+for _,eqnlist in ipairs{YInvYEqns, YYInvEqns} do
+	for k=#eqnlist,1,-1 do
+		eqnlist[k][3] = eqnlist[k][3]:subst(constraints:unpack()):simplify()
+		if eqnlist[k][3]:isTrue() then
+			eqnlist:remove(k)
+		end
+	end
+end
+
+-- after substituting, pick out the variables left
+local YInvRemainingVars = symmath.Matrix()
+for i=1,8 do
+	for j=1,8 do
+		if YInv[i][j]:isa(symmath.Variable) then
+			table.insert(YInvRemainingVars, symmath.Tensor(YInv[i][j]))
+		end
+	end
+end
+local YInvRemainingMatrix = symmath.Matrix()
+local YInvRemainingSolution = symmath.Matrix()
+print('constraints remaining:'..(#YInvYEqns+#YYInvEqns)..'<br>')
+print('variables left to solve:'..#YInvRemainingVars..'<br>')
 for _,info in ipairs(YInvYEqns) do
 	local i,j,eqn = unpack(info)
 	print('YInv row '..i..' Y col '..j..': '..eqn..'<br>')
+	
+	local row = symmath.Tensor()
+	table.insert(YInvRemainingMatrix, row)
+	for k,vars in ipairs(YInvRemainingVars) do
+		local var = vars[1]
+		row[k] = eqn:rhs():polyCoeffs(var)[1] or symmath.Constant(0)
+		table.insert(YInvRemainingSolution, symmath.Tensor(eqn:lhs()))
+	end
 end
 for _,info in ipairs(YYInvEqns) do
 	local i,j,eqn = unpack(info)
 	print('Y row '..i..' YInv col '..j..': '..eqn..'<br>')
+	
+	local row = symmath.Tensor()
+	table.insert(YInvRemainingMatrix, row)
+	for k,vars in ipairs(YInvRemainingVars) do
+		local var = vars[1]
+		row[k] = eqn:rhs():polyCoeffs(var)[1] or symmath.Constant(0)
+		table.insert(YInvRemainingSolution, symmath.Tensor(eqn:lhs()))
+	end
 end
 
+print('remaining matrix:'..YInvRemainingMatrix..'<br>')
+print('remaining vector:'..YInvRemainingVars..'<br>')
+print('remaining solution:'..YInvRemainingSolution..'<br>')
+print((YInvRemainingMatrix * YInvRemainingVars):equals(YInvRemainingSolution) .. '<br>')
