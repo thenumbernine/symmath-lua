@@ -25,6 +25,18 @@ Prune.lookupTable = {
 
 	[Derivative] = function(prune, expr)
 
+		-- d/dx{y_i} = {dy_i/dx}
+		do
+			local Tensor = require 'symmath.Tensor'
+			if expr[1]:isa(Tensor) then
+				local res = expr[1]:clone()
+				for i=1,#res do
+					res[i] = prune:apply(res[i]:diff(unpack(expr, 2)))
+				end
+				return res
+			end
+		end
+
 		-- d/dx c = 0
 		if expr[1]:isa(Constant) then
 			return Constant(0)

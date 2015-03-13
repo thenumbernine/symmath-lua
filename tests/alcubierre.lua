@@ -37,12 +37,15 @@ ideal code:
 	-- align coords by associated variables. let the user reference by g'_tt' rather than g[1][1] or g[4][4] or whichever implementation is used.
 	-- ... either use the vars as fields themselves or use the provided list as order index, so 'txyz' would either provide g.t.t, g.t.x, etc or g[1][1] as g_tt, g[1][2] as g_tx, etc
 	--	though that wouldn't be so compatible with allowing matrix indexing ...
+	-- how about storing tables as 1-based typical indexed matrices
+	-- then overriding __index/__newindex to handle individual letter-based indexes
+	-- then they would be compatible with matrices
 
 	alpha = 1
 
 	-- "dont differentiate / not a constant" is the default?
-	v = var()
-	f = var()
+	v = var'v'
+	f = var'f'
 	
 	-- use tensor's ctor to specify the default contra/co-variance and which indexes to allocate for
 	-- use the coords def to infer rank from these indexes
@@ -50,9 +53,9 @@ ideal code:
 
 	-- for tensor assignment I'd like to use __call with implicit string parameter 
 	-- but the returned object would be assigned with Lua's un-overloadable assignment operation 
-	--beta'^0' = -v*f	-- (ideal but not possible as a setter)
+	--beta'^x' = -v*f	-- (ideal but not possible as a setter)
 	-- to work around this __newindex could be overloaded
-	beta['^0'] = -v*f
+	beta['^x'] = -v*f
 
 	gamma = tensor'_ij'
 	gamma['_ij'] = tensor.delta'_ij'

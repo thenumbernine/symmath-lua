@@ -3,7 +3,7 @@ local Function = require 'symmath.Function'
 local tanh = class(Function)
 tanh.name = 'tanh'
 tanh.func = math.tanh
-function tanh:diff(...)
+function tanh:evaluateDerivative(...)
 	local x = unpack(self)
 	local cosh = require 'symmath.cosh'
 	local diff = require 'symmath'.diff

@@ -10,6 +10,25 @@ Tensor.name = 'Tensor'
 Tensor.mulNonCommutative = true
 Tensor.precedence = 10
 
+--[[
+constructors:
+	string = index representation
+		'^i' = contravariant rank-1
+		'_ij' = covariant rank-2
+		'^i_jk' = mixed rank-3
+		default goes to ... contra? co?  neither / separate associated metric?
+		associate indexes with metrics?
+		functions for converting from/to different basii?
+
+	table (of numbers) = list of dimensions ... contra/co?  which indices? default indices / flat space?
+
+	2nd arg function = constructor callback iterated over all elements
+
+	each Tensor has the following info:
+		- rank (list of dimensions)
+		- list of associated basis (contra-/co-/other?)
+		- associated indices / index ranges?  g_uv spans txyz vs g_ij spans xyz
+--]]
 function Tensor:init(...)
 	Tensor.super.init(self, ...)
 
