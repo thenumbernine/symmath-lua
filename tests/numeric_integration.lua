@@ -77,8 +77,7 @@ local t1 = 1
 local n = 100
 local norm = math.abs
 
-local f = f:compile{x}
-local df = df:compile{x}
+local _f = f:compile{x}
 
 for _,method in ipairs{
 	euler,
@@ -88,15 +87,15 @@ for _,method in ipairs{
 } do
 	local dt = (t1 - t0) / n
 	local t = t0
-	local x = f(t)
+	local x = _f(t)
 	local err = 0
 	for i=1,n do
-		local correctX = f(t)
+		local correctX = _f(t)
 		local diffX = x - correctX
 		local normDiff = norm(diffX)
 		err = err + normDiff
 		
-		x = method(t, x, dt, df)
+		x = method(f, x, x+dt, n)
 		t = t + dt
 	end
 end

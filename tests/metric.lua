@@ -110,11 +110,13 @@ coords = {'t', 'x', 'y', 'z'}
 Phi = symmath.Variable('Phi', {t,x,y,z})
 --]]
 
-function printNonZero(expr, args)
+function printNonZero(title, expr, args)
 	for k,v in pairs(args) do
 		expr = expr:gsub('$'..k, v)
+		title = title:gsub('$'..k, v)
 	end
-	exec("if "..expr.." ~= symmath.Constant(0) then printbr('"..expr.." = '.."..expr..") end")
+	local cmd = [[if ]]..expr..[[ ~= symmath.Constant(0) then printbr(]]..'[['..[[\(]]..title..[[\) = ]]..']]'..[[..]]..expr..[[) end]]
+	exec(cmd)
 end
 
 --[[
@@ -130,7 +132,7 @@ for _,u in ipairs(coords) do
 		else
 			exec(('gLL_$u_$v = symmath.Constant(0)'):gsub('$u',u):gsub('$v',v))
 		end
-		printNonZero('gLL_$u_$v',{u=u,v=v})
+		printNonZero('g_{$u$v}', 'gLL_$u_$v',{u=u,v=v})
 	end
 end
 --]]
@@ -144,7 +146,7 @@ for _,u in ipairs(coords) do
 		else
 			exec(('gUU_$u_$v = symmath.Constant(0)'):gsub('$u',u):gsub('$v',v))
 		end
-		printNonZero('gUU_$u_$v',{u=u,v=v})
+		printNonZero('g_{$u$v}', 'gUU_$u_$v',{u=u,v=v})
 	end
 end
 --]]
@@ -187,6 +189,7 @@ end
 for _,u in ipairs(spatial) do
 	for _,v in ipairs(spatial) do
 		exec(('gLL_$u_$v = gammaLL_$u_$v'):gsub('$u', u):gsub('$v', v))
+		printNonZero('g_{$u$v}', 'gLL_$u_$v', {u=u,v=v})
 	end
 end
 -- inverse
@@ -201,13 +204,18 @@ for _,u in ipairs(spatial) do
 	end
 end
 --]]
+for _,u in ipairs(coords) do
+	for _,v in ipairs(coords) do
+		printNonZero('g^{$u$v}', 'gUU_$u_$v', {u=u,v=v})
+	end
+end
 
 printbr()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
 			exec(('gLLL_$u_$v_$w = symmath.simplify(symmath.diff(gLL_$u_$v, $w))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero('gLLL_$u_$v_$w', {u=u,v=v,w=w})
+			printNonZero([[\partial_$w g_{$u$v}]], 'gLLL_$u_$v_$w', {u=u,v=v,w=w})
 		end
 	end
 end
@@ -217,7 +225,7 @@ for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
 			exec(('christoffelLLL_$u_$v_$w = symmath.simplify((symmath.Constant(1)/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero('christoffelLLL_$u_$v_$w', {u=u,v=v,w=w})
+			printNonZero([[\Gamma_{$u$v$w}]], 'christoffelLLL_$u_$v_$w', {u=u,v=v,w=w})
 		end
 	end
 end
@@ -231,7 +239,7 @@ for _,u in ipairs(coords) do
 				exec(('christoffelULL_$u_$v_$w = christoffelULL_$u_$v_$w + christoffelLLL_$r_$v_$w * gUU_$r_$u'):gsub('$u',u):gsub('$v',v):gsub('$w',w):gsub('$r',r))
 			end
 			exec(('christoffelULL_$u_$v_$w = symmath.simplify(christoffelULL_$u_$v_$w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero('christoffelULL_$u_$v_$w',{u=u,v=v,w=w})
+			printNonZero([[{\Gamma^$u}_{$v$w}]], 'christoffelULL_$u_$v_$w',{u=u,v=v,w=w})
 		end
 	end
 end
@@ -242,7 +250,7 @@ for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		for _,w in ipairs(coords) do
 			exec(('christoffelULL_$u_$v_$w = symmath.replace(christoffelULL_$u_$v_$w, Phi, symmath.Constant(-1), function(v) return not v:isa(symmath.Derivative) end)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero('christoffelULL_$u_$v_$w',{u=u,v=v,w=w})
+			printNonZero([[{\Gamma^$u}_{$v$w}]], 'christoffelULL_$u_$v_$w',{u=u,v=v,w=w})
 		end
 	end
 end

@@ -10,27 +10,109 @@ Tensor.name = 'Tensor'
 Tensor.mulNonCommutative = true
 Tensor.precedence = 10
 
+
+-- helper function
+-- accepts tensor string with ^, _, a-z, 1-9 
+-- returns pairs of {
+local function parseIndexes(indexString)
+end
+
 --[[
+information the constructor needs...
+possible combinations:
+* * *      	/ contra/covariant + index information (includes variance and dimensions, excludes optional values)
+      * *  	\ list of dimension (excludes variance and optional values)
+  *       *	/ dense content: expressions as nested tables (includes dimensions, excludes variance)
+    *   *  	\ lambdas for content generation (includes values, excludes dimension or variance)
+
 constructors:
-	string = index representation
-		'^i' = contravariant rank-1
-		'_ij' = covariant rank-2
-		'^i_jk' = mixed rank-3
-		default goes to ... contra? co?  neither / separate associated metric?
-		associate indexes with metrics?
-		functions for converting from/to different basii?
+	contra/co-variant alone:
+		Tensor(string)
+		Tensor'^i' = contravariant rank-1
+		Tensor'_ij' = covariant rank-2
+		Tensor'^i_jk' = mixed rank-3
+			default goes to ... contra? co? or neither / separate associated metric?
+			associate indexes with metrics?
+			functions for converting from/to different basii?
 
-	table (of numbers) = list of dimensions ... contra/co?  which indices? default indices / flat space?
+	contra/co-variant + dense values:
+		Tensor(string, table)
+		Tensor('^i', {1,2,3}) = contravariant rank-3 tensor w/initial values
+							(error upon mismatch sizes, or only use what you can / fill the rest with zero?)
 
-	2nd arg function = constructor callback iterated over all elements
+	contra/co-variant + sparse values:
+		Tensor(string, function)
+		Tensor('^ij', function(i,j) return ... end)
 
-	each Tensor has the following info:
-		- rank (list of dimensions)
-		- list of associated basis (contra-/co-/other?)
-		- associated indices / index ranges?  g_uv spans txyz vs g_ij spans xyz
+	dimensions:
+		Tensor(number...)			<- conflict with the dense value definition
+
+	dimensions + lambda:
+		Tensor(number..., function)
+
+	dense content:
+		Tensor([number|table]...)	<- conflict with dimensions constructor
+
+interpretations:
+	Tensor(string) => contra/co-variance
+	Tensor(string, function) => contra/co-variance + lambda callback
+	Tensor(string, table) => contra/co-variance + dense value
+	Tensor(number...) => dense values
+	Tensor{dim=table, values=table} => dimension list + lambda callback
+	Tensor{dim=table} => dimension list
+	Tensor{}
+
+Tensor static members:
+	- association of indicies to coordinates
+
+Tensor.coords = {
+	default = {t,x,y,z},
+	{i,j,k} = {x,y,z},
+	{I,J,K} = {whatever flat space vielbein indices you want to use},
+}
+- coordinate transformation information ...
+	i.e. lower txyz to upper txyz basis transforms with g^uv,
+		upper txyz to lower txyz transforms with g_uv
+		lower txyz to lower TXYZ transforms with e_I^u, etc
+
+Tensor have the following attributes:
+	- rank (list of dimensions) <- right now dynamcially calculated via :rank()
+	- list of associated basis (contra-/co-/neither)
+	- associated indices / index ranges?  g_uv spans txyz vs g_ij spans xyz
 --]]
 function Tensor:init(...)
-	Tensor.super.init(self, ...)
+
+	local args = {...}
+
+	local valueCallback 
+	if type(args[#args]) == 'function' then
+		valueCallback = table.remove(args)
+	end
+	
+	--[[
+	Tensor'^i'
+	Tensor'_jk'
+	Tensor'^a_bc'
+	--]]
+	if type(args[1]) == 'string' then
+		-- *) parse string into indicies (and what basis they belong to) and contra- vs co- variance
+		-- should I make a distinction for multi-letter variables? not allowed for the time being ...
+		self.variance = parseIndexes(args[1])
+
+		-- *) complain if there is no Tensor.coords assignment
+		-- *) store index information (in this tensor and subtensors ... i.e. this may be {^i, _j, _k}, subtensors would be {_j, _k}, and their subtensors would be {_k}
+		-- *) build an empty tensor with rank according to the basis size of the indices
+
+	--[[
+	Tensor({row1}, {row2}, ...)
+	--]]
+	else
+		-- if we get a list of tables then call super init ...	
+		Tensor.super.init(self, ...)
+
+		-- default: covariant?
+		self.variance = {}
+	end
 
 	-- now that children are stored, construct them as lower-rank objects if the arguments were provided implicitly as metatable-less tables
 	-- this way we know all children (a) are Tensors and have a ".rank" field, or (b) are non-Tensor Expressions and are rank-0 
@@ -41,6 +123,12 @@ function Tensor:init(...)
 			-- then assume it's meant to be a sub-tensor
 			x = Tensor(unpack(x))
 			self[i] = x
+		end
+	end
+
+	if valueCallback then
+		for index,_ in self:iter() do
+			self[index] = valueCallback(unpack(index))
 		end
 	end
 end
