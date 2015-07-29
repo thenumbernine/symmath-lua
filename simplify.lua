@@ -13,6 +13,7 @@ return function(x, ...)
 	local prune = require 'symmath.prune'
 	local factor = require 'symmath.factor'
 	local tidy = require 'symmath.tidy'
+	local Invalid = require 'symmath.Invalid'
 	local lastx
 	-- [[ with stack trace on loop  
 	local clone = require 'symmath.clone'
@@ -31,7 +32,7 @@ return function(x, ...)
 		simplifyStack:insert(clone(x))
 	--]]
 		i = i + 1
-	until i == 10 or x == lastx
+	until i == 10 or x == lastx or getmetatable(x) == Invalid
 	-- [[ debugging simplify loop stack trace
 	if i == 10 then
 		local Verbose = require 'symmath.tostring.Verbose'
