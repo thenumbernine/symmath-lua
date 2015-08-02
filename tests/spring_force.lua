@@ -157,18 +157,18 @@ for i,v in ipairs(system.particles) do
 		local dq_dt_var = v.qVar[k]:diff(tVar)
 print(dq_dt_var:equals(dH_dp),'<br>')
 		v.dq_dt[k] = dH_dp:compile(symbolicParams)
-		table.insert(dq_dt_vector, symmath.Tensor(dq_dt_var))
-		table.insert(dq_dt_vector_eqn_rhs, symmath.Tensor(dH_dp))
-		table.insert(q_vector, symmath.Tensor(v.qVar[k]))
+		table.insert(dq_dt_vector, symmath.Array(dq_dt_var))
+		table.insert(dq_dt_vector_eqn_rhs, symmath.Array(dH_dp))
+		table.insert(q_vector, symmath.Array(v.qVar[k]))
 	
 		local _dH_dq = (-H):diff(v.qVar[k]):simplify()
 		v.dp_dt_expr[k] = _dH_dq
 		local dp_dt_var = v.pVar[k]:diff(tVar)
 print(dp_dt_var:equals(_dH_dq),'<br>')
 		v.dp_dt[k] = _dH_dq:compile(symbolicParams)
-		table.insert(dq_dt_vector, symmath.Tensor(dp_dt_var))
-		table.insert(dq_dt_vector_eqn_rhs, symmath.Tensor(_dH_dq))
-		table.insert(q_vector, symmath.Tensor(v.pVar[k]))
+		table.insert(dq_dt_vector, symmath.Array(dp_dt_var))
+		table.insert(dq_dt_vector_eqn_rhs, symmath.Array(_dH_dq))
+		table.insert(q_vector, symmath.Array(v.pVar[k]))
 	end
 end
 
@@ -186,7 +186,7 @@ do
 	end
 	local n = #dq_dt_vector
 	for i=1,n do
-		A_matrix[i] = symmath.Tensor()
+		A_matrix[i] = symmath.Array()
 		for j=1,n do
 			A_matrix[i][j] = coeff(dq_dt_vector_eqn_rhs[i][1], q_vector[j][1])
 		end
@@ -200,8 +200,8 @@ print(dq_dt_vector:equals(A_matrix * q_vector),'<br>')
 local q_t_vector = symmath.Matrix()
 local q_t_dt_vector = symmath.Matrix()
 for i=1,#q_vector do
-	q_t_vector[i] = symmath.Tensor(symmath.var(q_vector[i][1].name..'(t)'))
-	q_t_dt_vector[i] = symmath.Tensor(symmath.var(q_vector[i][1].name..'(t+\\Delta t)'))
+	q_t_vector[i] = symmath.Array(symmath.var(q_vector[i][1].name..'(t)'))
+	q_t_dt_vector[i] = symmath.Array(symmath.var(q_vector[i][1].name..'(t+\\Delta t)'))
 end
 
 local discrete_dq_dt_vector = ((q_t_dt_vector - q_t_vector) / dtVar):simplify()

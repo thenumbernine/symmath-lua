@@ -58,7 +58,7 @@ print('\\(u = \\)'..u..'<br>')
 local w = symmath.Matrix{rho, vx, vy, vz, Bx, By, Bz, p}:transpose()	-- primitive variables
 print('\\(w = \\)'..w..'<br>')
 
-local du_dw = symmath.Tensor(table.map(u, function(u_i,i)
+local du_dw = symmath.Array(table.map(u, function(u_i,i)
 	u_i = u_i[1]
 	u_i = u_i:subst(BSq_from_v, vSq_from_v)
 	if type(i) ~= 'number' then return end
@@ -214,7 +214,7 @@ local YInvRemainingVars = symmath.Matrix()
 for i=1,8 do
 	for j=1,8 do
 		if YInv[i][j]:isa(symmath.Variable) then
-			table.insert(YInvRemainingVars, symmath.Tensor(YInv[i][j]))
+			table.insert(YInvRemainingVars, symmath.Array(YInv[i][j]))
 		end
 	end
 end
@@ -226,24 +226,24 @@ for _,info in ipairs(YInvYEqns) do
 	local i,j,eqn = unpack(info)
 	print('YInv row '..i..' Y col '..j..': '..eqn..'<br>')
 	
-	local row = symmath.Tensor()
+	local row = symmath.Array()
 	table.insert(YInvRemainingMatrix, row)
 	for k,vars in ipairs(YInvRemainingVars) do
 		local var = vars[1]
 		row[k] = eqn:rhs():polyCoeffs(var)[1] or symmath.Constant(0)
-		table.insert(YInvRemainingSolution, symmath.Tensor(eqn:lhs()))
+		table.insert(YInvRemainingSolution, symmath.Array(eqn:lhs()))
 	end
 end
 for _,info in ipairs(YYInvEqns) do
 	local i,j,eqn = unpack(info)
 	print('Y row '..i..' YInv col '..j..': '..eqn..'<br>')
 	
-	local row = symmath.Tensor()
+	local row = symmath.Array()
 	table.insert(YInvRemainingMatrix, row)
 	for k,vars in ipairs(YInvRemainingVars) do
 		local var = vars[1]
 		row[k] = eqn:rhs():polyCoeffs(var)[1] or symmath.Constant(0)
-		table.insert(YInvRemainingSolution, symmath.Tensor(eqn:lhs()))
+		table.insert(YInvRemainingSolution, symmath.Array(eqn:lhs()))
 	end
 end
 

@@ -27,8 +27,8 @@ Prune.lookupTable = {
 
 		-- d/dx{y_i} = {dy_i/dx}
 		do
-			local Tensor = require 'symmath.Tensor'
-			if expr[1]:isa(Tensor) then
+			local Array = require 'symmath.Array'
+			if expr[1]:isa(Array) then
 				local res = expr[1]:clone()
 				for i=1,#res do
 					res[i] = prune:apply(res[i]:diff(unpack(expr, 2)))
@@ -146,38 +146,38 @@ local original = expr:clone()
 		-- vector and matrix addition
 		do
 
-			local Tensor = require 'symmath.Tensor'
+			local Array = require 'symmath.Array'
 
-			local function isTensor(x)
-				return type(x) == 'table' and x.isa and x:isa(Tensor)
+			local function isArray(x)
+				return type(x) == 'table' and x.isa and x:isa(Array)
 			end
 
-			local function tensorTensorAdd(a,b)
+			local function arrayArrayAdd(a,b)
 				if #a ~= #b then return end
-				local result = Tensor()
-				for i=1,#a do
-					result[i] = a[i] + b[i]
+				local result = clone(a)
+				for i=1,#result do
+					result[i] = result[i] + b[i]
 				end
 				return prune:apply(result)
 			end
 
-			-- and now for Tensor+Tensor addition ...
+			-- and now for Array+Array addition ...
 			if #expr > 1 then
 				for i=#expr,1,-1 do
 					local rhs = expr[i]
-					local rhsIsTensor = isTensor(rhs)
-					if rhsIsTensor then
+					local rhsIsArray = isArray(rhs)
+					if rhsIsArray then
 						for j=i-1,1,-1 do
 							local lhs = expr[j]
-							local lhsIsTensor = isTensor(lhs)
-							if lhsIsTensor and rhsIsTensor then 
-								local result = tensorTensorAdd(lhs, rhs)
+							local lhsIsArray = isArray(lhs)
+							if lhsIsArray and rhsIsArray then 
+								local result = arrayArrayAdd(lhs, rhs)
 								if result then
 									table.remove(expr, i)
 									expr[j] = result
 									return prune:apply(expr)
 								end
-							-- else tensor+scalar?  nah, too ambiguous.  are you asking for adding to all elements, or just the diagonals? idk.
+							-- else array+scalar?  nah, too ambiguous.  are you asking for adding to all elements, or just the diagonals? idk.
 							end
 						end
 					end
@@ -538,10 +538,10 @@ local original = expr:clone()
 
 
 		do
-			local Tensor = require 'symmath.Tensor'
+			local Array = require 'symmath.Array'
 
-			local function isTensor(x)
-				return type(x) == 'table' and x.isa and x:isa(Tensor)
+			local function isArray(x)
+				return type(x) == 'table' and x.isa and x:isa(Array)
 			end
 
 			local function matrixMatrixMul(a,b)
@@ -566,20 +566,20 @@ local original = expr:clone()
 				end):unpack())
 			end
 		
-			-- TODO only map the elements of the tensor
-			-- TODO tensor getter, setter, and iterator
-			local function tensorScalarMul(m,s)
-				local result = Tensor()
-				for i=1,#m do
-					result[i] = m[i] * s
+			-- TODO only map the elements of the array
+			-- TODO array getter, setter, and iterator
+			local function arrayScalarMul(m,s)
+				local result = clone(m)
+				for i=1,#result do
+					result[i] = result[i] * s
 				end
 				return prune:apply(result)
 			end
 
-			local function scalarTensorMul(s,m)
-				local result = Tensor()
-				for i=1,#m do
-					result[i] = s * m[i]
+			local function scalarArrayMul(s,m)
+				local result = clone(m)
+				for i=1,#result do
+					result[i] = s * result[i]
 				end
 				return prune:apply(result)
 			end
@@ -590,25 +590,25 @@ local original = expr:clone()
 					local rhs = expr[i]
 					for j=i-1,1,-1 do
 						local lhs = expr[j]
-						local lhsIsTensor = isTensor(lhs)
-						local rhsIsTensor = isTensor(rhs)
-						if lhsIsTensor and rhsIsTensor then
+						local lhsIsArray = isArray(lhs)
+						local rhsIsArray = isArray(rhs)
+						if lhsIsArray and rhsIsArray then
 							local result = matrixMatrixMul(lhs, rhs)
 							if result then
 								table.remove(expr, i)
 								expr[j] = result
 								return prune:apply(expr)
 							end
-						elseif lhsIsTensor or rhsIsTensor then	-- matrix-scalar multiplication
-							-- notice I'm not handling Matrix/Tensor multiplication.  
+						elseif lhsIsArray or rhsIsArray then	-- matrix-scalar multiplication
+							-- notice I'm not handling Matrix/Array multiplication.  
 							-- My rule of thumb for now is "don't instanciate RowVectors -- instanciate nx1 Matrices instead"
-							-- I'm sure that will change once I start introducing tensors.
+							-- I'm sure that will change once I start introducing arrays.
 							-- See the tests/alcubierre.lua file for thoughts on this.
 							local result 
-							if lhsIsTensor then
-								result = tensorScalarMul(lhs, rhs)
-							elseif rhsIsTensor then
-								result = scalarTensorMul(lhs, rhs)
+							if lhsIsArray then
+								result = arrayScalarMul(lhs, rhs)
+							elseif rhsIsArray then
+								result = scalarArrayMul(lhs, rhs)
 							else
 								error("shouldn't get here")
 							end
@@ -770,13 +770,13 @@ local original = expr:clone()
 		-- matrix/scalar
 		do
 			local a, b = unpack(expr)
-			local Tensor = require 'symmath.Tensor'
-			if a:isa(Tensor)
-			and not b:isa(Tensor)
+			local Array = require 'symmath.Array'
+			if a:isa(Array)
+			and not b:isa(Array)
 			then
-				local result = Tensor()
-				for i=1,#a do
-					result[i] = a[i] / b
+				local result = clone(a)
+				for i=1,#result do
+					result[i] = result[i] / b
 				end
 				return prune:apply(result)
 			end

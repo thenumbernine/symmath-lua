@@ -39,21 +39,21 @@ function permutations(args)
 end
 
 return function(m)
-	local Tensor = require 'symmath.Tensor'
+	local Array = require 'symmath.Array'
 	local Constant = require 'symmath.Constant'
 
-	-- non-tensor?  return itself
-	if type(m) ~= 'table' or not m.isa or not m:isa(Tensor) then return m end
+	-- non-array?  return itself
+	if type(m) ~= 'table' or not m.isa or not m:isa(Array) then return m end
 
 	local dim = m:dim()
 	local volume = table.combine(dim, function(a,b) return a * b end) or 0
 
-	-- 0x0 tensor?  return itself
+	-- 0x0 array?  return itself
 	if volume == 0 then return Constant(1) end
 
 	-- tempted to write a volume=1 rank=n return the n-th nested element condition ...
 
-	-- not a rank-2 tensor? return nothing.  maybe error. 
+	-- not a rank-2 array? return nothing.  maybe error. 
 	if #dim ~= 2 then return end
 
 	-- not square?

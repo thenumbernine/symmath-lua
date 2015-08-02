@@ -79,7 +79,7 @@ SingleLine.lookupTable = {
 			return s, #newtable+1
 		end):concat(' ')..'}['..diffexpr..']'
 	end,
-	[require 'symmath.Tensor'] = function(self, expr)
+	[require 'symmath.Array'] = function(self, expr)
 		return '[' .. table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self:apply(x)

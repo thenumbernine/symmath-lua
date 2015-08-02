@@ -6,27 +6,27 @@ TODO how to handle matrix inverses?
 as a separate function? symmath.inverse.
 same question with matrix multiplication
 same question with per-component matrix multiplication
-then there's the question of how to integrate tensors in general
+then there's the question of how to integrate arrays in general
 then there's breaking down prune/simplify op visitors into rules, so I could quickly insert a new rule when using matrices 
 --]]
 return function(A, AInv)
-	local Tensor = require 'symmath.Tensor'
+	local Array = require 'symmath.Array'
 	local Matrix = require 'symmath.Matrix'
 	local Constant = require 'symmath.Constant'
 	local simplify = require 'symmath.simplify'
 	local clone = require 'symmath.clone'
 	
 	if type(A) == 'number' then return 1/Constant(A) end
-	if not (type(A) == 'table' and A.isa and A:isa(Tensor)) then return Constant(1)/A end
+	if not (type(A) == 'table' and A.isa and A:isa(Array)) then return Constant(1)/A end
 
-	-- ... and Tensor
+	-- ... and Array
 	local dim = A:dim()
-	assert(#dim == 2 and dim[1] == dim[2], "expected a square rank-2 tensor")
+	assert(#dim == 2 and dim[1] == dim[2], "expected a square rank-2 array")
 	local n = dim[1]
 
 	A = clone(A)
 	
-	-- assumes A is a rank-2 tensor
+	-- assumes A is a rank-2 array
 	AInv = AInv and AInv:clone() or Matrix.identity(n)
 	local invdim = AInv:dim()
 	assert(#invdim == 2 and invdim[1] == dim[1], "expected vectors to invert to have same height as linear system")

@@ -12,7 +12,7 @@ local x = symmath.var'x'
 local t = symmath.var('h', {x})
 local xs = table{t,x}
 
-local r = symmath.Tensor(xs):transpose()
+local r = symmath.Array(xs):transpose()
 
 local e_t = r:diff(t):simplify()
 print('e_t^u = '..e_t)
@@ -39,7 +39,7 @@ print('g^uv = '..gUU)
 -- [[ simply solve for any unit vector ...
 local nUt = symmath.var'n^t'
 local nUx = symmath.var'n^x'
-local nU = symmath.Tensor{nUt, nUx}:transpose()
+local nU = symmath.Array{nUt, nUx}:transpose()
 print('n^u = '..nU)
 
 local n_dot_e_x = (nU:transpose() * gLL * e_x):simplify()[1][1]:equals(0)
@@ -80,7 +80,7 @@ assert((nUt_soln:rhs() - cmp):simplify() == symmath.Constant(0))
 local nUt_soln = nUt:equals(symmath.sqrt((1 - t:diff(x)^2) / (1 - 2 * t:diff(x)^2)))
 print(nUt_soln)
 
-local nU = symmath.Tensor({nUt_soln:rhs()}, {nUx_soln:rhs()})
+local nU = symmath.Array({nUt_soln:rhs()}, {nUx_soln:rhs()})
 print('n^u = '..nU)
 
 local n_dot_e_x = (nU:transpose() * gLL * e_x):simplify()[1][1]:equals(0)
@@ -93,7 +93,7 @@ print(n_norm)
 -- and once again, polynomial division would show this to be true ...
 
 -- connection coefficients
-local connLLL = symmath.Tensor(xs:map(function(xi,i) 
+local connLLL = symmath.Array(xs:map(function(xi,i) 
 	return xs:map(function(xj,j) 
 		return xs:map(function(xk,k) 
 			return ((gLL[i][j]:diff(xk) + gLL[i][k]:diff(xj) - gLL[j][k]:diff(xi))/2):simplify()
@@ -102,7 +102,7 @@ local connLLL = symmath.Tensor(xs:map(function(xi,i)
 end):unpack())
 print('conn_ijk = '..connLLL)
 
-local connULL = symmath.Tensor(xs:map(function(_,i) 
+local connULL = symmath.Array(xs:map(function(_,i) 
 	return xs:map(function(_,j) 
 		return xs:map(function(_,k) 
 			local sum = 0
@@ -118,14 +118,14 @@ print('conn^i_jk = '..connULL)
 local nL = (gLL * nU):simplify()
 print('n_u = '..nL)
 
-local partialL_nL = symmath.Tensor(xs:map(function(xu,u)
+local partialL_nL = symmath.Array(xs:map(function(xu,u)
 	return xs:map(function(xv,v)
 		return nL[v][1]:diff(xu):simplify()
 	end)
 end):unpack())
 print('partial_u n_v = '..partialL_nL)
 
-local diffL_nL = symmath.Tensor(xs:map(function(xu,u)
+local diffL_nL = symmath.Array(xs:map(function(xu,u)
 	return xs:map(function(xv,v)
 		local sum = 0
 		for w,xw in ipairs(xs) do

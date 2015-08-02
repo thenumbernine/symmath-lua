@@ -1,9 +1,9 @@
 --[[
-Matrix is a Tensor with some added Matrix-specific stuff to the namespace
+Matrix is a Array with some added Matrix-specific stuff to the namespace
 --]]
 require 'ext'
-local Tensor = require 'symmath.Tensor'
-local Matrix = class(Tensor)
+local Array = require 'symmath.Array'
+local Matrix = class(Array)
 
 Matrix.inverse = require 'symmath.matrix.inverse'
 Matrix.determinant = require 'symmath.matrix.determinant'

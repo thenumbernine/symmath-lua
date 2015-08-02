@@ -1,10 +1,10 @@
 return function(A)
-	local Tensor = require 'symmath.Tensor'
+	local Array = require 'symmath.Array'
 	local Matrix = require 'symmath.Matrix'
 	local clone = require 'symmath.clone'
-	if not (type(A) == 'table' and A.isa and A:isa(Tensor)) then return A end
+	if not (type(A) == 'table' and A.isa and A:isa(Array)) then return A end
 	local dim = A:dim()
-	assert(#dim == 2, "expected a rank-2 tensor")
+	assert(#dim == 2, "expected a rank-2 array")
 	local rows = {}
 	for i=1,dim[2] do
 		local row = {}

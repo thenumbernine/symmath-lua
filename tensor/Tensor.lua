@@ -1,16 +1,14 @@
-require 'ext'
+local table = require 'ext.table'
+local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
-
+local Array = require 'symmath.Array'
 
 --[[
 general-purpose rank-1 (successive nesting for rank-n) structure
 to be used as vectors, vectors of them as matrices, etc ...
 --]]
-local Tensor = class(Expression)
+local Tensor = class(Array)
 Tensor.name = 'Tensor'
-Tensor.mulNonCommutative = true
-Tensor.precedence = 10
-
 
 --[[
 helper function
@@ -21,7 +19,7 @@ returns table of the following fields for each index:
 	- whether there is a particular kind of derivative associated with this index?  (i.e. comma, semicolon, projection, etc?)
 --]]
 local function parseIndexes(indexes)
-	local TensorIndex = require 'symmath.TensorIndex'
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	
 	local function handleTable(indexes)
 		indexes = {unpack(indexes)}
@@ -135,7 +133,7 @@ end
 Tensor.__coordSrcs = nil
 
 function Tensor.coords(newCoords)
-	local TensorCoordBasis = require 'symmath.TensorCoordBasis'
+	local TensorCoordBasis = require 'symmath.tensor.TensorCoordBasis'
 	local oldCoords = Tensor.__coordSrcs
 	if newCoords ~= nil then
 		Tensor.__coordSrcs = newCoords
@@ -227,7 +225,7 @@ Tensor have the following attributes:
 --]]
 function Tensor:init(...)
 	local Constant = require 'symmath.Constant'	
-	local TensorIndex = require 'symmath.TensorIndex'
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	
 	local args = {...}
 
@@ -267,7 +265,7 @@ function Tensor:init(...)
 					superArgs[i] = Constant(0)
 				end
 			end
-			Tensor.super.init(self, unpack(superArgs))
+			Expression.init(self, unpack(superArgs))
 		else
 			-- construct content from default of zeroes
 			local subVariance = table(self.variance)
@@ -283,7 +281,7 @@ function Tensor:init(...)
 					superArgs[i] = Constant(0)
 				end
 			end
-			Tensor.super.init(self, unpack(superArgs))
+			Expression.init(self, unpack(superArgs))
 		end	
 	else
 	
@@ -319,7 +317,7 @@ function Tensor:init(...)
 				local subVariance = table(self.variance)
 				table.remove(subVariance, 1)
 			
-				Tensor.super.init(self, unpack(args))
+				Expression.init(self, unpack(args))
 				
 				-- matches below
 				for i=1,#self do
@@ -346,17 +344,17 @@ function Tensor:init(...)
 						superArgs[i] = Constant(0)
 					end
 				end
-				Tensor.super.init(self, unpack(superArgs))
+				Expression.init(self, unpack(superArgs))
 			end
 		--[[
 		Tensor({row1}, {row2}, ...)
 		--]]
 		else
 			-- if we get a list of tables then call super init ...	
-			Tensor.super.init(self, ...)
+			Expression.init(self, ...)
 
 			-- default: covariant?
-			-- TODO create defaults according to children (from the Tensor.super.init(self, ...) call)
+			-- TODO create defaults according to children (from the Expression.init(self, ...) call)
 			self.variance = {}
 		
 			-- now that children are stored, construct them as lower-rank objects if the arguments were provided implicitly as metatable-less tables
@@ -381,160 +379,23 @@ function Tensor:init(...)
 end
 
 function Tensor:clone(...)
-	local TensorIndex = require 'symmath.TensorIndex'
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	local copy = Tensor.super.clone(self, ...)
 	for i=1,#self.variance do
-		copy.variance[i] = TensorIndex(self.variance[i])
+		copy.variance[i] = self.variance[i]:clone()
 	end
 	return copy
 end
 
-Tensor.__index = function(self, key)
-	-- parent class access
-	local metavalue = getmetatable(self)[key]
-	if metavalue then return metavalue end
-
-	-- get a nested element
-	if type(key) == 'table' then
-		return self:get(key)
-	--elseif type(key) == 'string' then	-- TODO interpret index notation
-	end
-
-	-- self class access
-	return rawget(self, key)
-end
-
-Tensor.__newindex = function(self, key, value)
-	
-	-- I don't think I do much assignment-by-table ...
-	--  except for in the Visitor.lookupTable ...
-	-- otherwise, looks like it's not allowed in Tensors, where I've overridden it to be the setter
-	if type(key) == 'table' then
-		self:set(key, value)
-		return
-	end
-
-	rawset(self, key, value)
-end
-
-function Tensor:get(index)
-	local x = self
-	for i=1,#index do
-		x = x[index[i]]
-	end
-	return x
-end
-
-function Tensor:set(index, value)
-	local x = self
-	for i=1,#index-1 do
-		x = x[index[i]]
-	end
-	x[index[#index]] = value
-	-- TODO return the old, for functionality?
-	-- or just ignore it, since this is predominantly the implementation of __newindex, which has no return type?
-end
-
--- returns a for loop iterator that cycles across all indexes and values within the tensor
--- usage: for index,value in t:iter() do ... end
--- where #index == t:rank() and contains elements 1 <= index[i] <= t:dim()[i]
-function Tensor:iter()
-	local dim = self:dim()
-	local n = #dim
-	
-	local index = {}
-	for i=1,n do
-		index[i] = 1
-	end
-	
-	return coroutine.wrap(function()
-		while true do
-			coroutine.yield(index, self:get(index))
-			for i=1,n do
-				index[i] = index[i] + 1
-				if index[i] <= dim[i] then break end
-				index[i] = 1
-				if i == n then return end
-			end
-		end
-	end)
-end
-
--- calculated rank was a great idea, except when the Tensor is dynamically constructed
-function Tensor:rank()
-	-- note to self: empty Tensor objects means no way of representing empty rank>1 objects 
-	-- ... which means special case of type assertion of the determinant being always rank-2 (except for empty matrices)
-	-- ... unless I also introduce "shallow" tensors vs "deep" tensors ... "shallow" being represented only by their indices and contra-/co-variance (and "deep" being these)
-	if #self == 0 then return 0 end
-
-	-- hmm, how should we determine rank?
-	local minRank, maxRank
-	for i=1,#self do
-		local rank = self[i].rank and self[i]:rank() or 0
-		if i == 1 then
-			minRank = rank
-			maxRank = rank
-		else
-			minRank = math.min(minRank, rank)
-			maxRank = math.max(maxRank, rank)
-		end
-	end
-	if minRank ~= maxRank then
-		error("At the moment I don't allow mixed-rank elements in tensors.  I might lighten up on this later.")
-	end
-
-	return minRank + 1
-end
-
-function Tensor:dim()
-	local dim = Tensor()
-	dim.rank = 1
-	
-	-- if we have no children then we can't tell any info of rank
-	if #self == 0 then return dim end
-
-	local rank = self:rank()
-	if rank == 1 then
-		dim[1] = #self
-		return dim
-	end
-
-	-- get first child's dim
-	local subdim_1 = Tensor.dim(self[1])
-
-	assert(#subdim_1 == rank-1, "tensor has subtensor with inequal rank")
-
-	-- make sure they're equal for all children
-	for j=2,#self do
-		local subdim_j = Tensor.dim(self[j])
-		assert(#subdim_j == rank-1, "tensor has subtensor with inequal rank")
-		
-		for k=1,#subdim_1 do
-			if subdim_1[k] ~= subdim_j[k] then
-				error("tensor has subtensor with inequal dimensions")
-			end
-		end
-	end
-
-	-- copy subrank into 
-	for i=1,rank-1 do
-		dim[i+1] = subdim_1[i]
-	end
-	dim[1] = #self
-	return dim
-end
-
--- works like Expression.__eq except checks for Tensor subclass equality rather than strictly metatable equality
 function Tensor.__eq(a,b)
-	if not (type(a) == 'table' and a.isa and a:isa(Tensor)) then return false end
-	if not (type(b) == 'table' and b.isa and b:isa(Tensor)) then return false end
-	if a and b then
-		if #a ~= #b then return false end
-		for i=1,#a do
-			if a[i] ~= b[i] then return false end
-		end
-		return true
+	if not Tensor.super.__eq(a,b) then return false end
+--[[
+	assert(#a.variance == #b.variance)
+	for i=1,#a.variance do
+		if a.variance ~= b.variance then return false end
 	end
+--]]
+	return true
 end
 
 --[[
@@ -730,7 +591,7 @@ function Tensor:__call(indexes)
 			end
 		end
 	
-		local TensorIndex = require 'symmath.TensorIndex'
+		local TensorIndex = require 'symmath.tensor.TensorIndex'
 		local newVariance = {}
 		-- TODO straighten out the upper/lower vs differentiation order
 		for i=1,#indexes do
@@ -801,6 +662,38 @@ function Tensor:__call(indexes)
 
 	return self
 end
+
+-- have to be copied?
+
+Tensor.__index = function(self, key)
+	-- parent class access
+	local metavalue = getmetatable(self)[key]
+	if metavalue then return metavalue end
+
+	-- get a nested element
+	if type(key) == 'table' then
+		return self:get(key)
+	--elseif type(key) == 'string' then	-- TODO interpret index notation
+	end
+
+	-- self class access
+	return rawget(self, key)
+end
+
+Tensor.__newindex = function(self, key, value)
+	
+	-- I don't think I do much assignment-by-table ...
+	--  except for in the Visitor.lookupTable ...
+	-- otherwise, looks like it's not allowed in Arrays, where I've overridden it to be the setter
+	if type(key) == 'table' then
+		self:set(key, value)
+		return
+	end
+
+	rawset(self, key, value)
+end
+
+
 
 return Tensor
 

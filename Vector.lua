@@ -1,3 +1,3 @@
 return function(...) 
-	return require 'symmath.Tensor'(...)
+	return require 'symmath.Array'(...)
 end

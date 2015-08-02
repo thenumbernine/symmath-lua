@@ -185,7 +185,7 @@ local cs = symmath.Variable('cs')
 
 local bSq = bx^2 + by^2 + bz^2
 
-local m = tensor.Tensor(8, 8, {
+local m = tensor.Array(8, 8, {
 	{
 		(rho * cf^2 - bSq) / c^2,
 		0,

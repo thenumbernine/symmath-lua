@@ -40,7 +40,7 @@ Lua.lookupTable = {
 		error("can't compile differentiation.  replace() your diff'd content first!\n"
 		..(require 'symmath.tostring.MultiLine')(expr))
 	end,
-	[require 'symmath.Tensor'] = function(self, expr, vars)
+	[require 'symmath.Array'] = function(self, expr, vars)
 		return '{' .. table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self:apply(x, vars)

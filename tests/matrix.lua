@@ -26,7 +26,7 @@ require 'ext'
 symmath = require 'symmath'
 require 'symmath.notebook'
 Matrix = require 'symmath.Matrix'
-Tensor = require 'symmath.Tensor'
+Array = require 'symmath.Array'
 
 -- test
 
@@ -38,10 +38,10 @@ end
 notebook[[
 
 -- vectors
-=Tensor(1,2,3)
+=Array(1,2,3)
 
-=Tensor(1,2) + Tensor(3,4)
-=(Tensor(1,2) + Tensor(3,4)):simplify()
+=Array(1,2) + Array(3,4)
+=(Array(1,2) + Array(3,4)):simplify()
 
 -- numeric example
 

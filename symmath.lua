@@ -195,7 +195,8 @@ symmath.Integral = require 'symmath.Integral'
 -- specific to Matrix
 symmath.Vector = require 'symmath.Vector'
 symmath.Matrix = require 'symmath.Matrix'
-symmath.Tensor = require 'symmath.Tensor'
+symmath.Array = require 'symmath.Array'
+symmath.Tensor = require 'symmath.tensor.Tensor'
 
 -- change the default as you see fit
 symmath.tostring = assert(require 'symmath.tostring.MultiLine')

@@ -38,8 +38,8 @@ Verbose.lookupTable = {
 			return self(x)
 		end):concat(', ')..'}'
 	end,
-	[require 'symmath.Tensor'] = function(self, expr)
-		return 'Tensor{'..table.map(expr, function(x,k)
+	[require 'symmath.Array'] = function(self, expr)
+		return 'Array{'..table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self(x)
 		end):concat(', ')..'}'

@@ -55,9 +55,9 @@ Tensor.metric(g)
 
 print('g_ab = '..g'_ab')
 print('g^ab = '..g'^ab')
-do return end
 
 local conn = 1/2 * (g'_ab,c' + g'_ac,b' - g'_bc,a')
-print(conn'_abc')
-print(conn'^a_bc')
+print('conn_abc = '..conn)	-- TODO correctly re-order indexes for arithmetic operations
+--print('conn_abc = '..conn'_abc')
+--print(conn'^a_bc')
 
