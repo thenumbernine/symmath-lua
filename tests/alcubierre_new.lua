@@ -20,10 +20,10 @@ Tensor.coords{
 local alpha = 1
 print('alpha = '..alpha)
 
-local v = symmath.var'v'
+local v = symmath.var('v', {t,x,y,z})
 print('v = '..v)
 
-local f = symmath.var'f'
+local f = symmath.var('f', {t,x,y,z})
 print('f = '..f)
 
 local beta = Tensor('^i', -v*f, 0, 0)
@@ -56,7 +56,12 @@ Tensor.metric(g)
 print('g_ab = '..g'_ab')
 print('g^ab = '..g'^ab')
 
-local conn = 1/2 * (g'_ab,c' + g'_ac,b' - g'_bc,a')
+local dg = (g'_ab,c'):simplify()
+print('g_ab,c = '..dg)
+local conn = (dg'_abc' + dg'_acb' - dg'_bca'):simplify()
+print('conn_abc = '..conn'_abc')
+do return end
+local conn = (1/2 * (g'_ab,c' + g'_ac,b' - g'_bc,a')):simplify()
 print('conn_abc = '..conn)	-- TODO correctly re-order indexes for arithmetic operations
 --print('conn_abc = '..conn'_abc')
 --print(conn'^a_bc')

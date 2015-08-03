@@ -154,7 +154,7 @@ local original = expr:clone()
 
 			local function arrayArrayAdd(a,b)
 				if #a ~= #b then return end
-				local result = clone(a)
+				local result = a:clone()
 				for i=1,#result do
 					result[i] = result[i] + b[i]
 				end
@@ -569,7 +569,7 @@ local original = expr:clone()
 			-- TODO only map the elements of the array
 			-- TODO array getter, setter, and iterator
 			local function arrayScalarMul(m,s)
-				local result = clone(m)
+				local result = m:clone()
 				for i=1,#result do
 					result[i] = result[i] * s
 				end
@@ -577,7 +577,7 @@ local original = expr:clone()
 			end
 
 			local function scalarArrayMul(s,m)
-				local result = clone(m)
+				local result = m:clone()
 				for i=1,#result do
 					result[i] = s * result[i]
 				end
@@ -774,7 +774,7 @@ local original = expr:clone()
 			if a:isa(Array)
 			and not b:isa(Array)
 			then
-				local result = clone(a)
+				local result = a:clone()
 				for i=1,#result do
 					result[i] = result[i] / b
 				end

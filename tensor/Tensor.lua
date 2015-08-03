@@ -130,19 +130,19 @@ local function parseIndexes(indexes)
 end
 
 -- array of TensorCoordBasis objects
-Tensor.__coordSrcs = nil
+Tensor.__coordBasis = nil
 
 function Tensor.coords(newCoords)
 	local TensorCoordBasis = require 'symmath.tensor.TensorCoordBasis'
-	local oldCoords = Tensor.__coordSrcs
+	local oldCoords = Tensor.__coordBasis
 	if newCoords ~= nil then
-		Tensor.__coordSrcs = newCoords
-		for i=1,#Tensor.__coordSrcs do
-			assert(type(Tensor.__coordSrcs[i]) == 'table')
-			if not Tensor.__coordSrcs[i].isa
-			or not Tensor.__coordSrcs[i]:isa(TensorCoordBasis)
+		Tensor.__coordBasis = newCoords
+		for i=1,#Tensor.__coordBasis do
+			assert(type(Tensor.__coordBasis[i]) == 'table')
+			if not Tensor.__coordBasis[i].isa
+			or not Tensor.__coordBasis[i]:isa(TensorCoordBasis)
 			then
-				Tensor.__coordSrcs[i] = TensorCoordBasis(Tensor.__coordSrcs[i])
+				Tensor.__coordBasis[i] = TensorCoordBasis(Tensor.__coordBasis[i])
 			end
 		end
 	end
@@ -150,7 +150,7 @@ function Tensor.coords(newCoords)
 end
 
 local function findBasisForSymbol(symbol)
-	for _,basis in ipairs(Tensor.__coordSrcs) do
+	for _,basis in ipairs(Tensor.__coordBasis) do
 		if not basis.symbols then
 			default = basis
 		else
@@ -249,9 +249,7 @@ function Tensor:init(...)
 		-- one of these two variables should be defined:
 		self.variance = args[1].indexes and parseIndexes(args[1].indexes) or {}
 		local dim = args[1].dim
-		if dim and args[1].indexes then
-			error("can't specify dim and indexes")
-		end
+		--if dim and args[1].indexes then error("can't specify dim and indexes") end
 		if dim then
 			-- construct content from default of zeroes
 			local subdim = table(dim)
@@ -305,9 +303,6 @@ function Tensor:init(...)
 			-- should I make a distinction for multi-letter variables? not allowed for the time being ...
 			self.variance = parseIndexes(indexes)
 
-			if not Tensor.__coordSrcs then
-				error("can't assign tensor by indexes until Tensor.coords has been defined")
-			end
 			-- *) complain if there is no Tensor.coords assignment
 			-- *) store index information (in this tensor and subtensors ... i.e. this may be {^i, _j, _k}, subtensors would be {_j, _k}, and their subtensors would be {_k}
 			-- *) build an empty tensor with rank according to the basis size of the indices
@@ -468,6 +463,54 @@ function Tensor.metric(metric, symbol)
 	defaultBasis.metricInverse = Matrix.inverse(metric)
 end
 
+function Tensor:applyRaiseOrLower(i, tensorIndex)
+	local t = self:clone()
+
+	-- TODO this matches Tensor:__call
+	local srcBasis, dstBasis
+	if Tensor.__coordBasis then
+		srcBasis = findBasisForSymbol(t.variance[i].symbol)
+		dstBasis = findBasisForSymbol(tensorIndex.symbol)
+	end
+
+	if tensorIndex.lower ~= t.variance[i].lower then
+		-- how do we handle raising indexes of subsets
+		local metric = (dstBasis and dstBasis.metric) or (srcBasis and srcBasis.metric)
+		local metricInverse = (dstBasis and dstBasis.metricInverse) or (srcBasis and srcBasis.metricInverse)
+		
+		if not metric then
+			error("tried to raise/lower an index without a metric")
+		end
+		
+		if t:dim()[i] ~= metric:dim()[1]
+		or t:dim()[i] ~= metricInverse:dim()[1]
+		then
+			print("can't raise/lower index "..i.." until you set the metric tensor to one with dimension matching the tensor you are attempting to raise/lower")
+			print(i.."'th dim")
+			print("  your tensor's dimensions: "..table.concat(t:dim(), ','))
+			print("  metric dimensions: "..table.concat(metric:dim(),','))
+			print("  metric inverse dimensions: "..table.concat(metricInverse:dim(),','))
+			error("you can reset the metric tensor via the Tensor.coords() function")
+		end
+		
+		-- TODO generalize transforms, including inter-basis-symbol-sets
+	
+		local oldVariance = table.map(t.variance, function(v) return v:clone() end)
+		if tensorIndex.lower and not t.variance[i].lower then
+			t = t:transformIndex(i, metric)
+		elseif not tensorIndex.lower and t.variance[i].lower then
+			t = t:transformIndex(i, metricInverse)
+		else
+			error("don't know how to raise/lower these indexes")
+		end
+		t = require 'symmath.simplify'(t)
+		t.variance = oldVariance
+		t.variance[i].lower = tensorIndex.lower
+	end
+
+	return t
+end
+
 function Tensor:__call(indexes)
 	local clone = require 'symmath.clone'
 	indexes = parseIndexes(indexes)
@@ -513,43 +556,14 @@ function Tensor:__call(indexes)
 				-- TODO replace all of this, the upper/lower transforms, the inter-coordinate transforms
 				-- with one general routine for transforming between basii (in place of transformIndex)
 
-				local srcBasis = findBasisForSymbol(self.variance[i].symbol)
-				local dstBasis = findBasisForSymbol(indexes[i].symbol)
+				self = self:applyRaiseOrLower(i, indexes[i])
 				
-				if indexes[i].lower ~= self.variance[i].lower then
-					-- how do we handle raising indexes of subsets
-					local metric = (dstBasis or srcBasis).metric
-					local metricInverse = (dstBasis or srcBasis).metricInverse
-					
-					if not metric then
-						error("tried to raise/lower an index without a metric")
-					end
-					
-					if self:dim()[i] ~= metric:dim()[1]
-					or self:dim()[i] ~= metricInverse:dim()[1]
-					then
-						print("can't raise/lower index "..i.." until you set the metric tensor to one with dimension matching the tensor you are attempting to raise/lower")
-						print(i.."'th dim")
-						print("  your tensor's dimensions: "..table.concat(self:dim(), ','))
-						print("  metric dimensions: "..table.concat(metric:dim(),','))
-						print("  metric inverse dimensions: "..table.concat(metricInverse:dim(),','))
-						error("you can reset the metric tensor via the Tensor.coords() function")
-					end
-					
-					-- TODO generalize transforms, including inter-basis-symbol-sets
-				
-					local oldVariance = table.map(self.variance, function(v) return v:clone() end)
-					if indexes[i].lower and not self.variance[i].lower then
-						self = self:transformIndex(i, metric)
-					elseif not indexes[i].lower and self.variance[i].lower then
-						self = self:transformIndex(i, metricInverse)
-					else
-						error("don't know how to raise/lower these indexes")
-					end
-					self = require 'symmath.simplify'(self)
-					self.variance = oldVariance
-					self.variance[i].lower = indexes[i].lower
-				end
+				-- TODO this matches Tensor:applyRaiseOrLower
+				local srcBasis, dstBasis
+				if Tensor.__coordBasis then
+					srcBasis = findBasisForSymbol(self.variance[i].symbol)
+					dstBasis = findBasisForSymbol(indexes[i].symbol)
+				end				
 			
 				if srcBasis ~= dstBasis then
 					-- only handling exchanges of variables at the moment
@@ -663,6 +677,29 @@ function Tensor:__call(indexes)
 	return self
 end
 
+-- permute the tensor's elements according to the dest variance
+function Tensor:permute(dstVariance)
+	-- determine index remapping
+	local indexMap = {}
+	for i,srcVar in ipairs(self.variance) do
+		indexMap[i] = table.find(dstVariance, nil, function(dstVar)
+			return srcVar.symbol == dstVar.symbol
+		end)
+		assert(indexMap[i], "assigning tensor with '"..srcVar.symbol.."' to tensor without that symbol")
+	end
+
+	-- perform assignment
+	return Tensor{indexes=dstVariance, dim=self:dim(), values=function(...)
+		local dstIndex = {...}
+		local srcIndex = {}	
+		for i=1,#dstIndex do
+			srcIndex[i] = dstIndex[indexMap[i]]
+		end
+		return self:get(srcIndex)
+	end}
+end
+	
+
 -- have to be copied?
 
 Tensor.__index = function(self, key)
@@ -690,10 +727,74 @@ Tensor.__newindex = function(self, key, value)
 		return
 	end
 
+	-- handle assignment by tensor indexes
+	if type(key) == 'string' 
+	and (key:sub(1,1) == '^' or key:sub(1,1) == '_')
+	then
+		local dstVariance = parseIndexes(key)
+		
+		-- assert no comma derivatives
+		for _,dstVar in ipairs(dstVariance) do
+			assert(not dstVar.derivative, "can't assign to a partial derivative tensor")
+		end
+
+		-- raise/lower self according to the key
+		-- also apply any change-of-coordinate-system transform
+		-- but don't apply subsets of basis
+		local dst = self:clone()
+		for i=1,#dstVariance do
+			dst = dst:applyRaiseOrLower(i, dstVariance[i])
+		end
+
+		-- for all non-number indexes
+		-- gather all variables of each of those indexes
+		-- iterate across all
+		
+
+		-- permute the indexes of the value to match the source
+		-- TODO no need to permute it if the index is entirely variables/numbers, such that the assignment is to a single element in the tensor
+		local dst = value:permute(dstVariance)
+
+		-- reform self to the original variances
+		-- TODO once again for scalar assignment or subset assignment
+		dst = dst(self.variance)
+		
+		-- copy in new values
+		for is in self:iter() do
+			self[is] = dst[is]
+		end
+		
+		if #value.variance ~= #self.variance then
+			error("can't assign tensors of mismatching number of indexes")
+		end
+		return
+	end
+
 	rawset(self, key, value)
 end
 
+local function isTensor(x)
+	return type(x) == 'table'
+	and x.isa
+	and x:isa(Tensor)
+end
 
+--[[
+function Tensor.__add(a,b)
+	assert(isTensor(a) and isTensor(b))
+
+	b = b:permute(a.variance)
+
+	return Tensor{
+		indexes = a.variance,
+		dim = a:dim(),
+		values = function(...)
+			local indexes = {...}
+			return a:get(indexes) + b:get(indexes)
+		end,
+	}
+end
+--]]
 
 return Tensor
 
