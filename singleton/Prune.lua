@@ -143,48 +143,25 @@ local original = expr:clone()
 		end
 	
 
-		-- vector and matrix addition
-		do
-
-			local Array = require 'symmath.Array'
-
-			local function isArray(x)
-				return type(x) == 'table' and x.isa and x:isa(Array)
+		-- any overloaded subclass simplification
+		-- specifically used for vector/matrix addition
+		-- only operate on neighboring elements - don't assume commutativitiy, and that we can exchange elements to be arbitrary neighbors
+		for i=#expr,2,-1 do
+			local rhs = expr[i]
+			local lhs = expr[i-1]
+			
+			local result
+			if lhs.pruneAdd then
+				result = lhs.pruneAdd(lhs, rhs)
+			elseif rhs.pruneAdd then
+				result = rhs.pruneAdd(lhs, rhs)
 			end
-
-			local function arrayArrayAdd(a,b)
-				if #a ~= #b then return end
-				local result = a:clone()
-				for i=1,#result do
-					result[i] = result[i] + b[i]
-				end
-				return prune:apply(result)
-			end
-
-			-- and now for Array+Array addition ...
-			if #expr > 1 then
-				for i=#expr,1,-1 do
-					local rhs = expr[i]
-					local rhsIsArray = isArray(rhs)
-					if rhsIsArray then
-						for j=i-1,1,-1 do
-							local lhs = expr[j]
-							local lhsIsArray = isArray(lhs)
-							if lhsIsArray and rhsIsArray then 
-								local result = arrayArrayAdd(lhs, rhs)
-								if result then
-									table.remove(expr, i)
-									expr[j] = result
-									return prune:apply(expr)
-								end
-							-- else array+scalar?  nah, too ambiguous.  are you asking for adding to all elements, or just the diagonals? idk.
-							end
-						end
-					end
-				end
+			if result then
+				table.remove(expr, i)
+				expr[i-1] = result
+				return prune:apply(expr)
 			end
 		end
-	
 
 		-- [[ x * c1 + x * c2 => x * (c1 + c2) ... for constants
 		do
@@ -537,88 +514,22 @@ local original = expr:clone()
 		end
 
 
-		do
-			local Array = require 'symmath.Array'
-
-			local function isArray(x)
-				return type(x) == 'table' and x.isa and x:isa(Array)
-			end
-
-			local function matrixMatrixMul(a,b)
-				local adim = a:dim()
-				local bdim = b:dim()
-				if #adim ~= 2 or #bdim ~= 2 then return end	-- only support matrix/matrix multiplication
-				local ah, aw = unpack(adim)
-				local bh, bw = unpack(bdim)
-				if aw ~= bh then return end
-				return require 'symmath.Matrix'(range(ah):map(function(i)
-					return range(bw):map(function(j)
-						local s
-						for k=1,aw do
-							if not s then
-								s = a[i][k] * b[k][j]
-							else
-								s = s + a[i][k] * b[k][j]
-							end
-						end
-						return s
-					end)
-				end):unpack())
-			end
-		
-			-- TODO only map the elements of the array
-			-- TODO array getter, setter, and iterator
-			local function arrayScalarMul(m,s)
-				local result = m:clone()
-				for i=1,#result do
-					result[i] = result[i] * s
-				end
-				return prune:apply(result)
-			end
-
-			local function scalarArrayMul(s,m)
-				local result = m:clone()
-				for i=1,#result do
-					result[i] = s * result[i]
-				end
-				return prune:apply(result)
-			end
-			
+		do		
 			-- and now for Matrix*Matrix multiplication ...
-			if #expr > 1 then
-				for i=#expr,1,-1 do
-					local rhs = expr[i]
-					for j=i-1,1,-1 do
-						local lhs = expr[j]
-						local lhsIsArray = isArray(lhs)
-						local rhsIsArray = isArray(rhs)
-						if lhsIsArray and rhsIsArray then
-							local result = matrixMatrixMul(lhs, rhs)
-							if result then
-								table.remove(expr, i)
-								expr[j] = result
-								return prune:apply(expr)
-							end
-						elseif lhsIsArray or rhsIsArray then	-- matrix-scalar multiplication
-							-- notice I'm not handling Matrix/Array multiplication.  
-							-- My rule of thumb for now is "don't instanciate RowVectors -- instanciate nx1 Matrices instead"
-							-- I'm sure that will change once I start introducing arrays.
-							-- See the tests/alcubierre.lua file for thoughts on this.
-							local result 
-							if lhsIsArray then
-								result = arrayScalarMul(lhs, rhs)
-							elseif rhsIsArray then
-								result = scalarArrayMul(lhs, rhs)
-							else
-								error("shouldn't get here")
-							end
-							if result then
-								table.remove(expr, i)
-								expr[j] = result
-								return prune:apply(expr)
-							end
-						end
-					end
+			for i=#expr,2,-1 do
+				local rhs = expr[i]
+				local lhs = expr[i-1]
+			
+				local result
+				if lhs.pruneMul then
+					result = lhs.pruneMul(lhs, rhs)
+				elseif rhs.pruneMul then
+					result = rhs.pruneMul(lhs, rhs)
+				end
+				if result then
+					table.remove(expr, i)
+					expr[i-1] = result
+					return prune:apply(expr)
 				end
 			end
 		end

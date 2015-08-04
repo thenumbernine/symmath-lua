@@ -396,6 +396,7 @@ end
 --[[
 produce a trace between dimensions i and j
 store the result in dimension i, removing dimension j
+TODO why keep dimension i?  why not sum it as well?
 --]]
 function Tensor:trace(i,j)
 	if i == j then
@@ -413,17 +414,93 @@ function Tensor:trace(i,j)
 	-- keep track of where the first index is in the new dimension
 	local newdimI = i
 	if j < i then newdimI = newdimI - 1 end
+	
+	local newVariance = {unpack(self.variance)}
+	table.remove(newVariance, j)
 
-	local result = Tensor(self.variance)
-	return Tensor{dim=newdim, values=function(...)
-		local indexes = {...}
-		-- now when we reference the unremoved dimension
+	return Tensor{
+		indexes = newVariance,
+		dim = newdim,
+		values = function(...)
+			local indexes = {...}
+			-- now when we reference the unremoved dimension
 
-		local srcIndexes = {unpack(indexes)}
-		table.insert(srcIndexes, j, indexes[newdimI])
-		
-		return self:elem(srcIndexes)
-	end}
+			local srcIndexes = {unpack(indexes)}
+			table.insert(srcIndexes, j, indexes[newdimI])
+			
+			return self:get(srcIndexes)
+		end,
+	}
+end
+
+--[[
+this removes the i'th dimension, summing across it
+
+if it removes the last dim then a number is returned (rather than a 0-rank tensor, which I don't support)
+--]]
+function Tensor:contraction(i)
+	local dim = self:dim()
+	assert(i >= 1 and i <= #dim, "tried to contract dimension "..i.." when we are only rank "..#self.dim)
+
+	-- if there's a valid contraction and we're rank-1 then we're summing across everything
+	if #dim == 1 then
+		local result
+		for i=1,dim[1] do
+			if not result then
+				result = self[i]
+			else
+				result = result + self[i]
+			end
+		end
+		return result
+	end
+
+	local newdim = {unpack(dim)}
+	local removedDim = table.remove(newdim,i)
+
+	local newVariance = {unpack(self.variance)}
+	table.remove(newVariance, i)
+
+	return Tensor{
+		indexes = newVariance,
+		dim = newdim,
+		values = function(...)
+			local indexes = {...}
+			table.insert(indexes, i, 1)
+			local result
+			for index=1,removedDim do
+				indexes[i] = index
+				if not result then
+					result = self:get(indexes)
+				else
+					result = result + self:get(indexes)
+				end
+			end
+			return result
+		end,
+	}
+end
+
+
+function Tensor:simplifyTraces()
+	local modified
+	repeat
+		modified = false
+		for i=1,#self.variance-1 do
+			for j=i+1,#self.variance do
+				if self.variance[i].symbol == self.variance[j].symbol then
+					self = self:trace(i,j):contraction(i)
+					if not self:isa(Tensor) then
+						return self:simplify()	-- if it's a scalra then return
+					end
+					modified = true
+					break
+				end
+			end
+			if modified then break end
+		end
+	until not modified
+	return self:simplify()
 end
 
 --[[
@@ -653,22 +730,9 @@ function Tensor:__call(indexes)
 	-- apply any summations upon construction
 	-- if any two indexes match then zero non-diagonal entries in the resulting tensor
 	--  (scaling with the delta tensor)
-	
-	local modified
-	repeat
-		modified = false
-		for i=1,#self.variance-1 do
-			for j=i+1,#self.variance do
-				if self.variance[i] == self.variance[j] then
-					self = self:trace(i,j)
-					table.remove(self.variance,j)	-- remove one of the two matching indices
-					modified = true
-					break
-				end
-			end
-			if modified then break end
-		end
-	until not modified
+
+	self = self:simplifyTraces()
+	if not self:isa(Tensor) then return self end
 	
 	for i,index in ipairs(self.variance) do
 		assert(index.number or index.symbol, "failed to find index on "..i.." of "..#self.variance)
@@ -779,22 +843,68 @@ local function isTensor(x)
 	and x:isa(Tensor)
 end
 
---[[
-function Tensor.__add(a,b)
-	assert(isTensor(a) and isTensor(b))
+function Tensor.pruneAdd(lhs,rhs)
+	if not isTensor(lhs) or not isTensor(rhs) then return end
 
-	b = b:permute(a.variance)
+	-- reorganize the elements of rhs so the letters match lhs 
+	rhs = rhs:permute(lhs.variance)
+
+	-- TODO complain if the raise/lower doesn't match up for each index?
 
 	return Tensor{
-		indexes = a.variance,
-		dim = a:dim(),
+		indexes = lhs.variance,
+		dim = lhs:dim(),
 		values = function(...)
 			local indexes = {...}
-			return a:get(indexes) + b:get(indexes)
+			return lhs:get(indexes) + rhs:get(indexes)
 		end,
 	}
 end
---]]
+
+local function isArray(x)
+	local Array = require 'symmath.Array'
+	return type(x) == 'table' and x.isa and x:isa(Array)
+end
+
+function Tensor.pruneMul(lhs, rhs)
+	local table = require 'ext.table'
+	local lhsIsArray = isArray(lhs)
+	local rhsIsArray = isArray(rhs)
+	local lhsIsTensor = isTensor(lhs)
+	local rhsIsTensor = isTensor(rhs)
+	local lhsIsScalar = not lhsIsTensor and not lhsIsArray
+	local rhsIsScalar = not rhsIsTensor and not rhsIsArray
+	assert(lhsIsTensor or rhsIsTensor)
+	if lhsIsTensor and rhsIsTensor then
+		-- tensor-tensor mul
+		local result = Tensor{
+			indexes = table():append(lhs.variance):append(rhs.variance),
+			dim = table():append(lhs:dim()):append(rhs:dim()),
+			values = function(...)
+				local indexes = {...}
+				assert(#indexes == #lhs.variance + #rhs.variance)
+				local lhsIndexes = {unpack(indexes, 1, #lhs.variance)}
+				local rhsIndexes = {unpack(indexes, #lhs.variance+1, #lhs.variance + #rhs.variance)}
+				return lhs:get(lhsIndexes) * rhs:get(rhsIndexes)
+			end,
+		}
+		result = result:simplifyTraces()
+		return result
+	end
+	if lhsIsTensor and rhsIsScalar then
+		return Tensor{
+			indexes = lhs.variance,
+			dim = lhs:dim(),
+			values = function(...) return lhs:get{...} * rhs end,
+		}
+	elseif rhsIsTensor and lhsIsScalar then
+		return Tensor{
+			indexes = rhs.variance,
+			dim = rhs:dim(),
+			values = function(...) return lhs * rhs:get{...} end,
+		}
+	end
+end
 
 return Tensor
 

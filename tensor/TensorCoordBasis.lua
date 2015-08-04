@@ -23,10 +23,10 @@ function TensorCoordBasis:init(args)
 	local clone = require 'symmath.clone'
 	local Matrix = require 'symmath.Matrix'
 	if args.metric then
-		self.metric = clone(args.metric)
+		self.metric = Matrix(unpack(args.metric))
 	end
 	if args.metricInverse then
-		self.metricInverse = clone(args.metricInverse)
+		self.metricInverse = Matrix(unpack(args.metricInverse))
 	else
 		if self.metric then
 			self.metricInverse = Matrix.inverse(self.metric)

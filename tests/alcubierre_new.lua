@@ -1,37 +1,45 @@
 #! /usr/bin/env luajit
 
 local symmath = require 'symmath'
-local Tensor = symmath.Tensor 
-symmath.tostring = require 'symmath.tostring.SingleLine'
+local Tensor = require 'symmath.Tensor'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = MathJax
+print(MathJax.header)
+
+local function printbr(...)
+	print(...)
+	print'<br>'
+end
 
 local t,x,y,z = symmath.vars('t', 'x', 'y', 'z')
 
 Tensor.coords{
 	{
-		variables = {t,x,y,z}
+		variables = {t,x,y,z},
 	},
 	{
 		variables = {x,y,z},
 		symbols = 'ijklmn',
-		metric = Tensor({1,0,0},{0,1,0},{0,0,1}),
+		metric = {{1,0,0},{0,1,0},{0,0,1}},
 	},
 }
 
 local alpha = 1
-print('alpha = '..alpha)
+printbr('lapse = '..alpha)
 
 local v = symmath.var('v', {t,x,y,z})
-print('v = '..v)
+printbr('warp bubble velocity = '..v)
 
 local f = symmath.var('f', {t,x,y,z})
-print('f = '..f)
+printbr('some function = '..f)
 
 local beta = Tensor('^i', -v*f, 0, 0)
-print('beta^i = '..beta)
+printbr('shift \\( \\beta^i = \\)'..beta)
 
 local gamma = Tensor('_ij', {1,0,0}, {0,1,0}, {0,0,1})
-print('gamma_ij = '..gamma)
-print('gamma^ij = '..gamma'^ij')
+printbr'spatial metric:'
+printbr('\\(\\gamma_{ij} = \\)'..gamma)
+printbr('\\(\\gamma^{ij} = \\)'..gamma'^ij')
 
 local g = Tensor'_ab'
 --[[
@@ -53,16 +61,18 @@ g=g:simplify()
 
 Tensor.metric(g)
 
-print('g_ab = '..g'_ab')
-print('g^ab = '..g'^ab')
+printbr'4-metric:'
+printbr([[\(g_{ab} = \)]]..g'_ab')
+printbr([[\(g^{ab} = \)]]..g'^ab')
 
 local dg = (g'_ab,c'):simplify()
-print('g_ab,c = '..dg)
+printbr([[\(g_{ab,c} = \)]]..dg)
 local conn = (dg'_abc' + dg'_acb' - dg'_bca'):simplify()
-print('conn_abc = '..conn'_abc')
+printbr([[\(\Gamma_{abc} = \)]]..conn'_abc')
 do return end
 local conn = (1/2 * (g'_ab,c' + g'_ac,b' - g'_bc,a')):simplify()
-print('conn_abc = '..conn)	-- TODO correctly re-order indexes for arithmetic operations
---print('conn_abc = '..conn'_abc')
---print(conn'^a_bc')
+printbr([[\(\Gamma_{abc} = \)]]..conn)	-- TODO correctly re-order indexes for arithmetic operations
+--printbr('conn_abc = '..conn'_abc')
+--printbr(conn'^a_bc')
 
+print(MathJax.footer)

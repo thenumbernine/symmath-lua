@@ -23,18 +23,22 @@
 
 
 symmath = require 'symmath'
-local tensor = require 'symmath.tensorhelp'
+local Tensor = require 'symmath.Tensor'
+local tensorhelp = require 'symmath.tensorhelp'
 
---this is a halfway step between pure symmath code and symmath+tensor code
+x, y, r, phi = symmath.vars('x', 'y', 'r', '\\phi')
+Tensor.coords{
+	{
+		variables = {r, phi},
+	},
+	{
+		symbols = 'IJKLMN',
+		variables = {x, y},
+		metric = {{1,0}, {0,1}},
+	}
+}
 
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-r = symmath.Variable('r')
-phi = symmath.Variable('\\phi')
-srcCoords = {x, y}
-coords = {r, phi}
-
-tensor.coords{coords, abcdefg=srcCoords}
+tensorhelp.coords{{r, phi}, abcdefg={x, y}}
 
 -- TODO make this symbolic so that it can be properly evaluated
 function cond(expr, ontrue, onfalse)
@@ -42,21 +46,30 @@ function cond(expr, ontrue, onfalse)
 	return onfalse
 end
 
-tensor.assign[[metric_x = r * symmath.cos(phi)]]
-tensor.assign[[metric_y = r * symmath.sin(phi)]]
-tensor.assign[[eLU_$u_$a = symmath.simplify(symmath.diff(metric_$a, $u))]]
-tensor.assign[[gLL_$u_$v = eLU_$u_$a * eLU_$v_$a]]
--- assume diagonal 
--- TODO factoring functions and trig identities
-tensor.assign[[gUU_$u_$v = symmath.simplify(cond($u==$v, 1/gLL_$u_$v, symmath.Constant(0)))]]
-tensor.assign[[gLLL_$u_$v_$w = symmath.simplify(symmath.diff(gLL_$u_$v, $w))]]
-tensor.assign[[GammaLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))]]
-tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
+local function printbr(...)
+	print([[\(]] .. table{...}:map(tostring):concat'\t' .. [[\)<br>]])
+end
 
--- now comes the geodesic equation: d^2[x^i]/dt^2 = -conn^i_jk dx^j_dt dx^k/dt
-tensor.assign[[diffxU_$u = symmath.Variable('{dx^{$u}}\\over{d\\tau}', nil, true)]]
-tensor.assign[[diff2xU_$u = -GammaULL_$u_$v_$w * diffxU_$u * diffxU_$v]]
+local eta = Tensor('_IJ', {1,0}, {0,1})
+printbr([[\eta_{IJ} = ]]..eta'_IJ')
 
-printbr(diff2xU_r:eval{r=1, [phi.name]=0, [diffxU_r.name]=0, [diffxU_phi.name]=1})
-printbr(diff2xU_phi:eval{r=1, [phi.name]=0, [diffxU_r.name]=0, [diffxU_phi.name]=1})
+local u = Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi))
+printbr('u^I = '..u'^I')
 
+local e = Tensor('_u^I')
+e['_u^I'] = u'^I_,u':simplify()		-- use assignment to correctly arrange indexes. TODO have a ctor to do this?
+printbr([[{e_u}^I = \partial_u u^I = ]]..u'^I_,u'..' = '..e'_u^I')
+
+local g = (e'_u^I' * e'_v^J' * eta'_IJ'):simplify()
+printbr([[g_{uv} = {e_u}^I {e_v}^J \eta_{IJ} = ]]..g'_uv')
+
+Tensor.metric(g)
+
+local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2):simplify()
+printbr([[\Gamma_{abc} = ]]..Gamma)
+printbr([[{\Gamma^a}_{bc} = ]]..Gamma'^a_bc')
+
+local dx = Tensor('^u', symmath.var'\\dot{x}^r', symmath.var'\\dot{x}^\\phi')
+local d2x = Tensor('^u', symmath.var'\\ddot{x}^r', symmath.var'\\ddot{x}^\\phi')
+printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):equals(Tensor('^u',0,0))):simplify())
+-- TODO unravel equaliy, or print individual assignments

@@ -6,7 +6,7 @@ TensorIndex.name = 'TensorIndex'
 
 function TensorIndex:init(args)
 	self.lower = args.lower or false
-	self.derivative = args.derivative or false
+	self.derivative = args.derivative
 	self.symbol = args.symbol
 	assert(type(self.symbol) == 'string' or type(self.symbol) == 'nil')
 	self.number = args.number
