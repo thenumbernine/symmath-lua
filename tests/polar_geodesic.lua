@@ -56,7 +56,7 @@ local function printmath(...)
 end
 
 local eta = Tensor('_IJ', {1,0}, {0,1})
-printbr'eta:'
+printbr'flat metric:'
 printmath([[\eta_{IJ} = ]]..eta'_IJ')
 printbr()
 
@@ -72,7 +72,7 @@ printmath([[{e_u}^I = \partial_u u^I = ]]..u'^I_,u'..' = '..e'_u^I')
 printbr()
 
 local g = (e'_u^I' * e'_v^J' * eta'_IJ'):simplify()
-printbr'metric:'
+printbr'coordinate metric:'
 printmath([[g_{uv} = {e_u}^I {e_v}^J \eta_{IJ} = ]]..g'_uv')
 printbr()
 Tensor.metric(g)
