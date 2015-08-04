@@ -21,12 +21,14 @@
 
 --]]
 
-
-symmath = require 'symmath'
+local symmath = require 'symmath'
 local Tensor = require 'symmath.Tensor'
-local tensorhelp = require 'symmath.tensorhelp'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = require 'symmath.tostring.LaTeX'
 
-x, y, r, phi = symmath.vars('x', 'y', 'r', '\\phi')
+print(MathJax.header)
+
+local x, y, r, phi = symmath.vars('x', 'y', 'r', '\\phi')
 Tensor.coords{
 	{
 		variables = {r, phi},
@@ -38,21 +40,14 @@ Tensor.coords{
 	}
 }
 
-tensorhelp.coords{{r, phi}, abcdefg={x, y}}
-
--- TODO make this symbolic so that it can be properly evaluated
-function cond(expr, ontrue, onfalse)
-	if expr then return ontrue end
-	return onfalse
-end
-
 local function printbr(...)
 	print(...)
 	print'<br>'
 end
-
 local function printmath(...)
-	print([[\(]] .. table{...}:map(tostring):concat'\t' .. [[\)<br>]])
+	print'\\('
+	printbr(...)
+	print'\\)<br>'
 end
 
 local eta = Tensor('_IJ', {1,0}, {0,1})
@@ -89,3 +84,5 @@ printbr'geodesic:'
 -- TODO unravel equaliy, or print individual assignments
 printmath(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):equals(Tensor('^u',0,0))):simplify())
 printbr()
+
+print(MathJax.footer)

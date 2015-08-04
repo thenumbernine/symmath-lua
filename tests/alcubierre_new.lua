@@ -65,14 +65,24 @@ printbr'4-metric:'
 printbr([[\(g_{ab} = \)]]..g'_ab')
 printbr([[\(g^{ab} = \)]]..g'^ab')
 
-local dg = (g'_ab,c'):simplify()
-printbr([[\(g_{ab,c} = \)]]..dg)
-local conn = (dg'_abc' + dg'_acb' - dg'_bca'):simplify()
-printbr([[\(\Gamma_{abc} = \)]]..conn'_abc')
-do return end
-local conn = (1/2 * (g'_ab,c' + g'_ac,b' - g'_bc,a')):simplify()
-printbr([[\(\Gamma_{abc} = \)]]..conn)	-- TODO correctly re-order indexes for arithmetic operations
---printbr('conn_abc = '..conn'_abc')
---printbr(conn'^a_bc')
+local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2):simplify()
+printbr([[\(\Gamma_{abc} = \)]]..Gamma'_abc')
+printbr([[\({\Gamma^a}_{bc} = \)]]..Gamma'^a_bc')
+
+local dx = Tensor('^u',
+	symmath.var'\\dot{x}^t',
+	symmath.var'\\dot{x}^x',
+	symmath.var'\\dot{x}^y',
+	symmath.var'\\dot{x}^z')
+local d2x = Tensor('^u',
+	symmath.var'\\ddot{x}^t',
+	symmath.var'\\ddot{x}^x',
+	symmath.var'\\ddot{x}^y',
+	symmath.var'\\ddot{x}^z')
+printbr'geodesic:'
+-- TODO unravel equaliy, or print individual assignments
+printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):equals(Tensor('^u',0,0,0,0))):simplify())
+printbr()
+
 
 print(MathJax.footer)

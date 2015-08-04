@@ -124,7 +124,7 @@ LaTeX.lookupTable = {
 		for i=1,#expr do
 			s:insert(self:apply(expr[i]))
 		end
-		return ' \\left[ \\matrix{ ' .. s:concat(' && ') .. ' } \\right] '
+		return ' \\left[ \\matrix{ ' .. s:concat(' & ') .. ' } \\right] '
 	end,
 	[require 'symmath.Matrix'] = function(self, expr)
 		local rows = table()
@@ -136,7 +136,7 @@ LaTeX.lookupTable = {
 				rows[i] = table.map(expr[i], function(x,k)
 					if type(k) ~= 'number' then return end
 					return self:apply(x)
-				end):concat(' && ')
+				end):concat(' & ')
 			end
 		end
 		return ' \\left[ \\matrix{ ' .. rows:concat(' \\\\ ') .. ' } \\right] '

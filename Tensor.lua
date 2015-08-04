@@ -405,7 +405,7 @@ function Tensor:trace(i,j)
 
 	local dim = self:dim()
 	if dim[i] ~= dim[j] then
-		error("tried to apply tensor contraction across indices of differing dimension: "..i.."th and "..j.."th of "..table.concat(self.dim, ','))
+		error("tried to apply tensor contraction across indices of differing dimension: "..i.."th and "..j.."th of "..table.concat(self:dim(), ','))
 	end
 	
 	local newdim = {unpack(dim)}
