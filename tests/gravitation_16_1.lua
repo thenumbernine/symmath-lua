@@ -21,56 +21,71 @@
 
 --]]
 
+-- MTW's Gravitation ch. 16 problem 1
 
 symmath = require 'symmath'
-local tensor = require 'symmath.tensorhelp'
+local Tensor = require 'symmath.Tensor'
+symmath.tostring = require 'symmath.tostring.LaTeX'
+print(require 'symmath.tostring.MathJax'.header)
 
---this is a halfway step between pure symmath code and symmath+tensor code
+local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
+local coords = {t, x, y, z}
+Tensor.coords{
+	{
+		variables = coords,
+	},
+}
 
-t = symmath.Variable('t')
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-z = symmath.Variable('z')
-coords = {t, x, y, z}
+local Phi = symmath.var('\\Phi', coords)
+local rho = symmath.var('\\rho', coords)
+local P = symmath.var('P', coords)
 
-Phi = symmath.Variable('\\Phi', coords)
-rho = symmath.Variable('\\rho', coords)
-P = symmath.Variable('P', coords)
+local delta = Tensor('_uv', {1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1})
+print('\\(\\delta_{uv} = '..delta'_uv'..'\\)<br>')
 
-function cond(expr, ontrue, onfalse)
-	if expr then return ontrue end
-	return onfalse
-end
+local eta = Tensor('_uv', {-1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1})
+print('\\(\\eta_{uv} = '..eta'_uv'..'\\)<br>')
 
-tensor.coords{coords}
+local g = (eta'_uv' - 2 * Phi * delta'_uv'):simplify()
+print('\\(g_{uv} = '..g'_uv'..'\\)<br>')
+Tensor.metric(g)
+print('\\(g^{uv} = '..g'^uv'..'\\)<br>')
 
-tensor.assign[[delta_$u_$v = symmath.Constant(cond($u==$v, 1, 0))]]
-tensor.assign[[eta_$u_$v = symmath.simplify(delta_$u_$v * symmath.Constant(cond($u==t, -1, 1)))]]
-tensor.assign[[gLL_$u_$v = symmath.simplify(eta_$u_$v - delta_$u_$v * symmath.Constant(2) * Phi)]]
+local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2):simplify()
+print('\\(\\Gamma_{abc} = '..Gamma'_abc'..'\\)<br>')
+Gamma = Gamma'^a_bc'
+print('\\({\\Gamma^a}_{bc} = '..Gamma'^a_bc'..'\\)<br>')
+
 -- assume diagonal matrix
-tensor.assign[[gUU_$u_$v = symmath.simplify(cond($u==$v, 1/gLL_$u_$v, symmath.Constant(0)))]]
-tensor.assign[[gLLL_$u_$v_$w = symmath.simplify(symmath.diff(gLL_$u_$v, $w))]]
-tensor.assign[[GammaLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))]]
-tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
-printbr([[let \(\Phi\) ~ 0, but keep \(d\Phi\)]])
-tensor.assign[[
-	GammaULL_$u_$v_$w = symmath.replace(
-		GammaULL_$u_$v_$w, Phi, symmath.Constant(0), function(v) return v:isa(symmath.Derivative) end
-	)
-]]
+print[[let \(\Phi\) ~ 0, but keep \(d\Phi\)<br>]]
 
-tensor.assign[[uU_$u = symmath.Variable('u^$u', coords)]]
-tensor.assign[[vU_$u = cond($u==t, symmath.Constant(1), symmath.Variable('v^$u', coords))]]
-printbr('matter stress-energy tensor')
-tensor.assign[[TUU_$u_$v = (rho + P) * uU_$u * uU_$v]]
+Gamma = symmath.replace(Gamma, Phi, symmath.Constant(0), function(v) return v:isa(symmath.Derivative) end)
+print('\\({\\Gamma^a}_{bc} = '..Gamma'^a_bc'..'\\)<br>')
 
-printbr('low velocity relativistic approximation')
-for vars in tensor.rank{'u','v','w'} do
-	local u,v,w = unpack(vars)
-	tensor.exec([[TUU_$u_$v = symmath.replace(TUU_$u_$v, uU_$w, vU_$w)]],{u=u,v=v,w=w})
-end
-tensor.assign[[TUU_$u_$v = TUU_$u_$v]]
+local u = Tensor('^a',
+	symmath.var('u^t', coords),
+	symmath.var('u^x', coords),
+	symmath.var('u^y', coords),
+	symmath.var('u^z', coords))
+print('\\(u^a = '..u'^a'..'\\)<br>')
 
-printbr('matter constraint')
-tensor.assign[[C_$u = symmath.simplify(symmath.diff(TUU_$u_$v, $v) + GammaULL_$u_$a_$v * TUU_$a_$v + GammaULL_$v_$a_$v * TUU_$u_$a)]]
+local T = ((rho * P) * u'^a' * u'^b'):simplify()
+print'matter stress-energy tensor<br>'
+print('\\(T^{ab} = '..T'^ab'..'\\)<br>')
 
+print'low velocity relativistic approximation<br>'
+local v = Tensor('^a',
+	1,
+	symmath.var('v^x', coords),
+	symmath.var('v^y', coords),
+	symmath.var('v^z', coords))
+print('\\(v^a = '..v'^a'..'\\)<br>')
+T = ((rho * P) * v'_a' * v'_b'):simplify()
+print('\\(T^{ab} = '..T'^ab'..'\\)<br>')
+
+print'matter constraint<br>'
+
+local C = (T'^uv_,v' + Gamma'^u_av' * T'^av' + Gamma'^v_av' * T'^ua'):simplify()
+print('\\(C^u = '..C'^u'..'\\)<br>')
+
+print(require 'symmath.tostring.MathJax'.footer)
