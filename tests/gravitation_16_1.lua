@@ -86,6 +86,10 @@ print('\\(T^{ab} = '..T'^ab'..'\\)<br>')
 print'matter constraint<br>'
 
 local C = (T'^uv_,v' + Gamma'^u_av' * T'^av' + Gamma'^v_av' * T'^ua'):simplify()
-print('\\(C^u = '..C'^u'..'\\)<br>')
+print'constraints:<br>'
+print('\\('..C[1]..'\\)<br>')
+print('\\('..C[2]..'\\)<br>')
+print('\\('..C[3]..'\\)<br>')
+print('\\('..C[4]..'\\)<br>')
 
 print(require 'symmath.tostring.MathJax'.footer)

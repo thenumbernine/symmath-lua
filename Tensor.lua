@@ -150,6 +150,7 @@ function Tensor.coords(newCoords)
 end
 
 local function findBasisForSymbol(symbol)
+	if not Tensor.__coordBasis then return end
 	for _,basis in ipairs(Tensor.__coordBasis) do
 		if not basis.symbols then
 			default = basis
@@ -208,7 +209,7 @@ interpretations:
 Tensor static members:
 	- association of indicies to coordinates
 
-Tensor.coords = {
+Tensor.coords{
 	{t,x,y,z},
 	{i,j,k} = {x,y,z},
 	{I,J,K} = {whatever flat space vielbein indices you want to use},
@@ -368,7 +369,8 @@ function Tensor:init(...)
 
 	if valueCallback then
 		for index,_ in self:iter() do
-			self[index] = valueCallback(unpack(index))
+			local clone = require 'symmath.clone'
+			self[index] = clone(valueCallback(unpack(index)))
 		end
 	end
 end
@@ -533,11 +535,12 @@ end
 
 -- static
 -- replaces the specified coordinate basis metric with the specified metric
-function Tensor.metric(metric, symbol)
+function Tensor.metric(metric, symbol, metricInverse)
 	local Matrix = require 'symmath.matrix'
 	local defaultBasis = findBasisForSymbol(symbol or {})
+	if not defaultBasis then error("can't set the metric without first setting the coords") end
 	defaultBasis.metric = metric
-	defaultBasis.metricInverse = Matrix.inverse(metric)
+	defaultBasis.metricInverse = metricInverse or Matrix.inverse(metric)
 end
 
 function Tensor:applyRaiseOrLower(i, tensorIndex)

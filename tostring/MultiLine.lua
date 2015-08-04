@@ -181,7 +181,7 @@ MultiLine.lookupTable = {
 		for i=1,#expr do
 			parts[i] = self:apply(expr[i])
 		end
-		
+
 		local height = select(2, parts:map(function(part) return #part end):sup())
 
 		local sep = table()

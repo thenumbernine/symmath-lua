@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 --[[
 
-    File: metric.lua
+    File: kaluza-klein.lua
 
     Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
 	  
@@ -21,10 +21,10 @@
 
 --]]
 
-symmath = require 'symmath'
-local tensor = require 'symmath.tensorhelp'
+local symmath = require 'symmath'
+local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
---symmath.tostring = MathJax
+symmath.tostring = MathJax
 
 function printbr(...)
 	print(...)
@@ -40,59 +40,95 @@ g^ab =	[ 	g^uv				-A^u		 ]
 		[	-A^v				A^2 + phi^-2 ]
 --]]
 
-t = symmath.Variable('t')
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-z = symmath.Variable('z')
-w = symmath.Variable('w')	-- x^5, or the A^mu vector combined with the phi^2 ...
-phi = symmath.Variable('\\phi', {t,x,y,z,w})
+local t, x, y, z, w = symmath.vars('t', 'x', 'y', 'z', 'w')
+local coords = {t, x, y, z, w}
+-- w = x^5, or the A^mu vector combined with the phi^2 ...
+local phi = symmath.Variable('\\phi', {t,x,y,z,w})
 
 -- symmath.tensorhelp isn't set up to handle _5 ... since it uses tostring() for concat'ing variable names 
 -- ... yet also uses tostring() for referencing the variable itself ...
-tensor.coords{{t,x,y,z}, abcdef={t,x,y,z,w}}
+Tensor.coords{
+	{variables={t,x,y,z}},
+	{variables={t,x,y,z,w}, symbols='abcdef'},
+}
 
 -- 4D metric tensor
 -- keeping it 4D at the moment
 -- if one were so inclined they might insert the adm 3+1 metric here ...
-printbr('4D metric tensor')
-tensor.assign[[gLL_$u_$v = symmath.Variable('g_{{$u}{$v}}', {t,x,y,z,w})]]
+local gLL = Tensor('_uv', function(u,v) return symmath.var('g_{'..u..v..'}', coords) end)
+printbr'4D metric tensor:'
+printbr([[\(g_{uv} = \)]]..gLL)
+
+local gUU = Tensor('^uv', function(u,v) return symmath.var('g^{'..u..v..'}', coords) end)
 printbr('4D metric tensor inverse')
-tensor.assign[[gUU_$u_$v = symmath.Variable('g^{{$u}{$v}}', {t,x,y,z,w})]]
+printbr([[\(g^{uv} = \)]]..gUU)
+
+Tensor.metric(gLL, nil, gUU)	-- TODO think up better arguments for this
 
 -- EM potential 4-vector
-printbr('EM potential vector')
-tensor.assign[[AL_$u = symmath.Variable('A_{$u}', {t,x,y,z,w})]]
-tensor.assign[[AU_$u = symmath.Variable('A^{$u}', {t,x,y,z,w})]]
-A = symmath.Variable('A', {t,x,y,z,w})	-- helper for representing A^2 = A^u A_u
+printbr'EM potential vector:'
+local AL = Tensor('_u', function(u) return symmath.var('A_'..u, coords) end)
+printbr([[\(A_u = \)]]..AL)
+local AU = Tensor('^u', function(u) return symmath.var('A^'..u, coords) end)
+printbr([[\(A^u = \)]]..AU)
+local A2 = symmath.var('A^2', coords)	-- helper for representing A^2 = A^u A_u
+printbr[[\(A^2 = A^u A_u\)]]
 
 -- 5D metric tensor
-printbr('5D metric tensor')
-tensor.assign[[g5LL_$u_$v = gLL_$u_$v + phi^2 * AL_$u * AL_$v]]
-tensor.assign[[g5LL_$u_w = phi^2 * AL_$u]]
-tensor.assign[[g5LL_w_$v = phi^2 * AL_$v]]
-tensor.assign[[g5LL_w_w = phi^2]]
+printbr'5D metric tensor:'
+local g5LL = Tensor('_ab', function(a,b)
+	if a < 5 and b < 5 then
+		return gLL[{a,b}] + phi^2 * AL[a] * AL[b]
+	elseif a < 5 then
+		return phi^2 * AL[a]
+	elseif b < 5 then
+		return phi^2 * AL[b]
+	else
+		return phi^2
+	end
+end)
+printbr([[\(\tilde{g}_{ab} = \)]]..g5LL)
+--[[ TODO
+g5LL['_uv'] = gLL'_uv' + phi^2 * AL'_u' * AL'_v'
+g5LL['_uw'] = phi^2 * AL'_u'
+g5LL['_wv'] = phi^2 * AL'_v'
+g5LL['_ww'] = phi^2
+--]]
 
-printbr('5D metric tensor inverse')
-tensor.assign[[g5UU_$u_$v = gUU_$u_$v]]
-tensor.assign[[g5UU_$u_w = -AU_$u]]
-tensor.assign[[g5UU_w_$v = -AU_$v]]
-tensor.assign[[g5UU_w_w = A^2 + phi^-2]]
+printbr'5D metric tensor inverse:'
+local g5UU = Tensor('^ab', function(a,b)
+	if a < 5 and b < 5 then
+		return gUU[{a,b}]
+	elseif a < 5 then
+		return -AU[a]
+	elseif b < 5 then
+		return -AU[b]
+	else
+		return A2 + phi^-2
+	end
+end)
+--[[ TODO
+g5UU['^uv'] = gUU'_uv'
+g5UU['^uw'] = -AU'^u'
+g5UU['^wv'] = -AU'^v'
+g5UU['^ww'] = A2 + phi^-2
+--]]
+printbr([[\(\tilde{g}^{ab} = \)]]..g5UU)
 
---[=[ keep track of the equality
-printbr('5D metric partial derivatives')
-tensor.assign[[g5LLL_$a_$b_$c = g5LL_$a_$b:diff($c)]]
-printbr('cylindrical constraint')
-tensor.assign[[g5cylilnderLL_$a_$b = g5LLL_$a_$b_w:equals(0)]]
---]=]
--- [=[  just zero (no chance of substituting out like expressions for zero later on)
-printbr('5D metric partial derivatives')
-tensor.assign[[g5LLL_$a_$b_$u = g5LL_$a_$b:diff($c)]]
-tensor.assign[[g5LLL_$a_$b_w = symmath.Constant(0)]]
---]=]
+Tensor.metric(g5LL, 'a', g5UU)	-- TODO think up better arguments for this
 
--- 1st kind connection coefficients
-tensor.assign[[Gamma5LLL_$u_$v_$w = symmath.simplify((1/2) * (g5LLL_$u_$v_$w + g5LLL_$u_$w_$v - g5LLL_$v_$w_$u))]]
+printbr'cylindrical constraint:'
+local g5cylinderLL = g5LL'_ab':diff(w):equals(Tensor'_ab'):simplify()	-- TODO allow g5LL'_ab,w' or g5LL'_ab,5'
+printbr(g5cylinderLL)
+-- TODO extract unique equations from tensor/tensor equality
+
+-- now comes the manual assumption that g5_ab,c = 0 ...
+local dg5 = g5LL'_ab,c'
+local Gamma5 = (1/2 * (dg5'_abc' + dg5'_acb' - dg5'_bca')):simplify()
+printbr'1st kind Christoffel:'
+printbr([[\(\Gamma_{abc} = \)]]..Gamma5'_abc')
 
 -- 2nd kind
-tensor.assign[[Gamma5ULL_$u_$v_$w = g5UU_$u_$r * Gamma5LLL_$r_$v_$w]]
-
+printbr'2nd kind Christoffel:'
+Gamma5 = Gamma5'^a_bc'	-- should raise with the metric of 'a' ... which is the g5-metric
+printbr([[\({\Gamma^a}_{bc} = \)]]..Gamma5)--'^a_bc')	-- TODO for some reason assigning the same indexes as it already had still takes too long ...
