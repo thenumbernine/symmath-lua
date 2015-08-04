@@ -47,29 +47,45 @@ function cond(expr, ontrue, onfalse)
 end
 
 local function printbr(...)
+	print(...)
+	print'<br>'
+end
+
+local function printmath(...)
 	print([[\(]] .. table{...}:map(tostring):concat'\t' .. [[\)<br>]])
 end
 
 local eta = Tensor('_IJ', {1,0}, {0,1})
-printbr([[\eta_{IJ} = ]]..eta'_IJ')
+printbr'eta:'
+printmath([[\eta_{IJ} = ]]..eta'_IJ')
+printbr()
 
 local u = Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi))
-printbr('u^I = '..u'^I')
+printbr'coordinate chart:'
+printmath('u^I = '..u'^I')
+printbr()
 
 local e = Tensor('_u^I')
 e['_u^I'] = u'^I_,u':simplify()		-- use assignment to correctly arrange indexes. TODO have a ctor to do this?
-printbr([[{e_u}^I = \partial_u u^I = ]]..u'^I_,u'..' = '..e'_u^I')
+printbr'vielbein:'
+printmath([[{e_u}^I = \partial_u u^I = ]]..u'^I_,u'..' = '..e'_u^I')
+printbr()
 
 local g = (e'_u^I' * e'_v^J' * eta'_IJ'):simplify()
-printbr([[g_{uv} = {e_u}^I {e_v}^J \eta_{IJ} = ]]..g'_uv')
-
+printbr'metric:'
+printmath([[g_{uv} = {e_u}^I {e_v}^J \eta_{IJ} = ]]..g'_uv')
+printbr()
 Tensor.metric(g)
 
 local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2):simplify()
-printbr([[\Gamma_{abc} = ]]..Gamma)
-printbr([[{\Gamma^a}_{bc} = ]]..Gamma'^a_bc')
+printbr'connection:'
+printmath([[\Gamma_{abc} = ]]..Gamma)
+printmath([[{\Gamma^a}_{bc} = ]]..Gamma'^a_bc')
+printbr()
 
 local dx = Tensor('^u', symmath.var'\\dot{x}^r', symmath.var'\\dot{x}^\\phi')
 local d2x = Tensor('^u', symmath.var'\\ddot{x}^r', symmath.var'\\ddot{x}^\\phi')
-printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):equals(Tensor('^u',0,0))):simplify())
+printbr'geodesic:'
 -- TODO unravel equaliy, or print individual assignments
+printmath(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):equals(Tensor('^u',0,0))):simplify())
+printbr()
