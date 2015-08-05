@@ -42,6 +42,8 @@ r^2 x^2 + r^2 y^2 + r^2 z^2 + a^2 z^2 = r^4 + a^2 r^2
 	r^2 = 1/2 ((x^2 + y^2 + z^2 + a^2) +- sqrt((x^2 + y^2 + z^2 + a^2)^2 + 4 a^2 z^2))
 --]]
 
+-- TODO inverting the metric goes really slow...
+
 local symmath = require 'symmath'
 local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
@@ -49,8 +51,7 @@ symmath.tostring = MathJax
 print(MathJax.header)
 
 -- coordinates
-local t, x, y, x = symmath.vars('t', 'x', 'y', 'z')
-local spatialCoords = {x, y, z}
+local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
 local coords = {t, x, y, z}
 
 -- TODO store tensor names like we store variables ... though I no longer store variable values (as tensor values are stored)
@@ -66,7 +67,8 @@ function printTensor(name, t)
 			end
 		end
 	end
-	print('\\('..s..' = \\)'..t..'<br>')
+	s = '\\('..s..' = \\)'..t
+	print(s..'<br>')
 	io.stdout:flush()
 end
 
@@ -77,7 +79,6 @@ local Q = symmath.var('Q')
 
 Tensor.coords{
 	{variables=coords},
-	{symbols='ijk', variables=spatialCoords}
 }
 
 --[[
@@ -110,8 +111,12 @@ printTensor('\\eta', eta)
 
 -- Kerr metric in cartesian coordinates
 local g = (eta'_uv' - 2 * H * l'_u' * l'_v'):simplify()
-Tensor.metric(g)
 printTensor('g', g)
+
+Tensor.metric(g)
+
+printTensor('g', Tensor.metric().metricInverse)
+error("current matrix inverse is too slow for n=4")
 
 -- metric partial
 -- assume dr/dt is zero

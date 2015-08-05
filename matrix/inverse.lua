@@ -81,9 +81,13 @@ return function(A, AInv)
 					for k=1,invdim[2] do
 						AInv[j][k] = AInv[j][k] - s * AInv[i][k]
 					end
-					A = simplify(A)
-					AInv = simplify(AInv)
 --print('\\(A = \\)'..A..'<br>')
+--print('simplifying A...<br>')
+					A = simplify(A)
+--print('\\(A = \\)'..A..'<br>')
+--print('\\(A^{-1} = \\)'..AInv..'<br>')
+--print('simplifying A^{-1}...<br>')
+					AInv = simplify(AInv)
 --print('\\(A^{-1} = \\)'..AInv..'<br>')
 				end
 			end

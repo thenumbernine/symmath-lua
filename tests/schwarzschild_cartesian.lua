@@ -3,7 +3,7 @@
 
     File: schwarzschild_cartesian.lua
 
-    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2015 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,49 +33,39 @@ TODO: The correct substitution method is:
 	dphi = (-y dx + x dy) / (x^2 + y^2)
 --]]
 
-symmath = require 'symmath'
-local tensor = require 'symmath.tensorhelp'
+local symmath = require 'symmath'
+local Tensor = require 'symmath.Tensor'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = MathJax
+print(MathJax.header)
 
 -- coordinates
-t = symmath.Variable('t')
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-z = symmath.Variable('z')
-M = symmath.Variable('M')
+local t, x, y, z, M = symmath.vars('t', 'x', 'y', 'z', 'M')
+local spatialCoords = {x, y, z}
+local coords = {t, x, y, z}
 
 -- algebraic
 --r = (x^2 + y^2 + z^2)^.5
 -- deferred:
-r = symmath.Variable('r', {t,x,y,z})
-
-spatialCoords = {x, y, z}
-coords = {t, x, y, z}
-tensor.coords{coords, ijk=spatialCoords}
-
--- TODO make this symbolic so that it can be properly evaluated
-function cond(expr, ontrue, onfalse)
-	if expr then return ontrue end
-	return onfalse
-end
+local r = symmath.Variable('r', coords)
+Tensor.coords{
+	{variables = {coords}},
+	{variables = spatialCoords, symbols = 'ijklmn'},
+}
 
 -- schwarzschild metric in cartesian coordinates
 
-	-- start with zero
-tensor.assign'gLL_$u_$v = symmath.Constant(0)'
-	
--- assign diagonals
--- atm canonical form isnt so good, so dont simplify metric and inverse
-gLL_t_t =  -(1-2*M/r)
-gLL_x_x = 1/(1-2*M/r)
-gLL_y_y = 1/(1-2*M/r)
-gLL_z_z = 1/(1-2*M/r)
+local g = Tensor('_uv', 
+	{-(1-2*M/r), 0, 0, 0},
+	{0, (x^2/(1-2*M/r) + y^2 + z^2)/r^2, x*y*4*M/(r^2*(r-2*M)), x*z*4*M/(r^2*(r-2*M))},
+	{0, x*y*4*M/(r^2*(r-2*M)), (x^2 + y^2/(1-2*M/r) + z^2)/r^2, y*z*4*M/(r^2*(r-2*M))},
+	{0, x*z*4*M/(r^2*(r-2*M)), y*z*4*M/(r^2*(r-2*M)), (x^2 + y^2 + z^2/(1-2*M/r))/r^2})
+print('\\(g_{uv} = \\)'..g..'<br>')
 
--- metric inverse, assume diagonal
-tensor.assign'gUU_$u_$v = symmath.Constant(0)'
-gUU_t_t =  -1/(1-2*M/r)
-gUU_x_x = 1-2*M/r
-gUU_y_y = 1-2*M/r
-gUU_z_z = 1-2*M/r
+Tensor.metric(g)
+print('\\(g^{uv} = \\)'..Tensor.metric().matrixInverse..'<br>')
+
+error("current matrix inverse is too slow for n=4")
 
 -- metric partial
 -- assume dr/dt is zero
@@ -104,3 +94,4 @@ tensor.assign'RLL_$a_$b = RULLL_$u_$a_$u_$b'
 -- Gaussian curvature: R = g^ab R_ab
 tensor.assign'R = gUU_$a_$b * RLL_$a_$b'
 
+print(MathJax.footer)
