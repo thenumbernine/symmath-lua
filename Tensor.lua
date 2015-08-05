@@ -534,13 +534,25 @@ end
 
 
 -- static
--- replaces the specified coordinate basis metric with the specified metric
-function Tensor.metric(metric, symbol, metricInverse)
+--[[
+replaces the specified coordinate basis metric with the specified metric
+returns the TensorBasis object
+
+usage:
+	Tensor.metric(m, nil, symbol) 		<- replaces the metric of the basis associated with the symbol, calculates the metric inverse
+	Tensor.metric(nil, mInv, symbol)	<- replaces the metric inverse of the basis associated with the symbol, calculates the metric
+	Tensor.metric(m, mInv, symbol)		<- replaces both the metric and the metric inverse of the basis associated with the symbol 
+	Tensor.metric(nil, nil, symbol) 	<- returns the basis associated with the symbol
+--]]
+function Tensor.metric(metric, metricInverse, symbol)
 	local Matrix = require 'symmath.matrix'
-	local defaultBasis = findBasisForSymbol(symbol or {})
-	if not defaultBasis then error("can't set the metric without first setting the coords") end
-	defaultBasis.metric = metric
-	defaultBasis.metricInverse = metricInverse or Matrix.inverse(metric)
+	local basis = findBasisForSymbol(symbol or {})
+	if not basis then error("can't set the metric without first setting the coords") end
+	if metric or metricInverse then
+		basis.metric = metric or Matrix.inverse(metricInverse)
+		basis.metricInverse = metricInverse or Matrix.inverse(metric)
+	end
+	return basis
 end
 
 function Tensor:applyRaiseOrLower(i, tensorIndex)
@@ -769,6 +781,7 @@ end
 
 -- have to be copied?
 
+-- TODO make this and call identical
 Tensor.__index = function(self, key)
 	-- parent class access
 	local metavalue = getmetatable(self)[key]

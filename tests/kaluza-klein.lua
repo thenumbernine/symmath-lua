@@ -63,7 +63,7 @@ local gUU = Tensor('^uv', function(u,v) return symmath.var('g^{'..u..v..'}', coo
 printbr('4D metric tensor inverse')
 printbr([[\(g^{uv} = \)]]..gUU)
 
-Tensor.metric(gLL, nil, gUU)	-- TODO think up better arguments for this
+Tensor.metric(gLL, gUU)	-- TODO think up better arguments for this
 
 -- EM potential 4-vector
 printbr'EM potential vector:'
@@ -115,7 +115,7 @@ g5UU['^ww'] = A2 + phi^-2
 --]]
 printbr([[\(\tilde{g}^{ab} = \)]]..g5UU)
 
-Tensor.metric(g5LL, 'a', g5UU)	-- TODO think up better arguments for this
+Tensor.metric(g5LL, g5UU, 'a')	-- TODO think up better arguments for this
 
 printbr'cylindrical constraint:'
 local g5cylinderLL = g5LL'_ab':diff(w):equals(Tensor'_ab'):simplify()	-- TODO allow g5LL'_ab,w' or g5LL'_ab,5'
