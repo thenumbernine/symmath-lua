@@ -124,7 +124,7 @@ printbr(g5cylinderLL)
 
 -- now comes the manual assumption that g5_ab,c = 0 ...
 local dg5 = g5LL'_ab,c'
-local Gamma5 = (1/2 * (dg5'_abc' + dg5'_acb' - dg5'_bca')):simplify()
+local Gamma5 = ((dg5'_abc' + dg5'_acb' - dg5'_bca') / 2):simplify()
 printbr'1st kind Christoffel:'
 printbr([[\(\Gamma_{abc} = \)]]..Gamma5'_abc')
 

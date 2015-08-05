@@ -42,36 +42,49 @@ r^2 x^2 + r^2 y^2 + r^2 z^2 + a^2 z^2 = r^4 + a^2 r^2
 	r^2 = 1/2 ((x^2 + y^2 + z^2 + a^2) +- sqrt((x^2 + y^2 + z^2 + a^2)^2 + 4 a^2 z^2))
 --]]
 
-symmath = require 'symmath'
-local tensor = require 'symmath.tensorhelp'
+local symmath = require 'symmath'
+local Tensor = require 'symmath.Tensor'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = MathJax
+print(MathJax.header)
 
 -- coordinates
-t = symmath.Variable('t')
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-z = symmath.Variable('z')
+local t, x, y, x = symmath.vars('t', 'x', 'y', 'z')
+local spatialCoords = {x, y, z}
+local coords = {t, x, y, z}
 
-spatialCoords = {x, y, z}
-coords = {t, x, y, z}
-
-a = symmath.Variable('a', coords)
-r = symmath.Variable('r', coords)
-M = symmath.Variable('M')
-Q = symmath.Variable('Q')
-
-tensor.coords{coords, ijk=spatialCoords}
-
--- TODO make this symbolic so that it can be properly evaluated
-function cond(expr, ontrue, onfalse)
-	if expr then return ontrue end
-	return onfalse
+-- TODO store tensor names like we store variables ... though I no longer store variable values (as tensor values are stored)
+function printTensor(name, t)
+	local s = name
+	local lastLower = 'asdf'
+	if t.variance then
+		for _,index in ipairs(t.variance) do
+			if index.lower then
+				s = '{'..s..'}_'..index.symbol
+			else
+				s = '{'..s..'}^'..index.symbol
+			end
+		end
+	end
+	print('\\('..s..' = \\)'..t..'<br>')
+	io.stdout:flush()
 end
+
+local a = symmath.var('a', coords)
+local r = symmath.var('r', coords)
+local M = symmath.var('M')
+local Q = symmath.var('Q')
+
+Tensor.coords{
+	{variables=coords},
+	{symbols='ijk', variables=spatialCoords}
+}
 
 --[[
 H = (r * M - Q^2 / 2) / (r^2 + a^2 * z^2 / r^2)
 --]]
 -- [[
-H = symmath.Variable('H', coords)
+local H = symmath.var('H', coords)
 --]]
 
 --[[
@@ -85,50 +98,54 @@ mU_y = lL_y
 mU_z = lL_z
 --]]
 -- [=[
-tensor.assign[[lL_$u = symmath.Variable('l_$u', coords)]]
-tensor.assign[[mU_$u = symmath.Variable('m^$u', coords)]]
+local l = Tensor('_u', function(u) return symmath.var('l_'..u, coords) end)
+printTensor('l', l)
+local m = Tensor('^u', function(u) return symmath.var('m^'..u, coords) end)
+printTensor('m', m)
 --]=]
 
 -- Minkowski metric
-tensor.assign'etaLL_$u_$v = symmath.Constant(0)'
-etaLL_t_t = -1
-etaLL_x_x = 1
-etaLL_y_y = 1
-etaLL_z_z = 1
-tensor.assign'etaUU_$u_$v = etaLL_$u_$v'
+local eta = Tensor('_uv', function(u,v) return u == v and (u == 1 and -1 or 1) or 0 end)
+printTensor('\\eta', eta)
 
 -- Kerr metric in cartesian coordinates
-tensor.assign'gLL_$u_$v = etaLL_$u_$v - 2 * H * lL_$u * lL_$v'
-
--- metric inverse, assume diagonal
-tensor.assign'gUU_$u_$v = etaUU_$u_$v - 2 * H * mU_$u * mU_$v'
+local g = (eta'_uv' - 2 * H * l'_u' * l'_v'):simplify()
+Tensor.metric(g)
+printTensor('g', g)
 
 -- metric partial
 -- assume dr/dt is zero
-tensor.assign[[gLLL_$u_$v_$w = symmath.simplify(symmath.diff(gLL_$u_$v, $w))]]
-tensor.assign[[gLLL_$u_$v_$w = symmath.replace(gLLL_$u_$v_$w, symmath.Derivative(r, t), symmath.Constant(0))]]
+local dg = g'_uv,w'
+dg = dg:replace(r:diff(t), symmath.Constant(0)):simplify()
+printTensor('\\partial g', dg)
 
 -- Christoffel: G_abc = 1/2 (g_ab,c + g_ac,b - g_bc,a) 
-tensor.assign[[GammaLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))]]
+local Gamma = ((dg'_uvw' + dg'_uwv' - dg'_vwu') / 2):simplify()
+printTensor('\\Gamma', Gamma)
 
 -- Christoffel: G^a_bc = g^ae G_ebc
-tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
+Gamma = Gamma'^a_bc':simplify()
+printTensor('\\Gamma', Gamma)
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
-tensor.assign[[diffxU_$u = symmath.Variable('{d x^$u}\\over{d\\tau}', coords)]]
-tensor.assign[[diff2xU_$u = -GammaULL_$u_$v_$w * diffxU_$u * diffxU_$v]]
-
-do return end
+local diffx = Tensor('^u', function(u) return symmath.var('{d x^'..u..'}\\over{d\\tau}', coords) end)
+local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w'):simplify()
+printTensor('\\ddot{x}', diffx2)
 
 -- Christoffel partial: G^a_bc,d
-tensor.assign'GammaULLL_$a_$b_$c_$d = symmath.diff(GammaULL_$a_$b_$c, $d)'
+local dGamma = Gamma'^a_bc,d':simplify()
+printTensor('\\partial \\Gamma', dGamma)
 
 --Riemann: R^a_bcd = G^a_bd,c - G^a_bc,d + G^a_uc G^u_bd - G^a_ud G^u_bc
-tensor.assign'riemannULLL_$a_$b_$c_$d = GammaULLL_$a_$b_$d_$c - GammaULLL_$a_$b_$c_$d + GammaULL_$a_$u_$c * GammaULL_$u_$b_$d - GammaULL_$a_$u_$d * GammaULL_$u_$b_$c'
+local Riemann = (dGamma'^a_bdc' - dGamma'^a_bcd' + Gamma'^a_uc' * Gamma'^u_bd' - Gamma'^a_ud' * Gamma'^u_bc'):simplify()
+printTensor('R', Riemann)
 
 -- Ricci: R_ab = R^u_aub
-tensor.assign'ricciLL_$a_$b = riemannULLL_$u_$a_$u_$b'
+local Ricci = Riemann'^u_aub':simplify()
+printTensor('R', Ricci)
 
 -- Gaussian curvature: R = g^ab R_ab
-tensor.assign'gaussianCurvature = gUU_$a_$b * ricciLL_$a_$b'
+local Gaussian = Ricci'^a_a':simplify()
+printTensor('R', Gaussian)
 
+print(MathJax.footer)
