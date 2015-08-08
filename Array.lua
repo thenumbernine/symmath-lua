@@ -123,7 +123,7 @@ function Array:rank()
 		end
 	end
 	if minRank ~= maxRank then
-		error("At the moment I don't allow mixed-rank elements in arrays.  I might lighten up on this later.")
+		error("I found an array as an element within an array.  At the moment I don't allow mixed-rank elements in arrays.  I might lighten up on this later.\nminRank: "..minRank.." maxRank: "..maxRank)
 	end
 
 	return minRank + 1

@@ -66,11 +66,9 @@ end
 -- schwarzschild metric in cartesian coordinates
 
 -- start with zero
-local g = Tensor('_uv',
-	{-1, 0, 0, 0}, 
-	{0, a^2 / (1 - k * r^2), 0, 0}, 
-	{0, 0, a^2 * r^2, 0}, 
-	{0, 0, 0, a^2 * r^2 * symmath.sin(theta)^2})
+local g = Tensor('_uv', unpack(symmath.Matrix.diagonal(
+	-1, a^2 / (1 - k * r^2), a^2 * r^2, a^2 * r^2 * symmath.sin(theta)^2
+)))
 printbr('metric:')
 printmath([[g_{uv} = ]]..g'_uv')
 
@@ -108,6 +106,11 @@ printbr()
 
 local Riemann = (Gamma'^a_bd,c' - Gamma'^a_bc,d' + Gamma'^a_uc' * Gamma'^u_bd' - Gamma'^a_ud' * Gamma'^u_bc'):simplify()
 printbr'Riemann curvature tensor:'
+-- TODO trig simplification
+Riemann = symmath.map(Riemann, function(x)
+	if x == symmath.cos(theta)^2 then return 1 - symmath.sin(theta)^2 end
+end):simplify()
+-- also TODO the other thing that doesn't appear to work is factoring out negatives of the denominator for simplification 
 printmath([[{R^a}_{bcd} = ]]..Riemann'^a_bcd')
 
 local Ricci = Riemann'^c_acd':simplify()
@@ -155,8 +158,8 @@ local lhs = (Ricci'_ab' + g'_ab' * Gaussian / 2):simplify()
 local rhs = (8 * pi * T'_ab'):simplify()
 for i=1,4 do
 	for j=1,4 do
-		local lhs_ij = lhs[{i,j}]
-		local rhs_ij = rhs[{i,j}]
+		local lhs_ij = lhs{i,j}
+		local rhs_ij = rhs{i,j}
 		local Constant = require 'symmath.Constant'
 		if lhs_ij ~= Constant(0)
 		or rhs_ij ~= Constant(0)

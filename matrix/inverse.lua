@@ -31,6 +31,23 @@ return function(A, AInv)
 	local invdim = AInv:dim()
 	assert(#invdim == 2 and invdim[1] == dim[1], "expected vectors to invert to have same height as linear system")
 
+	-- shortcuts:
+	if n == 1 then
+		return Matrix((1/A[1][1]):simplify())
+	elseif n == 2 then
+		return (Matrix(
+			{A[2][2], -A[1][2]},
+			{-A[2][1], A[1][1]}) / A:determinant()):simplify()
+--[[	elseif n == 3 then
+		-- transpose, +-+- sign stagger, for each element remove that row and column and 
+		return (Matrix(
+			{A[2][2]*A[3][3]-A[2][3]*A[3][2], A[1][3]*A[3][2]-A[1][2]*A[3][3], A[1][2]*A[2][3]-A[1][3]*A[2][2]},
+			{A[2][3]*A[3][1]-A[2][1]*A[3][3], A[1][1]*A[3][3]-A[1][3]*A[3][1], A[1][3]*A[2][1]-A[1][1]*A[2][3]},
+			{A[2][1]*A[3][2]-A[2][2]*A[3][1], A[1][2]*A[3][1]-A[1][1]*A[3][2], A[1][1]*A[2][2]-A[1][2]*A[2][1]}
+		) / A:determinant()):simplify()
+--]]
+	end
+
 	for i=1,n do
 		-- if we have a zero on the diagonal...
 		if A[i][i] == Constant(0) then

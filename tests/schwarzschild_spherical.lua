@@ -71,7 +71,7 @@ printbr('\\({\\Gamma^a}_{bc} = \\)'..Gamma'^a_bc')
 printbr()
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
-local diffx = Tensor('^u', function(u) return symmath.var('{d x^'..u..'}\\over{d\\tau}', coords) end)
+local diffx = Tensor('^u', function(u) return symmath.var('\\dot{x}^'..coords[u].name, coords) end)
 local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w'):simplify()
 printbr('geodesic equation')
 printbr('\\(\\ddot{x}^a = \\)'..diffx2)

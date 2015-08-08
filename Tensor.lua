@@ -17,6 +17,10 @@ returns table of the following fields for each index:
 	- whether this index is contra- (upper) or co-(lower)-variant
 	- whether this index is a variable, or a range of variables
 	- whether there is a particular kind of derivative associated with this index?  (i.e. comma, semicolon, projection, etc?)
+
+space separated for multi-char symbols/numbers
+	however space-separated means you *must* provide upper/lower prefix before *each* symbol/number
+	(TODO fix this)
 --]]
 local function parseIndexes(indexes)
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
@@ -123,7 +127,7 @@ local function parseIndexes(indexes)
 	end
 	
 	for i,index in ipairs(indexes) do
-		assert(index.number or index.symbol)
+		assert(index.number or index.symbol, "index missing number or symbol")
 	end
 	
 	return indexes
@@ -605,6 +609,24 @@ end
 
 function Tensor:__call(indexes)
 	local clone = require 'symmath.clone'
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
+
+	if type(indexes) == 'table' then
+		indexes = {unpack(indexes)}
+		assert(#indexes == #self.variance)
+		for i=1,#indexes do
+			if type(indexes[i]) == 'number' then
+				indexes[i] = TensorIndex{
+					lower = self.variance[i].lower,
+					number = indexes[i],
+				}
+			elseif type(indexes[i]) == 'table' then
+				assert(indexes[i].isa and indexes[i]:isa(TensorIndex))
+			else
+				error("indexes["..i.."] got unknown type "..type(indexes[i]))
+			end
+		end
+	end
 	indexes = parseIndexes(indexes)
 
 	-- clone self before returning it
@@ -665,21 +687,23 @@ function Tensor:__call(indexes)
 						indexMap[i] = table.find(srcBasis.variables, dstBasis.variables[i])
 					end
 
-					self = Tensor{indexes=indexes, values=function(...)
--- error - this isn't getting called
-						local srcIndexes = {...}
-						srcIndexes[i] = indexMap[srcIndexes[i]]
-						return self[srcIndexes]
-					end}
+					self = Tensor{
+						indexes = indexes,
+						values = function(...)
+							local srcIndexes = {...}
+							srcIndexes[i] = indexMap[srcIndexes[i]]
+							return self[srcIndexes]
+						end,
+					}
 				end
-			
+
 				self.variance[i].symbol = indexes[i].symbol
+				self.variance[i].number = indexes[i].number
 			end
 		end
 	end
 
 	transformIndexes(false)
-
 
 	if foundDerivative then
 		-- indexed starting at the first derivative index
@@ -737,8 +761,41 @@ function Tensor:__call(indexes)
 --print('after differentiation: '..tensor)
 	end
 	
-	-- TODO handle specific number/variable indexes
-
+	-- handle specific number/variable indexes
+	do
+		local foundNumbers = table.find(indexes, nil, function(index) return index.number end)
+		if foundNumbers then
+			local newdim = {unpack(self:dim())}
+			local srcIndexes = {unpack(indexes)}
+			local sis = {}
+			for i=#newdim,1,-1 do
+				if indexes[i].number then
+					sis[i] = indexes[i].number
+					table.remove(indexes, i)
+					table.remove(newdim, i)
+				end
+			end
+			if #newdim == 0 then
+				return self:get(sis)
+			else
+				local dstToSrc = {}
+				for i=1,#newdim do
+					dstToSrc[i] = assert(table.find(srcIndexes, indexes[i]))
+				end
+				self = Tensor{
+					dim = newdim,
+					indexes = self.variance,
+					values = function(...)
+						local is = {...}
+						for i=1,#is do
+							sis[dstToSrc[i]] = is[i]
+						end
+						return self:get(sis)
+					end,
+				}
+			end
+		end
+	end
 
 	-- for all indexes
 	
@@ -767,15 +824,25 @@ function Tensor:permute(dstVariance)
 		assert(indexMap[i], "assigning tensor with '"..srcVar.symbol.."' to tensor without that symbol")
 	end
 
+	local olddim = self:dim()
+	local newdim = {}
+	for i=1,#olddim do
+		newdim[i] = olddim[indexMap[i]]
+	end
+
 	-- perform assignment
-	return Tensor{indexes=dstVariance, dim=self:dim(), values=function(...)
-		local dstIndex = {...}
-		local srcIndex = {}	
-		for i=1,#dstIndex do
-			srcIndex[i] = dstIndex[indexMap[i]]
-		end
-		return self:get(srcIndex)
-	end}
+	return Tensor{
+		indexes = dstVariance,
+		dim = newdim,
+		values = function(...)
+			local dstIndex = {...}
+			local srcIndex = {}	
+			for i=1,#dstIndex do
+				srcIndex[i] = dstIndex[indexMap[i]]
+			end
+			return self:get(srcIndex)
+		end,
+	}
 end
 	
 
@@ -794,7 +861,11 @@ Tensor.__index = function(self, key)
 	end
 
 	-- self class access
-	return rawget(self, key)
+	local value = rawget(self, key)
+	if value then return value end
+
+	-- last fallback to __call
+--	return self.__call(self, key)
 end
 
 Tensor.__newindex = function(self, key, value)

@@ -30,14 +30,8 @@ print(MathJax.header)
 
 local x, y, r, phi = symmath.vars('x', 'y', 'r', '\\phi')
 Tensor.coords{
-	{
-		variables = {r, phi},
-	},
-	{
-		symbols = 'IJKLMN',
-		variables = {x, y},
-		metric = {{1,0}, {0,1}},
-	}
+	{ variables = {r, phi} },
+	{ variables = {x, y}, symbols = 'IJKLMN', metric = {{1,0}, {0,1}} }
 }
 
 local function printbr(...)
@@ -60,7 +54,7 @@ printbr'coordinate chart:'
 printmath('u^I = '..u'^I')
 printbr()
 
-local e = Tensor('_u^I')
+local e = Tensor'_u^I'
 e['_u^I'] = u'^I_,u':simplify()		-- use assignment to correctly arrange indexes. TODO have a ctor to do this?
 printbr'vielbein:'
 printmath([[{e_u}^I = \partial_u u^I = ]]..u'^I_,u'..' = '..e'_u^I')

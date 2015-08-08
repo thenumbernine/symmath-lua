@@ -9,6 +9,7 @@ Matrix.inverse = require 'symmath.matrix.inverse'
 Matrix.determinant = require 'symmath.matrix.determinant'
 Matrix.identity = require 'symmath.matrix.identity'
 Matrix.transpose = require 'symmath.matrix.transpose'
+Matrix.diagonal = require 'symmath.matrix.diagonal'
 
 return Matrix
 

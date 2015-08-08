@@ -23,45 +23,78 @@
 
 
 
-symmath = require 'symmath'
-local tensor = require 'symmath.tensorhelp'
+local symmath = require 'symmath'
+local Tensor = require 'symmath.Tensor'
+symmath.tostring = require 'symmath.tostring.LaTeX'
+
+local MathJax = require 'symmath.tostring.MathJax'
+print(MathJax.header)
 
 --this is a halfway step between pure symmath code and symmath+tensor code
 
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-z = symmath.Variable('z')
-r = symmath.Variable('r')
-phi = symmath.Variable('\\phi')
-theta = symmath.Variable('\\theta')
-srcCoords = {x, y, z}
-coords = {theta, phi}
+local x, y, z, r, phi, theta = symmath.vars('x', 'y', 'z', 'r', '\\phi', '\\theta')
 
-tensor.coords{coords, abcdefg=srcCoords}
+Tensor.coords{
+	{variables={theta, phi}},
+	{variables={x, y, z}, symbols='IJKLMN' },
+}
 
--- TODO make this symbolic so that it can be properly evaluated
-function cond(expr, ontrue, onfalse)
-	if expr then return ontrue end
-	return onfalse
-end
+local eta = Tensor('_IJ', {1,0,0},{0,1,0},{0,0,1})
+Tensor.metric(eta, eta, 'I')
+print'flat metric:<br>'
+print('\\(\\eta_{IJ} = '..eta'_IJ'..'\\)<br>')
+print'<br>'
 
-tensor.assign[[metric_x = r * symmath.sin(theta) * symmath.cos(phi)]]
-tensor.assign[[metric_y = r * symmath.sin(theta) * symmath.sin(phi)]]
-tensor.assign[[metric_z = r * symmath.cos(theta)]]
-tensor.assign[[eLU_$u_$a = symmath.simplify(symmath.diff(metric_$a, $u))]]
-tensor.assign[[gLL_$u_$v = eLU_$u_$a * eLU_$v_$a]]
+local u = Tensor('^I', 
+	r * symmath.sin(theta) * symmath.cos(phi),
+	r * symmath.sin(theta) * symmath.sin(phi),
+	r * symmath.cos(theta))
+print'coordinate chart:<br>'
+print('\\(u^I = '..u'^I'..'\\)<br>')
+print'<br>'
 
--- assume diagonal 
+print('\\({{u^I}_{,u}} = '..u'^I_,u'..'\\)<br>')
+
+local e = Tensor'_u^I'
+e['_u^I'] = u'^I_,u':simplify()
+print'vielbein:<br>'
+print('\\({e_u}^I = '..e'_u^I'..'\\)<br>')
+print'<br>'
+
+local g = (e'_u^I' * e'_v^J' * eta'_IJ'):simplify()
+print'coordinate metric:<br>'
+print('\\(g_{uv} = '..g'_iu'..'\\)<br>')
+print'<br>'
+
 -- TODO factoring functions and trig identities
-tensor.assign[[gUU_$u_$v = symmath.simplify(cond($u==$v, 1/gLL_$u_$v, symmath.Constant(0)))]]
-tensor.assign[[gLLL_$u_$v_$w = symmath.simplify(symmath.diff(gLL_$u_$v, $w))]]
-tensor.assign[[GammaLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))]]
-tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
+Tensor.metric(g)
+print'coordinate metric inverse:<br>'
+print('\\(g^{uv} = '..g'^uv'..'\\)<br>')
+
+local dg = g'_uv,w':simplify()
+print('\\(\\partial_w g_{uv} = '..dg'_uvw'..'\\)<br>')
+print'<br>'
+
+local Gamma = ((dg'_uvw' + dg'_uwv' - dg'_vwu')/2):simplify()
+print'connection coefficients:<br>'
+print('\\(\\Gamma_{uvw} = '..Gamma'_uvw'..'\\)<br>')
+print'<br>'
+
+Gamma = Gamma'^u_vw'
+print('\\({\\Gamma^u}_{vw} = '..Gamma'^u_vw'..'\\)<br>')
+print'<br>'
 
 -- now comes the geodesic equation: d^2[x^i]/dt^2 = -conn^i_jk dx^j_dt dx^k/dt
-tensor.assign[[diffxU_$u = symmath.Variable('{dx^{$u}}\\over{d\\tau}', {r,phi,theta})]]
-tensor.assign[[diff2xU_$u = -GammaULL_$u_$v_$w * diffxU_$u * diffxU_$v]]
+local dx = Tensor('^u', symmath.var'\\dot{x}^t', symmath.var'\\dot{x}^x')
+local d2x = Tensor('^u', symmath.var'\\ddot{x}^t', symmath.var'\\ddot{x}^x')
+print'geodesic:<br>'
+-- TODO unravel equaliy, or print individual assignments
+print('\\('..((d2x'^u' + Gamma'^u_vw' * dx'^v' * dx'^w'):equals(Tensor('^u',0,0))):simplify()..'\\)<br>')
+print'<br>'
 
-printbr(diff2xU_theta:eval{r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1})
-printbr(diff2xU_phi:eval{r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1})
 
+
+--printbr(diff2xU_theta:eval{r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1})
+--printbr(diff2xU_phi:eval{r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1})
+
+print(MathJax.footer)

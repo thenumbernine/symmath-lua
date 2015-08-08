@@ -141,6 +141,21 @@ LaTeX.lookupTable = {
 		end
 		return ' \\left[ \\matrix{ ' .. rows:concat(' \\\\ ') .. ' } \\right] '
 	end,
+	[require 'symmath.Tensor'] = function(self, expr)
+		local s = self.lookupTable[require 'symmath.Array'](self, expr)
+		local arrows = {'\\downarrow', '\\rightarrow'}
+		if #expr.variance > 0 then
+			local prefix = ''
+			for i=#expr.variance,1,-1 do
+				local var = expr.variance[i]
+				local arrowIndex = (#expr.variance + i + 1) % 2 + 1
+				prefix = var.symbol .. arrows[arrowIndex] .. ' ' .. prefix
+				if arrowIndex == 1 and i ~= 1 then prefix = '[' .. prefix .. ']' end
+			end
+			s = '\\overset{' .. prefix .. ' }{' ..  s .. '}'
+		end
+		return s
+	end,
 	[require 'symmath.Sum'] = function(self, expr)
 		local s = '\\sum'
 		local sumexpr, var, from, to = unpack(expr)

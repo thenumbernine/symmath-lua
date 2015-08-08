@@ -45,8 +45,6 @@ local coords = {t, x, y, z, w}
 -- w = x^5, or the A^mu vector combined with the phi^2 ...
 local phi = symmath.Variable('\\phi', {t,x,y,z,w})
 
--- symmath.tensorhelp isn't set up to handle _5 ... since it uses tostring() for concat'ing variable names 
--- ... yet also uses tostring() for referencing the variable itself ...
 Tensor.coords{
 	{variables={t,x,y,z}},
 	{variables={t,x,y,z,w}, symbols='abcdef'},

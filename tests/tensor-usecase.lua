@@ -210,7 +210,15 @@ assertEqn(t'_i':equals(Tensor('^i', 1, 4, 9)))
 	-- testing skew of raising/lowering (assuring that the linear transform is using the correct index into the metric matrix)
 local basis = Tensor.metric(Tensor('_ij', {1, 1, 0}, {0, 1, 0}, {0, 0, 1}))
 	-- assert that the inverse was calculated correctly
-print((basis.metricInverse - Tensor('^ij', {1, -1, 0}, {0, 1, 0}, {0, 0, 1})):simplify():equals(Tensor('_ij')):isTrue())
+
+print(symmath.Verbose(basis.metricInverse[1]))
+print(symmath.Verbose(Tensor('^j', 1, -1, 0)))
+assertEqn(basis.metricInverse[1]:equals(Tensor('^j', 1, -1, 0)))
+
+assertEqn(basis.metricInverse[1]:equals(Tensor('^j', 1, -1, 0)))
+assertEqn(basis.metricInverse[2]:equals(Tensor('^j', 0, 1, 0)))
+assertEqn(basis.metricInverse[3]:equals(Tensor('^j', 0, 0, 1)))
+
 assertEqn(basis.metricInverse:equals(Tensor('^ij', {1, -1, 0}, {0, 1, 0}, {0, 0, 1})))
 local t = Tensor('^i', 1,2,3)
 --[[
