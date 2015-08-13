@@ -9,6 +9,8 @@ symmath.simplifyConstantPowers  = true
 
 print(MathJax.header)
 
+local function printbr(...) print(...) print'<br>' end
+
 local speedOfLightInMPerS = 299792458
 local gravitationalConstantInM3PerKgS2 = 6.67384e-11
 local cmInM = .01
@@ -77,15 +79,15 @@ local s = s or symmath.var's'
 
 local c = symmath.var'c'
 local c_from_m_s = c:equals(speedOfLightInMPerS * (m / s))
-print(c_from_m_s)
+printbr(c_from_m_s)
 local s_from_m = c_from_m_s:subst(c:equals(1)):solve(s)
-print(s_from_m)
+printbr(s_from_m)
 
 local G = G or symmath.var'G'
 local G_from_kg_m_s = G:equals(gravitationalConstantInM3PerKgS2 * (m^3 / (kg * s^2)))
-print(G_from_kg_m_s)
+printbr(G_from_kg_m_s)
 local kg_from_m = G_from_kg_m_s:subst(G:equals(1)):subst(s_from_m):solve(kg) 
-print(kg_from_m)
+printbr(kg_from_m)
 
 function process(bodies)
 	for name, info in pairs(bodies) do
@@ -96,14 +98,14 @@ function process(bodies)
 		info.schwarzschildRadius = (info.mass * 2):simplify()
 		info.photonSphereRadius = (info.mass * 3):simplify()
 
-		print(name..' radius = '..show(info.radius))
-		print(name..' mass = '..show(info.mass))
-		print(name..' embedding radius = '..show(info.embeddingRadius))
-		print(name..' embedding radius to physical radius ratio = '..show(info.embeddingRadius / info.radius))
-		--print(name..' photon outer orbit = '..show(info.photonOuterOrbit / lyr)..' lyr') -- not sure about this one ...
-		print(name..' schwarzschild radius = '..show(info.schwarzschildRadius))
-		print(name..' photon sphere radius = '..show(info.photonSphereRadius))
-		print()
+		printbr(name..' radius = '..show(info.radius))
+		printbr(name..' mass = '..show(info.mass))
+		printbr(name..' embedding radius = '..show(info.embeddingRadius))
+		printbr(name..' embedding radius to physical radius ratio = '..show(info.embeddingRadius / info.radius))
+		--printbr(name..' photon outer orbit = '..show(info.photonOuterOrbit / lyr)..' lyr') -- not sure about this one ...
+		printbr(name..' schwarzschild radius = '..show(info.schwarzschildRadius))
+		printbr(name..' photon sphere radius = '..show(info.photonSphereRadius))
+		printbr()
 	end
 end
 
@@ -126,10 +128,10 @@ function z(r)
 	else
 		z = (R^3/Rs)^.5 * (1 - (1 - Rs/R)^.5) + (4 * Rs * (r - Rs))^.5 - (4 * Rs * (R - Rs))^.5
 	end
-	print('z('..r..') = '..unify(z))
+	printbr('z('..r..') = '..unify(z))
 end
 
-print('earth embedding at different radii...')
+printbr('earth embedding at different radii...')
 z(0)
 z(.25 * earth.radius)
 z(.5 * earth.radius)

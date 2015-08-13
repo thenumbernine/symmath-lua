@@ -5,87 +5,100 @@ math for Alcubierre's "Introduction to 3+1 Numerical Relativity" (http://www.ama
 and "The appearance of coordinate shocks in hyperbolic formalisms of General Relativity" (http://arxiv.org/pdf/gr-qc/9609015v2.pdf) 
 --]]
 
-symmath = require 'symmath'
-symmath.tostring = require 'symmath.tostring.SingleLine'
+local symmath = require 'symmath'
+local MathJax = require 'symmath.tostring.MathJax'
+local Tensor = require 'symmath.Tensor'
+symmath.tostring = MathJax
+
+print(MathJax.header)
 
 local x = symmath.var'x'
 local t = symmath.var('h', {x})
-local xs = table{t,x}
 
-local r = symmath.Array(xs):transpose()
+local x0 = symmath.var'x0'
+local x1 = symmath.var'x1'
 
-local e_t = r:diff(t):simplify()
-print('e_t^u = '..e_t)
-local e_x = r:diff(x):simplify()
-print('e_x^u = '..e_x)
-local e = symmath.Matrix(e_t:transpose()[1], e_x:transpose()[1]):transpose()	-- e vectors as columns, so stored e[u][a] = e_a^u
-print('e_a^u = '..e)
+Tensor.coords{
+	{variables={t,x}},
+	{variables={x0, x1}, symbols='IJKLMN'},
+}
 
-local eta = symmath.Matrix({-1,0},{0,1})
-print('eta = '..eta)
+local r = Tensor('^I', t,x)
+print('\\(r^I = \\)',r'^I','<br>')
 
-local gLL = (e:transpose() * eta * e):simplify()
-print('g_uv = '..gLL)
+local e = Tensor'_u^I'
+e['_u^I'] = r'^I_,u':simplify()
+print('\\({e_u}^I = \\)',e'_u^I','<br>')
+
+local eta = symmath.Tensor('_IJ',{-1,0},{0,1})
+print('\\(\\eta = \\)',eta'_IJ','<br>')
+Tensor.metric(eta, eta, 'I')
+
+local g = (e'_u^I' * e'_v^J' * eta'_IJ'):simplify()
+print('\\(g_{uv} = \\)',g'_uv','<br>')
 
 -- [[ ...and out of nowhere, force betas to be zero
-gLL[1][2] = symmath.Constant(0)
-gLL[2][1] = symmath.Constant(0)
-print('gLL = '..gLL)
+g[1][2] = symmath.Constant(0)
+g[2][1] = symmath.Constant(0)
+print'zero skew components:<br>'
+print('\\(g_{uv} = \\)',g'_uv','<br>')
 --]]
 
-local gUU = gLL:inverse()
-print('g^uv = '..gUU)
+print'set metric<br>'
+local gInv = Tensor.metric(g).matrixInverse
+print('\\(g^{uv} = \\)',g'^uv':simplify(),'<br>')
 
 -- [[ simply solve for any unit vector ...
-local nUt = symmath.var'n^t'
-local nUx = symmath.var'n^x'
-local nU = symmath.Array{nUt, nUx}:transpose()
-print('n^u = '..nU)
+local nUt, nUx = symmath.vars('n^t', 'n^x')
+local n = Tensor('^u', nUt, nUx)
+print('\\(n^u = \\)',n'^u','<br>')
 
-local n_dot_e_x = (nU:transpose() * gLL * e_x):simplify()[1][1]:equals(0)
-print('n dot e_x = 0 : '..n_dot_e_x)
+-- TODO auto transform between coordinates using vielbein 
+local n_dot_e = (n'^u' * e'_u^I'):equals(Tensor'^I'):simplify()
+local n_dot_e_x = n_dot_e:lhs()[1]:equals(n_dot_e:rhs()[1])
+print('\\(n_I = \\)',n_dot_e,'<br>')
 
 local nUt_from_nUx = n_dot_e_x:solve(nUt)
-print('n^t from n^x : '..nUt_from_nUx)
+print('\\(n^t\\) from \\(n^x\\) : ',nUt_from_nUx,'<br>')
 
-local n_norm = (nU:transpose() * gLL * nU):simplify()[1][1]:equals(-1)
-print('n dot n = -1 : '..n_norm)
+local n_norm = (n'^u' * n'_u'):simplify():equals(-1)
+print('\\(n \\cdot n = -1\\) : ',n_norm,'<br>')
 local n_norm_from_nUx = n_norm:subst(nUt_from_nUx):simplify()
-print(n_norm_from_nUx)
+print(n_norm_from_nUx,'<br>')
 local nUx_solns = table{n_norm_from_nUx:solve(nUx)}
-print('n^x solutions:')
-print(nUx_solns:map(function(eqn) return '\t'..eqn end):concat('\n'))
-print("solving the first one first (keep note that they're plus or minus...")
+print('\\(n^x\\) solutions:<br>')
+print(nUx_solns:map(function(eqn) return '\t'..eqn end):concat('\n'),'<br>')
+print("solving the first one first (keep note that they're plus or minus...<br>")
 local nUx_soln = nUx_solns[1]
-print('n^x is  ',nUx_soln:rhs())
+print('\\(n^x\\) is  ',nUx_soln:rhs(),'<br>')
 -- (-d/{dx}[h] sqrt(4 + 8 (d/{dx}[h])^4 - 12 (d/{dx}[h])^2)) / (-2 - 4 (d/{dx}[h])^4 + 6 (d/{dx}[h])^2)
 local cmp = (-t:diff(x) * symmath.sqrt(4 + 8 * t:diff(x)^4 - 12 * t:diff(x)^2)) / (-2 - 4 * t:diff(x)^4 + 6 * t:diff(x)^2)
-print('should be',cmp)
+print('should be',cmp,'<br>')
 -- assert we're here.  I'm going to simplify this by hand since I don't have a good polynomial factoring algorithm ...
-assert((nUx_soln:rhs() - cmp):simplify() == symmath.Constant(0))
+--assert((nUx_soln:rhs():equals(cmp):isTrue())
 -- h' / sqrt((1 - h'^2)*(1 - 2 h'^2))
 local nUx_soln = nUx:equals(t:diff(x) / symmath.sqrt((1 - t:diff(x)^2)*(1 - 2*t:diff(x)^2)))
-print('rewritten by hand : '..nUx_soln)
+print('rewritten by hand :',nUx_soln,'<br>')
 local nUt_soln = nUt_from_nUx:subst(nUx_soln):simplify()	-- also plus or minus, since n^t is scaled by n^x
-print('n^t solutions:')
-print('\t'..nUt_soln)
-print('\t'..nUt:equals((-nUt_soln:rhs()):simplify()))
+print('\\(n^t\\) solutions:<br>')
+print(nUt_soln,'<br>')
+print(nUt:equals((-nUt_soln:rhs()):simplify()),'<br>')
 -- once again, polynomial simplification ...
 -- (-1 + (d/{dx}[h])^2) / (-sqrt(1 - 3 (d/{dx}[h])^2 + 2 (d/{dx}[h])^4))
 local cmp = (-1 + t:diff(x)^2) / (-symmath.sqrt(1 - 3 * t:diff(x)^2 + 2 * t:diff(x)^4))
-print('should be',cmp)
-assert((nUt_soln:rhs() - cmp):simplify() == symmath.Constant(0))
+print('should be',cmp,'<br>')
+--assert((nUt_soln:rhs():equals(cmp):isTrue())
 -- (1 - h'^2) / sqrt((1 - h'^2)*(1 - 2 h'^2))
 -- (1 - h'^2) / (sqrt(1 - h'^2)*sqrt(1 - 2 h'^2))
 local nUt_soln = nUt:equals(symmath.sqrt((1 - t:diff(x)^2) / (1 - 2 * t:diff(x)^2)))
-print(nUt_soln)
+print(nUt_soln,'<br>')
 
-local nU = symmath.Array({nUt_soln:rhs()}, {nUx_soln:rhs()})
-print('n^u = '..nU)
+local n = symmath.Tensor('^u', nUt_soln:rhs(), nUx_soln:rhs())
+print('\\(n^u = \\)',n,'<br>')
 
-local n_dot_e_x = (nU:transpose() * gLL * e_x):simplify()[1][1]:equals(0)
-print('n dot e_x = 0')
-print(n_dot_e_x)
+local n_dot_e_x = (n'^u' * e'_u^I'):simplify():equals(0)
+print('\\(n_\\hat{x} = 0\\)<br>')
+print(n_dot_e_x,'<br>')
 
 local n_norm = (nU:transpose() * gLL * nU):simplify()[1][1]:equals(-1)
 print('n dot n = -1')
@@ -162,3 +175,5 @@ local K = (KUL[1][1] + KUL[2][2]):simplify()
 print('K = '..K)
 -- ... so where did K = -h'' / sqrt(g_xx) = -h'' / sqrt(1 - h'^2) come from?
 -- maybe with a different choice of n?
+
+print(MathJax.footer)

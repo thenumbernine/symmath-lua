@@ -21,12 +21,9 @@
 
 --]]
 
-require 'ext'
-
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-symmath.simplifyConstantPowers  = true
 
 local function printbr(...)
 	print(...)
@@ -34,28 +31,25 @@ local function printbr(...)
 end
 
 -- dimension variables
-local t = symmath.Variable('t', nil, true)
-local x = symmath.Variable('x', nil, true)
-local y = symmath.Variable('y', nil, true)
-local z = symmath.Variable('z', nil, true)
+local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
 
 -- primitive variables
-local rho = symmath.Variable('\\rho', {t,x,y,z})	-- density
-local u = symmath.Variable('u', {t,x,y,z})		-- velocity
-local v = symmath.Variable('v', {t,x,y,z})
-local w = symmath.Variable('w', {t,x,y,z})
-local e = symmath.Variable('e', {t,x,y,z})		-- total specific energy 
+local rho = symmath.var('\\rho', {t,x,y,z})	-- density
+local u = symmath.var('u', {t,x,y,z})		-- velocity
+local v = symmath.var('v', {t,x,y,z})
+local w = symmath.var('w', {t,x,y,z})
+local e = symmath.var('e', {t,x,y,z})		-- total specific energy 
 
 -- state variable
-local q1 = symmath.Variable('q1', {t,x,y,z})
-local q2 = symmath.Variable('q2', {t,x,y,z})
-local q3 = symmath.Variable('q3', {t,x,y,z})
-local q4 = symmath.Variable('q4', {t,x,y,z})
-local q5 = symmath.Variable('q5', {t,x,y,z})
+local q1 = symmath.var('q_1', {t,x,y,z})
+local q2 = symmath.var('q_2', {t,x,y,z})
+local q3 = symmath.var('q_3', {t,x,y,z})
+local q4 = symmath.var('q_4', {t,x,y,z})
+local q5 = symmath.var('q_5', {t,x,y,z})
 
-local gamma = symmath.Variable('\\gamma')
-local ek = symmath.Constant(1)/symmath.Constant(2) * (u * u + v * v + w * w)			-- kinetic specific energy
-local ei = e - symmath.Constant(1)/symmath.Constant(2) * ek							-- internal specific energy
+local gamma = symmath.var('\\gamma')
+local ek = (u * u + v * v + w * w) / 2			-- kinetic specific energy
+local ei = e - ek / 2							-- internal specific energy
 local P = (gamma - 1) * rho * ei				-- pressure
 local E = rho * e								-- total energy
 

@@ -35,7 +35,8 @@ local function printbr(...)
 end
 
 function asserteq(a,b)
-	if a ~= b then
+	local simplify = require 'symmath.simplify'
+	if simplify(a) ~= simplify(b) then
 		error("expected "..tostring(a).." to equal "..tostring(b))
 	end
 end

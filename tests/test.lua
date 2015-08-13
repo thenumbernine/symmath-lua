@@ -25,6 +25,7 @@ symmath = require 'symmath'
 require 'symmath.notebook'
 Constant = require 'symmath.Constant'
 
+
 notebook[[
 -- constant simplificaiton
 =asserteq(Constant(1), (Constant(1)*Constant(1)):simplify())

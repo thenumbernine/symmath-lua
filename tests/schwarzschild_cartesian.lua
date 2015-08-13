@@ -25,9 +25,7 @@
 --[[
 schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
 
-my incorrect guess of how this converts to Cartesian.
-
-TODO: The correct substitution method is:
+convert to pseudo-Cartesian via:
 	dr = (x dx + y dy + z dy) / r
 	dtheta = (xz dx + yz dy - (x^2 + y^2) dz) / (r^2 sqrt(x^2 + y^2))
 	dphi = (-y dx + x dy) / (x^2 + y^2)
@@ -40,43 +38,86 @@ symmath.tostring = MathJax
 print(MathJax.header)
 
 -- coordinates
-local t, x, y, z, M = symmath.vars('t', 'x', 'y', 'z', 'M')
-local spatialCoords = {x, y, z}
-local coords = {t, x, y, z}
+local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
+
+local dim = 2	-- 2, 3, or 4
+
+local allCoords = {t, x, y, z}
+local coords = {unpack(allCoords, 1, dim)}
+local spatialCoords = {unpack(allCoords, 2, dim)}
 
 -- algebraic
 --r = (x^2 + y^2 + z^2)^.5
 -- deferred:
 local r = symmath.Variable('r', coords)
+-- mass is constant
+local M = symmath.var('M')
+
 Tensor.coords{
-	{variables = {coords}},
+	{variables = coords},
 	{variables = spatialCoords, symbols = 'ijklmn'},
 }
 
 -- schwarzschild metric in cartesian coordinates
 
+--[[ 4D
 local g = Tensor('_uv', 
 	{-(1-2*M/r), 0, 0, 0},
-	{0, (x^2/(1-2*M/r) + y^2 + z^2)/r^2, x*y*4*M/(r^2*(r-2*M)), x*z*4*M/(r^2*(r-2*M))},
-	{0, x*y*4*M/(r^2*(r-2*M)), (x^2 + y^2/(1-2*M/r) + z^2)/r^2, y*z*4*M/(r^2*(r-2*M))},
-	{0, x*z*4*M/(r^2*(r-2*M)), y*z*4*M/(r^2*(r-2*M)), (x^2 + y^2 + z^2/(1-2*M/r))/r^2})
+	{0, (x^2/(1-2*M/r) + y^2 + z^2)/r^2, x*y*2*M/(r^2*(r-2*M)), x*z*2*M/(r^2*(r-2*M))},
+	{0, x*y*2*M/(r^2*(r-2*M)), (x^2 + y^2/(1-2*M/r) + z^2)/r^2, y*z*2*M/(r^2*(r-2*M))},
+	{0, x*z*2*M/(r^2*(r-2*M)), y*z*2*M/(r^2*(r-2*M)), (x^2 + y^2 + z^2/(1-2*M/r))/r^2})
+--]]
+-- [[ n-D
+local g = Tensor'_uv'
+g[{1,1}] = -(1-2*M/r)
+for i=1,dim-1 do
+	local xi = spatialCoords[i]
+	for j=1,dim-1 do
+		local xj = spatialCoords[j]
+		if i == j then
+			local sum
+			for k=1,dim-1 do
+				local xk = spatialCoords[k]
+				local term = k == i and (xk^2 / (1 - 2 * M / r)) or (xk^2)
+				sum = sum and sum + term or term
+			end
+			sum = sum / r^2
+			g[{i+1,j+1}] = sum
+		else
+			g[{i+1,j+1}] = 2 * M * xi * xj / (r^2 * (r - 2 * M))
+		end
+	end
+end
+--]]
+print'metric:<br>'
+print('\\(g_{uv} = \\)'..g..'<br>')
+g = g:simplify()
+print'simplified:<br>'
 print('\\(g_{uv} = \\)'..g..'<br>')
 
 Tensor.metric(g)
-print('\\(g^{uv} = \\)'..Tensor.metric().matrixInverse..'<br>')
-
-error("current matrix inverse is too slow for n=4")
+print('\\(g^{uv} = \\)'..Tensor.metric().metricInverse..'<br>')
 
 -- metric partial
 -- assume dr/dt is zero
-tensor.assign[[gLLL_$u_$v_$w = symmath.simplify(symmath.diff(gLL_$u_$v, $w))]]
-tensor.assign[[gLLL_$u_$v_$w = symmath.replace(gLLL_$u_$v_$w, symmath.Derivative(r, t), symmath.Constant(0))]]
+local dg = g'_uv,w':simplify()
+print'metric partial derivatives:<br>'
+print('\\(\\partial_w g_{uv} = \\)'..dg'_uvw'..'<br>')
+
+print'let \\({{\\partial r}\\over{\\partial t}} = 0\\)<br>'
+dg = dg:replace(r:diff(t), 0):simplify()
+print('\\(\\partial_w g_{uv} = \\)'..dg'_uvw'..'<br>')
 
 -- Christoffel: G_abc = 1/2 (g_ab,c + g_ac,b - g_bc,a) 
-tensor.assign[[GammaLLL_$u_$v_$w = symmath.simplify((1/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))]]
+local Gamma = ((dg'_uvw' + dg'_uwv' - dg'_vwu')/2):simplify()
+print'1st kind Christoffel:<br>'
+print('\\(\\Gamma_{uvw} = \\)'..Gamma'_uvw'..'<br>')
 
 -- Christoffel: G^a_bc = g^ae G_ebc
-tensor.assign[[GammaULL_$u_$v_$w = gUU_$u_$r * GammaLLL_$r_$v_$w]]
+Gamma = Gamma'^u_vw'	-- change underlying storage (not necessary, but saves future calculations)
+print'2nd kind Christoffel:<br>'
+print('\\({\\Gamma^u}_{vw} = \\)'..Gamma'^u_vw'..'<br>')
+do return end
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
 tensor.assign[[diffxU_$u = symmath.Variable('diffxU_$u', {t,x,y,z})]]

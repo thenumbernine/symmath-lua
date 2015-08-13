@@ -415,7 +415,7 @@ local original = expr:clone()
 
 				-- this is factoring ... and pruning ... 
 				-- such that it is recursively calling this function for its simplification
-				local f = (require 'symmath.factor')(expr)
+				local f = require 'symmath.factor'(expr)
 				if f then return f end
 			end	
 
@@ -817,7 +817,6 @@ local original = expr:clone()
 			end
 
 			-- TODO move minus sign to the top
-
 			-- TODO if the coefficients are non-integers then just divide them
 
 			-- from this point on, nums and denoms don't match up with numBases (specifically because of the prime factorization of integers)
