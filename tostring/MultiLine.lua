@@ -182,7 +182,7 @@ MultiLine.lookupTable = {
 			parts[i] = self:apply(expr[i])
 		end
 
-		local height = parts:map(function(part) return #part end):sup()
+		local height = parts:map(function(part) return #part end):sup() or 0
 
 		local sep = table()
 		for i=1,height do
@@ -209,7 +209,7 @@ MultiLine.lookupTable = {
 			parts[i] = self:apply(expr[i])
 		end
 		
-		local width = parts:map(function(part) return #part[1] end):sup()
+		local width = parts:map(function(part) return #part[1] end):sup() or 0
 		local sep = (' '):rep(width)
 
 		-- TODO apply per-element without the [] wrapping
