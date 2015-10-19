@@ -43,8 +43,8 @@ local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
 local dim = 2	-- 2, 3, or 4
 
 local allCoords = {t, x, y, z}
-local coords = {unpack(allCoords, 1, dim)}
-local spatialCoords = {unpack(allCoords, 2, dim)}
+local coords = {table.unpack(allCoords, 1, dim)}
+local spatialCoords = {table.unpack(allCoords, 2, dim)}
 
 -- algebraic
 --r = (x^2 + y^2 + z^2)^.5

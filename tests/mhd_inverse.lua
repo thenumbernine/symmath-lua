@@ -139,7 +139,7 @@ YInvVars[8][5] = 0
 
 --local YInv = Y:inverse()	-- dies
 local YInv = symmath.Matrix(
-	unpack(YInvVars)
+	table.unpack(YInvVars)
 --[[
 	{	0,	0,	0,	0,	0,	0,	0,	0	},	
 	{	0,	1,	0,	0,	0,	0,	0,	0	},	
@@ -188,7 +188,7 @@ print('\\(Y^{-1} = \\)'..YInv..'<br>')
 local constraints = table()
 for _,eqnlist in ipairs{YInvYEqns, YYInvEqns} do
 	for k=#eqnlist,1,-1 do
-		local i,j,eqn = unpack(eqnlist[k])
+		local i,j,eqn = table.unpack(eqnlist[k])
 		if eqn[2]:isa(symmath.Variable) then
 			eqnlist:remove(k)
 			constraints:insert(eqn:switch())
@@ -223,7 +223,7 @@ local YInvRemainingSolution = symmath.Matrix()
 print('constraints remaining:'..(#YInvYEqns+#YYInvEqns)..'<br>')
 print('variables left to solve:'..#YInvRemainingVars..'<br>')
 for _,info in ipairs(YInvYEqns) do
-	local i,j,eqn = unpack(info)
+	local i,j,eqn = table.unpack(info)
 	print('YInv row '..i..' Y col '..j..': '..eqn..'<br>')
 	
 	local row = symmath.Array()
@@ -235,7 +235,7 @@ for _,info in ipairs(YInvYEqns) do
 	end
 end
 for _,info in ipairs(YYInvEqns) do
-	local i,j,eqn = unpack(info)
+	local i,j,eqn = table.unpack(info)
 	print('Y row '..i..' YInv col '..j..': '..eqn..'<br>')
 	
 	local row = symmath.Array()

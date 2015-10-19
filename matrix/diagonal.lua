@@ -8,5 +8,5 @@ return function(...)
 		end
 		rows[i][i] = args[i]
 	end
-	return require 'symmath.Matrix'(unpack(rows))
+	return require 'symmath.Matrix'(table.unpack(rows))
 end

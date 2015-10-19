@@ -27,7 +27,7 @@ function Expression:clone()
 			local clone = require 'symmath.clone'
 			xs:insert(clone(self[i]))
 		end
-		return getmetatable(self)(unpack(xs))
+		return getmetatable(self)(table.unpack(xs))
 	else
 		return getmetatable(self)()
 	end

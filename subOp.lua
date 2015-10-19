@@ -6,7 +6,7 @@ subOp.precedence = 2
 subOp.name = '-'
 
 function subOp:evaluateDerivative(...)
-	local a, b = unpack(self)
+	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
 	local x = diff(a,...) - diff(b,...)

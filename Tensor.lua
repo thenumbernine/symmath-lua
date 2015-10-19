@@ -26,7 +26,7 @@ local function parseIndexes(indexes)
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	
 	local function handleTable(indexes)
-		indexes = {unpack(indexes)}
+		indexes = {table.unpack(indexes)}
 		local derivative = nil
 		for i=1,#indexes do
 			if type(indexes[i]) == 'number' then
@@ -268,7 +268,7 @@ function Tensor:init(...)
 					superArgs[i] = Constant(0)
 				end
 			end
-			Expression.init(self, unpack(superArgs))
+			Expression.init(self, table.unpack(superArgs))
 		else
 			-- construct content from default of zeroes
 			local subVariance = table(self.variance)
@@ -284,7 +284,7 @@ function Tensor:init(...)
 					superArgs[i] = Constant(0)
 				end
 			end
-			Expression.init(self, unpack(superArgs))
+			Expression.init(self, table.unpack(superArgs))
 		end	
 	else
 	
@@ -317,7 +317,7 @@ function Tensor:init(...)
 				local subVariance = table(self.variance)
 				table.remove(subVariance, 1)
 			
-				Expression.init(self, unpack(args))
+				Expression.init(self, table.unpack(args))
 				
 				-- matches below
 				for i=1,#self do
@@ -325,7 +325,7 @@ function Tensor:init(...)
 					assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions") 
 					if not (x.isa and x:isa(Expression)) then
 						-- then assume it's meant to be a sub-tensor
-						x = Tensor(subVariance, unpack(x))
+						x = Tensor(subVariance, table.unpack(x))
 						self[i] = x
 					end
 				end
@@ -344,7 +344,7 @@ function Tensor:init(...)
 						superArgs[i] = Constant(0)
 					end
 				end
-				Expression.init(self, unpack(superArgs))
+				Expression.init(self, table.unpack(superArgs))
 			end
 		--[[
 		Tensor({row1}, {row2}, ...)
@@ -364,7 +364,7 @@ function Tensor:init(...)
 				assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions") 
 				if not (x.isa and x:isa(Expression)) then
 					-- then assume it's meant to be a sub-tensor
-					x = Tensor(unpack(x))
+					x = Tensor(table.unpack(x))
 					self[i] = x
 				end
 			end
@@ -374,7 +374,7 @@ function Tensor:init(...)
 	if valueCallback then
 		for index,_ in self:iter() do
 			local clone = require 'symmath.clone'
-			self[index] = clone(valueCallback(unpack(index)))
+			self[index] = clone(valueCallback(table.unpack(index)))
 		end
 	end
 end
@@ -414,14 +414,14 @@ function Tensor:trace(i,j)
 		error("tried to apply tensor contraction across indices of differing dimension: "..i.."th and "..j.."th of "..table.concat(self:dim(), ','))
 	end
 	
-	local newdim = {unpack(dim)}
+	local newdim = {table.unpack(dim)}
 	-- remove the second index from the new dimension
 	local removedDim = table.remove(newdim,j)
 	-- keep track of where the first index is in the new dimension
 	local newdimI = i
 	if j < i then newdimI = newdimI - 1 end
 	
-	local newVariance = {unpack(self.variance)}
+	local newVariance = {table.unpack(self.variance)}
 	table.remove(newVariance, j)
 
 	return Tensor{
@@ -431,7 +431,7 @@ function Tensor:trace(i,j)
 			local indexes = {...}
 			-- now when we reference the unremoved dimension
 
-			local srcIndexes = {unpack(indexes)}
+			local srcIndexes = {table.unpack(indexes)}
 			table.insert(srcIndexes, j, indexes[newdimI])
 			
 			return self:get(srcIndexes)
@@ -461,10 +461,10 @@ function Tensor:contraction(i)
 		return result
 	end
 
-	local newdim = {unpack(dim)}
+	local newdim = {table.unpack(dim)}
 	local removedDim = table.remove(newdim,i)
 
-	local newVariance = {unpack(self.variance)}
+	local newVariance = {table.unpack(self.variance)}
 	table.remove(newVariance, i)
 
 	return Tensor{
@@ -526,7 +526,7 @@ function Tensor:transformIndex(ti, m)
 		
 		local result = 0
 		for vi=1,m:dim()[1] do
-			local vis = {unpack(is)}
+			local vis = {table.unpack(is)}
 			vis[ti] = vi
 			result = result + m:get{vxi, vi} * self:get(vis)
 		end
@@ -612,7 +612,7 @@ function Tensor:__call(indexes)
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 
 	if type(indexes) == 'table' then
-		indexes = {unpack(indexes)}
+		indexes = {table.unpack(indexes)}
 		assert(#indexes == #self.variance)
 		for i=1,#indexes do
 			if type(indexes[i]) == 'number' then
@@ -714,7 +714,7 @@ function Tensor:__call(indexes)
 			end
 		end
 		
-		local newdim = table{unpack(self:dim())}
+		local newdim = table{table.unpack(self:dim())}
 		for i=1,#indexes do
 			if indexes[i].derivative then
 				newdim[i] = #basisForCommaIndex[i].variables
@@ -765,8 +765,8 @@ function Tensor:__call(indexes)
 	do
 		local foundNumbers = table.find(indexes, nil, function(index) return index.number end)
 		if foundNumbers then
-			local newdim = {unpack(self:dim())}
-			local srcIndexes = {unpack(indexes)}
+			local newdim = {table.unpack(self:dim())}
+			local srcIndexes = {table.unpack(indexes)}
 			local sis = {}
 			for i=#newdim,1,-1 do
 				if indexes[i].number then
@@ -970,8 +970,8 @@ function Tensor.pruneMul(lhs, rhs)
 			values = function(...)
 				local indexes = {...}
 				assert(#indexes == #lhs.variance + #rhs.variance)
-				local lhsIndexes = {unpack(indexes, 1, #lhs.variance)}
-				local rhsIndexes = {unpack(indexes, #lhs.variance+1, #lhs.variance + #rhs.variance)}
+				local lhsIndexes = {table.unpack(indexes, 1, #lhs.variance)}
+				local rhsIndexes = {table.unpack(indexes, #lhs.variance+1, #lhs.variance + #rhs.variance)}
 				return lhs:get(lhsIndexes) * rhs:get(rhsIndexes)
 			end,
 		}

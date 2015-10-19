@@ -66,7 +66,7 @@ end
 -- schwarzschild metric in cartesian coordinates
 
 -- start with zero
-local g = Tensor('_uv', unpack(symmath.Matrix.diagonal(
+local g = Tensor('_uv', table.unpack(symmath.Matrix.diagonal(
 	-1, a^2 / (1 - k * r^2), a^2 * r^2, a^2 * r^2 * symmath.sin(theta)^2
 )))
 printbr('metric:')

@@ -26,7 +26,7 @@ function Array:init(...)
 		assert(type(x) == 'table', "arrays can only be constructed with Expressions or tables of Expressions") 
 		if not (x.isa and x:isa(Expression)) then
 			-- then assume it's meant to be a sub-array
-			x = Array(unpack(x))
+			x = Array(table.unpack(x))
 			self[i] = x
 		end
 	end
@@ -203,8 +203,8 @@ local function matrixMatrixMul(a,b)
 	local adim = a:dim()
 	local bdim = b:dim()
 	if #adim ~= 2 or #bdim ~= 2 then return end	-- only support matrix/matrix multiplication
-	local ah, aw = unpack(adim)
-	local bh, bw = unpack(bdim)
+	local ah, aw = table.unpack(adim)
+	local bh, bw = table.unpack(bdim)
 	if aw ~= bh then return end
 	return require 'symmath.Matrix'(range(ah):map(function(i)
 		return range(bw):map(function(j)

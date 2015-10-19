@@ -31,12 +31,12 @@ local symmath = require 'symmath'
 					term[i] = xch:clone()
 					terms:insert(term)
 				end
-				expr = getmetatable(x)(unpack(terms))
+				expr = getmetatable(x)(table.unpack(terms))
 --print('mulOp a*(b+c) => a*b + a*c', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 				return expand:apply(expr)
 			
 				--[[
-				local newSelf = getmetatable(x)(unpack(table.filter(expr, function(cx,k)
+				local newSelf = getmetatable(x)(table.unpack(table.filter(expr, function(cx,k)
 					if type(k) ~= 'number' then return end
 					return cx ~= x
 				end):map(function(cx)
@@ -46,10 +46,10 @@ local symmath = require 'symmath'
 				--[[
 				local removedTerm = table.remove(newSelf, i)
 				print('removed ',removedTerm)
-				local newe = expand:apply(addOp(unpack(
+				local newe = expand:apply(addOp(table.unpack(
 					table.map(x, function(addX,k)
 						if type(k) ~= 'number' then return end
-						return mulOp(addX, unpack(newSelf))
+						return mulOp(addX, table.unpack(newSelf))
 					end)
 				)))
 				print('new expand',newe)
@@ -83,7 +83,7 @@ local symmath = require 'symmath'
 	end,
 
 	[subOp] = function(expand, expr)
-		return expand:apply(expr[1] + -addOp(unpack(expr, 2)))
+		return expand:apply(expr[1] + -addOp(table.unpack(expr, 2)))
 	end,
 }
 

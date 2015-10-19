@@ -49,11 +49,11 @@ ExpandPolynomial.lookupTable = setmetatable(table(ExpandPolynomial.lookupTable, 
 					terms:insert(expr[1]:clone()^frac)
 				end
 				if div then
-					expr = Constant(1)/mulOp(unpack(terms))
+					expr = Constant(1)/mulOp(table.unpack(terms))
 --print('powOp a^-c => 1/(a*a*a...)', require 'symmath.tostring.Verbose'(original), '=>', require 'symmath.tostring.Verbose'(expr))
 					return expand:apply(expr)
 				else
-					expr = mulOp(unpack(terms))
+					expr = mulOp(table.unpack(terms))
 --print('powOp a^c => a*a*a...', require 'symmath.tostring.Verbose'(original), '=>', require 'symmath.tostring.Verbose'(expr))
 					return expand:apply(expr)
 				end

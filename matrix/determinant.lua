@@ -84,7 +84,7 @@ return function(m)
 				end
 			end
 			result = result + parity * product
-			--print(parity, unpack(index))
+			--print(parity, table.unpack(index))
 		end,
 	}
 	local simplify = require 'symmath.simplify'

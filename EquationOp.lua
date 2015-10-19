@@ -23,7 +23,7 @@ function EquationOp:rhs() return self[2] end
 -- a = b => b = a
 -- should probably overload this for >= and <= to switch the sides
 function EquationOp:switch()
-	local a,b = unpack(self)
+	local a,b = table.unpack(self)
 	return b:clone():equals(a:clone())
 end
 

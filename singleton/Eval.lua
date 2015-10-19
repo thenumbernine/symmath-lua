@@ -44,17 +44,17 @@ Eval.lookupTable = {
 	end,
 
 	[divOp] = function(self, expr)
-		local a, b = unpack(expr)
+		local a, b = table.unpack(expr)
 		return self:apply(a) / self:apply(b)
 	end,
 	
 	[modOp] = function(self, expr)
-		local a, b = unpack(expr)
+		local a, b = table.unpack(expr)
 		return self:apply(a) % self:apply(b)
 	end,
 	
 	[powOp] = function(self, expr)
-		local a, b = unpack(expr)
+		local a, b = table.unpack(expr)
 		return self:apply(a) ^ self:apply(b)
 	end,
 

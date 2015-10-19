@@ -4,7 +4,7 @@ local atan = class(Function)
 atan.name = 'atan'
 atan.func = math.atan
 function atan:evaluateDerivative(...)
-	local x = unpack(self):clone()
+	local x = table.unpack(self):clone()
 	local diff = require 'symmath'.diff
 	return diff(x,...) / (1 + x^2)
 end

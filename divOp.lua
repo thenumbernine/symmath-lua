@@ -7,7 +7,7 @@ divOp.precedence = 3.5
 divOp.name = '/'
 
 function divOp:evaluateDerivative(...)
-	local a, b = unpack(self)
+	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
 	local x = (diff(a, ...) * b - a * diff(b, ...)) / (b * b)

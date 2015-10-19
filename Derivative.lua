@@ -19,7 +19,7 @@ function Derivative:init(...)
 		assert(x and type(x) == 'table' and x.isa and x:isa(Variable), "diff() expected wrt expressions to be a variable")
 	end
 	vars:sort(function(a,b) return a.name < b.name end)
-	Derivative.super.init(self, expr, unpack(vars))
+	Derivative.super.init(self, expr, table.unpack(vars))
 end
 
 return Derivative

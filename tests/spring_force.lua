@@ -127,8 +127,8 @@ so the system simplifies one step into
 -- considering how linear an oscillator is, I'm sure this could be eliminated 
 -- (esp if I was storing spring edges somewhere, rather than making all particles share)
 local symbolicParams = system:buildSymbolicParams()
-print('symbolic params',unpack(symbolicParams:map(function(v)
-	local k = unpack(table.keys(v))
+print('symbolic params',table.unpack(symbolicParams:map(function(v)
+	local k = table.unpack(table.keys(v))
 	return tostring(k)..'='..v[k]
 end)))
 print('<br>')
@@ -288,12 +288,12 @@ for i=1,numberOfSteps do
 	for _,v in ipairs(system.particles) do
 		-- forward Euler integration
 		for j=1,dim do
-			v.q[j] = v.q[j] + dt * v.dq_dt[j](unpack(system:buildNumericParams()))
-			v.p[j] = v.p[j] + dt * v.dp_dt[j](unpack(system:buildNumericParams()))
+			v.q[j] = v.q[j] + dt * v.dq_dt[j](table.unpack(system:buildNumericParams()))
+			v.p[j] = v.p[j] + dt * v.dp_dt[j](table.unpack(system:buildNumericParams()))
 			columns[v.qVar[j].name]:insert(v.q[j])
 			columns[v.pVar[j].name]:insert(v.p[j])
 		end
-		-- TODO backward Euler via numeric inverse of the backwards Euler matrix calculated above
+		-- TODO backward Euler via numeric inverse of the backwards Euler matrix calculated above ... or symbolic inverse?
 	end
 	t = t + dt
 	ts:insert(t)

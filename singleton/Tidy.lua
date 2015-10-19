@@ -91,7 +91,7 @@ Tidy.lookupTable = {
 		end
 	end,
 	[divOp] = function(tidy, expr)
-		local a, b = unpack(expr)
+		local a, b = table.unpack(expr)
 		local ua = a:isa(unmOp)
 		local ub = b:isa(unmOp)
 		if ua and ub then return tidy:apply(a[1] / b[1]) end

@@ -17,7 +17,6 @@ n = number of divisions (default 200)
 
 local function euler(f, x, x0, x1, n)
 	n = n or 200
-	f = f:compile{x}
 	local y = f(x0)
 	local dx = (x1 - x0) / n
 	for i=1,n do
@@ -32,7 +31,6 @@ end
 
 local function midpoint(f, x, x0, x1, n)
 	n = n or 200
-	f = f:compile{x}
 	local y = f(x0)
 	local dx = (x1 - x0) / n
 	for i=1,n do
@@ -44,7 +42,6 @@ end
 
 local function trapezoid(f, x, x0, x1, n)
 	n = n or 200
-	f = f:compile{x}
 	local y = f(x0)
 	local dx = (x1 - x0) / n
 	for i=1,n do
@@ -69,15 +66,15 @@ local function simpson(f, x, x0, x1, n)
 end
 
 local symmath = require 'symmath'
-local x = symmath.var'x'
-local f = x^2	-- our target function
-local df = f:diff(x):simplify()
-local t0 = 0
-local t1 = 1
-local n = 100
-local norm = math.abs
+local x = symmath.var'x'		-- x-variable
+local f = x^2					-- symbolic function
+local df = f:diff(x):simplify()	-- symbolic function derivative
+local t0 = 0					-- start time
+local t1 = 1					-- end time
+local n = 100					-- number of iterations
+local norm = math.abs			-- norm
 
-local _f = f:compile{x}
+local _f = f:compile{x}			-- numeric function
 
 for _,method in ipairs{
 	euler,
@@ -87,15 +84,15 @@ for _,method in ipairs{
 } do
 	local dt = (t1 - t0) / n
 	local t = t0
-	local x = _f(t)
+	local _x = _f(t)			-- numeric value
 	local err = 0
 	for i=1,n do
 		local correctX = _f(t)
-		local diffX = x - correctX
+		local diffX = _x - correctX
 		local normDiff = norm(diffX)
 		err = err + normDiff
 		
-		x = method(f, x, x+dt, n)
+		_x = method(_f, _x, x+dt, n)
 		t = t + dt
 	end
 end

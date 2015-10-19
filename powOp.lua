@@ -18,7 +18,7 @@ a^b * (db/dx * log(a) + b * d/dx[log(a)])
 a^b * (db/dx * log(a) + da/dx * b / a)
 --]]
 function powOp:evaluateDerivative(...)
-	local a, b = unpack(self)
+	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
 	local x = a ^ b * (diff(b, ...) * log(a) + diff(a, ...) * b / a)

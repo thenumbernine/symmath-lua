@@ -43,8 +43,8 @@ for n=1,maxN do
 	} do
 		-- data-only constructor:
 		local args = range(n)
-		if indexes[1] then args = {indexes[1], unpack(args)} end
-		test(Tensor(unpack(args)))
+		if indexes[1] then args = {indexes[1], table.unpack(args)} end
+		test(Tensor(table.unpack(args)))
 		-- value-only constructor
 		test(Tensor{
 			dim = {n},
@@ -76,8 +76,8 @@ for n=1,maxN do
 					return j + n * (i-1)
 				end)
 			end)
-			if indexes[1] then args = {indexes[1], unpack(args)} end
-			test(Tensor(unpack(args)))
+			if indexes[1] then args = {indexes[1], table.unpack(args)} end
+			test(Tensor(table.unpack(args)))
 			-- value-only constructor
 			test(Tensor{
 				dim = {m, n},
@@ -112,8 +112,8 @@ for n=1,maxN do
 						end)
 					end)
 				end)
-				if indexes[1] then args = {indexes[1], unpack(args)} end
-				test(Tensor(unpack(args)))
+				if indexes[1] then args = {indexes[1], table.unpack(args)} end
+				test(Tensor(table.unpack(args)))
 				-- value-only constructor:
 				test(Tensor{
 					dim = {m, n, p},

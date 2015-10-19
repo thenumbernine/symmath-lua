@@ -158,7 +158,7 @@ LaTeX.lookupTable = {
 	end,
 	[require 'symmath.Sum'] = function(self, expr)
 		local s = '\\sum'
-		local sumexpr, var, from, to = unpack(expr)
+		local sumexpr, var, from, to = table.unpack(expr)
 		if var or from or to then
 			s = s .. '\\limits'
 			if var or from then
@@ -179,7 +179,7 @@ LaTeX.lookupTable = {
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
 		local s = '\\int'
-		local intexpr, var, from, to = unpack(expr)
+		local intexpr, var, from, to = table.unpack(expr)
 		if from or to then
 			s = s .. '\\limits_'
 			if from then

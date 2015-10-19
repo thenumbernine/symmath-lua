@@ -31,7 +31,7 @@ Prune.lookupTable = {
 			if expr[1]:isa(Array) then
 				local res = expr[1]:clone()
 				for i=1,#res do
-					res[i] = prune:apply(res[i]:diff(unpack(expr, 2)))
+					res[i] = prune:apply(res[i]:diff(table.unpack(expr, 2)))
 				end
 				return res
 			end
@@ -44,8 +44,8 @@ Prune.lookupTable = {
 
 		-- d/dx d/dy = d/dxy
 		if expr[1]:isa(Derivative) then
-			return prune:apply(Derivative(expr[1][1], unpack(
-				table.append({unpack(expr, 2)}, {unpack(expr[1], 2)})
+			return prune:apply(Derivative(expr[1][1], table.unpack(
+				table.append({table.unpack(expr, 2)}, {table.unpack(expr[1], 2)})
 			)))
 		end
 
@@ -204,7 +204,7 @@ local original = expr:clone()
 					baseConst = baseConst + thisConst
 				end
 				if not didntFind then
-					local expr = addOp(mulOp(baseConst, unpack(baseTerms)), unpack(nonMuls))
+					local expr = addOp(mulOp(baseConst, table.unpack(baseTerms)), table.unpack(nonMuls))
 --print('addOp c1*x + c2*x = (c1+c2)*x', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 					return prune:apply(expr)
 				end
@@ -228,7 +228,7 @@ local original = expr:clone()
 --print("x[i] didn't find mulOp")
 				termsI = table{xI}
 			end
---print('termsI:',unpack(termsI))
+--print('termsI:',table.unpack(termsI))
 			for j=i+1,#expr do
 				local xJ = expr[j]
 				local termsJ
@@ -239,7 +239,7 @@ local original = expr:clone()
 --print("x[j] didn't find mulOp")
 					termsJ = table{xJ}
 				end
---print('termsJ:',unpack(termsJ))
+--print('termsJ:',table.unpack(termsJ))
 
 				local fail
 				
@@ -292,8 +292,8 @@ local original = expr:clone()
 				if not fail then
 --print('optimizing from '..tostring(expr))
 					table.remove(expr, j)
---print('constI',constI.value,'constJ',constJ.value,'commonTerms',unpack(commonTerms))
-					expr[i] = mulOp(Constant(constI.value + constJ.value), unpack(commonTerms))
+--print('constI',constI.value,'constJ',constJ.value,'commonTerms',table.unpack(commonTerms))
+					expr[i] = mulOp(Constant(constI.value + constJ.value), table.unpack(commonTerms))
 --print('optimizing to '..tostring(prune:apply(expr)))
 --print('flattening muls in add')
 					return prune:apply(expr)
@@ -330,7 +330,7 @@ local original = expr:clone()
 		for i,x in ipairs(expr) do
 			if x:isa(divOp) then
 				assert(#x == 2)
-				local a,b = unpack(x)
+				local a,b = table.unpack(x)
 				table.remove(expr, i)
 				local expr = (expr * b + a) / b
 --print('c+a/b => (c*b+a)/b', symmath.Verbose(original), '=>', symmath.Verbose(expr))
@@ -606,10 +606,10 @@ local original = expr:clone()
 				local denom = Constant(1)
 
 				if base:isa(powOp) then
-					base, power = unpack(base)
+					base, power = table.unpack(base)
 				end
 				if base:isa(divOp) then
-					base, denom = unpack(base)
+					base, denom = table.unpack(base)
 				end
 				if denom ~= Constant(1) then
 					uniqueDenomIndexes:insert(i)
@@ -629,7 +629,7 @@ local original = expr:clone()
 						num = num ^ powers[1]
 					end
 				else
-					num = mulOp(unpack(bases:map(function(base,i)
+					num = mulOp(table.unpack(bases:map(function(base,i)
 						if powers[i] == Constant(1) then
 							return base
 						else
@@ -648,7 +648,7 @@ local original = expr:clone()
 					end
 				elseif #denoms > 1 then
 --print('mulOp (a/b)*(c/d) => (a*c)/(b*d)')
-					denom = mulOp(unpack(uniqueDenomIndexes:map(function(i)
+					denom = mulOp(table.unpack(uniqueDenomIndexes:map(function(i)
 						if powers[i] == Constant(1) then
 							return denoms[i]
 						else
@@ -680,7 +680,7 @@ local original = expr:clone()
 		
 		-- matrix/scalar
 		do
-			local a, b = unpack(expr)
+			local a, b = table.unpack(expr)
 			local Array = require 'symmath.Array'
 			if a:isa(Array)
 			and not b:isa(Array)
@@ -707,7 +707,7 @@ local original = expr:clone()
 			-- mul / Constant = 1/Constant * mul
 			if expr[1]:isa(mulOp) and expr[2]:isa(Constant) then
 				local m = expr[1]:clone()
-				return prune:apply(mulOp(Constant(1/expr[2].value), unpack(m)))
+				return prune:apply(mulOp(Constant(1/expr[2].value), table.unpack(m)))
 			end
 		end
 
@@ -737,8 +737,8 @@ local original = expr:clone()
 		
 		-- a / (b / c) => (a * c) / b
 		if expr[2]:isa(divOp) then
-			local a, b = unpack(expr)
-			local b, c = unpack(b)
+			local a, b = table.unpack(expr)
+			local b, c = table.unpack(b)
 			return prune:apply((a * c) / b)
 		end
 
@@ -768,7 +768,7 @@ local original = expr:clone()
 					local x = list[i]
 					local base, power
 					if x:isa(powOp) then
-						base, power = unpack(x)
+						base, power = table.unpack(x)
 					else
 						base, power = x, Constant(1)
 					end
@@ -786,7 +786,7 @@ local original = expr:clone()
 				{numBases, numPowers},
 				{denomBases, denomPowers}
 			} do
-				local bases, powers = unpack(info)
+				local bases, powers = table.unpack(info)
 				for i=#bases,1,-1 do
 					local b = bases[i]
 					if b:isa(Constant) 
@@ -842,13 +842,13 @@ local original = expr:clone()
 				-- can I construct these even if they have no terms?
 				local num
 				if #numBases > 0 then
-					num = mulOp(unpack(numBases:map(function(v,i) 
+					num = mulOp(table.unpack(numBases:map(function(v,i) 
 						return v ^ numPowers[i]
 					end)))
 				end
 				local denom
 				if #denomBases > 0 then
-					denom = mulOp(unpack(denomBases:map(function(v,i) 
+					denom = mulOp(table.unpack(denomBases:map(function(v,i) 
 						return v ^ denomPowers[i]
 					end)))
 				end

@@ -13,6 +13,6 @@ return function(A)
 			row[j] = A[j][i]:clone()
 		end
 	end
-	return Matrix(unpack(rows))
+	return Matrix(table.unpack(rows))
 end
 
