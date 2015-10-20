@@ -86,7 +86,23 @@ LaTeX.lookupTable = {
 		local diffExpr = expr[1]
 		local diffExprStr = self:apply(diffExpr)
 		local diffExprOnTop = diffExpr:isa(Variable)
-		
+	
+		if self.usePartialLHSForDerivative then
+			local s = '{\\partial_{'
+			..diffVars:map(function(var)
+				return '{'..self:apply(var)..'}'
+			end):concat()
+			..'}}'
+			--if not diffExprOnTop then 
+				s = s .. '(' 
+			--end
+			s = s .. diffExprStr
+			--if not diffExprOnTop then 
+				s = s .. ')' 
+			--end
+			return s
+		end
+
 		local s = '{d'
 		if diffPower > 1 then
 			s = s .. '^{' .. diffPower .. '}'

@@ -24,6 +24,7 @@
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
+MathJax.usePartialLHSForDerivative = true
 
 local function printbr(...)
 	print(...)
@@ -35,9 +36,9 @@ local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
 
 -- primitive variables
 local rho = symmath.var('\\rho', {t,x,y,z})	-- density
-local u = symmath.var('u', {t,x,y,z})		-- velocity
-local v = symmath.var('v', {t,x,y,z})
-local w = symmath.var('w', {t,x,y,z})
+local ux = symmath.var('u_x', {t,x,y,z})		-- velocity
+local uy = symmath.var('u_y', {t,x,y,z})
+local uz = symmath.var('u_z', {t,x,y,z})
 local e = symmath.var('e', {t,x,y,z})		-- total specific energy 
 
 -- state variable
@@ -48,8 +49,8 @@ local q4 = symmath.var('q_4', {t,x,y,z})
 local q5 = symmath.var('q_5', {t,x,y,z})
 
 local gamma = symmath.var('\\gamma')
-local ek = (u * u + v * v + w * w) / 2			-- kinetic specific energy
-local ei = e - ek / 2							-- internal specific energy
+local ek = .5 * (ux * ux + uy * uy + uz * uz)	-- kinetic specific energy
+local ei = e - ek								-- internal specific energy
 local P = (gamma - 1) * rho * ei				-- pressure
 local E = rho * e								-- total energy
 
@@ -59,11 +60,11 @@ print(MathJax.header)
 printbr('original equations:')
 local diff = symmath.diff
 local eqns = table{
-	symmath.equals(diff(rho    , t) + diff(rho * u        , x) + diff(rho * v        , y) + diff(rho * w        , z), 0),
-	symmath.equals(diff(rho * u, t) + diff(rho * u * u + P, x) + diff(rho * u * v    , y) + diff(rho * u * w    , z), 0),
-	symmath.equals(diff(rho * v, t) + diff(rho * v * u    , x) + diff(rho * v * v + P, y) + diff(rho * v * w    , z), 0),
-	symmath.equals(diff(rho * w, t) + diff(rho * w * u    , x) + diff(rho * w * v    , y) + diff(rho * w * w + P, z), 0),
-	symmath.equals(diff(rho * e, t) + diff((E + P) * u    , x) + diff((E + P) * v    , y) + diff((E + P) * w    , z), 0),
+	symmath.equals(diff(rho     , t) + diff(rho * ux         , x) + diff(rho * uy         , y) + diff(rho * uz         , z), 0),
+	symmath.equals(diff(rho * ux, t) + diff(rho * ux * ux + P, x) + diff(rho * ux * uy    , y) + diff(rho * ux * uz    , z), 0),
+	symmath.equals(diff(rho * uy, t) + diff(rho * uy * ux    , x) + diff(rho * uy * uy + P, y) + diff(rho * uy * uz    , z), 0),
+	symmath.equals(diff(rho * uz, t) + diff(rho * uz * ux    , x) + diff(rho * uz * uy    , y) + diff(rho * uz * uz + P, z), 0),
+	symmath.equals(diff(rho * e , t) + diff((E + P) * ux     , x) + diff((E + P) * uy     , y) + diff((E + P) * uz     , z), 0),
 }
 -- TODO don't simplify differentiation
 eqns = eqns:map(function(eqn) 
@@ -74,9 +75,9 @@ eqns:map(function(eqn) printbr(eqn) end)
 printbr('substituting state variables:')
 eqns = eqns:map(function(eqn)
 	eqn = symmath.replace(eqn, rho, q1)
-	eqn = symmath.replace(eqn, u, q2 / q1)
-	eqn = symmath.replace(eqn, v, q3 / q1)
-	eqn = symmath.replace(eqn, w, q4 / q1)
+	eqn = symmath.replace(eqn, ux, q2 / q1)
+	eqn = symmath.replace(eqn, uy, q3 / q1)
+	eqn = symmath.replace(eqn, uz, q4 / q1)
 	eqn = symmath.replace(eqn, e, q5 / q1)
 	--eqn = symmath.simplify(eqn)
 	return eqn
@@ -87,11 +88,18 @@ printbr('simplify & expand')
 eqns = eqns:map(symmath.simplify)
 eqns:map(function(eqn) printbr(eqn) end)
 
---[[
+-- [[
 printbr('factor derivatives')
-eqns = symmath.factor(eqns, function(eqn)
-	return symmath.factor(eqn, {symmath.diff(q1, x), symmath.diff(q2, x), symmath.diff(q3, x)})
+eqns = eqns:map(function(eqn)
+	return symmath.factor(eqn, {
+		symmath.diff(q1, x),
+		symmath.diff(q2, x),
+		symmath.diff(q3, x),
+		symmath.diff(q4, x),
+		symmath.diff(q5, x)
+	})
 end)
+eqns:map(function(eqn) printbr(eqn) end)
 --]]
 
 print(MathJax.footer)

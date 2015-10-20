@@ -7,12 +7,12 @@ local Visitor = require 'symmath.singleton.Visitor'
 local Factor = class(Visitor)
 
 Factor.lookupTable = {
-	[addOp] = function(factor, self, factors)
+	[addOp] = function(factor, expr, factors)
 
 		-- [[ x*a + x*b => x * (a + b)
 		-- the opposite of this is in mulOp:prune's applyDistribute
 		-- don't leave both of them uncommented or you'll get deadlock
-		if #self <= 1 then return end
+		if #expr <= 1 then return end
 		
 		local function nodeToProdList(x)
 			local prodList
@@ -90,8 +90,8 @@ Factor.lookupTable = {
 
 		-- 1) get all terms and powers
 		local prodsList = table()
-		for i=1,#self do
-			prodsList[i] = nodeToProdList(self[i])
+		for i=1,#expr do
+			prodsList[i] = nodeToProdList(expr[i])
 		end
 	
 
@@ -99,9 +99,9 @@ Factor.lookupTable = {
 		-- also add double the -1 to the rest of the terms (which should equate to being positive)
 		-- so that signs don't mess with simplifying division
 		-- ex: -1+x => (-1)*1+(-1)*(-1)*x => -1*(1+(-1)*x) => -1*(1-x)
-		for i=1,#self do
-			if self[i]:isa(Constant) and self[i].value < 0 then
-				for j=1,#self do
+		for i=1,#expr do
+			if expr[i]:isa(Constant) and expr[i].value < 0 then
+				for j=1,#expr do
 					if j ~= i then
 						-- insert two copies so that one can be factored out
 						-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
