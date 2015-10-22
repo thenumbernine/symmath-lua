@@ -70,7 +70,7 @@ interpretter = new SymLuaEmbeddedLuaInterpreter({
 		interpretter.execute(mlstr(function(){/*
 -- META!!! This is Lua code interpretted in JavaScript embedded in HTML served from a Lua server
 LUA_IN_HTML = true -- maybe this should set in lua.vm-util.js 
-package.path = package.path .. ';./?/init.lua'
+package.path = package.path .. ';./?/?.lua'
 symmath = require 'symmath'
 do
 	local MathJax = require 'symmath.tostring.MathJax'
