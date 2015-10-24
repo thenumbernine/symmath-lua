@@ -26,8 +26,8 @@ flrw in spherical form: -dt^2 + a^2 (dr^2 / (1 - k r^2) + r^2 (dtheta^2 + sin(th
 --]]
 
 symmath = require 'symmath'
-symmath.tostring = require 'symmath.tostring.LaTeX'
 local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = MathJax
 local Tensor = require 'symmath.Tensor'
 
 print(MathJax.header)
@@ -57,11 +57,6 @@ local function printbr(...)
 	print(...)
 	print('<br>')
 end
-local function printmath(...)
-	print'\\('
-	printbr(...)
-	print'\\)<br>'
-end
 
 -- schwarzschild metric in cartesian coordinates
 
@@ -70,23 +65,23 @@ local g = Tensor('_uv', table.unpack(symmath.Matrix.diagonal(
 	-1, a^2 / (1 - k * r^2), a^2 * r^2, a^2 * r^2 * symmath.sin(theta)^2
 )))
 printbr('metric:')
-printmath([[g_{uv} = ]]..g'_uv')
+printbr([[\(g_{uv} = \)]]..g'_uv')
 
 Tensor.metric(g)
 
 -- metric inverse, assume diagonal
 printbr'metric inverse:'
-printmath([[g^{uv} = ]]..g'^uv')
+printbr([[\(g^{uv} = \)]]..g'^uv')
 
 -- connections of 1st kind
 local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2):simplify()
 printbr'1st kind Christoffel:'
-printmath([[\Gamma_{abc} = ]]..Gamma'_abc')
+printbr([[\(\Gamma_{abc} = \)]]..Gamma'_abc')
 printbr()
 
 -- connections of 2nd kind
 printbr'2nd kind Christoffel:'
-printmath([[{\Gamma^a}_{bc} = ]]..Gamma'^a_bc')
+printbr([[\({\Gamma^a}_{bc} = \)]]..Gamma'^a_bc')
 printbr()
 
 local dx = Tensor('^a',
@@ -101,7 +96,7 @@ local d2x = Tensor('^a',
 	symmath.var'\\ddot{x}^z')
 printbr'geodesic:'
 -- TODO unravel equaliy, or print individual assignments
-printmath(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):equals(Tensor('^a',0,0,0,0))):simplify())
+printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):equals(Tensor('^a',0,0,0,0))):simplify())
 printbr()
 
 local Riemann = (Gamma'^a_bd,c' - Gamma'^a_bc,d' + Gamma'^a_uc' * Gamma'^u_bd' - Gamma'^a_ud' * Gamma'^u_bc'):simplify()
@@ -111,24 +106,24 @@ Riemann = symmath.map(Riemann, function(x)
 	if x == symmath.cos(theta)^2 then return 1 - symmath.sin(theta)^2 end
 end):simplify()
 -- also TODO the other thing that doesn't appear to work is factoring out negatives of the denominator for simplification 
-printmath([[{R^a}_{bcd} = ]]..Riemann'^a_bcd')
+printbr([[\({R^a}_{bcd} = \)]]..Riemann'^a_bcd')
 
 local Ricci = Riemann'^c_acd':simplify()
 printbr'Ricci curvature tensor:'
-printmath([[R_{ab} = ]]..Ricci'_ab')
+printbr([[\(R_{ab} = \)]]..Ricci'_ab')
 
 printbr('Gaussian curvature')
 local Gaussian = Ricci'^a_a':simplify()
-printmath([[R = ]]..Gaussian)
+printbr([[\(R = \)]]..Gaussian)
 printbr()
 
 -- matter stress-energy tensor
 printbr'matter stress-energy tensor:'
 local u = Tensor('^a', 1,0,0,0)
-printmath([[u^a = ]]..u)
+printbr([[\(u^a = \)]]..u)
 
 local T = (g'_ab' * p + u'_a' * u'_b' * (rho + p)):simplify()
-printmath([[T_{ab} = ]]..T'_ab')
+printbr([[\(T_{ab} = \)]]..T'_ab')
 printbr()
 
 -- Einstein field equations
@@ -164,7 +159,7 @@ for i=1,4 do
 		if lhs_ij ~= Constant(0)
 		or rhs_ij ~= Constant(0)
 		then
-			printmath(lhs_ij..' = '..rhs_ij)
+			printbr(lhs_ij..[[\( = \)]]..rhs_ij)
 		end
 	end
 end
