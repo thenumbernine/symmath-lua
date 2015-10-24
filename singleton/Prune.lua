@@ -326,7 +326,7 @@ local original = expr:clone()
 			return prune:apply(expr / denom)
 		end
 		--]]
-		--[[ divs: c + a/b => (c * b + a) / b
+		-- [[ divs: c + a/b => (c * b + a) / b
 		for i,x in ipairs(expr) do
 			if x:isa(divOp) then
 				assert(#x == 2)
@@ -866,7 +866,7 @@ local original = expr:clone()
 			end
 		end
 
-		-- (a + b) / c => a/c + b/c ...
+		--[[ (a + b) / c => a/c + b/c ...
 		if expr[1]:isa(addOp) then
 			return prune:apply(addOp(
 				table.map(expr[1], function(x,k)
@@ -874,9 +874,10 @@ local original = expr:clone()
 					return x / expr[2]
 				end):unpack()))
 		end
+		--]]
 
 		--[[
-	
+		
 		-- x / x^a => x^(1-a)
 		if expr[2]:isa(powOp) and expr[1] == expr[2][1] then
 			return prune:apply(expr[1] ^ (1 - expr[2][2]))

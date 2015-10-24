@@ -35,12 +35,18 @@ local symmath = require 'symmath'
 local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
+
+local function printbr(...)
+	print(...)
+	print('<br>')
+end
+
 print(MathJax.header)
 
 -- coordinates
 local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
 
-local dim = 2	-- 2, 3, or 4
+local dim = 4	-- 2, 3, or 4
 
 local allCoords = {t, x, y, z}
 local coords = {table.unpack(allCoords, 1, dim)}
@@ -89,50 +95,68 @@ for i=1,dim-1 do
 	end
 end
 --]]
-print'metric:<br>'
-print('\\(g_{uv} = \\)'..g..'<br>')
+printbr'metric:'
+printbr('\\(g_{uv} = \\)'..g)
 g = g:simplify()
-print'simplified:<br>'
-print('\\(g_{uv} = \\)'..g..'<br>')
+printbr'simplified:'
+printbr('\\(g_{uv} = \\)'..g)
 
 Tensor.metric(g)
-print('\\(g^{uv} = \\)'..Tensor.metric().metricInverse..'<br>')
+printbr('\\(g^{uv} = \\)'..Tensor.metric().metricInverse)
+
+-- metric inverse, assume diagonal
+printbr('metric inverse')
+printbr('\\(g^{uv} = \\)'..g'^uv')
+printbr()
 
 -- metric partial
 -- assume dr/dt is zero
 local dg = g'_uv,w':simplify()
-print'metric partial derivatives:<br>'
-print('\\(\\partial_w g_{uv} = \\)'..dg'_uvw'..'<br>')
+printbr'metric partial derivatives:'
+printbr('\\(\\partial_w g_{uv} = \\)'..dg'_uvw')
 
-print'let \\({{\\partial r}\\over{\\partial t}} = 0\\)<br>'
+printbr'let \\({{\\partial r}\\over{\\partial t}} = 0\\)'
 dg = dg:replace(r:diff(t), 0):simplify()
-print('\\(\\partial_w g_{uv} = \\)'..dg'_uvw'..'<br>')
+printbr('\\(\\partial_w g_{uv} = \\)'..dg'_uvw')
 
 -- Christoffel: G_abc = 1/2 (g_ab,c + g_ac,b - g_bc,a) 
-local Gamma = ((dg'_uvw' + dg'_uwv' - dg'_vwu')/2):simplify()
-print'1st kind Christoffel:<br>'
-print('\\(\\Gamma_{uvw} = \\)'..Gamma'_uvw'..'<br>')
+local Gamma = ((dg'_abc' + dg'_acb' - dg'_bca') / 2):simplify()
+printbr'1st kind Christoffel:'
+printbr('\\(\\Gamma_{uvw} = \\)'..Gamma'_uvw')
 
 -- Christoffel: G^a_bc = g^ae G_ebc
 Gamma = Gamma'^u_vw'	-- change underlying storage (not necessary, but saves future calculations)
-print'2nd kind Christoffel:<br>'
-print('\\({\\Gamma^u}_{vw} = \\)'..Gamma'^u_vw'..'<br>')
-do return end
+printbr'2nd kind Christoffel:'
+printbr('\\({\\Gamma^u}_{vw} = \\)'..Gamma'^u_vw')
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
-tensor.assign[[diffxU_$u = symmath.Variable('diffxU_$u', {t,x,y,z})]]
-tensor.assign[[diff2xU_$u = -GammaULL_$u_$v_$w * diffxU_$u * diffxU_$v]]
+local diffx = Tensor('^u', function(u) return symmath.var('\\dot{x}^'..coords[u].name, coords) end)
+local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w'):simplify()
+printbr('geodesic equation')
+printbr('\\(\\ddot{x}^a = \\)'..diffx2)
 
 -- Christoffel partial: G^a_bc,d
-tensor.assign'GammaULLL_$a_$b_$c_$d = symmath.diff(GammaULL_$a_$b_$c, $d)'
+local dGamma = Gamma'^a_bc,d':simplify()
+printbr('2nd kind Christoffel partial')
+printbr('\\({\\Gamma^a}_{bc,d} = \\)'..dGamma)
+printbr()
 
 --Riemann: R^a_bcd = G^a_bd,c - G^a_bc,d + G^a_uc G^u_bd - G^a_ud G^u_bc
-tensor.assign'RULLL_$a_$b_$c_$d = GammaULLL_$a_$b_$d_$c - GammaULLL_$a_$b_$c_$d + GammaULL_$a_$u_$c * GammaULL_$u_$b_$d - GammaULL_$a_$u_$d * GammaULL_$u_$b_$c'
+local Riemann = (dGamma'^a_bdc' - dGamma'^a_bcd' + Gamma'^a_uc' * Gamma'^u_bd' - Gamma'^a_ud' * Gamma'^u_bc'):simplify()
+printbr('Riemann curvature tensor')
+printbr('\\({R^a}_{bcd} = \\)'..Riemann)
+printbr()
 
 -- Ricci: R_ab = R^u_aub
-tensor.assign'RLL_$a_$b = RULLL_$u_$a_$u_$b'
+local Ricci = Riemann'^u_aub':simplify()
+printbr('Ricci curvature tensor')
+printbr('\\(R_{ab} = \\)'..Ricci)
+printbr()
 
 -- Gaussian curvature: R = g^ab R_ab
-tensor.assign'R = gUU_$a_$b * RLL_$a_$b'
+local Gaussian = Ricci'^a_a':simplify()
+printbr('Gaussian curvature')
+printbr('\\(R = \\)'..Gaussian)
+printbr()
 
 print(MathJax.footer)

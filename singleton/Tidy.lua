@@ -99,7 +99,7 @@ Tidy.lookupTable = {
 		if ub and b[1]:isa(Constant) then return tidy:apply(-(a / b[1])) end
 	end,
 	[powOp] = function(tidy, expr)
-		--[[ x^-a => 1/x^a ... TODO only do this when in a product?
+		-- [[ x^-a => 1/x^a ... TODO only do this when in a product?
 		if expr[2]:isa(unmOp) then
 			return tidy:apply(Constant(1)/expr[1]^expr[2][1])
 		end

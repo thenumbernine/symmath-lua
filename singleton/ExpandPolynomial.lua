@@ -18,7 +18,7 @@ ExpandPolynomial.lookupTable = setmetatable(table(ExpandPolynomial.lookupTable, 
 -- without this, equations look a whole lot cleaner during simplificaton
 -- (and dividing polys works a bit better)
 -- until factor() works, simplify() works better without this enabled ... but polyCoeffs() doesn't ... 
---[[
+-- [[
 	[require 'symmath.powOp'] = function(expand, expr)
 		local clone = require 'symmath.clone'
 		local Constant = require 'symmath.Constant'

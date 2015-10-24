@@ -30,6 +30,11 @@ local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 
+local function printbr(...)
+	print(...)
+	print('<br>')
+end
+
 print(MathJax.header)
 
 -- coordinates
@@ -39,10 +44,6 @@ local coords = {t, r, theta, phi}
 Tensor.coords{
 	{variables = coords},
 }
-local function printbr(...)
-	print(...)
-	print('<br>')
-end
 
 -- schwarzschild metric in cartesian coordinates
 local g = Tensor('_uv', function(u,v) return u == v and ({-(1-2*M/r), 1/(1-2*M/r), r^2, r^2 * symmath.sin(theta)^2})[u] or 0 end) 

@@ -549,7 +549,7 @@ usage:
 	Tensor.metric(nil, nil, symbol) 	<- returns the basis associated with the symbol
 --]]
 function Tensor.metric(metric, metricInverse, symbol)
-	local Matrix = require 'symmath.matrix'
+	local Matrix = require 'symmath.Matrix'
 	local basis = findBasisForSymbol(symbol or {})
 	if not basis then error("can't set the metric without first setting the coords") end
 	if metric or metricInverse then
