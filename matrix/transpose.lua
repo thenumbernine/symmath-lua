@@ -6,10 +6,10 @@ return function(A)
 	local dim = A:dim()
 	assert(#dim == 2, "expected a rank-2 array")
 	local rows = {}
-	for i=1,dim[2] do
+	for i=1,dim[2].value do
 		local row = {}
 		rows[i] = row
-		for j=1,dim[1] do
+		for j=1,dim[1].value do
 			row[j] = A[j][i]:clone()
 		end
 	end

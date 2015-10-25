@@ -1,3 +1,71 @@
+--[[
+thoughts:
+
+transformIndexes works fine between upper and lower, using the metric and its inverse
+	I think I have some sort of implicit subset working for my adm calculations between 4D and 3D that just chops off a letter (and neglects the 4D projection part)
+	... based on the fact that the 3D part of the ADM metric is the 3D spatial metric, and the 3D part of the ADM metric inverse is the 3D spatial metric inverse plus an outer of shift vectors
+	... which are orthogonal to the spatial metric (so any spatial terms only operate with the 3D portion anyways)
+	
+so neglect aside, what is the correct way I should be doing this?
+
+each index set needs a metric (and an inverse, which can be calculated)
+...and between each index set needs transform matrices (and their inverses, which can be calculated)
+...and between subsequent coordinate systems we can calculate combined transformations 
+
+ex:
+local t,x,y,z = symmath.vars('t', 'x', 'y', 'z')
+local curvedVars = {t,x,y,z}
+local tHat, xHat, yHat, zHat = symmath.vars('\hat{t}', '\hat{x}', '\hat{y}', '\hat{z}')
+local flatVars = {tHat,xHat,yHat,zHat}
+local r, theta, phi = symmath.vars('r, '\\theta', '\\phi')
+local eta = Tensor{indexes='_IJ', values=Matrix.identity(#flatVars)}
+local u = Tensor('^I', table.unpack(symmath.Vector.sphericalToCartesian(r, theta, phi)))
+local e = Tensor{indexes='_u^I', values=u'^I_,u':simplify())
+local g = (e'_u^I' * e'_v^J' * eta'_IJ')
+local curvedSpace = CoordinateSystem{variables=curvedVars, symbols='a-z', metric=g}				-- 4D curved space
+local flatSpace = CoordinateSystem{variables=flatVars, symbols='I-N', metric=eta}	-- 4D Minkowski space
+Tensor.coords{curvedSpace, flatSpace}
+Tensor.transforms{from=curvedSpace, to=flatSpcae, transform=e}
+
+Tensor.transforms would be the new function
+transform= would specify the tensor to transform between coordinate systems
+a convention would have to be established such that ...
+(for a-h the system from and i-n the system to)
+
+e_a^i e_b^j eta_ij = g_ab
+e_a^i e_b^j g^ab = eta_ij
+e^a_i e^b_j eta^ij = g^ab
+e^a_i e^b_j g_ab = eta_ij
+
+e_a^i v^a = v^i transforms v upper from a->i
+e_a^i v_i = v_a transforms v lower from i->a
+e^a_i v_a = v_i transforms v lower from a->i
+e^a_i v^i = v^a transforms v upper from i->a
+
+it turns out if you do the math, you just need to provide one transform from 'from' to 'to'
+then the inverse accomplishes the other direction,
+and between uppers and lowers, raising/lowering metrics accordingly
+ (in the correct coordinate system) gets you what you want
+
+the thing to be careful of is index order.
+http://physics.stackexchange.com/questions/142836/correct-tetrad-index-notation
+
+e_u^I != e^I_u no matter how many papers this is incorrectly stated in
+
+typical linear transforms in index notation have the 'from' as the second coordinate
+ and the 'to' as the first: y_i = a_ij x_j
+typical vielbein representation follow the same:
+
+metric transformsations:  g_uv = e_u^I e_v^J eta_IJ
+inverse metric transformations: eta^IJ = g^uv e_u^I e_v^J
+
+by some linear math we find that, once this is specified,
+we can find the inverse transform by either 
+(1) compute the transpose inverse of the transform metric
+(2) raise/lower indexes (i.e. multiply rhs by 'from' metric and lhs by 'to' metric inverse)
+
+--]]
+
 local table = require 'ext.table'
 local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
@@ -256,6 +324,13 @@ function Tensor:init(...)
 		local dim = args[1].dim
 		--if dim and args[1].indexes then error("can't specify dim and indexes") end
 		if dim then
+			assert(type(dim) == 'table')
+			dim = range(#dim):map(function(i)
+				local di = dim[i]
+				if Constant.is(di) then di = di.value end
+				assert(type(di) == 'number')
+				return di
+			end)
 			-- construct content from default of zeroes
 			local subdim = table(dim)
 			local thisdim = subdim:remove(1)
@@ -372,9 +447,13 @@ function Tensor:init(...)
 	end
 
 	if valueCallback then
+		local clone = require 'symmath.clone'
 		for index,_ in self:iter() do
-			local clone = require 'symmath.clone'
-			self[index] = clone(valueCallback(table.unpack(index)))
+			if type(valueCallback) == 'function' then
+				self[index] = clone(valueCallback(table.unpack(index)))
+			elseif Array.is(valueCallback) then
+				self[index] = clone(valueCallback[index])
+			end
 		end
 	end
 end
@@ -402,19 +481,20 @@ end
 --[[
 produce a trace between dimensions i and j
 store the result in dimension i, removing dimension j
-TODO why keep dimension i?  why not sum it as well?
 --]]
 function Tensor:trace(i,j)
+	local clone = require 'symmath.clone'
+
 	if i == j then
 		error("cannot apply contraction across the same index: "..i)
 	end
 
 	local dim = self:dim()
 	if dim[i] ~= dim[j] then
-		error("tried to apply tensor contraction across indices of differing dimension: "..i.."th and "..j.."th of "..table.concat(self:dim(), ','))
+		error("tried to apply tensor contraction across indices of differing dimension: "..i.."th and "..j.."th of "..table.concat(dim, ','))
 	end
 	
-	local newdim = {table.unpack(dim)}
+	local newdim = clone(dim)
 	-- remove the second index from the new dimension
 	local removedDim = table.remove(newdim,j)
 	-- keep track of where the first index is in the new dimension
@@ -445,13 +525,15 @@ this removes the i'th dimension, summing across it
 if it removes the last dim then a number is returned (rather than a 0-rank tensor, which I don't support)
 --]]
 function Tensor:contraction(i)
+	local clone = require 'symmath.clone'
+	
 	local dim = self:dim()
 	assert(i >= 1 and i <= #dim, "tried to contract dimension "..i.." when we are only rank "..#self.dim)
 
 	-- if there's a valid contraction and we're rank-1 then we're summing across everything
 	if #dim == 1 then
 		local result
-		for i=1,dim[1] do
+		for i=1,dim[1].value do
 			if not result then
 				result = self[i]
 			else
@@ -461,7 +543,7 @@ function Tensor:contraction(i)
 		return result
 	end
 
-	local newdim = {table.unpack(dim)}
+	local newdim = clone(dim)
 	local removedDim = table.remove(newdim,i)
 
 	local newVariance = {table.unpack(self.variance)}
@@ -474,7 +556,7 @@ function Tensor:contraction(i)
 			local indexes = {...}
 			table.insert(indexes, i, 1)
 			local result
-			for index=1,removedDim do
+			for index=1,removedDim.value do
 				indexes[i] = index
 				if not result then
 					result = self:get(indexes)
@@ -516,16 +598,18 @@ transform it by the provided rank-2 tensor
 and store it back where you got it from
 --]]
 function Tensor:transformIndex(ti, m)
+	local dim = self:dim()
+	local mdim = m:dim()
 	assert(m:rank() == 2, "can only transform an index by a rank-2 metric, got a rank "..m:rank())
-	assert(m:dim()[1] == m:dim()[2], "can only transform an index by a square metric, got dims "..table.concat(m:dim(),','))
-	assert(self:dim()[ti] == m:dim()[1], "tried to transform tensor of dims "..table.concat(self:dim(),',').." with metric of dims "..table.concat(m:dim(),','))
-	return Tensor{dim=self:dim(), values=function(...)
+	assert(mdim[1] == mdim[2], "can only transform an index by a square metric, got dims "..mdim)
+	assert(dim[ti] == mdim[1], "tried to transform tensor of dims "..dim.." with metric of dims "..mdim)
+	return Tensor{dim=dim, values=function(...)
 		-- current element being transformed
 		local is = {...}
 		local vxi = is[ti]	-- the current coordinate along the vector being transformed
 		
 		local result = 0
-		for vi=1,m:dim()[1] do
+		for vi=1,mdim[1].value do
 			local vis = {table.unpack(is)}
 			vis[ti] = vi
 			result = result + m:get{vxi, vi} * self:get(vis)
@@ -556,6 +640,23 @@ function Tensor.metric(metric, metricInverse, symbol)
 		basis.metric = metric or Matrix.inverse(metricInverse)
 		basis.metricInverse = metricInverse or Matrix.inverse(metric)
 	end
+	-- TODO convert matrices to tensors?
+	-- this means use distinct symbols
+	-- also assigning values= isn't working ...
+	local a,b
+	if basis.symbols then
+		if #basis.symbols < 2 then
+			error("found a basis with only one symbol, when you need two to represent the metric tensor: " .. tolua(basis))
+		end
+		-- TODO seems findBasisForSymbol isn't set up to support space-separated symbol strings ...
+		a = basis.symbols:sub(1,1)
+		b = basis.symbols:sub(2,2)
+	else
+		a,b = 'a','b'
+	end
+	assert(a and b and #a>0 and #b>0)
+	basis.metric = Tensor{indexes={'_'..a, '_'..b}, values=basis.metric}
+	basis.metricInverse = Tensor{indexes={'^'..a, '^'..b}, values=basis.metricInverse}
 	return basis
 end
 
@@ -577,13 +678,14 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 		if not metric then
 			error("tried to raise/lower an index without a metric")
 		end
-		
-		if t:dim()[i] ~= metric:dim()[1]
-		or t:dim()[i] ~= metricInverse:dim()[1]
+	
+		local tdim = t:dim()
+		if tdim[i] ~= metric:dim()[1]
+		or tdim[i] ~= metricInverse:dim()[1]
 		then
 			print("can't raise/lower index "..i.." until you set the metric tensor to one with dimension matching the tensor you are attempting to raise/lower")
 			print(i.."'th dim")
-			print("  your tensor's dimensions: "..table.concat(t:dim(), ','))
+			print("  your tensor's dimensions: "..table.concat(tdim, ','))
 			print("  metric dimensions: "..table.concat(metric:dim(),','))
 			print("  metric inverse dimensions: "..table.concat(metricInverse:dim(),','))
 			error("you can reset the metric tensor via the Tensor.coords() function")
@@ -713,13 +815,6 @@ function Tensor:__call(indexes)
 				basisForCommaIndex[i] = findBasisForSymbol(indexes[i].symbol)
 			end
 		end
-		
-		local newdim = table{table.unpack(self:dim())}
-		for i=1,#indexes do
-			if indexes[i].derivative then
-				newdim[i] = #basisForCommaIndex[i].variables
-			end
-		end
 	
 		local TensorIndex = require 'symmath.tensor.TensorIndex'
 		local newVariance = {}
@@ -765,7 +860,7 @@ function Tensor:__call(indexes)
 	do
 		local foundNumbers = table.find(indexes, nil, function(index) return index.number end)
 		if foundNumbers then
-			local newdim = {table.unpack(self:dim())}
+			local newdim = self:dim()
 			local srcIndexes = {table.unpack(indexes)}
 			local sis = {}
 			for i=#newdim,1,-1 do
@@ -924,14 +1019,8 @@ Tensor.__newindex = function(self, key, value)
 	rawset(self, key, value)
 end
 
-local function isTensor(x)
-	return type(x) == 'table'
-	and x.isa
-	and x:isa(Tensor)
-end
-
 function Tensor.pruneAdd(lhs,rhs)
-	if not isTensor(lhs) or not isTensor(rhs) then return end
+	if not Tensor.is(lhs) or not Tensor.is(rhs) then return end
 
 	-- reorganize the elements of rhs so the letters match lhs 
 	rhs = rhs:permute(lhs.variance)
@@ -948,17 +1037,13 @@ function Tensor.pruneAdd(lhs,rhs)
 	}
 end
 
-local function isArray(x)
-	local Array = require 'symmath.Array'
-	return type(x) == 'table' and x.isa and x:isa(Array)
-end
-
 function Tensor.pruneMul(lhs, rhs)
+	local Array = require 'symmath.Array'
 	local table = require 'ext.table'
-	local lhsIsArray = isArray(lhs)
-	local rhsIsArray = isArray(rhs)
-	local lhsIsTensor = isTensor(lhs)
-	local rhsIsTensor = isTensor(rhs)
+	local lhsIsArray = Array.is(lhs)
+	local rhsIsArray = Array.is(rhs)
+	local lhsIsTensor = Tensor.is(lhs)
+	local rhsIsTensor = Tensor.is(rhs)
 	local lhsIsScalar = not lhsIsTensor and not lhsIsArray
 	local rhsIsScalar = not rhsIsTensor and not rhsIsArray
 	assert(lhsIsTensor or rhsIsTensor)
@@ -994,4 +1079,3 @@ function Tensor.pruneMul(lhs, rhs)
 end
 
 return Tensor
-

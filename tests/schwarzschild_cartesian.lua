@@ -46,7 +46,7 @@ print(MathJax.header)
 -- coordinates
 local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
 
-local dim = 4	-- 2, 3, or 4
+local dim = 3	-- 2, 3, or 4
 
 local allCoords = {t, x, y, z}
 local coords = {table.unpack(allCoords, 1, dim)}

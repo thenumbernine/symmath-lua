@@ -1,3 +1,12 @@
+local function maxn(t)
+	local m = 0
+	for k,v in pairs(t) do
+		if type(k) == 'number' then
+			m = math.max(m, k)
+		end
+	end
+	return m
+end
 
 --[[
 accepts an equation and a variable
@@ -30,7 +39,7 @@ return function(eqn, x)
 
 	-- 'homogeneous' polynomial
 	if not coeffs.extra then
-		local n = table.maxn(coeffs)
+		local n = maxn(coeffs)
 		if n == 0 then return end	-- a = 0 <=> no solutions
 		if n == 1 then		-- c1 x + c0 = 0 <=> x = -c0/c1
 --print('coeffs',table.map(coeffs[1],tostring):concat('\n'),'\nend coeffs')
@@ -47,7 +56,7 @@ return function(eqn, x)
 	end
 
 	local result = Constant(0)
-	for i=0,table.maxn(coeffs) do
+	for i=0,maxn(coeffs) do
 		if coeffs[i] then
 			result = result + x^n * getCoeff(i) 
 		end

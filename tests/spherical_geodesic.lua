@@ -21,8 +21,6 @@
 
 --]]
 
-
-
 local symmath = require 'symmath'
 local Tensor = require 'symmath.Tensor'
 symmath.tostring = require 'symmath.tostring.LaTeX'
@@ -30,71 +28,75 @@ symmath.tostring = require 'symmath.tostring.LaTeX'
 local MathJax = require 'symmath.tostring.MathJax'
 print(MathJax.header)
 
+local function printbr(...)
+	print(...)
+	print'<br>'
+end
+
 --this is a halfway step between pure symmath code and symmath+tensor code
 
 local x, y, z, r, phi, theta = symmath.vars('x', 'y', 'z', 'r', '\\phi', '\\theta')
 
-Tensor.coords{
-	{variables={theta, phi}},
-	{variables={x, y, z}, symbols='IJKLMN' },
-}
+local flatCoords = {x,y,z}
+local curvedCoords = {theta, phi}
+
+local curvedSpace = {variables=flatCoords, symbols='IJKLMN' }
+local flatSpace = {variables=curvedCoords}
+
+Tensor.coords{flatSpace, curvedSpace}
 
 local eta = Tensor('_IJ', {1,0,0},{0,1,0},{0,0,1})
 Tensor.metric(eta, eta, 'I')
-print'flat metric:<br>'
-print('\\(\\eta_{IJ} = '..eta'_IJ'..'\\)<br>')
-print'<br>'
+
+printbr'flat metric:'
+printbr('\\(\\eta_{IJ} = '..eta'_IJ'..'\\)')
+printbr()
 
 local u = Tensor('^I', 
 	r * symmath.sin(theta) * symmath.cos(phi),
 	r * symmath.sin(theta) * symmath.sin(phi),
 	r * symmath.cos(theta))
-print'coordinate chart:<br>'
-print('\\(u^I = '..u'^I'..'\\)<br>')
-print'<br>'
+printbr'coordinate chart:'
+printbr('\\(u^I = '..u'^I'..'\\)')
+printbr()
 
-print('\\({{u^I}_{,u}} = '..u'^I_,u'..'\\)<br>')
+printbr('\\({{u^I}_{,u}} = '..u'^I_,u'..'\\)')
 
 local e = Tensor'_u^I'
 e['_u^I'] = u'^I_,u':simplify()
-print'vielbein:<br>'
-print('\\({e_u}^I = '..e'_u^I'..'\\)<br>')
-print'<br>'
+printbr'vielbein:'
+printbr('\\({e_u}^I = '..e'_u^I'..'\\)')
+printbr()
 
 local g = (e'_u^I' * e'_v^J' * eta'_IJ'):simplify()
-print'coordinate metric:<br>'
-print('\\(g_{uv} = '..g'_iu'..'\\)<br>')
-print'<br>'
+printbr'coordinate metric:'
+printbr('\\(g_{uv} = '..g'_uv'..'\\)')
+printbr()
 
 -- TODO factoring functions and trig identities
 Tensor.metric(g)
-print'coordinate metric inverse:<br>'
-print('\\(g^{uv} = '..g'^uv'..'\\)<br>')
+printbr'coordinate metric inverse:'
+printbr('\\(g^{uv} = '..g'^uv'..'\\)')
 
 local dg = g'_uv,w':simplify()
-print('\\(\\partial_w g_{uv} = '..dg'_uvw'..'\\)<br>')
-print'<br>'
+printbr('\\(\\partial_w g_{uv} = '..dg'_uvw'..'\\)')
+printbr()
 
 local Gamma = ((dg'_uvw' + dg'_uwv' - dg'_vwu')/2):simplify()
-print'connection coefficients:<br>'
-print('\\(\\Gamma_{uvw} = '..Gamma'_uvw'..'\\)<br>')
-print'<br>'
+printbr'connection coefficients:'
+printbr('\\(\\Gamma_{uvw} = '..Gamma'_uvw'..'\\)')
+printbr()
 
 Gamma = Gamma'^u_vw'
-print('\\({\\Gamma^u}_{vw} = '..Gamma'^u_vw'..'\\)<br>')
-print'<br>'
+printbr('\\({\\Gamma^u}_{vw} = '..Gamma'^u_vw'..'\\)')
+printbr()
 
 -- now comes the geodesic equation: d^2[x^i]/dt^2 = -conn^i_jk dx^j_dt dx^k/dt
-local dx = Tensor('^u', symmath.var'\\dot{x}^t', symmath.var'\\dot{x}^x')
-local d2x = Tensor('^u', symmath.var'\\ddot{x}^t', symmath.var'\\ddot{x}^x')
-print'geodesic:<br>'
+local dx = Tensor('^u', function(u) return symmath.var('\\dot{'..curvedCoords[u].name..'}') end)
+local d2x = Tensor('^u', function(u) return symmath.var('\\ddot{'..curvedCoords[u].name..'}') end)
+printbr'geodesic:'
 -- TODO unravel equaliy, or print individual assignments
-print('\\('..((d2x'^u' + Gamma'^u_vw' * dx'^v' * dx'^w'):equals(Tensor('^u',0,0))):simplify()..'\\)<br>')
-print'<br>'
-
-
-
---printbr(diff2xU_theta:eval{r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1})
---printbr(diff2xU_phi:eval{r=1, [phi.name]=0, [theta.name]=0, [diffxU_theta.name]=0, [diffxU_phi.name]=1})
+printbr('\\('..((d2x'^u' + Gamma'^u_vw' * dx'^v' * dx'^w'):equals(Tensor('^u',0,0))):simplify()..'\\)')
+printbr()
 
 print(MathJax.footer)

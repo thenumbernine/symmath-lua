@@ -5,6 +5,11 @@ require 'ext'
 local Array = require 'symmath.Array'
 local Matrix = class(Array)
 
+-- class() assigns __index to self ... so set it back
+Matrix.__index = Matrix.super.__index
+
+Matrix.name = 'Matrix'
+
 Matrix.inverse = require 'symmath.matrix.inverse'
 Matrix.determinant = require 'symmath.matrix.determinant'
 Matrix.identity = require 'symmath.matrix.identity'

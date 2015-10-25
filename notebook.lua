@@ -26,9 +26,19 @@ local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 print(MathJax.header)
 
+local function maxn(t)
+	local m = 0
+	for k,v in pairs(t) do
+		if type(k) == 'number' then
+			m = math.max(m, k)
+		end
+	end
+	return m
+end
+
 local function printbr(...)
 	local args = {...}
-	for i=1,table.maxn(args) do
+	for i=1,maxn(args) do
 		print(tostring((args[i]):gsub('[\r\n]', '<br>')))
 	end
 	print('<br>')

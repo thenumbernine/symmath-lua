@@ -46,7 +46,7 @@ return function(m)
 	if type(m) ~= 'table' or not m.isa or not m:isa(Array) then return m end
 
 	local dim = m:dim()
-	local volume = table.combine(dim, function(a,b) return a * b end) or 0
+	local volume = range(#dim):map(function(i) return dim[i].value end):combine(function(a,b) return a * b end) or 0
 
 	-- 0x0 array?  return itself
 	if volume == 0 then return Constant(1) end
@@ -60,7 +60,7 @@ return function(m)
 	if dim[1] ~= dim[2] then error("determinant only works on square matrices") end
 
 
-	local n = dim[1]
+	local n = dim[1].value
 
 	-- cycle through all permutations of 1..n for n == #m
 	-- if the # of flips is odd then scale by -1, if even then by +1 
@@ -72,7 +72,7 @@ return function(m)
 	-- any further -- use recursive case
 	local result = Constant(0)
 	permutations{
-		elements=range(n),
+		elements = range(n),
 		callback = function(index, parity)
 			local product
 			for i=1,n do

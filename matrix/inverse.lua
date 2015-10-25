@@ -22,7 +22,7 @@ return function(A, AInv)
 	-- ... and Array
 	local dim = A:dim()
 	assert(#dim == 2 and dim[1] == dim[2], "expected a square rank-2 array")
-	local n = dim[1]
+	local n = dim[1].value
 
 	A = clone(A)
 	
@@ -58,7 +58,7 @@ return function(A, AInv)
 					for k=1,n do
 						A[j][k], A[i][k] = A[i][k], A[j][k]
 					end
-					for k=1,invdim[2] do
+					for k=1,invdim[2].value do
 						AInv[j][k], AInv[i][k] = AInv[i][k], AInv[j][k]
 					end
 					A = simplify(A)
@@ -79,7 +79,7 @@ return function(A, AInv)
 			for j=1,n do
 				A[i][j] = A[i][j] / s
 			end
-			for j=1,invdim[2] do
+			for j=1,invdim[2].value do
 				AInv[i][j] = AInv[i][j] / s
 			end
 			A = simplify(A)
@@ -95,7 +95,7 @@ return function(A, AInv)
 					for k=1,n do
 						A[j][k] = A[j][k] - s * A[i][k]
 					end
-					for k=1,invdim[2] do
+					for k=1,invdim[2].value do
 						AInv[j][k] = AInv[j][k] - s * AInv[i][k]
 					end
 --print('\\(A = \\)'..A..'<br>')

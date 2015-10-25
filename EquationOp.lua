@@ -31,6 +31,32 @@ function EquationOp:isTrue()
 	return self[1] == self[2]
 end
 
+function EquationOp:simplify()
+	local expr = self:clone()
+	expr[1] = expr[1]:simplify()
+	expr[2] = expr[2]:simplify()
+	return expr
+end
+
+-- convert from array equations to a table of equations
+function EquationOp:unravel()
+	local Array = require 'symmath.Array'
+	local lhs, rhs = table.unpack(self)
+	local lhsIsArray = Array.is(lhs)
+	local rhsIsArray = Array.is(rhs)
+	if not lhsIsArray or not rhsIsArray then
+		return table{lhs:equals(rhs)}
+	end
+
+	assert(lhs:dim() == rhs:dim())
+
+	local results = table()
+	for index in lhs:iter() do
+		results:insert(lhs[index]:equals(rhs[index]))
+	end
+	return results
+end
+
 -- cause operators to apply immdiately, and to apply to both sides
 
 -- TODO switch equality sign for non-equals equation ops? same with scaling by negatives?

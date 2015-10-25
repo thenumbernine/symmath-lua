@@ -171,9 +171,13 @@ MultiLine.lookupTable = {
 		return self:combine(lhs, rhs)
 	end,
 	[require 'symmath.Array'] = function(self, expr)
+		local rank = expr:rank()
+		
+		if rank == 0 then return table() end
+		
 		-- even if it doesn't have a Matrix metatable, if it's rank-2 then display it as a matrix ...
 		-- TODO just put Matrix's entry here and get rid of its empty, let its subclass fall through to here instead
-		if expr:rank() == 2 then
+		if rank == 2 then
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
 		

@@ -40,7 +40,6 @@ Array.__index = function(self, key)
 	-- get a nested element
 	if type(key) == 'table' then
 		return self:get(key)
-	--elseif type(key) == 'string' then	-- TODO interpret index notation
 	end
 
 	-- self class access
@@ -63,6 +62,7 @@ end
 function Array:get(index)
 	local x = self
 	for i=1,#index do
+		if not x then error("tried to index too deeply into array "..tostring(self).." with "..table(table.unpack(index)):concat', ') end
 		x = x[index[i]]
 	end
 	return x
@@ -95,7 +95,7 @@ function Array:iter()
 			coroutine.yield(index, self:get(index))
 			for i=1,n do
 				index[i] = index[i] + 1
-				if index[i] <= dim[i] then break end
+				if index[i] <= dim[i].value then break end
 				index[i] = 1
 				if i == n then return end
 			end
@@ -130,15 +130,16 @@ function Array:rank()
 end
 
 function Array:dim()
+	local Constant = require 'symmath.Constant'
+	
 	local dim = Array()
-	dim.rank = 1
 	
 	-- if we have no children then we can't tell any info of rank
 	if #self == 0 then return dim end
 
 	local rank = self:rank()
 	if rank == 1 then
-		dim[1] = #self
+		dim[1] = Constant(#self)
 		return dim
 	end
 
@@ -163,7 +164,7 @@ function Array:dim()
 	for i=1,rank-1 do
 		dim[i+1] = subdim_1[i]
 	end
-	dim[1] = #self
+	dim[1] = Constant(#self)
 	return dim
 end
 
@@ -180,12 +181,8 @@ function Array.__eq(a,b)
 	end
 end
 
-local function isArray(x)
-	return type(x) == 'table' and x.isa and x:isa(Array)
-end
-
 function Array.pruneAdd(a,b)
-	if not isArray(a) or not isArray(b) then return end
+	if not Array.is(a) or not Array.is(b) then return end
 	-- else array+scalar?  nah, too ambiguous.  are you asking for adding to all elements, or just the diagonals? idk.
 	if #a ~= #b then return end
 	local result = a:clone()
@@ -203,8 +200,10 @@ local function matrixMatrixMul(a,b)
 	local adim = a:dim()
 	local bdim = b:dim()
 	if #adim ~= 2 or #bdim ~= 2 then return end	-- only support matrix/matrix multiplication
-	local ah, aw = table.unpack(adim)
-	local bh, bw = table.unpack(bdim)
+	local ah = adim[1].value
+	local aw = adim[2].value
+	local bh = bdim[1].value
+	local bw = bdim[2].value
 	if aw ~= bh then return end
 	return require 'symmath.Matrix'(range(ah):map(function(i)
 		return range(bw):map(function(j)
@@ -242,8 +241,8 @@ local function scalarArrayMul(s,m)
 end
 
 function Array.pruneMul(lhs,rhs)
-	local lhsIsArray = isArray(lhs)
-	local rhsIsArray = isArray(rhs)
+	local lhsIsArray = Array.is(lhs)
+	local rhsIsArray = Array.is(rhs)
 	assert(lhsIsArray or rhsIsArray)
 	if lhsIsArray and rhsIsArray then
 		return matrixMatrixMul(lhs, rhs)

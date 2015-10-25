@@ -3,6 +3,10 @@ local symmath = require 'symmath'
 local Matrix = require 'symmath.Matrix'
 local Tensor = require 'symmath.Tensor'
 local TensorIndex = require 'symmath.tensor.TensorIndex'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = MathJax
+
+print(MathJax.header)
 
 local maxN = 3
 
@@ -20,8 +24,8 @@ end
 -- no metric:
 
 local function assertEqn(eqn)
-	if not eqn:isTrue() then
-		error("expected "..eqn:lhs().." to equal "..eqn:rhs())
+	if not eqn:simplify():isTrue() then
+		error("expected "..(eqn:lhs()).." to equal "..(eqn:rhs()))
 	end
 end
 
@@ -193,7 +197,6 @@ epsilon['_ijk'] = epsilon'_jki'
 assertEqn(epsilon[{3,1,2}]:equals(1))
 assertEqn(epsilon[{2,3,1}]:equals(0))	-- this will be 1 if the index remapping is done backwards
 
-
 -- testing raising/lowering
 	-- testing scale of raising/lowering
 local n = setDim(3)
@@ -210,9 +213,6 @@ assertEqn(t'_i':equals(Tensor('^i', 1, 4, 9)))
 	-- testing skew of raising/lowering (assuring that the linear transform is using the correct index into the metric matrix)
 local basis = Tensor.metric(Tensor('_ij', {1, 1, 0}, {0, 1, 0}, {0, 0, 1}))
 	-- assert that the inverse was calculated correctly
-
-print(symmath.Verbose(basis.metricInverse[1]))
-print(symmath.Verbose(Tensor('^j', 1, -1, 0)))
 assertEqn(basis.metricInverse[1]:equals(Tensor('^j', 1, -1, 0)))
 
 assertEqn(basis.metricInverse[1]:equals(Tensor('^j', 1, -1, 0)))
@@ -228,3 +228,4 @@ local t = Tensor('^i', 1,2,3)
 --]]
 assertEqn(t'_i':equals(Tensor('_i', 3,2,3)))
 
+print(MathJax.footer)
