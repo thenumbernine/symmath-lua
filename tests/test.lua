@@ -63,6 +63,18 @@ t = symmath.Variable('t')
 =asserteq(((2*x + 2*y)/2):simplify(), (x+y):simplify())
 =asserteq(((-2*x + 2*y)/2):simplify(), (-x+y):simplify())
 
+=asserteq((-1-x):simplify(), -(1+x))
+print((-1-x):simplify())
+print(-(1+x))
+print((-1-x):simplify() == -(1+x))
+
+print(((-x)/x):simplify())
+print((x/(-x)):simplify())
+print(( (-x-1)/(x+1) ):simplify())
+print(( (x-1)/(1-x) ):simplify())
+
+os.exit()
+
 -- expand(): add div mul
 
 -- factor(): mul add div

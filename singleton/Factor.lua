@@ -94,7 +94,9 @@ Factor.lookupTable = {
 			prodsList[i] = nodeToProdList(expr[i])
 		end
 	
-
+-- without this (1-x)/(x-1) doesn't simplify to -1
+-- but there's a bug in here that's killing (-1-x):simplify() => -(1-x)
+--[[
 		-- instead of only factoring the -1 out of the constant
 		-- also add double the -1 to the rest of the terms (which should equate to being positive)
 		-- so that signs don't mess with simplifying division
@@ -102,7 +104,7 @@ Factor.lookupTable = {
 		for i=1,#expr do
 			if expr[i]:isa(Constant) and expr[i].value < 0 then
 				for j=1,#expr do
-					if j ~= i then
+					do --if j ~= i then
 						-- insert two copies so that one can be factored out
 						-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
 						prodsList[j]:insert{
@@ -113,7 +115,7 @@ Factor.lookupTable = {
 				end
 			end
 		end
-
+--]]
 		-- 2) find smallest set of common terms
 		
 		local minProds = prodsList[1]:map(function(prod) return prod.term end)
