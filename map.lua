@@ -13,6 +13,10 @@ local function map(expr, callback)
 	end
 	-- process this node
 	expr = callback(expr) or expr
+	if type(expr) == 'number' then 
+		local Constant = require 'symmath.Constant'
+		expr = Constant(expr)
+	end
 	-- done
 	return expr
 end
