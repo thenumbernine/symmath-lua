@@ -44,6 +44,7 @@ Factor.lookupTable = {
 				if x.term:isa(Constant) then
 					if x.term.value == 1 then
 						-- do nothing -- remove any 1's
+					-- TODO if there's any negative constants, add -1^2 to all other terms
 					elseif x.term.value < 0 then
 						-- if it's a negative constant then split out the minus
 						newProdList:insert{
@@ -95,22 +96,30 @@ Factor.lookupTable = {
 		end
 	
 -- without this (1-x)/(x-1) doesn't simplify to -1
--- but there's a bug in here that's killing (-1-x):simplify() => -(1-x)
---[[
+-- [[
 		-- instead of only factoring the -1 out of the constant
 		-- also add double the -1 to the rest of the terms (which should equate to being positive)
 		-- so that signs don't mess with simplifying division
 		-- ex: -1+x => (-1)*1+(-1)*(-1)*x => -1*(1+(-1)*x) => -1*(1-x)
+		-- TODO don't just use constants, use lowest polynomial or some method
+		-- TODO fix both by just sorting the expr above ... assuming it uses commutative multiplications
 		for i=1,#expr do
 			if expr[i]:isa(Constant) and expr[i].value < 0 then
 				for j=1,#expr do
-					do --if j ~= i then
-						-- insert two copies so that one can be factored out
-						-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
-						prodsList[j]:insert{
-							term = Constant(-1),
-							power = Constant(2),
-						}
+					if not expr[j]:isa(Constant) then
+						local index = prodsList[j]:find(nil, function(factor)
+							return factor.term == Constant(-1)
+						end)
+						if index then
+							prodsList[j][index].power = (prodsList[j][index].power + 2):simplify()
+						else
+							-- insert two copies so that one can be factored out
+							-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
+							prodsList[j]:insert{
+								term = Constant(-1),
+								power = Constant(2),
+							}
+						end
 					end
 				end
 			end

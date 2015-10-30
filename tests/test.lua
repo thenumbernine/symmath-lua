@@ -28,10 +28,10 @@ Constant = require 'symmath.Constant'
 
 notebook[[
 -- constant simplificaiton
-=asserteq(Constant(1), (Constant(1)*Constant(1)):simplify())
-=asserteq(Constant(1), (Constant(1)/Constant(1)):simplify())
-=asserteq(Constant(-1):simplify(), (-Constant(1)/Constant(1)):simplify())	-- without the first 'simplify' we don't get the same canonical form with the unary - on the outside
-=asserteq(Constant(1), (Constant(1)/(Constant(1)*Constant(1))):simplify())
+=asserteq(1, (Constant(1)*Constant(1)):simplify())
+=asserteq(1, (Constant(1)/Constant(1)):simplify())
+=asserteq(-1, (-Constant(1)/Constant(1)):simplify())	-- without the first 'simplify' we don't get the same canonical form with the unary - on the outside
+=asserteq(1, (Constant(1)/(Constant(1)*Constant(1))):simplify())
 
 x = symmath.Variable('x')
 y = symmath.Variable('y')
@@ -42,10 +42,10 @@ t = symmath.Variable('t')
 =asserteq(x*y, y*x)
 
 -- pruning operations
-=asserteq(x, (Constant(1)*x):simplify())
-=asserteq(Constant(0), (Constant(0)*x):simplify())
-=asserteq(x, (Constant(1)*x):simplify())
-=asserteq((x/x):simplify(), Constant(1))
+=asserteq(x, (1*x):simplify())
+=asserteq(0, (Constant(0)*x):simplify())
+=asserteq(x, (1*x):simplify())
+=asserteq((x/x):simplify(), 1)
 
 =asserteq(x^2, (x*x):simplify())
 
@@ -54,7 +54,7 @@ t = symmath.Variable('t')
 =asserteq(((x+1)*(y+1)):simplify(), (x*y + x + y + 1):simplify())
 =asserteq((2/(2*x*y)):simplify(), (1/(x*y)):simplify())
 =asserteq((1-(1-x)):simplify(), x)
-=asserteq(((1-(1-x))/x):simplify(), Constant(1))
+=asserteq(((1-(1-x))/x):simplify(), 1)
 	
 -- factoring integers
 =asserteq((Constant(2)/Constant(2)):simplify(), Constant(1))
@@ -63,15 +63,14 @@ t = symmath.Variable('t')
 =asserteq(((2*x + 2*y)/2):simplify(), (x+y):simplify())
 =asserteq(((-2*x + 2*y)/2):simplify(), (-x+y):simplify())
 
-=asserteq((-1-x):simplify(), -(1+x))
 print((-1-x):simplify())
-print(-(1+x))
-print((-1-x):simplify() == -(1+x))
+print(-(1+x):simplify())
+=asserteq(-1-x, -(1+x))
 
-print(((-x)/x):simplify())
-print((x/(-x)):simplify())
-print(( (-x-1)/(x+1) ):simplify())
-print(( (x-1)/(1-x) ):simplify())
+=asserteq((-x)/x, -1)
+=asserteq((x/(-x)), -1)
+=asserteq((-x-1)/(x+1), -1) 
+=asserteq((x-1)/(1-x), -1)
 
 os.exit()
 
@@ -80,7 +79,7 @@ os.exit()
 -- factor(): mul add div
 
 -- trigonometry
-=asserteq((symmath.sin(x)^2+symmath.cos(x)^2):simplify(), Constant(1))
+=asserteq((symmath.sin(x)^2+symmath.cos(x)^2):simplify(), 1)
 =asserteq((y*symmath.sin(x)^2+y*symmath.cos(x)^2):simplify(), y)
 =asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2):simplify(), 2*y)	-- works when combining y + y * trig ident
 =asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2):simplify(), 1+y)	-- ... but not when combining 1 + y * trig ident (look in factor.lua)

@@ -55,8 +55,8 @@ local eta = Tensor('_uv', {-1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1})
 printbr('$\\eta_{uv} = $'..eta'_uv')
 
 local g = (eta'_uv' - 2 * Phi * delta'_uv'):simplify()
-printbr('$g_{uv} = $'..g'_uv')
 Tensor.metric(g)
+printbr('$g_{uv} = $'..g'_uv')
 printbr('$g^{uv} = $'..g'^uv')
 
 local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2):simplify()
@@ -65,6 +65,7 @@ Gamma = Gamma'^a_bc'
 printbr('${\\Gamma^a}_{bc} = $'..Gamma'^a_bc')
 
 -- assume diagonal matrix
+printbr()
 printbr[[let $\Phi$ ~ 0, but keep $d\Phi$]]
 
 Gamma = Gamma:replace(Phi, 0, function(v) return symmath.Derivative.is(v) end):simplify()
@@ -76,7 +77,8 @@ printbr('$g_{uv} = $'..g'_uv')
 printbr('$g^{uv} = $'..g'^uv')
 
 local dPhi_dt_equals_0 = Phi:diff(t):equals(0)
-printbr(dPhi_dt_equals_0)
+printbr()
+printbr('let '..dPhi_dt_equals_0)
 Gamma = Gamma:subst(dPhi_dt_equals_0):simplify()
 
 printbr('${\\Gamma^a}_{bc} = $'..Gamma'^a_bc')
@@ -85,24 +87,25 @@ local u = Tensor('^a', coords:map(function(x) return symmath.var('u^'..x.name, c
 printbr('$u^a = $'..u'^a')
 
 printbr()
-printbr'matter stress-energy tensor'
+printbr'matter stress-energy tensor:'
 local T = ((rho + P) * u'^a' * u'^b' + P * g'^ab'):simplify()
 printbr('$T^{ab} = $'..T'^ab')
 
 local div_T = (T'^ab_,b' + Gamma'^a_cb' * T'^cb' + Gamma'^b_cb' * T'^ac'):simplify()
 printbr()
-printbr'constraint equation of $\\nabla \\cdot T = 0$'
+printbr'$\\nabla \\cdot T = 0$'
 for _,eqn in ipairs(div_T) do
 	printbr(eqn:equals(0))
 end
 
+printbr()
 printbr'low velocity relativistic approximations:'
 local ut_equals_1 = u[1]:equals(1)
 printbr(ut_equals_1)
 div_T = div_T:subst(ut_equals_1):simplify()
 
 printbr()
-printbr'constraint equation of $\\nabla \\cdot T = 0$'
+printbr'$\\nabla \\cdot T = 0$ becomes:'
 for _,eqn in ipairs(div_T) do
 	printbr(eqn:equals(0))
 end
@@ -114,11 +117,13 @@ local div_Pu = Pu'^i_,i'
 printbr(div_Pu:equals(0))
 div_T[1] = (div_T[1] - div_Pu):simplify()
 
-printbr('in terms of $\\partial_t \\rho$')
+printbr()
+printbr('first equation in terms of $\\partial_t \\rho$')
 local drho_dt_def = div_T[1]:equals(0):solve(rho:diff(t))
 printbr(drho_dt_def)
 
-printbr'space equation neglects $P_{,t}$, $(P u^j)_{,j}$, $P$, and $\\Phi_{,i} u_j$ and substitutes the definition of $\\partial_t \\rho$'
+printbr()
+printbr'spatial equations neglect $P_{,t}$, $(P u^j)_{,j}$, $P$, and $\\Phi_{,i} u_j$ and substitutes the definition of $\\partial_t \\rho$'
 for i=2,4 do
 	-- remove time derivative of pressure
 	div_T[i] = div_T[i]:replace(P:diff(t), 0):simplify()
@@ -147,7 +152,7 @@ for i=2,4 do
 end
 
 printbr()
-printbr'constraint equation of $\\nabla \\cdot T = 0$'
+printbr'$\\nabla \\cdot T = 0$ becomes:'
 for _,eqn in ipairs(div_T) do
 	printbr(eqn:equals(0))
 end

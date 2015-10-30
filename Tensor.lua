@@ -655,8 +655,8 @@ function Tensor.metric(metric, metricInverse, symbol)
 		a,b = 'a','b'
 	end
 	assert(a and b and #a>0 and #b>0)
-	basis.metric = Tensor{indexes={'_'..a, '_'..b}, values=basis.metric}
-	basis.metricInverse = Tensor{indexes={'^'..a, '^'..b}, values=basis.metricInverse}
+	if not basis.metric:isa(Tensor) then basis.metric = Tensor{indexes={'_'..a, '_'..b}, values=basis.metric} end
+	if not basis.metricInverse:isa(Tensor) then basis.metricInverse = Tensor{indexes={'^'..a, '^'..b}, values=basis.metricInverse} end
 	return basis
 end
 

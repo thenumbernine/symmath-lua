@@ -62,7 +62,7 @@ end
 function Array:get(index)
 	local x = self
 	for i=1,#index do
-		if not x then error("tried to index too deeply into array "..tostring(self).." with "..table(table.unpack(index)):concat', ') end
+		if not x then error("tried to index too deeply into array "..tostring(self).." with "..table(index):concat', ') end
 		x = x[index[i]]
 	end
 	return x
