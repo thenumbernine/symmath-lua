@@ -1,5 +1,5 @@
 --[[
-thoughts:
+thoughts on transformation between different sets of indexes:
 
 transformIndexes works fine between upper and lower, using the metric and its inverse
 	I think I have some sort of implicit subset working for my adm calculations between 4D and 3D that just chops off a letter (and neglects the 4D projection part)
@@ -234,6 +234,24 @@ local function findBasisForSymbol(symbol)
 end
 
 --[[
+TODO Tensor construction:
+	- (optional) first argument tensor variance
+		- string that is parsed: '_ijk', etc
+		- table-of-TensorIndex objects (already in processed form that is returned by parseIndexes)
+		- aka args.indexes 
+	- (optional) n-many dimension numbers of lua numbers or Constants
+		- aka args.dim
+	- (optional) final argument value generator
+		- function that accepts n parameters (for n rank of tensor)
+		- table that is n nestings deep (for n rank of tensor)
+		- aka args.values
+...
+how to specify index-only (value-less) tensors?
+	- extra flag?  'indexOnly=true' only for vararg ... bad idea
+	- if values are not provided then the tensor should be a representation with no actual values - i.e. an index-Tensor
+		- this means no more defaulting values to zero
+
+
 information the constructor needs...
 possible combinations:
 * * *      	/ contra/covariant + index information (includes variance and dimensions, excludes optional values)

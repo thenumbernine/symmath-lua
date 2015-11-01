@@ -41,7 +41,7 @@ local e = symmath.var('e', {t,x})		-- total specific energy
 
 -- state variable
 local qs = range(3):map(function(i) return symmath.var('q_'..i, {t,x}) end)
-local q1, q2, q3 = unpack(qs)
+local q1, q2, q3 = table.unpack(qs)
 
 local gamma = symmath.var('\\gamma')
 local ek = (u * u)/2					-- kinetic specific energy
@@ -77,87 +77,53 @@ end)
 eqns:map(function(eqn) printbr(eqn) end)
 
 printbr('simplify & expand')
--- TODO make an operation out of this: 'distribute division'
-do
-	local found
-	eqns = eqns:map(function(eqn)
-		eqn = eqn:simplify()
-		eqn = eqn:prune()	-- undo the last 'tidy'
-		local lhs, rhs = eqn:lhs(), eqn:rhs()
-		-- distribute division
-		if lhs:isa(symmath.divOp) then
-			local num, denom = lhs[1], lhs[2]
-			if num:isa(symmath.addOp)
-			or num:isa(symmath.subOp)
-			then
-				found = true
-				lhs = getmetatable(num)(
-					table.map(num, function(term,k)
-						if type(k) == 'number' then
-							return (term / denom):simplify()
-						end
-					end):unpack()
-				)
-			end
-		end
-		return lhs:equals(rhs)
-	end)
-end
+eqns = eqns:map(function(eqn)
+	-- conver to add -> div -> mul
+	return eqn:distributeDivision()
+	-- TODO it seems like the visitor below can handle distributeDivision as well
+	-- ... but I can't find out how to get it into a cooperative state ...
+	--return eqn:simplify():expand()
+end)
 eqns:map(function(eqn) printbr(eqn) end)
 
--- [[
 local dq_dxs = qs:map(function(q) return q:diff(x) end)
 printbr('factor derivatives')
-eqns = eqns:map(function(eqn)
-	-- [[ -a => a
-	if eqn[1]:isa(symmath.addOp) then
-		for i=#eqn[1],1,-1 do
-			local expr = eqn[1][i]
-			if expr:isa(symmath.unmOp) then
-				if expr[1]:isa(symmath.mulOp) then
-					eqn[1][i] = symmath.mulOp(symmath.Constant(-1), table.unpack(expr[1]))
-				else
-					eqn[1][i] = symmath.mulOp(symmath.Constant(-1), expr)
+
+-- TODO make this its own visitor that converts to add -> mul -> div
+do
+	local Visitor = require 'symmath.singleton.Visitor'
+	local Constant = require 'symmath.Constant'
+	local unmOp = require 'symmath.unmOp'
+	local mulOp = require 'symmath.mulOp'
+	local divOp = require 'symmath.divOp'
+	local visitor = Visitor()
+	visitor.lookupTable = {
+		[unmOp] = function(self, expr)
+			assert(expr[1])
+			return self:apply(Constant(-1) * expr[1])
+		end,
+		[mulOp] = function(self, expr)
+			-- flatten multiplications
+			for i=#expr,1,-1 do
+				local ch = expr[i]
+				if ch:isa(mulOp) then
+					table.remove(expr, i)
+					for j=#ch,1,-1 do
+						local chch = ch[j]
+						table.insert(expr, i, chch)
+					end
+					return self:apply(expr)
 				end
-			end
-		end
-	end
-	--]]
-	
-	-- [[ (-(a*b*c))/d => (-1) * ((a*b*c)/d)
-	eqn = eqn:map(function(expr)
-		if expr:isa(symmath.divOp)
-		and expr[1]:isa(symmath.unmOp)
-		and expr[1][1]:isa(symmath.mulOp)
-		then
-			return symmath.mulOp(symmath.Constant(-1), table.unpack(expr[1][1])) / expr[2]
-		end
-	end)
-	--]]
-	-- pull out any div(mul(diff,...)) s to mul(diff,div(...)
-	-- (a * b * dc/dx) / d => dc/dx * (a * b) / d
-	eqn = eqn:map(function(expr)
-		if expr:isa(symmath.divOp)
-		and expr[1]:isa(symmath.mulOp)
-		then
-			local prods = table()
-			local mul = expr[1]
-			for i=#mul,1,-1 do
-				local expr = mul[i]
-				if expr:isa(symmath.Derivative) then
-					prods:insert(table.remove(mul, i))
-				end
-			end
-			if #prods > 0 then
-				return symmath.mulOp(expr, table.unpack(prods))
-			end
-		end
-	end)
-	-- factor out partials from the base addOp ...
-	-- TODO matrix factor
-	assert(eqn[1]:isa(symmath.addOp))
-	return eqn
-end)
+			end	
+		end,
+		[divOp] = function(self, expr)
+			if expr[1] == Constant(1) then return end
+			return self:apply(expr[1] * (Constant(1)/expr[2]))
+		end,
+	}
+	eqns = eqns:map(function(eqn) return visitor(eqn) end)
+end
+
 
 --[=[ TODO not yet working
 eqns = eqns:map(function(eqn)
@@ -180,15 +146,6 @@ eqns = eqns:map(function(eqn,i)
 	table.remove(lhs, dtIndex)	-- destroy the lhs
 	-- find dx(qj)
 	for k=#lhs,1,-1 do
-		
-		if lhs[k]:isa(symmath.unmOp) then
-			if lhs[k][1]:isa(symmath.mulOp) then
-				table.insert(lhs[k][1], 1, symmath.Constant(-1))
-			else
-				lhs[k] = symmath.Constant(-1) * lhs[k][1]
-			end
-		end
-		
 		local found = false
 		for j=1,3 do
 			if lhs[k] == qs[j]:diff(x) then
@@ -197,12 +154,12 @@ eqns = eqns:map(function(eqn,i)
 				table.remove(lhs,k)
 				found = true
 			elseif lhs[k]:isa(symmath.mulOp) then
-				for l=1,#lhs[k] do
+				for l=#lhs[k],1,-1 do
 					if lhs[k][l]:isa(symmath.mulOp) then error"needs flattening" end
 					if lhs[k][l] == qs[j]:diff(x) then
 						assert(not found)
 						table.remove(lhs[k],l)
-						A[i][j] = (A[i][j] + lhs[k]):simplify()
+						A[i][j] = (lhs[k] + A[i][j]):simplify()
 						found = true
 					end
 				end
@@ -214,7 +171,7 @@ eqns = eqns:map(function(eqn,i)
 		end
 	end
 	-- TODO if there is anything left then put it in the rhs side
-	assert(#lhs == 0)
+	assert(#lhs == 0, "lhs still has stuff in it: "..lhs)
 	return lhs:equals(rhs)
 end)
 print((dq_dt + A * dq_dx):equals(symmath.Matrix({0},{0},{0})))
