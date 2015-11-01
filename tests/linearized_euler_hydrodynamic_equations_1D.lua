@@ -86,46 +86,14 @@ eqns = eqns:map(function(eqn)
 end)
 eqns:map(function(eqn) printbr(eqn) end)
 
-local dq_dxs = qs:map(function(q) return q:diff(x) end)
 printbr('factor derivatives')
-
--- TODO make this its own visitor that converts to add -> mul -> div
-do
-	local Visitor = require 'symmath.singleton.Visitor'
-	local Constant = require 'symmath.Constant'
-	local unmOp = require 'symmath.unmOp'
-	local mulOp = require 'symmath.mulOp'
-	local divOp = require 'symmath.divOp'
-	local visitor = Visitor()
-	visitor.lookupTable = {
-		[unmOp] = function(self, expr)
-			assert(expr[1])
-			return self:apply(Constant(-1) * expr[1])
-		end,
-		[mulOp] = function(self, expr)
-			-- flatten multiplications
-			for i=#expr,1,-1 do
-				local ch = expr[i]
-				if ch:isa(mulOp) then
-					table.remove(expr, i)
-					for j=#ch,1,-1 do
-						local chch = ch[j]
-						table.insert(expr, i, chch)
-					end
-					return self:apply(expr)
-				end
-			end	
-		end,
-		[divOp] = function(self, expr)
-			if expr[1] == Constant(1) then return end
-			return self:apply(expr[1] * (Constant(1)/expr[2]))
-		end,
-	}
-	eqns = eqns:map(function(eqn) return visitor(eqn) end)
-end
-
+eqns = eqns:map(function(eqn)
+	return eqn:factorDivision()
+end)
+eqns:map(function(eqn) printbr(eqn) end)
 
 --[=[ TODO not yet working
+local dq_dxs = qs:map(function(q) return q:diff(x) end)
 eqns = eqns:map(function(eqn)
 	return symmath.factor(eqn, dq_dxs)
 end)

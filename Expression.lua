@@ -142,6 +142,7 @@ Expression.solve = require 'symmath.solve'
 Expression.map = require 'symmath.map'
 Expression.prune = function(...) return require 'symmath.prune'(...) end
 Expression.distributeDivision = function(...) return require 'symmath.distributeDivision'(...) end
+Expression.factorDivision = function(...) return require 'symmath.factorDivision'(...) end
 Expression.expand = function(...) return require 'symmath.expand'(...) end
 Expression.factor = function(...) return require 'symmath.factor'(...) end
 Expression.tidy = function(...) return require 'symmath.tidy'(...) end

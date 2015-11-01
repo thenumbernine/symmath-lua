@@ -34,6 +34,7 @@ symmath.map = require 'symmath.map'
 
 symmath.prune = require 'symmath.prune'
 symmath.distributeDivision = require 'symmath.distributeDivision'
+symmath.factorDivision = require 'symmath.factorDivision'
 symmath.expand = require 'symmath.expand'
 symmath.factor = require 'symmath.factor'
 symmath.tidy = require 'symmath.tidy'
