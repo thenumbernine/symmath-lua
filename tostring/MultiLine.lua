@@ -239,11 +239,10 @@ MultiLine.lookupTable = {
 -- while most ToString.__call methods deal in strings,
 --  MultiLine passes around an array of strings (per-newline)
 -- so we recombine them into one string here at the end
-MultiLine.__call = function(self, ...) 
+function MultiLine:__call(...) 
 	local result = MultiLine.super.__call(self, ...)
 	if type(result) == 'string' then return '\n'..result end 
 	return '\n' ..result:concat('\n')
 end
 
 return MultiLine()	-- singleton
-

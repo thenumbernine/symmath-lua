@@ -212,5 +212,10 @@ LaTeX.lookupTable = {
 	end,
 }
 
-return LaTeX()	-- singleton
+function LaTeX:__call(...)
+	local result = LaTeX.super.__call(self, ...)
+	-- now combine the symbols conscious of LaTeX grammar ... 
+	return result
+end
 
+return LaTeX()	-- singleton

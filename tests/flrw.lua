@@ -151,6 +151,9 @@ T_uv =
 --]]
 local lhs = (Ricci'_ab' + g'_ab' * Gaussian / 2):simplify()
 local rhs = (8 * pi * T'_ab'):simplify()
+printbr(lhs:equals(rhs))
+
+local eqns = table()
 for i=1,4 do
 	for j=1,4 do
 		local lhs_ij = lhs{i,j}
@@ -159,9 +162,13 @@ for i=1,4 do
 		if lhs_ij ~= Constant(0)
 		or rhs_ij ~= Constant(0)
 		then
-			printbr(lhs_ij..[[\( = \)]]..rhs_ij)
+			eqns:insert(lhs_ij:equals(rhs_ij))
 		end
 	end
 end
+eqns:map(function(eqn) printbr(eqn) end)
+assert(#eqns == 4)
+-- eqn 1 is the density eqn
+-- eqns 2 thru 4 are the pressure eqn scaled by various things ... 
 
 print(MathJax.footer)
