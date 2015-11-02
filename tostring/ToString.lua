@@ -7,9 +7,8 @@ I made this before I made the symmath.Visitor parent class, so consider merging 
 --]]
 
 require 'ext'
-local Visitor = require 'symmath.singleton.Visitor'
 
-
+--local Visitor = require 'symmath.visitor.Visitor'
 -- Visitor...
 --  (1) clones everything that passes through it (to prevent accidental/intentional in-place modifications)
 --  (2) processes bottom-up (rather than ToString's top-down)

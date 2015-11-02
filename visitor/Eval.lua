@@ -10,7 +10,7 @@ local Invalid = require 'symmath.Invalid'
 local Function = require 'symmath.Function'
 local Derivative = require 'symmath.Derivative'
 local Variable = require 'symmath.Variable'
-local Visitor = require 'symmath.singleton.Visitor'
+local Visitor = require 'symmath.visitor.Visitor'
 
 local Eval = class(Visitor)
 

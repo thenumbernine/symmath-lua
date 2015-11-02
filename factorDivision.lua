@@ -1,1 +1,1 @@
-return require 'symmath.singleton.FactorDivision'()
+return require 'symmath.visitor.FactorDivision'()

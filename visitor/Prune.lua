@@ -17,7 +17,7 @@ local Constant = require 'symmath.Constant'
 local Derivative = require 'symmath.Derivative'
 local Variable = require 'symmath.Variable'
 local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
-local Visitor = require 'symmath.singleton.Visitor'
+local Visitor = require 'symmath.visitor.Visitor'
 
 local Prune = class(Visitor)
 

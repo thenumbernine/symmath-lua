@@ -1,1 +1,1 @@
-return require 'symmath.singleton.Prune'()
+return require 'symmath.visitor.Prune'()

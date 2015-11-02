@@ -7,7 +7,7 @@ local divOp = require 'symmath.divOp'
 local mulOp = require 'symmath.mulOp'
 local powOp = require 'symmath.powOp'
 local Constant = require 'symmath.Constant'
-local Visitor = require 'symmath.singleton.Visitor'
+local Visitor = require 'symmath.visitor.Visitor'
 
 local Tidy = class(Visitor)
 

@@ -8,7 +8,7 @@ So I'm going to make this a separate expand for now ...
 simplify() shouldn't need to expand powers of polys itself -- unless those powers are sum'd themselves (which means the Visitor needs to see the stack, or each node needs to see its parent)
 --]]
 require 'ext'
-local Expand = require 'symmath.singleton.Expand'
+local Expand = require 'symmath.visitor.Expand'
 local ExpandPolynomial = class(Expand)
 
 -- copy inherited visitor lookup table (so we don't modify the parent's)

@@ -1,1 +1,1 @@
-return require 'symmath.singleton.Factor'()
+return require 'symmath.visitor.Factor'()

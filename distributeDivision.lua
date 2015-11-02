@@ -1,1 +1,1 @@
-return require 'symmath.singleton.DistributeDivision'()
+return require 'symmath.visitor.DistributeDivision'()

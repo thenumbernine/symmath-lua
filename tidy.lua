@@ -1,1 +1,1 @@
-return require 'symmath.singleton.Tidy'()
+return require 'symmath.visitor.Tidy'()

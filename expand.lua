@@ -1,1 +1,1 @@
-return require 'symmath.singleton.Expand'()
+return require 'symmath.visitor.Expand'()

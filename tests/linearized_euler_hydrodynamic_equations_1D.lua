@@ -78,41 +78,29 @@ eqns:map(function(eqn) printbr(eqn) end)
 
 printbr('simplify & expand')
 eqns = eqns:map(function(eqn)
-	-- conver to add -> div -> mul
+	-- convert to add -> div -> mul
 	return eqn:distributeDivision()
-	-- TODO it seems like the visitor below can handle distributeDivision as well
-	-- ... but I can't find out how to get it into a cooperative state ...
-	--return eqn:simplify():expand()
+	-- ...because add -> mul -> div can't handle it
+	--return eqn:simplify()
 end)
 eqns:map(function(eqn) printbr(eqn) end)
 
 printbr('factor derivatives')
+-- convert to add -> mul -> div
 eqns = eqns:map(function(eqn)
 	return eqn:factorDivision()
 end)
 eqns:map(function(eqn) printbr(eqn) end)
 
---[=[ TODO not yet working
-local dq_dxs = qs:map(function(q) return q:diff(x) end)
-eqns = eqns:map(function(eqn)
-	return symmath.factor(eqn, dq_dxs)
-end)
---]=]
-eqns:map(function(eqn) printbr(eqn) end)
---]]
 printbr'factor matrix'
--- ... factor?  provide a list of expressions to factor by ... to get our matrix?
 local dq_dt = symmath.Matrix({qs[1]:diff(t)}, {qs[2]:diff(t)}, {qs[3]:diff(t)})
 local A = symmath.Matrix({0,0,0}, {0,0,0}, {0,0,0})
 local dq_dx = symmath.Matrix({qs[1]:diff(x)}, {qs[2]:diff(x)}, {qs[3]:diff(x)})
+local S = symmath.Matrix({0}, {0}, {0})
 eqns = eqns:map(function(eqn,i)
 	local lhs, rhs = eqn:lhs(), eqn:rhs()
 	assert(lhs:isa(symmath.addOp))
-	-- find dts
-	local dtIndex = table.find(lhs, nil, function(expr) return expr == qs[i]:diff(t) end)
-	assert(dtIndex)
-	table.remove(lhs, dtIndex)	-- destroy the lhs
-	-- find dx(qj)
+	-- find factors
 	for k=#lhs,1,-1 do
 		local found = false
 		for j=1,3 do
@@ -139,9 +127,10 @@ eqns = eqns:map(function(eqn,i)
 		end
 	end
 	-- TODO if there is anything left then put it in the rhs side
-	assert(#lhs == 0, "lhs still has stuff in it: "..lhs)
+	S[i][1] = (S[i][1] - lhs):simplify()
+	rhs = (rhs - lhs):simplify()
 	return lhs:equals(rhs)
 end)
-print((dq_dt + A * dq_dx):equals(symmath.Matrix({0},{0},{0})))
+print((dq_dt + A * dq_dx):equals((S + dq_dt):simplify()))
 
 print(MathJax.footer)

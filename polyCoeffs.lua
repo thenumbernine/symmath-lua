@@ -100,7 +100,7 @@ return function(expr, x)
 	local mulOp = require 'symmath.mulOp'
 	local Constant = require 'symmath.Constant'
 
-	local ExpandPolynomial = require 'symmath.singleton.ExpandPolynomial'
+	local ExpandPolynomial = require 'symmath.visitor.ExpandPolynomial'
 	expr = ExpandPolynomial()(expr)
 	expr = expr:simplify()
 	

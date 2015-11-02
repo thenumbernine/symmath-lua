@@ -8,7 +8,7 @@ I'll just have this around to convert things to an add -> div -> mul state
 local addOp = require 'symmath.addOp'
 local divOp = require 'symmath.divOp'
 local class = require 'ext.class'
-local Visitor = require 'symmath.singleton.Visitor'
+local Visitor = require 'symmath.visitor.Visitor'
 
 local DistributeDivision = class(Visitor)
 
