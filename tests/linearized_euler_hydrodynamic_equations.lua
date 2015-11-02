@@ -125,15 +125,16 @@ for dim=1,3 do
 	for j=1,dim do
 		local dq_dxk = qs:map(function(q) return q:diff(xs[j]) end)
 
-		local dFk_dU
-		dFk_dU, remainingTerms = factorLinearSystem(
+		local dFk_dq
+		dFk_dq, remainingTerms = factorLinearSystem(
 			table.map(remainingTerms, function(row) return row[1] end), dq_dxk)
 
 		local dq_dxk = Matrix(dq_dxk:map(function(dq_dx)
 			return {dq_dx}
 		end):unpack())
 
-		matrixLHS = matrixLHS and (matrixLHS + dFk_dU * dq_dxk) or (dFk_dU * dq_dxk)
+		local dFk_dxk = dFk_dq * dq_dxk
+		matrixLHS = matrixLHS and (matrixLHS + dFk_dxk) or dFk_dxk
 	end
 
 	local matrixRHS = -remainingTerms
