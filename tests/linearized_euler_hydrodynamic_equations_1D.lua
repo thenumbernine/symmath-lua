@@ -59,78 +59,36 @@ local eqns = table{
 	(diff(rho * u, t) + diff(rho * u * u + P, x)):equals(0),
 	(diff(rho * e, t) + diff((E + P) * u    , x)):equals(0),
 }
---[[ TODO don't simplify differentiation
-eqns = eqns:map(function(eqn) 
-	return symmath.simplify(eqn)--, {exclude={symmath.Derivative}}) 
-end)
---]]
 eqns:map(function(eqn) printbr(eqn) end)
 
 printbr('substituting state variables:')
 eqns = eqns:map(function(eqn)
-	eqn = symmath.replace(eqn, rho, q1)
-	eqn = symmath.replace(eqn, u, q2 / q1)
-	eqn = symmath.replace(eqn, e, q3 / q1)
-	--eqn = symmath.simplify(eqn)
+	eqn = eqn:replace(rho, q1)
+		:replace(u, q2 / q1)
+		:replace(e, q3 / q1)
 	return eqn
 end)
 eqns:map(function(eqn) printbr(eqn) end)
 
-printbr('simplify & expand')
-eqns = eqns:map(function(eqn)
-	-- convert to add -> div -> mul
-	return eqn:distributeDivision()
-	-- ...because add -> mul -> div can't handle it
-	--return eqn:simplify()
-end)
-eqns:map(function(eqn) printbr(eqn) end)
-
-printbr('factor derivatives')
--- convert to add -> mul -> div
-eqns = eqns:map(function(eqn)
-	return eqn:factorDivision()
-end)
-eqns:map(function(eqn) printbr(eqn) end)
-
 printbr'factor matrix'
-local dq_dt = symmath.Matrix({qs[1]:diff(t)}, {qs[2]:diff(t)}, {qs[3]:diff(t)})
-local A = symmath.Matrix({0,0,0}, {0,0,0}, {0,0,0})
-local dq_dx = symmath.Matrix({qs[1]:diff(x)}, {qs[2]:diff(x)}, {qs[3]:diff(x)})
-local S = symmath.Matrix({0}, {0}, {0})
-eqns = eqns:map(function(eqn,i)
-	local lhs, rhs = eqn:lhs(), eqn:rhs()
-	assert(lhs:isa(symmath.addOp))
-	-- find factors
-	for k=#lhs,1,-1 do
-		local found = false
-		for j=1,3 do
-			if lhs[k] == qs[j]:diff(x) then
-				assert(not found)
-				A[i][j] = (A[i][j] + 1):simplify()
-				table.remove(lhs,k)
-				found = true
-			elseif lhs[k]:isa(symmath.mulOp) then
-				for l=#lhs[k],1,-1 do
-					if lhs[k][l]:isa(symmath.mulOp) then error"needs flattening" end
-					if lhs[k][l] == qs[j]:diff(x) then
-						assert(not found)
-						table.remove(lhs[k],l)
-						A[i][j] = (lhs[k] + A[i][j]):simplify()
-						found = true
-					end
-				end
-				if found then
-					table.remove(lhs,k)
-				end
-			end
-			if found then break end
-		end
-	end
-	-- TODO if there is anything left then put it in the rhs side
-	S[i][1] = (S[i][1] - lhs):simplify()
-	rhs = (rhs - lhs):simplify()
-	return lhs:equals(rhs)
-end)
-print((dq_dt + A * dq_dx):equals((S + dq_dt):simplify()))
+
+local dq_dxs = qs:map(function(q) return q:diff(x) end)
+
+local A, S = require 'symmath.factorLinearSystem'(
+	eqns:map(function(eqn) return eqn:lhs() end), dq_dxs)
+
+-- convert from table to matrix
+local dq_dts = symmath.Matrix(qs:map(function(q)
+	return {q:diff(t)}
+end):unpack())
+
+local dq_dxs = symmath.Matrix(dq_dxs:map(function(dq_dx)
+	return {dq_dx}
+end):unpack())
+
+local matrixEqn = (A * dq_dxs):equals(-S)
+matrixEqn = dq_dts + matrixEqn
+matrixEqn[2] = matrixEqn[2]:simplify() 	-- simplify the rhs only -- keep the dts and dxs separate
+printbr(matrixEqn)
 
 print(MathJax.footer)

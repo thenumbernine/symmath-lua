@@ -205,4 +205,3 @@ Factor.lookupTable = {
 }
 
 return Factor
-
