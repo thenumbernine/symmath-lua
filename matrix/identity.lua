@@ -1,6 +1,7 @@
-require 'ext'
 return function(n)
-	return require 'symmath.Matrix'(
+	local range = require 'ext.range'
+	local Matrix = require 'symmath.Matrix'
+	return Matrix(
 		range(n):map(function(i)
 			return range(n):map(function(j)
 				return i == j and 1 or 0

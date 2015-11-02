@@ -24,7 +24,7 @@ function Array:init(...)
 	for i=1,#self do
 		local x = self[i]
 		assert(type(x) == 'table', "arrays can only be constructed with Expressions or tables of Expressions") 
-		if not (x.isa and x:isa(Expression)) then
+		if not Expression.is(x) then
 			-- then assume it's meant to be a sub-array
 			x = Array(table.unpack(x))
 			self[i] = x
@@ -170,8 +170,8 @@ end
 
 -- works like Expression.__eq except checks for Array subclass equality rather than strictly metatable equality
 function Array.__eq(a,b)
-	if not (type(a) == 'table' and a.isa and a:isa(Array)) then return false end
-	if not (type(b) == 'table' and b.isa and b:isa(Array)) then return false end
+	if not Array.is(a) then return false end
+	if not Array.is(b) then return false end
 	if a and b then
 		if #a ~= #b then return false end
 		for i=1,#a do

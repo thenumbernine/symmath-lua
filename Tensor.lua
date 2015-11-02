@@ -211,9 +211,7 @@ function Tensor.coords(newCoords)
 		Tensor.__coordBasis = newCoords
 		for i=1,#Tensor.__coordBasis do
 			assert(type(Tensor.__coordBasis[i]) == 'table')
-			if not Tensor.__coordBasis[i].isa
-			or not Tensor.__coordBasis[i]:isa(TensorCoordBasis)
-			then
+			if not TensorCoordBasis.is(Tensor.__coordBasis[i]) then
 				Tensor.__coordBasis[i] = TensorCoordBasis(Tensor.__coordBasis[i])
 			end
 		end
@@ -386,13 +384,10 @@ function Tensor:init(...)
 		Tensor'_jk'
 		Tensor'^a_bc'
 		--]]
-			-- got a string of indexes
+		-- got a string of indexes
 		if type(args[1]) == 'string'	
-			-- got an array of TensorIndexes
-		or (type(args[1]) == 'table' 
-			and type(args[1][1]) == 'table'
-			and args[1][1].isa
-			and args[1][1]:isa(TensorIndex))
+		-- got an array of TensorIndexes
+		or (type(args[1]) == 'table'  and TensorIndex.is(args[1][1]))
 		then
 			
 			local indexes = table.remove(args, 1)
@@ -416,7 +411,7 @@ function Tensor:init(...)
 				for i=1,#self do
 					local x = self[i]
 					assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions") 
-					if not (x.isa and x:isa(Expression)) then
+					if not Expression.is(x) then
 						-- then assume it's meant to be a sub-tensor
 						x = Tensor(subVariance, table.unpack(x))
 						self[i] = x
@@ -455,7 +450,7 @@ function Tensor:init(...)
 			for i=1,#self do
 				local x = self[i]
 				assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions") 
-				if not (x.isa and x:isa(Expression)) then
+				if not Expression.is(x) then
 					-- then assume it's meant to be a sub-tensor
 					x = Tensor(table.unpack(x))
 					self[i] = x
@@ -741,7 +736,7 @@ function Tensor:__call(indexes)
 					number = indexes[i],
 				}
 			elseif type(indexes[i]) == 'table' then
-				assert(indexes[i].isa and indexes[i]:isa(TensorIndex))
+				assert(TensorIndex.is(indexes[i]))
 			else
 				error("indexes["..i.."] got unknown type "..type(indexes[i]))
 			end
@@ -1013,7 +1008,6 @@ Tensor.__newindex = function(self, key, value)
 		-- for all non-number indexes
 		-- gather all variables of each of those indexes
 		-- iterate across all
-		
 
 		-- permute the indexes of the value to match the source
 		-- TODO no need to permute it if the index is entirely variables/numbers, such that the assignment is to a single element in the tensor

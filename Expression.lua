@@ -94,45 +94,33 @@ function Expression.__unm(a)
 	return require 'symmath.unmOp'(a) 
 end
 function Expression.__add(a,b)
-	local Constant = require 'symmath.Constant'
-	if type(b) == 'number' then b = Constant(b) end
-	local EquationOp = require 'symmath.EquationOp'
-	if b:isa(EquationOp) then return b.__add(a,b) end
+	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
+	if require 'symmath.EquationOp'.is(b) then return b.__add(a,b) end
 	return require 'symmath.addOp'(a,b) 
 end
 function Expression.__sub(a,b) 
-	local Constant = require 'symmath.Constant'
-	if type(b) == 'number' then b = Constant(b) end
-	local EquationOp = require 'symmath.EquationOp'
-	if b:isa(EquationOp) then return b.__sub(a,b) end
+	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
+	if require 'symmath.EquationOp'.is(b) then return b.__sub(a,b) end
 	return require 'symmath.subOp'(a,b) 
 end
 function Expression.__mul(a,b) 
-	local Constant = require 'symmath.Constant'
-	if type(b) == 'number' then b = Constant(b) end
-	local EquationOp = require 'symmath.EquationOp'
-	if b:isa(EquationOp) then return b.__mul(a,b) end
+	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
+	if require 'symmath.EquationOp'.is(b) then return b.__mul(a,b) end
 	return require 'symmath.mulOp'(a,b) 
 end
 function Expression.__div(a,b) 
-	local Constant = require 'symmath.Constant'
-	if type(b) == 'number' then b = Constant(b) end
-	local EquationOp = require 'symmath.EquationOp'
-	if b:isa(EquationOp) then return b.__div(a,b) end
+	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
+	if require 'symmath.EquationOp'.is(b) then return b.__div(a,b) end
 	return require 'symmath.divOp'(a,b) 
 end
 function Expression.__pow(a,b) 
-	local Constant = require 'symmath.Constant'
-	if type(b) == 'number' then b = Constant(b) end
-	local EquationOp = require 'symmath.EquationOp'
-	if type(b) == 'table' and b.isa and b:isa(EquationOp) then return b.__pow(a,b) end
+	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
+	if require 'symmath.EquationOp'.is(b) then return b.__pow(a,b) end
 	return require 'symmath.powOp'(a,b) 
 end
 function Expression.__mod(a,b) 
-	local Constant = require 'symmath.Constant'
-	if type(b) == 'number' then b = Constant(b) end
-	local EquationOp = require 'symmath.EquationOp'
-	if b:isa(EquationOp) then return b.__mod(a,b) end
+	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
+	if require 'symmath.EquationOp'.is(b) then return b.__mod(a,b) end
 	return require 'symmath.modOp'(a,b) 
 end
 

@@ -52,7 +52,7 @@ local uz = var('u_z', {t,x,y,z})
 local e = var('e', {t,x,y,z})		-- total specific energy 
 
 -- dimension related
-for dim=1,3 do
+for dim=1,1 do
 	print('<h3>'..dim..'D case:</h3>')
 	
 	local us = table{ux, uy, uz} 
@@ -122,12 +122,14 @@ for dim=1,3 do
 
 	local matrixLHS
 
+	local dFk_dqs = table()
 	for j=1,dim do
 		local dq_dxk = qs:map(function(q) return q:diff(xs[j]) end)
 
 		local dFk_dq
 		dFk_dq, remainingTerms = factorLinearSystem(
 			table.map(remainingTerms, function(row) return row[1] end), dq_dxk)
+		dFk_dqs:insert(dFk_dq)
 
 		local dq_dxk = Matrix(dq_dxk:map(function(dq_dx)
 			return {dq_dx}
@@ -150,6 +152,12 @@ for dim=1,3 do
 
 	matrixRHS = matrixRHS:simplify() 	-- simplify the rhs only -- keep the dts and dxs separate
 	printbr(matrixLHS:equals(matrixRHS))
+
+	printbr('eigenvalues of ${{\\partial F_x}\\over{\\partial q}}$')
+	local lambda = var'\\lambda'
+	local det = (dFk_dqs[1] - Matrix.identity(#qs) * lambda):determinant():equals(0)
+	printbr(det)
+	printbr(det:solve(lambda))
 end
 
 print(MathJax.footer)

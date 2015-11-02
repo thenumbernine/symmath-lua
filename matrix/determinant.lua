@@ -42,11 +42,16 @@ return function(m)
 	local Array = require 'symmath.Array'
 	local Constant = require 'symmath.Constant'
 
+	local original = m
+	m = m:simplify()
+	
 	-- non-array?  return itself
-	if type(m) ~= 'table' or not m.isa or not m:isa(Array) then return m end
+	if not Array.is(m) then return original end
 
 	local dim = m:dim()
-	local volume = range(#dim):map(function(i) return dim[i].value end):combine(function(a,b) return a * b end) or 0
+	local volume = range(#dim):map(function(i)
+		return dim[i].value
+	end):combine(function(a,b) return a * b end) or 0
 
 	-- 0x0 array?  return itself
 	if volume == 0 then return Constant(1) end
@@ -58,7 +63,6 @@ return function(m)
 
 	-- not square?
 	if dim[1] ~= dim[2] then error("determinant only works on square matrices") end
-
 
 	local n = dim[1].value
 

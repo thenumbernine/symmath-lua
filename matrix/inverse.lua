@@ -17,7 +17,7 @@ return function(A, AInv)
 	local clone = require 'symmath.clone'
 	
 	if type(A) == 'number' then return 1/Constant(A) end
-	if not (type(A) == 'table' and A.isa and A:isa(Array)) then return Constant(1)/A end
+	if not Array.is(A) then return Constant(1)/A end
 
 	-- ... and Array
 	local dim = A:dim()

@@ -13,16 +13,18 @@ accepts an equation and a variable
 returns an equation with that variable on the lhs and the rest on the rhs
 --]]
 return function(eqn, x)
-	assert(eqn, 'expected equation or expression to solve for zero')
-	
 	local mulOp = require 'symmath.mulOp'
 	local EquationOp = require 'symmath.EquationOp'	
 	local Constant = require 'symmath.Constant'
+	local equals = require 'symmath.equals' 
+	local polyCoeffs = require 'symmath.polyCoeffs'
+	local sqrt = require 'symmath.sqrt'
+	
+	assert(eqn, 'expected equation to solve, or expression to solve for zero')
 	
 	local lhs
-	local equalityClass = require 'symmath.equals' 
 	if eqn:isa(EquationOp) then
-		equalityClass = getmetatable(eqn)
+		equals = getmetatable(eqn)
 		-- move everything to one side of the equation
 		lhs = eqn[1] - eqn[2]
 	else
@@ -30,7 +32,6 @@ return function(eqn, x)
 		lhs = eqn
 	end
 
-	local polyCoeffs = require 'symmath.polyCoeffs'
 	local coeffs = polyCoeffs(lhs, x)
 
 	local function getCoeff(n)
@@ -43,14 +44,13 @@ return function(eqn, x)
 		if n == 0 then return end	-- a = 0 <=> no solutions
 		if n == 1 then		-- c1 x + c0 = 0 <=> x = -c0/c1
 --print('coeffs',table.map(coeffs[1],tostring):concat('\n'),'\nend coeffs')
-			return equalityClass(x, -getCoeff(0) / getCoeff(1)):simplify()
+			return equals(x, -getCoeff(0) / getCoeff(1)):simplify()
 		end
 		-- this is where factor() comes in handy ...
 		if n == 2 then
 			local a,b,c = getCoeff(2), getCoeff(1), getCoeff(0)
-			local sqrt = require 'symmath.sqrt'
-			return equalityClass(x, (-b-sqrt(b^2-4*a*c))/(2*a)):simplify(),
-					equalityClass(x, (-b+sqrt(b^2-4*a*c))/(2*a)):simplify()
+			return equals(x, (-b-sqrt(b^2-4*a*c))/(2*a)):simplify(),
+					equals(x, (-b+sqrt(b^2-4*a*c))/(2*a)):simplify()
 		end
 		-- and on ...
 	end
@@ -64,5 +64,4 @@ return function(eqn, x)
 	if coeffs.extra then
 		result = result + getCoeff'extra'
 	end
-
 end

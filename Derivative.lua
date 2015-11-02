@@ -16,7 +16,7 @@ function Derivative:init(...)
 	local expr = assert(vars:remove(1), "can't differentiate nil")
 	assert(#vars > 0, "can't differentiate against nil")
 	for _,x in ipairs(vars) do
-		assert(x and type(x) == 'table' and x.isa and x:isa(Variable), "diff() expected wrt expressions to be a variable")
+		assert(Variable.is(x), "diff() expected wrt expressions to be a variable")
 	end
 	vars:sort(function(a,b) return a.name < b.name end)
 	Derivative.super.init(self, expr, table.unpack(vars))

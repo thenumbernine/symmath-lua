@@ -2,7 +2,7 @@ return function(A)
 	local Array = require 'symmath.Array'
 	local Matrix = require 'symmath.Matrix'
 	local clone = require 'symmath.clone'
-	if not (type(A) == 'table' and A.isa and A:isa(Array)) then return A end
+	if not Array.is(A) then return A end
 	local dim = A:dim()
 	assert(#dim == 2, "expected a rank-2 array")
 	local rows = {}

@@ -21,7 +21,7 @@ function Language:prepareForCompile(expr, paramInputs)
 	local vars = table()
 	for _,paramInput in pairs(paramInputs) do
 		if type(paramInput) == 'table' then
-			if paramInput.isa and paramInput:isa(Expression) then
+			if Expression.is(paramInput) then
 				assert(paramInput:isa(Variable), "can only implicitly use Variables for compile function parameters.  For non-variables, use {[expression] = 'parameter_name'}")
 				vars:insert(paramInput)
 			else 
@@ -31,7 +31,7 @@ function Language:prepareForCompile(expr, paramInputs)
 				for key,value in pairs(paramInput) do
 					if not found then	-- only allow one key/value pair per list
 						found = true
-						assert(type(key) == 'table' and key.isa and key:isa(Expression), "expected key to be an Expression")
+						assert(Expression.is(key), "expected key to be an Expression")
 						local tmpvar = Variable(tostring(value))
 						vars:insert(tmpvar)
 						expr = expr:replace(key, tmpvar)
