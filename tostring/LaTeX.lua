@@ -140,7 +140,7 @@ LaTeX.lookupTable = {
 		for i=1,#expr do
 			s:insert(self:apply(expr[i]))
 		end
-		return ' \\left[ \\matrix{ ' .. s:concat(' \\ ') .. ' } \\right] '
+		return ' \\left[ \\matrix{ ' .. s:concat(' \\\\ ') .. ' } \\right] '
 	end,
 	[require 'symmath.Matrix'] = function(self, expr)
 		local rows = table()
@@ -165,7 +165,7 @@ LaTeX.lookupTable = {
 			for i=#expr.variance,1,-1 do
 				local var = expr.variance[i]
 				local arrowIndex = (#expr.variance + i + 1) % 2 + 1
-				prefix = var.symbol .. arrows[arrowIndex] .. ' ' .. prefix
+				prefix = var.symbol .. (i == 1 and arrows[1] or arrows[arrowIndex]) .. ' ' .. prefix
 				if arrowIndex == 1 and i ~= 1 then prefix = '[' .. prefix .. ']' end
 			end
 			s = '\\overset{' .. prefix .. ' }{' ..  s .. '}'

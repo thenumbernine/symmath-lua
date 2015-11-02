@@ -31,6 +31,7 @@ convert to pseudo-Cartesian via:
 	dphi = (-y dx + x dy) / (x^2 + y^2)
 --]]
 
+local table = require 'ext.table'
 local symmath = require 'symmath'
 local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
@@ -46,11 +47,11 @@ print(MathJax.header)
 -- coordinates
 local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
 
-local dim = 3	-- 2, 3, or 4
+local dim = 2	-- 2, 3, or 4
 
-local allCoords = {t, x, y, z}
-local coords = {table.unpack(allCoords, 1, dim)}
-local spatialCoords = {table.unpack(allCoords, 2, dim)}
+local allCoords = table{t, x, y, z}
+local coords = allCoords:sub(1,dim)
+local spatialCoords = allCoords:sub(2,dim)
 
 -- algebraic
 --r = (x^2 + y^2 + z^2)^.5
@@ -76,10 +77,10 @@ local g = Tensor('_uv',
 -- [[ n-D
 local g = Tensor'_uv'
 g[{1,1}] = -(1-2*M/r)
-for i=1,dim-1 do
-	local xi = spatialCoords[i]
-	for j=1,dim-1 do
-		local xj = spatialCoords[j]
+spatialCoords:map(function(xi,i)
+	spatialCoords:map(function(xj,j)
+--		g[{i+1,j+1}] = symmath.var('g_{'..xi.name..xj.name..'}', allCoords)
+-- [=[
 		if i == j then
 			local sum
 			for k=1,dim-1 do
@@ -92,8 +93,9 @@ for i=1,dim-1 do
 		else
 			g[{i+1,j+1}] = 2 * M * xi * xj / (r^2 * (r - 2 * M))
 		end
-	end
-end
+--]=]
+	end)
+end)
 --]]
 printbr'metric:'
 printbr('\\(g_{uv} = \\)'..g)
