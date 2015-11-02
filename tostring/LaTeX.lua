@@ -4,36 +4,75 @@ local ToString = require 'symmath.tostring.ToString'
 
 local LaTeX = class(ToString)
 
+local function omit(t)
+	t.omit = true
+	return t
+end
+
+local function tableConcat(t, mid)
+	for i=#t,2,-1 do
+		table.insert(t,i,mid)
+	end
+	return t
+end
+
+-- just like super except uses a table combine
+function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
+	local node = parentNode[childIndex]
+	
+	-- tostring() needed to call MultiLine's conversion to tables ...
+	--local s = tostring(node)
+	local s = self:apply(node)
+	
+	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
+		if type(s) == 'string' then
+			return table{'(', s, ')'}
+		else
+			s = table{'(', s, ')'}
+		end
+	end
+	return s
+end
+
+local function prepareName(name)
+	if name:find'%^' or name:find'_' then
+		return '{'..name..'}'
+	end
+	return name
+end
+
 LaTeX.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
 		local s = tostring(expr.value)	
 		local a,b = s:match('([^e]*)e(.*)')
 		if a and b then
 			if b:sub(1,1) == '+' then b = b:sub(2) end
-			return a .. [[\cdot 10^{]]..b..'}'
+			if #b > 1 then b = '{'..b..'}' end	-- 10^20 just raises the 2 ...
+			return table{a, '\\cdot', table{'10', '^', b}}
 		end
+		if #s > 1 then return '{'..s..'}' end	-- 10^20 just raises the 2 ...
 		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
 		return '?'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return expr.name .. '\\left (' .. table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return '{' .. self:apply(x) .. '}'
-		end):concat(',') .. '\\right )'
+		return table{prepareName(expr.name), '\\left(', 
+			tableConcat(range(#expr):map(function(i)
+				return self:apply(expr[i])
+			end), ','),
+			'\\right)'}
 	end,
 	[require 'symmath.sqrt'] = function(self, expr)
-		return '\\sqrt{'..self:apply(expr[1])..'}'
+		return table{'\\sqrt', self:apply(expr[1])}
 	end,
 	[require 'symmath.unmOp'] = function(self, expr)
-		return '-{'..self:wrapStrOfChildWithParenthesis(expr, 1)..'}'
+		return table{'-', self:wrapStrOfChildWithParenthesis(expr, 1)}
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
-		return table.map(expr, function(x,i)
-			if type(i) ~= 'number' then return end
-			return '{' .. self:wrapStrOfChildWithParenthesis(expr, i) .. '}'
-		end):concat(expr:getSepStr())
+		return tableConcat(range(#expr):map(function(i) 
+			return self:wrapStrOfChildWithParenthesis(expr, i)
+		end), expr:getSepStr())
 	end,
 	[require 'symmath.mulOp'] = function(self, expr)
 		local Variable = require 'symmath.Variable'
@@ -42,40 +81,37 @@ LaTeX.lookupTable = {
 		local powOp = require 'symmath.powOp'
 		local res = table()
 		for i=1,#expr do
-			res:insert(self:wrapStrOfChildWithParenthesis(expr, i))
-			if i > 1 then
-				-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
-				-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
-				if expr[i-1]:isa(Variable)
-				and #expr[i-1].name > 1
-				--and expr[i]:isa(Variable)
+			res[i] = self:wrapStrOfChildWithParenthesis(expr, i)
+		end
+		for i=#expr,2,-1 do
+			-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
+			-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
+			if expr[i-1]:isa(Variable)
+			and #expr[i-1].name > 1
+			--and expr[i]:isa(Variable)
+			then
+				res:insert(i, '\\cdot')
+			-- insert \cdot between neighboring numbers
+			elseif expr[i-1]:isa(Constant) then
+				if expr[i]:isa(Constant)
+				or expr[i]:isa(divOp)
+				or (expr[i]:isa(powOp) and expr[i][1]:isa(Constant))
 				then
-					res[i-1] = res[i-1] .. '\\cdot'
-				-- insert \cdot between neighboring numbers
-				elseif expr[i-1]:isa(Constant) then
-					if expr[i]:isa(Constant)
-					or expr[i]:isa(divOp)
-					or (expr[i]:isa(powOp) and expr[i][1]:isa(Constant))
-					then
-						res[i-1] = res[i-1] .. '\\cdot'
-					end
+					res:insert(i, '\\cdot')
 				end
 			end
 		end
-		for i=1,#res do
-			res[i] = '{'..res[i]..'}'
-		end
-		return res:concat(expr:getSepStr())
+		return tableConcat(res, expr:getSepStr())
 	end,
 	[require 'symmath.divOp'] = function(self, expr)
-		return '{{' .. self:apply(expr[1]) .. '} \\over {' .. self:apply(expr[2]) .. '}}'
+		return table{self:apply(expr[1]), '\\over', self:apply(expr[2])}
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		local s = expr.name
+		local s = table{prepareName(expr.name)}
 		if expr.value then
-			s = s .. '|' .. expr.value
+			s:append{'|', expr.value}
 		end
-		return '{'..s..'}'
+		return s
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local Variable = require 'symmath.Variable'
@@ -88,46 +124,48 @@ LaTeX.lookupTable = {
 		local diffExprOnTop = diffExpr:isa(Variable)
 	
 		if self.usePartialLHSForDerivative then
-			local s = '{\\partial_{'
-			..diffVars:map(function(var)
-				return '{'..self:apply(var)..'}'
-			end):concat()
-			..'}}'
+			local s = table{'\\partial_', 
+				range(#diffVars):map(function(i)
+					return self:apply(diffVars[i])
+				end)}
 			--if not diffExprOnTop then 
-				s = s .. '(' 
+				s:insert'('
 			--end
-			s = s .. diffExprStr
+			s:insert(diffExprStr)
 			--if not diffExprOnTop then 
-				s = s .. ')' 
+				s:insert')'
 			--end
 			return s
 		end
 
-		local s = '{d'
+		local top = table{'d'}
 		if diffPower > 1 then
-			s = s .. '^{' .. diffPower .. '}'
+			top:insert('^')
+			top:insert(diffPower)
 		end
 
 		if diffExprOnTop then
-			s = s .. diffExprStr
+			top:insert(diffExprStr)
 		end
 	
-		s = s .. ' \\over {'
-		
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
 			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
 		end
-		
+	
+		local bottom = table()
 		for name,power in pairs(powersForDeriv) do	
-			s = s .. ' d{' .. name .. '}'
+			bottom:insert'd'
+			bottom:insert(name)
 			if power > 1 then
-				s = s .. '^{' .. power .. '}'
+				bottom:insert('^')
+				bottom:insert(power)
 			end
 		end
-		s = s .. '}}'
+		local s = table{top, '\\over', bottom}
+		
 		if not diffExprOnTop then
-			s = s .. '\\left ( ' .. diffExprStr .. ' \\right )'
+			s = table{s, '\\left(', diffExprStr, '\\right)'}
 		end
 		return s
 	end,
@@ -136,11 +174,11 @@ LaTeX.lookupTable = {
 		if expr:rank() % 2 == 0 then
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
-		local s = table()
-		for i=1,#expr do
-			s:insert(self:apply(expr[i]))
-		end
-		return ' \\left[ \\matrix{ ' .. s:concat(' \\\\ ') .. ' } \\right] '
+		return table{'\\left[', '\\matrix',
+			tableConcat(range(#expr):map(function(i)
+				return self:apply(expr[i])
+			end), '\\\\'),
+			'\\right]'}
 	end,
 	[require 'symmath.Matrix'] = function(self, expr)
 		local rows = table()
@@ -148,74 +186,97 @@ LaTeX.lookupTable = {
 			if type(expr[i]) ~= 'table' then 
 				error("expected matrix children to be Arrays (or at least tables), but got ("..type(expr[i])..") "..tostring(expr[i]))
 			end
-			for j=1,#expr[i] do
-				rows[i] = table.map(expr[i], function(x,k)
-					if type(k) ~= 'number' then return end
-					return self:apply(x)
-				end):concat(' & ')
-			end
+			rows[i] = omit(tableConcat(range(#expr[i]):map(function(j)
+				return self:apply(expr[i][j])
+			end), '&'))
 		end
-		return ' \\left[ \\matrix{ ' .. rows:concat(' \\\\ ') .. ' } \\right] '
+		return table{'\\left[', '\\matrix',
+			tableConcat(rows, '\\\\'),
+			'\\right]'}
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
 		local s = self.lookupTable[require 'symmath.Array'](self, expr)
 		local arrows = {'\\downarrow', '\\rightarrow'}
 		if #expr.variance > 0 then
-			local prefix = ''
+			local prefix = table()
 			for i=#expr.variance,1,-1 do
 				local var = expr.variance[i]
 				local arrowIndex = (#expr.variance + i + 1) % 2 + 1
-				prefix = var.symbol .. (i == 1 and arrows[1] or arrows[arrowIndex]) .. ' ' .. prefix
-				if arrowIndex == 1 and i ~= 1 then prefix = '[' .. prefix .. ']' end
+				prefix = table{var.symbol, (i == 1 and arrows[1] or arrows[arrowIndex])}:append(prefix)
+				if arrowIndex == 1 and i ~= 1 then prefix = table{'[', prefix, ']'} end
 			end
-			s = '\\overset{' .. prefix .. ' }{' ..  s .. '}'
+			s = table{'\\overset', prefix, s}
 		end
 		return s
 	end,
 	[require 'symmath.Sum'] = function(self, expr)
-		local s = '\\sum'
+		local s = table{'\\sum'}
 		local sumexpr, var, from, to = table.unpack(expr)
 		if var or from or to then
-			s = s .. '\\limits'
+			s:insert'\\limits'
 			if var or from then
-				s = s .. '_{'
+				s:insert'_'
 				if var then
-					s = s .. '{' .. self:apply(var) .. '}'
+					s:insert(self:apply(var))
 				end
 				if from then
-					s = s .. '={' .. self:apply(from) .. '}'
+					s:insert'='
+					s:insert(self:apply(from))
 				end
-				s = s .. '}'
 			end
 			if to then
-				s = s .. '^{' .. self:apply(to) .. '}'
+				s:insert'^'
+				s:insert(self:apply(to))
 			end
 		end
-		return s .. self:apply(sumexpr)
+		s:insert(self:apply(sumexpr))
+		return s
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
-		local s = '\\int'
+		local s = table{'\\int'}
 		local intexpr, var, from, to = table.unpack(expr)
 		if from or to then
-			s = s .. '\\limits_'
+			s:insert'\\limits'
+			s:insert'_'
 			if from then
-				s = s .. '{' .. self:apply(from) .. '}'
+				s:insert(self:apply(from))
 			end
 			if to then
-				s = s .. '^{' .. self:apply(to) .. '}'
+				s:insert'^'
+				s:insert(self:apply(to))
 			end
 		end
 		if var then
-			s = s .. 'd{'..self:apply(var)..'}'
+			s:insert'd'
+			s:insert(self:apply(var))
 		end
-		return s .. self:apply(intexpr)	
+		s:insert(self:apply(intexpr))
+		return s
 	end,
 }
 
 function LaTeX:__call(...)
 	local result = LaTeX.super.__call(self, ...)
+	
 	-- now combine the symbols conscious of LaTeX grammar ... 
-	return result
+
+	local function flatten(result)
+		if type(result) == 'string' then return result end
+		if type(result) == 'number' then return tostring(result) end
+		if type(result) ~= 'table' then
+			error("don't know how to handle type "..type(result))
+		end
+
+		local count = #result
+		local omit = result.omit
+		result = range(#result):map(function(i) return flatten(result[i]) end):concat' '
+		if count > 1 and not omit then result = '{' .. result .. '}' end
+		
+		return result
+	end
+
+	result.omit = true
+	return flatten(result):gsub('%s+', ' ')
 end
 
 return LaTeX()	-- singleton

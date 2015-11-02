@@ -85,15 +85,15 @@ printbr([[\({\Gamma^a}_{bc} = \)]]..Gamma'^a_bc')
 printbr()
 
 local dx = Tensor('^a',
-	symmath.var'\\dot{x}^t',
-	symmath.var'\\dot{x}^x',
-	symmath.var'\\dot{x}^y',
-	symmath.var'\\dot{x}^z')
+	symmath.var'\\dot{t}',
+	symmath.var'\\dot{x}',
+	symmath.var'\\dot{y}',
+	symmath.var'\\dot{z}')
 local d2x = Tensor('^a',
-	symmath.var'\\ddot{x}^t',
-	symmath.var'\\ddot{x}^x',
-	symmath.var'\\ddot{x}^y',
-	symmath.var'\\ddot{x}^z')
+	symmath.var'\\ddot{t}',
+	symmath.var'\\ddot{x}',
+	symmath.var'\\ddot{y}',
+	symmath.var'\\ddot{z}')
 printbr'geodesic:'
 -- TODO unravel equaliy, or print individual assignments
 printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):equals(Tensor('^a',0,0,0,0))):simplify())

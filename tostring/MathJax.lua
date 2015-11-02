@@ -20,7 +20,7 @@ MathJax.footer = [[
 ]]
 
 function MathJax:__call(...)
-	return '\\(' .. MathJax.super.__call(self, ...) .. '\\)'
+	return '$' .. MathJax.super.__call(self, ...) .. '$'
 end
 
 return MathJax()	-- singleton
