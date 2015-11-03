@@ -52,7 +52,7 @@ local uz = var('u_z', {t,x,y,z})
 local e = var('e', {t,x,y,z})		-- total specific energy 
 
 -- dimension related
-for dim=1,1 do
+for dim=1,3 do
 	print('<h3>'..dim..'D case:</h3>')
 	
 	local us = table{ux, uy, uz} 

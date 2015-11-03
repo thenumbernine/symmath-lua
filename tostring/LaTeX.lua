@@ -41,16 +41,25 @@ local function prepareName(name)
 	return name
 end
 
+local function explode(s)
+	assert(type(s) == 'string')
+	local t = table()
+	for i=1,#s do
+		t[i] = s:sub(i,i)
+	end
+	return t
+end
+
 LaTeX.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
 		local s = tostring(expr.value)	
 		local a,b = s:match('([^e]*)e(.*)')
 		if a and b then
 			if b:sub(1,1) == '+' then b = b:sub(2) end
-			if #b > 1 then b = '{'..b..'}' end	-- 10^20 just raises the 2 ...
+			b = explode(b)
 			return table{a, '\\cdot', table{'10', '^', b}}
 		end
-		if #s > 1 then return '{'..s..'}' end	-- 10^20 just raises the 2 ...
+		s = explode(s)
 		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
@@ -141,7 +150,7 @@ LaTeX.lookupTable = {
 		local top = table{'d'}
 		if diffPower > 1 then
 			top:insert('^')
-			top:insert(diffPower)
+			top:insert(explode(tostring(diffPower)))
 		end
 
 		if diffExprOnTop then
@@ -159,7 +168,7 @@ LaTeX.lookupTable = {
 			bottom:insert(name)
 			if power > 1 then
 				bottom:insert('^')
-				bottom:insert(power)
+				bottom:insert(explode(tostring(power)))
 			end
 		end
 		local s = table{top, '\\over', bottom}
@@ -266,10 +275,22 @@ function LaTeX:__call(...)
 		if type(result) ~= 'table' then
 			error("don't know how to handle type "..type(result))
 		end
-
-		local count = #result
+		
 		local omit = result.omit
-		result = range(#result):map(function(i) return flatten(result[i]) end):concat' '
+		local count = #result
+
+		for i=1,#result do
+			result[i] = flatten(result[i])
+		end
+		for i=2,#result do
+			assert(type(result[i]) == 'string', "got type "..type(result[i]))
+			if result[i-1]:match('%a$') and result[i]:match('^%a') then
+				result[i] = ' '..result[i]
+			end
+		end
+		result = result:concat()
+		
+		--result = range(#result):map(function(i) return flatten(result[i]) end):concat' '
 		if count > 1 and not omit then result = '{' .. result .. '}' end
 		
 		return result

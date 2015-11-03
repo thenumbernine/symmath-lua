@@ -63,7 +63,7 @@ Tensor.metric(g)
 
 printbr'4-metric:'
 printbr([[\(g_{ab} = \)]]..g'_ab')
-printbr([[\(g^{ab} = \)]]..g'^ab')
+printbr([[\(g^{ab} = \)]]..g'^ab':simplify())
 
 local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2):simplify()
 printbr([[\(\Gamma_{abc} = \)]]..Gamma'_abc')

@@ -16,13 +16,9 @@ DistributeDivision.lookupTable = {
 	[divOp] = function(self, expr)
 		local num, denom = expr[1], expr[2]
 		if not num:isa(addOp) then return end
-		return getmetatable(num)(
-			table.map(num, function(term,k)
-				if type(k) == 'number' then
-					return (term / denom):simplify()
-				end
-			end):unpack()
-		)
+		return getmetatable(num)(range(#num):map(function(k)
+			return (num[k] / denom):simplify()
+		end):unpack())
 	end,
 }
 

@@ -87,8 +87,8 @@ local m = symmath.Matrix(
 )
 m = m:simplify()
 if outputMethod == 'MathJax' then 
-	print((tostring((m * v):equals((m*v):simplify())):gsub('0','\\cdot')))
-	print'<br><br>' 
+	print((tostring((m * v):equals((m*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
+	print'<br><br>'
 elseif outputMethod == 'SingleLine' then
 	print(m)
 elseif outputMethod == 'Lua' then
@@ -98,7 +98,7 @@ end
 mInv = m:inverse()
 
 if outputMethod == 'MathJax' then 
-	print((tostring((mInv * v):equals((mInv*v):simplify())):gsub('0','\\cdot')))
+	print((tostring((mInv * v):equals((mInv*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
 	print'<br><br>' 
 	print(MathJax.footer)
 elseif outputMethod == 'SingleLine' then
