@@ -1,8 +1,10 @@
 --[[
 visitor pattern superclass
 --]]
+local class = require 'ext.class'
 
 local Visitor = class()
+Visitor.name = 'Visitor'
 
 --[[
 debugging:

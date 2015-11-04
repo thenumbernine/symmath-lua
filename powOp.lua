@@ -21,8 +21,7 @@ function powOp:evaluateDerivative(...)
 	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
-	local x = a ^ b * (diff(b, ...) * log(a) + diff(a, ...) * b / a)
-	return x
+	return a ^ b * (diff(b, ...) * log(a) + diff(a, ...) * b / a)
 end
 
 return powOp

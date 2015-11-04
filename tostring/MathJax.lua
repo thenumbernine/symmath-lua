@@ -23,5 +23,15 @@ function MathJax:__call(...)
 	return '$' .. MathJax.super.__call(self, ...) .. '$'
 end
 
-return MathJax()	-- singleton
+-- call this to setup mathjax
+function MathJax.setup()
+	local symmath = require 'symmath'
+	symmath.tostring = MathJax
+	print(MathJax.header)
+	function printbr(...)
+		print(...)
+		print'<br>'
+	end
+end
 
+return MathJax()	-- singleton

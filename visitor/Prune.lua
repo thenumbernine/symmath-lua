@@ -6,7 +6,7 @@ traverses x, child first, maps the nodes if they appear in the lookup table
 
 the table can be expanded by adding an entry prune.lookupTable[class] to perform the necessary transformation
 --]]
-
+local class = require 'ext.class'
 local unmOp = require 'symmath.unmOp'
 local addOp = require 'symmath.addOp'
 local subOp = require 'symmath.subOp'
@@ -20,6 +20,7 @@ local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 local Visitor = require 'symmath.visitor.Visitor'
 
 local Prune = class(Visitor)
+Prune.name = 'Prune'
 
 Prune.lookupTable = {
 
@@ -444,10 +445,8 @@ local original = expr:clone()
 	end,
 	
 	[mulOp] = function(prune, expr)
-
 		assert(#expr > 0)
-		
-		expr = expr:clone()
+
 local symmath = require 'symmath'
 local original = expr:clone()	
 		

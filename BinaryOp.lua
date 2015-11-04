@@ -1,4 +1,4 @@
-require 'ext'
+local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
 
 local BinaryOp = class(Expression)

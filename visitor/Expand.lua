@@ -1,3 +1,4 @@
+local class = require 'ext.class'
 local unmOp = require 'symmath.unmOp'
 local addOp = require 'symmath.addOp'
 local subOp = require 'symmath.subOp'
@@ -7,6 +8,7 @@ local Constant = require 'symmath.Constant'
 local Visitor = require 'symmath.visitor.Visitor'
 
 local Expand = class(Visitor)
+Expand.name = 'Expand'
 
 Expand.lookupTable = {
 	[unmOp] = function(expand, expr)

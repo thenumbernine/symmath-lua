@@ -1,3 +1,4 @@
+local class = require 'ext.class'
 local addOp = require 'symmath.addOp'
 local mulOp = require 'symmath.mulOp'
 local powOp = require 'symmath.powOp'
@@ -5,6 +6,7 @@ local Constant = require 'symmath.Constant'
 local Visitor = require 'symmath.visitor.Visitor'
 
 local Factor = class(Visitor)
+Factor.name = 'Factor'
 
 Factor.lookupTable = {
 	[addOp] = function(factor, expr, factors)

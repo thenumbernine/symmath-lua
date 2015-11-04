@@ -1,3 +1,4 @@
+local class = require 'ext.class'
 local unmOp = require 'symmath.unmOp'
 local addOp = require 'symmath.addOp'
 local subOp = require 'symmath.subOp'
@@ -13,6 +14,7 @@ local Variable = require 'symmath.Variable'
 local Visitor = require 'symmath.visitor.Visitor'
 
 local Eval = class(Visitor)
+Eval.name = 'Eval' 
 
 Eval.lookupTable = {
 	[unmOp] = function(self, expr)

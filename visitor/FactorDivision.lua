@@ -8,6 +8,7 @@ local mulOp = require 'symmath.mulOp'
 local divOp = require 'symmath.divOp'
 
 local FactorDivision = class(Visitor)
+FactorDivision.name = 'FactorDivision'
 
 -- converts to add -> mul -> div
 FactorDivision .lookupTable = {
