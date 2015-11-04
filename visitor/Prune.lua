@@ -90,16 +90,6 @@ Prune.lookupTable = {
 	end,
 	
 	[addOp] = function(prune, expr, ...)
-
-		assert(#expr > 0)
-		
-		expr = expr:clone()
-local symmath = require 'symmath'
-local original = expr:clone()
-
-		if #expr == 1 then return expr[1] end
-
-
 		-- flatten additions
 		-- (x + y) + z => x + y + z
 		for i=#expr,1,-1 do
@@ -112,12 +102,11 @@ local original = expr:clone()
 					local chch = assert(ch[j])
 					table.insert(expr, i, chch)
 				end
---print('addOp flatten', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 				return prune:apply(expr)
 			end
 		end
 		
-		-- push all Constants to the lhs, sum as we go
+		-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
 		local cval = 0
 		for i=#expr,1,-1 do
 			if expr[i]:isa(Constant) then
@@ -127,7 +116,6 @@ local original = expr:clone()
 		
 		-- if it's all constants then return what we got
 		if #expr == 0 then 
---print('addOp const1 + const2 => const', symmath.Verbose(original), '=>', symmath.Verbose(cval))
 			return Constant(cval) 
 		end
 		
@@ -138,11 +126,9 @@ local original = expr:clone()
 			-- if cval is zero and we're not re-inserting a constant
 			-- then see if we have only one term ...
 			if #expr == 1 then 
---print('addOp returning zero')
 				return prune:apply(expr[1]) 
 			end
 		end
-	
 
 		-- any overloaded subclass simplification
 		-- specifically used for vector/matrix addition
@@ -160,6 +146,9 @@ local original = expr:clone()
 			if result then
 				table.remove(expr, i)
 				expr[i-1] = result
+				if #expr == 1 then
+					expr = expr[1]
+				end
 				return prune:apply(expr)
 			end
 		end
@@ -205,8 +194,21 @@ local original = expr:clone()
 					baseConst = baseConst + thisConst
 				end
 				if not didntFind then
-					local expr = addOp(mulOp(baseConst, table.unpack(baseTerms)), table.unpack(nonMuls))
---print('addOp c1*x + c2*x = (c1+c2)*x', symmath.Verbose(original), '=>', symmath.Verbose(expr))
+					local terms = table{baseConst, baseTerms:unpack()}
+					assert(#terms > 0)	-- at least baseConst should exist
+					if #terms == 1 then
+						terms = terms[1]
+					else
+						terms = mulOp(terms:unpack())
+					end
+
+					local expr
+					if #nonMuls == 0 then
+						expr = terms
+					else
+						expr = addOp(terms, nonMuls:unpack())
+					end
+
 					return prune:apply(expr)
 				end
 			end
@@ -223,24 +225,18 @@ local original = expr:clone()
 			local xI = expr[i]
 			local termsI
 			if xI:isa(mulOp) then
---print('x[i] found mulOp')
 				termsI = table(xI)
 			else
---print("x[i] didn't find mulOp")
 				termsI = table{xI}
 			end
---print('termsI:',table.unpack(termsI))
 			for j=i+1,#expr do
 				local xJ = expr[j]
 				local termsJ
 				if xJ:isa(mulOp) then
---print("x[j] found mulOp")
 					termsJ = table(xJ)
 				else
---print("x[j] didn't find mulOp")
 					termsJ = table{xJ}
 				end
---print('termsJ:',table.unpack(termsJ))
 
 				local fail
 				
@@ -252,10 +248,8 @@ local original = expr:clone()
 						if ch:isa(Constant) then
 							if not constI then
 								constI = Constant(ch.value)
---print('setting constI to',constI.value)
 							else
 								constI.value = constI.value * ch.value
---print('adding constI to',constI.value)
 							end
 						else
 							fail = true
@@ -266,7 +260,6 @@ local original = expr:clone()
 					end
 				end
 				if not constI then constI = Constant(1) end
---print('constI is ',constI.value)
 				
 				local constJ
 				if not fail then
@@ -275,10 +268,8 @@ local original = expr:clone()
 							if ch:isa(Constant) then
 								if not constJ then
 									constJ = Constant(ch.value)
---print('setting constJ to',constJ.value)
 								else
 									constJ.value = constJ.value * ch.value
---print('adding constJ to',constJ.value)
 								end
 							else
 								fail = true
@@ -288,15 +279,15 @@ local original = expr:clone()
 					end
 				end
 				if not constJ then constJ = Constant(1) end
---print('constJ is',constJ.value)
 				
 				if not fail then
---print('optimizing from '..tostring(expr))
 					table.remove(expr, j)
---print('constI',constI.value,'constJ',constJ.value,'commonTerms',table.unpack(commonTerms))
-					expr[i] = mulOp(Constant(constI.value + constJ.value), table.unpack(commonTerms))
---print('optimizing to '..tostring(prune:apply(expr)))
---print('flattening muls in add')
+					if #commonTerms == 0 then
+						expr[i] = Constant(constI.value + constJ.value)
+					else
+						expr[i] = mulOp(Constant(constI.value + constJ.value), table.unpack(commonTerms))
+					end
+					if #expr == 1 then expr = expr[1] end
 					return prune:apply(expr)
 				end
 			end
@@ -334,7 +325,6 @@ local original = expr:clone()
 				local a,b = table.unpack(x)
 				table.remove(expr, i)
 				local expr = (expr * b + a) / b
---print('c+a/b => (c*b+a)/b', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 				return prune:apply(expr)
 			end
 		end
@@ -368,7 +358,6 @@ local original = expr:clone()
 									-- then remove sine and cosine and replace with a '1' and set modified
 									table.remove(expr, i)	-- remove largest index first
 									expr[sinIndex] = Constant(1)
---print('cos^2+sin^2=1')
 									return expr
 								end
 							else
@@ -380,7 +369,6 @@ local original = expr:clone()
 								if cosAngle == x[1][1] then
 									table.remove(expr, i)
 									expr[cosIndex] = Constant(1)
---print('cos^2+sin^2=1')
 									return expr
 								end
 							else
@@ -395,22 +383,20 @@ local original = expr:clone()
 			local cos = require 'symmath.cos'
 			local sin = require 'symmath.sin'
 			local Function = require 'symmath.Function'
-			
+			local map = require 'symmath.map'
+
 			-- using factor outright causes simplification loops ...
 			-- how about only using it if we find a cos or a sin in our tree?
 			local foundTrig = false
-			symmath.map(expr, function(node)
+			map(expr, function(node)
 				if node:isa(cos) or node:isa(sin) then
 					foundTrig = true
 				end
 			end)
 
 			if foundTrig then
---print('attempting trig simplify on',expr)
 				local result = checkAddOp(expr)
---print('...got',result)
 				if result then 
---print('...returning',original,'=>',prune:apply(result))
 					return prune:apply(result) 
 				end
 
@@ -424,11 +410,8 @@ local original = expr:clone()
 			if f:isa(mulOp) then	-- should always be a mulOp unless there was nothing to factor
 				for _,ch in ipairs(f) do
 					if ch:isa(addOp) then
---print('attempting trig simplify on factor term',ch)
 						local result = checkAddOp(ch)
---print('...got',result)
 						if result then 
---print('...returning',original,'=>',prune:apply(result))
 							return prune:apply(result) 
 						end
 					end
@@ -436,8 +419,6 @@ local original = expr:clone()
 			end
 --]]
 		end
-
-		return expr
 	end,
 	
 	[subOp] = function(prune, expr)
@@ -446,9 +427,6 @@ local original = expr:clone()
 	
 	[mulOp] = function(prune, expr)
 		assert(#expr > 0)
-
-local symmath = require 'symmath'
-local original = expr:clone()	
 		
 		-- flatten multiplications
 		for i=#expr,1,-1 do
@@ -460,7 +438,6 @@ local original = expr:clone()
 					local chch = ch[j]
 					table.insert(expr, i, chch)
 				end
---print('mulOp (a*b)*c => a*b*c', symmath.Verbose(original), '=>', symmath.Verbose(expr))
 				return prune:apply(expr)
 			end
 		end
@@ -494,12 +471,10 @@ local original = expr:clone()
 
 		-- if it's all constants then return what we got
 		if #expr == 0 then 
---print('mulOp returning constant', symmath.Verbose(original), '=>', symmath.Verbose(Constant(cval)))
 			return Constant(cval) 
 		end
 		
 		if cval == 0 then 
---print('mulOp returning zero')
 			return Constant(0) 
 		end
 		
@@ -507,11 +482,9 @@ local original = expr:clone()
 			table.insert(expr, 1, Constant(cval))
 		else
 			if #expr == 1 then 
---print('mulOp 1*a => a', symmath.Verbose(original), '=>', symmath.Verbose(expr[1]))
 				return prune:apply(expr[1]) 
 			end
 		end
-
 
 		do		
 			-- and now for Matrix*Matrix multiplication ...
@@ -532,9 +505,6 @@ local original = expr:clone()
 				end
 			end
 		end
-
-
-
 
 		-- [[ a^m * a^n => a^(m + n)
 		do
@@ -580,7 +550,7 @@ local original = expr:clone()
 				i = i + 1
 			end
 			if modified then
---print('mulOp a^m * a^n => a^(m+n)', symmath.Verbose(original), '=>', symmath.Verbose(expr))
+				if #expr == 1 then expr = expr[1] end
 				return prune:apply(expr)
 			end
 		end
@@ -628,25 +598,29 @@ local original = expr:clone()
 						num = num ^ powers[1]
 					end
 				else
-					num = mulOp(table.unpack(bases:map(function(base,i)
+					num = bases:map(function(base,i)
 						if powers[i] == Constant(1) then
 							return base
 						else
 							return base ^ powers[i]
 						end
-					end)))
+					end)
+					assert(#num > 0)
+					if #num == 1 then
+						num = num[1]
+					else
+						num = mulOp(num:unpack())
+					end
 				end
 				
 				local denom
 				if #uniqueDenomIndexes == 1 then
---print('mulOp a*(b/c) => (a*b)/c')
 					local i = uniqueDenomIndexes[1]
 					denom = denoms[i]
 					if powers[i] ~= Constant(1) then
 						denom = denom^powers[i]
 					end
 				elseif #denoms > 1 then
---print('mulOp (a/b)*(c/d) => (a*c)/(b*d)')
 					denom = mulOp(table.unpack(uniqueDenomIndexes:map(function(i)
 						if powers[i] == Constant(1) then
 							return denoms[i]
@@ -673,9 +647,6 @@ local original = expr:clone()
 	
 	[divOp] = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
-		local original = expr:clone()
-	
-		expr = expr:clone()
 		
 		-- matrix/scalar
 		do
@@ -706,7 +677,11 @@ local original = expr:clone()
 			-- mul / Constant = 1/Constant * mul
 			if expr[1]:isa(mulOp) and expr[2]:isa(Constant) then
 				local m = expr[1]:clone()
-				return prune:apply(mulOp(Constant(1/expr[2].value), table.unpack(m)))
+				if #m == 0 then
+					return prune:apply(Constant(1/expr[2].value))
+				else
+					return prune:apply(mulOp(Constant(1/expr[2].value), table.unpack(m)))
+				end
 			end
 		end
 
@@ -841,15 +816,27 @@ local original = expr:clone()
 				-- can I construct these even if they have no terms?
 				local num
 				if #numBases > 0 then
-					num = mulOp(table.unpack(numBases:map(function(v,i) 
+					num = numBases:map(function(v,i) 
 						return v ^ numPowers[i]
-					end)))
+					end)
+					assert(#num > 0)
+					if #num == 1 then
+						num = num[1]
+					else
+						num = mulOp(num:unpack())
+					end
 				end
 				local denom
 				if #denomBases > 0 then
-					denom = mulOp(table.unpack(denomBases:map(function(v,i) 
+					denom = denomBases:map(function(v,i) 
 						return v ^ denomPowers[i]
-					end)))
+					end)
+					assert(#denom > 0)
+					if #denom == 1 then
+						denom = denom[1]
+					else
+						denom = mulOp(denom:unpack())
+					end
 				end
 				
 				local result
@@ -969,10 +956,17 @@ local original = expr:clone()
 		
 		-- (a * b) ^ c => a^c * b^c
 		if expr[1]:isa(mulOp) then
-			return prune:apply(mulOp(table.map(expr[1], function(v,k)
+			local result = table.map(expr[1], function(v,k)
 				if type(k) ~= 'number' then return end
 				return v ^ expr[2]
-			end):unpack()))
+			end)
+			assert(#result > 0)
+			if #result == 1 then
+				result = result[1]
+			else
+				result = mulOp(result:unpack())
+			end
+			return prune:apply(result)
 		end
 	
 		-- a^(-c) => 1/a^c
@@ -1003,6 +997,4 @@ local original = expr:clone()
 	end,
 }
 
--- return instanciated singletons of Visitor class children
 return Prune
-

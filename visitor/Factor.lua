@@ -187,20 +187,24 @@ Factor.lookupTable = {
 
 		-- start with all the factored-out terms
 		local terms = minProds:map(function(minProd,i) return minProd ^ minPowers[i] end)
+		
 		-- then add what's left of the original sum
-		local lastTerm = addOp(prodsList:map(
+		local lastTerm = prodsList:map(
 			function(list)
-				return mulOp(list:map(function(x)
+				list = list:map(function(x)
 					if x.power == Constant(1) then
 						return x.term
 					else
-						return x.term ^ x.power
+						return x.term ^ x.power:simplify()
 					end
-				end):unpack())
-			end):unpack())
+				end)
+				return #list == 1 and list[1] or mulOp(list:unpack())
+			end)
+		lastTerm = #lastTerm == 1 and lastTerm[1] or addOp(lastTerm:unpack())
 
 		terms:insert(lastTerm)
-		local result = mulOp(terms:unpack())
+	
+		local result = #terms == 1 and terms[1] or mulOp(terms:unpack())
 		
 		return prune(result)
 	end,

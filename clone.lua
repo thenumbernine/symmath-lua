@@ -1,9 +1,12 @@
 return function(obj, ...)
-	local Constant = require 'symmath.Constant'
-	local Expression = require 'symmath.Expression'
+	if type(obj) == 'number' then
+		local Constant = require 'symmath.Constant'
+		return Constant(obj)
+	end
 	
-	if type(obj) == 'number' then return Constant(obj) end
 	if type(obj) ~= 'table' then return obj end
+	
+	local Expression = require 'symmath.Expression'
 	if Expression.is(obj) then return obj:clone() end
 	
 	return obj

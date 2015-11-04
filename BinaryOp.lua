@@ -3,6 +3,11 @@ local Expression = require 'symmath.Expression'
 
 local BinaryOp = class(Expression)
 
+function BinaryOp:init(...)
+	BinaryOp.super.init(self, ...)
+--	assert(#self > 1)
+end
+
 function BinaryOp:getSepStr()
 	local sep = self.name
 	if self.implicitName then 

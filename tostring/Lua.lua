@@ -62,4 +62,3 @@ function Lua:compile(expr, paramInputs)
 end
 
 return Lua()	-- singleton
-

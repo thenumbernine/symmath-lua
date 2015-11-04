@@ -11,11 +11,11 @@ local Expand = class(Visitor)
 Expand.name = 'Expand'
 
 Expand.lookupTable = {
-	[unmOp] = function(expand, expr)
-		return expand:apply(Constant(-1) * expr[1])
+	[unmOp] = function(self, expr)
+		return self:apply(Constant(-1) * expr[1])
 	end,
 	
-	[mulOp] = function(expand, expr)
+	[mulOp] = function(self, expr)
 		expr = expr:clone()
 local original = expr:clone()
 local symmath = require 'symmath'	
@@ -34,14 +34,19 @@ local symmath = require 'symmath'
 					terms:insert(term)
 				end
 				expr = getmetatable(x)(table.unpack(terms))
-				return expand:apply(expr)
+				return self:apply(expr)
 
 			end
 		end
 	end,
 
-	[subOp] = function(expand, expr)
-		return expand:apply(expr[1] + -addOp(table.unpack(expr, 2)))
+	[subOp] = function(self, expr)
+		if #expr == 2 then
+			expr = expr[1] + -expr[2]
+		else
+			expr = expr[1] + -addOp(table.unpack(expr[2]))
+		end
+		return self:apply(expr)
 	end,
 }
 

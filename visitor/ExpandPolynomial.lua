@@ -50,15 +50,19 @@ ExpandPolynomial.lookupTable = setmetatable(table(ExpandPolynomial.lookupTable, 
 				if frac ~= 0 then
 					terms:insert(expr[1]:clone()^frac)
 				end
-				if div then
-					expr = Constant(1)/mulOp(table.unpack(terms))
---print('powOp a^-c => 1/(a*a*a...)', require 'symmath.tostring.Verbose'(original), '=>', require 'symmath.tostring.Verbose'(expr))
-					return expand:apply(expr)
+			
+				assert(#terms > 0)
+				
+				if #terms == 1 then
+					expr = terms[1]
 				else
-					expr = mulOp(table.unpack(terms))
---print('powOp a^c => a*a*a...', require 'symmath.tostring.Verbose'(original), '=>', require 'symmath.tostring.Verbose'(expr))
-					return expand:apply(expr)
+					local mulOp = require 'symmath.mulOp'
+					expr = mulOp(terms:unpack())
 				end
+				
+				if div then expr = 1/expr end
+				
+				return expand:apply(expr)
 			end
 		end
 	end,

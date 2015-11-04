@@ -10,11 +10,11 @@ addOp.name = '+'
 
 function addOp:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
-	local result = addOp()
+	local result = table()
 	for i=1,#self do
 		result[i] = diff(self[i]:clone(), ...)
 	end
-	return result
+	return addOp(result:unpack())
 end
 
 addOp.__eq = require 'symmath.nodeCommutativeEqual'

@@ -11,19 +11,27 @@ mulOp.name = '*'
 function mulOp:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
 	local addOp = require 'symmath.addOp'
-	local sumRes = addOp()
+	local sums = table()
 	for i=1,#self do
-		local termRes = mulOp()
+		local terms = table()
 		for j=1,#self do
 			if i == j then
-				table.insert(termRes, diff(self[j]:clone(), ...))
+				terms:insert(diff(self[j]:clone(), ...))
 			else
-				table.insert(termRes, self[j]:clone())
+				terms:insert(self[j]:clone())
 			end
 		end
-		table.insert(sumRes, termRes)
+		if #terms == 1 then
+			sums:insert(terms[1])
+		else
+			sums:insert(mulOp(terms:unpack()))
+		end
 	end
-	return sumRes
+	if #sums == 1 then
+		return sums[1]
+	else
+		return addOp(sums:unpack())
+	end
 end
 
 -- now that we've got matrix multilpication, this becomes more difficult...
