@@ -41,6 +41,9 @@ local symmath = require 'symmath'
 	end,
 
 	[subOp] = function(self, expr)
+		--assert(#expr > 1) -- TODO
+		if #expr == 1 then return self:apply(expr[1]) end
+
 		if #expr == 2 then
 			expr = expr[1] + -expr[2]
 		else

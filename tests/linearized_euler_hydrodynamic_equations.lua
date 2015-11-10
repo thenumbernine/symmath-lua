@@ -39,6 +39,11 @@ local function printbr(...)
 	print('<br>')
 end
 
+local function sum(t)
+	if #t == 1 then return t[1] end
+	return add(table.unpack(t))
+end
+
 -- dimension variables
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 
@@ -76,20 +81,20 @@ for dim=1,3 do
 	printbr('original equations:')
 
 	local continuityEqn = (rho:diff(t) + 
-		add(range(dim):map(function(j)
+		sum(range(dim):map(function(j)
 			return (rho * us[j]):diff(xs[j])
-		end):unpack())):equals(0)
+		end))):equals(0)
 
 	local momentumEqns = range(dim):map(function(i)
-		return ((rho * us[i]):diff(t) + add(range(dim):map(function(j)
+		return ((rho * us[i]):diff(t) + sum(range(dim):map(function(j)
 			return (rho * us[i] * us[j] + (i==j and P or 0)):diff(xs[j])
-		end):unpack())):equals(0)
+		end))):equals(0)
 	end)
 
 	local energyEqn = ((rho * e):diff(t) +
-		add(range(dim):map(function(j)
+		sum(range(dim):map(function(j)
 			return ((E + P) * us[j]):diff(xs[j])
-		end):unpack())):equals(0)
+		end))):equals(0)
 
 	local eqns = table{continuityEqn}:append(momentumEqns):append{energyEqn}
 

@@ -29,7 +29,9 @@ function Visitor:apply(expr, ...)
 --local id = hash(expr)
 --print(id, 'begin Visitor', Verbose(expr))
 	local clone = require 'symmath.clone'
+
 	expr = clone(expr)
+	
 	local t = type(expr)
 	if t == 'table' then
 		local m = getmetatable(expr)

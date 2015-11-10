@@ -58,10 +58,11 @@ return function(eqn, x)
 	local result = Constant(0)
 	for i=0,maxn(coeffs) do
 		if coeffs[i] then
-			result = result + x^n * getCoeff(i) 
+			result = result + x^i * getCoeff(i) 
 		end
 	end
 	if coeffs.extra then
 		result = result + getCoeff'extra'
 	end
+	return result
 end

@@ -55,20 +55,21 @@ Prune.lookupTable = {
 		-- [[
 		if expr[1]:isa(Variable)
 		then
+			local var = expr[1]
 			-- dx/dx = 1
-			if #expr == 2 
-			and expr[1] == expr[2]
-			then
+			if #expr == 2 and var == expr[2] then
 				return Constant(1)
 			end
-			
 			--dx/dy = 0 unless x is a function of y
 			for i=2,#expr do
-				local var = expr[i]
-				if not expr[1].dependentVars:find(var) then
+				local wrt = expr[i]
+
+				-- and what about 2nd derivatives too?	
+				
+				if not var.dependentVars:find(wrt) then
 					return Constant(0)
 				end
-			end			
+			end
 		end
 		--]]
 
@@ -324,6 +325,7 @@ Prune.lookupTable = {
 				assert(#x == 2)
 				local a,b = table.unpack(x)
 				table.remove(expr, i)
+				if #expr == 1 then expr = expr[1] end
 				local expr = (expr * b + a) / b
 				return prune:apply(expr)
 			end
@@ -358,6 +360,7 @@ Prune.lookupTable = {
 									-- then remove sine and cosine and replace with a '1' and set modified
 									table.remove(expr, i)	-- remove largest index first
 									expr[sinIndex] = Constant(1)
+									if #expr == 1 then expr = expr[1] end
 									return expr
 								end
 							else
@@ -369,6 +372,7 @@ Prune.lookupTable = {
 								if cosAngle == x[1][1] then
 									table.remove(expr, i)
 									expr[cosIndex] = Constant(1)
+									if #expr == 1 then expr = expr[1] end
 									return expr
 								end
 							else
@@ -396,14 +400,16 @@ Prune.lookupTable = {
 
 			if foundTrig then
 				local result = checkAddOp(expr)
-				if result then 
+				if result then
 					return prune:apply(result) 
 				end
 
 				-- this is factoring ... and pruning ... 
 				-- such that it is recursively calling this function for its simplification
 				local f = require 'symmath.factor'(expr)
-				if f then return f end
+				if f then
+					return f
+				end
 			end	
 
 --[[
@@ -486,25 +492,25 @@ Prune.lookupTable = {
 			end
 		end
 
-		do		
-			-- and now for Matrix*Matrix multiplication ...
-			for i=#expr,2,-1 do
-				local rhs = expr[i]
-				local lhs = expr[i-1]
-			
-				local result
-				if lhs.pruneMul then
-					result = lhs.pruneMul(lhs, rhs)
-				elseif rhs.pruneMul then
-					result = rhs.pruneMul(lhs, rhs)
-				end
-				if result then
-					table.remove(expr, i)
-					expr[i-1] = result
-					return prune:apply(expr)
-				end
+		-- [[ and now for Matrix*Matrix multiplication ...
+		for i=#expr,2,-1 do
+			local rhs = expr[i]
+			local lhs = expr[i-1]
+		
+			local result
+			if lhs.pruneMul then
+				result = lhs.pruneMul(lhs, rhs)
+			elseif rhs.pruneMul then
+				result = rhs.pruneMul(lhs, rhs)
+			end
+			if result then
+				table.remove(expr, i)
+				expr[i-1] = result
+				if #expr == 1 then expr = expr[1] end
+				return prune:apply(expr)
 			end
 		end
+		--]]
 
 		-- [[ a^m * a^n => a^(m + n)
 		do
@@ -638,11 +644,6 @@ Prune.lookupTable = {
 			end
 		end
 		--]]
-
-
-		-- TODO this is required for things to work right
-		-- that means somewhere above there's still in-place operations going on
-		return expr
 	end,
 	
 	[divOp] = function(prune, expr)
@@ -882,8 +883,6 @@ Prune.lookupTable = {
 			return prune:apply(expr[1][1] ^ (expr[1][2] - expr[2][2]))
 		end
 		--]]
-
-		return expr
 	end,
 	
 	[powOp] = function(prune, expr)
@@ -988,8 +987,6 @@ Prune.lookupTable = {
 			return prune:apply(m)
 		end
 		--]]
-
-		return expr
 	end,
 
 	[require 'symmath.sqrt'] = function(prune, expr)

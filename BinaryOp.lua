@@ -5,7 +5,10 @@ local BinaryOp = class(Expression)
 
 function BinaryOp:init(...)
 	BinaryOp.super.init(self, ...)
---	assert(#self > 1)
+	if self[1] == nil or self[2] == nil then	
+		local Verbose = require 'symmath.tostring.Verbose'
+		error("tried to initialize a binary operation without two expressions: "..Verbose(self[1]).." and "..Verbose(self[2]))
+	end
 end
 
 function BinaryOp:getSepStr()

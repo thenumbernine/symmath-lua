@@ -45,7 +45,11 @@ return function(exprs, factors)
 						if expr[k][l] == factors[j] then
 							assert(not found)
 							table.remove(expr[k],l)
-							A[i][j] = (expr[k] + A[i][j]):simplify()
+							if #expr[k] == 1 then
+								A[i][j] = (expr[k][1] + A[i][j]):simplify()
+							else
+								A[i][j] = (expr[k] + A[i][j]):simplify()
+							end
 							found = true
 						end
 					end
