@@ -1,10 +1,10 @@
 --[[
-local prune = require 'symmath.prune'
-x = prune(x)
+local self = require 'symmath.self'
+x = self(x)
 
 traverses x, child first, maps the nodes if they appear in the lookup table
 
-the table can be expanded by adding an entry prune.lookupTable[class] to perform the necessary transformation
+the table can be expanded by adding an entry self.lookupTable[class] to perform the necessary transformation
 --]]
 local class = require 'ext.class'
 local unmOp = require 'symmath.unmOp'
@@ -15,6 +15,7 @@ local divOp = require 'symmath.divOp'
 local powOp = require 'symmath.powOp'
 local Constant = require 'symmath.Constant'
 local Derivative = require 'symmath.Derivative'
+local Integral = require 'symmath.Integral'
 local Variable = require 'symmath.Variable'
 local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 local Visitor = require 'symmath.visitor.Visitor'
@@ -24,7 +25,7 @@ Prune.name = 'Prune'
 
 Prune.lookupTable = {
 
-	[Derivative] = function(prune, expr)
+	[Derivative] = function(self, expr)
 
 		-- d/dx{y_i} = {dy_i/dx}
 		do
@@ -32,7 +33,7 @@ Prune.lookupTable = {
 			if expr[1]:isa(Array) then
 				local res = expr[1]:clone()
 				for i=1,#res do
-					res[i] = prune:apply(res[i]:diff(table.unpack(expr, 2)))
+					res[i] = self:apply(res[i]:diff(table.unpack(expr, 2)))
 				end
 				return res
 			end
@@ -45,7 +46,7 @@ Prune.lookupTable = {
 
 		-- d/dx d/dy = d/dxy
 		if expr[1]:isa(Derivative) then
-			return prune:apply(Derivative(expr[1][1], table.unpack(
+			return self:apply(Derivative(expr[1][1], table.unpack(
 				table.append({table.unpack(expr, 2)}, {table.unpack(expr[1], 2)})
 			)))
 		end
@@ -77,20 +78,94 @@ Prune.lookupTable = {
 			local result = expr[1]:clone()
 			for i=2,#expr do
 				-- TODO one at a time ...
-				result = prune:apply(result:evaluateDerivative(expr[i]))
+				result = self:apply(result:evaluateDerivative(expr[i]))
 			end
 			return result
 		end
 	end,
-	
-	[unmOp] = function(prune, expr)
-		if expr[1]:isa(unmOp) then
-			return prune:apply(expr[1][1]:clone())
+
+	[Integral] = function(self, expr)
+		local x = expr[2]
+		
+		-- TODO convert away divisions first ... convert into ^-1's
+		
+		if expr[1]:isa(Constant) then
+			return self(expr[1] * x)
 		end
-		return prune:apply(Constant(-1) * expr[1])
+
+		if expr[1]:isa(Variable) then
+			if expr[1] == x then
+				return self(expr[1]^2/2)
+			else
+				return self(expr[1] * x)
+			end
+		end
+	
+		if expr[1]:isa(addOp) then
+			return addOp(range(#expr[1]):map(function(i)
+				return self(Integral(expr[1][i], table.unpack(expr, 2)))
+			end):unpack())
+		end
+
+		local log = require 'symmath.log'
+		local abs = require 'symmath.abs'
+
+		if expr[1]:isa(powOp)
+		and expr[1][1] == x
+		and expr[1][2]:isa(Constant)
+		then
+			if expr[1][2] == Constant(-1) then
+				return self(log(abs(x)))
+			else
+				return self(x^(expr[1][2]+1)/(expr[1][2]+1))
+			end
+		end
+
+		-- assuming it's already simplified ... ? so no x * x^2's exist?
+		if expr[1]:isa(mulOp) then
+			local function find(a,b)
+				local found = false
+				local map = require 'symmath.map'
+				map(a, function(x)
+					if x == b then found = true end
+				end)
+				return found
+			end
+			local found = false
+			local terms = table(expr[1])
+			for i=1,#terms do
+				if terms[i] == x then
+					if found then return end
+					-- integrating something times x ... 
+					terms[i] = x^2/2
+					found = true
+				elseif terms[i]:isa(powOp) and terms[i][1] == x then
+					-- integrating something times x^n
+					if found then return end
+					if terms[i][2] == Constant(-1) then
+						terms[i] = self(log(abs(x)))
+					else
+						terms[i] = self(x^(terms[i][2]+1)/(terms[i][2]+1))
+					end
+					found = true
+				elseif find(terms[i], x) then
+					return
+				end
+			end
+			if found then
+				return self(mulOp(terms:unpack()))
+			end
+		end
+	end,
+
+	[unmOp] = function(self, expr)
+		if expr[1]:isa(unmOp) then
+			return self:apply(expr[1][1]:clone())
+		end
+		return self:apply(Constant(-1) * expr[1])
 	end,
 	
-	[addOp] = function(prune, expr, ...)
+	[addOp] = function(self, expr, ...)
 		-- flatten additions
 		-- (x + y) + z => x + y + z
 		for i=#expr,1,-1 do
@@ -103,7 +178,7 @@ Prune.lookupTable = {
 					local chch = assert(ch[j])
 					table.insert(expr, i, chch)
 				end
-				return prune:apply(expr)
+				return self:apply(expr)
 			end
 		end
 		
@@ -127,7 +202,7 @@ Prune.lookupTable = {
 			-- if cval is zero and we're not re-inserting a constant
 			-- then see if we have only one term ...
 			if #expr == 1 then 
-				return prune:apply(expr[1]) 
+				return self:apply(expr[1]) 
 			end
 		end
 
@@ -150,7 +225,7 @@ Prune.lookupTable = {
 				if #expr == 1 then
 					expr = expr[1]
 				end
-				return prune:apply(expr)
+				return self:apply(expr)
 			end
 		end
 
@@ -210,7 +285,7 @@ Prune.lookupTable = {
 						expr = addOp(terms, nonMuls:unpack())
 					end
 
-					return prune:apply(expr)
+					return self:apply(expr)
 				end
 			end
 		end
@@ -289,7 +364,7 @@ Prune.lookupTable = {
 						expr[i] = mulOp(Constant(constI.value + constJ.value), table.unpack(commonTerms))
 					end
 					if #expr == 1 then expr = expr[1] end
-					return prune:apply(expr)
+					return self:apply(expr)
 				end
 			end
 		end
@@ -316,7 +391,7 @@ Prune.lookupTable = {
 		end
 		if denom then
 			table.remove(expr, denomIndex)
-			return prune:apply(expr / denom)
+			return self:apply(expr / denom)
 		end
 		--]]
 		-- [[ divs: c + a/b => (c * b + a) / b
@@ -327,7 +402,7 @@ Prune.lookupTable = {
 				table.remove(expr, i)
 				if #expr == 1 then expr = expr[1] end
 				local expr = (expr * b + a) / b
-				return prune:apply(expr)
+				return self:apply(expr)
 			end
 		end
 		--]]
@@ -401,7 +476,7 @@ Prune.lookupTable = {
 			if foundTrig then
 				local result = checkAddOp(expr)
 				if result then
-					return prune:apply(result) 
+					return self:apply(result) 
 				end
 
 				-- this is factoring ... and pruning ... 
@@ -418,7 +493,7 @@ Prune.lookupTable = {
 					if ch:isa(addOp) then
 						local result = checkAddOp(ch)
 						if result then 
-							return prune:apply(result) 
+							return self:apply(result) 
 						end
 					end
 				end
@@ -427,11 +502,11 @@ Prune.lookupTable = {
 		end
 	end,
 	
-	[subOp] = function(prune, expr)
-		return prune:apply(expr[1] + (-expr[2]))
+	[subOp] = function(self, expr)
+		return self:apply(expr[1] + (-expr[2]))
 	end,
 	
-	[mulOp] = function(prune, expr)
+	[mulOp] = function(self, expr)
 		assert(#expr > 0)
 		
 		-- flatten multiplications
@@ -444,7 +519,7 @@ Prune.lookupTable = {
 					local chch = ch[j]
 					table.insert(expr, i, chch)
 				end
-				return prune:apply(expr)
+				return self:apply(expr)
 			end
 		end
 		
@@ -460,9 +535,9 @@ Prune.lookupTable = {
 				end
 			end
 			if unmOpCount % 2 == 1 then
-				return -prune:apply(expr)	-- move unm outside and simplify what's left
+				return -self:apply(expr)	-- move unm outside and simplify what's left
 			elseif unmOpCount ~= 0 then
-				return prune:apply(expr)	-- got an even number?  remove it and simplify this
+				return self:apply(expr)	-- got an even number?  remove it and simplify this
 			end
 		end
 		--]]
@@ -488,7 +563,7 @@ Prune.lookupTable = {
 			table.insert(expr, 1, Constant(cval))
 		else
 			if #expr == 1 then 
-				return prune:apply(expr[1]) 
+				return self:apply(expr[1]) 
 			end
 		end
 
@@ -507,7 +582,7 @@ Prune.lookupTable = {
 				table.remove(expr, i)
 				expr[i-1] = result
 				if #expr == 1 then expr = expr[1] end
-				return prune:apply(expr)
+				return self:apply(expr)
 			end
 		end
 		--]]
@@ -557,7 +632,7 @@ Prune.lookupTable = {
 			end
 			if modified then
 				if #expr == 1 then expr = expr[1] end
-				return prune:apply(expr)
+				return self:apply(expr)
 			end
 		end
 		--]]
@@ -640,13 +715,13 @@ Prune.lookupTable = {
 				if denom ~= Constant(1) then
 					expr = expr / denom
 				end
-				return prune:apply(expr)
+				return self:apply(expr)
 			end
 		end
 		--]]
 	end,
 	
-	[divOp] = function(prune, expr)
+	[divOp] = function(self, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
 		
 		-- matrix/scalar
@@ -660,7 +735,7 @@ Prune.lookupTable = {
 				for i=1,#result do
 					result[i] = result[i] / b
 				end
-				return prune:apply(result)
+				return self:apply(result)
 			end
 		end
 
@@ -679,9 +754,9 @@ Prune.lookupTable = {
 			if expr[1]:isa(mulOp) and expr[2]:isa(Constant) then
 				local m = expr[1]:clone()
 				if #m == 0 then
-					return prune:apply(Constant(1/expr[2].value))
+					return self:apply(Constant(1/expr[2].value))
 				else
-					return prune:apply(mulOp(Constant(1/expr[2].value), table.unpack(m)))
+					return self:apply(mulOp(Constant(1/expr[2].value), table.unpack(m)))
 				end
 			end
 		end
@@ -695,7 +770,7 @@ Prune.lookupTable = {
 		if expr[2]:isa(Constant)
 		and expr[2].value < 0
 		then
-			return prune:apply(Constant(-1) * expr[1] / Constant(-expr[2].value))
+			return self:apply(Constant(-1) * expr[1] / Constant(-expr[2].value))
 		end
 		
 		-- 0 / x => 0
@@ -707,14 +782,14 @@ Prune.lookupTable = {
 		
 		-- (a / b) / c => a / (b * c)
 		if expr[1]:isa(divOp) then
-			return prune:apply(expr[1][1] / (expr[1][2] * expr[2]))
+			return self:apply(expr[1][1] / (expr[1][2] * expr[2]))
 		end
 		
 		-- a / (b / c) => (a * c) / b
 		if expr[2]:isa(divOp) then
 			local a, b = table.unpack(expr)
 			local b, c = table.unpack(b)
-			return prune:apply((a * c) / b)
+			return self:apply((a * c) / b)
 		end
 
 		if expr[1] == expr[2] then
@@ -849,13 +924,13 @@ Prune.lookupTable = {
 					result = num / denom
 				end
 
-				return prune:apply(result)
+				return self:apply(result)
 			end
 		end
 
 		--[[ (a + b) / c => a/c + b/c ...
 		if expr[1]:isa(addOp) then
-			return prune:apply(addOp(
+			return self:apply(addOp(
 				table.map(expr[1], function(x,k)
 					if type(k) ~= 'number' then return end
 					return x / expr[2]
@@ -867,12 +942,12 @@ Prune.lookupTable = {
 		
 		-- x / x^a => x^(1-a)
 		if expr[2]:isa(powOp) and expr[1] == expr[2][1] then
-			return prune:apply(expr[1] ^ (1 - expr[2][2]))
+			return self:apply(expr[1] ^ (1 - expr[2][2]))
 		end
 		
 		-- x^a / x => x^(a-1)
 		if expr[1]:isa(powOp) and expr[1][1] == expr[2] then
-			return prune:apply(expr[1][1] ^ (expr[1][2] - 1))
+			return self:apply(expr[1][1] ^ (expr[1][2] - 1))
 		end
 		
 		-- x^a / x^b => x^(a-b)
@@ -880,12 +955,12 @@ Prune.lookupTable = {
 		and expr[2]:isa(powOp)
 		and expr[1][1] == expr[2][1]
 		then
-			return prune:apply(expr[1][1] ^ (expr[1][2] - expr[2][2]))
+			return self:apply(expr[1][1] ^ (expr[1][2] - expr[2][2]))
 		end
 		--]]
 	end,
 	
-	[powOp] = function(prune, expr)
+	[powOp] = function(self, expr)
 		
 		local symmath = require 'symmath'	-- for debug flags
 		
@@ -943,14 +1018,14 @@ Prune.lookupTable = {
 		end
 		
 		-- a^1 => a
-		if expr[2] == Constant(1) then return prune:apply(expr[1]) end
+		if expr[2] == Constant(1) then return self:apply(expr[1]) end
 		
 		-- a^0 => 1
 		if expr[2] == Constant(0) then return Constant(1) end
 		
 		-- (a ^ b) ^ c => a ^ (b * c)
 		if expr[1]:isa(powOp) then
-			return prune:apply(expr[1][1] ^ (expr[1][2] * expr[2]))
+			return self:apply(expr[1][1] ^ (expr[1][2] * expr[2]))
 		end
 		
 		-- (a * b) ^ c => a^c * b^c
@@ -965,12 +1040,12 @@ Prune.lookupTable = {
 			else
 				result = mulOp(result:unpack())
 			end
-			return prune:apply(result)
+			return self:apply(result)
 		end
 	
 		-- a^(-c) => 1/a^c
 		if expr[2]:isa(Constant) and expr[2].value < 0 then
-			return prune:apply(Constant(1)/(expr[1]^Constant(-expr[2].value)))
+			return self:apply(Constant(1)/(expr[1]^Constant(-expr[2].value)))
 		end
 
 		--[[ for simplification's sake ... (like -a => -1 * a)
@@ -984,13 +1059,13 @@ Prune.lookupTable = {
 				table.insert(m, expr[1]:clone())
 			end
 			
-			return prune:apply(m)
+			return self:apply(m)
 		end
 		--]]
 	end,
 
-	[require 'symmath.sqrt'] = function(prune, expr)
-		return prune:apply(expr[1]^divOp(1,2))
+	[require 'symmath.sqrt'] = function(self, expr)
+		return self:apply(expr[1]^divOp(1,2))
 	end,
 }
 

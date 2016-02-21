@@ -1,4 +1,5 @@
-require 'ext'
+local class = require 'ext.class'
+local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local cos = class(Function)
 cos.name = 'cos'
@@ -10,4 +11,3 @@ function cos:evaluateDerivative(...)
 	return -diff(x,...) * sin(x)
 end
 return cos
-

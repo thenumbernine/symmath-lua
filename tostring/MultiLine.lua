@@ -170,6 +170,15 @@ MultiLine.lookupTable = {
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		return self:combine(lhs, rhs)
 	end,
+	[require 'symmath.Integral'] = function(self, expr)
+		local s = self:combine({'integrate('}, self:apply(expr[1]))
+		for i=2,#expr do
+			s = self:combine(s, {', '})
+			s = self:combine(s, self:apply(expr[i]))
+		end
+		s = self:combine(s, {')'})
+		return s
+	end,
 	[require 'symmath.Array'] = function(self, expr)
 		local rank = expr:rank()
 		

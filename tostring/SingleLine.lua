@@ -79,6 +79,9 @@ SingleLine.lookupTable = {
 			return s, #newtable+1
 		end):concat(' ')..'}['..diffexpr..']'
 	end,
+	[require 'symmath.Integral'] = function(self, expr)
+		return 'integrate('..table.map(expr, tostring):concat(', ')..' )'
+	end,
 	[require 'symmath.Array'] = function(self, expr)
 		return '[' .. table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
@@ -88,4 +91,3 @@ SingleLine.lookupTable = {
 }
 
 return SingleLine()		-- singleton
-

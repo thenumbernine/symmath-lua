@@ -10,6 +10,7 @@ local Constant = require 'symmath.Constant'
 local Invalid = require 'symmath.Invalid'
 local Function = require 'symmath.Function'
 local Derivative = require 'symmath.Derivative'
+local Integral = require 'symmath.Integral'
 local Variable = require 'symmath.Variable'
 local Visitor = require 'symmath.visitor.Visitor'
 
@@ -77,6 +78,11 @@ Eval.lookupTable = {
 
 	[Derivative] = function(self, expr)
 		error("cannot evaluate derivative"..tostring(expr)..".  try replace()ing derivatives.")
+	end,
+
+	-- TODO numerical integration methods
+	[Integral] = function(self, expr)
+		error("cannot evaluate integral "..tostring(expr)..".  try replace()ing integrals.")
 	end,
 	
 	[Variable] = function(self, expr)

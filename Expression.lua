@@ -69,6 +69,14 @@ function Expression:__tostring()
 	return symmath.tostring(self)
 end
 
+function Expression:tostring(method, ...)
+	if not method then
+		return tostring(self)
+	else
+		return require('symmath.tostring.'..method)(self, ...)
+	end
+end
+
 --[[
 compares metatable, children length, and children contents.
 child order must match.  if your node type order doesn't matter then use nodeCommutativeEqual
@@ -139,6 +147,7 @@ Expression.polyCoeffs = function(...) return require 'symmath.polyCoeffs'(...) e
 Expression.eval = function(...) return require 'symmath'.eval(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
 Expression.compile = function(...) return require 'symmath'.compile(...) end	-- which itself is shorthand for require 'symmath.tostring.Lua').compile(...)
 Expression.diff = function(...) return require 'symmath'.diff(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
+Expression.integrate = function(...) return require 'symmath'.Integral(...) end
 --
 -- I have to buffer these by a function to prevent require loop
 Expression.equals = function(...) return require 'symmath.equals'(...) end

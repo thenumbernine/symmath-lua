@@ -1,5 +1,5 @@
-require 'ext'
-
+local table = require 'ext.table'
+local class = require 'ext.class'
 local Language = require 'symmath.tostring.Language'
 
 -- convert to JavaScript code.  use :compile to wrap in a function
@@ -73,7 +73,7 @@ JavaScript.lookupTable = {
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!")
-	end
+	end,
 }
 
 -- returns code that can be eval()'d to return a function

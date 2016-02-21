@@ -16,4 +16,3 @@ function Function:evaluateConstants()
 end
 
 return Function
-
