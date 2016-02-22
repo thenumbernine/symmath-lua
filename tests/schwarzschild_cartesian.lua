@@ -166,6 +166,38 @@ Gamma = Gamma'^u_vw'	-- change underlying storage (not necessary, but saves futu
 printbr'2nd kind Christoffel:'
 printbr('${\\Gamma^u}_{vw} = $'..Gamma'^u_vw')
 
+--[[
+-1/alpha^2 = g^tt
+alpha = sqrt(-1/g^tt)
+--]]
+local alpha = symmath.sqrt(-1/gInv[1][1])
+local n = Tensor('_u', function(u)
+	return u == 1 and alpha or 0
+end)
+printbr('$n_u = $'..n'_u')	--'_u')
+
+-- P is really just the 4D extension of gamma ...
+-- it'd be great if I could just define gamma in 4D then just reference the 3D components of it when it needed to be treated like a 3D tensor ...
+local P = (g'_uv' + n'_u' * n'_v'):simplify()
+printbr('$P_{uv} = $'..P'_uv')
+
+local dn = Tensor('_uv')
+-- simplification loop?
+--dn = (dn'_uv' - Gamma'^w_vu' * n'_w'):simplify()
+-- looks like chaining arithmetic operators between tensor +- and * causes problems ... 
+-- ... probably because we're trying to derefernce an uevaluated multiplication ... so it has no internal structure yet ...
+-- ... so should (a) tensor algebra be immediately simplified, or
+--				(b) dereferences require simplification?
+dn['_uv'] = (n'_v,u' - (Gamma'^w_vu' * n'_w'):simplify()'_uv'):simplify()
+for _,xi in ipairs(spatialCoords) do
+	dn = dn:replace(r:diff(xi), xi/r):simplify()
+end
+printbr('$\\nabla_u n_v = $'..dn'_uv')
+
+-- TODO add support for (ab) and [ab] indexes
+local K = (P'^a_u' * P'^b_v' * ((dn'_ab' + dn'_ba')/2)):simplify() 
+printbr('$K_{uv} = $'..K'_uv')
+
 do return end
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
