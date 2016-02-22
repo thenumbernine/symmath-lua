@@ -58,7 +58,7 @@ function Lua:compile(expr, paramInputs)
 	..') return '..
 		self:apply(expr, vars)
 	..' end'
-	return assert(loadstring(cmd))(), cmd
+	return assert(load(cmd))(), cmd
 end
 
 return Lua()	-- singleton

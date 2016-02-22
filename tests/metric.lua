@@ -28,7 +28,7 @@ symmath.tostring = MathJax
 -- test
 
 function exec(cmd)
-	assert(loadstring(cmd))()
+	assert(load(cmd))()
 end
 
 function printbr(...)

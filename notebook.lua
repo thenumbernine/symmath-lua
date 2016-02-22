@@ -60,7 +60,7 @@ function notebook(cmd)
 				line = 'return '..line:sub(2)
 			end
 			local startTime = os.time()	-- TODO hires timer
-			local ok, err = loadstring(line)
+			local ok, err = load(line)
 			if not ok then
 				printbr(err)
 			else
