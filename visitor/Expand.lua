@@ -51,6 +51,25 @@ local symmath = require 'symmath'
 		end
 		return self:apply(expr)
 	end,
+
+	-- this isn't here because factoring isnt fully implmented yet
+	--[[ so until then I'll make it its own function ...
+	[powOp] = function(self, expr)
+		-- for certain small integer powers, expand 
+		-- ... or should we have all integer powers expended under a different command?
+		if expr[2]:isa(Constant)
+		and expr[2].value >= 0
+		and expr[2].value < 10
+		and expr[2].value == math.floor(expr[2].value)
+		then
+			local result = Constant(1)
+			for i=1,expr[2].value do
+				result = result * expr[1]:clone()
+			end
+			return result:simplify()
+		end
+	end,
+	--]]
 }
 
 return Expand

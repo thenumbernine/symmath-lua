@@ -22,15 +22,6 @@
 --]]
 
 
---[[
-schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
-
-convert to pseudo-Cartesian via:
-	dr = (x dx + y dy + z dy) / r
-	dtheta = (xz dx + yz dy - (x^2 + y^2) dz) / (r^2 sqrt(x^2 + y^2))
-	dphi = (-y dx + x dy) / (x^2 + y^2)
---]]
-
 local table = require 'ext.table'
 local symmath = require 'symmath'
 local Tensor = require 'symmath.Tensor'
@@ -46,19 +37,23 @@ print(MathJax.header)
 
 -- coordinates
 local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
+local r = symmath.var('r', {x,y,z}) 	-- r = (x^2 + y^2 + z^2)^.5
+
+-- mass is constant
+local R = symmath.var('R')
+
+-- algebraic
+--r = (x^2 + y^2 + z^2)^.5
+-- deferred:
+local r = symmath.Variable('r', spatialCoords)
+--]=]
+
 
 local dim = 4	-- 2, 3, or 4
 
 local allCoords = table{t, x, y, z}
 local coords = allCoords:sub(1,dim)
 local spatialCoords = allCoords:sub(2,dim)
-
--- algebraic
---r = (x^2 + y^2 + z^2)^.5
--- deferred:
-local r = symmath.Variable('r', spatialCoords)
--- mass is constant
-local R = symmath.var('R')
 
 Tensor.coords{
 	{variables = coords},

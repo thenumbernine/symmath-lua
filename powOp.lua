@@ -24,5 +24,23 @@ function powOp:evaluateDerivative(...)
 	return a ^ b * (diff(b, ...) * log(a) + diff(a, ...) * b / a)
 end
 
+-- just for this
+-- temporary ...
+function powOp:expand()
+	-- for certain small integer powers, expand 
+	-- ... or should we have all integer powers expended under a different command?
+	if self[2]:isa(Constant)
+	and self[2].value >= 0
+	and self[2].value < 10
+	and self[2].value == math.floor(self[2].value)
+	then
+		local result = Constant(1)
+		for i=1,self[2].value do
+			result = result * self[1]:clone()
+		end
+		return result:simplify()
+	end
+end
+
 return powOp
 

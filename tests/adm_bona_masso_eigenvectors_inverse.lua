@@ -33,19 +33,44 @@ local gIndexed = sym3x3:map(function(var)
 	then
 		return symmath.var('gU'..var)
 	else
-		return symmath.var('g^{'..var..'}')
+		return symmath.var('\\gamma^{'..var..'}')
 	end
 end)
 local g = gIndexed:map(function(g_ij, ij) return g_ij, sym3x3[ij] end)
 
-mVars = table():append{f}:append(g:map(function(x,k,t) return x, #t+1 end))
+local mVars = table():append{f}:append(g:map(function(x,k,t) return x, #t+1 end))
+
+local vars = table{
+	alpha = {name='\\alpha', pos=1, size=1},
+	gamma = {name='\\gamma', pos=2, size=6},
+	A = {name='A', pos=8, size=3},
+	D = {name='D', pos=11, size=3*6},
+	K = {name='K', pos=29, size=6},
+	V = {name='V', pos=35, size=3},
+}
+
+local xs = table{'x', 'y', 'z'}
+local subscriptForIndexAndSize = {
+	[1] = {''},
+	[3] = xs,
+	[6] = sym3x3,
+	[18] = table.append(xs:map(function(xi)
+		return sym3x3:map(function(xjk) return xi..xjk end)
+	end):unpack()),
+}
 
 local vVars = range(37):map(function(i)
 	if outputMethod == 'Lua' or outputMethod == 'C' then
 		return symmath.var('v_'..i)
 	else
-		-- TODO correct naming of variables?
-		return symmath.var('v_{'..i..'}')
+		for _,var in pairs(vars) do
+			if var.pos <= i and i < var.pos + var.size then
+				local varindex = i - var.pos + 1
+				local subscript = subscriptForIndexAndSize[var.size][varindex]
+				return symmath.var(var.name..'_{'..subscript..'}')
+			end
+		end
+		error('failed to find var for index '..i)
 	end
 end)
 local allVars = table():append(vVars):append(mVars)
@@ -88,14 +113,10 @@ local function from6to3x3(i)
 	return table.unpack(({{1,1},{1,2},{1,3},{2,2},{2,3},{3,3}})[i])
 end
 
-local vars = table{
-	alpha = {name='alpha', pos=1, size=1},
-	gamma = {name='gamma', pos=2, size=6},
-	A = {name='A', pos=8, size=3},
-	D = {name='D', pos=11, size=3*6},
-	K = {name='K', pos=29, size=6},
-	V = {name='V', pos=35, size=3},
-}
+-- tr(K) = g^ij K_ij = g^xx K_xx + g^yy K_yy + g^zz K_zz + 2 g^xy K_xy + 2 g^xz K_xz + 2 g^yz K_yz
+-- so the trace scalars associated with symmetric index pairs {xx, xy, xz, yy, yz, zz} are ...
+local traceScalar = {1, 2, 2, 1, 2, 1}
+
 local ms = range(3):map(function(dir)
 	return symmath.Matrix(range(37):map(function(row)
 			return range(37):map(function(col)
@@ -117,7 +138,7 @@ local ms = range(3):map(function(dir)
 					if var == vars.A then
 						return varindex == dir and sign * sqrt(gIndexed[from3x3to6(dir,dir)]) or 0
 					elseif var == vars.K then
-						return sqrt(f) * gIndexed[varindex]
+						return sqrt(f) * traceScalar[varindex] * gIndexed[varindex]
 					elseif var == vars.V then
 						return sign * 2 * gIndexed[from3x3to6(dir,varindex)] / sqrt(gIndexed[from3x3to6(dir,dir)])
 					end
@@ -162,7 +183,7 @@ local ms = range(3):map(function(dir)
 					if var == vars.A and varindex == dir then return 1 end
 					if var == vars.D then
 						local m,pq = from18to3x6(varindex)
-						if m == dir then return -f * gIndexed[pq] end
+						if m == dir then return -f * traceScalar[pq] * gIndexed[pq] end
 					end
 					return 0
 				end
