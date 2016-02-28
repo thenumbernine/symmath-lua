@@ -48,16 +48,20 @@ Lua.lookupTable = {
 	end,
 }
 
+function Lua:generate(expr, vars)
+	return 'return function('..
+		vars:map(function(var) return var.name end):concat(', ')
+	..') return '..
+		self:apply(expr, vars)
+	..' end'
+end
+
 -- returns (1) the function and (2) the code
 -- see Language:getCompileParameters for a description of paramInputs
 function Lua:compile(expr, paramInputs)
 	local expr, vars = self:prepareForCompile(expr, paramInputs)
 	assert(vars)
-	local cmd = 'return function('..
-		vars:map(function(var) return var.name end):concat(', ')
-	..') return '..
-		self:apply(expr, vars)
-	..' end'
+	local cmd = self:generate(expr, vars)
 	return assert(load(cmd))(), cmd
 end
 

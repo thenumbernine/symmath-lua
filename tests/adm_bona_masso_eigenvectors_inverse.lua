@@ -22,6 +22,11 @@ end
 
 local outputCode = outputMethod == 'Lua' or outputMethod == 'C' 
 
+local ToStringLua
+if outputCode then 
+	ToStringLua = require 'symmath.tostring.Lua'
+end
+
 local printbr
 if outputCode then
 	printbr = print
@@ -70,27 +75,27 @@ for i=1,3 do
 	end
 end
 
+local function codeVar(name)
+	if outputCode then name = name:gsub('[{\\}]', ''):gsub('%^', 'U') end
+	return symmath.var(name)
+end
+
 -- symmetrically-indexed gamma upper.  i.e. stores only 6 in the symNames order
 -- indexed by name or index of symmetric indexes, i.e. by .yz or [5] for matching yz/zy component
-local gammaUsym = symNames:map(function(xij)
-	return symmath.var(outputCode and ('gammaU'..xij) or ('\\gamma^{'..xij..'}'))
-end)
-
+local gammaUsym = symNames:map(function(xij) return codeVar('\\gamma^{'..xij..'}') end)
 
 -- state variables:
-local alpha = symmath.var(outputCode and 'alpha' or '\\alpha')
-local As = xNames:map(function(xi,i) return symmath.var('A_'..xi) end)
-local gammaLsym = symNames:map(function(xij,ij) return symmath.var('\\gamma_{'..xij..'}') end)
+local alpha = codeVar('\\alpha')
+local As = xNames:map(function(xi,i) return codeVar('A_'..xi) end)
+local gammaLsym = symNames:map(function(xij,ij) return codeVar('\\gamma_{'..xij..'}') end)
 	-- Dsym[i][jk]	for jk symmetric indexed from 1 thru 6
 local Dsym = xNames:map(function(xi,i)
-	return symNames:map(function(xjk,jk)
-		return symmath.var('D_{'..xi..xjk..'}')
-	end)
+	return symNames:map(function(xjk,jk) return codeVar('D_{'..xi..xjk..'}') end)
 end)
 	-- D_ijk unique symmetric, unraveled
 local Dflattened = table():append(Dsym:unpack())
-local Ksym = symNames:map(function(xij,ij) return symmath.var('K_{'..xij..'}') end)
-local Vs = xNames:map(function(xi,i) return symmath.var('V_'..xi) end)
+local Ksym = symNames:map(function(xij,ij) return codeVar('K_{'..xij..'}') end)
+local Vs = xNames:map(function(xi,i) return codeVar('V_'..xi) end)
 
 
 -- tensors of variables:
@@ -148,73 +153,40 @@ local compileVars = table():append(varsFlattened):append{f}:append(gammaUsym)
 -- all variables combined into one vector
 local v = symmath.Matrix(varsFlattened:map(function(v) return {v} end):unpack())
 
-
--- [[ for verification -- manual entered eigenvector inverse matrix
-do
-	local gU = gammaUsym:map(function(gammaUij,ij) return gammaUij, symNames[ij] end)
-	local Fx = symmath.Matrix(
-			{0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(f)*gU.xx,2*sqrt(f)*gU.xy,2*sqrt(f)*gU.xz,sqrt(f)*gU.yy,2*sqrt(f)*gU.yz,sqrt(f)*gU.zz,-2*sqrt(gU.xx),-2*gU.xy/sqrt(gU.xx),-2*gU.xz/sqrt(gU.xx)},
-			{0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,-1/sqrt(gU.xx),0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,-1/sqrt(gU.xx)},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{0,0,0,0,0,0,0,1,0,0,-f*gU.xx,-2*f*gU.xy,-2*f*gU.xz,-f*gU.yy,-2*f*gU.yz,-f*gU.zz,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1/sqrt(gU.xx),0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1/sqrt(gU.xx)},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0},
-			{0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(f)*gU.xx,2*sqrt(f)*gU.xy,2*sqrt(f)*gU.xz,sqrt(f)*gU.yy,2*sqrt(f)*gU.yz,sqrt(f)*gU.zz,2*sqrt(gU.xx),2*gU.xy/sqrt(gU.xx),2*gU.xz/sqrt(gU.xx)}
-		):simplify()
-	if not outputCode then
-		print('verify:<br>')
-		print(Fx)
-		print('<br>')
-	end
-end
---]]
-
 local function processCode(code)
 	code = code:gsub('v_(%d+)', function(i)
 		if outputMethod == 'C' then return 'input['..(i-1)..']' end
 		return 'v['..i..']'
 	end)
 	code = code:gsub('}, {', ',\n')
+	-- remove the return at the beginning
+	code = code:match('^return (.*)$')
 	-- remove the function wrapper
-	code = code:match(', gUxx%) (.*) end$')
-	if outputMethod == 'C' then
+	code = code:match('(return .*) end$')
+	-- replace variable names with array
+	for i,var in ipairs(varsFlattened) do
+		code = code:gsub(var.name, 'v['..i..']')
+	end
+	if outputMethod == 'Lua' then
+		-- separate lines
+		code = code:gsub('^return {{(.*)}}$', 'return {\n%1\n}')
+		-- indent
+		code = code:trim():split'\n'
+		code = code:map(function(line,i)
+			if i == 1 or i == #code then
+				return '\t' .. line
+			else
+				return '\t\t' .. line
+			end
+		end):concat('\n')
+	elseif outputMethod == 'C' then
 		code = code:match('^return {{(.*)}}$')
 		code = code:gsub('math%.','')
 		code = code:gsub('v%[', 'input%[')
 		-- add in variables
 		code = code:gsub('sqrt%(f%)', 'sqrt_f')
 		for _,ii in ipairs{'xx', 'yy', 'zz'} do
-			code = code:gsub('sqrt%(gammaUsym'..ii..'%)', 'sqrt_gU'..ii)
+			code = code:gsub('sqrt%(gammaUsym'..ii..'%)', 'sqrt_gammaU'..ii)
 			code = code:gsub('%(gammaUsym'..ii..' %^ %(3 / 2%)%)', 'gammaUsym'..ii..'_toThe_3_2')
 		end
 		-- add assignments
@@ -323,35 +295,37 @@ local ms = range(3):map(function(dir)
 	--]]
 	assert(#eigenfields == #varsFlattened)
 
---[[
-	printbr()
-	printbr('eigenvalues')
-	printbr()
-	for _,field in ipairs(eigenfields) do
-		printbr(symmath.simplify(field.lambda))
+	if not outputCode then
+		printbr()
+		printbr('eigenvalues')
+		printbr()
+		for _,field in ipairs(eigenfields) do
+			printbr(symmath.simplify(field.lambda))
+		end
+		printbr()
+		
+		printbr('eigenfields')
+		printbr()
+		for _,field in ipairs(eigenfields) do
+			printbr(symmath.simplify(field.w))
+		end
+		printbr()
 	end
-	printbr()
-	printbr('eigenfields')
-	printbr()
-	for _,field in ipairs(eigenfields) do
-		printbr(symmath.simplify(field.w))
-	end
---]]
 
 	-- now just do a matrix factor of the eigenfields on varsFlattened and viola.
-	local A, b = symmath.factorLinearSystem(
+	local F, b = symmath.factorLinearSystem(
 		eigenfields:map(function(field) return field.w end),
 		fieldVarsFlattened)
 
 	-- now add in 0's for cols corresponding to the timelike vars (which aren't supposed to be in the linear system)
 	-- [[ this asserts that the time vars go first and the field vars go second in the varsFlattened
-	for i=1,#A do
+	for i=1,#F do
 		for j=1,#timeVarsFlattened do
-			table.insert(A[i], 1, symmath.Constant(0))
+			table.insert(F[i], 1, symmath.Constant(0))
 		end
-		assert(#A[i] == #varsFlattened)
+		assert(#F[i] == #varsFlattened)
 	end
-	assert(#A == #varsFlattened)
+	assert(#F == #varsFlattened)
 	--]]
 
 	-- only for the eigenfields corresponding to the time vars ...
@@ -366,7 +340,7 @@ local ms = range(3):map(function(dir)
 				-- ... it shouldn't have been factored out.  and there shouldn't be anything else.
 				assert(b[i][1] == var, "expected "..var.." but got "..b[i].." for row "..i)
 				-- so manually insert it into the eigenvector inverse 
-				A[i][j] = symmath.Constant(1)
+				F[i][j] = symmath.Constant(1)
 				-- and manually remove it from the source term
 				b[i][1] = symmath.Constant(0)
 			end
@@ -379,34 +353,32 @@ local ms = range(3):map(function(dir)
 		assert(b[i][1] == symmath.Constant(0), "expected b["..i.."] to be 0 but found "..b[i][1])
 	end
 
-	local m = A
-
 	
 	if not outputCode then 
 		printbr('inverse eigenvectors in '..dir..' dir')
-		printbr((tostring((m * v):equals((m*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
+		printbr((tostring((F * v):equals((F*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
 		printbr()
 	else
 		print('-- inverse eigenvectors in '..dir..' dir:')
-		print(processCode(select(2, (m*v):simplify():compile(compileVars))))		
+		print(processCode(ToStringLua:generate((F*v):simplify(), compileVars)))
 	end
 io.stdout:flush()
 	printbr('inverting...')
 	io.stdout:flush()
-	local mInv = m:inverse()
+	local FInv = F:inverse()
 	printbr('...done inverting')
 	io.stdout:flush()
 	if not outputCode then 
 		printbr('eigenvectors in '..dir..' dir')
-		printbr((tostring((mInv * v):equals((mInv*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
+		printbr((tostring((FInv * v):equals((FInv*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
 		printbr()
 	else
 		print('-- eigenvectors in '..dir..' dir:')
-		print(processCode(select(2, (mInv*v):simplify():compile(compileVars))))
+		print(processCode(ToStringLua:generate((FInv*v):simplify(), compileVars)))
 	end
 io.stdout:flush()
 	-- verify orthogonality
-	delta = (m * mInv):simplify()
+	delta = (F * FInv):simplify()
 	for i=1,delta:dim()[1].value do
 		for j=1,delta:dim()[2].value do
 			local Constant = require 'symmath.Constant'
