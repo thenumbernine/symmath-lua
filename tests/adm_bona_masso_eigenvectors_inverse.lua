@@ -4,19 +4,18 @@ local symmath = require 'symmath'
 local Tensor = symmath.Tensor
 
 local outputMethod = ... or 'MathJax'
---[[
-local outputMethod = 'MathJax'		-- HTML
-local outputMethod = 'SingleLine'	-- pasting into Excel
-local outputMethod = 'Lua'			-- code generation
-local outputMethod = 'C'			-- code gen as well
---]]
+--local outputMethod = 'MathJax'		-- HTML
+--local outputMethod = 'SingleLine'		-- pasting into Excel
+--local outputMethod = 'Lua'			-- code generation
+--local outputMethod = 'C'				-- code gen as well
+--local outputMethod = 'GraphViz'		-- generate graphviz dot files
 
 local MathJax
 if outputMethod == 'MathJax' then
 	MathJax = require 'symmath.tostring.MathJax'
 	symmath.tostring = MathJax 
 	print(MathJax.header)
-elseif outputMethod == 'SingleLine' then
+elseif outputMethod == 'SingleLine' or outputMethod == 'GraphViz' then
 	symmath.tostring = require 'symmath.tostring.SingleLine'
 end
 
@@ -28,21 +27,13 @@ if outputCode then
 end
 
 local printbr
-if outputCode then
+if outputCode or outputMethod == 'GraphViz' then
 	printbr = print
 else
 	printbr = function(...)
 		print(...)
 		print'<br>'
 	end
-end
-
-local sqrt = symmath.sqrt
-
-
--- split index into 3 and symNames components: 
-local function from18to3x6(i)
-	return math.floor((i-1)/6)+1, ((i-1)%6)+1
 end
 
 local function from3x3to6(i,j)
@@ -55,17 +46,13 @@ local function from6to3x3(i)
 	return table.unpack(({{1,1},{1,2},{1,3},{2,2},{2,3},{3,3}})[i])
 end
 
--- tr(K) = g^ij K_ij = g^xx K_xx + g^yy K_yy + g^zz K_zz + 2 g^xy K_xy + 2 g^xz K_xz + 2 g^yz K_yz
--- so the trace scalars associated with symmetric index pairs {xx, xy, xz, yy, yz, zz} are ...
-local traceScalar = {1, 2, 2, 1, 2, 1}
-
 
 local f = symmath.var('f')
 
 -- coordinates
 local xNames = table{'x', 'y', 'z'}
-local xs = xNames:map(function(x) return symmath.var(x) end)
-Tensor.coords{{variables=xs}}
+local spatialCoords = xNames:map(function(x) return symmath.var(x) end)
+Tensor.coords{{variables=spatialCoords}}
 
 -- symmetric indexes: xx xy xz yy yz zz
 local symNames = table()
@@ -201,6 +188,20 @@ local function processCode(code)
 	return code
 end
 
+local function processGraph(m,name)
+	local f = io.open('output/adm_'..name..'.dot', 'w')
+	f:write'digraph {\n'
+	for i=1,#m do
+		for j=1,#m[i] do
+			if m[i][j] ~= symmath.Constant(0) then
+				f:write('\t',('%q'):format(varsFlattened[j]), ' -> ', ('%q'):format(varsFlattened[i]),'\n')
+			end
+		end
+	end
+	f:write'}\n'
+	f:close()
+end
+
 --[[
 timelike variables (no need for flux integration): 
 alpha
@@ -230,6 +231,15 @@ local VU = V'^i':simplify()
 local trK = K'^i_i':simplify()
 local trDk = D'_km^m':simplify()
 local delta = symmath.Matrix.identity(3)
+
+if not outputCode and outputMethod ~= 'GraphViz' then
+	printbr('V and D constraints:')
+	printbr((V'_i' - (D'_im^m' - D'^m_mi')):simplify())
+	printbr()
+elseif outputCode then
+	local VDs = V'_i' - (D'_im^m' - D'^m_mi')
+	print(ToStringLua:generate(VDs:simplify(), compileVars))
+end
 
 local ms = range(3):map(function(dir)
 
@@ -269,6 +279,7 @@ local ms = range(3):map(function(dir)
 		-- A_x - f D_xm^m, x = dir
 	eigenfields:insert{w=A[dir] - f * trDk[dir], lambda=0}
 	
+	local sqrt = symmath.sqrt
 	for sign=-1,1,2 do
 		-- light cone -+
 			-- K_ix'
@@ -293,7 +304,7 @@ local ms = range(3):map(function(dir)
 	
 	assert(#eigenfields == #varsFlattened)
 
-	if not outputCode then
+	if not outputCode and outputMethod ~= 'GraphViz' then
 		printbr()
 		printbr('eigenvalues')
 		printbr()
@@ -351,8 +362,10 @@ local ms = range(3):map(function(dir)
 		assert(b[i][1] == symmath.Constant(0), "expected b["..i.."] to be 0 but found "..b[i][1])
 	end
 
-	
-	if not outputCode then 
+
+	if outputMethod == 'GraphViz' then
+		processGraph(F,xNames[dir])
+	elseif not outputCode then 
 		printbr('inverse eigenvectors in '..dir..' dir')
 		printbr((tostring((F * v):equals((F*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
 		printbr()
@@ -361,12 +374,16 @@ local ms = range(3):map(function(dir)
 		print(processCode(ToStringLua:generate((F*v):simplify(), compileVars)))
 	end
 io.stdout:flush()
+	
 	printbr('inverting...')
 	io.stdout:flush()
 	local FInv = F:inverse()
 	printbr('...done inverting')
+	
 	io.stdout:flush()
-	if not outputCode then 
+	if outputMethod == 'GraphViz' then
+		processGraph(FInv,xNames[dir]..'inv')
+	elseif not outputCode then 
 		printbr('eigenvectors in '..dir..' dir')
 		printbr((tostring((FInv * v):equals((FInv*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
 		printbr()
@@ -385,11 +402,6 @@ io.stdout:flush()
 		end
 	end
 io.stdout:flush()
-	--[[ eigenvalues
-	local l = symmath.Matrix.diagonal(
-		-alpha * sqrt(f * gammaUSymNamed.xx)
-	)
-	--]]
 end)
 
 if outputMethod == 'MathJax' then 
