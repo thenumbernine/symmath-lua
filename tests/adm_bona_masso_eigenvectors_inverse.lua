@@ -202,23 +202,25 @@ local function processCode(code)
 end
 
 --[[
+timelike variables (no need for flux integration): 
 alpha
-gamma_xx, gamma_xy, gamma_xz, gamma_yy, gamma_yz, gamma_zz,
-a_x, a_y, a_z
-d_xxx, d_xxy, d_xxz, d_xyy, d_xyz, d_xzz,
-d_yxx, d_yxy, d_yxz, d_yyy, d_yyz, d_yzz,
-d_zxx, d_zxy, d_zxz, d_zyy, d_zyz, d_zzz,
-K_xx, K_xy, K_xz, K_yy, K_yz, K_zz,
-V_x, V_y, V_z
+gamma_ij
+
+flux variables:
+A_i = (ln alpha),i
+D_ijk = 
+K_ij
+V_i
+
+constraints:
 
 hyperbolic system:
-
-partial_t alpha = -alpha^2 f tr K
-partial_t g_ij = -2 alpha K_ij
-partial_t A_k + alpha f g^ij partial_k K_ij = -alpha tr K (f + alpha f') A_k + 2 alpha f K^ij D_kij
-partial_t D_kij + alpha partial_k K_ij = -alpha A_k K_ij
-partial_t K_ij + alpha (g^km partial_k D_mij + 1/2 (delta^k_i partial_k A_j + delta^k_j partial_k A_i) + delta^k_i partial_k V_j + delta^k_j partial_k V_i) = alpha S_ij - alpha lambda^k_ij A_k + 2 alpha D_mij D_k^km
-partial_t V_k = alpha P_k
+alpha,t = -alpha^2 f tr K
+gamma_ij,t = -2 alpha K_ij
+A_k,t + alpha f g^ij partial_k K_ij = -alpha tr K (f + alpha f') A_k + 2 alpha f K^ij D_kij
+D_kij,t + alpha partial_k K_ij = -alpha A_k K_ij
+K_ij,t + alpha (g^km partial_k D_mij + 1/2 (delta^k_i partial_k A_j + delta^k_j partial_k A_i) + delta^k_i partial_k V_j + delta^k_j partial_k V_i) = alpha S_ij - alpha lambda^k_ij A_k + 2 alpha D_mij D_k^km
+V_k,t = alpha P_k
 
 eigenfields:
 
@@ -381,10 +383,6 @@ io.stdout:flush()
 			assert(Constant.is(delta[i][j]))
 			assert(delta[i][j].value == (i == j and 1 or 0))
 		end
-	end
-	if not outputCode then
-		printbr(delta)
-		printbr()	
 	end
 io.stdout:flush()
 	--[[ eigenvalues
