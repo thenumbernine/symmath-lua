@@ -234,7 +234,6 @@ local ms = range(3):map(function(dir)
 	-- x's other than the current dir
 	local oxIndexes = range(3)
 	oxIndexes:remove(dir)
-	local oxNames = oxIndexes:map(function(i) return xNames[i] end)
 
 	-- symmetric, with 2nd index matching dir removed 
 	local osymIndexes = range(6):filter(function(ij)
@@ -243,9 +242,6 @@ local ms = range(3):map(function(dir)
 	end)
 
 
-	-- TODO all of this mess ...
-	-- for indexes pq != dir, r=dir
-	-- [[ TODO extract matrix entries from this
 	local eigenfields = table()
 	
 	-- timelike:
@@ -292,7 +288,7 @@ local ms = range(3):map(function(dir)
 			lambda = sign * alpha * sqrt(f * gammaU[dir][dir]),
 		})
 	end
-	--]]
+	
 	assert(#eigenfields == #varsFlattened)
 
 	if not outputCode then
