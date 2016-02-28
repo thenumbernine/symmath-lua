@@ -1,6 +1,7 @@
 #!/usr/bin/env luajit
 require 'ext'
 local symmath = require 'symmath'
+local Tensor = symmath.Tensor
 
 local outputMethod = ... or 'MathJax'
 --[[
@@ -19,63 +20,214 @@ elseif outputMethod == 'SingleLine' then
 	symmath.tostring = require 'symmath.tostring.SingleLine'
 end
 
+local outputCode = outputMethod == 'Lua' or outputMethod == 'C' 
+
+local printbr
+if outputCode then
+	printbr = print
+else
+	printbr = function(...)
+		print(...)
+		print'<br>'
+	end
+end
+
 local sqrt = symmath.sqrt
 
-local m = symmath.Matrix({1,1},{1,0})
 
-local sym3x3 = table{'xx', 'xy', 'xz', 'yy', 'yz', 'zz'}
+-- split index into 3 and symNames components: 
+local function from18to3x6(i)
+	return math.floor((i-1)/6)+1, ((i-1)%6)+1
+end
 
-local f = symmath.var'f'
+local function from3x3to6(i,j)
+	return ({{1,2,3},
+			 {2,4,5},
+			 {3,5,6}})[i][j]
+end
 
-local gIndexed = sym3x3:map(function(var)
-	if outputMethod == 'Lua' 
-	or outputMethod == 'C'
-	then
-		return symmath.var('gU'..var)
-	else
-		return symmath.var('\\gamma^{'..var..'}')
+local function from6to3x3(i)
+	return table.unpack(({{1,1},{1,2},{1,3},{2,2},{2,3},{3,3}})[i])
+end
+
+-- tr(K) = g^ij K_ij = g^xx K_xx + g^yy K_yy + g^zz K_zz + 2 g^xy K_xy + 2 g^xz K_xz + 2 g^yz K_yz
+-- so the trace scalars associated with symmetric index pairs {xx, xy, xz, yy, yz, zz} are ...
+local traceScalar = {1, 2, 2, 1, 2, 1}
+
+
+local f = symmath.var('f')
+
+-- coordinates
+local xNames = table{'x', 'y', 'z'}
+local xs = xNames:map(function(x) return symmath.var(x) end)
+Tensor.coords{{variables=xs}}
+
+-- symmetric indexes: xx xy xz yy yz zz
+local symNames = table()
+for i=1,3 do
+	for j=i,3 do
+		symNames:insert(xNames[i]..xNames[j])
 	end
+end
+
+-- symmetrically-indexed gamma upper.  i.e. stores only 6 in the symNames order
+-- indexed by name or index of symmetric indexes, i.e. by .yz or [5] for matching yz/zy component
+local gammaUsym = symNames:map(function(xij)
+	return symmath.var(outputCode and ('gammaU'..xij) or ('\\gamma^{'..xij..'}'))
 end)
-local g = gIndexed:map(function(g_ij, ij) return g_ij, sym3x3[ij] end)
 
-local mVars = table():append{f}:append(g:map(function(x,k,t) return x, #t+1 end))
 
+-- state variables:
+local alpha = symmath.var(outputCode and 'alpha' or '\\alpha')
+local As = xNames:map(function(xi,i) return symmath.var('A_'..xi) end)
+local gammaLsym = symNames:map(function(xij,ij) return symmath.var('\\gamma_{'..xij..'}') end)
+	-- Dsym[i][jk]	for jk symmetric indexed from 1 thru 6
+local Dsym = xNames:map(function(xi,i)
+	return symNames:map(function(xjk,jk)
+		return symmath.var('D_{'..xi..xjk..'}')
+	end)
+end)
+	-- D_ijk unique symmetric, unraveled
+local Dflattened = table():append(Dsym:unpack())
+local Ksym = symNames:map(function(xij,ij) return symmath.var('K_{'..xij..'}') end)
+local Vs = xNames:map(function(xi,i) return symmath.var('V_'..xi) end)
+
+
+-- tensors of variables:
+local gammaU = Tensor('_ij', function(i,j) return gammaUsym[from3x3to6(i,j)] end)
+local gammaL = Tensor('_ij', function(i,j) return gammaLsym[from3x3to6(i,j)] end)
+local A = Tensor('_i', function(i) return As[i] end)
+local D = Tensor('_ijk', function(i,j,k) return Dsym[i][from3x3to6(j,k)] end)
+local K = Tensor('_ij', function(i,j) return Ksym[from3x3to6(i,j)] end)
+local V = Tensor('_i', function(i) return Vs[i] end)
+
+Tensor.metric(gammaL, gammaU)
+
+-- lookup of variables to their flattened lists and other associated information 
 local vars = table{
-	alpha = {name='\\alpha', pos=1, size=1},
-	gamma = {name='\\gamma', pos=2, size=6},
-	A = {name='A', pos=8, size=3},
-	D = {name='D', pos=11, size=3*6},
-	K = {name='K', pos=29, size=6},
-	V = {name='V', pos=35, size=3},
+	{name='\\alpha', flattened={alpha}},
+	{name='\\gamma', flattened=gammaLsym},
+	{name='A', flattened=A},
+	{name='D', flattened=Dflattened},
+	{name='K', flattened=Ksym},
+	{name='V', flattened=V},
 }
-
-local xs = table{'x', 'y', 'z'}
-local subscriptForIndexAndSize = {
-	[1] = {''},
-	[3] = xs,
-	[6] = sym3x3,
-	[18] = table.append(xs:map(function(xi)
-		return sym3x3:map(function(xjk) return xi..xjk end)
-	end):unpack()),
-}
-
-local vVars = range(37):map(function(i)
-	if outputMethod == 'Lua' or outputMethod == 'C' then
-		return symmath.var('v_'..i)
-	else
-		for _,var in pairs(vars) do
-			if var.pos <= i and i < var.pos + var.size then
-				local varindex = i - var.pos + 1
-				local subscript = subscriptForIndexAndSize[var.size][varindex]
-				return symmath.var(var.name..'_{'..subscript..'}')
-			end
-		end
-		error('failed to find var for index '..i)
+do
+	local pos = 1
+	for _,var in ipairs(vars) do
+		local name = var.name:match('\\?(.*)')	-- remove leading \\ for greek characters
+		var.size = #var.flattened
+		var.pos = pos
+		pos = pos + var.size
+		vars[name] = var
 	end
-end)
-local allVars = table():append(vVars):append(mVars)
+end
 
-local v = symmath.Matrix(vVars:map(function(v) return {v} end):unpack())
+local timeVars = table{vars.alpha, vars.gamma}
+local fieldVars = table{vars.A, vars.D, vars.K, vars.V}
+
+-- variables flattened and combined into one table
+local timeVarsFlattened = table()
+local fieldVarsFlattened = table()
+for _,info in ipairs{
+	{timeVars, timeVarsFlattened},
+	{fieldVars, fieldVarsFlattened},
+} do
+	local infoVars, infoVarsFlattened = table.unpack(info)
+	for _,var in ipairs(infoVars) do
+		infoVarsFlattened:append(var.flattened)
+	end
+end
+
+local varsFlattened = table():append(timeVarsFlattened, fieldVarsFlattened)
+assert(#varsFlattened == 37, "expected 37 but found "..#varsFlattened)
+
+-- all symbolic variables for use with compiled functions
+local compileVars = table():append(varsFlattened):append{f}:append(gammaUsym)
+
+-- all variables combined into one vector
+local v = symmath.Matrix(varsFlattened:map(function(v) return {v} end):unpack())
+
+
+-- [[ for verification -- manual entered eigenvector inverse matrix
+do
+	local gU = gammaUsym:map(function(gammaUij,ij) return gammaUij, symNames[ij] end)
+	local Fx = symmath.Matrix(
+			{0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(f)*gU.xx,2*sqrt(f)*gU.xy,2*sqrt(f)*gU.xz,sqrt(f)*gU.yy,2*sqrt(f)*gU.yz,sqrt(f)*gU.zz,-2*sqrt(gU.xx),-2*gU.xy/sqrt(gU.xx),-2*gU.xz/sqrt(gU.xx)},
+			{0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,-1/sqrt(gU.xx),0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,-1/sqrt(gU.xx)},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+			{0,0,0,0,0,0,0,1,0,0,-f*gU.xx,-2*f*gU.xy,-2*f*gU.xz,-f*gU.yy,-2*f*gU.yz,-f*gU.zz,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1/sqrt(gU.xx),0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1/sqrt(gU.xx)},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0},
+			{0,0,0,0,0,0,0,sqrt(gU.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(f)*gU.xx,2*sqrt(f)*gU.xy,2*sqrt(f)*gU.xz,sqrt(f)*gU.yy,2*sqrt(f)*gU.yz,sqrt(f)*gU.zz,2*sqrt(gU.xx),2*gU.xy/sqrt(gU.xx),2*gU.xz/sqrt(gU.xx)}
+		):simplify()
+	if not outputCode then
+		print('verify:<br>')
+		print(Fx)
+		print('<br>')
+	end
+end
+--]]
+
+local function processCode(code)
+	code = code:gsub('v_(%d+)', function(i)
+		if outputMethod == 'C' then return 'input['..(i-1)..']' end
+		return 'v['..i..']'
+	end)
+	code = code:gsub('}, {', ',\n')
+	-- remove the function wrapper
+	code = code:match(', gUxx%) (.*) end$')
+	if outputMethod == 'C' then
+		code = code:match('^return {{(.*)}}$')
+		code = code:gsub('math%.','')
+		code = code:gsub('v%[', 'input%[')
+		-- add in variables
+		code = code:gsub('sqrt%(f%)', 'sqrt_f')
+		for _,ii in ipairs{'xx', 'yy', 'zz'} do
+			code = code:gsub('sqrt%(gammaUsym'..ii..'%)', 'sqrt_gU'..ii)
+			code = code:gsub('%(gammaUsym'..ii..' %^ %(3 / 2%)%)', 'gammaUsym'..ii..'_toThe_3_2')
+		end
+		-- add assignments
+		code = code:trim():split('\n'):map(function(line,i)
+			line = line:gsub(',$','')..';'
+			return 'results['..(i-1)..'] = '..line
+		end):concat('\n')
+		if code:find('sqrt%(') then error('found sqrt( at '..code) end
+		if code:find('%^') then error('found ^ at '..code) end
+		code = code:gsub('([^%[_])(%d+)([^%]_])', '%1%2%.f%3')
+	end
+	return code
+end
 
 --[[
 alpha
@@ -96,208 +248,161 @@ partial_t D_kij + alpha partial_k K_ij = -alpha A_k K_ij
 partial_t K_ij + alpha (g^km partial_k D_mij + 1/2 (delta^k_i partial_k A_j + delta^k_j partial_k A_i) + delta^k_i partial_k V_j + delta^k_j partial_k V_i) = alpha S_ij - alpha lambda^k_ij A_k + 2 alpha D_mij D_k^km
 partial_t V_k = alpha P_k
 
+eigenfields:
+
 --]]
 
--- split index into 3 and sym3x3 components: 
-local function from18to3x6(i)
-	return math.floor((i-1)/6)+1, ((i-1)%6)+1
-end
-
-local function from3x3to6(i,j)
-	return ({{1,2,3},
-			 {2,4,5},
-			 {3,5,6}})[i][j]
-end
-
-local function from6to3x3(i)
-	return table.unpack(({{1,1},{1,2},{1,3},{2,2},{2,3},{3,3}})[i])
-end
-
--- tr(K) = g^ij K_ij = g^xx K_xx + g^yy K_yy + g^zz K_zz + 2 g^xy K_xy + 2 g^xz K_xz + 2 g^yz K_yz
--- so the trace scalars associated with symmetric index pairs {xx, xy, xz, yy, yz, zz} are ...
-local traceScalar = {1, 2, 2, 1, 2, 1}
+local VU = V'^i':simplify()
+local trK = K'^i_i':simplify()
+local trDk = D'_km^m':simplify()
+local delta = symmath.Matrix.identity(3)
 
 local ms = range(3):map(function(dir)
-	return symmath.Matrix(range(37):map(function(row)
-			return range(37):map(function(col)
-				-- determine which variable and index block 'col' is in
-				local var	-- which variable
-				local varindex	-- which index of the variable, 1-based
-				for _,ovar in pairs(vars) do
-					if col >= ovar.pos and col < ovar.pos+ovar.size then
-						var = ovar
-						varindex = col - ovar.pos+1
-						break
-					end
-				end
-				assert(var and varindex)
-				
-				-- determine which eigenfield 'row' is in
-				if row == 1 or row == 37 then	-- fast -+
-					local sign = row == 1 and -1 or 1
-					if var == vars.A then
-						return varindex == dir and sign * sqrt(gIndexed[from3x3to6(dir,dir)]) or 0
-					elseif var == vars.K then
-						return sqrt(f) * traceScalar[varindex] * gIndexed[varindex]
-					elseif var == vars.V then
-						return sign * 2 * gIndexed[from3x3to6(dir,varindex)] / sqrt(gIndexed[from3x3to6(dir,dir)])
-					end
-					return 0
-				elseif (row >= 2 and row <= 6) or (row >= 32 and row <= 36) then -- light -+
-					local sign = row <= 6 and -1 or 1
-					local eigindex = (row <= 6) and (row-2+1) or (row-32+1)
-					if var == vars.D then
-						local m,pq = from18to3x6(varindex)
-						local p,q = from6to3x3(pq)
-						local eigindexWithDirAdded = eigindex + (eigindex >= from3x3to6(dir,dir) and 1 or 0)
-						return (m == dir and pq == eigindexWithDirAdded) and sign * sqrt(gIndexed[from3x3to6(dir,dir)]) or 0
-					elseif var == vars.K then	-- working for x and y (and maybe z)
-						local eigindexWithDirAdded = eigindex + (eigindex >= from3x3to6(dir,dir) and 1 or 0)
-						return varindex == eigindexWithDirAdded and 1 or 0
-					elseif var == vars.V then	-- working for x and y (and maybe z)
-						-- for dir, if eigindex has that dir and another dir then use V of the other dir
-						local eigindexWithDirAdded = eigindex + (eigindex >= from3x3to6(dir, dir) and 1 or 0)
-						local i,chi = from6to3x3(eigindexWithDirAdded)
-						if chi == dir then i,chi = chi,i end	-- get dir in i, other dir in chi
-						if chi == varindex and i == dir then return sign / sqrt(gIndexed[from3x3to6(dir,dir)]) end
-						return 0
-					end
-					return 0
-				elseif row == 7 then	-- alpha
-					return var == vars.alpha and 1 or 0
-				elseif row >= 8 and row <= 13 then	-- gamma
-					local eigindex = row-8+1
-					return (var == vars.gamma and varindex == eigindex) and 1 or 0
-				elseif row >= 14 and row <= 15 then	-- A
-					local eigindex = row-14+1	-- 1 or 2 
-					local eigindexWithDirAdded = eigindex + (eigindex >= dir and 1 or 0)
-					return (var == vars.A and eigindexWithDirAdded == varindex) and 1 or 0
-				elseif row >= 16 and row <= 27 then	-- D
-					local eigindex = row-16+1
-					local eigindexWithDirAdded = eigindex + ((eigindex >= (dir-1)*6+1) and 6 or 0)
-					return (var == vars.D and varindex == eigindexWithDirAdded) and 1 or 0
-				elseif row >= 28 and row <= 30 then	-- V
-					local eigindex = row-28+1
-					return (var == vars.V and varindex == eigindex) and 1 or 0
-				elseif row == 31 then	-- dir
-					if var == vars.A and varindex == dir then return 1 end
-					if var == vars.D then
-						local m,pq = from18to3x6(varindex)
-						if m == dir then return -f * traceScalar[pq] * gIndexed[pq] end
-					end
-					return 0
-				end
-			end):map(function(x)
-				return symmath.Expression.is(x) and x:simplify() or x
-			end)
-		end):unpack())
-end)
+
+	-- x's other than the current dir
+	local oxIndexes = range(3)
+	oxIndexes:remove(dir)
+	local oxNames = oxIndexes:map(function(i) return xNames[i] end)
+
+	-- symmetric, with 2nd index matching dir removed 
+	local osymIndexes = range(6):filter(function(ij)
+		local i,j = from6to3x3(ij)
+		return i ~= dir or j ~= dir
+	end)
+
+
+	-- TODO all of this mess ...
+	-- for indexes pq != dir, r=dir
+	-- [[ TODO extract matrix entries from this
+	local eigenfields = table()
 	
--- [[ for verification -- manual entered eigenvector inverse matrix
-local manual = symmath.Matrix(
-		{0,0,0,0,0,0,0,-sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(f)*g.xx,sqrt(f)*g.xy,sqrt(f)*g.xz,sqrt(f)*g.yy,sqrt(f)*g.yz,sqrt(f)*g.zz,-2*sqrt(g.xx),-2*g.xy/sqrt(g.xx),-2*g.xz/sqrt(g.xx)},
-		{0,0,0,0,0,0,0,0,0,0,0,-sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,-1/sqrt(g.xx),0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,-1/sqrt(g.xx)},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{0,0,0,0,0,0,0,1,0,0,-f*g.xx,-f*g.xy,-f*g.xz,-f*g.yy,-f*g.yz,-f*g.zz,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1/sqrt(g.xx),0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1/sqrt(g.xx)},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0},
-		{0,0,0,0,0,0,0,sqrt(g.xx),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,sqrt(f)*g.xx,sqrt(f)*g.xy,sqrt(f)*g.xz,sqrt(f)*g.yy,sqrt(f)*g.yz,sqrt(f)*g.zz,2*sqrt(g.xx),2*g.xy/sqrt(g.xx),2*g.xz/sqrt(g.xx)}
-	):simplify()
-if not (outputMethod == 'Lua' or outputMethod == 'C') then
-	print('verify:<br>')
-	print(manual)
-	print('<br>')
-end
+	-- timelike:
+	--[[
+	the alpha and gamma don't have to be part of the flux, but i'm lazy so i'm adding them in with the rest of the lambda=0 eigenfields
+	however in doing so, it makes factoring the linear system a pain, because you're not supposed to factor out alphas or gammas
+	...except with the alpha and gamma eigenfields when you have to ...
+	--]]
+		-- alpha
+	eigenfields:insert{w=alpha, lambda=0}
+		-- gamma_ij
+	eigenfields:append(gammaLsym:map(function(gamma_ij,ij) return {w=gamma_ij, lambda=0} end))
+		-- A_x', x' != dir
+	eigenfields:append(oxIndexes:map(function(p) return {w=A[p], lambda=0} end))
+		-- D_x'ij, x' != dir
+	eigenfields:append(oxIndexes:map(function(p)
+		return Dsym[p]:map(function(D_pij)
+			return {w=D_pij, lambda=0}
+		end)
+	end):unpack())
+		-- V_i
+	eigenfields:append(range(3):map(function(i) return {w=V[i], lambda=0} end))
+		-- A_x - f D_xm^m, x = dir
+	eigenfields:insert{w=A[dir] - f * trDk[dir], lambda=0}
+	
+	for sign=-1,1,2 do
+		-- light cone -+
+			-- K_ix'
+		local loc = sign == -1 and 1 or #eigenfields+1
+		for _,ij in ipairs(osymIndexes) do
+			local i,j = from6to3x3(ij)
+			if j == dir then i,j = j,i end
+			assert(j ~= dir)
+			eigenfields:insert(loc, {
+				w = K[i][j] + sign * sqrt(gammaU[dir][dir]) * (D[dir][i][j] + delta[dir][i] * V[j] / gammaU[dir][dir]),
+				lambda = sign * alpha * sqrt(gammaU[dir][dir]),
+			})
+			loc=loc+1
+		end
+		-- gauge -+
+		local loc = sign == -1 and 1 or #eigenfields+1
+		eigenfields:insert(loc, {
+			w = sqrt(f) * trK + sign * sqrt(gammaU[dir][dir]) * (A[dir] + 2 * VU[dir] / gammaU[dir][dir]),
+			lambda = sign * alpha * sqrt(f * gammaU[dir][dir]),
+		})
+	end
+	--]]
+	assert(#eigenfields == #varsFlattened)
+
+--[[
+	printbr()
+	printbr('eigenvalues')
+	printbr()
+	for _,field in ipairs(eigenfields) do
+		printbr(symmath.simplify(field.lambda))
+	end
+	printbr()
+	printbr('eigenfields')
+	printbr()
+	for _,field in ipairs(eigenfields) do
+		printbr(symmath.simplify(field.w))
+	end
 --]]
 
-local function processCode(code)
-	code = code:gsub('v_(%d+)', function(i)
-		if outputMethod == 'C' then return 'input['..(i-1)..']' end
-		return 'v['..i..']'
-	end)
-	code = code:gsub('}, {', ',\n')
-	-- remove the function wrapper
-	code = code:match(', gUxx%) (.*) end$')
-	if outputMethod == 'C' then
-		code = code:match('^return {{(.*)}}$')
-		code = code:gsub('math%.','')
-		code = code:gsub('v%[', 'input%[')
-		-- add in variables
-		code = code:gsub('sqrt%(f%)', 'sqrt_f')
-		for _,ii in ipairs{'xx', 'yy', 'zz'} do
-			code = code:gsub('sqrt%(gU'..ii..'%)', 'sqrt_gU'..ii)
-			code = code:gsub('%(gU'..ii..' %^ %(3 / 2%)%)', 'gU'..ii..'_toThe_3_2')
-		end
-		-- add assignments
-		code = code:trim():split('\n'):map(function(line,i)
-			line = line:gsub(',$','')..';'
-			return 'results['..(i-1)..'] = '..line
-		end):concat('\n')
-		if code:find('sqrt%(') then error('found sqrt( at '..code) end
-		if code:find('%^') then error('found ^ at '..code) end
-		code = code:gsub('([^%[_])(%d+)([^%]_])', '%1%2%.f%3')
-	end
-	return code
-end
+	-- now just do a matrix factor of the eigenfields on varsFlattened and viola.
+	local A, b = symmath.factorLinearSystem(
+		eigenfields:map(function(field) return field.w end),
+		fieldVarsFlattened)
 
-for dir,m in ipairs(ms) do
-	if outputMethod == 'MathJax' then 
-		print('inverse eigenvectors in '..dir..' dir<br>')
-		print((tostring((m * v):equals((m*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
-		print'<br><br>'
-	elseif outputMethod == 'SingleLine' then
-		print('inverse eigenvectors in '..dir..' dir:')
-		print(m)
-	elseif outputMethod == 'Lua' or outputMethod == 'C' then
+	-- now add in 0's for cols corresponding to the timelike vars (which aren't supposed to be in the linear system)
+	-- [[ this asserts that the time vars go first and the field vars go second in the varsFlattened
+	for i=1,#A do
+		for j=1,#timeVarsFlattened do
+			table.insert(A[i], 1, symmath.Constant(0))
+		end
+		assert(#A[i] == #varsFlattened)
+	end
+	assert(#A == #varsFlattened)
+	--]]
+
+	-- only for the eigenfields corresponding to the time vars ...
+	-- I have to pick them out of the system
+	-- I *should* be not including them to begin with
+	assert(#b == #eigenfields)
+	for _,var in ipairs(timeVarsFlattened) do
+		local j = varsFlattened:find(var) 
+		for i,field in ipairs(eigenfields) do
+			-- if the eigenfield is the time var then ...
+			if field.w == var then
+				-- ... it shouldn't have been factored out.  and there shouldn't be anything else.
+				assert(b[i][1] == var, "expected "..var.." but got "..b[i].." for row "..i)
+				-- so manually insert it into the eigenvector inverse 
+				A[i][j] = symmath.Constant(1)
+				-- and manually remove it from the source term
+				b[i][1] = symmath.Constant(0)
+			end
+		end
+	end
+	
+	-- make sure all source terms are gone
+	for i=1,#b do
+		assert(#b[i] == 1)
+		assert(b[i][1] == symmath.Constant(0), "expected b["..i.."] to be 0 but found "..b[i][1])
+	end
+
+	local m = A
+
+	
+	if not outputCode then 
+		printbr('inverse eigenvectors in '..dir..' dir')
+		printbr((tostring((m * v):equals((m*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
+		printbr()
+	else
 		print('-- inverse eigenvectors in '..dir..' dir:')
-		print(processCode(select(2, (m*v):simplify():compile(allVars))))		
+		print(processCode(select(2, (m*v):simplify():compile(compileVars))))		
 	end
 io.stdout:flush()
-	print('inverting...')
+	printbr('inverting...')
 	io.stdout:flush()
 	local mInv = m:inverse()
-	print('...done inverting')
+	printbr('...done inverting')
 	io.stdout:flush()
-	if outputMethod == 'MathJax' then 
-		print('eigenvectors in '..dir..' dir<br>')
-		print((tostring((mInv * v):equals((mInv*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
-		print'<br><br>' 
-	elseif outputMethod == 'SingleLine' then
-		print('eigenvectors in '..dir..' dir')
-		print(mInv)
-	elseif outputMethod == 'Lua' or outputMethod == 'C' then
+	if not outputCode then 
+		printbr('eigenvectors in '..dir..' dir')
+		printbr((tostring((mInv * v):equals((mInv*v):simplify():factorDivision():tidy())):gsub('0','\\cdot')))
+		printbr()
+	else
 		print('-- eigenvectors in '..dir..' dir:')
-		print(processCode(select(2, (mInv*v):simplify():compile(allVars))))
+		print(processCode(select(2, (mInv*v):simplify():compile(compileVars))))
 	end
 io.stdout:flush()
 	-- verify orthogonality
@@ -309,19 +414,17 @@ io.stdout:flush()
 			assert(delta[i][j].value == (i == j and 1 or 0))
 		end
 	end
-	if not (outputMethod == 'Lua' or outputMethod == 'C') then
-		print(delta)
-		if outputMethod == 'MathJax' then 
-			print'<br><br>'
-		end
+	if not outputCode then
+		printbr(delta)
+		printbr()	
 	end
 io.stdout:flush()
 	--[[ eigenvalues
 	local l = symmath.Matrix.diagonal(
-		-alpha * sqrt(f * gU.xx)
+		-alpha * sqrt(f * gammaUSymNamed.xx)
 	)
 	--]]
-end
+end)
 
 if outputMethod == 'MathJax' then 
 	print(MathJax.footer)

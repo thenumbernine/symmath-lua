@@ -22,7 +22,6 @@
 --]]
 
 local symmath = require 'symmath'
-local factorLinearSystem = require 'symmath.factorLinearSystem'
 local vars = symmath.vars
 local var = symmath.var
 local add = symmath.addOp	-- why the 'Op' suffix anyways?
@@ -132,7 +131,7 @@ for dim=1,3 do
 		local dq_dxk = qs:map(function(q) return q:diff(xs[j]) end)
 
 		local dFk_dq
-		dFk_dq, remainingTerms = factorLinearSystem(
+		dFk_dq, remainingTerms = symmath.factorLinearSystem(
 			table.map(remainingTerms, function(row) return row[1] end), dq_dxk)
 		dFk_dqs:insert(dFk_dq)
 

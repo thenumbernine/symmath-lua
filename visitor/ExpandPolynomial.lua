@@ -21,7 +21,7 @@ ExpandPolynomial.lookupTable = setmetatable(table(ExpandPolynomial.lookupTable, 
 -- (and dividing polys works a bit better)
 -- until factor() works, simplify() works better without this enabled ... but polyCoeffs() doesn't ... 
 -- [[
-	[require 'symmath.powOp'] = function(expand, expr)
+	[require 'symmath.powOp'] = function(self, expr)
 		local clone = require 'symmath.clone'
 		local Constant = require 'symmath.Constant'
 		expr = clone(expr)
@@ -62,7 +62,7 @@ ExpandPolynomial.lookupTable = setmetatable(table(ExpandPolynomial.lookupTable, 
 				
 				if div then expr = 1/expr end
 				
-				return expand:apply(expr)
+				return self:apply(expr)
 			end
 		end
 	end,
