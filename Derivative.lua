@@ -23,4 +23,3 @@ function Derivative:init(...)
 end
 
 return Derivative
-

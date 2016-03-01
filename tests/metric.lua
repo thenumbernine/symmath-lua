@@ -3,7 +3,7 @@
 
     File: metric.lua
 
-    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2016 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,28 +21,15 @@
 
 --]]
 
-symmath = require 'symmath'
+local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
+local Tensor = symmath.Tensor
+require 'symmath.tostring.LaTeX'.usePartialLHSForDerivative = true
 
--- test
-
-function exec(cmd)
-	assert(load(cmd))()
-end
-
-function printbr(...)
+local function printbr(...)
 	print(...)
 	print('<br>')
-end
-
-function assign(cmd)
-	local var, expr = cmd:match('^(.-)=(.-)$')
-	assert(var, "couldn't pick apart "..cmd)
-	var = var:trim()
-	expr = expr:trim()
-	exec(var .. '=' .. expr)
-	printbr(var .. ' = ' .. tostring(_G[var]))
 end
 
 print(MathJax.header)
@@ -110,15 +97,6 @@ coords = {'t', 'x', 'y', 'z'}
 Phi = symmath.Variable('Phi', {t,x,y,z})
 --]]
 
-function printNonZero(title, expr, args)
-	for k,v in pairs(args) do
-		expr = expr:gsub('$'..k, v)
-		title = title:gsub('$'..k, v)
-	end
-	local cmd = [[if ]]..expr..[[ ~= symmath.Constant(0) then printbr(]]..'[['..[[\(]]..title..[[\) = ]]..']]'..[[..]]..expr..[[) end]]
-	exec(cmd)
-end
-
 --[[
 printbr()
 for _,u in ipairs(coords) do
@@ -152,108 +130,77 @@ end
 --]]
 
 -- [[ ADM
-t = symmath.Variable('t')
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-z = symmath.Variable('z')
-alpha = symmath.Variable('\\alpha', {t,x,y,z})
-spatial = {'x','y','z'}
-coords = {'t', 'x', 'y', 'z'}
-for _,u in ipairs(spatial) do
-	exec(([[betaU_$u = symmath.Variable('\\beta^$u', {t,x,y,z})]]):gsub('$u', u))
-	exec(([[betaL_$u = symmath.Variable('\\beta_$u', {t,x,y,z})]]):gsub('$u', u))
-end
-for _,u in ipairs(spatial) do
-	for _,v in ipairs(spatial) do
-		exec(([[gammaLL_$u_$v = symmath.Variable('\\gamma_{$u$v}', {t,x,y,z})]]):gsub('$u', u):gsub('$v', v))
-		exec(([[gammaUU_$u_$v = symmath.Variable('\\gamma^{$u$v}', {t,x,y,z})]]):gsub('$u', u):gsub('$v', v))
-	end
-end
---[=[
-for _,u in ipairs(spatial) do
-	exec(('betaL_$u = 0'):gsub('$u',u))
-	for _,v in ipairs(spatial) do
-		exec(('betaL_$u = beta_L_$u + gammaLL_$u_$v * betaU_$v'):gsub('$u',u):gsub('$v',v))
-	end
-end
---]=]
+local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
+local spatialCoords = {x,y,z}
+local coords = {t, x, y, z}
+Tensor.coords{
+	{variables = coords},
+	{variables = spatialCoords, symbols='ijklmn'},
+}
+local alpha = symmath.var('\\alpha', coords)
+local beta = Tensor('^i', function(i) return symmath.var('\\beta^'..spatialCoords[i].name, coords) end)
+local gamma = Tensor('_ij', function(i,j) return symmath.var('\\gamma_{'..spatialCoords[i].name..spatialCoords[j].name..'}', coords) end)
+local gammaUU = Tensor('^ij', function(i,j) return symmath.var('\\gamma^{'..spatialCoords[i].name..spatialCoords[j].name..'}', coords) end)
+
+--local betaL = Tensor('_i', function(i) return symmath.var('\\beta_'..spatialCoords[i].name, coords) end)
+--local betaL_def = Tensor('_i', function(i) return betaL[i]:equals(
+local betaSq = symmath.var('\\beta^2')
+--local betaSq_def = betaSq:equals(beta'^i' * betaL'_i')
+
+Tensor.metric(gamma, gammaUU, 'i')
+--local gammaUU = Tensor.metric(gamma, nil, 'i').metricInverse
+
+printbr(alpha)
+printbr('$\\beta^i = $'..beta'^i')
+printbr('$\\gamma_{ij} = $'..gamma'_ij')
+printbr('$\\gamma^{ij} = $'..gammaUU'^ij')
+
 -- metric
-exec('gLL_t_t = alpha * alpha')
-for _,u in ipairs(spatial) do
-	exec(('gLL_t_t = gLL_t_t - betaU_$u * betaL_$u'):gsub('$u', u))
-end
-for _,u in ipairs(spatial) do
-	exec(('gLL_$u_t = betaL_$u'):gsub('$u', u))
-	exec(('gLL_t_$u = betaL_$u'):gsub('$u', u))
-end
-for _,u in ipairs(spatial) do
-	for _,v in ipairs(spatial) do
-		exec(('gLL_$u_$v = gammaLL_$u_$v'):gsub('$u', u):gsub('$v', v))
-		printNonZero('g_{$u$v}', 'gLL_$u_$v', {u=u,v=v})
-	end
-end
--- inverse
-exec('gUU_t_t =-alpha^-2')
-for _,u in ipairs(spatial) do
-	exec(('gUU_$u_t = betaU_$u / alpha^2'):gsub('$u', u))
-	exec(('gUU_t_$u = betaU_$u / alpha^2'):gsub('$u', u))
-end
-for _,u in ipairs(spatial) do
-	for _,v in ipairs(spatial) do
-		exec(('gUU_$u_$v = gammaUU_$u_$v - betaU_$u * betaU_$v / alpha^2'):gsub('$u', u):gsub('$v', v)) 
-	end
-end
---]]
-for _,u in ipairs(coords) do
-	for _,v in ipairs(coords) do
-		printNonZero('g^{$u$v}', 'gUU_$u_$v', {u=u,v=v})
-	end
-end
-
-printbr()
-for _,u in ipairs(coords) do
-	for _,v in ipairs(coords) do
-		for _,w in ipairs(coords) do
-			exec(('gLLL_$u_$v_$w = symmath.simplify(symmath.diff(gLL_$u_$v, $w))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero([[\partial_$w g_{$u$v}]], 'gLLL_$u_$v_$w', {u=u,v=v,w=w})
+-- TODO subtensor expansion.  useful here and in the ADM flux ... and a lot of other places
+local g = Tensor('_uv', function(u,v)
+	if u == 1 then
+		if v == 1 then
+			return (-alpha^2 + betaSq)
+		else
+			return beta'_i'[v-1]
+		end
+	else
+		if v == 1 then
+			return beta'_i'[u-1]
+		else
+			return gamma'_ij'[u-1][v-1]
 		end
 	end
-end
-
-printbr()
-for _,u in ipairs(coords) do
-	for _,v in ipairs(coords) do
-		for _,w in ipairs(coords) do
-			exec(('christoffelLLL_$u_$v_$w = symmath.simplify((symmath.Constant(1)/2) * (gLLL_$u_$v_$w + gLLL_$u_$w_$v - gLLL_$v_$w_$u))'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero([[\Gamma_{$u$v$w}]], 'christoffelLLL_$u_$v_$w', {u=u,v=v,w=w})
+end)
+local gUU = Tensor('^uv', function(u,v)
+	if u == 1 then
+		if v == 1 then
+			return -1/alpha^2
+		else
+			return beta[v-1] / alpha^2
+		end
+	else
+		if v == 1 then
+			return beta[u-1] / alpha^2
+		else
+			return gammaUU[u-1][v-1] - beta[u-1] * beta[v-1] / alpha^2
 		end
 	end
-end
+end)
+Tensor.metric(g, gUU)
 
-printbr()
-for _,u in ipairs(coords) do
-	for _,v in ipairs(coords) do
-		for _,w in ipairs(coords) do
-			exec(('christoffelULL_$u_$v_$w = 0'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			for _,r in ipairs(coords) do
-				exec(('christoffelULL_$u_$v_$w = christoffelULL_$u_$v_$w + christoffelLLL_$r_$v_$w * gUU_$r_$u'):gsub('$u',u):gsub('$v',v):gsub('$w',w):gsub('$r',r))
-			end
-			exec(('christoffelULL_$u_$v_$w = symmath.simplify(christoffelULL_$u_$v_$w)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero([[{\Gamma^$u}_{$v$w}]], 'christoffelULL_$u_$v_$w',{u=u,v=v,w=w})
-		end
-	end
-end
+printbr('$g_{uv} = $'..g'_uv')
+printbr('$g^{uv} = $'..gUU'^uv')
 
+local Conn = Tensor('_abc')
+Conn['_abc'] = (g'_ab,c' + g'_ac,b' - g'_bc,a'):simplify()
+printbr('$\\Gamma_{abc} = $'..Conn'_abc')
+Conn = Conn'^a_bc'
+printbr('${\\Gamma^a}_{bc} = $'..Conn'^a_bc')
 
-printbr('Phi ~ -1')
-for _,u in ipairs(coords) do
-	for _,v in ipairs(coords) do
-		for _,w in ipairs(coords) do
-			exec(('christoffelULL_$u_$v_$w = symmath.replace(christoffelULL_$u_$v_$w, Phi, symmath.Constant(-1), function(v) return not v:isa(symmath.Derivative) end)'):gsub('$u',u):gsub('$v',v):gsub('$w',w))
-			printNonZero([[{\Gamma^$u}_{$v$w}]], 'christoffelULL_$u_$v_$w',{u=u,v=v,w=w})
-		end
-	end
-end
+os.exit()
+local Riemann = Tensor('^a_bcd')
+Riemann['^a_bcd'] = (Conn'^a_bd,c' - Conn'^a_bc,d' + Conn'^a_ec' * Conn'^e_bd' - Conn'^a_ed' * Conn'^e_bc'):simplify()
+printbr('${R^a}_{bcd} = $'..Riemann'^a_bcd')
 
 print(MathJax.footer)
-

@@ -652,6 +652,8 @@ function Tensor.metric(metric, metricInverse, symbol)
 	if metric or metricInverse then
 		basis.metric = metric or Matrix.inverse(metricInverse)
 		basis.metricInverse = metricInverse or Matrix.inverse(metric)
+	else
+		return basis
 	end
 	-- TODO convert matrices to tensors?
 	-- this means use distinct symbols
@@ -662,8 +664,8 @@ function Tensor.metric(metric, metricInverse, symbol)
 			error("found a basis with only one symbol, when you need two to represent the metric tensor: " .. tolua(basis))
 		end
 		-- TODO seems findBasisForSymbol isn't set up to support space-separated symbol strings ...
-		a = basis.symbols:sub(1,1)
-		b = basis.symbols:sub(2,2)
+		a = basis.symbols[1]
+		b = basis.symbols[2]
 	else
 		a,b = 'a','b'
 	end
@@ -1008,6 +1010,9 @@ Tensor.__newindex = function(self, key, value)
 		-- for all non-number indexes
 		-- gather all variables of each of those indexes
 		-- iterate across all
+
+		-- simplify any expressions ... automatically here?
+		--if not Tensor.is(value) then value = value:simplify() end
 
 		-- permute the indexes of the value to match the source
 		-- TODO no need to permute it if the index is entirely variables/numbers, such that the assignment is to a single element in the tensor
