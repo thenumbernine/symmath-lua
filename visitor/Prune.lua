@@ -5,6 +5,13 @@ x = self(x)
 traverses x, child first, maps the nodes if they appear in the lookup table
 
 the table can be expanded by adding an entry self.lookupTable[class] to perform the necessary transformation
+
+I'm having second thoughts about putting all this here ...
+maybe it should be member functions?
+maybe all Expressions should have member functions that all visitors default to?
+maybe all Expressions should have .visit = {[Prune] = function() ...} ?
+this way these files don't explode in size as the number of objects do
+and this way extensions don't have to modify the original symmath package
 --]]
 local class = require 'ext.class'
 local unmOp = require 'symmath.unmOp'
@@ -1066,6 +1073,189 @@ Prune.lookupTable = {
 
 	[require 'symmath.sqrt'] = function(self, expr)
 		return self:apply(expr[1]^divOp(1,2))
+	end,
+
+	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		local Tensor = require 'symmath.Tensor'
+		local t = expr[1]
+		local indexes = {table.unpack(expr,2)}
+
+		-- now transform all indexes that don't match up
+		
+		local foundDerivative
+		local nonDerivativeIndexes = table()
+		for i,index in ipairs(indexes) do
+			if index.derivative then
+				foundDerivative = true
+			else
+				nonDerivativeIndexes:insert(i)
+			end
+		end
+
+		--[[ TODO possibly support for comma derivatives of (non-Tensor) scalar expressions?
+		if is scalar then
+			if #indexes > 0 then
+				error("tried to apply "..#indexes.." indexes to a 0-rank tensor (a scalar): "..tostring(tensor))
+			end
+			if #nonDerivativeIndexes ~= 0 then
+				error("Tensor.rep non-tensor needs as zero non-comma indexes as the tensor's rank.  Found "..#nonDerivativeIndexes.." but needed "..0)
+			end
+		else...
+		--]]
+		local rank = Tensor.rank(t)
+		if #nonDerivativeIndexes ~= rank then
+			error("Tensor() needs as many non-derivative indexes as the tensor's rank.  Found "..#nonDerivativeIndexes.." but needed "..rank)
+		end
+
+		-- this operates on indexes
+		-- which hasn't been expanded according to commas just yet
+		-- so commas must be all at the end
+		local function transformIndexes(withDerivatives)
+			-- raise all indexes, transform tensors accordingly
+			for i=1,#indexes do
+				if not indexes[i].derivative == not withDerivatives then
+
+					-- TODO replace all of this, the upper/lower transforms, the inter-coordinate transforms
+					-- with one general routine for transforming between basii (in place of transformIndex)
+
+					t = t:applyRaiseOrLower(i, indexes[i])
+					
+					-- TODO this matches Tensor:applyRaiseOrLower
+					local srcBasis, dstBasis
+					if Tensor.__coordBasis then
+						srcBasis = Tensor.findBasisForSymbol(t.variance[i].symbol)
+						dstBasis = Tensor.findBasisForSymbol(indexes[i].symbol)
+					end				
+				
+					if srcBasis ~= dstBasis then
+						-- only handling exchanges of variables at the moment
+						
+						local indexMap = {}
+						for i=1,#dstBasis.variables do
+							indexMap[i] = table.find(srcBasis.variables, dstBasis.variables[i])
+						end
+
+						t = Tensor{
+							indexes = indexes,
+							values = function(...)
+								local srcIndexes = {...}
+								srcIndexes[i] = indexMap[srcIndexes[i]]
+								return t[srcIndexes]
+							end,
+						}
+					end
+
+					t.variance[i].symbol = indexes[i].symbol
+					t.variance[i].number = indexes[i].number
+				end
+			end
+		end
+
+		transformIndexes(false)
+
+		if foundDerivative then
+			-- indexed starting at the first derivative index
+			local basisForCommaIndex = {}
+			for i=1,#indexes do
+				if indexes[i].derivative then
+					basisForCommaIndex[i] = Tensor.findBasisForSymbol(indexes[i].symbol)
+				end
+			end
+		
+			local TensorIndex = require 'symmath.tensor.TensorIndex'
+			local newVariance = {}
+			-- TODO straighten out the upper/lower vs differentiation order
+			for i=1,#indexes do
+				newVariance[i] = TensorIndex{
+					symbol = indexes[i].symbol,
+					lower = indexes[i].lower,
+					-- ...and i'm not copying the derivative field
+				}
+			end
+			
+			t = Tensor{
+				indexes = newVariance,
+				values = function(...)
+					local is = {...}
+					-- pick out 
+					local base = table()
+					local deriv = table()
+					for i=1,#is do
+						if indexes[i].derivative then
+							deriv:insert(basisForCommaIndex[i].variables[is[i]])
+						else
+							base:insert(is[i])
+						end
+					end
+					local x = t:get(base)
+					for i=1,#deriv do
+						x = x:diff(deriv[i])
+					end
+					return x
+				end,
+			}
+
+			-- raise after differentiating
+			-- TODO do this after each diff
+			transformIndexes(true)
+			
+			for i=1,#indexes do
+				indexes[i].derivative = false
+			end
+	--print('after differentiation: '..tensor)
+		end
+		
+		-- handle specific number/variable indexes
+		do
+			local foundNumbers = table.find(indexes, nil, function(index)
+				return index.number
+			end)
+			if foundNumbers then
+				local newdim = t:dim()
+				local srcIndexes = {table.unpack(indexes)}
+				local sis = {}
+				for i=#newdim,1,-1 do
+					if indexes[i].number then
+						sis[i] = indexes[i].number
+						table.remove(indexes, i)
+						table.remove(newdim, i)
+					end
+				end
+				if #newdim == 0 then
+					return self(t:get(sis))
+				else
+					local dstToSrc = {}
+					for i=1,#newdim do
+						dstToSrc[i] = assert(table.find(srcIndexes, indexes[i]))
+					end
+					t = Tensor{
+						dim = newdim,
+						indexes = t.variance,
+						values = function(...)
+							local is = {...}
+							for i=1,#is do
+								sis[dstToSrc[i]] = is[i]
+							end
+							return t:get(sis)
+						end,
+					}
+				end
+			end
+		end
+
+		-- for all indexes
+		
+		-- apply any summations upon construction
+		-- if any two indexes match then zero non-diagonal entries in the resulting tensor
+		--  (scaling with the delta tensor)
+
+		t = t:simplifyTraces()
+		if Tensor.is(t) then 
+			for i,index in ipairs(t.variance) do
+				assert(index.number or index.symbol, "failed to find index on "..i.." of "..#t.variance)
+			end	
+		end
+		return self(t)
 	end,
 }
 

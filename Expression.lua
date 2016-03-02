@@ -1,4 +1,5 @@
-require 'ext'
+local class = require 'ext.class'
+local table = require 'ext.table'
 
 local Expression = class()
 
@@ -148,17 +149,28 @@ Expression.eval = function(...) return require 'symmath'.eval(...) end	-- which 
 Expression.compile = function(...) return require 'symmath'.compile(...) end	-- which itself is shorthand for require 'symmath.tostring.Lua').compile(...)
 Expression.diff = function(...) return require 'symmath'.diff(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
 Expression.integrate = function(...) return require 'symmath'.Integral(...) end
---
+
 -- I have to buffer these by a function to prevent require loop
 Expression.equals = function(...) return require 'symmath.equals'(...) end
 Expression.greaterThan = function(...) return require 'symmath.greaterThan'(...) end
 Expression.greaterThanOrEquals = function(...) return require 'symmath.greaterThanOrEquals'(...) end
 Expression.lessThan = function(...) return require 'symmath.lessThan'(...) end
 Expression.lessThanOrEquals = function(...) return require 'symmath.lessThanOrEquals'(...) end
+-- shorthand ...
+Expression.eq = Expression.equals
+Expression.gt = Expression.greaterThan
+Expression.ge = Expression.greaterThanOrEquals
+Expression.lt = Expression.lessThan
+Expression.le = Expression.lessThanOrEquals
+
 -- linear system stuff.  do we want these here, or only as a child of Matrix?
 Expression.inverse = function(...) return require 'symmath.matrix.inverse'(...) end
 Expression.determinant = function(...) return require 'symmath.matrix.determinant'(...) end
 Expression.transpose = function(...) return require 'symmath.matrix.transpose'(...) end
+-- shorthand ...
+Expression.inv = Expression.inverse
+Expression.det = Expression.determinant
+-- I would do transpose => tr, but tr could be trace too ...
 
 -- ... = list of equations
 function Expression:subst(...)
@@ -167,6 +179,47 @@ function Expression:subst(...)
 		result = result:replace(eqn:lhs(), eqn:rhs())
 	end
 	return result
+end
+
+-- adding tensor indexing to *all* expressions:
+-- once I add function evaluation I'm sure I'll regret this decision
+function Expression:__call(...)
+	-- calling with nothing?  run a simplify() on it
+	-- this is getting ugly ...
+	if select('#', ...) == 0 then
+		return self:simplify()
+	end
+
+	-- calling with anything else?  assume index dereference
+	local indexes = ...
+
+	local clone = require 'symmath.clone'
+	local Tensor = require 'symmath.Tensor'
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
+
+	if type(indexes) == 'table' then
+		indexes = {table.unpack(indexes)}
+		assert(#indexes == #self.variance)
+		for i=1,#indexes do
+			if type(indexes[i]) == 'number' then
+				indexes[i] = TensorIndex{
+					lower = self.variance[i].lower,
+					number = indexes[i],
+				}
+			elseif type(indexes[i]) == 'table' then
+				assert(TensorIndex.is(indexes[i]))
+			else
+				error("indexes["..i.."] got unknown type "..type(indexes[i]))
+			end
+		end
+	end
+	indexes = Tensor.parseIndexes(indexes)
+	-- by now 'indexes' should be a table of TensorIndex objects
+	-- possibly including comma derivatives
+	-- TODO replace comma derivatives with (or make them shorthand for) index-based partial derivative operators
+
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	return TensorRef(self, table.unpack(indexes))
 end
 
 return Expression

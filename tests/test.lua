@@ -83,4 +83,8 @@ os.exit()
 =asserteq((y*symmath.sin(x)^2+y*symmath.cos(x)^2):simplify(), y)
 =asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2):simplify(), 2*y)	-- works when combining y + y * trig ident
 =asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2):simplify(), 1+y)	-- ... but not when combining 1 + y * trig ident (look in factor.lua)
+
+-- new test case:
+-- 1+sin(x)^2+sin(x)^2 correctly simplifies to 1+2*sin(x)^2
+-- -1+sin(x)^2+sin(x)^2 should simplify to -1+2*sin(x)^2, but doesn't ...
 ]]

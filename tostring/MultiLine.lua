@@ -243,6 +243,17 @@ MultiLine.lookupTable = {
 		
 		return res
 	end,
+	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		local t = expr[1]
+		local indexes = {table.unpack(expr, 2)}
+
+		local s = self:apply(t)
+		for _,index in ipairs(indexes) do
+			s = self:combine(s, self:apply(index))
+		end
+		
+		return s
+	end,
 }
 
 -- while most ToString.__call methods deal in strings,

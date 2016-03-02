@@ -262,9 +262,37 @@ LaTeX.lookupTable = {
 		s:insert(self:apply(intexpr))
 		return s
 	end,
+	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		local t = expr[1]
+		local indexes = {table.unpack(expr, 2)}
+
+		local s = self:applyLaTeX(t)
+		for _,index in ipairs(indexes) do
+			s = '{' .. s .. '}' .. self:apply(index)
+		end
+		
+		return table{s}
+	end,
+	-- looks a lot like TensorIndex.__tostring, except with some {}'s wrapping stuff
+	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+		local s = ''
+		if expr.derivative then s = ',' .. s end
+		if expr.symbol then
+			s = s .. expr.symbol
+		elseif expr.number then
+			s = s .. expr.number
+		else
+			error("TensorIndex expected a symbol or a number")
+		end
+		if #s > 1 then s = '{' .. s .. '}' end
+		if expr.lower then s = '_' .. s else s = '^' .. s end
+		return s
+	end,
 }
 
-function LaTeX:__call(...)
+-- not quite apply, because that returns a table
+-- but not quite call, because MathJax overloads that
+function LaTeX:applyLaTeX(...)
 	local result = LaTeX.super.__call(self, ...)
 	
 	-- now combine the symbols conscious of LaTeX grammar ... 
@@ -298,6 +326,10 @@ function LaTeX:__call(...)
 
 	result.omit = true
 	return flatten(result):gsub('%s+', ' ')
+end
+
+function LaTeX:__call(...)
+	return self:applyLaTeX(...)
 end
 
 return LaTeX()	-- singleton

@@ -90,7 +90,7 @@ space separated for multi-char symbols/numbers
 	however space-separated means you *must* provide upper/lower prefix before *each* symbol/number
 	(TODO fix this)
 --]]
-local function parseIndexes(indexes)
+function Tensor.parseIndexes(indexes)
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	
 	local function handleTable(indexes)
@@ -219,7 +219,8 @@ function Tensor.coords(newCoords)
 	return oldCoords
 end
 
-local function findBasisForSymbol(symbol)
+-- static function
+function Tensor.findBasisForSymbol(symbol)
 	if not Tensor.__coordBasis then return end
 	for _,basis in ipairs(Tensor.__coordBasis) do
 		if not basis.symbols then
@@ -336,7 +337,7 @@ function Tensor:init(...)
 	--]]
 	if argsAreNamed then
 		-- one of these two variables should be defined:
-		self.variance = args[1].indexes and parseIndexes(args[1].indexes) or {}
+		self.variance = args[1].indexes and Tensor.parseIndexes(args[1].indexes) or {}
 		local dim = args[1].dim
 		--if dim and args[1].indexes then error("can't specify dim and indexes") end
 		if dim then
@@ -365,7 +366,7 @@ function Tensor:init(...)
 			local subVariance = table(self.variance)
 			local firstVariance = table.remove(subVariance, 1)
 			
-			local basis = findBasisForSymbol(firstVariance.symbol)
+			local basis = Tensor.findBasisForSymbol(firstVariance.symbol)
 			
 			local superArgs = {}
 			for i=1,#basis.variables do
@@ -394,7 +395,7 @@ function Tensor:init(...)
 			
 			-- *) parse string into indicies (and what basis they belong to) and contra- vs co- variance
 			-- should I make a distinction for multi-letter variables? not allowed for the time being ...
-			self.variance = parseIndexes(indexes)
+			self.variance = Tensor.parseIndexes(indexes)
 
 			-- *) complain if there is no Tensor.coords assignment
 			-- *) store index information (in this tensor and subtensors ... i.e. this may be {^i, _j, _k}, subtensors would be {_j, _k}, and their subtensors would be {_k}
@@ -422,7 +423,7 @@ function Tensor:init(...)
 				-- construct content from default of zeroes
 				local subVariance = table(self.variance)
 				local firstVariance = table.remove(subVariance, 1)
-				local basis = findBasisForSymbol(firstVariance.symbol)
+				local basis = Tensor.findBasisForSymbol(firstVariance.symbol)
 
 				local superArgs = {}
 				for i=1,#basis.variables do
@@ -647,7 +648,7 @@ usage:
 --]]
 function Tensor.metric(metric, metricInverse, symbol)
 	local Matrix = require 'symmath.Matrix'
-	local basis = findBasisForSymbol(symbol or {})
+	local basis = Tensor.findBasisForSymbol(symbol or {})
 	if not basis then error("can't set the metric without first setting the coords") end
 	if metric or metricInverse then
 		basis.metric = metric or Matrix.inverse(metricInverse)
@@ -681,10 +682,11 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 	-- TODO this matches Tensor:__call
 	local srcBasis, dstBasis
 	if Tensor.__coordBasis then
-		srcBasis = findBasisForSymbol(t.variance[i].symbol)
-		dstBasis = findBasisForSymbol(tensorIndex.symbol)
+		srcBasis = Tensor.findBasisForSymbol(t.variance[i].symbol)
+		dstBasis = Tensor.findBasisForSymbol(tensorIndex.symbol)
 	end
 
+-- TODO what if the tensor was created without variance? 
 	if tensorIndex.lower ~= t.variance[i].lower then
 		-- how do we handle raising indexes of subsets
 		local metric = (dstBasis and dstBasis.metric) or (srcBasis and srcBasis.metric)
@@ -724,205 +726,6 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 	return t
 end
 
-function Tensor:__call(indexes)
-	local clone = require 'symmath.clone'
-	local TensorIndex = require 'symmath.tensor.TensorIndex'
-
-	if type(indexes) == 'table' then
-		indexes = {table.unpack(indexes)}
-		assert(#indexes == #self.variance)
-		for i=1,#indexes do
-			if type(indexes[i]) == 'number' then
-				indexes[i] = TensorIndex{
-					lower = self.variance[i].lower,
-					number = indexes[i],
-				}
-			elseif type(indexes[i]) == 'table' then
-				assert(TensorIndex.is(indexes[i]))
-			else
-				error("indexes["..i.."] got unknown type "..type(indexes[i]))
-			end
-		end
-	end
-	indexes = parseIndexes(indexes)
-
-	-- clone self before returning it
-	self = clone(self)
-	
-	-- now transform all indexes that don't match up
-	
-	local foundDerivative
-	local nonDerivativeIndexes = table()
-	for i,index in ipairs(indexes) do
-		if index.derivative then
-			foundDerivative = true
-		else
-			nonDerivativeIndexes:insert(i)
-		end
-	end
-
-	--[[ TODO possibly support for comma derivatives of (non-Tensor) scalar expressions?
-	if is scalar then
-		if #indexes > 0 then
-			error("tried to apply "..#indexes.." indexes to a 0-rank tensor (a scalar): "..tostring(tensor))
-		end
-		if #nonDerivativeIndexes ~= 0 then
-			error("Tensor.rep non-tensor needs as zero non-comma indexes as the tensor's rank.  Found "..#nonDerivativeIndexes.." but needed "..0)
-		end
-	else...
-	--]]
-	local rank = Tensor.rank(self)
-	if #nonDerivativeIndexes ~= rank then
-		error("Tensor() needs as many non-derivative indexes as the tensor's rank.  Found "..#nonDerivativeIndexes.." but needed "..rank)
-	end
-
-	-- this operates on indexes
-	-- which hasn't been expanded according to commas just yet
-	-- so commas must be all at the end
-	local function transformIndexes(withDerivatives)
-		-- raise all indexes, transform tensors accordingly
-		for i=1,#indexes do
-			if not indexes[i].derivative == not withDerivatives then
-
-				-- TODO replace all of this, the upper/lower transforms, the inter-coordinate transforms
-				-- with one general routine for transforming between basii (in place of transformIndex)
-
-				self = self:applyRaiseOrLower(i, indexes[i])
-				
-				-- TODO this matches Tensor:applyRaiseOrLower
-				local srcBasis, dstBasis
-				if Tensor.__coordBasis then
-					srcBasis = findBasisForSymbol(self.variance[i].symbol)
-					dstBasis = findBasisForSymbol(indexes[i].symbol)
-				end				
-			
-				if srcBasis ~= dstBasis then
-					-- only handling exchanges of variables at the moment
-					
-					local indexMap = {}
-					for i=1,#dstBasis.variables do
-						indexMap[i] = table.find(srcBasis.variables, dstBasis.variables[i])
-					end
-
-					self = Tensor{
-						indexes = indexes,
-						values = function(...)
-							local srcIndexes = {...}
-							srcIndexes[i] = indexMap[srcIndexes[i]]
-							return self[srcIndexes]
-						end,
-					}
-				end
-
-				self.variance[i].symbol = indexes[i].symbol
-				self.variance[i].number = indexes[i].number
-			end
-		end
-	end
-
-	transformIndexes(false)
-
-	if foundDerivative then
-		-- indexed starting at the first derivative index
-		local basisForCommaIndex = {}
-		for i=1,#indexes do
-			if indexes[i].derivative then
-				basisForCommaIndex[i] = findBasisForSymbol(indexes[i].symbol)
-			end
-		end
-	
-		local TensorIndex = require 'symmath.tensor.TensorIndex'
-		local newVariance = {}
-		-- TODO straighten out the upper/lower vs differentiation order
-		for i=1,#indexes do
-			newVariance[i] = TensorIndex{
-				symbol = indexes[i].symbol,
-				lower = indexes[i].lower,
-				-- ...and i'm not copying the derivative field
-			}
-		end
-		
-		self = Tensor{indexes=newVariance, values=function(...)
-			local is = {...}
-			-- pick out 
-			local base = table()
-			local deriv = table()
-			for i=1,#is do
-				if indexes[i].derivative then
-					deriv:insert(basisForCommaIndex[i].variables[is[i]])
-				else
-					base:insert(is[i])
-				end
-			end
-			local x = self:get(base)
-			for i=1,#deriv do
-				x = x:diff(deriv[i])
-			end
-			return x
-		end}
-
-		-- raise after differentiating
-		-- TODO do this after each diff
-		transformIndexes(true)
-		
-		for i=1,#indexes do
-			indexes[i].derivative = false
-		end
---print('after differentiation: '..tensor)
-	end
-	
-	-- handle specific number/variable indexes
-	do
-		local foundNumbers = table.find(indexes, nil, function(index) return index.number end)
-		if foundNumbers then
-			local newdim = self:dim()
-			local srcIndexes = {table.unpack(indexes)}
-			local sis = {}
-			for i=#newdim,1,-1 do
-				if indexes[i].number then
-					sis[i] = indexes[i].number
-					table.remove(indexes, i)
-					table.remove(newdim, i)
-				end
-			end
-			if #newdim == 0 then
-				return self:get(sis)
-			else
-				local dstToSrc = {}
-				for i=1,#newdim do
-					dstToSrc[i] = assert(table.find(srcIndexes, indexes[i]))
-				end
-				self = Tensor{
-					dim = newdim,
-					indexes = self.variance,
-					values = function(...)
-						local is = {...}
-						for i=1,#is do
-							sis[dstToSrc[i]] = is[i]
-						end
-						return self:get(sis)
-					end,
-				}
-			end
-		end
-	end
-
-	-- for all indexes
-	
-	-- apply any summations upon construction
-	-- if any two indexes match then zero non-diagonal entries in the resulting tensor
-	--  (scaling with the delta tensor)
-
-	self = self:simplifyTraces()
-	if not self:isa(Tensor) then return self end
-	
-	for i,index in ipairs(self.variance) do
-		assert(index.number or index.symbol, "failed to find index on "..i.." of "..#self.variance)
-	end	
-
-	return self
-end
-
 -- permute the tensor's elements according to the dest variance
 function Tensor:permute(dstVariance)
 	-- determine index remapping
@@ -954,11 +757,11 @@ function Tensor:permute(dstVariance)
 		end,
 	}
 end
-	
 
 -- have to be copied?
 
 -- TODO make this and call identical
+-- ... or not.  __call was moved to Expression so expressions could be indexed 
 Tensor.__index = function(self, key)
 	-- parent class access
 	local metavalue = getmetatable(self)[key]
@@ -992,7 +795,7 @@ Tensor.__newindex = function(self, key, value)
 	if type(key) == 'string' 
 	and (key:sub(1,1) == '^' or key:sub(1,1) == '_')
 	then
-		local dstVariance = parseIndexes(key)
+		local dstVariance = Tensor.parseIndexes(key)
 		
 		-- assert no comma derivatives
 		for _,dstVar in ipairs(dstVariance) do

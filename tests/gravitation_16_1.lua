@@ -25,14 +25,17 @@
 
 local table = require 'ext.table'
 local symmath = require 'symmath'
-local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax 
 print(MathJax.header)
 
+local Tensor = symmath.Tensor
+local var = symmath.var
+local vars = symmath.vars
+
 local function printbr(...) print(...) print'<br>' end
 
-local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
+local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}
 Tensor.coords{
 	{
@@ -44,102 +47,101 @@ Tensor.coords{
 	}
 }
 
-local Phi = symmath.var('\\Phi', coords)
-local rho = symmath.var('\\rho', coords)
-local P = symmath.var('P', coords)
+local Phi = var('\\Phi', coords)
+local rho = var('\\rho', coords)
+local P = var('P', coords)
 
 local delta = Tensor('_uv', {1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1})
-printbr('$\\delta_{uv} = $'..delta'_uv')
+printbr(var'\\delta''_uv':eq(delta'_uv'()))
 
 local eta = Tensor('_uv', {-1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1})
-printbr('$\\eta_{uv} = $'..eta'_uv')
+printbr(var'\\eta''_uv':eq(eta'_uv'()))
 
-local g = (eta'_uv' - 2 * Phi * delta'_uv'):simplify()
+local g = (eta'_uv' - 2 * Phi * delta'_uv')()
 Tensor.metric(g)
-printbr('$g_{uv} = $'..g'_uv')
-printbr('$g^{uv} = $'..g'^uv')
 
-local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2):simplify()
-printbr('$\\Gamma_{abc} = $'..Gamma'_abc')
-Gamma = Gamma'^a_bc'
-printbr('${\\Gamma^a}_{bc} = $'..Gamma'^a_bc')
+printbr(var'g''_uv':eq(g'_uv'()))
+printbr(var'g''^uv':eq(g'^uv'()))
+
+local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
+printbr(var'\\Gamma''_abc':eq(Gamma'_abc'()))
+Gamma = Gamma'^a_bc'()
+printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
 -- assume diagonal matrix
 printbr()
 printbr[[let $\Phi$ ~ 0, but keep $d\Phi$]]
 
-Gamma = Gamma:replace(Phi, 0, function(v) return symmath.Derivative.is(v) end):simplify()
-printbr('${\\Gamma^a}_{bc} = $'..Gamma'^a_bc')
+Gamma = Gamma:replace(Phi, 0, symmath.Derivative.is)()
+printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
-g = g:replace(Phi, 0, function(v) return symmath.Derivative.is(v) end):simplify()
+g = g:replace(Phi, 0, symmath.Derivative.is)()
 Tensor.metric(g)
-printbr('$g_{uv} = $'..g'_uv')
-printbr('$g^{uv} = $'..g'^uv')
+printbr(var'g''_uv':eq(g'_uv'()))
+printbr(var'g''^uv':eq(g'^uv'()))
 
-local dPhi_dt_equals_0 = Phi:diff(t):equals(0)
+local dPhi_dt_eq_0 = Phi:diff(t):eq(0)
 printbr()
-printbr('let '..dPhi_dt_equals_0)
-Gamma = Gamma:subst(dPhi_dt_equals_0):simplify()
+printbr('let '..dPhi_dt_eq_0)
+Gamma = Gamma:subst(dPhi_dt_eq_0)()
 
-printbr('${\\Gamma^a}_{bc} = $'..Gamma'^a_bc')
+printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
-local u = Tensor('^a', coords:map(function(x) return symmath.var('u^'..x.name, coords) end):unpack())
-printbr('$u^a = $'..u'^a')
+local u = Tensor('^u', function(u) return var('u^'..coords[u].name, coords) end)
+printbr(var'u''^a':eq(u'^a'()))
 
 printbr()
 printbr'matter stress-energy tensor:'
-local T = ((rho + P) * u'^a' * u'^b' + P * g'^ab'):simplify()
-printbr('$T^{ab} = $'..T'^ab')
+local T = ((rho + P) * u'^a' * u'^b' + P * g'^ab')()
+printbr(var'T''^ab':eq(T'^ab'()))
 
-local div_T = (T'^ab_,b' + Gamma'^a_cb' * T'^cb' + Gamma'^b_cb' * T'^ac'):simplify()
+local div_T = (T'^ab_,b' + Gamma'^a_cb' * T'^cb' + Gamma'^b_cb' * T'^ac')()
 printbr()
 printbr'$\\nabla \\cdot T = 0$'
 for _,eqn in ipairs(div_T) do
-	printbr(eqn:equals(0))
+	printbr(eqn:eq(0))
 end
 
 printbr()
 printbr'low velocity relativistic approximations:'
-local ut_equals_1 = u[1]:equals(1)
-printbr(ut_equals_1)
-div_T = div_T:subst(ut_equals_1):simplify()
+local ut_eq_1 = u[1]:eq(1)
+printbr(ut_eq_1)
+div_T = div_T:subst(ut_eq_1)()
 
 printbr()
 printbr'$\\nabla \\cdot T = 0$ becomes:'
 for _,eqn in ipairs(div_T) do
-	printbr(eqn:equals(0))
+	printbr(eqn:eq(0))
 end
 
--- hmm without the simplify the tensor derivative doesn't work ...
--- between this and the idea of producing scalar gradients, I might have to overload *all* nodes with tensor syntax handling 
-local Pu = (P * u'^i'):simplify()	
-local div_Pu = Pu'^i_,i'
-printbr(div_Pu:equals(0))
-div_T[1] = (div_T[1] - div_Pu):simplify()
+local Pu = (P * u'^i')()	
+local div_Pu = Pu'^i_,i'()
+printbr(div_Pu:eq(0))
+div_T[1] = (div_T[1] - div_Pu)()
 
 printbr()
 printbr('first equation in terms of $\\partial_t \\rho$')
-local drho_dt_def = div_T[1]:equals(0):solve(rho:diff(t))
+local drho_dt_def = div_T[1]:eq(0):solve(rho:diff(t))
 printbr(drho_dt_def)
 
 printbr()
 printbr'spatial equations neglect $P_{,t}$, $(P u^j)_{,j}$, $P$, and $\\Phi_{,i} u_j$ and substitutes the definition of $\\partial_t \\rho$'
 for i=2,4 do
 	-- remove time derivative of pressure
-	div_T[i] = div_T[i]:replace(P:diff(t), 0):simplify()
+	div_T[i] = div_T[i]:replace(P:diff(t), 0)()
 	
 	-- this one's tough: neglect P,j u^j u^i ... but keep P,j
-	div_T[i] = (div_T[i] - div_Pu * u[i]):simplify()
+	div_T[i] = (div_T[i] - div_Pu * u[i])()
 
 	-- this one too ... get rid of the P that's just floating out there.  but leave its gradients.
-	div_T[i] = div_T[i]:replace(P, 0, function(v) return symmath.Derivative.is(v) end):simplify()
+	div_T[i] = div_T[i]:replace(P, 0, symmath.Derivative.is)()
 
 	-- substitute drho/dt definition to cancel some terms out
-	div_T[i] = div_T[i]:subst(drho_dt_def):simplify()
+	div_T[i] = div_T[i]:subst(drho_dt_def)()
 
 	-- get rid of any Phi,j times u,k of any kind ... hmm ...
 	div_T[i] = div_T[i]:map(function(expr)
-		if not expr:isa(symmath.mulOp) then return end
+		if not symmath.mulOp.is(expr) then return end
 		local dPhi = {Phi:diff(x), Phi:diff(y), Phi:diff(z)}
 		local foundDPhi
 		local foundU
@@ -148,13 +150,13 @@ for i=2,4 do
 			foundU = foundU or table.find(u, node)
 		end)
 		if foundDPhi and foundU then return 0 end
-	end):simplify()
+	end)()
 end
 
 printbr()
 printbr'$\\nabla \\cdot T = 0$ becomes:'
 for _,eqn in ipairs(div_T) do
-	printbr(eqn:equals(0))
+	printbr(eqn:eq(0))
 end
 
 print(MathJax.footer)
