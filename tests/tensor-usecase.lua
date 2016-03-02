@@ -1,12 +1,12 @@
 #! /usr/bin/env luajit
 local symmath = require 'symmath'
-local Matrix = require 'symmath.Matrix'
-local Tensor = require 'symmath.Tensor'
 local TensorIndex = require 'symmath.tensor.TensorIndex'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-
 print(MathJax.header)
+
+local Matrix = symmath.Matrix
+local Tensor = symmath.Tensor
 
 local maxN = 3
 
@@ -33,7 +33,7 @@ end
 for n=1,maxN do
 	local test = function(t)
 		for i=1,n do
-			assertEqn(t:get{n}:equals(n))
+			assertEqn(t:get{n}:eq(n))
 		end
 	end
 	for _,indexes in ipairs{
@@ -63,7 +63,7 @@ for n=1,maxN do
 			for i=1,m do
 				for j=1,n do
 					-- if only Lua could overload the compare for primitives of differing types ... 
-					assertEqn(t:get{i,j}:equals((i-1)*n+j))
+					assertEqn(t:get{i,j}:eq((i-1)*n+j))
 				end
 			end
 		end
@@ -96,7 +96,7 @@ for n=1,maxN do
 				for i=1,m do
 					for j=1,n do
 						for k=1,p do
-							assertEqn(t:get{i,j,k}:equals(k + p*((j-1) + n*(i-1))))
+							assertEqn(t:get{i,j,k}:eq(k + p*((j-1) + n*(i-1))))
 						end
 					end
 				end
@@ -156,26 +156,26 @@ for n=1,maxN do
 		assert(not pcall(function()
 			local t = Tensor(indexes)
 			-- perform the raise/lower... and error
-			t(indexesComplement[i])
+			t(indexesComplement[i])()
 		end))
 	end
 
 	-- testing tensor transpose
 	local t = Tensor('_ij', function(i,j) return i + n*(j-1) end)
-	for i=1,n do for j=1,n do assertEqn(t[{i,j}]:equals(i+n*(j-1))) end end
-	t['_ij'] = t'_ji'
-	for i=1,n do for j=1,n do assertEqn(t[{i,j}]:equals(j+n*(i-1))) end end
+	for i=1,n do for j=1,n do assertEqn(t[{i,j}]:eq(i+n*(j-1))) end end
+	t['_ij'] = t'_ji'()	-- TODO fixme
+	for i=1,n do for j=1,n do assertEqn(t[{i,j}]:eq(j+n*(i-1))) end end
 
 	-- testing contraction to a scalar:
 	local expected = 0
 	for i=1,n do
 		expected = expected + i + n*(i-1)
 	end
-	assertEqn(t'_ii':equals(expected))
+	assertEqn(t'_ii':eq(expected))
 
 	-- testing contraction to a vector
 	local t = Tensor('_ijk', function(i,j,k) return i + n*(j-1 + n*(k-1)) end)
-	local expected = Tensor('_k')
+	local expected = Tensor'_k'
 	for k=1,n do
 		expected[k] = 0
 		for i=1,n do
@@ -183,7 +183,7 @@ for n=1,maxN do
 		end
 		expected[k] = symmath.Constant(expected[k])
 	end
-	assertEqn(t'_iki':equals(expected))
+	assertEqn(t'_iki':eq(expected))
 end
 
 
@@ -191,11 +191,11 @@ end
 local n = setDim(3)
 local epsilon = Tensor('_ijk')
 epsilon[1][2][3] = symmath.Constant(1)
-assertEqn(epsilon[{1,2,3}]:equals(1))
+assertEqn(epsilon[{1,2,3}]:eq(1))
 -- now rotate
 epsilon['_ijk'] = epsilon'_jki'
-assertEqn(epsilon[{3,1,2}]:equals(1))
-assertEqn(epsilon[{2,3,1}]:equals(0))	-- this will be 1 if the index remapping is done backwards
+assertEqn(epsilon[{3,1,2}]:eq(1))
+assertEqn(epsilon[{2,3,1}]:eq(0))	-- this will be 1 if the index remapping is done backwards
 
 -- testing raising/lowering
 	-- testing scale of raising/lowering
@@ -203,29 +203,29 @@ local n = setDim(3)
 Tensor.metric(Tensor('_ij', {1, 0, 0}, {0, 2, 0}, {0, 0, 3}))
 	-- testing raising
 local t = Tensor('_i', 1,2,3)
-assertEqn(t'^i':equals(Tensor('^i', 1, 1, 1)))
+assertEqn(t'^i':eq(Tensor('^i', 1, 1, 1)))
 	-- variance of index doesn't matter -- a^u == a_u is true so long as a^1==a_1 && a^2==a_2 ... etc
-assertEqn(t'^i':equals(Tensor('_i', 1, 1, 1)))	
+assertEqn(t'^i':eq(Tensor('_i', 1, 1, 1)))	
 	-- testing lower
 local t = Tensor('^i', 1,2,3)
-assertEqn(t'_i':equals(Tensor('_i', 1, 4, 9)))
-assertEqn(t'_i':equals(Tensor('^i', 1, 4, 9)))
+assertEqn(t'_i':eq(Tensor('_i', 1, 4, 9)))
+assertEqn(t'_i':eq(Tensor('^i', 1, 4, 9)))
 	-- testing skew of raising/lowering (assuring that the linear transform is using the correct index into the metric matrix)
 local basis = Tensor.metric(Tensor('_ij', {1, 1, 0}, {0, 1, 0}, {0, 0, 1}))
 	-- assert that the inverse was calculated correctly
-assertEqn(basis.metricInverse[1]:equals(Tensor('^j', 1, -1, 0)))
+assertEqn(basis.metricInverse[1]:eq(Tensor('^j', 1, -1, 0)))
 
-assertEqn(basis.metricInverse[1]:equals(Tensor('^j', 1, -1, 0)))
-assertEqn(basis.metricInverse[2]:equals(Tensor('^j', 0, 1, 0)))
-assertEqn(basis.metricInverse[3]:equals(Tensor('^j', 0, 0, 1)))
+assertEqn(basis.metricInverse[1]:eq(Tensor('^j', 1, -1, 0)))
+assertEqn(basis.metricInverse[2]:eq(Tensor('^j', 0, 1, 0)))
+assertEqn(basis.metricInverse[3]:eq(Tensor('^j', 0, 0, 1)))
 
-assertEqn(basis.metricInverse:equals(Tensor('^ij', {1, -1, 0}, {0, 1, 0}, {0, 0, 1})))
+assertEqn(basis.metricInverse:eq(Tensor('^ij', {1, -1, 0}, {0, 1, 0}, {0, 0, 1})))
 local t = Tensor('^i', 1,2,3)
 --[[
 [1 1 0] [1]   [3]
 [0 1 0] [2] = [2]
 [0 0 1] [3]   [3]
 --]]
-assertEqn(t'_i':equals(Tensor('_i', 3,2,3)))
+assertEqn(t'_i':eq(Tensor('_i', 3,2,3)))
 
 print(MathJax.footer)
