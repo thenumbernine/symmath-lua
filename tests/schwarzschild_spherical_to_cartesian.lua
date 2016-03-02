@@ -2,42 +2,41 @@
 
 local table = require 'ext.table'
 local symmath = require 'symmath'
-local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-
-local function printbr(...)
-	print(...)
-	print('<br>')
-end
-
 print(MathJax.header)
 
+local function printbr(...) print(...) print'<br>' end
+
+local Tensor = symmath.Tensor
+local var = symmath.var
+local vars = symmath.vars
+
 -- coordinates
-local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
-local theta, phi = symmath.vars('r', 'theta', 'phi')
+local t,x,y,z = vars('t','x','y','z')
+local theta,phi = vars('r','theta','phi')
 
 -- differentials
-local dt, dx, dy, dz = symmath.vars('dt', 'dx', 'dy', 'dz')
-local dr, dtheta, dphi = symmath.vars('dr', 'd\\theta', 'd\\phi')
+local dt,dx,dy,dz = vars('dt','dx','dy','dz')
+local dr,dtheta,dphi = vars('dr','d\\theta','d\\phi')
 
 -- Constants
 local R = symmath.var('R')
 
 Tensor.coords{
-	{variables = {t, r, theta, phi}},
+	{variables = {t,r,theta,phi}},
 }
 
 -- algebraic
 --r = (x^2 + y^2 + z^2)^.5
 -- deferred:
-local r = symmath.Variable('r', spatialCoords)
+local r = var('r', spatialCoords)
 --]=]
 
 --schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
 local dsSq = (-(1-R/r))*dt^2 + 1/(1-R/r)*dr^2 + r^2*dtheta^2 + r^2*symmath.sin(theta)^2*dphi^2
-printbr('Spherical representation:')
-printbr('$ds^2 = $'..dsSq)
+printbr'Spherical representation:'
+printbr((var'ds'^2):eq(dsSq))
 dsSq = dsSq
 	:replace(dr, (x*dx + y*dy + z*dy) / r)
 	:replace(dtheta, (x*z*dx + y*z*dy - (x^2 + y^2)*dz) / (r^2*symmath.sqrt(x^2 + y^2)))
@@ -54,9 +53,9 @@ local function rapply(expr)
 	end
 	return expr
 end
-dsSq = rapply(dsSq):simplify():factorDivision()
-printbr('Cartesian representation:')
-printbr('$ds^2 = $'..dsSq)
+dsSq = rapply(dsSq)():factorDivision()
+printbr'Cartesian representation:'
+printbr((var'ds'^2):eq(dsSq))
 
 --[[
 convert to pseudo-Cartesian via:
@@ -68,7 +67,7 @@ convert to pseudo-Cartesian via:
 --]]
 local factorLinearSystem = require 'symmath.factorLinearSystem'
 local results = factorLinearSystem({dsSq}, table{dt^2, dx^2, dy^2, dz^2, dx*dy, dx*dz, dy*dz})
-printbr('factoring...')
+printbr'factoring...'
 printbr(results)
 
 print(MathJax.footer)

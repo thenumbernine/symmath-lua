@@ -2,12 +2,12 @@
 local run = ... or 'separate'
 
 local symmath = require 'symmath'
-
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-symmath.simplifyConstantPowers  = true
-
 print(MathJax.header)
+
+symmath.simplifyConstantPowers  = true
+local var = symmath.var
 
 local function printbr(...) print(...) print'<br>' end
 
@@ -18,7 +18,7 @@ local kmInM = 1000
 local lightYearInM = 9.4605284e+15
 local megaParsecInM = 3.08567758e+22
 
-m = symmath.var'm'
+m = var'm'
 
 if run == 'unified' then -- unified units
 	s = speedOfLightInMPerS * m	-- 1 = c m/s <=> s = c m
@@ -27,19 +27,19 @@ if run == 'unified' then -- unified units
 	mpc = megaParsecInM * m
 	function show(x) return x end
 else	--default: if run == 'separate' then -- separate units
-	cm = symmath.var'cm'
-	km = symmath.var'km'
-	s = symmath.var's'
-	kg = symmath.var'kg'
-	lyr = symmath.var'lyr'
+	cm = var'cm'
+	km = var'km'
+	s = var's'
+	kg = var'kg'
+	lyr = var'lyr'
 
 	function unify(x)
 		if type(x) == 'number' then return x end
-		x = symmath.simplify(symmath.replace(x, kg, gravitationalConstantInM3PerKgS2 * m^3 / s^2)) 
-		x = symmath.simplify(symmath.replace(x, s, speedOfLightInMPerS * m))
-		x = symmath.simplify(symmath.replace(x, mpc, megaParsecInM * m))
-		x = symmath.simplify(symmath.replace(x, lyr, lightYearInM * m))
-		x = symmath.simplify(symmath.replace(x, cm, cmInM * m))
+		x = x:replace(kg, gravitationalConstantInM3PerKgS2 * m^3 / s^2)()
+		x = x:replace(s, speedOfLightInMPerS * m)()
+		x = x:replace(mpc, megaParsecInM * m)()
+		x = x:replace(lyr, lightYearInM * m)()
+		x = x:replace(cm, cmInM * m)()
 		return x
 	end
 	function show(x)
@@ -75,18 +75,18 @@ end
 
 show = function(...) return ... end
 
-local s = s or symmath.var's'
+local s = s or var's'
 
-local c = symmath.var'c'
-local c_from_m_s = c:equals(speedOfLightInMPerS * (m / s))
+local c = var'c'
+local c_from_m_s = c:eq(speedOfLightInMPerS * (m / s))
 printbr(c_from_m_s)
-local s_from_m = c_from_m_s:subst(c:equals(1)):solve(s)
+local s_from_m = c_from_m_s:subst(c:eq(1)):solve(s)
 printbr(s_from_m)
 
-local G = G or symmath.var'G'
-local G_from_kg_m_s = G:equals(gravitationalConstantInM3PerKgS2 * (m^3 / (kg * s^2)))
+local G = G or var'G'
+local G_from_kg_m_s = G:eq(gravitationalConstantInM3PerKgS2 * (m^3 / (kg * s^2)))
 printbr(G_from_kg_m_s)
-local kg_from_m = G_from_kg_m_s:subst(G:equals(1)):subst(s_from_m):solve(kg) 
+local kg_from_m = G_from_kg_m_s:subst(G:eq(1)):subst(s_from_m):solve(kg) 
 printbr(kg_from_m)
 
 function process(bodies)

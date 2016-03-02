@@ -3,7 +3,7 @@
 
     File: polar_geodesic.lua 
 
-    Copyright (C) 2000-2013 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2000-2016 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,20 +22,19 @@
 --]]
 
 local symmath = require 'symmath'
-local Tensor = require 'symmath.Tensor'
-symmath.tostring = require 'symmath.tostring.LaTeX'
-
 local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = MathJax 
 print(MathJax.header)
 
-local function printbr(...)
-	print(...)
-	print'<br>'
-end
+local function printbr(...) print(...) print'<br>' end
+
+local Tensor = symmath.Tensor
+local vars = symmath.vars
+local var = symmath.var
 
 --this is a halfway step between pure symmath code and symmath+tensor code
 
-local x, y, z, r, phi, theta = symmath.vars('x', 'y', 'z', 'r', '\\phi', '\\theta')
+local x,y,z,r,phi,theta = vars('x','y','z','r','\\phi','\\theta')
 
 local flatCoords = {x,y,z}
 local curvedCoords = {theta, phi}
@@ -49,7 +48,7 @@ local eta = Tensor('_IJ', {1,0,0},{0,1,0},{0,0,1})
 Tensor.metric(eta, eta, 'I')
 
 printbr'flat metric:'
-printbr('\\(\\eta_{IJ} = '..eta'_IJ'..'\\)')
+printbr(var'\\eta''_IJ':eq(eta'_IJ'()))
 printbr()
 
 local u = Tensor('^I', 
@@ -57,46 +56,47 @@ local u = Tensor('^I',
 	r * symmath.sin(theta) * symmath.sin(phi),
 	r * symmath.cos(theta))
 printbr'coordinate chart:'
-printbr('\\(u^I = '..u'^I'..'\\)')
+printbr(var'u''^I':eq(u'^I'()))
 printbr()
 
-printbr('\\({{u^I}_{,u}} = '..u'^I_,u'..'\\)')
+printbr(var'u''^I_,u':eq(u'^I_,u'()))
 
 local e = Tensor'_u^I'
-e['_u^I'] = u'^I_,u':simplify()
+e['_u^I'] = u'^I_,u'()	-- TODO fixme
+e = Tensor('_a^I', function(a,I) return u'^I_,a'()[I][a] end)
 printbr'vielbein:'
-printbr('\\({e_u}^I = '..e'_u^I'..'\\)')
+printbr(var'e''_u^I':eq(e'_u^I'()))
 printbr()
 
-local g = (e'_u^I' * e'_v^J' * eta'_IJ'):simplify()
+local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 printbr'coordinate metric:'
-printbr('\\(g_{uv} = '..g'_uv'..'\\)')
+printbr(var'g''_uv':eq(g'_uv'()))
 printbr()
 
 -- TODO factoring functions and trig identities
 Tensor.metric(g)
 printbr'coordinate metric inverse:'
-printbr('\\(g^{uv} = '..g'^uv'..'\\)')
+printbr(var'g''^uv':eq(g'^uv'()))
 
-local dg = g'_uv,w':simplify()
-printbr('\\(\\partial_w g_{uv} = '..dg'_uvw'..'\\)')
+local dg = g'_uv,w'()
+printbr(var'g''_uv,w':eq(dg'_uvw'()))
 printbr()
 
-local Gamma = ((dg'_uvw' + dg'_uwv' - dg'_vwu')/2):simplify()
+local Gamma = ((dg'_uvw' + dg'_uwv' - dg'_vwu')/2)()
 printbr'connection coefficients:'
-printbr('\\(\\Gamma_{uvw} = '..Gamma'_uvw'..'\\)')
+printbr(var'\\Gamma''_uvw':eq(Gamma'_uvw'()))
 printbr()
 
-Gamma = Gamma'^u_vw'
-printbr('\\({\\Gamma^u}_{vw} = '..Gamma'^u_vw'..'\\)')
+Gamma = Gamma'^u_vw'()
+printbr(var'\\Gamma''^u_vw':eq(Gamma'^u_vw'()))
 printbr()
 
 -- now comes the geodesic equation: d^2[x^i]/dt^2 = -conn^i_jk dx^j_dt dx^k/dt
-local dx = Tensor('^u', function(u) return symmath.var('\\dot{'..curvedCoords[u].name..'}') end)
-local d2x = Tensor('^u', function(u) return symmath.var('\\ddot{'..curvedCoords[u].name..'}') end)
+local dx = Tensor('^u', function(u) return var('\\dot{'..curvedCoords[u].name..'}') end)
+local d2x = Tensor('^u', function(u) return var('\\ddot{'..curvedCoords[u].name..'}') end)
 printbr'geodesic:'
 -- TODO unravel equaliy, or print individual assignments
-printbr('\\('..((d2x'^u' + Gamma'^u_vw' * dx'^v' * dx'^w'):equals(Tensor('^u',0,0))):simplify()..'\\)')
+printbr(((d2x'^u' + Gamma'^u_vw' * dx'^v' * dx'^w'):eq(Tensor('^u',0,0)))())
 printbr()
 
 print(MathJax.footer)

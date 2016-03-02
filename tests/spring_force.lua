@@ -6,6 +6,11 @@ hamiltonian = (|x_1 - x_2| - restLength)
 x'' = -(k/m)(x-s) = 
 --]]
 
+local symmath = require 'symmath'
+local MathJax = require 'symmath.tostring.MathJax'
+symmath.tostring = MathJax
+print(MathJax.header)
+
 local dim = 1	-- or 2 or 3 or whatever
 local numParticlesToCreate = 3
 local dt = .1
@@ -18,11 +23,6 @@ else
 	local createVectorClass = require 'vec.create'
 	vec = createVectorClass(dim)	-- nothing extra
 end
-
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
 
 local Particle = class()
 
