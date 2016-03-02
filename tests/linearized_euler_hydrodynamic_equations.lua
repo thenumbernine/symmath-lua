@@ -22,38 +22,36 @@
 --]]
 
 local symmath = require 'symmath'
-local vars = symmath.vars
-local var = symmath.var
-local add = symmath.addOp	-- why the 'Op' suffix anyways?
-local Matrix = symmath.Matrix
-
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 MathJax.usePartialLHSForDerivative = true
 
+local vars = symmath.vars
+local var = symmath.var
+local addOp = symmath.addOp	-- why the 'Op' suffix anyways?
+local Matrix = symmath.Matrix
+
 print(MathJax.header)
 
-local function printbr(...)
-	print(...)
-	print('<br>')
-end
+local function printbr(...) print(...) print'<br>' end
 
 local function sum(t)
 	if #t == 1 then return t[1] end
-	return add(table.unpack(t))
+	return addOp(table.unpack(t))
 end
 
 -- dimension variables
 local t, x, y, z = vars('t', 'x', 'y', 'z')
+local coords = {t, x, y, z}
 
 -- primitive variables
-local rho = var('\\rho', {t,x,y,z})	-- density
+local rho = var('\\rho', coords)	-- density
 
-local ux = var('u_x', {t,x,y,z})	-- velocity
-local uy = var('u_y', {t,x,y,z})
-local uz = var('u_z', {t,x,y,z})
+local ux = var('u_x', coords)	-- velocity
+local uy = var('u_y', coords)
+local uz = var('u_z', coords)
 
-local e = var('e', {t,x,y,z})		-- total specific energy 
+local e = var('e', coords)		-- total specific energy 
 
 -- dimension related
 for dim=1,3 do
@@ -63,10 +61,10 @@ for dim=1,3 do
 	us = us:sub(1,dim)
 	local xs = table{x,y,z}
 	xs = xs:sub(1,dim)
-	local uSq = dim == 1 and ux^2 or add(us:map(function(u) return u^2 end):unpack())
+	local uSq = dim == 1 and ux^2 or addOp(us:map(function(u) return u^2 end):unpack())
 
 	-- state variable
-	local qs = range(dim+2):map(function(i) return var('q_'..i, {t,x,y,z}) end)
+	local qs = range(dim+2):map(function(i) return var('q_'..i, coords) end)
 	local q1, q2, q3, q4, q5 = table.unpack(qs)
 
 	-- other variables
@@ -82,18 +80,18 @@ for dim=1,3 do
 	local continuityEqn = (rho:diff(t) + 
 		sum(range(dim):map(function(j)
 			return (rho * us[j]):diff(xs[j])
-		end))):equals(0)
+		end))):eq(0)
 
 	local momentumEqns = range(dim):map(function(i)
 		return ((rho * us[i]):diff(t) + sum(range(dim):map(function(j)
 			return (rho * us[i] * us[j] + (i==j and P or 0)):diff(xs[j])
-		end))):equals(0)
+		end))):eq(0)
 	end)
 
 	local energyEqn = ((rho * e):diff(t) +
 		sum(range(dim):map(function(j)
 			return ((E + P) * us[j]):diff(xs[j])
-		end))):equals(0)
+		end))):eq(0)
 
 	local eqns = table{continuityEqn}:append(momentumEqns):append{energyEqn}
 
@@ -154,12 +152,12 @@ for dim=1,3 do
 	matrixLHS = dq_dts + matrixLHS
 	matrixRHS = dq_dts + matrixRHS
 
-	matrixRHS = matrixRHS:simplify() 	-- simplify the rhs only -- keep the dts and dxs separate
-	printbr(matrixLHS:equals(matrixRHS))
+	matrixRHS = matrixRHS() 	-- simplify the rhs only -- keep the dts and dxs separate
+	printbr(matrixLHS:eq(matrixRHS))
 
 	printbr('eigenvalues of ${{\\partial F_x}\\over{\\partial q}}$')
 	local lambda = var'\\lambda'
-	local det = (dFk_dqs[1] - Matrix.identity(#qs) * lambda):determinant():equals(0)
+	local det = (dFk_dqs[1] - Matrix.identity(#qs) * lambda):determinant():eq(0)
 	printbr(det)
 	printbr(det:solve(lambda))
 end
