@@ -54,7 +54,6 @@ end
 
 local function simpson(f, x, x0, x1, n)
 	n = math.floor((n or 200) / 2) * 2
-	f = f:compile{x}
 	local dx = (x1 - x0) / n
 	local y = dx/3 * (f(x0) + 4 * f(x0+dx))
 	for i=2,n-1,2 do
@@ -68,7 +67,7 @@ end
 local symmath = require 'symmath'
 local x = symmath.var'x'		-- x-variable
 local f = x^2					-- symbolic function
-local df = f:diff(x):simplify()	-- symbolic function derivative
+local df = f:diff(x)()			-- symbolic function derivative
 local t0 = 0					-- start time
 local t1 = 1					-- end time
 local n = 100					-- number of iterations
@@ -91,8 +90,9 @@ for _,method in ipairs{
 		local diffX = _x - correctX
 		local normDiff = norm(diffX)
 		err = err + normDiff
+print(t,_x,correctX,err,'<br>')
 		
-		_x = method(_f, _x, x+dt, n)
+		_x = method(_f, _x, _x+dt, n)
 		t = t + dt
 	end
 end

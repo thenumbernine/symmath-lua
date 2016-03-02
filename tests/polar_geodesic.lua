@@ -22,56 +22,57 @@
 --]]
 
 local symmath = require 'symmath'
-local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-
 print(MathJax.header)
 
-local x, y, r, phi = symmath.vars('x', 'y', 'r', '\\phi')
-Tensor.coords{
-	{ variables = {r, phi} },
-	{ variables = {x, y}, symbols = 'IJKLMN', metric = {{1,0}, {0,1}} }
-}
+local function printbr(...) print(...) print'<br>' end
 
-local function printbr(...)
-	print(...)
-	print'<br>'
-end
+local Tensor = symmath.Tensor
+local var = symmath.var
+local vars = symmath.vars
+
+local x,y,r,phi = vars('x','y','r','\\phi')
+Tensor.coords{
+	{variables = {r,phi}},
+	{variables = {x,y}, symbols = 'IJKLMN', metric = {{1,0},{0,1}} }
+}
 
 local eta = Tensor('_IJ', {1,0}, {0,1})
 printbr'flat metric:'
-printbr([[$\eta_{IJ} = $]]..eta'_IJ')
+printbr(var'\\eta''_IJ':eq(eta'_IJ'()))
 printbr()
 
 local u = Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi))
 printbr'coordinate chart:'
-printbr([[$u^I = $]]..u'^I')
+printbr(var'u''^I':eq(u'^I'()))
 printbr()
 
 local e = Tensor'_u^I'
-e['_u^I'] = u'^I_,u':simplify()		-- use assignment to correctly arrange indexes. TODO have a ctor to do this?
+e['_u^I'] = u'^I_,u'()	-- TODO fixme
+-- until then...
+e = Tensor('_a^I', function(a,I) return u'^I_,a'()[I][a] end)
 printbr'vielbein:'
-printbr([[${e_u}^I = \partial_u u^I = $]]..u'^I_,u'..[[$ = $]]..e'_u^I')
+printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(u'^I_,u'()):eq(e'_u^I'()))
 printbr()
 
-local g = (e'_u^I' * e'_v^J' * eta'_IJ'):simplify()
+local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 printbr'coordinate metric:'
-printbr([[$g_{uv} = {e_u}^I {e_v}^J \eta_{IJ} = $]]..g'_uv')
+printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'):eq(g'_uv'()))
 printbr()
 Tensor.metric(g)
 
-local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2):simplify()
+local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
 printbr'connection:'
-printbr([[$\Gamma_{abc} = $]]..Gamma)
-printbr([[${\Gamma^a}_{bc} = $]]..Gamma'^a_bc')
+printbr(var'\\Gamma''_abc':eq(Gamma'_abc'()))
+printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 printbr()
 
-local dx = Tensor('^u', symmath.var'\\dot{r}', symmath.var'\\dot{\\phi}')
-local d2x = Tensor('^u', symmath.var'\\ddot{r}', symmath.var'\\ddot{\\phi}')
+local dx = Tensor('^u', var'\\dot{r}', var'\\dot{\\phi}')
+local d2x = Tensor('^u', var'\\ddot{r}', var'\\ddot{\\phi}')
 printbr'geodesic:'
 -- TODO unravel equaliy, or print individual assignments
-printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):equals(Tensor('^u',0,0))):simplify())
+printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):eq(Tensor('^u',0,0)))())
 printbr()
 
 print(MathJax.footer)

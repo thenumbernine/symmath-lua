@@ -24,30 +24,18 @@
 
 local table = require 'ext.table'
 local symmath = require 'symmath'
-local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-
-local function printbr(...)
-	print(...)
-	print('<br>')
-end
-
 print(MathJax.header)
 
+local function printbr(...) print(...) print'<br>' end
+
+local Tensor = symmath.Tensor
+local vars = symmath.vars
+local var = symmath.var
+
 -- coordinates
-local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
-local r = symmath.var('r', {x,y,z}) 	-- r = (x^2 + y^2 + z^2)^.5
-
--- mass is constant
-local R = symmath.var('R')
-
--- algebraic
---r = (x^2 + y^2 + z^2)^.5
--- deferred:
-local r = symmath.Variable('r', spatialCoords)
---]=]
-
+local t,x,y,z = vars('t','x','y','z')
 
 local dim = 4	-- 2, 3, or 4
 
@@ -60,9 +48,21 @@ Tensor.coords{
 	{variables = spatialCoords, symbols = 'ijklmn'},
 }
 
+
+local r = var('r', spatialCoords) 	-- r = (x^2 + y^2 + z^2)^.5
+
+-- mass is constant
+local R = var'R'
+
+-- algebraic
+--r = (x^2 + y^2 + z^2)^.5
+-- deferred:
+local r = var('r', spatialCoords)
+--]=]
+
 -- scale factor
-local mu = symmath.var('\\mu')
-local mu_def = mu:equals(R / (r^2 * (r - R)))
+local mu = var'\\mu'
+local mu_def = mu:eq(R / (r^2 * (r - R)))
 
 -- spatial metric
 
@@ -75,10 +75,10 @@ local gamma = Tensor('_ij', function(i,j)
 		result = mu_def:rhs() * xi * xj
 	end
 	return result
-end):simplify()
+end)()
 
 printbr'spatial metric:'
-printbr('$\\gamma_{ij} = $'..gamma)
+printbr(var'\\gamma''_ij':eq(gamma'_ij'()))
 
 local rSq_def = dim == 2 and x^2 or symmath.addOp(spatialCoords:map(function(xi) return xi^2 end):unpack())
 local gammaInv = Tensor('^ij', function(i,j)
@@ -91,75 +91,75 @@ local gammaInv = Tensor('^ij', function(i,j)
 		result = -mu_def:rhs() * xi * xj
 	end
 	return result / (1 + mu_def:rhs() * r^2)
-end):simplify()
+end)()
 
 --local gammaInv = Tensor{indexes='^ij', values=symmath.Matrix.inverse(gamma)}
 printbr'spatial metric inverse:'
-printbr('$\\gamma^{ij} = $'..gammaInv)
+printbr(var'\\gamma''^ij':eq(gammaInv'^ij'()))
 
 local delta3 = (gamma'_ik' * gammaInv'^kj')
 	:replace(r^2, rSq_def)
 	:replace(r^3, r*rSq_def)
 	:simplify()
-printbr('$\\gamma_{ik} \\gamma^{kj} = $'..delta3)
+printbr((var'\\gamma''_ik' * var'\\gamma''^kj'):eq(delta3'_i^j'()))
 
 -- schwarzschild metric in cartesian coordinates
 local g = Tensor('_uv', function(u,v)
 	if u == 1 and v == 1 then
 		return -1 + R/r
 	elseif u > 1 and v > 1 then
-		return gamma[{u-1,v-1}]
+		return gamma[u-1][v-1]
 	else
 		return 0
 	end
 end)
 
 printbr'metric:'
-printbr('$g_{uv} = $'..g)
+printbr(var'g''_uv':eq(g'_uv'()))
 
 local gInv = Tensor('^uv', function(u,v)
 	if u == 1 and v == 1 then
-		return 1/g[{1,1}]
+		return 1/g[1][1]
 	elseif u > 1 and v > 1 then
-		return gammaInv[{u-1,v-1}]
+		return gammaInv[u-1][v-1]
 	else
 		return 0
 	end
 end)
 
 printbr'metric inverse:'
-printbr('$g^{uv} = $'..gInv)
+printbr(var'g''^uv':eq(gInv'^uv'()))
 
 local delta4 = (g'_ua' * gInv'^av')
 	:replace(r^2, rSq_def)
 	:replace(r^3, r * rSq_def)
 	:simplify()
-printbr('$g_{ua} g^{av} = $'..delta4)
+printbr((var'g''_ua'*var'g''^av'):eq(delta4'_u^v'()))
 
 Tensor.metric(g, gInv)
 
 -- metric partial
 -- assume dr/dt is zero
-local dg = g'_uv,w':simplify()
+local dg = g'_uv,w'()
 for _,xi in ipairs(spatialCoords) do
 	dg = dg:replace(r:diff(xi), xi/r)
 end
-dg = dg:simplify()
+dg = dg()
 printbr'metric partial derivatives:'
-printbr('$\\partial_w g_{uv} = $'..dg'_uvw')
+printbr(var'g''_uv,w':eq(dg'_uvw'()))
 
 -- Christoffel: G_abc = 1/2 (g_ab,c + g_ac,b - g_bc,a) 
-local Gamma = ((dg'_abc' + dg'_acb' - dg'_bca') / 2):simplify()
+local Gamma = ((dg'_abc' + dg'_acb' - dg'_bca') / 2)()
 printbr'1st kind Christoffel:'
-printbr('$\\Gamma_{uvw} = $'..Gamma'_uvw')
+printbr(var'\\Gamma''_uvw':eq(Gamma'_uvw'()))
 
 -- Christoffel: G^a_bc = g^ae G_ebc
-Gamma = Gamma'^u_vw'	-- change underlying storage (not necessary, but saves future calculations)
+Gamma = Gamma'^u_vw'()	-- change underlying storage (not necessary, but saves future calculations)
 	--:replace(x^2, r^2-y^2-z^2):simplify()
 	--:replace(y^2, r^2-x^2-z^2):simplify()
 	--:replace(z^2, r^2-x^2-y^2):simplify()
 printbr'2nd kind Christoffel:'
-printbr('${\\Gamma^u}_{vw} = $'..Gamma'^u_vw')
+printbr(var'\\Gamma''^u_vw':eq(Gamma'^u_vw'()))
 
 --[[
 -1/alpha^2 = g^tt
@@ -169,31 +169,33 @@ local alpha = symmath.sqrt(-1/gInv[1][1])
 local n = Tensor('_u', function(u)
 	return u == 1 and alpha or 0
 end)
-printbr('$n_u = $'..n'_u')	--'_u')
+printbr(var'n''_u':eq(n'_u'()))	--'_u')
 
 -- P is really just the 4D extension of gamma ...
 -- it'd be great if I could just define gamma in 4D then just reference the 3D components of it when it needed to be treated like a 3D tensor ...
-local P = (g'_uv' + n'_u' * n'_v'):simplify()
-printbr('$P_{uv} = $'..P'_uv')
+local P = (g'_uv' + n'_u' * n'_v')()
+printbr(var'P''_uv':eq(P'_uv'()))
 
-local dn = Tensor('_uv')
+local dn = Tensor'_uv'
 -- simplification loop?
 --dn = (dn'_uv' - Gamma'^w_vu' * n'_w'):simplify()
 -- looks like chaining arithmetic operators between tensor +- and * causes problems ... 
 -- ... probably because we're trying to derefernce an uevaluated multiplication ... so it has no internal structure yet ...
 -- ... so should (a) tensor algebra be immediately simplified, or
 --				(b) dereferences require simplification?
-dn['_uv'] = (n'_v,u' - (Gamma'^w_vu' * n'_w'):simplify()'_uv'):simplify()
+-- also looks like __newindex is broken
+dn['_uv'] = (n'_v,u' - (Gamma'^w_vu' * n'_w')()'_uv')()
 for _,xi in ipairs(spatialCoords) do
-	dn = dn:replace(r:diff(xi), xi/r):simplify()
+	dn = dn:replace(r:diff(xi), xi/r)()
 end
-printbr('$\\nabla_u n_v = $'..dn'_uv')
+printbr(var'dn':eq(dn))
+printbr('$\\nabla_u$'..(var'n''_uv'):eq(dn'_uv'()))
 
 -- TODO add support for (ab) and [ab] indexes
-local K = (P'^a_u' * P'^b_v' * ((dn'_ab' + dn'_ba')/2)):simplify() 
-printbr('$K_{uv} = $'..K'_uv')
+local K = (P'^a_u' * P'^b_v' * ((dn'_ab' + dn'_ba')/2))() 
+printbr(var'K''_uv':eq(K'_uv'()))
 
-do return end
+os.exit()
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
 local diffx = Tensor('^u', function(u) return symmath.var('\\dot{x}^'..coords[u].name, coords) end)
