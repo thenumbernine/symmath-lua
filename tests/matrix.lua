@@ -41,7 +41,7 @@ notebook[[
 =Array(1,2,3)
 
 =Array(1,2) + Array(3,4)
-=(Array(1,2) + Array(3,4)):simplify()
+=(Array(1,2) + Array(3,4))()
 
 -- numeric example
 
@@ -66,37 +66,37 @@ a, b, c, d = vars('a','b','c','d')
 theta = var'\\theta'
 m = Matrix({symmath.cos(theta), -symmath.sin(theta)}, {symmath.sin(theta), symmath.cos(theta)})
 mInv = m:inverse()
-mInv = mInv:replace(symmath.sin(theta)^2, 1-symmath.cos(theta)^2):simplify()	-- almost there ... still have to trig simplify this ...
+mInv = mInv:replace(symmath.sin(theta)^2, 1-symmath.cos(theta)^2)()	-- almost there ... still have to trig simplify this ...
 
 =m + mInv
-=(m + mInv):simplify()
+=(m + mInv)()
 =m * mInv
-=(m * mInv):simplify()
+=(m * mInv)()
 =m*m
-=(m*m):simplify()
+=(m*m)()
 
 m1 = symmath.Matrix({1,a},{0,1})
 m2 = symmath.Matrix({1,0},{b,1})
 =(m1)
 =(m2)
-=(m1*m2):equals((m1*m2):simplify())
-=(m2*m1):equals((m2*m1):simplify())
-=m1:equals(m2)
+=(m1*m2):eq((m1*m2)())
+=(m2*m1):eq((m2*m1)())
+=m1:eq(m2)
 =m1==m2
-=(m1*m2):equals(m2*m1)
+=(m1*m2):eq(m2*m1)
 =m1*m2==m2*m1
-=(m1*m2):equals(m1*m2)
+=(m1*m2):eq(m1*m2)
 =m1*m2==m1*m2
-=(m1*m2):equals(m2*m1):simplify()
-=(m1*m2):simplify()==(m2*m1):simplify()
+=(m1*m2):eq(m2*m1)()
+=(m1*m2)()==(m2*m1)()
 
 t = var't'
 =(Matrix({a},{b}) + Matrix({c},{d})) / t
-=((Matrix({a},{b}) + Matrix({c},{d})) / t):simplify()
+=((Matrix({a},{b}) + Matrix({c},{d})) / t)()
 
 -- linear system solver
 
 =Matrix({1,2},{3,4}):inverse(Matrix({5},{6}))
-=(Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6}))):simplify()
+=(Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))()
 ]]
 

@@ -24,19 +24,19 @@
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-local Tensor = symmath.Tensor
-require 'symmath.tostring.LaTeX'.usePartialLHSForDerivative = true
-
-local function printbr(...)
-	print(...)
-	print('<br>')
-end
-
 print(MathJax.header)
 
+require 'symmath.tostring.LaTeX'.usePartialLHSForDerivative = true
+
+local function printbr(...) print(...) print'<br>' end
+
+local Tensor = symmath.Tensor
+local var = symmath.var
+local vars = symmath.vars
+
 --[[ polar
-r = symmath.Variable('r')
-phi = symmath.Variable('phi')
+r = var('r')
+phi = var('phi')
 srcCoords = {'x', 'y'}
 coords = {'r', 'phi'}
 assign('metric_x = r * symmath.cos(phi)')
@@ -44,9 +44,9 @@ assign('metric_y = r * symmath.sin(phi)')
 --]]
 
 --[[ spherical
-r = symmath.Variable('r')
-theta = symmath.Variable('theta')
-phi = symmath.Variable('phi')
+r = var('r')
+theta = var('theta')
+phi = var('phi')
 srcCoords = {'x', 'y', 'z'}
 coords = {'r', 'theta', 'phi'}
 assign('metric_x = r * symmath.cos(phi) * symmath.sin(theta)')
@@ -89,12 +89,12 @@ end
 --]]
 
 --[[ explicitly provided metric
-t = symmath.Variable('t')
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-z = symmath.Variable('z')
+t = var('t')
+x = var('x')
+y = var('y')
+z = var('z')
 coords = {'t', 'x', 'y', 'z'}
-Phi = symmath.Variable('Phi', {t,x,y,z})
+Phi = var('Phi', {t,x,y,z})
 --]]
 
 --[[
@@ -130,30 +130,30 @@ end
 --]]
 
 -- [[ ADM
-local t, x, y, z = symmath.vars('t', 'x', 'y', 'z')
+local t,x,y,z = vars('t','x','y','z')
 local spatialCoords = {x,y,z}
-local coords = {t, x, y, z}
+local coords = {t,x,y,z}
 Tensor.coords{
 	{variables = coords},
 	{variables = spatialCoords, symbols='ijklmn'},
 }
-local alpha = symmath.var('\\alpha', coords)
-local beta = Tensor('^i', function(i) return symmath.var('\\beta^'..spatialCoords[i].name, coords) end)
-local gamma = Tensor('_ij', function(i,j) return symmath.var('\\gamma_{'..spatialCoords[i].name..spatialCoords[j].name..'}', coords) end)
-local gammaUU = Tensor('^ij', function(i,j) return symmath.var('\\gamma^{'..spatialCoords[i].name..spatialCoords[j].name..'}', coords) end)
+local alpha = var('\\alpha', coords)
+local beta = Tensor('^i', function(i) return var('\\beta^'..spatialCoords[i].name, coords) end)
+local gamma = Tensor('_ij', function(i,j) return var('\\gamma_{'..spatialCoords[i].name..spatialCoords[j].name..'}', coords) end)
+local gammaUU = Tensor('^ij', function(i,j) return var('\\gamma^{'..spatialCoords[i].name..spatialCoords[j].name..'}', coords) end)
 
---local betaL = Tensor('_i', function(i) return symmath.var('\\beta_'..spatialCoords[i].name, coords) end)
+--local betaL = Tensor('_i', function(i) return var('\\beta_'..spatialCoords[i].name, coords) end)
 --local betaL_def = Tensor('_i', function(i) return betaL[i]:equals(
-local betaSq = symmath.var('\\beta^2')
+local betaSq = var'\\beta^2'
 --local betaSq_def = betaSq:equals(beta'^i' * betaL'_i')
 
 Tensor.metric(gamma, gammaUU, 'i')
 --local gammaUU = Tensor.metric(gamma, nil, 'i').metricInverse
 
 printbr(alpha)
-printbr('$\\beta^i = $'..beta'^i')
-printbr('$\\gamma_{ij} = $'..gamma'_ij')
-printbr('$\\gamma^{ij} = $'..gammaUU'^ij')
+printbr(var'\\beta''^i':eq(beta'^i'()))
+printbr(var'\\gamma''_ij':eq(gamma'_ij'()))
+printbr(var'\\gamma''^ij':eq(gammaUU'^ij'()))
 
 -- metric
 -- TODO subtensor expansion.  useful here and in the ADM flux ... and a lot of other places
@@ -162,13 +162,13 @@ local g = Tensor('_uv', function(u,v)
 		if v == 1 then
 			return (-alpha^2 + betaSq)
 		else
-			return beta'_i'[v-1]
+			return beta'_i'()[v-1]
 		end
 	else
 		if v == 1 then
-			return beta'_i'[u-1]
+			return beta'_i'()[u-1]
 		else
-			return gamma'_ij'[u-1][v-1]
+			return gamma'_ij'()[u-1][v-1]
 		end
 	end
 end)
@@ -189,18 +189,17 @@ local gUU = Tensor('^uv', function(u,v)
 end)
 Tensor.metric(g, gUU)
 
-printbr('$g_{uv} = $'..g'_uv')
-printbr('$g^{uv} = $'..gUU'^uv')
+printbr(var'g''_uv':eq(g'_uv'()))
+printbr(var'g''^uv':eq(gUU'^uv'()))
 
-local Conn = Tensor('_abc')
-Conn['_abc'] = (g'_ab,c' + g'_ac,b' - g'_bc,a'):simplify()
-printbr('$\\Gamma_{abc} = $'..Conn'_abc')
-Conn = Conn'^a_bc'
-printbr('${\\Gamma^a}_{bc} = $'..Conn'^a_bc')
+local Gamma = Tensor'_abc'
+Gamma['_abc'] = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
+printbr(var'\\Gamma''_abc':eq(Gamma'_abc'()))
+Gamma = Gamma'^a_bc'()
+printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
-os.exit()
-local Riemann = Tensor('^a_bcd')
-Riemann['^a_bcd'] = (Conn'^a_bd,c' - Conn'^a_bc,d' + Conn'^a_ec' * Conn'^e_bd' - Conn'^a_ed' * Conn'^e_bc'):simplify()
+local Riemann = Tensor'^a_bcd'
+Riemann['^a_bcd'] = (Gamma'^a_bd,c' - Gamma'^a_bc,d' + Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc')()
 printbr('${R^a}_{bcd} = $'..Riemann'^a_bcd')
 
 print(MathJax.footer)

@@ -21,19 +21,16 @@
 
 --]]
 
-require 'ext'
+local table = require 'ext.table'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-
-local function printbr(...)
-	print(...)
-	print('<br>')
-end
-
--- header 
-
 print(MathJax.header)
+
+local function printbr(...) print(...) print'<br>' end
+
+local var = symmath.var
+local vars = symmath.vars
 
 -- functions
 
@@ -52,23 +49,15 @@ end
 
 -- variables
 
-do
-	local isGreek = ('rho gamma mu'):split('%s+'):map(function(v) return true,v end)
-	local varNames = 'x y z t rho vx vy vz p P Z E Bx By Bz gamma mu c cs cf ca'
-	printbr('variables:', varNames)
-	for _,var in ipairs(varNames:split('%s+')) do
-		local varname = var
-		-- LaTeX greek symbols
-		if isGreek[varname] then varname = '\\' .. varname end
-		-- subscript
-		if #varname > 1 and varname:match('[xyz]$') then varname = varname:sub(1,-2)..'_'..varname:sub(-1) end
-		_G[var] = symmath.Variable(varname)
-	end
-	for _,var in ipairs(varNames:split('%s+')) do
-		if not ({x=1,y=1,z=1,t=1})[var] then
-			_G[var]:depends(x,y,z,t)
-		end
-	end
+local x,y,z,t = vars('x','y','z','t')
+local rho = var'\\rho'
+local vx,vy,vz = vars('v_x','v_y','v_z')
+local p,P,Z,E = vars('p','P','Z','E')
+local Bx,By,Bz = vars('B_x','B_y','B_z')
+local gamma,mu = vars('\\gamma','\\mu')
+local c,cs,cf,ca = vars('c','cs','cf','ca')
+for _,v in ipairs{rho,vx,vy,vz,p,P,Z,E,Bx,By,Bz,c,cs,cf,ca} do
+	v:depends(x,y,z,t)
 end
 
 local vs = table{vx, vy, vz}
@@ -82,66 +71,66 @@ local vSq = sum(function(i) return vs[i]^2 end, 1, 3)
 
 -- relations
 
-printbr('relations')
+printbr'relations'
 
-local Z_from_E_B_rho_mu = Z:equals(E + 1 / (2 * rho * mu) * BSq)
+local Z_from_E_B_rho_mu = Z:eq(E + 1 / (2 * rho * mu) * BSq)
 printbr(Z_from_E_B_rho_mu)
 
-local P_from_p_B_mu = P:equals(p + 1 / (2 * mu) * BSq)
+local P_from_p_B_mu = P:eq(p + 1 / (2 * mu) * BSq)
 printbr(P_from_p_B_mu)
 
-local p_from_E_rho_v_gamma = p:equals((gamma - 1) * rho * (E - 1/symmath.Constant(2) * vSq))
+local p_from_E_rho_v_gamma = p:eq((gamma - 1) * rho * (E - 1/symmath.Constant(2) * vSq))
 printbr(p_from_E_rho_v_gamma)
 
-local cSq_from_p_rho_gamma = (c^2):equals(gamma * p / rho)
+local cSq_from_p_rho_gamma = (c^2):eq(gamma * p / rho)
 printbr(cSq_from_p_rho_gamma)
 
 -- equations
 
 local continuityEqn = (symmath.diff(rho, t) + sum(function(j) 
-	return symmath.diff(rho*vs[j], xs[j])
-end,1,3)):equals(0)
+	return (rho*vs[j]):diff(xs[j])
+end,1,3)):eq(0)
 
 printbr()
-printbr('continuity')
+printbr'continuity'
 printbr(continuityEqn)
 
 local momentumEqns = range(3):map(function(i)
-	return (symmath.diff(rho * vs[i], t) + sum(function(j)
-				return symmath.diff(rho * vs[i] * vs[j] - 1/mu * Bs[i] * Bs[j], xs[j])
+	return ((rho * vs[i]):diff(t) + sum(function(j)
+				return (rho * vs[i] * vs[j] - 1/mu * Bs[i] * Bs[j]):diff(xs[j])
 			end, 1,3)
-			+ symmath.diff(P, xs[i])
-		):equals(
+			+ P:diff(xs[i])
+		):eq(
 			-1/mu * Bs[i] * divB)
 end)
 
 printbr()
-printbr('momentum')
+printbr'momentum'
 momentumEqns:map(function(eqn) printbr(eqn) end)
 
 local magneticFieldEqns = range(3):map(function(i)
 	return (symmath.diff(Bs[i], t) + sum(function(j)
 				return symmath.diff(vs[j] * Bs[i] - vs[i] * Bs[j], xs[j])
 			end, 1,3)
-		):equals(-vs[i] * divB)
+		):eq(-vs[i] * divB)
 end)
 
 printbr()
-printbr('magnetic field')
+printbr'magnetic field'
 magneticFieldEqns:map(function(eqn) printbr(eqn) end)
 
 local energyTotalEqn = 
 	(symmath.diff(rho * Z, t) + sum(function(j)
 		return (rho * Z + p) * vs[j] - 1/mu * vDotB * Bs[j]
 	end, 1, 3)
-	):equals(-1/mu * vDotB * divB)
+	):eq(-1/mu * vDotB * divB)
 
 printbr()
-printbr('energy total')
+printbr'energy total'
 printbr(energyTotalEqn)
 
 -- expand system
-continuityEqn:simplify()
+continuityEqn = continuityEqn()
 
 
 local allEqns = table{
@@ -154,34 +143,32 @@ local allEqns = table{
 	magneticFieldEqns[3],
 	energyTotalEqn
 }
-allEqns[1] = allEqns[1]:simplify()
-allEqns[2] = allEqns[2]:simplify()
-allEqns[3] = allEqns[3]:simplify()
-allEqns[4] = allEqns[4]:simplify()
-allEqns[5] = allEqns[5]:simplify()
-allEqns[6] = allEqns[6]:simplify()
-allEqns[7] = allEqns[7]:simplify()
-allEqns[8] = allEqns[8]:simplify()
+allEqns[1] = allEqns[1]()
+allEqns[2] = allEqns[2]()
+allEqns[3] = allEqns[3]()
+allEqns[4] = allEqns[4]()
+allEqns[5] = allEqns[5]()
+allEqns[6] = allEqns[6]()
+allEqns[7] = allEqns[7]()
+allEqns[8] = allEqns[8]()
 
 printbr()
-printbr('all')
+printbr'all'
 allEqns:map(function(eqn) printbr(eqn) end)
 
 -- conservative variables
 
-print(MathJax.footer)
-
 --[[
 -- Eigenvectors from Trangenstein J. A. "A Numerical Solution of Hyperbolic Partial Differential Equations"
 
-local bx = symmath.Variable('bx')
-local by = symmath.Variable('by')
-local bz = symmath.Variable('bz')
-local sigma = symmath.Variable('sigma')
-local rho = symmath.Variable('rho')
-local cf = symmath.Variable('cf')
-local c = symmath.Variable('c')
-local cs = symmath.Variable('cs')
+local bx = var'bx'
+local by = var'by'
+local bz = var'bz'
+local sigma = var'sigma'
+local rho = var'rho'
+local cf = var'cf'
+local c = var'c'
+local cs = var'cs'
 
 local bSq = bx^2 + by^2 + bz^2
 
@@ -271,4 +258,4 @@ print(m)
 print(inverse(m))
 --]]
 
-
+print(MathJax.footer)
