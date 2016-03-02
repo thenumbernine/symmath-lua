@@ -37,17 +37,14 @@ printbr('warp bubble velocity = '..v)
 local f = var('f', {t,x,y,z})
 printbr('some function = '..f)
 
-local betaVar = var'\\beta'
 local beta = Tensor('^i', -v*f, 0, 0)
-printbr('shift '..betaVar'^i':eq(beta'^i'()))
+printbr('shift '..var'\\beta''^i':eq(beta'^i'()))
 
-local gammaVar = var'\\gamma'
 local gamma = Tensor('_ij', {1,0,0}, {0,1,0}, {0,0,1})
 printbr'spatial metric:'
-printbr(gammaVar'_ij':eq(gamma'_ij'()))
-printbr(gammaVar'^ij':eq(gamma'^ij'()))
+printbr(var'\\gamma''_ij':eq(gamma'_ij'()))
+printbr(var'\\gamma''^ij':eq(gamma'^ij'()))
 
-local gVar = var'g'
 local g = Tensor'_ab'
 --[[
 g['_tt'] = -alpha^2 + beta'^i' * beta'^j' * gamma'_ij'
@@ -69,14 +66,13 @@ g=g()
 Tensor.metric(g)
 
 printbr'4-metric:'
-printbr(gVar'_ab':eq(g'_ab'()))
-printbr(gVar'^ab':eq(g'^ab'()))
+printbr(var'g''_ab':eq(g'_ab'()))
+printbr(var'g''^ab':eq(g'^ab'()))
 
-local GammaVar = var'\\Gamma'
 local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
-printbr(GammaVar'_abc':eq(Gamma'_abc'()))
+printbr(var'\\Gamma''_abc':eq(Gamma'_abc'()))
 Gamma = Gamma'^a_bc'()
-printbr(GammaVar'^a_bc':eq(Gamma'^a_bc'()))
+printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
 local dx = Tensor('^u', function(u) return var('\\dot{x}^'..coords[u].name) end)
 local d2x = Tensor('^u', function(u) return var('\\ddot{x}^'..coords[u].name) end)

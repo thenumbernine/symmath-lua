@@ -241,9 +241,9 @@ local compileVars = table():append(varsFlattened):append{f}:append(gammaUsym)
 -- all variables combined into one vector
 local v = symmath.Matrix(varsFlattened:map(function(v) return {v} end):unpack())
 
-local VU = V'^i':simplify()
-local trK = K'^i_i':simplify()
-local trDk = D'_km^m':simplify()
+local VU = V'^i'()
+local trK = K'^i_i'()
+local trDk = D'_km^m'()
 --local delta3 = symmath.Matrix.identity(3)
 local delta3 = Tensor('^i_j', function(i,j) return i == j and 1 or 0 end)
 
@@ -252,7 +252,7 @@ local delta3 = Tensor('^i_j', function(i,j) return i == j and 1 or 0 end)
 
 -- assuming those gammas are of the spatial metric (and not the spacetime metric ...)
 local Gamma = Tensor('_ijk')
-Gamma['_ijk'] = (D'_kij' + D'_jik' - D'_ijk'):simplify()
+Gamma['_ijk'] = (D'_kij' + D'_jik' - D'_ijk')()
 printbr('$\\Gamma_{ijk} = $'..Gamma'_ijk')
 io.stdout:flush()
 
@@ -274,7 +274,7 @@ S['_ij'] = (
 		+ (A'^k' - 2 * D'_m^km') * (D'_ijk' + D'_jik') 
 		+ A'_i' * (V'_j' - D'_jk^k'/2)
 		+ A'_j' * (V'_i' - D'_ik^k'/2)
-	):simplify()
+	)()
 printbr('$S_{ij} = $'..S'_ij')
 --]]
 local S = range(6):map(function(ij)
@@ -306,7 +306,7 @@ P['_k'] = (
 		- 2 * K'_mn' * D'^mn_k'
 		+ 2 * K'_mk' * D'_a^am'
 --]]
-	):simplify()
+	)()
 printbr('$P_i = $'..P'_i')
 io.stdout:flush()
 --]=]
@@ -440,7 +440,7 @@ if outputCode then
 		io.write('{')
 		for jk,xjk in ipairs(symNames) do
 			local j,k = from6to3x3(jk)
-			print(ToStringLua((D[k][i][j] + D[j][i][k] - D[i][j][k]):simplify(), compileVars)..',')
+			print(ToStringLua((D[k][i][j] + D[j][i][k] - D[i][j][k])(), compileVars)..',')
 		end
 		io.write('},')
 	end
@@ -541,7 +541,7 @@ if outputCode then
 	for ij,xij in ipairs(symNames) do
 		local i,j = from6to3x3(ij)
 		print(xNames:map(function(xk,k)
-			return 'ADU'..I(k)..' * '..ToStringLua((D[i][j][k] + D[j][i][k]):simplify(), compileVars)
+			return 'ADU'..I(k)..' * '..ToStringLua((D[i][j][k] + D[j][i][k])(), compileVars)
 		end):concat(' + ')..',')
 	end
 	print('};')
@@ -574,7 +574,7 @@ if outputCode then
 			..' - Gamma11SymLL'..I(ij)
 			..' + ADDSymLL'..I(ij)
 			..' + '..ToStringLua(
-				(A[i] * (V[j] - D1L[j] / 2) + A[j] * (V[i] - D1L[i] / 2)):simplify(),
+				(A[i] * (V[j] - D1L[j] / 2) + A[j] * (V[i] - D1L[i] / 2))(),
 			table():append(compileVars):append(D1L))
 			..','
 		)
@@ -753,15 +753,15 @@ end
 
 if not outputCode and outputMethod ~= 'GraphViz' then
 	printbr('V and D constraints:')
-	printbr((V'_i':equals(D'_im^m' - D'^m_mi')):simplify())
+	printbr((V'_i':eq(D'_im^m' - D'^m_mi'))())
 	printbr()
 elseif outputCode then
 	print('-- V and D constraint')
-	local VDs = V'_i':equals(D'_im^m' - D'^m_mi')
-	print(ToStringLua(VDs:simplify(), compileVars))
+	local VDs = V'_i':eq(D'_im^m' - D'^m_mi')
+	print(ToStringLua(VDs(), compileVars))
 	print('-- V and D linear project')
 	-- linear factor out the V's and D's ... 
-	local VDZeros = (V'_i' - (D'_ij^j' - D'^j_ji')):simplify()
+	local VDZeros = (V'_i' - (D'_ij^j' - D'^j_ji'))()
 	for i=1,3 do
 		local a,b = symmath.factorLinearSystem({VDZeros[i]}, varsFlattened)
 		for j=1,#b do
@@ -769,8 +769,8 @@ elseif outputCode then
 		end
 		print('	-- '..xNames[i])
 		--print('local a = '..ToStringLua(a, compileVars))
-		print('local aDotA = '..ToStringLua((a * a:transpose()):simplify()[1][1], compileVars))
-		print('local vDotA = '..ToStringLua((a * v):simplify()[1][1], compileVars))
+		print('local aDotA = '..ToStringLua((a * a:transpose())()[1][1], compileVars))
+		print('local vDotA = '..ToStringLua((a * v)()[1][1], compileVars))
 		print('local v_a = vDotA / aDotA')
 		local v_a = codeVar('v_a')
 		-- because we're doing 3 linear projections of overlapping variables ... i'd say scale back by 1/3rd ... but chances are that won't even work.  newton would be best.
@@ -779,7 +779,7 @@ elseif outputCode then
 		print('local epsilon = 1/100')
 		for i,var in ipairs(varsFlattened) do
 			if a[1][i] ~= symmath.Constant(0) then
-				print('qs[i]['..i..'] = qs[i]['..i..'] + '..ToStringLua((-epsilon * v_a * a[1][i]):simplify(), compileVars:append{v_a, epsilon}))
+				print('qs[i]['..i..'] = qs[i]['..i..'] + '..ToStringLua((-epsilon * v_a * a[1][i])(), compileVars:append{v_a, epsilon}))
 			end
 		end
 	end
@@ -909,14 +909,14 @@ local ms = range(3):map(function(dir)
 
 	local QR = QL:inverse()
 	
-	-- TODO :equals(source terms) 
+	-- TODO :eq(source terms) 
 
 	if outputMethod == 'GraphViz' then
 		processGraph(QL,xNames[dir])
 		processGraph(QR,xNames[dir]..'inv')
 	elseif not outputCode then 
 		printbr('inverse eigenvectors in '..dir..' dir')
-		printbr((tostring((QL * v):equals(sourceTerms)):gsub('0','\\cdot')))
+		printbr((tostring((QL * v):eq(sourceTerms)):gsub('0','\\cdot')))
 		printbr()
 		printbr('eigenvectors in '..dir..' dir')
 		printbr((tostring(QR * v):gsub('0','\\cdot')))
@@ -924,14 +924,14 @@ local ms = range(3):map(function(dir)
 	else
 		-- generate the code for the linear function 
 		print('-- inverse eigenvectors in '..dir..' dir:')
-		print(processCode(ToStringLua((QL*v):simplify(), compileVars)))
+		print(processCode(ToStringLua((QL*v)(), compileVars)))
 		print('-- eigenvectors in '..dir..' dir:')
-		print(processCode(ToStringLua((QR*v):simplify(), compileVars)))
+		print(processCode(ToStringLua((QR*v)(), compileVars)))
 	end
 	io.stdout:flush()
 	
 	-- verify orthogonality
-	local delta = (QL * QR):simplify()
+	local delta = (QL * QR)()
 	for i=1,delta:dim()[1].value do
 		for j=1,delta:dim()[2].value do
 			local Constant = require 'symmath.Constant'

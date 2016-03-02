@@ -60,30 +60,28 @@ local pi = var'\\pi'
 -- schwarzschild metric in cartesian coordinates
 
 -- start with zero
-local gVar = var'g'
 local g = Tensor('_uv', table.unpack(symmath.Matrix.diagonal(
 	-1, a^2 / (1 - k * r^2), a^2 * r^2, a^2 * r^2 * symmath.sin(theta)^2
 )))
 printbr'metric:'
-printbr(gVar'_uv':eq(g'_uv'()))
+printbr(var'g''_uv':eq(g'_uv'()))
 
 Tensor.metric(g)
 
 -- metric inverse, assume diagonal
 printbr'metric inverse:'
-printbr(gVar'^uv':eq(g'^uv'()))
+printbr(var'g''^uv':eq(g'^uv'()))
 
 -- connections of 1st kind
-local GammaVar = var'\\Gamma'
 local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
 printbr'1st kind Christoffel:'
-printbr(GammaVar'_abc':eq(Gamma'_abc'()))
+printbr(var'\\Gamma''_abc':eq(Gamma'_abc'()))
 printbr()
 
 -- connections of 2nd kind
 Gamma = Gamma'^a_bc'()
 printbr'2nd kind Christoffel:'
-printbr(GammaVar'^a_bc':eq(Gamma'^a_bc'()))
+printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 printbr()
 
 local dx = Tensor('^u', function(u) return var('\\dot{'..coords[u].name..'}') end)
@@ -93,32 +91,29 @@ printbr'geodesic:'
 printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):eq(Tensor('^a',0,0,0,0)))())
 printbr()
 
-local RVar = var'R'
 local Riemann = (Gamma'^a_bd,c' - Gamma'^a_bc,d' + Gamma'^a_uc' * Gamma'^u_bd' - Gamma'^a_ud' * Gamma'^u_bc')()
 printbr'Riemann curvature tensor:'
 -- TODO trig simplification
 Riemann = Riemann:replace(symmath.cos(theta)^2, 1 - symmath.sin(theta)^2)
 -- also TODO the other thing that doesn't appear to work is factoring out negatives of the denominator for simplification 
-printbr(RVar'^a_bcd':eq(Riemann'^a_bcd'()))
+printbr(var'R''^a_bcd':eq(Riemann'^a_bcd'()))
 
 local Ricci = Riemann'^c_acd'()
 printbr'Ricci curvature tensor:'
-printbr(RVar'_ab':eq(Ricci'_ab'()))
+printbr(var'R''_ab':eq(Ricci'_ab'()))
 
 printbr'Gaussian curvature'
 local Gaussian = Ricci'^a_a'()
-printbr(RVar:eq(Gaussian))
+printbr(var'R':eq(Gaussian))
 printbr()
 
 -- matter stress-energy tensor
 printbr'matter stress-energy tensor:'
-local uVar = var'u'
 local u = Tensor('^a', 1,0,0,0)
-printbr(uVar'^a':eq(u'^a'()))
+printbr(var'u''^a':eq(u'^a'()))
 
-local TVar = var'T'
 local T = (g'_ab' * p + u'_a' * u'_b' * (rho + p))()
-printbr(TVar'_ab':eq(T'_ab'()))
+printbr(var'T''_ab':eq(T'_ab'()))
 printbr()
 
 -- Einstein field equations
@@ -146,7 +141,7 @@ T_uv =
 --]]
 local lhs = (Ricci'_ab' + g'_ab' * Gaussian / 2)()
 local rhs = (8 * pi * T'_ab')()
-printbr(lhs:equals(rhs))
+printbr(lhs:eq(rhs))
 
 local eqns = table()
 for i=1,4 do
@@ -156,7 +151,7 @@ for i=1,4 do
 		if lhs_ij ~= symmath.Constant(0)
 		or rhs_ij ~= symmath.Constant(0)
 		then
-			eqns:insert(lhs_ij:equals(rhs_ij))
+			eqns:insert(lhs_ij:eq(rhs_ij))
 		end
 	end
 end
