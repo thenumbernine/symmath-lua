@@ -7,7 +7,9 @@ args:
 	[optional]
 	size = how many elements to return.  default is the length
 --]]
-function permutations(args)
+
+local table = require 'ext.table'
+local function permutations(args)
 	local parity = args.parity or 1
 	local p = args.elements
 	local callback = args.callback
@@ -38,6 +40,7 @@ function permutations(args)
 	end
 end
 
+local range = require 'ext.range'
 return function(m)
 	local Array = require 'symmath.Array'
 	local Constant = require 'symmath.Constant'
@@ -94,4 +97,3 @@ return function(m)
 	local simplify = require 'symmath.simplify'
 	return simplify(result)
 end
-

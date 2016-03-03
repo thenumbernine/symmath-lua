@@ -21,6 +21,8 @@
 
 --]]
 
+local table = require 'ext.table'
+local range = require 'ext.range'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
