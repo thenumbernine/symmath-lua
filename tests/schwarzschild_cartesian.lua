@@ -139,26 +139,32 @@ Tensor.metric(g, gInv)
 
 -- metric partial
 -- assume dr/dt is zero
-local dg = g'_uv,w'()
+local dg = Tensor'_wuv'
+dg['_wuv'] = g'_uv,w'()
 for _,xi in ipairs(spatialCoords) do
 	dg = dg:replace(r:diff(xi), xi/r)
 end
 dg = dg()
 printbr'metric partial derivatives:'
-printbr(var'g''_uv,w':eq(dg'_uvw'()))
+printbr(var'g''_uv,w':eq(dg'_wuv'()))
 
 -- Christoffel: G_abc = 1/2 (g_ab,c + g_ac,b - g_bc,a) 
-local Gamma = ((dg'_abc' + dg'_acb' - dg'_bca') / 2)()
+local Gamma = ((dg'_cab' + dg'_bac' - dg'_abc') / 2)()
 printbr'1st kind Christoffel:'
 printbr(var'\\Gamma''_uvw':eq(Gamma'_uvw'()))
 
 -- Christoffel: G^a_bc = g^ae G_ebc
 Gamma = Gamma'^u_vw'()	-- change underlying storage (not necessary, but saves future calculations)
-	--:replace(x^2, r^2-y^2-z^2):simplify()
-	--:replace(y^2, r^2-x^2-z^2):simplify()
-	--:replace(z^2, r^2-x^2-y^2):simplify()
+	:replace(x^4, x^2*x^2)
+	:replace(y^4, y^2*y^2)
+	:replace(z^4, z^2*z^2)
+	:replace(x^2, r^2-y^2-z^2)()
+	:replace(y^2, r^2-x^2-z^2)()
+	:replace(z^2, r^2-x^2-y^2)()
+--	:replace(r^2, x^2+y^2+z^2)()
 printbr'2nd kind Christoffel:'
 printbr(var'\\Gamma''^u_vw':eq(Gamma'^u_vw'()))
+os.exit()
 
 --[[
 -1/alpha^2 = g^tt
@@ -192,8 +198,6 @@ printbr('$\\nabla_u$'..(var'n''_uv'):eq(dn'_uv'()))
 -- TODO add support for (ab) and [ab] indexes
 local K = (P'^a_u' * P'^b_v' * ((dn'_ab' + dn'_ba')/2))() 
 printbr(var'K''_uv':eq(K'_uv'()))
-
-os.exit()
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
 local diffx = Tensor('^u', function(u) return symmath.var('\\dot{x}^'..coords[u].name, coords) end)

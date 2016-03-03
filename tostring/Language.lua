@@ -2,11 +2,8 @@
 parent class of all language-specific ToString child classes
 --]]
 
-require 'ext'
+local class = require 'ext.class'
 local ToString = require 'symmath.tostring.ToString'
-local Variable = require 'symmath.Variable'
-local Expression = require 'symmath.Expression'
-
 local Language = class(ToString)
 
 --[[
@@ -17,12 +14,15 @@ replaces all non-Variable expressions with Variables of matching names
 then generates the code
 --]]
 function Language:prepareForCompile(expr, paramInputs)
+	local Variable = require 'symmath.Variable'
+	local Expression = require 'symmath.Expression'
+	
 	assert(paramInputs)
 	local vars = table()
 	for _,paramInput in pairs(paramInputs) do
 		if type(paramInput) == 'table' then
 			if Expression.is(paramInput) then
-				assert(paramInput:isa(Variable), "can only implicitly use Variables for compile function parameters.  For non-variables, use {[expression] = 'parameter_name'}")
+				assert(Variable.is(paramInput), "can only implicitly use Variables for compile function parameters.  For non-variables, use {[expression] = 'parameter_name'}")
 				vars:insert(paramInput)
 			else 
 				-- if it's a table and not an Expression (the root of our class tree)

@@ -1,8 +1,7 @@
-require 'ext'
-
-local Language = require 'symmath.tostring.Language'
-
 -- convert to Lua code.  use :compile to generate a function
+local class = require 'ext.class'
+local table = require 'ext.table'
+local Language = require 'symmath.tostring.Language'
 local Lua = class(Language)
 
 Lua.lookupTable = {

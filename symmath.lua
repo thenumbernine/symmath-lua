@@ -20,7 +20,7 @@
 
 --]]
 
-require 'ext'
+local table = require 'ext.table'
 
 local symmath = {}
 symmath.verbose = false
@@ -153,6 +153,7 @@ symmath.Function = require 'symmath.Function'
 
 symmath.sqrt = require 'symmath.sqrt'
 symmath.log = require 'symmath.log'
+symmath.abs = require 'symmath.abs'
 symmath.exp = require 'symmath.exp'
 symmath.sin = require 'symmath.sin'
 symmath.cos = require 'symmath.cos'

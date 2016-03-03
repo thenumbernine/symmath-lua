@@ -1,4 +1,4 @@
-require 'ext'
+local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local exp = class(Function)
 exp.name = 'exp'
@@ -9,4 +9,3 @@ function exp:evaluateDerivative(...)
 	return diff(x,...) * self:clone()
 end
 return exp
-

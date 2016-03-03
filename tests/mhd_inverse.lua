@@ -17,8 +17,8 @@ local var = symmath.var
 function expandPowers(self)
 	return self()
 		:map(function(x) 	-- expand powers ...
-			if x:isa(symmath.powOp) 
-			and x[2]:isa(symmath.Constant)
+			if symmath.powOp.is(x) 
+			and symmath.Constant.is(x[2])
 			and x[2].value == math.floor(x[2].value)
 			and x[2].value > 0
 			then 
@@ -164,13 +164,13 @@ for i=1,8 do
 			YYInv_rhs = YYInv_rhs + Y[i][k] * YInv[k][j]
 		end
 		local YInvYEqn = lhs:eq(YInvY_rhs)()
-		if YInvYEqn:rhs():isa(symmath.divOp) then YInvYEqn = (YInvYEqn * YInvYEqn:rhs()[2])() end
+		if symmath.divOp.is(YInvYEqn:rhs()) then YInvYEqn = (YInvYEqn * YInvYEqn:rhs()[2])() end
 		YInvYEqn = YInvYEqn:subst(B_from_BSq)()
 		if not YInvYEqn:isTrue() then
 			YInvYEqns:insert{i,j,YInvYEqn}
 		end
 		local YYInvEqn = lhs:eq(YYInv_rhs)()
-		if YYInvEqn:rhs():isa(symmath.divOp) then YYInvEqn = (YYInvEqn * YYInvEqn:rhs()[2])() end
+		if symmath.divOp.is(YYInvEqn:rhs()) then YYInvEqn = (YYInvEqn * YYInvEqn:rhs()[2])() end
 		YYInvEqn = YYInvEqn:subst(B_from_BSq)()
 		if not YYInvEqn:isTrue() then
 			YYInvEqns:insert{i,j,YYInvEqn}
@@ -189,7 +189,7 @@ local constraints = table()
 for _,eqnlist in ipairs{YInvYEqns, YYInvEqns} do
 	for k=#eqnlist,1,-1 do
 		local i,j,eqn = table.unpack(eqnlist[k])
-		if eqn[2]:isa(symmath.Variable) then
+		if symmath.Variable.is(eqn[2]) then
 			eqnlist:remove(k)
 			constraints:insert(eqn:switch())
 		end
@@ -213,7 +213,7 @@ end
 local YInvRemainingVars = symmath.Matrix()
 for i=1,8 do
 	for j=1,8 do
-		if YInv[i][j]:isa(symmath.Variable) then
+		if symmath.Variable.is(YInv[i][j]) then
 			table.insert(YInvRemainingVars, symmath.Array(YInv[i][j]))
 		end
 	end

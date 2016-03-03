@@ -1,4 +1,4 @@
-require 'ext'
+local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local acos = class(Function)
 acos.name = 'acos'
@@ -10,4 +10,3 @@ function acos:evaluateDerivative(...)
 	return -diff(x, ...) / sqrt(1 - x^2)
 end
 return acos
-

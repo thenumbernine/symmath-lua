@@ -22,13 +22,14 @@
 --]]
 
 local symmath = require 'symmath'
+
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-print(MathJax.header)
+local print_ = print
+local function print(...) print_(...) print_'<br>' end
+print_(MathJax.header)
 
 require 'symmath.tostring.LaTeX'.usePartialLHSForDerivative = true
-
-local function printbr(...) print(...) print'<br>' end
 
 local Tensor = symmath.Tensor
 local var = symmath.var
@@ -55,7 +56,7 @@ assign('metric_z = r * symmath.cos(theta)')
 --]]
 
 --[[
-printbr()
+print()
 -- coordinate basis
 for _,u in ipairs(coords) do
 	for _,v in ipairs(srcCoords) do
@@ -76,7 +77,7 @@ end
 --]]
 
 --[[
-printbr()
+print()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		exec(('gLL_$u_$v = 0'):gsub('$u',u):gsub('$v',v))
@@ -98,7 +99,7 @@ Phi = var('Phi', {t,x,y,z})
 --]]
 
 --[[
-printbr()
+print()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		if u == v then
@@ -116,7 +117,7 @@ end
 --]]
 
 --[[ calc inverse of diagonal matrix
-printbr()
+print()
 for _,u in ipairs(coords) do
 	for _,v in ipairs(coords) do
 		if u == v then
@@ -131,75 +132,83 @@ end
 
 -- [[ ADM
 local t,x,y,z = vars('t','x','y','z')
+local ijk = var'ijk'	-- not sure about this ...
 local spatialCoords = {x,y,z}
 local coords = {t,x,y,z}
+local spacetimeIndexes = {variables=coords}
+local spatialIndexes = {symbols='ijklmn', variables=spatialCoords}
+local groupedSpatialIndexes = {symbols='IJKLMN', variables={ijk}}
+local groupedIndexes = {symbols='UVW', variables={t,ijk}}	-- maybe 'group' to specify that a split will happen?  but that restricts to a certain form
 Tensor.coords{
-	{variables = coords},
-	{variables = spatialCoords, symbols='ijklmn'},
+	spacetimeIndexes,
+	spatialIndexes,
+	groupedIndexes,
 }
-local alpha = var('\\alpha', coords)
-local beta = Tensor('^i', function(i) return var('\\beta^'..spatialCoords[i].name, coords) end)
-local gamma = Tensor('_ij', function(i,j) return var('\\gamma_{'..spatialCoords[i].name..spatialCoords[j].name..'}', coords) end)
-local gammaUU = Tensor('^ij', function(i,j) return var('\\gamma^{'..spatialCoords[i].name..spatialCoords[j].name..'}', coords) end)
+local alpha = var'\\alpha'
+local beta = var'\\beta'
+local gamma = var'\\gamma'
+local g = var'g'
 
---local betaL = Tensor('_i', function(i) return var('\\beta_'..spatialCoords[i].name, coords) end)
---local betaL_def = Tensor('_i', function(i) return betaL[i]:equals(
-local betaSq = var'\\beta^2'
---local betaSq_def = betaSq:equals(beta'^i' * betaL'_i')
-
-Tensor.metric(gamma, gammaUU, 'i')
---local gammaUU = Tensor.metric(gamma, nil, 'i').metricInverse
-
-printbr(alpha)
-printbr(var'\\beta''^i':eq(beta'^i'()))
-printbr(var'\\gamma''_ij':eq(gamma'_ij'()))
-printbr(var'\\gamma''^ij':eq(gammaUU'^ij'()))
+print(alpha)
+print(beta'^i')
+print(gamma'_ij')
+print(gamma'^ij')
 
 -- metric
--- TODO subtensor expansion.  useful here and in the ADM flux ... and a lot of other places
-local g = Tensor('_uv', function(u,v)
-	if u == 1 then
-		if v == 1 then
-			return (-alpha^2 + betaSq)
-		else
-			return beta'_i'()[v-1]
-		end
-	else
-		if v == 1 then
-			return beta'_i'()[u-1]
-		else
-			return gamma'_ij'()[u-1][v-1]
-		end
-	end
-end)
-local gUU = Tensor('^uv', function(u,v)
-	if u == 1 then
-		if v == 1 then
-			return -1/alpha^2
-		else
-			return beta[v-1] / alpha^2
-		end
-	else
-		if v == 1 then
-			return beta[u-1] / alpha^2
-		else
-			return gammaUU[u-1][v-1] - beta[u-1] * beta[v-1] / alpha^2
-		end
-	end
-end)
-Tensor.metric(g, gUU)
+--[[
+how to handle subtensors ... 
+how to we declare the indexes of a tensor to use subindexes?
+if we say Tensor'_uv' for defaults uv on coords t,x,y,z then the ctor will span 4 variables ...
+if we create a new set of indexes for groups of indexes ... we'd have to specify the layout beforehand (to be compatible with the current system)
+	i.e. UVW = indexGroup{abc, ijk}
+if we use matrices ...
+... then how will we access them in the future?
+--]]
+local gLLDef = g'_UV':eq(Tensor('_UV', 
+	{
+		-alpha^2 + beta'^k' * beta'_k',
+		beta'_j',
+	}, {
+		beta'_i',
+		gamma'_ij',
+	}
+))
+print(gLLDef)
 
-printbr(var'g''_uv':eq(g'_uv'()))
-printbr(var'g''^uv':eq(gUU'^uv'()))
+local gUUDef = g'^UV':eq(Tensor('^UV',
+	{
+		-1/alpha^2,
+		beta'^j'/alpha^2,
+	}, {
+		beta'^i'/alpha^2,
+		gamma'^ij' - beta'^i' * beta'^j' / alpha^2,
+	}
+))
+print(gUUDef)
 
-local Gamma = Tensor'_abc'
-Gamma['_abc'] = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
-printbr(var'\\Gamma''_abc':eq(Gamma'_abc'()))
+--[[
+now if 'group' was used in the index definitions ... (TODO rename Tensor.coords to Tensor.indexes)
+I wouldn't need 'group' if I just had separate index information for grouped and non-grouped tensors
+... so gamma and beta would be defined on indexes where ijk span xyz
+... but g would be defined on indexes where ijk reprsent a single coordinate (which can be later expanded)
+
+... then we could do something like this:
+g = Tensor('_UV', {alpha, beta'_i'}, {beta'_j', gamma'_ij'}) 
+... and then ...
+print(g'_ij'()) to show gamma_ij
+--]]
+--print(gLLDef:rhs()'_IJ')	-- this would work if the code were in place for the notion of g'_tt' to return a scalar ... same principle
+
+local Gamma = var'\\Gamma'
+print(Gamma'_abc':eq((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2))
+
+os.exit()
+print(var'\\Gamma''_abc':eq(Gamma'_abc'()))
 Gamma = Gamma'^a_bc'()
-printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
+print(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
 local Riemann = Tensor'^a_bcd'
 Riemann['^a_bcd'] = (Gamma'^a_bd,c' - Gamma'^a_bc,d' + Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc')()
-printbr('${R^a}_{bcd} = $'..Riemann'^a_bcd')
+print('${R^a}_{bcd} = $'..Riemann'^a_bcd')
 
-print(MathJax.footer)
+print_(MathJax.footer)

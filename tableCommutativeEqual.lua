@@ -1,4 +1,5 @@
-local function tableCommutativeEqual(a,b)
+local table = require 'ext.table'
+return function(a,b)
 	-- order-independent
 	a = table(a)
 	b = table(b)
@@ -11,5 +12,3 @@ local function tableCommutativeEqual(a,b)
 	end
 	return #a == 0 and #b == 0
 end
-return tableCommutativeEqual
-

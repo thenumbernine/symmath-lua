@@ -1,4 +1,4 @@
-require 'ext'
+local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local atan = class(Function)
 atan.name = 'atan'
@@ -9,4 +9,3 @@ function atan:evaluateDerivative(...)
 	return diff(x,...) / (1 + x^2)
 end
 return atan
-

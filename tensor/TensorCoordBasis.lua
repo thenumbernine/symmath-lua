@@ -1,5 +1,3 @@
-require 'ext'
-
 --[[
 TensorCoordBasis represents an entry in the coordSrcs
 complete with
@@ -9,7 +7,8 @@ complete with
 	(c) what metrics are used for raising/lowering
 	[(d)] what linear transforms go between this and the other TensorCoordBasis's
 --]]
-
+local class = require 'ext.class'
+local table = require 'ext.table'
 local TensorCoordBasis = class()
 
 function TensorCoordBasis:init(args)

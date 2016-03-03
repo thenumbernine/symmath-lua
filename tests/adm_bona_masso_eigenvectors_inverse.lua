@@ -63,7 +63,8 @@ w_+- = sqrt(f) K^m_m +- sqrt(gamma^xx) (A_x + 2 V_m gamma^mx / gamma^xx)
 --]]
 
 
-require 'ext'
+local table = require 'ext.table'
+local range = require 'ext.range'
 local symmath = require 'symmath'
 local Tensor = symmath.Tensor
 

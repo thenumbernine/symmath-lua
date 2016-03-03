@@ -1,3 +1,4 @@
+local table = require 'ext.table'
 return function(...)
 	local args = {...}
 	local rows = {}

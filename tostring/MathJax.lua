@@ -1,4 +1,4 @@
-require 'ext'
+local class = require 'ext.class'
 local LaTeX = require 'symmath.tostring.LaTeX'	-- returns a singleton object
 local MathJax = class(LaTeX.class)
 

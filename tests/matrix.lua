@@ -22,7 +22,6 @@
 --]]
 
 
-require 'ext'
 symmath = require 'symmath'
 require 'symmath.notebook'
 Matrix = require 'symmath.Matrix'

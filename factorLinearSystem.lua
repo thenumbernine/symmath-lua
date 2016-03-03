@@ -7,12 +7,13 @@ returns matrices A and b:
 [an1 ... anm][xm]   [bn]
 
 --]]
+local table = require 'ext.table'
 return function(exprs, factors)
-	local table = require 'ext.table'
-	local clone = require 'symmath.clone'
-	local Matrix = require 'symmath.Matrix'
-	local addOp = require 'symmath.addOp'
-	local mulOp = require 'symmath.mulOp'
+	local symmath = require 'symmath'
+	local clone = symmath.clone
+	local Matrix = symmath.Matrix
+	local addOp = symmath.addOp
+	local mulOp = symmath.mulOp
 
 	local A = Matrix(table.map(exprs, function()
 		return table.map(factors, function() return 0 end)
@@ -36,11 +37,11 @@ return function(exprs, factors)
 					A[i][j] = (A[i][j] + 1):simplify()
 					table.remove(expr,k)
 					found = true
-				elseif expr[k]:isa(mulOp) then
+				elseif mulOp.is(expr[k]) then
 					for l=#expr[k],1,-1 do
 						
 						-- factorDivision() should prevent this
-						if expr[k][l]:isa(mulOp) then error"needs flattening" end
+						if mulOp.is(expr[k][l]) then error"needs flattening" end
 						
 						if expr[k][l] == factors[j] then
 							assert(not found)

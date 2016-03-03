@@ -1,4 +1,4 @@
-require 'ext'
+local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local asin = class(Function)
 asin.name = 'asin'
@@ -10,4 +10,3 @@ function asin:evaluateDerivative(...)
 	return diff(x,...) / sqrt(1 - x^2)
 end
 return asin
-

@@ -1,5 +1,5 @@
 -- TensorIndex represents an entry in the Tensor.variance list
-
+local class = require 'ext.class'
 local TensorIndex = class()
 
 TensorIndex.name = 'TensorIndex'

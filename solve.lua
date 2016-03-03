@@ -23,7 +23,7 @@ return function(eqn, x)
 	assert(eqn, 'expected equation to solve, or expression to solve for zero')
 	
 	local lhs
-	if eqn:isa(EquationOp) then
+	if EquationOp.is(eqn) then
 		equals = getmetatable(eqn)
 		-- move everything to one side of the equation
 		lhs = eqn[1] - eqn[2]

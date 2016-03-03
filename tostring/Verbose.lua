@@ -1,5 +1,5 @@
-require 'ext'
-
+local class = require 'ext.class'
+local table = require 'ext.table'
 local ToString = require 'symmath.tostring.ToString'
 local Verbose = class(ToString)
 
@@ -47,4 +47,3 @@ Verbose.lookupTable = {
 }
 
 return Verbose()	-- singleton
-

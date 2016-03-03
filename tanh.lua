@@ -1,4 +1,4 @@
-require 'ext'
+local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local tanh = class(Function)
 tanh.name = 'tanh'
@@ -10,4 +10,3 @@ function tanh:evaluateDerivative(...)
 	return diff(x,...) / cosh(x)^2
 end
 return tanh
-

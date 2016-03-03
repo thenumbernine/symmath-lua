@@ -1,7 +1,6 @@
-require 'ext'
-
+local class = require 'ext.class'
+local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
-local Constant = require 'symmath.Constant'
 
 local Variable = class(Expression)
 Variable.precedence = 10	-- high since it will never have nested members 
@@ -31,5 +30,11 @@ end
 function Variable:depends(...)
 	self.dependentVars = table{...}
 end
+
+Variable.visitorHandler = {
+	Eval = function(eval, expr)
+		error("Variable "..tostring(expr).." wasn't replace()'d with a constant during eval")
+	end,
+}
 
 return Variable

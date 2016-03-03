@@ -66,8 +66,9 @@ we can find the inverse transform by either
 
 --]]
 
-local table = require 'ext.table'
 local class = require 'ext.class'
+local table = require 'ext.table'
+local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
 local Array = require 'symmath.Array'
 
@@ -543,7 +544,7 @@ function Tensor:contraction(i)
 	local clone = require 'symmath.clone'
 	
 	local dim = self:dim()
-	assert(i >= 1 and i <= #dim, "tried to contract dimension "..i.." when we are only rank "..#self.dim)
+	assert(i >= 1 and i <= #dim, "tried to contract dimension "..i.." when we are only rank "..#dim)
 
 	-- if there's a valid contraction and we're rank-1 then we're summing across everything
 	if #dim == 1 then
@@ -593,7 +594,7 @@ function Tensor:simplifyTraces()
 			for j=i+1,#self.variance do
 				if self.variance[i].symbol == self.variance[j].symbol then
 					self = self:trace(i,j):contraction(i)
-					if not self:isa(Tensor) then
+					if not Tensor.is(self) then
 						return self:simplify()	-- if it's a scalra then return
 					end
 					modified = true
@@ -672,8 +673,8 @@ function Tensor.metric(metric, metricInverse, symbol)
 		a,b = 'a','b'
 	end
 	assert(a and b and #a>0 and #b>0)
-	if not basis.metric:isa(Tensor) then basis.metric = Tensor{indexes={'_'..a, '_'..b}, values=basis.metric} end
-	if not basis.metricInverse:isa(Tensor) then basis.metricInverse = Tensor{indexes={'^'..a, '^'..b}, values=basis.metricInverse} end
+	if not Tensor.is(basis.metric) then basis.metric = Tensor{indexes={'_'..a, '_'..b}, values=basis.metric} end
+	if not Tensor.is(basis.metricInverse) then basis.metricInverse = Tensor{indexes={'^'..a, '^'..b}, values=basis.metricInverse} end
 	return basis
 end
 

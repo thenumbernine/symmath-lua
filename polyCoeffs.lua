@@ -12,9 +12,9 @@ local function isXToTheNth(expr, x)
 	if expr == x then return 1 end
 	local powOp = require 'symmath.powOp'
 	local Constant = require 'symmath.Constant'
-	if expr:isa(powOp)
+	if powOp.is(expr)
 	and expr[1] == x
-	and expr[2]:isa(Constant)
+	and Constant.is(expr[2])
 	then
 		local n = expr[2].value
 		if n == math.floor(n)
@@ -39,7 +39,7 @@ local function processTerm(coeffs, expr, x)
 	local clone = require 'symmath.clone'
 	local mulOp = require 'symmath.mulOp'
 		
-	if not expr:isa(mulOp) then
+	if not mulOp.is(expr) then
 --print('not mulOp')
 		-- just process expr
 --print('testing',expr,x)
@@ -113,14 +113,14 @@ return function(expr, x)
 	-- b) solve polynomial 
 	
 	-- here is the equivalent of multipling by denomiators
-	if expr:isa(divOp) then
+	if divOp.is(expr) then
 		expr = expr[1]	-- cross multiply the denom across with the zero 
 	end
 	
 	-- group terms by polynomial coefficients
 	local coeffs = {}	-- result = coeffs[n] * x^n + coeffs.extra, where coeffs.extra holds all the nonlinear x references
 
-	if not expr:isa(addOp) then
+	if not addOp.is(expr) then
 --print('not addOp')
 		processTerm(coeffs, expr, x)
 	else

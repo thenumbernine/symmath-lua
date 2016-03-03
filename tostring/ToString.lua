@@ -6,7 +6,7 @@ symmath.tostring = require 'symmath.tostring.***' for *** any subclass of ToStri
 I made this before I made the symmath.Visitor parent class, so consider merging those.
 --]]
 
-require 'ext'
+local class = require 'ext.class'
 
 --local Visitor = require 'symmath.visitor.Visitor'
 -- Visitor...
@@ -41,7 +41,7 @@ end
 
 function ToString:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local subOp = require 'symmath.subOp'
-	if parentNode:isa(subOp) and childIndex > 1 then
+	if subOp.is(parentNode) and childIndex > 1 then
 		return precedence(parentNode[childIndex]) <= precedence(parentNode)
 	else
 		return precedence(parentNode[childIndex]) < precedence(parentNode)

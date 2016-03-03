@@ -1,4 +1,4 @@
-require 'ext'
+local class = require 'ext.class'
 local EquationOp = require 'symmath.EquationOp'
 local greaterThanOrEquals = class(EquationOp)
 greaterThanOrEquals.name = '>='

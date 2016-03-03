@@ -1,7 +1,7 @@
 --[[
 Matrix is a Array with some added Matrix-specific stuff to the namespace
 --]]
-require 'ext'
+local class = require 'ext.class'
 local Array = require 'symmath.Array'
 local Matrix = class(Array)
 
@@ -17,4 +17,3 @@ Matrix.transpose = require 'symmath.matrix.transpose'
 Matrix.diagonal = require 'symmath.matrix.diagonal'
 
 return Matrix
-

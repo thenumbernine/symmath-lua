@@ -7,6 +7,29 @@ local Visitor = class()
 Visitor.name = 'Visitor'
 
 --[[
+look in the object's metatable for visitorHandler key matching the visitor's .name
+only check in the child-most class
+NOTICE this means classes must inherit (by copying) their parent class visitorHandler tables
+
+also look in this vistor's lookup table for the key matching the object's metatable itself 
+
+I can't use the table key here and the line above because
+that would cause a dependency loop for the construction of both
+--]]
+function Visitor:lookup(m)
+	-- check in the metatable for our visitor name.
+	local f = m.visitorHandler and m.visitorHandler[self.name]
+	if f then return f end
+	
+	while m do
+		-- check in our lookupTable for the metatable key
+		local f = self.lookupTable and self.lookupTable[m]
+		if f then return f end
+		m = m.super
+	end
+end
+
+--[[
 debugging:
 local function hash(t)
 	local m = getmetatable(t)
@@ -29,6 +52,7 @@ function Visitor:apply(expr, ...)
 --local id = hash(expr)
 --print(id, 'begin Visitor', Verbose(expr))
 	local clone = require 'symmath.clone'
+	local Expression = require 'symmath.Expression'
 
 	expr = clone(expr)
 	
@@ -36,8 +60,7 @@ function Visitor:apply(expr, ...)
 	if t == 'table' then
 		local m = getmetatable(expr)
 		-- if it's an expression then apply to all children first
-		local Expression = require 'symmath.Expression'
-		if m:isa(Expression) then
+		if Expression.is(m) then
 			-- I could use symmath.map to do this, but then I'd have to cache ... in a table (and nils might cause me to miss objects unless I called table.maxn a... )
 			if expr then
 				for i=1,#expr do
@@ -48,12 +71,11 @@ function Visitor:apply(expr, ...)
 		end
 		-- traverse class parentwise til a key in the lookup table is found
 		-- stop at null
-		while m and not self.lookupTable[m] do
-			m = m.super
-		end
+
 		-- if we found an entry then apply it
-		if self.lookupTable[m] then
-			expr = self.lookupTable[m](self, expr, ...) or expr
+		local handler = self:lookup(m)
+		if handler then
+			expr = handler(self, expr, ...) or expr
 		end
 	end
 --print(id, 'done pruning with', Verbose(expr))

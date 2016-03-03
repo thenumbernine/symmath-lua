@@ -1,11 +1,10 @@
-require 'ext'
+local class = require 'ext.class'
 local BinaryOp = require 'symmath.BinaryOp'
-local nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
 
 -- equality
 -- I would use binary operators for this, but Lua's overloading requires the return value be a boolean
 local EquationOp = class(BinaryOp)
-EquationOp.__eq = nodeCommutativeEqual
+EquationOp.__eq = require 'symmath.nodeCommutativeEqual'
 EquationOp.solve = require 'symmath.solve'
 
 function EquationOp:evaluateDerivative(...)
@@ -80,14 +79,14 @@ for _,op in ipairs{
 		local Constant = require 'symmath.Constant'
 		if type(a) == 'number' then a = Constant(a) end
 		if type(b) == 'number' then b = Constant(b) end
-		if a:isa(EquationOp) and not b:isa(EquationOp) then
+		if EquationOp.is(a) and not EquationOp.is(b) then
 			a = a:clone()
 			for i=1,#a do
 				a[i] = op.f(a[i], b)
 			end
 			return a
 		end
-		if not a:isa(EquationOp) and b:isa(EquationOp) then
+		if not EquationOp.is(a) and EquationOp.is(b) then
 			b = b:clone()
 			for i=1,#b do
 				b[i] = op.f(a, b[i])
@@ -98,4 +97,3 @@ for _,op in ipairs{
 end
 
 return EquationOp
-

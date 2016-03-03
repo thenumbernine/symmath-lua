@@ -1,8 +1,7 @@
-require 'ext'
-
+local class = require 'ext.class'
 local BinaryOp = require 'symmath.BinaryOp'
-
 local modOp = class(BinaryOp)
+
 modOp.precedence = 3
 modOp.name = '%'
 
@@ -17,5 +16,11 @@ function modOp:evaluateDerivative(...)
 	return x
 end
 
-return modOp
+modOp.visitorHandler = {
+	Eval = function(eval, expr)
+		local a, b = table.unpack(expr)
+		return eval:apply(a) % eval:apply(b)
+	end,
+}
 
+return modOp

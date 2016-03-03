@@ -1,7 +1,7 @@
-require 'ext'
-
+local class = require 'ext.class'
+local table = require 'ext.table'
+local range = require 'ext.range'
 local ToString = require 'symmath.tostring.ToString'
-
 local LaTeX = class(ToString)
 
 local function omit(t)
@@ -95,16 +95,16 @@ LaTeX.lookupTable = {
 		for i=#expr,2,-1 do
 			-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
 			-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
-			if expr[i-1]:isa(Variable)
+			if Variable.is(expr[i-1])
 			and #expr[i-1].name > 1
-			--and expr[i]:isa(Variable)
+			--and Variable.is(expr[i])
 			then
 				res:insert(i, '\\cdot')
 			-- insert \cdot between neighboring numbers
-			elseif expr[i-1]:isa(Constant) then
-				if expr[i]:isa(Constant)
-				or expr[i]:isa(divOp)
-				or (expr[i]:isa(powOp) and expr[i][1]:isa(Constant))
+			elseif Constant.is(expr[i-1]) then
+				if Constant.is(expr[i])
+				or divOp.is(expr[i])
+				or (powOp.is(expr[i]) and Constant.is(expr[i][1]))
 				then
 					res:insert(i, '\\cdot')
 				end
@@ -130,7 +130,7 @@ LaTeX.lookupTable = {
 		
 		local diffExpr = expr[1]
 		local diffExprStr = self:apply(diffExpr)
-		local diffExprOnTop = diffExpr:isa(Variable)
+		local diffExprOnTop = Variable.is(diffExpr)
 	
 		if self.usePartialLHSForDerivative then
 			local s = table{'\\partial_', 

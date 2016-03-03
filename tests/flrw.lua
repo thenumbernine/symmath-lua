@@ -25,6 +25,7 @@
 flrw in spherical form: -dt^2 + a^2 (dr^2 / (1 - k r^2) + r^2 (dtheta^2 + sin(theta)^2 dphi^2)
 --]]
 
+local table = require 'ext.table'
 local symmath = require 'symmath'
 local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'

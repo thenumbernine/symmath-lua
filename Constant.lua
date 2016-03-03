@@ -1,9 +1,7 @@
-require 'ext'
-
+local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
 
 local Constant = class(Expression)
-
 Constant.precedence = 10	-- high since it can't have child nodes 
 Constant.name = 'Constant'
 
@@ -30,5 +28,24 @@ function Constant:evaluateDerivative(...)
 	return Constant(0)
 end
 
-return Constant
+Constant.visitorHandler = {
+	Eval = function(eval, expr)
+		return expr.value
+	end,
 
+	Tidy = function(tidy, expr)
+		local unmOp = require 'symmath.unmOp'
+		
+		-- for formatting's sake ...
+		if expr.value == 0 then	-- which could possibly be -0 ...
+			return Constant(0)
+		end
+		
+		-- -c => -(c)
+		if expr.value < 0 then
+			return tidy:apply(unmOp(Constant(-expr.value)))
+		end
+	end,
+}
+
+return Constant

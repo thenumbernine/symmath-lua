@@ -1,4 +1,4 @@
-require 'ext'
+local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local tan = class(Function)
 tan.name = 'tan'
@@ -9,5 +9,3 @@ function tan:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
 	return diff(x,...) / cos(x)^2
 end
-
-

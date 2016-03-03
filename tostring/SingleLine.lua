@@ -1,4 +1,5 @@
-require 'ext'
+local class = require 'ext.class'
+local table = require 'ext.table'
 -- single-line strings 
 local ToString = require 'symmath.tostring.ToString'
 local SingleLine = class(ToString)
@@ -13,10 +14,10 @@ function SingleLine:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local childNode = parentNode[childIndex]
 	local childPrecedence = precedence(childNode)
 	local parentPrecedence = precedence(parentNode)
-	if parentNode:isa(divOp) then parentPrecedence = parentPrecedence + .5 end
-	if childNode:isa(divOp) then childPrecedence = childPrecedence + .5 end
+	if divOp.is(parentNode) then parentPrecedence = parentPrecedence + .5 end
+	if divOp.is(childNode) then childPrecedence = childPrecedence + .5 end
 	local subOp = require 'symmath.subOp'
-	if parentNode:isa(subOp) and childIndex > 1 then
+	if subOp.is(parentNode) and childIndex > 1 then
 		return childPrecedence <= parentPrecedence
 	else
 		return childPrecedence < parentPrecedence

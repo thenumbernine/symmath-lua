@@ -4,6 +4,8 @@ basis of all vectors, matrices, tensors, etc
 --]]
 
 local class = require 'ext.class'
+local table = require 'ext.table'
+local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
 
 local Array = class(Expression)
@@ -165,6 +167,7 @@ function Array:dim()
 		dim[i+1] = subdim_1[i]
 	end
 	dim[1] = Constant(#self)
+	
 	return dim
 end
 

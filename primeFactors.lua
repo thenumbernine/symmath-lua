@@ -1,3 +1,4 @@
+local table = require 'ext.table'
 return function(n)
 	local ps = table()
 	while n > 1 do
@@ -17,4 +18,3 @@ return function(n)
 	end
 	return ps
 end
-

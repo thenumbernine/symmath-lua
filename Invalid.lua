@@ -1,9 +1,7 @@
-require 'ext'
-
+local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
 
-Invalid = class(Expression)
-
+local Invalid = class(Expression)
 Invalid.name = 'Invalid'
 
 -- true to NaNs
@@ -15,5 +13,10 @@ function Invalid:evaluateDerivative(...)
 	return self
 end
 
-return Invalid
+Invalid.visitorHandler = {
+	Eval = function(eval, expr)
+		return 0/0
+	end,
+}
 
+return Invalid

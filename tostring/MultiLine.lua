@@ -1,9 +1,9 @@
-require 'ext'
-
+-- multi-line strings
+local class = require 'ext.class'
+local table = require 'ext.table'
 local ToString = require 'symmath.tostring.ToString'
 local SingleLine = require 'symmath.tostring.SingleLine'
 
--- multi-line strings
 local MultiLine = class(ToString)
 
 --[[
