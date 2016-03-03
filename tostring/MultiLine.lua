@@ -243,6 +243,9 @@ MultiLine.lookupTable = {
 		
 		return res
 	end,
+	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+		return {expr:__tostring()}
+	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
 		local t = expr[1]
 		local indexes = {table.unpack(expr, 2)}

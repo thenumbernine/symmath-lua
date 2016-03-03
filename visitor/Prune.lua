@@ -1187,7 +1187,7 @@ Prune.lookupTable = {
 							base:insert(is[i])
 						end
 					end
-					local x = t:get(base)
+					local x = #base == 0 and t or t:get(base)
 					for i=1,#deriv do
 						x = x:diff(deriv[i])
 					end

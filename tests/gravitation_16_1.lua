@@ -3,7 +3,7 @@
 
     File: gravitation_16_1.lua
 
-    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2013-2016 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -38,13 +38,8 @@ local function printbr(...) print(...) print'<br>' end
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}
 Tensor.coords{
-	{
-		variables = coords,
-	},
-	{
-		variables = {x,y,z},
-		symbols = 'ijklmn',
-	}
+	{variables = coords},
+	{variables = {x,y,z}, symbols = 'ijklmn'},
 }
 
 local Phi = var('\\Phi', coords)
@@ -142,7 +137,7 @@ for i=2,4 do
 	-- get rid of any Phi,j times u,k of any kind ... hmm ...
 	div_T[i] = div_T[i]:map(function(expr)
 		if not symmath.mulOp.is(expr) then return end
-		local dPhi = {Phi:diff(x), Phi:diff(y), Phi:diff(z)}
+		local dPhi = Phi'_,i'()
 		local foundDPhi
 		local foundU
 		expr:map(function(node)

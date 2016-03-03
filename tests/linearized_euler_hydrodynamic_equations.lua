@@ -3,7 +3,7 @@
 
     File: linearized_euler_hydrodyanamic_equations.lua
 
-    Copyright (C) 2013-2015 Christopher Moore (christopher.e.moore@gmail.com)
+    Copyright (C) 2013-2016 Christopher Moore (christopher.e.moore@gmail.com)
 	  
     This software is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
