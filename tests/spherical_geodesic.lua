@@ -69,6 +69,8 @@ printbr()
 
 local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 printbr'coordinate metric:'
+g = g:replace(symmath.cos(phi)^2, 1-symmath.sin(phi)^2)()
+g = g:replace(symmath.cos(theta)^2, 1-symmath.sin(theta)^2)()
 printbr(var'g''_uv':eq(g'_uv'()))
 printbr()
 

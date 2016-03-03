@@ -89,6 +89,7 @@ printbr()
 --Riemann: R^a_bcd = G^a_bd,c - G^a_bc,d + G^a_uc G^u_bd - G^a_ud G^u_bc
 local Riemann = Tensor'^a_bcd'
 Riemann['^a_bcd'] = (dGamma'^a_bdc' - dGamma'^a_bcd' + Gamma'^a_uc' * Gamma'^u_bd' - Gamma'^a_ud' * Gamma'^u_bc')()
+-- hack:
 Riemann = Riemann:replace(symmath.cos(theta)^2, 1-symmath.sin(theta)^2)()
 printbr'Riemann curvature tensor'
 printbr(var'R''^a_bcd':eq(Riemann'^a_bcd'()))
@@ -96,6 +97,8 @@ printbr()
 
 -- Ricci: R_ab = R^u_aub
 local Ricci = Riemann'^u_aub'()
+-- hack:
+Ricci = Ricci:map(function(x) if symmath.powOp.is(x) then return x:expand() end end)
 printbr'Ricci curvature tensor'
 printbr(var'R''_ab':eq(Ricci'_ab'()))
 printbr()

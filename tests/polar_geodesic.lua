@@ -55,6 +55,7 @@ printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(u'^I_,u'()):eq(e'_u^I'()))
 printbr()
 
 local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
+g = g:replace(symmath.cos(phi)^2, 1-symmath.sin(phi)^2)()		-- TODO somehow automatically do this ...
 printbr'coordinate metric:'
 printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'):eq(g'_uv'()))
 printbr()

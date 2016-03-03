@@ -164,7 +164,6 @@ Gamma = Gamma'^u_vw'()	-- change underlying storage (not necessary, but saves fu
 --	:replace(r^2, x^2+y^2+z^2)()
 printbr'2nd kind Christoffel:'
 printbr(var'\\Gamma''^u_vw':eq(Gamma'^u_vw'()))
-os.exit()
 
 --[[
 -1/alpha^2 = g^tt
@@ -193,7 +192,7 @@ for _,xi in ipairs(spatialCoords) do
 	dn = dn:replace(r:diff(xi), xi/r)()
 end
 printbr(var'dn':eq(dn))
-printbr('$\\nabla_u$'..(var'n''_uv'):eq(dn'_uv'()))
+printbr((var'\\nabla n''_uv'):eq(dn'_uv'()))
 
 -- TODO add support for (ab) and [ab] indexes
 local K = (P'^a_u' * P'^b_v' * ((dn'_ab' + dn'_ba')/2))() 
@@ -205,6 +204,7 @@ local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w'):simplify()
 printbr('geodesic equation')
 printbr('$\\ddot{x}^a = $'..diffx2)
 
+--[[
 -- Christoffel partial: G^a_bc,d
 local dGamma = Gamma'^a_bc,d':simplify()
 printbr('2nd kind Christoffel partial')
@@ -228,5 +228,6 @@ local Gaussian = Ricci'^a_a':simplify()
 printbr('Gaussian curvature')
 printbr('$R = $'..Gaussian)
 printbr()
+--]]
 
 print(MathJax.footer)
