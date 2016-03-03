@@ -49,9 +49,7 @@ printbr(var'u''^I':eq(u'^I'()))
 printbr()
 
 local e = Tensor'_u^I'
-e['_u^I'] = u'^I_,u'()	-- TODO fixme
--- until then...
-e = Tensor('_a^I', function(a,I) return u'^I_,a'()[I][a] end)
+e['_u^I'] = u'^I_,u'()
 printbr'vielbein:'
 printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(u'^I_,u'()):eq(e'_u^I'()))
 printbr()

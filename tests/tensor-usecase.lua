@@ -189,11 +189,11 @@ end
 
 -- testing 3-point rotation (to verify that the mapping between indexes is the correct direction -- 2-point (i.e. transpose) won't pick up on this)
 local n = setDim(3)
-local epsilon = Tensor('_ijk')
+local epsilon = Tensor'_ijk'
 epsilon[1][2][3] = symmath.Constant(1)
 assertEqn(epsilon[{1,2,3}]:eq(1))
 -- now rotate
-epsilon['_ijk'] = epsilon'_jki'
+epsilon['_ijk'] = epsilon'_jki'()
 assertEqn(epsilon[{3,1,2}]:eq(1))
 assertEqn(epsilon[{2,3,1}]:eq(0))	-- this will be 1 if the index remapping is done backwards
 

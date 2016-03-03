@@ -32,7 +32,6 @@ printbr(var'r''^I':eq(r'^I'()))
 
 local e = Tensor'_u^I'
 e['_u^I'] = r'^I_,u'()
-e = Tensor('_a^I', function(a,I) return r'^I_,a'()[I][a] end)
 printbr(var'e''_u^I':eq(e'_u^I'()))
 
 local eta = symmath.Tensor('_IJ',{-1,0},{0,1})
@@ -72,7 +71,7 @@ local n_norm_from_nUx = n_norm:subst(nUt_from_nUx)()
 printbr(n_norm_from_nUx)
 local nUx_solns = table{n_norm_from_nUx:solve(nUx)}
 printbr'$n^x$ solutions:'
-printbr(nUx_solns:map(function(eqn) return '\t'..eqn end):concat('\n'))
+printbr(nUx_solns:map(function(eqn) return '\t'..eqn end):concat('<br>\n'))
 printbr"solving the first one first (keep note that they're plus or minus...)"
 local nUx_soln = nUx_solns[1]
 printbr(var'n''^x'..' is  ',nUx_soln:rhs())
@@ -113,28 +112,28 @@ printbr(n_norm)
 -- connection coefficients
 local Gamma = ((g'_ab,c' + g'_ac,b' - g'_bc,a')/2)()
 printbr('1st kind Christoffel')
-printbr('$\\Gamma_{abc} = $'..Gamma'_abc')
+printbr(var'\\Gamma''_abc':eq(Gamma'_abc'()))
 printbr()
 
 Gamma = Gamma'^a_bc'()	-- change form stored in Gamma from 1st to 2nd kind
 
 -- Christoffel: G^a_bc = g^ae G_ebc
 printbr('2nd kind Christoffel')
-printbr('${\\Gamma^a}_{bc} = $'..Gamma'^a_bc')
+printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 printbr()
 
-printbr('$n_u = $'..n'_u')
-printbr('$\\partial_u n_v = $'..n'_u,v')
+printbr(var'n''_u':eq(n'_u'()))
+printbr('$\\partial_u n_v = $'..n'_u,v'())
 
 local diff_n = (n'_u,v' - Gamma'^w_vu' * n'_w')()
-printbr('$\\nabla_u n_v = $'..diff_n'_uv')
+printbr('$\\nabla_u n_v = $'..diff_n'_uv'())
 
 local P = (g'^u_v' + n'^u' * n'_v')()
 --[[ explicitly force extrinsic projection values to zero?
 PUL[1][2] = symmath.Constant(0)
 PUL[2][1] = symmath.Constant(0)
 --]]
-printbr('$\\perp = {P^u}_v = $'..P'^u_v')
+printbr(var'\\perp':eq(var'P''^u_v'):eq(P'^u_v'()))
 
 local proj_diff_n = (P'^c_a' * diff_n'_cd' * P'^d_b')()
 printbr('$\\perp \\nabla_u n_v = $'..proj_diff_n)
@@ -147,7 +146,7 @@ printbr(var'K''_uv':eq(K'_uv'()))
 --printbr('$K_{uv} = $'..K'_ab')	
 
 local K = K'^a_b'()
-printbr('${K^u}_v = $'..K'^a_b')
+printbr(var'K''^u_v':eq(K'^u_v'()))
 
 local K = K'^a_a'()
 printbr(var'K':eq(K))

@@ -257,6 +257,7 @@ possible combinations:
       * *  	\ list of dimension (excludes variance and optional values)
   *       *	/ dense content: expressions as nested tables (includes dimensions, excludes variance)
     *   *  	\ lambdas for content generation (includes values, excludes dimension or variance)
+... NOTICE I'm getting rid of non-dense .. I'll just have deferred indexes on *all* expressions, variables included, which will serve the same
 
 constructors:
 	contra/co-variant alone:
@@ -820,16 +821,15 @@ Tensor.__newindex = function(self, key, value)
 		-- permute the indexes of the value to match the source
 		-- TODO no need to permute it if the index is entirely variables/numbers, such that the assignment is to a single element in the tensor
 		local dst = value:permute(dstVariance)
-
 		-- reform self to the original variances
 		-- TODO once again for scalar assignment or subset assignment
-		dst = dst(self.variance)
+		dst = dst(self.variance)()
 		
 		-- copy in new values
 		for is in self:iter() do
 			self[is] = dst[is]
 		end
-		
+
 		if #value.variance ~= #self.variance then
 			error("can't assign tensors of mismatching number of indexes")
 		end

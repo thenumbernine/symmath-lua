@@ -6,7 +6,6 @@ local Constant = require 'symmath.Constant'
 local Variable = class(Expression)
 Variable.precedence = 10	-- high since it will never have nested members 
 Variable.name = 'Variable'
-variable = Variable	-- shorthand / case convention
 
 -- the old 'value' assignment is going to be replaced with :replace()
 -- 'deferDiff' replaced with a list of dependencies, assigned with :depends()
@@ -34,4 +33,3 @@ function Variable:depends(...)
 end
 
 return Variable
-

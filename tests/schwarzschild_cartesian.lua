@@ -183,7 +183,6 @@ local dn = Tensor'_uv'
 -- ... probably because we're trying to derefernce an uevaluated multiplication ... so it has no internal structure yet ...
 -- ... so should (a) tensor algebra be immediately simplified, or
 --				(b) dereferences require simplification?
--- also looks like __newindex is broken
 dn['_uv'] = (n'_v,u' - (Gamma'^w_vu' * n'_w')()'_uv')()
 for _,xi in ipairs(spatialCoords) do
 	dn = dn:replace(r:diff(xi), xi/r)()
