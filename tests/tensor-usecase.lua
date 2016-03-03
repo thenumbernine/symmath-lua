@@ -1,4 +1,6 @@
 #! /usr/bin/env luajit
+local range = require 'ext.range'
+local table = require 'ext.table'
 local symmath = require 'symmath'
 local TensorIndex = require 'symmath.tensor.TensorIndex'
 local MathJax = require 'symmath.tostring.MathJax'

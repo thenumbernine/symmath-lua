@@ -6,6 +6,8 @@ hamiltonian = (|x_1 - x_2| - restLength)
 x'' = -(k/m)(x-s) = 
 --]]
 
+local class = require 'ext.class'
+local table = require 'ext.table'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax

@@ -100,7 +100,9 @@ printbr(var'\\eta''_uv':eq(eta'_uv'()))
 local g = (eta'_uv' - 2 * H * l'_u' * l'_v')()
 printbr(var'g''_uv':eq(g'_uv'()))
 
-error"current matrix inverse is too slow for n=4"
+print"current matrix inverse is too slow for n=4"
+do return end
+
 Tensor.metric(g)
 
 local gInv = Tensor.metric().metricInverse

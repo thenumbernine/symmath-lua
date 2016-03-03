@@ -5,6 +5,7 @@ math for Alcubierre's "Introduction to 3+1 Numerical Relativity" (http://www.ama
 and "The appearance of coordinate shocks in hyperbolic formalisms of General Relativity" (http://arxiv.org/pdf/gr-qc/9609015v2.pdf) 
 --]]
 
+local table = require 'ext.table'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax

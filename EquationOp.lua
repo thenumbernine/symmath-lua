@@ -1,4 +1,5 @@
 local class = require 'ext.class'
+local table = require 'ext.table'
 local BinaryOp = require 'symmath.BinaryOp'
 
 -- equality

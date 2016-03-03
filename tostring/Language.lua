@@ -3,6 +3,7 @@ parent class of all language-specific ToString child classes
 --]]
 
 local class = require 'ext.class'
+local table = require 'ext.table'
 local ToString = require 'symmath.tostring.ToString'
 local Language = class(ToString)
 
@@ -48,4 +49,3 @@ function Language:prepareForCompile(expr, paramInputs)
 end
 
 return Language
-

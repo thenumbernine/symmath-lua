@@ -21,6 +21,8 @@
 --]]
 
 -- notebook expects symmath to be assigned in global scope
+local string = require 'ext.string'
+local table = require 'ext.table'
 symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
@@ -52,8 +54,8 @@ function asserteq(a,b)
 end
 
 function notebook(cmd)
-	for _,line in ipairs(cmd:split('\n')) do
-		line = line:trim()
+	for _,line in ipairs(string.split(cmd,'\n')) do
+		line = string.trim(line)
 		if #line > 0 then
 			printbr('> '..line)
 			if line:sub(1,1) == '=' then

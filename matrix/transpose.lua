@@ -1,3 +1,4 @@
+local table = require 'ext.table'
 return function(A)
 	local Array = require 'symmath.Array'
 	local Matrix = require 'symmath.Matrix'
@@ -15,4 +16,3 @@ return function(A)
 	end
 	return Matrix(table.unpack(rows))
 end
-
