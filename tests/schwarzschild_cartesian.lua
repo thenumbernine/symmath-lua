@@ -139,17 +139,17 @@ Tensor.metric(g, gInv)
 
 -- metric partial
 -- assume dr/dt is zero
-local dg = Tensor'_wuv'
-dg['_wuv'] = g'_uv,w'()
+local dg = Tensor'_uvw'
+dg['_uvw'] = g'_uv,w'()
 for _,xi in ipairs(spatialCoords) do
 	dg = dg:replace(r:diff(xi), xi/r)
 end
 dg = dg()
 printbr'metric partial derivatives:'
-printbr(var'g''_uv,w':eq(dg'_wuv'()))
+printbr(var'g''_uv,w':eq(dg'_uvw'()))
 
 -- Christoffel: G_abc = 1/2 (g_ab,c + g_ac,b - g_bc,a) 
-local Gamma = ((dg'_cab' + dg'_bac' - dg'_abc') / 2)()
+local Gamma = ((dg'_abc' + dg'_acb' - dg'_bca') / 2)()
 printbr'1st kind Christoffel:'
 printbr(var'\\Gamma''_uvw':eq(Gamma'_uvw'()))
 

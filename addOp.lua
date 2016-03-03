@@ -36,7 +36,7 @@ addOp.visitorHandler = {
 		-- the opposite of this is in mulOp:prune's applyDistribute
 		-- don't leave both of them uncommented or you'll get deadlock
 		if #expr <= 1 then return end
-		
+	
 		local function nodeToProdList(x)
 			local prodList
 			
@@ -89,7 +89,20 @@ addOp.visitorHandler = {
 
 			return prodList
 		end
-				
+		
+		local function prodListToNode(list)
+			list = list:map(function(x)
+				if x.power == Constant(1) then
+					return x.term
+				else
+					return x.term ^ x.power:simplify()
+				end
+			end)
+			if #list == 0 then return Constant(1) end
+			if #list == 1 then return list[1] end
+			return mulOp(list:unpack())
+		end
+
 		local function pruneProdList(listToPrune, listToFind)
 			-- prods is our total list to be factored out
 			-- checkProds is the list for the current child
@@ -111,35 +124,53 @@ addOp.visitorHandler = {
 				end
 			end
 		end
-
+		
+		local tolua = require 'ext.tolua'
+		
 		-- 1) get all terms and powers
-		local prodsList = table()
+		local prodLists = table()
 		for i=1,#expr do
-			prodsList[i] = nodeToProdList(expr[i])
+			prodLists[i] = nodeToProdList(expr[i])
 		end
-	
--- without this (1-x)/(x-1) doesn't simplify to -1
--- TODO but (y-x)/(x-y) still doesn't simplify to -1 ...
+		
+		-- sort by prodLists[i].term, excluding all constants
+		local function sortstr(list)
+			if #list == 0 then return '' end
+			if #list == 1 and Constant.is(list[1].term) then return '' end
+			return table.map(list, function(x,_,t)
+				if Constant.is(x.term) then return end
+				return symmath.Verbose(x.term), #t+1
+			end):concat(',')
+		end
+		prodLists:sort(function(a,b)
+			return sortstr(a) < sortstr(b)
+		end)
+		
+		-- rebuild exprs accordingly
+		assert(#prodLists == #expr)
+		for i=1,#prodLists do
+			expr[i] = prodListToNode(prodLists[i])
+		end
+
+-- without this (y-x)/(x-y) doesn't simplify to -1
 -- [[
 		-- instead of only factoring the -1 out of the constant
 		-- also add double the -1 to the rest of the terms (which should equate to being positive)
 		-- so that signs don't mess with simplifying division
 		-- ex: -1+x => (-1)*1+(-1)*(-1)*x => -1*(1+(-1)*x) => -1*(1-x)
-		-- TODO don't just use constants, use lowest polynomial or some method
-		-- TODO fix both by just sorting the expr above ... assuming it uses commutative multiplications
 		for i=1,#expr do
-			if Constant.is(expr[i]) and expr[i].value < 0 then
+			if #prodLists[i] > 0 and Constant.is(prodLists[i][1].term) and prodLists[i][1].term.value < 0 then
 				for j=1,#expr do
-					if not Constant.is(expr[j]) then
-						local index = prodsList[j]:find(nil, function(factor)
+					if j>i then
+						local index = prodLists[j]:find(nil, function(factor)
 							return factor.term == Constant(-1)
 						end)
 						if index then
-							prodsList[j][index].power = (prodsList[j][index].power + 2):simplify()
+							prodLists[j][index].power = (prodLists[j][index].power + 2):simplify()
 						else
 							-- insert two copies so that one can be factored out
 							-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
-							prodsList[j]:insert{
+							prodLists[j]:insert{
 								term = Constant(-1),
 								power = Constant(2),
 							}
@@ -151,9 +182,9 @@ addOp.visitorHandler = {
 --]]
 		-- 2) find smallest set of common terms
 		
-		local minProds = prodsList[1]:map(function(prod) return prod.term end)
-		for i=2,#prodsList do
-			local otherProds = prodsList[i]:map(function(prod) return prod.term end)
+		local minProds = prodLists[1]:map(function(prod) return prod.term end)
+		for i=2,#prodLists do
+			local otherProds = prodLists[i]:map(function(prod) return prod.term end)
 			for j=#minProds,1,-1 do
 				local found = false
 				for k=1,#otherProds do
@@ -177,17 +208,17 @@ addOp.visitorHandler = {
 			-- 3) find abs min power of all terms
 			local minPower
 			local foundNonConstMinPower
-			for i=1,#prodsList do
-				for j=1,#prodsList[i] do
-					if prodsList[i][j].term == minProd then
-						if Constant.is(prodsList[i][j].power) then
+			for i=1,#prodLists do
+				for j=1,#prodLists[i] do
+					if prodLists[i][j].term == minProd then
+						if Constant.is(prodLists[i][j].power) then
 							if minPower == nil then
-								minPower = prodsList[i][j].power.value
+								minPower = prodLists[i][j].power.value
 							else
-								minPower = math.min(minPower, prodsList[i][j].power.value)
+								minPower = math.min(minPower, prodLists[i][j].power.value)
 							end
 						else	-- if it is variable then ... just use the ... first?
-							minPower = prodsList[i][j].power
+							minPower = prodLists[i][j].power
 							foundNonConstMinPower = true
 							break
 						end
@@ -197,11 +228,11 @@ addOp.visitorHandler = {
 			end
 			minPowers[i] = minPower
 			-- 4) factor them out
-			for i=1,#prodsList do
-				for j=1,#prodsList[i] do
-					if prodsList[i][j].term == minProd then
-						prodsList[i][j].power = prodsList[i][j].power - minPower
-						prodsList[i][j].power = prune(prodsList[i][j].power) or prodsList[i][j].power
+			for i=1,#prodLists do
+				for j=1,#prodLists[i] do
+					if prodLists[i][j].term == minProd then
+						prodLists[i][j].power = prodLists[i][j].power - minPower
+						prodLists[i][j].power = prune(prodLists[i][j].power) or prodLists[i][j].power
 					end
 				end
 			end
@@ -211,17 +242,7 @@ addOp.visitorHandler = {
 		local terms = minProds:map(function(minProd,i) return minProd ^ minPowers[i] end)
 		
 		-- then add what's left of the original sum
-		local lastTerm = prodsList:map(
-			function(list)
-				list = list:map(function(x)
-					if x.power == Constant(1) then
-						return x.term
-					else
-						return x.term ^ x.power:simplify()
-					end
-				end)
-				return #list == 1 and list[1] or mulOp(list:unpack())
-			end)
+		local lastTerm = prodLists:map(prodListToNode)
 		lastTerm = #lastTerm == 1 and lastTerm[1] or addOp(lastTerm:unpack())
 
 		terms:insert(lastTerm)
