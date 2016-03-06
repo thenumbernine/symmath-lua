@@ -32,17 +32,16 @@ Verbose.lookupTable = {
 		end
 		return s	
 	end,
-	[require 'symmath.Derivative'] = function(self, expr) 
-		return 'Derivative{'..table.map(expr, function(x,k)
+	[require 'symmath.Expression'] = function(self, expr)
+		return expr.name..'{'..table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self(x)
 		end):concat(', ')..'}'
 	end,
-	[require 'symmath.Array'] = function(self, expr)
-		return 'Array{'..table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self(x)
-		end):concat(', ')..'}'
+	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+		-- NOTICE if TensorIndex ever became an Expression then its __tostring would be overriding the original
+		-- and if it didn't override the original ... then this tostring() call would be a recursive call
+		return expr.name..'{'..tostring(expr)..'}'
 	end,
 }
 
