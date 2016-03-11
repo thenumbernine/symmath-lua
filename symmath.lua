@@ -165,6 +165,7 @@ symmath.atan2 = require 'symmath.atan2'
 symmath.cosh = require 'symmath.cosh'
 symmath.sinh = require 'symmath.sinh'
 symmath.tanh = require 'symmath.tanh'
+symmath.Heaviside = require 'symmath.Heaviside'
 
 symmath.unmOp = require 'symmath.unmOp'
 symmath.BinaryOp = require 'symmath.BinaryOp'

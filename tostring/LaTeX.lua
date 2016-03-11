@@ -263,10 +263,17 @@ LaTeX.lookupTable = {
 		return s
 	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		local symmath = require 'symmath'
+		local Array = symmath.Array
+		local TensorRef = require 'symmath.tensor.TensorRef'
+		local Variable = symmath.Variable
+
 		local t = expr[1]
 		local indexes = {table.unpack(expr, 2)}
 
 		local s = self:applyLaTeX(t)
+		if not (Variable.is(t) or Array.is(t) or TensorRef.is(t)) then s = '\\left(' .. s .. '\\right)' end
+		
 		for _,index in ipairs(indexes) do
 			s = '{' .. s .. '}' .. self:apply(index)
 		end

@@ -6,31 +6,56 @@ local Lua = class(Language)
 
 Lua.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr, vars)
-		return tostring(expr.value) 
+		return {tostring(expr.value)}
 	end,
 	[require 'symmath.Invalid'] = function(self, expr, vars)
-		return '(0/0)'
+		return {'(0/0)'}
 	end,
 	[require 'symmath.Function'] = function(self, expr, vars)
-		return 'math.' .. expr.name .. '(' .. table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x, vars) 
-		end):concat(',') .. ')'
+		--[[
+		TODO
+		'math.' .. expr.name <- only works for builtin functions
+		others have to be defined somewhere they can be compiled in ...
+		that means we might have to return a state object which has the compile string as well as a list of other functions to be defined
+		--]]
+		local predefs = table()
+		local s = table()
+		for i,x in ipairs(expr) do
+			local sx = self:apply(x, vars)
+			s:insert(sx[1])
+			predefs = table(predefs, sx[2])
+		end
+		s = s:concat(', ')
+		
+		local funcName
+		if not expr.code then
+			funcName = 'math.'..expr.name
+		else
+			funcName = expr.name
+			predefs['local '..funcName..' = '..expr.code] = true
+		end
+		return {funcName .. '(' .. s .. ')', predefs}
 	end,
 	[require 'symmath.unmOp'] = function(self, expr, vars)
-		return '(-'..self:apply(expr[1], vars)..')'
+		local sx = self:apply(expr[1], vars)
+		return {'(-'..sx[1]..')', sx[2]}
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr, vars)
-		return '('..table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x, vars) 
-		end):concat(' '..expr.name..' ')..')'
+		local predefs = table()
+		local s = table()
+		for i,x in ipairs(expr) do
+			local sx = self:apply(x, vars)
+			s:insert(sx[1])
+			predefs = table(predefs, sx[2])
+		end
+		s = s:concat(' '..expr.name..' ')
+		return {'('..s..')', predefs}
 	end,
 	[require 'symmath.Variable'] = function(self, expr, vars)
 		if table.find(vars, nil, function(var) 
 			return expr.name == var.name 
 		end) then
-			return expr.name
+			return {expr.name}
 		end
 		error("tried to compile variable "..expr.name.." that wasn't in your function argument variable list!\n"
 		..(require 'symmath.tostring.MultiLine')(expr))
@@ -40,19 +65,26 @@ Lua.lookupTable = {
 		..(require 'symmath.tostring.MultiLine')(expr))
 	end,
 	[require 'symmath.Array'] = function(self, expr, vars)
-		return '{' .. table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x, vars)
-		end):concat(', ') .. '}'
+		local predefs = table()
+		local s = table()
+		for i,x in ipairs(expr) do
+			local sx = self:apply(x,vars)
+			s:insert(sx[1])
+			predefs = table(predefs, sx[2])
+		end
+		s = s:concat(', ')
+		return {'{'..s..'}', predefs}
 	end,
 }
 
 function Lua:generate(expr, vars)
-	return 'return function('..
+	local info = self:apply(expr, vars)
+	local body = info[1]
+	local predefs = info[2]
+	local code = table.keys(predefs):concat'\n'
+	return code..'\nreturn function('..
 		vars:map(function(var) return var.name end):concat(', ')
-	..') return '..
-		self:apply(expr, vars)
-	..' end'
+	..') return '..body..' end'
 end
 
 -- returns (1) the function and (2) the code

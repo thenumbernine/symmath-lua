@@ -68,6 +68,7 @@ convert to pseudo-Cartesian via:
 local factorLinearSystem = require 'symmath.factorLinearSystem'
 local results = factorLinearSystem({dsSq}, table{dt^2, dx^2, dy^2, dz^2, dx*dy, dx*dz, dy*dz})
 printbr'factoring...'
+--there's MathJax error somewhere in this output...
 printbr(results)
 
 print(MathJax.footer)
