@@ -81,8 +81,8 @@ function Lua:generate(expr, vars)
 	local info = self:apply(expr, vars)
 	local body = info[1]
 	local predefs = info[2]
-	local code = table.keys(predefs):concat'\n'
-	return code..'\nreturn function('..
+	local code = predefs and table.keys(predefs):concat'\n'..'\n' or ''
+	return code..'return function('..
 		vars:map(function(var) return var.name end):concat(', ')
 	..') return '..body..' end'
 end
