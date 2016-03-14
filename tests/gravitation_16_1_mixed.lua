@@ -38,13 +38,9 @@ local function printbr(...) print(...) print'<br>' end
 
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}
-local xyz = var'xyz'	-- index range placeholder
 Tensor.coords{
 	{variables = coords},
 	{variables = {x,y,z}, symbols = 'ijklmn'},
-	{variables = {t, xyz}, symbols = range(0,26):map(function(i)
-		return string.char(('A'):byte()+i)
-	end):concat()},
 }
 
 local Phi = var('\\Phi', coords)
@@ -52,7 +48,12 @@ local rho = var('\\rho', coords)
 local P = var('P', coords)
 
 local delta = var'\\delta'
-local delta4LLDef = delta'_uv':eq(Tensor('_UV', {1, 0}, {0, delta'_ij'}))
+--[[
+NOTE that the skew 0's are implicitly expanded to 1x3 and 3x1 respectively
+should this be only for zeroes?  only for constants along diagonal?  never at all?
+upon reading indexes, subindex are found then it should know how
+--]]
+local delta4LLDef = delta'_uv':eq(Tensor('_u(i)v(j)', {1, 0}, {0, delta'_ij'}))
 printbr(delta4LLDef)
 --[[
 delta'_uv'() tries to transform the 2x2 mixed into a 4x4
@@ -64,6 +65,35 @@ TODO how to handle this?
 local eta = var'\\eta'
 local eta4LLDef = eta'_uv':eq(Tensor('_UV', {-1, 0}, {0, delta'_ij'}))
 printbr(eta4LLDef)
+--[[
+what has to eventually happen is mixed-def tensors need to define their subtensors
+so, rather than g'_uv':eq(Tensor('_UV', ...)), we need something more like g'_uv':eq(Tensor('_u(i)v(j)', ...)) or something like that
+... something to denote that i is a subtensor of u and j of v
+... but what of when we have multiple subtensor dimensions ... especially for subtensor factoring of larger linear systems
+	like deriving the flux matrix from the first-order ADM equations, in which case I'll use the same index for separate dimensions,
+	provided those indexes only show up in either the input or output.
+
+	i.e. 
+	[A_i]   [E_ij F_ij] [C_j]
+	[B_i] = [G_ij H_ij] [D_j]
+	...does make sense and does correctly expand to the following:
+	A_i = E_ij C_j + F_ij D_j
+	B_i = G_ij C_j + H_ij D_j
+	...but could be confusing to specify to the class, that indexes u and v would both be using subindexes i and j
+	Tensor('_u(i,i)', A'_i', B'_i') :eq Tensor('_u(i,i)v(j,j)', {E'_ij', F'_ij'}, {G'_ij', H'_ij'}) * Tensor('_v(j,j)', C'_j', D'_j')
+	This could get ambiguous if there were i's in both the lhs and the rhs vectors.
+	maybe not.  so long as each index has subindexes unique to itself, we're fine.
+	ambiguity only arises if one of u's subindexes matches one of v's subindexes
+	An easier-to-code restriction would be to force things like so:
+	[A_i]   [E_ik F_il] [C_k]
+	[B_j] = [G_jk H_jl] [D_l]
+	...which would expand to:
+	A_i = E_ik C_k + F_il D_l
+	B_j = G_jk C_k + H_jl D_l
+	...and could be defined with subtensors:
+	Tensor('_u(i,j)', A'_i', B'_j') :eq Tensor('_u(i,j)v(k,l)', {E'_ik', F'_il'}, {G'_jk', H'_jl'}) * Tensor('_v(k,l)', C'_k', D'_l')
+
+--]]
 --printbr(var'\\eta''_uv':eq(eta'_uv'()))
 
 local g = var'g'
@@ -72,15 +102,21 @@ printbr(g4LLDef)
 --local g = (eta'_uv' - 2 * Phi * delta'_uv')()
 
 --[[
+TODO
 now for the mixed-definition metric inverse...
 two ways to go about providing this:
 (1) do our mixed expansion to get the full 4x4 representation of g_uv, then use the matrix inverse algorithm on that.
 (2) explicitly provide a mixed representation
-(3) some algebraic combination of (1) and (2) to automatically find the mixed inverse
+(3) some algebraic combination of (1) and (2) to automatically find the mixed inverse ... like do a typical gauss-jordan inverse, then when you encounter nested tensors, use algebra to deduce the inverse
 for now I'll explicitly provide the mixed representation...
 --]]
 local g4UUDef = g'^uv':eq(Tensor('^UV', {-1/(1+2*Phi), 0}, {0, delta'^ij'/(1-2*Phi)}))
 printbr(g4UUDef)
+--[[
+TODO how about metric transformations in index notation?
+just use the variable as the metric/inverse ...
+... but how is such a transformation going to work?  any :simplify() call will break things...
+--]]
 Tensor.metric(g, g)
 
 local Gamma = var'\\Gamma'
@@ -117,6 +153,8 @@ printbr(g'_uv,w':eq(
 	:subst(g4LLDef)
 	:subst(eta4LLDef)
 	:subst(delta4LLDef)
+))
+--[[
 	-- here's where a normal simplify() should go, but it will try to simplify the indexed vars as well. 	
 	:map(function(expr)
 		-- map processes children first
@@ -132,6 +170,7 @@ printbr(g'_uv,w':eq(
 		end
 	end)
 ))
+--]]
 
 local Gamma4ULLDef = Gamma'^a_bc':eq(g'^ad' * Gamma'_dbc')
 printbr(Gamma4ULLDef)

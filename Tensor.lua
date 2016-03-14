@@ -390,7 +390,7 @@ function Tensor:init(...)
 		-- got a string of indexes
 		if type(args[1]) == 'string'	
 		-- got an array of TensorIndexes
-		or (type(args[1]) == 'table'  and TensorIndex.is(args[1][1]))
+		or (type(args[1]) == 'table' and TensorIndex.is(args[1][1]))
 		then
 			
 			local indexes = table.remove(args, 1)
