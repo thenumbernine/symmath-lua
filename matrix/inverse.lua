@@ -1,6 +1,7 @@
 --[[
 A = matrix to invert
 AInv = vector to solve the linear system inverse of.  default: identity, to produce the ivnerse matrix.
+callback = watch the progress!
 
 TODO how to handle matrix inverses?
 as a separate function? symmath.inverse.
@@ -9,7 +10,7 @@ same question with per-component matrix multiplication
 then there's the question of how to integrate arrays in general
 then there's breaking down prune/simplify op visitors into rules, so I could quickly insert a new rule when using matrices 
 --]]
-return function(A, AInv)
+return function(A, AInv, callback)
 	local Array = require 'symmath.Array'
 	local Matrix = require 'symmath.Matrix'
 	local Constant = require 'symmath.Constant'
@@ -68,7 +69,8 @@ return function(A, AInv)
 				end
 			end
 			if not found then
-				error("couldn't find a row to pivot")
+				-- return the progress if things fail
+				error("couldn't find a row to pivot\n"..AInv..'\n'..A)
 			end
 		end
 		-- rescale diagonal
@@ -85,6 +87,7 @@ return function(A, AInv)
 			A = simplify(A)
 			AInv = simplify(AInv)
 --print('\\(A =\\) '..A..', \\(A^{-1}\\) = '..AInv..'<br>')
+			if callback then callback(AInv, A) end
 		end
 		-- eliminate columns apart from diagonal
 		for j=1,n do
@@ -106,6 +109,7 @@ return function(A, AInv)
 --print('simplifying A^{-1}...<br>')
 					AInv = simplify(AInv)
 --print('\\(A^{-1} = \\)'..AInv..'<br>')
+					if callback then callback(AInv, A) end
 				end
 			end
 		end

@@ -160,11 +160,10 @@ how to handle subtensors ...
 how to we declare the indexes of a tensor to use subindexes?
 if we say Tensor'_uv' for defaults uv on coords t,x,y,z then the ctor will span 4 variables ...
 if we create a new set of indexes for groups of indexes ... we'd have to specify the layout beforehand (to be compatible with the current system)
-	i.e. UVW = indexGroup{abc, ijk}
 if we use matrices ...
 ... then how will we access them in the future?
 --]]
-local gLLDef = g'_UV':eq(Tensor('_UV', 
+local gLLDef = g'_uv':eq(Tensor('_UV', 
 	{
 		-alpha^2 + beta'^k' * beta'_k',
 		beta'_j',
@@ -175,7 +174,7 @@ local gLLDef = g'_UV':eq(Tensor('_UV',
 ))
 print(gLLDef)
 
-local gUUDef = g'^UV':eq(Tensor('^UV',
+local gUUDef = g'^uv':eq(Tensor('^UV',
 	{
 		-1/alpha^2,
 		beta'^j'/alpha^2,

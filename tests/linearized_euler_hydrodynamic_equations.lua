@@ -155,7 +155,23 @@ for dim=1,3 do
 	matrixRHS = dq_dts + matrixRHS
 
 	matrixRHS = matrixRHS() 	-- simplify the rhs only -- keep the dts and dxs separate
-	printbr(matrixLHS:eq(matrixRHS))
+	local matrixEqn = matrixLHS:eq(matrixRHS)
+	printbr(matrixEqn)
+
+	printbr'factor matrix in primitive variables'
+
+	local primMatrixEqn = matrixEqn:replace(qs[1], rho)
+	for j=1,dim do
+		primMatrixEqn = primMatrixEqn:replace(qs[j+1], rho * us[j])
+	end
+	primMatrixEqn = primMatrixEqn:replace(qs[dim+2], rho * e)
+	-- only simplify matrix contents
+	primMatrixEqn:map(function(expr)
+		if Matrix.is(expr) then	-- why won't this work ...
+			return expr:factorDivision()
+		end
+	end)
+	printbr(primMatrixEqn)
 
 	printbr('eigenvalues of ${{\\partial F_x}\\over{\\partial q}}$')
 	local lambda = var'\\lambda'

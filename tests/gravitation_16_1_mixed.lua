@@ -73,25 +73,33 @@ so, rather than g'_uv':eq(Tensor('_UV', ...)), we need something more like g'_uv
 	like deriving the flux matrix from the first-order ADM equations, in which case I'll use the same index for separate dimensions,
 	provided those indexes only show up in either the input or output.
 
-	i.e. 
-	[A_i]   [E_ij F_ij] [C_j]
-	[B_i] = [G_ij H_ij] [D_j]
-	...does make sense and does correctly expand to the following:
-	A_i = E_ij C_j + F_ij D_j
-	B_i = G_ij C_j + H_ij D_j
-	...but could be confusing to specify to the class, that indexes u and v would both be using subindexes i and j
-	Tensor('_u(i,i)', A'_i', B'_i') :eq Tensor('_u(i,i)v(j,j)', {E'_ij', F'_ij'}, {G'_ij', H'_ij'}) * Tensor('_v(j,j)', C'_j', D'_j')
-	This could get ambiguous if there were i's in both the lhs and the rhs vectors.
-	maybe not.  so long as each index has subindexes unique to itself, we're fine.
-	ambiguity only arises if one of u's subindexes matches one of v's subindexes
-	An easier-to-code restriction would be to force things like so:
-	[A_i]   [E_ik F_il] [C_k]
-	[B_j] = [G_jk H_jl] [D_l]
-	...which would expand to:
-	A_i = E_ik C_k + F_il D_l
-	B_j = G_jk C_k + H_jl D_l
-	...and could be defined with subtensors:
-	Tensor('_u(i,j)', A'_i', B'_j') :eq Tensor('_u(i,j)v(k,l)', {E'_ik', F'_il'}, {G'_jk', H'_jl'}) * Tensor('_v(k,l)', C'_k', D'_l')
+i.e. 
+[A_i]   [E_ij F_ij] [C_j]
+[B_i] = [G_ij H_ij] [D_j]
+...does make sense and does correctly expand to the following:
+A_i = E_ij C_j + F_ij D_j
+B_i = G_ij C_j + H_ij D_j
+...but could be confusing to specify to the class, that indexes u and v would both be using subindexes i and j
+Tensor('_u(i,i)', A'_i', B'_i') :eq Tensor('_u(i,i)v(j,j)', {E'_ij', F'_ij'}, {G'_ij', H'_ij'}) * Tensor('_v(j,j)', C'_j', D'_j')
+This could get ambiguous if there were i's in both the lhs and the rhs vectors.
+maybe not.  so long as each index has subindexes unique to itself, we're fine.
+ambiguity only arises if one of u's subindexes matches one of v's subindexes
+An easier-to-code restriction would be to force things like so:
+[A_i]   [E_ik F_il] [C_k]
+[B_j] = [G_jk H_jl] [D_l]
+...which would expand to:
+A_i = E_ik C_k + F_il D_l
+B_j = G_jk C_k + H_jl D_l
+...and could be defined with subtensors:
+Tensor('_u(i,j)', A'_i', B'_j') :eq Tensor('_u(i,j)v(k,l)', {E'_ik', F'_il'}, {G'_jk', H'_jl'}) * Tensor('_v(k,l)', C'_k', D'_l')
+
+Note that in the 6x6 case, if one subindex was specified and the other left to implicitly match, ambiguity might arise.
+Unless subtensor values are first gathered and next matched against specified subtensor indexes ... which might be a NP problem ... though on a small scale.
+
+In this case, Tensor({1,0}, {0, delta'_ij'}) will need indexes ... '_u(i)v(j)' will need to specify which dimensions the i and j are associated with.
+Maybe a better index specification would be '_u(1,i)v(1,j)' ... to specify that one dimension will be explicitly specified? 
+Or what about using _'s for unspecified dimensions?  'u(_,i)v(_,j)' ?  that would make high-dimension dense tensors tedious to specify.
+This seems inches away from defining index objects distinctly (which is what is going on behind the scenes anyways)
 
 --]]
 --printbr(var'\\eta''_uv':eq(eta'_uv'()))

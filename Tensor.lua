@@ -245,12 +245,6 @@ TODO Tensor construction:
 		- function that accepts n parameters (for n rank of tensor)
 		- table that is n nestings deep (for n rank of tensor)
 		- aka args.values
-...
-how to specify index-only (value-less) tensors?
-	- extra flag?  'indexOnly=true' only for vararg ... bad idea
-	- if values are not provided then the tensor should be a representation with no actual values - i.e. an index-Tensor
-		- this means no more defaulting values to zero
-
 
 information the constructor needs...
 possible combinations:
@@ -258,7 +252,11 @@ possible combinations:
       * *  	\ list of dimension (excludes variance and optional values)
   *       *	/ dense content: expressions as nested tables (includes dimensions, excludes variance)
     *   *  	\ lambdas for content generation (includes values, excludes dimension or variance)
+
 ... NOTICE I'm getting rid of non-dense .. I'll just have deferred indexes on *all* expressions, variables included, which will serve the same
+now that index evaluation is deferred, value-less tensors can be represented as variables with unevaluated index dereferences:
+g = var'g'; g'_ij'	<- will give you a variable with unevaluated dereference _ij.
+	evaluating it will cause an error, unless you substitute g for a proper Tensor object
 
 constructors:
 	contra/co-variant alone:
