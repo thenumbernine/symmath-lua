@@ -175,8 +175,23 @@ Expression.det = Expression.determinant
 -- ... = list of equations
 function Expression:subst(...)
 	local result = self:clone()
-	for _,eqn in ipairs{...} do
-		result = result:replace(eqn:lhs(), eqn:rhs())
+	for i=1,select('#', ...) do
+		local eqn = select(i, ...)
+		local lhs = eqn:lhs()
+		local rhs = eqn:rhs()
+	
+		-- special case for TensorRef's -- try replacing all index permutations
+		local TensorRef = require 'symmath.tensor.TensorRef'
+		if lhs:isa(TensorRef) then
+			-- TODO
+			-- for all permutations of indexes that show up in 'result' ...
+			-- ... length the # of indexes to lhs ...
+			-- ... reindex both lhs and rhs to that permutation
+			-- ... then try to replace 
+			result = result:replace(lhs, rhs)
+		else
+			result = result:replace(lhs, rhs)
+		end
 	end
 	return result
 end
@@ -220,6 +235,41 @@ function Expression:__call(...)
 
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	return TensorRef(self, table.unpack(indexes))
+end
+
+-- another way tensor is seeping into everything ...
+-- __call does Tensor reindexing, now this does reindexing for all other expressions ...
+-- fwiw this is only being used for subst tensor equalities, which I should automatically incorporate into subst next ...
+function Expression:reindex(args)
+	local swaps = table()
+	for k,v in pairs(args) do
+		-- currently only handles single-char symbols
+		-- TODO allow keys to be tables of multi-char symbols
+		assert(#k == #v, "reindex key and value length needs to match.  got "..#k.." and "..#v)
+		for i=1,#k do
+			swaps:insert{src = v:sub(i,i), dst = k:sub(i,i)}
+		end
+	end
+	local Tensor = require 'symmath.Tensor'
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
+	local function replaceAllSymbols(expr)
+		for _,swap in ipairs(swaps) do
+			if expr.symbol == swap.src then
+				expr.symbol = swap.dst
+				break
+			end
+		end
+	end
+	return self:map(function(expr)
+		if TensorIndex.is(expr) then
+			replaceAllSymbols(expr)
+		elseif Tensor.is(expr) then
+			for _,index in ipairs(expr.variance) do
+				replaceAllSymbols(index)
+			end
+		end
+		return expr
+	end)
 end
 
 return Expression
