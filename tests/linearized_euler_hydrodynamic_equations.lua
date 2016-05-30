@@ -55,8 +55,11 @@ local uz = var('u_z', coords)
 
 local e = var('e', coords)		-- total specific energy 
 
+--local usePrims = true
+
 -- dimension related
 for dim=1,3 do
+--for dim=1,1 do
 	print('<h3>'..dim..'D case:</h3>')
 	
 	local us = table{ux, uy, uz} 
@@ -75,6 +78,13 @@ for dim=1,3 do
 	local ei = e - ek					-- specific internal energy
 	local P = (gamma - 1) * rho * ei	-- pressure
 	local E = rho * e					-- total energy
+	
+	-- primitives
+	local ws
+	if usePrims then
+		P = var('P', coords)
+		ws = table{rho}:append(us):append{P}
+	end
 
 	-- equations 
 	printbr('original equations:')
@@ -99,19 +109,22 @@ for dim=1,3 do
 
 	eqns:map(function(eqn) printbr(eqn) end)
 
-	printbr('substituting state variables:')
-	eqns = eqns:map(function(eqn)
-		local i = 1
-		eqn = eqn:replace(rho, qs[i]) i=i+1
-		for j=1,dim do
-			eqn = eqn:replace(us[j], qs[i] / qs[1]) i=i+1
-		end
-		assert(qs[i], "failed to find state var for "..i)
-		eqn = eqn:replace(e, qs[i] / qs[1])
-		
-		return eqn
-	end)
-	eqns:map(function(eqn) printbr(eqn) end)
+	if usePrims then
+	else
+		printbr('substituting state variables:')
+		eqns = eqns:map(function(eqn)
+			local i = 1
+			eqn = eqn:replace(rho, qs[i]) i=i+1
+			for j=1,dim do
+				eqn = eqn:replace(us[j], qs[i] / qs[1]) i=i+1
+			end
+			assert(qs[i], "failed to find state var for "..i)
+			eqn = eqn:replace(e, qs[i] / qs[1])
+			
+			return eqn
+		end)
+		eqns:map(function(eqn) printbr(eqn) end)
+	end
 
 	printbr'distribute'
 
@@ -128,7 +141,7 @@ for dim=1,3 do
 
 	local dFk_dqs = table()
 	for j=1,dim do
-		local dq_dxk = qs:map(function(q) return q:diff(xs[j]) end)
+		local dq_dxk = (usePrims and ws or qs):map(function(q) return q:diff(xs[j]) end)
 
 		local dFk_dq
 		dFk_dq, remainingTerms = symmath.factorLinearSystem(
@@ -146,7 +159,7 @@ for dim=1,3 do
 	local matrixRHS = -remainingTerms
 
 	-- convert from table to matrix
-	local dq_dts = Matrix(qs:map(function(q)
+	local dq_dts = Matrix((usePrims and ws or qs):map(function(q)
 		return {q:diff(t)}
 	end):unpack())
 
