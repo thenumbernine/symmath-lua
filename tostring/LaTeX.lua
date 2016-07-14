@@ -135,7 +135,7 @@ LaTeX.lookupTable = {
 		if self.usePartialLHSForDerivative then
 			local s = table{'\\partial_', 
 				range(#diffVars):map(function(i)
-					return self:apply(diffVars[i])
+					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
 				end)}
 			--if not diffExprOnTop then 
 				s:insert'('
@@ -248,11 +248,11 @@ LaTeX.lookupTable = {
 			s:insert'\\limits'
 			s:insert'_'
 			if from then
-				s:insert(self:apply(from))
+				s:insert(table{'{'}:append(self:apply(from)):append{'}'})
 			end
 			if to then
 				s:insert'^'
-				s:insert(self:apply(to))
+				s:insert(table{'{'}:append(self:apply(to)):append{'}'})
 			end
 		end
 		if var then

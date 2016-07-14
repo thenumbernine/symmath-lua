@@ -23,6 +23,11 @@ function MathJax:__call(...)
 	return '$' .. MathJax.super.__call(self, ...) .. '$'
 end
 
+function MathJax.print(...)
+	print(...)
+	print'<br>'
+end
+
 -- call this to setup mathjax
 function MathJax.setup()
 	local symmath = require 'symmath'

@@ -28,6 +28,7 @@ schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
+MathJax.usePartialLHSForDerivative = true
 print(MathJax.header)
 
 local function printbr(...) print(...) print'<br>' end
@@ -37,7 +38,10 @@ local vars = symmath.vars
 local var = symmath.var
 
 -- coordinates
-local t,r,theta,phi,M = vars('t','r','\\theta','\\phi','M')
+local t,r,theta,phi = vars('t','r','\\theta','\\phi')
+
+-- mass
+local M = var('M', {r})	-- dependent on r or not?  most derivations treat M as constant, but for stellar models M varies inside of the star
 
 local coords = {t,r,theta,phi}
 Tensor.coords{
@@ -107,6 +111,12 @@ printbr()
 local Gaussian = Ricci'^a_a'()
 printbr'Gaussian curvature'
 printbr(var'R':eq(Gaussian))
+printbr()
+
+-- Einstein tensor: G_ab = R_ab - 1/2 g_ab R
+local Einstein = (Ricci'_ab' - g'_ab' * Gaussian / 2)()
+printbr'Einstein tensor'
+printbr(var'G''_ab':eq(Einstein'_ab'))
 printbr()
 
 print(MathJax.footer)

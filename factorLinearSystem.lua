@@ -42,7 +42,9 @@ return function(exprs, factors)
 						
 						-- factorDivision() should prevent this
 						if mulOp.is(expr[k][l]) then error"needs flattening" end
-						
+					
+						-- TODO what if factors[j] is a product?
+						-- in that case we need to make sure it's a common subset
 						if expr[k][l] == factors[j] then
 							assert(not found)
 							table.remove(expr[k],l)

@@ -14,7 +14,9 @@ local vars = symmath.vars
 
 -- coordinates
 local t,x,y,z = vars('t','x','y','z')
-local theta,phi = vars('r','theta','phi')
+local spatialCoords = table{t,x,y,z}
+local theta= var('\\theta', spatialCoords)
+local phi = var('\\phi', spatialCoords)
 
 -- differentials
 local dt,dx,dy,dz = vars('dt','dx','dy','dz')
@@ -38,9 +40,14 @@ local dsSq = (-(1-R/r))*dt^2 + 1/(1-R/r)*dr^2 + r^2*dtheta^2 + r^2*symmath.sin(t
 printbr'Spherical representation:'
 printbr((var'ds'^2):eq(dsSq))
 dsSq = dsSq
-	:replace(dr, (x*dx + y*dy + z*dy) / r)
+	:replace(dr, (x*dx + y*dy + z*dz) / r)
 	:replace(dtheta, (x*z*dx + y*z*dy - (x^2 + y^2)*dz) / (r^2*symmath.sqrt(x^2 + y^2)))
 	:replace(dphi, (-y*dx + x*dy) / (x^2 + y^2))
+	
+	:replace(symmath.sin(theta), symmath.sqrt(x^2 + y^2)/r)
+	:replace(y^2, r^2 - x^2 - z^2)
+	:replace(z^2, r^2 - x^2 - y^2)
+	
 	-- I should really call this 'expandDivision' because it doesn't factor ...
 	:factorDivision()
 local function rapply(expr)
@@ -66,9 +73,15 @@ convert to pseudo-Cartesian via:
 ...and verify the results are the same
 --]]
 local factorLinearSystem = require 'symmath.factorLinearSystem'
-local results = factorLinearSystem({dsSq}, table{dt^2, dx^2, dy^2, dz^2, dx*dy, dx*dz, dy*dz})
+local terms = table{dt^2, dx^2, dy^2, dz^2, dx*dy, dx*dz, dy*dz}
+local results, source = factorLinearSystem({dsSq}, terms)
 printbr'factoring...'
 --there's MathJax error somewhere in this output...
-printbr(results)
-
+--printbr(results)
+for i,term in ipairs(terms) do
+	print(term)
+	print(':')
+	printbr(results[1][i])
+end
+printbr('rest:',source[1][1])
 print(MathJax.footer)
