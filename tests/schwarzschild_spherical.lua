@@ -41,7 +41,10 @@ local var = symmath.var
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
 
 -- mass
-local M = var('M', {r})	-- dependent on r or not?  most derivations treat M as constant, but for stellar models M varies inside of the star
+local R_of_r = false
+-- dependent on r or not?  most derivations treat R as constant, but for stellar models R varies inside of the star
+-- TODO to match up with MTW, use 'R' for the planet radius and 'M' for the total mass, so 2 M for the Schwarzschild radius
+local R = var('R', R_of_r and {r} or nil)	
 
 local coords = {t,r,theta,phi}
 Tensor.coords{
@@ -49,10 +52,12 @@ Tensor.coords{
 }
 
 -- schwarzschild metric in cartesian coordinates
-local g = Tensor('_uv', function(u,v) return u == v and ({-(1-2*M/r), 1/(1-2*M/r), r^2, r^2 * symmath.sin(theta)^2})[u] or 0 end) 
+local g = Tensor('_uv', function(u,v) return u == v and ({-(1-R/r), 1/(1-R/r), r^2, r^2 * symmath.sin(theta)^2})[u] or 0 end) 
 printbr'metric'
 printbr(var'g''_uv':eq(g'_uv'()))
 printbr()
+
+local props = require 'symmath.diffgeom'(g)
 
 Tensor.metric(g)
 
@@ -84,8 +89,8 @@ printbr(var'\\ddot{x}''^a':eq(diffx2'^a'()))
 -- Christoffel partial: G^a_bc,d
 local dGamma = Tensor'^a_bcd'
 dGamma['^a_bcd'] = Gamma'^a_bc,d'()
-dGamma = dGamma:replace(symmath.cos(theta)^2, 1-symmath.sin(theta)^2)
-dGamma = dGamma()	-- this isn't removing the 1-sin^2+sin^2's...
+-- hack:
+dGamma = dGamma:replace(symmath.cos(theta)^2, 1-symmath.sin(theta)^2)() -- this isn't removing the 1-sin^2+sin^2's...
 printbr'2nd kind Christoffel partial'
 printbr(var'\\Gamma''^a_bc,d':eq(dGamma'^a_bcd'()))
 printbr()
