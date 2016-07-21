@@ -54,10 +54,20 @@ function Props:calcEqns()
 end
 
 local keys = table{'g', 'gU', 'GammaL', 'Gamma', 'Riemann', 'Ricci', 'Gaussian', 'Einstein'}
-
+local title = {
+	g = 'metric',
+	gU = 'metric inverse',
+	GammaL = '1st kind Christoffel',
+	Gamma = 'connection coefficients / 2nd kind Christoffel',
+	Riemann = 'Riemann curvature',
+	Ricci = 'Ricci curvature',
+	Gaussian = 'Gaussian curvature',
+	Einstein = 'trace-reversed Ricci curvature',
+}
 function Props:print(print_)
 	print_ = print_ or print
 	for _,key in ipairs(keys) do
+		print_(title[key]..':')
 		print_(self.eqns[key])
 	end
 end

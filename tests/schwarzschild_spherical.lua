@@ -121,7 +121,7 @@ printbr()
 -- Einstein tensor: G_ab = R_ab - 1/2 g_ab R
 local Einstein = (Ricci'_ab' - g'_ab' * Gaussian / 2)()
 printbr'Einstein tensor'
-printbr(var'G''_ab':eq(Einstein'_ab'))
+printbr(var'G''_ab':eq(Einstein'_ab'()))
 printbr()
 
 print(MathJax.footer)
