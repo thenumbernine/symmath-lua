@@ -178,11 +178,9 @@ for dim=1,3 do
 		primMatrixEqn = primMatrixEqn:replace(qs[j+1], rho * us[j])
 	end
 	primMatrixEqn = primMatrixEqn:replace(qs[dim+2], rho * e)
-	-- only simplify matrix contents
-	primMatrixEqn:map(function(expr)
-		if Matrix.is(expr) then	-- why won't this work ...
-			return expr:factorDivision()
-		end
+	-- only simplify matrix contents.  TODO skip the d/dx q matrices
+	primMatrixEqn = primMatrixEqn:map(function(expr)
+		if Matrix.is(expr) then return expr() end
 	end)
 	printbr(primMatrixEqn)
 
