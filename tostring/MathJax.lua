@@ -36,6 +36,7 @@ function MathJax.setup()
 	function printbr(...)
 		print(...)
 		print'<br>'
+		io.stdout:flush()
 	end
 end
 
