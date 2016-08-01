@@ -205,6 +205,7 @@ function Expression:__call(...)
 		return self:simplify()
 	end
 
+--print('__call reindexing')
 	-- calling with anything else?  assume index dereference
 	local indexes = ...
 

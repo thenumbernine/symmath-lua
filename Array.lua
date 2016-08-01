@@ -71,6 +71,7 @@ function Array:get(index)
 end
 
 function Array:set(index, value)
+	assert(#index > 0, "expected something in index but got an empty table: "..tolua(index))
 	local x = self
 	for i=1,#index-1 do
 		x = x[index[i]]

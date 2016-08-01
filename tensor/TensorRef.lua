@@ -59,6 +59,7 @@ TensorRef.visitorHandler = {
 		-- so commas must be all at the end
 		local function transformIndexes(withDerivatives)
 			-- raise all indexes, transform tensors accordingly
+--print('transforming indexes '..table.map(indexes,tostring):concat',')
 			for i=1,#indexes do
 				if not indexes[i].derivative == not withDerivatives then
 
@@ -72,24 +73,33 @@ TensorRef.visitorHandler = {
 					if Tensor.__coordBasis then
 						srcBasis = Tensor.findBasisForSymbol(t.variance[i].symbol)
 						dstBasis = Tensor.findBasisForSymbol(indexes[i].symbol)
-					end				
+					end
 				
 					if srcBasis ~= dstBasis then
 						-- only handling exchanges of variables at the moment
 						
 						local indexMap = {}
 						for i=1,#dstBasis.variables do
-							indexMap[i] = table.find(srcBasis.variables, dstBasis.variables[i])
+							indexMap[i] = table.find(srcBasis.variables, dstBasis.variables[i])  --assert(..., "failed to find src variable in dst basis")
 						end
 
+--print('transforming tensor\n'..t)
 						t = Tensor{
-							indexes = indexes,
+							-- only update indexes 1..i
+							-- keep the rest the same
+							-- TODO even better store an indexMap per 'i', and then update all at once
+							--indexes = indexes,
+							indexes = table.sub(indexes,1,i):append(table.sub(t.variance,i+1)),
 							values = function(...)
 								local srcIndexes = {...}
-								srcIndexes[i] = indexMap[srcIndexes[i]]
+								srcIndexes[i] = indexMap[srcIndexes[i]] -- assert(..., "failed to remap\n"..tolua({i=i, srcIndexes=srcIndexes, indexMap=indexMap}, {indent=true}))
+								if not srcIndexes[i] then return 0 end	-- zero whatever isn't there.
+								-- but if it's a subindex then srcIndexes can be nil ...
+--print('assigning at {'..table.concat(srcIndexes, ',')..'} to '..t[srcIndexes])
 								return t[srcIndexes]
 							end,
 						}
+--print('...into tensor\n'..t)
 					end
 
 					t.variance[i].symbol = indexes[i].symbol

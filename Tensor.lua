@@ -782,7 +782,9 @@ Tensor.__index = function(self, key)
 end
 
 Tensor.__newindex = function(self, key, value)
-	
+
+	-- TODO if value is a TensorRef then run the TensorRef prune transformation ...
+
 	-- I don't think I do much assignment-by-table ...
 	--  except for in the Visitor.lookupTable ...
 	-- otherwise, looks like it's not allowed in Arrays, where I've overridden it to be the setter
@@ -810,25 +812,147 @@ Tensor.__newindex = function(self, key, value)
 			dst = dst:applyRaiseOrLower(i, dstVariance[i])
 		end
 
-		-- for all non-number indexes
-		-- gather all variables of each of those indexes
-		-- iterate across all
+		--[[
+		for all non-number indexes
+		gather all variables of each of those indexes
+		iterate across all
+		... or, alternatively, wrap all single-variable dstVariance indexes that don't show up in value's variance
+		but what if there are two instances of the same single-variable?
+		you will have to mark them off as you find them ...
+		first find which single-variable indexes exist in both
+		then, if there are any left in 'dstVariance', wrap 'value' in those
+		
+		without this, g['_tt'] = 2 will fail ... and must be written g['_tt'] = Tensor('_tt', 2)
+		or g['_ti'] = A'_i' will fail ... and must be written g['_ti'] = Tensor('_ti', A)
+		--]]
+--print('value variance',table.unpack(value.variance))
+--print('dest variance',table.unpack(dstVariance))
+		local function mapSingleIndexes(v,k,t)
+--print('v.symbol',v.symbol)
+			local basis = Tensor.findBasisForSymbol(v.symbol)
+--print('basis',basis,'variables',basis and #basis.variables)
+			return (basis and #basis.variables == 1 and k or nil), #t+1
+		end
+		local valueSingleVarIndexes = table.map(value.variance, mapSingleIndexes)
+		local dstSingleVarIndexes = table.map(dstVariance, mapSingleIndexes)
+--print('value single vars',valueSingleVarIndexes:unpack())
+--print('self single vars',dstSingleVarIndexes:unpack())
+		for _,dstIndex in ipairs(dstSingleVarIndexes) do
+			local v = dstVariance[dstIndex]
+			local k = valueSingleVarIndexes:find(nil, function(valueIndex) return v.symbol == value.variance[valueIndex].symbol end)
+			if k then
+				valueSingleVarIndexes:remove(k)
+			else
+				-- wrap it in the single-variable index
+--print('from ',value)
+				local TensorIndex = require 'symmath.tensor.TensorIndex'
+				value = Tensor(table{
+					TensorIndex{
+						lower = v.lower,
+						derivative = not assert(not v.derivative),
+						symbol = v.symbol,
+					}
+				}:append(value.variance), value)
+				-- since we're wrapping the value tensor in a new index, increment all the index indexes
+				for i=1,#valueSingleVarIndexes do
+					valueSingleVarIndexes[i] = valueSingleVarIndexes[i] + 1
+				end
+--print('to ',value)
+			end
+		end
+		-- if any are left then remove them 
+		if #valueSingleVarIndexes > 0 then
+--print('we still have '..#valueSingleVarIndexes..' left of ',table.map(value.variance,tostring):concat',',' at ',valueSingleVarIndexes:unpack())
+			value = Tensor(
+				-- remove the rest of the single-variance letters
+				table.filter(value.variance, function(v,k)
+					return not valueSingleVarIndexes:find(k)
+				end), function(...)
+					local is = {...}
+					for i=#valueSingleVarIndexes,1,-1 do
+						table.insert(is, valueSingleVarIndexes[i], 1)
+					end
+					return value[is]
+				end)
+		end
+
+		for _,variance in ipairs(dstVariance) do
+			local basis = Tensor.findBasisForSymbol(variance.symbol)
+			if #basis.variables == 1 then
+				local variable = basis.variables[1]
+			end
+		end
 
 		-- simplify any expressions ... automatically here?
 		--if not Tensor.is(value) then value = value:simplify() end
 
 		-- permute the indexes of the value to match the source
 		-- TODO no need to permute it if the index is entirely variables/numbers, such that the assignment is to a single element in the tensor
+--print('permuting...')
 		local dst = value:permute(dstVariance)
+--for i=1,#dst do print('dst['..i..']', dst[i]) end
 		-- reform self to the original variances
 		-- TODO once again for scalar assignment or subset assignment
-		dst = dst(self.variance)()
+--print('applying variance...')
+		dst = dst(self.variance)
+--for i=1,#dst do print('dst['..i..']=', dst[i]) end
+--print('simplifying...')
+		dst = dst()
+--print('assigning from dst\n'..dst)
+-- applying variance to dst puts dst into dst[1] because the subindex isn't there ...
+
+--print('all dst iters:')
+--for is in dst:iter() do print(table.concat(is, ',')) end
+--print('...done')
 		
-		-- copy in new values
+		--[[ copy in new values
 		for is in self:iter() do
+--print('index is',table.concat(is, ','), ' assigning '..dst[is]..' to '..self[is])
 			self[is] = dst[is]
 		end
+		--]]
+		-- [[ only copy over values in the dst variance
+		for isrc in self:iter() do
+			-- isrc holds the iter of assignment ... might not be assigned if dstVariance doesn't hold a basis that holds the var
+			-- isrc[i] cooresponds to the i'th variable in srcBasis.variables
+			-- then we find the same variable in dstBasis.variables
+			-- if it isrc there - read from that variable - and write back to self.iter
+			-- if it isn't there - skip this iter
+--print('assigning to indexes '..table.concat(isrc, ','))	
+			assert(#isrc == #dstVariance)
+			-- looks similar to transformIndexes in Tensor/TensorRef.lua
+			local indexes = dstVariance
+			local notfound = false
+			for i=1,#indexes do
+				-- don't worry about raising or lowering
+				local srcBasis, dstBasis
+				if Tensor.__coordBasis then
+					srcBasis = Tensor.findBasisForSymbol(self.variance[i].symbol)
+					dstBasis = Tensor.findBasisForSymbol(indexes[i].symbol)
+--print('assigning from '..indexes[i].symbol)
+--print('assigning into '..self.variance[i].symbol)
+				end
 
+				do--if srcIndex ~= dstIndex then
+--print('looking for', srcBasis.variables[isrc[i]])
+--print('...among variables',table.unpack(dstBasis.variables))
+					local dstIndex = table.find(dstBasis.variables, srcBasis.variables[isrc[i]])
+					-- however 'dst' has already been transformed to the basis of 'src' ...
+					-- ... and padded with zeros (TODO don't bother do that?)
+					-- so I don't need to reindex the lookup, just skip the zeroes 
+--print('dstIndex',dstIndex)
+					if not dstIndex then
+						notfound = true
+						break
+					end
+				end
+			end
+			if not notfound then
+				self[isrc] = dst[isrc]
+			end
+		end
+		--]]
+		
 		if #value.variance ~= #self.variance then
 			error("can't assign tensors of mismatching number of indexes")
 		end
