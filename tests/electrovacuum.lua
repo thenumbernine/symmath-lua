@@ -9,11 +9,31 @@ local printbr = MathJax.print
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars
+local frac = symmath.divOp
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local q,m = vars('q', 'm')
 local coords = {t,x,y,z}
 local spatialCoords = {x,y,z}
+
+local pi = var'\\pi'
+
+-- used for output
+local A_ = var'A'
+local B_ = var'B'
+local E_ = var'E'
+local F_ = var'F'
+local G_ = var'G'
+local R_ = var'R'
+local S_ = var'S'
+local T_ = var'T'
+local g_ = var'g'
+local u_ = var'u'
+local Gamma_ = var'\\Gamma'
+local delta_ = var'\\delta'
+local eta_ = var'\\eta'
+local epsilon_ = var'\\epsilon'
+local RHat_ = var'\\hat{R}'
 
 Tensor.coords{
 	{variables=coords},
@@ -46,16 +66,16 @@ A^i = V s/m = \tilde{c} V
 --]]
 local A = Tensor('_u', function(u) return var('A_'..coords[u].name, coords) end)
 printbr('electromagnetic four-potential')
-printbr(var'A''_u':eq(A'_u'()))
+printbr(A_'_u':eq(A'_u'()))
 
 local g = Tensor'_uv'
 -- hmm, single-variable coordinate sets still need to be specified in what is being assigned ...
 -- this is where special treatment for variables among indexes would come in handy
-g['_tt'] = Tensor('_tt', function(t,t) return -1 + 2 * A[1] * q / m end)
-g['_ti'] = (A'_i' * q / m)()
-g['_it'] = (A'_i' * q / m)()
+g['_tt'] = Tensor('_tt', function(t,t) return -1 + 2 * A[1] end)
+g['_ti'] = (A'_i')()
+g['_it'] = (A'_i')()
 g['_ij'] = deltaL3'_ij'()
-printbr(var'g''_uv':eq(g))
+printbr(g_'_uv':eq(g))
 
 --[[ variable
 local gU = Tensor('^uv', function(u,v)
@@ -72,21 +92,21 @@ local gU = Tensor('^uv', function(u,v)
 		if v == 1 then
 			return 1 / denom
 		else
-			return -A[v] * q/m / denom
+			return -A[v] / denom
 		end
 	else
 		if v == 1 then
-			return -A[u] * q/m / denom
+			return -A[u] / denom
 		else
-			local result = A[u] * A[v] * q^2/m^2 / denom
+			local result = A[u] * A[v] / denom
 			if u == v then result = result - 1 end
 			return result
 		end
 	end
 end)
 --]]
---	printbr(var'g''^uv':eq(gU))
---	printbr((var'g''_ac' * var'g''^cb'):eq( (g'_ac' * gU'^cb')() ))
+--	printbr(g_'^uv':eq(gU))
+--	printbr((g_'_ac' * g_'^cb'):eq( (g'_ac' * gU'^cb')() ))
 
 local basis = Tensor.metric(g, gU)
 --[[
@@ -95,16 +115,16 @@ printbr(gU)
 --]]
 local GammaL = Tensor'_abc'
 GammaL['_abc'] = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
-printbr(var'\\Gamma''_abc':eq(GammaL'_abc'()))
+printbr(Gamma_'_abc':eq(GammaL'_abc'()))
 
 local E = Tensor('_i', function(i) return var('E_'..spatialCoords[i].name, coords) end)
-printbr(var'E''_i':eq(E'_i'()))
+printbr(E_'_i':eq(E'_i'()))
 
 local B = Tensor('_i', function(i) return var('B_'..spatialCoords[i].name, coords) end)
-printbr(var'B''_i':eq(B'_i'()))
+printbr(B_'_i':eq(B'_i'()))
 
 local S = Tensor('_i', function(i) return var('S_'..spatialCoords[i].name, coords) end)
-printbr(var'S''_i':eq(S'_i'()))
+printbr(S_'_i':eq(S'_i'()))
 
 -- E_i = A_t,i - A_i,t
 -- B_i = epsilon_ijk A_k,j
@@ -116,11 +136,11 @@ GammaL = GammaL
 	:replace(A[4]:diff(y), A[3]:diff(z) + B[1])
 	:replace(A[2]:diff(z), A[4]:diff(x) + B[2])
 	:replace(A[3]:diff(x), A[2]:diff(y) + B[3])
-printbr(var'\\Gamma''_abc':eq(GammaL'_abc'()))
+printbr(Gamma_'_abc':eq(GammaL'_abc'()))
 
 --[[
 local Gamma = GammaL'^a_bc'()
-printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
+printbr(Gamma_'^a_bc':eq(Gamma'^a_bc'()))
 --]]
 
 local u = Tensor('^u', function(u)
@@ -130,7 +150,7 @@ local u = Tensor('^u', function(u)
 end)
 
 local accel = -GammaL'_abc' * u'^b' * u'^c'
-printbr(var'\\dot{u}''_a':eq( -var'\\Gamma''_abc' * var'u''^b' * var'u''^c' ):eq( -GammaL'_abc'() * u'^b'() * u'^c'() ):eq( accel() ))
+printbr(( frac(1, q) * u[1] * m * var'\\dot{u}''_a' ):eq( -Gamma_'_abc' * u_'^b' * u_'^c' ):eq( -GammaL'_abc'() * u'^b'() * u'^c'() ):eq( accel() ))
 
 --[[
 local props = require 'symmath.diffgeom'(g)
@@ -165,30 +185,31 @@ Faraday['_ti'] = Tensor('_ti', (-E'_i')())
 Faraday['_it'] = Tensor('_ti', E'_i'())
 Faraday['_ij'] = (LeviCivita3'_ijk' * B'_k')()
 
-printbr(var'F''_ab':eq(Faraday'_ab'()))
-printbr(var'F''^a_b':eq(Faraday'^a_b'()))
-
-local pi = var'\\pi'
+printbr(F_'_ab':eq(Faraday'_ab'()))
+printbr(F_'^a_b':eq(Faraday'^a_b'()))
 
 local T_EM = Tensor'_ab'
 T_EM['_ab'] = ((Faraday'_au' * Faraday'_b^u' - eta'_ab' * Faraday'_uv' * Faraday'^uv' / 4) / (4 * pi))()
 
-printbr(var'T''_ab':eq(T_EM'_ab'()))
-printbr(var'T''^a_a':eq( T_EM'^a_a'() ))
+printbr(T_'_ab':eq(T_EM'_ab'()))
+printbr(T_'^a_a':eq( T_EM'^a_a'() ))
 
-local frac = symmath.divOp
-printbr(var'G''_ab':eq( 8 * pi * var'T''_ab')) -- G_ab = 8 pi T_ab
-printbr(var'G''_ab':eq( var'R''_ab' - frac(1,2) * var'R''^c_c' * var'\\eta''_ab' )) -- G_ab = R_ab - 1/2 R^c_c eta_ab
-printbr(var'R''_ab':eq( var'G''_ab' - frac(1,2) * var'G''^c_c' * var'\\eta''_ab' ))	-- R_ab = G_ab - 1/2 G^c_c eta_ab
-printbr(var'R''_ab':eq( 8 * pi * var'T''_ab' - 4 * pi * var'T''^c_c' * var'\\eta''_ab'))	-- R_ab = 8 pi T_ab - 4 pi T^c_c eta_ab
+printbr(G_'_ab':eq( 8 * pi * T_'_ab')) -- G_ab = 8 pi T_ab
+printbr(G_'_ab':eq( R_'_ab' - frac(1,2) * R_'^c_c' * eta_'_ab' )) -- G_ab = R_ab - 1/2 R^c_c eta_ab
+printbr(R_'_ab':eq( G_'_ab' - frac(1,2) * G_'^c_c' * eta_'_ab' ))	-- R_ab = G_ab - 1/2 G^c_c eta_ab
+printbr(R_'_ab':eq( 8 * pi * T_'_ab' - 4 * pi * T_'^c_c' * eta_'_ab'))	-- R_ab = 8 pi T_ab - 4 pi T^c_c eta_ab
 
 local Ricci = Tensor'_ab'
 Ricci['_ab'] = (8 * pi * T_EM'_ab' - 4 * pi * T_EM'^c_c' * eta'_ab')()
 
 printbr"<h3>here's the Ricci curvature tensor that matches the Einstein field equations for the electromagnetic stress-energy tensor</h3>"
 
-printbr(var'\\hat{R}''_ab'
-	:eq( 8 * pi * var'T''_ab' - 4 * pi * var'T''^c_c' * var'\\eta''_ab')
+printbr(( R_'_tt' ):eq( E_^2 + B_^2 ))
+printbr(( R_'_it' ):eq( -2 * S_'i' ):eq( -2 * epsilon_'_ijk' * E_'_j' * B_'_k' ))
+printbr(( R_'_ij' ):eq( delta_'_ij' * (E_^2 + B_^2)  - 2 * (E_'_i' * E_'_j' + B_'_i' * B_'_j') ))
+
+printbr(RHat_'_ab'
+	:eq( 8 * pi * T_'_ab' - 4 * pi * T_'^c_c' * eta_'_ab')
 	:eq(Ricci'_ab'()))
 
 --[[
@@ -200,48 +221,80 @@ Ricci['_ti'] = Tensor('_ti', (-2 * S'_i')())
 Ricci['_it'] = Tensor('_ti', (-2 * S'_i')())
 Ricci['_ij'] = (-2 * E'_i' * E'_j' - 2 * B'_i' * B'_j' + ESq_plus_BSq * deltaL3'_ij')()
 
-printbr(var'\\hat{R}''_ab':eq(Ricci))
+printbr(RHat_'_ab':eq(Ricci))
 --]]
 
 printbr"<h3>here's the constraints that have to be satisfied for the Riemann curvature tensor:</h3>"
 
-local delta_ = var'\\delta'
-local epsilon_ = var'\\epsilon'
-local E_ = var'E'
-local S_ = var'S'
-local B_ = var'B'
-local R_ = var'R'
-
-printbr(( delta_'_ij' * (E_^2 + B_^2)  - 2 * (E_'_i' * E_'_j' + B_'_i' * B_'_j') ):eq( R_'_ij' ):eq( R_'^a_iaj' ):eq( R_'^t_itj' + R_'^k_ikj' ))
-printbr(( E_^2 + B_^2 ):eq( R_'_tt' ):eq( R_'^a_tat' ):eq( R_'^j_tjt' ))
-printbr(( -2 * S_'i' ):eq( -2 * epsilon_'_ijk' * E_'_j' * B_'_k' ):eq( R_'_it' ):eq( R_'^j_ijt' ), '$\\approx$', R_'_jijt' :eq( R_'_tjij') )
+printbr(( R_'_tt' ):eq( E_^2 + B_^2 ):eq( R_'^a_tat' ):eq( R_'^t_ttt' + R_'^j_tjt' ):eq( R_'^j_tjt' ):eq( g_'^jt' * R_'_ttjt' + g_'^jk' * R_'_ktjt' ):eq( g_'^jk' * R_'_ktjt' ))
+printbr(( R_'_it' ):eq( -2 * S_'i' ):eq( -2 * epsilon_'_ijk' * E_'_j' * B_'_k' ):eq( R_'^a_iat' ):eq( R_'^t_itt' + R_'^j_ijt' ):eq( R_'^j_ijt' ):eq( g_'^jt' * R_'_tijt' + g_'^jk' * R_'_kijt' ))
+printbr(( R_'_ij' ):eq( delta_'_ij' * (E_^2 + B_^2)  - 2 * (E_'_i' * E_'_j' + B_'_i' * B_'_j') ):eq( R_'^a_iaj' ):eq( R_'^t_itj' + R_'^k_ikj' )
+	:eq( g_'^tt' * R_'_titj' + g_'^tk' * R_'_kitj' + g_'^kt' * R_'_tikj' + g_'^kl' * R_'_likj' )
+	:eq( g_'^tt' * R_'_titj' + g_'^kl' * R_'_likj' + g_'^tk' * (R_'_tjki' + R_'_tikj') ))
 
 printbr"<h3>here's a Riemann curvature tensor that gives rise to that Ricci curvature tensor</h3>"
 
-printbr(R_'_tijk':eq( delta_'_ij' * S_'_k' - delta_'_ik' * S_'_j' ))
-printbr(R_'_titj':eq(E_'_i' * E_'_j' + B_'_i' * B_'_j'))
-printbr(R_'_ijkl':eq(epsilon_'_ijm' * (E_'_m' + B_'_m') * epsilon_'_kln' * (E_'_n' + B_'_n')))
-
-local dual_E_plus_B = Tensor'_ij'
-dual_E_plus_B['_ij'] = (LeviCivita3'_ijk' * (E'_k' + B'_k'))()
-
-local dual_E_times_B = (LeviCivita3'_kmn' * E'_m' * B'_n' / 2)()
 
 local S = (LeviCivita3'_ijk' * E'_j' * B'_k')()
 
-local Riemann_t = Tensor'_ijk'
-Riemann_t['_ijk'] = (deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j')()
+
+-- the last "2/3 E dot B" is used to eliminate the "-2 E dot B" difference left between R_tt and Rhat_tt ... need to divide by 3 because the tensor is traced
+--[[
+options for R_titj:
+E_i E_j + B_i B_j - E_i B_j B_i E_j gives a difference of R_ab += -2 E dot B eta_ab
+... - 2/3 delta_ij E dot B ... R_ii += -4/3 E dot B
+... + 2 delta_ij E dot B ... R_tt += -4 E dot B 
+--]]
+
+--[[ option #1 -- leaves R_tt - Rhat_tt = -4 E dot b
+local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j' + 2 * deltaL3'_ij' * E'_k' * B'_k'
+local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
+local Riemann_ijkl_expr = LeviCivita3'_ijm' * (E'_m' + B'_m') * LeviCivita3'_kln' * (E'_n' + B'_n')
+--]]
+--[[ option #2 -- leaves R_ii - Rhat_ii = -4/3 E dot B
+local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j' + frac(2,3) * deltaL3'_ij' * E'_k' * B'_k'
+local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
+local Riemann_ijkl_expr = LeviCivita3'_ijm' * (E'_m' + B'_m') * LeviCivita3'_kln' * (E'_n' + B'_n')
+--]]
+--[[ option #3 -- leaves R_ab - Rhat_ab = -2 eta E dot B
+local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j'
+local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
+local Riemann_ijkl_expr = LeviCivita3'_ijm' * (E'_m' + B'_m') * LeviCivita3'_kln' * (E'_n' + B'_n')
+--]]
+-- [[ option #4 -- works -- R_ab - Rhat_ab = 0 
+local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j'
+local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
+local Riemann_ijkl_expr = LeviCivita3'_ijm' * LeviCivita3'_kln' * (E'_m' * E'_n' + B'_m' * B'_n')
+--]]
+--[[ option #5
+local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j'
+local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
+local Riemann_ijkl_expr = (deltaL3'_ij' * deltaL3'_km' * deltaL3'_ln' - frac(2,3) * deltaL3'_kl' * deltaL3'_im' * deltaL3'_jn') * (E'_m' * E'_n' + B'_m' * B'_n')
+--]]
 
 local Riemann_tt = Tensor'_ij'
-Riemann_tt['_ij'] = (E'_i' * E'_j' + B'_i' * B'_j'
-	- E'_i' * B'_j' - B'_i' * E'_j')()
+Riemann_tt['_ij'] = Riemann_titj_expr()
 
-local Riemann = Tensor'_abcd'
+local Riemann_t = Tensor'_ijk'
+Riemann_t['_ijk'] = Riemann_tijk_expr()
+
 -- R_ijkl -- zero 't's
-Riemann['_ijkl'] = (
-	dual_E_plus_B'_ij' * dual_E_plus_B'_kl' 
-	-- + deltaL3'_ik' * (E'_j' * B'_l' + E'_l' * B'_j') / 3
-)()
+local Riemann = Tensor'_abcd'
+Riemann['_ijkl'] = Riemann_ijkl_expr()
+
+local function pretty(expr)
+	return expr
+		:replace(E,E_)
+		:replace(B,B_)
+		:replace(S,S_)
+		:replace(deltaL3,delta_)
+		:replace(LeviCivita3,epsilon_)
+end
+
+printbr(R_'_titj':eq( pretty(Riemann_titj_expr) ))
+printbr(R_'_tijk':eq( pretty(Riemann_tijk_expr) ))
+printbr(R_'_ijkl':eq( pretty(Riemann_ijkl_expr) ))
+
 -- R_tijk -- one 't's
 Riemann['_tijk'] = Tensor('_tijk', function(t,i,j,k) return Riemann_t[i][j][k] end)
 Riemann['_itjk'] = Tensor('_itjk', function(i,t,j,k) return -Riemann_t[i][j][k] end)
@@ -260,23 +313,17 @@ local Riemann = Riemann'^a_bcd'()
 
 printbr"<h3>identities...</h3>"
 
--- should equal delta_ij (E^2 + B^2) - 2 (E_i E_j + B_i B_j)
-printbr(R_'^a_iaj':eq(Riemann'^a_iaj'()))
 printbr(R_'^a_tat':eq(Riemann'^a_tat'()))
 printbr(R_'^a_iat':eq(Riemann'^a_iat'()))
+printbr(R_'^a_iaj':eq(Riemann'^a_iaj'()))
 
 printbr"<h3>building Ricci from Riemann...</h3>"
 
 RicciNew = Riemann'^c_acb'()
 printbr(R_'_ab':eq(RicciNew))
 
-printbr"<h3>desired Ricci, once again:</h3>"
-printbr(var'\\hat{R}''_ab':eq(Ricci)
-	--:replace(B[2]*E[2], -B[1]*E[1]-B[3]*E[3])()
-)
-
 printbr"<h3>differences with the desired Ricci:</h3>"
-printbr((var'\\hat{R}''_ab' - R_'_ab'):eq(
+printbr((RHat_'_ab' - R_'_ab'):eq(
 	(Ricci - RicciNew)()
 ))
 
@@ -285,5 +332,35 @@ printbr"<h3>Riemann tensor constraints that need to be fulfilled:</h3>"
 printbr((R_'_abcd' + R_'_abdc'):eq( (Riemann'_abcd' + Riemann'_abdc')() ))
 printbr((R_'_abcd' + R_'_bacd'):eq( (Riemann'_abcd' + Riemann'_bacd')() ))
 printbr((R_'_abcd' - R_'_cdab'):eq( (Riemann'_abcd' - Riemann'_cdab')() ))
+
+printbr"<h3>connections that give rise to Riemann tensor</h3>"
+
+printbr(R_'^t_ijk':eq( -pretty(Riemann_tijk_expr) ):eq(
+	Gamma_'^t_ik,j' - Gamma_'^t_ij,k' + Gamma_'^t_aj' * Gamma_'^a_ik' - Gamma_'^t_ak' * Gamma_'^a_ij'
+):eq(
+	Gamma_'^t_ik,j' - Gamma_'^t_ij,k' 
+	+ Gamma_'^t_tj' * Gamma_'^t_ik' 
+	+ Gamma_'^t_mj' * Gamma_'^m_ik' 
+	- Gamma_'^t_tk' * Gamma_'^t_ij'
+	- Gamma_'^t_mk' * Gamma_'^m_ij'
+))
+printbr(R_'^t_itj':eq( -pretty(Riemann_titj_expr) ):eq(
+	Gamma_'^t_ij,t' - Gamma_'^t_it,j' + Gamma_'^t_at' * Gamma_'^a_ij' - Gamma_'^t_aj' * Gamma_'^a_it'
+):eq(
+	Gamma_'^t_ij,t' - Gamma_'^t_it,j' 
+	+ Gamma_'^t_tt' * Gamma_'^t_ij' 
+	+ Gamma_'^t_mt' * Gamma_'^m_ij' 
+	- Gamma_'^t_tj' * Gamma_'^t_it'
+	- Gamma_'^t_mj' * Gamma_'^m_it'
+))
+printbr(R_'^i_jkl':eq( pretty(Riemann_ijkl) ):eq(
+	Gamma_'^i_jl,k' - Gamma_'^i_jk,l' + Gamma_'^i_ak' * Gamma_'^a_jl' - Gamma_'^i_al' * Gamma_'^a_jk'
+):eq(
+	Gamma_'^i_jl,k' - Gamma_'^i_jk,l' 
+	+ Gamma_'^i_tk' * Gamma_'^t_jl' 
+	+ Gamma_'^i_mk' * Gamma_'^m_jl' 
+	- Gamma_'^i_tl' * Gamma_'^t_jk'
+	- Gamma_'^i_ml' * Gamma_'^m_jk'
+))
 
 print(MathJax.footer)
