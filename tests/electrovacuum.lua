@@ -335,15 +335,6 @@ printbr((R_'_abcd' - R_'_cdab'):eq( (Riemann'_abcd' - Riemann'_cdab')() ))
 
 printbr"<h3>connections that give rise to Riemann tensor</h3>"
 
-printbr(R_'^t_ijk':eq( -pretty(Riemann_tijk_expr) ):eq(
-	Gamma_'^t_ik,j' - Gamma_'^t_ij,k' + Gamma_'^t_aj' * Gamma_'^a_ik' - Gamma_'^t_ak' * Gamma_'^a_ij'
-):eq(
-	Gamma_'^t_ik,j' - Gamma_'^t_ij,k' 
-	+ Gamma_'^t_tj' * Gamma_'^t_ik' 
-	+ Gamma_'^t_mj' * Gamma_'^m_ik' 
-	- Gamma_'^t_tk' * Gamma_'^t_ij'
-	- Gamma_'^t_mk' * Gamma_'^m_ij'
-))
 printbr(R_'^t_itj':eq( -pretty(Riemann_titj_expr) ):eq(
 	Gamma_'^t_ij,t' - Gamma_'^t_it,j' + Gamma_'^t_at' * Gamma_'^a_ij' - Gamma_'^t_aj' * Gamma_'^a_it'
 ):eq(
@@ -353,7 +344,16 @@ printbr(R_'^t_itj':eq( -pretty(Riemann_titj_expr) ):eq(
 	- Gamma_'^t_tj' * Gamma_'^t_it'
 	- Gamma_'^t_mj' * Gamma_'^m_it'
 ))
-printbr(R_'^i_jkl':eq( pretty(Riemann_ijkl) ):eq(
+printbr(R_'^t_ijk':eq( -pretty(Riemann_tijk_expr) ):eq(
+	Gamma_'^t_ik,j' - Gamma_'^t_ij,k' + Gamma_'^t_aj' * Gamma_'^a_ik' - Gamma_'^t_ak' * Gamma_'^a_ij'
+):eq(
+	Gamma_'^t_ik,j' - Gamma_'^t_ij,k' 
+	+ Gamma_'^t_tj' * Gamma_'^t_ik' 
+	+ Gamma_'^t_mj' * Gamma_'^m_ik' 
+	- Gamma_'^t_tk' * Gamma_'^t_ij'
+	- Gamma_'^t_mk' * Gamma_'^m_ij'
+))
+printbr(R_'^i_jkl':eq( pretty(Riemann_ijkl_expr) ):eq(
 	Gamma_'^i_jl,k' - Gamma_'^i_jk,l' + Gamma_'^i_ak' * Gamma_'^a_jl' - Gamma_'^i_al' * Gamma_'^a_jk'
 ):eq(
 	Gamma_'^i_jl,k' - Gamma_'^i_jk,l' 
