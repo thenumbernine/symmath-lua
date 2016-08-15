@@ -232,7 +232,7 @@ printbr(( R_'_ij' ):eq( delta_'_ij' * (E_^2 + B_^2)  - 2 * (E_'_i' * E_'_j' + B_
 	:eq( g_'^tt' * R_'_titj' + g_'^tk' * R_'_kitj' + g_'^kt' * R_'_tikj' + g_'^kl' * R_'_likj' )
 	:eq( g_'^tt' * R_'_titj' + g_'^kl' * R_'_likj' + g_'^tk' * (R_'_tjki' + R_'_tikj') ))
 
-printbr"<h3>here's a Riemann curvature tensor that gives rise to that Ricci curvature tensor</h3>"
+printbr"<h3>here's a Riemann curvature tensor that gives rise to that Ricci curvature tensor, subject to $g^{ab} \\approx \\eta^{ab}$ </h3>"
 
 
 local S = (LeviCivita3'_ijk' * E'_j' * B'_k')()
@@ -263,7 +263,7 @@ local Riemann_ijkl_expr = LeviCivita3'_ijm' * (E'_m' + B'_m') * LeviCivita3'_kln
 --]]
 -- [[ option #4 -- works -- R_ab - Rhat_ab = 0 
 local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j'
-local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
+local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'	-- = (delta_ij delta_lk - delta_ik delta_lj) epsilon_lmn E_m B_n = delta^il_jk epsilon_lmn E_m B_n = epsilon_ilw epsilon_jkw epsilon_lpq E_p B_q
 local Riemann_ijkl_expr = LeviCivita3'_ijm' * LeviCivita3'_kln' * (E'_m' * E'_n' + B'_m' * B'_n')
 --]]
 --[[ option #5
@@ -287,6 +287,7 @@ local function pretty(expr)
 		:replace(E,E_)
 		:replace(B,B_)
 		:replace(S,S_)
+		:replace(Riemann,R_)
 		:replace(deltaL3,delta_)
 		:replace(LeviCivita3,epsilon_)
 end
@@ -329,22 +330,43 @@ printbr((RHat_'_ab' - R_'_ab'):eq(
 
 printbr"<h3>Riemann tensor constraints that need to be fulfilled:</h3>"
 
+--[[ doesn't show zeros
+for _,expr in ipairs{
+	{R_'_abcd' + R_'_abdc', (Riemann'_abcd' + Riemann'_abdc')()},
+	{R_'_abcd' + R_'_bacd', (Riemann'_abcd' + Riemann'_bacd')()},
+	{R_'_abcd' - R_'_cdab', (Riemann'_abcd' - Riemann'_cdab')()},
+} do
+	printbr(( expr[1] ):eq( expr[2] ))
+end
+--]]
+-- [[ shows zeros
 printbr((R_'_abcd' + R_'_abdc'):eq( (Riemann'_abcd' + Riemann'_abdc')() ))
 printbr((R_'_abcd' + R_'_bacd'):eq( (Riemann'_abcd' + Riemann'_bacd')() ))
 printbr((R_'_abcd' - R_'_cdab'):eq( (Riemann'_abcd' - Riemann'_cdab')() ))
+--]]
+
+printbr"<h3>removeing $g^{ab} \\approx \\eta^{ab}$</h3>"
+
+printbr(( R_'^t_itj' ):eq( pretty(-E'_i' * E'_j' - B'_i' * B'_j') ))
+printbr(( R_'^t_ijk' ):eq( pretty(deltaL3'_ik' * S'_j' - deltaL3'_ij' * S'_k' ) ))
+printbr(( R_'^i_jkl' ):eq( pretty(LeviCivita3'^i_jm' * LeviCivita3'_kln' * (E'^m' * E'^n' + B'^m' * B'^n')) ))
 
 printbr"<h3>connections that give rise to Riemann tensor</h3>"
 
-printbr(R_'^t_itj':eq( -pretty(Riemann_titj_expr) ):eq(
+printbr(R_'^t_itj':eq( 
+	-E_'_i' * E_'_j' - B_'_i' * B_'_j'
+):eq(
 	Gamma_'^t_ij,t' - Gamma_'^t_it,j' + Gamma_'^t_at' * Gamma_'^a_ij' - Gamma_'^t_aj' * Gamma_'^a_it'
 ):eq(
-	Gamma_'^t_ij,t' - Gamma_'^t_it,j' 
+	Gamma_'^t_ij,t' - Gamma_'^t_ti,j' 
 	+ Gamma_'^t_tt' * Gamma_'^t_ij' 
-	+ Gamma_'^t_mt' * Gamma_'^m_ij' 
-	- Gamma_'^t_tj' * Gamma_'^t_it'
-	- Gamma_'^t_mj' * Gamma_'^m_it'
+	+ Gamma_'^t_tm' * Gamma_'^m_ij' 
+	- Gamma_'^t_tj' * Gamma_'^t_ti'
+	- Gamma_'^t_mj' * Gamma_'^m_ti'
 ))
-printbr(R_'^t_ijk':eq( -pretty(Riemann_tijk_expr) ):eq(
+printbr(R_'^t_ijk':eq( 
+	delta_'_ik' * S_'_j' - delta_'_ij' * S_'_k' 
+):eq(
 	Gamma_'^t_ik,j' - Gamma_'^t_ij,k' + Gamma_'^t_aj' * Gamma_'^a_ik' - Gamma_'^t_ak' * Gamma_'^a_ij'
 ):eq(
 	Gamma_'^t_ik,j' - Gamma_'^t_ij,k' 
@@ -353,7 +375,9 @@ printbr(R_'^t_ijk':eq( -pretty(Riemann_tijk_expr) ):eq(
 	- Gamma_'^t_tk' * Gamma_'^t_ij'
 	- Gamma_'^t_mk' * Gamma_'^m_ij'
 ))
-printbr(R_'^i_jkl':eq( pretty(Riemann_ijkl_expr) ):eq(
+printbr(R_'^i_jkl':eq( 
+	epsilon_'^i_jm' * epsilon_'_kln' * (E_'^m' * E_'^n' + B_'^m' * B_'^n')
+):eq(
 	Gamma_'^i_jl,k' - Gamma_'^i_jk,l' + Gamma_'^i_ak' * Gamma_'^a_jl' - Gamma_'^i_al' * Gamma_'^a_jk'
 ):eq(
 	Gamma_'^i_jl,k' - Gamma_'^i_jk,l' 
