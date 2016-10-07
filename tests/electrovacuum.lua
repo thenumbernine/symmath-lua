@@ -27,6 +27,7 @@ local G_ = var'G'
 local R_ = var'R'
 local S_ = var'S'
 local T_ = var'T'
+local c_ = var'c'
 local g_ = var'g'
 local u_ = var'u'
 local Gamma_ = var'\\Gamma'
@@ -82,37 +83,28 @@ local gU = Tensor('^uv', function(u,v)
 	return var('g^{'..coords[u].name..coords[v].name..'}', coords)
 end)
 --]]
--- [[ eta (near-flat approximation)
+--[[ eta (near-flat approximation)
+printbr"using $g^{ab} \\approx \\eta^{ab}$"
 local gU = Tensor('^ab', table.unpack(eta))
 --]]
---[[ actual inverse.  explicitly specified since my inverse algorithm can't handle it.
-local gU = Tensor('^uv', function(u,v)
-	local denom = -1 + 2 * A[1] - A[2]^2 - A[3]^2 - A[4]^2
-	if u == 1 then
-		if v == 1 then
-			return 1 / denom
-		else
-			return -A[v] / denom
-		end
-	else
-		if v == 1 then
-			return -A[u] / denom
-		else
-			local result = A[u] * A[v] / denom
-			if u == v then result = result - 1 end
-			return result
-		end
-	end
-end)
+-- [[ actual inverse.  explicitly specified since my inverse algorithm can't handle it.
+local denom = -1 + 2 * A[1] - A[2]^2 - A[3]^2 - A[4]^2
+local gU = Tensor'^uv'
+gU['^tt'] = Tensor('^tt', function() return 1 / denom end)
+gU['^ti'] = (-A'_i' / denom)()
+gU['^it'] = (-A'_i' / denom)()
+gU['^ij'] = (A'_i' * A'_j' / denom + deltaL3'_ij')()
 --]]
---	printbr(g_'^uv':eq(gU))
---	printbr((g_'_ac' * g_'^cb'):eq( (g'_ac' * gU'^cb')() ))
+
+printbr(g_'^uv':eq(gU))
+printbr((g_'_ac' * g_'^cb'):eq( (g'_ac' * gU'^cb')() ))
 
 local basis = Tensor.metric(g, gU)
 --[[
 local gU = basis.metricInverse
 printbr(gU)
 --]]
+
 local GammaL = Tensor'_abc'
 GammaL['_abc'] = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
 printbr(Gamma_'_abc':eq(GammaL'_abc'()))
@@ -129,19 +121,30 @@ printbr(S_'_i':eq(S'_i'()))
 -- E_i = A_t,i - A_i,t
 -- B_i = epsilon_ijk A_k,j
 -- A_i,t = A_t,i - E_i
-GammaL = GammaL
-	:replace(A[2]:diff(t), A[1]:diff(x) - E[1])
-	:replace(A[3]:diff(t), A[1]:diff(y) - E[2])
-	:replace(A[4]:diff(t), A[1]:diff(z) - E[3])
-	:replace(A[4]:diff(y), A[3]:diff(z) + B[1])
-	:replace(A[2]:diff(z), A[4]:diff(x) + B[2])
-	:replace(A[3]:diff(x), A[2]:diff(y) + B[3])
+local function replacePotentialsWithFields(expr)
+	return expr	
+		:replace(A[2]:diff(t), A[1]:diff(x) - E[1])
+		:replace(A[3]:diff(t), A[1]:diff(y) - E[2])
+		:replace(A[4]:diff(t), A[1]:diff(z) - E[3])
+		
+		:replace(A[1]:diff(x), A[2]:diff(t) + E[1])
+		:replace(A[1]:diff(y), A[3]:diff(t) + E[2])
+		:replace(A[1]:diff(z), A[4]:diff(t) + E[3])
+		
+		:replace(A[4]:diff(y), A[3]:diff(z) + B[1])
+		:replace(A[2]:diff(z), A[4]:diff(x) + B[2])
+		:replace(A[3]:diff(x), A[2]:diff(y) + B[3])
+
+		:replace(A[3]:diff(z), A[4]:diff(y) - B[1])
+		:replace(A[4]:diff(x), A[2]:diff(z) - B[2])
+		:replace(A[2]:diff(y), A[3]:diff(x) - B[3])
+end
+
+GammaL = replacePotentialsWithFields(GammaL)
+
 printbr(Gamma_'_abc':eq(GammaL'_abc'()))
 
---[[
-local Gamma = GammaL'^a_bc'()
-printbr(Gamma_'^a_bc':eq(Gamma'^a_bc'()))
---]]
+printbr"<h3>Lorentz force as a geodesic</h3>"
 
 local u = Tensor('^u', function(u)
 	-- t approaches 1
@@ -150,7 +153,18 @@ local u = Tensor('^u', function(u)
 end)
 
 local accel = -GammaL'_abc' * u'^b' * u'^c'
-printbr(( frac(1, q) * u[1] * m * var'\\dot{u}''_a' ):eq( -Gamma_'_abc' * u_'^b' * u_'^c' ):eq( -GammaL'_abc'() * u'^b'() * u'^c'() ):eq( accel() ))
+printbr(( frac(1, q) * u[1] * m * var'\\dot{u}''_a' ):eq( -Gamma_'_abc' * u_'^b' * u_'^c' ):eq( -GammaL'_abc'() * u'^b'() * u'^c'() ):eq( 
+	--replacePotentialsWithFields(
+		accel()
+	--)()
+))
+
+printbr(( frac(1,q) * u[1] * m * var'\\dot{u}''_i' ):eq( -Gamma_'_ibc' * u_'^b' * u_'^c' ):eq( accel()'_i'() ))
+
+printbr"<h3>Connection coefficients</h3>"
+
+local Gamma = GammaL'^a_bc'()
+printbr(Gamma_'^a_bc':eq(Gamma'^a_bc'()))
 
 --[[
 local props = require 'symmath.diffgeom'(g)
@@ -170,7 +184,7 @@ props:calcEqns()
 props:printbr(printbr)
 --]]
 
-printbr"<h3>electromagnetism stress-energy tensor</h3>"
+printbr"<h3>now I'm looking for a Riemann (and then a Christoffel) that gives rise to the electromagnetism stress-energy tensor</h3>"
 
 Tensor.metric(eta, eta)
 
@@ -246,22 +260,22 @@ E_i E_j + B_i B_j - E_i B_j B_i E_j gives a difference of R_ab += -2 E dot B eta
 ... + 2 delta_ij E dot B ... R_tt += -4 E dot B 
 --]]
 
---[[ option #1 -- leaves R_tt - Rhat_tt = -4 E dot b
+--[[ option #1 -- leaves Rhat_tt - R_tt = -4 E dot b
 local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j' + 2 * deltaL3'_ij' * E'_k' * B'_k'
 local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
 local Riemann_ijkl_expr = LeviCivita3'_ijm' * (E'_m' + B'_m') * LeviCivita3'_kln' * (E'_n' + B'_n')
 --]]
---[[ option #2 -- leaves R_ii - Rhat_ii = -4/3 E dot B
+--[[ option #2 -- leaves Rhat_ii - R_ii = -4/3 E dot B
 local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j' + frac(2,3) * deltaL3'_ij' * E'_k' * B'_k'
 local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
 local Riemann_ijkl_expr = LeviCivita3'_ijm' * (E'_m' + B'_m') * LeviCivita3'_kln' * (E'_n' + B'_n')
 --]]
---[[ option #3 -- leaves R_ab - Rhat_ab = -2 eta E dot B
+--[[ option #3 -- leaves Rhat_ab - R_ab = -2 eta E dot B
 local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j'
 local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
 local Riemann_ijkl_expr = LeviCivita3'_ijm' * (E'_m' + B'_m') * LeviCivita3'_kln' * (E'_n' + B'_n')
 --]]
--- [[ option #4 -- works -- R_ab - Rhat_ab = 0 
+-- [[ option #4 -- works -- Rhat_ab - R_ab = 0 
 local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j'
 local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'	-- = (delta_ij delta_lk - delta_ik delta_lj) epsilon_lmn E_m B_n = delta^il_jk epsilon_lmn E_m B_n = epsilon_ilw epsilon_jkw epsilon_lpq E_p B_q
 local Riemann_ijkl_expr = LeviCivita3'_ijm' * LeviCivita3'_kln' * (E'_m' * E'_n' + B'_m' * B'_n')
@@ -270,6 +284,12 @@ local Riemann_ijkl_expr = LeviCivita3'_ijm' * LeviCivita3'_kln' * (E'_m' * E'_n'
 local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j'
 local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'
 local Riemann_ijkl_expr = (deltaL3'_ij' * deltaL3'_km' * deltaL3'_ln' - frac(2,3) * deltaL3'_kl' * deltaL3'_im' * deltaL3'_jn') * (E'_m' * E'_n' + B'_m' * B'_n')
+--]]
+--[[ option #6 - spinoff of option #4 which works, but switches j & l so the Levi-Civita symbols line up with the connection coefficients of R^a_bcd
+-- RHat_ab - R_ab = eta_ab (E^2 + B^2) and the Riemann constraints are not fulfilled
+local Riemann_titj_expr = 3 * (E'_i' * E'_j' + B'_i' * B'_j')
+local Riemann_tijk_expr = deltaL3'_ij' * S'_k' - deltaL3'_ik' * S'_j'	-- = (delta_ij delta_lk - delta_ik delta_lj) epsilon_lmn E_m B_n = delta^il_jk epsilon_lmn E_m B_n = epsilon_ilw epsilon_jkw epsilon_lpq E_p B_q
+local Riemann_ijkl_expr = LeviCivita3'_ilm' * LeviCivita3'_jkn' * (E'_m' * E'_n' + B'_m' * B'_n')
 --]]
 
 local Riemann_tt = Tensor'_ij'
@@ -282,12 +302,19 @@ Riemann_t['_ijk'] = Riemann_tijk_expr()
 local Riemann = Tensor'_abcd'
 Riemann['_ijkl'] = Riemann_ijkl_expr()
 
+local Connection
+local Commutation
+local RiemannFromConnection
+
 local function pretty(expr)
 	return expr
 		:replace(E,E_)
 		:replace(B,B_)
 		:replace(S,S_)
+		:replace(Connection,Gamma_)
+		:replace(Commutation,c_)
 		:replace(Riemann,R_)
+		:replace(RiemannFromConnection,R_)
 		:replace(deltaL3,delta_)
 		:replace(LeviCivita3,epsilon_)
 end
@@ -310,7 +337,7 @@ Riemann['_itjt'] = Tensor('_itjt', function(i,t,j,t) return Riemann_tt[i][j] end
 
 printbr(R_'_abcd':eq(Riemann))
 
-local Riemann = Riemann'^a_bcd'()
+Riemann = Riemann'^a_bcd'()
 
 printbr"<h3>identities...</h3>"
 
@@ -320,13 +347,11 @@ printbr(R_'^a_iaj':eq(Riemann'^a_iaj'()))
 
 printbr"<h3>building Ricci from Riemann...</h3>"
 
-RicciNew = Riemann'^c_acb'()
-printbr(R_'_ab':eq(RicciNew))
+RicciFromRiemann = Riemann'^c_acb'()
+printbr(R_'_ab':eq(RicciFromRiemann))
 
 printbr"<h3>differences with the desired Ricci:</h3>"
-printbr((RHat_'_ab' - R_'_ab'):eq(
-	(Ricci - RicciNew)()
-))
+printbr((RHat_'_ab' - R_'_ab'):eq( (Ricci - RicciFromRiemann)() ))
 
 printbr"<h3>Riemann tensor constraints that need to be fulfilled:</h3>"
 
@@ -345,7 +370,7 @@ printbr((R_'_abcd' + R_'_bacd'):eq( (Riemann'_abcd' + Riemann'_bacd')() ))
 printbr((R_'_abcd' - R_'_cdab'):eq( (Riemann'_abcd' - Riemann'_cdab')() ))
 --]]
 
-printbr"<h3>removeing $g^{ab} \\approx \\eta^{ab}$</h3>"
+printbr"<h3>removing $g^{ab} \\approx \\eta^{ab}$</h3>"
 
 printbr(( R_'^t_itj' ):eq( pretty(-E'_i' * E'_j' - B'_i' * B'_j') ))
 printbr(( R_'^t_ijk' ):eq( pretty(deltaL3'_ik' * S'_j' - deltaL3'_ij' * S'_k' ) ))
@@ -361,11 +386,13 @@ printbr(R_'^t_itj':eq(
 	Gamma_'^t_ij,t' - Gamma_'^t_ti,j' 
 	+ Gamma_'^t_tt' * Gamma_'^t_ij' 
 	+ Gamma_'^t_tm' * Gamma_'^m_ij' 
-	- Gamma_'^t_tj' * Gamma_'^t_ti'
+	- Gamma_'^t_ti' * Gamma_'^t_tj'
 	- Gamma_'^t_mj' * Gamma_'^m_ti'
 ))
 printbr(R_'^t_ijk':eq( 
 	delta_'_ik' * S_'_j' - delta_'_ij' * S_'_k' 
+):eq(
+	-epsilon_'_inm' * epsilon_'_jkm' * epsilon_'_npq' * E_'_p' * B_'_q'
 ):eq(
 	Gamma_'^t_ik,j' - Gamma_'^t_ij,k' + Gamma_'^t_aj' * Gamma_'^a_ik' - Gamma_'^t_ak' * Gamma_'^a_ij'
 ):eq(
@@ -386,5 +413,38 @@ printbr(R_'^i_jkl':eq(
 	- Gamma_'^i_tl' * Gamma_'^t_jk'
 	- Gamma_'^i_ml' * Gamma_'^m_jk'
 ))
+
+printbr"<h3>generating Riemann curvature from connection coefficients</h3>"
+
+Tensor.metric(deltaL3, deltaL3, 'i')
+
+local Connection_ijk_expr = LeviCivita3'^i_jl' * (E'^l' * E'_k' + B'^l' * B'_k')
+local Commutation_ijk_expr = LeviCivita3'_ij^k'
+
+printbr( Gamma_'^i_jk' :eq( pretty(Connection_ijk_expr) ) )
+printbr( c_'_ij^k':eq( pretty(Commutation_ijk_expr) ) )
+
+Connection = Tensor'^a_bc'
+Connection['^i_jk'] = Connection_ijk_expr()
+
+Commutation = Tensor'_ab^c'
+Commutation['_ij^k'] = Commutation_ijk_expr()
+
+local RiemannFromConnection_expr = Connection'^a_bd,c' 
+	- Connection'^a_bc,d' 
+	+ Connection'^a_ec' * Connection'^e_bd' 
+	- Connection'^a_ed' * Connection'^e_bc' 
+	- Connection'^a_be' * Commutation'_cd^e'
+
+RiemannFromConnection = Tensor'^a_bcd'
+RiemannFromConnection['^a_bcd'] = RiemannFromConnection_expr()
+
+printbr((Gamma_'^a_bc'):eq(Connection'^a_bc'()))
+printbr((c_'_ab^c'):eq(Commutation'_ab^c'()))
+printbr((R_'^a_bcd'):eq(RiemannFromConnection'^a_bcd'()))
+
+printbr"<h3>differences with desired Riemann</h3>"
+
+printbr((RHat_'^a_bcd' - R_'^a_bcd'):eq( (Riemann - RiemannFromConnection)() ))
 
 print(MathJax.footer)
