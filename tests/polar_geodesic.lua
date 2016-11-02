@@ -82,7 +82,7 @@ for _,info in ipairs{
 		end,
 	},
 	{
-		title = 'cylinder surface',
+		title = 'cylindrical surface',
 		coords = {phi,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -91,7 +91,7 @@ for _,info in ipairs{
 		end,
 	},
 	{
-		title = 'cylinder',
+		title = 'cylindrical',
 		coords = {r,phi,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -100,7 +100,7 @@ for _,info in ipairs{
 		end,
 	},
 	{
-		title = 'cylinder, anholonomic, normalized',
+		title = 'cylindrical, anholonomic, normalized',
 		coords = {rHat,thetaHat,zHat},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -161,7 +161,7 @@ for _,info in ipairs{
 --]]
 	{
 		title = 'spherical',
-		coords = {r,phi,theta},
+		coords = {r,theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -173,7 +173,7 @@ for _,info in ipairs{
 	},
 	{
 		title = 'spherical, anholonomic, normalized',
-		coords = {rHat,phiHat,thetaHat},
+		coords = {rHat,thetaHat,phiHat},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -185,7 +185,7 @@ for _,info in ipairs{
 	},
 	{
 		title = 'spherical and time',
-		coords = {t,r,phi,theta},
+		coords = {t,r,theta,phi},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
@@ -198,7 +198,7 @@ for _,info in ipairs{
 	},
 	{
 		title = 'spherical and time, lapse varying in radial',
-		coords = {t,r,phi,theta},
+		coords = {t,r,theta,phi},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
@@ -261,7 +261,7 @@ for _,info in ipairs{
 	for i,ui in ipairs(info.coords) do
 		for j,uj in ipairs(info.coords) do
 			local psi = var('\\psi', baseCoords)
-			local diff = uj:applyDiff(ui:applyDiff(psi)) - ui:applyDiff(uj:applyDiff(psi))
+			local diff = ui:applyDiff(uj:applyDiff(psi)) - uj:applyDiff(ui:applyDiff(psi))
 			local diffEval = diff()
 			if diffEval ~= symmath.Constant(0) then
 				printbr('$[',ui.name,',',uj.name,'] =$',diff:eq(diffEval))
