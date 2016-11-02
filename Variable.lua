@@ -18,6 +18,12 @@ function Variable:clone()
 	return self
 end
 
+-- used for comma derivatives
+-- override this to override for anholonomic basis
+function Variable:applyDiff(x)
+	return x:diff(self)
+end
+
 function Variable.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
 	return a.name == b.name

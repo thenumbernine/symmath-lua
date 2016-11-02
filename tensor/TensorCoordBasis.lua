@@ -2,6 +2,9 @@
 TensorCoordBasis represents an entry in the coordSrcs
 complete with
 	variables - table of what variables are in this basis 
+		- if this is variables, assumes the basis is e_i = diff(variable[i])
+		- if this is a function, uses the function to apply the basis 
+		- TODO rename to 'basis'
 	symbols - what symbols are used to representing this basis 
 			symbols == nil means all symbols
 	(c) what metrics are used for raising/lowering

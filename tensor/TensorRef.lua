@@ -144,8 +144,8 @@ TensorRef.visitorHandler = {
 						end
 					end
 					local x = #base == 0 and t or t:get(base)
-					for i=1,#deriv do
-						x = x:diff(deriv[i])
+					for i,d in ipairs(deriv) do
+						x = d:applyDiff(x)
 					end
 					return x
 				end,

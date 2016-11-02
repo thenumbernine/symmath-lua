@@ -35,6 +35,22 @@ local vars = symmath.vars
 local t,x,y,z = vars('t','x','y','z')
 local r,phi,theta = vars('r','\\phi','\\theta')
 
+local rHat = var'\\hat{r}'
+rHat.base = r
+rHat = r
+
+local zHat = var'\\hat{z}'
+zHat.base = z
+zHat = z
+
+local thetaHat = var'\\hat{\\theta}'
+thetaHat.base = theta
+function thetaHat:applyDiff(x) return x:diff(theta) / r end
+
+local phiHat = var'\\hat{\\phi}'
+phiHat.base = phi
+function phiHat:applyDiff(x) return x:diff(phi) / (r * symmath.sin(theta)) end
+
 local alpha = var('\\alpha', {r})
 local omega = var('\\omega', {t, r})
 
@@ -58,17 +74,11 @@ for _,info in ipairs{
 	},
 	{
 		title = 'polar, anholonomic, normalized',
-		coords = {r,phi},
+		coords = {rHat,thetaHat},
 		embedded = {x,y},
 		flatMetric = delta2,
 		chart = function()
-			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi))
-		end,
-		basis = function(self, x, i)
-			return ({
-				function(x) return x:diff(r) end,
-				function(x) return x:diff(phi) / r end,
-			})[i](x)
+			return Tensor('^I', r * symmath.cos(theta), r * symmath.sin(theta))
 		end,
 	},
 	{
@@ -87,6 +97,15 @@ for _,info in ipairs{
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi), z)
+		end,
+	},
+	{
+		title = 'cylinder, anholonomic, normalized',
+		coords = {rHat,thetaHat,zHat},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', r * symmath.cos(theta), r * symmath.sin(theta), z)
 		end,
 	},
 	{
@@ -142,7 +161,19 @@ for _,info in ipairs{
 --]]
 	{
 		title = 'spherical',
-		coords = {r,theta,phi},
+		coords = {r,phi,theta},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', 
+				r * symmath.sin(theta) * symmath.cos(phi),
+				r * symmath.sin(theta) * symmath.sin(phi),
+				r * symmath.cos(theta))
+		end,
+	},
+	{
+		title = 'spherical, anholonomic, normalized',
+		coords = {rHat,phiHat,thetaHat},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -154,7 +185,7 @@ for _,info in ipairs{
 	},
 	{
 		title = 'spherical and time',
-		coords = {t,r,theta,phi},
+		coords = {t,r,phi,theta},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
@@ -167,7 +198,7 @@ for _,info in ipairs{
 	},
 	{
 		title = 'spherical and time, lapse varying in radial',
-		coords = {t,r,theta,phi},
+		coords = {t,r,phi,theta},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
@@ -200,8 +231,11 @@ for _,info in ipairs{
 		{variables=info.coords},
 		{variables=info.embedded, symbols='IJKLMN', metric=info.flatMetric}
 	}
+			
+	local baseCoords = table.map(info.coords, function(coord) return coord.base or coord end)
 
 	printbr('coordinates:', table.unpack(info.coords))
+	printbr('base coords:', table.unpack(baseCoords))
 	printbr('embedding:', table.unpack(info.embedded))
 
 	local eta = Tensor('_IJ', unpack(info.flatMetric))
@@ -215,58 +249,41 @@ for _,info in ipairs{
 	printbr()
 
 	local e = Tensor'_u^I'
-	if info.basis then
-		printbr'anholonomic embedded:'
-		for i,ui in ipairs(info.coords) do
-			local e_i = info:basis(u,i)()
-			--[[
-			-- sure is messy to just put a phi in the index ...
-			local TensorIndex = reqire 'symmath.tensor.TensorIndex'
-			-- you can't just __call with TensorIndex, because then it checks variance (before simplify() even)
-			local TensorRef = reqire 'symmath.tensor.TensorRef'
-			printbr(TensorRef(var'e',TensorIndex{lower=true, symbol=ui.name},TensorIndex{lower=false, symbol='I'}):eq(e_i))
-			--]]
-			-- assumes e internal structure is e_u^I
-			-- e['_i^I'] = e_i'^I' 
-			for I=1,#info.embedded do
-				e[i][I] = e_i[I]
-			end
-		end
-		printbr(var'e''_u^I':eq(e'_u^I'()))
-	else
-		printbr'holonomic embedded:'
-		e['_u^I'] = u'^I_,u'()
-		printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(u'^I_,u'()):eq(e'_u^I'()))
-	end
+	--printbr'holonomic embedded:'
+	printbr'embedded:'
+	e['_u^I'] = u'^I_,u'()
+	printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(u'^I_,u'()):eq(e'_u^I'()))
 	printbr()
 
-	local c
-	if info.basis then
-		c = Tensor'_ab^c'
-		printbr()
-		printbr'commutation coefficients:'
-		for i,ui in ipairs(info.coords) do
-			for j,uj in ipairs(info.coords) do
-				local psi = var('\\psi', info.coords)
-				local diff = info:basis(info:basis(psi,i),j) - info:basis(info:basis(psi,j),i)
-				printbr('$[',ui.name,',',uj.name,'] =$',diff:eq(diff()))
+	local c = Tensor'_ab^c'
+	printbr'connection coefficients:'
+	printbr(var'c''_uv^w' * var'e''_w','$=[ e_u, e_v ]$')
+	for i,ui in ipairs(info.coords) do
+		for j,uj in ipairs(info.coords) do
+			local psi = var('\\psi', baseCoords)
+			local diff = uj:applyDiff(ui:applyDiff(psi)) - ui:applyDiff(uj:applyDiff(psi))
+			local diffEval = diff()
+			if diffEval ~= symmath.Constant(0) then
+				printbr('$[',ui.name,',',uj.name,'] =$',diff:eq(diffEval))
 				diff = diff()
 				--printbr('factor division',diff)
-				local dpsi = table.map(info.coords, function(uk) return psi:diff(uk) end)
+				local dpsi = table.map(baseCoords, function(uk) return psi:diff(uk) end)
 				--printbr('dpsi', dpsi:unpack())
 				local A,b = symmath.factorLinearSystem({diff}, dpsi)
 				-- now extract psi:diff(uk)
-				-- ... and divide by e_k to get the correct coefficient
-				-- TODO pray that the anholonomic basis isn't a linear combination of coordinates ...
+				-- and divide by e_k to get the correct coefficient
+				-- TODO this assumes that e_a is only a function of partial_a
+				-- if e_a is a linear combination of e_a^b partial_b then you can work it out to find
+				-- c_ab^d = (e^-1)_c^d (e_a^r e_b^c_,r - e_b^r e_a^c_,r)
+				-- TODO put this somewhere else so everyone can use it
 				assert(b[1][1] == symmath.Constant(0))
-				for k in ipairs(info.coords) do
-					local coeff = (A[1][k] * dpsi[k] / info:basis(psi, k))()
+				for k,uk in ipairs(info.coords) do
+					local coeff = (A[1][k] * dpsi[k] / uk:applyDiff(psi))()
 					-- assert dphi is nowhere in coeff ...
 					c[i][j][k] = coeff 
 				end
 			end
 		end
-		printbr(var'c''_ab^c':eq(c))
 	end
 
 	local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
@@ -293,6 +310,18 @@ for _,info in ipairs{
 	local d2x = Tensor('^u', function(u)
 		return var('\\ddot{' .. info.coords[u].name .. '}')
 	end)
+
+	local A = Tensor('^i', function(i) return var('A^{'..info.coords[i].name..'}', baseCoords) end)
+	--[[
+	TODO can't use comma derivative, gotta override the :applyDiff of the anholonomic basis variables
+	 but when doing so, you must make the embedded variables dependent on the ... variables that the anholonomic are spun off of
+	 	i.e. if the anholonomic basis is rHat, phiHat, thetaHat, then the A^I variables must be dependent upon r, theta, phi
+	--]]
+	local divVarExpr = var'A''^i_,i' + var'\\Gamma''^i_ji' * var'A''^j'
+	local divExpr = divVarExpr:replace(var'A', A):replace(var'\\Gamma', Gamma)
+	-- TODO only simplify TensorRef, so the indexes are fixed
+	printbr('divergence:', divVarExpr:eq(divExpr):eq(divExpr():factorDivision())) 
+	
 	printbr'geodesic:'
 	-- TODO unravel equaliy, or print individual assignments
 	printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):eq(Tensor'^u'))())
