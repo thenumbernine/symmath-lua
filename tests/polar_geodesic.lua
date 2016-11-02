@@ -21,6 +21,7 @@
 
 --]]
 
+local table = require 'ext.table'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
@@ -49,16 +50,49 @@ for _,info in ipairs{
 	{
 		title = 'polar',
 		coords = {r,phi},
-		basis = {x,y},
+		embedded = {x,y},
 		flatMetric = delta2,
 		chart = function() 
 			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi))
 		end,
 	},
 	{
+		title = 'polar, anholonomic, normalized',
+		coords = {r,phi},
+		embedded = {x,y},
+		flatMetric = delta2,
+		chart = function()
+			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi))
+		end,
+		basis = function(self, x, i)
+			return ({
+				function(x) return x:diff(r) end,
+				function(x) return x:diff(phi) / r end,
+			})[i](x)
+		end,
+	},
+	{
+		title = 'cylinder surface',
+		coords = {phi,z},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi), z)
+		end,
+	},
+	{
+		title = 'cylinder',
+		coords = {r,phi,z},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi), z)
+		end,
+	},
+	{
 		title = 'spiral',
 		coords = {r,phi},
-		basis = {x,y},
+		embedded = {x,y},
 		flatMetric = delta2,
 		chart = function()
 			return Tensor('^I',
@@ -70,7 +104,7 @@ for _,info in ipairs{
 	{
 		title = 'polar and time, constant rotation',
 		coords = {t,r,phi},
-		basis = {t,x,y},
+		embedded = {t,x,y},
 		flatMetric = eta3,
 		chart = function()
 			return Tensor('^I', 
@@ -82,7 +116,7 @@ for _,info in ipairs{
 	{
 		title = 'polar and time, lapse varying in radial',
 		coords = {t,r,phi},
-		basis = {t,x,y},
+		embedded = {t,x,y},
 		flatMetric = eta3,
 		chart = function()
 			return Tensor('^I',
@@ -95,7 +129,7 @@ for _,info in ipairs{
 	{
 		title = 'polar and time, lapse varying in radial, rotation varying in time and radial',
 		coords = {t,r,phi},
-		basis = {t,x,y},
+		embedded = {t,x,y},
 		flatMetric = eta3,
 		chart = function()
 			return Tensor('^I', 
@@ -109,7 +143,7 @@ for _,info in ipairs{
 	{
 		title = 'spherical',
 		coords = {r,theta,phi},
-		basis = {x,y,z},
+		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I', 
@@ -121,7 +155,7 @@ for _,info in ipairs{
 	{
 		title = 'spherical and time',
 		coords = {t,r,theta,phi},
-		basis = {t,x,y,z},
+		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
 			return Tensor('^I', 
@@ -134,7 +168,7 @@ for _,info in ipairs{
 	{
 		title = 'spherical and time, lapse varying in radial',
 		coords = {t,r,theta,phi},
-		basis = {t,x,y,z},
+		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
 			return Tensor('^I', 
@@ -148,7 +182,7 @@ for _,info in ipairs{
 	{
 		title = 'spherical and time, lapse varying in radial',
 		coords = {t,r,theta,phi},
-		basis = {t,x,y,z},
+		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
 			return Tensor('^I', 
@@ -164,8 +198,11 @@ for _,info in ipairs{
 
 	Tensor.coords{
 		{variables=info.coords},
-		{variables=info.basis, symbols='IJKLMN', metric=info.flatMetric}
+		{variables=info.embedded, symbols='IJKLMN', metric=info.flatMetric}
 	}
+
+	printbr('coordinates:', table.unpack(info.coords))
+	printbr('embedding:', table.unpack(info.embedded))
 
 	local eta = Tensor('_IJ', unpack(info.flatMetric))
 	printbr'flat metric:'
@@ -178,10 +215,59 @@ for _,info in ipairs{
 	printbr()
 
 	local e = Tensor'_u^I'
-	e['_u^I'] = u'^I_,u'()
-	printbr'basis:'
-	printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(u'^I_,u'()):eq(e'_u^I'()))
+	if info.basis then
+		printbr'anholonomic embedded:'
+		for i,ui in ipairs(info.coords) do
+			local e_i = info:basis(u,i)()
+			--[[
+			-- sure is messy to just put a phi in the index ...
+			local TensorIndex = reqire 'symmath.tensor.TensorIndex'
+			-- you can't just __call with TensorIndex, because then it checks variance (before simplify() even)
+			local TensorRef = reqire 'symmath.tensor.TensorRef'
+			printbr(TensorRef(var'e',TensorIndex{lower=true, symbol=ui.name},TensorIndex{lower=false, symbol='I'}):eq(e_i))
+			--]]
+			-- assumes e internal structure is e_u^I
+			-- e['_i^I'] = e_i'^I' 
+			for I=1,#info.embedded do
+				e[i][I] = e_i[I]
+			end
+		end
+		printbr(var'e''_u^I':eq(e'_u^I'()))
+	else
+		printbr'holonomic embedded:'
+		e['_u^I'] = u'^I_,u'()
+		printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(u'^I_,u'()):eq(e'_u^I'()))
+	end
 	printbr()
+
+	local c
+	if info.basis then
+		c = Tensor'_ab^c'
+		printbr()
+		printbr'commutation coefficients:'
+		for i,ui in ipairs(info.coords) do
+			for j,uj in ipairs(info.coords) do
+				local psi = var('\\psi', info.coords)
+				local diff = info:basis(info:basis(psi,i),j) - info:basis(info:basis(psi,j),i)
+				printbr('$[',ui.name,',',uj.name,'] =$',diff:eq(diff()))
+				diff = diff()
+				--printbr('factor division',diff)
+				local dpsi = table.map(info.coords, function(uk) return psi:diff(uk) end)
+				--printbr('dpsi', dpsi:unpack())
+				local A,b = symmath.factorLinearSystem({diff}, dpsi)
+				-- now extract psi:diff(uk)
+				-- ... and divide by e_k to get the correct coefficient
+				-- TODO pray that the anholonomic basis isn't a linear combination of coordinates ...
+				assert(b[1][1] == symmath.Constant(0))
+				for k in ipairs(info.coords) do
+					local coeff = (A[1][k] * dpsi[k] / info:basis(psi, k))()
+					-- assert dphi is nowhere in coeff ...
+					c[i][j][k] = coeff 
+				end
+			end
+		end
+		printbr(var'c''_ab^c':eq(c))
+	end
 
 	local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 	
@@ -193,11 +279,11 @@ for _,info in ipairs{
 		then
 			return 1 - symmath.sin(expr[1][1]:clone())^2
 		end
-	end)
-
-	local props = require 'symmath.diffgeom'(g)
+	end)()
+	
+	local props = require 'symmath.diffgeom'(g, nil, c)
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
-	printbr(var'\\Gamma''_abc':eq(symmath.divOp(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a')))
+	printbr(var'\\Gamma''_abc':eq(symmath.divOp(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
 	props:print(printbr)
 	local Gamma = props.Gamma
 

@@ -195,9 +195,10 @@ LaTeX.lookupTable = {
 			if type(expr[i]) ~= 'table' then 
 				error("expected matrix children to be Arrays (or at least tables), but got ("..type(expr[i])..") "..tostring(expr[i]))
 			end
-			rows[i] = omit(tableConcat(range(#expr[i]):map(function(j)
+			rows[i] = tableConcat(range(#expr[i]):map(function(j)
 				return self:apply(expr[i][j])
-			end), '&'))
+			end), '&')
+			if #expr > 1 then rows[i] = omit(rows[i]) end
 		end
 		return table{'\\left[', '\\matrix',
 			tableConcat(rows, '\\\\'),
