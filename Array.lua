@@ -266,4 +266,26 @@ function Array.pruneMul(lhs,rhs)
 	end
 end
 
+
+-- creates an array of zeroes
+-- static, uses :
+function Array:zeros(dims)
+	-- assert self is Array or a subclass of Array
+	if #dims == 0 then return self() end
+	return self(range(dims[1]):map(function()
+		return #dims == 1 and 0 or self:zeros(table.sub(dims, 2))
+	end):unpack())
+end
+
+-- create an Array from a function
+-- static, but uses : (so I know what class is calling it)
+function Array:lambda(dims, f)
+	local clone = require 'symmath.clone'
+	local m = self:zeros(dims)
+	for i in m:iter() do
+		m[i] = clone(f(table.unpack(i)))
+	end
+	return m
+end
+
 return Array

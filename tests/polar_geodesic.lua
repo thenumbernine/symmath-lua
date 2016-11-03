@@ -57,10 +57,10 @@ local omega = var('\\omega', {t, r})
 -- I need a better way of (1) defining functions, and (2) keeping track of their derivatives
 local class = require 'ext.class'
 
-local delta2 = symmath.Matrix({1,0}, {0,1})
-local delta3 = symmath.Matrix({1,0,0}, {0,1,0}, {0,0,1})
-local eta3 = symmath.Matrix({-1,0,0}, {0,1,0}, {0,0,1})
-local eta4 = symmath.Matrix({-1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1})
+local delta2 = symmath.Matrix:lambda({2,2}, function(i,j) return i==j and 1 or 0 end)
+local delta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and 1 or 0 end)
+local eta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
+local eta4 = symmath.Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
 for _,info in ipairs{
 	{
