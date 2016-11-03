@@ -34,7 +34,7 @@ return function(A, AInv, callback)
 
 	-- shortcuts:
 	if n == 1 then
-		return Matrix((1/A[1][1]):simplify())
+		return Matrix{(1/A[1][1]):simplify()}
 	elseif n == 2 then
 		return (Matrix(
 			{A[2][2], -A[1][2]},
