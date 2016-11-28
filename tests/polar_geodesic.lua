@@ -53,6 +53,7 @@ function phiHat:applyDiff(x) return x:diff(phi) / (r * symmath.sin(theta)) end
 
 local alpha = var('\\alpha', {r})
 local omega = var('\\omega', {t, r})
+local q = var('q', {t,x,y,z})
 
 -- I need a better way of (1) defining functions, and (2) keeping track of their derivatives
 local class = require 'ext.class'
@@ -63,6 +64,7 @@ local eta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 an
 local eta4 = symmath.Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
 for _,info in ipairs{
+--[=[
 	{
 		title = 'polar',
 		coords = {r,phi},
@@ -209,6 +211,16 @@ for _,info in ipairs{
 				r * symmath.cos(theta))
 		end,
 	},
+--]=]
+	{
+		title = '1D spacetime',
+		coords = {t,x,y,z},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		chart = function()
+			return Tensor('^I', t, q, y, z)
+		end,
+	},
 --[[ this is schwarzschild, for alpha = 1/sqrt(1 - R/r)
 	{
 		title = 'spherical and time, lapse varying in radial',
@@ -243,6 +255,7 @@ for _,info in ipairs{
 	printbr(var'\\eta''_IJ':eq(eta'_IJ'()))
 	printbr()
 
+--[[
 	local u = info.chart()
 	printbr'coordinate chart:'
 	printbr(var'u''^I':eq(u'^I'()))
@@ -297,7 +310,14 @@ for _,info in ipairs{
 			return 1 - symmath.sin(expr[1][1]:clone())^2
 		end
 	end)()
-	
+--]]
+
+local g = Tensor('_ab', function(a,b) 
+	if a~=b then return 0 end
+	if a == 1 then return -1 end
+	if a == 2 then return q end
+	return 1
+end)
 	local props = require 'symmath.diffgeom'(g, nil, c)
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
 	printbr(var'\\Gamma''_abc':eq(symmath.divOp(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))

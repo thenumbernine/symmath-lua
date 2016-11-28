@@ -119,7 +119,7 @@ local S = Tensor('_i', function(i) return var('S_'..spatialCoords[i].name, coord
 printbr(S_'_i':eq(S'_i'()))
 
 -- E_i = A_t,i - A_i,t
--- B_i = epsilon_ijk A_k,j
+-- B_i = epsilon_i^jk A_k,j
 -- A_i,t = A_t,i - E_i
 local function replacePotentialsWithFields(expr)
 	return expr	
@@ -308,6 +308,7 @@ local RiemannFromConnection
 
 local function pretty(expr)
 	return expr
+		:replace(A,A_)
 		:replace(E,E_)
 		:replace(B,B_)
 		:replace(S,S_)
@@ -375,6 +376,13 @@ printbr"<h3>removing $g^{ab} \\approx \\eta^{ab}$</h3>"
 printbr(( R_'^t_itj' ):eq( pretty(-E'_i' * E'_j' - B'_i' * B'_j') ))
 printbr(( R_'^t_ijk' ):eq( pretty(deltaL3'_ik' * S'_j' - deltaL3'_ij' * S'_k' ) ))
 printbr(( R_'^i_jkl' ):eq( pretty(LeviCivita3'^i_jm' * LeviCivita3'_kln' * (E'^m' * E'^n' + B'^m' * B'^n')) ))
+
+printbr"<h3>...in terms of four-potential</h3>"
+
+printbr(( R_'^t_itj' ):eq( pretty(-(A'_t,i' - A'_i,t') * (A'_t,j' - A'_j,t') - LeviCivita3'_i^mn' * A'_n,m' * LeviCivita3'_j^pq' * A'_q,p') ))
+printbr(( R_'^t_ijk' ):eq( pretty(deltaL3'_ik' * S'_j' - deltaL3'_ij' * S'_k' ) ))
+printbr(( R_'^i_jkl' ):eq( pretty(LeviCivita3'^i_jm' * LeviCivita3'_kln' * (E'^m' * E'^n' + B'^m' * B'^n')) ))
+
 
 printbr"<h3>connections that give rise to Riemann tensor</h3>"
 

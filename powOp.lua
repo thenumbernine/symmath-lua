@@ -189,6 +189,9 @@ powOp.visitorHandler = {
 		if expr[2] == Constant(0) then return Constant(1) end
 		
 		-- (a ^ b) ^ c => a ^ (b * c)
+		-- unless b is 2 and c is 1/2 ...
+		-- in fact, only if c is integer
+		-- in fact, better add complex numbers
 		if powOp.is(expr[1]) then
 			return prune:apply(expr[1][1] ^ (expr[1][2] * expr[2]))
 		end
