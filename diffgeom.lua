@@ -49,7 +49,7 @@ function Props:calcEqns()
 	self.eqns = {
 		g = var'g''_uv':eq(self.g'_uv'()),
 		c = self.c and var'c''_ab^c':eq(self.c'_ab^c'()) or nil,
-		gU = var'g''^uv':eq(self.g'^uv'()),
+		gU = var'g''^uv':eq(self.gU'^uv'()),
 		GammaL = var'\\Gamma''_abc':eq(self.GammaL'_abc'()),
 		Gamma = var'\\Gamma''^a_bc':eq(self.Gamma'^a_bc'()),
 		Riemann = var'R''^ab_cd':eq(self.Riemann'^ab_cd'()),
