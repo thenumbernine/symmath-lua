@@ -161,12 +161,12 @@ printbr(( frac(1, q) * u[1] * m * var'\\dot{u}''_a' ):eq( -Gamma_'_abc' * u_'^b'
 
 printbr(( frac(1,q) * u[1] * m * var'\\dot{u}''_i' ):eq( -Gamma_'_ibc' * u_'^b' * u_'^c' ):eq( accel()'_i'() ))
 
+--[[
 printbr"<h3>Connection coefficients</h3>"
 
 local Gamma = GammaL'^a_bc'()
 printbr(Gamma_'^a_bc':eq(Gamma'^a_bc'()))
 
---[[
 local props = require 'symmath.diffgeom'(g)
 for k,eqn in ipairs(props.eqns) do
 	for i,x in ipairs(spatialCoords) do
@@ -371,6 +371,9 @@ printbr((R_'_abcd' + R_'_bacd'):eq( (Riemann'_abcd' + Riemann'_bacd')() ))
 printbr((R_'_abcd' - R_'_cdab'):eq( (Riemann'_abcd' - Riemann'_cdab')() ))
 --]]
 
+-- TODO this makes more sense in curved space
+--printbr( (R_'^a_bcd;e' + R_'^a_bec;d' + R_'^a_bde;c'):eq( (Riemann'^a_bcd;e' + Riemann'^a_bec;d' + Riemann'^a_bde;c')() ) )
+
 printbr"<h3>removing $g^{ab} \\approx \\eta^{ab}$</h3>"
 
 printbr(( R_'^t_itj' ):eq( pretty(-E'_i' * E'_j' - B'_i' * B'_j') ))
@@ -422,12 +425,30 @@ printbr(R_'^i_jkl':eq(
 	- Gamma_'^i_ml' * Gamma_'^m_jk'
 ))
 
+os.exit()
+
 printbr"<h3>generating Riemann curvature from connection coefficients</h3>"
 
 Tensor.metric(deltaL3, deltaL3, 'i')
 
-local Connection_ijk_expr = LeviCivita3'^i_jl' * (E'^l' * E'_k' + B'^l' * B'_k')
-local Commutation_ijk_expr = LeviCivita3'_ij^k'
+
+local P = Tensor('^i_j', function(i,j)
+	if j==1 then return E[i] end
+	if j==2 then return B[i] end
+	return 0
+end)
+local Q = Tensor('^ij', function(i,j)
+	if j==1 then return E[i] end
+	if j==2 then return B[i] end
+	return 0
+end)
+printbr(var'P''^i_j':eq(P'^i_j'()))
+printbr(var'Q''^i_j':eq(Q'^i_j'()))
+
+printbr((var'P''^i_k' * var'Q''^jk'):eq( (P'^i_k'*Q'^jk')() ))
+
+local Connection_ijk_expr = LeviCivita3'^i_jm' * P'^m_k'
+local Commutation_ijk_expr = Q'^km' * LeviCivita3'_mij'
 
 printbr( Gamma_'^i_jk' :eq( pretty(Connection_ijk_expr) ) )
 printbr( c_'_ij^k':eq( pretty(Commutation_ijk_expr) ) )

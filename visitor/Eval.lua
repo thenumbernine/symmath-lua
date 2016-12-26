@@ -7,11 +7,12 @@ function Eval:__call(expr, evalmap, ...)
 	local symmath = require 'symmath'
 	local Constant = symmath.Constant
 	local Variable = symmath.Variable
-	
+	local complex = require 'symmath.complex'
+
 	-- do the replaces based on the evalmap
 	if evalmap then
 		for k,v in pairs(evalmap) do
-			if type(v) ~= 'number' then
+			if type(v) ~= 'number' and not complex.is(v) then
 				error("expected the values of the evaluation map to be numbers, but found "..tostring(k).." = ("..type(v)..")"..tostring(v))
 			end
 			if type(k) == 'table' then

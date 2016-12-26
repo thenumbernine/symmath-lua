@@ -3,7 +3,8 @@ local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local sin = class(Function)
 sin.name = 'sin'
-sin.func = math.sin
+--sin.func = math.sin
+sin.func = require 'symmath.complex'.sin
 function sin:evaluateDerivative(...)
 	local x = table.unpack(self):clone()
 	local cos = require 'symmath.cos'

@@ -3,7 +3,8 @@ local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local abs = class(Function)
 abs.name = 'abs'
-abs.func = math.abs
+--abs.func = math.abs
+abs.func = require 'symmath.complex'.abs
 function abs:evaluateDerivative(...)
 	error('not just yet')
 	-- TODO - heaviside step?  or conditions?

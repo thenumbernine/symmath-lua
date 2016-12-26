@@ -129,7 +129,11 @@ powOp.visitorHandler = {
 		local divOp = symmath.divOp
 		local Constant = symmath.Constant
 
-		local function isInteger(x) return x == math.floor(x+.5) end
+		local complex = require 'symmath.complex'
+		local function isInteger(x) 
+			if complex.is(x) then x = complex.unpack(x) end	
+			return x == math.floor(x+.5) 
+		end
 		local function isPositiveInteger(x) return isInteger(x) and x > 0 end
 
 		if Constant.is(expr[1]) and Constant.is(expr[2]) then

@@ -2,7 +2,8 @@ local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local asin = class(Function)
 asin.name = 'asin'
-asin.func = math.asin
+--asin.func = math.asin
+asin.func = require 'symmath.complex'.asin
 function asin:evaluateDerivative(...)
 	local x = table.unpack(self):clone()
 	local sqrt = require 'symmath.sqrt'

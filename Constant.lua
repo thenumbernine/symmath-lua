@@ -1,12 +1,28 @@
 local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
 
+--[[
+what about complex numbers?
+what about big integers?
+what about infinite precision numbers?
+
+I'll let .value hold whatever is essential to the constant - whatever class of constant it is.
+--]]
+
+-- for now I'll allow value to be ffi.typeof(...) == 'ctype<complex>' or 'ctype<complex float>'
+local result, ffi = pcall(require,'ffi')
+ffi = result and ffi
+
+local complex = require 'symmath.complex'
+
 local Constant = class(Expression)
 Constant.precedence = 10	-- high since it can't have child nodes 
 Constant.name = 'Constant'
 
 function Constant:init(value)
-	if type(value) ~= 'number' then
+	if type(value) ~= 'number'
+	and not complex.is(value)
+	then
 		error('tried to init constant with non-number type '..type(value)..' value '..tostring(value))
 	end
 	self.value = value
@@ -16,12 +32,15 @@ function Constant:clone()
 	return Constant(self.value)
 end
 
+local function toConstant(a)
+	if getmetatable(a) == Constant then return a.value end
+	if complex.is(a) then return a end 
+	return tonumber(a)
+end
+
 -- this won't be called if a prim is used ...
 function Constant.__eq(a,b)
-	local va, vb
-	if getmetatable(a) == Constant then va = a.value else va = tonumber(a) end
-	if getmetatable(b) == Constant then vb = b.value else vb = tonumber(b) end
-	return va == vb
+	return toConstant(a) == toConstant(b)
 end
 
 function Constant:evaluateDerivative(...)
@@ -42,7 +61,7 @@ Constant.visitorHandler = {
 		end
 		
 		-- -c => -(c)
-		if expr.value < 0 then
+		if complex.unpack(expr.value) < 0 then
 			return tidy:apply(unmOp(Constant(-expr.value)))
 		end
 	end,

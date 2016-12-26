@@ -25,8 +25,12 @@ local c_normalized = c:eq(1)
 printbr(c_normalized)
 
 -- solve for s
-local s_from_m = c_from_m_s:subst(c_normalized):solve(s)
+local substd = c_from_m_s:subst(c_normalized)
+print('substd',substd)
+local s_from_m = substd:solve(s)
 printbr(s_from_m)
+
+error('when did solve() go wrong?')
 
 -- Planck's constant
 local hBar = var'\\hbar'

@@ -4,7 +4,8 @@ local Function = require 'symmath.Function'
 
 local sqrt = class(Function)
 sqrt.name = 'sqrt'
-sqrt.func = math.sqrt
+--sqrt.func = math.sqrt
+sqrt.func = require 'symmath.complex'.sqrt
 
 function sqrt:evaluateDerivative(...)
 	local Constant = require 'symmath.Constant'
