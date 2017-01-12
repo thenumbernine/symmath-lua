@@ -64,7 +64,7 @@ local eta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 an
 local eta4 = symmath.Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
 for _,info in ipairs{
---[=[
+-- [=[
 	{
 		title = 'polar',
 		coords = {r,phi},
@@ -146,7 +146,7 @@ for _,info in ipairs{
 				r * symmath.sin(phi))
 		end,
 	},
---[[
+-- [[
 	{
 		title = 'polar and time, lapse varying in radial, rotation varying in time and radial',
 		coords = {t,r,phi},
@@ -221,7 +221,7 @@ for _,info in ipairs{
 			return Tensor('^I', t, q, y, z)
 		end,
 	},
---[[ this is schwarzschild, for alpha = 1/sqrt(1 - R/r)
+-- [[ this is schwarzschild, for alpha = 1/sqrt(1 - R/r)
 	{
 		title = 'spherical and time, lapse varying in radial',
 		coords = {t,r,theta,phi},
@@ -255,7 +255,7 @@ for _,info in ipairs{
 	printbr(var'\\eta''_IJ':eq(eta'_IJ'()))
 	printbr()
 
---[[
+-- [[
 	local u = info.chart()
 	printbr'coordinate chart:'
 	printbr(var'u''^I':eq(u'^I'()))
@@ -312,12 +312,15 @@ for _,info in ipairs{
 	end)()
 --]]
 
+--[[  I don't remember what this was about ...
 local g = Tensor('_ab', function(a,b) 
 	if a~=b then return 0 end
 	if a == 1 then return -1 end
 	if a == 2 then return q end
 	return 1
 end)
+--]]
+	
 	local props = require 'symmath.diffgeom'(g, nil, c)
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
 	printbr(var'\\Gamma''_abc':eq(symmath.divOp(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))

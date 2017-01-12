@@ -198,7 +198,7 @@ w_+- = sqrt(f) K^m_m +- sqrt(gamma^xx) (A_x + 2 V_m gamma^mx / gamma^xx)
 --]]
 
 local useADM = true
-local useShift = true 
+local useShift = false
 
 -- state variables:
 local alpha = codeVar('\\alpha')
