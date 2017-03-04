@@ -124,11 +124,10 @@ TensorRef.visitorHandler = {
 			for i=1,#indexes do
 				newVariance[i] = TensorIndex{
 					symbol = indexes[i].symbol,
-					lower = indexes[i].lower,
-					-- ...and i'm not copying the derivative field
+					lower = true,	-- when a tensor is differentiated, the index created is covariant
 				}
 			end
-			
+
 			t = Tensor{
 				indexes = newVariance,
 				values = function(...)
@@ -150,11 +149,11 @@ TensorRef.visitorHandler = {
 					return x
 				end,
 			}
-
+			
 			-- raise after differentiating
 			-- TODO do this after each diff
 			transformIndexes(true)
-			
+
 			for i=1,#indexes do
 				indexes[i].derivative = false
 			end

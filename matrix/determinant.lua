@@ -91,7 +91,6 @@ return function(m)
 				end
 			end
 			result = result + parity * product
-print(parity, table.concat(index,','), product(), '<br>')
 		end,
 	}
 	local simplify = require 'symmath.simplify'
