@@ -284,7 +284,11 @@ LaTeX.lookupTable = {
 	-- looks a lot like TensorIndex.__tostring, except with some {}'s wrapping stuff
 	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
 		local s = ''
-		if expr.derivative then s = ',' .. s end
+		if expr.derivative == 'covariant' then
+			s = ';' .. s 
+		elseif expr.derivative then 
+			s = ',' .. s 
+		end
 		if expr.symbol then
 			s = s .. expr.symbol
 		elseif expr.number then

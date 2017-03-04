@@ -26,7 +26,11 @@ end
 
 function TensorIndex:__tostring()
 	local s = ''
-	if self.derivative then s = ',' .. s end
+	if self.derivative == 'covariant' then
+		s = ';' .. s 
+	elseif self.derivative then
+		s = ',' .. s 
+	end
 	if self.lower then s = '_' .. s else s = '^' .. s end
 	if self.symbol then
 		return s .. self.symbol
