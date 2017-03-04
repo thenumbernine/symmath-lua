@@ -177,6 +177,8 @@ symmath.powOp = require 'symmath.powOp'
 symmath.modOp = require 'symmath.modOp'
 
 -- for name's sake alone
+-- er - product is no longer for name's sake, now that I'm asserting more than one child per operation
+-- I should make a genuine Product just as I have a Sum operation
 symmath.product = symmath.mulOp
 symmath.subtract = symmath.subOp
 symmath.fraction = symmath.divOp
