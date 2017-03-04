@@ -10,7 +10,7 @@ args:
 
 local table = require 'ext.table'
 local function permutations(args)
-	local parity = args.parity or 1
+	local parity = args.parity or (#args.elements%2==0 and 1 or -1)
 	local p = args.elements
 	local callback = args.callback
 	local index = args.index
@@ -91,7 +91,7 @@ return function(m)
 				end
 			end
 			result = result + parity * product
-			--print(parity, table.unpack(index))
+print(parity, table.concat(index,','), product(), '<br>')
 		end,
 	}
 	local simplify = require 'symmath.simplify'
