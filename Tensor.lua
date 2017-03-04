@@ -173,6 +173,10 @@ function Tensor.parseIndexes(indexes)
 				--elseif ch == '|' then
 				--	derivative = 'projection'
 				else
+					-- if the first index is a derivative the default to lower
+					-- otherwise default to upper
+					if #indexes == 0 and derivative then lower = true end
+					
 					if tonumber(ch) ~= nil then
 						table.insert(indexes, TensorIndex{
 							number = tonumber(ch),
