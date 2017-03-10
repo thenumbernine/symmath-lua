@@ -1,6 +1,15 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 
+local function eprint(...)
+	local s = {}
+	for i=1,select('#',...) do
+		table.insert(s, tostring(select(i, ...)))
+	end
+	io.stderr:write(table.concat(s, '\t'), '\n')
+	io.stderr:flush()
+end
+
 local Props = class()
 
 function Props:init(g, gU, c)
@@ -10,16 +19,19 @@ function Props:init(g, gU, c)
 	g = basis.metric
 	gU = basis.metricInverse
 
-if verbose then print'Gamma_abc' end
-	local expr = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)
+	local dg = Tensor'_abc'
+	dg['_abc'] = g'_ab,c'()
+if verbose then eprint'g_ab,c' end
+if verbose then eprint'Gamma_abc' end
+	local expr = ((dg'_abc' + dg'_acb' - dg'_bca') / 2)
 	if c then expr = expr + (c'_abc' + c'_acb' - c'_bca')/2 end
 	local GammaL = Tensor'_abc'
 	GammaL['_abc'] = expr()
 
-if verbose then print'Gamma^a_bc' end
+if verbose then eprint'Gamma^a_bc' end
 	local Gamma = GammaL'^a_bc'()
 
-if verbose then print'Gamma^a_bc,d' end
+if verbose then eprint'Gamma^a_bc,d' end
 	local dGamma = Tensor'^a_bcd'
 	dGamma['^a_bcd'] = Gamma'^a_bc,d'()
 
@@ -30,27 +42,27 @@ if verbose then print'Gamma^a_bc,d' end
 -- and if it has multiple indexes, keep track of them, transform the elements individually, sum them, and only generate the resulting indexes
 -- (in this case, 4^4 = 256, much smaller)
 -- another TODO to help optimization: keep track of symmetric/antisymmetric terms
-if verbose then print'Gamma^a_ec Gamma^e_bd' end
+if verbose then eprint'Gamma^a_ec Gamma^e_bd' end
 	local GammaSq = Tensor'^a_bcd'
 	GammaSq['^a_bcd'] = (Gamma'^a_ec' * Gamma'^e_bd')()
 
-if verbose then print'Riemann^a_bcd' end
+if verbose then eprint'Riemann^a_bcd' end
 	local expr = (dGamma'^a_bdc' - dGamma'^a_bcd' + GammaSq'^a_bcd' - GammaSq'^a_bdc')
 	if c then expr = expr + Gamma'^a_be' * c'_cd^e' end
 	local Riemann = Tensor'^a_bcd'
 	Riemann['^a_bcd'] = expr()
 
-if verbose then print'Riemann^ab_cd' end
+if verbose then eprint'Riemann^ab_cd' end
 	Riemann = Riemann'^ab_cd'()
 	
-if verbose then print'Ricci^a_b' end
+if verbose then eprint'Ricci^a_b' end
 	local Ricci = Tensor'^a_b'
 	Ricci['^a_b'] = Riemann'^ca_cb'()
 	
-if verbose then print'Gaussian' end
+if verbose then eprint'Gaussian' end
 	local Gaussian = Ricci'^a_a'()
 	
-if verbose then print'Einstein^a_b' end
+if verbose then eprint'Einstein^a_b' end
 	local Einstein = Tensor'^a_b'
 	Einstein['^a_b'] = (Ricci'^a_b' - g'^a_b' * Gaussian)()
 

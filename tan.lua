@@ -10,3 +10,4 @@ function tan:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
 	return diff(x,...) / cos(x)^2
 end
+return tan
