@@ -31,6 +31,7 @@ end
 function MathJax.print(...)
 	print(...)
 	print'<br>'
+	io.stdout:flush()
 end
 
 -- call this to setup mathjax
@@ -38,11 +39,7 @@ function MathJax.setup()
 	local symmath = require 'symmath'
 	symmath.tostring = MathJax
 	print(MathJax.header)
-	function printbr(...)
-		print(...)
-		print'<br>'
-		io.stdout:flush()
-	end
+	printbr = MathJax.print
 end
 
 return MathJax()	-- singleton

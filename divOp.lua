@@ -57,7 +57,7 @@ divOp.visitorHandler = {
 
 		-- x / 0 => Invalid
 		if expr[2] == Constant(0) then
-			return Invalid()
+			return symmath.Invalid()
 		end
 		
 		if symmath.simplifyConstantPowers  then

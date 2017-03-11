@@ -22,6 +22,7 @@
 --]]
 local table = require 'ext.table'
 local range = require 'ext.range'
+local class = require 'ext.class'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
@@ -69,8 +70,20 @@ local function simplifyTrig(x)
 			end
 		end)()
 	until not found
-	return x
 	--]]
+	
+	-- [[ one last attempt to divide out cos's
+	x = x:map(function(expr) 
+		if symmath.powOp.is(expr)
+		and sin.is(expr[1])
+		and expr[2] == symmath.Constant(2)
+		then
+			return 1 - cos(expr[1][1]:clone())^2
+		end
+	end)()
+	--]]
+	
+	return x
 end
 --]=]
 --[=[ trying to not rely on the other simplification operations for help: 
@@ -157,12 +170,12 @@ local function simplifyPowers(x)
 	end)()
 end
 
-
-
-
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars
+local frac = symmath.divOp
+local sin = symmath.sin
+local cos = symmath.cos
 
 local t,x,y,z = vars('t','x','y','z')
 local r,phi,theta,psi = vars('r','\\phi','\\theta','\\psi')
@@ -186,16 +199,13 @@ local alpha = var('\\alpha', {r})
 local omega = var('\\omega', {t, r})
 local q = var('q', {t,x,y,z})
 
--- I need a better way of (1) defining functions, and (2) keeping track of their derivatives
-local class = require 'ext.class'
-
 local delta2 = symmath.Matrix:lambda({2,2}, function(i,j) return i==j and 1 or 0 end)
 local delta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and 1 or 0 end)
 local eta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 local eta4 = symmath.Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
 for _,info in ipairs{
---[=[
+-- [=[
 	{
 		title = 'polar',
 		coords = {r,phi},
@@ -222,6 +232,14 @@ for _,info in ipairs{
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi), z)
+		end,
+		-- for the time being, all coord charts where #coords < #embedded need to explicitly provide this.
+		-- (which, for now, is only this coordinate chart)
+		-- it is equal to dx^a/dx^I in terms of x^a
+		eU = function()
+			return Tensor('^a_I', 
+				{-sin(phi)/r, cos(phi)/r, 0},
+				{0, 0, 1})
 		end,
 	},
 	{
@@ -372,156 +390,6 @@ for _,info in ipairs{
 		end,
 	},
 --]]
--- [[
-	(function()
-		local baseCoords = table{psi,theta,phi}
-		
-		local cos = symmath.cos
-		local sin = symmath.sin
-		local tan = symmath.tan
-		local function cot(...) return cos(...) / sin(...) end
-
-		-- notice these are negative the Rodrigues rotation formula / typical Euler angles
-		-- but they are this way to match MTW while I pick the question apart
-		local function Rx(theta)
-			return symmath.Matrix(
-				{1, 0, 0},
-				{0, cos(theta), -sin(theta)},
-				{0, sin(theta), cos(theta)})
-		end
-		local function Ry(theta)
-			return symmath.Matrix(
-				{cos(theta), 0, sin(theta)},
-				{0, 1, 0},
-				{-sin(theta), 0, cos(theta)})
-		end
-		local function Rz(theta)
-			return symmath.Matrix(
-				{cos(theta), -sin(theta), 0},
-				{sin(theta), cos(theta), 0},
-				{0, 0, 1})
-		end
-		local Rs = table{Rx, Ry, Rz}
-
-		--[=[ mtw's:
-		-- u spans rows, I spans cols
-		local em = { 
-			{-sin(psi) * cot(theta), cos(psi), sin(psi) / sin(theta)},
-			{cos(psi) * cot(theta), sin(psi), -cos(psi) / sin(theta)},
-			{1, 0, 0},
-		}
-		--]=]
-		--[=[ mtw's, with rows rescaled to remove sin(theta) in denominator.  doesn't produce the same commutations	
-		local em = { 
-			{-sin(psi) * cos(theta), cos(psi) * sin(theta), sin(psi)},
-			{cos(psi) * cos(theta), sin(psi) * sin(theta), -cos(psi)},
-			{1, 0, 0},
-		}
-		--]=]	
-		--[=[ mtw picked apart
-		local invem = symmath.Matrix(
-			{0, 0, 1},
-			{cos(psi), sin(psi), 0},
-			{sin(theta) * sin(psi), -sin(theta) * cos(psi), cos(theta)}
-		)
-		local em = simplifyTrig(symmath.Matrix(table.unpack(invem)):inverse())()
-		--]=]
-		-- [=[ mtw by construction
-		local P = (Rz(psi) * Rx(theta) * Rz(phi))()
-		local dP = baseCoords:map(function(theta_i,i)
-			return (P:diff(theta_i)())
-		end)
-		local eP = Rs:map(function(R,i) 
-			return (simplifyTrig((R(t):diff(t)() * P)():replace(t,0)))
-		end)
-
-		local xs = {'x','y','z'}
-		printbr([[$P = R_z(\psi) R_x(\theta) R_z(\phi) = $]],P)
-		for i=1,3 do
-			printbr([[$e_]]..i..[[(P) = \frac{\partial}{\partial t} R_]]..xs[i]..[[(t) |_{t=0} \cdot P = K_]]..xs[i]..[[ \cdot P = $]], eP[i])
-		end
-		for i,theta_i in ipairs(baseCoords) do 
-			printbr(var'P':diff(theta_i):eq(dP[i]))
-		end
-		printbr(var'P':diff(psi):eq(var'e''_3' * var'P'), '?', P:diff(psi)() == e3P) 	-- e3(P) := d/dpsi P == d/dt Rz(t) * P
-		for i=1,3 do
-			printbr([[$e_{]]..i..[[1} \frac{\partial P}{\partial \psi} + e_{]]..i..[[2} \frac{\partial P}{\partial \theta} + e_{]]..i..[[3} \frac{\partial P}{\partial \psi} = e_]]..i..[[(P) = K_]]..xs[i]..[[ \cdot P$]])
-		end
-		--[[
-		(ei1 d/dpsi + ei2 d/dtheta + ei3 d/dphi) P = Ri(t):diff(t) * P
-		solve for eij
-		--]]
-		printbr[[
-$\left[\matrix{
-	\frac{\partial P}{\partial \psi} |
-		\frac{\partial P}{\partial \theta} |
-		\frac{\partial P}{\partial \phi}
-}\right] \left[\matrix{
-	e_1 | e_2 | e_3
-}\right] = \left[\matrix{
-	K_x P | K_y P | K_z P
-}\right]$
-]]
-
-		local dPm = symmath.Matrix(range(9):map(function(ij)
-			local i, j = math.floor((ij-1)/3)+1, (ij-1)%3+1
-			return range(3):map(function(k)
-				return dP[k][i][j]
-			end)
-		end):unpack())
-
-		local emv = symmath.Matrix(range(3):map(function(i)
-			return range(3):map(function(j)
-				return var'e'('_'..i..j)
-			end)
-		end):unpack())
-
-		local ePm = symmath.Matrix(range(9):map(function(ij)
-			local i, j = math.floor((ij-1)/3)+1, (ij-1)%3+1
-			return range(3):map(function(k)
-				return eP[k][i][j]
-			end)
-		end):unpack())
-
-
-		printbr((dPm * emv):eq(ePm))
-
-		--[[
-		A x = b
-		pseudoinverse
-		At A x = At b
-		--]]
-		local AtA = simplifyTrig(simplifyPowers((dPm:transpose() * dPm)()))
-		local Atb = simplifyTrig(simplifyPowers((dPm:transpose() * ePm)()))
-		printbr(( AtA * emv ):eq( Atb ))
-		local emvsoln = simplifyTrig((AtA:inverse() * Atb)())
-		printbr(emv:eq(emvsoln))
-
-		local em = emvsoln:transpose()
-		--]=]
-
-		local evs = range(3):map(function(i) 
-			local ei = var('e_'..i) 
-			function ei:applyDiff(x)
-				return range(3):map(function(j) 
-					return em[i][j] * x:diff(baseCoords[j])
-				end):sum()
-			end
-			return ei
-		end)
-		
-		return {
-			title = 'rotation group',
-			coords = evs,
-			baseCoords = baseCoords,
-			embedded = {x,y,z},
-			flatMetric = delta3,
-			basis = function()
-				return Tensor('_u^I', table.unpack(em))
-			end,
-		}
-	end)(),
---]]
 } do
 	print('<h3>'..info.title..'</h3>')
 
@@ -536,7 +404,7 @@ $\left[\matrix{
 	printbr('base coords:', table.unpack(baseCoords))
 	printbr('embedding:', table.unpack(info.embedded))
 
-	local eta = Tensor('_IJ', unpack(info.flatMetric))
+	local eta = Tensor('_IJ', table.unpack(info.flatMetric))
 	printbr'flat metric:'
 	printbr(var'\\eta''_IJ':eq(eta'_IJ'()))
 	printbr()
@@ -551,7 +419,7 @@ $\left[\matrix{
 
 		--printbr'holonomic embedded:'
 		printbr'embedded:'
-		e['_u^I'] = u'^I_,u'()
+		e['_u^I'] = u'^I_,u'()	--dx^I/dx^a
 		printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(u'^I_,u'()):eq(e'_u^I'()))
 		printbr()
 	elseif info.basis then
@@ -561,7 +429,18 @@ $\left[\matrix{
 		printbr()
 	end
 
-	eU = Tensor('^u_I', table.unpack(simplifyTrig(symmath.Matrix(table.unpack(e)):inverse():transpose())))
+	-- but what if this matrix isn't square?
+	-- for now provide an override and explicitly provide those eU's
+	-- that's why for the true eU value I should be solving P^u_,I 
+	local eU
+	if info.eU then
+		eU = info.eU()
+	else
+		assert(#info.coords == #info.embedded)
+		local eUm = simplifyTrig(symmath.Matrix(table.unpack(e)):inverse():transpose())
+		eU = Tensor('^u_I', function(u,I) return eUm[{u,I}] or 0 end)
+	end
+
 	printbr(var'e''^u_I':eq(eU))
 	printbr((var'e''_u^I' * var'e''^v_I'):eq(simplifyTrig((e'_u^I' * eU'^v_I')())))
 	printbr((var'e''_u^I' * var'e''^u_J'):eq(simplifyTrig((e'_u^I' * eU'^u_J')())))
@@ -604,44 +483,13 @@ local g = Tensor('_ab', function(a,b)
 end)
 --]]
 
---[[ using diffgeom
-verbose = true
-	local props = require 'symmath.diffgeom'(g, nil, c)
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
 	printbr(var'\\Gamma''_abc':eq(symmath.divOp(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
-	props:print(printbr)
+	local Props = class(require 'symmath.diffgeom')
+	Props.print = printbr
+	Props.verbose = true
+	local props = Props(g, nil, c)
 	local Gamma = props.Gamma
---]]
--- [[ inline
-	local basis = Tensor.metric(g, nil)
-	g = basis.metric
-	local gU = basis.metricInverse
-
-	printbr(var'g''^uv':eq(gU'^uv'()))
-
-	local dg = Tensor'_abc'
-	dg['_abc'] = g'_ab,c'()
-	printbr(var'g''_ab,c':eq(dg'_abc'()))
-	
-	local expr = ((dg'_abc' + dg'_acb' - dg'_bca') / 2)
-	if c then expr = expr + (c'_abc' + c'_acb' - c'_bca')/2 end
-	local GammaL = Tensor'_abc'
-	printbr(var'\\Gamma''_abc':eq(expr))
-	GammaL['_abc'] = expr()
-	printbr(var'\\Gamma''_abc':eq(GammaL'_abc'()))
-	
-	local Gamma = GammaL'^a_bc'()
-	printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
-	
-	local dGamma = Tensor'^a_bcd'
-	dGamma['^a_bcd'] = Gamma'^a_bc,d'()
-	printbr(var'\\Gamma''^a_bc,d':eq(dGamma'^a_bcd'()))
-
-	local expr = Gamma'^a_ec' * Gamma'^e_bd'
-	local GammaSq = Tensor'^a_bcd'
-	GammaSq['^a_bcd'] = expr()
-	printbr(expr:eq(GammaSq))
---]]
 
 	local dx = Tensor('^u', function(u)
 		return var('\\dot{' .. info.coords[u].name .. '}')

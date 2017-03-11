@@ -3,12 +3,9 @@ require 'ext'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
-MathJax.usePartialLHSForDerivative = true
 print(MathJax.header)
-local printbr = function(...)
-	MathJax.print(...)
-	io.stdout:flush()
-end
+local printbr = MathJax.print
+MathJax.usePartialLHSForDerivative = true
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars

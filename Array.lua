@@ -108,6 +108,7 @@ function Array:iter()
 end
 
 -- calculated rank was a great idea, except when the Array is dynamically constructed
+-- TODO, 'rank' refers to another property, so consider renaming this to 'order' or 'degree'
 function Array:rank()
 	-- note to self: empty Array objects means no way of representing empty rank>1 objects 
 	-- ... which means special case of type assertion of the determinant being always rank-2 (except for empty matrices)
@@ -133,6 +134,21 @@ function Array:rank()
 	return minRank + 1
 end
 
+--[[
+Why does :dim() return symmath.Constant instead of lua number?
+Right now it must be a fixed size
+Maybe in the future I will have 'shallow' Array objects with no internal value, 
+but only external properties (rank, index, etc) from which I can perform index gymnastics.
+In such a case, I would want to allow variable-dimension arrays:
+	a = Matrix{name='a', dim={m,k}}
+	print(a) => a in R^(m x k)
+	b = Matrix{name='b', dim={k,n}}
+	print(b) => b in R^(k x n)
+	c = a * b
+	print(c) => a in R^(m x k) * b in R^(k x n)
+	print(c'_ij'()) => a_'ik' * b'_kj'
+... maybe? who knows.
+--]]
 function Array:dim()
 	local Constant = require 'symmath.Constant'
 	
