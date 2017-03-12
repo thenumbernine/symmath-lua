@@ -234,6 +234,30 @@ powOp.visitorHandler = {
 			return prune:apply(m)
 		end
 		--]]
+
+		-- (a / b)^n => a^n / b^n
+		-- not simplifying ...
+		-- maybe this should go in factor() or expand()
+		if divOp.is(expr[1]) then
+			return prune:apply(expr[1][1]:clone() ^ expr[2]:clone() / expr[1][2]:clone() ^ expr[2]:clone())
+		end
+
+		-- trigonometric
+		local sin = require 'symmath.sin'
+		local cos = require 'symmath.cos'
+		if cos.is(expr[1])
+		and Constant.is(expr[2])
+		then
+			local n = expr[2].value
+			if n >= 2
+			and n <= 10
+			and n == math.floor(n)
+			then
+				local th = expr[1][1]
+				return prune:apply((1 - sin(th:clone())^2) * cos(th:clone())^(n-2))
+			end
+		end
+
 	end,
 
 	Tidy = function(tidy, expr)

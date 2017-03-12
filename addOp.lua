@@ -502,8 +502,7 @@ addOp.visitorHandler = {
 		--]]
 
 
-		-- trigonometry identities
-
+		--[=[ trigonometry identities
 		-- cos(theta)^2 + sin(theta)^2 => 1
 		-- TODO first get a working factor() function
 		-- then replace all nodes of cos^2 + sin^2 with 1
@@ -553,7 +552,7 @@ addOp.visitorHandler = {
 				end
 			end
 
---[[ not sure what this special case was doing here ...
+			--[[ not sure what this special case was doing here ...
 			do
 				local cos = require 'symmath.cos'
 				local sin = require 'symmath.sin'
@@ -582,8 +581,8 @@ addOp.visitorHandler = {
 					end
 				end	
 			end	
---]]
---[[ 
+			--]]
+			--[[ 
 			if mulOp.is(f) then	-- should always be a mulOp unless there was nothing to factor
 				for _,ch in ipairs(f) do
 					if addOp.is(ch) then
@@ -594,8 +593,9 @@ addOp.visitorHandler = {
 					end
 				end
 			end
---]]
+			--]]
 		end
+		--]=]
 	end,
 
 	Tidy = function(tidy, expr)

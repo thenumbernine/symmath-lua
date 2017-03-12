@@ -6,64 +6,9 @@ local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 print(MathJax.header)
+local printbr = MathJax.print
 
-local function printbr(...)
-	MathJax.print(...)
-	io.flush()
-end
-
-local function simplifyTrig(x)
-	local sin = symmath.sin
-	local cos = symmath.cos
-	-- [[ tan => sin / cos
-	x = x:map(function(expr)
-		if symmath.tan.is(expr) then
-			local th = expr[1]
-			return symmath.sin(th:clone()) / symmath.cos(th:clone())
-		end
-	end)()
-	--]]
-	-- [[
-	x = x:replace(cos(0), 1)
-	x = x:replace(sin(0), 0)
-	x = x()
-	--]]
-	-- [[ cos^n => cos^(n-2) * (1 - sin^2) 
-	local found
-	repeat
-		found = false
-		x = x:map(function(expr)
-			if symmath.powOp.is(expr)
-			and cos.is(expr[1])
-			and symmath.Constant.is(expr[2])
-			and expr[2].value > 1
-			and expr[2].value == math.floor(expr[2].value)
-			then
-				local n = expr[2].value
-				local th = expr[1][1]
-				found = true
-				local res = 1 - sin(th:clone())^2
-				if n > 2 then res = cos(th:clone())^(n-2) * res end
-				return res
-			end
-		end)()
-	until not found
-	--]]
-	
-	-- [[ one last attempt to divide out cos's
-	x = x:map(function(expr) 
-		if symmath.powOp.is(expr)
-		and sin.is(expr[1])
-		and expr[2] == symmath.Constant(2)
-		then
-			return 1 - cos(expr[1][1]:clone())^2
-		end
-	end)()
-	--]]
-	
-	return x
-end
-
+-- still need to get this working with visitor ...
 local function simplifyPowers(x)
 	return x:map(function(expr) 
 		if symmath.powOp.is(expr) then 
@@ -75,8 +20,6 @@ local function simplifyPowers(x)
 		end 
 	end)()
 end
-
-
 
 
 local frac = symmath.divOp
@@ -139,14 +82,18 @@ local invem = symmath.Matrix(
 	{cos(psi), sin(psi), 0},
 	{sin(theta) * sin(psi), -sin(theta) * cos(psi), cos(theta)}
 )
-local em = simplifyTrig(symmath.Matrix(table.unpack(invem)):inverse())()
+local em = symmath.Matrix(table.unpack(invem)):inverse())
 --]=]
 -- [=[ mtw by construction
 
--- MTW uses ZXZ Euler angles
---local P = (Rz(psi) * Rx(theta) * Rz(phi))()
--- here's me using ZYX angles
+-- [=[ MTW uses ZXZ negative Euler angles
+local P = (Rz(-psi) * Rx(-theta) * Rz(-phi))()
+printbr([[$P = R_z(-\psi) R_x(-\theta) R_z(-\phi) = $]], P)
+--]=]
+--[=[ here's me using ZYX angles
 local P = (Rz(psi) * Ry(theta) * Rx(phi))()
+printbr([[$P = R_z(\psi) R_y(\theta) R_x(\phi) = $]], P)
+--]=]
 -- and here's me trying to remove one of the rotations
 --local P = (Rz(psi) * Ry(theta))()
 -- ... sure enough, I need to fix my linear system solver to handle multiple solutions 
@@ -155,11 +102,10 @@ local dP = baseCoords:map(function(theta_i,i)
 	return (P:diff(theta_i)())
 end)
 local eP = Rs:map(function(R,i) 
-	return (simplifyTrig((R(t):diff(t)() * P)():replace(t,0)))
+	return ((R(t):diff(t)() * P)():replace(t,0))
 end)
 
 local xs = {'x','y','z'}
-printbr([[$P = R_z(\psi) R_x(\theta) R_z(\phi) = $]],P)
 for i=1,3 do
 	printbr([[$e_]]..i..[[(P) = \frac{\partial}{\partial t} R_]]..xs[i]..[[(t) |_{t=0} \cdot P = K_]]..xs[i]..[[ \cdot P = $]], eP[i])
 end
@@ -206,22 +152,28 @@ local ePm = symmath.Matrix(range(9):map(function(ij)
 	end)
 end):unpack())
 
-
 printbr((dPm * emv):eq(ePm))
 
---[[
-A x = b
-pseudoinverse
-At A x = At b
---]]
-local AtA = simplifyTrig(simplifyPowers((dPm:transpose() * dPm)()))
-local Atb = simplifyTrig(simplifyPowers((dPm:transpose() * ePm)()))
+-- [[ using a pseudoinverse
+-- A x = b
+-- At A x = At b
+-- TODO use (rectangular) linear system solver instead
+local AtA = (dPm:transpose() * dPm)()
+local Atb = (dPm:transpose() * ePm)()
 printbr(( AtA * emv ):eq( Atb ))
-local emvsoln = simplifyTrig((AtA:inverse() * Atb)())
+local APlus = AtA:inverse()
+local emvsoln = (APlus * Atb)()
 printbr(emv:eq(emvsoln))
-
+--]]
+--[[ attempting a rectangular linear solver ...
+local results = getn(dPm:inverse(ePm, nil, true))
+for i=1,results.n do
+	printbr(i,results[i])
+end
+local emvsoln = results[1]
+printbr(emv:eq(emvsoln))
+--]]
 local em = emvsoln:transpose()
---]=]
 
 local evs = range(3):map(function(i) 
 	local ei = var('e_'..i) 
@@ -257,6 +209,7 @@ local eta = Tensor('_IJ', table.unpack(flatMetric))
 printbr'flat metric:'
 printbr(var'\\eta''_IJ':eq(eta'_IJ'()))
 printbr()
+Tensor.metric(eta, eta, 'I')
 
 local e = Tensor'_u^I'
 
@@ -267,11 +220,11 @@ printbr()
 
 -- but what if this matrix isn't square?
 
-local eUm = simplifyTrig(symmath.Matrix(table.unpack(e)):inverse():transpose())
+local eUm = symmath.Matrix(table.unpack(e)):inverse():transpose()
 eU = Tensor('^u_I', function(u,I) return eUm[{u,I}] or 0 end)
 printbr(var'e''^u_I':eq(eU))
-printbr((var'e''_u^I' * var'e''^v_I'):eq(simplifyTrig((e'_u^I' * eU'^v_I')())))
-printbr((var'e''_u^I' * var'e''^u_J'):eq(simplifyTrig((e'_u^I' * eU'^u_J')())))
+printbr((var'e''_u^I' * var'e''^v_I'):eq((e'_u^I' * eU'^v_I')()))
+printbr((var'e''_u^I' * var'e''^u_J'):eq((e'_u^I' * eU'^u_J')()))
 --[[
 e_u = e_u^I d/dx^I
 and e^v_J is the inverse of e_u^I 
@@ -292,27 +245,42 @@ we find c_uv^w e_w^I = (e_v^I_,u - e_u^I_,v)
 or c_uv^w = (e_v^I_,u - e_u^I_,v) e^w_I
 is it just me, or does this look strikingly similar to the spin connection?
 --]]
-local c = Tensor'_ab^c'
-c['_ab^c'] = simplifyTrig(((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')())
-printbr(var'c''_ab^c':eq(c'_ab^c'()))
 
 local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
--- TODO automatically do this ...
-g = simplifyTrig(simplifyPowers(g))
-printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'):eq(g'_uv'()))
---]]
-
---[[  I don't remember what this was about ...
-local g = Tensor('_ab', function(a,b) 
-if a~=b then return 0 end
-if a == 1 then return -1 end
-if a == 2 then return q end
-return 1
-end)
---]]
 
 printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
-printbr(var'\\Gamma''_abc':eq(symmath.divOp(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
+printbr(var'g''_uv':eq(g'_uv'()))
+
+local gU = Tensor'^uv'
+gU['^uv'] = (eU'^u_I' * eU'^v_J' * eta'^IJ')()
+printbr(var'g''^uv':eq(var'e''^u_I' * var'e''^v_J' * var'\\eta''^IJ'))
+printbr(var'g''^uv':eq(gU'^uv'()))
+
+Tensor.metric(g, gU)
+
+local c = Tensor'_ab^c'
+c['_ab^c'] = ((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')()
+printbr(var'c''_ab^c':eq(c'_ab^c'()))
+
+local cL = Tensor'_abc'
+cL['_abc'] = c'_abc'()
+printbr(var'c''_abc':eq(cL'_abc'()))
+
+local dg = Tensor'_abc'
+dg['_abc'] = g'_ab,c'()
+printbr(var'g''_ab,c':eq(dg'_abc'()))
+
+local GammaL = Tensor'_abc'
+GammaL['_abc'] = (frac(1,2) * (dg'_abc' + dg'_acb' - dg'_bca' + cL'_abc' + cL'_acb' - cL'_bca'))()
+printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
+printbr(var'\\Gamma''_abc':eq(GammaL'_abc'()))
+
+local Gamma = Tensor'^a_bc'
+Gamma['^a_bc'] = GammaL'^a_bc'()
+printbr(var'\\Gamma''^a_bc':eq(var'g''^ad' * var'\\Gamma''_dbc'))
+printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
+os.exit()
+
 local Props = class(require 'symmath.diffgeom')
 Props.print = printbr
 Props.verbose = true

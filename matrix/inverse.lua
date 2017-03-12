@@ -14,7 +14,7 @@ returns AInv, A, and any errors encountered during the simplification
 (should I favor consistency of return argument order, like pcall?
 or should I favor assert() compatability?)
 --]]
-return function(A, b, callback)
+return function(A, b, callback, allowRectangular)
 	local Array = require 'symmath.Array'
 	local Matrix = require 'symmath.Matrix'
 	local Constant = require 'symmath.Constant'
@@ -34,8 +34,10 @@ return function(A, b, callback)
 -- I think I will make this assertion here for Matrix.inverse
 -- then remove it for another function called 'linsolve'
 -- and have the two use the same code
-assert(dim[1] == dim[2], "expected A to be square")
-	
+if not allowRectangular then
+	assert(dim[1] == dim[2], "expected A to be square")
+end
+
 	local m, n = dim[1].value, dim[2].value
 
 	A = clone(A)

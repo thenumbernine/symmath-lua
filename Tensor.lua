@@ -801,6 +801,8 @@ Tensor.__newindex = function(self, key, value)
 	if type(key) == 'string' 
 	and (key:sub(1,1) == '^' or key:sub(1,1) == '_')
 	then
+		assert(Tensor.is(value), "tried to assign a non-tensor to a tensor")
+		
 		local dstVariance = Tensor.parseIndexes(key)
 		
 		-- assert no comma derivatives
