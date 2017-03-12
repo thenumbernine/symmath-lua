@@ -49,25 +49,34 @@ powOp.visitorHandler = {
 		return eval:apply(a) ^ eval:apply(b)
 	end,
 	
-	-- this isn't here because factoring isnt fully implmented yet
-	--[[ so until then I'll make it its own function ...
 	Expand = function(expand, expr)
+		local divOp = require 'symmath.divOp'
+		local mulOp = require 'symmath.mulOp'
 		local Constant = require 'symmath.Constant'
-		-- for certain small integer powers, expand 
-		-- ... or should we have all integer powers expended under a different command?
+		local range = require 'ext.range'
+		
+		-- (a / b)^n => a^n / b^n
+		-- not simplifying ...
+		-- maybe this should go in factor() or expand()
+		if divOp.is(expr[1]) then
+			return expand:apply(expr[1][1]:clone() ^ expr[2]:clone() 
+				/ expr[1][2]:clone() ^ expr[2]:clone())
+		end
+
+		-- a^n => a*a*...*a,  n times, only for integer 2 <= n < 10
+		-- hmm this can cause problems in some cases ... 
+		-- comment this out to get schwarzschild_spherical_to_cartesian to work
 		if Constant.is(expr[2])
-		and expr[2].value >= 0
+		and expr[2].value >= 2
 		and expr[2].value < 10
 		and expr[2].value == math.floor(expr[2].value)
 		then
-			local result = Constant(1)
-			for i=1,expr[2].value do
-				result = result * expr[1]:clone()
-			end
-			return result:simplify()
+			return expand:apply(mulOp(range(expr[2].value):map(function(i)
+				return expr[1]:clone()
+			end):unpack()))
 		end
+		--]]	
 	end,
-	--]]
 
 -- with this, polyCoeffs works
 -- without this, equations look a whole lot cleaner during simplificaton
@@ -75,9 +84,8 @@ powOp.visitorHandler = {
 -- until factor() works, simplify() works better without this enabled ... but polyCoeffs() doesn't ... 
 -- [[
 	ExpandPolynomial = function(expandPolynomial, expr)
-		local symmath = require 'symmath'
-		local clone = symmath.clone
-		local Constant = symmath.Constant
+		local clone = require 'symmath.clone'
+		local Constant = require 'symmath.Constant'
 		
 		expr = clone(expr)
 --local original = clone(expr)
@@ -234,13 +242,6 @@ powOp.visitorHandler = {
 			return prune:apply(m)
 		end
 		--]]
-
-		-- (a / b)^n => a^n / b^n
-		-- not simplifying ...
-		-- maybe this should go in factor() or expand()
-		if divOp.is(expr[1]) then
-			return prune:apply(expr[1][1]:clone() ^ expr[2]:clone() / expr[1][2]:clone() ^ expr[2]:clone())
-		end
 
 		-- trigonometric
 		local sin = require 'symmath.sin'

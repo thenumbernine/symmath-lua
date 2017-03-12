@@ -30,12 +30,8 @@ local symmath = require 'symmath'
 local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
+local printbr = MathJax.print
 print(MathJax.header)
-
-local function printbr(...)
-	print(...)
-	print('<br>')
-end
 
 local var = symmath.var
 local vars = symmath.vars

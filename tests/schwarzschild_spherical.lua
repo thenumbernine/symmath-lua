@@ -30,8 +30,7 @@ local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 MathJax.usePartialLHSForDerivative = true
 print(MathJax.header)
-
-local function printbr(...) print(...) print'<br>' end
+local printbr = MathJax.print
 
 local Tensor = symmath.Tensor
 local vars = symmath.vars
@@ -106,8 +105,6 @@ printbr()
 
 -- Ricci: R_ab = R^u_aub
 local Ricci = Riemann'^u_aub'()
--- hack:
-Ricci = Ricci:map(function(x) if symmath.powOp.is(x) then return x:expand() end end)
 printbr'Ricci curvature tensor'
 printbr(var'R''_ab':eq(Ricci'_ab'()))
 printbr()

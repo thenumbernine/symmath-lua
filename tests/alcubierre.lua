@@ -27,14 +27,10 @@ local Tensor = require 'symmath.Tensor'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 print(MathJax.header)
+local printbr = MathJax.print
 
 local var = symmath.var
 local vars = symmath.vars
-
-local function printbr(...)
-	print(...)
-	print'<br>'
-end
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local coords = {t,x,y,z}

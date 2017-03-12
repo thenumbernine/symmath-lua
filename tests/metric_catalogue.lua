@@ -27,23 +27,7 @@ local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 print(MathJax.header)
-
-local function printbr(...)
-	MathJax.print(...)
-	io.flush()
-end
-
-local function simplifyPowers(x)
-	return x:map(function(expr) 
-		if symmath.powOp.is(expr) then 
-			if symmath.divOp.is(expr[1]) then
-				return expr[1][1]:clone()^expr[2]:clone()
-					/ expr[1][2]:clone()^expr[2]:clone()
-			end
-			return expr:expand() 
-		end 
-	end)()
-end
+local printbr = MathJax.print
 
 local Tensor = symmath.Tensor
 local var = symmath.var
@@ -113,7 +97,9 @@ for _,info in ipairs{
 		-- it is equal to dx^a/dx^I in terms of x^a
 		eU = function()
 			return Tensor('^a_I', 
+				--{dphi/dx, dphi/dy, dphi/dz}:
 				{-sin(phi)/r, cos(phi)/r, 0},
+				--{dz/dx, dz/dy, dz/dz}:
 				{0, 0, 1})
 		end,
 	},
@@ -187,6 +173,27 @@ for _,info in ipairs{
 		end,
 	},
 --]]
+	{
+		title = 'sphere surface',
+		coords = {theta,phi},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I',
+				r * symmath.sin(theta) * symmath.cos(phi),
+				r * symmath.sin(theta) * symmath.sin(phi),
+				r * symmath.cos(theta))
+		end,
+		eU = function()
+			-- theta = acos(z/r)
+			-- phi = atan(y/x)
+			return Tensor('^a_I',
+				--{dtheta/dx, dtheta/dy, dtheta/dz}:
+				{cos(theta) * cos(phi) / r, cos(theta) * sin(phi) / r, -sin(theta) / r},
+				--{dphi/dx, dphi/dy, dphi/dz}:
+				{-sin(phi)/(r*sin(theta)),cos(phi)/(r*sin(theta)),0})
+		end,
+	},
 	{
 		title = 'spherical',
 		coords = {r,theta,phi},
@@ -344,9 +351,7 @@ for _,info in ipairs{
 	printbr(var'c''_ab^c':eq(c'_ab^c'()))
 
 	local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
-	-- TODO automatically do this ...
-	g = simplifyPowers(g)
-printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'):eq(g'_uv'()))
+	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'):eq(g'_uv'()))
 --]]
 
 --[[  I don't remember what this was about ...

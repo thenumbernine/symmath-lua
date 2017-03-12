@@ -28,13 +28,12 @@ local range = require 'ext.range'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax 
+local printbr = MathJax.print
 print(MathJax.header)
 
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars
-
-local function printbr(...) print(...) print'<br>' end
 
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}

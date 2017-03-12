@@ -5,11 +5,10 @@ local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 print(MathJax.header)
+local printbr = MathJax.print
 
 symmath.simplifyConstantPowers  = true
 local var = symmath.var
-
-local function printbr(...) print(...) print'<br>' end
 
 local speedOfLightInMPerS = 299792458
 local gravitationalConstantInM3PerKgS2 = 6.67384e-11

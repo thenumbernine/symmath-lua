@@ -1,12 +1,13 @@
 #!/usr/bin/env luajit
 
+-- hmm this was working before I moved powOp:expand() into powOp.visitorHandler.Expand ...
+
 local table = require 'ext.table'
 local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 print(MathJax.header)
-
-local function printbr(...) print(...) print'<br>' end
+local printbr = MathJax.print
 
 local Tensor = symmath.Tensor
 local var = symmath.var

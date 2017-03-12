@@ -8,20 +8,6 @@ symmath.tostring = MathJax
 print(MathJax.header)
 local printbr = MathJax.print
 
--- still need to get this working with visitor ...
-local function simplifyPowers(x)
-	return x:map(function(expr) 
-		if symmath.powOp.is(expr) then 
-			if symmath.divOp.is(expr[1]) then
-				return expr[1][1]:clone()^expr[2]:clone()
-					/ expr[1][2]:clone()^expr[2]:clone()
-			end
-			return expr:expand() 
-		end 
-	end)()
-end
-
-
 local frac = symmath.divOp
 local Tensor = symmath.Tensor
 local var = symmath.var

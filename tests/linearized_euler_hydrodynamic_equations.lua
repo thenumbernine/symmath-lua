@@ -27,15 +27,13 @@ local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 MathJax.usePartialLHSForDerivative = true
+print(MathJax.header)
+local printbr = MathJax.print
 
 local vars = symmath.vars
 local var = symmath.var
 local addOp = symmath.addOp	-- why the 'Op' suffix anyways?
 local Matrix = symmath.Matrix
-
-print(MathJax.header)
-
-local function printbr(...) print(...) print'<br>' end
 
 local function sum(t)
 	if #t == 1 then return t[1] end

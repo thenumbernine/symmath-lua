@@ -4,10 +4,10 @@ symmath.simplifyConstantPowers = true
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 print(MathJax.header)
+local printbr = MathJax.print
 
 local var = symmath.var
 
-local function printbr(...) print(...) print'<br>' end 
 
 local m = var'm'
 local s = var's'

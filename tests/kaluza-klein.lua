@@ -25,8 +25,7 @@ local symmath = require 'symmath'
 local MathJax = require 'symmath.tostring.MathJax'
 symmath.tostring = MathJax
 print(MathJax.header)
-
-function printbr(...) print(...) print'<br>' end
+local printbr = MathJax.print
 
 local Tensor = symmath.Tensor
 local var = symmath.var
