@@ -33,131 +33,6 @@ local function printbr(...)
 	io.flush()
 end
 
--- [=[ keeping my rules simple
-local function simplifyTrig(x)
-	local sin = symmath.sin
-	local cos = symmath.cos
-	-- [[ tan => sin / cos
-	x = x:map(function(expr)
-		if symmath.tan.is(expr) then
-			local th = expr[1]
-			return symmath.sin(th:clone()) / symmath.cos(th:clone())
-		end
-	end)()
-	--]]
-	-- [[
-	x = x:replace(cos(0), 1)
-	x = x:replace(sin(0), 0)
-	x = x()
-	--]]
-	-- [[ cos^n => cos^(n-2) * (1 - sin^2) 
-	local found
-	repeat
-		found = false
-		x = x:map(function(expr)
-			if symmath.powOp.is(expr)
-			and cos.is(expr[1])
-			and symmath.Constant.is(expr[2])
-			and expr[2].value > 1
-			and expr[2].value == math.floor(expr[2].value)
-			then
-				local n = expr[2].value
-				local th = expr[1][1]
-				found = true
-				local res = 1 - sin(th:clone())^2
-				if n > 2 then res = cos(th:clone())^(n-2) * res end
-				return res
-			end
-		end)()
-	until not found
-	--]]
-	
-	-- [[ one last attempt to divide out cos's
-	x = x:map(function(expr) 
-		if symmath.powOp.is(expr)
-		and sin.is(expr[1])
-		and expr[2] == symmath.Constant(2)
-		then
-			return 1 - cos(expr[1][1]:clone())^2
-		end
-	end)()
-	--]]
-	
-	return x
-end
---]=]
---[=[ trying to not rely on the other simplification operations for help: 
-
--- remove one element from x. if only one is left then return that element, otherwise returns the modified x.
-local function removeFromBinOp(x,i)
-	x = x:clone()
-	table.remove(x,i)
-	if #x == 1 then return x[1] end
-	return x
-end
-
--- for x_1 * ... * x_n, returns the first x_i such that f(x_i) is true, then the rest of the elements as a product
-local function getCoeffsOf(x, f)
-	if not symmath.mulOp.is(x) then
-		if f(x) then return x, symmath.Constant(1) end
-	end
-	for i=1,#x do
-		local xi = x[i]
-		if f(xi) then
-			return xi, removeFromBinOp(x,i)
-		end
-	end
-end
-
-
-local function simplifyTrig(x)
-	local sin = symmath.sin
-	local cos = symmath.cos
-	-- cos^2 + sin^2 => 1
-	x = x:map(function(expr)
-		expr = expr:prune()
-		if symmath.addOp.is(expr) then
-			-- test used by ei and ej for getCoeffsOf
-			-- TODO multiple bases, then expand powers, then collect cos^3 => cos cos, cos and cos sin^2 => sin sin, cos, but to do that you'd have to test all permutations ... or just factor first
-			local function coeffTest(x)
-				return symmath.powOp.is(x)
-					and x[2] == symmath.Constant(2)
-					and (symmath.sin.is(x[1]) or symmath.cos.is(x[1]))
-			end
-			
-			for i=1,#expr-1 do
-				local ei, ci = getCoeffsOf(expr[i], coeffTest)
-				if ei then
-					for j=i+1,#expr do
-						local ej, cj = getCoeffsOf(expr[j], coeffTest)
-						if ej 
-						and ci == cj
-						and ((symmath.sin.is(ei[1]) and symmath.cos.is(ej[1]))
-							or (symmath.cos.is(ei[1]) and symmath.sin.is(ej[1])))
-						and ei[1][1] == ej[1][1]
-						then
-							if #expr == 2 then return ci:clone() end	-- this can't happen with subOp because it starts at 2
-							local newexpr = expr:clone()
-							table.remove(newexpr, j)
-							table.remove(newexpr, i)
-							table.insert(newexpr, i, ci:clone())
-							return newexpr
-						end
-					end
-				end
-			end
-		end
-		--]]
-
-		--[[ replace 1 - sin^2 => cos^2 and 1 - cos^2 => sin^2
-		expr = expr:prune()
-		if symmath.addOp.is(expr) then
-		end
-	end)()
-	return x
-end
---]=]
-
 local function simplifyPowers(x)
 	return x:map(function(expr) 
 		if symmath.powOp.is(expr) then 
@@ -437,13 +312,13 @@ for _,info in ipairs{
 		eU = info.eU()
 	else
 		assert(#info.coords == #info.embedded)
-		local eUm = simplifyTrig(symmath.Matrix(table.unpack(e)):inverse():transpose())
+		local eUm = symmath.Matrix(table.unpack(e)):inverse():transpose()
 		eU = Tensor('^u_I', function(u,I) return eUm[{u,I}] or 0 end)
 	end
 
 	printbr(var'e''^u_I':eq(eU))
-	printbr((var'e''_u^I' * var'e''^v_I'):eq(simplifyTrig((e'_u^I' * eU'^v_I')())))
-	printbr((var'e''_u^I' * var'e''^u_J'):eq(simplifyTrig((e'_u^I' * eU'^u_J')())))
+	printbr((var'e''_u^I' * var'e''^v_I'):eq((e'_u^I' * eU'^v_I')()))
+	printbr((var'e''_u^I' * var'e''^u_J'):eq((e'_u^I' * eU'^u_J')()))
 	--[[
 	e_u = e_u^I d/dx^I
 	and e^v_J is the inverse of e_u^I 
@@ -465,12 +340,12 @@ for _,info in ipairs{
 	is it just me, or does this look strikingly similar to the spin connection?
 	--]]
 	local c = Tensor'_ab^c'
-	c['_ab^c'] = simplifyTrig(((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')())
+	c['_ab^c'] = ((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')()
 	printbr(var'c''_ab^c':eq(c'_ab^c'()))
 
 	local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 	-- TODO automatically do this ...
-	g = simplifyTrig(simplifyPowers(g))
+	g = simplifyPowers(g)
 printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'):eq(g'_uv'()))
 --]]
 
