@@ -98,7 +98,6 @@ end
 for i,theta_i in ipairs(baseCoords) do 
 	printbr(var'P':diff(theta_i):eq(dP[i]))
 end
-printbr(var'P':diff(psi):eq(var'e''_3' * var'P'), '?', P:diff(psi)() == e3P) 	-- e3(P) := d/dpsi P == d/dt Rz(t) * P
 for i=1,3 do
 	printbr([[$e_{]]..i..[[1} \frac{\partial P}{\partial \psi} + e_{]]..i..[[2} \frac{\partial P}{\partial \theta} + e_{]]..i..[[3} \frac{\partial P}{\partial \psi} = e_]]..i..[[(P) = K_]]..xs[i]..[[ \cdot P$]])
 end
@@ -140,16 +139,33 @@ end):unpack())
 
 printbr((dPm * emv):eq(ePm))
 
+-- from https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_pseudoinverse
+local function pseudoInverse(A)
+	local AT = A:transpose()
+	local APlus
+	if #A > #A[1] then
+		local ATA = (AT * A)():inverse()
+		APlus = (ATA * AT)()
+	else
+		local AAT = (A * AT)():inverse()
+		APlus = (AT * AAT)()
+	end
+	local APlusA = (APlus * A)()
+	local determinable = APlusA == symmath.Matrix.identity(#APlusA)
+	return APlus, determinable
+end
+
 -- [[ using a pseudoinverse
--- A x = b
--- At A x = At b
--- TODO use (rectangular) linear system solver instead
-local AtA = (dPm:transpose() * dPm)()
-local Atb = (dPm:transpose() * ePm)()
-printbr(( AtA * emv ):eq( Atb ))
-local APlus = AtA:inverse()
-local emvsoln = (APlus * Atb)()
-printbr(emv:eq(emvsoln))
+local emvsoln
+do
+	local A = dPm
+	local b = ePm
+	local APlus, determinable = pseudoInverse(A)
+	assert(determinable, "the pseudoinverse was not determinable")
+	emvsoln = (APlus * b)()
+	printbr(emv:eq(APlus * b))
+	printbr(emv:eq(emvsoln))
+end
 --]]
 --[[ attempting a rectangular linear solver ...
 local results = getn(dPm:inverse(ePm, nil, true))
