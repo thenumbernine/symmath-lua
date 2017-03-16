@@ -25,7 +25,13 @@ if not ffi then
 	end
 
 	function complex:__tostring()
-		return tostring(self.re)..'+i'..tostring(self.im)
+		if self.im == 0 then
+			return tostring(self.re)
+		elseif self.im > 0 then
+			return tostring(self.re)..'+i'..tostring(self.im)
+		elseif self.im < 0 then
+			return tostring(self.re)..'-i'..tostring(math.abs(self.im))
+		end
 	end
 
 else
@@ -43,6 +49,12 @@ else
 		return xt == 'ctype<complex>'
 			or xt == 'ctype<complex float>'
 	end
+end
+
+function complex.__eq(a,b)
+	a = complex(a)
+	b = complex(b)
+	return a.re == b.re and a.im == b.im
 end
 
 function complex.__concat(a,b)
@@ -75,8 +87,7 @@ function complex.__mul(a,b)
 end
 
 function complex.__div(a,b)
-	local b = complex(b)
-	return (complex(a) * b:conj()) * (1 / b:norm())
+	return complex(a) * complex(b):inv()
 end
 
 -- a^b
@@ -98,6 +109,10 @@ end
 
 function complex:norm()
 	return self.re * self.re + self.im * self.im
+end
+
+function complex:inv()
+	return self:conj() * (1/self:norm())
 end
 
 function complex:abs()

@@ -18,6 +18,8 @@ local function simplify(x, ...)
 	repeat
 		lastx = x	-- lastx = x invokes the simplification loop.  that means one of the next few commands operates in-place.
 		
+		x = prune(x, ...)
+		stack:insert(clone(x))
 		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
 		stack:insert(clone(x))
 		x = prune(x, ...)

@@ -157,10 +157,10 @@ function Props:init(g, gU, c)
 	local GammaSq = Tensor'^a_bcd'
 	GammaSq['^a_bcd'] = (Gamma'^a_ec' * Gamma'^e_bd')()
 	self.GammaSq = GammaSq
-	if self.output then self:printField'GammaSq' end
+	if self.verbose then self:printField'GammaSq' end
 
 	local expr = (dGamma'^a_bdc' - dGamma'^a_bcd' + GammaSq'^a_bcd' - GammaSq'^a_bdc')
-	if c then expr = expr + Gamma'^a_be' * c'_cd^e' end
+	if c then expr = expr - Gamma'^a_be' * c'_cd^e' end
 	local RiemannU = Tensor'^a_bcd'
 	RiemannU['^a_bcd'] = expr()
 	self.RiemannU = RiemannU

@@ -125,8 +125,6 @@ addOp.visitorHandler = {
 			end
 		end
 		
-		local tolua = require 'ext.tolua'
-		
 		-- 1) get all terms and powers
 		local prodLists = table()
 		for i=1,#expr do

@@ -37,8 +37,8 @@ divOp.visitorHandler = {
 
 	Prune = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
+		local addOp = symmath.addOp	
 		local mulOp = symmath.mulOp
-		local divOp = symmath.divOp
 		local powOp = symmath.powOp
 		local Array = symmath.Array
 		local Constant = symmath.Constant
@@ -253,16 +253,20 @@ divOp.visitorHandler = {
 		end
 		--]]
 
+		-- this would be helpful if it wasn't evaluated after children, where exponent polys get distributed
+		-- do I need a bubble-in/bubble-out callback?
+		-- I just got this to call first by calling the *same* callback before and after child recursion
+		-- that might be a bad idea, but it solves this problem.
+		-- but that screws up things elsewhere ...
 		--[[
-		
 		-- x / x^a => x^(1-a)
 		if powOp.is(expr[2]) and expr[1] == expr[2][1] then
-			return prune:apply(expr[1] ^ (1 - expr[2][2]))
+			return prune:apply(expr[1]:clone() ^ (1 - expr[2][2]:clone()))
 		end
 		
 		-- x^a / x => x^(a-1)
 		if powOp.is(expr[1]) and expr[1][1] == expr[2] then
-			return prune:apply(expr[1][1] ^ (expr[1][2] - 1))
+			return prune:apply(expr[1][1]:clone() ^ (expr[1][2]:clone() - 1))
 		end
 		
 		-- x^a / x^b => x^(a-b)
@@ -270,7 +274,43 @@ divOp.visitorHandler = {
 		and powOp.is(expr[2])
 		and expr[1][1] == expr[2][1]
 		then
-			return prune:apply(expr[1][1] ^ (expr[1][2] - expr[2][2]))
+			return prune:apply(expr[1][1]:clone() ^ (expr[1][2]:clone() - expr[2][2]:clone()))
+		end
+		--]]
+	
+		-- [[ hmm, attempt polynomial division
+		if addOp.is(expr[1]) then
+			local a,b = expr[1], expr[2]
+			local q = Constant(0)
+			local r = a
+		end
+		--]]
+	
+		--[[ cheat
+		-- now that cos.visitorHandler.Prune has simplified all the cos^2's into sin^2's
+		-- if there's a divOp that needs to be simplified 
+		-- do one last sin^2 -> cos^2 to see if anything divides out
+		-- hmm, does this need :expand() -- or does cos.Prune need :expand()? 
+		-- yeah, this has to be done after simplify
+		do
+			local sin = require 'symmath.sin'
+			local cos = require 'symmath.cos'
+			local found
+			local sinSqToOneMinusCosSq = function(sub)
+				if powOp.is(sub)
+				and sub[2] == Constant(2)
+				and sin.is(sub[1])
+				then
+					found = true
+					return 1 - cos(sub[1][1])^2
+				end
+			end
+			local a = expr[1]:map(sinSqToOneMinusCosSq)
+			local b = expr[2]:map(sinSqToOneMinusCosSq)
+			if found then
+print('converting',expr,'to',a/b)
+				return prune:apply(a/b)
+			end
 		end
 		--]]
 	end,

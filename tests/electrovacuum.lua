@@ -132,7 +132,7 @@ local function makeLeviCivita(index, sqrt_det_g)
 				end
 			end
 		end
-		return (parity * sqrt_det_g)()
+		return (parity * symmath.clone(sqrt_det_g))()
 	end)
 end
 
@@ -523,14 +523,14 @@ if showFlatSpaceApproximationRiemannSolution then
 
 	local Riemann_t = Tensor'_ijk'
 	Riemann_t['_ijk'] = Riemann_tijk_expr()
+	
+	printbr(R_'_titj':eq( pretty(Riemann_titj_expr) ))
+	printbr(R_'_tijk':eq( pretty(Riemann_tijk_expr) ))
+	printbr(R_'_ijkl':eq( pretty(Riemann_ijkl_expr) ))
 
 	-- R_ijkl -- zero 't's
 	Riemann = Tensor'_abcd'
 	Riemann['_ijkl'] = Riemann_ijkl_expr()
-
-	printbr(R_'_titj':eq( pretty(Riemann_titj_expr) ))
-	printbr(R_'_tijk':eq( pretty(Riemann_tijk_expr) ))
-	printbr(R_'_ijkl':eq( pretty(Riemann_ijkl_expr) ))
 
 	-- R_tijk -- one 't's
 	Riemann['_tijk'] = Tensor('_tijk', function(t,i,j,k) return Riemann_t[i][j][k] end)
@@ -626,172 +626,239 @@ if showFlatSpaceApproximationRiemannSolution then
 	printbr(( R_'^t_ijk' ):eq( pretty(gamma'_ik' * S'_j' - gamma'_ij' * S'_k' ) ))
 	printbr(( R_'^i_jkl' ):eq( pretty(LeviCivita3'^i_jm' * LeviCivita3'_kln' * P'^mr' * P'^n_r') ))
 
+
+
 	printbr"<h3>connections that give rise to Riemann tensor</h3>"
 
 	printbr(R_'^t_itj':eq( 
 		-E_'_i' * E_'_j' - B_'_i' * B_'_j'
 	):eq(
-		Gamma_'^t_ij,t' - Gamma_'^t_it,j' + Gamma_'^t_at' * Gamma_'^a_ij' - Gamma_'^t_aj' * Gamma_'^a_it'
+		Gamma_'^t_ij,t' - Gamma_'^t_it,j' + Gamma_'^t_at' * Gamma_'^a_ij' - Gamma_'^t_aj' * Gamma_'^a_it' - Gamma_'^t_ia' * c_'_tj^a'
 	):eq(
-		Gamma_'^t_ij,t' - Gamma_'^t_ti,j' 
+		Gamma_'^t_ij,t' - Gamma_'^t_it,j' 
 		+ Gamma_'^t_tt' * Gamma_'^t_ij' 
-		+ Gamma_'^t_tm' * Gamma_'^m_ij' 
-		- Gamma_'^t_ti' * Gamma_'^t_tj'
-		- Gamma_'^t_mj' * Gamma_'^m_ti'
+		+ Gamma_'^t_kt' * Gamma_'^k_ij' 
+		- Gamma_'^t_tj' * Gamma_'^t_it'
+		- Gamma_'^t_kj' * Gamma_'^k_it'
+		- Gamma_'^t_it' * c_'_tj^t'
+		- Gamma_'^t_ik' * c_'_tj^k'
 	))
 	printbr(R_'^t_ijk':eq( 
 		gamma_'_ik' * S_'_j' - gamma_'_ij' * S_'_k' 
 	):eq(
 		-epsilon_'_i^nm' * epsilon_'_jkm' * epsilon_'_n^pq' * E_'_p' * B_'_q'
 	):eq(
-		Gamma_'^t_ik,j' - Gamma_'^t_ij,k' + Gamma_'^t_aj' * Gamma_'^a_ik' - Gamma_'^t_ak' * Gamma_'^a_ij'
+		Gamma_'^t_ik,j' - Gamma_'^t_ij,k' + Gamma_'^t_aj' * Gamma_'^a_ik' - Gamma_'^t_ak' * Gamma_'^a_ij' - Gamma_'^t_ia' * c_'_jk^a'
 	):eq(
 		Gamma_'^t_ik,j' - Gamma_'^t_ij,k' 
 		+ Gamma_'^t_tj' * Gamma_'^t_ik' 
-		+ Gamma_'^t_mj' * Gamma_'^m_ik' 
+		+ Gamma_'^t_lj' * Gamma_'^l_ik' 
 		- Gamma_'^t_tk' * Gamma_'^t_ij'
-		- Gamma_'^t_mk' * Gamma_'^m_ij'
+		- Gamma_'^t_lk' * Gamma_'^l_ij'
+		- Gamma_'^t_it' * c_'_jk^t'
+		- Gamma_'^t_il' * c_'_jk^l'
 	))
 	printbr(R_'^i_jkl':eq( 
 		epsilon_'^i_j^m' * epsilon_'_kl^n' * (E_'_m' * E_'_n' + B_'_m' * B_'_n')
 	):eq(
-		Gamma_'^i_jl,k' - Gamma_'^i_jk,l' + Gamma_'^i_ak' * Gamma_'^a_jl' - Gamma_'^i_al' * Gamma_'^a_jk'
+		Gamma_'^i_jl,k' - Gamma_'^i_jk,l' + Gamma_'^i_ak' * Gamma_'^a_jl' - Gamma_'^i_al' * Gamma_'^a_jk' - Gamma_'^i_ja' * c_'_kl^a'
 	):eq(
 		Gamma_'^i_jl,k' - Gamma_'^i_jk,l' 
 		+ Gamma_'^i_tk' * Gamma_'^t_jl' 
 		+ Gamma_'^i_mk' * Gamma_'^m_jl' 
 		- Gamma_'^i_tl' * Gamma_'^t_jk'
 		- Gamma_'^i_ml' * Gamma_'^m_jk'
+		- Gamma_'^i_jt' * c_'_kl^t'
+		- Gamma_'^i_jm' * c_'_kl^m'
 	))
 end
 
---printbr"<h3>generating Riemann curvature from connection coefficients</h3>"
--- but then we have the same problem coming up with the metric for the connection, esp with the dependency on the Levi-Civita tensor
--- so let's just try metrics...
-printbr"<h3>testing metrics and comparing Riemann metric tensors...</h3>"
+if true then
+	printbr[[<h3>Riemann curvature for $E=\hat{x}$ and $B=\hat{y}$</h3>]]
 
-printbr'experimental metric:'
-g['_tt'] = Tensor('_tt', function() return -1 end)
-g['_ti'] = Tensor('_ti', function(i) return 0 end)
-g['_it'] = g'_ti'()
-g['_ij'] = Tensor('_ij', function(i,j) 
-	return (i == j and 1 or 0) + E[i] * E[j] + B[i] * B[j]
-end)
-printbr(g_'_ab':eq(g'_ab'()))
+	-- local, not global, so I don't overwrite the vars
+	-- this means pretty will ignore this E
+	-- to fix that, push and pop the old, and replace it (don't use local)
+	local E = Tensor('_i', 1,0,0)
+	local B = Tensor('_i', 0,1,0)
+	local S = Tensor('_i', 0,0,1)
 
--- courtesy of maxima:
-local ESq = (E'_i'*E'_i')()
-local BSq = (B'_i'*B'_i')()
-local SSq = (S'_i'*S'_i')()
-local det_g = SSq + ESq + BSq + 1
-local sqrt_det_g = symmath.sqrt(det_g)
-local sqrt_det_gamma = sqrt_det_g:clone()
-gU['^tt'] = Tensor('^tt', function() return -1 end)
-gU['^ti'] = Tensor('^ti', function(i) return 0 end)
-gU['^ij'] = Tensor('^ij', function(i,j)
-	local gUij = S[i] * S[j] - E[i] * E[j] - B[i] * B[j]
-	if i == j then gUij = gUij + 1 + 2 * (ESq + BSq) end
-	return gUij / g_
-end)
+	--global
+	P = Tensor('_ij', function(i,j)
+		if j==1 then return E[i] end
+		if j==2 then return B[i] end
+		return 0
+	end)
+	printbr(var'P''_ij':eq(P'_ij'()))
+	printbr((var'P''_i^k' * var'P''_jk'):eq( (P'_i^k'*P'_jk')() ))
 
-printbr'spatial metric:'
-gamma['_ij'] = g'_ij'()
-gammaU['^ij'] = gU'^ij'()	-- TODO lapse and shift vector
-printbr(gamma_'_ij':eq(gamma'_ij'()))
+	printbr(( R_'^t_itj' ):eq( -P_'_i^k' * P_'_jk') )
+	printbr(( R_'^t_ijk' ):eq( gamma_'_ik' * S_'_j' - gamma_'_ij' * S_'_k' ))
+	printbr(( R_'^i_jkl' ):eq( epsilon_'^i_jm' * epsilon_'_kln' * P_'^mr' * P_'^n_r' ))
 
-printbr('$\\sqrt{-g} =$ '..sqrt_det_g)
+	local Riemann_Ut_itj_expr = -E'_i' * E'_j' - B'_i' * B'_j'
+	local Riemann_Ut_ijk_expr = gamma'_ik' * S'_j' - gamma'_ij' * S'_k'	-- = -(delta_ij delta_lk - delta_ik delta_lj) epsilon_lmn E_m B_n = delta^il_jk epsilon_lmn E_m B_n = epsilon_ilw epsilon_jkw epsilon_lpq E_p B_q
+	local Riemann_Ui_jkl_expr = LeviCivita3'_ij^m' * LeviCivita3'_kl^n' * (E'_m' * E'_n' + B'_m' * B'_n')
+		
+	local Riemann_Ut_t = Tensor'_ij'
+	Riemann_Ut_t['_ij'] = Riemann_Ut_itj_expr()
+	
+	local Riemann_Ut = Tensor'_ijk'
+	Riemann_Ut['_ijk'] = Riemann_Ut_ijk_expr()
+	
+	Riemann = Tensor'^a_bcd'
+	Riemann['^i_jkl'] = Riemann_Ui_jkl_expr()
 
-printbr('$\\sqrt{\\gamma} =$ '..sqrt_det_gamma)
+	-- R_tijk -- one 't's
+	Riemann['^t_ijk'] = Tensor('^t_ijk', function(t,i,j,k) return Riemann_Ut[i][j][k] end)
+	Riemann['^i_tjk'] = Tensor('^i_tjk', function(i,t,j,k) return -Riemann_Ut[i][j][k] end)
+	Riemann['^j_kti'] = Tensor('^j_kti', function(j,k,t,i) return Riemann_Ut[i][j][k] end)
+	Riemann['^j_kit'] = Tensor('^j_kit', function(j,k,i,t) return -Riemann_Ut[i][j][k] end)
+	-- R_titj -- two 't's
+	Riemann['^t_itj'] = Tensor('^t_itj', function(t,i,t,j) return Riemann_Ut_t[i][j] end)
+	Riemann['^t_ijt'] = Tensor('^t_ijt', function(t,i,j,t) return -Riemann_Ut_t[i][j] end)
+	Riemann['^i_ttj'] = Tensor('^i_ttj', function(i,t,t,j) return -Riemann_Ut_t[i][j] end)
+	Riemann['^i_tjt'] = Tensor('^i_tjt', function(i,t,j,t) return Riemann_Ut_t[i][j] end)
+	-- ... and 3 't's and 4 't's is always zero ...
 
-Tensor.metric(g, gU)
-Tensor.metric(gamma, gammaU, 'i')
+	printbr(R_'^a_bcd':eq(Riemann))
 
-LeviCivita3 = Tensor('_ijk', function(i,j,k)
-	if i%3+1 == j and j%3+1 == k then return sqrt_det_gamma end
-	if k%3+1 == j and j%3+1 == i then return -sqrt_det_gamma end
-	return 0
-end)
-printbr(epsilon_'_ijk':eq(LeviCivita3))
+	printbr'versus Riemann curvature of a SO(4) group'
+	printbr(R_'^a_bcd':eq(Tensor('^a_bcd', function(a,b,c,d)
+		return (a == c and 1 or 0) * (b == d and 1 or 0) 
+			- (a == d and 1 or 0) * (b == c and 1 or 0)
+	end)))
+end
 
-LeviCivita4 = makeLeviCivita('a', sqrt_det_g)
-printbr(epsilon_'_abcd':eq(LeviCivita4))
+if false then
+	--printbr"<h3>generating Riemann curvature from connection coefficients</h3>"
+	-- but then we have the same problem coming up with the metric for the connection, esp with the dependency on the Levi-Civita tensor
+	-- so let's just try metrics...
+	printbr"<h3>testing metrics and comparing Riemann metric tensors...</h3>"
 
-printbr'connection from metric:'
-GammaL = Tensor'_abc'
-GammaL['_abc'] = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
-printbr(Gamma_'_abc':eq(GammaL'_abc'()))
+	printbr'experimental metric:'
+	g['_tt'] = Tensor('_tt', function() return -1 end)
+	g['_ti'] = Tensor('_ti', function(i) return 0 end)
+	g['_it'] = g'_ti'()
+	g['_ij'] = Tensor('_ij', function(i,j) 
+		return (i == j and 1 or 0) + E[i] * E[j] + B[i] * B[j]
+	end)
+	printbr(g_'_ab':eq(g'_ab'()))
 
-Connection = Tensor'^a_bc'
-Connection['^a_bc'] = GammaL'^a_bc'()
-printbr(Gamma_'^a_bc':eq(Connection'^a_bc'()))
+	-- courtesy of maxima:
+	local ESq = (E'_i'*E'_i')()
+	local BSq = (B'_i'*B'_i')()
+	local SSq = (S'_i'*S'_i')()
+	local det_g = SSq + ESq + BSq + 1
+	local sqrt_det_g = symmath.sqrt(det_g)
+	local sqrt_det_gamma = sqrt_det_g:clone()
+	gU['^tt'] = Tensor('^tt', function() return -1 end)
+	gU['^ti'] = Tensor('^ti', function(i) return 0 end)
+	gU['^ij'] = Tensor('^ij', function(i,j)
+		local gUij = S[i] * S[j] - E[i] * E[j] - B[i] * B[j]
+		if i == j then gUij = gUij + 1 + 2 * (ESq + BSq) end
+		return gUij / g_
+	end)
 
-printbr'Levi-Civita tensor from metric:'
+	printbr'spatial metric:'
+	gamma['_ij'] = g'_ij'()
+	gammaU['^ij'] = gU'^ij'()	-- TODO lapse and shift vector
+	printbr(gamma_'_ij':eq(gamma'_ij'()))
 
-local RiemannFromConnection_expr = Connection'^a_bd,c' 
-	- Connection'^a_bc,d' 
-	+ Connection'^a_ec' * Connection'^e_bd' 
-	- Connection'^a_ed' * Connection'^e_bc' 
+	printbr('$\\sqrt{-g} =$ '..sqrt_det_g)
 
-RiemannFromConnection = Tensor'^a_bcd'
-RiemannFromConnection['^a_bcd'] = RiemannFromConnection_expr()
-printbr((R_'^a_bcd'):eq(RiemannFromConnection'^a_bcd'()))
+	printbr('$\\sqrt{\\gamma} =$ '..sqrt_det_gamma)
+
+	Tensor.metric(g, gU)
+	Tensor.metric(gamma, gammaU, 'i')
+
+	LeviCivita3 = Tensor('_ijk', function(i,j,k)
+		if i%3+1 == j and j%3+1 == k then return sqrt_det_gamma end
+		if k%3+1 == j and j%3+1 == i then return -sqrt_det_gamma end
+		return 0
+	end)
+	printbr(epsilon_'_ijk':eq(LeviCivita3))
+
+	LeviCivita4 = makeLeviCivita('a', sqrt_det_g)
+	printbr(epsilon_'_abcd':eq(LeviCivita4))
+
+	printbr'connection from metric:'
+	GammaL = Tensor'_abc'
+	GammaL['_abc'] = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)()
+	printbr(Gamma_'_abc':eq(GammaL'_abc'()))
+
+	Connection = Tensor'^a_bc'
+	Connection['^a_bc'] = GammaL'^a_bc'()
+	printbr(Gamma_'^a_bc':eq(Connection'^a_bc'()))
+
+	printbr'Levi-Civita tensor from metric:'
+
+	local RiemannFromConnection_expr = Connection'^a_bd,c' 
+		- Connection'^a_bc,d' 
+		+ Connection'^a_ec' * Connection'^e_bd' 
+		- Connection'^a_ed' * Connection'^e_bc' 
+
+	RiemannFromConnection = Tensor'^a_bcd'
+	RiemannFromConnection['^a_bcd'] = RiemannFromConnection_expr()
+	printbr((R_'^a_bcd'):eq(RiemannFromConnection'^a_bcd'()))
 
 
---[[ finding the connections without the metric
-local Connection_ijk_expr = LeviCivita3'^i_jm' * P'^m_k' / r^2
-local Connection_itj_expr = P'^i_j' / r^2
---local Commutation_ijk_expr = P'^km' * LeviCivita3'_mij'
+	--[[ finding the connections without the metric
+	local Connection_ijk_expr = LeviCivita3'^i_jm' * P'^m_k' / r^2
+	local Connection_itj_expr = P'^i_j' / r^2
+	--local Commutation_ijk_expr = P'^km' * LeviCivita3'_mij'
 
-printbr( Gamma_'^i_jk' :eq( pretty(Connection_ijk_expr) ) )
-printbr( Gamma_'^i_tj' :eq( pretty(Connection_itj_expr) ) )
---printbr( c_'_ij^k':eq( pretty(Commutation_ijk_expr) ) )
+	printbr( Gamma_'^i_jk' :eq( pretty(Connection_ijk_expr) ) )
+	printbr( Gamma_'^i_tj' :eq( pretty(Connection_itj_expr) ) )
+	--printbr( c_'_ij^k':eq( pretty(Commutation_ijk_expr) ) )
 
-Connection = Tensor'^a_bc'
-Connection['^i_jk'] = Connection_ijk_expr()
-Connection['^i_tj'] = Connection_itj_expr()
+	Connection = Tensor'^a_bc'
+	Connection['^i_jk'] = Connection_ijk_expr()
+	Connection['^i_tj'] = Connection_itj_expr()
 
---Commutation = Tensor'_ab^c'
---Commutation['_ij^k'] = Commutation_ijk_expr()
+	--Commutation = Tensor'_ab^c'
+	--Commutation['_ij^k'] = Commutation_ijk_expr()
 
-local RiemannFromConnection_expr = Connection'^a_bd,c' 
-	- Connection'^a_bc,d' 
-	+ Connection'^a_ec' * Connection'^e_bd' 
-	- Connection'^a_ed' * Connection'^e_bc' 
---	- Connection'^a_be' * Commutation'_cd^e'
+	local RiemannFromConnection_expr = Connection'^a_bd,c' 
+		- Connection'^a_bc,d' 
+		+ Connection'^a_ec' * Connection'^e_bd' 
+		- Connection'^a_ed' * Connection'^e_bc' 
+	--	- Connection'^a_be' * Commutation'_cd^e'
 
-RiemannFromConnection = Tensor'^a_bcd'
-RiemannFromConnection['^a_bcd'] = RiemannFromConnection_expr()
+	RiemannFromConnection = Tensor'^a_bcd'
+	RiemannFromConnection['^a_bcd'] = RiemannFromConnection_expr()
 
-printbr((Gamma_'^a_bc'):eq(Connection'^a_bc'()))
---printbr((c_'_ab^c'):eq(Commutation'_ab^c'()))
-printbr((R_'^a_bcd'):eq(RiemannFromConnection'^a_bcd'()))
---]]
+	printbr((Gamma_'^a_bc'):eq(Connection'^a_bc'()))
+	--printbr((c_'_ab^c'):eq(Commutation'_ab^c'()))
+	printbr((R_'^a_bcd'):eq(RiemannFromConnection'^a_bcd'()))
+	--]]
 
-printbr"<h3>differences with desired Riemann</h3>"
+	printbr"<h3>differences with desired Riemann</h3>"
 
-printbr((RHat_'^a_bcd' - R_'^a_bcd'):eq( (Riemann - RiemannFromConnection)() ))
+	printbr((RHat_'^a_bcd' - R_'^a_bcd'):eq( (Riemann - RiemannFromConnection)() ))
 
-printbr"<h3>Bianchi constraints:</h3>"
+	printbr"<h3>Bianchi constraints:</h3>"
 
-printbr( (R_'^a_bcd;e' + R_'^a_bec;d' + R_'^a_bde;c' ):eq(0))
-printbr'expanded covariant derivatives:'
-printbr( (
-	R_'^a_bcd,e' 
-		+ R_'^u_bcd' * Gamma_'^a_ue' 
-		- R_'^a_ucd' * Gamma_'^u_be'
-		- R_'^a_bud' * Gamma_'^u_ce'
-		- R_'^a_bcu' * Gamma_'^u_de'
-	+ R_'^a_bec,d' 
-		+ R_'^u_bec' * Gamma_'^a_ud'
-		- R_'^a_uec' * Gamma_'^u_bd'
-		- R_'^a_buc' * Gamma_'^u_ed'
-		- R_'^a_beu' * Gamma_'^u_cd'
-	+ R_'^a_bde,c'
-		+ R_'^u_bde' * Gamma_'^a_uc'
-		- R_'^a_ude' * Gamma_'^u_bc'
-		- R_'^a_bue' * Gamma_'^u_dc'
-		- R_'^a_bdu' * Gamma_'^u_ec'
-):eq(0))
---printbr'expanded Riemann tensors:'
+	printbr( (R_'^a_bcd;e' + R_'^a_bec;d' + R_'^a_bde;c' ):eq(0))
+	printbr'expanded covariant derivatives:'
+	printbr( (
+		R_'^a_bcd,e' 
+			+ R_'^u_bcd' * Gamma_'^a_ue' 
+			- R_'^a_ucd' * Gamma_'^u_be'
+			- R_'^a_bud' * Gamma_'^u_ce'
+			- R_'^a_bcu' * Gamma_'^u_de'
+		+ R_'^a_bec,d' 
+			+ R_'^u_bec' * Gamma_'^a_ud'
+			- R_'^a_uec' * Gamma_'^u_bd'
+			- R_'^a_buc' * Gamma_'^u_ed'
+			- R_'^a_beu' * Gamma_'^u_cd'
+		+ R_'^a_bde,c'
+			+ R_'^u_bde' * Gamma_'^a_uc'
+			- R_'^a_ude' * Gamma_'^u_bc'
+			- R_'^a_bue' * Gamma_'^u_dc'
+			- R_'^a_bdu' * Gamma_'^u_ec'
+	):eq(0))
+	--printbr'expanded Riemann tensors:'
+end
 
 print(MathJax.footer)

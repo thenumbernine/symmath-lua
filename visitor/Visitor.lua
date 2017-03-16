@@ -59,6 +59,18 @@ function Visitor:apply(expr, ...)
 	local t = type(expr)
 	if t == 'table' then
 		local m = getmetatable(expr)
+
+		--[[
+		local handler = self:lookup(m)
+		if handler then
+			local newexpr = handler(self, expr, ...) 
+			if newexpr then
+				expr = newexpr
+				m = getmetatable(expr)
+			end
+		end
+		--]]
+		
 		-- if it's an expression then apply to all children first
 		if Expression.is(m) then
 			-- I could use symmath.map to do this, but then I'd have to cache ... in a table (and nils might cause me to miss objects unless I called table.maxn a... )

@@ -15,5 +15,7 @@ Matrix.determinant = require 'symmath.matrix.determinant'
 Matrix.identity = require 'symmath.matrix.identity'
 Matrix.transpose = require 'symmath.matrix.transpose'
 Matrix.diagonal = require 'symmath.matrix.diagonal'
+Matrix.trace = require 'symmath.matrix.trace'
+Matrix.pseudoInverse = require 'symmath.matrix.pseudoInverse'
 
 return Matrix

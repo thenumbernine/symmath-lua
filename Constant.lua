@@ -35,12 +35,12 @@ end
 local function toConstant(a)
 	if getmetatable(a) == Constant then return a.value end
 	if complex.is(a) then return a end 
-	return tonumber(a)
+	return complex(a,0)
 end
 
 -- this won't be called if a prim is used ...
 function Constant.__eq(a,b)
-	return toConstant(a) == toConstant(b)
+	return complex(toConstant(a)) == complex(toConstant(b))
 end
 
 function Constant:evaluateDerivative(...)
