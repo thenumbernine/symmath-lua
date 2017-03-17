@@ -75,15 +75,15 @@ end
 function complex.__sub(a,b)
 	local are, aim = complex(a):unpack()
 	local bre, bim = complex(b):unpack()
-	return complex(a.re - b.re, a.im - b.im) 
+	return complex(are - bre, aim - bim) 
 end
 
 function complex.__mul(a,b)
 	local are, aim = complex(a):unpack()
 	local bre, bim = complex(b):unpack()
 	return complex(
-		a.re * b.re - a.im * b.im,
-		a.re * b.im - a.im * b.re)
+		are * bre - aim * bim,
+		are * bim - aim * bre)
 end
 
 function complex.__div(a,b)

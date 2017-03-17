@@ -6,10 +6,22 @@ symmath.tostring = MathJax
 print(MathJax.header)
 local printbr = MathJax.print
 MathJax.usePartialLHSForDerivative = true
+
 local Tensor = symmath.Tensor
+local Matrix = symmath.Matrix
 local var = symmath.var
 local vars = symmath.vars
 local frac = symmath.divOp
+local sqrt = symmath.sqrt
+local log = symmath.log
+local Constant = symmath.Constant
+local clone = symmath.clone
+local sin = symmath.sin
+local cos = symmath.cos
+local divOp = symmath.divOp
+local mulOp = symmath.mulOp
+local Derivative = symmath.Derivative
+local complex = require 'symmath.complex'
 
 local showLorentzMetric = false
 local showFlatSpaceApproximationRiemannSolution = true
@@ -101,6 +113,9 @@ Tensor.coords{
 	{variables=coords},
 	{symbols='ijklmn', variables=spatialCoords},
 	{symbols='t', variables={t}},
+	{symbols='x', variables={x}},
+	{symbols='y', variables={y}},
+	{symbols='z', variables={z}},
 }
 	
 g = Tensor'_uv'
@@ -132,7 +147,7 @@ local function makeLeviCivita(index, sqrt_det_g)
 				end
 			end
 		end
-		return (parity * symmath.clone(sqrt_det_g))()
+		return (parity * clone(sqrt_det_g))()
 	end)
 end
 
@@ -284,17 +299,17 @@ if showFlatSpaceApproximationRiemannSolution then
 	if flatSpace == 'cartesian' then
 		g['_ab'] = eta'_ab'()	-- cartesian
 	elseif flatSpace == 'spherical' then
-		g['_ab'] = Tensor('_ab', table.unpack(symmath.Matrix.diagonal(-1, 1, r^2, r^2 * symmath.sin(theta)^2))) 	-- spherical
+		g['_ab'] = Tensor('_ab', table.unpack(Matrix.diagonal(-1, 1, r^2, r^2 * sin(theta)^2))) 	-- spherical
 	end
 	printbr('using ', g_'_ab':eq(g'_ab'()))
 
 	gamma['_ij'] = g'_ij'()
 	printbr(gamma_'_ij':eq(gamma'_ij'()))
 
-	local sqrt_det_g = symmath.sqrt(-symmath.Matrix.determinant(g))()
+	local sqrt_det_g = sqrt(-Matrix.determinant(g))()
 	printbr('$\\sqrt{-g} =$ '..sqrt_det_g)
 
-	local sqrt_det_gamma = symmath.sqrt(symmath.Matrix.determinant(gamma))()
+	local sqrt_det_gamma = sqrt(Matrix.determinant(gamma))()
 	printbr('$\\sqrt{\\gamma} =$ '..sqrt_det_gamma)
 
 	Tensor.metric(g)
@@ -346,14 +361,14 @@ if showFlatSpaceApproximationRiemannSolution then
 			local rhs = eqn:rhs()[i]
 			-- hack in the mean time ...
 			local eqn = lhs:eq(rhs)
-			if symmath.divOp.is(rhs) then
+			if divOp.is(rhs) then
 				eqn = (eqn * rhs[2]:clone())()
-			elseif symmath.mulOp.is(rhs) then
+			elseif mulOp.is(rhs) then
 				eqn = (eqn / rhs[1]:clone())()
 			end
 			eqn = (eqn + A[i%3+2]:diff(spatialCoords[(i+1)%3+1]))()
 			eqn = eqn:switch()
-			assert(symmath.Derivative.is(eqn:lhs()))
+			assert(Derivative.is(eqn:lhs()))
 			printbr(eqn)
 			return eqn
 		end)
@@ -412,10 +427,10 @@ if showFlatSpaceApproximationRiemannSolution then
 
 	printbr()
 	printbr"Maxwell's laws in curved space in contravariant form:"
-	local divLnG = Tensor('_a', function(a) return symmath.log(sqrt_det_g):diff(coords[a]) end)
+	local divLnG = Tensor('_a', function(a) return log(sqrt_det_g):diff(coords[a]) end)
 	printbr(F_'^uv_;v'
 		:eq( F_'^uv_,v' + F_'^uv' * Gamma_'^a_va')
-		:eq( F_'^uv_,v' + F_'^uv' * symmath.sqrt(symmath.log(-g_))',v')
+		:eq( F_'^uv_,v' + F_'^uv' * sqrt(log(-g_))',v')
 		:eq( (Faraday'^uv_,v' + Faraday'^uv' * divLnG'_v')():factorDivision():tidy() )
 		:eq( 4 * pi * J_'^u' )
 	)
@@ -556,7 +571,7 @@ if showFlatSpaceApproximationRiemannSolution then
 
 	local function isZero(t)
 		for k,v in t:iter() do
-			if not symmath.Constant.is(v) then return false end
+			if not Constant.is(v) then return false end
 			if v.value ~= 0 then return false end
 		end
 		return true
@@ -679,9 +694,9 @@ if true then
 	-- local, not global, so I don't overwrite the vars
 	-- this means pretty will ignore this E
 	-- to fix that, push and pop the old, and replace it (don't use local)
-	local E = Tensor('_i', 1,0,0)
-	local B = Tensor('_i', 0,1,0)
-	local S = Tensor('_i', 0,0,1)
+	local E = Tensor('_i', var'E_x',0,0)
+	local B = Tensor('_i', 0,var'B_y',0)
+	local S = Tensor('_i', 0,0,var'S_z')
 
 	--global
 	P = Tensor('_ij', function(i,j)
@@ -722,12 +737,102 @@ if true then
 	-- ... and 3 't's and 4 't's is always zero ...
 
 	printbr(R_'^a_bcd':eq(Riemann))
+	
+	printbr'...compared to SO(3) connection...'
 
-	printbr'versus Riemann curvature of a SO(4) group'
-	printbr(R_'^a_bcd':eq(Tensor('^a_bcd', function(a,b,c,d)
-		return (a == c and 1 or 0) * (b == d and 1 or 0) 
-			- (a == d and 1 or 0) * (b == c and 1 or 0)
-	end)))
+	printbr'versus Riemann curvature of a SO(3) group'
+	
+	--local CommSO3 = Tensor'_ab^c'
+	--CommSO3['_ij^k'] = (2 * LeviCivita3'_ijk')()
+	--printbr(c_'_ij^k':eq(2 * epsilon_'_ijk'))
+	local CommSO3 = Tensor('_ab^c', function(a,b,c)
+		-- if a==1 or b==1 or c==1 or d==1 then return 0 end	-- skipping timelike
+		if a == b then return 0 end
+		local sign = 1
+		if a > b then a,b,sign = b,a,-1 end
+		return sign * var('{c_{'..coords[a].name..coords[b].name..'}}^{'..coords[c].name..'}')
+	end)
+-- [[ timelike zero
+CommSO3['_ta^b'] = Tensor'_ta^b'
+CommSO3['_at^b'] = Tensor'_at^b'
+CommSO3['_ab^t'] = Tensor'_ab^t'
+--]]
+--[[ square zero
+CommSO3['_xy^x'] = Tensor'_xy^x'
+CommSO3['_yx^x'] = Tensor'_yx^x'
+CommSO3['_xz^x'] = Tensor'_xz^x'
+CommSO3['_zx^x'] = Tensor'_zx^x'
+CommSO3['_yz^y'] = Tensor'_yz^y'
+CommSO3['_zy^y'] = Tensor'_zy^y'
+--]]
+-- timelike zero + square zero leaves us with c_yz^x c_xz^y = -4 Ex^2 = -4 By^2 ...
+-- if it's not c_yz^x c_xz^y then it has to be the time components ...
+--[[
+CommSO3['_tz^x'] = Tensor('_tz^x', function() return 2 * B[2] end)
+CommSO3['_zt^x'] = Tensor('_zt^x', function() return 2 * -B[2] end)
+CommSO3['_xz^t'] = Tensor('_xz^t', function() return -2 * B[2] end)
+CommSO3['_zx^t'] = Tensor('_zx^t', function() return 2 * B[2] end)
+CommSO3['_tz^y'] = Tensor('_tz^y', function() return 2 * E[1] end)
+CommSO3['_zt^y'] = Tensor('_zt^y', function() return -2 * E[1] end)
+CommSO3['_yz^t'] = Tensor('_yz^t', function() return -2 * E[1] end)
+CommSO3['_zy^t'] = Tensor('_zy^t', function() return 2 * E[1] end)
+--]]	
+-- but these can't be used because they cause the 0= constraints to be nonzero ...
+--[[
+CommSO3['_xy^z'] = Tensor'_xy^z'
+CommSO3['_yx^z'] = Tensor'_yx^z'
+CommSO3['_xz^y'] = Tensor'_xz^y'
+CommSO3['_zx^y'] = Tensor'_zx^y'
+CommSO3['_yz^x'] = Tensor'_yz^x'
+CommSO3['_zy^x'] = Tensor'_zy^x'
+--]]
+--[[
+CommSO3['_xz^z'] = Tensor'_xz^z'
+CommSO3['_zx^z'] = Tensor'_zx^z'
+CommSO3['_yz^z'] = Tensor'_yz^z'
+CommSO3['_zy^z'] = Tensor'_zy^z'
+CommSO3['_xy^x'] = Tensor'_xy^x'
+CommSO3['_yx^x'] = Tensor'_yx^x'
+CommSO3['_xy^y'] = Tensor'_xy^y'
+CommSO3['_yx^y'] = Tensor'_yx^y'
+--[[ 
+local _i_ = var'i'
+CommSO3['_xz^x'] = Tensor('_xz^x', function() return _i_ * B[2] end)
+CommSO3['_zx^x'] = Tensor('_zx^x', function() return -_i_ * B[2] end)
+CommSO3['_yz^y'] = Tensor('_yz^y', function() return _i_ * E[1] end)
+CommSO3['_zy^y'] = Tensor('_zy^y', function() return -_i_ * E[1] end)
+--]]
+
+	printbr(c_'_ab^c':eq(CommSO3'_ab^c'()))
+
+	local GammaSO3 = Tensor'^a_bc'
+	GammaSO3['^a_bc'] = (frac(1,2) * CommSO3'_cb^a')()
+	printbr'for purely antisymmetric connections:'
+	printbr(Gamma_'^a_bc':eq(frac(1,2) * c_'_cb^a'))
+	printbr(Gamma_'^a_bc':eq(GammaSO3'^a_bc'()))
+	
+	local RiemannSO3 = Tensor'^a_bcd'
+	RiemannSO3['^a_bcd'] = (GammaSO3'^a_bd,c' - GammaSO3'^a_bc,d' + GammaSO3'^a_ec' * GammaSO3'^e_bd' - GammaSO3'^a_ed' * GammaSO3'^e_bc' - GammaSO3'^a_be' * CommSO3'_cd^e')() 
+	printbr(R_'^a_bcd':eq(RiemannSO3))
+
+	printbr'spatial constraints to fulfill:'
+	local constraints = table()
+	for is,value in RiemannSO3:iter() do
+		local a,b,c,d = table.unpack(is)
+		if a>1 and b>1 and c>1 and d>1 then -- skipping timelike
+			do --if a<b and c<d then
+				local lhs = Riemann[{a,b,c,d}]
+				local rhs = RiemannSO3[{a,b,c,d}]
+				if lhs ~= rhs then
+					constraints:insert( (clone(lhs):eq(clone(rhs))*4)() )
+				end
+			end
+		end
+	end
+
+	for _,eq in ipairs(constraints) do
+		printbr(eq)
+	end
 end
 
 if false then
@@ -750,7 +855,7 @@ if false then
 	local BSq = (B'_i'*B'_i')()
 	local SSq = (S'_i'*S'_i')()
 	local det_g = SSq + ESq + BSq + 1
-	local sqrt_det_g = symmath.sqrt(det_g)
+	local sqrt_det_g = sqrt(det_g)
 	local sqrt_det_gamma = sqrt_det_g:clone()
 	gU['^tt'] = Tensor('^tt', function() return -1 end)
 	gU['^ti'] = Tensor('^ti', function(i) return 0 end)
