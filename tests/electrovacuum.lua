@@ -688,7 +688,7 @@ if showFlatSpaceApproximationRiemannSolution then
 	))
 end
 
-if true then
+if false then
 	printbr[[<h3>Riemann curvature for $E=\hat{x}$ and $B=\hat{y}$</h3>]]
 
 	-- local, not global, so I don't overwrite the vars
@@ -965,5 +965,54 @@ if false then
 	):eq(0))
 	--printbr'expanded Riemann tensors:'
 end
+
+printbr[[
+
+<h3>two-form as matrix, as seen in Misner, Thorne, and Wheeler problem 14.14</h3>
+
+${R^{ti}}_{tj} = -(E^i E_j + B^i B_j)$<br>
+${R^{ti}}_{jk} = 2 \delta^i_{[k} S_{j]}$<br>
+${R^{ij}}_{kl} = {\epsilon^{ij}}_m (E^m E_n + B^m B_n) {\epsilon^n}_{kl}$<br>
+<Br>
+
+Assuming ${R_{ti}}^{ij} = -{R^{ti}}_{jk}$<br>
+and $S_i = {\epsilon_{ij}}^k E^j B_k$<br>
+$S = E \wedge B$ in 3D.<br>
+<br>
+
+${R^{ab}}_{cd} = ab\downarrow \overset{cd\rightarrow}{
+\left[\matrix{
+		& tx & ty & tz & yz & zx & xy \\
+	tx & -E^x E_x - B^x B_x & -E^x E_y - B^x B_y & -E^x E_z - B^x B_z & 0 & -S_z & S_y \\
+	ty & -E^y E_x - B^y B_x & -E^y E_y - B^y B_y & -E^y E_z - B^y B_z & S_z & 0 & -S_x \\
+	tz & -E^z E_x - B^z B_x & -E^z E_y - B^z B_y & -E^z E_z - B^z B_z & -S_y & S_x & 0 \\
+	yz & 0 & -S_z & S_y & E^x E_x + B^x B_x & E^x E_y + B^x B_y & E^x E_z + B^x B_z \\
+	zx & S_z & 0 & -S_x & E^y E_x + B^y B_x & E^y E_y + B^y B_y & E^y E_z + B^y B_z \\
+	xy & -S_y & S_x & 0 & E^z E_x + B^z B_x & E^z E_y + B^z B_y & E^z E_z + B^z B_z \\
+}\right]
+}$<br>
+$= ab\downarrow \overset{cd\rightarrow}{
+\left[\matrix{
+		& tx & ty & tz & yz & zx & xy \\
+	tx & -E^x E_x - B^x B_x & -E^x E_y - B^x B_y & -E^x E_z - B^x B_z & 0 & E^y B_x - E^x B_y & E^z B_x - E^x B_z \\
+	ty & -E^y E_x - B^y B_x & -E^y E_y - B^y B_y & -E^y E_z - B^y B_z & E^x B_y - E^y B_x & 0 & E^z B_y - E^y B_z \\
+	tz & -E^z E_x - B^z B_x & -E^z E_y - B^z B_y & -E^z E_z - B^z B_z & E^x B_z - E^z B_x & E^y B_z - E^z B_y & 0 \\
+	yz & 0 & E^y B_x - E^x B_y & E^z B_x - E^x B_z & E^x E_x + B^x B_x & E^x E_y + B^x B_y & E^x E_z + B^x B_z \\
+	zx & E^x B_y - E^y B_x & 0 & E^z B_y - E^y B_z & E^y E_x + B^y B_x & E^y E_y + B^y B_y & E^y E_z + B^y B_z \\
+	xy & E^x B_x - E^z B_x & E^y B_z - E^z B_y & 0 & E^z E_x + B^z B_x & E^z E_y + B^z B_y & E^z E_z + B^z B_z \\
+}\right]
+}$<br>
+
+<br>
+${R^a}_b = d {w^a}_b + {w^a}_c \wedge {w^c}_b$<br>
+${R^t}_i = d {w^t}_i + {w^t}_t \wedge {w^t}_i + {w^t}_k \wedge {w^k}_i$<br>
+${R^i}_j = d {w^i}_j + {w^i}_t \wedge {w^t}_j + {w^i}_k \wedge {w^k}_j$<br>
+<br>
+
+${R^t}_i = -(E_i E_j + B_i B_j) dt \wedge dx^j + 2 \gamma_{i[k} S_{j]} dx^j \wedge dx^k$<br>
+${R^i}_j = {\epsilon^i}_{jm} (E^m E_n + B^m B_n) {\epsilon^n}_{kl} dx^k \wedge dx^l$<br>
+<br>
+
+]]
 
 print(MathJax.footer)
