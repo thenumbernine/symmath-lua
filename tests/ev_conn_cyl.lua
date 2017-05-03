@@ -218,6 +218,7 @@ for index,value in Conn:iter() do
 end
 printbr(s:concat',')
 
+-- why am I getting asymmetric Ricci curvature for symmetric connections? 
 local RiemannExpr = Conn'^a_bd,c' - Conn'^a_bc,d' 
 	+ Conn'^a_ec' * Conn'^e_bd' - Conn'^a_ed' * Conn'^e_bc'
 	- Conn'^a_be' * (Conn'^e_dc' - Conn'^e_cd')
