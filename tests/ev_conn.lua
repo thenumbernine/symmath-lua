@@ -29,18 +29,26 @@ Tensor.coords{
 }
 
 local E = var'E'
+local Ev = Tensor('_i', function(i) return var('E_'..spatialCoords[i].name) end)
+local Ex, Ey, Ez = table.unpack(Ev)
+local B = var'B'
+local Bv = Tensor('_i', function(i) return var('B_'..spatialCoords[i].name) end)
+local Bx, By, Bz = table.unpack(Bv)
+local S = var'S'
+local Sv = Tensor('_i', function(i) return var('S_'..spatialCoords[i].name) end)
+local Sx, Sy, Sz = table.unpack(Sv)
 
 local Conn = Tensor'^a_bc'
 
 -- [[ this gives rise to the stress-energy tensor for EM with E in the x dir and B = 0
 -- to account for other E's and B's, just boost and rotate your coordinate system
 -- don't forget, when transforming Conn, to use its magic transformation eqn, since it's not a real tensor
-Conn[1][1][1] = sqrt(E)
-Conn[2][1][1] = -sqrt(E)
-Conn[1][2][1] = sqrt(E)
-Conn[1][1][2] = sqrt(E)
-Conn[1][3][3] = sqrt(E)
-Conn[1][4][4] = sqrt(E)
+Conn[1][1][1] = E
+Conn[2][1][1] = -E
+Conn[1][2][1] = E
+Conn[1][1][2] = E
+Conn[1][3][3] = E
+Conn[1][4][4] = E
 --]]
 
 --printbr(var'\\Gamma''^a_bc':eq(Conn))
@@ -82,9 +90,31 @@ print(var'R''_ab':eq(Ricci))
 -- and R = 0 for electrovac T_ab
 -- so 8 pi T_ab = R_ab
 print('vs desired')
-local R = Tensor('_ab',
-	{E, 0, 0, 0},
-	{0, -E, 0, 0},
-	{0, 0, E, 0},
-	{0, 0, 0, E})
+local ESqBSq = Ex^2 + Ey^2 + Ez^2 + Bx^2 + By^2 + Bz^2
+local R = Tensor('_ab', function(a,b)
+	if a==1 and b==1 then
+		return ESqBSq
+	elseif a==1 then
+		return -2 * Sv[b-1]
+	elseif b==1 then
+		return -2 * Sv[a-1]
+	elseif a==b then
+		return ESqBSq - 2 * (Ev[a-1] * Ev[b-1] + Bv[a-1] * Bv[b-1])
+	else
+		return -2 * (Ev[a-1] * Ev[b-1] + Bv[a-1] * Bv[b-1])
+	end
+end)
+R = R
+	:replace(Sx, Ey*Bz-Ez*By)
+	:replace(Sy, Ez*Bx-Ex*Bz)
+	:replace(Sz, Ex*By-Ey*Bx)
+-- E in Ex direction 
+	:replace(Ex, E)
+	:replace(Ey, 0)
+	:replace(Ez, 0)
+-- zero b-field
+	:replace(Bx, 0)
+	:replace(By, 0)
+	:replace(Bz, 0)
+	:simplify()
 printbr(var'R''_ab':eq(R))

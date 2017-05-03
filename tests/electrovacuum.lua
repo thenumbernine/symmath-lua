@@ -26,8 +26,9 @@ local complex = require 'symmath.complex'
 local showLorentzMetric = false
 local showFlatSpaceApproximationRiemannSolution = true
 
-local flatSpace = 'cartesian'
+--local flatSpace = 'cartesian'
 --local flatSpace = 'spherical'
+local flatSpace = 'cylindrical'
 
 local t = var't'
 local q,m = vars('q', 'm')
@@ -39,6 +40,8 @@ if flatSpace == 'cartesian' then
 	spatialCoords = {x,y,z}
 elseif flatSpace == 'spherical' then
 	spatialCoords = {r,theta,phi}
+elseif flatSpace == 'cylindrical' then
+	spatialCoords = {r,phi,z}
 end
 
 local coords = table{t}:append(spatialCoords)
@@ -299,7 +302,9 @@ if showFlatSpaceApproximationRiemannSolution then
 	if flatSpace == 'cartesian' then
 		g['_ab'] = eta'_ab'()	-- cartesian
 	elseif flatSpace == 'spherical' then
-		g['_ab'] = Tensor('_ab', table.unpack(Matrix.diagonal(-1, 1, r^2, r^2 * sin(theta)^2))) 	-- spherical
+		g['_ab'] = Tensor('_ab', table.unpack(Matrix.diagonal(-1, 1, r^2, r^2 * sin(theta)^2)))
+	elseif flatSpace == 'cylindrical' then
+		g['_ab'] = Tensor('_ab', table.unpack(Matrix.diagonal(-1, 1, r^2, 1))) 
 	end
 	printbr('using ', g_'_ab':eq(g'_ab'()))
 
@@ -403,9 +408,11 @@ if showFlatSpaceApproximationRiemannSolution then
 	printbr'dual:'
 	local dualFaraday = Tensor'_uv'
 	local dualFaraday_expr = frac(1,2) * Faraday'^ab' * LeviCivita4'_abuv'
-	dualFaraday['_uv'] = dualFaraday_expr()
-	--printbr(var'\\star F''_uv':eq(pretty(dualFaraday_expr)))
-	printbr(var'\\star F''_uv':eq(dualFaraday'_uv'()))
+	dualFaraday['_uv'] = dualFaraday_expr()	-- does simplify() modifies the expr?
+	printbr(var'\\star F''_uv'
+		-- why isn't pretty() producing this from expr?
+		:eq(frac(1,2) * var'F''^ab' * var'\\epsilon''_abuv')
+		:eq(dualFaraday'_uv'()))
 
 	-- make sure the identities form the Maxwell equations 
 	local J = Tensor('^u', function(u) 
@@ -458,6 +465,7 @@ if showFlatSpaceApproximationRiemannSolution then
 
 	Ricci = Tensor'_ab'
 	Ricci['_ab'] = (8 * pi * T_EM'_ab' - 4 * pi * T_EM'^c_c' * g'_ab')()
+	printbr(var'R''_ab':eq(Ricci'_ab'()))
 
 	printbr"<h3>here's the Ricci curvature tensor that matches the Einstein field equations for the electromagnetic stress-energy tensor (in Cartesian coordinates)</h3>"
 
