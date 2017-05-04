@@ -105,18 +105,63 @@ Ricci_EM = Ricci_EM
 
 local Conn = Tensor'^a_bc'
 
--- [[ produces all correct terms *AND* R_tr, R_rt, R_zr, R_rz ... and I'ved got rid of Conn^r_jk being used for the lambda^2 terms of R_jk
+-- [[ tada!
+Conn[2][1][1] = -frac(4,3) * I^2 / r^3 - 4 * lambda^2 / r
+Conn[2][1][4] = 4 * I * lambda / r^2
+Conn[2][4][1] = 4 * I * lambda / r^2
+Conn[1][1][1] = 1
+Conn[1][3][3] = -4 * I^2 / r^2 + 4 * lambda^2
+Conn[1][4][4] = 4 * I^2 / r^4 + 4 * lambda^2 / r^2
+Conn[3][2][2] = 4 * phi * (I^2 / r^4 - lambda^2 / r^2)
+--]]
+
+--[[ all except R_tz, R_zt, investigating with variables
+Conn[2][1][1] = var('e',{r,z})
+Conn[2][1][4] = var('a',{r,z})
+Conn[2][4][1] = var('b',{r,z})
+
+Conn[1][1][1] = var('f')
+--Conn[2][1][2] = var('q',{r,z})
+--Conn[3][1][3] = var('n',{r,z})
+--Conn[4][1][4] = var('p',{z})
+
+Conn[1][3][3] = var('g',{r,z})
+Conn[1][4][4] = var('h',{r,z})
+
+--Conn[2][2][2] = var('m',{r})
+Conn[3][2][2] = var('k',{r,z,phi})
+--Conn[4][2][2] = var('j',{r,z})
+
+--Conn[2][1][2] = var('c',{r,z})
+--Conn[2][2][1] = var('d',{z})
+
+--]]
+
+--[[ all except R_tz, R_zt, investigating with variables
 Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
-Conn[2][1][4] = 4 * I * lambda / r^2 
-Conn[2][4][1] = 4 * I * lambda / r^2 
+Conn[1][1][1] = 1
+Conn[1][3][3] = -4 * I^2 / r^2 + 4 * lambda^2 
+Conn[1][4][4] = 4 * I^2 / r^4 - 4 * lambda^2 / r^2
+Conn[4][2][2] = 4 * z * (I^2 / r^4 - lambda^2 / r^2)
 
-Conn[1][1][1] = 1	-- needs to be something or else C^t_jj will be zero.  can't depend on 'r' without causing a R_tr term
-Conn[1][3][3] = -4 * I^2/ r^2 + 4 * lambda^2
-Conn[1][4][4] = (4 * I^2 / r^2 + 4 * lambda^2) / r^2
+--Conn[4][4][1] = var('q',{r,z})	-- this produces R_zt = q,z and some terms in R_zz
+--Conn[4][1][4] = var('q',{r,z})	-- this produces R_tr = q,r
+--Conn[2][1][4] = 4 * I * lambda / r^2 -- these two work,
+--Conn[2][4][1] = 4 * I * lambda / r^2 --  but they produce terms in R_tr and R_rt
+Conn[2][1][4] = var('a',{r,z})
+Conn[2][4][1] = var('b',{r,z})
+--Conn[2][1][2] = var('c',{r,z})	-- messes with R_tt, R_pp, R_zz
+Conn[2][2][1] = var('d',{r,z})
+--]]
 
--- the last pain in the ass:
-Conn[1][2][2] = 4 * (I^2 / r^4 - lambda^2 / r^2)
---Conn[2][2][2] = 4 * lambda^2 / r^2	-- this is the biggest pain in the ass
+--[[ all except R_tz, R_zt
+Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+--Conn[2][1][4] = 4 * I * lambda / r^2 
+--Conn[2][4][1] = 4 * I * lambda / r^2 
+Conn[1][1][1] = 1
+Conn[1][3][3] = -4 * I^2 / r^2 + 4 * lambda^2 
+Conn[1][4][4] = 4 * I^2 / r^4 - 4 * lambda^2 / r^2
+Conn[4][2][2] = 4 * z * (I^2 / r^4 - lambda^2 / r^2)
 --]]
 
 --[[ produces all correct terms *AND* R_tr, R_rt, R_zr, R_rz ... and I'ved got rid of Conn^r_jk being used for the lambda^2 terms of R_jk
