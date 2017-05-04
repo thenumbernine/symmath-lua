@@ -9,6 +9,7 @@ MathJax.usePartialLHSForDerivative = true
 
 local Tensor = symmath.Tensor
 local Matrix = symmath.Matrix
+local Constant = symmath.Constant
 local TensorIndex = require 'symmath.tensor.TensorIndex'
 local var = symmath.var
 local vars = symmath.vars
@@ -104,23 +105,73 @@ Ricci_EM = Ricci_EM
 
 local Conn = Tensor'^a_bc'
 
--- [[
+-- [[ produces all correct terms *AND* R_tr, R_rt, R_zr, R_rz ... and I'ved got rid of Conn^r_jk being used for the lambda^2 terms of R_jk
 Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+Conn[2][1][4] = 4 * I * lambda / r^2 
+Conn[2][4][1] = 4 * I * lambda / r^2 
+
+Conn[1][1][1] = 1	-- needs to be something or else C^t_jj will be zero.  can't depend on 'r' without causing a R_tr term
+Conn[1][3][3] = -4 * I^2/ r^2 + 4 * lambda^2
+Conn[1][4][4] = (4 * I^2 / r^2 + 4 * lambda^2) / r^2
+
+-- the last pain in the ass:
+Conn[1][2][2] = 4 * (I^2 / r^4 - lambda^2 / r^2)
+--Conn[2][2][2] = 4 * lambda^2 / r^2	-- this is the biggest pain in the ass
+--]]
+
+--[[ produces all correct terms *AND* R_tr, R_rt, R_zr, R_rz ... and I'ved got rid of Conn^r_jk being used for the lambda^2 terms of R_jk
+Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+Conn[2][1][4] = 4 * I * lambda / r^2 
+Conn[2][4][1] = 4 * I * lambda / r^2 
+
+Conn[1][1][1] = 1	-- needs to be something or else C^t_jj will be zero.  can't depend on 'r' without causing a R_tr term
+Conn[1][3][3] = -4 * I^2/ r^2 + 4 * lambda^2
+Conn[1][4][4] = (4 * I^2 / r^2 + 4 * lambda^2) / r^2
+
+-- the last pain in the ass:
+Conn[1][2][2] = 4 * (I^2 / r^4 - lambda^2 / r^2)
+--Conn[2][2][2] = 4 * lambda^2 / r^2	-- this is the biggest pain in the ass
+--]]
+
+--[[ this produces all correct terms *AND* R_tr, R_rt, R_zr, R_rz
+Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+Conn[2][1][4] = 4 * I * lambda / r^2 
+Conn[2][4][1] = 4 * I * lambda / r^2 
+
+Conn[1][1][1] = 1	-- can't depend on 'r' without causing a R_tr term
+Conn[1][3][3] = -4 * I^2/ r^2
+Conn[1][4][4] = 4 * I^2 / r^4
+Conn[2][3][3] = 4 * lambda^2 * r
+Conn[2][4][4] = -4 * lambda^2 / r
+
+-- the last pain in the ass:
+Conn[1][2][2] = 4 * (I^2 / r^4 - lambda^2 / r^2)
+--Conn[2][2][2] = 4 * lambda^2 / r^2	-- this is the biggest pain in the ass
+--]]
+
+--[[ all except R_tt, R_tz, R_zt
+Conn[1][1][1] = 1
+Conn[1][2][2] = 4 * (I^2 / r^4 - lambda^2 / r^2)
+Conn[1][3][3] = -4 * I^2 / r^2
+Conn[1][4][4] = 4 * I^2 / r^4
+Conn[2][3][3] = 4 * lambda^2 * r
+Conn[2][4][4] = -4 * lambda^2 / r
+--]]
+
+--[[ all except R_tt and R_rr
+--Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2 
 Conn[2][4][1] = 4 * I * lambda / r^2 
 
 Conn[1][1][1] = 2 * I
 Conn[1][3][3] = -2 * I / r^2
 Conn[1][4][4] = 2 * I / r^4
+
 Conn[2][3][3] = 4 * lambda^2 * r
 Conn[2][4][4] = -4 * lambda^2 / r
-
--- the last pain in the ass:
---Conn[1][2][2] = 2 * I / r^4
-Conn[2][2][2] = var('q', {'r'}) 
 --]]
 
---[[
+--[[ all except R_rr
 -- all I need now is R_rr = C^c_rr,c - C^c_rc,r + C^c_dc C^d_rr - C^c_dr C^d_rc - C^c_rd (C^d_rc - C^d_cr)
 Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2 
@@ -162,6 +213,14 @@ Conn[1][3][3] = -2 * I / r^2
 Conn[1][4][4] = 2 * I / r^4
 --Conn[2][3][3] = lambda
 --Conn[2][4][4] = lambda / r^2
+--]]
+
+--[[ C^t_tt = -C^r_tt = C^t_rt = C^t_tr = I => R_tt = -R_rr = I^2
+-- but only works for values not dependent on r (or other variables)
+Conn[1][1][1] = I
+Conn[2][1][1] = -I
+Conn[1][2][1] = I
+Conn[1][1][2] = I
 --]]
 
 --[[ C^r_tt = -4/3 I^2 / r^3 - 4 lambda^2 / r, C^r_tz = C^r_zt = 4 I lambda / r^2 
@@ -339,12 +398,15 @@ Conn[2][3][2] = -sqrt(I)
 
 -- C^t_ty = -C^t_yt = sqrt(I) and C^x_xy = -C^x_yx = sqrt(I) linearly combine
 
-
+-- hmm...
+for index,value in Conn:iter() do
+	Conn[index] = symmath.clone(Conn[index])
+end
 
 local s = table()
 for index,value in Conn:iter() do
 	local a,b,c = table.unpack(index)
-	if value ~= symmath.Constant(0) then
+	if value ~= Constant(0) then
 		s:insert(tostring(var('\\Gamma^{'..coords[a].name..'}'..'_{'..coords[b].name..' '..coords[c].name..'}'):eq(value))) 
 	end
 end
