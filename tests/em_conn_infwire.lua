@@ -111,12 +111,31 @@ Conn[2][1][4] = 4 * I * lambda / r^2
 Conn[2][4][1] = 4 * I * lambda / r^2 
 
 Conn[1][1][1] = 2 * I
---Conn[1][2][2] = 2 * I / r^4
 Conn[1][3][3] = -2 * I / r^2
 Conn[1][4][4] = 2 * I / r^4
-
 Conn[2][3][3] = 4 * lambda^2 * r
 Conn[2][4][4] = -4 * lambda^2 / r
+
+-- the last pain in the ass:
+--Conn[1][2][2] = 2 * I / r^4
+--Conn[2][2][2] = 4 * lambda^2 / r^2
+--]]
+
+--[[
+-- all I need now is R_rr = C^c_rr,c - C^c_rc,r + C^c_dc C^d_rr - C^c_dr C^d_rc - C^c_rd (C^d_rc - C^d_cr)
+Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+Conn[2][1][4] = 4 * I * lambda / r^2 
+Conn[2][4][1] = 4 * I * lambda / r^2 
+
+Conn[1][1][1] = 2 * I
+Conn[1][3][3] = -2 * I / r^2
+Conn[1][4][4] = 2 * I / r^4
+Conn[2][3][3] = 4 * lambda^2 * r
+Conn[2][4][4] = -4 * lambda^2 / r
+
+-- the last pain in the ass:
+--Conn[1][2][2] = 2 * I / r^4
+--Conn[2][2][2] = 4 * lambda^2 / r^2
 --]]
 
 --[[ produces R_tt, R_tz, R_zt, R_pp, Rzz
