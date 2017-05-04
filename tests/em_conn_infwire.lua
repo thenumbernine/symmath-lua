@@ -476,3 +476,11 @@ print(var'R''_ab':eq(Ricci))
 
 print('vs desired')
 printbr(var'R''_ab':eq(Ricci_EM))
+
+([[
+Ok, this gives me the connections that give rise to the curvature.
+But the connections themselves come from the coordinate systems
+and who is to say the coordinate systems do correctly align with cylindrical Minkowski?
+Though their deviation from Minkowski should only be infintesimal, according to $I$ and $\lamda$
+which I need to calculate in natural units and specify here ...
+]]):split'\n':map(printbr)
