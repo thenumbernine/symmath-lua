@@ -58,13 +58,7 @@ local RiemannExpr = Conn'^a_bd,c' - Conn'^a_bc,d'
 	+ Conn'^a_ec' * Conn'^e_bd' - Conn'^a_ed' * Conn'^e_bc'
 	- Conn'^a_be' * (Conn'^e_dc' - Conn'^e_cd')
 printbr(var'R''^a_bcd':eq(RiemannExpr:replace(Conn, var'\\Gamma')))
-printbr(var'R''_ab':eq(RiemannExpr
-	:replace(Conn, var'\\Gamma')
-	:replace(TensorIndex{lower=false, symbol='a'}, TensorIndex{lower=false, symbol='c'})
-	:replace(TensorIndex{lower=true, symbol='b'}, TensorIndex{lower=true, symbol='a'})
-	:replace(TensorIndex{lower=true, symbol='d'}, TensorIndex{lower=true, symbol='b'})
-	:replace(TensorIndex{lower=true, symbol='d', derivative='partial'}, TensorIndex{lower=true, symbol='b', derivative='partial'})
-))
+printbr(var'R''_ab':eq(RiemannExpr:replace(Conn, var'\\Gamma'):reindex{cacbd='abcde'}))
 
 for index,value in Conn:iter() do
 	local a,b,c = table.unpack(index)

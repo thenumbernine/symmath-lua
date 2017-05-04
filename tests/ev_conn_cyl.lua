@@ -105,7 +105,8 @@ Ricci_EM = Ricci_EM
 local Conn = Tensor'^a_bc'
 
 -- [[
-Conn[2][1][1] = -frac(4,3) * I^2 / r^3 - 4 * lambda^2 / r
+-- all I need now is R_rr = C^c_rr,c - C^c_rc,r + C^c_dc C^d_rr - C^c_dr C^d_rc - C^c_rd (C^d_rc - C^d_cr)
+Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2 
 Conn[2][4][1] = 4 * I * lambda / r^2 
 
@@ -337,13 +338,7 @@ local RiemannExpr = Conn'^a_bd,c' - Conn'^a_bc,d'
 	- Conn'^a_be' * (Conn'^e_dc' - Conn'^e_cd')
 -- [[
 printbr(var'R''^a_bcd':eq(RiemannExpr:replace(Conn, var'\\Gamma')))
-printbr(var'R''_ab':eq(RiemannExpr
-	:replace(Conn, var'\\Gamma')
-	:replace(TensorIndex{lower=false, symbol='a'}, TensorIndex{lower=false, symbol='c'})
-	:replace(TensorIndex{lower=true, symbol='b'}, TensorIndex{lower=true, symbol='a'})
-	:replace(TensorIndex{lower=true, symbol='d'}, TensorIndex{lower=true, symbol='b'})
-	:replace(TensorIndex{lower=true, symbol='d', derivative='partial'}, TensorIndex{lower=true, symbol='b', derivative='partial'})
-))
+printbr(var'R''_ab':eq(RiemannExpr:replace(Conn, var'\\Gamma'):reindex{cacbd='abcde'}))
 --]]
 
 local Riemann = Tensor'^a_bcd'
