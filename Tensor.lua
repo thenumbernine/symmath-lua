@@ -226,6 +226,7 @@ end
 
 -- static function
 function Tensor.findBasisForSymbol(symbol)
+	if not symbol then symbol = {} end
 	if not Tensor.__coordBasis then return end
 	for _,basis in ipairs(Tensor.__coordBasis) do
 		if not basis.symbols then
@@ -477,7 +478,6 @@ function Tensor:init(...)
 end
 
 function Tensor:clone(...)
-	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	local copy = Tensor.super.clone(self, ...)
 	for i=1,#self.variance do
 		copy.variance[i] = self.variance[i]:clone()
