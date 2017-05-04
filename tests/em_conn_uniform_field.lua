@@ -12,6 +12,7 @@ local TensorIndex = require 'symmath.tensor.TensorIndex'
 local var = symmath.var
 local vars = symmath.vars
 local sqrt = symmath.sqrt
+local Constant = symmath.Constant
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local r = var('r', {x,y,z})
@@ -62,7 +63,7 @@ printbr(var'R''_ab':eq(RiemannExpr:replace(Conn, var'\\Gamma'):reindex{cacbd='ab
 
 for index,value in Conn:iter() do
 	local a,b,c = table.unpack(index)
-	if value ~= symmath.Constant(0) then
+	if value ~= Constant(0) then
 		print(
 			var'\\Gamma'(
 				'^'..coords[a].name
@@ -85,7 +86,7 @@ print(var'R''_ab':eq(Ricci))
 -- so 8 pi T_ab = R_ab
 print('vs desired')
 local ESqBSq = Ex^2 + Ey^2 + Ez^2 + Bx^2 + By^2 + Bz^2
-local R = Tensor('_ab', function(a,b)
+local Ricci_EM = Tensor('_ab', function(a,b)
 	if a==1 and b==1 then
 		return ESqBSq
 	elseif a==1 then
@@ -98,7 +99,7 @@ local R = Tensor('_ab', function(a,b)
 		return -2 * (Ev[a-1] * Ev[b-1] + Bv[a-1] * Bv[b-1])
 	end
 end)
-R = R
+Ricci_EM = Ricci_EM
 	:replace(Sx, Ey*Bz-Ez*By)
 	:replace(Sy, Ez*Bx-Ex*Bz)
 	:replace(Sz, Ex*By-Ey*Bx)
@@ -111,4 +112,31 @@ R = R
 	:replace(By, 0)
 	:replace(Bz, 0)
 	:simplify()
-printbr(var'R''_ab':eq(R))
+printbr(var'R''_ab':eq(Ricci_EM))
+
+--[[ this is zero, but it's a bit slow
+-- this will be a 4^5 = 1024, but it only needs to show 20 * 4 = 80, though because it's R^a_bcd, we can't use the R_abcd = R_cdab symmetry, so maybe double that to 160 
+-- TODO covariant derivative function?
+-- NOTICE this matches em_conn_infwire.lua, so fix both of these
+local diffRiemann = (Riemann'^a_bcd,e' + Conn'^a_fe' * Riemann'^f_bcd' - Conn'^f_be' * Riemann'^a_fcd' - Conn'^f_ce' * Riemann'^a_bfd' - Conn'^f_de' * Riemann'^a_bcf')()
+local Bianchi = Tensor'^a_bcde'
+Bianchi['^a_bcde'] = (diffRiemann + diffRiemann:reindex{abecd='abcde'} +  diffRiemann:reindex{abdec='abcde'})()
+print'Bianchi:'
+local sep = ''
+for index,value in Bianchi:iter() do
+	local abcde = table.map(index, function(i) return coords[i].name end)
+	local a,b,c,d,e = abcde:unpack()
+	local bcde = table{b,c,d,e}
+	if value ~= Constant(0) then
+		if sep == '' then printbr() end
+		print(sep, (
+				var('{R^'..a..'}_{'..b..' '..c..' '..d..';'..e..'}')
+				+ var('{R^'..a..'}_{'..b..' '..e..' '..c..';'..d..'}')
+				+ var('{R^'..a..'}_{'..b..' '..d..' '..e..';'..c..'}')
+			):eq(value))
+		sep = ';'
+	end
+end
+if sep=='' then print(0) end
+printbr()
+--]]

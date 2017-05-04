@@ -477,6 +477,32 @@ print(var'R''_ab':eq(Ricci))
 print('vs desired')
 printbr(var'R''_ab':eq(Ricci_EM))
 
+--[[ this is zero, but it's a bit slow
+-- this will be a 4^5 = 1024, but it only needs to show 20 * 4 = 80, though because it's R^a_bcd, we can't use the R_abcd = R_cdab symmetry, so maybe double that to 160 
+-- TODO covariant derivative function?
+-- NOTICE this matches em_conn_uniform_field.lua, so fix both of these
+local diffRiemann = (Riemann'^a_bcd,e' + Conn'^a_fe' * Riemann'^f_bcd' - Conn'^f_be' * Riemann'^a_fcd' - Conn'^f_ce' * Riemann'^a_bfd' - Conn'^f_de' * Riemann'^a_bcf')()
+local Bianchi = Tensor'^a_bcde'
+Bianchi['^a_bcde'] = (diffRiemann + diffRiemann:reindex{abecd='abcde'} +  diffRiemann:reindex{abdec='abcde'})()
+print'Bianchi:'
+local sep = ''
+for index,value in Bianchi:iter() do
+	local abcde = table.map(index, function(i) return coords[i].name end)
+	local a,b,c,d,e = abcde:unpack()
+	local bcde = table{b,c,d,e}
+	if value ~= Constant(0) then
+		if sep == '' then printbr() end
+		print(sep, (
+				var('{R^'..a..'}_{'..b..' '..c..' '..d..';'..e..'}')
+				+ var('{R^'..a..'}_{'..b..' '..e..' '..c..';'..d..'}')
+				+ var('{R^'..a..'}_{'..b..' '..d..' '..e..';'..c..'}')
+			):eq(value))
+		sep = ';'
+	end
+end
+if sep=='' then print(0) end
+printbr()
+--]]
 
 for _,l in ipairs(([[
 Ok, this gives me the connections that give rise to the curvature.
