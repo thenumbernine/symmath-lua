@@ -103,78 +103,50 @@ Shorthand for `expr:replace(eqn:lhs(), eqn:rhs())`.
 
 ### Expressions
 
-```
-symmath.simplify(expr)
-expr:simplify()
-expr()
-```
-
+`symmath.simplify(expr)`  
+`expr:simplify()`  
+`expr()`  
 Simplifies the expression.
 
-```
-symmath.replace(expr, find, repl, callback)
-expr:replace(find, repl, callback)
-```
+`symmath.replace(expr, find, repl, callback)`  
+`expr:replace(find, repl, callback)`  
+Replaces portions of an expression with another.  
+expr = expression to change.  
+find = sub-expression to find.  
+repl = sub-expression to replace.  
+callback(node) = callback per node, returns 'true' if we don't want to find/replace this tree.  
 
-Replaces portions of an expression with another
-expr = expression to change
-find = sub-expression to find
-repl = sub-expression to replace
-callback(node) = callback per node, returns 'true' if we don't want to find/replace this tree.
+`symmath.map(expr, callback)`  
+`expr:map(callback)`  
+Maps sub-expressions in an expression to new sub-expressions.  
+expr = expression.  
+callback(node) = callback that returns nil if it leaves the tree untouched, returns a value if it wishes to change the tree.  
 
-```
-symmath.map(expr, callback)
-expr:map(callback)
-```
+`symmath.eval(expr, {[var1]=value, var2name=value, ...})`  
+`expr:eval{[var1]=value, var2name=value, ...}`  
+Calculates the numeric value of the expression.  
 
-Maps sub-expressions in an expression to new sub-expressions.
-expr = expression
-callback(node) = callback that returns nil if it leaves the tree untouched, returns a value if it wishes to change the tree
-
-```
-symmath.eval(expr, {[var1]=value, var2name=value, ...})
-expr:eval{[var1]=value, var2name=value, ...}
-```
-
-Calculates the numeric value of the expression.
-
-```
-symmath.polyCoeffs(expr, var)
-expr:polyCoeffs(var)
-```
-
-Returns a table of coefficients with keys 0 through the degree of the polynomial, and 'extra' containing all non-polynomial terms.
+`symmath.polyCoeffs(expr, var)`  
+`expr:polyCoeffs(var)`  
+Returns a table of coefficients with keys 0 through the degree of the polynomial, and 'extra' containing all non-polynomial terms.  
 
 ### Calculus
 
-```
-symmath.diff(expr, var1, var2, ...)
-expr:diff(var1, var2, ...)
-```
-
-Differentiates the expression with respect to the given variable.
-Integrals and limits coming eventually.
+`symmath.diff(expr, var1, var2, ...)`  
+`expr:diff(var1, var2, ...)`  
+Differentiates the expression with respect to the given variable.  
 
 ### Linear Algebra
 
-```
-A = symmath.Matrix({expr11, expr12 ...}, {expr21, expr22, ...}, ...)
-```
+`A = symmath.Matrix({expr11, expr12 ...}, {expr21, expr22, ...}, ...)`  
+Create a matrix of expressions.  
 
-Create a matrix of expressions.
+`A = symmath.Array(...)`  
+Create an array of expressions. Same deal as Matrix but with any arbitrary nesting depth, and without Matrix-specific operations.  
 
-```
-A = symmath.Array(...)
-```
-
-Create an array of expressions. Same deal as Matrix but with any arbitrary nesting depth, and without Matrix-specific operations.
-
-```
-AInv, I, message = A:inverse([b, callback, allowRectangular])
-```
-
-returns
-AInv = the inverse of matrix A.
+`AInv, I, message = A:inverse([b, callback, allowRectangular])`  
+returns  
+AInv = the inverse of matrix A.  
 I = what's left of the Gauss-Jordan solver (typically the identity matrix).  
 message = any error that occured during solving.  
 args:  
@@ -183,60 +155,32 @@ callback = function to be called after each Gauss-Jordan operation.
 allowRectangular = set to `true` to allow inverting rectangular matrices.  
 
 `APlus, determinable = A:pseudoInverse()`  
-Returns the pseudoinverse of A (stored in APlus) and whether the pseudoinverse is determinable.
+Returns the pseudoinverse of A (stored in APlus) and whether the pseudoinverse is determinable.  
 
-```
-d = A:determinant()
-```
+`d = A:determinant()`  
+Returns the determinant of A.  
 
-Calculates the determinant of A
+`At = A:transpose()`  
+Returns the transpose of A
 
-```
-At = A:transpose()
-```
+`I = Matrix.identity([m, n])`  
+Returns 1 if no arguments are provided.  
+Returns a m x m identity matrix if one argument is provided.  
+Returns a m x n identity matrix if two arguments are provided.  
 
-Calculates the transpose of A
+`D = Matrix.diagonal(d1, d2, d3, ...)`  
+Returns a n x n matrix with diagonal elements set to d1 ... dn, for n the number of arguments provided.  
 
-```
-I = Matrix.identity()
-```
-
-Returns 1
-
-```
-I = Matrix.identity(n)
-```
-
-Returns a n x n identity matrix
-
-```
-I = Matrix.identity(m,n)
-```
-
-Returns a m x n matrix with diagonals set to 1 and all other values set to 0.
-
-```
-D = Matrix.diagonal(d1, d2, d3, ...)
-```
-
-Returns a n x n matrix with diagonal elements set to d1 ... dn, for n the number of arguments provided.
-
-```
-tr = A:trace()
-```
-
-Returns the trace of A.
+`tr = A:trace()`  
+Returns the trace of A.  
 
 ### Tensors
 
 ```
-
 Tensor.coords{
  {variables={t,x,y,z}}
 }
-
 ```
-
 Specifies that tensors will be using coordinates t,x,y,z
 
 ```
@@ -271,7 +215,8 @@ Tensor.metric(g, [gU, symbol])
 Specifies to use metric 'g' for the default coordinate system (assuming one has been defined with Tensor.coords).
 
 ```
-t = Tensor'_abc'``
+t = Tensor'_abc'
+```
 
 Creates a degree-3 covariant tensor 't' with all values initialized to 0.
 
@@ -284,10 +229,8 @@ Creates a degree-3 covariant tensor 't' with all values initialized to 0.
 in this case the indexes of 'S' are picked on a first-come, first-serve basis.  If you want to be  certain of the assignment, use the following: 
 
 ```
-
 S = Tensor'_ab'
 S['_ab'] = (T'_ab' - T'_ba')()
-
 ```
 
 (the final `()` is shorthand for `:simplify()`, which will evaluate the expression into the tensor structure)
