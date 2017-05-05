@@ -8,10 +8,12 @@ local printbr = MathJax.print
 MathJax.usePartialLHSForDerivative = true
 
 local Tensor = symmath.Tensor
+local Matrix = symmath.Matrix
 local TensorIndex = require 'symmath.tensor.TensorIndex'
 local var = symmath.var
 local vars = symmath.vars
 local sqrt = symmath.sqrt
+local frac = symmath.divOp
 local Constant = symmath.Constant
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
@@ -39,8 +41,37 @@ local S = var'S'
 local Sv = Tensor('_i', function(i) return var('S_'..spatialCoords[i].name) end)
 local Sx, Sy, Sz = table.unpack(Sv)
 
+
+-- [[ ok now to find the metric that gives rise to the conn ...
+local g = Tensor'_ab'
+g[1][1] = var('a',{x})
+g[2][2] = var('b',{x})
+g[3][3] = var('c',{x,y,z})
+g[4][4] = var('d',{x,y,z})
+--]]
+
+local gU = Tensor('^ab', table.unpack(( Matrix.inverse(g) )))
+
+--g:printElem'g' printbr() 
+g:print'g'
+--gU:printElem'g' printbr() 
+gU:print'g'
+
+local ConnFromMetric = Tensor'_abc'
+ConnFromMetric['_abc'] = (frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()	-- ... plus commutation? in this case I have a symmetric Conn so I don't need comm
+
+printbr'...produces...'
+--ConnFromMetric:printElem'\\Gamma' printbr()
+ConnFromMetric = (gU'^ad' * ConnFromMetric'_dbc')()
+
+--ConnFromMetric:printElem'\\Gamma' printbr()
+ConnFromMetric:print'\\Gamma'
+
+print'...vs desired...'
+
 local Conn = Tensor'^a_bc'
 
+-- THIS WORKS:
 -- [[ this gives rise to the stress-energy tensor for EM with E in the x dir and B = 0
 -- to account for other E's and B's, just boost and rotate your coordinate system
 -- don't forget, when transforming Conn, to use its magic transformation eqn, since it's not a real tensor
@@ -52,34 +83,21 @@ Conn[1][3][3] = E
 Conn[1][4][4] = E
 --]]
 
---printbr(var'\\Gamma''^a_bc':eq(Conn))
+--Conn:printElem'\\Gamma' printbr()
+Conn:print'\\Gamma'
 --printbr(var'c''_cb^a':eq(var'\\Gamma''^a_bc' - var'\\Gamma''^a_cb'):eq((Conn'^a_bc' - Conn'^a_cb')()))
 
 local RiemannExpr = Conn'^a_bd,c' - Conn'^a_bc,d' 
 	+ Conn'^a_ec' * Conn'^e_bd' - Conn'^a_ed' * Conn'^e_bc'
 	- Conn'^a_be' * (Conn'^e_dc' - Conn'^e_cd')
-printbr(var'R''^a_bcd':eq(RiemannExpr:replace(Conn, var'\\Gamma')))
-printbr(var'R''_ab':eq(RiemannExpr:replace(Conn, var'\\Gamma'):reindex{cacbd='abcde'}))
 
-for index,value in Conn:iter() do
-	local a,b,c = table.unpack(index)
-	if value ~= Constant(0) then
-		print(
-			var'\\Gamma'(
-				'^'..coords[a].name
-				..'_'..coords[b].name
-				..coords[c].name
-			):eq(value),',') 
-	end
-end
-printbr()
 
 local Riemann = Tensor'^a_bcd'
 Riemann['^a_bcd'] = RiemannExpr()
---printbr(var'R''^a_bcd':eq(Riemann))
+--Riemann:print'R'
 
 local Ricci = Riemann'^c_acb'()
-print(var'R''_ab':eq(Ricci))
+Ricci:print'R'
 
 -- 8 pi T_ab = G_ab = R_ab - 1/2 R g_ab
 -- and R = 0 for electrovac T_ab
@@ -112,7 +130,7 @@ Ricci_EM = Ricci_EM
 	:replace(By, 0)
 	:replace(Bz, 0)
 	:simplify()
-printbr(var'R''_ab':eq(Ricci_EM))
+printbr(Ricci_EM:print'R')
 
 --[[ Bianchi identities
 -- This is zero, but it's a bit slow to compute.
@@ -142,3 +160,8 @@ end
 if sep=='' then print(0) end
 printbr()
 --]]
+
+-- reminders:
+printbr()
+printbr(var'R''^a_bcd':eq(RiemannExpr:replace(Conn, var'\\Gamma')))
+printbr(var'R''_ab':eq(RiemannExpr:replace(Conn, var'\\Gamma'):reindex{cacbd='abcde'}))

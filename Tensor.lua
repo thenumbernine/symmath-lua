@@ -1027,4 +1027,43 @@ function Tensor.pruneMul(lhs, rhs)
 	end
 end
 
+-- I'm one step away from storing the name locally
+
+-- prints the tensor contents as T_abc = <contents>
+function Tensor:print(name)
+	local Variable = require 'symmath.Variable'
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
+	print(TensorRef(Variable(name), table.unpack(self.variance)):eq(self))
+end
+
+-- print non-zero elements
+function Tensor:printElem(name)
+	local Variable = require 'symmath.Variable'
+	local Constant = require 'symmath.Constant'
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
+	local sep = ''
+	local basis = Tensor.findBasisForSymbol()
+	for index,x in self:iter() do
+		if x ~= Constant(0) then
+			print(sep,
+				TensorRef(Variable(name),
+					table.map(self.variance, function(v,i)
+						v = v:clone()
+						v.symbol = basis 
+							and basis.variables[index[i]].name
+							or index[i]
+						return v
+					end):unpack()
+				):eq(x))
+			sep = ';'
+		end
+	end
+	-- none found:
+	if sep == '' then
+		print(TensorRef(Variable(name), table.unpack(self.variance)):eq(0))
+	end
+end
+
 return Tensor

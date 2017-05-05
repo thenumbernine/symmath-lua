@@ -448,14 +448,8 @@ for index,value in Conn:iter() do
 	Conn[index] = symmath.clone(Conn[index])
 end
 
-local s = table()
-for index,value in Conn:iter() do
-	local a,b,c = table.unpack(index)
-	if value ~= Constant(0) then
-		s:insert(tostring(var('\\Gamma^{'..coords[a].name..'}'..'_{'..coords[b].name..' '..coords[c].name..'}'):eq(value))) 
-	end
-end
-printbr(s:concat'; ')
+Conn:printElem'\\Gamma'
+printbr()
 
 -- R^a_bcd = Conn^a_bd,c - Conn^a_bc,d + Conn^a_ec Conn^e_bd - Conn^a_ed Conn^e_bc - Conn^a_be (Conn^e_dc - Conn^e_cd)
 local RiemannExpr = Conn'^a_bd,c' - Conn'^a_bc,d' 
