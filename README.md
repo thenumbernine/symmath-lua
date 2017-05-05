@@ -192,64 +192,38 @@ Returns the trace of A.
 
 ### Tensors
 
-`Tensor.coords{
- {variables={t,x,y,z}}
-}`  
+`Tensor.coords{ {variables={t,x,y,z}} }`  
 Specifies that tensors will be using coordinates t,x,y,z
 
-```
-Tensor.coords{
- {variables={t,x,y,z}, meric=g}
-}
-```
-
+`Tensor.coords{ {variables={t,x,y,z}, meric=g} }`  
 Specifies that tensors will be using coordinates t,x,y,z with metric 'g' (a Matrix or 2D array).  The metric inverse will be automatically computed.
 
-```
-Tensor.coords{
- {variables={t,x,y,z}, meric=g, metricInverse=gU}
-}
-```
-
+`Tensor.coords{ {variables={t,x,y,z}, meric=g, metricInverse=gU} }`  
 Specifies that tensors will be using coordinates t,x,y,z with metric 'g' (a Matrix or 2D array) and metric inverse 'gU'.
 
-```
-Tensor.coords{
- {variables={t,x,y,z}},
- {symbols='ijklmn', variables={x,y,z}},
-}
-```
+`Tensor.coords{ {variables={t,x,y,z}}, {symbols='ijklmn', variables={x,y,z}} }`  
+Specifies that tensors will be using coordinates t,x,y,z, except for indexes ijklmn which will only use x,y,z.  
+At the moment conversion between maps is very ugly/incomplete.
 
-Specifies that tensors will be using coordinates t,x,y,z, except for indexes ijklmn which will only use x,y,z.  At the moment conversion between maps is very ugly/incomplete.
+`Tensor.metric(g, [gU, symbol])`  
+Specifies to use metric 'g' for the default coordinate system (assuming one has been defined with Tensor.coords).  
 
-```
-Tensor.metric(g, [gU, symbol])
-```
-
-Specifies to use metric 'g' for the default coordinate system (assuming one has been defined with Tensor.coords).
-
-```
-t = Tensor'_abc'
-```
-
+`t = Tensor'_abc'`  
 Creates a degree-3 covariant tensor 't' with all values initialized to 0.
 
-... tensor summation / multiplication ...
+... tensor summation / multiplication ...  
 ` ( u'^a' * v'_b' * eps'_a^bc_d' )() ` produces a degree-2 tensor perpendicular to 'u' and 'v' (assuming eps is defined as the Levi-Civita tensor).
 
-... comma derivatives (semicolon derivatives almost there, just need to store the connection coefficients) ...
+... comma derivatives (semicolon derivatives almost there, just need to store the connection coefficients) ...  
 
-... assignment: `S = T'_ab' - T'_ba'`
+... assignment: `S = T'_ab' - T'_ba'`  
 in this case the indexes of 'S' are picked on a first-come, first-serve basis.  If you want to be  certain of the assignment, use the following: 
 
-```
-S = Tensor'_ab'
-S['_ab'] = (T'_ab' - T'_ba')()
-```
+`S = Tensor'_ab'`  
+`S['_ab'] = (T'_ab' - T'_ba')()`  
+(the final `()` is shorthand for `:simplify()`, which will evaluate the expression into the tensor structure).
 
-(the final `()` is shorthand for `:simplify()`, which will evaluate the expression into the tensor structure)
-
-... index gymnastics (so long as you defined a metric): `v = Tensor('_a', ...) print(v'^a'())` will show you the contents of v^a = g^ab v_b.
+... index gymnastics (so long as you defined a metric): `v = Tensor('_a', ...) print(v'^a'())` will show you the contents of `v^a = g^ab v_b`.
 
 `t:print't'`  
 Prints the tensor's contents.  
