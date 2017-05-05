@@ -34,95 +34,68 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 
 ### Arithmetic
 
-`symmath.negative(a)`  
+`symmath.unmOp(a)`  
 `-a` when used with symmath expressions  
 Creates an expression representing the negative of the parameter.
 
-`symmath.sum(a, b, ...)`  
-`a + b + ...` when used with symmath expressions  
-Creates an expression representing the sum of all parameters.
+`symmath.addOp(a, b)`  
+`a + b` when used with symmath expressions  
+Creates an expression representing the sum of the parameters.
 
-`symmath.product(a, b, ...)`  
-`a * b * ...` when used with symmath expressions  
-Creates an expression representing the product of all parameters.
+`symmath.mulOp(a, b)`  
+`a * b` when used with symmath expressions  
+Creates an expression representing the product of the parameters.
 
-`symmath.subtract(a, b, ...)`  
-`a - b - ...` when used with symmath expressions  
-Creates an expression representing the difference of all parameters.
+`symmath.subOp(a, b)`  
+`a - b` when used with symmath expressions  
+Creates an expression representing the difference of the parameters.
 
-`symmath.fraction(a, b)`  
+`symmath.divOp(a, b)`  
 `a / b` when used with symmath expressions  
-Creates an expression representing a fraction of the two parameters.
+Creates an expression representing a fraction of the parameters.
 
-`symmath.power(a, b)`  
+`symmath.powOp(a, b)`  
 `a ^ b` when used with symmath expressions  
-Creates an expression representing the power of the first parameter raised to the second.
+Creates an expression representing the first parameter raised to the power of the second parameter.
 
-`symmath.modulo(a, b)`  
+`symmath.modOp(a, b)`  
 `a % b` when used with symmath expressions  
 Creates an expression representing the first parameter modulo the second.
 
 ###Equations
 
-```
-eqn = symmath.equals(lhs, rhs)
-eqn = lhs:equals(rhs)
-eqn = lhs:eq(rhs)
-```
-
+`eqn = symmath.equals(lhs, rhs)`  
+`eqn = lhs:equals(rhs)`  
+`eqn = lhs:eq(rhs)`  
 Creates an equation representing the equality lhs = rhs.
 
-```
-eqn = symmath.lessThan(lhs, rhs)
-eqn = lhs:lessThan(rhs)
-```
-
+`eqn = symmath.lessThan(lhs, rhs)`  
+`eqn = lhs:lessThan(rhs)`  
 Creates an equation representing the inequality lhs < rhs.
 
-```
-eqn = symmath.lessThanOrEquals(lhs, rhs)
-eqn = lhs:lessThanOrEquals(rhs)
-```
-
+`eqn = symmath.lessThanOrEquals(lhs, rhs)`  
+`eqn = lhs:lessThanOrEquals(rhs)`  
 Creates an equation representing the inequality lhs ≤ rhs.
 
-```
-eqn = symmath.greaterThan(lhs, rhs)
-eqn = lhs:greaterThan(rhs)
-```
-
+`eqn = symmath.greaterThan(lhs, rhs)`  
+`eqn = lhs:greaterThan(rhs)`  
 Creates an equation representing the inequality lhs > rhs.
 
-```
-eqn = symmath.greaterThanOrEquals(lhs, rhs)
-eqn = lhs:greaterThanOrEquals(rhs)
-```
-
+`eqn = symmath.greaterThanOrEquals(lhs, rhs)`  
+`eqn = lhs:greaterThanOrEquals(rhs)`  
 Creates an equation representing the inequality lhs ≥ rhs.
 
-```
-lhs = eqn:lhs()
-```
-
+`lhs = eqn:lhs()`  
 Returns the left hand side of the equation.
 
-```
-rhs = eqn:rhs()
-```
-
+`rhs = eqn:rhs()`  
 Returns the right hand side of the equation.
 
-```
-soln1, soln2, ... = symmath.solve(eqn, var)
-soln1, soln2, ... = eqn:solve(var)
-```
-
+`soln1, soln2, ... = symmath.solve(eqn, var)`  
+`soln1, soln2, ... = eqn:solve(var)`  
 Returns solutions to the equation. If eqn is not an Equation then returns solutions to eqn = 0.
 
-```
-newexpr = expr:subst(eqn)
-```
-
+`newexpr = expr:subst(eqn)`  
 Shorthand for `expr:replace(eqn:lhs(), eqn:rhs())`.
 
 ### Expressions

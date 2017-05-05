@@ -176,16 +176,6 @@ symmath.divOp = require 'symmath.divOp'
 symmath.powOp = require 'symmath.powOp'
 symmath.modOp = require 'symmath.modOp'
 
--- for name's sake alone
--- er - product is no longer for name's sake, now that I'm asserting more than one child per operation
--- I should make a genuine Product just as I have a Sum operation
-symmath.negative = symmath.unmOp
-symmath.product = symmath.mulOp
-symmath.subtract = symmath.subOp
-symmath.fraction = symmath.divOp
-symmath.power = symmath.powOp
-symmath.modulo = symmath.modOp
-
 --symmath.Variable = require 'symmath.Variable'
 symmath.Derivative = require 'symmath.Derivative'
 symmath.diff = symmath.Derivative	-- shorthand
@@ -199,6 +189,7 @@ symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
 
 -- thinking of lowercasing all of these ...
 symmath.Sum = require 'symmath.Sum'
+-- symmath.Product
 symmath.Integral = require 'symmath.Integral'
 
 -- specific to Matrix
