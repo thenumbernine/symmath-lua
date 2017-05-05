@@ -24,7 +24,7 @@ function Equation:rhs() return self[2] end
 -- should probably overload this for >= and <= to switch the sides
 function Equation:switch()
 	local a,b = table.unpack(self)
-	return b:clone():equals(a:clone())
+	return b:clone():eq(a:clone())
 end
 
 function Equation:isTrue()
@@ -45,14 +45,14 @@ function Equation:unravel()
 	local lhsIsArray = Array.is(lhs)
 	local rhsIsArray = Array.is(rhs)
 	if not lhsIsArray or not rhsIsArray then
-		return table{lhs:equals(rhs)}
+		return table{lhs:eq(rhs)}
 	end
 
 	assert(lhs:dim() == rhs:dim())
 
 	local results = table()
 	for index in lhs:iter() do
-		results:insert(lhs[index]:equals(rhs[index]))
+		results:insert(lhs[index]:eq(rhs[index]))
 	end
 	return results
 end

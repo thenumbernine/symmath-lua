@@ -4,6 +4,6 @@ local ge = class(Equation)
 ge.name = '>='
 function ge:switch()
 	local a,b = table.unpack(self)
-	return b:lessThanOrEquals(a)
+	return b:le(a)
 end
 return ge

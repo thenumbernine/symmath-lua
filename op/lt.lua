@@ -4,6 +4,6 @@ local lt = class(Equation)
 lt.name = '<'
 function lt:switch()
 	local a,b = table.unpack(self)
-	return b:greaterThan(a)
+	return b:gt(a)
 end
 return lt

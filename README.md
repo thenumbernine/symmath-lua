@@ -64,25 +64,28 @@ Creates an expression representing the first parameter modulo the second.
 
 ### Equations
 
-`eqn = symmath.equals(lhs, rhs)`  
-`eqn = lhs:equals(rhs)`  
+`eqn = symmath.op.eq(lhs, rhs)`  
 `eqn = lhs:eq(rhs)`  
 Creates an equation representing the equality lhs = rhs.
 
-`eqn = symmath.lessThan(lhs, rhs)`  
-`eqn = lhs:lessThan(rhs)`  
+`eqn = symmath.op.ne(lhs, rhs)`  
+`eqn = lhs:ne(rhs)`  
+Creates an equation representing the inequality lhs ≠ rhs.
+
+`eqn = symmath.op.lt(lhs, rhs)`  
+`eqn = lhs:lt(rhs)`  
 Creates an equation representing the inequality lhs < rhs.
 
-`eqn = symmath.lessThanOrEquals(lhs, rhs)`  
-`eqn = lhs:lessThanOrEquals(rhs)`  
+`eqn = symmath.op.le(lhs, rhs)`  
+`eqn = lhs:le(rhs)`  
 Creates an equation representing the inequality lhs ≤ rhs.
 
-`eqn = symmath.greaterThan(lhs, rhs)`  
-`eqn = lhs:greaterThan(rhs)`  
+`eqn = symmath.op.gt(lhs, rhs)`  
+`eqn = lhs:gt(rhs)`  
 Creates an equation representing the inequality lhs > rhs.
 
-`eqn = symmath.greaterThanOrEquals(lhs, rhs)`  
-`eqn = lhs:greaterThanOrEquals(rhs)`  
+`eqn = symmath.op.ge(lhs, rhs)`  
+`eqn = lhs:ge(rhs)`  
 Creates an equation representing the inequality lhs ≥ rhs.
 
 `lhs = eqn:lhs()`  

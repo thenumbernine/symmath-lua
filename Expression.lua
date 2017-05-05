@@ -83,7 +83,7 @@ compares metatable, children length, and children contents.
 child order must match.  if your node type order doesn't matter then use nodeCommutativeEqual
 
 this is used for comparing
-for equality and solving, use .equals()
+for equality and solving, use .eq()
 --]]
 function Expression.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
@@ -151,17 +151,12 @@ Expression.diff = function(...) return require 'symmath.Derivative'(...) end	-- 
 Expression.integrate = function(...) return require 'symmath'.Integral(...) end
 
 -- I have to buffer these by a function to prevent require loop
-Expression.equals = function(...) return require 'symmath.equals'(...) end
-Expression.greaterThan = function(...) return require 'symmath.greaterThan'(...) end
-Expression.greaterThanOrEquals = function(...) return require 'symmath.greaterThanOrEquals'(...) end
-Expression.lessThan = function(...) return require 'symmath.lessThan'(...) end
-Expression.lessThanOrEquals = function(...) return require 'symmath.lessThanOrEquals'(...) end
--- shorthand ...
-Expression.eq = Expression.equals
-Expression.gt = Expression.greaterThan
-Expression.ge = Expression.greaterThanOrEquals
-Expression.lt = Expression.lessThan
-Expression.le = Expression.lessThanOrEquals
+Expression.eq = function(...) return require 'symmath.op.eq'(...) end
+Expression.ne = function(...) return require 'symmath.op.ne'(...) end
+Expression.gt = function(...) return require 'symmath.op.gt'(...) end
+Expression.ge = function(...) return require 'symmath.op.ge'(...) end
+Expression.lt = function(...) return require 'symmath.op.lt'(...) end
+Expression.le = function(...) return require 'symmath.op.le'(...) end
 
 -- linear system stuff.  do we want these here, or only as a child of Matrix?
 Expression.inverse = function(...) return require 'symmath.matrix.inverse'(...) end

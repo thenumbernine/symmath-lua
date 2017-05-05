@@ -137,7 +137,7 @@ print('<br>')
 
 -- and now each particle has its evolution equations
 print('Hamiltonian','<br>')
-print(symmath.var'H':equals(H),'<br>')
+print(symmath.var'H':eq(H),'<br>')
 -- compile evolution equations
 print('Evolution Equations:','<br>')
 local tVar = symmath.var't'
@@ -157,7 +157,7 @@ for i,v in ipairs(system.particles) do
 		local dH_dp = H:diff(v.pVar[k]):simplify()
 		v.dq_dt_expr[k] = dH_dp
 		local dq_dt_var = v.qVar[k]:diff(tVar)
-print(dq_dt_var:equals(dH_dp),'<br>')
+print(dq_dt_var:eq(dH_dp),'<br>')
 		v.dq_dt[k] = dH_dp:compile(symbolicParams)
 		table.insert(dq_dt_vector, symmath.Array(dq_dt_var))
 		table.insert(dq_dt_vector_eqn_rhs, symmath.Array(dH_dp))
@@ -166,7 +166,7 @@ print(dq_dt_var:equals(dH_dp),'<br>')
 		local _dH_dq = (-H):diff(v.qVar[k]):simplify()
 		v.dp_dt_expr[k] = _dH_dq
 		local dp_dt_var = v.pVar[k]:diff(tVar)
-print(dp_dt_var:equals(_dH_dq),'<br>')
+print(dp_dt_var:eq(_dH_dq),'<br>')
 		v.dp_dt[k] = _dH_dq:compile(symbolicParams)
 		table.insert(dq_dt_vector, symmath.Array(dp_dt_var))
 		table.insert(dq_dt_vector_eqn_rhs, symmath.Array(_dH_dq))
@@ -175,7 +175,7 @@ print(dp_dt_var:equals(_dH_dq),'<br>')
 end
 
 print('...in a vector:','<br>')
-print(dq_dt_vector:equals(dq_dt_vector_eqn_rhs),'<br>')
+print(dq_dt_vector:eq(dq_dt_vector_eqn_rhs),'<br>')
 -- TODO factor matrix function
 
 local dtVar = symmath.var('\\Delta t')
@@ -197,7 +197,7 @@ do
 end
 
 print('...linearized:','<br>')
-print(dq_dt_vector:equals(A_matrix * q_vector),'<br>')
+print(dq_dt_vector:eq(A_matrix * q_vector),'<br>')
 
 local q_t_vector = symmath.Matrix()
 local q_t_dt_vector = symmath.Matrix()
@@ -210,41 +210,41 @@ local discrete_dq_dt_vector = ((q_t_dt_vector - q_t_vector) / dtVar):simplify()
 
 do
 	print('1st order approximate derivative for Forward Euler','<br>')
-	local eqn = (discrete_dq_dt_vector):equals(A_matrix * q_t_vector)
+	local eqn = (discrete_dq_dt_vector):eq(A_matrix * q_t_vector)
 	print(eqn,'<br>')
 	-- now I need something to convert the a/b's to a*(1/b)'s, so I can use a to-be-made function for extracting matrix coefficients ...
 	-- until then, I'll just start with the non-simplified equation:
-	local eqn = (q_t_dt_vector):equals(q_t_vector + dtVar * A_matrix * q_t_vector)
+	local eqn = (q_t_dt_vector):eq(q_t_vector + dtVar * A_matrix * q_t_vector)
 	print(eqn,'<br>')
 	-- hmm, todo, factoring out matrices (by introducing identity)
 	-- until then, redo the equation
-	local eqn = (q_t_dt_vector):equals((symmath.Matrix.identity(#q_vector) + dtVar * A_matrix) * q_t_vector)
+	local eqn = (q_t_dt_vector):eq((symmath.Matrix.identity(#q_vector) + dtVar * A_matrix) * q_t_vector)
 	print(eqn,'<br>')
 	-- simplify matrix muls only
-	local eqn = (q_t_dt_vector):equals((symmath.Matrix.identity(#q_vector) + dtVar * A_matrix):simplify() * q_t_vector)
+	local eqn = (q_t_dt_vector):eq((symmath.Matrix.identity(#q_vector) + dtVar * A_matrix):simplify() * q_t_vector)
 	print(eqn,'<br>')
 	-- simplify matrix muls only
-	local eqn = (q_t_dt_vector):equals((symmath.Matrix.identity(#q_vector) + dt * A_matrix):simplify() * q_t_vector)
+	local eqn = (q_t_dt_vector):eq((symmath.Matrix.identity(#q_vector) + dt * A_matrix):simplify() * q_t_vector)
 	print(eqn,'<br>')
 end
 
 local backwardsEulerMatrix
 do
 	print('1st order approximate derivative for Backwards Euler','<br>')
-	local eqn = (discrete_dq_dt_vector):equals(A_matrix * q_t_dt_vector)
+	local eqn = (discrete_dq_dt_vector):eq(A_matrix * q_t_dt_vector)
 	print(eqn,'<br>')
 	-- TODO expand() on lhs then matrix factor ...
-	eqn = (q_t_dt_vector - dtVar * A_matrix * q_t_dt_vector):equals(q_t_vector)
+	eqn = (q_t_dt_vector - dtVar * A_matrix * q_t_dt_vector):eq(q_t_vector)
 	print(eqn,'<br>')
 	-- TODO vector factor
 	backwardsEulerMatrix = (symmath.Matrix.identity(#q_vector) - dtVar * A_matrix)
-	eqn = (backwardsEulerMatrix * q_t_dt_vector):equals(q_t_vector)
+	eqn = (backwardsEulerMatrix * q_t_dt_vector):eq(q_t_vector)
 	print(eqn,'<br>')
 	backwardsEulerMatrix = backwardsEulerMatrix:simplify()
-	eqn = (backwardsEulerMatrix * q_t_dt_vector):equals(q_t_vector)
+	eqn = (backwardsEulerMatrix * q_t_dt_vector):eq(q_t_vector)
 	print(eqn,'<br>')
 	backwardsEulerMatrix = backwardsEulerMatrix:replace(dtVar, dt):simplify()
-	eqn = q_t_dt_vector:equals(backwardsEulerMatrix^(-1) * q_t_vector)
+	eqn = q_t_dt_vector:eq(backwardsEulerMatrix^(-1) * q_t_vector)
 	print(eqn,'<br>')
 end
 
