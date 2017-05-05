@@ -192,11 +192,9 @@ Returns the trace of A.
 
 ### Tensors
 
-```
-Tensor.coords{
+`Tensor.coords{
  {variables={t,x,y,z}}
-}
-```
+}`  
 Specifies that tensors will be using coordinates t,x,y,z
 
 ```
