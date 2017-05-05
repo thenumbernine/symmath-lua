@@ -37,7 +37,7 @@ do
 			local RDef = props.Gaussian
 			for _,k in ipairs{'Riemann', 'Ricci', 'Einstein'} do
 				props[k] = (props[k] / RDef * var'R')()
-				print(props.eqns[k]:lhs():eq(props[k]))
+				props:printField(k, print)
 			end
 		end
 	end

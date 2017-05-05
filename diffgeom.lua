@@ -85,7 +85,7 @@ Props.print = print
 -- print all
 function Props:print(printfn)
 	printfn = printfn or self.print
-	for _,kv in ipairs(self.fields) do
+	for _,field in ipairs(self.fields) do
 		if self[field.name] then	
 			printfn(field.title..':')
 			printfn(field.eqn(self))
