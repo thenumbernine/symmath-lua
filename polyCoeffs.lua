@@ -102,7 +102,7 @@ return function(expr, x)
 
 	local ExpandPolynomial = require 'symmath.visitor.ExpandPolynomial'
 	expr = ExpandPolynomial()(expr)
-	expr = expr:simplify()
+	expr = expr():factorDivision()
 	
 	-- ... but don't run tidy (to keep unms consts from being factored out) ... so, here's a final prune ...
 	local prune = require 'symmath.prune'
@@ -130,12 +130,8 @@ return function(expr, x)
 		end
 	end
 
---[[
 --print('got coeffs')
-for k,v in pairs(coeffs) do
-	--print(k,v)
-end
---]]
+--for k,v in pairs(coeffs) do print(k,v) end
 
 	return coeffs
 end

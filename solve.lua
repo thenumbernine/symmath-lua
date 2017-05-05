@@ -37,13 +37,12 @@ return function(eqn, x)
 	
 	local eq = getmetatable(eqn)
 		-- move everything to one side of the equation
-print'subtracting lhs from rhs...<br>'		
+--print'subtracting lhs from rhs...'		
 	local lhs = eqn[1] - eqn[2]
-print('...got',lhs,'<br>')
+--print('...got',lhs)
 	
-print('looking for coeffs wrt',x,'<br>')	
+--print('looking for coeffs wrt',x)	
 	local coeffs = polyCoeffs(lhs, x)
-print('...got',require 'ext.tolua'(coeffs),'<br>')
 
 	local function getCoeff(n)
 		return coeffs[n] or Constant(0)

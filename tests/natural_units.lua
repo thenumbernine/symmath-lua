@@ -18,17 +18,16 @@ local eV = var'eV'
 -- speed of light
 local c = var'c'
 local c_from_m_s = c:eq(299792458 * (m / s))
-printbr('c_from_m_s',c_from_m_s)
+printbr(c_from_m_s)
 
 -- c = 1
 local c_normalized = c:eq(1)
-printbr('c_normalized',c_normalized)
+printbr(c_normalized)
 
 -- solve for s
 local substd = c_from_m_s:subst(c_normalized)
-printbr('substd',substd)
 local s_from_m = substd:solve(s)
-printbr('s_from_m',s_from_m)
+printbr(s_from_m)
 
 -- Planck's constant
 local hBar = var'\\hbar'
