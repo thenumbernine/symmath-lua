@@ -167,25 +167,28 @@ symmath.sinh = require 'symmath.sinh'
 symmath.tanh = require 'symmath.tanh'
 symmath.Heaviside = require 'symmath.Heaviside'
 
-symmath.BinaryOp = require 'symmath.BinaryOp'
-symmath.unm = require 'symmath.unm'
-symmath.add = require 'symmath.add'
-symmath.sub = require 'symmath.sub'
-symmath.mul = require 'symmath.mul'
-symmath.div = require 'symmath.div'
-symmath.pow = require 'symmath.pow'
-symmath.mod = require 'symmath.mod'
+symmath.op = {
+	Binary = require 'symmath.op.Binary',
+	unm = require 'symmath.op.unm',
+	add = require 'symmath.op.add',
+	sub = require 'symmath.op.sub',
+	mul = require 'symmath.op.mul',
+	div = require 'symmath.op.div',
+	pow = require 'symmath.op.pow',
+	mod = require 'symmath.op.mod',
+
+	Equation = require 'symmath.op.Equation',
+	eq = require 'symmath.op.eq',
+	ne = require 'symmath.op.ne',
+	lt = require 'symmath.op.lt',
+	le = require 'symmath.op.le',
+	gt = require 'symmath.op.gt',
+	ge = require 'symmath.op.ge',
+}
 
 --symmath.Variable = require 'symmath.Variable'
 symmath.Derivative = require 'symmath.Derivative'
 symmath.diff = symmath.Derivative	-- shorthand
-
-symmath.EquationOp = require 'symmath.EquationOp'
-symmath.equals = require 'symmath.equals'
-symmath.lessThan = require 'symmath.lessThan'
-symmath.lessThanOrEquals = require 'symmath.lessThanOrEquals'
-symmath.greaterThan = require 'symmath.greaterThan'
-symmath.greaterThanOrEquals = require 'symmath.greaterThanOrEquals'
 
 -- thinking of lowercasing all of these ...
 symmath.Sum = require 'symmath.Sum'

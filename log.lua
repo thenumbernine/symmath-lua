@@ -7,7 +7,7 @@ log.name = 'log'
 log.func = require 'symmath.complex'.log
 function log:evaluateDerivative(...)
 	local x = table.unpack(self):clone()
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	return diff(x,...) / x
 end
 return log

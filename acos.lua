@@ -7,7 +7,7 @@ acos.func = require 'symmath.complex'.acos
 function acos:evaluateDerivative(...)
 	local x = table.unpack(self):clone()
 	local sqrt = require 'symmath.sqrt'
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	return -diff(x, ...) / sqrt(1 - x^2)
 end
 return acos

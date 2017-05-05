@@ -10,11 +10,11 @@ Verbose.lookupTable = {
 	[require 'symmath.Invalid'] = function(self, expr)
 		return 'Invalid'
 	end,
-	[require 'symmath.unm'] = function(self, expr)
+	[require 'symmath.op.unm'] = function(self, expr)
 		return 'unm('..self:apply(expr[1])..')'
 	end,
-	[require 'symmath.BinaryOp'] = function(self, expr)
-		return 'BinaryOp{'..expr.name..'}['..table.map(expr, function(x,k)
+	[require 'symmath.op.Binary'] = function(self, expr)
+		return 'Binary{'..expr.name..'}['..table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self(x)
 		end):concat(', ')..']'

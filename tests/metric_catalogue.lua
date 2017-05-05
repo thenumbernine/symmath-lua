@@ -32,7 +32,7 @@ local printbr = MathJax.print
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars
-local div = symmath.div
+local div = symmath.op.div
 local sin = symmath.sin
 local cos = symmath.cos
 

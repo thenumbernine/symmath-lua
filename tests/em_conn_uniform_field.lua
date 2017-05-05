@@ -13,7 +13,7 @@ local TensorIndex = require 'symmath.tensor.TensorIndex'
 local var = symmath.var
 local vars = symmath.vars
 local sqrt = symmath.sqrt
-local div = symmath.div
+local div = symmath.op.div
 local Constant = symmath.Constant
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')

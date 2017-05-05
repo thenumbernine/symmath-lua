@@ -16,7 +16,7 @@ local var = symmath.var
 function expandPowers(self)
 	return self()
 		:map(function(x) 	-- expand powers ...
-			if symmath.pow.is(x) 
+			if symmath.op.pow.is(x) 
 			and symmath.Constant.is(x[2])
 			and x[2].value == math.floor(x[2].value)
 			and x[2].value > 0
@@ -163,13 +163,13 @@ for i=1,8 do
 			YYInv_rhs = YYInv_rhs + Y[i][k] * YInv[k][j]
 		end
 		local YInvYEqn = lhs:eq(YInvY_rhs)()
-		if symmath.div.is(YInvYEqn:rhs()) then YInvYEqn = (YInvYEqn * YInvYEqn:rhs()[2])() end
+		if symmath.op.div.is(YInvYEqn:rhs()) then YInvYEqn = (YInvYEqn * YInvYEqn:rhs()[2])() end
 		YInvYEqn = YInvYEqn:subst(B_from_BSq)()
 		if not YInvYEqn:isTrue() then
 			YInvYEqns:insert{i,j,YInvYEqn}
 		end
 		local YYInvEqn = lhs:eq(YYInv_rhs)()
-		if symmath.div.is(YYInvEqn:rhs()) then YYInvEqn = (YYInvEqn * YYInvEqn:rhs()[2])() end
+		if symmath.op.div.is(YYInvEqn:rhs()) then YYInvEqn = (YYInvEqn * YYInvEqn:rhs()[2])() end
 		YYInvEqn = YYInvEqn:subst(B_from_BSq)()
 		if not YYInvEqn:isTrue() then
 			YYInvEqns:insert{i,j,YYInvEqn}

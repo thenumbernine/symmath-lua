@@ -108,13 +108,13 @@ MultiLine.lookupTable = {
 		res = self:combine(res, {')'})
 		return res
 	end,
-	[require 'symmath.unm'] = function(self, expr)
+	[require 'symmath.op.unm'] = function(self, expr)
 		local ch = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local sym = '-'
 		if #ch > 1 then sym = '- ' end	-- so minus-fraction doesn't just blend the minus into the fraction
 		return self:combine({sym}, ch)
 	end,
-	[require 'symmath.BinaryOp'] = function(self, expr)
+	[require 'symmath.op.Binary'] = function(self, expr)
 		local res = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local sep = {expr:getSepStr()}
 		for i=2,#expr do
@@ -123,11 +123,11 @@ MultiLine.lookupTable = {
 		end
 		return res
 	end,
-	[require 'symmath.div'] = function(self, expr)
+	[require 'symmath.op.div'] = function(self, expr)
 		assert(#expr == 2)
 		return self:fraction(self:apply(expr[1]), self:apply(expr[2]))
 	end,
-	[require 'symmath.pow'] = function(self, expr)
+	[require 'symmath.op.pow'] = function(self, expr)
 		if #expr ~= 2 then error("expected 2 children but found "..#expr.." in "..toLua(expr)) end
 		local lhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, 2)

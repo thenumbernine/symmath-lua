@@ -9,7 +9,7 @@ symmath.tostring = MathJax
 print(MathJax.header)
 local printbr = MathJax.print
 local var = symmath.var
-local div = symmath.div
+local div = symmath.op.div
 
 for _,info in ipairs{
 	{

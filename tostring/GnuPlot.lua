@@ -19,16 +19,16 @@ GnuPlot.lookupTable = {
 			return self:apply(x, vars)
 		end):concat(',') .. ')'
 	end,
-	[require 'symmath.unm'] = function(self, expr, vars)
+	[require 'symmath.op.unm'] = function(self, expr, vars)
 		return '(-'..self:apply(expr[1], vars)..')'
 	end,
-	[require 'symmath.BinaryOp'] = function(self, expr, vars)
+	[require 'symmath.op.Binary'] = function(self, expr, vars)
 		return '('..table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self:apply(x, vars)
 		end):concat(' '..expr.name..' ')..')'
 	end,
-	[require 'symmath.pow'] = function(self, expr, vars)
+	[require 'symmath.op.pow'] = function(self, expr, vars)
 		return '('..table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self:apply(x, vars)

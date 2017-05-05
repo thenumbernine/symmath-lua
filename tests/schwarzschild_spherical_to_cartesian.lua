@@ -16,7 +16,7 @@ local vars = symmath.vars
 -- coordinates
 local t,x,y,z = vars('t','x','y','z')
 local spatialCoords = table{t,x,y,z}
-local theta= var('\\theta', spatialCoords)
+local theta = var('\\theta', spatialCoords)
 local phi = var('\\phi', spatialCoords)
 
 -- differentials
@@ -52,8 +52,8 @@ dsSq = dsSq
 	-- I should really call this 'expandDivision' because it doesn't factor ...
 	:factorDivision()
 local function rapply(expr)
-	if symmath.div.is(expr) then return expr end
-	if symmath.pow.is(expr) then return expr:expand() end
+	if symmath.op.div.is(expr) then return expr end
+	if symmath.op.pow.is(expr) then return expr:expand() end
 	if #expr == 0 then return expr end
 	expr = expr:clone()
 	for i=1,#expr do

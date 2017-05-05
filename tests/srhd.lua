@@ -14,7 +14,7 @@ local var = symmath.var
 local vars = symmath.vars
 local Matrix = symmath.Matrix
 local sqrt = symmath.sqrt
-local div = symmath.div
+local div = symmath.op.div
 
 local gamma = var'\\gamma'
 printbr(gamma..' = heat capacity ratio')

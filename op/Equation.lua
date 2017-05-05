@@ -1,15 +1,15 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local BinaryOp = require 'symmath.BinaryOp'
+local Binary = require 'symmath.op.Binary'
 
 -- equality
 -- I would use binary operators for this, but Lua's overloading requires the return value be a boolean
-local EquationOp = class(BinaryOp)
-EquationOp.__eq = require 'symmath.nodeCommutativeEqual'
-EquationOp.solve = require 'symmath.solve'
+local Equation = class(Binary)
+Equation.__eq = require 'symmath.nodeCommutativeEqual'
+Equation.solve = require 'symmath.solve'
 
-function EquationOp:evaluateDerivative(...)
-	local diff = require 'symmath'.diff
+function Equation:evaluateDerivative(...)
+	local diff = require 'symmath.Derivative'
 	local result = getmetatable(self)()
 	for i=1,#self do
 		result[i] = diff(self[i]:clone(), ...)
@@ -17,21 +17,21 @@ function EquationOp:evaluateDerivative(...)
 	return result
 end
 
-function EquationOp:lhs() return self[1] end
-function EquationOp:rhs() return self[2] end
+function Equation:lhs() return self[1] end
+function Equation:rhs() return self[2] end
 
 -- a = b => b = a
 -- should probably overload this for >= and <= to switch the sides
-function EquationOp:switch()
+function Equation:switch()
 	local a,b = table.unpack(self)
 	return b:clone():equals(a:clone())
 end
 
-function EquationOp:isTrue()
+function Equation:isTrue()
 	return self[1] == self[2]
 end
 
-function EquationOp:simplify()
+function Equation:simplify()
 	local expr = self:clone()
 	expr[1] = expr[1]:simplify()
 	expr[2] = expr[2]:simplify()
@@ -39,7 +39,7 @@ function EquationOp:simplify()
 end
 
 -- convert from array equations to a table of equations
-function EquationOp:unravel()
+function Equation:unravel()
 	local Array = require 'symmath.Array'
 	local lhs, rhs = table.unpack(self)
 	local lhsIsArray = Array.is(lhs)
@@ -60,7 +60,7 @@ end
 -- cause operators to apply immdiately, and to apply to both sides
 
 -- TODO switch equality sign for non-equals equation ops? same with scaling by negatives?
-function EquationOp.__unm(a)
+function Equation.__unm(a)
 	a = a:clone()
 	for i=1,#a do
 		a[i] = -a[i]
@@ -76,18 +76,18 @@ for _,op in ipairs{
 	{field = '__pow', f = function(a,b) return a ^ b end},
 	{field = '__mod', f = function(a,b) return a % b end},
 } do
-	EquationOp[op.field] = function(a,b)
+	Equation[op.field] = function(a,b)
 		local Constant = require 'symmath.Constant'
 		if type(a) == 'number' then a = Constant(a) end
 		if type(b) == 'number' then b = Constant(b) end
-		if EquationOp.is(a) and not EquationOp.is(b) then
+		if Equation.is(a) and not Equation.is(b) then
 			a = a:clone()
 			for i=1,#a do
 				a[i] = op.f(a[i], b)
 			end
 			return a
 		end
-		if not EquationOp.is(a) and EquationOp.is(b) then
+		if not Equation.is(a) and Equation.is(b) then
 			b = b:clone()
 			for i=1,#b do
 				b[i] = op.f(a, b[i])
@@ -97,4 +97,4 @@ for _,op in ipairs{
 	end
 end
 
-return EquationOp
+return Equation

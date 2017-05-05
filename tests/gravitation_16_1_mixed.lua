@@ -167,7 +167,7 @@ printbr(g'_uv,w':eq(
 		-- map processes children first
 		-- so only do this on the last node
 		-- dirty hack, I know
-		if require 'symmath.sub'.is(expr) then
+		if require 'symmath.op.sub'.is(expr) then
 			return expr 
 				:simplify()
 				-- so I hide them, simplify, and un-hide them
@@ -260,7 +260,7 @@ for i=2,4 do
 
 	-- get rid of any Phi,j times u,k of any kind ... hmm ...
 	div_T[i] = div_T[i]:map(function(expr)
-		if not symmath.mul.is(expr) then return end
+		if not symmath.op.mul.is(expr) then return end
 		local dPhi = Phi'_,i'()
 		local foundDPhi
 		local foundU

@@ -1,7 +1,7 @@
 local class = require 'ext.class'
-local BinaryOp = require 'symmath.BinaryOp'
+local Binary = require 'symmath.op.Binary'
 
-local sub = class(BinaryOp)
+local sub = class(Binary)
 sub.precedence = 2
 sub.name = '-'
 
@@ -23,7 +23,7 @@ sub.visitorHandler = {
 	end,
 	
 	Expand = function(expand, expr)
-		local add = require 'symmath.add'
+		local add = require 'symmath.op.add'
 		
 		--assert(#expr > 1) -- TODO
 		if #expr == 1 then return expand:apply(expr[1]) end

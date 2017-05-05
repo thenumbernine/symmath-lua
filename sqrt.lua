@@ -17,7 +17,7 @@ end
 sqrt.visitorHandler = table(sqrt.visitorHandler)
 
 sqrt.visitorHandler.Prune = function(prune, expr)
-	local div = require 'symmath.div'
+	local div = require 'symmath.op.div'
 	return prune:apply(expr[1]^div(1,2))
 end
 

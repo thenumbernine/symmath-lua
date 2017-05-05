@@ -7,7 +7,7 @@ unm.precedence = 3	--4	--make it match mul and div so there aren't extra parenth
 
 function unm:evaluateDerivative(...)
 	local x = unpack(self):clone()
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	return -diff(x,...)
 end
 
@@ -32,7 +32,7 @@ unm.visitorHandler = {
 	end,
 
 	Tidy = function(tidy, expr)
-		local add = require 'symmath.add'
+		local add = require 'symmath.op.add'
 		
 		-- --x => x
 		if unm.is(expr[1]) then

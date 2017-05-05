@@ -41,11 +41,11 @@ C.lookupTable = {
 		end
 		return {funcName .. '(' .. s .. ')', predefs}
 	end,
-	[require 'symmath.unm'] = function(self, expr, vars)
+	[require 'symmath.op.unm'] = function(self, expr, vars)
 		local sx = self:apply(expr[1], vars)
 		return {'(-'..sx[1]..')', sx[2]}
 	end,
-	[require 'symmath.pow'] = function(self, expr, vars)
+	[require 'symmath.op.pow'] = function(self, expr, vars)
 		local predefs = table()
 		local s = table()
 		for i,x in ipairs(expr) do
@@ -57,7 +57,7 @@ C.lookupTable = {
 		
 		return {'(real)pow(' .. s .. ')', predefs}	
 	end,
-	[require 'symmath.BinaryOp'] = function(self, expr, vars)
+	[require 'symmath.op.Binary'] = function(self, expr, vars)
 		local predefs = table()
 		local s = table()
 		for i,x in ipairs(expr) do

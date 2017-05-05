@@ -9,7 +9,7 @@ tan.func = require 'symmath.complex'.tan
 function tan:evaluateDerivative(...)
 	local x = table.unpack(self):clone()
 	local cos = require 'symmath.cos'
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	return diff(x,...) / cos(x)^2
 end
 

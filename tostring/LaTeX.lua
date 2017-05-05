@@ -75,19 +75,19 @@ LaTeX.lookupTable = {
 	[require 'symmath.sqrt'] = function(self, expr)
 		return table{'\\sqrt', self:apply(expr[1])}
 	end,
-	[require 'symmath.unm'] = function(self, expr)
+	[require 'symmath.op.unm'] = function(self, expr)
 		return table{'-', self:wrapStrOfChildWithParenthesis(expr, 1)}
 	end,
-	[require 'symmath.BinaryOp'] = function(self, expr)
+	[require 'symmath.op.Binary'] = function(self, expr)
 		return tableConcat(range(#expr):map(function(i) 
 			return self:wrapStrOfChildWithParenthesis(expr, i)
 		end), expr:getSepStr())
 	end,
-	[require 'symmath.mul'] = function(self, expr)
+	[require 'symmath.op.mul'] = function(self, expr)
 		local Variable = require 'symmath.Variable'
 		local Constant = require 'symmath.Constant'
-		local div = require 'symmath.div'
-		local pow = require 'symmath.pow'
+		local div = require 'symmath.op.div'
+		local pow = require 'symmath.op.pow'
 		local res = table()
 		for i=1,#expr do
 			res[i] = self:wrapStrOfChildWithParenthesis(expr, i)
@@ -112,7 +112,7 @@ LaTeX.lookupTable = {
 		end
 		return tableConcat(res, expr:getSepStr())
 	end,
-	[require 'symmath.div'] = function(self, expr)
+	[require 'symmath.op.div'] = function(self, expr)
 		return table{self:apply(expr[1]), '\\over', self:apply(expr[2])}
 	end,
 	[require 'symmath.Variable'] = function(self, expr)

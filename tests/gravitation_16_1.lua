@@ -32,8 +32,8 @@ print(MathJax.header)
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars
-local div = symmath.div
-local mul = symmath.mul
+local div = symmath.op.div
+local mul = symmath.op.mul
 
 local function print(...)
 	_G.print(...)

@@ -17,8 +17,8 @@ local Constant = symmath.Constant
 local clone = symmath.clone
 local sin = symmath.sin
 local cos = symmath.cos
-local div = symmath.div
-local mul = symmath.mul
+local div = symmath.op.div
+local mul = symmath.op.mul
 local Derivative = symmath.Derivative
 local complex = require 'symmath.complex'
 

@@ -1,13 +1,13 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local BinaryOp = require 'symmath.BinaryOp'
+local Binary = require 'symmath.op.Binary'
 
-local add = class(BinaryOp)
+local add = class(Binary)
 add.precedence = 2
 add.name = '+'
 
 function add:evaluateDerivative(...)
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	local result = table()
 	for i=1,#self do
 		result[i] = diff(self[i]:clone(), ...)
@@ -27,10 +27,9 @@ add.visitorHandler = {
 	end,
 
 	Factor = function(factor, expr, factors)
-		local symmath = require 'symmath'
-		local mul = symmath.mul
-		local pow = symmath.pow
-		local Constant = symmath.Constant
+		local mul = require 'symmath.op.mul'
+		local pow = require 'symmath.op.pow'
+		local Constant = require 'symmath.Constant'
 
 		-- [[ x*a + x*b => x * (a + b)
 		-- the opposite of this is in mul:prune's applyDistribute
@@ -137,7 +136,7 @@ add.visitorHandler = {
 			if #list == 1 and Constant.is(list[1].term) then return '' end
 			return table.map(list, function(x,_,t)
 				if Constant.is(x.term) then return end
-				return symmath.Verbose(x.term), #t+1
+				return require 'symmath.tostring.Verbose'(x.term), #t+1
 			end):concat(',')
 		end
 		prodLists:sort(function(a,b)
@@ -252,11 +251,10 @@ add.visitorHandler = {
 
 	Prune = function(prune, expr, ...)
 		local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
-		local symmath = require 'symmath'
-		local Constant = symmath.Constant
-		local div = symmath.div
-		local mul = symmath.mul
-		local pow = symmath.pow
+		local Constant = require 'symmath.Constant'
+		local div = require 'symmath.op.div'
+		local mul = require 'symmath.op.mul'
+		local pow = require 'symmath.op.pow'
 		
 		-- flatten additions
 		-- (x + y) + z => x + y + z
@@ -559,7 +557,7 @@ add.visitorHandler = {
 				-- using factor outright causes simplification loops ...
 				-- how about only using it if we find a cos or a sin in our tree?
 				local foundTrig = false
-				symmath.map(expr, function(node)
+				require 'symmath.map'(expr, function(node)
 					if cos.is(node) or sin.is(node) then
 						foundTrig = true
 					end
@@ -597,9 +595,7 @@ add.visitorHandler = {
 	end,
 
 	Tidy = function(tidy, expr)
-		local symmath = require 'symmath'
-		local unm = symmath.unm
-		
+		local unm = require 'symmath.op.unm'
 		for i=1,#expr-1 do
 			-- x + -y => x - y
 			if unm.is(expr[i+1]) then

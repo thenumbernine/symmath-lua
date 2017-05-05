@@ -11,14 +11,14 @@ sin.func = require 'symmath.complex'.sin
 function sin:evaluateDerivative(...)
 	local x = table.unpack(self):clone()
 	local cos = require 'symmath.cos'
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	return diff(x,...) * cos(x)
 end
 
 sin.visitorHandler = {
 	Prune = function(prune, expr)
 		local Constant = require 'symmath.Constant'
-		local mul = require 'symmath.mul'
+		local mul = require 'symmath.op.mul'
 		
 		-- sin(0) => 0
 		if expr[1] == Constant(0) then

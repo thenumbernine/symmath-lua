@@ -6,7 +6,7 @@ tanh.func = math.tanh
 function tanh:evaluateDerivative(...)
 	local x = table.unpack(self)
 	local cosh = require 'symmath.cosh'
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	return diff(x,...) / cosh(x)^2
 end
 return tanh

@@ -10,7 +10,7 @@ end
 -- otherwise returns nil
 local function isXToTheNth(expr, x)
 	if expr == x then return 1 end
-	local pow = require 'symmath.pow'
+	local pow = require 'symmath.op.pow'
 	local Constant = require 'symmath.Constant'
 	if pow.is(expr)
 	and expr[1] == x
@@ -37,7 +37,7 @@ end
 local function processTerm(coeffs, expr, x)
 --print('processTerm',expr,x)
 	local clone = require 'symmath.clone'
-	local mul = require 'symmath.mul'
+	local mul = require 'symmath.op.mul'
 		
 	if not mul.is(expr) then
 --print('not mul')
@@ -95,9 +95,9 @@ end
 -- such that (sum for n=0 to table.max(result) of x^n * result[n]) + result.extra == expr
 return function(expr, x)
 --print('polyCoeffs',expr,x)
-	local add = require 'symmath.add'
-	local div = require 'symmath.div'
-	local mul = require 'symmath.mul'
+	local add = require 'symmath.op.add'
+	local div = require 'symmath.op.div'
+	local mul = require 'symmath.op.mul'
 	local Constant = require 'symmath.Constant'
 
 	local ExpandPolynomial = require 'symmath.visitor.ExpandPolynomial'

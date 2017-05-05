@@ -31,7 +31,7 @@ local printbr = MathJax.print
 local Tensor = symmath.Tensor
 local vars = symmath.vars
 local var = symmath.var
-local add = symmath.add
+local add = symmath.op.add
 
 -- coordinates
 local t,x,y,z = vars('t','x','y','z')

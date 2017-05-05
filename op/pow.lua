@@ -1,8 +1,9 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local BinaryOp = require 'symmath.BinaryOp'
+local range = require 'ext.range'
+local Binary = require 'symmath.op.Binary'
 
-local pow = class(BinaryOp)
+local pow = class(Binary)
 pow.omitSpace = true
 pow.precedence = 5
 pow.name = '^'
@@ -16,9 +17,8 @@ a^b * (db/dx * log(a) + b * d/dx[log(a)])
 a^b * (db/dx * log(a) + da/dx * b / a)
 --]]
 function pow:evaluateDerivative(...)
-	local symmath = require 'symmath'
-	local log = symmath.log
-	local diff = symmath.diff
+	local log = require 'symmath.log'
+	local diff = require 'symmath.Derivative'
 	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
 	return a ^ b * (diff(b, ...) * log(a) + diff(a, ...) * b / a)
@@ -50,10 +50,9 @@ pow.visitorHandler = {
 	end,
 	
 	Expand = function(expand, expr)
-		local div = require 'symmath.div'
-		local mul = require 'symmath.mul'
+		local div = require 'symmath.op.div'
+		local mul = require 'symmath.op.mul'
 		local Constant = require 'symmath.Constant'
-		local range = require 'ext.range'
 		
 		-- (a / b)^n => a^n / b^n
 		-- not simplifying ...
@@ -119,7 +118,7 @@ pow.visitorHandler = {
 				if #terms == 1 then
 					expr = terms[1]
 				else
-					local mul = require 'symmath.mul'
+					local mul = require 'symmath.op.mul'
 					expr = mul(terms:unpack())
 				end
 				
@@ -132,9 +131,9 @@ pow.visitorHandler = {
 --]]
 
 	Prune = function(prune, expr)
-		local symmath = require 'symmath'
-		local mul = symmath.mul
-		local div = symmath.div
+		local symmath = require 'symmath'	-- needed for flags
+		local mul = symmath.op.mul
+		local div = symmath.op.div
 		local Constant = symmath.Constant
 
 		local complex = require 'symmath.complex'
@@ -262,10 +261,9 @@ pow.visitorHandler = {
 	end,
 
 	Tidy = function(tidy, expr)
-		local symmath = require 'symmath'
-		local unm = symmath.unm
-		local Constant = symmath.Constant
-		local sqrt = symmath.sqrt
+		local unm = require 'symmath.op.unm'
+		local Constant = require 'symmath.Constant'
+		local sqrt = require 'symmath.sqrt'
 
 		-- [[ x^-a => 1/x^a ... TODO only do this when in a product?
 		if unm.is(expr[2]) then

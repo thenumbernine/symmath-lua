@@ -100,37 +100,37 @@ end
 
 -- make sure to require Expression and then require the ops
 function Expression.__unm(a) 
-	return require 'symmath.unm'(a) 
+	return require 'symmath.op.unm'(a) 
 end
 function Expression.__add(a,b)
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
-	if require 'symmath.EquationOp'.is(b) then return b.__add(a,b) end
-	return require 'symmath.add'(a,b) 
+	if require 'symmath.op.Equation'.is(b) then return b.__add(a,b) end
+	return require 'symmath.op.add'(a,b) 
 end
 function Expression.__sub(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
-	if require 'symmath.EquationOp'.is(b) then return b.__sub(a,b) end
-	return require 'symmath.sub'(a,b) 
+	if require 'symmath.op.Equation'.is(b) then return b.__sub(a,b) end
+	return require 'symmath.op.sub'(a,b) 
 end
 function Expression.__mul(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
-	if require 'symmath.EquationOp'.is(b) then return b.__mul(a,b) end
-	return require 'symmath.mul'(a,b) 
+	if require 'symmath.op.Equation'.is(b) then return b.__mul(a,b) end
+	return require 'symmath.op.mul'(a,b) 
 end
 function Expression.__div(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
-	if require 'symmath.EquationOp'.is(b) then return b.__div(a,b) end
-	return require 'symmath.div'(a,b) 
+	if require 'symmath.op.Equation'.is(b) then return b.__div(a,b) end
+	return require 'symmath.op.div'(a,b) 
 end
 function Expression.__pow(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
-	if require 'symmath.EquationOp'.is(b) then return b.__pow(a,b) end
-	return require 'symmath.pow'(a,b) 
+	if require 'symmath.op.Equation'.is(b) then return b.__pow(a,b) end
+	return require 'symmath.op.pow'(a,b) 
 end
 function Expression.__mod(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
-	if require 'symmath.EquationOp'.is(b) then return b.__mod(a,b) end
-	return require 'symmath.mod'(a,b) 
+	if require 'symmath.op.Equation'.is(b) then return b.__mod(a,b) end
+	return require 'symmath.op.mod'(a,b) 
 end
 
 -- root-level functions that always apply to expressions
@@ -147,7 +147,7 @@ Expression.simplify = require 'symmath.simplify'
 Expression.polyCoeffs = function(...) return require 'symmath.polyCoeffs'(...) end
 Expression.eval = function(...) return require 'symmath'.eval(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
 Expression.compile = function(...) return require 'symmath'.compile(...) end	-- which itself is shorthand for require 'symmath.tostring.Lua').compile(...)
-Expression.diff = function(...) return require 'symmath'.diff(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
+Expression.diff = function(...) return require 'symmath.Derivative'(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
 Expression.integrate = function(...) return require 'symmath'.Integral(...) end
 
 -- I have to buffer these by a function to prevent require loop

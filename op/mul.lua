@@ -1,15 +1,15 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local BinaryOp = require 'symmath.BinaryOp'
+local Binary = require 'symmath.op.Binary'
 
-local mul = class(BinaryOp)
+local mul = class(Binary)
 mul.implicitName = true
 mul.precedence = 3
 mul.name = '*'
 
 function mul:evaluateDerivative(...)
 	local diff = require 'symmath.Derivative'
-	local add = require 'symmath.add'
+	local add = require 'symmath.op.add'
 	local sums = table()
 	for i=1,#self do
 		local terms = table()
@@ -69,8 +69,8 @@ mul.visitorHandler = {
 	end,
 
 	Expand = function(expand, expr)
-		local add = require 'symmath.add'
-		local sub = require 'symmath.sub'
+		local add = require 'symmath.op.add'
+		local sub = require 'symmath.op.sub'
 		
 		expr = expr:clone()
 		
@@ -94,8 +94,8 @@ mul.visitorHandler = {
 	end,
 
 	FactorDivision = function(factor, expr)
-		local add = require 'symmath.add'
-		local sub = require 'symmath.sub'
+		local add = require 'symmath.op.add'
+		local sub = require 'symmath.op.sub'
 		
 		-- first time processing we want to simplify()
 		--  to remove powers and divisions
@@ -136,8 +136,8 @@ mul.visitorHandler = {
 
 	Prune = function(prune, expr)	
 		local Constant = require 'symmath.Constant'
-		local pow = require 'symmath.pow'
-		local div = require 'symmath.div'
+		local pow = require 'symmath.op.pow'
+		local div = require 'symmath.op.div'
 
 		assert(#expr > 0)
 		
@@ -158,7 +158,7 @@ mul.visitorHandler = {
 		-- move unary minuses up
 		--[[ pruning unm immediately
 		do
-			local unm = require 'symmath.unm'
+			local unm = require 'symmath.op.unm'
 			local unmCount = 0
 			for i=1,#expr do
 				local ch = expr[i]
@@ -355,7 +355,7 @@ mul.visitorHandler = {
 	end,
 
 	Tidy = function(tidy, expr)
-		local unm = require 'symmath.unm'
+		local unm = require 'symmath.op.unm'
 		local Constant = require 'symmath.Constant'
 		
 		-- -x * y * z => -(x * y * z)

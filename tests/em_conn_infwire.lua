@@ -16,7 +16,7 @@ local vars = symmath.vars
 local sqrt = symmath.sqrt
 local sin = symmath.sin
 local cos = symmath.cos
-local div = symmath.div
+local div = symmath.op.div
 
 local t,r,phi,z = vars('t', 'r', '\\phi', 'z')
 local pi = var'\\pi'

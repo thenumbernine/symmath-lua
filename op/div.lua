@@ -1,22 +1,22 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
-local BinaryOp = require 'symmath.BinaryOp'
+local Binary = require 'symmath.op.Binary'
 
-local div = class(BinaryOp)
+local div = class(Binary)
 div.precedence = 3.5
 div.name = '/'
 
 function div:evaluateDerivative(...)
 	local a, b = self[1], self[2]
 	a, b = a:clone(), b:clone()
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	return (diff(a, ...) * b - a * diff(b, ...)) / (b * b)
 end
 
 div.visitorHandler = {
 	DistributeDivision = function(distributeDivision, expr)
-		local add = require 'symmath.add'
+		local add = require 'symmath.op.add'
 		local num, denom = expr[1], expr[2]
 		if not add.is(num) then return end
 		return getmetatable(num)(range(#num):map(function(k)
@@ -37,9 +37,9 @@ div.visitorHandler = {
 
 	Prune = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
-		local add = symmath.add	
-		local mul = symmath.mul
-		local pow = symmath.pow
+		local add = symmath.op.add	
+		local mul = symmath.op.mul
+		local pow = symmath.op.pow
 		local Array = symmath.Array
 		local Constant = symmath.Constant
 
@@ -243,7 +243,7 @@ div.visitorHandler = {
 		end
 
 		--[[ (a + b) / c => a/c + b/c ...
-		local add = require 'symmath.add'
+		local add = require 'symmath.op.add'
 		if add.is(expr[1]) then
 			return prune:apply(add(
 				table.map(expr[1], function(x,k)
@@ -316,9 +316,8 @@ print('converting',expr,'to',a/b)
 	end,
 
 	Tidy = function(tidy, expr)
-		local symmath = require 'symmath'
-		local unm = symmath.unm
-		local Constant = symmath.Constant
+		local unm = require 'symmath.op.unm'
+		local Constant = require 'symmath.Constant'
 		
 		local a, b = table.unpack(expr)
 		local ua = unm.is(a)

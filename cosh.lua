@@ -6,7 +6,7 @@ cosh.func = math.cosh
 function cosh:evaluateDerivative(...)
 	local x = table.unpack(self):clone()
 	local sinh = require 'symmath.sinh'
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	return diff(x,...) * sinh(x)
 end
 return cosh

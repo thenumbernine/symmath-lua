@@ -32,7 +32,7 @@ local printbr = MathJax.print
 
 local vars = symmath.vars
 local var = symmath.var
-local add = symmath.add
+local add = symmath.op.add
 local Matrix = symmath.Matrix
 
 local function sum(t)

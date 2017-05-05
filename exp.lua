@@ -7,7 +7,7 @@ exp.name = 'exp'
 exp.func = require 'symmath.complex'.exp
 function exp:evaluateDerivative(...)
 	local x = table.unpack(self):clone()
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	return diff(x,...) * self:clone()
 end
 return exp

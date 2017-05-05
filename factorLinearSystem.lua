@@ -12,8 +12,8 @@ return function(exprs, factors)
 	local symmath = require 'symmath'
 	local clone = symmath.clone
 	local Matrix = symmath.Matrix
-	local add = symmath.add
-	local mul = symmath.mul
+	local add = symmath.op.add
+	local mul = symmath.op.mul
 
 	local A = Matrix(table.map(exprs, function()
 		return table.map(factors, function() return 0 end)

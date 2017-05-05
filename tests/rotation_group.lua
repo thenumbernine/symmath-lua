@@ -8,7 +8,7 @@ symmath.tostring = MathJax
 print(MathJax.header)
 local printbr = MathJax.print
 
-local div = symmath.div
+local div = symmath.op.div
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars
