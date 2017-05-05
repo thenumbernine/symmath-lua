@@ -148,6 +148,7 @@ symmath.nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
 
 symmath.Expression = require 'symmath.Expression'
 symmath.Constant = require 'symmath.Constant'
+symmath.complex = require 'symmath.complex'
 symmath.Invalid = require 'symmath.Invalid'
 symmath.Function = require 'symmath.Function'
 
