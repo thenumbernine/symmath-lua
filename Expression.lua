@@ -169,9 +169,12 @@ Expression.det = Expression.determinant
 
 -- ... = list of equations
 function Expression:subst(...)
+	local eq = require 'symmath.op.eq'
 	local result = self:clone()
 	for i=1,select('#', ...) do
 		local eqn = select(i, ...)
+		assert(eq.is(eqn), "Expression:subst argument "..i.." is not an equals") 
+		
 		local lhs = eqn:lhs()
 		local rhs = eqn:rhs()
 	

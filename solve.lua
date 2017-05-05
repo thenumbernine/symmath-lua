@@ -13,26 +13,37 @@ accepts an equation and a variable
 returns an equation with that variable on the lhs and the rest on the rhs
 --]]
 return function(eqn, x)
+	local div = require 'symmath.op.div'
 	local mul = require 'symmath.op.mul'
 	local Equation = require 'symmath.op.Equation'	
-	local eq = require 'symmath.op.eq' 
 	local Constant = require 'symmath.Constant'
 	local polyCoeffs = require 'symmath.polyCoeffs'
 	local sqrt = require 'symmath.sqrt'
 	
 	assert(eqn, 'expected equation to solve, or expression to solve for zero')
-	
-	local lhs
-	if Equation.is(eqn) then
-		eq = getmetatable(eqn)
-		-- move everything to one side of the equation
-		lhs = eqn[1] - eqn[2]
-	else
-		-- or just treat it like it is a lhs == 0
-		lhs = eqn
+
+	eqn = eqn()
+
+-- multiply by all denominators
+-- or just those of the variable we want to solve for?
+	if div.is(eqn[1]) then
+		eqn = (eqn * eqn[1][1])()
+	end
+	if div.is(eqn[2]) then
+		eqn = (eqn * eqn[2][2])()
 	end
 
+	assert(Equation.is(eqn), "expected the expression to be an equation or inequality")
+	
+	local eq = getmetatable(eqn)
+		-- move everything to one side of the equation
+print'subtracting lhs from rhs...<br>'		
+	local lhs = eqn[1] - eqn[2]
+print('...got',lhs,'<br>')
+	
+print('looking for coeffs wrt',x,'<br>')	
 	local coeffs = polyCoeffs(lhs, x)
+print('...got',require 'ext.tolua'(coeffs),'<br>')
 
 	local function getCoeff(n)
 		return coeffs[n] or Constant(0)
@@ -44,13 +55,13 @@ return function(eqn, x)
 		if n == 0 then return end	-- a = 0 <=> no solutions
 		if n == 1 then		-- c1 x + c0 = 0 <=> x = -c0/c1
 --print('coeffs',table.map(coeffs[1],tostring):concat('\n'),'\nend coeffs')
-			return eq(x, -getCoeff(0) / getCoeff(1)):simplify()
+			return eq(x, -getCoeff(0) / getCoeff(1))()
 		end
 		-- this is where factor() comes in handy ...
 		if n == 2 then
 			local a,b,c = getCoeff(2), getCoeff(1), getCoeff(0)
-			return eq(x, (-b-sqrt(b^2-4*a*c))/(2*a)):simplify(),
-					eq(x, (-b+sqrt(b^2-4*a*c))/(2*a)):simplify()
+			return eq(x, (-b-sqrt(b^2-4*a*c))/(2*a))(),
+					eq(x, (-b+sqrt(b^2-4*a*c))/(2*a))()
 		end
 		-- and on ...
 	end

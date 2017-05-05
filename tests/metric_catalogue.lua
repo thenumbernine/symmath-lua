@@ -288,7 +288,8 @@ for _,info in ipairs{
 
 	local eta = Tensor('_IJ', table.unpack(info.flatMetric))
 	printbr'flat metric:'
-	printbr(var'\\eta''_IJ':eq(eta'_IJ'()))
+	eta:print'\\eta'
+	printbr()
 	printbr()
 
 -- [[
@@ -296,13 +297,14 @@ for _,info in ipairs{
 	if info.chart then
 		local u = info.chart()
 		printbr'coordinate chart:'
-		printbr(var'u''^I':eq(u'^I'()))
+		u:print'u'
+		printbr()
 		printbr()
 
 		--printbr'holonomic embedded:'
 		printbr'embedded:'
 		e['_u^I'] = u'^I_,u'()	--dx^I/dx^a
-		printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(u'^I_,u'()):eq(e'_u^I'()))
+		printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(e'_u^I'()))
 		printbr()
 	elseif info.basis then
 		printbr'basis:'
@@ -323,7 +325,9 @@ for _,info in ipairs{
 		eU = Tensor('^u_I', function(u,I) return eUm[{u,I}] or 0 end)
 	end
 
-	printbr(var'e''^u_I':eq(eU))
+	printbr(var'e''^u_I'
+		--:eq(var'e''_u^I'^-1)	LaTeX output chokes here
+		:eq(eU))
 	printbr((var'e''_u^I' * var'e''^v_I'):eq((e'_u^I' * eU'^v_I')()))
 	printbr((var'e''_u^I' * var'e''^u_J'):eq((e'_u^I' * eU'^u_J')()))
 	--[[
@@ -348,7 +352,8 @@ for _,info in ipairs{
 	--]]
 	local c = Tensor'_ab^c'
 	c['_ab^c'] = ((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')()
-	printbr(var'c''_ab^c':eq(c'_ab^c'()))
+	c:printElem'c'
+	printbr()
 
 	local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'):eq(g'_uv'()))

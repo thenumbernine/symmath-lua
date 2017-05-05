@@ -170,18 +170,19 @@ A = symmath.Array(...)
 Create an array of expressions. Same deal as Matrix but with any arbitrary nesting depth, and without Matrix-specific operations.
 
 ```
-AInv, I = A:inverse([b, callback, allowRectangular])
+AInv, I, message = A:inverse([b, callback, allowRectangular])
 ```
 
-returns the inverse of matrix A, followed by what's left of the Gauss-Jordan solver (typically the identity matrix).
-b = solution vector.  If specified, returns x such that A x = b.
-callback = function to be called after each Gauss-Jordan operation.
-allowRectangular = set to `true` to allow inverting rectangular matrices.
+returns
+AInv = the inverse of matrix A.
+I = what's left of the Gauss-Jordan solver (typically the identity matrix).  
+message = any error that occured during solving.  
+args:  
+b = solution vector.  If specified, returns x such that A x = b.  
+callback = function to be called after each Gauss-Jordan operation.  
+allowRectangular = set to `true` to allow inverting rectangular matrices.  
 
-```
-APlus, determinable = A:pseudoInverse()
-```
-
+`APlus, determinable = A:pseudoInverse()`  
 Returns the pseudoinverse of A (stored in APlus) and whether the pseudoinverse is determinable.
 
 ```
@@ -303,4 +304,6 @@ S['_ab'] = (T'_ab' - T'_ba')()
 - support for numbers rather than only Constant
 
 - integrate with lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
-	i.e. f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]
+	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`  
+
+- subindexes, so you can store a tensor of tensors: g_ab = Tensor('_ab', {-alpha^2+beta^2, beta_j}, {beta_i, gamma_ij})
