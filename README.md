@@ -23,7 +23,7 @@ Specify the variables that var is dependent on for differentiation.
 
 `func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
 `func, code = expr:compile{var1, var2, ...}`  
-Compiles an expression to a Lua function with the listed vars as parameters.
+Compiles an expression to a Lua function with the listed vars as parameters.  
 `language` can be one of the following:  
 * Lua
 * JavaScript
@@ -34,59 +34,33 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 
 ### Arithmetic
 
-```
-symmath.negative(a)
--a
-```
-when used with symmath expressions
-
+`symmath.negative(a)`  
+`-a` when used with symmath expressions  
 Creates an expression representing the negative of the parameter.
 
-```
-symmath.sum(a, b, ...)
-a + b + ...
-```
- when used with symmath expressions
-
+`symmath.sum(a, b, ...)`  
+`a + b + ...` when used with symmath expressions  
 Creates an expression representing the sum of all parameters.
 
-```
-symmath.product(a, b, ...)
-a * b * ...
-```
- when used with symmath expressions
+`symmath.product(a, b, ...)`  
+`a * b * ...` when used with symmath expressions  
+Creates an expression representing the product of all parameters.
 
- Creates an expression representing the product of all parameters.
-
-```
-symmath.subtract(a, b, ...)
-a - b - ...
-```
- when used with symmath expressions
-
+`symmath.subtract(a, b, ...)`  
+`a - b - ...` when used with symmath expressions  
 Creates an expression representing the difference of all parameters.
 
-```
-symmath.fraction(a, b)
-a / b
-```
- when used with symmath expressions
-
+`symmath.fraction(a, b)`  
+`a / b` when used with symmath expressions  
 Creates an expression representing a fraction of the two parameters.
 
-```
-symmath.power(a, b)
-a ^ b
-```
- when used with symmath expressions
-
+`symmath.power(a, b)`  
+`a ^ b` when used with symmath expressions  
 Creates an expression representing the power of the first parameter raised to the second.
 
-```
-symmath.modulo(a, b)
-a % b
-```
- when used with symmath expressions
+`symmath.modulo(a, b)`  
+`a % b` when used with symmath expressions  
+Creates an expression representing the first parameter modulo the second.
 
 ###Equations
 
