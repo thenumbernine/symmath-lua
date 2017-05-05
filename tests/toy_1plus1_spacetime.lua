@@ -33,30 +33,30 @@ printbr(var'r''^I':eq(r'^I'()))
 
 local e = Tensor'_u^I'
 e['_u^I'] = r'^I_,u'()
-printbr(var'e''_u^I':eq(e'_u^I'()))
+e:print'e' printbr()
 
 local eta = symmath.Tensor('_IJ',{-1,0},{0,1})
-printbr(var'\\eta''_IJ':eq(eta'_IJ'()))
+eta:print'\\eta' printbr()
 Tensor.metric(eta, eta, 'I')
 
 local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
-printbr(var'g''_uv':eq(g'_uv'()))
+g:print'g' printbr()
 
 -- [[ ...and out of nowhere, force betas to be zero
 g[1][2] = symmath.Constant(0)
 g[2][1] = symmath.Constant(0)
 printbr'zero skew components:'
-printbr(var'g''_uv':eq(g'_uv'()))
+g:print'g' printbr()
 --]]
 
 printbr'set metric'
 Tensor.metric(g)
-printbr(var'g''_uv':eq(g'^uv'()))
+g'^uv'():print'g' printbr()
 
 -- [[ simply solve for any unit vector ...
 local nUt, nUx = vars('n^t', 'n^x')
 local n = Tensor('^u', nUt, nUx)
-printbr(var'n''^u':eq(n'^u'()))
+n:print'n' printbr()
 
 -- TODO auto transform between coordinates using vielbein 
 local n_dot_e = (n'^u' * e'_u^I'):eq(Tensor'^I')()

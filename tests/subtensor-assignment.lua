@@ -42,3 +42,7 @@ print('A = '..A)
 
 A['^it'] = B'^ix'()
 print('A = '..A)
+
+-- TODO get rid of the requirement to wrap single-element assignmets in at least one single-rank, single-dim Tensor
+A['^tt'] = Tensor('^t', 2)
+print('A = '..A)
