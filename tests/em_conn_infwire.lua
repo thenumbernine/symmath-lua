@@ -477,10 +477,12 @@ print(var'R''_ab':eq(Ricci))
 print('vs desired')
 printbr(var'R''_ab':eq(Ricci_EM))
 
---[[ this is zero, but it's a bit slow
--- this will be a 4^5 = 1024, but it only needs to show 20 * 4 = 80, though because it's R^a_bcd, we can't use the R_abcd = R_cdab symmetry, so maybe double that to 160 
+--[[ Bianchi identities
+-- This is zero, but it's a bit slow to compute.
+-- It's probably zero because I derived the Riemann values from the connections.
+-- This will be a 4^5 = 1024, but it only needs to show 20 * 4 = 80, though because it's R^a_bcd, we can't use the R_abcd = R_cdab symmetry, so maybe double that to 160.
 -- TODO covariant derivative function?
--- NOTICE this matches em_conn_uniform_field.lua, so fix both of these
+-- NOTICE this matches em_conn_infwire.lua, so fix both of these
 local diffRiemann = (Riemann'^a_bcd,e' + Conn'^a_fe' * Riemann'^f_bcd' - Conn'^f_be' * Riemann'^a_fcd' - Conn'^f_ce' * Riemann'^a_bfd' - Conn'^f_de' * Riemann'^a_bcf')()
 local Bianchi = Tensor'^a_bcde'
 Bianchi['^a_bcde'] = (diffRiemann + diffRiemann:reindex{abecd='abcde'} +  diffRiemann:reindex{abdec='abcde'})()
@@ -502,6 +504,15 @@ for index,value in Bianchi:iter() do
 end
 if sep=='' then print(0) end
 printbr()
+--]]
+
+--[[ This is zeros also.
+-- Since I'm defining the Riemann by the connections explicitly,
+-- and the Ricci from the Riemann,
+-- the torsion-free Ricci's symmetry is dependent on symmetry of C^c_ac,b = C^c_bc,a
+-- since C^c_ac = (1/2 ln|g|),a, so C^c_ac,b = (1/2 ln|g|),ab = (1/2 ln|g|),ba = C^c_bc,a
+local dCab = Conn'^c_ac,b'()
+printbr(var'\\Gamma''^c_ac,b':eq(dCab))
 --]]
 
 for _,l in ipairs(([[

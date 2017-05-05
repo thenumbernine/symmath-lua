@@ -114,8 +114,10 @@ Ricci_EM = Ricci_EM
 	:simplify()
 printbr(var'R''_ab':eq(Ricci_EM))
 
---[[ this is zero, but it's a bit slow
--- this will be a 4^5 = 1024, but it only needs to show 20 * 4 = 80, though because it's R^a_bcd, we can't use the R_abcd = R_cdab symmetry, so maybe double that to 160 
+--[[ Bianchi identities
+-- This is zero, but it's a bit slow to compute.
+-- It's probably zero because I derived the Riemann values from the connections.
+-- This will be a 4^5 = 1024, but it only needs to show 20 * 4 = 80, though because it's R^a_bcd, we can't use the R_abcd = R_cdab symmetry, so maybe double that to 160.
 -- TODO covariant derivative function?
 -- NOTICE this matches em_conn_infwire.lua, so fix both of these
 local diffRiemann = (Riemann'^a_bcd,e' + Conn'^a_fe' * Riemann'^f_bcd' - Conn'^f_be' * Riemann'^a_fcd' - Conn'^f_ce' * Riemann'^a_bfd' - Conn'^f_de' * Riemann'^a_bcf')()
