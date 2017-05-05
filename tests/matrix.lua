@@ -23,7 +23,7 @@
 
 
 symmath = require 'symmath'
-require 'symmath.notebook'
+require 'symmath.notebook'	-- THIS IS THE LAST FILE THAT USES NOTEBOOK
 Matrix = require 'symmath.Matrix'
 Array = require 'symmath.Array'
 

@@ -42,12 +42,49 @@ local Sv = Tensor('_i', function(i) return var('S_'..spatialCoords[i].name) end)
 local Sx, Sy, Sz = table.unpack(Sv)
 
 
--- [[ ok now to find the metric that gives rise to the conn ...
 local g = Tensor'_ab'
-g[1][1] = var('a',{x})
-g[2][2] = var('b',{x})
-g[3][3] = var('c',{x,y,z})
-g[4][4] = var('d',{x,y,z})
+
+--[[ 
+solving for g_tt = -1 + a(x), g_xx = 1 + b (is const), g_yy = g_zz = 1
+I get everything except the C^t_tt constraint (which I'm now thinking maybe I should avoid, since Schwarzschild avoids it)
+C^t_tx = C^t_xt = -a,x / (2(1-a)) = E
+C^x_tt = -a,x / (2(1+b)) = -E
+
+solving for a(x):
+da/dx = 2 E a
+da/a = 2 E dx
+ln a = 2 E x
+a = exp(2 E x) + C
+a = exp(2 E x) + 1
+da/dx = 2 E exp(2 E x)
+-da/dx + 2 E a = -2 E exp(2 E x) + 2 E (exp(2 E x) + 1) = 2 E, viola...
+...however, a = 1 + exp(2 E x) means g_tt = -1 + a = -1 + 1 + exp(2 E x)
+... means I'm cancelling out my Minkowski component of the metric ...
+
+-2 E exp(2 E x) / (2 (1 + b)) = -E
+b = -exp(2 E x) - 1
+...and now I'm in trouble, because 'b' was supposed to be constant (otherwise more C^a_bc terms would show up)
+maybe I should let b depend on x, and solve this as a linear dynamic system?
+--]]
+
+-- [[ ok now to find the metric that gives rise to the conn ...
+g[1][1] = -1 + var('a',{x})
+g[2][2] = 1 + var('b')
+--g[3][3] = var('c',{x,y,z})
+--g[4][4] = var('d',{x,y,z})
+--g[2][3] = var('h', {x,y,z}) g[3][2] = g[2][3]
+--g[2][4] = var('j', {x,y,z}) g[4][2] = g[2][4]
+--g[3][4] = var('k', {x,y,z}) g[4][3] = g[3][4]
+
+-- still need: 
+-- C^t_tt = g^tt C_ttt + g^tk C_ktt = 1/2 (g^tt g_tt,t + g^tk (2 g_kt,t - g_tt,k))
+--g[1][2] = var('e', {x}) g[2][1] = g[1][2]
+--g[1][3] = var('f', {y,z}) g[3][1] = g[1][3]
+--g[1][4] = var('g', {x,y,z}) g[4][1] = g[1][4]
+-- C^t_jj = g^tt C_tjj + g^tk C_kjj
+
+g[3][3] = Constant(1)
+g[4][4] = Constant(1)
 --]]
 
 local gU = Tensor('^ab', table.unpack(( Matrix.inverse(g) )))
@@ -67,7 +104,7 @@ ConnFromMetric = (gU'^ad' * ConnFromMetric'_dbc')()
 --ConnFromMetric:printElem'\\Gamma' printbr()
 ConnFromMetric:print'\\Gamma'
 
-print'...vs desired...'
+print'vs desired'
 
 local Conn = Tensor'^a_bc'
 
@@ -87,6 +124,8 @@ Conn[1][4][4] = E
 Conn:print'\\Gamma'
 --printbr(var'c''_cb^a':eq(var'\\Gamma''^a_bc' - var'\\Gamma''^a_cb'):eq((Conn'^a_bc' - Conn'^a_cb')()))
 
+printbr()
+
 local RiemannExpr = Conn'^a_bd,c' - Conn'^a_bc,d' 
 	+ Conn'^a_ec' * Conn'^e_bd' - Conn'^a_ed' * Conn'^e_bc'
 	- Conn'^a_be' * (Conn'^e_dc' - Conn'^e_cd')
@@ -102,7 +141,7 @@ Ricci:print'R'
 -- 8 pi T_ab = G_ab = R_ab - 1/2 R g_ab
 -- and R = 0 for electrovac T_ab
 -- so 8 pi T_ab = R_ab
-print('vs desired')
+print'vs desired'
 local ESqBSq = Ex^2 + Ey^2 + Ez^2 + Bx^2 + By^2 + Bz^2
 local Ricci_EM = Tensor('_ab', function(a,b)
 	if a==1 and b==1 then
