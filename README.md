@@ -18,17 +18,13 @@ Example used at http://christopheremoore.net/metric
 `var1, var2, ... = symmath.vars(name1, name2, ...)`  
 Create a variable with given name, and optionally a list of which variables it is dependent on for differentiation. By default variables of different names have a derivative of zero.
 
-```
-var:depends(var1, var2, ...)
-```
+`var:depends(var1, var2, ...)`  
 Specify the variables that var is dependent on for differentiation.
 
-```
-func, code = symmath.compile(expr, {var1, var2, ...}, language)
-func, code = expr:compile{var1, var2, ...}
-```
+`func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
+`func, code = expr:compile{var1, var2, ...}`  
 Compiles an expression to a Lua function with the listed vars as parameters.
-`language` can be one of the following:
+`language` can be one of the following:  
 * Lua
 * JavaScript
 * C
