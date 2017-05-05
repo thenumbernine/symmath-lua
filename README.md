@@ -5,9 +5,9 @@
 - Everything done in pure Lua / Lua syntax.  No/minimal parsing.
 - Originally intended for computational physics.  Implement equations in Lua, perform symbolic manipulation, generate functions (via symmath.compile)
 
-Online demo and API at http://christopheremoore.net/symbolic-lua
-Example used at http://christopheremoore.net/metric
-	and http://christopheremoore.net/gravitational-wave-simulation
+Online demo and API at http://christopheremoore.net/symbolic-lua  
+Example used at http://christopheremoore.net/metric  
+	and http://christopheremoore.net/gravitational-wave-simulation  
 
 ## Reference
 
