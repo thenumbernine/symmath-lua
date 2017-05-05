@@ -15,13 +15,7 @@ Example used at http://christopheremoore.net/metric
 
 ```
 var = symmath.Variable(name[, dependencies])
-```
-
-```
 var = symmath.var(name[, dependencies])
-```
-
-```
 var1, var2, ... = symmath.vars(name1, name2, ...)
 ```
 
@@ -30,20 +24,14 @@ Create a variable with given name, and optionally a list of which variables it i
 ```
 var:depends(var1, var2, ...)
 ```
-
 Specify the variables that var is dependent on for differentiation.
 
 ```
 func, code = symmath.compile(expr, {var1, var2, ...}, language)
-```
-
-```
 func, code = expr:compile{var1, var2, ...}
 ```
-
 Compiles an expression to a Lua function with the listed vars as parameters.
 `language` can be one of the following:
-
 * Lua
 * JavaScript
 * C
@@ -55,9 +43,6 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 
 ```
 symmath.negative(a)
-```
-
-```
 -a
 ```
  when used with symmath expressions
@@ -66,9 +51,6 @@ Creates an expression representing the negative of the parameter.
 
 ```
 symmath.sum(a, b, ...)
-```
-
-```
 a + b + ...
 ```
  when used with symmath expressions
@@ -77,9 +59,6 @@ Creates an expression representing the sum of all parameters.
 
 ```
 symmath.product(a, b, ...)
-```
-
-```
 a * b * ...
 ```
  when used with symmath expressions
@@ -88,9 +67,6 @@ a * b * ...
 
 ```
 symmath.subtract(a, b, ...)
-```
-
-```
 a - b - ...
 ```
  when used with symmath expressions
@@ -99,9 +75,6 @@ Creates an expression representing the difference of all parameters.
 
 ```
 symmath.fraction(a, b)
-```
-
-```
 a / b
 ```
  when used with symmath expressions
@@ -110,9 +83,6 @@ Creates an expression representing a fraction of the two parameters.
 
 ```
 symmath.power(a, b)
-```
-
-```
 a ^ b
 ```
  when used with symmath expressions
@@ -121,9 +91,6 @@ Creates an expression representing the power of the first parameter raised to th
 
 ```
 symmath.modulo(a, b)
-```
-
-```
 a % b
 ```
  when used with symmath expressions
@@ -132,13 +99,7 @@ a % b
 
 ```
 eqn = symmath.equals(lhs, rhs)
-```
-
-```
 eqn = lhs:equals(rhs)
-```
-
-```
 eqn = lhs:eq(rhs)
 ```
 
@@ -146,9 +107,6 @@ Creates an equation representing the equality lhs = rhs.
 
 ```
 eqn = symmath.lessThan(lhs, rhs)
-```
-
-```
 eqn = lhs:lessThan(rhs)
 ```
 
@@ -156,9 +114,6 @@ Creates an equation representing the inequality lhs < rhs.
 
 ```
 eqn = symmath.lessThanOrEquals(lhs, rhs)
-```
-
-```
 eqn = lhs:lessThanOrEquals(rhs)
 ```
 
@@ -166,9 +121,6 @@ Creates an equation representing the inequality lhs ≤ rhs.
 
 ```
 eqn = symmath.greaterThan(lhs, rhs)
-```
-
-```
 eqn = lhs:greaterThan(rhs)
 ```
 
@@ -176,9 +128,6 @@ Creates an equation representing the inequality lhs > rhs.
 
 ```
 eqn = symmath.greaterThanOrEquals(lhs, rhs)
-```
-
-```
 eqn = lhs:greaterThanOrEquals(rhs)
 ```
 
@@ -198,9 +147,6 @@ Returns the right hand side of the equation.
 
 ```
 soln1, soln2, ... = symmath.solve(eqn, var)
-```
-
-```
 soln1, soln2, ... = eqn:solve(var)
 ```
 
@@ -216,13 +162,7 @@ Shorthand for `expr:replace(eqn:lhs(), eqn:rhs())`.
 
 ```
 symmath.simplify(expr)
-```
-
-```
 expr:simplify()
-```
-
-```
 expr()
 ```
 
@@ -230,9 +170,6 @@ Simplifies the expression.
 
 ```
 symmath.replace(expr, find, repl, callback)
-```
-
-```
 expr:replace(find, repl, callback)
 ```
 
@@ -244,9 +181,6 @@ callback(node) = callback per node, returns 'true' if we don't want to find/repl
 
 ```
 symmath.map(expr, callback)
-```
-
-```
 expr:map(callback)
 ```
 
@@ -256,9 +190,6 @@ callback(node) = callback that returns nil if it leaves the tree untouched, retu
 
 ```
 symmath.eval(expr, {[var1]=value, var2name=value, ...})
-```
-
-```
 expr:eval{[var1]=value, var2name=value, ...}
 ```
 
@@ -266,9 +197,6 @@ Calculates the numeric value of the expression.
 
 ```
 symmath.polyCoeffs(expr, var)
-```
-
-```
 expr:polyCoeffs(var)
 ```
 
@@ -278,9 +206,6 @@ Returns a table of coefficients with keys 0 through the degree of the polynomial
 
 ```
 symmath.diff(expr, var1, var2, ...)
-```
-
-```
 expr:diff(var1, var2, ...)
 ```
 
