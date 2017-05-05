@@ -13,12 +13,9 @@ Example used at http://christopheremoore.net/metric
 
 ### Variables
 
-```
-var = symmath.Variable(name[, dependencies])
-var = symmath.var(name[, dependencies])
-var1, var2, ... = symmath.vars(name1, name2, ...)
-```
-
+`var = symmath.Variable(name[, dependencies])`
+`var = symmath.var(name[, dependencies])`
+`var1, var2, ... = symmath.vars(name1, name2, ...)`
 Create a variable with given name, and optionally a list of which variables it is dependent on for differentiation. By default variables of different names have a derivative of zero.
 
 ```
@@ -45,7 +42,7 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 symmath.negative(a)
 -a
 ```
- when used with symmath expressions
+when used with symmath expressions
 
 Creates an expression representing the negative of the parameter.
 
