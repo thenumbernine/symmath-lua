@@ -31,6 +31,7 @@ local printbr = MathJax.print
 local Tensor = symmath.Tensor
 local vars = symmath.vars
 local var = symmath.var
+local add = symmath.add
 
 -- coordinates
 local t,x,y,z = vars('t','x','y','z')
@@ -78,7 +79,7 @@ end)()
 printbr'spatial metric:'
 printbr(var'\\gamma''_ij':eq(gamma'_ij'()))
 
-local rSq_def = dim == 2 and x^2 or symmath.addOp(spatialCoords:map(function(xi) return xi^2 end):unpack())
+local rSq_def = dim == 2 and x^2 or add(spatialCoords:map(function(xi) return xi^2 end):unpack())
 local gammaInv = Tensor('^ij', function(i,j)
 	local xi = spatialCoords[i]
 	local xj = spatialCoords[j]

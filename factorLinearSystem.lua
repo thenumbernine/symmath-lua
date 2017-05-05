@@ -12,8 +12,8 @@ return function(exprs, factors)
 	local symmath = require 'symmath'
 	local clone = symmath.clone
 	local Matrix = symmath.Matrix
-	local addOp = symmath.addOp
-	local mulOp = symmath.mulOp
+	local add = symmath.add
+	local mul = symmath.mul
 
 	local A = Matrix(table.map(exprs, function()
 		return table.map(factors, function() return 0 end)
@@ -27,7 +27,7 @@ return function(exprs, factors)
 		local expr = exprs[i]:factorDivision()
 		
 		-- just consider expr as its terms (since I no longer support single-term binary ops)
-		expr = addOp.is(expr) and {table.unpack(expr)} or {expr}
+		expr = add.is(expr) and {table.unpack(expr)} or {expr}
 		-- find factors
 		for k=#expr,1,-1 do
 			local found = false
@@ -37,11 +37,11 @@ return function(exprs, factors)
 					A[i][j] = (A[i][j] + 1):simplify()
 					table.remove(expr,k)
 					found = true
-				elseif mulOp.is(expr[k]) then
+				elseif mul.is(expr[k]) then
 					for l=#expr[k],1,-1 do
 						
 						-- factorDivision() should prevent this
-						if mulOp.is(expr[k][l]) then error"needs flattening" end
+						if mul.is(expr[k][l]) then error"needs flattening" end
 					
 						-- TODO what if factors[j] is a product?
 						-- in that case we need to make sure it's a common subset
@@ -63,7 +63,7 @@ return function(exprs, factors)
 				if found then break end
 			end
 		end
-		if #expr > 1 then expr = addOp(table.unpack(expr)) end
+		if #expr > 1 then expr = add(table.unpack(expr)) end
 		-- if there is anything left then put it in the rhs side
 		if #expr ~= 0 then
 			if #expr == 1 then expr = expr[1] end

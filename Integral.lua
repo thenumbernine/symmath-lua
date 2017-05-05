@@ -20,9 +20,9 @@ Integral.visitorHandler = {
 		local symmath = require 'symmath'
 		local Constant = symmath.Constant
 		local Variable = symmath.Variable
-		local addOp = symmath.addOp
-		local mulOp = symmath.mulOp
-		local powOp = symmath.powOp
+		local add = symmath.add
+		local mul = symmath.mul
+		local pow = symmath.pow
 		local map = symmath.map
 		local log = symmath.log
 		local abs = symmath.abs
@@ -43,13 +43,13 @@ Integral.visitorHandler = {
 			end
 		end
 	
-		if addOp.is(expr[1]) then
-			return addOp(range(#expr[1]):map(function(i)
+		if add.is(expr[1]) then
+			return add(range(#expr[1]):map(function(i)
 				return prune(Integral(expr[1][i], table.unpack(expr, 2)))
 			end):unpack())
 		end
 
-		if powOp.is(expr[1])
+		if pow.is(expr[1])
 		and expr[1][1] == x
 		and Constant.is(expr[1][2])
 		then
@@ -61,7 +61,7 @@ Integral.visitorHandler = {
 		end
 
 		-- assuming it's already simplified ... ? so no x * x^2's exist?
-		if mulOp.is(expr[1]) then
+		if mul.is(expr[1]) then
 			local function find(a,b)
 				local found = false
 				map(a, function(x)
@@ -77,7 +77,7 @@ Integral.visitorHandler = {
 					-- integrating something times x ... 
 					terms[i] = x^2/2
 					found = true
-				elseif powOp.is(terms[i]) and terms[i][1] == x then
+				elseif pow.is(terms[i]) and terms[i][1] == x then
 					-- integrating something times x^n
 					if found then return end
 					if terms[i][2] == Constant(-1) then
@@ -91,7 +91,7 @@ Integral.visitorHandler = {
 				end
 			end
 			if found then
-				return prune(mulOp(terms:unpack()))
+				return prune(mul(terms:unpack()))
 			end
 		end
 	end,

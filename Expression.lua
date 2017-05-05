@@ -100,37 +100,37 @@ end
 
 -- make sure to require Expression and then require the ops
 function Expression.__unm(a) 
-	return require 'symmath.unmOp'(a) 
+	return require 'symmath.unm'(a) 
 end
 function Expression.__add(a,b)
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
 	if require 'symmath.EquationOp'.is(b) then return b.__add(a,b) end
-	return require 'symmath.addOp'(a,b) 
+	return require 'symmath.add'(a,b) 
 end
 function Expression.__sub(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
 	if require 'symmath.EquationOp'.is(b) then return b.__sub(a,b) end
-	return require 'symmath.subOp'(a,b) 
+	return require 'symmath.sub'(a,b) 
 end
 function Expression.__mul(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
 	if require 'symmath.EquationOp'.is(b) then return b.__mul(a,b) end
-	return require 'symmath.mulOp'(a,b) 
+	return require 'symmath.mul'(a,b) 
 end
 function Expression.__div(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
 	if require 'symmath.EquationOp'.is(b) then return b.__div(a,b) end
-	return require 'symmath.divOp'(a,b) 
+	return require 'symmath.div'(a,b) 
 end
 function Expression.__pow(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
 	if require 'symmath.EquationOp'.is(b) then return b.__pow(a,b) end
-	return require 'symmath.powOp'(a,b) 
+	return require 'symmath.pow'(a,b) 
 end
 function Expression.__mod(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
 	if require 'symmath.EquationOp'.is(b) then return b.__mod(a,b) end
-	return require 'symmath.modOp'(a,b) 
+	return require 'symmath.mod'(a,b) 
 end
 
 -- root-level functions that always apply to expressions

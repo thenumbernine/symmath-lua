@@ -1,11 +1,11 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local BinaryOp = require 'symmath.BinaryOp'
-local powOp = class(BinaryOp)
 
-powOp.omitSpace = true
-powOp.precedence = 5
-powOp.name = '^'
+local pow = class(BinaryOp)
+pow.omitSpace = true
+pow.precedence = 5
+pow.name = '^'
 
 --[[
 d/dx(a^b)
@@ -15,7 +15,7 @@ exp(b*log(a)) * d/dx[b*log(a)]
 a^b * (db/dx * log(a) + b * d/dx[log(a)])
 a^b * (db/dx * log(a) + da/dx * b / a)
 --]]
-function powOp:evaluateDerivative(...)
+function pow:evaluateDerivative(...)
 	local symmath = require 'symmath'
 	local log = symmath.log
 	local diff = symmath.diff
@@ -26,7 +26,7 @@ end
 
 -- just for this
 -- temporary ...
-function powOp:expand()
+function pow:expand()
 	local Constant = require 'symmath.Constant'
 	-- for certain small integer powers, expand 
 	-- ... or should we have all integer powers expended under a different command?
@@ -43,22 +43,22 @@ function powOp:expand()
 	end
 end
 
-powOp.visitorHandler = {
+pow.visitorHandler = {
 	Eval = function(eval, expr)
 		local a, b = table.unpack(expr)
 		return eval:apply(a) ^ eval:apply(b)
 	end,
 	
 	Expand = function(expand, expr)
-		local divOp = require 'symmath.divOp'
-		local mulOp = require 'symmath.mulOp'
+		local div = require 'symmath.div'
+		local mul = require 'symmath.mul'
 		local Constant = require 'symmath.Constant'
 		local range = require 'ext.range'
 		
 		-- (a / b)^n => a^n / b^n
 		-- not simplifying ...
 		-- maybe this should go in factor() or expand()
-		if divOp.is(expr[1]) then
+		if div.is(expr[1]) then
 			return expand:apply(expr[1][1]:clone() ^ expr[2]:clone() 
 				/ expr[1][2]:clone() ^ expr[2]:clone())
 		end
@@ -71,7 +71,7 @@ powOp.visitorHandler = {
 		and expr[2].value < 10
 		and expr[2].value == math.floor(expr[2].value)
 		then
-			return expand:apply(mulOp(range(expr[2].value):map(function(i)
+			return expand:apply(mul(range(expr[2].value):map(function(i)
 				return expr[1]:clone()
 			end):unpack()))
 		end
@@ -103,7 +103,7 @@ powOp.visitorHandler = {
 					frac = value - math.floor(value)
 					num = math.floor(value)
 				else
---print('powOp a^0 => 1', require 'symmath.tostring.Verbose'(original), '=>', require 'symmath.tostring.Verbose'(Constant(1)))
+--print('pow a^0 => 1', require 'symmath.tostring.Verbose'(original), '=>', require 'symmath.tostring.Verbose'(Constant(1)))
 					return Constant(1)
 				end
 				local terms = table()
@@ -119,8 +119,8 @@ powOp.visitorHandler = {
 				if #terms == 1 then
 					expr = terms[1]
 				else
-					local mulOp = require 'symmath.mulOp'
-					expr = mulOp(terms:unpack())
+					local mul = require 'symmath.mul'
+					expr = mul(terms:unpack())
 				end
 				
 				if div then expr = 1/expr end
@@ -133,8 +133,8 @@ powOp.visitorHandler = {
 
 	Prune = function(prune, expr)
 		local symmath = require 'symmath'
-		local mulOp = symmath.mulOp
-		local divOp = symmath.divOp
+		local mul = symmath.mul
+		local div = symmath.div
 		local Constant = symmath.Constant
 
 		local complex = require 'symmath.complex'
@@ -154,7 +154,7 @@ powOp.visitorHandler = {
 		end
 	
 		if Constant.is(expr[1]) and isPositiveInteger(expr[1].value)
-		and (expr[2] == divOp(1,2) or expr[2] == Constant(.5))
+		and (expr[2] == div(1,2) or expr[2] == Constant(.5))
 		then
 			local primes = require 'symmath.primeFactors'(expr[1].value)
 			local outside = 1
@@ -171,9 +171,9 @@ powOp.visitorHandler = {
 				inside = inside * primes[i]
 			end
 			if inside == 1 and outside == 1 then return Constant(1) end
-			if outside == 1 then return Constant(inside)^divOp(1,2) end
+			if outside == 1 then return Constant(inside)^div(1,2) end
 			if inside == 1 then return Constant(outside) end
-			return Constant(outside) * Constant(inside)^divOp(1,2)
+			return Constant(outside) * Constant(inside)^div(1,2)
 		end
 	
 		-- 0^a = 0 for a>0
@@ -204,12 +204,12 @@ powOp.visitorHandler = {
 		-- unless b is 2 and c is 1/2 ...
 		-- in fact, only if c is integer
 		-- in fact, better add complex numbers
-		if powOp.is(expr[1]) then
+		if pow.is(expr[1]) then
 			return prune:apply(expr[1][1] ^ (expr[1][2] * expr[2]))
 		end
 		
 		-- (a * b) ^ c => a^c * b^c
-		if mulOp.is(expr[1]) then
+		if mul.is(expr[1]) then
 			local result = table.map(expr[1], function(v,k)
 				if type(k) ~= 'number' then return end
 				return v ^ expr[2]
@@ -218,7 +218,7 @@ powOp.visitorHandler = {
 			if #result == 1 then
 				result = result[1]
 			else
-				result = mulOp(result:unpack())
+				result = mul(result:unpack())
 			end
 			return prune:apply(result)
 		end
@@ -234,7 +234,7 @@ powOp.visitorHandler = {
 		and expr[2].value > 0 
 		and expr[2].value == math.floor(expr[2].value)
 		then
-			local m = mulOp()
+			local m = mul()
 			for i=1,expr[2].value do
 				table.insert(m, expr[1]:clone())
 			end
@@ -263,12 +263,12 @@ powOp.visitorHandler = {
 
 	Tidy = function(tidy, expr)
 		local symmath = require 'symmath'
-		local unmOp = symmath.unmOp
+		local unm = symmath.unm
 		local Constant = symmath.Constant
 		local sqrt = symmath.sqrt
 
 		-- [[ x^-a => 1/x^a ... TODO only do this when in a product?
-		if unmOp.is(expr[2]) then
+		if unm.is(expr[2]) then
 			return tidy:apply(Constant(1)/expr[1]^expr[2][1])
 		end
 		--]]
@@ -282,7 +282,7 @@ powOp.visitorHandler = {
 
 }
 -- ExpandPolynomial inherits from Expand
---powOp.visitorHandler.ExpandPolynomial = powOp.visitorHandler.Expand
+--pow.visitorHandler.ExpandPolynomial = pow.visitorHandler.Expand
 -- but don't do it because it's overwritten for this class
 
-return powOp
+return pow

@@ -10,9 +10,9 @@ end
 -- otherwise returns nil
 local function isXToTheNth(expr, x)
 	if expr == x then return 1 end
-	local powOp = require 'symmath.powOp'
+	local pow = require 'symmath.pow'
 	local Constant = require 'symmath.Constant'
-	if powOp.is(expr)
+	if pow.is(expr)
 	and expr[1] == x
 	and Constant.is(expr[2])
 	then
@@ -37,10 +37,10 @@ end
 local function processTerm(coeffs, expr, x)
 --print('processTerm',expr,x)
 	local clone = require 'symmath.clone'
-	local mulOp = require 'symmath.mulOp'
+	local mul = require 'symmath.mul'
 		
-	if not mulOp.is(expr) then
---print('not mulOp')
+	if not mul.is(expr) then
+--print('not mul')
 		-- just process expr
 --print('testing',expr,x)
 		local n = isXToTheNth(expr, x)
@@ -60,10 +60,10 @@ local function processTerm(coeffs, expr, x)
 			end
 		end
 	else
---print('is mulOp')
+--print('is mul')
 		-- then process all terms
 		-- if you find an x^n then assume it's the only one there (courtesy of simplify())
-		-- and put the rest in a mulOp and add it to coeffs[n]
+		-- and put the rest in a mul and add it to coeffs[n]
 		for i=1,#expr do
 --print('testing',expr[i],x)
 			local n = isXToTheNth(expr[i], x)
@@ -95,9 +95,9 @@ end
 -- such that (sum for n=0 to table.max(result) of x^n * result[n]) + result.extra == expr
 return function(expr, x)
 --print('polyCoeffs',expr,x)
-	local addOp = require 'symmath.addOp'
-	local divOp = require 'symmath.divOp'
-	local mulOp = require 'symmath.mulOp'
+	local add = require 'symmath.add'
+	local div = require 'symmath.div'
+	local mul = require 'symmath.mul'
 	local Constant = require 'symmath.Constant'
 
 	local ExpandPolynomial = require 'symmath.visitor.ExpandPolynomial'
@@ -113,18 +113,18 @@ return function(expr, x)
 	-- b) solve polynomial 
 	
 	-- here is the equivalent of multipling by denomiators
-	if divOp.is(expr) then
+	if div.is(expr) then
 		expr = expr[1]	-- cross multiply the denom across with the zero 
 	end
 	
 	-- group terms by polynomial coefficients
 	local coeffs = {}	-- result = coeffs[n] * x^n + coeffs.extra, where coeffs.extra holds all the nonlinear x references
 
-	if not addOp.is(expr) then
---print('not addOp')
+	if not add.is(expr) then
+--print('not add')
 		processTerm(coeffs, expr, x)
 	else
---print('is addOp')
+--print('is add')
 		for i=#expr,1,-1 do
 			processTerm(coeffs, expr[i], x)
 		end

@@ -167,14 +167,14 @@ symmath.sinh = require 'symmath.sinh'
 symmath.tanh = require 'symmath.tanh'
 symmath.Heaviside = require 'symmath.Heaviside'
 
-symmath.unmOp = require 'symmath.unmOp'
 symmath.BinaryOp = require 'symmath.BinaryOp'
-symmath.addOp = require 'symmath.addOp'
-symmath.subOp = require 'symmath.subOp'
-symmath.mulOp = require 'symmath.mulOp'
-symmath.divOp = require 'symmath.divOp'
-symmath.powOp = require 'symmath.powOp'
-symmath.modOp = require 'symmath.modOp'
+symmath.unm = require 'symmath.unm'
+symmath.add = require 'symmath.add'
+symmath.sub = require 'symmath.sub'
+symmath.mul = require 'symmath.mul'
+symmath.div = require 'symmath.div'
+symmath.pow = require 'symmath.pow'
+symmath.mod = require 'symmath.mod'
 
 --symmath.Variable = require 'symmath.Variable'
 symmath.Derivative = require 'symmath.Derivative'
@@ -203,4 +203,3 @@ symmath.tostring = assert(require 'symmath.tostring.MultiLine')
 symmath.Verbose = assert(require 'symmath.tostring.Verbose')
 
 return symmath
-

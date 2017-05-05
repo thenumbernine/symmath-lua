@@ -22,4 +22,3 @@ function BinaryOp:getSepStr()
 end
 
 return BinaryOp
-

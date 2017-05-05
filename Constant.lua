@@ -53,16 +53,14 @@ Constant.visitorHandler = {
 	end,
 
 	Tidy = function(tidy, expr)
-		local unmOp = require 'symmath.unmOp'
-		
 		-- for formatting's sake ...
 		if expr.value == 0 then	-- which could possibly be -0 ...
 			return Constant(0)
 		end
 		
-		-- -c => -(c)
+		-- (-c) => -(c)
 		if complex.unpack(expr.value) < 0 then
-			return tidy:apply(unmOp(Constant(-expr.value)))
+			return tidy:apply(-Constant(-expr.value))
 		end
 	end,
 }

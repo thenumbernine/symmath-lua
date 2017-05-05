@@ -75,7 +75,7 @@ LaTeX.lookupTable = {
 	[require 'symmath.sqrt'] = function(self, expr)
 		return table{'\\sqrt', self:apply(expr[1])}
 	end,
-	[require 'symmath.unmOp'] = function(self, expr)
+	[require 'symmath.unm'] = function(self, expr)
 		return table{'-', self:wrapStrOfChildWithParenthesis(expr, 1)}
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)
@@ -83,11 +83,11 @@ LaTeX.lookupTable = {
 			return self:wrapStrOfChildWithParenthesis(expr, i)
 		end), expr:getSepStr())
 	end,
-	[require 'symmath.mulOp'] = function(self, expr)
+	[require 'symmath.mul'] = function(self, expr)
 		local Variable = require 'symmath.Variable'
 		local Constant = require 'symmath.Constant'
-		local divOp = require 'symmath.divOp'
-		local powOp = require 'symmath.powOp'
+		local div = require 'symmath.div'
+		local pow = require 'symmath.pow'
 		local res = table()
 		for i=1,#expr do
 			res[i] = self:wrapStrOfChildWithParenthesis(expr, i)
@@ -103,8 +103,8 @@ LaTeX.lookupTable = {
 			-- insert \cdot between neighboring numbers
 			elseif Constant.is(expr[i-1]) then
 				if Constant.is(expr[i])
-				or divOp.is(expr[i])
-				or (powOp.is(expr[i]) and Constant.is(expr[i][1]))
+				or div.is(expr[i])
+				or (pow.is(expr[i]) and Constant.is(expr[i][1]))
 				then
 					res:insert(i, '\\cdot')
 				end
@@ -112,7 +112,7 @@ LaTeX.lookupTable = {
 		end
 		return tableConcat(res, expr:getSepStr())
 	end,
-	[require 'symmath.divOp'] = function(self, expr)
+	[require 'symmath.div'] = function(self, expr)
 		return table{self:apply(expr[1]), '\\over', self:apply(expr[2])}
 	end,
 	[require 'symmath.Variable'] = function(self, expr)

@@ -16,7 +16,7 @@ local vars = symmath.vars
 local sqrt = symmath.sqrt
 local sin = symmath.sin
 local cos = symmath.cos
-local frac = symmath.divOp
+local div = symmath.div
 
 local t,r,phi,z = vars('t', 'r', '\\phi', 'z')
 local pi = var'\\pi'
@@ -106,7 +106,7 @@ Ricci_EM = Ricci_EM
 local Conn = Tensor'^a_bc'
 
 -- [[ tada!
-Conn[2][1][1] = -frac(4,3) * I^2 / r^3 - 4 * lambda^2 / r
+Conn[2][1][1] = -div(4,3) * I^2 / r^3 - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2
 Conn[2][4][1] = 4 * I * lambda / r^2
 Conn[1][1][1] = 1
@@ -138,7 +138,7 @@ Conn[3][2][2] = var('k',{r,z,phi})
 --]]
 
 --[[ all except R_tz, R_zt, investigating with variables
-Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+Conn[2][1][1] = -div(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
 Conn[1][1][1] = 1
 Conn[1][3][3] = -4 * I^2 / r^2 + 4 * lambda^2 
 Conn[1][4][4] = 4 * I^2 / r^4 - 4 * lambda^2 / r^2
@@ -155,7 +155,7 @@ Conn[2][2][1] = var('d',{r,z})
 --]]
 
 --[[ all except R_tz, R_zt
-Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+Conn[2][1][1] = -div(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
 --Conn[2][1][4] = 4 * I * lambda / r^2 
 --Conn[2][4][1] = 4 * I * lambda / r^2 
 Conn[1][1][1] = 1
@@ -165,7 +165,7 @@ Conn[4][2][2] = 4 * z * (I^2 / r^4 - lambda^2 / r^2)
 --]]
 
 --[[ produces all correct terms *AND* R_tr, R_rt, R_zr, R_rz ... and I'ved got rid of Conn^r_jk being used for the lambda^2 terms of R_jk
-Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+Conn[2][1][1] = -div(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2 
 Conn[2][4][1] = 4 * I * lambda / r^2 
 
@@ -179,7 +179,7 @@ Conn[1][2][2] = 4 * (I^2 / r^4 - lambda^2 / r^2)
 --]]
 
 --[[ this produces all correct terms *AND* R_tr, R_rt, R_zr, R_rz
-Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+Conn[2][1][1] = -div(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2 
 Conn[2][4][1] = 4 * I * lambda / r^2 
 
@@ -204,7 +204,7 @@ Conn[2][4][4] = -4 * lambda^2 / r
 --]]
 
 --[[ all except R_tt and R_rr
---Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+--Conn[2][1][1] = -div(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2 
 Conn[2][4][1] = 4 * I * lambda / r^2 
 
@@ -218,7 +218,7 @@ Conn[2][4][4] = -4 * lambda^2 / r
 
 --[[ all except R_rr
 -- all I need now is R_rr = C^c_rr,c - C^c_rc,r + C^c_dc C^d_rr - C^c_dr C^d_rc - C^c_rd (C^d_rc - C^d_cr)
-Conn[2][1][1] = -frac(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
+Conn[2][1][1] = -div(4,3) * (I^2 / r^3) - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2 
 Conn[2][4][1] = 4 * I * lambda / r^2 
 
@@ -234,7 +234,7 @@ Conn[2][4][4] = -4 * lambda^2 / r
 --]]
 
 --[[ produces R_tt, R_tz, R_zt, R_pp, Rzz
-Conn[2][1][1] = -frac(4,3) * I^2 / r^3 - 4 * lambda^2 / r
+Conn[2][1][1] = -div(4,3) * I^2 / r^3 - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2 
 Conn[2][4][1] = 4 * I * lambda / r^2 
 
@@ -248,7 +248,7 @@ Conn[2][4][4] = -4 * lambda^2 / r
 --]]
 
 --[[ produces R_tt, R_tz, R_zt, and I component of R_pp, R_zz
-Conn[2][1][1] = -frac(4,3) * I^2 / r^3 - 4 * lambda^2 / r
+Conn[2][1][1] = -div(4,3) * I^2 / r^3 - 4 * lambda^2 / r
 Conn[2][1][4] = 4 * I * lambda / r^2 
 Conn[2][4][1] = 4 * I * lambda / r^2 
 
@@ -270,7 +270,7 @@ Conn[1][1][2] = I
 
 --[[ C^r_tt = -4/3 I^2 / r^3 - 4 lambda^2 / r, C^r_tz = C^r_zt = 4 I lambda / r^2 
 -- => R_tt = 4 (I^2 + lamda^2 r^2) / r^4, R_tz = R_zt = -8 I lambda / r^3
-Conn[2][1][1] = (-frac(4,3) * I^2 / r^3 - 4 * lambda^2 / r)()
+Conn[2][1][1] = (-div(4,3) * I^2 / r^3 - 4 * lambda^2 / r)()
 --Conn[1][1][4] = -8 * I * lambda * t / r^3
 --Conn[1][4][1] = -8 * I * lambda * t / r^3		-- can't set C^t_zt = C^t_tz or it contributes to R_zr
 Conn[2][1][4] = 4 * I * lambda / r^2 
@@ -309,7 +309,7 @@ Conn[2][4][1] = 4 * I * lambda / r^2
 --[[ producing R_tt by separating terms and producing them individually with C^r_tt,r (I^2) and C^p_tt,p (lambda^2)
 -- C^r_tt = -4/3 I^2 / r^3, C^p_tt = 4 lambda^2 phi r^2, C^r_tz = C^r_zt = 4 I lambda / r^2
 -- => R_tt = 4 (I^2 + lamda^2 r^2) / r^4, R_tz = R_zt = -8 I lambda / r^3
-Conn[2][1][1] = -frac(4,3) * I^2 / r^3
+Conn[2][1][1] = -div(4,3) * I^2 / r^3
 Conn[3][1][1] = 4 * lambda^2 * phi / r^2
 Conn[2][1][4] = 4 * I * lambda / r^2 
 Conn[2][4][1] = 4 * I * lambda / r^2 
@@ -318,7 +318,7 @@ Conn[2][4][1] = 4 * I * lambda / r^2
 -- here I'm producing the R_tt, R_tz, R_zt terms, just by integrating the Conn^r_tt,r
 --[[ C^r_tt = -4/3 I^2 / r^3 - 4 lambda^2 / r, C^r_tz = C^r_zt = 4 I lambda / r^2 
 -- => R_tt = 4 (I^2 + lamda^2 r^2) / r^4, R_tz = R_zt = -8 I lambda / r^3
-Conn[2][1][1] = (-frac(4,3) * I^2 / r^3 - 4 * lambda^2 / r)()
+Conn[2][1][1] = (-div(4,3) * I^2 / r^3 - 4 * lambda^2 / r)()
 --Conn[1][1][4] = -8 * I * lambda * t / r^3
 --Conn[1][4][1] = -8 * I * lambda * t / r^3		-- can't set C^t_zt = C^t_tz or it contributes to R_zr
 Conn[2][1][4] = 4 * I * lambda / r^2 

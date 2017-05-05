@@ -13,7 +13,7 @@ local TensorIndex = require 'symmath.tensor.TensorIndex'
 local var = symmath.var
 local vars = symmath.vars
 local sqrt = symmath.sqrt
-local frac = symmath.divOp
+local div = symmath.div
 local Constant = symmath.Constant
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
@@ -58,7 +58,7 @@ g:print'g'
 gU:print'g'
 
 local ConnFromMetric = Tensor'_abc'
-ConnFromMetric['_abc'] = (frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()	-- ... plus commutation? in this case I have a symmetric Conn so I don't need comm
+ConnFromMetric['_abc'] = (div(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()	-- ... plus commutation? in this case I have a symmetric Conn so I don't need comm
 
 printbr'...produces...'
 --ConnFromMetric:printElem'\\Gamma' printbr()

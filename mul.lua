@@ -2,14 +2,14 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local BinaryOp = require 'symmath.BinaryOp'
 
-mulOp = class(BinaryOp)
-mulOp.implicitName = true
-mulOp.precedence = 3
-mulOp.name = '*'
+local mul = class(BinaryOp)
+mul.implicitName = true
+mul.precedence = 3
+mul.name = '*'
 
-function mulOp:evaluateDerivative(...)
-	local diff = require 'symmath'.diff
-	local addOp = require 'symmath.addOp'
+function mul:evaluateDerivative(...)
+	local diff = require 'symmath.Derivative'
+	local add = require 'symmath.add'
 	local sums = table()
 	for i=1,#self do
 		local terms = table()
@@ -23,20 +23,20 @@ function mulOp:evaluateDerivative(...)
 		if #terms == 1 then
 			sums:insert(terms[1])
 		else
-			sums:insert(mulOp(terms:unpack()))
+			sums:insert(mul(terms:unpack()))
 		end
 	end
 	if #sums == 1 then
 		return sums[1]
 	else
-		return addOp(sums:unpack())
+		return add(sums:unpack())
 	end
 end
 
 -- now that we've got matrix multilpication, this becomes more difficult...
 -- non-commutative objects (matrices) need to be compared in-order
 -- commutative objects can be compared in any order
-mulOp.__eq = function(a,b)
+mul.__eq = function(a,b)
 	-- order-independent
 	local a = table(a)
 	local b = table(b)
@@ -59,7 +59,7 @@ mulOp.__eq = function(a,b)
 	return true
 end
 
-mulOp.visitorHandler = {
+mul.visitorHandler = {
 	Eval = function(eval, expr)
 		local result = 1
 		for _,x in ipairs(expr) do
@@ -69,9 +69,8 @@ mulOp.visitorHandler = {
 	end,
 
 	Expand = function(expand, expr)
-		local symmath = require 'symmath'	
-		local addOp = symmath.addOp
-		local subOp = symmath.subOp
+		local add = require 'symmath.add'
+		local sub = require 'symmath.sub'
 		
 		expr = expr:clone()
 		
@@ -81,7 +80,7 @@ mulOp.visitorHandler = {
 		--]]
 
 		for i,x in ipairs(expr) do
-			if addOp.is(x) or subOp.is(x) then
+			if add.is(x) or sub.is(x) then
 				local terms = table()
 				for j,xch in ipairs(x) do
 					local term = expr:clone()
@@ -95,9 +94,8 @@ mulOp.visitorHandler = {
 	end,
 
 	FactorDivision = function(factor, expr)
-		local symmath = require 'symmath'
-		local addOp = symmath.addOp
-		local subOp = symmath.subOp
+		local add = require 'symmath.add'
+		local sub = require 'symmath.sub'
 		
 		-- first time processing we want to simplify()
 		--  to remove powers and divisions
@@ -109,7 +107,7 @@ mulOp.visitorHandler = {
 		-- make Rules
 		for i=#expr,1,-1 do
 			local ch = expr[i]
-			if mulOp.is(ch) then
+			if mul.is(ch) then
 				table.remove(expr, i)
 				for j=#ch,1,-1 do
 					local chch = ch[j]
@@ -123,7 +121,7 @@ mulOp.visitorHandler = {
 		-- TODO this is also in Expand
 		-- make Rules
 		for i,ch in ipairs(expr) do
-			if addOp.is(ch) or subOp.is(ch) then
+			if add.is(ch) or sub.is(ch) then
 				local terms = table()
 				for j,chch in ipairs(ch) do
 					local term = expr:clone()
@@ -137,17 +135,16 @@ mulOp.visitorHandler = {
 	end,
 
 	Prune = function(prune, expr)	
-		local symmath = require 'symmath'
-		local Constant = symmath.Constant
-		local powOp = symmath.powOp
-		local divOp = symmath.divOp
+		local Constant = require 'symmath.Constant'
+		local pow = require 'symmath.pow'
+		local div = require 'symmath.div'
 
 		assert(#expr > 0)
 		
 		-- flatten multiplications
 		for i=#expr,1,-1 do
 			local ch = expr[i]
-			if mulOp.is(ch) then
+			if mul.is(ch) then
 				-- this looks like a job for splice ...
 				table.remove(expr, i)
 				for j=#ch,1,-1 do
@@ -159,20 +156,20 @@ mulOp.visitorHandler = {
 		end
 		
 		-- move unary minuses up
-		--[[ pruning unmOp immediately
+		--[[ pruning unm immediately
 		do
-			local unmOp = require 'symmath.unmOp'
-			local unmOpCount = 0
+			local unm = require 'symmath.unm'
+			local unmCount = 0
 			for i=1,#expr do
 				local ch = expr[i]
-				if unmOp.is(ch) then
-					unmOpCount = unmOpCount + 1
+				if unm.is(ch) then
+					unmCount = unmCount + 1
 					expr[i] = ch[1]
 				end
 			end
-			if unmOpCount % 2 == 1 then
+			if unmCount % 2 == 1 then
 				return -prune:apply(expr)	-- move unm outside and simplify what's left
-			elseif unmOpCount ~= 0 then
+			elseif unmCount ~= 0 then
 				return prune:apply(expr)	-- got an even number?  remove it and simplify this
 			end
 		end
@@ -231,7 +228,7 @@ mulOp.visitorHandler = {
 				local x = expr[i]
 				local base
 				local power
-				if powOp.is(x) then
+				if pow.is(x) then
 					base = x[1]
 					power = x[2]
 				else
@@ -245,7 +242,7 @@ mulOp.visitorHandler = {
 						local x2 = expr[j]
 						local base2
 						local power2
-						if powOp.is(x2) then
+						if pow.is(x2) then
 							base2 = x2[1]
 							power2 = x2[2]
 						else
@@ -291,10 +288,10 @@ mulOp.visitorHandler = {
 				local power = Constant(1)
 				local denom = Constant(1)
 
-				if powOp.is(base) then
+				if pow.is(base) then
 					base, power = table.unpack(base)
 				end
-				if divOp.is(base) then
+				if div.is(base) then
 					base, denom = table.unpack(base)
 				end
 				if denom ~= Constant(1) then
@@ -326,7 +323,7 @@ mulOp.visitorHandler = {
 					if #num == 1 then
 						num = num[1]
 					else
-						num = mulOp(num:unpack())
+						num = mul(num:unpack())
 					end
 				end
 				
@@ -338,7 +335,7 @@ mulOp.visitorHandler = {
 						denom = denom^powers[i]
 					end
 				elseif #denoms > 1 then
-					denom = mulOp(table.unpack(uniqueDenomIndexes:map(function(i)
+					denom = mul(table.unpack(uniqueDenomIndexes:map(function(i)
 						if powers[i] == Constant(1) then
 							return denoms[i]
 						else
@@ -358,30 +355,29 @@ mulOp.visitorHandler = {
 	end,
 
 	Tidy = function(tidy, expr)
-		local symmath = require 'symmath'
-		local unmOp = symmath.unmOp
-		local Constant = symmath.Constant
+		local unm = require 'symmath.unm'
+		local Constant = require 'symmath.Constant'
 		
 		-- -x * y * z => -(x * y * z)
 		-- -x * y * -z => x * y * z
 		do
-			local unmOpCount = 0
+			local unmCount = 0
 			for i=1,#expr do
 				local ch = expr[i]
-				if unmOp.is(ch) then
-					unmOpCount = unmOpCount + 1
+				if unm.is(ch) then
+					unmCount = unmCount + 1
 					expr[i] = ch[1]
 				end
 			end
 			assert(#expr > 1)
-			if unmOpCount % 2 == 1 then
+			if unmCount % 2 == 1 then
 				return -tidy:apply(expr)	-- move unm outside and simplify what's left
-			elseif unmOpCount ~= 0 then
+			elseif unmCount ~= 0 then
 				return tidy:apply(expr)	-- got an even number?  remove it and simplify this
 			end
 		end
 		
-		-- (has to be solved post-prune() because tidy's Constant+unmOp will have made some new ones)
+		-- (has to be solved post-prune() because tidy's Constant+unm will have made some new ones)
 		-- 1 * x => x 	
 		local first = expr[1]
 		if Constant.is(first) and first.value == 1 then
@@ -394,6 +390,6 @@ mulOp.visitorHandler = {
 	end,
 }
 -- ExpandPolynomial inherits from Expand
-mulOp.visitorHandler.ExpandPolynomial = mulOp.visitorHandler.Expand
+mul.visitorHandler.ExpandPolynomial = mul.visitorHandler.Expand
 
-return mulOp
+return mul

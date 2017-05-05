@@ -41,8 +41,8 @@ local function precedence(x)
 end
 
 function ToString:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
-	local subOp = require 'symmath.subOp'
-	if subOp.is(parentNode) and childIndex > 1 then
+	local sub = require 'symmath.sub'
+	if sub.is(parentNode) and childIndex > 1 then
 		return precedence(parentNode[childIndex]) <= precedence(parentNode)
 	else
 		return precedence(parentNode[childIndex]) < precedence(parentNode)

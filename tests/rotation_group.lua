@@ -8,7 +8,7 @@ symmath.tostring = MathJax
 print(MathJax.header)
 local printbr = MathJax.print
 
-local frac = symmath.divOp
+local div = symmath.div
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars
@@ -440,8 +440,8 @@ K_x P | K_y P | K_z P
 
 --[[
 	local GammaL = Tensor'_abc'
-	GammaL['_abc'] = (frac(1,2) * (dg'_abc' + dg'_acb' - dg'_bca' + cL'_abc' + cL'_acb' - cL'_bca'))()
-	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
+	GammaL['_abc'] = (div(1,2) * (dg'_abc' + dg'_acb' - dg'_bca' + cL'_abc' + cL'_acb' - cL'_bca'))()
+	printbr(var'\\Gamma''_abc':eq(div(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
 	printbr(var'\\Gamma''_abc':eq(GammaL'_abc'()))
 
 	local Gamma = Tensor'^a_bc'
@@ -451,7 +451,7 @@ K_x P | K_y P | K_z P
 --]]
 	local Gamma = Tensor'^a_bc'
 	-- purely antisymmetric 
-	Gamma['^a_bc'] = (frac(1,2) * c'_cb^a')()
+	Gamma['^a_bc'] = (div(1,2) * c'_cb^a')()
 
 	local dGamma = Tensor'^a_bcd'
 	dGamma['^a_bcd'] = Gamma'^a_bc,d'()

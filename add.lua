@@ -2,22 +2,22 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local BinaryOp = require 'symmath.BinaryOp'
 
-local addOp = class(BinaryOp)
-addOp.precedence = 2
-addOp.name = '+'
+local add = class(BinaryOp)
+add.precedence = 2
+add.name = '+'
 
-function addOp:evaluateDerivative(...)
+function add:evaluateDerivative(...)
 	local diff = require 'symmath'.diff
 	local result = table()
 	for i=1,#self do
 		result[i] = diff(self[i]:clone(), ...)
 	end
-	return addOp(result:unpack())
+	return add(result:unpack())
 end
 
-addOp.__eq = require 'symmath.nodeCommutativeEqual'
+add.__eq = require 'symmath.nodeCommutativeEqual'
 
-addOp.visitorHandler = {
+add.visitorHandler = {
 	Eval = function(eval, expr)
 		local result = 0
 		for _,x in ipairs(expr) do
@@ -28,12 +28,12 @@ addOp.visitorHandler = {
 
 	Factor = function(factor, expr, factors)
 		local symmath = require 'symmath'
-		local mulOp = symmath.mulOp
-		local powOp = symmath.powOp
+		local mul = symmath.mul
+		local pow = symmath.pow
 		local Constant = symmath.Constant
 
 		-- [[ x*a + x*b => x * (a + b)
-		-- the opposite of this is in mulOp:prune's applyDistribute
+		-- the opposite of this is in mul:prune's applyDistribute
 		-- don't leave both of them uncommented or you'll get deadlock
 		if #expr <= 1 then return end
 	
@@ -41,7 +41,7 @@ addOp.visitorHandler = {
 			local prodList
 			
 			-- get products or individual terms
-			if mulOp.is(x) then
+			if mul.is(x) then
 				prodList = table(x)
 			else
 				prodList = table{x}
@@ -49,7 +49,7 @@ addOp.visitorHandler = {
 			
 			-- pick out any exponents in any of the products
 			prodList = prodList:map(function(ch)
-				if powOp.is(ch) then
+				if pow.is(ch) then
 					return {
 						term = ch[1],
 						power = assert(ch[2]),
@@ -100,7 +100,7 @@ addOp.visitorHandler = {
 			end)
 			if #list == 0 then return Constant(1) end
 			if #list == 1 then return list[1] end
-			return mulOp(list:unpack())
+			return mul(list:unpack())
 		end
 
 		local function pruneProdList(listToPrune, listToFind)
@@ -241,11 +241,11 @@ addOp.visitorHandler = {
 		
 		-- then add what's left of the original sum
 		local lastTerm = prodLists:map(prodListToNode)
-		lastTerm = #lastTerm == 1 and lastTerm[1] or addOp(lastTerm:unpack())
+		lastTerm = #lastTerm == 1 and lastTerm[1] or add(lastTerm:unpack())
 
 		terms:insert(lastTerm)
 	
-		local result = #terms == 1 and terms[1] or mulOp(terms:unpack())
+		local result = #terms == 1 and terms[1] or mul(terms:unpack())
 		
 		return prune(result)
 	end,
@@ -254,15 +254,15 @@ addOp.visitorHandler = {
 		local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 		local symmath = require 'symmath'
 		local Constant = symmath.Constant
-		local divOp = symmath.divOp
-		local mulOp = symmath.mulOp
-		local powOp = symmath.powOp
+		local div = symmath.div
+		local mul = symmath.mul
+		local pow = symmath.pow
 		
 		-- flatten additions
 		-- (x + y) + z => x + y + z
 		for i=#expr,1,-1 do
 			local ch = expr[i]
-			if addOp.is(ch) then
+			if add.is(ch) then
 				expr = expr:clone()
 				-- this looks like a job for splice ...
 				table.remove(expr, i)
@@ -326,7 +326,7 @@ addOp.visitorHandler = {
 			local muls = table()
 			local nonMuls = table()
 			for i,x in ipairs(expr) do
-				if mulOp.is(x) then
+				if mul.is(x) then
 					muls:insert(x)
 				else
 					nonMuls:insert(x)
@@ -367,14 +367,14 @@ addOp.visitorHandler = {
 					if #terms == 1 then
 						terms = terms[1]
 					else
-						terms = mulOp(terms:unpack())
+						terms = mul(terms:unpack())
 					end
 
 					local expr
 					if #nonMuls == 0 then
 						expr = terms
 					else
-						expr = addOp(terms, nonMuls:unpack())
+						expr = add(terms, nonMuls:unpack())
 					end
 
 					return prune:apply(expr)
@@ -383,16 +383,16 @@ addOp.visitorHandler = {
 		end
 		--]]
 
-		-- TODO shouldn't this be regardless of the outer addOp ?
+		-- TODO shouldn't this be regardless of the outer add ?
 		-- turn any a + (b * (c + d)) => a + (b * c) + (b * d)
-		-- [[ if any two children are mulOps,
+		-- [[ if any two children are muls,
 		--    and they have all children in common (with the exception of any constants)
 		--  then combine them, and combine their constants
 		-- x * c1 + x * c2 => x * (c1 + c2) (for c1,c2 constants)
 		for i=1,#expr-1 do
 			local xI = expr[i]
 			local termsI
-			if mulOp.is(xI) then
+			if mul.is(xI) then
 				termsI = table(xI)
 			else
 				termsI = table{xI}
@@ -400,7 +400,7 @@ addOp.visitorHandler = {
 			for j=i+1,#expr do
 				local xJ = expr[j]
 				local termsJ
-				if mulOp.is(xJ) then
+				if mul.is(xJ) then
 					termsJ = table(xJ)
 				else
 					termsJ = table{xJ}
@@ -453,7 +453,7 @@ addOp.visitorHandler = {
 					if #commonTerms == 0 then
 						expr[i] = Constant(constI.value + constJ.value)
 					else
-						expr[i] = mulOp(Constant(constI.value + constJ.value), table.unpack(commonTerms))
+						expr[i] = mul(Constant(constI.value + constJ.value), table.unpack(commonTerms))
 					end
 					if #expr == 1 then expr = expr[1] end
 					return prune:apply(expr)
@@ -466,7 +466,7 @@ addOp.visitorHandler = {
 		local denom
 		local denomIndex
 		for i,x in ipairs(expr) do
-			if not divOp.is(x) then
+			if not div.is(x) then
 				denom = nil
 				break
 			else
@@ -488,7 +488,7 @@ addOp.visitorHandler = {
 		--]]
 		-- [[ divs: c + a/b => (c * b + a) / b
 		for i,x in ipairs(expr) do
-			if divOp.is(x) then
+			if div.is(x) then
 				assert(#x == 2)
 				local a,b = table.unpack(x)
 				table.remove(expr, i)
@@ -511,12 +511,12 @@ addOp.visitorHandler = {
 			local sin = require 'symmath.sin'
 			local Function = require 'symmath.Function'
 		
-			local function checkAddOp(ch)
+			local function checkAdd(ch)
 				local cosAngle, sinAngle
 				local cosIndex, sinIndex
 				for i,x in ipairs(ch) do
 					
-					if powOp.is(x)
+					if pow.is(x)
 					and Function.is(x[1])
 					and x[2] == Constant(2)
 					then
@@ -566,7 +566,7 @@ addOp.visitorHandler = {
 				end)
 
 				if foundTrig then
-					local result = checkAddOp(expr)
+					local result = checkAdd(expr)
 					if result then
 						return prune:apply(result) 
 					end
@@ -581,10 +581,10 @@ addOp.visitorHandler = {
 			end	
 			--]]
 			--[[ 
-			if mulOp.is(f) then	-- should always be a mulOp unless there was nothing to factor
+			if mul.is(f) then	-- should always be a mul unless there was nothing to factor
 				for _,ch in ipairs(f) do
-					if addOp.is(ch) then
-						local result = checkAddOp(ch)
+					if add.is(ch) then
+						local result = checkAdd(ch)
 						if result then 
 							return prune:apply(result) 
 						end
@@ -598,11 +598,11 @@ addOp.visitorHandler = {
 
 	Tidy = function(tidy, expr)
 		local symmath = require 'symmath'
-		local unmOp = symmath.unmOp
+		local unm = symmath.unm
 		
 		for i=1,#expr-1 do
 			-- x + -y => x - y
-			if unmOp.is(expr[i+1]) then
+			if unm.is(expr[i+1]) then
 				local a = table.remove(expr, i)
 				local b = table.remove(expr, i)[1]
 				assert(a)
@@ -620,4 +620,4 @@ addOp.visitorHandler = {
 	end,
 }
 
-return addOp
+return add

@@ -10,7 +10,7 @@ Verbose.lookupTable = {
 	[require 'symmath.Invalid'] = function(self, expr)
 		return 'Invalid'
 	end,
-	[require 'symmath.unmOp'] = function(self, expr)
+	[require 'symmath.unm'] = function(self, expr)
 		return 'unm('..self:apply(expr[1])..')'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)

@@ -1,14 +1,14 @@
 local class = require 'ext.class'
 local BinaryOp = require 'symmath.BinaryOp'
-local modOp = class(BinaryOp)
 
-modOp.precedence = 3
-modOp.name = '%'
+local mod = class(BinaryOp)
+mod.precedence = 3
+mod.name = '%'
 
 --[[
 d/dx[a%b] is da/dx, except when a = b * k for some integer k
 --]]
-function modOp:evaluateDerivative(...)
+function mod:evaluateDerivative(...)
 	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
@@ -16,11 +16,11 @@ function modOp:evaluateDerivative(...)
 	return x
 end
 
-modOp.visitorHandler = {
+mod.visitorHandler = {
 	Eval = function(eval, expr)
 		local a, b = table.unpack(expr)
 		return eval:apply(a) % eval:apply(b)
 	end,
 }
 
-return modOp
+return mod

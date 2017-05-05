@@ -32,7 +32,7 @@ local printbr = MathJax.print
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars
-local frac = symmath.divOp
+local div = symmath.div
 local sin = symmath.sin
 local cos = symmath.cos
 
@@ -364,7 +364,7 @@ end)
 --]]
 
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
-	printbr(var'\\Gamma''_abc':eq(symmath.divOp(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
+	printbr(var'\\Gamma''_abc':eq(div(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
 	local Props = class(require 'symmath.diffgeom')
 	Props.print = printbr
 	Props.verbose = true

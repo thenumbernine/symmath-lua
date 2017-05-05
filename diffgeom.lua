@@ -150,7 +150,7 @@ function Props:init(g, gU, c)
 -- this is too slow.  for dim=4, Gamma^a_bc is 4^3 = 64 elements
 -- the multiply always does the outer before the inner
 -- and the outer operation is 4^6 = 4096 elements
--- TODO analyze the mulOp(TensorRef,TensorRef)
+-- TODO analyze the mul(TensorRef,TensorRef)
 -- and if it has multiple indexes, keep track of them, transform the elements individually, sum them, and only generate the resulting indexes
 -- (in this case, 4^4 = 256, much smaller)
 -- another TODO to help optimization: keep track of symmetric/antisymmetric terms

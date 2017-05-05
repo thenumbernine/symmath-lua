@@ -19,7 +19,7 @@ end
 cos.visitorHandler = {
 	Prune = function(prune, expr)
 		local Constant = require 'symmath.Constant'
-		local mulOp = require 'symmath.mulOp'
+		local mul = require 'symmath.mul'
 		
 		-- cos(0) => 1
 		if expr[1] == Constant(0) then 
@@ -27,7 +27,7 @@ cos.visitorHandler = {
 		end
 	
 		-- cos(-c x y z) => cos(c x y z)
-		if mulOp.is(expr[1])
+		if mul.is(expr[1])
 		and Constant.is(expr[1][1])
 		and expr[1][1].value < 0
 		then
@@ -35,7 +35,7 @@ cos.visitorHandler = {
 				return expr[1][i]:clone()
 			end)
 			local c = -mulArgs:remove(1).value
-			local theta = #mulArgs == 1 and mulArgs[1] or mulOp(mulArgs:unpack()) 
+			local theta = #mulArgs == 1 and mulArgs[1] or mul(mulArgs:unpack()) 
 			return prune:apply(c == 1 and cos(theta) or sin(c * theta))
 		end
 	end,

@@ -2,16 +2,16 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 
-local unmOp = class(Expression)
-unmOp.precedence = 3	--4	--make it match mul and div so there aren't extra parenthesis around mul and div
+local unm = class(Expression)
+unm.precedence = 3	--4	--make it match mul and div so there aren't extra parenthesis around mul and div
 
-function unmOp:evaluateDerivative(...)
+function unm:evaluateDerivative(...)
 	local x = unpack(self):clone()
 	local diff = require 'symmath'.diff
 	return -diff(x,...)
 end
 
-unmOp.visitorHandler = {
+unm.visitorHandler = {
 	Eval = function(eval, expr)
 		return -eval:apply(expr[1])
 	end,
@@ -25,23 +25,23 @@ unmOp.visitorHandler = {
 	end,
 
 	Prune = function(prune, expr)
-		if unmOp.is(expr[1]) then
+		if unm.is(expr[1]) then
 			return prune:apply(expr[1][1]:clone())
 		end
 		return prune:apply(-1 * expr[1])
 	end,
 
 	Tidy = function(tidy, expr)
-		local addOp = require 'symmath.addOp'
+		local add = require 'symmath.add'
 		
 		-- --x => x
-		if unmOp.is(expr[1]) then
+		if unm.is(expr[1]) then
 			return tidy:apply(expr[1][1])
 		end
 		
 		-- distribute through addition/subtraction
-		if addOp.is(expr[1]) then
-			return addOp(table.map(expr[1], function(x,k) 
+		if add.is(expr[1]) then
+			return add(table.map(expr[1], function(x,k) 
 				if type(k) ~= 'number' then return end
 				return -x 
 			end):unpack())
@@ -49,6 +49,6 @@ unmOp.visitorHandler = {
 	end,
 }
 -- ExpandPolynomial inherits from Expand
-unmOp.visitorHandler.ExpandPolynomial = unmOp.visitorHandler.Expand
+unm.visitorHandler.ExpandPolynomial = unm.visitorHandler.Expand
 
-return unmOp
+return unm

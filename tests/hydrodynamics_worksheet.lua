@@ -9,8 +9,6 @@ print(MathJax.header)
 
 local Tensor = symmath.Tensor
 local var = symmath.var
-local vars = symmath.vars
-local frac = symmath.divOp
 
 local function print(...)
 	_G.print(...)
@@ -34,7 +32,6 @@ function markup(str)
 end
 
 -- TODO environments
-var = symmath.var
 m = var'm'
 t = var't'
 rho = var'\\rho'

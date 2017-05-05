@@ -32,12 +32,12 @@ local printbr = MathJax.print
 
 local vars = symmath.vars
 local var = symmath.var
-local addOp = symmath.addOp	-- why the 'Op' suffix anyways?
+local add = symmath.add
 local Matrix = symmath.Matrix
 
 local function sum(t)
 	if #t == 1 then return t[1] end
-	return addOp(table.unpack(t))
+	return add(table.unpack(t))
 end
 
 -- dimension variables
@@ -64,7 +64,7 @@ for dim=1,3 do
 	us = us:sub(1,dim)
 	local xs = table{x,y,z}
 	xs = xs:sub(1,dim)
-	local uSq = dim == 1 and ux^2 or addOp(us:map(function(u) return u^2 end):unpack())
+	local uSq = sum(us:map(function(u) return u^2 end))
 
 	-- state variable
 	local qs = range(dim+2):map(function(i) return var('q_'..i, coords) end)

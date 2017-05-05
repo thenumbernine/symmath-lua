@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 
--- hmm this was working before I moved powOp:expand() into powOp.visitorHandler.Expand ...
+-- hmm this was working before I moved pow:expand() into pow.visitorHandler.Expand ...
 
 local table = require 'ext.table'
 local symmath = require 'symmath'
@@ -52,8 +52,8 @@ dsSq = dsSq
 	-- I should really call this 'expandDivision' because it doesn't factor ...
 	:factorDivision()
 local function rapply(expr)
-	if symmath.divOp.is(expr) then return expr end
-	if symmath.powOp.is(expr) then return expr:expand() end
+	if symmath.div.is(expr) then return expr end
+	if symmath.pow.is(expr) then return expr:expand() end
 	if #expr == 0 then return expr end
 	expr = expr:clone()
 	for i=1,#expr do

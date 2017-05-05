@@ -1,19 +1,19 @@
 local class = require 'ext.class'
 local BinaryOp = require 'symmath.BinaryOp'
 
-local subOp = class(BinaryOp)
-subOp.precedence = 2
-subOp.name = '-'
+local sub = class(BinaryOp)
+sub.precedence = 2
+sub.name = '-'
 
-function subOp:evaluateDerivative(...)
+function sub:evaluateDerivative(...)
 	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
-	local diff = require 'symmath'.diff
+	local diff = require 'symmath.Derivative'
 	local x = diff(a,...) - diff(b,...)
 	return x
 end
 
-subOp.visitorHandler = {
+sub.visitorHandler = {
 	Eval = function(eval, expr)
 		local result = eval:apply(expr[1])
 		for i=2,#expr do
@@ -23,7 +23,7 @@ subOp.visitorHandler = {
 	end,
 	
 	Expand = function(expand, expr)
-		local addOp = require 'symmath.addOp'
+		local add = require 'symmath.add'
 		
 		--assert(#expr > 1) -- TODO
 		if #expr == 1 then return expand:apply(expr[1]) end
@@ -31,7 +31,7 @@ subOp.visitorHandler = {
 		if #expr == 2 then
 			expr = expr[1] + -expr[2]
 		else
-			expr = expr[1] + -addOp(table.unpack(expr[2]))
+			expr = expr[1] + -add(table.unpack(expr[2]))
 		end
 		return expand:apply(expr)
 	end,
@@ -41,6 +41,6 @@ subOp.visitorHandler = {
 	end,
 }
 -- ExpandPolynomial inherits from Expand
-subOp.visitorHandler.ExpandPolynomial = subOp.visitorHandler.Expand
+sub.visitorHandler.ExpandPolynomial = sub.visitorHandler.Expand
 
-return subOp
+return sub

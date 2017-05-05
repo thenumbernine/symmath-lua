@@ -108,7 +108,7 @@ MultiLine.lookupTable = {
 		res = self:combine(res, {')'})
 		return res
 	end,
-	[require 'symmath.unmOp'] = function(self, expr)
+	[require 'symmath.unm'] = function(self, expr)
 		local ch = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local sym = '-'
 		if #ch > 1 then sym = '- ' end	-- so minus-fraction doesn't just blend the minus into the fraction
@@ -123,11 +123,11 @@ MultiLine.lookupTable = {
 		end
 		return res
 	end,
-	[require 'symmath.divOp'] = function(self, expr)
+	[require 'symmath.div'] = function(self, expr)
 		assert(#expr == 2)
 		return self:fraction(self:apply(expr[1]), self:apply(expr[2]))
 	end,
-	[require 'symmath.powOp'] = function(self, expr)
+	[require 'symmath.pow'] = function(self, expr)
 		if #expr ~= 2 then error("expected 2 children but found "..#expr.." in "..toLua(expr)) end
 		local lhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, 2)

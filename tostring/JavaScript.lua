@@ -18,7 +18,7 @@ JavaScript.lookupTable = {
 			return self:apply(x, vars)
 		end):concat(',') .. ')'
 	end,
-	[require 'symmath.unmOp'] = function(self, expr, vars)
+	[require 'symmath.unm'] = function(self, expr, vars)
 		return '(-'..self:apply(expr[1], vars)..')'
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr, vars)
@@ -27,7 +27,7 @@ JavaScript.lookupTable = {
 			return self:apply(x, vars)
 		end):concat(' '..expr.name..' ')..')'
 	end,
-	[require 'symmath.powOp'] = function(self, expr, vars)
+	[require 'symmath.pow'] = function(self, expr, vars)
 		-- special case for constant integer powers
 		local invert = false 
 		local result

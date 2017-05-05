@@ -9,14 +9,14 @@ symmath.tostring = MathJax
 print(MathJax.header)
 local printbr = MathJax.print
 local var = symmath.var
-local frac = symmath.divOp
+local div = symmath.div
 
 for _,info in ipairs{
 	{
 		A = {
 			{3, 2, -1},
 			{2, -2, 4},
-			{-1, frac(1,2), -1}
+			{-1, div(1,2), -1}
 		},
 		b = {{1}, {-2}, {0}},
 	},

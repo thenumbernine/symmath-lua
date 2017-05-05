@@ -3,22 +3,22 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local BinaryOp = require 'symmath.BinaryOp'
 
-local divOp = class(BinaryOp)
-divOp.precedence = 3.5
-divOp.name = '/'
+local div = class(BinaryOp)
+div.precedence = 3.5
+div.name = '/'
 
-function divOp:evaluateDerivative(...)
+function div:evaluateDerivative(...)
 	local a, b = self[1], self[2]
 	a, b = a:clone(), b:clone()
 	local diff = require 'symmath'.diff
 	return (diff(a, ...) * b - a * diff(b, ...)) / (b * b)
 end
 
-divOp.visitorHandler = {
+div.visitorHandler = {
 	DistributeDivision = function(distributeDivision, expr)
-		local addOp = require 'symmath.addOp'
+		local add = require 'symmath.add'
 		local num, denom = expr[1], expr[2]
-		if not addOp.is(num) then return end
+		if not add.is(num) then return end
 		return getmetatable(num)(range(#num):map(function(k)
 			return (num[k] / denom):simplify()
 		end):unpack())
@@ -37,9 +37,9 @@ divOp.visitorHandler = {
 
 	Prune = function(prune, expr)
 		local symmath = require 'symmath'	-- for debug flags ...
-		local addOp = symmath.addOp	
-		local mulOp = symmath.mulOp
-		local powOp = symmath.powOp
+		local add = symmath.add	
+		local mul = symmath.mul
+		local pow = symmath.pow
 		local Array = symmath.Array
 		local Constant = symmath.Constant
 
@@ -67,12 +67,12 @@ divOp.visitorHandler = {
 			end
 
 			-- mul / Constant = 1/Constant * mul
-			if mulOp.is(expr[1]) and Constant.is(expr[2]) then
+			if mul.is(expr[1]) and Constant.is(expr[2]) then
 				local m = expr[1]:clone()
 				if #m == 0 then
 					return prune:apply(Constant(1/expr[2].value))
 				else
-					return prune:apply(mulOp(Constant(1/expr[2].value), table.unpack(m)))
+					return prune:apply(mul(Constant(1/expr[2].value), table.unpack(m)))
 				end
 			end
 		end
@@ -95,12 +95,12 @@ divOp.visitorHandler = {
 		end
 		
 		-- (a / b) / c => a / (b * c)
-		if divOp.is(expr[1]) then
+		if div.is(expr[1]) then
 			return prune:apply(expr[1][1] / (expr[1][2] * expr[2]))
 		end
 		
 		-- a / (b / c) => (a * c) / b
-		if divOp.is(expr[2]) then
+		if div.is(expr[2]) then
 			local a, b = table.unpack(expr)
 			local b, c = table.unpack(b)
 			return prune:apply((a * c) / b)
@@ -114,12 +114,12 @@ divOp.visitorHandler = {
 		do
 			local modified
 			local nums, denoms
-			if mulOp.is(expr[1]) then
+			if mul.is(expr[1]) then
 				nums = table(expr[1])
 			else
 				nums = table{expr[1]}
 			end
-			if mulOp.is(expr[2]) then
+			if mul.is(expr[2]) then
 				denoms = table(expr[2])
 			else
 				denoms = table{expr[2]}
@@ -131,7 +131,7 @@ divOp.visitorHandler = {
 				for i=1,#list do
 					local x = list[i]
 					local base, power
-					if powOp.is(x) then
+					if pow.is(x) then
 						base, power = table.unpack(x)
 					else
 						base, power = x, Constant(1)
@@ -213,7 +213,7 @@ divOp.visitorHandler = {
 					if #num == 1 then
 						num = num[1]
 					else
-						num = mulOp(num:unpack())
+						num = mul(num:unpack())
 					end
 				end
 				local denom
@@ -225,7 +225,7 @@ divOp.visitorHandler = {
 					if #denom == 1 then
 						denom = denom[1]
 					else
-						denom = mulOp(denom:unpack())
+						denom = mul(denom:unpack())
 					end
 				end
 				
@@ -243,9 +243,9 @@ divOp.visitorHandler = {
 		end
 
 		--[[ (a + b) / c => a/c + b/c ...
-		local addOp = require 'symmath.addOp'
-		if addOp.is(expr[1]) then
-			return prune:apply(addOp(
+		local add = require 'symmath.add'
+		if add.is(expr[1]) then
+			return prune:apply(add(
 				table.map(expr[1], function(x,k)
 					if type(k) ~= 'number' then return end
 					return x / expr[2]
@@ -260,18 +260,18 @@ divOp.visitorHandler = {
 		-- but that screws up things elsewhere ...
 		--[[
 		-- x / x^a => x^(1-a)
-		if powOp.is(expr[2]) and expr[1] == expr[2][1] then
+		if pow.is(expr[2]) and expr[1] == expr[2][1] then
 			return prune:apply(expr[1]:clone() ^ (1 - expr[2][2]:clone()))
 		end
 		
 		-- x^a / x => x^(a-1)
-		if powOp.is(expr[1]) and expr[1][1] == expr[2] then
+		if pow.is(expr[1]) and expr[1][1] == expr[2] then
 			return prune:apply(expr[1][1]:clone() ^ (expr[1][2]:clone() - 1))
 		end
 		
 		-- x^a / x^b => x^(a-b)
-		if powOp.is(expr[1])
-		and powOp.is(expr[2])
+		if pow.is(expr[1])
+		and pow.is(expr[2])
 		and expr[1][1] == expr[2][1]
 		then
 			return prune:apply(expr[1][1]:clone() ^ (expr[1][2]:clone() - expr[2][2]:clone()))
@@ -279,7 +279,7 @@ divOp.visitorHandler = {
 		--]]
 	
 		-- [[ hmm, attempt polynomial division
-		if addOp.is(expr[1]) then
+		if add.is(expr[1]) then
 			local a,b = expr[1], expr[2]
 			local q = Constant(0)
 			local r = a
@@ -288,7 +288,7 @@ divOp.visitorHandler = {
 	
 		--[[ cheat
 		-- now that cos.visitorHandler.Prune has simplified all the cos^2's into sin^2's
-		-- if there's a divOp that needs to be simplified 
+		-- if there's a div that needs to be simplified 
 		-- do one last sin^2 -> cos^2 to see if anything divides out
 		-- hmm, does this need :expand() -- or does cos.Prune need :expand()? 
 		-- yeah, this has to be done after simplify
@@ -297,7 +297,7 @@ divOp.visitorHandler = {
 			local cos = require 'symmath.cos'
 			local found
 			local sinSqToOneMinusCosSq = function(sub)
-				if powOp.is(sub)
+				if pow.is(sub)
 				and sub[2] == Constant(2)
 				and sin.is(sub[1])
 				then
@@ -317,16 +317,16 @@ print('converting',expr,'to',a/b)
 
 	Tidy = function(tidy, expr)
 		local symmath = require 'symmath'
-		local unmOp = symmath.unmOp
+		local unm = symmath.unm
 		local Constant = symmath.Constant
 		
 		local a, b = table.unpack(expr)
-		local ua = unmOp.is(a)
-		local ub = unmOp.is(b)
+		local ua = unm.is(a)
+		local ub = unm.is(b)
 		if ua and ub then return tidy:apply(a[1] / b[1]) end
 		if ua and Constant.is(a[1]) then return tidy:apply(-(a[1] / b)) end
 		if ub and Constant.is(b[1]) then return tidy:apply(-(a / b[1])) end
 	end,
 }
 
-return divOp
+return div

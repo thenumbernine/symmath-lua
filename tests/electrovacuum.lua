@@ -11,15 +11,14 @@ local Tensor = symmath.Tensor
 local Matrix = symmath.Matrix
 local var = symmath.var
 local vars = symmath.vars
-local frac = symmath.divOp
 local sqrt = symmath.sqrt
 local log = symmath.log
 local Constant = symmath.Constant
 local clone = symmath.clone
 local sin = symmath.sin
 local cos = symmath.cos
-local divOp = symmath.divOp
-local mulOp = symmath.mulOp
+local div = symmath.div
+local mul = symmath.mul
 local Derivative = symmath.Derivative
 local complex = require 'symmath.complex'
 
@@ -265,13 +264,13 @@ if showLorentzMetric then
 	end)
 
 	local accel = -GammaL'_abc' * u'^b' * u'^c'
-	printbr(( frac(1, q) * u[1] * m * var'\\dot{u}''_a' ):eq( -Gamma_'_abc' * u_'^b' * u_'^c' ):eq( -GammaL'_abc'() * u'^b'() * u'^c'() ):eq( 
+	printbr(( div(1, q) * u[1] * m * var'\\dot{u}''_a' ):eq( -Gamma_'_abc' * u_'^b' * u_'^c' ):eq( -GammaL'_abc'() * u'^b'() * u'^c'() ):eq( 
 		--replacePotentialsWithFields(
 			accel()
 		--)()
 	))
 
-	printbr(( frac(1,q) * u[1] * m * var'\\dot{u}''_i' ):eq( -Gamma_'_ibc' * u_'^b' * u_'^c' ):eq( accel()'_i'() ))
+	printbr(( div(1,q) * u[1] * m * var'\\dot{u}''_i' ):eq( -Gamma_'_ibc' * u_'^b' * u_'^c' ):eq( accel()'_i'() ))
 
 	--[[
 	printbr"<h3>Connection coefficients</h3>"
@@ -366,9 +365,9 @@ if showFlatSpaceApproximationRiemannSolution then
 			local rhs = eqn:rhs()[i]
 			-- hack in the mean time ...
 			local eqn = lhs:eq(rhs)
-			if divOp.is(rhs) then
+			if div.is(rhs) then
 				eqn = (eqn * rhs[2]:clone())()
-			elseif mulOp.is(rhs) then
+			elseif mul.is(rhs) then
 				eqn = (eqn / rhs[1]:clone())()
 			end
 			eqn = (eqn + A[i%3+2]:diff(spatialCoords[(i+1)%3+1]))()
@@ -407,11 +406,11 @@ if showFlatSpaceApproximationRiemannSolution then
 	printbr()
 	printbr'dual:'
 	local dualFaraday = Tensor'_uv'
-	local dualFaraday_expr = frac(1,2) * Faraday'^ab' * LeviCivita4'_abuv'
+	local dualFaraday_expr = div(1,2) * Faraday'^ab' * LeviCivita4'_abuv'
 	dualFaraday['_uv'] = dualFaraday_expr()	-- does simplify() modifies the expr?
 	printbr(var'\\star F''_uv'
 		-- why isn't pretty() producing this from expr?
-		:eq(frac(1,2) * var'F''^ab' * var'\\epsilon''_abuv')
+		:eq(div(1,2) * var'F''^ab' * var'\\epsilon''_abuv')
 		:eq(dualFaraday'_uv'()))
 
 	-- make sure the identities form the Maxwell equations 
@@ -451,7 +450,7 @@ if showFlatSpaceApproximationRiemannSolution then
 	printbr(( F_'_uv' * F_'^uv' ):eq( (Faraday'_uv' * Faraday'^uv')() ))
 
 	local T_EM = Tensor'_ab'
-	local T_EM_expr = frac(1, 4 * pi) * (Faraday'_au' * Faraday'_b^u' - frac(1,4) * g'_ab' * Faraday'_uv' * Faraday'^uv')
+	local T_EM_expr = div(1, 4 * pi) * (Faraday'_au' * Faraday'_b^u' - div(1,4) * g'_ab' * Faraday'_uv' * Faraday'^uv')
 	T_EM['_ab'] = T_EM_expr()
 
 	printbr(T_'_ab':eq(pretty(T_EM_expr)))
@@ -459,8 +458,8 @@ if showFlatSpaceApproximationRiemannSolution then
 	printbr(T_'^a_a':eq( T_EM'^a_a'()))
 
 	printbr(G_'_ab':eq( 8 * pi * T_'_ab')) -- G_ab = 8 pi T_ab
-	printbr(G_'_ab':eq( R_'_ab' - frac(1,2) * R_'^c_c' * g_'_ab' )) -- G_ab = R_ab - 1/2 R^c_c g_ab
-	printbr(R_'_ab':eq( G_'_ab' - frac(1,2) * G_'^c_c' * g_'_ab' ))	-- R_ab = G_ab - 1/2 G^c_c g_ab
+	printbr(G_'_ab':eq( R_'_ab' - div(1,2) * R_'^c_c' * g_'_ab' )) -- G_ab = R_ab - 1/2 R^c_c g_ab
+	printbr(R_'_ab':eq( G_'_ab' - div(1,2) * G_'^c_c' * g_'_ab' ))	-- R_ab = G_ab - 1/2 G^c_c g_ab
 	printbr(R_'_ab':eq( 8 * pi * T_'_ab' - 4 * pi * T_'^c_c' * g_'_ab'))	-- R_ab = 8 pi T_ab - 4 pi T^c_c g_ab
 
 	Ricci = Tensor'_ab'
@@ -515,7 +514,7 @@ if showFlatSpaceApproximationRiemannSolution then
 	local Riemann_ijkl_expr = LeviCivita3'_ijm' * (E'_m' + B'_m') * LeviCivita3'_kln' * (E'_n' + B'_n')
 	--]]
 	--[[ option #2 -- leaves Rhat_ii - R_ii = -4/3 E dot B
-	local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j' + frac(2,3) * gamma'_ij' * E'_k' * B'_k'
+	local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j' + div(2,3) * gamma'_ij' * E'_k' * B'_k'
 	local Riemann_tijk_expr = gamma'_ij' * S'_k' - gamma'_ik' * S'_j'
 	local Riemann_ijkl_expr = LeviCivita3'_ijm' * (E'_m' + B'_m') * LeviCivita3'_kln' * (E'_n' + B'_n')
 	--]]
@@ -532,7 +531,7 @@ if showFlatSpaceApproximationRiemannSolution then
 	--[[ option #5
 	local Riemann_titj_expr = E'_i' * E'_j' + B'_i' * B'_j' - E'_i' * B'_j' - B'_i' * E'_j'
 	local Riemann_tijk_expr = gamma'_ij' * S'_k' - gamma'_ik' * S'_j'
-	local Riemann_ijkl_expr = (gamma'_ij' * gamma'_km' * gamma'_ln' - frac(2,3) * gamma'_kl' * gamma'_im' * gamma'_jn') * (E'_m' * E'_n' + B'_m' * B'_n')
+	local Riemann_ijkl_expr = (gamma'_ij' * gamma'_km' * gamma'_ln' - div(2,3) * gamma'_kl' * gamma'_im' * gamma'_jn') * (E'_m' * E'_n' + B'_m' * B'_n')
 	--]]
 	--[[ option #6 - spinoff of option #4 which works, but switches j & l so the Levi-Civita symbols line up with the connection coefficients of R^a_bcd
 	-- RHat_ab - R_ab = eta_ab (E^2 + B^2) and the Riemann constraints are not fulfilled
@@ -814,9 +813,9 @@ CommSO3['_zy^y'] = Tensor('_zy^y', function() return -_i_ * E[1] end)
 	printbr(c_'_ab^c':eq(CommSO3'_ab^c'()))
 
 	local GammaSO3 = Tensor'^a_bc'
-	GammaSO3['^a_bc'] = (frac(1,2) * CommSO3'_cb^a')()
+	GammaSO3['^a_bc'] = (div(1,2) * CommSO3'_cb^a')()
 	printbr'for purely antisymmetric connections:'
-	printbr(Gamma_'^a_bc':eq(frac(1,2) * c_'_cb^a'))
+	printbr(Gamma_'^a_bc':eq(div(1,2) * c_'_cb^a'))
 	printbr(Gamma_'^a_bc':eq(GammaSO3'^a_bc'()))
 	
 	local RiemannSO3 = Tensor'^a_bcd'

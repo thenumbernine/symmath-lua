@@ -10,14 +10,14 @@ local function precedence(x)
 end
 
 function SingleLine:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
-	local divOp = require 'symmath.divOp'
+	local div = require 'symmath.div'
 	local childNode = parentNode[childIndex]
 	local childPrecedence = precedence(childNode)
 	local parentPrecedence = precedence(parentNode)
-	if divOp.is(parentNode) then parentPrecedence = parentPrecedence + .5 end
-	if divOp.is(childNode) then childPrecedence = childPrecedence + .5 end
-	local subOp = require 'symmath.subOp'
-	if subOp.is(parentNode) and childIndex > 1 then
+	if div.is(parentNode) then parentPrecedence = parentPrecedence + .5 end
+	if div.is(childNode) then childPrecedence = childPrecedence + .5 end
+	local sub = require 'symmath.sub'
+	if sub.is(parentNode) and childIndex > 1 then
 		return childPrecedence <= parentPrecedence
 	else
 		return childPrecedence < parentPrecedence
@@ -44,7 +44,7 @@ SingleLine.lookupTable = {
 			return self:apply(x)
 		end):concat(', ') .. ')'
 	end,
-	[require 'symmath.unmOp'] = function(self, expr)
+	[require 'symmath.unm'] = function(self, expr)
 		return '-'..self:wrapStrOfChildWithParenthesis(expr, 1)
 	end,
 	[require 'symmath.BinaryOp'] = function(self, expr)

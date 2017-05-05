@@ -13,7 +13,7 @@ accepts an equation and a variable
 returns an equation with that variable on the lhs and the rest on the rhs
 --]]
 return function(eqn, x)
-	local mulOp = require 'symmath.mulOp'
+	local mul = require 'symmath.mul'
 	local EquationOp = require 'symmath.EquationOp'	
 	local Constant = require 'symmath.Constant'
 	local equals = require 'symmath.equals' 

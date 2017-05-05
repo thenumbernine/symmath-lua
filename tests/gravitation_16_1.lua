@@ -32,7 +32,8 @@ print(MathJax.header)
 local Tensor = symmath.Tensor
 local var = symmath.var
 local vars = symmath.vars
-local frac = symmath.divOp
+local div = symmath.div
+local mul = symmath.mul
 
 local function print(...)
 	_G.print(...)
@@ -75,7 +76,7 @@ local Gamma = var'\\Gamma'
 -- *) automatically separate out comma derivatives into separate TensorRef's, for easier substitution
 -- *) automatically reindex subst's where applicable
 -- *) make dense Tensor reindexing work just like expression reindexing
-local GammaLDef = Gamma'_abc':eq(frac(1,2) * (g'_ab''_,c' + g'_ac''_,b' - g'_bc''_,a'))
+local GammaLDef = Gamma'_abc':eq(div(1,2) * (g'_ab''_,c' + g'_ac''_,b' - g'_bc''_,a'))
 print(GammaLDef)
 print()
 
@@ -228,7 +229,7 @@ for i=2,4 do
 
 	-- get rid of any Phi,j times u,k of any kind ... hmm ...
 	divTVal[i] = divTVal[i]:map(function(expr)
-		if not symmath.mulOp.is(expr) then return end
+		if not mul.is(expr) then return end
 		local dPhi = Phi'_,i'()
 		local foundDPhi
 		local foundU

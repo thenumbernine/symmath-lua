@@ -34,35 +34,35 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 
 ### Arithmetic
 
-`symmath.unmOp(a)`  
+`symmath.unm(a)`  
 `-a` when used with symmath expressions  
 Creates an expression representing the negative of the parameter.
 
-`symmath.addOp(a, b)`  
+`symmath.add(a, b)`  
 `a + b` when used with symmath expressions  
 Creates an expression representing the sum of the parameters.
 
-`symmath.mulOp(a, b)`  
+`symmath.mul(a, b)`  
 `a * b` when used with symmath expressions  
 Creates an expression representing the product of the parameters.
 
-`symmath.subOp(a, b)`  
+`symmath.sub(a, b)`  
 `a - b` when used with symmath expressions  
 Creates an expression representing the difference of the parameters.
 
-`symmath.divOp(a, b)`  
+`symmath.div(a, b)`  
 `a / b` when used with symmath expressions  
 Creates an expression representing a fraction of the parameters.
 
-`symmath.powOp(a, b)`  
+`symmath.pow(a, b)`  
 `a ^ b` when used with symmath expressions  
 Creates an expression representing the first parameter raised to the power of the second parameter.
 
-`symmath.modOp(a, b)`  
+`symmath.mod(a, b)`  
 `a % b` when used with symmath expressions  
 Creates an expression representing the first parameter modulo the second.
 
-###Equations
+### Equations
 
 `eqn = symmath.equals(lhs, rhs)`  
 `eqn = lhs:equals(rhs)`  
