@@ -93,7 +93,7 @@ mul.visitorHandler = {
 		end
 	end,
 
-	FactorDivision = function(factor, expr)
+	FactorDivision = function(factorDivision, expr)
 		local add = require 'symmath.op.add'
 		local sub = require 'symmath.op.sub'
 		
@@ -113,7 +113,7 @@ mul.visitorHandler = {
 					local chch = ch[j]
 					table.insert(expr, i, chch)
 				end
-				return factor:apply(expr)
+				return factorDivision:apply(expr)
 			end
 		end
 		
@@ -129,7 +129,7 @@ mul.visitorHandler = {
 					terms:insert(term)
 				end
 				expr = getmetatable(ch)(table.unpack(terms))
-				return factor:apply(expr)
+				return factorDivision:apply(expr)
 			end
 		end
 	end,

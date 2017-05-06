@@ -516,3 +516,55 @@ and who is to say the coordinate systems do correctly align with cylindrical Min
 Though their deviation from Minkowski should only be infintesimal, according to $I$ and $\lambda$
 which I need to calculate in natural units and specify here ...
 ]]):split'\n') do printbr(l) end
+
+-- -4/3 I^2 / r^3 - 4 lambda^2 / r
+
+local constants = require 'grem.constants'
+local wire_radius = .5 * constants.wire_diameters.electrical_range	-- m
+printbr('wire_radius',wire_radius)
+local wire_cross_section_area = math.pi * wire_radius^2	-- m^2
+printbr('wire_cross_section_area',wire_cross_section_area)  
+local wire_length = 12 * constants.in_in_m	-- m
+printbr('wire_length',wire_length)  
+local wire_resistivity = constants.wire_resistivities.gold
+printbr('wire_resistivity',wire_resistivity)  
+local wire_resistance = wire_resistivity * wire_length / wire_cross_section_area	-- m^0
+printbr('wire_resistance',wire_resistance)  
+--local battery_voltage_in_V = 1.5
+local battery_voltage_in_V = 1e+5
+local battery_voltage_in_m = battery_voltage_in_V * constants.V_in_m	-- m^0
+printbr('battery_voltage_in_m',battery_voltage_in_m)  
+local wire_current = battery_voltage_in_m / wire_resistance	-- amps = C / s = m / m = m^0, likewise volts = m^0, ohms = m^0, so amps = volts / ohms = m^0
+printbr([[wire_current in $m^0$]],wire_current)
+printbr([[wire current in $\frac{m}{s}$:]], wire_current / constants.c)
+
+--local current_velocity = 1	-- doesn't matter if lambda = 0.  units of m/s = m^0
+-- so ... inside the wire we know q=0 by Kirchoff's law
+-- what about J = sigma E? doesn't that mean E = J rho, for rho = resistivity?
+local wire_charge_density = 0	-- C / m^3 = m^-2
+printbr('wire_charge_density',wire_charge_density)  
+local wire_charge_density_per_length = wire_charge_density * wire_cross_section_area	-- m^-2 * m^2 = m^0
+printbr('wire_charge_density_per_length',wire_charge_density_per_length)  
+
+-- J is current density, in units of amperes per square meter ...
+-- I current = J current density * A area, is in amperes ...
+-- Ohm's law: I current = V voltage / R resistance
+-- J = sigma E, E = rho J, sigma = 1/rho
+
+--[[
+drift speed: I = n A v Q
+v = I / (n A Q) = 
+example given https://en.wikiversity.org/wiki/Physics_equations/Current_and_current_density#Drift_speed
+I = electric current = V / R = 5 Amps
+n = number of charged particles per unit volume = charge carrier density = ?
+A = cross-section area = .5 mm^2 = .5 (1e-3 m)^2 = 5e-7 m^2
+Q = charge on each particle.  k_e = # electrons in 1 Coulomb, so 1/k_e = 1.6e-19 Coulombs = charge of an electron
+v = drift velocity ~ 1e-3 m/s
+
+5 Amps = n * 5e-7 m^2 * 1e-3 m/s * 1.6e-19 Coulombs
+n = 5 Amps / (5e-7 m^2 * 1e-3 m/s * 1.6e-19 Coulombs)
+n = 5 Amps / (8e-29 Coulombs m^3 / s) ... Amps = Coulombs / second ...
+n = 6.25e+28 m^-3 for copper wire
+n = 1.070e+28 m^-3 for silver wire ... https://en.wikipedia.org/wiki/Charge_carrier_density
+
+--]]

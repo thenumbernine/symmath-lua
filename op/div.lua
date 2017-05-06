@@ -31,7 +31,19 @@ div.visitorHandler = {
 
 	FactorDivision = function(factorDivision, expr)
 		local Constant = require 'symmath.Constant'
+		local mul = require 'symmath.op.mul'
+
 		if expr[1] == Constant(1) then return end
+	
+		-- a/(b1 * ... * bn) => a * 1/b1 * ... * 1/bn
+		if mul.is(expr[2]) then
+			local prod = mul(expr[1], range(#expr[2]):map(function(i)
+				return 1 / expr[2][i]:clone()
+			end):unpack())
+			return factorDivision:apply(prod)
+		end
+
+		-- a/b => a * 1/b
 		return factorDivision:apply(expr[1] * (Constant(1)/expr[2]))
 	end,
 
