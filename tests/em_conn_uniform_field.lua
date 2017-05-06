@@ -42,6 +42,7 @@ local S = var'S'
 local Sv = Tensor('_i', function(i) return var('S_'..spatialCoords[i].name) end)
 local Sx, Sy, Sz = table.unpack(Sv)
 
+--[=[
 --[[
 here's a thought on this:
 finding g->C and C->R means finding the space by which E changes when transformed, and therefore R changes
@@ -151,11 +152,21 @@ ConnFromMetric = (gU'^ad' * ConnFromMetric'_dbc')()
 ConnFromMetric:print'\\Gamma'
 
 print'vs desired'
+--]=]
 
 local Conn = Tensor'^a_bc'
 
+-- THIS WORKS
+-- [[ same as below, but I want to avoid C^t_tt ...
+Conn[2][1][1] = -E
+Conn[1][2][1] = E
+Conn[1][1][2] = E
+Conn[2][3][3] = E
+Conn[2][4][4] = E
+--]]
+
 -- THIS WORKS:
--- [[ this gives rise to the stress-energy tensor for EM with E in the x dir and B = 0
+--[[ this gives rise to the stress-energy tensor for EM with E in the x dir and B = 0
 -- to account for other E's and B's, just boost and rotate your coordinate system
 -- don't forget, when transforming Conn, to use its magic transformation eqn, since it's not a real tensor
 Conn[1][1][1] = E
@@ -166,8 +177,7 @@ Conn[1][3][3] = E
 Conn[1][4][4] = E
 --]]
 
---Conn:printElem'\\Gamma' printbr()
-Conn:print'\\Gamma'
+if gU then Conn:print'\\Gamma' else Conn:printElem'\\Gamma' printbr() end
 --printbr(var'c''_cb^a':eq(var'\\Gamma''^a_bc' - var'\\Gamma''^a_cb'):eq((Conn'^a_bc' - Conn'^a_cb')()))
 
 printbr()

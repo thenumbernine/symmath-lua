@@ -12,11 +12,24 @@ end
 
 local pi = var'\\pi'
 
-local m = var'm'
-local s = var's'
+printbr'<h3>distance</h3>'
 
+local m = var'm'
+printbr('meters:',m)
+
+local in_ = var'in'
+local in_in_m = in_:eq(.0254 * m)
+printbr('inches:',in_in_m)
+
+local ft = var'ft'
+local ft_in_in = ft:eq(12 * in_)
+local ft_in_m = ft_in_in:subst(in_in_m)()
+printbr('feet:', ft_in_in:eq(ft_in_m:rhs()))
+
+printbr()
 printbr'speed of light'
 local c = var'c'
+local s = var's'
 local c_in_m_s = c:eq(299792458 * (m / s))
 printbr(c_in_m_s)
 
@@ -86,19 +99,23 @@ local expr = ke_in_m_s_kg_C:subst(ke_eq_1, kg_in_m, s_in_m)():factorDivision()
 local C_in_m = sqrt(expr)():solve(C)
 printbr(C_in_m)
 
+-- Amp
+local A = var'A'
+local A_in_s_C = A:eq(C / s)
+local A_in_m = A_in_s_C:subst(s_in_m, C_in_m)()
+printbr('Amp',A_in_s_C:eq(A_in_m:rhs()))
+
 -- Volt
 local V = var'V'
 local V_in_N_C = V:eq(N / C)
-printbr(V_in_N_C)
 local V_in_m = V_in_N_C:subst(N_in_m, C_in_m)():factorDivision()():factorDivision()
-printbr(V_in_m)
+printbr('Volt',V_in_N_C:eq(V_in_m:rhs()))
 
 -- Ohm
 local Ohm = var'\\Omega'
 local Ohm_in_kg_s_C = Ohm:eq(kg / (s * C^2))
-printbr(Ohm_in_kg_s_C)
 local Ohm_in_m = Ohm_in_kg_s_C:subst(kg_in_m, s_in_m, C_in_m)():factorDivision()():factorDivision()
-printbr(Ohm_in_m)
+printbr('Ohm',Ohm_in_kg_s_C:eq(Ohm_in_m:rhs()))
 
 -- eps0
 printbr()
@@ -153,48 +170,48 @@ printbr(hBar_in_s_J)
 local hBar_in_m = hBar_in_s_J:subst(s_in_m, J_in_m)()
 printbr(hBar_in_m)
 
--- hBar = 1
--- what new units do we get out of this?
--- the wikipedia article on Planck units says it should provide temperature units
--- but hBar itself is given in J s = N m s = kg m s ... which I've already reduced to meters ...
-local hBar_eq_1 = hBar:eq(1)
-printbr(hBar_eq_1)
-
 printbr()
 printbr'Planck units:'
 local lP = var'l_P'
 local lP_def = lP:eq(sqrt(hBar * G / c^3))
-local lP_in_m = lP_def:subst(hBar_in_m, c_in_m_s, G_in_m_s_kg, kg_in_m, s_in_m)()
+local lP_in_m = lP_def:subst(hBar_in_m, c_eq_1, G_eq_1)()
 printbr('length',lP_def:eq(lP_in_m:rhs()))
 
 local mP = var'm_P'
 local mP_def = mP:eq(sqrt(hBar * c / G))
-local mP_in_kg = mP_def:subst(hBar_in_m, c_in_m_s, G_in_m_s_kg, kg_in_m, s_in_m)():subst(kg_in_m:solve(m))()
+local mP_in_kg = mP_def:subst(hBar_in_m, c_eq_1, G_eq_1)():subst(kg_in_m:solve(m))()
 printbr('mass',mP_def:eq(mP_in_kg:rhs()))
 
 local tP = var't_P'
 local tP_def = tP:eq(sqrt(hBar * G / c^5))
-local tP_in_s = tP_def:subst(hBar_in_m, c_in_m_s, G_in_m_s_kg, kg_in_m, s_in_m)():subst(s_in_m:solve(m))()
+local tP_in_s = tP_def:subst(hBar_in_m, c_eq_1, G_eq_1)():subst(s_in_m:solve(m))()
 printbr('time',tP_def:eq(tP_in_s:rhs()))
 
-printbr()
-printbr'Planck charge'
 local qP = var'q_P'
 local qP_def = qP:eq(sqrt(4 * pi * eps0 * hBar * c))
-local qP_in_C = qP_def:subst(hBar_in_m, c_in_m_s, G_in_m_s_kg, kg_in_m, s_in_m, eps0_in_m, pi:eq(math.pi)):subst(C_in_m:solve(m))()
+local qP_in_C = qP_def:subst(hBar_in_m, c_eq_1, G_eq_1, eps0_in_m, pi:eq(math.pi)):subst(C_in_m:solve(m))()
 printbr('charge',qP_def:eq(qP_in_C:rhs()))
 
-printbr()
-printbr'Planck temperature'
 local TP = var'T_P'
 local TP_def = TP:eq(sqrt(hBar * c^2 / kB))
-local TP_in_K = TP_def:subst(hBar_in_m, c_in_m_s, G_in_m_s_kg, kB_in_m_s_kg_K, kg_in_m, s_in_m):subst(K_in_m:solve(m))()
+local TP_in_K = TP_def:subst(hBar_in_m, c_eq_1, G_eq_1, kB_eq_1):subst(K_in_m:solve(m))()
 printbr('temperature',TP_def:eq(TP_in_K:rhs()))
 
--- kg in terms of m, based on hBar (gives kg in m^-1 instead of m, as G does above)
--- why do we need hBar=1 and G=1 when together they give contradicting definitions of kg?
+
 printbr()
-printbr('kg using $\\hbar$')
+printbr'fine structure constant'
+local alpha = var'\\alpha'
+local alpha_def = alpha:eq((ke * e^2) / (hBar * c))
+printbr(alpha_def)
+local alpha_in_m = alpha_def:subst(ke_eq_1, e_in_m, hBar_in_m, c_eq_1)()
+printbr(alpha_in_m)
+
+--[[ the following is from QFT notes, which relies on hBar = 1
+-- either this or G = 1 can be enforced to defined kg in terms of m and s
+-- but not both
+local hBar_eq_1 = hBar:eq(1)
+printbr()
+printbr('kg using',hBar_eq_1)
 local kg_in_m_s = hBar_in_s_J:subst(hBar_eq_1, J_in_m_s_kg)():factorDivision():solve(kg)():factorDivision()
 printbr(kg_in_m_s)
 local kg_in_m = kg_in_m_s:factorDivision()():subst(s_in_m)():factorDivision()
@@ -241,6 +258,7 @@ printbr(m_in_eV)
 printbr(s_in_eV)
 printbr(K_in_eV)
 printbr(C_in_eV)
+--]]
 
 --[[
 
