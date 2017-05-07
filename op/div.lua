@@ -14,6 +14,18 @@ function div:evaluateDerivative(...)
 	return (diff(a, ...) * b - a * diff(b, ...)) / (b * b)
 end
 
+function div:reverse(soln, index)
+	local p,q = table.unpack(self)
+	-- y = p(x) / q => p(x) = q * y
+	if index == 1 then
+		soln = soln * q:clone()
+	-- y = p / q(x) => q(x) = p / y
+	elseif index == 2 then
+		soln = p:clone() / soln
+	end
+	return soln
+end
+
 div.visitorHandler = {
 	DistributeDivision = function(distributeDivision, expr)
 		local add = require 'symmath.op.add'
@@ -78,14 +90,11 @@ div.visitorHandler = {
 				return Constant(expr[1].value / expr[2].value)
 			end
 
-			-- mul / Constant = 1/Constant * mul
-			if mul.is(expr[1]) and Constant.is(expr[2]) then
-				local m = expr[1]:clone()
-				if #m == 0 then
-					return prune:apply(Constant(1/expr[2].value))
-				else
-					return prune:apply(mul(Constant(1/expr[2].value), table.unpack(m)))
-				end
+			-- q / Constant = 1/Constant * q
+			if Constant.is(expr[2]) then
+				return prune:apply(
+					Constant(1/expr[2].value) * expr[1]
+				)
 			end
 		end
 

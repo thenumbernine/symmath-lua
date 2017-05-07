@@ -14,6 +14,11 @@ function sqrt:evaluateDerivative(...)
 	return diff(x, ...) / (Constant(2) * sqrt(x))
 end
 
+-- y = sqrt(x) => y^2 = x
+function sqrt:reverse(soln, index)
+	return soln^2
+end
+
 sqrt.visitorHandler = table(sqrt.visitorHandler)
 
 sqrt.visitorHandler.Prune = function(prune, expr)

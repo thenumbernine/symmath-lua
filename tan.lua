@@ -13,6 +13,10 @@ function tan:evaluateDerivative(...)
 	return diff(x,...) / cos(x)^2
 end
 
+function tan:reverse(soln, index)
+	return require 'symmath.atan'(soln)
+end
+
 tan.visitorHandler = {
 	Prune = function(prune, expr)
 		local sin = require 'symmath.sin'

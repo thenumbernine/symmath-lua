@@ -13,6 +13,26 @@ function sub:evaluateDerivative(...)
 	return x
 end
 
+function sub:reverse(soln, index)
+	-- y = a_1(x) - a_2 - ... - a_n
+	-- => a_1(x) = y + a_2 + ... + a_n
+	-- y = a_1 - a_2 - ... - a_j(x) - ... - a_n
+	-- => a_j(x) = -y + a_1 - a_2 - ... - a_j-1 - a_j+1 - a_n
+	-- so to move to the opposite side of an equation, we sub the first and add the rest
+	-- but then, if we're solving for bcd etc, then we negatie the solution
+	for k=1,#self do
+		if k ~= index then
+			if k == 1 then
+				soln = soln - self[k]:clone()
+			else
+				soln = soln + self[k]:clone()
+			end
+		end
+	end
+	if index > 1 then soln = -soln end
+	return soln
+end
+
 sub.visitorHandler = {
 	Eval = function(eval, expr)
 		local result = eval:apply(expr[1])

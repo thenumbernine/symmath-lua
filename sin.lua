@@ -15,6 +15,10 @@ function sin:evaluateDerivative(...)
 	return diff(x,...) * cos(x)
 end
 
+function sin:reverse(soln, index)
+	return require 'symmath.asin'(soln)
+end
+
 sin.visitorHandler = {
 	Prune = function(prune, expr)
 		local Constant = require 'symmath.Constant'

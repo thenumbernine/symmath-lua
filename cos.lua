@@ -16,6 +16,10 @@ function cos:evaluateDerivative(...)
 	return -diff(x,...) * sin(x)
 end
 
+function cos:reverse(soln, index)
+	return require 'symmath.acos'(soln)
+end
+
 cos.visitorHandler = {
 	Prune = function(prune, expr)
 		local Constant = require 'symmath.Constant'

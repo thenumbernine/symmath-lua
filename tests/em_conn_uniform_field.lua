@@ -42,7 +42,8 @@ local S = var'S'
 local Sv = Tensor('_i', function(i) return var('S_'..spatialCoords[i].name) end)
 local Sx, Sy, Sz = table.unpack(Sv)
 
---[=[
+-- [==[
+
 --[[
 here's a thought on this:
 finding g->C and C->R means finding the space by which E changes when transformed, and therefore R changes
@@ -120,18 +121,18 @@ g[2][4] = E * z * exp(E * t) g[4][2] = g[2][4]
 -- C^x_tt = -E = g^xt C_ttt + g^xk C_ktt = 1/2 g^xt g_tt,t + g^xk g_kt,t - 1/2 g^xk g_tt,k
 -- C^t_tx = E = g^tt C_ttx + g^tk C_ktx = 1/2 (g^tt g_tt,x + g^tx g_xx,t + g^ty (g_xy,t + g_ty,x - g_tx,y) + 1/2 g^tz (g_xz,t + g_tz,x - g_tx,z))
 -- and all those terms are constant.
-g[1][1] = var('a', {})
-g[2][2] = var('b', {})
-g[3][3] = var('c', {})
-g[4][4] = var('d', {})
+g[1][1] = var('a', {t,x,y,z})
+g[2][2] = var('b', {t,x,y,z})
+g[3][3] = var('c', {t,x,y,z})
+g[4][4] = var('d', {t,x,y,z})
 
-g[1][2] = var('e', {}) g[2][1] = g[1][2]
-g[1][3] = var('f', {}) g[3][1] = g[1][3]
-g[1][4] = var('g', {}) g[4][1] = g[1][4]
+g[1][2] = var('e', {t,x,y,z}) g[2][1] = g[1][2]
+--g[1][3] = var('f', {}) g[3][1] = g[1][3]
+--g[1][4] = var('g', {}) g[4][1] = g[1][4]
 
-g[2][3] = var('h', {}) g[3][2] = g[2][3]
-g[2][4] = var('j', {}) g[4][2] = g[2][4]
-g[3][4] = var('k', {}) g[4][3] = g[3][4]
+--g[2][3] = var('h', {}) g[3][2] = g[2][3]
+--g[2][4] = var('j', {}) g[4][2] = g[2][4]
+--g[3][4] = var('k', {}) g[4][3] = g[3][4]
 --]]
 
 local gU = Tensor('^ab', table.unpack(( Matrix.inverse(g) )))
@@ -152,17 +153,17 @@ ConnFromMetric = (gU'^ad' * ConnFromMetric'_dbc')()
 ConnFromMetric:print'\\Gamma'
 
 print'vs desired'
---]=]
+--]==]
 
 local Conn = Tensor'^a_bc'
 
 -- THIS WORKS
 -- [[ same as below, but I want to avoid C^t_tt ...
-Conn[2][1][1] = -E
-Conn[1][2][1] = E
-Conn[1][1][2] = E
-Conn[2][3][3] = E
-Conn[2][4][4] = E
+Conn[2][1][1] = -E	-- only scales R_tt
+Conn[1][2][1] = E	-- scales R_xx and affects terms of R_tt
+Conn[1][1][2] = E	-- affects terms of R_tt
+Conn[2][3][3] = E	-- scales R_yy
+Conn[2][4][4] = E	-- scales R_zz
 --]]
 
 -- THIS WORKS:
@@ -261,3 +262,5 @@ printbr()
 printbr()
 printbr(var'R''^a_bcd':eq(RiemannExpr:replace(Conn, var'\\Gamma')))
 printbr(var'R''_ab':eq(RiemannExpr:replace(Conn, var'\\Gamma'):reindex{cacbd='abcde'}))
+
+printbr[[TODO compare change-of-coordinate to Conn with change-of-coordinate to Ricci, make sure I know how to use this to find the Ricci tensor in any frame, therefore for any (non?)null E and B configuration]] 

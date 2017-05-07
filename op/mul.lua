@@ -59,6 +59,17 @@ mul.__eq = function(a,b)
 	return true
 end
 
+function mul:reverse(soln, index)
+	-- y = a_1 * ... * a_j(x) * ... * a_n
+	-- => a_j(x) = y / (a_1 * ... * a_j-1 * a_j+1 * ... * a_n)
+	for k=1,#self do
+		if k ~= index then
+			soln = soln / self[k]:clone()
+		end
+	end
+	return soln
+end
+
 mul.visitorHandler = {
 	Eval = function(eval, expr)
 		local result = 1

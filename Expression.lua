@@ -34,6 +34,15 @@ function Expression:clone()
 	end
 end
 
+--[[
+applies the inverse operation to soln
+inverse is performed with regards to child at index
+returns result
+--]]
+function Expression:reverse(soln, index)
+	error("don't know how to inverse")
+end
+
 -- get a flattened tree of all nodes
 -- I don't know that I ever use this ...
 function Expression:getAllNodes()
