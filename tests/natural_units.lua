@@ -48,7 +48,7 @@ printbr()
 printbr'Gravitational constant'
 local G = var'G'
 local kg = var'kg'
-local G_in_m_s_kg = G:eq(6.67384e-11 * m^3 / (kg * s^2))():factorDivision()
+local G_in_m_s_kg = G:eq(6.67384e-11 * (m^3 / (kg * s^2)))
 printbr(G_in_m_s_kg)
 
 -- G = 1
@@ -61,8 +61,7 @@ local m_in_kg = kg_in_m:solve(m)
 local s_in_kg = s_in_m:subst(m_in_kg)()
 local kg_in_s = s_in_kg:solve(kg)
 
-printbr(kg_in_m)
-printbr(kg_in_s)
+printbr(kg_in_m:eq(kg_in_s:rhs()))
 
 printbr(m_in_kg)
 printbr(s_in_kg)
@@ -70,16 +69,14 @@ printbr(s_in_kg)
 -- Newton
 local N = var'N'
 local N_in_m_s = N:eq(kg / s^2)
-printbr(N_in_m_s)
-local N_in_m = N_in_m_s:subst(kg_in_m, s_in_m)():factorDivision():solve(N):factorDivision()
-printbr(N_in_m)
+local N_in_m = N_in_m_s:subst(kg_in_m, s_in_m):solve(N):factorDivision()
+printbr('Newton',N_in_m_s:eq(N_in_m:rhs()))
 
 -- Joule
 local J = var'J'
 local J_in_m_s_kg = J:eq((kg * m^2) / s^2)
-printbr(J_in_m_s_kg)
 local J_in_m = J_in_m_s_kg:subst(kg_in_m, s_in_m):solve(J)()
-printbr(J_in_m)
+printbr('Joule',J_in_m_s_kg:eq(J_in_m:rhs()))
 
 -- Coulomb constant
 printbr()
@@ -95,9 +92,8 @@ printbr(ke_eq_1)
 
 -- Coulomb in terms of meter
 local expr = ke_in_m_s_kg_C:subst(ke_eq_1, kg_in_m, s_in_m)():factorDivision()
---printbr(expr) -- TODO solve sqrts automatically
-local C_in_m = sqrt(expr)():solve(C)
-printbr(C_in_m)
+local C_in_m = expr:solve(C)
+printbr('Coulomb',C_in_m)
 
 -- Amp
 local A = var'A'
@@ -108,13 +104,13 @@ printbr('Amp',A_in_s_C:eq(A_in_m:rhs()))
 -- Volt
 local V = var'V'
 local V_in_N_C = V:eq(N / C)
-local V_in_m = V_in_N_C:subst(N_in_m, C_in_m)():factorDivision()():factorDivision()
+local V_in_m = V_in_N_C:subst(N_in_m, C_in_m)():factorDivision()
 printbr('Volt',V_in_N_C:eq(V_in_m:rhs()))
 
 -- Ohm
 local Ohm = var'\\Omega'
 local Ohm_in_kg_s_C = Ohm:eq(kg / (s * C^2))
-local Ohm_in_m = Ohm_in_kg_s_C:subst(kg_in_m, s_in_m, C_in_m)():factorDivision()():factorDivision()
+local Ohm_in_m = Ohm_in_kg_s_C:subst(kg_in_m, s_in_m, C_in_m)():factorDivision()
 printbr('Ohm',Ohm_in_kg_s_C:eq(Ohm_in_m:rhs()))
 
 -- eps0
@@ -140,9 +136,8 @@ local e = var'e'
 local C_in_e = C:eq(6.2415093414e+18 * e)
 printbr(C_in_e)
 local e_in_C = C_in_e:factorDivision()():solve(e)
-printbr(e_in_C)
 local e_in_m = e_in_C:subst(C_in_m)()
-printbr(e_in_m)
+printbr(e_in_C:eq(e_in_m:rhs()))
 
 printbr()
 printbr"Boltzmann's constant"
@@ -155,20 +150,16 @@ local kB_eq_1 = kB:eq(1)
 printbr(kB_eq_1)
 
 local K_in_m_s_kg = kB_in_m_s_kg_K:subst(kB_eq_1):solve(K):factorDivision()
-printbr(K_in_m_s_kg)
-
 local K_in_m = K_in_m_s_kg:subst(s_in_m):subst(kg_in_m)()
-K_in_m = ((K_in_m * m)() / m)():factorDivision()
-printbr(K_in_m)
+printbr('Kelvin',K_in_m_s_kg:eq(K_in_m:rhs()))
 
 -- Planck constant 
 printbr()
 printbr"reduced Planck constant"
 local hBar = var'\\hbar'
 local hBar_in_s_J = hBar:eq(1.05457173e-34 * J * s)
-printbr(hBar_in_s_J)
 local hBar_in_m = hBar_in_s_J:subst(s_in_m, J_in_m)()
-printbr(hBar_in_m)
+printbr(hBar_in_s_J:eq(hBar_in_m:rhs()))
 
 printbr()
 printbr'Planck units:'
@@ -202,9 +193,8 @@ printbr()
 printbr'fine structure constant'
 local alpha = var'\\alpha'
 local alpha_def = alpha:eq((ke * e^2) / (hBar * c))
-printbr(alpha_def)
 local alpha_in_m = alpha_def:subst(ke_eq_1, e_in_m, hBar_in_m, c_eq_1)()
-printbr(alpha_in_m)
+printbr(alpha_def:eq(alpha_in_m:rhs()))
 
 --[[ the following is from QFT notes, which relies on hBar = 1
 -- either this or G = 1 can be enforced to defined kg in terms of m and s
@@ -212,9 +202,9 @@ printbr(alpha_in_m)
 local hBar_eq_1 = hBar:eq(1)
 printbr()
 printbr('kg using',hBar_eq_1)
-local kg_in_m_s = hBar_in_s_J:subst(hBar_eq_1, J_in_m_s_kg)():factorDivision():solve(kg)():factorDivision()
+local kg_in_m_s = hBar_in_s_J:subst(hBar_eq_1, J_in_m_s_kg):solve(kg)():factorDivision()
 printbr(kg_in_m_s)
-local kg_in_m = kg_in_m_s:factorDivision()():subst(s_in_m)():factorDivision()
+local kg_in_m = kg_in_m_s():subst(s_in_m)():factorDivision()
 printbr(kg_in_m)
 
 -- eV
@@ -226,7 +216,7 @@ printbr(eV_in_J)
 
 local eV_in_m_s_kg = eV_in_J:subst(J_in_m_s_kg)
 printbr(eV_in_m_s_kg)
-local eV_in_m = eV_in_m_s_kg:subst(kg_in_m, s_in_m):solve(eV)():factorDivision()():factorDivision()
+local eV_in_m = eV_in_m_s_kg:subst(kg_in_m, s_in_m):solve(eV)():factorDivision()
 printbr(eV_in_m)
 
 -- these are eV^-1
@@ -236,10 +226,10 @@ local K_in_eV = K_in_m:subst(m_in_eV)():factorDivision()
 local C_in_eV = C_in_m:subst(m_in_eV)():factorDivision()
 
 -- these are eV
-local inv_m_in_eV = (1 / m_in_eV)():factorDivision()():factorDivision()
-local inv_s_in_eV = (1 / s_in_eV)():factorDivision()():factorDivision()
-local inv_K_in_eV = (1 / K_in_eV)():factorDivision()():factorDivision()
-local inv_C_in_eV = (1 / C_in_eV)():factorDivision()():factorDivision()
+local inv_m_in_eV = (1 / m_in_eV)():factorDivision()
+local inv_s_in_eV = (1 / s_in_eV)():factorDivision()
+local inv_K_in_eV = (1 / K_in_eV)():factorDivision()
+local inv_C_in_eV = (1 / C_in_eV)():factorDivision()
 local kg_in_eV = kg_in_m:subst(m_in_eV)():factorDivision()
 local J_in_eV = eV_in_J:solve(J)
 

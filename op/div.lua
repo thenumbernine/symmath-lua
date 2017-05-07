@@ -96,6 +96,27 @@ div.visitorHandler = {
 					Constant(1/expr[2].value) * expr[1]
 				)
 			end
+	
+			-- (c1 * m) / c2 => (c1 / c2) * m
+			if mul.is(expr[1]) and Constant.is(expr[1][1]) and Constant.is(expr[2]) then
+				local rest = #expr[1] == 2 and expr[1][2] or mul(table.unpack(expr[1], 2))
+				return Constant(expr[1][1].value / expr[2].value) * rest
+			end
+		
+			-- c1 / (c2 * m) => (c1/c2) / m
+			if Constant.is(expr[1]) and mul.is(expr[2]) and Constant.is(expr[2][1]) then
+				local rest = #expr[2] == 2 and expr[2][2] or mul(table.unpack(expr[2], 2))
+				return Constant(expr[1].value / expr[2][1].value) / rest
+			end
+	
+			-- (c1 * m1) / (c2 * m2) => ((c1/c2) * m1) / m2
+			if mul.is(expr[1]) and Constant.is(expr[1][1])
+			and mul.is(expr[2]) and Constant.is(expr[2][1])
+			then
+				local rest1 = #expr[1] == 2 and expr[1][2] or mul(table.unpack(expr[1], 2))
+				local rest2 = #expr[2] == 2 and expr[2][2] or mul(table.unpack(expr[2], 2))
+				return (Constant(expr[1][1].value / expr[2][1].value) * rest1) / rest2
+			end
 		end
 
 		-- x / 1 => x

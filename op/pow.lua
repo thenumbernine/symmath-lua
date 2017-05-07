@@ -43,6 +43,18 @@ function pow:expand()
 	end
 end
 
+function pow:reverse(soln, index)
+	local p,q = table.unpack(self)
+	-- y = p(x)^q => y^(1/q) = p(x)
+	if index == 1 then
+		return soln^(1/q)
+	-- y = p^q(x) => log(y) / log(p) = q(x)
+	elseif index == 2 then
+		local log = require 'symmath.log'
+		return log(y) / log(p)
+	end
+end
+
 pow.visitorHandler = {
 	Eval = function(eval, expr)
 		local a, b = table.unpack(expr)
