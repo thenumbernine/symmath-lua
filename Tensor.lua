@@ -1044,7 +1044,7 @@ function Tensor:printElem(name)
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	local sep = ''
-	local basis = Tensor.findBasisForSymbol()
+	local basis = Tensor.findBasisForSymbol(self.variance[1].symbol)
 	for index,x in self:iter() do
 		if x ~= Constant(0) then
 			print(sep,

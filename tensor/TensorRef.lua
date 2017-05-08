@@ -27,6 +27,9 @@ TensorRef.visitorHandler = {
 		local t = expr[1]
 		local indexes = {table.unpack(expr,2)}
 
+		-- if it's not a tensor then just leave the indexing for now
+		if not Tensor.is(t) then return end
+
 		-- now transform all indexes that don't match up
 		
 		local foundDerivative

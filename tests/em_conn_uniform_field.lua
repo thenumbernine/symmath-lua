@@ -9,12 +9,11 @@ MathJax.usePartialLHSForDerivative = true
 
 local Tensor = symmath.Tensor
 local Matrix = symmath.Matrix
-local TensorIndex = require 'symmath.tensor.TensorIndex'
 local var = symmath.var
 local vars = symmath.vars
 local sqrt = symmath.sqrt
 local exp = symmath.exp
-local div = symmath.op.div
+local frac = symmath.op.div
 local Constant = symmath.Constant
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
@@ -42,7 +41,7 @@ local S = var'S'
 local Sv = Tensor('_i', function(i) return var('S_'..spatialCoords[i].name) end)
 local Sx, Sy, Sz = table.unpack(Sv)
 
--- [==[
+--[==[
 
 --[[
 here's a thought on this:
@@ -115,7 +114,7 @@ g[2][3] = E * y * exp(E * t) g[3][2] = g[2][3]	-- this requires h to be a functi
 g[2][4] = E * z * exp(E * t) g[4][2] = g[2][4]
 --]]
 
--- [[ ok now to find the metric that gives rise to the conn ...
+--[[ ok now to find the metric that gives rise to the conn ...
 -- C^t_tt = E = g^tt C_ttt + g^tk C_ktt = 1/2 g^tt g_tt,t + g^tk g_tk,t - 1/2 g^tk g_tt,k
 -- C^t_yy = E = g^tt C_tyy + g^tk C_kyy = g^tt g_ty,y - 1/2 g^tt g_yy,t + g^tk g_ky,y - 1/2 g^tk g_yy,k
 -- C^x_tt = -E = g^xt C_ttt + g^xk C_ktt = 1/2 g^xt g_tt,t + g^xk g_kt,t - 1/2 g^xk g_tt,k
@@ -143,7 +142,7 @@ g:print'g'
 gU:print'g'
 
 local ConnFromMetric = Tensor'_abc'
-ConnFromMetric['_abc'] = (div(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()	-- ... plus commutation? in this case I have a symmetric Conn so I don't need comm
+ConnFromMetric['_abc'] = (frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()	-- ... plus commutation? in this case I have a symmetric Conn so I don't need comm
 
 printbr'...produces...'
 --ConnFromMetric:printElem'\\Gamma' printbr()
