@@ -22,14 +22,15 @@ function Expression:init(...)
 end
 
 function Expression:clone()
+	local clone = require 'symmath.clone'
 	if self then
 		local xs = table()
 		for i=1,#self do
-			local clone = require 'symmath.clone'
 			xs:insert(clone(self[i]))
 		end
 		return getmetatable(self)(xs:unpack())
 	else
+		-- why do I have this condition?
 		return getmetatable(self)()
 	end
 end

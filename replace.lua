@@ -30,5 +30,5 @@ local function replace(expr, find, repl, condition)
 	end
 	return expr
 end
-return replace
 
+return replace

@@ -19,6 +19,13 @@ function TensorRef:init(tensor, ...)
 	end
 end
 
+-- how does this behave any different than Expression:clone() 
+function TensorRef:clone()
+	return TensorRef(range(#self):map(function(i)
+		return self[i]:clone()
+	end):unpack())
+end
+
 TensorRef.visitorHandler = {
 	Prune = function(prune, expr)
 		local Tensor = require 'symmath.Tensor'
