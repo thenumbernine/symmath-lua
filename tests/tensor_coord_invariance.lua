@@ -24,8 +24,9 @@ local R = var'R'
 local T = var'T'
 local F = var'F'
 local A = var'A'
-local e = var'e'
+local e = var'\\Lambda'
 local g = var'g'
+local Gamma = var'\\Gamma'
 local delta = var'\\delta'
 local pi = var'\\pi'
 
@@ -40,16 +41,19 @@ printbr('Let', R'^a_bcd', 'be the Riemann curvature')
 local Ricci_def = R'_ab':eq(R'^c_acb')
 printbr('Let', Ricci_def)
 
-printbr'coordinate transforms:'
+printbr'transformed Ricci:'
 local Ricci_xform_def = R'_AB':eq(R'_ab' * e'^a_A' * e'^b_B')
 printbr(Ricci_xform_def)
+printbr'transformed Riemann:'
 local Riemann_xform_def = R'^A_BCD':eq(R'^a_bcd' * e'_a^A' * e'^b_B' * e'^c_C' * e'^d_D')
 printbr(Riemann_xform_def)
+printbr'transformed connection (as jet bundle):'
+local Conn_xform_def = Gamma'^A_BC':eq( Gamma'^a_bc' * e'_a^A' * e'^b_B' * e'^c_C' + e'_a^A' * e'^b_B,C')
+printbr(Conn_xform_def)
 printbr()
 
 printbr('is transformed Ricci equal to Ricci from transformed Riemann?')
-printbr('is', R'^C_ACB':eq(R'_AB'),'?')
-
+printbr'Ricci from transformed connection:'
 local soln
 soln = R'^C_ACB'
 printbr(soln)
@@ -67,10 +71,81 @@ printbr('=', soln, 'using', Ricci_def)
 soln = soln:subst( Ricci_xform_def:switch()() )
 printbr('=', soln, 'using', Ricci_xform_def:switch() )
 printbr'yup'
-
-printbr"same question for connections => Riemann, using the jet bundle transformation"
-printbr"I'm betting it is yes"
 printbr()
+
+printbr'is the transformed Riemann equal to the Riemann from the transformed connection?'
+printbr'Riemann from transformed connection:'
+local soln = Gamma'^A_BD,C' - Gamma'^A_BC,D' + Gamma'^A_EC' * Gamma'^E_BD' - Gamma'^A_ED' * Gamma'^E_BC' - Gamma'^A_BE' * (Gamma'^E_DC' - Gamma'^E_CD')
+printbr(soln)
+local soln = (
+		Conn_xform_def:rhs():reindex{ABDabd='ABCabc'}
+	)'_,C' 
+	- (
+		Conn_xform_def:rhs()
+	)'_,D' 
+	+ Conn_xform_def:rhs():reindex{AECaec='ABCabc'}
+	* Conn_xform_def:rhs():reindex{EBDebd='ABCabc'}
+	- Conn_xform_def:rhs():reindex{AEDaed='ABCabc'}
+	* Conn_xform_def:rhs():reindex{EBCebc='ABCabc'}
+	- Conn_xform_def:rhs():reindex{ABEabe='ABCabc'}
+	* (
+		Conn_xform_def:rhs():reindex{EDCedc='ABCabc'}
+		- Conn_xform_def:rhs():reindex{ECDecd='ABCabc'}
+	)
+printbr(soln)
+-- distribute derivatives
+local soln = 
+	Gamma'^a_bd,C' * e'_a^A' * e'^b_B' * e'^d_D'
+	+ Gamma'^a_bd' * e'_a^A_,C' * e'^b_B' * e'^d_D'	
+	+ Gamma'^a_bd' * e'_a^A' * e'^b_B,C' * e'^d_D'	
+	+ Gamma'^a_bd' * e'_a^A' * e'^b_B' * e'^d_D,C'
+	+ e'_a^A_,C' * e'^b_B,D'
+	+ e'_a^A' * e'^b_B,DC'
+	- Gamma'^a_bc,D' * e'_a^A' * e'^b_B' * e'^c_C' 
+	- Gamma'^a_bc' * e'_a^A_,D' * e'^b_B' * e'^c_C' 
+	- Gamma'^a_bc' * e'_a^A' * e'^b_B,D' * e'^c_C' 
+	- Gamma'^a_bc' * e'_a^A' * e'^b_B' * e'^c_C,D'
+	- e'_a^A_,D' * e'^b_B,C'
+	- e'_a^A' * e'^b_B,CD'
+	
+	+ (Conn_xform_def:rhs():reindex{AECaec='ABCabc'}
+	* Conn_xform_def:rhs():reindex{EBDebd='ABCabc'}
+	- Conn_xform_def:rhs():reindex{AEDaed='ABCabc'}
+	* Conn_xform_def:rhs():reindex{EBCebc='ABCabc'}
+	- Conn_xform_def:rhs():reindex{ABEabe='ABCabc'}
+	* (
+		Conn_xform_def:rhs():reindex{EDCedc='ABCabc'}
+		- Conn_xform_def:rhs():reindex{ECDecd='ABCabc'}
+	))()
+printbr(soln)
+soln = soln:replace(Gamma'^a_bc,D', Gamma'^a_bc,d' * e'^d_D')
+	:replace(Gamma'^a_bd,C', Gamma'^a_bd,c' * e'^c_C')
+printbr(soln)
+soln = (soln + (R'^a_bcd'
+	- (Gamma'^a_bd,c' - Gamma'^a_bc,d' + Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc' - Gamma'^a_be' * (Gamma'^e_dc' - Gamma'^e_cd'))
+	) * e'_a^A' * e'^b_B' * e'^c_C' * e'^d_D')()
+printbr(soln)
+soln = soln
+	:replace(e'_a^A_,C', e'_a^A_,c' * e'^c_C')
+	:replace(e'_a^A_,D', e'_a^A_,d' * e'^d_D')
+	:replace(e'_b^B_,C', e'_b^B_,c' * e'^c_C')
+	:replace(e'_b^B_,D', e'_b^B_,d' * e'^d_D')
+	:replace(e'^b_B,C', e'^b_B,c' * e'^c_C')
+	:replace(e'^b_B,D', e'^b_B,d' * e'^d_D')
+	:replace(e'^b_B,E', e'^b_B,e' * e'^e_E')
+	:replace(e'^c_C,D', e'^c_C,d' * e'^d_D')
+	:replace(e'^d_D,C', e'^d_D,c' * e'^c_C')
+	:replace(e'^e_E,C', e'^e_E,c' * e'^c_C')
+	:replace(e'^e_E,D', e'^e_E,d' * e'^d_D')
+	:replace(e'^b_B,DC', e'^b_B,CD')()
+printbr(soln)
+soln = soln
+	:replace(e'_a^A_,d', -e'_a^P' * e'^p_P,d' * e'_p^A')
+	:replace(e'^b_B,d', -e'^b_P' * e'_p^P_,d' * e'^p_B,d')
+	:simplify()
+printbr(soln)
+printbr()
+-- ugh this is messy
 
 printbr('Let', F'_ab', 'be the Faraday tensor')
 printbr('Let', T'_ab', 'be the stress-energy tensor')

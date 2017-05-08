@@ -49,8 +49,8 @@ printbr'cylindrical to cartesian'
 eU:print'e'
 printbr()
 
-printbr((e'_a^A' * eU'^b_A')())
-printbr((e'_a^A' * eU'^a_B')())
+printbr((var'e''_a^A' * var'e''^b_A'):eq((e'_a^A' * eU'^b_A')()))
+printbr((var'e''_a^A' * var'e''^a_B'):eq((e'_a^A' * eU'^a_B')()))
 
 local E = var'E'
 local Ricci_flat = Tensor('_AB', table.unpack(Matrix.diagonal(E^2, E^2, E^2, -E^2))) 
@@ -64,11 +64,11 @@ Ricci_cyl:print'R'
 printbr()
 
 local Conn_flat = Tensor'^A_BC'
-Conn_flat[2][1][1] = -E	-- only scales R_tt
-Conn_flat[1][2][1] = E	-- scales R_xx and affects terms of R_tt
-Conn_flat[1][1][2] = E	-- affects terms of R_tt
-Conn_flat[2][3][3] = E	-- scales R_yy
-Conn_flat[2][4][4] = E	-- scales R_zz
+Conn_flat[4][1][1] = -E	-- only scales R_tt
+Conn_flat[1][4][1] = E	-- scales R_xx and affects terms of R_tt
+Conn_flat[1][1][4] = E	-- affects terms of R_tt
+Conn_flat[4][2][2] = E	-- scales R_yy
+Conn_flat[4][3][3] = E	-- scales R_zz
 printbr'cartesian connection that gives rise to cartesian Ricci of EM stress-energy tensor:'
 Conn_flat:print'\\Gamma'
 printbr()
@@ -82,35 +82,12 @@ Riemann_flat['^A_BCD'] = (Conn_flat'^A_BD,C' - Conn_flat'^A_BC,D'
 --printbr()
 
 local Ricci_flat = Riemann_flat'^C_ACB'() 
-printbr'cartesian Ricci'
+printbr'Ricci from Riemann from cartesian connection'
 Ricci_flat:print'R'
 printbr()
 
-printbr'partial of change of coordinate'
-local de = Tensor'_b^A_c'
-de['_b^A_c'] = e'_b^A_,c'()
-de:print'\\partial e'
-printbr()
-
 local Conn_cyl = Tensor'^a_bc'
---Conn_cyl = (Conn_flat'^A_BC' * eU'^a_A' * e'_b^B' * e'_c^C' + eU'^a_A' * e'_b^A_,c')()
-for a=1,4 do
-	for b=1,4 do
-		for c=1,4 do
-			local sum = 0
-			for A=1,4 do
-				for B=1,4 do
-					for C=1,4 do
-						sum = (sum + (Conn_flat[A][B][C] * eU[a][A] * e[b][B] * e[c][C])())()
-					end
-				end
-			
-				sum = (sum + (eU[a][A] * de[b][A][c])())()
-			end
-			Conn_cyl[a][b][c] = sum()
-		end
-	end
-end
+Conn_cyl['^a_bc'] = (Conn_flat'^A_BC' * eU'^a_A' * e'_b^B' * e'_c^C' + eU'^a_A' * e'_b^A_,c')()
 printbr'cyl connection - via transformation'
 Conn_cyl:print'\\Gamma'
 printbr()
@@ -128,4 +105,3 @@ printbr'cylindrical Ricci from cylindrical connections transformed from cartesia
 Ricci_cyl_from_xform_conn:print'R'
 printbr()
 
--- cos^2 + sin^2 = 1 => 1 - sin^2 = cos^2, 1 - 2 sin^2 = 1 - sin^2 - sin^2 = cos^2 - sin^2 = cos(2 phi)
