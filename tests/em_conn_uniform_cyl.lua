@@ -40,21 +40,30 @@ if so, don't I need to factor g's into my calculations of R?
 local g = Tensor'_ab'
 
 -- [[
+-- same as below, but messing with signs, 
+-- got it to reproduce R_tt, R_rr, R_pp, but sets R_zz = 0
+g[1][1] = -exp(sqrt(2) * E * z)
+g[2][2] = -exp(sqrt(2) * E * z)
+g[3][3] = -r^2 * exp(sqrt(2) * E * z)
+g[4][4] = exp(sqrt(2) * E * z)
+--]]
+
+--[[ 
+-- reproduces all of C^a_bc, with additional C^r_zr = C^r_rz = C^p_pz = C^p_zp = C^z_zz = E
+-- produces R_tt = -2 E^2, R_xx = 2 E^2, R_pp = 2 E^2 r^2, R_zz = 0
+-- note: replace exp(2 E z) with exp(sqrt(2) E z) to rescale the R_ab
 -- start with this
 --g[1][1] = var('a',{r,phi,z})
 --g[2][2] = var('b',{r,phi,z})
 --g[3][3] = var('c',{r,phi,z})
 --g[4][4] = var('d',{r,phi,z})
-
+-- and solve:
 -- C^t_zt: a,z / 2a = E =>  da/a = 2 E z dz =>a = exp(2 E z)
 g[1][1] = exp(2 * E * z)
-
 -- C^z_tt: -E exp(2 E z) / d = -E => d = exp(-2 E z)
 g[4][4] = exp(2 * E * z)
-
 -- C^z_rr: -b,z / (2 exp(2 E z)) = E => b,z = -2 E exp(2 E z) => b = -exp(2 E z)
 g[2][2] = -exp(2 * E * z)
-
 -- C^r_pp: c,r / (2 exp(2 E z)) = -r => c,r = -2 r exp(2 E z) => c = -r^2 exp(2 E z)
 g[3][3] = -r^2 * exp(2 * E * z)
 --]]
