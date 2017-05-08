@@ -8,7 +8,7 @@ local MathJax = class(LaTeX.class)
 local url = '/MathJax/MathJax.js?config=TeX-MML-AM_CHTML'
 
 MathJax.header = [=[
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <meta charset="UTF-8">

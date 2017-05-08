@@ -39,23 +39,33 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
--- [[ 
--- this produces almost all nonzero conns, except c^t_tz = c^t_zt = 1/(2*z) instead of e
--- it produces some extra nonzero conns as well
--- it also produces a ricci that is scaled by 1/(2z), except for r_zz = 3 / (4 * z^2) but should be -e^2 
-g[1][1] = 2 * E * z / r
-g[2][2] = -2 * E * z / r
-g[3][3] = -2 * E * z * r	-- influences c^p_pr = c^p_rp = 1/r
+--[[
+g[1][1] = exp(2 * E * z)
+g[2][2] = Constant(1)
+g[3][3] = Constant(1)
+g[1][3] = exp(2 * E * z)
+g[3][1] = exp(2 * E * z)
 g[4][4] = Constant(1)
+-- E_r = A_t,r - A_r,t
 --]]
 
 --[[ 
--- this produces almost all nonzero conns, except c^t_tz = c^t_zt = 1/(2*z) instead of e
+-- this produces almost all nonzero conns, except C^t_tz = C^t_zt = 1/(2*z) instead of e
+-- it produces some extra nonzero conns as well
+-- it also produces a ricci that is scaled by 1/(2z), except for r_zz = 3 / (4 * z^2) but should be -e^2 
+g[1][1] = -1 + 2 * E * z
+g[2][2] = 1 - 2 * E * z
+g[3][3] = 1 - 2 * E * z * r^2	-- influences C^p_pr = C^p_rp = 1/r
+g[4][4] = Constant(1)
+--]]
+
+-- [[ 
+-- this produces almost all nonzero conns, except C^t_tz = C^t_zt = 1/(2*z) instead of e
 -- it produces some extra nonzero conns as well
 -- it also produces a ricci that is scaled by 1/(2z), except for r_zz = 3 / (4 * z^2) but should be -e^2 
 g[1][1] = 2 * E * z
 g[2][2] = -2 * E * z
-g[3][3] = -2 * E * z * r^2	-- influences c^p_pr = c^p_rp = 1/r
+g[3][3] = -2 * E * z * r^2	-- influences C^p_pr = C^p_rp = 1/r
 g[4][4] = Constant(1)
 --]]
 
