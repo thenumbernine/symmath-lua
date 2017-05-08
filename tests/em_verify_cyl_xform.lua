@@ -59,7 +59,7 @@ Ricci_flat:print'R'
 printbr()
 
 local Ricci_cyl = (Ricci_flat'_AB' * e'_a^A' * e'_b^B')()
-printbr'cylindrical Ricci tensor'
+printbr'cartesian Ricci tensor transformed to cylindrical'
 Ricci_cyl:print'R' 
 printbr()
 
@@ -70,7 +70,7 @@ Conn_flat[1][1][4] = E	-- affects terms of R_tt
 Conn_flat[4][2][2] = E	-- scales R_yy
 Conn_flat[4][3][3] = E	-- scales R_zz
 printbr'cartesian connection that gives rise to cartesian Ricci of EM stress-energy tensor:'
-Conn_flat:print'\\Gamma'
+Conn_flat:printElem'\\Gamma'
 printbr()
 
 local Riemann_flat = Tensor'^A_BCD'
@@ -88,8 +88,8 @@ printbr()
 
 local Conn_cyl = Tensor'^a_bc'
 Conn_cyl['^a_bc'] = (Conn_flat'^A_BC' * eU'^a_A' * e'_b^B' * e'_c^C' + eU'^a_A' * e'_b^A_,c')()
-printbr'cyl connection - via transformation'
-Conn_cyl:print'\\Gamma'
+printbr'cartesian connection transformed to cylindrical'
+Conn_cyl:printElem'\\Gamma'
 printbr()
 
 local Riemann_cyl_from_xform_conn = Tensor'^a_bcd'
@@ -101,7 +101,7 @@ Riemann_cyl_from_xform_conn['^a_bcd'] =  (Conn_cyl'^a_bd,c' - Conn_cyl'^a_bc,d'
 --printbr()
 
 local Ricci_cyl_from_xform_conn = Riemann_cyl_from_xform_conn'^c_acb'()
-printbr'cylindrical Ricci from cylindrical connections transformed from cartesian connections'
+printbr'Ricci from connections transformed from cartesian to cylindrical'
 Ricci_cyl_from_xform_conn:print'R'
+printbr'...matches the Ricci transformed to cylindrical'
 printbr()
-
