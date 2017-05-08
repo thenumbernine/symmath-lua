@@ -46,7 +46,7 @@ local g = Tensor'_ab'
 g[1][1] = 2 * E * z / r
 g[2][2] = -2 * E * z / r
 g[3][3] = -2 * E * z * r	-- influences c^p_pr = c^p_rp = 1/r
-g[4][4] = constant(1)
+g[4][4] = Constant(1)
 --]]
 
 --[[ 
@@ -56,7 +56,7 @@ g[4][4] = constant(1)
 g[1][1] = 2 * E * z
 g[2][2] = -2 * E * z
 g[3][3] = -2 * E * z * r^2	-- influences c^p_pr = c^p_rp = 1/r
-g[4][4] = constant(1)
+g[4][4] = Constant(1)
 --]]
 
 local gU = Tensor('^ab', table.unpack(( Matrix.inverse(g) )))
