@@ -39,6 +39,26 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
+-- [[
+-- start with this
+--g[1][1] = var('a',{r,phi,z})
+--g[2][2] = var('b',{r,phi,z})
+--g[3][3] = var('c',{r,phi,z})
+--g[4][4] = var('d',{r,phi,z})
+
+-- C^t_zt: a,z / 2a = E =>  da/a = 2 E z dz =>a = exp(2 E z)
+g[1][1] = exp(2 * E * z)
+
+-- C^z_tt: -E exp(2 E z) / d = -E => d = exp(-2 E z)
+g[4][4] = exp(2 * E * z)
+
+-- C^z_rr: -b,z / (2 exp(2 E z)) = E => b,z = -2 E exp(2 E z) => b = -exp(2 E z)
+g[2][2] = -exp(2 * E * z)
+
+-- C^r_pp: c,r / (2 exp(2 E z)) = -r => c,r = -2 r exp(2 E z) => c = -r^2 exp(2 E z)
+g[3][3] = -r^2 * exp(2 * E * z)
+--]]
+
 --[[
 g[1][1] = exp(2 * E * z)
 g[2][2] = Constant(1)
@@ -59,7 +79,7 @@ g[3][3] = 1 - 2 * E * z * r^2	-- influences C^p_pr = C^p_rp = 1/r
 g[4][4] = Constant(1)
 --]]
 
--- [[ 
+--[[ 
 -- this produces almost all nonzero conns, except C^t_tz = C^t_zt = 1/(2*z) instead of e
 -- it produces some extra nonzero conns as well
 -- it also produces a ricci that is scaled by 1/(2z), except for r_zz = 3 / (4 * z^2) but should be -e^2 
