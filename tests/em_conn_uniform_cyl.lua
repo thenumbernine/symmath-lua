@@ -39,7 +39,14 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
--- [[
+-- [[ reproduces R_tt, R_rr, R_pp, but sets R_zz = 0
+g[1][1] = -exp(E * z)
+g[2][2] = -exp(E * z)
+g[3][3] = -r^2 * exp(E * z)
+g[4][4] = exp(E * z) / 2
+--]]
+
+--[[
 -- same as below, but messing with signs, 
 -- got it to reproduce R_tt, R_rr, R_pp, but sets R_zz = 0
 g[1][1] = -exp(sqrt(2) * E * z)
@@ -147,7 +154,6 @@ RiemannFromManualMetric['^a_bcd'] = RiemannExpr:replace(var'\\Gamma', ConnFromMe
 
 local RicciFromManualMetric = Tensor'_ab'
 RicciFromManualMetric['_ab'] = RiemannFromManualMetric'^c_acb'()
-
 printbr'Ricci from manual metric'
 RicciFromManualMetric:print'R'
 printbr()

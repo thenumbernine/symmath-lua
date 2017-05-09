@@ -32,15 +32,21 @@ function Constant:clone()
 	return Constant(self.value)
 end
 
-local function toConstant(a)
-	if getmetatable(a) == Constant then return a.value end
-	if complex.is(a) then return a end 
-	return complex(a,0)
-end
-
 -- this won't be called if a prim is used ...
 function Constant.__eq(a,b)
-	return complex(toConstant(a)) == complex(toConstant(b))
+	-- if either is a constant then get the value 
+	-- (which should not be an expression of its own)
+	if Constant.is(a) then a = a.value end
+	if Constant.is(b) then b = b.value end
+	-- if it is an expression then it must not have been a constant
+	-- so we can assume it differs
+	if Expression.is(a) or Expression.is(b) then return false end
+	-- if either is complex then convert the other to complex
+	if complex.is(a) or complex.is(b) then
+		return complex.__eq(a,b)
+	end
+	-- by here they both should be numbers
+	return a == b
 end
 
 function Constant:evaluateDerivative(...)

@@ -206,4 +206,13 @@ symmath.Tensor = require 'symmath.Tensor'
 symmath.tostring = assert(require 'symmath.tostring.MultiLine')
 symmath.Verbose = assert(require 'symmath.tostring.Verbose')
 
+-- shorthand for adding all (possible) fields to _G
+setmetatable(symmath, {__call = function(symmath)
+	for k,v in pairs(symmath) do
+		if k ~= 'tostring' then
+			_G[k] = v
+		end
+	end
+end})
+
 return symmath

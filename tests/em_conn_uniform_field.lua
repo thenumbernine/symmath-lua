@@ -32,16 +32,9 @@ Tensor.coords{
 }
 
 local E = var'E'
-local Ev = Tensor('_i', function(i) return var('E_'..spatialCoords[i].name) end)
-local Ex, Ey, Ez = table.unpack(Ev)
-local B = var'B'
-local Bv = Tensor('_i', function(i) return var('B_'..spatialCoords[i].name) end)
-local Bx, By, Bz = table.unpack(Bv)
-local S = var'S'
-local Sv = Tensor('_i', function(i) return var('S_'..spatialCoords[i].name) end)
-local Sx, Sy, Sz = table.unpack(Sv)
+local Gamma = var'\\Gamma'
 
---[==[
+-- [==[
 
 --[[
 here's a thought on this:
@@ -52,6 +45,47 @@ wouldn't that be E^i rather than E_i ?
 if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
+
+-- [[
+g[1][1] = var('a', {x})
+g[2][2] = var('a', {x})
+g[3][3] = var('a', {x})
+g[4][4] = var('a', {x})
+--[=[
+if g_ab = delta_ab a(x)
+then we get R_tt = R_yy = R_zz = -a,xx / 2a (needs to be E^2)
+and R_xx = -3 (a,xx a - (a,x)^2) / (2 a^2) = -E^2
+solve: 
+a,xx + 2 E^2 a = 0
+3 a,xx a - 3 a,x^2 - 2 a^2 E^2 = 0
+first eqn: a = exp(k x) => a,xx = k^2 exp(k x)
+=> k^2 exp(k x) + 2 E^2 exp(k x) = 0 
+=> k^2 + 2 E^2 = 0 
+=> k = +- sqrt(-2 E^2) 
+=> k = +-i sqrt(2) E
+=> a = A1 exp(i sqrt(2) E x) + A2 exp(-i sqrt(2) E x)
+second eqn:
+3 k^2 - 3 k^2 - 2 E^2 = 0
+=> -2 E^2 = 0 doesn't work
+
+try again?
+a = (A x + B) exp(k x) 
+a,x = A exp(k x) + (A x + B) k exp(k x)
+a,xx = (2 A k + A x k^2 + B k^2) exp(k x)
+first eqn:
+(2 A k + (A x + B) k^2) exp(k x) + 2 E^2 (A x + B) exp(k x) = 0
+(A x + B) k^2 + 2 A k + 2 E^2 (A x + B) = 0
+quadratic
+... matching terms means k = 0
+--]=]
+--]]
+
+--[[ I'm getting close results for a similar thing in cylindrical coordinates...
+g[1][1] = -exp(E * x)
+g[2][2] = exp(E * x) / 2
+g[3][3] = -exp(E * x)
+g[4][4] = -exp(E * x)
+--]]
 
 --[[ 
 -- this forgets C^t_tt, C^t_yy, C^t_zz, and misrepresents C^x_tt
@@ -140,18 +174,18 @@ local gU = Tensor('^ab', table.unpack(( Matrix.inverse(g) )))
 g:print'g'
 --gU:printElem'g' printbr() 
 gU:print'g'
+printbr()
 
 local ConnFromMetric = Tensor'_abc'
 ConnFromMetric['_abc'] = (frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()	-- ... plus commutation? in this case I have a symmetric Conn so I don't need comm
-
-printbr'...produces...'
+print'conn from manual metric:'
 --ConnFromMetric:printElem'\\Gamma' printbr()
 ConnFromMetric = (gU'^ad' * ConnFromMetric'_dbc')()
 
 --ConnFromMetric:printElem'\\Gamma' printbr()
 ConnFromMetric:print'\\Gamma'
 
-print'vs desired'
+print'vs manual conn:'
 --]==]
 
 local Conn = Tensor'^a_bc'
@@ -177,55 +211,43 @@ Conn[1][3][3] = E
 Conn[1][4][4] = E
 --]]
 
-if gU then Conn:print'\\Gamma' else Conn:printElem'\\Gamma' printbr() end
---printbr(var'c''_cb^a':eq(var'\\Gamma''^a_bc' - var'\\Gamma''^a_cb'):eq((Conn'^a_bc' - Conn'^a_cb')()))
+Conn:print'\\Gamma'
+printbr()
+--printbr(var'c''_cb^a':eq(Gamma'^a_bc' - Gamma'^a_cb'):eq((Conn'^a_bc' - Conn'^a_cb')()))
 
+local RiemannExpr = Gamma'^a_bd,c' - Gamma'^a_bc,d' 
+	+ Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc'
+	- Gamma'^a_be' * (Gamma'^e_dc' - Gamma'^e_cd')
+
+
+local RiemannFromManualMetric = Tensor'^a_bcd'
+RiemannFromManualMetric['^a_bcd'] = RiemannExpr:replace(Gamma, ConnFromMetric)()
+--printbr'Riemann from manual metric'
+--RiemannFromManualConn:print'R'
+
+local RicciFromManualMetric = Tensor'_ab'
+RicciFromManualMetric['_ab'] = RiemannFromManualMetric'^c_acb'()
+printbr'Ricci from manual metric'
+RicciFromManualMetric:print'R'
 printbr()
 
-local RiemannExpr = Conn'^a_bd,c' - Conn'^a_bc,d' 
-	+ Conn'^a_ec' * Conn'^e_bd' - Conn'^a_ed' * Conn'^e_bc'
-	- Conn'^a_be' * (Conn'^e_dc' - Conn'^e_cd')
+local RiemannFromManualConn = Tensor'^a_bcd'
+RiemannFromManualConn['^a_bcd'] = RiemannExpr:replace(Gamma, Conn)()
+--printbr'riemann from manual conn'
+--RiemannFromManualConn:print'R'
 
-
-local Riemann = Tensor'^a_bcd'
-Riemann['^a_bcd'] = RiemannExpr()
---Riemann:print'R'
-
-local Ricci = Riemann'^c_acb'()
-Ricci:print'R'
+local RicciFromManualConn = RiemannFromManualConn'^c_acb'()
+printbr'Ricci from manual conn'
+RicciFromManualConn:print'R'
+printbr()
 
 -- 8 pi T_ab = G_ab = R_ab - 1/2 R g_ab
 -- and R = 0 for electrovac T_ab
 -- so 8 pi T_ab = R_ab
-print'vs desired'
-local ESqBSq = Ex^2 + Ey^2 + Ez^2 + Bx^2 + By^2 + Bz^2
-local Ricci_EM = Tensor('_ab', function(a,b)
-	if a==1 and b==1 then
-		return ESqBSq
-	elseif a==1 then
-		return -2 * Sv[b-1]
-	elseif b==1 then
-		return -2 * Sv[a-1]
-	elseif a==b then
-		return ESqBSq - 2 * (Ev[a-1] * Ev[b-1] + Bv[a-1] * Bv[b-1])
-	else
-		return -2 * (Ev[a-1] * Ev[b-1] + Bv[a-1] * Bv[b-1])
-	end
-end)
-Ricci_EM = Ricci_EM
-	:replace(Sx, Ey*Bz-Ez*By)
-	:replace(Sy, Ez*Bx-Ex*Bz)
-	:replace(Sz, Ex*By-Ey*Bx)
--- E in Ex direction 
-	:replace(Ex, E)
-	:replace(Ey, 0)
-	:replace(Ez, 0)
--- zero b-field
-	:replace(Bx, 0)
-	:replace(By, 0)
-	:replace(Bz, 0)
-	:simplify()
-printbr(Ricci_EM:print'R')
+printbr'desired Ricci'
+local RicciDesired = Tensor('_ab', table.unpack(Matrix.diagonal(E^2, -E^2, E^2, E^2))) 
+RicciDesired:print'R'
+printbr()
 
 --[[ Bianchi identities
 -- This is zero, but it's a bit slow to compute.
@@ -259,7 +281,5 @@ printbr()
 
 -- reminders:
 printbr()
-printbr(var'R''^a_bcd':eq(RiemannExpr:replace(Conn, var'\\Gamma')))
-printbr(var'R''_ab':eq(RiemannExpr:replace(Conn, var'\\Gamma'):reindex{cacbd='abcde'}))
-
-printbr[[TODO compare change-of-coordinate to Conn with change-of-coordinate to Ricci, make sure I know how to use this to find the Ricci tensor in any frame, therefore for any (non?)null E and B configuration]] 
+printbr(var'R''^a_bcd':eq(RiemannExpr))
+printbr(var'R''_ab':eq(RiemannExpr:reindex{cacbd='abcde'}))
