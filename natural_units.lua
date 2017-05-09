@@ -164,6 +164,15 @@ return function(verbose)
 	e_in_m = e_in_C:subst(C_in_m)()
 	printbr(e_in_C:eq(e_in_m:rhs()))
 
+	-- m_e
+	printbr()
+	printbr"electron mass"
+	me = var'm_e'
+	me_in_kg = me:eq(9.1093835611e-31 * kg)
+	printbr(me_in_kg)
+	me_in_m = me_in_kg:subst(kg_in_m)()
+	printbr(me_in_m)
+
 	printbr()
 	printbr"Boltzmann's constant"
 	K = var'K'

@@ -295,13 +295,13 @@ Electric fields are described as $\frac{N}{C}$ or $\frac{V}{m}$.
 
 local units = require 'symmath.natural_units'()
 
-local volts = 1 * units.V
-local dist = 1e-6 * units.m
+local volts = frac(3,2) * units.V
+local dist = 1e-2 * units.m
 local Emag = E:eq(volts / dist)():factorDivision()
 printbr('Applying',volts,'between conductors',dist,'apart produces a uniform electric field of',Emag,'.')
 Emag = Emag:subst(units.V_in_m)():factorDivision()
 printbr('converting to meters gives',Emag)	-- 1/m ...
-printbr(E:eq(Emag:rhs()*units.s_in_m/s)())
+printbr(E:eq(Emag:rhs():subst(units.m_in_s) * (m / m:subst(units.m_in_s)))())
 -- 
 -- acceleration is m/s = unitless ...
 -- so does that mean our E, in 1/m^3, is per-volume?

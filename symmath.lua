@@ -208,6 +208,14 @@ symmath.Tensor = require 'symmath.Tensor'
 symmath.tostring = assert(require 'symmath.tostring.MultiLine')
 symmath.Verbose = assert(require 'symmath.tostring.Verbose')
 
+local texSymbols = {}
+for k in ([[alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
+nu xi omicron pi rho sigma tau upsilon phi chi psi omega]]):gmatch'%S+' do
+	table.insert(texSymbols, k)
+	k = k:sub(1,1):upper() .. k:sub(2)
+	table.insert(texSymbols, k)
+end
+
 -- shorthand for adding all (possible) fields to _G
 symmath.setup = function(args)
 	--[[ just copy
@@ -238,6 +246,19 @@ symmath.setup = function(args)
 			-- extra ugly hack - create vars by request?
 			-- maybe only with certain variable names?
 			if symmath.implicitVars then
+				local i=1
+				while i < #k do
+					if i>1 and k:sub(i):match('^[%^_]') then
+						k = k:sub(1,i-1) .. '_{' .. k:sub(i+1) .. '}'
+					end
+					for _,w in ipairs(texSymbols) do
+						if k:sub(i):match('^'..w) then
+							k = k:sub(1,i-1) .. '\\' .. k:sub(i)
+							i = i + 1
+						end
+					end
+					i=i+1
+				end
 				return symmath.var(k)
 			end
 
