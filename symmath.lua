@@ -186,6 +186,8 @@ symmath.op = {
 	gt = require 'symmath.op.gt',
 	ge = require 'symmath.op.ge',
 }
+-- shorthand
+symmath.frac = symmath.op.div
 
 --symmath.Variable = require 'symmath.Variable'
 symmath.Derivative = require 'symmath.Derivative'
@@ -207,12 +209,42 @@ symmath.tostring = assert(require 'symmath.tostring.MultiLine')
 symmath.Verbose = assert(require 'symmath.tostring.Verbose')
 
 -- shorthand for adding all (possible) fields to _G
-setmetatable(symmath, {__call = function(symmath)
+symmath.setup = function(args)
+	--[[ just copy
 	for k,v in pairs(symmath) do
 		if k ~= 'tostring' then
 			_G[k] = v
 		end
 	end
-end})
+	--]]
+	-- [[ override environment
+	if args then	
+		for k,v in pairs(args) do
+			symmath[k] = v
+		end
+	end
+	assert(not getmetatable(_G), "ut oh")
+	_G.symmath = symmath
+	setmetatable(_G, {
+		__index = function(t,k)
+			-- first check symmath (except tostring, for circular reference reasons)
+			if k ~= 'tostring' then
+				local symmath_k = symmath[k]
+				if symmath_k ~= nil then return symmath_k end
+			end
+			local _G_k = rawget(_G,k)
+			if _G_k ~= nil then return _G_k end
+			
+			-- extra ugly hack - create vars by request?
+			-- maybe only with certain variable names?
+			if symmath.implicitVars then
+				return symmath.var(k)
+			end
+
+			return nil
+		end
+	})
+	--]]
+end
 
 return symmath

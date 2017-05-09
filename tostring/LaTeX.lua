@@ -147,7 +147,7 @@ LaTeX.lookupTable = {
 			return s
 		end
 
-		local top = table{'d'}
+		local top = table{'\\partial'}
 		if diffPower > 1 then
 			top:insert('^')
 			top:insert(explode(tostring(diffPower)))
@@ -164,7 +164,7 @@ LaTeX.lookupTable = {
 	
 		local bottom = table()
 		for name,power in pairs(powersForDeriv) do	
-			bottom:insert'd'
+			bottom:insert'\\partial'
 			bottom:insert(name)
 			if power > 1 then
 				bottom:insert('^')

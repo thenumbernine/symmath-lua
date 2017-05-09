@@ -34,12 +34,19 @@ function MathJax.print(...)
 	io.stdout:flush()
 end
 
+local inst = MathJax()
+
 -- call this to setup mathjax
-function MathJax.setup()
+function MathJax.setup(args)
+	if args then
+		for k,v in pairs(args) do
+			inst[k] = v
+		end
+	end
 	local symmath = require 'symmath'
-	symmath.tostring = MathJax
+	symmath.tostring = inst
 	print(MathJax.header)
 	printbr = MathJax.print
 end
 
-return MathJax()	-- singleton
+return inst

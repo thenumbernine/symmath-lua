@@ -3,28 +3,17 @@
 this is the same as em_conn_uniform_field.lua, except in cylindrical coordinates, which I've verified tensor transformations of via em_verify_cyl_xform.lua 
 --]]
 require 'ext'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-MathJax.usePartialLHSForDerivative = true
-
-for k,v in pairs(symmath) do
-	if k ~= 'tostring' then _G[k] = v end
-end
-local frac = symmath.op.div
+require 'symmath'.setup{implicitVars=true}
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivatives=true}
 
 local t, r, phi, z = vars('t', 'r', '\\phi', 'z')
 local E = var'E'
 
-local coords = table{t, r, phi, z}
-
 Tensor.coords{
-	{variables=coords},
+	{variables={t,r,phi,z}},
 	{symbols='t', variables={t}},
-	{symbols='x', variables={x}},
-	{symbols='y', variables={y}},
+	{symbols='r', variables={r}},
+	{symbols='phi', variables={phi}},
 	{symbols='z', variables={z}},
 }
 
@@ -39,7 +28,14 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
--- [[ reproduces R_tt, R_rr, R_pp, but sets R_zz = 0
+-- [[
+g[1][1] = -e^(sqrt(2) * E * z)
+g[2][2] = -e^(sqrt(2) * E * z)
+g[3][3] = -r^2 * e^(sqrt(2) * E * z)
+g[4][4] = e^(sqrt(2) * E * z / 3)
+--]]
+
+--[[ reproduces R_tt, R_rr, R_pp, but sets R_zz = 0
 g[1][1] = -exp(E * z)
 g[2][2] = -exp(E * z)
 g[3][3] = -r^2 * exp(E * z)

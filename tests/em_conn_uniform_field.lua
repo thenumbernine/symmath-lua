@@ -1,20 +1,7 @@
 #! /usr/bin/env luajit
 require 'ext'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-MathJax.usePartialLHSForDerivative = true
-
-local Tensor = symmath.Tensor
-local Matrix = symmath.Matrix
-local var = symmath.var
-local vars = symmath.vars
-local sqrt = symmath.sqrt
-local exp = symmath.exp
-local frac = symmath.op.div
-local Constant = symmath.Constant
+require 'symmath'.setup{implicitVars=true}
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local r = var('r', {x,y,z})
@@ -47,40 +34,50 @@ if so, don't I need to factor g's into my calculations of R?
 local g = Tensor'_ab'
 
 -- [[
+g[1][1] = -exp(E * x)
+g[2][2] = exp(E * x) / 2
+g[3][3] = -exp(E * x)
+g[4][4] = -exp(E * x)
+--]]
+
+--[[ if you don't mind /x^2 terms ... and E is still missing from R_xx 
+local e = var'e'
+g[1][1] = -E/x
+g[2][2] = 1/(E*x)
+g[3][3] = -E/x
+g[4][4] = -E/x
+--]]
+
+--[[ well, I got that R_xx = -E^2, but the others are now wrong
+g[1][1] = -exp(sqrt(2) * E * x)
+g[2][2] = exp(sqrt(2) * E * x / 3)
+g[3][3] = -exp(sqrt(2) * E * x)
+g[4][4] = -exp(sqrt(2) * E * x)
+--]]
+
+--[[
+g[1][1] = var('a', {x})
+g[2][2] = var('b', {x})
+g[3][3] = var('a', {x})
+g[4][4] = var('a', {x})
+-- this gives:
+-- 2 a'' a b -   a' b' a +   a'^2 b + 4 a b^2 E^2 = 0
+-- 6 a'' a b - 3 a' b' a - 3 a'^2 b - 4 a^2 b E^2 = 0
+-- good luck
+--]]
+
+--[[
 g[1][1] = var('a', {x})
 g[2][2] = var('a', {x})
 g[3][3] = var('a', {x})
 g[4][4] = var('a', {x})
---[=[
-if g_ab = delta_ab a(x)
-then we get R_tt = R_yy = R_zz = -a,xx / 2a (needs to be E^2)
-and R_xx = -3 (a,xx a - (a,x)^2) / (2 a^2) = -E^2
-solve: 
-a,xx + 2 E^2 a = 0
-3 a,xx a - 3 a,x^2 - 2 a^2 E^2 = 0
-first eqn: a = exp(k x) => a,xx = k^2 exp(k x)
-=> k^2 exp(k x) + 2 E^2 exp(k x) = 0 
-=> k^2 + 2 E^2 = 0 
-=> k = +- sqrt(-2 E^2) 
-=> k = +-i sqrt(2) E
-=> a = A1 exp(i sqrt(2) E x) + A2 exp(-i sqrt(2) E x)
-second eqn:
-3 k^2 - 3 k^2 - 2 E^2 = 0
-=> -2 E^2 = 0 doesn't work
-
-try again?
-a = (A x + B) exp(k x) 
-a,x = A exp(k x) + (A x + B) k exp(k x)
-a,xx = (2 A k + A x k^2 + B k^2) exp(k x)
-first eqn:
-(2 A k + (A x + B) k^2) exp(k x) + 2 E^2 (A x + B) exp(k x) = 0
-(A x + B) k^2 + 2 A k + 2 E^2 (A x + B) = 0
-quadratic
-... matching terms means k = 0
---]=]
+-- this gives:
+-- a,xx + 2 E^2 a = 0
+-- 3 a,xx a - 3 a,x^2 - 2 a^2 E^2 = 0
+-- two equations means we need two variables
 --]]
 
---[[ I'm getting close results for a similar thing in cylindrical coordinates...
+--[[ this gives R_tt = R_yy = R_zz = E^2, but has R_xx = 0 instead of -E^2
 g[1][1] = -exp(E * x)
 g[2][2] = exp(E * x) / 2
 g[3][3] = -exp(E * x)
@@ -283,3 +280,40 @@ printbr()
 printbr()
 printbr(var'R''^a_bcd':eq(RiemannExpr))
 printbr(var'R''_ab':eq(RiemannExpr:reindex{cacbd='abcde'}))
+
+printbr([[ 
+Gravitation acting on an object at rest is given as ${\Gamma^j}_{tt}$.
+
+For a uniform field in the x direction,
+for the connections that give rise to this stress-energy,
+gravitation is ${\Gamma^x}_{tt} = -E$.
+(Don't forget to convert units between time and space.  
+Does this mean scale by c^2 or c^-2?.)
+
+Electric fields are described as $\frac{N}{C}$ or $\frac{V}{m}$.
+]])
+
+local units = require 'symmath.natural_units'()
+
+local volts = 1 * units.V
+local dist = 1e-6 * units.m
+local Emag = E:eq(volts / dist)():factorDivision()
+printbr('Applying',volts,'between conductors',dist,'apart produces a uniform electric field of',Emag,'.')
+Emag = Emag:subst(units.V_in_m)():factorDivision()
+printbr('converting to meters gives',Emag)	-- 1/m ...
+printbr(E:eq(Emag:rhs()*units.s_in_m/s)())
+-- 
+-- acceleration is m/s = unitless ...
+-- so does that mean our E, in 1/m^3, is per-volume?
+-- and what units are the Schwarzschild connection in?
+-- units of metric tensor: g_tt = m^2/s^2, g_ti = m/s, g_ij = 1
+-- N = kg m / s^2
+-- g_ab is unitless
+-- C^a_bc is in units 1/m
+-- R^c_acb and R_ab is units 1/m^2
+-- T_ab is units N / m^2 = kg / (m s^2)
+-- G is units N m^2 / kg^2 = m^3 / (kg s^2)
+-- 8 pi G / c^4 T_ab is units (m^3 / (kg s^2)) / (m/s)^4 (kg / (m s^2))
+-- = 1 / (m^2)
+-- 
+-- and my stress-energy tensor is E^2 in units of 1/m^2, good 
