@@ -209,12 +209,17 @@ symmath.tostring = assert(require 'symmath.tostring.MultiLine')
 symmath.Verbose = assert(require 'symmath.tostring.Verbose')
 
 local texSymbols = {}
-for k in ([[alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
-nu xi omicron pi rho sigma tau upsilon phi chi psi omega]]):gmatch'%S+' do
+for k in ([[
+alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
+nu xi omicron pi rho sigma tau upsilon phi chi psi omega
+hBar
+]]):gmatch'%S+' do
 	table.insert(texSymbols, k)
 	k = k:sub(1,1):upper() .. k:sub(2)
 	table.insert(texSymbols, k)
 end
+-- sort these largest to smallest so replacements work
+table.sort(texSymbols, function(a,b) return #a > #b end)
 
 -- shorthand for adding all (possible) fields to _G
 symmath.setup = function(args)
@@ -254,7 +259,7 @@ symmath.setup = function(args)
 					for _,w in ipairs(texSymbols) do
 						if k:sub(i):match('^'..w) then
 							k = k:sub(1,i-1) .. '\\' .. k:sub(i)
-							i = i + 1
+							i = i + #w
 						end
 					end
 					i=i+1

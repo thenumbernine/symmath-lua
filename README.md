@@ -9,7 +9,36 @@ Online demo and API at http://christopheremoore.net/symbolic-lua
 Example used at http://christopheremoore.net/metric  
 	and http://christopheremoore.net/gravitational-wave-simulation  
 
-## Reference
+### Overall
+
+`symmath.setup(args)`  
+Use this if you want to copy the symmath namespace into the global namespace.  
+`args` can include the following:  
+`implicitVars` - set this to `true` to create a variable from any reference to an uninitialized variable. Otherwise variables must be initialized manually.  
+
+Using `symmath` without `symmath.setup()`.  
+```
+local symmath = require 'symmath'
+local a, r, theta, rho, M, Q = symmath.vars('a','r','\\theta','\\rho','M','Q')
+print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
+print((Delta - (r^2 + a^2)) * a * symmath.sin(theta)^2 / rho^2)
+```
+
+Using `symmath` with `symmath.setup()` but without `implicitVars` removes the need to reference the `symmath` namespace, but still requires explicit creation of variables.  
+```
+require 'symmath'.setup()
+local a, r, theta, rho, M, Q = vars('a','r','\\theta','\\rho','M','Q')
+print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
+print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
+```
+
+Using `symmath` with `symmath.setup{implicitVars=true}` removes the need for `symmath` namespace references and the need for explicit creation of variables.  
+Notice that underscores and Greek letters are automatically converted to appropriate TeX symbols.
+```
+require 'symmath'.setup{implicitVars=true}
+print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
+print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
+```
 
 ### Numbers
 
