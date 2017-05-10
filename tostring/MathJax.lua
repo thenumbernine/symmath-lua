@@ -38,15 +38,17 @@ local inst = MathJax()
 
 -- call this to setup mathjax
 function MathJax.setup(args)
-	if args then
-		for k,v in pairs(args) do
+	args = args or {}
+	local env = args.env or _G
+	for k,v in pairs(args) do
+		if k ~= 'env' then
 			inst[k] = v
 		end
 	end
 	local symmath = require 'symmath'
 	symmath.tostring = inst
 	print(MathJax.header)
-	printbr = MathJax.print
+	env.printbr = MathJax.print
 end
 
 return inst

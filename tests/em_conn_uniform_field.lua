@@ -287,10 +287,6 @@ Gravitation acting on an object at rest is given as ${\Gamma^j}_{tt}$.
 For a uniform field in the x direction,
 for the connections that give rise to this stress-energy,
 gravitation is ${\Gamma^x}_{tt} = -E$.
-(Don't forget to convert units between time and space.  
-Does this mean scale by c^2 or c^-2?.)
-
-Electric fields are described as $\frac{N}{C}$ or $\frac{V}{m}$.
 ]])
 
 local units = require 'symmath.natural_units'()
@@ -300,20 +296,37 @@ local dist = 1e-2 * units.m
 local Emag = E:eq(volts / dist)():factorDivision()
 printbr('Applying',volts,'between conductors',dist,'apart produces a uniform electric field of',Emag,'.')
 Emag = Emag:subst(units.V_in_m)():factorDivision()
-printbr('converting to meters gives',Emag)	-- 1/m ...
-printbr(E:eq((Emag:rhs():subst(units.m_in_s) * (m / m:subst(units.m_in_s)))():factorDivision()))
--- 
--- acceleration is m/s = unitless ...
--- so does that mean our E, in 1/m^3, is per-volume?
--- and what units are the Schwarzschild connection in?
--- units of metric tensor: g_tt = m^2/s^2, g_ti = m/s, g_ij = 1
--- N = kg m / s^2
--- g_ab is unitless
--- C^a_bc is in units 1/m
--- R^c_acb and R_ab is units 1/m^2
--- T_ab is units N / m^2 = kg / (m s^2)
--- G is units N m^2 / kg^2 = m^3 / (kg s^2)
--- 8 pi G / c^4 T_ab is units (m^3 / (kg s^2)) / (m/s)^4 (kg / (m s^2))
--- = 1 / (m^2)
--- 
--- and my stress-energy tensor is E^2 in units of 1/m^2, good 
+local Emag_in_ms2 =E:eq((Emag:rhs():subst(units.m_in_s) * (m / m:subst(units.m_in_s)))():factorDivision())
+printbr('converting to meters gives',Emag:eq(Emag_in_ms2:rhs()))	-- 1/m ...
+
+--[[
+acceleration is m/s = unitless ...
+so does that mean our E, in 1/m^3, is per-volume?
+and what units are the Schwarzschild connection in?
+units of metric tensor: g_tt = m^2/s^2, g_ti = m/s, g_ij = 1
+N = kg m / s^2
+g_ab is unitless
+C^a_bc is in units 1/m
+R^c_acb and R_ab is units 1/m^2
+T_ab is units N / m^2 = kg / (m s^2)
+G is units N m^2 / kg^2 = m^3 / (kg s^2)
+8 pi G / c^4 T_ab is units (m^3 / (kg s^2)) / (m/s)^4 (kg / (m s^2))
+= 1 / (m^2)
+and my stress-energy tensor is E^2 in units of 1/m^2, good 
+
+Lorentz boost of EM fields:
+
+E||' = E||
+B||' = B||
+E_P' = gamma (E_P + v x B)
+B_P' = gamma (B_P - v x E / c^2)
+
+so if our B = 0 and we want to make a new one out of nothing ...
+boost at a right-angle to the desired B field: v = E x B'
+E||' = E||
+E_P' = gamma E_P
+B' = gamma (-v x E) = gamma (-(E x B') x E) = gamma (E x (E x B'))
+	vector triple product ... a x (b x c) = b (a.c) - c (a.b)
+B' = gamma (E (E . B') - B' (E . E)) ... but E and B' aren't necessarily orthogonal, so the simplification stops.
+gamma = (1-v^2)^(-1/2)
+--]]

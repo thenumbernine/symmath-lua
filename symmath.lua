@@ -221,32 +221,36 @@ end
 -- sort these largest to smallest so replacements work
 table.sort(texSymbols, function(a,b) return #a > #b end)
 
--- shorthand for adding all (possible) fields to _G
 symmath.setup = function(args)
+	args = args or {}
+	local env = args.env or _G	
+	
 	--[[ just copy
 	for k,v in pairs(symmath) do
 		if k ~= 'tostring' then
-			_G[k] = v
+			env[k] = v
 		end
 	end
 	--]]
 	-- [[ override environment
-	if args then	
-		for k,v in pairs(args) do
+	for k,v in pairs(args) do
+		-- hmm, some args are for symmath, some are for setup ...
+		if k ~= 'env' then
 			symmath[k] = v
 		end
 	end
-	assert(not getmetatable(_G), "ut oh")
-	_G.symmath = symmath
-	setmetatable(_G, {
+	assert(not getmetatable(env), "ut oh")
+	env.symmath = symmath
+	setmetatable(env, {
 		__index = function(t,k)
 			-- first check symmath (except tostring, for circular reference reasons)
+			local x
 			if k ~= 'tostring' then
-				local symmath_k = symmath[k]
-				if symmath_k ~= nil then return symmath_k end
+				x = symmath[k]
+				if x ~= nil then return x end
 			end
-			local _G_k = rawget(_G,k)
-			if _G_k ~= nil then return _G_k end
+			x = rawget(env,k)
+			if x ~= nil then return x end
 			
 			-- extra ugly hack - create vars by request?
 			-- maybe only with certain variable names?
