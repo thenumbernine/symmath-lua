@@ -8,8 +8,12 @@ require 'ext'
 require 'symmath'.setup{implicitVars=true, simplifyConstantPowers=true}
 require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
-local units = require 'symmath.natural_units'{valuesAsVars=true}
-local pi, c, G, eps0 = units.pi, units.c, units.G, units.eps0
+local units = require 'symmath.natural_units'{
+	--valuesAsVars=true,
+}
+local pi, c, G, epsilon_0 = units.pi, units.c, units.G, units.epsilon_0
+local e = units.e
+local m_e = units.m_e
 
 Tensor.coords{
 	{variables={t,r,theta,phi}},
@@ -27,7 +31,7 @@ printbr(Delta_def)
 local r_s_def = r_s:eq(2 * G * M / c^2)
 printbr(r_s_def)
 
-local r_Q_def = r_q:eq((Q^2 * G) / (4 * pi * eps0 * c^4))
+local r_Q_def = r_Q:eq((Q^2 * G) / (4 * pi * epsilon_0 * c^4))
 printbr(r_Q_def) 
 
 -- invert then substitute, to avoid polynomial division
@@ -68,38 +72,56 @@ printbr()
 local Conn = Tensor'_abc'
 Conn['_abc'] = (frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()
 Conn = Conn'^a_bc'()
-local accel = Conn'^i_tt'()
+local accel = (-Conn'^i_tt')()
 printbr'gravitational acceleration:'
 accel:print'accel'
 printbr()
 
-accel = accel:subst(Delta_def, rho_def, a_def, r_Q_def, r_s_def)()
+printbr'...at azimuthal plane...'
+local azimuth_defs = table{cos(theta):eq(0), sin(theta):eq(1)}
+accel = accel:subst(azimuth_defs:unpack())()
+printbr(azimuth_defs:map(tostring):concat';')
+accel:print'accel'
+printbr()
+
+accel = accel:subst(Delta_def, rho_def, a_def, r_Q_def, r_s_def, azimuth_defs:unpack())()
 printbr'...substitute variable definitions...'
 accel:print'accel'
 printbr()
 
-accel = accel:subst(units.G_eq_1, units.c_eq_1)()
-printbr'...convert units to meters...'
-printbr(units.G_eq_1)
-printbr(units.c_eq_1)
---accel:print'accel'
---printbr()
-
-accel = accel:replace(r_Q, units.e_in_m:rhs())
-			:replace(M, units.me_in_m:rhs())
+accel = accel
+			:subst(units.G_eq_1, units.c_eq_1)()
+			:replace(pi, math.pi)
+			:subst(r_Q_def)
+			:replace(Q, units.e_in_m:rhs())
+			:replace(M, units.m_e_in_m:rhs())
 			:replace(J, units.hBar_in_m:rhs()/2)
 			:simplify()
 printbr'...substitute electron definitions...'
-printbr(r_Q:eq(units.e_in_m:rhs()))
-printbr(M:eq(units.me_in_m:rhs()))
+printbr(r_Q_def)
+printbr(Q:eq(units.e_in_m:rhs()))
+printbr(M:eq(units.m_e_in_m:rhs()))
 printbr(J:eq(units.hBar_in_m:rhs()/2))
 accel:print'accel'
 printbr()
 
-printbr'...at azimuthal plane...'
-accel = accel:replace(cos(theta), 0)
-			:replace(sin(theta), 1)
-			:simplify()
+printbr'...at distance of the classical electron radius...'
+local r_e = (units.e_in_m:rhs()^2 / units.m_e_in_m:rhs())()
+accel = accel:replace(r, r_e)()
 accel:print'accel'
+printbr"Looks like there's a factor of m^2 that I've accidentally added..."
 printbr()
 
+printbr'electric field around a uniformly charged sphere:'
+local E_sphere_def = E:eq(Q / (4 * pi * epsilon_0 * r^2))
+printbr(E_sphere_def)
+printbr'...for an electron...'
+E_sphere_def = E_sphere_def
+	:replace(Q, units.e_in_m:rhs())
+	:subst(units.epsilon_0_in_m)
+	:replace(pi, math.pi)
+	:simplify()
+printbr(E_sphere_def)
+printbr'...at a distnace of $m_e$...'
+E_sphere_def = E_sphere_def:replace(r, r_e)()
+printbr(E_sphere_def)

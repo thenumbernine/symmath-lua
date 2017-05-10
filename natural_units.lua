@@ -57,21 +57,22 @@ return function(args)
 	end
 	symmath.simplifyConstantPowers = true 
 
+	-- TODO always use the variables, then subst at the end / let the user subst ?
 	if args.valuesAsVars then
 		c_value = var'{\\tilde{c}}'
 		G_value = var'{\\tilde{G}}'
-		ke_value = var'{\\tilde{k}_e}'
+		k_e_value = var'{\\tilde{k}_e}'
 		e_value = var'{\\tilde{e}}'
-		me_value = var'{\\tilde{m}_e}'
-		kB_value = var'{\\tilde{k}_B}'
+		m_e_value = var'{\\tilde{m}_e}'
+		k_B_value = var'{\\tilde{k}_B}'
 		hBar_value = var'{\\tilde{h}}'	-- '{\\tilde{\\hBar}}' ... gives MathJax errors
 	else
 		c_value = 299792458 
 		G_value = 6.67384e-11
-		ke_value = 8.9875517873681764e+9
+		k_e_value = 8.9875517873681764e+9
 		e_value = 6.2415093414e+18
-		me_value = 9.1093835611e-31
-		kB_value = 1.3806488e-23
+		m_e_value = 9.1093835611e-31
+		k_B_value = 1.3806488e-23
 		hBar_value = 1.05457173e-34
 	end
 
@@ -161,13 +162,13 @@ return function(args)
 
 	-- Coulomb's constant
 	C = var'C'
-	ke = var'k_e'
-	ke_in_SI_and_C = ke:eq(ke_value * kg * m^3 / (s^2 * C^2)):factorDivision()
-	ke_eq_1 = ke:eq(1)
+	k_e = var'k_e'
+	k_e_in_SI_and_C = k_e:eq(k_e_value * kg * m^3 / (s^2 * C^2)):factorDivision()
+	k_e_eq_1 = k_e:eq(1)
 	lprint()
-	lprint("Coulomb's constant:", ke_in_SI_and_C:eq(ke_eq_1:rhs()))
+	lprint("Coulomb's constant:", k_e_in_SI_and_C:eq(k_e_eq_1:rhs()))
 
-	C_in_m = ke_in_SI_and_C:subst(ke_eq_1, SI_in_m:unpack())():solve(C)
+	C_in_m = k_e_in_SI_and_C:subst(k_e_eq_1, SI_in_m:unpack())():solve(C)
 	C_in_SI = C:eq(s * A)
 	lprint('coulomb:',C_in_SI:eq(C_in_m:rhs()))
 
@@ -188,21 +189,19 @@ return function(args)
 
 	-- and some useful constants:
 
-	-- eps0
 	lprint()
 	lprint"permeability and permittivity of free space"
-	eps0 = var'\\epsilon_0'
-	ke_in_eps0 = ke:eq(1 / (4 * pi * eps0))
-	lprint(ke_in_eps0)
-	eps0_in_m = ke_in_eps0:subst(ke_eq_1):solve(eps0)
-	lprint(eps0_in_m)
+	epsilon_0 = var'\\epsilon_0'
+	k_e_in_epsilon_0 = k_e:eq(1 / (4 * pi * epsilon_0))
+	lprint(k_e_in_epsilon_0)
+	epsilon_0_in_m = k_e_in_epsilon_0:subst(k_e_eq_1):solve(epsilon_0)
+	lprint(epsilon_0_in_m)
 
-	-- mu0
-	mu0 = var'\\mu_0'
-	cSq_in_mu0_eps0 = (c^2):eq(1 / (mu0 * eps0))
-	lprint(cSq_in_mu0_eps0)
-	mu0_in_m = cSq_in_mu0_eps0:subst(c_eq_1, eps0_in_m):solve(mu0)
-	lprint(mu0_in_m)
+	mu_0 = var'\\mu_0'
+	cSq_in_mu_0_epsilon_0 = (c^2):eq(1 / (mu_0 * epsilon_0))
+	lprint(cSq_in_mu_0_epsilon_0)
+	mu_0_in_m = cSq_in_mu_0_epsilon_0:subst(c_eq_1, epsilon_0_in_m):solve(mu_0)
+	lprint(mu_0_in_m)
 
 	-- e
 	lprint()
@@ -215,19 +214,19 @@ return function(args)
 	lprint(e_in_C:eq(e_in_m:rhs()))
 
 	-- m_e
-	me = var'm_e'
-	me_in_kg = me:eq(me_value * kg)
-	me_in_m = me_in_kg:subst(kg_in_m)()
+	m_e = var'm_e'
+	m_e_in_kg = m_e:eq(m_e_value * kg)
+	m_e_in_m = m_e_in_kg:subst(kg_in_m)()
 	lprint()
-	lprint("electron mass:", me_in_kg:eq(me_in_m:rhs()))
+	lprint("electron mass:", m_e_in_kg:eq(m_e_in_m:rhs()))
 
 	K = var'K'
-	kB = var'k_B'
-	kB_in_SI = kB:eq(kB_value * ((m^2 * kg) / (K * s^2)))
-	kB_eq_1 = kB:eq(1)
-	lprint("Boltzmann's constant:", kB_in_SI:eq(kB_eq_1:rhs()))
+	k_B = var'k_B'
+	k_B_in_SI = k_B:eq(k_B_value * ((m^2 * kg) / (K * s^2)))
+	k_B_eq_1 = k_B:eq(1)
+	lprint("Boltzmann's constant:", k_B_in_SI:eq(k_B_eq_1:rhs()))
 
-	K_in_SI = kB_in_SI:subst(kB_eq_1):solve(K):factorDivision()
+	K_in_SI = k_B_in_SI:subst(k_B_eq_1):solve(K):factorDivision()
 	K_in_m = K_in_SI:subst(SI_in_m:unpack())()
 	lprint('Kelvin:', K_in_SI:eq(K_in_m:rhs()))
 
@@ -241,36 +240,36 @@ return function(args)
 
 	lprint()
 	lprint'Planck units:'
-	lP = var'l_P'
-	lP_def = lP:eq(sqrt(hBar * G / c^3))
-	lP_in_m = lP_def:subst(hBar_in_m, c_eq_1, G_eq_1)()
-	lprint('length',lP_def:eq(lP_in_m:rhs()))
+	l_P = var'l_P'
+	l_P_def = l_P:eq(sqrt(hBar * G / c^3))
+	l_P_in_m = l_P_def:subst(hBar_in_m, c_eq_1, G_eq_1)()
+	lprint('length',l_P_def:eq(l_P_in_m:rhs()))
 
-	mP = var'm_P'
-	mP_def = mP:eq(sqrt(hBar * c / G))
-	mP_in_kg = mP_def:subst(hBar_in_m, c_eq_1, G_eq_1)():subst(kg_in_m:solve(m))()
-	lprint('mass',mP_def:eq(mP_in_kg:rhs()))
+	m_P = var'm_P'
+	m_P_def = m_P:eq(sqrt(hBar * c / G))
+	m_P_in_kg = m_P_def:subst(hBar_in_m, c_eq_1, G_eq_1)():subst(kg_in_m:solve(m))()
+	lprint('mass',m_P_def:eq(m_P_in_kg:rhs()))
 
-	tP = var't_P'
-	tP_def = tP:eq(sqrt(hBar * G / c^5))
-	tP_in_s = tP_def:subst(hBar_in_m, c_eq_1, G_eq_1)():subst(s_in_m:solve(m))()
-	lprint('time',tP_def:eq(tP_in_s:rhs()))
+	t_P = var't_P'
+	t_P_def = t_P:eq(sqrt(hBar * G / c^5))
+	t_P_in_s = t_P_def:subst(hBar_in_m, c_eq_1, G_eq_1)():subst(s_in_m:solve(m))()
+	lprint('time',t_P_def:eq(t_P_in_s:rhs()))
 
-	qP = var'q_P'
-	qP_def = qP:eq(sqrt(4 * pi * eps0 * hBar * c))
-	qP_in_C = qP_def:subst(hBar_in_m, c_eq_1, G_eq_1, eps0_in_m, pi:eq(math.pi)):subst(C_in_m:solve(m))()
-	lprint('charge',qP_def:eq(qP_in_C:rhs()))
+	q_P = var'q_P'
+	q_P_def = q_P:eq(sqrt(4 * pi * epsilon_0 * hBar * c))
+	q_P_in_C = q_P_def:subst(hBar_in_m, c_eq_1, G_eq_1, epsilon_0_in_m, pi:eq(math.pi)):subst(C_in_m:solve(m))()
+	lprint('charge',q_P_def:eq(q_P_in_C:rhs()))
 
-	TP = var'T_P'
-	TP_def = TP:eq(sqrt(hBar * c^2 / kB))
-	TP_in_K = TP_def:subst(hBar_in_m, c_eq_1, G_eq_1, kB_eq_1):subst(K_in_m:solve(m))()
-	lprint('temperature',TP_def:eq(TP_in_K:rhs()))
+	T_P = var'T_P'
+	T_P_def = T_P:eq(sqrt(hBar * c^2 / k_B))
+	T_P_in_K = T_P_def:subst(hBar_in_m, c_eq_1, G_eq_1, k_B_eq_1):subst(K_in_m:solve(m))()
+	lprint('temperature',T_P_def:eq(T_P_in_K:rhs()))
 
 	lprint()
 	lprint'fine structure constant'
 	alpha = var'\\alpha'
-	alpha_def = alpha:eq((ke * e^2) / (hBar * c))
-	alpha_in_m = alpha_def:subst(ke_eq_1, e_in_m, hBar_in_m, c_eq_1)()
+	alpha_def = alpha:eq((k_e * e^2) / (hBar * c))
+	alpha_in_m = alpha_def:subst(k_e_eq_1, e_in_m, hBar_in_m, c_eq_1)()
 	lprint(alpha_def:eq(alpha_in_m:rhs()))
 
 	--[[ the following is from QFT notes, which relies on hBar = 1
