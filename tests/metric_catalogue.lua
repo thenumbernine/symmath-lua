@@ -20,21 +20,10 @@
     Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --]]
-local table = require 'ext.table'
-local range = require 'ext.range'
-local class = require 'ext.class'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-
-local Tensor = symmath.Tensor
-local var = symmath.var
-local vars = symmath.vars
-local div = symmath.op.div
-local sin = symmath.sin
-local cos = symmath.cos
+local env = _ENV or getfenv()
+require 'ext'
+require 'symmath'.setup{implicitVars=true, env=env}
+require 'symmath.tostring.MathJax'.setup{env=env}
 
 local t,x,y,z = vars('t','x','y','z')
 local r,phi,theta,psi = vars('r','\\phi','\\theta','\\psi')
@@ -63,7 +52,7 @@ local delta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and 1 or 0
 local eta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 local eta4 = symmath.Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
-for _,info in ipairs{
+local spacetimes = {
 -- [=[
 	{
 		title = 'polar',
@@ -272,7 +261,14 @@ for _,info in ipairs{
 		end,
 	},
 --]]
-} do
+}
+for _,info in ipairs(spacetimes) do
+	printbr('<a href="#'..info.title..'">'..info.title..'</a>')
+end
+printbr()
+
+for _,info in ipairs(spacetimes) do
+	print('<a name="'..info.title..'">')
 	print('<h3>'..info.title..'</h3>')
 
 	Tensor.coords{
@@ -288,7 +284,7 @@ for _,info in ipairs{
 
 	local eta = Tensor('_IJ', table.unpack(info.flatMetric))
 	printbr'flat metric:'
-	eta:print'\\eta'
+	eta:printElem'\\eta'
 	printbr()
 	printbr()
 
@@ -297,19 +293,21 @@ for _,info in ipairs{
 	if info.chart then
 		local u = info.chart()
 		printbr'coordinate chart:'
-		u:print'u'
+		u:printElem'u'
 		printbr()
 		printbr()
 
 		--printbr'holonomic embedded:'
 		printbr'embedded:'
 		e['_u^I'] = u'^I_,u'()	--dx^I/dx^a
-		printbr(var'e''_u^I':eq(var'u''^I_,u'):eq(e'_u^I'()))
+		printbr(var'e''_u^I':eq(var'u''^I_,u'))
+		e:printElem'e'
 		printbr()
 	elseif info.basis then
 		printbr'basis:'
 		e['_u^I'] = info.basis()()
-		printbr(var'e''_u^I':eq(e'_u^I'()))
+		e:printElem'e'
+		printbr()
 		printbr()
 	end
 
@@ -321,13 +319,15 @@ for _,info in ipairs{
 		eU = info.eU()
 	else
 		assert(#info.coords == #info.embedded)
-		local eUm = symmath.Matrix(table.unpack(e)):inverse():transpose()
-		eU = Tensor('^u_I', function(u,I) return eUm[{u,I}] or 0 end)
+		eU = Tensor('^u_I', table.unpack(Matrix(table.unpack(e)):inverse():transpose()))
 	end
 
-	printbr(var'e''^u_I'
-		--:eq(var'e''_u^I'^-1)	LaTeX output chokes here
-		:eq(eU))
+	--printbr(var'e''^u_I'
+	--	:eq(var'e''_u^I'^-1)	LaTeX output chokes here
+	--	:eq(eU))
+	eU:printElem'e'
+	printbr()
+	
 	printbr((var'e''_u^I' * var'e''^v_I'):eq((e'_u^I' * eU'^v_I')()))
 	printbr((var'e''_u^I' * var'e''^u_J'):eq((e'_u^I' * eU'^u_J')()))
 	--[[
@@ -356,7 +356,9 @@ for _,info in ipairs{
 	printbr()
 
 	local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
-	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'):eq(g'_uv'()))
+	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
+	g:printElem'g'
+	printbr()
 --]]
 
 --[[  I don't remember what this was about ...
@@ -369,9 +371,18 @@ end)
 --]]
 
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
-	printbr(var'\\Gamma''_abc':eq(div(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
+	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
 	local Props = class(require 'symmath.diffgeom')
-	Props.print = printbr
+	function Props:doPrint(field)
+		print(field.title..':')
+		local t = self[field.name]
+		if Tensor.is(t) then
+			t:printElem(field.symbol)
+		else
+			print(t)
+		end
+		printbr()
+	end
 	Props.verbose = true
 	local props = Props(g, nil, c)
 	local Gamma = props.Gamma
@@ -392,7 +403,7 @@ end)
 	local divVarExpr = var'A''^i_,i' + var'\\Gamma''^i_ji' * var'A''^j'
 	local divExpr = divVarExpr:replace(var'A', A):replace(var'\\Gamma', Gamma)
 	-- TODO only simplify TensorRef, so the indexes are fixed
-	printbr('divergence:', divVarExpr:eq(divExpr):eq(divExpr():factorDivision())) 
+	printbr('divergence:', divVarExpr:eq(divExpr():factorDivision())) 
 	
 	printbr'geodesic:'
 	-- TODO unravel equaliy, or print individual assignments

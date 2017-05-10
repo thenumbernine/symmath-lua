@@ -26,42 +26,44 @@ Integral.visitorHandler = {
 		local map = symmath.map
 		local log = symmath.log
 		local abs = symmath.abs
+
+		local int, x = table.unpack(expr)
 		
-		local x = expr[2]
-		
+		int = int():factorDivision()
+
 		-- TODO convert away divisions first ... convert into ^-1's
 		
-		if Constant.is(expr[1]) then
-			return prune(expr[1] * x)
+		if Constant.is(int) then
+			return prune(int * x)
 		end
 
-		if Variable.is(expr[1]) then
-			if expr[1] == x then
-				return prune(expr[1]^2/2)
+		if Variable.is(int) then
+			if int == x then
+				return prune(int^2/2)
 			else
-				return prune(expr[1] * x)
+				return prune(int * x)
 			end
 		end
 	
-		if add.is(expr[1]) then
-			return add(range(#expr[1]):map(function(i)
-				return prune(Integral(expr[1][i], table.unpack(expr, 2)))
+		if add.is(int) then
+			return add(range(#int):map(function(i)
+				return prune(Integral(int[i], table.unpack(expr, 2)))
 			end):unpack())
 		end
 
-		if pow.is(expr[1])
-		and expr[1][1] == x
-		and Constant.is(expr[1][2])
+		if pow.is(int)
+		and int[1] == x
+		and Constant.is(int[2])
 		then
-			if expr[1][2] == Constant(-1) then
+			if int[2] == Constant(-1) then
 				return prune(log(abs(x)))
 			else
-				return prune(x^(expr[1][2]+1)/(expr[1][2]+1))
+				return prune(x^(int[2]+1)/(int[2]+1))
 			end
 		end
 
 		-- assuming it's already simplified ... ? so no x * x^2's exist?
-		if mul.is(expr[1]) then
+		if mul.is(int) then
 			local function find(a,b)
 				local found = false
 				map(a, function(x)
@@ -70,7 +72,7 @@ Integral.visitorHandler = {
 				return found
 			end
 			local found = false
-			local terms = table(expr[1])
+			local terms = table(int)
 			for i=1,#terms do
 				if terms[i] == x then
 					if found then return end

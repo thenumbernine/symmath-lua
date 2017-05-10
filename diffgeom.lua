@@ -8,66 +8,79 @@ local function var() return require 'symmath'.var end
 Props.fields = table{
 	{
 		name = 'c',
+		symbol = 'c',
 		title = 'commutation coefficients',
 		eqn = function(self) return var()'c''_ab^c':eq(self.c'_ab^c'()) end,
 	},
 	{
 		name = 'g',
+		symbol = 'g',
 		title = 'metric',
 		eqn = function(self) return var()'g''_ab':eq(self.g'_ab'()) end,
 	},
 	{
 		name = 'gU',
+		symbol = 'g',
 		title = 'metric inverse',
 		eqn = function(self) return var()'g''^ab':eq(self.gU'^ab'()) end,
 	},
 	{
 		name = 'dg',
+		symbol = '{\\partial g}',
 		title = 'metric derivative',
 		eqn = function(self) return var()'g''_ab,c':eq(self.dg'_abc'()) end,
 	},
 	{
 		name = 'GammaL',
+		symbol = '\\Gamma',
 		title = '1st kind Christoffel',
 		eqn = function(self) return var()'\\Gamma''_abc':eq(self.GammaL'_abc'()) end,
 	},
 	{
 		name = 'Gamma',
+		symbol = '\\Gamma',
 		title = 'connection coefficients / 2nd kind Christoffel',
 		eqn = function(self) return var()'\\Gamma''^a_bc':eq(self.Gamma'^a_bc'()) end,
 	},
 	{
 		name = 'dGamma',
+		symbol = '{\\partial \\Gamma}',
 		title = 'connection coefficients derivative',
 		eqn = function(self) return var()'\\Gamma''^a_bc,d':eq(self.dGamma'^a_bcd'()) end,
 	},
 	{
 		name = 'GammaSq',
+		symbol = '(\\Gamma^2)',
 		title = 'connection coefficients squared',
 		eqn = function(self) return (var()'\\Gamma''^a_ec' * var()'\\Gamma''^e_bd'):eq(self.GammaSq'^a_bcd'()) end,
 	},
 	{
 		name = 'RiemannU',
+		symbol = 'R',
 		title = 'Riemann curvature, sharp',
 		eqn = function(self) return var()'R''^a_bcd':eq(self.RiemannU'^a_bcd'()) end,
 	},
 	{
 		name = 'Riemann',
+		symbol = 'R',
 		title = 'Riemann curvature',
 		eqn = function(self) return var()'R''^ab_cd':eq(self.Riemann'^ab_cd'()) end,
 	},
 	{
 		name = 'Ricci',
+		symbol = 'R',
 		title = 'Ricci curvature',
 		eqn = function(self) return var()'R''^a_b':eq(self.Ricci'^a_b'()) end,
 	},
 	{
 		name = 'Gaussian',
+		symbol = 'R',
 		title = 'Gaussian curvature',
 		eqn = function(self) return var()'R':eq(self.Gaussian) end,
 	},
 	{
 		name = 'Einstein',
+		symbol = 'G',
 		title = 'trace-reversed Ricci curvature',
 		eqn = function(self) return var()'G''^a_b':eq(self.Einstein'^a_b'()) end,
 	},
@@ -80,27 +93,27 @@ function Props:getEqnForField(fieldname)
 	return field and field.eqn(self) or nil
 end
 
-Props.print = print 
+function Props:doPrint(field)
+	local pr = require 'symmath'.tostring.print or print
+	pr(field.title..':')
+	pr(field.eqn(self))
+end
 
 -- print all
-function Props:print(printfn)
-	printfn = printfn or self.print
+function Props:print()
 	for _,field in ipairs(self.fields) do
 		if self[field.name] then	
-			printfn(field.title..':')
-			printfn(field.eqn(self))
+			self:doPrint(field)
 		end
 	end
 end
 
 -- print one
-function Props:printField(fieldname, printfn)
-	printfn = printfn or self.print
+function Props:printField(fieldname)
 	for _,field in ipairs(self.fields) do
 		if field.name == fieldname then
 			assert(self[field.name])
-			printfn(field.title..':')
-			printfn(field.eqn(self))
+			self:doPrint(field)
 		end
 	end
 end

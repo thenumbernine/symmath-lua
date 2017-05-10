@@ -1044,16 +1044,18 @@ function Tensor:printElem(name)
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	local sep = ''
-	local basis = Tensor.findBasisForSymbol(self.variance[1].symbol)
 	for index,x in self:iter() do
 		if x ~= Constant(0) then
 			print(sep,
 				TensorRef(Variable(name),
 					table.map(self.variance, function(v,i)
+						local basis = Tensor.findBasisForSymbol(self.variance[i].symbol)
 						v = v:clone()
 						v.symbol = basis 
+							and basis.variables[index[i]]
 							and basis.variables[index[i]].name
 							or index[i]
+							or i
 						return v
 					end):unpack()
 				):eq(x))

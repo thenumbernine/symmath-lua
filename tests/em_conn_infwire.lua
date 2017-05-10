@@ -90,14 +90,17 @@ Ricci_EM = Ricci_EM
 
 local Conn = Tensor'^a_bc'
 
--- [[ Trying to get rid of C^t_tt
-Conn[2][1][1] = -frac(4,3) * I^2 / r^3 - 4 * lambda^2 / r		-- R_tt
-Conn[2][1][4] = 4 * I * lambda / r^2							-- R_tz
-Conn[2][4][1] = 4 * I * lambda / r^2							-- R_zt
-Conn[1][1][1] = Constant(1)										-- R_pp, R_zz
-Conn[1][3][3] = -4 * I^2 / r^2 + 4 * lambda^2					-- R_pp
-Conn[1][4][4] = 4 * I^2 / r^4 + 4 * lambda^2 / r^2				-- R_zz
-Conn[3][2][2] = 4 * phi * (I^2 / r^4 - lambda^2 / r^2)			-- R_rr
+-- [[ 
+Conn[2][1][1] = var('a',{r})
+Conn[1][2][1] = var('d',{r}) * I / r^2
+Conn[1][1][2] = var('g',{r})
+
+Conn[2][1][4] = var('b',{r})
+Conn[2][4][1] = var('c',{r})
+Conn[2][2][2] = lambda -- var('h',{r})
+
+Conn[2][3][3] = var('e',{r})
+Conn[2][4][4] = var('f',{r})
 --]]
 
 --[[ tada!
