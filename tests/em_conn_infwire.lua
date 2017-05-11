@@ -170,7 +170,21 @@ RicciDesiredNoChargeBoosted:print'R'
 printbr()
 
 --[[
+-8 I lambda / r^3 = -8 I^2 beta / (r^4 (1 - beta^2))
+solve for beta
+-8 I lambda r^4 (1 - beta^2) = -8 I^2 beta r^3
+lambda r (1 - beta^2) = I beta
+lambda r - lambda r beta^2 = I beta
+lambda r beta^2 + I beta - lambda r = 0
+beta = (-I +- sqrt(I^2 - 4 lambda^2 r^2)) / (2 lambda r)
 --]]
+
+RicciBoostedToCreateB = RicciDesiredNoChargeBoosted
+	:replace(beta, (-I + sqrt(I^2 - 4 * lambda^2 * r^2)) / (2 * lambda * r))
+	:simplify()
+printbr'Ricci without charge, then boosted to recreate B'
+RicciBoostedToCreateB:print'R'
+printbr()
 
 --[[
 to eliminate B, solve for beta 0 = (lambda I r) beta^2 + (I^2 + lambda^2 r^2) beta + lambda I r
