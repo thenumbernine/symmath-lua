@@ -8,8 +8,9 @@ I did this out of suspicion spacetime would twist around the uniform field
 but if it is uniform then of course it's not going to...
 --]]
 require 'ext'
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivatives=true}
+local _ENV = _ENV or getfenv()
+require 'symmath'.setup{env=_ENV, implicitVars=true}
+require 'symmath.tostring.MathJax'.setup{env=_ENV, usePartialLHSForDerivative=true}
 
 local t, r, phi, z = vars('t', 'r', '\\phi', 'z')
 local E = var'E'
@@ -33,7 +34,16 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
--- [[
+--[[ cylindrical, with time scaled and r and z squashed similar to Schwarzschild
+local alpha = var('\\alpha', {r})
+--local alpha = (r - E) / r
+g[1][1] = -alpha
+g[2][2] = 1/alpha
+g[3][3] = r^2
+g[4][4] = 1/alpha
+--]]
+
+-- [[ reproduces R_zz, but the others are scaled wrong
 g[1][1] = -e^(sqrt(2) * E * z)
 g[2][2] = -e^(sqrt(2) * E * z)
 g[3][3] = -r^2 * e^(sqrt(2) * E * z)

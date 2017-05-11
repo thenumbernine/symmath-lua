@@ -234,6 +234,16 @@ local spacetimes = {
 				r * symmath.cos(theta))
 		end,
 	},
+	{
+		title = 'cylindrical and time',
+		coords = {t,r,phi,z},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		chart = function()
+			return Tensor('^I', t, r * symmath.cos(phi), r * symmath.sin(phi), z)
+		end,
+	},
+
 --]=]
 --[[
 	{

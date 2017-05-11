@@ -8,12 +8,12 @@ local t,r,phi,z = vars('t', 'r', '\\phi', 'z')
 local pi = var'\\pi'
 
 --[[
-local eps0 = var'\\epsilon_0'
-local mu0 = var'\\mu_0'
+local epsilon_0 = var'\\epsilon_0'
+local mu_0 = var'\\mu_0'
 --]]
 -- [[
-local mu0 = 4 * pi
-local eps0 = 1 / mu0
+local mu_0 = 4 * pi
+local epsilon_0 = 1 / mu_0
 --]]
 
 local spatialCoords = {r,phi,z}
@@ -53,10 +53,10 @@ local LeviCivita3 = makeLeviCivita('i')
 --printbr(var'\\epsilon''_ijk':eq(LeviCivita3'_ijk'()))
 
 local E = Tensor('_i', function(i) return var('E_'..spatialCoords[i].name, coords) end)
-local Er, Ephi, Ez = table.unpack(E)
+local E_r, E_phi, E_z = table.unpack(E)
 
 local B = Tensor('_i', function(i) return var('B_'..spatialCoords[i].name, coords) end)
-local Br, Bphi, Bz = table.unpack(B)
+local B_r, B_phi, B_z = table.unpack(B)
 
 local S = (LeviCivita3'_i^jk' * E'_j' * B'_k')()
 
@@ -67,27 +67,27 @@ local S = (LeviCivita3'_i^jk' * E'_j' * B'_k')()
 local ESq_plus_BSq = (E'_i' * E'_j' * gammaU'^ij' + B'_i' * B'_j' * gammaU'^ij')()
 
 -- taken from my electrovacuum.lua script
-local RicciDesired = Tensor'_ab'
-RicciDesired['_tt'] = Tensor('_tt', {ESq_plus_BSq})
-RicciDesired['_ti'] = Tensor('_ti', (-2 * S'_i')())
-RicciDesired['_it'] = Tensor('_ti', (-2 * S'_i')())
-RicciDesired['_ij'] = (-2 * E'_i' * E'_j' - 2 * B'_i' * B'_j' + ESq_plus_BSq * gamma'_ij')()
+local RicciEM = Tensor'_ab'
+RicciEM['_tt'] = Tensor('_tt', {ESq_plus_BSq})
+RicciEM['_ti'] = Tensor('_ti', (-2 * S'_i')())
+RicciEM['_it'] = Tensor('_ti', (-2 * S'_i')())
+RicciEM['_ij'] = (-2 * E'_i' * E'_j' - 2 * B'_i' * B'_j' + ESq_plus_BSq * gamma'_ij')()
 
 local lambda = var'\\lambda'
 local I = var'I'
 printbr'for a uniformly charged wire...'
 -- TODO http://www.physicspages.com/2013/11/18/electric-field-outside-an-infinite-wire/
-RicciDesired = RicciDesired
+RicciEM = RicciEM
 	-- http://farside.ph.utexas.edu/teaching/302l/lectures/node26.html
-	:replace(Er, lambda / (2 * pi * eps0 * r))
-	:replace(Ephi, 0)
-	:replace(Ez, 0)
+	:replace(E_r, lambda / (2 * pi * epsilon_0 * r))
+	:replace(E_phi, 0)
+	:replace(E_z, 0)
 	-- http://hyperphysics.phy-astr.gsu.edu/hbase/magnetic/magcur.html
-	:replace(Br, 0)
-	:replace(Bphi, mu0 * I / (2 * pi * r))
-	:replace(Bz, 0)
+	:replace(B_r, 0)
+	:replace(B_phi, mu_0 * I / (2 * pi * r))
+	:replace(B_z, 0)
 	:simplify()
---printbr(var'R''_ab':eq(RicciDesired'_ab'()))
+--printbr(var'R''_ab':eq(RicciEM'_ab'()))
 
 -- clear the metric
 do
@@ -138,15 +138,20 @@ Riemann['^a_bcd'] = RiemannExpr()
 
 -- R_ab = R^c_acb = Conn^c_ab,c - Conn^c_ac,b + Conn^c_dc Conn^d_ab - Conn^c_db Conn^d_ac - Conn^c_ad (Conn^d_bc - Conn^d_cb)
 local Ricci = Riemann'^c_acb'()
+Ricci:print'R'
 print(var'R''_ab':eq(Ricci))
 
-print('vs desired')
-RicciDesired:print'R'
+print('vs Ricci of EM stress-energy tensor')
+RicciEM:print'R'
 printbr()
 
-printbr'desired with no charge -- in rest frame -- purely magnetic field'
-local RicciDesiredNoCharge = RicciDesired:replace(lambda, 0)()
-RicciDesiredNoCharge:print'R'
+printbr"EM with no current -- in frame of wire carrier drift velocity, right?  How do you apply Lorentz boost to create this setup?"
+RicciEM:replace(I, 0)():print'R'
+printbr()
+
+printbr'EM with no charge -- in rest frame -- purely magnetic field'
+local RicciEMNoCharge = RicciEM:replace(lambda, 0)()
+RicciEMNoCharge:print'R'
 printbr()
 
 local beta = var'\\beta'
@@ -157,29 +162,78 @@ local LorentzBoost = Tensor('^a_b',
 	{0, 0, 1, 0},
 	{-beta * gamma, 0, 0, gamma})
 
+printbr[[
+If the wire has either no current or no charge then $R_{tz}$ will be zero.
+If $R_{tz}$ is zero then there is no way to apply a Lorentz transformation to create this term (right?).
+There would also be no way to transform a EM stress-energy of purely current (observer frame) into one of purely current (frame of charge carriers).
+]]
+
 printbr'Lorentz boost'
 LorentzBoost:print'\\Lambda'
 printbr()
 
-local RicciDesiredNoChargeBoosted = (RicciDesiredNoCharge'_cd' * LorentzBoost'^c_a' * LorentzBoost'^d_b')
+local RicciEMBoosted = (RicciEM'_cd' * LorentzBoost'^c_a' * LorentzBoost'^d_b')()
+printbr'EM boosted:'
+RicciEMBoosted:print'R' 
+printbr()
+
+local RicciEMNoChargeBoosted = (RicciEMNoCharge'_cd' * LorentzBoost'^c_a' * LorentzBoost'^d_b')
 	:simplify()
 	:replace(gamma^2, 1/(1 - beta^2))
 	:simplify()
-printbr'desired, no charge, boosted:'
-RicciDesiredNoChargeBoosted:print'R'
+printbr'EM, no charge, boosted:'
+RicciEMNoChargeBoosted:print'R'
+printbr()
+
+local J = Tensor('_a', 0, 0, 0, I)
+printbr'four-current in rest frame. no charge, only current:'
+J:print'J'
+printbr()
+
+JBoosted = (J'_b' * LorentzBoost'^b_a')()
+printbr'four-current boosted'
+JBoosted:print'J'
 printbr()
 
 --[[
--8 I lambda / r^3 = -8 I^2 beta / (r^4 (1 - beta^2))
+... but how do we boost to get the new frame's current equal to zero?
+for that we solve 0 = -8 I^2 beta / (r^4 (1 - beta^2))
+and that means beta = 0 ...
+unless all I terms have to be replaced with something ...
+	I^2 -> (I^2 - lambda^2 r^2)
+... in order to represent the current in the new field
+... why is that?
+Lorentz transform on 4-current:
+J_a = [0, 0, 0, I]
+J_a' = [-beta gamma I, 0, 0, gamma I]
+so there's your new lambda: equal to beta gamma I
+...and your new I is gamma I 
+--]]
+printbr'EM, no charge, boosted, with four-current exchanged as well'
+local tmp = RicciEMBoosted	-- start with the with-charge boosted Ricci, so we can replace the lambda with the boosted J_t'
+	:replace(lambda, JBoosted[1])
+	:replace(I, JBoosted[4])
+	:simplify()
+	:replace(gamma^4, 1/(1-beta^2)^2)
+	:simplify()
+tmp:print'R'
+printbr()
+
+--[[
+I = rest-frame current.  no charge
+I', lambda' = new current, charge
+-8 I' lambda' / r^3 = -8 I^2 beta / (r^4 (1 - beta^2))
 solve for beta
--8 I lambda r^4 (1 - beta^2) = -8 I^2 beta r^3
-lambda r (1 - beta^2) = I beta
-lambda r - lambda r beta^2 = I beta
-lambda r beta^2 + I beta - lambda r = 0
-beta = (-I +- sqrt(I^2 - 4 lambda^2 r^2)) / (2 lambda r)
+-8 I' lambda' r^4 (1 - beta^2) = -8 I^2 r^3 beta
+(I' / I^2)  lambda' r (beta^2 - 1) + beta = 0 
+beta = (-1 +- sqrt( 1 - 4 ((I' / I^2)  lambda' r)^2 ) ) / (2 (I' / I^2)  lambda' r)
+beta = (-1 +- sqrt( 1 - 4 lambda'^2 r^2 I'^2 / I^4 ) ) / (2 lambda' r I' / I^2)
+beta = (-1 +- (I' / I^2) sqrt( I^4 / I'^2 - 4 lambda'^2 r^2 ) ) / (2 lambda' r I' / I^2)
+beta = (-(I' / I^2) / (I' / I^2) +- (I' / I^2) sqrt( I^4 / I'^2 - 4 lambda'^2 r^2 ) ) / (2 lambda' r I' / I^2)
+beta = (-I^2 / I' +- sqrt( I^4 / I'^2 - 4 lambda'^2 r^2 ) ) / (2 lambda' r)
 --]]
 
-RicciBoostedToCreateB = RicciDesiredNoChargeBoosted
+RicciBoostedToCreateB = RicciEMNoChargeBoosted
 	:replace(beta, (-I + sqrt(I^2 - 4 * lambda^2 * r^2)) / (2 * lambda * r))
 	:simplify()
 printbr'Ricci without charge, then boosted to recreate B'

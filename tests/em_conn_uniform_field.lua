@@ -275,6 +275,15 @@ B' = gamma (B' (E . E) - E (E . B')) / E^2
 B' = gamma B' ... tada!
 ... for gamma = (1-v^2)^(-1/2)
 
+likewise if we wanted to make B = 0 ...
+... we would have to boost perpendicular to B, so B|| = 0
+... then solve:
+0 = gamma (B_P - v x E)
+0 = B_P - v x E
+v x E = B_P
+v = E x B_P / E.E
+v x E = (E x B_P / E.E) x E = -E x (E x B_P) / E.E = (-E(E.B_P) + B_P(E.E)) / E.E = B_P
+
 --]]
 -- technically this should have a separate set for its upper index
 -- shouldn't the boost be perpendicular to E and B?
@@ -289,14 +298,15 @@ LorentzBoost:print'\\Lambda'
 printbr()
 
 LorentzBoost = LorentzBoost 
-	:replace(gamma, 1/sqrt(1 - beta^2))
-	:replace(beta, -B / E)
+--	:replace(gamma, 1/sqrt(1 - beta^2))
+--	:replace(beta, -B / E)
 	:simplify()
 printbr'Lorentz boost to reconstruct a magnetic field in the Y direction (I hope)'
 LorentzBoost:print'\\Lambda'
 printbr()
 
 local RicciDesiredBoosted = (RicciDesired'_cd' * LorentzBoost'^c_a' * LorentzBoost'^d_b')
+	:replace(gamma^2, 1 / (1 - beta^2))
 	:simplify()
 printbr'EM Ricci, boosted'
 RicciDesiredBoosted:print'R'
