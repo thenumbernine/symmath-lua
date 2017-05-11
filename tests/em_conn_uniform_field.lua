@@ -1,6 +1,6 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true}
+require 'symmath'.setup{implicitVars=true, env=_ENV or getfenv()}
 require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
@@ -21,7 +21,11 @@ Tensor.coords{
 local E = var'E'
 local Gamma = var'\\Gamma'
 
--- [==[
+local ConnFromMetric 
+-- finding the metric
+--[==[
+
+-- ONCE YOU FIND THE METRIC, FIND THE FARADAY TRANFORMED UNDER THE METRIC, THEN FIND THE STRESS-ENERGY FROM THE FARADAY, and see if it is the same or not ...
 
 --[[
 here's a thought on this:
@@ -173,7 +177,7 @@ g:print'g'
 gU:print'g'
 printbr()
 
-local ConnFromMetric = Tensor'_abc'
+ConnFromMetric = Tensor'_abc'
 ConnFromMetric['_abc'] = (frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()	-- ... plus commutation? in this case I have a symmetric Conn so I don't need comm
 print'conn from manual metric:'
 --ConnFromMetric:printElem'\\Gamma' printbr()
@@ -182,7 +186,7 @@ ConnFromMetric = (gU'^ad' * ConnFromMetric'_dbc')()
 --ConnFromMetric:printElem'\\Gamma' printbr()
 ConnFromMetric:print'\\Gamma'
 
-print'vs manual conn:'
+print'vs'
 --]==]
 
 local Conn = Tensor'^a_bc'
@@ -208,6 +212,7 @@ Conn[1][3][3] = E
 Conn[1][4][4] = E
 --]]
 
+print'manual conn:'
 Conn:print'\\Gamma'
 printbr()
 --printbr(var'c''_cb^a':eq(Gamma'^a_bc' - Gamma'^a_cb'):eq((Conn'^a_bc' - Conn'^a_cb')()))
@@ -216,17 +221,19 @@ local RiemannExpr = Gamma'^a_bd,c' - Gamma'^a_bc,d'
 	+ Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc'
 	- Gamma'^a_be' * (Gamma'^e_dc' - Gamma'^e_cd')
 
+if ConnFromMetric then
+	local RiemannFromManualMetric = Tensor'^a_bcd'
+	RiemannFromManualMetric['^a_bcd'] = RiemannExpr:replace(Gamma, ConnFromMetric)()
+	--printbr'Riemann from manual metric'
+	--RiemannFromManualConn:print'R'
 
-local RiemannFromManualMetric = Tensor'^a_bcd'
-RiemannFromManualMetric['^a_bcd'] = RiemannExpr:replace(Gamma, ConnFromMetric)()
---printbr'Riemann from manual metric'
---RiemannFromManualConn:print'R'
-
-local RicciFromManualMetric = Tensor'_ab'
-RicciFromManualMetric['_ab'] = RiemannFromManualMetric'^c_acb'()
-printbr'Ricci from manual metric'
-RicciFromManualMetric:print'R'
-printbr()
+	local RicciFromManualMetric = Tensor'_ab'
+	RicciFromManualMetric['_ab'] = RiemannFromManualMetric'^c_acb'()
+	printbr'Ricci from manual metric'
+	RicciFromManualMetric:print'R'
+	printbr()
+	print'vs'
+end
 
 local RiemannFromManualConn = Tensor'^a_bcd'
 RiemannFromManualConn['^a_bcd'] = RiemannExpr:replace(Gamma, Conn)()
@@ -241,9 +248,79 @@ printbr()
 -- 8 pi T_ab = G_ab = R_ab - 1/2 R g_ab
 -- and R = 0 for electrovac T_ab
 -- so 8 pi T_ab = R_ab
-printbr'desired Ricci'
+printbr'vs desired Ricci'
 local RicciDesired = Tensor('_ab', table.unpack(Matrix.diagonal(E^2, -E^2, E^2, E^2))) 
 RicciDesired:print'R'
+printbr()
+
+--[[
+let's create a magnetic field in the Y direction (to compliment our electric field in the X direction)
+
+Lorentz boost of EM fields:
+
+E||' = E||
+B||' = B||
+E_P' = gamma (E_P + v x B)
+B_P' = gamma (B_P - v x E / c^2)
+
+so if our B = 0 and we want to make a new one out of nothing ...
+boost at a right-angle to the desired B field: 
+E||' = E||
+E_P' = gamma E_P
+... let v = -E x B' / (E^2) ... gamma in the denominator, eh?
+B' = gamma (-v x E) = gamma (-(-E x B' / E^2) x E) = gamma (E x (B' x E)) / E^2
+	vector triple product ... a x (b x c) = b (a.c) - c (a.b)
+B' = gamma (B' (E . E) - E (E . B')) / E^2
+... assume B' is picked to be orthogonal to E ...
+B' = gamma B' ... tada!
+... for gamma = (1-v^2)^(-1/2)
+
+--]]
+-- technically this should have a separate set for its upper index
+-- shouldn't the boost be perpendicular to E and B?
+local LorentzBoost = Tensor('^a_b', 
+	{gamma, 0, 0, -beta * gamma},
+	{0, 1, 0, 0},
+	{0, 0, 1, 0},
+	{-beta * gamma, 0, 0, gamma})
+
+printbr'Lorentz boost'
+LorentzBoost:print'\\Lambda'
+printbr()
+
+LorentzBoost = LorentzBoost 
+	:replace(gamma, 1/sqrt(1 - beta^2))
+	:replace(beta, -B / E)
+	:simplify()
+printbr'Lorentz boost to reconstruct a magnetic field in the Y direction (I hope)'
+LorentzBoost:print'\\Lambda'
+printbr()
+
+local RicciDesiredBoosted = (RicciDesired'_cd' * LorentzBoost'^c_a' * LorentzBoost'^d_b')
+	:simplify()
+printbr'EM Ricci, boosted'
+RicciDesiredBoosted:print'R'
+printbr()
+
+local Faraday = Tensor('_ab', 
+	{0, -E, 0, 0},
+	{E, 0, 0, 0},
+	{0, 0, 0, 0},
+	{0, 0, 0, 0})
+printbr'Faraday of Electric field in X direction:'
+Faraday:print'F'
+printbr()
+printbr'Faraday, boosted:'
+local FaradayBoosted = (Faraday'_cd' * LorentzBoost'^c_a' * LorentzBoost'^d_b')()
+FaradayBoosted:print'F'
+printbr()
+
+-- but we don't have a metric ...
+printbr'Ricci from stress-energy from boosted Faraday (assuming near-linear metric):'
+local etaL4 = Tensor('_ab', table.unpack(Matrix.diagonal(-1, 1, 1, 1)))
+local etaU4 = Tensor('^ab', table.unpack(Matrix.diagonal(-1, 1, 1, 1)))
+local RicciFromBoostedFaraday = (2 * (FaradayBoosted'_ac' * FaradayBoosted'_bd' * etaU4'^cd' - frac(1,4) * etaL4'_ab' * etaU4'^ce' * etaU4'^df' * FaradayBoosted'_cd' * FaradayBoosted'_ef'))()
+RicciFromBoostedFaraday:print'R'
 printbr()
 
 --[[ Bianchi identities
@@ -313,20 +390,4 @@ G is units N m^2 / kg^2 = m^3 / (kg s^2)
 8 pi G / c^4 T_ab is units (m^3 / (kg s^2)) / (m/s)^4 (kg / (m s^2))
 = 1 / (m^2)
 and my stress-energy tensor is E^2 in units of 1/m^2, good 
-
-Lorentz boost of EM fields:
-
-E||' = E||
-B||' = B||
-E_P' = gamma (E_P + v x B)
-B_P' = gamma (B_P - v x E / c^2)
-
-so if our B = 0 and we want to make a new one out of nothing ...
-boost at a right-angle to the desired B field: v = E x B'
-E||' = E||
-E_P' = gamma E_P
-B' = gamma (-v x E) = gamma (-(E x B') x E) = gamma (E x (E x B'))
-	vector triple product ... a x (b x c) = b (a.c) - c (a.b)
-B' = gamma (E (E . B') - B' (E . E)) ... but E and B' aren't necessarily orthogonal, so the simplification stops.
-gamma = (1-v^2)^(-1/2)
 --]]

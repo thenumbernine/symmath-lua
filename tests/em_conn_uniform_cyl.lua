@@ -1,6 +1,11 @@
 #! /usr/bin/env luajit
 --[[
-this is the same as em_conn_uniform_field.lua, except in cylindrical coordinates, which I've verified tensor transformations of via em_verify_cyl_xform.lua 
+this is the same as em_conn_uniform_field.lua, 
+except in cylindrical coordinates, 
+which I've verified tensor transformations of via em_verify_cyl_xform.lua 
+I did this out of suspicion spacetime would twist around the uniform field
+(when specifying the manual metric)
+but if it is uniform then of course it's not going to...
 --]]
 require 'ext'
 require 'symmath'.setup{implicitVars=true}

@@ -649,6 +649,9 @@ usage:
 	Tensor.metric(nil, mInv, symbol)	<- replaces the metric inverse of the basis associated with the symbol, calculates the metric
 	Tensor.metric(m, mInv, symbol)		<- replaces both the metric and the metric inverse of the basis associated with the symbol 
 	Tensor.metric(nil, nil, symbol) 	<- returns the basis associated with the symbol
+
+TODO clearing the metric cannot be done by Tensor.metric(nil, nil)
+	which is confusing
 --]]
 function Tensor.metric(metric, metricInverse, symbol)
 	local Matrix = require 'symmath.Matrix'

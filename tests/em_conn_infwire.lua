@@ -1,7 +1,8 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{env=_ENV or getfenv()}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+local _ENV = _ENV or getfenv()
+require 'symmath'.setup{env=_ENV}
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true, env=_ENV}
 
 local t,r,phi,z = vars('t', 'r', '\\phi', 'z')
 local pi = var'\\pi'
@@ -66,17 +67,17 @@ local S = (LeviCivita3'_i^jk' * E'_j' * B'_k')()
 local ESq_plus_BSq = (E'_i' * E'_j' * gammaU'^ij' + B'_i' * B'_j' * gammaU'^ij')()
 
 -- taken from my electrovacuum.lua script
-local Ricci_EM = Tensor'_ab'
-Ricci_EM['_tt'] = Tensor('_tt', {ESq_plus_BSq})
-Ricci_EM['_ti'] = Tensor('_ti', (-2 * S'_i')())
-Ricci_EM['_it'] = Tensor('_ti', (-2 * S'_i')())
-Ricci_EM['_ij'] = (-2 * E'_i' * E'_j' - 2 * B'_i' * B'_j' + ESq_plus_BSq * gamma'_ij')()
+local RicciDesired = Tensor'_ab'
+RicciDesired['_tt'] = Tensor('_tt', {ESq_plus_BSq})
+RicciDesired['_ti'] = Tensor('_ti', (-2 * S'_i')())
+RicciDesired['_it'] = Tensor('_ti', (-2 * S'_i')())
+RicciDesired['_ij'] = (-2 * E'_i' * E'_j' - 2 * B'_i' * B'_j' + ESq_plus_BSq * gamma'_ij')()
 
 local lambda = var'\\lambda'
 local I = var'I'
 printbr'for a uniformly charged wire...'
 -- TODO http://www.physicspages.com/2013/11/18/electric-field-outside-an-infinite-wire/
-Ricci_EM = Ricci_EM
+RicciDesired = RicciDesired
 	-- http://farside.ph.utexas.edu/teaching/302l/lectures/node26.html
 	:replace(Er, lambda / (2 * pi * eps0 * r))
 	:replace(Ephi, 0)
@@ -86,11 +87,17 @@ Ricci_EM = Ricci_EM
 	:replace(Bphi, mu0 * I / (2 * pi * r))
 	:replace(Bz, 0)
 	:simplify()
---printbr(var'R''_ab':eq(Ricci_EM'_ab'()))
+--printbr(var'R''_ab':eq(RicciDesired'_ab'()))
+
+-- clear the metric
+do
+	local basis = Tensor.metric() basis.metric = nil basis.metricInverse = nil
+	local basis = Tensor.metric(nil, nil, 'i') basis.metric = nil basis.metricInverse = nil
+end
 
 local Conn = Tensor'^a_bc'
 
--- [[ 
+--[[ 
 Conn[2][1][1] = var('a',{r})
 Conn[1][2][1] = var('d',{r}) * I / r^2
 Conn[1][1][2] = var('g',{r})
@@ -103,7 +110,7 @@ Conn[2][3][3] = var('e',{r})
 Conn[2][4][4] = var('f',{r})
 --]]
 
---[[ tada!
+-- [[ tada!
 Conn[2][1][1] = -frac(4,3) * I^2 / r^3 - 4 * lambda^2 / r		-- R_tt
 Conn[2][1][4] = 4 * I * lambda / r^2							-- R_tz
 Conn[2][4][1] = 4 * I * lambda / r^2							-- R_zt
@@ -134,10 +141,58 @@ local Ricci = Riemann'^c_acb'()
 print(var'R''_ab':eq(Ricci))
 
 print('vs desired')
-printbr(var'R''_ab':eq(Ricci_EM))
+RicciDesired:print'R'
+printbr()
 
-print'diff'
-printbr((Ricci_EM - Ricci)())
+printbr'desired with no charge -- in rest frame -- purely magnetic field'
+local RicciDesiredNoCharge = RicciDesired:replace(lambda, 0)()
+RicciDesiredNoCharge:print'R'
+printbr()
+
+local beta = var'\\beta'
+local gamma = var'\\gamma'
+local LorentzBoost = Tensor('^a_b', 
+	{gamma, 0, 0, -beta * gamma},
+	{0, 1, 0, 0},
+	{0, 0, 1, 0},
+	{-beta * gamma, 0, 0, gamma})
+
+printbr'Lorentz boost'
+LorentzBoost:print'\\Lambda'
+printbr()
+
+local RicciDesiredNoChargeBoosted = (RicciDesiredNoCharge'_cd' * LorentzBoost'^c_a' * LorentzBoost'^d_b')
+	:simplify()
+	:replace(gamma^2, 1/(1 - beta^2))
+	:simplify()
+printbr'desired, no charge, boosted:'
+RicciDesiredNoChargeBoosted:print'R'
+printbr()
+
+--[[
+--]]
+
+--[[
+to eliminate B, solve for beta 0 = (lambda I r) beta^2 + (I^2 + lambda^2 r^2) beta + lambda I r
+beta = ( -(I^2 + lambda^2 r^2) +- sqrt( (I^2 + lambda^2 r^2)^2 - 4 (lambda I r) lambda I r ) ) / (2 lambda I r)
+beta = ( -I^2 - lambda^2 r^2 +- sqrt( I^4 + 2 I^2 lambda^2 r^2 + lambda^4 r^4 - 4 lambda^2 I^2 r^2 ) ) / (2 lambda I r)
+beta = ( -I^2 - lambda^2 r^2 +- sqrt( I^4 - 2 I^2 lambda^2 r^2 + lambda^4 r^4 ) ) / (2 lambda I r)
+beta = ( -I^2 - lambda^2 r^2 +- sqrt( (I^2 - lambda^2 r^2)^2 ) )  / (2 lambda I r)
+beta = ( -I^2 - lambda^2 r^2 +- I^2 -+ lambda^2 r^2) / (2 lambda I r)
+
+beta = ( -I^2 - lambda^2 r^2 + I^2 - lambda^2 r^2) / (2 lambda I r)
+beta = ( - 2 lambda^2 r^2 ) / (2 lambda I r)
+beta = -lambda r / I
+
+beta = ( -I^2 - lambda^2 r^2 - I^2 + lambda^2 r^2) / (2 lambda I r)
+beta = ( -2 I^2) / (2 lambda I r)
+beta = -I / (lambda r)
+
+oh yeah, lambda is zero for the rest frame ...
+--]]
+
+os.exit()
+
 
 --[[ Bianchi identities
 -- This is zero, but it's a bit slow to compute.
@@ -187,6 +242,7 @@ which I need to calculate in natural units and specify here ...
 
 -- -4/3 I^2 / r^3 - 4 lambda^2 / r
 
+-- grem.constants doesn't work with implicitVars
 local constants = require 'grem.constants'
 local wire_radius = .5 * constants.wire_diameters.electrical_range	-- m
 printbr('wire_radius',wire_radius)
