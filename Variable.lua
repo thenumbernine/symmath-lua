@@ -30,7 +30,7 @@ function Variable:applyDiff(x)
 end
 
 -- Variable equality is by name and value at the moment
--- this way log(e) fails to simplify, but log(Constant.e) simplifies to 1 
+-- this way log(e) fails to simplify, but log(symmath.e) simplifies to 1 
 function Variable.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
 	return a.name == b.name

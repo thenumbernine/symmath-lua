@@ -14,14 +14,15 @@ function log:evaluateDerivative(...)
 end
 
 function log:reverse(soln, index)
-	return require 'symmath.exp'(soln)
+	return require 'symmath'.e ^ soln
 end
 
 log.visitorHandler = {
 	Prune = function(prune, expr)
-		local Constant = require 'symmath.Constant'
+		local symmath = require 'symmath'
+		local Constant = symmath.Constant
 		local x = table.unpack(expr)
-		if x == Constant.e then
+		if x == symmath.e then
 			return Constant(1)
 		elseif x == Constant(0) then
 			return -Constant.inf

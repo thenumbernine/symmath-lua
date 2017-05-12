@@ -19,13 +19,6 @@ local Constant = class(Expression)
 Constant.precedence = 10	-- high since it can't have child nodes 
 Constant.name = 'Constant'
 
-
--- put some constants here as static members
-local Variable = require 'symmath.Variable'
-Constant.e = Variable('e', nil, math.exp(1))
-Constant.pi = Variable('\\pi', nil, math.pi)
-Constant.inf = Variable('\\infty', nil, math.huge)
-
 function Constant:init(value)
 	if type(value) ~= 'number'
 	and not complex.is(value)

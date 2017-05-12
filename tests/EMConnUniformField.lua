@@ -37,7 +37,6 @@ if so, don't I need to factor g's into my calculations of R?
 local g = Tensor'_ab'
 
 -- [[ 
-local e = Constant.e	-- use the real 'e'
 g[1][1] = -e^(sqrt(2) * E * x)
 g[2][2] = e^(sqrt(2) * E * x / 3)
 g[3][3] = -e^(sqrt(2) * E * x)

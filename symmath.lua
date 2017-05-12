@@ -45,8 +45,9 @@ symmath.polyCoeffs = require 'symmath.polyCoeffs'
 -- replace variables with names as keys in evalmap with constants of the associated values
 symmath.eval = require 'symmath.eval'
 
-symmath.Variable = require 'symmath.Variable'
-symmath.var = symmath.Variable					--shorthand
+local Variable = require 'symmath.Variable'
+symmath.Variable = Variable
+symmath.var = Variable					--shorthand
 function symmath.vars(...)						--create variables for each string parameter 
 	return table{...}:map(function(x) return symmath.var(x) end):unpack()
 end
@@ -207,6 +208,13 @@ symmath.Tensor = require 'symmath.Tensor'
 -- change the default as you see fit
 symmath.tostring = assert(require 'symmath.tostring.MultiLine')
 symmath.Verbose = assert(require 'symmath.tostring.Verbose')
+
+-- constants 
+symmath.e = Variable('e', nil, math.exp(1))
+symmath.pi = Variable('\\pi', nil, math.pi)
+symmath.inf = Variable('\\infty', nil, math.huge)
+
+-- hack implicit variable names to look good in TeX
 
 local texSymbols = {}
 for k in ([[

@@ -76,7 +76,6 @@ return function(args)
 		hBar_value = 1.05457173e-34
 	end
 
-	pi = Constant.pi
 	m = var'm'
 
 	lprint('meter:',m)
