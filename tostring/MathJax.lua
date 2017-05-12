@@ -2,22 +2,39 @@ local class = require 'ext.class'
 local LaTeX = require 'symmath.tostring.LaTeX'	-- returns a singleton object
 local MathJax = class(LaTeX.class)
 
---cdn
---local url = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML'
--- local filesystem
-local url = '/MathJax/MathJax.js?config=TeX-MML-AM_CHTML'
+local Header = class()
 
-MathJax.header = [=[
+Header.title = 'Symbolic Lua Output'
+
+Header.cdnURL = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML'
+Header.localURL = '/MathJax/MathJax.js?config=TeX-MML-AM_CHTML'
+Header.url = Header.localURL
+
+function Header:init(title, url)
+	self.title = title
+	self.url = url
+end
+function Header:__tostring()
+	return [=[
 <!doctype html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Symbolic Lua Output</title>
-		<script type="text/javascript" async src="]=]..url..[=["></script>
+        <title>]=] .. self.title .. [=[</title>
+		<script type="text/javascript" async src="]=]..self.url..[=["></script>
 		<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
 	</head>
     <body>
 ]=]
+end
+function Header.__concat(a,b)
+	return tostring(a) .. tostring(b) 
+end
+
+-- Header class
+MathJax.Header = Header
+-- default instance
+MathJax.header = Header()
 
 MathJax.footer = [[
 	</body>
@@ -36,18 +53,26 @@ end
 
 local inst = MathJax()
 
--- call this to setup mathjax
+--[[
+call this to setup mathjax
+args:
+	env = environment.  _G by default.
+	title = page title.
+	any other args are forwarded to the MathJax singleton
+--]]
 function MathJax.setup(args)
 	args = args or {}
 	local env = args.env or _G
 	for k,v in pairs(args) do
-		if k ~= 'env' then
+		if k ~= 'env' 
+		and k ~= 'title'
+		then
 			inst[k] = v
 		end
 	end
 	local symmath = require 'symmath'
 	symmath.tostring = inst
-	print(MathJax.header)
+	print(Header(args.title))
 	env.printbr = MathJax.print
 end
 

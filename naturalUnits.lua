@@ -51,7 +51,7 @@ return function(args)
 		MathJax = require 'symmath.tostring.MathJax'
 		symmath.tostring = MathJax
 		lprint = MathJax.print
-		Gprint(MathJax.header)
+		Gprint(MathJax.Header('Natural Units'))
 	else
 		function lprint() end
 	end

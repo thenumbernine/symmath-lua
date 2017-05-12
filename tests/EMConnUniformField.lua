@@ -1,7 +1,8 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true, env=_ENV or getfenv()}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+local _ENV = _ENV or getfenv()
+require 'symmath'.setup{env=_ENV, implicitVars=true}
+require 'symmath.tostring.MathJax'.setup{env=_ENV, title='EM Conn Uniform Field', usePartialLHSForDerivative=true}
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local r = var('r', {x,y,z})
@@ -37,10 +38,10 @@ if so, don't I need to factor g's into my calculations of R?
 local g = Tensor'_ab'
 
 -- [[ 
-g[1][1] = -e^(sqrt(2) * E * x)
-g[2][2] = e^(sqrt(2) * E * x / 3)
-g[3][3] = -e^(sqrt(2) * E * x)
-g[4][4] = -e^(sqrt(2) * E * x)
+g[1][1] = -e^(-sqrt(2) * E * x)
+g[2][2] = e^(-sqrt(2) * E * x / 3)
+g[3][3] = -e^(-sqrt(2) * E * x)
+g[4][4] = -e^(-sqrt(2) * E * x)
 --]]
 
 
