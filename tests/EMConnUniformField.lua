@@ -36,13 +36,40 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
--- [[ 
-g[1][1] = -e^(-sqrt(2) * E * x)
-g[2][2] = e^(-sqrt(2) * E * x / 3)
-g[3][3] = -e^(-sqrt(2) * E * x)
-g[4][4] = -e^(-sqrt(2) * E * x)
+-- [[
+local cplx = require 'symmath.complex'
+g[1][1] = exp(E * x)
+g[2][2] = exp(E * x) / 2
+g[3][3] = exp(E * x)
+g[4][4] = exp(E * x)
 --]]
 
+--[[
+g[1][1] = -var('a', {x})
+g[2][2] = var('b', {x})
+g[3][3] = var('a', {x})
+g[4][4] = var('a', {x})
+-- gives -R_tt = R_yy = R_zz = E^2 = f(a,b,c) ... so we need a diff eq that solves for both E^2 and -E^2
+-- so this is a bad idea
+--]]
+
+--[[
+local a = var('a',{x})
+local b = var('b',{x})
+local c = var('c',{x})
+g[1][1] = a
+g[2][2] = b
+g[3][3] = c
+g[4][4] = c
+-- gives:
+-- R_tt = E^2 = -(2 a'' a b c - a' b' a c - a'^2 b c + 2 a' c' a b) / (4 a b^2 c)
+-- R_xx = -E^2 = -(2 a'' a b c^2 - a' b' a c^2 - a'^2 b c^2 + 4 c'' a^2 b c - 2 b' c' a^2 c - 2 c'^2 a^2 b) / (4 a^2 b c^2)
+-- R_yy = R_zz = E^2 = -(a' c' b + 2 c'' a b - b' c' a) / (4 a b^2)
+--
+-- 0 = 2 a'' a b c - a' b' a c - a'^2 b c + 2 a' c' a b + 4 E^2 a b^2 c
+-- 0 = 2 a'' a b c^2 - a' b' a c^2 - a'^2 b c^2 + 4 c'' a^2 b c - 2 b' c' a^2 c - 2 c'^2 a^2 b - 4 E^2 a^2 b c^2
+-- 0 = a' c' b + 2 c'' a b - b' c' a + 4 E^2 a b^2
+--]]
 
 --[[ if you don't mind /x^2 terms ... and E is still missing from R_xx 
 local e = var'e'

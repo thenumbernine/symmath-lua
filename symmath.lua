@@ -45,9 +45,8 @@ symmath.polyCoeffs = require 'symmath.polyCoeffs'
 -- replace variables with names as keys in evalmap with constants of the associated values
 symmath.eval = require 'symmath.eval'
 
-local Variable = require 'symmath.Variable'
-symmath.Variable = Variable
-symmath.var = Variable					--shorthand
+symmath.Variable = require 'symmath.Variable'
+symmath.var = symmath.Variable					--shorthand
 function symmath.vars(...)						--create variables for each string parameter 
 	return table{...}:map(function(x) return symmath.var(x) end):unpack()
 end
@@ -190,7 +189,6 @@ symmath.op = {
 -- shorthand
 symmath.frac = symmath.op.div
 
---symmath.Variable = require 'symmath.Variable'
 symmath.Derivative = require 'symmath.Derivative'
 symmath.diff = symmath.Derivative	-- shorthand
 
@@ -210,9 +208,10 @@ symmath.tostring = assert(require 'symmath.tostring.MultiLine')
 symmath.Verbose = assert(require 'symmath.tostring.Verbose')
 
 -- constants 
-symmath.e = Variable('e', nil, math.exp(1))
-symmath.pi = Variable('\\pi', nil, math.pi)
-symmath.inf = Variable('\\infty', nil, math.huge)
+symmath.e = symmath.Variable('e', nil, math.exp(1))
+symmath.i = symmath.Constant(symmath.complex(0,1))
+symmath.pi = symmath.Variable('\\pi', nil, math.pi)
+symmath.inf = symmath.Variable('\\infty', nil, math.huge)
 
 -- hack implicit variable names to look good in TeX
 
