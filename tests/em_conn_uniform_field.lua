@@ -376,7 +376,7 @@ for the connections that give rise to this stress-energy,
 gravitation is ${\Gamma^x}_{tt} = -E$.
 ]])
 
-local units = require 'symmath.natural_units'()
+local units = require 'symmath.naturalUnits'()
 
 local volts = frac(3,2) * units.V
 local dist = 1e-2 * units.m

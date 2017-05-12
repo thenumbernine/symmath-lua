@@ -34,16 +34,14 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
---[[ cylindrical, with time scaled and r and z squashed similar to Schwarzschild
-local alpha = var('\\alpha', {r})
---local alpha = (r - E) / r
-g[1][1] = -alpha
-g[2][2] = 1/alpha
+-- [[ cylindrical, with time scaled and r and z squashed similar to Schwarzschild
+g[1][1] = var('a',{r})
+g[2][2] = var('b',{r})
 g[3][3] = r^2
-g[4][4] = 1/alpha
+g[4][4] = var('c',{r})
 --]]
 
--- [[ reproduces R_zz, but the others are scaled wrong
+--[[ reproduces R_zz, but the others are scaled wrong
 g[1][1] = -e^(sqrt(2) * E * z)
 g[2][2] = -e^(sqrt(2) * E * z)
 g[3][3] = -r^2 * e^(sqrt(2) * E * z)
@@ -191,3 +189,4 @@ printbr()
 printbr()
 printbr(var'R''^a_bcd':eq(RiemannExpr))
 printbr(var'R''_ab':eq(RiemannExpr:reindex{cacbd='abcde'}))
+
