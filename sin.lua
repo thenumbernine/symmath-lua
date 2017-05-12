@@ -23,23 +23,52 @@ sin.visitorHandler = {
 	Prune = function(prune, expr)
 		local Constant = require 'symmath.Constant'
 		local mul = require 'symmath.op.mul'
-		
-		-- sin(0) => 0
-		if expr[1] == Constant(0) then
-			return Constant(0)
-		end
+		local div = require 'symmath.op.div'
 	
-		-- sin(-c x y z) => -sin(c x y z)
-		if mul.is(expr[1])
-		and Constant.is(expr[1][1])
-		and expr[1][1].value < 0
-		then
-			local mulArgs = range(#expr[1]):map(function(i)
-				return expr[1][i]:clone()
-			end)
-			local c = -mulArgs:remove(1).value
-			local theta = #mulArgs == 1 and mulArgs[1] or mul(mulArgs:unpack()) 
-			return prune:apply(c == 1 and -sin(theta) or -sin(c * theta))
+		local theta = expr[1]
+
+		if Constant.is(theta) then
+			-- sin(0) => 0
+			if theta == Constant(0) then return Constant(0) end
+			-- sin(pi) => 0
+			if theta == Constant.pi then return Constant(0) end
+		elseif mul.is(theta) then
+			if #theta == 2 
+			and theta[2] == Constant.pi 
+			then
+				-- sin(k * pi) => 0
+				if Constant.is(theta[1]) then return Constant(0) end
+			end
+		
+			-- sin(-c x y z) => -sin(c x y z)
+			if Constant.is(theta[1])
+			and theta[1].value < 0
+			then
+				local mulArgs = range(#theta):map(function(i)
+					return theta[i]:clone()
+				end)
+				local c = -mulArgs:remove(1).value
+				local rest = #mulArgs == 1 and mulArgs[1] or mul(mulArgs:unpack()) 
+				return prune:apply(c == 1 and -sin(rest) or -sin(c * rest))
+			end
+		elseif div.is(theta) then
+			if theta[2] == Constant(2) then
+				-- sin(pi / 2) => 1
+				if theta[1] == Constant.pi then return Constant(1) end
+				if mul.is(theta[1])
+				and #theta[1] == 2
+				and Constant.is(theta[1][1])
+				and theta[1][2] == Constant.pi
+				then
+					-- sin((k * pi) / 2) for 1,5,9,... k => 1
+					if (theta[1][1].value - 1) / 4 == math.floor((theta[1][1].value - 1) / 4) then
+						return Constant(1)
+					-- sin((k * pi) / 2) for 3,7,11,... k => -1
+					elseif (theta[1][1].value - 3) / 4 == math.floor((theta[1][1].value - 3) / 4) then
+						return Constant(-1)
+					end
+				end
+			end
 		end
 	end,
 }

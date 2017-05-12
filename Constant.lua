@@ -19,6 +19,13 @@ local Constant = class(Expression)
 Constant.precedence = 10	-- high since it can't have child nodes 
 Constant.name = 'Constant'
 
+
+-- put some constants here as static members
+local Variable = require 'symmath.Variable'
+Constant.e = Variable('e', nil, math.exp(1))
+Constant.pi = Variable('\\pi', nil, math.pi)
+Constant.inf = Variable('\\infty', nil, math.huge)
+
 function Constant:init(value)
 	if type(value) ~= 'number'
 	and not complex.is(value)
@@ -70,5 +77,22 @@ Constant.visitorHandler = {
 		end
 	end,
 }
+
+-- helper
+
+function Constant.isInteger(x)
+	return Constant.is(x)
+	and x.value == math.floor(x.value)
+end
+
+function Constant.isEven(x)
+	return Constant.is(x)
+	and x.value / 2 == math.floor(x.value / 2)
+end
+
+function Constant.isOdd(x)
+	return Constant.is(x)
+	and (x.value + 1) / 2 == math.floor((x.value + 1) / 2)
+end
 
 return Constant

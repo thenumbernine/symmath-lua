@@ -195,10 +195,7 @@ div.visitorHandler = {
 				local bases, powers = table.unpack(info)
 				for i=#bases,1,-1 do
 					local b = bases[i]
-					if Constant.is(b)
-					and b.value == math.floor(b.value + .5)	--integer
-					and b.value ~= 0
-					then
+					if Constant.isInteger(b) and b.value ~= 0 then
 						bases:remove(i)
 						local value = b.value
 						local power = powers:remove(i)

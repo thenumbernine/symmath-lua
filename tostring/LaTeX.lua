@@ -52,7 +52,7 @@ end
 
 LaTeX.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
-		local s = tostring(expr.value)	
+		local s = tostring(expr.value)
 		local a,b = s:match('([^e]*)e(.*)')
 		if a and b then
 			if b:sub(1,1) == '+' then b = b:sub(2) end
@@ -117,9 +117,7 @@ LaTeX.lookupTable = {
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		local s = table{prepareName(expr.name)}
-		if expr.value then
-			s:append{'|', expr.value}
-		end
+		--if expr.value then s:append{'|', expr.value} end
 		return s
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 

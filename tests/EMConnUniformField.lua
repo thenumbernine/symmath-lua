@@ -22,8 +22,7 @@ local E = var'E'
 local Gamma = var'\\Gamma'
 
 local ConnFromMetric 
--- finding the metric
---[==[
+-- [==[ finding the metric
 
 -- ONCE YOU FIND THE METRIC, FIND THE FARADAY TRANFORMED UNDER THE METRIC, THEN FIND THE STRESS-ENERGY FROM THE FARADAY, and see if it is the same or not ...
 
@@ -37,12 +36,14 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
--- [[
-g[1][1] = -exp(E * x)
-g[2][2] = exp(E * x) / 2
-g[3][3] = -exp(E * x)
-g[4][4] = -exp(E * x)
+-- [[ 
+local e = Constant.e	-- use the real 'e'
+g[1][1] = -e^(sqrt(2) * E * x)
+g[2][2] = e^(sqrt(2) * E * x / 3)
+g[3][3] = -e^(sqrt(2) * E * x)
+g[4][4] = -e^(sqrt(2) * E * x)
 --]]
+
 
 --[[ if you don't mind /x^2 terms ... and E is still missing from R_xx 
 local e = var'e'
@@ -253,6 +254,8 @@ local RicciDesired = Tensor('_ab', table.unpack(Matrix.diagonal(E^2, -E^2, E^2, 
 RicciDesired:print'R'
 printbr()
 
+--[==[ looking into boosted stuff -- recreting magnetic fields by moving a stationary electric field
+
 --[[
 let's create a magnetic field in the Y direction (to compliment our electric field in the X direction)
 
@@ -332,6 +335,7 @@ local etaU4 = Tensor('^ab', table.unpack(Matrix.diagonal(-1, 1, 1, 1)))
 local RicciFromBoostedFaraday = (2 * (FaradayBoosted'_ac' * FaradayBoosted'_bd' * etaU4'^cd' - frac(1,4) * etaL4'_ab' * etaU4'^ce' * etaU4'^df' * FaradayBoosted'_cd' * FaradayBoosted'_ef'))()
 RicciFromBoostedFaraday:print'R'
 printbr()
+--]==]
 
 --[[ Bianchi identities
 -- This is zero, but it's a bit slow to compute.

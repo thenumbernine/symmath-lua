@@ -6,11 +6,16 @@ local Variable = class(Expression)
 Variable.precedence = 10	-- high since it will never have nested members 
 Variable.name = 'Variable'
 
--- the old 'value' assignment is going to be replaced with :replace()
--- 'deferDiff' replaced with a list of dependencies, assigned with :depends()
-function Variable:init(name, dependentVars)
+--[[
+args:
+	name = name of variable
+	dependentVars = variables this var is dependent on
+	value = numerical value of this variable
+--]]
+function Variable:init(name, dependentVars, value)
 	self.name = name
 	self.dependentVars = table(dependentVars)
+	self.value = value
 end
 
 function Variable:clone()
@@ -24,6 +29,8 @@ function Variable:applyDiff(x)
 	return x:diff(self)
 end
 
+-- Variable equality is by name and value at the moment
+-- this way log(e) fails to simplify, but log(Constant.e) simplifies to 1 
 function Variable.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
 	return a.name == b.name
@@ -39,7 +46,11 @@ end
 
 Variable.visitorHandler = {
 	Eval = function(eval, expr)
-		error("Variable "..tostring(expr).." wasn't replace()'d with a constant during eval")
+		if expr.value then 
+			assert(type(expr.value) == 'number')
+			return expr.value
+		end
+		error("Eval: Variable "..tostring(expr).." wasn't given a value, or replace()'d with a Constant")
 	end,
 }
 

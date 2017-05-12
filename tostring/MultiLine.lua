@@ -144,7 +144,7 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		local s = expr.name
-		if expr.value then s = s .. '|' .. expr.value end
+		--if expr.value then s = s .. '|' .. expr.value end
 		return table{s}
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)

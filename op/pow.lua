@@ -30,10 +30,9 @@ function pow:expand()
 	local Constant = require 'symmath.Constant'
 	-- for certain small integer powers, expand 
 	-- ... or should we have all integer powers expended under a different command?
-	if Constant.is(self[2])
+	if Constant.isInteger(self[2])
 	and self[2].value >= 0
 	and self[2].value < 10
-	and self[2].value == math.floor(self[2].value)
 	then
 		local result = Constant(1)
 		for i=1,self[2].value do
@@ -77,10 +76,9 @@ pow.visitorHandler = {
 		-- a^n => a*a*...*a,  n times, only for integer 2 <= n < 10
 		-- hmm this can cause problems in some cases ... 
 		-- comment this out to get schwarzschild_spherical_to_cartesian to work
-		if Constant.is(expr[2])
+		if Constant.isInteger(expr[2])
 		and expr[2].value >= 2
 		and expr[2].value < 10
-		and expr[2].value == math.floor(expr[2].value)
 		then
 			return expand:apply(mul(range(expr[2].value):map(function(i)
 				return expr[1]:clone()
@@ -149,22 +147,17 @@ pow.visitorHandler = {
 		local Constant = symmath.Constant
 
 		local complex = require 'symmath.complex'
-		local function isInteger(x) 
-			if complex.is(x) then x = complex.unpack(x) end	
-			return x == math.floor(x+.5) 
-		end
-		local function isPositiveInteger(x) return isInteger(x) and x > 0 end
 
 		if Constant.is(expr[1]) and Constant.is(expr[2]) then
 			if symmath.simplifyConstantPowers
 			-- TODO this replaces some cases below
-			or isInteger(expr[1].value) and isPositiveInteger(expr[2].value)
+			or Constant.isInteger(expr[1]) and expr[2].value > 0
 			then
 				return Constant(expr[1].value ^ expr[2].value)
 			end
 		end
 	
-		if Constant.is(expr[1]) and isPositiveInteger(expr[1].value)
+		if Constant.isInteger(expr[1]) and expr[1].value > 0
 		and (expr[2] == div(1,2) or expr[2] == Constant(.5))
 		then
 			local primes = require 'symmath.primeFactors'(expr[1].value)
