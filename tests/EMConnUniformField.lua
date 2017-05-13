@@ -37,11 +37,25 @@ if so, don't I need to factor g's into my calculations of R?
 local g = Tensor'_ab'
 
 -- [[
-local cplx = require 'symmath.complex'
-g[1][1] = exp(E * x)
-g[2][2] = exp(E * x) / 2
-g[3][3] = exp(E * x)
-g[4][4] = exp(E * x)
+local i = var'i'
+-- hmm, I don't seem to be enforcing 'mulNonCommutative' in all situations ...
+local gamma_0 = var'\\gamma_0' gamma_0.mulNonCommutative = true 
+local gamma_1 = var'\\gamma_1' gamma_1.mulNonCommutative = true 
+local gamma_2 = var'\\gamma_2' gamma_2.mulNonCommutative = true 
+local gamma_3 = var'\\gamma_3' gamma_3.mulNonCommutative = true 
+local f = exp(
+	gamma_1 * t * sqrt(frac(2,3)) +
+	gamma_0 * x * sqrt(frac(10,3)) +
+	gamma_2 * y * sqrt(frac(2,3)) +
+	gamma_3 * z * sqrt(frac(2,3))
+) ^ E
+g[1][1] = f
+g[2][2] = f
+g[3][3] = f
+g[4][4] = f
+-- this works if f_a * f_b = 0 for a != b
+-- and f_a^2 = E * sqrt(2)  for a != x
+-- and f_x^2 = i E * sqrt(2)
 --]]
 
 --[[
@@ -258,6 +272,17 @@ if ConnFromMetric then
 	RicciFromManualMetric['_ab'] = RiemannFromManualMetric'^c_acb'()
 	printbr'Ricci from manual metric'
 	RicciFromManualMetric:print'R'
+	
+	printbr()
+	RicciFromManualMetric = RicciFromManualMetric
+		:replace(gamma_0^2, -1)
+		:replace(gamma_1^2, 1)
+		:replace(gamma_2^2, 1)
+		:replace(gamma_3^2, 1)
+		:simplify()	
+	RicciFromManualMetric:print'R'
+	printbr[[...subject to $\gamma_\mu \gamma_\nu = \eta_{\mu\nu}$.]]
+	printbr[[I need to incorporate non-commutative multiplication to verify this is also true for $\{\gamma_\mu, \gamma_\nu\} = \eta_{\mu\nu}$.]] 
 	printbr()
 	print'vs'
 end
