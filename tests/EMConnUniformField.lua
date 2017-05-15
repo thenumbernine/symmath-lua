@@ -37,14 +37,10 @@ if so, don't I need to factor g's into my calculations of R?
 local g = Tensor'_ab'
 
 -- [[
-local a = var('a',{x})
-local b = var('b',{x})
-local c = var('c',{x})
-local d = var('d',{x})
-g[1][1] = a
-g[2][2] = b
-g[3][3] = c
-g[4][4] = d
+g[1][1] = -exp(zeta_00 * t + zeta_01 * x + zeta_02 * y + zeta_03 * z)
+g[2][2] = exp(zeta_10 * t + zeta_11 * x + zeta_12 * y + zeta_13 * z)
+g[3][3] = exp(zeta_20 * t + zeta_21 * x + zeta_22 * y + zeta_23 * z)
+g[4][4] = exp(zeta_30 * t + zeta_31 * x + zeta_32 * y + zeta_33 * z)
 -- gives:
 -- R_tt = E^2 = -(2 a'' a b c - a' b' a c - a'^2 b c + 2 a' c' a b) / (4 a b^2 c)
 -- R_xx = -E^2 = -(2 a'' a b c^2 - a' b' a c^2 - a'^2 b c^2 + 4 c'' a^2 b c - 2 b' c' a^2 c - 2 c'^2 a^2 b) / (4 a^2 b c^2)
@@ -55,61 +51,23 @@ g[4][4] = d
 -- 0 = a' c' b + 2 c'' a b - b' c' a + 4 E^2 a b^2
 --]]
 
---[[ THIS WORKS, BUT I'm cheating by just adding extra dimensions
--- UNLIKE THE SOLUTION BELOW, THIS REDUCES TO THE MINKOWSKI SIGNATURE
+--[[ THIS almost WORKS, BUT I'm cheating by just adding extra dimensions
+-- SOME PROBLEMS:
+-- NOTICE: true Dirac matrices require {gamma_a, gamma_b} = eta_ab, which I haven't verified sinc my non-commutative mul flag isn't working
+-- ALSO: I am considering gamma's to be non-commutative, but pretending exp(gamma's) are commutative, which is wrong to do. 
 -- a solution of g_ab = phi eta_ab, phi = A exp( zeta_u x^u)
 -- works only for zeta_a zeta_b = 0 for a != b
 -- and -(zeta_t)^2 = (zeta_k)^2 = 1
 -- This can work for the following zeta_u def, based on gamma_u, for gamma_a gamma_b = eta_ab
--- SOME PROBLEMS:
--- NOTICE: true Dirac matrices require {gamma_a, gamma_b} = eta_ab, which I haven't verified sinc my non-commutative mul flag isn't working
--- ALSO: I am considering gamma's to be non-commutative, but pretending exp(gamma's) are commutative, which is wrong to do. 
 local i = var'i'
--- hmm, I don't seem to be enforcing 'mulNonCommutative' in all situations ...
 local gamma_0 = var'\\gamma_0' gamma_0.mulNonCommutative = true 
 local gamma_1 = var'\\gamma_1' gamma_1.mulNonCommutative = true 
 local gamma_2 = var'\\gamma_2' gamma_2.mulNonCommutative = true 
 local gamma_3 = var'\\gamma_3' gamma_3.mulNonCommutative = true 
--- with 4D (gamma matrices?) I can create 4 orthogonal numbers
--- can I do the same with complex (2D) ?
--- 	(a+ib)(c+id) = 0 for a=c, b*d = c^2, b=-d ... so -d^2=c^2 
--- ... so we need hypercomplex to solve this
--- so the answer is no.
 local zeta = (Tensor('_u', gamma_1, gamma_0, gamma_2, gamma_3) * sqrt(2) * E)()
 local xv = Tensor('^u', t, x, y, z)
 local f = exp( (zeta * xv)() )
 g[1][1] = -f
-g[2][2] = f
-g[3][3] = f
-g[4][4] = f
---]]
-
---[[ THIS WORKS, BUT I'm cheating by just adding extra dimensions
--- OOPS, THIS SOLVES THINGS BUT I FORGOT ABOUT THE MINKOWSKI SIGNATURE
--- a solution of g_ab = phi eta_ab, phi = A exp( zeta_u x^u)
--- works only for zeta_a zeta_b = 0 for a != b
--- and -(zeta_t)^2 = (zeta_k)^2 = 1
--- This can work for the following zeta_u def, based on gamma_u, for gamma_a gamma_b = eta_ab
--- note true Dirac matrices require {gamma_a, gamma_b} = eta_ab, which I haven't verified sinc my non-commutative mul flag isn't working
-local i = var'i'
--- hmm, I don't seem to be enforcing 'mulNonCommutative' in all situations ...
-local gamma_0 = var'\\gamma_0' gamma_0.mulNonCommutative = true 
-local gamma_1 = var'\\gamma_1' gamma_1.mulNonCommutative = true 
-local gamma_2 = var'\\gamma_2' gamma_2.mulNonCommutative = true 
-local gamma_3 = var'\\gamma_3' gamma_3.mulNonCommutative = true 
--- with 4D (gamma matrices?) I can create 4 orthogonal numbers
--- can I do the same with complex (2D) ?
--- 	(a+ib)(c+id) = 0 for a=c, b*d = c^2, b=-d ... so -d^2=c^2 
--- ... so we need hypercomplex to solve this
--- so the answer is no.
-local zeta = (Tensor('_u', 
-	gamma_1 * sqrt(frac(2,3)),
-	gamma_0 * sqrt(frac(10,3)),
-	gamma_2 * sqrt(frac(2,3)),
-	gamma_3 * sqrt(frac(2,3))) * E)()
-local xv = Tensor('^u', t, x, y, z)
-local f = exp( (zeta * xv)() )
-g[1][1] = f
 g[2][2] = f
 g[3][3] = f
 g[4][4] = f
