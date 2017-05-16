@@ -37,10 +37,14 @@ if so, don't I need to factor g's into my calculations of R?
 local g = Tensor'_ab'
 
 -- [[
-g[1][1] = -exp(zeta_00 * t + zeta_01 * x + zeta_02 * y + zeta_03 * z)
-g[2][2] = exp(zeta_10 * t + zeta_11 * x + zeta_12 * y + zeta_13 * z)
-g[3][3] = exp(zeta_20 * t + zeta_21 * x + zeta_22 * y + zeta_23 * z)
-g[4][4] = exp(zeta_30 * t + zeta_31 * x + zeta_32 * y + zeta_33 * z)
+local a = var('a',{x})
+local b = var('b',{x})
+local c = var('c',{x})
+local d = var('d',{x})
+g[1][1] = a
+g[2][2] = b
+g[3][3] = c
+g[4][4] = d
 -- gives:
 -- R_tt = E^2 = -(2 a'' a b c - a' b' a c - a'^2 b c + 2 a' c' a b) / (4 a b^2 c)
 -- R_xx = -E^2 = -(2 a'' a b c^2 - a' b' a c^2 - a'^2 b c^2 + 4 c'' a^2 b c - 2 b' c' a^2 c - 2 c'^2 a^2 b) / (4 a^2 b c^2)
