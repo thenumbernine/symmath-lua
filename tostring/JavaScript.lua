@@ -28,42 +28,14 @@ JavaScript.lookupTable = {
 		end):concat(' '..expr.name..' ')..')'
 	end,
 	[require 'symmath.op.pow'] = function(self, expr, vars)
-		-- special case for constant integer powers
-		local invert = false 
-		local result
-		if require 'symmath.Constant'.is(expr[2]) then
-			local power = expr[2].value
-			if power == 0 then 
-				return '1' 
-			end
-			if power < 0 then
-				invert = true
-				power = -power
-			end	
-			-- sqrt hack
-			if power == .5 then
-				result = 'Math.sqrt(' .. self:apply(expr[1], vars) .. ')'
-			-- integer-power hack
-			elseif power > 0 and power == math.floor(power) then
-				-- TODO declare beforehand as a variable
-				local code = '(' .. self:apply(expr[1], vars) .. ')'
-				local reps = table()
-				for i=1,power do
-					reps:insert(code)
-				end
-				result = '(' .. reps:concat(' * ') .. ')'
-			end
-		end
-		if not result then
-			result = 'Math.pow(' .. table.map(expr, function(x,k)
+		if expr[1] == require 'symmath'.e then
+			return 'Math.exp('..self:apply(expr[2], vars)..')'
+		else
+			return 'Math.pow(' .. table.map(expr, function(x,k)
 				if k ~= 'number' then return end
 				return self:apply(x, vars)
 			end):concat(',')..')'
 		end
-		if invert then
-			result = '1 / (' .. result .. ')'
-		end
-		return result
 	end,
 	[require 'symmath.Variable'] = function(self, expr, vars)
 		if table.find(vars, nil, function(var) return expr.name == var.name end) then

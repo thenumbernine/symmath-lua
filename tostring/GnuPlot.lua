@@ -29,10 +29,14 @@ GnuPlot.lookupTable = {
 		end):concat(' '..expr.name..' ')..')'
 	end,
 	[require 'symmath.op.pow'] = function(self, expr, vars)
-		return '('..table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x, vars)
-		end):concat(' ** ')..')'
+		if expr[1] == require 'symmath'.e then
+			return '(exp('..self:apply(expr[2], vars)..'))'
+		else
+			return '('..table.map(expr, function(x,k)
+				if type(k) ~= 'number' then return end
+				return self:apply(x, vars)
+			end):concat(' ** ')..')'
+		end
 	end,
 	[require 'symmath.Variable'] = function(self, expr, vars)
 		if table.find(vars, nil, function(var) return expr.name == var.name end) then

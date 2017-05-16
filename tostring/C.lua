@@ -46,16 +46,20 @@ C.lookupTable = {
 		return {'(-'..sx[1]..')', sx[2]}
 	end,
 	[require 'symmath.op.pow'] = function(self, expr, vars)
-		local predefs = table()
-		local s = table()
-		for i,x in ipairs(expr) do
-			local sx = self:apply(x, vars)
-			s:insert('(real)'..sx[1])
-			predefs = table(predefs, sx[2])
+		if expr[1] == require 'symmath'.e then
+			local sx = self:apply(expr[2], vars)
+			return {'(real)exp((real)' .. sx[1] .. ')', sx[2]}
+		else
+			local predefs = table()
+			local s = table()
+			for i,x in ipairs(expr) do
+				local sx = self:apply(x, vars)
+				s:insert('(real)'..sx[1])
+				predefs = table(predefs, sx[2])
+			end
+			s = s:concat(', ')
+			return {'(real)pow(' .. s .. ')', predefs}	
 		end
-		s = s:concat(', ')
-		
-		return {'(real)pow(' .. s .. ')', predefs}	
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr, vars)
 		local predefs = table()

@@ -51,6 +51,22 @@ Lua.lookupTable = {
 		s = s:concat(' '..expr.name..' ')
 		return {'('..s..')', predefs}
 	end,
+	[require 'symmath.op.pow'] = function(self, expr, vars)
+		if expr[1] == require 'symmath'.e then
+			local sx = self:apply(expr[2], vars)
+			return {'math.exp(' .. sx[1] .. ')', sx[2]}
+		else
+			local predefs = table()
+			local s = table()
+			for i,x in ipairs(expr) do
+				local sx = self:apply(x, vars)
+				s:insert(sx[1])
+				predefs = table(predefs, sx[2])
+			end
+			s = s:concat(' '..expr.name..' ')
+			return {'('..s..')', predefs}
+		end
+	end,
 	[require 'symmath.Variable'] = function(self, expr, vars)
 		if table.find(vars, nil, function(var) 
 			return expr.name == var.name 
