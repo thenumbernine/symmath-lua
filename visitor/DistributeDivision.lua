@@ -10,7 +10,7 @@ DistributeDivision.name = 'DistributeDivision'
 
 -- prune beforehand to undo tidy(), to undo subtractions and unary - signs
 function DistributeDivision:apply(expr, ...)
-	-- [[
+	--[[
 	if not expr.simplify then
 		print(require 'symmath.tostring.Verbose'(expr))
 		error("expr "..type(expr).." "..tostring(expr).." doesn't have simplify")
@@ -18,7 +18,7 @@ function DistributeDivision:apply(expr, ...)
 
 	return DistributeDivision.super.apply(self, expr:simplify():prune(), ...)
 	--]]
-	--[[
+	-- [[
 	local simplify = require 'symmath.simplify'
 	local prune = require 'symmath.prune'
 	return DistributeDivision.super.apply(self, prune(simplify(expr)), ...)

@@ -69,6 +69,41 @@ function mul:reverse(soln, index)
 	return soln
 end
 
+function mul:flatten()
+	for i=#self,1,-1 do
+		local ch = self[i]
+		if mul.is(ch) then
+			local expr = {table.unpack(self)}
+			table.remove(expr, i)
+			for j=#ch,1,-1 do
+				local chch = ch[j]
+				table.insert(expr, i, chch)
+			end
+			return mul(table.unpack(expr))
+		end
+	end
+end
+		
+--[[
+a * (b + c) * d * e becomes
+(a * b * d * e) + (a * c * d * e)
+--]]
+function mul:distribute()
+	local add = require 'symmath.op.add'
+	local sub = require 'symmath.op.sub'
+	for i,ch in ipairs(self) do
+		if add.is(ch) or sub.is(ch) then
+			local terms = table()
+			for j,chch in ipairs(ch) do
+				local term = self:clone()
+				term[i] = chch:clone()
+				terms:insert(term)
+			end
+			return getmetatable(ch)(table.unpack(terms))
+		end
+	end
+end
+
 mul.visitorHandler = {
 	Eval = function(eval, expr)
 		local result = 1
@@ -79,33 +114,13 @@ mul.visitorHandler = {
 	end,
 
 	Expand = function(expand, expr)
-		local add = require 'symmath.op.add'
-		local sub = require 'symmath.op.sub'
-		
-		expr = expr:clone()
-		
-		--[[
-		a * (b + c) * d * e becomes
-		(a * b * d * e) + (a * c * d * e)
-		--]]
-
-		for i,x in ipairs(expr) do
-			if add.is(x) or sub.is(x) then
-				local terms = table()
-				for j,xch in ipairs(x) do
-					local term = expr:clone()
-					term[i] = xch:clone()
-					terms:insert(term)
-				end
-				expr = getmetatable(x)(table.unpack(terms))
-				return expand:apply(expr)
-			end
-		end
+		local dstr = expr:distribute()
+		if dstr then return expand:apply(dstr) end
 	end,
 
 	FactorDivision = function(factorDivision, expr)
-		local add = require 'symmath.op.add'
-		local sub = require 'symmath.op.sub'
+		local Constant = require 'symmath.Constant'
+		local div = require 'symmath.op.div'
 		
 		-- first time processing we want to simplify()
 		--  to remove powers and divisions
@@ -113,57 +128,61 @@ mul.visitorHandler = {
 		-- but not recursively ... hmm ...
 		
 		-- flatten multiplications
-		-- TODO this is also in Prune
-		-- make Rules
+		local flat = expr:flatten()
+		if flat then return factorDivision:apply(flat) end
+
+		-- distribute multiplication
+		local dstr = expr:distribute()
+		if dstr then return factorDivision:apply(dstr) end
+
+		-- push all fractions to the left
+		for i=#expr,2,-1 do
+			if div.is(expr[i])
+			and Constant.is(expr[i][1])
+			and Constant.is(expr[i][2])
+			then
+				table.insert(expr, 1, table.remove(expr, i))
+			end
+		end
+
+		-- [[ same as Prune:
+
+		-- push all Constants to the lhs, sum as we go
+		local cval = 1
 		for i=#expr,1,-1 do
-			local ch = expr[i]
-			if mul.is(ch) then
-				table.remove(expr, i)
-				for j=#ch,1,-1 do
-					local chch = ch[j]
-					table.insert(expr, i, chch)
-				end
-				return factorDivision:apply(expr)
+			if Constant.is(expr[i]) then
+				cval = cval * table.remove(expr, i).value
 			end
 		end
 		
-		-- distribute multiplication
-		-- TODO this is also in Expand
-		-- make Rules
-		for i,ch in ipairs(expr) do
-			if add.is(ch) or sub.is(ch) then
-				local terms = table()
-				for j,chch in ipairs(ch) do
-					local term = expr:clone()
-					term[i] = chch:clone()
-					terms:insert(term)
-				end
-				expr = getmetatable(ch)(table.unpack(terms))
-				return factorDivision:apply(expr)
+		-- if it's all constants then return what we got
+		if #expr == 0 then 
+			return Constant(cval) 
+		end
+		
+		if cval == 0 then 
+			return Constant(0) 
+		end
+		
+		if cval ~= 1 then
+			table.insert(expr, 1, Constant(cval))
+		else
+			if #expr == 1 then 
+				return prune:apply(expr[1]) 
 			end
 		end
+		
+		--]]	
 	end,
 
 	Prune = function(prune, expr)	
 		local Constant = require 'symmath.Constant'
 		local pow = require 'symmath.op.pow'
 		local div = require 'symmath.op.div'
-
-		assert(#expr > 0)
 		
 		-- flatten multiplications
-		for i=#expr,1,-1 do
-			local ch = expr[i]
-			if mul.is(ch) then
-				-- this looks like a job for splice ...
-				table.remove(expr, i)
-				for j=#ch,1,-1 do
-					local chch = ch[j]
-					table.insert(expr, i, chch)
-				end
-				return prune:apply(expr)
-			end
-		end
+		local flat = expr:flatten()
+		if flat then return prune:apply(flat) end
 		
 		-- move unary minuses up
 		--[[ pruning unm immediately
@@ -184,7 +203,7 @@ mul.visitorHandler = {
 			end
 		end
 		--]]
-
+		
 		-- push all Constants to the lhs, sum as we go
 		local cval = 1
 		for i=#expr,1,-1 do
@@ -192,7 +211,7 @@ mul.visitorHandler = {
 				cval = cval * table.remove(expr, i).value
 			end
 		end
-
+		
 		-- if it's all constants then return what we got
 		if #expr == 0 then 
 			return Constant(cval) 
