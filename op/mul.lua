@@ -135,6 +135,8 @@ mul.visitorHandler = {
 		local dstr = expr:distribute()
 		if dstr then return factorDivision:apply(dstr) end
 
+		-- [[ same as Prune:
+
 		-- push all fractions to the left
 		for i=#expr,2,-1 do
 			if div.is(expr[i])
@@ -144,8 +146,6 @@ mul.visitorHandler = {
 				table.insert(expr, 1, table.remove(expr, i))
 			end
 		end
-
-		-- [[ same as Prune:
 
 		-- push all Constants to the lhs, sum as we go
 		local cval = 1
@@ -203,7 +203,17 @@ mul.visitorHandler = {
 			end
 		end
 		--]]
-		
+
+		-- push all fractions to the left
+		for i=#expr,2,-1 do
+			if div.is(expr[i])
+			and Constant.is(expr[i][1])
+			and Constant.is(expr[i][2])
+			then
+				table.insert(expr, 1, table.remove(expr, i))
+			end
+		end
+
 		-- push all Constants to the lhs, sum as we go
 		local cval = 1
 		for i=#expr,1,-1 do

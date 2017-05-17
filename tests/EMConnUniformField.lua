@@ -22,7 +22,7 @@ local E = var'E'
 local Gamma = var'\\Gamma'
 
 local ConnFromMetric 
--- [==[ finding the metric
+--[==[ finding the metric
 
 -- ONCE YOU FIND THE METRIC, FIND THE FARADAY TRANFORMED UNDER THE METRIC, THEN FIND THE STRESS-ENERGY FROM THE FARADAY, and see if it is the same or not ...
 
@@ -447,9 +447,16 @@ gravitation is ${\Gamma^x}_{tt} = -E$.
 
 local units = require 'symmath.naturalUnits'()
 
+--[[ AA battery across a cm gap
 local volts = frac(3,2) * units.V
 local dist = 1e-2 * units.m
+--]]
+-- [[ https://arxiv.org/pdf/1407.7772.pdf
+local volts = 1e+5 * units.V
+local dist = .1 * units.m
+--]]
 local Emag = E:eq(volts / dist)():factorDivision()
+
 printbr('Applying',volts,'between conductors',dist,'apart produces a uniform electric field of',Emag,'.')
 Emag = Emag:subst(units.V_in_m)():factorDivision()
 local Emag_in_ms2 =E:eq((Emag:rhs():subst(units.m_in_s) * (m / m:subst(units.m_in_s)))():factorDivision())
