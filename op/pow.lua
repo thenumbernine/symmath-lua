@@ -16,12 +16,11 @@ exp(b*log(a)) * d/dx[b*log(a)]
 a^b * (db/dx * log(a) + b * d/dx[log(a)])
 a^b * (db/dx * log(a) + da/dx * b / a)
 --]]
-function pow:evaluateDerivative(...)
+function pow:evaluateDerivative(deriv, ...)
 	local log = require 'symmath.log'
-	local diff = require 'symmath.Derivative'
 	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
-	return a ^ b * (diff(b, ...) * log(a) + diff(a, ...) * b / a)
+	return a ^ b * (deriv(b, ...) * log(a) + deriv(a, ...) * b / a)
 end
 
 -- just for this

@@ -6,11 +6,10 @@ local add = class(Binary)
 add.precedence = 2
 add.name = '+'
 
-function add:evaluateDerivative(...)
-	local diff = require 'symmath.Derivative'
+function add:evaluateDerivative(deriv, ...)
 	local result = table()
 	for i=1,#self do
-		result[i] = diff(self[i]:clone(), ...)
+		result[i] = deriv(self[i]:clone(), ...)
 	end
 	return add(result:unpack())
 end

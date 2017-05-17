@@ -8,11 +8,10 @@ local Equation = class(Binary)
 Equation.__eq = require 'symmath.nodeCommutativeEqual'
 Equation.solve = require 'symmath.solve'
 
-function Equation:evaluateDerivative(...)
-	local diff = require 'symmath.Derivative'
+function Equation:evaluateDerivative(deriv, ...)
 	local result = getmetatable(self)()
 	for i=1,#self do
-		result[i] = diff(self[i]:clone(), ...)
+		result[i] = deriv(self[i]:clone(), ...)
 	end
 	return result
 end

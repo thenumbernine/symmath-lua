@@ -7,11 +7,10 @@ local div = class(Binary)
 div.precedence = 3.5
 div.name = '/'
 
-function div:evaluateDerivative(...)
+function div:evaluateDerivative(deriv, ...)
 	local a, b = self[1], self[2]
 	a, b = a:clone(), b:clone()
-	local diff = require 'symmath.Derivative'
-	return (diff(a, ...) * b - a * diff(b, ...)) / (b * b)
+	return (deriv(a, ...) * b - a * deriv(b, ...)) / (b * b)
 end
 
 function div:reverse(soln, index)

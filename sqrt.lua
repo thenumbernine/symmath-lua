@@ -7,11 +7,9 @@ sqrt.name = 'sqrt'
 --sqrt.func = math.sqrt
 sqrt.func = require 'symmath.complex'.sqrt
 
-function sqrt:evaluateDerivative(...)
-	local Constant = require 'symmath.Constant'
-	local diff = require 'symmath.Derivative'
+function sqrt:evaluateDerivative(deriv, ...)
 	local x = self[1]:clone()
-	return diff(x, ...) / (Constant(2) * sqrt(x))
+	return deriv(x, ...) / (2 * sqrt(x))
 end
 
 -- y = sqrt(x) => y^2 = x

@@ -5,11 +5,10 @@ local sinh = class(Function)
 sinh.name = 'sinh'
 sinh.func = math.sinh
 
-function sinh:evaluateDerivative(...)
+function sinh:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
 	local cosh = require 'symmath.cosh'
-	local diff = require 'symmath.Derivative'
-	return diff(x,...) * cosh(x)
+	return deriv(x, ...) * cosh(x)
 end
 
 function sinh:reverse(soln, index)

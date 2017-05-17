@@ -8,11 +8,10 @@ sin.name = 'sin'
 --sin.func = math.sin
 sin.func = require 'symmath.complex'.sin
 
-function sin:evaluateDerivative(...)
+function sin:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
 	local cos = require 'symmath.cos'
-	local diff = require 'symmath.Derivative'
-	return diff(x,...) * cos(x)
+	return deriv(x, ...) * cos(x)
 end
 
 function sin:reverse(soln, index)

@@ -6,10 +6,9 @@ atan.name = 'atan'
 --atan.func = math.atan
 atan.func = require 'symmath.complex'.atan
 
-function atan:evaluateDerivative(...)
+function atan:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
-	local diff = require 'symmath.Derivative'
-	return diff(x,...) / (1 + x^2)
+	return deriv(x, ...) / (1 + x^2)
 end
 
 function atan:reverse(soln, index)

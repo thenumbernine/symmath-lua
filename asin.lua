@@ -6,11 +6,10 @@ asin.name = 'asin'
 --asin.func = math.asin
 asin.func = require 'symmath.complex'.asin
 
-function asin:evaluateDerivative(...)
+function asin:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
 	local sqrt = require 'symmath.sqrt'
-	local diff = require 'symmath.Derivative'
-	return diff(x,...) / sqrt(1 - x^2)
+	return deriv(x, ...) / sqrt(1 - x^2)
 end
 
 function asin:reverse(soln, index)

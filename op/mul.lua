@@ -7,15 +7,14 @@ mul.implicitName = true
 mul.precedence = 3
 mul.name = '*'
 
-function mul:evaluateDerivative(...)
-	local diff = require 'symmath.Derivative'
+function mul:evaluateDerivative(deriv, ...)
 	local add = require 'symmath.op.add'
 	local sums = table()
 	for i=1,#self do
 		local terms = table()
 		for j=1,#self do
 			if i == j then
-				terms:insert(diff(self[j]:clone(), ...))
+				terms:insert(deriv(self[j]:clone(), ...))
 			else
 				terms:insert(self[j]:clone())
 			end

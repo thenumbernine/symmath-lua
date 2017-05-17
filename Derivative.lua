@@ -76,8 +76,9 @@ Derivative.visitorHandler = {
 		if expr[1].evaluateDerivative then
 			local result = expr[1]:clone()
 			for i=2,#expr do
-				-- TODO one at a time ...
-				result = prune:apply(result:evaluateDerivative(expr[i]))
+				result = prune:apply(
+					result:evaluateDerivative(Derivative, expr[i])
+				)
 			end
 			return result
 		end

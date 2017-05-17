@@ -49,7 +49,7 @@ function Constant.__eq(a,b)
 	return a == b
 end
 
-function Constant:evaluateDerivative(...)
+function Constant:evaluateDerivative(deriv, ...)
 	return Constant(0)
 end
 

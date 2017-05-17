@@ -9,11 +9,10 @@ cos.name = 'cos'
 --cos.func = math.cos
 cos.func = require 'symmath.complex'.cos
 
-function cos:evaluateDerivative(...)
+function cos:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
 	local sin = require 'symmath.sin'
-	local diff = require 'symmath.Derivative'
-	return -diff(x,...) * sin(x)
+	return -deriv(x,...) * sin(x)
 end
 
 function cos:reverse(soln, index)

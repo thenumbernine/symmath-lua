@@ -6,11 +6,10 @@ tan.name = 'tan'
 --tan.func = math.tan
 tan.func = require 'symmath.complex'.tan
 
-function tan:evaluateDerivative(...)
+function tan:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
 	local cos = require 'symmath.cos'
-	local diff = require 'symmath.Derivative'
-	return diff(x,...) / cos(x)^2
+	return deriv(x, ...) / cos(x)^2
 end
 
 function tan:reverse(soln, index)

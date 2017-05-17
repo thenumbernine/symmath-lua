@@ -7,7 +7,7 @@ Invalid.name = 'Invalid'
 -- true to NaNs
 --function Invalid.__eq(a,b) return false end
 
-function Invalid:evaluateDerivative(...)
+function Invalid:evaluateDerivative(deriv, ...)
 	return self
 end
 

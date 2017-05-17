@@ -7,9 +7,9 @@ abs.name = 'abs'
 --abs.func = math.abs
 abs.func = require 'symmath.complex'.abs
 
-function abs:evaluateDerivative(...)
-	error('not just yet')
-	-- TODO - heaviside step?  or conditions?
+function abs:evaluateDerivative(deriv, ...)
+	local x = self[1]
+	return (Heaviside(x) - Heaviside(-x)) * deriv(x, ...)
 end
 
 function abs:reverse(soln, index)

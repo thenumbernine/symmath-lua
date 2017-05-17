@@ -5,12 +5,12 @@ local sub = class(Binary)
 sub.precedence = 2
 sub.name = '-'
 
-function sub:evaluateDerivative(...)
-	local a, b = table.unpack(self)
-	a, b = a:clone(), b:clone()
-	local diff = require 'symmath.Derivative'
-	local x = diff(a,...) - diff(b,...)
-	return x
+function sub:evaluateDerivative(deriv, ...)
+	local result = table()
+	for i=1,#self do
+		result[i] = deriv(self[i]:clone(), ...)
+	end
+	return sub(result:unpack())
 end
 
 function sub:reverse(soln, index)
