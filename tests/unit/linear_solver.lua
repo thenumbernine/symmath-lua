@@ -3,20 +3,15 @@
 testing my linear solver, most of which I've crammed into symmath.matrix.inverse (even though this is now starting to include over- and under-constrained systems)
 --]]
 require 'ext'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-local var = symmath.var
-local div = symmath.op.div
+require 'symmath'.setup{implicitVars=true}
+require 'symmath.tostring.MathJax'.setup{title='Linear Solver'}
 
 for _,info in ipairs{
 	{
 		A = {
 			{3, 2, -1},
 			{2, -2, 4},
-			{-1, div(1,2), -1}
+			{-1, frac(1,2), -1}
 		},
 		b = {{1}, {-2}, {0}},
 	},
@@ -119,11 +114,11 @@ because the number of dimensions of the parameters is less than of the embedding
 
 --]]
 } do
-	local A = symmath.Matrix(table.unpack(info.A))
-	local b = symmath.Matrix(table.unpack(info.b))
+	local A = Matrix(table.unpack(info.A))
+	local b = Matrix(table.unpack(info.b))
 
 	printbr(( var'A' * var'x' ):eq( var'b' ))
-	local x = symmath.Matrix(range(#A[1]):map(function(i)
+	local x = Matrix(range(#A[1]):map(function(i)
 		return range(#b[1]):map(function(j)
 			return var('x_{'..i..','..j..'}')
 		end)
