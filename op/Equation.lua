@@ -9,11 +9,11 @@ Equation.__eq = require 'symmath.nodeCommutativeEqual'
 Equation.solve = require 'symmath.solve'
 
 function Equation:evaluateDerivative(deriv, ...)
-	local result = getmetatable(self)()
+	local result = table()
 	for i=1,#self do
 		result[i] = deriv(self[i]:clone(), ...)
 	end
-	return result
+	return getmetatable(self)(result:unpack())
 end
 
 function Equation:lhs() return self[1] end

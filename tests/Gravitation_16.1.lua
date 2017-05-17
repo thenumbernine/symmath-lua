@@ -179,8 +179,6 @@ TVal = TVal()
 print(T'^ab':eq(TVal))
 print()
 
--- YOU ARE HERE
-
 local divT = var'\\nabla \\cdot T'
 local divT_eq_0 = divT:eq(0)
 local divTVal = (TVal'^ab_,b' + GammaUVal'^a_cb' * TVal'^cb' + GammaUVal'^b_cb' * TVal'^ac')()

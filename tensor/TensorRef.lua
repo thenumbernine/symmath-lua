@@ -35,8 +35,28 @@ TensorRef.visitorHandler = {
 		local t = expr[1]
 		local indexes = {table.unpack(expr,2)}
 
-		-- if it's not a tensor then just leave the indexing for now
-		if not Tensor.is(t) then return end
+		-- if it's not a tensor ...
+		if not Tensor.is(t) then 
+			
+			-- t _ab _cd => t _abcd
+			if TensorRef.is(t) then
+				return prune:apply(
+					TensorRef(t[1], table():append{table.unpack(t,2)}:append(indexes):unpack())
+				)
+			end
+			
+			-- if this is a derivative then apply differentiation
+			if indexes[1].derivative then
+				if t.evaluateDerivative then
+					return t:evaluateDerivative(function(x)
+						return TensorRef(x, table.unpack(indexes))
+					end)
+				end
+			end
+
+			-- just leave the indexing there 
+			return 
+		end
 
 		-- now transform all indexes that don't match up
 		

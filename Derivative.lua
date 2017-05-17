@@ -60,7 +60,7 @@ Derivative.visitorHandler = {
 			if #expr == 2 and var == expr[2] then
 				return Constant(1)
 			end
-			--dx/dy = 0 unless x is a function of y
+			--dx/dy = 0 (unless x is a function of y ... but I only have partials)
 			for i=2,#expr do
 				local wrt = expr[i]
 
