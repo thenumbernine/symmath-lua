@@ -1,9 +1,9 @@
 #!/usr/bin/env luajit
 require 'ext'
-local symmath=require'symmath' 
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup{title='Sub-Tensor Assignment'}
 
-local Tensor = symmath.Tensor 
-local t,x,y,z = symmath.vars('t','x','y','z') 
+local t,x,y,z = vars('t','x','y','z') 
 local coords = {t,x,y,z}
 Tensor.coords{
 	{variables = {t,x,y,z}}, 
@@ -14,35 +14,37 @@ Tensor.coords{
 	{symbols = 'z', variables={z}},
 }
 
-print("rank-1 subtensor assignment")
+printbr("rank-1 subtensor assignment")
 
-A = Tensor('^a', function(a) return symmath.var('a^'..coords[a].name) end) 
-B = Tensor('^i', function(i) return symmath.var('b^'..coords[i+1].name) end) 
-print('A = '..A)
-print('B = '..B)
+A = Tensor('^a', function(a) return var'a'('^'..coords[a].name) end)
+B = Tensor('^i', function(i) return var'b'('^'..coords[i+1].name) end) 
+printbr('A = '..A)
+printbr('B = '..B)
 A['^i'] = B'^i'()
-print('A = '..A)
+printbr('A = '..A)
 
-print("rank-2 subtensor assignment")
+printbr("rank-2 subtensor assignment")
 
-A = Tensor('^ab', function(a,b) return symmath.var('a^'..coords[a].name..coords[b].name) end) 
-print('A = '..A)
+A = Tensor('^ab', function(a,b) return var'a'('^'..coords[a].name..' '..coords[b].name) end) 
+printbr('A = '..A)
 
-B = Tensor('^ij', function(i,j) return symmath.var('b^'..coords[i+1].name..coords[j+1].name) end) 
-print('B = '..B)
+B = Tensor('^ij', function(i,j) return var'b'('^'..coords[i+1].name..' '..coords[j+1].name) end) 
+printbr('B = '..B)
 
 A['^ij'] = B'^ij'()
-print('A = '..A)
+printbr('A = '..A)
 
-C = Tensor('^i', function(i) return symmath.var('c^'..coords[i+1].name) end)
-print('C = '..C)
+C = Tensor('^i', function(i) return var'c'('^'..coords[i+1].name) end)
+printbr('C = '..C)
 
 A['^ti'] = C'^i'()
-print('A = '..A)
+printbr('A = '..A)
 
 A['^it'] = B'^ix'()
-print('A = '..A)
+printbr('A = '..A)
 
--- TODO get rid of the requirement to wrap single-element assignmets in at least one single-rank, single-dim Tensor
-A['^tt'] = Tensor('^t', 2)
-print('A = '..A)
+A['^tt'] = 2
+printbr('A = '..A)
+
+A['^ij'] = 1
+printbr('A = '..A)

@@ -295,6 +295,8 @@ interpretations:
 	Tensor(string) => contra/co-variance
 	Tensor(string, function) => contra/co-variance + lambda callback
 	Tensor(string, table) => contra/co-variance + dense value
+	Tensor(table, function) => contra/co-variance + lambda callback
+	Tensor(table, table) => contra/co-variance + dense values 
 	Tensor(number...) => dense values
 	Tensor{dim=table, values=table} => dimension list + lambda callback
 	Tensor{dim=table} => dimension list
@@ -803,14 +805,19 @@ Tensor.__newindex = function(self, key, value)
 	-- handle assignment by tensor indexes
 	if type(key) == 'string' 
 	and (key:sub(1,1) == '^' or key:sub(1,1) == '_')
-	then
-		assert(Tensor.is(value), "tried to assign a non-tensor to a tensor")
-		
+	then	
 		local dstVariance = Tensor.parseIndexes(key)
-		
+
 		-- assert no comma derivatives
 		for _,dstVar in ipairs(dstVariance) do
 			assert(not dstVar.derivative, "can't assign to a partial derivative tensor")
+		end
+
+		-- if we're assigning a non-tensor to a tensor
+		-- then implicitly wrap it in a tensor
+		if not Tensor.is(value) then
+			local clone = require 'symmath.clone'
+			value = Tensor(dstVariance, function(...) return clone(value) end)
 		end
 
 		-- raise/lower self according to the key
