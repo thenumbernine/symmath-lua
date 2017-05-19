@@ -1,6 +1,9 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 
+--[[
+helper class for computing common differential geometry values from a metric tensor
+--]]
 local Props = class()
 
 local function var() return require 'symmath'.var end

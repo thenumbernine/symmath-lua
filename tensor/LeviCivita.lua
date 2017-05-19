@@ -20,10 +20,9 @@ local function makeLeviCivita(symbol, sqrtDetG)
 		sqrtDetG = sqrtDetG or 1
 		basis = Tensor.findBasisForSymbol()
 	else
-		-- TODO allow this to work even if there is no symbol.
-		-- don't throw an error.
-		basis = Tensor.findBasisForSymbol(symbol)
-		rank = #assert(basis.metric)
+		basis = Tensor.findBasisForSymbol(symbol or {})
+		rank = basis and basis.metric and #basis.metric
+			or #Tensor.__coordBasis[1].variables
 
 		if not sqrtDetG then
 			sqrtDetG = basis and basis.metric

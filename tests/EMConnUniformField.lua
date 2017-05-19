@@ -327,6 +327,7 @@ if RicciFromManualMetric then
 end
 
 --[==[ looking into boosted stuff -- recreting magnetic fields by moving a stationary electric field
+-- why does it look like no magnetic field once means no magnetic field ever?
 
 --[[
 let's create a magnetic field in the Y direction (to compliment our electric field in the X direction)
@@ -452,7 +453,7 @@ for the connections that give rise to this stress-energy,
 gravitation is ${\Gamma^x}_{tt} = -E$.
 ]])
 
-local units = require 'symmath.naturalUnits'()
+local units = require 'symmath.physics.units'()
 
 --[[ AA battery across a cm gap
 local volts = frac(3,2) * units.V

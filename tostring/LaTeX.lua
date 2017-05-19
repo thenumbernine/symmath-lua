@@ -217,6 +217,9 @@ LaTeX.lookupTable = {
 		end
 		return s
 	end,
+	[require 'symmath.abs'] = function(self, expr)
+		return table{'|', self:apply(expr[1]), '|'}
+	end,
 	[require 'symmath.Sum'] = function(self, expr)
 		local s = table{'\\sum'}
 		local sumexpr, var, from, to = table.unpack(expr)

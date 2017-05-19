@@ -8,7 +8,7 @@ require 'ext'
 require 'symmath'.setup{implicitVars=true, simplifyConstantPowers=true}
 require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
-local units = require 'symmath.naturalUnits'{
+local units = require 'symmath.physics.units'{
 	--valuesAsVars=true,
 }
 local pi, c, G, epsilon_0 = units.pi, units.c, units.G, units.epsilon_0

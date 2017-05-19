@@ -8,9 +8,8 @@ I did this out of suspicion spacetime would twist around the uniform field
 but if it is uniform then of course it's not going to...
 --]]
 require 'ext'
-local _ENV = _ENV or getfenv()
-require 'symmath'.setup{env=_ENV, implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{env=_ENV, usePartialLHSForDerivative=true}
+require 'symmath'.setup{implicitVars=true}
+require 'symmath.tostring.MathJax'.setup{title='EM Conn Uniform Field in Cylindrical Coordinates', usePartialLHSForDerivative=true}
 
 local t, r, phi, z = vars('t', 'r', '\\phi', 'z')
 local E = var'E'
@@ -35,10 +34,12 @@ if so, don't I need to factor g's into my calculations of R?
 local g = Tensor'_ab'
 
 -- [[
-g[1][1] = -exp(E^2 * phi)
-g[2][2] = -exp(E^2 * phi)
-g[3][3] = -r^2 * exp(E^2 * phi)
-g[4][4] = exp(3 * E^2 * phi)
+g[1][1] = Constant(-1)
+g[2][2] = Constant(1)
+g[3][3] = r^2
+g[4][4] = Constant(1)
+g[1][3] = B * (cos(phi) - sin(phi))
+g[3][1] = g[1][3]
 --]]
 
 --[[ cylindrical, with time scaled and r and z squashed similar to Schwarzschild
@@ -137,8 +138,10 @@ ConnFromMetric = (gU'^ad' * ConnFromMetric'_dbc')()
 
 local ConnManual = Tensor'^a_bc'
 
--- THIS WORKS
--- [[ same as below, but I want to avoid C^t_tt ...
+-- [[ THIS WORKS
+-- ConnManual[1][1][1] = E	-- is optional, and I don't like it (it implies perpetual acceleration through time
+-- OOPS NOT REALLY
+-- I just realized I should be -'ing the E_rr instead of the E_zz ...
 ConnManual[4][1][1] = -E
 ConnManual[1][4][1] = E
 ConnManual[1][1][4] = E
@@ -187,13 +190,46 @@ printbr()
 -- 8 pi T_ab = G_ab = R_ab - 1/2 R g_ab
 -- and R = 0 for electrovac T_ab
 -- so 8 pi T_ab = R_ab
-local RicciDesired = Tensor('_ab', table.unpack(Matrix.diagonal(E^2, E^2, E^2 * r^2, -E^2))) 
+local RicciDesired = Tensor('_ab', table.unpack(Matrix.diagonal(E^2, -E^2, E^2 * r^2, E^2))) 
 printbr'desired Ricci'
 RicciDesired:print'R'
 printbr()
+printbr()
+
+-- manual Gaussian curvature.  verify this is zero.
+
+if RicciFromManualMetric then
+	local GaussianFromMetric = (gU'^ab' * RicciFromManualMetric'_ab')()
+	printbr'manual metric Gaussian -- equal to zero according to EM stress-energy trace:'
+	printbr(Constant(0):eq(GaussianFromMetric))
+	local iszero = GaussianFromMetric
+	if op.div.is(iszero) then iszero = iszero[1] end
+	if op.unm.is(iszero) then iszero = iszero[1] end
+	printbr(iszero:eq(0))
+	printbr()
+end
 
 -- reminders:
-printbr()
 printbr(var'R''^a_bcd':eq(RiemannExpr))
 printbr(var'R''_ab':eq(RiemannExpr:reindex{cacbd='abcde'}))
 
+local cyl_gm = Matrix.diagonal(-1, 1, r^2, 1)
+local cyl_gmU = Matrix.diagonal(-1, 1, r^-2, 1)
+local cyl_g = Tensor('_ab', table.unpack(cyl_gm))
+local cyl_gU = Tensor('^ab', table.unpack(cyl_gmU))
+local Faraday = require 'symmath.physics.Faraday'{
+	g = cyl_g, 
+	gU = cyl_gU, 
+	E = Tensor('_a', 0, E, 0, 0),
+	B = Tensor'_a',
+}
+printbr'Faraday:'
+Faraday:print'F'
+printbr()
+
+local StressEnergy = Tensor'_ab'
+StressEnergy['_ab'] = (frac(1, 4 * pi) * (
+	Faraday'_ac' * Faraday'_bd' * cyl_gU'^cd'
+	- frac(1, 4) * cyl_g'_ab' * Faraday'_ce' * Faraday'_df' * cyl_gU'^cd' * cyl_gU'^ef'
+))()
+printbr((8 * pi * var'T''_ab'):eq((8 * pi * StressEnergy'_ab')()))

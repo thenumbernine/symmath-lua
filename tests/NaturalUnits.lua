@@ -1,2 +1,2 @@
 #!/usr/bin/env luajit
-require 'symmath.naturalUnits'{verbose=true}
+require 'symmath.physics.units'{verbose=true}
