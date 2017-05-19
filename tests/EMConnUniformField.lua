@@ -238,33 +238,20 @@ ConnFromMetric:print'\\Gamma'
 print'vs'
 --]==]
 
-local Conn = Tensor'^a_bc'
+local ConnManual = Tensor'^a_bc'
 
--- THIS WORKS
--- [[ same as below, but I want to avoid C^t_tt ...
-Conn[2][1][1] = -E	-- only scales R_tt
-Conn[1][2][1] = E	-- scales R_xx and affects terms of R_tt
-Conn[1][1][2] = E	-- affects terms of R_tt
-Conn[2][3][3] = E	-- scales R_yy
-Conn[2][4][4] = E	-- scales R_zz
---]]
-
--- THIS WORKS:
---[[ this gives rise to the stress-energy tensor for EM with E in the x dir and B = 0
--- to account for other E's and B's, just boost and rotate your coordinate system
--- don't forget, when transforming Conn, to use its magic transformation eqn, since it's not a real tensor
-Conn[1][1][1] = E
-Conn[2][1][1] = -E
-Conn[1][2][1] = E
-Conn[1][1][2] = E
-Conn[1][3][3] = E
-Conn[1][4][4] = E
+-- [[ THIS WORKS
+ConnManual[2][1][1] = -E	-- only scales R_tt
+ConnManual[1][2][1] = E	-- scales R_xx and affects terms of R_tt
+ConnManual[1][1][2] = E	-- affects terms of R_tt
+ConnManual[2][3][3] = E	-- scales R_yy
+ConnManual[2][4][4] = E	-- scales R_zz
 --]]
 
 print'manual conn:'
-Conn:print'\\Gamma'
+ConnManual:print'\\Gamma'
 printbr()
---printbr(var'c''_cb^a':eq(Gamma'^a_bc' - Gamma'^a_cb'):eq((Conn'^a_bc' - Conn'^a_cb')()))
+--printbr(var'c''_cb^a':eq(Gamma'^a_bc' - Gamma'^a_cb'):eq((ConnManual'^a_bc' - ConnManual'^a_cb')()))
 
 local RiemannExpr = Gamma'^a_bd,c' - Gamma'^a_bc,d' 
 	+ Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc'
@@ -299,7 +286,7 @@ if ConnFromMetric then
 end
 
 local RiemannFromManualConn = Tensor'^a_bcd'
-RiemannFromManualConn['^a_bcd'] = RiemannExpr:replace(Gamma, Conn)()
+RiemannFromManualConn['^a_bcd'] = RiemannExpr:replace(Gamma, ConnManual)()
 --printbr'riemann from manual conn'
 --RiemannFromManualConn:print'R'
 
@@ -417,7 +404,7 @@ printbr()
 -- TODO covariant derivative function?
 -- NOTICE this matches em_conn_infwire.lua, so fix both of these
 local diffRiemann = Tensor'^a_bcde'
-diffRiemann['^a_bcde'] = (Riemann'^a_bcd,e' + Conn'^a_fe' * Riemann'^f_bcd' - Conn'^f_be' * Riemann'^a_fcd' - Conn'^f_ce' * Riemann'^a_bfd' - Conn'^f_de' * Riemann'^a_bcf')()
+diffRiemann['^a_bcde'] = (Riemann'^a_bcd,e' + ConnManual'^a_fe' * Riemann'^f_bcd' - ConnManual'^f_be' * Riemann'^a_fcd' - ConnManual'^f_ce' * Riemann'^a_bfd' - ConnManual'^f_de' * Riemann'^a_bcf')()
 local Bianchi = Tensor'^a_bcde'
 Bianchi['^a_bcde'] = (diffRiemann'^a_bcde' + diffRiemann'^a_becd' +  diffRiemann'^a_bdec')()
 print'Bianchi:'

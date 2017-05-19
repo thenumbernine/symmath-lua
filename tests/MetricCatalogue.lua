@@ -20,10 +20,9 @@
     Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --]]
-local env = _ENV or getfenv()
 require 'ext'
-require 'symmath'.setup{implicitVars=true, env=env}
-require 'symmath.tostring.MathJax'.setup{env=env}
+require 'symmath'.setup{implicitVars=true}
+require 'symmath.tostring.MathJax'.setup{title='Metric Catalogue'}
 
 local t,x,y,z = vars('t','x','y','z')
 local r,phi,theta,psi = vars('r','\\phi','\\theta','\\psi')

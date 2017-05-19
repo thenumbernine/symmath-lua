@@ -9,19 +9,57 @@ but if it is uniform then of course it's not going to...
 --]]
 require 'ext'
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='EM Conn Uniform Field in Cylindrical Coordinates', usePartialLHSForDerivative=true}
+require 'symmath.tostring.MathJax'.setup{title='cylindrical coordinate Christoffel (and metric?) for EM stress-energy of a uniform field along the z-axis', usePartialLHSForDerivative=true}
 
 local t, r, phi, z = vars('t', 'r', '\\phi', 'z')
 local E = var'E'
+local coords = {t,r,phi,z}
 
 Tensor.coords{
-	{variables={t,r,phi,z}},
+	{variables=coords},
 	{symbols='t', variables={t}},
 	{symbols='r', variables={r}},
 	{symbols='phi', variables={phi}},
 	{symbols='z', variables={z}},
 }
 
+
+local CylEmbedding = Tensor('^I', t, r * cos(phi), r * sin(phi), z)
+CylEmbedding:print'u_{cyl}'
+printbr()
+
+local CylJacobian = Tensor'^I_a'
+CylJacobian['^I_a'] = CylEmbedding'^I_,a'()
+printbr(var'e_{cyl}''_a^I':eq(var'u_{cyl}''^I_,a'):eq(CylJacobian))
+
+local CylJacobianInv = Tensor('_I^a', table.unpack((Matrix.inverse(CylJacobian))))
+printbr(var'e_{cyl}''^a_I':eq(CylJacobianInv))
+
+local MinkowskiMetric = Tensor('_IJ', function(I,J) return I ~= J and 0 or I == 1 and -1 or 1 end)
+local CylMetric = (CylJacobian'^I_a' * CylJacobian'^J_b' * MinkowskiMetric'_IJ')()
+CylMetric:print'g_{cyl}' 
+printbr()
+
+local CylMetricInv = Tensor('^ab', table.unpack((Matrix.inverse(CylMetric))))
+
+local FaradayCyl = require 'symmath.physics.Faraday'{
+	g = CylMetric, 
+	gU = CylMetricInv, 
+	E = Tensor('_a', 0, 0, 0, E),
+	B = Tensor'_a',
+}
+printbr'Faraday:'
+FaradayCyl:print'F'
+printbr()
+
+local StressEnergyCyl = Tensor'_ab'
+StressEnergyCyl['_ab'] = (frac(1, 4 * pi) * (
+	FaradayCyl'_ac' * FaradayCyl'_bd' * CylMetricInv'^cd'
+	- frac(1, 4) * CylMetric'_ab' * FaradayCyl'_ce' * FaradayCyl'_df' * CylMetricInv'^cd' * CylMetricInv'^ef'
+))()
+local RicciDesired = (8 * pi * StressEnergyCyl'_ab')()
+printbr(R'_ab':eq(8 * pi * var'T''_ab'):eq(RicciDesired))
+printbr()
 
 --[[
 here's a thought on this:
@@ -138,10 +176,31 @@ ConnFromMetric = (gU'^ad' * ConnFromMetric'_dbc')()
 
 local ConnManual = Tensor'^a_bc'
 
+--[[ transform the connection for x-direction field from cartesian to cylindrical
+-- I think my cylindrical jacobian and inv are mixed up 
+local ConnManualCartesian = Tensor'^a_bc'
+ConnManualCartesian[2][1][1] = -E	-- only scales R_tt
+ConnManualCartesian[1][2][1] = E	-- scales R_xx and affects terms of R_tt
+ConnManualCartesian[1][1][2] = E	-- affects terms of R_tt
+ConnManualCartesian[2][3][3] = E	-- scales R_yy
+ConnManualCartesian[2][4][4] = E	-- scales R_zz
+
+ConnManual['^a_bc'] = 
+	(CylJacobianInv'_I^a' * (
+		CylJacobian'^J_b'
+		* CylJacobian'^K_c'
+		* ConnManualCartesian'^I_JK'
+		+ CylJacobian'^I_b,c')())()
+printbr'cartesian conn'
+ConnManualCartesian:print'\\Gamma'
+
+printbr'cylindrical conn'
+ConnManual:print'\\Gamma'
+--]]
+
 -- [[ THIS WORKS
 -- ConnManual[1][1][1] = E	-- is optional, and I don't like it (it implies perpetual acceleration through time
--- OOPS NOT REALLY
--- I just realized I should be -'ing the E_rr instead of the E_zz ...
+-- I don't like the z in there, I would rather it be r ...
 ConnManual[4][1][1] = -E
 ConnManual[1][4][1] = E
 ConnManual[1][1][4] = E
@@ -150,8 +209,8 @@ ConnManual[4][2][2] = E
 ConnManual[4][3][3] = E * r^2
 
 ConnManual[2][3][3] = -r
-ConnManual[3][3][2] = 1/r
 ConnManual[3][2][3] = 1/r
+ConnManual[3][3][2] = 1/r
 --]]
 
 printbr'conn from manual metric'
@@ -190,7 +249,6 @@ printbr()
 -- 8 pi T_ab = G_ab = R_ab - 1/2 R g_ab
 -- and R = 0 for electrovac T_ab
 -- so 8 pi T_ab = R_ab
-local RicciDesired = Tensor('_ab', table.unpack(Matrix.diagonal(E^2, -E^2, E^2 * r^2, E^2))) 
 printbr'desired Ricci'
 RicciDesired:print'R'
 printbr()
@@ -212,24 +270,3 @@ end
 -- reminders:
 printbr(var'R''^a_bcd':eq(RiemannExpr))
 printbr(var'R''_ab':eq(RiemannExpr:reindex{cacbd='abcde'}))
-
-local cyl_gm = Matrix.diagonal(-1, 1, r^2, 1)
-local cyl_gmU = Matrix.diagonal(-1, 1, r^-2, 1)
-local cyl_g = Tensor('_ab', table.unpack(cyl_gm))
-local cyl_gU = Tensor('^ab', table.unpack(cyl_gmU))
-local Faraday = require 'symmath.physics.Faraday'{
-	g = cyl_g, 
-	gU = cyl_gU, 
-	E = Tensor('_a', 0, E, 0, 0),
-	B = Tensor'_a',
-}
-printbr'Faraday:'
-Faraday:print'F'
-printbr()
-
-local StressEnergy = Tensor'_ab'
-StressEnergy['_ab'] = (frac(1, 4 * pi) * (
-	Faraday'_ac' * Faraday'_bd' * cyl_gU'^cd'
-	- frac(1, 4) * cyl_g'_ab' * Faraday'_ce' * Faraday'_df' * cyl_gU'^cd' * cyl_gU'^ef'
-))()
-printbr((8 * pi * var'T''_ab'):eq((8 * pi * StressEnergy'_ab')()))
