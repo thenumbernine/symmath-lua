@@ -22,7 +22,7 @@ local E = var'E'
 local Gamma = var'\\Gamma'
 
 local ConnFromMetric 
---[==[ finding the metric
+-- [==[ finding the metric
 
 -- ONCE YOU FIND THE METRIC, FIND THE FARADAY TRANFORMED UNDER THE METRIC, THEN FIND THE STRESS-ENERGY FROM THE FARADAY, and see if it is the same or not ...
 
@@ -36,7 +36,14 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
--- [[
+--[[
+g[1][1] = -exp(a_tx * x + a_ty * y + a_tz * z)
+g[2][2] = exp(a_xx * x + a_xy * y + a_xz * z)
+g[3][3] = exp(a_yx * x + a_yy * y + a_yz * z)
+g[4][4] = exp(a_zx * x + a_zy * y + a_zz * z)
+--]]
+
+--[[
 local a = var('a',{x})
 local b = var('b',{x})
 local c = var('c',{x})

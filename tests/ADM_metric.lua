@@ -18,7 +18,6 @@ local var = symmath.var
 local vars = symmath.vars
 
 local t,x,y,z = vars('t','x','y','z')
-local ijk = var'ijk'	-- not sure about this ...
 local spatialCoords = {x,y,z}
 local coords = {t,x,y,z}
 local spacetimeIndexes = {variables=coords}

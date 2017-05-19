@@ -34,7 +34,14 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
--- [[ cylindrical, with time scaled and r and z squashed similar to Schwarzschild
+-- [[
+g[1][1] = -exp(E^2 * phi)
+g[2][2] = -exp(E^2 * phi)
+g[3][3] = -r^2 * exp(E^2 * phi)
+g[4][4] = exp(3 * E^2 * phi)
+--]]
+
+--[[ cylindrical, with time scaled and r and z squashed similar to Schwarzschild
 g[1][1] = var('a',{r})
 g[2][2] = var('b',{r})
 g[3][3] = r^2
