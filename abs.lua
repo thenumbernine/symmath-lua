@@ -33,6 +33,12 @@ abs.visitorHandler = {
 				)
 			)
 		end
+	
+		if Constant.is(expr[1])
+		and expr[1].value < 0
+		then
+			return prune:apply(Constant(math.abs(expr[1].value)))
+		end
 	end,
 }
 

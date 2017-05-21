@@ -23,6 +23,6 @@ return function(args)
 	local E = args.E or Tensor('_a', function(a) return a == 1 and 0 or var('E_{'..basis.variables[a].name..'}') end)
 	local B = args.B or Tensor('_a', function(a) return a == 1 and 0 or var('B_{'..basis.variables[a].name..'}') end)
 	local F = Tensor'_ab'
-	F['_ab'] = (n'_e' * gU'^ed' * LeviCivita'_dabf' * gU'^fg' * B'_g' + n'_a' * E'_b' - E'_a' * n'_b')()
+	F['_ab'] = (n'_e' * gU'^ed' * LeviCivita'_adbf' * gU'^fg' * B'_g' - n'_a' * E'_b' + E'_a' * n'_b')()
 	return F
 end
