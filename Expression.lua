@@ -178,6 +178,9 @@ Expression.det = Expression.determinant
 -- I would do transpose => tr, but tr could be trace too ...
 
 -- ... = list of equations
+-- TODO subst on multiplication terms
+-- TODO subst automatic reindex of Tensors
+-- TODO :expandIndexes() function to split indexes in particular ways (a -> t + k -> t + x + y + z)
 function Expression:subst(...)
 	local eq = require 'symmath.op.eq'
 	local result = self:clone()

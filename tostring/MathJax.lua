@@ -72,7 +72,7 @@ function MathJax.setup(args)
 	end
 	local symmath = require 'symmath'
 	symmath.tostring = inst
-	print(Header(args.title))
+	print(Header(args.title, args.url))
 	env.printbr = MathJax.print
 end
 

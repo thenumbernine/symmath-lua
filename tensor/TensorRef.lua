@@ -15,8 +15,9 @@ function TensorRef:init(tensor, ...)
 
 	-- make sure the rest of the arguments are tensor indexes
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
-	for _,index in ipairs{...} do
-		assert(TensorIndex.is(index))
+	for i=1,select('#',...) do
+		local index = select(i, ...)
+		assert(TensorIndex.is(index), 'argument '..i..' of TensorRef is not a TensorIndex: '..require 'ext.tolua'(index))
 	end
 end
 

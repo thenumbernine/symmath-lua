@@ -113,7 +113,12 @@ LaTeX.lookupTable = {
 		return tableConcat(res, expr:getSepStr())
 	end,
 	[require 'symmath.op.div'] = function(self, expr)
-		return table{self:apply(expr[1]), '\\over', self:apply(expr[2])}
+		return table{'\\frac', self:apply(expr[1]), self:apply(expr[2])}
+	end,
+	[require 'symmath.op.pow'] = function(self, expr)
+		return tableConcat(range(#expr):map(function(i) 
+			return table({self:wrapStrOfChildWithParenthesis(expr, i)}, {force=true})
+		end), expr:getSepStr())
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		local s = table{prepareName(expr.name)}
@@ -318,6 +323,7 @@ function LaTeX:applyLaTeX(...)
 		end
 		
 		local omit = result.omit
+		local force = result.force
 		local count = #result
 
 		for i=1,#result do
@@ -332,7 +338,7 @@ function LaTeX:applyLaTeX(...)
 		result = result:concat()
 		
 		--result = range(#result):map(function(i) return flatten(result[i]) end):concat' '
-		if count > 1 and not omit then result = '{' .. result .. '}' end
+		if (count > 1 and not omit) or force then result = '{' .. result .. '}' end
 		
 		return result
 	end
