@@ -7,7 +7,7 @@ args:
 	gU = (optional) metric inverse
 	index = (optional) index to get the metric from
 	n = (optional) hypersurface normal vector for observing electromagnetic field.  default n_a = (1,0,0,0)
-	E = (optional) electric field.  default E_a = (0,E_x,E_y,E_z)
+	E = (optional) electric field.  default E_a = (0,E_x,E_y,E_z) (or whatever the basis variable names are)
 	B = (optional) magnetic field.  default B_a = (0,B_x,B_y,B_z)
 --]]
 return function(args)
