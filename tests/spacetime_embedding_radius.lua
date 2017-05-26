@@ -1,14 +1,6 @@
 #!/usr/bin/env luajit
-
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-
-symmath.simplifyConstantPowers  = true
-local var = symmath.var
-local sqrt = symmath.sqrt
+require 'symmath'.setup{simplifyConstantPowers=true}
+require 'symmath.tostring.MathJax'.setup{title='Spacetime Embedding Function'}
 
 local const_c = 299792458
 local const_G = 6.67384e-11
