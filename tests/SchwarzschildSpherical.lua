@@ -25,16 +25,8 @@
 schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
 --]]
 
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-MathJax.usePartialLHSForDerivative = true
-print(MathJax.header)
-local printbr = MathJax.print
-
-local Tensor = symmath.Tensor
-local vars = symmath.vars
-local var = symmath.var
+require 'symmath'.setup{implicitVars=true}
+require 'symmath.tostring.MathJax'.setup{title='Schwarzschild Spherical', usePartialLHSForDerivative=true}
 
 -- coordinates
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
@@ -54,7 +46,7 @@ Tensor.coords{
 local g = Tensor('_uv', function(u,v) return u == v and ({-(1-R/r), 1/(1-R/r), r^2, r^2 * symmath.sin(theta)^2})[u] or 0 end) 
 printbr'metric' g:print'g' printbr() printbr()
 
-local props = require 'symmath.diffgeom'(g)
+local props = require 'symmath.physics.diffgeom'(g)
 
 Tensor.metric(g)
 

@@ -23,7 +23,7 @@ Tensor.coords{
 	{symbols='z', variables={z}},
 }
 
-
+--[==[
 local CylEmbedding = Tensor('^I', t, r * cos(phi), r * sin(phi), z)
 CylEmbedding:print'u_{cyl}'
 printbr()
@@ -60,6 +60,10 @@ StressEnergyCyl['_ab'] = (frac(1, 4 * pi) * (
 local RicciDesired = (8 * pi * StressEnergyCyl'_ab')()
 printbr(R'_ab':eq(8 * pi * var'T''_ab'):eq(RicciDesired))
 printbr()
+--]==]
+-- [==[
+local RicciDesired = Tensor('_ab', table.unpack(Matrix.diagonal(E^2, E^2, r^2 * E^2, -E^2)))
+--]==]
 
 --[[
 here's a thought on this:
@@ -71,7 +75,14 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
--- [[
+-- [[ reproduces R_tt, R_rr, R_pp, but sets R_zz = 0
+g[1][1] = -exp(E * z)
+g[2][2] = -exp(E * z)
+g[3][3] = -r^2 * exp(E * z)
+g[4][4] = exp(E * z) / 2
+--]]
+
+--[[
 g[1][1] = Constant(-1)
 g[2][2] = Constant(1)
 g[3][3] = r^2

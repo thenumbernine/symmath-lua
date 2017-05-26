@@ -36,6 +36,38 @@ if so, don't I need to factor g's into my calculations of R?
 --]]
 local g = Tensor'_ab'
 
+-- [[
+local a = var('a',{x})
+local c = var('c',{x})
+g[1][1] = -a
+g[2][2] = b
+g[3][3] = c
+g[4][4] = c
+--]]
+
+--[[	-- R_xx = -E^2
+g[1][1] = -exp(sqrt(2) * E * x)
+g[2][2] = exp(-sqrt(2) * E * x)
+g[3][3] = exp(-sqrt(2) * E * x)
+g[4][4] = exp(-sqrt(2) * E * x)
+--]]
+
+--[[ this gives R_tt = R_yy = R_zz = E^2, but has R_xx = 0 instead of -E^2
+g[1][1] = -exp(sqrt(2) * E * x)
+g[2][2] = exp(sqrt(2) * E * x)
+g[3][3] = -exp(sqrt(2) * E * x)
+g[4][4] = -exp(sqrt(2) * E * x)
+--]]
+
+--[[
+local a = var('a',{x})
+local b = var('b',{x})
+g[1][1] = -a
+g[2][2] = -b
+g[3][3] = b
+g[4][4] = b
+--]]
+
 --[[
 g[1][1] = -exp(a_tx * x + a_ty * y + a_tz * z)
 g[2][2] = exp(a_xx * x + a_xy * y + a_xz * z)

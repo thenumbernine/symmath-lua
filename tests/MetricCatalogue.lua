@@ -381,7 +381,7 @@ end)
 
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
 	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
-	local Props = class(require 'symmath.diffgeom')
+	local Props = class(require 'symmath.physics.diffgeom')
 	function Props:doPrint(field)
 		print(field.title..':')
 		local t = self[field.name]
