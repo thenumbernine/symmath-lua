@@ -36,13 +36,16 @@ MathJax.Header = Header
 -- default instance
 MathJax.header = Header()
 
+MathJax.openSymbol = '$'
+MathJax.closeSymbol = '$'
+
 MathJax.footer = [[
 	</body>
 </html>
 ]]
 
 function MathJax:__call(...)
-	return '$$' .. MathJax.super.__call(self, ...) .. '$$'
+	return self.openSymbol .. MathJax.super.__call(self, ...) .. self.closeSymbol
 end
 
 function MathJax.print(...)
