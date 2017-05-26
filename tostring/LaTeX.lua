@@ -229,23 +229,26 @@ LaTeX.lookupTable = {
 		local s = table{'\\sum'}
 		local sumexpr, var, from, to = table.unpack(expr)
 		if var or from or to then
-			s:insert'\\limits'
 			if var or from then
 				s:insert'_'
+				local lower = table()
+				s:insert(lower)
 				if var then
-					s:insert(self:apply(var))
+					lower:insert(self:apply(var))
 				end
 				if from then
-					s:insert'='
-					s:insert(self:apply(from))
+					lower:insert'='
+					lower:insert(self:apply(from))
 				end
 			end
 			if to then
 				s:insert'^'
-				s:insert(self:apply(to))
+				local upper = table()
+				s:insert(upper)
+				upper:insert(self:apply(to))
 			end
 		end
-		s:insert(self:apply(sumexpr))
+		s:insert(table{self:apply(sumexpr)})
 		return s
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
