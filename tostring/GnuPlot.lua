@@ -47,6 +47,27 @@ GnuPlot.lookupTable = {
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!")
 	end,
+	[require 'symmath.Heaviside'] = function(self, expr, vars)
+		return '('..self:apply(expr[1], vars)..' >= 0.)'
+	end,
 }
+
+-- create a plot of an expression
+local gnuplot = require 'gnuplot'
+local io = require 'ext.io'
+function GnuPlot:plot(args)
+	local var = require 'symmath.Variable'
+	assert(args.output)
+	-- TODO accept *all* vars used, and define vars in gnuplot before producing the plot command
+	for i,arg in ipairs(args) do
+		local x = arg.x or var'x' arg.x = nil
+		local expr = assert(arg[1])
+		args[i][1] = self:apply(expr:replace(x, var'x'), {var'x'})
+	end
+	gnuplot(args)
+	-- assumes html output ...
+	local _, output = io.getfiledir(args.output)
+	print('<img src="'..output..'"/><br>')
+end
 
 return GnuPlot()	-- singleton

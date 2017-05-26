@@ -67,6 +67,8 @@ function Equation.__unm(a)
 	return a
 end
 
+-- TODO only do this on simplify()
+-- [[
 for _,op in ipairs{
 	{field = '__add', f = function(a,b) return a + b end},
 	{field = '__sub', f = function(a,b) return a - b end},
@@ -95,5 +97,6 @@ for _,op in ipairs{
 		end
 	end
 end
+--]]
 
 return Equation
