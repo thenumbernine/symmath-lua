@@ -43,11 +43,10 @@ local Phi =
 printbr(var'\\Phi':eq(Phi))
 -- assume T_ab is only a function of r ...
 -- and is diagonal ...
-local StressEnergy = Tensor('_ab', table.unpack(Matrix.diagonal(
-	var('T_{tt}',{r}),
-	var('T_{rr}',{r}),
-	var('T_{\\theta\\theta}',{r}),
-	var('T_{\\phi\\phi}',{r}))))
+-- MTW 22.16d, for u_a = n_a = t_,a: T_ab = (rho + P) n_a n_b + P g_ab
+-- for g_ab = diag(-1, 1, r^2, r^2 sin(theta)^2) and n_a = (1, 0, 0, 0)
+-- we get T_ab = diag(rho, P, P r^2, P r^2 sin(theta)^2)
+local StressEnergy = Tensor('_ab', table.unpack(Matrix.diagonal(rho, P, P * r^2, P * (r * sin(theta))^2)))
 StressEnergy:print'T'
 -- I would replace this, but let's just redefine it
 Phi = nil
@@ -62,5 +61,12 @@ for a=1,4 do
 	end
 end
 -- fixme
-Phi = frac(4,3) * pi * Integral(Phi * r^2, r, 0, R)
+Phi = Integral(
+	Integral(
+		-- because I'm integrating in spherical, 
+		-- do I need to multiply by the spherical Jacobian
+		-- or is that already done courtesy of the tensor representations in spherical?
+		Integral(Phi * r^2 * sin(theta), r, 0, R),
+	theta, 0, pi),
+phi, 0, 2 * pi)
 printbr(var'\\Phi':eq(Phi))
