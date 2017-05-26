@@ -73,6 +73,10 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 * MathJax
 * GnuPlot
 
+`GnuPlot:plot(args)`  
+Produces SVG of a plot. Requires my `lua-gnuplot` library.  
+Arguments are forwarded to the `gnuplot` lua module, with the expression provided in place of the plot command.  
+
 ### Arithmetic
 
 `symmath.op.unm(a)`  
