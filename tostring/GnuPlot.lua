@@ -55,19 +55,26 @@ GnuPlot.lookupTable = {
 -- create a plot of an expression
 local gnuplot = require 'gnuplot'
 local io = require 'ext.io'
+local file = require 'ext.file'
 function GnuPlot:plot(args)
 	local var = require 'symmath.Variable'
-	assert(args.output)
 	-- TODO accept *all* vars used, and define vars in gnuplot before producing the plot command
 	for i,arg in ipairs(args) do
 		local x = arg.x or var'x' arg.x = nil
 		local expr = assert(arg[1])
 		args[i][1] = self:apply(expr:replace(x, var'x'), {var'x'})
 	end
+
+	local capture = not args.persist and not args.terminal
+	if capture then
+		args.terminal = 'svg size 800,600'
+		args.output = 'tmp.svg'
+	end
 	gnuplot(args)
+	local svg = file['tmp.svg']
+	file['tmp.svg'] = nil
 	-- assumes html output ...
-	local _, output = io.getfiledir(args.output)
-	print('<img src="'..output..'"/><br>')
+	print(svg,'<br>')
 end
 
 return GnuPlot()	-- singleton

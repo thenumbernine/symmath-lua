@@ -45,11 +45,12 @@ function process(...)
 
 		local x = var'x'
 		GnuPlot:plot{
+			xlabel = 'distance from center',
+			ylabel = 'embedding',
 			xrange = {0, (3 * info.radius / m)().value},
-			title=name..' embedding radius',
+			title = name..' embedding radius',
 			-- TODO ... I need to embed the image into the html ...
 			-- or determine in advance the destination of the output ...
-			output='output/SpacetimeEmbeddingRadius_'..name..'.png',
 			{z(x), title='z(r)'}
 		}
 	end
