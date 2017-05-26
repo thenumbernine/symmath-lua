@@ -62,5 +62,5 @@ for a=1,4 do
 	end
 end
 -- fixme
-Phi = 4 * pi * Integral(Phi * r, r, 0, R)
+Phi = frac(4,3) * pi * Integral(Phi * r^2, r, 0, R)
 printbr(var'\\Phi':eq(Phi))
