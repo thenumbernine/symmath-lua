@@ -17,8 +17,8 @@ then generates the code
 function Language:prepareForCompile(expr, paramInputs)
 	local Variable = require 'symmath.Variable'
 	local Expression = require 'symmath.Expression'
-	
-	assert(paramInputs)
+	paramInputs = paramInputs or {}
+
 	local vars = table()
 	for _,paramInput in pairs(paramInputs) do
 		if type(paramInput) == 'table' then
