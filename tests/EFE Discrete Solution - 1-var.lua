@@ -33,13 +33,17 @@ Tensor.coords{
 }
 
 local alpha = var('\\alpha', {r})
--- [[ alpha of ADM in spherical
+--[[ alpha of ADM in spherical, constant spatial
 local g = Tensor('_ab', table.unpack(Matrix.diagonal(-alpha^2, 1,r^2,(r*sin(theta))^2)))
 local gU = Tensor('^ab', table.unpack(Matrix.diagonal(-1/alpha^2, 1,r^-2,(r*sin(theta))^-2)))
 --]]
---[[ alpha of ADM in cartesian
+--[[ alpha of ADM in cartesian, constant spatial
 local g = Tensor('_ab', table.unpack(Matrix.diagonal(-alpha^2, 1,1,1)))
 local gU = Tensor('^ab', table.unpack(Matrix.diagonal(-1/alpha^2, 1,1,1)))
+--]]
+-- [[ alpha in ADM in spherical, spatial is inverse temporal
+local g = Tensor('_ab', table.unpack(Matrix.diagonal(-alpha^2, 1/alpha^2, r^2, (r*sin(theta))^2)))
+local gU = Tensor('^ab', table.unpack(Matrix.diagonal(-1/alpha^2, alpha^2, r^-2, (r*sin(theta))^-2)))
 --]]
 g:print'g'
 gU:print'g'

@@ -95,6 +95,16 @@ for _,op in ipairs{
 			end
 			return b
 		end
+		if op.field == '__add' or op.field == '__sub' then
+			if Equation.is(a) and Equation.is(b) then
+				assert(#a == #b)
+				a = a:clone()
+				for i=1,#a do
+					a[i] = op.f(a[i], b[i])
+				end
+				return a
+			end
+		end
 	end
 end
 --]]
