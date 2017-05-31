@@ -18,4 +18,8 @@ Matrix.diagonal = require 'symmath.matrix.diagonal'
 Matrix.trace = require 'symmath.matrix.trace'
 Matrix.pseudoInverse = require 'symmath.matrix.pseudoInverse'
 
+-- shorthand
+Matrix.inv = Matrix.inverse	
+Matrix.T = Matrix.transpose
+
 return Matrix
