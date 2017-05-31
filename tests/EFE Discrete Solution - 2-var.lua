@@ -70,7 +70,7 @@ local earthRadius = 6.37101e+6
 local earthMass = 5.9736e+24 * G / c / c					--  total mass within radius, in m
 local earthDensity = earthMass / (4/3 * math.pi * earthRadius^3)	--  average density, in m^-2
 local earthPressure = 0
-local n = 100
+local n = 1000
 local rmax = 2 * earthRadius
 local rmin = rmax * .01
 local dr = (rmax - rmin) / n
@@ -272,56 +272,135 @@ local Grr_func = EinsteinLL[2][2]
 
 local solveWithForwardEuler = true 
 if solveWithForwardEuler then
-	local r = rmax
-	local A, B = 1, -1
-	local dB_dr = 0
-	local As = matrix()
-	local Bs = matrix()
-	local dA_drs = matrix()
-	local dB_drs = matrix()
-	local d2B_dr2s = matrix()
-	for i=n,1,-1 do
-		local dr = -dr
+
+	function table.reverse(t)
+		local r = table()
+		for i=#t,1,-1 do
+			r:insert(t[i])
+		end
+		return r
+	end
+
+	local function calcDerivVars(r, q)
+		local A, B, dB_dr = q:unpack()
+
+		local rhoPlusP = r < earthRadius and (earthPressure + earthDensity) or 0
+
 		-- (G_tt = 8 pi T_tt) / B - (G_rr / 8 pi T_rr) / A gives 
 		-- (A B)' = - 8 pi r A^2 (rho + P)
-		local dAB_dr = -8 * math.pi * r * A^2 * (earthPressure + earthDensity)
+		local dAB_dr = -8 * math.pi * r * A^2 * rhoPlusP 
 		local dA_dr = (dAB_dr - dB_dr * A) / B
 		-- (G_rr = 8 pi T_rr) / A - (G_theta_theta - 8 pi T_theta_theta) / r^2
 		-- 2 A' B^2 r - 2 B'' A B r^2 + A' B' B r^2 + B'^2 A r^2 + 2 B' A B r + 4 A B^2 - 4 A^2 B^2 = 0
 		-- 2 B'' A B r^2 = (A' B + B' A) (2 B r + B' r^2) + 4 A B^2 (1 - A)
 		-- B'' = ((A' B + B' A) (2 B r + B' r^2) + 4 A B^2 (1 - A)) / (2 A B r^2)
 		-- B'' = -4 pi A (rho + P) (2 + B'/B r) + 2 B (1 - A) / r^2
-		local d2B_dr2 = -4 * math.pi * A * (earthPressure + earthDensity) * (2 + r * dB_dr / B) + 2 * B * (1 - A) / r^2
-		A = A + dr * dA_dr
-		B = B + dr * dB_dr
-		dB_dr = dB_dr + dr * d2B_dr2
-		r = r + dr
-		As[i] = A
-		Bs[i] = B
-		dA_drs[i] = dA_dr
-		dB_drs[i] = dB_dr
-		d2B_dr2s[i] = d2B_dr2
+		local d2B_dr2 = -4 * math.pi * A * rhoPlusP * (2 + r * dB_dr / B) + 2 * B * (1 - A) / r^2
+		return dA_dr, dB_dr, d2B_dr2
 	end
+
+	local function dq_dr(r, q)
+		local dA_dr, dB_dr, d2B_dr2 = calcDerivVars(r, q)
+		return matrix{dA_dr, dB_dr, d2B_dr2}
+	end
+
+	local function int_fe(r, q, dq_dr, dr)
+		return r + dr, q + dq_dr(r, q) * dr
+	end
+
+	local function int_rk4(r, q, dq_dr, dr)
+		local k1 = dq_dr(r, q)
+		local k2 = dq_dr(r + .5 * dr, q + .5 * dr * k1)
+		local k3 = dq_dr(r + .5 * dr, q + .5 * dr * k2)
+		local k4 = dq_dr(r + dr, q + dr * k3)
+		return r + dr, q + (k1 + 2 * k2 + 2 * k3 + k4) * dr / 6
+	end
+
+	local function definite_integral(r1, r2, q1)
+		local r = r1
+		local q = q1
+		local dr = (r2 - r1) / n
+	
+		local rs = table()
+		local As = table()
+		local Bs = table()
+		local dA_drs = table()
+		local dB_drs = table()
+		local d2B_dr2s = table()
+		for i=1,n do
+			r, q = int_rk4(r, q, dq_dr, dr)
+			local A, B, dB_dr = q:unpack()
+			local dA_dr, dB_dr, d2B_dr2 = calcDerivVars(r, q)
+			rs:insert(r)
+			As:insert(A)
+			Bs:insert(B)
+			dA_drs:insert(dA_dr)
+			dB_drs:insert(dB_dr)
+			d2B_dr2s:insert(d2B_dr2)
+		end
+	
+		return rs, As, Bs, dA_drs, dB_drs, d2B_dr2s
+	end
+	
+	-- start at rmax and integrate inwards
+	local r = rmax
+	local q = matrix{1,-1,0}	-- A, B, B'
+	local rs, As, Bs, dA_drs, dB_drs, d2B_dr2s = definite_integral(rmax, rmin, q)
+	local inward = table{rs=rs, As=As, Bs=Bs, dA_drs=dA_drs, dB_drs=dB_drs, d2B_dr2s=d2B_dr2s}
+
+	-- reverse the inward trace
+	for _,k in ipairs(inward:keys()) do
+		inward[k] = inward[k]:reverse()
+	end
+
+	-- start at rmin (with the last q) and integrate outwards
+	local r = rs:last()
+	local q = matrix{As:last(), Bs:last(), dB_drs:last()}
+	local rs, As, Bs, dA_drs, dB_drs, d2B_dr2s = definite_integral(rmin, rmax, q)
+	local outward = table{rs=rs, As=As, Bs=Bs, dA_drs=dA_drs, dB_drs=dB_drs, d2B_dr2s=d2B_dr2s}
+
+	-- looks basically the same
+	-- ok
+	-- so now that we have (approximations of) functions for B(r) and A(r) where ds^2 = B(r) dt^2 + A(r) dr^2 + r^2 (dtheta^2 + sin(theat)^2 dphi^2)
+	-- since dr itself is growing and shrinking
+	-- I need to re-plot the graph with respect to a fixed radial ruler ...
+	for _,t in ipairs{inward, outward} do
+		t.rhos = table()	-- ds^2 = A(r) dr^2 <=> dr = ds/sqrt(A)
+		local rho = 0
+		for i=1,n do
+			rho = rho + dr/math.sqrt(t.As[i])
+			t.rhos:insert(rho)
+		end
+	end
+
 	local _8piTtts = matrix{n}:lambda(function(i) return _8piTtt_func(rs[i], As[i], Bs[i], earthDensity, earthPressure, math.pi) end)
 	local _8piTrrs = matrix{n}:lambda(function(i) return _8piTrr_func(rs[i], As[i], Bs[i], earthDensity, earthPressure, math.pi) end)
 	local Gtts = matrix{n}:lambda(function(i) return Gtt_func(rs[i], As[i], Bs[i], dA_drs[i], dB_drs[i], d2B_dr2s[i]) end)
 	local Grrs = matrix{n}:lambda(function(i) return Grr_func(rs[i], As[i], Bs[i], dA_drs[i], dB_drs[i], d2B_dr2s[i]) end)
 	for _,info in ipairs{
-		{['A'] = As},
-		{['B'] = Bs},
+		{['A'] = 'As'},
+		{['B'] = 'Bs'},
+		--[[
 		{['8 pi T_t_t'] = _8piTtts},
 		{['8 pi T_r_r'] = _8piTrrs},
 		{['G_t_t'] = Gtts},
 		{['G_r_r'] = Grrs},
 		{['G_t_t - 8 pi T_t_t'] = Gtts - _8piTtts},
 		{['G_r_r - 8 pi T_r_r'] = Grrs - _8piTrrs},
+		--]]
 	} do
-		local title, y = next(info)
+		local title, ys = next(info)
 		require 'symmath.tostring.GnuPlot':plot{
 			style = 'data lines',
-			--log = 'y',
-			data = {rs, y},
-			{using='1:(abs($2))', title=title},
+			data = {inward.rs, inward[ys], outward.rs, outward[ys]},
+			{using='1:2', title='inward '..title},
+			{using='3:4', title='outward '..title},
+		}
+		require 'symmath.tostring.GnuPlot':plot{
+			style = 'data lines',
+			data = {inward.rhos, inward[ys], outward.rhos, outward[ys]},
+			{using='1:2', title='inward '..title..' wrt abs coord rho'},
+			{using='3:4', title='outward '..title..' wrt abs coord rho'},
 		}
 	end
 end
