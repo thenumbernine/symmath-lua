@@ -17,31 +17,60 @@ Tensor.coords{
 	{symbols='z', variables={z}},
 }
 
-local Conn = Tensor'^a_bc'
+printbr'manual metric:'
+local g = Tensor('_ab', table.unpack((Matrix.diagonal(-1, 1, 1, 1))))
+g[1][1] = -I / r
+g[2][2] = 1 / (I * r)
+g[3][3] = r^2
+g[4][4] = 1 / r
 
-Conn[3][1][1] = -2 * I / r^2
-Conn[1][3][1] = 2 * I
-Conn[1][1][3] = 2 * I
-Conn[3][2][2] = 2 * I / r^2
-Conn[3][4][4] = 2 * I / r^2
+local gU = Tensor('^ab', table.unpack(
+	(Matrix(table.unpack(g)):transpose():inverse())
+))
+
+printbr(g:printElem'g')
+printbr(gU:printElem'g')
+
+local ConnFromManualMetric = Tensor'_abc'
+ConnFromManualMetric['_abc'] = ((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)() 
+printbr(ConnFromManualMetric:printElem'\\Gamma')
+ConnFromManualMetric = (gU'^ad' * ConnFromManualMetric'_dbc')()
+printbr(ConnFromManualMetric:printElem'\\Gamma')
+
+local ConnManual = Tensor'^a_bc'
+
+-- [[ WORKS
+ConnManual[3][1][1] = -2 * I / r^2
+ConnManual[1][3][1] = 2 * I
+ConnManual[1][1][3] = 2 * I
+ConnManual[3][2][2] = 2 * I / r^2
+ConnManual[3][4][4] = 2 * I / r^2
+--]]
+
+printbr'connection from manual metric:'
+printbr(ConnFromManualMetric:printElem'\\Gamma')
 
 printbr'manual connection:'
-Conn:printElem'\\Gamma'
-printbr()
+printbr(ConnManual:printElem'\\Gamma')
 
-local RiemannForConn = Tensor'^a_bcd'
-RiemannForConn['^a_bcd'] = RiemannExpr:replace(Gamma, Conn)()
-local RicciForConn = RiemannForConn'^c_acb'()
-printbr'Ricci from connection:'
-RicciForConn:print'R'
-printbr()
+local RiemannFromManualMetric = Tensor'^a_bcd'
+RiemannFromManualMetric['^a_bcd'] = RiemannExpr:replace(Gamma, ConnFromManualMetric)()
+local RicciFromManualMetric = RiemannFromManualMetric'^c_acb'()
+printbr'Ricci from manual metric:'
+printbr(RicciFromManualMetric:print'R')
+
+local RiemannFromManualConn = Tensor'^a_bcd'
+RiemannFromManualConn['^a_bcd'] = RiemannExpr:replace(Gamma, ConnManual)()
+local RicciFromManualConn = RiemannFromManualConn'^c_acb'()
+printbr'Ricci from manual connection:'
+printbr(RicciFromManualConn:print'R')
 
 -- stress energy of EM field around an infinite wire
 -- looking at the case where there is no charge in the wire (lambda = 0), but there is a current (I != 0)
 -- taken from em_conn_infwire.lua
-local RicciEM = (Tensor('_ab', table.unpack(Matrix.diagonal(1, 1, -r^2, 1))) * 4 * I^2 / r^2)()
+local RicciDesired = (Tensor('_ab', table.unpack(Matrix.diagonal(1, 1, -r^2, 1))) * 4 * I^2 / r^2)()
 print'vs $8 \\pi \\times$ EM stress-energy tensor = Ricci tensor'
-RicciEM:print'R' 
+RicciDesired:print'R' 
 printbr()
 
 
@@ -88,8 +117,7 @@ Conn[3][2][2] = -4 * phi * lambda^2 / r^2			-- R_rr
 --]]
 
 printbr'manual connection:'
-Conn:printElem'\\Gamma'
-printbr()
+printbr(Conn:printElem'\\Gamma')
 
 local RiemannForConn = Tensor'^a_bcd'
 RiemannForConn['^a_bcd'] = RiemannExpr:replace(Gamma, Conn)()
