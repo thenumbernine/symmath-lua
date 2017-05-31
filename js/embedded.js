@@ -63,7 +63,7 @@ var SymLuaEmbeddedLuaInterpreter = makeClass({
 
 interpretter = new SymLuaEmbeddedLuaInterpreter({
 	id : 'lua-vm-container',
-	packages : ['ext', 'symmath', 'tensor'],
+	packages : ['ext', 'symmath'],
 	packageTests : ['symmath'],
 	autoLaunch : true,
 	done : function() {
@@ -71,34 +71,10 @@ interpretter = new SymLuaEmbeddedLuaInterpreter({
 -- META!!! This is Lua code interpretted in JavaScript embedded in HTML served from a Lua server
 LUA_IN_HTML = true -- maybe this should set in lua.vm-util.js 
 package.path = package.path .. ';./?/?.lua'
-symmath = require 'symmath'
-do
-	local MathJax = require 'symmath.tostring.MathJax'
-	symmath.tostring = MathJax
-	MathJax.header = ''
-end
+require 'symmath'.setup{implicitVars=true}
+require 'symmath.tostring.MathJax'.setup{header=''}
+-- MathJax.header = ''
 */}));
-		{
-			interpretter.execute(mlstr(function(){/*
---[[ hide symmath, and don't allow scripts to change ToStringMethod from MathJax
-do
-	local oldsymmath = symmath
-	local newsymmath = {}
-	_G.symmath = symmath
-	package.loaded.symmath = newsymmath
-	setmetatable(newsymmath, {
-		__index = function(self, key)
-			return oldsymmath[key]
-		end,
-		__newindex = function(self, key, value)
-			if key == 'tostring' then return end
-			oldsymmath[key] = value
-		end,
-	})
-end
---]]
-*/}));
-		}
 		var open = $.url().param('open');
 		if (open !== undefined) {
 			this.executeAndPrint("dofile '" + open + "'");

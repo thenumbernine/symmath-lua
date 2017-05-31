@@ -84,7 +84,7 @@ RicciEM = RicciEM
 	:replace(E_z, 0)
 	-- http://hyperphysics.phy-astr.gsu.edu/hbase/magnetic/magcur.html
 	:replace(B_r, 0)
-	:replace(B_phi, mu_0 * I / (2 * pi * r))
+	:replace(B_phi, mu_0 * I / (2 * pi))	-- this is B_phiHat = mu_0 I / (2 pi r) ... but B_phiHat = 1/r B_phi ... so B_phi = I mu_0 / (2 pi)
 	:replace(B_z, 0)
 	:simplify()
 --printbr(var'R''_ab':eq(RicciEM'_ab'()))

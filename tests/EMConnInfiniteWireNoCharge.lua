@@ -19,45 +19,11 @@ Tensor.coords{
 
 local Conn = Tensor'^a_bc'
 
---[[
-Conn[2][1][1] = var('a',{r})
-Conn[1][2][1] = var('b',{r})
-Conn[1][1][2] = var('b',{r})
-Conn[2][3][3] = var('c',{r})
-Conn[2][4][4] = var('d',{r})
---]]
--- -db/dr - b^2 = 4 I^2 / r^2
--- let b = exp(int p(r))
--- db/dr = p(r) exp(int p(r))
--- -p(r) b - b^2 = q(r)
--- b^2 + p(r) b + q(r) = 0
--- b = (-p +- sqrt(p^2 - 4 q)) / 2
--- let p = 2 sqrt(q), so p^2 = 4 q and the denominator goes away
--- b = -p / 2 = -2 sqrt(q) / 2 = -sqrt(q) = -2 I / r
--- [[
-Conn[2][1][1] = var('a',{r})
-Conn[1][2][1] = -2 * I / r
-Conn[1][1][2] = -2 * I / r
-Conn[2][3][3] = var('c',{r})
-Conn[2][4][4] = var('d',{r})
---]]
-
---[[
-Conn[2][1][1] = -frac(4,3) * I^2 / r^3
-Conn[1][2][1] = a
-Conn[1][1][2] = a
-Conn[2][3][3] = -4 * I^2 / r^2
-Conn[2][4][4] = 4 * I^2 / r^4
---Conn[3][2][2] = 4 * phi * I^2 / r^4
---]]
-
---[[ this works, but I want to get rid of C^t_tt
-Conn[2][1][1] = -frac(4,3) * I^2 / r^3		-- R_tt
-Conn[1][1][1] = Constant(1)										-- R_pp, R_zz
-Conn[1][3][3] = -4 * I^2 / r^2					-- R_pp
-Conn[1][4][4] = 4 * I^2 / r^4 				-- R_zz
-Conn[3][2][2] = 4 * phi * I^2 / r^4			-- R_rr
---]]
+Conn[3][1][1] = -2 * I / r^2
+Conn[1][3][1] = 2 * I
+Conn[1][1][3] = 2 * I
+Conn[3][2][2] = 2 * I / r^2
+Conn[3][4][4] = 2 * I / r^2
 
 printbr'manual connection:'
 Conn:printElem'\\Gamma'
@@ -73,7 +39,7 @@ printbr()
 -- stress energy of EM field around an infinite wire
 -- looking at the case where there is no charge in the wire (lambda = 0), but there is a current (I != 0)
 -- taken from em_conn_infwire.lua
-local RicciEM = (Tensor('_ab', table.unpack(Matrix.diagonal(1, 1, -r^2, 1))) * 4 * I^2 / r^4)()
+local RicciEM = (Tensor('_ab', table.unpack(Matrix.diagonal(1, 1, -r^2, 1))) * 4 * I^2 / r^2)()
 print'vs $8 \\pi \\times$ EM stress-energy tensor = Ricci tensor'
 RicciEM:print'R' 
 printbr()
