@@ -215,19 +215,6 @@ symmath.inf = symmath.Variable('\\infty', nil, math.huge)
 
 -- hack implicit variable names to look good in TeX
 
-local texSymbols = {}
-for k in ([[
-alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
-nu xi omicron pi rho sigma tau upsilon phi chi psi omega
-hBar
-]]):gmatch'%S+' do
-	table.insert(texSymbols, k)
-	k = k:sub(1,1):upper() .. k:sub(2)
-	table.insert(texSymbols, k)
-end
--- sort these largest to smallest so replacements work
-table.sort(texSymbols, function(a,b) return #a > #b end)
-
 symmath.setup = function(args)
 	args = args or {}
 	local env = args.env or _G	
@@ -262,18 +249,8 @@ symmath.setup = function(args)
 			-- extra ugly hack - create vars by request?
 			-- maybe only with certain variable names?
 			if symmath.implicitVars then
-				local i=1
-				while i < #k do
-					if i>1 and k:sub(i):match('^[%^_]') then
-						k = k:sub(1,i-1) .. '_{' .. k:sub(i+1) .. '}'
-					end
-					for _,w in ipairs(texSymbols) do
-						if k:sub(i):match('^'..w) then
-							k = k:sub(1,i-1) .. '\\' .. k:sub(i)
-							i = i + #w
-						end
-					end
-					i=i+1
+				if symmath.tostring.fixImplicitName then
+					k = symmath.tostring:fixImplicitName(k)
 				end
 				return symmath.var(k)
 			end

@@ -354,4 +354,34 @@ function LaTeX:__call(...)
 	return self:applyLaTeX(...)
 end
 
+local texSymbols = {}
+for k in ([[
+alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
+nu xi omicron pi rho sigma tau upsilon phi chi psi omega
+hBar
+]]):gmatch'%S+' do
+	table.insert(texSymbols, k)
+	k = k:sub(1,1):upper() .. k:sub(2)
+	table.insert(texSymbols, k)
+end
+-- sort these largest to smallest so replacements work
+table.sort(texSymbols, function(a,b) return #a > #b end)
+
+function LaTeX:fixImplicitName(name)
+	local i=1
+	while i < #name do
+		if i>1 and name:sub(i):match('^[%^_]') then
+			name = name:sub(1,i-1) .. '_{' .. name:sub(i+1) .. '}'
+		end
+		for _,w in ipairs(texSymbols) do
+			if name:sub(i):match('^'..w) then
+				name = name:sub(1,i-1) .. '\\' .. name:sub(i)
+				i = i + #w
+			end
+		end
+		i=i+1
+	end
+	return name
+end
+
 return LaTeX()	-- singleton

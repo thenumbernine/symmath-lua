@@ -1,10 +1,22 @@
 -- multi-line strings
 local class = require 'ext.class'
 local table = require 'ext.table'
-local ToString = require 'symmath.tostring.ToString'
+local Console = require 'symmath.tostring.Console'
 local SingleLine = require 'symmath.tostring.SingleLine'
 
-local MultiLine = class(ToString)
+local strlen
+do
+	local has, utf8 = pcall(require, 'utf8')
+	if has then
+		strlen = utf8.len
+	elseif rawlen then
+		strlen = rawlen
+	else
+		strlen = function(s) return #s end
+	end
+end
+
+local MultiLine = class(Console)
 
 --[[
 produces:
@@ -25,7 +37,7 @@ function MultiLine:combine(lhs, rhs)
 			if sideIndex >= 1 and sideIndex <= #side then
 				line = line .. side[sideIndex]
 			else
-				line = line .. (' '):rep(#side[1])
+				line = line .. (' '):rep(strlen(side[1]))
 			end
 		end
 		res:insert(line)
@@ -41,9 +53,9 @@ produces:
 --]]
 function MultiLine:fraction(top, bottom)
 	local res = table()
-	local width = math.max(#top[1], #bottom[1])
+	local width = math.max(strlen(top[1]), strlen(bottom[1]))
 	
-	local topPadding = width - #top[1] + 1
+	local topPadding = width - strlen(top[1]) + 1
 	local topLeft = math.floor(topPadding/2)
 	local topRight = topPadding - topLeft
 	for i=1,#top do
@@ -52,7 +64,7 @@ function MultiLine:fraction(top, bottom)
 	
 	res:insert(('-'):rep(width+2))
 	
-	local bottomPadding = width - #bottom[1] + 1
+	local bottomPadding = width - strlen(bottom[1]) + 1
 	local bottomLeft = math.floor(bottomPadding/2)
 	local bottomRight = bottomPadding - bottomLeft
 	for i=1,#bottom do
@@ -111,7 +123,7 @@ MultiLine.lookupTable = {
 	[require 'symmath.op.unm'] = function(self, expr)
 		local ch = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local sym = '-'
-		if #ch > 1 then sym = '- ' end	-- so minus-fraction doesn't just blend the minus into the fraction
+		if strlen(ch) > 1 then sym = '- ' end	-- so minus-fraction doesn't just blend the minus into the fraction
 		return self:combine({sym}, ch)
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
@@ -131,8 +143,8 @@ MultiLine.lookupTable = {
 		if #expr ~= 2 then error("expected 2 children but found "..#expr.." in "..toLua(expr)) end
 		local lhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, 2)
-		local lhswidth = #lhs[1]
-		local rhswidth = #rhs[1]
+		local lhswidth = strlen(lhs[1])
+		local rhswidth = strlen(rhs[1])
 		local res = table()
 		for i=1,#rhs do
 			res:insert((' '):rep(lhswidth)..rhs[i])
@@ -222,13 +234,13 @@ MultiLine.lookupTable = {
 			parts[i] = self:apply(expr[i])
 		end
 		
-		local width = parts:map(function(part) return #part[1] end):sup() or 0
+		local width = parts:map(function(part) return strlen(part[1]) end):sup() or 0
 		local sep = (' '):rep(width)
 
 		-- TODO apply per-element without the [] wrapping
 		local res = table()
 		for i=1,#expr do
-			local padding = width - #parts[i][1]
+			local padding = width - strlen(parts[i][1])
 			local leftWidth = padding - math.floor(padding/2)
 			local rightWidth = padding - leftWidth
 			local left = (' '):rep(leftWidth)
@@ -265,7 +277,7 @@ MultiLine.lookupTable = {
 function MultiLine:__call(...) 
 	local result = MultiLine.super.__call(self, ...)
 	if type(result) == 'string' then return '\n'..result end 
-	return '\n' ..result:concat('\n')
+	return result:concat('\n')
 end
 
 return MultiLine()	-- singleton

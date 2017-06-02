@@ -1,10 +1,9 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 -- single-line strings 
-local ToString = require 'symmath.tostring.ToString'
-local SingleLine = class(ToString)
+local Console = require 'symmath.tostring.Console'
+local SingleLine = class(Console)
 
--- all very copied from ToString ... I should make it more OOP somehow ...
 local function precedence(x)
 	return x.precedence or 10
 end
