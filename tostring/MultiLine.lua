@@ -1,6 +1,7 @@
 -- multi-line strings
 local class = require 'ext.class'
 local table = require 'ext.table'
+local range = require 'ext.range'
 local Console = require 'symmath.tostring.Console'
 local SingleLine = require 'symmath.tostring.SingleLine'
 
@@ -199,61 +200,78 @@ MultiLine.lookupTable = {
 		-- even if it doesn't have a Matrix metatable, if it's rank-2 then display it as a matrix ...
 		-- TODO just put Matrix's entry here and get rid of its empty, let its subclass fall through to here instead
 		if rank == 2 then
-			return self.lookupTable[require 'symmath.Matrix'](self, expr)
-		end
-		
-		local parts = table()
-		for i=1,#expr do
-			parts[i] = self:apply(expr[i])
-		end
 
-		local height = parts:map(function(part) return #part end):sup() or 0
-
-		local sep = table()
-		for i=1,height do
-			sep[i] = ' '
-		end
-
-		local res = parts[1]
-		for i=2,#parts do
-			res = self:combine(res, sep)
-			res = self:combine(res, parts[i])
-		end
-
-		for i=1,height do
-			res[i] = '['..res[i]..']'
-		end
-		
-		return res
-	end,
-	[require 'symmath.Matrix'] = function(self, expr)
-		-- expects all children to be rows ... and bypasses their tostring()
-		
-		local parts = table()
-		for i=1,#expr do
-			parts[i] = self:apply(expr[i])
-		end
-		
-		local width = parts:map(function(part) return strlen(part[1]) end):sup() or 0
-		local sep = (' '):rep(width)
-
-		-- TODO apply per-element without the [] wrapping
-		local res = table()
-		for i=1,#expr do
-			local padding = width - strlen(parts[i][1])
-			local leftWidth = padding - math.floor(padding/2)
-			local rightWidth = padding - leftWidth
-			local left = (' '):rep(leftWidth)
-			local right = (' '):rep(rightWidth)
-			for j=1,#parts[i] do
-				res:insert('[ ' .. left .. parts[i][j] .. right .. ' ]')
+			local parts = table()
+			for i=1,#expr do
+				parts[i] = table()
+				for j=1,#expr[1] do
+					parts[i][j] = self:apply(expr[i][j])
+				end
 			end
-			if i < #expr then
-				res:insert('[ ' .. sep .. ' ]')
-			end
-		end
+
+			local allparts = table():append(parts:unpack())
 		
-		return res
+			local width = allparts:map(function(part)
+				return strlen(part[1]) 
+			end):sup() or 0
+			
+			local height = allparts:map(function(part)
+				return #part
+			end):sup() or 0
+			
+			local res = table()
+
+			for i,partrow in ipairs(parts) do
+				local row = range(height):map(function() return '' end)
+				local sep = ''
+				for j,part in ipairs(partrow) do
+					local cell = table()
+					local padding = width - strlen(part[1])
+					local leftWidth = padding - math.floor(padding/2)
+					local rightWidth = padding - leftWidth
+					local left = (' '):rep(leftWidth)
+					local right = (' '):rep(rightWidth)
+					for k=1,#part do
+						part[k] = sep .. left .. part[k] .. right
+					end
+					row = self:combine(row, part)
+					sep = ' '
+				end
+				res = res:append(row)
+			end
+		
+			for i=1,#res do
+				res[i] = '['..res[i]..']'
+			end
+
+			return res
+		else
+			local parts = table()
+			for i=1,#expr do
+				parts[i] = self:apply(expr[i])
+			end
+			
+			local height = parts:map(function(part) 
+				return #part
+			end):sup() or 0
+			
+			local sep = table()
+			for i=1,height do
+				sep[i] = ' '
+			end
+			
+			local res = parts[1]
+			for i=2,#parts do
+				res = self:combine(res, sep)
+				res = self:combine(res, parts[i])
+			end
+			
+			for i=1,height do
+				res[i] = '['..res[i]..']'
+			end
+			
+			return res
+		end
 	end,
 	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
 		return {expr:__tostring()}

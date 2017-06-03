@@ -233,7 +233,10 @@ symmath.setup = function(args)
 			symmath[k] = v
 		end
 	end
-	assert(not getmetatable(env), "ut oh")
+	if getmetatable(env) then
+		io.stderr:write"Ut oh, looks like this environment already has a metatable.  Overriding...\n"
+		io.stderr:flush()
+	end
 	env.symmath = symmath
 	setmetatable(env, {
 		__index = function(t,k)
