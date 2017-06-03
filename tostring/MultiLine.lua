@@ -201,32 +201,39 @@ MultiLine.lookupTable = {
 		-- TODO just put Matrix's entry here and get rid of its empty, let its subclass fall through to here instead
 		if rank == 2 then
 
+			local matheight = #expr
+			local matwidth = #expr[1]
+
 			local parts = table()
-			for i=1,#expr do
+			for i=1,matheight do
 				parts[i] = table()
-				for j=1,#expr[1] do
+				for j=1,matwidth do
 					parts[i][j] = self:apply(expr[i][j])
 				end
 			end
 
 			local allparts = table():append(parts:unpack())
+	
+			local widths = range(matwidth):map(function(j)
+				return (range(matheight):map(function(i)
+					return strlen(parts[i][j][1])
+				end):sup() or 0)
+			end)
 		
-			local width = allparts:map(function(part)
-				return strlen(part[1]) 
-			end):sup() or 0
-			
-			local height = allparts:map(function(part)
-				return #part
-			end):sup() or 0
-			
+			local heights = range(matheight):map(function(i)
+				return (range(matwidth):map(function(j)
+					return #parts[i][j]
+				end):sup() or 0)
+			end)
+
 			local res = table()
 
 			for i,partrow in ipairs(parts) do
-				local row = range(height):map(function() return '' end)
+				local row = range(heights[i]):map(function() return '' end)
 				local sep = ''
 				for j,part in ipairs(partrow) do
 					local cell = table()
-					local padding = width - strlen(part[1])
+					local padding = widths[j] - strlen(part[1])
 					local leftWidth = padding - math.floor(padding/2)
 					local rightWidth = padding - leftWidth
 					local left = (' '):rep(leftWidth)
@@ -236,6 +243,9 @@ MultiLine.lookupTable = {
 					end
 					row = self:combine(row, part)
 					sep = ' '
+				end
+				if i > 1 then
+					res:insert((' '):rep(#res[1]))
 				end
 				res = res:append(row)
 			end
