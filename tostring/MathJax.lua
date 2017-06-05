@@ -1,4 +1,6 @@
 local class = require 'ext.class'
+local table = require 'ext.table'
+local string = require 'ext.string'
 local LaTeX = require 'symmath.tostring.LaTeX'	-- returns a singleton object
 local MathJax = class(LaTeX.class)
 
@@ -6,13 +8,13 @@ local Header = class()
 
 Header.title = 'Symbolic Lua Output'
 
-Header.cdnURL = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML'
-Header.localURL = '/MathJax/MathJax.js?config=TeX-MML-AM_CHTML'
-Header.url = Header.localURL
+Header.cdnURL = 'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'
 
-function Header:init(title, url)
+local envURLs = os.getenv'SYMMATH_MATHJAX_URLS'
+Header.urls = (envURLs and string.split(envURLs, ';') or table()):append{Header.cdnURL}
+
+function Header:init(title)
 	self.title = title
-	self.url = url
 end
 function Header:__tostring()
 --[==[ old header
@@ -64,9 +66,9 @@ function loadScript(url) {
 function init() {
 	console.log('init...');
 	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML'
+]=] .. self.urls:map(function(url,i)
+		return "\t\t'" .. url .. "'"
+	end):concat',\n' .. [=[
 	];
 	var i = 0;
 	var loadNext = function() {
@@ -139,7 +141,7 @@ function MathJax.setup(args)
 	end
 	local symmath = require 'symmath'
 	symmath.tostring = inst
-	print(Header(args.title, args.url))
+	print(Header(args.title))
 	env.printbr = MathJax.print
 end
 
