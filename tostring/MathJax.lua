@@ -15,6 +15,7 @@ function Header:init(title, url)
 	self.url = url
 end
 function Header:__tostring()
+--[==[ old header
 	return [=[
 <!doctype html>
 <html>
@@ -26,6 +27,69 @@ function Header:__tostring()
 	</head>
     <body>
 ]=]
+--]==]
+-- [==[ new header, which tries multiple sources
+	-- no promises the javascript loading callbacks work on all browsers
+	return [=[
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Metric Catalogue</title>
+		<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+		<script type="text/javascript">
+function loadScript(url) {
+	console.log("loading "+url);
+	var done = undefined;
+	var fail = undefined;
+	var result = {
+		done : function(f) { done = f; return result; },
+		fail : function(f) { fail = f; return result; }
+	};
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (done !== undefined) done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+url);
+		if (fail !== undefined) {
+			fail();
+		}
+	};
+	el.src = url; 
+	return result;
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML'
+	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript(urls[i])
+		.done(function() {
+			console.log("success!");
+		}).fail(function() {
+			++i;
+			if (i >= urls.length) {
+				console.log("looks like all our sources have failed!");
+			} else {
+				loadNext();
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+		<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+	</head>
+    <body onload='init();'>
+]=]
+--]==]
 end
 function Header.__concat(a,b)
 	return tostring(a) .. tostring(b) 
