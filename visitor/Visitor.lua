@@ -54,6 +54,7 @@ function Visitor:apply(expr, ...)
 	local clone = require 'symmath.clone'
 	local Expression = require 'symmath.Expression'
 
+-- TODO don't be lazy, only clone when you need to
 	expr = clone(expr)
 	
 	local t = type(expr)

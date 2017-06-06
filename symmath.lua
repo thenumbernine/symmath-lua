@@ -25,6 +25,7 @@ local table = require 'ext.table'
 local symmath = {}
 symmath.verbose = false
 symmath.simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
+symmath.debugSimplifyLoops = false		-- whether to debug simplification loops
 
 symmath.clone = require 'symmath.clone'	-- also casts numbers to Constant
 
