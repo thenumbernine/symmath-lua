@@ -1,39 +1,8 @@
 #!/usr/bin/env luajit
---[[
-
-    File: gravitation_16_1_mixed.lua
-
-    Copyright (C) 2016 Christopher Moore (christopher.e.moore@gmail.com)
-	  
-    This software is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-  
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-  
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write the Free Software Foundation, Inc., 51
-    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
---]]
-
 -- MTW's Gravitation ch. 16 problem 1
-
-local table = require 'ext.table'
-local range = require 'ext.range'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax 
-local printbr = MathJax.print
-print(MathJax.header)
-
-local Tensor = symmath.Tensor
-local var = symmath.var
-local vars = symmath.vars
+require 'ext'
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}
@@ -167,7 +136,7 @@ printbr(g'_uv,w':eq(
 		-- map processes children first
 		-- so only do this on the last node
 		-- dirty hack, I know
-		if require 'symmath.op.sub'.is(expr) then
+		if op.sub.is(expr) then
 			return expr 
 				:simplify()
 				-- so I hide them, simplify, and un-hide them
@@ -191,10 +160,10 @@ printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 printbr()
 printbr[[let $\Phi$ ~ 0, but keep $d\Phi$]]
 
-Gamma = Gamma:replace(Phi, 0, symmath.Derivative.is)()
+Gamma = Gamma:replace(Phi, 0, Derivative.is)()
 printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
-g = g:replace(Phi, 0, symmath.Derivative.is)()
+g = g:replace(Phi, 0, Derivative.is)()
 Tensor.metric(g)
 printbr(var'g''_uv':eq(g'_uv'()))
 printbr(var'g''^uv':eq(g'^uv'()))
@@ -253,14 +222,14 @@ for i=2,4 do
 	div_T[i] = (div_T[i] - div_Pu * u[i])()
 
 	-- this one too ... get rid of the P that's just floating out there.  but leave its gradients.
-	div_T[i] = div_T[i]:replace(P, 0, symmath.Derivative.is)()
+	div_T[i] = div_T[i]:replace(P, 0, Derivative.is)()
 
 	-- substitute drho/dt definition to cancel some terms out
 	div_T[i] = div_T[i]:subst(drho_dt_def)()
 
 	-- get rid of any Phi,j times u,k of any kind ... hmm ...
 	div_T[i] = div_T[i]:map(function(expr)
-		if not symmath.op.mul.is(expr) then return end
+		if not op.mul.is(expr) then return end
 		local dPhi = Phi'_,i'()
 		local foundDPhi
 		local foundU
@@ -277,5 +246,3 @@ printbr'$\\nabla \\cdot T = 0$ becomes:'
 for _,eqn in ipairs(div_T) do
 	printbr(eqn:eq(0))
 end
-
-print(MathJax.footer)

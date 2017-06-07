@@ -5,17 +5,9 @@ math for Alcubierre's "Introduction to 3+1 Numerical Relativity" (http://www.ama
 and "The appearance of coordinate shocks in hyperbolic formalisms of General Relativity" (http://arxiv.org/pdf/gr-qc/9609015v2.pdf) 
 --]]
 
-local table = require 'ext.table'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-
-local function printbr(...) print(...) print'<br>' end
-
-local Tensor = symmath.Tensor
-local var = symmath.var
-local vars = symmath.vars
+require 'ext'
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 local x = var'x'
 local t = var('h', {x})
@@ -153,5 +145,3 @@ local K = K'^a_a'()
 printbr(var'K':eq(K))
 -- ... so where did K = -h'' / sqrt(g_xx) = -h'' / sqrt(1 - h'^2) come from?
 -- maybe with a different choice of n?
-
-print(MathJax.footer)

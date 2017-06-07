@@ -1,14 +1,8 @@
 #! /usr/bin/env luajit
-local range = require 'ext.range'
-local table = require 'ext.table'
-local symmath = require 'symmath'
+require 'ext'
+require 'symmath'.setup()
 local TensorIndex = require 'symmath.tensor.TensorIndex'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-
-local Matrix = symmath.Matrix
-local Tensor = symmath.Tensor
+require 'symmath.tostring.MathJax'.setup()
 
 local maxN = 3
 
@@ -229,5 +223,3 @@ local t = Tensor('^i', 1,2,3)
 [0 0 1] [3]   [3]
 --]]
 assertEqn(t'_i':eq(Tensor('_i', 3,2,3)))
-
-print(MathJax.footer)

@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='Gravitation 16.1, trying out Tensor expressions....'}
+require 'symmath.tostring.MathJax'.setup()
 
 local deta_eq_0 = eta'_ab,c':eq(0)
 local ddelta_eq_0 = delta'_ab,c':eq(0)

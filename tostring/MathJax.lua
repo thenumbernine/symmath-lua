@@ -37,7 +37,7 @@ function Header:__tostring()
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Metric Catalogue</title>
+        <title>]=] .. self.title .. [=[</title>
 		<script type="text/javascript">
 function loadScript(args) {
 	console.log("loading "+args.src);
@@ -134,7 +134,14 @@ function MathJax.setup(args)
 	end
 	local symmath = require 'symmath'
 	symmath.tostring = inst
-	print(Header(args.title))
+	
+	local title = args.title
+	if not title then 
+		title = os.getenv'_'
+		if title then title = title:match('^%./(.*)%.lua$') end
+	end
+	
+	print(Header(title))
 	env.printbr = MathJax.print
 end
 

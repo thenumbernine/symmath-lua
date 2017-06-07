@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='ADM metric, using mixed indexes', usePartialLHSForDerivative=true}
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
 local t,x,y,z = vars('t','x','y','z')
 local ijk = var'ijk'	-- not sure about this ...
@@ -45,7 +45,7 @@ local gLLDef = g'_uv':eq(Tensor('_u(i)v(j)',
 ))
 printbr(gLLDef)
 
-local gUUDef = g'^uv':eq(Tensor('^u(i)v(j)',
+local gUUDef = g'^uv':eq(Tensor('^{u(i)v(j)}',
 	{
 		-1/alpha^2,
 		beta'^j'/alpha^2,

@@ -1,7 +1,6 @@
 #!/usr/bin/env luajit
 require 'symmath'.setup{simplifyConstantPowers=true}
-require 'symmath.tostring.MathJax'.setup{title='Spacetime Embedding Function'}
-local GnuPlot = require 'symmath.tostring.GnuPlot'
+require 'symmath.tostring.MathJax'.setup()
 
 local units = require 'symmath.physics.units'()
 local m = units.m

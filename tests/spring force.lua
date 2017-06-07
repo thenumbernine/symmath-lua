@@ -6,12 +6,9 @@ hamiltonian = (|x_1 - x_2| - restLength)
 x'' = -(k/m)(x-s) = 
 --]]
 
-local class = require 'ext.class'
-local table = require 'ext.table'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
+require 'ext'
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 local dim = 1	-- or 2 or 3 or whatever
 local numParticlesToCreate = 3
@@ -36,8 +33,8 @@ function Particle:init(index)
 	self.qVar = vec()	-- position symbolic
 	self.pVar = vec()	-- momentum symbolic
 	for i=1,dim do
-		self.qVar[i] = symmath.var('q_{'..self.index..','..i..'}', {t})
-		self.pVar[i] = symmath.var('p_{'..self.index..','..i..'}', {t})
+		self.qVar[i] = var('q_{'..self.index..','..i..'}', {t})
+		self.pVar[i] = var('p_{'..self.index..','..i..'}', {t})
 	end
 	self.q = vec()	-- position numeric
 	self.p = vec()	-- momentum numeric
@@ -87,7 +84,7 @@ for i=1,numParticlesToCreate do
 end
 
 -- kinetic energy
-local K = symmath.Constant(0)
+local K = Constant(0)
 for _,v in ipairs(system.particles) do
 	K = K + v.pVar:lenSq() / (2 * v.m)
 end
@@ -97,13 +94,13 @@ end
 -- potential energy
 local restLength = 1
 local k = .1	-- spring constant
-local U = symmath.Constant(0) 
+local U = Constant(0) 
 
 -- ... and then, upon evaluation, I'll calculate them and evaluate the system 
 for i,v1 in ipairs(system.particles) do
 	for j,v2 in ipairs(system.particles) do
 		if v1 ~= v2 then
-			U = U + (symmath.sqrt((v1.qVar - v2.qVar):lenSq()) - restLength)^2
+			U = U + (sqrt((v1.qVar - v2.qVar):lenSq()) - restLength)^2
 		end
 	end
 end
@@ -137,13 +134,13 @@ print('<br>')
 
 -- and now each particle has its evolution equations
 print('Hamiltonian','<br>')
-print(symmath.var'H':eq(H),'<br>')
+print(var'H':eq(H),'<br>')
 -- compile evolution equations
 print('Evolution Equations:','<br>')
-local tVar = symmath.var't'
-local dq_dt_vector = symmath.Matrix()
-local dq_dt_vector_eqn_rhs = symmath.Matrix()
-local q_vector = symmath.Matrix()
+local tVar = var't'
+local dq_dt_vector = Matrix()
+local dq_dt_vector_eqn_rhs = Matrix()
+local q_vector = Matrix()
 for i,v in ipairs(system.particles) do	
 	-- dq/dt = dH/dp is a function of p1..pn ... and maybe q1..qn
 	v.dq_dt = vec()
@@ -159,18 +156,18 @@ for i,v in ipairs(system.particles) do
 		local dq_dt_var = v.qVar[k]:diff(tVar)
 print(dq_dt_var:eq(dH_dp),'<br>')
 		v.dq_dt[k] = dH_dp:compile(symbolicParams)
-		table.insert(dq_dt_vector, symmath.Array(dq_dt_var))
-		table.insert(dq_dt_vector_eqn_rhs, symmath.Array(dH_dp))
-		table.insert(q_vector, symmath.Array(v.qVar[k]))
+		table.insert(dq_dt_vector, Array(dq_dt_var))
+		table.insert(dq_dt_vector_eqn_rhs, Array(dH_dp))
+		table.insert(q_vector, Array(v.qVar[k]))
 	
 		local _dH_dq = (-H):diff(v.qVar[k]):simplify()
 		v.dp_dt_expr[k] = _dH_dq
 		local dp_dt_var = v.pVar[k]:diff(tVar)
 print(dp_dt_var:eq(_dH_dq),'<br>')
 		v.dp_dt[k] = _dH_dq:compile(symbolicParams)
-		table.insert(dq_dt_vector, symmath.Array(dp_dt_var))
-		table.insert(dq_dt_vector_eqn_rhs, symmath.Array(_dH_dq))
-		table.insert(q_vector, symmath.Array(v.pVar[k]))
+		table.insert(dq_dt_vector, Array(dp_dt_var))
+		table.insert(dq_dt_vector_eqn_rhs, Array(_dH_dq))
+		table.insert(q_vector, Array(v.pVar[k]))
 	end
 end
 
@@ -178,17 +175,17 @@ print('...in a vector:','<br>')
 print(dq_dt_vector:eq(dq_dt_vector_eqn_rhs),'<br>')
 -- TODO factor matrix function
 
-local dtVar = symmath.var('\\Delta t')
-local A_matrix = symmath.Matrix()
+local dtVar = var('\\Delta t')
+local A_matrix = Matrix()
 do
 	local function coeff(expr, var)
 		return expr:polyCoeffs(var)[1] 
 			--or error("failed to find coefficient of "..var.." in expression "..expr)
-			or symmath.Constant(0)
+			or Constant(0)
 	end
 	local n = #dq_dt_vector
 	for i=1,n do
-		A_matrix[i] = symmath.Array()
+		A_matrix[i] = Array()
 		for j=1,n do
 			A_matrix[i][j] = coeff(dq_dt_vector_eqn_rhs[i][1], q_vector[j][1])
 		end
@@ -199,11 +196,11 @@ end
 print('...linearized:','<br>')
 print(dq_dt_vector:eq(A_matrix * q_vector),'<br>')
 
-local q_t_vector = symmath.Matrix()
-local q_t_dt_vector = symmath.Matrix()
+local q_t_vector = Matrix()
+local q_t_dt_vector = Matrix()
 for i=1,#q_vector do
-	q_t_vector[i] = symmath.Array(symmath.var(q_vector[i][1].name..'(t)'))
-	q_t_dt_vector[i] = symmath.Array(symmath.var(q_vector[i][1].name..'(t+\\Delta t)'))
+	q_t_vector[i] = Array(var(q_vector[i][1].name..'(t)'))
+	q_t_dt_vector[i] = Array(var(q_vector[i][1].name..'(t+\\Delta t)'))
 end
 
 local discrete_dq_dt_vector = ((q_t_dt_vector - q_t_vector) / dtVar):simplify()
@@ -218,13 +215,13 @@ do
 	print(eqn,'<br>')
 	-- hmm, todo, factoring out matrices (by introducing identity)
 	-- until then, redo the equation
-	local eqn = (q_t_dt_vector):eq((symmath.Matrix.identity(#q_vector) + dtVar * A_matrix) * q_t_vector)
+	local eqn = (q_t_dt_vector):eq((Matrix.identity(#q_vector) + dtVar * A_matrix) * q_t_vector)
 	print(eqn,'<br>')
 	-- simplify matrix muls only
-	local eqn = (q_t_dt_vector):eq((symmath.Matrix.identity(#q_vector) + dtVar * A_matrix):simplify() * q_t_vector)
+	local eqn = (q_t_dt_vector):eq((Matrix.identity(#q_vector) + dtVar * A_matrix):simplify() * q_t_vector)
 	print(eqn,'<br>')
 	-- simplify matrix muls only
-	local eqn = (q_t_dt_vector):eq((symmath.Matrix.identity(#q_vector) + dt * A_matrix):simplify() * q_t_vector)
+	local eqn = (q_t_dt_vector):eq((Matrix.identity(#q_vector) + dt * A_matrix):simplify() * q_t_vector)
 	print(eqn,'<br>')
 end
 
@@ -237,7 +234,7 @@ do
 	eqn = (q_t_dt_vector - dtVar * A_matrix * q_t_dt_vector):eq(q_t_vector)
 	print(eqn,'<br>')
 	-- TODO vector factor
-	backwardsEulerMatrix = (symmath.Matrix.identity(#q_vector) - dtVar * A_matrix)
+	backwardsEulerMatrix = (Matrix.identity(#q_vector) - dtVar * A_matrix)
 	eqn = (backwardsEulerMatrix * q_t_dt_vector):eq(q_t_vector)
 	print(eqn,'<br>')
 	backwardsEulerMatrix = backwardsEulerMatrix:simplify()
@@ -301,13 +298,12 @@ for i=1,numberOfSteps do
 	ts:insert(t)
 end
 
--- TODO replace with your own graphing output *here*, like pipe to a text file and render in gnuplot or something
--- TODO in the JS, replace plot2d with a canvas-based plotting mechanism
-local plot2d = require 'plot2d'
-plot2d(columns:map(function(v,k)
-	return { enabled = true, ts, v}
-end))
-
-print('<br>','<br>')
-print(MathJax.footer)
-
+local args = {
+	style = 'data lines',
+	data = {ts},
+}
+for k,v in pairs(columns) do
+	table.insert(args.data, v)
+	table.insert(args, {using='1:'..#args.data, title=k})
+end
+GnuPlot:plot(args)

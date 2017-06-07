@@ -1,32 +1,7 @@
 #!/usr/bin/env luajit
---[[
-
-    File: schwarzschild_spherical.lua
-
-    Copyright (C) 2000-2014 Christopher Moore (christopher.e.moore@gmail.com)
-	  
-    This software is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-  
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-  
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write the Free Software Foundation, Inc., 51
-    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
---]]
-
---[[
-schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
---]]
-
+-- schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='Schwarzschild Spherical', usePartialLHSForDerivative=true}
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
 -- coordinates
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')

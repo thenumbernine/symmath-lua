@@ -1,28 +1,5 @@
 #!/usr/bin/env luajit
 --[[
-
-    File: kerr_cartesian.lua
-
-    Copyright (C) 2013-2016 Christopher Moore (christopher.e.moore@gmail.com)
-	  
-    This software is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-  
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-  
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write the Free Software Foundation, Inc., 51
-    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
---]]
-
-
---[[
 kerr in cartesian form: 
 
 Alcubierre p. 56, Baumgarte & Shapiro p. 52
@@ -44,15 +21,8 @@ r^2 x^2 + r^2 y^2 + r^2 z^2 + a^2 z^2 = r^4 + a^2 r^2
 
 -- TODO inverting the metric goes really slow...
 
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-
-local Tensor = symmath.Tensor
-local var = symmath.var
-local vars = symmath.vars
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 -- coordinates
 local t, x, y, z = vars('t', 'x', 'y', 'z')
@@ -141,5 +111,3 @@ printbr(var'R''_ab':eq(Ricci'_ab'))
 -- Gaussian curvature: R = g^ab R_ab
 local Gaussian = Ricci'^a_a'()
 printbr(var'R':eq(Gaussian))
-
-print(MathJax.footer)

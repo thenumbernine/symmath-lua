@@ -1,37 +1,7 @@
 #!/usr/bin/env luajit
---[[
-
-    File: mhd_symmetrization.lua
-
-    Copyright (C) 2014 Christopher Moore (christopher.e.moore@gmail.com)
-	  
-    This software is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-  
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-  
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write the Free Software Foundation, Inc., 51
-    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
---]]
-
-local table = require 'ext.table'
-local range = require 'ext.range'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-
-local function printbr(...) print(...) print'<br>' end
-
-local var = symmath.var
-local vars = symmath.vars
+require 'ext'
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 -- functions
 
@@ -66,7 +36,7 @@ local Bs = table{Bx, By, Bz}
 local xs = table{x,y,z}
 
 local vDotB = sum(function(i) return vs[i] * Bs[i] end, 1, 3)
-local divB = sum(function(i) return symmath.diff(Bs[i], xs[i]) end, 1, 3)
+local divB = sum(function(i) return diff(Bs[i], xs[i]) end, 1, 3)
 local BSq = sum(function(i) return Bs[i]^2 end, 1, 3)
 local vSq = sum(function(i) return vs[i]^2 end, 1, 3)
 
@@ -80,7 +50,7 @@ printbr(Z_from_E_B_rho_mu)
 local P_from_p_B_mu = P:eq(p + 1 / (2 * mu) * BSq)
 printbr(P_from_p_B_mu)
 
-local p_from_E_rho_v_gamma = p:eq((gamma - 1) * rho * (E - 1/symmath.Constant(2) * vSq))
+local p_from_E_rho_v_gamma = p:eq((gamma - 1) * rho * (E - 1/Constant(2) * vSq))
 printbr(p_from_E_rho_v_gamma)
 
 local cSq_from_p_rho_gamma = (c^2):eq(gamma * p / rho)
@@ -88,7 +58,7 @@ printbr(cSq_from_p_rho_gamma)
 
 -- equations
 
-local continuityEqn = (symmath.diff(rho, t) + sum(function(j) 
+local continuityEqn = (diff(rho, t) + sum(function(j) 
 	return (rho*vs[j]):diff(xs[j])
 end,1,3)):eq(0)
 
@@ -110,8 +80,8 @@ printbr'momentum'
 momentumEqns:map(function(eqn) printbr(eqn) end)
 
 local magneticFieldEqns = range(3):map(function(i)
-	return (symmath.diff(Bs[i], t) + sum(function(j)
-				return symmath.diff(vs[j] * Bs[i] - vs[i] * Bs[j], xs[j])
+	return (diff(Bs[i], t) + sum(function(j)
+				return diff(vs[j] * Bs[i] - vs[i] * Bs[j], xs[j])
 			end, 1,3)
 		):eq(-vs[i] * divB)
 end)
@@ -121,7 +91,7 @@ printbr'magnetic field'
 magneticFieldEqns:map(function(eqn) printbr(eqn) end)
 
 local energyTotalEqn = 
-	(symmath.diff(rho * Z, t) + sum(function(j)
+	(diff(rho * Z, t) + sum(function(j)
 		return (rho * Z + p) * vs[j] - 1/mu * vDotB * Bs[j]
 	end, 1, 3)
 	):eq(-1/mu * vDotB * divB)
@@ -226,22 +196,22 @@ local m = tensor.Array(8, 8, {
 	},
 	{
 		by,
-		bz * symmath.sqrt(rho),
+		bz * sqrt(rho),
 		by,
 		0,
 		0,
 		by,
-		bz * symmath.sqrt(rho),
+		bz * sqrt(rho),
 		by,
 	},
 	{
 		bz,
-		-by * symmath.sqrt(rho),
+		-by * sqrt(rho),
 		bz,
 		0,
 		0,
 		bz,
-		-by * symmath.sqrt(rho),
+		-by * sqrt(rho),
 		bz,
 	},
 	{
@@ -258,5 +228,3 @@ local m = tensor.Array(8, 8, {
 print(m)
 print(inverse(m))
 --]]
-
-print(MathJax.footer)

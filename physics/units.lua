@@ -76,6 +76,9 @@ return function(args)
 		hBar_value = 1.05457173e-34
 	end
 
+	-- grab from symmath, put in units (courtesy of the metatable)
+	pi = pi
+
 	m = var'm'
 
 	lprint('meter:',m)

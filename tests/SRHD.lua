@@ -1,20 +1,7 @@
 #! /usr/bin/env luajit
 require 'ext'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-
-local function printbr(...)
-	print(...)
-	print('<br>')
-end
-
-local var = symmath.var
-local vars = symmath.vars
-local Matrix = symmath.Matrix
-local sqrt = symmath.sqrt
-local div = symmath.op.div
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 local gamma = var'\\gamma'
 printbr(gamma..' = heat capacity ratio')
@@ -93,11 +80,11 @@ end):unpack())
 	:simplify()
 	:subst(vxSq_for_W)()
 	:replace(sqrt(1/W^2),1/W)()	-- really?  can't simplify this?
-	:replace((1/W^2)^div(3,2),1/W^3)()
+	:replace((1/W^2)^frac(3,2),1/W^3)()
 	:replace(vx^2,1-1/W^2)()
 	--[[ useful when not computing the ideal gas pressure
 	:replace(eInt, eInt_for_h:rhs(), function(expr)
-		return symmath.Derivative.is(expr)
+		return Derivative.is(expr)
 	end)()
 	--]]
 	:subst(eInt_for_h_idealGas)()
@@ -119,11 +106,11 @@ local dF_dw = Matrix(range(3):map(function(i)
 end):unpack())()
 	:subst(vxSq_for_W)()
 	:replace(sqrt(1/W^2),1/W)()	-- really?  can't simplify this?
-	:replace((1/W^2)^div(3,2),1/W^3)()
+	:replace((1/W^2)^frac(3,2),1/W^3)()
 	:replace((1/W^2)^2,1/W^4)()
 	--[[ general
 	:replace(eInt, eInt_for_h:rhs(), function(expr)
-		return symmath.Derivative.is(expr)
+		return Derivative.is(expr)
 	end)()
 	--]]
 	:subst(eInt_for_h_idealGas)()
@@ -135,5 +122,3 @@ local dF_dU = (dF_dw * dU_dw_def:inverse())()
 printbr'change in flux wrt conservatives:'
 printbr(var'F^i':diff(var'w^j'):eq(dF_dU))
 --]]
-
-print(MathJax.footer)

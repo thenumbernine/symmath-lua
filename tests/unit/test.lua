@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{debugSimplifyLoops=true}
-require 'symmath.tostring.MathJax'.setup{title='tests'}
+require 'symmath.tostring.MathJax'.setup()
 
 function asserteq(a,b)
 	local sa = symmath.simplify(a)

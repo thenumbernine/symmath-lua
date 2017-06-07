@@ -205,8 +205,9 @@ symmath.Array = require 'symmath.Array'
 symmath.Tensor = require 'symmath.Tensor'
 
 -- change the default as you see fit
-symmath.tostring = assert(require 'symmath.tostring.MultiLine')
-symmath.Verbose = assert(require 'symmath.tostring.Verbose')
+symmath.tostring = require 'symmath.tostring.MultiLine'
+symmath.Verbose = require 'symmath.tostring.Verbose'
+symmath.GnuPlot = require 'symmath.tostring.GnuPlot'
 
 -- constants 
 symmath.e = symmath.Variable('e', nil, math.exp(1))

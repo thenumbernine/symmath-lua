@@ -4,7 +4,7 @@ testing my linear solver, most of which I've crammed into symmath.matrix.inverse
 --]]
 require 'ext'
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='Linear Solver'}
+require 'symmath.tostring.MathJax'.setup()
 
 for _,info in ipairs{
 	{

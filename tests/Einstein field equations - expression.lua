@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='EFE expression in index notation'}
+require 'symmath.tostring.MathJax'.setup()
 
 local g_def = g'_ab'
 printbr(g_def)

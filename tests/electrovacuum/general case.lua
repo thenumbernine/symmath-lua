@@ -1,7 +1,7 @@
 #! /usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup() --{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='Electrovacuum solutions', usePartialLHSForDerivative=true}
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
 local showLorentzMetric = false
 local showFlatSpaceApproximationRiemannSolution = true

@@ -1,7 +1,7 @@
 #! /usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='EM Conn Uniform Field', usePartialLHSForDerivative=true}
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local r = var('r', {x,y,z})

@@ -1,44 +1,9 @@
 #!/usr/bin/env luajit
---[[
-
-    File: gravitation_16_1.lua
-
-    Copyright (C) 2013-2016 Christopher Moore (christopher.e.moore@gmail.com)
-	  
-    This software is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-  
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-  
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write the Free Software Foundation, Inc., 51
-    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
---]]
-
 -- MTW's Gravitation ch. 16 problem 1
 
-local table = require 'ext.table'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax 
-print(MathJax.header)
-
-local Tensor = symmath.Tensor
-local var = symmath.var
-local vars = symmath.vars
-local div = symmath.op.div
-local mul = symmath.op.mul
-
-local function print(...)
-	_G.print(...)
-	_G.print'<br>'
-end
+require 'ext'
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}
@@ -53,39 +18,39 @@ local P = var('P', coords)
 
 local delta = var'\\delta'
 local deltaDef = delta'_uv':eq(Tensor('_uv', {1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1}))
-print(deltaDef)
+printbr(deltaDef)
 
 local eta = var'\\eta'
 local etaDef = eta'_uv':eq(Tensor('_uv', {-1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1}))
-print(etaDef)
+printbr(etaDef)
  
 local g = var'g'
 local gDef = g'_uv':eq( eta'_uv' - 2 * Phi * delta'_uv' )
-print(gDef)
+printbr(gDef)
 
 local gVal = gDef:rhs():subst(deltaDef, etaDef)()	-- turn the index expression into a dense tensor ...
 Tensor.metric(gVal)
 local gValDef = g'_uv':eq(gVal'_uv'())
-print(gValDef)
+printbr(gValDef)
 local gUValDef = g'^uv':eq(gVal'^uv'())
-print(gUValDef)
-print()
+printbr(gUValDef)
+printbr()
 
 local Gamma = var'\\Gamma'
 -- TODO:
 -- *) automatically separate out comma derivatives into separate TensorRef's, for easier substitution
 -- *) automatically reindex subst's where applicable
 -- *) make dense Tensor reindexing work just like expression reindexing
-local GammaLDef = Gamma'_abc':eq(div(1,2) * (g'_ab''_,c' + g'_ac''_,b' - g'_bc''_,a'))
-print(GammaLDef)
-print()
+local GammaLDef = Gamma'_abc':eq(frac(1,2) * (g'_ab''_,c' + g'_ac''_,b' - g'_bc''_,a'))
+printbr(GammaLDef)
+printbr()
 
 local GammaLDef_wrt_eta_delta = GammaLDef:subst(
 	gDef:reindex{ab='uv'},
 	gDef:reindex{ac='uv'},
 	gDef:reindex{bc='uv'})
-print(GammaLDef_wrt_eta_delta)
-print()
+printbr(GammaLDef_wrt_eta_delta)
+printbr()
 
 -- [[ can't substitute g's for eta's, then reindex, then subtitute
 --	because the comma derivatives ...
@@ -97,8 +62,8 @@ local GammaLVal = GammaLDef_wrt_eta_delta:rhs():subst(
 	deltaDef:reindex{ab='uv'},
 	deltaDef:reindex{ac='uv'},
 	deltaDef:reindex{bc='uv'})
-print(Gamma'_abc':eq(GammaLVal))
-print()
+printbr(Gamma'_abc':eq(GammaLVal))
+printbr()
 --]]
 -- [[ so instead you have to substitute the dense tensor values first
 
@@ -115,103 +80,103 @@ local GammaLVal = GammaLDef:rhs():subst(
 	dgValDef:reindex{acb='abc'},
 	dgValDef:reindex{bca='abc'})
 --]]
-print(Gamma'_abc':eq(GammaLVal))
-print()
+printbr(Gamma'_abc':eq(GammaLVal))
+printbr()
 
 GammaLVal = GammaLVal()	-- simplify
-print(Gamma'_abc':eq(GammaLVal))
-print()
+printbr(Gamma'_abc':eq(GammaLVal))
+printbr()
 
 local GammaUVal = GammaLVal'^a_bc'()	-- here's where __call is used for reindexing
-print(Gamma'^a_bc':eq(g'^ad' * Gamma'_dbc'))
-print()
+printbr(Gamma'^a_bc':eq(g'^ad' * Gamma'_dbc'))
+printbr()
 
-print(Gamma'^a_bc':eq(GammaUVal))
-print()
+printbr(Gamma'^a_bc':eq(GammaUVal))
+printbr()
 
 -- assume diagonal matrix
-print()
-print'let $\\Phi$ ~ 0, but keep $\\partial\\Phi$ to find:'
+printbr()
+printbr'let $\\Phi$ ~ 0, but keep $\\partial\\Phi$ to find:'
 
-GammaUVal = GammaUVal:replace(Phi, 0, symmath.Derivative.is)()
-print(Gamma'^a_bc':eq(GammaUVal'^a_bc'()))
+GammaUVal = GammaUVal:replace(Phi, 0, Derivative.is)()
+printbr(Gamma'^a_bc':eq(GammaUVal'^a_bc'()))
 
-gVal = gVal:replace(Phi, 0, symmath.Derivative.is)()
+gVal = gVal:replace(Phi, 0, Derivative.is)()
 Tensor.metric(gVal)
 local gVal = gVal'_uv'()
 local gValDef = g'_uv':eq(gVal)
-print(gValDef)
+printbr(gValDef)
 local gUVal = gVal'^uv'()
 local gUValDef = g'^uv':eq(gUVal)
-print(gUValDef)
-print()
+printbr(gUValDef)
+printbr()
 
 local dPhi_dt_eq_0 = Phi:diff(t):eq(0)
-print('let '..dPhi_dt_eq_0..' to find:')
+printbr('let '..dPhi_dt_eq_0..' to find:')
 GammaUVal = GammaUVal:subst(dPhi_dt_eq_0)()
 
-print(Gamma'^a_bc':eq(GammaUVal'^a_bc'()))
-print()
+printbr(Gamma'^a_bc':eq(GammaUVal'^a_bc'()))
+printbr()
 
-print('let')
+printbr('let')
 local u = var'u'
 local uVal = Tensor('^u', function(u)
 	return var('u^'..coords[u].name, coords)
 end)
 local uDef = u'^a':eq(uVal'^a'())
-print(uDef)
-print()
+printbr(uDef)
+printbr()
 
-print'matter stress-energy tensor:'
+printbr'matter stress-energy tensor:'
 local T = var'T'
 local TDef = T'^ab':eq( (rho + P) * u'^a' * u'^b' + P * g'^ab' )
-print(TDef)
-print()
+printbr(TDef)
+printbr()
 
 local TVal = TDef:rhs():subst(
 	u'^a':eq( uVal'^a'() ),
 	u'^b':eq( uVal'^b'() ),
 	g'^ab':eq(gUVal'^ab'() )
 )
-print(T'^ab':eq(TVal))
+printbr(T'^ab':eq(TVal))
 
 TVal = TVal()
-print(T'^ab':eq(TVal))
-print()
+printbr(T'^ab':eq(TVal))
+printbr()
 
 local divT = var'\\nabla \\cdot T'
 local divT_eq_0 = divT:eq(0)
 local divTVal = (TVal'^ab_,b' + GammaUVal'^a_cb' * TVal'^cb' + GammaUVal'^b_cb' * TVal'^ac')()
-print()
-print(divT_eq_0)
+printbr()
+printbr(divT_eq_0)
 for _,eqn in ipairs(divTVal) do
-	print(eqn:eq(0))
+	printbr(eqn:eq(0))
 end
 
-print()
-print'low velocity relativistic approximations:'
+printbr()
+printbr'low velocity relativistic approximations:'
 local ut_eq_1 = uVal[1]:eq(1)
-print(ut_eq_1)
+printbr(ut_eq_1)
 divTVal = divTVal:subst(ut_eq_1)()
 
-print()
-print(divT_eq_0..' becomes:')
+printbr()
+printbr(divT_eq_0..' becomes:')
 for _,eqn in ipairs(divTVal) do
-	print(eqn:eq(0))
+	printbr(eqn:eq(0))
 end
 
 local Pu = (P * uVal'^i')()	
 local div_Pu = Pu'^i_,i'()
-print(div_Pu:eq(0))
+printbr(div_Pu:eq(0))
 divTVal[1] = (divTVal[1] - div_Pu)()
 
-print()
-print('first equation in terms of $\\partial_t \\rho$')
+printbr()
+printbr('first equation in terms of $\\partial_t \\rho$')
 local drho_dt_def = divTVal[1]:eq(0):solve(rho:diff(t))
-print(drho_dt_def)
+printbr(drho_dt_def)
 
-print()
-print'spatial equations neglect $P_{,t}$, $(P u^j)_{,j}$, $P$, and $\\Phi_{,i} u_j$ and substitutes the definition of $\\partial_t \\rho$'
+printbr()
+printbr'spatial equations neglect $P_{,t}$, $(P u^j)_{,j}$, $P$, and $\\Phi_{,i} u_j$ and substitutes the definition of $\\partial_t \\rho$'
 for i=2,4 do
 	-- remove time derivative of pressure
 	divTVal[i] = divTVal[i]:replace(P:diff(t), 0)()
@@ -220,14 +185,14 @@ for i=2,4 do
 	divTVal[i] = (divTVal[i] - div_Pu * uVal[i])()
 
 	-- this one too ... get rid of the P that's just floating out there.  but leave its gradients.
-	divTVal[i] = divTVal[i]:replace(P, 0, symmath.Derivative.is)()
+	divTVal[i] = divTVal[i]:replace(P, 0, Derivative.is)()
 
 	-- substitute drho/dt definition to cancel some terms out
 	divTVal[i] = divTVal[i]:subst(drho_dt_def)()
 
 	-- get rid of any Phi,j times u,k of any kind ... hmm ...
 	divTVal[i] = divTVal[i]:map(function(expr)
-		if not mul.is(expr) then return end
+		if not op.mul.is(expr) then return end
 		local dPhi = Phi'_,i'()
 		local foundDPhi
 		local foundU
@@ -239,10 +204,8 @@ for i=2,4 do
 	end)()
 end
 
-print()
-print(divT_eq_0..' becomes:')
+printbr()
+printbr(divT_eq_0..' becomes:')
 for _,eqn in ipairs(divTVal) do
-	print(eqn:eq(0))
+	printbr(eqn:eq(0))
 end
-
-_G.print(MathJax.footer)

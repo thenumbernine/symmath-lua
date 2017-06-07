@@ -1,35 +1,6 @@
 #!/usr/bin/env luajit
---[[
-
-    File: kaluza-klein.lua
-
-    Copyright (C) 2013-2016 Christopher Moore (christopher.e.moore@gmail.com)
-	  
-    This software is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-  
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-  
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write the Free Software Foundation, Inc., 51
-    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
---]]
-
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-
-local Tensor = symmath.Tensor
-local var = symmath.var
-local vars = symmath.vars
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 --[[
 g_ab =	[ g_uv + phi^2 A_u A_v	phi^2 A^u	 ]
@@ -128,5 +99,3 @@ printbr(var'\\Gamma''_abc':eq(Gamma5'_abc'()))
 printbr'2nd kind Christoffel:'
 Gamma5 = Gamma5'^a_bc'()	-- should raise with the metric of 'a' ... which is the g5-metric
 printbr(var'\\Gamma''^a_bc':eq(Gamma5'^a_bc'()))
-
-print(MathJax.footer)

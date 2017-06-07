@@ -1,40 +1,8 @@
 #!/usr/bin/env luajit
---[[
-
-    File: flrw.lua
-
-    Copyright (C) 2015-2016 Christopher Moore (christopher.e.moore@gmail.com)
-	  
-    This software is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-  
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-  
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write the Free Software Foundation, Inc., 51
-    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
---]]
-
---[[
-flrw in spherical form: -dt^2 + a^2 (dr^2 / (1 - k r^2) + r^2 (dtheta^2 + sin(theta)^2 dphi^2)
---]]
-
-local table = require 'ext.table'
-local symmath = require 'symmath'
-local Tensor = require 'symmath.Tensor'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-local printbr = MathJax.print
-print(MathJax.header)
-
-local var = symmath.var
-local vars = symmath.vars
+--flrw in spherical form: -dt^2 + a^2 (dr^2 / (1 - k r^2) + r^2 (dtheta^2 + sin(theta)^2 dphi^2)
+require 'ext'
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 -- coordinates
 local t, r, theta, phi = vars('t', 'r', '\\theta', '\\phi')
@@ -57,8 +25,8 @@ local pi = var'\\pi'
 -- schwarzschild metric in cartesian coordinates
 
 -- start with zero
-local g = Tensor('_uv', table.unpack(symmath.Matrix.diagonal(
-	-1, a^2 / (1 - k * r^2), a^2 * r^2, a^2 * r^2 * symmath.sin(theta)^2
+local g = Tensor('_uv', table.unpack(Matrix.diagonal(
+	-1, a^2 / (1 - k * r^2), a^2 * r^2, a^2 * r^2 * sin(theta)^2
 )))
 printbr'metric:'
 printbr(var'g''_uv':eq(g'_uv'()))
@@ -91,7 +59,7 @@ printbr()
 local Riemann = (Gamma'^a_bd,c' - Gamma'^a_bc,d' + Gamma'^a_uc' * Gamma'^u_bd' - Gamma'^a_ud' * Gamma'^u_bc')()
 printbr'Riemann curvature tensor:'
 -- TODO trig simplification
-Riemann = Riemann:replace(symmath.cos(theta)^2, 1 - symmath.sin(theta)^2)
+Riemann = Riemann:replace(cos(theta)^2, 1 - sin(theta)^2)
 -- also TODO the other thing that doesn't appear to work is factoring out negatives of the denominator for simplification 
 printbr(var'R''^a_bcd':eq(Riemann'^a_bcd'()))
 
@@ -145,8 +113,8 @@ for i=1,4 do
 	for j=1,4 do
 		local lhs_ij = lhs[i][j]
 		local rhs_ij = rhs[i][j]
-		if lhs_ij ~= symmath.Constant(0)
-		or rhs_ij ~= symmath.Constant(0)
+		if lhs_ij ~= Constant(0)
+		or rhs_ij ~= Constant(0)
 		then
 			eqns:insert(lhs_ij:eq(rhs_ij))
 		end
@@ -158,5 +126,3 @@ end
 assert(#eqns == 4)
 -- eqn 1 is the density eqn
 -- eqns 2 thru 4 are the pressure eqn scaled by various things ... 
-
-print(MathJax.footer)

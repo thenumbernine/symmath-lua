@@ -1,15 +1,7 @@
 #! /usr/bin/env luajit
 require 'ext'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-MathJax.usePartialLHSForDerivative = true
-
-for k,v in pairs(symmath) do
-	if k ~= 'tostring' then _G[k] = v end
-end
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative = true}
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local r = var('r', {x,y})

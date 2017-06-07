@@ -1,43 +1,11 @@
 #!/usr/bin/env luajit
---[[
-
-    File: linearized_euler_hydrodyanamic_equations.lua
-
-    Copyright (C) 2013-2016 Christopher Moore (christopher.e.moore@gmail.com)
-	  
-    This software is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-  
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-  
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write the Free Software Foundation, Inc., 51
-    Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
---]]
-
-local table = require 'ext.table'
-local range = require 'ext.range'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-MathJax.usePartialLHSForDerivative = true
-print(MathJax.header)
-local printbr = MathJax.print
-
-local vars = symmath.vars
-local var = symmath.var
-local add = symmath.op.add
-local Matrix = symmath.Matrix
+require 'ext'
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative = true}
 
 local function sum(t)
 	if #t == 1 then return t[1] end
-	return add(table.unpack(t))
+	return op.add(table.unpack(t))
 end
 
 -- dimension variables
@@ -142,7 +110,7 @@ for dim=1,3 do
 		local dq_dxk = (usePrims and ws or qs):map(function(q) return q:diff(xs[j]) end)
 
 		local dFk_dq
-		dFk_dq, remainingTerms = symmath.factorLinearSystem(
+		dFk_dq, remainingTerms = factorLinearSystem(
 			table.map(remainingTerms, function(row) return row[1] end), dq_dxk)
 		dFk_dqs:insert(dFk_dq)
 
@@ -188,5 +156,3 @@ for dim=1,3 do
 	printbr(det)
 	printbr(det:solve(lambda))
 end
-
-print(MathJax.footer)

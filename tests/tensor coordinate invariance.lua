@@ -1,15 +1,8 @@
 #! /usr/bin/env luajit
 require 'ext'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-MathJax.usePartialLHSForDerivative = true
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative = true}
 
-for k,v in pairs(symmath) do
-	if k ~= 'tostring' then _G[k] = v end
-end
 --[[
 are Ricci tensors really coordinate transform invariant?
 for R_ab

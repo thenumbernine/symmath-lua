@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='Rotation Group'}
+require 'symmath.tostring.MathJax'.setup()
 
 local function cot(...) return cos(...) / sin(...) end
 

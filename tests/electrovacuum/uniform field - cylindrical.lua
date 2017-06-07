@@ -9,7 +9,7 @@ but if it is uniform then of course it's not going to...
 --]]
 require 'ext'
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{title='cylindrical coordinate Christoffel (and metric?) for EM stress-energy of a uniform field along the z-axis', usePartialLHSForDerivative=true}
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
 local t, r, phi, z = vars('t', 'r', '\\phi', 'z')
 local E = var'E'

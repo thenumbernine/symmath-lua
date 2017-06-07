@@ -1,10 +1,7 @@
 #! /usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{
-	title='spherical coordinate metric for EM stress-energy of a uniform field along the z-axis', 
-	usePartialLHSForDerivative=true,
-}
+require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
 
 local t, r, theta, phi = vars('t', 'r', '\\theta', '\\phi')
 local coords = {t, r, theta, phi}

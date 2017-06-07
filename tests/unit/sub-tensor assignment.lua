@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup{title='Sub-Tensor Assignment'}
+require 'symmath.tostring.MathJax'.setup()
 
 local t,x,y,z = vars('t','x','y','z') 
 local coords = {t,x,y,z}

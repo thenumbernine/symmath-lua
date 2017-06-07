@@ -113,7 +113,10 @@ LaTeX.lookupTable = {
 		return tableConcat(res, expr:getSepStr())
 	end,
 	[require 'symmath.op.div'] = function(self, expr)
-		return table{'\\frac', self:apply(expr[1]), self:apply(expr[2])}
+		return table{'\\frac', 
+			table(self:apply(expr[1]), {force=true}),
+			table(self:apply(expr[2]), {force=true})
+		}
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		return tableConcat(range(#expr):map(function(i) 

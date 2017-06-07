@@ -7,9 +7,7 @@ test differerent simplified discrete spacetimes
 --]]
 require 'ext'
 require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup{
-	title='Discrete EFE funtion of alpha',
-}
+require 'symmath.tostring.MathJax'.setup()
 
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
 local coords = {t,r,theta,phi}
@@ -38,8 +36,8 @@ local B = var('B',{r})
 local g = Tensor('_ab', table.unpack(Matrix.diagonal(A, B, B, B)))
 local gU = Tensor('^ab', table.unpack(Matrix.diagonal(1/A, 1/B, 1/B, 1/B)))
 --]]
-g:printElem'g'
-gU:printElem'g'
+g:print'g'
+gU:print'g'
 
 local props = class(
 	require 'symmath.physics.diffgeom'
@@ -47,7 +45,7 @@ local props = class(
 )(g, gU)
 --props:print()
 local EinsteinLL = props.Einstein'_ab'()
-printbr(EinsteinLL:printElem'G')
+printbr(EinsteinLL:print'G')
 
 -- ok now we have alpha, we have G_ab as a function of alpha ...
 
@@ -61,7 +59,7 @@ local n = Tensor('_a', 1, 0, 0, 0)
 local rho = var'\\rho'
 local P = var'P'
 local StressEnergy = ((rho + P) * n'_a' * n'_b' + P * g'_ab')()
-printbr(StressEnergy:printElem'T')
+printbr(StressEnergy:print'T')
 
 local matrix = require 'matrix'
 local c = 299792458						--  ... m/s = 1

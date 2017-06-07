@@ -1,18 +1,9 @@
 #!/usr/bin/env luajit
 -- these are the eigenvectors provided in Trangenstein
 
-local table = require 'ext.table'
-local symmath = require 'symmath'
-local MathJax = require 'symmath.tostring.MathJax'
-symmath.tostring = MathJax
-print(MathJax.header)
-local printbr = MathJax.print
-
-local var = symmath.var
-local sqrt = symmath.sqrt
-local Array = symmath.Array
-local Matrix = symmath.Matrix
-local Constant = symmath.Constant
+require 'ext'
+require 'symmath'.setup()
+require 'symmath.tostring.MathJax'.setup()
 
 -- I'd like to add this to the parent class metatable
 --  but since child classes are flattened upon creation,
@@ -20,7 +11,7 @@ local Constant = symmath.Constant
 function expandPowers(self)
 	return self()
 		:map(function(x) 	-- expand powers ...
-			if symmath.op.pow.is(x) 
+			if op.pow.is(x) 
 			and Constant.is(x[2])
 			and x[2].value == math.floor(x[2].value)
 			and x[2].value > 0
@@ -170,13 +161,13 @@ for i=1,8 do
 			YYInv_rhs = YYInv_rhs + Y[i][k] * YInv[k][j]
 		end
 		local YInvYEqn = lhs:eq(YInvY_rhs)()
-		if symmath.op.div.is(YInvYEqn:rhs()) then YInvYEqn = (YInvYEqn * YInvYEqn:rhs()[2])() end
+		if op.div.is(YInvYEqn:rhs()) then YInvYEqn = (YInvYEqn * YInvYEqn:rhs()[2])() end
 		YInvYEqn = YInvYEqn:subst(B_from_BSq)()
 		if not YInvYEqn:isTrue() then
 			YInvYEqns:insert{i,j,YInvYEqn}
 		end
 		local YYInvEqn = lhs:eq(YYInv_rhs)()
-		if symmath.op.div.is(YYInvEqn:rhs()) then YYInvEqn = (YYInvEqn * YYInvEqn:rhs()[2])() end
+		if op.div.is(YYInvEqn:rhs()) then YYInvEqn = (YYInvEqn * YYInvEqn:rhs()[2])() end
 		YYInvEqn = YYInvEqn:subst(B_from_BSq)()
 		if not YYInvEqn:isTrue() then
 			YYInvEqns:insert{i,j,YYInvEqn}

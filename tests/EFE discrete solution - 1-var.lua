@@ -7,9 +7,7 @@ test differerent simplified discrete spacetimes
 --]]
 require 'ext'
 require 'symmath'.setup() --{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{
-	title='Discrete EFE funtion of alpha',
-}
+require 'symmath.tostring.MathJax'.setup()
 
 local solveWithGMRES = false
 local solveWithLU = false
