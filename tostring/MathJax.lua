@@ -38,30 +38,20 @@ function Header:__tostring()
     <head>
         <meta charset="UTF-8">
         <title>Metric Catalogue</title>
-		<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
 		<script type="text/javascript">
-function loadScript(url) {
-	console.log("loading "+url);
-	var done = undefined;
-	var fail = undefined;
-	var result = {
-		done : function(f) { done = f; return result; },
-		fail : function(f) { fail = f; return result; }
-	};
+function loadScript(args) {
+	console.log("loading "+args.src);
 	var el = document.createElement('script');
 	document.body.append(el);
 	el.onload = function() {
 		console.log('loaded');
-		if (done !== undefined) done();
+		if (args.done !== undefined) args.done();
 	};
 	el.onerror = function() {
-		console.log("failed to load "+url);
-		if (fail !== undefined) {
-			fail();
-		}
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
 	};
-	el.src = url; 
-	return result;
+	el.src = args.src; 
 }
 function init() {
 	console.log('init...');
@@ -72,22 +62,25 @@ function init() {
 	];
 	var i = 0;
 	var loadNext = function() {
-		loadScript(urls[i])
-		.done(function() {
-			console.log("success!");
-		}).fail(function() {
-			++i;
-			if (i >= urls.length) {
-				console.log("looks like all our sources have failed!");
-			} else {
-				loadNext();
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
 			}
 		});
 	}
 	loadNext();
 }
 		</script>
-		<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
 	</head>
     <body onload='init();'>
 ]=]
