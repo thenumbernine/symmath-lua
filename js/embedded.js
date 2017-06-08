@@ -63,7 +63,7 @@ var SymLuaEmbeddedLuaInterpreter = makeClass({
 
 interpretter = new SymLuaEmbeddedLuaInterpreter({
 	id : 'lua-vm-container',
-	packages : ['ext', 'symmath'],
+	packages : ['ext', 'gnuplot', 'symmath'],
 	packageTests : ['symmath'],
 	autoLaunch : true,
 	done : function() {

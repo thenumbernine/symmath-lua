@@ -140,8 +140,9 @@ function MathJax.setup(args)
 		title = os.getenv'_'
 		if title then title = title:match('^%./(.*)%.lua$') end
 	end
+	inst.title = title
 	
-	print(Header(title))
+	print(inst.header)
 	env.printbr = MathJax.print
 end
 
