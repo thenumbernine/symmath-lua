@@ -181,8 +181,7 @@ pow.visitorHandler = {
 	
 		-- 0^a = 0 for a>0
 		if expr[1] == Constant(0) 
-		and Constant.is(expr[2])
-		and expr[2].value > 0
+		and ((Constant.is(expr[2]) and expr[2].value > 0) or expr[2] == div(1,2))
 		then
 			return Constant(0)
 		end
