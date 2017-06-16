@@ -68,7 +68,7 @@ exprs - specifies the table of expressions that will be associated with function
 		
 		x,t=symmath.vars('x','t') 
 		x:depends(t) 
-		symmath.exp(-x^2):diff(t):simplify():compile{x,{[x:diff(t)]='dx_dt']}}
+		symmath.exp(-x^2):diff(t):simplify():compile{x,{dx_dt=x:diff(t)}})
 		... produces "function(x, dx_dt) return -2 * x * dx_dt * math.exp(-x^2) end"
 
 language - specifies the target language.  options are 'Lua' (default) and 'JavaScript'

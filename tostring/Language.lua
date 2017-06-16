@@ -9,7 +9,7 @@ local Language = class(ToString)
 
 --[[
 converts the flexible-yet-confusing input of parameters into a format that the language serializer can use
-paramInputs: {var1, var2, {[expr3] = 'name3'}, ...}
+paramInputs: {var1, var2, {name3=expr3}, ...}
 
 replaces all non-Variable expressions with Variables of matching names
 then generates the code
@@ -23,7 +23,7 @@ function Language:prepareForCompile(expr, paramInputs)
 	for _,paramInput in pairs(paramInputs) do
 		if type(paramInput) == 'table' then
 			if Expression.is(paramInput) then
-				assert(Variable.is(paramInput), "can only implicitly use Variables for compile function parameters.  For non-variables, use {[expression] = 'parameter_name'}")
+				assert(Variable.is(paramInput), "can only implicitly use Variables for compile function parameters.  For non-variables, use {parameter_name = expression}")
 				vars:insert(paramInput)
 			else 
 				-- if it's a table and not an Expression (the root of our class tree)
