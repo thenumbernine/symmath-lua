@@ -32,17 +32,17 @@ function Language:prepareForCompile(expr, paramInputs)
 				for key,value in pairs(paramInput) do
 					if not found then	-- only allow one key/value pair per list
 						found = true
-						assert(Expression.is(key), "expected key to be an Expression")
-						local tmpvar = Variable(tostring(value))
+						assert(Expression.is(value), "expected value to be an Expression")
+						local tmpvar = Variable(tostring(key))
 						vars:insert(tmpvar)
-						expr = expr:replace(key, tmpvar)
+						expr = expr:replace(value, tmpvar)
 					else
-						error("for multiple key/value pairs use multiple tables.  i.e. instead of {[expr1]='var1', [expr2]='var2'} use {[expr1]='var1'}, {[expr2]='var2'}.  This way parameter order is preserved.")
+						error("for multiple key/value pairs use multiple tables.  i.e. instead of {var1=expr1, var2=expr2} use {var1=expr1}, {var2=expr2}.  This way parameter order is preserved.")
 					end
 				end
 			end
 		else
-			error("compile parameters can only be Expression or {[Expression] = 'parameter_name'}")
+			error("compile parameters can only be Expression or {parameter_name = Expression}")
 		end
 	end
 	return expr, vars
