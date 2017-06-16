@@ -250,9 +250,9 @@ os.exit()
 -- TODO PREM data
 local StressEnergyCompileArgs = {
 	r, A, B,
-	{[rho]='earthDensity'}, 
-	{[P]='earthPressure'}, 
-	{[pi]='pi'},
+	{earthDensity=rho},
+	{earthPressure=P},
+	{pi=pi},
 }
 local _8piTtt_func = (8 * pi * StressEnergy[1][1]):compile(StressEnergyCompileArgs)
 local _8piTrr_func = (8 * pi * StressEnergy[2][2]):compile(StressEnergyCompileArgs)

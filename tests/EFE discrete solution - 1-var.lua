@@ -115,13 +115,13 @@ local function D2(y)
 end
 
 local _8piTtt_func = (8 * pi * StressEnergy[1][1]):compile{
-	{[rho]='earthDensity'}, {[pi]='pi'},
+	{earthDensity=rho}, {pi=pi},
 }
 
 local Gtt_func = EinsteinLL[1][1]
 	:replace(alpha:diff(r), var'dr_alpha')
 	:replace(alpha:diff(r,r), var'd2r_alpha')
-	:compile{r, {[alpha]='alpha'}, var'dr_alpha', var'd2r_alpha'}
+	:compile{r, {alpha=alpha}, var'dr_alpha', var'd2r_alpha'}
 
 local function _8piTtt(r)
 	return r < earthRadius 
