@@ -46,12 +46,36 @@ TensorRef.visitorHandler = {
 				)
 			end
 			
-			-- if this is a derivative then apply differentiation
+			-- if this is a derivative then 
 			if indexes[1].derivative then
+				-- if it can be evaluated then apply differentiation
+				-- (if it is a tensor or variable then it won't be applied)
 				if t.evaluateDerivative then
-					return t:evaluateDerivative(function(x)
+					return prune:apply(t:evaluateDerivative(function(x)
 						return TensorRef(x, table.unpack(indexes))
-					end)
+					end))
+				end
+			
+				-- if any derivative indexes are for single variables then apply them directly
+				local diffvars
+				for i=#indexes,1,-1 do
+					local index = indexes[i]
+					local basis = Tensor.findBasisForSymbol(index.symbol)
+					-- maybe I should just treat numbers like symbols?
+					if #basis.variables == 1 then
+						table.remove(indexes, i)
+						local v = basis.variables[1]
+						diffvars = diffvars or table()
+						diffvars:insert(1,v)
+					end
+				end
+				if diffvars and #diffvars > 0 then
+					local Derivative = require 'symmath.Derivative'
+					local result = Derivative(t, diffvars:unpack())
+					if #indexes > 0 then
+						result = TensorRef(result, table.unpack(indexes)) 
+					end
+					return prune:apply(result)
 				end
 			end
 
