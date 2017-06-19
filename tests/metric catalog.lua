@@ -90,6 +90,15 @@ local spacetimes = {
 		end,
 	},
 	{
+		title = 'cylindrical and time',
+		coords = {t,r,phi,z},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		chart = function()
+			return Tensor('^I', t, r * symmath.cos(phi), r * symmath.sin(phi), z)
+		end,
+	},
+	{
 		title = 'spiral',
 		coords = {r,phi},
 		embedded = {x,y},
@@ -213,15 +222,17 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'cylindrical and time',
-		coords = {t,r,phi,z},
-		embedded = {t,x,y,z},
-		flatMetric = eta4,
+		title = 'torus',
+		coords = {r,theta,phi},
+		embedded = {x,y,z},
+		flatMetric = delta3,
 		chart = function()
-			return Tensor('^I', t, r * symmath.cos(phi), r * symmath.sin(phi), z)
+			return Tensor('^I', 
+				(R + r * symmath.sin(theta)) * symmath.cos(phi),
+				(R + r * symmath.sin(theta)) * symmath.sin(phi),
+				r * symmath.cos(theta))
 		end,
-	},
-
+	}
 --]=]
 --[[
 	{
