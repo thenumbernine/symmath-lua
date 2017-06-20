@@ -291,9 +291,23 @@ MultiLine.lookupTable = {
 		local indexes = {table.unpack(expr, 2)}
 
 		local s = self:apply(t)
+		--[[ trusting the TensorIndex for proper generation
 		for _,index in ipairs(indexes) do
 			s = self:combine(s, self:apply(index))
 		end
+		--]]
+		-- [[ compacting a few symbols
+		local lastLower
+		for i,index in ipairs(indexes) do
+			local is = self:apply(index)
+			if not (i == 1 or (not not index.lower) ~= lastLower) then
+				is[1] = is[1]:sub(2)
+			end
+			lastLower = not not index.lower
+			-- TODO combine valign to top or bottom
+			s = self:combine(s, is)
+		end
+		--]]
 		
 		return s
 	end,
