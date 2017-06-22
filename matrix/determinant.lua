@@ -9,41 +9,12 @@ args:
 --]]
 
 local table = require 'ext.table'
-local function permutations(args)
-	local parity = args.parity or (#args.elements%2==0 and 1 or -1)
-	local p = args.elements
-	local callback = args.callback
-	local index = args.index
-	if args.size then
-		if index and #index == args.size then
-			return callback(index, parity)
-		end
-	else
-		if #p == 0 then
-			return callback(index, parity)
-		end
-	end
-	for i=1,#p do
-		local subset = table(p)
-		local subindex = table(index)
-		subindex:insert(subset:remove(i))
-		parity = parity * -1		-- TODO times -1 or times the distance of the swap?
-		if permutations{
-			elements = subset, 
-			callback = callback, 
-			index = subindex,
-			size = args.size,
-			parity = parity,
-		} then 
-			return true 
-		end
-	end
-end
-
 local range = require 'ext.range'
-return function(m)
+
+local function determinant(m)
 	local Array = require 'symmath.Array'
 	local Constant = require 'symmath.Constant'
+	local simplify = require 'symmath.simplify'
 
 	local original = m
 	m = m:simplify()
@@ -69,30 +40,44 @@ return function(m)
 
 	local n = dim[1].value
 
-	-- cycle through all permutations of 1..n for n == #m
-	-- if the # of flips is odd then scale by -1, if even then by +1 
 	-- 1x1 matrix? 
 	if n == 1 then
 		return m[1][1]
+	elseif n == 2 then
+		return simplify(m[1][1] * m[2][2] - m[1][2] * m[2][1])
 	end
+	
+	local Matrix = require 'symmath.Matrix'
+	
+	-- pick row (or column) with most zeroes
+	local mostZerosOfRow, rowWithMostZeros = range(n):map(function(i)
+		return range(n):map(function(j) return m[i][j] == Constant(0) and 1 or 0 end):sum()
+	end):sup()
+	local mostZerosOfCol, colWithMostZeros = range(n):map(function(j)
+		return range(n):map(function(i) return m[i][j] == Constant(0) and 1 or 0 end):sum()
+	end):sup()
+	
+	local useCol = mostZerosOfCol > mostZerosOfRow 
+	local x = useCol and colWithMostZeros or rowWithMostZeros
 
-	-- any further -- use recursive case
 	local result = Constant(0)
-	permutations{
-		elements = range(n),
-		callback = function(index, parity)
-			local product
-			for i=1,n do
-				local entry = m[i][index[i]]
-				if not product then
-					product = entry
-				else
-					product = product * entry
-				end
-			end
-			result = result + parity * product
-		end,
-	}
-	local simplify = require 'symmath.simplify'
+	for y=1,n do
+		local i,j
+		if useCol then i,j = y,x else i,j = x,y end
+		local mij = m[i][j]
+		-- if the # of flips is odd then scale by -1, if even then by +1 
+		local sign = ((i+j)%2)==0 and 1 or -1
+		if mij ~= Constant(0) then
+			local submat = Matrix:lambda({n-1,n-1}, function(p,q)
+				if p>=i then p=p+1 end
+				if q>=j then q=q+1 end
+				return m[p][q]
+			end)
+			result = result + sign * mij * determinant(submat)
+		end
+	end
+	
 	return simplify(result)
 end
+
+return determinant

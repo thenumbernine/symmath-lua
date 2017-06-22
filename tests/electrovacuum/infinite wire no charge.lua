@@ -48,7 +48,7 @@ Tensor.coords{
 printbr'manual metric:'
 local g = Tensor('_ab', table.unpack((Matrix.diagonal(-1, 1, 1, 1))))
 
---[[ meh close
+-- [[ meh close
 g[1][1] = -I / r
 g[2][2] = 1 / (I * r)
 g[3][3] = r^2
@@ -84,7 +84,7 @@ g[3][1] = g[1][3]
 g[4][1] = g[1][4]
 --]]
 
--- [[
+--[[
 g = Tensor'_ab'
 g[1][1] = -(a + b / r)
 g[2][2] = 1 / (a + b / r)
