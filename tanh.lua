@@ -1,3 +1,4 @@
+local table = require 'ext.table'
 local class = require 'ext.class'
 local Function = require 'symmath.Function'
 
