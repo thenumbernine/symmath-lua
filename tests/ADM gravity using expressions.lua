@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{implicitVars = true, MathJax=true}
+	
+local TensorRef = require 'symmath.tensor.TensorRef'
 
 -- I should be coding up some tensor index expression substitution functions ...
 -- TODO instead of 'toSet', provide basis to split indexes into
@@ -14,29 +16,30 @@ local function splitIndex(expr, from, toSet)
 	return result
 end
 
--- this will work like :replace()
--- except I'm going to split off derivative TensorRef's so that substitution can properly work
-local function indexExprReplace(expr, from, to)
-	local TensorRef = require 'symmath.tensor.TensorRef'
-	expr = expr:map(function(x)
+-- this takes the combined comma derivative references and splits off the comma parts into separate references
+-- it is very helpful for replacing tensors
+local function splitOffDerivRefs(expr)
+	return expr:map(function(x)
 		if TensorRef.is(x) then
---			x = x()	-- recombine indexes if possible ... but I don't want to simplify expressions yet ...
-			x = x:replace(from, to)	-- replace if possible
-			-- now split off any derivative indexes
 			local derivIndex = table.sub(x, 2):find(nil, function(ref)
 				return ref.derivative
 			end) 
 			if derivIndex and derivIndex > 1 then
-				x = TensorRef(
+				return TensorRef(
 					TensorRef(x[1], table.unpack(x, 2, derivIndex)),
 					table.unpack(x, derivIndex+1)
 				)
 			end
-			x = x:replace(from, to)	-- and replace if possible
-			return x
 		end
 	end)
-	return expr
+end
+
+-- this will work like :replace()
+-- except I'm going to split off derivative TensorRef's so that substitution can properly work 
+-- TODO check all combinations of to's indexes against from's indexes
+local function indexExprReplace(expr, from, to)
+	expr = splitOffDerivRefs(expr)
+	return expr:replace(from, to)
 end
 
 -- this replaces sub-expressions
@@ -47,6 +50,51 @@ end
 local function replaceSubExpr(expr, from, to)
 	return expr:prune():replace(from:prune(), to)()
 end
+
+
+-- tensor replace for any indexes
+-- for 'x' each tensor we find (TODO whole expressions)
+-- look at its indexes
+-- compare them to the 'from's indexes
+-- if the pattern matches up
+-- then replace it with the 'to' tensor with 'x's index pattern
+local function replaceForAnyIndex(expr, from, to)
+	assert(TensorRef.is(from))
+	-- no substituting derivatives just yet (right?)
+	-- but if you were, an easy fix would be to just call splitOffDerivRefs on 'from' to get it into 'canonical form'
+	assert(not table.find( table.sub(from, 2), nil, function(x) return x.derivative end))	
+	expr = splitOffDerivRefs(expr)
+	return expr:map(function(x)
+		if TensorRef.is(x) 
+		and from[1] == x[1] 
+		and #from == #x
+		then
+			local fromForTo = {}
+			local failed
+			for i=2,#x do
+				if x[i].derivative ~= x[j].derivative then
+					failed = true
+					break
+				end
+				if not fromForTo[x[i].symbol] then
+					fromForTo[x[i].symbol] = from[i].symbol
+				else
+					-- symbols don't match ... A^iji=1 can't substitute correctly for expression B^ijk.
+					if fromForTo[x[i].symbol] ~= from[i].symbol then
+						failed = true
+						break
+					end
+				end
+			end
+			if not failed then
+				-- TODO reindex 'to' according to 'fromForTo'
+				return to
+			end
+		end
+	end)
+end
+
+
 
 local grav = -Gamma'^i_tt'
 printbr(grav)
@@ -74,6 +122,8 @@ printbr(grav)
 grav = grav()
 printbr(grav)
 
+-- TODO some kind of tensor-friendly :prune() or :simplify()
+-- that keeps track of sum terms, and relabels them in some canonical form, and simplifies accordingly ?
 
 grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl,t' * beta'^k' * beta'^l',
 							-beta'^i' * beta'^j' * beta'^k' * gamma'_jk,t')()
@@ -97,4 +147,9 @@ printbr(grav)
 
 grav = replaceSubExpr(grav, gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k' * beta'^l_,j',
 							gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k_,j' * beta'^l')()
+printbr(grav)
+
+printbr('for ', beta'^i':eq(0))
+
+grav = replaceForAnyIndex(grav, beta'^i', 0)()
 printbr(grav)
