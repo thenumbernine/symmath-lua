@@ -186,7 +186,7 @@ function Expression:subst(...)
 	local result = self:clone()
 	for i=1,select('#', ...) do
 		local eqn = select(i, ...)
-		assert(eq.is(eqn), "Expression:subst argument "..i.." is not an equals") 
+		assert(eq.is(eqn), "Expression:subst() argument "..i.." is not an equals operator") 
 		
 		local lhs = eqn:lhs()
 		local rhs = eqn:rhs()

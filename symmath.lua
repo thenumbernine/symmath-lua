@@ -209,7 +209,9 @@ symmath.setup = function(args)
 	-- [[ override environment
 	for k,v in pairs(args) do
 		-- hmm, some args are for symmath, some are for setup ...
-		if k ~= 'env' then
+		if k ~= 'env' 
+		and k ~= 'MathJax'
+		then
 			symmath[k] = v
 		end
 	end
@@ -242,6 +244,11 @@ symmath.setup = function(args)
 		end
 	})
 	--]]
+
+	if args.MathJax then
+		local MathJaxArgs = type(args.MathJax) == 'table' and args.MathJax or {}
+		require 'symmath.tostring.MathJax'.setup(MathJaxArgs)
+	end
 end
 
 return symmath

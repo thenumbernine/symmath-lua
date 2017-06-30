@@ -62,7 +62,7 @@ TensorRef.visitorHandler = {
 					local index = indexes[i]
 					local basis = Tensor.findBasisForSymbol(index.symbol)
 					-- maybe I should just treat numbers like symbols?
-					if #basis.variables == 1 then
+					if basis and #basis.variables == 1 then
 						table.remove(indexes, i)
 						local v = basis.variables[1]
 						diffvars = diffvars or table()
