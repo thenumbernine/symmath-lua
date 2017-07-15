@@ -42,7 +42,7 @@ function Language:prepareForCompile(expr, paramInputs)
 				end
 			end
 		else
-			error("compile parameters can only be Expression or {parameter_name = Expression}")
+			error("compile parameters can only be Expression or {parameter_name = Expression} ... got type "..type(paramInput))
 		end
 	end
 	return expr, vars
