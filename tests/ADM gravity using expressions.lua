@@ -99,61 +99,80 @@ local function replaceForAnyIndex(expr, from, to)
 end
 
 
+for _,grav in ipairs{
+	-Gamma'^i_tt',
+	-Gamma'^i_mt',	-- TODO use 'j's and 'k's ... and automatically reindex the substitutions below (so indexes don't get doubled up where they shouldn't be)
+	-Gamma'^i_mn',
+} do
+	print'<hr>'
+	printbr(grav)
 
-local grav = -Gamma'^i_tt'
-printbr(grav)
+	printbr'factor out index raise'
+	grav = grav:replace(Gamma'^i_tt', g'^ia' * Gamma'_att')
+	grav = grav:replace(Gamma'^i_mt', g'^ia' * Gamma'_amt')
+	grav = grav:replace(Gamma'^i_mn', g'^ia' * Gamma'_amn')
+	printbr(grav)
 
-grav = grav:replace(Gamma'^i_tt', g'^ia' * Gamma'_att')
-printbr(grav)
+	printbr'substitute definition of connection'
+	grav = grav:replace(Gamma'^_att', frac(1,2) * (g'_at'',t' + g'_at'',t' - g'_tt'',a'))
+	grav = grav:replace(Gamma'^_amt', frac(1,2) * (g'_am'',t' + g'_at'',m' - g'_mt'',a'))
+	grav = grav:replace(Gamma'^_amn', frac(1,2) * (g'_am'',n' + g'_an'',m' - g'_mn'',a'))
+	grav = grav()
+	printbr(grav)
 
-grav = grav:replace(Gamma'^_att', frac(1,2) * (g'_at'',t' + g'_at'',t' - g'_tt'',a'))
-grav = grav()
-printbr(grav)
+	printbr'split the index a into t and j'
+	grav = splitIndex(grav, 'a', {'t', 'j'})
+	grav = grav()
+	printbr(grav)
 
--- split the index a into t and j
-grav = splitIndex(grav, 'a', {'t', 'j'})
-grav = grav()
-printbr(grav)
+	printbr'replace ADM metric definitions'
+	grav = indexExprReplace(grav, g'_tt', -alpha^2 + beta^2)
+	grav = indexExprReplace(grav, g'_jt', gamma'_jk' * beta'^k')
+	grav = indexExprReplace(grav, g'_mt', gamma'_mk' * beta'^k')
+	grav = indexExprReplace(grav, g'_tm', gamma'_mk' * beta'^k')
+	grav = indexExprReplace(grav, g'_tn', gamma'_nk' * beta'^k')
+	grav = indexExprReplace(grav, g'_mn', gamma'_mn')
+	grav = indexExprReplace(grav, g'_jm', gamma'_jm')
+	grav = indexExprReplace(grav, g'_jn', gamma'_jn')
+	grav = indexExprReplace(grav, g'^it', beta'^i' / alpha^2)
+	grav = indexExprReplace(grav, g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
+	grav = indexExprReplace(grav, beta^2, gamma'_kl' * beta'^k' * beta'^l')
+	printbr(grav)
 
--- replace ADM metric definition
-grav = indexExprReplace(grav, g'_tt', -alpha^2 + beta^2)
-grav = indexExprReplace(grav, g'_jt', gamma'_jk' * beta'^k')
-grav = indexExprReplace(grav, g'^it', beta'^i' / alpha^2)
-grav = indexExprReplace(grav, g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
-grav = indexExprReplace(grav, beta^2, gamma'_kl' * beta'^k' * beta'^l')
-printbr(grav)
+	printbr'simplify...'
+	grav = grav()
+	printbr(grav)
 
-grav = grav()
-printbr(grav)
+	-- TODO some kind of tensor-friendly :prune() or :simplify()
+	-- that keeps track of sum terms, and relabels them in some canonical form, and simplifies accordingly ?
+	printbr'relabel...'
 
--- TODO some kind of tensor-friendly :prune() or :simplify()
--- that keeps track of sum terms, and relabels them in some canonical form, and simplifies accordingly ?
+	grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl,t' * beta'^k' * beta'^l',
+								-beta'^i' * beta'^j' * beta'^k' * gamma'_jk,t')()
+	printbr(grav)
 
-grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl,t' * beta'^k' * beta'^l',
-							-beta'^i' * beta'^j' * beta'^k' * gamma'_jk,t')()
-printbr(grav)
+	grav = replaceSubExpr(grav, -beta'^i' * beta'^j' * gamma'_kl' * beta'^k' * beta'^l_,j',
+								-beta'^i' * beta'^j' * gamma'_kl' * beta'^k_,j' * beta'^l')()
+	printbr(grav)
 
-grav = replaceSubExpr(grav, -beta'^i' * beta'^j' * gamma'_kl' * beta'^k' * beta'^l_,j',
-							-beta'^i' * beta'^j' * gamma'_kl' * beta'^k_,j' * beta'^l')()
-printbr(grav)
+	grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl' * beta'^k_,t' * beta'^l',
+								-beta'^i' * beta'^j' * gamma'_jk' * beta'^k_,t')()
+	printbr(grav)
 
-grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl' * beta'^k_,t' * beta'^l',
-							-beta'^i' * beta'^j' * gamma'_jk' * beta'^k_,t')()
-printbr(grav)
+	grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl' * beta'^k' * beta'^l_,t',
+								-beta'^i' * beta'^j' * gamma'_jk' * beta'^k_,t')()
+	printbr(grav)
 
-grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl' * beta'^k' * beta'^l_,t',
-							-beta'^i' * beta'^j' * gamma'_jk' * beta'^k_,t')()
-printbr(grav)
+	grav = replaceSubExpr(grav, -2 * gamma'^ij' * alpha^2 * gamma'_jk' * beta'^k_,t',
+								-2 * alpha^2 * beta'^i_,t')()
+	printbr(grav)
 
-grav = replaceSubExpr(grav, -2 * gamma'^ij' * alpha^2 * gamma'_jk' * beta'^k_,t',
-							-2 * alpha^2 * beta'^i_,t')()
-printbr(grav)
+	grav = replaceSubExpr(grav, gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k' * beta'^l_,j',
+								gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k_,j' * beta'^l')()
+	printbr(grav)
 
-grav = replaceSubExpr(grav, gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k' * beta'^l_,j',
-							gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k_,j' * beta'^l')()
-printbr(grav)
+	printbr('for ', beta'^i':eq(0))
 
-printbr('for ', beta'^i':eq(0))
-
-grav = replaceForAnyIndex(grav, beta'^i', 0)()
-printbr(grav)
+	grav = replaceForAnyIndex(grav, beta'^i', 0)()
+	printbr(grav)
+end
