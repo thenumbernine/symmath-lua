@@ -115,8 +115,9 @@ function complex:inv()
 	return self:conj() * (1/self:norm())
 end
 
-function complex:abs()
-	return complex(math.sqrt(self:norm()), 0)
+function complex.abs(a)
+	local a = complex(a)
+	return complex(math.sqrt(a:norm()), 0)
 end
 
 function complex:arg()

@@ -63,16 +63,20 @@ local function replaceForAnyIndex(expr, from, to)
 	-- no substituting derivatives just yet (right?)
 	-- but if you were, an easy fix would be to just call splitOffDerivRefs on 'from' to get it into 'canonical form'
 	assert(not table.find( table.sub(from, 2), nil, function(x) return x.derivative end))	
+	-- separate deriv references so substitutions can be performed on the original tensor
 	expr = splitOffDerivRefs(expr)
 	return expr:map(function(x)
+		-- if we find a tensor 
 		if TensorRef.is(x) 
+		-- whose name matches what we're searching for
 		and from[1] == x[1] 
+		-- and which contains the same number of indexes
 		and #from == #x
 		then
 			local fromForTo = {}
 			local failed
 			for i=2,#x do
-				if x[i].derivative ~= x[j].derivative then
+				if x[i].derivative then -- ~= x[j].derivative then
 					failed = true
 					break
 				end
