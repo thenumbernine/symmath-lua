@@ -138,8 +138,8 @@ for _,index in ipairs(indexes) do
 	-- same as above
 	-- expr = indexExprReplace(expr, Gamma'_abc', frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))
 	expr = expr:replace(
-		Gamma'_dbc':reindex{[indexLetters] = 'abc'},
-		(frac(1,2) * (g'_db,c' + g'_dc,b' - g'_bc,d')):reindex{[indexLetters] = 'abc'})
+		Gamma'_abc':reindex{[indexLetters..'d'] = 'dbca'},
+		(frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a')):reindex{[indexLetters..'d'] = 'dbca'})
 
 	expr = expr()
 	printbr(expr)
