@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{implicitVars = true, MathJax=true}
-	
+
 local TensorRef = require 'symmath.tensor.TensorRef'
 
 -- I should be coding up some tensor index expression substitution functions ...
@@ -98,81 +98,155 @@ local function replaceForAnyIndex(expr, from, to)
 	end)
 end
 
+local indexes = table{
+--	'^t_tt',
+--	'^t_ti',
+	--Gamma^t_it = Gamma^t_ti
+	'^i_tt',
+	'^i_mt',
+	--Gamma^i_tm = Gamma^i_mt
+--	'^t_im',
+	'^i_mn',
+}
+local GammasForIndexes = table()
 
-for _,grav in ipairs{
-	-Gamma'^i_tt',
-	-Gamma'^i_mt',	-- TODO use 'j's and 'k's ... and automatically reindex the substitutions below (so indexes don't get doubled up where they shouldn't be)
-	-Gamma'^i_mn',
-} do
+for _,index in ipairs(indexes) do
+	indexLetters = index:gsub('[^%a]', '')
+	
 	print'<hr>'
-	printbr(grav)
+	
+	local expr = Gamma(index)
+	printbr(expr)
 
 	printbr'factor out index raise'
-	grav = grav:replace(Gamma'^i_tt', g'^ia' * Gamma'_att')
-	grav = grav:replace(Gamma'^i_mt', g'^ia' * Gamma'_amt')
-	grav = grav:replace(Gamma'^i_mn', g'^ia' * Gamma'_amn')
-	printbr(grav)
+	-- what this function will have to do:
+	-- 1) keep track of which indexes in the 'to' are summation indexes
+	-- 2) replace the summation indexes in 'from' with unused summation indexes
+	-- 3) replace the non-summation indexes in 'from' with whatever indexes we match them to
+	-- 3.5) replace non-summation indexes in this index set and all index sets that are a subset of it...?
+	-- 4) don't replace single-variable indexes.  specificially: only replace indexes within their same subset of indexes (spatial, etc, etc).
+	--		If a subset only has one coordinate _t _x _y _z then duplicates are fine.
+	--		But if a subset has multiple coordinates (i.e. the defaults spanning txyz, or ijklmn represents indexes spanning xyz but not t) then make sure we don't use more indexes than the subset allows
+	--		...or complain when we pass that limit.
+	--expr = indexExprReplace(expr, Gamma'^a_bc', g'^ad' * Gamma'_dbc')
+	expr = expr:replace(
+		Gamma'^a_bc':reindex{[indexLetters] = 'abc'}, 
+		(g'^ad' * Gamma'_dbc'):reindex{[indexLetters] = 'abc'})
+	printbr(expr)
 
 	printbr'substitute definition of connection'
-	grav = grav:replace(Gamma'^_att', frac(1,2) * (g'_at'',t' + g'_at'',t' - g'_tt'',a'))
-	grav = grav:replace(Gamma'^_amt', frac(1,2) * (g'_am'',t' + g'_at'',m' - g'_mt'',a'))
-	grav = grav:replace(Gamma'^_amn', frac(1,2) * (g'_am'',n' + g'_an'',m' - g'_mn'',a'))
-	grav = grav()
-	printbr(grav)
+	-- same as above
+	-- expr = indexExprReplace(expr, Gamma'_abc', frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))
+	expr = expr:replace(
+		Gamma'_dbc':reindex{[indexLetters] = 'abc'},
+		(frac(1,2) * (g'_db,c' + g'_dc,b' - g'_bc,d')):reindex{[indexLetters] = 'abc'})
+
+	expr = expr()
+	printbr(expr)
 
 	printbr'split the index a into t and j'
-	grav = splitIndex(grav, 'a', {'t', 'j'})
-	grav = grav()
-	printbr(grav)
+	expr = splitIndex(expr, 'd', {'t', 'j'})
+	expr = expr()
+	printbr(expr)
 
 	printbr'replace ADM metric definitions'
-	grav = indexExprReplace(grav, g'_tt', -alpha^2 + beta^2)
-	grav = indexExprReplace(grav, g'_jt', gamma'_jk' * beta'^k')
-	grav = indexExprReplace(grav, g'_mt', gamma'_mk' * beta'^k')
-	grav = indexExprReplace(grav, g'_tm', gamma'_mk' * beta'^k')
-	grav = indexExprReplace(grav, g'_tn', gamma'_nk' * beta'^k')
-	grav = indexExprReplace(grav, g'_mn', gamma'_mn')
-	grav = indexExprReplace(grav, g'_jm', gamma'_jm')
-	grav = indexExprReplace(grav, g'_jn', gamma'_jn')
-	grav = indexExprReplace(grav, g'^it', beta'^i' / alpha^2)
-	grav = indexExprReplace(grav, g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
-	grav = indexExprReplace(grav, beta^2, gamma'_kl' * beta'^k' * beta'^l')
-	printbr(grav)
+	--[[ 
+	-- this should only take 4 statements (3 if symmetries are stored)
+	expr = indexExprReplace(expr, g'_tt', -alpha^2 + beta'^i' * beta'^j' * gamma'_ij')
+	expr = indexExprReplace(expr, g'_ti', beta'_i')
+	expr = indexExprReplace(expr, g'_it', beta'_i')
+	expr = indexExprReplace(expr, g'_ij', gamma'_ij')
+	
+	expr = indexExprReplace(expr, g'^tt', -1/alpha^2)
+	expr = indexExprReplace(expr, g'^ti', beta'_i' / alpha^2)
+	expr = indexExprReplace(expr, g'^it', beta'_i' / alpha^2)
+	expr = indexExprReplace(expr, g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
+	--]]
+	expr = indexExprReplace(expr, g'_tt', -alpha^2 + beta^2)
+	expr = indexExprReplace(expr, g'_jt', gamma'_jk' * beta'^k')
+	expr = indexExprReplace(expr, g'_mt', gamma'_mk' * beta'^k')
+	expr = indexExprReplace(expr, g'_tm', gamma'_mk' * beta'^k')
+	expr = indexExprReplace(expr, g'_tn', gamma'_nk' * beta'^k')
+	expr = indexExprReplace(expr, g'_mn', gamma'_mn')
+	expr = indexExprReplace(expr, g'_jm', gamma'_jm')
+	expr = indexExprReplace(expr, g'_jn', gamma'_jn')
+	expr = indexExprReplace(expr, g'^it', beta'^i' / alpha^2)
+	expr = indexExprReplace(expr, g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
+	expr = indexExprReplace(expr, beta^2, gamma'_kl' * beta'^k' * beta'^l')
+	printbr(expr)
 
 	printbr'simplify...'
-	grav = grav()
-	printbr(grav)
+	expr = expr()
+	printbr(expr)
 
 	-- TODO some kind of tensor-friendly :prune() or :simplify()
 	-- that keeps track of sum terms, and relabels them in some canonical form, and simplifies accordingly ?
 	printbr'relabel...'
 
-	grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl,t' * beta'^k' * beta'^l',
+	expr = replaceSubExpr(expr, -beta'^i' * gamma'_kl,t' * beta'^k' * beta'^l',
 								-beta'^i' * beta'^j' * beta'^k' * gamma'_jk,t')()
-	printbr(grav)
+	printbr(expr)
 
-	grav = replaceSubExpr(grav, -beta'^i' * beta'^j' * gamma'_kl' * beta'^k' * beta'^l_,j',
+	expr = replaceSubExpr(expr, -beta'^i' * beta'^j' * gamma'_kl' * beta'^k' * beta'^l_,j',
 								-beta'^i' * beta'^j' * gamma'_kl' * beta'^k_,j' * beta'^l')()
-	printbr(grav)
+	printbr(expr)
 
-	grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl' * beta'^k_,t' * beta'^l',
+	expr = replaceSubExpr(expr, -beta'^i' * gamma'_kl' * beta'^k_,t' * beta'^l',
 								-beta'^i' * beta'^j' * gamma'_jk' * beta'^k_,t')()
-	printbr(grav)
+	printbr(expr)
 
-	grav = replaceSubExpr(grav, -beta'^i' * gamma'_kl' * beta'^k' * beta'^l_,t',
+	expr = replaceSubExpr(expr, -beta'^i' * gamma'_kl' * beta'^k' * beta'^l_,t',
 								-beta'^i' * beta'^j' * gamma'_jk' * beta'^k_,t')()
-	printbr(grav)
+	printbr(expr)
 
-	grav = replaceSubExpr(grav, -2 * gamma'^ij' * alpha^2 * gamma'_jk' * beta'^k_,t',
+	expr = replaceSubExpr(expr, -2 * gamma'^ij' * alpha^2 * gamma'_jk' * beta'^k_,t',
 								-2 * alpha^2 * beta'^i_,t')()
-	printbr(grav)
+	printbr(expr)
 
-	grav = replaceSubExpr(grav, gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k' * beta'^l_,j',
+	expr = replaceSubExpr(expr, gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k' * beta'^l_,j',
 								gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k_,j' * beta'^l')()
-	printbr(grav)
+	printbr(expr)
+	
+	GammasForIndexes[index] = expr
 
 	printbr('for ', beta'^i':eq(0))
 
-	grav = replaceForAnyIndex(grav, beta'^i', 0)()
-	printbr(grav)
+	expr = replaceForAnyIndex(expr, beta'^i', 0)()
+	printbr(expr)
 end
+os.exit()
+
+-- ok now Riemann
+local indexes = table{
+	--R^t_ttt = 0
+	'^t_tti',
+	--R^t_tit = -R^t_tti
+	'^t_itt',
+	'^i_ttt',	-- will be similar to -R^t_itt
+	'^t_tij',
+	'^t_itj',
+	'^i_ttj',
+	--R^t_ijt = -R^t_itj
+	--R^i_tjt = -R^i_ttj
+	--R^i_jtt = 0
+	'^t_ijk',
+	'^i_tjk',
+	'^i_jtk',
+	--R^i_jkt = -R^i_jtk
+	'^i_jkl',
+}
+
+for _,index in ipairs(indexes) do
+	indexLetters = index:gsub('[^%a]', '')
+	
+	print'<hr>'
+	
+	local expr = R(index)
+	printbr(expr)
+
+	expr = expr:replace(
+		R'^a_bcd':reindex{[indexLetters] = 'abcd'}, 
+		(Gamma'^a_bd'',c' - Gamma'^a_bc'',d' + Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc'):reindex{[indexLetters] = 'abcd'})
+	printbr(expr)
+end
+
