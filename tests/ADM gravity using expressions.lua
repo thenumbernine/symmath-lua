@@ -99,13 +99,13 @@ local function replaceForAnyIndex(expr, from, to)
 end
 
 local indexes = table{
---	'^t_tt',
---	'^t_ti',
+	'^t_tt',
+	'^t_ti',
 	--Gamma^t_it = Gamma^t_ti
 	'^i_tt',
 	'^i_mt',
 	--Gamma^i_tm = Gamma^i_mt
---	'^t_im',
+	'^t_im',
 	'^i_mn',
 }
 local GammasForIndexes = table()
@@ -165,12 +165,16 @@ for _,index in ipairs(indexes) do
 	expr = indexExprReplace(expr, g'_tt', -alpha^2 + beta^2)
 	expr = indexExprReplace(expr, g'_jt', gamma'_jk' * beta'^k')
 	expr = indexExprReplace(expr, g'_mt', gamma'_mk' * beta'^k')
+	expr = indexExprReplace(expr, g'_ti', gamma'_ik' * beta'^k')
 	expr = indexExprReplace(expr, g'_tm', gamma'_mk' * beta'^k')
 	expr = indexExprReplace(expr, g'_tn', gamma'_nk' * beta'^k')
+	expr = indexExprReplace(expr, g'_im', gamma'_im')
 	expr = indexExprReplace(expr, g'_mn', gamma'_mn')
 	expr = indexExprReplace(expr, g'_jm', gamma'_jm')
 	expr = indexExprReplace(expr, g'_jn', gamma'_jn')
+	expr = indexExprReplace(expr, g'^tt', -1/alpha^2)
 	expr = indexExprReplace(expr, g'^it', beta'^i' / alpha^2)
+	expr = indexExprReplace(expr, g'^tj', beta'^j' / alpha^2)
 	expr = indexExprReplace(expr, g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
 	expr = indexExprReplace(expr, beta^2, gamma'_kl' * beta'^k' * beta'^l')
 	printbr(expr)
@@ -214,7 +218,6 @@ for _,index in ipairs(indexes) do
 	expr = replaceForAnyIndex(expr, beta'^i', 0)()
 	printbr(expr)
 end
-os.exit()
 
 -- ok now Riemann
 local indexes = table{
@@ -244,9 +247,15 @@ for _,index in ipairs(indexes) do
 	local expr = R(index)
 	printbr(expr)
 
+	printbr'substitute definition of Riemann curvature'
 	expr = expr:replace(
 		R'^a_bcd':reindex{[indexLetters] = 'abcd'}, 
 		(Gamma'^a_bd'',c' - Gamma'^a_bc'',d' + Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc'):reindex{[indexLetters] = 'abcd'})
+	printbr(expr)
+
+	printbr'split the index e into t and m'
+	expr = splitIndex(expr, 'e', {'t', 'm'})
+	expr = expr()
 	printbr(expr)
 end
 
