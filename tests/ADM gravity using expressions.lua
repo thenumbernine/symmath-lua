@@ -224,8 +224,8 @@ local indexes = table{
 	--R^t_ttt = 0
 	'^t_tti',
 	--R^t_tit = -R^t_tti
-	'^t_itt',
-	'^i_ttt',	-- will be similar to -R^t_itt
+	--R^t_itt = 0
+	--R^i_ttt = 0
 	'^t_tij',
 	'^t_itj',
 	'^i_ttj',
@@ -254,7 +254,20 @@ for _,index in ipairs(indexes) do
 	printbr(expr)
 
 	printbr'split the index e into t and m'
-	expr = splitIndex(expr, 'e', {'t', 'm'})
+	-- TODO FIXME splitIndex just duplicates whole expressions.
+	expr = expr:replace(
+		Gamma'^a_ec':reindex{[indexLetters] = 'abcd'}, 
+		(Gamma'^a_tc' + Gamma'^a_mc'):reindex{[indexLetters] = 'abcd'})
+	expr = expr:replace(
+		Gamma'^e_bd':reindex{[indexLetters] = 'abcd'}, 
+		(Gamma'^t_bd' + Gamma'^m_bd'):reindex{[indexLetters] = 'abcd'})
+	expr = expr:replace(
+		Gamma'^a_ed':reindex{[indexLetters] = 'abcd'}, 
+		(Gamma'^a_td' + Gamma'^a_nd'):reindex{[indexLetters] = 'abcd'})
+	expr = expr:replace(
+		Gamma'^e_bc':reindex{[indexLetters] = 'abcd'}, 
+		(Gamma'^t_bc' + Gamma'^n_bc'):reindex{[indexLetters] = 'abcd'})
+	printbr(expr)
 	expr = expr()
 	printbr(expr)
 end
