@@ -168,7 +168,7 @@ mul.visitorHandler = {
 			table.insert(expr, 1, Constant(cval))
 		else
 			if #expr == 1 then 
-				return prune:apply(expr[1]) 
+				return factorDivision:apply(expr[1]) 
 			end
 		end
 		
