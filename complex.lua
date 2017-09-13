@@ -83,7 +83,7 @@ function complex.__mul(a,b)
 	local bre, bim = complex(b):unpack()
 	return complex(
 		are * bre - aim * bim,
-		are * bim - aim * bre)
+		are * bim + aim * bre)
 end
 
 function complex.__div(a,b)
