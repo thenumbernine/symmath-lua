@@ -48,11 +48,16 @@ function Equation:unravel()
 	end
 
 	assert(lhs:dim() == rhs:dim())
+	local Tensor = require 'symmath.Tensor'
+	if Tensor.is(lhs) and Tensor.is(rhs) then
+		rhs = rhs:permute(lhs.variance)
+	end
 
 	local results = table()
 	for index in lhs:iter() do
 		results:insert(lhs[index]:eq(rhs[index]))
 	end
+	
 	return results
 end
 
