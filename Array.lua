@@ -82,9 +82,12 @@ function Array:set(index, value)
 	-- or just ignore it, since this is predominantly the implementation of __newindex, which has no return type?
 end
 
--- returns a for loop iterator that cycles across all indexes and values within the array
--- usage: for index,value in t:iter() do ... end
--- where #index == t:rank() and contains elements 1 <= index[i] <= t:dim()[i]
+--[[
+returns a for loop iterator that cycles across all indexes and values within the array
+usage: for index,value in t:iter() do ... end
+where #index == t:rank() and contains elements 1 <= index[i] <= t:dim()[i]
+cycles the first indexes (outer-most arrays) first
+--]]
 function Array:iter()
 	local dim = self:dim()
 	local n = #dim
@@ -106,6 +109,30 @@ function Array:iter()
 		end
 	end)
 end
+
+-- same as above but cycles the last indexes (inner-most arrays) first
+function Array:innerIter()
+	local dim = self:dim()
+	local n = #dim
+	
+	local index = {}
+	for i=1,n do
+		index[i] = 1
+	end
+	
+	return coroutine.wrap(function()
+		while true do
+			coroutine.yield(index, self:get(index))
+			for i=n,1,-1 do
+				index[i] = index[i] + 1
+				if index[i] <= dim[i].value then break end
+				index[i] = 1
+				if i == 1 then return end
+			end
+		end
+	end)
+end
+
 
 -- calculated rank was a great idea, except when the Array is dynamically constructed
 -- TODO, 'rank' refers to another property, so consider renaming this to 'order' or 'degree'

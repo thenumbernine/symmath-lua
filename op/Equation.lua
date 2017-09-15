@@ -54,7 +54,7 @@ function Equation:unravel()
 	end
 
 	local results = table()
-	for index in lhs:iter() do
+	for index in lhs:innerIter() do
 		results:insert(lhs[index]:eq(rhs[index]))
 	end
 	
