@@ -86,18 +86,22 @@ end
 
 	local min = math.min(m,n)
 
+	-- i is the column, which increases across the matrix
+	-- row is the row, which only increases as we find a new linearly independent column
+	local row = 1
 	for i=1,min do
 		-- if we have a zero on the diagonal...
-		if A[i][i] == Constant(0) then
+		local found = true
+		if A[row][i] == Constant(0) then
 			-- pivot with a row beneath this one
-			local found = false
-			for j=i+1,m do
+			found = false
+			for j=row+1,m do
 				if A[j][i] ~= Constant(0) then
 					for k=1,n do
-						A[j][k], A[i][k] = A[i][k], A[j][k]
+						A[j][k], A[row][k] = A[row][k], A[j][k]
 					end
 					for k=1,invdim[2].value do
-						AInv[j][k], AInv[i][k] = AInv[i][k], AInv[j][k]
+						AInv[j][k], AInv[row][k] = AInv[row][k], AInv[j][k]
 					end
 					A = simplify(A)
 					AInv = simplify(AInv)
@@ -105,50 +109,52 @@ end
 					break
 				end
 			end
-			if not found then
-				-- return the progress if things fail
-				return AInv, A, "couldn't find a row to pivot"
-			end
 		end
-		-- rescale diagonal
-		if A[i][i] ~= Constant(1) then
-			-- rescale column
-			local s = A[i][i]
---print('rescaling row '..i..' by \\('..(1/s):simplify()..'\\)<br>')
-			for j=1,n do
-				A[i][j] = A[i][j] / s
+		if not found then
+			-- return the progress if things fail
+			--return AInv, A, "couldn't find a row to pivot"
+		else
+			-- rescale diagonal
+			if A[row][i] ~= Constant(1) then
+				-- rescale column
+				local s = A[row][i]
+	--print('rescaling row '..i..' by \\('..(1/s):simplify()..'\\)<br>')
+				for j=1,n do
+					A[row][j] = A[row][j] / s
+				end
+				for j=1,invdim[2].value do
+					AInv[row][j] = AInv[row][j] / s
+				end
+				A = simplify(A)
+				AInv = simplify(AInv)
+	--print('\\(A =\\) '..A..', \\(A^{-1}\\) = '..AInv..'<br>')
+				if callback then callback(AInv, A) end
 			end
-			for j=1,invdim[2].value do
-				AInv[i][j] = AInv[i][j] / s
-			end
-			A = simplify(A)
-			AInv = simplify(AInv)
---print('\\(A =\\) '..A..', \\(A^{-1}\\) = '..AInv..'<br>')
-			if callback then callback(AInv, A) end
-		end
-		-- eliminate columns apart from diagonal
-		for j=1,m do
-			if j ~= i then
-				if A[j][i] ~= Constant(0) then
-					local s = A[j][i]
---print('subtracting \\('..s..'\\) to row '..j..'<br>')
-					for k=1,n do
-						A[j][k] = A[j][k] - s * A[i][k]
+			-- eliminate columns apart from diagonal
+			for j=1,m do
+				if j ~= row then
+					if A[j][i] ~= Constant(0) then
+						local s = A[j][i]
+	--print('subtracting \\('..s..'\\) to row '..j..'<br>')
+						for k=1,n do
+							A[j][k] = A[j][k] - s * A[row][k]
+						end
+						for k=1,invdim[2].value do
+							AInv[j][k] = AInv[j][k] - s * AInv[row][k]
+						end
+	--print('\\(A = \\)'..A..'<br>')
+	--print('simplifying A...<br>')
+						A = simplify(A)
+	--print('\\(A = \\)'..A..'<br>')
+	--print('\\(A^{-1} = \\)'..AInv..'<br>')
+	--print('simplifying A^{-1}...<br>')
+						AInv = simplify(AInv)
+	--print('\\(A^{-1} = \\)'..AInv..'<br>')
+						if callback then callback(AInv, A) end
 					end
-					for k=1,invdim[2].value do
-						AInv[j][k] = AInv[j][k] - s * AInv[i][k]
-					end
---print('\\(A = \\)'..A..'<br>')
---print('simplifying A...<br>')
-					A = simplify(A)
---print('\\(A = \\)'..A..'<br>')
---print('\\(A^{-1} = \\)'..AInv..'<br>')
---print('simplifying A^{-1}...<br>')
-					AInv = simplify(AInv)
---print('\\(A^{-1} = \\)'..AInv..'<br>')
-					if callback then callback(AInv, A) end
 				end
 			end
+			row = row + 1
 		end
 	end
 
