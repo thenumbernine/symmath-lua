@@ -251,11 +251,36 @@ function Expression:replaceIndex(find, repl, cond)
 	-- sumsymbols = m
 
 	if TensorRef.is(find) then
-
-		-- todo repeat symbols so long as we aren't entering into an op.mul ...
+		
 		local newsumusedalready = table()
+		
+		local mul = require 'symmath.op.mul'
+		local function rmap(expr, callback)
+			if expr.clone then expr = expr:clone() end
+		
+			--[[
+			while traversing parent-first,
+			if you come across a mul operation,
+			push and pop while new sum symbols you have already used.
+			This means not using self:map since it is always child-first, or expanding on it
+			--]]
+			local pushnewsumusedalready = table(newsumusedalready)
+			local ismul = mul.is(expr)
+			
+			for i=1,#expr do
+				expr[i] = rmap(expr[i], callback)
+			
+				if not ismul then
+					newsumusedalready = table(pushnewsumusedalready)
+				end
+			end
 
-		return self:map(function(x)
+			expr = callback(expr) or expr
+		
+			return expr
+		end
+
+		return rmap(self, function(x)
 			if TensorRef.is(x) 
 			and x[1] == find[1]
 			and #x == #find
