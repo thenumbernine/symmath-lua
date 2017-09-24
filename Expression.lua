@@ -317,7 +317,10 @@ and simplification can work better
 function Expression:symmetrizeIndexes(var, indexes)
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	return self:map(function(x)
-		if TensorRef.is(x) then
+		if TensorRef.is(x) 
+		and x[1] == var
+		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
+		then
 			local sorted = table.map(indexes, function(i)
 				return x[i+1].symbol
 			end):sort()
