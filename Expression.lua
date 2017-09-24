@@ -187,25 +187,128 @@ function Expression:subst(...)
 	for i=1,select('#', ...) do
 		local eqn = select(i, ...)
 		assert(eq.is(eqn), "Expression:subst() argument "..i.." is not an equals operator") 
-		
-		local lhs = eqn:lhs()
-		local rhs = eqn:rhs()
-	
-		-- special case for TensorRef's -- try replacing all index permutations
-		local TensorRef = require 'symmath.tensor.TensorRef'
-		if lhs:isa(TensorRef) then
-			-- TODO
-			-- for all permutations of indexes that show up in 'result' ...
-			-- ... length the # of indexes to lhs ...
-			-- ... reindex both lhs and rhs to that permutation
-			-- ... then try to replace 
-			result = result:replace(lhs, rhs)
-		else
-			result = result:replace(lhs, rhs)
-		end
+		result = result:replace(eqn:lhs(), eqn:rhs())
 	end
 	return result
 end
+
+--[[
+this is like subst but pattern-matches indexes
+--]]
+function Expression:substIndex(...)
+	local eq = require 'symmath.op.eq'
+	local result = self:clone()
+	for i=1,select('#', ...) do
+		local eqn = select(i, ...)
+		assert(eq.is(eqn), "Expression:subst() argument "..i.." is not an equals operator") 
+		result = result:replaceIndex(eqn:lhs(), eqn:rhs())
+	end
+	return result
+end
+
+--[[
+this is like replace()
+except for TensorRefs it pattern matches indexes
+--]]
+function Expression:replaceIndex(find, repl, cond)
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	
+	local rfindsymbols = table()
+	local function rfind(x)
+		if TensorRef.is(x) then
+			for i=2,#x do
+				rfindsymbols[x[i].symbol] = true
+			end
+		elseif Expression.is(x) then
+			for i=1,#x do
+				rfind(x[i])
+			end
+		end
+	end
+	rfind(self)
+	local selfsymbols = rfindsymbols:keys()
+	rfindsymbols = table()
+	rfind(find)
+	local findsymbols = rfindsymbols:keys()
+	rfindsymbols = table()
+	rfind(repl)
+	local replsymbols = rfindsymbols:keys()
+
+	local sumsymbols = table()	
+	if #replsymbols > #findsymbols then
+		for _,replsymbol in ipairs(replsymbols) do
+			if not findsymbols:find(replsymbol) 
+			and not sumsymbols:find(replsymbol)
+			then
+				sumsymbols:insert(replsymbol)
+			end
+		end
+	end
+
+	-- for Gamma^i_jk = gamma^im Gamma_mjk
+	-- findsymbols = ijk
+	-- replsymbols = ijkm
+	-- sumsymbols = m
+
+	if TensorRef.is(find) then
+
+		-- todo repeat symbols so long as we aren't entering into an op.mul ...
+		local newsumusedalready = table()
+
+		return self:map(function(x)
+			if TensorRef.is(x) 
+			and x[1] == find[1]
+			and #x == #find
+			then
+				local xsymbols = range(2,#x):map(function(i)
+					return x[i].symbol
+				end)
+				-- reindex will convert xsymbols to findsymbols
+
+--local tolua = require 'ext.tolua'
+
+				-- find new symbols that aren't in selfsymbols
+				local newsumsymbols = table()
+				local function getnewsymbol()
+					local already = {}
+					for _,s in ipairs(selfsymbols) do already[s] = true end
+					for _,s in ipairs(xsymbols) do already[s] = true end
+					for _,s in ipairs(newsumsymbols) do already[s] = true end
+					for _,s in ipairs(newsumusedalready) do already[s] = true end
+					-- TODO pick symbols from the basis associated with the to-be-replaced index
+					-- that means excluding those from all other basis
+					for i=1,26 do
+						local p = string.char(('a'):byte()+i-1)
+						if not already[p] then
+							return p
+						end
+					end
+				end
+				for i=1,#sumsymbols do
+					newsumsymbols:insert(getnewsymbol())
+				end
+				newsumusedalready:append(newsumsymbols)
+--print('selfsymbols', tolua(selfsymbols))
+--print('xsymbols', tolua(xsymbols))
+--print('newsumsumbols', tolua(newsumsymbols))
+
+-- TODO also go through and all the other replsymbols
+-- (i.e. sum indexes)
+-- and compare them to all indexes in self
+-- and rename them to not collide
+				local result = repl:reindex{
+					[xsymbols:concat()..newsumsymbols:concat()] = 
+						findsymbols:concat()..sumsymbols:concat()
+				}
+			
+				return result
+			end
+		end)
+	else
+		return self:replace(find, repl, cond)
+	end
+end
+
 
 -- adding tensor indexing to *all* expressions:
 -- once I add function evaluation I'm sure I'll regret this decision
@@ -313,10 +416,21 @@ takes all instances of var'_ijk...'
 and sorts the indexes in 'indexes'
 so that all g_ji's turn into g_ij's
 and simplification can work better
+
+another thing symmetrizing can do ...
+g^kl (d_klj + d_jlk - d_ljk)  symmetrize g {1,2}
+... not only sort g^kl
+but also sort all indexes in all multiplied expressions which use 'k' or 'l'
+so this would become
+g^kl (d_klj + d_jkl - d_kjl)
+then another symmetrize d {2,3} gives us
+g^kl (d_kjl + d_jkl - d_kjl)
+g^kl d_jkl
+
 --]]
 function Expression:symmetrizeIndexes(var, indexes)
-	local TensorRef = require 'symmath.tensor.TensorRef'
 	return self:map(function(x)
+		local TensorRef = require 'symmath.tensor.TensorRef'
 		if TensorRef.is(x) 
 		and x[1] == var
 		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
@@ -326,6 +440,53 @@ function Expression:symmetrizeIndexes(var, indexes)
 			end):sort()
 			for i,sorted in ipairs(sorted) do
 				x[indexes[i]+1].symbol = sorted
+			end
+		end
+		
+		-- if there's a var^ijk... anywhere in the mul
+		-- then look for matching indexes in any other TensorRef's in the mul
+		local mul = require 'symmath.op.mul'
+		if mul.is(x) then
+			local found
+			local sorted
+			for i=1,#x do
+				local y = x[i]
+				if TensorRef.is(y)
+				and y[1] == var
+				and #y >= table.sup(indexes)+1
+				then
+					sorted = table.map(indexes, function(i)
+						return y[i+1].symbol
+					end):sort()
+					for i,sorted in ipairs(sorted) do
+						y[indexes[i]+1].symbol = sorted
+					end				
+					
+					found = true
+					break
+				end
+			end
+			
+			if found then
+				return x:map(function(y)
+					if TensorRef.is(y) then
+						local indexes = table()
+						local indexSymbols = table()
+						for j=2,#y do
+							local sym = y[j].symbol
+							if sorted:find(sym) then
+								indexes:insert(j)
+								indexSymbols:insert(sym)
+							end
+						end
+						if #indexSymbols >= 2 then
+							indexSymbols:sort()
+							for i,j in ipairs(indexes) do
+								y[j].symbol = indexSymbols[i]
+							end
+						end
+					end
+				end)
 			end
 		end
 	end)

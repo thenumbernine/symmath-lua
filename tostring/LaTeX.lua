@@ -119,7 +119,9 @@ LaTeX.lookupTable = {
 		-- TODO if the second term is small enough ...
 		-- for now, just look for single constants or Variables (or both?)
 		local a,b = table.unpack(expr)
-		if add.is(a) then
+		if add.is(a) 
+		or (a[1] and add.is(a[1]))
+		then
 			if Constant.is(b) 
 			or Variable.is(b)
 			then

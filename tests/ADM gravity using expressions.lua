@@ -16,29 +16,12 @@ local function splitIndex(expr, from, toSet)
 	return result
 end
 
--- this takes the combined comma derivative references and splits off the comma parts into separate references
--- it is very helpful for replacing tensors
-local function splitOffDerivRefs(expr)
-	return expr:map(function(x)
-		if TensorRef.is(x) then
-			local derivIndex = table.sub(x, 2):find(nil, function(ref)
-				return ref.derivative
-			end) 
-			if derivIndex and derivIndex > 1 then
-				return TensorRef(
-					TensorRef(x[1], table.unpack(x, 2, derivIndex)),
-					table.unpack(x, derivIndex+1)
-				)
-			end
-		end
-	end)
-end
 
 -- this will work like :replace()
 -- except I'm going to split off derivative TensorRef's so that substitution can properly work 
 -- TODO check all combinations of to's indexes against from's indexes
 local function indexExprReplace(expr, from, to)
-	expr = splitOffDerivRefs(expr)
+	expr = expr:splitOffDerivIndexes()
 	return expr:replace(from, to)
 end
 
@@ -64,7 +47,7 @@ local function replaceForAnyIndex(expr, from, to)
 	-- but if you were, an easy fix would be to just call splitOffDerivRefs on 'from' to get it into 'canonical form'
 	assert(not table.find( table.sub(from, 2), nil, function(x) return x.derivative end))	
 	-- separate deriv references so substitutions can be performed on the original tensor
-	expr = splitOffDerivRefs(expr)
+	expr = expr:splitOffDerivIndexes()
 	return expr:map(function(x)
 		-- if we find a tensor 
 		if TensorRef.is(x) 
