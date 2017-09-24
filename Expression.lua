@@ -284,6 +284,50 @@ function Expression:reindex(args)
 	end)
 end
 
+--[[
+here's another tensor-specific function that I want to apply to both Tensor and Variable
+so I'm putting here ...
+
+this takes the combined comma derivative references and splits off the comma parts into separate references
+it is very helpful for replacing tensors
+--]]
+function Expression:splitOffDerivIndexes()
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	return self:map(function(x)
+		if TensorRef.is(x) then
+			local derivIndex = table.sub(x, 2):find(nil, function(ref)
+				return ref.derivative
+			end) 
+			if derivIndex and derivIndex > 1 then
+				return TensorRef(
+					TensorRef(x[1], table.unpack(x, 2, derivIndex)),
+					table.unpack(x, derivIndex+1)
+				)
+			end
+		end
+	end)
+end
+
+--[[
+takes all instances of var'_ijk...' 
+and sorts the indexes in 'indexes'
+so that all g_ji's turn into g_ij's
+and simplification can work better
+--]]
+function Expression:symmetrizeIndexes(var, indexes)
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	return self:map(function(x)
+		if TensorRef.is(x) then
+			local sorted = table.map(indexes, function(i)
+				return x[i+1].symbol
+			end):sort()
+			for i,sorted in ipairs(sorted) do
+				x[indexes[i]+1].symbol = sorted
+			end
+		end
+	end)
+end
+
 
 -- hmm, rules ...
 -- static function, 'self' is the class

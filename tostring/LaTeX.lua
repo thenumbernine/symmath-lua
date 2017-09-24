@@ -113,9 +113,26 @@ LaTeX.lookupTable = {
 		return tableConcat(res, expr:getSepStr())
 	end,
 	[require 'symmath.op.div'] = function(self, expr)
+		local add = require 'symmath.op.add'
+		local Constant = require 'symmath.Constant'
+		local Variable = require 'symmath.Variable'
+		-- TODO if the second term is small enough ...
+		-- for now, just look for single constants or Variables (or both?)
+		local a,b = table.unpack(expr)
+		if add.is(a) then
+			if Constant.is(b) 
+			or Variable.is(b)
+			then
+				return table{
+					table{'\\frac', 1, self:apply(b)},
+					table{'(', table(self:apply(a), {force=true}), ')'},
+				}
+			end
+		end
+
 		return table{'\\frac', 
-			table(self:apply(expr[1]), {force=true}),
-			table(self:apply(expr[2]), {force=true})
+			table(self:apply(a), {force=true}),
+			table(self:apply(b), {force=true})
 		}
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
