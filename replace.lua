@@ -11,7 +11,9 @@ local function replace(expr, find, repl, condition)
 	if type(find) == 'number' then
 		find = Constant(find)
 	end
-	if type(repl) == 'number' then
+	if repl == nil then 
+		error("expected to have something to replace, got nil")
+	elseif type(repl) == 'number' then
 		repl = Constant(repl)
 	end
 	
