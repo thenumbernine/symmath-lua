@@ -53,22 +53,26 @@ function Constant:evaluateDerivative(deriv, ...)
 	return Constant(0)
 end
 
-Constant.visitorHandler = {
-	Eval = function(eval, expr)
-		return expr.value
-	end,
+Constant.rules = {
+	Eval = {
+		{apply = function(eval, expr)
+			return expr.value
+		end},
+	},
 
-	Tidy = function(tidy, expr)
-		-- for formatting's sake ...
-		if expr.value == 0 then	-- which could possibly be -0 ...
-			return Constant(0)
-		end
-		
-		-- (-c) => -(c)
-		if complex.unpack(expr.value) < 0 then
-			return tidy:apply(-Constant(-expr.value))
-		end
-	end,
+	Tidy = {
+		{apply = function(tidy, expr)
+			-- for formatting's sake ...
+			if expr.value == 0 then	-- which could possibly be -0 ...
+				return Constant(0)
+			end
+			
+			-- (-c) => -(c)
+			if complex.unpack(expr.value) < 0 then
+				return tidy:apply(-Constant(-expr.value))
+			end
+		end},
+	},
 }
 
 -- helper

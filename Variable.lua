@@ -44,14 +44,16 @@ function Variable:depends(...)
 	self.dependentVars = table{...}
 end
 
-Variable.visitorHandler = {
-	Eval = function(eval, expr)
-		if expr.value then 
-			assert(type(expr.value) == 'number')
-			return expr.value
-		end
-		error("Eval: Variable "..tostring(expr).." wasn't given a value, or replace()'d with a Constant")
-	end,
+Variable.rules = {
+	Eval = {
+		{apply = function(eval, expr)
+			if expr.value then 
+				assert(type(expr.value) == 'number')
+				return expr.value
+			end
+			error("Eval: Variable "..tostring(expr).." wasn't given a value, or replace()'d with a Constant")
+		end},
+	},
 }
 
 return Variable

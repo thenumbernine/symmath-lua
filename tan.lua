@@ -16,13 +16,15 @@ function tan:reverse(soln, index)
 	return require 'symmath.atan'(soln)
 end
 
-tan.visitorHandler = {
-	Prune = function(prune, expr)
-		local sin = require 'symmath.sin'
-		local cos = require 'symmath.cos'
-		local th = expr[1]
-		return prune:apply(sin(th:clone()) / cos(th:clone()))
-	end,
+tan.rules = {
+	Prune = {
+		{apply = function(prune, expr)
+			local sin = require 'symmath.sin'
+			local cos = require 'symmath.cos'
+			local th = expr[1]
+			return prune:apply(sin(th:clone()) / cos(th:clone()))
+		end},
+	},
 }
 
 return tan

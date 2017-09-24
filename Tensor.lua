@@ -702,7 +702,7 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 		local metricInverse = (dstBasis and dstBasis.metricInverse) or (srcBasis and srcBasis.metricInverse)
 		
 		if not metric then
-			error("tried to raise/lower an index without a metric")
+			error("tried to raise/lower an index without a metric:"..tostring(self))
 		end
 	
 		local tdim = t:dim()

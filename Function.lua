@@ -14,13 +14,15 @@ function Function:evaluateConstants()
 	end
 end
 
-Function.visitorHandler = {
-	Eval = function(eval, expr)
-		return expr.func(table.map(expr, function(node, k)
-			if type(k) ~= 'number' then return end
-			return eval:apply(node)
-		end):unpack())
-	end,
+Function.rules = {
+	Eval = {
+		{apply = function(eval, expr)
+			return expr.func(table.map(expr, function(node, k)
+				if type(k) ~= 'number' then return end
+				return eval:apply(node)
+			end):unpack())
+		end},
+	},
 }
 
 return Function

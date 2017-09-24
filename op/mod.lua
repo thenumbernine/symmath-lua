@@ -15,11 +15,13 @@ function mod:evaluateDerivative(deriv, ...)
 	return deriv(a, ...)
 end
 
-mod.visitorHandler = {
-	Eval = function(eval, expr)
-		local a, b = table.unpack(expr)
-		return eval:apply(a) % eval:apply(b)
-	end,
+mod.rules = {
+	Eval = {
+		{apply = function(eval, expr)
+			local a, b = table.unpack(expr)
+			return eval:apply(a) % eval:apply(b)
+		end},
+	},
 }
 
 return mod

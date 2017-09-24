@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 
--- hmm this was working before I moved pow:expand() into pow.visitorHandler.Expand ...
+-- hmm this was working before I moved pow:expand() into pow.rules.Expand ...
 
 require 'ext'
 require 'symmath'.setup()

@@ -111,7 +111,7 @@ local indexes = table{
 local GammasForIndexes = table()
 
 for _,index in ipairs(indexes) do
-	indexLetters = index:gsub('[^%a]', '')
+	local indexLetters = index:gsub('[^%a]', '')
 	
 	print'<hr>'
 	
@@ -240,7 +240,7 @@ local indexes = table{
 }
 
 for _,index in ipairs(indexes) do
-	indexLetters = index:gsub('[^%a]', '')
+	local indexLetters = index:gsub('[^%a]', '')
 	
 	print'<hr>'
 	

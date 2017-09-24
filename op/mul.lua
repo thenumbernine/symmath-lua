@@ -104,331 +104,341 @@ function mul:distribute()
 	end
 end
 
-mul.visitorHandler = {
-	Eval = function(eval, expr)
-		local result = 1
-		for _,x in ipairs(expr) do
-			result = result * eval:apply(x)
-		end
-		return result
-	end,
+mul.rules = {
+	Eval = {
+		{apply = function(eval, expr)
+			local result = 1
+			for _,x in ipairs(expr) do
+				result = result * eval:apply(x)
+			end
+			return result
+		end},
+	},
 
-	Expand = function(expand, expr)
-		local dstr = expr:distribute()
-		if dstr then return expand:apply(dstr) end
-	end,
+	Expand = {
+		{apply = function(expand, expr)
+			local dstr = expr:distribute()
+			if dstr then return expand:apply(dstr) end
+		end},
+	},
 
-	FactorDivision = function(factorDivision, expr)
-		local Constant = require 'symmath.Constant'
-		local div = require 'symmath.op.div'
-		
-		-- first time processing we want to simplify()
-		--  to remove powers and divisions
-		--expr = expr:simplify()
-		-- but not recursively ... hmm ...
-		
-		-- flatten multiplications
-		local flat = expr:flatten()
-		if flat then return factorDivision:apply(flat) end
-
-		-- distribute multiplication
-		local dstr = expr:distribute()
-		if dstr then return factorDivision:apply(dstr) end
-
-		-- [[ same as Prune:
-
-		-- push all fractions to the left
-		for i=#expr,2,-1 do
-			if div.is(expr[i])
-			and Constant.is(expr[i][1])
-			and Constant.is(expr[i][2])
-			then
-				table.insert(expr, 1, table.remove(expr, i))
-			end
-		end
-
-		-- push all Constants to the lhs, sum as we go
-		local cval = 1
-		for i=#expr,1,-1 do
-			if Constant.is(expr[i]) then
-				cval = cval * table.remove(expr, i).value
-			end
-		end
-		
-		-- if it's all constants then return what we got
-		if #expr == 0 then 
-			return Constant(cval) 
-		end
-		
-		if cval == 0 then 
-			return Constant(0) 
-		end
-		
-		if cval ~= 1 then
-			table.insert(expr, 1, Constant(cval))
-		else
-			if #expr == 1 then 
-				return factorDivision:apply(expr[1]) 
-			end
-		end
-		
-		--]]	
-	end,
-
-	Prune = function(prune, expr)	
-		local Constant = require 'symmath.Constant'
-		local pow = require 'symmath.op.pow'
-		local div = require 'symmath.op.div'
-		
-		-- flatten multiplications
-		local flat = expr:flatten()
-		if flat then return prune:apply(flat) end
-		
-		-- move unary minuses up
-		--[[ pruning unm immediately
-		do
-			local unm = require 'symmath.op.unm'
-			local unmCount = 0
-			for i=1,#expr do
-				local ch = expr[i]
-				if unm.is(ch) then
-					unmCount = unmCount + 1
-					expr[i] = ch[1]
-				end
-			end
-			if unmCount % 2 == 1 then
-				return -prune:apply(expr)	-- move unm outside and simplify what's left
-			elseif unmCount ~= 0 then
-				return prune:apply(expr)	-- got an even number?  remove it and simplify this
-			end
-		end
-		--]]
-
-		-- push all fractions to the left
-		for i=#expr,2,-1 do
-			if div.is(expr[i])
-			and Constant.is(expr[i][1])
-			and Constant.is(expr[i][2])
-			then
-				table.insert(expr, 1, table.remove(expr, i))
-			end
-		end
-
-		-- push all Constants to the lhs, sum as we go
-		local cval = 1
-		for i=#expr,1,-1 do
-			if Constant.is(expr[i]) then
-				cval = cval * table.remove(expr, i).value
-			end
-		end
-		
-		-- if it's all constants then return what we got
-		if #expr == 0 then 
-			return Constant(cval) 
-		end
-		
-		if cval == 0 then 
-			return Constant(0) 
-		end
-		
-		if cval ~= 1 then
-			table.insert(expr, 1, Constant(cval))
-		else
-			if #expr == 1 then 
-				return prune:apply(expr[1]) 
-			end
-		end
-
-		-- [[ and now for Matrix*Matrix multiplication ...
-		for i=#expr,2,-1 do
-			local rhs = expr[i]
-			local lhs = expr[i-1]
-		
-			local result
-			if lhs.pruneMul then
-				result = lhs.pruneMul(lhs, rhs)
-			elseif rhs.pruneMul then
-				result = rhs.pruneMul(lhs, rhs)
-			end
-			if result then
-				table.remove(expr, i)
-				expr[i-1] = result
-				if #expr == 1 then expr = expr[1] end
-				return prune:apply(expr)
-			end
-		end
-		--]]
-
-		-- [[ a^m * a^n => a^(m + n)
-		do
-			local modified = false
-			local i = 1
-			while i <= #expr do
-				local x = expr[i]
-				local base
-				local power
-				if pow.is(x) then
-					base = x[1]
-					power = x[2]
-				else
-					base = x
-					power = Constant(1)
-				end
-				
-				if base then
-					local j = i + 1
-					while j <= #expr do
-						local x2 = expr[j]
-						local base2
-						local power2
-						if pow.is(x2) then
-							base2 = x2[1]
-							power2 = x2[2]
-						else
-							base2 = x2
-							power2 = Constant(1)
-						end
-						if base2 == base then
-							modified = true
-							table.remove(expr, j)
-							j = j - 1
-							power = power + power2
-						end
-						j = j + 1
-					end
-					if modified then
-						expr[i] = base ^ power
-					end
-				end
-				i = i + 1
-			end
-			if modified then
-				if #expr == 1 then expr = expr[1] end
-				return prune:apply(expr)
-			end
-		end
-		--]]
-		
-		-- [[ factor out denominators
-		-- a * b * (c / d) => (a * b * c) / d
-		--  generalization:
-		-- a^m * b^n * (c/d)^p = (a^m * b^n * c^p) / d^p
-		do
-			local uniqueDenomIndexes = table()
+	FactorDivision = {
+		{apply = function(factorDivision, expr)
+			local Constant = require 'symmath.Constant'
+			local div = require 'symmath.op.div'
 			
-			local denoms = table()
-			local powers = table()
-			local bases = table()
+			-- first time processing we want to simplify()
+			--  to remove powers and divisions
+			--expr = expr:simplify()
+			-- but not recursively ... hmm ...
 			
-			for i=1,#expr do
-				-- decompose expressions of the form 
-				--  (base / denom) ^ power
-				local base = expr[i]
-				local power = Constant(1)
-				local denom = Constant(1)
+			-- flatten multiplications
+			local flat = expr:flatten()
+			if flat then return factorDivision:apply(flat) end
 
-				if pow.is(base) then
-					base, power = table.unpack(base)
-				end
-				if div.is(base) then
-					base, denom = table.unpack(base)
-				end
-				if denom ~= Constant(1) then
-					uniqueDenomIndexes:insert(i)
-				end
+			-- distribute multiplication
+			local dstr = expr:distribute()
+			if dstr then return factorDivision:apply(dstr) end
 
-				denoms:insert(denom)
-				powers:insert(power)
-				bases:insert(base)
+			-- [[ same as Prune:
+
+			-- push all fractions to the left
+			for i=#expr,2,-1 do
+				if div.is(expr[i])
+				and Constant.is(expr[i][1])
+				and Constant.is(expr[i][2])
+				then
+					table.insert(expr, 1, table.remove(expr, i))
+				end
+			end
+
+			-- push all Constants to the lhs, sum as we go
+			local cval = 1
+			for i=#expr,1,-1 do
+				if Constant.is(expr[i]) then
+					cval = cval * table.remove(expr, i).value
+				end
 			end
 			
-			if #uniqueDenomIndexes > 0 then	
-				
-				local num
-				if #bases == 1 then
-					num = bases[1]
-					if powers[1] ~= Constant(1) then
-						num = num ^ powers[1]
+			-- if it's all constants then return what we got
+			if #expr == 0 then 
+				return Constant(cval) 
+			end
+			
+			if cval == 0 then 
+				return Constant(0) 
+			end
+			
+			if cval ~= 1 then
+				table.insert(expr, 1, Constant(cval))
+			else
+				if #expr == 1 then 
+					return factorDivision:apply(expr[1]) 
+				end
+			end
+			
+			--]]	
+		end},
+	},
+
+	Prune = {
+		{apply = function(prune, expr)	
+			local Constant = require 'symmath.Constant'
+			local pow = require 'symmath.op.pow'
+			local div = require 'symmath.op.div'
+			
+			-- flatten multiplications
+			local flat = expr:flatten()
+			if flat then return prune:apply(flat) end
+			
+			-- move unary minuses up
+			--[[ pruning unm immediately
+			do
+				local unm = require 'symmath.op.unm'
+				local unmCount = 0
+				for i=1,#expr do
+					local ch = expr[i]
+					if unm.is(ch) then
+						unmCount = unmCount + 1
+						expr[i] = ch[1]
 					end
-				else
-					num = bases:map(function(base,i)
-						if powers[i] == Constant(1) then
-							return base
-						else
-							return base ^ powers[i]
-						end
-					end)
-					assert(#num > 0)
-					if #num == 1 then
-						num = num[1]
+				end
+				if unmCount % 2 == 1 then
+					return -prune:apply(expr)	-- move unm outside and simplify what's left
+				elseif unmCount ~= 0 then
+					return prune:apply(expr)	-- got an even number?  remove it and simplify this
+				end
+			end
+			--]]
+
+			-- push all fractions to the left
+			for i=#expr,2,-1 do
+				if div.is(expr[i])
+				and Constant.is(expr[i][1])
+				and Constant.is(expr[i][2])
+				then
+					table.insert(expr, 1, table.remove(expr, i))
+				end
+			end
+
+			-- push all Constants to the lhs, sum as we go
+			local cval = 1
+			for i=#expr,1,-1 do
+				if Constant.is(expr[i]) then
+					cval = cval * table.remove(expr, i).value
+				end
+			end
+			
+			-- if it's all constants then return what we got
+			if #expr == 0 then 
+				return Constant(cval) 
+			end
+			
+			if cval == 0 then 
+				return Constant(0) 
+			end
+			
+			if cval ~= 1 then
+				table.insert(expr, 1, Constant(cval))
+			else
+				if #expr == 1 then 
+					return prune:apply(expr[1]) 
+				end
+			end
+
+			-- [[ and now for Matrix*Matrix multiplication ...
+			for i=#expr,2,-1 do
+				local rhs = expr[i]
+				local lhs = expr[i-1]
+			
+				local result
+				if lhs.pruneMul then
+					result = lhs.pruneMul(lhs, rhs)
+				elseif rhs.pruneMul then
+					result = rhs.pruneMul(lhs, rhs)
+				end
+				if result then
+					table.remove(expr, i)
+					expr[i-1] = result
+					if #expr == 1 then expr = expr[1] end
+					return prune:apply(expr)
+				end
+			end
+			--]]
+
+			-- [[ a^m * a^n => a^(m + n)
+			do
+				local modified = false
+				local i = 1
+				while i <= #expr do
+					local x = expr[i]
+					local base
+					local power
+					if pow.is(x) then
+						base = x[1]
+						power = x[2]
 					else
-						num = mul(num:unpack())
+						base = x
+						power = Constant(1)
 					end
-				end
-				
-				local denom
-				if #uniqueDenomIndexes == 1 then
-					local i = uniqueDenomIndexes[1]
-					denom = denoms[i]
-					if powers[i] ~= Constant(1) then
-						denom = denom^powers[i]
-					end
-				elseif #denoms > 1 then
-					denom = mul(table.unpack(uniqueDenomIndexes:map(function(i)
-						if powers[i] == Constant(1) then
-							return denoms[i]
-						else
-							return denoms[i]^powers[i]
+					
+					if base then
+						local j = i + 1
+						while j <= #expr do
+							local x2 = expr[j]
+							local base2
+							local power2
+							if pow.is(x2) then
+								base2 = x2[1]
+								power2 = x2[2]
+							else
+								base2 = x2
+								power2 = Constant(1)
+							end
+							if base2 == base then
+								modified = true
+								table.remove(expr, j)
+								j = j - 1
+								power = power + power2
+							end
+							j = j + 1
 						end
-					end)))
+						if modified then
+							expr[i] = base ^ power
+						end
+					end
+					i = i + 1
+				end
+				if modified then
+					if #expr == 1 then expr = expr[1] end
+					return prune:apply(expr)
+				end
+			end
+			--]]
+			
+			-- [[ factor out denominators
+			-- a * b * (c / d) => (a * b * c) / d
+			--  generalization:
+			-- a^m * b^n * (c/d)^p = (a^m * b^n * c^p) / d^p
+			do
+				local uniqueDenomIndexes = table()
+				
+				local denoms = table()
+				local powers = table()
+				local bases = table()
+				
+				for i=1,#expr do
+					-- decompose expressions of the form 
+					--  (base / denom) ^ power
+					local base = expr[i]
+					local power = Constant(1)
+					local denom = Constant(1)
+
+					if pow.is(base) then
+						base, power = table.unpack(base)
+					end
+					if div.is(base) then
+						base, denom = table.unpack(base)
+					end
+					if denom ~= Constant(1) then
+						uniqueDenomIndexes:insert(i)
+					end
+
+					denoms:insert(denom)
+					powers:insert(power)
+					bases:insert(base)
 				end
 				
-				local expr = num
-				if denom ~= Constant(1) then
-					expr = expr / denom
+				if #uniqueDenomIndexes > 0 then	
+					
+					local num
+					if #bases == 1 then
+						num = bases[1]
+						if powers[1] ~= Constant(1) then
+							num = num ^ powers[1]
+						end
+					else
+						num = bases:map(function(base,i)
+							if powers[i] == Constant(1) then
+								return base
+							else
+								return base ^ powers[i]
+							end
+						end)
+						assert(#num > 0)
+						if #num == 1 then
+							num = num[1]
+						else
+							num = mul(num:unpack())
+						end
+					end
+					
+					local denom
+					if #uniqueDenomIndexes == 1 then
+						local i = uniqueDenomIndexes[1]
+						denom = denoms[i]
+						if powers[i] ~= Constant(1) then
+							denom = denom^powers[i]
+						end
+					elseif #denoms > 1 then
+						denom = mul(table.unpack(uniqueDenomIndexes:map(function(i)
+							if powers[i] == Constant(1) then
+								return denoms[i]
+							else
+								return denoms[i]^powers[i]
+							end
+						end)))
+					end
+					
+					local expr = num
+					if denom ~= Constant(1) then
+						expr = expr / denom
+					end
+					return prune:apply(expr)
 				end
-				return prune:apply(expr)
 			end
-		end
-		--]]
-	end,
+			--]]
+		end},
+	},
 
-	Tidy = function(tidy, expr)
-		local unm = require 'symmath.op.unm'
-		local Constant = require 'symmath.Constant'
-		
-		-- -x * y * z => -(x * y * z)
-		-- -x * y * -z => x * y * z
-		do
-			local unmCount = 0
-			for i=1,#expr do
-				local ch = expr[i]
-				if unm.is(ch) then
-					unmCount = unmCount + 1
-					expr[i] = ch[1]
+	Tidy = {
+		{apply = function(tidy, expr)
+			local unm = require 'symmath.op.unm'
+			local Constant = require 'symmath.Constant'
+			
+			-- -x * y * z => -(x * y * z)
+			-- -x * y * -z => x * y * z
+			do
+				local unmCount = 0
+				for i=1,#expr do
+					local ch = expr[i]
+					if unm.is(ch) then
+						unmCount = unmCount + 1
+						expr[i] = ch[1]
+					end
+				end
+				assert(#expr > 1)
+				if unmCount % 2 == 1 then
+					return -tidy:apply(expr)	-- move unm outside and simplify what's left
+				elseif unmCount ~= 0 then
+					return tidy:apply(expr)	-- got an even number?  remove it and simplify this
 				end
 			end
-			assert(#expr > 1)
-			if unmCount % 2 == 1 then
-				return -tidy:apply(expr)	-- move unm outside and simplify what's left
-			elseif unmCount ~= 0 then
-				return tidy:apply(expr)	-- got an even number?  remove it and simplify this
+			
+			-- (has to be solved post-prune() because tidy's Constant+unm will have made some new ones)
+			-- 1 * x => x 	
+			local first = expr[1]
+			if Constant.is(first) and first.value == 1 then
+				table.remove(expr, 1)
+				if #expr == 1 then
+					expr = expr[1]
+				end
+				return tidy:apply(expr)
 			end
-		end
-		
-		-- (has to be solved post-prune() because tidy's Constant+unm will have made some new ones)
-		-- 1 * x => x 	
-		local first = expr[1]
-		if Constant.is(first) and first.value == 1 then
-			table.remove(expr, 1)
-			if #expr == 1 then
-				expr = expr[1]
-			end
-			return tidy:apply(expr)
-		end
-	end,
+		end},
+	},
 }
 -- ExpandPolynomial inherits from Expand
-mul.visitorHandler.ExpandPolynomial = mul.visitorHandler.Expand
+mul.rules.ExpandPolynomial = mul.rules.Expand
 
 return mul

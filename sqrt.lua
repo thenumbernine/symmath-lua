@@ -17,11 +17,13 @@ function sqrt:reverse(soln, index)
 	return soln^2
 end
 
-sqrt.visitorHandler = table(sqrt.visitorHandler)
+sqrt.rules = table(sqrt.rules)
 
-sqrt.visitorHandler.Prune = function(prune, expr)
-	local div = require 'symmath.op.div'
-	return prune:apply(expr[1]^div(1,2))
-end
+sqrt.rules.Prune = {
+	{apply = function(prune, expr)
+		local div = require 'symmath.op.div'
+		return prune:apply(expr[1]^div(1,2))
+	end},
+}
 
 return sqrt

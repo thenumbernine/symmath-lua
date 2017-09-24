@@ -16,17 +16,19 @@ function log:reverse(soln, index)
 	return require 'symmath'.e ^ soln
 end
 
-log.visitorHandler = {
-	Prune = function(prune, expr)
-		local symmath = require 'symmath'
-		local Constant = symmath.Constant
-		local x = table.unpack(expr)
-		if x == symmath.e then
-			return Constant(1)
-		elseif x == Constant(0) then
-			return -Constant.inf
-		end
-	end
+log.rules = {
+	Prune = {
+		{apply = function(prune, expr)
+			local symmath = require 'symmath'
+			local Constant = symmath.Constant
+			local x = table.unpack(expr)
+			if x == symmath.e then
+				return Constant(1)
+			elseif x == Constant(0) then
+				return -Constant.inf
+			end
+		end},
+	},
 }
 
 return log
