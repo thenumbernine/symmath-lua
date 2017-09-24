@@ -92,8 +92,20 @@ function Visitor:apply(expr, ...)
 			local rules = self:lookup(m)
 			if rules then
 				for _,rule in ipairs(rules) do
-					local name, func = next(rule)
-					expr = func(self, expr, table.unpack(args, 1, args.n)) or expr
+					if not m.pushedRules
+					or not m.pushedRules[rule]
+					then
+						local name, func = next(rule)
+						local newexpr = func(self, expr, table.unpack(args, 1, args.n))
+						if newexpr then
+							expr = newexpr
+							-- if we change content then there's no guarantee the metatable -- or the rules -- will be the same
+							-- we probably need to start again
+							-- this would have the detriment
+							m = getmetatable(expr)
+							break
+						end
+					end
 				end
 			end
 		end

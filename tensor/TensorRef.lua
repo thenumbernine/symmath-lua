@@ -30,59 +30,75 @@ end
 
 TensorRef.rules = {
 	Prune = {
+		-- t _ab _cd => t _abcd
+		{combine = function(prune, expr)
+			local Tensor = require 'symmath.Tensor'
+			local t = expr[1]
+			if not Tensor.is(t) then 
+				if TensorRef.is(t) then
+					local indexes = {table.unpack(expr,2)}
+					return prune:apply(
+						TensorRef(t[1], table():append{table.unpack(t,2)}:append(indexes):unpack())
+					)
+				end
+			end	
+		end},
+
+		{evalDeriv = function(prune, expr)
+			local Tensor = require 'symmath.Tensor'
+			local t = expr[1]
+			if not Tensor.is(t) 
+			and expr[2].derivative
+			then 
+				-- if it can be evaluated then apply differentiation
+				-- (if it is a tensor or variable then it won't be applied)
+				if t.evaluateDerivative then
+					return prune:apply(t:evaluateDerivative(function(x)
+						return TensorRef(x, table.unpack(expr, 2))
+					end))
+				end
+			end
+		end},
+
+		{replacePartial = function(prune, expr)
+			local Tensor = require 'symmath.Tensor'
+			local t = expr[1]
+			if not Tensor.is(t)			-- if it's not a tensor ...
+			and expr[2].derivative then	-- if this is a derivative then 
+				local indexes = {table.unpack(expr,2)}
+				-- if any derivative indexes are for single variables then apply them directly
+				local diffvars
+				for i=#indexes,1,-1 do
+					local index = indexes[i]
+					local basis = Tensor.findBasisForSymbol(index.symbol)
+					-- maybe I should just treat numbers like symbols?
+					if basis and #basis.variables == 1 then
+						table.remove(indexes, i)
+						local v = basis.variables[1]
+						diffvars = diffvars or table()
+						diffvars:insert(1,v)
+					end
+				end
+				if diffvars and #diffvars > 0 then
+					local Derivative = require 'symmath.Derivative'
+					local result = Derivative(t, diffvars:unpack())
+					if #indexes > 0 then
+						result = TensorRef(result, table.unpack(indexes)) 
+					end
+					return prune:apply(result)
+				end
+			end
+		end},
+
 		{apply = function(prune, expr)
 			local Tensor = require 'symmath.Tensor'
-			local TensorIndex = require 'symmath.tensor.TensorIndex'
 			
 			local t = expr[1]
 			local indexes = {table.unpack(expr,2)}
 
 			-- if it's not a tensor ...
-			if not Tensor.is(t) then 
-				
-				-- t _ab _cd => t _abcd
-				if TensorRef.is(t) then
-					return prune:apply(
-						TensorRef(t[1], table():append{table.unpack(t,2)}:append(indexes):unpack())
-					)
-				end
-				
-				-- if this is a derivative then 
-				if indexes[1].derivative then
-					-- if it can be evaluated then apply differentiation
-					-- (if it is a tensor or variable then it won't be applied)
-					if t.evaluateDerivative then
-						return prune:apply(t:evaluateDerivative(function(x)
-							return TensorRef(x, table.unpack(indexes))
-						end))
-					end
-				
-					-- if any derivative indexes are for single variables then apply them directly
-					local diffvars
-					for i=#indexes,1,-1 do
-						local index = indexes[i]
-						local basis = Tensor.findBasisForSymbol(index.symbol)
-						-- maybe I should just treat numbers like symbols?
-						if basis and #basis.variables == 1 then
-							table.remove(indexes, i)
-							local v = basis.variables[1]
-							diffvars = diffvars or table()
-							diffvars:insert(1,v)
-						end
-					end
-					if diffvars and #diffvars > 0 then
-						local Derivative = require 'symmath.Derivative'
-						local result = Derivative(t, diffvars:unpack())
-						if #indexes > 0 then
-							result = TensorRef(result, table.unpack(indexes)) 
-						end
-						return prune:apply(result)
-					end
-				end
-
-				-- just leave the indexing there 
-				return 
-			end
+			-- ...then just leave the indexing there 
+			if not Tensor.is(t) then return end
 
 			-- now transform all indexes that don't match up
 			
@@ -175,6 +191,8 @@ TensorRef.rules = {
 						basisForCommaIndex[i] = Tensor.findBasisForSymbol(indexes[i].symbol)
 					end
 				end
+			
+				local TensorIndex = require 'symmath.tensor.TensorIndex'
 			
 				local newVariance = {}
 				-- TODO straighten out the upper/lower vs differentiation order

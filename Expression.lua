@@ -284,4 +284,24 @@ function Expression:reindex(args)
 	end)
 end
 
+
+-- hmm, rules ...
+-- static function, 'self' is the class
+function Expression:pushRule(name)
+	local visitor, rulename = name:split'/':unpack()
+	assert(visitor and rulename, "Expression:pushRule expected format visitor/rule")	
+	
+	local rules = assert(self.rules[visitor], "couldn't find visitor "..visitor)
+	
+	local _, rule = table.find(rules, nil, function(r) return next(r) == rulename end)
+	assert(rule, "couldn't find rule named "..rulename.." in visitor "..visitor)
+
+	self.pushedRules = self.pushedRules or table()
+	self.pushedRules[rule] = true 
+end
+
+function Expression:popRules()
+	self.pushedRules = table()
+end
+
 return Expression

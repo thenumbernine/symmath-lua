@@ -251,4 +251,6 @@ symmath.setup = function(args)
 	end
 end
 
+symmath.Visitor = require 'symmath.visitor.Visitor'
+
 return symmath

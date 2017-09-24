@@ -27,13 +27,26 @@ Derivative.rules = {
 	},
 
 	Prune = {
-		{apply = function(prune, expr)
-			local symmath = require 'symmath'
-			local Constant = symmath.Constant
-			local Array = symmath.Array
-			local Variable = symmath.Variable
-
-			-- d/dx{y_i} = {dy_i/dx}
+	
+		-- (a = b):diff(x) => a:diff(x) = b:diff(x)
+		{equations = function(prune, expr)
+			local Equation = require 'symmath.op.Equation'
+			local eq = expr[1]
+			if Equation.is(eq) then
+				return getmetatable(expr)(
+					assert(prune:apply(
+						eq[1]:diff(table.unpack(expr, 2))
+					)),
+					assert(prune:apply(
+						eq[2]:diff(table.unpack(expr, 2))
+					))
+				)
+			end
+		end},
+		
+		-- d/dx{y_i} = {dy_i/dx}
+		{arrays = function(prune, expr)
+			local Array = require 'symmath.Array'
 			if Array.is(expr[1]) then
 				local res = expr[1]:clone()
 				for i=1,#res do
@@ -41,41 +54,64 @@ Derivative.rules = {
 				end
 				return res
 			end
-
-			-- d/dx c = 0
+		end},
+	
+		-- d/dx c = 0
+		{constants = function(prune, expr)
+			local Constant = require 'symmath.Constant'
 			if Constant.is(expr[1]) then
 				return Constant(0)
 			end
+		end},
 
-			-- d/dx d/dy = d/dxy
+		-- d/dx d/dy = d/dxy
+		{combine = function(prune, expr)
 			if Derivative.is(expr[1]) then
 				return prune:apply(Derivative(expr[1][1], table.unpack(
 					table.append({table.unpack(expr, 2)}, {table.unpack(expr[1], 2)})
 				)))
 			end
+		end},
 
-			-- apply differentiation
-			-- don't do so if it's a diff of a variable that requests not to
-			-- [[
+		-- dx/dx = 1
+		{self = function(prune, expr)
+			local Constant = require 'symmath.Constant'
+			local Variable = require 'symmath.Variable'
 			if Variable.is(expr[1]) then
 				local var = expr[1]
 				-- dx/dx = 1
-				if #expr == 2 and var == expr[2] then
-					return Constant(1)
+				if #expr == 2 then
+					if var == expr[2] then
+						return Constant(1)
+					end
+				-- d/dy dx/dx = 0
+				elseif #expr > 2 then
+					for i=2,#expr do
+						if expr[i] == var then return Constant(0) end
+					end
 				end
-				--dx/dy = 0 (unless x is a function of y ... but I only have partials)
+			end
+		end},
+
+		--dx/dy = 0 (unless x is a function of y ... but I only have partials)
+		{other = function(prune, expr)
+			local Constant = require 'symmath.Constant'
+			local Variable = require 'symmath.Variable'
+			-- apply differentiation
+			-- don't do so if it's a diff of a variable that requests not to
+			if Variable.is(expr[1]) then
+				local var = expr[1]
 				for i=2,#expr do
 					local wrt = expr[i]
-
 					-- and what about 2nd derivatives too?	
-					
 					if not var.dependentVars:find(wrt) then
 						return Constant(0)
 					end
 				end
 			end
-			--]]
+		end},
 
+		{eval = function(prune, expr)
 			if expr[1].evaluateDerivative then
 				local result = expr[1]:clone()
 				for i=2,#expr do
