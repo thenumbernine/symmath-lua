@@ -428,9 +428,9 @@ function Expression:tidyIndexes()
 				symbolCounts[symbol] = (symbolCounts[symbol] or 0) + 1
 			end
 		end
-	
 	end
 	rmap(self)
+	savedSymbolCounts = savedSymbolCounts or symbolCounts
 	--print('counts', require 'ext.tolua'(symbolCounts))
 
 	-- you can only count as you are considering multiplications
@@ -451,7 +451,18 @@ function Expression:tidyIndexes()
 	-- now relabel
 	local sofar = table()
 	local replSymIndex = 0	-- TODO don't stray into other index ranges ...
+	while fixedSymbols:find(string.char(('a'):byte() + replSymIndex))  do
+		replSymIndex = replSymIndex + 1
+	end
+
 	local replMap = table()
+
+	-- pick a symbol ...
+	-- not in replMap's destination yet
+	-- not in the fixed symbol list
+	local function getnewsymbol()
+	end
+	
 	local function rmap(expr)
 		if expr.clone then expr = expr:clone() end	
 
@@ -479,7 +490,11 @@ function Expression:tidyIndexes()
 						local replSym = string.char(('a'):byte() + replSymIndex)
 						--print('replacing',symbol,'with',replSym)
 						replMap[symbol] = replSym
-						replSymIndex = replSymIndex + 1
+					
+						-- TODO this better ...
+						repeat
+							replSymIndex = replSymIndex + 1
+						until not fixedSymbols:find(string.char(('a'):byte() + replSymIndex)) 
 					end
 					expr[i].symbol = replMap[expr[i].symbol]
 				end
