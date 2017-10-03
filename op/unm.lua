@@ -51,7 +51,7 @@ unm.rules = {
 			if add.is(expr[1]) then
 				return add(table.map(expr[1], function(x,k) 
 					if type(k) ~= 'number' then return end
-					return -x 
+					return -x
 				end):unpack())
 			end
 		end},

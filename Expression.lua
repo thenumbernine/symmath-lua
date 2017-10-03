@@ -279,11 +279,24 @@ function Expression:replaceIndex(find, repl, cond)
 		
 			return expr
 		end
-
+		
+		local function sameVariance(a,b)
+			if #a ~= #b then return false end
+			for i=2,#a do
+				if a[i].lower ~= b[i].lower then return false end
+				if a[i].derivative ~= b[i].derivative then return false end
+			end
+			return true
+		end
+		
 		return rmap(self, function(x)
 			if TensorRef.is(x) 
+			
+-- if indexes are split (like for pattern matching derivatives)
+-- then this equality will only be true if the nested tensorref's indexes are also identical -- thus defeating the purpose of the index-invariant replace
 			and x[1] == find[1]
-			and #x == #find
+			
+			and sameVariance(x, find)
 			then
 				local xsymbols = range(2,#x):map(function(i)
 					return x[i].symbol
@@ -300,10 +313,13 @@ function Expression:replaceIndex(find, repl, cond)
 					for _,s in ipairs(xsymbols) do already[s] = true end
 					for _,s in ipairs(newsumsymbols) do already[s] = true end
 					for _,s in ipairs(newsumusedalready) do already[s] = true end
+					
+					local first = math.max(0, table.keys(already):inf():byte() - ('a'):byte())
+					
 					-- TODO pick symbols from the basis associated with the to-be-replaced index
 					-- that means excluding those from all other basis
-					for i=1,26 do
-						local p = string.char(('a'):byte()+i-1)
+					for i=0,25 do
+						local p = string.char(('a'):byte()+(i+first)%26)
 						if not already[p] then
 							return p
 						end
@@ -321,10 +337,13 @@ function Expression:replaceIndex(find, repl, cond)
 -- (i.e. sum indexes)
 -- and compare them to all indexes in self
 -- and rename them to not collide
-				local result = repl:reindex{
-					[xsymbols:concat()..newsumsymbols:concat()] = 
-						findsymbols:concat()..sumsymbols:concat()
-				}
+				local result = repl
+				if result.reindex then
+					result = result:reindex{
+						[xsymbols:concat()..newsumsymbols:concat()] = 
+							findsymbols:concat()..sumsymbols:concat()
+					}
+				end
 			
 				return result
 			end
@@ -332,6 +351,156 @@ function Expression:replaceIndex(find, repl, cond)
 	else
 		return self:replace(find, repl, cond)
 	end
+end
+
+--[[
+This will try to pick consistent indexes for matching terms so that subsequent operations can simplify easier
+ex: K^a_a + K^b_b should produce K^a_a + K^a_a, which will simplify to 2 K^a_a
+This should also pay attention to which indexes are sum (repeated) and which are fixed (single)
+TODO use case
+K^a_a + K^b_b => K^a_a + K^a_a => 2 K^a_a
+a^ij (b_jk + c_jk) shouldn't change ...
+a_ijk b^jk + a_ilm b^lm => a_ijk b^jk + a_ijk b^jk => 2 a_jik b^jk
+--]]
+function Expression:tidyIndexes()
+	-- process each part of an equation independently
+	local Equation = require 'symmath.op.Equation'
+	if Equation.is(self) then
+		return getmetatable(self)(self[1]:tidyIndexes(), self[2]:tidyIndexes())
+	end
+	
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	local mul = require 'symmath.op.mul'
+	local add = require 'symmath.op.add'
+	local sub = require 'symmath.op.sub'
+
+	-- assume by here we're working with non-equation expressions
+	-- so find all fixed and sum indexes
+	-- don't bother check upper vs lower indexes
+	local symbolCounts = table()
+	local savedSymbolCounts
+	local function rmap(expr)
+	
+		local ismul = mul.is(expr)
+		local isadd = add.is(expr)
+		local issub = sub.is(expr)
+	
+		local push = table(symbolCounts)
+
+		for i=1,#expr do
+			rmap(expr[i])
+		
+			-- if we just got done processing a mul ...
+			-- then save the symbolCounts
+			-- and if we've saved before
+			-- then compare symbol counts
+			if isadd or issub then
+				if not savedSymbolCounts then
+					savedSymbolCounts = table(symbolCounts)
+				else
+					--print('comparing symbol counts after mul...')
+					--print('saved', require 'ext.tolua'(savedSymbolCounts))
+					--print('new', require 'ext.tolua'(symbolCounts))
+				
+					-- assert that the fixed symbols in each sub expression of add or sub match
+					-- <=> assert the same number of symbols whose count is 1 match
+					-- otherwise we have an invalid tensor index expression
+					-- The set of fixed symbols may have changed
+					-- The things to check are that any in one are also in the other
+					-- and also, if any are fixed that they were not summed indexes somewhere else
+					for symbol,count in pairs(symbolCounts) do
+						local savedCount = savedSymbolCounts[symbol]
+						if not savedCount then
+							savedSymbolCounts[symbol] = count
+						else
+							assert((count == 1) == (savedCount == 1))
+						end
+					end
+				end
+			end
+		
+			if not ismul then symbolCounts = table(push) end
+		end
+	
+		if TensorRef.is(expr) then
+			for i=2,#expr do
+				local symbol = expr[i].symbol
+				symbolCounts[symbol] = (symbolCounts[symbol] or 0) + 1
+			end
+		end
+	
+	end
+	rmap(self)
+	--print('counts', require 'ext.tolua'(symbolCounts))
+
+	-- you can only count as you are considering multiplications
+	-- i.e. a^ij (b_jk + c_jk) will have two 'k's, but they are fixed
+	local fixedSymbols = table()
+	local sumSymbols = table()
+	for symbol, count in pairs(savedSymbolCounts) do
+		if count == 1 then
+			fixedSymbols:insert(symbol)
+		else
+			assert(count > 1)
+			sumSymbols:insert(symbol)
+		end
+	end
+	--print('fixed', fixedSymbols:concat())
+
+
+	-- now relabel
+	local sofar = table()
+	local replSymIndex = 0	-- TODO don't stray into other index ranges ...
+	local replMap = table()
+	local function rmap(expr)
+		if expr.clone then expr = expr:clone() end	
+
+		local pushsofar = table(sofar)
+		local pushReplSymIndex = replSymIndex
+		local ismul = mul.is(expr)
+
+		for i=1,#expr do
+			expr[i] = rmap(expr[i]) or expr[i]
+		
+			-- if it's not a mul then we need to push/pop
+			if not ismul then
+				sofar = table(pushsofar)
+				replSymIndex = pushReplSymIndex 
+			end
+		end
+	
+		if TensorRef.is(expr) then
+			for i=2,#expr do
+				local symbol = expr[i].symbol
+				if not fixedSymbols:find(symbol) then
+					if not sofar:find(symbol) 
+					then
+						sofar:insert(symbol)
+						local replSym = string.char(('a'):byte() + replSymIndex)
+						--print('replacing',symbol,'with',replSym)
+						replMap[symbol] = replSym
+						replSymIndex = replSymIndex + 1
+					end
+					expr[i].symbol = replMap[expr[i].symbol]
+				end
+			end
+		end
+	
+		return expr
+	end
+	local result = rmap(self)
+
+	--[[
+	local from = table()
+	local to = table()
+	for k,v in pairs(replMap) do
+		from:insert(k)
+		to:insert(v)
+	end
+	result = result:reindex{[from:concat()] = to:concat()}
+	--]]
+	
+	return result
 end
 
 
@@ -515,6 +684,13 @@ function Expression:symmetrizeIndexes(var, indexes)
 			end
 		end
 	end)
+end
+
+
+-- returns fixedIndexes, sumIndexes
+function Expression:getIndexesUsed()
+	-- fixedIndexes are those which appear only once on either side of an equality
+	-- sumIndexes appear repeated
 end
 
 

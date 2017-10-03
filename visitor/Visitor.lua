@@ -22,8 +22,7 @@ function Visitor:lookup(m)
 	if f then return f end
 end
 
---[[
-debugging:
+-- [[ debugging:
 local function hash(t)
 	local m = getmetatable(t)
 	setmetatable(t, nil)
@@ -47,11 +46,21 @@ Inherit from Visitor, instanciate that class as 'x', and x() will call Visitor:a
 
 --]]
 function Visitor:apply(expr, ...)
-	local Verbose = require 'symmath.tostring.Verbose'
+	local debugVisitors = require 'symmath'.debugVisitors
+
+	local Verbose
+	if debugVisitors then
+		Verbose = require 'symmath.tostring.Verbose'
+	end
+
 	local args = getn(...)
 	local success, results = xpcall(function()
-	--local id = hash(expr)
-	--print(id, 'begin Visitor', Verbose(expr))
+
+	local id
+	if debugVisitors then
+		id = hash(expr)
+		print(id, 'begin Visitor', Verbose(expr))
+	end
 		local clone = require 'symmath.clone'
 		local Expression = require 'symmath.Expression'
 
@@ -80,7 +89,9 @@ function Visitor:apply(expr, ...)
 			if Expression.is(m) then
 				if expr then
 					for i=1,#expr do
-	--print(id, 'simplifying child #'..i)
+						if debugVisitors then
+							print(id, 'simplifying child #'..i)
+						end
 						expr[i] = self:apply(expr[i], table.unpack(args, 1, args.n))
 					end
 				end
@@ -109,7 +120,9 @@ function Visitor:apply(expr, ...)
 				end
 			end
 		end
-	--print(id, 'done pruning with', Verbose(expr))
+		if debugVisitors then
+			print(id, 'done pruning with', Verbose(expr))
+		end
 		return expr
 	end, function(err)
 		io.stderr:write('expr:'..tostring(expr)..'\n')
