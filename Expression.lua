@@ -371,10 +371,11 @@ function Expression:tidyIndexes()
 	
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	local Verbose = require 'symmath.tostring.Verbose'
-	local mul = require 'symmath.op.mul'
+	local unm = require 'symmath.op.unm'
 	local add = require 'symmath.op.add'
 	local sub = require 'symmath.op.sub'
-	local unm = require 'symmath.op.unm'
+	local mul = require 'symmath.op.mul'
+	local div = require 'symmath.op.div'
 	
 	local replaces = table()
 
@@ -441,7 +442,7 @@ function Expression:tidyIndexes()
 			return fixed, summed
 		end
 
-		if unm.is(expr) then
+		if unm.is(expr) or div.is(expr) then
 			return rmap(expr[1], expr, 1, table(parents):append{expr})
 		end
 
