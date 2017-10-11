@@ -374,6 +374,7 @@ function Expression:tidyIndexes()
 	local mul = require 'symmath.op.mul'
 	local add = require 'symmath.op.add'
 	local sub = require 'symmath.op.sub'
+	local unm = require 'symmath.op.unm'
 	
 	local replaces = table()
 
@@ -429,11 +430,19 @@ function Expression:tidyIndexes()
 			for i=2,#expr do
 				local fixedi, summedi = rmap(expr[i], expr, i, table(parents):append{expr})
 				-- TODO only assert equality up to variance and symbol.  don't bother with derivative
-				assert(tableCommutativeEqual(fixed, fixedi), "found an addition expression whose fixed indexed didn't match")
+				if not tableCommutativeEqual(fixed, fixedi) then
+					error("found an addition expression whose fixed indexed didn't match:"
+						..require 'ext.tolua'(fixed)..' vs '
+						..require 'ext.tolua'(fixedi)..' in '..expr)
+				end
 				summed = table(summed, summedi:map(function(v) return true, v end))
 			end
 			summed = summed:keys()
 			return fixed, summed
+		end
+
+		if unm.is(expr) then
+			return rmap(expr[1], expr, 1, table(parents):append{expr})
 		end
 
 		--[[
