@@ -63,7 +63,7 @@ LaTeX.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
-		return '?'
+		return table{'?'}
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		return table{prepareName(expr.name), '\\left(', 
