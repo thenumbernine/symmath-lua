@@ -1,16 +1,29 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{implicitVars=true, MathJax=true}
+require 'symmath'.setup{MathJax=true}
+
+local a = var'a'
+local b = var'b'
+local c = var'c'
+local d = var'd'
+local e = var'e'
+local f = var'f'
+
 for _,test in ipairs{
-	{K'^i_i' + K'^j_j', 2 * K'^a_a'},
-	{a'^ij' * (b'_jk' + B'_jk'), a'^ia' * (b'_ak' + B'_ak')},
-	{a'_ijk' * b'^jk' + a'_ilm' * b'^lm', 2 * a'_ibc' * b'^bc'},
+	{a'^i_i^j_j', a'^a_a^b_b'},
+	{a'^i_i' + a'^j_j', 2 * a'^a_a'},
+	{a'^ij' * (b'_jk' + c'_jk'), a'^ia' * (b'_ak' + c'_ak')},
+	{a'_ijk' * b'^jk' + a'_ilm' * b'^lm', 2 * a'_iab' * b'^ab'},
 	{a'_ajk' * b'^jk' + a'_alm' * b'^lm', 2 * a'_abc' * b'^bc'},
+	{c'^pq' * (d'_ipqj' + d'_jpqi') - c'^mr' * (d'_imrj' + d'_jmri'), 0},
+	{(a'^k' + b'^k') * (c'_k' + d'_k'), (a'^a' + b'^a') * (c'_a' + d'_a')},
+	{a'^i' * (b'_i' + c'_i^j' * d'_j'), a'^a' * (b'_a' + c'_a^b' * d'_b')},
+	{(a'^i' + b'^i_j' * c'^j') * (d'_i' + e'_i^k' * f'_k'), 
+		(a'^a' + b'^a_b' * c'^b') * (d'_a' + e'_a^c' * f'_c')},
 } do
 	local expr, expect = table.unpack(test)
 	printbr(expr)
 	expr = expr:tidyIndexes()
 	printbr(expr)
-	expr = expr:simplify()
-	printbr(expr)
+	printbr(expr, 'vs', expect, 'equal?', (expr - expect)() == Constant(0))
 	printbr'<hr>'
 end

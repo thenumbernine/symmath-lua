@@ -370,152 +370,246 @@ function Expression:tidyIndexes()
 	end
 	
 	local TensorRef = require 'symmath.tensor.TensorRef'
+	local Verbose = require 'symmath.tostring.Verbose'
 	local mul = require 'symmath.op.mul'
 	local add = require 'symmath.op.add'
 	local sub = require 'symmath.op.sub'
-
-	-- assume by here we're working with non-equation expressions
-	-- so find all fixed and sum indexes
-	-- don't bother check upper vs lower indexes
-	local symbolCounts = table()
-	local savedSymbolCounts
-	local function rmap(expr)
 	
-		local ismul = mul.is(expr)
-		local isadd = add.is(expr)
-		local issub = sub.is(expr)
-	
-		local push = table(symbolCounts)
+	local replaces = table()
 
-		for i=1,#expr do
-			rmap(expr[i])
+	local function rmap(expr, parent, childIndex, parents)
+		--[[
+		new system:
+		for each node, recursively return ...
+		1) what fixed indexes there are (i.e. indexes not yet summed) ... and their variance
+		2) what indexes have already been summed
 		
-			-- if we just got done processing a mul ...
-			-- then save the symbolCounts
-			-- and if we've saved before
-			-- then compare symbol counts
-			if isadd or issub then
-				if not savedSymbolCounts then
-					savedSymbolCounts = table(symbolCounts)
+		for TensorRefs, just return the indexes
+		--]]
+		if TensorRef.is(expr) then
+			local fixed = table()
+			local summed = table()
+			for i=#expr,2,-1 do
+				local symbol = expr[i].symbol
+				-- if we have a duplicate index within the same tensor then denote it to be a summed index
+				local j = fixed:find(symbol)
+				if j then
+					fixed:remove(j)
+					summed:insert(symbol)
+					
+					-- TODO right here is where we should put in a request for substituting 'symbol' with whatever next free index is available
+					-- but we should store it for until after the whole expression is checked 
+					-- since if we replace symbols child-first then we'll get x_i^j y_j^k z_k => x_i^b y_b^a z_a
+					-- whereas if we replace symbols parent-first, we will get => x_i^a y_a^b z_b
+					-- however, to perform the global replace, I'll have to keep track of the information globally ...
+					-- i.e. what TensorRef to replace, and which indexes in the TensorRef to replace
+			
+					local repl = {
+						parent = parent,
+						childIndex = childIndex,
+						parents = table(parents),
+						from = symbol,
+						summed = table(summed),
+					}
+					replaces:insert(1, repl)
 				else
-					--print('comparing symbol counts after mul...')
-					--print('saved', require 'ext.tolua'(savedSymbolCounts))
-					--print('new', require 'ext.tolua'(symbolCounts))
-				
-					-- assert that the fixed symbols in each sub expression of add or sub match
-					-- <=> assert the same number of symbols whose count is 1 match
-					-- otherwise we have an invalid tensor index expression
-					-- The set of fixed symbols may have changed
-					-- The things to check are that any in one are also in the other
-					-- and also, if any are fixed that they were not summed indexes somewhere else
-					for symbol,count in pairs(symbolCounts) do
-						local savedCount = savedSymbolCounts[symbol]
-						if not savedCount then
-							savedSymbolCounts[symbol] = count
-						else
-							assert((count == 1) == (savedCount == 1))
+					fixed:insert(symbol)
+				end
+			end
+			return fixed, summed
+		end
+
+		--[[
+		add and sub ops, assert the fixed indexes all match, and return a superset of all summed indexes (so no parent reuses any)
+		--]]
+		local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
+		if add.is(expr) or sub.is(expr) then
+			local fixed, summed = rmap(expr[1], expr, 1, table(parents):append{expr})
+			summed = summed:map(function(v) return true, v end)
+			for i=2,#expr do
+				local fixedi, summedi = rmap(expr[i], expr, i, table(parents):append{expr})
+				-- TODO only assert equality up to variance and symbol.  don't bother with derivative
+				assert(tableCommutativeEqual(fixed, fixedi), "found an addition expression whose fixed indexed didn't match")
+				summed = table(summed, summedi:map(function(v) return true, v end))
+			end
+			summed = summed:keys()
+			return fixed, summed
+		end
+
+		--[[
+		for muls, accumulate indexes ...
+		... as you pair child nodes' fixed indexes, also keep track of index remapping information
+		... and of course replace indexes as you do this
+		--]]
+		if mul.is(expr) then
+			-- before traversing down into a mul
+			-- accumulate all the indexes of this mul
+			-- and then pass them down through the mul
+			-- so that way we know what symbols
+
+			local fixed, summed
+			for i=#expr,1,-1 do
+				if not fixed then
+					fixed, summed = rmap(expr[i], expr, i, table(parents):append{expr})
+					fixed = fixed:map(function(symbol) return {symbol=symbol, i=i} end)
+					summed = summed:map(function(v) return true, v end)
+				else
+					local fixedi, summedi = rmap(expr[i], expr, i, table(parents):append{expr})
+					fixedi = fixedi:map(function(symbol) return {symbol=symbol, i=i} end)
+					summed = table(summed, summedi:map(function(v) return true, v end))
+					
+					local j=1
+					while j <= #fixed do
+						local symbol = fixed[j].symbol
+					
+						local k=1
+						while k <= #fixedi do
+							
+							if symbol == fixedi[k].symbol then
+								--assert(not not fixed[j].lower ~= not not fixedi[j].lower, "can't sum two contra- or two co-variant indexes")
+								assert(not summed[symbol], "found a fixed symbol that's also a summed symbol...")
+								summed[symbol] = true
+
+								-- at this point, when we find a fixed symbol of a child is really a summed symbol of a mul,
+								-- we want to tell other replaces related that info ...
+						
+								-- TODO 
+								-- replace another symbol here
+								-- for the replace info,
+								-- we have to keep track of which expr child index each symbol is in
+								local repl = {
+									parent = parent,
+									childIndex = childIndex,
+									parents = table(parents),
+									from = symbol,
+									summed = summed:keys(),
+								}
+								replaces:insert(1, repl)
+
+								fixed:remove(j) j=j-1
+								fixedi:remove(k) k=k-1
+							end
+							k=k+1
+						end
+					
+						j=j+1
+					end
+					
+					-- if 'fixed' and 'fixedi' have any symbols in common then
+					-- 1) assert they have nothing in common with 'summed' or 'summedi'
+					-- 2) assert their variance is opposite
+					-- 3) replace all instances in either expression of the symbol with a new symbol
+					-- pick the new symbol by
+					-- *) can't exist in summed or summedi
+					-- *) ... any other constraints?
+					fixed:append(fixedi)
+				end
+			end
+			fixed = fixed:map(function(t) return t.symbol end)
+			summed = summed:keys()
+			return fixed, summed
+		end
+
+		return table(), table()
+	end
+	local fixed, summed = rmap(self, nil, nil, table())
+
+
+	local expr = self
+--[[
+print('fixed', fixed:concat', ', '<br>')
+print('summed', summed:concat', ', '<br>')
+for _,repl in ipairs(replaces) do
+	print(repl.parent and repl.parent[repl.childIndex] or expr, 
+		'from', repl.from, 
+		'summed', repl.summed:concat',', 
+		'<br>')
+end
+--]]	
+	local function getnewsymbol(repl)
+		local replexpr = repl.parent and repl.parent[repl.childIndex] or expr
+		for i=1,26 do
+			local symbol = string.char( ('a'):byte() + i-1 )
+			if not summed:find(symbol)
+			and not fixed:find(symbol)
+			and (not repl.block or not repl.block:find(symbol))
+			then
+				local blocked
+
+				for _,repl2 in ipairs(replaces) do
+					local repl2expr = repl2.parent and repl2.parent[repl2.childIndex] or expr
+					--[[
+					if rawequal(replexpr, repl2expr)
+					and symbol == repl2.to then
+						blocked = true
+						break
+					end
+					--]]
+					for _,parent in ipairs(table(repl.parents):append{replexpr}) do
+						if rawequal(parent, repl2expr)
+						and repl2.block
+						and repl2.block:find(symbol)
+						then
+							blocked = true
+							break
 						end
 					end
 				end
-			end
-		
-			if not ismul then symbolCounts = table(push) end
-		end
-	
-		if TensorRef.is(expr) then
-			for i=2,#expr do
-				local symbol = expr[i].symbol
-				symbolCounts[symbol] = (symbolCounts[symbol] or 0) + 1
-			end
-		end
-	end
-	rmap(self)
-	savedSymbolCounts = savedSymbolCounts or symbolCounts
-	--print('counts', require 'ext.tolua'(symbolCounts))
 
-	-- you can only count as you are considering multiplications
-	-- i.e. a^ij (b_jk + c_jk) will have two 'k's, but they are fixed
-	local fixedSymbols = table()
-	local sumSymbols = table()
-	for symbol, count in pairs(savedSymbolCounts) do
-		if count == 1 then
-			fixedSymbols:insert(symbol)
-		else
-			assert(count > 1)
-			sumSymbols:insert(symbol)
-		end
-	end
-	--print('fixed', fixedSymbols:concat())
-
-
-	-- now relabel
-	local sofar = table()
-	local replSymIndex = 0	-- TODO don't stray into other index ranges ...
-	while fixedSymbols:find(string.char(('a'):byte() + replSymIndex))  do
-		replSymIndex = replSymIndex + 1
-	end
-
-	local replMap = table()
-
-	-- pick a symbol ...
-	-- not in replMap's destination yet
-	-- not in the fixed symbol list
-	local function getnewsymbol()
-	end
-	
-	local function rmap(expr)
-		if expr.clone then expr = expr:clone() end	
-
-		local pushsofar = table(sofar)
-		local pushReplSymIndex = replSymIndex
-		local ismul = mul.is(expr)
-
-		for i=1,#expr do
-			expr[i] = rmap(expr[i]) or expr[i]
-		
-			-- if it's not a mul then we need to push/pop
-			if not ismul then
-				sofar = table(pushsofar)
-				replSymIndex = pushReplSymIndex 
-			end
-		end
-	
-		if TensorRef.is(expr) then
-			for i=2,#expr do
-				local symbol = expr[i].symbol
-				if not fixedSymbols:find(symbol) then
-					if not sofar:find(symbol) 
-					then
-						sofar:insert(symbol)
-						local replSym = string.char(('a'):byte() + replSymIndex)
-						--print('replacing',symbol,'with',replSym)
-						replMap[symbol] = replSym
-					
-						-- TODO this better ...
-						repeat
-							replSymIndex = replSymIndex + 1
-						until not fixedSymbols:find(string.char(('a'):byte() + replSymIndex)) 
-					end
-					expr[i].symbol = replMap[expr[i].symbol]
+				if not blocked then
+					return symbol
 				end
 			end
 		end
+		error("couldn't find any new symbols")
+	end 
+	for i=1,#replaces do
+		local repl = replaces[i]
+		local replexpr = repl.parent and repl.parent[repl.childIndex] or expr 
+		
+		repl.to = getnewsymbol(repl)
+		repl.block = repl.block or table()
+		repl.block:insert(repl.to)
+--print('replacing symbol in',replexpr,'from',repl.from,'to',repl.to,'<br>')
 	
-		return expr
-	end
-	local result = rmap(self)
-
-	--[[
-	local from = table()
-	local to = table()
-	for k,v in pairs(replMap) do
-		from:insert(k)
-		to:insert(v)
-	end
-	result = result:reindex{[from:concat()] = to:concat()}
-	--]]
+		-- now cycle through replaces and look for any children of repl
+		-- and tell it in advance what symbols to block
+		-- what a mess ...
+		-- another way around this is passing down the recursion tree what summed indexes are used
+		-- but this still requires two separate recursion passes at each node ...
+		
+		-- but here's the extra frustrating thing
+		-- (a^i + b^i_j c^j) (d_i + e_i^k f_k)
+		-- repl first the parent mul, then each child add ...
+		-- so the parent will pass on the block info to repl
+		-- but also -- the first child's block info will have to pass on to the second child
 	
-	return result
+		-- so maybe the block info should be stored parent-most
+		-- and then checked parent-most	
+		for j=1,i-1 do
+			local repl2 = replaces[j]
+			local repl2expr = repl2.parent and repl2.parent[repl2.childIndex] or expr
+			--if in any of repl2's parents is repl then put repl.to in repl2's preemtive block symbol list
+			for _,parent in ipairs(repl.parents) do
+				if rawequal(parent, repl2expr) then
+					repl2.block = repl2.block or table()
+					repl2.block:insert(repl.to)
+				end
+			end
+		end
+	end
+	-- replace, children first
+	-- otherwise the replaced would be disconnected from the graph (replaced by clones)
+	for i=#replaces,1,-1 do
+		local repl = replaces[i]
+		if repl.parent then
+			repl.parent[repl.childIndex] = repl.parent[repl.childIndex]:reindex{[repl.to] = repl.from}
+		else
+			expr = expr:reindex{[repl.to] = repl.from}
+		end
+	end
+--print('expr', expr, '<br>')
+	return expr
 end
 
 
