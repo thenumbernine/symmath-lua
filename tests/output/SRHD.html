@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SRHD</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+$\gamma$ = heat capacity ratio
+<br>
+$\rho$ = rest-mass density
+<br>
+${v^x}$ = 3-velocity
+<br>
+${e_{int}}$ = rest-mass internal specific energy
+<br>
+primitives:
+<br>
+${w}^i = {\left[\matrix{\rho\\{v^x}\\{e_{int}}}\right]}$
+<br>
+$W = {\frac{1}{\sqrt{1 - {{{v^x}}^{2}}}}}$ = Lorentz factor
+<br>
+${{{v^x}}^{2}} = {1 - {\frac{1}{{W}^{2}}}}$ = velocity in terms of Lorentz factor
+<br>
+$P$ = pressure
+<br>
+$P = {{{({\gamma - 1})} \rho} {e_{int}}}$ = pressure for an ideal gas
+<br>
+$h = {{1 + {e_{int}}} + {\frac{P}{\rho}}}$ = internal specific enthalpy
+<br>
+$h = {1 + {\gamma \cdot {e_{int}}}}$ = internal specific enthalpy for an ideal gas
+<br>
+${e_{int}} = {\frac{-{({1 - h})}}{\gamma}}$ = internal specific energy in terms of enthalpy
+<br>
+${e_{int}} = {\frac{-{({P + {\rho - {h \rho}}})}}{\rho}}$
+<br>
+$D = {\rho \cdot W}$ = density
+<br>
+${S^x}$ = momentum
+<br>
+$\tau$ = total energy density
+<br>
+conservatives:
+<br>
+${U}^i = {\left[\matrix{D\\{S^x}\\\tau}\right]}$
+<br>
+conservative definitions:
+<br>
+${U}^i = {\left[\matrix{{\rho \cdot W}\\{{{\rho \cdot h} {{W}^{2}}} {v^x}}\\{{{{\rho \cdot h} {{W}^{2}}} - P} - {\rho \cdot W}}}\right]}$
+<br>
+...in terms of primitives:
+<br>
+${U}^i = {\left[\matrix{{\rho \cdot {\frac{1}{\sqrt{1 - {{{v^x}}^{2}}}}}}\\{{{\rho \cdot {({{1 + {e_{int}}} + {\frac{{{({\gamma - 1})} \rho} {e_{int}}}{\rho}}})}} {{{({\frac{1}{\sqrt{1 - {{{v^x}}^{2}}}}})}}^{2}}} {v^x}}\\{{{{\rho \cdot {({{1 + {e_{int}}} + {\frac{{{({\gamma - 1})} \rho} {e_{int}}}{\rho}}})}} {{{({\frac{1}{\sqrt{1 - {{{v^x}}^{2}}}}})}}^{2}}} - {{{({\gamma - 1})} \rho} {e_{int}}}} - {\rho \cdot {\frac{1}{\sqrt{1 - {{{v^x}}^{2}}}}}}}}\right]}$
+<br>
+change in conservative vars wrt primitives:
+<br>
+${{\partial{U^i}}\over{\partial w^j}} = {\left[\matrix{W&{\rho \cdot {v^x} \cdot {{W}^{3}}}&0\\{{v^x} \cdot {{W}^{2}} h}&{\frac{-{\rho \cdot h {({1 - {2 {{W}^{2}}}})}}}{{2 - {{W}^{2}}} + {{{{v^x}}^{4}} {{W}^{2}}}}}&{\rho \cdot \gamma \cdot {v^x} \cdot {{W}^{2}}}\\{\frac{-{({1 + {{{{W \gamma} - \gamma} - h} - {h {{W}^{2}} \gamma}} + {h \gamma}})}}{\gamma}}&{\frac{-{\rho \cdot {v^x} \cdot W {({1 - {2 W h}})}}}{{2 - {{W}^{2}}} + {{{{v^x}}^{4}} {{W}^{2}}}}}&{\rho \cdot {({{1 - \gamma} + {\gamma \cdot {{W}^{2}}}})}}}\right]}$
+<br>
+flux in terms of conservative variables:
+<br>
+${F}^i = {\left[\matrix{{D {v^x}}\\{{{S^x} \cdot {v^x}} - P}\\{{S^x} - {D {v^x}}}}\right]}$
+<br>
+flux in terms of primitive variables:
+<br>
+${F}^i = {\left[\matrix{{\frac{\rho \cdot {v^x}}{\sqrt{1 - {{{v^x}}^{2}}}}}\\{\frac{-{\rho \cdot {({{{{\gamma \cdot {e_{int}}} - {2 \gamma \cdot {e_{int}} \cdot {{{v^x}}^{2}}}} - {e_{int}}} + {{{e_{int}} \cdot {{{v^x}}^{2}}} - {{{v^x}}^{2}}}})}}}{1 - {{{v^x}}^{2}}}}\\{\frac{\rho \cdot {v^x} \cdot {({{1 - {\sqrt{1 - {{{v^x}}^{2}}}}} + {\gamma \cdot {e_{int}}}})}}{1 - {{{v^x}}^{2}}}}}\right]}$
+<br>
+change in flux wrt primitives:
+<br>
+${{\partial{F^i}}\over{\partial w^j}} = {\left[\matrix{{{v^x} \cdot W}&{\rho \cdot {{W}^{3}}}&0\\{\frac{-{({{{{1 - \gamma} - h} - {h {{W}^{2}} \gamma}} + {2 h \gamma}})}}{\gamma}}&{\frac{2 \rho \cdot {v^x} \cdot {{W}^{2}} h}{{2 - {{W}^{2}}} + {{{{v^x}}^{4}} {{W}^{2}}}}}&{\rho \cdot {({{1 - {2 \gamma}} + {\gamma \cdot {{W}^{2}}}})}}\\{-{{v^x} \cdot W {({1 - {W h}})}}}&{\frac{\rho \cdot {({{1 - {3 {{W}^{2}}}} + {{{W}^{4}} - {h W}} + {{2 h {{W}^{3}}} - {{{{v^x}}^{4}} {{W}^{4}}}}})}}{W {({{2 - {{W}^{2}}} + {{{W}^{2}} {{{v^x}}^{4}}}})}}}&{\rho \cdot {v^x} \cdot \gamma \cdot {{W}^{2}}}}\right]}$
+<br>

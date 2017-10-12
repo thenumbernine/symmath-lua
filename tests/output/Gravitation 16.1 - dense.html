@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Symbolic Lua Output</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+${{\delta}_u}_v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+<br>
+${{\eta}_u}_v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{-1}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+<br>
+${{g}_u}_v = {{{\eta}_u}_v - {{2 \Phi} {{\delta}_u}_v}}$
+<br>
+${{g}_u}_v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{-{({1 + {2 \Phi}})}}&0&0&0\\0&{1 - {2 \Phi}}&0&0\\0&0&{1 - {2 \Phi}}&0\\0&0&0&{1 - {2 \Phi}}}\right]}}$
+<br>
+${{g}^u}^v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{\frac{1}{-{({1 + {2 \Phi}})}}}&0&0&0\\0&{\frac{1}{1 - {2 \Phi}}}&0&0\\0&0&{\frac{1}{1 - {2 \Phi}}}&0\\0&0&0&{\frac{1}{1 - {2 \Phi}}}}\right]}}$
+<br>
+
+<br>
+${{{\Gamma}_a}_b}_c = {{\frac{1}{2}} {({{{{{g}_a}_b}_{,c} + {{{g}_a}_c}_{,b}} - {{{g}_b}_c}_{,a}})}}$
+<br>
+
+<br>
+${{{\Gamma}_a}_b}_c = {{\frac{1}{2}} {({{{\left({{\eta}_a}_b - {{2 \Phi} {{\delta}_a}_b}\right)}_{,c} + {\left({{\eta}_a}_c - {{2 \Phi} {{\delta}_a}_c}\right)}_{,b}} - {\left({{\eta}_b}_c - {{2 \Phi} {{\delta}_b}_c}\right)}_{,a}})}}$
+<br>
+
+<br>
+${{{\Gamma}_a}_b}_c = {{\frac{1}{2}} {({{{\left({\overset{a\downarrow b\rightarrow}{\left[\matrix{{-1}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}} - {{2 \Phi} {\overset{a\downarrow b\rightarrow}{\left[\matrix{1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}}\right)}_{,c} + {\left({\overset{a\downarrow c\rightarrow}{\left[\matrix{{-1}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}} - {{2 \Phi} {\overset{a\downarrow c\rightarrow}{\left[\matrix{1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}}\right)}_{,b}} - {\left({\overset{b\downarrow c\rightarrow}{\left[\matrix{{-1}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}} - {{2 \Phi} {\overset{b\downarrow c\rightarrow}{\left[\matrix{1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}}\right)}_{,a}})}}$
+<br>
+
+<br>
+${{{\Gamma}_a}_b}_c = {{\frac{1}{2}} {({{{\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\overset{b\downarrow c\rightarrow}{\left[\matrix{{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}}\right]}}}\right]}} + {\overset{a\downarrow[{c\downarrow b\rightarrow}]}{\left[\matrix{{\overset{c\downarrow b\rightarrow}{\left[\matrix{{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow b\rightarrow}{\left[\matrix{0&0&0&0\\{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow b\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}\\0&0&0&0}\right]}}\\{\overset{c\downarrow b\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}}\right]}}}\right]}}} - {\overset{b\downarrow[{c\downarrow a\rightarrow}]}{\left[\matrix{{\overset{c\downarrow a\rightarrow}{\left[\matrix{{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow a\rightarrow}{\left[\matrix{0&0&0&0\\{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow a\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}\\0&0&0&0}\right]}}\\{\overset{c\downarrow a\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\{-{2 {{\partial\Phi}\over{\partial t}}}}&{-{2 {{\partial\Phi}\over{\partial x}}}}&{-{2 {{\partial\Phi}\over{\partial y}}}}&{-{2 {{\partial\Phi}\over{\partial z}}}}}\right]}}}\right]}}})}}$
+<br>
+
+<br>
+${{{\Gamma}_a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\left[\matrix{{-{{\partial\Phi}\over{\partial t}}}&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}\\{-{{\partial\Phi}\over{\partial x}}}&{{\partial\Phi}\over{\partial t}}&0&0\\{-{{\partial\Phi}\over{\partial y}}}&0&{{\partial\Phi}\over{\partial t}}&0\\{-{{\partial\Phi}\over{\partial z}}}&0&0&{{\partial\Phi}\over{\partial t}}}\right]}\\{\left[\matrix{{{\partial\Phi}\over{\partial x}}&{-{{\partial\Phi}\over{\partial t}}}&0&0\\{-{{\partial\Phi}\over{\partial t}}}&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}\\0&{-{{\partial\Phi}\over{\partial y}}}&{{\partial\Phi}\over{\partial x}}&0\\0&{-{{\partial\Phi}\over{\partial z}}}&0&{{\partial\Phi}\over{\partial x}}}\right]}\\{\left[\matrix{{{\partial\Phi}\over{\partial y}}&0&{-{{\partial\Phi}\over{\partial t}}}&0\\0&{{\partial\Phi}\over{\partial y}}&{-{{\partial\Phi}\over{\partial x}}}&0\\{-{{\partial\Phi}\over{\partial t}}}&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}\\0&0&{-{{\partial\Phi}\over{\partial z}}}&{{\partial\Phi}\over{\partial y}}}\right]}\\{\left[\matrix{{{\partial\Phi}\over{\partial z}}&0&0&{-{{\partial\Phi}\over{\partial t}}}\\0&{{\partial\Phi}\over{\partial z}}&0&{-{{\partial\Phi}\over{\partial x}}}\\0&0&{{\partial\Phi}\over{\partial z}}&{-{{\partial\Phi}\over{\partial y}}}\\{-{{\partial\Phi}\over{\partial t}}}&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}}\right]}}\right]}}$
+<br>
+
+<br>
+${{{\Gamma}^a}_b}_c = {{{g}^a}^d {{{\Gamma}_d}_b}_c}$
+<br>
+
+<br>
+${{{\Gamma}^a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\left[\matrix{{\frac{{\partial\Phi}\over{\partial t}}{1 + {2 \Phi}}}&{\frac{{\partial\Phi}\over{\partial x}}{1 + {2 \Phi}}}&{\frac{{\partial\Phi}\over{\partial y}}{1 + {2 \Phi}}}&{\frac{{\partial\Phi}\over{\partial z}}{1 + {2 \Phi}}}\\{\frac{{\partial\Phi}\over{\partial x}}{1 + {2 \Phi}}}&{\frac{{\partial\Phi}\over{\partial t}}{-{({1 + {2 \Phi}})}}}&0&0\\{\frac{{\partial\Phi}\over{\partial y}}{1 + {2 \Phi}}}&0&{\frac{{\partial\Phi}\over{\partial t}}{-{({1 + {2 \Phi}})}}}&0\\{\frac{{\partial\Phi}\over{\partial z}}{1 + {2 \Phi}}}&0&0&{\frac{{\partial\Phi}\over{\partial t}}{-{({1 + {2 \Phi}})}}}}\right]}\\{\left[\matrix{{\frac{{\partial\Phi}\over{\partial x}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial t}}}{1 - {2 \Phi}}}&0&0\\{\frac{-{{\partial\Phi}\over{\partial t}}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial x}}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial y}}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial z}}}{1 - {2 \Phi}}}\\0&{\frac{-{{\partial\Phi}\over{\partial y}}}{1 - {2 \Phi}}}&{\frac{{\partial\Phi}\over{\partial x}}{1 - {2 \Phi}}}&0\\0&{\frac{-{{\partial\Phi}\over{\partial z}}}{1 - {2 \Phi}}}&0&{\frac{{\partial\Phi}\over{\partial x}}{1 - {2 \Phi}}}}\right]}\\{\left[\matrix{{\frac{{\partial\Phi}\over{\partial y}}{1 - {2 \Phi}}}&0&{\frac{-{{\partial\Phi}\over{\partial t}}}{1 - {2 \Phi}}}&0\\0&{\frac{{\partial\Phi}\over{\partial y}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial x}}}{1 - {2 \Phi}}}&0\\{\frac{-{{\partial\Phi}\over{\partial t}}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial x}}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial y}}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial z}}}{1 - {2 \Phi}}}\\0&0&{\frac{-{{\partial\Phi}\over{\partial z}}}{1 - {2 \Phi}}}&{\frac{{\partial\Phi}\over{\partial y}}{1 - {2 \Phi}}}}\right]}\\{\left[\matrix{{\frac{{\partial\Phi}\over{\partial z}}{1 - {2 \Phi}}}&0&0&{\frac{-{{\partial\Phi}\over{\partial t}}}{1 - {2 \Phi}}}\\0&{\frac{{\partial\Phi}\over{\partial z}}{1 - {2 \Phi}}}&0&{\frac{-{{\partial\Phi}\over{\partial x}}}{1 - {2 \Phi}}}\\0&0&{\frac{{\partial\Phi}\over{\partial z}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial y}}}{1 - {2 \Phi}}}\\{\frac{-{{\partial\Phi}\over{\partial t}}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial x}}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial y}}}{1 - {2 \Phi}}}&{\frac{-{{\partial\Phi}\over{\partial z}}}{1 - {2 \Phi}}}}\right]}}\right]}}$
+<br>
+
+<br>
+
+<br>
+let $\Phi$ ~ 0, but keep $\partial\Phi$ to find:
+<br>
+${{{\Gamma}^a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\left[\matrix{{{\partial\Phi}\over{\partial t}}&{{\partial\Phi}\over{\partial x}}&{{\partial\Phi}\over{\partial y}}&{{\partial\Phi}\over{\partial z}}\\{{\partial\Phi}\over{\partial x}}&{-{{\partial\Phi}\over{\partial t}}}&0&0\\{{\partial\Phi}\over{\partial y}}&0&{-{{\partial\Phi}\over{\partial t}}}&0\\{{\partial\Phi}\over{\partial z}}&0&0&{-{{\partial\Phi}\over{\partial t}}}}\right]}\\{\left[\matrix{{{\partial\Phi}\over{\partial x}}&{-{{\partial\Phi}\over{\partial t}}}&0&0\\{-{{\partial\Phi}\over{\partial t}}}&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}\\0&{-{{\partial\Phi}\over{\partial y}}}&{{\partial\Phi}\over{\partial x}}&0\\0&{-{{\partial\Phi}\over{\partial z}}}&0&{{\partial\Phi}\over{\partial x}}}\right]}\\{\left[\matrix{{{\partial\Phi}\over{\partial y}}&0&{-{{\partial\Phi}\over{\partial t}}}&0\\0&{{\partial\Phi}\over{\partial y}}&{-{{\partial\Phi}\over{\partial x}}}&0\\{-{{\partial\Phi}\over{\partial t}}}&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}\\0&0&{-{{\partial\Phi}\over{\partial z}}}&{{\partial\Phi}\over{\partial y}}}\right]}\\{\left[\matrix{{{\partial\Phi}\over{\partial z}}&0&0&{-{{\partial\Phi}\over{\partial t}}}\\0&{{\partial\Phi}\over{\partial z}}&0&{-{{\partial\Phi}\over{\partial x}}}\\0&0&{{\partial\Phi}\over{\partial z}}&{-{{\partial\Phi}\over{\partial y}}}\\{-{{\partial\Phi}\over{\partial t}}}&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}}\right]}}\right]}}$
+<br>
+${{g}_u}_v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{-1}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+<br>
+${{g}^u}^v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{-1}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+<br>
+
+<br>
+let ${{\partial\Phi}\over{\partial t}} = 0$ to find:
+<br>
+${{{\Gamma}^a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\left[\matrix{0&{{\partial\Phi}\over{\partial x}}&{{\partial\Phi}\over{\partial y}}&{{\partial\Phi}\over{\partial z}}\\{{\partial\Phi}\over{\partial x}}&0&0&0\\{{\partial\Phi}\over{\partial y}}&0&0&0\\{{\partial\Phi}\over{\partial z}}&0&0&0}\right]}\\{\left[\matrix{{{\partial\Phi}\over{\partial x}}&0&0&0\\0&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}\\0&{-{{\partial\Phi}\over{\partial y}}}&{{\partial\Phi}\over{\partial x}}&0\\0&{-{{\partial\Phi}\over{\partial z}}}&0&{{\partial\Phi}\over{\partial x}}}\right]}\\{\left[\matrix{{{\partial\Phi}\over{\partial y}}&0&0&0\\0&{{\partial\Phi}\over{\partial y}}&{-{{\partial\Phi}\over{\partial x}}}&0\\0&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}\\0&0&{-{{\partial\Phi}\over{\partial z}}}&{{\partial\Phi}\over{\partial y}}}\right]}\\{\left[\matrix{{{\partial\Phi}\over{\partial z}}&0&0&0\\0&{{\partial\Phi}\over{\partial z}}&0&{-{{\partial\Phi}\over{\partial x}}}\\0&0&{{\partial\Phi}\over{\partial z}}&{-{{\partial\Phi}\over{\partial y}}}\\0&{-{{\partial\Phi}\over{\partial x}}}&{-{{\partial\Phi}\over{\partial y}}}&{-{{\partial\Phi}\over{\partial z}}}}\right]}}\right]}}$
+<br>
+
+<br>
+let
+<br>
+${u}^a = {\overset{a\downarrow}{\left[\matrix{{u^t}\\{u^x}\\{u^y}\\{u^z}}\right]}}$
+<br>
+
+<br>
+matter stress-energy tensor:
+<br>
+${{T}^a}^b = {{{{({\rho + P})} {u}^a} {u}^b} + {P {{g}^a}^b}}$
+<br>
+
+<br>
+${{T}^a}^b = {{{{({\rho + P})} {\overset{a\downarrow}{\left[\matrix{{u^t}\\{u^x}\\{u^y}\\{u^z}}\right]}}} {\overset{b\downarrow}{\left[\matrix{{u^t}\\{u^x}\\{u^y}\\{u^z}}\right]}}} + {P {\overset{a\downarrow b\rightarrow}{\left[\matrix{{-1}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}}}$
+<br>
+${{T}^a}^b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{-{({{P - {{{{u^t}}^{2}} P}} - {{{{u^t}}^{2}} \rho}})}}&{{u^t} \cdot {u^x} \cdot {({P + \rho})}}&{{u^t} \cdot {u^y} \cdot {({P + \rho})}}&{{u^t} \cdot {u^z} \cdot {({P + \rho})}}\\{{u^x} \cdot {u^t} \cdot {({P + \rho})}}&{P + {{{{u^x}}^{2}} P} + {{{{u^x}}^{2}} \rho}}&{{u^x} \cdot {u^y} \cdot {({P + \rho})}}&{{u^x} \cdot {u^z} \cdot {({P + \rho})}}\\{{u^y} \cdot {u^t} \cdot {({P + \rho})}}&{{u^y} \cdot {u^x} \cdot {({P + \rho})}}&{P + {{{{u^y}}^{2}} P} + {{{{u^y}}^{2}} \rho}}&{{u^y} \cdot {u^z} \cdot {({P + \rho})}}\\{{u^z} \cdot {u^t} \cdot {({P + \rho})}}&{{u^z} \cdot {u^x} \cdot {({P + \rho})}}&{{u^z} \cdot {u^y} \cdot {({P + \rho})}}&{P + {{{{u^z}}^{2}} P} + {{{{u^z}}^{2}} \rho}}}\right]}}$
+<br>
+
+<br>
+
+<br>
+$\nabla \cdot T = 0$
+<br>
+${-{({{{{{{{{{{{{{{{{{{{{{{{{\partial P}\over{\partial t}} - {{{\partial{u^t}}\over{\partial x}} {u^x} \cdot P}} - {{{\partial{u^t}}\over{\partial x}} {u^x} \cdot \rho}} - {{{\partial{u^t}}\over{\partial y}} {u^y} \cdot P}} - {{{\partial{u^t}}\over{\partial y}} {u^y} \cdot \rho}} - {{{\partial{u^t}}\over{\partial z}} {u^z} \cdot P}} - {{{\partial{u^t}}\over{\partial z}} {u^z} \cdot \rho}} - {{{{u^t}}^{2}} {{\partial P}\over{\partial t}}}} - {{{{u^t}}^{2}} {{\partial\rho}\over{\partial t}}}} - {2 {u^t} \cdot {{\partial{u^t}}\over{\partial t}} P}} - {2 {u^t} \cdot {{\partial{u^t}}\over{\partial t}} \rho}} - {{u^t} \cdot {{\partial{u^x}}\over{\partial x}} P}} - {{u^t} \cdot {{\partial{u^x}}\over{\partial x}} \rho}} - {{u^t} \cdot {{\partial{u^y}}\over{\partial y}} P}} - {{u^t} \cdot {{\partial{u^y}}\over{\partial y}} \rho}} - {{u^t} \cdot {{\partial{u^z}}\over{\partial z}} P}} - {{u^t} \cdot {{\partial{u^z}}\over{\partial z}} \rho}} - {{u^t} \cdot {u^x} \cdot {{\partial P}\over{\partial x}}}} - {{u^t} \cdot {u^x} \cdot {{\partial\rho}\over{\partial x}}}} - {{u^t} \cdot {u^y} \cdot {{\partial P}\over{\partial y}}}} - {{u^t} \cdot {u^y} \cdot {{\partial\rho}\over{\partial y}}}} - {{u^t} \cdot {u^z} \cdot {{\partial P}\over{\partial z}}}} - {{u^t} \cdot {u^z} \cdot {{\partial\rho}\over{\partial z}}}})}} = 0$
+<br>
+${{{{\partial P}\over{\partial x}} - {2 {{\partial\Phi}\over{\partial x}} P}} + {{{\partial\Phi}\over{\partial x}} {{{u^t}}^{2}} P} + {{{{{\partial\Phi}\over{\partial x}} {{{u^t}}^{2}} \rho} - {3 {{\partial\Phi}\over{\partial x}} {{{u^x}}^{2}} P}} - {3 {{\partial\Phi}\over{\partial x}} {{{u^x}}^{2}} \rho}} + {{{\partial\Phi}\over{\partial x}} {{{u^y}}^{2}} P} + {{{\partial\Phi}\over{\partial x}} {{{u^y}}^{2}} \rho} + {{{\partial\Phi}\over{\partial x}} {{{u^z}}^{2}} P} + {{{{{{{\partial\Phi}\over{\partial x}} {{{u^z}}^{2}} \rho} - {4 {{\partial\Phi}\over{\partial y}} {u^y} \cdot {u^x} \cdot P}} - {4 {{\partial\Phi}\over{\partial y}} {u^y} \cdot {u^x} \cdot \rho}} - {4 {{\partial\Phi}\over{\partial z}} {u^z} \cdot {u^x} \cdot P}} - {4 {{\partial\Phi}\over{\partial z}} {u^z} \cdot {u^x} \cdot \rho}} + {{{\partial{u^x}}\over{\partial t}} {u^t} \cdot P} + {{{\partial{u^x}}\over{\partial t}} {u^t} \cdot \rho} + {{{\partial{u^x}}\over{\partial y}} {u^y} \cdot P} + {{{\partial{u^x}}\over{\partial y}} {u^y} \cdot \rho} + {{{\partial{u^x}}\over{\partial z}} {u^z} \cdot P} + {{{\partial{u^x}}\over{\partial z}} {u^z} \cdot \rho} + {{{{u^x}}^{2}} {{\partial P}\over{\partial x}}} + {{{{u^x}}^{2}} {{\partial\rho}\over{\partial x}}} + {{u^x} \cdot {{\partial{u^t}}\over{\partial t}} P} + {{u^x} \cdot {{\partial{u^t}}\over{\partial t}} \rho} + {2 {u^x} \cdot {{\partial{u^x}}\over{\partial x}} P} + {2 {u^x} \cdot {{\partial{u^x}}\over{\partial x}} \rho} + {{u^x} \cdot {{\partial{u^y}}\over{\partial y}} P} + {{u^x} \cdot {{\partial{u^y}}\over{\partial y}} \rho} + {{u^x} \cdot {{\partial{u^z}}\over{\partial z}} P} + {{u^x} \cdot {{\partial{u^z}}\over{\partial z}} \rho} + {{u^x} \cdot {u^t} \cdot {{\partial P}\over{\partial t}}} + {{u^x} \cdot {u^t} \cdot {{\partial\rho}\over{\partial t}}} + {{u^x} \cdot {u^y} \cdot {{\partial P}\over{\partial y}}} + {{u^x} \cdot {u^y} \cdot {{\partial\rho}\over{\partial y}}} + {{u^x} \cdot {u^z} \cdot {{\partial P}\over{\partial z}}} + {{u^x} \cdot {u^z} \cdot {{\partial\rho}\over{\partial z}}}} = 0$
+<br>
+${{{{{{\partial P}\over{\partial y}} - {4 {{\partial\Phi}\over{\partial x}} {u^y} \cdot {u^x} \cdot P}} - {4 {{\partial\Phi}\over{\partial x}} {u^y} \cdot {u^x} \cdot \rho}} - {2 {{\partial\Phi}\over{\partial y}} P}} + {{{\partial\Phi}\over{\partial y}} {{{u^t}}^{2}} P} + {{{\partial\Phi}\over{\partial y}} {{{u^t}}^{2}} \rho} + {{{\partial\Phi}\over{\partial y}} {{{u^x}}^{2}} P} + {{{{{\partial\Phi}\over{\partial y}} {{{u^x}}^{2}} \rho} - {3 {{\partial\Phi}\over{\partial y}} {{{u^y}}^{2}} P}} - {3 {{\partial\Phi}\over{\partial y}} {{{u^y}}^{2}} \rho}} + {{{\partial\Phi}\over{\partial y}} {{{u^z}}^{2}} P} + {{{{{\partial\Phi}\over{\partial y}} {{{u^z}}^{2}} \rho} - {4 {{\partial\Phi}\over{\partial z}} {u^z} \cdot {u^y} \cdot P}} - {4 {{\partial\Phi}\over{\partial z}} {u^z} \cdot {u^y} \cdot \rho}} + {{{\partial{u^y}}\over{\partial t}} {u^t} \cdot P} + {{{\partial{u^y}}\over{\partial t}} {u^t} \cdot \rho} + {{{\partial{u^y}}\over{\partial x}} {u^x} \cdot P} + {{{\partial{u^y}}\over{\partial x}} {u^x} \cdot \rho} + {{{\partial{u^y}}\over{\partial z}} {u^z} \cdot P} + {{{\partial{u^y}}\over{\partial z}} {u^z} \cdot \rho} + {{{{u^y}}^{2}} {{\partial P}\over{\partial y}}} + {{{{u^y}}^{2}} {{\partial\rho}\over{\partial y}}} + {{u^y} \cdot {{\partial{u^t}}\over{\partial t}} P} + {{u^y} \cdot {{\partial{u^t}}\over{\partial t}} \rho} + {{u^y} \cdot {{\partial{u^x}}\over{\partial x}} P} + {{u^y} \cdot {{\partial{u^x}}\over{\partial x}} \rho} + {2 {u^y} \cdot {{\partial{u^y}}\over{\partial y}} P} + {2 {u^y} \cdot {{\partial{u^y}}\over{\partial y}} \rho} + {{u^y} \cdot {{\partial{u^z}}\over{\partial z}} P} + {{u^y} \cdot {{\partial{u^z}}\over{\partial z}} \rho} + {{u^y} \cdot {u^t} \cdot {{\partial P}\over{\partial t}}} + {{u^y} \cdot {u^t} \cdot {{\partial\rho}\over{\partial t}}} + {{u^y} \cdot {u^x} \cdot {{\partial P}\over{\partial x}}} + {{u^y} \cdot {u^x} \cdot {{\partial\rho}\over{\partial x}}} + {{u^y} \cdot {u^z} \cdot {{\partial P}\over{\partial z}}} + {{u^y} \cdot {u^z} \cdot {{\partial\rho}\over{\partial z}}}} = 0$
+<br>
+${{{{{{{{\partial P}\over{\partial z}} - {4 {{\partial\Phi}\over{\partial x}} {u^z} \cdot {u^x} \cdot P}} - {4 {{\partial\Phi}\over{\partial x}} {u^z} \cdot {u^x} \cdot \rho}} - {4 {{\partial\Phi}\over{\partial y}} {u^z} \cdot {u^y} \cdot P}} - {4 {{\partial\Phi}\over{\partial y}} {u^z} \cdot {u^y} \cdot \rho}} - {2 {{\partial\Phi}\over{\partial z}} P}} + {{{\partial\Phi}\over{\partial z}} {{{u^t}}^{2}} P} + {{{\partial\Phi}\over{\partial z}} {{{u^t}}^{2}} \rho} + {{{\partial\Phi}\over{\partial z}} {{{u^x}}^{2}} P} + {{{\partial\Phi}\over{\partial z}} {{{u^x}}^{2}} \rho} + {{{\partial\Phi}\over{\partial z}} {{{u^y}}^{2}} P} + {{{{{\partial\Phi}\over{\partial z}} {{{u^y}}^{2}} \rho} - {3 {{\partial\Phi}\over{\partial z}} {{{u^z}}^{2}} P}} - {3 {{\partial\Phi}\over{\partial z}} {{{u^z}}^{2}} \rho}} + {{{\partial{u^z}}\over{\partial t}} {u^t} \cdot P} + {{{\partial{u^z}}\over{\partial t}} {u^t} \cdot \rho} + {{{\partial{u^z}}\over{\partial x}} {u^x} \cdot P} + {{{\partial{u^z}}\over{\partial x}} {u^x} \cdot \rho} + {{{\partial{u^z}}\over{\partial y}} {u^y} \cdot P} + {{{\partial{u^z}}\over{\partial y}} {u^y} \cdot \rho} + {{{{u^z}}^{2}} {{\partial P}\over{\partial z}}} + {{{{u^z}}^{2}} {{\partial\rho}\over{\partial z}}} + {{u^z} \cdot {{\partial{u^t}}\over{\partial t}} P} + {{u^z} \cdot {{\partial{u^t}}\over{\partial t}} \rho} + {{u^z} \cdot {{\partial{u^x}}\over{\partial x}} P} + {{u^z} \cdot {{\partial{u^x}}\over{\partial x}} \rho} + {{u^z} \cdot {{\partial{u^y}}\over{\partial y}} P} + {{u^z} \cdot {{\partial{u^y}}\over{\partial y}} \rho} + {2 {u^z} \cdot {{\partial{u^z}}\over{\partial z}} P} + {2 {u^z} \cdot {{\partial{u^z}}\over{\partial z}} \rho} + {{u^z} \cdot {u^t} \cdot {{\partial P}\over{\partial t}}} + {{u^z} \cdot {u^t} \cdot {{\partial\rho}\over{\partial t}}} + {{u^z} \cdot {u^x} \cdot {{\partial P}\over{\partial x}}} + {{u^z} \cdot {u^x} \cdot {{\partial\rho}\over{\partial x}}} + {{u^z} \cdot {u^y} \cdot {{\partial P}\over{\partial y}}} + {{u^z} \cdot {u^y} \cdot {{\partial\rho}\over{\partial y}}}} = 0$
+<br>
+
+<br>
+low velocity relativistic approximations:
+<br>
+${u^t} = 1$
+<br>
+
+<br>
+$\nabla \cdot T = 0$ becomes:
+<br>
+${{{\partial\rho}\over{\partial t}} + {{{\partial{u^x}}\over{\partial x}} P} + {{{\partial{u^x}}\over{\partial x}} \rho} + {{{\partial{u^y}}\over{\partial y}} P} + {{{\partial{u^y}}\over{\partial y}} \rho} + {{{\partial{u^z}}\over{\partial z}} P} + {{{\partial{u^z}}\over{\partial z}} \rho} + {{u^x} \cdot {{\partial P}\over{\partial x}}} + {{u^x} \cdot {{\partial\rho}\over{\partial x}}} + {{u^y} \cdot {{\partial P}\over{\partial y}}} + {{u^y} \cdot {{\partial\rho}\over{\partial y}}} + {{u^z} \cdot {{\partial P}\over{\partial z}}} + {{u^z} \cdot {{\partial\rho}\over{\partial z}}}} = 0$
+<br>
+${{{{\partial P}\over{\partial x}} - {{{\partial\Phi}\over{\partial x}} P}} + {{{{{\partial\Phi}\over{\partial x}} \rho} - {3 {{\partial\Phi}\over{\partial x}} {{{u^x}}^{2}} P}} - {3 {{\partial\Phi}\over{\partial x}} {{{u^x}}^{2}} \rho}} + {{{\partial\Phi}\over{\partial x}} {{{u^y}}^{2}} P} + {{{\partial\Phi}\over{\partial x}} {{{u^y}}^{2}} \rho} + {{{\partial\Phi}\over{\partial x}} {{{u^z}}^{2}} P} + {{{{{{{\partial\Phi}\over{\partial x}} {{{u^z}}^{2}} \rho} - {4 {{\partial\Phi}\over{\partial y}} {u^y} \cdot {u^x} \cdot P}} - {4 {{\partial\Phi}\over{\partial y}} {u^y} \cdot {u^x} \cdot \rho}} - {4 {{\partial\Phi}\over{\partial z}} {u^z} \cdot {u^x} \cdot P}} - {4 {{\partial\Phi}\over{\partial z}} {u^z} \cdot {u^x} \cdot \rho}} + {{{\partial{u^x}}\over{\partial t}} P} + {{{\partial{u^x}}\over{\partial t}} \rho} + {{{\partial{u^x}}\over{\partial y}} {u^y} \cdot P} + {{{\partial{u^x}}\over{\partial y}} {u^y} \cdot \rho} + {{{\partial{u^x}}\over{\partial z}} {u^z} \cdot P} + {{{\partial{u^x}}\over{\partial z}} {u^z} \cdot \rho} + {{u^x} \cdot {{\partial P}\over{\partial t}}} + {{{{u^x}}^{2}} {{\partial P}\over{\partial x}}} + {{u^x} \cdot {{\partial\rho}\over{\partial t}}} + {{{{u^x}}^{2}} {{\partial\rho}\over{\partial x}}} + {2 {u^x} \cdot {{\partial{u^x}}\over{\partial x}} P} + {2 {u^x} \cdot {{\partial{u^x}}\over{\partial x}} \rho} + {{u^x} \cdot {{\partial{u^y}}\over{\partial y}} P} + {{u^x} \cdot {{\partial{u^y}}\over{\partial y}} \rho} + {{u^x} \cdot {{\partial{u^z}}\over{\partial z}} P} + {{u^x} \cdot {{\partial{u^z}}\over{\partial z}} \rho} + {{u^x} \cdot {u^y} \cdot {{\partial P}\over{\partial y}}} + {{u^x} \cdot {u^y} \cdot {{\partial\rho}\over{\partial y}}} + {{u^x} \cdot {u^z} \cdot {{\partial P}\over{\partial z}}} + {{u^x} \cdot {u^z} \cdot {{\partial\rho}\over{\partial z}}}} = 0$
+<br>
+${{{{{{\partial P}\over{\partial y}} - {4 {{\partial\Phi}\over{\partial x}} {u^y} \cdot {u^x} \cdot P}} - {4 {{\partial\Phi}\over{\partial x}} {u^y} \cdot {u^x} \cdot \rho}} - {{{\partial\Phi}\over{\partial y}} P}} + {{{\partial\Phi}\over{\partial y}} \rho} + {{{\partial\Phi}\over{\partial y}} {{{u^x}}^{2}} P} + {{{{{\partial\Phi}\over{\partial y}} {{{u^x}}^{2}} \rho} - {3 {{\partial\Phi}\over{\partial y}} {{{u^y}}^{2}} P}} - {3 {{\partial\Phi}\over{\partial y}} {{{u^y}}^{2}} \rho}} + {{{\partial\Phi}\over{\partial y}} {{{u^z}}^{2}} P} + {{{{{\partial\Phi}\over{\partial y}} {{{u^z}}^{2}} \rho} - {4 {{\partial\Phi}\over{\partial z}} {u^z} \cdot {u^y} \cdot P}} - {4 {{\partial\Phi}\over{\partial z}} {u^z} \cdot {u^y} \cdot \rho}} + {{{\partial{u^y}}\over{\partial t}} P} + {{{\partial{u^y}}\over{\partial t}} \rho} + {{{\partial{u^y}}\over{\partial x}} {u^x} \cdot P} + {{{\partial{u^y}}\over{\partial x}} {u^x} \cdot \rho} + {{{\partial{u^y}}\over{\partial z}} {u^z} \cdot P} + {{{\partial{u^y}}\over{\partial z}} {u^z} \cdot \rho} + {{u^y} \cdot {{\partial P}\over{\partial t}}} + {{{{u^y}}^{2}} {{\partial P}\over{\partial y}}} + {{u^y} \cdot {{\partial\rho}\over{\partial t}}} + {{{{u^y}}^{2}} {{\partial\rho}\over{\partial y}}} + {{u^y} \cdot {{\partial{u^x}}\over{\partial x}} P} + {{u^y} \cdot {{\partial{u^x}}\over{\partial x}} \rho} + {2 {u^y} \cdot {{\partial{u^y}}\over{\partial y}} P} + {2 {u^y} \cdot {{\partial{u^y}}\over{\partial y}} \rho} + {{u^y} \cdot {{\partial{u^z}}\over{\partial z}} P} + {{u^y} \cdot {{\partial{u^z}}\over{\partial z}} \rho} + {{u^y} \cdot {u^x} \cdot {{\partial P}\over{\partial x}}} + {{u^y} \cdot {u^x} \cdot {{\partial\rho}\over{\partial x}}} + {{u^y} \cdot {u^z} \cdot {{\partial P}\over{\partial z}}} + {{u^y} \cdot {u^z} \cdot {{\partial\rho}\over{\partial z}}}} = 0$
+<br>
+${{{{{{{{\partial P}\over{\partial z}} - {4 {{\partial\Phi}\over{\partial x}} {u^z} \cdot {u^x} \cdot P}} - {4 {{\partial\Phi}\over{\partial x}} {u^z} \cdot {u^x} \cdot \rho}} - {4 {{\partial\Phi}\over{\partial y}} {u^z} \cdot {u^y} \cdot P}} - {4 {{\partial\Phi}\over{\partial y}} {u^z} \cdot {u^y} \cdot \rho}} - {{{\partial\Phi}\over{\partial z}} P}} + {{{\partial\Phi}\over{\partial z}} \rho} + {{{\partial\Phi}\over{\partial z}} {{{u^x}}^{2}} P} + {{{\partial\Phi}\over{\partial z}} {{{u^x}}^{2}} \rho} + {{{\partial\Phi}\over{\partial z}} {{{u^y}}^{2}} P} + {{{{{\partial\Phi}\over{\partial z}} {{{u^y}}^{2}} \rho} - {3 {{\partial\Phi}\over{\partial z}} {{{u^z}}^{2}} P}} - {3 {{\partial\Phi}\over{\partial z}} {{{u^z}}^{2}} \rho}} + {{{\partial{u^z}}\over{\partial t}} P} + {{{\partial{u^z}}\over{\partial t}} \rho} + {{{\partial{u^z}}\over{\partial x}} {u^x} \cdot P} + {{{\partial{u^z}}\over{\partial x}} {u^x} \cdot \rho} + {{{\partial{u^z}}\over{\partial y}} {u^y} \cdot P} + {{{\partial{u^z}}\over{\partial y}} {u^y} \cdot \rho} + {{u^z} \cdot {{\partial P}\over{\partial t}}} + {{{{u^z}}^{2}} {{\partial P}\over{\partial z}}} + {{u^z} \cdot {{\partial\rho}\over{\partial t}}} + {{{{u^z}}^{2}} {{\partial\rho}\over{\partial z}}} + {{u^z} \cdot {{\partial{u^x}}\over{\partial x}} P} + {{u^z} \cdot {{\partial{u^x}}\over{\partial x}} \rho} + {{u^z} \cdot {{\partial{u^y}}\over{\partial y}} P} + {{u^z} \cdot {{\partial{u^y}}\over{\partial y}} \rho} + {2 {u^z} \cdot {{\partial{u^z}}\over{\partial z}} P} + {2 {u^z} \cdot {{\partial{u^z}}\over{\partial z}} \rho} + {{u^z} \cdot {u^x} \cdot {{\partial P}\over{\partial x}}} + {{u^z} \cdot {u^x} \cdot {{\partial\rho}\over{\partial x}}} + {{u^z} \cdot {u^y} \cdot {{\partial P}\over{\partial y}}} + {{u^z} \cdot {u^y} \cdot {{\partial\rho}\over{\partial y}}}} = 0$
+<br>
+${{{{\partial P}\over{\partial x}} {u^x}} + {{{\partial P}\over{\partial y}} {u^y}} + {{{\partial P}\over{\partial z}} {u^z}} + {P {{\partial{u^x}}\over{\partial x}}} + {P {{\partial{u^y}}\over{\partial y}}} + {P {{\partial{u^z}}\over{\partial z}}}} = 0$
+<br>
+
+<br>
+first equation in terms of $\partial_t \rho$
+<br>
+${{\partial\rho}\over{\partial t}} = {-{({{{{\partial{u^x}}\over{\partial x}} \rho} + {{{\partial{u^y}}\over{\partial y}} \rho} + {{{\partial{u^z}}\over{\partial z}} \rho} + {{u^x} \cdot {{\partial\rho}\over{\partial x}}} + {{u^y} \cdot {{\partial\rho}\over{\partial y}}} + {{u^z} \cdot {{\partial\rho}\over{\partial z}}}})}}$
+<br>
+
+<br>
+spatial equations neglect $P_{,t}$, $(P u^j)_{,j}$, $P$, and $\Phi_{,i} u_j$ and substitutes the definition of $\partial_t \rho$
+<br>
+
+<br>
+$\nabla \cdot T = 0$ becomes:
+<br>
+${{{\partial\rho}\over{\partial t}} + {{{\partial{u^x}}\over{\partial x}} \rho} + {{{\partial{u^y}}\over{\partial y}} \rho} + {{{\partial{u^z}}\over{\partial z}} \rho} + {{u^x} \cdot {{\partial\rho}\over{\partial x}}} + {{u^y} \cdot {{\partial\rho}\over{\partial y}}} + {{u^z} \cdot {{\partial\rho}\over{\partial z}}}} = 0$
+<br>
+${{{\partial P}\over{\partial x}} + {{{\partial\Phi}\over{\partial x}} \rho} + {{{\partial{u^x}}\over{\partial t}} \rho} + {{{\partial{u^x}}\over{\partial y}} {u^y} \cdot \rho} + {{{\partial{u^x}}\over{\partial z}} {u^z} \cdot \rho} + {{u^x} \cdot {{\partial{u^x}}\over{\partial x}} \rho}} = 0$
+<br>
+${{{\partial P}\over{\partial y}} + {{{\partial\Phi}\over{\partial y}} \rho} + {{{\partial{u^y}}\over{\partial t}} \rho} + {{{\partial{u^y}}\over{\partial x}} {u^x} \cdot \rho} + {{{\partial{u^y}}\over{\partial z}} {u^z} \cdot \rho} + {{u^y} \cdot {{\partial{u^y}}\over{\partial y}} \rho}} = 0$
+<br>
+${{{\partial P}\over{\partial z}} + {{{\partial\Phi}\over{\partial z}} \rho} + {{{\partial{u^z}}\over{\partial t}} \rho} + {{{\partial{u^z}}\over{\partial x}} {u^x} \cdot \rho} + {{{\partial{u^z}}\over{\partial y}} {u^y} \cdot \rho} + {{u^z} \cdot {{\partial{u^z}}\over{\partial z}} \rho}} = 0$
+<br>

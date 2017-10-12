@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Symbolic Lua Output</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+${{g}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{-{{e}^{{({{\sqrt2} E {({{{\gamma_0} \cdot x} + {{\gamma_1} \cdot t} + {{\gamma_2} \cdot y} + {{\gamma_3} \cdot z}})}})}}}}&0&0&0\\0&{{e}^{{({{\sqrt2} E {({{{\gamma_0} \cdot x} + {{\gamma_1} \cdot t} + {{\gamma_2} \cdot y} + {{\gamma_3} \cdot z}})}})}}}&0&0\\0&0&{{e}^{{({{\sqrt2} E {({{{\gamma_0} \cdot x} + {{\gamma_1} \cdot t} + {{\gamma_2} \cdot y} + {{\gamma_3} \cdot z}})}})}}}&0\\0&0&0&{{e}^{{({{\sqrt2} E {({{{\gamma_0} \cdot x} + {{\gamma_1} \cdot t} + {{\gamma_2} \cdot y} + {{\gamma_3} \cdot z}})}})}}}}\right]}}$
+${{g}^a}^b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{1}{-{{e}^{{({{\sqrt2} E {({{{\gamma_0} \cdot x} + {{\gamma_1} \cdot t} + {{\gamma_2} \cdot y} + {{\gamma_3} \cdot z}})}})}}}}}&0&0&0\\0&{\frac{1}{{e}^{{({{\sqrt2} E {({{{\gamma_0} \cdot x} + {{\gamma_1} \cdot t} + {{\gamma_2} \cdot y} + {{\gamma_3} \cdot z}})}})}}}}&0&0\\0&0&{\frac{1}{{e}^{{({{\sqrt2} E {({{{\gamma_0} \cdot x} + {{\gamma_1} \cdot t} + {{\gamma_2} \cdot y} + {{\gamma_3} \cdot z}})}})}}}}&0\\0&0&0&{\frac{1}{{e}^{{({{\sqrt2} E {({{{\gamma_0} \cdot x} + {{\gamma_1} \cdot t} + {{\gamma_2} \cdot y} + {{\gamma_3} \cdot z}})}})}}}}}\right]}}$
+
+<br>
+conn from manual metric:
+${{{\Gamma}^a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\left[\matrix{{\frac{E {\gamma_1}}{\sqrt2}}&{\frac{E {\gamma_0}}{\sqrt2}}&{\frac{E {\gamma_2}}{\sqrt2}}&{\frac{E {\gamma_3}}{\sqrt2}}\\{\frac{E {\gamma_0}}{\sqrt2}}&{\frac{E {\gamma_1}}{\sqrt2}}&0&0\\{\frac{E {\gamma_2}}{\sqrt2}}&0&{\frac{E {\gamma_1}}{\sqrt2}}&0\\{\frac{E {\gamma_3}}{\sqrt2}}&0&0&{\frac{E {\gamma_1}}{\sqrt2}}}\right]}\\{\left[\matrix{{\frac{E {\gamma_0}}{\sqrt2}}&{\frac{E {\gamma_1}}{\sqrt2}}&0&0\\{\frac{E {\gamma_1}}{\sqrt2}}&{\frac{E {\gamma_0}}{\sqrt2}}&{\frac{E {\gamma_2}}{\sqrt2}}&{\frac{E {\gamma_3}}{\sqrt2}}\\0&{\frac{E {\gamma_2}}{\sqrt2}}&{\frac{-{E {\gamma_0}}}{\sqrt2}}&0\\0&{\frac{E {\gamma_3}}{\sqrt2}}&0&{\frac{-{E {\gamma_0}}}{\sqrt2}}}\right]}\\{\left[\matrix{{\frac{E {\gamma_2}}{\sqrt2}}&0&{\frac{E {\gamma_1}}{\sqrt2}}&0\\0&{\frac{-{E {\gamma_2}}}{\sqrt2}}&{\frac{E {\gamma_0}}{\sqrt2}}&0\\{\frac{E {\gamma_1}}{\sqrt2}}&{\frac{E {\gamma_0}}{\sqrt2}}&{\frac{E {\gamma_2}}{\sqrt2}}&{\frac{E {\gamma_3}}{\sqrt2}}\\0&0&{\frac{E {\gamma_3}}{\sqrt2}}&{\frac{-{E {\gamma_2}}}{\sqrt2}}}\right]}\\{\left[\matrix{{\frac{E {\gamma_3}}{\sqrt2}}&0&0&{\frac{E {\gamma_1}}{\sqrt2}}\\0&{\frac{-{E {\gamma_3}}}{\sqrt2}}&0&{\frac{E {\gamma_0}}{\sqrt2}}\\0&0&{\frac{-{E {\gamma_3}}}{\sqrt2}}&{\frac{E {\gamma_2}}{\sqrt2}}\\{\frac{E {\gamma_1}}{\sqrt2}}&{\frac{E {\gamma_0}}{\sqrt2}}&{\frac{E {\gamma_2}}{\sqrt2}}&{\frac{E {\gamma_3}}{\sqrt2}}}\right]}}\right]}}$
+vs
+manual conn:
+${{{\Gamma}^a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&E&0&0\\E&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{{-E}&0&0&0\\0&0&0&0\\0&0&E&0\\0&0&0&E}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}}\right]}}$
+
+<br>
+Ricci from manual metric
+<br>
+${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{{{E}^{2}} {({{{{\gamma_0}}^{2}} + {{{\gamma_2}}^{2}} + {{{\gamma_3}}^{2}}})}}&{{{E}^{2}} {\gamma_0} \cdot {\gamma_1}}&{{{E}^{2}} {\gamma_2} \cdot {\gamma_1}}&{{{E}^{2}} {\gamma_3} \cdot {\gamma_1}}\\{{{E}^{2}} {\gamma_0} \cdot {\gamma_1}}&{{{E}^{2}} {({{{{{\gamma_1}}^{2}} - {{{\gamma_2}}^{2}}} - {{{\gamma_3}}^{2}}})}}&{{{E}^{2}} {\gamma_2} \cdot {\gamma_0}}&{{{E}^{2}} {\gamma_3} \cdot {\gamma_0}}\\{{{E}^{2}} {\gamma_2} \cdot {\gamma_1}}&{{{E}^{2}} {\gamma_2} \cdot {\gamma_0}}&{-{{{E}^{2}} {({{{{{\gamma_0}}^{2}} - {{{\gamma_1}}^{2}}} + {{{\gamma_3}}^{2}}})}}}&{{{E}^{2}} {\gamma_3} \cdot {\gamma_2}}\\{{{E}^{2}} {\gamma_3} \cdot {\gamma_1}}&{{{E}^{2}} {\gamma_3} \cdot {\gamma_0}}&{{{E}^{2}} {\gamma_3} \cdot {\gamma_2}}&{-{{{E}^{2}} {({{{{{\gamma_0}}^{2}} - {{{\gamma_1}}^{2}}} + {{{\gamma_2}}^{2}}})}}}}\right]}}$
+
+<br>
+vs
+Ricci from manual conn
+<br>
+${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{{E}^{2}}&0&0&0\\0&{-{{E}^{2}}}&0&0\\0&0&{{E}^{2}}&0\\0&0&0&{{E}^{2}}}\right]}}$
+
+<br>
+vs desired Ricci
+<br>
+${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{{E}^{2}}&0&0&0\\0&{-{{E}^{2}}}&0&0\\0&0&{{E}^{2}}&0\\0&0&0&{{E}^{2}}}\right]}}$
+
+<br>
+manual metric Gaussian -- equal to zero according to EM stress-energy trace:
+<br>
+${G = {\frac{3 {{E}^{2}} {({{{{{\gamma_0}}^{2}} - {{{\gamma_1}}^{2}}} + {{{\gamma_2}}^{2}} + {{{\gamma_3}}^{2}}})}}{-{{e}^{{({{\sqrt2} E {({{{\gamma_0} \cdot x} + {{\gamma_1} \cdot t} + {{\gamma_2} \cdot y} + {{\gamma_3} \cdot z}})}})}}}}}} = 0$
+<br>
+${3 {{E}^{2}} {({{{{{\gamma_0}}^{2}} - {{{\gamma_1}}^{2}}} + {{{\gamma_2}}^{2}} + {{{\gamma_3}}^{2}}})}} = 0$
+<br>
+
+<br>
+${{{{R}^a}_b}_c}_d = {{{{{{{{\Gamma}^a}_b}_d}_{,c} - {{{{\Gamma}^a}_b}_c}_{,d}} + {{{{\Gamma}^a}_e}_c {{{\Gamma}^e}_b}_d}} - {{{{\Gamma}^a}_e}_d {{{\Gamma}^e}_b}_c}} - {{{{\Gamma}^a}_b}_e {({{{{\Gamma}^e}_d}_c - {{{\Gamma}^e}_c}_d})}}}$
+<br>
+${{R}_a}_b = {{{{{{{{\Gamma}^c}_a}_b}_{,c} - {{{{\Gamma}^c}_a}_c}_{,b}} + {{{{\Gamma}^c}_d}_c {{{\Gamma}^d}_a}_b}} - {{{{\Gamma}^c}_d}_b {{{\Gamma}^d}_a}_c}} - {{{{\Gamma}^c}_a}_d {({{{{\Gamma}^d}_b}_c - {{{\Gamma}^d}_c}_b})}}}$
+<br>
+ 
+Gravitation acting on an object at rest is given as ${\Gamma^j}_{tt}$.
+
+For a uniform field in the x direction,
+for the connections that give rise to this stress-energy,
+gravitation is ${\Gamma^x}_{tt} = -E$.
+
+<br>
+Applying	${\frac{3}{2}} V$	between conductors	${0.01} m$	apart produces a uniform electric field of	$E = {{150} V {\frac{1}{m}}}$	.
+<br>
+converting to meters gives	${E = {{1.4381925858737\cdot{10^{-25}}} \cdot {\frac{1}{m}}}} = {{1.2925830345749\cdot{10^{-08}}} m {\frac{1}{{s}^{2}}}}$
+<br>

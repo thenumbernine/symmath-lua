@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Symbolic Lua Output</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+$\alpha$
+<br>
+${\beta}^i = {\overset{i\downarrow}{\left[\matrix{{\beta^x}\\{\beta^y}\\{\beta^z}}\right]}}$
+<br>
+${{\gamma}_i}_j = {\overset{i\downarrow j\rightarrow}{\left[\matrix{{\gamma_{xx}}&{\gamma_{xy}}&{\gamma_{xz}}\\{\gamma_{yx}}&{\gamma_{yy}}&{\gamma_{yz}}\\{\gamma_{zx}}&{\gamma_{zy}}&{\gamma_{zz}}}\right]}}$
+<br>
+${{\gamma}^i}^j = {\overset{i\downarrow j\rightarrow}{\left[\matrix{{\gamma^{xx}}&{\gamma^{xy}}&{\gamma^{xz}}\\{\gamma^{yx}}&{\gamma^{yy}}&{\gamma^{yz}}\\{\gamma^{zx}}&{\gamma^{zy}}&{\gamma^{zz}}}\right]}}$
+<br>
+${{g}_u}_v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{{-{{\alpha}^{2}}} + {{{{{\beta^x}}^{2}} {\gamma_{xx}}} + {{\beta^y} \cdot {\beta^x} \cdot {\gamma_{yx}}} + {{\beta^z} \cdot {\beta^x} \cdot {\gamma_{zx}}} + {{\beta^x} \cdot {\beta^y} \cdot {\gamma_{xy}}} + {{{{\beta^y}}^{2}} {\gamma_{yy}}} + {{\beta^z} \cdot {\beta^y} \cdot {\gamma_{zy}}} + {{\beta^x} \cdot {\beta^z} \cdot {\gamma_{xz}}} + {{\beta^y} \cdot {\beta^z} \cdot {\gamma_{yz}}} + {{{{\beta^z}}^{2}} {\gamma_{zz}}}}}&{{{\beta^x} \cdot {\gamma_{xx}}} + {{\beta^y} \cdot {\gamma_{yx}}} + {{\beta^z} \cdot {\gamma_{zx}}}}&{{{\beta^x} \cdot {\gamma_{xy}}} + {{\beta^y} \cdot {\gamma_{yy}}} + {{\beta^z} \cdot {\gamma_{zy}}}}&{{{\beta^x} \cdot {\gamma_{xz}}} + {{\beta^y} \cdot {\gamma_{yz}}} + {{\beta^z} \cdot {\gamma_{zz}}}}\\{{{\beta^x} \cdot {\gamma_{xx}}} + {{\beta^y} \cdot {\gamma_{yx}}} + {{\beta^z} \cdot {\gamma_{zx}}}}&{\gamma_{xx}}&{\gamma_{xy}}&{\gamma_{xz}}\\{{{\beta^x} \cdot {\gamma_{xy}}} + {{\beta^y} \cdot {\gamma_{yy}}} + {{\beta^z} \cdot {\gamma_{zy}}}}&{\gamma_{yx}}&{\gamma_{yy}}&{\gamma_{yz}}\\{{{\beta^x} \cdot {\gamma_{xz}}} + {{\beta^y} \cdot {\gamma_{yz}}} + {{\beta^z} \cdot {\gamma_{zz}}}}&{\gamma_{zx}}&{\gamma_{zy}}&{\gamma_{zz}}}\right]}}$
+<br>
+${{g}^u}^v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{\frac{-1}{{\alpha}^{2}}}&{\frac{{\beta^x}}{\alpha}}&{\frac{{\beta^y}}{\alpha}}&{\frac{{\beta^z}}{\alpha}}\\{\frac{{\beta^x}}{\alpha}}&{{\gamma^{xx}} - {\frac{{\beta^x} \cdot {\beta^x}}{{\alpha}^{2}}}}&{{\gamma^{xy}} - {\frac{{\beta^x} \cdot {\beta^y}}{{\alpha}^{2}}}}&{{\gamma^{xz}} - {\frac{{\beta^x} \cdot {\beta^z}}{{\alpha}^{2}}}}\\{\frac{{\beta^y}}{\alpha}}&{{\gamma^{yx}} - {\frac{{\beta^y} \cdot {\beta^x}}{{\alpha}^{2}}}}&{{\gamma^{yy}} - {\frac{{\beta^y} \cdot {\beta^y}}{{\alpha}^{2}}}}&{{\gamma^{yz}} - {\frac{{\beta^y} \cdot {\beta^z}}{{\alpha}^{2}}}}\\{\frac{{\beta^z}}{\alpha}}&{{\gamma^{zx}} - {\frac{{\beta^z} \cdot {\beta^x}}{{\alpha}^{2}}}}&{{\gamma^{zy}} - {\frac{{\beta^z} \cdot {\beta^y}}{{\alpha}^{2}}}}&{{\gamma^{zz}} - {\frac{{\beta^z} \cdot {\beta^z}}{{\alpha}^{2}}}}}\right]}}$
+<br>

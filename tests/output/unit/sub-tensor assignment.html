@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Symbolic Lua Output</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+rank-1 subtensor assignment
+<br>
+A = $\overset{a\downarrow}{\left[\matrix{{a}^t\\{a}^x\\{a}^y\\{a}^z}\right]}$
+<br>
+B = $\overset{i\downarrow}{\left[\matrix{{b}^x\\{b}^y\\{b}^z}\right]}$
+<br>
+A = $\overset{a\downarrow}{\left[\matrix{{a}^t\\{b}^x\\{b}^y\\{b}^z}\right]}$
+<br>
+rank-2 subtensor assignment
+<br>
+A = $\overset{a\downarrow b\rightarrow}{\left[\matrix{{{a}^t}^t&{{a}^t}^x&{{a}^t}^y&{{a}^t}^z\\{{a}^x}^t&{{a}^x}^x&{{a}^x}^y&{{a}^x}^z\\{{a}^y}^t&{{a}^y}^x&{{a}^y}^y&{{a}^y}^z\\{{a}^z}^t&{{a}^z}^x&{{a}^z}^y&{{a}^z}^z}\right]}$
+<br>
+B = $\overset{i\downarrow j\rightarrow}{\left[\matrix{{{b}^x}^x&{{b}^x}^y&{{b}^x}^z\\{{b}^y}^x&{{b}^y}^y&{{b}^y}^z\\{{b}^z}^x&{{b}^z}^y&{{b}^z}^z}\right]}$
+<br>
+A = $\overset{a\downarrow b\rightarrow}{\left[\matrix{{{a}^t}^t&{{a}^t}^x&{{a}^t}^y&{{a}^t}^z\\{{a}^x}^t&{{b}^x}^x&{{b}^x}^y&{{b}^x}^z\\{{a}^y}^t&{{b}^y}^x&{{b}^y}^y&{{b}^y}^z\\{{a}^z}^t&{{b}^z}^x&{{b}^z}^y&{{b}^z}^z}\right]}$
+<br>
+C = $\overset{i\downarrow}{\left[\matrix{{c}^x\\{c}^y\\{c}^z}\right]}$
+<br>
+A = $\overset{a\downarrow b\rightarrow}{\left[\matrix{{{a}^t}^t&{c}^x&{c}^y&{c}^z\\{{a}^x}^t&{{b}^x}^x&{{b}^x}^y&{{b}^x}^z\\{{a}^y}^t&{{b}^y}^x&{{b}^y}^y&{{b}^y}^z\\{{a}^z}^t&{{b}^z}^x&{{b}^z}^y&{{b}^z}^z}\right]}$
+<br>
+A = $\overset{a\downarrow b\rightarrow}{\left[\matrix{{{a}^t}^t&{c}^x&{c}^y&{c}^z\\{{b}^x}^x&{{b}^x}^x&{{b}^x}^y&{{b}^x}^z\\{{b}^y}^x&{{b}^y}^x&{{b}^y}^y&{{b}^y}^z\\{{b}^z}^x&{{b}^z}^x&{{b}^z}^y&{{b}^z}^z}\right]}$
+<br>
+A = $\overset{a\downarrow b\rightarrow}{\left[\matrix{2&{c}^x&{c}^y&{c}^z\\{{b}^x}^x&{{b}^x}^x&{{b}^x}^y&{{b}^x}^z\\{{b}^y}^x&{{b}^y}^x&{{b}^y}^y&{{b}^y}^z\\{{b}^z}^x&{{b}^z}^x&{{b}^z}^y&{{b}^z}^z}\right]}$
+<br>
+A = $\overset{a\downarrow b\rightarrow}{\left[\matrix{2&{c}^x&{c}^y&{c}^z\\{{b}^x}^x&1&1&1\\{{b}^y}^x&1&1&1\\{{b}^z}^x&1&1&1}\right]}$
+<br>

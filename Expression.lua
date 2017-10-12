@@ -314,7 +314,7 @@ function Expression:replaceIndex(find, repl, cond)
 					for _,s in ipairs(newsumsymbols) do already[s] = true end
 					for _,s in ipairs(newsumusedalready) do already[s] = true end
 					
-					local first = math.max(0, table.keys(already):inf():byte() - ('a'):byte())
+					local first = 0--math.max(0, table.keys(already):inf():byte() - ('a'):byte())
 					
 					-- TODO pick symbols from the basis associated with the to-be-replaced index
 					-- that means excluding those from all other basis

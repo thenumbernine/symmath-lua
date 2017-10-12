@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Natural Units</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+meter:	$m$
+<br>
+inch:	$in = {{0.0254} m}$
+<br>
+foot:	${ft = {{12} in}} = {{0.3048} m}$
+<br>
+
+<br>
+speed of light:	${c = {{299792458} \cdot {\frac{m}{s}}}} = 1$
+<br>
+second:	$s = {{299792458} m}$
+<br>
+$m = {{3.3356409519815\cdot{10^{-09}}} s}$
+<br>
+hertz:	${Hz = {\frac{1}{s}}} = {{3.3356409519815\cdot{10^{-09}}} \cdot {\frac{1}{m}}}$
+<br>
+
+<br>
+gravitational constant:	${G = {{6.67384\cdot{10^{-11}}} \cdot {\frac{{m}^{3}}{kg \cdot {{s}^{2}}}}}} = 1$
+<br>
+kilogram:	${kg = {{7.4256484500929\cdot{10^{-28}}} m}} = {{2.4769297065148\cdot{10^{-36}}} s}$
+<br>
+$m = {{1.3466837364049\cdot{10^{27}}} kg}$
+<br>
+$s = {{4.0372562748544\cdot{10^{35}}} kg}$
+<br>
+newton: ${N = {\frac{kg \cdot m}{{s}^{2}}}} = {8.2621481642303\cdot{10^{-45}}}$
+<br>
+pascal: ${Pa = {\frac{kg}{m {{s}^{2}}}}} = {{8.2621481642303\cdot{10^{-45}}} \cdot {\frac{1}{{m}^{2}}}}$
+<br>
+joule: ${J = {\frac{kg \cdot {{m}^{2}}}{{s}^{2}}}} = {{8.2621481642303\cdot{10^{-45}}} m}$
+<br>
+watt: ${W = {\frac{kg \cdot {{m}^{2}}}{{s}^{3}}}} = {2.7559559767946\cdot{10^{-53}}}$
+<br>
+
+<br>
+Coulomb's constant:	${{k_e} = {{8987551787.3682} kg \cdot {{m}^{3}} {\frac{1}{{s}^{2}}} {\frac{1}{{C}^{2}}}}} = 1$
+<br>
+coulomb:	${C = {s A}} = {{8.6172202304994\cdot{10^{-18}}} m}$
+<br>
+ampere:	${A = {\frac{C}{s}}} = {2.8743952693098\cdot{10^{-26}}}$
+<br>
+volt: ${V = {\frac{kg \cdot {{m}^{2}}}{{{s}^{3}} A}}} = {9.5879505724916\cdot{10^{-28}}}$
+<br>
+farad: ${F = {\frac{{{s}^{4}} {{A}^{2}}}{kg \cdot {{m}^{2}}}}} = {{8987551787.3682} m}$
+<br>
+ohm: ${\Omega = {\frac{kg \cdot {{m}^{2}}}{{{s}^{3}} {{A}^{2}}}}} = {0.033356409519815}$
+<br>
+siemens: ${S = {\frac{{{s}^{3}} {{A}^{2}}}{{{m}^{2}} kg}}} = {29.9792458}$
+<br>
+weber: ${Wb = {\frac{kg \cdot {{m}^{2}}}{{{s}^{2}} A}}} = {{2.8743952693098\cdot{10^{-19}}} m}$
+<br>
+tesla: ${T = {\frac{kg}{{{s}^{2}} A}}} = {{2.8743952693098\cdot{10^{-19}}} \cdot {\frac{1}{m}}}$
+<br>
+henry: ${H = {\frac{kg \cdot {{m}^{2}}}{{{s}^{2}} {{A}^{2}}}}} = {{10000000} m}$
+<br>
+
+<br>
+permeability and permittivity of free space
+<br>
+${k_e} = {\frac{1}{{4 \pi} {\epsilon_0}}}$
+<br>
+${\epsilon_0} = {\frac{0.25}{\pi}}$
+<br>
+${{c}^{2}} = {\frac{1}{{\mu_0} \cdot {\epsilon_0}}}$
+<br>
+${\mu_0} = {4 \pi}$
+<br>
+
+<br>
+electron charge:
+<br>
+$C = {{6.2415093414\cdot{10^{18}}} e}$
+<br>
+${e = {{1.6021765654775\cdot{10^{-19}}} C}} = {{1.3806308312865\cdot{10^{-36}}} m}$
+<br>
+
+<br>
+electron mass:	${{m_e} = {{9.1093835611\cdot{10^{-31}}} kg}} = {{6.7643079921784\cdot{10^{-58}}} m}$
+<br>
+Boltzmann's constant:	${{k_B} = {{1.3806488\cdot{10^{-23}}} \cdot {\frac{{{m}^{2}} kg}{K {{s}^{2}}}}}} = 1$
+<br>
+Kelvin:	${K = {{1.3806488\cdot{10^{-23}}} {{m}^{2}} kg \cdot {\frac{1}{{s}^{2}}}}} = {{1.1407124948367\cdot{10^{-67}}} m}$
+<br>
+reduced Planck constant:	${\hbar = {{{1.05457173\cdot{10^{-34}}} J} s}} = {{2.6121000456877\cdot{10^{-70}}} {{m}^{2}}}$
+<br>
+
+<br>
+Planck units:
+<br>
+length	${{l_P} = {\sqrt{\frac{\hbar \cdot G}{{c}^{3}}}}} = {{1.6161992592771\cdot{10^{-35}}} m}$
+<br>
+mass	${{m_P} = {\sqrt{\frac{\hbar \cdot c}{G}}}} = {{2.176509257258\cdot{10^{-08}}} kg}$
+<br>
+time	${{t_P} = {\sqrt{\frac{\hbar \cdot G}{{c}^{5}}}}} = {{5.3910604358067\cdot{10^{-44}}} s}$
+<br>
+charge	${{q_P} = {\sqrt{{{{4 \pi} {\epsilon_0}} \hbar} c}}} = {{1.8755459603513\cdot{10^{-18}}} C}$
+<br>
+temperature	${{T_P} = {\sqrt{\frac{\hbar \cdot {{c}^{2}}}{{k_B}}}}} = {{1.4168331341969\cdot{10^{32}}} K}$
+<br>
+
+<br>
+fine structure constant
+<br>
+${\alpha = {\frac{{k_e} \cdot {{e}^{2}}}{\hbar \cdot c}}} = {0.0072973525476011}$
+<br>
+	</body>
+</html>
+

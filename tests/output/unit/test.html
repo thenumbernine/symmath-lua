@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Symbolic Lua Output</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+<code>asserteq(1, (Constant(1)*Constant(1))())</code>
+<br>
+
+<br>
+<code>asserteq(1, (Constant(1)/Constant(1))())</code>
+<br>
+
+<br>
+<code>asserteq(-1, (-Constant(1)/Constant(1))())	-- without the first 'simplify' we don't get the same canonical form with the unary - on the outside</code>
+<br>
+
+<br>
+<code>asserteq(1, (Constant(1)/(Constant(1)*Constant(1)))())</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>x = symmath.Variable('x')</code>
+<br>
+
+<br>
+<code>y = symmath.Variable('y')</code>
+<br>
+
+<br>
+<code>t = symmath.Variable('t')</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>-- commutativity</code>
+<br>
+
+<br>
+<code>asserteq(x+y, y+x)</code>
+<br>
+
+<br>
+<code>asserteq(x*y, y*x)</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>-- pruning operations</code>
+<br>
+
+<br>
+<code>asserteq(x, (1*x)())</code>
+<br>
+
+<br>
+<code>asserteq(0, (Constant(0)*x)())</code>
+<br>
+
+<br>
+<code>asserteq(x, (1*x)())</code>
+<br>
+
+<br>
+<code>asserteq((x/x)(), 1)</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>asserteq(x^2, (x*x)())</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>-- simplify(): div add mul</code>
+<br>
+
+<br>
+<code>asserteq(((x+1)*y)(), (x*y + y)())</code>
+<br>
+
+<br>
+<code>asserteq(((x+1)*(y+1))(), (x*y + x + y + 1)())</code>
+<br>
+
+<br>
+<code>asserteq((2/(2*x*y))(), (1/(x*y))())</code>
+<br>
+
+<br>
+<code>asserteq((1-(1-x))(), x)</code>
+<br>
+
+<br>
+<code>asserteq(((1-(1-x))/x)(), 1)</code>
+<br>
+
+<br>
+<code>	</code>
+<br>
+
+<br>
+<code>-- factoring integers</code>
+<br>
+
+<br>
+<code>asserteq((Constant(2)/Constant(2))(), Constant(1))</code>
+<br>
+
+<br>
+<code>asserteq((Constant(2)/Constant(4))(), (Constant(1)/Constant(2))())</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>asserteq(((2*x + 2*y)/2)(), (x+y)())</code>
+<br>
+
+<br>
+<code>asserteq(((-2*x + 2*y)/2)(), (-x+y)())</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>asserteq(-1-x, -(1+x))</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>asserteq((-x)/x, -1)</code>
+<br>
+
+<br>
+<code>asserteq((x/(-x)), -1)</code>
+<br>
+
+<br>
+<code>asserteq((-x-1)/(x+1), -1) </code>
+<br>
+
+<br>
+<code>asserteq((x-1)/(1-x), -1)</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>-- expand(): add div mul</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>-- factor(): mul add div</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>-- [[ trigonometry</code>
+<br>
+
+<br>
+<code>asserteq((symmath.sin(x)^2+symmath.cos(x)^2)(), 1)</code>
+<br>
+
+<br>
+<code>asserteq((y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), y)</code>
+<br>
+
+<br>
+<code>asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 2*y)	-- works when combining y + y * trig ident</code>
+<br>
+
+<br>
+<code>asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 1+y)	-- ... but not when combining 1 + y * trig ident (look in factor.lua)</code>
+<br>
+
+<br>
+<code>--]]</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>asserteq(1+symmath.cos(x)^2+symmath.cos(x)^2, 1+2*symmath.cos(x)^2)</code>
+<br>
+
+<br>
+<code>asserteq(-1+symmath.cos(x)^2+symmath.cos(x)^2, -1+2*symmath.cos(x)^2)</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>asserteq((y-x)/(x-y), -1)</code>
+<br>
+
+<br>
+<code>asserteq((x+y)/(x+y)^2, 1/(x+y))</code>
+<br>
+
+<br>
+<code>asserteq((-x+y)/(-x+y)^2, 1/(-x+y))</code>
+<br>
+
+<br>
+<code></code>
+<br>
+
+<br>
+<code>-- and an example of what a failure looks like:</code>
+<br>
+
+<br>
+<code>asserteq(1,2)</code>
+<br>
+expected 1 to equal 2
+<br>
+instead found $1$ vs $2$
+<br>
+lhs stack
+<br>
+$1$
+<br>
+$1$
+<br>
+$1$
+<br>
+$1$
+<br>
+$1$
+<br>
+$1$
+<br>
+rhs stack
+<br>
+$2$
+<br>
+$2$
+<br>
+$2$
+<br>
+$2$
+<br>
+$2$
+<br>
+$2$
+<br>
+
+<br>

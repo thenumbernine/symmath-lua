@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Symbolic Lua Output</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+${{{{a}^i}_i}^j}_j$
+<br>
+${{{{a}^a}_a}^b}_b$
+<br>
+${{{{a}^a}_a}^b}_b$	vs	${{{{a}^a}_a}^b}_b$	equal?	true
+<br>
+<hr>
+<br>
+${{a}^i}_i + {{a}^j}_j$
+<br>
+${{a}^a}_a + {{a}^a}_a$
+<br>
+${{a}^a}_a + {{a}^a}_a$	vs	$2 {{a}^a}_a$	equal?	true
+<br>
+<hr>
+<br>
+${{a}^i}^j {({{{b}_j}_k + {{c}_j}_k})}$
+<br>
+${{a}^i}^a {({{{b}_a}_k + {{c}_a}_k})}$
+<br>
+${{a}^i}^a {({{{b}_a}_k + {{c}_a}_k})}$	vs	${{a}^i}^a {({{{b}_a}_k + {{c}_a}_k})}$	equal?	true
+<br>
+<hr>
+<br>
+${{{{a}_i}_j}_k {{b}^j}^k} + {{{{a}_i}_l}_m {{b}^l}^m}$
+<br>
+${{{{a}_i}_a}_b {{b}^a}^b} + {{{{a}_i}_a}_b {{b}^a}^b}$
+<br>
+${{{{a}_i}_a}_b {{b}^a}^b} + {{{{a}_i}_a}_b {{b}^a}^b}$	vs	${2 {{{a}_i}_a}_b} {{b}^a}^b$	equal?	true
+<br>
+<hr>
+<br>
+${{{{a}_a}_j}_k {{b}^j}^k} + {{{{a}_a}_l}_m {{b}^l}^m}$
+<br>
+${{{{a}_a}_b}_c {{b}^b}^c} + {{{{a}_a}_b}_c {{b}^b}^c}$
+<br>
+${{{{a}_a}_b}_c {{b}^b}^c} + {{{{a}_a}_b}_c {{b}^b}^c}$	vs	${2 {{{a}_a}_b}_c} {{b}^b}^c$	equal?	true
+<br>
+<hr>
+<br>
+${{{c}^p}^q {({{{{{d}_i}_p}_q}_j + {{{{d}_j}_p}_q}_i})}} - {{{c}^m}^r {({{{{{d}_i}_m}_r}_j + {{{{d}_j}_m}_r}_i})}}$
+<br>
+${{{c}^a}^b {({{{{{d}_i}_a}_b}_j + {{{{d}_j}_a}_b}_i})}} - {{{c}^a}^b {({{{{{d}_i}_a}_b}_j + {{{{d}_j}_a}_b}_i})}}$
+<br>
+${{{c}^a}^b {({{{{{d}_i}_a}_b}_j + {{{{d}_j}_a}_b}_i})}} - {{{c}^a}^b {({{{{{d}_i}_a}_b}_j + {{{{d}_j}_a}_b}_i})}}$	vs	0	equal?	true
+<br>
+<hr>
+<br>
+${({{a}^k + {b}^k})} {({{c}_k + {d}_k})}$
+<br>
+${({{a}^a + {b}^a})} {({{c}_a + {d}_a})}$
+<br>
+${({{a}^a + {b}^a})} {({{c}_a + {d}_a})}$	vs	${({{a}^a + {b}^a})} {({{c}_a + {d}_a})}$	equal?	true
+<br>
+<hr>
+<br>
+${a}^i {({{b}_i + {{{c}_i}^j {d}_j}})}$
+<br>
+${a}^a {({{b}_a + {{{c}_a}^b {d}_b}})}$
+<br>
+${a}^a {({{b}_a + {{{c}_a}^b {d}_b}})}$	vs	${a}^a {({{b}_a + {{{c}_a}^b {d}_b}})}$	equal?	true
+<br>
+<hr>
+<br>
+${({{a}^i + {{{b}^i}_j {c}^j}})} {({{d}_i + {{{e}_i}^k {f}_k}})}$
+<br>
+${({{a}^a + {{{b}^a}_b {c}^b}})} {({{d}_a + {{{e}_a}^c {f}_c}})}$
+<br>
+${({{a}^a + {{{b}^a}_b {c}^b}})} {({{d}_a + {{{e}_a}^c {f}_c}})}$	vs	${({{a}^a + {{{b}^a}_b {c}^b}})} {({{d}_a + {{{e}_a}^c {f}_c}})}$	equal?	true
+<br>
+<hr>
+<br>
+${{-{a}_i} {a}_j} + {{({{{{{d}_j}_i}^k + {{{d}_i}_j}^k} - {{{d}^k}_i}_j})} {({{{a}_k + {c}_k} - {{{d}^l}_l}_k})}}$
+<br>
+${{-{a}_i} {a}_j} + {{({{{{{d}_j}_i}^a + {{{d}_i}_j}^a} - {{{d}^a}_i}_j})} {({{{a}_a + {c}_a} - {{{d}^b}_b}_a})}}$
+<br>
+${{-{a}_i} {a}_j} + {{({{{{{d}_j}_i}^a + {{{d}_i}_j}^a} - {{{d}^a}_i}_j})} {({{{a}_a + {c}_a} - {{{d}^b}_b}_a})}}$	vs	${{-{a}_i} {a}_j} + {{({{{{{d}_j}_i}^a + {{{d}_i}_j}^a} - {{{d}^a}_i}_j})} {({{{a}_a + {c}_a} - {{{d}^b}_b}_a})}}$	equal?	true
+<br>
+<hr>
+<br>

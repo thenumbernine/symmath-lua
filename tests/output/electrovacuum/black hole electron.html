@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>black hole electron</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+$a = {\frac{J}{M c}}$
+<br>
+$\rho = {\sqrt{{{r}^{2}} + {{{a}^{2}} {{{cos\left(\theta\right)}}^{2}}}}}$
+<br>
+$\Delta = {{{{{r}^{2}} + {{a}^{2}}} + {{{r_{Q}}}^{2}}} - {{2 {r_{s}}} r}}$
+<br>
+${r_{s}} = {\frac{{2 G} M}{{c}^{2}}}$
+<br>
+${r_{Q}} = {\frac{{{Q}^{2}} G}{{{4 \pi} {\epsilon_0}} {{c}^{4}}}}$
+<br>
+${{g}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{-{({\Delta - {{{a}^{2}} {{{sin\left(\theta\right)}}^{2}}}})}}{{\rho}^{2}}}&0&0&{\frac{-{a {{{sin\left(\theta\right)}}^{2}} {({{{{a}^{2}} - \Delta} + {{r}^{2}}})}}}{{\rho}^{2}}}\\0&{\frac{{\rho}^{2}}{\Delta}}&0&0\\0&0&{{\rho}^{2}}&0\\{\frac{-{a {{{sin\left(\theta\right)}}^{2}} {({{{{a}^{2}} - \Delta} + {{r}^{2}}})}}}{{\rho}^{2}}}&0&0&{\frac{{{{sin\left(\theta\right)}}^{2}} {({{{{a}^{4}} - {{{{sin\left(\theta\right)}}^{2}} {{a}^{2}} \Delta}} + {{r}^{4}} + {2 {{r}^{2}} {{a}^{2}}}})}}{{\rho}^{2}}}}\right]}}$
+
+<br>
+${{g}^a}^b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{-{{{\rho}^{2}} {({{{{{{{sin\left(\theta\right)}}^{2}} {{a}^{2}} \Delta} - {{a}^{4}}} - {{r}^{4}}} - {2 {{r}^{2}} {{a}^{2}}}})}}}{\Delta \cdot {({{{2 {{{sin\left(\theta\right)}}^{2}} {{a}^{4}}} - {{{{sin\left(\theta\right)}}^{4}} {{a}^{4}}}} + {{{{2 {{{sin\left(\theta\right)}}^{2}} {{r}^{2}} {{a}^{2}}} - {{a}^{4}}} - {{r}^{4}}} - {2 {{r}^{2}} {{a}^{2}}}}})}}}&0&0&{\frac{-{a {{\rho}^{2}} {({{{{a}^{2}} - \Delta} + {{r}^{2}}})}}}{\Delta \cdot {({{{a}^{4}} + {{{{a}^{4}} {{{sin\left(\theta\right)}}^{4}}} - {2 {{a}^{4}} {{{sin\left(\theta\right)}}^{2}}}} + {{r}^{4}} + {{2 {{r}^{2}} {{a}^{2}}} - {2 {{r}^{2}} {{a}^{2}} {{{sin\left(\theta\right)}}^{2}}}}})}}}\\0&{\frac{\Delta}{{\rho}^{2}}}&0&0\\0&0&{\frac{1}{{\rho}^{2}}}&0\\{\frac{-{a {{\rho}^{2}} {({{{{a}^{2}} - \Delta} + {{r}^{2}}})}}}{\Delta \cdot {({{{a}^{4}} + {{{{a}^{4}} {{{sin\left(\theta\right)}}^{4}}} - {2 {{a}^{4}} {{{sin\left(\theta\right)}}^{2}}}} + {{r}^{4}} + {{2 {{r}^{2}} {{a}^{2}}} - {2 {{r}^{2}} {{a}^{2}} {{{sin\left(\theta\right)}}^{2}}}}})}}}&0&0&{\frac{{{\rho}^{2}} {({\Delta - {{{a}^{2}} {{{sin\left(\theta\right)}}^{2}}}})}}{-{\Delta \cdot {{{sin\left(\theta\right)}}^{2}} {({{{{{2 {{{sin\left(\theta\right)}}^{2}} {{a}^{4}}} - {{{{sin\left(\theta\right)}}^{4}} {{a}^{4}}}} - {{a}^{4}}} - {{r}^{4}}} + {{2 {{{sin\left(\theta\right)}}^{2}} {{r}^{2}} {{a}^{2}}} - {2 {{r}^{2}} {{a}^{2}}}}})}}}}}\right]}}$
+
+<br>
+gravitational acceleration:
+<br>
+${accel}^i = {\overset{i\downarrow}{\left[\matrix{0\\{\frac{2 \Delta \cdot {{{sin\left(\theta\right)}}^{2}} r {({{{r}^{2}} + {{a}^{2}}})}}{{\rho}^{4}}}\\{\frac{{sin\left(\theta\right)} {cos\left(\theta\right)} {({{{a}^{4}} + {{{a}^{2}} - {2 {{{sin\left(\theta\right)}}^{2}} {{a}^{2}} \Delta}} + {{r}^{4}} + {2 {{r}^{2}} {{a}^{2}}}})}}{{\rho}^{4}}}\\0}\right]}}$
+
+<br>
+...at azimuthal plane...
+<br>
+${cos\left(\theta\right)} = 0$;${sin\left(\theta\right)} = 1$
+<br>
+${accel}^i = {\overset{i\downarrow}{\left[\matrix{0\\{\frac{2 \Delta \cdot r {({{{r}^{2}} + {{a}^{2}}})}}{{\rho}^{4}}}\\0\\0}\right]}}$
+
+<br>
+...substitute variable definitions...
+<br>
+${accel}^i = {\overset{i\downarrow}{\left[\matrix{0\\{\frac{-{({{8 G r {{J}^{2}} {{M}^{3}} {{c}^{6}} {{\pi}^{2}} {{{\epsilon_0}}^{2}}} + {{{{{{8 G {{r}^{3}} {{M}^{5}} {{c}^{8}} {{\pi}^{2}} {{{\epsilon_0}}^{2}}} - {2 {{J}^{4}} {{c}^{6}} {{\pi}^{2}} {{{\epsilon_0}}^{2}}}} - {4 {{J}^{2}} {{r}^{2}} {{M}^{2}} {{c}^{8}} {{\pi}^{2}} {{{\epsilon_0}}^{2}}}} - {{0.125} {{Q}^{4}} {{G}^{2}} {{J}^{2}} {{M}^{2}}}} - {{0.125} {{Q}^{4}} {{G}^{2}} {{r}^{2}} {{c}^{2}} {{M}^{4}}}} - {2 {{r}^{4}} {{c}^{{10}}} {{M}^{4}} {{\pi}^{2}} {{{\epsilon_0}}^{2}}}}})}}{{{M}^{4}} {{c}^{{10}}} {{\pi}^{2}} {{{\epsilon_0}}^{2}} {{r}^{3}}}}\\0\\0}\right]}}$
+
+<br>
+...substitute electron definitions...
+<br>
+${r_{Q}} = {\frac{{{Q}^{2}} G}{{{4 \pi} {\epsilon_0}} {{c}^{4}}}}$
+<br>
+$Q = {{1.3806308312865\cdot{10^{-36}}} m}$
+<br>
+$M = {{6.7643079921784\cdot{10^{-58}}} m}$
+<br>
+$J = {\frac{{2.6121000456877\cdot{10^{-70}}} {{m}^{2}}}{2}}$
+<br>
+${accel}^i = {\overset{i\downarrow}{\left[\matrix{0\\{\frac{{{5.7433989639185\cdot{10^{-279}}} {{m}^{4}}} + {{3.0812441086239\cdot{10^{-253}}} {{m}^{2}} {{r}^{2}}} + {{{{4.1325987087844\cdot{10^{-228}}} {{r}^{4}}} - {{4.1684968299633\cdot{10^{-310}}} r {{m}^{3}}}} - {{1.1181668189718\cdot{10^{-284}}} {{r}^{3}} m}}}{{2.0662993543922\cdot{10^{-228}}} {{r}^{3}}}}\\0\\0}\right]}}$
+
+<br>
+...at distance of the classical electron radius...
+<br>
+${accel}^i = {\overset{i\downarrow}{\left[\matrix{0\\{{1.2426975890733\cdot{10^{-07}}} m}\\0\\0}\right]}}$
+Looks like there's a factor of m^2 that I've accidentally added...
+<br>
+
+<br>
+electric field around a uniformly charged sphere:
+<br>
+$E = {\frac{Q}{{{4 \pi} {\epsilon_0}} {{r}^{2}}}}$
+<br>
+...for an electron...
+<br>
+$E = {\frac{{1.3806308312865\cdot{10^{-36}}} m}{{r}^{2}}}$
+<br>
+...at a distnace of $m_e$...
+<br>
+$E = {\frac{1.7386575258035\cdot{10^{-07}}}{m}}$
+<br>

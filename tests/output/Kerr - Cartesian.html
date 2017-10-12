@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Kerr - Cartesian</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+${l}_u = {\overset{u\downarrow}{\left[\matrix{{l_1}\\{l_2}\\{l_3}\\{l_4}}\right]}}$
+<br>
+${m}^u = {\overset{u\downarrow}{\left[\matrix{{m^1}\\{m^2}\\{m^3}\\{m^4}}\right]}}$
+<br>
+${{\eta}_u}_v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{-1}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+<br>
+${{g}_u}_v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{-{({1 + {2 H {{{l_1}}^{2}}}})}}&{-{2 H {l_1} \cdot {l_2}}}&{-{2 H {l_1} \cdot {l_3}}}&{-{2 H {l_1} \cdot {l_4}}}\\{-{2 H {l_2} \cdot {l_1}}}&{1 - {2 H {{{l_2}}^{2}}}}&{-{2 H {l_2} \cdot {l_3}}}&{-{2 H {l_2} \cdot {l_4}}}\\{-{2 H {l_3} \cdot {l_1}}}&{-{2 H {l_3} \cdot {l_2}}}&{1 - {2 H {{{l_3}}^{2}}}}&{-{2 H {l_3} \cdot {l_4}}}\\{-{2 H {l_4} \cdot {l_1}}}&{-{2 H {l_4} \cdot {l_2}}}&{-{2 H {l_4} \cdot {l_3}}}&{1 - {2 H {{{l_4}}^{2}}}}}\right]}}$
+<br>
+current matrix inverse is too slow for n=4

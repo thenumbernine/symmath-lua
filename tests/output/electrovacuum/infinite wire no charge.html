@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Symbolic Lua Output</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+${{{{R}^a}_b}_c}_d = {{{{{{{{\Gamma}^a}_b}_d}_{,c} - {{{{\Gamma}^a}_b}_c}_{,d}} + {{{{\Gamma}^a}_e}_c {{{\Gamma}^e}_b}_d}} - {{{{\Gamma}^a}_e}_d {{{\Gamma}^e}_b}_c}} - {{{{\Gamma}^a}_b}_e {({{{{\Gamma}^e}_d}_c - {{{\Gamma}^e}_c}_d})}}}$
+<br>
+manual metric:
+<br>
+${{g}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{-I}{r}}&0&0&0\\0&{\frac{1}{I r}}&0&0\\0&0&{{r}^{2}}&0\\0&0&0&{\frac{1}{r}}}\right]}}$
+
+<br>
+${{g}^a}^b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{r}{-I}}&0&0&0\\0&{I r}&0&0\\0&0&{\frac{1}{{r}^{2}}}&0\\0&0&0&r}\right]}}$
+
+<br>
+	${{{\Gamma}_r}_t}_t = {\frac{-I}{2 {{r}^{2}}}}$
+;	${{{\Gamma}_t}_r}_t = {\frac{I}{2 {{r}^{2}}}}$
+;	${{{\Gamma}_t}_t}_r = {\frac{I}{2 {{r}^{2}}}}$
+;	${{{\Gamma}_r}_r}_r = {-{\frac{1}{2 I {{r}^{2}}}}}$
+;	${{{\Gamma}_{\phi}}_{\phi}}_r = r$
+;	${{{\Gamma}_z}_z}_r = {-{\frac{1}{2 {{r}^{2}}}}}$
+;	${{{\Gamma}_{\phi}}_r}_{\phi} = r$
+;	${{{\Gamma}_r}_{\phi}}_{\phi} = {-r}$
+;	${{{\Gamma}_z}_r}_z = {-{\frac{1}{2 {{r}^{2}}}}}$
+;	${{{\Gamma}_r}_z}_z = {\frac{1}{2 {{r}^{2}}}}$
+
+<br>
+	${{{\Gamma}^r}_t}_t = {\frac{-{{I}^{2}}}{2 r}}$
+;	${{{\Gamma}^t}_r}_t = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^t}_t}_r = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^r}_r}_r = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^{\phi}}_{\phi}}_r = {\frac{1}{r}}$
+;	${{{\Gamma}^z}_z}_r = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^{\phi}}_r}_{\phi} = {\frac{1}{r}}$
+;	${{{\Gamma}^r}_{\phi}}_{\phi} = {-{I {{r}^{2}}}}$
+;	${{{\Gamma}^z}_r}_z = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^r}_z}_z = {\frac{I}{2 r}}$
+
+<br>
+connection from manual metric:
+<br>
+	${{{\Gamma}^r}_t}_t = {\frac{-{{I}^{2}}}{2 r}}$
+;	${{{\Gamma}^t}_r}_t = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^t}_t}_r = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^r}_r}_r = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^{\phi}}_{\phi}}_r = {\frac{1}{r}}$
+;	${{{\Gamma}^z}_z}_r = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^{\phi}}_r}_{\phi} = {\frac{1}{r}}$
+;	${{{\Gamma}^r}_{\phi}}_{\phi} = {-{I {{r}^{2}}}}$
+;	${{{\Gamma}^z}_r}_z = {-{\frac{1}{2 r}}}$
+;	${{{\Gamma}^r}_z}_z = {\frac{I}{2 r}}$
+
+<br>
+manual connection:
+<br>
+	${{{\Gamma}^{\phi}}_t}_t = {\frac{{-2} I}{{r}^{2}}}$
+;	${{{\Gamma}^t}_{\phi}}_t = {2 I}$
+;	${{{\Gamma}^{\phi}}_r}_r = {\frac{2 I}{{r}^{2}}}$
+;	${{{\Gamma}^t}_t}_{\phi} = {2 I}$
+;	${{{\Gamma}^{\phi}}_z}_z = {\frac{2 I}{{r}^{2}}}$
+
+<br>
+Ricci from manual metric:
+<br>
+${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{{I}^{2}}{4 {{r}^{2}}}}&0&0&0\\0&{-{\frac{3}{2 {{r}^{2}}}}}&0&0\\0&0&{\frac{I r}{2}}&0\\0&0&0&{\frac{-I}{4 {{r}^{2}}}}}\right]}}$
+
+<br>
+Gaussian from manual metric:
+<br>
+${R = {\frac{-{3 I}}{2 r}}} = 0$
+<br>
+${3 I} = 0$
+<br>
+$R_{tt} - R_{rr}$:
+<br>
+${\frac{6 + {{I}^{2}}}{4 {{r}^{2}}}} = 0$
+<br>
+$R_{rr} - R_{zz}$:
+<br>
+${\frac{-{({6 - I})}}{4 {{r}^{2}}}} = 0$
+<br>
+$r^{-2} R_{\phi\phi} + R_{tt}$:
+<br>
+${\frac{I {({I + {2 r}})}}{4 {{r}^{2}}}} = 0$
+<br>
+Ricci from manual connection:
+<br>
+${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{4 {{I}^{2}}}{{r}^{2}}}&0&0&0\\0&{\frac{4 {{I}^{2}}}{{r}^{2}}}&0&0\\0&0&{-{4 {{I}^{2}}}}&0\\0&0&0&{\frac{4 {{I}^{2}}}{{r}^{2}}}}\right]}}$
+
+<br>
+vs $8 \pi \times$ EM stress-energy tensor = Ricci tensor
+${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{4 {{I}^{2}}}{{r}^{2}}}&0&0&0\\0&{\frac{4 {{I}^{2}}}{{r}^{2}}}&0&0\\0&0&{-{4 {{I}^{2}}}}&0\\0&0&0&{\frac{4 {{I}^{2}}}{{r}^{2}}}}\right]}}$
+
+<br>
+now the same thing for no-current only-charge
+<br>
+manual connection:
+<br>
+	${{{\Gamma}^r}_t}_t = {\frac{-{8 {{\lambda}^{2}}}}{r {({3 + {\sqrt{1 + {{16} {{\lambda}^{2}}}}}})}}}$
+;	${{{\Gamma}^t}_r}_t = {\frac{1 + {\sqrt{1 + {{16} {{\lambda}^{2}}}}}}{2 r}}$
+;	${{{\Gamma}^t}_t}_r = {\frac{1 + {\sqrt{1 + {{16} {{\lambda}^{2}}}}}}{2 r}}$
+;	${{{\Gamma}^r}_{\phi}}_{\phi} = {\frac{8 {{\lambda}^{2}} r}{3 + {\sqrt{1 + {{16} {{\lambda}^{2}}}}}}}$
+;	${{{\Gamma}^r}_z}_z = {\frac{8 {{\lambda}^{2}}}{-{r {({1 - {\sqrt{1 + {{16} {{\lambda}^{2}}}}}})}}}}$
+
+<br>
+Ricci from connection:
+<br>
+${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{{{\lambda}^{2}} {({{12} + {4 {\sqrt{1 + {{16} {{\lambda}^{2}}}}}}})}}{{{r}^{2}} {({3 + {\sqrt{1 + {{16} {{\lambda}^{2}}}}}})}}}&0&0&0\\0&{\frac{-{4 {{\lambda}^{2}}}}{{r}^{2}}}&0&0\\0&0&{\frac{{{\lambda}^{2}} {({{12} + {4 {\sqrt{1 + {{16} {{\lambda}^{2}}}}}}})}}{3 + {\sqrt{1 + {{16} {{\lambda}^{2}}}}}}}&0\\0&0&0&{\frac{4 {{\lambda}^{2}}}{{r}^{2}}}}\right]}}$
+
+<br>
+vs $8 \pi \times$ EM stress-energy tensor = Ricci tensor
+${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{4 {{\lambda}^{2}}}{{r}^{2}}}&0&0&0\\0&{\frac{-{4 {{\lambda}^{2}}}}{{r}^{2}}}&0&0\\0&0&{4 {{\lambda}^{2}}}&0\\0&0&0&{\frac{4 {{\lambda}^{2}}}{{r}^{2}}}}\right]}}$
+
+<br>

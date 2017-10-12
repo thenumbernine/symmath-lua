@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>uniform field - spherical</title>
+		<script type="text/javascript">
+function loadScript(args) {
+	console.log("loading "+args.src);
+	var el = document.createElement('script');
+	document.body.append(el);
+	el.onload = function() {
+		console.log('loaded');
+		if (args.done !== undefined) args.done();
+	};
+	el.onerror = function() {
+		console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	};
+	el.src = args.src; 
+}
+function init() {
+	console.log('init...');
+	var urls = [
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+	var i = 0;
+	var loadNext = function() {
+		loadScript({
+			src : urls[i],
+			done : function() {
+				console.log("success!");
+				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+			},
+			fail : function() {
+				++i;
+				if (i >= urls.length) {
+					console.log("looks like all our sources have failed!");
+				} else {
+					loadNext();
+				}
+			}
+		});
+	}
+	loadNext();
+}
+		</script>
+	</head>
+    <body onload='init();'>
+
+${{g}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{a&0&0&0\\0&b&0&0\\0&0&{{r}^{2}}&0\\0&0&0&{{{r}^{2}} {{{sin\left(\theta\right)}}^{2}}}}\right]}}$
+
+<br>
+${{g}^a}^b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{1}{a}}&0&0&0\\0&{\frac{1}{b}}&0&0\\0&0&{\frac{1}{{r}^{2}}}&0\\0&0&0&{\frac{1}{{{r}^{2}} {{{sin\left(\theta\right)}}^{2}}}}}\right]}}$
+
+<br>
+${{{\Gamma}^a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\left[\matrix{0&{\frac{\partial_{{r}}(a)}{2 a}}&0&0\\{\frac{\partial_{{r}}(a)}{2 a}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}\\{\left[\matrix{{\frac{-{\partial_{{r}}(a)}}{2 b}}&0&0&0\\0&{\frac{\partial_{{r}}(b)}{2 b}}&0&0\\0&0&{\frac{-r}{b}}&0\\0&0&0&{\frac{-{r {{{sin\left(\theta\right)}}^{2}}}}{b}}}\right]}\\{\left[\matrix{0&0&0&0\\0&0&{\frac{1}{r}}&0\\0&{\frac{1}{r}}&0&0\\0&0&0&{-{{sin\left(\theta\right)} {cos\left(\theta\right)}}}}\right]}\\{\left[\matrix{0&0&0&0\\0&0&0&{\frac{1}{r}}\\0&0&0&{\frac{cos\left(\theta\right)}{sin\left(\theta\right)}}\\0&{\frac{1}{r}}&{\frac{cos\left(\theta\right)}{sin\left(\theta\right)}}&0}\right]}}\right]}}$
+
+<br>
+Ricci from manual metric
+<br>
+${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{-{({{{2 {\partial_{{{r}}{{r}}}(a)} b a r} - {{\partial_{{r}}(a)} {\partial_{{r}}(b)} a r}} + {{4 {\partial_{{r}}(a)} a b} - {{{{({\partial_{{r}}(a)})}}^{2}} b r}}})}}{4 r a {{b}^{2}}}}&0&0&0\\0&{\frac{-{({{{{2 {\partial_{{{r}}{{r}}}(a)} a b r} - {{\partial_{{r}}(a)} {\partial_{{r}}(b)} a r}} - {{{{({\partial_{{r}}(a)})}}^{2}} b r}} - {4 {\partial_{{r}}(b)} {{a}^{2}}}})}}{4 r b {{a}^{2}}}}&0&0\\0&0&{\frac{-{({{{\partial_{{r}}(a)} r b} + {{{2 b a} - {2 {{b}^{2}} a}} - {r {\partial_{{r}}(b)} a}}})}}{2 {{b}^{2}} a}}&0\\0&0&0&{\frac{-{{{{sin\left(\theta\right)}}^{2}} {({{{\partial_{{r}}(a)} r b} + {{{2 b a} - {2 {{b}^{2}} a}} - {r {\partial_{{r}}(b)} a}}})}}}{2 {{b}^{2}} a}}}\right]}}$
+
+<br>
+Faraday in spherical geometry
+<br>
+${{F}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{0&{-{E_{r}}}&{-{E_{\theta}}}&{-{E_{\phi}}}\\{E_{r}}&0&{\frac{-{{\frac{1}{\sqrt a}} {\sqrt b} {B_{\phi}}}}{sin\left(\theta\right)}}&{{\frac{1}{\sqrt a}} {\sqrt b} {sin\left(\theta\right)} {B_{\theta}}}\\{E_{\theta}}&{\frac{{\frac{1}{\sqrt a}} {\sqrt b} {B_{\phi}}}{sin\left(\theta\right)}}&0&{-{{\frac{1}{\sqrt a}} {\frac{1}{\sqrt b}} {{r}^{2}} {sin\left(\theta\right)} {B_{r}}}}\\{E_{\phi}}&{-{{\frac{1}{\sqrt a}} {\sqrt b} {sin\left(\theta\right)} {B_{\theta}}}}&{{\frac{1}{\sqrt a}} {\frac{1}{\sqrt b}} {{r}^{2}} {sin\left(\theta\right)} {B_{r}}}&0}\right]}}$
+
+<br>
+stress-energy in spherical geometry
+<br>
+${{T}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{-{({{{{{sin\left(\theta\right)}}^{2}} {{{B_{\theta}}}^{2}} b} + {{{{{{{B_{\phi}}}^{2}} b} - {{{{E_{\phi}}}^{2}} b}} - {{{{E_{\theta}}}^{2}} b {{{sin\left(\theta\right)}}^{2}}}} - {{{{E_{r}}}^{2}} {{{sin\left(\theta\right)}}^{2}} {{r}^{2}}}} + {{{r}^{2}} {{{sin\left(\theta\right)}}^{2}} {{{B_{r}}}^{2}}}})}}{8 \pi \cdot {{{sin\left(\theta\right)}}^{2}} {{r}^{2}} b}}&{\frac{-{{\sqrt b} {({{{E_{\phi}} \cdot {B_{\theta}}} - {{E_{\theta}} \cdot {B_{\phi}}}})}}}{4 \pi \cdot {\sqrt a} {sin\left(\theta\right)} {{r}^{2}}}}&{\frac{{{E_{\phi}} \cdot {B_{r}}} - {{E_{r}} \cdot {B_{\phi}}}}{4 {\sqrt b} \pi \cdot {\sqrt a} {sin\left(\theta\right)}}}&{\frac{-{{sin\left(\theta\right)} {({{{E_{\theta}} \cdot {B_{r}}} - {{E_{r}} \cdot {B_{\theta}}}})}}}{4 {\sqrt b} \pi \cdot {\sqrt a}}}\\{\frac{{\sqrt b} {({{{B_{\phi}} \cdot {E_{\theta}}} - {{B_{\theta}} \cdot {E_{\phi}}}})}}{4 \pi \cdot {\sqrt a} {sin\left(\theta\right)} {{r}^{2}}}}&{\frac{{{{{E_{r}}}^{2}} {{{sin\left(\theta\right)}}^{2}} {{r}^{2}}} + {b {{{sin\left(\theta\right)}}^{2}} {{{B_{\theta}}}^{2}}} + {{{{b {{{B_{\phi}}}^{2}}} - {b {{{E_{\phi}}}^{2}}}} - {b {{{E_{\theta}}}^{2}} {{{sin\left(\theta\right)}}^{2}}}} - {{{r}^{2}} {{{sin\left(\theta\right)}}^{2}} {{{B_{r}}}^{2}}}}}{8 \pi \cdot {{{sin\left(\theta\right)}}^{2}} {{r}^{2}} a}}&{\frac{-{({{{B_{\theta}} \cdot {B_{r}}} - {{E_{r}} \cdot {E_{\theta}}}})}}{4 \pi \cdot a}}&{\frac{-{({{{B_{\phi}} \cdot {B_{r}}} - {{E_{r}} \cdot {E_{\phi}}}})}}{4 \pi \cdot a}}\\{\frac{-{({{{B_{\phi}} \cdot {E_{r}}} - {{B_{r}} \cdot {E_{\phi}}}})}}{4 {\sqrt b} \pi \cdot {\sqrt a} {sin\left(\theta\right)}}}&{\frac{-{({{{B_{r}} \cdot {B_{\theta}}} - {{E_{\theta}} \cdot {E_{r}}}})}}{4 \pi \cdot a}}&{\frac{{{{{{B_{\phi}}}^{2}} b} - {{{{E_{\phi}}}^{2}} b}} + {{{{{E_{\theta}}}^{2}} {{{sin\left(\theta\right)}}^{2}} b} - {b {{{B_{\theta}}}^{2}} {{{sin\left(\theta\right)}}^{2}}}} + {{{{r}^{2}} {{{B_{r}}}^{2}} {{{sin\left(\theta\right)}}^{2}}} - {{{r}^{2}} {{{E_{r}}}^{2}} {{{sin\left(\theta\right)}}^{2}}}}}{8 \pi \cdot {{{sin\left(\theta\right)}}^{2}} b a}}&{\frac{-{({{{B_{\phi}} \cdot {B_{\theta}}} - {{E_{\theta}} \cdot {E_{\phi}}}})}}{4 \pi \cdot a}}\\{\frac{{sin\left(\theta\right)} {({{{B_{\theta}} \cdot {E_{r}}} - {{B_{r}} \cdot {E_{\theta}}}})}}{4 {\sqrt b} \pi \cdot {\sqrt a}}}&{\frac{-{({{{B_{r}} \cdot {B_{\phi}}} - {{E_{\phi}} \cdot {E_{r}}}})}}{4 \pi \cdot a}}&{\frac{-{({{{B_{\theta}} \cdot {B_{\phi}}} - {{E_{\phi}} \cdot {E_{\theta}}}})}}{4 \pi \cdot a}}&{\frac{{{{{{sin\left(\theta\right)}}^{2}} {{{B_{\theta}}}^{2}} b} - {{{{sin\left(\theta\right)}}^{2}} {{{E_{\theta}}}^{2}} b}} + {{{{{E_{\phi}}}^{2}} b} - {b {{{B_{\phi}}}^{2}}}} + {{{{r}^{2}} {{{sin\left(\theta\right)}}^{2}} {{{B_{r}}}^{2}}} - {{{r}^{2}} {{{sin\left(\theta\right)}}^{2}} {{{E_{r}}}^{2}}}}}{8 \pi \cdot b a}}}\right]}}$
+<br>
+...for electric field in x-direction and no magnetic field:
+<br>
+TODO convert a constant direction into these new spherical coordinates
+<br>
+${{T}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{{{{{E_{\phi}}}^{2}} b} + {{{{E_{\theta}}}^{2}} b {{{sin\left(\theta\right)}}^{2}}} + {{{{E_{r}}}^{2}} {{{sin\left(\theta\right)}}^{2}} {{r}^{2}}}}{8 \pi \cdot {{{sin\left(\theta\right)}}^{2}} {{r}^{2}} b}}&0&0&0\\0&{\frac{{{{{{E_{r}}}^{2}} {{{sin\left(\theta\right)}}^{2}} {{r}^{2}}} - {b {{{E_{\phi}}}^{2}}}} - {b {{{E_{\theta}}}^{2}} {{{sin\left(\theta\right)}}^{2}}}}{8 \pi \cdot {{{sin\left(\theta\right)}}^{2}} {{r}^{2}} a}}&{\frac{{E_{r}} \cdot {E_{\theta}}}{4 \pi \cdot a}}&{\frac{{E_{r}} \cdot {E_{\phi}}}{4 \pi \cdot a}}\\0&{\frac{{E_{\theta}} \cdot {E_{r}}}{4 \pi \cdot a}}&{\frac{-{({{{{{{E_{\phi}}}^{2}} b} - {{{{E_{\theta}}}^{2}} {{{sin\left(\theta\right)}}^{2}} b}} + {{{r}^{2}} {{{E_{r}}}^{2}} {{{sin\left(\theta\right)}}^{2}}}})}}{8 \pi \cdot {{{sin\left(\theta\right)}}^{2}} b a}}&{\frac{{E_{\theta}} \cdot {E_{\phi}}}{4 \pi \cdot a}}\\0&{\frac{{E_{\phi}} \cdot {E_{r}}}{4 \pi \cdot a}}&{\frac{{E_{\phi}} \cdot {E_{\theta}}}{4 \pi \cdot a}}&{\frac{-{({{{{{{sin\left(\theta\right)}}^{2}} {{{E_{\theta}}}^{2}} b} - {{{{E_{\phi}}}^{2}} b}} + {{{r}^{2}} {{{sin\left(\theta\right)}}^{2}} {{{E_{r}}}^{2}}}})}}{8 \pi \cdot b a}}}\right]}}$
+<br>
