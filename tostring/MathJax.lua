@@ -30,7 +30,7 @@ function Header:__tostring()
     <body>
 ]=]
 --]==]
--- [==[ new header, which tries multiple sources
+--[==[ new header, which tries multiple sources
 	-- no promises the javascript loading callbacks work on all browsers
 	return [=[
 <!doctype html>
@@ -83,6 +83,18 @@ function init() {
 		</script>
 	</head>
     <body onload='init();'>
+]=]
+--]==]
+-- [==[ next iteration -- in one tryToFindMathJax.js file -- which ignores the URLs here
+	return [=[
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>]=] .. self.title .. [=[</title>
+		<script type="text/javascript" src='tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 ]=]
 --]==]
 end
