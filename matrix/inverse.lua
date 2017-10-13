@@ -128,7 +128,7 @@ end
 				A = simplify(A)
 				AInv = simplify(AInv)
 	--print('\\(A =\\) '..A..', \\(A^{-1}\\) = '..AInv..'<br>')
-				if callback then callback(AInv, A) end
+				if callback then callback(AInv, A, row, i, nil, 'scale') end
 			end
 			-- eliminate columns apart from diagonal
 			for j=1,m do
@@ -150,7 +150,7 @@ end
 	--print('simplifying A^{-1}...<br>')
 						AInv = simplify(AInv)
 	--print('\\(A^{-1} = \\)'..AInv..'<br>')
-						if callback then callback(AInv, A) end
+						if callback then callback(AInv, A, row, i, j, 'row') end
 					end
 				end
 			end
