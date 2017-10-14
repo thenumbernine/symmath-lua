@@ -16,6 +16,8 @@ end
 
 add.__eq = require 'symmath.nodeCommutativeEqual'
 
+add.removeIfContains = require 'symmath.commutativeRemove'
+
 function add:reverse(soln, index)
 	-- y = a_1 + ... + a_j(x) + ... + a_n
 	-- => a_j(x) = y - a_1 - ... - a_j-1 - a_j+1 - ... a_n
@@ -144,12 +146,13 @@ add.rules = {
 			end
 			
 			-- sort by prodLists[i].term, excluding all constants
+			local Verbose = require 'symmath.tostring.Verbose'
 			local function sortstr(list)
 				if #list == 0 then return '' end
 				if #list == 1 and Constant.is(list[1].term) then return '' end
 				return table.map(list, function(x,_,t)
 					if Constant.is(x.term) then return end
-					return require 'symmath.tostring.Verbose'(x.term), #t+1
+					return Verbose(x.term), #t+1
 				end):concat(',')
 			end
 			prodLists:sort(function(a,b)

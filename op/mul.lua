@@ -32,6 +32,8 @@ function mul:evaluateDerivative(deriv, ...)
 	end
 end
 
+mul.removeIfContains = require 'symmath.commutativeRemove'
+
 -- now that we've got matrix multilpication, this becomes more difficult...
 -- non-commutative objects (matrices) need to be compared in-order
 -- commutative objects can be compared in any order

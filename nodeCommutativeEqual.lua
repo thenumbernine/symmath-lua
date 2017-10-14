@@ -3,4 +3,3 @@ local function nodeCommutativeEqual(a,b)
 	return tableCommutativeEqual(a, b)
 end
 return nodeCommutativeEqual
-
