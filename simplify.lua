@@ -3,7 +3,20 @@ local table = require 'ext.table'
 local simplifyObj = {}
 
 local function simplify(x, ...)
-	local debugSimplifyLoops = require 'symmath'.debugSimplifyLoops
+	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ... 
+	-- this doesn't make sense, but maybe it's true
+	local Array = require 'symmath.Array'
+	if Array.is(x) then
+		x = x:clone()
+		for i in x:iter() do
+			x[i] = simplify(x[i])
+		end
+		return x
+	end
+	
+	local symmath = require 'symmath'
+	local debugSimplifyLoops = symmath.debugSimplifyLoops
+	local simplifyMaxIter = symmath.simplifyMaxIter or 10
 
 	local expand = require 'symmath.expand'
 	local prune = require 'symmath.prune'
@@ -36,10 +49,11 @@ local function simplify(x, ...)
 		
 		--do break end -- calling expand() again after this breaks things ...
 		i = i + 1
-	until i == 10 or x == lastx or getmetatable(x) == Invalid
+	until i == simplifyMaxIter or x == lastx or getmetatable(x) == Invalid
 	-- [[ debugging simplify loop stack trace
-	if i == 10 then
+	if i == simplifyMaxIter then
 		local Verbose = require 'symmath.tostring.Verbose'
+Verbose = require 'symmath'.tostring		
 		if stack then 
 			for i,x in ipairs(stack) do
 				io.stderr:write('simplify stack #'..i..'\n'..Verbose(x)..'\n')

@@ -44,6 +44,15 @@ div.rules = {
 		end},
 	},
 
+	--[[ here's me trying to better simplify fractions ...
+	-- but it requires parent traversal first ...
+	Expand = {
+		{apply = function(expand, expr)
+			return expand:apply(expr[1]) / expr[2]
+		end},
+	},
+	--]]
+
 	FactorDivision = {
 		{apply = function(factorDivision, expr)
 			local Constant = require 'symmath.Constant'

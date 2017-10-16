@@ -502,6 +502,7 @@ add.rules = {
 				return prune:apply(expr / denom)
 			end
 			--]]
+
 			-- [[ divs: c + a/b => (c * b + a) / b
 			for i,x in ipairs(expr) do
 				if div.is(x) then
@@ -511,6 +512,38 @@ add.rules = {
 					if #expr == 1 then expr = expr[1] end
 					local expr = (expr * b + a) / b
 					return prune:apply(expr)
+				end
+			end
+			--]]
+			--[[ divs all at once: a/b + c/d + e => (d*a + b*d + b*d*e) / (b*d)
+			do
+				local denom 
+				for i,x in ipairs(expr) do
+					if div.is(x) then
+						denom = denom or table()
+						denom:insert(x[2])
+					end
+				end
+				if denom then
+					denom = #denom == 1 and denom[1] or mul(denom:unpack())
+					local nums = table()
+					for i,x in ipairs(expr) do
+						local num = table()
+						for j,y in ipairs(expr) do
+							if div.is(y) and i ~= j then num:insert(y[2]) end
+						end				
+						if div.is(x) then
+							num:insert(1, x[1])
+							num = #num == 1 and num[1] or mul(num:unpack()) 
+							nums:insert(num)
+						else
+							num:insert(1, x)
+							num = #num == 1 and num[1] or mul(num:unpack())
+							nums:insert(num)
+						end
+					end
+					nums = #nums == 1 and nums[1] or add(nums:unpack())
+					return prune:apply(nums / denom)
 				end
 			end
 			--]]

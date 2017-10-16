@@ -1,8 +1,7 @@
 #!/usr/bin/env luajit
 --flrw in spherical form: -dt^2 + a^2 (dr^2 / (1 - k r^2) + r^2 (dtheta^2 + sin(theta)^2 dphi^2)
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='FLRW metric'}}
 
 -- coordinates
 local t, r, theta, phi = vars('t', 'r', '\\theta', '\\phi')
@@ -126,3 +125,8 @@ end
 assert(#eqns == 4)
 -- eqn 1 is the density eqn
 -- eqns 2 thru 4 are the pressure eqn scaled by various things ... 
+
+print[[
+	</body>
+</html>
+]]

@@ -84,7 +84,9 @@ function Visitor:apply(expr, ...)
 				end
 			end
 			--]]
-			
+		
+			-- TODO bubble-in and bubble-out
+
 			-- if it's an expression then apply to all children first
 			if Expression.is(m) then
 				if expr then

@@ -113,17 +113,13 @@ LaTeX.lookupTable = {
 		return tableConcat(res, expr:getSepStr())
 	end,
 	[require 'symmath.op.div'] = function(self, expr)
-		local add = require 'symmath.op.add'
-		local mul = require 'symmath.op.mul'
 		local Constant = require 'symmath.Constant'
 		local Variable = require 'symmath.Variable'
 		-- TODO if the second term is small enough ...
 		-- for now, just look for single constants or Variables (or both?)
+		-- this could be done in tidy ...
 		local a,b = table.unpack(expr)
-		if add.is(a) 
-		or mul.is(a)
-		or (a[1] and add.is(a[1]))
-		then
+		if not a.is(Constant) then
 			if Constant.is(b) 
 			or Variable.is(b)
 			then

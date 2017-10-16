@@ -102,65 +102,34 @@ for _,index in ipairs(indexes) do
 	printbr(expr)
 
 	printbr'factor out index raise'
-	-- what this function will have to do:
-	-- 1) keep track of which indexes in the 'to' are summation indexes
-	-- 2) replace the summation indexes in 'from' with unused summation indexes
-	-- 3) replace the non-summation indexes in 'from' with whatever indexes we match them to
-	-- 3.5) replace non-summation indexes in this index set and all index sets that are a subset of it...?
-	-- 4) don't replace single-variable indexes.  specificially: only replace indexes within their same subset of indexes (spatial, etc, etc).
-	--		If a subset only has one coordinate _t _x _y _z then duplicates are fine.
-	--		But if a subset has multiple coordinates (i.e. the defaults spanning txyz, or ijklmn represents indexes spanning xyz but not t) then make sure we don't use more indexes than the subset allows
-	--		...or complain when we pass that limit.
-	--expr = indexExprReplace(expr, Gamma'^a_bc', g'^ad' * Gamma'_dbc')
-	expr = expr:replace(
-		Gamma'^a_bc':reindex{[indexLetters] = 'abc'}, 
-		(g'^ad' * Gamma'_dbc'):reindex{[indexLetters] = 'abc'})
+	expr = expr:replaceIndex(Gamma'^a_bc', g'^ad' * Gamma'_dbc')
 	printbr(expr)
 
 	printbr'substitute definition of connection'
 	-- same as above
 	-- expr = indexExprReplace(expr, Gamma'_abc', frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))
-	expr = expr:replace(
-		Gamma'_abc':reindex{[indexLetters..'d'] = 'dbca'},
-		(frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a')):reindex{[indexLetters..'d'] = 'dbca'})
-
-	expr = expr()
+	expr = expr:replaceIndex(Gamma'_abc', frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()
 	printbr(expr)
 
 	printbr'split the index a into t and j'
-	expr = splitIndex(expr, 'd', {'t', 'j'})
-	expr = expr()
+	expr = splitIndex(expr, 'a', {'t', 'j'})()
 	printbr(expr)
 
 	printbr'replace ADM metric definitions'
-	--[[ 
-	-- this should only take 4 statements (3 if symmetries are stored)
-	expr = indexExprReplace(expr, g'_tt', -alpha^2 + beta'^i' * beta'^j' * gamma'_ij')
-	expr = indexExprReplace(expr, g'_ti', beta'_i')
-	expr = indexExprReplace(expr, g'_it', beta'_i')
-	expr = indexExprReplace(expr, g'_ij', gamma'_ij')
+	expr = expr:splitOffDerivIndexes()
+-- YOU ARE HERE in fixing things.  replaceIndex breaks when going from indexes to non-indexes
+	expr = expr:replaceIndex(g'_tt', -alpha^2 + beta'^i' * beta'^j' * gamma'_ij')
+	expr = expr:replaceIndex(g'_ti', beta'_i')
+	expr = expr:replaceIndex(g'_it', beta'_i')
+	expr = expr:replaceIndex(g'_ij', gamma'_ij')
 	
-	expr = indexExprReplace(expr, g'^tt', -1/alpha^2)
-	expr = indexExprReplace(expr, g'^ti', beta'_i' / alpha^2)
-	expr = indexExprReplace(expr, g'^it', beta'_i' / alpha^2)
-	expr = indexExprReplace(expr, g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
-	--]]
-	expr = indexExprReplace(expr, g'_tt', -alpha^2 + beta^2)
-	expr = indexExprReplace(expr, g'_jt', gamma'_jk' * beta'^k')
-	expr = indexExprReplace(expr, g'_mt', gamma'_mk' * beta'^k')
-	expr = indexExprReplace(expr, g'_ti', gamma'_ik' * beta'^k')
-	expr = indexExprReplace(expr, g'_tm', gamma'_mk' * beta'^k')
-	expr = indexExprReplace(expr, g'_tn', gamma'_nk' * beta'^k')
-	expr = indexExprReplace(expr, g'_im', gamma'_im')
-	expr = indexExprReplace(expr, g'_mn', gamma'_mn')
-	expr = indexExprReplace(expr, g'_jm', gamma'_jm')
-	expr = indexExprReplace(expr, g'_jn', gamma'_jn')
-	expr = indexExprReplace(expr, g'^tt', -1/alpha^2)
-	expr = indexExprReplace(expr, g'^it', beta'^i' / alpha^2)
-	expr = indexExprReplace(expr, g'^tj', beta'^j' / alpha^2)
-	expr = indexExprReplace(expr, g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
-	expr = indexExprReplace(expr, beta^2, gamma'_kl' * beta'^k' * beta'^l')
+	expr = expr:replaceIndex(g'^tt', -1/alpha^2)
+	expr = expr:replaceIndex(g'^ti', beta'_i' / alpha^2)
+	expr = expr:replaceIndex(g'^it', beta'_i' / alpha^2)
+	expr = expr:replaceIndex(g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
+	
 	printbr(expr)
+os.exit()
 
 	printbr'simplify...'
 	expr = expr()
