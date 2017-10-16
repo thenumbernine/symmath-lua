@@ -20,6 +20,7 @@ local function replaceRecurse(expr, find, repl, cond)
 	-- cond returns true to short circuit search
 	if cond and cond(expr) then return end
 
+--[[ this is failing for numerical-relativity-codegen/show_flux_matrix.lua
 	-- here I need to not just test equality, but also portions of equality
 	-- esp for commutative equals operators 
 	-- bleh, I hate implicitVars ...
@@ -36,6 +37,7 @@ local function replaceRecurse(expr, find, repl, cond)
 			end	
 		end
 	end
+--]]
 
 	-- found find then replace
 	if expr == find then return repl end

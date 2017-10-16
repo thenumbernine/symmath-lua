@@ -673,7 +673,7 @@ function Expression:reindex(args)
 	for k,v in pairs(args) do
 		-- currently only handles single-char symbols
 		-- TODO allow keys to be tables of multi-char symbols
-		assert(#k == #v, "reindex key and value length needs to match.  got "..#k.." and "..#v)
+		assert(#k == #v, "reindex key and value length needs to match.  got "..tostring(k).." with "..#k.." entries vs "..tostring(v).." with "..#v.." entries")
 		for i=1,#k do
 			swaps:insert{src = v:sub(i,i), dst = k:sub(i,i)}
 		end
