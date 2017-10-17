@@ -46,7 +46,12 @@ local function replaceRecurse(expr, find, repl, cond)
 	local clone = require 'symmath.clone'
 	local cloned
 	for i=1,#expr do
-		assert(expr[i])
+		if expr[i] == nil then
+			print('this had a nil: '..require 'ext.tolua'(expr))
+			print('when replacing '..tostring(find))
+			print(' with '..tostring(repl))
+			error'here'
+		end
 		local replexpri = replace(expr[i], find, repl, cond)
 		if replexpri then
 			if not cloned then		-- clone before modifying children
