@@ -13,8 +13,11 @@ Header.cdnURL = 'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=
 local envURLs = os.getenv'SYMMATH_MATHJAX_URLS'
 Header.urls = (envURLs and string.split(envURLs, ';') or table()):append{Header.cdnURL}
 
+Header.pathToTryToFindMathJax = '.'
+
 function Header:init(title)
 	self.title = title
+	self.pathToTryToFindMathJax = pathToTryToFindMathJax 
 end
 function Header:__tostring()
 --[==[ old header
@@ -30,7 +33,7 @@ function Header:__tostring()
     <body>
 ]=]
 --]==]
---[==[ new header, which tries multiple sources
+--[==[ new header, which tries multiple sources, and works great (except doesn't work with htmlpreview)
 	-- no promises the javascript loading callbacks work on all browsers
 	return [=[
 <!doctype html>
@@ -90,9 +93,9 @@ function init() {
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset='UTF-8'>
         <title>]=] .. self.title .. [=[</title>
-		<script type="text/javascript" src='tryToFindMathJax.js'></script>
+		<script type='text/javascript' src=']=] .. self.pathToTryToFindMathJax .. [=[/tryToFindMathJax.js'></script>
     </head>
 	<body onload='tryToFindMathJax();'>
 ]=]
@@ -140,6 +143,7 @@ function MathJax.setup(args)
 	for k,v in pairs(args) do
 		if k ~= 'env' 
 		and k ~= 'title'
+		and k ~= 'pathToTryToFindMathJax'
 		then
 			inst[k] = v
 		end
@@ -152,8 +156,9 @@ function MathJax.setup(args)
 		title = os.getenv'_'
 		if title then title = title:match('^%./(.*)%.lua$') end
 	end
-	inst.title = title
-	
+	inst.header.title = title
+	inst.header.pathToTryToFindMathJax = args.pathToTryToFindMathJax 
+
 	print(inst.header)
 	env.printbr = MathJax.print
 end
