@@ -22,11 +22,10 @@ local function replaceRecurse(expr, find, repl, cond)
 	
 	local modified
 
--- [[ this is failing for numerical-relativity-codegen/show_flux_matrix.lua
+-- [[ 
 	-- here I need to not just test equality, but also portions of equality
 	-- esp for commutative equals operators 
-	-- bleh, I hate implicitVars ...
-	if rawget(getmetatable(expr), 'removeIfContains') then
+	if expr.removeIfContains then
 		local status, removed = expr:removeIfContains(find)
 		-- "removed" was originally most likely a BinOp
 		-- but its children have been removed
@@ -61,7 +60,7 @@ local function replaceRecurse(expr, find, repl, cond)
 			print(' with '..tostring(repl))
 			error'here'
 		end
-		local replexpri = replace(expr[i], find, repl, cond)
+		local replexpri = replaceRecurse(expr[i], find, repl, cond)
 		if replexpri then
 			if not modified then		-- clone before modifying children
 				expr = clone(expr)

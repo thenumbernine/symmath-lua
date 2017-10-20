@@ -118,7 +118,9 @@ function Lua:compile(expr, paramInputs)
 	return assert(load(cmd))(), cmd
 end
 
+-- hmm, using a direct call isn't favorable over using :compile()
 function Lua:__call(...)
+	assert(select(2, ...), "expected tostring.Lua(expr, vars)")
 	return self:apply(...)[1]
 end
 
