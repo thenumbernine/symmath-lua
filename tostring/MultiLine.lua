@@ -287,10 +287,25 @@ MultiLine.lookupTable = {
 		return {expr:__tostring()}
 	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		local symmath = require 'symmath'
+		local Array = symmath.Array
+		local TensorRef = require 'symmath.tensor.TensorRef'
+		local Variable = symmath.Variable
+		
 		local t = expr[1]
 		local indexes = {table.unpack(expr, 2)}
 
 		local s = self:apply(t)
+		if not (Variable.is(t) or Array.is(t) or TensorRef.is(t)) then 
+			s = self:combine(
+				range(#s):map(function() return '(' end), 
+				self:combine(
+					s,
+					range(#s):map(function() return ')' end)
+				)
+			)
+		end
+		
 		--[[ trusting the TensorIndex for proper generation
 		for _,index in ipairs(indexes) do
 			s = self:combine(s, self:apply(index))
