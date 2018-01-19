@@ -10,9 +10,11 @@ do
 	local has, utf8 = pcall(require, 'utf8')
 	if has then
 		strlen = utf8.len
-	elseif rawlen then
+	end
+	if not strlen and rawlen then
 		strlen = rawlen
-	else
+	end
+	if not strlen then
 		strlen = function(s) return #s end
 	end
 end

@@ -54,13 +54,16 @@ function Visitor:apply(expr, ...)
 	end
 
 	local args = getn(...)
+--[==[
 	local success, results = xpcall(function()
+--]==]
 
-	local id
-	if debugVisitors then
-		id = hash(expr)
-		print(id, 'begin Visitor', Verbose(expr))
-	end
+		local id
+		if debugVisitors then
+			id = hash(expr)
+			print(id, 'begin Visitor', Verbose(expr))
+		end
+		
 		local clone = require 'symmath.clone'
 		local Expression = require 'symmath.Expression'
 
@@ -126,6 +129,7 @@ function Visitor:apply(expr, ...)
 			print(id, 'done pruning with', Verbose(expr))
 		end
 		return expr
+--[==[
 	end, function(err)
 		io.stderr:write('expr:'..tostring(expr)..'\n')
 		io.stderr:write('err:'..err..'\n')
@@ -136,6 +140,7 @@ function Visitor:apply(expr, ...)
 		error'here'
 	end
 	return results 
+--]==]
 end
 
 -- wrapping this so child classes can add prefix/postfix custom code apart from the recursive case

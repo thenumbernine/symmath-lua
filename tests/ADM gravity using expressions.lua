@@ -117,19 +117,21 @@ for _,index in ipairs(indexes) do
 
 	printbr'replace ADM metric definitions'
 	expr = expr:splitOffDerivIndexes()
--- YOU ARE HERE in fixing things.  replaceIndex breaks when going from indexes to non-indexes
-	expr = expr:replaceIndex(g'_tt', -alpha^2 + beta'^i' * beta'^j' * gamma'_ij')
+
+-- TODO replaceIndex fails on _tt ... but not _ti ... strange
+	expr = expr:replace(g'_tt', -alpha^2 + beta'^i' * beta'^j' * gamma'_ij')
+	
 	expr = expr:replaceIndex(g'_ti', beta'_i')
 	expr = expr:replaceIndex(g'_it', beta'_i')
 	expr = expr:replaceIndex(g'_ij', gamma'_ij')
 	
-	expr = expr:replaceIndex(g'^tt', -1/alpha^2)
+	expr = expr:replace(g'^tt', -1/alpha^2)
+	
 	expr = expr:replaceIndex(g'^ti', beta'_i' / alpha^2)
 	expr = expr:replaceIndex(g'^it', beta'_i' / alpha^2)
 	expr = expr:replaceIndex(g'^ij', gamma'^ij' - beta'^i' * beta'^j' / alpha^2)
 	
 	printbr(expr)
-os.exit()
 
 	printbr'simplify...'
 	expr = expr()
