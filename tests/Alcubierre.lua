@@ -1,6 +1,5 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax = {title = 'Alcubierre warp bubble', usePartialLHSForDerivative = true}}
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local coords = {t,x,y,z}
@@ -25,7 +24,10 @@ printbr('warp bubble velocity = '..v)
 local f = var('f', {t,x,y,z})
 printbr('some function = '..f)
 
-local beta = Tensor('^i', -v*f, 0, 0)
+local u = var('u', {t,x,y,z})
+printbr('velocity times some function = '..u)
+
+local beta = Tensor('^i', -u, 0, 0)
 printbr('shift '..var'\\beta''^i':eq(beta'^i'()))
 
 local gamma = Tensor('_ij', {1,0,0}, {0,1,0}, {0,0,1})
@@ -62,8 +64,10 @@ local gU = Tensor('^ab', table.unpack(
 ))
 printbr(var'g''^ab':eq(gU'^ab'()))
 gU = gU:replace((-detg_def)(), -detg)
-gU = gU:replace( (-detg_def * (1 - v^2*f^2))(), -detg * (1 - v^2 * f^2) )
-gU = gU:replace( ((1 - v^2 * f^2)^2)(), (1 - v^2 * f^2)^2 )
+gU = gU:replace( (-detg_def * (1 - u^2))(), -detg * (1 - u^2) )
+gU = gU:replace( ((1 - u^2)^2)(), (1 - u^2)^2 )
+-- need to make factoring better ...
+gU[1][1] = (( 1 - u^2 ) / detg)()
 printbr(var'g''^ab':eq(gU'^ab'()))
 
 Tensor.metric(g, gU)
@@ -83,12 +87,28 @@ printbr()
 
 local dGamma = Tensor'^a_bcd'
 dGamma['^a_bcd'] = Gamma'^a_bc,d'()
-printbr(var'Gamma''^a_bc,d':eq(dGamma))
+dGamma = dGamma:map(function(expr)
+	if Derivative.is(expr) 
+	and expr[1] == detg
+	then
+		return detg_def:diff( table.unpack(expr, 2) )()
+	end
+end)
+printbr(var'\\Gamma''^a_bc,d':eq(dGamma'^a_bcd'()))
 
 local GammaSq = Tensor'^a_bcd'
 GammaSq['^a_bcd'] = (Gamma'^a_ec' * Gamma'^e_bd')()
-printbr(var'Gamma^2''^a_bcd':eq(GammaSq))
+printbr(var'(\\Gamma^2)''^a_bcd':eq(GammaSq'^a_bcd'()))
 
 local Riemann = Tensor'^a_bcd'
 Riemann['^a_bcd'] = (dGamma'^a_bdc' - dGamma'^a_bcd' + GammaSq'^a_bcd' - GammaSq'^a_bdc')()
-printbr(var'R''^a_bcd':eq(Riemann))
+printbr(var'R''^a_bcd':eq(Riemann'^a_bcd'()))
+
+local Ricci = Riemann'^c_acb'()
+printbr(var'R''_ab':eq(Ricci'_ab'()))
+
+local Gaussian = Ricci'^a_a'()
+printbr(var'R':eq(Gaussian))
+
+local Einstein = (Ricci'_ab' - g'_ab' * Gaussian / 2)()
+printbr(var'G''_ab':eq(Einstein'_ab'()))
