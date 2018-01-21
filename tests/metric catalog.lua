@@ -360,15 +360,6 @@ for _,info in ipairs(spacetimes) do
 	printbr()
 --]]
 
---[[  I don't remember what this was about ...
-local g = Tensor('_ab', function(a,b) 
-	if a~=b then return 0 end
-	if a == 1 then return -1 end
-	if a == 2 then return q end
-	return 1
-end)
---]]
-
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
 	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
 	local Props = class(require 'symmath.physics.diffgeom')

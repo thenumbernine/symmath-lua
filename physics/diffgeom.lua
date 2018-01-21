@@ -115,7 +115,7 @@ end
 function Props:printField(fieldname)
 	for _,field in ipairs(self.fields) do
 		if field.name == fieldname then
-			assert(self[field.name])
+			assert(self[field.name], "failed to find field "..field.name)
 			self:doPrint(field)
 		end
 	end
@@ -127,7 +127,7 @@ function Props:init(g, gU, c)
 	local Tensor = require 'symmath'.Tensor
 
 	self.c = c
-	if self.verbose then self:printField'c' end
+	if self.c and self.verbose then self:printField'c' end
 
 	-- TODO Tensor.meric accepts non-symmath tables
 	-- soo I would need to convert them before outputting

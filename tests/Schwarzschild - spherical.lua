@@ -1,7 +1,10 @@
 #!/usr/bin/env luajit
 -- schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+require 'ext'
+require 'symmath'.setup{
+	--implicitVars=true, 
+	MathJax={title='Schwarzschild - spherical', usePartialLHSForDerivative=true}
+}
 
 -- coordinates
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
@@ -13,69 +16,32 @@ local R_of_r = false
 local R = var('R', R_of_r and {r} or nil)	
 
 local coords = {t,r,theta,phi}
-Tensor.coords{
-	{variables = coords},
-}
+Tensor.coords{{variables = coords}}
 
 -- schwarzschild metric in cartesian coordinates
 local g = Tensor('_uv', function(u,v) return u == v and ({-(1-R/r), 1/(1-R/r), r^2, r^2 * symmath.sin(theta)^2})[u] or 0 end) 
-printbr'metric' g:print'g' printbr() printbr()
 
-local props = require 'symmath.physics.diffgeom'(g)
+local Props = class(require 'symmath.physics.diffgeom')
+Props.verbose = true
+local props = Props(g)
+local Gamma = props.Gamma
 
-Tensor.metric(g)
+local dx = Tensor('^u', function(u)
+	return var('\\dot{' .. coords[u].name .. '}')
+end)
+local d2x = Tensor('^u', function(u)
+	return var('\\ddot{' .. coords[u].name .. '}')
+end)
 
--- metric inverse, assume diagonal
-printbr'metric inverse' g'^uv'():print'g' printbr() printbr()
+local A = Tensor('^i', function(i) return var('A^{'..coords[i].name..'}', coords) end)
+local divVarExpr = var'A''^i_,i' + var'\\Gamma''^i_ji' * var'A''^j'
+local divExpr = divVarExpr:replace(var'A', A):replace(var'\\Gamma', Gamma)
+-- TODO only simplify TensorRef, so the indexes are fixed
+printbr('divergence:', divVarExpr:eq(divExpr():factorDivision())) 
 
--- Christoffel: G_abc = 1/2 (g_ab,c + g_ac,b - g_bc,a) 
-local Gamma = Tensor'_abc'
-Gamma['_abc'] = ((g'_ab,c' + g'_ac,b' - g'_bc,a')/2)()
-printbr'1st kind Christoffel'
-Gamma:print'\\Gamma' printbr() printbr()
-
-Gamma = Gamma'^a_bc'()	-- change form stored in Gamma from 1st to 2nd kind
-
--- Christoffel: G^a_bc = g^ae G_ebc
-printbr'2nd kind Christoffel'
-Gamma'^a_bc'():print'\\Gamma' printbr() printbr()
-
--- Geodesic: x''^u = -G^u_vw x'^v x'^w
-local diffx = Tensor('^u', function(u) return var('\\dot{x}^'..coords[u].name, coords) end)
-local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w')()
-printbr'geodesic equation' printbr(var'\\ddot{x}''^a':eq(diffx2'^a'()))
-
--- Christoffel partial: G^a_bc,d
-local dGamma = Tensor'^a_bcd'
-dGamma['^a_bcd'] = Gamma'^a_bc,d'()
--- hack:
-dGamma = dGamma:replace(symmath.cos(theta)^2, 1-symmath.sin(theta)^2)() -- this isn't removing the 1-sin^2+sin^2's...
-printbr'2nd kind Christoffel partial'
-printbr(var'\\Gamma''^a_bc,d':eq(dGamma'^a_bcd'()))
+printbr'geodesic:'
+-- TODO unravel equaliy, or print individual assignments
+printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):eq(Tensor'^u'))())
 printbr()
 
---Riemann: R^a_bcd = G^a_bd,c - G^a_bc,d + G^a_uc G^u_bd - G^a_ud G^u_bc
-local Riemann = Tensor'^a_bcd'
-Riemann['^a_bcd'] = (dGamma'^a_bdc' - dGamma'^a_bcd' + Gamma'^a_uc' * Gamma'^u_bd' - Gamma'^a_ud' * Gamma'^u_bc')()
--- hack:
-Riemann = Riemann:replace(symmath.cos(theta)^2, 1-symmath.sin(theta)^2)()
-printbr'Riemann curvature tensor'
-Riemann:print'R' printbr() printbr()
-
--- Ricci: R_ab = R^u_aub
-local Ricci = Riemann'^u_aub'()
-printbr'Ricci curvature tensor'
-Ricci:print'R' printbr() printbr()
-
--- Gaussian curvature: R = g^ab R_ab
-local Gaussian = Ricci'^a_a'()
-printbr'Gaussian curvature'
-printbr(var'R':eq(Gaussian))
-printbr()
-
--- Einstein tensor: G_ab = R_ab - 1/2 g_ab R
-local Einstein = (Ricci'_ab' - g'_ab' * Gaussian / 2)()
-printbr'Einstein tensor'
-Einstein:print'G' printbr() printbr()
-
-print(MathJax.footer)
+print(require 'symmath.tostring.MathJax'.footer)

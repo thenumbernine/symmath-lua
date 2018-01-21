@@ -1,116 +1,68 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset='UTF-8'>
         <title>Schwarzschild - spherical</title>
-		<script type="text/javascript">
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src; 
-}
-function init() {
-	console.log('init...');
-	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
-			src : urls[i],
-			done : function() {
-				console.log("success!");
-				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-			},
-			fail : function() {
-				++i;
-				if (i >= urls.length) {
-					console.log("looks like all our sources have failed!");
-				} else {
-					loadNext();
-				}
-			}
-		});
-	}
-	loadNext();
-}
-		</script>
-	</head>
-    <body onload='init();'>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 
-metric
+metric:
 <br>
-${{g}_u}_v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{-{({1 - {\frac{R}{r}}})}}&0&0&0\\0&{\frac{1}{1 - {\frac{R}{r}}}}&0&0\\0&0&{{r}^{2}}&0\\0&0&0&{{{r}^{2}} {{{sin\left(\theta\right)}}^{2}}}}\right]}}$
-
+${{g}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{{\frac1r}{({R - r})}}&0&0&0\\0&{\frac{r}{-{({R - r})}}}&0&0\\0&0&{{r}^{2}}&0\\0&0&0&{{{r}^{2}} {{{sin\left(\theta\right)}}^{2}}}}\right]}}$
 <br>
-
+metric inverse:
 <br>
-metric inverse
+${{g}^a}^b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{r}{R - r}}&0&0&0\\0&{{\frac1r}{({-{({R - r})}})}}&0&0\\0&0&{\frac{1}{{r}^{2}}}&0\\0&0&0&{\frac{1}{{{r}^{2}} {{{sin\left(\theta\right)}}^{2}}}}}\right]}}$
 <br>
-${{g}^u}^v = {\overset{u\downarrow v\rightarrow}{\left[\matrix{{\frac{r}{R - r}}&0&0&0\\0&{\frac{-{({R - r})}}{r}}&0&0\\0&0&{\frac{1}{{r}^{2}}}&0\\0&0&0&{\frac{1}{{{r}^{2}} {{{sin\left(\theta\right)}}^{2}}}}}\right]}}$
-
+metric derivative:
 <br>
-
+${{{g}_a}_b}_{,c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&{\frac{-R}{{r}^{2}}}&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&{\frac{-R}{{{R}^{2}} + {{{r}^{2}} - {2 r R}}}}&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&{2 r}&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&{2 r {{{sin\left(\theta\right)}}^{2}}}&{2 {{r}^{2}} {sin\left(\theta\right)} {cos\left(\theta\right)}}&0}\right]}}}\right]}}$
 <br>
-1st kind Christoffel
+1st kind Christoffel:
 <br>
 ${{{\Gamma}_a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&{\frac{-R}{2 {{r}^{2}}}}&0&0\\{\frac{-R}{2 {{r}^{2}}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{{\frac{R}{2 {{r}^{2}}}}&0&0&0\\0&{\frac{-R}{{2 {{R}^{2}}} + {{2 {{r}^{2}}} - {4 r R}}}}&0&0\\0&0&{-r}&0\\0&0&0&{-{r {{{sin\left(\theta\right)}}^{2}}}}}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&r&0\\0&r&0&0\\0&0&0&{-{{{r}^{2}} {sin\left(\theta\right)} {cos\left(\theta\right)}}}}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&{r {{{sin\left(\theta\right)}}^{2}}}\\0&0&0&{{{r}^{2}} {sin\left(\theta\right)} {cos\left(\theta\right)}}\\0&{r {{{sin\left(\theta\right)}}^{2}}}&{{{r}^{2}} {sin\left(\theta\right)} {cos\left(\theta\right)}}&0}\right]}}}\right]}}$
-
 <br>
-
-<br>
-2nd kind Christoffel
+connection coefficients / 2nd kind Christoffel:
 <br>
 ${{{\Gamma}^a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\left[\matrix{0&{\frac{R}{2 r {({r - R})}}}&0&0\\{\frac{R}{2 r {({r - R})}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}\\{\left[\matrix{{\frac{-{R {({R - r})}}}{2 {{r}^{3}}}}&0&0&0\\0&{\frac{R {({R - r})}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0\\0&0&{R - r}&0\\0&0&0&{{{{sin\left(\theta\right)}}^{2}} {({R - r})}}}\right]}\\{\left[\matrix{0&0&0&0\\0&0&{\frac{1}{r}}&0\\0&{\frac{1}{r}}&0&0\\0&0&0&{-{{sin\left(\theta\right)} {cos\left(\theta\right)}}}}\right]}\\{\left[\matrix{0&0&0&0\\0&0&0&{\frac{1}{r}}\\0&0&0&{\frac{cos\left(\theta\right)}{sin\left(\theta\right)}}\\0&{\frac{1}{r}}&{\frac{cos\left(\theta\right)}{sin\left(\theta\right)}}&0}\right]}}\right]}}$
-
 <br>
-
-<br>
-geodesic equation
-<br>
-${\ddot{x}}^a = {\overset{a\downarrow}{\left[\matrix{{\frac{-{R {\dot{x}^r} \cdot {\dot{x}^t}}}{r {({r - R})}}}\\{\frac{-{({{{12} {{{sin\left(\theta\right)}}^{2}} {{{\dot{x}^\phi}}^{2}} R {{r}^{5}}} + {{{4 {{{sin\left(\theta\right)}}^{2}} {{{\dot{x}^\phi}}^{2}} {{R}^{3}} {{r}^{3}}} - {{12} {{{sin\left(\theta\right)}}^{2}} {{{\dot{x}^\phi}}^{2}} {{R}^{2}} {{r}^{4}}}} - {4 {{{sin\left(\theta\right)}}^{2}} {{{\dot{x}^\phi}}^{2}} {{r}^{6}}}} + {{{{2 {{R}^{2}} {{{\dot{x}^r}}^{2}} {{r}^{2}}} - {2 R {{{\dot{x}^r}}^{2}} {{r}^{3}}}} - {2 {{R}^{4}} {{{\dot{x}^t}}^{2}}}} - {6 {{R}^{2}} {{{\dot{x}^t}}^{2}} {{r}^{2}}}} + {2 R {{{\dot{x}^t}}^{2}} {{r}^{3}}} + {6 {{R}^{3}} {{{\dot{x}^t}}^{2}} r} + {{{12} {{{\dot{x}^\theta}}^{2}} R {{r}^{5}}} - {{12} {{{\dot{x}^\theta}}^{2}} {{R}^{2}} {{r}^{4}}}} + {{4 {{{\dot{x}^\theta}}^{2}} {{R}^{3}} {{r}^{3}}} - {4 {{{\dot{x}^\theta}}^{2}} {{r}^{6}}}}})}}{{{r}^{3}} {({{4 {{r}^{2}}} + {{4 {{R}^{2}}} - {8 r R}}})}}}\\{\frac{{{sin\left(\theta\right)} {cos\left(\theta\right)} {{{\dot{x}^\phi}}^{2}} r} - {2 {\dot{x}^\theta} \cdot {\dot{x}^r}}}{r}}\\{\frac{-{2 {\dot{x}^\phi} \cdot {({{{cos\left(\theta\right)} {\dot{x}^\theta} \cdot r} + {{\dot{x}^r} \cdot {sin\left(\theta\right)}}})}}}{{sin\left(\theta\right)} r}}}\right]}}$
-<br>
-2nd kind Christoffel partial
+connection coefficients derivative:
 <br>
 ${{{{\Gamma}^a}_b}_c}_{,d} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\matrix{{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&{\frac{R {({{2 R} - {4 r}})}}{{{r}^{2}} {({{{4 {{r}^{2}}} - {8 r R}} + {4 {{R}^{2}}}})}}}&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&{\frac{R {({{2 R} - {4 r}})}}{{{r}^{2}} {({{{4 {{r}^{2}}} - {8 r R}} + {4 {{R}^{2}}}})}}}&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&{\frac{R {({{6 R} - {4 r}})}}{4 {{r}^{4}}}}&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&{\frac{-{R {({{2 {{R}^{3}}} + {{{{10} R {{r}^{2}}} - {8 {{R}^{2}} r}} - {4 {{r}^{3}}}}})}}}{{{r}^{2}} {({{4 {{r}^{4}}} + {{4 {{R}^{4}}} - {{16} {{r}^{3}} R}} + {{{24} {{r}^{2}} {{R}^{2}}} - {{16} r {{R}^{3}}}}})}}}&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&{-1}&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&{-{{{sin\left(\theta\right)}}^{2}}}&{2 {sin\left(\theta\right)} {cos\left(\theta\right)} {({R - r})}}&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&{-{\frac{1}{{r}^{2}}}}&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&{-{\frac{1}{{r}^{2}}}}&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&{-{({1 - {2 {{{sin\left(\theta\right)}}^{2}}}})}}&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&{-{\frac{1}{{r}^{2}}}}&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&{-{\frac{1}{{{sin\left(\theta\right)}}^{2}}}}&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&{-{\frac{1}{{r}^{2}}}}&0&0\\0&0&{-{\frac{1}{{{sin\left(\theta\right)}}^{2}}}}&0\\0&0&0&0}\right]}}}\right]}}$
 <br>
-
+connection coefficients squared:
 <br>
-Riemann curvature tensor
+${{{{\Gamma}^a}_e}_c {{{\Gamma}^e}_b}_d} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\matrix{{\overset{c\downarrow d\rightarrow}{\left[\matrix{{\frac{-{{{R}^{2}} {({R - r})}}}{4 {{r}^{4}} {({r - R})}}}&0&0&0\\0&{\frac{{R}^{2}}{{{r}^{2}} {({{{4 {{r}^{2}}} - {8 r R}} + {4 {{R}^{2}}}})}}}&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&{\frac{{{R}^{2}} {({R - r})}}{{{r}^{2}} {({{{4 {{r}^{3}}} - {{12} {{r}^{2}} R}} + {{{12} r {{R}^{2}}} - {4 {{R}^{3}}}}})}}}&0&0\\{\frac{{R}^{2}}{{{r}^{2}} {({{{4 {{r}^{2}}} - {8 r R}} + {4 {{R}^{2}}}})}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&{\frac{R {({R - r})}}{2 r {({r - R})}}}&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&{\frac{R {{{sin\left(\theta\right)}}^{2}} {({R - r})}}{2 r {({r - R})}}}\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&{\frac{-{{{R}^{2}} {({R - r})}}}{4 {{r}^{4}} {({r - R})}}}&0&0\\{\frac{-{{{R}^{2}} {({{{{R}^{2}} - {2 R r}} + {{r}^{2}}})}}}{{{r}^{4}} {({{4 {{r}^{2}}} + {{4 {{R}^{2}}} - {8 r R}}})}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{{\frac{-{{{R}^{2}} {({R - r})}}}{4 {{r}^{4}} {({r - R})}}}&0&0&0\\0&{\frac{{{R}^{2}} {({{{{R}^{2}} - {2 R r}} + {{r}^{2}}})}}{{{r}^{2}} {({{4 {{r}^{4}}} + {{4 {{R}^{4}}} - {{16} {{r}^{3}} R}} + {{{24} {{r}^{2}} {{R}^{2}}} - {{16} r {{R}^{3}}}}})}}}&0&0\\0&0&{{\frac1r}{({R - r})}}&0\\0&0&0&{{\frac1r}{({{{{sin\left(\theta\right)}}^{2}} {({R - r})}})}}}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&{\frac{R {({{{{R}^{2}} - {2 R r}} + {{r}^{2}}})}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0\\0&{{\frac1r}{({R - r})}}&0&0\\0&0&0&{{sin\left(\theta\right)} {cos\left(\theta\right)} {({R - r})}}}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&{\frac{R {{{sin\left(\theta\right)}}^{2}} {({{{{R}^{2}} - {2 R r}} + {{r}^{2}}})}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}\\0&0&0&{-{{sin\left(\theta\right)} {cos\left(\theta\right)} {({R - r})}}}\\0&{{\frac1r}{({{{{sin\left(\theta\right)}}^{2}} {({R - r})}})}}&{{sin\left(\theta\right)} {cos\left(\theta\right)} {({R - r})}}&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 {{r}^{4}}}}&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&{\frac{1}{{r}^{2}}}&0\\0&{\frac{R {({R - r})}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0\\0&0&0&{{\frac1r}{({-{{sin\left(\theta\right)} {cos\left(\theta\right)}}})}}}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&{\frac{1}{{r}^{2}}}&0&0\\0&0&{{\frac1r}{({R - r})}}&0\\0&0&0&{-{({1 - {{{sin\left(\theta\right)}}^{2}}})}}}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&{{\frac1r}{({-{{sin\left(\theta\right)} {cos\left(\theta\right)}}})}}\\0&0&0&{{\frac1r}{({{{{sin\left(\theta\right)}}^{2}} {({R - r})}})}}\\0&{{\frac1r}{({-{{sin\left(\theta\right)} {cos\left(\theta\right)}}})}}&{-{({1 - {{{sin\left(\theta\right)}}^{2}}})}}&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 {{r}^{4}}}}&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&{\frac{1}{{r}^{2}}}\\0&0&0&{\frac{cos\left(\theta\right)}{{sin\left(\theta\right)} r}}\\0&{\frac{R {({R - r})}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&{\frac{cos\left(\theta\right)}{{sin\left(\theta\right)} r}}&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&{\frac{cos\left(\theta\right)}{r {sin\left(\theta\right)}}}\\0&0&0&{\frac{1 - {{{sin\left(\theta\right)}}^{2}}}{{{sin\left(\theta\right)}}^{2}}}\\0&{\frac{cos\left(\theta\right)}{{sin\left(\theta\right)} r}}&{{\frac1r}{({R - r})}}&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&{\frac{1}{{r}^{2}}}&{\frac{cos\left(\theta\right)}{r {sin\left(\theta\right)}}}&0\\0&{\frac{cos\left(\theta\right)}{{sin\left(\theta\right)} r}}&{\frac{1 - {{{sin\left(\theta\right)}}^{2}}}{{{sin\left(\theta\right)}}^{2}}}&0\\0&0&0&{{\frac1r}{({{{{{sin\left(\theta\right)}}^{2}} R} - r})}}}\right]}}}\right]}}$
 <br>
-${{{{R}^a}_b}_c}_d = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\matrix{{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&{\frac{R {({{{{16} {{R}^{4}}} - {{64} {{R}^{3}} r}} + {{{96} {{R}^{2}} {{r}^{2}}} - {{64} R {{r}^{3}}}} + {{16} {{r}^{4}}}})}}{{{r}^{2}} {({{{{{16} {{r}^{5}}} - {{16} {{R}^{5}}}} - {{80} {{r}^{4}} R}} + {{{80} r {{R}^{4}}} - {{160} {{r}^{2}} {{R}^{3}}}} + {{160} {{r}^{3}} {{R}^{2}}}})}}}&0&0\\{\frac{R {({{{{16} {{R}^{4}}} - {{64} {{R}^{3}} r}} + {{{96} {{R}^{2}} {{r}^{2}}} - {{64} R {{r}^{3}}}} + {{16} {{r}^{4}}}})}}{-{{{r}^{2}} {({{{{{16} {{r}^{5}}} - {{16} {{R}^{5}}}} - {{80} {{r}^{4}} R}} + {{{80} r {{R}^{4}}} - {{160} {{r}^{2}} {{R}^{3}}}} + {{160} {{r}^{3}} {{R}^{2}}}})}}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&{\frac{R {({R - r})}}{2 r {({r - R})}}}&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 r {({r - R})}}}&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&{\frac{R {{{sin\left(\theta\right)}}^{2}} {({R - r})}}{2 r {({r - R})}}}\\0&0&0&0\\0&0&0&0\\{\frac{-{R {{{sin\left(\theta\right)}}^{2}} {({R - r})}}}{2 r {({r - R})}}}&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&{\frac{R {({{{{16} {{R}^{4}}} - {{64} {{R}^{3}} r}} + {{{96} {{R}^{2}} {{r}^{2}}} - {{64} R {{r}^{3}}}} + {{16} {{r}^{4}}}})}}{{{r}^{4}} {({{{{16} {{r}^{3}}} - {{16} {{R}^{3}}}} + {{{48} r {{R}^{2}}} - {{48} {{r}^{2}} R}}})}}}&0&0\\{\frac{R {({{{16} {{R}^{4}}} + {{{{96} {{R}^{2}} {{r}^{2}}} - {{64} {{R}^{3}} r}} - {{64} R {{r}^{3}}}} + {{16} {{r}^{4}}}})}}{-{{{r}^{4}} {({{{{{16} {{r}^{3}}} - {{48} {{r}^{2}} R}} - {{16} {{R}^{3}}}} + {{48} r {{R}^{2}}}})}}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&{\frac{-{R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0\\0&{\frac{R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&{\frac{-{{{{sin\left(\theta\right)}}^{2}} R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}\\0&0&0&0\\0&{\frac{{{{sin\left(\theta\right)}}^{2}} R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&{\frac{R {({R - r})}}{2 {{r}^{4}}}}&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 {{r}^{4}}}}&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&{\frac{-{R {({R - r})}}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0\\0&{\frac{R {({R - r})}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&{\frac{{{{sin\left(\theta\right)}}^{2}} R}{r}}\\0&0&{\frac{-{{{{sin\left(\theta\right)}}^{2}} R}}{r}}&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&{\frac{R {({R - r})}}{2 {{r}^{4}}}}\\0&0&0&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 {{r}^{4}}}}&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&{\frac{-{R {({R - r})}}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}\\0&0&0&0\\0&{\frac{R {({R - r})}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&{\frac{-R}{r}}\\0&0&{\frac{R}{r}}&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}}\right]}}$
-
+Riemann curvature, sharp:
 <br>
-
+${{{{R}^a}_b}_c}_d = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\matrix{{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&{\frac{R {({{{{16} {{R}^{4}}} - {{64} R {{r}^{3}}}} + {{{96} {{R}^{2}} {{r}^{2}}} - {{64} {{R}^{3}} r}} + {{16} {{r}^{4}}}})}}{{{r}^{2}} {({{{16} {{r}^{5}}} + {{{{{80} r {{R}^{4}}} - {{160} {{r}^{2}} {{R}^{3}}}} - {{80} {{r}^{4}} R}} - {{16} {{R}^{5}}}} + {{160} {{r}^{3}} {{R}^{2}}}})}}}&0&0\\{\frac{R {({{{{16} {{R}^{4}}} - {{64} R {{r}^{3}}}} + {{{96} {{R}^{2}} {{r}^{2}}} - {{64} {{R}^{3}} r}} + {{16} {{r}^{4}}}})}}{-{{{r}^{2}} {({{{16} {{r}^{5}}} + {{{{{80} r {{R}^{4}}} - {{160} {{r}^{2}} {{R}^{3}}}} - {{80} {{r}^{4}} R}} - {{16} {{R}^{5}}}} + {{160} {{r}^{3}} {{R}^{2}}}})}}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&{\frac{R {({R - r})}}{2 r {({r - R})}}}&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 r {({r - R})}}}&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&{\frac{R {{{sin\left(\theta\right)}}^{2}} {({R - r})}}{2 r {({r - R})}}}\\0&0&0&0\\0&0&0&0\\{\frac{-{R {{{sin\left(\theta\right)}}^{2}} {({R - r})}}}{2 r {({r - R})}}}&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&{\frac{R {({{{{16} {{R}^{4}}} - {{64} R {{r}^{3}}}} + {{{96} {{R}^{2}} {{r}^{2}}} - {{64} {{R}^{3}} r}} + {{16} {{r}^{4}}}})}}{{{r}^{4}} {({{{16} {{r}^{3}}} + {{{{48} r {{R}^{2}}} - {{16} {{R}^{3}}}} - {{48} {{r}^{2}} R}}})}}}&0&0\\{\frac{R {({{{{{16} {{R}^{4}}} - {{64} R {{r}^{3}}}} - {{64} {{R}^{3}} r}} + {{96} {{R}^{2}} {{r}^{2}}} + {{16} {{r}^{4}}}})}}{-{{{r}^{4}} {({{{{{16} {{r}^{3}}} - {{16} {{R}^{3}}}} - {{48} {{r}^{2}} R}} + {{48} r {{R}^{2}}}})}}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&{\frac{-{R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0\\0&{\frac{R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&{\frac{-{{{{sin\left(\theta\right)}}^{2}} R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}\\0&0&0&0\\0&{\frac{{{{sin\left(\theta\right)}}^{2}} R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}{r {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&{\frac{R {({R - r})}}{2 {{r}^{4}}}}&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 {{r}^{4}}}}&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&{\frac{-{R {({R - r})}}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0\\0&{\frac{R {({R - r})}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&{{\frac1r}{({{{{sin\left(\theta\right)}}^{2}} R})}}\\0&0&{{\frac1r}{({-{{{{sin\left(\theta\right)}}^{2}} R}})}}&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&{\frac{R {({R - r})}}{2 {{r}^{4}}}}\\0&0&0&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 {{r}^{4}}}}&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&{\frac{-{R {({R - r})}}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}\\0&0&0&0\\0&{\frac{R {({R - r})}}{{{r}^{2}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&{{\frac1r}{({-R})}}\\0&0&{{\frac1r}{({R})}}&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}}\right]}}$
 <br>
-Ricci curvature tensor
+Riemann curvature:
 <br>
-${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}$
-
+${{{{R}^a}^b}_c}_d = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\matrix{{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&{\frac{-{R {({{{16} {{R}^{5}}} + {{{160} {{R}^{3}} {{r}^{2}}} - {{160} {{R}^{2}} {{r}^{3}}}} + {{{{80} R {{r}^{4}}} - {{80} {{R}^{4}} r}} - {{16} {{r}^{5}}}}})}}}{{{r}^{3}} {({{{16} {{r}^{5}}} + {{{{{80} r {{R}^{4}}} - {{160} {{r}^{2}} {{R}^{3}}}} - {{80} {{r}^{4}} R}} - {{16} {{R}^{5}}}} + {{160} {{r}^{3}} {{R}^{2}}}})}}}&0&0\\{\frac{R {({{{16} {{R}^{5}}} + {{{160} {{R}^{3}} {{r}^{2}}} - {{160} {{R}^{2}} {{r}^{3}}}} + {{{{80} R {{r}^{4}}} - {{80} {{R}^{4}} r}} - {{16} {{r}^{5}}}}})}}{{{r}^{3}} {({{{16} {{r}^{5}}} + {{{{{80} r {{R}^{4}}} - {{160} {{r}^{2}} {{R}^{3}}}} - {{80} {{r}^{4}} R}} - {{16} {{R}^{5}}}} + {{160} {{r}^{3}} {{R}^{2}}}})}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&{\frac{R {({R - r})}}{2 {{r}^{3}} {({r - R})}}}&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 {{r}^{3}} {({r - R})}}}&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&{\frac{R {({R - r})}}{2 {{r}^{3}} {({r - R})}}}\\0&0&0&0\\0&0&0&0\\{\frac{-{R {({R - r})}}}{2 {{r}^{3}} {({r - R})}}}&0&0&0}\right]}\\{\left[\matrix{0&{\frac{R}{-{{r}^{3}}}}&0&0\\{\frac{R}{{r}^{3}}}&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&{\frac{-{R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}}{{{r}^{3}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0\\0&{\frac{R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}{{{r}^{3}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&{\frac{-{R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}}{{{r}^{3}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}\\0&0&0&0\\0&{\frac{R {({{{R}^{2}} + {{{r}^{2}} - {2 R r}}})}}{{{r}^{3}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0}\right]}\\{\left[\matrix{0&0&{\frac{R}{2 {{r}^{3}}}}&0\\0&0&0&0\\{\frac{-R}{2 {{r}^{3}}}}&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&{\frac{R {({{{{R}^{2}} - {2 R r}} + {{r}^{2}}})}}{{{r}^{3}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0\\0&{\frac{-{R {({{{{R}^{2}} - {2 R r}} + {{r}^{2}}})}}}{{{r}^{3}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&{\frac{R}{{r}^{3}}}\\0&0&{\frac{-R}{{r}^{3}}}&0}\right]}\\{\left[\matrix{0&0&0&{\frac{R}{2 {{r}^{3}}}}\\0&0&0&0\\0&0&0&0\\{\frac{-R}{2 {{r}^{3}}}}&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&{\frac{R {({{{{R}^{2}} - {2 R r}} + {{r}^{2}}})}}{{{r}^{3}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}\\0&0&0&0\\0&{\frac{-{R {({{{{R}^{2}} - {2 R r}} + {{r}^{2}}})}}}{{{r}^{3}} {({{2 {{r}^{2}}} + {{2 {{R}^{2}}} - {4 r R}}})}}}&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&{\frac{-R}{{r}^{3}}}\\0&0&{\frac{R}{{r}^{3}}}&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\right]}}$
 <br>
-
+Ricci curvature:
 <br>
-Gaussian curvature
+${{R}^a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}$
+<br>
+Gaussian curvature:
 <br>
 $R = 0$
 <br>
+trace-reversed Ricci curvature:
+<br>
+${{G}^a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}$
+<br>
+divergence:	${{{A}^i}_{,i} + {{{{\Gamma}^i}_j}_i {A}^j}} = {{4 {\partial_{{\phi}}({A^{\phi}})} {{r}^{3}} {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {{12} {\partial_{{\phi}}({A^{\phi}})} r {{R}^{2}} {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {4 {\partial_{{\phi}}({A^{\phi}})} {{R}^{3}} {\frac{1}{{{{4 {{R}^{3}}} - {4 {{r}^{3}}}} - {{12} r {{R}^{2}}}} + {{12} {{r}^{2}} R}}}} + {{12} {\partial_{{\phi}}({A^{\phi}})} {{r}^{2}} R {\frac{1}{{{{4 {{R}^{3}}} - {4 {{r}^{3}}}} - {{12} r {{R}^{2}}}} + {{12} {{r}^{2}} R}}}} + {4 {\partial_{{\theta}}({A^{\theta}})} {{r}^{3}} {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {{12} {\partial_{{\theta}}({A^{\theta}})} r {{R}^{2}} {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {4 {\partial_{{\theta}}({A^{\theta}})} {{R}^{3}} {\frac{1}{{{{4 {{R}^{3}}} - {4 {{r}^{3}}}} - {{12} r {{R}^{2}}}} + {{12} {{r}^{2}} R}}}} + {{12} {\partial_{{\theta}}({A^{\theta}})} {{r}^{2}} R {\frac{1}{{{{4 {{R}^{3}}} - {4 {{r}^{3}}}} - {{12} r {{R}^{2}}}} + {{12} {{r}^{2}} R}}}} + {4 {\partial_{{r}}({A^{r}})} {{r}^{3}} {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {4 {\partial_{{r}}({A^{r}})} {{R}^{3}} {\frac{1}{{{{4 {{R}^{3}}} - {4 {{r}^{3}}}} - {{12} r {{R}^{2}}}} + {{12} {{r}^{2}} R}}}} + {{12} {\partial_{{r}}({A^{r}})} {{r}^{2}} R {\frac{1}{{{{4 {{R}^{3}}} - {4 {{r}^{3}}}} - {{12} r {{R}^{2}}}} + {{12} {{r}^{2}} R}}}} + {{12} {\partial_{{r}}({A^{r}})} r {{R}^{2}} {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {4 {\partial_{{t}}({A^{t}})} {{r}^{3}} {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {{12} {\partial_{{t}}({A^{t}})} r {{R}^{2}} {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {4 {\partial_{{t}}({A^{t}})} {{R}^{3}} {\frac{1}{{{{4 {{R}^{3}}} - {4 {{r}^{3}}}} - {{12} r {{R}^{2}}}} + {{12} {{r}^{2}} R}}}} + {{12} {\partial_{{t}}({A^{t}})} {{r}^{2}} R {\frac{1}{{{{4 {{R}^{3}}} - {4 {{r}^{3}}}} - {{12} r {{R}^{2}}}} + {{12} {{r}^{2}} R}}}} + {4 {cos\left(\theta\right)} {A^{\theta}} \cdot {{r}^{3}} {\frac{1}{{{{{-4} {sin\left(\theta\right)} {{R}^{3}}} - {{-4} {sin\left(\theta\right)} {{r}^{3}}}} - {{-12} {sin\left(\theta\right)} r {{R}^{2}}}} + {{-12} {sin\left(\theta\right)} {{r}^{2}} R}}}} + {{12} {cos\left(\theta\right)} {A^{\theta}} \cdot r {{R}^{2}} {\frac{1}{{{{{-4} {sin\left(\theta\right)} {{R}^{3}}} - {{-4} {sin\left(\theta\right)} {{r}^{3}}}} - {{-12} {sin\left(\theta\right)} r {{R}^{2}}}} + {{-12} {sin\left(\theta\right)} {{r}^{2}} R}}}} + {4 {cos\left(\theta\right)} {A^{\theta}} \cdot {{R}^{3}} {\frac{1}{{{{4 {sin\left(\theta\right)} {{R}^{3}}} - {4 {sin\left(\theta\right)} {{r}^{3}}}} - {{12} {sin\left(\theta\right)} r {{R}^{2}}}} + {{12} {sin\left(\theta\right)} {{r}^{2}} R}}}} + {{12} {cos\left(\theta\right)} {A^{\theta}} \cdot {{r}^{2}} R {\frac{1}{{{{4 {sin\left(\theta\right)} {{R}^{3}}} - {4 {sin\left(\theta\right)} {{r}^{3}}}} - {{12} {sin\left(\theta\right)} r {{R}^{2}}}} + {{12} {sin\left(\theta\right)} {{r}^{2}} R}}}} + {8 {{R}^{3}} {A^{r}} \cdot {\frac{1}{{{{-4} r {{r}^{3}}} - {{-4} r {{R}^{3}}}} + {{{-12} r r {{R}^{2}}} - {{-12} r {{r}^{2}} R}}}}} + {{24} {{R}^{2}} {A^{r}} \cdot {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {8 {{r}^{2}} {A^{r}} \cdot {\frac{1}{{{{{-4} {{R}^{3}}} - {{-4} {{r}^{3}}}} - {{-12} r {{R}^{2}}}} + {{-12} {{r}^{2}} R}}}} + {{24} r R {A^{r}} \cdot {\frac{1}{{{{4 {{R}^{3}}} - {4 {{r}^{3}}}} - {{12} r {{R}^{2}}}} + {{12} {{r}^{2}} R}}}}}$
+<br>
+geodesic:
+<br>
+${\overset{a\downarrow}{\left[\matrix{{\frac{{R \dot{r} \cdot \dot{t}} + {{\ddot{t} \cdot {{r}^{2}}} - {\ddot{t} \cdot r R}}}{r {({r - R})}}}\\{\frac{{4 {{{sin\left(\theta\right)}}^{2}} {{\dot{\phi}}^{2}} {{R}^{3}} {{r}^{3}}} + {{{{12} {{{sin\left(\theta\right)}}^{2}} {{\dot{\phi}}^{2}} R {{r}^{5}}} - {{12} {{{sin\left(\theta\right)}}^{2}} {{\dot{\phi}}^{2}} {{R}^{2}} {{r}^{4}}}} - {4 {{{sin\left(\theta\right)}}^{2}} {{\dot{\phi}}^{2}} {{r}^{6}}}} + {{{2 {{R}^{2}} {{\dot{r}}^{2}} {{r}^{2}}} - {2 R {{\dot{r}}^{2}} {{r}^{3}}}} - {2 {{R}^{4}} {{\dot{t}}^{2}}}} + {6 {{R}^{3}} {{\dot{t}}^{2}} r} + {{2 R {{\dot{t}}^{2}} {{r}^{3}}} - {6 {{R}^{2}} {{\dot{t}}^{2}} {{r}^{2}}}} + {{4 \ddot{r} \cdot {{r}^{5}}} - {8 \ddot{r} \cdot {{r}^{4}} R}} + {4 \ddot{r} \cdot {{r}^{3}} {{R}^{2}}} + {{12} {{\dot{\theta}}^{2}} R {{r}^{5}}} + {{{4 {{\dot{\theta}}^{2}} {{R}^{3}} {{r}^{3}}} - {{12} {{\dot{\theta}}^{2}} {{R}^{2}} {{r}^{4}}}} - {4 {{\dot{\theta}}^{2}} {{r}^{6}}}}}{{{r}^{3}} {({{4 {{r}^{2}}} + {{4 {{R}^{2}}} - {8 r R}}})}}}\\{{\frac1r}{({-{({{{{sin\left(\theta\right)} {cos\left(\theta\right)} {{\dot{\phi}}^{2}} r} - {\ddot{\theta} \cdot r}} - {2 \dot{\theta} \cdot \dot{r}}})}})}}\\{\frac{{\ddot{\phi} \cdot {sin\left(\theta\right)} r} + {2 \dot{\phi} \cdot {cos\left(\theta\right)} \dot{\theta} \cdot r} + {2 \dot{\phi} \cdot \dot{r} \cdot {sin\left(\theta\right)}}}{{sin\left(\theta\right)} r}}}\right]}} = {\overset{u\downarrow}{\left[\matrix{0\\0\\0\\0}\right]}}$
+<br>
 
 <br>
-Einstein tensor
-<br>
-${{G}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}$
+	</body>
+</html>
 
-<br>
-
-<br>
-nil
