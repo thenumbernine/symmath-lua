@@ -18,7 +18,7 @@ Tensor.coords{{variables = coords}}
 local g = Tensor('_uv', function(u,v) 
 	return u ~= v and 0
 		or ({
-			-e^(-2*Phi),
+			-e^(2*Phi),
 			e^(2*Lambda), 
 			r^2, 
 			r^2 * sin(theta)^2,
