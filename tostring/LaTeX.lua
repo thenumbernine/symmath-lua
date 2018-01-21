@@ -154,7 +154,17 @@ LaTeX.lookupTable = {
 		local diffExpr = expr[1]
 		local diffExprStr = self:apply(diffExpr)
 		local diffExprOnTop = Variable.is(diffExpr)
-	
+
+		if self.useCommaDerivative then
+			return table{ 
+				table{diffExprStr}, 
+				'_', 
+				table{','}:append(range(#diffVars):map(function(i)
+					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
+				end))
+			}
+		end
+		
 		if self.usePartialLHSForDerivative then
 			local s = table{'\\partial_', 
 				range(#diffVars):map(function(i)

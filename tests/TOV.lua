@@ -2,7 +2,7 @@
 -- TOV spherical metric
 require 'ext'
 require 'symmath'.setup{
-	MathJax={title='TOV metric', usePartialLHSForDerivative=true}
+	MathJax={title='TOV metric', useCommaDerivative=true}
 }
 
 -- coordinates
@@ -28,12 +28,21 @@ end)
 local Props = class(require 'symmath.physics.diffgeom')
 Props.verbose = true
 Props.fields = table(Props.fields)
-Props.fields:insert{
-	name = 'EinsteinLL',
-	symbol = 'G',
-	title = 'Einstein, $\\flat\\flat$',
-	calc = function(self) return self.Einstein'_ab'() end,
-	display = function(self) return var'G''_ab':eq(self.EinsteinLL'_ab'()) end,
+Props.fields:append{
+	{
+		name = 'EinsteinLL',
+		symbol = 'G',
+		title = 'Einstein, $\\flat\\flat$',
+		calc = function(self) return self.Einstein'_ab'() end,
+		display = function(self) return var'G''_ab':eq(self.EinsteinLL'_ab'()) end,
+	},
+	{
+		name = 'RicciLL',
+		symbol = 'R',
+		title = 'Ricci, $\\flat\\flat$',
+		calc = function(self) return self.Ricci'_ab'() end,
+		display = function(self) return var'R''_ab':eq(self.RicciLL'_ab'()) end,
+	},
 }
 local props = Props(g)
 
