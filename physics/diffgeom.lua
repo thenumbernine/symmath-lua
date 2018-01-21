@@ -1,91 +1,139 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local var = require 'symmath.Variable'
+local Tensor = require 'symmath.Tensor'
 
 --[[
 helper class for computing common differential geometry values from a metric tensor
 --]]
 local Props = class()
 
-local function var() return require 'symmath'.var end
-
 Props.fields = table{
 	{
 		name = 'c',
 		symbol = 'c',
 		title = 'commutation coefficients',
-		eqn = function(self) return var()'c''_ab^c':eq(self.c'_ab^c'()) end,
+		display = function(self) return var'c''_ab^c':eq(self.c'_ab^c'()) end,
 	},
 	{
 		name = 'g',
 		symbol = 'g',
 		title = 'metric',
-		eqn = function(self) return var()'g''_ab':eq(self.g'_ab'()) end,
+		calc = function(self) return Tensor.metric().metric end,
+		display = function(self) return var'g''_ab':eq(self.g'_ab'()) end,
 	},
 	{
 		name = 'gU',
 		symbol = 'g',
 		title = 'metric inverse',
-		eqn = function(self) return var()'g''^ab':eq(self.gU'^ab'()) end,
+		calc = function(self) return Tensor.metric().metricInverse end,
+		display = function(self) return var'g''^ab':eq(self.gU'^ab'()) end,
 	},
 	{
 		name = 'dg',
 		symbol = '{\\partial g}',
 		title = 'metric derivative',
-		eqn = function(self) return var()'g''_ab,c':eq(self.dg'_abc'()) end,
+		calc = function(self)
+			local dg = Tensor'_abc'
+			dg['_abc'] = self.g'_ab,c'()
+			return dg
+		end,
+		display = function(self) return var'g''_ab,c':eq(self.dg'_abc'()) end,
 	},
 	{
 		name = 'GammaL',
 		symbol = '\\Gamma',
 		title = '1st kind Christoffel',
-		eqn = function(self) return var()'\\Gamma''_abc':eq(self.GammaL'_abc'()) end,
+		calc = function(self)
+			local expr = ((self.dg'_abc' + self.dg'_acb' - self.dg'_bca') / 2)
+			if self.c then 
+				expr = expr + (self.c'_abc' + self.c'_acb' - self.c'_bca')/2 
+			end
+			local GammaL = Tensor'_abc'
+			GammaL['_abc'] = expr()
+			return GammaL		
+		end,
+		display = function(self) return var'\\Gamma''_abc':eq(self.GammaL'_abc'()) end,
 	},
 	{
 		name = 'Gamma',
 		symbol = '\\Gamma',
 		title = 'connection coefficients / 2nd kind Christoffel',
-		eqn = function(self) return var()'\\Gamma''^a_bc':eq(self.Gamma'^a_bc'()) end,
+		calc = function(self) return self.GammaL'^a_bc'() end,
+		display = function(self) return var'\\Gamma''^a_bc':eq(self.Gamma'^a_bc'()) end,
 	},
 	{
 		name = 'dGamma',
 		symbol = '{\\partial \\Gamma}',
 		title = 'connection coefficients derivative',
-		eqn = function(self) return var()'\\Gamma''^a_bc,d':eq(self.dGamma'^a_bcd'()) end,
+		calc = function(self)
+			local dGamma = Tensor'^a_bcd'
+			dGamma['^a_bcd'] = self.Gamma'^a_bc,d'()
+			return dGamma
+		end,
+		display = function(self) return var'\\Gamma''^a_bc,d':eq(self.dGamma'^a_bcd'()) end,
 	},
+
+-- this is too slow.  for dim=4, Gamma^a_bc is 4^3 = 64 elements
+-- the multiply always does the outer before the inner
+-- and the outer operation is 4^6 = 4096 elements
+-- TODO analyze the mul(TensorRef,TensorRef)
+-- and if it has multiple indexes, keep track of them, transform the elements individually, sum them, and only generate the resulting indexes
+-- (in this case, 4^4 = 256, much smaller)
+-- another TODO to help optimization: keep track of symmetric/antisymmetric terms
 	{
 		name = 'GammaSq',
 		symbol = '(\\Gamma^2)',
 		title = 'connection coefficients squared',
-		eqn = function(self) return (var()'\\Gamma''^a_ec' * var()'\\Gamma''^e_bd'):eq(self.GammaSq'^a_bcd'()) end,
+		calc = function(self)
+			local GammaSq = Tensor'^a_bcd'
+			GammaSq['^a_bcd'] = (self.Gamma'^a_ec' * self.Gamma'^e_bd')()
+			return GammaSq
+		end,
+		display = function(self) return (var'\\Gamma''^a_ec' * var'\\Gamma''^e_bd'):eq(self.GammaSq'^a_bcd'()) end,
 	},
 	{
-		name = 'RiemannU',
+		name = 'RiemannULLL',
 		symbol = 'R',
-		title = 'Riemann curvature, sharp',
-		eqn = function(self) return var()'R''^a_bcd':eq(self.RiemannU'^a_bcd'()) end,
+		title = 'Riemann curvature, $\\sharp\\flat\\flat\\flat$',
+		calc = function(self)
+			local RiemannULLL = Tensor'^a_bcd'
+			local expr = (self.dGamma'^a_bdc' - self.dGamma'^a_bcd' + self.GammaSq'^a_bcd' - self.GammaSq'^a_bdc')
+			if self.c then 
+				expr = expr - self.Gamma'^a_be' * self.c'_cd^e' 
+			end
+			RiemannULLL['^a_bcd'] = expr()
+			return RiemannULLL
+		end,
+		display = function(self) return var'R''^a_bcd':eq(self.RiemannULLL'^a_bcd'()) end,
 	},
 	{
 		name = 'Riemann',
 		symbol = 'R',
-		title = 'Riemann curvature',
-		eqn = function(self) return var()'R''^ab_cd':eq(self.Riemann'^ab_cd'()) end,
+		title = 'Riemann curvature, $\\sharp\\sharp\\flat\\flat$',
+		calc = function(self) return self.RiemannULLL'^ab_cd'() end,
+		display = function(self) return var'R''^ab_cd':eq(self.Riemann'^ab_cd'()) end,
 	},
 	{
 		name = 'Ricci',
 		symbol = 'R',
-		title = 'Ricci curvature',
-		eqn = function(self) return var()'R''^a_b':eq(self.Ricci'^a_b'()) end,
+		title = 'Ricci curvature, $\\sharp\\flat$',
+		calc = function(self) return self.Riemann'^ca_cb'() end,
+		display = function(self) return var'R''^a_b':eq(self.Ricci'^a_b'()) end,
 	},
 	{
 		name = 'Gaussian',
 		symbol = 'R',
 		title = 'Gaussian curvature',
-		eqn = function(self) return var()'R':eq(self.Gaussian) end,
+		calc = function(self) return self.Ricci'^a_a'() end,
+		display = function(self) return var'R':eq(self.Gaussian) end,
 	},
 	{
 		name = 'Einstein',
 		symbol = 'G',
-		title = 'trace-reversed Ricci curvature',
-		eqn = function(self) return var()'G''^a_b':eq(self.Einstein'^a_b'()) end,
+		title = 'Einstein $\\sharp\\flat$ / trace-reversed Ricci curvature',
+		calc = function(self) return (self.Ricci'^a_b' - self.g'^a_b' * self.Gaussian)() end,
+		display = function(self) return var'G''^a_b':eq(self.Einstein'^a_b'()) end,
 	},
 }
 
@@ -93,13 +141,13 @@ function Props:getEqnForField(fieldname)
 	local _, field = self.fields:find(nil, function(field)
 		return field.name == fieldname
 	end)
-	return field and field.eqn(self) or nil
+	return field and field.display(self) or nil
 end
 
 function Props:doPrint(field)
 	local pr = require 'symmath'.tostring.print or print
 	pr(field.title..':')
-	pr(field.eqn(self))
+	pr(field.display(self))
 end
 
 -- print all
@@ -126,79 +174,22 @@ end
 function Props:init(g, gU, c)
 	local Tensor = require 'symmath'.Tensor
 
+	Tensor.metric(g, gU)
 	self.c = c
-	if self.c and self.verbose then self:printField'c' end
+
+	for _,field in ipairs(self.fields) do
+		local name = field.name
+		if field.calc then
+			self[name] = field.calc(self)
+		end
+		if self[name] and self.verbose then 
+			self:printField(name) 
+		end
+	end
 
 	-- TODO Tensor.meric accepts non-symmath tables
 	-- soo I would need to convert them before outputting
 	-- either move this below Tensor.metric, or convert before this line.
-	self.g = g
-	if self.verbose then self:printField'g' end
-
-	local basis = Tensor.metric(g, gU)
-	g = basis.metric
-	self.g = g
-	gU = basis.metricInverse
-	self.gU = gU
-	if self.verbose then self:printField'gU' end
-
-	local dg = Tensor'_abc'
-	dg['_abc'] = g'_ab,c'()
-	self.dg = dg
-	if self.verbose then self:printField'dg' end
-	
-	local expr = ((dg'_abc' + dg'_acb' - dg'_bca') / 2)
-	if c then expr = expr + (c'_abc' + c'_acb' - c'_bca')/2 end
-	local GammaL = Tensor'_abc'
-	GammaL['_abc'] = expr()
-	self.GammaL = GammaL
-	if self.verbose then self:printField'GammaL' end
-
-	local Gamma = GammaL'^a_bc'()
-	self.Gamma = Gamma
-	if self.verbose then self:printField'Gamma' end
-
-	local dGamma = Tensor'^a_bcd'
-	dGamma['^a_bcd'] = Gamma'^a_bc,d'()
-	self.dGamma = dGamma
-	if self.verbose then self:printField'dGamma' end
-
--- this is too slow.  for dim=4, Gamma^a_bc is 4^3 = 64 elements
--- the multiply always does the outer before the inner
--- and the outer operation is 4^6 = 4096 elements
--- TODO analyze the mul(TensorRef,TensorRef)
--- and if it has multiple indexes, keep track of them, transform the elements individually, sum them, and only generate the resulting indexes
--- (in this case, 4^4 = 256, much smaller)
--- another TODO to help optimization: keep track of symmetric/antisymmetric terms
-	local GammaSq = Tensor'^a_bcd'
-	GammaSq['^a_bcd'] = (Gamma'^a_ec' * Gamma'^e_bd')()
-	self.GammaSq = GammaSq
-	if self.verbose then self:printField'GammaSq' end
-
-	local expr = (dGamma'^a_bdc' - dGamma'^a_bcd' + GammaSq'^a_bcd' - GammaSq'^a_bdc')
-	if c then expr = expr - Gamma'^a_be' * c'_cd^e' end
-	local RiemannU = Tensor'^a_bcd'
-	RiemannU['^a_bcd'] = expr()
-	self.RiemannU = RiemannU
-	if self.verbose then self:printField'RiemannU' end
-
-	local Riemann = RiemannU'^ab_cd'()
-	self.Riemann = Riemann
-	if self.verbose then self:printField'Riemann' end
-
-	local Ricci = Tensor'^a_b'
-	Ricci['^a_b'] = Riemann'^ca_cb'()
-	self.Ricci = Ricci
-	if self.verbose then self:printField'Ricci' end
-
-	local Gaussian = Ricci'^a_a'()
-	self.Gaussian = Gaussian
-	if self.verbose then self:printField'Gaussian' end
-
-	local Einstein = Tensor'^a_b'
-	Einstein['^a_b'] = (Ricci'^a_b' - g'^a_b' * Gaussian)()
-	self.Einstein = Einstein
-	if self.verbose then self:printField'Einstein' end
 end
 
 return Props

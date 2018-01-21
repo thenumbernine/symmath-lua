@@ -27,6 +27,14 @@ end)
 
 local Props = class(require 'symmath.physics.diffgeom')
 Props.verbose = true
+Props.fields = table(Props.fields)
+Props.fields:insert{
+	name = 'EinsteinLL',
+	symbol = 'G',
+	title = 'Einstein, $\\flat\\flat$',
+	calc = function(self) return self.Einstein'_ab'() end,
+	display = function(self) return var'G''_ab':eq(self.EinsteinLL'_ab'()) end,
+}
 local props = Props(g)
 
 local dx = Tensor('^u', function(u)
