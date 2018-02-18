@@ -55,8 +55,8 @@ C.lookupTable = {
 		return {funcName .. '(' .. s .. ')', predefs}
 	end,
 	[require 'symmath.op.unm'] = function(self, expr, vars)
-		local sx = self:apply(expr[1], vars)
-		return {'(-'..sx[1]..')', sx[2]}
+		local sx = self:wrapStrOfChildWithParenthesis(expr, 1, vars)
+		return {'-'..sx[1], sx[2]}
 	end,
 	[require 'symmath.op.pow'] = function(self, expr, vars)
 		if expr[1] == require 'symmath'.e then
@@ -76,24 +76,11 @@ C.lookupTable = {
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr, vars)
 		local predefs = table()
-		--[[
-		local s = table()
-		for i,x in ipairs(expr) do
-			local sx = self:apply(x, vars)
-			s:insert(sx[1])
-			predefs = table(predefs, sx[2])
-		end
-		s = s:concat(' '..expr.name..' ')
-		return {'('..s..')', predefs}
-		--]]
-		-- [[
 		return {range(#expr):map(function(i)
 			local sx = self:wrapStrOfChildWithParenthesis(expr, i, vars)
-			--local sx = self:apply(expr[i], vars)
 			predefs = table(predefs, sx[2])
 			return sx[1]
 		end):concat(' '..expr.name..' '), predefs}
-		--]]
 	end,
 	[require 'symmath.Variable'] = function(self, expr, vars)
 		if table.find(vars, nil, function(var) 
