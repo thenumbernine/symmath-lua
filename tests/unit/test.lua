@@ -85,6 +85,13 @@ asserteq((y-x)/(x-y), -1)
 asserteq((x+y)/(x+y)^2, 1/(x+y))
 asserteq((-x+y)/(-x+y)^2, 1/(-x+y))
 
+gUxx = var('\\gamma^{xx}')
+gUxy = var('\\gamma^{xy}')
+gUyy = var('\\gamma^{yy}')
+--asserteq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)
+--asserteq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)
+asserteq( gUxy * (gUxy - gUxx) / (gUxx - gUxy), -gUxy)
+
 -- and an example of what a failure looks like:
 asserteq(1,2)
 ]=]):trim():split'\n') do

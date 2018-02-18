@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local range = require 'ext.range'
 local Language = require 'symmath.tostring.Language'
 local C = class(Language)
 
@@ -10,6 +11,18 @@ TODO provide the type instead of using 'real'
 also TODO - merge common stuff between this and tostring.Lua into the Language class
 also TODO - fix differences with compile() and generate()
 --]]
+
+function C:wrapStrOfChildWithParenthesis(parentNode, childIndex, ...)
+	local node = parentNode[childIndex]
+	local sx = self:apply(node, ...)
+	if not sx then return false end
+	local s, predef = table.unpack(sx)
+	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
+		s = '(' .. s .. ')'
+	end
+	return {s, predef}
+end
+
 
 C.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr, vars)
@@ -63,6 +76,7 @@ C.lookupTable = {
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr, vars)
 		local predefs = table()
+		--[[
 		local s = table()
 		for i,x in ipairs(expr) do
 			local sx = self:apply(x, vars)
@@ -71,6 +85,15 @@ C.lookupTable = {
 		end
 		s = s:concat(' '..expr.name..' ')
 		return {'('..s..')', predefs}
+		--]]
+		-- [[
+		return {range(#expr):map(function(i)
+			local sx = self:wrapStrOfChildWithParenthesis(expr, i, vars)
+			--local sx = self:apply(expr[i], vars)
+			predefs = table(predefs, sx[2])
+			return sx[1]
+		end):concat(' '..expr.name..' '), predefs}
+		--]]
 	end,
 	[require 'symmath.Variable'] = function(self, expr, vars)
 		if table.find(vars, nil, function(var) 
