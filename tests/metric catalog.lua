@@ -1,7 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{implicitVars=true, MathJax={title='Metric Catalog'}}
 
 local t,x,y,z = vars('t','x','y','z')
 local r,phi,theta,psi = vars('r','\\phi','\\theta','\\psi')
@@ -16,7 +15,7 @@ local thetaHat = var'\\hat{\\theta}'
 function thetaHat:applyDiff(x) return x:diff(theta) / r end
 
 local phiHat = var'\\hat{\\phi}'
-function phiHat:applyDiff(x) return x:diff(phi) / (r * symmath.sin(theta)) end
+function phiHat:applyDiff(x) return x:diff(phi) / (r * sin(theta)) end
 
 local psiHat = var'\\hat{\\psi}'
 function psiHat:applyDiff(x) return x:diff(psi) end
@@ -25,10 +24,10 @@ local alpha = var('\\alpha', {r})
 local omega = var('\\omega', {t, r})
 local q = var('q', {t,x,y,z})
 
-local delta2 = symmath.Matrix:lambda({2,2}, function(i,j) return i==j and 1 or 0 end)
-local delta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and 1 or 0 end)
-local eta3 = symmath.Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
-local eta4 = symmath.Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
+local delta2 = Matrix:lambda({2,2}, function(i,j) return i==j and 1 or 0 end)
+local delta3 = Matrix:lambda({3,3}, function(i,j) return i==j and 1 or 0 end)
+local eta3 = Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
+local eta4 = Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
 local spacetimes = {
 -- [=[
@@ -38,7 +37,7 @@ local spacetimes = {
 		embedded = {x,y},
 		flatMetric = delta2,
 		chart = function() 
-			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi))
+			return Tensor('^I', r * cos(phi), r * sin(phi))
 		end,
 	},
 	{
@@ -48,7 +47,7 @@ local spacetimes = {
 		embedded = {x,y},
 		flatMetric = delta2,
 		chart = function()
-			return Tensor('^I', r * symmath.cos(theta), r * symmath.sin(theta))
+			return Tensor('^I', r * cos(theta), r * sin(theta))
 		end,
 	},
 	{
@@ -57,7 +56,7 @@ local spacetimes = {
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
-			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi), z)
+			return Tensor('^I', r * cos(phi), r * sin(phi), z)
 		end,
 		-- for the time being, all coord charts where #coords < #embedded need to explicitly provide this.
 		-- (which, for now, is only this coordinate chart)
@@ -76,7 +75,7 @@ local spacetimes = {
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
-			return Tensor('^I', r * symmath.cos(phi), r * symmath.sin(phi), z)
+			return Tensor('^I', r * cos(phi), r * sin(phi), z)
 		end,
 	},
 	{
@@ -86,7 +85,7 @@ local spacetimes = {
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
-			return Tensor('^I', r * symmath.cos(theta), r * symmath.sin(theta), z)
+			return Tensor('^I', r * cos(theta), r * sin(theta), z)
 		end,
 	},
 	{
@@ -95,7 +94,7 @@ local spacetimes = {
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
-			return Tensor('^I', t, r * symmath.cos(phi), r * symmath.sin(phi), z)
+			return Tensor('^I', t, r * cos(phi), r * sin(phi), z)
 		end,
 	},
 	{
@@ -105,8 +104,8 @@ local spacetimes = {
 		flatMetric = delta2,
 		chart = function()
 			return Tensor('^I',
-				r * symmath.cos(phi + symmath.log(r)),
-				r * symmath.sin(phi + symmath.log(r))
+				r * cos(phi + log(r)),
+				r * sin(phi + log(r))
 			)
 		end,
 	},
@@ -118,8 +117,8 @@ local spacetimes = {
 		chart = function()
 			return Tensor('^I', 
 				t,
-				r * symmath.cos(phi + t),
-				r * symmath.sin(phi + t))
+				r * cos(phi + t),
+				r * sin(phi + t))
 		end,
 	},
 	{
@@ -130,8 +129,8 @@ local spacetimes = {
 		chart = function()
 			return Tensor('^I',
 				t * alpha,
-				r * symmath.cos(phi),
-				r * symmath.sin(phi))
+				r * cos(phi),
+				r * sin(phi))
 		end,
 	},
 -- [[
@@ -143,8 +142,8 @@ local spacetimes = {
 		chart = function()
 			return Tensor('^I', 
 				t,
-				r * symmath.cos(phi + omega),
-				r * symmath.sin(phi + omega)
+				r * cos(phi + omega),
+				r * sin(phi + omega)
 			)
 		end,
 	},
@@ -156,9 +155,9 @@ local spacetimes = {
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I',
-				r * symmath.sin(theta) * symmath.cos(phi),
-				r * symmath.sin(theta) * symmath.sin(phi),
-				r * symmath.cos(theta))
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
 		end,
 		eU = function()
 			-- theta = acos(z/r)
@@ -177,9 +176,9 @@ local spacetimes = {
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I', 
-				r * symmath.sin(theta) * symmath.cos(phi),
-				r * symmath.sin(theta) * symmath.sin(phi),
-				r * symmath.cos(theta))
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
 		end,
 	},
 	{
@@ -190,9 +189,9 @@ local spacetimes = {
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I', 
-				r * symmath.sin(theta) * symmath.cos(phi),
-				r * symmath.sin(theta) * symmath.sin(phi),
-				r * symmath.cos(theta))
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
 		end,
 	},
 	{
@@ -203,9 +202,9 @@ local spacetimes = {
 		chart = function()
 			return Tensor('^I', 
 				t,
-				r * symmath.sin(theta) * symmath.cos(phi),
-				r * symmath.sin(theta) * symmath.sin(phi),
-				r * symmath.cos(theta))
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
 		end,
 	},
 	{
@@ -216,9 +215,9 @@ local spacetimes = {
 		chart = function()
 			return Tensor('^I', 
 				t * alpha,
-				r * symmath.sin(theta) * symmath.cos(phi),
-				r * symmath.sin(theta) * symmath.sin(phi),
-				r * symmath.cos(theta))
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
 		end,
 	},
 	{
@@ -228,11 +227,30 @@ local spacetimes = {
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I', 
-				(R + r * symmath.sin(theta)) * symmath.cos(phi),
-				(R + r * symmath.sin(theta)) * symmath.sin(phi),
-				r * symmath.cos(theta))
+				(R + r * sin(theta)) * cos(phi),
+				(R + r * sin(theta)) * sin(phi),
+				r * cos(theta))
 		end,
-	}
+	},
+	{
+		title = 'torus surface',
+		coords = {theta,phi},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', 
+				(R + r * sin(theta)) * cos(phi),
+				(R + r * sin(theta)) * sin(phi),
+				r * cos(theta))
+		end,
+		eU = function()
+			return Tensor('^a_I',
+				-- dtheta/dx, dtheta/dy dtheta/dz
+				{cos(theta) * cos(phi) / r, cos(theta) * sin(phi) / r, -sin(theta) / r},
+				-- dphi/dx, dphi/dy dphi/dz
+				{-sin(phi) / (R + r * sin(theta)), cos(phi) / (R + r * sin(theta)), 0})
+		end,
+	},
 --]=]
 --[[
 	{
@@ -254,9 +272,9 @@ local spacetimes = {
 		chart = function()
 			return Tensor('^I', 
 				t * alpha,
-				r/alpha * symmath.sin(theta) * symmath.cos(phi),
-				r/alpha * symmath.sin(theta) * symmath.sin(phi),
-				r/alpha * symmath.cos(theta))
+				r/alpha * sin(theta) * cos(phi),
+				r/alpha * sin(theta) * sin(phi),
+				r/alpha * cos(theta))
 		end,
 	},
 --]]
