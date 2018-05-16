@@ -156,8 +156,10 @@ function MathJax.setup(args)
 		title = os.getenv'_'
 		if title then title = title:match('^%./(.*)%.lua$') end
 	end
-	inst.header.title = title
-	inst.header.pathToTryToFindMathJax = args.pathToTryToFindMathJax 
+	if type(inst.header) ~= 'string' then
+		inst.header.title = title
+		inst.header.pathToTryToFindMathJax = args.pathToTryToFindMathJax 
+	end
 
 	print(inst.header)
 	env.printbr = MathJax.print

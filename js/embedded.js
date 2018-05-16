@@ -67,10 +67,7 @@ interpretter = new SymLuaEmbeddedLuaInterpreter({
 		interpretter.execute(mlstr(function(){/*
 -- META!!! This is Lua code interpretted in JavaScript embedded in HTML served from a Lua server
 LUA_IN_HTML = true -- maybe this should set in lua.vm-util.js 
-package.path = package.path .. ';./?/?.lua'
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{header=''}
--- MathJax.header = ''
+require 'symmath'.setup{implicitVars=true, MathJax={header=''}}
 */}));
 		var open = $.url().param('open');
 		if (open !== undefined) {
