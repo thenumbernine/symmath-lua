@@ -15,11 +15,11 @@ local coords = {t, x, y, z}
 -- primitive variables
 local rho = var('\\rho', coords)	-- density
 
-local ux = var('u_x', coords)	-- velocity
-local uy = var('u_y', coords)
-local uz = var('u_z', coords)
+local ux = var('u^x', coords)	-- velocity
+local uy = var('u^y', coords)
+local uz = var('u^z', coords)
 
-local e_int = var('e_{int}', coords)		-- total specific energy 
+local P = var('P', coords)		-- total specific energy 
 
 --local usePrims = true
 
@@ -39,9 +39,9 @@ for dim=1,1 do
 
 	-- other variables
 	local gamma = var('\\gamma')
+	local e_int = P / ((gamma - 1) * rho)		-- specific internal energy 
 	local e_kin = uSq/2					-- specific kinetic energy
-	local e_total = e_int + e_kin					-- specific internal energy
-	local P = (gamma - 1) * rho * e_int	-- pressure
+	local e_total = e_int + e_kin					-- specific total energy
 	local E_total = rho * e_total					-- total energy
 	
 	-- primitives
@@ -79,7 +79,7 @@ for dim=1,1 do
 		printbr('substituting state variables:')
 		eqns = eqns:map(function(eqn)
 			eqn = eqn:replace(rho, qs[1])
-			eqn = eqn:replace(e_int, qs[dim+2] / qs[1] - e_kin)
+			eqn = eqn:replace(P, (gamma - 1) * (qs[dim+2] - qs[1] * e_kin))
 			for j=1,dim do
 				eqn = eqn:replace(us[j], qs[j+1] / qs[1])
 			end
