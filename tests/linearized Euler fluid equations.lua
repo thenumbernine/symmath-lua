@@ -19,13 +19,12 @@ local ux = var('u_x', coords)	-- velocity
 local uy = var('u_y', coords)
 local uz = var('u_z', coords)
 
-local e = var('e', coords)		-- total specific energy 
+local e_int = var('e_{int}', coords)		-- total specific energy 
 
 --local usePrims = true
 
 -- dimension related
-for dim=1,3 do
---for dim=1,1 do
+for dim=1,1 do
 	print('<h3>'..dim..'D case:</h3>')
 	
 	local us = table{ux, uy, uz} 
@@ -40,10 +39,10 @@ for dim=1,3 do
 
 	-- other variables
 	local gamma = var('\\gamma')
-	local ek = uSq/2					-- specific kinetic energy
-	local ei = e - ek					-- specific internal energy
-	local P = (gamma - 1) * rho * ei	-- pressure
-	local E = rho * e					-- total energy
+	local e_kin = uSq/2					-- specific kinetic energy
+	local e_total = e_int + e_kin					-- specific internal energy
+	local P = (gamma - 1) * rho * e_int	-- pressure
+	local E_total = rho * e_total					-- total energy
 	
 	-- primitives
 	local ws
@@ -66,9 +65,9 @@ for dim=1,3 do
 		end))):eq(0)
 	end)
 
-	local energyEqn = ((rho * e):diff(t) +
+	local energyEqn = ((rho * e_total):diff(t) +
 		sum(range(dim):map(function(j)
-			return ((E + P) * us[j]):diff(xs[j])
+			return ((E_total + P) * us[j]):diff(xs[j])
 		end))):eq(0)
 
 	local eqns = table{continuityEqn}:append(momentumEqns):append{energyEqn}
@@ -79,13 +78,11 @@ for dim=1,3 do
 	else
 		printbr('substituting state variables:')
 		eqns = eqns:map(function(eqn)
-			local i = 1
-			eqn = eqn:replace(rho, qs[i]) i=i+1
+			eqn = eqn:replace(rho, qs[1])
+			eqn = eqn:replace(e_int, qs[dim+2] / qs[1] - e_kin)
 			for j=1,dim do
-				eqn = eqn:replace(us[j], qs[i] / qs[1]) i=i+1
+				eqn = eqn:replace(us[j], qs[j+1] / qs[1])
 			end
-			assert(qs[i], "failed to find state var for "..i)
-			eqn = eqn:replace(e, qs[i] / qs[1])
 			
 			return eqn
 		end)
@@ -143,7 +140,7 @@ for dim=1,3 do
 	for j=1,dim do
 		primMatrixEqn = primMatrixEqn:replace(qs[j+1], rho * us[j])
 	end
-	primMatrixEqn = primMatrixEqn:replace(qs[dim+2], rho * e)
+	primMatrixEqn = primMatrixEqn:replace(qs[dim+2], rho * e_total)
 	-- only simplify matrix contents.  TODO skip the d/dx q matrices
 	primMatrixEqn = primMatrixEqn:map(function(expr)
 		if Matrix.is(expr) then return expr() end
