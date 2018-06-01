@@ -20,6 +20,7 @@ for _,test in ipairs{
 	{(a'^i' + b'^i_j' * c'^j') * (d'_i' + e'_i^k' * f'_k'), (a'^a' + b'^a_b' * c'^b') * (d'_a' + e'_a^c' * f'_c')},
 	{-a'_i' * a'_j' + (d'_ji^k' + d'_ij^k' - d'^k_ij') * (a'_k' + c'_k' - d'^l_lk'), 
 		-a'_i' * a'_j' + (d'_ji^a' + d'_ij^a' - d'^a_ij') * (a'_a' + c'_a' - d'^b_ba') },
+	{a'^j_aj' * b'^a' - a'^k_jk' * b'^j', 0},
 } do
 	local expr, expect = table.unpack(test)
 	printbr(expr)

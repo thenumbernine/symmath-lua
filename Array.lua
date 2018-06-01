@@ -313,6 +313,11 @@ end
 -- creates an array of zeroes
 -- static, uses :
 function Array:zeros(dims)
+	dims = range(#dims):map(function(x)
+		if type(x) == 'number' then return x end
+		if Constant.is(x) then return x.value end
+		return x
+	end)
 	-- assert self is Array or a subclass of Array
 	if #dims == 0 then return self() end
 	return self(range(dims[1]):map(function()

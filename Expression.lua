@@ -234,6 +234,14 @@ function Expression:replaceIndex(find, repl, cond)
 	rfind(repl)
 	local replsymbols = rfindsymbols:keys()
 
+--[[
+printbr('selfsymbols', selfsymbols:unpack())
+printbr('findsymbols', findsymbols:unpack())
+printbr('replsymbols', replsymbols:unpack())
+--]]
+	-- TODO, (a * b'^i'):replaceIndex(a, c'^i' * c'_i')) produces c'^i' * c'_i' * b'^i', not c'^j' * c'_j' * b'^i'
+	-- if repl contains a sum index which is already present in the expression then it won't reindex
+
 	local sumsymbols = table()	
 	if #replsymbols > #findsymbols then
 		for _,replsymbol in ipairs(replsymbols) do
@@ -811,6 +819,29 @@ function Expression:getIndexesUsed()
 	-- fixedIndexes are those which appear only once on either side of an equality
 	-- sumIndexes appear repeated
 end
+
+
+-- maybe this will replace 'getIndexesUsed'
+-- at least if this is called on a flattened expression, then the 1-count symbols are the fixed symbols
+function Expression:getIndexCounts()
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	local symbolCounts = {}
+	local function rfind(x)
+		if TensorRef.is(x) then
+			for i=2,#x do
+				local symbol = x[i].symbol
+				symbolCounts[symbol] = (symbolCounts[symbol] or 0) + 1
+			end
+		elseif Expression.is(x) then
+			for i=1,#x do
+				rfind(x[i])
+			end
+		end
+	end
+	rfind(self())
+	return symbolCounts
+end
+
 
 
 -- hmm, rules ...
