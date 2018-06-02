@@ -313,7 +313,8 @@ end
 -- creates an array of zeroes
 -- static, uses :
 function Array:zeros(dims)
-	dims = range(#dims):map(function(x)
+	dims = range(#dims):map(function(i)
+		local x = dims[i]
 		if type(x) == 'number' then return x end
 		if Constant.is(x) then return x.value end
 		return x

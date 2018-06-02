@@ -155,14 +155,16 @@ covar_dF_matrix_def = covar_dF_matrix_def
 --]]
 printbr(F'^Ij_;j':eq(covar_dF_matrix_def))
 
-local S_def = Gamma'^k_jk' * F_def + partial_dF_matrix_def - covar_dF_matrix_def
+local S_def = Gamma'^k_jk' * F_def:reindex{m='k'} + partial_dF_matrix_def - covar_dF_matrix_def
 printbr(S'^I':eq(S_def)) 
 
 S_def = S_def()	-- multiply all matrices and combine all vectors
 
+S_def = S_def:replaceIndex(g'_ij,k', Gamma'_ijk' + Gamma'_jik')
+
 -- combine all deltas
 -- TODO combine all g's as well
-local function simplifyKronecherDeltas(expr)
+local function simplifyDeltasAndMetrics(expr)
 	return expr:map(function(x)
 		if op.mul.is(x) then
 			local changed
@@ -170,8 +172,11 @@ local function simplifyKronecherDeltas(expr)
 			repeat
 				found = false
 				for i=1,#x do
+					local origx = x
 					if TensorRef.is(x[i])
-					and x[i][1] == delta
+					and (x[i][1] == delta
+						or x[i][1] == g
+					)
 					and #x[i] == 3
 					and not x[i][#x[i]].derivative
 					then
@@ -190,7 +195,9 @@ local function simplifyKronecherDeltas(expr)
 	--printbr('removed delta to get', x)
 						-- I can't just reindex syma=>symb
 						-- I have to find which the sum term is ...
-						x = x:reindex{[syma] = symb}
+						x = x:reindex({[syma] = symb} 
+							, origx[i][2].lower and 'lower' or 'raise'
+						)
 	--printbr('reindexed to get', x)
 						changed = true
 						found = true
@@ -203,19 +210,21 @@ local function simplifyKronecherDeltas(expr)
 	end)
 
 end
-S_def = simplifyKronecherDeltas(S_def)
+S_def = simplifyDeltasAndMetrics(S_def)
 
-S_def = S_def:replaceIndex(g'_ij,k', Gamma'_ijk' + Gamma'_jik')
-
+S_def = S_def:tidyIndexes()
+--[[
 S_def = Matrix{
 	S_def[1][1]:tidyIndexes(),
 	S_def[2][1]:tidyIndexes(),
 	S_def[3][1]:tidyIndexes(),
 }:T()
+--]]
 
---S_def = S_def:symmetrizeIndexes(g, {1,2})
---S_def = S_def:symmetrizeIndexes(Gamma, {2,3})
+S_def = S_def:symmetrizeIndexes(g, {1,2})
 S_def = S_def()
+
+--S_def = S_def:symmetrizeIndexes(Gamma, {2,3})
 
 printbr(S'^I':eq(S_def)) 
 -- 1/sqrt(g) (sqrt(g) F^Ij)_,j = F^Ij_,j + Gamma^k_jk F^Ij

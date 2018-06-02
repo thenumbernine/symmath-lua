@@ -673,25 +673,33 @@ function Expression:__call(...)
 	return TensorRef(self, table.unpack(indexes))
 end
 
--- another way tensor is seeping into everything ...
--- __call does Tensor reindexing, now this does reindexing for all other expressions ...
--- fwiw this is only being used for subst tensor equalities, which I should automatically incorporate into subst next ...
-function Expression:reindex(args)
+--[[
+another way tensor is seeping into everything ...
+__call does Tensor reindexing, now this does reindexing for all other expressions ...
+fwiw this is only being used for subst tensor equalities, which I should automatically incorporate into subst next ...
+
+action is a dirty hack for using this in conjunction with the metric tensor
+action can be 'raise' or 'lower'
+--]]
+function Expression:reindex(args, action)
 	local swaps = table()
 	for k,v in pairs(args) do
 		-- currently only handles single-char symbols
 		-- TODO allow keys to be tables of multi-char symbols
 		assert(#k == #v, "reindex key and value length needs to match.  got "..tostring(k).." with "..#k.." entries vs "..tostring(v).." with "..#v.." entries")
 		for i=1,#k do
-			swaps:insert{src = v:sub(i,i), dst = k:sub(i,i)}
+			swaps:insert{src = {symbol=v:sub(i,i)}, dst = {symbol=k:sub(i,i)}}
 		end
 	end
 	local Tensor = require 'symmath.Tensor'
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	local function replaceAllSymbols(expr)
 		for _,swap in ipairs(swaps) do
-			if expr.symbol == swap.src then
-				expr.symbol = swap.dst
+			if expr.symbol == swap.src.symbol then
+				expr.symbol = swap.dst.symbol
+				if action then
+					expr.lower = action == 'lower'
+				end
 				break
 			end
 		end
@@ -707,6 +715,7 @@ function Expression:reindex(args)
 		return expr
 	end)
 end
+
 
 --[[
 here's another tensor-specific function that I want to apply to both Tensor and Variable
