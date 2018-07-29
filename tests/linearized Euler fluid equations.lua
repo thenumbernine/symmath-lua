@@ -212,13 +212,11 @@ local function simplifyDeltasAndMetrics(expr)
 end
 S_def = simplifyDeltasAndMetrics(S_def)
 
-S_def = S_def:tidyIndexes()
---[[
-S_def = Matrix{
-	S_def[1][1]:tidyIndexes(),
-	S_def[2][1]:tidyIndexes(),
-	S_def[3][1]:tidyIndexes(),
-}:T()
+--S_def = S_def:tidyIndexes()
+-- [[
+S_def = Matrix:lambda(S_def:dim(), function(i,j)
+	return S_def[i][j]:tidyIndexes()
+end)
 --]]
 
 S_def = S_def:symmetrizeIndexes(g, {1,2})

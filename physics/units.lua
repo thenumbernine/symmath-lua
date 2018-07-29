@@ -89,7 +89,9 @@ return function(args)
 
 	ft = var'ft'
 	ft_in_in = ft:eq(12 * in_)
+	in_in_ft = ft_in_in:solve(in_)
 	ft_in_m = ft_in_in:subst(in_in_m)()
+	in_in_m = in_in_ft:subst(ft_in_m)()
 	lprint('foot:', ft_in_in:eq(ft_in_m:rhs()))
 
 	s = var's'
@@ -131,6 +133,21 @@ return function(args)
 	lprint(m_in_kg)
 	lprint(s_in_kg)
 
+	lb = var'lb'	-- pounds
+	lb_in_kg = lb:eq(0.45359237 * kg)
+
+	g_n = var'g_n'
+	g_n_def = g_n:eq(9.80665 * frac(m,s^2))
+
+	lbf = var'lbf'
+	lbf_def = lbf:eq(lb * g_n)
+	lbf_in_SI = lbf_def:subst(lb_in_kg, g_n_def)
+
+	-- 'pound-force' per inch^2
+	psi = var'psi'
+	psi_def = psi:eq(lbf / (in_^2))
+	psi_in_SI = psi_def:subst(lbf_in_SI, in_in_m)
+
 	local function addunits(units)
 		for _,info in ipairs(units) do
 			local name, symbol, SI = table.unpack(info)
@@ -152,6 +169,8 @@ return function(args)
 		{'joule', 'J', kg * m^2 / s^2},
 		{'watt', 'W', kg * m^2 / s^3},
 	}
+	
+	psi_in_Pa = psi_in_SI:subst(Pa_in_SI:solve(kg))()
 
 	-- ampere
 	-- Things would be more simple if coulomb was a SI unit instead of ampere.
@@ -194,16 +213,20 @@ return function(args)
 	lprint()
 	lprint"permeability and permittivity of free space"
 	epsilon_0 = var'\\epsilon_0'
-	k_e_in_epsilon_0 = k_e:eq(1 / (4 * pi * epsilon_0))
+	k_e_in_epsilon_0 = k_e:eq(frac(1, 4 * pi * epsilon_0))
 	lprint(k_e_in_epsilon_0)
+	epsilon_0_in_SI_and_C = k_e_in_epsilon_0:subst(k_e_in_SI_and_C):solve(epsilon_0):factorDivision()
+	lprint(epsilon_0_in_SI_and_C)
 	epsilon_0_in_m = k_e_in_epsilon_0:subst(k_e_eq_1):solve(epsilon_0)
-	lprint(epsilon_0_in_m)
+	lprint('in natural units:',epsilon_0_in_m)
 
 	mu_0 = var'\\mu_0'
 	cSq_in_mu_0_epsilon_0 = (c^2):eq(1 / (mu_0 * epsilon_0))
 	lprint(cSq_in_mu_0_epsilon_0)
+	mu_0_in_SI_and_C = cSq_in_mu_0_epsilon_0:subst(epsilon_0_in_SI_and_C):subst(c_in_m_s):solve(mu_0):factorDivision()
+	lprint(mu_0_in_SI_and_C)	
 	mu_0_in_m = cSq_in_mu_0_epsilon_0:subst(c_eq_1, epsilon_0_in_m):solve(mu_0)
-	lprint(mu_0_in_m)
+	lprint('in natural units:',mu_0_in_m)
 
 	-- e
 	lprint()

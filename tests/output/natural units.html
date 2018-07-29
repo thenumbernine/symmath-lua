@@ -1,52 +1,11 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset='UTF-8'>
         <title>Natural Units</title>
-		<script type="text/javascript">
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src; 
-}
-function init() {
-	console.log('init...');
-	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
-			src : urls[i],
-			done : function() {
-				console.log("success!");
-				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-			},
-			fail : function() {
-				++i;
-				if (i >= urls.length) {
-					console.log("looks like all our sources have failed!");
-				} else {
-					loadNext();
-				}
-			}
-		});
-	}
-	loadNext();
-}
-		</script>
-	</head>
-    <body onload='init();'>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 
 meter:	$m$
 <br>
@@ -56,7 +15,7 @@ foot:	${ft = {{12} in}} = {{0.3048} m}$
 <br>
 
 <br>
-speed of light:	${c = {{299792458} \cdot {\frac{m}{s}}}} = 1$
+speed of light:	${c = {{299792458} \cdot {{\frac1s}{({m})}}}} = 1$
 <br>
 second:	$s = {{299792458} m}$
 <br>
@@ -88,7 +47,7 @@ Coulomb's constant:	${{k_e} = {{8987551787.3682} kg \cdot {{m}^{3}} {\frac{1}{{s
 <br>
 coulomb:	${C = {s A}} = {{8.6172202304994\cdot{10^{-18}}} m}$
 <br>
-ampere:	${A = {\frac{C}{s}}} = {2.8743952693098\cdot{10^{-26}}}$
+ampere:	${A = {{\frac1s}{({C})}}} = {2.8743952693098\cdot{10^{-26}}}$
 <br>
 volt: ${V = {\frac{kg \cdot {{m}^{2}}}{{{s}^{3}} A}}} = {9.5879505724916\cdot{10^{-28}}}$
 <br>
@@ -110,11 +69,15 @@ permeability and permittivity of free space
 <br>
 ${k_e} = {\frac{1}{{4 \pi} {\epsilon_0}}}$
 <br>
-${\epsilon_0} = {\frac{0.25}{\pi}}$
+${\epsilon_0} = {{\frac{1}{35950207149.473}} {{s}^{2}} {{C}^{2}} {\frac{1}{kg}} {\frac{1}{{m}^{3}}} {\frac{1}{\pi}}}$
+<br>
+in natural units:	${\epsilon_0} = {\frac{0.25}{\pi}}$
 <br>
 ${{c}^{2}} = {\frac{1}{{\mu_0} \cdot {\epsilon_0}}}$
 <br>
-${\mu_0} = {4 \pi}$
+${\mu_0} = {{\frac{1}{2500000}} m kg \cdot \pi \cdot {\frac{1}{{C}^{2}}}}$
+<br>
+in natural units:	${\mu_0} = {4 \pi}$
 <br>
 
 <br>
@@ -140,13 +103,13 @@ Planck units:
 <br>
 length	${{l_P} = {\sqrt{\frac{\hbar \cdot G}{{c}^{3}}}}} = {{1.6161992592771\cdot{10^{-35}}} m}$
 <br>
-mass	${{m_P} = {\sqrt{\frac{\hbar \cdot c}{G}}}} = {{2.176509257258\cdot{10^{-08}}} kg}$
+mass	${{m_P} = {\sqrt{{\frac1G}{({\hbar \cdot c})}}}} = {{2.176509257258\cdot{10^{-08}}} kg}$
 <br>
 time	${{t_P} = {\sqrt{\frac{\hbar \cdot G}{{c}^{5}}}}} = {{5.3910604358067\cdot{10^{-44}}} s}$
 <br>
 charge	${{q_P} = {\sqrt{{{{4 \pi} {\epsilon_0}} \hbar} c}}} = {{1.8755459603513\cdot{10^{-18}}} C}$
 <br>
-temperature	${{T_P} = {\sqrt{\frac{\hbar \cdot {{c}^{2}}}{{k_B}}}}} = {{1.4168331341969\cdot{10^{32}}} K}$
+temperature	${{T_P} = {\sqrt{{\frac1{k_B}}{({\hbar \cdot {{c}^{2}}})}}}} = {{1.4168331341969\cdot{10^{32}}} K}$
 <br>
 
 <br>

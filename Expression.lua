@@ -757,6 +757,8 @@ then another symmetrize d {2,3} gives us
 g^kl (d_kjl + d_jkl - d_kjl)
 g^kl d_jkl
 
+TODO swap the variance as well, not just the symbol ... and the derivative too ...
+... (which means the danger of derivatives being moved out of the rhs places ... test for that)
 --]]
 function Expression:symmetrizeIndexes(var, indexes)
 	return self:map(function(x)
