@@ -1,20 +1,21 @@
---[[ iterates through all permutations of the provided table
-args:
-	elements = what elements to permute
-	callback = what to call back with
-	[internal]
-	index = constructed index to be passed to the callback
-	[optional]
-	size = how many elements to return.  default is the length
---]]
-
 local table = require 'ext.table'
 local range = require 'ext.range'
 
-local function determinant(m)
+--[[
+args:
+	m = matrix
+	callback = optional callback on the percent of progress
+	callbackctx = context for the callback object
+--]]
+local function determinant(m, callback, callbackctx)
 	local Array = require 'symmath.Array'
 	local Constant = require 'symmath.Constant'
 	local simplify = require 'symmath.simplify'
+
+	if callback then 
+		callbackctx = callbackctx or {}
+		callbackctx.lastTime = callbackctx.lastTime or os.time()
+	end
 
 	local original = m
 	m = m:simplify()
@@ -59,7 +60,7 @@ local function determinant(m)
 	
 	local useCol = mostZerosOfCol > mostZerosOfRow 
 	local x = useCol and colWithMostZeros or rowWithMostZeros
-
+	
 	local result = Constant(0)
 	for y=1,n do
 		local i,j
@@ -68,12 +69,31 @@ local function determinant(m)
 		-- if the # of flips is odd then scale by -1, if even then by +1 
 		local sign = ((i+j)%2)==0 and 1 or -1
 		if mij ~= Constant(0) then
-			local submat = Matrix:lambda({n-1,n-1}, function(p,q)
-				if p>=i then p=p+1 end
-				if q>=j then q=q+1 end
-				return m[p][q]
-			end)
-			result = result + sign * mij * determinant(submat)
+			local submat = {}
+			for u=1,n-1 do
+				submat[u] = {}
+				for v=1,n-1 do
+					local p,q = u,v
+					if p>=i then p=p+1 end
+					if q>=j then q=q+1 end
+					submat[u][v] = m[p][q]
+				end
+			end
+			submat = Matrix(table.unpack(submat))
+			local subcallback
+			if callback then 
+				subcallback = function(percent)
+					return callback(((y-1) + percent) / n)
+				end
+			end
+			result = result + sign * mij * determinant(submat, subcallback, callbackctx)
+		end
+		if callback then
+			local thisTime = os.time()
+			if thisTime ~= callbackctx.lastTime then
+				callbackctx.lastTime = thisTime
+				callback(y/n)
+			end
 		end
 	end
 	
