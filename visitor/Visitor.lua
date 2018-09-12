@@ -32,12 +32,6 @@ local function hash(t)
 end
 --]]
 
-local function getn(...)
-	local t = {...}
-	t.n = select('#', ...)
-	return t
-end
-
 --[[
 transform expr by whatever rules are provided in lookupTable
 
@@ -53,94 +47,77 @@ function Visitor:apply(expr, ...)
 		Verbose = require 'symmath.tostring.Verbose'
 	end
 
-	local args = getn(...)
---[==[
-	local success, results = xpcall(function()
---]==]
+	local id
+	if debugVisitors then
+		id = hash(expr)
+		print(id, 'begin Visitor', Verbose(expr))
+	end
+	
+	local clone = require 'symmath.clone'
+	local Expression = require 'symmath.Expression'
 
-		local id
-		if debugVisitors then
-			id = hash(expr)
-			print(id, 'begin Visitor', Verbose(expr))
+-- TODO don't be lazy, only clone when you need to
+	expr = clone(expr)
+	
+	local t = type(expr)
+	if t == 'table' then
+		local m = getmetatable(expr)
+
+		--[[
+		local rules = self:lookup(m)
+		if rules then
+			for _,rule in ipairs(rules) do
+				local name, func = next(rule)
+				local newexpr = func(self, expr, ...) 
+				if newexpr then
+					expr = newexpr
+					m = getmetatable(expr)
+				end
+			end
 		end
-		
-		local clone = require 'symmath.clone'
-		local Expression = require 'symmath.Expression'
+		--]]
+	
+		-- TODO bubble-in and bubble-out
 
-	-- TODO don't be lazy, only clone when you need to
-		expr = clone(expr)
-		
-		local t = type(expr)
-		if t == 'table' then
-			local m = getmetatable(expr)
+		-- if it's an expression then apply to all children first
+		if Expression.is(m) then
+			if expr then
+				for i=1,#expr do
+					if debugVisitors then
+						print(id, 'simplifying child #'..i)
+					end
+					expr[i] = self:apply(expr[i], ...)
+				end
+			end
+		end
+		-- traverse class parentwise til a key in the lookup table is found
+		-- stop at null
 
-			--[[
-			local rules = self:lookup(m)
-			if rules then
-				for _,rule in ipairs(rules) do
+		-- if we found an entry then apply it
+		local rules = self:lookup(m)
+		if rules then
+			for _,rule in ipairs(rules) do
+				if not m.pushedRules
+				or not m.pushedRules[rule]
+				then
 					local name, func = next(rule)
-					local newexpr = func(self, expr, table.unpack(args, 1, args.n)) 
+					local newexpr = func(self, expr, ...)
 					if newexpr then
 						expr = newexpr
+						-- if we change content then there's no guarantee the metatable -- or the rules -- will be the same
+						-- we probably need to start again
+						-- this would have the detriment
 						m = getmetatable(expr)
-					end
-				end
-			end
-			--]]
-		
-			-- TODO bubble-in and bubble-out
-
-			-- if it's an expression then apply to all children first
-			if Expression.is(m) then
-				if expr then
-					for i=1,#expr do
-						if debugVisitors then
-							print(id, 'simplifying child #'..i)
-						end
-						expr[i] = self:apply(expr[i], table.unpack(args, 1, args.n))
-					end
-				end
-			end
-			-- traverse class parentwise til a key in the lookup table is found
-			-- stop at null
-
-			-- if we found an entry then apply it
-			local rules = self:lookup(m)
-			if rules then
-				for _,rule in ipairs(rules) do
-					if not m.pushedRules
-					or not m.pushedRules[rule]
-					then
-						local name, func = next(rule)
-						local newexpr = func(self, expr, table.unpack(args, 1, args.n))
-						if newexpr then
-							expr = newexpr
-							-- if we change content then there's no guarantee the metatable -- or the rules -- will be the same
-							-- we probably need to start again
-							-- this would have the detriment
-							m = getmetatable(expr)
-							break
-						end
+						break
 					end
 				end
 			end
 		end
-		if debugVisitors then
-			print(id, 'done pruning with', Verbose(expr))
-		end
-		return expr
---[==[
-	end, function(err)
-		io.stderr:write('expr:'..tostring(expr)..'\n')
-		io.stderr:write('err:'..err..'\n')
-		io.stderr:write(debug.traceback())
-		io.stderr:flush()
-	end)
-	if not success then 
-		error'here'
 	end
-	return results 
---]==]
+	if debugVisitors then
+		print(id, 'done pruning with', Verbose(expr))
+	end
+	return expr
 end
 
 -- wrapping this so child classes can add prefix/postfix custom code apart from the recursive case

@@ -514,7 +514,7 @@ function Tensor:trace(i,j)
 		error("tried to apply tensor contraction across indices of differing dimension: "..i.."th and "..j.."th of "..table.concat(dim, ','))
 	end
 	
-	local newdim = clone(dim)
+	local newdim = table(dim)
 	-- remove the second index from the new dimension
 	local removedDim = table.remove(newdim,j)
 	-- keep track of where the first index is in the new dimension
@@ -553,7 +553,7 @@ function Tensor:contraction(i)
 	-- if there's a valid contraction and we're rank-1 then we're summing across everything
 	if #dim == 1 then
 		local result
-		for i=1,dim[1].value do
+		for i=1,dim[1] do
 			if not result then
 				result = self[i]
 			else
@@ -563,7 +563,7 @@ function Tensor:contraction(i)
 		return result
 	end
 
-	local newdim = clone(dim)
+	local newdim = table(dim)
 	local removedDim = table.remove(newdim,i)
 
 	local newVariance = {table.unpack(self.variance)}
@@ -576,7 +576,7 @@ function Tensor:contraction(i)
 			local indexes = {...}
 			table.insert(indexes, i, 1)
 			local result
-			for index=1,removedDim.value do
+			for index=1,removedDim do
 				indexes[i] = index
 				if not result then
 					result = self:get(indexes)
@@ -588,7 +588,6 @@ function Tensor:contraction(i)
 		end,
 	}
 end
-
 
 function Tensor:simplifyTraces()
 	local modified
@@ -629,7 +628,7 @@ function Tensor:transformIndex(ti, m)
 		local vxi = is[ti]	-- the current coordinate along the vector being transformed
 		
 		local result = 0
-		for vi=1,mdim[1].value do
+		for vi=1,mdim[1] do
 			local vis = {table.unpack(is)}
 			vis[ti] = vi
 			result = result + m:get{vxi, vi} * self:get(vis)

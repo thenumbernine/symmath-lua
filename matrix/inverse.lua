@@ -38,7 +38,7 @@ if not allowRectangular then
 	assert(dim[1] == dim[2], "expected A to be square")
 end
 
-	local m, n = dim[1].value, dim[2].value
+	local m, n = dim[1], dim[2]
 
 	A = clone(A)
 	
@@ -49,7 +49,7 @@ end
 	if invdim[1] ~= dim[1] then
 		if b then
 			error("expected A number of rows to match b number of rows.\n"
-				.."found A to have "..m.." rows and b to have "..invdim[1].value.." rows")
+				.."found A to have "..m.." rows and b to have "..invdim[1].." rows")
 		else
 			error("hmm, you picked the wrong default number of rows for the result")
 		end
@@ -63,24 +63,24 @@ end
 		end
 		local result = Matrix{(1/A_11)()}
 		if b then result = (result * b)() end
-		return result, Matrix.identity(invdim[1].value, invdim[2].value)
+		return result, Matrix.identity(invdim[1], invdim[2])
 	elseif m == 2 and n == 2 and not b then
 		local A_det = A:determinant()
 		if A_det == Constant(0) then
 			return AInv, A, "determinant is zero"
 		end
-		local result = (Matrix(
+		local result = (Matrix:convertTable{
 			{A[2][2], -A[1][2]},
-			{-A[2][1], A[1][1]}) / A_det)()
+			{-A[2][1], A[1][1]}} / A_det)()
 		if b then result = (result * b)() end
-		return result, Matrix.identity(invdim[1].value, invdim[2].value)
+		return result, Matrix.identity(invdim[1], invdim[2])
 --[[	elseif n == 3 then
 		-- transpose, +-+- sign stagger, for each element remove that row and column and 
-		return (Matrix(
+		return (Matrix:convertTable{
 			{A[2][2]*A[3][3]-A[2][3]*A[3][2], A[1][3]*A[3][2]-A[1][2]*A[3][3], A[1][2]*A[2][3]-A[1][3]*A[2][2]},
 			{A[2][3]*A[3][1]-A[2][1]*A[3][3], A[1][1]*A[3][3]-A[1][3]*A[3][1], A[1][3]*A[2][1]-A[1][1]*A[2][3]},
 			{A[2][1]*A[3][2]-A[2][2]*A[3][1], A[1][2]*A[3][1]-A[1][1]*A[3][2], A[1][1]*A[2][2]-A[1][2]*A[2][1]}
-		) / A:determinant()):simplify()
+		} / A:determinant()):simplify()
 --]]
 	end
 
@@ -100,7 +100,7 @@ end
 					for k=1,n do
 						A[j][k], A[row][k] = A[row][k], A[j][k]
 					end
-					for k=1,invdim[2].value do
+					for k=1,invdim[2] do
 						AInv[j][k], AInv[row][k] = AInv[row][k], AInv[j][k]
 					end
 					A = simplify(A)
@@ -122,7 +122,7 @@ end
 				for j=1,n do
 					A[row][j] = A[row][j] / s
 				end
-				for j=1,invdim[2].value do
+				for j=1,invdim[2] do
 					AInv[row][j] = AInv[row][j] / s
 				end
 				A = simplify(A)
@@ -139,7 +139,7 @@ end
 						for k=1,n do
 							A[j][k] = A[j][k] - s * A[row][k]
 						end
-						for k=1,invdim[2].value do
+						for k=1,invdim[2] do
 							AInv[j][k] = AInv[j][k] - s * AInv[row][k]
 						end
 	--print('\\(A = \\)'..A..'<br>')
@@ -163,7 +163,7 @@ end
 		-- then the remaining columns must be zero
 		-- and should be cut out?
 		for i=n+1,m do
-			for j=1,invdim[2].value do
+			for j=1,invdim[2] do
 				if AInv[i][j] ~= Constant(0) then
 					return AInv, A, "system is overconstrained"
 				end

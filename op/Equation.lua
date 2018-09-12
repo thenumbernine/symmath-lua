@@ -47,7 +47,12 @@ function Equation:unravel()
 		return table{lhs:eq(rhs)}
 	end
 
-	assert(lhs:dim() == rhs:dim())
+	local ldim = lhs:dim()
+	local rdim = rhs:dim()
+	assert(#ldim == #rdim)
+	for i=1,#ldim do
+		assert(ldim[i] == rdim[i])
+	end
 	local Tensor = require 'symmath.Tensor'
 	if Tensor.is(lhs) and Tensor.is(rhs) then
 		rhs = rhs:permute(lhs.variance)

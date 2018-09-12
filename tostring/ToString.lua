@@ -24,8 +24,10 @@ function ToString:apply(expr, ...)
 	while lookup and not self.lookupTable[lookup] do
 		lookup = lookup.super
 	end
-	local tolua = require 'ext.tolua'
-	if not lookup then error("expected to find a lookup for class named "..tostring(expr.name).." for expr "..tolua(expr)) end
+	if not lookup then 
+		local tolua = require 'ext.tolua'
+		error("expected to find a lookup for class named "..tostring(expr.name).." for expr "..tolua(expr)) 
+	end
 	return (self.lookupTable[lookup])(self, expr, ...)
 end
 
@@ -63,4 +65,3 @@ function ToString:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 end
 
 return ToString
-

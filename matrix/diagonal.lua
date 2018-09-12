@@ -1,13 +1,20 @@
-local table = require 'ext.table'
 return function(...)
-	local args = {...}
-	local rows = {}
-	for i=1,#args do
-		rows[i] = {}
+	local Constant = require 'symmath.Constant'
+	local Matrix = require 'symmath.Matrix'
+	local rows = Matrix()
+	for i=1,select('#', ...) do
+		local row = Matrix()
+		rows[i] = row 
 		for j=1,#args do
-			rows[i][j] = 0
+			local el
+			if i == j then
+				el = select(i, ...) 
+				if type(el) == 'number' then el = Constant(el) end
+			else
+				el = Constant(0)
+			end
+			row[j] = el
 		end
-		rows[i][i] = args[i]
 	end
-	return require 'symmath.Matrix'(table.unpack(rows))
+	return rows
 end

@@ -15,7 +15,8 @@ args:
 	callback = optional callback on the percent of progress
 	ctx = context for the callback object
 --]]
-local function determinantRecurse(m, callback, ctx)
+local function determinant(m, callback, ctx)
+	ctx = ctx or {}
 	if callback then 
 		ctx.lastTime = ctx.lastTime or os.time()
 	end
@@ -24,14 +25,12 @@ local function determinantRecurse(m, callback, ctx)
 
 	-- non-array?  return itself
 	if not Array.is(m) then return m end
-	local dimfunc = m.dim or Array.dim
-
-	local dim = dimfunc(m)
+	local dim = m:dim()
 	if #dim == 0 then return Constant(1) end
 	
 	local volume = #dim == 0 and 0 or 1
 	for i=1,#dim do
-		volume = volume * dim[i].value
+		volume = volume * dim[i]
 	end
 
 	-- 0x0 array?  return itself
@@ -50,13 +49,13 @@ local function determinantRecurse(m, callback, ctx)
 		error("determinant only works on square matrices")
 	end
 
-	local n = dim[1].value
+	local n = dim[1]
 
 	-- 1x1 matrix? 
 	if n == 1 then
 		return m[1][1]
 	elseif n == 2 then
-		return (m[1][1] * m[2][2] - m[1][2] * m[2][1])	--:simplify()
+		return (m[1][1] * m[2][2] - m[1][2] * m[2][1]):simplify()
 	end
 
 	-- pick row (or column) with most zeroes
@@ -84,7 +83,7 @@ local function determinantRecurse(m, callback, ctx)
 	local useCol = mostZerosOfCol > mostZerosOfRow
 	local x = useCol and colWithMostZeros or rowWithMostZeros
 
-	local results = table()
+	local results = Constant(0)
 	for y=1,n do
 		local i,j
 		if useCol then i,j = y,x else i,j = x,y end
@@ -92,10 +91,9 @@ local function determinantRecurse(m, callback, ctx)
 		-- if the # of flips is odd then scale by -1, if even then by +1 
 		local sign = ((i+j)%2)==0 and 1 or -1
 		if not isZero(mij) then
-			local submat = {}
+			local submat = Array()
 			for u=1,n-1 do
-				local submat_u = {}
-				setmetatable(submat_u, Array)
+				local submat_u = Array()
 				submat[u] = submat_u
 				for v=1,n-1 do
 					local p,q = u,v
@@ -104,24 +102,14 @@ local function determinantRecurse(m, callback, ctx)
 					submat_u[v] = m[p][q]
 				end
 			end
-			setmetatable(submat, Array)
 			local subcallback
 			if callback then 
 				subcallback = function(...)
 					return callback(y, ...)
 				end
 			end
-			local subres = determinantRecurse(submat, subcallback, ctx)
-			if Constant.is(subres) then
-				if subres.value == 0 then
-				elseif subres.value == 1 then
-					results:insert(sign * mij)
-				else
-					results:insert(sign * mij * subres)
-				end
-			else
-				results:insert(sign * mij * subres)
-			end
+			local subres = determinant(submat, subcallback, ctx)
+			results = (results + sign * mij * subres)()
 		end
 		if callback then
 			local thisTime = os.time()
@@ -131,18 +119,7 @@ local function determinantRecurse(m, callback, ctx)
 			end
 		end
 	end
-
-	if #results == 0 then return Constant(0) end
-	if #results == 1 then return results[1] end
-	if #results >= 2 then
-		return add(results:unpack()) --:simplify()
-	end
-end
-
-local function determinant(m, callback, ctx)
-	ctx = ctx or {}
-	m = simplify(m)
-	return simplify(determinantRecurse(m, callback, ctx))
+	return results
 end
 
 return determinant

@@ -7,9 +7,8 @@ Expression.precedence = 1
 Expression.name = 'Expression'
 
 function Expression:init(...)
-	local ch = {...}
-	for i=1,#ch do
-		local x = ch[i]
+	for i=1,select('#', ...) do
+		local x = select(i, ...)
 		if type(x) == 'number' then
 			local Constant = require 'symmath.Constant'
 			self[i] = Constant(x)

@@ -35,6 +35,14 @@ function Array:init(...)
 	end
 end
 
+-- using the Array constructor is slow, since it deep copies the contents
+-- here's my alternative.  don't use this.  it's especially only for internal use.
+-- use it as a static function, so 'Array:convertTable' or whatever subclass of Array
+-- make sure you apply all nested tables (rows, etc) just as the constructor would when deep-copying.
+function Array:convertTable(t)
+	return setmetatable(t, self.class)
+end
+
 Array.__index = function(self, key)
 	-- parent class access
 	local metavalue = getmetatable(self)[key]
@@ -89,7 +97,8 @@ where #index == t:rank() and contains elements 1 <= index[i] <= t:dim()[i]
 cycles the first indexes (outer-most arrays) first
 --]]
 function Array:iter()
-	local dim = self:dim()
+	local dimfunc = self.dim or Array.dim
+	local dim = dimfunc(self)
 	local n = #dim
 	
 	local index = {}
@@ -102,7 +111,7 @@ function Array:iter()
 			coroutine.yield(index, self:get(index))
 			for i=1,n do
 				index[i] = index[i] + 1
-				if index[i] <= dim[i].value then break end
+				if index[i] <= dim[i] then break end
 				index[i] = 1
 				if i == n then return end
 			end
@@ -112,7 +121,8 @@ end
 
 -- same as above but cycles the last indexes (inner-most arrays) first
 function Array:innerIter()
-	local dim = self:dim()
+	local dimfunc = self.dim or Array.dim
+	local dim = dimfunc(self)
 	local n = #dim
 	
 	local index = {}
@@ -125,7 +135,7 @@ function Array:innerIter()
 			coroutine.yield(index, self:get(index))
 			for i=n,1,-1 do
 				index[i] = index[i] + 1
-				if index[i] <= dim[i].value then break end
+				if index[i] <= dim[i] then break end
 				index[i] = 1
 				if i == 1 then return end
 			end
@@ -179,25 +189,27 @@ In such a case, I would want to allow variable-dimension arrays:
 function Array:dim()
 	local Constant = require 'symmath.Constant'
 	
-	local dim = Array()
+	local dim = table()
 	
-	-- if we have no children then we can't tell any info of rank
-	if #self == 0 then return dim end
+	if not Array.is(self) then return dim end
 
-	local rank = self:rank()
+	local rankfunc = self.rank or Array.rank
+	local rank = rankfunc(self)
 	if rank == 1 then
-		dim[1] = Constant(#self)
+		dim[1] = #self
 		return dim
 	end
 
 	-- get first child's dim
-	local subdim_1 = Array.dim(self[1])
+	local dimfunc = self[1].dim or Array.dim
+	local subdim_1 = dimfunc(self[1])
 
 	assert(#subdim_1 == rank-1, "array has subarray with inequal rank")
 
 	-- make sure they're equal for all children
 	for j=2,#self do
-		local subdim_j = Array.dim(self[j])
+		local dimfunc = self[j].dim or Array.dim
+		local subdim_j = dimfunc(self[j])
 		assert(#subdim_j == rank-1, "array has subarray with inequal rank")
 		
 		for k=1,#subdim_1 do
@@ -211,7 +223,7 @@ function Array:dim()
 	for i=1,rank-1 do
 		dim[i+1] = subdim_1[i]
 	end
-	dim[1] = Constant(#self)
+	dim[1] = #self
 	
 	return dim
 end
@@ -248,10 +260,10 @@ local function matrixMatrixMul(a,b)
 	local adim = a:dim()
 	local bdim = b:dim()
 	if #adim ~= 2 or #bdim ~= 2 then return end	-- only support matrix/matrix multiplication
-	local ah = adim[1].value
-	local aw = adim[2].value
-	local bh = bdim[1].value
-	local bw = bdim[2].value
+	local ah = adim[1]
+	local aw = adim[2]
+	local bh = bdim[1]
+	local bw = bdim[2]
 	if aw ~= bh then return end
 	return require 'symmath.Matrix'(range(ah):map(function(i)
 		return range(bw):map(function(j)

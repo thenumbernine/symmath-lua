@@ -1,6 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
+local string = require 'ext.string'
 local ToString = require 'symmath.tostring.ToString'
 local LaTeX = class(ToString)
 
@@ -76,12 +77,17 @@ LaTeX.lookupTable = {
 		return table{'\\sqrt', self:apply(expr[1])}
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
-		return table{'-', self:wrapStrOfChildWithParenthesis(expr, 1)}
+		local res = table{'-'}:append(self:wrapStrOfChildWithParenthesis(expr, 1))
+		res.omit = true
+		return res
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
-		return tableConcat(range(#expr):map(function(i) 
-			return self:wrapStrOfChildWithParenthesis(expr, i)
-		end), expr:getSepStr())
+		local res = table()
+		for i=1,#expr do
+			if i > 1 then res:insert(expr:getSepStr()) end
+			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+		end
+		return res
 	end,
 	[require 'symmath.op.mul'] = function(self, expr)
 		local Variable = require 'symmath.Variable'
@@ -124,7 +130,7 @@ LaTeX.lookupTable = {
 			or Variable.is(b)
 			then
 				return table{
-					table{'\\frac', 1, self:apply(b)},
+					table{'\\frac', '{1}', table(self:apply(b), {force=true})},
 					table{'(', table(self:apply(a), {force=true}), ')'},
 				}
 			end
@@ -136,9 +142,12 @@ LaTeX.lookupTable = {
 		}
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
-		return tableConcat(range(#expr):map(function(i) 
-			return table({self:wrapStrOfChildWithParenthesis(expr, i)}, {force=true})
-		end), expr:getSepStr())
+		local res = table()
+		for i=1,#expr do
+			if i > 1 then res:insert(expr:getSepStr()) end
+			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+		end
+		return res
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		local s = table{prepareName(expr.name)}
@@ -216,11 +225,11 @@ LaTeX.lookupTable = {
 		if expr:rank() % 2 == 0 then
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
-		return table{'\\left[', '\\matrix',
-			tableConcat(range(#expr):map(function(i)
+		return table{'\n\\left[\n', '\\begin{matrix}\n'}
+			:append(tableConcat(range(#expr):map(function(i)
 				return self:apply(expr[i])
-			end), '\\\\'),
-			'\\right]'}
+			end), ' \\\\\n'))
+			:append{'\n\\end{matrix}\n', '\\right]\n'}
 	end,
 	[require 'symmath.Matrix'] = function(self, expr)
 		local rows = table()
@@ -230,12 +239,12 @@ LaTeX.lookupTable = {
 			end
 			rows[i] = tableConcat(range(#expr[i]):map(function(j)
 				return self:apply(expr[i][j])
-			end), '&')
+			end), ' & ')
 			if #expr > 1 then rows[i] = omit(rows[i]) end
 		end
-		return table{'\\left[', '\\matrix',
-			tableConcat(rows, '\\\\'),
-			'\\right]'}
+		return table{'\n\\left[\n', '\\begin{matrix}\n'}
+			:append(tableConcat(rows, ' \\\\\n'))
+			:append{'\n\\end{matrix}\n', '\\right]\n'}
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
 		local s = self.lookupTable[require 'symmath.Array'](self, expr)
@@ -377,11 +386,15 @@ function LaTeX:applyLaTeX(...)
 	end
 
 	result.omit = true
-	return flatten(result):gsub('%s+', ' ')
+	return flatten(result)--:gsub('%s+', ' ')
 end
 
+LaTeX.openSymbol = '$'
+LaTeX.closeSymbol = '$'
 function LaTeX:__call(...)
-	return self:applyLaTeX(...)
+	local result = self:applyLaTeX(...)
+	result = string.trim(result)
+	return self.openSymbol .. result .. self.closeSymbol
 end
 
 local texSymbols = {}
@@ -396,6 +409,25 @@ hBar
 end
 -- sort these largest to smallest so replacements work
 table.sort(texSymbols, function(a,b) return #a > #b end)
+
+LaTeX.header = [[
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	papersize={10000mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+\setcounter{MaxMatrixCols}{50}
+\begin{document}
+]]
+--170mm width is typical.  my equations are just over 6000mm
+
+LaTeX.footer = [[
+\end{document}
+]]
 
 function LaTeX:fixImplicitName(name)
 	local i=1

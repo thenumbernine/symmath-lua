@@ -7,9 +7,9 @@ n: returns a nxn identity matrix
 m,n: returns a mxn matrix with subset kxk equal to the identity matrix, for k = min(m,n)
 --]]
 return function(...)
-	local symmath = require 'symmath'
 	local nargs = select('#', ...)
-	if nargs == 0 then return symmath.Constant(1) end
+	local Constant = require 'symmath.Constant'
+	if nargs == 0 then return Constant(1) end
 	local m,n
 	if nargs == 1 then
 		m = ...
@@ -17,11 +17,14 @@ return function(...)
 	elseif nargs == 2 then
 		m,n = ...
 	end
-	return symmath.Matrix(
-		range(m):map(function(i)
-			return range(n):map(function(j)
-				return i == j and 1 or 0
-			end)
-		end):unpack()
-	)
+	local Matrix = require 'symmath.Matrix'
+	local rows = Matrix()
+	for i=1,m do
+		local row = Matrix()
+		rows[i] = row
+		for j=1,n do
+			row[j] = Constant(i == j and 1 or 0)
+		end
+	end
+	return rows
 end
