@@ -55,11 +55,11 @@ local function simplify(x, ...)
 		local Verbose = require 'symmath.tostring.Verbose'
 Verbose = require 'symmath'.tostring		
 		if stack then 
-			for i,x in ipairs(stack) do
-				io.stderr:write('simplify stack #'..i..'\n'..Verbose(x)..'\n')
+			for i,xi in ipairs(stack) do
+				io.stderr:write('simplify stack #'..i..'\n'..Verbose(xi)..'\n')
 			end
 		end
-		error("simplification loop")
+		io.stderr:write("simplification loop\n")
 	end
 	--]]
 	x = tidy(x, ...)

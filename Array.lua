@@ -97,10 +97,10 @@ where #index == t:rank() and contains elements 1 <= index[i] <= t:dim()[i]
 cycles the first indexes (outer-most arrays) first
 --]]
 function Array:iter()
-	local dimfunc = self.dim or Array.dim
-	local dim = dimfunc(self)
+	local dim = self:dim()
 	local n = #dim
-	
+	if n == 0 then return coroutine.wrap(function() end) end
+
 	local index = {}
 	for i=1,n do
 		index[i] = 1
@@ -121,8 +121,7 @@ end
 
 -- same as above but cycles the last indexes (inner-most arrays) first
 function Array:innerIter()
-	local dimfunc = self.dim or Array.dim
-	local dim = dimfunc(self)
+	local dim = self:dim()
 	local n = #dim
 	
 	local index = {}
@@ -200,21 +199,22 @@ function Array:dim()
 		return dim
 	end
 
+	if #self == 0 then return table() end
+
 	-- get first child's dim
-	local dimfunc = self[1].dim or Array.dim
-	local subdim_1 = dimfunc(self[1])
+	local subdim_1 = self[1]:dim()
 
 	assert(#subdim_1 == rank-1, "array has subarray with inequal rank")
 
 	-- make sure they're equal for all children
 	for j=2,#self do
-		local dimfunc = self[j].dim or Array.dim
-		local subdim_j = dimfunc(self[j])
+		local subdim_j = self[j]:dim()
 		assert(#subdim_j == rank-1, "array has subarray with inequal rank")
 		
 		for k=1,#subdim_1 do
 			if subdim_1[k] ~= subdim_j[k] then
-				error("array has subarray with inequal dimensions")
+				error("array has subarray with inequal dimensions: "
+					..tostring(subdim_1)..' vs '..tostring(subdim_j))
 			end
 		end
 	end

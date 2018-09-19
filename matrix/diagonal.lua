@@ -2,10 +2,11 @@ return function(...)
 	local Constant = require 'symmath.Constant'
 	local Matrix = require 'symmath.Matrix'
 	local rows = Matrix()
-	for i=1,select('#', ...) do
+	local n = select('#', ...)
+	for i=1,n do
 		local row = Matrix()
 		rows[i] = row 
-		for j=1,#args do
+		for j=1,n do
 			local el
 			if i == j then
 				el = select(i, ...) 

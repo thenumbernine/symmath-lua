@@ -12,14 +12,18 @@ end
 --[[
 args:
 	m = matrix
-	callback = optional callback on the percent of progress
-	ctx = context for the callback object
+	args:
+		callback = optional callback, every second, with the percent of progress
+		TODO maxDepth = how deep to compute
+		... but to allow for maxDepth to leave determinants unevaluated, I need support for unevaluated functions
+			right now all I have is Lua functions, which themselves immediately evaluate.  nothing is deferred.
+	args internally:
+		lastTime = table holding the last time that the callback was called
 --]]
-local function determinant(m, callback, ctx)
-	ctx = ctx or {}
-	if callback then 
-		ctx.lastTime = ctx.lastTime or os.time()
-	end
+local function determinant(m, args)
+	local callback = args and args.callback
+	local lastTime = args and args.lastTime or {t=os.time()}
+	--local depth = args and args.depth or 1
 
 	-- require the caller to simplify beforehand
 
@@ -102,19 +106,14 @@ local function determinant(m, callback, ctx)
 					submat_u[v] = m[p][q]
 				end
 			end
-			local subcallback
-			if callback then 
-				subcallback = function(...)
-					return callback(y, ...)
-				end
-			end
-			local subres = determinant(submat, subcallback, ctx)
+			local subcallback = callback and function(...) return callback(y, ...) end or nil
+			local subres = determinant(submat, args and table(args, {callback=subcallback, lastTime=lastTime}) or nil)
 			results = (results + sign * mij * subres)()
 		end
 		if callback then
 			local thisTime = os.time()
-			if thisTime ~= ctx.lastTime then
-				ctx.lastTime = thisTime
+			if thisTime ~= lastTime[1] then
+				lastTime[1] = thisTime
 				callback(y)
 			end
 		end

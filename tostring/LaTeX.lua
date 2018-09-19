@@ -32,6 +32,8 @@ function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 			s = table{'(', s, ')'}
 		end
 	end
+	s:insert(1, '{')
+	s:insert('}')
 	return s
 end
 
