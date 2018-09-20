@@ -548,7 +548,7 @@ function Tensor:contraction(i)
 	local clone = require 'symmath.clone'
 	
 	local dim = self:dim()
-	assert(i >= 1 and i <= #dim, "tried to contract dimension "..i.." when we are only rank "..#dim)
+	if i < 1 or i > #dim then error("tried to contract dimension "..i.." when we are only rank "..#dim) end
 
 	-- if there's a valid contraction and we're rank-1 then we're summing across everything
 	if #dim == 1 then
@@ -619,9 +619,9 @@ and store it back where you got it from
 function Tensor:transformIndex(ti, m)
 	local dim = self:dim()
 	local mdim = m:dim()
-	assert(m:rank() == 2, "can only transform an index by a rank-2 metric, got a rank "..m:rank())
-	assert(mdim[1] == mdim[2], "can only transform an index by a square metric, got dims "..mdim)
-	assert(dim[ti] == mdim[1], "tried to transform tensor of dims "..dim.." with metric of dims "..mdim)
+	if m:rank() ~= 2 then error("can only transform an index by a rank-2 metric, got a rank "..m:rank()) end
+	if mdim[1] ~= mdim[2] then error("can only transform an index by a square metric, got dims "..mdim:concat', ') end
+	if dim[ti] ~= mdim[1] then error("tried to transform tensor of dims "..dim:concat', '.." with metric of dims "..mdim:concat', ') end
 	return Tensor{dim=dim, values=function(...)
 		-- current element being transformed
 		local is = {...}
@@ -742,7 +742,7 @@ function Tensor:permute(dstVariance)
 		indexMap[i] = table.find(dstVariance, nil, function(dstVar)
 			return srcVar.symbol == dstVar.symbol
 		end)
-		assert(indexMap[i], "assigning tensor with '"..srcVar.symbol.."' to tensor without that symbol")
+		if not indexMap[i] then error("assigning tensor with '"..srcVar.symbol.."' to tensor without that symbol") end
 	end
 
 	local olddim = self:dim()
