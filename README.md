@@ -280,100 +280,114 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 
 Output CDN URLs:
 
-[tests/output/ADM gravity using expressions](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/ADM%20gravity%20using%20expressions%2ehtml)
+[tests/output/ADM gravity using expressions](https://thenumbernine.github.io/symmath/tests/output/ADM%20gravity%20using%20expressions.html)
 
-[tests/output/ADM metric - mixed](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/ADM%20metric%20%2d%20mixed%2ehtml)
+[tests/output/ADM metric - mixed](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric%20%2d%20mixed.html)
 
-[tests/output/ADM metric](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/ADM%20metric%2ehtml)
+[tests/output/ADM metric](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric.html)
 
-[tests/output/Alcubierre](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Alcubierre%2ehtml)
+[tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
-[tests/output/EFE discrete solution - 1-var](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/EFE%20discrete%20solution%20%2d%201%2dvar%2ehtml)
+[tests/output/Building Curvature by ADM](https://thenumbernine.github.io/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
 
-[tests/output/EFE discrete solution - 2-var](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/EFE%20discrete%20solution%20%2d%202%2dvar%2ehtml)
+[tests/output/EFE discrete solution - 1-var](https://thenumbernine.github.io/symmath/tests/output/EFE%20discrete%20solution%20%2d%201%2dvar.html)
 
-[tests/output/Einstein field equations - expression](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Einstein%20field%20equations%20%2d%20expression%2ehtml)
+[tests/output/EFE discrete solution - 2-var](https://thenumbernine.github.io/symmath/tests/output/EFE%20discrete%20solution%20%2d%202%2dvar.html)
 
-[tests/output/Ernst](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Ernst%2ehtml)
+[tests/output/Einstein field equations - expression](https://thenumbernine.github.io/symmath/tests/output/Einstein%20field%20equations%20%2d%20expression.html)
 
-[tests/output/FLRW](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/FLRW%2ehtml)
+[tests/output/Ernst](https://thenumbernine.github.io/symmath/tests/output/Ernst.html)
 
-[tests/output/Gravitation 16.1 - dense](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Gravitation%2016%2e1%20%2d%20dense%2ehtml)
+[tests/output/FLRW](https://thenumbernine.github.io/symmath/tests/output/FLRW.html)
 
-[tests/output/Gravitation 16.1 - expression](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Gravitation%2016%2e1%20%2d%20expression%2ehtml)
+[tests/output/Gravitation 16.1 - dense](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20dense.html)
 
-[tests/output/Gravitation 16.1 - mixed](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Gravitation%2016%2e1%20%2d%20mixed%2ehtml)
+[tests/output/Gravitation 16.1 - expression](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20expression.html)
 
-[tests/output/Kaluza-Klein](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Kaluza%2dKlein%2ehtml)
+[tests/output/Gravitation 16.1 - mixed](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20mixed.html)
 
-[tests/output/Kerr - Cartesian](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Kerr%20%2d%20Cartesian%2ehtml)
+[tests/output/Kaluza-Klein](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein.html)
 
-[tests/output/MHD inverse](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/MHD%20inverse%2ehtml)
+[tests/output/Kerr - Cartesian](https://thenumbernine.github.io/symmath/tests/output/Kerr%20%2d%20Cartesian.html)
 
-[tests/output/MHD symmetrization](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/MHD%20symmetrization%2ehtml)
+[tests/output/MHD inverse](https://thenumbernine.github.io/symmath/tests/output/MHD%20inverse.html)
 
-[tests/output/Newton method](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Newton%20method%2ehtml)
+[tests/output/MHD symmetrization](https://thenumbernine.github.io/symmath/tests/output/MHD%20symmetrization.html)
 
-[tests/output/SRHD](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/SRHD%2ehtml)
+[tests/output/Newton method](https://thenumbernine.github.io/symmath/tests/output/Newton%20method.html)
 
-[tests/output/Schwarzschild - Cartesian](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Schwarzschild%20%2d%20Cartesian%2ehtml)
+[tests/output/SRHD](https://thenumbernine.github.io/symmath/tests/output/SRHD.html)
 
-[tests/output/Schwarzschild - spherical to Cartesian](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Schwarzschild%20%2d%20spherical%20to%20Cartesian%2ehtml)
+[tests/output/Schwarzschild - Cartesian](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20Cartesian.html)
 
-[tests/output/Schwarzschild - spherical](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/Schwarzschild%20%2d%20spherical%2ehtml)
+[tests/output/Schwarzschild - spherical - derivation - varying time 2](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation%20%2d%20varying%20time%202.html)
 
-[tests/output/electrovacuum/black hole electron](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/electrovacuum/black%20hole%20electron%2ehtml)
+[tests/output/Schwarzschild - spherical - derivation - varying time](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation%20%2d%20varying%20time.html)
 
-[tests/output/electrovacuum/general case](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/electrovacuum/general%20case%2ehtml)
+[tests/output/Schwarzschild - spherical - derivation](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation.html)
 
-[tests/output/electrovacuum/infinite wire no charge](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/electrovacuum/infinite%20wire%20no%20charge%2ehtml)
+[tests/output/Schwarzschild - spherical to Cartesian](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20to%20Cartesian.html)
 
-[tests/output/electrovacuum/infinite wire](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/electrovacuum/infinite%20wire%2ehtml)
+[tests/output/Schwarzschild - spherical](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical.html)
 
-[tests/output/electrovacuum/uniform field - Cartesian](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/electrovacuum/uniform%20field%20%2d%20Cartesian%2ehtml)
+[tests/output/TOV](https://thenumbernine.github.io/symmath/tests/output/TOV.html)
 
-[tests/output/electrovacuum/uniform field - cylindrical](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/electrovacuum/uniform%20field%20%2d%20cylindrical%2ehtml)
+[tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
 
-[tests/output/electrovacuum/uniform field - spherical](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/electrovacuum/uniform%20field%20%2d%20spherical%2ehtml)
+[tests/output/electrovacuum/general case](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/general%20case.html)
 
-[tests/output/electrovacuum/verify cylindrical transform](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/electrovacuum/verify%20cylindrical%20transform%2ehtml)
+[tests/output/electrovacuum/infinite wire no charge](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/infinite%20wire%20no%20charge.html)
 
-[tests/output/hydrodynamics](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/hydrodynamics%2ehtml)
+[tests/output/electrovacuum/infinite wire](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/infinite%20wire.html)
 
-[tests/output/linearized Euler fluid equations](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/linearized%20Euler%20fluid%20equations%2ehtml)
+[tests/output/electrovacuum/uniform field - Cartesian](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20Cartesian.html)
 
-[tests/output/metric catalog](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/metric%20catalog%2ehtml)
+[tests/output/electrovacuum/uniform field - cylindrical](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20cylindrical.html)
 
-[tests/output/natural units](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/natural%20units%2ehtml)
+[tests/output/electrovacuum/uniform field - spherical](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20spherical.html)
 
-[tests/output/numeric integration](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/numeric%20integration%2ehtml)
+[tests/output/electrovacuum/verify cylindrical transform](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/verify%20cylindrical%20transform.html)
 
-[tests/output/rotation group](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/rotation%20group%2ehtml)
+[tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
 
-[tests/output/run all tests](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/run%20all%20tests%2ehtml)
+[tests/output/linearized Euler fluid equations](https://thenumbernine.github.io/symmath/tests/output/linearized%20Euler%20fluid%20equations.html)
 
-[tests/output/scalar metric](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/scalar%20metric%2ehtml)
+[tests/output/metric catalog](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog.html)
 
-[tests/output/simple_ag](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/simple_ag%2ehtml)
+[tests/output/natural units](https://thenumbernine.github.io/symmath/tests/output/natural%20units.html)
 
-[tests/output/spacetime embedding radius](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/spacetime%20embedding%20radius%2ehtml)
+[tests/output/numeric integration](https://thenumbernine.github.io/symmath/tests/output/numeric%20integration.html)
 
-[tests/output/spinors](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/spinors%2ehtml)
+[tests/output/remove beta from adm metric](https://thenumbernine.github.io/symmath/tests/output/remove%20beta%20from%20adm%20metric.html)
 
-[tests/output/spring force](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/spring%20force%2ehtml)
+[tests/output/rotation group](https://thenumbernine.github.io/symmath/tests/output/rotation%20group.html)
 
-[tests/output/tensor coordinate invariance](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/tensor%20coordinate%20invariance%2ehtml)
+[tests/output/run all tests](https://thenumbernine.github.io/symmath/tests/output/run%20all%20tests.html)
 
-[tests/output/toy-1+1 spacetime](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/toy%2d1%2b1%20spacetime%2ehtml)
+[tests/output/scalar metric](https://thenumbernine.github.io/symmath/tests/output/scalar%20metric.html)
 
-[tests/output/unit/linear solver](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/unit/linear%20solver%2ehtml)
+[tests/output/simple_ag](https://thenumbernine.github.io/symmath/tests/output/simple_ag.html)
 
-[tests/output/unit/matrix](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/unit/matrix%2ehtml)
+[tests/output/spacetime embedding radius](https://thenumbernine.github.io/symmath/tests/output/spacetime%20embedding%20radius.html)
 
-[tests/output/unit/sub-tensor assignment](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/unit/sub%2dtensor%20assignment%2ehtml)
+[tests/output/spinors](https://thenumbernine.github.io/symmath/tests/output/spinors.html)
 
-[tests/output/unit/tensor use case](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/unit/tensor%20use%20case%2ehtml)
+[tests/output/spring force](https://thenumbernine.github.io/symmath/tests/output/spring%20force.html)
 
-[tests/output/unit/test](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/unit/test%2ehtml)
+[tests/output/tensor coordinate invariance](https://thenumbernine.github.io/symmath/tests/output/tensor%20coordinate%20invariance.html)
 
-[tests/output/unit/tidyIndexes](https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/tests/output/unit/tidyIndexes%2ehtml)
+[tests/output/toy-1+1 spacetime](https://thenumbernine.github.io/symmath/tests/output/toy%2d1%2b1%20spacetime.html)
+
+[tests/output/unit/linear solver](https://thenumbernine.github.io/symmath/tests/output/unit/linear%20solver.html)
+
+[tests/output/unit/matrix](https://thenumbernine.github.io/symmath/tests/output/unit/matrix.html)
+
+[tests/output/unit/partial replace](https://thenumbernine.github.io/symmath/tests/output/unit/partial%20replace.html)
+
+[tests/output/unit/sub-tensor assignment](https://thenumbernine.github.io/symmath/tests/output/unit/sub%2dtensor%20assignment.html)
+
+[tests/output/unit/tensor use case](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20use%20case.html)
+
+[tests/output/unit/test](https://thenumbernine.github.io/symmath/tests/output/unit/test.html)
+
+[tests/output/unit/tidyIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/tidyIndexes.html)

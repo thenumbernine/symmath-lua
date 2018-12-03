@@ -2,10 +2,9 @@
 require 'ext'
 local url = require 'socket.url'
 
--- using rawgit.com
 --local base = [[https://cdn.rawgit.com/thenumbernine/symmath-lua/master/]]
--- using htmlpreview.github.io
-local base = [[https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/]]
+--local base = [[https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/]]
+local base = [[https://thenumbernine.github.io/symmath/]]
 
 local s = table{[[
 Output CDN URLs:
@@ -30,6 +29,10 @@ end
 fs:sort()
 for _,f in ipairs(fs) do
 	local name = f:sub(1,-6)
-	s:insert('['..name..']('..base..url.escape(f):gsub('%%2f','/')..')\n')
+	s:insert('['..name..']('..base..
+		url.escape(f)
+			:gsub('%%2f','/')
+			:gsub('%%2e','.')
+		..')\n')
 end
 file['README.md'] = file['README.contents.md']..'\n'..s:concat'\n'
