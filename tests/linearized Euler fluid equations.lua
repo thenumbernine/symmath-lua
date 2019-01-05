@@ -184,9 +184,9 @@ local function simplifyDeltasAndMetrics(expr)
 						local syma = x[i][2].symbol
 						local symb = x[i][3].symbol
 						
-						local symbolCounts = x:getIndexCounts()
-	--printbr(require 'ext.tolua'{symbolCounts=symbolCounts, syma=syma, symb=symb})
-						if symbolCounts[syma] > symbolCounts[symb] then syma, symb = symb, syma end
+						local exprsForSymbols = x:getExprsForIndexSymbols()
+	--printbr(require 'ext.tolua'{exprsForSymbols=exprsForSymbols, syma=syma, symb=symb})
+						if #exprsForSymbols[syma] > #exprsForSymbols[symb] then syma, symb = symb, syma end
 						
 						-- now go through the expressions and replace all of syma with symb
 						x = table{table.unpack(x)}

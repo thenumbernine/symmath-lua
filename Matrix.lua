@@ -17,6 +17,7 @@ Matrix.transpose = require 'symmath.matrix.transpose'
 Matrix.diagonal = require 'symmath.matrix.diagonal'
 Matrix.trace = require 'symmath.matrix.trace'
 Matrix.pseudoInverse = require 'symmath.matrix.pseudoInverse'
+Matrix.nullspace = require 'symmath.matrix.nullspace'
 
 -- shorthand
 Matrix.inv = Matrix.inverse	

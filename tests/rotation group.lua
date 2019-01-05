@@ -313,7 +313,7 @@ K_x P | K_y P | K_z P
 	end
 	--]]
 	--[[ attempting a rectangular linear solver ...
-	local results = getn(dPm:inverse(ePm, nil, true))
+	local results = table.pack(dPm:inverse(ePm, nil, true))
 	for i=1,results.n do
 		printbr(i,results[i])
 	end

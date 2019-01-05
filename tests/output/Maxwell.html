@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title>Maxwell</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+${A} = {
+\left[
+\begin{matrix}
+0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & \frac{1}{\mu} \\
+0 & 0 & 0 & 0 & \frac{-1}{\mu} & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & \frac{-1}{\epsilon} & 0 & 0 & 0 \\
+0 & \frac{1}{\epsilon} & 0 & 0 & 0 & 0
+\end{matrix}
+\right]
+}$
+<br>
+char poly:
+<br>
+${\frac{{{{\lambda}^{2}}} {{({{{1} - {{{2}} {{{\lambda}^{2}}} {{\mu}} \cdot {{\epsilon}}}} + {{{{\lambda}^{4}}} {{{\mu}^{2}}} {{{\epsilon}^{2}}}}})}}}{{{{\mu}^{2}}} {{{\epsilon}^{2}}}}} = {0}$
+<br>
+eigenvectors of 	${\lambda} = {\frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}}$
+<br>
+$\left[
+\begin{matrix}
+0 & 0 \\
+0 & \frac{-{\sqrt\epsilon}}{\sqrt\mu} \\
+\frac{\sqrt\epsilon}{\sqrt\mu} & 0 \\
+0 & 0 \\
+1 & 0 \\
+0 & 1
+\end{matrix}
+\right]$
+<br>
+eigenvectors of 	${\lambda} = {0}$
+<br>
+$\left[
+\begin{matrix}
+1 & 0 \\
+0 & 0 \\
+0 & 0 \\
+0 & 1 \\
+0 & 0 \\
+0 & 0
+\end{matrix}
+\right]$
+<br>
+eigenvectors of 	${\lambda} = {\frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}}$
+<br>
+$\left[
+\begin{matrix}
+0 & 0 \\
+0 & \frac{\sqrt\epsilon}{\sqrt\mu} \\
+\frac{-{\sqrt\epsilon}}{\sqrt\mu} & 0 \\
+0 & 0 \\
+1 & 0 \\
+0 & 1
+\end{matrix}
+\right]$
+<br>
+$\Lambda$:
+<br>
+$\left[
+\begin{matrix}
+\frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} & 0 & 0 & 0 & 0 & 0 \\
+0 & \frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} & 0 \\
+0 & 0 & 0 & 0 & 0 & \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}
+\end{matrix}
+\right]$
+<br>
+R:
+<br>
+$\left[
+\begin{matrix}
+0 & 0 & 1 & 0 & 0 & 0 \\
+0 & \frac{-{\sqrt\epsilon}}{\sqrt\mu} & 0 & 0 & 0 & \frac{\sqrt\epsilon}{\sqrt\mu} \\
+\frac{\sqrt\epsilon}{\sqrt\mu} & 0 & 0 & 0 & \frac{-{\sqrt\epsilon}}{\sqrt\mu} & 0 \\
+0 & 0 & 0 & 1 & 0 & 0 \\
+1 & 0 & 0 & 0 & 1 & 0 \\
+0 & 1 & 0 & 0 & 0 & 1
+\end{matrix}
+\right]$
+<br>
+L:
+<br>
+$\left[
+\begin{matrix}
+0 & 0 & \frac{\sqrt\mu}{{{2}} {{\sqrt\epsilon}}} & 0 & \frac{1}{2} & 0 \\
+0 & \frac{\sqrt\mu}{-{{{2}} {{\sqrt\epsilon}}}} & 0 & 0 & 0 & \frac{1}{2} \\
+1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & \frac{-{\sqrt\mu}}{{{2}} {{\sqrt\epsilon}}} & 0 & \frac{1}{2} & 0 \\
+0 & \frac{\sqrt\mu}{{{2}} {{\sqrt\epsilon}}} & 0 & 0 & 0 & \frac{1}{2}
+\end{matrix}
+\right]$
+<br>
+A check
+<br>
+$\left[
+\begin{matrix}
+0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & \frac{1}{\mu} \\
+0 & 0 & 0 & 0 & -{\frac{1}{\mu}} & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & -{\frac{1}{\epsilon}} & 0 & 0 & 0 \\
+0 & \frac{1}{\epsilon} & 0 & 0 & 0 & 0
+\end{matrix}
+\right]$
+<br>

@@ -27,23 +27,7 @@ Derivative.rules = {
 	},
 
 	Prune = {
-	
-		-- (a = b):diff(x) => a:diff(x) = b:diff(x)
-		{equations = function(prune, expr)
-			local Equation = require 'symmath.op.Equation'
-			local eq = expr[1]
-			if Equation.is(eq) then
-				return getmetatable(expr)(
-					assert(prune:apply(
-						eq[1]:diff(table.unpack(expr, 2))
-					)),
-					assert(prune:apply(
-						eq[2]:diff(table.unpack(expr, 2))
-					))
-				)
-			end
-		end},
-		
+
 		-- d/dx{y_i} = {dy_i/dx}
 		{arrays = function(prune, expr)
 			local Array = require 'symmath.Array'

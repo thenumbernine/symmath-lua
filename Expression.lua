@@ -832,16 +832,23 @@ function Expression:getIndexesUsed()
 end
 
 
--- maybe this will replace 'getIndexesUsed'
--- at least if this is called on a flattened expression, then the 1-count symbols are the fixed symbols
-function Expression:getIndexCounts()
+--[[
+returns a table:
+t[sym] = {{expr=expr, index=index}, ...}
+	expr is a TensorRef
+	index is which index holds this symbol
+maybe this will replace 'getIndexesUsed'
+at least if this is called on a flattened expression, then the 1-count symbols are the fixed symbols
+--]]
+function Expression:getExprsForIndexSymbols()
 	local TensorRef = require 'symmath.tensor.TensorRef'
-	local symbolCounts = {}
+	local exprsForSymbol = {}
 	local function rfind(x)
 		if TensorRef.is(x) then
 			for i=2,#x do
 				local symbol = x[i].symbol
-				symbolCounts[symbol] = (symbolCounts[symbol] or 0) + 1
+				exprsForSymbol[symbol] = exprsForSymbol[symbol] or table()
+				exprsForSymbol[symbol]:insert{expr=x, index=i}
 			end
 		elseif Expression.is(x) then
 			for i=1,#x do
@@ -849,8 +856,8 @@ function Expression:getIndexCounts()
 			end
 		end
 	end
-	rfind(self())
-	return symbolCounts
+	rfind(self)
+	return exprsForSymbol
 end
 
 

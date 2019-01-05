@@ -227,11 +227,13 @@ LaTeX.lookupTable = {
 		if expr:rank() % 2 == 0 then
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
-		return table{'\n\\left[\n', '\\begin{matrix}\n'}
-			:append(tableConcat(range(#expr):map(function(i)
-				return self:apply(expr[i])
-			end), ' \\\\\n'))
-			:append{'\n\\end{matrix}\n', '\\right]\n'}
+		
+		local result = table(omit{'\n\\left[\n', '\\begin{matrix}\n'})
+		result:append(omit(tableConcat(range(#expr):map(function(i)
+			return omit(self:apply(expr[i]))
+		end), ' \\\\\n')))
+		result:append(omit{'\n\\end{matrix}\n', '\\right]\n'})
+		return omit(result)
 	end,
 	[require 'symmath.Matrix'] = function(self, expr)
 		local rows = table()
@@ -239,14 +241,16 @@ LaTeX.lookupTable = {
 			if type(expr[i]) ~= 'table' then 
 				error("expected matrix children to be Arrays (or at least tables), but got ("..type(expr[i])..") "..tostring(expr[i]))
 			end
-			rows[i] = tableConcat(range(#expr[i]):map(function(j)
-				return self:apply(expr[i][j])
-			end), ' & ')
+			rows[i] = omit(tableConcat(range(#expr[i]):map(function(j)
+				return omit(self:apply(expr[i][j]))
+			end), ' & '))
 			if #expr > 1 then rows[i] = omit(rows[i]) end
 		end
-		return table{'\n\\left[\n', '\\begin{matrix}\n'}
-			:append(tableConcat(rows, ' \\\\\n'))
-			:append{'\n\\end{matrix}\n', '\\right]\n'}
+		
+		local result = table{'\n\\left[\n', '\\begin{matrix}\n'}
+		result:append(omit(tableConcat(rows, ' \\\\\n')))
+		result:append{'\n\\end{matrix}\n', '\\right]\n'}
+		return omit(result)
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
 		local s = self.lookupTable[require 'symmath.Array'](self, expr)
