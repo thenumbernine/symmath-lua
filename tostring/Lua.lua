@@ -115,7 +115,10 @@ function Lua:compile(expr, paramInputs)
 	local expr, vars = self:prepareForCompile(expr, paramInputs)
 	assert(vars)
 	local cmd = self:generate(expr, vars)
-	return assert(load(cmd))(), cmd
+	local result, err = load(cmd)
+	if not result then return false, cmd, err end
+	result = result()
+	return result, cmd
 end
 
 -- hmm, using a direct call isn't favorable over using :compile()
