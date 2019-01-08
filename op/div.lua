@@ -367,6 +367,8 @@ div.rules = {
 				end
 			end
 			--]]
+		
+			return prune(expr[1]) / prune(expr[2])
 		end},
 	},
 

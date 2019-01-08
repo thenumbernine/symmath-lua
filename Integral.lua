@@ -1,4 +1,6 @@
 local class = require 'ext.class'
+local table = require 'ext.table'
+local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
 
 local Integral = class(Expression)
@@ -30,8 +32,13 @@ Integral.rules = {
 			local log = symmath.log
 			local abs = symmath.abs
 
-			local int, x = table.unpack(expr)
-			
+			local int, x, start, finish = table.unpack(expr)
+
+			if start and finish then
+				expr = prune(Integral(int, x))
+				return (expr:replace(x, finish) - expr:replace(x, start))()
+			end
+
 			int = int():factorDivision()
 
 			-- TODO convert away divisions first ... convert into ^-1's
@@ -78,25 +85,25 @@ Integral.rules = {
 				local terms = table(int)
 				for i=1,#terms do
 					if terms[i] == x then
-						if found then return end
 						-- integrating something times x ... 
 						terms[i] = x^2/2
 						found = true
 					elseif pow.is(terms[i]) and terms[i][1] == x then
 						-- integrating something times x^n
-						if found then return end
 						if terms[i][2] == Constant(-1) then
 							terms[i] = prune(log(abs(x)))
 						else
 							terms[i] = prune(x^(terms[i][2]+1)/(terms[i][2]+1))
 						end
 						found = true
-					elseif find(terms[i], x) then
+					elseif find(terms[i], x) then	-- a function of x not yet implemented
 						return
 					end
 				end
 				if found then
 					return prune(mul(terms:unpack()))
+				else
+					return prune(mul(x, terms:unpack()))
 				end
 			end
 		end},
