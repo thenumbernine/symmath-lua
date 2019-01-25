@@ -26,8 +26,8 @@ local As = table{
 		{0,			0,			-1/epsilon,			0,			0,			0,				0,			0},
 		{0,			1/epsilon,	0,					0,			0,			0,				0,			0},
 																						
-		{chi_phi / (epsilon * mu),	0,			0,					0,			0,			0,				0,			0},
-		{0,			0,			0,					chi_psi / (epsilon * mu), 	0,			0,				0,			0}
+		{chi_phi,	0,			0,					0,			0,			0,				0,			0},
+		{0,			0,			0,					chi_psi, 	0,			0,				0,			0}
 	),
 
 	Matrix(
@@ -39,8 +39,8 @@ local As = table{
 		{0,			0,			0,					0,			0,			0,				0,			chi_psi},
 		{-1/epsilon,0,			0,					0,			0,			0,				0,			0},
 																						
-		{0,			chi_phi / (epsilon * mu),	0,					0,			0,			0,				0,			0},
-		{0,			0,			0,					0, 			chi_psi / (epsilon * mu),	0,				0,			0}
+		{0,			chi_phi,	0,					0,			0,			0,				0,			0},
+		{0,			0,			0,					0, 			chi_psi,	0,				0,			0}
 	),
 
 	Matrix(
@@ -52,8 +52,8 @@ local As = table{
 		{1/epsilon,	0,			0,					0,			0,			0,				0,			0},
 		{0,			0,			0,					0,			0,			0,				0,			chi_psi},
 																						
-		{0,			0,			chi_phi / (epsilon * mu),			0,			0,			0,				0,			0},
-		{0,			0,			0,					0, 			0,			chi_psi / (epsilon * mu),		0,			0}
+		{0,			0,			chi_phi,			0,			0,			0,				0,			0},
+		{0,			0,			0,					0, 			0,			chi_psi,		0,			0}
 	),
 
 }
@@ -73,12 +73,12 @@ for side=1,3 do
 	-- TODO solve charpoly_eqn for lambda ...
 	-- gives solutions lambda = 0, lambda = +- 1/sqrt(mu epsilon) = +- c
 	local lambdas = table{
-		-chi_phi / sqrt(mu * epsilon), 
-		-chi_psi / sqrt(mu * epsilon), 
+		-chi_phi, 
+		-chi_psi, 
 		-1/sqrt(mu * epsilon), 
 		1/sqrt(mu * epsilon),
-		chi_phi / sqrt(mu * epsilon), 
-		chi_psi / sqrt(mu * epsilon), 
+		chi_phi, 
+		chi_psi, 
 	}
 
 	local n = #Us

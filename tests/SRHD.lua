@@ -6,37 +6,30 @@ require 'symmath.tostring.MathJax'.setup()
 local x,y,z = vars('x', 'y', 'z')
 local xs = table{x,y,z}
 
+local delta = var'\\delta'
+
 -- primitives:
 
 local rho = var'\\rho'
 
-local vs = xs:map(function(x) return var('v_'..x.name) end)
-local v_x, v_y, v_z = vs:unpack()
+local v = var'v'
 
 local eInt = var'e_{int}'
 
-local prims = table{rho, v_x, v_y, v_z, eInt}
+local prims = table{rho, v'_i', eInt}
 
-local vSq = var('v^2', vs)
-local vSq_from_v = vSq:eq(v_x^2 + v_y^2 + v_z^2)
+local vSq = var('v^2', v)
+local vSq_from_v = vSq:eq(v'_i' * v'^i')
 
-local dvSq_dv_defs = vs:map(function(v) return vSq_from_v:diff(v)() end)
-for _,eq in ipairs(dvSq_dv_defs) do printbr(eq) end
-
-local W = var('W', vs)
-local W_from_v = W:eq( 1 / sqrt(1 - v_x^2 - v_y^2 - v_z^2) )
+local W = var('W', v)
 local W_from_v = W:eq( 1 / sqrt(1 - vSq) )
 printbr(W_from_v)
 
 local invLorentzSq_from_W = ((1 / W_from_v)^2)():switch()
 printbr(invLorentzSq_from_W)
 
-local dW_dv_defs = vs:map(function(v) 
-	return W_from_v:diff(v)():subst(invLorentzSq_from_W, dvSq_dv_defs:unpack())()
-end)
-for _,eq in ipairs(dW_dv_defs) do printbr(eq) end
-
---printbr(W_from_v:diff(v_x)())
+local dW_dv_def = W_from_v:diff(v'_j')():subst(invLorentzSq_from_W)()
+printbr(dW_dv_def)
 
 local P = var('P', {rho, eInt})
 
@@ -89,9 +82,9 @@ local U = var'U'
 local cons_def = U:eq(Matrix{D, S_x, S_y, S_z, tau}:T())
 printbr(cons_def)
 
-local F_x = var'F_x'
-local F_x_def = F_x:eq(Matrix{D * v_x, S_x * v_x - P, S_y * v_x, S_z * v_x, S_x - D * v_x}:T())
-printbr(F_x_def)
+local F = var'F'
+local F_def = F'_ij':eq(Matrix{D * v'_j', S'_i' * v'_j' - delta'_ij' * P, S'_j' - D * v'_j'}:T())
+printbr(F_def)
 
 --	dD/drho
 
@@ -218,7 +211,9 @@ end)())
 printbr(A_def)
 --]]
 
-local AInv_def = (var'A'^-1):eq(Matrix:lambda({3,3}, function(i,j)
+local AInv = var'(A^{-1})'
+--[[
+local AInv_def = AInv:eq(Matrix:lambda({3,3}, function(i,j)
 	return (
 		(i == j and 1 or 0) 
 		- vs[i] * vs[j] / (
@@ -227,42 +222,51 @@ local AInv_def = (var'A'^-1):eq(Matrix:lambda({3,3}, function(i,j)
 		)
 	) / (rho * W^4 * h * Phi)
 end)())
+--]]
+-- [[
+local AInv_def = AInv:eq(
+	(1 / (rho * W^4 * h * Phi)) 
+	* (delta'_ij' - v'_i' * v'_j' / ( v'_k' * v'_k' + (h * Phi / rho) / ((gamma + h) * (gamma - 1)) ))
+)
+--]]
 printbr(AInv_def)
 
-local AInv_v = (AInv_def[2] * Matrix(vs):T())()
-printbr((var'A'^-1 * var'v'):eq(AInv_v)) 
+local AInv_v = var'(v \\cdot A^{-1})'
+local AInv_v_def = AInv_v:eq((AInv_def[2] * Matrix(vs):T())())
+printbr(AInv_v_def)
 
-local v_AInv_v = (Matrix(vs) * AInv_v)()[1][1]
-printbr((var'v' * var'A'^-1 * var'v'):eq(v_AInv_v)) 
+local v_AInv_v = var'(v \\cdot A^{-1} \\cdot v)'
+local v_AInv_v_def = v_AInv_v:eq((Matrix(vs) * AInv_v_def[2])()[1][1])
+printbr(v_AInv_v_def) 
 
 local dprim_dcons = W:diff(U):eq(Matrix(
 	{
 		1/W - v_AInv_v * rho^2 * rho^2 * W^3 * (W * gamma - (gamma - 1)),
-		-rho^2 * W^2 * Phi * AInv_v[1][1],
-		-rho^2 * W^2 * Phi * AInv_v[2][1],
-		-rho^2 * W^2 * Phi * AInv_v[3][1],
+		-rho^2 * W^2 * Phi * AInv_v'_1',
+		-rho^2 * W^2 * Phi * AInv_v'_2',
+		-rho^2 * W^2 * Phi * AInv_v'_3',
 		v_AInv_v,
 	},
 	{
-		-AInv_v[1][1] * rho * W * (W * gamma - (gamma - 1)),
-		Phi * AInv_def[2][1][1],
-		Phi * AInv_def[2][1][2],
-		Phi * AInv_def[2][1][3],
-		-rho * gamma * W^2 * AInv_v[1][1],
+		-AInv_v'_1' * rho * W * (W * gamma - (gamma - 1)),
+		Phi * AInv'_11',
+		Phi * AInv'_12',
+		Phi * AInv'_13',
+		-rho * gamma * W^2 * AInv_v'_1',
 	},
 	{
-		-AInv_v[2][1] * rho * W * (W * gamma - (gamma - 1)),
-		Phi * AInv_def[2][2][1],
-		Phi * AInv_def[2][2][2],
-		Phi * AInv_def[2][2][3],
-		-rho * gamma * W^2 * AInv_v[2][1],
+		-AInv_v'_2' * rho * W * (W * gamma - (gamma - 1)),
+		Phi * AInv'_21',
+		Phi * AInv'_22',
+		Phi * AInv'_23',
+		-rho * gamma * W^2 * AInv_v'_2',
 	},
 	{
-		-AInv_v[3][1] * rho * W * (W * gamma - (gamma - 1)),
-		Phi * AInv_def[2][3][1],
-		Phi * AInv_def[2][3][2],
-		Phi * AInv_def[2][3][3],
-		-rho * gamma * W^2 * AInv_v[3][1],
+		-AInv_v'_3' * rho * W * (W * gamma - (gamma - 1)),
+		Phi * AInv'_31',
+		Phi * AInv'_32',
+		Phi * AInv'_33',
+		-rho * gamma * W^2 * AInv_v'_3',
 	},
 	{
 		( 
@@ -270,17 +274,19 @@ local dprim_dcons = W:diff(U):eq(Matrix(
 		) / (
 			W * Phi
 		),
-		-AInv_v[1][1] * rho * W^2 * (h * W^2 + (gamma-1) * eInt),
-		-AInv_v[2][1] * rho * W^2 * (h * W^2 + (gamma-1) * eInt),
-		-AInv_v[3][1] * rho * W^2 * (h * W^2 + (gamma-1) * eInt),
+		-AInv_v'_1' * rho * W^2 * (h * W^2 + (gamma-1) * eInt),
+		-AInv_v'_2' * rho * W^2 * (h * W^2 + (gamma-1) * eInt),
+		-AInv_v'_3' * rho * W^2 * (h * W^2 + (gamma-1) * eInt),
 		1/Phi + 1/Phi * (gamma * rho * W^2 * v_AInv_v * rho * W^2 * (h * W^2 + (gamma-1) * eInt)),
 	}
 ))
 printbr(dprim_dcons)
 
+--[[
 printbr'verify orthogonality:'
 printbr((dcons_dprim[2] * dprim_dcons[2])())
 printbr((dprim_dcons[2] * dcons_dprim[2])())
+--]]
 
 --[[ too much for it
 local dprim_dcons = W:diff(U):eq( dcons_dprim[2]:inverse() )

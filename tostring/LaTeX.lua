@@ -314,7 +314,9 @@ LaTeX.lookupTable = {
 			s:insert'd'
 			s:insert(self:apply(var))
 		end
+		s:insert'\\left('
 		s:insert(self:apply(intexpr))
+		s:insert'\\right)'
 		return s
 	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
