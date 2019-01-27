@@ -7,7 +7,43 @@
     </head>
 	<body onload='tryToFindMathJax();'>
 
+state:
+<br>
+${U} = {
+\left[
+\begin{matrix}
+{D_x} \\
+{D_y} \\
+{D_z} \\
+{B_x} \\
+{B_y} \\
+{B_z} \\
+\phi \\
+\psi
+\end{matrix}
+\right]
+}$
+<br>
 side	1
+<br>
+flux:
+<br>
+${F} = {
+\left[
+\begin{matrix}
+{{{\chi_\phi}}} \cdot {{\phi}} \\
+{\frac{1}{\mu}}{({{B_z}})} \\
+{\frac{1}{\mu}}{({-{{B_y}}})} \\
+{{{\chi_\psi}}} \cdot {{\psi}} \\
+{\frac{1}{\epsilon}}{({-{{D_z}}})} \\
+{\frac{1}{\epsilon}}{({{D_y}})} \\
+{{{\chi_\phi}}} \cdot {{{D_x}}} \\
+{{{\chi_\psi}}} \cdot {{{B_x}}}
+\end{matrix}
+\right]
+}$
+<br>
+flux jacobian:
 <br>
 ${A} = {
 \left[
@@ -163,21 +199,6 @@ $\left[
 \end{matrix}
 \right]$
 <br>
-A check
-<br>
-$\left[
-\begin{matrix}
-0 & 0 & 0 & 0 & 0 & 0 & {\chi_\phi} & 0 \\
-0 & 0 & 0 & 0 & 0 & \frac{1}{\mu} & 0 & 0 \\
-0 & 0 & 0 & 0 & -{\frac{1}{\mu}} & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 0 & 0 & {\chi_\psi} \\
-0 & 0 & -{\frac{1}{\epsilon}} & 0 & 0 & 0 & 0 & 0 \\
-0 & \frac{1}{\epsilon} & 0 & 0 & 0 & 0 & 0 & 0 \\
-{\chi_\phi} & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & {\chi_\psi} & 0 & 0 & 0 & 0
-\end{matrix}
-\right]$
-<br>
 R(v) = 	$\left[
 \begin{matrix}
 \frac{-{({{{v_0}} - {{v_6}}})}}{{{\sqrt2}} {{\sqrt\epsilon}}} \\
@@ -212,9 +233,28 @@ return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{
 left transform code:
 <br>
 <pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(v_0 - v_6)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((-(math.sqrt(\epsilon) * (v_3 - v_5))) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_2 - v_4)) / math.sqrt(2))}, {((-(v_1 - v_7)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((math.sqrt(\mu) * (v_2 + v_4)) / math.sqrt(2))}, {((math.sqrt(\mu) * (v_3 + v_5)) / math.sqrt(2))}, {((v_0 + v_6) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((v_1 + v_7) / (math.sqrt(2) * math.sqrt(\epsilon)))}} end</pre>
+return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(math.sqrt(\epsilon) * (v_0 - v_6))) / math.sqrt(2))}, {((-(math.sqrt(\epsilon) * (v_3 - v_7))) / math.sqrt(2))}, {(((v_2 * math.sqrt(\mu)) + (v_4 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon)))}, {(((v_1 * math.sqrt(\mu)) - (v_5 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {((-((v_2 * math.sqrt(\mu)) - (v_4 * math.sqrt(\epsilon)))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {(((v_1 * math.sqrt(\mu)) + (v_5 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {((math.sqrt(\epsilon) * (v_0 + v_6)) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_3 + v_7)) / math.sqrt(2))}} end</pre>
 <br>
 side	2
+<br>
+flux:
+<br>
+${F} = {
+\left[
+\begin{matrix}
+{\frac{1}{\mu}}{({-{{B_z}}})} \\
+{{{\chi_\phi}}} \cdot {{\phi}} \\
+{\frac{1}{\mu}}{({{B_x}})} \\
+{\frac{1}{\epsilon}}{({{D_z}})} \\
+{{{\chi_\psi}}} \cdot {{\psi}} \\
+{\frac{1}{\epsilon}}{({-{{D_x}}})} \\
+{{{\chi_\phi}}} \cdot {{{D_y}}} \\
+{{{\chi_\psi}}} \cdot {{{B_y}}}
+\end{matrix}
+\right]
+}$
+<br>
+flux jacobian:
 <br>
 ${A} = {
 \left[
@@ -370,21 +410,6 @@ $\left[
 \end{matrix}
 \right]$
 <br>
-A check
-<br>
-$\left[
-\begin{matrix}
-0 & 0 & 0 & 0 & 0 & -{\frac{1}{\mu}} & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 0 & {\chi_\phi} & 0 \\
-0 & 0 & 0 & \frac{1}{\mu} & 0 & 0 & 0 & 0 \\
-0 & 0 & \frac{1}{\epsilon} & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 0 & 0 & {\chi_\psi} \\
--{\frac{1}{\epsilon}} & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-0 & {\chi_\phi} & 0 & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & {\chi_\psi} & 0 & 0 & 0
-\end{matrix}
-\right]$
-<br>
 R(v) = 	$\left[
 \begin{matrix}
 \frac{{{\sqrt\epsilon}} {{({{{v_3}} - {{v_5}}})}}}{\sqrt2} \\
@@ -419,9 +444,28 @@ return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{
 left transform code:
 <br>
 <pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((math.sqrt(\epsilon) * (v_3 - v_5)) / math.sqrt(2))}, {((-(v_0 - v_6)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((-(math.sqrt(\epsilon) * (v_2 - v_4))) / math.sqrt(2))}, {((math.sqrt(\mu) * (v_2 + v_4)) / math.sqrt(2))}, {((-(v_1 - v_7)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((math.sqrt(\mu) * (v_3 + v_5)) / math.sqrt(2))}, {((v_0 + v_6) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((v_1 + v_7) / (math.sqrt(2) * math.sqrt(\epsilon)))}} end</pre>
+return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(math.sqrt(\epsilon) * (v_1 - v_6))) / math.sqrt(2))}, {((-(math.sqrt(\epsilon) * (v_4 - v_7))) / math.sqrt(2))}, {(((v_2 * math.sqrt(\mu)) - (v_3 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {(((v_0 * math.sqrt(\mu)) + (v_5 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon)))}, {(((v_2 * math.sqrt(\mu)) + (v_3 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {((-((v_0 * math.sqrt(\mu)) - (v_5 * math.sqrt(\epsilon)))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {((math.sqrt(\epsilon) * (v_1 + v_6)) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_4 + v_7)) / math.sqrt(2))}} end</pre>
 <br>
 side	3
+<br>
+flux:
+<br>
+${F} = {
+\left[
+\begin{matrix}
+{\frac{1}{\mu}}{({{B_y}})} \\
+{\frac{1}{\mu}}{({-{{B_x}}})} \\
+{{{\chi_\phi}}} \cdot {{\phi}} \\
+{\frac{1}{\epsilon}}{({-{{D_y}}})} \\
+{\frac{1}{\epsilon}}{({{D_x}})} \\
+{{{\chi_\psi}}} \cdot {{\psi}} \\
+{{{\chi_\phi}}} \cdot {{{D_z}}} \\
+{{{\chi_\psi}}} \cdot {{{B_z}}}
+\end{matrix}
+\right]
+}$
+<br>
+flux jacobian:
 <br>
 ${A} = {
 \left[
@@ -577,21 +621,6 @@ $\left[
 \end{matrix}
 \right]$
 <br>
-A check
-<br>
-$\left[
-\begin{matrix}
-0 & 0 & 0 & 0 & \frac{1}{\mu} & 0 & 0 & 0 \\
-0 & 0 & 0 & -{\frac{1}{\mu}} & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 0 & {\chi_\phi} & 0 \\
-0 & -{\frac{1}{\epsilon}} & 0 & 0 & 0 & 0 & 0 & 0 \\
-\frac{1}{\epsilon} & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 0 & 0 & {\chi_\psi} \\
-0 & 0 & {\chi_\phi} & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & {\chi_\psi} & 0 & 0
-\end{matrix}
-\right]$
-<br>
 R(v) = 	$\left[
 \begin{matrix}
 \frac{-{{{\sqrt\epsilon}} {{({{{v_3}} - {{v_5}}})}}}}{\sqrt2} \\
@@ -626,5 +655,5 @@ return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{
 left transform code:
 <br>
 <pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(math.sqrt(\epsilon) * (v_3 - v_5))) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_2 - v_4)) / math.sqrt(2))}, {((-(v_0 - v_6)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((math.sqrt(\mu) * (v_2 + v_4)) / math.sqrt(2))}, {((math.sqrt(\mu) * (v_3 + v_5)) / math.sqrt(2))}, {((-(v_1 - v_7)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((v_0 + v_6) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((v_1 + v_7) / (math.sqrt(2) * math.sqrt(\epsilon)))}} end</pre>
+return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(math.sqrt(\epsilon) * (v_2 - v_6))) / math.sqrt(2))}, {((-(math.sqrt(\epsilon) * (v_5 - v_7))) / math.sqrt(2))}, {(((v_1 * math.sqrt(\mu)) + (v_3 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon)))}, {(((v_0 * math.sqrt(\mu)) - (v_4 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {(((v_1 * math.sqrt(\mu)) - (v_3 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {(((v_0 * math.sqrt(\mu)) + (v_4 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {((math.sqrt(\epsilon) * (v_2 + v_6)) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_5 + v_7)) / math.sqrt(2))}} end</pre>
 <br>

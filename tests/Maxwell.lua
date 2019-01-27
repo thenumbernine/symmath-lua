@@ -58,11 +58,20 @@ local As = table{
 
 }
 
+printbr'state:'
+local U = Matrix(Us):T()
+printbr(var'U':eq(U))
+
 local A = var'A'
 for side=1,3 do
 	printbr('side',side)
-	local A_def = A:eq(As[side])
+	
+	printbr'flux:'
+	local F = (As[side] * U)()
+	printbr(var'F':eq(F))
 
+	printbr'flux jacobian:'
+	local A_def = A:eq(As[side])
 	printbr(A_def)
 
 	local lambda = var'\\lambda'
@@ -135,8 +144,14 @@ for side=1,3 do
 	printbr(evLMat)
 
 	local A_check = (evRMat * lambdaMat * evLMat)()
-	printbr('A check')
-	printbr(A_check)
+	local diff = (A_check - As[side])()
+	for i=1,8 do
+		for j=1,8 do
+			if diff[i][j] ~= Constant(0) then
+				error("eigensystem did not reproduce original")
+			end
+		end
+	end
 
 	local vs = range(0,7):map(function(i) return var('v_'..i) end)
 	local evrxform = (evRMat * Matrix:lambda({n,1}, function(i) return vs[i] end))()
@@ -145,7 +160,7 @@ for side=1,3 do
 	printbr('L(v) = ', evlxform)
 
 	local _, evrcode = evrxform:compile(table():append(vs, {epsilon, mu}), 'Lua')
-	local _, evlcode = evrxform:compile(table():append(vs, {epsilon, mu}), 'Lua')
+	local _, evlcode = evlxform:compile(table():append(vs, {epsilon, mu}), 'Lua')
 	printbr'right transform code:'
 	printbr('<pre>'..evrcode..'</pre>')
 	printbr'left transform code:'
