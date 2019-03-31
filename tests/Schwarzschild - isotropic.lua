@@ -1,7 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{tostring='MathJax', MathJax={title='Schwarzschild - isotropic'}}
 
 -- coordinates
 local t,x,y,z = vars('t','x','y','z')
@@ -18,66 +17,31 @@ Tensor.coords{
 }
 
 
-local r = var('r', spatialCoords) 	-- r = (x^2 + y^2 + z^2)^.5
+local r = var('r', spatialCoords)
 
 -- mass is constant
 local R = var'R'
 
--- algebraic
---r = (x^2 + y^2 + z^2)^.5
--- deferred:
 local r = var('r', spatialCoords)
---]=]
 
--- scale factor
-local mu = var'\\mu'
-local mu_def = mu:eq(R / (r^2 * (r - R)))
+local mu = var('\\mu', spatialCoords)
+local mu_def = mu:eq(R / (4 * r))
+printbr(mu_def)
 
--- spatial metric
+local mu_plus = var('\\mu_+', spatialCoords)
+local mu_plus_def = mu_plus:eq(1 + mu)
+printbr(mu_plus_def) 
 
-local gamma = Tensor('_ij', function(i,j)
-	local xi = spatialCoords[i]
-	local xj = spatialCoords[j]
-	if i == j then
-		result = 1 + mu_def:rhs() * xi^2
-	else
-		result = mu_def:rhs() * xi * xj
-	end
-	return result
-end)()
+local mu_minus = var('\\mu_-', spatialCoords)
+local mu_minus_def = mu_minus:eq(1 - mu)
+printbr(mu_minus_def)
 
-printbr'spatial metric:'
-printbr(var'\\gamma''_ij':eq(gamma'_ij'()))
-
-local rSq_def = dim == 2 and x^2 or op.add(spatialCoords:map(function(xi) return xi^2 end):unpack())
-local gammaInv = Tensor('^ij', function(i,j)
-	local xi = spatialCoords[i]
-	local xj = spatialCoords[j]
-	local result
-	if i == j then
-		result = 1 + mu_def:rhs() * (r^2 - xi^2)
-	else
-		result = -mu_def:rhs() * xi * xj
-	end
-	return result / (1 + mu_def:rhs() * r^2)
-end)()
-
---local gammaInv = Tensor{indexes='^ij', values=symmath.Matrix.inverse(gamma)}
-printbr'spatial metric inverse:'
-printbr(var'\\gamma''^ij':eq(gammaInv'^ij'()))
-
-local delta3 = (gamma'_ik' * gammaInv'^kj')
-	:replace(r^2, rSq_def)
-	:replace(r^3, r*rSq_def)
-	:simplify()
-printbr((var'\\gamma''_ik' * var'\\gamma''^kj'):eq(delta3'_i^j'()))
-
--- schwarzschild metric in cartesian coordinates
+-- schwarzschild metric in isotropic coordinates
 local g = Tensor('_uv', function(u,v)
 	if u == 1 and v == 1 then
-		return -1 + R/r
-	elseif u > 1 and v > 1 then
-		return gamma[u-1][v-1]
+		return -(mu_minus / mu_plus)^2
+	elseif u == v then
+		return mu_plus^4
 	else
 		return 0
 	end
@@ -86,24 +50,14 @@ end)
 printbr'metric:'
 printbr(var'g''_uv':eq(g'_uv'()))
 
-local gInv = Tensor('^uv', function(u,v)
-	if u == 1 and v == 1 then
-		return 1/g[1][1]
-	elseif u > 1 and v > 1 then
-		return gammaInv[u-1][v-1]
-	else
-		return 0
-	end
-end)
+local gInv = Tensor('^uv', table.unpack(
+	(Matrix(table.unpack(g)):inverse())
+))
 
 printbr'metric inverse:'
 printbr(var'g''^uv':eq(gInv'^uv'()))
 
-local delta4 = (g'_ua' * gInv'^av')
-	:replace(r^2, rSq_def)
-	:replace(r^3, r * rSq_def)
-	:simplify()
-printbr((var'g''_ua'*var'g''^av'):eq(delta4'_u^v'()))
+printbr((var'g''_ua'*var'g''^av'):eq( (g'_ua' * gInv'^av')() ))
 
 Tensor.metric(g, gInv)
 
@@ -112,9 +66,9 @@ Tensor.metric(g, gInv)
 local dg = Tensor'_uvw'
 dg['_uvw'] = g'_uv,w'()
 for _,xi in ipairs(spatialCoords) do
-	dg = dg:replace(r:diff(xi), xi/r)
+	dg = dg:subst(mu_plus_def:diff(xi)(), mu_minus_def:diff(xi)(), mu_def:diff(xi)())()
+	dg = dg:replace(r:diff(xi), xi/r)()
 end
-dg = dg()
 printbr'metric partial derivatives:'
 printbr(var'g''_uv,w':eq(dg'_uvw'()))
 
@@ -125,13 +79,6 @@ printbr(var'\\Gamma''_uvw':eq(Gamma'_uvw'()))
 
 -- Christoffel: G^a_bc = g^ae G_ebc
 Gamma = Gamma'^u_vw'()	-- change underlying storage (not necessary, but saves future calculations)
-	:replace(x^4, x^2*x^2)
-	:replace(y^4, y^2*y^2)
-	:replace(z^4, z^2*z^2)
-	:replace(x^2, r^2-y^2-z^2)()
-	:replace(y^2, r^2-x^2-z^2)()
-	:replace(z^2, r^2-x^2-y^2)()
---	:replace(r^2, x^2+y^2+z^2)()
 printbr'2nd kind Christoffel:'
 printbr(var'\\Gamma''^u_vw':eq(Gamma'^u_vw'()))
 

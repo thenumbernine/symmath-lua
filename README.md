@@ -314,19 +314,19 @@ Output CDN URLs:
 
 [tests/output/MHD symmetrization](https://thenumbernine.github.io/symmath/tests/output/MHD%20symmetrization.html)
 
+[tests/output/Maxwell](https://thenumbernine.github.io/symmath/tests/output/Maxwell.html)
+
 [tests/output/Newton method](https://thenumbernine.github.io/symmath/tests/output/Newton%20method.html)
 
 [tests/output/SRHD](https://thenumbernine.github.io/symmath/tests/output/SRHD.html)
 
-[tests/output/Schwarzschild - Cartesian](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20Cartesian.html)
+[tests/output/Schwarzschild - isotropic](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20isotropic.html)
 
 [tests/output/Schwarzschild - spherical - derivation - varying time 2](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation%20%2d%20varying%20time%202.html)
 
 [tests/output/Schwarzschild - spherical - derivation - varying time](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation%20%2d%20varying%20time.html)
 
 [tests/output/Schwarzschild - spherical - derivation](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation.html)
-
-[tests/output/Schwarzschild - spherical to Cartesian](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20to%20Cartesian.html)
 
 [tests/output/Schwarzschild - spherical](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical.html)
 
@@ -347,6 +347,8 @@ Output CDN URLs:
 [tests/output/electrovacuum/uniform field - spherical](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20spherical.html)
 
 [tests/output/electrovacuum/verify cylindrical transform](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/verify%20cylindrical%20transform.html)
+
+[tests/output/exp_metric](https://thenumbernine.github.io/symmath/tests/output/exp_metric.html)
 
 [tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
 
