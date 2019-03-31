@@ -263,6 +263,8 @@ LaTeX.lookupTable = {
 				prefix = table{var.symbol, (i == 1 and arrows[1] or arrows[arrowIndex])}:append(prefix)
 				if arrowIndex == 1 and i ~= 1 then prefix = table{'[', prefix, ']'} end
 			end
+			prefix.force = true
+			s.force = true
 			s = table{'\\overset', prefix, s}
 		end
 		return s

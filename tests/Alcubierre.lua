@@ -13,6 +13,10 @@ Tensor.coords{
 		symbols = 'ijklmn',
 		metric = {{1,0,0},{0,1,0},{0,0,1}},
 	},
+	{symbols='t', variables={t}},
+	{symbols='x', variables={x}},
+	{symbols='y', variables={y}},
+	{symbols='z', variables={z}},
 }
 
 local alpha = 1
@@ -36,21 +40,10 @@ printbr(var'\\gamma''_ij':eq(gamma'_ij'()))
 printbr(var'\\gamma''^ij':eq(gamma'^ij'()))
 
 local g = Tensor'_ab'
---[[
-g['_tt'] = -alpha^2 + beta'^i' * beta'^j' * gamma'_ij'
-g['_it'] = beta'^i' / alpha^2
-g['_ti'] = beta'^i' / alpha^2
-g['_ij'] = gamma'^ij' - beta'^i' * beta'^j' / alpha^2
---]]
-g[{1,1}] = -alpha^2
-for i=1,3 do
-	g[{i+1,1}] = beta[i] / alpha^2
-	g[{1,i+1}] = beta[i] / alpha^2
-	for j=1,3 do
-		g[{1,1}] = g[{1,1}] + beta[i] * beta[j] * gamma[{i,j}]
-		g[{i+1,j+1}] = gamma'^ij'()[{i,j}] - beta[i] * beta[j] / alpha^2
-	end
-end
+g['_tt'] = (-alpha^2 + beta'^i' * beta'^j' * gamma'_ij')()
+g['_it'] = (beta'^i' / alpha^2)()
+g['_ti'] = (beta'^i' / alpha^2)()
+g['_ij'] = gamma'_ij'()
 g=g()
 printbr'4-metric:'
 printbr(var'g''_ab':eq(g'_ab'()))
@@ -62,12 +55,6 @@ printbr(var'g':eq(detg_def))
 local gU = Tensor('^ab', table.unpack(
 	(Matrix(table.unpack(g)):inverse())
 ))
-printbr(var'g''^ab':eq(gU'^ab'()))
-gU = gU:replace((-detg_def)(), -detg)
-gU = gU:replace( (-detg_def * (1 - u^2))(), -detg * (1 - u^2) )
-gU = gU:replace( ((1 - u^2)^2)(), (1 - u^2)^2 )
--- need to make factoring better ...
-gU[1][1] = (( 1 - u^2 ) / detg)()
 printbr(var'g''^ab':eq(gU'^ab'()))
 
 Tensor.metric(g, gU)
@@ -82,18 +69,11 @@ local dx = Tensor('^u', function(u) return var('\\dot{x}^'..coords[u].name) end)
 local d2x = Tensor('^u', function(u) return var('\\ddot{x}^'..coords[u].name) end)
 printbr'geodesic:'
 -- TODO unravel equaliy, or print individual assignments
-printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):eq(Tensor('^u',0,0,0,0)))())
+printbr(d2x'^a':eq((-Gamma'^a_bc' * dx'^b' * dx'^c')()))
 printbr()
 
 local dGamma = Tensor'^a_bcd'
 dGamma['^a_bcd'] = Gamma'^a_bc,d'()
-dGamma = dGamma:map(function(expr)
-	if Derivative.is(expr) 
-	and expr[1] == detg
-	then
-		return detg_def:diff( table.unpack(expr, 2) )()
-	end
-end)
 printbr(var'\\Gamma''^a_bc,d':eq(dGamma'^a_bcd'()))
 
 local GammaSq = Tensor'^a_bcd'
