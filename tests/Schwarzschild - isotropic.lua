@@ -68,6 +68,7 @@ dg['_uvw'] = g'_uv,w'()
 for _,xi in ipairs(spatialCoords) do
 	dg = dg:subst(mu_plus_def:diff(xi)(), mu_minus_def:diff(xi)(), mu_def:diff(xi)())()
 	dg = dg:replace(r:diff(xi), xi/r)()
+	dg = dg:subst((mu_plus_def + mu_minus_def)())()
 end
 printbr'metric partial derivatives:'
 printbr(var'g''_uv,w':eq(dg'_uvw'()))
