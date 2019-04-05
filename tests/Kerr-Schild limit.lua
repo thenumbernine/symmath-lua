@@ -136,7 +136,7 @@ printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
 local diffx = Tensor('^u', function(u) 
-	return var('\\dot{x}^'..u.name, coords) 
+	return var('\\dot{x}^'..coords[u].name, coords) 
 end)
 local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w')()
 printbr(var'\\ddot{x}':eq(diffx2))
