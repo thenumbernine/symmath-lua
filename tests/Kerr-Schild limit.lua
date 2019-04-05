@@ -132,6 +132,7 @@ Gamma = Gamma'^a_bc'()
 Gamma = Gamma:subst(rSq_def:switch())()
 Gamma = Gamma:replace((2 * M * x^2)(), 2 * M * (r^2 - y^2 - z^2))()
 Gamma = Gamma:replace((6 * M * x^2)(), 6 * M * (r^2 - y^2 - z^2))()
+Gamma = Gamma:replace((4 * M * x^2)(), 4 * M * (r^2 - y^2 - z^2))()
 printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
