@@ -21,61 +21,94 @@ r^2 x^2 + r^2 y^2 + r^2 z^2 + a^2 z^2 = r^4 + a^2 r^2
 
 -- TODO inverting the metric goes really slow...
 
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'ext'
+require 'symmath'.setup{tostring='MathJax', MathJax={title='Kerr-Schild', usePartialLHSForDerivative=true}}
 
 -- coordinates
 local t, x, y, z = vars('t', 'x', 'y', 'z')
+local spatialCoords = table{x,y,z}
 local coords = {t, x, y, z}
 
-local a = var('a', coords)
-local r = var('r', coords)
+local a = var('a')
 local M = var'M'
 local Q = var'Q'
 
 Tensor.coords{
 	{variables=coords},
+	{
+		variables = spatialCoords,
+		symbols = 'ijklmn',
+	},
+	{symbols='t', variables={t}},
+	{symbols='x', variables={x}},
+	{symbols='y', variables={y}},
+	{symbols='z', variables={z}},
+
 }
 
---[[
-H = (r * M - Q^2 / 2) / (r^2 + a^2 * z^2 / r^2)
---]]
--- [[
-local H = var('H', coords)
---]]
+local r = var('r', spatialCoords)
+local b = a^2 - x^2 - y^2 - z^2
+local rSq_def = (r^2):eq(frac(1,2) * (-b + sqrt(b^2 + 4*a^2*z^2)))
+printbr(rSq_def)
+printbr(rSq_def:diff(x)())
+printbr(rSq_def:diff(y)())
+printbr(rSq_def:diff(z)())
+printbr()
 
---[[
-lL_t = 1
-lL_x = (r*x + a*y) / (r^2 + a^2)
-lL_y = (r*y - a*x) / (r^2 + a^2)
-lL_z = z / r
-mU_t = -lL_t
-mU_x = lL_x
-mU_y = lL_y
-mU_z = lL_z
---]]
--- [=[
-local l = Tensor('_u', function(u) return var('l_'..u, coords) end)
-printbr(var'l''_u':eq(l'_u'()))
-local m = Tensor('^u', function(u) return var('m^'..u, coords) end)
-printbr(var'm''^u':eq(m'^u'()))
---]=]
+local H = var('H', spatialCoords)
+
+local H_def = H:eq((r * M - Q^2 / 2) / (r^2 + a^2 * z^2 / r^2))
+printbr(H_def)
+printbr(H_def:diff(x)())
+printbr(H_def:diff(y)())
+printbr(H_def:diff(z)())
+printbr()
 
 -- Minkowski metric
 local eta = Tensor('_uv', function(u,v) return u == v and (u == 1 and -1 or 1) or 0 end)
 printbr(var'\\eta''_uv':eq(eta'_uv'()))
 
+local etaU = Tensor('^uv', function(u,v) return u == v and (u == 1 and -1 or 1) or 0 end)
+printbr(var'\\eta''^uv':eq(etaU'^uv'()))
+
+
+--[[
+local l = Tensor('_u', 
+	1,
+	(r*x + a*y) / (r^2 + a^2),
+	(r*y - a*x) / (r^2 + a^2),
+	z / r
+)
+--]]
+-- [[
+local l = Tensor('_u', function(u) 
+	if u == 1 then return 1 end
+	return var('l_'..coords[u].name, spatialCoords)
+end)
+--]]
+printbr(var'l''_u':eq(l'_u'()))
+printbr(var'l''_t':eq(1))
+printbr(var'l''_x':eq((r*x + a*y) / (r^2 + a^2)))
+printbr(var'l''_y':eq((r*y - a*x) / (r^2 + a^2)))
+printbr(var'l''_z':eq(z / r))
+printbr()
+
+printbr(var'l''^u':eq(var'l''_v' * var'\\eta''^uv'))
+local lU = (l'_v' * etaU'^uv')()
+printbr(var'l''^u':eq(lU'^u'()))
+
 -- Kerr metric in cartesian coordinates
-local g = (eta'_uv' - 2 * H * l'_u' * l'_v')()
+-- Alcubierre's num rel book, eqn 1.16.16
+printbr(var'g''_uv':eq(var'\\eta''_uv' + 2 * var'H' * var'l''_u' * var'l''_v'))
+local g = (eta'_uv' + 2 * H * l'_u' * l'_v')()
 printbr(var'g''_uv':eq(g'_uv'()))
 
-print"current matrix inverse is too slow for n=4"
-do return end
-
-Tensor.metric(g)
-
-local gInv = Tensor.metric().metricInverse
+-- Alcubierre's num rel book, eqn 1.16.19
+printbr(var'g''^uv':eq(var'\\eta''^uv' - 2 * var'H' * var'l''^u' * var'l''^v'))
+local gInv = (etaU'^uv' - 2 * H * lU'^u' * lU'^v')()
 printbr(var'g''^uv':eq(gInv'^uv'()))
+
+Tensor.metric(g, gInv)
 
 -- metric partial
 -- assume dr/dt is zero
@@ -95,6 +128,8 @@ printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 local diffx = Tensor('^u', function(u) return var('{d x^'..u..'}\\over{d\\tau}', coords) end)
 local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w')()
 printbr(var'\\ddot{x}':eq(diffx2))
+
+os.exit()
 
 -- Christoffel partial: G^a_bc,d
 local dGamma = Gamma'^a_bc,d'()

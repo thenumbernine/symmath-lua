@@ -20,6 +20,28 @@ function phiHat:applyDiff(x) return x:diff(phi) / (r * sin(theta)) end
 local psiHat = var'\\hat{\\psi}'
 function psiHat:applyDiff(x) return x:diff(psi) end
 
+
+local rPolarConformal = var'\\bar{r}'
+function rPolarConformal:applyDiff(x) return x:diff(r) / sqrt(r) end 
+
+local thetaPolarConformal = var'\\bar{\\theta}'
+function thetaPolarConformal:applyDiff(x) return x:diff(theta) / sqrt(r) end
+
+
+local phiCylindricalSurfaceNormalized = var'\\bar{\\phi}'
+function phiCylindricalSurfaceNormalized:applyDiff(x) return x:diff(phi) / r end
+
+local zCylindricalSurfaceNormalized = var'\\bar{z}'
+function zCylindricalSurfaceNormalized:applyDiff(x) return x:diff(z) / r end
+
+
+local phiCylindricalSurfaceConformal = var'\\bar{\\phi}'
+function phiCylindricalSurfaceConformal:applyDiff(x) return x:diff(phi) / sqrt(r) end
+
+local zCylindricalSurfaceConformal = var'\\bar{z}'
+function zCylindricalSurfaceConformal:applyDiff(x) return x:diff(z) / sqrt(r) end
+
+
 local alpha = var('\\alpha', {r})
 local omega = var('\\omega', {t, r})
 local q = var('q', {t,x,y,z})
@@ -51,6 +73,16 @@ local spacetimes = {
 		end,
 	},
 	{
+		title = 'polar, anholonomic, conformal',
+		coords = {rPolarConformal,thetaPolarConformal},
+		baseCoords = {r,theta},
+		embedded = {x,y},
+		flatMetric = delta2,
+		chart = function()
+			return Tensor('^I', r * cos(theta), r * sin(theta))
+		end,
+	},
+	{
 		title = 'cylindrical surface',
 		coords = {phi,z},
 		embedded = {x,y,z},
@@ -70,6 +102,36 @@ local spacetimes = {
 		end,
 	},
 	{
+		title = 'cylindrical surface, anholonomic, normalized',
+		coords = {phiCylindricalSurfaceNormalized,zCylindricalSurfaceNormalized},
+		baseCoords = {phi,z},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', r * cos(phi), r * sin(phi), z)
+		end,
+		eU = function()
+			return Tensor('^a_I', 
+				{-sin(phi)/r, cos(phi)/r, 0},
+				{0, 0, 1})
+		end,
+	},
+	{
+		title = 'cylindrical surface, anholonomic, conformal',
+		coords = {phiCylindricalSurfaceConformal,zCylindricalSurfaceConformal},
+		baseCoords = {phi,z},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', r * cos(phi), r * sin(phi), z)
+		end,
+		eU = function()
+			return Tensor('^a_I', 
+				{-sin(phi)/r, cos(phi)/r, 0},
+				{0, 0, 1})
+		end,
+	},
+	{
 		title = 'cylindrical',
 		coords = {r,phi,z},
 		embedded = {x,y,z},
@@ -81,6 +143,20 @@ local spacetimes = {
 	{
 		title = 'cylindrical, anholonomic, normalized',
 		coords = {rHat,thetaHat,zHat},
+		baseCoords = {r,theta,z},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', r * cos(theta), r * sin(theta), z)
+		end,
+	},
+	{
+		title = 'cylindrical, anholonomic, conformal',
+		coords = {
+			class(var, {name = '\\bar{r}', applyDiff = function(self,x) return x:diff(r) * r^(-frac(1,3)) end})(),
+			class(var, {name = '\\bar{\\theta}', applyDiff = function(self,x) return x:diff(theta) * r^(-frac(1,3)) end})(),
+			class(var, {name = '\\bar{z}', applyDiff = function(self,x) return x:diff(z) * r^(-frac(1,3)) end})(),
+		},
 		baseCoords = {r,theta,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
