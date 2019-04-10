@@ -104,6 +104,7 @@ add.rules = {
 				return prodList
 			end
 			
+			local Verbose = require 'symmath.tostring.Verbose'
 			local function prodListToNode(list)
 				list = list:map(function(x)
 					if x.power == Constant(1) then
@@ -114,6 +115,12 @@ add.rules = {
 				end)
 				if #list == 0 then return Constant(1) end
 				if #list == 1 then return list[1] end
+				list = list:sort(function(a,b)
+					local sa = Verbose(a)
+					local sb = Verbose(b)
+					if #sa ~= #sb then return #sa < #sb end
+					return sa < sb 
+				end)
 				return mul(list:unpack())
 			end
 
@@ -155,8 +162,11 @@ add.rules = {
 					return Verbose(x.term), #t+1
 				end):concat(',')
 			end
+			-- sort the sum terms from shortest to longest
 			prodLists:sort(function(a,b)
-				return sortstr(a) < sortstr(b)
+				local sa = sortstr(a)
+				local sb = sortstr(b)
+				return sa < sb 
 			end)
 			
 			-- rebuild exprs accordingly

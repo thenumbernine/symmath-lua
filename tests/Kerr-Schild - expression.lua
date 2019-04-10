@@ -124,26 +124,26 @@ local Gamma = var'\\Gamma'
 local Gamma_lll_def = Gamma'_abc':eq(frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))
 printbr(Gamma_lll_def)
 
-Gamma_lll_def = Gamma_lll_def:substIndex(dg_lll_def)
-printbr(Gamma_lll_def)
+-- this isn't working correctly ...
+--Gamma_lll_def = Gamma_lll_def:substIndex(dg_lll_def)
+-- so here's this instead:
+Gamma_lll_def = Gamma_lll_def():subst(
+	dg_lll_def:reindex{abc = 'uvw'},
+	dg_lll_def:reindex{acb = 'uvw'},
+	dg_lll_def:reindex{bca = 'uvw'}
+)
 
 Gamma_lll_def = Gamma_lll_def()
 printbr(Gamma_lll_def)
 
-local Gamma_l_def = Gamma'_a':eq(Gamma'_abc' * g'^bc')
-printbr(Gamma_l_def)
+local u = var'u'
+local du = var'\\dot{u}'
 
-Gamma_l_def = Gamma_l_def:substIndex(Gamma_lll_def, g_uu_def)() 
-printbr(Gamma_l_def)
+local accel_l_def = du'_a':eq(-Gamma'_abc' * u'^b' * u'^c')
+printbr(accel_l_def)
 
-Gamma_l_def = Gamma_l_def:substIndex(lStar_def)():tidyIndexes()()
-printbr(Gamma_l_def)
+accel_l_def = accel_l_def:subst(Gamma_lll_def)()
+printbr(accel_l_def)
 
-local Gamma_u_def = Gamma'^u':eq(g'^ua' * Gamma'_a')
-printbr(Gamma_u_def)
-
-Gamma_u_def = Gamma_u_def:substIndex(g_uu_def, Gamma_l_def)()
-printbr(Gamma_u_def)
-
-Gamma_u_def = Gamma_u_def:tidyIndexes()()
-printbr(Gamma_u_def)
+accel_l_def = accel_l_def():tidyIndexes()
+printbr(accel_l_def)
