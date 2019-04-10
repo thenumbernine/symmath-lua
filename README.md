@@ -308,7 +308,11 @@ Output CDN URLs:
 
 [tests/output/Kaluza-Klein](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein.html)
 
-[tests/output/Kerr - Cartesian](https://thenumbernine.github.io/symmath/tests/output/Kerr%20%2d%20Cartesian.html)
+[tests/output/Kerr-Schild - dense](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20%2d%20dense.html)
+
+[tests/output/Kerr-Schild - expression](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20%2d%20expression.html)
+
+[tests/output/Kerr-Schild degenerate case](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20degenerate%20case.html)
 
 [tests/output/MHD inverse](https://thenumbernine.github.io/symmath/tests/output/MHD%20inverse.html)
 

@@ -22,7 +22,7 @@ r^2 x^2 + r^2 y^2 + r^2 z^2 + a^2 z^2 = r^4 + a^2 r^2
 -- TODO inverting the metric goes really slow...
 
 require 'ext'
-require 'symmath'.setup{tostring='MathJax', MathJax={title='Kerr-Schild', usePartialLHSForDerivative=true}}
+require 'symmath'.setup{tostring='MathJax', MathJax={title='Kerr-Schild - dense', usePartialLHSForDerivative=true}}
 
 -- coordinates
 local t, x, y, z = vars('t', 'x', 'y', 'z')
@@ -46,13 +46,25 @@ Tensor.coords{
 
 }
 
+local rho = var('\\rho', spatialCoords)
+local rho_def = rho:eq(x^2 + y^2 + z^2 - a^2)
+printbr(rho_def)
+local drho_dx_defs = table()
+for i,xi in ipairs(spatialCoords) do
+	drho_dx_defs[i] = rho_def:diff(xi)()
+	printbr(drho_dx_defs[i])
+end
+printbr()
+
 local r = var('r', spatialCoords)
-local b = a^2 - x^2 - y^2 - z^2
-local rSq_def = (r^2):eq(frac(1,2) * (-b + sqrt(b^2 + 4*a^2*z^2)))
+local rSq_def = (r^2):eq(frac(1,2) * (rho + sqrt(rho^2 + 4*a^2*z^2)))
 printbr(rSq_def)
-printbr(rSq_def:diff(x)())
-printbr(rSq_def:diff(y)())
-printbr(rSq_def:diff(z)())
+local dr_dx_defs = table()
+for i,xi in ipairs(spatialCoords) do
+	local dr_dx = rSq_def:diff(xi)():solve(r:diff(xi)):subst(drho_dx_defs:unpack())()
+	printbr(dr_dx)
+	dr_dx_defs:insert(dr_dx)
+end
 printbr()
 
 local H = var('H', spatialCoords)
@@ -81,30 +93,46 @@ local l = Tensor('_u',
 )
 --]]
 -- [[
+--]]
+local lvar = var'l'
+
+local lt_def = lvar'_t':eq(1)
+local lx_def = lvar'_x':eq((r*x + a*y) / (r^2 + a^2))
+local ly_def = lvar'_y':eq((r*y - a*x) / (r^2 + a^2))
+local lz_def = lvar'_z':eq(z / r)
+printbr(lt_def)
+printbr(lx_def)
+printbr(ly_def)
+printbr(lz_def)
+printbr()
+for i,xi in ipairs(spatialCoords) do
+	printbr(lx_def:diff(xi)())
+end
+for i,xi in ipairs(spatialCoords) do
+	printbr(ly_def:diff(xi)())
+end
+for i,xi in ipairs(spatialCoords) do
+	printbr(lz_def:diff(xi)())
+end
+
 local l = Tensor('_u', function(u) 
 	if u == 1 then return 1 end
 	return var('l_'..coords[u].name, spatialCoords)
 end)
---]]
-printbr(var'l''_u':eq(l'_u'()))
-printbr(var'l''_t':eq(1))
-printbr(var'l''_x':eq((r*x + a*y) / (r^2 + a^2)))
-printbr(var'l''_y':eq((r*y - a*x) / (r^2 + a^2)))
-printbr(var'l''_z':eq(z / r))
-printbr()
+printbr(lvar'_u':eq(l'_u'()))
 
-printbr(var'l''^u':eq(var'l''_v' * var'\\eta''^uv'))
+printbr(lvar'^u':eq(lvar'_v' * var'\\eta''^uv'))
 local lU = (l'_v' * etaU'^uv')()
-printbr(var'l''^u':eq(lU'^u'()))
+printbr(lvar'^u':eq(lU'^u'()))
 
 -- Kerr metric in cartesian coordinates
 -- Alcubierre's num rel book, eqn 1.16.16
-printbr(var'g''_uv':eq(var'\\eta''_uv' + 2 * var'H' * var'l''_u' * var'l''_v'))
+printbr(var'g''_uv':eq(var'\\eta''_uv' + 2 * var'H' * lvar'_u' * lvar'_v'))
 local g = (eta'_uv' + 2 * H * l'_u' * l'_v')()
 printbr(var'g''_uv':eq(g'_uv'()))
 
 -- Alcubierre's num rel book, eqn 1.16.19
-printbr(var'g''^uv':eq(var'\\eta''^uv' - 2 * var'H' * var'l''^u' * var'l''^v'))
+printbr(var'g''^uv':eq(var'\\eta''^uv' - 2 * var'H' * lvar'^u' * lvar'^v'))
 local gInv = (etaU'^uv' - 2 * H * lU'^u' * lU'^v')()
 printbr(var'g''^uv':eq(gInv'^uv'()))
 
@@ -120,6 +148,10 @@ printbr(var'g''_uv,w':eq(dg'_uvw'()))
 local Gamma = ((dg'_uvw' + dg'_uwv' - dg'_vwu') / 2)()
 printbr(var'\\Gamma''_abc':eq(Gamma'_abc'()))
 
+-- Gamma_a, for x''^u = -g^uv Gamma_v
+printbr(var'\\Gamma''_a':eq(var'\\Gamma''_abc' * var'g''^bc'):eq( Gamma'_ab^b'() ))
+os.exit()
+
 -- Christoffel: G^a_bc = g^ae G_ebc
 Gamma = Gamma'^a_bc'()
 printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
@@ -128,8 +160,6 @@ printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 local diffx = Tensor('^u', function(u) return var('{d x^'..u..'}\\over{d\\tau}', coords) end)
 local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w')()
 printbr(var'\\ddot{x}':eq(diffx2))
-
-os.exit()
 
 -- Christoffel partial: G^a_bc,d
 local dGamma = Gamma'^a_bc,d'()

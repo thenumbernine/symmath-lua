@@ -22,7 +22,7 @@ r^2 x^2 + r^2 y^2 + r^2 z^2 + a^2 z^2 = r^4 + a^2 r^2
 -- TODO inverting the metric goes really slow...
 
 require 'ext'
-require 'symmath'.setup{tostring='MathJax', MathJax={title='Kerr-Schild limit', usePartialLHSForDerivative=true}}
+require 'symmath'.setup{tostring='MathJax', MathJax={title='Kerr-Schild degenerate case', usePartialLHSForDerivative=true}}
 
 -- coordinates
 local t, x, y, z = vars('t', 'x', 'y', 'z')
@@ -130,9 +130,19 @@ printbr(var'\\Gamma''_abc':eq(Gamma'_abc'()))
 -- Christoffel: G^a_bc = g^ae G_ebc
 Gamma = Gamma'^a_bc'()
 Gamma = Gamma:subst(rSq_def:switch())()
-Gamma = Gamma:replace((2 * M * x^2)(), 2 * M * (r^2 - y^2 - z^2))()
-Gamma = Gamma:replace((6 * M * x^2)(), 6 * M * (r^2 - y^2 - z^2))()
-Gamma = Gamma:replace((4 * M * x^2)(), 4 * M * (r^2 - y^2 - z^2))()
+Gamma = Gamma:replace(x^2, r^2 - y^2 - z^2)()
+Gamma = Gamma:replace((2 * M * y^2)(), 2 * M * (r^2 - x^2 - z^2))()
+Gamma[1][3][3] = Gamma[1][3][3]:replace((2 * M * x^2)(), 2 * M * (r^2 - y^2 - z^2))()
+Gamma[2][2][1] = Gamma[2][2][1]:replace(r^2, x^2 + y^2 + z^2)()
+Gamma[2][1][2] = Gamma[2][1][2]:replace(r^2, x^2 + y^2 + z^2)()
+Gamma = Gamma:replace((3 * r * y^2)(), 3 * r * (r^2 - x^2 - z^2))()
+
+-- Gamma[1..4][2][2] needs some simplification
+Gamma[1][2][2] = (-2 * M * (r^3 - 2 * r * x^2 - M * x^2) / r^5)()
+Gamma[2][2][2] = (x * M * (2 * r^3 - 3 * r * x^2 - 2 * M * x^2) / r^6)()
+Gamma[3][2][2] = (y * M * (2 * r^3 - 3 * r * x^2 - 2 * M * x^2) / r^6)()
+Gamma[4][2][2] = (z * M * (2 * r^3 - 3 * r * x^2 - 2 * M * x^2) / r^6)()
+
 printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
