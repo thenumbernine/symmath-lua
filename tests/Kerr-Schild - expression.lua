@@ -144,6 +144,3 @@ printbr(accel_l_def)
 
 accel_l_def = accel_l_def:subst(Gamma_lll_def)()
 printbr(accel_l_def)
-
-accel_l_def = accel_l_def():tidyIndexes()
-printbr(accel_l_def)
