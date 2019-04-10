@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title>Schwarzschild - spherical - mass varying with time</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+metric:
+<br>
+${{{g}_a}_b} = {\overset{a\downarrow b\rightarrow}{
+\left[
+\begin{matrix}
+{\frac{1}{r}}{({{R} - {r}})} & 0 & 0 & 0 \\
+0 & \frac{r}{-{({{R} - {r}})}} & 0 & 0 \\
+0 & 0 & {r}^{2} & 0 \\
+0 & 0 & 0 & {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}
+\end{matrix}
+\right]
+}}$
+<br>
+metric inverse:
+<br>
+${{{g}^a}^b} = {\overset{a\downarrow b\rightarrow}{
+\left[
+\begin{matrix}
+\frac{r}{{R} - {r}} & 0 & 0 & 0 \\
+0 & {\frac{1}{r}}{({-{({{R} - {r}})}})} & 0 & 0 \\
+0 & 0 & \frac{1}{{r}^{2}} & 0 \\
+0 & 0 & 0 & \frac{1}{{{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}}
+\end{matrix}
+\right]
+}}$
+<br>
+metric derivative:
+<br>
+${{{{g}_a}_b}_{,c}} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{
+\left[
+\begin{matrix}
+\overset{b\downarrow c\rightarrow}{
+\left[
+\begin{matrix}
+{\frac{1}{r}}{({\partial_{{t}}(R)})} & \frac{-{R}}{{r}^{2}} & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{matrix}
+\right]
+} \\
+\overset{b\downarrow c\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 & 0 \\
+\frac{{{r}} {{\partial_{{t}}(R)}}}{{{{R}^{2}} - {{{2}} {{R}} {{r}}}} + {{r}^{2}}} & \frac{-{R}}{{{{R}^{2}} - {{{2}} {{R}} {{r}}}} + {{r}^{2}}} & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{matrix}
+\right]
+} \\
+\overset{b\downarrow c\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & {{2}} {{r}} & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{matrix}
+\right]
+} \\
+\overset{b\downarrow c\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & {{2}} {{r}} {{{sin\left(\theta\right)}^{2}}} & {{2}} {{{r}^{2}}} {{sin\left(\theta\right)}} {{cos\left(\theta\right)}} & 0
+\end{matrix}
+\right]
+}
+\end{matrix}
+\right]
+}}$
+<br>
+1st kind Christoffel:
+<br>
+${{{{\Gamma}_a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{
+\left[
+\begin{matrix}
+\overset{b\downarrow c\rightarrow}{
+\left[
+\begin{matrix}
+\frac{\partial_{{t}}(R)}{{{2}} {{r}}} & \frac{-{R}}{{{2}} {{{r}^{2}}}} & 0 & 0 \\
+\frac{-{R}}{{{2}} {{{r}^{2}}}} & \frac{-{{{r}} {{\partial_{{t}}(R)}}}}{{{{{2}} {{{R}^{2}}}} - {{{4}} {{R}} {{r}}}} + {{{2}} {{{r}^{2}}}}} & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{matrix}
+\right]
+} \\
+\overset{b\downarrow c\rightarrow}{
+\left[
+\begin{matrix}
+\frac{R}{{{2}} {{{r}^{2}}}} & \frac{{{r}} {{\partial_{{t}}(R)}}}{{{{{2}} {{{R}^{2}}}} - {{{4}} {{R}} {{r}}}} + {{{2}} {{{r}^{2}}}}} & 0 & 0 \\
+\frac{{{r}} {{\partial_{{t}}(R)}}}{{{{{2}} {{{R}^{2}}}} - {{{4}} {{R}} {{r}}}} + {{{2}} {{{r}^{2}}}}} & \frac{-{R}}{{{{{2}} {{{R}^{2}}}} - {{{4}} {{R}} {{r}}}} + {{{2}} {{{r}^{2}}}}} & 0 & 0 \\
+0 & 0 & -{r} & 0 \\
+0 & 0 & 0 & -{{{r}} {{{sin\left(\theta\right)}^{2}}}}
+\end{matrix}
+\right]
+} \\
+\overset{b\downarrow c\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 & 0 \\
+0 & 0 & r & 0 \\
+0 & r & 0 & 0 \\
+0 & 0 & 0 & -{{{{r}^{2}}} {{sin\left(\theta\right)}} {{cos\left(\theta\right)}}}
+\end{matrix}
+\right]
+} \\
+\overset{b\downarrow c\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & {{r}} {{{sin\left(\theta\right)}^{2}}} \\
+0 & 0 & 0 & {{{r}^{2}}} {{sin\left(\theta\right)}} {{cos\left(\theta\right)}} \\
+0 & {{r}} {{{sin\left(\theta\right)}^{2}}} & {{{r}^{2}}} {{sin\left(\theta\right)}} {{cos\left(\theta\right)}} & 0
+\end{matrix}
+\right]
+}
+\end{matrix}
+\right]
+}}$
+<br>
+connection coefficients / 2nd kind Christoffel:
+<br>
+${{{{\Gamma}^a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{
+\left[
+\begin{matrix}
+
+\left[
+\begin{matrix}
+\frac{\partial_{{t}}(R)}{{{2}} {{({{R} - {r}})}}} & \frac{R}{{{2}} {{r}} {{({{r} - {R}})}}} & 0 & 0 \\
+\frac{R}{{{2}} {{r}} {{({{r} - {R}})}}} & \frac{-{{{{r}^{2}}} {{\partial_{{t}}(R)}}}}{{{{2}} {{{R}^{3}}}} + {{{{{6}} {{R}} {{{r}^{2}}}} - {{{2}} {{{r}^{3}}}}} - {{{6}} {{r}} {{{R}^{2}}}}}} & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{matrix}
+\right]
+ \\
+
+\left[
+\begin{matrix}
+\frac{-{{{R}} {{({{R} - {r}})}}}}{{{2}} {{{r}^{3}}}} & \frac{-{{{\partial_{{t}}(R)}} {{({{R} - {r}})}}}}{{{{{2}} {{{R}^{2}}}} - {{{4}} {{R}} {{r}}}} + {{{2}} {{{r}^{2}}}}} & 0 & 0 \\
+\frac{-{{{\partial_{{t}}(R)}} {{({{R} - {r}})}}}}{{{{{2}} {{{R}^{2}}}} - {{{4}} {{R}} {{r}}}} + {{{2}} {{{r}^{2}}}}} & \frac{{{R}} {{({{R} - {r}})}}}{{{r}} {{({{{{{2}} {{{r}^{2}}}} - {{{4}} {{R}} {{r}}}} + {{{2}} {{{R}^{2}}}}})}}} & 0 & 0 \\
+0 & 0 & {R} - {r} & 0 \\
+0 & 0 & 0 & {{{sin\left(\theta\right)}^{2}}} {{({{R} - {r}})}}
+\end{matrix}
+\right]
+ \\
+
+\left[
+\begin{matrix}
+0 & 0 & 0 & 0 \\
+0 & 0 & \frac{1}{r} & 0 \\
+0 & \frac{1}{r} & 0 & 0 \\
+0 & 0 & 0 & -{{{sin\left(\theta\right)}} {{cos\left(\theta\right)}}}
+\end{matrix}
+\right]
+ \\
+
+\left[
+\begin{matrix}
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & \frac{1}{r} \\
+0 & 0 & 0 & \frac{cos\left(\theta\right)}{sin\left(\theta\right)} \\
+0 & \frac{1}{r} & \frac{cos\left(\theta\right)}{sin\left(\theta\right)} & 0
+\end{matrix}
+\right]
+
+\end{matrix}
+\right]
+}}$
+<br>
+divergence:	${{{{A}^i}_{,i}} + {{{{{{\Gamma}^i}_j}_i}} {{{A}^j}}}} = {{{{12}} {{{R}^{2}}} {{r}} {{\partial_{{\phi}}({A^{\phi}})}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}} + {{{12}} {{{R}^{2}}} {{r}} {{\partial_{{\theta}}({A^{\theta}})}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}} + {{{12}} {{{R}^{2}}} {{r}} {{\partial_{{r}}({A^{r}})}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}} + {{{12}} {{{R}^{2}}} {{r}} {{\partial_{{t}}({A^{t}})}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{r}^{3}}} {{\partial_{{\phi}}({A^{\phi}})}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{r}^{3}}} {{\partial_{{\theta}}({A^{\theta}})}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{r}^{3}}} {{\partial_{{r}}({A^{r}})}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{r}^{3}}} {{\partial_{{t}}({A^{t}})}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}} + {{{12}} {{{A^{\theta}}}} \cdot {{cos\left(\theta\right)}} {{{R}^{2}}} {{r}} {{\frac{1}{{{{-4}} {{sin\left(\theta\right)}} {{{R}^{3}}}} + {{{{{-12}} {{sin\left(\theta\right)}} {{R}} {{{r}^{2}}}} - {{{-4}} {{sin\left(\theta\right)}} {{{r}^{3}}}}} - {{{-12}} {{sin\left(\theta\right)}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{A^{\theta}}}} \cdot {{cos\left(\theta\right)}} {{{r}^{3}}} {{\frac{1}{{{{-4}} {{sin\left(\theta\right)}} {{{R}^{3}}}} + {{{{{-12}} {{sin\left(\theta\right)}} {{R}} {{{r}^{2}}}} - {{{-4}} {{sin\left(\theta\right)}} {{{r}^{3}}}}} - {{{-12}} {{sin\left(\theta\right)}} {{r}} {{{R}^{2}}}}}}}}} + {{{8}} {{{A^{r}}}} \cdot {{{R}^{3}}} {{\frac{1}{{{{{{-4}} {{r}} {{{r}^{3}}}} - {{{-12}} {{r}} {{R}} {{{r}^{2}}}}} - {{{-4}} {{r}} {{{R}^{3}}}}} + {{{-12}} {{r}} {{r}} {{{R}^{2}}}}}}}} + {{{8}} {{{A^{r}}}} \cdot {{{r}^{2}}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}} + {{{12}} {{R}} {{{r}^{2}}} {{\partial_{{\phi}}({A^{\phi}})}} {{\frac{1}{{{{4}} {{{R}^{3}}}} + {{{{{12}} {{R}} {{{r}^{2}}}} - {{{4}} {{{r}^{3}}}}} - {{{12}} {{r}} {{{R}^{2}}}}}}}}} + {{{12}} {{R}} {{{r}^{2}}} {{\partial_{{\theta}}({A^{\theta}})}} {{\frac{1}{{{{4}} {{{R}^{3}}}} + {{{{{12}} {{R}} {{{r}^{2}}}} - {{{4}} {{{r}^{3}}}}} - {{{12}} {{r}} {{{R}^{2}}}}}}}}} + {{{12}} {{R}} {{{r}^{2}}} {{\partial_{{r}}({A^{r}})}} {{\frac{1}{{{{4}} {{{R}^{3}}}} + {{{{{12}} {{R}} {{{r}^{2}}}} - {{{4}} {{{r}^{3}}}}} - {{{12}} {{r}} {{{R}^{2}}}}}}}}} + {{{12}} {{R}} {{{r}^{2}}} {{\partial_{{t}}({A^{t}})}} {{\frac{1}{{{{4}} {{{R}^{3}}}} + {{{{{12}} {{R}} {{{r}^{2}}}} - {{{4}} {{{r}^{3}}}}} - {{{12}} {{r}} {{{R}^{2}}}}}}}}} + {{{12}} {{R}} {{{A^{\theta}}}} \cdot {{cos\left(\theta\right)}} {{{r}^{2}}} {{\frac{1}{{{{4}} {{sin\left(\theta\right)}} {{{R}^{3}}}} + {{{{{12}} {{sin\left(\theta\right)}} {{R}} {{{r}^{2}}}} - {{{4}} {{sin\left(\theta\right)}} {{{r}^{3}}}}} - {{{12}} {{sin\left(\theta\right)}} {{r}} {{{R}^{2}}}}}}}}} + {{{24}} {{R}} {{{A^{r}}}} \cdot {{r}} {{\frac{1}{{{{4}} {{{R}^{3}}}} + {{{{{12}} {{R}} {{{r}^{2}}}} - {{{4}} {{{r}^{3}}}}} - {{{12}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{R}^{3}}} {{\partial_{{\phi}}({A^{\phi}})}} {{\frac{1}{{{{4}} {{{R}^{3}}}} + {{{{{12}} {{R}} {{{r}^{2}}}} - {{{4}} {{{r}^{3}}}}} - {{{12}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{R}^{3}}} {{\partial_{{\theta}}({A^{\theta}})}} {{\frac{1}{{{{4}} {{{R}^{3}}}} + {{{{{12}} {{R}} {{{r}^{2}}}} - {{{4}} {{{r}^{3}}}}} - {{{12}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{R}^{3}}} {{\partial_{{r}}({A^{r}})}} {{\frac{1}{{{{4}} {{{R}^{3}}}} + {{{{{12}} {{R}} {{{r}^{2}}}} - {{{4}} {{{r}^{3}}}}} - {{{12}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{R}^{3}}} {{\partial_{{t}}({A^{t}})}} {{\frac{1}{{{{4}} {{{R}^{3}}}} + {{{{{12}} {{R}} {{{r}^{2}}}} - {{{4}} {{{r}^{3}}}}} - {{{12}} {{r}} {{{R}^{2}}}}}}}}} + {{{4}} {{{A^{\theta}}}} \cdot {{cos\left(\theta\right)}} {{{R}^{3}}} {{\frac{1}{{{{4}} {{sin\left(\theta\right)}} {{{R}^{3}}}} + {{{{{12}} {{sin\left(\theta\right)}} {{R}} {{{r}^{2}}}} - {{{4}} {{sin\left(\theta\right)}} {{{r}^{3}}}}} - {{{12}} {{sin\left(\theta\right)}} {{r}} {{{R}^{2}}}}}}}}} + {{{24}} {{{A^{r}}}} \cdot {{{R}^{2}}} {{\frac{1}{{{{-4}} {{{R}^{3}}}} + {{{{{-12}} {{R}} {{{r}^{2}}}} - {{{-4}} {{{r}^{3}}}}} - {{{-12}} {{r}} {{{R}^{2}}}}}}}}}}$
+<br>
+geodesic:
+<br>
+${\overset{a\downarrow}{
+\left[
+\begin{matrix}
+\ddot{t} \\
+\ddot{r} \\
+\ddot{\theta} \\
+\ddot{\phi}
+\end{matrix}
+\right]
+}} = {\overset{a\downarrow}{
+\left[
+\begin{matrix}
+\frac{-{({{{{8}} {{R}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{r}^{5}}}} + {{{{{12}} {{{R}^{2}}} {{{r}^{4}}} {{\partial_{{t}}(R)}} {{{\dot{r}}^{2}}}} - {{{12}} {{R}} {{{r}^{5}}} {{\partial_{{t}}(R)}} {{{\dot{r}}^{2}}}}} - {{{4}} {{{R}^{3}}} {{{r}^{3}}} {{\partial_{{t}}(R)}} {{{\dot{r}}^{2}}}}} + {{{40}} {{{R}^{3}}} {{{r}^{3}}} {{\partial_{{t}}(R)}} {{{\dot{t}}^{2}}}} + {{{{{{{{20}} {{R}} {{{r}^{5}}} {{\partial_{{t}}(R)}} {{{\dot{t}}^{2}}}} - {{{20}} {{{R}^{4}}} {{{r}^{2}}} {{\partial_{{t}}(R)}} {{{\dot{t}}^{2}}}}} - {{{40}} {{{R}^{2}}} {{{r}^{4}}} {{\partial_{{t}}(R)}} {{{\dot{t}}^{2}}}}} - {{{8}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{R}^{6}}}}} - {{{40}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{R}^{2}}} {{{r}^{4}}}}} - {{{80}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{R}^{4}}} {{{r}^{2}}}}} + {{{80}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{R}^{3}}} {{{r}^{3}}}} + {{{{4}} {{{r}^{6}}} {{\partial_{{t}}(R)}} {{{\dot{r}}^{2}}}} - {{{4}} {{{r}^{6}}} {{\partial_{{t}}(R)}} {{{\dot{t}}^{2}}}}} + {{{4}} {{r}} {{{R}^{5}}} {{\partial_{{t}}(R)}} {{{\dot{t}}^{2}}}} + {{{40}} {{r}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{R}^{5}}}}})}}{{{r}} {{({{{{8}} {{{r}^{6}}}} + {{{{{120}} {{{R}^{4}}} {{{r}^{2}}}} - {{{48}} {{r}} {{{R}^{5}}}}} - {{{160}} {{{R}^{3}}} {{{r}^{3}}}}} + {{{8}} {{{R}^{6}}}} + {{{{120}} {{{R}^{2}}} {{{r}^{4}}}} - {{{48}} {{R}} {{{r}^{5}}}}}})}}} \\
+\frac{{{{24}} {{R}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{r}^{5}}} {{\partial_{{t}}(R)}}} + {{{{4}} {{{R}^{6}}} {{{\dot{t}}^{2}}}} - {{{8}} {{{R}^{5}}} {{{r}^{3}}} {{{\dot{\phi}}^{2}}} {{{sin\left(\theta\right)}^{2}}}}} + {{{{40}} {{{R}^{4}}} {{{r}^{4}}} {{{\dot{\phi}}^{2}}} {{{sin\left(\theta\right)}^{2}}}} - {{{40}} {{R}} {{{r}^{7}}} {{{\dot{\phi}}^{2}}} {{{sin\left(\theta\right)}^{2}}}}} + {{{{{80}} {{{R}^{2}}} {{{r}^{6}}} {{{\dot{\phi}}^{2}}} {{{sin\left(\theta\right)}^{2}}}} - {{{80}} {{{R}^{3}}} {{{r}^{5}}} {{{\dot{\phi}}^{2}}} {{{sin\left(\theta\right)}^{2}}}}} - {{{40}} {{R}} {{{r}^{7}}} {{{\dot{\theta}}^{2}}}}} + {{{{{40}} {{{R}^{4}}} {{{r}^{4}}} {{{\dot{\theta}}^{2}}}} - {{{80}} {{{R}^{3}}} {{{r}^{5}}} {{{\dot{\theta}}^{2}}}}} - {{{8}} {{{R}^{5}}} {{{r}^{3}}} {{{\dot{\theta}}^{2}}}}} + {{{{80}} {{{R}^{2}}} {{{r}^{6}}} {{{\dot{\theta}}^{2}}}} - {{{12}} {{{R}^{2}}} {{{r}^{4}}} {{{\dot{r}}^{2}}}}} + {{{4}} {{R}} {{{r}^{5}}} {{{\dot{r}}^{2}}}} + {{{{{12}} {{{R}^{3}}} {{{r}^{3}}} {{{\dot{r}}^{2}}}} - {{{4}} {{{R}^{4}}} {{{r}^{2}}} {{{\dot{r}}^{2}}}}} - {{{40}} {{{R}^{3}}} {{{r}^{3}}} {{{\dot{t}}^{2}}}}} + {{{20}} {{{R}^{2}}} {{{r}^{4}}} {{{\dot{t}}^{2}}}} + {{{{{40}} {{{R}^{4}}} {{{r}^{2}}} {{{\dot{t}}^{2}}}} - {{{4}} {{R}} {{{r}^{5}}} {{{\dot{t}}^{2}}}}} - {{{24}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{R}^{2}}} {{{r}^{4}}} {{\partial_{{t}}(R)}}}} + {{{{{8}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{R}^{3}}} {{{r}^{3}}} {{\partial_{{t}}(R)}}} - {{{8}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{r}^{6}}} {{\partial_{{t}}(R)}}}} - {{{20}} {{r}} {{{R}^{5}}} {{{\dot{t}}^{2}}}}} + {{{8}} {{{r}^{8}}} {{{\dot{\phi}}^{2}}} {{{sin\left(\theta\right)}^{2}}}} + {{{8}} {{{r}^{8}}} {{{\dot{\theta}}^{2}}}}}{{{{r}^{3}}} {{({{{{{8}} {{{r}^{4}}}} - {{{32}} {{r}} {{{R}^{3}}}}} + {{{{8}} {{{R}^{4}}}} - {{{32}} {{R}} {{{r}^{3}}}}} + {{{48}} {{{R}^{2}}} {{{r}^{2}}}}})}}} \\
+{\frac{1}{r}}{({-{({{{{2}} {{\dot{r}}} \cdot {{\dot{\theta}}}} - {{{r}} {{cos\left(\theta\right)}} {{sin\left(\theta\right)}} {{{\dot{\phi}}^{2}}}}})}})} \\
+\frac{-{{{2}} {{\dot{\phi}}} \cdot {{({{{{\dot{r}}} \cdot {{sin\left(\theta\right)}}} + {{{r}} {{\dot{\theta}}} \cdot {{cos\left(\theta\right)}}}})}}}}{{{sin\left(\theta\right)}} {{r}}}
+\end{matrix}
+\right]
+}}$
+<br>
+
+<br>
+	</body>
+</html>
+

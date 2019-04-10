@@ -3,7 +3,7 @@
 require 'ext'
 require 'symmath'.setup{
 	--implicitVars=true, 
-	MathJax={title='Schwarzschild - spherical', usePartialLHSForDerivative=true}
+	MathJax={title='Schwarzschild - spherical - mass varying with time', usePartialLHSForDerivative=true}
 }
 
 -- coordinates
@@ -13,7 +13,7 @@ local t,r,theta,phi = vars('t','r','\\theta','\\phi')
 local R_of_r = false
 -- dependent on r or not?  most derivations treat R as constant, but for stellar models R varies inside of the star
 -- TODO to match up with MTW, use 'R' for the planet radius and 'M' for the total mass, so 2 M for the Schwarzschild radius
-local R = var('R', R_of_r and {r} or nil)	
+local R = var('R', R_of_r and {t,r} or {t})
 
 local coords = {t,r,theta,phi}
 Tensor.coords{{variables = coords}}
@@ -23,6 +23,17 @@ local g = Tensor('_uv', function(u,v) return u == v and ({-(1-R/r), 1/(1-R/r), r
 
 local Props = class(require 'symmath.physics.diffgeom')
 Props.verbose = true
+Props.fields = table.filter(Props.fields, function(field)
+	return not ({
+		dGamma = true,
+		GammaSq = true,
+		RiemannULLL = true,
+		Riemann = true,
+		Ricci = true,
+		Gaussian = true,
+		Einstein = true,
+	})[field.name]
+end)
 local props = Props(g)
 local Gamma = props.Gamma
 
