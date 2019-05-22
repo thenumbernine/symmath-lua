@@ -1,6 +1,5 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='Kaluza-Klein', useCommaDerivative=true}}
 
 --[[
 g_ab =	[ g_uv + phi^2 A_u A_v	phi^2 A^u	 ]
