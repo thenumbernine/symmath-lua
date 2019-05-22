@@ -10,8 +10,8 @@ local s = table{[[
 Output CDN URLs:
 ]]}
 
-local fs = io.rdir('.', function(fn, isdir)
-	return fn ~= '.git' and (isdir or fn:sub(-5) == '.html')
+local fs = io.rdir('.', function(f, isdir)
+	return f ~= '.git' and (isdir or f:sub(-5) == '.html')
 end):mapi(function(f)
 	assert(f:sub(1,2) == './')
 	return f:sub(3)
