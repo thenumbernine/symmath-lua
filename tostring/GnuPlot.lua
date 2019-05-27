@@ -53,10 +53,10 @@ GnuPlot.lookupTable = {
 }
 
 -- create a plot of an expression
-local gnuplot = require 'gnuplot'
 local io = require 'ext.io'
 local file = require 'ext.file'
 function GnuPlot:plot(args)
+	local gnuplot = require 'gnuplot'
 	local var = require 'symmath.Variable'
 	local Expression = require 'symmath.Expression'
 	-- TODO accept *all* vars used, and define vars in gnuplot before producing the plot command
