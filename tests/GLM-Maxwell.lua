@@ -1,44 +1,59 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{tostring='MathJax', MathJax={title='Maxwell hyperbolic conservation law'}}
+require 'symmath'.setup{tostring='MathJax', MathJax={title='GLM-Maxwell hyperbolic conservation law'}}
 local printbr = symmath.tostring.print
 
 local D_x, D_y, D_z = vars('D_x', 'D_y', 'D_z')
 local B_x, B_y, B_z = vars('B_x', 'B_y', 'B_z')
-local Us = table{D_x, D_y, D_z, B_x, B_y, B_z}
+local phi = var'\\phi'
+local psi = var'\\psi'
+local Us = table{D_x, D_y, D_z, B_x, B_y, B_z, phi, psi}
 
 local epsilon = var'\\epsilon'
 local mu = var'\\mu'
 
+local chi_phi = var'\\chi_\\phi'	-- wavespeed of div E
+local chi_psi = var'\\chi_\\psi'	-- wavespeed of div B
+local v_p = var'v_p'		-- phase velocity = 1/(epsilon * mu)
+
 local As = table{
 	Matrix(
-		{0,			0,			0,					0,			0,			0},
-		{0,			0,			0,					0,			0,			1/mu},
-		{0,			0,			0,					0,			-1/mu,		0},
-																			 
-		{0,			0,			0,					0,			0,			0},
-		{0,			0,			-1/epsilon,			0,			0,			0},
-		{0,			1/epsilon,	0,					0,			0,			0}
+		{0,			0,			0,					0,			0,			0,				chi_phi,	0},
+		{0,			0,			0,					0,			0,			1/mu,			0,			0},
+		{0,			0,			0,					0,			-1/mu,		0,				0,			0},
+																									
+		{0,			0,			0,					0,			0,			0,				0,			chi_psi},
+		{0,			0,			-1/epsilon,			0,			0,			0,				0,			0},
+		{0,			1/epsilon,	0,					0,			0,			0,				0,			0},
+																						
+		{chi_phi,	0,			0,					0,			0,			0,				0,			0},
+		{0,			0,			0,					chi_psi, 	0,			0,				0,			0}
 	),
 
 	Matrix(
-		{0,			0,			0,					0,			0,			-1/mu},
-		{0,			0,			0,					0,			0,			0},
-		{0,			0,			0,					1/mu,		0,			0},
-																			 
-		{0,			0,			1/epsilon,			0,			0,			0},
-		{0,			0,			0,					0,			0,			0},
-		{-1/epsilon,0,			0,					0,			0,			0}
+		{0,			0,			0,					0,			0,			-1/mu,			0,			0},
+		{0,			0,			0,					0,			0,			0,				chi_phi,	0},
+		{0,			0,			0,					1/mu,		0,			0,				0,			0},
+																									
+		{0,			0,			1/epsilon,			0,			0,			0,				0,			0},
+		{0,			0,			0,					0,			0,			0,				0,			chi_psi},
+		{-1/epsilon,0,			0,					0,			0,			0,				0,			0},
+																						
+		{0,			chi_phi,	0,					0,			0,			0,				0,			0},
+		{0,			0,			0,					0, 			chi_psi,	0,				0,			0}
 	),
 
 	Matrix(
-		{0,			0,			0,					0,			1/mu,		0},
-		{0,			0,			0,					-1/mu,		0,			0},
-		{0,			0,			0,					0,			0,			0},
-																			 
-		{0,			-1/epsilon,	0,					0,			0,			0},
-		{1/epsilon,	0,			0,					0,			0,			0},
-		{0,			0,			0,					0,			0,			0}
+		{0,			0,			0,					0,			1/mu,		0,				0,			0},
+		{0,			0,			0,					-1/mu,		0,			0,				0,			0},
+		{0,			0,			0,					0,			0,			0,				chi_phi,	0},
+																									
+		{0,			-1/epsilon,	0,					0,			0,			0,				0,			0},
+		{1/epsilon,	0,			0,					0,			0,			0,				0,			0},
+		{0,			0,			0,					0,			0,			0,				0,			chi_psi},
+																						
+		{0,			0,			chi_phi,			0,			0,			0,				0,			0},
+		{0,			0,			0,					0, 			0,			chi_psi,		0,			0}
 	),
 
 }
@@ -67,9 +82,12 @@ for side=1,3 do
 	-- TODO solve charpoly_eqn for lambda ...
 	-- gives solutions lambda = 0, lambda = +- 1/sqrt(mu epsilon) = +- c
 	local lambdas = table{
+		-chi_phi, 
+		-chi_psi, 
 		-1/sqrt(mu * epsilon), 
-		0,
 		1/sqrt(mu * epsilon),
+		chi_phi, 
+		chi_psi, 
 	}
 
 	local n = #Us
@@ -109,12 +127,13 @@ for side=1,3 do
 		):unpack()
 	):transpose()
 
+	-- rescale rows
 	evRMat = (evRMat * ({
-		Matrix.diagonal(sqrt(mu), sqrt(mu), 1, 1, sqrt(mu), sqrt(mu)),
-		Matrix.diagonal(sqrt(mu), sqrt(mu), 1, 1, sqrt(mu), sqrt(mu)),
-		Matrix.diagonal(sqrt(mu), sqrt(mu), 1, 1, sqrt(mu), sqrt(mu)),
+		Matrix.diagonal(1/sqrt(epsilon), 1/sqrt(epsilon), sqrt(mu), sqrt(mu), sqrt(mu), sqrt(mu), 1/sqrt(epsilon), 1/sqrt(epsilon)),
+		Matrix.diagonal(1/sqrt(epsilon), 1/sqrt(epsilon), sqrt(mu), sqrt(mu), sqrt(mu), sqrt(mu), 1/sqrt(epsilon), 1/sqrt(epsilon)),
+		Matrix.diagonal(1/sqrt(epsilon), 1/sqrt(epsilon), sqrt(mu), sqrt(mu), sqrt(mu), sqrt(mu), 1/sqrt(epsilon), 1/sqrt(epsilon)),
 	})[side])()
-
+	
 	printbr('R:')
 	printbr(evRMat)
 
@@ -126,15 +145,15 @@ for side=1,3 do
 
 	local A_check = (evRMat * lambdaMat * evLMat)()
 	local diff = (A_check - As[side])()
-	for i=1,6 do
-		for j=1,6 do
+	for i=1,8 do
+		for j=1,8 do
 			if diff[i][j] ~= Constant(0) then
 				error("eigensystem did not reproduce original")
 			end
 		end
 	end
 
-	local vs = range(0,5):map(function(i) return var('v_'..i) end)
+	local vs = range(0,7):map(function(i) return var('v_'..i) end)
 	local evrxform = (evRMat * Matrix:lambda({n,1}, function(i) return vs[i] end))()
 	local evlxform = (evLMat * Matrix:lambda({n,1}, function(i) return vs[i] end))()
 	printbr('R(v) = ', evrxform)

@@ -300,6 +300,8 @@ Output CDN URLs:
 
 [tests/output/FLRW](https://thenumbernine.github.io/symmath/tests/output/FLRW.html)
 
+[tests/output/GLM-Maxwell](https://thenumbernine.github.io/symmath/tests/output/GLM%2dMaxwell.html)
+
 [tests/output/Gravitation 16.1 - dense](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20dense.html)
 
 [tests/output/Gravitation 16.1 - expression](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20expression.html)
@@ -353,8 +355,6 @@ Output CDN URLs:
 [tests/output/electrovacuum/uniform field - spherical](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20spherical.html)
 
 [tests/output/electrovacuum/verify cylindrical transform](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/verify%20cylindrical%20transform.html)
-
-[tests/output/exp_metric](https://thenumbernine.github.io/symmath/tests/output/exp_metric.html)
 
 [tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
 
