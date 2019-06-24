@@ -2,34 +2,198 @@
 <html>
     <head>
         <meta charset='UTF-8'>
-        <title>linearized Euler fluid equations</title>
+        <title>Symbolic Lua Output</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
     </head>
 	<body onload='tryToFindMathJax();'>
 
+${\tilde{\gamma}} = {{\gamma} - {1}}$
+<br>
 equations:
 <br>
-${U}^I = {\left[\matrix{\rho\\{m}^i\\{E_{total}}}\right]}$
+${{U}^I} = {
+\left[
+\begin{matrix}
+\rho \\
+{m}^i \\
+{E_{total}}
+\end{matrix}
+\right]
+}$
 <br>
-${{F}^I}^j = {\left[\matrix{{\rho \cdot {v}^j}\\{{{\rho \cdot {v}^i} {v}^j} + {{{g}^i}^j P}}\\{{v}^j {H_{total}}}}\right]}$
+${{{F}^I}^j} = {
+\left[
+\begin{matrix}
+{{\rho}} \cdot {{{v}^j}} \\
+{{{{{\rho}} \cdot {{{v}^i}}}} {{{v}^j}}} + {{{{{g}^i}^j}} {{P}}} \\
+{{{v}^j}} {{{H_{total}}}}
+\end{matrix}
+\right]
+}$
 <br>
-${{F}^I}^j = {\left[\matrix{{\rho \cdot {{\frac1\rho}{({{m}^j})}}}\\{{{\rho \cdot {{\frac1\rho}{({{m}^i})}}} {{\frac1\rho}{({{m}^j})}}} + {{{g}^i}^j {{({\gamma - 1})} {({{E_{total}} - {{{\frac{1}{2}} \rho} {{{{\frac1\rho}{({{m}^k})}} {{\frac1\rho}{({{m}^l})}}} {{g}_k}_l}}})}}}}\\{{{\frac1\rho}{({{m}^j})}} {({{E_{total}} + {{({\gamma - 1})} {({{E_{total}} - {{{\frac{1}{2}} \rho} {{{{\frac1\rho}{({{m}^k})}} {{\frac1\rho}{({{m}^l})}}} {{g}_k}_l}}})}}})}}}\right]}$
+${{{F}^I}^j} = {
+\left[
+\begin{matrix}
+{{\rho}} \cdot {{{\frac{1}{\rho}}{({{m}^j})}}} \\
+{{{{{\rho}} \cdot {{{\frac{1}{\rho}}{({{m}^i})}}}}} {{{\frac{1}{\rho}}{({{m}^j})}}}} + {{{{{g}^i}^j}} {{{{\tilde{\gamma}}} \cdot {{({{{E_{total}}} - {{{{{\frac{1}{2}}} {{\rho}}}} {{{{{{{\frac{1}{\rho}}{({{m}^k})}}} {{{\frac{1}{\rho}}{({{m}^l})}}}}} {{{{g}_k}_l}}}}}})}}}}} \\
+{{{\frac{1}{\rho}}{({{m}^j})}}} {{({{{E_{total}}} + {{{\tilde{\gamma}}} \cdot {{({{{E_{total}}} - {{{{{\frac{1}{2}}} {{\rho}}}} {{{{{{{\frac{1}{\rho}}{({{m}^k})}}} {{{\frac{1}{\rho}}{({{m}^l})}}}}} {{{{g}_k}_l}}}}}})}}}})}}
+\end{matrix}
+\right]
+}$
 <br>
-${{F}^I}^j = {\left[\matrix{{m}^j\\{\frac{{{{{{g}^i}^j {m}^k {m}^l {{g}_k}_l} - {2 {{g}^i}^j {E_{total}} \cdot \rho}} - {{{g}^i}^j \gamma \cdot {m}^k {m}^l {{g}_k}_l}} + {2 {{g}^i}^j \gamma \cdot {E_{total}} \cdot \rho} + {2 {m}^i {m}^j}}{2 \rho}}\\{\frac{{m}^j {({{{{m}^k {m}^l {{g}_k}_l} - {\gamma \cdot {m}^k {m}^l {{g}_k}_l}} + {2 \gamma \cdot {E_{total}} \cdot \rho}})}}{2 {{\rho}^{2}}}}}\right]}$
+${{{F}^I}^j} = {
+\left[
+\begin{matrix}
+{m}^j \\
+\frac{{{{2}} {{{m}^i}} {{{m}^j}}} + {{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{g}^i}^j}}} - {{{\tilde{\gamma}}} \cdot {{{m}^k}} {{{m}^l}} {{{{g}^i}^j}} {{{{g}_k}_l}}}}}{{{2}} {{\rho}}} \\
+\frac{{{{m}^j}} {{({{{{2}} {{\rho}} \cdot {{{E_{total}}}}} + {{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^k}} {{{m}^l}} {{{{g}_k}_l}}}}})}}}{{{2}} {{{\rho}^{2}}}}
+\end{matrix}
+\right]
+}$
 <br>
-${{{F}^I}^j}_{,j} = {\left[\matrix{{{m}^j}_{,j}\\{\left(\frac{{{{{{g}^i}^j {m}^k {m}^l {{g}_k}_l} - {2 {{g}^i}^j {E_{total}} \cdot \rho}} - {{{g}^i}^j \gamma \cdot {m}^k {m}^l {{g}_k}_l}} + {2 {{g}^i}^j \gamma \cdot {E_{total}} \cdot \rho} + {2 {m}^i {m}^j}}{2 \rho}\right)}_{,j}\\{\left(\frac{{m}^j {({{{{m}^k {m}^l {{g}_k}_l} - {\gamma \cdot {m}^k {m}^l {{g}_k}_l}} + {2 \gamma \cdot {E_{total}} \cdot \rho}})}}{2 {{\rho}^{2}}}\right)}_{,j}}\right]}$
+${{{{F}^I}^j}_{,j}} = {
+\left[
+\begin{matrix}
+{{m}^j}_{,j} \\
+{\left(\frac{{{{2}} {{{m}^i}} {{{m}^j}}} + {{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{g}^i}^j}}} - {{{\tilde{\gamma}}} \cdot {{{m}^k}} {{{m}^l}} {{{{g}^i}^j}} {{{{g}_k}_l}}}}}{{{2}} {{\rho}}}\right)}_{,j} \\
+{\left(\frac{{{{m}^j}} {{({{{{2}} {{\rho}} \cdot {{{E_{total}}}}} + {{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^k}} {{{m}^l}} {{{{g}_k}_l}}}}})}}}{{{2}} {{{\rho}^{2}}}}\right)}_{,j}
+\end{matrix}
+\right]
+}$
 <br>
-${{{F}^I}^j}_{,j} = {\left[\matrix{{{m}^j}_{,j}\\{\frac{{{{2 {{{g}^i}^j}_{,j} {m}^k {m}^l {{g}_k}_l \rho} - {4 {{{g}^i}^j}_{,j} {E_{total}} \cdot {{\rho}^{2}}}} - {2 {{{g}^i}^j}_{,j} \gamma \cdot {m}^k {m}^l {{g}_k}_l \rho}} + {{4 {{{g}^i}^j}_{,j} \gamma \cdot {E_{total}} \cdot {{\rho}^{2}}} - {4 {{g}^i}^j {{E_{total}}}_{,j} {{\rho}^{2}}}} + {2 {{g}^i}^j {{m}^k}_{,j} {m}^l {{g}_k}_l \rho} + {2 {{g}^i}^j {m}^k {{m}^l}_{,j} {{g}_k}_l \rho} + {{2 {{g}^i}^j {m}^k {m}^l {{{g}_k}_l}_{,j} \rho} - {2 {{g}^i}^j {m}^k {m}^l {{g}_k}_l {\rho}_{,j}}} + {{{{4 {{g}^i}^j \gamma \cdot {{E_{total}}}_{,j} {{\rho}^{2}}} - {2 {{g}^i}^j \gamma \cdot {{m}^k}_{,j} {m}^l {{g}_k}_l \rho}} - {2 {{g}^i}^j \gamma \cdot {m}^k {{m}^l}_{,j} {{g}_k}_l \rho}} - {2 {{g}^i}^j \gamma \cdot {m}^k {m}^l {{{g}_k}_l}_{,j} \rho}} + {2 {{g}^i}^j \gamma \cdot {m}^k {m}^l {{g}_k}_l {\rho}_{,j}} + {4 {{m}^i}_{,j} {m}^j \rho} + {{4 {m}^i {{m}^j}_{,j} \rho} - {4 {m}^i {m}^j {\rho}_{,j}}}}{4 {{\rho}^{2}}}}\\{\frac{{{2 {{m}^j}_{,j} {m}^k {m}^l {{g}_k}_l \rho} - {2 {{m}^j}_{,j} \gamma \cdot {m}^k {m}^l {{g}_k}_l \rho}} + {4 {{m}^j}_{,j} \gamma \cdot {E_{total}} \cdot {{\rho}^{2}}} + {2 {m}^j {{m}^k}_{,j} {m}^l {{g}_k}_l \rho} + {2 {m}^j {m}^k {{m}^l}_{,j} {{g}_k}_l \rho} + {{2 {m}^j {m}^k {m}^l {{{g}_k}_l}_{,j} \rho} - {4 {m}^j {m}^k {m}^l {{g}_k}_l {\rho}_{,j}}} + {{{{4 {m}^j \gamma \cdot {{E_{total}}}_{,j} {{\rho}^{2}}} - {2 {m}^j \gamma \cdot {{m}^k}_{,j} {m}^l {{g}_k}_l \rho}} - {2 {m}^j \gamma \cdot {m}^k {{m}^l}_{,j} {{g}_k}_l \rho}} - {2 {m}^j \gamma \cdot {m}^k {m}^l {{{g}_k}_l}_{,j} \rho}} + {{4 {m}^j \gamma \cdot {m}^k {m}^l {{g}_k}_l {\rho}_{,j}} - {4 {m}^j \gamma \cdot {E_{total}} \cdot {\rho}_{,j} \rho}}}{4 {{\rho}^{3}}}}}\right]}$
+${{{{F}^I}^j}_{,j}} = {
+\left[
+\begin{matrix}
+{{m}^j}_{,j} \\
+\frac{-{({{{{{{{4}} {{{m}^i}} {{{m}^j}} {{{\rho}_{,j}}}} - {{{4}} {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{\rho}^{2}}} {{{{{g}^i}^j}_{,j}}}}} - {{{4}} {{\rho}} \cdot {{{m}^i}} {{{{m}^j}_{,j}}}}} - {{{4}} {{\rho}} \cdot {{{m}^j}} {{{{m}^i}_{,j}}}}} + {{{2}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^k}} {{{{g}^i}^j}} {{{{g}_k}_l}} {{{{m}^l}_{,j}}}} + {{{2}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^k}} {{{m}^l}} {{{{g}^i}^j}} {{{{{g}_k}_l}_{,j}}}} + {{{2}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^k}} {{{m}^l}} {{{{g}_k}_l}} {{{{{g}^i}^j}_{,j}}}} + {{{{{2}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^l}} {{{{g}^i}^j}} {{{{g}_k}_l}} {{{{m}^k}_{,j}}}} - {{{2}} {{\tilde{\gamma}}} \cdot {{{m}^k}} {{{m}^l}} {{{\rho}_{,j}}} {{{{g}^i}^j}} {{{{g}_k}_l}}}} - {{{4}} {{\tilde{\gamma}}} \cdot {{{\rho}^{2}}} {{{{E_{total}}}_{,j}}} {{{{g}^i}^j}}}}})}}{{{4}} {{{\rho}^{2}}}} \\
+\frac{{{{4}} {{{E_{total}}}} \cdot {{{\rho}^{2}}} {{{{m}^j}_{,j}}}} + {{{4}} {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{\rho}^{2}}} {{{{m}^j}_{,j}}}} + {{{{{{{{{4}} {{{\rho}^{2}}} {{{m}^j}} {{{{E_{total}}}_{,j}}}} - {{{4}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{m}^j}} {{{\rho}_{,j}}}}} - {{{4}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^j}} {{{\rho}_{,j}}}}} - {{{2}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^k}} {{{{g}_k}_l}} {{{{m}^l}_{,j}}}}} - {{{2}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^k}} {{{m}^l}} {{{{{g}_k}_l}_{,j}}}}} - {{{2}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{{g}_k}_l}} {{{{m}^k}_{,j}}}}} - {{{2}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^k}} {{{m}^l}} {{{{g}_k}_l}} {{{{m}^j}_{,j}}}}} + {{{4}} {{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^k}} {{{m}^l}} {{{\rho}_{,j}}} {{{{g}_k}_l}}} + {{{4}} {{\tilde{\gamma}}} \cdot {{{\rho}^{2}}} {{{m}^j}} {{{{E_{total}}}_{,j}}}}}{{{4}} {{{\rho}^{3}}}}
+\end{matrix}
+\right]
+}$
 <br>
 distribute
 <br>
-${{{F}^I}^j}_{,j} = {\left[\matrix{{{{m}^k}_{,j} {{\delta}^j}_k}\\{{{-2} \cdot {\frac{1}{4}} {{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j {m}^m {m}^l {{g}_m}_l \rho \cdot {\frac{1}{{\rho}^{2}}}} + {4 \cdot {\frac{1}{4}} {{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j {E_{total}} \cdot {{\rho}^{2}} {\frac{1}{{\rho}^{2}}}} + {2 \cdot {\frac{1}{4}} {{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l \rho \cdot {\frac{1}{{\rho}^{2}}}} + {{-4} \cdot {\frac{1}{4}} {{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j \gamma \cdot {E_{total}} \cdot {{\rho}^{2}} {\frac{1}{{\rho}^{2}}}} + {{-4} \cdot {\frac{1}{4}} {{g}^i}^j {{E_{total}}}_{,j} {{\rho}^{2}} {\frac{1}{{\rho}^{2}}}} + {2 \cdot {\frac{1}{4}} {{g}^i}^j {{m}^k}_{,j} {{\delta}^m}_k {m}^l {{g}_m}_l \rho \cdot {\frac{1}{{\rho}^{2}}}} + {2 \cdot {\frac{1}{4}} {{g}^i}^j {m}^m {{m}^k}_{,j} {{\delta}^l}_k {{g}_m}_l \rho \cdot {\frac{1}{{\rho}^{2}}}} + {2 \cdot {\frac{1}{4}} {{g}^i}^j {m}^m {m}^l {{{g}_m}_l}_{,j} \rho \cdot {\frac{1}{{\rho}^{2}}}} + {{-2} \cdot {\frac{1}{4}} {{g}^i}^j {m}^m {m}^l {{g}_m}_l {\rho}_{,j} {\frac{1}{{\rho}^{2}}}} + {4 \cdot {\frac{1}{4}} {{g}^i}^j \gamma \cdot {{E_{total}}}_{,j} {{\rho}^{2}} {\frac{1}{{\rho}^{2}}}} + {{-2} \cdot {\frac{1}{4}} {{g}^i}^j \gamma \cdot {{m}^k}_{,j} {{\delta}^m}_k {m}^l {{g}_m}_l \rho \cdot {\frac{1}{{\rho}^{2}}}} + {{-2} \cdot {\frac{1}{4}} {{g}^i}^j \gamma \cdot {m}^m {{m}^k}_{,j} {{\delta}^l}_k {{g}_m}_l \rho \cdot {\frac{1}{{\rho}^{2}}}} + {{-2} \cdot {\frac{1}{4}} {{g}^i}^j \gamma \cdot {m}^m {m}^l {{{g}_m}_l}_{,j} \rho \cdot {\frac{1}{{\rho}^{2}}}} + {2 \cdot {\frac{1}{4}} {{g}^i}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l {\rho}_{,j} {\frac{1}{{\rho}^{2}}}} + {{-4} \cdot {\frac{1}{4}} {m}^i {m}^j {\rho}_{,j} {\frac{1}{{\rho}^{2}}}} + {4 \cdot {\frac{1}{4}} {m}^i {{m}^k}_{,j} {{\delta}^j}_k \rho \cdot {\frac{1}{{\rho}^{2}}}} + {4 \cdot {\frac{1}{4}} {{m}^k}_{,j} {{\delta}^i}_k {m}^j \rho \cdot {\frac{1}{{\rho}^{2}}}}}\\{{{\frac{1}{2}} {m}^j {{m}^k}_{,j} {{\delta}^m}_k {m}^l {{g}_m}_l {\frac{1}{{\rho}^{2}}}} + {{\frac{1}{2}} {m}^j {m}^m {{m}^k}_{,j} {{\delta}^l}_k {{g}_m}_l {\frac{1}{{\rho}^{2}}}} + {{\frac{1}{2}} {m}^j {m}^m {m}^l {{{g}_m}_l}_{,j} {\frac{1}{{\rho}^{2}}}} + {{-1} {m}^j {m}^m {m}^l {{g}_m}_l {\rho}_{,j} {\frac{1}{{\rho}^{3}}}} + {{m}^j \gamma \cdot {{E_{total}}}_{,j} {\frac{1}{\rho}}} + {{-1} \cdot {\frac{1}{2}} {m}^j \gamma \cdot {{m}^k}_{,j} {{\delta}^m}_k {m}^l {{g}_m}_l {\frac{1}{{\rho}^{2}}}} + {{-1} \cdot {\frac{1}{2}} {m}^j \gamma \cdot {m}^m {{m}^k}_{,j} {{\delta}^l}_k {{g}_m}_l {\frac{1}{{\rho}^{2}}}} + {{-1} \cdot {\frac{1}{2}} {m}^j \gamma \cdot {m}^m {m}^l {{{g}_m}_l}_{,j} {\frac{1}{{\rho}^{2}}}} + {{m}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l {\rho}_{,j} {\frac{1}{{\rho}^{3}}}} + {{-1} {m}^j \gamma \cdot {E_{total}} \cdot {\rho}_{,j} {\frac{1}{{\rho}^{2}}}} + {{\frac{1}{2}} {{m}^k}_{,j} {{\delta}^j}_k {m}^m {m}^l {{g}_m}_l {\frac{1}{{\rho}^{2}}}} + {{-1} \cdot {\frac{1}{2}} {{m}^k}_{,j} {{\delta}^j}_k \gamma \cdot {m}^m {m}^l {{g}_m}_l {\frac{1}{{\rho}^{2}}}} + {{{m}^k}_{,j} {{\delta}^j}_k \gamma \cdot {E_{total}} \cdot {\frac{1}{\rho}}}}}\right]}$
+${{{{F}^I}^j}_{,j}} = {
+\left[
+\begin{matrix}
+{{{{m}^k}_{,j}}} {{{{\delta}^j}_k}} \\
+{{{-4}} \cdot {{\frac{1}{4}}} {{{m}^i}} {{{m}^j}} {{{\rho}_{,j}}} {{\frac{1}{{\rho}^{2}}}}} + {{{-4}} \cdot {{\frac{1}{4}}} {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{\rho}^{2}}} {{{{g}^a}^j}} {{{{g}^i}^b}} {{{{{g}_b}_a}_{,j}}} {{\frac{1}{{\rho}^{2}}}}} + {{{4}} \cdot {{\frac{1}{4}}} {{\rho}} \cdot {{{m}^i}} {{{{m}^k}_{,j}}} {{{{\delta}^j}_k}} {{\frac{1}{{\rho}^{2}}}}} + {{{4}} \cdot {{\frac{1}{4}}} {{\rho}} \cdot {{{m}^j}} {{{{m}^k}_{,j}}} {{{{\delta}^i}_k}} {{\frac{1}{{\rho}^{2}}}}} + {{{-2}} \cdot {{\frac{1}{4}}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^l}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{m}^k}_{,j}}} {{{{\delta}^m}_k}} {{\frac{1}{{\rho}^{2}}}}} + {{{2}} \cdot {{\frac{1}{4}}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}^a}^j}} {{{{g}^i}^b}} {{{{g}_m}_l}} {{{{{g}_b}_a}_{,j}}} {{\frac{1}{{\rho}^{2}}}}} + {{{-2}} \cdot {{\frac{1}{4}}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}^i}^j}} {{{{{g}_m}_l}_{,j}}} {{\frac{1}{{\rho}^{2}}}}} + {{{-2}} \cdot {{\frac{1}{4}}} {{\rho}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^m}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{m}^k}_{,j}}} {{{{\delta}^l}_k}} {{\frac{1}{{\rho}^{2}}}}} + {{{2}} \cdot {{\frac{1}{4}}} {{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{\rho}_{,j}}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{\frac{1}{{\rho}^{2}}}}} + {{{4}} \cdot {{\frac{1}{4}}} {{\tilde{\gamma}}} \cdot {{{\rho}^{2}}} {{{{E_{total}}}_{,j}}} {{{{g}^i}^j}} {{\frac{1}{{\rho}^{2}}}}} \\
+{{{{E_{total}}}} \cdot {{{{m}^k}_{,j}}} {{{{\delta}^j}_k}} {{\frac{1}{\rho}}}} + {{{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{m}^k}_{,j}}} {{{{\delta}^j}_k}} {{\frac{1}{\rho}}}} + {{{{m}^j}} {{{{E_{total}}}_{,j}}} {{\frac{1}{\rho}}}} + {{{-1}} {{{E_{total}}}} \cdot {{{m}^j}} {{{\rho}_{,j}}} {{\frac{1}{{\rho}^{2}}}}} + {{{-1}} {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{m}^j}} {{{\rho}_{,j}}} {{\frac{1}{{\rho}^{2}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{{g}_m}_l}} {{{{m}^k}_{,j}}} {{{{\delta}^m}_k}} {{\frac{1}{{\rho}^{2}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{m}^m}} {{{{{g}_m}_l}_{,j}}} {{\frac{1}{{\rho}^{2}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^m}} {{{{g}_m}_l}} {{{{m}^k}_{,j}}} {{{{\delta}^l}_k}} {{\frac{1}{{\rho}^{2}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}_m}_l}} {{{{m}^k}_{,j}}} {{{{\delta}^j}_k}} {{\frac{1}{{\rho}^{2}}}}} + {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{m}^m}} {{{\rho}_{,j}}} {{{{g}_m}_l}} {{\frac{1}{{\rho}^{3}}}}} + {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{{E_{total}}}_{,j}}} {{\frac{1}{\rho}}}}
+\end{matrix}
+\right]
+}$
 <br>
-${{{F}^I}^j}_{,j} = {{{\left[\matrix{0&{{\delta}^j}_k&0\\{\frac{-{({{{{{g}^i}^j {m}^m {m}^l {{g}_m}_l} - {{{g}^i}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 {m}^i {m}^j}})}}{2 {{\rho}^{2}}}}&{\frac{{2 {{\delta}^i}_k {m}^j} + {{{g}^i}^j {{\delta}^m}_k {m}^l {{g}_m}_l} + {{{{{g}^i}^j {m}^m {{\delta}^l}_k {{g}_m}_l} - {{{g}^i}^j \gamma \cdot {{\delta}^m}_k {m}^l {{g}_m}_l}} - {{{g}^i}^j \gamma \cdot {m}^m {{\delta}^l}_k {{g}_m}_l}} + {2 {m}^i {{\delta}^j}_k}}{2 \rho}}&{-{{{g}^i}^j {({1 - \gamma})}}}\\{\frac{-{{m}^j {({{{{m}^m {m}^l {{g}_m}_l} - {\gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {\gamma \cdot {E_{total}} \cdot \rho}})}}}{{\rho}^{3}}}&{\frac{{{{{\delta}^j}_k {m}^m {m}^l {{g}_m}_l} - {{{\delta}^j}_k \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 {{\delta}^j}_k \gamma \cdot {E_{total}} \cdot \rho} + {{m}^j {{\delta}^m}_k {m}^l {{g}_m}_l} + {{{{m}^j {m}^m {{\delta}^l}_k {{g}_m}_l} - {{m}^j \gamma \cdot {{\delta}^m}_k {m}^l {{g}_m}_l}} - {{m}^j \gamma \cdot {m}^m {{\delta}^l}_k {{g}_m}_l}}}{2 {{\rho}^{2}}}}&{{\frac1\rho}{({{m}^j \gamma})}}}\right]} {\left[\matrix{{\rho}_{,j}\\{{m}^k}_{,j}\\{{E_{total}}}_{,j}}\right]}} + {\left[\matrix{0\\{\frac{-{({{{{{{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j {m}^m {m}^l {{g}_m}_l} - {2 {{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j {E_{total}} \cdot \rho}} - {{{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {{2 {{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j \gamma \cdot {E_{total}} \cdot \rho} - {{{g}^i}^j {m}^m {m}^l {{{g}_m}_l}_{,j}}} + {{{g}^i}^j \gamma \cdot {m}^m {m}^l {{{g}_m}_l}_{,j}}})}}{2 \rho}}\\{\frac{{m}^j {m}^m {m}^l {{{g}_m}_l}_{,j} {({1 - \gamma})}}{2 {{\rho}^{2}}}}}\right]}}$
+${{{{F}^I}^j}_{,j}} = {{{
+\left[
+\begin{matrix}
+0 & {{\delta}^j}_k & 0 \\
+\frac{-{({{{{2}} {{{m}^i}} {{{m}^j}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}^i}^j}} {{{{g}_m}_l}}}})}}{{{2}} {{{\rho}^{2}}}} & \frac{{{{2}} {{{m}^i}} {{{{\delta}^j}_k}}} + {{{{{2}} {{{m}^j}} {{{{\delta}^i}_k}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{\delta}^m}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^m}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{\delta}^l}_k}}}}}{{{2}} {{\rho}}} & {{\tilde{\gamma}}} \cdot {{{{g}^i}^j}} \\
+\frac{-{{{{m}^j}} {{({{{{\rho}} \cdot {{{E_{total}}}}} + {{{{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}_m}_l}}}}})}}}}{{\rho}^{3}} & \frac{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{{\delta}^j}_k}}} + {{{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{\delta}^j}_k}}} - {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{{g}_m}_l}} {{{{\delta}^m}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^m}} {{{{g}_m}_l}} {{{{\delta}^l}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}_m}_l}} {{{{\delta}^j}_k}}}}}{{{2}} {{{\rho}^{2}}}} & {\frac{1}{\rho}}{({{{{m}^j}} {{({{1} + {\tilde{\gamma}}})}}})}
+\end{matrix}
+\right]
+} {
+\left[
+\begin{matrix}
+{\rho}_{,j} \\
+{{m}^k}_{,j} \\
+{{E_{total}}}_{,j}
+\end{matrix}
+\right]
+}} + {
+\left[
+\begin{matrix}
+0 \\
+\frac{{{\tilde{\gamma}}} \cdot {{({{{{{{m}^l}} {{{m}^m}} {{{{g}^a}^j}} {{{{g}^i}^b}} {{{{g}_m}_l}} {{{{{g}_b}_a}_{,j}}}} - {{{{m}^l}} {{{m}^m}} {{{{g}^i}^j}} {{{{{g}_m}_l}_{,j}}}}} - {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{{g}^a}^j}} {{{{g}^i}^b}} {{{{{g}_b}_a}_{,j}}}}})}}}{{{2}} {{\rho}}} \\
+\frac{-{{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{m}^m}} {{{{{g}_m}_l}_{,j}}}}}{{{2}} {{{\rho}^{2}}}}
+\end{matrix}
+\right]
+}}$
 <br>
-${{{F}^I}^j}_{;j} = {{\left[\matrix{0&{{\delta}^j}_k&0\\{\frac{-{({{{{{g}^i}^j {m}^m {m}^l {{g}_m}_l} - {{{g}^i}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 {m}^i {m}^j}})}}{2 {{\rho}^{2}}}}&{\frac{{2 {{\delta}^i}_k {m}^j} + {{{g}^i}^j {{\delta}^m}_k {m}^l {{g}_m}_l} + {{{{{g}^i}^j {m}^m {{\delta}^l}_k {{g}_m}_l} - {{{g}^i}^j \gamma \cdot {{\delta}^m}_k {m}^l {{g}_m}_l}} - {{{g}^i}^j \gamma \cdot {m}^m {{\delta}^l}_k {{g}_m}_l}} + {2 {m}^i {{\delta}^j}_k}}{2 \rho}}&{-{{{g}^i}^j {({1 - \gamma})}}}\\{\frac{-{{m}^j {({{{{m}^m {m}^l {{g}_m}_l} - {\gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {\gamma \cdot {E_{total}} \cdot \rho}})}}}{{\rho}^{3}}}&{\frac{{{{{\delta}^j}_k {m}^m {m}^l {{g}_m}_l} - {{{\delta}^j}_k \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 {{\delta}^j}_k \gamma \cdot {E_{total}} \cdot \rho} + {{m}^j {{\delta}^m}_k {m}^l {{g}_m}_l} + {{{{m}^j {m}^m {{\delta}^l}_k {{g}_m}_l} - {{m}^j \gamma \cdot {{\delta}^m}_k {m}^l {{g}_m}_l}} - {{m}^j \gamma \cdot {m}^m {{\delta}^l}_k {{g}_m}_l}}}{2 {{\rho}^{2}}}}&{{\frac1\rho}{({{m}^j \gamma})}}}\right]} {\left[\matrix{{\rho}_{,j}\\{{{m}^k}_{,j} + {{{{\Gamma}^k}_a}_j {m}^a}}\\{{E_{total}}}_{,j}}\right]}}$
+${{{{F}^I}^j}_{;j}} = {{
+\left[
+\begin{matrix}
+0 & {{\delta}^j}_k & 0 \\
+\frac{-{({{{{2}} {{{m}^i}} {{{m}^j}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}^i}^j}} {{{{g}_m}_l}}}})}}{{{2}} {{{\rho}^{2}}}} & \frac{{{{2}} {{{m}^i}} {{{{\delta}^j}_k}}} + {{{{{2}} {{{m}^j}} {{{{\delta}^i}_k}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{\delta}^m}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^m}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{\delta}^l}_k}}}}}{{{2}} {{\rho}}} & {{\tilde{\gamma}}} \cdot {{{{g}^i}^j}} \\
+\frac{-{{{{m}^j}} {{({{{{\rho}} \cdot {{{E_{total}}}}} + {{{{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}_m}_l}}}}})}}}}{{\rho}^{3}} & \frac{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{{\delta}^j}_k}}} + {{{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{\delta}^j}_k}}} - {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{{g}_m}_l}} {{{{\delta}^m}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^m}} {{{{g}_m}_l}} {{{{\delta}^l}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}_m}_l}} {{{{\delta}^j}_k}}}}}{{{2}} {{{\rho}^{2}}}} & {\frac{1}{\rho}}{({{{{m}^j}} {{({{1} + {\tilde{\gamma}}})}}})}
+\end{matrix}
+\right]
+} {
+\left[
+\begin{matrix}
+{\rho}_{,j} \\
+{{{m}^k}_{,j}} + {{{{{{\Gamma}^k}_j}_a}} {{{m}^a}}} \\
+{{E_{total}}}_{,j}
+\end{matrix}
+\right]
+}}$
 <br>
-${S}^I = {{{{{{\Gamma}^k}_j}_k {\left[\matrix{{m}^j\\{\frac{{{{{{g}^i}^j {m}^m {m}^l {{g}_m}_l} - {2 {{g}^i}^j {E_{total}} \cdot \rho}} - {{{g}^i}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 {{g}^i}^j \gamma \cdot {E_{total}} \cdot \rho} + {2 {m}^i {m}^j}}{2 \rho}}\\{\frac{{m}^j {({{{{m}^m {m}^l {{g}_m}_l} - {\gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 \gamma \cdot {E_{total}} \cdot \rho}})}}{2 {{\rho}^{2}}}}}\right]}} + {{{\left[\matrix{0&{{\delta}^j}_k&0\\{\frac{-{({{{{{g}^i}^j {m}^m {m}^l {{g}_m}_l} - {{{g}^i}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 {m}^i {m}^j}})}}{2 {{\rho}^{2}}}}&{\frac{{2 {{\delta}^i}_k {m}^j} + {{{g}^i}^j {{\delta}^m}_k {m}^l {{g}_m}_l} + {{{{{g}^i}^j {m}^m {{\delta}^l}_k {{g}_m}_l} - {{{g}^i}^j \gamma \cdot {{\delta}^m}_k {m}^l {{g}_m}_l}} - {{{g}^i}^j \gamma \cdot {m}^m {{\delta}^l}_k {{g}_m}_l}} + {2 {m}^i {{\delta}^j}_k}}{2 \rho}}&{-{{{g}^i}^j {({1 - \gamma})}}}\\{\frac{-{{m}^j {({{{{m}^m {m}^l {{g}_m}_l} - {\gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {\gamma \cdot {E_{total}} \cdot \rho}})}}}{{\rho}^{3}}}&{\frac{{{{{\delta}^j}_k {m}^m {m}^l {{g}_m}_l} - {{{\delta}^j}_k \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 {{\delta}^j}_k \gamma \cdot {E_{total}} \cdot \rho} + {{m}^j {{\delta}^m}_k {m}^l {{g}_m}_l} + {{{{m}^j {m}^m {{\delta}^l}_k {{g}_m}_l} - {{m}^j \gamma \cdot {{\delta}^m}_k {m}^l {{g}_m}_l}} - {{m}^j \gamma \cdot {m}^m {{\delta}^l}_k {{g}_m}_l}}}{2 {{\rho}^{2}}}}&{{\frac1\rho}{({{m}^j \gamma})}}}\right]} {\left[\matrix{{\rho}_{,j}\\{{m}^k}_{,j}\\{{E_{total}}}_{,j}}\right]}} + {\left[\matrix{0\\{\frac{-{({{{{{{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j {m}^m {m}^l {{g}_m}_l} - {2 {{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j {E_{total}} \cdot \rho}} - {{{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {{2 {{g}^i}^b {{{g}_b}_a}_{,j} {{g}^a}^j \gamma \cdot {E_{total}} \cdot \rho} - {{{g}^i}^j {m}^m {m}^l {{{g}_m}_l}_{,j}}} + {{{g}^i}^j \gamma \cdot {m}^m {m}^l {{{g}_m}_l}_{,j}}})}}{2 \rho}}\\{\frac{{m}^j {m}^m {m}^l {{{g}_m}_l}_{,j} {({1 - \gamma})}}{2 {{\rho}^{2}}}}}\right]}}} - {{\left[\matrix{0&{{\delta}^j}_k&0\\{\frac{-{({{{{{g}^i}^j {m}^m {m}^l {{g}_m}_l} - {{{g}^i}^j \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 {m}^i {m}^j}})}}{2 {{\rho}^{2}}}}&{\frac{{2 {{\delta}^i}_k {m}^j} + {{{g}^i}^j {{\delta}^m}_k {m}^l {{g}_m}_l} + {{{{{g}^i}^j {m}^m {{\delta}^l}_k {{g}_m}_l} - {{{g}^i}^j \gamma \cdot {{\delta}^m}_k {m}^l {{g}_m}_l}} - {{{g}^i}^j \gamma \cdot {m}^m {{\delta}^l}_k {{g}_m}_l}} + {2 {m}^i {{\delta}^j}_k}}{2 \rho}}&{-{{{g}^i}^j {({1 - \gamma})}}}\\{\frac{-{{m}^j {({{{{m}^m {m}^l {{g}_m}_l} - {\gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {\gamma \cdot {E_{total}} \cdot \rho}})}}}{{\rho}^{3}}}&{\frac{{{{{\delta}^j}_k {m}^m {m}^l {{g}_m}_l} - {{{\delta}^j}_k \gamma \cdot {m}^m {m}^l {{g}_m}_l}} + {2 {{\delta}^j}_k \gamma \cdot {E_{total}} \cdot \rho} + {{m}^j {{\delta}^m}_k {m}^l {{g}_m}_l} + {{{{m}^j {m}^m {{\delta}^l}_k {{g}_m}_l} - {{m}^j \gamma \cdot {{\delta}^m}_k {m}^l {{g}_m}_l}} - {{m}^j \gamma \cdot {m}^m {{\delta}^l}_k {{g}_m}_l}}}{2 {{\rho}^{2}}}}&{{\frac1\rho}{({{m}^j \gamma})}}}\right]} {\left[\matrix{{\rho}_{,j}\\{{{m}^k}_{,j} + {{{{\Gamma}^k}_a}_j {m}^a}}\\{{E_{total}}}_{,j}}\right]}}}$
+${{S}^I} = {{{{{{{{\Gamma}^k}_j}_k}} {
+\left[
+\begin{matrix}
+{m}^j \\
+\frac{{{{2}} {{{m}^i}} {{{m}^j}}} + {{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{g}^i}^j}}} - {{{\tilde{\gamma}}} \cdot {{{m}^m}} {{{m}^l}} {{{{g}^i}^j}} {{{{g}_m}_l}}}}}{{{2}} {{\rho}}} \\
+\frac{{{{m}^j}} {{({{{{2}} {{\rho}} \cdot {{{E_{total}}}}} + {{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^m}} {{{m}^l}} {{{{g}_m}_l}}}}})}}}{{{2}} {{{\rho}^{2}}}}
+\end{matrix}
+\right]
+}} + {{{
+\left[
+\begin{matrix}
+0 & {{\delta}^j}_k & 0 \\
+\frac{-{({{{{2}} {{{m}^i}} {{{m}^j}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}^i}^j}} {{{{g}_m}_l}}}})}}{{{2}} {{{\rho}^{2}}}} & \frac{{{{2}} {{{m}^i}} {{{{\delta}^j}_k}}} + {{{{{2}} {{{m}^j}} {{{{\delta}^i}_k}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{\delta}^m}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^m}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{\delta}^l}_k}}}}}{{{2}} {{\rho}}} & {{\tilde{\gamma}}} \cdot {{{{g}^i}^j}} \\
+\frac{-{{{{m}^j}} {{({{{{\rho}} \cdot {{{E_{total}}}}} + {{{{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}_m}_l}}}}})}}}}{{\rho}^{3}} & \frac{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{{\delta}^j}_k}}} + {{{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{\delta}^j}_k}}} - {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{{g}_m}_l}} {{{{\delta}^m}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^m}} {{{{g}_m}_l}} {{{{\delta}^l}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}_m}_l}} {{{{\delta}^j}_k}}}}}{{{2}} {{{\rho}^{2}}}} & {\frac{1}{\rho}}{({{{{m}^j}} {{({{1} + {\tilde{\gamma}}})}}})}
+\end{matrix}
+\right]
+} {
+\left[
+\begin{matrix}
+{\rho}_{,j} \\
+{{m}^k}_{,j} \\
+{{E_{total}}}_{,j}
+\end{matrix}
+\right]
+}} + {
+\left[
+\begin{matrix}
+0 \\
+\frac{{{\tilde{\gamma}}} \cdot {{({{{{{{m}^l}} {{{m}^m}} {{{{g}^a}^j}} {{{{g}^i}^b}} {{{{g}_m}_l}} {{{{{g}_b}_a}_{,j}}}} - {{{{m}^l}} {{{m}^m}} {{{{g}^i}^j}} {{{{{g}_m}_l}_{,j}}}}} - {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{{g}^a}^j}} {{{{g}^i}^b}} {{{{{g}_b}_a}_{,j}}}}})}}}{{{2}} {{\rho}}} \\
+\frac{-{{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{m}^m}} {{{{{g}_m}_l}_{,j}}}}}{{{2}} {{{\rho}^{2}}}}
+\end{matrix}
+\right]
+}}} - {{
+\left[
+\begin{matrix}
+0 & {{\delta}^j}_k & 0 \\
+\frac{-{({{{{2}} {{{m}^i}} {{{m}^j}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}^i}^j}} {{{{g}_m}_l}}}})}}{{{2}} {{{\rho}^{2}}}} & \frac{{{{2}} {{{m}^i}} {{{{\delta}^j}_k}}} + {{{{{2}} {{{m}^j}} {{{{\delta}^i}_k}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{\delta}^m}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^m}} {{{{g}^i}^j}} {{{{g}_m}_l}} {{{{\delta}^l}_k}}}}}{{{2}} {{\rho}}} & {{\tilde{\gamma}}} \cdot {{{{g}^i}^j}} \\
+\frac{-{{{{m}^j}} {{({{{{\rho}} \cdot {{{E_{total}}}}} + {{{{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}_m}_l}}}}})}}}}{{\rho}^{3}} & \frac{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{{\delta}^j}_k}}} + {{{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{\delta}^j}_k}}} - {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^l}} {{{{g}_m}_l}} {{{{\delta}^m}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^j}} {{{m}^m}} {{{{g}_m}_l}} {{{{\delta}^l}_k}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^l}} {{{m}^m}} {{{{g}_m}_l}} {{{{\delta}^j}_k}}}}}{{{2}} {{{\rho}^{2}}}} & {\frac{1}{\rho}}{({{{{m}^j}} {{({{1} + {\tilde{\gamma}}})}}})}
+\end{matrix}
+\right]
+} {
+\left[
+\begin{matrix}
+{\rho}_{,j} \\
+{{{m}^k}_{,j}} + {{{{{{\Gamma}^k}_j}_a}} {{{m}^a}}} \\
+{{E_{total}}}_{,j}
+\end{matrix}
+\right]
+}}}$
 <br>
-${S}^I = {\left[\matrix{0\\{\frac{-{({{{2 {{{\Gamma}^b}^i}_b {E_{total}} \cdot \rho} - {2 {{{\Gamma}^b}^i}_b \gamma \cdot {E_{total}} \cdot \rho}} + {{{{{{\Gamma}^i}_a}^a {m}^b {m}_b} - {{{{\Gamma}^i}_a}^a \gamma \cdot {m}^b {m}_b}} - {2 {{{\Gamma}^i}_b}^b {E_{total}} \cdot \rho}} + {{2 {{{\Gamma}^i}_b}^b \gamma \cdot {E_{total}} \cdot \rho} - {{{{\Gamma}^k}^i}_k {m}^b {m}_b}} + {{{{\Gamma}^k}^i}_k \gamma \cdot {m}^b {m}_b} + {{{{{{\Gamma}_a}^i}^a {m}^b {m}_b} - {{{{\Gamma}_a}^i}^a \gamma \cdot {m}^b {m}_b}} - {2 {{{\Gamma}_b}^i}^b {E_{total}} \cdot \rho}} + {2 {{{\Gamma}_b}^i}^b \gamma \cdot {E_{total}} \cdot \rho} + {{2 {m}^b {{{\Gamma}^i}_c}_b {m}^c} - {{m}^b {m}^c {{{\Gamma}_c}_b}^i}} + {{m}_b {{{\Gamma}^b}_c}^i {m}^c} + {{\gamma \cdot {m}^b {m}^c {{{\Gamma}_c}_b}^i} - {\gamma \cdot {m}_b {{{\Gamma}^b}_c}^i {m}^c}}})}}{2 \rho}}\\{\frac{{m}^b {({{{{{{\Gamma}^k}_b}_k {m}^d {m}_d} - {{{{\Gamma}^k}_b}_k \gamma \cdot {m}^d {m}_d}} + {{{{{m}^c {m}^d {{{\Gamma}_d}_c}_b} - {{m}^c {m}^d {{{\Gamma}_d}_c}_b \gamma}} - {{m}_b {{{\Gamma}^d}_c}_d {m}^c}} - {{m}_c {{{\Gamma}^c}_d}_b {m}^d}} + {\gamma \cdot {m}_b {{{\Gamma}^d}_c}_d {m}^c} + {\gamma \cdot {m}_c {{{\Gamma}^c}_d}_b {m}^d}})}}{2 {{\rho}^{2}}}}}\right]}$
+${{S}^I} = {
+\left[
+\begin{matrix}
+{{{m}^b}} {{({{{{{\Gamma}^c}_b}_c} - {{{{\Gamma}^c}_c}_b}})}} \\
+\frac{-{({{{{{2}} {{{m}^b}} {{{m}^c}} {{{{{\Gamma}^i}_c}_b}}} - {{{2}} {{{m}^b}} {{{m}^i}} {{{{{\Gamma}^c}_b}_c}}}} + {{{{2}} {{{m}^b}} {{{m}^i}} {{{{{\Gamma}^c}_c}_b}}} - {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{{\Gamma}^b}^i}_b}}}} + {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{{\Gamma}^i}^b}_b}}} + {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{{\Gamma}_b}^b}^i}}} + {{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}^c}} {{{{{\Gamma}_b}^i}_c}}} + {{{{{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}_b}} {{{{{\Gamma}^c}^i}_c}}} - {{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}_b}} {{{{{\Gamma}^i}^d}_d}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}_b}} {{{{{\Gamma}_c}^c}^i}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}_c}} {{{{{\Gamma}^c}^i}_b}}}}})}}{{{2}} {{\rho}}} \\
+\frac{{{{m}^b}} {{({{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{{{\Gamma}^c}_b}_c}}} - {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{{{\Gamma}^c}_c}_b}}}} + {{{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{{\Gamma}^c}_b}_c}}} - {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{{\Gamma}^c}_c}_b}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}^d}} {{{{{\Gamma}_c}_b}_d}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}^d}} {{{{{\Gamma}_d}_b}_c}}}} + {{{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}^d}} {{{{{\Gamma}_d}_c}_b}}} - {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}_c}} {{{{{\Gamma}^d}_b}_d}}}} + {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}_c}} {{{{{\Gamma}^d}_d}_b}}} + {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}_d}} {{{{{\Gamma}^d}_c}_b}}}})}}}{{{2}} {{{\rho}^{2}}}}
+\end{matrix}
+\right]
+}$
+<br>
+${{S}^I} = {
+\left[
+\begin{matrix}
+{{{m}^b}} {{{{{c}_c}_b}^c}} \\
+\frac{-{({{{{{{2}} {{{m}^b}} {{{m}^c}} {{{{{\Gamma}^i}_c}_b}}} - {{{2}} {{{m}^b}} {{{m}^i}} {{{{{c}_c}_b}^c}}}} - {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{{\Gamma}^b}^i}_b}}}} + {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{{\Gamma}^i}^b}_b}}} + {{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{{\Gamma}_b}^b}^i}}} + {{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}^c}} {{{{{\Gamma}_b}^i}_c}}} + {{{{{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}_b}} {{{{{\Gamma}^c}^i}_c}}} - {{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}_b}} {{{{{\Gamma}^i}^d}_d}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}_b}} {{{{{\Gamma}_c}^c}^i}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^b}} {{{m}_c}} {{{{{\Gamma}^c}^i}_b}}}}})}}{{{2}} {{\rho}}} \\
+\frac{{{{m}^b}} {{({{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{{{{c}_c}_b}^c}}} + {{{{{2}} {{\rho}} \cdot {{{E_{total}}}} \cdot {{\tilde{\gamma}}} \cdot {{{{{c}_c}_b}^c}}} - {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}^d}} {{{{{\Gamma}_c}_b}_d}}}} - {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}^d}} {{{{{\Gamma}_d}_b}_c}}}} + {{{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}^d}} {{{{{\Gamma}_d}_c}_b}}} - {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}_c}} {{{{{\Gamma}^d}_b}_d}}}} + {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}_c}} {{{{{\Gamma}^d}_d}_b}}} + {{{\tilde{\gamma}}} \cdot {{{m}^c}} {{{m}_d}} {{{{{\Gamma}^d}_c}_b}}}})}}}{{{2}} {{{\rho}^{2}}}}
+\end{matrix}
+\right]
+}$
 <br>

@@ -17,9 +17,7 @@ Array.precedence = 10
 --[[
 valid ctors:
 	Array(x1, x2, ..., xN)
-	
-	maybe this one too?
-	Array{dim={dim1, dim2, ...}, values=function(i1, ..., in) ... end}}
+	if you want to use a lambda constructor, check out Array:lambda
 --]]
 function Array:init(...)
 	Array.super.init(self, ...)

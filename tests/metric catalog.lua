@@ -455,7 +455,7 @@ for _,info in ipairs(spacetimes) do
 --]]
 
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
-	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_bca')))
+	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_cba')))
 	local Props = class(require 'symmath.physics.diffgeom')
 	function Props:doPrint(field)
 		print(field.title..':')
@@ -484,7 +484,7 @@ for _,info in ipairs(spacetimes) do
 	 but when doing so, you must make the embedded variables dependent on the ... variables that the anholonomic are spun off of
 	 	i.e. if the anholonomic basis is rHat, phiHat, thetaHat, then the A^I variables must be dependent upon r, theta, phi
 	--]]
-	local divVarExpr = var'A''^i_,i' + var'\\Gamma''^i_ji' * var'A''^j'
+	local divVarExpr = var'A''^i_,i' + var'\\Gamma''^i_ij' * var'A''^j'
 	local divExpr = divVarExpr:replace(var'A', A):replace(var'\\Gamma', Gamma)
 	-- TODO only simplify TensorRef, so the indexes are fixed
 	printbr('divergence:', divVarExpr:eq(divExpr():factorDivision())) 

@@ -119,10 +119,10 @@ for _,index in ipairs(indexes) do
 	expr = expr:splitOffDerivIndexes()
 
 -- TODO replaceIndex fails on _tt ... but not _ti ... strange
-	expr = expr:replace(g'_tt', -alpha^2 + beta'^i' * beta'^j' * gamma'_ij')
+	expr = expr:replace(g'_tt', -alpha^2 + beta'^i' * beta'^k' * gamma'_ik')
 	
-	expr = expr:replaceIndex(g'_ti', beta'_i')
-	expr = expr:replaceIndex(g'_it', beta'_i')
+	expr = expr:replace(g'_tj', beta'_j')
+	expr = expr:replace(g'_jt', beta'_j')
 	expr = expr:replaceIndex(g'_ij', gamma'_ij')
 	
 	expr = expr:replace(g'^tt', -1/alpha^2)
@@ -133,6 +133,14 @@ for _,index in ipairs(indexes) do
 	
 	printbr(expr)
 
+	printbr'raise $\\beta_j$'
+
+	expr = expr:replaceIndex(beta'_j,t':splitOffDerivIndexes(), (g'_jk' * beta'^k')'_,t')
+	expr = expr:replaceIndex(g'_jk', gamma'_jk')
+	expr = expr:replaceIndex(beta'_t,t':splitOffDerivIndexes(), (g'_tk' * beta'^k')'_,t')
+	expr = expr:replaceIndex(g'_tk', gamma'_kl' * beta'^l')
+	printbr(expr)
+	
 	printbr'simplify...'
 	expr = expr()
 	printbr(expr)
@@ -143,26 +151,6 @@ for _,index in ipairs(indexes) do
 
 	expr = replaceSubExpr(expr, -beta'^i' * gamma'_kl,t' * beta'^k' * beta'^l',
 								-beta'^i' * beta'^j' * beta'^k' * gamma'_jk,t')()
-	printbr(expr)
-
-	expr = replaceSubExpr(expr, -beta'^i' * beta'^j' * gamma'_kl' * beta'^k' * beta'^l_,j',
-								-beta'^i' * beta'^j' * gamma'_kl' * beta'^k_,j' * beta'^l')()
-	printbr(expr)
-
-	expr = replaceSubExpr(expr, -beta'^i' * gamma'_kl' * beta'^k_,t' * beta'^l',
-								-beta'^i' * beta'^j' * gamma'_jk' * beta'^k_,t')()
-	printbr(expr)
-
-	expr = replaceSubExpr(expr, -beta'^i' * gamma'_kl' * beta'^k' * beta'^l_,t',
-								-beta'^i' * beta'^j' * gamma'_jk' * beta'^k_,t')()
-	printbr(expr)
-
-	expr = replaceSubExpr(expr, -2 * gamma'^ij' * alpha^2 * gamma'_jk' * beta'^k_,t',
-								-2 * alpha^2 * beta'^i_,t')()
-	printbr(expr)
-
-	expr = replaceSubExpr(expr, gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k' * beta'^l_,j',
-								gamma'^ij' * alpha^2 * gamma'_kl' * beta'^k_,j' * beta'^l')()
 	printbr(expr)
 	
 	GammasForIndexes[index] = expr

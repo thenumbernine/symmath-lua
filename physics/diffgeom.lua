@@ -47,7 +47,7 @@ Props.fields = table{
 		calc = function(self)
 			local expr = ((self.dg'_abc' + self.dg'_acb' - self.dg'_bca') / 2)
 			if self.c then 
-				expr = expr + (self.c'_abc' + self.c'_acb' - self.c'_bca')/2 
+				expr = expr + (self.c'_abc' + self.c'_acb' - self.c'_cba')/2 
 			end
 			local GammaL = Tensor'_abc'
 			GammaL['_abc'] = expr()
@@ -87,7 +87,7 @@ Props.fields = table{
 		title = 'connection coefficients squared',
 		calc = function(self)
 			local GammaSq = Tensor'^a_bcd'
-			GammaSq['^a_bcd'] = (self.Gamma'^a_ec' * self.Gamma'^e_bd')()
+			GammaSq['^a_bcd'] = (self.Gamma'^a_ce' * self.Gamma'^e_bd')()
 			return GammaSq
 		end,
 		display = function(self) return (var'\\Gamma''^a_ec' * var'\\Gamma''^e_bd'):eq(self.GammaSq'^a_bcd'()) end,
@@ -98,9 +98,9 @@ Props.fields = table{
 		title = 'Riemann curvature, $\\sharp\\flat\\flat\\flat$',
 		calc = function(self)
 			local RiemannULLL = Tensor'^a_bcd'
-			local expr = (self.dGamma'^a_bdc' - self.dGamma'^a_bcd' + self.GammaSq'^a_bcd' - self.GammaSq'^a_bdc')
+			local expr = (self.dGamma'^a_dbc' - self.dGamma'^a_cbd' + self.GammaSq'^a_cdb' - self.GammaSq'^a_dcb')
 			if self.c then 
-				expr = expr - self.Gamma'^a_be' * self.c'_cd^e' 
+				expr = expr - self.Gamma'^a_eb' * self.c'_cd^e' 
 			end
 			RiemannULLL['^a_bcd'] = expr()
 			return RiemannULLL

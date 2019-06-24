@@ -1,5 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
+op = nil	-- make way for _G.op = symmath.op
 require 'symmath'.setup()
 require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative = true}
 
@@ -11,6 +12,7 @@ end
 -- primitive variables
 local rho = var'\\rho'	-- density
 
+local c = var'c'		-- commutation
 local g = var'g'			-- metric
 local m = var'm'	-- momentum
 local v = var'v'	-- velocity
@@ -19,12 +21,15 @@ local P = var'P'		-- total specific energy
 local S = var'S'		-- source terms
 local delta = var'\\delta'	-- Kronecher delta
 local gamma = var'\\gamma'
+local tildeGamma = var'\\tilde{\\gamma}'	-- = gamma - 1
 local Gamma = var'\\Gamma'
+
+printbr(tildeGamma:eq(gamma - 1))
 
 local vSq = v'^k' * v'^l' * g'_kl'
 
 local e_int = var'e_{int}'
-local e_int_def = e_int:eq(P / ((gamma - 1) * rho))		-- specific internal energy 
+local e_int_def = e_int:eq(P / (tildeGamma * rho))		-- specific internal energy 
 
 local e_kin = var'e_{kin}'
 local e_kin_def = e_kin:eq(frac(1,2) * vSq)					-- specific kinetic energy
@@ -69,7 +74,7 @@ printbr(F'^Ij':eq(F_def))
 F_def = F_def:map(function(x)
 	if not x.replace then return end
 	x = x:subst(H_total_def)
-	x = x:replaceIndex(P, (gamma - 1) * (E_total - frac(1,2) * rho * vSq))
+	x = x:replaceIndex(P, tildeGamma * (E_total - frac(1,2) * rho * vSq))
 	x = x:splitOffDerivIndexes():replaceIndex(v'^i', m'^i' / rho)
 	x = x:splitOffDerivIndexes():replaceIndex(v'_i', m'_i' / rho)
 	return x
@@ -90,7 +95,7 @@ local TensorRef = require 'symmath.tensor.TensorRef'
 local function removeConstantDerivatives(x)
 	if TensorRef.is(x)
 	and x[#x].derivative
-	and (x[1] == gamma or x[1] == delta)
+	and (x[1] == gamma or x[1] == tildeGamma or x[1] == delta)
 	then
 		return Constant(0)
 	end
@@ -145,7 +150,7 @@ end
 covar_dF_matrix_def = covar_dF_matrix_def
 -- replace ,'s with ;'s
 -- [[ or... just insert the Gammas manually?
-	:replaceIndex(m'^i_,j', m'^i_,j' + Gamma'^i_kj' * m'^k')
+	:replaceIndex(m'^i_,j', m'^i_,j' + Gamma'^i_jk' * m'^k')
 --]]
 --[[ or cancel out the partials manually as well?
 	:replaceIndex(rho'_,j', 0)
@@ -155,12 +160,13 @@ covar_dF_matrix_def = covar_dF_matrix_def
 --]]
 printbr(F'^Ij_;j':eq(covar_dF_matrix_def))
 
+-- Gamma^k_jk = e_j(log(sqrt(det(g_ab))))
 local S_def = Gamma'^k_jk' * F_def:reindex{m='k'} + partial_dF_matrix_def - covar_dF_matrix_def
 printbr(S'^I':eq(S_def)) 
 
 S_def = S_def()	-- multiply all matrices and combine all vectors
 
-S_def = S_def:replaceIndex(g'_ij,k', Gamma'_ijk' + Gamma'_jik')
+S_def = S_def:replaceIndex(g'_ij,k', Gamma'_ikj' + Gamma'_jki')
 
 -- combine all deltas
 -- TODO combine all g's as well
@@ -222,7 +228,11 @@ end)
 S_def = S_def:symmetrizeIndexes(g, {1,2})
 S_def = S_def()
 
+printbr(S'^I':eq(S_def)) 
+
+-- symmetrize Gamma_i(jk)? nope, could be anholonomic
 --S_def = S_def:symmetrizeIndexes(Gamma, {2,3})
+S_def = S_def:replace(Gamma'^c_cb', Gamma'^c_bc' - c'_cb^c')()
 
 printbr(S'^I':eq(S_def)) 
 -- 1/sqrt(g) (sqrt(g) F^Ij)_,j = F^Ij_,j + Gamma^k_jk F^Ij
