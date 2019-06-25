@@ -83,6 +83,8 @@ Integral.rules = {
 				end
 				local found = false
 				local terms = table(int)
+				local sin = require 'symmath.sin'
+				local cos = require 'symmath.cos'
 				for i=1,#terms do
 					if terms[i] == x then
 						-- integrating something times x ... 
@@ -90,11 +92,17 @@ Integral.rules = {
 						found = true
 					elseif pow.is(terms[i]) and terms[i][1] == x then
 						-- integrating something times x^n
-						if terms[i][2] == Constant(-1) then
+						if terms[i][2] == Constant(-1) then				-- integral of 1/x = log|x|
 							terms[i] = prune(log(abs(x)))
-						else
+						else											-- integral of x^n = n x^(n-1)
 							terms[i] = prune(x^(terms[i][2]+1)/(terms[i][2]+1))
 						end
+						found = true
+					elseif sin.is(terms[i]) and terms[i][1] == x then	-- integral of sin(x) = -cos(x)
+						terms[i] = prune(-cos(x))
+						found = true
+					elseif cos.is(terms[i]) and terms[i][1] == x then	-- integral of cos(x) = sin(x)
+						terms[i] = prune(sin(x))
 						found = true
 					elseif find(terms[i], x) then	-- a function of x not yet implemented
 						return
