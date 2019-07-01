@@ -19,17 +19,22 @@ local Constant = class(Expression)
 Constant.precedence = 10	-- high since it can't have child nodes 
 Constant.name = 'Constant'
 
-function Constant:init(value)
+--[[
+value = value of your constant
+symbol = override display of the constant (i.e. 'pi', 'e', etc)
+--]]
+function Constant:init(value, symbol)
 	if type(value) ~= 'number'
 	and not complex.is(value)
 	then
 		error('tried to init constant with non-number type '..type(value)..' value '..tostring(value))
 	end
 	self.value = value
+	self.symbol = symbol
 end
 
 function Constant:clone()
-	return Constant(self.value)
+	return Constant(self.value, self.symbol)
 end
 
 -- this won't be called if a prim is used ...

@@ -188,10 +188,10 @@ symmath.Verbose = require 'symmath.tostring.Verbose'
 symmath.GnuPlot = require 'symmath.tostring.GnuPlot'
 
 -- constants 
-symmath.e = symmath.Variable('e', nil, math.exp(1))
-symmath.i = symmath.Constant(symmath.complex(0,1))
-symmath.pi = symmath.Variable('\\pi', nil, math.pi)
-symmath.inf = symmath.Variable('\\infty', nil, math.huge)
+symmath.i = symmath.Constant(symmath.complex(0,1), 'i')
+symmath.e = symmath.Constant(math.exp(1), 'e')
+symmath.pi = symmath.Constant(math.pi, '\\pi')
+symmath.inf = symmath.Constant(math.huge, '\\infty')
 
 -- hack implicit variable names to look good in TeX
 

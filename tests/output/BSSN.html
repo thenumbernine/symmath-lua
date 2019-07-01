@@ -1,0 +1,337 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title>BSSN</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+translation of BSSN_RHS.nb from Zach Etienne's SENR project, from Mathematica into Lua symmath
+<br>
+found at <a href='https://math.wvu.edu/~zetienne/SENR/'>https://math.wvu.edu/~zetienne/SENR/</a>
+<br>
+Using capital letters to denote non-coordinate basis... which I'm denoting individually with hats.
+<br>
+Rescaling to non-coordinate basis:
+<br>
+${{{e}^I}_i} = {\overset{I\downarrow i\rightarrow}{
+\left[
+\begin{matrix}
+1 & 0 & 0 \\
+0 & r & 0 \\
+0 & 0 & {{r}} {{sin\left(\theta\right)}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{e}_I}^i} = {\overset{I\downarrow i\rightarrow}{
+\left[
+\begin{matrix}
+\frac{1}{1} & 0 & 0 \\
+0 & \frac{1}{r} & 0 \\
+0 & 0 & \frac{1}{{{r}} {{sin\left(\theta\right)}}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{\hat{\gamma}}_i}_j} = {\overset{i\downarrow j\rightarrow}{
+\left[
+\begin{matrix}
+1 & 0 & 0 \\
+0 & {r}^{2} & 0 \\
+0 & 0 & {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{\hat{\gamma}}^i}^j} = {\overset{i\downarrow j\rightarrow}{
+\left[
+\begin{matrix}
+1 & 0 & 0 \\
+0 & \frac{1}{{r}^{2}} & 0 \\
+0 & 0 & \frac{1}{{{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{{\hat{\Gamma}}^i}_j}_k} = {\overset{i\downarrow[{j\downarrow k\rightarrow}]}{
+\left[
+\begin{matrix}
+\overset{j\downarrow k\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 \\
+0 & -{r} & 0 \\
+0 & 0 & -{{{r}} {{{sin\left(\theta\right)}^{2}}}}
+\end{matrix}
+\right]
+} \\
+\overset{j\downarrow k\rightarrow}{
+\left[
+\begin{matrix}
+0 & \frac{1}{r} & 0 \\
+\frac{1}{r} & 0 & 0 \\
+0 & 0 & -{{{sin\left(\theta\right)}} {{cos\left(\theta\right)}}}
+\end{matrix}
+\right]
+} \\
+\overset{j\downarrow k\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & \frac{1}{r} \\
+0 & 0 & \frac{cos\left(\theta\right)}{sin\left(\theta\right)} \\
+\frac{1}{r} & \frac{cos\left(\theta\right)}{sin\left(\theta\right)} & 0
+\end{matrix}
+\right]
+}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{{{\hat{\Gamma}}^i}_j}_k}_{,l}} = {\overset{i\downarrow j\rightarrow[{k\downarrow l\rightarrow}]}{
+\left[
+\begin{matrix}
+\overset{k\downarrow l\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 0
+\end{matrix}
+\right]
+} & \overset{k\downarrow l\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 \\
+-{1} & 0 & 0 \\
+0 & 0 & 0
+\end{matrix}
+\right]
+} & \overset{k\downarrow l\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+-{{sin\left(\theta\right)}^{2}} & -{{{2}} {{r}} {{sin\left(\theta\right)}} {{cos\left(\theta\right)}}} & 0
+\end{matrix}
+\right]
+} \\
+\overset{k\downarrow l\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 \\
+-{\frac{1}{{r}^{2}}} & 0 & 0 \\
+0 & 0 & 0
+\end{matrix}
+\right]
+} & \overset{k\downarrow l\rightarrow}{
+\left[
+\begin{matrix}
+-{\frac{1}{{r}^{2}}} & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 0
+\end{matrix}
+\right]
+} & \overset{k\downarrow l\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & -{({{1} - {{{2}} {{{sin\left(\theta\right)}^{2}}}}})} & 0
+\end{matrix}
+\right]
+} \\
+\overset{k\downarrow l\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+-{\frac{1}{{r}^{2}}} & 0 & 0
+\end{matrix}
+\right]
+} & \overset{k\downarrow l\rightarrow}{
+\left[
+\begin{matrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & -{\frac{1}{{sin\left(\theta\right)}^{2}}} & 0
+\end{matrix}
+\right]
+} & \overset{k\downarrow l\rightarrow}{
+\left[
+\begin{matrix}
+-{\frac{1}{{r}^{2}}} & 0 & 0 \\
+0 & -{\frac{1}{{sin\left(\theta\right)}^{2}}} & 0 \\
+0 & 0 & 0
+\end{matrix}
+\right]
+}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{h}_I}_J} = {\overset{I\downarrow J\rightarrow}{
+\left[
+\begin{matrix}
+{h_{\hat{r} \hat{r}}} & {h_{\hat{r} \hat{\theta}}} & {h_{\hat{r} \hat{\phi}}} \\
+{h_{\hat{r} \hat{\theta}}} & {h_{\hat{\theta} \hat{\theta}}} & {h_{\hat{\theta} \hat{\phi}}} \\
+{h_{\hat{r} \hat{\phi}}} & {h_{\hat{\theta} \hat{\phi}}} & {h_{\hat{\phi} \hat{\phi}}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{{h}_I}_J}_{,k}} = {\overset{I\downarrow[{J\downarrow k\rightarrow}]}{
+\left[
+\begin{matrix}
+\overset{J\downarrow k\rightarrow}{
+\left[
+\begin{matrix}
+{h_{\hat{r} \hat{r}}}_{,{{r}}} & {h_{\hat{r} \hat{r}}}_{,{{\theta}}} & {h_{\hat{r} \hat{r}}}_{,{{\phi}}} \\
+{h_{\hat{r} \hat{\theta}}}_{,{{r}}} & {h_{\hat{r} \hat{\theta}}}_{,{{\theta}}} & {h_{\hat{r} \hat{\theta}}}_{,{{\phi}}} \\
+{h_{\hat{r} \hat{\phi}}}_{,{{r}}} & {h_{\hat{r} \hat{\phi}}}_{,{{\theta}}} & {h_{\hat{r} \hat{\phi}}}_{,{{\phi}}}
+\end{matrix}
+\right]
+} \\
+\overset{J\downarrow k\rightarrow}{
+\left[
+\begin{matrix}
+{h_{\hat{r} \hat{\theta}}}_{,{{r}}} & {h_{\hat{r} \hat{\theta}}}_{,{{\theta}}} & {h_{\hat{r} \hat{\theta}}}_{,{{\phi}}} \\
+{h_{\hat{\theta} \hat{\theta}}}_{,{{r}}} & {h_{\hat{\theta} \hat{\theta}}}_{,{{\theta}}} & {h_{\hat{\theta} \hat{\theta}}}_{,{{\phi}}} \\
+{h_{\hat{\theta} \hat{\phi}}}_{,{{r}}} & {h_{\hat{\theta} \hat{\phi}}}_{,{{\theta}}} & {h_{\hat{\theta} \hat{\phi}}}_{,{{\phi}}}
+\end{matrix}
+\right]
+} \\
+\overset{J\downarrow k\rightarrow}{
+\left[
+\begin{matrix}
+{h_{\hat{r} \hat{\phi}}}_{,{{r}}} & {h_{\hat{r} \hat{\phi}}}_{,{{\theta}}} & {h_{\hat{r} \hat{\phi}}}_{,{{\phi}}} \\
+{h_{\hat{\theta} \hat{\phi}}}_{,{{r}}} & {h_{\hat{\theta} \hat{\phi}}}_{,{{\theta}}} & {h_{\hat{\theta} \hat{\phi}}}_{,{{\phi}}} \\
+{h_{\hat{\phi} \hat{\phi}}}_{,{{r}}} & {h_{\hat{\phi} \hat{\phi}}}_{,{{\theta}}} & {h_{\hat{\phi} \hat{\phi}}}_{,{{\phi}}}
+\end{matrix}
+\right]
+}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{a}_I}_J} = {\overset{I\downarrow J\rightarrow}{
+\left[
+\begin{matrix}
+{a_{\hat{r} \hat{r}}} & {a_{\hat{r} \hat{\theta}}} & {a_{\hat{r} \hat{\phi}}} \\
+{a_{\hat{r} \hat{\theta}}} & {a_{\hat{\theta} \hat{\theta}}} & {a_{\hat{\theta} \hat{\phi}}} \\
+{a_{\hat{r} \hat{\phi}}} & {a_{\hat{\theta} \hat{\phi}}} & {a_{\hat{\phi} \hat{\phi}}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{{\epsilon}_i}_j} = {{{{{{{h}_I}_J}} {{{{e}^I}_i}}}} {{{{e}^J}_j}}}} = {\overset{i\downarrow j\rightarrow}{
+\left[
+\begin{matrix}
+{h_{\hat{r} \hat{r}}} & {{{h_{\hat{r} \hat{\theta}}}}} \cdot {{r}} & {{{h_{\hat{r} \hat{\phi}}}}} \cdot {{r}} {{sin\left(\theta\right)}} \\
+{{{h_{\hat{r} \hat{\theta}}}}} \cdot {{r}} & {{{h_{\hat{\theta} \hat{\theta}}}}} \cdot {{{r}^{2}}} & {{{h_{\hat{\theta} \hat{\phi}}}}} \cdot {{{r}^{2}}} {{sin\left(\theta\right)}} \\
+{{{h_{\hat{r} \hat{\phi}}}}} \cdot {{r}} {{sin\left(\theta\right)}} & {{{h_{\hat{\theta} \hat{\phi}}}}} \cdot {{{r}^{2}}} {{sin\left(\theta\right)}} & {{{h_{\hat{\phi} \hat{\phi}}}}} \cdot {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{{\bar{\gamma}}_i}_j} = {{{{\hat{\gamma}}_i}_j} + {{{\epsilon}_i}_j}}} = {\overset{i\downarrow j\rightarrow}{
+\left[
+\begin{matrix}
+{1} + {{h_{\hat{r} \hat{r}}}} & {{{h_{\hat{r} \hat{\theta}}}}} \cdot {{r}} & {{{h_{\hat{r} \hat{\phi}}}}} \cdot {{r}} {{sin\left(\theta\right)}} \\
+{{{h_{\hat{r} \hat{\theta}}}}} \cdot {{r}} & {{{r}^{2}}} {{({{1} + {{h_{\hat{\theta} \hat{\theta}}}}})}} & {{{h_{\hat{\theta} \hat{\phi}}}}} \cdot {{{r}^{2}}} {{sin\left(\theta\right)}} \\
+{{{h_{\hat{r} \hat{\phi}}}}} \cdot {{r}} {{sin\left(\theta\right)}} & {{{h_{\hat{\theta} \hat{\phi}}}}} \cdot {{{r}^{2}}} {{sin\left(\theta\right)}} & {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}} {{({{1} + {{h_{\hat{\phi} \hat{\phi}}}}})}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{{\bar{A}}_i}_j} = {{{{{{{a}_I}_J}} {{{{e}^I}_i}}}} {{{{e}^J}_j}}}} = {\overset{i\downarrow j\rightarrow}{
+\left[
+\begin{matrix}
+{a_{\hat{r} \hat{r}}} & {{{a_{\hat{r} \hat{\theta}}}}} \cdot {{r}} & {{{a_{\hat{r} \hat{\phi}}}}} \cdot {{r}} {{sin\left(\theta\right)}} \\
+{{{a_{\hat{r} \hat{\theta}}}}} \cdot {{r}} & {{{a_{\hat{\theta} \hat{\theta}}}}} \cdot {{{r}^{2}}} & {{{a_{\hat{\theta} \hat{\phi}}}}} \cdot {{{r}^{2}}} {{sin\left(\theta\right)}} \\
+{{{a_{\hat{r} \hat{\phi}}}}} \cdot {{r}} {{sin\left(\theta\right)}} & {{{a_{\hat{\theta} \hat{\phi}}}}} \cdot {{{r}^{2}}} {{sin\left(\theta\right)}} & {{{a_{\hat{\phi} \hat{\phi}}}}} \cdot {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{{\epsilon}_j}_k}_{,i}} = {\overset{j\downarrow[{k\downarrow i\rightarrow}]}{
+\left[
+\begin{matrix}
+\overset{k\downarrow i\rightarrow}{
+\left[
+\begin{matrix}
+{h_{\hat{r} \hat{r}}}_{,{{r}}} & {{h_{\hat{r} \hat{\theta}}}} + {{{r}} {{{h_{\hat{r} \hat{\theta}}}_{,{{r}}}}}} & {{sin\left(\theta\right)}} {{({{{h_{\hat{r} \hat{\phi}}}} + {{{r}} {{{h_{\hat{r} \hat{\phi}}}_{,{{r}}}}}}})}} \\
+{h_{\hat{r} \hat{r}}}_{,{{\theta}}} & {{{h_{\hat{r} \hat{\theta}}}_{,{{\theta}}}}} {{r}} & {{r}} {{({{{{cos\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}}}} + {{{sin\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}_{,{{\theta}}}}}}})}} \\
+{h_{\hat{r} \hat{r}}}_{,{{\phi}}} & {{{h_{\hat{r} \hat{\theta}}}_{,{{\phi}}}}} {{r}} & {{{h_{\hat{r} \hat{\phi}}}_{,{{\phi}}}}} {{r}} {{sin\left(\theta\right)}}
+\end{matrix}
+\right]
+} \\
+\overset{k\downarrow i\rightarrow}{
+\left[
+\begin{matrix}
+{{h_{\hat{r} \hat{\theta}}}} + {{{r}} {{{h_{\hat{r} \hat{\theta}}}_{,{{r}}}}}} & {{r}} {{({{{{r}} {{{h_{\hat{\theta} \hat{\theta}}}_{,{{r}}}}}} + {{{2}} {{{h_{\hat{\theta} \hat{\theta}}}}}}})}} & {{r}} {{sin\left(\theta\right)}} {{({{{{r}} {{{h_{\hat{\theta} \hat{\phi}}}_{,{{r}}}}}} + {{{2}} {{{h_{\hat{\theta} \hat{\phi}}}}}}})}} \\
+{{{h_{\hat{r} \hat{\theta}}}_{,{{\theta}}}}} {{r}} & {{{h_{\hat{\theta} \hat{\theta}}}_{,{{\theta}}}}} {{{r}^{2}}} & {{{r}^{2}}} {{({{{{cos\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}}}} + {{{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}_{,{{\theta}}}}}}})}} \\
+{{{h_{\hat{r} \hat{\theta}}}_{,{{\phi}}}}} {{r}} & {{{h_{\hat{\theta} \hat{\theta}}}_{,{{\phi}}}}} {{{r}^{2}}} & {{{h_{\hat{\theta} \hat{\phi}}}_{,{{\phi}}}}} {{{r}^{2}}} {{sin\left(\theta\right)}}
+\end{matrix}
+\right]
+} \\
+\overset{k\downarrow i\rightarrow}{
+\left[
+\begin{matrix}
+{{sin\left(\theta\right)}} {{({{{h_{\hat{r} \hat{\phi}}}} + {{{r}} {{{h_{\hat{r} \hat{\phi}}}_{,{{r}}}}}}})}} & {{r}} {{sin\left(\theta\right)}} {{({{{{r}} {{{h_{\hat{\theta} \hat{\phi}}}_{,{{r}}}}}} + {{{2}} {{{h_{\hat{\theta} \hat{\phi}}}}}}})}} & {{r}} {{{sin\left(\theta\right)}^{2}}} {{({{{{r}} {{{h_{\hat{\phi} \hat{\phi}}}_{,{{r}}}}}} + {{{2}} {{{h_{\hat{\phi} \hat{\phi}}}}}}})}} \\
+{{r}} {{({{{{cos\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}}}} + {{{sin\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}_{,{{\theta}}}}}}})}} & {{{r}^{2}}} {{({{{{cos\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}}}} + {{{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}_{,{{\theta}}}}}}})}} & {{{r}^{2}}} {{sin\left(\theta\right)}} {{({{{{sin\left(\theta\right)}} {{{h_{\hat{\phi} \hat{\phi}}}_{,{{\theta}}}}}} + {{{2}} {{cos\left(\theta\right)}} {{{h_{\hat{\phi} \hat{\phi}}}}}}})}} \\
+{{{h_{\hat{r} \hat{\phi}}}_{,{{\phi}}}}} {{r}} {{sin\left(\theta\right)}} & {{{h_{\hat{\theta} \hat{\phi}}}_{,{{\phi}}}}} {{{r}^{2}}} {{sin\left(\theta\right)}} & {{{h_{\hat{\phi} \hat{\phi}}}_{,{{\phi}}}}} {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}
+\end{matrix}
+\right]
+}
+\end{matrix}
+\right]
+}}$
+<br>
+${{\hat{D}_i \bar{\gamma}_{jk}}} = {\overset{j\downarrow[{k\downarrow i\rightarrow}]}{
+\left[
+\begin{matrix}
+\overset{k\downarrow i\rightarrow}{
+\left[
+\begin{matrix}
+{h_{\hat{r} \hat{r}}}_{,{{r}}} & {{h_{\hat{r} \hat{r}}}_{,{{\theta}}}} - {{{2}} {{{h_{\hat{r} \hat{\theta}}}}}} & {{h_{\hat{r} \hat{r}}}_{,{{\phi}}}} - {{{2}} {{sin\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}}}} \\
+{{r}} {{{h_{\hat{r} \hat{\theta}}}_{,{{r}}}}} & {{r}} {{({{{{h_{\hat{r} \hat{\theta}}}_{,{{\theta}}}} - {{h_{\hat{\theta} \hat{\theta}}}}} + {{h_{\hat{r} \hat{r}}}}})}} & {{r}} {{({{{{h_{\hat{r} \hat{\theta}}}_{,{{\phi}}}} - {{{cos\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}}}}} - {{{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}}}}})}} \\
+{{sin\left(\theta\right)}} {{r}} {{{h_{\hat{r} \hat{\phi}}}_{,{{r}}}}} & {{r}} {{sin\left(\theta\right)}} {{({{{h_{\hat{r} \hat{\phi}}}_{,{{\theta}}}} - {{h_{\hat{\theta} \hat{\phi}}}}})}} & {{r}} {{sin\left(\theta\right)}} {{({{{h_{\hat{r} \hat{\phi}}}_{,{{\phi}}}} + {{{{cos\left(\theta\right)}} {{{h_{\hat{r} \hat{\theta}}}}}} - {{{sin\left(\theta\right)}} {{{h_{\hat{\phi} \hat{\phi}}}}}}} + {{{{h_{\hat{r} \hat{r}}}}} \cdot {{sin\left(\theta\right)}}}})}}
+\end{matrix}
+\right]
+} \\
+\overset{k\downarrow i\rightarrow}{
+\left[
+\begin{matrix}
+{{r}} {{{h_{\hat{r} \hat{\theta}}}_{,{{r}}}}} & {{r}} {{({{{{h_{\hat{r} \hat{\theta}}}_{,{{\theta}}}} - {{h_{\hat{\theta} \hat{\theta}}}}} + {{h_{\hat{r} \hat{r}}}}})}} & {{r}} {{({{{{h_{\hat{r} \hat{\theta}}}_{,{{\phi}}}} - {{{cos\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}}}}} - {{{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}}}}})}} \\
+{{{r}^{2}}} {{{h_{\hat{\theta} \hat{\theta}}}_{,{{r}}}}} & {{{r}^{2}}} {{({{{h_{\hat{\theta} \hat{\theta}}}_{,{{\theta}}}} + {{{2}} {{{h_{\hat{r} \hat{\theta}}}}}}})}} & {{{r}^{2}}} {{({{{h_{\hat{\theta} \hat{\theta}}}_{,{{\phi}}}} - {{{2}} {{cos\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}}}}})}} \\
+{{{r}^{2}}} {{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}_{,{{r}}}}} & {{{r}^{2}}} {{sin\left(\theta\right)}} {{({{{h_{\hat{\theta} \hat{\phi}}}_{,{{\theta}}}} + {{h_{\hat{r} \hat{\phi}}}}})}} & {{{r}^{2}}} {{sin\left(\theta\right)}} {{({{{{h_{\hat{\theta} \hat{\phi}}}_{,{{\phi}}}} - {{{cos\left(\theta\right)}} {{{h_{\hat{\phi} \hat{\phi}}}}}}} + {{{cos\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\theta}}}}}} + {{{sin\left(\theta\right)}} {{{h_{\hat{r} \hat{\theta}}}}}}})}}
+\end{matrix}
+\right]
+} \\
+\overset{k\downarrow i\rightarrow}{
+\left[
+\begin{matrix}
+{{sin\left(\theta\right)}} {{r}} {{{h_{\hat{r} \hat{\phi}}}_{,{{r}}}}} & {{r}} {{sin\left(\theta\right)}} {{({{{h_{\hat{r} \hat{\phi}}}_{,{{\theta}}}} - {{h_{\hat{\theta} \hat{\phi}}}}})}} & {{r}} {{sin\left(\theta\right)}} {{({{{h_{\hat{r} \hat{\phi}}}_{,{{\phi}}}} + {{{{cos\left(\theta\right)}} {{{h_{\hat{r} \hat{\theta}}}}}} - {{{sin\left(\theta\right)}} {{{h_{\hat{\phi} \hat{\phi}}}}}}} + {{{{h_{\hat{r} \hat{r}}}}} \cdot {{sin\left(\theta\right)}}}})}} \\
+{{{r}^{2}}} {{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}_{,{{r}}}}} & {{{r}^{2}}} {{sin\left(\theta\right)}} {{({{{h_{\hat{\theta} \hat{\phi}}}_{,{{\theta}}}} + {{h_{\hat{r} \hat{\phi}}}}})}} & {{{r}^{2}}} {{sin\left(\theta\right)}} {{({{{{h_{\hat{\theta} \hat{\phi}}}_{,{{\phi}}}} - {{{cos\left(\theta\right)}} {{{h_{\hat{\phi} \hat{\phi}}}}}}} + {{{cos\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\theta}}}}}} + {{{sin\left(\theta\right)}} {{{h_{\hat{r} \hat{\theta}}}}}}})}} \\
+{{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}} {{{h_{\hat{\phi} \hat{\phi}}}_{,{{r}}}}} & {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}} {{{h_{\hat{\phi} \hat{\phi}}}_{,{{\theta}}}}} & {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}} {{({{{h_{\hat{\phi} \hat{\phi}}}_{,{{\phi}}}} + {{{2}} {{cos\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}}}} + {{{2}} {{sin\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}}}}})}}
+\end{matrix}
+\right]
+}
+\end{matrix}
+\right]
+}}$
+<br>
+begin verification:
+<br>
+${{{r}^{2}}} {{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}_{,{{r}}}}}$	should be	${{{r}^{2}}} {{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}_{,{{r}}}}}$	...?	true
+<br>
+${{{r}^{2}}} {{sin\left(\theta\right)}} {{({{{h_{\hat{\theta} \hat{\phi}}}_{,{{\theta}}}} + {{h_{\hat{r} \hat{\phi}}}}})}}$	should be	${{{r}^{2}}} {{sin\left(\theta\right)}} {{({{{h_{\hat{\theta} \hat{\phi}}}_{,{{\theta}}}} + {{h_{\hat{r} \hat{\phi}}}}})}}$	...?	true
+<br>
+${{r}} {{({{{{h_{\hat{r} \hat{\theta}}}_{,{{\phi}}}} - {{{cos\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}}}}} - {{{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}}}}})}}$	should be	${{r}} {{({{{{h_{\hat{r} \hat{\theta}}}_{,{{\phi}}}} - {{{cos\left(\theta\right)}} {{{h_{\hat{r} \hat{\phi}}}}}}} - {{{sin\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\phi}}}}}}})}}$	...?	true
+<br>
+${{{r}^{2}}} {{sin\left(\theta\right)}} {{({{{{h_{\hat{\theta} \hat{\phi}}}_{,{{\phi}}}} - {{{cos\left(\theta\right)}} {{{h_{\hat{\phi} \hat{\phi}}}}}}} + {{{cos\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\theta}}}}}} + {{{sin\left(\theta\right)}} {{{h_{\hat{r} \hat{\theta}}}}}}})}}$	should be	${{{r}^{2}}} {{sin\left(\theta\right)}} {{({{{{h_{\hat{\theta} \hat{\phi}}}_{,{{\phi}}}} - {{{cos\left(\theta\right)}} {{{h_{\hat{\phi} \hat{\phi}}}}}}} + {{{cos\left(\theta\right)}} {{{h_{\hat{\theta} \hat{\theta}}}}}} + {{{sin\left(\theta\right)}} {{{h_{\hat{r} \hat{\theta}}}}}}})}}$	...?	true
+<br>
+end verification
+<br>

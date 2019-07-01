@@ -216,14 +216,14 @@ MultiLine.lookupTable = {
 
 			local allparts = table():append(parts:unpack())
 	
-			local widths = range(matwidth):map(function(j)
-				return (range(matheight):map(function(i)
+			local widths = range(matwidth):mapi(function(j)
+				return (range(matheight):mapi(function(i)
 					return strlen(parts[i][j][1])
 				end):sup() or 0)
 			end)
 		
-			local heights = range(matheight):map(function(i)
-				return (range(matwidth):map(function(j)
+			local heights = range(matheight):mapi(function(i)
+				return (range(matwidth):mapi(function(j)
 					return #parts[i][j]
 				end):sup() or 0)
 			end)
@@ -231,7 +231,7 @@ MultiLine.lookupTable = {
 			local res = table()
 
 			for i,partrow in ipairs(parts) do
-				local row = range(heights[i]):map(function() return '' end)
+				local row = range(heights[i]):mapi(function() return '' end)
 				local sep = ''
 				for j,part in ipairs(partrow) do
 					local cell = table()
@@ -300,10 +300,10 @@ MultiLine.lookupTable = {
 		local s = self:apply(t)
 		if not (Variable.is(t) or Array.is(t) or TensorRef.is(t)) then 
 			s = self:combine(
-				range(#s):map(function() return '(' end), 
+				range(#s):mapi(function() return '(' end), 
 				self:combine(
 					s,
-					range(#s):map(function() return ')' end)
+					range(#s):mapi(function() return ')' end)
 				)
 			)
 		end

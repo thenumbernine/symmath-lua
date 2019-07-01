@@ -32,7 +32,7 @@ function Language:prepareForCompile(expr, paramInputs)
 				for key,value in pairs(paramInput) do
 					if not found then	-- only allow one key/value pair per list
 						found = true
-						assert(Expression.is(value), "expected value to be an Expression")
+						assert(Expression.is(value), "expected parameter pair value to be an Expression")
 						local tmpvar = Variable(tostring(key))
 						vars:insert(tmpvar)
 						expr = expr:replace(value, tmpvar)

@@ -827,9 +827,71 @@ end
 
 -- returns fixedIndexes, sumIndexes
 function Expression:getIndexesUsed()
-	-- fixedIndexes are those which appear only once on either side of an equality
-	-- sumIndexes appear repeated
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	local add = require 'symmath.op.add'
+	local sub = require 'symmath.op.sub'
+	local indexCounts = table()
+	local function rfind(x)
+		if TensorRef.is(x) then
+			for i=2,#x do
+				local symbol = x[i].symbol
+				if not indexCounts[symbol] then
+					indexCounts[symbol] = x[i]:clone()
+					indexCounts[symbol].count = 0	-- should I be using this field in TensorIndex?
+				end
+				indexCounts[symbol].count = indexCounts[symbol].count + 1
+			end
+		elseif add.is(x) or sub.is(x) then
+			local subIndexes = x[1]:getIndexesUsed():map(function(index)
+				return index, index.symbol
+			end)
+			for i=2,#x do
+				local subIndexes2 = x[i]:getIndexesUsed():map(function(index)
+					return index, index.symbol
+				end)
+				
+				--assert(subIndexes == subIndexes2)
+				for symbol,index in pairs(subIndexes) do
+					assert(subIndexes2[symbol].count == index.count)
+				end
+				for symbol,index in pairs(subIndexes2) do
+					assert(subIndexes[symbol].count == index.count)
+				end
+			end
+			for symbol,index in pairs(subIndexes) do
+				if not indexCounts[symbol] then
+					indexCounts[symbol] = index:clone()
+					indexCounts[symbol].count = 0
+				end
+				indexCounts[symbol].count = indexCounts[symbol].count + index.count
+			end
+		elseif Expression.is(x) then
+			-- if it's a mul then recurse
+			-- if it's an add then don't ... instead test
+			
+			for i=1,#x do
+				rfind(x[i])
+			end
+		end
+	end
+	rfind(self)
+	return indexCounts:filter(function(index,symbol)
+		return index.count == 1
+	end):values()
 end
+
+-- TODO don't even use this, instead change tensor assignment
+function Expression:makeDense()
+	local Tensor = require 'symmath.Tensor'
+	local indexes = self:getIndexesUsed()	
+	return Tensor(indexes, function(...)
+		-- now we have to swap out the comma derivatives of each index with the respective index provided
+error'you are here'
+		return self:get{...}
+	end)
+end
+
 
 
 --[[

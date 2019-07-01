@@ -254,6 +254,7 @@ end
 -- TODO should all arrays perform matrix multiplciations?
 --  or should only matrix/vectors?
 -- should non-matrix arrays perform per-element scalar multiplications instead?  or none?
+-- how about do this like my matrix library? inner the last index of the left and the first index of the right.
 local function matrixMatrixMul(a,b)
 	local adim = a:dim()
 	local bdim = b:dim()

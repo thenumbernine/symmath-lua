@@ -32,7 +32,7 @@ SingleLine.lookupTable = {
 	end,
 	--]]
 	[require 'symmath.Constant'] = function(self, expr) 
-		return tostring(expr.value) 
+		return expr.symbol or tostring(expr.value) 
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
 		return 'Invalid'

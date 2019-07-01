@@ -55,6 +55,9 @@ end
 
 LaTeX.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
+		if expr.symbol then 
+			return table{prepareName(expr.symbol)}
+		end
 		local s = tostring(expr.value)
 		local a,b = s:match('([^e]*)e(.*)')
 		if a and b then

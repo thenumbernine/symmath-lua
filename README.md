@@ -288,6 +288,8 @@ Output CDN URLs:
 
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
+[tests/output/BSSN](https://thenumbernine.github.io/symmath/tests/output/BSSN.html)
+
 [tests/output/Building Curvature by ADM](https://thenumbernine.github.io/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
 
 [tests/output/EFE discrete solution - 1-var](https://thenumbernine.github.io/symmath/tests/output/EFE%20discrete%20solution%20%2d%201%2dvar.html)
