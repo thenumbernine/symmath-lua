@@ -2,6 +2,10 @@
 A = matrix to invert
 AInv = vector to solve the linear system inverse of.  default: identity, to produce the inverse matrix.
 callback = watch the progress!
+allowRectangular = set this to true to perform Gaussian elimination on the rectangular linear system
+A_det = assign this to substitute an expression into A_det.  
+	Only works for 2x2 and 3x3 for now.
+	TODO do like maxima and leave the determinant factored out front?
 
 TODO how to handle matrix inverses?
 as a separate function? symmath.inverse.
@@ -13,8 +17,10 @@ then there's breaking down prune/simplify op visitors into rules, so I could qui
 returns AInv, A, and any errors encountered during the simplification
 (should I favor consistency of return argument order, like pcall?
 or should I favor assert() compatability?)
+
+
 --]]
-return function(A, b, callback, allowRectangular)
+return function(A, b, callback, allowRectangular, A_det)
 	local Array = require 'symmath.Array'
 	local Matrix = require 'symmath.Matrix'
 	local Constant = require 'symmath.Constant'
@@ -65,22 +71,30 @@ end
 		if b then result = (result * b)() end
 		return result, Matrix.identity(invdim[1], invdim[2])
 	elseif m == 2 and n == 2 and not b then
-		local A_det = A:determinant()
+		A_det = A_det or A:determinant()
 		if A_det == Constant(0) then
 			return AInv, A, "determinant is zero"
 		end
 		local result = (Matrix:convertTable{
 			{A[2][2], -A[1][2]},
-			{-A[2][1], A[1][1]}} / A_det)()
-		if b then result = (result * b)() end
+			{-A[2][1], A[1][1]},
+		} / A_det)()
+		--if b then result = (result * b)() end
 		return result, Matrix.identity(invdim[1], invdim[2])
---[[	elseif n == 3 then
+-- [[
+	elseif m == 3 and n == 3 and not b then
+		A_det = A_det or A:determinant()
+		if A_det == Constant(0) then
+			return AInv, A, "determinant is zero"
+		end
 		-- transpose, +-+- sign stagger, for each element remove that row and column and 
-		return (Matrix:convertTable{
+		local result = (Matrix:convertTable{
 			{A[2][2]*A[3][3]-A[2][3]*A[3][2], A[1][3]*A[3][2]-A[1][2]*A[3][3], A[1][2]*A[2][3]-A[1][3]*A[2][2]},
 			{A[2][3]*A[3][1]-A[2][1]*A[3][3], A[1][1]*A[3][3]-A[1][3]*A[3][1], A[1][3]*A[2][1]-A[1][1]*A[2][3]},
-			{A[2][1]*A[3][2]-A[2][2]*A[3][1], A[1][2]*A[3][1]-A[1][1]*A[3][2], A[1][1]*A[2][2]-A[1][2]*A[2][1]}
-		} / A:determinant()):simplify()
+			{A[2][1]*A[3][2]-A[2][2]*A[3][1], A[1][2]*A[3][1]-A[1][1]*A[3][2], A[1][1]*A[2][2]-A[1][2]*A[2][1]},
+		} / A_det)()
+		--if b then result = (result * b)() end
+		return result, Matrix.identity(invdim[1], invdim[2])
 --]]
 	end
 
