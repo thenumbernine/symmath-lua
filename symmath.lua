@@ -253,4 +253,9 @@ end
 
 symmath.Visitor = require 'symmath.visitor.Visitor'
 
+function symmath.makefunc(name)
+	local Function = symmath.Function
+	return class(Function, {name=name})
+end
+
 return symmath
