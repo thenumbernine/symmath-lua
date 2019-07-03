@@ -3,7 +3,7 @@ require 'ext'
 require 'symmath'.setup()
 
 --[[
---symmath.tostring = require 'symmath.tostring.MathJax'
+symmath.tostring = require 'symmath.tostring.MathJax'
 symmath.tostring.setup{title='BSSN'}
 --]]
 -- [[
@@ -287,7 +287,7 @@ Dhat2gammabarDDdDD['_ijkl'] = (DhatgammabarDDdD'_ijk,l' +
 	- DhatgammabarDDdD'_mjl' * GammahatUDD'^m_ki'
 	- DhatgammabarDDdD'_iml' * GammahatUDD'^m_kj'
 	- DhatgammabarDDdD'_ijm' * GammahatUDD'^m_kl')()
-printbr('$\\hat{D}_k \\hat{D}_l$', gbarvar'_ij':eq(Dhat2gammabarDDdDD))
+printbr(Dhat'_k'(Dhat'_l'(gbarvar'_ij')):eq(Dhat2gammabarDDdDD))
 
 -- Then focus on hatted quantities related to vectors
 printAndWarn'hatted quantities related to vectors'
@@ -366,7 +366,7 @@ printbr(betavar'^i_,jk':eq(betaUdDD))
 
 local DhatLambdaUdD = Tensor'^i_j'
 DhatLambdaUdD['^i_j'] = (LambdaUdD'^i_j' + GammahatUDD'^i_jk' * LambdaU'^k')()
-printbr('$\\hat{D}_j$', Lambdavar'^i':eq(DhatLambdaUdD))
+printbr(Dhat'_j'(Lambdavar'^i'):eq(DhatLambdaUdD))
 
 if CoordSystem == 'SphericalPolar' then
 	printbr'begin verification:'
@@ -379,13 +379,13 @@ end
 
 local DhatbetaUdD = Tensor'^i_j'
 DhatbetaUdD['^i_j'] = (betaUdD'^i_j' + GammahatUDD'^i_jk' * betaU'^k')()
-printbr('$\\hat{D}_j$', betavar'^i':eq(DhatbetaUdD))
+printbr(Dhat'_j'(betavar'^i'):eq(DhatbetaUdD))
 
 local Dhat2betaUdDD = Tensor'^j_ik'
 Dhat2betaUdDD['^j_ik'] = (DhatbetaUdD'^j_i,k'
 	+ GammahatUDD'^j_kd' * DhatbetaUdD'^d_i'
 	- GammahatUDD'^d_ki' * DhatbetaUdD'^j_d')()
-printbr('$\\hat{D}_k \\hat{D}_i$', betavar'^j':eq(Dhat2betaUdDD))
+printbr(Dhat'_k'(Dhat'_i'(betavar'^j')):eq(Dhat2betaUdDD))
 
 -- Next define BSSN quantities
 printAndWarn'BSSN quantities'
@@ -475,20 +475,20 @@ if InitialDataType == 'Minkowski' then
 else
 	error'not yet supported'
 end
-os.exit()
 
 -- Lie derivatives
 printAndWarn'Lie derivatives'
 
+local Lbeta = makefunc'\\mathcal{L}_\\beta'
 local LbetagammabarDD = Tensor'_ij'
 LbetagammabarDD['_ij'] = (betaU'^k' * gammabarDDdupD'_ijk'
 	+ gammabarDD'_ki' * betaUdD'^k_j' + gammabarDD'_kj' * betaUdD'^k_i')()
-printbr('$\\mathcal{L}_\\beta$', gbarvar'_ij':eq(LbetagammabarDD))
+printbr(Lbeta(gbarvar'_ij'):eq(LbetagammabarDD))
 
 local LbetaAbarDD = Tensor'_ij'
 LbetaAbarDD['_ij'] = (betaU'^k' * AbarDDdupD'_ijk'
 	+ AbarDD'_ki' * betaUdD'^k_j' + AbarDD'_kj' * betaUdD'^k_i')()
-printbr('$\\mathcal{L}_\\beta$', Abarvar'_ij':eq(LbetaAbarDD))
+printbr(Lbeta(Abarvar'_ij'):eq(LbetaAbarDD))
 
 -- TODO trKdupD = K'_,i':makeDense() or Tensor('_i', K'_,i') or something
 -- this is the clash between applying indexes to variables without and with and dense Tensor data objects
@@ -498,7 +498,7 @@ end)
 printbr(K'_,i':eq(trKdupD))
 
 local LbetatrK = (betaU'^l' * trKdupD'_l')()
-printbr('$\\mathcal{L}_\\beta$', K:eq(LbetatrK))
+printbr(Lbeta(K):eq(LbetatrK))
 
 local cf = var('W', xs)
 local cfdD = Tensor('_i', function(i)
@@ -524,7 +524,7 @@ else
 end
 
 local Lbetaphi = (betaU'^l' * phidupD'_l')()
-printbr('$\\mathcal{L}_\\beta$', phivar:eq(Lbetaphi))
+printbr(Lbeta(phivar):eq(Lbetaphi))
 
 local alpha = var('\\alpha', xs)
 local alphadD = Tensor('_i', function(i)
@@ -535,71 +535,84 @@ local alphadupdD = alphadD
 local alphadDD = alphadD'_i,j'()
 
 local Lbetaalpha = (betaU'^l' * alphadupdD'_l')()
-printbr('$\\mathcal{L}_\\beta$', alpha:eq(Lbetaalpha))
+printbr(Lbeta(alpha):eq(Lbetaalpha))
 
 local LbetaLambdaU = (betaU'^j' * LambdaUdupD'^i_j' - betaUdD'^i_j' * LambdaU'^j')()
-printbr('$\\mathcal{L}_\\beta$', Lambdavar'^i':eq(LbetaLambdaU)) 
+printbr(Lbeta(Lambdavar)'^i':eq(LbetaLambdaU)) 
 
 -- Covariant derivatives of phi and alpha
 printAndWarn'Covariant derivatives of phi and alpha'
 
+local function Dbar(suffix)
+	return makefunc('\\bar{D}'..suffix)
+end
+
 local DbaralphaD = alphadD'_i'
-printbr('$\\bar{D}_i$', alpha:eq(DbaralphaD))
+printbr(Dbar'_i'(alpha):eq(DbaralphaD))
 
 local DbaralphaU = (gammabarUU'^ij' * alphadD'_j')()
-printbr('$\\bar{D}^i$', alpha:eq(DbaralphaU))
+printbr(Dbar'_i'(alpha):eq(DbaralphaU))
 
 local DbarphiD = phidD'_i'
-printbr('$\\bar{D}_i$', phivar:eq(DbarphiD))
+printbr(Dbar'_i'(phivar):eq(DbarphiD))
 
 local DbarphiU = (gammabarUU'^ij' * phidD'_j')()
-printbr('$\\bar{D}^i$', phivar:eq(DbarphiU))
+printbr(Dbar'_i'(phivar):eq(DbarphiU))
 
 local Dbar2phiDD = (phidDD'_ij' - GammabarUDD'^l_ij' * phidD'_l')()
-printbr('$\\bar{D}_i \\bar{D}_j$', phivar:eq(Dbar2phiDD))
+printbr(Dbar'_i'(Dbar'_j'(phivar)):eq(Dbar2phiDD))
 
 local Dbarphi2 = (DbarphiD'_i' * DbarphiU'^i')()
-printbr('$\\bar{\\gamma}^{ij} \\bar{D}_i \\phi \\bar{D}_j \\phi =$', Dbarphi2)
+printbr((gbarvar'^ij' * Dbar'_i'(phivar) * Dbar'_j'(phivar)):eq(Dbarphi2))
 
 local Dbar2alphaDD = (alphadDD'_ij' - GammabarUDD'^l_ij' * alphadD'_l')()
-printbr('$\\bar{D}_i \\bar{D}_j$', alpha:eq(Dbar2alphaDD))
+printbr(Dbar'_i'(Dbar'_j'(alpha)):eq(Dbar2alphaDD))
 
 local Dbar2alpha = (gammabarUU'^ij' * Dbar2alphaDD'_ij')()
-printbr(gbarvar'^ij', '$\\bar{D}_i \\bar{D}_j$', alpha:eq(Dbar2alpha))
+printbr((gbarvar'^ij' * Dbar'_i'(Dbar'_j'(alpha))):eq(Dbar2alpha))
 
 local phitermsDD = (-2 * alpha * Dbar2phiDD'_ij'
 	+ 4 * alpha * DbarphiD'_i' * DbarphiD'_j'
 	+ 2 * (DbaralphaD'_i' * DbarphiD'_j' + DbaralphaD'_j' * DbaralphaD'_i'))()
 printbr('$(\\phi$ extra terms$)_{ij} =$', phitermsDD)
 
-local detgammahat = Matrix.determinant(ghatDD)
-printbr('$det(\\hat{\\gamma}_{mn}) =$', detgammahat)
+-- TODO instead defer evaluation of Matrix.determinant?
+-- or maybe have a 'defer(Matrix.determinant, ghatDD)' command?
+-- but then again, the defer command is associated with a function, a function doesn't have a name,
+-- so how would the defer'd function be displayed?
+-- why not just use a class?
+-- and then, why not just always defer until simplification?
+local det = makefunc'det'
 
+local detgammahat = Matrix.determinant(ghatDD)
+printbr(det(ghatvar'_mn'):eq(detgammahat))
+
+local gammavar = var'g'
 local detg = var('g', xs)
-printbr('$det(\\gamma_{mn}) = $', detg)
+printbr(det(gammavar'_mn'):eq(detg))
 
 local detgdD = Tensor('_i', function(i)
 	return detg:diff(xs[i])()
 end)
 
 local detgammabar = detgammahat * detg
-printbr('$det(\\bar{\\gamma}_{mn}) = $', detgammabar)
+printbr(det(gbarvar'_mn'):eq(detgammabar))
 
 local detgammabardD = Tensor('_i', function(i)
 	return (detgammahat * detg):diff(xs[i])()
 end)
-printbr('$det(\\bar{\\gamma}_{mn})_{,i} = $', detgammabardD)
+printbr(det(gbarvar'_mn')'_,i':eq(detgammabardD))
 
 local detgammabardDD = detgammabardD'_i,j'()
-printbr('$det(\\bar{\\gamma}_{mn})_{,ij} = $', detgammabardDD)
+printbr(det(gbarvar'_mn')'_,ij':eq(detgammabardDD))
 
 local DbarbetaUD = (betaUdD'^i_j' 
 	+ GammabarUDD'^j_il' * betaU'^l')()
-printbr('$\\bar{D}_j$', betavar'^i':eq(DbarbetaUD))
+printbr(Dbar'_j'(betavar'^i'):eq(DbarbetaUD))
 
 --local Dbarbetacontraction = DbarbetaUD'^i_i'() 
 local Dbarbetacontraction = (betaUdD'^i_i' + betaU'^i' * detgammabardD'_i' / (2*detgammabar))()
-printbr('$\\bar{D}_k$', betavar'^k':eq(Dbarbetacontraction))
+printbr(Dbar'_k'(betavar'^k'):eq(Dbarbetacontraction))
 
 local Dbar2betacontractionD = (betaUdDD'^j_jk'
 	+ frac(1,2) * (
@@ -607,10 +620,10 @@ local Dbar2betacontractionD = (betaUdDD'^j_jk'
 		- detgammabardD'_j' * detgammabardD'_k' * betaU'^j' / detgammabar
 		+ detgammabardD'_j' * betaUdD'^j_k'
 	) / detgammabar)()
-printbr('$\\bar{D}_k \\bar{D}_j$', betavar'^j':eq(Dbar2betacontractionD))
+printbr(Dbar'_k'(Dbar'_j'(betavar'^j')):eq(Dbar2betacontractionD))
 
 local Dbar2betacontractionU = (gammabarUU'^ij' * Dbar2betacontractionD'_j')()
-printbr('$\\bar{D}^k \\bar{D}_j$', betavar'^j':eq(Dbar2betacontractionU))
+printbr(Dbar'^k'(Dbar'_j'(betavar'^j')):eq(Dbar2betacontractionU))
 
 -- Ricci tensor, wrt barred metric ... goes too slow.
 
@@ -702,7 +715,7 @@ end
 printbr(cf'_,t':eq(cfrhs))
 
 local trAbar = (gammabarUU'^ij' * AbarDD'_ij')()
-printbr(var'tr(\\bar{A})':eq(trAbar))
+printbr(Abarvar'^k_k':eq(trAbar))
 
 trKrhs = (LbetatrK
 	+ alpha / 3 * K^2
