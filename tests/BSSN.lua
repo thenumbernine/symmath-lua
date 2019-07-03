@@ -192,9 +192,11 @@ printbr(Gammahatvar'^i_jk,l':eq(GammahatUDDdD))
 printAndWarn'state variables:'
 
 --[[
-What is "dup" vs "d"? 
-hint in gammabarDDdD vs gammabarDDdupD
-which is only different in their use of hDDdD vs hDDdupD
+What is "dup" vs "d"? Aha, upwind-sampled vs centered-sampled derivatives.
+TODO take notice of this.
+TODO only do index notation equations for the first half of this worksheet,
+and only later substitute in dense tensors.
+That way if deriving the dense ones runs too slow (as it tends to), at least you have the index notion expressions.
 --]]
 
 --[[
@@ -405,7 +407,6 @@ local gammabarDDdD = Tensor'_ijk'
 gammabarDDdD['_ijk'] = gammabarDD'_ij,k'()
 printbr(gbarvar'_ij,k':eq(gammabarDDdD))
 
--- TODO what's the difference between these two?
 local gammabarDDdupD = gammabarDDdD
 
 local gammabarDDdDD = Tensor'_ijkl'
@@ -515,7 +516,6 @@ else
 	printbr(phivar'_,i'
 		:eq(-1/(2*cf) * cf'_,i')
 		:eq(phidD))
-	-- TODO phidupD	
 	phidupD = phidD
 	phidDD = (1/(2*cf)*( 1/cf * cfdD'_i' * cfdD'_j' - cfdDD'_ij'))()
 	printbr(phivar'_,ij'
@@ -530,7 +530,6 @@ local alpha = var('\\alpha', xs)
 local alphadD = Tensor('_i', function(i)
 	return alpha:diff(xs[i])()
 end)
--- TODO
 local alphadupdD = alphadD
 
 local alphadDD = alphadD'_i,j'()

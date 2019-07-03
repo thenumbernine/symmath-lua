@@ -7,7 +7,84 @@
     </head>
 	<body onload='tryToFindMathJax();'>
 
-${{g}_u}_v = {\left[\matrix{{{-{{\alpha}^{2}}} + {{\beta}^k {\beta}_k}}&{\beta}_j\\{\beta}_i&{{\gamma}_i}_j}\right]}$
+${{{g}_u}_v} = {
+\left[
+\begin{matrix}
+{-{{\alpha}^{2}}} + {{{{\beta}^k}} {{{\beta}_k}}} & {\beta}_j \\
+{\beta}_i & {{\gamma}_i}_j
+\end{matrix}
+\right]
+}$
 <br>
-${{\Lambda}^u}_v = {\left[\matrix{\gamma&{{{-\gamma} \beta} {n}_j}\\{{{-\gamma} \beta} {n}^i}&{{{\delta}^i}_j + {{{({\gamma - 1})} {n}^i} {n}_j}}}\right]}$
+${{{\Lambda}^u}_v} = {
+\left[
+\begin{matrix}
+\Gamma & {{{-{\Gamma}} {{B}}}} {{{n}_j}} \\
+{{{-{\Gamma}} {{B}}}} {{{n}^i}} & {{{\delta}^i}_j} + {{{{{({{\Gamma} - {1}})}} {{{n}^i}}}} {{{n}_j}}}
+\end{matrix}
+\right]
+}$
+<br>
+${{{{g'}_a}_b} = {{{{{{{\Lambda}^u}_a}} {{{{g}_u}_v}}}} {{{{\Lambda}^v}_b}}}} = {{{{
+\left[
+\begin{matrix}
+\Gamma & {{{-{\Gamma}} {{B}}}} {{{n}^i}} \\
+{{{-{\Gamma}} {{B}}}} {{{n}_a}} & {{{\delta}^i}_a} + {{{{{({{\Gamma} - {1}})}} {{{n}^i}}}} {{{n}_a}}}
+\end{matrix}
+\right]
+} {
+\left[
+\begin{matrix}
+{-{{\alpha}^{2}}} + {{{{\beta}^k}} {{{\beta}_k}}} & {\beta}_j \\
+{\beta}_i & {{\gamma}_i}_j
+\end{matrix}
+\right]
+}}} {
+\left[
+\begin{matrix}
+\Gamma & {{{-{\Gamma}} {{B}}}} {{{n}_b}} \\
+{{{-{\Gamma}} {{B}}}} {{{n}^j}} & {{{\delta}^j}_b} + {{{{{({{\Gamma} - {1}})}} {{{n}^j}}}} {{{n}_b}}}
+\end{matrix}
+\right]
+}}$
+<br>
+${{{g'}_a}_b} = {
+\left[
+\begin{matrix}
+{{{\Gamma}^{2}}} {{({{{{{{\beta}^k}} {{{\beta}_k}}} - {{{B}} {{{n}^i}} {{{\beta}_i}}}} + {{{{{{B}^{2}}} {{{n}^i}} {{{n}^j}} {{{{\gamma}_i}_j}}} - {{{B}} {{{n}^j}} {{{\beta}_j}}}} - {{\alpha}^{2}}}})}} & {{\Gamma}} \cdot {{({{{{{\beta}_j}} {{{{\delta}^j}_b}}} + {{{{{{\Gamma}} \cdot {{{n}^j}} {{{n}_b}} {{{\beta}_j}}} - {{{{n}^j}} {{{n}_b}} {{{\beta}_j}}}} - {{{B}} {{{n}^i}} {{{{\delta}^j}_b}} {{{{\gamma}_i}_j}}}} - {{{B}} {{\Gamma}} \cdot {{{n}^i}} {{{n}^j}} {{{n}_b}} {{{{\gamma}_i}_j}}}} + {{{B}} {{{n}^i}} {{{n}^j}} {{{n}_b}} {{{{\gamma}_i}_j}}} + {{{{\Gamma}} \cdot {{{B}^{2}}} {{{n}^i}} {{{n}_b}} {{{\beta}_i}}} - {{{B}} {{\Gamma}} \cdot {{{n}_b}} {{{\beta}^k}} {{{\beta}_k}}}} + {{{B}} {{\Gamma}} \cdot {{{n}_b}} {{{\alpha}^{2}}}}})}} \\
+{{\Gamma}} \cdot {{({{{{{\beta}_i}} {{{{\delta}^i}_a}}} + {{{{\Gamma}} \cdot {{{n}^i}} {{{n}_a}} {{{\beta}_i}}} - {{{{n}^i}} {{{n}_a}} {{{\beta}_i}}}} + {{{{{B}} {{{n}^i}} {{{n}^j}} {{{n}_a}} {{{{\gamma}_i}_j}}} - {{{B}} {{\Gamma}} \cdot {{{n}^i}} {{{n}^j}} {{{n}_a}} {{{{\gamma}_i}_j}}}} - {{{B}} {{{n}^j}} {{{{\delta}^i}_a}} {{{{\gamma}_i}_j}}}} + {{{{\Gamma}} \cdot {{{B}^{2}}} {{{n}^j}} {{{n}_a}} {{{\beta}_j}}} - {{{B}} {{\Gamma}} \cdot {{{n}_a}} {{{\beta}^k}} {{{\beta}_k}}}} + {{{B}} {{\Gamma}} \cdot {{{n}_a}} {{{\alpha}^{2}}}}})}} & {{{{{\delta}^i}_a}} {{{{\delta}^j}_b}} {{{{\gamma}_i}_j}}} + {{{{n}^i}} {{{n}^j}} {{{n}_a}} {{{n}_b}} {{{{\gamma}_i}_j}}} + {{{{{{{{n}^i}} {{{n}^j}} {{{n}_a}} {{{n}_b}} {{{\Gamma}^{2}}} {{{{\gamma}_i}_j}}} - {{{{n}^i}} {{{n}_a}} {{{{\delta}^j}_b}} {{{{\gamma}_i}_j}}}} - {{{{n}^j}} {{{n}_b}} {{{{\delta}^i}_a}} {{{{\gamma}_i}_j}}}} - {{{B}} {{{n}^i}} {{{n}_a}} {{{n}_b}} {{{\Gamma}^{2}}} {{{\beta}_i}}}} - {{{B}} {{{n}^j}} {{{n}_a}} {{{n}_b}} {{{\Gamma}^{2}}} {{{\beta}_j}}}} + {{{{{B}^{2}}} {{{n}_a}} {{{n}_b}} {{{\Gamma}^{2}}} {{{\beta}^k}} {{{\beta}_k}}} - {{{{B}^{2}}} {{{n}_a}} {{{n}_b}} {{{\Gamma}^{2}}} {{{\alpha}^{2}}}}} + {{{B}} {{\Gamma}} \cdot {{{n}^i}} {{{n}_a}} {{{n}_b}} {{{\beta}_i}}} + {{{{{{B}} {{\Gamma}} \cdot {{{n}^j}} {{{n}_a}} {{{n}_b}} {{{\beta}_j}}} - {{{B}} {{\Gamma}} \cdot {{{n}_a}} {{{\beta}_j}} {{{{\delta}^j}_b}}}} - {{{B}} {{\Gamma}} \cdot {{{n}_b}} {{{\beta}_i}} {{{{\delta}^i}_a}}}} - {{{2}} {{\Gamma}} \cdot {{{n}^i}} {{{n}^j}} {{{n}_a}} {{{n}_b}} {{{{\gamma}_i}_j}}}} + {{{\Gamma}} \cdot {{{n}^i}} {{{n}_a}} {{{{\delta}^j}_b}} {{{{\gamma}_i}_j}}} + {{{\Gamma}} \cdot {{{n}^j}} {{{n}_b}} {{{{\delta}^i}_a}} {{{{\gamma}_i}_j}}}
+\end{matrix}
+\right]
+}$
+<br>
+${{{g'}_a}_b} = {
+\left[
+\begin{matrix}
+{{{\Gamma}^{2}}} {{({{{{{B}^{2}} - {{{2}} {{B}} {{{n}^k}} {{{\beta}_k}}}} - {{\alpha}^{2}}} + {{\beta}^{2}}})}} & {{\Gamma}} \cdot {{({{{{\beta}_b} - {{{{n}^k}} {{{n}_b}} {{{\beta}_k}}}} + {{{{\Gamma}} \cdot {{{n}^k}} {{{n}_b}} {{{\beta}_k}}} - {{{B}} {{\Gamma}} \cdot {{{n}_b}}}} + {{{\Gamma}} \cdot {{{B}^{2}}} {{{n}^k}} {{{n}_b}} {{{\beta}_k}}} + {{{{B}} {{\Gamma}} \cdot {{{n}_b}} {{{\alpha}^{2}}}} - {{{B}} {{\Gamma}} \cdot {{{\beta}^{2}}} {{{n}_b}}}}})}} \\
+{{\Gamma}} \cdot {{({{{{\beta}_a} - {{{{n}^k}} {{{n}_a}} {{{\beta}_k}}}} + {{{{\Gamma}} \cdot {{{n}^k}} {{{n}_a}} {{{\beta}_k}}} - {{{B}} {{\Gamma}} \cdot {{{n}_a}}}} + {{{\Gamma}} \cdot {{{B}^{2}}} {{{n}^k}} {{{n}_a}} {{{\beta}_k}}} + {{{{B}} {{\Gamma}} \cdot {{{n}_a}} {{{\alpha}^{2}}}} - {{{B}} {{\Gamma}} \cdot {{{\beta}^{2}}} {{{n}_a}}}}})}} & {{{{\gamma}_a}_b} - {{{{n}_a}} {{{n}_b}}}} + {{{{{{n}_a}} {{{n}_b}} {{{\Gamma}^{2}}}} - {{{2}} {{B}} {{{n}^k}} {{{n}_a}} {{{n}_b}} {{{\Gamma}^{2}}} {{{\beta}_k}}}} - {{{{B}^{2}}} {{{n}_a}} {{{n}_b}} {{{\Gamma}^{2}}} {{{\alpha}^{2}}}}} + {{{{{B}^{2}}} {{{\beta}^{2}}} {{{n}_a}} {{{n}_b}} {{{\Gamma}^{2}}}} - {{{B}} {{\Gamma}} \cdot {{{n}_a}} {{{\beta}_b}}}} + {{{{2}} {{B}} {{\Gamma}} \cdot {{{n}^k}} {{{n}_a}} {{{n}_b}} {{{\beta}_k}}} - {{{B}} {{\Gamma}} \cdot {{{n}_b}} {{{\beta}_a}}}}
+\end{matrix}
+\right]
+}$
+<br>
+Let	${\Gamma} = {\frac{1}{\sqrt{{1} - {{B}^{2}}}}}$
+<br>
+${{{g'}_a}_b} = {
+\left[
+\begin{matrix}
+\frac{{{{{B}^{2}} - {{{2}} {{B}} {{{n}^k}} {{{\beta}_k}}}} - {{\alpha}^{2}}} + {{\beta}^{2}}}{{1} - {{B}^{2}}} & \frac{{{{{\beta}_b}} {{\sqrt{{1} - {{B}^{2}}}}}} + {{{{{n}^k}} {{{n}_b}} {{{\beta}_k}}} - {{{{n}^k}} {{{n}_b}} {{{\beta}_k}} {{\sqrt{{1} - {{B}^{2}}}}}}} + {{{{{B}^{2}}} {{{n}^k}} {{{n}_b}} {{{\beta}_k}}} - {{{B}} {{{n}_b}}}} + {{{{B}} {{{n}_b}} {{{\alpha}^{2}}}} - {{{B}} {{{\beta}^{2}}} {{{n}_b}}}}}{{1} - {{B}^{2}}} \\
+\frac{{{{{\beta}_a}} {{\sqrt{{1} - {{B}^{2}}}}}} + {{{{{n}^k}} {{{n}_a}} {{{\beta}_k}}} - {{{{n}^k}} {{{n}_a}} {{{\beta}_k}} {{\sqrt{{1} - {{B}^{2}}}}}}} + {{{{{B}^{2}}} {{{n}^k}} {{{n}_a}} {{{\beta}_k}}} - {{{B}} {{{n}_a}}}} + {{{{B}} {{{n}_a}} {{{\alpha}^{2}}}} - {{{B}} {{{\beta}^{2}}} {{{n}_a}}}}}{{1} - {{B}^{2}}} & \frac{{{{{{\gamma}_a}_b} - {{{{B}^{2}}} {{{{\gamma}_a}_b}}}} - {{{2}} {{B}} {{{n}^k}} {{{n}_a}} {{{n}_b}} {{{\beta}_k}}}} + {{{{2}} {{B}} {{{n}^k}} {{{n}_a}} {{{n}_b}} {{{\beta}_k}} {{\sqrt{{1} - {{B}^{2}}}}}} - {{{B}} {{{n}_a}} {{{\beta}_b}} {{\sqrt{{1} - {{B}^{2}}}}}}} + {{{{{{B}^{2}}} {{{n}_a}} {{{n}_b}}} - {{{{B}^{2}}} {{{n}_a}} {{{n}_b}} {{{\alpha}^{2}}}}} - {{{B}} {{{n}_b}} {{{\beta}_a}} {{\sqrt{{1} - {{B}^{2}}}}}}} + {{{{B}^{2}}} {{{\beta}^{2}}} {{{n}_a}} {{{n}_b}}}}{{1} - {{B}^{2}}}
+\end{matrix}
+\right]
+}$
+<br>
+Let	${{n}^i} = {{{\zeta}} \cdot {{{\beta}^i}}}$
+<br>
+${{{g'}_a}_b} = {
+\left[
+\begin{matrix}
+\frac{{{{{B}^{2}} - {{{2}} {{B}} {{\zeta}} \cdot {{{\beta}^{2}}}}} - {{\alpha}^{2}}} + {{\beta}^{2}}}{{1} - {{B}^{2}}} & \frac{{{{\beta}_b}} {{({{\sqrt{{1} - {{B}^{2}}}} + {{{{{B}^{2}}} {{{\beta}^{2}}} {{{\zeta}^{2}}}} - {{{B}} {{\zeta}}}} + {{{{B}} {{\zeta}} \cdot {{{\alpha}^{2}}}} - {{{B}} {{\zeta}} \cdot {{{\beta}^{2}}}}} + {{{{{\beta}^{2}}} {{{\zeta}^{2}}}} - {{{{\beta}^{2}}} {{{\zeta}^{2}}} {{\sqrt{{1} - {{B}^{2}}}}}}}})}}}{{1} - {{B}^{2}}} \\
+\frac{{{{\beta}_a}} {{({{\sqrt{{1} - {{B}^{2}}}} + {{{{{B}^{2}}} {{{\beta}^{2}}} {{{\zeta}^{2}}}} - {{{B}} {{\zeta}}}} + {{{{B}} {{\zeta}} \cdot {{{\alpha}^{2}}}} - {{{B}} {{\zeta}} \cdot {{{\beta}^{2}}}}} + {{{{{\beta}^{2}}} {{{\zeta}^{2}}}} - {{{{\beta}^{2}}} {{{\zeta}^{2}}} {{\sqrt{{1} - {{B}^{2}}}}}}}})}}}{{1} - {{B}^{2}}} & \frac{{{{{\gamma}_a}_b} - {{{{B}^{2}}} {{{{\gamma}_a}_b}}}} + {{{{B}^{2}}} {{{\beta}^{2}}} {{{\zeta}^{2}}} {{{\beta}_a}} {{{\beta}_b}}} + {{{{{B}^{2}}} {{{\zeta}^{2}}} {{{\beta}_a}} {{{\beta}_b}}} - {{{2}} {{B}} {{\zeta}} \cdot {{{\beta}_a}} {{{\beta}_b}} {{\sqrt{{1} - {{B}^{2}}}}}}} + {{{{{2}} {{B}} {{{\beta}^{2}}} {{{\zeta}^{3}}} {{{\beta}_a}} {{{\beta}_b}} {{\sqrt{{1} - {{B}^{2}}}}}} - {{{{B}^{2}}} {{{\zeta}^{2}}} {{{\alpha}^{2}}} {{{\beta}_a}} {{{\beta}_b}}}} - {{{2}} {{B}} {{{\beta}^{2}}} {{{\zeta}^{3}}} {{{\beta}_a}} {{{\beta}_b}}}}}{{1} - {{B}^{2}}}
+\end{matrix}
+\right]
+}$
 <br>
