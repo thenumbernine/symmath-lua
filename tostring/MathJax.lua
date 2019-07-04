@@ -61,7 +61,7 @@ function init() {
 	var urls = [
 ]=] .. self.urls:map(function(url,i)
 		return "\t\t'" .. url .. "'"
-	end):concat',\n' .. [=[
+	end):concat',' .. [=[
 	];
 	var i = 0;
 	var loadNext = function() {

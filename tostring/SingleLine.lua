@@ -86,6 +86,12 @@ SingleLine.lookupTable = {
 			return self:apply(x)
 		end):concat(', ') .. ']'
 	end,
+	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+		return expr:__tostring()
+	end,
+	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		return table.mapi(expr, tostring):concat()
+	end,
 }
 
 return SingleLine()		-- singleton

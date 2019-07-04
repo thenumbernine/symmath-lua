@@ -231,11 +231,11 @@ LaTeX.lookupTable = {
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
 		
-		local result = table(omit{'\n\\left[\n', '\\begin{matrix}\n'})
+		local result = table(omit{'\\left[', '\\begin{matrix}'})
 		result:append(omit(tableConcat(range(#expr):map(function(i)
 			return omit(self:apply(expr[i]))
-		end), ' \\\\\n')))
-		result:append(omit{'\n\\end{matrix}\n', '\\right]\n'})
+		end), ' \\\\')))
+		result:append(omit{'\\end{matrix}', '\\right]'})
 		return omit(result)
 	end,
 	[require 'symmath.Matrix'] = function(self, expr)
@@ -250,9 +250,9 @@ LaTeX.lookupTable = {
 			if #expr > 1 then rows[i] = omit(rows[i]) end
 		end
 		
-		local result = table{'\n\\left[\n', '\\begin{matrix}\n'}
-		result:append(omit(tableConcat(rows, ' \\\\\n')))
-		result:append{'\n\\end{matrix}\n', '\\right]\n'}
+		local result = table{'\\left[', '\\begin{matrix}'}
+		result:append(omit(tableConcat(rows, ' \\\\')))
+		result:append{'\\end{matrix}', '\\right]'}
 		return omit(result)
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
@@ -428,13 +428,16 @@ LaTeX.header = [[
 \usepackage{amsmath}
 \usepackage{geometry}
 \geometry{
-	a4paper,
-	papersize={10000mm,257mm},
-	left=20mm,
-	top=20mm,
+	a4paper%,
+%	papersize={10000mm,257mm},
+%	left=20mm,
+%	top=20mm,
 }
 \setcounter{MaxMatrixCols}{50}
 \begin{document}
+
+\catcode`\^ = 13 \def^#1{\sp{#1}{}}
+\catcode`\_ = 13 \def_#1{\sb{#1}{}}
 ]]
 --170mm width is typical.  my equations are just over 6000mm
 

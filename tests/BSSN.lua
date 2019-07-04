@@ -2,16 +2,32 @@
 require 'ext'
 require 'symmath'.setup()
 
---[[
-symmath.tostring = require 'symmath.tostring.MathJax'
-symmath.tostring.setup{title='BSSN'}
---]]
--- [[
-symmath.tostring = require 'symmath.tostring.LaTeX'
-printbr = print 
---symmath.tostring.title = 'BSSN'	-- I don't have this yet?
-print(symmath.tostring.header)
---]]
+local output = 'html'
+--local output = 'tex'
+
+output = ... or output
+
+local header = [[
+translation of BSSN_RHS.nb from Zach Etienne's SENR project, from Mathematica into Lua symmath
+found at <a href='https://math.wvu.edu/~zetienne/SENR/'>https://math.wvu.edu/~zetienne/SENR/</a>
+]]
+
+if output == 'html' then
+	symmath.tostring = require 'symmath.tostring.MathJax'
+	symmath.tostring.setup{title='BSSN'}
+	print((header:gsub('\n', '<br>\n')))
+elseif output == 'tex' then
+	symmath.tostring = require 'symmath.tostring.LaTeX'
+	printbr = print 
+	--symmath.tostring.title = 'BSSN'	-- I don't have this yet?
+	print(symmath.tostring.header)
+	header = header:gsub('_', '\\_') .. [[
+\DeclareMathSymbol{\beth}{\mathord}{hebrewletters}{98}\let\bet\beth
+\DeclareMathSymbol{\vet}{\mathord}{hebrewletters}{99}
+]]
+	print(header)
+end
+
 symmath.tostring.useCommaDerivative = true
 
 local function printAndWarn(str)
@@ -19,8 +35,6 @@ local function printAndWarn(str)
 	io.stderr:write(str,'\n')
 end
 
-printbr"translation of BSSN_RHS.nb from Zach Etienne's SENR project, from Mathematica into Lua symmath"
-printbr"found at <a href='https://math.wvu.edu/~zetienne/SENR/'>https://math.wvu.edu/~zetienne/SENR/</a>"
 
 -- TODO redo this whole thing, don't use any dense tensors, just index notation expression
 -- and only last substitute in actual dense tensor values for specific coordinate systems
@@ -236,7 +250,7 @@ printbr(epsvar'_ij':eq(epsDD))
 printbr()
 local gbarvar = var'\\bar{\\gamma}'
 local gammabarDDexpr = gbarvar'_ij':eq(ghatvar'_ij' + epsvar'_ij')
-printbr(gammabarDDexpr) 
+printbr(gammabarDDexpr)
 local gammabarDD = gammabarDDexpr:rhs():replaceIndex(ghatvar'_ij', ghatDD'_ij'):replaceIndex(epsvar'_ij', epsDD'_ij')()
 printbr(gbarvar'_ij':eq(gammabarDD))
 
@@ -307,7 +321,7 @@ lambdaUdD
 lambdaUdupD
 --]]
 
-local vetvar = var'ב'
+local vetvar = var(output == 'tex' and '\\vet' or 'ב')
 local vetU = Tensor('^I', function(i)
 	return var(vetvar.name..'^'..xns[i].name, xs)
 end)
@@ -318,7 +332,7 @@ printbr(betavar'^i'
 	:eq(vetvar'^I' * evar'_I^i')
 	:eq(betaU))
 
-local betvar = var'בּ'
+local betvar = var(output == 'tex' and '\\bet' or 'בּ')
 local betU = Tensor('^I', function(i)
 	return var(betvar.name..'^'..xns[i].name, xs)
 end)
@@ -424,6 +438,13 @@ local gammabarUU = Tensor('^ij', function(i,j)
 	if i > j then i,j = j,i end
 	return var('\\bar{\\gamma}^{'..xs[i].name..' '..xs[j].name..'}', xs)
 end)
+--]]
+--[[ halfway: separate the determinant
+printbr()
+local detgammabar = Matrix.determinant(gammabarDD)
+printbr()
+printbr(gbarvar:eq(detgammabar))
+local gammabarUU = Tensor('^ij', table.unpack((Matrix.inverse(gammabarDD, nil, nil, nil, gbarvar))))
 --]]
 printbr(gbarvar'^ij':eq(gammabarUU))
 
@@ -587,8 +608,8 @@ local det = makefunc'det'
 local detgammahat = Matrix.determinant(ghatDD)
 printbr(det(ghatvar'_mn'):eq(detgammahat))
 
-local gammavar = var'g'
-local detg = var('g', xs)
+local gammavar = var'\\gamma'
+local detg = var('\\gamma', xs)
 printbr(det(gammavar'_mn'):eq(detg))
 
 local detgdD = Tensor('_i', function(i)
