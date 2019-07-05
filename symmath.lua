@@ -55,9 +55,9 @@ if there are any Derivatives or variables (other those listed) then compiling wi
 so if you have any derivs you want as function parameters, use map() or replace() to replace them for new variables
 	and then put them in the vars list
 --]]
-function symmath.compile(expr, vars, language)
+function symmath.compile(expr, vars, language, args)
 	language = language or 'Lua'
-	return require('symmath.tostring.'..language):compile(expr, vars)
+	return require('symmath.tostring.'..language):compile(expr, vars, args)
 end
 
 --[[ potential new system based on breadth-first search ... not finished yet

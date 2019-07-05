@@ -101,17 +101,22 @@ C.lookupTable = {
 	end,
 }
 
-function C:compile(expr, paramInputs)
+function C:compile(expr, paramInputs, args)
 	local expr, vars = self:prepareForCompile(expr, paramInputs)
 	local info = self:apply(expr, vars)
 	local body = info[1]
 	local predefs = info[2]
 	local code = (predefs and #predefs > 0) and (table.keys(predefs):concat'\n'..'\n') or ''
-	return code..'('..
-		vars:map(function(var) 	
-			return 'real '..var.name
-		end):concat(', ')
-	..') { return '..body..'; }'
+	if not (args and args.hideHeader) then
+		code = code..'('..
+			vars:map(function(var) 	
+				return 'real '..var.name
+			end):concat(', ')
+		..') { return '..body..'; }'
+	else
+		code = body
+	end
+	return code
 end
 
 function C:__call(...)
