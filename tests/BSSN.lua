@@ -127,10 +127,11 @@ elseif CoordSystem == 'SymTP' then
 	y2 = ph
 	y3 = zz
 end
+local ys = table{y1, y2, y3}
 printbr(var'r_{coord}':eq(r))
 printbr(var'\\theta_{coord}':eq(th))
 printbr(var'\\phi_{coord}':eq(ph))
-printbr('$y^i = \\{$', y1, y2, y3, '$\\}$')
+printbr('$y^i = \\{$', ys:map(tostring):concat', ', '$\\}$')
 -- hmm, why is xx used distinct, xx,yy,zz, but then later as an array: xx[0],xx[1],xx[2]
 --local xx = {x1,x2,x3}
 local xs = table{x1,x2,x3}
@@ -427,26 +428,19 @@ local gammabarDDdDD = Tensor'_ijkl'
 gammabarDDdDD['_ijkl'] = gammabarDDdD'_ijk,l'()
 printbr(gbarvar'_ij,kl':eq(gammabarDDdDD))
 
---[[ evaluating the inverse symbolically:
-local detgammabarDD = Matrix.determinant(gammabarDD)
-printbr('det(', gbarvar'_ij', ') =', detgammabarDD)
-local detgammabarDDvar = var('\\bar{\\gamma}', xs)
-local gammabarUU = Tensor('^ij', table.unpack((symmath.Matrix.inverse(gammabarDD, nil, nil, nil, detgammabarDDvar))))
---]]
 -- [[ store them for later
+printbr()
+local detgammabarexpr = Matrix.determinant(gammabarDD)
+printbr(gbarvar:eq(detgammabarexpr))
+local detgammabar = gbarvar
+local gammabarUUexprs = Tensor('^ij', table.unpack((symmath.Matrix.inverse(gammabarDD, nil, nil, nil, gbarvar))))
 local gammabarUU = Tensor('^ij', function(i,j)
 	if i > j then i,j = j,i end
 	return var('\\bar{\\gamma}^{'..xs[i].name..' '..xs[j].name..'}', xs)
 end)
+printbr(gbarvar'^ij':eq(gammabarUU):eq(gammabarUUexprs))
 --]]
---[[ halfway: separate the determinant
-printbr()
-local detgammabar = Matrix.determinant(gammabarDD)
-printbr()
-printbr(gbarvar:eq(detgammabar))
-local gammabarUU = Tensor('^ij', table.unpack((Matrix.inverse(gammabarDD, nil, nil, nil, gbarvar))))
---]]
-printbr(gbarvar'^ij':eq(gammabarUU))
+
 
 local Gammabarvar = var'\\bar{\\Gamma}'
 local GammabarDDD = Tensor'_ijk'
@@ -461,11 +455,27 @@ local Deltavar = var'\\Delta'
 local DGammaUDD = (GammabarUDD'^i_jk' - GammahatUDD'^i_jk')()
 printbr(Deltavar'^i_jk':eq(DGammaUDD))
 
+--[[
 local DGammaDDD = (gammabarDD'_im' * DGammaUDD'^m_jk')()
 printbr(Deltavar'_ijk':eq(DGammaDDD))
 
 local DGammaU = (DGammaUDD'^i_jk' * gammabarUU'^jk')()
 printbr(Deltavar'^i':eq(DGammaU))
+--]]
+-- [[ defer.  I wonder if there are any essential simplifications depending on what is being deferred...
+local DGammaDDDexprs = (gammabarDD'_im' * DGammaUDD'^m_jk')()
+local DGammaDDD = Tensor('_ijk', function(i,j,k)
+	if j > k then j,k = k,j end
+	return var('\\Delta_{'..xs[i].name..' '..xs[j].name..' '..xs[k].name..'}', xs)
+end)
+printbr(Deltavar'_ijk':eq(DGammaDDD):eq(DGammaDDDexprs))
+
+local DGammaUexprs = (DGammaUDD'^i_jk' * gammabarUU'^jk')()
+local DGammaU = Tensor('^i', function(i)
+	return var('\\Delta^'..xs[i].name, xs)
+end)
+printbr(Deltavar'^i':eq(DGammaU):eq(DGammaUexprs))
+--]]
 
 local AbarUD = (gammabarUU'^ik' * AbarDD'_kj')()
 printbr(Abarvar'^i_j':eq(AbarUD)) 
@@ -500,7 +510,7 @@ end
 -- Lie derivatives
 printAndWarn'Lie derivatives'
 
-local Lbeta = makefunc'\\mathcal{L}_\\beta'
+local Lbeta = makefunc'{\\mathcal{L}_\\beta}'
 local LbetagammabarDD = Tensor'_ij'
 LbetagammabarDD['_ij'] = (betaU'^k' * gammabarDDdupD'_ijk'
 	+ gammabarDD'_ki' * betaUdD'^k_j' + gammabarDD'_kj' * betaUdD'^k_i')()
@@ -649,22 +659,37 @@ printbr(Dbar'^k'(Dbar'_j'(betavar'^j')):eq(Dbar2betacontractionU))
 -- Ricci tensor, wrt barred metric ... goes too slow.
 
 -- temp cache to save on computation time
-io.stderr:write'trDHat2gammabarDDdDD...\n'
+printAndWarn'trDHat2gammabarDDdDD...'
 local trDHat2gammabarDDdDD = (gammabarUU'^kl' * Dhat2gammabarDDdDD'_ijkl')()
-io.stderr:write'DhatLambdaUdD_DD...\n'
-local DhatLambdaUdD_DD = (gammabarDD'_ki' * DhatLambdaUdD'^k_j')()
-io.stderr:write'DGammaU_dot3_DGammaDDD...\n'
-local DGammaU_dot3_DGammaDDD = (DGammaU'^k' * DGammaDDD'_ijk')()
-io.stderr:write'DGammaUDD_dot12_DGammaDDD...\n'
-local DGammaUDD_dot12_DGammaDDD = (DGammaUDD'^m_ij' * DGammaDDD'_kml')()
-io.stderr:write'tr14_DGammaUDD_dot12_DGammaDDD...\n'
-local tr14_DGammaUDD_dot12_DGammaDDD = (gammabarUU'^kl' * DGammaUDD_dot12_DGammaDDD'_kijl')()
-io.stderr:write'DGammaUDD_dot11_DGammaDDD...\n'
-local DGammaUDD_dot11_DGammaDDD = (DGammaUDD'^m_ik' * DGammaDDD'_mjl')()
-io.stderr:write'tr24_DGammaUDD_dot11_DGammaDDD...\n'
-local tr24_DGammaUDD_dot11_DGammaDDD = (gammabarUU'^kl' * DGammaUDD_dot11_DGammaDDD'_ikjl')()
-io.stderr:write'RbarDD...\n'
+printbr(trDHat2gammabarDDdDD) 
 
+printAndWarn'DhatLambdaUdD_DD...'
+local DhatLambdaUdD_DD = (gammabarDD'_ki' * DhatLambdaUdD'^k_j')()
+printbr(DhatLambdaUdD_DD)
+
+-- this is where things stall, unless I defer Delta^i and Delta_ijk
+printAndWarn'DGammaU_dot3_DGammaDDD...'
+local DGammaU_dot3_DGammaDDD = (DGammaU'^k' * DGammaDDD'_ijk')()
+printbr(DGammaU_dot3_DGammaDDD)
+
+printAndWarn'DGammaUDD_dot12_DGammaDDD...'
+local DGammaUDD_dot12_DGammaDDD = (DGammaUDD'^m_ij' * DGammaDDD'_kml')()
+printbr(DGammaUDD_dot12_DGammaDDD)
+
+printAndWarn'tr14_DGammaUDD_dot12_DGammaDDD...'
+local tr14_DGammaUDD_dot12_DGammaDDD = (gammabarUU'^kl' * DGammaUDD_dot12_DGammaDDD'_kijl')()
+printbr(tr14_DGammaUDD_dot12_DGammaDDD)
+
+printAndWarn'DGammaUDD_dot11_DGammaDDD...'
+local DGammaUDD_dot11_DGammaDDD = (DGammaUDD'^m_ik' * DGammaDDD'_mjl')()
+printbr(DGammaUDD_dot11_DGammaDDD)
+
+printAndWarn'tr24_DGammaUDD_dot11_DGammaDDD...'
+local tr24_DGammaUDD_dot11_DGammaDDD = (gammabarUU'^kl' * DGammaUDD_dot11_DGammaDDD'_ikjl')()
+printbr(tr24_DGammaUDD_dot11_DGammaDDD)
+
+-- this stalls next
+printAndWarn'RbarDD...'
 local Rbarvar = var'\\bar{R}'
 local RbarDD = (
 	-- first term

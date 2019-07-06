@@ -736,6 +736,10 @@ end
 
 -- permute the tensor's elements according to the dest variance
 function Tensor:permute(dstVariance)
+	if type(dstVariance) == 'string' then
+		dstVariance = self.parseIndexes(dstVariance)
+	end
+	
 	-- determine index remapping
 	local indexMap = {}
 	for i,srcVar in ipairs(self.variance) do
