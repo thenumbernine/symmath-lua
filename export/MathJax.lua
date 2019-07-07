@@ -25,7 +25,7 @@ function Header:__tostring()
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset='utf-8'>
         <title>]=] .. self.title .. [=[</title>
 		<script type="text/javascript" async src="]=]..self.url..[=["></script>
 		<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
@@ -39,9 +39,9 @@ function Header:__tostring()
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset='utf-8'>
         <title>]=] .. self.title .. [=[</title>
-		<script type="text/javascript">
+		<script type='text/javascript'>
 function loadScript(args) {
 	console.log("loading "+args.src);
 	var el = document.createElement('script');
@@ -93,7 +93,7 @@ function init() {
 <!doctype html>
 <html>
     <head>
-        <meta charset='UTF-8'>
+        <meta charset='utf-8'>
         <title>]=] .. self.title .. [=[</title>
 		<script type='text/javascript' src=']=] .. self.pathToTryToFindMathJax .. [=[/tryToFindMathJax.js'></script>
     </head>

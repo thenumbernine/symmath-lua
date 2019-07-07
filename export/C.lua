@@ -25,21 +25,21 @@ end
 
 
 C.lookupTable = {
-	[require 'symmath.Constant'] = function(self, expr, vars)
+	[require 'symmath.Constant'] = function(self, expr)
 		local s = tostring(expr.value)
 		if not s:find'e' then
 			if not s:find'%.' then s = s .. '.' end
 		end
 		return {s}
 	end,
-	[require 'symmath.Invalid'] = function(self, expr, vars)
+	[require 'symmath.Invalid'] = function(self, expr)
 		return {'NAN'}
 	end,
-	[require 'symmath.Function'] = function(self, expr, vars)
+	[require 'symmath.Function'] = function(self, expr)
 		local predefs = table()
 		local s = table()
 		for i,x in ipairs(expr) do
-			local sx = self:apply(x, vars)
+			local sx = self:apply(x)
 			s:insert(sx[1])
 			predefs = table(predefs, sx[2])
 		end
@@ -54,19 +54,19 @@ C.lookupTable = {
 		end
 		return {funcName .. '(' .. s .. ')', predefs}
 	end,
-	[require 'symmath.op.unm'] = function(self, expr, vars)
-		local sx = self:wrapStrOfChildWithParenthesis(expr, 1, vars)
+	[require 'symmath.op.unm'] = function(self, expr)
+		local sx = self:wrapStrOfChildWithParenthesis(expr, 1)
 		return {'-'..sx[1], sx[2]}
 	end,
-	[require 'symmath.op.pow'] = function(self, expr, vars)
+	[require 'symmath.op.pow'] = function(self, expr)
 		if expr[1] == require 'symmath'.e then
-			local sx = self:apply(expr[2], vars)
+			local sx = self:apply(expr[2])
 			return {'(real)exp((real)' .. sx[1] .. ')', sx[2]}
 		else
 			local predefs = table()
 			local s = table()
 			for i,x in ipairs(expr) do
-				local sx = self:apply(x, vars)
+				local sx = self:apply(x)
 				s:insert('(real)'..sx[1])
 				predefs = table(predefs, sx[2])
 			end
@@ -74,36 +74,37 @@ C.lookupTable = {
 			return {'(real)pow(' .. s .. ')', predefs}	
 		end
 	end,
-	[require 'symmath.op.Binary'] = function(self, expr, vars)
+	[require 'symmath.op.Binary'] = function(self, expr)
 		local predefs = table()
-		return {range(#expr):map(function(i)
-			local sx = self:wrapStrOfChildWithParenthesis(expr, i, vars)
+		return {table.mapi(expr, function(x,i)
+			local sx = self:wrapStrOfChildWithParenthesis(expr, i)
 			predefs = table(predefs, sx[2])
 			return sx[1]
 		end):concat(' '..expr.name..' '), predefs}
 	end,
-	[require 'symmath.Variable'] = function(self, expr, vars)
-		if table.find(vars, nil, function(var) 
-			return expr.name == var.name 
-		end) then
-			return {expr.name}
-		end
-		error("tried to compile variable "..expr.name.." that wasn't in your function argument variable list!\n"
-		..(require 'symmath.export.MultiLine')(expr))
+	[require 'symmath.Variable'] = function(self, expr)
+		return {expr.name}
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!\n"
 		..(require 'symmath.export.MultiLine')(expr))
 	end,
-	[require 'symmath.Array'] = function(self, expr, vars)
-		error("can't compile arrays in C.  replace() your diff'd content first!\n"
-		..(require 'symmath.export.MultiLine')(expr))
+	[require 'symmath.Array'] = function(self, expr)
+		local predefs = table()
+		return {'{'..table.mapi(expr, function(x, i)
+			local sx = self:apply(x)
+			predefs = table(predefs, sx[2])
+			return sx[1]
+		end):concat', '..'}', predefs}
 	end,
 }
 
+-- TODO rename this to 'generate' (or rename export.Lua's 'generate' to whatever this becomes)
+-- and leave 'compile' for producing callable functions
 function C:compile(expr, paramInputs, args)
 	local expr, vars = self:prepareForCompile(expr, paramInputs)
-	local info = self:apply(expr, vars)
+	local info = self:apply(expr)
+	-- TODO keep track of what vars are used, and compare it to the vars in the compile, to ensure correct code is generated.
 	local body = info[1]
 	local predefs = info[2]
 	local code = (predefs and #predefs > 0) and (table.keys(predefs):concat'\n'..'\n') or ''

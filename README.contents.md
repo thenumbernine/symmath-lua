@@ -282,3 +282,10 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 
 - change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
 
+
+distinct functions for all languages:
+- __call = produces a single expression of code, without checking variables
+- generate = produces the function body.  multiple expressions.
+	doing tree searches and moving common variables out front would be good.
+- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler (TODO organize LuaMake and change ffi-c to use it and make this use ffi-c to build C functions)
+

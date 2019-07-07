@@ -393,7 +393,13 @@ function LaTeX:applyLaTeX(...)
 		result = result:concat()
 		
 		--result = range(#result):map(function(i) return flatten(result[i]) end):concat' '
-		if (count > 1 and not omit) or force then result = '{' .. result .. '}' end
+		if force then
+			result = '{' .. result .. '}' 
+		elseif count > 1 and not omit then 
+			result = '{' .. result .. '}' 
+		else
+			result = ' ' .. result
+		end
 		
 		return result
 	end

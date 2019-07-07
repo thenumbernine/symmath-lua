@@ -62,7 +62,7 @@ div.rules = {
 		
 			-- a/(b1 * ... * bn) => a * 1/b1 * ... * 1/bn
 			if mul.is(expr[2]) then
-				local prod = mul(expr[1], range(#expr[2]):map(function(i)
+				local prod = mul(expr[1], range(#expr[2]):mapi(function(i)
 					return 1 / expr[2][i]:clone()
 				end):unpack())
 				return factorDivision:apply(prod)
