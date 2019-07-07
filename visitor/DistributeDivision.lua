@@ -12,7 +12,7 @@ DistributeDivision.name = 'DistributeDivision'
 function DistributeDivision:apply(expr, ...)
 	--[[
 	if not expr.simplify then
-		print(require 'symmath.tostring.Verbose'(expr))
+		print(require 'symmath.export.Verbose'(expr))
 		error("expr "..type(expr).." "..tostring(expr).." doesn't have simplify")
 	end
 

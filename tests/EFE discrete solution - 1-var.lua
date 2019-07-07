@@ -6,14 +6,13 @@ test differerent simplified discrete spacetimes
 1.a) solve alpha_i = alpha(r_i) to minimize phi_i = ||G_ab(alpha_i) - 8 pi T_ab(alpha_i)|| 
 --]]
 require 'ext'
-require 'symmath'.setup() --{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='EFE discrete solution - 1-var'}} --{implicitVars=true}
 
 local solveWithGMRES = false
 local solveWithLU = false
 local solveWithInitValue = true
 
-local GnuPlot = require 'symmath.tostring.GnuPlot'
+local GnuPlot = symmath.export.GnuPlot
 local function plot(x, y, title)
 	args = {
 		data = {x, y},

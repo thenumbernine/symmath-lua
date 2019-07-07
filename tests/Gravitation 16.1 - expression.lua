@@ -1,7 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{implicitVars=true, MathJax={title='Gravitation 16.1 - expression'}}
 
 local deta_eq_0 = eta'_ab,c':eq(0)
 local ddelta_eq_0 = delta'_ab,c':eq(0)

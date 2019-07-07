@@ -1,64 +1,23 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Symbolic Lua Output</title>
-		<script type="text/javascript">
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src; 
-}
-function init() {
-	console.log('init...');
-	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
-			src : urls[i],
-			done : function() {
-				console.log("success!");
-				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-			},
-			fail : function() {
-				++i;
-				if (i >= urls.length) {
-					console.log("looks like all our sources have failed!");
-				} else {
-					loadNext();
-				}
-			}
-		});
-	}
-	loadNext();
-}
-		</script>
-	</head>
-    <body onload='init();'>
+        <meta charset='UTF-8'>
+        <title>matrix</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 
 <code>Array(1,2,3)</code>
 <br>
-$\left[\matrix{1\\2\\3}\right]$
+$\left[\begin{matrix}1 \\2 \\3\end{matrix}\right]$
 <br>
 <code>Array(1,2) + Array(3,4)</code>
 <br>
-${\left[\matrix{1\\2}\right]} + {\left[\matrix{3\\4}\right]}$
+${\left[\begin{matrix}1 \\2\end{matrix}\right]} + {\left[\begin{matrix}3 \\4\end{matrix}\right]}$
 <br>
 <code>(Array(1,2) + Array(3,4))()</code>
 <br>
-$\left[\matrix{4\\6}\right]$
+$\left[\begin{matrix}4 \\6\end{matrix}\right]$
 <br>
 <code>asserteq((Array(1,2) + Array(3,4))(), Array(4,6))</code>
 <br>
@@ -66,11 +25,11 @@ $\left[\matrix{4\\6}\right]$
 <br>
 <code>Matrix({1,2},{3,4})</code>
 <br>
-$\left[\matrix{1&2\\3&4}\right]$
+$\left[\begin{matrix}1 & 2 \\3 & 4\end{matrix}\right]$
 <br>
 <code>Matrix({1,2},{3,4}):inverse()</code>
 <br>
-$\left[\matrix{{-2}&1\\{\frac{3}{2}}&{-{\frac{1}{2}}}}\right]$	$\left[\matrix{1&0\\0&1}\right]$
+$\left[\begin{matrix}-{2} & 1 \\\frac{3}{2} & -{\frac{1}{2}}\end{matrix}\right]$	$\left[\begin{matrix}1 & 0 \\0 & 1\end{matrix}\right]$
 <br>
 <code>asserteq(Matrix({1,2},{3,4}):inverse(), Matrix({-2,1},{frac(3,2),-frac(1,2)}))</code>
 <br>
@@ -78,11 +37,11 @@ $\left[\matrix{{-2}&1\\{\frac{3}{2}}&{-{\frac{1}{2}}}}\right]$	$\left[\matrix{1&
 <br>
 <code>Matrix({a,b},{c,d})</code>
 <br>
-$\left[\matrix{a&b\\c&d}\right]$
+$\left[\begin{matrix}a & b \\c & d\end{matrix}\right]$
 <br>
 <code>Matrix({a,b},{c,d}):inverse()</code>
 <br>
-$\left[\matrix{{\frac{d}{{a d} - {b c}}}&{\frac{-b}{{a d} - {b c}}}\\{\frac{-c}{{a d} - {b c}}}&{\frac{a}{{a d} - {b c}}}}\right]$	$\left[\matrix{1&0\\0&1}\right]$
+$\left[\begin{matrix}\frac{d}{{{{a}} {{d}}} - {{{b}} {{c}}}} & \frac{-{b}}{{{{a}} {{d}}} - {{{b}} {{c}}}} \\\frac{-{c}}{{{{a}} {{d}}} - {{{b}} {{c}}}} & \frac{a}{{{{a}} {{d}}} - {{{b}} {{c}}}}\end{matrix}\right]$	$\left[\begin{matrix}1 & 0 \\0 & 1\end{matrix}\right]$
 <br>
 <code>asserteq(Matrix({a,b},{c,d}):inverse(), Matrix( {frac(d, a*d-b*c), frac(-b, a*d-b*c)}, {frac(-c, a*d-b*c), frac(a, a*d-b*c)} ))</code>
 <br>
@@ -90,11 +49,11 @@ $\left[\matrix{{\frac{d}{{a d} - {b c}}}&{\frac{-b}{{a d} - {b c}}}\\{\frac{-c}{
 <br>
 <code>Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1})</code>
 <br>
-$\left[\matrix{1&0&0&{t_{x}}\\0&1&0&{t_{y}}\\0&0&1&{t_{z}}\\0&0&0&1}\right]$
+$\left[\begin{matrix}1 & 0 & 0 & {t_{x}} \\0 & 1 & 0 & {t_{y}} \\0 & 0 & 1 & {t_{z}} \\0 & 0 & 0 & 1\end{matrix}\right]$
 <br>
 <code>Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse()</code>
 <br>
-$\left[\matrix{1&0&0&{-{t_{x}}}\\0&1&0&{-{t_{y}}}\\0&0&1&{-{t_{z}}}\\0&0&0&1}\right]$	$\left[\matrix{1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]$
+$\left[\begin{matrix}1 & 0 & 0 & -{{t_{x}}} \\0 & 1 & 0 & -{{t_{y}}} \\0 & 0 & 1 & -{{t_{z}}} \\0 & 0 & 0 & 1\end{matrix}\right]$	$\left[\begin{matrix}1 & 0 & 0 & 0 \\0 & 1 & 0 & 0 \\0 & 0 & 1 & 0 \\0 & 0 & 0 & 1\end{matrix}\right]$
 <br>
 <code>asserteq(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse(), Matrix({1,0,0,-t_x},{0,1,0,-t_y},{0,0,1,-t_z},{0,0,0,1}))</code>
 <br>
@@ -102,19 +61,19 @@ $\left[\matrix{1&0&0&{-{t_{x}}}\\0&1&0&{-{t_{y}}}\\0&0&1&{-{t_{z}}}\\0&0&0&1}\ri
 <br>
 <code>m + mInv</code>
 <br>
-${\left[\matrix{{cos\left(\theta\right)}&{-{sin\left(\theta\right)}}\\{sin\left(\theta\right)}&{cos\left(\theta\right)}}\right]} + {\left[\matrix{{cos\left(\theta\right)}&{sin\left(\theta\right)}\\{-{sin\left(\theta\right)}}&{cos\left(\theta\right)}}\right]}$
+${\left[\begin{matrix}cos\left(\theta\right) & -{sin\left(\theta\right)} \\sin\left(\theta\right) & cos\left(\theta\right)\end{matrix}\right]} + {\left[\begin{matrix}cos\left(\theta\right) & sin\left(\theta\right) \\-{sin\left(\theta\right)} & cos\left(\theta\right)\end{matrix}\right]}$
 <br>
 <code>(m + mInv)()</code>
 <br>
-$\left[\matrix{{2 {cos\left(\theta\right)}}&0\\0&{2 {cos\left(\theta\right)}}}\right]$
+$\left[\begin{matrix}{{2}} {{cos\left(\theta\right)}} & 0 \\0 & {{2}} {{cos\left(\theta\right)}}\end{matrix}\right]$
 <br>
 <code>m * mInv</code>
 <br>
-${\left[\matrix{{cos\left(\theta\right)}&{-{sin\left(\theta\right)}}\\{sin\left(\theta\right)}&{cos\left(\theta\right)}}\right]} {\left[\matrix{{cos\left(\theta\right)}&{sin\left(\theta\right)}\\{-{sin\left(\theta\right)}}&{cos\left(\theta\right)}}\right]}$
+${\left[\begin{matrix}cos\left(\theta\right) & -{sin\left(\theta\right)} \\sin\left(\theta\right) & cos\left(\theta\right)\end{matrix}\right]} {\left[\begin{matrix}cos\left(\theta\right) & sin\left(\theta\right) \\-{sin\left(\theta\right)} & cos\left(\theta\right)\end{matrix}\right]}$
 <br>
 <code>(m * mInv)()</code>
 <br>
-$\left[\matrix{1&0\\0&1}\right]$
+$\left[\begin{matrix}1 & 0 \\0 & 1\end{matrix}\right]$
 <br>
 <code>asserteq( (m*mInv)(), Matrix({1,0},{0,1}) )</code>
 <br>
@@ -122,31 +81,31 @@ $\left[\matrix{1&0\\0&1}\right]$
 <br>
 <code>m*m</code>
 <br>
-${\left[\matrix{{cos\left(\theta\right)}&{-{sin\left(\theta\right)}}\\{sin\left(\theta\right)}&{cos\left(\theta\right)}}\right]} {\left[\matrix{{cos\left(\theta\right)}&{-{sin\left(\theta\right)}}\\{sin\left(\theta\right)}&{cos\left(\theta\right)}}\right]}$
+${\left[\begin{matrix}cos\left(\theta\right) & -{sin\left(\theta\right)} \\sin\left(\theta\right) & cos\left(\theta\right)\end{matrix}\right]} {\left[\begin{matrix}cos\left(\theta\right) & -{sin\left(\theta\right)} \\sin\left(\theta\right) & cos\left(\theta\right)\end{matrix}\right]}$
 <br>
 <code>(m*m)()</code>
 <br>
-$\left[\matrix{{1 - {2 {{{sin\left(\theta\right)}}^{2}}}}&{-{2 {cos\left(\theta\right)} {sin\left(\theta\right)}}}\\{2 {sin\left(\theta\right)} {cos\left(\theta\right)}}&{1 - {2 {{{sin\left(\theta\right)}}^{2}}}}}\right]$
+$\left[\begin{matrix}{1} - {{{2}} {{{sin\left(\theta\right)}^{2}}}} & -{{{2}} {{cos\left(\theta\right)}} {{sin\left(\theta\right)}}} \\{{2}} {{sin\left(\theta\right)}} {{cos\left(\theta\right)}} & {1} - {{{2}} {{{sin\left(\theta\right)}^{2}}}}\end{matrix}\right]$
 <br>
 <code>(m1)</code>
 <br>
-$\left[\matrix{1&a\\0&1}\right]$
+$\left[\begin{matrix}1 & a \\0 & 1\end{matrix}\right]$
 <br>
 <code>(m2)</code>
 <br>
-$\left[\matrix{1&0\\b&1}\right]$
+$\left[\begin{matrix}1 & 0 \\b & 1\end{matrix}\right]$
 <br>
 <code>(m1*m2):eq((m1*m2)())</code>
 <br>
-${{\left[\matrix{1&a\\0&1}\right]} {\left[\matrix{1&0\\b&1}\right]}} = {\left[\matrix{{1 + {a b}}&a\\b&1}\right]}$
+${{\left[\begin{matrix}1 & a \\0 & 1\end{matrix}\right]} {\left[\begin{matrix}1 & 0 \\b & 1\end{matrix}\right]}} = {\left[\begin{matrix}{1} + {{{a}} {{b}}} & a \\b & 1\end{matrix}\right]}$
 <br>
 <code>(m2*m1):eq((m2*m1)())</code>
 <br>
-${{\left[\matrix{1&0\\b&1}\right]} {\left[\matrix{1&a\\0&1}\right]}} = {\left[\matrix{1&a\\b&{1 + {b a}}}\right]}$
+${{\left[\begin{matrix}1 & 0 \\b & 1\end{matrix}\right]} {\left[\begin{matrix}1 & a \\0 & 1\end{matrix}\right]}} = {\left[\begin{matrix}1 & a \\b & {1} + {{{a}} {{b}}}\end{matrix}\right]}$
 <br>
 <code>m1:eq(m2)</code>
 <br>
-${\left[\matrix{1&a\\0&1}\right]} = {\left[\matrix{1&0\\b&1}\right]}$
+${\left[\begin{matrix}1 & a \\0 & 1\end{matrix}\right]} = {\left[\begin{matrix}1 & 0 \\b & 1\end{matrix}\right]}$
 <br>
 <code>assertne(m1, m2)</code>
 <br>
@@ -154,7 +113,7 @@ ${\left[\matrix{1&a\\0&1}\right]} = {\left[\matrix{1&0\\b&1}\right]}$
 <br>
 <code>(m1*m2):eq(m2*m1)</code>
 <br>
-${{\left[\matrix{1&a\\0&1}\right]} {\left[\matrix{1&0\\b&1}\right]}} = {{\left[\matrix{1&0\\b&1}\right]} {\left[\matrix{1&a\\0&1}\right]}}$
+${{\left[\begin{matrix}1 & a \\0 & 1\end{matrix}\right]} {\left[\begin{matrix}1 & 0 \\b & 1\end{matrix}\right]}} = {{\left[\begin{matrix}1 & 0 \\b & 1\end{matrix}\right]} {\left[\begin{matrix}1 & a \\0 & 1\end{matrix}\right]}}$
 <br>
 <code>assertne(m1*m2, m2*m1)</code>
 <br>
@@ -162,7 +121,7 @@ ${{\left[\matrix{1&a\\0&1}\right]} {\left[\matrix{1&0\\b&1}\right]}} = {{\left[\
 <br>
 <code>(m1*m2):eq(m1*m2)</code>
 <br>
-${{\left[\matrix{1&a\\0&1}\right]} {\left[\matrix{1&0\\b&1}\right]}} = {{\left[\matrix{1&a\\0&1}\right]} {\left[\matrix{1&0\\b&1}\right]}}$
+${{\left[\begin{matrix}1 & a \\0 & 1\end{matrix}\right]} {\left[\begin{matrix}1 & 0 \\b & 1\end{matrix}\right]}} = {{\left[\begin{matrix}1 & a \\0 & 1\end{matrix}\right]} {\left[\begin{matrix}1 & 0 \\b & 1\end{matrix}\right]}}$
 <br>
 <code>asserteq(m1*m2, m1*m2)</code>
 <br>
@@ -170,7 +129,7 @@ ${{\left[\matrix{1&a\\0&1}\right]} {\left[\matrix{1&0\\b&1}\right]}} = {{\left[\
 <br>
 <code>(m1*m2):eq(m2*m1)()</code>
 <br>
-${\left[\matrix{{1 + {a b}}&a\\b&1}\right]} = {\left[\matrix{1&a\\b&{1 + {b a}}}\right]}$
+${\left[\begin{matrix}{1} + {{{a}} {{b}}} & a \\b & 1\end{matrix}\right]} = {\left[\begin{matrix}1 & a \\b & {1} + {{{a}} {{b}}}\end{matrix}\right]}$
 <br>
 <code>assertne((m1*m2)(), (m2*m1)())</code>
 <br>
@@ -178,11 +137,11 @@ ${\left[\matrix{{1 + {a b}}&a\\b&1}\right]} = {\left[\matrix{1&a\\b&{1 + {b a}}}
 <br>
 <code>(Matrix({a},{b}) + Matrix({c},{d})) / t</code>
 <br>
-$\frac{{\left[\matrix{a\\b}\right]} + {\left[\matrix{c\\d}\right]}}{t}$
+${\frac{1}{t}}{({{\left[\begin{matrix}a \\b\end{matrix}\right]} + {\left[\begin{matrix}c \\d\end{matrix}\right]}})}$
 <br>
 <code>((Matrix({a},{b}) + Matrix({c},{d})) / t)()</code>
 <br>
-$\left[\matrix{{\frac{a + c}{t}}\\{\frac{b + d}{t}}}\right]$
+$\left[\begin{matrix}{\frac{1}{t}}{({{a} + {c}})} \\{\frac{1}{t}}{({{b} + {d}})}\end{matrix}\right]$
 <br>
 <code>asserteq( ((Matrix({a},{b}) + Matrix({c},{d})) / t)(), Matrix({frac(a+c,t)}, {frac(b+d,t)}) )</code>
 <br>
@@ -190,11 +149,11 @@ $\left[\matrix{{\frac{a + c}{t}}\\{\frac{b + d}{t}}}\right]$
 <br>
 <code>Matrix({1,2},{3,4}):inverse(Matrix({5},{6}))</code>
 <br>
-$\left[\matrix{{-4}\\{\frac{9}{2}}}\right]$	$\left[\matrix{1&0\\0&1}\right]$
+$\left[\begin{matrix}-{4} \\\frac{9}{2}\end{matrix}\right]$	$\left[\begin{matrix}1 & 0 \\0 & 1\end{matrix}\right]$
 <br>
 <code>(Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))()</code>
 <br>
-$\left[\matrix{5\\6}\right]$
+$\left[\begin{matrix}5 \\6\end{matrix}\right]$
 <br>
 <code>asserteq( (Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))(), Matrix({5},{6}) )</code>
 <br>

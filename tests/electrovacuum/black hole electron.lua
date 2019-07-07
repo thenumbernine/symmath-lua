@@ -5,8 +5,7 @@
 -- what sort of gravitational force is it giving off?
 
 require 'ext'
-require 'symmath'.setup{implicitVars=true, simplifyConstantPowers=true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+require 'symmath'.setup{implicitVars=true, simplifyConstantPowers=true, MathJax={title='black hole electron', usePartialLHSForDerivative=true, pathToTryToFindMathJax='..'}}
 
 local units = require 'symmath.physics.units'{
 	--valuesAsVars=true,

@@ -1,7 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars = true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative = true}
+require 'symmath'.setup{implicitVars=true, MathJax={title='hydrodynamics', usePartialLHSForDerivative=true}}
 
 function section(name)
 	print('<h2>'..name..'</h2>')
@@ -22,17 +21,12 @@ end
 
 -- TODO environments
 dOmega = var'\\partial\\Omega'
-Integral = symmath.Integral
 
-markup[[
-$
 section'Hydrodynamics'
 subsection'Mass'
-$
 
-Total mass in volume:
-$m:eq(Integral(rho, x'_i', Omega))$
-]]
+printbr'Total mass in volume:'
+printbr(m:eq(Integral(rho, x'_i', Omega)))
 --[[
 $m$ = mass
 $rho$ = density

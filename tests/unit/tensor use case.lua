@@ -1,8 +1,7 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup()
+require 'symmath'.setup{MathJax={title='tensor use case', pathToTryToFindMathJax='..'}}
 local TensorIndex = require 'symmath.tensor.TensorIndex'
-require 'symmath.tostring.MathJax'.setup()
 
 local maxN = 3
 
@@ -20,6 +19,7 @@ end
 -- no metric:
 
 local function assertEqn(eqn)
+	printbr(eqn)
 	if not eqn:simplify():isTrue() then
 		error("expected "..(eqn:lhs()).." to equal "..(eqn:rhs()))
 	end

@@ -1,134 +1,93 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset='UTF-8'>
         <title>Gravitation 16.1 - expression</title>
-		<script type="text/javascript">
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src; 
-}
-function init() {
-	console.log('init...');
-	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
-			src : urls[i],
-			done : function() {
-				console.log("success!");
-				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-			},
-			fail : function() {
-				++i;
-				if (i >= urls.length) {
-					console.log("looks like all our sources have failed!");
-				} else {
-					loadNext();
-				}
-			}
-		});
-	}
-	loadNext();
-}
-		</script>
-	</head>
-    <body onload='init();'>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 
 metric:
 <br>
-${{g}_a}_b = {{{\eta}_a}_b - {{2 \Phi} {{\delta}_a}_b}}$
+${{{g}_a}_b} = {{{{\eta}_a}_b} - {{{{{2}} {{\Phi}}}} {{{{\delta}_a}_b}}}}$
 <br>
 
 <br>
 metric inverse:
 <br>
-${{g}^a}^b = {{\frac{1}{1 - {4 {{\Phi}^{2}}}}} {({{{\eta}^a}^b + {{2 \Phi} {{\delta}^a}^b}})}}$
+${{{g}^a}^b} = {{{\frac{1}{{1} - {{{4}} {{{\Phi}^{2}}}}}}} {{({{{{\eta}^a}^b} + {{{{{2}} {{\Phi}}}} {{{{\delta}^a}^b}}}})}}}$
 <br>
-${{g}^a}^c {{g}_c}_b$
+${{{{g}^a}^c}} {{{{g}_c}_b}}$
 <br>
-$\frac{{{{{{\eta}^a}^c {{\eta}_c}_b} - {2 {{\eta}^a}^c \Phi \cdot {{\delta}_c}_b}} - {4 {{\Phi}^{2}} {{\delta}^a}^c {{\delta}_c}_b}} + {2 \Phi \cdot {{\delta}^a}^c {{\eta}_c}_b}}{1 - {4 {{\Phi}^{2}}}}$
+$\frac{{{{{{{{\eta}^a}^c}} {{{{\eta}_c}_b}}} - {{{4}} {{{\Phi}^{2}}} {{{{\delta}^a}^c}} {{{{\delta}_c}_b}}}} - {{{2}} {{\Phi}} \cdot {{{{\eta}^a}^c}} {{{{\delta}_c}_b}}}} + {{{2}} {{\Phi}} \cdot {{{{\eta}_c}_b}} {{{{\delta}^a}^c}}}}{{1} - {{{4}} {{{\Phi}^{2}}}}}$
 <br>
-$\frac{{{{{\delta}^a}_b - {2 {{\eta}^a}^c \Phi \cdot {{\delta}_c}_b}} - {4 {{\Phi}^{2}} {{\delta}^a}^c {{\delta}_c}_b}} + {2 \Phi \cdot {{\delta}^a}^c {{\eta}_c}_b}}{1 - {4 {{\Phi}^{2}}}}$
+$\frac{{{{{{\delta}^a}_b} - {{{4}} {{{\Phi}^{2}}} {{{{\delta}^a}^c}} {{{{\delta}_c}_b}}}} - {{{2}} {{\Phi}} \cdot {{{{\eta}^a}^c}} {{{{\delta}_c}_b}}}} + {{{2}} {{\Phi}} \cdot {{{{\eta}_c}_b}} {{{{\delta}^a}^c}}}}{{1} - {{{4}} {{{\Phi}^{2}}}}}$
 <br>
 
 <br>
 metric derivative:
 <br>
-${{{g}_a}_b}_{,c} = {-{({{{2 {\Phi}_{,c} {{\delta}_a}_b} - {{{\eta}_a}_b}_{,c}} + {2 \Phi \cdot {{{\delta}_a}_b}_{,c}}})}}$
+${{{{g}_a}_b}_{,c}} = {-{({{{{{2}} {{{\Phi}_{,c}}} {{{{\delta}_a}_b}}} - {{{{\eta}_a}_b}_{,c}}} + {{{2}} {{\Phi}} \cdot {{{{{\delta}_a}_b}_{,c}}}}})}}$
 <br>
-${{{g}_a}_b}_{,c} = {-{2 {\Phi}_{,c} {{\delta}_a}_b}}$
+${{{{g}_a}_b}_{,c}} = {-{{{2}} {{{\Phi}_{,c}}} {{{{\delta}_a}_b}}}}$
 <br>
 connections:
 <br>
-${{{\Gamma}_a}_b}_c = {{\frac{1}{2}} {({{{{{g}_a}_b}_{,c} + {{{g}_a}_c}_{,b}} - {{{g}_b}_c}_{,a}})}}$
+${{{{\Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{g}_a}_b}_{,c}} + {{{{g}_a}_c}_{,b}}} - {{{{g}_b}_c}_{,a}}})}}}$
 <br>
-${{{\Gamma}_a}_b}_c = {{{{\Phi}_{,a} {{\delta}_b}_c} - {{\Phi}_{,b} {{\delta}_a}_c}} - {{\Phi}_{,c} {{\delta}_a}_b}}$
+${{{{\Gamma}_a}_b}_c} = {{{{{{\Phi}_{,a}}} {{{{\delta}_b}_c}}} - {{{{\Phi}_{,b}}} {{{{\delta}_a}_c}}}} - {{{{\Phi}_{,c}}} {{{{\delta}_a}_b}}}}$
 <br>
-${{{\Gamma}^a}_b}_c = {{{g}^a}^d {{{\Gamma}_d}_b}_c}$
+${{{{\Gamma}^a}_b}_c} = {{{{{g}^a}^d}} {{{{{\Gamma}_d}_b}_c}}}$
 <br>
-${{{\Gamma}^a}_b}_c = {\frac{-{({{{{\eta}^a}^d {\Phi}_{,b} {{\delta}_d}_c} + {{{{\eta}^a}^d {\Phi}_{,c} {{\delta}_d}_b} - {{{\eta}^a}^d {\Phi}_{,d} {{\delta}_b}_c}} + {2 \Phi \cdot {{\delta}^a}^d {\Phi}_{,b} {{\delta}_d}_c} + {{2 \Phi \cdot {{\delta}^a}^d {\Phi}_{,c} {{\delta}_d}_b} - {2 \Phi \cdot {{\delta}^a}^d {\Phi}_{,d} {{\delta}_b}_c}}})}}{1 - {4 {{\Phi}^{2}}}}}$
+${{{{\Gamma}^a}_b}_c} = {\frac{-{({{{{{\Phi}_{,b}}} {{{{\eta}^a}^d}} {{{{\delta}_d}_c}}} + {{{{{\Phi}_{,c}}} {{{{\eta}^a}^d}} {{{{\delta}_d}_b}}} - {{{{\Phi}_{,d}}} {{{{\eta}^a}^d}} {{{{\delta}_b}_c}}}} + {{{2}} {{\Phi}} \cdot {{{\Phi}_{,b}}} {{{{\delta}^a}^d}} {{{{\delta}_d}_c}}} + {{{{2}} {{\Phi}} \cdot {{{\Phi}_{,c}}} {{{{\delta}^a}^d}} {{{{\delta}_d}_b}}} - {{{2}} {{\Phi}} \cdot {{{\Phi}_{,d}}} {{{{\delta}^a}^d}} {{{{\delta}_b}_c}}}}})}}{{1} - {{{4}} {{{\Phi}^{2}}}}}}$
 <br>
-let 	$\Phi = 0$	, but keep 	${\Phi}_{,a}$	to find:
+let 	${\Phi} = {0}$	, but keep 	${\Phi}_{,a}$	to find:
 <br>
-${{{\Gamma}^a}_b}_c = {-{{{\eta}^a}^d {({{{\Phi}_{,b} {{\delta}_d}_c} + {{{\Phi}_{,c} {{\delta}_d}_b} - {{\Phi}_{,d} {{\delta}_b}_c}}})}}}$
+${{{{\Gamma}^a}_b}_c} = {-{{{{{\eta}^a}^d}} {{({{{{{\Phi}_{,b}}} {{{{\delta}_d}_c}}} + {{{{{\Phi}_{,c}}} {{{{\delta}_d}_b}}} - {{{{\Phi}_{,d}}} {{{{\delta}_b}_c}}}}})}}}}$
 <br>
 
 <br>
-${{u}^a}_{;b} = {{{u}^a}_{,b} + {{{{\Gamma}^a}_c}_b {u}^c}}$
+${{{u}^a}_{;b}} = {{{{u}^a}_{,b}} + {{{{{{\Gamma}^a}_c}_b}} {{{u}^c}}}}$
 <br>
-${{u}^a}_{;b} = {-{({{{{\eta}^a}^d {\Phi}_{,b} {{\delta}_d}_c {u}^c} + {{{{{\eta}^a}^d {\Phi}_{,c} {{\delta}_d}_b {u}^c} - {{{\eta}^a}^d {\Phi}_{,d} {{\delta}_c}_b {u}^c}} - {{u}^a}_{,b}}})}}$
+${{{u}^a}_{;b}} = {{{{{{u}^a}_{,b}} - {{{{u}^c}} {{{\Phi}_{,b}}} {{{{\eta}^a}^d}} {{{{\delta}_d}_c}}}} - {{{{u}^c}} {{{\Phi}_{,c}}} {{{{\eta}^a}^d}} {{{{\delta}_d}_b}}}} + {{{{u}^c}} {{{\Phi}_{,d}}} {{{{\eta}^a}^d}} {{{{\delta}_c}_b}}}}$
 <br>
-${{u}^i}_{;t} = {-{({{{{\eta}^i}^d {\Phi}_{,t} {{\delta}_d}_c {u}^c} + {{{{{\eta}^i}^d {\Phi}_{,c} {{\delta}_d}_t {u}^c} - {{{\eta}^i}^d {\Phi}_{,d} {{\delta}_c}_t {u}^c}} - {{u}^i}_{,t}}})}}$
+${{{u}^i}_{;t}} = {{{{{{u}^i}_{,t}} - {{{{u}^c}} {{{\Phi}_{,t}}} {{{{\eta}^i}^d}} {{{{\delta}_d}_c}}}} - {{{{u}^c}} {{{\Phi}_{,c}}} {{{{\eta}^i}^d}} {{{{\delta}_d}_t}}}} + {{{{u}^c}} {{{\Phi}_{,d}}} {{{{\eta}^i}^d}} {{{{\delta}_c}_t}}}}$
 <br>
-${{u}^i}_{;j} = {-{({{{{\eta}^i}^d {\Phi}_{,j} {{\delta}_d}_c {u}^c} + {{{{{\eta}^i}^d {\Phi}_{,c} {{\delta}_d}_j {u}^c} - {{{\eta}^i}^d {\Phi}_{,d} {{\delta}_c}_j {u}^c}} - {{u}^i}_{,j}}})}}$
+${{{u}^i}_{;j}} = {{{{{{u}^i}_{,j}} - {{{{u}^c}} {{{\Phi}_{,j}}} {{{{\eta}^i}^d}} {{{{\delta}_d}_c}}}} - {{{{u}^c}} {{{\Phi}_{,c}}} {{{{\eta}^i}^d}} {{{{\delta}_d}_j}}}} + {{{{u}^c}} {{{\Phi}_{,d}}} {{{{\eta}^i}^d}} {{{{\delta}_c}_j}}}}$
 <br>
 
 <br>
 stress-energy:
 <br>
-${{T}^a}^b = {{{{({\rho + P})} {u}^a} {u}^b} + {P {{g}^a}^b}}$
+${{{T}^a}^b} = {{{{{{({{\rho} + {P}})}} {{{u}^a}}}} {{{u}^b}}} + {{{P}} {{{{g}^a}^b}}}}$
 <br>
 divergence-free...
 <br>
-${{{T}^a}^b}_{;b} = {{{P}_{;b} {{g}^a}^b} + {{P}_{;b} {u}^a {u}^b} + {{\rho}_{;b} {u}^a {u}^b} + {P {{{g}^a}^b}_{;b}} + {P {{u}^a}_{;b} {u}^b} + {P {u}^a {{u}^b}_{;b}} + {\rho \cdot {{u}^a}_{;b} {u}^b} + {\rho \cdot {u}^a {{u}^b}_{;b}}}$
+${{{{T}^a}^b}_{;b}} = {{{{{P}_{;b}}} {{{{g}^a}^b}}} + {{{{u}^a}} {{{u}^b}} {{{P}_{;b}}}} + {{{{u}^a}} {{{u}^b}} {{{\rho}_{;b}}}} + {{{P}} {{{{{g}^a}^b}_{;b}}}} + {{{P}} {{{u}^a}} {{{{u}^b}_{;b}}}} + {{{P}} {{{u}^b}} {{{{u}^a}_{;b}}}} + {{{\rho}} \cdot {{{u}^a}} {{{{u}^b}_{;b}}}} + {{{\rho}} \cdot {{{u}^b}} {{{{u}^a}_{;b}}}}}$
 <br>
 substitute...
 <br>
-${{{T}^a}^b}_{;b} = {{{P}_{,b} {{\eta}^a}^b} + {{P}_{,b} {u}^a {u}^b} + {{\rho}_{,b} {u}^a {u}^b} + {P {{u}^a}_{;b} {u}^b} + {P {u}^a {{u}^b}_{;b}} + {\rho \cdot {{u}^a}_{;b} {u}^b} + {\rho \cdot {u}^a {{u}^b}_{;b}}}$
+${{{{T}^a}^b}_{;b}} = {{{{{P}_{,b}}} {{{{\eta}^a}^b}}} + {{{{u}^a}} {{{u}^b}} {{{P}_{,b}}}} + {{{{u}^a}} {{{u}^b}} {{{\rho}_{,b}}}} + {{{P}} {{{u}^a}} {{{{u}^b}_{;b}}}} + {{{P}} {{{u}^b}} {{{{u}^a}_{;b}}}} + {{{\rho}} \cdot {{{u}^a}} {{{{u}^b}_{;b}}}} + {{{\rho}} \cdot {{{u}^b}} {{{{u}^a}_{;b}}}}}$
 <br>
 separate b index into t and j:
 <br>
-${{{T}^a}^b}_{;b} = {{{{P}_{,t} {{\eta}^a}^t} + {{P}_{,t} {u}^a {u}^t} + {{\rho}_{,t} {u}^a {u}^t} + {P {{u}^a}_{;t} {u}^t} + {P {u}^a {{u}^t}_{;t}} + {\rho \cdot {{u}^a}_{;t} {u}^t} + {\rho \cdot {u}^a {{u}^t}_{;t}}} + {{{P}_{,j} {{\eta}^a}^j} + {{P}_{,j} {u}^a {u}^j} + {{\rho}_{,j} {u}^a {u}^j} + {P {{u}^a}_{;j} {u}^j} + {P {u}^a {{u}^j}_{;j}} + {\rho \cdot {{u}^a}_{;j} {u}^j} + {\rho \cdot {u}^a {{u}^j}_{;j}}}}$
+${{{{T}^a}^b}_{;b}} = {{{{{{P}_{,t}}} {{{{\eta}^a}^t}}} + {{{{u}^a}} {{{u}^t}} {{{P}_{,t}}}} + {{{{u}^a}} {{{u}^t}} {{{\rho}_{,t}}}} + {{{P}} {{{u}^a}} {{{{u}^t}_{;t}}}} + {{{P}} {{{u}^t}} {{{{u}^a}_{;t}}}} + {{{\rho}} \cdot {{{u}^a}} {{{{u}^t}_{;t}}}} + {{{\rho}} \cdot {{{u}^t}} {{{{u}^a}_{;t}}}}} + {{{{{P}_{,j}}} {{{{\eta}^a}^j}}} + {{{{u}^a}} {{{u}^j}} {{{P}_{,j}}}} + {{{{u}^a}} {{{u}^j}} {{{\rho}_{,j}}}} + {{{P}} {{{u}^a}} {{{{u}^j}_{;j}}}} + {{{P}} {{{u}^j}} {{{{u}^a}_{;j}}}} + {{{\rho}} \cdot {{{u}^a}} {{{{u}^j}_{;j}}}} + {{{\rho}} \cdot {{{u}^j}} {{{{u}^a}_{;j}}}}}}$
 <br>
 look at t component of a:
 <br>
-${{{T}^t}^b}_{;b} = {{{{P}_{,t} {{\eta}^t}^t} + {{P}_{,t} {u}^t {u}^t} + {{\rho}_{,t} {u}^t {u}^t} + {P {{u}^t}_{;t} {u}^t} + {P {u}^t {{u}^t}_{;t}} + {\rho \cdot {{u}^t}_{;t} {u}^t} + {\rho \cdot {u}^t {{u}^t}_{;t}}} + {{{P}_{,j} {{\eta}^t}^j} + {{P}_{,j} {u}^t {u}^j} + {{\rho}_{,j} {u}^t {u}^j} + {P {{u}^t}_{;j} {u}^j} + {P {u}^t {{u}^j}_{;j}} + {\rho \cdot {{u}^t}_{;j} {u}^j} + {\rho \cdot {u}^t {{u}^j}_{;j}}}}$
+${{{{T}^t}^b}_{;b}} = {{{{{{P}_{,t}}} {{{{\eta}^t}^t}}} + {{{{u}^t}} {{{u}^t}} {{{P}_{,t}}}} + {{{{u}^t}} {{{u}^t}} {{{\rho}_{,t}}}} + {{{P}} {{{u}^t}} {{{{u}^t}_{;t}}}} + {{{P}} {{{u}^t}} {{{{u}^t}_{;t}}}} + {{{\rho}} \cdot {{{u}^t}} {{{{u}^t}_{;t}}}} + {{{\rho}} \cdot {{{u}^t}} {{{{u}^t}_{;t}}}}} + {{{{{P}_{,j}}} {{{{\eta}^t}^j}}} + {{{{u}^t}} {{{u}^j}} {{{P}_{,j}}}} + {{{{u}^t}} {{{u}^j}} {{{\rho}_{,j}}}} + {{{P}} {{{u}^t}} {{{{u}^j}_{;j}}}} + {{{P}} {{{u}^j}} {{{{u}^t}_{;j}}}} + {{{\rho}} \cdot {{{u}^t}} {{{{u}^j}_{;j}}}} + {{{\rho}} \cdot {{{u}^j}} {{{{u}^t}_{;j}}}}}}$
 <br>
 substitute...
 <br>
-${{{T}^t}^b}_{;b} = {{{P}_{,j} {u}^j} + {{\rho}_{,j} {u}^j} + {{\rho}_{,t} - {P {{\eta}^j}^d {\Phi}_{,c} {{\delta}_d}_j {u}^c}} + {{P {{\eta}^j}^d {\Phi}_{,d} {{\delta}_c}_j {u}^c} - {P {{\eta}^j}^d {\Phi}_{,j} {{\delta}_d}_c {u}^c}} + {{P {{u}^j}_{,j}} - {\rho \cdot {{\eta}^j}^d {\Phi}_{,c} {{\delta}_d}_j {u}^c}} + {{\rho \cdot {{\eta}^j}^d {\Phi}_{,d} {{\delta}_c}_j {u}^c} - {\rho \cdot {{\eta}^j}^d {\Phi}_{,j} {{\delta}_d}_c {u}^c}} + {\rho \cdot {{u}^j}_{,j}}}$
+${{{{T}^t}^b}_{;b}} = {{{\rho}_{,t}} + {{{{u}^j}} {{{P}_{,j}}}} + {{{{{u}^j}} {{{\rho}_{,j}}}} - {{{P}} {{{u}^c}} {{{\Phi}_{,c}}} {{{{\eta}^j}^d}} {{{{\delta}_d}_j}}}} + {{{{P}} {{{u}^c}} {{{\Phi}_{,d}}} {{{{\eta}^j}^d}} {{{{\delta}_c}_j}}} - {{{P}} {{{u}^c}} {{{\Phi}_{,j}}} {{{{\eta}^j}^d}} {{{{\delta}_d}_c}}}} + {{{{P}} {{{{u}^j}_{,j}}}} - {{{\rho}} \cdot {{{u}^c}} {{{\Phi}_{,c}}} {{{{\eta}^j}^d}} {{{{\delta}_d}_j}}}} + {{{{\rho}} \cdot {{{u}^c}} {{{\Phi}_{,d}}} {{{{\eta}^j}^d}} {{{{\delta}_c}_j}}} - {{{\rho}} \cdot {{{u}^c}} {{{\Phi}_{,j}}} {{{{\eta}^j}^d}} {{{{\delta}_d}_c}}}} + {{{\rho}} \cdot {{{{u}^j}_{,j}}}}}$
 <br>
 
 <br>
 look at i component of a:
 <br>
-${{{T}^i}^b}_{;b} = {{{{P}_{,t} {{\eta}^i}^t} + {{P}_{,t} {u}^i {u}^t} + {{\rho}_{,t} {u}^i {u}^t} + {P {{u}^i}_{;t} {u}^t} + {P {u}^i {{u}^t}_{;t}} + {\rho \cdot {{u}^i}_{;t} {u}^t} + {\rho \cdot {u}^i {{u}^t}_{;t}}} + {{{P}_{,j} {{\eta}^i}^j} + {{P}_{,j} {u}^i {u}^j} + {{\rho}_{,j} {u}^i {u}^j} + {P {{u}^i}_{;j} {u}^j} + {P {u}^i {{u}^j}_{;j}} + {\rho \cdot {{u}^i}_{;j} {u}^j} + {\rho \cdot {u}^i {{u}^j}_{;j}}}}$
+${{{{T}^i}^b}_{;b}} = {{{{{{P}_{,t}}} {{{{\eta}^i}^t}}} + {{{{u}^i}} {{{u}^t}} {{{P}_{,t}}}} + {{{{u}^i}} {{{u}^t}} {{{\rho}_{,t}}}} + {{{P}} {{{u}^i}} {{{{u}^t}_{;t}}}} + {{{P}} {{{u}^t}} {{{{u}^i}_{;t}}}} + {{{\rho}} \cdot {{{u}^i}} {{{{u}^t}_{;t}}}} + {{{\rho}} \cdot {{{u}^t}} {{{{u}^i}_{;t}}}}} + {{{{{P}_{,j}}} {{{{\eta}^i}^j}}} + {{{{u}^i}} {{{u}^j}} {{{P}_{,j}}}} + {{{{u}^i}} {{{u}^j}} {{{\rho}_{,j}}}} + {{{P}} {{{u}^i}} {{{{u}^j}_{;j}}}} + {{{P}} {{{u}^j}} {{{{u}^i}_{;j}}}} + {{{\rho}} \cdot {{{u}^i}} {{{{u}^j}_{;j}}}} + {{{\rho}} \cdot {{{u}^j}} {{{{u}^i}_{;j}}}}}}$
 <br>
 substitute...
 <br>
-${{{T}^i}^b}_{;b} = {{{P}_{,j} {{\eta}^i}^j} + {{P}_{,j} {u}^i {u}^j} + {{P}_{,t} {u}^i} + {{\rho}_{,j} {u}^i {u}^j} + {{\rho}_{,t} {u}^i} + {P {{u}^i}_{;j} {u}^j} + {P {{u}^i}_{;t}} + {P {u}^i {{u}^j}_{;j}} + {P {u}^i {{u}^t}_{;t}} + {\rho \cdot {{u}^i}_{;j} {u}^j} + {\rho \cdot {{u}^i}_{;t}} + {\rho \cdot {u}^i {{u}^j}_{;j}} + {\rho \cdot {u}^i {{u}^t}_{;t}}}$
+${{{{T}^i}^b}_{;b}} = {{{{{P}_{,j}}} {{{{\eta}^i}^j}}} + {{{{u}^i}} {{{P}_{,t}}}} + {{{{u}^i}} {{{\rho}_{,t}}}} + {{{{u}^i}} {{{u}^j}} {{{P}_{,j}}}} + {{{{u}^i}} {{{u}^j}} {{{\rho}_{,j}}}} + {{{P}} {{{{u}^i}_{;t}}}} + {{{P}} {{{u}^i}} {{{{u}^j}_{;j}}}} + {{{P}} {{{u}^i}} {{{{u}^t}_{;t}}}} + {{{P}} {{{u}^j}} {{{{u}^i}_{;j}}}} + {{{\rho}} \cdot {{{{u}^i}_{;t}}}} + {{{\rho}} \cdot {{{u}^i}} {{{{u}^j}_{;j}}}} + {{{\rho}} \cdot {{{u}^i}} {{{{u}^t}_{;t}}}} + {{{\rho}} \cdot {{{u}^j}} {{{{u}^i}_{;j}}}}}$
 <br>

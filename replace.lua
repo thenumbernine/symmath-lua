@@ -22,7 +22,8 @@ local function replaceRecurse(expr, find, repl, cond)
 	
 	local modified
 
--- [[ 
+-- [[  TODO (a + a + b + b):replace(a + b, x) will fail 
+	local replacedAll, replacedIndex
 	-- here I need to not just test equality, but also portions of equality
 	-- esp for commutative equals operators 
 	if expr.removeIfContains then
@@ -37,20 +38,23 @@ local function replaceRecurse(expr, find, repl, cond)
 			if BinaryOp.is(removed) then
 				if #removed == 0 then
 					expr = repl
+					replacedAll = true
 				else
 					expr = removed
 					table.insert(expr, repl)
+					replacedIndex = #expr
 				end	
 			end	
 			modified = true
 		end
 --print("expr is now",expr,'<br>')	
 	end
+	if replacedAll then return expr end
 --]]
 
 	-- found find then replace
 	if expr == find then return repl end
-	
+
 	-- recursive call
 	local clone = require 'symmath.clone'
 	for i=1,#expr do
@@ -60,13 +64,16 @@ local function replaceRecurse(expr, find, repl, cond)
 			print(' with '..tostring(repl))
 			error'here'
 		end
-		local replexpri = replaceRecurse(expr[i], find, repl, cond)
-		if replexpri then
-			if not modified then		-- clone before modifying children
-				expr = clone(expr)
-				modified = true
+		-- don't recursively apply our replace() to the replaced result 
+		if i ~= replacedIndex then
+			local replexpri = replaceRecurse(expr[i], find, repl, cond)
+			if replexpri then
+				if not modified then		-- clone before modifying children
+					expr = clone(expr)
+					modified = true
+				end
+				expr[i] = replexpri
 			end
-			expr[i] = replexpri
 		end
 	end
 	if modified then

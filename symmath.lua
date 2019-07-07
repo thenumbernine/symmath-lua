@@ -30,6 +30,20 @@ function symmath.vars(...)						--create variables for each string parameter
 	return table{...}:map(function(x) return symmath.var(x) end):unpack()
 end
 
+-- export expressions to various languages
+symmath.export = {
+	C = require 'symmath.export.C',
+	GnuPlot = require 'symmath.export.GnuPlot',
+	JavaScript = require 'symmath.export.JavaScript',
+	LaTeX = require 'symmath.export.LaTeX',
+	Lua = require 'symmath.export.Lua',
+	MathJax = require 'symmath.export.MathJax',
+	Mathematica = require 'symmath.export.Mathematica',
+	MultiLine = require 'symmath.export.MultiLine',
+	SingleLine = require 'symmath.export.SingleLine',
+	Verbose = require 'symmath.export.Verbose',
+}
+
 --[[
 builds a function out of the expression
 exprs - specifies the table of expressions that will be associated with function input parameters
@@ -57,7 +71,8 @@ so if you have any derivs you want as function parameters, use map() or replace(
 --]]
 function symmath.compile(expr, vars, language, args)
 	language = language or 'Lua'
-	return require('symmath.tostring.'..language):compile(expr, vars, args)
+	local exporter = symmath.export[language]
+	return exporter:compile(expr, vars, args)
 end
 
 --[[ potential new system based on breadth-first search ... not finished yet
@@ -183,9 +198,9 @@ symmath.Array = require 'symmath.Array'
 symmath.Tensor = require 'symmath.Tensor'
 
 -- change the default as you see fit
-symmath.tostring = require 'symmath.tostring.MultiLine'
-symmath.Verbose = require 'symmath.tostring.Verbose'
-symmath.GnuPlot = require 'symmath.tostring.GnuPlot'
+symmath.tostring = symmath.export.MultiLine
+symmath.Verbose = symmath.export.Verbose
+symmath.GnuPlot = symmath.export.GnuPlot
 
 -- constants 
 symmath.i = symmath.Constant(symmath.complex(0,1), 'i')
@@ -247,7 +262,7 @@ symmath.setup = function(args)
 
 	if args.MathJax then
 		local MathJaxArgs = type(args.MathJax) == 'table' and args.MathJax or {}
-		require 'symmath.tostring.MathJax'.setup(MathJaxArgs)
+		symmath.export.MathJax.setup(MathJaxArgs)
 	end
 end
 

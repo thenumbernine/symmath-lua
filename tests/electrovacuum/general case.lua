@@ -1,7 +1,6 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup() --{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+require 'symmath'.setup{MathJax={title='electrovacuum general case', usePartialLHSForDerivative=true, pathToTryToFindMathJax='..'}}
 
 local showLorentzMetric = false
 local showFlatSpaceApproximationRiemannSolution = true
@@ -346,9 +345,9 @@ if showFlatSpaceApproximationRiemannSolution then
 			local rhs = eqn:rhs()[i]
 			-- hack in the mean time ...
 			local eqn = lhs:eq(rhs)
-			if op.div.is(rhs) then
+			if symmath.op.div.is(rhs) then
 				eqn = (eqn * rhs[2]:clone())()
-			elseif op.mul.is(rhs) then
+			elseif symmath.op.mul.is(rhs) then
 				eqn = (eqn / rhs[1]:clone())()
 			end
 			eqn = (eqn + A[i%3+2]:diff(spatialCoords[(i+1)%3+1]))()

@@ -1,7 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 -- single-line strings 
-local Console = require 'symmath.tostring.Console'
+local Console = require 'symmath.export.Console'
 local SingleLine = class(Console)
 
 local function precedence(x)

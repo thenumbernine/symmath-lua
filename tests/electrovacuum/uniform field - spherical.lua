@@ -1,7 +1,6 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+require 'symmath'.setup{implicitVars=true, MathJax={title='uniform field - spherical', usePartialLHSForDerivative=true, pathToTryToFindMathJax='..'}}
 
 local t, r, theta, phi = vars('t', 'r', '\\theta', '\\phi')
 local coords = {t, r, theta, phi}

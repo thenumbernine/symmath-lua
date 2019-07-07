@@ -1,11 +1,11 @@
 --[[
-parent class of all language-specific ToString child classes
+parent class of all language-specific Export child classes
 --]]
 
 local class = require 'ext.class'
 local table = require 'ext.table'
-local ToString = require 'symmath.tostring.ToString'
-local Language = class(ToString)
+local Export = require 'symmath.export.Export'
+local Language = class(Export)
 
 --[[
 converts the flexible-yet-confusing input of parameters into a format that the language serializer can use

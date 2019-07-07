@@ -1,9 +1,7 @@
 #!/usr/bin/env luajit
 -- TOV spherical metric
 require 'ext'
-require 'symmath'.setup{
-	MathJax={title='TOV metric', useCommaDerivative=true}
-}
+require 'symmath'.setup{MathJax={title='TOV metric', useCommaDerivative=true}}
 
 -- coordinates
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
@@ -62,4 +60,4 @@ printbr'geodesic:'
 printbr(((d2x'^a' + props.Gamma'^a_bc' * dx'^b' * dx'^c'):eq(Tensor'^u'))())
 printbr()
 
-print(require 'symmath.tostring.MathJax'.footer)
+print(symmath.export.MathJax.footer)

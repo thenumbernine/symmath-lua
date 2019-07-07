@@ -1,12 +1,11 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{MathJax={pathToTryToFindMathJax='..'}}
+require 'symmath'.setup{MathJax={title='partial replace', pathToTryToFindMathJax='..'}}
+
 local x,y,z = vars('x', 'y', 'z')
 local xs = table{x,y,z}
 
-Tensor.coords{
-	{variables={x,y,z}},
-}
+Tensor.coords{{variables={x,y,z}}}
 
 local gammaUVars = Tensor('^ij', function(i,j) 
 	if i > j then i,j = j,i end 

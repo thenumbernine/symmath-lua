@@ -1,6 +1,6 @@
 local table = require 'ext.table'
 local class = require 'ext.class'
-local Language = require 'symmath.tostring.Language'
+local Language = require 'symmath.export.Language'
 
 local GnuPlot = class(Language)
 

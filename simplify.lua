@@ -52,11 +52,9 @@ local function simplify(x, ...)
 	until i == simplifyMaxIter or x == lastx or getmetatable(x) == Invalid
 	-- [[ debugging simplify loop stack trace
 	if i == simplifyMaxIter then
-		local Verbose = require 'symmath.tostring.Verbose'
-Verbose = require 'symmath'.tostring		
 		if stack then 
 			for i,xi in ipairs(stack) do
-				io.stderr:write('simplify stack #'..i..'\n'..Verbose(xi)..'\n')
+				io.stderr:write('simplify stack #'..i..'\n'..xi..'\n')
 			end
 		end
 		io.stderr:write("simplification loop\n")

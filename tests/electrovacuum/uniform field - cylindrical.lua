@@ -8,8 +8,7 @@ I did this out of suspicion spacetime would twist around the uniform field
 but if it is uniform then of course it's not going to...
 --]]
 require 'ext'
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+require 'symmath'.setup{implicitVars=true, MathJax={title='uniform field - cylindrical', usePartialLHSForDerivative=true, pathToTryToFindMathJax='..'}}
 
 local t, r, phi, z = vars('t', 'r', '\\phi', 'z')
 local E = var'E'
@@ -272,8 +271,8 @@ if RicciFromManualMetric then
 	printbr'manual metric Gaussian -- equal to zero according to EM stress-energy trace:'
 	printbr(Constant(0):eq(GaussianFromMetric))
 	local iszero = GaussianFromMetric
-	if op.div.is(iszero) then iszero = iszero[1] end
-	if op.unm.is(iszero) then iszero = iszero[1] end
+	if symmath.op.div.is(iszero) then iszero = iszero[1] end
+	if symmath.op.unm.is(iszero) then iszero = iszero[1] end
 	printbr(iszero:eq(0))
 	printbr()
 end

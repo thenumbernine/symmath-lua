@@ -1,7 +1,6 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative = true}
+require 'symmath'.setup{MathJax={title='verify cylindrical transform', usePartialLHSForDerivative=true, pathToTryToFindMathJax='..'}}
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local r = var('r', {x,y})

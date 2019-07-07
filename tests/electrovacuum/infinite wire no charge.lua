@@ -1,8 +1,7 @@
 #! /usr/bin/env luajit
 require 'ext'
 local _ENV = _ENV or getfenv()
-require 'symmath'.setup{env=_ENV, implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{env=_ENV, usePartialLHSForDerivative=true}
+require 'symmath'.setup{env=_ENV, implicitVars=true, MathJax={title='infinite wire no charge', usePartialLHSForDerivative=true, pathToTryToFindMathJax='..'}}
 
 local RiemannExpr = Gamma'^a_bd,c' - Gamma'^a_bc,d' 
 	+ Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc'
@@ -132,8 +131,8 @@ local GaussianFromManualMetric = (gU'^ab' * RicciFromManualMetric'_ab')()
 printbr(R:eq(GaussianFromManualMetric):eq(0))
 do
 	local expr = GaussianFromManualMetric
-	if op.div.is(expr) then expr = expr[1] end
-	if op.unm.is(expr) then expr = expr[1] end
+	if symmath.op.div.is(expr) then expr = expr[1] end
+	if symmath.op.unm.is(expr) then expr = expr[1] end
 	printbr(expr:eq(0))
 
 	printbr'$R_{tt} - R_{rr}$:'

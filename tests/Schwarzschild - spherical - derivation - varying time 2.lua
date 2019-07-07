@@ -129,4 +129,4 @@ local R_tt_minus_R_rr = (props.Ricci[1][1] - props.Ricci[2][2])()
 printbr((var'R''_tt' - var'R''_rr'):eq( R_tt_minus_R_rr ) )
 --]]
 
-print(require 'symmath.tostring.MathJax'.footer)
+print(symmath.export.MathJax.footer)

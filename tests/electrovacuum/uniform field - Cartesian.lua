@@ -1,7 +1,6 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+require 'symmath'.setup{implicitVars=true, MathJax={title='uniform field - Cartesian', usePartialLHSForDerivative=true, pathToTryToFindMathJax='..'}}
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local r = var('r', {x,y,z})
@@ -340,8 +339,8 @@ if RicciFromManualMetric then
 	printbr'manual metric Gaussian -- equal to zero according to EM stress-energy trace:'
 	printbr(G:eq(GaussianFromMetric):eq(0))
 	local iszero = GaussianFromMetric
-	if op.div.is(iszero) then iszero = iszero[1] end
-	if op.unm.is(iszero) then iszero = iszero[1] end
+	if symmath.op.div.is(iszero) then iszero = iszero[1] end
+	if symmath.op.unm.is(iszero) then iszero = iszero[1] end
 	printbr(iszero:eq(0))
 end
 

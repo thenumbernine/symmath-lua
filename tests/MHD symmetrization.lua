@@ -1,7 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='MHD symmetrization'}}
 
 -- functions
 

@@ -6,7 +6,7 @@ local Binary = class(Expression)
 function Binary:init(...)
 	Binary.super.init(self, ...)
 	if self[1] == nil or self[2] == nil then	
-		local Verbose = require 'symmath.tostring.Verbose'
+		local Verbose = require 'symmath.export.Verbose'
 		error("tried to initialize a binary operation without two expressions: "..Verbose(self[1]).." and "..Verbose(self[2]))
 	end
 end

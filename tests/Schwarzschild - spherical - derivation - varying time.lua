@@ -54,4 +54,4 @@ local R_s = var'R_s'
 g = Tensor('_uv', table.unpack(Matrix.diagonal( -(1 - R_s / r) * C, 1 / (1 - R_s / r), r^2, r^2 * sin(theta)^2)))
 props = Props(g)
 
-print(require 'symmath.tostring.MathJax'.footer)
+print(symmath.export.MathJax.footer)

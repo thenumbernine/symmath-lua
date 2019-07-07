@@ -104,7 +104,7 @@ add.rules = {
 				return prodList
 			end
 			
-			local Verbose = require 'symmath.tostring.Verbose'
+			local Verbose = require 'symmath.export.Verbose'
 			local function prodListToNode(list)
 				list = list:map(function(x)
 					if x.power == Constant(1) then
@@ -153,7 +153,7 @@ add.rules = {
 			end
 			
 			-- sort by prodLists[i].term, excluding all constants
-			local Verbose = require 'symmath.tostring.Verbose'
+			local Verbose = require 'symmath.export.Verbose'
 			local function sortstr(list)
 				if #list == 0 then return '' end
 				if #list == 1 and Constant.is(list[1].term) then return '' end

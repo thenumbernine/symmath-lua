@@ -43,4 +43,4 @@ end)
 printbr(d2x'^a':eq(-Gamma'^a_bc' * dx'^b' * dx'^c')())
 printbr()
 
-print(require 'symmath.tostring.MathJax'.footer)
+print(symmath.export.MathJax.footer)

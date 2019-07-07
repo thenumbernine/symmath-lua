@@ -34,4 +34,4 @@ printbr("now substitute "..B_def)
 g = g:subst(B_def)
 local props = Props(g)
 
-print(require 'symmath.tostring.MathJax'.footer)
+print(symmath.export.MathJax.footer)

@@ -1,6 +1,5 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative = true}
+require 'symmath'.setup{MathJax={title='ADM metric', useCommaDerivative=true}}
 
 local t,x,y,z = vars('t','x','y','z')
 local spatialCoords = {x,y,z}

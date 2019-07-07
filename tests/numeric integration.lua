@@ -1,6 +1,10 @@
 #!/usr/bin/env luajit
 
--- i'm too lazy to fix this, but i've got two loops when i only need one
+-- I'm too lazy to fix this, but i've got two loops when i only need one
+-- I don't even remember what I was trying to do.
+-- Looks like I started doing numeric integrals of definite functions, 
+-- but then turned it into initial value explicit integration
+-- TODO fix this.
 
 -- explicit integration:
 
@@ -64,8 +68,7 @@ methods.simpson = function(f, x, x0, x1, n)
 end
 
 local table = require 'ext.table'
-local symmath = require 'symmath'
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='numeric integration'}}
 local x = symmath.var'x'		-- x-variable
 local f = x^2					-- symbolic function
 local df = f:diff(x)()			-- symbolic function derivative

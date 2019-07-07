@@ -1,8 +1,7 @@
 #! /usr/bin/env luajit
 require 'ext'
 local _ENV = _ENV or getfenv()
-require 'symmath'.setup{env=_ENV}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true, env=_ENV}
+require 'symmath'.setup{env=_ENV, MathJax={env=_ENV, title='infinite wire', usePartialLHSForDerivative=true, pathToTryToFindMathJax='..'}}
 
 local t,r,phi,z = vars('t', 'r', '\\phi', 'z')
 local pi = var'\\pi'

@@ -1,10 +1,10 @@
--- convert to Lua code.  use :compile to generate a function
 local class = require 'ext.class'
 local table = require 'ext.table'
-local Language = require 'symmath.tostring.Language'
-local Lua = class(Language)
+local Language = require 'symmath.export.Language'
 
-Lua.lookupTable = {
+local Mathematica = class(Language)
+
+Mathematica.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr, vars)
 		return {tostring(expr.value)}
 	end,
@@ -34,7 +34,7 @@ Lua.lookupTable = {
 			funcName = expr.name
 			predefs['local '..funcName..' = '..expr.code] = true
 		end
-		return {funcName .. '(' .. s .. ')', predefs}
+		return {funcName .. '[' .. s .. ']', predefs}
 	end,
 	[require 'symmath.op.unm'] = function(self, expr, vars)
 		local sx = self:apply(expr[1], vars)
@@ -54,7 +54,7 @@ Lua.lookupTable = {
 	[require 'symmath.op.pow'] = function(self, expr, vars)
 		if expr[1] == require 'symmath'.e then
 			local sx = self:apply(expr[2], vars)
-			return {'math.exp(' .. sx[1] .. ')', sx[2]}
+			return {'exp[' .. sx[1] .. ']', sx[2]}
 		else
 			local predefs = table()
 			local s = table()
@@ -69,16 +69,16 @@ Lua.lookupTable = {
 	end,
 	[require 'symmath.Variable'] = function(self, expr, vars)
 		if table.find(vars, nil, function(var) 
-			return expr.name == var.name 
+			return expr.name == var.name
 		end) then
 			return {expr.name}
 		end
 		error("tried to compile variable "..expr.name.." that wasn't in your function argument variable list!\n"
-		..(require 'symmath.tostring.MultiLine')(expr))
+		..(require 'symmath.export.MultiLine')(expr))
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!\n"
-		..(require 'symmath.tostring.MultiLine')(expr))
+		..(require 'symmath.export.MultiLine')(expr))
 	end,
 	[require 'symmath.Array'] = function(self, expr, vars)
 		local predefs = table()
@@ -93,38 +93,15 @@ Lua.lookupTable = {
 	end,
 }
 
-
--- TODO all other languages return the code from compile()
--- except Lua which returns function then code
--- it'd be nice to use compile() for functions and generate() for code
--- but that means putting prepareForCompile() in generate() as well
-
-function Lua:generate(expr, vars)
-	local info = self:apply(expr, vars)
-	local body = info[1]
-	local predefs = info[2]
-	local code = predefs and table.keys(predefs):concat'\n'..'\n' or ''
-	return code..'return function('..
-		vars:map(function(var) return var.name end):concat(', ')
-	..') return '..body..' end'
-end
-
--- returns (1) the function and (2) the code
--- see Language:getCompileParameters for a description of paramInputs
-function Lua:compile(expr, paramInputs)
+function Mathematica:compile(expr, paramInputs)
 	local expr, vars = self:prepareForCompile(expr, paramInputs)
 	assert(vars)
-	local cmd = self:generate(expr, vars)
-	local result, err = load(cmd)
-	if not result then return false, cmd, err end
-	result = result()
-	return result, cmd
+	local result = self:apply(expr, vars)
+	return result
 end
 
--- hmm, using a direct call isn't favorable over using :compile()
-function Lua:__call(...)
-	assert(select(2, ...), "expected tostring.Lua(expr, vars)")
+function Mathematica:__call(...)
 	return self:apply(...)[1]
 end
 
-return Lua()	-- singleton
+return Mathematica()	-- singleton

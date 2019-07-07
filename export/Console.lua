@@ -1,9 +1,9 @@
 local class = require 'ext.class'
 local string = require 'ext.string'
 local table = require 'ext.table'
-local ToString = require 'symmath.tostring.ToString'
+local Export = require 'symmath.export.Export'
 
-local Console = class(ToString)
+local Console = class(Export)
 
 Console.symbols = table{
 	Alpha = 'Α',

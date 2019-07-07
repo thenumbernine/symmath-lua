@@ -1,6 +1,6 @@
 local table = require 'ext.table'
 local class = require 'ext.class'
-local Language = require 'symmath.tostring.Language'
+local Language = require 'symmath.export.Language'
 
 -- convert to JavaScript code.  use :compile to wrap in a function
 local JavaScript = class(Language)

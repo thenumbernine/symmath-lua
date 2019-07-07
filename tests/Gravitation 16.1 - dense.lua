@@ -2,8 +2,7 @@
 -- MTW's Gravitation ch. 16 problem 1
 
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='Gravitation 16.1 - dense', useCommaDerivative=true}}
 
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}
@@ -192,7 +191,7 @@ for i=2,4 do
 
 	-- get rid of any Phi,j times u,k of any kind ... hmm ...
 	divTVal[i] = divTVal[i]:map(function(expr)
-		if not op.mul.is(expr) then return end
+		if not symmath.op.mul.is(expr) then return end
 		local dPhi = Phi'_,i'()
 		local foundDPhi
 		local foundU

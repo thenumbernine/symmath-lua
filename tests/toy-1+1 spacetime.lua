@@ -6,8 +6,7 @@ and "The appearance of coordinate shocks in hyperbolic formalisms of General Rel
 --]]
 
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='toy-1+1 spacetime'}}
 
 local x = var'x'
 local t = var('h', {x})

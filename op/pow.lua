@@ -116,7 +116,7 @@ pow.rules = {
 						frac = value - math.floor(value)
 						num = math.floor(value)
 					else
-	--print('pow a^0 => 1', require 'symmath.tostring.Verbose'(original), '=>', require 'symmath.tostring.Verbose'(Constant(1)))
+	--print('pow a^0 => 1', require 'symmath.export.Verbose'(original), '=>', require 'symmath.export.Verbose'(Constant(1)))
 						return Constant(1)
 					end
 					local terms = table()

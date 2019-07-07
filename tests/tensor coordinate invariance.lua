@@ -1,7 +1,6 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative = true}
+require 'symmath'.setup{MathJax={title='tensor coordinate invariance', usePartialLHSForDerivative=true}}
 
 --[[
 are Ricci tensors really coordinate transform invariant?

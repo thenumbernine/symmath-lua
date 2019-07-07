@@ -1,8 +1,7 @@
 #!/usr/bin/env luajit
 require 'ext'
 op = nil	-- make way for _G.op = symmath.op
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative = true}
+require 'symmath'.setup{MathJax={title='linearized Euler fluid equations', usePartialLHSForDerivative=true}}
 
 local function sum(t)
 	if #t == 1 then return t[1] end
@@ -161,6 +160,8 @@ covar_dF_matrix_def = covar_dF_matrix_def
 printbr(F'^Ij_;j':eq(covar_dF_matrix_def))
 
 -- Gamma^k_jk = e_j(log(sqrt(det(g_ab))))
+-- TODO DON'T FORGET TO INTEGRATE THIS WRT VOLUME
+-- the state variables may be immune, but the connections are not.
 local S_def = Gamma'^k_jk' * F_def:reindex{m='k'} + partial_dF_matrix_def - covar_dF_matrix_def
 printbr(S'^I':eq(S_def)) 
 

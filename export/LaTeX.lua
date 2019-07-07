@@ -2,8 +2,8 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local string = require 'ext.string'
-local ToString = require 'symmath.tostring.ToString'
-local LaTeX = class(ToString)
+local Export = require 'symmath.export.Export'
+local LaTeX = class(Export)
 
 local function omit(t)
 	t.omit = true

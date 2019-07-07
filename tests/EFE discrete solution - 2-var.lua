@@ -6,8 +6,7 @@ test differerent simplified discrete spacetimes
 1.a) solve alpha_i = alpha(r_i) to minimize phi_i = ||G_ab(alpha_i) - 8 pi T_ab(alpha_i)|| 
 --]]
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='EFE discrete solution - 2-var'}}
 
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
 local coords = {t,r,theta,phi}
@@ -213,7 +212,7 @@ if solveWithGMRES then
 		{['G_r_r - 8 pi T_r_r'] = EFE(qs)[2]},
 	} do
 		local title, y = next(info)
-		require 'symmath.tostring.GnuPlot':plot{
+		symmath.export.GnuPlot:plot{
 			style = 'data lines',
 			--log = 'y',
 			data = {rs, y},
@@ -388,13 +387,13 @@ if solveWithForwardEuler then
 		--]]
 	} do
 		local title, ys = next(info)
-		require 'symmath.tostring.GnuPlot':plot{
+		symmath.export.GnuPlot:plot{
 			style = 'data lines',
 			data = {inward.rs, inward[ys], outward.rs, outward[ys]},
 			{using='1:2', title='inward '..title},
 			{using='3:4', title='outward '..title},
 		}
-		require 'symmath.tostring.GnuPlot':plot{
+		symmath.export.GnuPlot:plot{
 			style = 'data lines',
 			data = {inward.rhos, inward[ys], outward.rhos, outward[ys]},
 			{using='1:2', title='inward '..title..' wrt abs coord rho'},

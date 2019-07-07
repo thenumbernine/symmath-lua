@@ -1,5 +1,5 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{MathJax=true}
+require 'symmath'.setup{MathJax={title='tidy indexes', pathToTryToFindMathJax='..'}}
 
 local a = var'a'
 local b = var'b'

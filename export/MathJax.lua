@@ -1,7 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local string = require 'ext.string'
-local LaTeX = require 'symmath.tostring.LaTeX'	-- returns a singleton object
+local LaTeX = require 'symmath.export.LaTeX'	-- returns a singleton object
 local MathJax = class(LaTeX.class)
 
 local Header = class()

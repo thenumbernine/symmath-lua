@@ -13,11 +13,11 @@ found at <a href='https://math.wvu.edu/~zetienne/SENR/'>https://math.wvu.edu/~ze
 ]]
 
 if output == 'html' then
-	symmath.tostring = require 'symmath.tostring.MathJax'
+	symmath.tostring = symmath.export.MathJax
 	symmath.tostring.setup{title='BSSN'}
 	print((header:gsub('\n', '<br>\n')))
 elseif output == 'tex' then
-	symmath.tostring = require 'symmath.tostring.LaTeX'
+	symmath.tostring = symmath.export.LaTeX
 	printbr = print 
 	--symmath.tostring.title = 'BSSN'	-- I don't have this yet?
 	print(symmath.tostring.header)
@@ -501,11 +501,14 @@ if InitialDataType == 'Minkowski' then
 	local APhys0DD = Tensor'_ij'
 	printbr(Abarvar'_ij':eq(APhys0DD))
 
-	local trK = 0
-	printbr(K:eq(trK))
+	trK0 = 0
+	printbr(K:eq(trK0))
 else
 	error'not yet supported'
 end
+local trK = K
+local trKdD = Tensor('_i', function(i) return K:diff(xs[i]) end)
+
 
 -- Lie derivatives
 printAndWarn'Lie derivatives'
@@ -561,11 +564,11 @@ local alpha = var('\\alpha', xs)
 local alphadD = Tensor('_i', function(i)
 	return alpha:diff(xs[i])()
 end)
-local alphadupdD = alphadD
+local alphadupD = alphadD
 
 local alphadDD = alphadD'_i,j'()
 
-local Lbetaalpha = (betaU'^l' * alphadupdD'_l')()
+local Lbetaalpha = (betaU'^l' * alphadupD'_l')()
 printbr(Lbeta(alpha):eq(Lbetaalpha))
 
 local LbetaLambdaU = (betaU'^j' * LambdaUdupD'^i_j' - betaUdD'^i_j' * LambdaU'^j')()
@@ -658,6 +661,7 @@ printbr(Dbar'^k'(Dbar'_j'(betavar'^j')):eq(Dbar2betacontractionU))
 
 -- Ricci tensor, wrt barred metric ... goes too slow.
 
+--[=[ very intensive to do this
 -- temp cache to save on computation time
 printAndWarn'trDHat2gammabarDDdDD...'
 local trDHat2gammabarDDdDD = (gammabarUU'^kl' * Dhat2gammabarDDdDD'_ijkl')()
@@ -704,6 +708,12 @@ local RbarDD = (
 	+ tr24_DGammaUDD_dot11_DGammaDDD'_ij'	-- + gammabarUU'^kl' * DGammaUDD_dot11_DGammaDDD'_ikjl' -- + gammabarUU'^kl' * DGammaUDD'^m_ik' * DGammaDDD'_mjl'
 )()
 printbr(Rbarvar'_ij':eq(RbarDD))
+--]=]
+local Rbarvar = var'\\bar{R}'
+local RbarDD = Tensor('_ij', function(i,j)
+	return var('\\bar{R}_{'..xs[i].name..' '..xs[j].name..'}', xs)
+end)
+printbr(Rbarvar'_ij':eq(RbarDD))
 
 local deltavar = var'\\delta'
 local deltaUD = Tensor('^i_j', function(i,j) return i==j and 1 or 0 end)
@@ -716,8 +726,11 @@ local function tracefree(x)
 	return (x'_ij' - gammabarDD'_ij' * tr / 3)()
 end
 
+printAndWarn'RbarTFDD'
 local RbarTFDD = tracefree(RbarDD)
+printAndWarn'phitermsTFDD'
 local phitermsTFDD = tracefree(phitermsDD)
+printAndWarn'Dbar2alphaTFDD'
 local Dbar2alphaTFDD = tracefree(Dbar2alphaDD)
 
 -- BSSN RHS
@@ -869,4 +882,4 @@ printbr(avar'_IJ,t')
 printbr('L2', L2arhsDD)
 printbr('L3', L3arhsDD)
 
-printbr(require 'symmath.tostring.MathJax'.footer)
+printbr(symmath.export.MathJax.footer)

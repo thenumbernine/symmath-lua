@@ -1,7 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local ToString = require 'symmath.tostring.ToString'
-local Verbose = class(ToString)
+local Export = require 'symmath.export.Export'
+local Verbose = class(Export)
 
 Verbose.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)

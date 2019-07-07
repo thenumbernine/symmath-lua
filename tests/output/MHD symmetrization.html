@@ -1,112 +1,71 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset='UTF-8'>
         <title>MHD symmetrization</title>
-		<script type="text/javascript">
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src; 
-}
-function init() {
-	console.log('init...');
-	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
-			src : urls[i],
-			done : function() {
-				console.log("success!");
-				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-			},
-			fail : function() {
-				++i;
-				if (i >= urls.length) {
-					console.log("looks like all our sources have failed!");
-				} else {
-					loadNext();
-				}
-			}
-		});
-	}
-	loadNext();
-}
-		</script>
-	</head>
-    <body onload='init();'>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 
 relations
 <br>
-$Z = {E + {{\frac{1}{{2 \rho} \mu}} {({{{{{B_x}}^{2}} + {{{B_y}}^{2}}} + {{{B_z}}^{2}}})}}}$
+${Z} = {{E} + {{{\frac{1}{{{{{2}} {{\rho}}}} {{\mu}}}}} {{({{{{{B_x}}^{2}} + {{{B_y}}^{2}}} + {{{B_z}}^{2}}})}}}}$
 <br>
-$P = {p + {{\frac{1}{2 \mu}} {({{{{{B_x}}^{2}} + {{{B_y}}^{2}}} + {{{B_z}}^{2}}})}}}$
+${P} = {{p} + {{{\frac{1}{{{2}} {{\mu}}}}} {{({{{{{B_x}}^{2}} + {{{B_y}}^{2}}} + {{{B_z}}^{2}}})}}}}$
 <br>
-$p = {{{({\gamma - 1})} \rho} {({E - {{\frac{1}{2}} {({{{{{v_x}}^{2}} + {{{v_y}}^{2}}} + {{{v_z}}^{2}}})}}})}}$
+${p} = {{{{{({{\gamma} - {1}})}} {{\rho}}}} {{({{E} - {{{\frac{1}{2}}} {{({{{{{v_x}}^{2}} + {{{v_y}}^{2}}} + {{{v_z}}^{2}}})}}}})}}}$
 <br>
-${{c}^{2}} = {\frac{\gamma \cdot p}{\rho}}$
+${{c}^{2}} = {{\frac{1}{\rho}}{({{{\gamma}} \cdot {{p}}})}}$
 <br>
 
 <br>
 continuity
 <br>
-${{{\partial\rho}\over{\partial t}} + {{{{\partial\over{\partial x}}\left({\rho \cdot {v_x}}\right)} + {{\partial\over{\partial y}}\left({\rho \cdot {v_y}}\right)}} + {{\partial\over{\partial z}}\left({\rho \cdot {v_z}}\right)}}} = 0$
+${{{\partial\rho}\over{\partial t}} + {{{{\partial\over{\partial x}}\left({{{\rho}} \cdot {{{v_x}}}}\right)} + {{\partial\over{\partial y}}\left({{{\rho}} \cdot {{{v_y}}}}\right)}} + {{\partial\over{\partial z}}\left({{{\rho}} \cdot {{{v_z}}}}\right)}}} = {0}$
 <br>
 
 <br>
 momentum
 <br>
-${{{{\partial\over{\partial t}}\left({\rho \cdot {v_x}}\right)} + {{{{\partial\over{\partial x}}\left({{{\rho \cdot {v_x}} {v_x}} - {{{\frac{1}{\mu}} {B_x}} {B_x}}}\right)} + {{\partial\over{\partial y}}\left({{{\rho \cdot {v_x}} {v_y}} - {{{\frac{1}{\mu}} {B_x}} {B_y}}}\right)}} + {{\partial\over{\partial z}}\left({{{\rho \cdot {v_x}} {v_z}} - {{{\frac{1}{\mu}} {B_x}} {B_z}}}\right)}}} + {{\partial P}\over{\partial x}}} = {{{\frac{-1}{\mu}} {B_x}} {({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}$
+${{{{\partial\over{\partial t}}\left({{{\rho}} \cdot {{{v_x}}}}\right)} + {{{{\partial\over{\partial x}}\left({{{{{{\rho}} \cdot {{{v_x}}}}} {{{v_x}}}} - {{{{{\frac{1}{\mu}}} {{{B_x}}}}} {{{B_x}}}}}\right)} + {{\partial\over{\partial y}}\left({{{{{{\rho}} \cdot {{{v_x}}}}} {{{v_y}}}} - {{{{{\frac{1}{\mu}}} {{{B_x}}}}} {{{B_y}}}}}\right)}} + {{\partial\over{\partial z}}\left({{{{{{\rho}} \cdot {{{v_x}}}}} {{{v_z}}}} - {{{{{\frac{1}{\mu}}} {{{B_x}}}}} {{{B_z}}}}}\right)}}} + {{\partial P}\over{\partial x}}} = {{{{{\frac{-1}{\mu}}} {{{B_x}}}}} {{({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}}$
 <br>
-${{{{\partial\over{\partial t}}\left({\rho \cdot {v_y}}\right)} + {{{{\partial\over{\partial x}}\left({{{\rho \cdot {v_y}} {v_x}} - {{{\frac{1}{\mu}} {B_y}} {B_x}}}\right)} + {{\partial\over{\partial y}}\left({{{\rho \cdot {v_y}} {v_y}} - {{{\frac{1}{\mu}} {B_y}} {B_y}}}\right)}} + {{\partial\over{\partial z}}\left({{{\rho \cdot {v_y}} {v_z}} - {{{\frac{1}{\mu}} {B_y}} {B_z}}}\right)}}} + {{\partial P}\over{\partial y}}} = {{{\frac{-1}{\mu}} {B_y}} {({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}$
+${{{{\partial\over{\partial t}}\left({{{\rho}} \cdot {{{v_y}}}}\right)} + {{{{\partial\over{\partial x}}\left({{{{{{\rho}} \cdot {{{v_y}}}}} {{{v_x}}}} - {{{{{\frac{1}{\mu}}} {{{B_y}}}}} {{{B_x}}}}}\right)} + {{\partial\over{\partial y}}\left({{{{{{\rho}} \cdot {{{v_y}}}}} {{{v_y}}}} - {{{{{\frac{1}{\mu}}} {{{B_y}}}}} {{{B_y}}}}}\right)}} + {{\partial\over{\partial z}}\left({{{{{{\rho}} \cdot {{{v_y}}}}} {{{v_z}}}} - {{{{{\frac{1}{\mu}}} {{{B_y}}}}} {{{B_z}}}}}\right)}}} + {{\partial P}\over{\partial y}}} = {{{{{\frac{-1}{\mu}}} {{{B_y}}}}} {{({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}}$
 <br>
-${{{{\partial\over{\partial t}}\left({\rho \cdot {v_z}}\right)} + {{{{\partial\over{\partial x}}\left({{{\rho \cdot {v_z}} {v_x}} - {{{\frac{1}{\mu}} {B_z}} {B_x}}}\right)} + {{\partial\over{\partial y}}\left({{{\rho \cdot {v_z}} {v_y}} - {{{\frac{1}{\mu}} {B_z}} {B_y}}}\right)}} + {{\partial\over{\partial z}}\left({{{\rho \cdot {v_z}} {v_z}} - {{{\frac{1}{\mu}} {B_z}} {B_z}}}\right)}}} + {{\partial P}\over{\partial z}}} = {{{\frac{-1}{\mu}} {B_z}} {({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}$
+${{{{\partial\over{\partial t}}\left({{{\rho}} \cdot {{{v_z}}}}\right)} + {{{{\partial\over{\partial x}}\left({{{{{{\rho}} \cdot {{{v_z}}}}} {{{v_x}}}} - {{{{{\frac{1}{\mu}}} {{{B_z}}}}} {{{B_x}}}}}\right)} + {{\partial\over{\partial y}}\left({{{{{{\rho}} \cdot {{{v_z}}}}} {{{v_y}}}} - {{{{{\frac{1}{\mu}}} {{{B_z}}}}} {{{B_y}}}}}\right)}} + {{\partial\over{\partial z}}\left({{{{{{\rho}} \cdot {{{v_z}}}}} {{{v_z}}}} - {{{{{\frac{1}{\mu}}} {{{B_z}}}}} {{{B_z}}}}}\right)}}} + {{\partial P}\over{\partial z}}} = {{{{{\frac{-1}{\mu}}} {{{B_z}}}}} {{({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}}$
 <br>
 
 <br>
 magnetic field
 <br>
-${{{\partial{B_x}}\over{\partial t}} + {{{{\partial\over{\partial x}}\left({{{v_x} \cdot {B_x}} - {{v_x} \cdot {B_x}}}\right)} + {{\partial\over{\partial y}}\left({{{v_y} \cdot {B_x}} - {{v_x} \cdot {B_y}}}\right)}} + {{\partial\over{\partial z}}\left({{{v_z} \cdot {B_x}} - {{v_x} \cdot {B_z}}}\right)}}} = {{-{v_x}} {({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}$
+${{{\partial{B_x}}\over{\partial t}} + {{{{\partial\over{\partial x}}\left({{{{{v_x}}} \cdot {{{B_x}}}} - {{{{v_x}}} \cdot {{{B_x}}}}}\right)} + {{\partial\over{\partial y}}\left({{{{{v_y}}} \cdot {{{B_x}}}} - {{{{v_x}}} \cdot {{{B_y}}}}}\right)}} + {{\partial\over{\partial z}}\left({{{{{v_z}}} \cdot {{{B_x}}}} - {{{{v_x}}} \cdot {{{B_z}}}}}\right)}}} = {{-{{v_x}}} {{({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}}$
 <br>
-${{{\partial{B_y}}\over{\partial t}} + {{{{\partial\over{\partial x}}\left({{{v_x} \cdot {B_y}} - {{v_y} \cdot {B_x}}}\right)} + {{\partial\over{\partial y}}\left({{{v_y} \cdot {B_y}} - {{v_y} \cdot {B_y}}}\right)}} + {{\partial\over{\partial z}}\left({{{v_z} \cdot {B_y}} - {{v_y} \cdot {B_z}}}\right)}}} = {{-{v_y}} {({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}$
+${{{\partial{B_y}}\over{\partial t}} + {{{{\partial\over{\partial x}}\left({{{{{v_x}}} \cdot {{{B_y}}}} - {{{{v_y}}} \cdot {{{B_x}}}}}\right)} + {{\partial\over{\partial y}}\left({{{{{v_y}}} \cdot {{{B_y}}}} - {{{{v_y}}} \cdot {{{B_y}}}}}\right)}} + {{\partial\over{\partial z}}\left({{{{{v_z}}} \cdot {{{B_y}}}} - {{{{v_y}}} \cdot {{{B_z}}}}}\right)}}} = {{-{{v_y}}} {{({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}}$
 <br>
-${{{\partial{B_z}}\over{\partial t}} + {{{{\partial\over{\partial x}}\left({{{v_x} \cdot {B_z}} - {{v_z} \cdot {B_x}}}\right)} + {{\partial\over{\partial y}}\left({{{v_y} \cdot {B_z}} - {{v_z} \cdot {B_y}}}\right)}} + {{\partial\over{\partial z}}\left({{{v_z} \cdot {B_z}} - {{v_z} \cdot {B_z}}}\right)}}} = {{-{v_z}} {({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}$
+${{{\partial{B_z}}\over{\partial t}} + {{{{\partial\over{\partial x}}\left({{{{{v_x}}} \cdot {{{B_z}}}} - {{{{v_z}}} \cdot {{{B_x}}}}}\right)} + {{\partial\over{\partial y}}\left({{{{{v_y}}} \cdot {{{B_z}}}} - {{{{v_z}}} \cdot {{{B_y}}}}}\right)}} + {{\partial\over{\partial z}}\left({{{{{v_z}}} \cdot {{{B_z}}}} - {{{{v_z}}} \cdot {{{B_z}}}}}\right)}}} = {{-{{v_z}}} {{({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}}$
 <br>
 
 <br>
 energy total
 <br>
-${{{\partial\over{\partial t}}\left({\rho \cdot Z}\right)} + {{{{{({{\rho \cdot Z} + p})} {v_x}} - {{{\frac{1}{\mu}} {({{{{v_x} \cdot {B_x}} + {{v_y} \cdot {B_y}}} + {{v_z} \cdot {B_z}}})}} {B_x}}} + {{{({{\rho \cdot Z} + p})} {v_y}} - {{{\frac{1}{\mu}} {({{{{v_x} \cdot {B_x}} + {{v_y} \cdot {B_y}}} + {{v_z} \cdot {B_z}}})}} {B_y}}}} + {{{({{\rho \cdot Z} + p})} {v_z}} - {{{\frac{1}{\mu}} {({{{{v_x} \cdot {B_x}} + {{v_y} \cdot {B_y}}} + {{v_z} \cdot {B_z}}})}} {B_z}}}}} = {{{\frac{-1}{\mu}} {({{{{v_x} \cdot {B_x}} + {{v_y} \cdot {B_y}}} + {{v_z} \cdot {B_z}}})}} {({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}$
+${{{\partial\over{\partial t}}\left({{{\rho}} \cdot {{Z}}}\right)} + {{{{{{({{{{\rho}} \cdot {{Z}}} + {p}})}} {{{v_x}}}} - {{{{{\frac{1}{\mu}}} {{({{{{{{v_x}}} \cdot {{{B_x}}}} + {{{{v_y}}} \cdot {{{B_y}}}}} + {{{{v_z}}} \cdot {{{B_z}}}}})}}}} {{{B_x}}}}} + {{{{({{{{\rho}} \cdot {{Z}}} + {p}})}} {{{v_y}}}} - {{{{{\frac{1}{\mu}}} {{({{{{{{v_x}}} \cdot {{{B_x}}}} + {{{{v_y}}} \cdot {{{B_y}}}}} + {{{{v_z}}} \cdot {{{B_z}}}}})}}}} {{{B_y}}}}}} + {{{{({{{{\rho}} \cdot {{Z}}} + {p}})}} {{{v_z}}}} - {{{{{\frac{1}{\mu}}} {{({{{{{{v_x}}} \cdot {{{B_x}}}} + {{{{v_y}}} \cdot {{{B_y}}}}} + {{{{v_z}}} \cdot {{{B_z}}}}})}}}} {{{B_z}}}}}}} = {{{{{\frac{-1}{\mu}}} {{({{{{{{v_x}}} \cdot {{{B_x}}}} + {{{{v_y}}} \cdot {{{B_y}}}}} + {{{{v_z}}} \cdot {{{B_z}}}}})}}}} {{({{{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}}} + {{\partial{B_z}}\over{\partial z}}})}}}$
 <br>
 
 <br>
 all
 <br>
-${{{\partial\rho}\over{\partial t}} + {{{\partial\rho}\over{\partial x}} {v_x}} + {{{\partial\rho}\over{\partial y}} {v_y}} + {{{\partial\rho}\over{\partial z}} {v_z}} + {\rho \cdot {{\partial{v_x}}\over{\partial x}}} + {\rho \cdot {{\partial{v_y}}\over{\partial y}}} + {\rho \cdot {{\partial{v_z}}\over{\partial z}}}} = 0$
+${{{\partial\rho}\over{\partial t}} + {{{\rho}} \cdot {{{\partial{v_x}}\over{\partial x}}}} + {{{\rho}} \cdot {{{\partial{v_y}}\over{\partial y}}}} + {{{\rho}} \cdot {{{\partial{v_z}}\over{\partial z}}}} + {{{{v_x}}} \cdot {{{\partial\rho}\over{\partial x}}}} + {{{{v_y}}} \cdot {{{\partial\rho}\over{\partial y}}}} + {{{{v_z}}} \cdot {{{\partial\rho}\over{\partial z}}}}} = {0}$
 <br>
-${\frac{-{({{{{\partial{B_x}}\over{\partial y}} {B_y}} + {{{{{{{{\partial{B_x}}\over{\partial z}} {B_z}} - {{{\partial P}\over{\partial x}} \mu}} - {{{\partial\rho}\over{\partial t}} {v_x} \cdot \mu}} - {{{\partial\rho}\over{\partial x}} {{{v_x}}^{2}} \mu}} - {{{\partial\rho}\over{\partial y}} {v_x} \cdot {v_y} \cdot \mu}} - {{{\partial\rho}\over{\partial z}} {v_x} \cdot {v_z} \cdot \mu}} + {2 {B_x} \cdot {{\partial{B_x}}\over{\partial x}}} + {{B_x} \cdot {{\partial{B_y}}\over{\partial y}}} + {{{{{{{{B_x} \cdot {{\partial{B_z}}\over{\partial z}}} - {\rho \cdot {{\partial{v_x}}\over{\partial t}} \mu}} - {\rho \cdot {{\partial{v_x}}\over{\partial y}} {v_y} \cdot \mu}} - {\rho \cdot {{\partial{v_x}}\over{\partial z}} {v_z} \cdot \mu}} - {2 \rho \cdot {v_x} \cdot {{\partial{v_x}}\over{\partial x}} \mu}} - {\rho \cdot {v_x} \cdot {{\partial{v_y}}\over{\partial y}} \mu}} - {\rho \cdot {v_x} \cdot {{\partial{v_z}}\over{\partial z}} \mu}}})}}{\mu}} = {\frac{-{{B_x} \cdot {({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}{\mu}}$
+${{\frac{1}{\mu}}{({-{({{{{2}} {{{B_x}}} \cdot {{{\partial{B_x}}\over{\partial x}}}} + {{{{B_x}}} \cdot {{{\partial{B_y}}\over{\partial y}}}} + {{{{B_x}}} \cdot {{{\partial{B_z}}\over{\partial z}}}} + {{{{B_y}}} \cdot {{{\partial{B_x}}\over{\partial y}}}} + {{{{{{{{{{{{{{{B_z}}} \cdot {{{\partial{B_x}}\over{\partial z}}}} - {{{\mu}} \cdot {{{\partial P}\over{\partial x}}}}} - {{{\mu}} \cdot {{\rho}} \cdot {{{\partial{v_x}}\over{\partial t}}}}} - {{{\mu}} \cdot {{{v_x}}} \cdot {{{\partial\rho}\over{\partial t}}}}} - {{{\mu}} \cdot {{{{v_x}}^{2}}} {{{\partial\rho}\over{\partial x}}}}} - {{{2}} {{\mu}} \cdot {{{v_x}}} \cdot {{\rho}} \cdot {{{\partial{v_x}}\over{\partial x}}}}} - {{{\mu}} \cdot {{{v_x}}} \cdot {{\rho}} \cdot {{{\partial{v_y}}\over{\partial y}}}}} - {{{\mu}} \cdot {{{v_x}}} \cdot {{\rho}} \cdot {{{\partial{v_z}}\over{\partial z}}}}} - {{{\mu}} \cdot {{{v_x}}} \cdot {{{v_y}}} \cdot {{{\partial\rho}\over{\partial y}}}}} - {{{\mu}} \cdot {{{v_x}}} \cdot {{{v_z}}} \cdot {{{\partial\rho}\over{\partial z}}}}} - {{{\mu}} \cdot {{{v_y}}} \cdot {{\rho}} \cdot {{{\partial{v_x}}\over{\partial y}}}}} - {{{\mu}} \cdot {{{v_z}}} \cdot {{\rho}} \cdot {{{\partial{v_x}}\over{\partial z}}}}}})}})}} = {{\frac{1}{\mu}}{({-{{{{B_x}}} \cdot {{({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}})}}$
 <br>
-${\frac{-{({{{{\partial{B_y}}\over{\partial x}} {B_x}} + {{{{{{{{\partial{B_y}}\over{\partial z}} {B_z}} - {{{\partial P}\over{\partial y}} \mu}} - {{{\partial\rho}\over{\partial t}} {v_y} \cdot \mu}} - {{{\partial\rho}\over{\partial x}} {v_y} \cdot {v_x} \cdot \mu}} - {{{\partial\rho}\over{\partial y}} {{{v_y}}^{2}} \mu}} - {{{\partial\rho}\over{\partial z}} {v_y} \cdot {v_z} \cdot \mu}} + {{B_y} \cdot {{\partial{B_x}}\over{\partial x}}} + {2 {B_y} \cdot {{\partial{B_y}}\over{\partial y}}} + {{{{{{{{B_y} \cdot {{\partial{B_z}}\over{\partial z}}} - {\rho \cdot {{\partial{v_y}}\over{\partial t}} \mu}} - {\rho \cdot {{\partial{v_y}}\over{\partial x}} {v_x} \cdot \mu}} - {\rho \cdot {{\partial{v_y}}\over{\partial z}} {v_z} \cdot \mu}} - {\rho \cdot {v_y} \cdot {{\partial{v_x}}\over{\partial x}} \mu}} - {2 \rho \cdot {v_y} \cdot {{\partial{v_y}}\over{\partial y}} \mu}} - {\rho \cdot {v_y} \cdot {{\partial{v_z}}\over{\partial z}} \mu}}})}}{\mu}} = {\frac{-{{B_y} \cdot {({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}{\mu}}$
+${{\frac{1}{\mu}}{({-{({{{{{B_x}}} \cdot {{{\partial{B_y}}\over{\partial x}}}} + {{{{B_y}}} \cdot {{{\partial{B_x}}\over{\partial x}}}} + {{{2}} {{{B_y}}} \cdot {{{\partial{B_y}}\over{\partial y}}}} + {{{{B_y}}} \cdot {{{\partial{B_z}}\over{\partial z}}}} + {{{{{{{{{{{{{{{B_z}}} \cdot {{{\partial{B_y}}\over{\partial z}}}} - {{{\mu}} \cdot {{{\partial P}\over{\partial y}}}}} - {{{\mu}} \cdot {{\rho}} \cdot {{{\partial{v_y}}\over{\partial t}}}}} - {{{\mu}} \cdot {{{v_x}}} \cdot {{\rho}} \cdot {{{\partial{v_y}}\over{\partial x}}}}} - {{{\mu}} \cdot {{{v_x}}} \cdot {{{v_y}}} \cdot {{{\partial\rho}\over{\partial x}}}}} - {{{\mu}} \cdot {{{v_y}}} \cdot {{{\partial\rho}\over{\partial t}}}}} - {{{\mu}} \cdot {{{{v_y}}^{2}}} {{{\partial\rho}\over{\partial y}}}}} - {{{\mu}} \cdot {{{v_y}}} \cdot {{\rho}} \cdot {{{\partial{v_x}}\over{\partial x}}}}} - {{{2}} {{\mu}} \cdot {{{v_y}}} \cdot {{\rho}} \cdot {{{\partial{v_y}}\over{\partial y}}}}} - {{{\mu}} \cdot {{{v_y}}} \cdot {{\rho}} \cdot {{{\partial{v_z}}\over{\partial z}}}}} - {{{\mu}} \cdot {{{v_y}}} \cdot {{{v_z}}} \cdot {{{\partial\rho}\over{\partial z}}}}} - {{{\mu}} \cdot {{{v_z}}} \cdot {{\rho}} \cdot {{{\partial{v_y}}\over{\partial z}}}}}})}})}} = {{\frac{1}{\mu}}{({-{{{{B_y}}} \cdot {{({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}})}}$
 <br>
-${\frac{-{({{{{\partial{B_z}}\over{\partial x}} {B_x}} + {{{{{{{{\partial{B_z}}\over{\partial y}} {B_y}} - {{{\partial P}\over{\partial z}} \mu}} - {{{\partial\rho}\over{\partial t}} {v_z} \cdot \mu}} - {{{\partial\rho}\over{\partial x}} {v_z} \cdot {v_x} \cdot \mu}} - {{{\partial\rho}\over{\partial y}} {v_z} \cdot {v_y} \cdot \mu}} - {{{\partial\rho}\over{\partial z}} {{{v_z}}^{2}} \mu}} + {{B_z} \cdot {{\partial{B_x}}\over{\partial x}}} + {{B_z} \cdot {{\partial{B_y}}\over{\partial y}}} + {{{{{{{2 {B_z} \cdot {{\partial{B_z}}\over{\partial z}}} - {\rho \cdot {{\partial{v_z}}\over{\partial t}} \mu}} - {\rho \cdot {{\partial{v_z}}\over{\partial x}} {v_x} \cdot \mu}} - {\rho \cdot {{\partial{v_z}}\over{\partial y}} {v_y} \cdot \mu}} - {\rho \cdot {v_z} \cdot {{\partial{v_x}}\over{\partial x}} \mu}} - {\rho \cdot {v_z} \cdot {{\partial{v_y}}\over{\partial y}} \mu}} - {2 \rho \cdot {v_z} \cdot {{\partial{v_z}}\over{\partial z}} \mu}}})}}{\mu}} = {\frac{-{{B_z} \cdot {({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}{\mu}}$
+${{\frac{1}{\mu}}{({-{({{{{{B_x}}} \cdot {{{\partial{B_z}}\over{\partial x}}}} + {{{{B_y}}} \cdot {{{\partial{B_z}}\over{\partial y}}}} + {{{{B_z}}} \cdot {{{\partial{B_x}}\over{\partial x}}}} + {{{{B_z}}} \cdot {{{\partial{B_y}}\over{\partial y}}}} + {{{{{{{{{{{{{{2}} {{{B_z}}} \cdot {{{\partial{B_z}}\over{\partial z}}}} - {{{\mu}} \cdot {{{\partial P}\over{\partial z}}}}} - {{{\mu}} \cdot {{\rho}} \cdot {{{\partial{v_z}}\over{\partial t}}}}} - {{{\mu}} \cdot {{{v_x}}} \cdot {{\rho}} \cdot {{{\partial{v_z}}\over{\partial x}}}}} - {{{\mu}} \cdot {{{v_x}}} \cdot {{{v_z}}} \cdot {{{\partial\rho}\over{\partial x}}}}} - {{{\mu}} \cdot {{{v_y}}} \cdot {{\rho}} \cdot {{{\partial{v_z}}\over{\partial y}}}}} - {{{\mu}} \cdot {{{v_y}}} \cdot {{{v_z}}} \cdot {{{\partial\rho}\over{\partial y}}}}} - {{{\mu}} \cdot {{{v_z}}} \cdot {{{\partial\rho}\over{\partial t}}}}} - {{{\mu}} \cdot {{{{v_z}}^{2}}} {{{\partial\rho}\over{\partial z}}}}} - {{{\mu}} \cdot {{{v_z}}} \cdot {{\rho}} \cdot {{{\partial{v_x}}\over{\partial x}}}}} - {{{\mu}} \cdot {{{v_z}}} \cdot {{\rho}} \cdot {{{\partial{v_y}}\over{\partial y}}}}} - {{{2}} {{\mu}} \cdot {{{v_z}}} \cdot {{\rho}} \cdot {{{\partial{v_z}}\over{\partial z}}}}}})}})}} = {{\frac{1}{\mu}}{({-{{{{B_z}}} \cdot {{({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}})}}$
 <br>
-${{{{{\partial{B_x}}\over{\partial t}} - {{{\partial{v_x}}\over{\partial y}} {B_y}}} - {{{\partial{v_x}}\over{\partial z}} {B_z}}} + {{{\partial{v_y}}\over{\partial y}} {B_x}} + {{{{{\partial{v_z}}\over{\partial z}} {B_x}} - {{v_x} \cdot {{\partial{B_y}}\over{\partial y}}}} - {{v_x} \cdot {{\partial{B_z}}\over{\partial z}}}} + {{v_y} \cdot {{\partial{B_x}}\over{\partial y}}} + {{v_z} \cdot {{\partial{B_x}}\over{\partial z}}}} = {-{{v_x} \cdot {({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}$
+${{{{{\partial{B_x}}\over{\partial t}} - {{{{B_y}}} \cdot {{{\partial{v_x}}\over{\partial y}}}}} - {{{{B_z}}} \cdot {{{\partial{v_x}}\over{\partial z}}}}} + {{{{B_x}}} \cdot {{{\partial{v_y}}\over{\partial y}}}} + {{{{{{B_x}}} \cdot {{{\partial{v_z}}\over{\partial z}}}} - {{{{v_x}}} \cdot {{{\partial{B_y}}\over{\partial y}}}}} - {{{{v_x}}} \cdot {{{\partial{B_z}}\over{\partial z}}}}} + {{{{v_y}}} \cdot {{{\partial{B_x}}\over{\partial y}}}} + {{{{v_z}}} \cdot {{{\partial{B_x}}\over{\partial z}}}}} = {-{{{{v_x}}} \cdot {{({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}}$
 <br>
-${{{\partial{B_y}}\over{\partial t}} + {{{{{\partial{v_x}}\over{\partial x}} {B_y}} - {{{\partial{v_y}}\over{\partial x}} {B_x}}} - {{{\partial{v_y}}\over{\partial z}} {B_z}}} + {{{\partial{v_z}}\over{\partial z}} {B_y}} + {{{{v_x} \cdot {{\partial{B_y}}\over{\partial x}}} - {{v_y} \cdot {{\partial{B_x}}\over{\partial x}}}} - {{v_y} \cdot {{\partial{B_z}}\over{\partial z}}}} + {{v_z} \cdot {{\partial{B_y}}\over{\partial z}}}} = {-{{v_y} \cdot {({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}$
+${{{\partial{B_y}}\over{\partial t}} + {{{{{{B_y}}} \cdot {{{\partial{v_x}}\over{\partial x}}}} - {{{{B_x}}} \cdot {{{\partial{v_y}}\over{\partial x}}}}} - {{{{B_z}}} \cdot {{{\partial{v_y}}\over{\partial z}}}}} + {{{{B_y}}} \cdot {{{\partial{v_z}}\over{\partial z}}}} + {{{{{{v_x}}} \cdot {{{\partial{B_y}}\over{\partial x}}}} - {{{{v_y}}} \cdot {{{\partial{B_x}}\over{\partial x}}}}} - {{{{v_y}}} \cdot {{{\partial{B_z}}\over{\partial z}}}}} + {{{{v_z}}} \cdot {{{\partial{B_y}}\over{\partial z}}}}} = {-{{{{v_y}}} \cdot {{({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}}$
 <br>
-${{{\partial{B_z}}\over{\partial t}} + {{{\partial{v_x}}\over{\partial x}} {B_z}} + {{{{{\partial{v_y}}\over{\partial y}} {B_z}} - {{{\partial{v_z}}\over{\partial x}} {B_x}}} - {{{\partial{v_z}}\over{\partial y}} {B_y}}} + {{v_x} \cdot {{\partial{B_z}}\over{\partial x}}} + {{{{v_y} \cdot {{\partial{B_z}}\over{\partial y}}} - {{v_z} \cdot {{\partial{B_x}}\over{\partial x}}}} - {{v_z} \cdot {{\partial{B_y}}\over{\partial y}}}}} = {-{{v_z} \cdot {({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}$
+${{{\partial{B_z}}\over{\partial t}} + {{{{B_z}}} \cdot {{{\partial{v_x}}\over{\partial x}}}} + {{{{{{B_z}}} \cdot {{{\partial{v_y}}\over{\partial y}}}} - {{{{B_x}}} \cdot {{{\partial{v_z}}\over{\partial x}}}}} - {{{{B_y}}} \cdot {{{\partial{v_z}}\over{\partial y}}}}} + {{{{v_x}}} \cdot {{{\partial{B_z}}\over{\partial x}}}} + {{{{{{v_y}}} \cdot {{{\partial{B_z}}\over{\partial y}}}} - {{{{v_z}}} \cdot {{{\partial{B_x}}\over{\partial x}}}}} - {{{{v_z}}} \cdot {{{\partial{B_y}}\over{\partial y}}}}}} = {-{{{{v_z}}} \cdot {{({{{\partial{B_x}}\over{\partial x}} + {{\partial{B_y}}\over{\partial y}} + {{\partial{B_z}}\over{\partial z}}})}}}}$
 <br>
-${\frac{{{{\partial\rho}\over{\partial t}} Z \mu} + {\rho \cdot {{\partial Z}\over{\partial t}} \mu} + {\rho \cdot Z {v_x} \cdot \mu} + {\rho \cdot Z {v_y} \cdot \mu} + {\rho \cdot Z {v_z} \cdot \mu} + {p {v_x} \cdot \mu} + {p {v_y} \cdot \mu} + {{{{{{{{{{p {v_z} \cdot \mu} - {{v_x} \cdot {{{B_x}}^{2}}}} - {{v_x} \cdot {B_x} \cdot {B_y}}} - {{v_x} \cdot {B_x} \cdot {B_z}}} - {{v_y} \cdot {{{B_y}}^{2}}}} - {{v_y} \cdot {B_y} \cdot {B_x}}} - {{v_y} \cdot {B_y} \cdot {B_z}}} - {{v_z} \cdot {{{B_z}}^{2}}}} - {{v_z} \cdot {B_z} \cdot {B_x}}} - {{v_z} \cdot {B_z} \cdot {B_y}}}}{\mu}} = {\frac{-{({{{v_x} \cdot {B_x} \cdot {{\partial{B_x}}\over{\partial x}}} + {{v_x} \cdot {B_x} \cdot {{\partial{B_y}}\over{\partial y}}} + {{v_x} \cdot {B_x} \cdot {{\partial{B_z}}\over{\partial z}}} + {{v_y} \cdot {B_y} \cdot {{\partial{B_x}}\over{\partial x}}} + {{v_y} \cdot {B_y} \cdot {{\partial{B_y}}\over{\partial y}}} + {{v_y} \cdot {B_y} \cdot {{\partial{B_z}}\over{\partial z}}} + {{v_z} \cdot {B_z} \cdot {{\partial{B_x}}\over{\partial x}}} + {{v_z} \cdot {B_z} \cdot {{\partial{B_y}}\over{\partial y}}} + {{v_z} \cdot {B_z} \cdot {{\partial{B_z}}\over{\partial z}}}})}}{\mu}}$
+${{\frac{1}{\mu}}{({-{({{{{{B_x}}} \cdot {{{B_y}}} \cdot {{{v_x}}}} + {{{{B_x}}} \cdot {{{B_y}}} \cdot {{{v_y}}}} + {{{{B_x}}} \cdot {{{B_z}}} \cdot {{{v_x}}}} + {{{{B_x}}} \cdot {{{B_z}}} \cdot {{{v_z}}}} + {{{{B_y}}} \cdot {{{B_z}}} \cdot {{{v_y}}}} + {{{{{{{{{{{{B_y}}} \cdot {{{B_z}}} \cdot {{{v_z}}}} - {{{Z}} {{\mu}} \cdot {{{\partial\rho}\over{\partial t}}}}} - {{{Z}} {{\mu}} \cdot {{{v_x}}} \cdot {{\rho}}}} - {{{Z}} {{\mu}} \cdot {{{v_y}}} \cdot {{\rho}}}} - {{{Z}} {{\mu}} \cdot {{{v_z}}} \cdot {{\rho}}}} - {{{\mu}} \cdot {{\rho}} \cdot {{{\partial Z}\over{\partial t}}}}} - {{{p}} {{\mu}} \cdot {{{v_x}}}}} - {{{p}} {{\mu}} \cdot {{{v_y}}}}} - {{{p}} {{\mu}} \cdot {{{v_z}}}}} + {{{{v_x}}} \cdot {{{{B_x}}^{2}}}} + {{{{v_y}}} \cdot {{{{B_y}}^{2}}}} + {{{{v_z}}} \cdot {{{{B_z}}^{2}}}}})}})}} = {{\frac{1}{\mu}}{({-{({{{{{B_x}}} \cdot {{{v_x}}} \cdot {{{\partial{B_x}}\over{\partial x}}}} + {{{{B_x}}} \cdot {{{v_x}}} \cdot {{{\partial{B_y}}\over{\partial y}}}} + {{{{B_x}}} \cdot {{{v_x}}} \cdot {{{\partial{B_z}}\over{\partial z}}}} + {{{{B_y}}} \cdot {{{v_y}}} \cdot {{{\partial{B_x}}\over{\partial x}}}} + {{{{B_y}}} \cdot {{{v_y}}} \cdot {{{\partial{B_y}}\over{\partial y}}}} + {{{{B_y}}} \cdot {{{v_y}}} \cdot {{{\partial{B_z}}\over{\partial z}}}} + {{{{B_z}}} \cdot {{{v_z}}} \cdot {{{\partial{B_x}}\over{\partial x}}}} + {{{{B_z}}} \cdot {{{v_z}}} \cdot {{{\partial{B_y}}\over{\partial y}}}} + {{{{B_z}}} \cdot {{{v_z}}} \cdot {{{\partial{B_z}}\over{\partial z}}}}})}})}}$
 <br>

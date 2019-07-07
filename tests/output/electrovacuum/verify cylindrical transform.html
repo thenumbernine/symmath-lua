@@ -1,113 +1,72 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset='UTF-8'>
         <title>verify cylindrical transform</title>
-		<script type="text/javascript">
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src; 
-}
-function init() {
-	console.log('init...');
-	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
-			src : urls[i],
-			done : function() {
-				console.log("success!");
-				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-			},
-			fail : function() {
-				++i;
-				if (i >= urls.length) {
-					console.log("looks like all our sources have failed!");
-				} else {
-					loadNext();
-				}
-			}
-		});
-	}
-	loadNext();
-}
-		</script>
-	</head>
-    <body onload='init();'>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 
 coordinate chart
 <br>
-${u}^A = {\overset{A\downarrow}{\left[\matrix{t\\{r {cos\left(\phi\right)}}\\{r {sin\left(\phi\right)}}\\z}\right]}}$
+${{u}^A} = {\overset{A\downarrow}{\left[\begin{matrix}t \\{{r}} {{cos\left(\phi\right)}} \\{{r}} {{sin\left(\phi\right)}} \\z\end{matrix}\right]}}$
 
 <br>
-${{u}^A}_{,a} = {\overset{A\downarrow a\rightarrow}{\left[\matrix{1&0&0&0\\0&{cos\left(\phi\right)}&{-{r {sin\left(\phi\right)}}}&0\\0&{sin\left(\phi\right)}&{r {cos\left(\phi\right)}}&0\\0&0&0&1}\right]}}$
+${{{u}^A}_{,a}} = {\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}1 & 0 & 0 & 0 \\0 & cos\left(\phi\right) & -{{{r}} {{sin\left(\phi\right)}}} & 0 \\0 & sin\left(\phi\right) & {{r}} {{cos\left(\phi\right)}} & 0 \\0 & 0 & 0 & 1\end{matrix}\right]}}$
 <br>
 cartesian to cylindrical
 <br>
-${{e}_a}^A = {\overset{a\downarrow A\rightarrow}{\left[\matrix{1&0&0&0\\0&{cos\left(\phi\right)}&{sin\left(\phi\right)}&0\\0&{-{r {sin\left(\phi\right)}}}&{r {cos\left(\phi\right)}}&0\\0&0&0&1}\right]}}$
+${{{e}_a}^A} = {\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}1 & 0 & 0 & 0 \\0 & cos\left(\phi\right) & sin\left(\phi\right) & 0 \\0 & -{{{r}} {{sin\left(\phi\right)}}} & {{r}} {{cos\left(\phi\right)}} & 0 \\0 & 0 & 0 & 1\end{matrix}\right]}}$
 
 <br>
 cylindrical to cartesian
 <br>
-${{e}^a}_A = {\overset{a\downarrow A\rightarrow}{\left[\matrix{1&0&0&0\\0&{cos\left(\phi\right)}&{sin\left(\phi\right)}&0\\0&{\frac{-{sin\left(\phi\right)}}{r}}&{\frac{cos\left(\phi\right)}{r}}&0\\0&0&0&1}\right]}}$
+${{{e}^a}_A} = {\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}1 & 0 & 0 & 0 \\0 & cos\left(\phi\right) & sin\left(\phi\right) & 0 \\0 & {\frac{1}{r}}{({-{sin\left(\phi\right)}})} & {\frac{1}{r}}{({cos\left(\phi\right)})} & 0 \\0 & 0 & 0 & 1\end{matrix}\right]}}$
 
 <br>
-${{{e}_a}^A {{e}^b}_A} = {\overset{a\downarrow b\rightarrow}{\left[\matrix{1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+${{{{{e}_a}^A}} {{{{e}^b}_A}}} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}1 & 0 & 0 & 0 \\0 & 1 & 0 & 0 \\0 & 0 & 1 & 0 \\0 & 0 & 0 & 1\end{matrix}\right]}}$
 <br>
-${{{e}_a}^A {{e}^a}_B} = {\overset{A\downarrow B\rightarrow}{\left[\matrix{1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+${{{{{e}_a}^A}} {{{{e}^a}_B}}} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}1 & 0 & 0 & 0 \\0 & 1 & 0 & 0 \\0 & 0 & 1 & 0 \\0 & 0 & 0 & 1\end{matrix}\right]}}$
 <br>
 cartesian Ricci tensor
 <br>
-${{R}_A}_B = {\overset{A\downarrow B\rightarrow}{\left[\matrix{{{E}^{2}}&0&0&0\\0&{{E}^{2}}&0&0\\0&0&{{E}^{2}}&0\\0&0&0&{-{{E}^{2}}}}\right]}}$
+${{{R}_A}_B} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}{E}^{2} & 0 & 0 & 0 \\0 & {E}^{2} & 0 & 0 \\0 & 0 & {E}^{2} & 0 \\0 & 0 & 0 & -{{E}^{2}}\end{matrix}\right]}}$
 
 <br>
 cartesian Ricci tensor transformed to cylindrical
 <br>
-${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{{E}^{2}}&0&0&0\\0&{{E}^{2}}&0&0\\0&0&{{{E}^{2}} {{r}^{2}}}&0\\0&0&0&{-{{E}^{2}}}}\right]}}$
+${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}{E}^{2} & 0 & 0 & 0 \\0 & {E}^{2} & 0 & 0 \\0 & 0 & {{{E}^{2}}} {{{r}^{2}}} & 0 \\0 & 0 & 0 & -{{E}^{2}}\end{matrix}\right]}}$
 
 <br>
 cartesian connection that gives rise to cartesian Ricci of EM stress-energy tensor:
 <br>
-	${{{\Gamma}^z}_t}_t = {-E}$
-;	${{{\Gamma}^t}_z}_t = E$
-;	${{{\Gamma}^z}_x}_x = E$
-;	${{{\Gamma}^z}_y}_y = E$
-;	${{{\Gamma}^t}_t}_z = E$
+	${{{{\Gamma}^z}_t}_t} = {-{E}}$
+;	${{{{\Gamma}^t}_z}_t} = {E}$
+;	${{{{\Gamma}^z}_x}_x} = {E}$
+;	${{{{\Gamma}^z}_y}_y} = {E}$
+;	${{{{\Gamma}^t}_t}_z} = {E}$
 
 <br>
 Ricci from Riemann from cartesian connection
 <br>
-${{R}_A}_B = {\overset{A\downarrow B\rightarrow}{\left[\matrix{{{E}^{2}}&0&0&0\\0&{{E}^{2}}&0&0\\0&0&{{E}^{2}}&0\\0&0&0&{-{{E}^{2}}}}\right]}}$
+${{{R}_A}_B} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}{E}^{2} & 0 & 0 & 0 \\0 & {E}^{2} & 0 & 0 \\0 & 0 & {E}^{2} & 0 \\0 & 0 & 0 & -{{E}^{2}}\end{matrix}\right]}}$
 
 <br>
 cartesian connection transformed to cylindrical
 <br>
-	${{{\Gamma}^z}_t}_t = {-E}$
-;	${{{\Gamma}^t}_z}_t = E$
-;	${{{\Gamma}^z}_r}_r = E$
-;	${{{\Gamma}^{\phi}}_{\phi}}_r = {\frac{1}{r}}$
-;	${{{\Gamma}^{\phi}}_r}_{\phi} = {\frac{1}{r}}$
-;	${{{\Gamma}^r}_{\phi}}_{\phi} = {-r}$
-;	${{{\Gamma}^z}_{\phi}}_{\phi} = {E {{r}^{2}}}$
-;	${{{\Gamma}^t}_t}_z = E$
+	${{{{\Gamma}^z}_t}_t} = {-{E}}$
+;	${{{{\Gamma}^t}_z}_t} = {E}$
+;	${{{{\Gamma}^z}_r}_r} = {E}$
+;	${{{{\Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
+;	${{{{\Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$
+;	${{{{\Gamma}^r}_{\phi}}_{\phi}} = {-{r}}$
+;	${{{{\Gamma}^z}_{\phi}}_{\phi}} = {{{E}} {{{r}^{2}}}}$
+;	${{{{\Gamma}^t}_t}_z} = {E}$
 
 <br>
 Ricci from connections transformed from cartesian to cylindrical
 <br>
-${{R}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{{E}^{2}}&0&0&0\\0&{{E}^{2}}&0&0\\0&0&{{{E}^{2}} {{r}^{2}}}&0\\0&0&0&{-{{E}^{2}}}}\right]}}$
+${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}{E}^{2} & 0 & 0 & 0 \\0 & {E}^{2} & 0 & 0 \\0 & 0 & {{{E}^{2}}} {{{r}^{2}}} & 0 \\0 & 0 & 0 & -{{E}^{2}}\end{matrix}\right]}}$
 ...matches the Ricci transformed to cylindrical
 <br>
 

@@ -1,7 +1,6 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+require 'symmath'.setup{implicitVars=true, MathJax={title='scalar metric', usePartialLHSForDerivative=true}}
 
 local allCoords = table{symmath.vars('t', 'x', 'y', 'z')}
 local t,x,y,z = allCoords:unpack() 

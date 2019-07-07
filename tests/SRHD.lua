@@ -1,7 +1,6 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='special relativistic hydrodynamics'}}
 
 local x,y,z = vars('x', 'y', 'z')
 local xs = table{x,y,z}
@@ -28,6 +27,8 @@ printbr(W_from_v)
 local invLorentzSq_from_W = ((1 / W_from_v)^2)():switch()
 printbr(invLorentzSq_from_W)
 
+-- TODO add support for x'_i':diff(x'_j') == delta'_ij'
+-- but this means adding delta'_ij' as a predefined variable
 local dW_dv_def = W_from_v:diff(v'_j')():subst(invLorentzSq_from_W)()
 printbr(dW_dv_def)
 
@@ -61,10 +62,9 @@ printbr(D_from_rho_W)
 local D_from_rho_v = D_from_rho_W:subst(W_from_v)
 printbr(D_from_rho_v) 
 
-local Ss = xs:map(function(x) return var('S_'..x.name, prims) end)
-local S_x, S_y, S_z = Ss:unpack()
+local S = var('S', prims)
 
-local S_def = Matrix(Ss):T():eq(rho * h * W^2 * Matrix(vs):T())()
+local S_def = S'_i':eq(rho * h * W^2 * v'_i')
 printbr(S_def)
 
 --S_def = S_def:subst(h_from_prim)()
@@ -79,7 +79,7 @@ local tau_def = tau:eq(rho * h * W^2 - P - D)
 printbr(tau_def)
 
 local U = var'U'
-local cons_def = U:eq(Matrix{D, S_x, S_y, S_z, tau}:T())
+local cons_def = U:eq(Matrix{D, S'_i', tau}:T())
 printbr(cons_def)
 
 local F = var'F'
@@ -91,6 +91,7 @@ printbr(F_def)
 local dD_drho_def = D_from_rho_W:diff(rho)()
 printbr(dD_drho_def)
 
+-- TODO YOU ARE HERE in converting this from dense to index expressions
 --	dD/dv
 
 local dD_dv_def = Matrix:lambda({3,1}, function(i)

@@ -1,6 +1,5 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{implicitVars=true, MathJax={title='matrix', pathToTryToFindMathJax='..'}}
 
 function asserteq(a,b)
 	if a() ~= b() then

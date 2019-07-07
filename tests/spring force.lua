@@ -7,8 +7,7 @@ x'' = -(k/m)(x-s) =
 --]]
 
 require 'ext'
-require 'symmath'.setup()
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{MathJax={title='spring force'}}
 
 local dim = 1	-- or 2 or 3 or whatever
 local numParticlesToCreate = 3
@@ -57,8 +56,8 @@ function EnergySystem:buildSymbolicParams()
 	local symbolicParams = table()
 	for i,v in ipairs(self.particles) do
 		for k=1,dim do
-			symbolicParams:insert{[v.qVar[k]] = 'q_'..i..'_'..k}	-- position
-			symbolicParams:insert{[v.pVar[k]] = 'p_'..i..'_'..k}	-- velocity
+			symbolicParams:insert{['q_'..i..'_'..k] = v.qVar[k]}	-- position
+			symbolicParams:insert{['p_'..i..'_'..k] = v.pVar[k]}	-- velocity
 		end
 	end
 	return symbolicParams

@@ -1,6 +1,5 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{simplifyConstantPowers=true}
-require 'symmath.tostring.MathJax'.setup()
+require 'symmath'.setup{simplifyConstantPowers=true, MathJax={title='spacetime embedding radius'}}
 
 local units = require 'symmath.physics.units'()
 local m = units.m

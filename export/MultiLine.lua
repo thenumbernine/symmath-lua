@@ -2,8 +2,8 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
-local Console = require 'symmath.tostring.Console'
-local SingleLine = require 'symmath.tostring.SingleLine'
+local Console = require 'symmath.export.Console'
+local SingleLine = require 'symmath.export.SingleLine'
 
 local strlen
 do
@@ -330,7 +330,7 @@ MultiLine.lookupTable = {
 	end,
 }
 
--- while most ToString.__call methods deal in strings,
+-- while most Export.__call methods deal in strings,
 --  MultiLine passes around an array of strings (per-newline)
 -- so we recombine them into one string here at the end
 function MultiLine:__call(...) 

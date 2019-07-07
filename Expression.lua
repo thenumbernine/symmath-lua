@@ -14,7 +14,7 @@ function Expression:init(...)
 			local Constant = require 'symmath.Constant'
 			self[i] = Constant(x)
 		elseif type(x) == 'nil' then
-			error("can't set a nil child")
+			error("can't initialize an expression with a nil child")
 		else
 			self[i] = x
 		end
@@ -84,7 +84,7 @@ function Expression:tostring(method, ...)
 	if not method then
 		return tostring(self)
 	else
-		return require('symmath.tostring.'..method)(self, ...)
+		return symmath.export[method](self, ...)
 	end
 end
 
@@ -155,9 +155,9 @@ Expression.factor = function(...) return require 'symmath.factor'(...) end
 Expression.tidy = function(...) return require 'symmath.tidy'(...) end
 Expression.simplify = require 'symmath.simplify'
 Expression.polyCoeffs = function(...) return require 'symmath.polyCoeffs'(...) end
-Expression.eval = function(...) return require 'symmath.eval'(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
-Expression.compile = function(...) return require 'symmath'.compile(...) end	-- which itself is shorthand for require 'symmath.tostring.Lua').compile(...)
-Expression.diff = function(...) return require 'symmath.Derivative'(...) end	-- which itself is shorthand for require 'symmath.Derivative'(...)
+Expression.eval = function(...) return require 'symmath.eval'(...) end
+Expression.compile = function(...) return require 'symmath'.compile(...) end
+Expression.diff = function(...) return require 'symmath.Derivative'(...) end
 Expression.integrate = function(...) return require 'symmath'.Integral(...) end
 
 -- I have to buffer these by a function to prevent require loop
@@ -372,18 +372,19 @@ a_ijk b^jk + a_ilm b^lm => a_ijk b^jk + a_ijk b^jk => 2 a_jik b^jk
 --]]
 function Expression:tidyIndexes()
 	-- process each part of an equation independently
-	local Equation = require 'symmath.op.Equation'
+	local symmath = require 'symmath'
+	local Equation = symmath.op.Equation
 	if Equation.is(self) then
 		return getmetatable(self)(self[1]:tidyIndexes(), self[2]:tidyIndexes())
 	end
 	
 	local TensorRef = require 'symmath.tensor.TensorRef'
-	local Verbose = require 'symmath.tostring.Verbose'
-	local unm = require 'symmath.op.unm'
-	local add = require 'symmath.op.add'
-	local sub = require 'symmath.op.sub'
-	local mul = require 'symmath.op.mul'
-	local div = require 'symmath.op.div'
+	local Verbose = symmath.export.Verbose
+	local unm = symmath.op.unm
+	local add = symmath.op.add
+	local sub = symmath.op.sub
+	local mul = symmath.op.mul
+	local div = symmath.op.div
 	
 	local replaces = table()
 
@@ -432,7 +433,7 @@ function Expression:tidyIndexes()
 		--[[
 		add and sub ops, assert the fixed indexes all match, and return a superset of all summed indexes (so no parent reuses any)
 		--]]
-		local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
+		local tableCommutativeEqual = symmath.tableCommutativeEqual
 		if add.is(expr) or sub.is(expr) then
 			local fixed, summed = rmap(expr[1], expr, 1, table(parents):append{expr})
 			summed = summed:map(function(v) return true, v end)

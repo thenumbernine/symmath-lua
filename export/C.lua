@@ -1,14 +1,14 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
-local Language = require 'symmath.tostring.Language'
+local Language = require 'symmath.export.Language'
 local C = class(Language)
 
 --[[
 this is really being used for OpenCL
 hence all the redundant real type casts
 TODO provide the type instead of using 'real'
-also TODO - merge common stuff between this and tostring.Lua into the Language class
+also TODO - merge common stuff between this and export.Lua into the Language class
 also TODO - fix differences with compile() and generate()
 --]]
 
@@ -89,15 +89,15 @@ C.lookupTable = {
 			return {expr.name}
 		end
 		error("tried to compile variable "..expr.name.." that wasn't in your function argument variable list!\n"
-		..(require 'symmath.tostring.MultiLine')(expr))
+		..(require 'symmath.export.MultiLine')(expr))
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!\n"
-		..(require 'symmath.tostring.MultiLine')(expr))
+		..(require 'symmath.export.MultiLine')(expr))
 	end,
 	[require 'symmath.Array'] = function(self, expr, vars)
 		error("can't compile arrays in C.  replace() your diff'd content first!\n"
-		..(require 'symmath.tostring.MultiLine')(expr))
+		..(require 'symmath.export.MultiLine')(expr))
 	end,
 }
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{implicitVars=true}
-require 'symmath.tostring.MathJax'.setup{usePartialLHSForDerivative=true}
+require 'symmath'.setup{implicitVars=true, MathJax={title='ADM metric - mixed', usePartialLHSForDerivative=true}}
 
 local t,x,y,z = vars('t','x','y','z')
 local ijk = var'ijk'	-- not sure about this ...

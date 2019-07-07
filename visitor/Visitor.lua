@@ -44,7 +44,7 @@ function Visitor:apply(expr, ...)
 
 	local Verbose
 	if debugVisitors then
-		Verbose = require 'symmath.tostring.Verbose'
+		Verbose = require 'symmath.export.Verbose'
 	end
 
 	local id
