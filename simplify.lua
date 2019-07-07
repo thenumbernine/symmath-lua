@@ -60,6 +60,7 @@ local function simplify(x, ...)
 		io.stderr:write("simplification loop\n")
 	end
 	--]]
+	
 	x = tidy(x, ...)
 
 	simplifyObj.stack = stack

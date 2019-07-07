@@ -267,6 +267,7 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 ## TODO
 
 - solving equalities
+
 - integrals.  symbolic, numeric explicit, then eventually get to numeric implicit (this involves derivatives based on both the dependent and the state variable)
 
 - functions that lua has that I don't: abs, ceil, floor, deg, rad, fmod, frexp, log10, min, max
@@ -274,9 +275,13 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 - support for numbers rather than only Constant
 
 - integrate with lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
-	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`  
+	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
 
 - subindexes, so you can store a tensor of tensors: g_ab = Tensor('_ab', {-alpha^2+beta^2, beta_j}, {beta_i, gamma_ij})
+	(Though this is a lot of work for a rarely used feature...)
+
+- change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
+
 
 Output CDN URLs:
 
@@ -327,6 +332,8 @@ Output CDN URLs:
 [tests/output/Newton method](https://thenumbernine.github.io/symmath/tests/output/Newton%20method.html)
 
 [tests/output/SRHD](https://thenumbernine.github.io/symmath/tests/output/SRHD.html)
+
+[tests/output/SRHD_1D](https://thenumbernine.github.io/symmath/tests/output/SRHD_1D.html)
 
 [tests/output/Schwarzschild - isotropic](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20isotropic.html)
 
