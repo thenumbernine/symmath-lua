@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{debugSimplifyLoops=true, MathJax={title='test'}}
+require 'symmath'.setup{debugSimplifyLoops=true, MathJax={title='test', pathToTryToFindMathJax='..'}}
 
 function asserteq(a,b)
 	local sa = symmath.simplify(a)
@@ -19,7 +19,7 @@ end
 
 local function exec(str)
 	printbr('<code>'..str..'</code>')
-	printbr(assert(loadstring(str))())
+	printbr(assert(load(str))())
 end
 
 -- constant simplificaiton
@@ -51,7 +51,9 @@ asserteq(((x+1)*(y+1))(), (x*y + x + y + 1)())
 asserteq((2/(2*x*y))(), (1/(x*y))())
 asserteq((1-(1-x))(), x)
 asserteq(((1-(1-x))/x)(), 1)
-	
+asserteq((1 + 1/x + 1/x)(), (1 + 2/x)())
+asserteq((1 + 1/x + 2/x)(), (1 + 3/x)())
+
 -- factoring integers
 asserteq((Constant(2)/Constant(2))(), Constant(1))
 asserteq((Constant(2)/Constant(4))(), (Constant(1)/Constant(2))())
