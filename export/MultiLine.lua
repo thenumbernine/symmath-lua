@@ -6,10 +6,18 @@ local Console = require 'symmath.export.Console'
 local SingleLine = require 'symmath.export.SingleLine'
 
 local strlen
+local box	-- [3][2] of the border chars of a box
+local line	-- [3]
 do
 	local has, utf8 = pcall(require, 'utf8')
 	if has then
 		strlen = utf8.len
+		box = {
+			{'\u{256d}', '\u{256e}'},
+			{'\u{2502}', '\u{2502}'},
+			{'\u{2570}', '\u{256f}'},
+		}
+		line = {'\u{2576}', '\u{2500}', '\u{2574}'}
 	end
 	if not strlen and rawlen then
 		strlen = rawlen
@@ -17,6 +25,39 @@ do
 	if not strlen then
 		strlen = function(s) return #s end
 	end
+	if not box then
+		box = {
+			{'[', ']'},
+			{'[', ']'},
+			{'[', ']'},
+		}
+	end
+	if not line then
+		line = {'-', '-', '-'}
+	end
+end
+
+local function wrap(rows, n)
+	n = n or #rows
+	if i == n then
+		rows[1] = '[' .. rows[1] .. ']'
+	else
+		for i=1,n do
+			if i == 1 then
+				rows[i] = box[1][1] .. rows[i] .. box[1][2]
+			elseif i == n then
+				rows[i] = box[3][1] .. rows[i] .. box[3][2]
+			else
+				rows[i] = box[2][1] .. rows[i] .. box[2][2]
+			end
+		end
+	end
+end
+
+local function vert(n)
+	if n == 0 then return '' end
+	if n == 1 then return '-' end
+	return line[1]..line[2]:rep(n-2)..line[3]
 end
 
 local MultiLine = class(Console)
@@ -64,8 +105,8 @@ function MultiLine:fraction(top, bottom)
 	for i=1,#top do
 		res:insert((' '):rep(topLeft+1)..top[i]..(' '):rep(topRight))
 	end
-	
-	res:insert(('-'):rep(width+2))
+
+	res:insert(vert(width+2))
 	
 	local bottomPadding = width - strlen(bottom[1]) + 1
 	local bottomLeft = math.floor(bottomPadding/2)
@@ -251,10 +292,8 @@ MultiLine.lookupTable = {
 				end
 				res = res:append(row)
 			end
-		
-			for i=1,#res do
-				res[i] = '['..res[i]..']'
-			end
+	
+			wrap(res)
 
 			return res
 		else
@@ -277,10 +316,8 @@ MultiLine.lookupTable = {
 				res = self:combine(res, sep)
 				res = self:combine(res, parts[i])
 			end
-			
-			for i=1,height do
-				res[i] = '['..res[i]..']'
-			end
+	
+			wrap(res, height)
 			
 			return res
 		end

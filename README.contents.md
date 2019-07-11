@@ -40,6 +40,8 @@ print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
 print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
 ```
 
+Alternatively, you can run Lua with `-lsymmath.setup`, which is equivalent to `require 'symmath.setup`, which calls `require 'symmath'.setup()`.
+
 ### Numbers
 
 For the most part Lua numbers will work, and will automatically be replaced by symmath Constants (found in symmath.Constant).
