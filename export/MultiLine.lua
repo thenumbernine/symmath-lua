@@ -7,15 +7,23 @@ local SingleLine = require 'symmath.export.SingleLine'
 
 local strlen
 local box	-- [3][2] of the border chars of a box
+local par	-- [3][2] of the border chars of parenthesis
 local line	-- [3]
 do
 	local has, utf8 = pcall(require, 'utf8')
 	if has then
 		strlen = utf8.len
 		box = {
+			{'\u{250c}', '\u{2510}'},
+			{'\u{2502}', '\u{2502}'},
+			{'\u{2514}', '\u{2518}'},
+			{'[', ']'},
+		}
+		par = {
 			{'\u{256d}', '\u{256e}'},
 			{'\u{2502}', '\u{2502}'},
 			{'\u{2570}', '\u{256f}'},
+			{'(', ')'},
 		}
 		line = {'\u{2576}', '\u{2500}', '\u{2574}'}
 	end
@@ -32,23 +40,31 @@ do
 			{'[', ']'},
 		}
 	end
+	if not par then
+		par = {
+			{' /', '\\ '},
+			{'| ', ' |'},
+			{'\\ ', '/ '},
+		}
+	end
 	if not line then
 		line = {'-', '-', '-'}
 	end
 end
 
-local function wrap(rows, n)
+-- borp = box or par [4][2]
+local function wrap(rows, n, borp)
 	n = n or #rows
 	if n == 1 then
-		rows[1] = '[' .. rows[1] .. ']'
+		rows[1] = borp[4][1] .. rows[1] .. borp[4][2]
 	else
 		for i=1,n do
 			if i == 1 then
-				rows[i] = box[1][1] .. rows[i] .. box[1][2]
+				rows[i] = borp[1][1] .. rows[i] .. borp[1][2]
 			elseif i == n then
-				rows[i] = box[3][1] .. rows[i] .. box[3][2]
+				rows[i] = borp[3][1] .. rows[i] .. borp[3][2]
 			else
-				rows[i] = box[2][1] .. rows[i] .. box[2][2]
+				rows[i] = borp[2][1] .. rows[i] .. borp[2][2]
 			end
 		end
 	end
@@ -122,24 +138,7 @@ function MultiLine:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local node = parentNode[childIndex]
 	local res = self:apply(node)
 	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
-		local height = #res
-		local lhs = {}
-		local rhs = {}
-		if height < 3 then
-			lhs[1] = '('
-			rhs[1] = ')'
-		else
-			lhs[1] = ' /'
-			rhs[1] = '\\ '
-			for i=2,height-1 do
-				lhs[i] = '| '
-				rhs[i] = ' |'
-			end
-			lhs[height] = ' \\'
-			rhs[height] = '/ '
-		end
-		res = self:combine(lhs, res)
-		res = self:combine(res, rhs)
+		wrap(res, nil, par)
 	end
 	return res
 end
@@ -293,7 +292,9 @@ MultiLine.lookupTable = {
 				res = res:append(row)
 			end
 	
-			wrap(res)
+			res:insert((' '):rep(strlen(res[1])))
+			res:insert(1, (' '):rep(strlen(res[1])))
+			wrap(res, nil, box)
 
 			return res
 		else
@@ -317,7 +318,7 @@ MultiLine.lookupTable = {
 				res = self:combine(res, parts[i])
 			end
 	
-			wrap(res, height)
+			wrap(res, height, box)
 			
 			return res
 		end
