@@ -167,7 +167,7 @@ MultiLine.lookupTable = {
 	[require 'symmath.op.unm'] = function(self, expr)
 		local ch = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local sym = '-'
-		if strlen(ch[1]) > 1 then sym = '- ' end	-- so minus-fraction doesn't just blend the minus into the fraction
+		if strlen(ch[1]) > 1 then sym = ' - ' end	-- so minus-fraction doesn't just blend the minus into the fraction
 		return self:combine({sym}, ch)
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
