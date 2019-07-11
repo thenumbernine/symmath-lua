@@ -39,7 +39,7 @@ end
 
 local function wrap(rows, n)
 	n = n or #rows
-	if i == n then
+	if n == 1 then
 		rows[1] = '[' .. rows[1] .. ']'
 	else
 		for i=1,n do
@@ -285,10 +285,10 @@ MultiLine.lookupTable = {
 						part[k] = sep .. left .. part[k] .. right
 					end
 					row = self:combine(row, part)
-					sep = ' '
+					sep = '  '
 				end
 				if i > 1 then
-					res:insert((' '):rep(#res[1]))
+					res:insert((' '):rep(strlen(res[1])))
 				end
 				res = res:append(row)
 			end
@@ -308,7 +308,7 @@ MultiLine.lookupTable = {
 			
 			local sep = table()
 			for i=1,height do
-				sep[i] = ' '
+				sep[i] = '  '
 			end
 			
 			local res = parts[1]
