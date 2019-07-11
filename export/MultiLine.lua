@@ -241,7 +241,7 @@ MultiLine.lookupTable = {
 		
 		-- even if it doesn't have a Matrix metatable, if it's rank-2 then display it as a matrix ...
 		-- TODO just put Matrix's entry here and get rid of its empty, let its subclass fall through to here instead
-		if rank == 2 then
+		if rank % 2 == 0 then
 
 			local matheight = #expr
 			local matwidth = #expr[1]
@@ -303,25 +303,50 @@ MultiLine.lookupTable = {
 				parts[i] = self:apply(expr[i])
 			end
 			
-			local height = parts:map(function(part) 
-				return #part
-			end):sup() or 0
+			local widths = parts:map(function(part) 
+				return strlen(part[1])
+			end)
+			local width = widths:sup() or 0
 			
-			local sep = table()
-			for i=1,height do
-				sep[i] = '  '
+			local sep
+			local res = table()
+			for i=1,#parts do
+				res:insert(sep)
+				sep = (' '):rep(width)
+				local pad = (' '):rep(math.floor(math.max((width - widths[i]) / 2, 0)))
+				for j=1,#parts[i] do
+					res:insert(pad..parts[i][j])
+				end
 			end
-			
-			local res = parts[1]
-			for i=2,#parts do
-				res = self:combine(res, sep)
-				res = self:combine(res, parts[i])
+			for i=1,#res do
+				res[i] = res[i] .. (' '):rep(width - strlen(res[i]))
 			end
 	
-			wrap(res, height, box)
+			wrap(res, nil, box)
 			
 			return res
 		end
+	end,
+	[require 'symmath.Tensor'] = function(self, expr)
+		local s = self.lookupTable[require 'symmath.Array'](self, expr)
+		local arrows = {'↓', '→'}
+		if #expr.variance > 0 then
+			local prefix = ''
+			for i=#expr.variance,1,-1 do
+				local var = expr.variance[i]
+				local arrowIndex = (#expr.variance + i + 1) % 2 + 1
+				prefix = var.symbol..(i == 1 and arrows[1] or arrows[arrowIndex])..prefix
+				if arrowIndex == 1 and i ~= 1 then prefix = '['..prefix..']' end
+			end
+			local pad = (' '):rep(math.floor(math.max(strlen(s[1]) - strlen(prefix), 0) / 2))
+			prefix = pad .. prefix
+			table.insert(s, 1, prefix)
+			local l = math.max(strlen(prefix), strlen(s[1]))
+			for i=1,#s do
+				s[i] = s[i] .. (' '):rep(l - #s[i])
+			end
+		end
+		return s	
 	end,
 	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
 		return {expr:__tostring()}

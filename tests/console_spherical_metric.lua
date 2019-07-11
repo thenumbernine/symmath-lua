@@ -1,0 +1,22 @@
+require 'symmath'.setup{implicitVars=true}
+Tensor.coords{{variables={r,theta,phi}}}
+u = Tensor('^I', r*sin(theta)*cos(phi), r*sin(theta)*sin(phi), r*cos(theta))
+print('u^I:\n'..u)
+e = Tensor'_i^I'
+e['_i^I'] = u'^I_,i'()
+print('e_i^I:\n'..e)
+delta = Tensor('_IJ', table.unpack(Matrix.identity(3)))
+print('delta_IJ:\n'..delta)
+g = (e'_i^I' * e'_j^J' * delta'_IJ')()
+print('g_ij:\n'..g)
+Tensor.metric(g)
+GammaL = ((g'_ij,k' + g'_ik,j' - g'_jk,i')/2)()
+print('Gamma_ijk:\n'..GammaL)
+Gamma = GammaL'^i_jk'()
+print('Gamma^i_jk:\n'..Gamma)
+Riemann = (Gamma'^ijl,k' - Gamma'^ijk,l' + Gamma'^i_mk' * Gamma'^m_jl' - Gamma'^i_ml' * Gamma'^m_jk')()
+print('Riemann:\n'..Riemann)
+Ricci = Riemann'^k_ikj'()
+print('Ricci:\n'..Ricci)
+Gaussian = Ricci'^i_i'()
+print('Gaussian:\n'..Gaussian)
