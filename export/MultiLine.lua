@@ -347,9 +347,9 @@ MultiLine.lookupTable = {
 			local pad = (' '):rep(math.floor(math.max(strlen(s[1]) - strlen(prefix), 0) / 2))
 			prefix = pad .. prefix
 			table.insert(s, 1, prefix)
-			local l = math.max(strlen(prefix), strlen(s[1]))
+			local l = table.mapi(s, function(l) return strlen(l) end):sup()
 			for i=1,#s do
-				s[i] = s[i] .. (' '):rep(l - #s[i])
+				s[i] = s[i] .. (' '):rep(l - strlen(s[i]))
 			end
 		end
 		return s	
