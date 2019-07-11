@@ -255,10 +255,16 @@ MultiLine.lookupTable = {
 			end
 
 			local allparts = table():append(parts:unpack())
-	
+
+			local partwidths = range(matheight):mapi(function(i)
+				return range(matwidth):mapi(function(j)
+					return (table.mapi(parts[i][j], function(l) return strlen(l) end):sup())
+				end)
+			end)
+			
 			local widths = range(matwidth):mapi(function(j)
 				return (range(matheight):mapi(function(i)
-					return strlen(parts[i][j][1])
+					return partwidths[i][j]
 				end):sup() or 0)
 			end)
 		
@@ -275,7 +281,7 @@ MultiLine.lookupTable = {
 				local sep = ''
 				for j,part in ipairs(partrow) do
 					local cell = table()
-					local padding = widths[j] - strlen(part[1])
+					local padding = widths[j] - partwidths[i][j]
 					local leftWidth = padding - math.floor(padding/2)
 					local rightWidth = padding - leftWidth
 					local left = (' '):rep(leftWidth)
