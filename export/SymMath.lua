@@ -3,7 +3,7 @@ local table = require 'ext.table'
 local Export = require 'symmath.export.Export'
 local tolua = require 'ext.tolua'
 
-local SymMath = class()
+local SymMath = class(Export)
 
 local tab = '\t'
 SymMath.lookupTable = {
@@ -41,12 +41,14 @@ SymMath.lookupTable = {
 			..indent..')'
 	end,
 	[require 'symmath.tensor.TensorIndex'] = function(self, x, indent)
-		return x.name..'{'
-			..'lower='..tostring(x.lower)..', '
-			..'derivative='..tostring(x.derivative)..', '
-			..'symbol='..tostring(x.symbol)..', '
-			..'number='..tostring(x.number)..', '
-			..'}'
+		local sep = ''
+		local s = x.name..'{'
+		if x.lower then s = s..sep..'lower='..tostring(x.lower) sep=', ' end
+		if x.derivative then s = s..sep..'derivative='..tostring(x.derivative) sep=', ' end
+		if x.symbol then s = s..sep..'symbol='..tostring(x.symbol) sep=', ' end
+		if x.number then s = s..sep..'number='..tostring(x.number) sep=', ' end
+		s = s ..'}'
+		return s
 	end,
 	[require 'symmath.Tensor'] = function(self, x, indent)
 		return indent..x.name..'(\n'
@@ -74,8 +76,4 @@ function SymMath:apply(x, indent, ...)
 	return SymMath.super.apply(self, x, indent or '', ...)
 end
 
-function SymMath:__call(...)
-	return self:apply(...)[1]
-end
-
-return SymMath
+return SymMath()
