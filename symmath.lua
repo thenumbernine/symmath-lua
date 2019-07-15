@@ -41,6 +41,7 @@ symmath.export = {
 	Mathematica = require 'symmath.export.Mathematica',
 	MultiLine = require 'symmath.export.MultiLine',
 	SingleLine = require 'symmath.export.SingleLine',
+	SymMath = require 'symmath.export.SymMath',
 	Verbose = require 'symmath.export.Verbose',
 }
 

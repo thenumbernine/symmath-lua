@@ -498,6 +498,9 @@ in this case the indexes of 'S' are picked on a first-come, first-serve basis.  
 
 ... index gymnastics (so long as you defined a metric): `v = Tensor('_a', ...) print(v'^a'())` will show you the contents of `v^a = g^ab v_b`.
 
+`t:permute'_ba'`
+Rearranges the internal storage of `t`
+
 `t:print't'`  
 Prints the tensor's contents.  
 
