@@ -15,7 +15,7 @@ args:
 function Variable:init(name, dependentVars, value)
 	local symmath = require 'symmath'
 	if symmath.fixVariableNames then
-		k = symmath.tostring:fixVariableName(k)
+		name = symmath.tostring:fixVariableName(name)
 	end
 	
 	self.name = name
