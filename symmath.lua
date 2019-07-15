@@ -197,6 +197,9 @@ symmath.Vector = require 'symmath.Vector'
 symmath.Matrix = require 'symmath.Matrix'
 symmath.Array = require 'symmath.Array'
 symmath.Tensor = require 'symmath.Tensor'
+-- hmm, not sure about namespace and subdirs ... this doesn't fit with Matrix
+symmath.TensorIndex = require 'symmath.tensor.TensorIndex'
+
 
 -- change the default as you see fit
 symmath.tostring = symmath.export.MultiLine
