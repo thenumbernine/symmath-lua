@@ -50,17 +50,21 @@ SymMath.lookupTable = {
 		s = s ..'}'
 		return s
 	end,
+	-- Tensor constructor is a mess
 	[require 'symmath.Tensor'] = function(self, x, indent)
-		return indent..x.name..'(\n'
-			..indent..tab..'{\n'
-			..table.mapi(x.variance, function(xi)
-				return self:apply(xi)
-			end):concat(',\n')..'\n'
-			..indent..tab..'},\n'
-			..table.mapi(x, function(xi) 
+		local s = indent..x.name..'(\n'
+		if #x.variance > 0 then
+			s = s ..indent..tab..'{\n'
+				..table.mapi(x.variance, function(xi)
+					return self:apply(xi)
+				end):concat(',\n')..'\n'
+				..indent..tab..'},\n'
+		end
+		s = s ..table.mapi(x, function(xi) 
 				return self:apply(xi, indent..tab) 
 			end):concat(',\n')..'\n'
 			..indent..')'
+		return s
 	end,
 	[require 'symmath.Expression'] = function(self, x, indent)
 		local name = x.name
