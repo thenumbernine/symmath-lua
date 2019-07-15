@@ -59,7 +59,7 @@ for _,k in ipairs(Console.symbols:keys()) do
 	Console.symbols[k] = string.trim(Console.symbols[k])
 end
 
-function Console:fixImplicitName(name)
+function Console:fixVariableName(name)
 local orig = name
 	local i=1
 	while i < #name do

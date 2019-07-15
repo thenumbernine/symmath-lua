@@ -18,25 +18,8 @@ local flatMetric = delta3
 
 -- notice MTW uses negative rotations, then concludes with c_ab^c = -epsilon_abc 
 -- turning these from negative to positive rotations results in c_ab^c = epsilon_abc 
-local function Rx(theta)
-	return Matrix(
-		{1, 0, 0},
-		{0, cos(theta), -sin(theta)},
-		{0, sin(theta), cos(theta)})
-end
-local function Ry(theta)
-	return Matrix(
-		{cos(theta), 0, sin(theta)},
-		{0, 1, 0},
-		{-sin(theta), 0, cos(theta)})
-end
-local function Rz(theta)
-	return Matrix(
-		{cos(theta), -sin(theta), 0},
-		{sin(theta), cos(theta), 0},
-		{0, 0, 1})
-end
-local Rs = table{Rx, Ry, Rz}
+local Rs = Matrix.eulerAngles
+local Rx, Ry, Rz = table.unpack(Rs)
 for i,R in ipairs(Rs) do
 	printbr('$R_'..embedded[i].name..'(\\theta) = $', R(theta))
 end
@@ -53,14 +36,7 @@ end
 
 -- assumes n is unit
 local function Rn(theta, nx, ny, nz)
-	local I = Matrix.identity(3)
-	local K = Matrix({0, -nz, ny}, {nz, 0, -nx}, {-ny, nx, 0})
-	local K2 = (K * K + I * (nx^2 + ny^2 + nz^2 - 1))()
-	--local K2 = (K * K)()
-	return (I
-		+ K * sin(theta)
-		+ K2 * (1 - cos(theta))
-	)()
+	return Matrix.rotation(theta, {nx,ny,nz})
 end
 
 for _,info in ipairs{

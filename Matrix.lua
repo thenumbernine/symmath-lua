@@ -18,6 +18,8 @@ Matrix.diagonal = require 'symmath.matrix.diagonal'
 Matrix.trace = require 'symmath.matrix.trace'
 Matrix.pseudoInverse = require 'symmath.matrix.pseudoInverse'
 Matrix.nullspace = require 'symmath.matrix.nullspace'
+Matrix.rotation = require 'symmath.matrix.Rotation'
+Matrix.eulerAngles = require 'symmath.matrix.EulerAngles'
 
 -- shorthand
 Matrix.inv = Matrix.inverse	

@@ -24,6 +24,9 @@ symmath.polyCoeffs = require 'symmath.polyCoeffs'
 -- replace variables with names as keys in evalmap with constants of the associated values
 symmath.eval = require 'symmath.eval'
 
+-- whether to replace variable names with unicode Greek symbols
+symmath.fixVariableNames = false
+
 symmath.Variable = require 'symmath.Variable'
 symmath.var = symmath.Variable					--shorthand
 function symmath.vars(...)						--create variables for each string parameter 
@@ -253,9 +256,6 @@ symmath.setup = function(args)
 			-- extra ugly hack - create vars by request?
 			-- maybe only with certain variable names?
 			if symmath.implicitVars then
-				if symmath.tostring.fixImplicitName then
-					k = symmath.tostring:fixImplicitName(k)
-				end
 				return symmath.var(k)
 			end
 

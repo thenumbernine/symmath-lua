@@ -451,7 +451,7 @@ LaTeX.footer = [[
 \end{document}
 ]]
 
-function LaTeX:fixImplicitName(name)
+function LaTeX:fixVariableName(name)
 	local i=1
 	while i < #name do
 		if i>1 and name:sub(i):match('^[%^_]') then

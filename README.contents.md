@@ -313,9 +313,13 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 * MathJax
 * GnuPlot
 
-`GnuPlot:plot(args)`  
+`symmath.GnuPlot:plot(args)`  
 Produces SVG of a plot. Requires my `lua-gnuplot` library.  
 Arguments are forwarded to the `gnuplot` lua module, with the expression provided in place of the plot command.  
+
+`symmath.fixVariableNames = true`
+Set this flag to true to have the LaTex and console outputs replace variable names with their associated unicode characters.
+For example, `var'theta'` will produce a variable with the name `θ`.
 
 ### Arithmetic
 

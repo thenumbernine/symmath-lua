@@ -61,4 +61,6 @@ function Export:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	return s
 end
 
+function Export:fixVariableName(name) return name end
+
 return Export
