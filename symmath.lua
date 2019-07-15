@@ -210,10 +210,18 @@ symmath.Verbose = symmath.export.Verbose
 symmath.GnuPlot = symmath.export.GnuPlot
 
 -- constants 
+--[[ hmm, should these be constants or variables?
 symmath.i = symmath.Constant(symmath.complex(0,1), 'i')
 symmath.e = symmath.Constant(math.exp(1), 'e')
-symmath.pi = symmath.Constant(math.pi, '\\pi')
-symmath.inf = symmath.Constant(math.huge, '\\infty')
+symmath.pi = symmath.Constant(math.pi, 'pi')
+symmath.inf = symmath.Constant(math.huge, 'infty')	-- TODO use 'infinite' or 'infinity' and fix the LaTex gsub fixVariableName code to handle renaming instead of just padding with symbols
+--]]
+-- [[
+symmath.i = symmath.Variable('i', nil, symmath.complex(0,1))
+symmath.e = symmath.Variable('e', nil, math.exp(1))
+symmath.pi = symmath.Variable('pi', nil, math.pi)
+symmath.inf = symmath.Variable('infty', nil, math.huge)	-- TODO use 'infinite' or 'infinity' and fix the LaTex gsub fixVariableName code to handle renaming instead of just padding with symbols
+--]]
 
 -- hack implicit variable names to look good in TeX
 

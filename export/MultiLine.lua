@@ -198,9 +198,7 @@ MultiLine.lookupTable = {
 		return res
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		local s = expr.name
-		--if expr.value then s = s .. '|' .. expr.value end
-		return table{s}
+		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
 		local topText = 'd'

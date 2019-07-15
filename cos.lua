@@ -29,13 +29,13 @@ cos.rules = {
 			local div = symmath.op.div
 		
 			local theta = expr[1]
+				
+			-- cos(pi) => -1
+			if theta == symmath.pi then return Constant(-1) end
 
 			if Constant.is(theta) then
 				-- cos(0) => 1
 				if theta == Constant(0) then return Constant(1) end
-			elseif Variable.is(theta) then
-				-- cos(pi) => -1
-				if theta == symmath.pi then return Constant(-1) end
 			elseif mul.is(theta) then
 				if #theta == 2 
 				and theta[2] == symmath.pi 

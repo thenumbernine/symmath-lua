@@ -13,11 +13,6 @@ args:
 	value = numerical value of this variable
 --]]
 function Variable:init(name, dependentVars, value)
-	local symmath = require 'symmath'
-	if symmath.fixVariableNames then
-		name = symmath.tostring:fixVariableName(name)
-	end
-	
 	self.name = name
 	self.dependentVars = table(dependentVars)
 	self.value = value

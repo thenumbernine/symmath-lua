@@ -32,7 +32,15 @@ SingleLine.lookupTable = {
 	end,
 	--]]
 	[require 'symmath.Constant'] = function(self, expr) 
-		return expr.symbol or tostring(expr.value) 
+		local symmath = require 'symmath'
+		local symbol = expr.symbol	
+		if symbol then
+			if symmath.fixVariableNames then
+				symbol = symmath.tostring:fixVariableName(symbol)
+			end
+			return symbol
+		end
+		return tostring(expr.value) 
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
 		return 'Invalid'
@@ -53,7 +61,12 @@ SingleLine.lookupTable = {
 		end):concat(expr:getSepStr())
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		local s = expr.name
+		local symmath = require 'symmath'
+		local name = expr.name
+		if symmath.fixVariableNames then
+			name = symmath.tostring:fixVariableName(name)
+		end
+		local s = name
 		--if expr.value then s = s .. '|' .. expr.value end
 		return s
 	end,

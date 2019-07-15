@@ -54,6 +54,9 @@ Console.symbols = table{
 	psi = 'ψ',	--ψι 	[ps]
 	Omega = 'Ω',
 	omega = 'ω',	--ωμέγα 	[ɔː] 	[o]
+
+	-- TODO rename to 'infinity'.  see symmath.lua and symmath/export/LaTeX.lua
+	infty = '∞',
 }
 for _,k in ipairs(Console.symbols:keys()) do
 	Console.symbols[k] = string.trim(Console.symbols[k])

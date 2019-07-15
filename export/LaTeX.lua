@@ -155,7 +155,12 @@ LaTeX.lookupTable = {
 		return res
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		local s = table{prepareName(expr.name)}
+		local symmath = require 'symmath'
+		local name = expr.name
+		if symmath.fixVariableNames then
+			name = symmath.tostring:fixVariableName(name)
+		end
+		local s = table{prepareName(name)}
 		--if expr.value then s:append{'|', expr.value} end
 		return s
 	end,
@@ -420,7 +425,7 @@ local texSymbols = {}
 for k in ([[
 alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
 nu xi omicron pi rho sigma tau upsilon phi chi psi omega
-hBar
+hBar infty
 ]]):gmatch'%S+' do
 	table.insert(texSymbols, k)
 	k = k:sub(1,1):upper() .. k:sub(2)

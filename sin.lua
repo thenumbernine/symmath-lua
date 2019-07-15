@@ -28,13 +28,13 @@ sin.rules = {
 			local div = symmath.op.div
 		
 			local theta = expr[1]
+			
+			-- sin(pi) => 0
+			if theta == symmath.pi then return Constant(0) end
 
 			if Constant.is(theta) then
 				-- sin(0) => 0
 				if theta == Constant(0) then return Constant(0) end
-			elseif Variable.is(theta) then
-				-- sin(pi) => 0
-				if theta == symmath.pi then return Constant(0) end
 			elseif mul.is(theta) then
 				if #theta == 2 
 				and theta[2] == symmath.pi 
