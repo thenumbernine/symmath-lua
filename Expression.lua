@@ -159,6 +159,7 @@ Expression.eval = function(...) return require 'symmath.eval'(...) end
 Expression.compile = function(...) return require 'symmath'.compile(...) end
 Expression.diff = function(...) return require 'symmath.Derivative'(...) end
 Expression.integrate = function(...) return require 'symmath'.Integral(...) end
+Expression.taylor = function(...) return require 'symmath'.taylor(...) end
 
 -- I have to buffer these by a function to prevent require loop
 Expression.eq = function(...) return require 'symmath.op.eq'(...) end
@@ -669,6 +670,8 @@ function Expression:__call(...)
 	-- by now 'indexes' should be a table of TensorIndex objects
 	-- possibly including comma derivatives
 	-- TODO replace comma derivatives with (or make them shorthand for) index-based partial derivative operators
+	-- TODO allow for '_,k' incomplete tensor dereferencing *only if* it is comma-derivatives-only
+	--  in which case, just append it to the rest of the tensor
 
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	return TensorRef(self, table.unpack(indexes))

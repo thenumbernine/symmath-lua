@@ -20,6 +20,7 @@ symmath.factorLinearSystem = require 'symmath.factorLinearSystem'
 symmath.tidy = require 'symmath.tidy'
 symmath.simplify = require 'symmath.simplify'
 symmath.polyCoeffs = require 'symmath.polyCoeffs'
+symmath.taylor = require 'symmath.taylor'
 
 -- replace variables with names as keys in evalmap with constants of the associated values
 symmath.eval = require 'symmath.eval'
@@ -202,6 +203,7 @@ symmath.Array = require 'symmath.Array'
 symmath.Tensor = require 'symmath.Tensor'
 -- hmm, not sure about namespace and subdirs ... this doesn't fit with Matrix
 symmath.TensorIndex = require 'symmath.tensor.TensorIndex'
+symmath.TensorRef = require 'symmath.tensor.TensorRef'
 
 
 -- change the default as you see fit
