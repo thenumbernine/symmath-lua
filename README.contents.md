@@ -517,11 +517,11 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 
 - integrals.  symbolic, numeric explicit, then eventually get to numeric implicit (this involves derivatives based on both the dependent and the state variable)
 
-- functions that lua has that I don't: abs, ceil, floor, deg, rad, fmod, frexp, log10, min, max
+- functions that lua has that I don't: ceil, floor, deg, rad, fmod, frexp, log10, min, max
 
 - support for numbers rather than only Constant
 
-- integrate with lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
+- combine symmath with the lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
 	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
 
 - subindexes, so you can store a tensor of tensors: g_ab = Tensor('_ab', {-alpha^2+beta^2, beta_j}, {beta_i, gamma_ij})
@@ -529,10 +529,127 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 
 - change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
 
+- sets associated with variables.  easy ones for starters:
+	*) naturals
+	*) integers
+	*) rings
+	*) rationals
+	*) irrationals
+	*) algebraic
+	*) transcendental
+	*) reals (extended reals by default? or a separate set for extended reals?)
+	*) complex
+	*) quaternions
+	*) octonions
+
+	... and associated properties ...
+	
+	Natural + Natural => Natural
+	Natural - Natural => Integer
+	Natural * Natural => Natural
+	Natural / Natural => Rational
+
+	Natural + Integer => Integer
+	Natural - Integer => Integer
+	Natural * Integer => Integer
+	Natural / Integer => Rational
+	
+	Integer + Natural => Integer
+	Integer - Natural => Integer
+	Integer * Natural => Integer
+	Integer / Natural => Rational
+	
+	Integer + Integer => Integer
+	Integer - Integer => Integer
+	Integer * Integer => Integer
+	Integer / Integer => Rational
+	
+	Natural (+-*/) Rational => Rational
+	Integer (+-*/) Rational => Rational
+
+	etc...
+
+- ranges/sets/conditions associated with expressions
+	so x in Reals, 1/x, simplified, gives 1/x (x~=0)
+	and x in Reals, sqrt(x), simplified, gives sqrt(x) (x>=0)
+	and x in Reals, sqrt(f(x)), simplified, gives sqrt(f(x)) (f(x)>=0)
+	and x in Reals, sqrt(x+1), simplified, gives sqrt(x+1) (x>=-1)
+
+- better rules for processing everything.  something where you provide patterns and it searches through and replaces accordingly.
+	patterns like...
+	unm:
+		-(-a) => a
+		[-c] => -[c] ... for c > 0
+	add:
+		a + 0 => a
+		0 + a => a
+		a + (b + c) => (a + b) + c ... only if a,b,c are associative under +
+		[c1] + [c2] => [c1+c2]
+		a + b => b + a ... only if a and b are commutative under +, and if our precedence of variables states precedence(b) < precedence(a)
+	sub:
+		a - 0 => a
+		0 - a => -a
+		a - (-b) => a + b
+		a - (b - c) => (a - b) + c
+		a - (b + c) => (a - b) - c
+		a + (b - c) => (a + b) - c
+		[c1] - [c2] => [c1-c2]
+	mul:
+		1 * 1 => 1
+		1 * -1 => -1
+		a * 0 => 0
+		0 * a => 0
+		a * 1 => a
+		1 * a => a
+		a * -1 => -a
+		-1 * a => -a
+		[-c1] * a => -([c1] * a) ... for c1 > 0
+		(-a) * b => -(a * b)
+		a * (-b) => -(a * b)
+		(-a) * (-b) => a * b
+		a * (b * c) => (a * b) * c ... only if a,b,c are associative under *
+		a * (b + c) => a * b + a * c
+		(a + b) * c => a * c + b * c
+		[c1] * [c2] => [c1*c2]
+		[c1] * a + [c2] * a => [c1+c2] * a
+		[c1] * a - [c2] * a => [c1-c2] * a
+		a * b => b * a ... only if a and b are commutative under *, and if our precedence of variables states precedence(b) < precedence(a)
+	div:
+		[c1] / [c2] => [factors(c1)\gcd(c1,c2)] / [factors(c2)\gcd(c1,c2)] for integers c1,c2
+		[c1] / 0 => undefined
+		a / 0 => undefined
+		0 / a => 0 (for a ~= 0)
+		a / 1 => a
+		a / -1 => -a
+		1 / -a => -1 / a (for a ~= 0)
+		a / a => 1
+		1 / (1 / a) => a (for a ~= 0)
+		(-a) / b => -(a / b)
+		a / (-b) => -(a / b)
+		(-a) / (-b) => a / b
+		(a * b) / a => b (for a ~= 0)
+		(b * a) / a => b (for a ~= 0)
+		(a + b) / c => a / c + b / c
+		(a - b) / c => a / c - b / c
+		a * (b / c) => (a * b) / c
+		a / (b / c) => (a * c) / b
+		(a / b) / c => a / (b * c)
+	pow:
+		a ^ 0 => 1
+		0 ^ 0 => 1
+		0 ^ a => { a=0: 1, a~=0: 0}
+		a ^ 1 => a
+		1 ^ a => 1
+		a ^ -1 => 1 / a
+		a ^ -b => 1 / (a ^ b)
+		a * a => a ^ 2
+		a * a ^ b => a ^ (1 + b)
+		a ^ b * a => a ^ (b + 1)
+		a ^ b * a ^ c => a ^ (b + c)
+		(a ^ b) ^ c => a ^ (b * c)
 
 distinct functions for all languages:
 - __call = produces a single expression of code, without checking variables
 - generate = produces the function body.  multiple expressions.
 	doing tree searches and moving common variables out front would be good.
-- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler (TODO organize LuaMake and change ffi-c to use it and make this use ffi-c to build C functions)
-
+- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler 

@@ -40,7 +40,7 @@ asserteq(x*y, y*x)
 -- pruning operations
 asserteq(x, (1*x)())
 asserteq(0, (Constant(0)*x)())
-asserteq(x, (1*x)())
+asserteq(x, (x*1)())
 asserteq((x/x)(), 1)
 
 asserteq(x^2, (x*x)())
