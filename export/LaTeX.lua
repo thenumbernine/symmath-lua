@@ -211,7 +211,13 @@ LaTeX.lookupTable = {
 	
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
-			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
+		
+			local varname = var.name
+			if symmath.fixVariableNames then
+				varname = symmath.tostring:fixVariableName(varname)
+			end
+			
+			powersForDeriv[varname] = (powersForDeriv[varname] or 0) + 1
 		end
 	
 		local bottom = table()
