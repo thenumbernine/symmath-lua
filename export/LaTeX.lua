@@ -58,7 +58,10 @@ LaTeX.lookupTable = {
 		if expr.symbol then 
 			return table{prepareName(expr.symbol)}
 		end
-		local s = tostring(expr.value)
+		local value = expr.value
+		local fv = math.floor(value)
+		if value == fv then value = fv end	-- get rid of decimal place in tostring() on lua 5.3
+		local s = tostring(value)
 		local a,b = s:match('([^e]*)e(.*)')
 		if a and b then
 			if b:sub(1,1) == '+' then b = b:sub(2) end

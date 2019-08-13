@@ -56,15 +56,26 @@ Lua.lookupTable = {
 			local sx = self:apply(expr[2])
 			return {'math.exp(' .. sx[1] .. ')', sx[2]}
 		else
-			local predefs = table()
-			local s = table()
-			for i,x in ipairs(expr) do
-				local sx = self:apply(x)
-				s:insert(sx[1])
-				predefs = table(predefs, sx[2])
+			-- represent integers as expanded multiplication
+			local Constant = symmath.Constant
+			if Constant.is(expr[2])
+			and expr[2].value == math.floor(expr[2].value)
+			and expr[2].value > 1
+			and expr[2].value < 100
+			then
+				return self:apply(setmetatable(table.rep({expr[1]}, expr[2].value), symmath.op.mul))
+			-- non-integer exponent? use pow()
+			else		
+				local predefs = table()
+				local s = table()
+				for i,x in ipairs(expr) do
+					local sx = self:apply(x)
+					s:insert(sx[1])
+					predefs = table(predefs, sx[2])
+				end
+				s = s:concat(' '..expr.name..' ')
+				return {'('..s..')', predefs}
 			end
-			s = s:concat(' '..expr.name..' ')
-			return {'('..s..')', predefs}
 		end
 	end,
 	[require 'symmath.Variable'] = function(self, expr)

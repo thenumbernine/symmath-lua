@@ -33,11 +33,7 @@ Props.fields = table{
 		name = 'dg',
 		symbol = '{\\partial g}',
 		title = 'metric derivative',
-		calc = function(self)
-			local dg = Tensor'_abc'
-			dg['_abc'] = self.g'_ab,c'()
-			return dg
-		end,
+		calc = function(self) return self.g'_ab,c'():permute'_abc' end,
 		display = function(self) return var'g''_ab,c':eq(self.dg'_abc'()) end,
 	},
 	{
@@ -47,11 +43,9 @@ Props.fields = table{
 		calc = function(self)
 			local expr = ((self.dg'_abc' + self.dg'_acb' - self.dg'_bca') / 2)
 			if self.c then 
-				expr = expr + (self.c'_abc' + self.c'_acb' - self.c'_cba')/2 
+				expr = expr + (self.c'_abc' + self.c'_acb' - self.c'_cba') / 2 
 			end
-			local GammaL = Tensor'_abc'
-			GammaL['_abc'] = expr()
-			return GammaL		
+			return expr():permute'_abc'
 		end,
 		display = function(self) return var'\\Gamma''_abc':eq(self.GammaL'_abc'()) end,
 	},
@@ -66,11 +60,7 @@ Props.fields = table{
 		name = 'dGamma',
 		symbol = '{\\partial \\Gamma}',
 		title = 'connection coefficients derivative',
-		calc = function(self)
-			local dGamma = Tensor'^a_bcd'
-			dGamma['^a_bcd'] = self.Gamma'^a_bc,d'()
-			return dGamma
-		end,
+		calc = function(self) return self.Gamma'^a_bc,d'():permute'^a_bcd' end,
 		display = function(self) return var'\\Gamma''^a_bc,d':eq(self.dGamma'^a_bcd'()) end,
 	},
 
@@ -85,11 +75,7 @@ Props.fields = table{
 		name = 'GammaSq',
 		symbol = '(\\Gamma^2)',
 		title = 'connection coefficients squared',
-		calc = function(self)
-			local GammaSq = Tensor'^a_bcd'
-			GammaSq['^a_bcd'] = (self.Gamma'^a_ce' * self.Gamma'^e_db')()
-			return GammaSq
-		end,
+		calc = function(self) return (self.Gamma'^a_ce' * self.Gamma'^e_db')():permute'^a_bcd' end,
 		display = function(self) return (var'\\Gamma''^a_ec' * var'\\Gamma''^e_bd'):eq(self.GammaSq'^a_bcd'()) end,
 	},
 	{
@@ -97,13 +83,11 @@ Props.fields = table{
 		symbol = 'R',
 		title = 'Riemann curvature, $\\sharp\\flat\\flat\\flat$',
 		calc = function(self)
-			local RiemannULLL = Tensor'^a_bcd'
 			local expr = (self.dGamma'^a_dbc' - self.dGamma'^a_cbd' + self.GammaSq'^a_bcd' - self.GammaSq'^a_bdc')
 			if self.c then 
 				expr = expr - self.Gamma'^a_eb' * self.c'_cd^e' 
 			end
-			RiemannULLL['^a_bcd'] = expr()
-			return RiemannULLL
+			return expr():permute'^a_bcd'
 		end,
 		display = function(self) return var'R''^a_bcd':eq(self.RiemannULLL'^a_bcd'()) end,
 	},
