@@ -71,7 +71,10 @@ C.lookupTable = {
 			and expr[2].value > 1
 			and expr[2].value < 100
 			then
-				return self:apply(setmetatable(table.rep({expr[1]}, expr[2].value), symmath.op.mul))
+				local result = self:apply(setmetatable(table.rep({expr[1]}, expr[2].value), symmath.op.mul))
+				-- precedence will see pow and not give correct parenthesis
+				-- so manually add parenthesis here
+				return {'('..result[1]..')', result[2]}
 			-- non-integer exponent? use pow()
 			else
 				local predefs = table()
