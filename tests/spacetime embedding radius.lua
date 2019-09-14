@@ -54,8 +54,24 @@ function process(...)
 	end
 end
 
-earth = {radius = 6.371e+6 * m, mass = 5.972e+24 * kg}
-sun = {radius = 6.955e+8 * m, mass = 1.989e+30 * kg}
-psr = {radius = 1.8729e-5 * sun.radius, mass = 1.97 * sun.mass}
-electron = {radius = 1.3807e-36 * m, mass = 9.109e-31 * kg}
-process({earth=earth}, {sun=sun}, {psr=psr}, {electron=electron})
+local au = 149597870700 * m
+local pc = 3.1e+16 * m	-- = pc
+local nanoarcsec = 1e-9 * pc	-- = mu as ... why do I not think this is related directly to parsec without factoring in distance?
+
+local earthradius = 6.371e+6 * m
+local earth = {radius = earthradius, mass = 5.972e+24 * kg, distance = earthradius}
+process{earth=earth}
+
+local msun = 1.989e+30 * kg
+local sun = {radius = 6.955e+8 * m, mass = msun, distance = 1 * au}
+process{sun=sun}
+
+local psr_J1614_2230 = {radius = 1.8729e-5 * sun.radius, mass = 1.97 * sun.mass, distance = 1200 * pc}
+process{psr_J1614_2230 = psr_J1614_2230}
+
+local electronradius = 1.3807e-36 * m
+local electron = {radius = electronradius, mass = 9.109e-31 * kg, distance = electronradius}
+process{electron=electron}
+
+local sgtastar = {radius = 52 * nanoarcsec, mass = 4e+4 * msun, distance = 8000 * pc}
+process{sgtastar = sgtastar}

@@ -1,70 +1,27 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Symbolic Lua Output</title>
-		<script type="text/javascript">
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src; 
-}
-function init() {
-	console.log('init...');
-	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
-			src : urls[i],
-			done : function() {
-				console.log("success!");
-				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-			},
-			fail : function() {
-				++i;
-				if (i >= urls.length) {
-					console.log("looks like all our sources have failed!");
-				} else {
-					loadNext();
-				}
-			}
-		});
-	}
-	loadNext();
-}
-		</script>
-	</head>
-    <body onload='init();'>
+        <meta charset='utf-8'>
+        <title>spacetime embedding radius</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 
-earth radius = ${6371000} m$
+earth radius = ${{6371000}} {{m}}$
 <br>
-earth mass = ${0.0044345972543955} m$
+earth mass = ${{0.0044345972543955}} {{m}}$
 <br>
-earth embedding radius = ${170753383446.42} m$
+earth embedding radius = ${{170753383446.42}} {{m}}$
 <br>
 earth embedding radius to physical radius ratio = $26801.661190773$
 <br>
-earth schwarzschild radius = ${0.0088691945087909} m$
+earth schwarzschild radius = ${{0.0088691945087909}} {{m}}$
 <br>
-earth photon sphere radius = ${0.013303791763186} m$
+earth photon sphere radius = ${{0.013303791763186}} {{m}}$
 <br>
 
 <br>
 <?xml version="1.0" encoding="utf-8"  standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg 
  width="800" height="600"
  viewBox="0 0 800 600"
@@ -73,14 +30,14 @@ earth photon sphere radius = ${0.013303791763186} m$
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.0 patchlevel 5 </desc>
+<desc>Produced by GNUPLOT 5.2 patchlevel 6 </desc>
 
 <g id="gnuplot_canvas">
 
 <rect x="0" y="0" width="800" height="600" fill="none"/>
 <defs>
 
-	<circle id='gpDot' r='0.5' stroke-width='0.5'/>
+	<circle id='gpDot' r='0.5' stroke-width='0.5' stroke='currentColor'/>
 	<path id='gpPt0' stroke-width='0.222' stroke='currentColor' d='M-1,0 h2 M0,-1 v2'/>
 	<path id='gpPt1' stroke-width='0.222' stroke='currentColor' d='M-1,-1 L1,1 M1,-1 L-1,1'/>
 	<path id='gpPt2' stroke-width='0.222' stroke='currentColor' d='M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1'/>
@@ -217,7 +174,7 @@ earth photon sphere radius = ${0.013303791763186} m$
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M71.9,54.1 L71.9,542.4 L775.0,542.4 L775.0,54.1 L71.9,54.1 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(17.0,298.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+	<g transform="translate(16.3,298.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
 		<text><tspan font-family="Arial" >embedding</tspan></text>
 	</g>
 </g>
@@ -266,23 +223,21 @@ earth photon sphere radius = ${0.013303791763186} m$
 </svg>
 
 	<br>
-sun radius = ${695500000} m$
+sun radius = ${{695500000}} {{m}}$
 <br>
-sun mass = ${1476.9614767235} m$
+sun mass = ${{1476.9614767235}} {{m}}$
 <br>
-sun embedding radius = ${337478507473.45} m$
+sun embedding radius = ${{337478507473.45}} {{m}}$
 <br>
 sun embedding radius to physical radius ratio = $485.23149888346$
 <br>
-sun schwarzschild radius = ${2953.9229534469} m$
+sun schwarzschild radius = ${{2953.9229534469}} {{m}}$
 <br>
-sun photon sphere radius = ${4430.8844301704} m$
+sun photon sphere radius = ${{4430.8844301704}} {{m}}$
 <br>
 
 <br>
 <?xml version="1.0" encoding="utf-8"  standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg 
  width="800" height="600"
  viewBox="0 0 800 600"
@@ -291,14 +246,14 @@ sun photon sphere radius = ${4430.8844301704} m$
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.0 patchlevel 5 </desc>
+<desc>Produced by GNUPLOT 5.2 patchlevel 6 </desc>
 
 <g id="gnuplot_canvas">
 
 <rect x="0" y="0" width="800" height="600" fill="none"/>
 <defs>
 
-	<circle id='gpDot' r='0.5' stroke-width='0.5'/>
+	<circle id='gpDot' r='0.5' stroke-width='0.5' stroke='currentColor'/>
 	<path id='gpPt0' stroke-width='0.222' stroke='currentColor' d='M-1,0 h2 M0,-1 v2'/>
 	<path id='gpPt1' stroke-width='0.222' stroke='currentColor' d='M-1,-1 L1,1 M1,-1 L-1,1'/>
 	<path id='gpPt2' stroke-width='0.222' stroke='currentColor' d='M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1'/>
@@ -390,7 +345,7 @@ sun photon sphere radius = ${4430.8844301704} m$
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M96.8,54.1 L96.8,542.4 L775.0,542.4 L775.0,54.1 L96.8,54.1 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(17.0,298.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+	<g transform="translate(16.3,298.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
 		<text><tspan font-family="Arial" >embedding</tspan></text>
 	</g>
 </g>
@@ -439,23 +394,21 @@ sun photon sphere radius = ${4430.8844301704} m$
 </svg>
 
 	<br>
-psr radius = ${1.8729\cdot{10^{-05}}} {{695500000} m}$
+psr_J1614_2230 radius = ${{1.8729\cdot{10^{-05}}}} {{{{695500000}} {{m}}}}$
 <br>
-psr mass = ${2909.6141091452} m$
+psr_J1614_2230 mass = ${{2909.6141091452}} {{m}}$
 <br>
-psr embedding radius = ${19488.790682429} m$
+psr_J1614_2230 embedding radius = ${{19488.790682429}} {{m}}$
 <br>
-psr embedding radius to physical radius ratio = $1.4961432141591$
+psr_J1614_2230 embedding radius to physical radius ratio = $1.4961432141591$
 <br>
-psr schwarzschild radius = ${5819.2282182905} m$
+psr_J1614_2230 schwarzschild radius = ${{5819.2282182905}} {{m}}$
 <br>
-psr photon sphere radius = ${8728.8423274357} m$
+psr_J1614_2230 photon sphere radius = ${{8728.8423274357}} {{m}}$
 <br>
 
 <br>
 <?xml version="1.0" encoding="utf-8"  standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg 
  width="800" height="600"
  viewBox="0 0 800 600"
@@ -464,14 +417,14 @@ psr photon sphere radius = ${8728.8423274357} m$
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.0 patchlevel 5 </desc>
+<desc>Produced by GNUPLOT 5.2 patchlevel 6 </desc>
 
 <g id="gnuplot_canvas">
 
 <rect x="0" y="0" width="800" height="600" fill="none"/>
 <defs>
 
-	<circle id='gpDot' r='0.5' stroke-width='0.5'/>
+	<circle id='gpDot' r='0.5' stroke-width='0.5' stroke='currentColor'/>
 	<path id='gpPt0' stroke-width='0.222' stroke='currentColor' d='M-1,0 h2 M0,-1 v2'/>
 	<path id='gpPt1' stroke-width='0.222' stroke='currentColor' d='M-1,-1 L1,1 M1,-1 L-1,1'/>
 	<path id='gpPt2' stroke-width='0.222' stroke='currentColor' d='M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1'/>
@@ -598,7 +551,7 @@ psr photon sphere radius = ${8728.8423274357} m$
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M88.5,54.1 L88.5,542.4 L775.0,542.4 L775.0,54.1 L88.5,54.1 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(17.0,298.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+	<g transform="translate(16.3,298.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
 		<text><tspan font-family="Arial" >embedding</tspan></text>
 	</g>
 </g>
@@ -609,7 +562,7 @@ psr photon sphere radius = ${8728.8423274357} m$
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(431.7,31.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
-		<text><tspan font-family="Arial" >psr embedding radius</tspan></text>
+		<text><tspan font-family="Arial" >psr</tspan><tspan font-family="Arial"  font-size="9.6" dy="3.60px">J</tspan><tspan font-family="Arial"  font-size="12.0" dy="-3.60px">1614</tspan><tspan font-family="Arial"  font-size="9.6" dy="3.60px">2</tspan><tspan font-family="Arial"  font-size="12.0" dy="-3.60px">230 embedding radius</tspan></text>
 	</g>
 </g>
 	<g id="gnuplot_plot_1" ><title>z(r)</title>
@@ -647,23 +600,21 @@ psr photon sphere radius = ${8728.8423274357} m$
 </svg>
 
 	<br>
-electron radius = ${1.3807\cdot{10^{-36}}} m$
+electron radius = ${{1.3807\cdot{10^{-36}}}} {{m}}$
 <br>
-electron mass = ${6.7640231731896\cdot{10^{-58}}} m$
+electron mass = ${{6.7640231731896\cdot{10^{-58}}}} {{m}}$
 <br>
-electron embedding radius = ${4.4109430036594\cdot{10^{-26}}} m$
+electron embedding radius = ${{4.4109430036594\cdot{10^{-26}}}} {{m}}$
 <br>
 electron embedding radius to physical radius ratio = $31947150022.883$
 <br>
-electron schwarzschild radius = ${1.3528046346379\cdot{10^{-57}}} m$
+electron schwarzschild radius = ${{1.3528046346379\cdot{10^{-57}}}} {{m}}$
 <br>
-electron photon sphere radius = ${2.0292069519569\cdot{10^{-57}}} m$
+electron photon sphere radius = ${{2.0292069519569\cdot{10^{-57}}}} {{m}}$
 <br>
 
 <br>
 <?xml version="1.0" encoding="utf-8"  standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg 
  width="800" height="600"
  viewBox="0 0 800 600"
@@ -672,14 +623,14 @@ electron photon sphere radius = ${2.0292069519569\cdot{10^{-57}}} m$
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.0 patchlevel 5 </desc>
+<desc>Produced by GNUPLOT 5.2 patchlevel 6 </desc>
 
 <g id="gnuplot_canvas">
 
 <rect x="0" y="0" width="800" height="600" fill="none"/>
 <defs>
 
-	<circle id='gpDot' r='0.5' stroke-width='0.5'/>
+	<circle id='gpDot' r='0.5' stroke-width='0.5' stroke='currentColor'/>
 	<path id='gpPt0' stroke-width='0.222' stroke='currentColor' d='M-1,0 h2 M0,-1 v2'/>
 	<path id='gpPt1' stroke-width='0.222' stroke='currentColor' d='M-1,-1 L1,1 M1,-1 L-1,1'/>
 	<path id='gpPt2' stroke-width='0.222' stroke='currentColor' d='M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1'/>
@@ -781,7 +732,7 @@ electron photon sphere radius = ${2.0292069519569\cdot{10^{-57}}} m$
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M71.9,54.1 L71.9,542.4 L775.0,542.4 L775.0,54.1 L71.9,54.1 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(17.0,298.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+	<g transform="translate(16.3,298.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
 		<text><tspan font-family="Arial" >embedding</tspan></text>
 	</g>
 </g>
@@ -824,6 +775,217 @@ electron photon sphere radius = ${2.0292069519569\cdot{10^{-57}}} m$
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M71.9,54.1 L71.9,542.4 L775.0,542.4 L775.0,54.1 L71.9,54.1 Z  '/></g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+</g>
+</g>
+</svg>
+
+	<br>
+sgtastar radius = ${{52}} {{{{1\cdot{10^{-09}}}} {{{{3.1\cdot{10^{16}}}} {{m}}}}}}$
+<br>
+sgtastar mass = ${{59078459.068939}} {{m}}$
+<br>
+sgtastar embedding radius = ${{5954125423.1507}} {{m}}$
+<br>
+sgtastar embedding radius to physical radius ratio = $3.6936261930215$
+<br>
+sgtastar schwarzschild radius = ${{118156918.13788}} {{m}}$
+<br>
+sgtastar photon sphere radius = ${{177235377.20682}} {{m}}$
+<br>
+
+<br>
+<?xml version="1.0" encoding="utf-8"  standalone="no"?>
+<svg 
+ width="800" height="600"
+ viewBox="0 0 800 600"
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+
+<title>Gnuplot</title>
+<desc>Produced by GNUPLOT 5.2 patchlevel 6 </desc>
+
+<g id="gnuplot_canvas">
+
+<rect x="0" y="0" width="800" height="600" fill="none"/>
+<defs>
+
+	<circle id='gpDot' r='0.5' stroke-width='0.5' stroke='currentColor'/>
+	<path id='gpPt0' stroke-width='0.222' stroke='currentColor' d='M-1,0 h2 M0,-1 v2'/>
+	<path id='gpPt1' stroke-width='0.222' stroke='currentColor' d='M-1,-1 L1,1 M1,-1 L-1,1'/>
+	<path id='gpPt2' stroke-width='0.222' stroke='currentColor' d='M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1'/>
+	<rect id='gpPt3' stroke-width='0.222' stroke='currentColor' x='-1' y='-1' width='2' height='2'/>
+	<rect id='gpPt4' stroke-width='0.222' stroke='currentColor' fill='currentColor' x='-1' y='-1' width='2' height='2'/>
+	<circle id='gpPt5' stroke-width='0.222' stroke='currentColor' cx='0' cy='0' r='1'/>
+	<use xlink:href='#gpPt5' id='gpPt6' fill='currentColor' stroke='none'/>
+	<path id='gpPt7' stroke-width='0.222' stroke='currentColor' d='M0,-1.33 L-1.33,0.67 L1.33,0.67 z'/>
+	<use xlink:href='#gpPt7' id='gpPt8' fill='currentColor' stroke='none'/>
+	<use xlink:href='#gpPt7' id='gpPt9' stroke='currentColor' transform='rotate(180)'/>
+	<use xlink:href='#gpPt9' id='gpPt10' fill='currentColor' stroke='none'/>
+	<use xlink:href='#gpPt3' id='gpPt11' stroke='currentColor' transform='rotate(45)'/>
+	<use xlink:href='#gpPt11' id='gpPt12' fill='currentColor' stroke='none'/>
+	<path id='gpPt13' stroke-width='0.222' stroke='currentColor' d='M0,1.330 L1.265,0.411 L0.782,-1.067 L-0.782,-1.076 L-1.265,0.411 z'/>
+	<use xlink:href='#gpPt13' id='gpPt14' fill='currentColor' stroke='none'/>
+	<filter id='textbox' filterUnits='objectBoundingBox' x='0' y='0' height='1' width='1'>
+	  <feFlood flood-color='white' flood-opacity='1' result='bgnd'/>
+	  <feComposite in='SourceGraphic' in2='bgnd' operator='atop'/>
+	</filter>
+	<filter id='greybox' filterUnits='objectBoundingBox' x='0' y='0' height='1' width='1'>
+	  <feFlood flood-color='lightgrey' flood-opacity='1' result='grey'/>
+	  <feComposite in='SourceGraphic' in2='grey' operator='atop'/>
+	</filter>
+</defs>
+<g fill="none" color="white" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,542.4 L89.2,542.4 M775.0,542.4 L766.0,542.4  '/>	<g transform="translate(71.9,546.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 0</tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,488.1 L89.2,488.1 M775.0,488.1 L766.0,488.1  '/>	<g transform="translate(71.9,492.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 1x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,433.9 L89.2,433.9 M775.0,433.9 L766.0,433.9  '/>	<g transform="translate(71.9,437.8)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 2x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,379.6 L89.2,379.6 M775.0,379.6 L766.0,379.6  '/>	<g transform="translate(71.9,383.5)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 3x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,325.4 L89.2,325.4 M775.0,325.4 L766.0,325.4  '/>	<g transform="translate(71.9,329.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 4x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,271.1 L89.2,271.1 M775.0,271.1 L766.0,271.1  '/>	<g transform="translate(71.9,275.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 5x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,216.9 L89.2,216.9 M775.0,216.9 L766.0,216.9  '/>	<g transform="translate(71.9,220.8)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 6x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,162.6 L89.2,162.6 M775.0,162.6 L766.0,162.6  '/>	<g transform="translate(71.9,166.5)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 7x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,108.4 L89.2,108.4 M775.0,108.4 L766.0,108.4  '/>	<g transform="translate(71.9,112.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 8x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,54.1 L89.2,54.1 M775.0,54.1 L766.0,54.1  '/>	<g transform="translate(71.9,58.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" > 9x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,542.4 L80.2,533.4 M80.2,54.1 L80.2,63.1  '/>	<g transform="translate(80.2,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 0</tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M152.0,542.4 L152.0,533.4 M152.0,54.1 L152.0,63.1  '/>	<g transform="translate(152.0,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 5x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">8</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M223.9,542.4 L223.9,533.4 M223.9,54.1 L223.9,63.1  '/>	<g transform="translate(223.9,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 1x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">9</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M295.7,542.4 L295.7,533.4 M295.7,54.1 L295.7,63.1  '/>	<g transform="translate(295.7,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 1.5x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">9</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M367.5,542.4 L367.5,533.4 M367.5,54.1 L367.5,63.1  '/>	<g transform="translate(367.5,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 2x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">9</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M439.4,542.4 L439.4,533.4 M439.4,54.1 L439.4,63.1  '/>	<g transform="translate(439.4,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 2.5x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">9</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M511.2,542.4 L511.2,533.4 M511.2,54.1 L511.2,63.1  '/>	<g transform="translate(511.2,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 3x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">9</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M583.1,542.4 L583.1,533.4 M583.1,54.1 L583.1,63.1  '/>	<g transform="translate(583.1,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 3.5x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">9</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M654.9,542.4 L654.9,533.4 M654.9,54.1 L654.9,63.1  '/>	<g transform="translate(654.9,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 4x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">9</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M726.7,542.4 L726.7,533.4 M726.7,54.1 L726.7,63.1  '/>	<g transform="translate(726.7,564.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" > 4.5x10</tspan><tspan font-family="Arial"  font-size="9.6" dy="-6.00px">9</tspan><tspan font-size="12.0" dy="6.00"></tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,54.1 L80.2,542.4 L775.0,542.4 L775.0,54.1 L80.2,54.1 Z  '/></g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(16.3,298.3) rotate(270)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" >embedding</tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(427.6,591.3)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" >distance from center</tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(427.6,31.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="middle">
+		<text><tspan font-family="Arial" >sgtastar embedding radius</tspan></text>
+	</g>
+</g>
+	<g id="gnuplot_plot_1" ><title>z(r)</title>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(707.9,76.0)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
+		<text><tspan font-family="Arial" >z(r)</tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='rgb(148,   0, 211)'  d='M716.2,72.1 L758.4,72.1 M80.2,542.4 L87.2,542.3 L94.2,542.0 L101.3,541.4 L108.3,540.7 L115.3,539.7
+		L122.3,538.5 L129.3,537.1 L136.3,535.4 L143.4,533.6 L150.4,531.5 L157.4,529.2 L164.4,526.7 L171.4,524.0
+		L178.5,521.0 L185.5,517.8 L192.5,514.4 L199.5,510.8 L206.5,507.0 L213.5,502.9 L220.6,498.6 L227.6,494.1
+		L234.6,489.3 L241.6,484.4 L248.6,479.2 L255.7,473.7 L262.7,468.1 L269.7,462.1 L276.7,456.0 L283.7,449.6
+		L290.7,443.0 L297.8,436.2 L304.8,429.1 L311.8,421.8 L318.8,414.4 L325.8,407.1 L332.9,399.9 L339.9,392.9
+		L346.9,385.9 L353.9,379.0 L360.9,372.3 L367.9,365.6 L375.0,359.0 L382.0,352.5 L389.0,346.0 L396.0,339.7
+		L403.0,333.4 L410.1,327.2 L417.1,321.1 L424.1,315.0 L431.1,309.0 L438.1,303.0 L445.1,297.2 L452.2,291.3
+		L459.2,285.6 L466.2,279.9 L473.2,274.2 L480.2,268.6 L487.3,263.0 L494.3,257.5 L501.3,252.1 L508.3,246.7
+		L515.3,241.3 L522.3,236.0 L529.4,230.7 L536.4,225.5 L543.4,220.3 L550.4,215.1 L557.4,210.0 L564.5,205.0
+		L571.5,199.9 L578.5,194.9 L585.5,190.0 L592.5,185.1 L599.5,180.2 L606.6,175.3 L613.6,170.5 L620.6,165.7
+		L627.6,160.9 L634.6,156.2 L641.7,151.5 L648.7,146.9 L655.7,142.2 L662.7,137.6 L669.7,133.0 L676.7,128.5
+		L683.8,124.0 L690.8,119.5 L697.8,115.0 L704.8,110.6 L711.8,106.1 L718.9,101.8 L725.9,97.4 L732.9,93.0
+		L739.9,88.7 L746.9,84.4 L753.9,80.2 L761.0,75.9 L768.0,71.7 L775.0,67.5  '/></g>
+	</g>
+<g fill="none" color="white" stroke="rgb(148,   0, 211)" stroke-width="2.00" stroke-linecap="butt" stroke-linejoin="miter">
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="2.00" stroke-linecap="butt" stroke-linejoin="miter">
+</g>
+<g fill="none" color="black" stroke="black" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<path stroke='black'  d='M80.2,54.1 L80.2,542.4 L775.0,542.4 L775.0,54.1 L80.2,54.1 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 </g>

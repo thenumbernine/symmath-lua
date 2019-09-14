@@ -4,7 +4,8 @@ TODO 'Euler angles' should refer to the concatenation of all these
 and each of this is an exponential map 
 So think of better names?
 --]]
-return {
+local table = require 'ext.table'
+return table{
 	function(theta)
 		local Matrix = require 'symmath.Matrix'
 		local sin = require 'symmath.sin'
