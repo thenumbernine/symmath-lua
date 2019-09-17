@@ -45,18 +45,20 @@ end)
 --]]
 -- [[
 local As = xs:mapi(function(x,j)
-	return Matrix:lambda({n+1,n+1}, function(i,k)
-		if i >= 1 and i <= n then
-			if k >= 1 and k <= n then
-				return i==k and -beta_u[j] or 0
-			elseif k == n+1 then
-				return i==j and -alpha or 0
-			end
-		elseif i == n+1 then
-			if k >= 1 and k <= n then
-				return -alpha * gamma_uu[j][k]
-			elseif k == n+1 then
+	return Matrix:lambda({n+1,n+1}, function(a,b)
+		local i = a - 1
+		local k = b - 1
+		if a == 1 then
+			if b == 1 then
 				return -beta_u[j]
+			elseif b >= 2 and b <= n+1 then
+				return -alpha * gamma_uu[j][k]
+			end
+		elseif a >= 2 and a <= n+1 then
+			if b == 1 then
+				return i==j and -alpha or 0
+			elseif b >= 2 and b <= n+1 then
+				return i==k and -beta_u[j] or 0
 			end
 		end
 		return 0
