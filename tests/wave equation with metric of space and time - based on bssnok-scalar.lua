@@ -71,10 +71,9 @@ for i,A in ipairs(As) do
 	printbr(var'A'('_'..xs[i].name):eq(A))
 
 	local lambdaVar = var'\\lambda'
-	local charpolymat = (A - Matrix.identity(#A) * lambdaVar)()
-	local charpoly_eqn  = charpolymat:determinant():eq(0)
+	local charPolyEqn = A:charpoly(lambdaVar)
 	printbr'char poly:'
-	printbr(charpoly_eqn)
+	printbr(charPolyEqn)
 
 	-- TODO THIS EVENTUALLY
 	local lambdas = table{

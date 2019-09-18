@@ -75,8 +75,7 @@ for side=1,3 do
 	printbr(A_def)
 
 	local lambda = var'\\lambda'
-	local charpolymat = (A_def[2] - Matrix.identity(#A_def[2]) * lambda)()
-	local charpoly_eqn  = charpolymat:determinant():eq(0)
+	local charpoly_eqn  = A_def[2]:charpoly(lambda)
 	printbr'char poly:'
 	printbr(charpoly_eqn)
 	-- TODO solve charpoly_eqn for lambda ...
