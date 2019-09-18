@@ -150,6 +150,13 @@ end)
 		):unpack()
 	):transpose()
 
+evRMat = (evRMat * Matrix.diagonal(
+	1,
+	gamma_uu[i][1],
+	gamma_uu[i][1],
+	1
+))()
+
 	-- TODO rescale rows if you want
 	
 	printbr('R:')
