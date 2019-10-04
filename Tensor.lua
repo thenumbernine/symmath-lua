@@ -69,6 +69,7 @@ we can find the inverse transform by either
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
+local string = require 'ext.string'
 local Expression = require 'symmath.Expression'
 local Array = require 'symmath.Array'
 
@@ -155,7 +156,7 @@ function Tensor.parseIndexes(indexes)
 	if type(indexes) == 'string' then
 		local indexString = indexes
 		if indexString:find(' ') then
-			indexes = handleTable(indexString:split(' '))
+			indexes = handleTable(string.split(indexString,' '))
 		else
 			local lower = false
 			local derivative = nil

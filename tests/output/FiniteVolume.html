@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Finite Volume</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+Let $g_{ab} = \partial_a \cdot \partial_b$ be the spacetime grid metric.  Let it be diagonal.
+<br>
+Let the $\hat{i}$ indexes be coefficients of a non-coordinate normalized basis.
+<br>
+Let $e_\hat{i} = {e^i}_\hat{i} \partial_i$ be the non-coordinate normalized basis.
+<br>
+Let ${e^i}_\hat{i}$ be the linear transform from the coordinate basis to the normalized non-coordinate basis, also diagonal.
+<br>
+Let ${e_i}^\hat{i}$ be the transform from the normalized non-coordinate basis to the coordinate basis, such that $[{e_i}^\hat{i}] = [{e^i}_\hat{i}]^{-1}$.
+<br>
+Let $V = det([{e_i}^\hat{i}])$ be the grid metric volume.
+<br>
+Let $\nabla$ be Levi-Civita tensor of the coordinate basis.
+<br>
+${\int\limits_{{{u_{0,L}}}}^{{{u_{0,R}}}}d {u_0}\left({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{{{\nabla_a}\left(  { {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^a\right)}} {{V}}}\right)})}}}\right)}\right)} = {0}$
+<br>
+Can we integrate non-coordinate values across an integral of a coordinate?
+<br>
+Or do we need to factor in the rescaling values as well?
+<br>
+From now I will only rescale (convert from non-coordinate normalized to coordinate basis) the index that matches with the covariant derivative.
+<br>
+But maybe you need to add rescaling for each index of the tensor degree?
+<br>
+${\int\limits_{{{u_{0,L}}}}^{{{u_{0,R}}}}d {u_0}\left({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{{{\nabla_a}\left( {{{{{ e}^a}_{\hat{a}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{a}}}}}\right)}} {{V}}}\right)})}}}\right)}\right)} = {0}$
+<br>
+Separate space and time, assume extrinsic curvature is zero.
+<br>
+${\int\limits_{{{u_{0,L}}}}^{{{u_{0,R}}}}d {u_0}\left({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{{({{\partial_ {{{u_0}}}({{{{{ e}^0}_{\hat{0}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{0}}}}})} + {{\nabla_k}\left( {{{{{ e}^k}_{\hat{k}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{k}}}}}\right)}})}} {{V}}}\right)})}}}\right)}\right)} = {0}$
+<br>
+Let $U = F^\hat{0} = F^0$, i.e. the state is the flux through time.
+<br>
+Let $t = u_0$.
+<br>
+Let ${e^0}_\hat{0}$ = 1.
+<br>
+${\int\limits_{{{u_{0,L}}}}^{{{u_{0,R}}}}d {u_0}\left({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{{({{\partial_ {{t}}( {{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q})} + {{\nabla_k}\left( {{{{{ e}^k}_{\hat{k}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{k}}}}}\right)}})}} {{V}}}\right)})}}}\right)}\right)} = {0}$
+<br>
+Separate the integrals.
+<br>
+Rearrange time integral to be first next to $U$.
+<br>
+Let $\nabla_i (\cdot) = \frac{1}{V} \partial_i (V (\cdot))$.
+<br>
+${{({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{\partial_ {{t}}( {{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q})}} {{V}}}\right)}\right)})}}}\right)})} + {({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{\partial_k}\left( {{{{{V}} {{{{ e}^k}_{\hat{k}}}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{k}}}}}\right)}\right)})}}}\right)}\right)})}} = {0}$
+<br>
+Apply FTC to $U$, separate $\partial_t$ from $F$.
+<br>
+${{({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{{({{{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_R}}}\right)} - {{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_L}}}\right)}})}} {{V}}}\right)})}}}\right)})} + {{{({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( 1\right)})}} {{({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{\partial_k}\left( {{{{{V}} {{{{ e}^k}_{\hat{k}}}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{k}}}}}\right)}\right)})}}}\right)})}}}} = {0}$
+<br>
+Factor out $U(t=t_R) - U(t=t_L)$, substitute $t_R - t_L = \Delta t$.
+<br>
+${{{{({{{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_R}}}\right)} - {{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_L}}}\right)}})}} {{({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left( V\right)})}}}\right)})}}} + {{{\Delta t}} \cdot {{({\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{\partial_k}\left( {{{{{V}} {{{{ e}^k}_{\hat{k}}}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{k}}}}}\right)}\right)})}}}\right)})}}}} = {0}$
+<br>
+Move $U(t=t_R)$ to the other side of the equation.
+<br>
+${{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_R}}}\right)} = {{{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_L}}}\right)} - {{{\Delta t}} \cdot {{\frac{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{\partial_k}\left( {{{{{V}} {{{{ e}^k}_{\hat{k}}}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{k}}}}}\right)}\right)})}}}\right)}{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left( V\right)})}}}\right)}}}}}$
+<br>
+Rearrange integrals so $u_k$ is inner-most.
+<br>
+${{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_R}}}\right)} = {{{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_L}}}\right)} - {{{\Delta t}} \cdot {{\frac{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{\overset{- \{k\}}{...}}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({\int\limits_{{{u_{k,L}}}}^{{{u_{k,R}}}}d {u_k}\left({{\partial_k}\left( {{{{{V}} {{{{ e}^k}_{\hat{k}}}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{k}}}}}\right)}\right)}\right)})}}}\right)}{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left( V\right)})}}}\right)}}}}}$
+<br>
+Apply FTC to $u_k$.
+<br>
+${{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_R}}}\right)} = {{{{{{{{{ U}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}\left( {{t} = {{t_L}}}\right)} - {{{\Delta t}} \cdot {{\frac{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{\overset{- \{k\}}{...}}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left({{{({{{{V}} {{{{ e}^k}_{\hat{k}}}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{k}}}})}\left( {{{u_k}} = {{u_{k,R}}}}\right)} - {{({{{{V}} {{{{ e}^k}_{\hat{k}}}}}} {{{ {{{{{{ F}^{\hat{i}_1}}^{...}}^{\hat{i}_p}}_{\hat{j}_1}}_{...}}_{\hat{j}_q}}^{\hat{k}}}})}\left( {{{u_k}} = {{u_{k,L}}}}\right)}}\right)})}}}\right)}{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}d {u_1}\left({{{...}} \cdot {{({\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}d {u_n}\left( V\right)})}}}\right)}}}}}$
+<br>
+<h2>Specific Examples</h2>
+<br>
+<h3>Polar</h3>
+<br>
+$n = 2, u_1 = r, u_2 = \phi$
+<br>
+${e_r}^\hat{r} = 1, {e^r}_\hat{r} = 1$
+<br>
+${e_\phi}^\hat{\phi} = r, {e^\phi}_\hat{\phi} = \frac{1}{r}$
+<br>
+$V = r$
+<br>
+<h4>scalar case</h4>
+<br>
+${U\left( {{t} = {{t_R}}}\right)} = {{U\left( {{t} = {{t_L}}}\right)} - {{{\frac{\Delta t}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{...}} \cdot {{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( r\right)})}}}\right)}}} {{({{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{({{{{r}} {{1}}}} {{{ F}^{\hat{r}}}})}\left( {{r} = {{r_R}}}\right)} - {{({{{{r}} {{1}}}} {{{ F}^{\hat{r}}}})}\left( {{r} = {{r_L}}}\right)}}\right)})} + {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{({{{{r}} {{\frac{1}{r}}}}} {{{ F}^{\hat{\phi}}}})}\left( {{\phi} = {{\phi_R}}}\right)} - {{({{{{r}} {{\frac{1}{r}}}}} {{{ F}^{\hat{\phi}}}})}\left( {{\phi} = {{\phi_L}}}\right)}}\right)})}})}}}}$
+<br>
+evaluate...
+<br>
+${U\left( {{t} = {{t_R}}}\right)} = {{U\left( {{t} = {{t_L}}}\right)} - {{{\frac{\Delta t}{{{({{{\phi_R}} - {{\phi_L}}})}} {{({{{\frac{1}{2}}{({{{r_R}}^{2}})}} - {{\frac{1}{2}}{({{{r_L}}^{2}})}}})}}}}} {{({{{{({{{\phi_R}} - {{\phi_L}}})}} {{({{{{{r_R}}} \cdot {{{{ F}^{\hat{r}}}\left(  {r_R}\right)}}} - {{{{r_L}}} \cdot {{{{ F}^{\hat{r}}}\left(  {r_L}\right)}}}})}}} + {{{({{{{ F}^{\hat{\phi}}}\left(  {\phi_R}\right)} - {{{ F}^{\hat{\phi}}}\left(  {\phi_L}\right)}})}} {{({{{r_R}} - {{r_L}}})}}}})}}}}$
+<br>
+${U\left( {{t} = {{t_R}}}\right)} = {{U\left( {{t} = {{t_L}}}\right)} - {{{\Delta t}} \cdot {{({{\frac{{{{{r_R}}} \cdot {{{{ F}^{\hat{r}}}\left(  {r_R}\right)}}} - {{{{r_L}}} \cdot {{{{ F}^{\hat{r}}}\left(  {r_L}\right)}}}}{{{\frac{1}{2}}{({{{r_R}}^{2}})}} - {{\frac{1}{2}}{({{{r_L}}^{2}})}}}} + {\frac{{{({{{{ F}^{\hat{\phi}}}\left(  {\phi_R}\right)} - {{{ F}^{\hat{\phi}}}\left(  {\phi_L}\right)}})}} {{({{{r_R}} - {{r_L}}})}}}{{{({{{\phi_R}} - {{\phi_L}}})}} {{({{{\frac{1}{2}}{({{{r_R}}^{2}})}} - {{\frac{1}{2}}{({{{r_L}}^{2}})}}})}}}}})}}}}$
+<br>
