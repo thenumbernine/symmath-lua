@@ -98,18 +98,37 @@ printbr(expr)
 
 printbr'Can we integrate non-coordinate values across an integral of a coordinate?'
 printbr'Or do we need to factor in the rescaling values as well?'
-printbr'From now I will only rescale (convert from non-coordinate normalized to coordinate basis) the index that matches with the covariant derivative.'
-printbr'But maybe you need to add rescaling for each index of the tensor degree?'
-
+--[=[
+printbr"If you don't rescale each flux index now then you will need to add in rescaling derivatives when calculating the covariant derivative of the flux."
+printbr"...But can we rescale it?  This changes the integral.  Does the integral still retain the same meaning?"
 local e = var'e'
 expr = Integral(
 	Integral(
 		dots * Integral(
-			Nabla('_a', index(e, '^a', '_\\hat{a}') * index(FIJ, '^\\hat{a}')) * V,
+			Nabla('_a', 
+--[[				
+				index(e, '_i_1', '^\\hat{i}_1')
+				* dots
+				* index(e, '_i_p', '^\\hat{i}_p')
+				* index(e, '^j_1', '_\\hat{j}_1')
+				* dots
+				* index(e, '^j_q', '_\\hat{j}_q')
+				*--]] index(F,
+					'^i_1',
+					'^...',
+					'^i_p',
+					'_j_1',
+					'_...',
+					'_j_q',
+				
+					'^a')
+			) * V,
 			un, unL, unR),
 		u1, u1L, u1R),
 	u0, u0L, u0R):eq(0)
 printbr(expr)
+printbr'<hr>'
+--]=]
 
 local e_k_hatk = index(e, '^k', '_\\hat{k}')
 local FIJhatK = index(FIJ, '^\\hat{k}')
@@ -142,7 +161,6 @@ printbr(expr)
 
 printbr'Separate the integrals.'
 printbr'Rearrange time integral to be first next to $U$.'
-printbr'Let $\\nabla_i (\\cdot) = \\frac{1}{V} \\partial_i (V (\\cdot))$.'
 expr = (
 	Integral(
 		dots * Integral(
@@ -154,12 +172,13 @@ expr = (
 	+ Integral(
 		Integral(
 			dots * Integral(
-				partial('_k', V * e_k_hatk * FIJhatK),
+				Nabla('_k', e_k_hatk * FIJhatK) * V,
 				un, unL, unR),
 			u1, u1L, u1R),
 		t, tL, tR)
 ):eq(0)
 printbr(expr)
+
 
 local UIJ_ = funcFromExpr(UIJ)
 printbr'Apply FTC to $U$, separate $\\partial_t$ from $F$.'
@@ -172,7 +191,7 @@ expr = (
 	+ Integral(1, t, tL, tR)
 	* Integral(
 		dots * Integral(
-			partial('_k', V * e_k_hatk * FIJhatK),
+			Nabla('_k', e_k_hatk * FIJhatK) * V,
 			un, unL, unR),
 		u1, u1L, u1R)
 ):eq(0)
@@ -190,7 +209,7 @@ expr = (
 	+ DeltaT
 	* Integral(
 		dots * Integral(
-			partial('_k', V * e_k_hatk * FIJhatK),
+			Nabla('_k', e_k_hatk * FIJhatK) * V,
 			un, unL, unR),
 		u1, u1L, u1R)
 ):eq(0)
@@ -205,7 +224,7 @@ UIJ_(t:eq(tR))
 	* (
 		Integral(
 			dots * Integral(
-				partial('_k', V * e_k_hatk * FIJhatK),
+				Nabla('_k', e_k_hatk * FIJhatK) * V,
 				un, unL, unR),
 			u1, u1L, u1R)
 		/ Integral(
@@ -217,23 +236,295 @@ UIJ_(t:eq(tR))
 )
 printbr(expr)
 
-printbr'Rearrange integrals so $u_k$ is inner-most.'
+local Gamma = var'\\Gamma'
+printbr"Expand $\\nabla_i$.  Don't forget that you will need to rescale the indexes associated with the connection pseudotensor that you are multiplying with the F tensor."
 expr = 
 UIJ_(t:eq(tR))
 :eq(
 	UIJ_(t:eq(tL))
 	- DeltaT 
+	/ Integral(
+		dots * Integral(
+			V,
+			un, unL, unR),
+		u1, u1L, u1R)
+
+	* (
+		Integral(
+			dots * Integral(
+				
+				(
+					partial('_k', e_k_hatk * index(
+						F, 
+						'^\\hat{i}_1',
+						'^...',
+						'^\\hat{i}_p',
+						'_\\hat{j}_1',
+						'_...',
+						'_\\hat{j}_q',
+					
+						'^\\hat{k}'
+					))
+
+					+
+						e_k_hatk 
+						* index(e
+							'_i_l',
+							'^\\hat{i}_l'
+						)
+						* index(
+							F, 
+							'^\\hat{i}_1',
+							'^...',
+							'^\\hat{i}_{l-1}',
+							'^m',
+							'^\\hat{i}_{l+1}',
+							'^...',
+							'^\\hat{i}_p',
+							'_\\hat{j}_1',
+							'_...',
+							'_\\hat{j}_q',
+						
+							'^\\hat{k}'
+						) * index(
+							Gamma,
+							'^i_l',
+							'_k',
+							'_m'
+						)
+					
+					- (e_k_hatk 
+					* index(e
+						'^j_l',
+						'_\\hat{j}_l'
+					)
+					* index(
+						F,
+						'^\\hat{i}_1',
+						'^...',
+						'^\\hat{i}_p',
+						'_\\hat{j}_1',
+						'_...',
+						'_\\hat{j}_{l-1}',
+						'_m',
+						'_\\hat{j}_{l-+}',
+						'_...',
+						'_\\hat{j}_q',
+						
+						'^\\hat{k}'
+					)) * index(
+						Gamma,
+						'^m',
+						'_k',
+						'_j_l'
+					)
+			
+					+
+						index(
+							F, 
+							'^\\hat{i}_1',
+							'^...',
+							'^\\hat{i}_p',
+							'_\\hat{j}_1',
+							'_...',
+							'_\\hat{j}_q',
+						
+							'^m'
+						) * index(
+							Gamma,
+							'^k',
+							'_k',
+							'_m'
+						)
+
+					
+				) * V,
+				
+				un, unL, unR),
+			u1, u1L, u1R)
+	)
+)
+printbr(expr)
+
+printbr[[Let ${\Gamma^k}_{km} = ln(\sqrt{det(g_{ij})})$, so $\partial_k (\cdot) + (\cdot) {\Gamma^k}_{km} = \frac{1}{V} \partial_k(V (\cdot) )$]]
+
+expr = 
+UIJ_(t:eq(tR))
+:eq(
+	UIJ_(t:eq(tL))
+	- DeltaT 
+	/ Integral(
+		dots * Integral(
+			V,
+			un, unL, unR),
+		u1, u1L, u1R)
+
+	* (
+		Integral(
+			dots * Integral(
+				
+				partial('_k', V * e_k_hatk * index(
+					F, 
+					'^\\hat{i}_1',
+					'^...',
+					'^\\hat{i}_p',
+					'_\\hat{j}_1',
+					'_...',
+					'_\\hat{j}_q',
+				
+					'^\\hat{k}'
+				))
+
+				+
+					(
+						e_k_hatk 
+						* index(e
+							'_i_l',
+							'^\\hat{i}_l'
+						)
+						* index(
+							F, 
+							'^\\hat{i}_1',
+							'^...',
+							'^\\hat{i}_{l-1}',
+							'^m',
+							'^\\hat{i}_{l+1}',
+							'^...',
+							'^\\hat{i}_p',
+							'_\\hat{j}_1',
+							'_...',
+							'_\\hat{j}_q',
+						
+							'^\\hat{k}'
+						) * index(
+							Gamma,
+							'^i_l',
+							'_k',
+							'_m'
+						)
+					
+					- e_k_hatk 
+					* index(e
+						'^j_l',
+						'_\\hat{j}_l'
+					)
+					* index(
+						F,
+						'^\\hat{i}_1',
+						'^...',
+						'^\\hat{i}_p',
+						'_\\hat{j}_1',
+						'_...',
+						'_\\hat{j}_{l-1}',
+						'_m',
+						'_\\hat{j}_{l-+}',
+						'_...',
+						'_\\hat{j}_q',
+						
+						'^\\hat{k}'
+					) * index(
+						Gamma,
+						'^m',
+						'_k',
+						'_j_l'
+					)
+								
+				) * V,
+				
+				un, unL, unR),
+			u1, u1L, u1R)
+	)
+)
+printbr(expr)
+
+printbr'Separate the integrals of the flux.  Rearrange integrals next to the partial so $u_k$ is inner-most.'
+expr = 
+UIJ_(t:eq(tR))
+:eq(
+	UIJ_(t:eq(tL))
+	- DeltaT 
+	/ Integral(
+		dots * Integral(
+			V,
+			un, unL, unR),
+		u1, u1L, u1R)
+
 	* (
 		Integral(
 			var'\\overset{- \\{k\\}}{...}' * Integral(
 				Integral(
-					partial('_k', V * e_k_hatk * FIJhatK),
+					partial('_k', V * e_k_hatk * index(
+						F, 
+						'^\\hat{i}_1',
+						'^...',
+						'^\\hat{i}_p',
+						'_\\hat{j}_1',
+						'_...',
+						'_\\hat{j}_q',
+					
+						'^\\hat{k}'
+					)),
 					uk, ukL, ukR),
 				un, unL, unR),
 			u1, u1L, u1R)
-		/ Integral(
+
+		+ Integral(
 			dots * Integral(
-				V,
+					(
+						e_k_hatk 
+						* index(e
+							'_i_l',
+							'^\\hat{i}_l'
+						)
+						* index(
+							F, 
+							'^\\hat{i}_1',
+							'^...',
+							'^\\hat{i}_{l-1}',
+							'^m',
+							'^\\hat{i}_{l+1}',
+							'^...',
+							'^\\hat{i}_p',
+							'_\\hat{j}_1',
+							'_...',
+							'_\\hat{j}_q',
+						
+							'^\\hat{k}'
+						) * index(
+							Gamma,
+							'^i_l',
+							'_k',
+							'_m'
+						)
+					
+					- e_k_hatk 
+					* index(e
+						'^j_l',
+						'_\\hat{j}_l'
+					)
+					* index(
+						F,
+						'^\\hat{i}_1',
+						'^...',
+						'^\\hat{i}_p',
+						'_\\hat{j}_1',
+						'_...',
+						'_\\hat{j}_{l-1}',
+						'_m',
+						'_\\hat{j}_{l-+}',
+						'_...',
+						'_\\hat{j}_q',
+						
+						'^\\hat{k}'
+					) * index(
+						Gamma,
+						'^m',
+						'_k',
+						'_j_l'
+					)
+								
+				) * V,
+				
 				un, unL, unR),
 			u1, u1L, u1R)
 	)
@@ -241,32 +532,92 @@ UIJ_(t:eq(tR))
 printbr(expr)
 
 local V_e_FIJ = makefunc('('..tostring(V * e_k_hatk * FIJhatK):match'%$(.*)%$'..')')
-
 printbr'Apply FTC to $u_k$.'
 expr = 
 UIJ_(t:eq(tR))
 :eq(
 	UIJ_(t:eq(tL))
 	- DeltaT 
+	/ Integral(
+		dots * Integral(
+			V,
+			un, unL, unR),
+		u1, u1L, u1R)
+
 	* (
 		Integral(
 			var'\\overset{- \\{k\\}}{...}' * Integral(
 				V_e_FIJ(uk:eq(ukR)) - V_e_FIJ(uk:eq(ukL)),
 				un, unL, unR),
 			u1, u1L, u1R)
-		/ Integral(
+
+		+ Integral(
 			dots * Integral(
-				V,
+					(
+						e_k_hatk 
+						* index(e
+							'_i_l',
+							'^\\hat{i}_l'
+						)
+						* index(
+							F, 
+							'^\\hat{i}_1',
+							'^...',
+							'^\\hat{i}_{l-1}',
+							'^m',
+							'^\\hat{i}_{l+1}',
+							'^...',
+							'^\\hat{i}_p',
+							'_\\hat{j}_1',
+							'_...',
+							'_\\hat{j}_q',
+						
+							'^\\hat{k}'
+						) * index(
+							Gamma,
+							'^i_l',
+							'_k',
+							'_m'
+						)
+					
+					- e_k_hatk 
+					* index(e
+						'^j_l',
+						'_\\hat{j}_l'
+					)
+					* index(
+						F,
+						'^\\hat{i}_1',
+						'^...',
+						'^\\hat{i}_p',
+						'_\\hat{j}_1',
+						'_...',
+						'_\\hat{j}_{l-1}',
+						'_m',
+						'_\\hat{j}_{l-+}',
+						'_...',
+						'_\\hat{j}_q',
+						
+						'^\\hat{k}'
+					) * index(
+						Gamma,
+						'^m',
+						'_k',
+						'_j_l'
+					)
+								
+				) * V,
+				
 				un, unL, unR),
 			u1, u1L, u1R)
 	)
 )
 printbr(expr)
 
-
+printbr'<hr>'
 printbr'<h2>Specific Examples</h2>'
 
-printbr'<h3>Polar</h3>'
+printbr'<h3>Polar, Anholonomic, Normalized</h3>'
 printbr'$n = 2, u_1 = r, u_2 = \\phi$'
 printbr'${e_r}^\\hat{r} = 1, {e^r}_\\hat{r} = 1$'
 printbr'${e_\\phi}^\\hat{\\phi} = r, {e^\\phi}_\\hat{\\phi} = \\frac{1}{r}$'
@@ -282,23 +633,24 @@ local phiR = var'\\phi_R'
 
 local vars = {r, phi}
 local lengths = {1, r}
-local V = table.product(lengths)
+local Vval = table.product(lengths)
 
 printbr'<h4>scalar case</h4>'
 
 local U_ = funcFromExpr(U)
-local V_e_F_r = makefunc('('..tostring(r * 1 * index(F, '^\\hat{r}')):match'%$(.*)%$'..')')
-local V_e_F_phi = makefunc('('..tostring(r * (1/r) * index(F, '^\\hat{\\phi}')):match'%$(.*)%$'..')')
+local V_e_F_r = makefunc('('..tostring(Vval / lengths[1] * index(F, '^\\hat{r}')):match'%$(.*)%$'..')')
+local V_e_F_phi = makefunc('('..tostring(Vval / lengths[2] * index(F, '^\\hat{\\phi}')):match'%$(.*)%$'..')')
 local F_rHat_ = funcFromExpr(index(F, '^\\hat{r}'))
 local F_phiHat_ = funcFromExpr(index(F, '^\\hat{\\phi}'))
+
 expr = 
 U_(t:eq(tR))
 :eq(
 	U_(t:eq(tL))
 	- DeltaT 
 		/ Integral(
-			dots * Integral(
-				r,
+			Integral(
+				Vval,
 				phi, phiL, phiR),
 			r, rL, rR)
 	* (
