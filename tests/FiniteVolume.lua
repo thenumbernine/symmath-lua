@@ -617,6 +617,80 @@ printbr(expr)
 printbr'<hr>'
 printbr'<h2>Specific Examples</h2>'
 
+local function example(args)
+	printbr('<h3>'..args.name..'</h3>')
+	
+	local us = table(args.vars)
+	local lengths = table(args.lengths)
+	assert(#lengths == #us)
+	
+	local Vval = table.product(lengths)()
+
+	local Ls = us:mapi(function(u) return var(u.name..'_L') end)
+	local Rs = us:mapi(function(u) return var(u.name..'_R') end)
+	local hats = us:mapi(function(u) return var('\\hat{'..u.name..'}') end)
+
+	printbr(var'n':eq(#us))
+	for i,u in ipairs(us) do	
+		printbr(var('u_'..i):eq(u))
+	end
+
+	for i,l in ipairs(lengths) do
+		printbr(index(var'e', '_'..us[i].name, '^'..hats[i].name):eq(l))
+		printbr(index(var'e', '^'..us[i].name, '_'..hats[i].name):eq(1/l))
+	end
+	
+	printbr(var'V':eq(Vval))
+
+	printbr'<h4>scalar case</h4>'
+
+	local U_ = funcFromExpr(U)
+	local V_e_F_r = makefunc('('..tostring(Vval / lengths[1] * index(F, '^'..hats[1].name)):match'%$(.*)%$'..')')
+	local V_e_F_phi = makefunc('('..tostring(Vval / lengths[2] * index(F, '^'..hats[2].name)):match'%$(.*)%$'..')')
+
+	local function wrapints(expr, excluding)
+		for i,u in ipairs(us) do
+			if i ~= excluding then
+				expr = Integral(expr, u, Ls[i], Rs[i])
+			end
+		end
+		return expr
+	end
+
+	local r, phi = us:unpack()
+	local rL, phiL = Ls:unpack()
+	local rR, phiR = Rs:unpack()
+	
+	local Fsum = table()
+	for i,u in ipairs(us) do
+		local hat, L, R = hats[i], Ls[i], Rs[i]
+		local V_e_F_i = makefunc('('..tostring(Vval / lengths[i] * index(F, '^'..hats[i].name)):match'%$(.*)%$'..')')
+		Fsum:insert(wrapints(V_e_F_i(u:eq(R)) - V_e_F_i(u:eq(L)), i))
+	end
+	if #Fsum == 0 then
+		Fsum = Constant(0)
+	elseif #Fsum == 1 then
+		Fsum = Fsum[1]
+	else
+		Fsum = op.add(Fsum:unpack())
+	end
+	
+	local expr = U_(t:eq(tR)):eq( U_(t:eq(tL)) - DeltaT / wrapints(Vval) * Fsum )
+	printbr(expr)
+
+	-- now to simplify...
+end
+
+
+local r = var'r'
+local phi = var'\\phi'
+example{
+	name = 'Polar, Anholonomic, Normalized',
+	vars = {r, phi},
+	lengths = {1, r},
+}
+
+
 printbr'<h3>Polar, Anholonomic, Normalized</h3>'
 printbr'$n = 2, u_1 = r, u_2 = \\phi$'
 printbr'${e_r}^\\hat{r} = 1, {e^r}_\\hat{r} = 1$'
