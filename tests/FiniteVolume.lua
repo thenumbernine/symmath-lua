@@ -2,6 +2,8 @@
 require 'symmath'.setup{MathJax={title='Finite Volume', usePartialLHSForDerivative=true}}
 local class = require 'ext.class'
 local table = require 'ext.table'
+local range = require 'ext.range'
+local matrix = require 'matrix'
 
 local Function = require 'symmath.Function'
 
@@ -618,6 +620,7 @@ printbr'<hr>'
 printbr'<h2>Specific Examples</h2>'
 
 local function example(args)
+	print'<hr>'
 	printbr('<h3>'..args.name..'</h3>')
 	
 	local us = table(args.vars)
@@ -631,64 +634,80 @@ local function example(args)
 	local hats = us:mapi(function(u) return var('\\hat{'..u.name..'}') end)
 
 	printbr(var'n':eq(#us))
+	local sep = ''
 	for i,u in ipairs(us) do	
-		printbr(var('u_'..i):eq(u))
+		print(sep, var('u_'..i):eq(u))
+		sep = ','
 	end
+	printbr()
 
+	sep = ''
 	for i,l in ipairs(lengths) do
-		printbr(index(var'e', '_'..us[i].name, '^'..hats[i].name):eq(l))
-		printbr(index(var'e', '^'..us[i].name, '_'..hats[i].name):eq(1/l))
+		print(sep, index(var'e', '_'..us[i].name, '^'..hats[i].name):eq(l))
+		sep = ','
 	end
+	printbr()
+
+	sep = ''
+	for i,l in ipairs(lengths) do
+		print(sep, index(var'e', '^'..us[i].name, '_'..hats[i].name):eq(1/l))
+		sep = ','
+	end
+	printbr()
 	
 	printbr(var'V':eq(Vval))
 
-	printbr'<h4>scalar case</h4>'
+	for p=0,1 do
+		for q=0,0 do
 
-	local U_ = funcFromExpr(U)
-	local V_e_F_r = makefunc('('..tostring(Vval / lengths[1] * index(F, '^'..hats[1].name)):match'%$(.*)%$'..')')
-	local V_e_F_phi = makefunc('('..tostring(Vval / lengths[2] * index(F, '^'..hats[2].name)):match'%$(.*)%$'..')')
+			
+			printbr('<h4>degree ', Matrix{p, q}:T(), 'case</h4>')
 
-	local function wrapints(expr, excluding)
-		for i,u in ipairs(us) do
-			if i ~= excluding then
-				expr = Integral(expr, u, Ls[i], Rs[i])
+			-- n x ... x n, p+q times
+			local sizes = matrix(range(p+1):mapi(function() return n end))
+			
+			
+			for is in sizes:iter() do
+				local pqindexes = is:map(function(i,j)
+					return (j <= p and '^' or '_')..hats[i].name
+				end)
+				
+				local UIJ = index(U, pqindexes:unpack())
+				local UIJ_ = funcFromExpr(UIJ)
+
+				local function wrapints(expr, excluding)
+					for i,u in ipairs(us) do
+						if i ~= excluding then
+							expr = Integral(expr, u, Ls[i], Rs[i])
+						end
+					end
+					return expr
+				end
+
+				local Fsum
+				for i,u in ipairs(us) do
+					local hat, L, R = hats[i], Ls[i], Rs[i]
+					local FIJ = index(F,
+						table(pqindexes):append{'^'..hats[i].name}:unpack()
+					)
+					local V_e_F_i = makefunc('('..tostring(Vval / lengths[i] * FIJ):match'%$(.*)%$'..')')
+					local term = wrapints(V_e_F_i(u:eq(R)) - V_e_F_i(u:eq(L)), i)
+					Fsum = Fsum and (Fsum + term) or term
+				end
+				Fsum = Fsum or 0
+
+				local expr = UIJ_(t:eq(tR)):eq( UIJ_(t:eq(tL)) - DeltaT / wrapints(Vval) * Fsum )
+				printbr(expr)
+
+				-- now to simplify...
+				-- TODO simplify() shouldn't expand. only factor.
+				local expr = UIJ_(t:eq(tR)):eq( UIJ_(t:eq(tL)) - DeltaT / wrapints(Vval)() * Fsum )
+				printbr(expr)
 			end
 		end
-		return expr
 	end
-
-	local r, phi = us:unpack()
-	local rL, phiL = Ls:unpack()
-	local rR, phiR = Rs:unpack()
-	
-	local Fsum = table()
-	for i,u in ipairs(us) do
-		local hat, L, R = hats[i], Ls[i], Rs[i]
-		local V_e_F_i = makefunc('('..tostring(Vval / lengths[i] * index(F, '^'..hats[i].name)):match'%$(.*)%$'..')')
-		Fsum:insert(wrapints(V_e_F_i(u:eq(R)) - V_e_F_i(u:eq(L)), i))
-	end
-	if #Fsum == 0 then
-		Fsum = Constant(0)
-	elseif #Fsum == 1 then
-		Fsum = Fsum[1]
-	else
-		Fsum = op.add(Fsum:unpack())
-	end
-	
-	local expr = U_(t:eq(tR)):eq( U_(t:eq(tL)) - DeltaT / wrapints(Vval) * Fsum )
-	printbr(expr)
-
-	-- now to simplify...
 end
 
-
-local r = var'r'
-local phi = var'\\phi'
-example{
-	name = 'Polar, Anholonomic, Normalized',
-	vars = {r, phi},
-	lengths = {1, r},
-}
 
 
 printbr'<h3>Polar, Anholonomic, Normalized</h3>'
@@ -766,3 +785,28 @@ U_(t:eq(tR))
 	)
 )
 printbr(expr)
+
+
+
+local r = var'r'
+local phi = var'\\phi'
+local theta = var'\\theta'
+local z = var'z'
+
+example{
+	name = 'Polar',
+	vars = {r, phi},
+	lengths = {1, r},
+}
+
+example{
+	name = 'Cylindrical',
+	vars = {r, phi, z},
+	lengths = {1, r, 1},
+}
+
+example{
+	name = 'Spherical',
+	vars = {r, theta, phi},
+	lengths = {1, r, r*sin(theta)},
+}
