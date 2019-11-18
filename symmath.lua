@@ -20,9 +20,13 @@ symmath.factorLinearSystem = require 'symmath.factorLinearSystem'
 symmath.tidy = require 'symmath.tidy'
 symmath.simplify = require 'symmath.simplify'
 symmath.polyCoeffs = require 'symmath.polyCoeffs'
+symmath.taylor = require 'symmath.taylor'
 
 -- replace variables with names as keys in evalmap with constants of the associated values
 symmath.eval = require 'symmath.eval'
+
+-- whether to replace variable names with unicode Greek symbols
+symmath.fixVariableNames = false
 
 symmath.Variable = require 'symmath.Variable'
 symmath.var = symmath.Variable					--shorthand
@@ -41,6 +45,7 @@ symmath.export = {
 	Mathematica = require 'symmath.export.Mathematica',
 	MultiLine = require 'symmath.export.MultiLine',
 	SingleLine = require 'symmath.export.SingleLine',
+	SymMath = require 'symmath.export.SymMath',
 	Verbose = require 'symmath.export.Verbose',
 }
 
@@ -196,6 +201,10 @@ symmath.Vector = require 'symmath.Vector'
 symmath.Matrix = require 'symmath.Matrix'
 symmath.Array = require 'symmath.Array'
 symmath.Tensor = require 'symmath.Tensor'
+-- hmm, not sure about namespace and subdirs ... this doesn't fit with Matrix
+symmath.TensorIndex = require 'symmath.tensor.TensorIndex'
+symmath.TensorRef = require 'symmath.tensor.TensorRef'
+
 
 -- change the default as you see fit
 symmath.tostring = symmath.export.MultiLine
@@ -203,10 +212,18 @@ symmath.Verbose = symmath.export.Verbose
 symmath.GnuPlot = symmath.export.GnuPlot
 
 -- constants 
+--[[ hmm, should these be constants or variables?
 symmath.i = symmath.Constant(symmath.complex(0,1), 'i')
 symmath.e = symmath.Constant(math.exp(1), 'e')
-symmath.pi = symmath.Constant(math.pi, '\\pi')
-symmath.inf = symmath.Constant(math.huge, '\\infty')
+symmath.pi = symmath.Constant(math.pi, 'pi')
+symmath.inf = symmath.Constant(math.huge, 'infty')	-- TODO use 'infinite' or 'infinity' and fix the LaTex gsub fixVariableName code to handle renaming instead of just padding with symbols
+--]]
+-- [[
+symmath.i = symmath.Variable('i', nil, symmath.complex(0,1))
+symmath.e = symmath.Variable('e', nil, math.exp(1))
+symmath.pi = symmath.Variable('pi', nil, math.pi)
+symmath.inf = symmath.Variable('infty', nil, math.huge)	-- TODO use 'infinite' or 'infinity' and fix the LaTex gsub fixVariableName code to handle renaming instead of just padding with symbols
+--]]
 
 -- hack implicit variable names to look good in TeX
 
@@ -249,9 +266,6 @@ symmath.setup = function(args)
 			-- extra ugly hack - create vars by request?
 			-- maybe only with certain variable names?
 			if symmath.implicitVars then
-				if symmath.tostring.fixImplicitName then
-					k = symmath.tostring:fixImplicitName(k)
-				end
 				return symmath.var(k)
 			end
 

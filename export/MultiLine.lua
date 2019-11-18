@@ -6,10 +6,26 @@ local Console = require 'symmath.export.Console'
 local SingleLine = require 'symmath.export.SingleLine'
 
 local strlen
+local box	-- [3][2] of the border chars of a box
+local par	-- [3][2] of the border chars of parenthesis
+local line	-- [3]
 do
 	local has, utf8 = pcall(require, 'utf8')
 	if has then
 		strlen = utf8.len
+		box = {
+			{'\u{250c}', '\u{2510}'},
+			{'\u{2502}', '\u{2502}'},
+			{'\u{2514}', '\u{2518}'},
+			{'[', ']'},
+		}
+		par = {
+			{'\u{256d}', '\u{256e}'},
+			{'\u{2502}', '\u{2502}'},
+			{'\u{2570}', '\u{256f}'},
+			{'(', ')'},
+		}
+		line = {'\u{2576}', '\u{2500}', '\u{2574}'}
 	end
 	if not strlen and rawlen then
 		strlen = rawlen
@@ -17,6 +33,49 @@ do
 	if not strlen then
 		strlen = function(s) return #s end
 	end
+	if not box then
+		box = {
+			{'[', ']'},
+			{'[', ']'},
+			{'[', ']'},
+			{'[', ']'},
+		}
+	end
+	if not par then
+		par = {
+			{' /', '\\ '},
+			{'| ', ' |'},
+			{'\\ ', '/ '},
+			{'(', ')'},
+		}
+	end
+	if not line then
+		line = {'-', '-', '-'}
+	end
+end
+
+-- borp = box or par [4][2]
+local function wrap(rows, n, borp)
+	n = n or #rows
+	if n == 1 then
+		rows[1] = borp[4][1] .. rows[1] .. borp[4][2]
+	else
+		for i=1,n do
+			if i == 1 then
+				rows[i] = borp[1][1] .. rows[i] .. borp[1][2]
+			elseif i == n then
+				rows[i] = borp[3][1] .. rows[i] .. borp[3][2]
+			else
+				rows[i] = borp[2][1] .. rows[i] .. borp[2][2]
+			end
+		end
+	end
+end
+
+local function vert(n)
+	if n == 0 then return '' end
+	if n == 1 then return '-' end
+	return line[1]..line[2]:rep(n-2)..line[3]
 end
 
 local MultiLine = class(Console)
@@ -64,8 +123,8 @@ function MultiLine:fraction(top, bottom)
 	for i=1,#top do
 		res:insert((' '):rep(topLeft+1)..top[i]..(' '):rep(topRight))
 	end
-	
-	res:insert(('-'):rep(width+2))
+
+	res:insert(vert(width+2))
 	
 	local bottomPadding = width - strlen(bottom[1]) + 1
 	local bottomLeft = math.floor(bottomPadding/2)
@@ -81,24 +140,7 @@ function MultiLine:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local node = parentNode[childIndex]
 	local res = self:apply(node)
 	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
-		local height = #res
-		local lhs = {}
-		local rhs = {}
-		if height < 3 then
-			lhs[1] = '('
-			rhs[1] = ')'
-		else
-			lhs[1] = ' /'
-			rhs[1] = '\\ '
-			for i=2,height-1 do
-				lhs[i] = '| '
-				rhs[i] = ' |'
-			end
-			lhs[height] = ' \\'
-			rhs[height] = '/ '
-		end
-		res = self:combine(lhs, res)
-		res = self:combine(res, rhs)
+		wrap(res, nil, par)
 	end
 	return res
 end
@@ -126,7 +168,7 @@ MultiLine.lookupTable = {
 	[require 'symmath.op.unm'] = function(self, expr)
 		local ch = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local sym = '-'
-		if strlen(ch[1]) > 1 then sym = '- ' end	-- so minus-fraction doesn't just blend the minus into the fraction
+		if strlen(ch[1]) > 1 then sym = ' - ' end	-- so minus-fraction doesn't just blend the minus into the fraction
 		return self:combine({sym}, ch)
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
@@ -158,9 +200,7 @@ MultiLine.lookupTable = {
 		return res
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		local s = expr.name
-		--if expr.value then s = s .. '|' .. expr.value end
-		return table{s}
+		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
 		local topText = 'd'
@@ -201,7 +241,7 @@ MultiLine.lookupTable = {
 		
 		-- even if it doesn't have a Matrix metatable, if it's rank-2 then display it as a matrix ...
 		-- TODO just put Matrix's entry here and get rid of its empty, let its subclass fall through to here instead
-		if rank == 2 then
+		if rank % 2 == 0 then
 
 			local matheight = #expr
 			local matwidth = #expr[1]
@@ -215,10 +255,16 @@ MultiLine.lookupTable = {
 			end
 
 			local allparts = table():append(parts:unpack())
-	
+
+			local partwidths = range(matheight):mapi(function(i)
+				return range(matwidth):mapi(function(j)
+					return (table.mapi(parts[i][j], function(l) return strlen(l) end):sup())
+				end)
+			end)
+			
 			local widths = range(matwidth):mapi(function(j)
 				return (range(matheight):mapi(function(i)
-					return strlen(parts[i][j][1])
+					return partwidths[i][j]
 				end):sup() or 0)
 			end)
 		
@@ -235,7 +281,7 @@ MultiLine.lookupTable = {
 				local sep = ''
 				for j,part in ipairs(partrow) do
 					local cell = table()
-					local padding = widths[j] - strlen(part[1])
+					local padding = widths[j] - partwidths[i][j]
 					local leftWidth = padding - math.floor(padding/2)
 					local rightWidth = padding - leftWidth
 					local left = (' '):rep(leftWidth)
@@ -244,17 +290,17 @@ MultiLine.lookupTable = {
 						part[k] = sep .. left .. part[k] .. right
 					end
 					row = self:combine(row, part)
-					sep = ' '
+					sep = '  '
 				end
 				if i > 1 then
-					res:insert((' '):rep(#res[1]))
+					res:insert((' '):rep(strlen(res[1])))
 				end
 				res = res:append(row)
 			end
-		
-			for i=1,#res do
-				res[i] = '['..res[i]..']'
-			end
+	
+			res:insert((' '):rep(strlen(res[1])))
+			res:insert(1, (' '):rep(strlen(res[1])))
+			wrap(res, nil, box)
 
 			return res
 		else
@@ -263,27 +309,50 @@ MultiLine.lookupTable = {
 				parts[i] = self:apply(expr[i])
 			end
 			
-			local height = parts:map(function(part) 
-				return #part
-			end):sup() or 0
+			local widths = parts:map(function(part) 
+				return strlen(part[1])
+			end)
+			local width = widths:sup() or 0
 			
-			local sep = table()
-			for i=1,height do
-				sep[i] = ' '
+			local sep
+			local res = table()
+			for i=1,#parts do
+				res:insert(sep)
+				sep = (' '):rep(width)
+				local pad = (' '):rep(math.floor(math.max((width - widths[i]) / 2, 0)))
+				for j=1,#parts[i] do
+					res:insert(pad..parts[i][j])
+				end
 			end
-			
-			local res = parts[1]
-			for i=2,#parts do
-				res = self:combine(res, sep)
-				res = self:combine(res, parts[i])
+			for i=1,#res do
+				res[i] = res[i] .. (' '):rep(width - strlen(res[i]))
 			end
-			
-			for i=1,height do
-				res[i] = '['..res[i]..']'
-			end
+	
+			wrap(res, nil, box)
 			
 			return res
 		end
+	end,
+	[require 'symmath.Tensor'] = function(self, expr)
+		local s = self.lookupTable[require 'symmath.Array'](self, expr)
+		local arrows = {'↓', '→'}
+		if #expr.variance > 0 then
+			local prefix = ''
+			for i=#expr.variance,1,-1 do
+				local var = expr.variance[i]
+				local arrowIndex = (#expr.variance + i + 1) % 2 + 1
+				prefix = var.symbol..(i == 1 and arrows[1] or arrows[arrowIndex])..prefix
+				if arrowIndex == 1 and i ~= 1 then prefix = '['..prefix..']' end
+			end
+			local pad = (' '):rep(math.floor(math.max(strlen(s[1]) - strlen(prefix), 0) / 2))
+			prefix = pad .. prefix
+			table.insert(s, 1, prefix)
+			local l = table.mapi(s, function(l) return strlen(l) end):sup()
+			for i=1,#s do
+				s[i] = s[i] .. (' '):rep(l - strlen(s[i]))
+			end
+		end
+		return s	
 	end,
 	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
 		return {expr:__tostring()}

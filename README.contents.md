@@ -1,5 +1,243 @@
 # Symbolic Math library for Lua
 
+## TLDR
+
+```
+require 'symmath'.setup{implicitVars=true}
+Tensor.coords{{variables={r,theta,phi}}}
+u = Tensor('^I', r*sin(theta)*cos(phi), r*sin(theta)*sin(phi), r*cos(theta))
+print('u^I:\n'..u)
+e = Tensor'_i^I'
+e['_a^I'] = u'^I_,a'()
+print('e_a^I:\n'..e)
+delta = Tensor('_IJ', table.unpack(Matrix.identity(3)))
+print('delta_IJ:\n'..delta)
+g = (e'_a^I' * e'_b^J' * delta'_IJ')()
+print('g_ab:\n'..g)
+Tensor.metric(g)
+dg = Tensor'_abc'
+dg['_abc'] = g'_ab,c'()
+print('g_ab,c:\n'..dg)
+GammaL = ((dg'_abc' + dg'_acb' - dg'_bca')/2)()
+print('Gamma_abc:\n'..GammaL)
+Gamma = GammaL'^a_bc'()
+print('Gamma^a_bc:\n'..Gamma)
+dGamma = Tensor'^a_bcd'
+dGamma['^a_bcd'] = Gamma'^a_bc,d'()
+print('Gamma^a_bc,d:\n'..dGamma)
+GammaSq = Tensor'^a_bcd'
+GammaSq['^a_bcd'] = (Gamma'^a_ce' * Gamma'^e_db')()
+Riemann = Tensor'^a_bcd'
+Riemann['^a_bcd'] = (dGamma'^a_dbc' - dGamma'^a_cbd' + GammaSq'^a_bcd' - GammaSq'^a_bdc')()
+print('Riemann^a_bcd:\n'..Riemann)
+```
+
+...makes this...
+
+```
+u^I:
+       I↓        
+┌r sin(θ) cos(φ)┐
+│               │
+│r sin(θ) sin(φ)│
+│               │
+└   r cos(θ)    ┘
+e_a^I:
+                       i↓I→                       
+┌                                                ┐
+│   sin(θ) cos(φ)     sin(θ) sin(φ)      cos(θ)  │
+│                                                │
+│  r cos(θ) cos(φ)   r cos(θ) sin(φ)   - r sin(θ)│
+│                                                │
+│ - r sin(θ) sin(φ)  r sin(θ) cos(φ)       0     │
+└                                                ┘
+delta_IJ:
+  I↓J→   
+┌       ┐
+│1  0  0│
+│       │
+│0  1  0│
+│       │
+│0  0  1│
+└       ┘
+g_ab:
+       a↓b→        
+┌                 ┐
+│1   0       0    │
+│                 │
+│    2            │
+│0  r        0    │
+│                 │
+│        2       2│
+│0   0  r  sin(θ) │
+└                 ┘
+g_ab,c:
+                 a↓[b↓c→]                 
+┌                 b↓c→                   ┐
+│               ┌       ┐                │
+│               │0  0  0│                │
+│               │       │                │
+│               │0  0  0│                │
+│               │       │                │
+│               │0  0  0│                │
+│               └       ┘                │
+│                                        │
+│                 b↓c→                   │
+│             ┌           ┐              │
+│             │  0    0  0│              │
+│             │           │              │
+│             │2.0 r  0  0│              │
+│             │           │              │
+│             │  0    0  0│              │
+│             └           ┘              │
+│                                        │
+│                  b↓c→                  │
+│┌                                      ┐│
+││      0                  0           0││
+││                                      ││
+││      0                  0           0││
+││                                      ││
+││            2       2                 ││
+││2.0 r sin(θ)   2.0 r  sin(θ) cos(θ)  0││
+└└                                      ┘┘
+Gamma_abc:
+                    a↓[b↓c→]                     
+┌             ┌                   ┐             ┐
+│             │0   0        0     │             │
+│             │                   │             │
+│             │0  -r        0     │             │
+│             │                   │             │
+│             │                  2│             │
+│             │0   0   - r sin(θ) │             │
+│             └                   ┘             │
+│                                               │
+│          ┌                         ┐          │
+│          │0  r           0         │          │
+│          │                         │          │
+│          │r  0           0         │          │
+│          │                         │          │
+│          │          2              │          │
+│          │0  0   - r  sin(θ) cos(θ)│          │
+│          └                         ┘          │
+│                                               │
+│┌                                             ┐│
+││                                         2   ││
+││    0              0             r sin(θ)    ││
+││                                             ││
+││                              2              ││
+││    0              0         r  sin(θ) cos(θ)││
+││                                             ││
+││        2   2                                ││
+││r sin(θ)   r  sin(θ) cos(θ)          0       ││
+└└                                             ┘┘
+Gamma^a_bc:
+           a↓[b↓c→]           
+┌   ┌                   ┐    ┐
+│   │0   0        0     │    │
+│   │                   │    │
+│   │0  -r        0     │    │
+│   │                   │    │
+│   │                  2│    │
+│   │0   0   - r sin(θ) │    │
+│   └                   ┘    │
+│                            │
+│┌                          ┐│
+││      1                   ││
+││ 0   ╶─╴          0       ││
+││      r                   ││
+││                          ││
+││ 1                        ││
+││╶─╴   0           0       ││
+││ r                        ││
+││                          ││
+││ 0    0    - sin(θ) cos(θ)││
+│└                          ┘│
+│                            │
+│ ┌                       ┐  │
+│ │                   1   │  │
+│ │ 0       0        ╶─╴  │  │
+│ │                   r   │  │
+│ │                       │  │
+│ │                cos(θ) │  │
+│ │ 0       0     ╶──────╴│  │
+│ │                sin(θ) │  │
+│ │                       │  │
+│ │ 1    cos(θ)           │  │
+│ │╶─╴  ╶──────╴      0   │  │
+│ │ r    sin(θ)           │  │
+└ └                       ┘  ┘
+Gamma^a_bc,d:
+                                   a↓b→[c↓d→]                                   
+┌                                                                              ┐
+│                                                        c↓d→                  │
+│     c↓d→                c↓d→          ┌                                     ┐│
+│   ┌       ┐          ┌        ┐       │     0                 0            0││
+│   │0  0  0│          │ 0  0  0│       │                                     ││
+│   │       │          │        │       │     0                 0            0││
+│   │0  0  0│          │-1  0  0│       │                                     ││
+│   │       │          │        │       │         2                           ││
+│   │0  0  0│          │ 0  0  0│       │ - sin(θ)    - 2.0 r sin(θ) cos(θ)  0││
+│   └       ┘          └        ┘       └                                     ┘│
+│                                                                              │
+│     c↓d→                c↓d→                                                 │
+│┌             ┐     ┌             ┐                      c↓d→                 │
+││   0     0  0│     │     1       │         ┌                            ┐    │
+││             │     │   ╶──╴      │         │0             0            0│    │
+││     1       │     │ -   2   0  0│         │                            │    │
+││   ╶──╴      │     │    r        │         │0             0            0│    │
+││ -   2   0  0│     │             │         │                            │    │
+││    r        │     │   0     0  0│         │      ╭                2╮   │    │
+││             │     │             │         │0   - ╰1.0 - 2.0 sin(θ) ╯  0│    │
+││   0     0  0│     │   0     0  0│         └                            ┘    │
+│└             ┘     └             ┘                                           │
+│                                                                              │
+│                                                         c↓d→                 │
+│                                              ┌                        ┐      │
+│     c↓d→                c↓d→                 │     1                  │      │
+│┌             ┐  ┌                  ┐         │   ╶──╴                 │      │
+││   0     0  0│  │0        0       0│         │ -   2         0       0│      │
+││             │  │                  │         │    r                   │      │
+││   0     0  0│  │0        0       0│         │                        │      │
+││             │  │                  │         │                1       │      │
+││     1       │  │          1       │         │            ╶───────╴   │      │
+││   ╶──╴      │  │      ╶───────╴   │         │   0      -        2   0│      │
+││ -   2   0  0│  │0   -        2   0│         │             sin(θ)     │      │
+││    r        │  │       sin(θ)     │         │                        │      │
+│└             ┘  └                  ┘         │   0           0       0│      │
+│                                              └                        ┘      │
+└                                                                              ┘
+Riemann^a_bcd:
+           a↓b→[c↓d→]            
+┌                               ┐
+│  c↓d→       c↓d→       c↓d→   │
+│┌       ┐  ┌       ┐  ┌       ┐│
+││0  0  0│  │0  0  0│  │0  0  0││
+││       │  │       │  │       ││
+││0  0  0│  │0  0  0│  │0  0  0││
+││       │  │       │  │       ││
+││0  0  0│  │0  0  0│  │0  0  0││
+│└       ┘  └       ┘  └       ┘│
+│                               │
+│  c↓d→       c↓d→       c↓d→   │
+│┌       ┐  ┌       ┐  ┌       ┐│
+││0  0  0│  │0  0  0│  │0  0  0││
+││       │  │       │  │       ││
+││0  0  0│  │0  0  0│  │0  0  0││
+││       │  │       │  │       ││
+││0  0  0│  │0  0  0│  │0  0  0││
+│└       ┘  └       ┘  └       ┘│
+│                               │
+│  c↓d→       c↓d→       c↓d→   │
+│┌       ┐  ┌       ┐  ┌       ┐│
+││0  0  0│  │0  0  0│  │0  0  0││
+││       │  │       │  │       ││
+││0  0  0│  │0  0  0│  │0  0  0││
+││       │  │       │  │       ││
+││0  0  0│  │0  0  0│  │0  0  0││
+│└       ┘  └       ┘  └       ┘│
+└                               ┘
+```
+
 ## Goals:
 
 - Everything done in pure Lua / Lua syntax.  No/minimal parsing.
@@ -40,6 +278,8 @@ print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
 print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
 ```
 
+Alternatively, you can run Lua with `-lsymmath.setup`, which is equivalent to `require 'symmath.setup`, which calls `require 'symmath'.setup()`.
+
 ### Numbers
 
 For the most part Lua numbers will work, and will automatically be replaced by symmath Constants (found in symmath.Constant).
@@ -73,9 +313,13 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 * MathJax
 * GnuPlot
 
-`GnuPlot:plot(args)`  
+`symmath.GnuPlot:plot(args)`  
 Produces SVG of a plot. Requires my `lua-gnuplot` library.  
 Arguments are forwarded to the `gnuplot` lua module, with the expression provided in place of the plot command.  
+
+`symmath.fixVariableNames = true`
+Set this flag to true to have the LaTex and console outputs replace variable names with their associated unicode characters.
+For example, `var'theta'` will produce a variable with the name `θ`.
 
 ### Arithmetic
 
@@ -258,6 +502,9 @@ in this case the indexes of 'S' are picked on a first-come, first-serve basis.  
 
 ... index gymnastics (so long as you defined a metric): `v = Tensor('_a', ...) print(v'^a'())` will show you the contents of `v^a = g^ab v_b`.
 
+`t:permute'_ba'`
+Rearranges the internal storage of `t`
+
 `t:print't'`  
 Prints the tensor's contents.  
 
@@ -270,11 +517,11 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 
 - integrals.  symbolic, numeric explicit, then eventually get to numeric implicit (this involves derivatives based on both the dependent and the state variable)
 
-- functions that lua has that I don't: abs, ceil, floor, deg, rad, fmod, frexp, log10, min, max
+- functions that lua has that I don't: ceil, floor, deg, rad, fmod, frexp, log10, min, max
 
 - support for numbers rather than only Constant
 
-- integrate with lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
+- combine symmath with the lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
 	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
 
 - subindexes, so you can store a tensor of tensors: g_ab = Tensor('_ab', {-alpha^2+beta^2, beta_j}, {beta_i, gamma_ij})
@@ -282,10 +529,127 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 
 - change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
 
+- sets associated with variables.  easy ones for starters:
+	*) naturals
+	*) integers
+	*) rings
+	*) rationals
+	*) irrationals
+	*) algebraic
+	*) transcendental
+	*) reals (extended reals by default? or a separate set for extended reals?)
+	*) complex
+	*) quaternions
+	*) octonions
+
+	... and associated properties ...
+	
+	Natural + Natural => Natural
+	Natural - Natural => Integer
+	Natural * Natural => Natural
+	Natural / Natural => Rational
+
+	Natural + Integer => Integer
+	Natural - Integer => Integer
+	Natural * Integer => Integer
+	Natural / Integer => Rational
+	
+	Integer + Natural => Integer
+	Integer - Natural => Integer
+	Integer * Natural => Integer
+	Integer / Natural => Rational
+	
+	Integer + Integer => Integer
+	Integer - Integer => Integer
+	Integer * Integer => Integer
+	Integer / Integer => Rational
+	
+	Natural (+-*/) Rational => Rational
+	Integer (+-*/) Rational => Rational
+
+	etc...
+
+- ranges/sets/conditions associated with expressions
+	so x in Reals, 1/x, simplified, gives 1/x (x~=0)
+	and x in Reals, sqrt(x), simplified, gives sqrt(x) (x>=0)
+	and x in Reals, sqrt(f(x)), simplified, gives sqrt(f(x)) (f(x)>=0)
+	and x in Reals, sqrt(x+1), simplified, gives sqrt(x+1) (x>=-1)
+
+- better rules for processing everything.  something where you provide patterns and it searches through and replaces accordingly.
+	patterns like...
+	unm:
+		-(-a) => a
+		[-c] => -[c] ... for c > 0
+	add:
+		a + 0 => a
+		0 + a => a
+		a + (b + c) => (a + b) + c ... only if a,b,c are associative under +
+		[c1] + [c2] => [c1+c2]
+		a + b => b + a ... only if a and b are commutative under +, and if our precedence of variables states precedence(b) < precedence(a)
+	sub:
+		a - 0 => a
+		0 - a => -a
+		a - (-b) => a + b
+		a - (b - c) => (a - b) + c
+		a - (b + c) => (a - b) - c
+		a + (b - c) => (a + b) - c
+		[c1] - [c2] => [c1-c2]
+	mul:
+		1 * 1 => 1
+		1 * -1 => -1
+		a * 0 => 0
+		0 * a => 0
+		a * 1 => a
+		1 * a => a
+		a * -1 => -a
+		-1 * a => -a
+		[-c1] * a => -([c1] * a) ... for c1 > 0
+		(-a) * b => -(a * b)
+		a * (-b) => -(a * b)
+		(-a) * (-b) => a * b
+		a * (b * c) => (a * b) * c ... only if a,b,c are associative under *
+		a * (b + c) => a * b + a * c
+		(a + b) * c => a * c + b * c
+		[c1] * [c2] => [c1*c2]
+		[c1] * a + [c2] * a => [c1+c2] * a
+		[c1] * a - [c2] * a => [c1-c2] * a
+		a * b => b * a ... only if a and b are commutative under *, and if our precedence of variables states precedence(b) < precedence(a)
+	div:
+		[c1] / [c2] => [factors(c1)\gcd(c1,c2)] / [factors(c2)\gcd(c1,c2)] for integers c1,c2
+		[c1] / 0 => undefined
+		a / 0 => undefined
+		0 / a => 0 (for a ~= 0)
+		a / 1 => a
+		a / -1 => -a
+		1 / -a => -1 / a (for a ~= 0)
+		a / a => 1
+		1 / (1 / a) => a (for a ~= 0)
+		(-a) / b => -(a / b)
+		a / (-b) => -(a / b)
+		(-a) / (-b) => a / b
+		(a * b) / a => b (for a ~= 0)
+		(b * a) / a => b (for a ~= 0)
+		(a + b) / c => a / c + b / c
+		(a - b) / c => a / c - b / c
+		a * (b / c) => (a * b) / c
+		a / (b / c) => (a * c) / b
+		(a / b) / c => a / (b * c)
+	pow:
+		a ^ 0 => 1
+		0 ^ 0 => 1
+		0 ^ a => { a=0: 1, a~=0: 0}
+		a ^ 1 => a
+		1 ^ a => 1
+		a ^ -1 => 1 / a
+		a ^ -b => 1 / (a ^ b)
+		a * a => a ^ 2
+		a * a ^ b => a ^ (1 + b)
+		a ^ b * a => a ^ (b + 1)
+		a ^ b * a ^ c => a ^ (b + c)
+		(a ^ b) ^ c => a ^ (b * c)
 
 distinct functions for all languages:
 - __call = produces a single expression of code, without checking variables
 - generate = produces the function body.  multiple expressions.
 	doing tree searches and moving common variables out front would be good.
-- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler (TODO organize LuaMake and change ffi-c to use it and make this use ffi-c to build C functions)
-
+- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler 

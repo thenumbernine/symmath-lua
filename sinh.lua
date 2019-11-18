@@ -6,7 +6,7 @@ sinh.name = 'sinh'
 sinh.func = math.sinh
 
 function sinh:evaluateDerivative(deriv, ...)
-	local x = table.unpack(self):clone()
+	local x = table.unpack(self)
 	local cosh = require 'symmath.cosh'
 	return deriv(x, ...) * cosh(x)
 end

@@ -735,6 +735,10 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 end
 
 -- permute the tensor's elements according to the dest variance
+-- TODO rename to something that makes more sense? :form() or something, idk,
+-- this function is used for reshaping internal form and index ordering
+-- maybe 'permute' is good.  maybe 'form' is good.
+-- maybe I should have (variance string, tensor) as ctors for Tensor()'s and then permute them there, but then what about 1x1x1 tensor initialization?
 function Tensor:permute(dstVariance)
 	if type(dstVariance) == 'string' then
 		dstVariance = self.parseIndexes(dstVariance)

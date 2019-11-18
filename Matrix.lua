@@ -18,9 +18,21 @@ Matrix.diagonal = require 'symmath.matrix.diagonal'
 Matrix.trace = require 'symmath.matrix.trace'
 Matrix.pseudoInverse = require 'symmath.matrix.pseudoInverse'
 Matrix.nullspace = require 'symmath.matrix.nullspace'
+Matrix.rotation = require 'symmath.matrix.Rotation'
+Matrix.eulerAngles = require 'symmath.matrix.EulerAngles'
 
 -- shorthand
 Matrix.inv = Matrix.inverse	
 Matrix.T = Matrix.transpose
+
+function Matrix:charpoly(lambdaVar)
+	if not lambdaVar then
+		local Variable = require 'symmath.Variable'
+		lambdaVar = Variable'lambda'
+	end
+	local charPolyMat = (self - Matrix.identity(#self) * lambdaVar)()
+	local charPolyEqn = charPolyMat:determinant(--[[{dontSimplify=true}--]]):eq(0)
+	return charPolyEqn
+end
 
 return Matrix

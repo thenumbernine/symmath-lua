@@ -3,6 +3,8 @@ local table = require 'ext.table'
 local Binary = require 'symmath.op.Binary'
 
 -- equality
+-- but subclasses are also inequalities
+-- what's the term for operators that are either equalities or inequalities?
 -- I would use binary operators for this, but Lua's overloading requires the return value be a boolean
 local Equation = class(Binary)
 Equation.__eq = require 'symmath.nodeCommutativeEqual'

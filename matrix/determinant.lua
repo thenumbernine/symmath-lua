@@ -12,17 +12,21 @@ end
 --[[
 args:
 	m = matrix
+	
 	args:
 		callback = optional callback, every second, with the percent of progress
 		TODO maxDepth = how deep to compute
 		... but to allow for maxDepth to leave determinants unevaluated, I need support for unevaluated functions
 			right now all I have is Lua functions, which themselves immediately evaluate.  nothing is deferred.
-	args internally:
+		dontSimplify = don't simplify results before returning
+
+	args internally used:
 		lastTime = table holding the last time that the callback was called
 --]]
 local function determinant(m, args)
 	local callback = args and args.callback
 	local lastTime = args and args.lastTime or {t=os.time()}
+	local dontSimplify = args and args.dontSimplify
 	--local depth = args and args.depth or 1
 
 	-- require the caller to simplify beforehand
@@ -59,7 +63,11 @@ local function determinant(m, args)
 	if n == 1 then
 		return m[1][1]
 	elseif n == 2 then
-		return (m[1][1] * m[2][2] - m[1][2] * m[2][1]):simplify()
+		local results = m[1][1] * m[2][2] - m[1][2] * m[2][1]
+		if not dontSimplify then
+			results = results:simplify()
+		end
+		return results
 	end
 
 	-- pick row (or column) with most zeroes
@@ -108,7 +116,10 @@ local function determinant(m, args)
 			end
 			local subcallback = callback and function(...) return callback(y, ...) end or nil
 			local subres = determinant(submat, args and table(args, {callback=subcallback, lastTime=lastTime}) or nil)
-			results = (results + sign * mij * subres)()
+			results = results + sign * mij * subres
+			if not dontSimplify then
+				results = results()
+			end
 		end
 		if callback then
 			local thisTime = os.time()

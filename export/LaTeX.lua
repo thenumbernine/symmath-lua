@@ -58,7 +58,10 @@ LaTeX.lookupTable = {
 		if expr.symbol then 
 			return table{prepareName(expr.symbol)}
 		end
-		local s = tostring(expr.value)
+		local value = expr.value
+		local fv = math.floor(value)
+		if value == fv then value = fv end	-- get rid of decimal place in tostring() on lua 5.3
+		local s = tostring(value)
 		local a,b = s:match('([^e]*)e(.*)')
 		if a and b then
 			if b:sub(1,1) == '+' then b = b:sub(2) end
@@ -155,7 +158,12 @@ LaTeX.lookupTable = {
 		return res
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		local s = table{prepareName(expr.name)}
+		local symmath = require 'symmath'
+		local name = expr.name
+		if symmath.fixVariableNames then
+			name = symmath.tostring:fixVariableName(name)
+		end
+		local s = table{prepareName(name)}
 		--if expr.value then s:append{'|', expr.value} end
 		return s
 	end,
@@ -206,7 +214,13 @@ LaTeX.lookupTable = {
 	
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
-			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
+		
+			local varname = var.name
+			if symmath.fixVariableNames then
+				varname = symmath.tostring:fixVariableName(varname)
+			end
+			
+			powersForDeriv[varname] = (powersForDeriv[varname] or 0) + 1
 		end
 	
 		local bottom = table()
@@ -420,7 +434,7 @@ local texSymbols = {}
 for k in ([[
 alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
 nu xi omicron pi rho sigma tau upsilon phi chi psi omega
-hBar
+hBar infty
 ]]):gmatch'%S+' do
 	table.insert(texSymbols, k)
 	k = k:sub(1,1):upper() .. k:sub(2)
@@ -451,7 +465,7 @@ LaTeX.footer = [[
 \end{document}
 ]]
 
-function LaTeX:fixImplicitName(name)
+function LaTeX:fixVariableName(name)
 	local i=1
 	while i < #name do
 		if i>1 and name:sub(i):match('^[%^_]') then

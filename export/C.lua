@@ -59,19 +59,34 @@ C.lookupTable = {
 		return {'-'..sx[1], sx[2]}
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
-		if expr[1] == require 'symmath'.e then
+		local symmath = require 'symmath'
+		if expr[1] == symmath.e then
 			local sx = self:apply(expr[2])
 			return {'(real)exp((real)' .. sx[1] .. ')', sx[2]}
 		else
-			local predefs = table()
-			local s = table()
-			for i,x in ipairs(expr) do
-				local sx = self:apply(x)
-				s:insert('(real)'..sx[1])
-				predefs = table(predefs, sx[2])
+			-- represent integers as expanded multiplication
+			local Constant = symmath.Constant
+			if Constant.is(expr[2])
+			and expr[2].value == math.floor(expr[2].value)
+			and expr[2].value > 1
+			and expr[2].value < 100
+			then
+				local result = self:apply(setmetatable(table.rep({expr[1]}, expr[2].value), symmath.op.mul))
+				-- precedence will see pow and not give correct parenthesis
+				-- so manually add parenthesis here
+				return {'('..result[1]..')', result[2]}
+			-- non-integer exponent? use pow()
+			else
+				local predefs = table()
+				local s = table()
+				for i,x in ipairs(expr) do
+					local sx = self:apply(x)
+					s:insert('(real)'..sx[1])
+					predefs = table(predefs, sx[2])
+				end
+				s = s:concat(', ')
+				return {'(real)pow(' .. s .. ')', predefs}	
 			end
-			s = s:concat(', ')
-			return {'(real)pow(' .. s .. ')', predefs}	
 		end
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
