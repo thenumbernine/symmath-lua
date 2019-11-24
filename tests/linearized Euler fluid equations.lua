@@ -62,13 +62,15 @@ local U = var'U'
 local U_def = Matrix{rho, m'^i', E_total}:T()
 printbr(U'^I':eq(U_def))
 
+local n = var'n'
+
 local F = var'F'
 local F_def = Matrix{
-	rho * v'^j',
-	rho * v'^i' * v'^j' + g'^ij' * P,
-	v'^j' * H_total
+	rho * v'^j' * n'_j',
+	rho * v'^i' * v'^j' * n'_j' + n'^i' * P,
+	v'^j' * n'_j' * H_total
 }:T()
-printbr(F'^Ij':eq(F_def))
+printbr(F'^I':eq(F_def))
 
 F_def = F_def:map(function(x)
 	if not x.replace then return end
@@ -78,23 +80,27 @@ F_def = F_def:map(function(x)
 	x = x:splitOffDerivIndexes():replaceIndex(v'_i', m'_i' / rho)
 	return x
 end)
-printbr(F'^Ij':eq(F_def))
+printbr(F'^I':eq(F_def))
 
 F_def = F_def()
-printbr(F'^Ij':eq(F_def))
+printbr(F'^I':eq(F_def))
 
 --local partial_dF_def = Matrix:lambda(F_def:dim(), function(x) return x'_,j' end)
-local partial_dF_def = Matrix{F_def[1][1]'_,j', F_def[2][1]'_,j', F_def[3][1]'_,j'}:T()
-printbr(F'^Ij_,j':eq(partial_dF_def))
+local partial_dF_def = (Matrix{
+	F_def[1][1]'_,m',
+	F_def[2][1]'_,m',
+	F_def[3][1]'_,m',
+}:T() * n'^m')()
+printbr(F'^I_,n':eq(partial_dF_def))
 
 partial_dF_def = partial_dF_def()
 
--- remove gamma or delta derivatives
+-- remove n, gamma, or delta derivatives
 local TensorRef = require 'symmath.tensor.TensorRef'
 local function removeConstantDerivatives(x)
 	if TensorRef.is(x)
 	and x[#x].derivative
-	and (x[1] == gamma or x[1] == tildeGamma or x[1] == delta)
+	and (x[1] == gamma or x[1] == tildeGamma or x[1] == delta or x[1] == n)
 	then
 		return Constant(0)
 	end
@@ -103,7 +109,7 @@ end
 partial_dF_def = partial_dF_def:map(removeConstantDerivatives)
 
 partial_dF_def = partial_dF_def()
-printbr(F'^Ij_,j':eq(partial_dF_def))
+printbr(F'^I_,n':eq(partial_dF_def))
 
 -- TODO here reindex so no one is using 'k'
 
@@ -128,7 +134,9 @@ end)
 partial_dF_def = partial_dF_def:replaceIndex(g'^ij_,m', -g'^ik' * g'_kl,m' * g'^lj')
 partial_dF_def = partial_dF_def:tidyIndexes()
 partial_dF_def = partial_dF_def:factorDivision()
-printbr(F'^Ij_,j':eq(partial_dF_def))
+partial_dF_def = partial_dF_def:reindex{jm='mj'} 
+
+printbr(F'^I_,n':eq(partial_dF_def))
 
 local factorLinearSystem = require 'symmath.factorLinearSystem'
 local dU = {
@@ -139,7 +147,7 @@ local dU = {
 }
 local A, b = factorLinearSystem(partial_dF_def:T()[1], dU)
 local partial_dF_matrix_def = A * Matrix(dU):T() + b
-printbr(F'^Ij_,j':eq(partial_dF_matrix_def))
+printbr(F'^I_,n':eq(partial_dF_matrix_def))
 
 local covar_dF_matrix_def = partial_dF_matrix_def:clone()
 covar_dF_matrix_def[2] = covar_dF_matrix_def[2]:replaceIndex(g'_ij,k', 0)()	-- only do the 'b' term in A x + b
@@ -157,7 +165,9 @@ covar_dF_matrix_def = covar_dF_matrix_def
 	:replaceIndex(E_total'_,j', 0)
 	:simplify()
 --]]
-printbr(F'^Ij_;j':eq(covar_dF_matrix_def))
+printbr(F'^I_;n':eq(covar_dF_matrix_def))
+
+-- TODO clean up the covariant wrt n
 
 -- Gamma^k_jk = e_j(log(sqrt(det(g_ab))))
 -- TODO DON'T FORGET TO INTEGRATE THIS WRT VOLUME
@@ -236,9 +246,9 @@ printbr(S'^I':eq(S_def))
 S_def = S_def:replace(Gamma'^c_cb', Gamma'^c_bc' - c'_cb^c')()
 
 printbr(S'^I':eq(S_def)) 
--- 1/sqrt(g) (sqrt(g) F^Ij)_,j = F^Ij_,j + Gamma^k_jk F^Ij
+-- 1/sqrt(g) (sqrt(g) F^Ij)_,j = F^I_,n + Gamma^k_jk F^Ij
 -- 
--- F^Ij_;j = F^Ij_,j + Gamma^k_jk F^Ij - S^I
--- S^I = -F^Ij_;j + F^Ij_,j + Gamma^k_jk F^Ij
+-- F^I_;n = F^I_,n + n^j Gamma^k_jk F^I - S^I
+-- S^I = -F^Ij_;j + F^I_,n + Gamma^k_jk F^Ij
 -- of course the difference of F^Ij_;j - F^Ij_,j is the A matrix times the connection terms alone ... with the partials set to zero ... 
 
