@@ -146,7 +146,13 @@ local dU = {
 	E_total'_,j',
 }
 local A, b = factorLinearSystem(partial_dF_def:T()[1], dU)
+A = A:replace((n'^j' * n'_m' * delta'^m_k')(), n'^j' * n'_k')
+	:replace((n'_m' * delta'^m_k')(), n'_k')
+	:replace((g'_jl' * delta'^l_k')(), g'_jk')
+	:replace((g'_jl' * delta'^j_k')(), g'_lk')()
 local partial_dF_matrix_def = A * Matrix(dU):T() + b
+
+
 printbr(F'^I_,n':eq(partial_dF_matrix_def))
 
 local covar_dF_matrix_def = partial_dF_matrix_def:clone()
@@ -229,8 +235,8 @@ local function simplifyDeltasAndMetrics(expr)
 end
 S_def = simplifyDeltasAndMetrics(S_def)
 
---S_def = S_def:tidyIndexes()
--- [[
+S_def = S_def:tidyIndexes()
+--[[ TODO
 S_def = Matrix:lambda(S_def:dim(), function(i,j)
 	return S_def[i][j]:tidyIndexes()
 end)
@@ -252,3 +258,69 @@ printbr(S'^I':eq(S_def))
 -- S^I = -F^Ij_;j + F^I_,n + Gamma^k_jk F^Ij
 -- of course the difference of F^Ij_;j - F^Ij_,j is the A matrix times the connection terms alone ... with the partials set to zero ... 
 
+printbr'as a matrix in Cartesian coordinates'
+
+printbr(var'A':eq(A))
+
+A = A
+	:expand()
+	:replace((m'^j' * g'_jl')(), m'_l')
+	:replace((m'^j' * g'_jk')(), m'_k')
+	:replace((m'^l' * g'_lk')(), m'_k')
+	:simplify()
+	:expand()
+	:replace((n'_m' * delta'^m_k')(), n'_k')	-- hmm, not working
+	:simplify()
+printbr(var'A':eq(A))
+
+local xs = {'x', 'y', 'z'}
+
+local function replaceIndex(expr, a, b)
+	return expr:map(function(x)
+		if TensorRef.is(x) then
+			x = x:clone()
+			for i=2,#x do
+				if x[i].symbol == a then 
+					x[i].symbol = b 
+				end
+			end
+			return x
+		end
+	end)
+end
+
+local Ac = Matrix:lambda({5,5}, function(i,k)
+	local si = ({1,2,2,2,3})[i]
+	local sk = ({1,2,2,2,3})[k]
+	local expr = A[si][sk]
+	if si == 2 then
+		expr = replaceIndex(expr, 'i', xs[i-1])
+	end
+	if sk == 2 then
+		expr = replaceIndex(expr, 'k', xs[k-1])
+	end
+	return expr
+end):map(function(x)
+	if TensorRef.is(x)
+	and x[1] == delta
+	and #x == 3
+	then
+		local ident = ({
+			x = {x=1, y=0, z=0},
+			y = {x=0, y=1, z=0},
+			z = {x=0, y=0, z=1},
+		})
+		local xi = ident[x[2].symbol]
+		if xi then
+			local xj = xi[x[3].symbol]
+			if xj then return xj end
+		end
+	end
+end)()
+printbr(var'A':eq(Ac))
+
+--[[ this is taking too long
+local lambda = var'\\lambda'
+local charpoly = (Ac - Matrix.diagonal(table{lambda}:rep(5):unpack()))():determinant():eq(0)()
+printbr(charpoly)
+--]]
