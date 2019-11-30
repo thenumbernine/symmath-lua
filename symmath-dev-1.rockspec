@@ -11,6 +11,7 @@ description = {
 }
 dependencies = {
 	'lua >= 5.1',
+	'ext >= 1.0',
 }
 build = {
 	type = 'builtin',
