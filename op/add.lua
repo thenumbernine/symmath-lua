@@ -559,7 +559,7 @@ add.rules = {
 			--]]
 
 
-			--[=[ trigonometry identities
+			-- [=[ trigonometry identities
 			-- cos(theta)^2 + sin(theta)^2 => 1
 			-- TODO first get a working factor() function
 			-- then replace all nodes of cos^2 + sin^2 with 1
