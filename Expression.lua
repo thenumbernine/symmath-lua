@@ -161,6 +161,13 @@ Expression.diff = function(...) return require 'symmath.Derivative'(...) end
 Expression.integrate = function(...) return require 'symmath'.Integral(...) end
 Expression.taylor = function(...) return require 'symmath'.taylor(...) end
 
+function Expression.wedge(a,b) 
+	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
+	if require 'symmath.op.Equation'.is(b) then return b.wedge(a,b) end
+	return require 'symmath.tensor.wedge'(a,b)
+end
+Expression.dual = function(...) return require 'symmath'.dual(...) end
+
 -- I have to buffer these by a function to prevent require loop
 Expression.eq = function(...) return require 'symmath.op.eq'(...) end
 Expression.ne = function(...) return require 'symmath.op.ne'(...) end

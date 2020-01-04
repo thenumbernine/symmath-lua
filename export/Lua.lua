@@ -52,7 +52,8 @@ Lua.lookupTable = {
 		return {'('..s..')', predefs}
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
-		if expr[1] == require 'symmath'.e then
+		local symmath = require 'symmath'
+		if expr[1] == symmath.e then
 			local sx = self:apply(expr[2])
 			return {'math.exp(' .. sx[1] .. ')', sx[2]}
 		else

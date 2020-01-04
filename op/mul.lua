@@ -85,7 +85,7 @@ function mul:flatten()
 		end
 	end
 end
-		
+
 --[[
 a * (b + c) * d * e becomes
 (a * b * d * e) + (a * c * d * e)

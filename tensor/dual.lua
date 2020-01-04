@@ -1,0 +1,13 @@
+return function(expr)
+	local Tensor = require 'symmath.Tensor'
+	local coords = Tensor.coords()
+	
+	-- TODO look up signatures and coords
+	print'FINISHME'
+end
+
+-- TODO TODO
+-- expr:diff()
+-- right now it is a partial diff wrt a variable
+-- make a exterior diff and use that as the volume element: dx wedge dy wedge dz etc
+-- use this with the dual
