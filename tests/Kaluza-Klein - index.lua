@@ -109,16 +109,17 @@ end)
 printbr(g5'_ab,c':eq(dg5_2x2_rhs))
 
 -- indexed [c][a][b]
-dg5_2x2x2_rhs = Tensor('_cab', function(c,a,b)
+local dg5_rhs = Tensor('_cab', function(c,a,b)
 	if c == 1 then
 		return dg5_2x2_rhs[a][b]:reindex{[' \\gamma']='c'}
 	elseif c == 2 then
 		return dg5_2x2_rhs[a][b]:reindex{[5]='c'}()
-			:replaceIndex(A'_\\alpha _,5',0)
-			:replaceIndex(g'_\\alpha _\\beta _,5',0)()
+			:replace(A'_\\alpha _,5',0)
+			:replace(A'_\\beta _,5',0)
+			:replace(g' _\\alpha _\\beta _,5',0)()
 	end
 end)
-printbr(g5'_ab,c':eq(dg5_2x2x2_rhs))
+printbr(g5'_ab,c':eq(dg5_rhs))
 printbr()
 
 -- alright, here we do the same exact index gymnastics as with dense tensors
@@ -129,14 +130,14 @@ local conn5 = var'\\tilde{\\Gamma}'
 local conn5L_rhs = Tensor('_abc', function(a,b,c)
 	return (frac(1,2) * (
 		-- g_ab,c
-		dg5_2x2x2_rhs[c][a][b]	
+		dg5_rhs[c][a][b]	
 		-- + g_ac,b
-		+ dg5_2x2x2_rhs[b][a][c]:reindex{
+		+ dg5_rhs[b][a][c]:reindex{
 			[' \\beta'] = ' \\gamma',
 			[' \\gamma'] = ' \\beta',
 		}
 		-- - g_bc,a
-		- dg5_2x2x2_rhs[a][b][c]:reindex{
+		- dg5_rhs[a][b][c]:reindex{
 			[' \\alpha'] = ' \\gamma',
 			[' \\beta'] = ' \\alpha',
 			[' \\gamma'] = ' \\beta',
@@ -166,9 +167,9 @@ printbr()
 printbr'upper connection'
 local conn5U_rhs = (
 	g5U_rhs'^ae' 
-		:reindex{[' \\epsilon'] = ' \\beta'}
+		:reindex{[' \\epsilon'] = ' \\beta'}()
 	* conn5L_rhs'_ebc'
-		:reindex{[' \\epsilon'] = ' \\alpha'}
+		:reindex{[' \\epsilon'] = ' \\alpha'}()
 )
 printbr(conn5'^a_bc':eq(conn5U_rhs))
 conn5U_rhs = conn5U_rhs()
@@ -177,6 +178,11 @@ conn5U_rhs = conn5U_rhs:replace(
 	g' ^\\alpha ^\\epsilon' * conn4' _\\epsilon _\\beta _\\gamma',
 	conn4' ^\\alpha _\\beta _\\gamma'
 )()
+conn5U_rhs = conn5U_rhs:replace(
+	A' ^\\epsilon' * conn4' _\\epsilon _\\beta _\\gamma',
+	A' _\\epsilon' * conn4' ^\\epsilon _\\beta _\\gamma'
+)()
+
 conn5U_rhs = conn5U_rhs:replace(
 	F' _\\beta _\\epsilon' * g' ^\\alpha ^\\epsilon',
 	F' _\\beta ^\\alpha'
@@ -193,6 +199,7 @@ conn5U_rhs = conn5U_rhs:replace(
 	(A' _\\epsilon' * A' ^\\epsilon')(),
 	A' _\\mu' * A' ^\\mu'
 )()
+conn5U_rhs = conn5U_rhs:reindex{[' \\mu'] = ' \\epsilon'}
 printbr(conn5'^a_bc':eq(conn5U_rhs))
 printbr()
 
@@ -229,7 +236,6 @@ geodesicEqn = geodesicEqn:replace(
 	conn5' ^\\alpha _5 _5',
 	conn5U_rhs[1][2][2]
 )()
-
 geodesicEqn = geodesicEqn:replace(
 	(phi^2 * A' _\\gamma' * dx_ds' ^\\beta' * dx_ds' ^\\gamma' * F' _\\beta ^\\alpha')(),
 	phi^2 * A' _\\beta' * dx_ds' ^\\beta' * dx_ds' ^\\gamma' * F' _\\gamma ^\\alpha'
@@ -244,7 +250,124 @@ geodesicEqn = geodesicEqn:replace(
 printbr(geodesicEqn)
 
 printbr()
-printbr'There you have gravitational force, Lorentz force, and some extra terms.'
+printbr'There you have gravitational force, Lorentz force, and an extra term.'
+printbr()
+
+
+printbr'connection partial:'
+local dconn5_2x2x2_rhs = Tensor('^a_bc', function(a,b,c)
+	return conn5U_rhs[a][b][c]',d'()
+		:replace(phi'_,d', 0)()
+		:replace(phi'_,d', 0)()
+end)
+printbr(conn5'^a_bc,d':eq(dconn5_2x2x2_rhs))
+
+local dconn5U_rhs = Tensor('^a_bcd', function(a,b,c,d)
+	if d == 1 then
+		return dconn5_2x2x2_rhs[a][b][c]:reindex{[' \\delta']='d'}
+	elseif d == 2 then
+		return dconn5_2x2x2_rhs[a][b][c]
+			:reindex{[5]='d'}
+			:replace(conn4' ^\\alpha _\\beta _\\gamma _,5', 0)
+			:replace(conn4' _\\mu _\\beta _\\gamma _,5', 0)
+			:replace(A' _\\beta _,5', 0)
+			:replace(A' _\\gamma _,5', 0)
+			:replace(A' ^\\mu _,5', 0)
+			:replace(A' _\\beta _,\\gamma _,5', 0)
+			:replace(A' _\\gamma _,\\beta _,5', 0)
+			:replace(F' _\\beta _\\mu _,5', 0)
+			:replace(F' _\\gamma _\\mu _,5', 0)
+			:replace(F' _\\gamma ^\\alpha _,5', 0)
+			:replace(F' _\\beta ^\\alpha _,5', 0)
+			:simplify()
+	end
+end)
+printbr(conn5'^a_bc,d':eq(dconn5U_rhs))
+printbr()
+
+
+local conn5USq_rhs = 
+	conn5U_rhs'^a_ec'():reindex{
+		[' \\epsilon'] = ' \\beta',
+	}
+	* conn5U_rhs'^e_bd'()
+		:reindex{
+			[' \\epsilon'] = ' \\alpha',
+			[' \\delta'] = ' \\gamma',
+		}
+printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_rhs))
+conn5USq_rhs = conn5USq_rhs():permute'abcd'
+printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_rhs))
+printbr()
+
+
+local R = var'R'
+local R5 = var'\\tilde{R}'
+printbr(R5'^a_bcd':eq( conn5'^a_bd,c' - conn5'^a_bc,d' + conn5'^a_ec'*conn5'^e_bd' - conn5'^a_ed'*conn5'^e_bc' ))
+local Riemann5_rhs = Tensor('^a_bcd', function(a,b,c,d)
+	return (dconn5U_rhs[a][b][d][c]:reindex{
+		[' \\gamma'] = ' \\delta',
+		[' \\delta'] = ' \\gamma',
+	}
+	- dconn5U_rhs[a][b][c][d]
+	+ conn5USq_rhs[a][b][c][d]
+	- conn5USq_rhs[a][b][d][c]:reindex{
+		[' \\gamma'] = ' \\delta',
+		[' \\delta'] = ' \\gamma',
+	})
+	:simplify()
+end)
+
+--[=[
+Riemann5_rhs = Riemann5_rhs
+	:replace( A' _\\beta _,\\delta _,\\gamma', A' _\\beta _,\\gamma _,\\delta')	
+	:replace( A' _\\delta _,\\beta _,\\gamma', F' _\\gamma _\\delta _,\\beta' + A' _\\gamma _,\\beta _,\\delta')
+	:simplify()
+
+-- why isn't replace() working?
+Riemann5_rhs[1][1][1][1] = (Riemann5_rhs[1][1][1][1] 
+	- (
+		conn4' ^\\alpha _\\beta _\\delta _,\\gamma' 
+		- conn4' ^\\alpha _\\beta _\\gamma _,\\delta'
+		+ conn4' ^\\epsilon _\\beta _\\delta' * conn4' ^\\alpha _\\epsilon _\\gamma'
+		- conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\alpha _\\epsilon _\\delta'
+	) + (
+		R' ^\\alpha _\\beta _\\gamma _\\delta'
+	)
+
+	- (
+		frac(1,4) * phi^2 * F' _\\gamma ^\\alpha' * (A' _\\delta _,\\beta' - A' _\\beta _,\\delta')
+	) + (
+		frac(1,4) * phi^2 * F' _\\gamma ^\\alpha' * F' _\\beta _\\delta'
+	)
+
+	- (
+		frac(1,4) * phi^2 * F' _\\delta ^\\alpha' * (A' _\\beta _,\\gamma' - A' _\\gamma _,\\beta')
+	) + (
+		frac(1,4) * phi^2 * F' _\\delta ^\\alpha' * F' _\\gamma _\\beta'
+	)
+
+	- (
+		frac(1,2) * phi^2 * F' _\\beta ^\\alpha' * (A' _\\delta _,\\gamma' - A' _\\gamma _,\\delta')
+	) + (
+		frac(1,2) * phi^2 * F' _\\beta ^\\alpha' * F' _\\gamma _\\delta'
+	)
+)()
+
+Riemann5_rhs[2][1][1][1] = (Riemann5_rhs[2][1][1][1] + (
+		A' _\\mu' * (
+			conn4' ^\\mu _\\beta _\\delta _,\\gamma' 
+			- conn4' ^\\mu _\\beta _\\gamma _,\\delta'
+			+ conn4' ^\\epsilon _\\beta _\\delta' * conn4' ^\\mu _\\epsilon _\\gamma'
+			- conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\mu _\\epsilon _\\delta'
+		)
+	) - (
+		A' _\\mu' * R' ^\\mu _\\beta _\\gamma _\\delta'
+	)
+)()
+--]=]
+
+printbr(R5'^a_bcd':eq(Riemann5_rhs))
 printbr()
 
 
