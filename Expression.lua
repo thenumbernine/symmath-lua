@@ -1,6 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
+local string = require 'ext.string'
 
 local Expression = class()
 
@@ -664,7 +665,7 @@ function Expression:__call(...)
 			if type(indexes[i]) == 'number' then
 				indexes[i] = TensorIndex{
 					lower = self.variance[i].lower,
-					number = indexes[i],
+					symbol = indexes[i],
 				}
 			elseif type(indexes[i]) == 'table' then
 				assert(TensorIndex.is(indexes[i]))
@@ -691,15 +692,32 @@ fwiw this is only being used for subst tensor equalities, which I should automat
 
 action is a dirty hack for using this in conjunction with the metric tensor
 action can be 'raise' or 'lower'
+
+just like with tensor indexes, insert a space in the beginning to denote that you are using multi-char symbols
 --]]
 function Expression:reindex(args, action)
+	-- if we find a space then treat it as space-separated multi-char indexes
+	local function interpret(s)
+		if type(s) == 'number' then return {s} end
+		assert(type(s) == 'string', "expected a string, found "..type(s))
+		if s:find' ' then
+			return string.split(string.trim(s), ' ')
+		else
+			return string.split(s)
+		end
+	end
+	
 	local swaps = table()
 	for k,v in pairs(args) do
-		-- currently only handles single-char symbols
-		-- TODO allow keys to be tables of multi-char symbols
-		assert(#k == #v, "reindex key and value length needs to match.  got "..tostring(k).." with "..#k.." entries vs "..tostring(v).." with "..#v.." entries")
-		for i=1,#k do
-			swaps:insert{src = {symbol=v:sub(i,i)}, dst = {symbol=k:sub(i,i)}}
+		local tk = interpret(k)
+		local tv = interpret(v)
+		
+		if #tk ~= #tv then
+			local tolua = require 'ext.tolua'
+			error("reindex key and value length needs to match.  got "..tolua(tk).." with "..#tk.." entries vs "..tolua(tv).." with "..#tv.." entries")
+		end
+		for i=1,#tk do
+			swaps:insert{src = {symbol=tv[i]}, dst = {symbol=tk[i]}}
 		end
 	end
 	local Tensor = require 'symmath.Tensor'

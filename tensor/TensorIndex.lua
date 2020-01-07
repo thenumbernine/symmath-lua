@@ -8,9 +8,7 @@ function TensorIndex:init(args)
 	self.lower = args.lower or false
 	self.derivative = args.derivative
 	self.symbol = args.symbol
-	assert(type(self.symbol) == 'string' or type(self.symbol) == 'nil')
-	self.number = args.number
-	assert(type(self.number) == 'number' or type(self.number) == 'nil')
+	assert(type(self.symbol) == 'string' or type(self.symbol) == 'number' or type(self.symbol) == 'nil')
 end
 
 function TensorIndex.clone(...)
@@ -21,7 +19,6 @@ function TensorIndex.__eq(a,b)
 	return a.lower == b.lower
 	and a.derivative == b.derivative
 	and a.symbol == b.symbol
-	and a.number == b.number
 end
 
 function TensorIndex:__tostring()
@@ -34,8 +31,6 @@ function TensorIndex:__tostring()
 	if self.lower then s = '_' .. s else s = '^' .. s end
 	if self.symbol then
 		return s .. self.symbol
-	elseif self.number then
-		return s .. self.number
 	else
 		error("TensorIndex expected a symbol or a number")
 	end

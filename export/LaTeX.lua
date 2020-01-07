@@ -366,8 +366,6 @@ LaTeX.lookupTable = {
 		end
 		if expr.symbol then
 			s = s .. expr.symbol
-		elseif expr.number then
-			s = s .. expr.number
 		else
 			error("TensorIndex expected a symbol or a number")
 		end

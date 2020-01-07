@@ -46,7 +46,6 @@ SymMath.lookupTable = {
 		if x.lower then s = s..sep..'lower='..tolua(x.lower) sep=', ' end
 		if x.derivative then s = s..sep..'derivative='..tolua(x.derivative) sep=', ' end
 		if x.symbol then s = s..sep..'symbol='..tolua(x.symbol) sep=', ' end
-		if x.number then s = s..sep..'number='..tolua(x.number) sep=', ' end
 		s = s ..'}'
 		return s
 	end,

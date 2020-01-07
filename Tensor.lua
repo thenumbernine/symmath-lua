@@ -89,8 +89,9 @@ returns table of the following fields for each index:
 	- whether there is a particular kind of derivative associated with this index?  (i.e. comma, semicolon, projection, etc?)
 
 space separated for multi-char symbols/numbers
-	however space-separated means you *must* provide upper/lower prefix before *each* symbol/number
+	However space-separated means you *must* provide upper/lower prefix before *each* symbol/number
 	(TODO fix this)
+	Also how to tell a multi-char symbol that has just a single symbol and doesn't require a space?
 --]]
 function Tensor.parseIndexes(indexes)
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
@@ -101,7 +102,7 @@ function Tensor.parseIndexes(indexes)
 		for i=1,#indexes do
 			if type(indexes[i]) == 'number' then
 				indexes[i] = {
-					number = indexes[i],
+					symbol = indexes[i],
 					derivative = derivative,
 				}
 			elseif type(indexes[i]) == 'table' and getmetatable(indexes[i]) == TensorIndex then
@@ -137,7 +138,7 @@ function Tensor.parseIndexes(indexes)
 				
 				if tonumber(indexes[i]) ~= nil then
 					indexes[i] = TensorIndex{
-						number = tonumber(indexes[i]),
+						symbol = tonumber(indexes[i]),
 						lower = lower,
 						derivative = derivative,
 					}
@@ -155,8 +156,10 @@ function Tensor.parseIndexes(indexes)
 
 	if type(indexes) == 'string' then
 		local indexString = indexes
+		-- space means multi-character
 		if indexString:find(' ') then
-			indexes = handleTable(string.split(indexString,' '))
+			-- special exception for the first space used to tell the parser it is multi-char even without multiple symbols, so trim the string
+			indexes = handleTable(string.split(string.trim(indexString),' '))
 		else
 			local lower = false
 			local derivative = nil
@@ -180,7 +183,7 @@ function Tensor.parseIndexes(indexes)
 					
 					if tonumber(ch) ~= nil then
 						table.insert(indexes, TensorIndex{
-							number = tonumber(ch),
+							symbol = tonumber(ch),
 							lower = lower,
 							derivative = derivative,
 						})
@@ -201,7 +204,7 @@ function Tensor.parseIndexes(indexes)
 	end
 	
 	for i,index in ipairs(indexes) do
-		assert(index.number or index.symbol, "index missing number or symbol")
+		assert(index.symbol, "index missing symbol")
 	end
 	
 	return indexes

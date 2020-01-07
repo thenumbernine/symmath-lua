@@ -176,7 +176,6 @@ TensorRef.rules = {
 						end
 
 						t.variance[i].symbol = indexes[i].symbol
-						t.variance[i].number = indexes[i].number
 					end
 				end
 			end
@@ -238,15 +237,15 @@ TensorRef.rules = {
 			-- handle specific number/variable indexes
 			do
 				local foundNumbers = table.find(indexes, nil, function(index)
-					return index.number
+					return type(index.symbol) == 'number'
 				end)
 				if foundNumbers then
 					local newdim = t:dim()
 					local srcIndexes = {table.unpack(indexes)}
 					local sis = {}
 					for i=#newdim,1,-1 do
-						if indexes[i].number then
-							sis[i] = indexes[i].number
+						if type(indexes[i].symbol) == 'number' then
+							sis[i] = indexes[i].symbol
 							table.remove(indexes, i)
 							table.remove(newdim, i)
 						end
@@ -282,7 +281,7 @@ TensorRef.rules = {
 			t = t:simplifyTraces()
 			if Tensor.is(t) then 
 				for i,index in ipairs(t.variance) do
-					assert(index.number or index.symbol, "failed to find index on "..i.." of "..#t.variance)
+					assert(index.symbol, "failed to find index on "..i.." of "..#t.variance)
 				end	
 			end
 			return prune(t)

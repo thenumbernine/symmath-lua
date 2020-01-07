@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Kaluza-Klein - index notation</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+Kaluza-Klein with constant scalar field<br>
+<br>
+
+unit coordinate convention: $dx^0 = c dt$<br>
+<br>
+
+$1 = c =$ speed of light<br>
+$1 = G =$ gravitational constant<br>
+$1 = k_e =$ Coulomb's constant<br>
+<br>
+
+<br>
+${ A}_u$	= electromagnetic four-potential, in units	$\frac{{{kg}} \cdot {{m}}}{{{C}} {{s}}}$
+<br>
+${{ A}_5} = {1}$	in natural units, but to cancel the units of $\phi$ it is in units of	$\frac{{{kg}} \cdot {{m}}}{{{C}} {{s}}}$
+<br>
+
+<br>
+$\phi$	= scalar field, in units	$\frac{{{C}} {{s}}}{{{kg}} \cdot {{m}}}$
+<br>
+
+<br>
+${{ g}_{\mu}}_{\nu}$	= 4D metric tensor, with units 1
+<br>
+${{ g}^{\mu}}^{\nu}$	= 4D metric inverse
+<br>
+
+<br>
+${{ \tilde{g}}_u}_v$	= 5D metric tensor
+<br>
+${{{ \tilde{g}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ \tilde{g}}_{\alpha}}_{\beta} &  {{ \tilde{g}}_{\alpha}}_5 \\  {{ \tilde{g}}_5}_{\beta} &  {{ \tilde{g}}_5}_5\end{matrix}\right]}}$
+<br>
+${{{ \tilde{g}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{ g}_{\alpha}}_{\beta}} + {{{{{{\phi}^{2}}} {{{ A}_{\alpha}}}}} {{{ A}_{\beta}}}} &  {{{{{\phi}^{2}}} {{{ A}_{\alpha}}}}} {{{ A}_5}} \\  {{{{{\phi}^{2}}} {{{ A}_{\beta}}}}} {{{ A}_5}} &  {{{\phi}^{2}}} {{{{ A}_5}^{2}}}\end{matrix}\right]}}$
+<br>
+Notice that I included the $A_5$ terms to show the units align.  From here on I will omit them since their value is 1.
+<br>
+${{{ \tilde{g}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{ g}_{\alpha}}_{\beta}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}}} &  {{{\phi}^{2}}} {{{ A}_{\alpha}}} \\  {{{\phi}^{2}}} {{{ A}_{\beta}}} &  {\phi}^{2}\end{matrix}\right]}}$
+<br>
+
+<br>
+${{ \tilde{g}}^u}^v$	= 5D metric inverse
+<br>
+${{{ \tilde{g}}^a}^b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ g}^{\alpha}}^{\beta} &   {-{{{ g}^{\alpha}}^{\mu}}} {{{ A}_{\mu}}} \\   {-{{{ g}^{\beta}}^{\mu}}} {{{ A}_{\mu}}} &  {{{{{{{ g}^{\mu}}^{\nu}}} {{{ A}_{\mu}}}}} {{{ A}_{\nu}}}} + {\frac{1}{{\phi}^{2}}}\end{matrix}\right]}}$
+<br>
+Notice, if you see a raised 4-index, it is being raised by the 4-metric and not the 5-metric.
+<br>
+${{{ \tilde{g}}^a}^b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ g}^{\alpha}}^{\beta} &  -{{ A}^{\alpha}} \\  -{{ A}^{\beta}} &  {{{{ A}_{\mu}}} {{{ A}^{\mu}}}} + {\frac{1}{{\phi}^{2}}}\end{matrix}\right]}}$
+<br>
+
+<br>
+The cylindrical constraint is
+<br>
+${{{{ \tilde{g}}_a}_b}_{,5}} = {0}$
+<br>
+Therefore
+<br>
+${\left[\begin{matrix}  {{{{ g}_{\alpha}}_{\beta}}_{,5}} + {{{{\phi}^{2}}} {{{ A}_{\alpha}}} {{{{ A}_{\beta}}_{,5}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{{ A}_{\alpha}}_{,5}}}} + {{{2}} {{\phi}} \cdot {{{ A}_{\beta}}} {{{ \phi}_{,5}}} {{{ A}_{\alpha}}}} &  {{\phi}} \cdot {{({{{{\phi}} \cdot {{{{ A}_{\alpha}}_{,5}}}} + {{{2}} {{{ \phi}_{,5}}} {{{ A}_{\alpha}}}}})}} \\  {{\phi}} \cdot {{({{{{\phi}} \cdot {{{{ A}_{\beta}}_{,5}}}} + {{{2}} {{{ A}_{\beta}}} {{{ \phi}_{,5}}}}})}} &  {{2}} {{\phi}} \cdot {{{ \phi}_{,5}}}\end{matrix}\right]} = {0}$
+<br>
+Therefore
+<br>
+${{ \phi}_{,5}} = {0}$
+<br>
+${{{ A}_{\mu}}_{,5}} = {0}$
+<br>
+${{{{ g}_{\alpha}}_{\beta}}_{,5}} = {0}$
+<br>
+
+<br>
+For now I'll use a constant scalar as well
+<br>
+${{ \phi}_{,a}} = {0}$
+<br>
+
+<br>
+metric partial:
+<br>
+${{{{ \tilde{g}}_a}_b}_{,c}} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{{ g}_{\alpha}}_{\beta}}_{,c}} + {{{{\phi}^{2}}} {{{ A}_{\alpha}}} {{{{ A}_{\beta}}_{,c}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{{ A}_{\alpha}}_{,c}}}} &  {{{\phi}^{2}}} {{{{ A}_{\alpha}}_{,c}}} \\  {{{\phi}^{2}}} {{{{ A}_{\beta}}_{,c}}} &  0\end{matrix}\right]}}$
+<br>
+${{{{ \tilde{g}}_a}_b}_{,c}} = {\overset{c\downarrow[{a\downarrow b\rightarrow}]}{\left[\begin{matrix} \overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{{ g}_{\alpha}}_{\beta}}_{,\gamma}} + {{{{\phi}^{2}}} {{{ A}_{\alpha}}} {{{{ A}_{\beta}}_{,\gamma}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{{ A}_{\alpha}}_{,\gamma}}}} &  {{{\phi}^{2}}} {{{{ A}_{\alpha}}_{,\gamma}}} \\  {{{\phi}^{2}}} {{{{ A}_{\beta}}_{,\gamma}}} &  0\end{matrix}\right]} \\ \overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}\end{matrix}\right]}}$
+<br>
+
+<br>
+lower connection
+<br>
+${{{{ \tilde{\Gamma}}_a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \overset{b\downarrow c\rightarrow}{\left[\begin{matrix}  {\frac{1}{2}}{({{{{{ g}_{\alpha}}_{\beta}}_{,\gamma}} + {{{{{ g}_{\alpha}}_{\gamma}}_{,\beta}} - {{{{ g}_{\beta}}_{\gamma}}_{,\alpha}}} + {{{{\phi}^{2}}} {{{ A}_{\alpha}}} {{{{ A}_{\beta}}_{,\gamma}}}} + {{{{\phi}^{2}}} {{{ A}_{\alpha}}} {{{{ A}_{\gamma}}_{,\beta}}}} + {{{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{{ A}_{\alpha}}_{,\gamma}}}} - {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{{ A}_{\gamma}}_{,\alpha}}}}} + {{{{{\phi}^{2}}} {{{ A}_{\gamma}}} {{{{ A}_{\alpha}}_{,\beta}}}} - {{{{\phi}^{2}}} {{{ A}_{\gamma}}} {{{{ A}_{\beta}}_{,\alpha}}}}}})} &  {\frac{1}{2}}{({{{{\phi}^{2}}} {{({{{{ A}_{\alpha}}_{,\beta}} - {{{ A}_{\beta}}_{,\alpha}}})}}})} \\  {\frac{1}{2}}{({{{{\phi}^{2}}} {{({{{{ A}_{\alpha}}_{,\gamma}} - {{{ A}_{\gamma}}_{,\alpha}}})}}})} &  0\end{matrix}\right]} \\ \overset{b\downarrow c\rightarrow}{\left[\begin{matrix}  {\frac{1}{2}}{({{{{\phi}^{2}}} {{({{{{ A}_{\beta}}_{,\gamma}} + {{{ A}_{\gamma}}_{,\beta}}})}}})} &  0 \\  0 &  0\end{matrix}\right]}\end{matrix}\right]}}$
+<br>
+${{{{ \tilde{\Gamma}}_a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \overset{b\downarrow c\rightarrow}{\left[\begin{matrix}  {\frac{1}{2}}{({{{{2}} {{{{{ \Gamma}_{\alpha}}_{\beta}}_{\gamma}}}} + {{{{\phi}^{2}}} {{{ A}_{\alpha}}} {{{{ A}_{\beta}}_{,\gamma}}}} + {{{{\phi}^{2}}} {{{ A}_{\alpha}}} {{{{ A}_{\gamma}}_{,\beta}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{{ F}_{\gamma}}_{\alpha}}}} + {{{{\phi}^{2}}} {{{ A}_{\gamma}}} {{{{ F}_{\beta}}_{\alpha}}}}})} &  {\frac{1}{2}}{({{{{\phi}^{2}}} {{{{ F}_{\beta}}_{\alpha}}}})} \\  {\frac{1}{2}}{({{{{\phi}^{2}}} {{{{ F}_{\gamma}}_{\alpha}}}})} &  0\end{matrix}\right]} \\ \overset{b\downarrow c\rightarrow}{\left[\begin{matrix}  {\frac{1}{2}}{({{{{\phi}^{2}}} {{({{{{ A}_{\beta}}_{,\gamma}} + {{{ A}_{\gamma}}_{,\beta}}})}}})} &  0 \\  0 &  0\end{matrix}\right]}\end{matrix}\right]}}$
+<br>
+
+<br>
+upper connection
+<br>
+${{{{ \tilde{\Gamma}}^a}_b}_c} = {{{{{ \overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ g}^{\alpha}}^{\epsilon} &  -{{ A}^{\alpha}} \\  -{{ A}^{\epsilon}} &  {{{{ A}_{\mu}}} {{{ A}^{\mu}}}} + {\frac{1}{{\phi}^{2}}}\end{matrix}\right]}}^a}^e}} {{{{{ \overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \overset{b\downarrow c\rightarrow}{\left[\begin{matrix}  {\frac{1}{2}}{({{{{2}} {{{{{ \Gamma}_{\epsilon}}_{\beta}}_{\gamma}}}} + {{{{\phi}^{2}}} {{{ A}_{\epsilon}}} {{{{ A}_{\beta}}_{,\gamma}}}} + {{{{\phi}^{2}}} {{{ A}_{\epsilon}}} {{{{ A}_{\gamma}}_{,\beta}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{{ F}_{\gamma}}_{\epsilon}}}} + {{{{\phi}^{2}}} {{{ A}_{\gamma}}} {{{{ F}_{\beta}}_{\epsilon}}}}})} &  {\frac{1}{2}}{({{{{\phi}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}}})} \\  {\frac{1}{2}}{({{{{\phi}^{2}}} {{{{ F}_{\gamma}}_{\epsilon}}}})} &  0\end{matrix}\right]} \\ \overset{b\downarrow c\rightarrow}{\left[\begin{matrix}  {\frac{1}{2}}{({{{{\phi}^{2}}} {{({{{{ A}_{\beta}}_{,\gamma}} + {{{ A}_{\gamma}}_{,\beta}}})}}})} &  0 \\  0 &  0\end{matrix}\right]}\end{matrix}\right]}}_e}_b}_c}}}$
+<br>
+${{{{ \tilde{\Gamma}}^a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  {\frac{1}{2}}{({{{{{{2}} {{{{ g}^{\alpha}}^{\epsilon}}} {{{{{ \Gamma}_{\epsilon}}_{\beta}}_{\gamma}}}} - {{{{\phi}^{2}}} {{{ A}^{\alpha}}} {{{{ A}_{\beta}}_{,\gamma}}}}} - {{{{\phi}^{2}}} {{{ A}^{\alpha}}} {{{{ A}_{\gamma}}_{,\beta}}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{{ F}_{\gamma}}_{\epsilon}}} {{{{ g}^{\alpha}}^{\epsilon}}}} + {{{{\phi}^{2}}} {{{ A}_{\epsilon}}} {{{{ A}_{\beta}}_{,\gamma}}} {{{{ g}^{\alpha}}^{\epsilon}}}} + {{{{\phi}^{2}}} {{{ A}_{\epsilon}}} {{{{ A}_{\gamma}}_{,\beta}}} {{{{ g}^{\alpha}}^{\epsilon}}}} + {{{{\phi}^{2}}} {{{ A}_{\gamma}}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ g}^{\alpha}}^{\epsilon}}}}})} &  {\frac{1}{2}}{({{{{{ g}^{\alpha}}^{\epsilon}}} {{{\phi}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}}})} \\  {\frac{1}{2}}{({{{{{ g}^{\alpha}}^{\epsilon}}} {{{\phi}^{2}}} {{{{ F}_{\gamma}}_{\epsilon}}}})} &  0\end{matrix}\right] \\ \left[\begin{matrix}  {\frac{1}{2}}{({-{({{{{{{2}} {{{ A}^{\epsilon}}} {{{{{ \Gamma}_{\epsilon}}_{\beta}}_{\gamma}}}} - {{{ A}_{\beta}}_{,\gamma}}} - {{{ A}_{\gamma}}_{,\beta}}} + {{{{\phi}^{2}}} {{{ A}^{\epsilon}}} {{{ A}_{\epsilon}}} {{{{ A}_{\beta}}_{,\gamma}}}} + {{{{{{\phi}^{2}}} {{{ A}^{\epsilon}}} {{{ A}_{\epsilon}}} {{{{ A}_{\gamma}}_{,\beta}}}} - {{{{\phi}^{2}}} {{{ A}^{\mu}}} {{{ A}_{\mu}}} {{{{ A}_{\beta}}_{,\gamma}}}}} - {{{{\phi}^{2}}} {{{ A}^{\mu}}} {{{ A}_{\mu}}} {{{{ A}_{\gamma}}_{,\beta}}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{ A}^{\epsilon}}} {{{{ F}_{\gamma}}_{\epsilon}}}} + {{{{\phi}^{2}}} {{{ A}_{\gamma}}} {{{ A}^{\epsilon}}} {{{{ F}_{\beta}}_{\epsilon}}}}})}})} &  {\frac{1}{2}}{({-{{{{ A}^{\epsilon}}} {{{\phi}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}}}})} \\  {\frac{1}{2}}{({-{{{{ A}^{\epsilon}}} {{{\phi}^{2}}} {{{{ F}_{\gamma}}_{\epsilon}}}}})} &  0\end{matrix}\right]\end{matrix}\right]}}$
+<br>
+${{{{ \tilde{\Gamma}}^a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  {\frac{1}{2}}{({{{{2}} {{{{{ \Gamma}^{\alpha}}_{\beta}}_{\gamma}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{{ F}_{\gamma}}^{\alpha}}}} + {{{{\phi}^{2}}} {{{ A}_{\gamma}}} {{{{ F}_{\beta}}^{\alpha}}}}})} &  {\frac{1}{2}}{({{{{\phi}^{2}}} {{{{ F}_{\beta}}^{\alpha}}}})} \\  {\frac{1}{2}}{({{{{\phi}^{2}}} {{{{ F}_{\gamma}}^{\alpha}}}})} &  0\end{matrix}\right] \\ \left[\begin{matrix}  {\frac{1}{2}}{({-{({{{{{{2}} {{{ A}^{\epsilon}}} {{{{{ \Gamma}_{\epsilon}}_{\beta}}_{\gamma}}}} - {{{ A}_{\beta}}_{,\gamma}}} - {{{ A}_{\gamma}}_{,\beta}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{ A}^{\epsilon}}} {{{{ F}_{\gamma}}_{\epsilon}}}} + {{{{\phi}^{2}}} {{{ A}_{\gamma}}} {{{ A}^{\epsilon}}} {{{{ F}_{\beta}}_{\epsilon}}}}})}})} &  {\frac{1}{2}}{({-{{{{ A}^{\epsilon}}} {{{\phi}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}}}})} \\  {\frac{1}{2}}{({-{{{{ A}^{\epsilon}}} {{{\phi}^{2}}} {{{{ F}_{\gamma}}_{\epsilon}}}}})} &  0\end{matrix}\right]\end{matrix}\right]}}$
+<br>
+
+<br>
+geodesic
+<br>
+${{{ \ddot{x}}^a} + {{{{{{{{ \tilde{\Gamma}}^a}_b}_c}} {{{ \dot{x}}^b}}}} {{{ \dot{x}}^c}}}} = {0}$
+<br>
+${{{ \ddot{x}}^a} + {{{{{ \dot{x}}^5}^{2}}} {{{{{ \tilde{\Gamma}}^{\alpha}}_5}_5}}} + {{{2}} {{{ \dot{x}}^5}} {{{ \dot{x}}^{\beta}}} {{{{{ \tilde{\Gamma}}^{\alpha}}_{\beta}}_5}}} + {{{{ \dot{x}}^{\beta}}} {{{ \dot{x}}^{\gamma}}} {{{{{ \tilde{\Gamma}}^{\alpha}}_{\beta}}_{\gamma}}}}} = {0}$
+<br>
+${{{ \ddot{x}}^a} + {{{{ \dot{x}}^{\beta}}} {{{ \dot{x}}^{\gamma}}} {{{{{ \Gamma}^{\alpha}}_{\beta}}_{\gamma}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{ \dot{x}}^{\beta}}} {{{ \dot{x}}^{\gamma}}} {{{{ F}_{\gamma}}^{\alpha}}}} + {{{{\phi}^{2}}} {{{ \dot{x}}^5}} {{{ \dot{x}}^{\beta}}} {{{{ F}_{\beta}}^{\alpha}}}}} = {0}$
+<br>
+Let $\dot{x}^5 = \frac{q}{m}$
+<br>
+${{{ \ddot{x}}^a} + {{{{ \dot{x}}^{\beta}}} {{{ \dot{x}}^{\gamma}}} {{{{{ \Gamma}^{\alpha}}_{\beta}}_{\gamma}}}} + {{{{\phi}^{2}}} {{{ A}_{\beta}}} {{{ \dot{x}}^{\beta}}} {{{ \dot{x}}^{\gamma}}} {{{{ F}_{\gamma}}^{\alpha}}}} + {{{\frac{q}{m}}} \cdot {{{\phi}^{2}}} {{{ \dot{x}}^{\beta}}} {{{{ F}_{\beta}}^{\alpha}}}}} = {0}$
+<br>
+
+<br>
+There you have gravitational force, Lorentz force, and some extra terms.
+<br>
+
+<br>
+
+<br>
+
+<br>
+	</body>
+</html>
+
