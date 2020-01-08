@@ -215,11 +215,18 @@ function Expression:substIndex(...)
 	return result
 end
 
+-- by default use a-z for index symbols
+local latinSymbols = range(1,26):mapi(function(i)
+	return string.char(('a'):byte()+i-1)
+end)
+
 --[[
 this is like replace()
 except for TensorRefs it pattern matches indexes
+args =
+	symbols = list of symbols to pick from when we need a new symbol.  default is latin lowercase letters.
 --]]
-function Expression:replaceIndex(find, repl, cond)
+function Expression:replaceIndex(find, repl, cond, args)
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	
 	local rfindsymbols = table()
@@ -330,13 +337,12 @@ printbr('replsymbols', replsymbols:unpack())
 					for _,s in ipairs(xsymbols) do already[s] = true end
 					for _,s in ipairs(newsumsymbols) do already[s] = true end
 					for _,s in ipairs(newsumusedalready) do already[s] = true end
-					
-					local first = 0--math.max(0, table.keys(already):inf():byte() - ('a'):byte())
-					
+				
+					-- TODO determine new from last used previous symbol?
 					-- TODO pick symbols from the basis associated with the to-be-replaced index
-					-- that means excluding those from all other basis
-					for i=0,25 do
-						local p = string.char(('a'):byte()+(i+first)%26)
+					-- 	that means excluding those from all other basis
+					local allsymbols = args and args.symbols or latinSymbols
+					for _,p in ipairs(allsymbols) do
 						if not already[p] then
 							return p
 						end
@@ -378,15 +384,24 @@ TODO use case
 K^a_a + K^b_b => K^a_a + K^a_a => 2 K^a_a
 a^ij (b_jk + c_jk) shouldn't change ...
 a_ijk b^jk + a_ilm b^lm => a_ijk b^jk + a_ijk b^jk => 2 a_jik b^jk
+
+args =
+	symbols = list of symbols to pick from when we need a new symbol.  default is latin lowercase letters.
 --]]
-function Expression:tidyIndexes()
+function Expression:tidyIndexes(args)
 	-- process each part of an equation independently
 	local symmath = require 'symmath'
-	local Equation = symmath.op.Equation
-	if Equation.is(self) then
-		return getmetatable(self)(self[1]:tidyIndexes(), self[2]:tidyIndexes())
+
+	if symmath.Array.is(self) 
+	or symmath.op.Equation.is(self)
+	then
+		local cl = self:clone()
+		for i=1,#cl do
+			cl[i] = cl[i]:tidyIndexes(args)
+		end
+		return cl
 	end
-	
+
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	local Verbose = symmath.export.Verbose
 	local unm = symmath.op.unm
@@ -542,6 +557,17 @@ function Expression:tidyIndexes()
 	end
 	local fixed, summed = rmap(self, nil, nil, table())
 
+	if args and args.fixed then
+		local Tensor = require 'symmath.Tensor'
+		fixed = fixed:append(
+			table.mapi(Tensor.parseIndexes(
+				args.fixed
+			), function(index)
+				return index.symbol
+			end)
+		)
+	end
+
 
 	local expr = self
 --[[
@@ -556,8 +582,8 @@ end
 --]]	
 	local function getnewsymbol(repl)
 		local replexpr = repl.parent and repl.parent[repl.childIndex] or expr
-		for i=1,26 do
-			local symbol = string.char( ('a'):byte() + i-1 )
+		local allsymbols = args and args.symbols or latinSymbols
+		for _,symbol in ipairs(allsymbols) do
 			if not summed:find(symbol)
 			and not fixed:find(symbol)
 			and (not repl.block or not repl.block:find(symbol))
@@ -694,6 +720,9 @@ action is a dirty hack for using this in conjunction with the metric tensor
 action can be 'raise' or 'lower'
 
 just like with tensor indexes, insert a space in the beginning to denote that you are using multi-char symbols
+
+args = 
+	[to] = from
 --]]
 function Expression:reindex(args, action)
 	-- if we find a space then treat it as space-separated multi-char indexes

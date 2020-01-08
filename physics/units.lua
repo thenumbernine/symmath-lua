@@ -25,7 +25,7 @@ return function(args)
 			-- env
 			x = rawget(env,k)
 			if x ~= nil then return x end
-			-- symmath	
+			-- symmath
 			if k ~= 'tostring' then	
 				x = rawget(symmath,k)
 				if x ~= nil then return x end

@@ -28,9 +28,18 @@ function TensorRef:hasIndex(symbol)
 	return false
 end
 
-function TensorRef:hasDerivIndex(symbol)
+--[[
+hasDerivIndex() return true if any indexes are derivatives
+hasDerivIndex(sym1, sym2, ... symN) returns true if any index is a derivative and has a symbol matching sym1...symN
+--]]
+function TensorRef:hasDerivIndex(...)
+	local symbols = table{...}
 	for i=2,#self do
-		if self[i].symbol == symbol and self[i].derivative then return true end
+		if self[i].derivative then 
+			if #symbols == 0 or symbols:find(self[i].symbol) then
+				return true 
+			end
+		end
 	end
 	return false
 end

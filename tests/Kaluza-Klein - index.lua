@@ -2,35 +2,50 @@
 require 'ext'
 require 'symmath'.setup{MathJax={title='Kaluza-Klein - index notation'}}
 
+-- this sets simplifyConstantPowers 
+local units = require 'symmath.physics.units'()
+
+-- units
+local m = units.m
+local s = units.s
+local kg = units.kg
+local C = units.C
+
+
+
 printbr[[
 Kaluza-Klein with constant scalar field<br>
 <br>
 
 unit coordinate convention: $dx^0 = c dt$<br>
 <br>
-
-$1 = c =$ speed of light<br>
-$1 = G =$ gravitational constant<br>
-$1 = k_e =$ Coulomb's constant<br>
-<br>
 ]]
+
+printbr(units.c_in_m_s, '= 1 = speed of light')
+printbr(units.G_in_SI, ' = 1 = gravitational constant')
+printbr(units.k_e_in_SI_and_C, " = 1 = Coulomb's constant")
+
+local kg_C_eq_1 = sqrt( units.k_e_in_SI_and_C:rhs() / units.G_in_SI:rhs() )():eq(1)
+printbr(sqrt(units.k_e / units.G):eq( kg_C_eq_1 ), ' = conversion from kg to C')
+local kg_in_C = kg_C_eq_1:solve(kg)
+printbr(kg_in_C)
+
 
 Tensor.coords{{variables={'txyz','5'}}}
 
--- units
-local m = var'm'
-local s = var's'
-local kg = var'kg'
-local C = var'C'
-
 local A = var'A'
 printbr(A'_u', '= electromagnetic four-potential, in units', (kg*m)/(C*s))
-printbr(A'_5':eq(1), 'in natural units, but to cancel the units of $\\phi$ it is in units of', (kg*m)/(C*s))
+printbr(A'_5':eq(1), 'in natural units, but to cancel the units of $\\phi$ it is in units of', (kg*m)/(C*s),
+	'so $A_5 = c \\sqrt{\\frac{k_e}{G}} = $', (units.c_in_m_s:rhs() * sqrt(units.k_e_in_SI_and_C:rhs() / units.G_in_SI:rhs()))():factorDivision() )
 printbr()
 
 local phi = var'\\phi'
 printbr(phi, '= scalar field, in units', (C*s)/(kg*m))
 printbr()
+
+
+symmath.simplifyConstantPowers = false
+
 
 local g = var'g'
 printbr(g'_\\mu _\\nu', '= 4D metric tensor, with units 1')
@@ -56,7 +71,7 @@ local g5_def = Tensor('_ab',
 -- make sure to wrap the variable and indexes in ()'s
 printbr(g5'_ab':eq(g5_def))
 
---[[
+--[[ omit A_5
 printbr'Notice that I included the $A_5$ terms to show the units align.  From here on I will omit them since their value is 1.'
 
 g5_def = g5_def:replace(A'_5', 1)()
@@ -76,18 +91,38 @@ printbr(g5'^ab':eq(g5U_def))
 printbr'Notice, if you see a raised 4-index, it is being raised by the 4-metric and not the 5-metric.'
 
 local g5U_def = Tensor('^ab',
-	{g'^\\alpha ^\\beta', -A' ^\\alpha'},
-	{-A' ^\\beta', A' _\\mu' * A' ^\\mu' + 1/phi^2}
+	{g'^\\alpha ^\\beta', -A' ^\\alpha' / A'_5'},
+	{-A' ^\\beta' / A'_5', (A' _\\mu' * A' ^\\mu' + phi^-2)  * (A'_5')^-2}
 )
 printbr(g5'^ab':eq(g5U_def))
 printbr()
 
+local greekSymbols = symmath.export.Console.greekSymbols
+--[[
+:sort(function(a,b)
+	return a < b
+end)
+--]]
+:filter(function(s)
+	return s:match'^[a-z]'
+end):mapi(function(s)
+	return '\\'..s
+end)
 
+local delta = var'\\delta'
 printbr((g5'_ac' * g5'^cb'):eq( (
-	g5_def'_ac'():reindex{ [' \\gamma'] = ' \\beta'}
-	* g5U_def'_cb'():reindex{ [' \\gamma'] = ' \\alpha'}
-)() ))
+		g5_def'_ac'():reindex{ [' \\gamma'] = ' \\beta'}
+		* g5U_def'^cb'():reindex{ [' \\gamma'] = ' \\alpha'}
+	)() 
+		:replace(A' _\\gamma' * g' ^\\gamma ^\\beta', A' ^\\beta')()
+	--	:replace(A' _\\gamma' * A' ^\\gamma', A' _\\mu' * A' ^\\mu')()
+		:replace(A' ^\\gamma' * g' _\\alpha _\\gamma', A' _\\alpha')()
+		:replace(g' ^\\gamma ^\\beta' * g' _\\alpha _\\gamma', delta' _\\alpha ^\\beta')()
+	)
+	:tidyIndexes{symbols=greekSymbols, fixed='\\alpha \\beta'}
+)
 printbr()
+
 
 printbr'The cylindrical constraint is'
 local cylConstraint = g5'_ab,5':eq(0)
@@ -99,7 +134,7 @@ printbr'Therefore'
 printbr(Array:lambda({2,2}, function(a,b) return g5_def[a][b]'_,5'() end):eq(0))
 
 -- TODO this can be derived, in order its presented, using the matrix equality
-printbr'Therefore'
+printbr'Therefore, if $A_{5,5} = 0$ then we find:'
 printbr(phi'_,5':eq(0))
 printbr(A' _\\mu _,5':eq(0))
 printbr(g' _\\alpha _\\beta _,5':eq(0))
@@ -122,12 +157,12 @@ local dg5_def = Tensor('_cab', function(c,a,b)
 		return dg5_2x2_def[a][b]:reindex{[' \\gamma']='c'}
 	elseif c == 2 then
 		return dg5_2x2_def[a][b]:reindex{[5]='c'}():map(function(x)
-			if TensorRef.is(x) and x:hasDerivIndex(5) then
-				return 0
-			end
+			if TensorRef.is(x) and x:hasDerivIndex(5) then return 0 end
 		end)()
 	end
-end)
+end):map(function(x)
+	if TensorRef.is(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
+end)()
 printbr(g5'_ab,c':eq(dg5_def))
 printbr()
 
@@ -224,8 +259,6 @@ printbr(conn5'^a_bc':eq(conn5U_def))
 printbr()
 
 
-os.exit()
-
 
 local d2x_ds2 = var'\\ddot{x}'
 local dx_ds = var'\\dot{x}'
@@ -265,12 +298,21 @@ geodesicEqn = geodesicEqn:replace(
 )()
 printbr(geodesicEqn)
 
-printbr'Let $\\dot{x}^5 = \\frac{q}{m}$'
+printbr'Let $\\dot{x}^5 = \\frac{q}{m} \\sqrt{\\frac{k_e}{G}}$'
 geodesicEqn = geodesicEqn:replace(
 	dx_ds'^5',
-	var'\\frac{q}{m}'	--frac(var'q', var'm')	-- using a var so it doesn't combine with other terms
+	var'\\frac{q}{m} \\sqrt{\\frac{k_e}{G}}'	--frac(var'q', var'm')	-- using a var so it doesn't combine with other terms
 )()
 printbr(geodesicEqn)
+
+printbr('For an electron,', units.m_e_in_kg, ',', units.e_in_C)
+
+-- TODO like maxima, :simplify{scopeVars}
+symmath.simplifyConstantPowers = true
+printbr('so $\\frac{q}{m} \\sqrt{\\frac{k_e}{G}} = $', 
+	(units.e_in_C:rhs() / units.m_e_in_kg:rhs()):subst(kg_in_C)()
+)
+symmath.simplifyConstantPowers = false
 
 printbr()
 printbr'There you have gravitational force, Lorentz force, and an extra term.'
@@ -281,7 +323,9 @@ printbr'connection partial:'
 local dconn5_2x2x2_def = Tensor('^a_bc', function(a,b,c)
 	return conn5U_def[a][b][c]',d'()
 		:replace(phi'_,d', 0)()
-		:replace(phi'_,d', 0)()
+		:map(function(x)
+			if TensorRef.is(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
+		end)()
 end)
 printbr(conn5'^a_bc,d':eq(dconn5_2x2x2_def))
 
@@ -289,24 +333,11 @@ local dconn5U_def = Tensor('^a_bcd', function(a,b,c,d)
 	if d == 1 then
 		return dconn5_2x2x2_def[a][b][c]:reindex{[' \\delta']='d'}
 	elseif d == 2 then
-		return dconn5_2x2x2_def[a][b][c]
-			:reindex{[5]='d'}
-			:replace(conn4' ^\\alpha _\\beta _\\gamma _,5', 0)
-			:replace(conn4' ^\\mu _\\beta _\\gamma _,5', 0)
-			:replace(conn4' _\\mu _\\beta _\\gamma _,5', 0)
-			:replace(A' _\\beta _,5', 0)
-			:replace(A' _\\gamma _,5', 0)
-			:replace(A' _\\mu _,5', 0)
-			:replace(A' ^\\mu _,5', 0)
-			:replace(A' _\\beta _,\\gamma _,5', 0)
-			:replace(A' _\\gamma _,\\beta _,5', 0)
-			:replace(F' _\\beta _\\mu _,5', 0)
-			:replace(F' _\\gamma _\\mu _,5', 0)
-			:replace(F' _\\gamma ^\\alpha _,5', 0)
-			:replace(F' _\\beta ^\\alpha _,5', 0)
-			:simplify()
+		return dconn5_2x2x2_def[a][b][c]:reindex{[5]='d'}
 	end
-end)
+end):map(function(x)
+	if TensorRef.is(x) and x:hasDerivIndex(5) then return 0 end
+end)()
 printbr(conn5'^a_bc,d':eq(dconn5U_def))
 printbr()
 
@@ -319,6 +350,7 @@ local conn5USq_def =
 		:reindex{
 			[' \\epsilon'] = ' \\alpha',
 			[' \\delta'] = ' \\gamma',
+			[' \\nu'] = ' \\mu',
 		}
 printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_def))
 conn5USq_def = conn5USq_def():permute'abcd'
@@ -349,35 +381,35 @@ Riemann5_def = Riemann5_def
 	:replace( A' _\\delta _,\\beta _,\\gamma', F' _\\gamma _\\delta _,\\beta' + A' _\\gamma _,\\beta _,\\delta')
 	:simplify()
 
--- why isn't replace() working?
-Riemann5_def[1][1][1][1] = (Riemann5_def[1][1][1][1] 
-	- (
-		conn4' ^\\alpha _\\beta _\\delta _,\\gamma' 
-		- conn4' ^\\alpha _\\beta _\\gamma _,\\delta'
-		+ conn4' ^\\epsilon _\\beta _\\delta' * conn4' ^\\alpha _\\epsilon _\\gamma'
-		- conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\alpha _\\epsilon _\\delta'
-	) + (
+Riemann5_def = Riemann5_def
+	:replace(
+		conn4' ^\\alpha _\\beta _\\delta _,\\gamma',
 		R' ^\\alpha _\\beta _\\gamma _\\delta'
-	)
+		+ conn4' ^\\alpha _\\beta _\\gamma _,\\delta'
+		- conn4' ^\\epsilon _\\beta _\\delta' * conn4' ^\\alpha _\\epsilon _\\gamma'
+		+ conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\alpha _\\epsilon _\\delta'
+	)()
+	:replace(
+		A' _\\delta _,\\beta',
+		F' _\\beta _\\delta' + A' _\\beta _,\\delta'
+	)()
+	:replace(
+		A' _\\beta _,\\gamma',
+		F' _\\gamma _\\beta' + A' _\\gamma _,\\beta'
+	)()
+	:replace(
+		A' _\\delta _,\\gamma',
+		F' _\\gamma _\\delta' + A' _\\gamma _,\\delta'
+	)()
+	:replace(
+		A' _\\mu' * conn4' ^\\mu _\\beta _\\delta _,\\gamma' ,
+		A' _\\mu' * R' ^\\mu _\\beta _\\gamma _\\delta'
+		+ A' _\\mu' * conn4' ^\\mu _\\beta _\\gamma _,\\delta'
+		- A' _\\mu' * conn4' ^\\epsilon _\\beta _\\delta' * conn4' ^\\mu _\\epsilon _\\gamma'
+		+ A' _\\mu' * conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\mu _\\epsilon _\\delta'
+	)()
 
-	- (
-		frac(1,4) * phi^2 * F' _\\gamma ^\\alpha' * (A' _\\delta _,\\beta' - A' _\\beta _,\\delta')
-	) + (
-		frac(1,4) * phi^2 * F' _\\gamma ^\\alpha' * F' _\\beta _\\delta'
-	)
-
-	- (
-		frac(1,4) * phi^2 * F' _\\delta ^\\alpha' * (A' _\\beta _,\\gamma' - A' _\\gamma _,\\beta')
-	) + (
-		frac(1,4) * phi^2 * F' _\\delta ^\\alpha' * F' _\\gamma _\\beta'
-	)
-
-	- (
-		frac(1,2) * phi^2 * F' _\\beta ^\\alpha' * (A' _\\delta _,\\gamma' - A' _\\gamma _,\\delta')
-	) + (
-		frac(1,2) * phi^2 * F' _\\beta ^\\alpha' * F' _\\gamma _\\delta'
-	)
-)()
+--[[
 --	:replace(F' _\\delta ^\\alpha _;\\gamma', F' _\\delta ^\\alpha _,\\gamma' - )
 --	:simplify()
 
@@ -387,17 +419,6 @@ Riemann5_def[1][1][2][1] = (Riemann5_def[1][1][2][1]
 )()
 
 Riemann5_def[2][1][1][1] = (Riemann5_def[2][1][1][1] 
-	+ (
-		A' _\\mu' * (
-			conn4' ^\\mu _\\beta _\\delta _,\\gamma' 
-			- conn4' ^\\mu _\\beta _\\gamma _,\\delta'
-			+ conn4' ^\\epsilon _\\beta _\\delta' * conn4' ^\\mu _\\epsilon _\\gamma'
-			- conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\mu _\\epsilon _\\delta'
-		)
-	) - (
-		A' _\\mu' * R' ^\\mu _\\beta _\\gamma _\\delta'
-	)
-
 	+ frac(1,2) * A' _\\epsilon _,\\delta' * conn4' ^\\epsilon _\\beta _\\gamma'
 	- frac(1,2) * A' _\\mu _,\\delta' * conn4' ^\\mu _\\beta _\\gamma'
 	
@@ -423,12 +444,10 @@ Riemann5_def[2][1][1][1] = (Riemann5_def[2][1][1][1]
 	:replace( A' _\\beta _,\\gamma', F' _\\gamma _\\beta' + A' _\\gamma _,\\beta')
 	:replace( A' _\\beta _,\\delta', F' _\\delta _\\beta' + A' _\\delta _,\\beta')
 	:simplify()
-
+--]]
 
 printbr(R5'^a_bcd':eq(Riemann5_def))
 printbr()
-
-printbr'TODO FIXME there is a double $\\mu$ index in $R_{2111}$'
 
 os.exit()
 
