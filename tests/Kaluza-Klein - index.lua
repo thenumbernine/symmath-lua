@@ -83,6 +83,11 @@ printbr(g5'^ab':eq(g5U_def))
 printbr()
 
 
+printbr((g5'_ac' * g5'^cb'):eq( (
+	g5_def'_ac'():reindex{ [' \\gamma'] = ' \\beta'}
+	* g5U_def'_cb'():reindex{ [' \\gamma'] = ' \\alpha'}
+)() ))
+printbr()
 
 printbr'The cylindrical constraint is'
 local cylConstraint = g5'_ab,5':eq(0)
