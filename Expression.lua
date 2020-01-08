@@ -357,8 +357,8 @@ printbr('replsymbols', replsymbols:unpack())
 				local result = repl
 				if result.reindex then
 					result = result:reindex{
-						[xsymbols:concat()..newsumsymbols:concat()] = 
-							findsymbols:concat()..sumsymbols:concat()
+						[xsymbols:concat' '..' '..newsumsymbols:concat' '] = 
+							findsymbols:concat' '..' '..sumsymbols:concat' '
 					}
 				end
 			
@@ -631,9 +631,9 @@ end
 	for i=#replaces,1,-1 do
 		local repl = replaces[i]
 		if repl.parent then
-			repl.parent[repl.childIndex] = repl.parent[repl.childIndex]:reindex{[repl.to] = repl.from}
+			repl.parent[repl.childIndex] = repl.parent[repl.childIndex]:reindex{[' '..repl.to] = ' '..repl.from}
 		else
-			expr = expr:reindex{[repl.to] = repl.from}
+			expr = expr:reindex{[' '..repl.to] = ' '..repl.from}
 		end
 	end
 --print('expr', expr, '<br>')

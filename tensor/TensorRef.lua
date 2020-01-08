@@ -21,6 +21,29 @@ function TensorRef:init(tensor, ...)
 	end
 end
 
+function TensorRef:hasIndex(symbol)
+	for i=2,#self do
+		if self[i].symbol == symbol then return true end
+	end
+	return false
+end
+
+function TensorRef:hasDerivIndex(symbol)
+	for i=2,#self do
+		if self[i].symbol == symbol and self[i].derivative then return true end
+	end
+	return false
+end
+
+function TensorRef:hasTensorIndex(symbol)
+	for i=2,#self do
+		if self[i].symbol == symbol and not self[i].derivative then return true end
+	end
+	return false
+end
+
+
+
 -- how does this behave any different than Expression:clone() 
 function TensorRef:clone()
 	return TensorRef(range(#self):map(function(i)
