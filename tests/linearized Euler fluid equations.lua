@@ -114,7 +114,7 @@ printbr(F'^I_,n':eq(partial_dF_def))
 -- TODO here reindex so no one is using 'k'
 
 printbr'distribute'
-partial_dF_def = partial_dF_def:reindex{m='k'}	-- repurpose 'k' so I can replace all m^?_,j's with m^k_,j's
+partial_dF_def = partial_dF_def:reindex{k='m'}	-- repurpose 'k' so I can replace all m^?_,j's with m^k_,j's
 partial_dF_def = partial_dF_def:map(function(x)
 	if TensorRef.is(x)
 	and x[#x].derivative
@@ -134,7 +134,7 @@ end)
 partial_dF_def = partial_dF_def:replaceIndex(g'^ij_,m', -g'^ik' * g'_kl,m' * g'^lj')
 partial_dF_def = partial_dF_def:tidyIndexes()
 partial_dF_def = partial_dF_def:factorDivision()
-partial_dF_def = partial_dF_def:reindex{jm='mj'} 
+partial_dF_def = partial_dF_def:reindex{mj='jm'} 
 
 printbr(F'^I_,n':eq(partial_dF_def))
 
@@ -178,7 +178,7 @@ printbr(F'^I_;n':eq(covar_dF_matrix_def))
 -- Gamma^k_jk = e_j(log(sqrt(det(g_ab))))
 -- TODO DON'T FORGET TO INTEGRATE THIS WRT VOLUME
 -- the state variables may be immune, but the connections are not.
-local S_def = Gamma'^k_jk' * F_def:reindex{m='k'} + partial_dF_matrix_def - covar_dF_matrix_def
+local S_def = Gamma'^k_jk' * F_def:reindex{k='m'} + partial_dF_matrix_def - covar_dF_matrix_def
 printbr(S'^I':eq(S_def)) 
 
 S_def = S_def()	-- multiply all matrices and combine all vectors
@@ -218,7 +218,7 @@ local function simplifyDeltasAndMetrics(expr)
 	--printbr('removed delta to get', x)
 						-- I can't just reindex syma=>symb
 						-- I have to find which the sum term is ...
-						x = x:reindex({[syma] = symb} 
+						x = x:reindex({[symb] = syma} 
 							, origx[i][2].lower and 'lower' or 'raise'
 						)
 	--printbr('reindexed to get', x)

@@ -24,7 +24,7 @@ local Lambda_def = Matrix(
 )
 printbr(Lambda'^u_v':eq(Lambda_def))
 
-local newg_def = Lambda_def:reindex{ia='ij'}:T() * g_def * Lambda_def:reindex{jb='ij'}
+local newg_def = Lambda_def:reindex{ij='ia'}:T() * g_def * Lambda_def:reindex{ij='jb'}
 printbr(var"g'"'_ab'
 	:eq(Lambda'^u_a' * g'_uv' * Lambda'^v_b')
 	:eq(newg_def))

@@ -11,10 +11,10 @@ printbr(ConnL_def)
 local Conn_def = Gamma'^a_bc':eq(g'^ad' * Gamma'_dbc')
 printbr(Conn_def)
 
-Conn_def = Conn_def:subst(ConnL_def:reindex{dbc='abc'})
+Conn_def = Conn_def:subst(ConnL_def:reindex{abc='dbc'})
 printbr(Conn_def)
 
-dConn_def = Conn_def:reindex{e='d'}'_,d'()
+dConn_def = Conn_def:reindex{d='e'}'_,d'()
 printbr(dConn_def)
 
 Riemann_def = R'^a_bcd':eq(Gamma'^a_bd,c' - Gamma'^a_bc,d' + Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc')
@@ -42,18 +42,18 @@ end
 
 Riemann_def = Riemann_def:subst(
 	dConn_def,
-	dConn_def:reindex{abdc='abcd'},
-	Conn_def:reindex{aecf='abcd'},
-	Conn_def:reindex{ebdg='abcd'},
-	Conn_def:reindex{aedf='abcd'},
-	Conn_def:reindex{ebcg='abcd'}
+	dConn_def:reindex{abcd='abdc'},
+	Conn_def:reindex{abcd='aecf'},
+	Conn_def:reindex{abcd='ebdg'},
+	Conn_def:reindex{abcd='aedf'},
+	Conn_def:reindex{abcd='ebcg'}
 ):map(g_sortSymIndexes):simplify()
 -- TODO sum indexes, e,f,g, can be rearranged
 printbr(Riemann_def)
 
-local Ricci_def = R'_bd':eq(Riemann_def:rhs():reindex{c='a'})
+local Ricci_def = R'_bd':eq(Riemann_def:rhs():reindex{a='c'})
 	:map(g_sortSymIndexes):simplify()
-	:reindex{cadb='abcd'}
+	:reindex{abcd='cadb'}
 printbr(Ricci_def)
 
 local Gaussian_def = R:eq(g'^bd' * Ricci_def:rhs())

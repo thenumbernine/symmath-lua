@@ -19,7 +19,7 @@ printbr(gU_def)
 local g_gU_ident = g'^ac' * g'_cb'
 printbr(g_gU_ident)
 
-g_gU_ident = g_gU_ident:subst(g_def:reindex{cb='ab'}, gU_def:reindex{ac='ab'}):simplify()
+g_gU_ident = g_gU_ident:subst(g_def:reindex{ab='cb'}, gU_def:reindex{ab='ac'}):simplify()
 printbr(g_gU_ident)
 
 g_gU_ident = g_gU_ident
@@ -44,13 +44,13 @@ printbr'connections:'
 local ConnL_def = Gamma'_abc':eq(frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))
 printbr(ConnL_def)
 
-ConnL_def = ConnL_def:subst(dg_def, dg_def:reindex{acb='abc'}, dg_def:reindex{bca='abc'})()
+ConnL_def = ConnL_def:subst(dg_def, dg_def:reindex{abc='acb'}, dg_def:reindex{abc='bca'})()
 printbr(ConnL_def)
 
 local Conn_def = Gamma'^a_bc':eq(g'^ad' * Gamma'_dbc')
 printbr(Conn_def)
 
-Conn_def = Conn_def:subst(gU_def:reindex{ad='ab'}, ConnL_def:reindex{dbc='abc'})()
+Conn_def = Conn_def:subst(gU_def:reindex{ab='ad'}, ConnL_def:reindex{abc='dbc'})()
 printbr(Conn_def)
 
 printbr('let ', Phi:eq(0), ', but keep ', Phi'_,a', 'to find:')
@@ -61,14 +61,14 @@ printbr()
 local du_def = u'^a_;b':eq(u'^a_,b' + Gamma'^a_cb' * u'^c')
 printbr(du_def)
 
-du_def = du_def:subst(Conn_def:reindex{acb='abc'})
+du_def = du_def:subst(Conn_def:reindex{abc='acb'})
 	:simplify()
 printbr(du_def)
 
-local duit_def = du_def:reindex{it='ab'}
+local duit_def = du_def:reindex{ab='it'}
 printbr(duit_def)
 
-local duij_def = du_def:reindex{ij='ab'}
+local duij_def = du_def:reindex{ab='ij'}
 printbr(duij_def)
 
 printbr()
@@ -92,11 +92,11 @@ dT_def = dT_def
 printbr(dT_def) 
 
 printbr'separate b index into t and j:'
-dT_def = dT_def:lhs():eq( dT_def:rhs():reindex{t='b'} + dT_def:rhs():reindex{j='b'} )
+dT_def = dT_def:lhs():eq( dT_def:rhs():reindex{b='t'} + dT_def:rhs():reindex{b='j'} )
 printbr(dT_def)
 
 printbr'look at t component of a:'
-local dTt_def = dT_def:reindex{t='a'}
+local dTt_def = dT_def:reindex{a='t'}
 printbr(dTt_def)
 
 printbr'substitute...'
@@ -104,7 +104,7 @@ dTt_def = dTt_def
 	:replace(u'^t', 1)
 	:replace(u'^t_;t', 0)
 	:replace(u'^t_;j', 0)
-	:subst(du_def:reindex{jj='ab'})
+	:subst(du_def:reindex{ab='jj'})
 	:replace(eta'^tt', -1)
 	:replace(eta'^tj', 0)
 	:simplify()
@@ -112,7 +112,7 @@ printbr(dTt_def)
 printbr()
 
 printbr'look at i component of a:'
-local dTi_def = dT_def:reindex{i='a'}
+local dTi_def = dT_def:reindex{a='i'}
 printbr(dTi_def)
 
 printbr'substitute...'

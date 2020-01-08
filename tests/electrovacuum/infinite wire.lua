@@ -128,7 +128,7 @@ local RiemannExpr = Conn'^a_bd,c' - Conn'^a_bc,d'
 	- Conn'^a_be' * (Conn'^e_dc' - Conn'^e_cd')
 -- [[
 printbr(var'R''^a_bcd':eq(RiemannExpr:replace(Conn, var'\\Gamma')))
-printbr(var'R''_ab':eq(RiemannExpr:replace(Conn, var'\\Gamma'):reindex{cacbd='abcde'}))
+printbr(var'R''_ab':eq(RiemannExpr:replace(Conn, var'\\Gamma'):reindex{abcde='cacbd'}))
 --]]
 
 local Riemann = Tensor'^a_bcd'
@@ -269,7 +269,7 @@ os.exit()
 -- NOTICE this matches em_conn_infwire.lua, so fix both of these
 local diffRiemann = (Riemann'^a_bcd,e' + Conn'^a_fe' * Riemann'^f_bcd' - Conn'^f_be' * Riemann'^a_fcd' - Conn'^f_ce' * Riemann'^a_bfd' - Conn'^f_de' * Riemann'^a_bcf')()
 local Bianchi = Tensor'^a_bcde'
-Bianchi['^a_bcde'] = (diffRiemann + diffRiemann:reindex{abecd='abcde'} +  diffRiemann:reindex{abdec='abcde'})()
+Bianchi['^a_bcde'] = (diffRiemann + diffRiemann:reindex{abcde='abecd'} +  diffRiemann:reindex{abcde='abdec'})()
 print'Bianchi:'
 local sep = ''
 for index,value in Bianchi:iter() do

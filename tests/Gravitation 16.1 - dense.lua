@@ -45,9 +45,9 @@ printbr(GammaLDef)
 printbr()
 
 local GammaLDef_wrt_eta_delta = GammaLDef:subst(
-	gDef:reindex{ab='uv'},
-	gDef:reindex{ac='uv'},
-	gDef:reindex{bc='uv'})
+	gDef:reindex{uv='ab'},
+	gDef:reindex{uv='ac'},
+	gDef:reindex{uv='bc'})
 printbr(GammaLDef_wrt_eta_delta)
 printbr()
 
@@ -55,12 +55,12 @@ printbr()
 --	because the comma derivatives ...
 -- TODO if subst gets a tensorRef on the lhs then try substituting all permutations of its indexes into the rhs
 local GammaLVal = GammaLDef_wrt_eta_delta:rhs():subst(
-	etaDef:reindex{ab='uv'},
-	etaDef:reindex{ac='uv'},
-	etaDef:reindex{bc='uv'},
-	deltaDef:reindex{ab='uv'},
-	deltaDef:reindex{ac='uv'},
-	deltaDef:reindex{bc='uv'})
+	etaDef:reindex{uv='ab'},
+	etaDef:reindex{uv='ac'},
+	etaDef:reindex{uv='bc'},
+	deltaDef:reindex{uv='ab'},
+	deltaDef:reindex{uv='ac'},
+	deltaDef:reindex{uv='bc'})
 printbr(Gamma'_abc':eq(GammaLVal))
 printbr()
 --]]
@@ -71,13 +71,13 @@ printbr()
 -- but x'_,c', if x is a scalar, should give the gradient of x
 -- so stop using __call to reindex dense tensors -- only use :reindex 
 -- but then dense tensor expressions would become ugly...
--- Gamma['_abc'] = (g:reindex{ab='uv'}'_,c' + g:reindex{ac='uv'}'_,b' + g:reindex{bc='uv'}'_,a')/2
+-- Gamma['_abc'] = (g:reindex{uv='ab'}'_,c' + g:reindex{uv='ac'}'_,b' + g:reindex{uv='bc'}'_,a')/2
 local dgVal = gVal'_ab,c'()	-- dgVal is indexed by abc
 local dgValDef = g'_ab''_,c':eq(dgVal)
 local GammaLVal = GammaLDef:rhs():subst(
 	dgValDef:reindex{abc='abc'},
-	dgValDef:reindex{acb='abc'},
-	dgValDef:reindex{bca='abc'})
+	dgValDef:reindex{abc='acb'},
+	dgValDef:reindex{abc='bca'})
 --]]
 printbr(Gamma'_abc':eq(GammaLVal))
 printbr()

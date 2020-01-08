@@ -10,7 +10,7 @@ local TensorRef = require 'symmath.tensor.TensorRef'
 local function splitIndex(expr, from, toSet)
 	local result
 	for _,to in ipairs(toSet) do
-		local nextTerm = expr:reindex{[to]=from}
+		local nextTerm = expr:reindex{[from]=to}
 		result = result and result + nextTerm or nextTerm
 	end
 	return result
@@ -191,24 +191,24 @@ for _,index in ipairs(indexes) do
 
 	printbr'substitute definition of Riemann curvature'
 	expr = expr:replace(
-		R'^a_bcd':reindex{[indexLetters] = 'abcd'}, 
-		(Gamma'^a_bd'',c' - Gamma'^a_bc'',d' + Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc'):reindex{[indexLetters] = 'abcd'})
+		R'^a_bcd':reindex{abcd=indexLetters}, 
+		(Gamma'^a_bd'',c' - Gamma'^a_bc'',d' + Gamma'^a_ec' * Gamma'^e_bd' - Gamma'^a_ed' * Gamma'^e_bc'):reindex{abcd=indexLetters})
 	printbr(expr)
 
 	printbr'split the index e into t and m'
 	-- TODO FIXME splitIndex just duplicates whole expressions.
 	expr = expr:replace(
-		Gamma'^a_ec':reindex{[indexLetters] = 'abcd'}, 
-		(Gamma'^a_tc' + Gamma'^a_mc'):reindex{[indexLetters] = 'abcd'})
+		Gamma'^a_ec':reindex{abcd=indexLetters}, 
+		(Gamma'^a_tc' + Gamma'^a_mc'):reindex{abcd=indexLetters})
 	expr = expr:replace(
-		Gamma'^e_bd':reindex{[indexLetters] = 'abcd'}, 
-		(Gamma'^t_bd' + Gamma'^m_bd'):reindex{[indexLetters] = 'abcd'})
+		Gamma'^e_bd':reindex{abcd=indexLetters}, 
+		(Gamma'^t_bd' + Gamma'^m_bd'):reindex{abcd=indexLetters})
 	expr = expr:replace(
-		Gamma'^a_ed':reindex{[indexLetters] = 'abcd'}, 
-		(Gamma'^a_td' + Gamma'^a_nd'):reindex{[indexLetters] = 'abcd'})
+		Gamma'^a_ed':reindex{abcd=indexLetters}, 
+		(Gamma'^a_td' + Gamma'^a_nd'):reindex{abcd=indexLetters})
 	expr = expr:replace(
-		Gamma'^e_bc':reindex{[indexLetters] = 'abcd'}, 
-		(Gamma'^t_bc' + Gamma'^n_bc'):reindex{[indexLetters] = 'abcd'})
+		Gamma'^e_bc':reindex{abcd=indexLetters}, 
+		(Gamma'^t_bc' + Gamma'^n_bc'):reindex{abcd=indexLetters})
 	printbr(expr)
 	expr = expr()
 	printbr(expr)

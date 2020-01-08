@@ -363,8 +363,8 @@ printbr('replsymbols', replsymbols:unpack())
 				local result = repl
 				if result.reindex then
 					result = result:reindex{
-						[xsymbols:concat' '..' '..newsumsymbols:concat' '] = 
-							findsymbols:concat' '..' '..sumsymbols:concat' '
+						[findsymbols:concat' '..' '..sumsymbols:concat' '] =
+							xsymbols:concat' '..' '..newsumsymbols:concat' '
 					}
 				end
 			
@@ -657,9 +657,9 @@ end
 	for i=#replaces,1,-1 do
 		local repl = replaces[i]
 		if repl.parent then
-			repl.parent[repl.childIndex] = repl.parent[repl.childIndex]:reindex{[' '..repl.to] = ' '..repl.from}
+			repl.parent[repl.childIndex] = repl.parent[repl.childIndex]:reindex{[' '..repl.from] = ' '..repl.to}
 		else
-			expr = expr:reindex{[' '..repl.to] = ' '..repl.from}
+			expr = expr:reindex{[' '..repl.from] = ' '..repl.to}
 		end
 	end
 --print('expr', expr, '<br>')
@@ -746,7 +746,7 @@ function Expression:reindex(args, action)
 			error("reindex key and value length needs to match.  got "..tolua(tk).." with "..#tk.." entries vs "..tolua(tv).." with "..#tv.." entries")
 		end
 		for i=1,#tk do
-			swaps:insert{src = {symbol=tv[i]}, dst = {symbol=tk[i]}}
+			swaps:insert{src = {symbol=tk[i]}, dst = {symbol=tv[i]}}
 		end
 	end
 	local Tensor = require 'symmath.Tensor'

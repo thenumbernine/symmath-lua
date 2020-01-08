@@ -111,15 +111,15 @@ end)
 
 local delta = var'\\delta'
 printbr((g5'_ac' * g5'^cb'):eq( (
-		g5_def'_ac'():reindex{ [' \\gamma'] = ' \\beta'}
-		* g5U_def'^cb'():reindex{ [' \\gamma'] = ' \\alpha'}
+		g5_def'_ac'():reindex{ [' \\beta'] = ' \\gamma'}
+		* g5U_def'^cb'():reindex{ [' \\alpha'] = ' \\gamma'}
 	)() 
 		:replace(A' _\\gamma' * g' ^\\gamma ^\\beta', A' ^\\beta')()
 	--	:replace(A' _\\gamma' * A' ^\\gamma', A' _\\mu' * A' ^\\mu')()
 		:replace(A' ^\\gamma' * g' _\\alpha _\\gamma', A' _\\alpha')()
 		:replace(g' ^\\gamma ^\\beta' * g' _\\alpha _\\gamma', delta' _\\alpha ^\\beta')()
 	)
-	:tidyIndexes{symbols=greekSymbols, fixed='\\alpha \\beta'}
+	:tidyIndexes{symbols=greekSymbols, fixed=' \\alpha \\beta'}
 )
 printbr()
 
@@ -154,9 +154,9 @@ printbr(g5'_ab,c':eq(dg5_2x2_def))
 -- indexed [c][a][b]
 local dg5_def = Tensor('_cab', function(c,a,b)
 	if c == 1 then
-		return dg5_2x2_def[a][b]:reindex{[' \\gamma']='c'}
+		return dg5_2x2_def[a][b]:reindex{c=' \\gamma'}
 	elseif c == 2 then
-		return dg5_2x2_def[a][b]:reindex{[5]='c'}():map(function(x)
+		return dg5_2x2_def[a][b]:reindex{c=5}():map(function(x)
 			if TensorRef.is(x) and x:hasDerivIndex(5) then return 0 end
 		end)()
 	end
@@ -176,16 +176,9 @@ local conn5L_def = Tensor('_abc', function(a,b,c)
 		-- g_ab,c
 		dg5_def[c][a][b]	
 		-- + g_ac,b
-		+ dg5_def[b][a][c]:reindex{
-			[' \\beta'] = ' \\gamma',
-			[' \\gamma'] = ' \\beta',
-		}
+		+ dg5_def[b][a][c]:reindex{[' \\beta \\gamma'] = ' \\gamma \\beta'}
 		-- - g_bc,a
-		- dg5_def[a][b][c]:reindex{
-			[' \\alpha'] = ' \\gamma',
-			[' \\beta'] = ' \\alpha',
-			[' \\gamma'] = ' \\beta',
-		}
+		- dg5_def[a][b][c]:reindex{[' \\alpha \\beta \\gamma'] = ' \\beta \\gamma \\alpha'}
 	))()
 end)
 printbr(conn5'_abc':eq(conn5L_def))
@@ -221,10 +214,8 @@ printbr()
 
 printbr'upper connection'
 local conn5U_def = (
-	g5U_def'^ae' 
-		:reindex{[' \\epsilon'] = ' \\beta'}()
-	* conn5L_def'_ebc'
-		:reindex{[' \\epsilon'] = ' \\alpha'}()
+	g5U_def'^ae':reindex{[' \\beta'] = ' \\epsilon'}()
+	* conn5L_def'_ebc':reindex{[' \\alpha'] = ' \\epsilon'}()
 )
 printbr(conn5'^a_bc':eq(conn5U_def))
 conn5U_def = conn5U_def()
@@ -254,7 +245,7 @@ conn5U_def = conn5U_def:replace(
 	(A' _\\epsilon' * A' ^\\epsilon')(),
 	A' _\\mu' * A' ^\\mu'
 )()
-conn5U_def = conn5U_def:reindex{[' \\mu'] = ' \\epsilon'}
+conn5U_def = conn5U_def:reindex{[' \\epsilon'] = ' \\mu'}
 printbr(conn5'^a_bc':eq(conn5U_def))
 printbr()
 
@@ -331,9 +322,9 @@ printbr(conn5'^a_bc,d':eq(dconn5_2x2x2_def))
 
 local dconn5U_def = Tensor('^a_bcd', function(a,b,c,d)
 	if d == 1 then
-		return dconn5_2x2x2_def[a][b][c]:reindex{[' \\delta']='d'}
+		return dconn5_2x2x2_def[a][b][c]:reindex{d=' \\delta'}
 	elseif d == 2 then
-		return dconn5_2x2x2_def[a][b][c]:reindex{[5]='d'}
+		return dconn5_2x2x2_def[a][b][c]:reindex{d=5}
 	end
 end):map(function(x)
 	if TensorRef.is(x) and x:hasDerivIndex(5) then return 0 end
@@ -343,15 +334,8 @@ printbr()
 
 
 local conn5USq_def = 
-	conn5U_def'^a_ec'():reindex{
-		[' \\epsilon'] = ' \\beta',
-	}
-	* conn5U_def'^e_bd'()
-		:reindex{
-			[' \\epsilon'] = ' \\alpha',
-			[' \\delta'] = ' \\gamma',
-			[' \\nu'] = ' \\mu',
-		}
+	conn5U_def'^a_ec'():reindex{[' \\beta'] = ' \\epsilon'}
+	* conn5U_def'^e_bd'():reindex{[' \\alpha \\gamma \\mu'] = ' \\epsilon \\delta \\nu'}
 printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_def))
 conn5USq_def = conn5USq_def():permute'abcd'
 printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_def))
@@ -363,16 +347,12 @@ local R = var'R'
 local R5 = var'\\tilde{R}'
 printbr(R5'^a_bcd':eq( conn5'^a_bd,c' - conn5'^a_bc,d' + conn5'^a_ec'*conn5'^e_bd' - conn5'^a_ed'*conn5'^e_bc' ))
 local Riemann5_def = Tensor('^a_bcd', function(a,b,c,d)
-	return (dconn5U_def[a][b][d][c]:reindex{
-		[' \\gamma'] = ' \\delta',
-		[' \\delta'] = ' \\gamma',
-	}
-	- dconn5U_def[a][b][c][d]
-	+ conn5USq_def[a][b][c][d]
-	- conn5USq_def[a][b][d][c]:reindex{
-		[' \\gamma'] = ' \\delta',
-		[' \\delta'] = ' \\gamma',
-	})
+	return (
+		dconn5U_def[a][b][d][c]:reindex{[' \\gamma \\delta'] = ' \\delta \\gamma'}
+		- dconn5U_def[a][b][c][d]
+		+ conn5USq_def[a][b][c][d]
+		- conn5USq_def[a][b][d][c]:reindex{[' \\gamma \\delta'] = ' \\delta \\gamma'}
+	)
 	:simplify()
 end)
 
@@ -453,20 +433,10 @@ os.exit()
 
 printbr'Ricci tensor:'
 local Ricci5_def = Riemann5_def'^e_aeb'()
-	:reindex{
-		[' \\rho'] = ' \\alpha',
-		[' \\alpha'] = ' \\beta',
-		[' \\nu'] = ' \\gamma',
-		[' \\beta'] = ' \\delta',
-	}
-	-- ... you will never need to turn one letter into two, but there are times when you will need to turn two into one, like with traces
-	-- ... so TODO swap the 'from' and 'to' in 'reindex'
-	:reindex{
-		[' \\nu'] = ' \\rho',
-	}
-	:replace(R' ^\\nu _\\alpha _\\nu _\\beta', R' _\\alpha _\\beta')
-	:replace(F' _\\nu ^\\nu', 0)()
-	:replace(F' _\\nu ^\\nu _,\\beta', 0)()
+	:reindex{[' \\alpha \\beta \\gamma \\delta'] = ' \\sigma \\alpha \\sigma \\beta'}
+	:replace(R' ^\\sigma _\\alpha _\\sigma _\\beta', R' _\\alpha _\\beta')
+	:replace(F' _\\sigma ^\\sigma', 0)()
+	:replace(F' _\\sigma ^\\sigma _,\\beta', 0)()
 	
 	-- hmm, not working so well...
 	-- even if it was, I would have to add the ability to tell this function which symbols to use (to avoid the 5D symbols)
@@ -474,25 +444,25 @@ local Ricci5_def = Riemann5_def'^e_aeb'()
 
 Ricci5_def[1][1] = (Ricci5_def[1][1]
 	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\alpha' * F' _\\epsilon _\\mu' * F' _\\beta ^\\epsilon'
-	- frac(1,4) * phi^4 * A' ^\\mu' * A' _\\alpha' * F' _\\nu _\\mu' * F' _\\beta ^\\nu'
+	- frac(1,4) * phi^4 * A' ^\\mu' * A' _\\alpha' * F' _\\sigma _\\mu' * F' _\\beta ^\\sigma'
 	
 	- frac(1,4) * phi^4 * A' ^\\mu' * A' _\\epsilon' * F' _\\beta _\\mu' * F' _\\alpha ^\\epsilon'
-	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\nu' * F' _\\beta ^\\nu' * F' _\\alpha _\\mu'
+	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\sigma' * F' _\\beta ^\\sigma' * F' _\\alpha _\\mu'
 )()
 
 Ricci5_def[2][1] = (Ricci5_def[2][1]
-	+ frac(1,4) * phi^4 * A' _\\epsilon' * F' _\\nu ^\\epsilon' * F' _\\beta ^\\nu'
-	- frac(1,4) * phi^4 * A' _\\nu' * F' _\\epsilon ^\\nu' * F' _\\beta ^\\epsilon'
+	+ frac(1,4) * phi^4 * A' _\\epsilon' * F' _\\sigma ^\\epsilon' * F' _\\beta ^\\sigma'
+	- frac(1,4) * phi^4 * A' _\\sigma' * F' _\\epsilon ^\\sigma' * F' _\\beta ^\\epsilon'
 	
 	+ frac(1,4) * phi^4 * A' ^\\mu' * F' _\\epsilon _\\mu' * F' _\\beta ^\\epsilon'
-	- frac(1,4) * phi^4 * A' ^\\mu' * F' _\\nu _\\mu' * F' _\\beta ^\\nu'
+	- frac(1,4) * phi^4 * A' ^\\mu' * F' _\\sigma _\\mu' * F' _\\beta ^\\sigma'
 
-	- frac(1,2) * phi^2 * (F' _\\beta ^\\nu _,\\nu' - F' _\\nu ^\\epsilon' * conn4' ^\\nu _\\epsilon _\\beta' + F' _\\beta ^\\epsilon' * conn4' ^\\nu _\\epsilon _\\nu')
+	- frac(1,2) * phi^2 * (F' _\\beta ^\\sigma _,\\sigma' - F' _\\sigma ^\\epsilon' * conn4' ^\\sigma _\\epsilon _\\beta' + F' _\\beta ^\\epsilon' * conn4' ^\\sigma _\\epsilon _\\sigma')
 	+ frac(1,2) * phi^2 * (F' _\\beta ^\\mu _;\\mu')
 )()
 
 Ricci5_def[1][2] = (Ricci5_def[1][2]
-	- frac(1,2) * phi^2 * (F' _\\alpha ^\\nu _,\\nu' - F' _\\epsilon ^\\nu' * conn4' ^\\epsilon _\\alpha _\\nu' + F' _\\alpha ^\\epsilon' * conn4' ^\\nu _\\epsilon _\\nu')
+	- frac(1,2) * phi^2 * (F' _\\alpha ^\\sigma _,\\sigma' - F' _\\epsilon ^\\sigma' * conn4' ^\\epsilon _\\alpha _\\sigma' + F' _\\alpha ^\\epsilon' * conn4' ^\\sigma _\\epsilon _\\sigma')
 	+ frac(1,2) * phi^2 * (F' _\\alpha ^\\mu _;\\mu')
 )()
 
@@ -511,10 +481,7 @@ Gaussian5_def = (Gaussian5_def
 
 	- frac(1,4) * phi^4 * A' ^\\rho' * A' _\\rho' * F' _\\epsilon ^\\nu' * F' _\\nu ^\\epsilon'
 	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\mu' * F' _\\epsilon ^\\nu' * F' _\\nu ^\\epsilon'
-)():reindex{
-	[' \\rho'] = ' \\alpha',
-	[' \\sigma'] = ' \\beta',
-}
+)():reindex{[' \\alpha \\beta'] = ' \\rho \\sigma'}
 printbr(R5:eq(Gaussian5_def))
 printbr()
 

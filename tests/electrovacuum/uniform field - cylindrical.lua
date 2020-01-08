@@ -279,4 +279,4 @@ end
 
 -- reminders:
 printbr(var'R''^a_bcd':eq(RiemannExpr))
-printbr(var'R''_ab':eq(RiemannExpr:reindex{cacbd='abcde'}))
+printbr(var'R''_ab':eq(RiemannExpr:reindex{abcde='cacbd'}))

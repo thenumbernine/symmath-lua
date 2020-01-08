@@ -13,8 +13,8 @@ do
 	local ConnDef = var'\\Gamma''_abc':eq(frac(1,2) * (var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a'))
 	local eqns = table{
 		ConnDef,
-		ConnDef:reindex{bca='abc'}:replace(g'_ba,c', g'_ab,c'):replace(g'_ca,b', g'_ac,b'),	-- TODO define symmetric g_ab = g_ba
-		ConnDef:reindex{cab='abc'}:replace(g'_ca,b', g'_ac,b'):replace(g'_cb,a', g'_bc,a'),
+		ConnDef:reindex{abc='bca'}:replace(g'_ba,c', g'_ab,c'):replace(g'_ca,b', g'_ac,b'),	-- TODO define symmetric g_ab = g_ba
+		ConnDef:reindex{abc='cab'}:replace(g'_ca,b', g'_ac,b'):replace(g'_cb,a', g'_bc,a'),
 	}
 	-- y = A x + b
 	local ylhs = eqns:map(function(eqn) return eqn:lhs() end)

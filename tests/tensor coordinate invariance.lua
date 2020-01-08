@@ -50,10 +50,10 @@ local soln
 soln = R'^C_ACB'
 printbr(soln)
 -- TODO instead of reindex, soln:subst(Riemann_xform_def:rhs())
-soln = soln:subst(Riemann_xform_def:reindex{CACB='ABCD'})
+soln = soln:subst(Riemann_xform_def:reindex{ABCD='CACB'})
 printbr('=', soln, 'using', Riemann_xform_def)
 -- TODO cancel transforms and inverse transformes
-soln = (soln / e'_a^C' / e'^c_C')():reindex{cab='abd'}
+soln = (soln / e'_a^C' / e'^c_C')():reindex{abd='cab'}
 printbr('=', soln, 'using', e_eInv_ab_def)
 -- TODO automatically reindex
 soln = soln:subst( Ricci_def:switch() )
@@ -70,19 +70,19 @@ printbr'Riemann from transformed connection:'
 local soln = Gamma'^A_BD,C' - Gamma'^A_BC,D' + Gamma'^A_EC' * Gamma'^E_BD' - Gamma'^A_ED' * Gamma'^E_BC' - Gamma'^A_BE' * (Gamma'^E_DC' - Gamma'^E_CD')
 printbr(soln)
 local soln = (
-		Conn_xform_def:rhs():reindex{ABDabd='ABCabc'}
+		Conn_xform_def:rhs():reindex{ABCabc='ABDabd'}
 	)'_,C' 
 	- (
 		Conn_xform_def:rhs()
 	)'_,D' 
-	+ Conn_xform_def:rhs():reindex{AECaec='ABCabc'}
-	* Conn_xform_def:rhs():reindex{EBDebd='ABCabc'}
-	- Conn_xform_def:rhs():reindex{AEDaed='ABCabc'}
-	* Conn_xform_def:rhs():reindex{EBCebc='ABCabc'}
-	- Conn_xform_def:rhs():reindex{ABEabe='ABCabc'}
+	+ Conn_xform_def:rhs():reindex{ABCabc='AECaec'}
+	* Conn_xform_def:rhs():reindex{ABCabc='EBDebd'}
+	- Conn_xform_def:rhs():reindex{ABCabc='AEDaed'}
+	* Conn_xform_def:rhs():reindex{ABCabc='EBCebc'}
+	- Conn_xform_def:rhs():reindex{ABCabc='ABEabe'}
 	* (
-		Conn_xform_def:rhs():reindex{EDCedc='ABCabc'}
-		- Conn_xform_def:rhs():reindex{ECDecd='ABCabc'}
+		Conn_xform_def:rhs():reindex{ABCabc='EDCedc'}
+		- Conn_xform_def:rhs():reindex{ABCabc='ECDecd'}
 	)
 printbr(soln)
 -- distribute derivatives
@@ -100,14 +100,14 @@ local soln =
 	- e'_a^A_,D' * e'^b_B,C'
 	- e'_a^A' * e'^b_B,CD'
 	
-	+ (Conn_xform_def:rhs():reindex{AECaec='ABCabc'}
-	* Conn_xform_def:rhs():reindex{EBDebd='ABCabc'}
-	- Conn_xform_def:rhs():reindex{AEDaed='ABCabc'}
-	* Conn_xform_def:rhs():reindex{EBCebc='ABCabc'}
-	- Conn_xform_def:rhs():reindex{ABEabe='ABCabc'}
+	+ (Conn_xform_def:rhs():reindex{ABCabc='AECaec'}
+	* Conn_xform_def:rhs():reindex{ABCabc='EBDebd'}
+	- Conn_xform_def:rhs():reindex{ABCabc='AEDaed'}
+	* Conn_xform_def:rhs():reindex{ABCabc='EBCebc'}
+	- Conn_xform_def:rhs():reindex{ABCabc='ABEabe'}
 	* (
-		Conn_xform_def:rhs():reindex{EDCedc='ABCabc'}
-		- Conn_xform_def:rhs():reindex{ECDecd='ABCabc'}
+		Conn_xform_def:rhs():reindex{ABCabc='EDCedc'}
+		- Conn_xform_def:rhs():reindex{ABCabc='ECDecd'}
 	))()
 printbr(soln)
 soln = soln:replace(Gamma'^a_bc,D', Gamma'^a_bc,d' * e'^d_D')
@@ -153,7 +153,7 @@ printbr()
 
 printbr'is transformed stress-energy equal to stress-energy from transformed Faraday?'
 printbr'stress-energy of transformed Faraday, in transformed coordinate system:'
-printbr(T_def:rhs():reindex{ABCD='abcd'})
+printbr(T_def:rhs():reindex{abcd='ABCD'})
 -- hmm, how about a transform index function?
 printbr('=',frac(1,4*pi)*(F'_ac' * e'^a_A' * e'^c_C' * F'_b^d' * e'^b_B' * e'_d^C' - frac(1,4) * g'_ab' * e'^a_A' * e'^b_B' * F'_cd' * e'^c_C' * e'^d_D' * F'^ef' * e'_e^C' * e'_f^D'))
 printbr('=',frac(1,4*pi)*(e'^a_A' * e'^b_B' * F'_ac' * F'_b^c' - frac(1,4) * g'_ab' * e'^a_A' * e'^b_B' * F'_cd' * F'^cd'))

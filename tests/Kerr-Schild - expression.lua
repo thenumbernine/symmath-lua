@@ -128,9 +128,9 @@ printbr(Gamma_lll_def)
 --Gamma_lll_def = Gamma_lll_def:substIndex(dg_lll_def)
 -- so here's this instead:
 Gamma_lll_def = Gamma_lll_def():subst(
-	dg_lll_def:reindex{abc = 'uvw'},
-	dg_lll_def:reindex{acb = 'uvw'},
-	dg_lll_def:reindex{bca = 'uvw'}
+	dg_lll_def:reindex{uvw = 'abc'},
+	dg_lll_def:reindex{uvw = 'acb'},
+	dg_lll_def:reindex{uvw = 'bca'}
 )
 
 Gamma_lll_def = Gamma_lll_def()
