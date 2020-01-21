@@ -1,4 +1,5 @@
-local table = require 'ext.table'
+local range = require 'ext.range'
+
 --[[
 makeLeviCivita(symbol, sqrtDetG)
 	symbol = (optional) symbol of coordinates that the Levi-Civita symbol pertains to
@@ -12,7 +13,7 @@ local function makeLeviCivita(symbol, sqrtDetG)
 	local Constant = require 'symmath.Constant'
 	local sqrt = require 'symmath.sqrt'
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
-
+	
 	local rank
 	local basis
 	if type(symbol) == 'number' then
@@ -31,16 +32,17 @@ local function makeLeviCivita(symbol, sqrtDetG)
 				or Constant(1)
 		end
 	end
-
-	local var = range(rank):map(function(i)
-		return '_'..(
-			basis.symbols 
-			and basis.symbols[i]
-			or string.char(('a'):byte()-1+i)
-		)
-	end):concat()
 	
-	return Tensor(var, function(...)
+	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
+	local variance = ' '..range(rank):mapi(function(i)
+		return '_'..(
+			basis and basis.symbols and basis.symbols[i]
+			or defaultSymbols[i]
+			or error("ran out of symbols")
+		)
+	end):concat' '
+	
+	return Tensor(variance, function(...)
 		local indexes = {...}
 		-- duplicates mean 0
 		for i=1,#indexes-1 do
@@ -58,7 +60,13 @@ local function makeLeviCivita(symbol, sqrtDetG)
 				end
 			end
 		end
-		return (parity * sqrtDetG)()
+		local result = parity * sqrtDetG
+		if type(result) == 'number' then 
+			result = Constant(result) 
+		else
+			result = result()
+		end
+		return result
 	end)
 end
 

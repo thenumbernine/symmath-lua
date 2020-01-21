@@ -22,6 +22,8 @@ function SingleLine:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
 		return childPrecedence < parentPrecedence
 	end
 end
+	
+local hasutf8, utf8 = pcall(require, 'utf8')
 
 SingleLine.lookupTable = {
 	--[[
@@ -46,7 +48,11 @@ SingleLine.lookupTable = {
 		return 'Invalid'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return expr.name..'(' .. table.map(expr, function(x,k)
+		local name = expr.name
+		if hasutf8 and name == 'sqrt' then
+			name = '\u{221a}'
+		end
+		return name..'(' .. table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self:apply(x)
 		end):concat(', ') .. ')'

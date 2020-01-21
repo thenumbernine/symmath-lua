@@ -215,20 +215,18 @@ function Expression:substIndex(...)
 	return result
 end
 
--- by default use a-z for index symbols
-local latinSymbols = range(1,26):mapi(function(i)
-	return string.char(('a'):byte()+i-1)
-end)
-
 --[[
 this is like replace()
 except for TensorRefs it pattern matches indexes
 args =
-	symbols = list of symbols to pick from when we need a new symbol.  default is latin lowercase letters.
+	symbols = list of symbols to pick from when we need a new symbol.  default is Tensor.defaultSymbols.
 --]]
 function Expression:replaceIndex(find, repl, cond, args)
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	
+	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being 
+	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
+
 	local rfindsymbols = table()
 	local function rfind(x)
 		if TensorRef.is(x) then
@@ -341,7 +339,7 @@ printbr('replsymbols', replsymbols:unpack())
 					-- TODO determine new from last used previous symbol?
 					-- TODO pick symbols from the basis associated with the to-be-replaced index
 					-- 	that means excluding those from all other basis
-					local allsymbols = args and args.symbols or latinSymbols
+					local allsymbols = args and args.symbols or defaultSymbols
 					for _,p in ipairs(allsymbols) do
 						if not already[p] then
 							return p
@@ -386,11 +384,14 @@ a^ij (b_jk + c_jk) shouldn't change ...
 a_ijk b^jk + a_ilm b^lm => a_ijk b^jk + a_ijk b^jk => 2 a_jik b^jk
 
 args =
-	symbols = list of symbols to pick from when we need a new symbol.  default is latin lowercase letters.
+	symbols = list of symbols to pick from when we need a new symbol.  default is Tensor.defaultSymbols.
 --]]
 function Expression:tidyIndexes(args)
 	-- process each part of an equation independently
 	local symmath = require 'symmath'
+	
+	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being 
+	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
 
 	if symmath.Array.is(self) 
 	or symmath.op.Equation.is(self)
@@ -582,7 +583,7 @@ end
 --]]	
 	local function getnewsymbol(repl)
 		local replexpr = repl.parent and repl.parent[repl.childIndex] or expr
-		local allsymbols = args and args.symbols or latinSymbols
+		local allsymbols = args and args.symbols or defaultSymbols
 		for _,symbol in ipairs(allsymbols) do
 			if not summed:find(symbol)
 			and not fixed:find(symbol)

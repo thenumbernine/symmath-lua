@@ -30,7 +30,11 @@ function TensorIndex:__tostring()
 	end
 	if self.lower then s = '_' .. s else s = '^' .. s end
 	if self.symbol then
-		return s .. self.symbol
+		local name = self.symbol
+		if type(name) == 'string' and require 'symmath'.fixVariableNames then
+			name = symmath.tostring:fixVariableName(name)
+		end
+		return s .. name
 	else
 		error("TensorIndex expected a symbol or a number")
 	end

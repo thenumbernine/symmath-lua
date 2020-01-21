@@ -107,11 +107,11 @@ function Array:iter()
 	return coroutine.wrap(function()
 		while true do
 			coroutine.yield(index, self:get(index))
-			for i=1,n do
+			for i=n,1,-1 do
 				index[i] = index[i] + 1
 				if index[i] <= dim[i] then break end
 				index[i] = 1
-				if i == n then return end
+				if i == 1 then return end
 			end
 		end
 	end)

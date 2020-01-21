@@ -4,14 +4,15 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local Console = require 'symmath.export.Console'
 local SingleLine = require 'symmath.export.SingleLine'
+	
+local hasutf8, utf8 = pcall(require, 'utf8')
 
 local strlen
 local box	-- [3][2] of the border chars of a box
 local par	-- [3][2] of the border chars of parenthesis
 local line	-- [3]
 do
-	local has, utf8 = pcall(require, 'utf8')
-	if has then
+	if hasutf8 then
 		strlen = utf8.len
 		box = {
 			{'\u{250c}', '\u{2510}'},
@@ -155,7 +156,11 @@ MultiLine.lookupTable = {
 		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		local res = {expr.name..'('}
+		local name = expr.name	
+		if hasutf8 and name == 'sqrt' then
+			name = '\u{221a}'
+		end
+		local res = {name..'('}
 		res = self:combine(res, self:apply(expr[1]))
 		local sep = {', '}
 		for i=2,#expr do
@@ -344,7 +349,7 @@ MultiLine.lookupTable = {
 			for i=#expr.variance,1,-1 do
 				local var = expr.variance[i]
 				local arrowIndex = (#expr.variance + i + 1) % 2 + 1
-				prefix = var.symbol..(i == 1 and arrows[1] or arrows[arrowIndex])..prefix
+				prefix = var..(i == 1 and arrows[1] or arrows[arrowIndex])..prefix
 				if arrowIndex == 1 and i ~= 1 then prefix = '['..prefix..']' end
 			end
 			local pad = (' '):rep(math.floor(math.max(strlen(s[1]) - strlen(prefix), 0) / 2))
@@ -389,10 +394,11 @@ MultiLine.lookupTable = {
 		local lastLower
 		for i,index in ipairs(indexes) do
 			local is = self:apply(index)
-			if not (i == 1 or (not not index.lower) ~= lastLower) then
+			local lower = index.lower or false
+			if i ~= 1 and lower == lastLower then
 				is[1] = is[1]:sub(2)
 			end
-			lastLower = not not index.lower
+			lastLower = lower
 			-- TODO combine valign to top or bottom
 			s = self:combine(s, is)
 		end

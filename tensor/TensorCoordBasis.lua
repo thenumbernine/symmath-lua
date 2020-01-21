@@ -7,6 +7,8 @@ complete with
 		- TODO rename to 'basis'
 	symbols = what symbols are used to representing this basis 
 			symbols == nil means all symbols
+			like Tensor variance, if there is a space present then symbols are assumed to be space-separated multi-chars
+			otherwise they are assumed to be single chars
 	(c) what metrics are used for raising/lowering
 	[(d)] what linear transforms go between this and the other TensorCoordBasis's
 
@@ -14,6 +16,7 @@ complete with
 --]]
 local class = require 'ext.class'
 local table = require 'ext.table'
+local string = require 'ext.string'
 local range = require 'ext.range'
 
 local TensorCoordBasis = class()
@@ -21,9 +24,13 @@ local TensorCoordBasis = class()
 function TensorCoordBasis:init(args)
 	self.variables = assert(args.variables)
 	if args.symbols and #args.symbols > 0 then
-		self.symbols = table()
-		for i=1,#args.symbols do
-			self.symbols[i] = args.symbols:sub(i,i)
+		if args.symbols:find' ' then
+			self.symbols = string.split(string.trim(args.symbols), ' ')
+		else
+			self.symbols = table()
+			for i=1,#args.symbols do
+				self.symbols[i] = args.symbols:sub(i,i)
+			end
 		end
 	end
 	local clone = require 'symmath.clone'

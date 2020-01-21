@@ -97,7 +97,9 @@ local g5U_def = Tensor('^ab',
 printbr(g5'^ab':eq(g5U_def))
 printbr()
 
-local greekSymbols = symmath.export.Console.greekSymbols
+local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames:mapi(function(s)
+	return '\\'..s
+end)
 --[[
 :sort(function(a,b)
 	return a < b
@@ -295,6 +297,8 @@ geodesicEqn = geodesicEqn:replace(
 	var'\\frac{q}{m} \\sqrt{\\frac{k_e}{G}}'	--frac(var'q', var'm')	-- using a var so it doesn't combine with other terms
 )()
 printbr(geodesicEqn)
+
+printbr'TODO separate space and time, substitute spacetime geodesic with Newtonian gravity, etc'
 
 printbr('For an electron,', units.m_e_in_kg, ',', units.e_in_C)
 

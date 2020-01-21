@@ -213,6 +213,9 @@ end
 -- array of TensorCoordBasis objects
 Tensor.__coordBasis = nil
 
+--[[
+newCoords[i] is arguments for a TensorCoordBasis object	
+--]]
 function Tensor.coords(newCoords)
 	local TensorCoordBasis = require 'symmath.tensor.TensorCoordBasis'
 	local oldCoords = Tensor.__coordBasis
@@ -227,6 +230,9 @@ function Tensor.coords(newCoords)
 	end
 	return oldCoords
 end
+
+-- by default use a-z for index symbols
+Tensor.defaultSymbols = require 'symmath.tensor.symbols'.latinSymbols
 
 -- static function
 function Tensor.findBasisForSymbol(symbol)
@@ -1067,10 +1073,10 @@ function Tensor:printElem(name)
 	local sep = ''
 	for index,x in self:iter() do
 		if x ~= Constant(0) then
-			print(sep,
-				TensorRef(Variable(name),
-					table.map(self.variance, function(v,i)
-						local basis = Tensor.findBasisForSymbol(self.variance[i].symbol)
+			if sep ~= '' then print(sep) end
+			io.write(tostring(TensorRef(Variable(name),
+					table.mapi(self.variance, function(v,i)
+						local basis = Tensor.findBasisForSymbol(v.symbol)
 						v = v:clone()
 						v.symbol = basis 
 							and basis.variables[index[i]]
@@ -1079,13 +1085,16 @@ function Tensor:printElem(name)
 							or i
 						return v
 					end):unpack()
-				):eq(x))
+				):eq(x)))
 			sep = ';'
 		end
 	end
+	
 	-- none found:
 	if sep == '' then
 		print(TensorRef(Variable(name), table.unpack(self.variance)):eq(0))
+	else
+		print()
 	end
 end
 
