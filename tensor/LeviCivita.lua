@@ -12,6 +12,7 @@ local function makeLeviCivita(symbol, sqrtDetG)
 	local Matrix = require 'symmath.Matrix'
 	local Constant = require 'symmath.Constant'
 	local sqrt = require 'symmath.sqrt'
+	local abs = require 'symmath.abs'
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	
 	local rank
@@ -28,7 +29,7 @@ local function makeLeviCivita(symbol, sqrtDetG)
 		if not sqrtDetG then
 			sqrtDetG = basis and basis.metric
 				-- TODO: sqrt(abs(det(metric)))
-				and sqrt(Matrix.determinant(basis.metric))()
+				and sqrt(abs(Matrix.determinant(basis.metric)))()
 				or Constant(1)
 		end
 	end

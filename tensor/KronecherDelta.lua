@@ -1,5 +1,7 @@
 local range = require 'ext.range'
 
+-- TODO don't use this.  it's really slow.  just use Tensor:antisym()
+
 --[[
 generalized kronecher delta
 delta^a_b = 1 for a == b, 0 otherwise

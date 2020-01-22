@@ -42,7 +42,9 @@ SingleLine.lookupTable = {
 			end
 			return symbol
 		end
-		return tostring(expr.value) 
+		local s = tostring(expr.value) 
+		if s:sub(-2) == '.0' then s = s:sub(1,-3) end
+		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
 		return 'Invalid'

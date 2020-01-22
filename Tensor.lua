@@ -748,6 +748,7 @@ end
 -- TODO rename to something that makes more sense? :form() or something, idk,
 -- this function is used for reshaping internal form and index ordering
 -- maybe 'permute' is good.  maybe 'form' is good.
+-- maybe 'reshape'
 -- maybe I should have (variance string, tensor) as ctors for Tensor()'s and then permute them there, but then what about 1x1x1 tensor initialization?
 function Tensor:permute(dstVariance)
 	if type(dstVariance) == 'string' then
@@ -1096,6 +1097,49 @@ function Tensor:printElem(name)
 	else
 		print()
 	end
+end
+
+function Tensor:antisym()
+	-- this is from https://www.lua.org/pil/9.3.html
+	function permgen(a, n, s)
+		if n == 0 then
+			coroutine.yield(a, s)
+		else
+			for i=1,n do
+				a[n], a[i] = a[i], a[n]		-- put i-th element as the last one
+
+				-- swap signs when you remove the ith and insert it as the nth
+				-- so exchanging the i'th and the n'th means performing n-i moves to move 'i' to 'n'
+				-- ... and n-i-1 moves to move 'n' to 'i'
+				-- so the sign flips by 2n-2i-1 % 2 == 1 ... so long as i ~= n already
+				local news = i==n and s or -s
+				permgen(a, n - 1, news)		-- generate all permutations of the other elements
+
+				a[n], a[i] = a[i], a[n]		-- restore i-th element
+			end
+		end
+	end
+	function perm(a)
+		a = table(a)
+		local n = table.maxn(a)
+		return coroutine.wrap(function() 
+			return permgen(a, n, 1) 
+		end)
+	end
+
+	return Tensor{
+		indexes = self.variance, 
+		values = function(...)
+			local indexes = {...}	
+			-- for all permutations of the indexes ...
+			-- add/sub depending on whether it is an even or odd permutation
+			local sum = 0
+			for p, s in perm(indexes) do
+				sum = sum + s * self[p]
+			end
+			return sum()
+		end,
+	}
 end
 
 return Tensor
