@@ -466,8 +466,12 @@ LaTeX.footer = [[
 function LaTeX:fixVariableName(name)
 	local i=1
 	while i < #name do
-		if i>1 and name:sub(i):match('^[%^_]') then
-			name = name:sub(1,i-1) .. '_{' .. name:sub(i+1) .. '}'
+		if i>1 then
+			if name:sub(i):match'^_' then
+				name = name:sub(1,i-1) .. '_{' .. name:sub(i+1) .. '}'
+			elseif name:sub(i):match'^%^' then
+				name = name:sub(1,i-1) .. '^{' .. name:sub(i+1) .. '}'
+			end
 		end
 		for _,w in ipairs(texSymbols) do
 			if name:sub(i):match('^'..w) then
