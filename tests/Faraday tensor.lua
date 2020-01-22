@@ -35,14 +35,7 @@ local d3 = KronDelta(3)
 function KronecherDelta3(T)
 	assert(#T.variance == 3, "this only works on a 3-form")
 	-- TODO also assert that all indexes are lowered
-	return (
-		  (d1'^a_d' * (d1'^b_e' * (d1'^c_f' * T'_abc')() )() )()
-		+ (d1'^a_e' * (d1'^b_f' * (d1'^c_d' * T'_abc')() )() )()
-		+ (d1'^a_f' * (d1'^b_d' * (d1'^c_e' * T'_abc')() )() )()
-		- (d1'^a_f' * (d1'^b_e' * (d1'^c_d' * T'_abc')() )() )()
-		- (d1'^a_d' * (d1'^b_f' * (d1'^c_e' * T'_abc')() )() )()
-		- (d1'^a_e' * (d1'^b_d' * (d1'^c_f' * T'_abc')() )() )()
-	)()
+	return (T'_abc' + T'_bca' + T'_cab' - T'_cba' - T'_acb' - T'_bac')()
 end
 
 -- this is really slow and returns zeroes anyways... but dF = d^2 A = 0, so that means it works.
