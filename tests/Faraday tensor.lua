@@ -62,7 +62,7 @@ printbr(F'_ab':eq(FDef))
 local partialFDef = FDef'_bc,a'():permute'_abc'
 printbr(F'_bc,a':eq(partialFDef))
 
-local extFDef = (frac(1,2) * partialFDef:antisym())()
+local extFDef = partialFDef:antisym()
 printbr'$d^2 A = 0$ in terms of $F_{ab}$'
 printbr(var'dF''_abc':eq(extFDef))
 
@@ -95,7 +95,7 @@ printbr(F'_ab':eq(FDef))
 local partialFDef = FDef'_bc,a'():permute'_abc'
 printbr(F'_bc,a':eq(partialFDef))
 
-local extFDef = (frac(1,2) * partialFDef:antisym())()
+local extFDef = partialFDef:antisym()
 printbr'$d^2 A = 0$ in terms of $F_{ab}$'
 printbr(var'dF''_abc':eq(extFDef))
 
@@ -112,7 +112,7 @@ printbr(var'\\star dF''_a':eq(starExtFDef):eq(Tensor'_a'))
 
 printbr[[collect equations]]
 for a=1,#starExtFDef do
-	printbr( (starExtFDef[a]:eq(0) * ({-1, -c, -c, -c})[a])() )
+	printbr( (starExtFDef[a]:eq(0) * ({-frac(1,2), -frac(1,2) * c, -frac(1,2) * c, -frac(1,2) * c})[a])() )
 end
 
 printbr[[and you have the Gauss law for the magnetic field and the Faraday law]]
@@ -127,7 +127,7 @@ local JDef = Tensor('^a', function(a)
 end)
 printbr(J'^a':eq(JDef))
 
-local mu0JDef = (mu'_0' * JDef'_a')()
+local _2mu0JDef = (2 * mu'_0' * JDef'_a')()
 
 
 printbr'now look at the co-differential'
@@ -141,24 +141,24 @@ printbr[[$(\partial_a \star dA)_{bc}$]]
 local partialStarFDef = starFDef'_bc,a'():permute'_abc'
 printbr(starF'_bc,a':eq(partialStarFDef))
 
-printbr[[$d \star dA = d \star F = -\star \mu_0 J$]]
-local extStarFDef = (frac(1,2) * partialStarFDef:antisym())()
+printbr[[$d \star dA = d \star F = -2 \star \mu_0 J$]]
+local extStarFDef = partialStarFDef:antisym()
 printbr(var'd \\star F''_abc':eq(extStarFDef))
 
-printbr[[$\star d \star d A = \star d \star F = \mu_0 J$]]
-local starExtStarFDef = (frac(1,6) * extStarFDef'^bcd' * lc'_bcda')()
-printbr(var'\\star d \\star F''_a':eq(starExtStarFDef):eq(mu0JDef))
+printbr[[$\star d \star d A = \star d \star F = 2 \mu_0 J$]]
+local starExtStarFDef = (frac(1,3*2) * extStarFDef'^bcd' * lc'_bcda')()
+printbr(var'\\star d \\star F''_a':eq(starExtStarFDef):eq(_2mu0JDef))
 printbr[[replace $\partial_0 = \frac{1}{c} \partial_t$]]
 starExtStarFDef = starExtStarFDef
 	:replace(EDef[2]:diff(x0)(), frac(1,c)*EDef[2]:diff(t))
 	:replace(EDef[3]:diff(x0)(), frac(1,c)*EDef[3]:diff(t))
 	:replace(EDef[4]:diff(x0)(), frac(1,c)*EDef[4]:diff(t))
 	()
-printbr(var'\\star d \\star F''_a':eq(starExtStarFDef):eq(mu0JDef))
+printbr(var'\\star d \\star F''_a':eq(starExtStarFDef):eq(_2mu0JDef))
 
 printbr[[collect equations]]
 for a=1,#starExtFDef do
-	printbr( (starExtStarFDef[a]:eq(mu0JDef[a]) * ({-c, -1, -1, -1})[a])() )
+	printbr( (starExtStarFDef[a]:eq(_2mu0JDef[a]) * ({-frac(1,2) * c, -frac(1,2), -frac(1,2), -frac(1,2)})[a])() )
 end
 
 printbr[[and you have the Gauss law for the electic field and the Ampere law]]
@@ -173,7 +173,7 @@ printbr(var'\\star A''_abc':eq(starADef))
 local partialStarADef = starADef'_bcd,a'():permute'_abcd'
 printbr(var'\\partial \\star A''_bcd,a':eq(partialStarADef))
 
-local extStarADef = (frac(1,3*2) * partialStarADef:antisym())() 
+local extStarADef = partialStarADef:antisym()
 printbr(var'd \\star A''_abcd':eq(extStarADef))
 
 local starExtStarADef = (frac(1,4*3*2) * extStarADef'^abcd' * lc'_abcd')()
@@ -186,10 +186,10 @@ printbr(var'd \\star d \\star A''_a':eq(partialStarExtStarADef))
 
 printbr[[...and this is equal to ${A^\mu}_{,\mu\alpha}$, which means as long as ${A^\mu}_{,\mu} = const$ then the gradient is zero.]]
 
-printbr[[This means that $\Delta A = (d \delta + \delta d) A = (d \star d \star + \star d \star d) A = \mu_0 J$ is equal to the Gauss-Ampere laws plus the gradient of the divergence of the four-potential]]
+printbr[[This means that $\frac{1}{2} \Delta A = \frac{1}{2} (d \delta + \delta d) A = \frac{1}{2} (d \star d \star + \star d \star d) A = \mu_0 J$ is equal to the Gauss-Ampere laws plus the gradient of the divergence of the four-potential]]
 
 printbr[[So the Gauss/Faraday side of Maxwell's laws are summed up in $d^2 A = 0$]]
-printbr[[And the Gauss/Ampere side of Maxwell's laws are summed up in $\Delta A = \mu_0 J$]]
+printbr[[And the Gauss/Ampere side of Maxwell's laws are summed up in $\frac{1}{2} \Delta A = \mu_0 J$]]
 
 printbr()
 printbr()
