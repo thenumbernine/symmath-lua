@@ -309,16 +309,17 @@ printbr(geodesicEqn)
 
 printbr[[Let $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}, A_5 = c \sqrt{\frac{k_e}{G}}, \phi = \frac{1}{c} \sqrt{\frac{G}{k_e}}$]]
 local mass = var'M'
+local q = var'q'
 geodesicEqn = geodesicEqn:replace(
 	dx_ds'^5',
-	--var'\\frac{q}{m} \\sqrt{\\frac{k_e}{G}}'	--frac(var'q', var'm')	-- using a var so it doesn't combine with other terms
-	var'q' / mass * sqrt(k_e / G)
+	--var'\\frac{q}{m} \\sqrt{\\frac{k_e}{G}}'	--frac(q, var'm')	-- using a var so it doesn't combine with other terms
+	frac(q, mass) * sqrt(frac(k_e, G))
 ):replace(
 	phi,
-	frac(1, c) * sqrt(G / k_e)
+	frac(1, c) * sqrt(frac(G, k_e))
 ):replace(
 	A'_5',
-	c * sqrt(k_e / G)
+	c * sqrt(frac(k_e, G))
 )():factorDivision()
 printbr(geodesicEqn)
 printbr()
@@ -387,7 +388,8 @@ spatialGeodesicEqn = spatialGeodesicEqn
 	:replace(F'_0^i', -frac(1,c) * E'^i')
 	:replace(F'_j^i', epsilon'^i_jl' * B'^l')
 	:replace(F'_k^i', epsilon'^i_kl' * B'^l')
-	():factorDivision()
+	--():factorDivision()
+spatialGeodesicEqn = betterSimplify(spatialGeodesicEqn)
 printbr(spatialGeodesicEqn)
 
 local phi_q = var('\\phi_q')
@@ -423,8 +425,12 @@ printbr('For an electron,', units.m_e_in_kg, ',', units.e_in_C)
 
 -- TODO like maxima, :simplify{scopeVars}
 symmath.simplifyConstantPowers = true
+local elec_q_sqrt_ke_over_m_sqrt_G = (units.e_in_C:rhs() / units.m_e_in_kg:rhs()):subst(kg_in_C)()
+
 printbr('so $\\frac{q}{m} \\sqrt{\\frac{k_e}{G}} = $', 
-	(units.e_in_C:rhs() / units.m_e_in_kg:rhs()):subst(kg_in_C)()
+	elec_q_sqrt_ke_over_m_sqrt_G 
+	'=', 
+	(elec_q_sqrt_ke_over_m_sqrt_G * units.c_in_m_s:rhs())()
 )
 symmath.simplifyConstantPowers = false
 
@@ -465,6 +471,7 @@ printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_def))
 printbr()
 
 
+-- TODO Riemann5_def[1][1][1][2] can replace A_5 F_beta^alpha_,gamma + ... with A_5 nablaF_gamma_beta^alpha
 printbr'Riemann curvature tensor:'
 local R = var'R'
 local R5 = var'\\tilde{R}'
@@ -513,42 +520,6 @@ Riemann5_def = Riemann5_def
 		+ A' _\\mu' * conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\mu _\\epsilon _\\delta'
 	)()
 
---[[
---	:replace(F' _\\delta ^\\alpha _;\\gamma', F' _\\delta ^\\alpha _,\\gamma' - )
---	:simplify()
-
-Riemann5_def[1][1][2][1] = (Riemann5_def[1][1][2][1] 
-	- frac(1,4) * phi^4 * A' ^\\mu' * F' _\\beta _\\mu' * F' _\\delta ^\\alpha'
-	+ frac(1,4) * phi^4 * A' _\\epsilon' * F' _\\beta ^\\epsilon' * F' _\\delta ^\\alpha'
-)()
-
-Riemann5_def[2][1][1][1] = (Riemann5_def[2][1][1][1] 
-	+ frac(1,2) * A' _\\epsilon _,\\delta' * conn4' ^\\epsilon _\\beta _\\gamma'
-	- frac(1,2) * A' _\\mu _,\\delta' * conn4' ^\\mu _\\beta _\\gamma'
-	
-	- frac(1,2) * A' _\\epsilon _,\\gamma' * conn4' ^\\epsilon _\\beta _\\delta'
-	+ frac(1,2) * A' _\\mu _,\\gamma' * conn4' ^\\mu _\\beta _\\delta'
-
-	+ frac(1,2) * (
-		A' _\\delta _,\\epsilon' * conn4' ^\\epsilon _\\beta _\\gamma'
-		- A' _\\mu _,\\delta' * conn4' ^\\mu _\\beta _\\gamma'
-	)
-	- frac(1,2) * F' _\\mu _\\delta' * conn4' ^\\mu _\\beta _\\gamma'
-
-	- frac(1,2) * (
-		A' _\\gamma _,\\epsilon' * conn4' ^\\epsilon _\\beta _\\delta'
-		- A' _\\mu _,\\gamma' * conn4' ^\\mu _\\beta _\\delta'
-	)
-	+ frac(1,2) * F' _\\mu _\\gamma' * conn4' ^\\mu _\\beta _\\delta'
-
-	- frac(1,4) * phi^4 * A' ^\\mu' * A' _\\beta' * A' _\\epsilon' * F' _\\delta _\\mu' * F' _\\gamma ^\\epsilon'
-	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\beta' * A' _\\epsilon' * F' _\\delta ^\\epsilon' * F' _\\gamma _\\mu'
-)()
-	:replace( A' _\\delta _,\\gamma', F' _\\gamma _\\delta' + A' _\\gamma _,\\delta')
-	:replace( A' _\\beta _,\\gamma', F' _\\gamma _\\beta' + A' _\\gamma _,\\beta')
-	:replace( A' _\\beta _,\\delta', F' _\\delta _\\beta' + A' _\\delta _,\\beta')
-	:simplify()
---]]
 Riemann5_def = betterSimplify(Riemann5_def)
 printbr(R5'^a_bcd':eq(Riemann5_def))
 printbr()
@@ -560,36 +531,6 @@ local Ricci5_def = Riemann5_def'^e_aeb'()
 	:replace(F' _\\sigma ^\\sigma', 0)()
 	:replace(F' _\\sigma ^\\sigma _,\\beta', 0)()
 	
-	-- hmm, not working so well...
-	-- even if it was, I would have to add the ability to tell this function which symbols to use (to avoid the 5D symbols)
-	--:tidyIndexes()()
-
---[[
-Ricci5_def[1][1] = (Ricci5_def[1][1]
-	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\alpha' * F' _\\epsilon _\\mu' * F' _\\beta ^\\epsilon'
-	- frac(1,4) * phi^4 * A' ^\\mu' * A' _\\alpha' * F' _\\sigma _\\mu' * F' _\\beta ^\\sigma'
-	
-	- frac(1,4) * phi^4 * A' ^\\mu' * A' _\\epsilon' * F' _\\beta _\\mu' * F' _\\alpha ^\\epsilon'
-	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\sigma' * F' _\\beta ^\\sigma' * F' _\\alpha _\\mu'
-)()
-
-Ricci5_def[2][1] = (Ricci5_def[2][1]
-	+ frac(1,4) * phi^4 * A' _\\epsilon' * F' _\\sigma ^\\epsilon' * F' _\\beta ^\\sigma'
-	- frac(1,4) * phi^4 * A' _\\sigma' * F' _\\epsilon ^\\sigma' * F' _\\beta ^\\epsilon'
-	
-	+ frac(1,4) * phi^4 * A' ^\\mu' * F' _\\epsilon _\\mu' * F' _\\beta ^\\epsilon'
-	- frac(1,4) * phi^4 * A' ^\\mu' * F' _\\sigma _\\mu' * F' _\\beta ^\\sigma'
-
-	- frac(1,2) * phi^2 * (F' _\\beta ^\\sigma _,\\sigma' - F' _\\sigma ^\\epsilon' * conn4' ^\\sigma _\\epsilon _\\beta' + F' _\\beta ^\\epsilon' * conn4' ^\\sigma _\\epsilon _\\sigma')
-	+ frac(1,2) * phi^2 * (F' _\\beta ^\\mu _;\\mu')
-)()
-
-Ricci5_def[1][2] = (Ricci5_def[1][2]
-	- frac(1,2) * phi^2 * (F' _\\alpha ^\\sigma _,\\sigma' - F' _\\epsilon ^\\sigma' * conn4' ^\\epsilon _\\alpha _\\sigma' + F' _\\alpha ^\\epsilon' * conn4' ^\\sigma _\\epsilon _\\sigma')
-	+ frac(1,2) * phi^2 * (F' _\\alpha ^\\mu _;\\mu')
-)()
---]]
-
 printbr(R5'_ab':eq(R5'^c_acb'))
 printbr()
 
@@ -627,54 +568,16 @@ Ricci5_def[1][1] = (Ricci5_def[1][1]
 		A' _\\gamma _,\\beta' * F' _\\alpha ^\\gamma'
 		+ A' _\\gamma' * F' _\\alpha ^\\gamma _,\\beta'
 	)
-
---[[
-	- frac(1,2) * phi^2 * (
-		F' _\\alpha _\\gamma' * A' ^\\gamma _,\\beta'
-		+ F' _\\alpha _\\gamma _,\\beta' * A' ^\\gamma'
-		+ F' _\\gamma _\\delta' * A' ^\\gamma' * conn4' ^\\delta _\\alpha _\\beta'
-	)
-	+ frac(1,2) * phi^2 * var'(\\nabla_{(1)} (F_{(2)(3)} A^{(3)}))'' _\\beta _\\alpha'
-
-	- frac(1,2) * phi^2 * (
-		F' _\\alpha ^\\gamma' * A' _\\gamma _,\\beta'
-		+ F' _\\alpha ^\\gamma _,\\beta' * A' _\\gamma'
-		+ F' ^\\gamma _\\delta' * A' _\\gamma' * conn4' ^\\delta _\\alpha _\\beta'
-	)
-	+ frac(1,2) * phi^2 * var'(\\nabla_{(1)} (F_{(2)(3)} A^{(3)}))'' _\\beta _\\alpha'
-
-
-	-- (A_alpha F_beta^gamma)_;gamma 
-	-- = A_alpha;gamma F_beta^gamma + A_alpha F_beta^gamma_;gamma
-	-- = (A_alpha,gamma - A_delta conn4^delta_alpha_gamma) F_beta^gamma + A_alpha (F_beta^gamma_,gamma - F_delta^gamma conn4^delta_beta_gamma + F_beta^delta conn4^gamma_delta_gamma)
-	-- = A_alpha,gamma F_beta^gamma - A_delta conn4^delta_alpha_gamma F_beta^gamma + A_alpha F_beta^gamma_,gamma - A_alpha F_delta^gamma conn4^delta_beta_gamma + A_alpha F_beta^delta conn4^gamma_delta_gamma
-	- frac(1,2) * phi^2 * (
-		A' _\\alpha _,\\gamma' * F' _\\beta ^\\gamma'
-		- A' _\\delta' * conn4' ^\\delta _\\alpha _\\gamma' * F' _\\beta ^\\gamma'
-		+ A' _\\alpha' * F' _\\beta ^\\gamma _,\\gamma'
-		- A' _\\alpha' * F' _\\delta ^\\gamma' * conn4' ^\\delta _\\beta _\\gamma'
-		+ A' _\\alpha' * F' _\\beta ^\\delta' * conn4' ^\\gamma _\\delta _\\gamma'
-	)
-	+ frac(1,2) * phi^2 * var'(\\nabla_{(3)} ( {F_{(1)}}^{(3)} A_{(2)} ))'' _\\beta _\\alpha'
-
-	+ frac(1,2) * phi^2 * (
-		A' _\\beta _,\\gamma' * F' _\\alpha ^\\gamma'
-		- A' _\\delta' * conn4' ^\\delta _\\beta _\\gamma' * F' _\\alpha ^\\gamma'
-		+ A' _\\beta' * F' _\\alpha ^\\gamma _,\\gamma'
-		- A' _\\beta' * F' _\\delta ^\\gamma' * conn4' ^\\delta _\\alpha _\\gamma'
-		+ A' _\\beta' * F' _\\alpha ^\\delta' * conn4' ^\\gamma _\\delta _\\gamma'
-	)
-	- frac(1,2) * phi^2 * var'(\\nabla_{(3)} ( {F_{(1)}}^{(3)} A_{(2)} ))'' _\\alpha _\\beta'
---]]
 )()
 
+local nablaF = var'(\\nabla F)'
 Ricci5_def[1][2] = (Ricci5_def[1][2]
 	- frac(1,2) * phi^2 * A'_5' * (
 		F' _\\alpha ^\\gamma _,\\gamma'
 		- F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\alpha _\\delta'
 		+ F' _\\alpha ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
 	)
-	+ frac(1,2) * phi^2 * A'_5' * var'(\\nabla F)'' _\\gamma _\\alpha ^\\gamma'
+	+ frac(1,2) * phi^2 * A'_5' * nablaF' _\\gamma _\\alpha ^\\gamma'
 )()
 
 Ricci5_def[2][1] = (Ricci5_def[2][1]
@@ -683,7 +586,7 @@ Ricci5_def[2][1] = (Ricci5_def[2][1]
 		+ F' _\\beta ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
 		- F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\delta _\\beta'
 	)
-	+ frac(1,2) * phi^2 * A'_5' * var'(\\nabla F)'' _\\gamma _\\beta ^\\gamma'
+	+ frac(1,2) * phi^2 * A'_5' * nablaF' _\\gamma _\\beta ^\\gamma'
 )()
 
 printbr(R5'_ab':eq(Ricci5_def))
@@ -695,14 +598,14 @@ Ricci5_def[1][1] = (Ricci5_def[1][1]
 		+ A' _\\beta' * F' _\\alpha ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
 		- A' _\\beta' * F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\alpha _\\delta'
 	)
-	+ frac(1,2) * phi^2 * A' _\\beta' * var'(\\nabla F)'' _\\gamma _\\alpha ^\\gamma'
+	+ frac(1,2) * phi^2 * A' _\\beta' * nablaF' _\\gamma _\\alpha ^\\gamma'
 
 	- frac(1,2) * phi^2 * (
 		A' _\\alpha' * F' _\\beta ^\\gamma _,\\gamma'
 		+ A' _\\alpha' * F' _\\beta ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
 		- A' _\\alpha' * F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\beta _\\delta'
 	)
-	+ frac(1,2) * phi^2 * A' _\\alpha' * var'(\\nabla F)'' _\\gamma _\\beta ^\\gamma'
+	+ frac(1,2) * phi^2 * A' _\\alpha' * nablaF' _\\gamma _\\beta ^\\gamma'
 
 	- frac(1,2) * phi^2 * A' ^\\gamma' * F' _\\gamma _\\delta' * conn4' ^\\delta _\\alpha _\\beta'
 	+ frac(1,2) * phi^2 * A' _\\gamma' * F' ^\\gamma _\\delta' * conn4' ^\\delta _\\alpha _\\beta'
@@ -732,8 +635,6 @@ printbr(R5'_ab':eq(Ricci5_def))
 printbr()
 
 
-os.exit()
-
 
 
 printbr'Gaussian curvature:'
@@ -744,15 +645,63 @@ Gaussian5_def = (Gaussian5_def
 
 	- frac(1,4) * phi^4 * A' ^\\rho' * A' _\\rho' * F' _\\epsilon ^\\nu' * F' _\\nu ^\\epsilon'
 	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\mu' * F' _\\epsilon ^\\nu' * F' _\\nu ^\\epsilon'
-)():reindex{[' \\alpha \\beta'] = ' \\rho \\sigma'}
+)()
+Gaussian5_def = Gaussian5_def:replace( A' ^\\beta' * A' _\\beta', A' ^\\alpha' * A' _\\alpha' )()
+Gaussian5_def = Gaussian5_def:replace( A' ^\\mu' * A' _\\mu', A' ^\\alpha' * A' _\\alpha' )()
+Gaussian5_def = Gaussian5_def:replace( A' ^\\rho' * A' _\\rho', A' ^\\alpha' * A' _\\alpha' )()
+Gaussian5_def = Gaussian5_def:replace( (A' _\\beta' * A' _\\alpha' * g' ^\\alpha ^\\beta')(), A' ^\\alpha' * A' _\\alpha' )()
+Gaussian5_def = Gaussian5_def:replace( (A' _\\beta' * g' ^\\alpha ^\\beta')(), A' ^\\alpha' )()
+Gaussian5_def = Gaussian5_def:replace( (A' _\\alpha' * g' ^\\alpha ^\\beta')(), A' ^\\beta' )()
+Gaussian5_def = Gaussian5_def:replace( (g' ^\\alpha ^\\beta' * F' _\\alpha _\\gamma')(), F' ^\\beta _\\gamma' )()
+Gaussian5_def = Gaussian5_def:tidyIndexes()()	-- this works, but the indexes it picks are really out there.
+Gaussian5_def = Gaussian5_def:reindex{[' \\alpha'] = ' \\gamma', [' \\epsilon'] = ' \\delta'}
+for _,index in ipairs((Gaussian5_def:getIndexesUsed())) do
+	assert(index.symbol ~= '\\alpha' and index.symbol ~= '\\beta', "now you have to replace these with some unused symbols...")
+end
 printbr(R5:eq(Gaussian5_def))
 printbr()
+
 
 printbr'Einstein curvature:'
 local G5 = var'\\tilde{G}'
 local Einstein_def = (Ricci5_def'_ab' - frac(1,2) * Gaussian5_def * g5_def'_ab')()
 printbr(G5'_ab':eq(Einstein_def))
 printbr()
+
+
+-- TODO check units here
+-- TODO build this better?  or just rho/c^2 u_a u_b + P g5_ab ?
+printbr'stress-energy tensor:'
+
+local rho = var'\\rho'
+local p = var'p'
+local T5_def = Tensor('_ab', 
+	{
+		c^2 * rho * dx_ds' _\\alpha' * dx_ds' _\\beta' + p * g5' _\\alpha _\\beta',
+		c^2 * rho * dx_ds' _\\alpha' * dx_ds'_5' + p * g5' _\\alpha _5',
+	},
+	{
+		c^2 * rho * dx_ds' _\\beta' * dx_ds'_5' + p * g5' _\\beta _5',
+		c^2 * rho * (dx_ds'_5')^2 + p * g5'_55'
+	}
+)
+local T5 = var'\\tilde{T}'
+printbr(T5'_ab':eq(c^2 * rho * dx_ds'_a' * dx_ds'_b' + p*g5'_ab'))
+printbr(T5:eq(T5_def))
+T5_def = betterSimplify(
+	T5_def
+		:replace(dx_ds'_5', frac(q, mass) * sqrt(k_e, G))
+		:replace(g5' _\\alpha _\\beta', g5_def[1][1])
+		:replace(g5' _\\alpha _5', g5_def[1][2])
+		:replace(g5' _\\beta _5', g5_def[2][1])
+		:replace(g5'_55', g5_def[2][2])
+		:replace(A'_5', c * sqrt(frac(k_e, G)))
+		:replace(phi, frac(1,c) * sqrt(frac(G, k_e)))
+)
+printbr(T5:eq(T5_def))
+
+
+-- TODO now compare G_u5 = 8 pi T_u5
 
 
 printbr()
