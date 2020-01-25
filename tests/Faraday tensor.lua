@@ -92,6 +92,10 @@ printbr(FExpr)
 FDef = FExpr:rhs():replace(E, EDef):replace(B, BDef):replace(n, nDef):replace(epsilon, lc)():permute'_ab'
 printbr(F'_ab':eq(FDef))
 
+printbr(F'_a^b':eq(FDef'_a^b'()))
+printbr(F'^a_b':eq(FDef'^a_b'()))
+printbr(F'^ab':eq(FDef'^ab'()))
+
 local partialFDef = FDef'_bc,a'():permute'_abc'
 printbr(F'_bc,a':eq(partialFDef))
 

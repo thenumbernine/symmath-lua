@@ -937,6 +937,8 @@ function Expression:getIndexesUsed()
 	rfind(self)
 	return indexCounts:filter(function(index,symbol)
 		return index.count == 1
+	end):values(), indexCounts:filter(function(index,symbol)
+		return index.count > 1
 	end):values()
 end
 

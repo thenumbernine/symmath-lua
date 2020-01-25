@@ -5,12 +5,31 @@ require 'symmath'.setup{MathJax={title='Kaluza-Klein - index notation'}}
 -- this sets simplifyConstantPowers 
 local units = require 'symmath.physics.units'()
 
+
+local function betterSimplify(x)
+	return x():factorDivision()
+	:map(function(x)
+		if symmath.op.add.is(x) then
+			x = x:clone()
+			for i=1,#x do
+				x[i] = x[i]():factorDivision()
+			end
+			return x
+		end
+	end)
+end
+
+
 -- units
 local m = units.m
 local s = units.s
 local kg = units.kg
 local C = units.C
 
+
+local c = units.c
+local k_e = units.k_e
+local G = units.G
 
 
 printbr[[
@@ -26,7 +45,7 @@ printbr(units.G_in_SI, ' = 1 = gravitational constant')
 printbr(units.k_e_in_SI_and_C, " = 1 = Coulomb's constant")
 
 local kg_C_eq_1 = sqrt( units.k_e_in_SI_and_C:rhs() / units.G_in_SI:rhs() )():eq(1)
-printbr(sqrt(units.k_e / units.G):eq( kg_C_eq_1 ), ' = conversion from kg to C')
+printbr(sqrt(k_e / G):eq( kg_C_eq_1 ), ' = conversion from kg to C')
 local kg_in_C = kg_C_eq_1:solve(kg)
 printbr(kg_in_C)
 
@@ -97,19 +116,12 @@ local g5U_def = Tensor('^ab',
 printbr(g5'^ab':eq(g5U_def))
 printbr()
 
-local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames:mapi(function(s)
-	return '\\'..s
-end)
---[[
-:sort(function(a,b)
-	return a < b
-end)
---]]
-:filter(function(s)
-	return s:match'^[a-z]'
-end):mapi(function(s)
-	return '\\'..s
-end)
+local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames
+	-- :sort(function(a,b) return a < b end)
+	:filter(function(s) return s:match'^[a-z]' end)		-- lowercase
+	:mapi(function(s) return '\\'..s end)				-- append \ to the beginning for LaTeX
+
+Tensor.defaultSymbols = greekSymbols
 
 local delta = var'\\delta'
 printbr((g5'_ac' * g5'^cb'):eq( (
@@ -121,7 +133,7 @@ printbr((g5'_ac' * g5'^cb'):eq( (
 		:replace(A' ^\\gamma' * g' _\\alpha _\\gamma', A' _\\alpha')()
 		:replace(g' ^\\gamma ^\\beta' * g' _\\alpha _\\gamma', delta' _\\alpha ^\\beta')()
 	)
-	:tidyIndexes{symbols=greekSymbols, fixed=' \\alpha \\beta'}
+	:tidyIndexes{fixed=' \\alpha \\beta'}
 )
 printbr()
 
@@ -256,17 +268,21 @@ printbr()
 local d2x_ds2 = var'\\ddot{x}'
 local dx_ds = var'\\dot{x}'
 
-printbr'geodesic'
+printbr()
+printbr'geodesic:'
 local geodesicEqn = (d2x_ds2'^a' + conn5'^a_bc' * dx_ds'^b' * dx_ds'^c'):eq(0)
 printbr(geodesicEqn)
+printbr()
 
+printbr'only look at spacetime components:'
 geodesicEqn = geodesicEqn:replace(
 	conn5'^a_bc' * dx_ds'^b' * dx_ds'^c',
 	conn5' ^\\alpha _\\beta _\\gamma' * dx_ds' ^\\beta' * dx_ds' ^\\gamma'
 		--+ conn5' ^\\alpha _5 _\\gamma' * dx_ds'^5' * dx_ds' ^\\gamma'
 		+ 2 * conn5' ^\\alpha _\\beta _5' * dx_ds' ^\\beta' * dx_ds'^5'
 		+ conn5' ^\\alpha _5 _5' * dx_ds'^5' * dx_ds'^5'
-)()
+):replace(d2x_ds2'^a', d2x_ds2' ^\\alpha')
+()
 printbr(geodesicEqn)
 
 geodesicEqn = geodesicEqn:replace(
@@ -291,14 +307,117 @@ geodesicEqn = geodesicEqn:replace(
 )()
 printbr(geodesicEqn)
 
-printbr'Let $\\dot{x}^5 = \\frac{q}{m} \\sqrt{\\frac{k_e}{G}}$'
+printbr[[Let $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}, A_5 = c \sqrt{\frac{k_e}{G}}, \phi = \frac{1}{c} \sqrt{\frac{G}{k_e}}$]]
+local mass = var'M'
 geodesicEqn = geodesicEqn:replace(
 	dx_ds'^5',
-	var'\\frac{q}{m} \\sqrt{\\frac{k_e}{G}}'	--frac(var'q', var'm')	-- using a var so it doesn't combine with other terms
-)()
+	--var'\\frac{q}{m} \\sqrt{\\frac{k_e}{G}}'	--frac(var'q', var'm')	-- using a var so it doesn't combine with other terms
+	var'q' / mass * sqrt(k_e / G)
+):replace(
+	phi,
+	frac(1, c) * sqrt(G / k_e)
+):replace(
+	A'_5',
+	c * sqrt(k_e / G)
+)():factorDivision()
 printbr(geodesicEqn)
+printbr()
+printbr'There you have gravitational force, Lorentz force, and an extra term.'
+printbr()
 
-printbr'TODO separate space and time, substitute spacetime geodesic with Newtonian gravity, etc'
+printbr'separate space and time, substitute spacetime geodesic with Newtonian gravity, etc:'
+printbr()
+
+-- this should replace all terms, summed together ... unless they are multiplied, then replace the multiplication as a whole
+function splitIndexes(expr, splitMap)
+	return symmath.map(expr, function(term)
+		if symmath.op.add.is(term) then
+			local newAdd = table()
+			for i,x in ipairs(term) do
+				local forThisTerm = table{x:clone()}
+				local fixed, summed = x:getIndexesUsed()
+--printbr('fixed', #fixed, fixed:mapi(tostring):concat', ')
+--printbr('summed', #summed, summed:mapi(tostring):concat', ')
+--printbr('element within add op:', x)
+				for _,s in ipairs(summed) do
+					local newForThisTerm = table()
+--printbr('finding symbol in splitMap '..s.symbol)						
+assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
+					for _,repl in ipairs(splitMap[s.symbol]) do
+--printbr('...replacing symbol with '..repl)						
+						-- TODO between strings, numbers, and multi-char symbols, right now the symbol system is a mess
+						local symbol = s.symbol
+						if type(symbol) == 'string' and #symbol > 1 then symbol = ' '..symbol end
+						newForThisTerm:append(
+							forThisTerm:mapi(function(y)
+--printbr('replacing indexes in term ', y)
+								return y:reindex{[symbol]=repl}
+							end)
+						)
+					end
+					forThisTerm = newForThisTerm
+				end
+				newAdd:append(forThisTerm)
+			end
+			return #newAdd == 1 and newAdd[1] or symmath.op.add(newAdd:unpack())
+		end
+	end)
+end
+
+printbr'spatial evolution:'
+local spatialGeodesicEqn = geodesicEqn:reindex{[' \\alpha']='i'}
+printbr(spatialGeodesicEqn)
+printbr'splitting spacetime indexes into space+time'
+spatialGeodesicEqn = splitIndexes(spatialGeodesicEqn, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
+spatialGeodesicEqn = (spatialGeodesicEqn * c^2)():factorDivision()
+printbr(spatialGeodesicEqn)
+printbr('low-velocity approximation:', dx_ds'^0':eq(1))
+spatialGeodesicEqn = spatialGeodesicEqn:replace(dx_ds'^0', 1)():factorDivision()
+printbr(spatialGeodesicEqn)
+printbr('assume spacetime connection is only', conn4'^i_00')
+local E = var'E'
+printbr('assume', F'_0^i':eq(-frac(1,c) * E'^i'))
+local epsilon = var'\\epsilon'
+local B = var'B'
+printbr('assume', F'_i^j':eq(epsilon'_i^jk' * B'_k'))
+spatialGeodesicEqn = spatialGeodesicEqn
+	:replace(conn4'^i_j0', 0)
+	:replace(conn4'^i_0k', 0)
+	:replace(conn4'^i_jk', 0)
+	:replace(F'_0^i', -frac(1,c) * E'^i')
+	:replace(F'_j^i', epsilon'^i_jl' * B'^l')
+	:replace(F'_k^i', epsilon'^i_kl' * B'^l')
+	():factorDivision()
+printbr(spatialGeodesicEqn)
+
+local phi_q = var('\\phi_q')
+printbr('assume', A'_0':eq(frac(1,c) * phi_q), 'is the electric field potential')
+spatialGeodesicEqn = betterSimplify(spatialGeodesicEqn
+	:replace(A'_0', frac(1,c) * phi_q)
+)
+printbr(spatialGeodesicEqn)
+local r = var'r'
+local mass2 = var'M_2'
+printbr('assume', conn4'^i_00':eq( frac(G * mass2 * var'x''^i', c^2 * r^3 )))
+spatialGeodesicEqn = spatialGeodesicEqn
+	:replace(conn4'^i_00', frac(G * mass2 * var'x''^i', c^2 * r^3 ))
+	():factorDivision()
+printbr(spatialGeodesicEqn)
+
+--[[
+printbr'time evolution:'
+local timeGeodesicEqn = geodesicEqn:reindex{[' \\alpha']=0}
+printbr(timeGeodesicEqn)
+timeGeodesicEqn = splitIndexes(timeGeodesicEqn, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
+printbr(timeGeodesicEqn)
+printbr()
+
+printbr(spatialGeodesicEqn)
+printbr()
+
+printbr'TODO 5th dimension evolution:'
+printbr()
+--]]
 
 printbr('For an electron,', units.m_e_in_kg, ',', units.e_in_C)
 
@@ -309,8 +428,6 @@ printbr('so $\\frac{q}{m} \\sqrt{\\frac{k_e}{G}} = $',
 )
 symmath.simplifyConstantPowers = false
 
-printbr()
-printbr'There you have gravitational force, Lorentz force, and an extra term.'
 printbr()
 
 
@@ -333,6 +450,7 @@ local dconn5U_def = Tensor('^a_bcd', function(a,b,c,d)
 end):map(function(x)
 	if TensorRef.is(x) and x:hasDerivIndex(5) then return 0 end
 end)()
+dconn5U_def = betterSimplify(dconn5U_def)
 printbr(conn5'^a_bc,d':eq(dconn5U_def))
 printbr()
 
@@ -342,6 +460,7 @@ local conn5USq_def =
 	* conn5U_def'^e_bd'():reindex{[' \\alpha \\gamma \\mu'] = ' \\epsilon \\delta \\nu'}
 printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_def))
 conn5USq_def = conn5USq_def():permute'abcd'
+conn5USq_def = betterSimplify(conn5USq_def)
 printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_def))
 printbr()
 
@@ -350,6 +469,7 @@ printbr'Riemann curvature tensor:'
 local R = var'R'
 local R5 = var'\\tilde{R}'
 printbr(R5'^a_bcd':eq( conn5'^a_bd,c' - conn5'^a_bc,d' + conn5'^a_ec'*conn5'^e_bd' - conn5'^a_ed'*conn5'^e_bc' ))
+
 local Riemann5_def = Tensor('^a_bcd', function(a,b,c,d)
 	return (
 		dconn5U_def[a][b][d][c]:reindex{[' \\gamma \\delta'] = ' \\delta \\gamma'}
@@ -429,11 +549,9 @@ Riemann5_def[2][1][1][1] = (Riemann5_def[2][1][1][1]
 	:replace( A' _\\beta _,\\delta', F' _\\delta _\\beta' + A' _\\delta _,\\beta')
 	:simplify()
 --]]
-
+Riemann5_def = betterSimplify(Riemann5_def)
 printbr(R5'^a_bcd':eq(Riemann5_def))
 printbr()
-
-os.exit()
 
 printbr'Ricci tensor:'
 local Ricci5_def = Riemann5_def'^e_aeb'()
@@ -446,6 +564,7 @@ local Ricci5_def = Riemann5_def'^e_aeb'()
 	-- even if it was, I would have to add the ability to tell this function which symbols to use (to avoid the 5D symbols)
 	--:tidyIndexes()()
 
+--[[
 Ricci5_def[1][1] = (Ricci5_def[1][1]
 	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\alpha' * F' _\\epsilon _\\mu' * F' _\\beta ^\\epsilon'
 	- frac(1,4) * phi^4 * A' ^\\mu' * A' _\\alpha' * F' _\\sigma _\\mu' * F' _\\beta ^\\sigma'
@@ -469,12 +588,152 @@ Ricci5_def[1][2] = (Ricci5_def[1][2]
 	- frac(1,2) * phi^2 * (F' _\\alpha ^\\sigma _,\\sigma' - F' _\\epsilon ^\\sigma' * conn4' ^\\epsilon _\\alpha _\\sigma' + F' _\\alpha ^\\epsilon' * conn4' ^\\sigma _\\epsilon _\\sigma')
 	+ frac(1,2) * phi^2 * (F' _\\alpha ^\\mu _;\\mu')
 )()
+--]]
 
 printbr(R5'_ab':eq(R5'^c_acb'))
 printbr()
 
 printbr(R5'_ab':eq(Ricci5_def))
 printbr()
+
+Ricci5_def = Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'}
+printbr(R5'_ab':eq(Ricci5_def))
+printbr()
+
+Ricci5_def[1][1] = (Ricci5_def[1][1]
+	+ frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\delta' * F' _\\beta _\\gamma'
+	- frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\gamma' * F' _\\beta _\\delta'
+
+	- frac(1,4) * phi^4 * A' ^\\gamma' * A' _\\delta' * F' _\\alpha _\\gamma' * F' _\\beta ^\\delta'
+	+ frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\gamma' * F' _\\beta _\\delta'
+	
+	- frac(1,4) * phi^4 * A' ^\\gamma' * A' _\\delta' * F' _\\alpha ^\\delta' * F' _\\beta _\\gamma'
+	+ frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\gamma' * F' _\\beta _\\delta'
+	
+	+ frac(1,4) * phi^4 * A' _\\gamma' * A' _\\delta' * F' _\\alpha ^\\delta' * F' _\\beta ^\\gamma'
+	- frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\gamma' * F' _\\beta _\\delta'
+)()
+Ricci5_def = Ricci5_def
+	:replace(F' _\\delta _\\gamma', -F' _\\gamma _\\delta')
+	:replace(F' _\\delta ^\\gamma', -F' ^\\gamma _\\delta')
+	:simplify()
+
+Ricci5_def[1][1] = (Ricci5_def[1][1]
+	- frac(1,2) * phi^2 * (
+		A' ^\\gamma _,\\beta' * F' _\\alpha _\\gamma'
+		+ A' ^\\gamma' * F' _\\alpha _\\gamma _,\\beta'
+	)
+	+ frac(1,2) * phi^2 * (
+		A' _\\gamma _,\\beta' * F' _\\alpha ^\\gamma'
+		+ A' _\\gamma' * F' _\\alpha ^\\gamma _,\\beta'
+	)
+
+--[[
+	- frac(1,2) * phi^2 * (
+		F' _\\alpha _\\gamma' * A' ^\\gamma _,\\beta'
+		+ F' _\\alpha _\\gamma _,\\beta' * A' ^\\gamma'
+		+ F' _\\gamma _\\delta' * A' ^\\gamma' * conn4' ^\\delta _\\alpha _\\beta'
+	)
+	+ frac(1,2) * phi^2 * var'(\\nabla_{(1)} (F_{(2)(3)} A^{(3)}))'' _\\beta _\\alpha'
+
+	- frac(1,2) * phi^2 * (
+		F' _\\alpha ^\\gamma' * A' _\\gamma _,\\beta'
+		+ F' _\\alpha ^\\gamma _,\\beta' * A' _\\gamma'
+		+ F' ^\\gamma _\\delta' * A' _\\gamma' * conn4' ^\\delta _\\alpha _\\beta'
+	)
+	+ frac(1,2) * phi^2 * var'(\\nabla_{(1)} (F_{(2)(3)} A^{(3)}))'' _\\beta _\\alpha'
+
+
+	-- (A_alpha F_beta^gamma)_;gamma 
+	-- = A_alpha;gamma F_beta^gamma + A_alpha F_beta^gamma_;gamma
+	-- = (A_alpha,gamma - A_delta conn4^delta_alpha_gamma) F_beta^gamma + A_alpha (F_beta^gamma_,gamma - F_delta^gamma conn4^delta_beta_gamma + F_beta^delta conn4^gamma_delta_gamma)
+	-- = A_alpha,gamma F_beta^gamma - A_delta conn4^delta_alpha_gamma F_beta^gamma + A_alpha F_beta^gamma_,gamma - A_alpha F_delta^gamma conn4^delta_beta_gamma + A_alpha F_beta^delta conn4^gamma_delta_gamma
+	- frac(1,2) * phi^2 * (
+		A' _\\alpha _,\\gamma' * F' _\\beta ^\\gamma'
+		- A' _\\delta' * conn4' ^\\delta _\\alpha _\\gamma' * F' _\\beta ^\\gamma'
+		+ A' _\\alpha' * F' _\\beta ^\\gamma _,\\gamma'
+		- A' _\\alpha' * F' _\\delta ^\\gamma' * conn4' ^\\delta _\\beta _\\gamma'
+		+ A' _\\alpha' * F' _\\beta ^\\delta' * conn4' ^\\gamma _\\delta _\\gamma'
+	)
+	+ frac(1,2) * phi^2 * var'(\\nabla_{(3)} ( {F_{(1)}}^{(3)} A_{(2)} ))'' _\\beta _\\alpha'
+
+	+ frac(1,2) * phi^2 * (
+		A' _\\beta _,\\gamma' * F' _\\alpha ^\\gamma'
+		- A' _\\delta' * conn4' ^\\delta _\\beta _\\gamma' * F' _\\alpha ^\\gamma'
+		+ A' _\\beta' * F' _\\alpha ^\\gamma _,\\gamma'
+		- A' _\\beta' * F' _\\delta ^\\gamma' * conn4' ^\\delta _\\alpha _\\gamma'
+		+ A' _\\beta' * F' _\\alpha ^\\delta' * conn4' ^\\gamma _\\delta _\\gamma'
+	)
+	- frac(1,2) * phi^2 * var'(\\nabla_{(3)} ( {F_{(1)}}^{(3)} A_{(2)} ))'' _\\alpha _\\beta'
+--]]
+)()
+
+Ricci5_def[1][2] = (Ricci5_def[1][2]
+	- frac(1,2) * phi^2 * A'_5' * (
+		F' _\\alpha ^\\gamma _,\\gamma'
+		- F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\alpha _\\delta'
+		+ F' _\\alpha ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
+	)
+	+ frac(1,2) * phi^2 * A'_5' * var'(\\nabla F)'' _\\gamma _\\alpha ^\\gamma'
+)()
+
+Ricci5_def[2][1] = (Ricci5_def[2][1]
+	- frac(1,2) * phi^2 * A'_5' * (
+		F' _\\beta ^\\gamma _,\\gamma'
+		+ F' _\\beta ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
+		- F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\delta _\\beta'
+	)
+	+ frac(1,2) * phi^2 * A'_5' * var'(\\nabla F)'' _\\gamma _\\beta ^\\gamma'
+)()
+
+printbr(R5'_ab':eq(Ricci5_def))
+printbr()
+
+Ricci5_def[1][1] = (Ricci5_def[1][1]
+	- frac(1,2) * phi^2 * (
+		A' _\\beta' * F' _\\alpha ^\\gamma _,\\gamma'
+		+ A' _\\beta' * F' _\\alpha ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
+		- A' _\\beta' * F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\alpha _\\delta'
+	)
+	+ frac(1,2) * phi^2 * A' _\\beta' * var'(\\nabla F)'' _\\gamma _\\alpha ^\\gamma'
+
+	- frac(1,2) * phi^2 * (
+		A' _\\alpha' * F' _\\beta ^\\gamma _,\\gamma'
+		+ A' _\\alpha' * F' _\\beta ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
+		- A' _\\alpha' * F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\beta _\\delta'
+	)
+	+ frac(1,2) * phi^2 * A' _\\alpha' * var'(\\nabla F)'' _\\gamma _\\beta ^\\gamma'
+
+	- frac(1,2) * phi^2 * A' ^\\gamma' * F' _\\gamma _\\delta' * conn4' ^\\delta _\\alpha _\\beta'
+	+ frac(1,2) * phi^2 * A' _\\gamma' * F' ^\\gamma _\\delta' * conn4' ^\\delta _\\alpha _\\beta'
+)()
+
+printbr(R5'_ab':eq(Ricci5_def))
+printbr()
+
+-- TODO move this rule further up, but that means rearranging the nabla rules
+Ricci5_def = Ricci5_def:symmetrizeIndexes(conn4, {2,3})()
+
+-- TODO same, move this rule up too
+Ricci5_def = Ricci5_def
+	:replace(F' _\\gamma _\\beta', -F' _\\beta _\\gamma')
+	:replace(F' _\\gamma _\\alpha', -F' _\\alpha _\\gamma')
+	:simplify()
+
+Ricci5_def[1][1] = (Ricci5_def[1][1]  
+	+ frac(1,2) * phi^2 * F' _\\alpha ^\\gamma' * F' _\\beta _\\gamma'
+	- frac(1,2) * phi^2 * F' _\\alpha _\\gamma' * F' _\\beta ^\\gamma'
+
+	- frac(1,4) * phi^2 * (A' _\\gamma _,\\beta' - A' _\\beta _,\\gamma') * F' _\\alpha ^\\gamma'
+	+ frac(1,4) * phi^2 * F' _\\beta ^\\gamma' * F' _\\alpha _\\gamma'
+)()
+
+printbr(R5'_ab':eq(Ricci5_def))
+printbr()
+
+
+os.exit()
+
 
 
 printbr'Gaussian curvature:'
