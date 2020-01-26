@@ -361,8 +361,8 @@ printbr('replsymbols', replsymbols:unpack())
 				local result = repl
 				if result.reindex then
 					result = result:reindex{
-						[findsymbols:concat' '..' '..sumsymbols:concat' '] =
-							xsymbols:concat' '..' '..newsumsymbols:concat' '
+						[' '..table():append(findsymbols, sumsymbols):concat' '] =
+							' '..table():append(xsymbols, newsumsymbols):concat' '
 					}
 				end
 			
@@ -826,7 +826,7 @@ function Expression:symmetrizeIndexes(var, indexes)
 		and x[1] == var
 		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
 		then
-			local sorted = table.map(indexes, function(i)
+			local sorted = table.mapi(indexes, function(i)
 				return x[i+1].symbol
 			end):sort()
 			for i,sorted in ipairs(sorted) do
@@ -846,7 +846,7 @@ function Expression:symmetrizeIndexes(var, indexes)
 				and y[1] == var
 				and #y >= table.sup(indexes)+1
 				then
-					sorted = table.map(indexes, function(i)
+					sorted = table.mapi(indexes, function(i)
 						return y[i+1].symbol
 					end):sort()
 					for i,sorted in ipairs(sorted) do

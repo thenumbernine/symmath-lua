@@ -52,6 +52,16 @@ printbr(kg_in_C)
 
 Tensor.coords{{variables={'txyz','5'}}}
 
+
+local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames
+	-- :sort(function(a,b) return a < b end)
+	:filter(function(s) return s:match'^[a-z]' end)		-- lowercase
+	:mapi(function(s) return '\\'..s end)				-- append \ to the beginning for LaTeX
+
+Tensor.defaultSymbols = greekSymbols
+
+
+
 local A = var'A'
 printbr(A'_u', '= electromagnetic four-potential, in units', (kg*m)/(C*s))
 printbr(A'_5':eq(1), 'in natural units, but to cancel the units of $\\phi$ it is in units of', (kg*m)/(C*s),
@@ -116,25 +126,17 @@ local g5U_def = Tensor('^ab',
 printbr(g5'^ab':eq(g5U_def))
 printbr()
 
-local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames
-	-- :sort(function(a,b) return a < b end)
-	:filter(function(s) return s:match'^[a-z]' end)		-- lowercase
-	:mapi(function(s) return '\\'..s end)				-- append \ to the beginning for LaTeX
-
-Tensor.defaultSymbols = greekSymbols
-
 local delta = var'\\delta'
-printbr((g5'_ac' * g5'^cb'):eq( (
+local delta5_from_g5_def = 
+	(
 		g5_def'_ac'():reindex{ [' \\beta'] = ' \\gamma'}
 		* g5U_def'^cb'():reindex{ [' \\alpha'] = ' \\gamma'}
 	)() 
-		:replace(A' _\\gamma' * g' ^\\gamma ^\\beta', A' ^\\beta')()
-	--	:replace(A' _\\gamma' * A' ^\\gamma', A' _\\mu' * A' ^\\mu')()
-		:replace(A' ^\\gamma' * g' _\\alpha _\\gamma', A' _\\alpha')()
-		:replace(g' ^\\gamma ^\\beta' * g' _\\alpha _\\gamma', delta' _\\alpha ^\\beta')()
-	)
-	:tidyIndexes{fixed=' \\alpha \\beta'}
-)
+		:replace(A' _\\gamma' * g' ^\\gamma ^\\beta', A' ^\\beta')
+		:replace(A' ^\\gamma' * g' _\\alpha _\\gamma', A' _\\alpha')
+		:replace(g' ^\\gamma ^\\beta' * g' _\\alpha _\\gamma', delta' _\\alpha ^\\beta')
+		:tidyIndexes{fixed=' \\alpha \\beta'}
+printbr((g5'_ac' * g5'^cb'):eq(delta5_from_g5_def):eq(delta5_from_g5_def()))
 printbr()
 
 
@@ -203,10 +205,7 @@ conn5L_def = conn5L_def:replace(
 	(g' _\\alpha _\\beta _,\\gamma' + g' _\\alpha _\\gamma _,\\beta' - g' _\\beta _\\gamma _,\\alpha')(), 
 	2 * conn4'_\\alpha _\\beta _\\gamma'
 )()
--- TODO's on replace ...
--- replace(A_alpha,beta - A_beta,alpha => F_beta,alpha) works with expressions that completely match, but not larger commutative expressions that partially match
--- replaceIndex(same) only seems to work when the indexes 
---[[
+--[[ TODO ... this only seems to make things worse.  seems it is replacing too many A_alpha,gamma's
 conn5L_def = conn5L_def:replaceIndex(
 	A' _\\alpha _,\\gamma',
 	F'_\\gamma _\\alpha' + A' _\\gamma _,\\alpha'
@@ -255,11 +254,15 @@ conn5U_def = conn5U_def:replace(
 	A' _\\epsilon' * g' ^\\alpha ^\\epsilon',
 	A' ^\\alpha'
 )()
+conn5U_def = conn5U_def:reindex{[' \\epsilon'] = ' \\mu'}()
 conn5U_def = conn5U_def:replace(
-	(A' _\\epsilon' * A' ^\\epsilon')(),
-	A' _\\mu' * A' ^\\mu'
+	A' ^\\mu' * F' _\\gamma _\\mu',
+	A' _\\mu' * F' _\\gamma ^\\mu'
 )()
-conn5U_def = conn5U_def:reindex{[' \\epsilon'] = ' \\mu'}
+conn5U_def = conn5U_def:replace(
+	A' ^\\mu' * F' _\\beta _\\mu',
+	A' _\\mu' * F' _\\beta ^\\mu'
+)()
 printbr(conn5'^a_bc':eq(conn5U_def))
 printbr()
 
@@ -439,11 +442,11 @@ printbr()
 
 printbr'connection partial:'
 local dconn5_2x2x2_def = Tensor('^a_bc', function(a,b,c)
-	return conn5U_def[a][b][c]',d'()
+	return betterSimplify(conn5U_def[a][b][c]',d'()
 		:replace(phi'_,d', 0)()
 		:map(function(x)
 			if TensorRef.is(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
-		end)()
+		end))
 end)
 printbr(conn5'^a_bc,d':eq(dconn5_2x2x2_def))
 
@@ -501,6 +504,13 @@ Riemann5_def = Riemann5_def
 		+ conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\alpha _\\epsilon _\\delta'
 	)()
 	:replace(
+		A' _\\mu' * conn4' ^\\mu _\\beta _\\delta _,\\gamma' ,
+		A' _\\mu' * R' ^\\mu _\\beta _\\gamma _\\delta'
+		+ A' _\\mu' * conn4' ^\\mu _\\beta _\\gamma _,\\delta'
+		- A' _\\mu' * conn4' ^\\epsilon _\\beta _\\delta' * conn4' ^\\mu _\\epsilon _\\gamma'
+		+ A' _\\mu' * conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\mu _\\epsilon _\\delta'
+	)()
+	:replace(
 		A' _\\delta _,\\beta',
 		F' _\\beta _\\delta' + A' _\\beta _,\\delta'
 	)()
@@ -513,151 +523,129 @@ Riemann5_def = Riemann5_def
 		F' _\\gamma _\\delta' + A' _\\gamma _,\\delta'
 	)()
 	:replace(
-		A' _\\mu' * conn4' ^\\mu _\\beta _\\delta _,\\gamma' ,
-		A' _\\mu' * R' ^\\mu _\\beta _\\gamma _\\delta'
-		+ A' _\\mu' * conn4' ^\\mu _\\beta _\\gamma _,\\delta'
-		- A' _\\mu' * conn4' ^\\epsilon _\\beta _\\delta' * conn4' ^\\mu _\\epsilon _\\gamma'
-		+ A' _\\mu' * conn4' ^\\epsilon _\\beta _\\gamma' * conn4' ^\\mu _\\epsilon _\\delta'
+		A' _\\delta _,\\epsilon',
+		F' _\\epsilon _\\delta' + A' _\\epsilon _,\\delta'
 	)()
+	:replace(
+		A' _\\gamma _,\\epsilon',
+		F' _\\epsilon _\\gamma' + A' _\\epsilon _,\\gamma'
+	)()
+
+Riemann5_def = Riemann5_def:symmetrizeIndexes(conn4, {2,3})()
+Riemann5_def = betterSimplify(Riemann5_def)
+printbr(R5'^a_bcd':eq(Riemann5_def))
+printbr()
+
+
+local nablaF = var'(\\nabla F)'
+
+Riemann5_def[1][1][1][1] = Riemann5_def[1][1][1][1]:reindex{[' \\nu'] = ' \\epsilon'}()
+Riemann5_def[1][1][1][2] = Riemann5_def[1][1][1][2]:reindex{[' \\nu'] = ' \\epsilon'}()
+Riemann5_def[1][1][2][1] = Riemann5_def[1][1][2][1]:reindex{[' \\nu'] = ' \\epsilon'}()
+
+Riemann5_def = (Riemann5_def
+	:replace(
+		F' _\\delta ^\\alpha _,\\gamma',
+		- F' _\\delta ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\gamma' 
+		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\gamma _\\delta'
+		+ nablaF' _\\gamma _\\delta ^\\alpha'
+	)
+	:replace(
+		F' _\\gamma ^\\alpha _,\\delta',
+		- F' _\\gamma ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\delta' 
+		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\gamma _\\delta'
+		+ nablaF' _\\delta _\\gamma ^\\alpha'
+	)
+	:replace(
+		F' _\\beta ^\\alpha _,\\gamma',
+		- F' _\\beta ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\gamma'
+		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\beta _\\gamma'
+		+ nablaF' _\\gamma _\\beta ^\\alpha'
+	)
+	:replace(
+		F' _\\beta ^\\alpha _,\\delta',
+		- F' _\\beta ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\delta'
+		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\beta _\\delta'
+		+ nablaF' _\\delta _\\beta ^\\alpha'
+	)
+	:replace(
+		F' _\\delta ^\\mu _,\\gamma',
+		- F' _\\delta ^\\epsilon' * conn4' ^\\mu _\\epsilon _\\gamma'
+		+ F' _\\epsilon ^\\mu' * conn4' ^\\epsilon _\\delta _\\gamma'
+		+ nablaF' _\\gamma _\\delta ^\\mu'
+	)
+	:replace(
+		F' _\\gamma ^\\mu _,\\delta',
+		- F' _\\gamma ^\\epsilon' * conn4' ^\\mu _\\epsilon _\\delta'
+		+ F' _\\epsilon ^\\mu' * conn4' ^\\epsilon _\\gamma _\\delta'
+		+ nablaF' _\\delta _\\gamma ^\\mu'
+	)
+	:replace(
+		F' _\\beta ^\\mu _,\\delta',
+		- F' _\\beta ^\\epsilon' * conn4' ^\\mu _\\epsilon _\\delta'
+		+ F' _\\epsilon ^\\mu' * conn4' ^\\epsilon _\\beta _\\delta'
+		+ nablaF' _\\delta _\\beta ^\\mu'
+	)
+	:replace(
+		F' _\\beta ^\\mu _,\\gamma',
+		- F' _\\beta ^\\epsilon' * conn4' ^\\mu _\\epsilon _\\gamma'
+		+ F' _\\epsilon ^\\mu' * conn4' ^\\epsilon _\\beta _\\gamma'
+		+ nablaF' _\\gamma _\\beta ^\\mu'
+	)
+	:replace(
+		F' _\\gamma _\\delta _,\\beta',
+		F' _\\epsilon _\\delta' * conn4' ^\\epsilon _\\beta _\\gamma'
+		- F' _\\epsilon _\\gamma' * conn4' ^\\epsilon _\\beta _\\delta'
+		+ nablaF' _\\beta _\\gamma _\\delta'
+	)()
+
+)()
+Riemann5_def = Riemann5_def:symmetrizeIndexes(conn4, {2,3})()
+Riemann5_def = betterSimplify(Riemann5_def)
+
+-- TODO honestly I should be doing this much earlier
+Riemann5_def = Riemann5_def:tidyIndexes{fixed=' \\alpha \\beta \\gamma \\delta'}
 
 Riemann5_def = betterSimplify(Riemann5_def)
 printbr(R5'^a_bcd':eq(Riemann5_def))
 printbr()
 
+
+-- TODO a 'safeReindex' or a 'relabelToUnusedIndex' function: same as reindex, but errors if the new destination index is already present
 printbr'Ricci tensor:'
 local Ricci5_def = Riemann5_def'^e_aeb'()
 	:reindex{[' \\alpha \\beta \\gamma \\delta'] = ' \\sigma \\alpha \\sigma \\beta'}
 	:replace(R' ^\\sigma _\\alpha _\\sigma _\\beta', R' _\\alpha _\\beta')
 	:replace(F' _\\sigma ^\\sigma', 0)()
-	:replace(F' _\\sigma ^\\sigma _,\\beta', 0)()
+	:replace(nablaF' _\\beta _\\gamma ^\\gamma', 0)()
+	:replace(nablaF' _\\beta _\\sigma ^\\sigma', 0)()
+
+Ricci5_def = Ricci5_def:symmetrizeIndexes(conn4, {2,3})()
+Ricci5_def = Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'}()
 	
 printbr(R5'_ab':eq(R5'^c_acb'))
 printbr()
-
 printbr(R5'_ab':eq(Ricci5_def))
 printbr()
-
-Ricci5_def = Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'}
-printbr(R5'_ab':eq(Ricci5_def))
-printbr()
-
-Ricci5_def[1][1] = (Ricci5_def[1][1]
-	+ frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\delta' * F' _\\beta _\\gamma'
-	- frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\gamma' * F' _\\beta _\\delta'
-
-	- frac(1,4) * phi^4 * A' ^\\gamma' * A' _\\delta' * F' _\\alpha _\\gamma' * F' _\\beta ^\\delta'
-	+ frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\gamma' * F' _\\beta _\\delta'
-	
-	- frac(1,4) * phi^4 * A' ^\\gamma' * A' _\\delta' * F' _\\alpha ^\\delta' * F' _\\beta _\\gamma'
-	+ frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\gamma' * F' _\\beta _\\delta'
-	
-	+ frac(1,4) * phi^4 * A' _\\gamma' * A' _\\delta' * F' _\\alpha ^\\delta' * F' _\\beta ^\\gamma'
-	- frac(1,4) * phi^4 * A' ^\\gamma' * A' ^\\delta' * F' _\\alpha _\\gamma' * F' _\\beta _\\delta'
-)()
-Ricci5_def = Ricci5_def
-	:replace(F' _\\delta _\\gamma', -F' _\\gamma _\\delta')
-	:replace(F' _\\delta ^\\gamma', -F' ^\\gamma _\\delta')
-	:simplify()
-
-Ricci5_def[1][1] = (Ricci5_def[1][1]
-	- frac(1,2) * phi^2 * (
-		A' ^\\gamma _,\\beta' * F' _\\alpha _\\gamma'
-		+ A' ^\\gamma' * F' _\\alpha _\\gamma _,\\beta'
-	)
-	+ frac(1,2) * phi^2 * (
-		A' _\\gamma _,\\beta' * F' _\\alpha ^\\gamma'
-		+ A' _\\gamma' * F' _\\alpha ^\\gamma _,\\beta'
-	)
-)()
-
-local nablaF = var'(\\nabla F)'
-Ricci5_def[1][2] = (Ricci5_def[1][2]
-	- frac(1,2) * phi^2 * A'_5' * (
-		F' _\\alpha ^\\gamma _,\\gamma'
-		- F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\alpha _\\delta'
-		+ F' _\\alpha ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
-	)
-	+ frac(1,2) * phi^2 * A'_5' * nablaF' _\\gamma _\\alpha ^\\gamma'
-)()
-
-Ricci5_def[2][1] = (Ricci5_def[2][1]
-	- frac(1,2) * phi^2 * A'_5' * (
-		F' _\\beta ^\\gamma _,\\gamma'
-		+ F' _\\beta ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
-		- F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\delta _\\beta'
-	)
-	+ frac(1,2) * phi^2 * A'_5' * nablaF' _\\gamma _\\beta ^\\gamma'
-)()
-
-printbr(R5'_ab':eq(Ricci5_def))
-printbr()
-
-Ricci5_def[1][1] = (Ricci5_def[1][1]
-	- frac(1,2) * phi^2 * (
-		A' _\\beta' * F' _\\alpha ^\\gamma _,\\gamma'
-		+ A' _\\beta' * F' _\\alpha ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
-		- A' _\\beta' * F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\alpha _\\delta'
-	)
-	+ frac(1,2) * phi^2 * A' _\\beta' * nablaF' _\\gamma _\\alpha ^\\gamma'
-
-	- frac(1,2) * phi^2 * (
-		A' _\\alpha' * F' _\\beta ^\\gamma _,\\gamma'
-		+ A' _\\alpha' * F' _\\beta ^\\gamma' * conn4' ^\\delta _\\gamma _\\delta'
-		- A' _\\alpha' * F' _\\gamma ^\\delta' * conn4' ^\\gamma _\\beta _\\delta'
-	)
-	+ frac(1,2) * phi^2 * A' _\\alpha' * nablaF' _\\gamma _\\beta ^\\gamma'
-
-	- frac(1,2) * phi^2 * A' ^\\gamma' * F' _\\gamma _\\delta' * conn4' ^\\delta _\\alpha _\\beta'
-	+ frac(1,2) * phi^2 * A' _\\gamma' * F' ^\\gamma _\\delta' * conn4' ^\\delta _\\alpha _\\beta'
-)()
-
-printbr(R5'_ab':eq(Ricci5_def))
-printbr()
-
--- TODO move this rule further up, but that means rearranging the nabla rules
-Ricci5_def = Ricci5_def:symmetrizeIndexes(conn4, {2,3})()
-
--- TODO same, move this rule up too
-Ricci5_def = Ricci5_def
-	:replace(F' _\\gamma _\\beta', -F' _\\beta _\\gamma')
-	:replace(F' _\\gamma _\\alpha', -F' _\\alpha _\\gamma')
-	:simplify()
-
-Ricci5_def[1][1] = (Ricci5_def[1][1]  
-	+ frac(1,2) * phi^2 * F' _\\alpha ^\\gamma' * F' _\\beta _\\gamma'
-	- frac(1,2) * phi^2 * F' _\\alpha _\\gamma' * F' _\\beta ^\\gamma'
-
-	- frac(1,4) * phi^2 * (A' _\\gamma _,\\beta' - A' _\\beta _,\\gamma') * F' _\\alpha ^\\gamma'
-	+ frac(1,4) * phi^2 * F' _\\beta ^\\gamma' * F' _\\alpha _\\gamma'
-)()
-
-printbr(R5'_ab':eq(Ricci5_def))
-printbr()
-
-
 
 
 printbr'Gaussian curvature:'
-local Gaussian5_def = (Ricci5_def'_ab' * g5U_def'^ab')()
-Gaussian5_def = (Gaussian5_def 
-	- R' _\\alpha _\\beta' * g' ^\\alpha ^\\beta'
-	+ R
 
-	- frac(1,4) * phi^4 * A' ^\\rho' * A' _\\rho' * F' _\\epsilon ^\\nu' * F' _\\nu ^\\epsilon'
-	+ frac(1,4) * phi^4 * A' ^\\mu' * A' _\\mu' * F' _\\epsilon ^\\nu' * F' _\\nu ^\\epsilon'
-)()
-Gaussian5_def = Gaussian5_def:replace( A' ^\\beta' * A' _\\beta', A' ^\\alpha' * A' _\\alpha' )()
-Gaussian5_def = Gaussian5_def:replace( A' ^\\mu' * A' _\\mu', A' ^\\alpha' * A' _\\alpha' )()
-Gaussian5_def = Gaussian5_def:replace( A' ^\\rho' * A' _\\rho', A' ^\\alpha' * A' _\\alpha' )()
-Gaussian5_def = Gaussian5_def:replace( (A' _\\beta' * A' _\\alpha' * g' ^\\alpha ^\\beta')(), A' ^\\alpha' * A' _\\alpha' )()
-Gaussian5_def = Gaussian5_def:replace( (A' _\\beta' * g' ^\\alpha ^\\beta')(), A' ^\\alpha' )()
-Gaussian5_def = Gaussian5_def:replace( (A' _\\alpha' * g' ^\\alpha ^\\beta')(), A' ^\\beta' )()
-Gaussian5_def = Gaussian5_def:replace( (g' ^\\alpha ^\\beta' * F' _\\alpha _\\gamma')(), F' ^\\beta _\\gamma' )()
-Gaussian5_def = Gaussian5_def:tidyIndexes()()	-- this works, but the indexes it picks are really out there.
-Gaussian5_def = Gaussian5_def:reindex{[' \\alpha'] = ' \\gamma', [' \\epsilon'] = ' \\delta'}
-for _,index in ipairs((Gaussian5_def:getIndexesUsed())) do
-	assert(index.symbol ~= '\\alpha' and index.symbol ~= '\\beta', "now you have to replace these with some unused symbols...")
-end
+local Gaussian5_def = (Ricci5_def'_ab' * g5U_def'^ab')()
+
+Gaussian5_def = Gaussian5_def:replace(R' _\\alpha _\\beta' * g' ^\\alpha ^\\beta', R)()
+Gaussian5_def = Gaussian5_def:tidyIndexes()()
+Ricci5_def = Ricci5_def:symmetrizeIndexes(g, {1,2})()
+
+Gaussian5_def = Gaussian5_def:replace( (A' _\\zeta' * g' ^\\zeta ^\\epsilon')(), A' ^\\epsilon' )()
+Gaussian5_def = Gaussian5_def:replace( (A' _\\epsilon' * g' ^\\zeta ^\\epsilon')(), A' ^\\zeta' )()
+Gaussian5_def = Gaussian5_def:replace( (A' _\\epsilon' * g' ^\\epsilon ^\\zeta')(), A' ^\\zeta' )()
+Gaussian5_def = Gaussian5_def:replace( (F' _\\zeta _\\eta' * g' ^\\eta ^\\epsilon')(), F' _\\zeta ^\\epsilon' )()
+Gaussian5_def = Gaussian5_def:replace( (F' _\\zeta _\\epsilon' * g' ^\\eta ^\\epsilon')(), F' _\\zeta ^\\eta' )()
+Gaussian5_def = Gaussian5_def:tidyIndexes()()
+
+Gaussian5_def = Gaussian5_def:reindex{[' \\alpha \\beta'] = ' \\mu \\nu'}	-- don't use alpha beta gamma delta, or anything already used in Ricci5_def ... in fact, add in an extra property for fixed indexes
+
 printbr(R5:eq(Gaussian5_def))
 printbr()
 
@@ -665,6 +653,11 @@ printbr()
 printbr'Einstein curvature:'
 local G5 = var'\\tilde{G}'
 local Einstein_def = (Ricci5_def'_ab' - frac(1,2) * Gaussian5_def * g5_def'_ab')()
+Einstein_def = Einstein_def:tidyIndexes{fixed=' \\alpha \\beta'}()
+Einstein_def = betterSimplify(Einstein_def
+	:replace( F' _\\beta ^\\epsilon' * F' _\\epsilon _\\alpha',  -F' _\\beta _\\epsilon' * F' _\\alpha ^\\epsilon' )
+	:replace( F' _\\epsilon _\\beta', -F' _\\beta _\\epsilon')
+)
 printbr(G5'_ab':eq(Einstein_def))
 printbr()
 
