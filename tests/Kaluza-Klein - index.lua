@@ -6,6 +6,13 @@ require 'symmath'.setup{MathJax={title='Kaluza-Klein - index notation'}}
 local units = require 'symmath.physics.units'()
 
 
+local constantScalarField = true
+if arg[1] == 'varyingScalarField' then
+	constantScalarField = false
+end
+--local constantScalarField = false	-- with implicitVars=true, you have to manually define your nil/false flags
+
+
 local function betterSimplify(x)
 	return x():factorDivision()
 	:map(function(y)
@@ -106,7 +113,7 @@ printbr(A'_5':eq(1), 'in natural units, but to cancel the units of $\\phi$ it is
 	'so $A_5 = c \\sqrt{\\frac{k_e}{G}} = $', (units.c_in_m_s:rhs() * sqrt(units.k_e_in_SI_and_C:rhs() / units.G_in_SI:rhs()))():factorDivision() )
 printbr()
 
-local phi = var'\\phi'
+local phi = var'\\phi_K'
 printbr(phi, '= scalar field, in units', (C*s)/(kg*m))
 printbr()
 
@@ -194,14 +201,20 @@ printbr(A' _\\mu _,5':eq(0))
 printbr(g' _\\alpha _\\beta _,5':eq(0))
 printbr()
 
-printbr"For now I'll use a constant scalar as well"
-printbr(phi'_,a':eq(0))
-printbr()
+
+if constantScalarField then
+	printbr"For now I'll use a constant scalar as well"
+	printbr(phi'_,a':eq(0))
+	printbr()
+end
 
 printbr'metric partial:'
 local dg5_2x2_def = Tensor('_ab', function(a,b)
-	return g5_def[a][b]'_,c'()
-		:replace(phi'_,c', 0)()
+	local x = g5_def[a][b]'_,c'()
+	if constantScalarField then
+		x = x:replace(phi'_,c', 0)()
+	end
+	return x
 end)
 printbr(g5'_ab,c':eq(dg5_2x2_def))
 
@@ -318,7 +331,7 @@ printbr()
 printbr'only look at spacetime components:'
 local spacetimeGeodesic_def
 --spacetimeGeodesic_def = geodesic5_def:reindex{a = ' \\alpha'}
---spacetimeGeodesic_def = splitIndexes(spacetimeGeodesic_def, {b = {0, ' \\beta'}, c = {0, '\\gamma'}})
+--spacetimeGeodesic_def = splitIndexes(spacetimeGeodesic_def, {b = {0, ' \\beta'}, c = {0, ' \\gamma'}})
 spacetimeGeodesic_def = betterSimplify(d2x_ds2' ^\\alpha':eq(
 	- conn5' ^\\alpha _\\beta _\\gamma' * dx_ds' ^\\beta' * dx_ds' ^\\gamma'
 	- 2 * conn5' ^\\alpha _\\beta _5' * dx_ds' ^\\beta' * dx_ds'^5'
@@ -348,16 +361,29 @@ spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
 ))
 printbr(spacetimeGeodesic_def)
 
+spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
+	phi' _,\\mu' * g' ^\\alpha ^\\mu',
+	phi' ^,\\alpha'
+))
+printbr(spacetimeGeodesic_def)
+
 local mass = var'M'
 local q = var'q'
 
 local dx_ds5U_def = dx_ds'^5':eq( frac(q, m) * sqrt(frac(k_e, G)) )
 local A5_def = A'_5':eq(c * sqrt(frac(k_e, G)))
-local phi_def = phi:eq( (1 / A5_def:rhs())() )
 
-printbr('Assume', dx_ds5U_def, A5_def, phi_def)
+local phiK_def = phi:eq( (1 / A5_def:rhs())() )
 
-spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:subst(dx_ds5U_def, phi_def, A5_def))
+printbr('Assume', dx_ds5U_def, A5_def)
+if constantScalarField then
+	printbr('Assume', phiK_def)
+end
+
+spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:subst(dx_ds5U_def, A5_def))
+if constantScalarField then
+	spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:subst(phiK_def))
+end
 printbr(spacetimeGeodesic_def)
 printbr()
 printbr'There you have gravitational force, Lorentz force, and an extra term.'
@@ -463,9 +489,14 @@ _5thGeodesic_def = betterSimplify(_5thGeodesic_def
 	:replace(conn5' ^5 _5 _5', conn5U_def[2][2][2])
 )
 printbr(_5thGeodesic_def)
-printbr('Assume', A5_def, phi_def)
-_5thGeodesic_def = _5thGeodesic_def:subst(phi_def)
+printbr('Assume', A5_def)
+_5thGeodesic_def = _5thGeodesic_def:subst(A5_def)
 printbr(_5thGeodesic_def)
+if constantScalarField then
+	printbr('Assume', phiK_def)
+	_5thGeodesic_def = _5thGeodesic_def:subst(phiK_def)
+	printbr(_5thGeodesic_def)
+end
 _5thGeodesic_def = betterSimplify(_5thGeodesic_def)
 printbr(_5thGeodesic_def)
 
@@ -493,11 +524,14 @@ printbr()
 
 printbr'connection partial:'
 local dconn5_2x2x2_def = Tensor('^a_bc', function(a,b,c)
-	return betterSimplify(conn5U_def[a][b][c]',d'()
-		:replace(phi'_,d', 0)()
-		:map(function(x)
-			if TensorRef.is(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
-		end))
+	local x = conn5U_def[a][b][c]',d'()
+	if constantScalarField then	
+		x = x:replace(phi'_,d', 0)()
+	end
+	x = x:map(function(x)
+		if TensorRef.is(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
+	end)
+	return betterSimplify(x)
 end)
 printbr(conn5'^a_bc,d':eq(dconn5_2x2x2_def))
 
@@ -714,21 +748,21 @@ printbr()
 -- TODO check units here
 -- TODO build this better?  or just rho/c^2 u_a u_b + P g5_ab ?
 printbr'stress-energy tensor:'
-
+printbr[[using $\tilde{T}_{ab} = c^2 \rho u_a u_b + P (\tilde{g}_{ab} + u_a u_b)$]]
 local rho = var'\\rho'
-local p = var'p'
+local P = var'P'
 local T5_def = Tensor('_ab', 
 	{
-		c^2 * rho * dx_ds' _\\alpha' * dx_ds' _\\beta' + p * g5' _\\alpha _\\beta',
-		c^2 * rho * dx_ds' _\\alpha' * dx_ds'_5' + p * g5' _\\alpha _5',
+		(c^2 * rho + P) * dx_ds' _\\alpha' * dx_ds' _\\beta' + P * g5' _\\alpha _\\beta',
+		(c^2 * rho + P) * dx_ds' _\\alpha' * dx_ds'_5' + P * g5' _\\alpha _5',
 	},
 	{
-		c^2 * rho * dx_ds' _\\beta' * dx_ds'_5' + p * g5' _\\beta _5',
-		c^2 * rho * (dx_ds'_5')^2 + p * g5'_55'
+		(c^2 * rho + P) * dx_ds' _\\beta' * dx_ds'_5' + P * g5' _\\beta _5',
+		(c^2 * rho + P) * (dx_ds'_5')^2 + P * g5'_55'
 	}
 )
 local T5 = var'\\tilde{T}'
-printbr(T5'_ab':eq(c^2 * rho * dx_ds'_a' * dx_ds'_b' + p*g5'_ab'))
+printbr(T5'_ab':eq(c^2 * rho * dx_ds'_a' * dx_ds'_b' + P*g5'_ab'))
 printbr(T5'_ab':eq(T5_def))
 
 printbr'substituting definitions for $\\tilde{g}_{ab}, A_5, \\dot{x}^a$...'
@@ -758,9 +792,14 @@ printbr(EFE5_mu_mu_def)
 printbr'Isolating the spacetime Einstein tensor.'
 EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def - EFE5_mu_mu_def[1] + R' _\\alpha _\\beta' - frac(1,2) * R * g' _\\alpha _\\beta')
 printbr(EFE5_mu_mu_def)
-printbr('Assuming', A5_def, phi_def)
-EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:subst(A5_def, phi_def))
+printbr('Assuming', A5_def)
+EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:subst(A5_def))
 printbr(EFE5_mu_mu_def)
+if constantScalarField then
+	printbr('Assuming', phiK_def)
+	EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:subst(phiK_def))
+	printbr(EFE5_mu_mu_def)
+end
 printbr()
 
 printbr'looking at the $\\tilde{G}_{5\\mu}$ components:'
@@ -769,21 +808,30 @@ printbr(EFE5_5_mu_def)
 printbr'isolating the Faraday tensor divergence:'
 EFE5_5_mu_def = betterSimplify((EFE5_5_mu_def - EFE5_5_mu_def[1]) / (A'_5' * phi^2 / 2) + F' _\\alpha ^\\epsilon _;\\epsilon ')
 printbr(EFE5_5_mu_def)
-printbr('Assuming', A5_def, phi_def)
-EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(A5_def, phi_def))
+printbr('Assuming', A5_def)
+EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(A5_def))
 printbr(EFE5_5_mu_def)
+if constantScalarField then
+	printbr('Assuming', phiK_def)
+	EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(phiK_def))
+	printbr(EFE5_5_mu_def)
+end
 printbr()
 
 printbr'looking at the $\\tilde{G}_{55}$ components:'
 local EFE5_55_def = EFE5_def:lhs()[2][2]:eq( EFE5_def:rhs()[2][2] )
 printbr(EFE5_55_def)
 printbr'isolating the Faraday tensor divergence:'
-EFE5_55_def = betterSimplify(-((EFE5_55_def - EFE5_55_def[1]) / (-A'_5'^2 * phi^2 / 2) + R))
+EFE5_55_def = betterSimplify((EFE5_55_def - EFE5_55_def[1]) / (-A'_5'^2 * phi^2 / 2) + R)
 printbr(EFE5_55_def)
-
-printbr('Assuming', A5_def, phi_def)
-EFE5_55_def = betterSimplify(EFE5_55_def:subst(A5_def, phi_def))
+printbr('Assuming', A5_def)
+EFE5_55_def = betterSimplify(EFE5_55_def:subst(A5_def))
 printbr(EFE5_55_def)
+if constantScalarField then
+	printbr('Assuming', phiK_def)
+	EFE5_55_def = betterSimplify(EFE5_55_def:subst(phiK_def))
+	printbr(EFE5_55_def)
+end
 printbr()
 
 printbr()

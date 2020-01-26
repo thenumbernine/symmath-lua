@@ -680,7 +680,9 @@ Output CDN URLs:
 
 [tests/output/FLRW](https://thenumbernine.github.io/symmath/tests/output/FLRW.html)
 
-[tests/output/Faraday tensor](https://thenumbernine.github.io/symmath/tests/output/Faraday%20tensor.html)
+[tests/output/Faraday tensor in general relativity](https://thenumbernine.github.io/symmath/tests/output/Faraday%20tensor%20in%20general%20relativity.html)
+
+[tests/output/Faraday tensor in special relativity](https://thenumbernine.github.io/symmath/tests/output/Faraday%20tensor%20in%20special%20relativity.html)
 
 [tests/output/FiniteVolume](https://thenumbernine.github.io/symmath/tests/output/FiniteVolume.html)
 
@@ -694,6 +696,8 @@ Output CDN URLs:
 
 [tests/output/Kaluza-Klein - index](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20index.html)
 
+[tests/output/Kaluza-Klein - varying scalar field - index](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20varying%20scalar%20field%20%2d%20index.html)
+
 [tests/output/Kaluza-Klein](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein.html)
 
 [tests/output/Kerr-Schild - dense](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20%2d%20dense.html)
@@ -706,7 +710,7 @@ Output CDN URLs:
 
 [tests/output/MHD symmetrization](https://thenumbernine.github.io/symmath/tests/output/MHD%20symmetrization.html)
 
-[tests/output/Maxwell](https://thenumbernine.github.io/symmath/tests/output/Maxwell.html)
+[tests/output/Maxwell equations in hyperbolic conservation form](https://thenumbernine.github.io/symmath/tests/output/Maxwell%20equations%20in%20hyperbolic%20conservation%20form.html)
 
 [tests/output/Newton method](https://thenumbernine.github.io/symmath/tests/output/Newton%20method.html)
 
