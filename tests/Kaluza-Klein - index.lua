@@ -474,7 +474,7 @@ printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_def))
 printbr()
 
 
--- TODO Riemann5_def[1][1][1][2] can replace A_5 F_beta^alpha_,gamma + ... with A_5 nablaF_gamma_beta^alpha
+-- TODO Riemann5_def[1][1][1][2] can replace A_5 F_beta^alpha_,gamma + ... with A_5 F_beta^alpha_;gamma
 printbr'Riemann curvature tensor:'
 local R = var'R'
 local R5 = var'\\tilde{R}'
@@ -537,8 +537,6 @@ printbr(R5'^a_bcd':eq(Riemann5_def))
 printbr()
 
 
-local nablaF = var'(\\nabla F)'
-
 Riemann5_def[1][1][1][1] = Riemann5_def[1][1][1][1]:reindex{[' \\nu'] = ' \\epsilon'}()
 Riemann5_def[1][1][1][2] = Riemann5_def[1][1][1][2]:reindex{[' \\nu'] = ' \\epsilon'}()
 Riemann5_def[1][1][2][1] = Riemann5_def[1][1][2][1]:reindex{[' \\nu'] = ' \\epsilon'}()
@@ -548,55 +546,55 @@ Riemann5_def = (Riemann5_def
 		F' _\\delta ^\\alpha _,\\gamma',
 		- F' _\\delta ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\gamma' 
 		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\gamma _\\delta'
-		+ nablaF' _\\gamma _\\delta ^\\alpha'
+		+ F' _\\delta ^\\alpha _;\\gamma'
 	)
 	:replace(
 		F' _\\gamma ^\\alpha _,\\delta',
 		- F' _\\gamma ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\delta' 
 		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\gamma _\\delta'
-		+ nablaF' _\\delta _\\gamma ^\\alpha'
+		+ F' _\\gamma ^\\alpha _;\\delta'
 	)
 	:replace(
 		F' _\\beta ^\\alpha _,\\gamma',
 		- F' _\\beta ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\gamma'
 		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\beta _\\gamma'
-		+ nablaF' _\\gamma _\\beta ^\\alpha'
+		+ F' _\\beta ^\\alpha _;\\gamma'
 	)
 	:replace(
 		F' _\\beta ^\\alpha _,\\delta',
 		- F' _\\beta ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\delta'
 		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\beta _\\delta'
-		+ nablaF' _\\delta _\\beta ^\\alpha'
+		+ F' _\\beta ^\\alpha _;\\delta'
 	)
 	:replace(
 		F' _\\delta ^\\mu _,\\gamma',
 		- F' _\\delta ^\\epsilon' * conn4' ^\\mu _\\epsilon _\\gamma'
 		+ F' _\\epsilon ^\\mu' * conn4' ^\\epsilon _\\delta _\\gamma'
-		+ nablaF' _\\gamma _\\delta ^\\mu'
+		+ F' _\\delta ^\\mu _;\\gamma'
 	)
 	:replace(
 		F' _\\gamma ^\\mu _,\\delta',
 		- F' _\\gamma ^\\epsilon' * conn4' ^\\mu _\\epsilon _\\delta'
 		+ F' _\\epsilon ^\\mu' * conn4' ^\\epsilon _\\gamma _\\delta'
-		+ nablaF' _\\delta _\\gamma ^\\mu'
+		+ F' _\\gamma ^\\mu _;\\delta'
 	)
 	:replace(
 		F' _\\beta ^\\mu _,\\delta',
 		- F' _\\beta ^\\epsilon' * conn4' ^\\mu _\\epsilon _\\delta'
 		+ F' _\\epsilon ^\\mu' * conn4' ^\\epsilon _\\beta _\\delta'
-		+ nablaF' _\\delta _\\beta ^\\mu'
+		+ F' _\\beta ^\\mu _;\\delta'
 	)
 	:replace(
 		F' _\\beta ^\\mu _,\\gamma',
 		- F' _\\beta ^\\epsilon' * conn4' ^\\mu _\\epsilon _\\gamma'
 		+ F' _\\epsilon ^\\mu' * conn4' ^\\epsilon _\\beta _\\gamma'
-		+ nablaF' _\\gamma _\\beta ^\\mu'
+		+ F' _\\beta ^\\mu _;\\gamma'
 	)
 	:replace(
 		F' _\\gamma _\\delta _,\\beta',
 		F' _\\epsilon _\\delta' * conn4' ^\\epsilon _\\beta _\\gamma'
 		- F' _\\epsilon _\\gamma' * conn4' ^\\epsilon _\\beta _\\delta'
-		+ nablaF' _\\beta _\\gamma _\\delta'
+		+ F' _\\gamma _\\delta _;\\beta'
 	)()
 
 )()
@@ -617,8 +615,8 @@ local Ricci5_def = Riemann5_def'^e_aeb'()
 	:reindex{[' \\alpha \\beta \\gamma \\delta'] = ' \\sigma \\alpha \\sigma \\beta'}
 	:replace(R' ^\\sigma _\\alpha _\\sigma _\\beta', R' _\\alpha _\\beta')
 	:replace(F' _\\sigma ^\\sigma', 0)()
-	:replace(nablaF' _\\beta _\\gamma ^\\gamma', 0)()
-	:replace(nablaF' _\\beta _\\sigma ^\\sigma', 0)()
+	:replace(F' _\\gamma ^\\gamma _;\\beta', 0)()
+	:replace(F' _\\sigma ^\\sigma _;\\beta', 0)()
 
 Ricci5_def = Ricci5_def:symmetrizeIndexes(conn4, {2,3})()
 Ricci5_def = Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'}()
