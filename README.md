@@ -680,6 +680,8 @@ Output CDN URLs:
 
 [tests/output/FLRW](https://thenumbernine.github.io/symmath/tests/output/FLRW.html)
 
+[tests/output/Faraday tensor](https://thenumbernine.github.io/symmath/tests/output/Faraday%20tensor.html)
+
 [tests/output/FiniteVolume](https://thenumbernine.github.io/symmath/tests/output/FiniteVolume.html)
 
 [tests/output/GLM-Maxwell](https://thenumbernine.github.io/symmath/tests/output/GLM%2dMaxwell.html)
@@ -767,6 +769,8 @@ Output CDN URLs:
 [tests/output/spinors](https://thenumbernine.github.io/symmath/tests/output/spinors.html)
 
 [tests/output/spring force](https://thenumbernine.github.io/symmath/tests/output/spring%20force.html)
+
+[tests/output/symbols](https://thenumbernine.github.io/symmath/tests/output/symbols.html)
 
 [tests/output/tensor coordinate invariance](https://thenumbernine.github.io/symmath/tests/output/tensor%20coordinate%20invariance.html)
 
