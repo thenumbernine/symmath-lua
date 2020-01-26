@@ -273,12 +273,13 @@ local dx_ds = var'\\dot{x}'
 
 printbr()
 printbr'geodesic:'
-local geodesicEqn = (d2x_ds2'^a' + conn5'^a_bc' * dx_ds'^b' * dx_ds'^c'):eq(0)
-printbr(geodesicEqn)
+local geodesic5_def = (d2x_ds2'^a' + conn5'^a_bc' * dx_ds'^b' * dx_ds'^c'):eq(0)
+printbr(geodesic5_def)
 printbr()
 
 printbr'only look at spacetime components:'
-geodesicEqn = geodesicEqn:replace(
+local spacetimeGeodesic_def = geodesic5_def
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	conn5'^a_bc' * dx_ds'^b' * dx_ds'^c',
 	conn5' ^\\alpha _\\beta _\\gamma' * dx_ds' ^\\beta' * dx_ds' ^\\gamma'
 		--+ conn5' ^\\alpha _5 _\\gamma' * dx_ds'^5' * dx_ds' ^\\gamma'
@@ -286,48 +287,46 @@ geodesicEqn = geodesicEqn:replace(
 		+ conn5' ^\\alpha _5 _5' * dx_ds'^5' * dx_ds'^5'
 ):replace(d2x_ds2'^a', d2x_ds2' ^\\alpha')
 ()
-printbr(geodesicEqn)
+printbr(spacetimeGeodesic_def)
 
-geodesicEqn = geodesicEqn:replace(
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _\\beta _\\gamma',
 	conn5U_def[1][1][1]
 )()
-geodesicEqn = geodesicEqn:replace(
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _\\beta _5',
 	conn5U_def[1][1][2]
 )()
-geodesicEqn = geodesicEqn:replace(
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _5 _\\gamma',
 	conn5U_def[1][2][1]
 )()
-geodesicEqn = geodesicEqn:replace(
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _5 _5',
 	conn5U_def[1][2][2]
 )()
-geodesicEqn = geodesicEqn:replace(
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	(phi^2 * A' _\\gamma' * dx_ds' ^\\beta' * dx_ds' ^\\gamma' * F' _\\beta ^\\alpha')(),
 	phi^2 * A' _\\beta' * dx_ds' ^\\beta' * dx_ds' ^\\gamma' * F' _\\gamma ^\\alpha'
 )()
-printbr(geodesicEqn)
+printbr(spacetimeGeodesic_def)
 
-printbr[[Let $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}, A_5 = c \sqrt{\frac{k_e}{G}}, \phi = \frac{1}{c} \sqrt{\frac{G}{k_e}}$]]
 local mass = var'M'
 local q = var'q'
-geodesicEqn = geodesicEqn:replace(
-	dx_ds'^5',
-	--var'\\frac{q}{m} \\sqrt{\\frac{k_e}{G}}'	--frac(q, var'm')	-- using a var so it doesn't combine with other terms
-	frac(q, mass) * sqrt(frac(k_e, G))
-):replace(
-	phi,
-	frac(1, c) * sqrt(frac(G, k_e))
-):replace(
-	A'_5',
-	c * sqrt(frac(k_e, G))
-)():factorDivision()
-printbr(geodesicEqn)
+
+local dx_ds5U_def = dx_ds'^5':eq( frac(q, m) * sqrt(frac(k_e, G)) )
+local A5_def = A'_5':eq(c * sqrt(frac(k_e, G)))
+local phi_def = phi:eq( (1 / A5_def:rhs())() )
+
+printbr('Assume', dx_ds5U_def, A5_def, phi_def)
+
+spacetimeGeodesic_def = spacetimeGeodesic_def:subst(dx_ds5U_def, phi_def, A5_def)():factorDivision()
+printbr(spacetimeGeodesic_def)
 printbr()
 printbr'There you have gravitational force, Lorentz force, and an extra term.'
 printbr()
+
+
 
 printbr'separate space and time, substitute spacetime geodesic with Newtonian gravity, etc:'
 printbr()
@@ -369,62 +368,100 @@ assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
 end
 
 printbr'spatial evolution:'
-local spatialGeodesicEqn = geodesicEqn:reindex{[' \\alpha']='i'}
-printbr(spatialGeodesicEqn)
+local spatialGeodesic_def = spacetimeGeodesic_def:reindex{[' \\alpha']='i'}
+printbr(spatialGeodesic_def)
 printbr'splitting spacetime indexes into space+time'
-spatialGeodesicEqn = splitIndexes(spatialGeodesicEqn, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
-spatialGeodesicEqn = (spatialGeodesicEqn * c^2)():factorDivision()
-printbr(spatialGeodesicEqn)
+spatialGeodesic_def = splitIndexes(spatialGeodesic_def, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
+spatialGeodesic_def = (spatialGeodesic_def * c^2)():factorDivision()
+printbr(spatialGeodesic_def)
+
 printbr('low-velocity approximation:', dx_ds'^0':eq(1))
-spatialGeodesicEqn = spatialGeodesicEqn:replace(dx_ds'^0', 1)():factorDivision()
-printbr(spatialGeodesicEqn)
+spatialGeodesic_def = spatialGeodesic_def:replace(dx_ds'^0', 1)():factorDivision()
+printbr(spatialGeodesic_def)
+
 printbr('assume spacetime connection is only', conn4'^i_00')
-local E = var'E'
-printbr('assume', F'_0^i':eq(-frac(1,c) * E'^i'))
-local epsilon = var'\\epsilon'
-local B = var'B'
-printbr('assume', F'_i^j':eq(epsilon'_i^jk' * B'_k'))
-spatialGeodesicEqn = spatialGeodesicEqn
+spatialGeodesic_def = spatialGeodesic_def
 	:replace(conn4'^i_j0', 0)
 	:replace(conn4'^i_0k', 0)
 	:replace(conn4'^i_jk', 0)
+
+local E = var'E'
+local epsilon = var'\\epsilon'
+local B = var'B'
+
+printbr('assume', F'_0^i':eq(-frac(1,c) * E'^i'))
+printbr('assume', F'_i^j':eq(epsilon'_i^jk' * B'_k'))
+spatialGeodesic_def = spatialGeodesic_def
 	:replace(F'_0^i', -frac(1,c) * E'^i')
 	:replace(F'_j^i', epsilon'^i_jl' * B'^l')
 	:replace(F'_k^i', epsilon'^i_kl' * B'^l')
-	--():factorDivision()
-spatialGeodesicEqn = betterSimplify(spatialGeodesicEqn)
-printbr(spatialGeodesicEqn)
+
+spatialGeodesic_def = betterSimplify(spatialGeodesic_def)
+printbr(spatialGeodesic_def)
 
 local phi_q = var('\\phi_q')
 printbr('assume', A'_0':eq(frac(1,c) * phi_q), 'is the electric field potential')
-spatialGeodesicEqn = betterSimplify(spatialGeodesicEqn
-	:replace(A'_0', frac(1,c) * phi_q)
-)
-printbr(spatialGeodesicEqn)
+spatialGeodesic_def = betterSimplify(spatialGeodesic_def:replace(A'_0', frac(1,c) * phi_q))
+printbr(spatialGeodesic_def)
 local r = var'r'
 local mass2 = var'M_2'
 printbr('assume', conn4'^i_00':eq( frac(G * mass2 * var'x''^i', c^2 * r^3 )))
-spatialGeodesicEqn = spatialGeodesicEqn
+spatialGeodesic_def = spatialGeodesic_def
 	:replace(conn4'^i_00', frac(G * mass2 * var'x''^i', c^2 * r^3 ))
 	():factorDivision()
-printbr(spatialGeodesicEqn)
+printbr(spatialGeodesic_def)
+printbr()
 
---[[
+
 printbr'time evolution:'
-local timeGeodesicEqn = geodesicEqn:reindex{[' \\alpha']=0}
-printbr(timeGeodesicEqn)
-timeGeodesicEqn = splitIndexes(timeGeodesicEqn, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
-printbr(timeGeodesicEqn)
+local timeGeodesic_def = spacetimeGeodesic_def:reindex{[' \\alpha']=0}
+printbr(timeGeodesic_def)
+timeGeodesic_def = splitIndexes(timeGeodesic_def, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
+printbr(timeGeodesic_def)
+
+printbr('low-velocity approximation:', dx_ds'^0':eq(1))
+timeGeodesic_def = timeGeodesic_def:replace(dx_ds'^0', 1)():factorDivision()
+printbr(timeGeodesic_def)
+
+printbr('assume spacetime connection is only', conn4'^i_00')
+timeGeodesic_def = timeGeodesic_def
+	:replaceIndex(conn4'^0_jk', 0)
+
+printbr('assume', F'_0^i':eq(-frac(1,c) * E'^i'))
+printbr('assume', F'_i^j':eq(epsilon'_i^jk' * B'_k'))
+timeGeodesic_def = timeGeodesic_def
+	:replace(F'_0^0', 0)
+	:replace(F'_j^0', -frac(1,c) * E'_j')
+	:replace(F'_k^0', -frac(1,c) * E'_k')
+
+printbr('assume', A'_0':eq(frac(1,c) * phi_q), 'is the electric field potential')
+spatialGeodesic_def = betterSimplify(spatialGeodesic_def:replace(A'_0', frac(1,c) * phi_q))
+
+timeGeodesic_def = betterSimplify(timeGeodesic_def)
+printbr(timeGeodesic_def)
 printbr()
 
-printbr(spatialGeodesicEqn)
+
+printbr'look at the 5th dimension evolution:'
+local _5thGeodesic_def = geodesic5_def:reindex{a=5}
+_5thGeodesic_def = splitIndexes(_5thGeodesic_def, {b = {' \\beta', 5}, c = {' \\gamma', 5}})
+printbr(_5thGeodesic_def)
+_5thGeodesic_def = betterSimplify(_5thGeodesic_def
+	:replace(conn5' ^5 _\\beta _\\gamma', conn5U_def[2][1][1])
+	:replace(conn5' ^5 _5 _\\gamma', conn5U_def[2][2][1])
+	:replace(conn5' ^5 _\\beta _5', conn5U_def[2][1][2])
+	:replace(conn5' ^5 _5 _5', conn5U_def[2][2][2])
+)
+printbr(_5thGeodesic_def)
+printbr('Assume', A5_def, phi_def)
+_5thGeodesic_def = betterSimplify(_5thGeodesic_def:subst(phi_def, A5_def))
+-- TODO where did x''^5 go?
+printbr(_5thGeodesic_def)
 printbr()
 
-printbr'TODO 5th dimension evolution:'
-printbr()
---]]
 
-printbr('For an electron,', units.m_e_in_kg, ',', units.e_in_C)
+
+printbr('$\\dot{x}^5$ for an electron,', units.m_e_in_kg, ',', units.e_in_C)
 
 -- TODO like maxima, :simplify{scopeVars}
 symmath.simplifyConstantPowers = true
@@ -650,13 +687,13 @@ printbr()
 
 printbr'Einstein curvature:'
 local G5 = var'\\tilde{G}'
-local Einstein_def = (Ricci5_def'_ab' - frac(1,2) * Gaussian5_def * g5_def'_ab')()
-Einstein_def = Einstein_def:tidyIndexes{fixed=' \\alpha \\beta'}()
-Einstein_def = betterSimplify(Einstein_def
+local Einstein5_def = (Ricci5_def'_ab' - frac(1,2) * Gaussian5_def * g5_def'_ab')()
+Einstein5_def = Einstein5_def:tidyIndexes{fixed=' \\alpha \\beta'}()
+Einstein5_def = betterSimplify(Einstein5_def
 	:replace( F' _\\beta ^\\epsilon' * F' _\\epsilon _\\alpha',  -F' _\\beta _\\epsilon' * F' _\\alpha ^\\epsilon' )
 	:replace( F' _\\epsilon _\\beta', -F' _\\beta _\\epsilon')
 )
-printbr(G5'_ab':eq(Einstein_def))
+printbr(G5'_ab':eq(Einstein5_def))
 printbr()
 
 
@@ -678,22 +715,62 @@ local T5_def = Tensor('_ab',
 )
 local T5 = var'\\tilde{T}'
 printbr(T5'_ab':eq(c^2 * rho * dx_ds'_a' * dx_ds'_b' + p*g5'_ab'))
-printbr(T5:eq(T5_def))
+printbr(T5'_ab':eq(T5_def))
+
+printbr'substituting definitions for $\\tilde{g}_{ab}, A_5, \\dot{x}^a$...'
+
 T5_def = betterSimplify(
 	T5_def
-		:replace(dx_ds'_5', frac(q, mass) * sqrt(k_e, G))
 		:replace(g5' _\\alpha _\\beta', g5_def[1][1])
 		:replace(g5' _\\alpha _5', g5_def[1][2])
 		:replace(g5' _\\beta _5', g5_def[2][1])
 		:replace(g5'_55', g5_def[2][2])
-		:replace(A'_5', c * sqrt(frac(k_e, G)))
-		:replace(phi, frac(1,c) * sqrt(frac(G, k_e)))
+		--:subst(dx_ds5U_def)	-- but we were looking at x'_5, not x'^5 ...
 )
-printbr(T5:eq(T5_def))
+printbr(T5'_ab':eq(T5_def))
+printbr()
 
 
--- TODO now compare G_u5 = 8 pi T_u5
+local pi = var'\\pi'
+printbr[[$\tilde{G}_{ab} = \frac{8 \pi G}{c^4} T_{ab}$]]
+local EFE5_def = betterSimplify(Einstein5_def:eq(frac(8 * pi * G, c^4) * T5_def))
+printbr(EFE5_def)
+printbr()
 
+printbr'Comparing spacetime components:'
+printbr[[$ \tilde{G}_{\alpha\beta} = 8 \pi \frac{G}{c^4} \tilde{T}_{\alpha\beta}$]]
+local EFE5_mu_mu_def = EFE5_def:lhs()[1][1]:eq( EFE5_def:rhs()[1][1] )
+printbr(EFE5_mu_mu_def)
+printbr'Isolating the spacetime Einstein tensor.'
+EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def - EFE5_mu_mu_def[1] + R' _\\alpha _\\beta' - frac(1,2) * R * g' _\\alpha _\\beta')
+printbr(EFE5_mu_mu_def)
+printbr('Assuming', A5_def, phi_def)
+EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:subst(A5_def, phi_def))
+printbr(EFE5_mu_mu_def)
+printbr()
+
+printbr'looking at the $\\tilde{G}_{5\\mu}$ components:'
+local EFE5_5_mu_def = EFE5_def:lhs()[1][2]:eq( EFE5_def:rhs()[1][2] )
+printbr(EFE5_5_mu_def)
+printbr'isolating the Faraday tensor divergence:'
+EFE5_5_mu_def = betterSimplify((EFE5_5_mu_def - EFE5_5_mu_def[1]) / (A'_5' * phi^2 / 2) + F' _\\alpha ^\\epsilon _;\\epsilon ')
+printbr(EFE5_5_mu_def)
+printbr('Assuming', A5_def, phi_def)
+EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(A5_def, phi_def))
+printbr(EFE5_5_mu_def)
+printbr()
+
+printbr'looking at the $\\tilde{G}_{55}$ components:'
+local EFE5_55_def = EFE5_def:lhs()[2][2]:eq( EFE5_def:rhs()[2][2] )
+printbr(EFE5_55_def)
+printbr'isolating the Faraday tensor divergence:'
+EFE5_55_def = betterSimplify(-((EFE5_55_def - EFE5_55_def[1]) / (-A'_5'^2 * phi^2 / 2) - R))
+printbr(EFE5_55_def)
+
+printbr('Assuming', A5_def, phi_def)
+EFE5_55_def = betterSimplify(EFE5_55_def:subst(A5_def, phi_def))
+printbr(EFE5_55_def)
+printbr()
 
 printbr()
 printbr()
