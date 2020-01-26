@@ -8,16 +8,54 @@ local units = require 'symmath.physics.units'()
 
 local function betterSimplify(x)
 	return x():factorDivision()
-	:map(function(x)
-		if symmath.op.add.is(x) then
-			x = x:clone()
-			for i=1,#x do
-				x[i] = x[i]():factorDivision()
+	:map(function(y)
+		if symmath.op.add.is(y) then
+			local newadd = table()
+			for i=1,#y do
+				newadd[i] = y[i]():factorDivision()
 			end
-			return x
+			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
 		end
 	end)
 end
+
+-- this should replace all terms, summed together ... unless they are multiplied, then replace the multiplication as a whole
+function splitIndexes(expr, splitMap)
+	return symmath.map(expr, function(term)
+		if symmath.op.add.is(term) then
+			local newAdd = table()
+			for i,x in ipairs(term) do
+				local forThisTerm = table{x:clone()}
+				local fixed, summed = x:getIndexesUsed()
+--printbr('fixed', #fixed, fixed:mapi(tostring):concat', ')
+--printbr('summed', #summed, summed:mapi(tostring):concat', ')
+--printbr('element within add op:', x)
+				for _,s in ipairs(summed) do
+					local newForThisTerm = table()
+--printbr('finding symbol in splitMap '..s.symbol)						
+assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
+					for _,repl in ipairs(splitMap[s.symbol]) do
+--printbr('...replacing symbol with '..repl)						
+						-- TODO between strings, numbers, and multi-char symbols, right now the symbol system is a mess
+						local symbol = s.symbol
+						if type(symbol) == 'string' and #symbol > 1 then symbol = ' '..symbol end
+						newForThisTerm:append(
+							forThisTerm:mapi(function(y)
+--printbr('replacing indexes in term ', y)
+								return y:reindex{[symbol]=repl}
+							end)
+						)
+					end
+					forThisTerm = newForThisTerm
+				end
+				newAdd:append(forThisTerm)
+			end
+			return #newAdd == 1 and newAdd[1] or symmath.op.add(newAdd:unpack())
+		end
+	end)
+end
+
+
 
 
 -- units
@@ -273,42 +311,41 @@ local dx_ds = var'\\dot{x}'
 
 printbr()
 printbr'geodesic:'
-local geodesic5_def = (d2x_ds2'^a' + conn5'^a_bc' * dx_ds'^b' * dx_ds'^c'):eq(0)
+local geodesic5_def = d2x_ds2'^a':eq( - conn5'^a_bc' * dx_ds'^b' * dx_ds'^c')
 printbr(geodesic5_def)
 printbr()
 
 printbr'only look at spacetime components:'
-local spacetimeGeodesic_def = geodesic5_def
-spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
-	conn5'^a_bc' * dx_ds'^b' * dx_ds'^c',
-	conn5' ^\\alpha _\\beta _\\gamma' * dx_ds' ^\\beta' * dx_ds' ^\\gamma'
-		--+ conn5' ^\\alpha _5 _\\gamma' * dx_ds'^5' * dx_ds' ^\\gamma'
-		+ 2 * conn5' ^\\alpha _\\beta _5' * dx_ds' ^\\beta' * dx_ds'^5'
-		+ conn5' ^\\alpha _5 _5' * dx_ds'^5' * dx_ds'^5'
-):replace(d2x_ds2'^a', d2x_ds2' ^\\alpha')
-()
+local spacetimeGeodesic_def
+--spacetimeGeodesic_def = geodesic5_def:reindex{a = ' \\alpha'}
+--spacetimeGeodesic_def = splitIndexes(spacetimeGeodesic_def, {b = {0, ' \\beta'}, c = {0, '\\gamma'}})
+spacetimeGeodesic_def = betterSimplify(d2x_ds2' ^\\alpha':eq(
+	- conn5' ^\\alpha _\\beta _\\gamma' * dx_ds' ^\\beta' * dx_ds' ^\\gamma'
+	- 2 * conn5' ^\\alpha _\\beta _5' * dx_ds' ^\\beta' * dx_ds'^5'
+	- conn5' ^\\alpha _5 _5' * dx_ds'^5' * dx_ds'^5'
+))
 printbr(spacetimeGeodesic_def)
 
-spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
+spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _\\beta _\\gamma',
 	conn5U_def[1][1][1]
-)()
-spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
+))
+spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _\\beta _5',
 	conn5U_def[1][1][2]
-)()
-spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
+))
+spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _5 _\\gamma',
 	conn5U_def[1][2][1]
-)()
-spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
+))
+spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _5 _5',
 	conn5U_def[1][2][2]
-)()
-spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
+))
+spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
 	(phi^2 * A' _\\gamma' * dx_ds' ^\\beta' * dx_ds' ^\\gamma' * F' _\\beta ^\\alpha')(),
 	phi^2 * A' _\\beta' * dx_ds' ^\\beta' * dx_ds' ^\\gamma' * F' _\\gamma ^\\alpha'
-)()
+))
 printbr(spacetimeGeodesic_def)
 
 local mass = var'M'
@@ -320,7 +357,7 @@ local phi_def = phi:eq( (1 / A5_def:rhs())() )
 
 printbr('Assume', dx_ds5U_def, A5_def, phi_def)
 
-spacetimeGeodesic_def = spacetimeGeodesic_def:subst(dx_ds5U_def, phi_def, A5_def)():factorDivision()
+spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:subst(dx_ds5U_def, phi_def, A5_def))
 printbr(spacetimeGeodesic_def)
 printbr()
 printbr'There you have gravitational force, Lorentz force, and an extra term.'
@@ -331,52 +368,18 @@ printbr()
 printbr'separate space and time, substitute spacetime geodesic with Newtonian gravity, etc:'
 printbr()
 
--- this should replace all terms, summed together ... unless they are multiplied, then replace the multiplication as a whole
-function splitIndexes(expr, splitMap)
-	return symmath.map(expr, function(term)
-		if symmath.op.add.is(term) then
-			local newAdd = table()
-			for i,x in ipairs(term) do
-				local forThisTerm = table{x:clone()}
-				local fixed, summed = x:getIndexesUsed()
---printbr('fixed', #fixed, fixed:mapi(tostring):concat', ')
---printbr('summed', #summed, summed:mapi(tostring):concat', ')
---printbr('element within add op:', x)
-				for _,s in ipairs(summed) do
-					local newForThisTerm = table()
---printbr('finding symbol in splitMap '..s.symbol)						
-assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
-					for _,repl in ipairs(splitMap[s.symbol]) do
---printbr('...replacing symbol with '..repl)						
-						-- TODO between strings, numbers, and multi-char symbols, right now the symbol system is a mess
-						local symbol = s.symbol
-						if type(symbol) == 'string' and #symbol > 1 then symbol = ' '..symbol end
-						newForThisTerm:append(
-							forThisTerm:mapi(function(y)
---printbr('replacing indexes in term ', y)
-								return y:reindex{[symbol]=repl}
-							end)
-						)
-					end
-					forThisTerm = newForThisTerm
-				end
-				newAdd:append(forThisTerm)
-			end
-			return #newAdd == 1 and newAdd[1] or symmath.op.add(newAdd:unpack())
-		end
-	end)
-end
-
 printbr'spatial evolution:'
 local spatialGeodesic_def = spacetimeGeodesic_def:reindex{[' \\alpha']='i'}
 printbr(spatialGeodesic_def)
 printbr'splitting spacetime indexes into space+time'
 spatialGeodesic_def = splitIndexes(spatialGeodesic_def, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
-spatialGeodesic_def = (spatialGeodesic_def * c^2)():factorDivision()
+spatialGeodesic_def = betterSimplify(spatialGeodesic_def * c^2)
 printbr(spatialGeodesic_def)
 
+-- TODO just use a Lorentz factor and don't approximate anything
+-- same with the Faraday tensor substitutions ... just use an ADM metric breakdown
 printbr('low-velocity approximation:', dx_ds'^0':eq(1))
-spatialGeodesic_def = spatialGeodesic_def:replace(dx_ds'^0', 1)():factorDivision()
+spatialGeodesic_def = betterSimplify(spatialGeodesic_def:replace(dx_ds'^0', 1))
 printbr(spatialGeodesic_def)
 
 printbr('assume spacetime connection is only', conn4'^i_00')
@@ -406,9 +409,9 @@ printbr(spatialGeodesic_def)
 local r = var'r'
 local mass2 = var'M_2'
 printbr('assume', conn4'^i_00':eq( frac(G * mass2 * var'x''^i', c^2 * r^3 )))
-spatialGeodesic_def = spatialGeodesic_def
+spatialGeodesic_def = betterSimplify(spatialGeodesic_def
 	:replace(conn4'^i_00', frac(G * mass2 * var'x''^i', c^2 * r^3 ))
-	():factorDivision()
+)
 printbr(spatialGeodesic_def)
 printbr()
 
@@ -443,19 +446,30 @@ printbr()
 
 
 printbr'look at the 5th dimension evolution:'
-local _5thGeodesic_def = geodesic5_def:reindex{a=5}
-_5thGeodesic_def = splitIndexes(_5thGeodesic_def, {b = {' \\beta', 5}, c = {' \\gamma', 5}})
+--local _5thGeodesic_def = geodesic5_def:reindex{a=5}
+-- hmm, does :map have trouble with Equation?
+--_5thGeodesic_def = splitIndexes(_5thGeodesic_def, {b = {' \\beta', 5}, c = {' \\gamma', 5}})
+local _5thGeodesic_def = d2x_ds2'^5':eq(-conn5'^5_bc' * dx_ds'^b' * dx_ds'^c')
+printbr(_5thGeodesic_def)
+_5thGeodesic_def = d2x_ds2'^5':eq(
+	-conn5' ^5 _\\beta _\\gamma' * dx_ds' ^\\beta' * dx_ds' ^\\gamma'
+	-2 * conn5' ^5 _5 _\\beta' * dx_ds'^5' * dx_ds' ^\\beta'
+	-conn5'^5_55' * (dx_ds'^5')^2
+)
 printbr(_5thGeodesic_def)
 _5thGeodesic_def = betterSimplify(_5thGeodesic_def
 	:replace(conn5' ^5 _\\beta _\\gamma', conn5U_def[2][1][1])
-	:replace(conn5' ^5 _5 _\\gamma', conn5U_def[2][2][1])
-	:replace(conn5' ^5 _\\beta _5', conn5U_def[2][1][2])
+	:replace(conn5' ^5 _5 _\\beta', conn5U_def[2][1][2])
 	:replace(conn5' ^5 _5 _5', conn5U_def[2][2][2])
 )
 printbr(_5thGeodesic_def)
 printbr('Assume', A5_def, phi_def)
-_5thGeodesic_def = betterSimplify(_5thGeodesic_def:subst(phi_def, A5_def))
--- TODO where did x''^5 go?
+_5thGeodesic_def = _5thGeodesic_def:subst(phi_def)
+printbr(_5thGeodesic_def)
+_5thGeodesic_def = betterSimplify(_5thGeodesic_def)
+printbr(_5thGeodesic_def)
+
+_5thGeodesic_def = betterSimplify(_5thGeodesic_def:subst(A5_def))
 printbr(_5thGeodesic_def)
 printbr()
 
