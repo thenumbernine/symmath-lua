@@ -778,7 +778,7 @@ printbr'looking at the $\\tilde{G}_{55}$ components:'
 local EFE5_55_def = EFE5_def:lhs()[2][2]:eq( EFE5_def:rhs()[2][2] )
 printbr(EFE5_55_def)
 printbr'isolating the Faraday tensor divergence:'
-EFE5_55_def = betterSimplify(-((EFE5_55_def - EFE5_55_def[1]) / (-A'_5'^2 * phi^2 / 2) - R))
+EFE5_55_def = betterSimplify(-((EFE5_55_def - EFE5_55_def[1]) / (-A'_5'^2 * phi^2 / 2) + R))
 printbr(EFE5_55_def)
 
 printbr('Assuming', A5_def, phi_def)
