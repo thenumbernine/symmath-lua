@@ -515,8 +515,8 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 
 - https://github.com/thenumbernine/lua-ext
 - https://github.com/thenumbernine/lua-gnuplot (optionally, for plotting graphs)
-- 'ffi' if available.  Used by console-based output methods.
-- 'utf8' if available.
+- 'utf8' if available.  Used by console-based output methods.
+- 'ffi' if available.
 
 Some tests use:
 
