@@ -11,8 +11,11 @@ local strlen
 local box	-- [3][2] of the border chars of a box
 local par	-- [3][2] of the border chars of parenthesis
 local line	-- [3]
+local sqrtname
 do
 	if hasutf8 then
+		strlen, box, par, line, sqrtname = assert(loadstring[[
+		local utf8 = ...
 		strlen = utf8.len
 		box = {
 			{'\u{250c}', '\u{2510}'},
@@ -27,6 +30,9 @@ do
 			{'(', ')'},
 		}
 		line = {'\u{2576}', '\u{2500}', '\u{2574}'}
+		sqrtname = '\u{221a}'
+		return strlen, box, par, line, sqrtname
+]])(utf8)
 	end
 	if not strlen and rawlen then
 		strlen = rawlen
@@ -158,7 +164,7 @@ MultiLine.lookupTable = {
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr.name	
 		if hasutf8 and name == 'sqrt' then
-			name = '\u{221a}'
+			name = sqrtname
 		end
 		local res = {name..'('}
 		res = self:combine(res, self:apply(expr[1]))
