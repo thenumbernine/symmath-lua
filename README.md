@@ -511,6 +511,23 @@ Prints the tensor's contents.
 `t:printElem't'`  
 Prints the individual nonzero values of the tensor, or '0' if they are all zero.  
 
+## Dependencies:
+
+- https://github.com/thenumbernine/lua-ext
+- https://github.com/thenumbernine/lua-gnuplot (optionally, for plotting graphs)
+- 'ffi' if available.  Used by console-based output methods.
+- 'utf8' if available.
+
+Some tests use:
+
+- https://github.com/thenumbernine/lua-matrix
+- https://github.com/thenumbernine/solver-lua
+- https://github.com/thenumbernine/vec-lua
+
+make_README.lua uses (for building the README.md):
+
+- LuaSocket, for its URL building functions.
+
 ## TODO
 
 - solving equalities
