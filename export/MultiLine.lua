@@ -14,7 +14,7 @@ local line	-- [3]
 local sqrtname
 do
 	if hasutf8 then
-		strlen, box, par, line, sqrtname = assert(loadstring[[
+		strlen, box, par, line, sqrtname = assert(load[[
 		local utf8 = ...
 		strlen = utf8.len
 		box = {

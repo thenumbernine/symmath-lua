@@ -27,7 +27,7 @@ local hasutf8, utf8 = pcall(require, 'utf8')
 
 local sqrtname
 if hasutf8 then
-	sqrtname = assert(loadstring[[
+	sqrtname = assert(load[[
 	sqrtname = '\u{221a}'
 	return sqrtname
 ]])()
