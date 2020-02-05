@@ -26,6 +26,35 @@ local function betterSimplify(x)
 	end)
 end
 
+function splitTermIndexes(x, splitMap)
+	local newAdd = table()
+	local forThisTerm = table{x:clone()}
+	local fixed, summed = x:getIndexesUsed()
+--printbr('fixed', #fixed, fixed:mapi(tostring):concat', ')
+--printbr('summed', #summed, summed:mapi(tostring):concat', ')
+--printbr('element within add op:', x)
+	for _,s in ipairs(summed) do
+		local newForThisTerm = table()
+--printbr('finding symbol in splitMap '..s.symbol)						
+assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
+		for _,repl in ipairs(splitMap[s.symbol]) do
+--printbr('...replacing symbol with '..repl)						
+			-- TODO between strings, numbers, and multi-char symbols, right now the symbol system is a mess
+			local symbol = s.symbol
+			if type(symbol) == 'string' and #symbol > 1 then symbol = ' '..symbol end
+			newForThisTerm:append(
+				forThisTerm:mapi(function(y)
+--printbr('replacing indexes in term ', y)
+					return y:reindex{[symbol]=repl}
+				end)
+			)
+		end
+		forThisTerm = newForThisTerm
+	end
+	newAdd:append(forThisTerm)
+	return #newAdd == 1 and newAdd[1] or symmath.op.add(newAdd:unpack())
+end
+
 -- this should replace all terms, summed together ... unless they are multiplied, then replace the multiplication as a whole
 function splitIndexes(expr, splitMap)
 	return symmath.map(expr, function(term)
@@ -63,6 +92,8 @@ assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
 end
 
 
+-- numeric constant symbols
+local pi = var'\\pi'
 
 
 -- units
@@ -75,7 +106,8 @@ local C = units.C
 local c = units.c
 local k_e = units.k_e
 local G = units.G
-
+local epsilon_0 = units.epsilon_0
+local mu_0 = units.mu_0
 
 printbr[[
 Kaluza-Klein with constant scalar field<br>
@@ -122,18 +154,17 @@ symmath.simplifyConstantPowers = false
 
 
 local g = var'g'
-printbr(g'_\\mu _\\nu', '= 4D metric tensor, with units 1')
+printbr(g'_\\mu _\\nu', '= 4D metric tensor, with units $[g_{\\mu\\nu}] = 1$')
 printbr(g'^\\mu ^\\nu', '= 4D metric inverse')
 printbr()
 
 local g5 = var'\\tilde{g}'
-printbr(g5'_uv', '= 5D metric tensor')
-printbr(g5'_ab':eq(
-	Tensor('_ab',
-		{g5'_\\alpha _\\beta', g5'_\\alpha _5'},
-		{g5'_5 _\\beta', g5'_55'}
-	)
-))
+printbr(g5'_ab', '= 5D metric tensor, with units $[\\tilde{g}_{ab}] = 1$')
+local g5_parts = Tensor('_ab',
+	{g5'_\\alpha _\\beta', g5'_\\alpha _5'},
+	{g5'_5 _\\beta', g5'_55'}
+)
+printbr(g5'_ab':eq(g5_parts))
 
 local g5_def = Tensor('_ab',
 	{g'_\\alpha _\\beta' + phi^2 * A' _\\alpha' * A' _\\beta', phi^2 * A' _\\alpha' * A'_5'},
@@ -144,13 +175,88 @@ local g5_def = Tensor('_ab',
 -- or with variables with numbers
 -- make sure to wrap the variable and indexes in ()'s
 printbr(g5'_ab':eq(g5_def))
+printbr()
 
---[[ omit A_5
-printbr'Notice that I included the $A_5$ terms to show the units align.  From here on I will omit them since their value is 1.'
 
-g5_def = g5_def:replace(A'_5', 1)()
-printbr(g5'_ab':eq(g5_def))
---]]
+-- I should put this in its own worksheet ...
+printbr('unit velocity?')
+local dx_ds = var'\\dot{x}'
+
+local unitVelEqn = (g5'_ab' * dx_ds'^a' * dx_ds'^b'):eq(-1)()
+printbr(unitVelEqn)
+
+printbr'split off spacetime indexes'
+--unitVelEqn[1] = splitTermIndexes(unitVelEqn[1], {a = {' \\alpha', 5}, b = {' \\beta ', 5}})
+	--:reindex{[' \\beta'] = ' \\alpha'}()
+	--:tidyIndexes()	-- tidy indexes doesn't work ...
+	--:symmetrizeIndexes(g5, {1,2})()
+unitVelEqn = ( g5' _\\alpha _\\beta' * dx_ds' ^\\alpha' * dx_ds' ^\\beta' + 2 * g5' _\\alpha _5' * dx_ds' ^\\alpha' * dx_ds'^5' + g5'_55' * (dx_ds'^5')^2 ):eq(-1)
+printbr(unitVelEqn)
+
+printbr('substitute definition of ', g5'_ab')
+unitVelEqn = unitVelEqn
+	:replace(g5_parts[1][1], g5_def[1][1])() 
+	:replace(g5_parts[1][2], g5_def[1][2])()
+	:replace(g5_parts[2][2], g5_def[2][2])()
+printbr(unitVelEqn)
+
+--printbr('Assume', ( g' _\\alpha _\\beta' * dx_ds' ^\\alpha' * dx_ds' ^\\beta' ):eq(-1))
+--unitVelEqn = unitVelEqn:replace( (g' _\\alpha _\\beta' * dx_ds' ^\\alpha' * dx_ds' ^\\beta')(), -1)()
+--printbr(unitVelEqn)
+
+printbr'solve quadratic for $A_5 \\dot{x}^5$...'
+-- I have no plus/minus symbol...
+printbr[[$ \dot{x}^5 = \frac{1}{A_5} ( -A_\mu \dot{x}^\mu \pm \sqrt{
+	(A_\mu \dot{x}^\mu)^2 - {\phi_K}^{-2} ( \dot{x}_\mu \dot{x}^\mu + 1)
+} )$]]
+printbr()
+
+printbr[[
+<hr>
+<br>
+
+Let's look at the magnitude of this for some real-world values.<br>
+Electrons in a copper wire (from my 'magnetic field from a boosted charge' worksheet).<br>
+$I = 1.89 A =$ current in wire.<br>
+$\lambda = 7223 \frac{C}{m} =$ charge density per unit meter in wire.<br>
+$v = \frac{I}{\lambda} = 2.625 \cdot 10^{-5} \frac{m}{s} =$ mean velocity of electrons in wire.<br>
+$\beta = \frac{v}{c} = 8.756735364191964 \cdot 10^{-14} = $ unitless, spatial component of 4-velocity.<br>
+$\gamma = 1 / \sqrt{1 - \beta^2} = 1 + 2.959179033 \cdot 10^{-7} = $ Lorentz factor.<br>
+$\dot{x}^0 = \gamma, \dot{x}^1 = \beta \gamma, \dot{x}^2 = \dot{x}^3 = 0$ = our 4-velocity components, such that $\eta_{\mu\nu} \dot{x}^\mu \dot{x}^\nu = -1$.<br>
+$r = 0.1 m = $ distance from the wire we are measuring fields.<br>
+$A_5 = c \sqrt{\frac{k_e}{G}} = 3.4789926447386 \cdot 10^{18} \frac{kg \cdot m}{C \cdot s} =$ fifth component of electromagnetic potential, as stated above.<br>
+$\phi_q = \frac{1}{2} \lambda k_e ln ( \frac{r}{r_0} ) =$ electric potential ... but what is $r_0$?  The EM potential has a constant which does not influence 4D or 3D EM, but will influence 5D EM.<br>
+Let's look at the potential with and without the constant: $\phi_q = \phi'_q + \phi''_q$.<br>
+$\phi'_q = \frac{1}{2} \lambda k_e ln(r) = -7.47382142321859 \cdot 10^{14} \frac{kg \cdot m^2}{C \cdot s^2}$.<br>
+$\phi''_q = \frac{1}{2} \lambda k_e ln(r_0) = $ arbitrary.<br>
+$A_i = 0 = $ magnetic vector potential.<br>
+So $A_\mu \dot{x}^\mu = A_0 \dot{x}^0 = \frac{1}{c} \phi_q \gamma = -2492999.2 \frac{kg \cdot m}{C \cdot s} + \frac{1}{c} \phi''_q \gamma$.<br>
+And $\frac{1}{A_5} A_\mu \dot{x}^\mu = -7.165865159852 \cdot 10^{-13} + \frac{1}{c A_5} \phi''_q \gamma$<br>
+<br>
+
+Assume $\dot{x}_\mu \dot{x}^\mu = -1$.<br>
+$\dot{x}^5 = -2 \frac{1}{A_5} A_\mu \dot{x}^\mu = 1.4331730319704 \cdot 10^{-12} - \frac{1}{c A_5} \gamma \phi''_q$<br>
+
+Below in the geodesic equation, for the Lorentz force equation to arise we muse set $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
+Let's insert this into the $\dot{x}^5$ equation above and solve to find what $\phi''_q$ would be:<br>
+$\frac{1}{c A_5} \gamma \phi''_q = \frac{q}{m} \sqrt{\frac{k_e}{G}}$<br>
+$\phi''_q = c^2 \frac{q}{\gamma m} \frac{k_e}{G} = c^2 \frac{q}{m} \frac{k_e}{G} \sqrt{1 - \beta^2}$<br>
+For an electron this comes out to be $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}} = 2.0410525849546 \cdot 10^{21} = 6.118921713508 \cdot 10^{29} \frac{m}{s}$.<br>
+$\phi''_q = 2.1287683635025 \cdot 10^{48} \frac{kg \cdot m^2}{C \cdot s^2}$<br>
+...which is a few orders of magnitude higher than what contributes to the EM field.<br>
+<br>
+
+So, assuming we want our velocity to be normalized across all 5 dimensions, and assuming our four-velocity is normalized with the four-metric,
+then it looks like the 5th velocity is made up of two parts:<br>
+1) the EM potential, dot the neglegible four-vel, which is on the order of $10^{-12}$ for our current through a copper wire.<br>
+2) the the arbitrary constant, which must relate to the charge-mass ratio, which is on the order of $10^{21}$.<br>
+
+Also notice that this shows - if we want the 5-vector to be normalized - then the charge-to-mass ratio in the Lorentz force law will be influenced by the velocity...<br>
+<br>
+
+<br>
+<hr>
+]]
 printbr()
 
 
@@ -318,9 +424,11 @@ printbr(conn5'^a_bc':eq(conn5U_def))
 printbr()
 
 
+printbr'<hr>'
+
+
 
 local d2x_ds2 = var'\\ddot{x}'
-local dx_ds = var'\\dot{x}'
 
 printbr()
 printbr'geodesic:'
@@ -375,7 +483,7 @@ local A5_def = A'_5':eq(c * sqrt(frac(k_e, G)))
 
 local phiK_def = phi:eq( (1 / A5_def:rhs())() )
 
-printbr('Assume', dx_ds5U_def, A5_def)
+printbr('Assume', dx_ds5U_def, ',', A5_def)
 if constantScalarField then
 	printbr('Assume', phiK_def)
 end
@@ -515,11 +623,14 @@ local elec_q_sqrt_ke_over_m_sqrt_G = (units.e_in_C:rhs() / units.m_e_in_kg:rhs()
 printbr('so $\\frac{q}{m} \\sqrt{\\frac{k_e}{G}} = $', 
 	elec_q_sqrt_ke_over_m_sqrt_G 
 	'=', 
-	(elec_q_sqrt_ke_over_m_sqrt_G * units.c_in_m_s:rhs())()
+	betterSimplify(elec_q_sqrt_ke_over_m_sqrt_G * units.c_in_m_s:rhs())
 )
 symmath.simplifyConstantPowers = false
 
 printbr()
+
+
+printbr'<hr>'
 
 
 printbr'connection partial:'
@@ -745,41 +856,19 @@ printbr(G5'_ab':eq(Einstein5_def))
 printbr()
 
 
+printbr'<hr>'
+
+
 -- TODO check units here
 -- TODO build this better?  or just rho/c^2 u_a u_b + P g5_ab ?
 printbr'stress-energy tensor:'
-printbr[[using $\tilde{T}_{ab} = c^2 \rho u_a u_b + P (\tilde{g}_{ab} + u_a u_b)$]]
-local rho = var'\\rho'
-local P = var'P'
-local T5_def = Tensor('_ab', 
-	{
-		(c^2 * rho + P) * dx_ds' _\\alpha' * dx_ds' _\\beta' + P * g5' _\\alpha _\\beta',
-		(c^2 * rho + P) * dx_ds' _\\alpha' * dx_ds'_5' + P * g5' _\\alpha _5',
-	},
-	{
-		(c^2 * rho + P) * dx_ds' _\\beta' * dx_ds'_5' + P * g5' _\\beta _5',
-		(c^2 * rho + P) * (dx_ds'_5')^2 + P * g5'_55'
-	}
-)
+
 local T5 = var'\\tilde{T}'
-printbr(T5'_ab':eq(c^2 * rho * dx_ds'_a' * dx_ds'_b' + P*g5'_ab'))
-printbr(T5'_ab':eq(T5_def))
-
-printbr'substituting definitions for $\\tilde{g}_{ab}, A_5, \\dot{x}^a$...'
-
-T5_def = betterSimplify(
-	T5_def
-		:replace(g5' _\\alpha _\\beta', g5_def[1][1])
-		:replace(g5' _\\alpha _5', g5_def[1][2])
-		:replace(g5' _\\beta _5', g5_def[2][1])
-		:replace(g5'_55', g5_def[2][2])
-		--:subst(dx_ds5U_def)	-- but we were looking at x'_5, not x'^5 ...
+local T5_def = Tensor('_ab', 
+	{T5'_\\alpha _\\beta', T5'_\\alpha _5'},
+	{T5'_5 _\\beta', T5'_55'}
 )
-printbr(T5'_ab':eq(T5_def))
-printbr()
 
-
-local pi = var'\\pi'
 printbr[[$\tilde{G}_{ab} = \frac{8 \pi G}{c^4} T_{ab}$]]
 local EFE5_def = betterSimplify(Einstein5_def:eq(frac(8 * pi * G, c^4) * T5_def))
 printbr(EFE5_def)
@@ -792,14 +881,29 @@ printbr(EFE5_mu_mu_def)
 printbr'Isolating the spacetime Einstein tensor.'
 EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def - EFE5_mu_mu_def[1] + R' _\\alpha _\\beta' - frac(1,2) * R * g' _\\alpha _\\beta')
 printbr(EFE5_mu_mu_def)
-printbr('Assuming', A5_def)
-EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:subst(A5_def))
-printbr(EFE5_mu_mu_def)
 if constantScalarField then
 	printbr('Assuming', phiK_def)
 	EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:subst(phiK_def))
 	printbr(EFE5_mu_mu_def)
+
+	printbr('Substitute', 
+		k_e:eq(frac(1, 4 * pi * epsilon_0)), ',',
+		(mu_0 * epsilon_0):eq(frac(1, c^2)), ',',
+		'so ', k_e:eq(frac(mu_0 * c^2, 4 * pi))
+	)
+	EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:replace(k_e, frac(mu_0 * c^2, 4 * pi)))
+	printbr(EFE5_mu_mu_def)
 end
+
+local T_EM = var'T_{EM}'
+printbr('Let ', T_EM' _\\alpha _\\beta':eq(frac(1, mu_0) * (F' _\\alpha _\\mu' * F' _\\beta ^\\mu' - frac(1,4) * g' _\\alpha _\\beta' * F' _\\mu _\\nu' * F' ^\\mu ^\\nu')))
+-- T_EM_ab = 1/mu0 (F_au F_b^u - 1/4 g_ab F_uv F^uv)
+-- so F_ae F_b^e = mu0 T_EM_ab + 1/4 g_ab F_uv F^uv 
+EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:replace(
+	F' _\\beta _\\epsilon' * F' _\\alpha ^\\epsilon',
+	mu_0 * T_EM' _\\alpha _\\beta' - frac(1,4) * g' _\\alpha _\\beta' * F' _\\epsilon ^\\zeta' * F' _\\zeta ^\\epsilon'
+))
+printbr(EFE5_mu_mu_def)
 printbr()
 
 printbr'looking at the $\\tilde{G}_{5\\mu}$ components:'
@@ -816,6 +920,8 @@ if constantScalarField then
 	EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(phiK_def))
 	printbr(EFE5_5_mu_def)
 end
+local rho = var'\\rho'
+printbr('Assuming', T5' _\\mu _5':eq( c^2 * rho * dx_ds'_5' * dx_ds' _\\mu' ))
 printbr()
 
 printbr'looking at the $\\tilde{G}_{55}$ components:'
@@ -833,6 +939,48 @@ if constantScalarField then
 	printbr(EFE5_55_def)
 end
 printbr()
+
+
+
+
+
+printbr[[using a specific stress-energy tensor:]]
+printbr[[$\tilde{T}_{ab} = c^2 \rho u_a u_b + P (\tilde{g}_{ab} + u_a u_b)$]]
+printbr()
+local P = var'P'
+local T5_def = Tensor('_ab', 
+	{
+		(c^2 * rho + P) * dx_ds' _\\alpha' * dx_ds' _\\beta' + P * g5' _\\alpha _\\beta',
+		(c^2 * rho + P) * dx_ds' _\\alpha' * dx_ds'_5' + P * g5' _\\alpha _5',
+	},
+	{
+		(c^2 * rho + P) * dx_ds' _\\beta' * dx_ds'_5' + P * g5' _\\beta _5',
+		(c^2 * rho + P) * (dx_ds'_5')^2 + P * g5'_55'
+	}
+)
+printbr(T5'_ab':eq(c^2 * rho * dx_ds'_a' * dx_ds'_b' + P*g5'_ab'))
+printbr(T5'_ab':eq(T5_def))
+
+
+printbr'substituting definitions for $\\tilde{g}_{ab}, A_5, \\dot{x}^a$...'
+
+T5_def = betterSimplify(
+	T5_def
+		:replace(g5' _\\alpha _\\beta', g5_def[1][1])
+		:replace(g5' _\\alpha _5', g5_def[1][2])
+		:replace(g5' _\\beta _5', g5_def[2][1])
+		:replace(g5'_55', g5_def[2][2])
+		--:subst(dx_ds5U_def)	-- but we were looking at x'_5, not x'^5 ...
+)
+printbr(T5'_ab':eq(T5_def))
+printbr()
+
+
+
+
+
+
+
 
 printbr()
 printbr()

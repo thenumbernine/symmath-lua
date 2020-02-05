@@ -34,17 +34,85 @@ ${\phi_K}$	= scalar field, in units	$\frac{{{C}} {{s}}}{{{kg}} \cdot {{m}}}$
 <br>
 
 <br>
-${{ g}_{\mu}}_{\nu}$	= 4D metric tensor, with units 1
+${{ g}_{\mu}}_{\nu}$	= 4D metric tensor, with units $[g_{\mu\nu}] = 1$
 <br>
 ${{ g}^{\mu}}^{\nu}$	= 4D metric inverse
 <br>
 
 <br>
-${{ \tilde{g}}_u}_v$	= 5D metric tensor
+${{ \tilde{g}}_a}_b$	= 5D metric tensor, with units $[\tilde{g}_{ab}] = 1$
 <br>
 ${{{ \tilde{g}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ \tilde{g}}_{\alpha}}_{\beta} &  {{ \tilde{g}}_{\alpha}}_5 \\  {{ \tilde{g}}_5}_{\beta} &  {{ \tilde{g}}_5}_5\end{matrix}\right]}}$
 <br>
 ${{{ \tilde{g}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{ g}_{\alpha}}_{\beta}} + {{{{{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}}}} {{{ A}_{\beta}}}} &  {{{{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}}}} {{{ A}_5}} \\  {{{{{{\phi_K}}^{2}}} {{{ A}_{\beta}}}}} {{{ A}_5}} &  {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}}\end{matrix}\right]}}$
+<br>
+
+<br>
+unit velocity?
+<br>
+${{{{{ \tilde{g}}_a}_b}} {{{ \dot{x}}^a}} {{{ \dot{x}}^b}}} = {-{1}}$
+<br>
+split off spacetime indexes
+<br>
+${{{{{{{{{ \tilde{g}}_{\alpha}}_{\beta}}} {{{ \dot{x}}^{\alpha}}}}} {{{ \dot{x}}^{\beta}}}} + {{{{{{{2}} {{{{ \tilde{g}}_{\alpha}}_5}}}} {{{ \dot{x}}^{\alpha}}}}} {{{ \dot{x}}^5}}}} + {{{{{ \tilde{g}}_5}_5}} {{{{ \dot{x}}^5}^{2}}}}} = {-1}$
+<br>
+substitute definition of 	${{ \tilde{g}}_a}_b$
+<br>
+${{{{2}} {{{ A}_5}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{ \dot{x}}^5}} {{{ \dot{x}}^{\alpha}}}} + {{{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{{{ \dot{x}}^5}^{2}}}} + {{{{ \dot{x}}^{\beta}}} {{{ \dot{x}}^{\alpha}}} {{{{ g}_{\alpha}}_{\beta}}}} + {{{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{ \dot{x}}^{\beta}}} {{{ \dot{x}}^{\alpha}}}}} = {-{1}}$
+<br>
+solve quadratic for $A_5 \dot{x}^5$...
+<br>
+$ \dot{x}^5 = \frac{1}{A_5} ( -A_\mu \dot{x}^\mu \pm \sqrt{
+	(A_\mu \dot{x}^\mu)^2 - {\phi_K}^{-2} ( \dot{x}_\mu \dot{x}^\mu + 1)
+} )$
+<br>
+
+<br>
+<hr>
+<br>
+
+Let's look at the magnitude of this for some real-world values.<br>
+Electrons in a copper wire (from my 'magnetic field from a boosted charge' worksheet).<br>
+$I = 1.89 A =$ current in wire.<br>
+$\lambda = 7223 \frac{C}{m} =$ charge density per unit meter in wire.<br>
+$v = \frac{I}{\lambda} = 2.625 \cdot 10^{-5} \frac{m}{s} =$ mean velocity of electrons in wire.<br>
+$\beta = \frac{v}{c} = 8.756735364191964 \cdot 10^{-14} = $ unitless, spatial component of 4-velocity.<br>
+$\gamma = 1 / \sqrt{1 - \beta^2} = 1 + 2.959179033 \cdot 10^{-7} = $ Lorentz factor.<br>
+$\dot{x}^0 = \gamma, \dot{x}^1 = \beta \gamma, \dot{x}^2 = \dot{x}^3 = 0$ = our 4-velocity components, such that $\eta_{\mu\nu} \dot{x}^\mu \dot{x}^\nu = -1$.<br>
+$r = 0.1 m = $ distance from the wire we are measuring fields.<br>
+$A_5 = c \sqrt{\frac{k_e}{G}} = 3.4789926447386 \cdot 10^{18} \frac{kg \cdot m}{C \cdot s} =$ fifth component of electromagnetic potential, as stated above.<br>
+$\phi_q = \frac{1}{2} \lambda k_e ln ( \frac{r}{r_0} ) =$ electric potential ... but what is $r_0$?  The EM potential has a constant which does not influence 4D or 3D EM, but will influence 5D EM.<br>
+Let's look at the potential with and without the constant: $\phi_q = \phi'_q + \phi''_q$.<br>
+$\phi'_q = \frac{1}{2} \lambda k_e ln(r) = -7.47382142321859 \cdot 10^{14} \frac{kg \cdot m^2}{C \cdot s^2}$.<br>
+$\phi''_q = \frac{1}{2} \lambda k_e ln(r_0) = $ arbitrary.<br>
+$A_i = 0 = $ magnetic vector potential.<br>
+So $A_\mu \dot{x}^\mu = A_0 \dot{x}^0 = \frac{1}{c} \phi_q \gamma = -2492999.2 \frac{kg \cdot m}{C \cdot s} + \frac{1}{c} \phi''_q \gamma$.<br>
+And $\frac{1}{A_5} A_\mu \dot{x}^\mu = -7.165865159852 \cdot 10^{-13} + \frac{1}{c A_5} \phi''_q \gamma$<br>
+<br>
+
+Assume $\dot{x}_\mu \dot{x}^\mu = -1$.<br>
+$\dot{x}^5 = -2 \frac{1}{A_5} A_\mu \dot{x}^\mu = 1.4331730319704 \cdot 10^{-12} - \frac{1}{c A_5} \gamma \phi''_q$<br>
+
+Below in the geodesic equation, for the Lorentz force equation to arise we muse set $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
+Let's insert this into the $\dot{x}^5$ equation above and solve to find what $\phi''_q$ would be:<br>
+$\frac{1}{c A_5} \gamma \phi''_q = \frac{q}{m} \sqrt{\frac{k_e}{G}}$<br>
+$\phi''_q = c^2 \frac{q}{\gamma m} \frac{k_e}{G} = c^2 \frac{q}{m} \frac{k_e}{G} \sqrt{1 - \beta^2}$<br>
+For an electron this comes out to be $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}} = 2.0410525849546 \cdot 10^{21} = 6.118921713508 \cdot 10^{29} \frac{m}{s}$.<br>
+$\phi''_q = 2.1287683635025 \cdot 10^{48} \frac{kg \cdot m^2}{C \cdot s^2}$<br>
+...which is a few orders of magnitude higher than what contributes to the EM field.<br>
+<br>
+
+So, assuming we want our velocity to be normalized across all 5 dimensions, and assuming our four-velocity is normalized with the four-metric,
+then it looks like the 5th velocity is made up of two parts:<br>
+1) the EM potential, dot the neglegible four-vel, which is on the order of $10^{-12}$ for our current through a copper wire.<br>
+2) the the arbitrary constant, which must relate to the charge-mass ratio, which is on the order of $10^{21}$.<br>
+
+Also notice that this shows - if we want the 5-vector to be normalized - then the charge-to-mass ratio in the Lorentz force law will be influenced by the velocity...<br>
+<br>
+
+<br>
+<hr>
+
 <br>
 
 <br>
@@ -110,6 +178,8 @@ ${{{{ \tilde{\Gamma}}^a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow
 <br>
 
 <br>
+<hr>
+<br>
 
 <br>
 geodesic:
@@ -126,7 +196,7 @@ ${{ \ddot{x}}^{\alpha}} = {{{{-1}} {{{ \dot{x}}^{\beta}}} {{{ A}_5}} {{{{\phi_K}
 <br>
 ${{ \ddot{x}}^{\alpha}} = {{{{-1}} {{{ \dot{x}}^{\beta}}} {{{ A}_5}} {{{{\phi_K}}^{2}}} {{{ \dot{x}}^5}} {{{{ F}_{\beta}}^{\alpha}}}} + {{{-1}} {{{ \dot{x}}^{\beta}}} {{{ \dot{x}}^{\gamma}}} {{{{{ \Gamma}^{\alpha}}_{\beta}}_{\gamma}}}} + {{{-1}} {{{ \dot{x}}^{\beta}}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ \dot{x}}^{\gamma}}} {{{{ F}_{\gamma}}^{\alpha}}}}}$
 <br>
-Assume	${{ \dot{x}}^5} = {{{{\frac{1}{m}}{({q})}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
+Assume	${{ \dot{x}}^5} = {{{{\frac{1}{m}}{({q})}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$	,	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
 <br>
 Assume	${{\phi_K}} = {\frac{\sqrt G}{{{c}} {{\sqrt {k_e}}}}}$
 <br>
@@ -218,9 +288,11 @@ ${{ \ddot{x}}^5} = {{{{\frac{1}{2}}} {{{ \dot{x}}^{\beta}}} {{{G}^{({{{3}} \cdot
 <br>
 $\dot{x}^5$ for an electron,	${{m_e}} = {{{9.1093835611\cdot{10^{-31}}}} {{kg}}}$	,	${e} = {{{1.6021765654775\cdot{10^{-19}}}} {{C}}}$
 <br>
-so $\frac{q}{m} \sqrt{\frac{k_e}{G}} = $	${\left( 2.0410525849546\cdot{10^{21}}\right)}^=$	${\frac{1}{s}}{({{{6.118921713508\cdot{10^{29}}}} {{m}}})}$
+so $\frac{q}{m} \sqrt{\frac{k_e}{G}} = $	${\left( 2.0410525849546\cdot{10^{21}}\right)}^=$	${{6.118921713508\cdot{10^{29}}}} {{m}} {{\frac{1}{s}}}$
 <br>
 
+<br>
+<hr>
 <br>
 connection partial:
 <br>
@@ -270,9 +342,83 @@ ${{{ \tilde{G}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}
 <br>
 
 <br>
+<hr>
+<br>
 stress-energy tensor:
 <br>
-using $\tilde{T}_{ab} = c^2 \rho u_a u_b + P (\tilde{g}_{ab} + u_a u_b)$
+$\tilde{G}_{ab} = \frac{8 \pi G}{c^4} T_{ab}$
+<br>
+${\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{2}}} {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} &  {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{R}} {{{ A}_{\alpha}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_5}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} \\  {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{R}} {{{ A}_{\beta}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_5}} {{{ A}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} &  {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{R}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{{ A}_5}^{2}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}\end{matrix}\right]}} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}} &  {{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_{\alpha}}_5}} {{\frac{1}{{c}^{4}}}} \\  {{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_5}_{\beta}}} {{\frac{1}{{c}^{4}}}} &  {{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{4}}}}\end{matrix}\right]}}$
+<br>
+
+<br>
+Comparing spacetime components:
+<br>
+$ \tilde{G}_{\alpha\beta} = 8 \pi \frac{G}{c^4} \tilde{T}_{\alpha\beta}$
+<br>
+${{{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{2}}} {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}} = {{{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}}$
+<br>
+Isolating the spacetime Einstein tensor.
+<br>
+${{{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}}} = {{{{8}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{\frac{1}{2}}} {{R}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}}} + {{{3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}}} + {{{\frac{1}{8}}} {{{{\phi_K}}^{2}}} {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+<br>
+Assuming	${{\phi_K}} = {\frac{\sqrt G}{{{c}} {{\sqrt {k_e}}}}}$
+<br>
+${{{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}}} = {{{{3}} \cdot {{\frac{1}{8}}} {{{G}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{{k_e}}^{2}}}} {{\frac{1}{{c}^{4}}}}} + {{{\frac{1}{2}}} {{G}} {{R}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{8}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{G}} {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{G}} {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{\frac{1}{2}}} {{G}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{\frac{1}{8}}} {{G}} {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}}}$
+<br>
+Substitute	${{k_e}} = {\frac{1}{{{{{4}} {{\pi}}}} {{{\epsilon_0}}}}}$	,	${{{{\mu_0}}} \cdot {{{\epsilon_0}}}} = {\frac{1}{{c}^{2}}}$	,	so 	${{k_e}} = {\frac{{{{\mu_0}}} \cdot {{{c}^{2}}}}{{{4}} {{\pi}}}}$
+<br>
+${{{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}}} = {{{{6}} {{{G}^{2}}} {{{\pi}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{{\mu_0}}^{2}}}} {{\frac{1}{{c}^{8}}}}} + {{{2}} {{G}} {{\pi}} \cdot {{R}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{-2}} {{G}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{-2}} {{G}} {{\pi}} \cdot {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{2}} {{G}} {{\pi}} \cdot {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{\frac{1}{2}}} {{G}} {{\pi}} \cdot {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}}}$
+<br>
+Let 	${{{ {T_{EM}}}_{\alpha}}_{\beta}} = {{{\frac{1}{{\mu_0}}}} {{({{{{{{ F}_{\alpha}}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}}} - {{{{{{{\frac{1}{4}}} {{{{ g}_{\alpha}}_{\beta}}}}} {{{{ F}_{\mu}}_{\nu}}}}} {{{{ F}^{\mu}}^{\nu}}}}})}}}$
+<br>
+${{{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}}} = {{{{6}} {{{G}^{2}}} {{{\pi}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{{\mu_0}}^{2}}}} {{\frac{1}{{c}^{8}}}}} + {{{2}} {{G}} {{\pi}} \cdot {{R}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{-2}} {{G}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{-2}} {{G}} {{\pi}} \cdot {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{2}} {{G}} {{\pi}} \cdot {{{{ {T_{EM}}}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}}}$
+<br>
+
+<br>
+looking at the $\tilde{G}_{5\mu}$ components:
+<br>
+${{{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{R}} {{{ A}_{\alpha}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_5}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}} = {{{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_{\alpha}}_5}} {{\frac{1}{{c}^{4}}}}}$
+<br>
+isolating the Faraday tensor divergence:
+<br>
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_{\alpha}}_5}} {{\frac{1}{{c}^{4}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+<br>
+Assuming	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
+<br>
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{R}} {{{ A}_{\alpha}}}} + {{{16}} {{\pi}} \cdot {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{{ \tilde{T}}_{\alpha}}_5}} {{\frac{1}{{c}^{5}}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+<br>
+Assuming	${{\phi_K}} = {\frac{\sqrt G}{{{c}} {{\sqrt {k_e}}}}}$
+<br>
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{3}} \cdot {{\frac{1}{4}}} {{G}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{16}} {{\pi}} \cdot {{{G}^{({\frac{1}{2}})}}} {{{{k_e}}^{({\frac{1}{2}})}}} {{{{ \tilde{T}}_{\alpha}}_5}} {{\frac{1}{{c}^{3}}}}}}$
+<br>
+Assuming	${{{ \tilde{T}}_{\mu}}_5} = {{{{{{{{c}^{2}}} {{\rho}}}} {{{ \dot{x}}_5}}}} {{{ \dot{x}}_{\mu}}}}$
+<br>
+
+<br>
+looking at the $\tilde{G}_{55}$ components:
+<br>
+${{{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{R}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{{ A}_5}^{2}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}} = {{{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{4}}}}}$
+<br>
+isolating the Faraday tensor divergence:
+<br>
+${R} = {{{{-16}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{4}}}} {{\frac{1}{{{ A}_5}^{2}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{-3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+<br>
+Assuming	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
+<br>
+${R} = {{{{-16}} {{\pi}} \cdot {{{G}^{2}}} {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{6}}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{-3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+<br>
+Assuming	${{\phi_K}} = {\frac{\sqrt G}{{{c}} {{\sqrt {k_e}}}}}$
+<br>
+${R} = {{{{-16}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{4}}}}} + {{{-3}} \cdot {{\frac{1}{4}}} {{G}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}}}$
+<br>
+
+<br>
+using a specific stress-energy tensor:
+<br>
+$\tilde{T}_{ab} = c^2 \rho u_a u_b + P (\tilde{g}_{ab} + u_a u_b)$
+<br>
+
 <br>
 ${{{ \tilde{T}}_a}_b} = {{{{{{{{{c}^{2}}} {{\rho}}}} {{{ \dot{x}}_a}}}} {{{ \dot{x}}_b}}} + {{{P}} {{{{ \tilde{g}}_a}_b}}}}$
 <br>
@@ -281,68 +427,6 @@ ${{{ \tilde{T}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}
 substituting definitions for $\tilde{g}_{ab}, A_5, \dot{x}^a$...
 <br>
 ${{{ \tilde{T}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{P}} {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}}} + {{{P}} {{{{ g}_{\alpha}}_{\beta}}}} + {{{P}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}}} + {{{\rho}} \cdot {{{c}^{2}}} {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}}} &  {{{P}} {{{ A}_5}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}}} + {{{P}} {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}}} + {{{\rho}} \cdot {{{c}^{2}}} {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}}} \\  {{{P}} {{{ A}_5}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}}} + {{{P}} {{{ \dot{x}}_5}} {{{ \dot{x}}_{\beta}}}} + {{{\rho}} \cdot {{{c}^{2}}} {{{ \dot{x}}_5}} {{{ \dot{x}}_{\beta}}}} &  {{{P}} {{{{ \dot{x}}_5}^{2}}}} + {{{P}} {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}}} + {{{\rho}} \cdot {{{c}^{2}}} {{{{ \dot{x}}_5}^{2}}}}\end{matrix}\right]}}$
-<br>
-
-<br>
-$\tilde{G}_{ab} = \frac{8 \pi G}{c^4} T_{ab}$
-<br>
-${\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{2}}} {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} &  {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{R}} {{{ A}_{\alpha}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_5}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} \\  {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{R}} {{{ A}_{\beta}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_5}} {{{ A}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} &  {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{R}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{{ A}_5}^{2}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}\end{matrix}\right]}} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{{ g}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{\rho}} \cdot {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} &  {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{ A}_5}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{\rho}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} \\  {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{ A}_5}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{ \dot{x}}_5}} {{{ \dot{x}}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{\rho}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\beta}}} {{\frac{1}{{c}^{2}}}}} &  {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{\rho}} \cdot {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{2}}}}}\end{matrix}\right]}}$
-<br>
-
-<br>
-Comparing spacetime components:
-<br>
-$ \tilde{G}_{\alpha\beta} = 8 \pi \frac{G}{c^4} \tilde{T}_{\alpha\beta}$
-<br>
-${{{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{2}}} {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}} = {{{{8}} {{\pi}} \cdot {{G}} {{P}} {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{{ g}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{\rho}} \cdot {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}}}$
-<br>
-Isolating the spacetime Einstein tensor.
-<br>
-${{{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}}} = {{{{8}} {{G}} {{P}} {{\pi}} \cdot {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{G}} {{P}} {{\pi}} \cdot {{{{ g}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{G}} {{P}} {{\pi}} \cdot {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{\frac{1}{2}}} {{R}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}}} + {{{3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}}} + {{{\frac{1}{8}}} {{{{\phi_K}}^{2}}} {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
-<br>
-Assuming	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
-<br>
-${{{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}}} = {{{{8}} {{G}} {{P}} {{\pi}} \cdot {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{G}} {{P}} {{\pi}} \cdot {{{{ g}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{G}} {{P}} {{\pi}} \cdot {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{\frac{1}{2}}} {{R}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}}} + {{{3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}}} + {{{\frac{1}{8}}} {{{{\phi_K}}^{2}}} {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
-<br>
-Assuming	${{\phi_K}} = {\frac{\sqrt G}{{{c}} {{\sqrt {k_e}}}}}$
-<br>
-${{{{ R}_{\alpha}}_{\beta}} + {{{-1}} \cdot {{\frac{1}{2}}} {{R}} {{{{ g}_{\alpha}}_{\beta}}}}} = {{{{8}} {{{G}^{2}}} {{P}} {{\pi}} \cdot {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{6}}}}} + {{{3}} \cdot {{\frac{1}{8}}} {{{G}^{2}}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{4}}}} {{\frac{1}{{{k_e}}^{2}}}}} + {{{8}} {{G}} {{P}} {{\pi}} \cdot {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{G}} {{P}} {{\pi}} \cdot {{{{ g}_{\alpha}}_{\beta}}} {{\frac{1}{{c}^{4}}}}} + {{{\frac{1}{2}}} {{G}} {{R}} {{{ A}_{\beta}}} {{{ A}_{\alpha}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{8}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ \dot{x}}_{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{G}} {{{ A}_{\alpha}}} {{{{{ F}_{\beta}}^{\epsilon}}_{;\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{G}} {{{ A}_{\beta}}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{\frac{1}{2}}} {{G}} {{{{ F}_{\beta}}_{\epsilon}}} {{{{ F}_{\alpha}}^{\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{\frac{1}{8}}} {{G}} {{{{ g}_{\alpha}}_{\beta}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}}}$
-<br>
-
-<br>
-looking at the $\tilde{G}_{5\mu}$ components:
-<br>
-${{{{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{ A}_5}} {{R}} {{{ A}_{\alpha}}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{ A}_5}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}} = {{{{8}} {{\pi}} \cdot {{G}} {{P}} {{{ A}_5}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{\rho}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}}}$
-<br>
-isolating the Faraday tensor divergence:
-<br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{P}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{16}} {{G}} {{P}} {{\pi}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{4}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
-<br>
-Assuming	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
-<br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{P}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{16}} {{P}} {{\pi}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{\frac{1}{{c}^{5}}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{16}} {{\pi}} \cdot {{\rho}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{\frac{1}{{c}^{3}}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
-<br>
-Assuming	${{\phi_K}} = {\frac{\sqrt G}{{{c}} {{\sqrt {k_e}}}}}$
-<br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{P}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{\frac{1}{{c}^{4}}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{G}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{16}} {{P}} {{\pi}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{{G}^{({\frac{1}{2}})}}} {{{{k_e}}^{({\frac{1}{2}})}}} {{\frac{1}{{c}^{3}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{16}} {{\pi}} \cdot {{\rho}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{{G}^{({\frac{1}{2}})}}} {{{{k_e}}^{({\frac{1}{2}})}}} {{\frac{1}{c}}}}}$
-<br>
-
-<br>
-looking at the $\tilde{G}_{55}$ components:
-<br>
-${{{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{R}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{{ A}_5}^{2}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}} = {{{{8}} {{\pi}} \cdot {{G}} {{P}} {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{P}} {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{\frac{1}{{c}^{4}}}}} + {{{8}} {{\pi}} \cdot {{G}} {{\rho}} \cdot {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{2}}}}}}$
-<br>
-isolating the Faraday tensor divergence:
-<br>
-${R} = {{{{-16}} {{G}} {{P}} {{\pi}} \cdot {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{4}}}} {{\frac{1}{{{ A}_5}^{2}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{-16}} {{G}} {{P}} {{\pi}} \cdot {{\frac{1}{{c}^{4}}}}} + {{{-16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{{ A}_5}^{2}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{-3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
-<br>
-Assuming	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
-<br>
-${R} = {{{{-16}} {{G}} {{P}} {{\pi}} \cdot {{\frac{1}{{c}^{4}}}}} + {{{-16}} {{P}} {{\pi}} \cdot {{{G}^{2}}} {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{6}}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{-16}} {{\pi}} \cdot {{\rho}} \cdot {{{G}^{2}}} {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{4}}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{-3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
-<br>
-Assuming	${{\phi_K}} = {\frac{\sqrt G}{{{c}} {{\sqrt {k_e}}}}}$
-<br>
-${R} = {{{{-16}} {{G}} {{P}} {{\pi}} \cdot {{\frac{1}{{c}^{4}}}}} + {{{-16}} {{G}} {{P}} {{\pi}} \cdot {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{4}}}}} + {{{-16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{{ \dot{x}}_5}^{2}}} {{\frac{1}{{c}^{2}}}}} + {{{-3}} \cdot {{\frac{1}{4}}} {{G}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}}}$
 <br>
 
 <br>

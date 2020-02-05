@@ -828,7 +828,7 @@ function Expression:symmetrizeIndexes(var, indexes)
 		then
 			local sorted = table.mapi(indexes, function(i)
 				return x[i+1].symbol
-			end):sort()
+			end):sort(function(a,b) return tostring(a) < tostring(b) end)
 			for i,sorted in ipairs(sorted) do
 				x[indexes[i]+1].symbol = sorted
 			end
@@ -848,7 +848,7 @@ function Expression:symmetrizeIndexes(var, indexes)
 				then
 					sorted = table.mapi(indexes, function(i)
 						return y[i+1].symbol
-					end):sort()
+					end):sort(function(a,b) return tostring(a) < tostring(b) end)
 					for i,sorted in ipairs(sorted) do
 						y[indexes[i]+1].symbol = sorted
 					end				
@@ -871,7 +871,7 @@ function Expression:symmetrizeIndexes(var, indexes)
 							end
 						end
 						if #indexSymbols >= 2 then
-							indexSymbols:sort()
+							indexSymbols:sort(function(a,b) return tostring(a) < tostring(b) end)
 							for i,j in ipairs(indexes) do
 								y[j].symbol = indexSymbols[i]
 							end
