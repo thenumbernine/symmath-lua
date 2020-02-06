@@ -177,9 +177,10 @@ local g5_def = Tensor('_ab',
 printbr(g5'_ab':eq(g5_def))
 printbr()
 
+printbr'<hr>'
 
 -- I should put this in its own worksheet ...
-printbr('unit velocity?')
+printbr'What if we require a unit 5-velocity?'
 local dx_ds = var'\\dot{x}'
 
 local unitVelEqn = (g5'_ab' * dx_ds'^a' * dx_ds'^b'):eq(-1)()
@@ -204,15 +205,18 @@ printbr(unitVelEqn)
 --unitVelEqn = unitVelEqn:replace( (g' _\\alpha _\\beta' * dx_ds' ^\\alpha' * dx_ds' ^\\beta')(), -1)()
 --printbr(unitVelEqn)
 
-printbr'solve quadratic for $A_5 \\dot{x}^5$...'
--- I have no plus/minus symbol...
-printbr[[$ \dot{x}^5 = \frac{1}{A_5} ( -A_\mu \dot{x}^\mu \pm \sqrt{
-	(A_\mu \dot{x}^\mu)^2 - {\phi_K}^{-2} ( \dot{x}_\mu \dot{x}^\mu + 1)
-} )$]]
-printbr()
-
 printbr[[
-<hr>
+
+solve quadratic for $A_5 \dot{x}^5$...<br>
+$ \dot{x}^5 = \frac{1}{A_5} ( -A_\mu \dot{x}^\mu \pm \sqrt{
+	(A_\mu \dot{x}^\mu)^2 - {\phi_K}^{-2} ( \dot{x}_\mu \dot{x}^\mu + 1)
+} )$<br>
+<br>
+
+On a side note, later we are going to set $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
+If we do this now then the solution of the quadratic looks like:<br>
+$\frac{q}{m} \sqrt{\frac{k_e}{G}} = \frac{1}{c} \sqrt{\frac{G}{k_e}} ( -A_\mu \dot{x}^\mu \pm \sqrt{ (A_\mu \dot{x}^\mu)^2 - {\phi_K}^{-2} ( \dot{x}_\mu \dot{x}^\mu + 1) } )$<br>
+$\frac{q}{m} = \frac{1}{c} \frac{G}{k_e} ( -A_\mu \dot{x}^\mu \pm \sqrt{ (A_\mu \dot{x}^\mu)^2 - {\phi_K}^{-2} ( \dot{x}_\mu \dot{x}^\mu + 1) } )$<br>
 <br>
 
 Let's look at the magnitude of this for some real-world values.<br>
@@ -246,12 +250,13 @@ $\phi''_q = 2.1287683635025 \cdot 10^{48} \frac{kg \cdot m^2}{C \cdot s^2}$<br>
 ...which is a few orders of magnitude higher than what contributes to the EM field.<br>
 <br>
 
-So, assuming we want our velocity to be normalized across all 5 dimensions, and assuming our four-velocity is normalized with the four-metric,
+So, assuming we want our 5-velocity to be normalized with the 5-metric, and assuming our 4-velocity is normalized with the 4-metric,
 then it looks like the 5th velocity is made up of two parts:<br>
-1) the EM potential, dot the neglegible four-vel, which is on the order of $10^{-12}$ for our current through a copper wire.<br>
+1) the EM potential, dot the negligible 4-vel, which is on the order of $10^{-12}$ for our current through a copper wire.<br>
 2) the the arbitrary constant, which must relate to the charge-mass ratio, which is on the order of $10^{21}$.<br>
-
-Also notice that this shows - if we want the 5-vector to be normalized - then the charge-to-mass ratio in the Lorentz force law will be influenced by the velocity...<br>
+Also notice that this shows then the charge-mass ratio in the Lorentz force law will be influenced by the 3-velocity.<br>
+Of course you can avoid the constraint that that charge-mass ratio is dependent on the 3-velocity if you just relax the constraint of $\dot{x}_\mu \dot{x}^\mu = -1$.
+Then, for constaint $\dot{x}^5} = \frac{q}{m} \sqrt{\frac{k_e}{G}}$, any deviations in the electric potential $A_t$ would relate to deviations in the 4-vel-norm or in deviations in the Kaluza field.<br> 
 <br>
 
 <br>
