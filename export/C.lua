@@ -62,7 +62,7 @@ C.lookupTable = {
 		local symmath = require 'symmath'
 		if expr[1] == symmath.e then
 			local sx = self:apply(expr[2])
-			return {'(real)exp((real)' .. sx[1] .. ')', sx[2]}
+			return {'exp(' .. sx[1] .. ')', sx[2]}
 		else
 			-- represent integers as expanded multiplication
 			local Constant = symmath.Constant
@@ -81,11 +81,11 @@ C.lookupTable = {
 				local s = table()
 				for i,x in ipairs(expr) do
 					local sx = self:apply(x)
-					s:insert('(real)'..sx[1])
+					s:insert(sx[1])
 					predefs = table(predefs, sx[2])
 				end
 				s = s:concat(', ')
-				return {'(real)pow(' .. s .. ')', predefs}	
+				return {'pow(' .. s .. ')', predefs}	
 			end
 		end
 	end,

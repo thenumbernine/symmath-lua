@@ -31,8 +31,11 @@ function TensorIndex:__tostring()
 	if self.lower then s = '_' .. s else s = '^' .. s end
 	if self.symbol then
 		local name = self.symbol
-		if type(name) == 'string' and require 'symmath'.fixVariableNames then
-			name = symmath.tostring:fixVariableName(name)
+		if type(name) == 'string' then
+			local symmath = require 'symmath'
+			if symmath.fixVariableNames then
+				name = symmath.tostring:fixVariableName(name)
+			end
 		end
 		return s .. name
 	else
