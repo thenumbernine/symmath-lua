@@ -227,8 +227,11 @@ MultiLine.lookupTable = {
 		local lhs = self:fraction(
 			{topText},
 			{table.map(powersForDeriv, function(power, name, newtable) 
-				if type(name) == 'string' and symmath.fixVariableNames then
-					name = symmath.tostring:fixVariableName(name)
+				if type(name) == 'string' then
+					local symmath = require 'symmath'
+					if symmath.fixVariableNames then
+						name = symmath.tostring:fixVariableName(name)
+					end
 				end
 				local s = 'd'..name
 				if power > 1 then
