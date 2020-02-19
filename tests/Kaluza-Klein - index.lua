@@ -179,6 +179,7 @@ printbr()
 
 printbr'<hr>'
 
+
 -- I should put this in its own worksheet ...
 printbr'What if we require a unit 5-velocity?'
 local dx_ds = var'\\dot{x}'
@@ -263,6 +264,28 @@ Then, for constaint $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$, any deviatio
 <hr>
 ]]
 printbr()
+
+printbr[[What is $\dot{x}_5$ in terms of $\dot{x}^5$?]]
+
+--[[
+u^5 = whatever
+so what is u_5?
+u_5 = g_5a u^a = g_5u u^u + g_55 u^5
+u_5 = phi^2 A_5 A_a u^a + phi^2 A_5^2 u^5
+u^5 = (u_5 - phi^2 A_5 A_a u^a) / (phi^2 A_5^2)
+u^5 = phi^-2 A_5^-2 u_5 - A_5^-1 A_a u^a
+--]]
+local u5_l_def = dx_ds'_5':eq(g5'_5a' * dx_ds'^a')
+printbr(u5_l_def)
+-- split
+local u5_l_def = dx_ds'_5':eq(g5' _5 _\\beta' * dx_ds' ^\\beta' + g5'_55' * dx_ds'^5')
+printbr(u5_l_def)
+printbr('substitute definition of '..g5'_ab')
+local u5_l_def = dx_ds'_5':eq(g5_def[2][1] * dx_ds' ^\\beta' + g5_def[2][2] * dx_ds'^5')
+printbr(u5_l_def)
+
+printbr()
+printbr'<hr>'
 
 
 printbr(g5'^uv', '= 5D metric inverse')
@@ -917,6 +940,16 @@ printbr(EFE5_5_mu_def)
 printbr'isolating the Faraday tensor divergence:'
 EFE5_5_mu_def = betterSimplify((EFE5_5_mu_def - EFE5_5_mu_def[1]) / (A'_5' * phi^2 / 2) + F' _\\alpha ^\\epsilon _;\\epsilon ')
 printbr(EFE5_5_mu_def)
+local rho = var'\\rho'
+printbr('Assuming', T5' _\\alpha _5':eq( c^2 * rho * dx_ds'_5' * dx_ds' _\\alpha' ))
+EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(T5' _\\alpha _5':eq( c^2 * rho * dx_ds'_5' * dx_ds' _\\alpha' )))
+printbr(EFE5_5_mu_def)
+printbr('substitute '..u5_l_def)
+EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(u5_l_def))
+printbr(EFE5_5_mu_def)
+printbr('Assume', dx_ds5U_def)
+EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(dx_ds5U_def))
+printbr(EFE5_5_mu_def)
 printbr('Assuming', A5_def)
 EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(A5_def))
 printbr(EFE5_5_mu_def)
@@ -925,8 +958,16 @@ if constantScalarField then
 	EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(phiK_def))
 	printbr(EFE5_5_mu_def)
 end
-local rho = var'\\rho'
-printbr('Assuming', T5' _\\mu _5':eq( c^2 * rho * dx_ds'_5' * dx_ds' _\\mu' ))
+printbr('Substitute', 
+	k_e:eq(frac(1, 4 * pi * epsilon_0)), ',',
+	(mu_0 * epsilon_0):eq(frac(1, c^2)), ',',
+	'so ', k_e:eq(frac(mu_0 * c^2, 4 * pi))
+)
+EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:replace(k_e, frac(mu_0 * c^2, 4 * pi)))
+--EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:replace(k_e, frac(1, 4 * pi * epsilon_0)))
+printbr(EFE5_5_mu_def)
+
+
 printbr()
 
 printbr'looking at the $\\tilde{G}_{55}$ components:'

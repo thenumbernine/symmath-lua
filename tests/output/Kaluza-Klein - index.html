@@ -121,6 +121,20 @@ Then, for constaint $\dot{x}^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$, any deviatio
 <br>
 
 <br>
+What is $\dot{x}_5$ in terms of $\dot{x}^5$?
+<br>
+${{ \dot{x}}_5} = {{{{{ \tilde{g}}_5}_a}} {{{ \dot{x}}^a}}}$
+<br>
+${{ \dot{x}}_5} = {{{{{{ \tilde{g}}_5}_{\beta}}} {{{ \dot{x}}^{\beta}}}} + {{{{{ \tilde{g}}_5}_5}} {{{ \dot{x}}^5}}}}$
+<br>
+substitute definition of ${{ \tilde{g}}_a}_b$
+<br>
+${{ \dot{x}}_5} = {{{{{{{{{{\phi_K}}^{2}}} {{{ A}_{\beta}}}}} {{{ A}_5}}}} {{{ \dot{x}}^{\beta}}}} + {{{{{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}}}} {{{ \dot{x}}^5}}}}$
+<br>
+
+<br>
+<hr>
+<br>
 ${{ \tilde{g}}^u}^v$	= 5D metric inverse
 <br>
 Notice, if you see a raised 4-index, it is being raised by the 4-metric and not the 5-metric.
@@ -389,15 +403,29 @@ isolating the Faraday tensor divergence:
 <br>
 ${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_{\alpha}}_5}} {{\frac{1}{{c}^{4}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
 <br>
+Assuming	${{{ \tilde{T}}_{\alpha}}_5} = {{{{{{{{c}^{2}}} {{\rho}}}} {{{ \dot{x}}_5}}}} {{{ \dot{x}}_{\alpha}}}}$
+<br>
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ \dot{x}}_5}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+<br>
+substitute ${{ \dot{x}}_5} = {{{{{{{{{{\phi_K}}^{2}}} {{{ A}_{\beta}}}}} {{{ A}_5}}}} {{{ \dot{x}}^{\beta}}}} + {{{{{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}}}} {{{ \dot{x}}^5}}}}$
+<br>
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_5}} {{{ \dot{x}}^5}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ \dot{x}}^{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+<br>
+Assume	${{ \dot{x}}^5} = {{{{\frac{1}{m}}{({q})}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
+<br>
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ \dot{x}}^{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{16}} {{q}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_5}} {{{ \dot{x}}_{\alpha}}} {{{G}^{({\frac{1}{2}})}}} {{{{k_e}}^{({\frac{1}{2}})}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{m}}}}}$
+<br>
 Assuming	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
 <br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{R}} {{{ A}_{\alpha}}}} + {{{16}} {{\pi}} \cdot {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{{ \tilde{T}}_{\alpha}}_5}} {{\frac{1}{{c}^{5}}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ \dot{x}}^{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{16}} {{q}} {{\pi}} \cdot {{{k_e}}} \cdot {{\rho}} \cdot {{{ \dot{x}}_{\alpha}}} {{\frac{1}{c}}} {{\frac{1}{m}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
 <br>
 Assuming	${{\phi_K}} = {\frac{\sqrt G}{{{c}} {{\sqrt {k_e}}}}}$
 <br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{3}} \cdot {{\frac{1}{4}}} {{G}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{16}} {{\pi}} \cdot {{{G}^{({\frac{1}{2}})}}} {{{{k_e}}^{({\frac{1}{2}})}}} {{{{ \tilde{T}}_{\alpha}}_5}} {{\frac{1}{{c}^{3}}}}}}$
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{3}} \cdot {{\frac{1}{4}}} {{G}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ \dot{x}}^{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{16}} {{q}} {{\pi}} \cdot {{\rho}} \cdot {{{k_e}}} \cdot {{{ \dot{x}}_{\alpha}}} {{\frac{1}{c}}} {{\frac{1}{m}}}}}$
 <br>
-Assuming	${{{ \tilde{T}}_{\mu}}_5} = {{{{{{{{c}^{2}}} {{\rho}}}} {{{ \dot{x}}_5}}}} {{{ \dot{x}}_{\mu}}}}$
+Substitute	${{k_e}} = {\frac{1}{{{{{4}} {{\pi}}}} {{{\epsilon_0}}}}}$	,	${{{{\mu_0}}} \cdot {{{\epsilon_0}}}} = {\frac{1}{{c}^{2}}}$	,	so 	${{k_e}} = {\frac{{{{\mu_0}}} \cdot {{{c}^{2}}}}{{{4}} {{\pi}}}}$
+<br>
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{3}} {{G}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ \dot{x}}^{\beta}}} {{{ \dot{x}}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{4}} {{q}} {{\rho}} \cdot {{c}} {{{\mu_0}}} \cdot {{{ \dot{x}}_{\alpha}}} {{\frac{1}{m}}}}}$
 <br>
 
 <br>
