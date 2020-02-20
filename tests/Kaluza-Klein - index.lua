@@ -943,8 +943,10 @@ printbr'isolating the Faraday tensor divergence:'
 EFE5_5_mu_def = betterSimplify((EFE5_5_mu_def - EFE5_5_mu_def[1]) / (A'_5' * phi^2 / 2) + F' _\\alpha ^\\epsilon _;\\epsilon ')
 printbr(EFE5_5_mu_def)
 local rho = var'\\rho'
-printbr('Assuming', T5' _\\alpha _5':eq( c^2 * rho * dx_ds'_5' * dx_ds' _\\alpha' ))
-EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(T5' _\\alpha _5':eq( c^2 * rho * dx_ds'_5' * dx_ds' _\\alpha' )))
+local T5mu_def = T5' _\\alpha _5':eq( frac(1,4) * c^2 * rho * dx_ds'_5' * dx_ds' _\\alpha' )
+printbr('Assuming', T5mu_def)
+printbr[[(The $\frac{1}{4}$ is to make the 4 next to the $\mu_0 J_\alpha$ go away)]]
+EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(T5mu_def))
 printbr(EFE5_5_mu_def)
 printbr('substitute '..u5_l_def)
 EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(u5_l_def))
@@ -970,11 +972,11 @@ printbr(EFE5_5_mu_def)
 local J = var'J'
 local fourCurrentDef = J' _\\alpha':eq( c * frac(q,m) * rho * dx_ds' _\\alpha' )
 printbr('Let '..fourCurrentDef)
-EFE5_5_mu_def[2] = betterSimplify(EFE5_5_mu_def[2] - 4 * mu_0 * fourCurrentDef:rhs() + 4 * mu_0 * fourCurrentDef:lhs())
+EFE5_5_mu_def[2] = betterSimplify(EFE5_5_mu_def[2] - mu_0 * fourCurrentDef:rhs() + mu_0 * fourCurrentDef:lhs())
 printbr(EFE5_5_mu_def)
 printbr'Move all but current to the left side:'
 -- move all except mu_0 J to the other side
-EFE5_5_mu_def = betterSimplify( -EFE5_5_mu_def + EFE5_5_mu_def:lhs() + 4 * mu_0 * J' _\\alpha' ):switch()
+EFE5_5_mu_def = betterSimplify( -EFE5_5_mu_def + EFE5_5_mu_def:lhs() + mu_0 * J' _\\alpha' ):switch()
 printbr(EFE5_5_mu_def)
 printbr'Rewriting the right hand side as an operator'
 printbr[[
@@ -987,14 +989,15 @@ $
 		16 \frac{1}{c^2} \pi G \rho \dot{x}_\alpha \dot{x}^\beta 
 		+ R \delta^\beta_\alpha 
 	) A_\beta 
-	= 4 \mu_0 J_\alpha
+	= \mu_0 J_\alpha
 $<br>
 
 In matter this becomes...<br>
-$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = 4 \mu_0 J_\alpha$<br>
+$\mu_0 \nabla^\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = \mu_0 J_\alpha$<br>
 
 ...for some sort of operator $\nabla (Z \cdot ...)$...
 ]]
+printbr()
 
 
 printbr()
