@@ -57,6 +57,7 @@ Derivative.rules = {
 			end
 		end},
 
+-- [[
 		-- dx/dx = 1
 		{self = function(prune, expr)
 			local Constant = require 'symmath.Constant'
@@ -76,6 +77,7 @@ Derivative.rules = {
 				end
 			end
 		end},
+--]]
 
 		--dx/dy = 0 (unless x is a function of y ... but I only have partials)
 		{other = function(prune, expr)
@@ -99,9 +101,24 @@ Derivative.rules = {
 			if expr[1].evaluateDerivative then
 				local result = expr[1]:clone()
 				for i=2,#expr do
+-- [[ defer					
 					result = prune:apply(
 						result:evaluateDerivative(Derivative, expr[i])
 					)
+--]]				
+--[[ don't defer
+					result = prune:apply(
+						result:evaluateDerivative(
+							--Derivative,
+							--function(...) return Derivative(...) end, 
+							function(b, ...) 
+								if not b.evaluateDerivative then error('here for '..tostring(b)) end
+								return b:evaluateDerivative(Derivative, ...)
+							end,
+							expr[i]
+						)
+					)
+--]]
 				end
 				return result
 			end

@@ -29,6 +29,21 @@ function Variable:applyDiff(x)
 	return x:diff(self)
 end
 
+-- [[ this is the same as Derivative.visitors.Prune.self
+-- either is interoperable (right?)
+function Variable:evaluateDerivative(deriv, ...)
+	local derivs = {...}
+	if #derivs == 1 and derivs[1] == self then
+		return require 'symmath.Constant'(1)
+	end
+	for i=1,#derivs do
+		if derivs[i] == self then
+			return require 'symmath.Constant'(0)
+		end
+	end
+end
+--]]
+
 -- Variable equality is by name and value at the moment
 -- this way log(e) fails to simplify, but log(symmath.e) simplifies to 1 
 function Variable.__eq(a,b)

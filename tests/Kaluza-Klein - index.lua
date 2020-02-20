@@ -934,6 +934,8 @@ EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:replace(
 printbr(EFE5_mu_mu_def)
 printbr()
 
+
+printbr()
 printbr'looking at the $\\tilde{G}_{5\\mu}$ components:'
 local EFE5_5_mu_def = EFE5_def:lhs()[1][2]:eq( EFE5_def:rhs()[1][2] )
 printbr(EFE5_5_mu_def)
@@ -964,12 +966,38 @@ printbr('Substitute',
 	'so ', k_e:eq(frac(mu_0 * c^2, 4 * pi))
 )
 EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:replace(k_e, frac(mu_0 * c^2, 4 * pi)))
---EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:replace(k_e, frac(1, 4 * pi * epsilon_0)))
 printbr(EFE5_5_mu_def)
+local J = var'J'
+local fourCurrentDef = J' _\\alpha':eq( c * frac(q,m) * rho * dx_ds' _\\alpha' )
+printbr('Let '..fourCurrentDef)
+EFE5_5_mu_def[2] = betterSimplify(EFE5_5_mu_def[2] - 4 * mu_0 * fourCurrentDef:rhs() + 4 * mu_0 * fourCurrentDef:lhs())
+printbr(EFE5_5_mu_def)
+printbr'Move all but current to the left side:'
+-- move all except mu_0 J to the other side
+EFE5_5_mu_def = betterSimplify( -EFE5_5_mu_def + EFE5_5_mu_def:lhs() + 4 * mu_0 * J' _\\alpha' ):switch()
+printbr(EFE5_5_mu_def)
+printbr'Rewriting the right hand side as an operator'
+printbr[[
+$
+	(	
+		3 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
+		+ \nabla^\nu \delta^\mu_\alpha 
+	) F_{\mu\nu} 
+	- (
+		16 \frac{1}{c^2} \pi G \rho \dot{x}_\alpha \dot{x}^\beta 
+		+ R \delta^\beta_\alpha 
+	) A_\beta 
+	= 4 \mu_0 J_\alpha
+$<br>
+
+In matter this becomes...<br>
+$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = 4 \mu_0 J_\alpha$<br>
+
+...for some sort of operator $\nabla (Z \cdot ...)$...
+]]
 
 
 printbr()
-
 printbr'looking at the $\\tilde{G}_{55}$ components:'
 local EFE5_55_def = EFE5_def:lhs()[2][2]:eq( EFE5_def:rhs()[2][2] )
 printbr(EFE5_55_def)
@@ -989,7 +1017,7 @@ printbr()
 
 
 
-
+printbr()
 printbr[[using a specific stress-energy tensor:]]
 printbr[[$\tilde{T}_{ab} = c^2 \rho u_a u_b + P (\tilde{g}_{ab} + u_a u_b)$]]
 printbr()
