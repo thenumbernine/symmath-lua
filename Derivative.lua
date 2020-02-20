@@ -51,13 +51,20 @@ Derivative.rules = {
 		-- d/dx d/dy = d/dxy
 		{combine = function(prune, expr)
 			if Derivative.is(expr[1]) then
-				return prune:apply(Derivative(expr[1][1], table.unpack(
-					table.append({table.unpack(expr, 2)}, {table.unpack(expr[1], 2)})
-				)))
+				return prune:apply(
+					Derivative(
+						
+						expr[1][1], 
+						
+						table.unpack(
+							table.append({table.unpack(expr, 2)}, {table.unpack(expr[1], 2)})
+						)
+					)
+				)
 			end
 		end},
 
--- [[ This is the same as Variable:evaluateDerivative
+--[[ This is the same as Variable:evaluateDerivative
 		-- dx/dx = 1
 		{self = function(prune, expr)
 			local Constant = require 'symmath.Constant'
@@ -101,24 +108,9 @@ Derivative.rules = {
 			if expr[1].evaluateDerivative then
 				local result = expr[1]:clone()
 				for i=2,#expr do
--- [[ defer					
-					result = prune:apply(
-						result:evaluateDerivative(Derivative, expr[i])
-					)
---]]				
---[[ don't defer
-					result = prune:apply(
-						result:evaluateDerivative(
-							--Derivative,
-							--function(...) return Derivative(...) end, 
-							function(b, ...) 
-								if not b.evaluateDerivative then error('here for '..tostring(b)) end
-								return b:evaluateDerivative(Derivative, ...)
-							end,
-							expr[i]
-						)
-					)
---]]
+					result = prune:apply(result:evaluateDerivative(Derivative, expr[i]))
+					-- failed -- bail out early
+					if not result then return end
 				end
 				return result
 			end

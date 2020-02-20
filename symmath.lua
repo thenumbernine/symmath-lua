@@ -192,7 +192,7 @@ symmath.op = {
 symmath.frac = symmath.op.div
 
 symmath.Derivative = require 'symmath.Derivative'
-symmath.diff = symmath.Derivative	-- shorthand
+symmath.diff = symmath.Derivative	-- shorthand ... TODO shorthand for Expression.diff?
 
 -- thinking of lowercasing all of these ...
 symmath.Sum = require 'symmath.Sum'

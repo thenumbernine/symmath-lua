@@ -203,7 +203,42 @@ Expression.simplify = require 'symmath.simplify'
 Expression.polyCoeffs = function(...) return require 'symmath.polyCoeffs'(...) end
 Expression.eval = function(...) return require 'symmath.eval'(...) end
 Expression.compile = function(...) return require 'symmath'.compile(...) end
-Expression.diff = function(...) return require 'symmath.Derivative'(...) end
+function Expression:diff(...) 
+	local Constant = require 'symmath.Constant'
+	
+	-- TODO double diff() as differential when no variables are used?
+	-- or should that be a separate operator?
+
+	-- d/dx c = 0
+	if Constant.is(self) then
+		return Constant(0)
+	end
+
+	-- d/dx (x) = 1
+	local vars = table{...}
+	for i,var in ipairs(vars) do
+		if var == self then
+			vars:remove(i)
+			if #vars == 0 then
+				return Constant(1)
+			else
+				return Constant(1):diff(vars:unpack())
+			end
+		end
+	end
+
+	--[[
+	-- d/dx y = 0 unless y = y(x) ...
+	-- if y is a variable and *any* of xs are not dependent on y then
+	if Variable.is(self) and self.dependentVars:find(nil, function(var) 
+		return not vars:find(var)
+	end) then
+		return Constant(0)
+	end
+	--]]
+
+	return require 'symmath.Derivative'(self, ...) 
+end
 Expression.integrate = function(...) return require 'symmath'.Integral(...) end
 Expression.taylor = function(...) return require 'symmath'.taylor(...) end
 
