@@ -29,7 +29,7 @@ function Variable:applyDiff(x)
 	return x:diff(self)
 end
 
--- [[ this is the same as Derivative.visitors.Prune.self
+--[[ this is the same as Derivative.visitors.Prune.self
 -- either is interoperable (right?)
 function Variable:evaluateDerivative(deriv, ...)
 	local derivs = {...}

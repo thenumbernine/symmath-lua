@@ -8,7 +8,7 @@ local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 
 local Derivative = class(Expression)
-Derivative.precedence = 4
+Derivative.precedence = 6
 
 function Derivative:init(...)
 	local Variable = require 'symmath.Variable'
@@ -57,7 +57,7 @@ Derivative.rules = {
 			end
 		end},
 
--- [[
+-- [[ This is the same as Variable:evaluateDerivative
 		-- dx/dx = 1
 		{self = function(prune, expr)
 			local Constant = require 'symmath.Constant'

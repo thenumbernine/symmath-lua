@@ -289,4 +289,11 @@ function symmath.makefunc(name)
 	return class(Function, {name=name})
 end
 
+-- make require'symmath'() shorthand for require'symmath'.setup()
+setmetatable(symmath, {
+	__call = function(t, ...)
+		return t.setup(...)
+	end,
+})
+
 return symmath
