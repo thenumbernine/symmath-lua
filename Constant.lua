@@ -29,7 +29,7 @@ function Constant:init(value, symbol)
 	then
 		error('tried to init constant with non-number type '..type(value)..' value '..tostring(value))
 	end
-	self.value = value
+	self.value = value * 1.0	-- convert from long to double
 	self.symbol = symbol
 end
 
