@@ -193,7 +193,7 @@ printbr'split off spacetime indexes'
 unitVelEqn = ( g5' _\\alpha _\\beta' * u' ^\\alpha' * u' ^\\beta' + 2 * g5' _\\alpha _5' * u' ^\\alpha' * u'^5' + g5'_55' * (u'^5')^2 ):eq(-1)
 printbr(unitVelEqn)
 
-printbr('substitute definition of ', g5'_ab')
+printbr('Substitute definition of ', g5'_ab')
 unitVelEqn = unitVelEqn
 	:replace(g5_parts[1][1], g5_def[1][1])() 
 	:replace(g5_parts[1][2], g5_def[1][2])()
@@ -205,6 +205,7 @@ printbr(unitVelEqn)
 --printbr(unitVelEqn)
 
 printbr[[
+TODO redo this for 1/4 u^5<br>
 
 Solve quadratic for $A_5 u^5$...<br>
 $ u^5 = \frac{1}{A_5} ( -A_\mu u^\mu \pm \sqrt{
@@ -212,10 +213,10 @@ $ u^5 = \frac{1}{A_5} ( -A_\mu u^\mu \pm \sqrt{
 } )$<br>
 <br>
 
-On a side note, later we are going to set $u^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
+On a side note, later we are going to set $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
 If we do this now then the solution of the quadratic looks like:<br>
-$\frac{q}{m} \sqrt{\frac{k_e}{G}} = \frac{1}{c} \sqrt{\frac{G}{k_e}} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
-$\frac{q}{m} = \frac{1}{c} \frac{G}{k_e} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
+$\frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}} = \frac{1}{c} \sqrt{\frac{G}{k_e}} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
+$\frac{q}{m} = 4 \frac{1}{c} \frac{G}{k_e} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
 <br>
 
 Let's look at the magnitude of this for some real-world values.<br>
@@ -240,12 +241,12 @@ And $\frac{1}{A_5} A_\mu u^\mu = -7.165865159852 \cdot 10^{-13} + \frac{1}{c A_5
 Assume $u_\mu u^\mu = -1$.<br>
 $u^5 = -2 \frac{1}{A_5} A_\mu u^\mu = 1.4331730319704 \cdot 10^{-12} - \frac{1}{c A_5} \gamma \phi''_q$<br>
 
-Below in the geodesic equation, for the Lorentz force equation to arise we muse set $u^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
+Below in the geodesic equation, for the Lorentz force equation to arise we must set $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
 Let's insert this into the $u^5$ equation above and solve to find what $\phi''_q$ would be:<br>
-$\frac{1}{c A_5} \gamma \phi''_q = \frac{q}{m} \sqrt{\frac{k_e}{G}}$<br>
-$\phi''_q = c^2 \frac{q}{\gamma m} \frac{k_e}{G} = c^2 \frac{q}{m} \frac{k_e}{G} \sqrt{1 - \beta^2}$<br>
-For an electron this comes out to be $u^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}} = 2.0410525849546 \cdot 10^{21} = 6.118921713508 \cdot 10^{29} \frac{m}{s}$.<br>
-$\phi''_q = 2.1287683635025 \cdot 10^{48} \frac{kg \cdot m^2}{C \cdot s^2}$<br>
+$\frac{1}{c A_5} \gamma \phi''_q = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$<br>
+$\phi''_q = \frac{1}{4} c^2 \frac{q}{\gamma m} \frac{k_e}{G} = \frac{1}{4} c^2 \frac{q}{m} \frac{k_e}{G} \sqrt{1 - \beta^2}$<br>
+For an electron this comes out to be $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}} = 5.1026314623865 \cdot 10^{20} = 1.529730428377 \cdot 10^{29} \frac{m}{s}$.<br>
+$\phi''_q = 5.3219209087562 \cdot 10^{47} \frac{kg \cdot m^2}{C \cdot s^2}$<br>
 ...which is a few orders of magnitude higher than what contributes to the EM field.<br>
 <br>
 
@@ -256,8 +257,8 @@ then it looks like the 5th velocity is made up of two parts:<br>
 Also notice that this shows then the charge-mass ratio in the Lorentz force law will be influenced by the 3-velocity.<br>
 <br>
 
-Of course you can avoid the constraint that that charge-mass ratio is dependent on the 3-velocity if you just relax the constraint of $u_\mu u^\mu = -1$.
-Then, for constaint $u^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$, any deviations in the electric potential $A_t$ could relate to deviations in the 4-vel-norm (or in deviations in the Kaluza field, which I am keeping constant in this worksheet).<br> 
+Of course you can avoid the constraint that that charge-mass ratio is dependent on the 3-velocity if you just relax the constraint of $u_\mu u^\mu = -1$.<br>
+Then, for constaint $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$, any deviations in the electric potential $A_t$ could relate to deviations in the 4-vel-norm (or in deviations in the Kaluza field, which I am keeping constant in this worksheet).<br> 
 <br>
 
 Let's look at $\delta u^5$ with respect to $\delta u^\mu$ in the constraint above:<br>
@@ -285,15 +286,14 @@ $ \frac{\delta u^5}{\delta (u_\mu u^\mu)} =
 	(A_\mu u^\mu)^2 - {\phi_K}^{-2} (u_\mu u^\mu + 1)
 }}
 $<br>
-...and if $A_5 = (\phi_K)^{-1}$...<br>
+...and if $A_5 = 2 (\phi_K)^{-1}$...<br>
 $ \frac{\delta u^5}{\delta (u_\mu u^\mu)} = 
 \mp \frac{
 	1
-}{2 \sqrt{
-	( \frac{1}{A_5} A_\mu u^\mu)^2 - u_\mu u^\mu - 1
+}{4 \sqrt{
+	4 (\frac{1}{A_5} A_\mu u^\mu)^2 - u_\mu u^\mu + 1
 }}
 $<br>
-<br>
 
 <br>
 <hr>
@@ -547,8 +547,8 @@ printbr(spacetimeGeodesic_def)
 local mass = var'M'
 local q = var'q'
 
-local u5U_def = u'^5':eq( frac(q, m) * sqrt(frac(k_e, G)) )
-local A5_def = A'_5':eq(frac(1,4) * c * sqrt(frac(k_e, G)))
+local u5U_def = u'^5':eq( frac(1,4) * frac(q, m) * sqrt(frac(k_e, G)) )
+local A5_def = A'_5':eq(c * sqrt(frac(k_e, G)))
 local phi_K_def = phi_K:eq( 
 	2 / c * sqrt(frac(G, k_e))
 )
@@ -683,18 +683,16 @@ printbr()
 
 
 printbr('$u^5$ for an electron,', units.m_e_in_kg, ',', units.e_in_C)
-
--- TODO like maxima, :simplify{scopeVars}
-symmath.simplifyConstantPowers = true
-local elec_q_sqrt_ke_over_m_sqrt_G = (units.e_in_C:rhs() / units.m_e_in_kg:rhs()):subst(kg_in_C)()
-
-printbr('so $\\frac{q}{m} \\sqrt{\\frac{k_e}{G}} = $', 
-	elec_q_sqrt_ke_over_m_sqrt_G 
-	'=', 
-	betterSimplify(elec_q_sqrt_ke_over_m_sqrt_G * units.c_in_m_s:rhs())
-)
+symmath.simplifyConstantPowers = true	-- TODO like maxima? :simplify{scopeVars}
+local elec_q_sqrt_ke_over_m_sqrt_G = u5U_def:rhs():subst(
+	q:eq(units.e_in_C:rhs()), 
+	m:eq(units.m_e_in_kg:rhs()), 
+	units.k_e_in_SI_and_C,
+	units.G_in_SI,
+	kg_in_C
+)()
+printbr('So', u5U_def:rhs():eq( elec_q_sqrt_ke_over_m_sqrt_G ):eq( betterSimplify(elec_q_sqrt_ke_over_m_sqrt_G * units.c_in_m_s:rhs()) ) )
 symmath.simplifyConstantPowers = false
-
 printbr()
 
 
@@ -961,8 +959,9 @@ end
 printbr('Substitute', substitutions:mapi(tostring):concat', ')
 EFE5_55_def = betterSimplify(EFE5_55_def:subst(substitutions:unpack()))
 printbr(EFE5_55_def)
-printbr'Isolating the Faraday tensor divergence:'
-EFE5_55_def = betterSimplify( -2 * (EFE5_55_def - EFE5_55_def[1]) + R)
+printbr'Isolating the scalar curvature:'
+EFE5_55_def = betterSimplify(EFE5_55_def:solve(R))
+--EFE5_55_def = betterSimplify( -2 * (EFE5_55_def - EFE5_55_def[1]) + R)
 printbr(EFE5_55_def)
 printbr[[It looks like $\tilde{T}_{55}$ provides the scalar curvature information ... with the exception of that extra term]]
 printbr'What is the magnitude of that extra term?'
@@ -983,7 +982,7 @@ printbr'Isolating the Faraday tensor divergence:'
 EFE5_5_mu_def = betterSimplify((EFE5_5_mu_def - EFE5_5_mu_def[1]) / (A'_5' * phi_K^2 / 2) + F' _\\alpha ^\\epsilon _;\\epsilon ')
 printbr(EFE5_5_mu_def)
 local rho = var'\\rho'
-local T5mu_def = T5' _\\alpha _5':eq( frac(1,4) * c^2 * rho * u'_5' * u' _\\alpha' )
+local T5mu_def = T5' _\\alpha _5':eq( c^2 * rho * u'_5' * u' _\\alpha' )
 printbr('Assume', T5mu_def)
 EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(T5mu_def))
 printbr(EFE5_5_mu_def)
@@ -1011,28 +1010,30 @@ printbr(EFE5_5_mu_def)
 local J = var'J'
 local fourCurrentDef = J' _\\alpha':eq( c * frac(q,m) * rho * u' _\\alpha' )
 printbr('Let '..fourCurrentDef)
-EFE5_5_mu_def[2] = betterSimplify(EFE5_5_mu_def[2] - 4 * mu_0 * fourCurrentDef:rhs() + 4 * mu_0 * fourCurrentDef:lhs())
+EFE5_5_mu_def[2] = betterSimplify(EFE5_5_mu_def[2] - mu_0 * fourCurrentDef:rhs() + mu_0 * fourCurrentDef:lhs())
 printbr(EFE5_5_mu_def)
 printbr'Move all but current to the left side:'
 -- move all except mu_0 J to the other side
-EFE5_5_mu_def = betterSimplify( -EFE5_5_mu_def + EFE5_5_mu_def:lhs() + 4 * mu_0 * J' _\\alpha' ):switch()
+EFE5_5_mu_def = betterSimplify( -EFE5_5_mu_def + EFE5_5_mu_def:lhs() + mu_0 * J' _\\alpha' ):switch()
 printbr(EFE5_5_mu_def)
 printbr'Rewriting the right hand side as an operator'
+
+-- TODO make sure this is up to date manually, or use some operators here
 printbr[[
 $
 	(	
-		3 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
-		+ \nabla^\nu \delta^\mu_\alpha 
+		12 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
+		+ \delta^\mu_\alpha \nabla^\nu
 	) F_{\mu\nu} 
 	- (
 		16 \frac{1}{c^2} \pi G \rho u_\alpha u^\beta 
 		+ R \delta^\beta_\alpha 
 	) A_\beta 
-	= 4 \mu_0 J_\alpha
+	= \mu_0 J_\alpha
 $<br>
 
-In matter this becomes...<br>
-$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = 4 \mu_0 J_\alpha$<br>
+In matter at macroscopic levels this becomes...<br>
+$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = \mu_0 J_\alpha$<br>
 
 ...for some sort of operator $\nabla (Z \cdot ...)$...
 ]]

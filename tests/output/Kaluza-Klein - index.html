@@ -59,10 +59,11 @@ split off spacetime indexes
 <br>
 ${{{{{{{{{ \tilde{g}}_{\alpha}}_{\beta}}} {{{ u}^{\alpha}}}}} {{{ u}^{\beta}}}} + {{{{{{{2}} {{{{ \tilde{g}}_{\alpha}}_5}}}} {{{ u}^{\alpha}}}}} {{{ u}^5}}}} + {{{{{ \tilde{g}}_5}_5}} {{{{ u}^5}^{2}}}}} = {-1}$
 <br>
-substitute definition of 	${{ \tilde{g}}_a}_b$
+Substitute definition of 	${{ \tilde{g}}_a}_b$
 <br>
 ${{{{2}} {{{ A}_5}} {{{ u}^5}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{ u}^{\alpha}}}} + {{{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{{{ u}^5}^{2}}}} + {{{{ u}^{\beta}}} {{{ u}^{\alpha}}} {{{{ g}_{\alpha}}_{\beta}}}} + {{{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ A}_{\alpha}}} {{{ u}^{\alpha}}}}} = {-{1}}$
 <br>
+TODO redo this for 1/4 u^5<br>
 
 Solve quadratic for $A_5 u^5$...<br>
 $ u^5 = \frac{1}{A_5} ( -A_\mu u^\mu \pm \sqrt{
@@ -70,10 +71,10 @@ $ u^5 = \frac{1}{A_5} ( -A_\mu u^\mu \pm \sqrt{
 } )$<br>
 <br>
 
-On a side note, later we are going to set $u^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
+On a side note, later we are going to set $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
 If we do this now then the solution of the quadratic looks like:<br>
-$\frac{q}{m} \sqrt{\frac{k_e}{G}} = \frac{1}{c} \sqrt{\frac{G}{k_e}} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
-$\frac{q}{m} = \frac{1}{c} \frac{G}{k_e} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
+$\frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}} = \frac{1}{c} \sqrt{\frac{G}{k_e}} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
+$\frac{q}{m} = 4 \frac{1}{c} \frac{G}{k_e} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
 <br>
 
 Let's look at the magnitude of this for some real-world values.<br>
@@ -98,12 +99,12 @@ And $\frac{1}{A_5} A_\mu u^\mu = -7.165865159852 \cdot 10^{-13} + \frac{1}{c A_5
 Assume $u_\mu u^\mu = -1$.<br>
 $u^5 = -2 \frac{1}{A_5} A_\mu u^\mu = 1.4331730319704 \cdot 10^{-12} - \frac{1}{c A_5} \gamma \phi''_q$<br>
 
-Below in the geodesic equation, for the Lorentz force equation to arise we muse set $u^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
+Below in the geodesic equation, for the Lorentz force equation to arise we must set $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
 Let's insert this into the $u^5$ equation above and solve to find what $\phi''_q$ would be:<br>
-$\frac{1}{c A_5} \gamma \phi''_q = \frac{q}{m} \sqrt{\frac{k_e}{G}}$<br>
-$\phi''_q = c^2 \frac{q}{\gamma m} \frac{k_e}{G} = c^2 \frac{q}{m} \frac{k_e}{G} \sqrt{1 - \beta^2}$<br>
-For an electron this comes out to be $u^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}} = 2.0410525849546 \cdot 10^{21} = 6.118921713508 \cdot 10^{29} \frac{m}{s}$.<br>
-$\phi''_q = 2.1287683635025 \cdot 10^{48} \frac{kg \cdot m^2}{C \cdot s^2}$<br>
+$\frac{1}{c A_5} \gamma \phi''_q = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$<br>
+$\phi''_q = \frac{1}{4} c^2 \frac{q}{\gamma m} \frac{k_e}{G} = \frac{1}{4} c^2 \frac{q}{m} \frac{k_e}{G} \sqrt{1 - \beta^2}$<br>
+For an electron this comes out to be $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}} = 5.1026314623865 \cdot 10^{20} = 1.529730428377 \cdot 10^{29} \frac{m}{s}$.<br>
+$\phi''_q = 5.3219209087562 \cdot 10^{47} \frac{kg \cdot m^2}{C \cdot s^2}$<br>
 ...which is a few orders of magnitude higher than what contributes to the EM field.<br>
 <br>
 
@@ -114,8 +115,8 @@ then it looks like the 5th velocity is made up of two parts:<br>
 Also notice that this shows then the charge-mass ratio in the Lorentz force law will be influenced by the 3-velocity.<br>
 <br>
 
-Of course you can avoid the constraint that that charge-mass ratio is dependent on the 3-velocity if you just relax the constraint of $u_\mu u^\mu = -1$.
-Then, for constaint $u^5 = \frac{q}{m} \sqrt{\frac{k_e}{G}}$, any deviations in the electric potential $A_t$ could relate to deviations in the 4-vel-norm (or in deviations in the Kaluza field, which I am keeping constant in this worksheet).<br> 
+Of course you can avoid the constraint that that charge-mass ratio is dependent on the 3-velocity if you just relax the constraint of $u_\mu u^\mu = -1$.<br>
+Then, for constaint $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$, any deviations in the electric potential $A_t$ could relate to deviations in the 4-vel-norm (or in deviations in the Kaluza field, which I am keeping constant in this worksheet).<br> 
 <br>
 
 Let's look at $\delta u^5$ with respect to $\delta u^\mu$ in the constraint above:<br>
@@ -143,15 +144,14 @@ $ \frac{\delta u^5}{\delta (u_\mu u^\mu)} =
 	(A_\mu u^\mu)^2 - {\phi_K}^{-2} (u_\mu u^\mu + 1)
 }}
 $<br>
-...and if $A_5 = (\phi_K)^{-1}$...<br>
+...and if $A_5 = 2 (\phi_K)^{-1}$...<br>
 $ \frac{\delta u^5}{\delta (u_\mu u^\mu)} = 
 \mp \frac{
 	1
-}{2 \sqrt{
-	( \frac{1}{A_5} A_\mu u^\mu)^2 - u_\mu u^\mu - 1
+}{4 \sqrt{
+	4 (\frac{1}{A_5} A_\mu u^\mu)^2 - u_\mu u^\mu + 1
 }}
 $<br>
-<br>
 
 <br>
 <hr>
@@ -253,7 +253,7 @@ ${{ \dot{u}}^{\alpha}} = {{{{-1}} {{{ u}^{\beta}}} {{{ A}_5}} {{{ u}^5}} {{{{\ph
 <br>
 ${{ \dot{u}}^{\alpha}} = {{{{-1}} {{{ u}^{\beta}}} {{{ A}_5}} {{{ u}^5}} {{{{\phi_K}}^{2}}} {{{{ F}_{\beta}}^{\alpha}}}} + {{{-1}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\alpha}}_{\beta}}_{\gamma}}}} + {{{-1}} {{{ u}^{\beta}}} {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\alpha}}}}}$
 <br>
-Substitute	${{ u}^5} = {{{{\frac{1}{m}}{({q})}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$, ${{ A}_5} = {{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$, ${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}}$
+Substitute	${{ u}^5} = {{{{{\frac{1}{4}}} {{{\frac{1}{m}}{({q})}}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$, ${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$, ${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}}$
 <br>
 ${{ \dot{u}}^{\alpha}} = {{{{-4}} {{{ u}^{\beta}}} {{G}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\alpha}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{-1}} {{{ u}^{\beta}}} {{q}} {{{{ F}_{\beta}}^{\alpha}}} {{\frac{1}{c}}} {{\frac{1}{m}}}} + {{{-1}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\alpha}}_{\beta}}_{\gamma}}}}}$
 <br>
@@ -327,23 +327,23 @@ ${{ \dot{u}}^5} = {{{{{ {-{{{{ \tilde{\Gamma}}^5}_{\beta}}_{\gamma}}} {{{ u}^{\b
 <br>
 ${{ \dot{u}}^5} = {{{{{ u}^{\beta}}} {{{ u}^5}} {{{{\phi_K}}^{2}}} {{{ A}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}}} + {{{{ u}^{\beta}}} {{{ A}_{\mu}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\mu}}_{\beta}}_{\gamma}}} {{\frac{1}{{ A}_5}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\beta}}_{,\gamma}}} {{\frac{1}{{ A}_5}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\gamma}}_{,\beta}}} {{\frac{1}{{ A}_5}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{{\phi_K}}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\mu}}} {{\frac{1}{{ A}_5}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{{\phi_K}}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\gamma}}} {{{ u}^{\gamma}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{ A}_5}}}}}$
 <br>
-Substitute	${{ A}_5} = {{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
+Substitute	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
 <br>
-${{ \dot{u}}^5} = {{{{{ u}^{\beta}}} {{{ u}^5}} {{{{\phi_K}}^{2}}} {{{ A}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}}} + {{{{ u}^{\beta}}} {{{ A}_{\mu}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\mu}}_{\beta}}_{\gamma}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\beta}}_{,\gamma}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\gamma}}_{,\beta}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{{\phi_K}}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\mu}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{{\phi_K}}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\gamma}}} {{{ u}^{\gamma}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}}}$
+${{ \dot{u}}^5} = {{{{{ u}^{\beta}}} {{{ u}^5}} {{{{\phi_K}}^{2}}} {{{ A}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}}} + {{{{ u}^{\beta}}} {{{ A}_{\mu}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\mu}}_{\beta}}_{\gamma}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\beta}}_{,\gamma}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\gamma}}_{,\beta}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{{\phi_K}}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\mu}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{{\phi_K}}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\gamma}}} {{{ u}^{\gamma}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}}}$
 <br>
 Substitute	${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}}$
 <br>
-${{ \dot{u}}^5} = {{{{{ u}^{\beta}}} {{{ u}^5}} {{{({{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}})}^{2}}} {{{ A}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}}} + {{{{ u}^{\beta}}} {{{ A}_{\mu}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\mu}}_{\beta}}_{\gamma}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\beta}}_{,\gamma}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\gamma}}_{,\beta}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{({{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}})}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\mu}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{({{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}})}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\gamma}}} {{{ u}^{\gamma}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}}}$
+${{ \dot{u}}^5} = {{{{{ u}^{\beta}}} {{{ u}^5}} {{{({{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}})}^{2}}} {{{ A}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}}} + {{{{ u}^{\beta}}} {{{ A}_{\mu}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\mu}}_{\beta}}_{\gamma}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\beta}}_{,\gamma}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{ u}^{\gamma}}} {{{{ A}_{\gamma}}_{,\beta}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{({{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}})}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\mu}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}} + {{{\frac{1}{2}}} {{{ u}^{\beta}}} {{{({{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}})}^{2}}} {{{ A}_{\mu}}} {{{ A}_{\gamma}}} {{{ u}^{\gamma}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}}}}}$
 <br>
-${{ \dot{u}}^5} = {{{{8}} {{{ u}^{\beta}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{ A}_{\mu}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\mu}}} {{\frac{1}{{{k_e}}^{({{{3}} \cdot {{\frac{1}{2}}}})}}}} {{\frac{1}{{c}^{3}}}}} + {{{8}} {{{ u}^{\beta}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{ A}_{\mu}}} {{{ A}_{\gamma}}} {{{ u}^{\gamma}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{{k_e}}^{({{{3}} \cdot {{\frac{1}{2}}}})}}}} {{\frac{1}{{c}^{3}}}}} + {{{4}} {{{ u}^{\beta}}} {{G}} {{{ u}^5}} {{{ A}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{4}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ A}_{\mu}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\mu}}_{\beta}}_{\gamma}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}} + {{{-2}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ u}^{\gamma}}} {{{{ A}_{\beta}}_{,\gamma}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}} + {{{-2}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ u}^{\gamma}}} {{{{ A}_{\gamma}}_{,\beta}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}}}$
+${{ \dot{u}}^5} = {{{{2}} {{{ u}^{\beta}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{ A}_{\mu}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\mu}}} {{\frac{1}{{{k_e}}^{({{{3}} \cdot {{\frac{1}{2}}}})}}}} {{\frac{1}{{c}^{3}}}}} + {{{2}} {{{ u}^{\beta}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{ A}_{\mu}}} {{{ A}_{\gamma}}} {{{ u}^{\gamma}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{{k_e}}^{({{{3}} \cdot {{\frac{1}{2}}}})}}}} {{\frac{1}{{c}^{3}}}}} + {{{4}} {{{ u}^{\beta}}} {{G}} {{{ u}^5}} {{{ A}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ A}_{\mu}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\mu}}_{\beta}}_{\gamma}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ u}^{\gamma}}} {{{{ A}_{\beta}}_{,\gamma}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ u}^{\gamma}}} {{{{ A}_{\gamma}}_{,\beta}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}}}$
 <br>
-${{ \dot{u}}^5} = {{{{8}} {{{ u}^{\beta}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{ A}_{\mu}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\mu}}} {{\frac{1}{{{k_e}}^{({{{3}} \cdot {{\frac{1}{2}}}})}}}} {{\frac{1}{{c}^{3}}}}} + {{{8}} {{{ u}^{\beta}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{ A}_{\mu}}} {{{ A}_{\gamma}}} {{{ u}^{\gamma}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{{k_e}}^{({{{3}} \cdot {{\frac{1}{2}}}})}}}} {{\frac{1}{{c}^{3}}}}} + {{{4}} {{{ u}^{\beta}}} {{G}} {{{ u}^5}} {{{ A}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{4}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ A}_{\mu}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\mu}}_{\beta}}_{\gamma}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}} + {{{-2}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ u}^{\gamma}}} {{{{ A}_{\beta}}_{,\gamma}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}} + {{{-2}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ u}^{\gamma}}} {{{{ A}_{\gamma}}_{,\beta}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}}}$
+${{ \dot{u}}^5} = {{{{2}} {{{ u}^{\beta}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{ A}_{\mu}}} {{{ A}_{\beta}}} {{{ u}^{\gamma}}} {{{{ F}_{\gamma}}^{\mu}}} {{\frac{1}{{{k_e}}^{({{{3}} \cdot {{\frac{1}{2}}}})}}}} {{\frac{1}{{c}^{3}}}}} + {{{2}} {{{ u}^{\beta}}} {{{G}^{({{{3}} \cdot {{\frac{1}{2}}}})}}} {{{ A}_{\mu}}} {{{ A}_{\gamma}}} {{{ u}^{\gamma}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{{k_e}}^{({{{3}} \cdot {{\frac{1}{2}}}})}}}} {{\frac{1}{{c}^{3}}}}} + {{{4}} {{{ u}^{\beta}}} {{G}} {{{ u}^5}} {{{ A}_{\mu}}} {{{{ F}_{\beta}}^{\mu}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ A}_{\mu}}} {{{ u}^{\gamma}}} {{{{{ \Gamma}^{\mu}}_{\beta}}_{\gamma}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ u}^{\gamma}}} {{{{ A}_{\beta}}_{,\gamma}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ u}^{\beta}}} {{{G}^{({\frac{1}{2}})}}} {{{ u}^{\gamma}}} {{{{ A}_{\gamma}}_{,\beta}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}} {{\frac{1}{c}}}}}$
 <br>
 
 <br>
 $u^5$ for an electron,	${{m_e}} = {{{9.1093835611\cdot{10^{-31}}}} {{kg}}}$	,	${e} = {{{1.6021765654775\cdot{10^{-19}}}} {{C}}}$
 <br>
-so $\frac{q}{m} \sqrt{\frac{k_e}{G}} = $	${\left( 2.0410525849546\cdot{10^{21}}\right)}^=$	${{6.118921713508\cdot{10^{29}}}} {{m}} {{\frac{1}{s}}}$
+So	${{{{{{\frac{1}{4}}} {{{\frac{1}{m}}{({q})}}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}} = {5.1026314623865\cdot{10^{20}}}} = {{{1.529730428377\cdot{10^{29}}}} {{m}} {{\frac{1}{s}}}}$
 <br>
 
 <br>
@@ -413,13 +413,13 @@ Looking at the $\tilde{G}_{55}$ components:
 <br>
 ${{{{-1}} \cdot {{\frac{1}{2}}} {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{R}}} + {{{-3}} \cdot {{\frac{1}{8}}} {{{{\phi_K}}^{4}}} {{{{ A}_5}^{2}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}} = {{{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{4}}}}}$
 <br>
-Substitute	${{ A}_5} = {{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$, ${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}}$
+Substitute	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$, ${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}}$
 <br>
-${{{{-3}} \cdot {{\frac{1}{8}}} {{G}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{-1}} \cdot {{\frac{1}{8}}} {{R}}}} = {{{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{4}}}}}$
+${{{{-6}} {{G}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{-2}} {{R}}}} = {{{8}} {{\pi}} \cdot {{G}} {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{4}}}}}$
 <br>
-Isolating the Faraday tensor divergence:
+Isolating the scalar curvature:
 <br>
-${R} = {{{{-16}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{4}}}}} + {{{-3}} \cdot {{\frac{1}{4}}} {{G}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{R}}}}$
+${R} = {{{{-4}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_5}_5}} {{\frac{1}{{c}^{4}}}}} + {{{-3}} {{G}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{k_e}}}}}}$
 <br>
 It looks like $\tilde{T}_{55}$ provides the scalar curvature information ... with the exception of that extra term
 <br>
@@ -439,54 +439,54 @@ Isolating the Faraday tensor divergence:
 <br>
 ${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{{{ \tilde{T}}_{\alpha}}_5}} {{\frac{1}{{c}^{4}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
 <br>
-Assume	${{{ \tilde{T}}_{\alpha}}_5} = {{{{{{{{{\frac{1}{4}}} {{{c}^{2}}}}} {{\rho}}}} {{{ u}_5}}}} {{{ u}_{\alpha}}}}$
+Assume	${{{ \tilde{T}}_{\alpha}}_5} = {{{{{{{{c}^{2}}} {{\rho}}}} {{{ u}_5}}}} {{{ u}_{\alpha}}}}$
 <br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{4}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ u}_5}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ u}_5}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{\phi_K}}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
 <br>
 Substitute 	${{ u}_5} = {{{{{{{{{{\phi_K}}^{2}}} {{{ A}_{\beta}}}}} {{{ A}_5}}}} {{{ u}^{\beta}}}} + {{{{{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}}}} {{{ u}^5}}}}$
 <br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{4}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_5}} {{{ u}^5}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{4}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_5}} {{{ u}^5}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
 <br>
-Substitute	${{ u}^5} = {{{{\frac{1}{m}}{({q})}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
+Substitute	${{ u}^5} = {{{{{\frac{1}{4}}} {{{\frac{1}{m}}{({q})}}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
 <br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{4}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{4}} {{q}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_5}} {{{ u}_{\alpha}}} {{{G}^{({\frac{1}{2}})}}} {{{{k_e}}^{({\frac{1}{2}})}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{m}}}}}$
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}} + {{{4}} {{q}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_5}} {{{ u}_{\alpha}}} {{{G}^{({\frac{1}{2}})}}} {{{{k_e}}^{({\frac{1}{2}})}}} {{\frac{1}{{c}^{2}}}} {{\frac{1}{m}}}}}$
 <br>
-Substitute	${{ A}_5} = {{{{{\frac{1}{4}}} {{c}}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
+Substitute	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$
 <br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{4}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{q}} {{\pi}} \cdot {{{k_e}}} \cdot {{\rho}} \cdot {{{ u}_{\alpha}}} {{\frac{1}{c}}} {{\frac{1}{m}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{4}} {{q}} {{\pi}} \cdot {{{k_e}}} \cdot {{\rho}} \cdot {{{ u}_{\alpha}}} {{\frac{1}{c}}} {{\frac{1}{m}}}} + {{{3}} \cdot {{\frac{1}{4}}} {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}}}}$
 <br>
 Substitute	${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}}$
 <br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{3}} {{G}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{4}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{q}} {{\pi}} \cdot {{\rho}} \cdot {{{k_e}}} \cdot {{{ u}_{\alpha}}} {{\frac{1}{c}}} {{\frac{1}{m}}}}}$
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{3}} {{G}} {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{k_e}}}} {{\frac{1}{{c}^{2}}}}} + {{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{4}} {{q}} {{\pi}} \cdot {{\rho}} \cdot {{{k_e}}} \cdot {{{ u}_{\alpha}}} {{\frac{1}{c}}} {{\frac{1}{m}}}}}$
 <br>
 Substitute	${{k_e}} = {\frac{1}{{{{{4}} {{\pi}}}} {{{\epsilon_0}}}}}$	,	${{{{\mu_0}}} \cdot {{{\epsilon_0}}}} = {\frac{1}{{c}^{2}}}$	,	so 	${{k_e}} = {\frac{{{{\mu_0}}} \cdot {{{c}^{2}}}}{{{4}} {{\pi}}}}$
 <br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{12}} {{G}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{4}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{\frac{1}{4}}} {{q}} {{\rho}} \cdot {{c}} {{{\mu_0}}} \cdot {{{ u}_{\alpha}}} {{\frac{1}{m}}}}}$
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{12}} {{G}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{q}} {{\rho}} \cdot {{c}} {{{\mu_0}}} \cdot {{{ u}_{\alpha}}} {{\frac{1}{m}}}}}$
 <br>
 Let ${{ J}_{\alpha}} = {{{{{{{c}} {{{\frac{1}{m}}{({q})}}}}} {{\rho}}}} {{{ u}_{\alpha}}}}$
 <br>
-${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{12}} {{G}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{4}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{4}} {{{\mu_0}}} \cdot {{{ J}_{\alpha}}}} + {{{-15}} \cdot {{\frac{1}{4}}} {{q}} {{\rho}} \cdot {{c}} {{{\mu_0}}} \cdot {{{ u}_{\alpha}}} {{\frac{1}{m}}}}}$
+${{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} = {{{{12}} {{G}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{R}} {{{ A}_{\alpha}}}} + {{{{\mu_0}}} \cdot {{{ J}_{\alpha}}}}}$
 <br>
 Move all but current to the left side:
 <br>
-${{{{-12}} {{G}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{-4}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{-1}} {{R}} {{{ A}_{\alpha}}}} + {{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}} + {{{15}} \cdot {{\frac{1}{4}}} {{q}} {{\rho}} \cdot {{c}} {{{\mu_0}}} \cdot {{{ u}_{\alpha}}} {{\frac{1}{m}}}}} = {{{4}} {{{\mu_0}}} \cdot {{{ J}_{\alpha}}}}$
+${{{{-12}} {{G}} {{\pi}} \cdot {{{ A}_{\alpha}}} {{{{ F}_{\epsilon}}^{\zeta}}} {{{{ F}_{\zeta}}^{\epsilon}}} {{\frac{1}{{\mu_0}}}} {{\frac{1}{{c}^{4}}}}} + {{{-16}} {{G}} {{\pi}} \cdot {{\rho}} \cdot {{{ A}_{\beta}}} {{{ u}^{\beta}}} {{{ u}_{\alpha}}} {{\frac{1}{{c}^{2}}}}} + {{{-1}} {{R}} {{{ A}_{\alpha}}}} + {{{{ F}_{\alpha}}^{\epsilon}}_{;\epsilon}}} = {{{{\mu_0}}} \cdot {{{ J}_{\alpha}}}}$
 <br>
 Rewriting the right hand side as an operator
 <br>
 $
 	(	
-		3 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
-		+ \nabla^\nu \delta^\mu_\alpha 
+		12 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
+		+ \delta^\mu_\alpha \nabla^\nu
 	) F_{\mu\nu} 
 	- (
 		16 \frac{1}{c^2} \pi G \rho u_\alpha u^\beta 
 		+ R \delta^\beta_\alpha 
 	) A_\beta 
-	= 4 \mu_0 J_\alpha
+	= \mu_0 J_\alpha
 $<br>
 
-In matter this becomes...<br>
-$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = 4 \mu_0 J_\alpha$<br>
+In matter at macroscopic levels this becomes...<br>
+$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = \mu_0 J_\alpha$<br>
 
 ...for some sort of operator $\nabla (Z \cdot ...)$...
 
