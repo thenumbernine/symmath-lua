@@ -682,7 +682,7 @@ printbr()
 
 
 
-printbr('$u^5$ for an electron,', units.m_e_in_kg, ',', units.e_in_C)
+printbr('For an electron,', units.m_e_in_kg, ',', units.e_in_C)
 symmath.simplifyConstantPowers = true	-- TODO like maxima? :simplify{scopeVars}
 local elec_q_sqrt_ke_over_m_sqrt_G = u5U_def:rhs():subst(
 	q:eq(units.e_in_C:rhs()), 
@@ -691,7 +691,7 @@ local elec_q_sqrt_ke_over_m_sqrt_G = u5U_def:rhs():subst(
 	units.G_in_SI,
 	kg_in_C
 )()
-printbr('So', u5U_def:rhs():eq( elec_q_sqrt_ke_over_m_sqrt_G ):eq( betterSimplify(elec_q_sqrt_ke_over_m_sqrt_G * units.c_in_m_s:rhs()) ) )
+printbr('so', u5U_def:eq( elec_q_sqrt_ke_over_m_sqrt_G ):eq( betterSimplify(elec_q_sqrt_ke_over_m_sqrt_G * units.c_in_m_s:rhs()) ) )
 symmath.simplifyConstantPowers = false
 printbr()
 
@@ -797,6 +797,10 @@ Riemann5_def = Riemann5_def
 		F' _\\epsilon _\\gamma' + A' _\\epsilon _,\\gamma'
 	)()
 
+if not constantScalarField then
+	Riemann5_def = Riemann5_def:replace(phi_K' _,\\delta _,\\gamma', phi_K' _,\\gamma _,\\delta')()
+end
+
 Riemann5_def = Riemann5_def:symmetrizeIndexes(conn4, {2,3})()
 Riemann5_def = betterSimplify(Riemann5_def)
 printbr(R5'^a_bcd':eq(Riemann5_def))
@@ -890,7 +894,20 @@ Ricci5_def = betterSimplify(Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'})
 Ricci5_def = Ricci5_def
 	:replace(F' _\\gamma _\\beta' * F' _\\alpha ^\\gamma', -F' _\\beta _\\gamma' * F'_\\alpha ^\\gamma')
 	:replace(F' _\\gamma _\\alpha' * F' _\\beta ^\\gamma', -F' _\\alpha ^\\gamma' * F'_\\beta _\\gamma')
-	:simplify()
+Ricci5_def = betterSimplify(Ricci5_def)
+if not constantScalarField then
+	Ricci5_def = Ricci5_def
+		:replace(phi_K' ^,\\gamma _,\\gamma', phi_K' _;\\gamma ^;\\gamma' - phi_K' ^,\\gamma' * conn4' ^\\delta _\\delta _\\gamma')
+		:replace(phi_K' ^,\\gamma' * F' _\\gamma _\\beta', -phi_K' _,\\gamma' * F' _\\beta ^\\gamma')
+		:replace(phi_K' ^,\\gamma' * F' _\\gamma _\\alpha', -phi_K' _,\\gamma' * F' _\\alpha ^\\gamma')
+		:replace(phi_K' _,\\gamma _,\\beta' * A' ^\\gamma', A' _\\gamma' * phi_K' ^,\\gamma _,\\beta' + phi_K' ^,\\gamma' * A' _\\gamma _,\\beta' - phi_K' _,\\gamma' * A' ^\\gamma _,\\beta')
+	
+	Ricci5_def[1][1] = Ricci5_def[1][1]
+		:replace(phi_K' _,\\alpha _,\\beta', phi_K' _;\\alpha _;\\beta' + phi_K' _,\\gamma' * conn4' ^\\gamma _\\alpha _\\beta')
+		:replace(A' _\\gamma' * phi_K' ^,\\gamma', A' ^\\gamma' * phi_K' _,\\gamma')
+	
+	Ricci5_def = betterSimplify(Ricci5_def)
+end
 
 printbr(R5'_ab':eq(R5'^c_acb'))
 printbr()
@@ -912,6 +929,7 @@ Gaussian5_def = Gaussian5_def:replace( (F' _\\zeta _\\epsilon' * g' ^\\eta ^\\ep
 Gaussian5_def = Gaussian5_def:tidyIndexes()()
 Gaussian5_def = Gaussian5_def:reindex{[' \\alpha \\beta'] = ' \\mu \\nu'}	-- don't use alpha beta gamma delta, or anything already used in Ricci5_def ... in fact, add in an extra property for fixed indexes
 Gaussian5_def = Gaussian5_def:replace( F' _\\gamma _\\nu' * g' ^\\mu ^\\gamma', -F' _\\nu ^\\mu' )()
+Gaussian5_def = betterSimplify(Gaussian5_def)
 
 printbr(R5:eq(Gaussian5_def))
 printbr()
@@ -925,6 +943,17 @@ Einstein5_def = betterSimplify(Einstein5_def
 	:replace( F' _\\beta ^\\epsilon' * F' _\\epsilon _\\alpha',  -F' _\\beta _\\epsilon' * F' _\\alpha ^\\epsilon' )
 	:replace( F' _\\epsilon _\\beta', -F' _\\beta _\\epsilon')
 )
+if not constantScalarField then
+	Einstein5_def = Einstein5_def:replace(g' ^\\epsilon ^\\zeta' * phi_K' _;\\epsilon _;\\zeta', phi_K' _;\\epsilon ^;\\epsilon')
+	Einstein5_def = Einstein5_def:replace(A' _\\epsilon' * g' ^\\epsilon ^\\eta', A' ^\\eta')
+	Einstein5_def = betterSimplify(Einstein5_def)
+	Einstein5_def = Einstein5_def:tidyIndexes{fixed=' \\alpha \\beta'}()
+	Einstein5_def = betterSimplify(Einstein5_def)
+	Einstein5_def = Einstein5_def:replace(A' _\\gamma' * g' ^\\theta ^\\gamma', A' ^\\theta')
+	Einstein5_def = betterSimplify(Einstein5_def)
+	Einstein5_def = Einstein5_def:tidyIndexes{fixed=' \\alpha \\beta'}()
+	Einstein5_def = betterSimplify(Einstein5_def)
+end
 printbr(G5'_ab':eq(Einstein5_def))
 printbr()
 
@@ -1016,27 +1045,29 @@ printbr'Move all but current to the left side:'
 -- move all except mu_0 J to the other side
 EFE5_5_mu_def = betterSimplify( -EFE5_5_mu_def + EFE5_5_mu_def:lhs() + mu_0 * J' _\\alpha' ):switch()
 printbr(EFE5_5_mu_def)
-printbr'Rewriting the right hand side as an operator'
 
--- TODO make sure this is up to date manually, or use some operators here
-printbr[[
-$
-	(	
-		12 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
-		+ \delta^\mu_\alpha \nabla^\nu
-	) F_{\mu\nu} 
-	- (
-		16 \frac{1}{c^2} \pi G \rho u_\alpha u^\beta 
-		+ R \delta^\beta_\alpha 
-	) A_\beta 
-	= \mu_0 J_\alpha
-$<br>
+if not constantScalarField then
+	printbr'Rewriting the right hand side as an operator'
+	-- TODO make sure this is up to date manually, or use some operators here
+	printbr[[
+	$
+		(	
+			12 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
+			+ \delta^\mu_\alpha \nabla^\nu
+		) F_{\mu\nu} 
+		- (
+			16 \frac{1}{c^2} \pi G \rho u_\alpha u^\beta 
+			+ R \delta^\beta_\alpha 
+		) A_\beta 
+		= \mu_0 J_\alpha
+	$<br>
 
-In matter at macroscopic levels this becomes...<br>
-$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = \mu_0 J_\alpha$<br>
+	In matter at macroscopic levels this becomes...<br>
+	$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = \mu_0 J_\alpha$<br>
 
-...for some sort of operator $\nabla (Z \cdot ...)$...
-]]
+	...for some sort of operator $\nabla (Z \cdot ...)$...
+	]]
+end
 
 
 printbr()
