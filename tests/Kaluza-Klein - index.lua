@@ -205,7 +205,6 @@ printbr(unitVelEqn)
 --printbr(unitVelEqn)
 
 printbr[[
-TODO redo this for 1/4 u^5<br>
 
 Solve quadratic for $A_5 u^5$...<br>
 $ u^5 = \frac{1}{A_5} ( -A_\mu u^\mu \pm \sqrt{
@@ -1046,7 +1045,7 @@ printbr'Move all but current to the left side:'
 EFE5_5_mu_def = betterSimplify( -EFE5_5_mu_def + EFE5_5_mu_def:lhs() + mu_0 * J' _\\alpha' ):switch()
 printbr(EFE5_5_mu_def)
 
-if not constantScalarField then
+if constantScalarField then
 	printbr'Rewriting the right hand side as an operator'
 	-- TODO make sure this is up to date manually, or use some operators here
 	printbr[[
