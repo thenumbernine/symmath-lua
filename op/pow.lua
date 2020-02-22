@@ -20,6 +20,26 @@ function pow:evaluateDerivative(deriv, ...)
 	local log = require 'symmath.log'
 	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
+
+-- [[
+	-- shorthand ...
+	local Constant = require 'symmath.Constant'
+	if Constant.is(b) then
+		if Constant.is(a) then
+			-- a & b are constant ... a^b is constant ... d/dx (a^b) = 0
+			return Constant(0)
+		end
+	
+		-- b is constant, a is not ... d/dx (a^b) = b a^(b-1) * d/dx(a)
+		return b * a ^ Constant(b.value-1) * deriv(a, ...)
+	elseif Constant.is(a) then
+		-- a is constant, b is not
+		-- d/dx a^b = d/dx exp(b log(a)) = log(a) d/dx(b) exp(b log(a)) = a^b log(a) d/dx(b)
+		return a ^ b * log(a) * deriv(b, ...)
+	end
+--]]
+
+	-- neither a nor b is constant
 	return a ^ b * (deriv(b, ...) * log(a) + deriv(a, ...) * b / a)
 end
 
@@ -71,8 +91,10 @@ pow.rules = {
 			-- not simplifying ...
 			-- maybe this should go in factor() or expand()
 			if div.is(expr[1]) then
-				return expand:apply(expr[1][1]:clone() ^ expr[2]:clone() 
-					/ expr[1][2]:clone() ^ expr[2]:clone())
+				local num = expr[1][1]:clone() ^ expr[2]:clone()
+				local denom = expr[1][2]:clone() ^ expr[2]:clone()
+				local repl = num / denom
+				return expand:apply(repl)
 			end
 
 			-- a^n => a*a*...*a,  n times, only for integer 2 <= n < 10
@@ -82,9 +104,16 @@ pow.rules = {
 			and expr[2].value >= 2
 			and expr[2].value < 10
 			then
-				return expand:apply(mul(range(expr[2].value):map(function(i)
+				local symmath = require 'symmath'
+				if symmath.simplifyConstantPowers 
+				and Constant.is(expr[1])
+				then
+					return Constant(expr[1].value ^ expr[2].value)
+				end
+				local new = setmetatable(range(expr[2].value):mapi(function(i)
 					return expr[1]:clone()
-				end):unpack()))
+				end), mul)
+				return expand:apply(new)
 			end
 			--]]	
 		end},

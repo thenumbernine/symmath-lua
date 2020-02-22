@@ -64,7 +64,8 @@ Derivative.rules = {
 			end
 		end},
 
---[[ This is the same as Variable:evaluateDerivative
+-- [[ This is the same as Variable:evaluateDerivative
+-- however enabling Variable.evaluateDerivative and commenting this returns (x^2):diff(x)() == 0
 		-- dx/dx = 1
 		{self = function(prune, expr)
 			local Constant = require 'symmath.Constant'

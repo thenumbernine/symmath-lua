@@ -29,7 +29,7 @@ function Variable:applyDiff(x)
 	return x:diff(self)
 end
 
--- [[ this is the same as Derivative.visitors.Prune.self
+--[[ this is the same as Derivative.visitors.Prune.self
 -- either is interoperable (right?)
 -- (TODO double check this with the non-coordinate derivatives that are used to create commutation coefficients)
 function Variable:evaluateDerivative(deriv, ...)

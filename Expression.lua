@@ -203,7 +203,9 @@ Expression.simplify = require 'symmath.simplify'
 Expression.polyCoeffs = function(...) return require 'symmath.polyCoeffs'(...) end
 Expression.eval = function(...) return require 'symmath.eval'(...) end
 Expression.compile = function(...) return require 'symmath'.compile(...) end
+
 function Expression:diff(...) 
+-- [=[
 	local Constant = require 'symmath.Constant'
 	
 	-- TODO double diff() as differential when no variables are used?
@@ -236,9 +238,10 @@ function Expression:diff(...)
 		return Constant(0)
 	end
 	--]]
-
+--]=]
 	return require 'symmath.Derivative'(self, ...) 
 end
+
 Expression.integrate = function(...) return require 'symmath'.Integral(...) end
 Expression.taylor = function(...) return require 'symmath'.taylor(...) end
 
