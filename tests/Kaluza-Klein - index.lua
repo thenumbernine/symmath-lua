@@ -1,7 +1,21 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{MathJax={title='Kaluza-Klein - index notation'}}
-
+require 'symmath'.setup()
+local MathJax = symmath.export.MathJax
+symmath.tostring = MathJax 
+local printbr = MathJax.print
+MathJax.header.title = 'Kaluza-Klein - index notation'
+print(
+	(tostring(MathJax.header):gsub(
+		'</head>',
+		[[<script type='text/javascript' src='template.js'/></script>
+		<script type='text/javascript'>
+Template.prototype.openstring = '{=={';		
+Template.prototype.closestring = '}==}';		
+		</script>
+	</head>
+]]):gsub('<body ', '<body templated ')
+))
 -- this sets simplifyConstantPowers 
 local units = require 'symmath.physics.units'()
 
@@ -137,13 +151,26 @@ Tensor.defaultSymbols = greekSymbols
 
 
 
+local mass = var'M'
+local q = var'q'
+
+local u = var'u'
+local u5U_def = u'^5':eq( frac(1,4) * frac(q, mass) * sqrt(frac(k_e, G)) )
+
 local A = var'A'
+local A5_def = A'_5':eq(c * sqrt(frac(k_e, G)))
+
+local phi_K = var'\\phi_K'
+local phi_K_def = phi_K:eq( 2 / c * sqrt(frac(G, k_e)) )
+
+
+
+
 printbr(A'_u', '= electromagnetic four-potential, in units', (kg*m)/(C*s))
 printbr('$A_5$ is constant in natural units, but to cancel the units of $\\phi_K$ it is in units of', (kg*m)/(C*s),
 	'so $A_5$ is proportional to $c \\sqrt{\\frac{k_e}{G}} = $', (units.c_in_m_s:rhs() * sqrt(units.k_e_in_SI_and_C:rhs() / units.G_in_SI:rhs()))():factorDivision() )
 printbr()
 
-local phi_K = var'\\phi_K'
 printbr(phi_K, '= scalar field, in units', (C*s)/(kg*m))
 printbr()
 
@@ -175,12 +202,35 @@ local g5_def = Tensor('_ab',
 printbr(g5'_ab':eq(g5_def))
 printbr()
 
+
 printbr'<hr>'
+
+printbr[[What is $u_5$ in terms of $u^5$?]]
+
+--[[
+u^5 = whatever
+so what is u_5?
+u_5 = g_5a u^a = g_5u u^u + g_55 u^5
+u_5 = phi_K^2 A_5 A_a u^a + phi_K^2 A_5^2 u^5
+u^5 = (u_5 - phi_K^2 A_5 A_a u^a) / (phi_K^2 A_5^2)
+u^5 = phi_K^-2 A_5^-2 u_5 - A_5^-1 A_a u^a
+--]]
+local u5L_def = u'_5':eq(g5'_5a' * u'^a')
+printbr(u5L_def)
+-- split
+local u5L_def = u'_5':eq(g5' _5 _\\beta' * u' ^\\beta' + g5'_55' * u'^5')
+printbr(u5L_def)
+printbr('substitute definition of '..g5'_ab')
+local u5L_def = u'_5':eq(g5_def[2][1] * u' ^\\beta' + g5_def[2][2] * u'^5')
+printbr(u5L_def)
+
+printbr()
+printbr'<hr>'
+
 
 
 -- I should put this in its own worksheet ...
 printbr'What if we require a unit 5-velocity?'
-local u = var'u'
 
 local unitVelEqn = (g5'_ab' * u'^a' * u'^b'):eq(-1)()
 printbr(unitVelEqn)
@@ -204,48 +254,75 @@ printbr(unitVelEqn)
 --unitVelEqn = unitVelEqn:replace( (g' _\\alpha _\\beta' * u' ^\\alpha' * u' ^\\beta')(), -1)()
 --printbr(unitVelEqn)
 
+printbr('Solve quadratic for', A'_5' * u'^5', '...')
+
+local plusminus = class(require 'symmath.op.sub', {name='\\pm'})
+plusminus.rules = nil
+local u5_for_A5_def = u'^5':eq(
+	frac(1,A'_5') * (
+		plusminus(
+			-A' _\\mu' * u' ^\\mu',
+			sqrt(
+				(A' _\\mu' * u' ^\\mu')^2 - phi_K^-2 * (u' _\\mu' * u' ^\\mu' + 1)
+			)
+		)
+	)
+)
+printbr(u5_for_A5_def)
+printbr()
+
+printbr('On a side note, later for the Lorentz force to arise we are going to set', u5U_def)
+printbr'If we do this now then the solution of the quadratic looks like:'
+u5_for_A5_def = u5_for_A5_def:subst(u5U_def)
+printbr(u5_for_A5_def)
+u5_for_A5_def = betterSimplify(u5_for_A5_def * 4 * sqrt(frac(G, k_e)))
+printbr(u5_for_A5_def)
+printbr()
+
+printbr[[Let's look at the magnitude of this for some real-world values.]]
+printbr[[Electrons in a copper wire (from my 'magnetic field from a boosted charge' worksheet).]]
+printbr[[$G = $<input name='gravitational_constant_in_m3_per_kg_s2' value='6.67384e-11'/> $\cdot \frac{m^3}{kg \cdot s^2}$ = gravitational constant.]]
+printbr[[$c = $<input name='speed_of_light_in_m_per_s' value='299792458'/> $\cdot \frac{m}{s} =$ the speed of light.]]
+printbr[[$k_e = $<input name='Coulomb_constant_in_kg_m3_per_C2_s2' value='8.9875517873682e+9'/> $\cdot \frac{N \cdot m^2}{C^2}$ = Coulomb's constant (typically $\frac{1}{4 \pi \epsilon_0}$).]]
+printbr[[$N_A = $<input name='Avogadro_constant_in_1_per_mol' value='6.02214085774e+23'/> $\cdot \frac{1}{mol}$ = Avogadro's constant.]]
+printbr[[$m_a =$ <input name='atomic_mass_in_g' value='63.54'/> $\frac{g}{mol} =$ atomic mass.]]
+printbr[[$n_v =$ <input name='material_nominal_valency' value='1'/> nominal valency.]]
+printbr[[$\rho =$ <input name='material_density_in_g_per_cm3' value='8.95'/> $\frac{g}{cm^3} =$ {=={material_density_in_kg_per_m3 = material_density_in_g_per_cm3 * 1e+3}==} $\frac{kg}{m^3} = $ matter density.]]
+printbr[[(atomic mass) {=={atomic_mass_in_kg = 1e-3 * atomic_mass_in_g}==} kg = (Avogadro's constant) {=={Avogadro_constant_in_1_per_mol}==} atoms = (Avogadro's constant * nominal valency) {=={Avogadro_constant_in_1_per_mol * material_nominal_valency}==} electrons.]]
+printbr[[$n_e = \frac{N_A \cdot n_v}{m_a} = $ Avogadro's constant * nominal valency / atomic mass = {=={free_electrons_per_kg = Avogadro_constant_in_1_per_mol * material_nominal_valency / atomic_mass_in_kg}==} $\frac{e}{kg} = $ free electrons per kg.]]
+printbr[[$e =$ <input name='electron_charge_in_C' value='1.602176620898e-19'/> $\cdot C$ = electron charge]]
+printbr[[$m_e =$ <input name='electron_mass_in_kg' value='9.10938188e-31'/> $\cdot kg$ = electron mass]]
+printbr[[$\rho_{charge} = n_e \cdot \rho = $ free electrons per kg * matter density = {=={electron_density_in_e_per_m3 = free_electrons_per_kg * material_density_in_kg_per_m3}==} $\frac{e}{m^3}$ = electron density.]]
+printbr[[$R =$ <input name='wire_radius_in_mm' value='1.3'/> $mm =$ {=={wire_radius_in_m = wire_radius_in_mm * 1e-3}==} $m =$ wire radius.]]
+printbr[[$r = \sqrt{y^2 + z^2} =$ <input name='field_measure_distance_in_m' value='.1'/> $m = $ distance of measurement from the wire along the x-axis.]]
+printbr[[$A = \pi R^2 =$ {=={wire_cross_section_area_in_m2 = Math.PI * wire_radius_in_m * wire_radius_in_m}==} $m^2 =$ wire cross-section area]]
+printbr[[$I =$ <input name='current_in_A' value='1.89'/> $A =$ current in wire.]]
+printbr[[$q = \rho_{charge} \cdot e =$ {=={charge_density_in_C_per_m3 = electron_density_in_e_per_m3 * electron_charge_in_C}==} $\frac{C}{m^3} = $ charge density.]]
+printbr[[$\lambda = A q = \pi R^2 \rho_{charge} e =$ {=={charge_per_unit_length_in_C_per_m = charge_density_in_C_per_m3 * wire_cross_section_area_in_m2}==} $\frac{C}{m}$ = charge density per unit meter along wire]]
+printbr[[$v = \frac{I}{\lambda} =$ {=={mean_electron_velocity_in_m_per_s = current_in_A / (wire_cross_section_area_in_m2 * charge_density_in_C_per_m3)}==} $\frac{C}{m} =$ charge density per unit meter along wire.]]
+printbr[[$\beta = \frac{v}{c} =$ {=={Lorentz_beta = mean_electron_velocity_in_m_per_s / speed_of_light_in_m_per_s}==} = unitless, spatial component of 4-velocity.]]
+printbr[[$\gamma = 1 / \sqrt{1 - \beta^2} \approx$ {=={Lorentz_gamma = 1 / (1 - Math.pow(Lorentz_beta, .5))}==} = Lorentz factor.]]
+printbr[[$E = \frac{1}{2} \lambda k_e \frac{1}{r} = \frac{1}{2} \pi R^2 \rho_{charge} e k_e \frac{1}{r} =$ {=={electric_field_in_kg_m2_per_C_s2 = charge_per_unit_length_in_C_per_m * .5 * Coulomb_constant_in_kg_m3_per_C2_s2 / field_measure_distance_in_m}==} $\cdot \frac{1}{r} \cdot \frac{kg \cdot m}{C \cdot s^2}$ = electric field magnitude.]]
+printbr[[$B = \frac{1}{c} \beta \gamma E = $ {=={magnetic_field_in_kg_m_per_C_s = Lorentz_beta * Lorentz_gamma * (electric_field_in_kg_m2_per_C_s2 / speed_of_light_in_m_per_s) }==} $\frac{kg}{C \cdot s} =$ magnetic field magnitude.]]
+printbr[[$u^0 = \gamma, u^1 = \beta \gamma, u^2 = u^3 = 0$ = our 4-velocity components, such that $\eta_{\mu\nu} u^\mu u^\nu = -1$.]]
+printbr[[$A_5 = c \sqrt{\frac{k_e}{G}} =$ {=={ A5L = speed_of_light_in_m_per_s * Math.sqrt(Coulomb_constant_in_kg_m3_per_C2_s2 / gravitational_constant_in_m3_per_kg_s2) }==} $\frac{kg \cdot m}{C \cdot s} =$ fifth component of electromagnetic potential, as stated above.]]
+printbr[[$\phi_q = \frac{1}{2} \lambda k_e ln ( \frac{r}{r_0} ) =$ electric potential ... but what is $r_0$?  The EM potential has a constant which does not influence 4D or 3D EM, but will influence 5D EM.]]
+printbr[[Let's look at the potential with and without the constant: $\phi_q = \phi'_q + \phi''_q$.]]
+printbr[[$\phi'_q = \frac{1}{2} \lambda k_e ln(r) =$ {=={ electric_potential_in_kg_m2_per_C_s2 = .5 * charge_density_in_C_per_m3 * Coulomb_constant_in_kg_m3_per_C2_s2 * Math.log(field_measure_distance_in_m) }==} $\frac{kg \cdot m^2}{C \cdot s^2}$.]]
+printbr[[$\phi''_q = \frac{1}{2} \lambda k_e ln(r_0) = $ arbitrary.]]
+printbr[[$A_i = 0 = $ magnetic vector potential.]]
+printbr[[So $A_\mu u^\mu = A_0 u^0 = \frac{1}{c} \phi_q \gamma = $ {=={ A_dot_u = electric_potential_in_kg_m2_per_C_s2 / speed_of_light_in_m_per_s * Lorentz_gamma }==} $ \frac{kg \cdot m}{C \cdot s} + \frac{1}{c} \phi''_q \gamma$.]]
+printbr[[And $\frac{1}{A_5} A_\mu u^\mu = $ {=={ A_dot_u_over_A5L = A_dot_u / A5L }==} $ + \frac{1}{c A_5} \phi''_q \gamma$]]
+printbr()
+printbr[[Assume $u_\mu u^\mu = -1$.]]
+printbr[[$u^5 = -2 \frac{1}{A_5} A_\mu u^\mu = $ {=={ -2 * A_dot_u_over_A5L }==} $ - \frac{1}{c A_5} \gamma \phi''_q$]]
+printbr[[Let's insert this into the $u^5$ equation above and solve to find what $\phi''_q$ would be:]]
+-- TODO keep converting
 printbr[[
-
-Solve quadratic for $A_5 u^5$...<br>
-$ u^5 = \frac{1}{A_5} ( -A_\mu u^\mu \pm \sqrt{
-	(A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1)
-} )$<br>
-<br>
-
-On a side note, later we are going to set $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
-If we do this now then the solution of the quadratic looks like:<br>
-$\frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}} = \frac{1}{c} \sqrt{\frac{G}{k_e}} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
-$\frac{q}{m} = 4 \frac{1}{c} \frac{G}{k_e} ( -A_\mu u^\mu \pm \sqrt{ (A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1) } )$<br>
-<br>
-
-Let's look at the magnitude of this for some real-world values.<br>
-Electrons in a copper wire (from my 'magnetic field from a boosted charge' worksheet).<br>
-$I = 1.89 A =$ current in wire.<br>
-$\lambda = 7223 \frac{C}{m} =$ charge density per unit meter in wire.<br>
-$v = \frac{I}{\lambda} = 2.625 \cdot 10^{-5} \frac{m}{s} =$ mean velocity of electrons in wire.<br>
-$\beta = \frac{v}{c} = 8.756735364191964 \cdot 10^{-14} = $ unitless, spatial component of 4-velocity.<br>
-$\gamma = 1 / \sqrt{1 - \beta^2} = 1 + 2.959179033 \cdot 10^{-7} = $ Lorentz factor.<br>
-$u^0 = \gamma, u^1 = \beta \gamma, u^2 = u^3 = 0$ = our 4-velocity components, such that $\eta_{\mu\nu} u^\mu u^\nu = -1$.<br>
-$r = 0.1 m = $ distance from the wire we are measuring fields.<br>
-$A_5 = c \sqrt{\frac{k_e}{G}} = 3.4789926447386 \cdot 10^{18} \frac{kg \cdot m}{C \cdot s} =$ fifth component of electromagnetic potential, as stated above.<br>
-$\phi_q = \frac{1}{2} \lambda k_e ln ( \frac{r}{r_0} ) =$ electric potential ... but what is $r_0$?  The EM potential has a constant which does not influence 4D or 3D EM, but will influence 5D EM.<br>
-Let's look at the potential with and without the constant: $\phi_q = \phi'_q + \phi''_q$.<br>
-$\phi'_q = \frac{1}{2} \lambda k_e ln(r) = -7.47382142321859 \cdot 10^{14} \frac{kg \cdot m^2}{C \cdot s^2}$.<br>
-$\phi''_q = \frac{1}{2} \lambda k_e ln(r_0) = $ arbitrary.<br>
-$A_i = 0 = $ magnetic vector potential.<br>
-So $A_\mu u^\mu = A_0 u^0 = \frac{1}{c} \phi_q \gamma = -2492999.2 \frac{kg \cdot m}{C \cdot s} + \frac{1}{c} \phi''_q \gamma$.<br>
-And $\frac{1}{A_5} A_\mu u^\mu = -7.165865159852 \cdot 10^{-13} + \frac{1}{c A_5} \phi''_q \gamma$<br>
-<br>
-
-Assume $u_\mu u^\mu = -1$.<br>
-$u^5 = -2 \frac{1}{A_5} A_\mu u^\mu = 1.4331730319704 \cdot 10^{-12} - \frac{1}{c A_5} \gamma \phi''_q$<br>
-
-Below in the geodesic equation, for the Lorentz force equation to arise we must set $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$.<br>
-Let's insert this into the $u^5$ equation above and solve to find what $\phi''_q$ would be:<br>
-$\frac{1}{c A_5} \gamma \phi''_q = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$<br>
-$\phi''_q = \frac{1}{4} c^2 \frac{q}{\gamma m} \frac{k_e}{G} = \frac{1}{4} c^2 \frac{q}{m} \frac{k_e}{G} \sqrt{1 - \beta^2}$<br>
-For an electron this comes out to be $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}} = 5.1026314623865 \cdot 10^{20} = 1.529730428377 \cdot 10^{29} \frac{m}{s}$.<br>
-$\phi''_q = 5.3219209087562 \cdot 10^{47} \frac{kg \cdot m^2}{C \cdot s^2}$<br>
+$\frac{1}{c A_5} \gamma \phi''_q = \frac{1}{4} \frac{q}{M} \sqrt{\frac{k_e}{G}}$<br>
+$\phi''_q = \frac{1}{4} c^2 \frac{q}{\gamma m} \frac{k_e}{G} = \frac{1}{4} c^2 \frac{q}{M} \frac{k_e}{G} \sqrt{1 - \beta^2}$<br>
+For an electron this comes out to be $u^5 = \frac{1}{4} \frac{q}{M} \sqrt{\frac{k_e}{G}} =$ {=={ u5U = .5 * electron_charge_in_C / electron_mass_in_kg * Math.sqrt(Coulomb_constant_in_kg_m3_per_C2_s2 / gravitational_constant_in_m3_per_kg_s2) }==} = {=={ u5U * speed_of_light_in_m_per_s }==} $\frac{m}{s}$.<br>
+$\phi''_q =$ {=={ u5U * speed_of_light_in_m_per_s * A5L / Lorentz_gamma }==} $\frac{kg \cdot m^2}{C \cdot s^2}$<br>
 ...which is a few orders of magnitude higher than what contributes to the EM field.<br>
 <br>
 
@@ -257,7 +334,7 @@ Also notice that this shows then the charge-mass ratio in the Lorentz force law 
 <br>
 
 Of course you can avoid the constraint that that charge-mass ratio is dependent on the 3-velocity if you just relax the constraint of $u_\mu u^\mu = -1$.<br>
-Then, for constaint $u^5 = \frac{1}{4} \frac{q}{m} \sqrt{\frac{k_e}{G}}$, any deviations in the electric potential $A_t$ could relate to deviations in the 4-vel-norm (or in deviations in the Kaluza field, which I am keeping constant in this worksheet).<br> 
+Then, for constaint $u^5 = \frac{1}{4} \frac{q}{M} \sqrt{\frac{k_e}{G}}$, any deviations in the electric potential $A_t$ could relate to deviations in the 4-vel-norm (or in deviations in the Kaluza field, which I am keeping constant in this worksheet).<br> 
 <br>
 
 Let's look at $\delta u^5$ with respect to $\delta u^\mu$ in the constraint above:<br>
@@ -298,28 +375,6 @@ $<br>
 <hr>
 ]]
 printbr()
-
-printbr[[What is $u_5$ in terms of $u^5$?]]
-
---[[
-u^5 = whatever
-so what is u_5?
-u_5 = g_5a u^a = g_5u u^u + g_55 u^5
-u_5 = phi_K^2 A_5 A_a u^a + phi_K^2 A_5^2 u^5
-u^5 = (u_5 - phi_K^2 A_5 A_a u^a) / (phi_K^2 A_5^2)
-u^5 = phi_K^-2 A_5^-2 u_5 - A_5^-1 A_a u^a
---]]
-local u5L_def = u'_5':eq(g5'_5a' * u'^a')
-printbr(u5L_def)
--- split
-local u5L_def = u'_5':eq(g5' _5 _\\beta' * u' ^\\beta' + g5'_55' * u'^5')
-printbr(u5L_def)
-printbr('substitute definition of '..g5'_ab')
-local u5L_def = u'_5':eq(g5_def[2][1] * u' ^\\beta' + g5_def[2][2] * u'^5')
-printbr(u5L_def)
-
-printbr()
-printbr'<hr>'
 
 
 printbr(g5'^uv', '= 5D metric inverse')
@@ -543,14 +598,6 @@ spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
 ))
 printbr(spacetimeGeodesic_def)
 
-local mass = var'M'
-local q = var'q'
-
-local u5U_def = u'^5':eq( frac(1,4) * frac(q, m) * sqrt(frac(k_e, G)) )
-local A5_def = A'_5':eq(c * sqrt(frac(k_e, G)))
-local phi_K_def = phi_K:eq( 
-	2 / c * sqrt(frac(G, k_e))
-)
 
 local substitutions = table{u5U_def, A5_def}
 if constantScalarField then
@@ -590,15 +637,20 @@ spatialGeodesic_def = spatialGeodesic_def
 	:replace(conn4'^i_jk', 0)
 
 local E = var'E'
-local epsilon = var'\\epsilon'
+local epsilon = var'\\epsilon'	-- Levi-Civita
 local B = var'B'
 
-printbr('Assume', F'_0^i':eq(-frac(1,c) * E'^i'))
-printbr('Assume', F'_i^j':eq(epsilon'_i^jk' * B'_k'))
+local F00LU_def = F'_0^0':eq(0)
+local EL_from_F = F'_i^0':eq(-frac(1,c) * E'_i')
+local EU_from_F = F'_0^i':eq(-frac(1,c) * E'^i')
+local B_from_F = F'_i^j':eq(epsilon'_i^jk' * B'_k')
+
+printbr'Low-velocity Faraday tensor:'
+printbr('Assume', EU_from_F, ',', B_from_F)
 spatialGeodesic_def = spatialGeodesic_def
-	:replace(F'_0^i', -frac(1,c) * E'^i')
-	:replace(F'_j^i', epsilon'^i_jl' * B'^l')
-	:replace(F'_k^i', epsilon'^i_kl' * B'^l')
+	:subst(EU_from_F)
+	:subst(B_from_F:reindex{ijk='jil'})
+	:subst(B_from_F:reindex{ijk='kil'})
 
 spatialGeodesic_def = betterSimplify(spatialGeodesic_def)
 printbr(spatialGeodesic_def)
@@ -628,15 +680,13 @@ timeGeodesic_def = timeGeodesic_def:replace(u'^0', 1)():factorDivision()
 printbr(timeGeodesic_def)
 
 printbr('Assume spacetime connection is only', conn4'^i_00')
-timeGeodesic_def = timeGeodesic_def
-	:replaceIndex(conn4'^0_jk', 0)
+timeGeodesic_def = timeGeodesic_def:replaceIndex(conn4'^0_jk', 0)
 
-printbr('Assume', F'_0^i':eq(-frac(1,c) * E'^i'))
-printbr('Assume', F'_i^j':eq(epsilon'_i^jk' * B'_k'))
+printbr('Assume', EL_from_F, ',', F00LU_def)
 timeGeodesic_def = timeGeodesic_def
-	:replace(F'_0^0', 0)
-	:replace(F'_j^0', -frac(1,c) * E'_j')
-	:replace(F'_k^0', -frac(1,c) * E'_k')
+	:subst(F00LU_def)
+	:subst(EL_from_F:reindex{i='j'})
+	:subst(EL_from_F:reindex{i='k'})
 
 printbr('Substitute', A'_0':eq(frac(1,c) * phi_q), 'is the electric field potential')
 spatialGeodesic_def = betterSimplify(spatialGeodesic_def:replace(A'_0', frac(1,c) * phi_q))
@@ -685,7 +735,7 @@ printbr('For an electron,', units.m_e_in_kg, ',', units.e_in_C)
 symmath.simplifyConstantPowers = true	-- TODO like maxima? :simplify{scopeVars}
 local elec_q_sqrt_ke_over_m_sqrt_G = u5U_def:rhs():subst(
 	q:eq(units.e_in_C:rhs()), 
-	m:eq(units.m_e_in_kg:rhs()), 
+	mass:eq(units.m_e_in_kg:rhs()), 
 	units.k_e_in_SI_and_C,
 	units.G_in_SI,
 	kg_in_C
@@ -696,7 +746,6 @@ printbr()
 
 
 printbr'<hr>'
-
 
 printbr'connection partial:'
 local dconn5_2x2x2_def = Tensor('^a_bc', function(a,b,c)
@@ -999,8 +1048,11 @@ printbr('Substitute', substitutions:mapi(tostring):concat', ')
 local R_from_EFE5_wrt_mu0 = betterSimplify(R_from_EFE5:subst(substitutions:unpack()))
 printbr(R_from_EFE5_wrt_mu0)
 printbr[[It looks like $\tilde{T}_{55}$ provides the scalar curvature information ... with the exception of that extra term]]
---[[
 printbr'What is the magnitude of that extra term?'
+-- F_α^β F_β^α = F_0^0 F_0^0 + F_0^i F_i^0 + F_i^0 F_0^i + F_i^j F_j^i
+-- = 2/c^2 E_k E^k - 2 B_k B^k
+-- so 1/μ_0 (F_α^β F_β^α) = 2 (ε_0 E^2 - 1/μ_0 B^2)
+--[[
 local lastCoeff = frac(3,4) * frac(G, k_e * c^2)
 symmath.simplifyConstantPowers = true
 printbr(lastCoeff:eq(
@@ -1043,7 +1095,7 @@ printbr('Substitute', substitutions:mapi(tostring):concat', ')
 local divF_from_EFE5_5_mu_J = betterSimplify(divF_from_EFE5_5_mu:subst(substitutions:unpack()))
 printbr(divF_from_EFE5_5_mu_J)
 local J = var'J'
-local fourCurrentDef = J' _\\alpha':eq( c * frac(q,m) * rho * u' _\\alpha' )
+local fourCurrentDef = J' _\\alpha':eq( c * frac(q,mass) * rho * u' _\\alpha' )
 printbr('Define our four-current as', fourCurrentDef)
 divF_from_EFE5_5_mu_J = betterSimplify(divF_from_EFE5_5_mu_J:lhs():eq(divF_from_EFE5_5_mu_J:rhs() - mu_0 * fourCurrentDef:rhs() + mu_0 * fourCurrentDef:lhs()))
 printbr(divF_from_EFE5_5_mu_J)
