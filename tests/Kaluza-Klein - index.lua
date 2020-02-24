@@ -309,14 +309,14 @@ u_5 = phi_K^2 A_5 A_a u^a + phi_K^2 A_5^2 u^5
 u^5 = (u_5 - phi_K^2 A_5 A_a u^a) / (phi_K^2 A_5^2)
 u^5 = phi_K^-2 A_5^-2 u_5 - A_5^-1 A_a u^a
 --]]
-local u5_l_def = u'_5':eq(g5'_5a' * u'^a')
-printbr(u5_l_def)
+local u5L_def = u'_5':eq(g5'_5a' * u'^a')
+printbr(u5L_def)
 -- split
-local u5_l_def = u'_5':eq(g5' _5 _\\beta' * u' ^\\beta' + g5'_55' * u'^5')
-printbr(u5_l_def)
+local u5L_def = u'_5':eq(g5' _5 _\\beta' * u' ^\\beta' + g5'_55' * u'^5')
+printbr(u5L_def)
 printbr('substitute definition of '..g5'_ab')
-local u5_l_def = u'_5':eq(g5_def[2][1] * u' ^\\beta' + g5_def[2][2] * u'^5')
-printbr(u5_l_def)
+local u5L_def = u'_5':eq(g5_def[2][1] * u' ^\\beta' + g5_def[2][2] * u'^5')
+printbr(u5L_def)
 
 printbr()
 printbr'<hr>'
@@ -976,22 +976,30 @@ printbr(EFE5_def)
 printbr()
 
 
+local k_e_in_mu_0 = k_e:eq(frac(mu_0 * c^2, 4 * pi))
+
 printbr()
 printbr'Looking at the $\\tilde{G}_{55}$ components:'
 local EFE5_55_def = EFE5_def:lhs()[2][2]:eq( EFE5_def:rhs()[2][2] )
 printbr(EFE5_55_def)
+printbr'Isolating the $\\tilde{T}_{55}$ stress-energy term:'
+local T5_55_def_from_EFE5_55 = betterSimplify(EFE5_55_def:solve(T5'_55'))
+printbr(T5_55_def_from_EFE5_55)
+printbr'Isolating the spacetime scalar curvature R:'
+local R_from_EFE5 = betterSimplify(EFE5_55_def:solve(R))
+printbr(R_from_EFE5)
+
+printbr[[Look at it with our substituted values:]]
 local substitutions = table{A5_def}
 if constantScalarField then
 	substitutions:insert(phi_K_def)
 end
+substitutions:insert(k_e_in_mu_0)
 printbr('Substitute', substitutions:mapi(tostring):concat', ')
-EFE5_55_def = betterSimplify(EFE5_55_def:subst(substitutions:unpack()))
-printbr(EFE5_55_def)
-printbr'Isolating the scalar curvature:'
-EFE5_55_def = betterSimplify(EFE5_55_def:solve(R))
---EFE5_55_def = betterSimplify( -2 * (EFE5_55_def - EFE5_55_def[1]) + R)
-printbr(EFE5_55_def)
+local R_from_EFE5_wrt_mu0 = betterSimplify(R_from_EFE5:subst(substitutions:unpack()))
+printbr(R_from_EFE5_wrt_mu0)
 printbr[[It looks like $\tilde{T}_{55}$ provides the scalar curvature information ... with the exception of that extra term]]
+--[[
 printbr'What is the magnitude of that extra term?'
 local lastCoeff = frac(3,4) * frac(G, k_e * c^2)
 symmath.simplifyConstantPowers = true
@@ -999,6 +1007,7 @@ printbr(lastCoeff:eq(
 	betterSimplify(lastCoeff:subst(units.k_e_in_SI_and_C, units.G_in_SI, units.c_in_m_s))
 ))
 symmath.simplifyConstantPowers = false
+--]]
 printbr()
 
 
@@ -1007,99 +1016,115 @@ printbr'Looking at the $\\tilde{G}_{5\\mu}$ components:'
 local EFE5_5_mu_def = EFE5_def:lhs()[1][2]:eq( EFE5_def:rhs()[1][2] )
 printbr(EFE5_5_mu_def)
 printbr'Isolating the Faraday tensor divergence:'
-EFE5_5_mu_def = betterSimplify((EFE5_5_mu_def - EFE5_5_mu_def[1]) / (A'_5' * phi_K^2 / 2) + F' _\\alpha ^\\epsilon _;\\epsilon ')
-printbr(EFE5_5_mu_def)
+local divF_from_EFE5_5_mu = betterSimplify(EFE5_5_mu_def:solve(F' _\\alpha ^\\epsilon _;\\epsilon '))
+printbr(divF_from_EFE5_5_mu)
+printbr('Substitute', R_from_EFE5)
+divF_from_EFE5_5_mu = betterSimplify(divF_from_EFE5_5_mu:subst(R_from_EFE5)) 
+printbr(divF_from_EFE5_5_mu)
+printbr[[And that conveniently cancelled a term.  Now let's substitute the definition of $\tilde{T}_{55}$]]
 local rho = var'\\rho'
+
 local T5mu_def = T5' _\\alpha _5':eq( c^2 * rho * u'_5' * u' _\\alpha' )
-printbr('Assume', T5mu_def)
-EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(T5mu_def))
-printbr(EFE5_5_mu_def)
-printbr('Substitute ', u5_l_def)
-EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(u5_l_def))
-printbr(EFE5_5_mu_def)
-printbr('Substitute', u5U_def)
-EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(u5U_def))
-printbr(EFE5_5_mu_def)
-printbr('Substitute', A5_def)
-EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(A5_def))
-printbr(EFE5_5_mu_def)
+local substitutions = table{
+	T5_55_def_from_EFE5_55,
+	T5mu_def,
+	u5L_def:reindex{[' \\beta'] = ' \\epsilon'},
+	u5U_def,
+	A5_def,
+}
 if constantScalarField then
-	printbr('Substitute', phi_K_def)
-	EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:subst(phi_K_def))
-	printbr(EFE5_5_mu_def)
+	substitutions:insert(phi_K_def)
 end
-printbr('Substitute', 
-	k_e:eq(frac(1, 4 * pi * epsilon_0)), ',',
-	(mu_0 * epsilon_0):eq(frac(1, c^2)), ',',
-	'so ', k_e:eq(frac(mu_0 * c^2, 4 * pi))
-)
-EFE5_5_mu_def = betterSimplify(EFE5_5_mu_def:replace(k_e, frac(mu_0 * c^2, 4 * pi)))
-printbr(EFE5_5_mu_def)
+substitutions:insert(k_e_in_mu_0)
+printbr()
+printbr'Now to take a detour and write the stress-energy in terms of the four-current to see the Gauss-Ampere laws emerge:'
+printbr'Bring back the scalar curvature term R from $\\tilde{T}_{55}$ and rewrite $\\tilde{T}_{5\\alpha}$ in terms of five-momentum:'
+printbr('Substitute', substitutions:mapi(tostring):concat', ')
+local divF_from_EFE5_5_mu_J = betterSimplify(divF_from_EFE5_5_mu:subst(substitutions:unpack()))
+printbr(divF_from_EFE5_5_mu_J)
 local J = var'J'
 local fourCurrentDef = J' _\\alpha':eq( c * frac(q,m) * rho * u' _\\alpha' )
-printbr('Let '..fourCurrentDef)
-EFE5_5_mu_def[2] = betterSimplify(EFE5_5_mu_def[2] - mu_0 * fourCurrentDef:rhs() + mu_0 * fourCurrentDef:lhs())
-printbr(EFE5_5_mu_def)
+printbr('Define our four-current as', fourCurrentDef)
+divF_from_EFE5_5_mu_J = betterSimplify(divF_from_EFE5_5_mu_J:lhs():eq(divF_from_EFE5_5_mu_J:rhs() - mu_0 * fourCurrentDef:rhs() + mu_0 * fourCurrentDef:lhs()))
+printbr(divF_from_EFE5_5_mu_J)
 printbr'Move all but current to the left side:'
 -- move all except mu_0 J to the other side
-EFE5_5_mu_def = betterSimplify( -EFE5_5_mu_def + EFE5_5_mu_def:lhs() + mu_0 * J' _\\alpha' ):switch()
-printbr(EFE5_5_mu_def)
-
+divF_from_EFE5_5_mu_J = betterSimplify( -divF_from_EFE5_5_mu_J + divF_from_EFE5_5_mu_J:lhs() + mu_0 * J' _\\alpha' ):switch()
+printbr(divF_from_EFE5_5_mu_J)
 if constantScalarField then
 	printbr'Rewriting the right hand side as an operator'
 	-- TODO make sure this is up to date manually, or use some operators here
 	printbr[[
-	$
-		(	
-			12 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
-			+ \delta^\mu_\alpha \nabla^\nu
-		) F_{\mu\nu} 
-		- (
-			16 \frac{1}{c^2} \pi G \rho u_\alpha u^\beta 
-			+ R \delta^\beta_\alpha 
-		) A_\beta 
-		= \mu_0 J_\alpha
-	$<br>
+$
+	(	
+		12 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
+		+ \delta^\mu_\alpha \nabla^\nu
+	) F_{\mu\nu} 
+	- (
+		16 \frac{1}{c^2} \pi G \rho u_\alpha u^\beta 
+		+ R \delta^\beta_\alpha 
+	) A_\beta 
+	= \mu_0 J_\alpha
+$<br>
 
-	In matter at macroscopic levels this becomes...<br>
-	$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = \mu_0 J_\alpha$<br>
+In matter at macroscopic levels this becomes...<br>
+$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = \mu_0 J_\alpha$<br>
 
-	...for some sort of operator $\nabla (Z \cdot ...)$...
-	]]
+...for some sort of operator $\nabla (Z \cdot ...)$...
+]]
 end
+printbr()
 
 
 printbr()
 printbr'Looking at the $\\tilde{G}_{\\mu\\nu}$ components:'
 printbr[[$ \tilde{G}_{\alpha\beta} = 8 \pi \frac{G}{c^4} \tilde{T}_{\alpha\beta}$]]
-local EFE5_mu_mu_def = EFE5_def:lhs()[1][1]:eq( EFE5_def:rhs()[1][1] )
-printbr(EFE5_mu_mu_def)
+local EFE5_mu_nu_def = EFE5_def:lhs()[1][1]:eq( EFE5_def:rhs()[1][1] )
+printbr(EFE5_mu_nu_def)
 printbr'Isolating the spacetime Einstein tensor.'
-EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def - EFE5_mu_mu_def[1] + R' _\\alpha _\\beta' - frac(1,2) * R * g' _\\alpha _\\beta')
-printbr(EFE5_mu_mu_def)
+EFE5_mu_nu_def = EFE5_mu_nu_def - EFE5_mu_nu_def[1] + R' _\\alpha _\\beta' - frac(1,2) * R * g' _\\alpha _\\beta'
+EFE5_mu_nu_def = EFE5_mu_nu_def:replace(R' _\\alpha _\\beta', G' _\\alpha _\\beta' + frac(1,2) * R * g' _\\alpha _\\beta')
+EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def)
+printbr(EFE5_mu_nu_def)
+printbr('Substitute', R_from_EFE5, A5_def)
+EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:subst(R_from_EFE5, A5_def))
+printbr(EFE5_mu_nu_def)
+printbr'Notice that substituting R conveniently cancelled another of the terms on the r.h.s,'
 if constantScalarField then
-	printbr('Substitute', phi_K_def)
-	EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:subst(phi_K_def))
-	printbr(EFE5_mu_mu_def)
-
-	printbr('Substitute', 
-		k_e:eq(frac(1, 4 * pi * epsilon_0)), ',',
-		(mu_0 * epsilon_0):eq(frac(1, c^2)), ',',
-		'so ', k_e:eq(frac(mu_0 * c^2, 4 * pi))
-	)
-	EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:replace(k_e, frac(mu_0 * c^2, 4 * pi)))
-	printbr(EFE5_mu_mu_def)
+	local substitutions = table{phi_K_def, k_e_in_mu_0}
+	printbr('Substitute', substitutions:mapi(tostring):concat', ')
+	EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:subst(substitutions:unpack()))
+	printbr(EFE5_mu_nu_def)
 end
-
 local T_EM = var'T_{EM}'
 printbr('Let ', T_EM' _\\alpha _\\beta':eq(frac(1, mu_0) * (F' _\\alpha _\\mu' * F' _\\beta ^\\mu' - frac(1,4) * g' _\\alpha _\\beta' * F' _\\mu _\\nu' * F' ^\\mu ^\\nu')))
 -- T_EM_ab = 1/mu0 (F_au F_b^u - 1/4 g_ab F_uv F^uv)
 -- so F_ae F_b^e = mu0 T_EM_ab + 1/4 g_ab F_uv F^uv 
-EFE5_mu_mu_def = betterSimplify(EFE5_mu_mu_def:replace(
+EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:replace(
 	F' _\\beta _\\epsilon' * F' _\\alpha ^\\epsilon',
 	mu_0 * T_EM' _\\alpha _\\beta' - frac(1,4) * g' _\\alpha _\\beta' * F' _\\epsilon ^\\zeta' * F' _\\zeta ^\\epsilon'
 ))
-printbr(EFE5_mu_mu_def)
+printbr(EFE5_mu_nu_def)
+-- can't just say "replace R" because it will substitute the indexed R's ... 
+-- but I'll replace the R_αβ - 1/2 R g_αβ with G_αβ
+printbr('Substitute', divF_from_EFE5_5_mu)
+local EFE5_mu_nu_def_A = betterSimplify(EFE5_mu_nu_def:subst(
+	divF_from_EFE5_5_mu,
+	divF_from_EFE5_5_mu:reindex{[' \\alpha'] = ' \\beta'},
+	A5_def,
+	phi_K_def,
+	k_e_in_mu_0
+))
+printbr(EFE5_mu_nu_def_A)
+printbr'Substitute our specific stress-energy and four-current definitions:'
+local EFE5_mu_nu_def_B = betterSimplify(EFE5_mu_nu_def:subst(
+	divF_from_EFE5_5_mu_J,
+	divF_from_EFE5_5_mu_J:reindex{[' \\alpha'] = ' \\beta'},
+	A5_def,
+	phi_K_def,
+	k_e_in_mu_0
+))
+printbr(EFE5_mu_nu_def_B)
 printbr()
 
 
@@ -1122,64 +1147,20 @@ printbr(T5'_ab':eq(c^2 * rho * u'_a' * u'_b' + P*g5'_ab'))
 printbr(T5'_ab':eq(T5_def))
 
 
-printbr'substituting definitions for $\\tilde{g}_{ab}, A_5, u^a$...'
+printbr'Substituting definitions for $\\tilde{g}_{ab}, u_5, u^5, A_5, \\phi_K$...'
 
-T5_def = betterSimplify(
-	T5_def
-		:replace(g5' _\\alpha _\\beta', g5_def[1][1])
-		:replace(g5' _\\alpha _5', g5_def[1][2])
-		:replace(g5' _\\beta _5', g5_def[2][1])
-		:replace(g5'_55', g5_def[2][2])
-		--:subst(u5U_def)	-- but we were looking at x'_5, not x'^5 ...
-)
+T5_def = T5_def
+	:replace(g5' _\\alpha _\\beta', g5_def[1][1])
+	:replace(g5' _\\alpha _5', g5_def[1][2])
+	:replace(g5' _\\beta _5', g5_def[2][1])
+	:replace(g5'_55', g5_def[2][2])
+	:subst(u5L_def, u5U_def, A5_def)
+if constantScalarField then
+	T5_def = T5_def:subst(phi_K_def)
+end
+T5_def = betterSimplify(T5_def)
 printbr(T5'_ab':eq(T5_def))
 printbr()
-
-
---[[
-What is the four-current in relation to the spacetime x 5th stress-energy?
-
-T5_5α = c^2 ρ u_5 u_α
-let u_5 = g_5a u^a = g_5_β u^β + g_55 u^5 = φ_K^2 A_5 (A_β u^β + A_5 u^5)
-so T5_5α = c^2 ρ u_α φ_K^2 A_5 (A_β u^β + A_5 u^5)
-let u^5 = q/m sqrt(k_e/G)	<- needed for Lorentz force law to emerge in geodesic
-so T5_5α = c^2 ρ u_α φ_K^2 A_5 (A_β u^β + A_5 q/m sqrt(k_e/G))
-let φ_K = 1/A_5
-so T5_5α = c^2 ρ u_α (φ_K A_β u^β + q/m sqrt(k_e/G))
-let A_5 = 1/φ_K = 1 in natural units = c sqrt(k_e/G)
-so T5_5α = c ρ u_α sqrt(G/k_e) A_β u^β + c^2 q/m ρ u_α 
-J_α = c q/m ρ u_α
-so T5_5α = c J_α + c ρ u_α sqrt(G/k_e) A_β u^β
-or T5_5α = c J_α + c^2 ρ u_α u^β A_β / A_5
-well either way, T5_5α = something J_α plus something else
-
-but this makes F_αβ^;β = 4 μ_0 J_α + extra ... off by a factor of 4 ...
-so maybe T5__5α = 1/4 c J_α + something ...
-then maybe T5_5α = c^2 ρ u_α (u_5 / 4)
-and then the Gauss-Ampere laws come out of the G5_5α = 8 π T5_5α
-
-but we also have G_αβ = 8 π G/c^4 (T_αβ + 1/4 T_EM_αβ) + extra
-...and there is no way T_αβ can directly influence T_EM_αβ ... unless we include a proportion of T_EM_αβ inside T_αβ 
-if we say F_αβ -> 2 F_αβ then we can get: G_αβ = 8 π G/c^4 (T_αβ + T_EM_αβ) + extra
-but this really means A_α -> 2 A_α ... and all this will influence lots of things ...
-
-and doing F_αβ -> 2 F_αβ only will leave F_αβ^;β = 2 μ_0 J_α, so you need to modify T5_ab as well
-
-in the metric this is equivalent to just changing φ_K ...
-φ_K -> 2 φ_K means 
-... G_αβ = 8 π G/c^4 (T_αβ + T_EM_αβ) + extra
-... F_αβ^;β = μ_0 J_α + extra
-so it looks like a winner
-but sure enough, it is going to haunt the Lorentz force law in the geodesic equation
-how about if we say A_5 -> 4 A_5 to counter the effects in the Lorentz force law?  
-won't help Gauss-Ampere, (though changing T5 would)
-it would help the EFE spacetime stress-energy
-
-so φ_K -> 2 φ_K fixes the EFE spacetime stress-energy but hurts Lorentz force and Gauss-Amepre
-then A_5 -> 1/4 A_5 fixes Lorentz force but further maybe hurts Gauss-Ampere
-then T5_5α -> 1/4 T5_5α to fix Gauss-Ampere
---]]
-
 
 
 printbr()
