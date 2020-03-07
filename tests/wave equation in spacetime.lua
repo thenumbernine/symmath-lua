@@ -16,6 +16,13 @@ local function betterSimplify(x)
 	end)
 end
 
+printbr[[
+Sources:<br>
+2010 Alcubierre, Mendez, "Formulations of the 3+1 evolution equations in curvilinear coordinates"<br>
+2017 Escorihuela-Tomàs, Sanchis-Gual, Degollado, Font, "Quasistationary solutions of scalar fields aroundcollapsing self-interacting boson stars"<br>
+<br>
+]]
+
 local g = var'g'
 local alpha = var'\\alpha'
 local beta = var'\\beta'
@@ -34,6 +41,9 @@ printbr(normalL_def)
 printbr()
 local normalU_def = n' ^\\mu':eq(Matrix({ frac(1,alpha), -frac(1,alpha) * beta'^i' }))
 printbr(normalU_def)
+printbr()
+
+printbr[[Also let $\frac{d}{dx^0} = \partial_0 - \mathcal{L}_\vec\beta$]]
 printbr()
 
 local K = var'K'
@@ -86,32 +96,41 @@ Pi_def = betterSimplify(Pi_def
 	:replace(n'^0', normalU_def:rhs()[1][1])
 	:replace(n'^i', normalU_def:rhs()[1][2])
 )
-printbr(Pi_def)
+printbr(Pi_def, '(eqn. 5)')
 printbr()
 
 local Psi = var'\\Psi'
 local Psi_def = Psi'_i':eq(Phi'_,i')
-printbr[[Let $\Psi = \nabla^\perp_i \Phi = {\gamma_i}^\mu \nabla_\mu \Phi$]]
+printbr[[Let $\Psi_i = \nabla^\perp_i \Phi$ (eqn. 6)]]
+printbr[[$\Psi_i = {\gamma_i}^\mu \nabla_\mu \Phi$]]
 printbr(Psi_def)
-local di_Phi_def = Psi_def:solve(Phi'_,i')
-printbr(di_Phi_def)
+local di_Phi_def = Psi_def:solve(Phi'_,i')	-- this is just switching the equation
 printbr()
 
 printbr[[Solve $\Pi$ for $\Phi_{,0}$:]]
 local d0_Phi_def = betterSimplify(Pi_def:solve(Phi'_,0'))
-printbr(d0_Phi_def )
+printbr(d0_Phi_def, '(eqn. 7)')
+printbr[[$\frac{d}{dx^0} \Phi = \alpha \Pi$]]
 d0_Phi_def = betterSimplify(d0_Phi_def:subst(Psi_def:switch()))
 printbr(d0_Phi_def )
 printbr()
 
 printbr[[Solve $\Pi_{,i}$ for $\Psi_{i,0}$:]]
-di_Pi_def = betterSimplify(Pi_def:reindex{i='j'}'_,i'()
-	:symmetrizeIndexes(Phi, {1,2})
-)
+di_Pi_def = betterSimplify(Pi_def:reindex{i='j'}'_,i'():symmetrizeIndexes(Phi, {1,2}))
 printbr(di_Pi_def)
-printbr('substitute', d0_Phi_def, ',', di_Phi_def)
-di_Pi_def = betterSimplify(di_Pi_def:subst(d0_Phi_def:reindex{i='j'}, di_Phi_def:reindex{i='j'}))
+printbr('substitute', d0_Phi_def, ',', di_Phi_def, ',', di_Phi_def'_,0'():symmetrizeIndexes(Phi, {1,2}))
+di_Pi_def = betterSimplify(di_Pi_def:subst(
+	d0_Phi_def:reindex{i='j'},
+	di_Phi_def:reindex{i='j'},
+	di_Phi_def'_,0'():symmetrizeIndexes(Phi, {1,2})
+))
 printbr(di_Pi_def)
+printbr('solve for', Psi'_i,0')
+local d0_Psi_def = di_Pi_def:solve(Psi'_i,0')
+printbr(d0_Psi_def)
+d0_Psi_def[2] = betterSimplify((d0_Psi_def[2] - (alpha * Pi)'_,i'())) + (alpha * Pi)'_,i'
+printbr(d0_Psi_def, '(eqn. 8)')
+printbr[[$\frac{d}{dx^0} \Psi_i = (\alpha \Pi)_{,i}$]]
 printbr()
 
 printbr[[Solve $\Pi_{,0}$]]
@@ -136,4 +155,11 @@ printbr(d0_Pi_def)
 -- hmm, I need to get this to ignore indexes... otherwise it gives an error
 ---d0_Pi_def = d0_Pi_def:tidyIndexes{fixed='0'}	
 --printbr(d0_Pi_def)
+printbr('substitute', conn4iU_def:reindex{m='j'})
+d0_Pi_def = d0_Pi_def:subst(conn4iU_def:reindex{m='j'})()
+-- I can't do this on all of d0_Pi_def, but only on the rhs (because it has no _,0's)
+d0_Pi_def[2] = d0_Pi_def[2]:tidyIndexes():reindex{ab='ij'}
+d0_Pi_def = betterSimplify(d0_Pi_def)
+printbr(d0_Pi_def)
+printbr(var[[\frac{d}{dx^0} \Pi]]:eq( betterSimplify(d0_Pi_def:rhs() - Pi'_,i' * beta'^i') ))
 printbr()

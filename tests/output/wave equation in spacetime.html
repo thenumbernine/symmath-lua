@@ -7,6 +7,12 @@
     </head>
 	<body onload='tryToFindMathJax();'>
 
+Sources:<br>
+2010 Alcubierre, Mendez, "Formulations of the 3+1 evolution equations in curvilinear coordinates"<br>
+2017 Escorihuela-Tomàs, Sanchis-Gual, Degollado, Font, "Quasistationary solutions of scalar fields aroundcollapsing self-interacting boson stars"<br>
+<br>
+
+<br>
 ADM metric:
 <br>
 
@@ -24,6 +30,10 @@ ${{ n}_{\mu}} = {\left[\begin{matrix}  -{\alpha} &  0\end{matrix}\right]}$
 
 <br>
 ${{ n}^{\mu}} = {\left[\begin{matrix}  \frac{1}{\alpha} &   {-{\frac{1}{\alpha}}} {{{ \beta}^i}}\end{matrix}\right]}$
+<br>
+
+<br>
+Also let $\frac{d}{dx^0} = \partial_0 - \mathcal{L}_\vec\beta$
 <br>
 
 <br>
@@ -69,21 +79,23 @@ Let 	${\Pi} = {{{{ n}^{\mu}}} {{{ \Phi}_{,\mu}}}}$
 <br>
 ${\Pi} = {{{{{ n}^0}} {{{ \Phi}_{,0}}}} + {{{{ n}^i}} {{{ \Phi}_{,i}}}}}$
 <br>
-${\Pi} = {{{{{ \Phi}_{,0}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Phi}_{,i}}} {{{ \beta}^i}} {{\frac{1}{\alpha}}}}}$
+${\Pi} = {{{{{ \Phi}_{,0}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Phi}_{,i}}} {{{ \beta}^i}} {{\frac{1}{\alpha}}}}}$	(eqn. 5)
 <br>
 
 <br>
-Let $\Psi = \nabla^\perp_i \Phi = {\gamma_i}^\mu \nabla_\mu \Phi$
+Let $\Psi_i = \nabla^\perp_i \Phi$ (eqn. 6)
+<br>
+$\Psi_i = {\gamma_i}^\mu \nabla_\mu \Phi$
 <br>
 ${{ \Psi}_i} = {{ \Phi}_{,i}}$
-<br>
-${{ \Phi}_{,i}} = {{ \Psi}_i}$
 <br>
 
 <br>
 Solve $\Pi$ for $\Phi_{,0}$:
 <br>
-${{ \Phi}_{,0}} = {{{{{ \Phi}_{,i}}} {{{ \beta}^i}}} + {{{\Pi}} \cdot {{\alpha}}}}$
+${{ \Phi}_{,0}} = {{{{{ \Phi}_{,i}}} {{{ \beta}^i}}} + {{{\Pi}} \cdot {{\alpha}}}}$	(eqn. 7)
+<br>
+$\frac{d}{dx^0} \Phi = \alpha \Pi$
 <br>
 ${{ \Phi}_{,0}} = {{{{{ \Psi}_i}} {{{ \beta}^i}}} + {{{\Pi}} \cdot {{\alpha}}}}$
 <br>
@@ -93,9 +105,17 @@ Solve $\Pi_{,i}$ for $\Psi_{i,0}$:
 <br>
 ${{ \Pi}_{,i}} = {{{{-1}} {{{ \Phi}_{,0}}} {{{ \alpha}_{,i}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{{ \Phi}_{,j}}} {{{ \beta}^j}} {{{ \alpha}_{,i}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{{{ \Phi}_{,0}}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Phi}_{,j}}} {{{{ \beta}^j}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}} {{\frac{1}{\alpha}}}}}$
 <br>
-substitute	${{ \Phi}_{,0}} = {{{{{ \Psi}_i}} {{{ \beta}^i}}} + {{{\Pi}} \cdot {{\alpha}}}}$	,	${{ \Phi}_{,i}} = {{ \Psi}_i}$
+substitute	${{ \Phi}_{,0}} = {{{{{ \Psi}_i}} {{{ \beta}^i}}} + {{{\Pi}} \cdot {{\alpha}}}}$	,	${{ \Phi}_{,i}} = {{ \Psi}_i}$	,	${{{ \Phi}_{,0}}_{,i}} = {{{ \Psi}_i}_{,0}}$
 <br>
-${{ \Pi}_{,i}} = {{{{{{ \Phi}_{,0}}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Psi}_j}} {{{{ \beta}^j}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{\Pi}} \cdot {{{ \alpha}_{,i}}} {{\frac{1}{\alpha}}}}}$
+${{ \Pi}_{,i}} = {{{{{{ \Psi}_i}_{,0}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Psi}_j}} {{{{ \beta}^j}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{\Pi}} \cdot {{{ \alpha}_{,i}}} {{\frac{1}{\alpha}}}}}$
+<br>
+solve for	${{ \Psi}_i}_{,0}$
+<br>
+${{{ \Psi}_i}_{,0}} = {{{{\alpha}} \cdot {{{ \Pi}_{,i}}}} + {{{{ \Psi}_j}} {{{{ \beta}^j}_{,i}}}} + {{{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}}} + {{{\Pi}} \cdot {{{ \alpha}_{,i}}}}}$
+<br>
+${{{ \Psi}_i}_{,0}} = {{{{{{ \Psi}_j}} {{{{ \beta}^j}_{,i}}}} + {{{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}}}} + {{\left( {{\alpha}} \cdot {{\Pi}}\right)}_{,i}}}$	(eqn. 8)
+<br>
+$\frac{d}{dx^0} \Psi_i = (\alpha \Pi)_{,i}$
 <br>
 
 <br>
@@ -114,6 +134,14 @@ ${{ \Pi}_{,0}} = {{{{-1}} {{{ \Psi}_i}} {{{{ \beta}^i}_{,0}}} {{\frac{1}{\alpha}
 substitute	${{ \bar{\Gamma}}^0} = { {-{\frac{1}{{\alpha}^{3}}}} {{({{{{ \alpha}_{,0}} - {{{{ \beta}^m}} {{{ \alpha}_{,m}}}}} + {{{{\alpha}^{2}}} {{K}}}})}}}$	,	${{ \Phi}_{,0}} = {{{{{ \Psi}_i}} {{{ \beta}^i}}} + {{{\Pi}} \cdot {{\alpha}}}}$	,	${{{ \Phi}_{,0}}_{,i}} = {{{{\alpha}} \cdot {{{ \Pi}_{,i}}}} + {{{{ \beta}^j}} {{{{ \Psi}_j}_{,i}}}} + {{{{ \Psi}_j}} {{{{ \beta}^j}_{,i}}}} + {{{\Pi}} \cdot {{{ \alpha}_{,i}}}}}$
 <br>
 ${{ \Pi}_{,0}} = {{{{{ \Psi}_i}} {{{ \beta}^i}} {{{ \alpha}_{,0}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{-1}} {{{ \Psi}_i}} {{{ \beta}^i}} {{{ \beta}^j}} {{{ \alpha}_{,j}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{K}} {{\Pi}} \cdot {{\alpha}}} + {{{K}} {{{ \Psi}_i}} {{{ \beta}^i}}} + {{{{ \Pi}_{,i}}} {{{ \beta}^i}}} + {{{\alpha}} \cdot {{{{ \Psi}_i}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{\alpha}} \cdot {{{ \Psi}_i}} {{{ \bar{\Gamma}}^i}}} + {{{-1}} {{{ \Psi}_i}} {{{{ \beta}^i}_{,0}}} {{\frac{1}{\alpha}}}} + {{{{ \Psi}_j}} {{{ \beta}^i}} {{{{ \beta}^j}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{f}} {{\alpha}}}}$
+<br>
+substitute	${{ \bar{\Gamma}}^i} = {{{{ \Gamma}^i} + {{{{{\frac{1}{{\alpha}^{3}}}} {{{ \beta}^i}}}} {{({{{{ \alpha}_{,0}} - {{{{ \beta}^j}} {{{ \alpha}_{,j}}}}} + {{{{\alpha}^{2}}} {{K}}}})}}}} - {{{\frac{1}{{\alpha}^{2}}}} {{({{{{{ \beta}^i}_{,0}} - {{{{ \beta}^j}} {{{{ \beta}^i}_{,j}}}}} + {{{{{\alpha}} \cdot {{{ \alpha}_j}}}} {{{{ \gamma}^i}^j}}}})}}}}$
+<br>
+${{ \Pi}_{,0}} = {{{{{ \Pi}_{,i}}} {{{ \beta}^i}}} + {{{{ \Psi}_i}} {{{ \alpha}_j}} {{{{ \gamma}^i}^j}}} + {{{K}} {{\Pi}} \cdot {{\alpha}}} + {{{\alpha}} \cdot {{{{ \Psi}_i}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{\alpha}} \cdot {{{ \Psi}_i}} {{{ \Gamma}^i}}} + {{{-1}} {{f}} {{\alpha}}}}$
+<br>
+
+<br>
+${{\frac{d}{dx^0} \Pi}} = {{{{{ \Psi}_i}} {{{ \alpha}_j}} {{{{ \gamma}^i}^j}}} + {{{K}} {{\Pi}} \cdot {{\alpha}}} + {{{\alpha}} \cdot {{{{ \Psi}_i}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{\alpha}} \cdot {{{ \Psi}_i}} {{{ \Gamma}^i}}} + {{{-1}} {{f}} {{\alpha}}}}$
 <br>
 
 <br>
