@@ -130,6 +130,7 @@ local d0_Psi_def = di_Pi_def:solve(Psi'_i,0')
 printbr(d0_Psi_def)
 d0_Psi_def[2] = betterSimplify((d0_Psi_def[2] - (alpha * Pi)'_,i'())) + (alpha * Pi)'_,i'
 printbr(d0_Psi_def, '(eqn. 8)')
+-- TODO this needs to be updated manually
 printbr[[$\frac{d}{dx^0} \Psi_i = (\alpha \Pi)_{,i}$]]
 printbr()
 
@@ -162,4 +163,11 @@ d0_Pi_def[2] = d0_Pi_def[2]:tidyIndexes():reindex{ab='ij'}
 d0_Pi_def = betterSimplify(d0_Pi_def)
 printbr(d0_Pi_def)
 printbr(var[[\frac{d}{dx^0} \Pi]]:eq( betterSimplify(d0_Pi_def:rhs() - Pi'_,i' * beta'^i') ))
+printbr()
+
+printbr'collected:'
+local eqn = Matrix{Phi, Pi, Psi'_i'}:T()'_0':eq( 
+	Matrix{d0_Phi_def:rhs(), d0_Pi_def:rhs(), d0_Psi_def:rhs()}:T() 
+)
+printbr(eqn)
 printbr()
