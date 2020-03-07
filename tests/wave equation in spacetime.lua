@@ -52,7 +52,7 @@ local conn4 = var'\\bar{\\Gamma}'
 printbr[[From 2008 Alcubierre "Introduction to 3+1 Numerical Relativity" Appendix B]]
 local conn40U_def = conn4'^0':eq( -frac(1,alpha^3) * (alpha'_,0' - beta'^m' * alpha'_,m' + alpha^2 * K) )
 printbr(conn40U_def)
-local conn4iU_def = conn4'^i':eq( conn3'^i' + frac(1,alpha^3) * beta'^i' * (alpha'_,0' - beta'^m' * alpha'_,m' + alpha^2 * K) - frac(1,alpha^2) * (beta'^i_,0' - beta'^m' * beta'^i_,m' + alpha * alpha'_j' * gamma'^ij') )
+local conn4iU_def = conn4'^i':eq( conn3'^i' + frac(1,alpha^3) * beta'^i' * (alpha'_,0' - beta'^m' * alpha'_,m' + alpha^2 * K) - frac(1,alpha^2) * (beta'^i_,0' - beta'^m' * beta'^i_,m' + alpha * alpha'_,j' * gamma'^ij') )
 printbr(conn4iU_def)
 printbr()
 
@@ -166,7 +166,7 @@ printbr(var[[\frac{d}{dx^0} \Pi]]:eq( betterSimplify(d0_Pi_def:rhs() - Pi'_,i' *
 printbr()
 
 printbr'collected:'
-local eqn = Matrix{Phi, Pi, Psi'_i'}:T()'_0':eq( 
+local eqn = Matrix{Phi, Pi, Psi'_i'}:T()'_,0':eq( 
 	Matrix{d0_Phi_def:rhs(), d0_Pi_def:rhs(), d0_Psi_def:rhs()}:T() 
 )
 printbr(eqn)
