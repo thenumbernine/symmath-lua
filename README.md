@@ -811,4 +811,6 @@ Output CDN URLs:
 
 [tests/output/unit/tidyIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/tidyIndexes.html)
 
+[tests/output/wave equation in spacetime](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20in%20spacetime.html)
+
 [tests/output/wave equation with metric of space and time - based on bssnok-scalar](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20with%20metric%20of%20space%20and%20time%20%2d%20based%20on%20bssnok%2dscalar.html)

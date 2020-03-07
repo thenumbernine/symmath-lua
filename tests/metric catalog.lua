@@ -491,6 +491,6 @@ for _,info in ipairs(spacetimes) do
 	
 	printbr'geodesic:'
 	-- TODO unravel equaliy, or print individual assignments
-	printbr(((d2x'^a' + Gamma'^a_bc' * dx'^b' * dx'^c'):eq(Tensor'^u'))())
+	printbr((d2x'^a':eq(-Gamma'^a_bc' * dx'^b' * dx'^c'))():factorDivision())
 	printbr()
 end

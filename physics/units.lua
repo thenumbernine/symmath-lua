@@ -54,7 +54,16 @@ return function(args)
 	else
 		function lprint() end
 	end
-	symmath.simplifyConstantPowers = true 
+	symmath.simplifyConstantPowers = true
+
+	-- make these available
+	c_value_in_m_per_s = 299792458 
+	G_value_in_m3_per_kg_s2 = 6.67384e-11
+	k_e_value_in_kg_m3_per_C2_s2 = 8.9875517873681764e+9
+	e_value_in_C = 6.2415093414e+18
+	m_e_value_in_kg = 9.1093835611e-31
+	k_B_value_in_kg_m2_per_K_s2 = 1.3806488e-23
+	hBar_value_in_kg_m2_per_s = 1.05457173e-34
 
 	-- TODO always use the variables, then subst at the end / let the user subst ?
 	if args.valuesAsVars then
@@ -66,13 +75,13 @@ return function(args)
 		k_B_value = var'{\\tilde{k}_B}'
 		hBar_value = var'{\\tilde{h}}'	-- '{\\tilde{\\hBar}}' ... gives MathJax errors
 	else
-		c_value = 299792458 
-		G_value = 6.67384e-11
-		k_e_value = 8.9875517873681764e+9
-		e_value = 6.2415093414e+18
-		m_e_value = 9.1093835611e-31
-		k_B_value = 1.3806488e-23
-		hBar_value = 1.05457173e-34
+		c_value = c_value_in_m_per_s
+		G_value = G_value_in_m3_per_kg_s2
+		k_e_value = k_e_value_in_kg_m3_per_C2_s2
+		e_value = e_value_in_C
+		m_e_value = m_e_value_in_kg
+		k_B_value = k_B_value_in_kg_m2_per_K_s2
+		hBar_value = hBar_value_in_kg_m2_per_s
 	end
 
 	-- grab from symmath, put in units (courtesy of the metatable)

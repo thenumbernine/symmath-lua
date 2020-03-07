@@ -81,7 +81,12 @@ end
 		} / A_det)()
 		--if b then result = (result * b)() end
 		return result, Matrix.identity(invdim[1], invdim[2])
--- [[
+--[[ 
+-- this breaks compatability with pseudoInverse() and nullspace()
+-- in fact, the 2D version probably does too
+-- TODO maybe put GaussJordan in one method and have inverse() and pseudoInverse() etc call it
+-- then give inverse() its own shortcut for the 2x2 and 3x3 methods?
+-- because right now this function does a few things: inverse, pseudoinverse, linear system solution
 	elseif m == 3 and n == 3 and not b then
 		A_det = A_det or A:determinant()
 		if A_det == Constant(0) then
