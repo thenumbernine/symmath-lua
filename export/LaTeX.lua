@@ -365,7 +365,11 @@ LaTeX.lookupTable = {
 			s = ',' .. s 
 		end
 		if expr.symbol then
-			s = s .. expr.symbol
+			local varname = expr.symbol
+			if symmath.fixVariableNames then
+				varname = symmath.tostring:fixVariableName(varname)
+			end
+			s = s .. varname
 		else
 			error("TensorIndex expected a symbol or a number")
 		end
@@ -464,6 +468,8 @@ LaTeX.footer = [[
 ]]
 
 function LaTeX:fixVariableName(name)
+	-- should we always tostring()?
+	if type(name) == 'number' then name = tostring(name) end
 	local i=1
 	while i < #name do
 		if i>1 then
@@ -473,6 +479,7 @@ function LaTeX:fixVariableName(name)
 				name = name:sub(1,i-1) .. '^{' .. name:sub(i+1) .. '}'
 			end
 		end
+		-- replace all greek letter names in the string with \\+the greek letter name
 		for _,w in ipairs(texSymbols) do
 			if name:sub(i):match('^'..w) then
 				name = name:sub(1,i-1) .. '\\' .. name:sub(i)

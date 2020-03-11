@@ -1,6 +1,10 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{tostring='MathJax', MathJax={title='wave equation in spacetime'}}
+require 'symmath'.setup{
+	tostring='MathJax',
+	MathJax={title='wave equation in spacetime'},
+	fixVariableNames=true,	-- automatically add the \\ to the greek letter names
+}
 
 -- used here and in 'Kaluza-Klein - index' ... maybe I should just change 'simplify'
 local function betterSimplify(x)
@@ -24,22 +28,22 @@ Sources:<br>
 ]]
 
 local g = var'g'
-local alpha = var'\\alpha'
-local beta = var'\\beta'
-local gamma = var'\\gamma'
+local alpha = var'alpha'
+local beta = var'beta'
+local gamma = var'gamma'
 printbr'ADM metric:'
 printbr()
-local ADMdef = g' _\\mu _\\nu':eq(Matrix( {-alpha^2 + beta'^k' * beta'_k', beta'_j' }, { beta'_i', gamma'_ij' }))
+local ADMdef = g' _mu _nu':eq(Matrix( {-alpha^2 + beta'^k' * beta'_k', beta'_j' }, { beta'_i', gamma'_ij' }))
 printbr(ADMdef)
 printbr()
-local ADMInv_def = g' ^\\mu ^\\nu':eq(Matrix( {-frac(1, alpha^2), frac(1, alpha^2) * beta'^j' }, { frac(1, alpha^2) * beta'^i', gamma'^ij' - frac(1, alpha^2) * beta'^i' * beta'^j' }))
+local ADMInv_def = g' ^mu ^nu':eq(Matrix( {-frac(1, alpha^2), frac(1, alpha^2) * beta'^j' }, { frac(1, alpha^2) * beta'^i', gamma'^ij' - frac(1, alpha^2) * beta'^i' * beta'^j' }))
 printbr(ADMInv_def)
 printbr()
 local n = var'n'
-local normalL_def = n' _\\mu':eq(Matrix({ -alpha, 0 }))
+local normalL_def = n' _mu':eq(Matrix({ -alpha, 0 }))
 printbr(normalL_def)
 printbr()
-local normalU_def = n' ^\\mu':eq(Matrix({ frac(1,alpha), -frac(1,alpha) * beta'^i' }))
+local normalU_def = n' ^mu':eq(Matrix({ frac(1,alpha), -frac(1,alpha) * beta'^i' }))
 printbr(normalU_def)
 printbr()
 
@@ -47,8 +51,8 @@ printbr[[Also let $\frac{d}{dx^0} = \partial_0 - \mathcal{L}_\vec\beta$]]
 printbr()
 
 local K = var'K'
-local conn3 = var'\\Gamma'
-local conn4 = var'\\bar{\\Gamma}'
+local conn3 = var'Gamma'
+local conn4 = var'\\bar{Gamma}'
 printbr[[From 2008 Alcubierre "Introduction to 3+1 Numerical Relativity" Appendix B]]
 local conn40U_def = conn4'^0':eq( -frac(1,alpha^3) * (alpha'_,0' - beta'^m' * alpha'_,m' + alpha^2 * K) )
 printbr(conn40U_def)
@@ -60,16 +64,16 @@ printbr[[Let ${\bar{\Gamma}^\alpha}_{\mu\nu}$ is the 4-metric connection.]]
 printbr[[Let $\bar{\Gamma}^\alpha = {\bar{\Gamma}^\alpha}_{\mu\nu} g^{\mu\nu}$]]
 printbr()
 
-local Phi = var'\\Phi'
+local Phi = var'Phi'
 local f = var'f'
 printbr'wave equation in spacetime:'
-local waveEqn = Phi' _;\\mu ^;\\mu':eq(f)
+local waveEqn = Phi' _;mu ^;mu':eq(f)
 printbr(waveEqn)
-waveEqn = (g' ^\\mu ^\\nu' * Phi' _;\\mu _\\nu'):eq(f)
+waveEqn = (g' ^mu ^nu' * Phi' _;mu _nu'):eq(f)
 printbr(waveEqn)
-waveEqn = (g' ^\\mu ^\\nu' * (Phi' _,\\mu _\\nu' - conn4' ^\\alpha _\\mu _\\nu' * Phi' _,\\alpha')):eq(f)
+waveEqn = (g' ^mu ^nu' * (Phi' _,mu _nu' - conn4' ^alpha _mu _nu' * Phi' _,alpha')):eq(f)
 printbr(waveEqn)
-waveEqn = (g' ^\\mu ^\\nu' * Phi' _,\\mu _\\nu' - conn4' ^\\alpha' * Phi' _,\\alpha'):eq(f)
+waveEqn = (g' ^mu ^nu' * Phi' _,mu _nu' - conn4' ^alpha' * Phi' _,alpha'):eq(f)
 printbr(waveEqn)
 printbr'split space and time:'
 waveEqn = (g'^00' * Phi'_,00' + 2 * g'^0i' * Phi'_,0i' + g'^ij' * Phi'_,ij' - conn4'^0' * Phi'_,0' - conn4'^i' * Phi'_,i'):eq(f)
@@ -86,10 +90,10 @@ local d00_Phi_def = waveEqn:solve(Phi'_,00')
 printbr(d00_Phi_def)
 printbr()
 
-local Pi = var'\\Pi'
-local Pi_def = Pi:eq(n' ^\\mu' * Phi' _,\\mu')
+local Pi = var'Pi'
+local Pi_def = Pi:eq(n' ^mu' * Phi' _,mu')
 printbr('Let ', Pi_def)
--- Pi_def = splitIndexes(Pi_def, {' \\mu' = {'0', 'i'}})
+-- Pi_def = splitIndexes(Pi_def, {' mu' = {'0', 'i'}})
 Pi_def = Pi:eq(n'^0' * Phi'_,0' + n'^i' * Phi'_,i')
 printbr(Pi_def)
 Pi_def = betterSimplify(Pi_def
@@ -99,7 +103,7 @@ Pi_def = betterSimplify(Pi_def
 printbr(Pi_def, '(eqn. 5)')
 printbr()
 
-local Psi = var'\\Psi'
+local Psi = var'Psi'
 local Psi_def = Psi'_i':eq(Phi'_,i')
 printbr[[Let $\Psi_i = \nabla^\perp_i \Phi$ (eqn. 6)]]
 printbr[[$\Psi_i = {\gamma_i}^\mu \nabla_\mu \Phi$]]
