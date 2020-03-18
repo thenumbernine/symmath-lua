@@ -54,6 +54,15 @@ local eta4 = Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 
 local spacetimes = {
 -- [=[
 	{
+		title = 'Cartesian',
+		coords = {x,y},
+		embedded = {x,y},
+		flatMetric = delta2,
+		chart = function() 
+			return Tensor('^I', x, y)
+		end,
+	},
+	{
 		title = 'polar',
 		coords = {r,phi},
 		embedded = {x,y},

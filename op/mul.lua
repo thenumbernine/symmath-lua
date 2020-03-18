@@ -223,6 +223,30 @@ mul.rules = {
 				end
 			end
 
+			
+			-- [[ and now for Matrix*Matrix multiplication ...
+			-- do this before the c * 0 = 0 rule
+			for i=#expr,2,-1 do
+				local rhs = expr[i]
+				local lhs = expr[i-1]
+			
+				local result
+				if lhs.pruneMul then
+					result = lhs.pruneMul(lhs, rhs)
+				elseif rhs.pruneMul then
+					result = rhs.pruneMul(lhs, rhs)
+				end
+				if result then
+					table.remove(expr, i)
+					expr[i-1] = result
+					if #expr == 1 then expr = expr[1] end
+					return prune:apply(expr)
+				end
+			end
+			--]]
+
+
+
 			-- push all Constants to the lhs, sum as we go
 			local cval = 1
 			for i=#expr,1,-1 do
@@ -247,26 +271,6 @@ mul.rules = {
 					return prune:apply(expr[1]) 
 				end
 			end
-
-			-- [[ and now for Matrix*Matrix multiplication ...
-			for i=#expr,2,-1 do
-				local rhs = expr[i]
-				local lhs = expr[i-1]
-			
-				local result
-				if lhs.pruneMul then
-					result = lhs.pruneMul(lhs, rhs)
-				elseif rhs.pruneMul then
-					result = rhs.pruneMul(lhs, rhs)
-				end
-				if result then
-					table.remove(expr, i)
-					expr[i-1] = result
-					if #expr == 1 then expr = expr[1] end
-					return prune:apply(expr)
-				end
-			end
-			--]]
 
 			-- [[ a^m * a^n => a^(m + n)
 			do

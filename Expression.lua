@@ -140,9 +140,12 @@ function Expression.__mul(a,b)
 	
 	if type(b) == 'number' then b = Constant(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__mul(a,b) end
-	
-	if (Constant.is(a) and a.value == 0) 
-	or (Constant.is(b) and b.value == 0)
+
+	-- only simplify c * 0 = 0 for constants
+	-- because if we have an Array then we want it to distribute to all elements
+	if Constant.is(a)
+	and Constant.is(b)
+	and (a.value == 0 or b.value == 0)
 	then
 		return Constant(0)
 	end

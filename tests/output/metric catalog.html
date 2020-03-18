@@ -7,6 +7,8 @@
     </head>
 	<body onload='tryToFindMathJax();'>
 
+<a href="#Cartesian">Cartesian</a>
+<br>
 <a href="#polar">polar</a>
 <br>
 <a href="#polar, anholonomic, normalized">polar, anholonomic, normalized</a>
@@ -48,6 +50,121 @@
 <a href="#torus">torus</a>
 <br>
 <a href="#torus surface">torus surface</a>
+<br>
+
+<br>
+<a name="Cartesian">
+<h3>Cartesian</h3>
+coordinates:	$x$	$y$
+<br>
+base coords:	$x$	$y$
+<br>
+embedding:	$x$	$y$
+<br>
+flat metric:
+<br>
+${{{ \eta}_x}_x} = {1}$;
+${{{ \eta}_y}_y} = {1}$
+
+<br>
+
+<br>
+coordinate chart:
+<br>
+${{ u}^x} = {x}$;
+${{ u}^y} = {y}$
+
+<br>
+
+<br>
+embedded:
+<br>
+${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
+<br>
+${{{ e}_x}^x} = {1}$;
+${{{ e}_y}^y} = {1}$
+
+<br>
+${{{ e}^x}_x} = {1}$;
+${{{ e}^y}_y} = {1}$
+
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
+<br>
+${{{{ c}_a}_b}^c} = {0}$
+
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+${{{ g}_x}_x} = {1}$;
+${{{ g}_y}_y} = {1}$
+
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+<br>
+commutation coefficients:
+${{{{ c}_a}_b}^c} = {0}$
+
+<br>
+metric:
+${{{ g}_x}_x} = {1}$;
+${{{ g}_y}_y} = {1}$
+
+<br>
+metric inverse:
+${{{ g}^x}^x} = {1}$;
+${{{ g}^y}^y} = {1}$
+
+<br>
+metric derivative:
+${{{{ {\partial g}}_a}_b}_c} = {0}$
+
+<br>
+1st kind Christoffel:
+${{{{ \Gamma}_a}_b}_c} = {0}$
+
+<br>
+connection coefficients / 2nd kind Christoffel:
+${{{{ \Gamma}^a}_b}_c} = {0}$
+
+<br>
+connection coefficients derivative:
+${{{{{ {\partial \Gamma}}^a}_b}_c}_d} = {0}$
+
+<br>
+connection coefficients squared:
+${{{{{ {(\Gamma^2)}}^a}_b}_c}_d} = {0}$
+
+<br>
+Riemann curvature, $\sharp\flat\flat\flat$:
+${{{{{ R}^a}_b}_c}_d} = {0}$
+
+<br>
+Riemann curvature, $\sharp\sharp\flat\flat$:
+${{{{{ R}^a}^b}_c}_d} = {0}$
+
+<br>
+Ricci curvature, $\sharp\flat$:
+${{{ R}^a}_b} = {0}$
+
+<br>
+Gaussian curvature:
+$0$
+
+<br>
+Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
+${{{ G}^a}_b} = {0}$
+
+<br>
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{\partial {A^{x}}}\over{\partial x}} + {{\partial {A^{y}}}\over{\partial y}}}$
+<br>
+geodesic:
+<br>
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{x} \\ \ddot{y}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ 0\end{matrix}\right]}}$
 <br>
 
 <br>
@@ -837,7 +954,7 @@ ${{{ e}_{\phi}}^y} = {{{r}} {{cos\left(  \phi\right)}}}$;
 ${{{ e}_z}^z} = {1}$
 
 <br>
-${{{ e}^r}_x} = {cos\left(  \phi\right)}$;
+${{{ e}^r}_x} = {\frac{{1} - {{sin\left(  \phi\right)}^{2}}}{cos\left(  \phi\right)}}$;
 ${{{ e}^r}_y} = {sin\left(  \phi\right)}$;
 ${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left(  \phi\right)}})}}$;
 ${{{ e}^{\phi}}_y} = {{\frac{1}{r}}{({cos\left(  \phi\right)})}}$;
@@ -973,7 +1090,7 @@ ${{{ e}_{\hat{\theta}}}^y} = {cos\left(  \theta\right)}$;
 ${{{ e}_z}^z} = {1}$
 
 <br>
-${{{ e}^r}_x} = {cos\left(  \theta\right)}$;
+${{{ e}^r}_x} = {\frac{{1} - {{sin\left(  \theta\right)}^{2}}}{cos\left(  \theta\right)}}$;
 ${{{ e}^r}_y} = {sin\left(  \theta\right)}$;
 ${{{ e}^{\hat{\theta}}}_x} = {-{sin\left(  \theta\right)}}$;
 ${{{ e}^{\hat{\theta}}}_y} = {cos\left(  \theta\right)}$;
@@ -1105,7 +1222,7 @@ ${{{ e}_{\bar{\theta}}}^y} = {{{{r}^{({\frac{2}{3}})}}} {{cos\left(  \theta\righ
 ${{{ e}_{\bar{z}}}^z} = {\frac{1}{{r}^{({\frac{1}{3}})}}}$
 
 <br>
-${{{ e}^{\bar{r}}}_x} = {{{{r}^{({\frac{1}{3}})}}} {{cos\left(  \theta\right)}}}$;
+${{{ e}^{\bar{r}}}_x} = {\frac{{{{r}^{({\frac{1}{3}})}}} {{({{1} - {{sin\left(  \theta\right)}^{2}}})}}}{cos\left(  \theta\right)}}$;
 ${{{ e}^{\bar{r}}}_y} = {{{{r}^{({\frac{1}{3}})}}} {{sin\left(  \theta\right)}}}$;
 ${{{ e}^{\bar{\theta}}}_x} = {\frac{-{sin\left(  \theta\right)}}{{r}^{({\frac{2}{3}})}}}$;
 ${{{ e}^{\bar{\theta}}}_y} = {\frac{cos\left(  \theta\right)}{{r}^{({\frac{2}{3}})}}}$;
@@ -1555,7 +1672,7 @@ ${{{ e}_{\phi}}^y} = {{{r}} {{cos\left( {{\phi} + {t}}\right)}}}$
 
 <br>
 ${{{ e}^t}_t} = {1}$;
-${{{ e}^r}_x} = {cos\left( {{\phi} + {t}}\right)}$;
+${{{ e}^r}_x} = {\frac{{1} - {{sin\left( {{\phi} + {t}}\right)}^{2}}}{cos\left( {{\phi} + {t}}\right)}}$;
 ${{{ e}^r}_y} = {sin\left( {{\phi} + {t}}\right)}$;
 ${{{ e}^{\phi}}_t} = {-{1}}$;
 ${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left( {{\phi} + {t}}\right)}})}}$;
@@ -1736,9 +1853,9 @@ ${{{ e}_{\phi}}^y} = {{{r}} {{cos\left(  \phi\right)}}}$
 
 <br>
 ${{{ e}^t}_t} = {\frac{1}{\alpha}}$;
-${{{ e}^t}_x} = {{\frac{1}{\alpha}}{({-{{{t}} {{{\partial \alpha}\over{\partial r}}} {{cos\left(  \phi\right)}}}})}}$;
-${{{ e}^t}_y} = {{\frac{1}{\alpha}}{({-{{{t}} {{{\partial \alpha}\over{\partial r}}} {{sin\left(  \phi\right)}}}})}}$;
-${{{ e}^r}_x} = {cos\left(  \phi\right)}$;
+${{{ e}^t}_x} = {\frac{-{{{t}} {{{\partial \alpha}\over{\partial r}}} {{({{1} - {{sin\left(  \phi\right)}^{2}}})}}}}{{{\alpha}} \cdot {{cos\left(  \phi\right)}}}}$;
+${{{ e}^t}_y} = {{\frac{1}{\alpha}}{({-{{{sin\left(  \phi\right)}} {{t}} {{{\partial \alpha}\over{\partial r}}}}})}}$;
+${{{ e}^r}_x} = {\frac{{1} - {{sin\left(  \phi\right)}^{2}}}{cos\left(  \phi\right)}}$;
 ${{{ e}^r}_y} = {sin\left(  \phi\right)}$;
 ${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left(  \phi\right)}})}}$;
 ${{{ e}^{\phi}}_y} = {{\frac{1}{r}}{({cos\left(  \phi\right)})}}$
@@ -1912,7 +2029,7 @@ ${{{ e}_{\phi}}^y} = {{{r}} {{cos\left( {{\omega} + {\phi}}\right)}}}$
 
 <br>
 ${{{ e}^t}_t} = {1}$;
-${{{ e}^r}_x} = {cos\left( {{\omega} + {\phi}}\right)}$;
+${{{ e}^r}_x} = {\frac{{{1} - {{sin\left( {{\omega} + {\phi}}\right)}^{2}}} - {{{r}} {{{\partial \omega}\over{\partial r}}} {{cos\left( {{\omega} + {\phi}}\right)}} {{sin\left( {{\omega} + {\phi}}\right)}}}}{{cos\left( {{\omega} + {\phi}}\right)} - {{{r}} {{{\partial \omega}\over{\partial r}}} {{sin\left( {{\omega} + {\phi}}\right)}}}}}$;
 ${{{ e}^r}_y} = {sin\left( {{\omega} + {\phi}}\right)}$;
 ${{{ e}^{\phi}}_t} = {-{{\partial \omega}\over{\partial t}}}$;
 ${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{({{sin\left( {{\omega} + {\phi}}\right)} + {{{r}} {{{\partial \omega}\over{\partial r}}} {{cos\left( {{\omega} + {\phi}}\right)}}}})}})}}$;
@@ -1966,7 +2083,7 @@ ${{{ g}^r}^r} = {1}$;
 ${{{ g}^r}^{\phi}} = {-{{\partial \omega}\over{\partial r}}}$;
 ${{{ g}^{\phi}}^t} = {{\partial \omega}\over{\partial t}}$;
 ${{{ g}^{\phi}}^r} = {-{{\partial \omega}\over{\partial r}}}$;
-${{{ g}^{\phi}}^{\phi}} = {\frac{{1} + {{{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}{{r}^{2}}}$
+${{{ g}^{\phi}}^{\phi}} = {\frac{{1} + {{{{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} - {{{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}{{{{r}^{2}}} {{({{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}})}}}}$
 
 <br>
 metric derivative:
@@ -2021,14 +2138,14 @@ ${{{{ \Gamma}^r}_r}_{\phi}} = {-{{{{\partial \omega}\over{\partial r}}} {{r}}}}$
 ${{{{ \Gamma}^r}_{\phi}}_t} = {-{{{r}} {{{\partial \omega}\over{\partial t}}}}}$;
 ${{{{ \Gamma}^r}_{\phi}}_r} = {-{{{{\partial \omega}\over{\partial r}}} {{r}}}}$;
 ${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{r}}$;
-${{{{ \Gamma}^{\phi}}_t}_t} = {{{\partial^ 2 \omega}\over{\partial t^ 2}} + {{{r}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}$;
-${{{{ \Gamma}^{\phi}}_t}_r} = {{\frac{1}{r}}{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}})}}$;
+${{{{ \Gamma}^{\phi}}_t}_t} = {\frac{{{\partial^ 2 \omega}\over{\partial t^ 2}} + {{{{{r}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} - {{{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{ \Gamma}^{\phi}}_t}_r} = {\frac{{{\partial \omega}\over{\partial t}} + {{{{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}}{{{r}} {{({{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}})}}}}$;
 ${{{{ \Gamma}^{\phi}}_t}_{\phi}} = {{{{\partial \omega}\over{\partial r}}} {{r}} {{{\partial \omega}\over{\partial t}}}}$;
-${{{{ \Gamma}^{\phi}}_r}_t} = {{\frac{1}{r}}{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}})}}$;
-${{{{ \Gamma}^{\phi}}_r}_r} = {\frac{{{{4}} {{{\partial \omega}\over{\partial r}}}} + {{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} + {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{3}}}}}{{{2}} {{r}}}}$;
-${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {{\frac{1}{r}}{({{1} + {{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}})}}$;
+${{{{ \Gamma}^{\phi}}_r}_t} = {\frac{{{\partial \omega}\over{\partial t}} + {{{{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}}{{{r}} {{({{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}})}}}}$;
+${{{{ \Gamma}^{\phi}}_r}_r} = {\frac{{{{4}} {{{\partial \omega}\over{\partial r}}}} + {{{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} - {{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{3}}}} - {{{4}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{3}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}{{{2}} {{r}} {{({{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}})}}}}$;
+${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{{1} + {{{{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} - {{{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}{{{r}} {{({{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}})}}}}$;
 ${{{{ \Gamma}^{\phi}}_{\phi}}_t} = {{{{\partial \omega}\over{\partial r}}} {{r}} {{{\partial \omega}\over{\partial t}}}}$;
-${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {{\frac{1}{r}}{({{1} + {{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}})}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{{1} + {{{{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} - {{{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}{{{r}} {{({{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}})}}}}$;
 ${{{{ \Gamma}^{\phi}}_{\phi}}_{\phi}} = {{{{\partial \omega}\over{\partial r}}} {{r}}}$
 
 <br>
@@ -2050,66 +2167,66 @@ ${{{{{ {\partial \Gamma}}^r}_{\phi}}_t}_r} = {-{({{{\partial \omega}\over{\parti
 ${{{{{ {\partial \Gamma}}^r}_{\phi}}_r}_t} = {-{{{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{r}}}}$;
 ${{{{{ {\partial \Gamma}}^r}_{\phi}}_r}_r} = {-{({{{\partial \omega}\over{\partial r}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}$;
 ${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_t}_t}_t} = {{{\partial^ 3 \omega}\over{\partial t^ 3}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} + {{{2}} {{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_t}_t}_r} = {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}} + {{{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} + {{{2}} {{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_t}_r}_t} = {{\frac{1}{r}}{({{{\partial^ 2 \omega}\over{\partial t^ 2}} + {{{r}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}} + {{{2}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}})}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_t}_r}_r} = {\frac{-{({{{{{{{\partial \omega}\over{\partial t}} - {{{{r}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}}} - {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} - {{{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}})}}{{r}^{2}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_t}_t}_t} = {\frac{{{\partial^ 3 \omega}\over{\partial t^ 3}} + {{{{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{6}}}} - {{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{4}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{2}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{5}}}} + {{{{2}} {{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{{\partial^ 3 \omega}\over{\partial t^ 3}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}} {{{\partial^ 3 \omega}\over{\partial t^ 3}}}}}{{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_t}_t}_r} = {\frac{{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}} + {{{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} + {{{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{6}}}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} - {{{4}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{{2}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{5}}}} - {{{2}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{r}^{4}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{6}}}} + {{{2}} {{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}}}}{{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_t}_r}_t} = {\frac{{{\partial^ 2 \omega}\over{\partial t^ 2}} + {{{r}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}} + {{{{2}} {{{r}^{6}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{5}}}} - {{{4}} {{{r}^{4}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{2}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} - {{{2}} {{{r}^{4}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{{r}^{6}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{2}} {{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{{r}^{4}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{2}} {{{r}^{3}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}}} + {{{{r}^{5}}} {{{{\partial \omega}\over{\partial t}}^{4}}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}}}{{{r}} {{({{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_t}_r}_r} = {\frac{-{({{{{{{\partial \omega}\over{\partial t}} - {{{{r}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}}} - {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} + {{{{2}} {{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{{r}^{7}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{{4}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}} - {{{2}} {{{r}^{7}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{5}}}}} - {{{{r}^{6}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{5}}}}} + {{{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} + {{{{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{5}}}} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} - {{{{r}^{6}}} {{{{\partial \omega}\over{\partial t}}^{4}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}}} + {{{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}} - {{{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}}})}}{{{{r}^{2}}} {{({{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_t}_{\phi}}_t} = {{{r}} {{({{{{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}} + {{{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_t}_{\phi}}_r} = {{{{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}}} + {{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{r}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_t}_t} = {{\frac{1}{r}}{({{{\partial^ 2 \omega}\over{\partial t^ 2}} + {{{r}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}} + {{{2}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}})}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_t}_r} = {\frac{-{({{{{{{{\partial \omega}\over{\partial t}} - {{{{r}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}}} - {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} - {{{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}})}}{{r}^{2}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_r}_t} = {\frac{{{{4}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{2}} {{r}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}} + {{{6}} {{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}}{{{2}} {{r}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_r}_r} = {\frac{-{({{{{{{{8}} {{{\partial \omega}\over{\partial r}}}} - {{{4}} {{{r}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 3}}}}} - {{{8}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} - {{{12}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{3}}}}})}}{{{4}} {{{r}^{2}}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_t} = {{{2}} {{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {\frac{-{({{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}{{r}^{2}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_t}_t} = {\frac{{{\partial^ 2 \omega}\over{\partial t^ 2}} + {{{r}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}} + {{{{2}} {{{r}^{6}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{5}}}} - {{{4}} {{{r}^{4}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{2}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} - {{{2}} {{{r}^{4}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{{r}^{6}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{2}} {{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{{r}^{4}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{2}} {{{r}^{3}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}}} + {{{{r}^{5}}} {{{{\partial \omega}\over{\partial t}}^{4}}} {{{\partial^ 3 \omega}\over{\partial r\partial t^ 2}}}}}{{{r}} {{({{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_t}_r} = {\frac{-{({{{{{{\partial \omega}\over{\partial t}} - {{{{r}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}}} - {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} + {{{{2}} {{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{{r}^{7}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{{4}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}} - {{{2}} {{{r}^{7}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{5}}}}} - {{{{r}^{6}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{5}}}}} + {{{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} + {{{{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{5}}}} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} - {{{{r}^{6}}} {{{{\partial \omega}\over{\partial t}}^{4}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}}} + {{{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}} - {{{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}}})}}{{{{r}^{2}}} {{({{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_r}_t} = {\frac{{{{8}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{4}} {{r}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}} + {{{{12}} {{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} - {{{24}} {{{r}^{4}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{12}} {{{r}^{6}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} + {{{{{8}} {{{r}^{4}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{16}} {{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{8}} {{{r}^{3}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}}} + {{{4}} {{{r}^{5}}} {{{{\partial \omega}\over{\partial t}}^{4}}} {{{\partial^ 3 \omega}\over{\partial r^ 2\partial t}}}}}{{{r}} {{({{{4} - {{{8}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{4}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_r}_r} = {\frac{-{({{{{{{{{8}} {{{\partial \omega}\over{\partial r}}}} - {{{4}} {{{r}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 3}}}}} - {{{8}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} - {{{12}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} - {{{12}} {{{r}^{7}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{24}} {{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} + {{{{{16}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{8}} {{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{3}}}}} + {{{8}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{3}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} + {{{{{{8}} {{{r}^{4}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{16}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{4}} {{{r}^{6}}} {{{{\partial \omega}\over{\partial r}}^{3}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} - {{{4}} {{{r}^{6}}} {{{{\partial \omega}\over{\partial t}}^{4}}} {{{\partial^ 3 \omega}\over{\partial r^ 3}}}}} + {{{8}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{{\partial^ 3 \omega}\over{\partial r^ 3}}}}})}}{{{{r}^{2}}} {{({{{4} - {{{8}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{4}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_t} = {\frac{{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{({{{2} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}{{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {\frac{-{({{{{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} - {{{2}} {{{r}^{7}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{4}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{{r}^{6}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}{{{{r}^{2}}} {{({{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_t}_t} = {{{r}} {{({{{{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}} + {{{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_t}_r} = {{{{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}}} + {{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{r}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_t} = {{{2}} {{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {\frac{-{({{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}{{r}^{2}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_t} = {\frac{{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{({{{2} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}{{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {\frac{-{({{{{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} - {{{2}} {{{r}^{7}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{4}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{{r}^{6}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} + {{{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}{{{{r}^{2}}} {{({{{1} - {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_{\phi}}_t} = {{{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{r}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_{\phi}}_r} = {{{\partial \omega}\over{\partial r}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}}$
 
 <br>
 connection coefficients squared:
 ${{{{{ {(\Gamma^2)}}^r}_t}_t}_t} = {-{{{r}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}}}$;
-${{{{{ {(\Gamma^2)}}^r}_t}_t}_r} = {-{{{{\partial \omega}\over{\partial t}}} {{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}}$;
+${{{{{ {(\Gamma^2)}}^r}_t}_t}_r} = {\frac{-{{{{\partial \omega}\over{\partial t}}} {{({{{{{\partial \omega}\over{\partial t}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
 ${{{{{ {(\Gamma^2)}}^r}_t}_r}_t} = {-{{{{\partial \omega}\over{\partial r}}} {{r}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}}}$;
-${{{{{ {(\Gamma^2)}}^r}_t}_r}_r} = {-{{{{\partial \omega}\over{\partial r}}} {{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}}$;
+${{{{{ {(\Gamma^2)}}^r}_t}_r}_r} = {\frac{-{{{{\partial \omega}\over{\partial r}}} {{({{{\partial \omega}\over{\partial t}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}}})}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
 ${{{{{ {(\Gamma^2)}}^r}_t}_{\phi}}_t} = {-{{{r}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}}}$;
-${{{{{ {(\Gamma^2)}}^r}_t}_{\phi}}_r} = {-{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_t}_t} = {-{{{{\partial \omega}\over{\partial t}}} {{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_t}_r} = {{\frac{1}{2}}{({-{{{{\partial \omega}\over{\partial t}}} {{({{{{4}} {{{\partial \omega}\over{\partial r}}}} + {{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}}})}}$;
+${{{{{ {(\Gamma^2)}}^r}_t}_{\phi}}_r} = {\frac{-{({{{\partial \omega}\over{\partial t}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}}})}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_t}_t} = {\frac{-{{{{\partial \omega}\over{\partial t}}} {{({{{{{\partial \omega}\over{\partial t}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_t}_r} = {\frac{-{{{{\partial \omega}\over{\partial t}}} {{({{{{{4}} {{{\partial \omega}\over{\partial r}}}} - {{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} - {{{4}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}})}}}}{{{2}} {{({{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}})}}}}$;
 ${{{{{ {(\Gamma^2)}}^r}_r}_t}_{\phi}} = {-{{\partial \omega}\over{\partial t}}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_r}_t} = {-{{{{\partial \omega}\over{\partial r}}} {{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_r}_r} = {{\frac{1}{2}}{({-{{{{\partial \omega}\over{\partial r}}} {{({{{{4}} {{{\partial \omega}\over{\partial r}}}} + {{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}}})}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_r}_t} = {\frac{-{{{{\partial \omega}\over{\partial r}}} {{({{{\partial \omega}\over{\partial t}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}}})}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_r}_r} = {\frac{-{{{{\partial \omega}\over{\partial r}}} {{({{{{4}} {{{\partial \omega}\over{\partial r}}}} + {{{{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} - {{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{4}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}})}}}}{{{2}} {{({{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}})}}}}$;
 ${{{{{ {(\Gamma^2)}}^r}_r}_r}_{\phi}} = {-{{\partial \omega}\over{\partial r}}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_t} = {-{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_r} = {{\frac{1}{2}}{({-{({{{{4}} {{{\partial \omega}\over{\partial r}}}} + {{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}})}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_t} = {\frac{-{({{{\partial \omega}\over{\partial t}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}}})}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_r} = {\frac{-{({{{{4}} {{{\partial \omega}\over{\partial r}}}} + {{{{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} - {{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{4}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}})}}{{{2}} {{({{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}})}}}}$;
 ${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_{\phi}} = {-{1}}$;
 ${{{{{ {(\Gamma^2)}}^r}_{\phi}}_t}_r} = {-{{\partial \omega}\over{\partial t}}}$;
 ${{{{{ {(\Gamma^2)}}^r}_{\phi}}_r}_r} = {-{{\partial \omega}\over{\partial r}}}$;
 ${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_t} = {-{{{{\partial \omega}\over{\partial t}}} {{({{{{\partial \omega}\over{\partial t}}^{2}} + {{{{r}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}}}})}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_{\phi}} = {-{{{{\partial \omega}\over{\partial t}}} {{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_r}_t} = {{\frac{1}{r}}{({{{{{\partial^ 2 \omega}\over{\partial t^ 2}} - {{{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{r}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}}})}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_r}_r} = {\frac{{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} - {{{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}}}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_r}_{\phi}} = {-{{{{\partial \omega}\over{\partial t}}} {{({{{\partial \omega}\over{\partial r}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_t} = {-{({{{{\partial \omega}\over{\partial t}}^{2}} - {{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}}})}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_t} = {\frac{-{{{{\partial \omega}\over{\partial t}}} {{({{{{{{\partial \omega}\over{\partial t}}^{2}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{r}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}}}})}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_{\phi}} = {\frac{-{{{{\partial \omega}\over{\partial t}}} {{({{{{\partial \omega}\over{\partial t}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}})}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_r}_t} = {\frac{{{{{{2}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}} - {{{2}} {{{r}^{6}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{6}}}}} - {{{2}} {{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{{4}} {{{r}^{4}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{2}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{6}}}}} - {{{2}} {{r}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{4}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} + {{{2}} {{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} + {{{{{2}} {{{r}^{6}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{4}} {{{r}^{4}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{4}} {{{r}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}{{{r}} {{({{{2} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_r}_r} = {\frac{{{{2}} {{{\partial \omega}\over{\partial t}}}} + {{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} + {{{{2}} {{{r}^{7}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{4}} {{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{2}} {{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{4}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{{{4}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}} - {{{2}} {{{r}^{7}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{5}}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{5}}}}}{{{{r}^{2}}} {{({{{2} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_r}_{\phi}} = {\frac{-{{{{\partial \omega}\over{\partial t}}} {{({{{\partial \omega}\over{\partial r}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}})}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_t} = {\frac{-{({{{{{\partial \omega}\over{\partial t}}^{2}} - {{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}}}} + {{{{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}})}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_r} = {{{{\partial \omega}\over{\partial r}}} {{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_{\phi}} = {-{{\partial \omega}\over{\partial t}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_t}_r} = {{{{\partial \omega}\over{\partial r}}} {{({{{{{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}}} - {{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}} + {{{r}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_t}_r} = {\frac{{{{\partial \omega}\over{\partial r}}} {{({{{{{{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} - {{{r}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}} + {{{{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{r}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_r}_t}_{\phi}} = {-{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{\partial \omega}\over{\partial r}}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_t} = {\frac{{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} - {{{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}}}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_r} = {\frac{{{{4}} {{{\partial \omega}\over{\partial r}}}} + {{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} + {{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{3}}}}}{{{2}} {{{r}^{2}}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{{1} - {{{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_t} = {\frac{{{{2}} {{{\partial \omega}\over{\partial t}}}} + {{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} + {{{2}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} + {{{{2}} {{{r}^{7}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{4}} {{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{2}} {{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{4}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{{{4}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}} - {{{2}} {{{r}^{7}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{5}}}}} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{5}}}}}{{{{r}^{2}}} {{({{{2} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_r} = {\frac{{{{4}} {{{\partial \omega}\over{\partial r}}}} + {{{2}} {{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} + {{{{2}} {{{r}^{5}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} - {{{4}} {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{{{2}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{3}}}} - {{{4}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{3}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{8}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{6}}} {{{{\partial \omega}\over{\partial r}}^{3}}} {{{{\partial \omega}\over{\partial t}}^{4}}}} + {{{4}} {{{r}^{4}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}{{{{r}^{2}}} {{({{{2} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{{{2} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} + {{{{{4}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{2}} {{{r}^{7}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}{{{{r}^{2}}} {{({{{2} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_r}_{\phi}}_t} = {{{{\partial \omega}\over{\partial r}}} {{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_{\phi}}_r} = {{{{\partial \omega}\over{\partial r}}} {{({{{\partial \omega}\over{\partial r}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_t} = {-{{{{\partial \omega}\over{\partial t}}} {{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_{\phi}}_r} = {\frac{{{{\partial \omega}\over{\partial r}}} {{({{{\partial \omega}\over{\partial r}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}})}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_t} = {\frac{-{{{{\partial \omega}\over{\partial t}}} {{({{{{\partial \omega}\over{\partial t}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}} + {{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}})}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_r} = {-{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{\partial \omega}\over{\partial r}}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_{\phi}} = {-{({{{\partial \omega}\over{\partial t}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}}})}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_t} = {-{{{{\partial \omega}\over{\partial t}}} {{({{{\partial \omega}\over{\partial r}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{{1} - {{{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_{\phi}} = {-{({{{\partial \omega}\over{\partial r}} + {{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}})}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_{\phi}} = {\frac{-{({{{\partial \omega}\over{\partial t}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}}}}})}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_t} = {\frac{-{{{{\partial \omega}\over{\partial t}}} {{({{{\partial \omega}\over{\partial r}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}})}}}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{{{2} - {{{2}} {{{r}^{3}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}}} + {{{{{4}} {{{r}^{5}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} - {{{2}} {{{r}^{7}}} {{{\partial \omega}\over{\partial r}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}}{{{{r}^{2}}} {{({{{2} - {{{4}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} + {{{2}} {{{r}^{4}}} {{{{\partial \omega}\over{\partial t}}^{4}}}}})}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_{\phi}} = {\frac{-{({{{\partial \omega}\over{\partial r}} + {{{{{r}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}}} - {{{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}} - {{{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}})}}{{1} - {{{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_t} = {-{{\partial \omega}\over{\partial t}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_{\phi}} = {-{1}}$
 
@@ -2138,7 +2255,7 @@ divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{{A^{
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{t} \\ \ddot{r} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ {{{r}} {{{\dot{\phi}}^{2}}}} + {{{r}} {{{\dot{r}}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} + {{{2}} {{r}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{{\partial \omega}\over{\partial r}}}} + {{{2}} {{r}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}}} + {{{r}} {{{\dot{t}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} + {{{2}} {{r}} {{\dot{t}}} \cdot {{\dot{\phi}}} \cdot {{{\partial \omega}\over{\partial t}}}} \\ {{{-4}} \cdot {{\frac{1}{2}}} {{{\dot{r}}^{2}}} {{{\partial \omega}\over{\partial r}}} {{\frac{1}{r}}}} + {{{-4}} \cdot {{\frac{1}{2}}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{\frac{1}{r}}}} + {{{-4}} \cdot {{\frac{1}{2}}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{\frac{1}{r}}}} + {{{-4}} \cdot {{\frac{1}{2}}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{\partial \omega}\over{\partial t}}} {{\frac{1}{r}}}} + {{{-4}} \cdot {{\frac{1}{2}}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{\frac{1}{r}}}} + {{{-4}} \cdot {{\frac{1}{2}}} {{\dot{t}}} \cdot {{\dot{\phi}}} \cdot {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{\frac{1}{r}}}} + {{{-2}} \cdot {{\frac{1}{2}}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{\dot{\phi}}^{2}}} {{\frac{1}{r}}}} + {{{-2}} \cdot {{\frac{1}{2}}} {{r}} {{{\dot{r}}^{2}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{\frac{1}{r}}}} + {{{-2}} \cdot {{\frac{1}{2}}} {{{r}^{2}}} {{{\dot{r}}^{2}}} {{{{\partial \omega}\over{\partial r}}^{3}}} {{\frac{1}{r}}}} + {{{-4}} \cdot {{\frac{1}{2}}} {{r}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{\frac{1}{r}}}} + {{{-2}} \cdot {{\frac{1}{2}}} {{{r}^{2}}} {{{\dot{t}}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{r}}}} + {{{-2}} \cdot {{\frac{1}{2}}} {{r}} {{{\dot{t}}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{\frac{1}{r}}}}\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{t} \\ \ddot{r} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ {{{r}} {{{\dot{\phi}}^{2}}}} + {{{r}} {{{\dot{r}}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}}} + {{{2}} {{r}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{{\partial \omega}\over{\partial r}}}} + {{{2}} {{r}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}}} + {{{r}} {{{\dot{t}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}} + {{{2}} {{r}} {{\dot{t}}} \cdot {{\dot{\phi}}} \cdot {{{\partial \omega}\over{\partial t}}}} \\ {{{-4}} {{{\dot{r}}^{2}}} {{{\partial \omega}\over{\partial r}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-4}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-4}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{{r}^{2}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{4}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{4}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-4}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{\partial \omega}\over{\partial t}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{4}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{r}^{3}}} {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{4}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{r}^{4}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{4}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{3}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-4}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{r}^{2}}} {{{\partial \omega}\over{\partial t}}} {{{{\partial \omega}\over{\partial r}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-4}} {{\dot{t}}} \cdot {{\dot{\phi}}} \cdot {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{\partial \omega}\over{\partial t}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{4}} {{\dot{t}}} \cdot {{\dot{\phi}}} \cdot {{{r}^{4}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{3}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-2}} {{{r}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{\dot{\phi}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{2}} {{{r}^{4}}} {{{\partial \omega}\over{\partial r}}} {{{\dot{\phi}}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-2}} {{r}} {{{\dot{r}}^{2}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{2}} {{{r}^{3}}} {{{\dot{r}}^{2}}} {{{\partial^ 2 \omega}\over{\partial r^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-2}} {{{r}^{2}}} {{{\dot{r}}^{2}}} {{{{\partial \omega}\over{\partial r}}^{3}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{4}} {{{r}^{2}}} {{{\dot{r}}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{2}} {{{r}^{4}}} {{{\dot{r}}^{2}}} {{{{\partial \omega}\over{\partial r}}^{3}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-4}} {{r}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{\partial^ 2 \omega}\over{\partial r\partial t}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{2}} {{{r}^{4}}} {{{\dot{t}}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{4}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-2}} {{{r}^{2}}} {{{\dot{t}}^{2}}} {{{\partial \omega}\over{\partial r}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{-2}} {{r}} {{{\dot{t}}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}} + {{{2}} {{{r}^{3}}} {{{\dot{t}}^{2}}} {{{\partial^ 2 \omega}\over{\partial t^ 2}}} {{{{\partial \omega}\over{\partial t}}^{2}}} {{\frac{1}{{{{2}} {{r}}} + {{{-2}} {{r}} {{{r}^{2}}} {{{{\partial \omega}\over{\partial t}}^{2}}}}}}}}\end{matrix}\right]}}$
 <br>
 
 <br>
@@ -2323,12 +2440,12 @@ ${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left(  \theta\right)}} {{sin\left(  \phi\rig
 ${{{ e}_{\phi}}^y} = {{{r}} {{sin\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$
 
 <br>
-${{{ e}^r}_x} = {{{sin\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
-${{{ e}^r}_y} = {{{sin\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
+${{{ e}^r}_x} = {\frac{{{sin\left(  \theta\right)}} {{({{1} - {{sin\left(  \phi\right)}^{2}}})}}}{cos\left(  \phi\right)}}$;
+${{{ e}^r}_y} = {{{sin\left(  \phi\right)}} {{sin\left(  \theta\right)}}}$;
 ${{{ e}^r}_z} = {cos\left(  \theta\right)}$;
-${{{ e}^{\theta}}_x} = {{\frac{1}{r}}{({{{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}})}}$;
-${{{ e}^{\theta}}_y} = {{\frac{1}{r}}{({{{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}}})}}$;
-${{{ e}^{\theta}}_z} = {{\frac{1}{r}}{({-{sin\left(  \theta\right)}})}}$;
+${{{ e}^{\theta}}_x} = {\frac{{{cos\left(  \theta\right)}} {{({{1} - {{sin\left(  \phi\right)}^{2}}})}}}{{{cos\left(  \phi\right)}} {{r}}}}$;
+${{{ e}^{\theta}}_y} = {{\frac{1}{r}}{({{{sin\left(  \phi\right)}} {{cos\left(  \theta\right)}}})}}$;
+${{{ e}^{\theta}}_z} = {\frac{sin\left(  \theta\right)}{-{r}}}$;
 ${{{ e}^{\phi}}_x} = {\frac{-{sin\left(  \phi\right)}}{{{r}} {{sin\left(  \theta\right)}}}}$;
 ${{{ e}^{\phi}}_y} = {\frac{cos\left(  \phi\right)}{{{r}} {{sin\left(  \theta\right)}}}}$
 
@@ -2509,11 +2626,11 @@ ${{{ e}_{\hat{\phi}}}^x} = {-{sin\left(  \phi\right)}}$;
 ${{{ e}_{\hat{\phi}}}^y} = {cos\left(  \phi\right)}$
 
 <br>
-${{{ e}^r}_x} = {{{sin\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
-${{{ e}^r}_y} = {{{sin\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
+${{{ e}^r}_x} = {\frac{{{sin\left(  \theta\right)}} {{({{1} - {{sin\left(  \phi\right)}^{2}}})}}}{cos\left(  \phi\right)}}$;
+${{{ e}^r}_y} = {{{sin\left(  \phi\right)}} {{sin\left(  \theta\right)}}}$;
 ${{{ e}^r}_z} = {cos\left(  \theta\right)}$;
-${{{ e}^{\hat{\theta}}}_x} = {{{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
-${{{ e}^{\hat{\theta}}}_y} = {{{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
+${{{ e}^{\hat{\theta}}}_x} = {\frac{{{cos\left(  \theta\right)}} {{({{1} - {{sin\left(  \phi\right)}^{2}}})}}}{cos\left(  \phi\right)}}$;
+${{{ e}^{\hat{\theta}}}_y} = {{{sin\left(  \phi\right)}} {{cos\left(  \theta\right)}}}$;
 ${{{ e}^{\hat{\theta}}}_z} = {-{sin\left(  \theta\right)}}$;
 ${{{ e}^{\hat{\phi}}}_x} = {-{sin\left(  \phi\right)}}$;
 ${{{ e}^{\hat{\phi}}}_y} = {cos\left(  \phi\right)}$
@@ -3115,12 +3232,12 @@ ${{{ e}_{\phi}}^x} = {-{{{sin\left(  \phi\right)}} {{({{R} + {{{r}} {{sin\left( 
 ${{{ e}_{\phi}}^y} = {{{cos\left(  \phi\right)}} {{({{R} + {{{r}} {{sin\left(  \theta\right)}}}})}}}$
 
 <br>
-${{{ e}^r}_x} = {{{sin\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
-${{{ e}^r}_y} = {{{sin\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
+${{{ e}^r}_x} = {\frac{{{sin\left(  \theta\right)}} {{({{1} - {{sin\left(  \phi\right)}^{2}}})}}}{cos\left(  \phi\right)}}$;
+${{{ e}^r}_y} = {{{sin\left(  \phi\right)}} {{sin\left(  \theta\right)}}}$;
 ${{{ e}^r}_z} = {cos\left(  \theta\right)}$;
-${{{ e}^{\theta}}_x} = {{\frac{1}{r}}{({{{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}})}}$;
-${{{ e}^{\theta}}_y} = {{\frac{1}{r}}{({{{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}}})}}$;
-${{{ e}^{\theta}}_z} = {{\frac{1}{r}}{({-{sin\left(  \theta\right)}})}}$;
+${{{ e}^{\theta}}_x} = {\frac{{{cos\left(  \theta\right)}} {{({{1} - {{sin\left(  \phi\right)}^{2}}})}}}{{{cos\left(  \phi\right)}} {{r}}}}$;
+${{{ e}^{\theta}}_y} = {{\frac{1}{r}}{({{{sin\left(  \phi\right)}} {{cos\left(  \theta\right)}}})}}$;
+${{{ e}^{\theta}}_z} = {\frac{sin\left(  \theta\right)}{-{r}}}$;
 ${{{ e}^{\phi}}_x} = {\frac{-{sin\left(  \phi\right)}}{{R} + {{{r}} {{sin\left(  \theta\right)}}}}}$;
 ${{{ e}^{\phi}}_y} = {\frac{cos\left(  \phi\right)}{{R} + {{{r}} {{sin\left(  \theta\right)}}}}}$
 
