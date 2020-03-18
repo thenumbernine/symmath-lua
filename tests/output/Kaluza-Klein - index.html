@@ -29,8 +29,6 @@ $k_e = $<input name='Coulomb_constant_in_kg_m3_per_C2_s2' value='8987551787.3682
 <br>
 $\sqrt{{\frac{1}{G}}{({{k_e}})}}$	 = {=={ sqrt_Coulomb_constant_over_gravitational_constant_in_kg_per_C = Math.sqrt(Coulomb_constant_in_kg_m3_per_C2_s2 / gravitational_constant_in_m3_per_kg_s2) }==} $ \cdot \frac{kg}{C} = 1 =$ conversion from kg to C
 <br>
-${kg} = {{{8.6172202304994\cdot{10^{-11}}}} {{C}}}$
-<br>
 $kg = $ {=={ 1 / sqrt_Coulomb_constant_over_gravitational_constant_in_kg_per_C }==} $C$. 
 <br>
 
@@ -157,9 +155,9 @@ $v = \frac{I}{\lambda} =$ {=={mean_electron_velocity_in_m_per_s = current_in_A /
 <br>
 $\beta = \frac{v}{c} =$ {=={Lorentz_beta = mean_electron_velocity_in_m_per_s / speed_of_light_in_m_per_s}==} = unitless, spatial component of 4-velocity.
 <br>
-$\gamma = 1 / \sqrt{1 - \beta^2} \approx$ {=={Lorentz_gamma = 1 / (1 - Math.pow(Lorentz_beta, .5))}==} = Lorentz factor.
+$\gamma = 1 / \sqrt{1 - \beta^2} \approx 1 + \frac{v^2}{2 c^2} \approx $ 1 + {=={Lorentz_gamma = 1 + .5 * Lorentz_beta * Lorentz_beta}==} = Lorentz factor.
 <br>
-$E = \frac{1}{2} \lambda k_e \frac{1}{r} = \frac{1}{2} \pi R^2 \rho_{charge} e k_e \frac{1}{r} =$ {=={electric_field_in_kg_m2_per_C_s2 = charge_per_unit_length_in_C_per_m * .5 * Coulomb_constant_in_kg_m3_per_C2_s2 / field_measure_distance_in_m}==} $\cdot \frac{kg \cdot m}{C \cdot s^2}$ = electric field magnitude.
+$E = 2 \lambda k_e \frac{1}{r} \frac{v^2}{c^2} = \frac{\lambda}{2 \pi \epsilon_0 r} \frac{v^2}{c^2} = 2 \pi R^2 \rho_{charge} e k_e \frac{1}{r} =$ {=={electric_field_in_kg_m2_per_C_s2 = charge_per_unit_length_in_C_per_m * 2 * Coulomb_constant_in_kg_m3_per_C2_s2 / field_measure_distance_in_m * (mean_electron_velocity_in_m_per_s * mean_electron_velocity_in_m_per_s) / (speed_of_light_in_m_per_s * speed_of_light_in_m_per_s)}==} $\cdot \frac{kg \cdot m}{C \cdot s^2}$ = electric field magnitude.
 <br>
 $B = \frac{1}{c} \beta \gamma E = $ {=={magnetic_field_in_kg_m_per_C_s = Lorentz_beta * Lorentz_gamma * (electric_field_in_kg_m2_per_C_s2 / speed_of_light_in_m_per_s) }==} $\frac{kg}{C \cdot s} =$ magnetic field magnitude.
 <br>
