@@ -166,7 +166,7 @@ d0_Pi_def = d0_Pi_def:subst(conn4iU_def:reindex{m='j'})()
 d0_Pi_def[2] = d0_Pi_def[2]:tidyIndexes():reindex{ab='ij'}
 d0_Pi_def = betterSimplify(d0_Pi_def)
 printbr(d0_Pi_def)
-printbr(var[[\frac{d}{dx^0} Pi]]:eq( betterSimplify(d0_Pi_def:rhs() - Pi'_,i' * beta'^i') ))
+printbr([[$\frac{d}{dx^0} \Pi = $]], betterSimplify(d0_Pi_def:rhs() - Pi'_,i' * beta'^i') )
 printbr()
 
 printbr'collected:'

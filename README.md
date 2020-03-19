@@ -681,6 +681,8 @@ Output CDN URLs:
 
 [tests/output/ADM metric](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric.html)
 
+[tests/output/Acoustic Black Hole](https://thenumbernine.github.io/symmath/tests/output/Acoustic%20Black%20Hole.html)
+
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
 [tests/output/BSSN](https://thenumbernine.github.io/symmath/tests/output/BSSN.html)
@@ -811,6 +813,6 @@ Output CDN URLs:
 
 [tests/output/unit/tidyIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/tidyIndexes.html)
 
-[tests/output/wave equation in spacetime](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20in%20spacetime.html)
+[tests/output/wave equation in spacetime - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20in%20spacetime%20%2d%20flux%20eigenvectors.html)
 
-[tests/output/wave equation with metric of space and time - based on bssnok-scalar](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20with%20metric%20of%20space%20and%20time%20%2d%20based%20on%20bssnok%2dscalar.html)
+[tests/output/wave equation in spacetime](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20in%20spacetime.html)
