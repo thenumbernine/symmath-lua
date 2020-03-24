@@ -237,6 +237,24 @@ pow.rules = {
 			
 			-- a^0 => 1
 			if expr[2] == Constant(0) then return Constant(1) end
+
+			-- i^n
+			if expr[1] == symmath.i and Constant.isInteger(expr[2]) then
+				local v = expr[2].value % 4
+				if v == 0 then
+					return Constant(1)
+				elseif v == 1 then
+					return symmath.i
+				elseif v == 2 then
+					return Constant(-1)
+				elseif v == 3 then
+					return -symmath.i
+				end
+				-- fraction?
+				if v < 0 or v >= 4 then
+					return symmath.i^(v%4)
+				end
+			end
 			
 			-- (a ^ b) ^ c => a ^ (b * c)
 			-- unless b is 2 and c is 1/2 ...

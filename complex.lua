@@ -18,6 +18,8 @@ if not ffi then
 		if complex.is(re) then
 			self.re = re.re
 			self.im = re.im
+		elseif require 'symmath.Variable'.is(re) then
+			self.init(re.value)
 		else
 			self.re = assert(tonumber(re))
 			self.im = tonumber(im) or 0
@@ -52,6 +54,7 @@ else
 end
 
 function complex.__eq(a,b)
+	if not complex.is(a) or not complex.is(b) then return false end
 	a = complex(a)
 	b = complex(b)
 	return a.re == b.re and a.im == b.im
