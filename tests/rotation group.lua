@@ -6,6 +6,19 @@ local function cot(...) return cos(...) / sin(...) end
 
 local Props = class(require 'symmath.physics.diffgeom', {print=printbr, verbose=true})
 
+printbr[[
+<h3>Rotation Groups</h3><br>
+<br>
+
+Taken from a few problems from Misner, Thorne, Wheeler, "Gravitation":<br>
+Exercise 9.13: rotation groups - generators<br>
+Exercise 9.13: rotation groups - structure constants: ${c_{\alpha\beta}}^\gamma = -\epsilon_{\alpha\beta\gamma}$<br>
+Exercise 10.17: rotation groups - connection coefficients: ${\Gamma^\alpha}_{\beta\gamma} = \frac{1}{2} \epsilon_{\alpha\beta\gamma}$<br>
+Exercise 11.12: rotation groups - Riemann curvature: ${R^\alpha}_{\beta\gamma\delta} = \frac{1}{2} \delta^{\alpha\beta}_{\gamma\delta}$<br>
+Exercise 13.15: rotation groups - metric (in non-coordinate basis of generators): $g_{\alpha\beta} = \delta_{\alpha\beta}, [e_\alpha, e_\beta] = -\epsilon_{\alpha\beta\gamma} e_\gamma$<br>
+<br>
+]]
+
 local t,x,y,z = vars('t','x','y','z')
 local r,phi,theta,psi = vars('r','\\phi','\\theta','\\psi')
 
