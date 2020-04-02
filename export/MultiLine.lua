@@ -176,6 +176,11 @@ MultiLine.lookupTable = {
 		res = self:combine(res, {')'})
 		return res
 	end,
+	[require 'symmath.abs'] = function(self, expr)
+		local x = self:apply(expr[1])
+		local bar = range(#x):mapi(function() return par[2][1] end)
+		return self:combine(self:combine(bar, x), bar)
+	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		local ch = self:wrapStrOfChildWithParenthesis(expr, 1)
 		local sym = '-'

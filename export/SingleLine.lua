@@ -67,6 +67,9 @@ SingleLine.lookupTable = {
 			return self:apply(x)
 		end):concat(', ') .. ')'
 	end,
+	[require 'symmath.abs'] = function(self, expr)
+		return '|'..self:apply(expr[1])..'|'
+	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		return '-'..self:wrapStrOfChildWithParenthesis(expr, 1)
 	end,

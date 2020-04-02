@@ -653,29 +653,29 @@ add.rules = {
 				--]]
 			end
 			--]=]
-		
-		
-			-- log(a) + log(b) = log(ab)
-			do
-				local found
-				local log = symmath.log
-				for i=#expr-1,1,-1 do
-					local a = expr[i]
-					for j=#expr,i+1,-1 do
-						local b = expr[j]
-						if log.is(a) and log.is(b) then
-							if not found then
-								expr = expr:clone()
-								found = true
-							end
-							table.remove(expr, j)
-							expr[i] = log(a[1] * b[1])
+		end},
+	
+		-- log(a) + log(b) = log(ab)
+		{logMul = function(prune, expr)
+			local symmath = require 'symmath'
+			local found
+			local log = symmath.log
+			for i=#expr-1,1,-1 do
+				local a = expr[i]
+				for j=#expr,i+1,-1 do
+					local b = expr[j]
+					if log.is(a) and log.is(b) then
+						if not found then
+							expr = expr:clone()
+							found = true
 						end
+						table.remove(expr, j)
+						expr[i] = log(a[1] * b[1])
 					end
 				end
-				if #expr == 1 then expr = expr[1] end
-				if found then return expr end
 			end
+			if #expr == 1 then expr = expr[1] end
+			if found then return expr end
 		end},
 	},
 

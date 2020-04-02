@@ -340,34 +340,22 @@ div.rules = {
 			end
 			--]]
 		
-			--[[ cheat
+			-- [[ cheat
 			-- now that cos.rules.Prune has simplified all the cos^2's into sin^2's
-			-- if there's a div that needs to be simplified 
-			-- do one last sin^2 -> cos^2 to see if anything divides out
-			-- hmm, does this need :expand() -- or does cos.Prune need :expand()? 
-			-- yeah, this has to be done after simplify
+			-- if there's a div that needs to be simplified, there could be some extra terms not simplified
+			-- (1 - sin(theta)^2) / cos(theta) = cos(theta)^2 / cos(theta) = cos(theta)
 			do
 				local sin = require 'symmath.sin'
 				local cos = require 'symmath.cos'
-				local found
-				local sinSqToOneMinusCosSq = function(sub)
-					if pow.is(sub)
-					and sub[2] == Constant(2)
-					and sin.is(sub[1])
-					then
-						found = true
-						return 1 - cos(sub[1][1])^2
+				if cos.is(expr[2]) then
+					local inside = expr[2][1]
+					if expr[1]() == (1 - sin(inside)^2)() then
+						return cos(inside)
 					end
-				end
-				local a = expr[1]:map(sinSqToOneMinusCosSq)
-				local b = expr[2]:map(sinSqToOneMinusCosSq)
-				if found then
-	print('converting',expr,'to',a/b)
-					return prune:apply(a/b)
 				end
 			end
 			--]]
-		
+			
 			return prune(expr[1]) / prune(expr[2])
 		end},
 	},
