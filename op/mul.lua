@@ -409,15 +409,31 @@ mul.rules = {
 		{logPow = function(prune, expr)
 			local symmath = require 'symmath'
 			-- b log(a) => log(a^b)
+			-- I would like to push this to prevent x log(y) => log(y^x)
+			-- but I would like to keep -1 * log(y) => log(y^-1)
+			-- so I'll make a separate rule for that ...
 			for i=1,#expr do
 				if symmath.log.is(expr[i]) then
 					expr = expr:clone()
 					local a = table.remove(expr,i)
 					if #expr == 1 then expr = expr[1] end
-					return symmath.log(a[1] ^ expr)
+					return prune:apply(symmath.log(a[1] ^ expr))
 				end
 			end	
 		end},
+
+-- [[
+		{negLog = function(prune, expr)
+			local symmath = require 'symmath'
+			-- -1*log(a) => log(1/a)
+			if #expr == 2
+			and expr[1] == symmath.Constant(-1)
+			and symmath.log.is(expr[2])
+			then
+				return prune:apply(symmath.log(1/expr[2][1]))
+			end	
+		end},
+--]]
 	},
 
 	Tidy = {

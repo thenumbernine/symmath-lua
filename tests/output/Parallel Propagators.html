@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Parallel Propagtors</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+polar, coordinate:
+<br>
+
+<br>
+connections:
+<br>
+
+<br>
+${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 \\  0 &  \frac{1}{r}\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{1}{r}\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 \\  0 &  log\left( {\frac{| { r}_R|}{| { r}_L|}}\right)\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{( -{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{1}{r}\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 \\  0 &  \frac{| { r}_L|}{| { r}_R|}\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{1}{r}\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 \\  0 &  \frac{| { r}_R|}{| { r}_L|}\end{matrix}\right]$
+<br>
+
+<br>
+${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  -{r} \\  \frac{1}{r} &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{r} \\  \frac{1}{r} &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  {{r}} {{({{{ \phi}_L} - {{ \phi}_R}})}} \\  {\frac{1}{r}}{({-{({{{ \phi}_L} - {{ \phi}_R}})}})} &  0\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{( -{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{r} \\  \frac{1}{r} &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{{{r}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} \\  {\frac{1}{r}}{({sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)})} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{r} \\  \frac{1}{r} &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  {{r}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} \\  {\frac{1}{r}}{({-{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}})} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]$
+<br>
+
+<br>
+spherical, coordinate::
+<br>
+
+<br>
+connections:
+<br>
+
+<br>
+${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  log\left( {\frac{| { r}_R|}{| { r}_L|}}\right) &  0 \\  0 &  0 &  log\left( {\frac{| { r}_R|}{| { r}_L|}}\right)\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{( -{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{| { r}_L|}{| { r}_R|} &  0 \\  0 &  0 &  \frac{| { r}_L|}{| { r}_R|}\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{| { r}_R|}{| { r}_L|} &  0 \\  0 &  0 &  \frac{| { r}_R|}{| { r}_L|}\end{matrix}\right]$
+<br>
+
+<br>
+${{[\Gamma_\theta]}} = {\left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{ \theta}_L}}^{{{ \theta}_R}}d \theta\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  {{r}} {{({{{ \theta}_L} - {{ \theta}_R}})}} &  0 \\  {\frac{1}{r}}{({-{({{{ \theta}_L} - {{ \theta}_R}})}})} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{( -{({\int\limits_{{{ \theta}_L}}^{{{ \theta}_R}}d \theta\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  cos\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  -{{{r}} {{sin\left( {{{ \theta}_L} - {{ \theta}_R}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{ \theta}_L} - {{ \theta}_R}}\right)})} &  cos\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{({\int\limits_{{{ \theta}_L}}^{{{ \theta}_R}}d \theta\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  cos\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  {{r}} {{sin\left( {{{ \theta}_L} - {{ \theta}_R}}\right)}} &  0 \\  {\frac{1}{r}}{({-{sin\left( {{{ \theta}_L} - {{ \theta}_R}}\right)}})} &  cos\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  0 &   {-{r}} {{{sin\left(  \theta\right)}^{2}}} \\  0 &  0 &   {-{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} \\  \frac{1}{r} &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)} &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  0 &   {-{r}} {{{sin\left(  \theta\right)}^{2}}} \\  0 &  0 &   {-{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} \\  \frac{1}{r} &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)} &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  {{r}} {{{sin\left(  \theta\right)}^{2}}} {{({{{ \phi}_L} - {{ \phi}_R}})}} \\  0 &  0 &  {{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} {{({{{ \phi}_L} - {{ \phi}_R}})}} \\  {\frac{1}{r}}{({-{({{{ \phi}_L} - {{ \phi}_R}})}})} &  \frac{-{{{cos\left(  \theta\right)}} {{({{{ \phi}_L} - {{ \phi}_R}})}}}}{sin\left(  \theta\right)} &  0\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{( -{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  0 &   {-{r}} {{{sin\left(  \theta\right)}^{2}}} \\  0 &  0 &   {-{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} \\  \frac{1}{r} &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)} &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  {{1} - {{sin\left(  \theta\right)}^{2}}} + {{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} &  -{{{cos\left(  \theta\right)}} {{r}} {{sin\left(  \theta\right)}} {{({{1} - {cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}})}}} &  -{{{r}} {{{sin\left(  \theta\right)}^{2}}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} \\  \frac{-{{{sin\left(  \theta\right)}} {{({{{1} - {{sin\left(  \theta\right)}^{2}}} + {{{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} - {cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}})}}}}{{{cos\left(  \theta\right)}} {{r}}} &  {cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} + {{{sin\left(  \theta\right)}^{2}} - {{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}}} &  -{{{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} \\  {\frac{1}{r}}{({sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)})} &  \frac{{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{cos\left(  \theta\right)}}}{sin\left(  \theta\right)} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]$
+<br>
+
+<br>
+${e}^{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  0 &   {-{r}} {{{sin\left(  \theta\right)}^{2}}} \\  0 &  0 &   {-{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} \\  \frac{1}{r} &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)} &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  \frac{{{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} - {{{2}} {{{sin\left(  \theta\right)}^{4}}}}} + {{{2}} {{{sin\left(  \theta\right)}^{2}}}} + {{{{{{2}} {{{sin\left(  \theta\right)}^{4}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} - {{{2}} {{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}}} - {{{{sin\left(  \theta\right)}^{4}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}} - {{{2}} {{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}} + {{{2}} {{{sin\left(  \theta\right)}^{4}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}}{{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} + {{{{sin\left(  \theta\right)}^{2}} - {{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}}} - {{{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}}} &  \frac{-{{{cos\left(  \theta\right)}} {{r}} {{sin\left(  \theta\right)}} {{({{{{1} - {{{2}} {{{sin\left(  \theta\right)}^{2}}}}} - {cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} + {{{{2}} {{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} - {{{2}} {{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}} + {{{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}} + {{{{{3}} {{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}} - {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}} - {{{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{4}}}}}})}}}}{{{{1} - {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}} - {{sin\left(  \theta\right)}^{2}}} + {{{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} - {{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}} + {{{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}} &  {{r}} {{{sin\left(  \theta\right)}^{2}}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} \\  \frac{{{sin\left(  \theta\right)}} {{({{{{1} - {{sin\left(  \theta\right)}^{2}}} - {cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} + {{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} + {{{{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}} - {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}})}}}{{{cos\left(  \theta\right)}} {{r}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} &  \frac{{{{1} - {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}} - {{sin\left(  \theta\right)}^{2}}} + {{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} + {{{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}}{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} &  \frac{{{sin\left(  \theta\right)}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{({{{{{sin\left(  \theta\right)}^{4}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}} + {{{{{sin\left(  \theta\right)}^{2}} - {{sin\left(  \theta\right)}^{4}}} - {{{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}} - {{{2}} {{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}}} + {{{{sin\left(  \theta\right)}^{4}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} + {cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}})}}}{{{cos\left(  \theta\right)}} {{({{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} + {{{{sin\left(  \theta\right)}^{2}} - {{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}}} - {{{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}}})}}} \\  {\frac{1}{r}}{({-{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}})} &  \frac{-{{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{cos\left(  \theta\right)}}}}{sin\left(  \theta\right)} &  \frac{{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} + {{{{sin\left(  \theta\right)}^{2}} - {{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}}} - {{{{sin\left(  \theta\right)}^{2}}} {{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}^{2}}}}}}{{{1} - {{sin\left(  \theta\right)}^{2}}} + {{{{sin\left(  \theta\right)}^{2}}} {{cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}}}\end{matrix}\right]$
+<br>
+
+<br>

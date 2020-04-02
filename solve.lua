@@ -94,12 +94,31 @@ return function(eqn, x)
 	local lhs = eqn[1] - eqn[2]
 --print('...got',lhs)
 
---[[ multiply by all denominators
+	-- -x = 0 => x = 0
+	if symmath.op.unm.is(lhs) then lhs = lhs[1] end
+
+-- [[ handle denominator
 	if div.is(lhs) then
-		lhs = lhs[1]
+		local notZero = table{lhs[2]:eq(0):solve(x)}
+		for i=1,#notZero do
+			assert(op.eq.is(notZero[i]))
+			setmetatable(notZero[i], op.ne)
+		end
+		local solns = notZero
+		-- TODO remove contraditions, {x!=y, x==y} => {x!=y}
+		solns:append{lhs[1]:eq(0):solve(x)}
+		return solns:unpack()
 	end
-	-- TODO handle denominator
 --]]
+
+	-- handle multiplication separately
+	if mul.is(lhs) then
+		local solns = table()
+		for _,term in ipairs(lhs) do
+			solns:append{term:eq(0):solve(x)}
+		end
+		return solns:unpack()
+	end
 
 --print('looking for coeffs wrt',x)	
 	local coeffs = polyCoeffs(lhs, x)

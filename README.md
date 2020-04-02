@@ -681,8 +681,6 @@ Output CDN URLs:
 
 [tests/output/ADM metric](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric.html)
 
-[tests/output/Acoustic Black Hole](https://thenumbernine.github.io/symmath/tests/output/Acoustic%20Black%20Hole.html)
-
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
 [tests/output/BSSN](https://thenumbernine.github.io/symmath/tests/output/BSSN.html)
@@ -733,6 +731,8 @@ Output CDN URLs:
 
 [tests/output/Newton method](https://thenumbernine.github.io/symmath/tests/output/Newton%20method.html)
 
+[tests/output/Parallel Propagators](https://thenumbernine.github.io/symmath/tests/output/Parallel%20Propagators.html)
+
 [tests/output/SRHD](https://thenumbernine.github.io/symmath/tests/output/SRHD.html)
 
 [tests/output/Schwarzschild - isotropic](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20isotropic.html)
@@ -764,8 +764,6 @@ Output CDN URLs:
 [tests/output/electrovacuum/uniform field - spherical](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20spherical.html)
 
 [tests/output/electrovacuum/verify cylindrical transform](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/verify%20cylindrical%20transform.html)
-
-[tests/output/exp_metric](https://thenumbernine.github.io/symmath/tests/output/exp_metric.html)
 
 [tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
 
