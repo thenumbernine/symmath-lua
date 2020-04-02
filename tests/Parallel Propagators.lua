@@ -78,19 +78,34 @@ for _,info in ipairs{
 		printbr(var('[\\Gamma_'..coords[i].name..']'):eq(conn))
 		printbr()
 
-		local origExpr = Integral(conn, coord, coord'_L', coord'_R')
-		print(origExpr)
-		local expr = origExpr()
-		printbr('=', expr)
+		local origIntConn = Integral(conn, coord, coord'_L', coord'_R')
+		print(origIntConn)
+		local intConn = origIntConn()
+		printbr('=', intConn)
 		printbr()
 
-		print(exp(-origExpr))
-		local expNegIntExpr = (-expr)():exp()
+		print(exp(-origIntConn))
+		local negIntConn = (-intConn)()
+		--[[ you could exp, and that will eigen-decompose ...
+		local expNegIntExpr = negIntConn:exp()
+		local expIntExpr = expNegIntExpr:inverse()
+		--]]
+		-- [[ but eigen will let inverting be easy
+		local ev = negIntConn:eigen()
+		local R, L, allLambdas = ev.R, ev.L, ev.allLambdas
+		local expLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
+			return exp(lambda) 
+		end):unpack() )
+		local expNegIntExpr = (R * expLambda * L)()
+		local invExpLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
+			return exp(-lambda) 
+		end):unpack() )
+		local expIntExpr = (R * invExpLambda * L)()
+		--]]
 		printbr('=', expNegIntExpr)
 		printbr()
 	
-		print(exp(origExpr))
-		local expIntExpr = expNegIntExpr:inverse()
+		print(exp(origIntConn))
 		printbr('=', expIntExpr)
 		printbr()
 	end
