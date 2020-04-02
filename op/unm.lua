@@ -10,6 +10,10 @@ function unm:evaluateDerivative(deriv, ...)
 	return -deriv(x, ...)
 end
 
+function unm:reverse(soln, index)
+	return -soln
+end
+
 unm.rules = {
 	Eval = {
 		{apply = function(eval, expr)

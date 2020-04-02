@@ -30,8 +30,19 @@ local function eigen(A)
 	local Rs = lambdas:mapi(function(lambdaInfo) 
 		local lambda = lambdaInfo.expr
 		local Ri = (A - lambda * I)():nullspace()
-		-- TODO assert multiplicity matches the unique lambda multiplicity
-		assert(#Ri[1] == lambdaInfo.mult)
+		
+		-- assert multiplicity matches the unique lambda multiplicity
+		if lambdaInfo.expr == Constant(0) then
+			-- right now x^3:eq(0):solve(x) will just give x=0, not {x=0,x=0,x=0}
+			-- so artificially insert it
+			while lambdaInfo.mult < #Ri[1] do
+				allLambdas:insert(lambdaInfo.expr)
+				lambdaInfo.mult = lambdaInfo.mult + 1
+			end
+		else
+			assert(lambdaInfo.mult == #Ri[1])
+		end
+		
 		return Ri:T()
 	end)
 --for i,lambda in ipairs(lambdas) do
@@ -56,9 +67,8 @@ local function eigen(A)
 assert( (R * Lambda * L - A)() == Matrix:zeros{#A, #A} )
 	
 	return {
-		-- TODO multiplicity
-		lambdas = lambdas,
-		allLambdas = allLambdas,
+		lambdas = lambdas,			-- this holds {expr=, mult=} multiplicity
+		allLambdas = allLambdas,	-- this just holds a list
 		
 		Lambda = Lambda,
 		R = R,

@@ -267,10 +267,16 @@ pow.rules = {
 			end
 		
 			-- 0^a = 0 for a>0
-			if expr[1] == Constant(0) 
-			and ((Constant.is(expr[2]) and expr[2].value > 0) or expr[2] == div(1,2))
-			then
-				return Constant(0)
+			if expr[1] == Constant(0) then
+				if (Constant.is(expr[2]) and expr[2].value > 0) 
+				or (
+					div.is(expr[2]) 
+					and Constant.is(expr[2][1]) 
+					and Constant.is(expr[2][2]) 
+					and (expr[2][1].value > 0) == (expr[2][2].value > 0)
+				) then
+					return Constant(0)
+				end
 			end
 
 			-- 1^a => 1

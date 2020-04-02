@@ -42,7 +42,7 @@ inverse is performed with regards to child at index
 returns result
 --]]
 function Expression:reverse(soln, index)
-	error("don't know how to inverse")
+	error("don't know how to inverse "..self.name)
 end
 
 -- get a flattened tree of all nodes

@@ -48,7 +48,9 @@ return function(eqn, x)
 			assert(rawequal(stack:remove().expr, ch))
 		end
 	end
+	
 	recurse(eqn)
+	
 	if count == 0 then
 		error("couldn't find "..x.." in eqn "..eqn)
 	end

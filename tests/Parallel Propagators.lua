@@ -19,6 +19,14 @@ for _,info in ipairs{
 		},
 	},
 	{
+		name = 'polar, orthonormal',
+		coords = {r, phi},
+		conns = {
+			Matrix.diagonal(0, 0),
+			Matrix({0, -1}, {1, 0}),	-- 1/r but scaled by r
+		},
+	},
+	{
 		name = 'spherical, coordinate:',
 		coords = {r, theta, phi},
 		conns = {
@@ -35,6 +43,24 @@ for _,info in ipairs{
 			),
 		},
 	},
+	{
+		name = 'spherical, orthonormal:',
+		coords = {r, theta, phi},
+		conns = {
+			Matrix.diagonal(0, 0, 0),
+			Matrix(
+				{0, -1, 0},		-- 1/r 
+				{1, 0, 0}, 
+				{0, 0, 0}
+			),
+			Matrix(
+				{0, 0, -sin(theta)}, 
+				{0, 0, -cos(theta)}, 
+				{sin(theta), cos(theta), 0}
+			),
+		},
+	},
+
 } do
 
 	printbr(info.name..':')
