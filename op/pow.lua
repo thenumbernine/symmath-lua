@@ -315,6 +315,13 @@ pow.rules = {
 				end
 			end
 
+			-- e^log(x) == x
+			if symmath.e == expr[1]
+			and require 'symmath.log'.is(expr[2])
+			then
+				return prune:apply(expr[2][1])
+			end
+
 		end},
 	},
 

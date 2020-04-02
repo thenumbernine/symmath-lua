@@ -70,6 +70,7 @@ end
 		local result = Matrix{(1/A_11)()}
 		if b then result = (result * b)() end
 		return result, Matrix.identity(invdim[1], invdim[2])
+--[[ this also breaks compat with nullspace()	
 	elseif m == 2 and n == 2 and not b then
 		A_det = A_det or A:determinant()
 		if A_det == Constant(0) then
@@ -81,6 +82,7 @@ end
 		} / A_det)()
 		--if b then result = (result * b)() end
 		return result, Matrix.identity(invdim[1], invdim[2])
+--]]
 --[[ 
 -- this breaks compatability with pseudoInverse() and nullspace()
 -- in fact, the 2D version probably does too

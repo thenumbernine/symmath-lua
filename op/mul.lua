@@ -404,6 +404,16 @@ mul.rules = {
 				end
 			end
 			--]]
+
+			-- b log(a) => log(a^b)
+			for i=1,#expr do
+				if symmath.log.is(expr[i]) then
+					expr = expr:clone()
+					local a = table.remove(expr,i)
+					if #expr == 1 then expr = expr[1] end
+					return symmath.log(a[1] ^ expr)
+				end
+			end
 		end},
 	},
 

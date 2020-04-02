@@ -37,7 +37,7 @@ for i,R in ipairs(Rs) do
 	printbr('$R_'..embedded[i].name..'(\\theta) = $', R(theta))
 end
 
-printbr[[$R_i(t) = exp(K_i)$]]
+printbr[[$R_i(t) = exp(t K_i)$]]
 printbr[[$\frac{\partial}{\partial t} R_i(t) = K_i R_i(t)$]]
 printbr[[$K_i = \frac{\partial}{\partial t} R_i(t) R_i(t)^{-1}
 	= \frac{\partial}{\partial t} R_i(t) R_i(t)^T$]]
