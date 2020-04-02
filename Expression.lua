@@ -1074,7 +1074,7 @@ end
 -- hmm, rules ...
 -- static function, 'self' is the class
 function Expression:pushRule(name)
-	local visitor, rulename = name:split'/':unpack()
+	local visitor, rulename = string.split(name, '/'):unpack()
 	assert(visitor and rulename, "Expression:pushRule expected format visitor/rule")	
 	
 	local rules = assert(self.rules[visitor], "couldn't find visitor "..visitor)
