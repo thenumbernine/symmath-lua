@@ -329,6 +329,21 @@ pow.rules = {
 				end
 				return prune:apply(result)
 			end
+
+			-- exp(i*x) => cos(x) + i*sin(x)
+			-- do this before a^-c => 1/a^c, 
+			if symmath.e == expr[1] then
+				local inside = expr[2]
+				if symmath.op.mul.is(inside) then
+					local j = table.find(inside, nil, function(y) return y == symmath.i end)
+					if j then
+						inside = inside:clone()
+						table.remove(inside, j)
+						if #inside == 1 then inside = inside[1] end
+						return cos(inside) + i * sin(inside)
+					end
+				end
+			end
 		
 			-- a^(-c) => 1/a^c
 			if Constant.is(expr[2]) and expr[2].value < 0 then
