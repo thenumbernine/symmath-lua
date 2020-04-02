@@ -21,7 +21,9 @@ sqrt.rules = table(sqrt.rules)
 
 sqrt.rules.Prune = {
 	{apply = function(prune, expr)
-		local div = require 'symmath.op.div'
+		local symmath = require 'symmath'
+		local div = symmath.op.div
+		-- sqrt(a) = a^div(1,2)
 		return prune:apply(expr[1]^div(1,2))
 	end},
 }

@@ -62,9 +62,16 @@ function pow:expand()
 end
 
 function pow:reverse(soln, index)
+	local Constant = require 'symmath'.Constant
 	local p,q = table.unpack(self)
 	-- y = p(x)^q => y^(1/q) = p(x)
 	if index == 1 then
+		-- TODO for q is integer, include all 1/q roots
+		-- here it is for square
+		if q == Constant(2) then
+			return soln^(1/q), -soln^(1/q)
+		end
+		
 		return soln^(1/q)
 	-- y = p^q(x) => log(y) / log(p) = q(x)
 	elseif index == 2 then
@@ -191,28 +198,49 @@ pow.rules = {
 					return Constant(expr[1].value ^ expr[2].value)
 				end
 			end
-		
-			if Constant.isInteger(expr[1]) and expr[1].value > 0
-			and (expr[2] == div(1,2) or expr[2] == Constant(.5))
-			then
-				local primes = require 'symmath.primeFactors'(expr[1].value)
-				local outside = 1
-				local inside = 1
-				for i=#primes-1,1,-1 do
-					if primes[i] == primes[i+1] then
-						outside = outside * primes[i]
-						primes:remove(i)
-						primes:remove(i)
+
+			if expr[2] == div(1,2) or expr[2] == Constant(.5) then
+				local x = expr[1]
+				local imag
+				if symmath.op.unm.is(x) 
+				and Constant.is(x[1])
+				then
+					x = x[1]
+					imag = true
+				end
+				if Constant.is(x) and x.value < 0 then
+					imag = not imag
+					x = Constant(-x.value)
+				end
+				if Constant.isInteger(x) and x.value > 0 then
+					local primes = require 'symmath.primeFactors'(x.value)
+					local outside = 1
+					local inside = 1
+					for i=#primes-1,1,-1 do
+						if primes[i] == primes[i+1] then
+							outside = outside * primes[i]
+							primes:remove(i)
+							primes:remove(i)
+						end
 					end
+					local inside = 1
+					for i=1,#primes do
+						inside = inside * primes[i]
+					end
+					
+					local result
+					if inside == 1 and outside == 1 then 
+						result = Constant(1) 
+					elseif outside == 1 then 
+						result = Constant(inside)^div(1,2) 
+					elseif inside == 1 then 
+						result = Constant(outside) 
+					else
+						result = outside * inside^div(1,2)
+					end
+					if imag then result = symmath.i * result end
+					return result
 				end
-				local inside = 1
-				for i=1,#primes do
-					inside = inside * primes[i]
-				end
-				if inside == 1 and outside == 1 then return Constant(1) end
-				if outside == 1 then return Constant(inside)^div(1,2) end
-				if inside == 1 then return Constant(outside) end
-				return Constant(outside) * Constant(inside)^div(1,2)
 			end
 		
 			-- 0^a = 0 for a>0

@@ -404,7 +404,10 @@ mul.rules = {
 				end
 			end
 			--]]
-
+		end},
+	
+		{logPow = function(prune, expr)
+			local symmath = require 'symmath'
 			-- b log(a) => log(a^b)
 			for i=1,#expr do
 				if symmath.log.is(expr[i]) then
@@ -413,7 +416,7 @@ mul.rules = {
 					if #expr == 1 then expr = expr[1] end
 					return symmath.log(a[1] ^ expr)
 				end
-			end
+			end	
 		end},
 	},
 
