@@ -24,6 +24,8 @@ symmath.taylor = require 'symmath.taylor'
 
 symmath.dual = require 'symmath.tensor.dual'
 
+symmath.multiplicity = require 'symmath.multiplicity'
+
 -- replace variables with names as keys in evalmap with constants of the associated values
 symmath.eval = require 'symmath.eval'
 

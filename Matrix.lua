@@ -20,6 +20,8 @@ Matrix.pseudoInverse = require 'symmath.matrix.pseudoInverse'
 Matrix.nullspace = require 'symmath.matrix.nullspace'
 Matrix.rotation = require 'symmath.matrix.Rotation'
 Matrix.eulerAngles = require 'symmath.matrix.EulerAngles'
+Matrix.eigen = require 'symmath.matrix.eigen'
+Matrix.exp = require 'symmath.matrix.exp'
 
 -- shorthand
 Matrix.inv = Matrix.inverse	
