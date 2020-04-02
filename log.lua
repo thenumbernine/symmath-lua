@@ -56,6 +56,11 @@ log.rules = {
 					return log(xi)
 				end):unpack())
 			end
+		
+			-- log(a/b) = log(a) - log(b)
+			if symmath.op.div.is(x) then
+				return log(x[1]) - log(x[2])
+			end
 		end},
 	},
 }
