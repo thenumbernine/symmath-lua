@@ -199,8 +199,31 @@ pow.rules = {
 				end
 			end
 
+			-- sqrt(something)
 			if expr[2] == div(1,2) or expr[2] == Constant(.5) then
 				local x = expr[1]
+
+				-- polynomials 
+				-- sqrt(a^2 + 2ab + b^2) = a + b
+				-- TODO now we have to consider domains ... this is only true for (a+b)>0 ... or two roots for +-
+				-- ... hmm, this is looking very ugly and specific
+				local function isSquare(x)
+					return pow.is(x) and x[2] == Constant(2)
+				end
+				if #x == 3
+				and isSquare(x[1]) 
+				and isSquare(x[3]) 
+				then
+					local a,b,c = table.unpack(x)
+					if b == symmath.op.mul(2, a[1], c[1]) then
+						return prune:apply(a[1] + c[1])
+					end
+					if b == symmath.op.mul(Constant(-2), a[1], c[1]) then
+						return prune:apply(a[1] - c[1])
+					end
+				end
+				
+				-- dealing with constants
 				local imag
 				if symmath.op.unm.is(x) 
 				and Constant.is(x[1])
