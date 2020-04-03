@@ -9,6 +9,16 @@
 
 <h3>polar, coordinate:</h3>
 <br>
+coordinates:$r$, $\phi$
+<br>
+
+<br>
+connection:
+${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{r}}$;
+${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
+
+<br>
 parallel propagators:
 <br>
 
@@ -61,6 +71,20 @@ propagator commutation:
 <br>
 <h3>polar, orthonormal:</h3>
 <br>
+coordinates:$r$, $\phi$
+<br>
+
+<br>
+connection:
+${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {\frac{-1}{r}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
+
+<br>
+connection with 2nd term transformed to a coordinate basis:
+${{{{ \bar{\Gamma}}^r}_{\phi}}_{\phi}} = {-{1}}$;
+${{{{ \bar{\Gamma}}^{\phi}}_{\phi}}_r} = {1}$
+
+<br>
 parallel propagators:
 <br>
 
@@ -84,21 +108,21 @@ ${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begi
 <br>
 
 <br>
-${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  -1 \\  1 &  0\end{matrix}\right]}$
+${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -1 \\  1 &  0\end{matrix}\right]\right)$
+$\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]\right)$
 =	$\left[\begin{matrix}  0 &  {{ \phi}_L} - {{ \phi}_R} \\  -{({{{ \phi}_L} - {{ \phi}_R}})} &  0\end{matrix}\right]$
 <br>
 
 <br>
-${ P}_{\phi}$	=	${e}^{( -{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -1 \\  1 &  0\end{matrix}\right]\right)})})}$
+${ P}_{\phi}$	=	${e}^{( -{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]\right)})})}$
 =	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} \\  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]$
 <br>
 
 <br>
-${{ P}_{\phi}}^{-1}$	=	${e}^{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -1 \\  1 &  0\end{matrix}\right]\right)})}$
+${{ P}_{\phi}}^{-1}$	=	${e}^{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]\right)})}$
 =	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) \\  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]$
 <br>
 
@@ -112,6 +136,22 @@ propagator commutation:
 
 <br>
 <h3>spherical, coordinate:</h3>
+<br>
+coordinates:$r$, $\theta$, $\phi$
+<br>
+
+<br>
+connection:
+${{{{ \Gamma}^r}_{\theta}}_{\theta}} = {-{r}}$;
+${{{{ \Gamma}^r}_{\phi}}_{\phi}} = { {-{r}} {{{sin\left(  \theta\right)}^{2}}}}$;
+${{{{ \Gamma}^{\theta}}_r}_{\theta}} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\theta}}_{\theta}}_r} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\theta}}_{\phi}}_{\phi}} = { {-{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}}}$;
+${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_{\theta}}_{\phi}} = {\frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_{\theta}} = {\frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}}$
+
 <br>
 parallel propagators:
 <br>
@@ -188,6 +228,28 @@ propagator commutation:
 <br>
 <h3>spherical, orthonormal:</h3>
 <br>
+coordinates:$r$, $\theta$, $\phi$
+<br>
+
+<br>
+connection:
+${{{{ \Gamma}^r}_{\theta}}_{\theta}} = {\frac{-1}{r}}$;
+${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {\frac{-1}{r}}$;
+${{{{ \Gamma}^{\theta}}_{\theta}}_r} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\theta}}_{\phi}}_{\phi}} = {\frac{-{cos\left(  \theta\right)}}{{{r}} {{sin\left(  \theta\right)}}}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_{\theta}} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$
+
+<br>
+connection with 2nd term transformed to a coordinate basis:
+${{{{ \bar{\Gamma}}^r}_{\theta}}_{\theta}} = {-{1}}$;
+${{{{ \bar{\Gamma}}^r}_{\phi}}_{\phi}} = {-{sin\left(  \theta\right)}}$;
+${{{{ \bar{\Gamma}}^{\theta}}_{\theta}}_r} = {1}$;
+${{{{ \bar{\Gamma}}^{\theta}}_{\phi}}_{\phi}} = {-{cos\left(  \theta\right)}}$;
+${{{{ \bar{\Gamma}}^{\phi}}_{\phi}}_r} = {sin\left(  \theta\right)}$;
+${{{{ \bar{\Gamma}}^{\phi}}_{\phi}}_{\theta}} = {cos\left(  \theta\right)}$
+
+<br>
 parallel propagators:
 <br>
 
@@ -211,21 +273,21 @@ ${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begi
 <br>
 
 <br>
-${{[\Gamma_\theta]}} = {\left[\begin{matrix}  0 &  -1 &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{[\Gamma_\theta]}} = {\left[\begin{matrix}  0 &  -{1} &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{ \theta}_L}}^{{{ \theta}_R}}d \theta\left( \left[\begin{matrix}  0 &  -1 &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+$\int\limits_{{{ \theta}_L}}^{{{ \theta}_R}}d \theta\left( \left[\begin{matrix}  0 &  -{1} &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
 =	$\left[\begin{matrix}  0 &  {{ \theta}_L} - {{ \theta}_R} &  0 \\  -{({{{ \theta}_L} - {{ \theta}_R}})} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
 <br>
 
 <br>
-${ P}_{\theta}$	=	${e}^{( -{({\int\limits_{{{ \theta}_L}}^{{{ \theta}_R}}d \theta\left( \left[\begin{matrix}  0 &  -1 &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+${ P}_{\theta}$	=	${e}^{( -{({\int\limits_{{{ \theta}_L}}^{{{ \theta}_R}}d \theta\left( \left[\begin{matrix}  0 &  -{1} &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
 =	$\left[\begin{matrix}  cos\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  -{sin\left( {{{ \theta}_L} - {{ \theta}_R}}\right)} &  0 \\  sin\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  cos\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
 <br>
-${{ P}_{\theta}}^{-1}$	=	${e}^{({\int\limits_{{{ \theta}_L}}^{{{ \theta}_R}}d \theta\left( \left[\begin{matrix}  0 &  -1 &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+${{ P}_{\theta}}^{-1}$	=	${e}^{({\int\limits_{{{ \theta}_L}}^{{{ \theta}_R}}d \theta\left( \left[\begin{matrix}  0 &  -{1} &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
 =	$\left[\begin{matrix}  cos\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  sin\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  0 \\  -{sin\left( {{{ \theta}_L} - {{ \theta}_R}}\right)} &  cos\left( {{{ \theta}_L} - {{ \theta}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
