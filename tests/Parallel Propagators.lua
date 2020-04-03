@@ -28,7 +28,7 @@ for _,info in ipairs{
 		},
 	},
 	{
-		name = 'spherical, coordinate:',
+		name = 'spherical, coordinate',
 		coords = {r, theta, phi},
 		conns = {
 			Matrix.diagonal(0, 1/r, 1/r),
@@ -45,7 +45,7 @@ for _,info in ipairs{
 		},
 	},
 	{
-		name = 'spherical, orthonormal:',
+		name = 'spherical, orthonormal',
 		coords = {r, theta, phi},
 		conns = {
 			-- Gamma_rHat
@@ -84,7 +84,6 @@ for _,info in ipairs{
 } do
 
 	printbr('<h3>'..info.name..':</h3>')
-	printbr()
 
 	local coords = info.coords
 	local conns = info.conns
@@ -188,4 +187,5 @@ intConn = intConn:replace(abs(r), r)
 			printbr('[', Piname, ',', Pjname, '] =', Pij - Pji, '=', Pcij)
 		end
 	end
+	printbr()
 end
