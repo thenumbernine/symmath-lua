@@ -340,7 +340,7 @@ div.rules = {
 			end
 			--]]
 		
-			-- [[ cheat
+			--[[ cheat
 			-- now that cos.rules.Prune has simplified all the cos^2's into sin^2's
 			-- if there's a div that needs to be simplified, there could be some extra terms not simplified
 			-- (1 - sin(theta)^2) / cos(theta) = cos(theta)^2 / cos(theta) = cos(theta)

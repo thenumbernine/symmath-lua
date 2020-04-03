@@ -122,7 +122,7 @@ pow.rules = {
 				end), mul)
 				return expand:apply(new)
 			end
-			--]]	
+			--]]
 		end},
 	},
 
@@ -371,29 +371,12 @@ pow.rules = {
 			end
 			--]]
 
-			-- trigonometric
-			local sin = require 'symmath.sin'
-			local cos = require 'symmath.cos'
-			if cos.is(expr[1])
-			and Constant.is(expr[2])
-			then
-				local n = expr[2].value
-				if n >= 2
-				and n <= 10
-				and n == math.floor(n)
-				then
-					local th = expr[1][1]
-					return prune:apply((1 - sin(th:clone())^2) * cos(th:clone())^(n-2))
-				end
-			end
-
 			-- e^log(x) == x
 			if symmath.e == expr[1]
 			and require 'symmath.log'.is(expr[2])
 			then
 				return prune:apply(expr[2][1])
 			end
-
 		end},
 	},
 

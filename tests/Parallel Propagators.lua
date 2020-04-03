@@ -5,6 +5,7 @@ require 'symmath'{MathJax={title='Parallel Propagtors'}}
 -- TODO incorporate this with the metric catalog?
 
 
+local t = var't'
 local r = var'r'
 local phi = var'\\phi'
 local theta = var'\\theta'
@@ -77,7 +78,6 @@ for _,info in ipairs{
 			)
 		end,
 	},
-
 } do
 
 	printbr('<h3>'..info.name..':</h3>')

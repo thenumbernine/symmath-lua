@@ -2,7 +2,9 @@
 require 'ext'
 require 'symmath'.setup{implicitVars=true, MathJax={title='Metric Catalog'}}
 
+-- implicitVars will cover this automatically:
 local t,x,y,z = vars('t','x','y','z')
+-- fixVariableNames would cover this automatically:
 local r,phi,theta,psi = vars('r','\\phi','\\theta','\\psi')
 
 local rHat = var'\\hat{r}'
@@ -305,6 +307,8 @@ local spacetimes = {
 				r * cos(theta))
 		end,
 	},
+--]=]
+--[=[ these are struggling with the new trig simplification
 	{
 		title = 'torus',
 		coords = {r,theta,phi},
@@ -337,6 +341,37 @@ local spacetimes = {
 		end,
 	},
 --]=]
+	{
+		title = 'Schwarzschild',
+		coords = {t,r,theta,phi},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		basis = function()
+			return Tensor('_u^I',
+				{sqrt(1 - R/r), 0, 0, 0},
+				{0, 1/sqrt(1 - R/r), 0, 0},
+				{0, 0, r, 0},
+				{0, 0, 0, r * sin(theta)}
+			)
+		end,
+	},
+--[[ hmm, those r's, too much memory used
+	{
+		title = 'Schwarzschild, pseudo-Cartesian',
+		coords = {t,x,y,z},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		metric = function()
+			-- where r = sqrt(x^2 + y^2 + z^2)
+			return Tensor('_uv',
+				{-(1 - R/r), 0, 0, 0},
+				{0, (x^2 / ((r - R)/r) + y^2 + z^2)/r^2, x * y * R / (r^2 * (r - R)), x * z * R / (r^2 * (r - R))},
+				{0, y * x * R / (r^2 * (r - R)), (x^2 + y^2 * ((r - R)/r) + z^2)/r^2, y * z * R / (r^2 * (r - R))},
+				{0, z * x * R / (r^2 * (r - R)), z * y * R / (r^2 * (r - R)), (x^2 + y^2 + z^2 * ((r - R)/r))/r^2}
+			)
+		end,
+	},
+--]]
 --[[
 	{
 		title = '1D spacetime',
@@ -370,6 +405,8 @@ end
 printbr()
 
 for _,info in ipairs(spacetimes) do
+io.stderr:write(info.title,'\n')
+io.stderr:flush()
 	print('<a name="'..info.title..'">')
 	print('<h3>'..info.title..'</h3>')
 
@@ -390,81 +427,94 @@ for _,info in ipairs(spacetimes) do
 	printbr()
 	printbr()
 
+	local e, eU, g, c
+	if info.chart or info.basis then
 -- [[
-	local e = Tensor'_u^I'
-	if info.chart then
-		local u = info.chart()
-		printbr'coordinate chart:'
-		u:printElem'u'
-		printbr()
-		printbr()
+		e = Tensor'_u^I'
+		if info.chart then
+			local u = info.chart()
+			printbr'coordinate chart:'
+			u:printElem'u'
+			printbr()
+			printbr()
 
-		--printbr'holonomic embedded:'
-		printbr'embedded:'
-		e['_u^I'] = u'^I_,u'()	--dx^I/dx^a
-		printbr(var'e''_u^I':eq(var'u''^I_,u'))
-		e:printElem'e'
-		printbr()
-	elseif info.basis then
-		printbr'basis:'
-		e['_u^I'] = info.basis()()
-		e:printElem'e'
-		printbr()
-		printbr()
-	end
+			--printbr'holonomic embedded:'
+			printbr'embedded:'
+			e['_u^I'] = u'^I_,u'()	--dx^I/dx^a
+			printbr(var'e''_u^I':eq(var'u''^I_,u'))
+			e:printElem'e'
+			printbr()
+		elseif info.basis then
+			printbr'basis:'
+			e['_u^I'] = info.basis()()
+			e:printElem'e'
+			printbr()
+			printbr()
+		end
 
-	-- but what if this matrix isn't square?
-	-- for now provide an override and explicitly provide those eU's
-	-- that's why for the true eU value I should be solving P^u_,I 
-	local eU
-	if info.eU then
-		eU = info.eU()
-	else
-		assert(#info.coords == #info.embedded)
-		eU = Tensor('^u_I', table.unpack(Matrix(table.unpack(e)):inverse():transpose()))
-	end
+		-- but what if this matrix isn't square?
+		-- for now provide an override and explicitly provide those eU's
+		-- that's why for the true eU value I should be solving P^u_,I 
+		if info.eU then
+			eU = info.eU()
+		else
+			assert(#info.coords == #info.embedded)
+			eU = Tensor('^u_I', table.unpack(Matrix(table.unpack(e)):inverse():transpose()))
+		end
 
-	--printbr(var'e''^u_I'
-	--	:eq(var'e''_u^I'^-1)	LaTeX output chokes here
-	--	:eq(eU))
-	eU:printElem'e'
-	printbr()
+		--printbr(var'e''^u_I'
+		--	:eq(var'e''_u^I'^-1)	LaTeX output chokes here
+		--	:eq(eU))
+		eU:printElem'e'
+		printbr()
 	
-	printbr((var'e''_u^I' * var'e''^v_I'):eq((e'_u^I' * eU'^v_I')()))
-	printbr((var'e''_u^I' * var'e''^u_J'):eq((e'_u^I' * eU'^u_J')()))
-	--[[
-	e_u = e_u^I d/dx^I
-	and e^v_J is the inverse of e_u^I 
-	such that e_u^I e^v_I = delta_u^v and e_u^I e^u_J = delta^I_J
-	
-	[e_u, e_v] = e_u e_v - e_v e_u
-		= e_u^I d/dx^I (e_v^J d/dx^J) - e_v^I d/dx^I (e_u^J d/dx^J)
-		= e_u^I ( (d/dx^I e_v^J) d/dx^J + e_v^J d/dx^I d/dx^J) - e_v^I ((d/dx^I e_u^J) d/dx^J + e_u^J d/dx^I d/dx^J)
-		= e_u^I (d/dx^I e_v^J) d/dx^J - e_v^I (d/dx^I e_u^J) d/dx^J
-		= (e_u^I e_v^J_,I - e_v^I e_u^J_,I) d/dx^J 
-		= (e_u^I (dx^a/dx^I d/dx^a e_v^J) - e_v^I (dx^a/dx^I d/dx^a e_u^J)) d/dx^J
-		= (e_u^I e_v^J_,a - e_v^I e_u^J_,a) e^a_I d/dx^J
-		= (delta_u^a e_v^J_,a - delta_v^a e_u^J_,a) d/dx^J
-		= (e_v^J_,u - e_u^J_,v) d/dx^J
+		-- show orthogonality of basis and its inverse
+		printbr((var'e''_u^I' * var'e''^v_I'):eq((e'_u^I' * eU'^v_I')()))
+		printbr((var'e''_u^I' * var'e''^u_J'):eq((e'_u^I' * eU'^u_J')()))
 		
-	so for [e_u, e_v] = c_uv^w e_w = c_uv^w e_w^J d/dx^J
-	we find c_uv^w e_w^I = (e_v^I_,u - e_u^I_,v)
-	or c_uv^w = (e_v^I_,u - e_u^I_,v) e^w_I
-	is it just me, or does this look strikingly similar to the spin connection?
-	--]]
-	local c = Tensor'_ab^c'
-	c['_ab^c'] = ((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')()
-	c:printElem'c'
-	printbr()
+		--[[
+		e_u = e_u^I d/dx^I
+		and e^v_J is the inverse of e_u^I 
+		such that e_u^I e^v_I = delta_u^v and e_u^I e^u_J = delta^I_J
+		
+		[e_u, e_v] = e_u e_v - e_v e_u
+			= e_u^I d/dx^I (e_v^J d/dx^J) - e_v^I d/dx^I (e_u^J d/dx^J)
+			= e_u^I ( (d/dx^I e_v^J) d/dx^J + e_v^J d/dx^I d/dx^J) - e_v^I ((d/dx^I e_u^J) d/dx^J + e_u^J d/dx^I d/dx^J)
+			= e_u^I (d/dx^I e_v^J) d/dx^J - e_v^I (d/dx^I e_u^J) d/dx^J
+			= (e_u^I e_v^J_,I - e_v^I e_u^J_,I) d/dx^J 
+			= (e_u^I (dx^a/dx^I d/dx^a e_v^J) - e_v^I (dx^a/dx^I d/dx^a e_u^J)) d/dx^J
+			= (e_u^I e_v^J_,a - e_v^I e_u^J_,a) e^a_I d/dx^J
+			= (delta_u^a e_v^J_,a - delta_v^a e_u^J_,a) d/dx^J
+			= (e_v^J_,u - e_u^J_,v) d/dx^J
+			
+		so for [e_u, e_v] = c_uv^w e_w = c_uv^w e_w^J d/dx^J
+		we find c_uv^w e_w^I = (e_v^I_,u - e_u^I_,v)
+		or c_uv^w = (e_v^I_,u - e_u^I_,v) e^w_I
+		is it just me, or does this look strikingly similar to the spin connection?
+		--]]
+		c = Tensor'_ab^c'
+		c['_ab^c'] = ((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')()
+		c:printElem'c'
+		printbr()
 
-	local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
-	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
-	g:printElem'g'
-	printbr()
+		g = (e'_u^I' * e'_v^J' * eta'_IJ')()
+		printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
+		g:printElem'g'
+		printbr()
+	
+		printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
+	elseif info.metric then
+		g = info.metric()
+		g:printElem'g'
+		printbr()
+	else
+		error'here'
+	end
 --]]
 
-	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
+	-- TODO just put this once in the intro?
 	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_cba')))
+	
 	local Props = class(require 'symmath.physics.diffgeom')
 	function Props:doPrint(field)
 		print(field.title..':')
@@ -503,3 +553,9 @@ for _,info in ipairs(spacetimes) do
 	printbr((d2x'^a':eq(-Gamma'^a_bc' * dx'^b' * dx'^c'))():factorDivision())
 	printbr()
 end
+
+printbr[[
+<br>
+Using 2010 Muller, Grave "Catalogue of Spacetimes" for a reference on the spacetime metrics.<br>
+<br>
+]]
