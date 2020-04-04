@@ -62,7 +62,7 @@ end
 
 function Expression:findChild(node)
 	-- how should I distinguish between find saying "not in our tree" and "it is ourself!"
-	if node == self then error("looking for self") end
+	if node == self then return true end --error("looking for self") end
 	for i,x in ipairs(self) do
 		-- if it's this node then return its info
 		if x == node then return self, i end

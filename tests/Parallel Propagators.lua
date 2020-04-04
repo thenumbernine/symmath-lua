@@ -14,6 +14,7 @@ local theta = var'\\theta'
 for _,info in ipairs{
 	{
 		name = 'cylindrical, coordinate',
+		coordVolumeElem = r,
 		coords = {r, phi, z},
 		getConn = function()
 			local conn = Tensor'^a_bc'
@@ -25,6 +26,7 @@ for _,info in ipairs{
 	},
 	{
 		name = 'cylindrical, orthonormal',
+		coordVolumeElem = r,
 		coords = {r, phi, z},
 		getConn = function()
 			local conn = Tensor'^I_JK'
@@ -44,6 +46,7 @@ for _,info in ipairs{
 	},
 	{
 		name = 'spherical, coordinate',
+		coordVolumeElem = r^2 * sin(theta),
 		coords = {r, theta, phi},
 		getConn = function()
 			local conn = Tensor'^a_bc'
@@ -61,6 +64,7 @@ for _,info in ipairs{
 	},
 	{
 		name = 'spherical, orthonormal',
+		coordVolumeElem = r^2 * sin(theta),
 		coords = {r, theta, phi},
 		getConn = function()
 			local conn = Tensor'^a_bc'
@@ -103,8 +107,9 @@ for _,info in ipairs{
 	-- connection: Gamma^I_JK, except rescale the lower term to a coordinate basis:
 	-- Gamma^I_aK = Gamma^I_JK * e_a^J
 	local connCoord = connT
+	local e
 	if info.getLinCoeff then
-		local e = info.getLinCoeff() 
+		e = info.getLinCoeff() 
 		connCoord = (connT'^I_JK' * e'_a^J')():permute'^I_aK'
 		
 		print('connection with 2nd term transformed to a coordinate basis:')
@@ -213,4 +218,185 @@ intConn = intConn:replace(abs(r), r)
 		end
 	end
 	printbr()
+
+	local xLs = range(n):mapi(function(i)
+		return var(coords[i].name..'_L')
+	end)
+	local xRs = range(n):mapi(function(i)
+		return var(coords[i].name..'_R')
+	end)
+	local deltas = range(n):mapi(function(i)
+		return var('\\Delta '..coords[i].name)
+	end)
+	local deltaSqs = range(n):mapi(function(i)
+		return var('\\Delta ('..coords[i].name..')^2')
+	end)
+	local deltaCubes = range(n):mapi(function(i)
+		return var('\\Delta ('..coords[i].name..')^3')
+	end)
+	local deltaCoss = range(n):mapi(function(i)
+		return var('\\Delta cos('..coords[i].name..')')
+	end)
+
+	local function replaceDeltas(expr)
+		for k=1,n do
+			expr = expr
+				:replace((xRs[k] - xLs[k])(), deltas[k])
+				:replace((xLs[k] - xRs[k])(), -deltas[k])
+				
+				:replace((xRs[k]^2 - xLs[k]^2)(), deltaSqs[k])
+				:replace((xLs[k]^2 - xRs[k]^2)(), -deltaSqs[k])
+				
+				:replace((xRs[k]^3 - xLs[k]^3)(), deltaCubes[k])
+				:replace((xLs[k]^3 - xRs[k]^3)(), -deltaCubes[k])
+				
+				:replace((cos(xRs[k]) - cos(xLs[k]))(), deltaCoss[k])
+				:replace((cos(xLs[k]) - cos(xRs[k]))(), -deltaCoss[k])
+		
+				-- hmm
+				:replace((xRs[k]^2)(), xLs[k]^2 + deltaSqs[k])()
+				:replace((xRs[k]^3)(), xLs[k]^3 + deltaCubes[k])()
+		end
+		return expr
+	end
+
+	local coordVolumeElem = info.coordVolumeElem
+	printbr('volume element: ', coordVolumeElem)
+	
+	local cellVolume = coordVolumeElem
+	for k=1,n do
+		if not cellVolume:findChild(coords[k]) then
+			cellVolume = cellVolume * deltas[k] 
+		else
+			cellVolume = cellVolume:integrate(coords[k], xLs[k], xRs[k])()
+			cellVolume = replaceDeltas(cellVolume):simplify()
+		end
+	end
+	printbr('volume integral: ', cellVolume)
+
+	local FLs = range(n):mapi(function(i)
+		return var('F^{'..coords[i].name..'}('..xLs[i].name..')')
+	end)
+	local FRs = range(n):mapi(function(i)
+		return var('F^{'..coords[i].name..'}('..xRs[i].name..')')
+	end)
+
+	printbr'finite volume (0,0)-form:'
+
+	local sum = 0
+	for k,coordk in ipairs(coords) do
+		local kLname = xLs[k].name
+		local kRname = xRs[k].name
+		local term = 
+			var('J('..kRname..')') 
+			* var('{e_{'..coordk.name..'}}^{\\bar{'..coordk.name..'}}('..kRname..')')
+			* FRs[k]
+			-
+			var('J('..kLname..')') 
+			* var('{e_{'..coordk.name..'}}^{\\bar{'..coordk.name..'}}('..kLname..')')
+			* FLs[k]
+		for j,coordj in ipairs(coords) do
+			if j ~= k then
+				term = term:integrate(coordj, var(coordj.name..'_L'), var(coordj.name..'_R'))
+			end
+		end
+		sum = sum - term
+	end
+	printbr(
+		var'u(x_C, t_R)':eq(
+			var'u(x_C, t_L)'
+			+ var'\\Delta t' * (
+				frac(1, var'\\mathcal{V}(x_C)') * sum
+				+ var'S(x_C)'
+			)
+		)
+	)
+	printbr()
+
+	-- TODO move to Matrix?
+	local function isDiagonal(m)
+		for i=1,#m do
+			for j=1,#m[1] do
+				if i ~= j then
+					if m[i][j] ~= Constant(0) then return false end
+				end
+			end
+		end
+		return true
+	end
+	if e then
+		assert(isDiagonal(e), "TODO add support for linear combinations of fluxes at cell surfaces for anholonomic coordinates")
+	end
+
+	local sum = 0
+	for k,coordk in ipairs(coords) do
+		local kLname = xLs[k].name
+		local kRname = xRs[k].name
+		local term = 
+			coordVolumeElem:replace(coords[k], xRs[k])
+			* (e and e[k][k] or Constant(1)):replace(coords[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
+			* FRs[k]
+			-
+			coordVolumeElem:replace(coords[k], xLs[k])
+			* (e and e[k][k] or Constant(1)):replace(coords[k], xLs[k])	-- diagonal {e_a}^I(x_L) quick fix
+			* FLs[k]
+		for j,coordj in ipairs(coords) do
+			if j ~= k then
+				term = term:integrate(coordj, var(coordj.name..'_L'), var(coordj.name..'_R'))
+			end
+		end
+		sum = sum - term
+	end
+	printbr(
+		var'u(x_C, t_R)':eq(
+			var'u(x_C, t_L)'
+			+ var'\\Delta t' * (
+				frac(1, cellVolume) * sum
+				+ var'S(x_C)'
+			)
+		)
+	)
+	printbr()
+
+	-- now repeat, except as you eval, substitute for the deltas
+	
+	local sum = 0
+	for k,coordk in ipairs(coords) do
+		local kLname = xLs[k].name
+		local kRname = xRs[k].name
+		local term = 
+			coordVolumeElem:replace(coords[k], xRs[k])
+			* (e and e[k][k] or Constant(1)):replace(coords[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
+			* FRs[k]
+			-
+			coordVolumeElem:replace(coords[k], xLs[k])
+			* (e and e[k][k] or Constant(1)):replace(coords[k], xLs[k])	-- diagonal {e_a}^I(x_L) quick fix
+			* FLs[k]
+		for j,coordj in ipairs(coords) do
+			if j ~= k then
+				if not term:findChild(coordj) then
+					term = term * deltas[j]
+				else
+					term = term:integrate(coordj, var(coordj.name..'_L'), var(coordj.name..'_R'))()
+					term = replaceDeltas(term):simplify()
+				end
+			end
+		end
+		sum = sum - term
+	end
+	local expr = var'u(x_C, t_R)':eq(
+		var'u(x_C, t_L)'
+		+ var'\\Delta t' * (
+			frac(1, cellVolume) * sum
+			+ var'S(x_C)'
+		)
+	)
+	printbr(expr)
+	printbr()
+
+	expr = expr():factorDivision()
+	printbr(expr)
+	printbr()
+
+
 end
