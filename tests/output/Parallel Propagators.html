@@ -7,9 +7,9 @@
     </head>
 	<body onload='tryToFindMathJax();'>
 
-<h3>polar, coordinate:</h3>
+<h3>cylindrical, coordinate:</h3>
 <br>
-coordinates:$r$, $\phi$
+coordinates:$r$, $\phi$, $z$
 <br>
 
 <br>
@@ -23,41 +23,60 @@ parallel propagators:
 <br>
 
 <br>
-${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 \\  0 &  \frac{1}{r}\end{matrix}\right]}$
+${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{1}{r}\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 \\  0 &  log\left( {\frac{{ r}_R}{{ r}_L}}\right)\end{matrix}\right]$
+$\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  log\left( {\frac{{ r}_R}{{ r}_L}}\right) &  0 \\  0 &  0 &  0\end{matrix}\right]$
 <br>
 
 <br>
-${ P}_r$	=	${e}^{( -{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{1}{r}\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 \\  0 &  \frac{{ r}_L}{{ r}_R}\end{matrix}\right]$
+${ P}_r$	=	${e}^{( -{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{{ r}_L}{{ r}_R} &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
 <br>
-${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{1}{r}\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 \\  0 &  \frac{{ r}_R}{{ r}_L}\end{matrix}\right]$
+${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{{ r}_R}{{ r}_L} &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
 <br>
-${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  -{r} \\  \frac{1}{r} &  0\end{matrix}\right]}$
+${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{r} \\  \frac{1}{r} &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  {{r}} {{({{{ \phi}_L} - {{ \phi}_R}})}} \\  {\frac{1}{r}}{({-{({{{ \phi}_L} - {{ \phi}_R}})}})} &  0\end{matrix}\right]$
+$\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  {{r}} {{({{{ \phi}_L} - {{ \phi}_R}})}} &  0 \\  {\frac{1}{r}}{({-{({{{ \phi}_L} - {{ \phi}_R}})}})} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
 <br>
 
 <br>
-${ P}_{\phi}$	=	${e}^{( -{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{r} \\  \frac{1}{r} &  0\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{{{r}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} \\  {\frac{1}{r}}{({sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)})} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]$
+${ P}_{\phi}$	=	${e}^{( -{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{{{r}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)})} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
 <br>
-${{ P}_{\phi}}^{-1}$	=	${e}^{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{r} \\  \frac{1}{r} &  0\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  {{r}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} \\  \frac{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}{-{r}} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]$
+${{ P}_{\phi}}^{-1}$	=	${e}^{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  {{r}} {{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} &  0 \\  {\frac{1}{r}}{({-{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}})} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{[\Gamma_z]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{ z}_L}}^{{{ z}_R}}d z\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_z$	=	${e}^{( -{({\int\limits_{{{ z}_L}}^{{{ z}_R}}d z\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{ P}_z}^{-1}$	=	${e}^{({\int\limits_{{{ z}_L}}^{{{ z}_R}}d z\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
 <br>
@@ -65,13 +84,17 @@ propagator commutation:
 <br>
 
 <br>
-[	${ P}_r$	,	${ P}_{\phi}$	] =	${ {\left[\begin{matrix}  1 &  0 \\  0 &  \frac{{ r}_L}{{ r}_R}\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{ r}_L}}} \\  \frac{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}{{ r}_L} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]}} - { {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{ r}_R}}} \\  \frac{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}{{ r}_R} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  0 &  \frac{{ r}_L}{{ r}_R}\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]$
+[	${ P}_r$	,	${ P}_{\phi}$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{{ r}_L}{{ r}_R} &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{ r}_L}}} &  0 \\  \frac{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}{{ r}_L} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{ r}_R}}} &  0 \\  \frac{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}{{ r}_R} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{{ r}_L}{{ r}_R} &  0 \\  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+[	${ P}_r$	,	${ P}_z$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{{ r}_L}{{ r}_R} &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{{ r}_L}{{ r}_R} &  0 \\  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+[	${ P}_{\phi}$	,	${ P}_z$	] =	${ {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{ r}_L}}} &  0 \\  \frac{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}{{ r}_L} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{{{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}} {{{ r}_L}}} &  0 \\  \frac{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)}{{ r}_L} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
 <br>
 
 <br>
-<h3>polar, orthonormal:</h3>
+<h3>cylindrical, orthonormal:</h3>
 <br>
-coordinates:$r$, $\phi$
+coordinates:$r$, $\phi$, $z$
 <br>
 
 <br>
@@ -89,41 +112,60 @@ parallel propagators:
 <br>
 
 <br>
-${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]$
+$\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
 <br>
 
 <br>
-${ P}_r$	=	${e}^{( -{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+${ P}_r$	=	${e}^{( -{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
 <br>
-${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{ r}_L}}^{{{ r}_R}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
 <br>
-${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]}$
+${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  -{1} &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  {{ \phi}_L} - {{ \phi}_R} \\  -{({{{ \phi}_L} - {{ \phi}_R}})} &  0\end{matrix}\right]$
+$\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{1} &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  {{ \phi}_L} - {{ \phi}_R} &  0 \\  -{({{{ \phi}_L} - {{ \phi}_R}})} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
 <br>
 
 <br>
-${ P}_{\phi}$	=	${e}^{( -{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} \\  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]$
+${ P}_{\phi}$	=	${e}^{( -{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{1} &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} &  0 \\  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
 <br>
-${{ P}_{\phi}}^{-1}$	=	${e}^{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) \\  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]$
+${{ P}_{\phi}}^{-1}$	=	${e}^{({\int\limits_{{{ \phi}_L}}^{{{ \phi}_R}}d \phi\left( \left[\begin{matrix}  0 &  -{1} &  0 \\  1 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{[\Gamma_z]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{ z}_L}}^{{{ z}_R}}d z\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_z$	=	${e}^{( -{({\int\limits_{{{ z}_L}}^{{{ z}_R}}d z\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{ P}_z}^{-1}$	=	${e}^{({\int\limits_{{{ z}_L}}^{{{ z}_R}}d z\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]$
 <br>
 
 <br>
@@ -131,7 +173,11 @@ propagator commutation:
 <br>
 
 <br>
-[	${ P}_r$	,	${ P}_{\phi}$	] =	${ {\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} \\  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]}} - { {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} \\  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right)\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]$
+[	${ P}_r$	,	${ P}_{\phi}$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} &  0 \\  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} &  0 \\  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+[	${ P}_r$	,	${ P}_z$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+[	${ P}_{\phi}$	,	${ P}_z$	] =	${ {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} &  0 \\  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  -{sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right)} &  0 \\  sin\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  cos\left( {{{ \phi}_L} - {{ \phi}_R}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
 <br>
 
 <br>

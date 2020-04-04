@@ -7,13 +7,14 @@ require 'symmath'{MathJax={title='Parallel Propagtors'}}
 
 local t = var't'
 local r = var'r'
+local z = var'z'
 local phi = var'\\phi'
 local theta = var'\\theta'
 
 for _,info in ipairs{
 	{
-		name = 'polar, coordinate',
-		coords = {r, phi},
+		name = 'cylindrical, coordinate',
+		coords = {r, phi, z},
 		getConn = function()
 			local conn = Tensor'^a_bc'
 			conn[2][1][2] = 1/r
@@ -23,8 +24,8 @@ for _,info in ipairs{
 		end,
 	},
 	{
-		name = 'polar, orthonormal',
-		coords = {r, phi},
+		name = 'cylindrical, orthonormal',
+		coords = {r, phi, z},
 		getConn = function()
 			local conn = Tensor'^I_JK'
 			conn[1][2][2] = -1/r
@@ -35,8 +36,9 @@ for _,info in ipairs{
 		-- s.t. g_ab = e_a^I e_b^J eta_IJ
 		getLinCoeff = function()
 			return Tensor('_a^I',
-				{1, 0},
-				{0, r}
+				{1, 0, 0},
+				{0, r, 0},
+				{0, 0, 1}
 			)
 		end,
 	},
