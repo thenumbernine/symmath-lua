@@ -365,6 +365,7 @@ LaTeX.lookupTable = {
 			s = ',' .. s 
 		end
 		if expr.symbol then
+			local symmath = require 'symmath'
 			local varname = expr.symbol
 			if symmath.fixVariableNames then
 				varname = symmath.tostring:fixVariableName(varname)
