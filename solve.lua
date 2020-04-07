@@ -14,7 +14,7 @@ end
 accepts an equation and a variable
 returns an equation with that variable on the lhs and the rest on the rhs
 --]]
-return function(eqn, x)
+local function solve(eqn, x, hasSimplified)
 	local div = require 'symmath.op.div'
 	local mul = require 'symmath.op.mul'
 	local Equation = require 'symmath.op.Equation'	
@@ -112,12 +112,14 @@ return function(eqn, x)
 		return solns:unpack()
 	end
 --]]
-
+	
 	-- handle multiplication separately
 	if mul.is(lhs) then
 		local solns = table()
 		for _,term in ipairs(lhs) do
-			solns:append{term:eq(0):solve(x)}
+			if term:dependsOn(x) then
+				solns:append{term:eq(0):solve(x)}
+			end
 		end
 		return solns:unpack()
 	end
@@ -155,5 +157,12 @@ return function(eqn, x)
 	if coeffs.extra then
 		result = result + getCoeff'extra'
 	end
-	return result
+
+	if not hasSimplified then
+		return result():eq(0):solve(x, true)
+	end
+
+	return result:eq(0)
 end
+
+return solve

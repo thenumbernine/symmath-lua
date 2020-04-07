@@ -19,34 +19,29 @@ local function eigen(A)
 --printbr(var'I':eq(I))
 	local AminusLambda = (A - lambda * I)()
 --printbr((var'A' - var'\\lambda' * var'I'):eq(AminusLambda))
-	local charPoly = AminusLambda:det():eq(0)
+	local charPoly = AminusLambda:det{dontSimplify=true}:eq(0)
 --printbr(charPoly)
 	local allLambdas = table{charPoly:solve(lambda)}
 --printbr(allLambdas:mapi(tostring):concat', ')	
 	allLambdas = allLambdas:mapi(function(eqn) return eqn:rhs() end)	-- convert to lambda equality
 --printbr(lambda, '$= \\{$', allLambdas:mapi(tostring):concat', ', '$\\}$')
 	local lambdas = symmath.multiplicity(allLambdas)	-- of equations
+--for _,info in ipairs(lambdas) do
+--	printbr('mult '..info.mult..' expr '..info.expr)
+--end
 	
+	allLambdas = table()	-- redo allLambdas so the order matches the right-eigenvectors' order
 	local Rs = lambdas:mapi(function(lambdaInfo) 
 		local lambda = lambdaInfo.expr
 		local Ri = (A - lambda * I)():nullspace()
-		
-		-- assert multiplicity matches the unique lambda multiplicity
-		if lambdaInfo.expr == Constant(0) then
-			-- right now x^3:eq(0):solve(x) will just give x=0, not {x=0,x=0,x=0}
-			-- so artificially insert it
-			while lambdaInfo.mult < #Ri[1] do
-				allLambdas:insert(lambdaInfo.expr)
-				lambdaInfo.mult = lambdaInfo.mult + 1
-			end
-		else
-			assert(lambdaInfo.mult == #Ri[1])
+		assert(lambdaInfo.mult == #Ri[1])
+		for i=1,lambdaInfo.mult do
+			allLambdas:insert(lambdaInfo.expr)
 		end
-		
 		return Ri:T()
 	end)
 --for i,lambda in ipairs(lambdas) do
---	printbr('right eigenvector of', lambda, 'is', Rs[i]:T())
+--	printbr('right eigenvector of', lambda.expr, 'is', Rs[i]:T())
 --end
 
 	local R = Matrix( 

@@ -109,8 +109,10 @@ LaTeX.lookupTable = {
 		for i=#expr,2,-1 do
 			-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
 			-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
-			if Variable.is(expr[i-1])
-			and #expr[i-1].name > 1
+			if (Variable.is(expr[i-1])
+			and #expr[i-1].name > 1)
+			or require 'symmath.op.unm'.is(expr[i])
+			or (Constant.is(expr[i]) and expr[i].value < 0)
 			--and Variable.is(expr[i])
 			then
 				res:insert(i, '\\cdot')

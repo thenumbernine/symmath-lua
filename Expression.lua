@@ -1094,4 +1094,22 @@ function Expression:popRules()
 	self.pushedRules = table()
 end
 
+
+-- alternative name? is-function-of?
+function Expression:dependsOn(x)
+	local found = false
+	require 'symmath.map'(self, function(ai)
+		if ai == x then 
+			found = true 
+			return 1	-- short-circuit
+		end
+		if Variable.is(ai) 
+		and table.find(ai.dependentVars, x) then 
+			found = true 
+			return 1	-- short-circuit
+		end
+	end)
+	return found
+end
+
 return Expression

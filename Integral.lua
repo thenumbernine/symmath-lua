@@ -79,12 +79,7 @@ Integral.rules = {
 
 			-- assuming it's already simplified ... ? so no x * x^2's exist?
 			local function isDepOfX(a)
-				local found = false
-				map(a, function(ai)
-					if ai == x then found = true return end
-					if Variable.is(ai) and table.find(ai.dependentVars, x) then found = true return end
-				end)
-				return found
+				return a:dependsOn(x)
 			end
 
 			local function getDepAndNonDep(int)
@@ -302,6 +297,80 @@ Integral.rules = {
 									- cos((a1 + a2) * x) / (2 * (a1 + a2))
 						end
 					end	
+				
+				-- cos(f(x)) * (g(x) / h(x))
+				elseif (cos.is(dep[1]) and div.is(dep[2]))
+				or (cos.is(dep[2]) and div.is(dep[1]))
+				then
+					if cos.is(dep[2]) and div.is(dep[1]) then
+						dep[1], dep[2] = dep[2], dep[1]
+					end
+					local dep11, nondep11 = getDepAndNonDep(dep[1][1])	-- f(x)
+					local dep21, nondep21 = getDepAndNonDep(dep[2][1])	-- g(x)
+					local dep22, nondep22 = getDepAndNonDep(dep[2][2])	-- h(x)
+
+					if #dep11 == 1		--   f(x) = b x
+					and dep11[1] == x	-- _/
+					and #dep21 == 0		-- g(x) = c
+					and #dep22 == 1		--   h(x) == sin(x)
+					and sin.is(dep22[1])	-- _/
+					then
+						local dep221, nondep221 = getDepAndNonDep(dep[2][2][1])	-- sin(k(x))
+						
+						-- k(x) == e x, so h(x) = d sin(e x)
+						if #dep221 == 1
+						and dep221[1] == x
+						then
+							-- a cos(b * x) * (c / (d * sin(e * x)))
+							local a = tableToTerm(nondep)			-- usu 1
+							local b = tableToTerm(nondep11)
+							local c = tableToTerm(nondep21)			-- usu 1
+							local d = tableToTerm(nondep22)			-- usu 1
+							local e = tableToTerm(nondep221)
+
+							if b == e then
+								return ((a * c) / (b * d)) * log(abs(sin(b * x)))
+							end
+						end
+					end
+
+
+				-- sin(f(x)) * (g(x) / h(x))
+				elseif (sin.is(dep[1]) and div.is(dep[2]))
+				or (sin.is(dep[2]) and div.is(dep[1]))
+				then
+					if sin.is(dep[2]) and div.is(dep[1]) then
+						dep[1], dep[2] = dep[2], dep[1]
+					end
+					local dep11, nondep11 = getDepAndNonDep(dep[1][1])	-- f(x)
+					local dep21, nondep21 = getDepAndNonDep(dep[2][1])	-- g(x)
+					local dep22, nondep22 = getDepAndNonDep(dep[2][2])	-- h(x)
+
+					if #dep11 == 1		--   f(x) = b x
+					and dep11[1] == x	-- _/
+					and #dep21 == 0		-- g(x) = c
+					and #dep22 == 1		--   h(x) == cos(x)
+					and cos.is(dep22[1])	-- _/
+					then
+						local dep221, nondep221 = getDepAndNonDep(dep[2][2][1])	-- cos(k(x))
+						
+						-- k(x) == e x, so h(x) = d cos(e x)
+						if #dep221 == 1
+						and dep221[1] == x
+						then
+							-- a sin(b * x) * (c / (d * cos(e * x)))
+							local a = tableToTerm(nondep)			-- usu 1
+							local b = tableToTerm(nondep11)
+							local c = tableToTerm(nondep21)			-- usu 1
+							local d = tableToTerm(nondep22)			-- usu 1
+							local e = tableToTerm(nondep221)
+
+							if b == e then
+								return -((a * c) / (b * d)) * log(abs(cos(b * x)))
+							end
+						end
+					end
+
 				-- sinh(f(x)) * (g(x) / h(x))
 				elseif (sinh.is(dep[1]) and div.is(dep[2]))
 				or (sinh.is(dep[2]) and div.is(dep[1]))
@@ -309,17 +378,73 @@ Integral.rules = {
 					if sinh.is(dep[2]) and div.is(dep[1]) then
 						dep[1], dep[2] = dep[2], dep[1]
 					end
-				-- sinh(a * x) * (c / (d * cosh(a * x)))
-					local dep21, nondep21 = getDepAndNonDep(dep[2][1])
-					local dep22, nondep22 = getDepAndNonDep(dep[2][2])
-					if #dep21 == 0
-					and #dep22 == 1
-					and cosh.is(dep22[1])
+					local dep11, nondep11 = getDepAndNonDep(dep[1][1])	-- f(x)
+					local dep21, nondep21 = getDepAndNonDep(dep[2][1])	-- g(x)
+					local dep22, nondep22 = getDepAndNonDep(dep[2][2])	-- h(x)
+
+					if #dep11 == 1		--   f(x) = b x
+					and dep11[1] == x	-- _/
+					and #dep21 == 0		-- g(x) = c
+					and #dep22 == 1		--   h(x) == cosh(x)
+					and cosh.is(dep22[1])	-- _/
 					then
+						local dep221, nondep221 = getDepAndNonDep(dep[2][2][1])	-- cosh(k(x))
 						
+						-- k(x) == e x, so h(x) = d cosh(e x)
+						if #dep221 == 1
+						and dep221[1] == x
+						then
+							-- a sinh(b * x) * (c / (d * cosh(e * x)))
+							local a = tableToTerm(nondep)			-- usu 1
+							local b = tableToTerm(nondep11)
+							local c = tableToTerm(nondep21)			-- usu 1
+							local d = tableToTerm(nondep22)			-- usu 1
+							local e = tableToTerm(nondep221)
+
+							if b == e then
+								return ((a * c) / (b * d)) * log(cosh(b * x))
+							end
+						end
 					end
+
+				-- cosh(f(x)) * (g(x) / h(x))
+				elseif (cosh.is(dep[1]) and div.is(dep[2]))
+				or (cosh.is(dep[2]) and div.is(dep[1]))
+				then
+					if cosh.is(dep[2]) and div.is(dep[1]) then
+						dep[1], dep[2] = dep[2], dep[1]
+					end
+					local dep11, nondep11 = getDepAndNonDep(dep[1][1])	-- f(x)
+					local dep21, nondep21 = getDepAndNonDep(dep[2][1])	-- g(x)
+					local dep22, nondep22 = getDepAndNonDep(dep[2][2])	-- h(x)
+
+					if #dep11 == 1		--   f(x) = b x
+					and dep11[1] == x	-- _/
+					and #dep21 == 0		-- g(x) = c
+					and #dep22 == 1		--   h(x) == sinh(x)
+					and sinh.is(dep22[1])	-- _/
+					then
+						local dep221, nondep221 = getDepAndNonDep(dep[2][2][1])	-- sinh(k(x))
+						
+						-- k(x) == e x, so h(x) = d sinh(e x)
+						if #dep221 == 1
+						and dep221[1] == x
+						then
+							-- a cosh(b * x) * (c / (d * sinh(e * x)))
+							local a = tableToTerm(nondep)			-- usu 1
+							local b = tableToTerm(nondep11)
+							local c = tableToTerm(nondep21)			-- usu 1
+							local d = tableToTerm(nondep22)			-- usu 1
+							local e = tableToTerm(nondep221)
+
+							if b == e then
+								return ((a * c) / (b * d)) * log(abs(sinh(b * x)))
+							end
+						end
+					end				
+
 				end
-			
+
 			elseif #dep > 2 then	-- TODO any integrals of f1(x) * ... * fn(x)
 			end
 
