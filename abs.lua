@@ -18,44 +18,6 @@ function abs:reverse(soln, index)
 	return soln, -soln
 end
 
--- returns true if the domain of x is a subset of [0, inf)
-local function isNonNegative(x)
-	local symmath = require 'symmath'
-	
-	if Constant.is(x) then
-		return x.value >= 0
-	end
-
-	--[[
-	if symmath.op.unm.is(x)
-	and isNonPositive(x[1])
-	then
-		return true
-	end
-	--]]
-
-	if Variable.is(x) then
-		if x.value and x.value >= 0 then return true end
-	
-		-- TODO subsets / intervals / domains
-		if require 'symmath.set.Real':contains(x)
-		and x.isNonNegative 
-		then 
-			return true 
-		end
-	end
-
-	-- |(x^n)| = x^n for n even
-	if symmath.op.pow.is(x)
-	and require 'symmath.set.EvenInteger':contains(x[2])
-	and require 'symmath.set.Real':contains(x[1])
-	then
-		return true
-	end
-
-	return false
-end
-
 abs.rules = {
 	Prune = {
 		{apply = function(prune, expr)
@@ -83,7 +45,7 @@ abs.rules = {
 				return prune:apply(Constant(math.abs(x.value)))
 			end
 		
-			if isNonNegative(x) then
+			if require 'symmath.set.NonNegativeReal':contains(x) then
 				return x
 			end
 		end},

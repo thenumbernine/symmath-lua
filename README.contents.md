@@ -511,6 +511,24 @@ Prints the tensor's contents.
 `t:printElem't'`  
 Prints the individual nonzero values of the tensor, or '0' if they are all zero.  
 
+### Sets (WIP)
+
+Sets so far:
+* symmath.set.Universal
+* symmath.set.Complex
+* symmath.set.Real
+* symmath.set.NonNegativeReal
+* symmath.set.Integer
+* symmath.set.EvenInteger
+* symmath.set.OddInteger
+
+Set:var('x', ...)
+shorthand for creating a variable associated with this set
+
+Set:contains(x)
+returns true/false if the set contains the element.
+returns nil if the answer is indeterminant.
+
 ## Dependencies:
 
 - https://github.com/thenumbernine/lua-ext

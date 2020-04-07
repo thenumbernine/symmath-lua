@@ -38,6 +38,16 @@ function symmath.vars(...)						--create variables for each string parameter
 	return table{...}:map(function(x) return symmath.var(x) end):unpack()
 end
 
+symmath.set = {
+	Universal = require 'symmath.set.Universal',
+	Complex = require 'symmath.set.Complex',
+	Real = require 'symmath.set.Real',
+	NonNegativeReal = require 'symmath.set.NonNegativeReal',
+	Integer = require 'symmath.set.Integer',
+	EvenInteger = require 'symmath.set.EvenInteger',
+	OddInteger = require 'symmath.set.OddInteger',
+}
+
 -- export expressions to various languages
 symmath.export = {
 	C = require 'symmath.export.C',

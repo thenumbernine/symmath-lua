@@ -1,4 +1,5 @@
 local class = require 'ext.class'
+local Variable = require 'symmath.Variable'
 
 -- abstract parent class
 local Set = class()
@@ -14,12 +15,21 @@ end
 
 function Set:variable(name, dependentVars, value)
 	-- TODO args are getting unruly, just use a table?
-	return require 'symmath.Variable'(name, dependentVars, value, self)
+	return Variable(name, dependentVars, value, self)
 end
+-- shorthand
+Set.var = Set.variable
 
 function Set:containsVariable(x)
-	return require 'symmath.Variable'.is(x)
-			and self:containsSet(x.set)
+	if Variable.is(x) then
+		if x.value then
+			return self:containsElement(Constant(x.value))
+		end
+		
+		-- if x's set is a subset of this set then true
+		-- but if x's set is not a subset ... x could still be contained
+		if self:containsSet(x.set) then return true end
+	end
 end
 
 --[[
@@ -29,7 +39,7 @@ returns
 	nil = indetermined
 --]]
 function Set:containsElement(x)
-	if self:containsVariable(x) then return true end
+	return self:containsVariable(x)
 end
 
 function Set:contains(x)

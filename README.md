@@ -511,6 +511,24 @@ Prints the tensor's contents.
 `t:printElem't'`  
 Prints the individual nonzero values of the tensor, or '0' if they are all zero.  
 
+### Sets (WIP)
+
+Sets so far:
+* symmath.set.Universal
+* symmath.set.Complex
+* symmath.set.Real
+* symmath.set.NonNegativeReal
+* symmath.set.Integer
+* symmath.set.EvenInteger
+* symmath.set.OddInteger
+
+Set:var('x', ...)
+shorthand for creating a variable associated with this set
+
+Set:contains(x)
+returns true/false if the set contains the element.
+returns nil if the answer is indeterminant.
+
 ## Dependencies:
 
 - https://github.com/thenumbernine/lua-ext
@@ -681,6 +699,8 @@ Output CDN URLs:
 
 [tests/output/ADM metric](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric.html)
 
+[tests/output/Acoustic Black Hole](https://thenumbernine.github.io/symmath/tests/output/Acoustic%20Black%20Hole.html)
+
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
 [tests/output/BSSN](https://thenumbernine.github.io/symmath/tests/output/BSSN.html)
@@ -764,6 +784,8 @@ Output CDN URLs:
 [tests/output/electrovacuum/uniform field - spherical](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20spherical.html)
 
 [tests/output/electrovacuum/verify cylindrical transform](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/verify%20cylindrical%20transform.html)
+
+[tests/output/exp_metric](https://thenumbernine.github.io/symmath/tests/output/exp_metric.html)
 
 [tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
 

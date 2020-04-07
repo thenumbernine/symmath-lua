@@ -106,6 +106,7 @@ build = {
 		["symmath.set.Complex"] = "set/Complex.lua",
 		["symmath.set.EvenInteger"] = "set/EvenInteger.lua",
 		["symmath.set.Integer"] = "set/Integer.lua",
+		["symmath.set.NonNegativeReal"] = "set/NonNegativeReal.lua",
 		["symmath.set.OddInteger"] = "set/OddInteger.lua",
 		["symmath.set.Real"] = "set/Real.lua",
 		["symmath.set.Set"] = "set/Set.lua",

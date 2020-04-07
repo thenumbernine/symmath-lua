@@ -7,7 +7,6 @@ fields:
 	name = variable name
 	dependentVars = table of vars that this var depends on
 	value = (optional) value of this var ... as a Lua number
-	isNonNegative = flag to specify this var is in [0,inf)
 	set = what set does this variable belong to?
 --]]
 local Variable = class(Expression)

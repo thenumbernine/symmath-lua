@@ -5,8 +5,7 @@ local Integer = class(Real)
 
 function Integer:containsElement(x)
 	-- if it isn't a real then it isn't an integer
-	local result = Integer.super.containsElement(self, x) 
-	if result == false then return false end
+	if Integer.super.containsElement(self, x) == false then return false end
 
 	if self:containsVariable(x) then return true end
 
