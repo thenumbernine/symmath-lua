@@ -2,8 +2,18 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 
+--[[
+fields:
+	name = variable name
+	dependentVars = table of vars that this var depends on
+	value = (optional) value of this var ... as a Lua number
+	isNonNegative = flag to specify this var is in [0,inf)
+	set = what set does this variable belong to?
+--]]
 local Variable = class(Expression)
+
 Variable.precedence = 10	-- high since it will never have nested members 
+
 Variable.name = 'Variable'
 
 --[[
@@ -12,10 +22,20 @@ args:
 	dependentVars = variables this var is dependent on
 	value = numerical value of this variable
 --]]
-function Variable:init(name, dependentVars, value)
+function Variable:init(name, dependentVars, value, set)
 	self.name = name
 	self.dependentVars = table(dependentVars)
 	self.value = value
+	if not set then
+		if require 'symmath.complex'.is(value) then 
+			set = require 'symmath.set.Complex'
+		elseif type(value) == 'number' then
+			set = require 'symmath.set.Real'
+		else
+			set = require 'symmath.set.Real'	-- default set ... Real or Universal?
+		end
+	end
+	self.set = set 
 end
 
 function Variable:clone()

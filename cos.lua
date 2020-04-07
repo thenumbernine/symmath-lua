@@ -41,9 +41,9 @@ cos.rules = {
 				and theta[2] == symmath.pi 
 				then
 					-- cos(k * pi) for even k => 1
-					if Constant.isEven(theta[1]) then return Constant(1) end
+					if require 'symmath.set.EvenInteger':contains(theta[1]) then return Constant(1) end
 					-- cos(k * pi) for odd k => -1
-					if Constant.isOdd(theta[1]) then return Constant(-1) end
+					if require 'symmath.set.OddInteger':contains(theta[1]) then return Constant(-1) end
 				end
 			
 				-- cos(-c x y z) => cos(c x y z)
@@ -64,7 +64,7 @@ cos.rules = {
 					-- cos((k * pi) / 2) for odd k => 0
 					if mul.is(theta[1])
 					and #theta[1] == 2
-					and Constant.isOdd(theta[1][1])
+					and require 'symmath.set.OddInteger':contains(theta[1][1])
 					and theta[1][2] == symmath.pi
 					then
 						return Constant(0)

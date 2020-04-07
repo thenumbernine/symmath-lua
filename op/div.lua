@@ -210,7 +210,9 @@ div.rules = {
 					local bases, powers = table.unpack(info)
 					for i=#bases,1,-1 do
 						local b = bases[i]
-						if Constant.isInteger(b) and b.value ~= 0 then
+						if require 'symmath.set.Integer':contains(b) 
+						and b.value ~= 0 
+						then
 							bases:remove(i)
 							local value = b.value
 							local power = powers:remove(i)

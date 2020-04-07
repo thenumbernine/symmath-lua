@@ -96,7 +96,7 @@ for _,info in ipairs{
 			local conn = Tensor'^a_bc'
 			conn[1][1][1] = sinh(rho/w) / (w * cosh(rho/w))
 			conn[1][2][2] = -w * sinh(rho/w) / cosh(rho/w)
-			conn[1][3][3] = -w * sinh(rho/w) * sin(theta)^2 / cosh(rho/w)
+			conn[1][3][3] = -w * sinh(rho/w) / cosh(rho/w) * sin(theta)^2
 			conn[2][3][3] = -sin(theta) * cos(theta)
 			
 			conn[2][1][2] = cosh(rho/w) / (w * sinh(rho/w))

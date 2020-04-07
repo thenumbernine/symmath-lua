@@ -49,7 +49,7 @@ function pow:expand()
 	local Constant = require 'symmath.Constant'
 	-- for certain small integer powers, expand 
 	-- ... or should we have all integer powers expended under a different command?
-	if Constant.isInteger(self[2])
+	if require 'symmath.set.Integer':contains(self[2])
 	and self[2].value >= 0
 	and self[2].value < 10
 	then
@@ -107,7 +107,7 @@ pow.rules = {
 			-- a^n => a*a*...*a,  n times, only for integer 2 <= n < 10
 			-- hmm this can cause problems in some cases ... 
 			-- comment this out to get schwarzschild_spherical_to_cartesian to work
-			if Constant.isInteger(expr[2])
+			if require 'symmath.set.Integer':contains(expr[2])
 			and expr[2].value >= 2
 			and expr[2].value < 10
 			then
@@ -193,7 +193,7 @@ pow.rules = {
 			if Constant.is(expr[1]) and Constant.is(expr[2]) then
 				if symmath.simplifyConstantPowers
 				-- TODO this replaces some cases below
-				or Constant.isInteger(expr[1]) and expr[2].value > 0
+				or require 'symmath.set.Integer':contains(expr[1]) and expr[2].value > 0
 				then
 					return Constant(expr[1].value ^ expr[2].value)
 				end
@@ -235,7 +235,7 @@ pow.rules = {
 					imag = not imag
 					x = Constant(-x.value)
 				end
-				if Constant.isInteger(x) and x.value > 0 then
+				if require 'symmath.set.Integer':contains(x) and x.value > 0 then
 					local primes = require 'symmath.primeFactors'(x.value)
 					local outside = 1
 					local inside = 1
@@ -296,7 +296,9 @@ pow.rules = {
 			if expr[2] == Constant(0) then return Constant(1) end
 
 			-- i^n
-			if expr[1] == symmath.i and Constant.isInteger(expr[2]) then
+			if expr[1] == symmath.i 
+			and require 'symmath.set.Integer':contains(expr[2]) 
+			then
 				local v = expr[2].value % 4
 				if v == 0 then
 					return Constant(1)

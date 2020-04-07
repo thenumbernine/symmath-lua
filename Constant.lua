@@ -81,21 +81,4 @@ Constant.rules = {
 	},
 }
 
--- helper
-
-function Constant.isInteger(x)
-	return Constant.is(x)
-	and x.value == math.floor(x.value)
-end
-
-function Constant.isEven(x)
-	return Constant.is(x)
-	and x.value / 2 == math.floor(x.value / 2)
-end
-
-function Constant.isOdd(x)
-	return Constant.is(x)
-	and (x.value + 1) / 2 == math.floor((x.value + 1) / 2)
-end
-
 return Constant
