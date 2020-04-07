@@ -177,9 +177,12 @@ symmath.asin = require 'symmath.asin'
 symmath.acos = require 'symmath.acos'
 symmath.atan = require 'symmath.atan'
 symmath.atan2 = require 'symmath.atan2'
-symmath.cosh = require 'symmath.cosh'
 symmath.sinh = require 'symmath.sinh'
+symmath.cosh = require 'symmath.cosh'
 symmath.tanh = require 'symmath.tanh'
+symmath.asinh = require 'symmath.asinh'
+symmath.acosh = require 'symmath.acosh'
+symmath.atanh = require 'symmath.atanh'
 symmath.Heaviside = require 'symmath.Heaviside'
 
 symmath.op = {

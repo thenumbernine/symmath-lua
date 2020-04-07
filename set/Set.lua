@@ -1,4 +1,5 @@
 local class = require 'ext.class'
+local table = require 'ext.table'
 local Variable = require 'symmath.Variable'
 
 -- abstract parent class
@@ -19,6 +20,12 @@ function Set:variable(name, dependentVars, value)
 end
 -- shorthand
 Set.var = Set.variable
+	
+function Set:vars(...)
+	return table{...}:map(function(x) 
+		return self:var(x)
+	end):unpack()
+end
 
 function Set:containsVariable(x)
 	if Variable.is(x) then

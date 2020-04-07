@@ -6,14 +6,17 @@ require 'symmath'{MathJax={title='Parallel Propagtors'}}
 
 
 local t = var't'
-local r = var'r'
 local z = var'z'
 local phi = var'\\phi'
 local theta = var'\\theta'
 
-local A = var'A'
-local w = var'w'
-local rho = var'\\rho'
+-- radial variables
+local r = set.NonNegativeReal:var'r'
+local rho = set.NonNegativeReal:var'\\rho'
+
+-- sphere-log-radial parameters:
+local A = set.NonNegativeReal:var'A'
+local w = set.NonNegativeReal:var'w'
 
 for _,info in ipairs{
 	{
@@ -144,10 +147,17 @@ for _,info in ipairs{
 	printbr'parallel propagators:'
 	printbr()
 
+	local xLs = range(n):mapi(function(i)
+		return coords[i].set:var(coords[i].name..'_L')
+	end)
+	local xRs = range(n):mapi(function(i)
+		return coords[i].set:var(coords[i].name..'_R')
+	end)
+
+	local P = var'P'
+
 	local propFwd = table()
 	local propInv = table()
-	
-	local P = var'P'
 
 	for i, coord in ipairs(coords) do
 		local conn = Matrix:lambda({n,n}, function(a,b)
@@ -159,15 +169,10 @@ for _,info in ipairs{
 		printbr(var('[\\Gamma_'..name..']'):eq(conn))
 		printbr()
 
-		local origIntConn = Integral(conn, coord, coord'_L', coord'_R')
+		local origIntConn = Integral(conn, coord, xLs[i], xRs[i])
 		print(origIntConn)
 		local intConn = origIntConn()
 
--- TODO add in the 'assume(r > 0)' stuff
-intConn = intConn:replace(abs(r'_L'), r'_L')
-intConn = intConn:replace(abs(r'_R'), r'_R')
-intConn = intConn:replace(abs(r), r)
-		
 		printbr('=', intConn)
 		printbr()
 
@@ -210,7 +215,7 @@ intConn = intConn:replace(abs(r), r)
 		local PiL = Pi:clone()
 		for k=1,n do
 			if k ~= i then
-				PiL = PiL:replace(coords[k], coords[k]'_L')
+				PiL = PiL:replace(coords[k], xLs[k])
 			end
 		end	
 		
@@ -221,12 +226,12 @@ intConn = intConn:replace(abs(r), r)
 			local PjL = Pj:clone()
 			for k=1,n do
 				if k ~= j then
-					PjL = PjL:replace(coords[k], coords[k]'_L')
+					PjL = PjL:replace(coords[k], xLs[k])
 				end
 			end
 		
-			local PiR = PiL:replace(coords[j]'_L', coords[j]'_R')
-			local PjR = PjL:replace(coords[i]'_L', coords[i]'_R')
+			local PiR = PiL:replace(xLs[j], xRs[j])
+			local PjR = PjL:replace(xLs[i], xRs[i])
 	
 			-- Pj propagates coord j from L to R
 			-- so in Pi replace coord j from arbitrary to jR
@@ -243,12 +248,6 @@ intConn = intConn:replace(abs(r), r)
 	end
 	printbr()
 
-	local xLs = range(n):mapi(function(i)
-		return var(coords[i].name..'_L')
-	end)
-	local xRs = range(n):mapi(function(i)
-		return var(coords[i].name..'_R')
-	end)
 	local deltas = range(n):mapi(function(i)
 		return var('\\Delta '..coords[i].name)
 	end)
@@ -321,7 +320,7 @@ intConn = intConn:replace(abs(r), r)
 			* FLs[k]
 		for j,coordj in ipairs(coords) do
 			if j ~= k then
-				term = term:integrate(coordj, var(coordj.name..'_L'), var(coordj.name..'_R'))
+				term = term:integrate(coordj, xLs[j], xRs[j])
 			end
 		end
 		sum = sum - term
@@ -366,7 +365,7 @@ intConn = intConn:replace(abs(r), r)
 			* FLs[k]
 		for j,coordj in ipairs(coords) do
 			if j ~= k then
-				term = term:integrate(coordj, var(coordj.name..'_L'), var(coordj.name..'_R'))
+				term = term:integrate(coordj, xLs[j], xRs[j])
 			end
 		end
 		sum = sum - term
@@ -401,7 +400,7 @@ intConn = intConn:replace(abs(r), r)
 				if not term:findChild(coordj) then
 					term = term * deltas[j]
 				else
-					term = term:integrate(coordj, var(coordj.name..'_L'), var(coordj.name..'_R'))()
+					term = term:integrate(coordj, xLs[j], xRs[j])()
 					term = replaceDeltas(term):simplify()
 				end
 			end

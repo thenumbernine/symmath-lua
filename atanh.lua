@@ -6,7 +6,7 @@ atanh.name = 'atanh'
 
 -- domain: (-1, 1)
 function atanh.func(x)
-	.5 * math.log((1 + x) / (1 - x))
+	return .5 * math.log((1 + x) / (1 - x))
 end
 
 -- domain: (-1, 1)

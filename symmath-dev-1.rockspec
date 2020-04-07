@@ -109,6 +109,7 @@ build = {
 		["symmath.set.NonNegativeReal"] = "set/NonNegativeReal.lua",
 		["symmath.set.OddInteger"] = "set/OddInteger.lua",
 		["symmath.set.Real"] = "set/Real.lua",
+		["symmath.set.RealInterval"] = "set/RealInterval.lua",
 		["symmath.set.Set"] = "set/Set.lua",
 		["symmath.set.Universal"] = "set/Universal.lua",
 		["symmath.setup"] = "setup.lua",
