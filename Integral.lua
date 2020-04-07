@@ -36,7 +36,20 @@ Integral.rules = {
 			local int, x, start, finish = table.unpack(expr)
 
 			if start and finish then
+				local orig = expr
 				expr = prune(Integral(int, x))
+				-- TODO ... I would like to know if the result was integrated, but how
+				-- if a scalar was factored out then expr won't necessarily be an integral - but one of its children will
+				-- but if we simply detect a child integral to short-circuit then what if we are using an integral whose definition is another integral?
+				local hasInt
+				expr:map(function(ch) 
+					hasInt = hasInt or Integral.is(ch) 
+				end)
+				-- and if we do want prune to map integrals to integrals, it would be nice to know the new integral (with constants factored out) so I can re-substitute the bounds
+				--if hasInt then return expr end	-- loses the bounds
+				-- so doing this saves us from errors, but prevents constants from being factored out
+				if hasInt then return orig end
+
 				-- but don't replace the variable of Integral's
 				-- TODO and here we need function evaluation, 
 				-- for a variable 'v' dependent on x, if we don't have an evaluation expression then we just simplify v - v = 0
@@ -47,7 +60,7 @@ Integral.rules = {
 				end
 				local defFin = replaceDefinite(expr, finish)
 				local defStart = replaceDefinite(expr, start)
-				return (defFin - defStart)()
+				return defFin - defStart
 			end
 			
 			-- TODO make this canonical form
@@ -130,16 +143,17 @@ Integral.rules = {
 				end
 				
 				if pow.is(d) then	-- int(f(x)^g(x),x)
-					-- int(x^n,x) = {
-					-- 		1/(n+1) x^(n+1) 	for x ~= -1
-					--		log|x| 				for x == -1
+
+					-- int(x^n, x)
 					if d[1] == x
 					and Constant.is(d[2])
 					then
 						local n = d[2].value
 						if n == -1 then
+							-- int(x^-1,x) = log|x|
 							return mulWithNonDep(log(abs(x)))
 						else
+							-- int(x^n,x) = 1/(n+1) x^(n+1) for n ~= -1
 							return mulWithNonDep(x^(n+1)/(n+1))
 						end
 					end
@@ -178,8 +192,10 @@ Integral.rules = {
 						end
 					end
 
-					-- TODO f(x)^g(x) 
+				-- TODO f(x)^g(x) 
+				
 				elseif div.is(d) then	-- int(f(x)/g(x), x)
+					
 					if Constant.is(d[1]) and d[1].value == 1 then	-- int(1/f(x), x)
 						local e = d[2]
 						-- int(1/x,x)
@@ -227,6 +243,8 @@ Integral.rules = {
 						{cos, sin},			-- int(cos(x),x) = sin(x)
 						{sinh, cosh},
 						{cosh, sinh},
+						-- int(tanh(x)) = log(cosh(x)) ... but I'm keeping them separated atm
+						-- hmm, once again, I am tempted to just (1) get rid of collapsing of mul(mul(a,b),c) -> mul(a,b,c) and (2) just implement everything as tree rules so sinh(x)/cosh(x) => tanh(x) and (3) try hard not to create any loops in that graph
 					} do
 						local f, F = table.unpack(p)
 						if f.is(d) then
@@ -259,8 +277,8 @@ Integral.rules = {
 						return sin((a2 - a1) * x)/(2 * (a2 - a1)) 
 								+ sin((a2 + a1) * x)/(2 * (a2 + a1)) 
 					end
-				elseif sin.is(dep[1]) and cos.is(dep[2])
-				or cos.is(dep[1]) and sin.is(dep[2])
+				elseif sin.is(dep[1]) and cos.is(dep[2])	-- sin(f(x)) * cos(g(x))
+				or cos.is(dep[1]) and sin.is(dep[2])		-- cos(f(x)) * sin(g(x))
 				then
 					local dep1, nondep1 = getDepAndNonDep(dep[1][1])
 					local dep2, nondep2 = getDepAndNonDep(dep[2][1])
@@ -268,15 +286,37 @@ Integral.rules = {
 						dep1, dep2 = dep2, dep1
 						nondep1, nondep2 = nondep2, nondep1
 					end
-					local a1 = tableToTerm(nondep1)
-					local a2 = tableToTerm(nondep2)
-					if a1 == a2 then
-						-- int(sin(a x) * cos(a x), x)
-						return sin(a1 * x)^2 / (2 * a1)
-					else
-						-- int(sin(a1 x) * cos(a2 x), x)
-						return -cos((a1 - a2) * x) / (2 * (a1 - a2))
-								- cos((a1 + a2) * x) / (2 * (a1 + a2))
+					-- sin(f(x)) * cos(g(x))
+					if #dep1 == 1 and dep1[1] == x
+					and #dep2 == 1 and dep2[1] == x
+					then
+						-- sin(a*x) * cos(b*x)
+						local a1 = tableToTerm(nondep1)
+						local a2 = tableToTerm(nondep2)
+						if a1 == a2 then
+							-- int(sin(a x) * cos(a x), x)
+							return sin(a1 * x)^2 / (2 * a1)
+						else
+							-- int(sin(a1 x) * cos(a2 x), x)
+							return -cos((a1 - a2) * x) / (2 * (a1 - a2))
+									- cos((a1 + a2) * x) / (2 * (a1 + a2))
+						end
+					end	
+				-- sinh(f(x)) * (g(x) / h(x))
+				elseif (sinh.is(dep[1]) and div.is(dep[2]))
+				or (sinh.is(dep[2]) and div.is(dep[1]))
+				then
+					if sinh.is(dep[2]) and div.is(dep[1]) then
+						dep[1], dep[2] = dep[2], dep[1]
+					end
+				-- sinh(a * x) * (c / (d * cosh(a * x)))
+					local dep21, nondep21 = getDepAndNonDep(dep[2][1])
+					local dep22, nondep22 = getDepAndNonDep(dep[2][2])
+					if #dep21 == 0
+					and #dep22 == 1
+					and cosh.is(dep22[1])
+					then
+						
 					end
 				end
 			

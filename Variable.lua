@@ -48,7 +48,9 @@ end
 -- Variable equality is by name and value at the moment
 -- this way log(e) fails to simplify, but log(symmath.e) simplifies to 1 
 function Variable.__eq(a,b)
-	if getmetatable(a) ~= getmetatable(b) then return false end
+	if getmetatable(a) ~= getmetatable(b) then 
+		return Variable.super.__eq(a,b)
+	end
 	return a.name == b.name
 end
 

@@ -26,6 +26,7 @@ Matrix.exp = require 'symmath.matrix.exp'
 -- shorthand
 Matrix.inv = Matrix.inverse	
 Matrix.T = Matrix.transpose
+Matrix.det = Matrix.determinant
 
 function Matrix:charpoly(lambdaVar)
 	if not lambdaVar then

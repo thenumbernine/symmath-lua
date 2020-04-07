@@ -97,10 +97,14 @@ this is used for comparing
 for equality and solving, use .eq()
 --]]
 function Expression.__eq(a,b)
+	-- if a or b is nil then they are different
+	if (a == nil) ~= (b == nil) then return false end
+	-- if the metatables differ then they are different
 	if getmetatable(a) ~= getmetatable(b) then return false end
-	if a == nil ~= b == nil then return false end
 	if a and b then
+		-- if the number of children differ then they are different
 		if #a ~= #b then return false end
+		-- if the children themselves differ then they are different
 		for i=1,#a do
 			if a[i] ~= b[i] then return false end
 		end

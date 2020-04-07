@@ -7,6 +7,10 @@ local t,x,y,z = vars('t','x','y','z')
 -- fixVariableNames would cover this automatically:
 local r,phi,theta,psi = vars('r','\\phi','\\theta','\\psi')
 
+-- unless I set 'fixVariableNames' I will have to explicitly define all the Greek symbols...
+-- this is used by sphere-log-radial
+local rho = var'\\rho'
+
 local rHat = var'\\hat{r}'
 rHat = r
 
@@ -282,6 +286,19 @@ local spacetimes = {
 		end,
 	},
 	{
+		title = 'spherical log-radial',
+		coords = {rho,theta,phi},	-- reminder, the connectins wrt r,theta,phi are the same as spherical above
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			local rDef = A * sinh(rho / w) / sinh(1 / w)
+			return Tensor('^I',
+				rDef * sin(theta) * cos(phi),
+				rDef * sin(theta) * sin(phi),
+				rDef * cos(theta))
+		end,
+	},
+	{
 		title = 'spherical and time',
 		coords = {t,r,theta,phi},
 		embedded = {t,x,y,z},
@@ -433,13 +450,12 @@ io.stderr:flush()
 		e = Tensor'_u^I'
 		if info.chart then
 			local u = info.chart()
-			printbr'coordinate chart:'
+			printbr'chart:'
 			u:printElem'u'
 			printbr()
 			printbr()
 
-			--printbr'holonomic embedded:'
-			printbr'embedded:'
+			printbr'basis:'
 			e['_u^I'] = u'^I_,u'()	--dx^I/dx^a
 			printbr(var'e''_u^I':eq(var'u''^I_,u'))
 			e:printElem'e'
@@ -471,7 +487,12 @@ io.stderr:flush()
 		-- show orthogonality of basis and its inverse
 		printbr((var'e''_u^I' * var'e''^v_I'):eq((e'_u^I' * eU'^v_I')()))
 		printbr((var'e''_u^I' * var'e''^u_J'):eq((e'_u^I' * eU'^u_J')()))
-		
+
+		-- NOTICE, this is only the volume element if our basis is a coordinate basis.
+		if #e == #e[1] then
+			printbr('basis determinant:', var'det(e)':eq(Matrix.det(e)))
+		end
+
 		--[[
 		e_u = e_u^I d/dx^I
 		and e^v_J is the inverse of e_u^I 
@@ -511,6 +532,8 @@ io.stderr:flush()
 		error'here'
 	end
 --]]
+	
+	printbr('metric determinant:', var'det(g)':eq(Matrix.det(g)))
 
 	-- TODO just put this once in the intro?
 	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_cba')))

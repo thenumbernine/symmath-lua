@@ -37,7 +37,8 @@ function Constant:clone()
 	return Constant(self.value, self.symbol)
 end
 
--- this won't be called if a prim is used ...
+-- this won't be called if a Lua number is used ...
+-- only when a Lua table is used
 function Constant.__eq(a,b)
 	-- if either is a constant then get the value 
 	-- (which should not be an expression of its own)

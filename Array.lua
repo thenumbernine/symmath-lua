@@ -228,8 +228,11 @@ end
 
 -- works like Expression.__eq except checks for Array subclass equality rather than strictly metatable equality
 function Array.__eq(a,b)
-	if not Array.is(a) then return false end
-	if not Array.is(b) then return false end
+	if not Array.is(a) 
+	or not Array.is(b) 
+	then 
+		return Array.super.__eq(a,b)
+	end
 	if a and b then
 		if #a ~= #b then return false end
 		for i=1,#a do

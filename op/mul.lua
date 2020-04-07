@@ -38,6 +38,10 @@ mul.removeIfContains = require 'symmath.commutativeRemove'
 -- non-commutative objects (matrices) need to be compared in-order
 -- commutative objects can be compared in any order
 mul.__eq = function(a,b)
+	if not mul.is(a) or not mul.is(b) then
+		return mul.super.__eq(a,b)
+	end
+	
 	-- order-independent
 	local a = table(a)
 	local b = table(b)

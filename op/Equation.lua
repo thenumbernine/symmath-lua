@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
 local Binary = require 'symmath.op.Binary'
 
 -- equality
@@ -7,7 +8,14 @@ local Binary = require 'symmath.op.Binary'
 -- what's the term for operators that are either equalities or inequalities?
 -- I would use binary operators for this, but Lua's overloading requires the return value be a boolean
 local Equation = class(Binary)
-Equation.__eq = require 'symmath.nodeCommutativeEqual'
+
+function Equation.__eq(a,b)
+	if getmetatable(a) ~= getmetatable(b) then
+		return Equation.super.__eq(a,b)
+	end
+	return nodeCommutativeEqual(a,b)
+end
+
 Equation.solve = require 'symmath.solve'
 
 function Equation:evaluateDerivative(deriv, ...)

@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
 local Binary = require 'symmath.op.Binary'
 
 local add = class(Binary)
@@ -14,7 +15,12 @@ function add:evaluateDerivative(deriv, ...)
 	return add(result:unpack())
 end
 
-add.__eq = require 'symmath.nodeCommutativeEqual'
+function add.__eq(a,b)
+	if not add.is(a) or not add.is(b) then
+		return add.super.__eq(a,b)
+	end
+	return nodeCommutativeEqual(a,b)
+end
 
 add.removeIfContains = require 'symmath.commutativeRemove'
 

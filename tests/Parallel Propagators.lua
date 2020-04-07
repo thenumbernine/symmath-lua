@@ -11,6 +11,10 @@ local z = var'z'
 local phi = var'\\phi'
 local theta = var'\\theta'
 
+local A = var'A'
+local w = var'w'
+local rho = var'\\rho'
+
 for _,info in ipairs{
 	{
 		name = 'cylindrical, coordinate',
@@ -84,6 +88,26 @@ for _,info in ipairs{
 			)
 		end,
 	},
+	{
+		name = 'spherical log-radial',
+		coordVolumeElem = A^3 * sinh(rho / w)^2 * sin(theta) * cosh(rho / w) / (w * sinh(1/w)^3),
+		coords = {rho, theta, phi},
+		getConn = function()
+			local conn = Tensor'^a_bc'
+			conn[1][1][1] = sinh(rho/w) / (w * cosh(rho/w))
+			conn[1][2][2] = -w * sinh(rho/w) / cosh(rho/w)
+			conn[1][3][3] = -w * sinh(rho/w) * sin(theta)^2 / cosh(rho/w)
+			conn[2][3][3] = -sin(theta) * cos(theta)
+			
+			conn[2][1][2] = cosh(rho/w) / (w * sinh(rho/w))
+			conn[3][1][3] = cosh(rho/w) / (w * sinh(rho/w))
+			conn[3][2][3] = cos(theta) / sin(theta)
+			conn[2][2][1] = conn[2][1][2]
+			conn[3][3][1] = conn[3][1][3]
+			conn[3][3][2] = conn[3][2][3]
+			return conn
+		end,
+	}
 } do
 
 	printbr('<h3>'..info.name..':</h3>')
@@ -235,7 +259,7 @@ intConn = intConn:replace(abs(r), r)
 		return var('\\Delta ('..coords[i].name..'^3)')
 	end)
 	local deltaCoss = range(n):mapi(function(i)
-		return var('\\Delta cos('..coords[i].name..')')
+		return var('\\Delta (cos('..coords[i].name..'))')
 	end)
 
 	local function replaceDeltas(expr)
