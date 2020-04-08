@@ -27,7 +27,7 @@ function Export:apply(expr, ...)
 	end
 	if not lookup then 
 		local tolua = require 'ext.tolua'
-		error("expected to find a lookup for class named "
+		error("in exporter "..self.name.." expected to find a lookup for class named "
 			..tostring(expr.name).." for expr\n"
 				..require 'symmath.export.MultiLine'(expr)..'\n'
 				..tolua(expr)) 

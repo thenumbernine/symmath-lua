@@ -4,6 +4,8 @@ local Language = require 'symmath.export.Language'
 
 local GnuPlot = class(Language)
 
+GnuPlot.name = 'GnuPlot'
+
 GnuPlot.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
 		local s = tostring(expr.value)

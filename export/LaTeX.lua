@@ -3,7 +3,7 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local string = require 'ext.string'
 local Export = require 'symmath.export.Export'
-local LaTeX = class(Export)
+
 
 local function omit(t)
 	t.omit = true
@@ -16,6 +16,11 @@ local function tableConcat(t, mid)
 	end
 	return t
 end
+
+
+local LaTeX = class(Export)
+
+LaTeX.name = 'LaTeX'
 
 -- just like super except uses a table combine
 function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)

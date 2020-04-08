@@ -2,7 +2,11 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Language = require 'symmath.export.Language'
+
+
 local C = class(Language)
+
+C.name = 'C'
 
 --[[
 this is really being used for OpenCL

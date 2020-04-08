@@ -2,7 +2,11 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 -- single-line strings 
 local Console = require 'symmath.export.Console'
+
+
 local SingleLine = class(Console)
+
+SingleLine.name = 'SingleLine'
 
 local function precedence(x)
 	return x.precedence or 10

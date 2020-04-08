@@ -5,6 +5,8 @@ local tolua = require 'ext.tolua'
 
 local SymMath = class(Export)
 
+SymMath.name = 'SymMath'
+
 local tab = '\t'
 SymMath.lookupTable = {
 	[require 'symmath.Constant'] = function(self, x, indent)

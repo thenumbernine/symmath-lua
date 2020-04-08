@@ -5,6 +5,8 @@ local Language = require 'symmath.export.Language'
 -- convert to JavaScript code.  use :compile to wrap in a function
 local JavaScript = class(Language)
 
+JavaScript.name = 'JavaScript'
+
 JavaScript.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr, vars)
 		return tostring(expr.value) 

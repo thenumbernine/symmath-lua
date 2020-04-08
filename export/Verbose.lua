@@ -1,7 +1,11 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Export = require 'symmath.export.Export'
+
+
 local Verbose = class(Export)
+
+Verbose.name = 'Verbose'
 
 Verbose.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)

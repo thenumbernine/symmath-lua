@@ -94,6 +94,8 @@ end
 
 local MultiLine = class(Console)
 
+MultiLine.name = 'MultiLine'
+
 --[[
 produces:
   bbb

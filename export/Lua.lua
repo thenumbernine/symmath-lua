@@ -2,7 +2,11 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Language = require 'symmath.export.Language'
+
+
 local Lua = class(Language)
+
+Lua.name = 'Lua'
 
 Lua.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)

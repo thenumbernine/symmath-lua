@@ -4,6 +4,8 @@ local Language = require 'symmath.export.Language'
 
 local Mathematica = class(Language)
 
+Mathematica.name = 'Mathematica'
+
 Mathematica.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
 		return {tostring(expr.value)}
