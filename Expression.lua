@@ -1098,6 +1098,7 @@ end
 -- alternative name? is-function-of?
 function Expression:dependsOn(x)
 	local found = false
+	local Variable = require 'symmath.Variable'
 	require 'symmath.map'(self, function(ai)
 		if ai == x then 
 			found = true 

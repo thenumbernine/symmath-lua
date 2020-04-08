@@ -12,9 +12,10 @@ local box	-- [3][2] of the border chars of a box
 local par	-- [3][2] of the border chars of parenthesis
 local line	-- [3]
 local sqrtname
+local intname
 do
 	if hasutf8 then
-		strlen, box, par, line, sqrtname = assert(load[[
+		strlen, box, par, line, sqrtname, intname = assert(load[[
 		local utf8 = ...
 		strlen = utf8.len
 		box = {
@@ -31,7 +32,13 @@ do
 		}
 		line = {'\u{2576}', '\u{2500}', '\u{2574}'}
 		sqrtname = '\u{221a}'
-		return strlen, box, par, line, sqrtname
+		intname = {
+			'\u{2320}',		-- integral top symbol
+			'\u{2502}',		-- integral middle
+			'\u{2321}',		-- integral bottom symbol
+			'\u{222b}',		-- integral symbol
+		}
+		return strlen, box, par, line, sqrtname, intname
 ]])(utf8)
 	end
 	if not strlen and rawlen then
@@ -92,6 +99,8 @@ produces:
   bbb
 aabbb
 aabbb
+
+TODO alignment
 --]]
 function MultiLine:combine(lhs, rhs)
 	if type(lhs) ~= 'table' then error("expected lhs to be table, found "..type(lhs)) end
@@ -248,12 +257,63 @@ MultiLine.lookupTable = {
 		return self:combine(lhs, rhs)
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
-		local s = self:combine({'integrate('}, self:apply(expr[1]))
-		for i=2,#expr do
-			s = self:combine(s, {', '})
-			s = self:combine(s, self:apply(expr[i]))
+		local s = self:apply(expr[1])
+		
+		local xL = expr[3]
+		local xR = expr[4]
+		
+		local dx = self:combine({' d'}, self:apply(expr[2]))
+		s = self:combine(s, dx)
+	
+		local name
+		if hasutf8 then
+			local n = math.max(2, #s)
+			local sLR = table()
+			if xL and xR then
+				local sL = xL and self:apply(xL) or nil
+				local sR = xR and self:apply(xR) or nil
+				if sL or sR then
+					if sR then
+						for _,l in ipairs(sR) do
+							sLR:insert(l)
+						end
+					end
+					for i=1,math.max(1, n - #sL + #sR) do
+						sLR:insert''
+					end
+					if sL then
+						for _,l in ipairs(sL) do
+							sLR:insert(l)
+						end
+					end
+				end
+				local maxwidth = sLR:mapi(function(l) return #l end):sup()
+				for i=1,#sLR do
+					sLR[i] = sLR[i] .. (' '):rep(maxwidth-#sLR[i])
+				end
+			end
+			n = math.max(n, #sLR)
+			
+			local intstr = {}
+			for i=1,n do
+				if i == 1 then
+					intstr[i] = intname[1]
+				elseif i == n then
+					intstr[i] = intname[3]
+				else
+					intstr[i] = intname[2]
+				end
+			end
+			s = self:combine(self:combine(self:combine(intstr, sLR), {' '}), s)
+		else
+			for i=3,#expr do
+				s = self:combine(s, {', '})
+				s = self:combine(s, self:apply(expr[i]))
+			end
+			wrap(s, nil, par)
+			s = self:combine({'integrate'}, s)
 		end
-		s = self:combine(s, {')'})
+		
 		return s
 	end,
 	[require 'symmath.Array'] = function(self, expr)
