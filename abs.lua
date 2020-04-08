@@ -5,8 +5,8 @@ local Function = require 'symmath.Function'
 
 local abs = class(Function)
 abs.name = 'abs'
---abs.func = math.abs
-abs.func = require 'symmath.complex'.abs
+abs.realFunc = math.abs
+abs.cplxFunc = require 'symmath.complex'.abs
 
 function abs:evaluateDerivative(deriv, ...)
 	local x = self[1]
@@ -45,7 +45,7 @@ abs.rules = {
 				return prune:apply(Constant(math.abs(x.value)))
 			end
 		
-			if require 'symmath.set.NonNegativeReal':contains(x) then
+			if require 'symmath.set.NonNegativeReal'():contains(x) then
 				return x
 			end
 		end},

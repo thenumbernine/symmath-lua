@@ -3,8 +3,8 @@ local Function = require 'symmath.Function'
 
 local atan = class(Function)
 atan.name = 'atan'
---atan.func = math.atan
-atan.func = require 'symmath.complex'.atan
+atan.realFunc = math.atan
+atan.cplxFunc = require 'symmath.complex'.atan
 
 function atan:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

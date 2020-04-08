@@ -5,9 +5,11 @@ local asinh = class(Function)
 asinh.name = 'asinh'
 
 -- domain: reals
-function asinh.func(x)
+function asinh.realFunc(x)
 	return math.log(x + math.sqrt(x*x + 1))
 end
+
+asinh.cplxFunc = require 'symmath.complex'.asinh
 
 -- domain: reals
 function asinh:evaluateDerivative(deriv, ...)

@@ -7,7 +7,7 @@ local Constant = require 'symmath.Constant'
 local Complex = class(Universal)
 
 function Complex:containsSet(other)
-	if Real:contains(other) then
+	if Real():contains(other) then
 		return true
 	end
 	return Complex.super.containsSet(self, other)

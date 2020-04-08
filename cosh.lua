@@ -3,7 +3,8 @@ local Function = require 'symmath.Function'
 
 local cosh = class(Function)
 cosh.name = 'cosh'
-cosh.func = math.cosh
+cosh.realFunc = math.cosh
+cosh.cplxFunc = require 'symmath.complex'.cosh
 
 function cosh:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

@@ -3,8 +3,8 @@ local Function = require 'symmath.Function'
 
 local acos = class(Function)
 acos.name = 'acos'
---acos.func = math.acos
-acos.func = require 'symmath.complex'.acos
+acos.realFunc = math.acos
+acos.cplxFunc = require 'symmath.complex'.acos
 
 function acos:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

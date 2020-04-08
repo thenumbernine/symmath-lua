@@ -13,6 +13,10 @@ local complex = require 'symmath.complex'
 
 local Real = class(Universal)
 
+-- compatability with the RealInterval subclass ... I'm tempted to merge the two ...
+Real.start = -math.huge
+Real.finish = math.huge
+
 function Real:interval(start, finish)
 	return require 'symmath.set.RealInterval'(start, finish)
 end
@@ -43,7 +47,7 @@ function Real:containsElement(x)
 	end
 
 	if symmath.op.unm.is(x)
-	and Real:containsElement(x[1])
+	and self:containsElement(x[1])
 	then
 		return true
 	end
@@ -51,7 +55,7 @@ function Real:containsElement(x)
 	if symmath.op.add.is(x) then
 		local fail
 		for i=1,#x do
-			if Real:containsElement(x[i]) ~= true then
+			if self:containsElement(x[i]) ~= true then
 				fail = true
 				break
 			end
@@ -62,7 +66,7 @@ function Real:containsElement(x)
 	if symmath.op.mul.is(x) then
 		local fail
 		for i=1,#x do
-			if Real:containsElement(x[i]) ~= true then
+			if self:containsElement(x[i]) ~= true then
 				fail = true
 				break
 			end
@@ -70,28 +74,35 @@ function Real:containsElement(x)
 		if not fail then return true end
 	end
 
+	if symmath.op.div.is(x) then
+		local isReal1 = self:containsElement(x[1])
+		local isReal2 = self:containsElement(x[2])
+		if isReal1 == nil or isReal2 == nil then return end
+		return isReal1 and isReal2
+	end
+
 	if symmath.op.pow.is(x) then
 		-- c^x >= 0 for x real and c >= 0
-		if NonNegativeReal:containsElement(x[1])
-		and Real:containsElement(x[2])
+		if NonNegativeReal():containsElement(x[1])
+		and self:containsElement(x[2])
 		then
 			return true
 		end
 	end
 	
-	if symmath.abs.is(x) and Real:containsElement(x[1]) then return true end
-	if symmath.sqrt.is(x) and NonNegativeReal:containsElement(x[1]) then return true end
+	if symmath.abs.is(x) and self:containsElement(x[1]) then return true end
+	if symmath.sqrt.is(x) and NonNegativeReal():containsElement(x[1]) then return true end
 	--if symmath.log.is(x) and x[1] is PositiveReal then return true end
-	if symmath.sin.is(x) and Real:containsElement(x[1]) then return true end
-	if symmath.cos.is(x) and Real:containsElement(x[1]) then return true end
-	-- if symmath.tan.is(x) and Real:containsElement(x[1]) and x[1] is not pi/2 + pi*k for k in Integer then return true end
+	if symmath.sin.is(x) and self:containsElement(x[1]) then return true end
+	if symmath.cos.is(x) and self:containsElement(x[1]) then return true end
+	-- if symmath.tan.is(x) and self:containsElement(x[1]) and x[1] is not pi/2 + pi*k for k in Integer then return true end
 	-- if symmath.asin.is(x) and x Real in [-1,1] then return true end
 	-- if symmath.acos.is(x) and x Real in [-1,1] then return true end
-	if symmath.atan.is(x) and Real:containsElement(x[1]) then return true end
-	if symmath.sinh.is(x) and Real:containsElement(x[1]) then return true end
-	if symmath.cosh.is(x) and Real:containsElement(x[1]) then return true end
-	if symmath.tanh.is(x) and Real:containsElement(x[1]) then return true end
-	if symmath.asinh.is(x) and Real:containsElement(x[1]) then return true end
+	if symmath.atan.is(x) and self:containsElement(x[1]) then return true end
+	if symmath.sinh.is(x) and self:containsElement(x[1]) then return true end
+	if symmath.cosh.is(x) and self:containsElement(x[1]) then return true end
+	if symmath.tanh.is(x) and self:containsElement(x[1]) then return true end
+	if symmath.asinh.is(x) and self:containsElement(x[1]) then return true end
 	--if symmath.acosh.is(x) and x Real in [1,inf) then return true end
 	--if symmath.atanh.is(x) and x Real in [-1,1] then return true end
 end

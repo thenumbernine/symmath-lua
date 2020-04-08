@@ -27,11 +27,11 @@ function Variable:init(name, dependentVars, value, set)
 	self.value = value
 	if not set then
 		if require 'symmath.complex'.is(value) then 
-			set = require 'symmath.set.Complex'
+			set = require 'symmath.set.Complex'()
 		elseif type(value) == 'number' then
-			set = require 'symmath.set.Real'
+			set = require 'symmath.set.Real'()
 		else
-			set = require 'symmath.set.Real'	-- default set ... Real or Universal?
+			set = require 'symmath.set.Real'()	-- default set ... Real or Universal?
 		end
 	end
 	self.set = set 

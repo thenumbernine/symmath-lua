@@ -210,7 +210,22 @@ end
 function complex.tanh(x)
 	return complex.sinh(x) / complex.cosh(x)
 end
-	
+
+function complex.acosh(x)
+	x = complex(x)
+	return complex.log(x + complex.sqrt(x*x - 1))
+end
+
+function complex.asinh(x)
+	x = complex(x)
+	return complex.log(x + complex.sqrt(x*x + 1))
+end
+
+function complex.atanh(x)
+	x = complex(x)
+	return .5 * complex.log((1 + x) / (1 - x))
+end
+
 -- only after all the complex metatables and metatable.__index elements are set ...
 -- (which means don't touch 'complex' after this)
 if ffi then

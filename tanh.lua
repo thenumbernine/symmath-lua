@@ -4,7 +4,8 @@ local Function = require 'symmath.Function'
 
 local tanh = class(Function)
 tanh.name = 'tanh'
-tanh.func = math.tanh
+tanh.realFunc = math.tanh
+tanh.cplxFunc = require 'symmath.complex'.tanh
 
 function tanh:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self)

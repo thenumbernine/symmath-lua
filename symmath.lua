@@ -35,14 +35,19 @@ symmath.fixVariableNames = false
 symmath.Variable = require 'symmath.Variable'
 symmath.var = symmath.Variable					--shorthand
 function symmath.vars(...)						--create variables for each string parameter 
-	return table{...}:map(function(x) return symmath.var(x) end):unpack()
+	return table{...}:mapi(function(x) return symmath.var(x) end):unpack()
 end
 
+-- should these be singletons or classes?  how about singletons?
 symmath.set = {
 	Universal = require 'symmath.set.Universal',
 	Complex = require 'symmath.set.Complex',
 	Real = require 'symmath.set.Real',
+	RealInterval = require 'symmath.set.RealInterval',
+	NegativeReal = require 'symmath.set.NegativeReal',
+	PositiveReal = require 'symmath.set.PositiveReal',
 	NonNegativeReal = require 'symmath.set.NonNegativeReal',
+	NonPositiveReal = require 'symmath.set.NonPositiveReal',
 	Integer = require 'symmath.set.Integer',
 	EvenInteger = require 'symmath.set.EvenInteger',
 	OddInteger = require 'symmath.set.OddInteger',

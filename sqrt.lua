@@ -4,8 +4,8 @@ local Function = require 'symmath.Function'
 
 local sqrt = class(Function)
 sqrt.name = 'sqrt'
---sqrt.func = math.sqrt
-sqrt.func = require 'symmath.complex'.sqrt
+sqrt.realFunc = math.sqrt
+sqrt.cplxFunc = require 'symmath.complex'.sqrt
 
 function sqrt:evaluateDerivative(deriv, ...)
 	local x = self[1]:clone()

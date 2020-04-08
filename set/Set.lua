@@ -20,9 +20,13 @@ function Set:variable(name, dependentVars, value)
 end
 -- shorthand
 Set.var = Set.variable
-	
+
+function Set.__eq(a,b)
+	return getmetatable(a) == getmetatable(b)
+end
+
 function Set:vars(...)
-	return table{...}:map(function(x) 
+	return table{...}:mapi(function(x) 
 		return self:var(x)
 	end):unpack()
 end

@@ -11,12 +11,12 @@ local phi = var'\\phi'
 local theta = var'\\theta'
 
 -- radial variables
-local r = set.NonNegativeReal:var'r'
-local rho = set.NonNegativeReal:var'\\rho'
+local r = set.NonNegativeReal():var'r'
+local rho = set.NonNegativeReal():var'\\rho'
 
 -- sphere-log-radial parameters:
-local A = set.NonNegativeReal:var'A'
-local w = set.NonNegativeReal:var'w'
+local A = set.NonNegativeReal():var'A'
+local w = set.NonNegativeReal():var'w'
 
 for _,info in ipairs{
 	{

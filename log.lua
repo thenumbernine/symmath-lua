@@ -4,8 +4,8 @@ local Function = require 'symmath.Function'
 
 local log = class(Function)
 log.name = 'log'
---log.func = math.log
-log.func = require 'symmath.complex'.log
+log.realFunc = math.log
+log.cplxFunc = require 'symmath.complex'.log
 
 function log:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

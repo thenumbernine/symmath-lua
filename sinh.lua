@@ -3,7 +3,8 @@ local Function = require 'symmath.Function'
 
 local sinh = class(Function)
 sinh.name = 'sinh'
-sinh.func = math.sinh
+sinh.realFunc = math.sinh
+sinh.cplxFunc = require 'symmath.complex'.sinh
 
 function sinh:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self)

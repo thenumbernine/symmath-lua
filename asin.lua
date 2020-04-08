@@ -3,8 +3,8 @@ local Function = require 'symmath.Function'
 
 local asin = class(Function)
 asin.name = 'asin'
---asin.func = math.asin
-asin.func = require 'symmath.complex'.asin
+asin.realFunc = math.asin
+asin.cplxFunc = require 'symmath.complex'.asin
 
 function asin:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
