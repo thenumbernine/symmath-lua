@@ -27,7 +27,7 @@ function RealInterval:__tostring()
 end
 
 -- TODO add in PositiveReals, NonPositiveReals, and NegativeReals all as RealIntervals
--- TODO add in Rational, Irrational, Transcendental sets, and do similar function mapping stuff below for them too (IntegerInterval, Natural=IntegerInterval(0,inf), RationalInterval, IrrationalInteral, TranscendentalInterval, etc)
+-- TODO add in Rational, Irrational, Transcendental sets, and do similar function mapping stuff below for them too (IntegerInterval, Natural=IntegerInterval(0,inf), RationalInterval, IrrationalInterval, TranscendentalInterval, etc)
 --   (I'm suspicious that I'm going to need to start associating each expression with its domain/range)
 
 function RealInterval:containsNumber(x)
@@ -419,7 +419,7 @@ function RealInterval:getExprRealInterval(x)
 				finish = fStart
 				includeFinish = I.includeStart
 			end
-			return RealInteral(
+			return RealInterval(
 				x.realFunc(0),
 				finish,
 				true,

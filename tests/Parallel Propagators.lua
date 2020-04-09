@@ -6,6 +6,8 @@ require 'symmath'{MathJax={title='Parallel Propagtors'}}
 
 
 local t = var't'
+local x = var'x'
+local y = var'y'
 local z = var'z'
 local phi = var'\\phi'
 local theta = var'\\theta'
@@ -19,6 +21,14 @@ local A = set.NonNegativeReal():var'A'
 local w = set.NonNegativeReal():var'w'
 
 for _,info in ipairs{
+	{
+		name = 'Cartesian',
+		coordVolumeElem = Constant(1),
+		coords = {x,y,z},
+		getConn = function()
+			return Tensor'^a_bc'
+		end,
+	},
 	{
 		name = 'cylindrical, coordinate',
 		coordVolumeElem = r,
@@ -247,6 +257,16 @@ for _,info in ipairs{
 		end
 	end
 	printbr()
+
+	printbr'propagator partials'
+	for i=1,n do
+		local Pi = propFwd[i]
+		for j=1,n do
+			printbr(Pi:diff(coords[j]):eq(
+				Pi:diff(coords[j])()
+			))
+		end
+	end
 
 	local deltas = range(n):mapi(function(i)
 		return var('\\Delta '..coords[i].name)
