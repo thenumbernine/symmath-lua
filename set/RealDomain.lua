@@ -158,7 +158,7 @@ function RealDomain.__add(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
-			newints:insert(RealInterval(ai + bi))
+			newints:insert(ai + bi)
 		end
 	end
 	return RealDomain(newints)
@@ -168,7 +168,7 @@ function RealDomain.__sub(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
-			newints:insert(RealInterval(ai - bi))
+			newints:insert(ai - bi)
 		end
 	end
 	return RealDomain(newints)
@@ -178,7 +178,7 @@ function RealDomain.__mul(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
-			newints:insert(RealInterval(ai * bi))
+			newints:insert(ai * bi)
 		end
 	end
 	return RealDomain(newints)
@@ -188,7 +188,7 @@ function RealDomain.__div(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
-			newints:insert(RealInterval(ai / bi))
+			newints:insert(ai / bi)
 		end
 	end
 	return RealDomain(newints)
@@ -198,7 +198,7 @@ function RealDomain.__pow(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
-			newints:insert(RealInterval(ai ^ bi))
+			newints:insert(ai ^ bi)
 		end
 	end
 	return RealDomain(newints)
@@ -208,7 +208,7 @@ function RealDomain.__mod(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
-			newints:insert(RealInterval(ai % bi))
+			newints:insert(ai % bi)
 		end
 	end
 	return RealDomain(newints)

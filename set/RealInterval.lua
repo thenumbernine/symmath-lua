@@ -166,7 +166,7 @@ function RealInterval:containsElement(x)
 	then 
 		return self:containsNumber(x) 
 	end
-	
+
 	-- this function is specific to each function -- maybe make it a member?
 	-- but for now it is only used here, so only keep it here
 	local I = x:getRealDomain()
