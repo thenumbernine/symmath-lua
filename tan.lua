@@ -21,13 +21,12 @@ function tan:getRealDomain()
 	local RealInterval = require 'symmath.set.RealInterval'
 	local I = self[1]:getRealDomain()
 	if I == nil then return nil end
-	local twopi = 2 * math.pi
-	local per1 = (I.start + math.pi) % twopi
-	local per2 = (I.finish + math.pi) % twopi
-	if per1 == per2 then
-		return RealInterval(self.realFunc(I.start), self.realFunc(I.finish))
+	local startHalf = math.floor(I.start + math.pi, 2 * math.pi)
+	local finishHalf = math.floor(I.finish + math.pi, 2 * math.pi)
+	if startHalf == finishHalf then
+		return RealInterval(self.realFunc(I.start), self.realFunc(I.finish), I.includeStart, I.includeFinish)
 	end
-	if per1 + 1 == per2 then
+	if startHalf + 1 == finishHalf then
 		-- TODO return a disjoint interval from [I.finish, inf) union (-inf, I.start]
 	end
 	-- if we span more than one period then we are covering the entire reals

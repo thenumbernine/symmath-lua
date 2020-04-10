@@ -20,12 +20,73 @@ function cos:reverse(soln, index)
 end
 
 function cos:getRealDomain()
+	local RealInteral = require 'symmath.set.RealInterval'
 	-- (-inf,inf) => (-1,1)
-	-- TODO you can map this by quadrant
 	local I = self[1]:getRealDomain()
 	if I == nil then return nil end
+	if I.start == -math.huge or I.finish == math.huge then return RealInterval(-1, 1, true, true) end
+	-- here I'm going to add pi/2 and then just copy the sin:getRealDomain() code
+	I.start = I.start + pi/2
+	I.finish = I.finish + pi/2
+	-- map by quadrant
+	local startQ = math.floor(I.start, math.pi/2)
+	local finishQ = math.floor(I.finish, math.pi/2)
+	local startQmod4 = startQ % 4
+	local finishQmod4 = finishQ % 4
+	local behavior
+	if startQ == finishQ then
+		if startQmod4 == 0 or startQmod4 == 3 then
+			behavior = 0	-- all inc
+		elseif startQmod4 == 1 or startQmod4 == 2 then
+			behavior = 1	-- all dec
+		else
+			error'here'
+		end
+	elseif startQ + 1 == finishQ then
+		if startQmod4 == 3 then
+			behavior = 0	-- all inc
+		elseif startQmod4 == 0 then	
+			behavior = 2	-- inc dec
+		elseif startQmod4 == 1 then	-- so finishQmod4 == 2
+			behavior = 1	-- all dec
+		elseif startQmod4 == 2 then
+			behavior = 3	-- dec inc
+		else
+			error'here'
+		end
+	elseif startQ + 2 == finishQ then
+		if startQmod4 == 3 or startQmod4 == 0 then
+			behavior = 2	-- inc dec
+		elseif startQmod4 == 1 or startQmod4 == 2 then
+			behavior = 3	-- dec inc
+		else
+			error'here'
+		end
+	elseif startQ + 3 >= finishQ then
+		return RealInterval(-1, 1, true, true)
+	end
+	if behavior == 0 then
+		-- all increasing
+		return RealInteral(math.sin(I.start), math.sin(I.finish), I.includeStart, I.includeFinish)
+	elseif behavior == 1 then
+		-- all decreasing
+		return RealInteral(math.sin(I.finish), math.sin(I.start), I.includeFinish, I.includeStart)
+	elseif behavior == 2 then
+		-- increasing then decreasing
+		return RealInterval(
+			math.min(math.sin(I.start), math.sin(I.finish)), math.sin(math.pi/2),
+			I.includeStart or I.includeFinish, true)	
+	elseif behavior == 3 then
+		-- decreasing then increasing
+		return RealInterval(
+			math.sin(3*math.pi/2), math.max(math.sin(I.start), math.sin(I.finish)),
+			true, I.includeStart or I.includeFinish)
+	else
+		error'here'
+	end
 	return require 'symmath.set.RealInterval'(-1, 1, true, true)
 end
+
 
 cos.rules = {
 	Prune = {
