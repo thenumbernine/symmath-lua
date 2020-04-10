@@ -101,6 +101,18 @@ function RealDomain:containsVariable(x)
 	return gotfalse
 end
 
+function RealDomain:intersects(set)
+	if RealInterval.is(set) then	
+		for _,selfi in ipairs(self) do
+			if selfi:intersects(set) then return true end
+		end
+	elseif RealDomain.is(set) then
+		for _,seti in ipairs(set) do
+			if self:intersects(seti) then return true end
+		end
+	end
+end
+
 function RealDomain:containsSet(set)
 	if RealInterval.is(set) then
 		-- if any of self's intervals contains 'set' then return true

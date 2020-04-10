@@ -80,6 +80,41 @@ function RealInterval:containsVariable(x)
 	end
 end
 
+function RealInterval:intersects(x)
+	if RealInterval.is(x) then
+		local result = true
+		if self.includeStart and x.includeFinish then
+			-- does [a,... contain ...,b]
+			result = result and self.start <= x.finish
+		elseif self.includeStart and not x.includeFinish then
+			-- does [a,... contain ...,b)
+			result = result and self.start < x.finish
+		elseif not self.includeStart and x.includeFinish then
+			-- does (a,... contain ...,b]
+			result = result and self.start < x.finish
+		elseif not self.includeStart and not x.includeFinish then
+			-- does (a,... contain ...,b)
+			result = result and self.start <= x.finish
+		end
+		
+		if self.includeFinish and x.includeStart then
+			-- does ...,a] contain [b,...
+			result = result and x.start <= self.finish
+		elseif self.includeFinish and not x.includeStart then
+			-- does ...,a] contain (b,...
+			result = result and x.start < self.finish
+		elseif not self.includeFinish and x.includeStart then
+			-- does ...,a) contain [b,...
+			result = result and x.start < self.finish
+		elseif not self.includeFinish and not x.includeStart then
+			-- does ...,a) contain (b,...
+			result = result and x.start < self.finish
+		end
+		
+		if result == true then return true end
+	end
+end
+
 function RealInterval:containsSet(I)
 	if RealInterval.is(I) then
 		local result = true
