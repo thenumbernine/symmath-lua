@@ -16,4 +16,6 @@ function cosh:reverse(soln, index)
 	return require 'symmath.acosh'(soln)
 end
 
+cosh.getRealDomain = require 'symmath.set.RealInterval'.getRealDomain_evenIncreasing
+
 return cosh

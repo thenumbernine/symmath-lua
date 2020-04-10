@@ -15,4 +15,11 @@ function atan:reverse(soln, index)
 	return require 'symmath.tan'(soln)
 end
 
+function atan:getRealDomain()
+	-- (-inf,inf) => (-pi/2,pi/2) increasing
+	local I = self[1]:getRealDomain()
+	if I == nil then return nil end
+	return require 'symmath.set.RealInterval'(-math.pi/2, math.pi/2)
+end
+
 return atan

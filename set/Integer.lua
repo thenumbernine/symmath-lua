@@ -1,11 +1,13 @@
 local class = require 'ext.class'
-local Real = require 'symmath.set.Real'
+local Universal = require 'symmath.set.Universal'
 
-local Integer = class(Real)
+local Integer = class(Universal)
 
 function Integer:containsElement(x)
 	-- if it isn't a real then it isn't an integer
-	if Integer.super.containsElement(self, x) == false then return false end
+	if require 'symmath.set.set'.real:containsElement(x) == false then 
+		return false 
+	end
 
 	if self:containsVariable(x) then return true end
 

@@ -25,6 +25,14 @@ function div:reverse(soln, index)
 	return soln
 end
 
+function div:getRealDomain()
+	local I = self[1]:getRealDomain()
+	if I == nil then return nil end
+	local I2 = self[2]:getRealDomain()
+	if I2 == nil then return nil end
+	return I / I2
+end
+
 div.rules = {
 	DistributeDivision = {
 		{apply = function(distributeDivision, expr)
@@ -210,7 +218,7 @@ div.rules = {
 					local bases, powers = table.unpack(info)
 					for i=#bases,1,-1 do
 						local b = bases[i]
-						if require 'symmath.set.Integer':contains(b) 
+						if require 'symmath.set.set'.integer:contains(b) 
 						and b.value ~= 0 
 						then
 							bases:remove(i)

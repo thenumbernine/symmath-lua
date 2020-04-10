@@ -49,7 +49,7 @@ function pow:expand()
 	local Constant = require 'symmath.Constant'
 	-- for certain small integer powers, expand 
 	-- ... or should we have all integer powers expended under a different command?
-	if require 'symmath.set.Integer':contains(self[2])
+	if require 'symmath.set.set'.integer:contains(self[2])
 	and self[2].value >= 0
 	and self[2].value < 10
 	then
@@ -80,6 +80,14 @@ function pow:reverse(soln, index)
 	end
 end
 
+function pow:getRealDomain()
+	local I = self[1]:getRealDomain()
+	if I == nil then return nil end
+	local I2 = self[2]:getRealDomain()
+	if I2 == nil then return nil end
+	return I ^ I2
+end
+
 pow.rules = {
 	Eval = {
 		{apply = function(eval, expr)
@@ -107,7 +115,7 @@ pow.rules = {
 			-- a^n => a*a*...*a,  n times, only for integer 2 <= n < 10
 			-- hmm this can cause problems in some cases ... 
 			-- comment this out to get schwarzschild_spherical_to_cartesian to work
-			if require 'symmath.set.Integer':contains(expr[2])
+			if require 'symmath.set.set'.integer:contains(expr[2])
 			and expr[2].value >= 2
 			and expr[2].value < 10
 			then
@@ -193,7 +201,7 @@ pow.rules = {
 			if Constant.is(expr[1]) and Constant.is(expr[2]) then
 				if symmath.simplifyConstantPowers
 				-- TODO this replaces some cases below
-				or require 'symmath.set.Integer':contains(expr[1]) and expr[2].value > 0
+				or require 'symmath.set.set'.integer:contains(expr[1]) and expr[2].value > 0
 				then
 					return Constant(expr[1].value ^ expr[2].value)
 				end
@@ -235,7 +243,7 @@ pow.rules = {
 					imag = not imag
 					x = Constant(-x.value)
 				end
-				if require 'symmath.set.Integer':contains(x) and x.value > 0 then
+				if require 'symmath.set.set'.integer:contains(x) and x.value > 0 then
 					local primes = require 'symmath.primeFactors'(x.value)
 					local outside = 1
 					local inside = 1
@@ -297,7 +305,7 @@ pow.rules = {
 
 			-- i^n
 			if expr[1] == symmath.i 
-			and require 'symmath.set.Integer':contains(expr[2]) 
+			and require 'symmath.set.set'.integer:contains(expr[2]) 
 			then
 				local v = expr[2].value % 4
 				if v == 0 then

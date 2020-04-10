@@ -18,6 +18,8 @@ function abs:reverse(soln, index)
 	return soln, -soln
 end
 
+abs.getRealDomain = require 'symmath.set.RealInterval'.getRealDomain_evenIncreasing
+
 abs.rules = {
 	Prune = {
 		{apply = function(prune, expr)
@@ -45,7 +47,7 @@ abs.rules = {
 				return prune:apply(Constant(math.abs(x.value)))
 			end
 		
-			if require 'symmath.set.NonNegativeReal'():contains(x) then
+			if require 'symmath.set.set'.nonNegativeReal:contains(x) then
 				return x
 			end
 		end},

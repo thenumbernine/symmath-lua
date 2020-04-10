@@ -1,8 +1,8 @@
 local class = require 'ext.class'
+local Universal = require 'symmath.set.Universal'
+local complex = require 'symmath.complex'
 
-local Real = require 'symmath.set.Real'
-
-local RealInterval = class(Real)
+local RealInterval = class(Universal)
 
 RealInterval.start = start or -math.huge
 RealInterval.finish = finish or math.huge
@@ -31,6 +31,11 @@ end
 --   (I'm suspicious that I'm going to need to start associating each expression with its domain/range)
 
 function RealInterval:containsNumber(x)
+	if complex.is(x) then
+		if x.im ~= 0 then return false end
+		x = x.re
+	end
+	
 	local result = true
 	if self.includeStart then
 		result = result and self.start <= x
@@ -46,13 +51,14 @@ function RealInterval:containsNumber(x)
 end
 
 function RealInterval:containsVariable(x)
-	local result = Real.containsVariable(self, x) 
-	if result ~= true then return result end
-	if x.value then return self:containsNumber(x.value) end
-	if x.set then 
+	if require 'symmath.Variable'.is(x) then
+		if x.value then 
+			return self:containsNumber(x.value) 
+		end
+		
 		-- right now :containsSet returns nil if the domains are overlapping
 		-- in that case, the variable *could* be inside 'self'
-		return self:containsSet(x.set) 
+		return self:containsSet(x.set)
 	end
 end
 
@@ -102,12 +108,15 @@ function RealInterval:containsSet(I)
 end
 
 function RealInterval:containsElement(x)
-	local result = Real.containsElement(self, x)
-	if result ~= true then return result end
+	if type(x) == 'number' 
+	or complex.is(x)
+	then 
+		return self:containsNumber(x) 
+	end
 	
 	-- this function is specific to each function -- maybe make it a member?
 	-- but for now it is only used here, so only keep it here
-	local I = self:getExprRealInterval(x)
+	local I = x:getRealDomain()
 	if I == nil then return end
 	if self:containsSet(I) then return true end
 end
@@ -302,211 +311,39 @@ function RealInterval.__pow(A,B)
 	return RealInterval(-math.huge, math.huge)
 end
 
--- function for telling the interval of arbitrary expressions
--- NOTICE only call this on x such that Real:containsElement(x)
--- hmm, this could also be renamed 'getRealDomain' ...
--- I could call it 'getDomain' - give it to all Expressions - and just have expressions return RealInterval objects when their input is RealInterval objects
---	but if I generalized it then I might need to also include support for ComplexDomain ... that might be tough
-function RealInterval:getExprRealInterval(x)
-	local symmath = require 'symmath'
-	
-	if symmath.Variable.is(x) then
-		local set = x.set
-		
-		if RealInterval.is(set) then return set end
-		
-		-- assuming start and finish are defined in all Real's subclasses
-		-- what about Integer?  Integer is a subst of Real, but its RealInterval is discontinuous ...
-		--if Real.is(set) then return set end
-		-- so for now I'll only accept Real itself
-		if getmetatable(set) == Real then return set end
-	end
+-- commonly used versions of the Expression:getRealDomain function
 
-	if Constant.is(x) then
-		if type(x.value) == 'number' then
-			-- should a Constant's domain be the single value of the constant?
-			return RealInterval(x.value, x.value, true, true)
-		end
-		if complex.is(x.value) then 
-			return self:getExprRealInterval(x.value) 
-		end
-	end
-
-	if complex.is(x) then
-		if x.im ~= 0 then return end
-		return RealInterval(x.re, x.re, true, true)
-	end
-
-	if symmath.op.unm.is(x) 
-	-- and Real():containsElement(x[1])
-	then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		return -I
-	end
-
-	if symmath.op.add.is(x) then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		for i=2,#x do
-			local I2 = self:getExprRealInterval(x[i])
-			if I2 == nil then return end
-			I = I + I2
-		end
-		return I
-	end
-
-	if symmath.op.sub.is(x) then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		for i=2,#x do
-			local I2 = self:getExprRealInterval(x[i])
-			if I2 == nil then return end
-			I = I - I2
-		end
-		return I
-	end
-
-	if symmath.op.mul.is(x) then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		for i=2,#x do
-			local I2 = self:getExprRealInterval(x[i])
-			if I2 == nil then return end
-			I = I * I2
-		end
-		return I
-	end
-
-	if symmath.op.div.is(x) then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		local I2 = self:getExprRealInterval(x[2])
-		if I2 == nil then return end
-		return I / I2
-	end
-
-	if symmath.op.pow.is(x) then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		local I2 = self:getExprRealInterval(x[2])
-		if I2 == nil then return end
-		return I ^ I2
-	end
-
-	-- (-inf,inf) even, increasing from zero
-	if symmath.abs.is(x) 
-	or symmath.cosh.is(x)
-	then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		if I.finish <= 0 then
-			return RealInterval(
-				x.realFunc(I.finish),
-				x.realFunc(I.start),
-				I.includeFinish,
-				I.includeStart
-			)
-		elseif I.start <= 0 and 0 <= I.finish then
-			local fStart = x.realFunc(I.start)
-			local fFinish = x.realFunc(I.finish)
-			local finish
-			local includeFinish
-			if fStart < fFinish then
-				finish = fFinish
-				includeFinish = I.includeFinish
-			else
-				finish = fStart
-				includeFinish = I.includeStart
-			end
-			return RealInterval(
-				x.realFunc(0),
-				finish,
-				true,
-				includeFinish
-			)
-		elseif 0 <= I.start then
-			return RealInterval(
-				x.realFunc(I.start),
-				x.realFunc(I.finish),
-				I.includeStart,
-				I.includeFinish
-			)
-		end
-	end
-
-	-- (0,inf) increasing, (-inf,0) imaginary
-	if symmath.sqrt.is(x) 
-	or symmath.log.is(x)
-	then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		if I.start < 0 then return end
+-- (-inf,inf) even, increasing from zero
+-- abs, cosh
+function RealInterval.getRealDomain_evenIncreasing(x)
+	local I = x[1]:getRealDomain()
+	if I == nil then return nil end
+	if I.finish <= 0 then
 		return RealInterval(
-			x.realFunc(I.start),
 			x.realFunc(I.finish),
-			I.includeStart,
-			I.includeFinish
-		)
-	end
-
-	-- (-inf,inf) => (-1,1)
-	-- TODO you can map this by quadrant
-	if symmath.sin.is(x) 
-	or symmath.cos.is(x)
-	then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		return RealInterval(-1, 1, true, true)
-	end
-
-	-- (-inf,inf) => (-inf,inf) increasing periodic
-	if symmath.tan.is(x) 
-	or symmath.atan.is(x)
-	then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		-- TODO once again, this can be chopped up by half-circles
-		return RealInterval(-math.huge, math.huge)
-	end
-
-	-- (-1,1) => (-inf,inf) increasing, (-inf,-1) and (1,inf) imaginary
-	if symmath.asin.is(x) 
-	or symmath.atanh.is(x)
-	then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		-- not real
-		if I.start < -1 or 1 < I.finish then return end
-		return RealInterval(
 			x.realFunc(I.start),
-			x.realFunc(I.finish),
-			I.includeStart,
-			I.includeFinish
-		)
-	end
-
-	-- (-1,1) => (-inf,inf) decreasing, (-inf,-1) and (1,inf) imaginary
-	if symmath.acos.is(x) then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		-- not real
-		if I.start < -1 or 1 < I.finish then return end
-		return RealInterval(
-			math.acos(I.finish),
-			math.acos(I.start),
 			I.includeFinish,
 			I.includeStart
 		)
-	end
-	
-	-- increasing
-	if symmath.sinh.is(x)
-	or symmath.tanh.is(x)
-	or symmath.asinh.is(x)
-	then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
+	elseif I.start <= 0 and 0 <= I.finish then
+		local fStart = x.realFunc(I.start)
+		local fFinish = x.realFunc(I.finish)
+		local finish
+		local includeFinish
+		if fStart < fFinish then
+			finish = fFinish
+			includeFinish = I.includeFinish
+		else
+			finish = fStart
+			includeFinish = I.includeStart
+		end
+		return RealInterval(
+			x.realFunc(0),
+			finish,
+			true,
+			includeFinish
+		)
+	elseif 0 <= I.start then
 		return RealInterval(
 			x.realFunc(I.start),
 			x.realFunc(I.finish),
@@ -514,19 +351,48 @@ function RealInterval:getExprRealInterval(x)
 			I.includeFinish
 		)
 	end
+end
 
-	-- (1,inf) increasing, (-inf,1) imaginary
-	if symmath.acosh.is(x) then
-		local I = self:getExprRealInterval(x[1])
-		if I == nil then return end
-		if I.start < 1 then return end
-		return RealInterval(
-			x.realFunc(I.start),
-			x.realFunc(I.finish),
-			I.includeStart,
-			I.includeFinish
-		)
-	end
+-- (0,inf) increasing, (-inf,0) imaginary
+-- sqrt, log
+function RealInterval.getRealDomain_posInc_negIm(x)
+	local I = x[1]:getRealDomain()
+	if I == nil then return nil end
+	if I.start < 0 then return nil end
+	return RealInterval(
+		x.realFunc(I.start),
+		x.realFunc(I.finish),
+		I.includeStart,
+		I.includeFinish
+	)
+end
+
+-- (-1,1) => (-inf,inf) increasing, (-inf,-1) and (1,inf) imaginary
+-- asin, atanh
+function RealInterval.getRealDomain_pmOneInc(x)
+	local I = x[1]:getRealDomain()
+	if I == nil then return nil end
+	-- not real
+	if I.start < -1 or 1 < I.finish then return nil end
+	return RealInterval(
+		x.realFunc(I.start),
+		x.realFunc(I.finish),
+		I.includeStart,
+		I.includeFinish
+	)
+end
+
+-- (-inf,inf) increasing
+-- sinh, tanh, asinh
+function RealInterval.getRealDomain_inc(x)
+	local I = x[1]:getRealDomain()
+	if I == nil then return nil end
+	return RealInterval(
+		x.realFunc(I.start),
+		x.realFunc(I.finish),
+		I.includeStart,
+		I.includeFinish
+	)
 end
 
 return RealInterval 

@@ -1,5 +1,4 @@
 local class = require 'ext.class'
-local Real = require 'symmath.set.Real'
 local Universal = require 'symmath.set.Universal'
 local complex = require 'symmath.complex'
 local Constant = require 'symmath.Constant'
@@ -7,7 +6,7 @@ local Constant = require 'symmath.Constant'
 local Complex = class(Universal)
 
 function Complex:containsSet(other)
-	if Real():contains(other) then
+	if require 'symmath.set.set'.real:contains(other) then
 		return true
 	end
 	return Complex.super.containsSet(self, other)
@@ -25,6 +24,8 @@ function Complex:containsElement(x)
 	-- right now Constant is either symmath.complex or Lua number.
 	if Constant.is(x) then return true end
 	if complex.is(x) then return true end
+
+	if require 'symmath.set.set'.real:contains(x) then return true end
 end
 
 return Complex

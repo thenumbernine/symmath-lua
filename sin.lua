@@ -18,6 +18,14 @@ function sin:reverse(soln, index)
 	return require 'symmath.asin'(soln)
 end
 
+function sin:getRealDomain()
+	-- (-inf,inf) => (-1,1)
+	-- TODO you can map this by quadrant
+	local I = self[1]:getRealDomain()
+	if I == nil then return nil end
+	return require 'symmath.set.RealInterval'(-1, 1, true, true)
+end
+
 sin.rules = {
 	Prune = {
 		{apply = function(prune, expr)

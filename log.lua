@@ -16,6 +16,8 @@ function log:reverse(soln, index)
 	return require 'symmath'.e ^ soln
 end
 
+log.getRealDomain = require 'symmath.set.RealInterval'.getRealDomain_posInc_negIm
+
 log.rules = {
 	Prune = {
 		{apply = function(prune, expr)

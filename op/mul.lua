@@ -75,6 +75,17 @@ function mul:reverse(soln, index)
 	return soln
 end
 
+function mul:getRealDomain()
+	local I = self[1]:getRealDomain()
+	if I == nil then return nil end
+	for i=2,#self do
+		local I2 = self[i]:getRealDomain()
+		if I2 == nil then return nil end
+		I = I * I2
+	end
+	return I
+end
+
 function mul:flatten()
 	for i=#self,1,-1 do
 		local ch = self[i]

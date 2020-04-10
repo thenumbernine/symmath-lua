@@ -1113,4 +1113,10 @@ function Expression:dependsOn(x)
 	return found
 end
 
+-- function for telling the interval of arbitrary expressions
+-- TODO maybe a getDomain()?  but I would like separate evaluation for real and complex versions of functions...
+function Expression:getRealDomain()
+	return nil
+end
+
 return Expression

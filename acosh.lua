@@ -18,4 +18,17 @@ function acosh:evaluateDerivative(deriv, ...)
 	return deriv(x, ...) / sqrt(x^2 - 1)
 end
 
+-- (1,inf) increasing, (-inf,1) imaginary
+function acosh:getRealDomain()
+	local I = x[1]:getRealDomain()
+	if I == nil then return nil end
+	if I.start < 1 then return nil end
+	return require 'symmath.set.RealInterval'(
+		x.realFunc(I.start),
+		x.realFunc(I.finish),
+		I.includeStart,
+		I.includeFinish
+	)
+end
+
 return acosh

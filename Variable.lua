@@ -27,11 +27,12 @@ function Variable:init(name, dependentVars, value, set)
 	self.value = value
 	if not set then
 		if require 'symmath.complex'.is(value) then 
-			set = require 'symmath.set.Complex'()
+			set = require 'symmath.set.set'.complex
 		elseif type(value) == 'number' then
-			set = require 'symmath.set.Real'()
+			set = require 'symmath.set.set'.real
 		else
-			set = require 'symmath.set.Real'()	-- default set ... Real or Universal?
+			-- default set ... Real or Universal?
+			set = require 'symmath.set.set'.real	
 		end
 	end
 	self.set = set 
@@ -79,6 +80,12 @@ end
 -- so I'll assign
 function Variable:depends(...)
 	self.dependentVars = table{...}
+end
+
+function Variable:getRealDomain()
+	if require 'symmath.set.RealInterval'.is(self.set) then return self.set end
+	-- assuming start and finish are defined in all Real's subclasses
+	-- what about Integer?  Integer's RealInterval is discontinuous ...
 end
 
 Variable.rules = {

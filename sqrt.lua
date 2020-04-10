@@ -17,6 +17,8 @@ function sqrt:reverse(soln, index)
 	return soln^2
 end
 
+sqrt.getRealDomain = require 'symmath.set.RealInterval'.getRealDomain_posInc_negIm
+
 sqrt.rules = table(sqrt.rules)
 
 sqrt.rules.Prune = {

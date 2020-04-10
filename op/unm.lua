@@ -14,6 +14,12 @@ function unm:reverse(soln, index)
 	return -soln
 end
 
+function unm:getRealDomain()
+	local I = self[1]:getRealDomain()
+	if I == nil then return nil end
+	return -I
+end
+
 unm.rules = {
 	Eval = {
 		{apply = function(eval, expr)

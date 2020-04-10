@@ -33,6 +33,17 @@ function sub:reverse(soln, index)
 	return soln
 end
 
+function sub:getRealDomain()
+	local I = self[1]:getRealDomain()
+	if I == nil then return nil end
+	for i=2,#self do
+		local I2 = self[i]:getRealDomain()
+		if I2 == nil then return nil end
+		I = I - I2
+	end
+	return I
+end
+
 sub.rules = {
 	Eval = {
 		{apply = function(eval, expr)
