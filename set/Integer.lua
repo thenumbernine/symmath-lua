@@ -5,7 +5,7 @@ local Integer = class(Universal)
 
 function Integer:containsElement(x)
 	-- if it isn't a real then it isn't an integer
-	if require 'symmath.set.set'.real:containsElement(x) == false then 
+	if require 'symmath.set.sets'.real:containsElement(x) == false then 
 		return false 
 	end
 

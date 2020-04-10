@@ -16,6 +16,6 @@ function sinh:reverse(soln, index)
 	return require 'symmath.asinh'(soln)
 end
 
-sinh.getRealDomain = require 'symmath.set.RealInterval'.getRealDomain_inc
+sinh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc
 
 return sinh

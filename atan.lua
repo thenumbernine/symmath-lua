@@ -15,11 +15,7 @@ function atan:reverse(soln, index)
 	return require 'symmath.tan'(soln)
 end
 
-function atan:getRealDomain()
-	-- (-inf,inf) increasing
-	local I = self[1]:getRealDomain()
-	if I == nil then return nil end
-	return require 'symmath.set.RealInterval'(math.atan(I.start), math.atan(I.finish))
-end
+-- technically this is a Riemann surface, and the codomain repeats every pi
+atan.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc
 
 return atan

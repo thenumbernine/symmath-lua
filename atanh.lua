@@ -15,6 +15,6 @@ function atanh:evaluateDerivative(deriv, ...)
 	return deriv(x, ...) / (1 - x^2)
 end
 
-atanh.getRealDomain = require 'symmath.set.RealInterval'.getRealDomain_pmOneInc
+atanh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_pmOneInc
 
 return atanh

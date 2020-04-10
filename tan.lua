@@ -18,19 +18,25 @@ end
 
 function tan:getRealDomain()
 	-- (-inf,inf) => (-inf,inf) increasing, periodic
-	local RealInterval = require 'symmath.set.RealInterval'
-	local I = self[1]:getRealDomain()
-	if I == nil then return nil end
-	local startHalf = math.floor(I.start + math.pi, 2 * math.pi)
-	local finishHalf = math.floor(I.finish + math.pi, 2 * math.pi)
-	if startHalf == finishHalf then
-		return RealInterval(self.realFunc(I.start), self.realFunc(I.finish), I.includeStart, I.includeFinish)
-	end
-	if startHalf + 1 == finishHalf then
-		-- TODO return a disjoint interval from [I.finish, inf) union (-inf, I.start]
-	end
-	-- if we span more than one period then we are covering the entire reals
-	return RealInterval(-math.huge, math.huge)
+	local Is = self[1]:getRealDomain()
+	if Is == nil then return nil end
+	local RealDomain = require 'symmath.set.RealDomain'
+	return RealDomain(table.mapi(Is, function(I)
+		local startHalf = math.floor((I.start + math.pi) / (2 * math.pi))
+		local finishHalf = math.floor((I.finish + math.pi) / (2 * math.pi))
+		if startHalf == finishHalf then
+			return RealDomain(self.realFunc(I.start), self.realFunc(I.finish), I.includeStart, I.includeFinish)
+		end
+		-- if we cross one period then we have to include the separate infinities
+		if startHalf + 1 == finishHalf then
+			return RealDomain{
+				{-math.huge, self.realFunc(I.finish), false, I.includeFinish},
+				{self.realFunc(I.start), math.huge, I.includeStart, false},
+			}
+		end
+		-- if we span more than one period then we are covering the entire reals
+		return RealDomain()
+	end))
 end
 
 tan.rules = {

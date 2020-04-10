@@ -60,16 +60,16 @@ function Constant:evaluateDerivative(deriv, ...)
 end
 
 function Constant:getRealDomain()
-	local RealInterval = require 'symmath.set.RealInterval'
+	local RealDomain = require 'symmath.set.RealDomain'
 	
 	if type(self.value) == 'number' then
 		-- should a Constant's domain be the single value of the constant?
-		return RealInterval(self.value, self.value, true, true)
+		return RealDomain(self.value, self.value, true, true)
 	end
 	
 	if complex.is(self.value) then 
 		if self.im ~= 0 then return nil end
-		return RealInterval(self.re, self.re, true, true)
+		return RealDomain(self.re, self.re, true, true)
 	end
 end
 

@@ -17,6 +17,6 @@ function tanh:reverse(soln, index)
 	return require 'symmath.atanh'(soln)
 end
 
-tanh.getRealDomain = require 'symmath.set.RealInterval'.getRealDomain_inc
+tanh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc
 
 return tanh

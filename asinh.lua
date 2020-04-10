@@ -22,6 +22,6 @@ function asinh:reverse(soln, index)
 	return require 'symmath.sinh'(soln)
 end
 
-asinh.getRealDomain = require 'symmath.set.RealInterval'.getRealDomain_inc
+asinh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc
 
 return asinh

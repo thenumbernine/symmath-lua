@@ -218,7 +218,7 @@ div.rules = {
 					local bases, powers = table.unpack(info)
 					for i=#bases,1,-1 do
 						local b = bases[i]
-						if require 'symmath.set.set'.integer:contains(b) 
+						if require 'symmath.set.sets'.integer:contains(b) 
 						and b.value ~= 0 
 						then
 							bases:remove(i)

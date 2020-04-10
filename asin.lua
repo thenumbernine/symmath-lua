@@ -16,6 +16,6 @@ function asin:reverse(soln, index)
 	return require 'symmath.sin'(soln)
 end
 
-asin.getRealDomain = require 'symmath.set.RealInterval'.getRealDomain_pmOneInc
+asin.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_pmOneInc
 
 return asin

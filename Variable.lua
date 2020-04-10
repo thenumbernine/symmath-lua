@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local complex = require 'symmath.complex'
 local Expression = require 'symmath.Expression'
 
 --[[
@@ -26,13 +27,13 @@ function Variable:init(name, dependentVars, value, set)
 	self.dependentVars = table(dependentVars)
 	self.value = value
 	if not set then
-		if require 'symmath.complex'.is(value) then 
-			set = require 'symmath.set.set'.complex
+		if complex.is(value) then 
+			set = require 'symmath.set.sets'.complex
 		elseif type(value) == 'number' then
-			set = require 'symmath.set.set'.real
+			set = require 'symmath.set.sets'.real
 		else
 			-- default set ... Real or Universal?
-			set = require 'symmath.set.set'.real	
+			set = require 'symmath.set.sets'.real	
 		end
 	end
 	self.set = set 
@@ -83,7 +84,15 @@ function Variable:depends(...)
 end
 
 function Variable:getRealDomain()
-	if require 'symmath.set.RealInterval'.is(self.set) then return self.set end
+	local RealDomain = require 'symmath.set.RealDomain'
+	if self.value then 
+		if type(self.value) == 'number' then
+			return RealDomain(self.value, self.value, true, true)
+		elseif complex.is(self.value) and self.value.im == 0 then
+			return RealDomain(self.value.re, self.value.re, true, true)
+		end
+	end
+	if RealDomain.is(self.set) then return self.set end
 	-- assuming start and finish are defined in all Real's subclasses
 	-- what about Integer?  Integer's RealInterval is discontinuous ...
 end

@@ -38,7 +38,7 @@ function symmath.vars(...)						--create variables for each string parameter
 	return table{...}:mapi(function(x) return symmath.var(x) end):unpack()
 end
 
-symmath.set = require 'symmath.set.set'
+symmath.set = require 'symmath.set.sets'
 
 -- export expressions to various languages
 symmath.export = {

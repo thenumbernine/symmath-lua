@@ -20,15 +20,19 @@ end
 
 -- (1,inf) increasing, (-inf,1) imaginary
 function acosh:getRealDomain()
-	local I = x[1]:getRealDomain()
-	if I == nil then return nil end
-	if I.start < 1 then return nil end
-	return require 'symmath.set.RealInterval'(
-		x.realFunc(I.start),
-		x.realFunc(I.finish),
-		I.includeStart,
-		I.includeFinish
-	)
+	local Is = x[1]:getRealDomain()
+	if Is == nil then return nil end
+	for _,I in ipairs(Is) do
+		if I.start < 1 then return nil end
+	end
+	local RealDomain = require 'symmath.set.RealDomain'
+	return RealDomain(table.mapi(Is, function(I)
+		return RealDomain(
+			x.realFunc(I.start),
+			x.realFunc(I.finish),
+			I.includeStart,
+			I.includeFinish)
+	end))
 end
 
 return acosh

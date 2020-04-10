@@ -17,18 +17,23 @@ function acos:reverse(soln, index)
 	return require 'symmath.cos'(soln)
 end
 
+-- technically a Riemann surface with a repeating codomain
 -- (-1,1) => (-inf,inf) decreasing, (-inf,-1) and (1,inf) imaginary
 function acos:getRealDomain()
-	local I = x[1]:getRealDomain()
-	if I == nil then return nil end
+	local Is = self[1]:getRealDomain()
+	if Is == nil then return nil end
 	-- not real
-	if I.start < -1 or 1 < I.finish then return nil end
-	return RealInterval(
-		math.acos(I.finish),
-		math.acos(I.start),
-		I.includeFinish,
-		I.includeStart
-	)
+	for _,I in ipairs(Is) do
+		if I.start < -1 or 1 < I.finish then return nil end
+	end
+	local RealDomain = require 'symmath.set.RealDomain'	
+	return RealDomain(table.mapi(Is, function(I)
+		return RealDomain(
+			math.acos(I.finish),
+			math.acos(I.start),
+			I.includeFinish,
+			I.includeStart)
+	end))
 end
 
 return acos

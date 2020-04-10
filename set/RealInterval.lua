@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local Universal = require 'symmath.set.Universal'
 local complex = require 'symmath.complex'
 
+-- in some places I'm using subclasses to represent subsets ...
 local RealInterval = class(Universal)
 
 RealInterval.start = start or -math.huge
@@ -16,6 +17,14 @@ function RealInterval:init(start, finish, includeStart, includeFinish)
 	self.includeFinish = includeFinish
 	if self.start == -math.huge or self.start == math.huge then self.includeStart = false end
 	if self.finish == -math.huge or self.finish == math.huge then self.includeFinish = false end
+end
+
+function RealInterval:clone()
+	return RealInterval(
+		self.start,
+		self.finish,
+		self.includeStart,
+		self.includeFinish)
 end
 
 function RealInterval:__tostring()
@@ -58,12 +67,21 @@ function RealInterval:containsVariable(x)
 		
 		-- right now :containsSet returns nil if the domains are overlapping
 		-- in that case, the variable *could* be inside 'self'
-		return self:containsSet(x.set)
+		assert(not RealInterval.is(x.set)) -- phasing this out -- use RealDomain as a single interval
+		local RealDomain = require 'symmath.set.RealDomain'
+		if RealDomain.is(x.set) then
+			if #x.set == 1 then
+				return self:containsSet(x.set)
+			else
+				-- if this interval contains all of x.set's intervals then we are good
+				return RealDomain(self.start, self.finish, self.containsStart, self.containsFinish):containsSet(x.set)
+			end
+		end
 	end
 end
 
 function RealInterval:containsSet(I)
-	if RealInterval.is(I) or getmetatable(I) == Real then
+	if RealInterval.is(I) then
 		local result = true
 		
 		if self.includeStart and I.includeStart then
@@ -118,7 +136,11 @@ function RealInterval:containsElement(x)
 	-- but for now it is only used here, so only keep it here
 	local I = x:getRealDomain()
 	if I == nil then return end
-	if self:containsSet(I) then return true end
+	assert(not RealInterval.is(I))
+	local RealDomain = require 'symmath.set.RealDomain'
+	if RealDomain.is(I) then
+		if RealDomain(self.start, self.finish, self.includeStart, self.includeFinish):containsSet(I) then return true end
+	end
 end
 
 -- ops might break my use of classes as singletons, since classes don't have the same op metatable as objects
@@ -311,88 +333,10 @@ function RealInterval.__pow(A,B)
 	return RealInterval(-math.huge, math.huge)
 end
 
--- commonly used versions of the Expression:getRealDomain function
-
--- (-inf,inf) even, increasing from zero
--- abs, cosh
-function RealInterval.getRealDomain_evenIncreasing(x)
-	local I = x[1]:getRealDomain()
-	if I == nil then return nil end
-	if I.finish <= 0 then
-		return RealInterval(
-			x.realFunc(I.finish),
-			x.realFunc(I.start),
-			I.includeFinish,
-			I.includeStart
-		)
-	elseif I.start <= 0 and 0 <= I.finish then
-		local fStart = x.realFunc(I.start)
-		local fFinish = x.realFunc(I.finish)
-		local finish
-		local includeFinish
-		if fStart < fFinish then
-			finish = fFinish
-			includeFinish = I.includeFinish
-		else
-			finish = fStart
-			includeFinish = I.includeStart
-		end
-		return RealInterval(
-			x.realFunc(0),
-			finish,
-			true,
-			includeFinish
-		)
-	elseif 0 <= I.start then
-		return RealInterval(
-			x.realFunc(I.start),
-			x.realFunc(I.finish),
-			I.includeStart,
-			I.includeFinish
-		)
-	end
+--[[ TODO modulo 
+-- [a,b] % [c,d]
+function RealInterval.__mod(A,B)
 end
-
--- (0,inf) increasing, (-inf,0) imaginary
--- sqrt, log
-function RealInterval.getRealDomain_posInc_negIm(x)
-	local I = x[1]:getRealDomain()
-	if I == nil then return nil end
-	if I.start < 0 then return nil end
-	return RealInterval(
-		x.realFunc(I.start),
-		x.realFunc(I.finish),
-		I.includeStart,
-		I.includeFinish
-	)
-end
-
--- (-1,1) => (-inf,inf) increasing, (-inf,-1) and (1,inf) imaginary
--- asin, atanh
-function RealInterval.getRealDomain_pmOneInc(x)
-	local I = x[1]:getRealDomain()
-	if I == nil then return nil end
-	-- not real
-	if I.start < -1 or 1 < I.finish then return nil end
-	return RealInterval(
-		x.realFunc(I.start),
-		x.realFunc(I.finish),
-		I.includeStart,
-		I.includeFinish
-	)
-end
-
--- (-inf,inf) increasing
--- sinh, tanh, asinh
-function RealInterval.getRealDomain_inc(x)
-	local I = x[1]:getRealDomain()
-	if I == nil then return nil end
-	return RealInterval(
-		x.realFunc(I.start),
-		x.realFunc(I.finish),
-		I.includeStart,
-		I.includeFinish
-	)
-end
+--]]
 
 return RealInterval 
