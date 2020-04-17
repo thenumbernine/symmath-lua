@@ -808,8 +808,41 @@ end
 _5thGeodesic_def = betterSimplify(_5thGeodesic_def)
 printbr(_5thGeodesic_def)
 
+
+--[[ A_5 doesn't seem to appear anywhere
 _5thGeodesic_def = betterSimplify(_5thGeodesic_def:subst(A5_def))
 printbr(_5thGeodesic_def)
+--]]
+
+--[[
+_5thGeodesic_def = betterSimplify(_5thGeodesic_def
+	:replace(
+		u' ^\\beta' * A' _\\beta' * u' ^\\gamma' * F' _\\gamma ^\\mu' * A' _\\mu',
+		u' ^\\gamma' * A' _\\gamma' * u' ^\\beta' * F' _\\beta^\\mu' * A' _\\mu'
+	)
+	:replace(
+		u' ^\\beta' * F' _\\beta ^\\mu' * A' _\\mu',
+		u' ^\\beta' * A' ^\\gamma' * (A' _\\gamma _,\\beta' - A' _\\beta _,\\gamma')
+	)
+)
+--]]
+-- [[
+_5thGeodesic_def[2] = betterSimplify(_5thGeodesic_def[2]
+	- 2 * (G/(k_e*c^2))^frac(3,2) * u' ^\\beta' * A' _\\mu' * A' _\\beta' * u' ^\\gamma' * F' _\\gamma ^\\mu'
+	+ 2 * (G/(k_e*c^2))^frac(3,2) * u' ^\\mu' * A' _\\mu' * u' ^\\beta' * A' ^\\gamma' * (A' _\\gamma _,\\beta' - A' _\\beta _,\\gamma')
+
+	- 2 * (G/(k_e*c^2))^frac(3,2) * u' ^\\beta' * A' _\\mu' * A' _\\gamma' * u' ^\\gamma' * F' _\\beta ^\\mu'
+	+ 2 * (G/(k_e*c^2))^frac(3,2) * u' ^\\mu' * A' _\\mu' * u' ^\\beta' * A' ^\\gamma' * (A' _\\gamma _,\\beta' - A' _\\beta _,\\gamma')
+
+	- 4 * (G/(k_e*c^2)) * u' ^\\beta' * u'^5' * A' _\\mu' * F' _\\beta ^\\mu'
+	+ 4 * (G/(k_e*c^2)) * u' ^\\beta' * u'^5' * A' ^\\gamma' * (A' _\\gamma _,\\beta' - A' _\\beta _,\\gamma')
+)
+--]]
+printbr(_5thGeodesic_def)
+
+_5thGeodesic_def = betterSimplify(_5thGeodesic_def:subst(u5U_def))
+printbr(_5thGeodesic_def)
+
 printbr()
 
 

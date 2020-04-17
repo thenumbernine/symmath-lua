@@ -270,8 +270,9 @@ MultiLine.lookupTable = {
 		local name
 		if hasutf8 then
 			local n = math.max(2, #s)
-			local sLR = table()
+			local sLR
 			if xL and xR then
+				sLR = table()
 				local sL = xL and self:apply(xL) or nil
 				local sR = xR and self:apply(xR) or nil
 				if sL or sR then
@@ -293,8 +294,8 @@ MultiLine.lookupTable = {
 				for i=1,#sLR do
 					sLR[i] = sLR[i] .. (' '):rep(maxwidth-#sLR[i])
 				end
+				n = math.max(n, #sLR)
 			end
-			n = math.max(n, #sLR)
 			
 			local intstr = {}
 			for i=1,n do
@@ -306,7 +307,10 @@ MultiLine.lookupTable = {
 					intstr[i] = intname[2]
 				end
 			end
-			s = self:combine(self:combine(self:combine(intstr, sLR), {' '}), s)
+			if sLR then
+				intstr = self:combine(intstr, sLR)
+			end
+			s = self:combine(self:combine(intstr, {' '}), s)
 		else
 			for i=3,#expr do
 				s = self:combine(s, {', '})

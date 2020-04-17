@@ -34,11 +34,12 @@ local thetaPolarConformal = var'\\bar{\\theta}'
 function thetaPolarConformal:applyDiff(x) return x:diff(theta) / sqrt(r) end
 
 
+-- equality is based on name, so don't mix this with any of the other phi anholonomic derivative vars
 local phiCylindricalSurfaceNormalized = var'\\bar{\\phi}'
 function phiCylindricalSurfaceNormalized:applyDiff(x) return x:diff(phi) / r end
 
 local zCylindricalSurfaceNormalized = var'\\bar{z}'
-function zCylindricalSurfaceNormalized:applyDiff(x) return x:diff(z) / r end
+function zCylindricalSurfaceNormalized:applyDiff(x) return x:diff(z) end
 
 
 local phiCylindricalSurfaceConformal = var'\\bar{\\phi}'
@@ -46,6 +47,13 @@ function phiCylindricalSurfaceConformal:applyDiff(x) return x:diff(phi) / sqrt(r
 
 local zCylindricalSurfaceConformal = var'\\bar{z}'
 function zCylindricalSurfaceConformal:applyDiff(x) return x:diff(z) / sqrt(r) end
+
+
+local thetaSphericalSurfaceConformal = var'\\bar{\\theta}'
+function thetaSphericalSurfaceConformal:applyDiff(x) return x:diff(theta) / (r * sqrt(abs(sin(theta)))) end
+
+local phiSphericalSurfaceConformal = var'\\bar{\\phi}'
+function phiSphericalSurfaceConformal:applyDiff(x) return x:diff(phi) / (r * sqrt(abs(sin(theta)))) end
 
 
 local alpha = var('\\alpha', {r})
@@ -58,7 +66,6 @@ local eta3 = Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 and -1 or 
 local eta4 = Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
 local spacetimes = {
--- [=[
 	{
 		title = 'Cartesian',
 		coords = {x,y},
@@ -78,7 +85,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'polar, anholonomic, normalized',
+		title = 'polar, anholonomic, orthonormal',
 		coords = {rHat,thetaHat},
 		baseCoords = {r,theta},
 		embedded = {x,y},
@@ -117,7 +124,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'cylindrical surface, anholonomic, normalized',
+		title = 'cylindrical surface, anholonomic, orthonormal',
 		coords = {phiCylindricalSurfaceNormalized,zCylindricalSurfaceNormalized},
 		baseCoords = {phi,z},
 		embedded = {x,y,z},
@@ -127,7 +134,7 @@ local spacetimes = {
 		end,
 		eU = function()
 			return Tensor('^a_I', 
-				{-sin(phi)/r, cos(phi)/r, 0},
+				{-sin(phi), cos(phi), 0},
 				{0, 0, 1})
 		end,
 	},
@@ -142,8 +149,8 @@ local spacetimes = {
 		end,
 		eU = function()
 			return Tensor('^a_I', 
-				{-sin(phi)/r, cos(phi)/r, 0},
-				{0, 0, 1})
+				{-sin(phi) / sqrt(r), cos(phi) / sqrt(r), 0},
+				{0, 0, sqrt(r)})
 		end,
 	},
 	{
@@ -156,7 +163,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'cylindrical, anholonomic, normalized',
+		title = 'cylindrical, anholonomic, orthonormal',
 		coords = {rHat,thetaHat,zHat},
 		baseCoords = {r,theta,z},
 		embedded = {x,y,z},
@@ -261,6 +268,50 @@ local spacetimes = {
 		end,
 	},
 	{
+		title = 'sphere surface, anholonomic, orthonormal',
+		coords = {thetaHat,phiHat},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I',
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
+		end,
+		eU = function()
+			-- theta = acos(z/r)
+			-- phi = atan(y/x)
+			return Tensor('^a_I',
+				--{dtheta/dx, dtheta/dy, dtheta/dz}:
+				{cos(theta) * cos(phi), cos(theta) * sin(phi), -sin(theta)},
+				--{dphi/dx, dphi/dy, dphi/dz}:
+				{-sin(phi),cos(phi),0})
+		end,
+	},
+--[[ not doing so well, with some abs derivatives
+	{
+		title = 'sphere surface, anholonomic, conformal',
+		coords = {thetaSphericalSurfaceConformal, phiSphericalSurfaceConformal},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I',
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
+		end,
+		eU = function()
+			-- theta = acos(z/r)
+			-- phi = atan(y/x)
+			return Tensor('^a_I',
+				--{dtheta/dx, dtheta/dy, dtheta/dz}:
+				{cos(theta) * cos(phi), cos(theta) * sin(phi), -sin(theta)},
+				--{dphi/dx, dphi/dy, dphi/dz}:
+				{-sin(phi),cos(phi),0})
+		end,
+	},
+--]]
+	{
 		title = 'spherical',
 		coords = {r,theta,phi},
 		embedded = {x,y,z},
@@ -273,7 +324,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'spherical, anholonomic, normalized',
+		title = 'spherical, anholonomic, orthonormal',
 		coords = {rHat,thetaHat,phiHat},
 		baseCoords = {r,theta,phi},
 		embedded = {x,y,z},
@@ -324,8 +375,7 @@ local spacetimes = {
 				r * cos(theta))
 		end,
 	},
---]=]
---[=[ these are struggling with the new trig simplification
+--[[ this is struggling with the new trig simplification
 	{
 		title = 'torus',
 		coords = {r,theta,phi},
@@ -338,6 +388,7 @@ local spacetimes = {
 				r * cos(theta))
 		end,
 	},
+--]]
 	{
 		title = 'torus surface',
 		coords = {theta,phi},
@@ -357,7 +408,6 @@ local spacetimes = {
 				{-sin(phi) / (R + r * sin(theta)), cos(phi) / (R + r * sin(theta)), 0})
 		end,
 	},
---]=]
 	{
 		title = 'Schwarzschild',
 		coords = {t,r,theta,phi},

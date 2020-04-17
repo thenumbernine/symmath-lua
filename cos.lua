@@ -27,8 +27,8 @@ function cos:getRealDomain()
 	return RealDomain(table.mapi(Is, function(I)
 		if I.start == -math.huge or I.finish == math.huge then return RealDomain(-1, 1, true, true) end
 		-- here I'm going to add pi/2 and then just copy the sin:getRealDomain() code
-		I.start = I.start + pi/2
-		I.finish = I.finish + pi/2
+		I.start = I.start + math.pi/2
+		I.finish = I.finish + math.pi/2
 		-- map by quadrant
 		local startQ = math.floor(I.start / (math.pi/2))
 		local finishQ = math.floor(I.finish / (math.pi/2))

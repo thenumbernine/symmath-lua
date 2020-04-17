@@ -61,6 +61,38 @@ for _,info in ipairs{
 			)
 		end,
 	},
+-- TODO for these surface ones, the propagator doesn't look right
+-- it has an extra cos(theta) factor 
+-- I'm suspicious they need extrinsic curvature to adjust for this
+	{
+		name = 'spherical surface, coordinate',
+		coordVolumeElem = r^2 * sin(theta),
+		coords = {theta, phi},
+		getConn = function()
+			local conn = Tensor'^a_bc'
+			conn[1][2][2] = -cos(theta) * sin(theta)
+			conn[2][1][2] = cos(theta) / sin(theta)
+			conn[2][2][1] = cos(theta) / sin(theta)
+			return conn
+		end,
+	},
+	{
+		name = 'spherical surface, orthonormal',
+		coordVolumeElem = r^2 * sin(theta),
+		coords = {theta, phi},
+		getConn = function()
+			local conn = Tensor'^I_JK'
+			conn[1][2][2] = -cos(theta) / (r * sin(theta))
+			conn[2][2][1] = cos(theta) / (r * sin(theta))
+			return conn
+		end,
+		getLinCoeff = function()
+			return Tensor('_a^I',
+				{r, 0},
+				{0, r * sin(theta)}
+			)
+		end,
+	},
 	{
 		name = 'spherical, coordinate',
 		coordVolumeElem = r^2 * sin(theta),

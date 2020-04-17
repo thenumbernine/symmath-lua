@@ -717,6 +717,29 @@ add.rules = {
 				end
 			end
 		end},
+	
+		-- can't seem to catch this at the right place 
+		--[[
+		{trig = function(tidy, expr)
+			local Constant = require 'symmath.Constant'
+			local pow = require 'symmath.op.pow'
+			local cos = require 'symmath.cos'
+			if #self == 1
+			and Constant.is(self[1]) 
+			and self[1].value == 1
+			and mul.is(self[2])
+			and Constant.is(self[2][1])
+			and self[2][1].value == -1
+			and pow.is(self[2][2])
+			and cos.is(self[2][2][1])
+			and Constant.is(self[2][2][2])
+			and self[2][2][2].value == 2
+			then
+				local sin = require 'symmath.sin'
+				return sin(x[2][2][1][1])^2
+			end
+		end},
+		--]]
 	},
 }
 
