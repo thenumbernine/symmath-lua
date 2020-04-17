@@ -34,7 +34,9 @@ local function eigen(A)
 	local Rs = lambdas:mapi(function(lambdaInfo) 
 		local lambda = lambdaInfo.expr
 		local Ri = (A - lambda * I)():nullspace()
-		assert(lambdaInfo.mult == #Ri[1])
+		if lambdaInfo.mult ~= #Ri[1] then
+			error("nullspace of "..lambda.." is "..#Ri[1].." but multiplicity of eigenvalue is "..lambdaInfo.mult)
+		end
 		for i=1,lambdaInfo.mult do
 			allLambdas:insert(lambdaInfo.expr)
 		end

@@ -17,22 +17,22 @@ do
 	if hasutf8 then
 		strlen, box, par, line, sqrtname, intname = assert(load[[
 		local utf8 = ...
-		strlen = utf8.len
-		box = {
+		local strlen = utf8.len
+		local box = {
 			{'\u{250c}', '\u{2510}'},
 			{'\u{2502}', '\u{2502}'},
 			{'\u{2514}', '\u{2518}'},
 			{'[', ']'},
 		}
-		par = {
+		local par = {
 			{'\u{256d}', '\u{256e}'},
 			{'\u{2502}', '\u{2502}'},
 			{'\u{2570}', '\u{256f}'},
 			{'(', ')'},
 		}
-		line = {'\u{2576}', '\u{2500}', '\u{2574}'}
-		sqrtname = '\u{221a}'
-		intname = {
+		local line = {'\u{2576}', '\u{2500}', '\u{2574}'}
+		local sqrtname = '\u{221a}'
+		local intname = {
 			'\u{2320}',		-- integral top symbol
 			'\u{2502}',		-- integral middle
 			'\u{2321}',		-- integral bottom symbol

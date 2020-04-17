@@ -228,7 +228,9 @@ symmath.pi = symmath.Constant(math.pi, 'pi')
 symmath.inf = symmath.Constant(math.huge, 'infty')	-- TODO use 'infinite' or 'infinity' and fix the LaTex gsub fixVariableName code to handle renaming instead of just padding with symbols
 --]]
 -- [[
-symmath.i = symmath.Variable('i', nil, symmath.complex(0,1))
+-- TODO right now I'm comparing variables by name ... don't do that.  Or else complex's "i" will match an iterator's "i".
+-- a temporary fix in the mean time ... I'll use 'ii' for the name and swap it out with a unicode char, just like Mathematica does.  This way users who use 'i' as an arbitrary variable won't have it collide with symmath.i
+symmath.i = symmath.Variable('ii', nil, symmath.complex(0,1))
 symmath.e = symmath.Variable('e', nil, math.exp(1))
 symmath.pi = symmath.Variable('pi', nil, math.pi)
 symmath.inf = symmath.Variable('infty', nil, math.huge)	-- TODO use 'infinite' or 'infinity' and fix the LaTex gsub fixVariableName code to handle renaming instead of just padding with symbols

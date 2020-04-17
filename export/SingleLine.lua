@@ -29,11 +29,12 @@ end
 	
 local hasutf8, utf8 = pcall(require, 'utf8')
 
-local sqrtname
+local sqrtname, iname
 if hasutf8 then
-	sqrtname = assert(load[[
-	sqrtname = '\u{221a}'
-	return sqrtname
+	sqrtname, iname = assert(load[[
+	local sqrtname = '\u{221a}'
+	local iname = '\u{1d55a}'
+	return sqrtname, iname
 ]])()
 end
 
@@ -86,6 +87,10 @@ SingleLine.lookupTable = {
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'
 		local name = expr.name
+		if rawequal(expr, symmath.i) then
+		--if self == symmath.i then	-- this will include all 'ii' variables
+			name = iname or name
+		end
 		if symmath.fixVariableNames then
 			name = symmath.tostring:fixVariableName(name)
 		end
