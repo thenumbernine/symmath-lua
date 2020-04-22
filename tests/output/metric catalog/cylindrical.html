@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>cylindrical</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+<h3>cylindrical</h3>
+embedding:	$x$	$y$	$z$
+<br>
+base coords:	$r$	$\phi$	$z$
+<br>
+transform from non-coorinate to coordinate basis:	$\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}$
+<br>
+transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}$
+<br>
+non-coord associated with $r$ is coord $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
+<br>
+non-coord associated with $\phi$ is coord $\phi$ with operator $e_{\phi}(\zeta) = $${\partial \zeta}\over{\partial\phi}$
+<br>
+non-coord associated with $z$ is coord $z$ with operator $e_{z}(\zeta) = $${\partial \zeta}\over{\partial z}$
+<br>
+coordinates:	$r$	$\phi$	$z$
+<br>
+flat metric:
+<br>
+${{{ \eta}_x}_x} = {1}$;
+${{{ \eta}_y}_y} = {1}$;
+${{{ \eta}_z}_z} = {1}$
+
+<br>
+
+<br>
+chart in embedded coordinates:
+<br>
+${{ u}^x} = {{{r}} {{cos\left(  \phi\right)}}}$;
+${{ u}^y} = {{{r}} {{sin\left(  \phi\right)}}}$;
+${{ u}^z} = {z}$
+
+<br>
+
+<br>
+basis operators applied to chart:
+<br>
+${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
+<br>
+${{{ e}_r}^x} = {cos\left(  \phi\right)}$;
+${{{ e}_r}^y} = {sin\left(  \phi\right)}$;
+${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left(  \phi\right)}}}}$;
+${{{ e}_{\phi}}^y} = {{{r}} {{cos\left(  \phi\right)}}}$;
+${{{ e}_z}^z} = {1}$
+
+<br>
+${{{ e}^r}_x} = {cos\left(  \phi\right)}$;
+${{{ e}^r}_y} = {sin\left(  \phi\right)}$;
+${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left(  \phi\right)}})}}$;
+${{{ e}^{\phi}}_y} = {{\frac{1}{r}}{({cos\left(  \phi\right)})}}$;
+${{{ e}^z}_z} = {1}$
+
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
+<br>
+basis determinant:	${det(e)} = {r}$
+<br>
+${{{{ c}_a}_b}^c} = {0}$
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+${{{ g}_r}_r} = {1}$;
+${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$;
+${{{ g}_z}_z} = {1}$
+
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+metric determinant:	${det(g)} = {{r}^{2}}$
+<br>
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+<br>
+commutation coefficients:
+${{{{ c}_a}_b}^c} = {0}$
+<br>
+metric:
+${{{ g}_r}_r} = {1}$;
+${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$;
+${{{ g}_z}_z} = {1}$
+
+<br>
+metric inverse:
+${{{ g}^r}^r} = {1}$;
+${{{ g}^{\phi}}^{\phi}} = {\frac{1}{{r}^{2}}}$;
+${{{ g}^z}^z} = {1}$
+
+<br>
+metric derivative:
+${{{{ {\partial g}}_{\phi}}_{\phi}}_r} = {{{2}} {{r}}}$
+
+<br>
+1st kind Christoffel:
+${{{{ \Gamma}_r}_{\phi}}_{\phi}} = {-{r}}$;
+${{{{ \Gamma}_{\phi}}_r}_{\phi}} = {r}$;
+${{{{ \Gamma}_{\phi}}_{\phi}}_r} = {r}$
+
+<br>
+connection coefficients / 2nd kind Christoffel:
+${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{r}}$;
+${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
+
+<br>
+connection coefficients derivative:
+${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$
+
+<br>
+connection coefficients squared:
+${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_{\phi}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_{\phi}} = {-{1}}$
+
+<br>
+Riemann curvature, $\sharp\flat\flat\flat$:
+${{{{{ R}^a}_b}_c}_d} = {0}$
+<br>
+Riemann curvature, $\sharp\sharp\flat\flat$:
+${{{{{ R}^a}^b}_c}_d} = {0}$
+<br>
+Ricci curvature, $\sharp\flat$:
+${{{ R}^a}_b} = {0}$
+<br>
+Gaussian curvature:
+$0$
+
+<br>
+Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
+${{{ G}^a}_b} = {0}$
+<br>
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{{A^{r}}}} \cdot {{\frac{1}{r}}}} + {{\partial {A^{\phi}}}\over{\partial\phi}} + {{\partial {A^{r}}}\over{\partial r}} + {{\partial {A^{z}}}\over{\partial z}}}$
+<br>
+geodesic:
+<br>
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{r} \\ \ddot{\phi} \\ \ddot{z}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{r}} {{{\dot{\phi}}^{2}}} \\ {{-2}} {{\dot{\phi}}} \cdot {{\dot{r}}} \cdot {{\frac{1}{r}}} \\ 0\end{matrix}\right]}}$
+<br>
+
+<br>
+parallel propagators:
+<br>
+
+<br>
+${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  log\left( {{\frac{1}{{r_L}}}{({{r_R}})}}\right) &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_r$	=	${e}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_L}}}{({{r_R}})} &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  {{r}} {{({{{\phi_L}} - {{\phi_R}}})}} &  0 \\  {\frac{1}{r}}{({-{({{{\phi_L}} - {{\phi_R}}})}})} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_{\phi}$	=	${e}^{( -{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{ P}_{\phi}}^{-1}$	=	${e}^{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  {{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} &  0 \\  {\frac{1}{r}}{({-{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{[\Gamma_z]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{z_L}}}^{{{z_R}}}d z\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_z$	=	${e}^{( -{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{ P}_z}^{-1}$	=	${e}^{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+propagator commutation:
+<br>
+
+<br>
+[	${ P}_r$	,	${ P}_{\phi}$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  0 \\  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_R}}}} &  0 \\  {\frac{1}{{r_R}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+[	${ P}_r$	,	${ P}_z$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+[	${ P}_{\phi}$	,	${ P}_z$	] =	${ {\left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  0 \\  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  0 \\  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+propagator partials
+<br>
+${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  -{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)} &  0 \\  \frac{-{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}{{r}^{2}} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+<br>
+	</body>
+</html>
+

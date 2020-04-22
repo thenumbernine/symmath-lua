@@ -3,7 +3,8 @@ require 'ext'
 require 'symmath'{MathJax={title='Parallel Propagtors'}}
 
 -- TODO incorporate this with the metric catalog?
-
+-- or TODO split this apart into parallel propagators + finite volume formulations
+-- I'll vote for combining them into one, but that will be a lot of MathJax to load ... maybe render this as a PDF or put it into separte htmls per-chart
 
 local t = var't'
 local x = var'x'

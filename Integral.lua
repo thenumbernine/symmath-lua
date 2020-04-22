@@ -193,9 +193,12 @@ Integral.rules = {
 					
 					if Constant.is(d[1]) and d[1].value == 1 then	-- int(1/f(x), x)
 						local e = d[2]
-						-- int(1/x,x)
-						if e == x then
-							return mulWithNonDep(log(abs(x)))
+						
+						local depe, nondepe = getDepAndNonDep(e)
+						-- int(1/(cx),x) = 1/c ln|x|
+						--if e == x then
+						if #depe == 1 and depe[1] == x then
+							return mulWithNonDep(log(abs(x))) / tableToTerm(nondepe)
 						end
 						
 						-- int(1/f(x)^g(x),x)

@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>polar, anholonomic, orthonormal</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+<h3>polar, anholonomic, orthonormal</h3>
+embedding:	$x$	$y$
+<br>
+base coords:	$r$	$\theta$
+<br>
+transform from non-coorinate to coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  r\end{matrix}\right]}$
+<br>
+transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  \frac{1}{r}\end{matrix}\right]}$
+<br>
+non-coord associated with $r$ is coord $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
+<br>
+non-coord associated with $\theta$ is coord $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $${\frac{1}{r}}{({{\partial \zeta}\over{\partial\theta}})}$
+<br>
+coordinates:	$r$	$\hat{\theta}$
+<br>
+flat metric:
+<br>
+${{{ \eta}_x}_x} = {1}$;
+${{{ \eta}_y}_y} = {1}$
+
+<br>
+
+<br>
+chart in embedded coordinates:
+<br>
+${{ u}^x} = {{{r}} {{cos\left(  \theta\right)}}}$;
+${{ u}^y} = {{{r}} {{sin\left(  \theta\right)}}}$
+
+<br>
+
+<br>
+basis operators applied to chart:
+<br>
+${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
+<br>
+${{{ e}_r}^x} = {cos\left(  \theta\right)}$;
+${{{ e}_r}^y} = {sin\left(  \theta\right)}$;
+${{{ e}_{\hat{\theta}}}^x} = {-{sin\left(  \theta\right)}}$;
+${{{ e}_{\hat{\theta}}}^y} = {cos\left(  \theta\right)}$
+
+<br>
+${{{ e}^r}_x} = {cos\left(  \theta\right)}$;
+${{{ e}^r}_y} = {sin\left(  \theta\right)}$;
+${{{ e}^{\hat{\theta}}}_x} = {-{sin\left(  \theta\right)}}$;
+${{{ e}^{\hat{\theta}}}_y} = {cos\left(  \theta\right)}$
+
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
+<br>
+basis determinant:	${det(e)} = {1}$
+<br>
+${{{{ c}_r}_{\hat{\theta}}}^{\hat{\theta}}} = {-{\frac{1}{r}}}$;
+${{{{ c}_{\hat{\theta}}}_r}^{\hat{\theta}}} = {\frac{1}{r}}$
+
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+${{{ g}_r}_r} = {1}$;
+${{{ g}_{\hat{\theta}}}_{\hat{\theta}}} = {1}$
+
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+metric determinant:	${det(g)} = {1}$
+<br>
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+<br>
+commutation coefficients:
+${{{{ c}_r}_{\hat{\theta}}}^{\hat{\theta}}} = {-{\frac{1}{r}}}$;
+${{{{ c}_{\hat{\theta}}}_r}^{\hat{\theta}}} = {\frac{1}{r}}$
+
+<br>
+metric:
+${{{ g}_r}_r} = {1}$;
+${{{ g}_{\hat{\theta}}}_{\hat{\theta}}} = {1}$
+
+<br>
+metric inverse:
+${{{ g}^r}^r} = {1}$;
+${{{ g}^{\hat{\theta}}}^{\hat{\theta}}} = {1}$
+
+<br>
+metric derivative:
+${{{{ {\partial g}}_a}_b}_c} = {0}$
+<br>
+1st kind Christoffel:
+${{{{ \Gamma}_r}_{\hat{\theta}}}_{\hat{\theta}}} = {-{\frac{1}{r}}}$;
+${{{{ \Gamma}_{\hat{\theta}}}_{\hat{\theta}}}_r} = {\frac{1}{r}}$
+
+<br>
+connection coefficients / 2nd kind Christoffel:
+${{{{ \Gamma}^r}_{\hat{\theta}}}_{\hat{\theta}}} = {-{\frac{1}{r}}}$;
+${{{{ \Gamma}^{\hat{\theta}}}_{\hat{\theta}}}_r} = {\frac{1}{r}}$
+
+<br>
+connection coefficients derivative:
+${{{{{ {\partial \Gamma}}^r}_{\hat{\theta}}}_{\hat{\theta}}}_r} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {\partial \Gamma}}^{\hat{\theta}}}_{\hat{\theta}}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$
+
+<br>
+connection coefficients squared:
+${{{{{ {(\Gamma^2)}}^r}_r}_{\hat{\theta}}}_{\hat{\theta}}} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {(\Gamma^2)}}^{\hat{\theta}}}_{\hat{\theta}}}_{\hat{\theta}}}_{\hat{\theta}}} = {-{\frac{1}{{r}^{2}}}}$
+
+<br>
+Riemann curvature, $\sharp\flat\flat\flat$:
+${{{{{ R}^a}_b}_c}_d} = {0}$
+<br>
+Riemann curvature, $\sharp\sharp\flat\flat$:
+${{{{{ R}^a}^b}_c}_d} = {0}$
+<br>
+Ricci curvature, $\sharp\flat$:
+${{{ R}^a}_b} = {0}$
+<br>
+Gaussian curvature:
+$0$
+
+<br>
+Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
+${{{ G}^a}_b} = {0}$
+<br>
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{{\partial {A^{\hat{\theta}}}}\over{\partial\theta}}} {{\frac{1}{r}}}} + {{{{A^{r}}}} \cdot {{\frac{1}{r}}}} + {{\partial {A^{r}}}\over{\partial r}}}$
+<br>
+geodesic:
+<br>
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{r} \\ \ddot{\hat{\theta}}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{{\dot{\hat{\theta}}}^{2}}} {{\frac{1}{r}}} \\ {{-1}} {{\dot{\hat{\theta}}}} \cdot {{\dot{r}}} \cdot {{\frac{1}{r}}}\end{matrix}\right]}}$
+<br>
+
+<br>
+parallel propagators:
+<br>
+
+<br>
+${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_r$	=	${e}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{[\Gamma_\theta]}} = {\left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  {{\theta_L}} - {{\theta_R}} \\  -{({{{\theta_L}} - {{\theta_R}}})} &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_{\theta}$	=	${e}^{( -{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} \\  sin\left( {{{\theta_L}} - {{\theta_R}}}\right) &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]$
+<br>
+
+<br>
+${{ P}_{\theta}}^{-1}$	=	${e}^{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  sin\left( {{{\theta_L}} - {{\theta_R}}}\right) \\  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]$
+<br>
+
+<br>
+propagator commutation:
+<br>
+
+<br>
+[	${ P}_r$	,	${ P}_{\theta}$	] =	${ {\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} \\  sin\left( {{{\theta_L}} - {{\theta_R}}}\right) &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]}} - { {\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} \\  sin\left( {{{\theta_L}} - {{\theta_R}}}\right) &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+propagator partials
+<br>
+${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} \\  sin\left( {{{\theta_L}} - {{\theta_R}}}\right) &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} \\  sin\left( {{{\theta_L}} - {{\theta_R}}}\right) &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+	</body>
+</html>
+

@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>spherical and time, lapse varying in radial</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+<h3>spherical and time, lapse varying in radial</h3>
+embedding:	$t$	$x$	$y$	$z$
+<br>
+base coords:	$t$	$r$	$\theta$	$\phi$
+<br>
+transform from non-coorinate to coordinate basis:	$\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}$
+<br>
+transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}$
+<br>
+non-coord associated with $t$ is coord $t$ with operator $e_{t}(\zeta) = $${\partial \zeta}\over{\partial t}$
+<br>
+non-coord associated with $r$ is coord $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
+<br>
+non-coord associated with $\theta$ is coord $\theta$ with operator $e_{\theta}(\zeta) = $${\partial \zeta}\over{\partial\theta}$
+<br>
+non-coord associated with $\phi$ is coord $\phi$ with operator $e_{\phi}(\zeta) = $${\partial \zeta}\over{\partial\phi}$
+<br>
+coordinates:	$t$	$r$	$\theta$	$\phi$
+<br>
+flat metric:
+<br>
+${{{ \eta}_t}_t} = {-1}$;
+${{{ \eta}_x}_x} = {1}$;
+${{{ \eta}_y}_y} = {1}$;
+${{{ \eta}_z}_z} = {1}$
+
+<br>
+
+<br>
+chart in embedded coordinates:
+<br>
+${{ u}^t} = {{{t}} {{\alpha}}}$;
+${{ u}^x} = {{{{{r}} {{sin\left(  \theta\right)}}}} {{cos\left(  \phi\right)}}}$;
+${{ u}^y} = {{{{{r}} {{sin\left(  \theta\right)}}}} {{sin\left(  \phi\right)}}}$;
+${{ u}^z} = {{{r}} {{cos\left(  \theta\right)}}}$
+
+<br>
+
+<br>
+basis operators applied to chart:
+<br>
+${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
+<br>
+${{{ e}_t}^t} = {\alpha}$;
+${{{ e}_r}^t} = {{{t}} {{{\partial \alpha}\over{\partial r}}}}$;
+${{{ e}_r}^x} = {{{sin\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
+${{{ e}_r}^y} = {{{sin\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
+${{{ e}_r}^z} = {cos\left(  \theta\right)}$;
+${{{ e}_{\theta}}^x} = {{{r}} {{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
+${{{ e}_{\theta}}^y} = {{{r}} {{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
+${{{ e}_{\theta}}^z} = {-{{{r}} {{sin\left(  \theta\right)}}}}$;
+${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left(  \theta\right)}} {{sin\left(  \phi\right)}}}}$;
+${{{ e}_{\phi}}^y} = {{{r}} {{sin\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$
+
+<br>
+${{{ e}^t}_t} = {\frac{1}{\alpha}}$;
+${{{ e}^t}_x} = {{\frac{1}{\alpha}}{({-{{{cos\left(  \phi\right)}} {{t}} {{{\partial \alpha}\over{\partial r}}} {{sin\left(  \theta\right)}}}})}}$;
+${{{ e}^t}_y} = {{\frac{1}{\alpha}}{({-{{{sin\left(  \phi\right)}} {{t}} {{{\partial \alpha}\over{\partial r}}} {{sin\left(  \theta\right)}}}})}}$;
+${{{ e}^t}_z} = {\frac{{{cos\left(  \theta\right)}} {{t}} {{{\partial \alpha}\over{\partial r}}}}{-{\alpha}}}$;
+${{{ e}^r}_x} = {{{cos\left(  \phi\right)}} {{sin\left(  \theta\right)}}}$;
+${{{ e}^r}_y} = {{{sin\left(  \phi\right)}} {{sin\left(  \theta\right)}}}$;
+${{{ e}^r}_z} = {cos\left(  \theta\right)}$;
+${{{ e}^{\theta}}_x} = {{\frac{1}{r}}{({{{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}})}}$;
+${{{ e}^{\theta}}_y} = {{\frac{1}{r}}{({{{sin\left(  \phi\right)}} {{cos\left(  \theta\right)}}})}}$;
+${{{ e}^{\theta}}_z} = {\frac{sin\left(  \theta\right)}{-{r}}}$;
+${{{ e}^{\phi}}_x} = {\frac{-{sin\left(  \phi\right)}}{{{r}} {{sin\left(  \theta\right)}}}}$;
+${{{ e}^{\phi}}_y} = {\frac{cos\left(  \phi\right)}{{{r}} {{sin\left(  \theta\right)}}}}$
+
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$
+<br>
+basis determinant:	${det(e)} = {{{\alpha}} \cdot {{{r}^{2}}} {{sin\left(  \theta\right)}}}$
+<br>
+${{{{ c}_a}_b}^c} = {0}$
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+${{{ g}_t}_t} = {-{{\alpha}^{2}}}$;
+${{{ g}_t}_r} = {-{{{\alpha}} \cdot {{t}} {{{\partial \alpha}\over{\partial r}}}}}$;
+${{{ g}_r}_t} = {-{{{t}} {{{\partial \alpha}\over{\partial r}}} {{\alpha}}}}$;
+${{{ g}_r}_r} = {{1} - {{{{t}^{2}}} {{{{\partial \alpha}\over{\partial r}}^{2}}}}}$;
+${{{ g}_{\theta}}_{\theta}} = {{r}^{2}}$;
+${{{ g}_{\phi}}_{\phi}} = {{{{r}^{2}}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}$
+
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+metric determinant:	${det(g)} = {-{{{{r}^{4}}} {{{\alpha}^{2}}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}}$
+<br>
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+<br>
+commutation coefficients:
+${{{{ c}_a}_b}^c} = {0}$
+<br>
+metric:
+${{{ g}_t}_t} = {-{{\alpha}^{2}}}$;
+${{{ g}_t}_r} = {-{{{\alpha}} \cdot {{t}} {{{\partial \alpha}\over{\partial r}}}}}$;
+${{{ g}_r}_t} = {-{{{t}} {{{\partial \alpha}\over{\partial r}}} {{\alpha}}}}$;
+${{{ g}_r}_r} = {{1} - {{{{t}^{2}}} {{{{\partial \alpha}\over{\partial r}}^{2}}}}}$;
+${{{ g}_{\theta}}_{\theta}} = {{r}^{2}}$;
+${{{ g}_{\phi}}_{\phi}} = {{{{r}^{2}}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}$
+
+<br>
+metric inverse:
+${{{ g}^t}^t} = {\frac{{1} - {{{{t}^{2}}} {{{{\partial \alpha}\over{\partial r}}^{2}}}}}{-{{\alpha}^{2}}}}$;
+${{{ g}^t}^r} = {{\frac{1}{\alpha}}{({-{{{t}} {{{\partial \alpha}\over{\partial r}}}}})}}$;
+${{{ g}^r}^t} = {{\frac{1}{\alpha}}{({-{{{t}} {{{\partial \alpha}\over{\partial r}}}}})}}$;
+${{{ g}^r}^r} = {1}$;
+${{{ g}^{\theta}}^{\theta}} = {\frac{1}{{r}^{2}}}$;
+${{{ g}^{\phi}}^{\phi}} = {\frac{1}{{{{r}^{2}}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}}$
+
+<br>
+metric derivative:
+${{{{ {\partial g}}_t}_t}_r} = {-{{{2}} {{\alpha}} \cdot {{{\partial \alpha}\over{\partial r}}}}}$;
+${{{{ {\partial g}}_t}_r}_t} = {-{{{\alpha}} \cdot {{{\partial \alpha}\over{\partial r}}}}}$;
+${{{{ {\partial g}}_t}_r}_r} = {-{{{t}} {{({{{{\partial \alpha}\over{\partial r}}^{2}} + {{{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}})}}}}$;
+${{{{ {\partial g}}_r}_t}_t} = {-{{{{\partial \alpha}\over{\partial r}}} {{\alpha}}}}$;
+${{{{ {\partial g}}_r}_t}_r} = {-{{{t}} {{({{{{\partial \alpha}\over{\partial r}}^{2}} + {{{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}})}}}}$;
+${{{{ {\partial g}}_r}_r}_t} = {-{{{2}} {{t}} {{{{\partial \alpha}\over{\partial r}}^{2}}}}}$;
+${{{{ {\partial g}}_r}_r}_r} = {-{{{2}} {{{t}^{2}}} {{{\partial \alpha}\over{\partial r}}} {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}}$;
+${{{{ {\partial g}}_{\theta}}_{\theta}}_r} = {{{2}} {{r}}}$;
+${{{{ {\partial g}}_{\phi}}_{\phi}}_r} = {{{2}} {{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}$;
+${{{{ {\partial g}}_{\phi}}_{\phi}}_{\theta}} = {{{2}} {{{r}^{2}}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}$
+
+<br>
+1st kind Christoffel:
+${{{{ \Gamma}_t}_t}_r} = {-{{{\alpha}} \cdot {{{\partial \alpha}\over{\partial r}}}}}$;
+${{{{ \Gamma}_t}_r}_t} = {-{{{\alpha}} \cdot {{{\partial \alpha}\over{\partial r}}}}}$;
+${{{{ \Gamma}_t}_r}_r} = {-{{{t}} {{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}}$;
+${{{{ \Gamma}_r}_t}_r} = {-{{{t}} {{{{\partial \alpha}\over{\partial r}}^{2}}}}}$;
+${{{{ \Gamma}_r}_r}_t} = {-{{{t}} {{{{\partial \alpha}\over{\partial r}}^{2}}}}}$;
+${{{{ \Gamma}_r}_r}_r} = {-{{{{t}^{2}}} {{{\partial \alpha}\over{\partial r}}} {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}}$;
+${{{{ \Gamma}_r}_{\theta}}_{\theta}} = {-{r}}$;
+${{{{ \Gamma}_r}_{\phi}}_{\phi}} = {-{{{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}}$;
+${{{{ \Gamma}_{\theta}}_r}_{\theta}} = {r}$;
+${{{{ \Gamma}_{\theta}}_{\theta}}_r} = {r}$;
+${{{{ \Gamma}_{\theta}}_{\phi}}_{\phi}} = {-{{{{r}^{2}}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}}$;
+${{{{ \Gamma}_{\phi}}_r}_{\phi}} = {{{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}$;
+${{{{ \Gamma}_{\phi}}_{\theta}}_{\phi}} = {{{{r}^{2}}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}$;
+${{{{ \Gamma}_{\phi}}_{\phi}}_r} = {{{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}$;
+${{{{ \Gamma}_{\phi}}_{\phi}}_{\theta}} = {{{{r}^{2}}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}$
+
+<br>
+connection coefficients / 2nd kind Christoffel:
+${{{{ \Gamma}^t}_t}_r} = {{\frac{1}{\alpha}}{({{\partial \alpha}\over{\partial r}})}}$;
+${{{{ \Gamma}^t}_r}_t} = {{\frac{1}{\alpha}}{({{\partial \alpha}\over{\partial r}})}}$;
+${{{{ \Gamma}^t}_r}_r} = {{\frac{1}{\alpha}}{({{{t}} {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}})}}$;
+${{{{ \Gamma}^t}_{\theta}}_{\theta}} = {{\frac{1}{\alpha}}{({{{t}} {{{\partial \alpha}\over{\partial r}}} {{r}}})}}$;
+${{{{ \Gamma}^t}_{\phi}}_{\phi}} = {{\frac{1}{\alpha}}{({{{t}} {{{\partial \alpha}\over{\partial r}}} {{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}})}}$;
+${{{{ \Gamma}^r}_{\theta}}_{\theta}} = {-{r}}$;
+${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{{{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}}$;
+${{{{ \Gamma}^{\theta}}_r}_{\theta}} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\theta}}_{\theta}}_r} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\theta}}_{\phi}}_{\phi}} = {-{{{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}}$;
+${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_{\theta}}_{\phi}} = {\frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_{\theta}} = {\frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}}$
+
+<br>
+connection coefficients derivative:
+${{{{{ {\partial \Gamma}}^t}_t}_r}_r} = {\frac{-{({{{{\partial \alpha}\over{\partial r}}^{2}} - {{{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}})}}{{\alpha}^{2}}}$;
+${{{{{ {\partial \Gamma}}^t}_r}_t}_r} = {\frac{-{({{{{\partial \alpha}\over{\partial r}}^{2}} - {{{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}})}}{{\alpha}^{2}}}$;
+${{{{{ {\partial \Gamma}}^t}_r}_r}_t} = {{\frac{1}{\alpha}}{({{\partial^ 2 \alpha}\over{\partial r^ 2}})}}$;
+${{{{{ {\partial \Gamma}}^t}_r}_r}_r} = {\frac{-{{{t}} {{({{{{{\partial \alpha}\over{\partial r}}} {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}} - {{{\alpha}} \cdot {{{\partial^ 3 \alpha}\over{\partial r^ 3}}}}})}}}}{{\alpha}^{2}}}$;
+${{{{{ {\partial \Gamma}}^t}_{\theta}}_{\theta}}_t} = {{\frac{1}{\alpha}}{({{{{\partial \alpha}\over{\partial r}}} {{r}}})}}$;
+${{{{{ {\partial \Gamma}}^t}_{\theta}}_{\theta}}_r} = {\frac{{{t}} {{({{{{{\alpha}} \cdot {{{\partial \alpha}\over{\partial r}}}} - {{{r}} {{{{\partial \alpha}\over{\partial r}}^{2}}}}} + {{{r}} {{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}})}}}{{\alpha}^{2}}}$;
+${{{{{ {\partial \Gamma}}^t}_{\phi}}_{\phi}}_t} = {{\frac{1}{\alpha}}{({{{{\partial \alpha}\over{\partial r}}} {{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}})}}$;
+${{{{{ {\partial \Gamma}}^t}_{\phi}}_{\phi}}_r} = {\frac{-{{{t}} {{({{{{{\alpha}} \cdot {{{\partial \alpha}\over{\partial r}}} {{{cos\left(  \theta\right)}^{2}}}} - {{{r}} {{{cos\left(  \theta\right)}^{2}}} {{{{\partial \alpha}\over{\partial r}}^{2}}}}} + {{{{r}} {{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}} {{{cos\left(  \theta\right)}^{2}}}} - {{{\alpha}} \cdot {{{\partial \alpha}\over{\partial r}}}}} + {{{{r}} {{{{\partial \alpha}\over{\partial r}}^{2}}}} - {{{r}} {{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}}})}}}}{{\alpha}^{2}}}$;
+${{{{{ {\partial \Gamma}}^t}_{\phi}}_{\phi}}_{\theta}} = {{\frac{1}{\alpha}}{({{{2}} {{t}} {{{\partial \alpha}\over{\partial r}}} {{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}})}}$;
+${{{{{ {\partial \Gamma}}^r}_{\theta}}_{\theta}}_r} = {-{1}}$;
+${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_r} = {-{({{1} - {{cos\left(  \theta\right)}^{2}}})}}$;
+${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_{\theta}} = {-{{{2}} {{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}}$;
+${{{{{ {\partial \Gamma}}^{\theta}}_r}_{\theta}}_r} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\theta}}_{\theta}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\theta}}_{\phi}}_{\phi}}_{\theta}} = {{1} - {{{2}} {{{cos\left(  \theta\right)}^{2}}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_{\theta}}_{\phi}}_{\theta}} = {-{\frac{1}{{1} - {{cos\left(  \theta\right)}^{2}}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_{\theta}}_{\theta}} = {-{\frac{1}{{1} - {{cos\left(  \theta\right)}^{2}}}}}$
+
+<br>
+connection coefficients squared:
+${{{{{ {(\Gamma^2)}}^t}_t}_r}_r} = {\frac{{{\partial \alpha}\over{\partial r}}^{2}}{{\alpha}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^t}_r}_r}_t} = {\frac{{{\partial \alpha}\over{\partial r}}^{2}}{{\alpha}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^t}_r}_r}_r} = {\frac{{{{\partial \alpha}\over{\partial r}}} {{t}} {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}{{\alpha}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^t}_r}_{\theta}}_{\theta}} = {{\frac{1}{\alpha}}{({{{t}} {{{\partial \alpha}\over{\partial r}}}})}}$;
+${{{{{ {(\Gamma^2)}}^t}_r}_{\phi}}_{\phi}} = {{\frac{1}{\alpha}}{({{{t}} {{{\partial \alpha}\over{\partial r}}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}})}}$;
+${{{{{ {(\Gamma^2)}}^t}_{\theta}}_t}_{\theta}} = {{\frac{1}{\alpha}}{({-{{{{\partial \alpha}\over{\partial r}}} {{r}}}})}}$;
+${{{{{ {(\Gamma^2)}}^t}_{\theta}}_r}_{\theta}} = {\frac{{{t}} {{r}} {{({{{{\partial \alpha}\over{\partial r}}^{2}} - {{{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}})}}}{{\alpha}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^t}_{\theta}}_{\theta}}_r} = {{\frac{1}{\alpha}}{({{{t}} {{{\partial \alpha}\over{\partial r}}}})}}$;
+${{{{{ {(\Gamma^2)}}^t}_{\theta}}_{\phi}}_{\phi}} = {{\frac{1}{\alpha}}{({{{t}} {{{\partial \alpha}\over{\partial r}}} {{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}})}}$;
+${{{{{ {(\Gamma^2)}}^t}_{\phi}}_t}_{\phi}} = {{\frac{1}{\alpha}}{({-{{{{\partial \alpha}\over{\partial r}}} {{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}})}}$;
+${{{{{ {(\Gamma^2)}}^t}_{\phi}}_r}_{\phi}} = {\frac{{{t}} {{r}} {{({{{{{\partial \alpha}\over{\partial r}}^{2}} - {{{{cos\left(  \theta\right)}^{2}}} {{{{\partial \alpha}\over{\partial r}}^{2}}}}} + {{{{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}} {{{cos\left(  \theta\right)}^{2}}}} - {{{\alpha}} \cdot {{{\partial^ 2 \alpha}\over{\partial r^ 2}}}}}})}}}{{\alpha}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^t}_{\phi}}_{\theta}}_{\phi}} = {{\frac{1}{\alpha}}{({-{{{t}} {{{\partial \alpha}\over{\partial r}}} {{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}})}}$;
+${{{{{ {(\Gamma^2)}}^t}_{\phi}}_{\phi}}_r} = {{\frac{1}{\alpha}}{({{{t}} {{{\partial \alpha}\over{\partial r}}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}})}}$;
+${{{{{ {(\Gamma^2)}}^t}_{\phi}}_{\phi}}_{\theta}} = {{\frac{1}{\alpha}}{({{{t}} {{{\partial \alpha}\over{\partial r}}} {{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}})}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_{\theta}}_{\theta}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_{\phi}} = {-{({{1} - {{cos\left(  \theta\right)}^{2}}})}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\theta}}_{\theta}}_r} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\theta}}_{\phi}}_{\phi}} = {-{{{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\theta}}_{\phi}} = {{{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_r} = {-{({{1} - {{cos\left(  \theta\right)}^{2}}})}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_{\theta}} = {-{{{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_r}_r}_{\theta}} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_r}_{\phi}}_{\phi}} = {{\frac{1}{r}}{({-{{{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}})}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_{\theta}}_r}_r} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_{\theta}}_{\theta}}_{\theta}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_{\theta}}_{\phi}}_{\phi}} = {-{{cos\left(  \theta\right)}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_{\phi}}_r}_{\phi}} = {{\frac{1}{r}}{({-{{{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}})}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_{\phi}}_{\theta}}_{\phi}} = {-{({{1} - {{cos\left(  \theta\right)}^{2}}})}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_{\phi}}_{\phi}}_r} = {{\frac{1}{r}}{({-{{{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}})}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_{\phi}}_{\phi}}_{\theta}} = {-{{cos\left(  \theta\right)}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_{\theta}}_{\phi}} = {\frac{cos\left(  \theta\right)}{{{sin\left(  \theta\right)}} {{r}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_{\phi}}_{\theta}} = {\frac{cos\left(  \theta\right)}{{{sin\left(  \theta\right)}} {{r}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\theta}}_r}_{\phi}} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\theta}}_{\theta}}_{\phi}} = {\frac{{cos\left(  \theta\right)}^{2}}{{1} - {{cos\left(  \theta\right)}^{2}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\theta}}_{\phi}}_r} = {\frac{cos\left(  \theta\right)}{{{sin\left(  \theta\right)}} {{r}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\theta}}_{\phi}}_{\theta}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_{\theta}} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\theta}}_r} = {\frac{cos\left(  \theta\right)}{{{sin\left(  \theta\right)}} {{r}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\theta}}_{\theta}} = {\frac{{cos\left(  \theta\right)}^{2}}{{1} - {{cos\left(  \theta\right)}^{2}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_{\phi}} = {-{1}}$
+
+<br>
+Riemann curvature, $\sharp\flat\flat\flat$:
+${{{{{ R}^a}_b}_c}_d} = {0}$
+<br>
+Riemann curvature, $\sharp\sharp\flat\flat$:
+${{{{{ R}^a}^b}_c}_d} = {0}$
+<br>
+Ricci curvature, $\sharp\flat$:
+${{{ R}^a}_b} = {0}$
+<br>
+Gaussian curvature:
+$0$
+
+<br>
+Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
+${{{ G}^a}_b} = {0}$
+<br>
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{2}} {{{A^{r}}}} \cdot {{\frac{1}{r}}}} + {{{{A^{r}}}} \cdot {{{\partial \alpha}\over{\partial r}}} {{\frac{1}{\alpha}}}} + {{\partial {A^{\phi}}}\over{\partial\phi}} + {{\partial {A^{\theta}}}\over{\partial\theta}} + {{\partial {A^{r}}}\over{\partial r}} + {{\partial {A^{t}}}\over{\partial t}} + {{{{A^{\theta}}}} \cdot {{cos\left(  \theta\right)}} {{\frac{1}{sin\left(  \theta\right)}}}}}$
+<br>
+geodesic:
+<br>
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{t} \\ \ddot{r} \\ \ddot{\theta} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{{-2}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{{\partial \alpha}\over{\partial r}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{r}} {{t}} {{{\partial \alpha}\over{\partial r}}} {{{\dot{\phi}}^{2}}} {{\frac{1}{\alpha}}}} + {{{r}} {{t}} {{{\partial \alpha}\over{\partial r}}} {{{\dot{\phi}}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{r}} {{t}} {{{\partial \alpha}\over{\partial r}}} {{{\dot{\theta}}^{2}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{t}} {{{\dot{r}}^{2}}} {{{\partial^ 2 \alpha}\over{\partial r^ 2}}} {{\frac{1}{\alpha}}}} \\ {{{r}} {{{\dot{\phi}}^{2}}}} + {{{-1}} {{r}} {{{\dot{\phi}}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{r}} {{{\dot{\theta}}^{2}}}} \\ {{{-2}} {{\dot{r}}} \cdot {{\dot{\theta}}} \cdot {{\frac{1}{r}}}} + {{{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}} {{{\dot{\phi}}^{2}}} {{\frac{1}{r}}}} \\ {{{-2}} {{\dot{\phi}}} \cdot {{\dot{r}}} \cdot {{sin\left(  \theta\right)}} {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}} + {{{-2}} {{\dot{\phi}}} \cdot {{r}} {{\dot{\theta}}} \cdot {{cos\left(  \theta\right)}} {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}}\end{matrix}\right]}}$
+<br>
+
+<br>
+parallel propagators:
+<br>
+
+<br>
+${{[\Gamma_t]}} = {\left[\begin{matrix}  0 &  {\frac{1}{\alpha}}{({{\partial \alpha}\over{\partial r}})} &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  {\frac{1}{\alpha}}{({{\partial \alpha}\over{\partial r}})} &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  {\frac{1}{\alpha}}{({-{{{{\partial \alpha}\over{\partial r}}} {{({{{t_L}} - {{t_R}}})}}}})} &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_t$	=	${e}^{( -{({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  {\frac{1}{\alpha}}{({{\partial \alpha}\over{\partial r}})} &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)})})}$

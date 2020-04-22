@@ -1066,7 +1066,8 @@ function Tensor:print(name)
 end
 
 -- print non-zero elements
-function Tensor:printElem(name)
+function Tensor:printElem(name, write)
+	write = write or io.write
 	local Variable = require 'symmath.Variable'
 	local Constant = require 'symmath.Constant'
 	local TensorRef = require 'symmath.tensor.TensorRef'
@@ -1074,8 +1075,10 @@ function Tensor:printElem(name)
 	local sep = ''
 	for index,x in self:iter() do
 		if x ~= Constant(0) then
-			if sep ~= '' then print(sep) end
-			io.write(tostring(TensorRef(Variable(name),
+			if sep ~= '' then 
+				write(sep, '\n')
+			end
+			write(tostring(TensorRef(Variable(name),
 					table.mapi(self.variance, function(v,i)
 						local basis = Tensor.findBasisForSymbol(v.symbol)
 						v = v:clone()
@@ -1093,9 +1096,9 @@ function Tensor:printElem(name)
 	
 	-- none found:
 	if sep == '' then
-		print(TensorRef(Variable(name), table.unpack(self.variance)):eq(0))
+		write(tostring(TensorRef(Variable(name), table.unpack(self.variance)):eq(0)))
 	else
-		print()
+		write'\n'
 	end
 end
 

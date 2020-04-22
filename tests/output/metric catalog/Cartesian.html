@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Cartesian</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+<h3>Cartesian</h3>
+embedding:	$x$	$y$
+<br>
+base coords:	$x$	$y$
+<br>
+transform from non-coorinate to coordinate basis:	$\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}$
+<br>
+transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}$
+<br>
+non-coord associated with $x$ is coord $x$ with operator $e_{x}(\zeta) = $${\partial \zeta}\over{\partial x}$
+<br>
+non-coord associated with $y$ is coord $y$ with operator $e_{y}(\zeta) = $${\partial \zeta}\over{\partial y}$
+<br>
+coordinates:	$x$	$y$
+<br>
+flat metric:
+<br>
+${{{ \eta}_x}_x} = {1}$;
+${{{ \eta}_y}_y} = {1}$
+
+<br>
+
+<br>
+chart in embedded coordinates:
+<br>
+${{ u}^x} = {x}$;
+${{ u}^y} = {y}$
+
+<br>
+
+<br>
+basis operators applied to chart:
+<br>
+${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
+<br>
+${{{ e}_x}^x} = {1}$;
+${{{ e}_y}^y} = {1}$
+
+<br>
+${{{ e}^x}_x} = {1}$;
+${{{ e}^y}_y} = {1}$
+
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
+<br>
+basis determinant:	${det(e)} = {1}$
+<br>
+${{{{ c}_a}_b}^c} = {0}$
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+${{{ g}_x}_x} = {1}$;
+${{{ g}_y}_y} = {1}$
+
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+metric determinant:	${det(g)} = {1}$
+<br>
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+<br>
+commutation coefficients:
+${{{{ c}_a}_b}^c} = {0}$
+<br>
+metric:
+${{{ g}_x}_x} = {1}$;
+${{{ g}_y}_y} = {1}$
+
+<br>
+metric inverse:
+${{{ g}^x}^x} = {1}$;
+${{{ g}^y}^y} = {1}$
+
+<br>
+metric derivative:
+${{{{ {\partial g}}_a}_b}_c} = {0}$
+<br>
+1st kind Christoffel:
+${{{{ \Gamma}_a}_b}_c} = {0}$
+<br>
+connection coefficients / 2nd kind Christoffel:
+${{{{ \Gamma}^a}_b}_c} = {0}$
+<br>
+connection coefficients derivative:
+${{{{{ {\partial \Gamma}}^a}_b}_c}_d} = {0}$
+<br>
+connection coefficients squared:
+${{{{{ {(\Gamma^2)}}^a}_b}_c}_d} = {0}$
+<br>
+Riemann curvature, $\sharp\flat\flat\flat$:
+${{{{{ R}^a}_b}_c}_d} = {0}$
+<br>
+Riemann curvature, $\sharp\sharp\flat\flat$:
+${{{{{ R}^a}^b}_c}_d} = {0}$
+<br>
+Ricci curvature, $\sharp\flat$:
+${{{ R}^a}_b} = {0}$
+<br>
+Gaussian curvature:
+$0$
+
+<br>
+Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
+${{{ G}^a}_b} = {0}$
+<br>
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{\partial {A^{x}}}\over{\partial x}} + {{\partial {A^{y}}}\over{\partial y}}}$
+<br>
+geodesic:
+<br>
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{x} \\ \ddot{y}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ 0\end{matrix}\right]}}$
+<br>
+
+<br>
+parallel propagators:
+<br>
+
+<br>
+${{[\Gamma_x]}} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{x_L}}}^{{{x_R}}}d x\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_x$	=	${e}^{( -{({\int\limits_{{{x_L}}}^{{{x_R}}}d x\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{ P}_x}^{-1}$	=	${e}^{({\int\limits_{{{x_L}}}^{{{x_R}}}d x\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{[\Gamma_y]}} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{y_L}}}^{{{y_R}}}d y\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+${ P}_y$	=	${e}^{( -{({\int\limits_{{{y_L}}}^{{{y_R}}}d y\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+${{ P}_y}^{-1}$	=	${e}^{({\int\limits_{{{y_L}}}^{{{y_R}}}d y\left( \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+propagator commutation:
+<br>
+
+<br>
+[	${ P}_x$	,	${ P}_y$	] =	${ {\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]$
+<br>
+
+<br>
+propagator partials
+<br>
+${{ \partial\over{\partial x}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial y}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial x}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial y}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+<br>
+	</body>
+</html>
+

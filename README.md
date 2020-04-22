@@ -699,8 +699,6 @@ Output CDN URLs:
 
 [tests/output/ADM metric](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric.html)
 
-[tests/output/Acoustic Black Hole](https://thenumbernine.github.io/symmath/tests/output/Acoustic%20Black%20Hole.html)
-
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
 [tests/output/BSSN](https://thenumbernine.github.io/symmath/tests/output/BSSN.html)
@@ -791,7 +789,43 @@ Output CDN URLs:
 
 [tests/output/linearized Euler fluid equations](https://thenumbernine.github.io/symmath/tests/output/linearized%20Euler%20fluid%20equations.html)
 
-[tests/output/metric catalog](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog.html)
+[tests/output/metric catalog/Cartesian](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/Cartesian.html)
+
+[tests/output/metric catalog/Schwarzschild](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/Schwarzschild.html)
+
+[tests/output/metric catalog/cylindrical and time](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%20and%20time.html)
+
+[tests/output/metric catalog/cylindrical surface, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%20surface%2c%20anholonomic%2c%20conformal.html)
+
+[tests/output/metric catalog/cylindrical surface, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%20surface%2c%20anholonomic%2c%20orthonormal.html)
+
+[tests/output/metric catalog/cylindrical surface](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%20surface.html)
+
+[tests/output/metric catalog/cylindrical, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20anholonomic%2c%20conformal.html)
+
+[tests/output/metric catalog/cylindrical, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20anholonomic%2c%20orthonormal.html)
+
+[tests/output/metric catalog/cylindrical](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical.html)
+
+[tests/output/metric catalog/polar, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%2c%20anholonomic%2c%20conformal.html)
+
+[tests/output/metric catalog/polar, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%2c%20anholonomic%2c%20orthonormal.html)
+
+[tests/output/metric catalog/polar](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar.html)
+
+[tests/output/metric catalog/sphere surface, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20anholonomic%2c%20orthonormal.html)
+
+[tests/output/metric catalog/sphere surface](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface.html)
+
+[tests/output/metric catalog/spherical and time, lapse varying in radial](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%20and%20time%2c%20lapse%20varying%20in%20radial.html)
+
+[tests/output/metric catalog/spherical and time](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%20and%20time.html)
+
+[tests/output/metric catalog/spherical log-radial](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%20log%2dradial.html)
+
+[tests/output/metric catalog/spherical, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20anholonomic%2c%20orthonormal.html)
+
+[tests/output/metric catalog/spherical](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical.html)
 
 [tests/output/natural units](https://thenumbernine.github.io/symmath/tests/output/natural%20units.html)
 

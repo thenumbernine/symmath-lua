@@ -1,74 +1,46 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true, MathJax={title='Metric Catalog'}}
+require 'symmath'.setup{
+	implicitVars = true,
+	--[[
+	MathJax = {
+		title = 'Metric Catalog',
+		pathToTryToFindMathJax = '..',
+	},
+	--]]
+}
 
 -- implicitVars will cover this automatically:
 local t,x,y,z = vars('t','x','y','z')
 -- fixVariableNames would cover this automatically:
-local r,phi,theta,psi = vars('r','\\phi','\\theta','\\psi')
+
+local r = set.nonNegativeReal:var'r'
+
+local phi,theta,psi = vars('\\phi','\\theta','\\psi')
 
 -- unless I set 'fixVariableNames' I will have to explicitly define all the Greek symbols...
 -- this is used by sphere-log-radial
-local rho = var'\\rho'
-
-local rHat = var'\\hat{r}'
-rHat = r
-
-local zHat = var'\\hat{z}'
-zHat = z
-
-local thetaHat = var'\\hat{\\theta}'
-function thetaHat:applyDiff(x) return x:diff(theta) / r end
-
-local phiHat = var'\\hat{\\phi}'
-function phiHat:applyDiff(x) return x:diff(phi) / (r * sin(theta)) end
-
-local psiHat = var'\\hat{\\psi}'
-function psiHat:applyDiff(x) return x:diff(psi) end
-
-
-local rPolarConformal = var'\\bar{r}'
-function rPolarConformal:applyDiff(x) return x:diff(r) / sqrt(r) end 
-
-local thetaPolarConformal = var'\\bar{\\theta}'
-function thetaPolarConformal:applyDiff(x) return x:diff(theta) / sqrt(r) end
-
-
--- equality is based on name, so don't mix this with any of the other phi anholonomic derivative vars
-local phiCylindricalSurfaceNormalized = var'\\bar{\\phi}'
-function phiCylindricalSurfaceNormalized:applyDiff(x) return x:diff(phi) / r end
-
-local zCylindricalSurfaceNormalized = var'\\bar{z}'
-function zCylindricalSurfaceNormalized:applyDiff(x) return x:diff(z) end
-
-
-local phiCylindricalSurfaceConformal = var'\\bar{\\phi}'
-function phiCylindricalSurfaceConformal:applyDiff(x) return x:diff(phi) / sqrt(r) end
-
-local zCylindricalSurfaceConformal = var'\\bar{z}'
-function zCylindricalSurfaceConformal:applyDiff(x) return x:diff(z) / sqrt(r) end
-
-
-local thetaSphericalSurfaceConformal = var'\\bar{\\theta}'
-function thetaSphericalSurfaceConformal:applyDiff(x) return x:diff(theta) / (r * sqrt(abs(sin(theta)))) end
-
-local phiSphericalSurfaceConformal = var'\\bar{\\phi}'
-function phiSphericalSurfaceConformal:applyDiff(x) return x:diff(phi) / (r * sqrt(abs(sin(theta)))) end
+local rho = set.nonNegativeReal:var'\\rho'
 
 
 local alpha = var('\\alpha', {r})
 local omega = var('\\omega', {t, r})
 local q = var('q', {t,x,y,z})
 
+
+-- background metrics
 local delta2 = Matrix:lambda({2,2}, function(i,j) return i==j and 1 or 0 end)
 local delta3 = Matrix:lambda({3,3}, function(i,j) return i==j and 1 or 0 end)
 local eta3 = Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 local eta4 = Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
+
+-- TODO rename 'baseCoords' to 'coords'
+-- and rename 'coords' to ... basis operator? idk, what is the technical term?
 local spacetimes = {
 	{
 		title = 'Cartesian',
-		coords = {x,y},
+		baseCoords = {x,y},
 		embedded = {x,y},
 		flatMetric = delta2,
 		chart = function() 
@@ -77,7 +49,7 @@ local spacetimes = {
 	},
 	{
 		title = 'polar',
-		coords = {r,phi},
+		baseCoords = {r,phi},
 		embedded = {x,y},
 		flatMetric = delta2,
 		chart = function() 
@@ -86,27 +58,41 @@ local spacetimes = {
 	},
 	{
 		title = 'polar, anholonomic, orthonormal',
-		coords = {rHat,thetaHat},
 		baseCoords = {r,theta},
 		embedded = {x,y},
 		flatMetric = delta2,
 		chart = function()
 			return Tensor('^I', r * cos(theta), r * sin(theta))
+		end,
+		eToEHol = function()
+			-- notice neither is a cartesian index,
+			-- but the capital denotes the non-coordinate basis
+			-- gHol_ab = g_AB e_a^A e_b^B
+			-- notice that orthonormal implies g_ab = eta_ab
+			return Tensor('_a^A', 
+				{1, 0},
+				{0, r}
+			)
 		end,
 	},
 	{
 		title = 'polar, anholonomic, conformal',
-		coords = {rPolarConformal,thetaPolarConformal},
 		baseCoords = {r,theta},
 		embedded = {x,y},
 		flatMetric = delta2,
 		chart = function()
 			return Tensor('^I', r * cos(theta), r * sin(theta))
 		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{sqrt(r), 0},
+				{0, sqrt(r)}
+			)
+		end,
 	},
 	{
 		title = 'cylindrical surface',
-		coords = {phi,z},
+		baseCoords = {phi,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -122,10 +108,15 @@ local spacetimes = {
 				--{dz/dx, dz/dy, dz/dz}:
 				{0, 0, 1})
 		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{1, 0},
+				{0, 1}
+			)
+		end,
 	},
 	{
 		title = 'cylindrical surface, anholonomic, orthonormal',
-		coords = {phiCylindricalSurfaceNormalized,zCylindricalSurfaceNormalized},
 		baseCoords = {phi,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -137,10 +128,15 @@ local spacetimes = {
 				{-sin(phi), cos(phi), 0},
 				{0, 0, 1})
 		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{1, 0},
+				{0, r}
+			)
+		end,
 	},
 	{
 		title = 'cylindrical surface, anholonomic, conformal',
-		coords = {phiCylindricalSurfaceConformal,zCylindricalSurfaceConformal},
 		baseCoords = {phi,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -152,10 +148,16 @@ local spacetimes = {
 				{-sin(phi) / sqrt(r), cos(phi) / sqrt(r), 0},
 				{0, 0, sqrt(r)})
 		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{sqrt(r), 0},
+				{0, sqrt(r)}
+			)
+		end,
 	},
 	{
 		title = 'cylindrical',
-		coords = {r,phi,z},
+		baseCoords = {r,phi,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -164,31 +166,39 @@ local spacetimes = {
 	},
 	{
 		title = 'cylindrical, anholonomic, orthonormal',
-		coords = {rHat,thetaHat,zHat},
 		baseCoords = {r,theta,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I', r * cos(theta), r * sin(theta), z)
+		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{1, 0, 0},
+				{0, r, 0},
+				{0, 0, 1}
+			)
 		end,
 	},
 	{
 		title = 'cylindrical, anholonomic, conformal',
-		coords = {
-			class(var, {name = '\\bar{r}', applyDiff = function(self,x) return x:diff(r) * r^(-frac(1,3)) end})(),
-			class(var, {name = '\\bar{\\theta}', applyDiff = function(self,x) return x:diff(theta) * r^(-frac(1,3)) end})(),
-			class(var, {name = '\\bar{z}', applyDiff = function(self,x) return x:diff(z) * r^(-frac(1,3)) end})(),
-		},
 		baseCoords = {r,theta,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I', r * cos(theta), r * sin(theta), z)
 		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{r^frac(1,3), 0, 0},
+				{0, r^frac(1,3), 0},
+				{0, 0, r^frac(1,3)}
+			)
+		end,
 	},
 	{
 		title = 'cylindrical and time',
-		coords = {t,r,phi,z},
+		baseCoords = {t,r,phi,z},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
@@ -196,59 +206,8 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'spiral',
-		coords = {r,phi},
-		embedded = {x,y},
-		flatMetric = delta2,
-		chart = function()
-			return Tensor('^I',
-				r * cos(phi + log(r)),
-				r * sin(phi + log(r))
-			)
-		end,
-	},
-	{
-		title = 'polar and time, constant rotation',
-		coords = {t,r,phi},
-		embedded = {t,x,y},
-		flatMetric = eta3,
-		chart = function()
-			return Tensor('^I', 
-				t,
-				r * cos(phi + t),
-				r * sin(phi + t))
-		end,
-	},
-	{
-		title = 'polar and time, lapse varying in radial',
-		coords = {t,r,phi},
-		embedded = {t,x,y},
-		flatMetric = eta3,
-		chart = function()
-			return Tensor('^I',
-				t * alpha,
-				r * cos(phi),
-				r * sin(phi))
-		end,
-	},
--- [[
-	{
-		title = 'polar and time, lapse varying in radial, rotation varying in time and radial',
-		coords = {t,r,phi},
-		embedded = {t,x,y},
-		flatMetric = eta3,
-		chart = function()
-			return Tensor('^I', 
-				t,
-				r * cos(phi + omega),
-				r * sin(phi + omega)
-			)
-		end,
-	},
---]]
-	{
 		title = 'sphere surface',
-		coords = {theta,phi},
+		baseCoords = {theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -269,7 +228,7 @@ local spacetimes = {
 	},
 	{
 		title = 'sphere surface, anholonomic, orthonormal',
-		coords = {thetaHat,phiHat},
+		baseCoords = {theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -286,12 +245,18 @@ local spacetimes = {
 				{cos(theta) * cos(phi), cos(theta) * sin(phi), -sin(theta)},
 				--{dphi/dx, dphi/dy, dphi/dz}:
 				{-sin(phi),cos(phi),0})
+		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{r, 0},
+				{0, r*sin(theta)}
+			)
 		end,
 	},
 --[[ not doing so well, with some abs derivatives
 	{
 		title = 'sphere surface, anholonomic, conformal',
-		coords = {thetaSphericalSurfaceConformal, phiSphericalSurfaceConformal},
+		baseCoords = {theta, phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -309,23 +274,16 @@ local spacetimes = {
 				--{dphi/dx, dphi/dy, dphi/dz}:
 				{-sin(phi),cos(phi),0})
 		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{r * sqrt(abs(sin(theta))), 0},
+				{0, r * sqrt(abs(sin(theta)))},
+			)
+		end,
 	},
 --]]
 	{
 		title = 'spherical',
-		coords = {r,theta,phi},
-		embedded = {x,y,z},
-		flatMetric = delta3,
-		chart = function()
-			return Tensor('^I', 
-				r * sin(theta) * cos(phi),
-				r * sin(theta) * sin(phi),
-				r * cos(theta))
-		end,
-	},
-	{
-		title = 'spherical, anholonomic, orthonormal',
-		coords = {rHat,thetaHat,phiHat},
 		baseCoords = {r,theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -337,8 +295,27 @@ local spacetimes = {
 		end,
 	},
 	{
+		title = 'spherical, anholonomic, orthonormal',
+		baseCoords = {r,theta,phi},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', 
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
+		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{1, 0, 0},
+				{0, r, 0},
+				{0, 0, r*sin(theta)}
+			)
+		end,
+	},
+	{
 		title = 'spherical log-radial',
-		coords = {rho,theta,phi},	-- reminder, the connectins wrt r,theta,phi are the same as spherical above
+		baseCoords = {rho,theta,phi},	-- reminder, the connectins wrt r,theta,phi are the same as spherical above
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -351,7 +328,7 @@ local spacetimes = {
 	},
 	{
 		title = 'spherical and time',
-		coords = {t,r,theta,phi},
+		baseCoords = {t,r,theta,phi},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
@@ -363,8 +340,22 @@ local spacetimes = {
 		end,
 	},
 	{
+		title = 'Schwarzschild',
+		baseCoords = {t,r,theta,phi},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		basis = function()
+			return Tensor('_u^I',
+				{sqrt(1 - R/r), 0, 0, 0},
+				{0, 1/sqrt(1 - R/r), 0, 0},
+				{0, 0, r, 0},
+				{0, 0, 0, r * sin(theta)}
+			)
+		end,
+	},
+	{
 		title = 'spherical and time, lapse varying in radial',
-		coords = {t,r,theta,phi},
+		baseCoords = {t,r,theta,phi},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
@@ -375,10 +366,53 @@ local spacetimes = {
 				r * cos(theta))
 		end,
 	},
+--[[ hmm, those r's, too much memory used
+	{
+		title = 'Schwarzschild, pseudo-Cartesian',
+		baseCoords = {t,x,y,z},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		metric = function()
+			-- where r = sqrt(x^2 + y^2 + z^2)
+			return Tensor('_uv',
+				{-(1 - R/r), 0, 0, 0},
+				{0, (x^2 / ((r - R)/r) + y^2 + z^2)/r^2, x * y * R / (r^2 * (r - R)), x * z * R / (r^2 * (r - R))},
+				{0, y * x * R / (r^2 * (r - R)), (x^2 + y^2 * ((r - R)/r) + z^2)/r^2, y * z * R / (r^2 * (r - R))},
+				{0, z * x * R / (r^2 * (r - R)), z * y * R / (r^2 * (r - R)), (x^2 + y^2 + z^2 * ((r - R)/r))/r^2}
+			)
+		end,
+	},
+--]]
+--[[
+	{
+		title = '1D spacetime',
+		baseCoords = {t,x,y,z},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		chart = function()
+			return Tensor('^I', t, q, y, z)
+		end,
+	},
+--]]
+--[[ this is schwarzschild, for alpha = 1/sqrt(1 - R/r)
+	{
+		title = 'spherical and time, lapse varying in radial, Schwarzschild form',
+		baseCoords = {t,r,theta,phi},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		chart = function()
+			return Tensor('^I', 
+				t * alpha,
+				r/alpha * sin(theta) * cos(phi),
+				r/alpha * sin(theta) * sin(phi),
+				r/alpha * cos(theta))
+		end,
+	},
+--]]
 --[[ this is struggling with the new trig simplification
 	{
 		title = 'torus',
-		coords = {r,theta,phi},
+		baseCoords = {r,theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -391,7 +425,7 @@ local spacetimes = {
 --]]
 	{
 		title = 'torus surface',
-		coords = {theta,phi},
+		baseCoords = {theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
@@ -409,111 +443,216 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'Schwarzschild',
-		coords = {t,r,theta,phi},
-		embedded = {t,x,y,z},
-		flatMetric = eta4,
-		basis = function()
-			return Tensor('_u^I',
-				{sqrt(1 - R/r), 0, 0, 0},
-				{0, 1/sqrt(1 - R/r), 0, 0},
-				{0, 0, r, 0},
-				{0, 0, 0, r * sin(theta)}
-			)
-		end,
-	},
---[[ hmm, those r's, too much memory used
-	{
-		title = 'Schwarzschild, pseudo-Cartesian',
-		coords = {t,x,y,z},
-		embedded = {t,x,y,z},
-		flatMetric = eta4,
-		metric = function()
-			-- where r = sqrt(x^2 + y^2 + z^2)
-			return Tensor('_uv',
-				{-(1 - R/r), 0, 0, 0},
-				{0, (x^2 / ((r - R)/r) + y^2 + z^2)/r^2, x * y * R / (r^2 * (r - R)), x * z * R / (r^2 * (r - R))},
-				{0, y * x * R / (r^2 * (r - R)), (x^2 + y^2 * ((r - R)/r) + z^2)/r^2, y * z * R / (r^2 * (r - R))},
-				{0, z * x * R / (r^2 * (r - R)), z * y * R / (r^2 * (r - R)), (x^2 + y^2 + z^2 * ((r - R)/r))/r^2}
-			)
-		end,
-	},
---]]
---[[
-	{
-		title = '1D spacetime',
-		coords = {t,x,y,z},
-		embedded = {t,x,y,z},
-		flatMetric = eta4,
+		title = 'spiral',
+		baseCoords = {r,phi},
+		embedded = {x,y},
+		flatMetric = delta2,
 		chart = function()
-			return Tensor('^I', t, q, y, z)
+			return Tensor('^I',
+				r * cos(phi + log(r)),
+				r * sin(phi + log(r))
+			)
 		end,
 	},
---]]
---[[ this is schwarzschild, for alpha = 1/sqrt(1 - R/r)
 	{
-		title = 'spherical and time, lapse varying in radial',
-		coords = {t,r,theta,phi},
-		embedded = {t,x,y,z},
-		flatMetric = eta4,
+		title = 'polar and time, constant rotation',
+		baseCoords = {t,r,phi},
+		embedded = {t,x,y},
+		flatMetric = eta3,
 		chart = function()
 			return Tensor('^I', 
+				t,
+				r * cos(phi + t),
+				r * sin(phi + t))
+		end,
+	},
+	{
+		title = 'polar and time, lapse varying in radial',
+		baseCoords = {t,r,phi},
+		embedded = {t,x,y},
+		flatMetric = eta3,
+		chart = function()
+			return Tensor('^I',
 				t * alpha,
-				r/alpha * sin(theta) * cos(phi),
-				r/alpha * sin(theta) * sin(phi),
-				r/alpha * cos(theta))
+				r * cos(phi),
+				r * sin(phi))
+		end,
+	},
+-- [[
+	{
+		title = 'polar and time, lapse varying in radial, rotation varying in time and radial',
+		baseCoords = {t,r,phi},
+		embedded = {t,x,y},
+		flatMetric = eta3,
+		chart = function()
+			return Tensor('^I', 
+				t,
+				r * cos(phi + omega),
+				r * sin(phi + omega)
+			)
 		end,
 	},
 --]]
 }
+
+
+local MathJax = symmath.export.MathJax
+MathJax.header.pathToTryToFindMathJax = '..'
+symmath.tostring = MathJax
+
+os.execute('mkdir "output/metric catalog"')
+--[[
 for _,info in ipairs(spacetimes) do
 	printbr('<a href="#'..info.title..'">'..info.title..'</a>')
 end
 printbr()
-
+--]]
 for _,info in ipairs(spacetimes) do
+
 io.stderr:write(info.title,'\n')
 io.stderr:flush()
-	print('<a name="'..info.title..'">')
+
+	MathJax.header.title = info.title
+
+	local f = assert(io.open('output/metric catalog/'..info.title..'.html', 'w'))
+	local function write(...)
+		return f:write(...)
+	end
+	local function print(...)
+		write(table{...}:mapi(tostring):concat'\t'..'\n')
+	end
+	local function printbr(...)
+		print(...)
+		print'<br>'
+	end
+	
+	print(MathJax.header)
+
+--print('<a name="'..info.title..'">')
 	print('<h3>'..info.title..'</h3>')
 
-	Tensor.coords{
-		{variables=info.coords},
-		{variables=info.embedded, symbols='IJKLMN', metric=info.flatMetric}
-	}
-			
-	local baseCoords = info.baseCoords or info.coords
 
-	printbr('coordinates:', table.unpack(info.coords))
+	-- technically this is the variable whose derivative operator produces the basis, 
+	-- ... not the 'coords', since it can be non-coordinate
+	local coords = info.coords
+	-- and this is the associated coordinates
+	local baseCoords = info.baseCoords or coords
+
+	local embedded = info.embedded
+	
+	printbr('embedding:', table.unpack(embedded))
 	printbr('base coords:', table.unpack(baseCoords))
-	printbr('embedding:', table.unpack(info.embedded))
+
+
+	-- dimension of manifold
+	local n = #baseCoords
+
+
+
+	Tensor.coords{
+		{variables=baseCoords},
+		{variables=embedded, symbols='IJKLMN', metric=info.flatMetric}
+	}
+
+	-- assert these are original coordinates + derivatives
+	for _,coord in ipairs(baseCoords) do
+		assert(getmetatable(coord) == Variable)
+		assert(coord.applyDiff == Variable.applyDiff)
+	end
+
+
+	-- transform from Cartesian basis to chart basis 
+	-- e_I = Cartesian basis
+	-- e_u = chart basis
+	-- e_u = e_u^I e_I
+	-- e_I = e^u_I e_u
+	local e
+	-- transform from chart basis to Cartesian basis
+	local eU
+	-- transform from chart basis to coordinate basis
+	-- e_A = chart basis
+	-- e_a = coordinate basis
+	-- e_a = e_a^A e_A
+	-- e_A = e^a_A e_a
+	local eToEHol = info.eToEHol and info.eToEHol() or Tensor('_A^a', function(A, a) 
+		return A == a and 1 or 0
+	end)
+printbr('transform from non-coorinate to coordinate basis:', eToEHol)
+	-- transform from coordinate basis to chart basis
+	local eHolToE = Tensor('^a_A', table.unpack((Matrix.inverse(eToEHol))))
+printbr('transform from coorinate to non-coordinate basis:', eHolToE)
+
+
+	-- create non-coords when available
+	local coords = table()
+	for i=1,n do
+		local onesi = Matrix:lambda({1,n}, function(_,j) return j==i and 1 or 0 end)
+		if eHolToE[i] == onesi[1] then
+			coords[i] = baseCoords[i]
+		else
+			local ci = baseCoords[i].set:var('\\hat{'..baseCoords[i].name..'}')
+			function ci:applyDiff(x)
+				local sum = 0
+				for j=1,n do
+					sum = sum + eHolToE[i][j] * x:diff(baseCoords[j])
+				end
+				return sum()
+			end
+			coords[i] = ci
+		end
+		local zeta = var('\\zeta', baseCoords)
+		printbr('non-coord associated with '..baseCoords[i]
+			..' is coord '..coords[i]
+			..' with operator $e_{'..coords[i].name..'}(\\zeta) = $'..coords[i]:applyDiff(zeta))
+	end
+	
+	printbr('coordinates:', table.unpack(coords))
+
+
+	-- TODO a set of indexes for the base coordinates?
+	Tensor.coords{
+		{variables=coords},
+		{variables=embedded, symbols='IJKLMN', metric=info.flatMetric},
+--		{variables=baseCoords, symbols='ABCDEF'},
+	}
+
+
+
 
 	local eta = Tensor('_IJ', table.unpack(info.flatMetric))
 	printbr'flat metric:'
-	eta:printElem'\\eta'
+	eta:printElem('\\eta', write)
 	printbr()
 	printbr()
 
-	local e, eU, g, c
+
+
+	-- metric
+	local g
+	-- commutation
+	local c
 	if info.chart or info.basis then
 -- [[
 		e = Tensor'_u^I'
+		
+		-- calc basis by applying operators to chart
 		if info.chart then
 			local u = info.chart()
-			printbr'chart:'
-			u:printElem'u'
+			printbr'chart in embedded coordinates:'
+			u:printElem('u', write)
 			printbr()
 			printbr()
 
-			printbr'basis:'
+			printbr'basis operators applied to chart:'
 			e['_u^I'] = u'^I_,u'()	--dx^I/dx^a
 			printbr(var'e''_u^I':eq(var'u''^I_,u'))
-			e:printElem'e'
+			e:printElem('e', write)
 			printbr()
+		-- simply use basis provided
 		elseif info.basis then
-			printbr'basis:'
+			printbr'basis in embedded coordinates:'
 			e['_u^I'] = info.basis()()
-			e:printElem'e'
+			e:printElem('e', write)
 			printbr()
 			printbr()
 		end
@@ -524,14 +663,14 @@ io.stderr:flush()
 		if info.eU then
 			eU = info.eU()
 		else
-			assert(#info.coords == #info.embedded)
+			assert(#coords == #embedded)
 			eU = Tensor('^u_I', table.unpack(Matrix(table.unpack(e)):inverse():transpose()))
 		end
 
 		--printbr(var'e''^u_I'
 		--	:eq(var'e''_u^I'^-1)	LaTeX output chokes here
 		--	:eq(eU))
-		eU:printElem'e'
+		eU:printElem('e', write)
 		printbr()
 	
 		-- show orthogonality of basis and its inverse
@@ -565,25 +704,26 @@ io.stderr:flush()
 		--]]
 		c = Tensor'_ab^c'
 		c['_ab^c'] = ((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')()
-		c:printElem'c'
+		c:printElem('c', write)
 		printbr()
 
 		g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 		printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
-		g:printElem'g'
+		g:printElem('g', write)
 		printbr()
 	
 		printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
 	elseif info.metric then
 		g = info.metric()
-		g:printElem'g'
+		g:printElem('g', write)
 		printbr()
 	else
 		error'here'
 	end
 --]]
-	
-	printbr('metric determinant:', var'det(g)':eq(Matrix.det(g)))
+
+	local detg = Matrix.det(g)
+	printbr('metric determinant:', var'det(g)':eq(detg))
 
 	-- TODO just put this once in the intro?
 	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_cba')))
@@ -593,7 +733,7 @@ io.stderr:flush()
 		print(field.title..':')
 		local t = self[field.name]
 		if Tensor.is(t) then
-			t:printElem(field.symbol)
+			t:printElem(field.symbol, write)
 		else
 			print(t)
 		end
@@ -604,13 +744,13 @@ io.stderr:flush()
 	local Gamma = props.Gamma
 
 	local dx = Tensor('^u', function(u)
-		return var('\\dot{' .. info.coords[u].name .. '}')
+		return var('\\dot{' .. coords[u].name .. '}')
 	end)
 	local d2x = Tensor('^u', function(u)
-		return var('\\ddot{' .. info.coords[u].name .. '}')
+		return var('\\ddot{' .. coords[u].name .. '}')
 	end)
 
-	local A = Tensor('^i', function(i) return var('A^{'..info.coords[i].name..'}', baseCoords) end)
+	local A = Tensor('^i', function(i) return var('A^{'..coords[i].name..'}', baseCoords) end)
 	--[[
 	TODO can't use comma derivative, gotta override the :applyDiff of the anholonomic basis variables
 	 but when doing so, you must make the embedded variables dependent on the ... variables that the anholonomic are spun off of
@@ -625,10 +765,220 @@ io.stderr:flush()
 	-- TODO unravel equaliy, or print individual assignments
 	printbr((d2x'^a':eq(-Gamma'^a_bc' * dx'^b' * dx'^c'))():factorDivision())
 	printbr()
+
+
+	-- start of the parallel propagator stuff
+
+
+	-- Gamma has the conn in it
+	local conn = Gamma
+	local connCoord = (conn'^a_bc' * eToEHol'_B^b')():permute'^a_Bc'
+--[[
+printbr(conn)
+printbr()
+printbr(eToEHol)
+printbr()
+-- when I add baseCoords as tensor indexes, why is this coming out as zeroes?
+printbr(conn'^a_bc'())
+printbr(connCoord)
+connCoord = connCoord:permute'^a_Bc'
+printbr(connCoord)
+printbr()
+--]]
+
+	printbr'parallel propagators:'
+	printbr()
+
+	local xLs = range(n):mapi(function(i)
+		return baseCoords[i].set:var(baseCoords[i].name..'_L')
+	end)
+	local xRs = range(n):mapi(function(i)
+		return baseCoords[i].set:var(baseCoords[i].name..'_R')
+	end)
+
+	local P = var'P'
+
+	local propFwd = table()
+	local propInv = table()
+
+	for i, coord in ipairs(baseCoords) do
+		-- conn matrix for coord i
+		local conn = Matrix:lambda({n,n}, function(a,b)
+			return connCoord[a][i][b]
+		end)
+		
+		local name = baseCoords[i].name	
+	
+		printbr(var('[\\Gamma_'..name..']'):eq(conn))
+		printbr()
+
+		local origIntConn = Integral(conn, coord, xLs[i], xRs[i])
+		print(origIntConn)
+		local intConn = origIntConn()
+
+		printbr('=', intConn)
+		printbr()
+
+		print(P(' _'..name), '=', exp(-origIntConn))
+		local negIntConn = (-intConn)()
+--[[ if :eigen() fails, this will show you what was being eigen'd
+printbr()
+printbr('negIntConn', negIntConn)
+printbr('negIntConn', negIntConn())
+--]]		
+		--[[ you could exp, and that will eigen-decompose ...
+		local expNegIntExpr = negIntConn:exp()
+		local expIntExpr = expNegIntExpr:inverse()
+		--]]
+		-- [[ but eigen will let inverting be easy
+		local ev = negIntConn:eigen()
+		local R, L, allLambdas = ev.R, ev.L, ev.allLambdas
+		local expLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
+			return exp(lambda) 
+		end):unpack() )
+		local expNegIntExpr = (R * expLambda * L)()
+		local invExpLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
+			return exp(-lambda) 
+		end):unpack() )
+		local expIntExpr = (R * invExpLambda * L)()
+		--]]
+		printbr('=', expNegIntExpr)
+		printbr()
+	
+		print(P(' _'..name)^-1, '=', exp(origIntConn))
+		printbr('=', expIntExpr)
+		printbr()
+	
+		propInv[i] = expIntExpr
+		propFwd[i] = expNegIntExpr
+	end
+
+	printbr'propagator commutation:'
+	printbr()
+	
+	for i=1,n-1 do
+		local Pi = propFwd[i]
+		local Piname = P(' _'..baseCoords[i].name)
+		
+		local PiL = Pi:clone()
+		for k=1,n do
+			if k ~= i then
+				PiL = PiL:replace(baseCoords[k], xLs[k])
+			end
+		end	
+		
+		for j=i+1,n do
+			local Pj = propFwd[j]
+			local Pjname = P(' _'..baseCoords[j].name)
+
+			local PjL = Pj:clone()
+			for k=1,n do
+				if k ~= j then
+					PjL = PjL:replace(baseCoords[k], xLs[k])
+				end
+			end
+		
+			local PiR = PiL:replace(xLs[j], xRs[j])
+			local PjR = PjL:replace(xLs[i], xRs[i])
+	
+			-- Pj propagates coord j from L to R
+			-- so in Pi replace coord j from arbitrary to jR
+			local Pij = PiR * PjL
+			
+			-- Pi propagates coord i from L to R
+			-- so in Pj replace coord i from arbitrary to iR
+			local Pji = PjR * PiL
+			
+			local Pcij = (Pij - Pji)()
+			
+			printbr('[', Piname, ',', Pjname, '] =', Pij - Pji, '=', Pcij)
+		end
+	end
+	printbr()
+
+	printbr'propagator partials'
+	for i=1,n do
+		local Pi = propFwd[i]
+		for j=1,n do
+			printbr(Pi:diff(baseCoords[j]):eq(
+				Pi:diff(baseCoords[j])()
+			))
+		end
+	end
+
+
+	local deltas = range(n):mapi(function(i)
+		return var('\\Delta '..baseCoords[i].name)
+	end)
+	local deltaSqs = range(n):mapi(function(i)
+		return var('\\Delta ('..baseCoords[i].name..'^2)')
+	end)
+	local deltaCubes = range(n):mapi(function(i)
+		return var('\\Delta ('..baseCoords[i].name..'^3)')
+	end)
+	local deltaCoss = range(n):mapi(function(i)
+		return var('\\Delta (cos('..baseCoords[i].name..'))')
+	end)
+
+	local function replaceDeltas(expr)
+		for k=1,n do
+			expr = expr
+				:replace((xRs[k] - xLs[k])(), deltas[k])
+				:replace((xLs[k] - xRs[k])(), -deltas[k])
+				
+				:replace((xRs[k]^2 - xLs[k]^2)(), deltaSqs[k])
+				:replace((xLs[k]^2 - xRs[k]^2)(), -deltaSqs[k])
+				
+				:replace((xRs[k]^3 - xLs[k]^3)(), deltaCubes[k])
+				:replace((xLs[k]^3 - xRs[k]^3)(), -deltaCubes[k])
+				
+				:replace((cos(xRs[k]) - cos(xLs[k]))(), deltaCoss[k])
+				:replace((cos(xLs[k]) - cos(xRs[k]))(), -deltaCoss[k])
+		
+				-- hmm
+				:replace((xRs[k]^2)(), xLs[k]^2 + deltaSqs[k])()
+				:replace((xRs[k]^3)(), xLs[k]^3 + deltaCubes[k])()
+		end
+		return expr
+	end
+
+	--[[
+	coordVolumeElem should be the determinant of the chart from cartesian to the manifold
+	... or equal to the sqrt of the determinant of the coordinte-based metric tensor
+	local coordVolumeElem = sqrt(detg)()
+	local coordVolumeElem = info.coordVolumeElem
+	printbr('volume element: ', coordVolumeElem)
+	
+	local cellVolume = coordVolumeElem
+	for k=1,n do
+		if not cellVolume:findChild(baseCoords[k]) then
+			cellVolume = cellVolume * deltas[k] 
+		else
+			cellVolume = cellVolume:integrate(baseCoords[k], xLs[k], xRs[k])()
+			cellVolume = replaceDeltas(cellVolume):simplify()
+		end
+	end
+	printbr('volume integral: ', cellVolume)
+
+	local FLs = range(n):mapi(function(i)
+		return var('F^{'..baseCoords[i].name..'}('..xLs[i].name..')')
+	end)
+	local FRs = range(n):mapi(function(i)
+		return var('F^{'..baseCoords[i].name..'}('..xRs[i].name..')')
+	end)
+
+	--]]
+
+
+	print(MathJax.footer)
+	f:close()
+
 end
 
+--[=[
 printbr[[
 <br>
 Using 2010 Muller, Grave "Catalogue of Spacetimes" for a reference on the spacetime metrics.<br>
 <br>
 ]]
+--]=]
