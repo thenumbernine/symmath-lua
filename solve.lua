@@ -139,6 +139,7 @@ local function solve(eqn, x, hasSimplified)
 --print('coeffs',table.map(coeffs[1],tostring):concat('\n'),'\nend coeffs')
 			return eq(x, -getCoeff(0) / getCoeff(1))()
 		end
+		-- quadratic solution
 		-- this is where factor() comes in handy ...
 		if n == 2 then
 			local a,b,c = getCoeff(2), getCoeff(1), getCoeff(0)

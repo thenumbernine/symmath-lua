@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local math = require 'ext.math'
 local nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
 local Binary = require 'symmath.op.Binary'
 
@@ -59,9 +60,11 @@ add.rules = {
 
 	Factor = {
 		{apply = function(factor, expr, factors)
-			local mul = require 'symmath.op.mul'
-			local pow = require 'symmath.op.pow'
-			local Constant = require 'symmath.Constant'
+			local symmath = require 'symmath'
+			local mul = symmath.op.mul
+			local pow = symmath.op.pow
+			local Constant = symmath.Constant
+			local Verbose = symmath.export.Verbose
 
 			-- [[ x*a + x*b => x * (a + b)
 			-- the opposite of this is in mul:prune's applyDistribute
@@ -79,7 +82,7 @@ add.rules = {
 				end
 				
 				-- pick out any exponents in any of the products
-				prodList = prodList:map(function(ch)
+				prodList = prodList:mapi(function(ch)
 					if pow.is(ch) then
 						return {
 							term = ch[1],
@@ -96,9 +99,10 @@ add.rules = {
 				local newProdList = table()
 				for k,x in ipairs(prodList) do
 					if Constant.is(x.term) then
-						if x.term.value == 1 then
+						local c = x.term.value
+						if c == 1 then
 							-- do nothing -- remove any 1's
-						-- TODO if there's any negative constants, add -1^2 to all other terms
+						--[[ old way - just separate -1's
 						elseif x.term.value < 0 then
 							-- if it's a negative constant then split out the minus
 							newProdList:insert{
@@ -108,10 +112,55 @@ add.rules = {
 							newProdList:insert{
 								term = Constant(-x.term.value),
 								power = x.power:clone(),
-							}	-- add the new term
+							}		-- add the new term
 						else
 							newProdList:insert(x)
 						end
+						--]] 
+						-- [[ new way - separate primes
+						
+						-- TODO if there's any negative constants, add -1^2 to all other terms
+						elseif c == 0 then
+							newProdList:insert(x)
+						else
+							if c < 0 then
+								-- if it's a negative constant then split out the minus
+								newProdList:insert{
+									term = Constant(-1),
+									power = x.power,
+								}
+								c = -c
+							end
+							
+							--if symmath.set.positiveInteger:contains(list[i])
+							-- [=[
+							if c == math.floor(c) then
+								local ppow = {}
+								for _,p in ipairs(math.primeFactorization(c)) do
+									ppow[p] = (ppow[p] or 0) + 1
+								end
+								for p,power in pairs(ppow) do
+									if power == 1 then
+										newProdList:insert{
+											term = Constant(p),
+											power = x.power,
+										}
+									else
+										newProdList:insert{
+											term = Constant(p),
+											power = x.power * power,
+										}
+									end
+								end
+							else
+							--]=] do
+								newProdList:insert{
+									term = Constant(c),
+									power = x.power,
+								}
+							end
+						end
+						--]]
 					else
 						newProdList:insert(x)	-- add the new term
 					end
@@ -121,15 +170,19 @@ add.rules = {
 				return prodList
 			end
 			
-			local Verbose = require 'symmath.export.Verbose'
 			local function prodListToNode(list)
-				list = list:map(function(x)
-					if x.power == Constant(1) then
+				list = list:mapi(function(x)
+					if Constant.isValue(x.power, 1) then
 						return x.term
 					else
 						return x.term ^ x.power:simplify()
 					end
 				end)
+
+				list = list:filter(function(x)
+					return not Constant.isValue(x, 1)
+				end)
+
 				if #list == 0 then return Constant(1) end
 				if #list == 1 then return list[1] end
 				list = list:sort(function(a,b)
@@ -138,9 +191,10 @@ add.rules = {
 					if #sa ~= #sb then return #sa < #sb end
 					return sa < sb 
 				end)
-				return mul(list:unpack())
+				return setmetatable(list, mul)
 			end
 
+--[=[ no one is using this
 			local function pruneProdList(listToPrune, listToFind)
 				-- prods is our total list to be factored out
 				-- checkProds is the list for the current child
@@ -151,7 +205,7 @@ add.rules = {
 					if i then
 						local prodPrune = listToPrune[i]
 						prodPrune.power = prodPrune.power - prodFind.power
-						local prune = require 'symmath.prune'
+						local prune = symmath.prune
 						prodPrune.power = prune(prodPrune.power) or prodPrune.power
 						
 						if Constant.is(prodPrune.power)
@@ -162,19 +216,18 @@ add.rules = {
 					end
 				end
 			end
-			
+--]=]
+
 			-- 1) get all terms and powers
 			local prodLists = table()
 			for i=1,#expr do
 				prodLists[i] = nodeToProdList(expr[i])
 			end
-			
 			-- sort by prodLists[i].term, excluding all constants
-			local Verbose = require 'symmath.export.Verbose'
 			local function sortstr(list)
 				if #list == 0 then return '' end
 				if #list == 1 and Constant.is(list[1].term) then return '' end
-				return table.map(list, function(x,_,t)
+				return table.mapi(list, function(x,_,t)
 					if Constant.is(x.term) then return end
 					return Verbose(x.term), #t+1
 				end):concat(',')
@@ -185,13 +238,41 @@ add.rules = {
 				local sb = sortstr(b)
 				return sa < sb 
 			end)
-			
+
 			-- rebuild exprs accordingly
 			assert(#prodLists == #expr)
+			-- hmm... how come I need to modify the original array or else things break further ?
+			--expr = setmetatable({}, symmath.op.add)
 			for i=1,#prodLists do
 				expr[i] = prodListToNode(prodLists[i])
 			end
+			-- add's shouldn't have 1 term ...
+			assert(#expr > 1)
+			--if #expr == 1 then return expr[1] end
 
+
+			--[[
+			-- TODO where to put quadratic / polynomial division
+			-- I should do this somewhere else, but I'll do it here for now
+			-- a^2 - b^2 => (a+b) (a-b)
+			if #expr == 2 then
+				if symmath.op.pow.is(expr[1])
+				and symmath.set.evenInteger:contains(expr[1][2])
+				and symmath.op.mul.is(expr[2])
+				and #expr[2] == 2
+				and expr[2][1] == Constant(-1)
+				and symmath.op.pow.is(expr[2][2])
+				and symmath.set.evenInteger:contains(expr[2][2][2])
+				then
+					local a = (expr[1][1] ^ (expr[1][2]/2))
+					local b = (expr[2][2][1] ^ (expr[2][2][2]/2))
+					return (a + b) * (a - b)
+				end
+			end
+			-- TODO factoring higher polys ... this is just one specific case
+			--]]
+
+	
 	-- without this (y-x)/(x-y) doesn't simplify to -1
 	-- [[
 			-- instead of only factoring the -1 out of the constant
@@ -199,11 +280,22 @@ add.rules = {
 			-- so that signs don't mess with simplifying division
 			-- ex: -1+x => (-1)*1+(-1)*(-1)*x => -1*(1+(-1)*x) => -1*(1-x)
 			for i=1,#expr do
-				if #prodLists[i] > 0 and Constant.is(prodLists[i][1].term) and prodLists[i][1].term.value < 0 then
+				--if expr[i] has a leading negative constant
+				if #prodLists[i] > 0
+				-- [[ old - expect a leading constant
+				and Constant.is(prodLists[i][1].term) 
+				and prodLists[i][1].term.value < 0 
+				--]]
+				--[[ new - look through all constants
+				-- TODO enabling this breaks things, but the code above is inserting Constant(-1) not in front, so the old check would miss it?
+				and prodLists[i]:find(nil, function(x) return Constant.isValue(x, -1) end)
+				--]]
+				then
 					for j=1,#expr do
-						if j>i then
-							local index = prodLists[j]:find(nil, function(factor)
-								return factor.term == Constant(-1)
+						--if j ~= i then	-- new ... fixing this? freezing?
+						if j > i then	-- old ... why for 1..n instead of i+1..n?
+							local index = prodLists[j]:find(nil, function(x)
+								return Constant.isValue(x.term, -1)
 							end)
 							if index then
 								prodLists[j][index].power = (prodLists[j][index].power + 2):simplify()
@@ -220,11 +312,13 @@ add.rules = {
 				end
 			end
 	--]]
+			
+			
 			-- 2) find smallest set of common terms
 			
-			local minProds = prodLists[1]:map(function(prod) return prod.term end)
+			local minProds = prodLists[1]:mapi(function(prod) return prod.term end)
 			for i=2,#prodLists do
-				local otherProds = prodLists[i]:map(function(prod) return prod.term end)
+				local otherProds = prodLists[i]:mapi(function(prod) return prod.term end)
 				for j=#minProds,1,-1 do
 					local found = false
 					for k=1,#otherProds do
@@ -239,10 +333,11 @@ add.rules = {
 				end
 			end
 
+
 			if #minProds == 0 then return end
-			
-			local prune = require 'symmath.prune'
-			
+				
+			local prune = symmath.prune
+
 			local minPowers = {}
 			for i,minProd in ipairs(minProds) do
 				-- 3) find abs min power of all terms
@@ -279,10 +374,10 @@ add.rules = {
 			end
 
 			-- start with all the factored-out terms
-			local terms = minProds:map(function(minProd,i) return minProd ^ minPowers[i] end)
+			local terms = minProds:mapi(function(minProd,i) return minProd ^ minPowers[i] end)
 			
 			-- then add what's left of the original sum
-			local lastTerm = prodLists:map(prodListToNode)
+			local lastTerm = prodLists:mapi(prodListToNode)
 			lastTerm = #lastTerm == 1 and lastTerm[1] or add(lastTerm:unpack())
 
 			terms:insert(lastTerm)

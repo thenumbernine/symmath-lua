@@ -95,4 +95,10 @@ Constant.rules = {
 	},
 }
 
+-- static method
+-- Constant.is(x) and x.value == value, combined
+function Constant.isValue(x, value)
+	return Constant.is(x) and x.value == value
+end
+
 return Constant
