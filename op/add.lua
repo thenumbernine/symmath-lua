@@ -70,7 +70,7 @@ add.rules = {
 			-- the opposite of this is in mul:prune's applyDistribute
 			-- don't leave both of them uncommented or you'll get deadlock
 			if #expr <= 1 then return end
-		
+
 			local function nodeToProdList(x)
 				local prodList
 				
@@ -102,24 +102,6 @@ add.rules = {
 						local c = x.term.value
 						if c == 1 then
 							-- do nothing -- remove any 1's
-						--[[ old way - just separate -1's
-						elseif x.term.value < 0 then
-							-- if it's a negative constant then split out the minus
-							newProdList:insert{
-								term = Constant(-1),
-								power = x.power:clone(),
-							}
-							newProdList:insert{
-								term = Constant(-x.term.value),
-								power = x.power:clone(),
-							}		-- add the new term
-						else
-							newProdList:insert(x)
-						end
-						--]] 
-						-- [[ new way - separate primes
-						
-						-- TODO if there's any negative constants, add -1^2 to all other terms
 						elseif c == 0 then
 							newProdList:insert(x)
 						else
@@ -133,7 +115,6 @@ add.rules = {
 							end
 							
 							--if symmath.set.positiveInteger:contains(list[i])
-							-- [=[
 							if c == math.floor(c) then
 								local ppow = {}
 								for _,p in ipairs(math.primeFactorization(c)) do
@@ -153,14 +134,12 @@ add.rules = {
 									end
 								end
 							else
-							--]=] do
 								newProdList:insert{
 									term = Constant(c),
 									power = x.power,
 								}
 							end
 						end
-						--]]
 					else
 						newProdList:insert(x)	-- add the new term
 					end
@@ -194,29 +173,6 @@ add.rules = {
 				return setmetatable(list, mul)
 			end
 
---[=[ no one is using this
-			local function pruneProdList(listToPrune, listToFind)
-				-- prods is our total list to be factored out
-				-- checkProds is the list for the current child
-				for _,prodFind in ipairs(listToFind) do
-					local i = listToPrune:find(nil, function(prod)
-						return prod.term == prodFind.term
-					end)
-					if i then
-						local prodPrune = listToPrune[i]
-						prodPrune.power = prodPrune.power - prodFind.power
-						local prune = symmath.prune
-						prodPrune.power = prune(prodPrune.power) or prodPrune.power
-						
-						if Constant.is(prodPrune.power)
-						and prodPrune.power.value <= 0	-- no factoring negatives ... for now ?
-						then
-							listToPrune:remove(i)
-						end
-					end
-				end
-			end
---]=]
 
 			-- 1) get all terms and powers
 			local prodLists = table()
@@ -241,14 +197,11 @@ add.rules = {
 
 			-- rebuild exprs accordingly
 			assert(#prodLists == #expr)
-			-- hmm... how come I need to modify the original array or else things break further ?
-			--expr = setmetatable({}, symmath.op.add)
+			expr = setmetatable({}, symmath.op.add)
 			for i=1,#prodLists do
 				expr[i] = prodListToNode(prodLists[i])
 			end
-			-- add's shouldn't have 1 term ...
 			assert(#expr > 1)
-			--if #expr == 1 then return expr[1] end
 
 
 			--[[
