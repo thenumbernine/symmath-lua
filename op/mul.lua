@@ -361,7 +361,7 @@ mul.rules = {
 					if div.is(base) then
 						base, denom = table.unpack(base)
 					end
-					if denom ~= Constant(1) then
+					if not Constant.isValue(denom, 1) then
 						uniqueDenomIndexes:insert(i)
 					end
 
@@ -375,12 +375,12 @@ mul.rules = {
 					local num
 					if #bases == 1 then
 						num = bases[1]
-						if powers[1] ~= Constant(1) then
+						if not Constant.isValue(powers[1], 1) then
 							num = num ^ powers[1]
 						end
 					else
 						num = bases:map(function(base,i)
-							if powers[i] == Constant(1) then
+							if Constant.isValue(powers[i], 1) then
 								return base
 							else
 								return base ^ powers[i]
@@ -398,12 +398,12 @@ mul.rules = {
 					if #uniqueDenomIndexes == 1 then
 						local i = uniqueDenomIndexes[1]
 						denom = denoms[i]
-						if powers[i] ~= Constant(1) then
+						if not Constant.isValue(powers[i], 1) then
 							denom = denom^powers[i]
 						end
 					elseif #denoms > 1 then
 						denom = mul(table.unpack(uniqueDenomIndexes:map(function(i)
-							if powers[i] == Constant(1) then
+							if Constant.isValue(powers[i], 1) then
 								return denoms[i]
 							else
 								return denoms[i]^powers[i]
@@ -412,7 +412,7 @@ mul.rules = {
 					end
 					
 					local expr = num
-					if denom ~= Constant(1) then
+					if not Constant.isValue(denom, 1) then
 						expr = expr / denom
 					end
 					return prune:apply(expr)

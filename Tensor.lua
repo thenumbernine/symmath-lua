@@ -1074,7 +1074,7 @@ function Tensor:printElem(name, write)
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	local sep = ''
 	for index,x in self:iter() do
-		if x ~= Constant(0) then
+		if not Constant.isValue(x, 0) then
 			if sep ~= '' then 
 				write(sep, '\n')
 			end

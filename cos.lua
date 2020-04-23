@@ -106,7 +106,7 @@ cos.rules = {
 
 			if Constant.is(theta) then
 				-- cos(0) => 1
-				if theta == Constant(0) then return Constant(1) end
+				if Constant.isValue(theta, 0) then return Constant(1) end
 			elseif mul.is(theta) then
 				if #theta == 2 
 				and theta[2] == symmath.pi 
@@ -129,7 +129,7 @@ cos.rules = {
 					return prune:apply(c == 1 and cos(rest) or cos(c * rest))
 				end
 			elseif div.is(theta) then
-				if theta[2] == Constant(2) then
+				if Constant.isValue(theta[2], 2) then
 					-- cos(pi / 2) => 0
 					if theta[1] == symmath.pi then return Constant(0) end
 					-- cos((k * pi) / 2) for odd k => 0

@@ -68,7 +68,7 @@ function pow:reverse(soln, index)
 	if index == 1 then
 		-- TODO for q is integer, include all 1/q roots
 		-- here it is for square
-		if q == Constant(2) then
+		if Constant.isValue(q, 2) then
 			return soln^(1/q), -soln^(1/q)
 		end
 		
@@ -208,7 +208,12 @@ pow.rules = {
 			end
 
 			-- sqrt(something)
-			if expr[2] == div(1,2) or expr[2] == Constant(.5) then
+			if (
+				-- expr[2] == frac(1,2) ... without extra object instanciation
+				div.is(expr[2])
+				and Constant.isValue(expr[2][1], 1)
+				and Constant.isValue(expr[2][2], 2)
+			) or Constant.isValue(expr[2], .5) then
 				local x = expr[1]
 
 				-- polynomials 
@@ -217,7 +222,7 @@ pow.rules = {
 				-- TODO now we have to consider domains ... this is only true for (a+b)>0 ... or two roots for +-
 				-- ... hmm, this is looking very ugly and specific
 				local function isSquare(x)
-					return pow.is(x) and x[2] == Constant(2)
+					return pow.is(x) and Constant.isValue(x[2], 2)
 				end
 				if #x == 3 then
 					local squares = table()
@@ -282,7 +287,7 @@ pow.rules = {
 			end
 		
 			-- 0^a = 0 for a>0
-			if expr[1] == Constant(0) then
+			if Constant.isValue(expr[1], 0) then
 				if (Constant.is(expr[2]) and expr[2].value > 0) 
 				or (
 					div.is(expr[2]) 
@@ -295,20 +300,20 @@ pow.rules = {
 			end
 
 			-- 1^a => 1
-			if expr[1] == Constant(1) then return Constant(1) end
+			if Constant.isValue(expr[1], 1) then return Constant(1) end
 			
 			-- (-1)^odd = -1, (-1)^even = 1
-			if expr[1] == Constant(-1) and Constant.is(expr[2]) then
+			if Constant.isValue(expr[1], -1) and Constant.is(expr[2]) then
 				local powModTwo = expr[2].value % 2
 				if powModTwo == 0 then return Constant(1) end
 				if powModTwo == 1 then return Constant(-1) end
 			end
 			
 			-- a^1 => a
-			if expr[2] == Constant(1) then return prune:apply(expr[1]) end
+			if Constant.isValue(expr[2], 1) then return prune:apply(expr[1]) end
 			
 			-- a^0 => 1
-			if expr[2] == Constant(0) then return Constant(1) end
+			if Constant.isValue(expr[2], 0) then return Constant(1) end
 
 			-- i^n
 			if expr[1] == symmath.i 
@@ -400,6 +405,7 @@ pow.rules = {
 	Tidy = {
 		{apply = function(tidy, expr)
 			local unm = require 'symmath.op.unm'
+			local div = require 'symmath.op.div'
 			local Constant = require 'symmath.Constant'
 			local sqrt = require 'symmath.sqrt'
 
@@ -409,9 +415,12 @@ pow.rules = {
 			end
 			--]]
 			
-			if expr[2] == Constant(.5)
-			or expr[2] == Constant(1)/Constant(2)
-			then
+			if Constant.isValue(expr[2], .5)
+			or (
+				div.is(expr[2])
+				and Constant.isValue(expr[2][1], 1)
+				and Constant.isValue(expr[2][2], 2)
+			) then
 				return sqrt(expr[1])
 			end
 		end},

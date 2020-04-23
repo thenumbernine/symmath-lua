@@ -31,12 +31,12 @@ log.rules = {
 			end
 			
 			-- log(1) = 0
-			if x == Constant(1) then
+			if Constant.isValue(x, 1) then
 				return Constant(0)
 			end
 			
 			-- log(0) = -infinity
-			if x == Constant(0) then
+			if Constant.isValue(x, 0) then
 				return -Constant.inf
 			end
 		end},

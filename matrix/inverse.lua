@@ -64,7 +64,7 @@ end
 	-- shortcuts:
 	if m == 1 and n == 1 and not b then
 		local A_11 = A[1][1]
-		if A_11 == Constant(0) then
+		if Constant.isValue(A_11, 0) then
 			return AInv, A, "determinant is zero"
 		end
 		local result = Matrix{(1/A_11)()}
@@ -73,7 +73,7 @@ end
 --[[ this also breaks compat with nullspace()	
 	elseif m == 2 and n == 2 and not b then
 		A_det = A_det or A:determinant()
-		if A_det == Constant(0) then
+		if Constant.isValue(A_det, 0) then
 			return AInv, A, "determinant is zero"
 		end
 		local result = (Matrix:convertTable{
@@ -91,7 +91,7 @@ end
 -- because right now this function does a few things: inverse, pseudoinverse, linear system solution
 	elseif m == 3 and n == 3 and not b then
 		A_det = A_det or A:determinant()
-		if A_det == Constant(0) then
+		if Constant.isValue(A_det, 0) then
 			return AInv, A, "determinant is zero"
 		end
 		-- transpose, +-+- sign stagger, for each element remove that row and column and 
@@ -113,11 +113,11 @@ end
 	for i=1,min do
 		-- if we have a zero on the diagonal...
 		local found = true
-		if A[row][i] == Constant(0) then
+		if Constant.isValue(A[row][i], 0) then
 			-- pivot with a row beneath this one
 			found = false
 			for j=row+1,m do
-				if A[j][i] ~= Constant(0) then
+				if not Constant.isValue(A[j][i], 0) then
 					for k=1,n do
 						A[j][k], A[row][k] = A[row][k], A[j][k]
 					end
@@ -136,7 +136,7 @@ end
 			--return AInv, A, "couldn't find a row to pivot"
 		else
 			-- rescale diagonal
-			if A[row][i] ~= Constant(1) then
+			if not Constant.isValue(A[row][i], 1) then
 				-- rescale column
 				local s = A[row][i]
 	--print('rescaling row '..i..' by \\('..(1/s):simplify()..'\\)<br>')
@@ -154,7 +154,7 @@ end
 			-- eliminate columns apart from diagonal
 			for j=1,m do
 				if j ~= row then
-					if A[j][i] ~= Constant(0) then
+					if not Constant.isValue(A[j][i], 0) then
 						local s = A[j][i]
 	--print('subtracting \\('..s..'\\) to row '..j..'<br>')
 						for k=1,n do
@@ -185,7 +185,7 @@ end
 		-- and should be cut out?
 		for i=n+1,m do
 			for j=1,invdim[2] do
-				if AInv[i][j] ~= Constant(0) then
+				if not Constant.isValue(AInv[i][j], 0) then
 					return AInv, A, "system is overconstrained"
 				end
 			end

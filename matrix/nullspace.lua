@@ -10,12 +10,12 @@ local function nullspace(A)
 	local firstNonZeroColPerRow = table()
 	local j = 1
 	for i=1,n do
-		while reduce[i][j] == Constant(0) and j <= n do
+		while Constant.isValue(reduce[i][j], 0) and j <= n do
 			nonLeadingCols:insert(j)
 			j=j+1
 		end
 		if j > n then break end
-		assert(reduce[i][j] == Constant(1), "found a column that doesn't lead with 1")
+		assert(Constant.isValue(reduce[i][j], 1), "found a column that doesn't lead with 1")
 		firstNonZeroColPerRow[i] = j
 		j = j + 1
 	end
@@ -46,7 +46,7 @@ local function nullspace(A)
 			-- reduce[i][j] x[j] + sum k=j+1,n (reduce[i][k] x[i]) = 0
 			-- x[j] = (-1/reduce[i][j]) * sum k=j+1,n (reduce[i][k] x[i])
 			for k=j+1,n do
-				if reduce[i][k] ~= Constant(0) then
+				if not Constant.isValue(reduce[i][k], 0) then
 					-- now we have to include this term in the results of x[j]
 					-- but while simultaneously separating the coefficients into the u[l][m] locations
 					local paramIndex = nonLeadingCols:find(k)

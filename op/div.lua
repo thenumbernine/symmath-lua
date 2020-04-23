@@ -66,7 +66,7 @@ div.rules = {
 			local Constant = require 'symmath.Constant'
 			local mul = require 'symmath.op.mul'
 
-			if expr[1] == Constant(1) then return end
+			if Constant.isValue(expr[1], 1) then return end
 		
 			-- a/(b1 * ... * bn) => a * 1/b1 * ... * 1/bn
 			if mul.is(expr[2]) then
@@ -103,7 +103,7 @@ div.rules = {
 			end
 
 			-- x / 0 => Invalid
-			if expr[2] == Constant(0) then
+			if Constant.isValue(expr[2], 0) then
 				return symmath.Invalid()
 			end
 			
@@ -143,7 +143,7 @@ div.rules = {
 			end
 
 			-- x / 1 => x
-			if expr[2] == Constant(1) then
+			if Constant.isValue(expr[2], 1) then
 				return expr[1]
 			end
 
@@ -153,7 +153,7 @@ div.rules = {
 			end
 			
 			-- 0 / x => 0
-			if expr[1] == Constant(0) then
+			if Constant.isValue(expr[1], 0) then
 				if expr[1].value == 0 then
 					return Constant(0)
 				end
@@ -252,7 +252,7 @@ div.rules = {
 
 				for i=1,#numBases do
 					for j=#denomBases,1,-1 do
-						if numBases[i] ~= Constant(1)
+						if not Constant.isValue(numBases[i], 1)
 						and numBases[i] == denomBases[j] 
 						then
 							modified = true

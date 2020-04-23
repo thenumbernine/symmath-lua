@@ -213,7 +213,7 @@ add.rules = {
 				and symmath.set.evenInteger:contains(expr[1][2])
 				and symmath.op.mul.is(expr[2])
 				and #expr[2] == 2
-				and expr[2][1] == Constant(-1)
+				and Constant.isValue(expr[2][1], -1)
 				and symmath.op.pow.is(expr[2][2])
 				and symmath.set.evenInteger:contains(expr[2][2][2])
 				then
@@ -642,7 +642,7 @@ add.rules = {
 						
 						if pow.is(x)
 						and Function.is(x[1])
-						and x[2] == Constant(2)
+						and Constant.isValue(x[2], 2)
 						then
 							if cos.is(x[1]) then
 								if sinAngle then
