@@ -60,6 +60,8 @@ add.rules = {
 
 	Factor = {
 		{apply = function(factor, expr, factors)
+			assert(#expr > 1)
+			
 			local symmath = require 'symmath'
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
@@ -69,7 +71,51 @@ add.rules = {
 			-- [[ x*a + x*b => x * (a + b)
 			-- the opposite of this is in mul:prune's applyDistribute
 			-- don't leave both of them uncommented or you'll get deadlock
-			if #expr <= 1 then return end
+
+			-- [[
+			-- TODO where to put quadratic / polynomial division
+			-- I should do this somewhere else, but I'll do it here for now
+			-- a^2 - b^2 => (a+b) (a-b)
+			if #expr == 2 then
+				if symmath.op.pow.is(expr[1])
+				and symmath.set.evenInteger:contains(expr[1][2])
+				and symmath.op.mul.is(expr[2])
+				and #expr[2] == 2
+				and Constant.isValue(expr[2][1], -1)
+				and symmath.op.pow.is(expr[2][2])
+				and symmath.set.evenInteger:contains(expr[2][2][2])
+				then
+					local a = (expr[1][1] ^ (expr[1][2]/2))
+					local b = (expr[2][2][1] ^ (expr[2][2][2]/2))
+					return (a + b) * (a - b)
+				end
+			end
+			-- TODO factoring higher polys ... this is just one specific case
+			--]]
+			-- [[ this is duplicated in sqrt.Prune
+			local function isSquare(x)
+				return pow.is(x) and Constant.isValue(x[2], 2)
+			end
+			if #expr == 3 then
+				local squares = table()
+				local notsquares = table()
+				for i,xi in ipairs(expr) do
+					(isSquare(xi) and squares or notsquares):insert(i)
+				end
+				if #squares == 2 then
+					assert(#notsquares == 1)
+					local a,c = expr[squares[1]], expr[squares[2]]
+					local b = expr[notsquares[1]]
+					if b == symmath.op.mul(2, a[1], c[1]) then
+						return (a[1] + c[1]) * (a[1] + c[1])
+					end
+					if b == symmath.op.mul(Constant(-2), a[1], c[1]) then
+						return (a[1] - c[1]) * (a[1] - c[1])
+					end
+				end
+			end
+			--]]
+
 
 			local function nodeToProdList(x)
 				local prodList
@@ -203,28 +249,6 @@ add.rules = {
 			end
 			assert(#expr > 1)
 
-
-			--[[
-			-- TODO where to put quadratic / polynomial division
-			-- I should do this somewhere else, but I'll do it here for now
-			-- a^2 - b^2 => (a+b) (a-b)
-			if #expr == 2 then
-				if symmath.op.pow.is(expr[1])
-				and symmath.set.evenInteger:contains(expr[1][2])
-				and symmath.op.mul.is(expr[2])
-				and #expr[2] == 2
-				and Constant.isValue(expr[2][1], -1)
-				and symmath.op.pow.is(expr[2][2])
-				and symmath.set.evenInteger:contains(expr[2][2][2])
-				then
-					local a = (expr[1][1] ^ (expr[1][2]/2))
-					local b = (expr[2][2][1] ^ (expr[2][2][2]/2))
-					return (a + b) * (a - b)
-				end
-			end
-			-- TODO factoring higher polys ... this is just one specific case
-			--]]
-
 	
 	-- without this (y-x)/(x-y) doesn't simplify to -1
 	-- [[
@@ -327,11 +351,46 @@ add.rules = {
 			end
 
 			-- start with all the factored-out terms
+			-- [[ old
 			local terms = minProds:mapi(function(minProd,i) return minProd ^ minPowers[i] end)
-			
+			--]]
+			--[[ new ... causes simplification loops
+			local terms = table()
+			for i=1,#minProds do
+				if type(minPowers[i]) == 'number'
+				and minPowers[i] > 0 
+				then
+					terms:insert(minProds[i] ^ minPowers[i])
+				end
+			end
+			--]]
+	
+			-- [[
+			-- remove any product lists that are to the zero power
+			-- NOTICE this will put prodLists[] out of sync with expr[]
+			for i=#prodLists,1,-1 do	-- here's our adds
+				local pli = prodLists[i]
+				for j=#pli,1,-1 do		-- here's our muls
+					local plij = pli[j]
+					if Constant.isValue(plij.power, 0) then
+						table.remove(pli,j)
+					end
+				end
+			end
+			--]]
+
 			-- then add what's left of the original sum
 			local lastTerm = prodLists:mapi(prodListToNode)
 			lastTerm = #lastTerm == 1 and lastTerm[1] or add(lastTerm:unpack())
+
+			-- [[
+			-- if anything was factored out then try the quadratic rules on what's left
+			if #terms > 0 then
+				-- prune is still needed here -- it looks like only to recombine constants (and move them to the left of the muls) before the quadratic testing at the top of Factor is run
+				lastTerm = prune(lastTerm)
+				lastTerm = factor(lastTerm)
+			end
+			--]]
 
 			terms:insert(lastTerm)
 		

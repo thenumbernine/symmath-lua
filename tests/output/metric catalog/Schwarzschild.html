@@ -58,8 +58,8 @@ ${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\be
 <br>
 basis determinant:	${det(e)} = {{{{r}^{2}}} {{sin\left(  \theta\right)}}}$
 <br>
-${{{{ c}_t}_r}^t} = {\frac{R}{-{{{2}} {{r}} {{({{r} - {R}})}}}}}$;
-${{{{ c}_r}_t}^t} = {\frac{R}{{{2}} {{r}} {{({{r} - {R}})}}}}$;
+${{{{ c}_t}_r}^t} = {\frac{R}{{{2}} {{r}} {{({{R} - {r}})}}}}$;
+${{{{ c}_r}_t}^t} = {\frac{-{R}}{{{2}} {{r}} {{({{R} - {r}})}}}}$;
 ${{{{ c}_r}_{\theta}}^{\theta}} = {\frac{1}{r}}$;
 ${{{{ c}_r}_{\phi}}^{\phi}} = {\frac{1}{r}}$;
 ${{{{ c}_{\theta}}_r}^{\theta}} = {-{\frac{1}{r}}}$;
@@ -83,8 +83,8 @@ metric determinant:	${det(g)} = {-{{{{r}^{4}}} {{({{1} - {{cos\left(  \theta\rig
 ${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
 <br>
 commutation coefficients:
-${{{{ c}_t}_r}^t} = {\frac{R}{-{{{2}} {{r}} {{({{r} - {R}})}}}}}$;
-${{{{ c}_r}_t}^t} = {\frac{R}{{{2}} {{r}} {{({{r} - {R}})}}}}$;
+${{{{ c}_t}_r}^t} = {\frac{R}{{{2}} {{r}} {{({{R} - {r}})}}}}$;
+${{{{ c}_r}_t}^t} = {\frac{-{R}}{{{2}} {{r}} {{({{R} - {r}})}}}}$;
 ${{{{ c}_r}_{\theta}}^{\theta}} = {\frac{1}{r}}$;
 ${{{{ c}_r}_{\phi}}^{\phi}} = {\frac{1}{r}}$;
 ${{{{ c}_{\theta}}_r}^{\theta}} = {-{\frac{1}{r}}}$;
@@ -109,7 +109,7 @@ ${{{ g}^{\phi}}^{\phi}} = {\frac{1}{{{{r}^{2}}} {{({{1} - {{cos\left(  \theta\ri
 <br>
 metric derivative:
 ${{{{ {\partial g}}_t}_t}_r} = {\frac{-{R}}{{r}^{2}}}$;
-${{{{ {\partial g}}_r}_r}_r} = {\frac{-{R}}{{-{{{2}} {{R}} {{r}}}} + {{R}^{2}} + {{r}^{2}}}}$;
+${{{{ {\partial g}}_r}_r}_r} = {\frac{-{R}}{{({{R} - {r}})}^{2}}}$;
 ${{{{ {\partial g}}_{\theta}}_{\theta}}_r} = {{{2}} {{r}}}$;
 ${{{{ {\partial g}}_{\phi}}_{\phi}}_r} = {{{2}} {{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}$;
 ${{{{ {\partial g}}_{\phi}}_{\phi}}_{\theta}} = {{{2}} {{{r}^{2}}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}$
@@ -117,31 +117,31 @@ ${{{{ {\partial g}}_{\phi}}_{\phi}}_{\theta}} = {{{2}} {{{r}^{2}}} {{cos\left(  
 <br>
 1st kind Christoffel:
 ${{{{ \Gamma}_t}_r}_t} = {\frac{-{R}}{{{2}} {{{r}^{2}}}}}$;
-${{{{ \Gamma}_r}_r}_r} = {\frac{-{R}}{{{2}} {{({{{{R}^{2}} - {{{2}} {{R}} {{r}}}} + {{r}^{2}}})}}}}$;
+${{{{ \Gamma}_r}_r}_r} = {\frac{-{R}}{{{2}} {{{({{R} - {r}})}^{2}}}}}$;
 ${{{{ \Gamma}_{\theta}}_r}_{\theta}} = {r}$;
 ${{{{ \Gamma}_{\phi}}_r}_{\phi}} = {{{r}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}$;
 ${{{{ \Gamma}_{\phi}}_{\theta}}_{\phi}} = {{{{r}^{2}}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}$
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma}^t}_r}_t} = {\frac{R}{{{2}} {{r}} {{({{r} - {R}})}}}}$;
-${{{{ \Gamma}^r}_r}_r} = {\frac{{{R}} {{({{R} - {r}})}}}{{{2}} {{r}} {{({{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}})}}}}$;
+${{{{ \Gamma}^t}_r}_t} = {\frac{-{R}}{{{2}} {{r}} {{({{R} - {r}})}}}}$;
+${{{{ \Gamma}^r}_r}_r} = {\frac{R}{{{2}} {{r}} {{({{R} - {r}})}}}}$;
 ${{{{ \Gamma}^{\theta}}_r}_{\theta}} = {\frac{1}{r}}$;
 ${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
 ${{{{ \Gamma}^{\phi}}_{\theta}}_{\phi}} = {\frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}}$
 
 <br>
 connection coefficients derivative:
-${{{{{ {\partial \Gamma}}^t}_r}_t}_r} = {\frac{{{R}} {{({{R} - {{{2}} {{r}}}})}}}{{{2}} {{{r}^{2}}} {{({{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}})}}}}$;
-${{{{{ {\partial \Gamma}}^r}_r}_r}_r} = {\frac{-{{{R}} {{({{{{R}^{3}} - {{{4}} {{r}} {{{R}^{2}}}}} + {{{{5}} {{R}} {{{r}^{2}}}} - {{{2}} {{{r}^{3}}}}}})}}}}{{{2}} {{{r}^{2}}} {{({{{{r}^{4}} - {{{4}} {{r}} {{{R}^{3}}}}} + {{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{4}} {{R}} {{{r}^{3}}}}} + {{R}^{4}}})}}}}$;
+${{{{{ {\partial \Gamma}}^t}_r}_t}_r} = {\frac{{{R}} {{({{R} - {{{2}} {{r}}}})}}}{{{2}} {{{r}^{2}}} {{{({{r} - {R}})}^{2}}}}}$;
+${{{{{ {\partial \Gamma}}^r}_r}_r}_r} = {\frac{-{{{R}} {{({{R} - {{{2}} {{r}}}})}}}}{{{2}} {{{r}^{2}}} {{{({{r} - {R}})}^{2}}}}}$;
 ${{{{{ {\partial \Gamma}}^{\theta}}_r}_{\theta}}_r} = {-{\frac{1}{{r}^{2}}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {-{\frac{1}{{r}^{2}}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_{\theta}}_{\phi}}_{\theta}} = {-{\frac{1}{{1} - {{cos\left(  \theta\right)}^{2}}}}}$
 
 <br>
 connection coefficients squared:
-${{{{{ {(\Gamma^2)}}^t}_t}_r}_r} = {\frac{{R}^{2}}{{{4}} {{{r}^{2}}} {{({{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}})}}}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_r}_r} = {\frac{{{{R}^{2}}} {{({{{{R}^{2}} - {{{2}} {{R}} {{r}}}} + {{r}^{2}}})}}}{{{4}} {{{r}^{2}}} {{({{{{r}^{4}} - {{{4}} {{r}} {{{R}^{3}}}}} + {{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{4}} {{R}} {{{r}^{3}}}}} + {{R}^{4}}})}}}}$;
+${{{{{ {(\Gamma^2)}}^t}_t}_r}_r} = {\frac{{R}^{2}}{{{4}} {{{r}^{2}}} {{{({{r} - {R}})}^{2}}}}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_r}_r} = {\frac{{R}^{2}}{{{4}} {{{r}^{2}}} {{{({{r} - {R}})}^{2}}}}}$;
 ${{{{{ {(\Gamma^2)}}^{\theta}}_{\theta}}_r}_r} = {\frac{1}{{r}^{2}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{1}{{r}^{2}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_{\theta}} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$;
@@ -155,8 +155,8 @@ ${{{{{ R}^{\phi}}_{\phi}}_{\theta}}_r} = {\frac{cos\left(  \theta\right)}{{{sin\
 
 <br>
 Riemann curvature, $\sharp\sharp\flat\flat$:
-${{{{{ R}^{\phi}}^{\phi}}_r}_{\theta}} = {\frac{cos\left(  \theta\right)}{{{{r}^{3}}} {{sin\left(  \theta\right)}} {{({{-{1}} + {{cos\left(  \theta\right)}^{2}}})}}}}$;
-${{{{{ R}^{\phi}}^{\phi}}_{\theta}}_r} = {\frac{cos\left(  \theta\right)}{-{{{{r}^{3}}} {{sin\left(  \theta\right)}} {{({{-{1}} + {{cos\left(  \theta\right)}^{2}}})}}}}}$
+${{{{{ R}^{\phi}}^{\phi}}_r}_{\theta}} = {\frac{-{cos\left(  \theta\right)}}{{{{r}^{3}}} {{sin\left(  \theta\right)}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}}$;
+${{{{{ R}^{\phi}}^{\phi}}_{\theta}}_r} = {\frac{cos\left(  \theta\right)}{{{{r}^{3}}} {{sin\left(  \theta\right)}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}}$
 
 <br>
 Ricci curvature, $\sharp\flat$:
@@ -169,11 +169,11 @@ $0$
 Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
 ${{{ G}^a}_b} = {0}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{{\partial {A^{t}}}\over{\partial t}}} {{{r}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{-2}} {{{\partial {A^{t}}}\over{\partial t}}} {{r}} {{R}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{{\partial {A^{t}}}\over{\partial t}}} {{{R}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{{\partial {A^{r}}}\over{\partial r}}} {{{r}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{-2}} {{{\partial {A^{r}}}\over{\partial r}}} {{r}} {{R}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{{\partial {A^{r}}}\over{\partial r}}} {{{R}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{{\partial {A^{\theta}}}\over{\partial\theta}}} {{{r}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{-2}} {{{\partial {A^{\theta}}}\over{\partial\theta}}} {{r}} {{R}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{{\partial {A^{\theta}}}\over{\partial\theta}}} {{{R}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{{\partial {A^{\phi}}}\over{\partial\phi}}} {{{r}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{-2}} {{{\partial {A^{\phi}}}\over{\partial\phi}}} {{r}} {{R}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{{\partial {A^{\phi}}}\over{\partial\phi}}} {{{R}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}}}}} + {{{{R}^{2}}} {{{A^{r}}}} \cdot {{\frac{1}{{{{{2}} {{r}} {{{r}^{2}}}} - {{{4}} {{r}} {{R}} {{r}}}} + {{{2}} {{r}} {{{R}^{2}}}}}}}} + {{{-1}} {{R}} {{{A^{r}}}} \cdot {{\frac{1}{{{{{2}} {{{R}^{2}}}} - {{{4}} {{R}} {{r}}}} + {{{2}} {{{r}^{2}}}}}}}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{R}} {{{A^{r}}}} \cdot {{\frac{1}{{{{2}} {{r}} {{R}}} - {{{2}} {{r}} {{r}}}}}}} + {{{R}} {{{\partial {A^{\phi}}}\over{\partial\phi}}} {{\frac{1}{{R} - {r}}}}} + {{{R}} {{{\partial {A^{\theta}}}\over{\partial\theta}}} {{\frac{1}{{R} - {r}}}}} + {{{R}} {{{\partial {A^{r}}}\over{\partial r}}} {{\frac{1}{{R} - {r}}}}} + {{{R}} {{{\partial {A^{t}}}\over{\partial t}}} {{\frac{1}{{R} - {r}}}}} + {{{-1}} {{r}} {{{\partial {A^{\phi}}}\over{\partial\phi}}} {{\frac{1}{{R} - {r}}}}} + {{{-1}} {{r}} {{{\partial {A^{\theta}}}\over{\partial\theta}}} {{\frac{1}{{R} - {r}}}}} + {{{-1}} {{r}} {{{\partial {A^{r}}}\over{\partial r}}} {{\frac{1}{{R} - {r}}}}} + {{{-1}} {{r}} {{{\partial {A^{t}}}\over{\partial t}}} {{\frac{1}{{R} - {r}}}}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{t} \\ \ddot{r} \\ \ddot{\theta} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{-1}} {{R}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{\frac{1}{{{{-2}} {{r}} {{R}}} + {{{2}} {{r}} {{r}}}}}} \\ {{{-1}} {{R}} {{{\dot{r}}^{2}}} {{R}} {{\frac{1}{{{{2}} {{r}} {{{r}^{2}}}} + {{{-4}} {{r}} {{R}} {{r}}} + {{{2}} {{r}} {{{R}^{2}}}}}}}} + {{{R}} {{{\dot{r}}^{2}}} {{r}} {{\frac{1}{{{{2}} {{r}} {{{r}^{2}}}} + {{{-4}} {{r}} {{R}} {{r}}} + {{{2}} {{r}} {{{R}^{2}}}}}}}} \\ {{-1}} {{\dot{r}}} \cdot {{\dot{\theta}}} \cdot {{\frac{1}{r}}} \\ {{{-1}} {{\dot{\phi}}} \cdot {{\dot{r}}} \cdot {{sin\left(  \theta\right)}} {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}} + {{{-1}} {{\dot{\phi}}} \cdot {{r}} {{\dot{\theta}}} \cdot {{cos\left(  \theta\right)}} {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}}\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{t} \\ \ddot{r} \\ \ddot{\theta} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{R}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{\frac{1}{{{{2}} {{r}} {{R}}} + {{{-2}} {{r}} {{r}}}}}} \\ {{-1}} {{R}} {{{\dot{r}}^{2}}} {{\frac{1}{{{{2}} {{r}} {{R}}} + {{{-2}} {{r}} {{r}}}}}} \\ {{-1}} {{\dot{r}}} \cdot {{\dot{\theta}}} \cdot {{\frac{1}{r}}} \\ {{{-1}} {{\dot{\phi}}} \cdot {{\dot{r}}} \cdot {{sin\left(  \theta\right)}} {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}} + {{{-1}} {{\dot{\phi}}} \cdot {{r}} {{\dot{\theta}}} \cdot {{cos\left(  \theta\right)}} {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}}\end{matrix}\right]}}$
 <br>
 
 <br>
@@ -200,13 +200,13 @@ ${{ P}_t}^{-1}$	=	${e}^{({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{
 <br>
 
 <br>
-${{[\Gamma_r]}} = {\left[\begin{matrix}  \frac{R}{{{2}} {{r}} {{({{r} - {R}})}}} &  0 &  0 &  0 \\  0 &  \frac{{{R}} {{({{R} - {r}})}}}{{{2}} {{r}} {{({{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}})}}} &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  \frac{1}{r}\end{matrix}\right]}$
+${{[\Gamma_r]}} = {\left[\begin{matrix}  \frac{-{R}}{{{2}} {{r}} {{({{R} - {r}})}}} &  0 &  0 &  0 \\  0 &  \frac{R}{{{2}} {{r}} {{({{R} - {r}})}}} &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  \frac{1}{r}\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  \frac{R}{{{2}} {{r}} {{({{r} - {R}})}}} &  0 &  0 &  0 \\  0 &  \frac{{{R}} {{({{R} - {r}})}}}{{{2}} {{r}} {{({{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}})}}} &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)$
-=	$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  \frac{R}{{{2}} {{r}} {{({{r} - {R}})}}} &  0 &  0 &  0 \\  0 &  \frac{{{R}} {{({{R} - {r}})}}}{{{2}} {{r}} {{({{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}})}}} &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)$
+$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  \frac{-{R}}{{{2}} {{r}} {{({{R} - {r}})}}} &  0 &  0 &  0 \\  0 &  \frac{R}{{{2}} {{r}} {{({{R} - {r}})}}} &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)$
+=	$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  \frac{-{R}}{{{2}} {{r}} {{({{R} - {r}})}}} &  0 &  0 &  0 \\  0 &  \frac{R}{{{2}} {{r}} {{({{R} - {r}})}}} &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)$
 <br>
 
 <br>
-${ P}_r$	=	${e}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  \frac{R}{{{2}} {{r}} {{({{r} - {R}})}}} &  0 &  0 &  0 \\  0 &  \frac{{{R}} {{({{R} - {r}})}}}{{{2}} {{r}} {{({{{{r}^{2}} - {{{2}} {{R}} {{r}}}} + {{R}^{2}}})}}} &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)})})}$
+${ P}_r$	=	${e}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  \frac{-{R}}{{{2}} {{r}} {{({{R} - {r}})}}} &  0 &  0 &  0 \\  0 &  \frac{R}{{{2}} {{r}} {{({{R} - {r}})}}} &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)})})}$
