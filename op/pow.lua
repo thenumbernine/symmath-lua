@@ -224,6 +224,7 @@ pow.rules = {
 				local function isSquare(x)
 					return pow.is(x) and Constant.isValue(x[2], 2)
 				end
+				-- this matches the top of add.Factor
 				if #x == 3 then
 					local squares = table()
 					local notsquares = table()

@@ -12,6 +12,10 @@ function Integral:var() return self[2] end
 function Integral:start() return self[3] end
 function Integral:finish() return self[4] end
 
+--[[
+I need a new system for pattern-matching
+--]]
+
 Integral.rules = {
 	-- TODO numerical integration methods
 	Eval = {
@@ -126,7 +130,7 @@ Integral.rules = {
 			local cos = require 'symmath.cos'
 			local sinh = require 'symmath.sinh'
 			local cosh = require 'symmath.cosh'
-			
+
 			if #dep == 0 then
 				return mulWithNonDep(x)
 			elseif #dep == 1 then	-- integrals of single f(x)
@@ -163,8 +167,7 @@ Integral.rules = {
 
 					-- int(sin(x)^2,x) = x/2 - 1/4a sin(2 a x)
 					if sin.is(d[1]) 
-					and Constant.is(d[2])
-					and d[2].value == 2
+					and Constant.isValue(d[2], 2)
 					then
 						local dep, nondep = getDepAndNonDep(d[1][1])
 						assert(#dep > 0)
@@ -176,8 +179,7 @@ Integral.rules = {
 
 					-- int(cos(x)^2,x) = x/2 + 1/4a sin(2 a x)
 					if cos.is(d[1]) 
-					and Constant.is(d[2])
-					and d[2].value == 2
+					and Constant.isValue(d[2], 2)
 					then
 						local dep, nondep = getDepAndNonDep(d[1][1])
 						assert(#dep > 0)
@@ -190,17 +192,47 @@ Integral.rules = {
 				-- TODO f(x)^g(x) 
 				
 				elseif div.is(d) then	-- int(f(x)/g(x), x)
-					
-					if Constant.is(d[1]) and d[1].value == 1 then	-- int(1/f(x), x)
+					if Constant.isValue(d[1], 1) then	-- int(1/f(x), x)
 						local e = d[2]
 						
 						local depe, nondepe = getDepAndNonDep(e)
 						-- int(1/(cx),x) = 1/c ln|x|
 						--if e == x then
-						if #depe == 1 and depe[1] == x then
+						if #depe == 1 
+						and depe[1] == x 
+						then
 							return mulWithNonDep(log(abs(x))) / tableToTerm(nondepe)
 						end
-						
+
+						-- int(1/(x*(ax+b)) = -1/b ln|(ax+b)/x|
+						-- This is just a single entry from https://en.wikipedia.org/wiki/List_of_integrals_of_rational_functions
+						-- TODO implement them all
+						if add.is(e)
+						and #e == 2
+						then
+							local depe21, nondepe21 = getDepAndNonDep(e[1])
+							local depe22, nondepe22 = getDepAndNonDep(e[2])
+							if #depe22 == 2 
+							and depe22[1] == x 
+							and depe22[2] == x
+							then
+								depe21, nondepe21, depe22, nondepe22 = depe22, nondepe22, depe21, nondepe21
+							end
+							-- a x + b
+							if #depe21 == 2 
+							and depe21[1] == x
+							and depe21[2] == x
+							and #depe22 == 1
+							and depe22[1] == x
+							then
+								-- e == a*x*x + b*x
+								local a = tableToTerm(nondepe21)
+								local b = tableToTerm(nondepe22)
+							
+								return -1/b * log(abs((a*x+b)/x))
+							end
+						end
+
 						-- int(1/f(x)^g(x),x)
 						if pow.is(e) then
 							-- int(1/x^n,x)
@@ -451,6 +483,7 @@ Integral.rules = {
 			elseif #dep > 2 then	-- TODO any integrals of f1(x) * ... * fn(x)
 			end
 
+--[[ bugs in here
 			-- factor out terms that don't depend on the integratable variable
 			-- but leave the integral of whatever's left unresolved
 			if #dep == 1 then
@@ -458,6 +491,7 @@ Integral.rules = {
 			else
 				return mulWithNonDep(Integral(setmetatable(dep, mul), table.unpack(expr, 2)))
 			end
+--]]		
 		end},
 	},
 }
