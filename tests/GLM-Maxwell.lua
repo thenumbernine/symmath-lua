@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{tostring='MathJax', MathJax={title='GLM-Maxwell hyperbolic conservation law'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='GLM-Maxwell hyperbolic conservation law'}}
 local printbr = symmath.tostring.print
 
 local D_x, D_y, D_z = vars('D_x', 'D_y', 'D_z')

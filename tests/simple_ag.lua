@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true, MathJax=true}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, implicitVars=true, MathJax=true}
 Tensor.coords{{variables={t,x,y,z}}, {variables={T,X,Y,Z}, symbols='ABCDEFGHIJKLMNOPQRSTUVWXYZ'}}
 local eta = Tensor('_IJ', table.unpack(Matrix.diagonal(-1,1,1,1)))
 Tensor.metric(eta, eta, 'I')

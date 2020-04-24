@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{tostring='MathJax', MathJax={title='Kerr-Schild - expression', usePartialLHSForDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='Kerr-Schild - expression', usePartialLHSForDerivative=true}}
 
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local spatialCoords = table{x,y,z}

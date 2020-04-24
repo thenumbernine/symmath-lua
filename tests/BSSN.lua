@@ -1,5 +1,7 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup()
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env}
 require 'ext'
 
 local output = 'html'

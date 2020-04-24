@@ -15,6 +15,7 @@ accepts an equation and a variable
 returns an equation with that variable on the lhs and the rest on the rhs
 --]]
 local function solve(eqn, x, hasSimplified)
+	local unm = require 'symmath.op.unm'
 	local div = require 'symmath.op.div'
 	local mul = require 'symmath.op.mul'
 	local Equation = require 'symmath.op.Equation'	
@@ -97,7 +98,7 @@ local function solve(eqn, x, hasSimplified)
 --print('...got',lhs)
 
 	-- -x = 0 => x = 0
-	if symmath.op.unm.is(lhs) then lhs = lhs[1] end
+	if unm.is(lhs) then lhs = lhs[1] end
 
 -- [[ handle denominator
 	if div.is(lhs) then

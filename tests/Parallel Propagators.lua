@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'{MathJax={title='Parallel Propagtors'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'{env=env, MathJax={title='Parallel Propagtors'}}
 
 -- TODO incorporate this with the metric catalog?
 -- or TODO split this apart into parallel propagators + finite volume formulations

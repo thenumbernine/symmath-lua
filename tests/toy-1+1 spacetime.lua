@@ -6,7 +6,9 @@ and "The appearance of coordinate shocks in hyperbolic formalisms of General Rel
 --]]
 
 require 'ext'
-require 'symmath'.setup{MathJax={title='toy-1+1 spacetime'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='toy-1+1 spacetime'}}
 
 local x = var'x'
 local t = var('h', {x})

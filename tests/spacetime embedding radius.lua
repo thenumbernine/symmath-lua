@@ -1,5 +1,7 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{simplifyConstantPowers=true, MathJax={title='spacetime embedding radius'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, simplifyConstantPowers=true, MathJax={title='spacetime embedding radius'}}
 
 local units = require 'symmath.physics.units'()
 local m = units.m

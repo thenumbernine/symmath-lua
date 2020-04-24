@@ -6,7 +6,9 @@ test differerent simplified discrete spacetimes
 1.a) solve alpha_i = alpha(r_i) to minimize phi_i = ||G_ab(alpha_i) - 8 pi T_ab(alpha_i)|| 
 --]]
 require 'ext'
-require 'symmath'.setup{MathJax={title='EFE discrete solution - 1-var'}} --{implicitVars=true}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='EFE discrete solution - 1-var'}} --{implicitVars=true}
 
 local solveWithGMRES = false
 local solveWithLU = false

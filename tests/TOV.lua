@@ -1,7 +1,9 @@
 #!/usr/bin/env luajit
 -- TOV spherical metric
 require 'ext'
-require 'symmath'.setup{MathJax={title='TOV metric', useCommaDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='TOV metric', useCommaDerivative=true}}
 
 -- coordinates
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')

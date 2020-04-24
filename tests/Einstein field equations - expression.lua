@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true, fixVariableNames=true, MathJax={title='Einstein field equations - expression'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJax={title='Einstein field equations - expression'}}
 
 local g_def = g'_ab'
 printbr(g_def)

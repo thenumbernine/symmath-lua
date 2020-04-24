@@ -1,7 +1,9 @@
 #!/usr/bin/env luajit
 --flrw in spherical form: -dt^2 + a^2 (dr^2 / (1 - k r^2) + r^2 (dtheta^2 + sin(theta)^2 dphi^2)
 require 'ext'
-require 'symmath'.setup{MathJax={title='FLRW metric'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='FLRW metric'}}
 
 -- coordinates
 local t, r, theta, phi = vars('t', 'r', '\\theta', '\\phi')

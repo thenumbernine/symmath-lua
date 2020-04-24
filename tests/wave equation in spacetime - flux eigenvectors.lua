@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{MathJax={title='wave equation ...', useCommaDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='wave equation ...', useCommaDerivative=true}}
 
 local xs = table{vars('x','y','z')}
 local n = #xs

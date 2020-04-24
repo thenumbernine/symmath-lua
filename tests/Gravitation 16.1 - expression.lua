@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true, fixVariableNames=true, MathJax={title='Gravitation 16.1 - expression'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJax={title='Gravitation 16.1 - expression'}}
 
 local deta_eq_0 = eta'_ab,c':eq(0)
 local ddelta_eq_0 = delta'_ab,c':eq(0)

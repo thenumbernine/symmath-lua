@@ -1,5 +1,7 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{MathJax = {title = 'Alcubierre warp bubble', usePartialLHSForDerivative = true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='Alcubierre warp bubble', usePartialLHSForDerivative=true}}
 require 'ext'
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')

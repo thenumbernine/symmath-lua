@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true, fixVariableNames=true, MathJax={title='Ernst'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJax={title='Ernst'}}
 
 Tensor.coords{{variables = {t,r,theta,phi}}}
 

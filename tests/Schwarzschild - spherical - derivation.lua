@@ -1,7 +1,9 @@
 #!/usr/bin/env luajit
 -- schwarzschild in spherical form: (-A dt^2 + B dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
 require 'ext'
-require 'symmath'.setup{MathJax={title='Schwarzschild - spherical - derivation', useCommaDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='Schwarzschild - spherical - derivation', useCommaDerivative=true}}
 
 -- coordinates
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')

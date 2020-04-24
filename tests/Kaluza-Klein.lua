@@ -1,5 +1,7 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{MathJax={title='Kaluza-Klein', useCommaDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='Kaluza-Klein', useCommaDerivative=true}}
 
 --[[
 g_ab =	[ g_uv + phi^2 A_u A_v	phi^2 A^u	 ]

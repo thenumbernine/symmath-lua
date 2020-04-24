@@ -1,6 +1,8 @@
 #!/usr/bin/env lua
 require 'ext'
-require 'symmath'.setup{implicitVars=true, fixVariableNames=true, MathJax={title='spinors'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJax={title='spinors'}}
 
 local i = var'i'	-- looks better than 0+1i
 

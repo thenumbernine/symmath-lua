@@ -7,7 +7,9 @@ x'' = -(k/m)(x-s) =
 --]]
 
 require 'ext'
-require 'symmath'.setup{MathJax={title='spring force'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='spring force'}}
 
 local dim = 1	-- or 2 or 3 or whatever
 local numParticlesToCreate = 3

@@ -2,7 +2,9 @@
 -- these are the eigenvectors provided in Trangenstein
 
 require 'ext'
-require 'symmath'.setup{MathJax={title='MHD inverse'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='MHD inverse'}}
 
 -- I'd like to add this to the parent class metatable
 --  but since child classes are flattened upon creation,

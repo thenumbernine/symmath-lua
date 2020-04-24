@@ -1,6 +1,8 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true, MathJax={title='scalar metric', usePartialLHSForDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, implicitVars=true, MathJax={title='scalar metric', usePartialLHSForDerivative=true}}
 
 local allCoords = table{symmath.vars('t', 'x', 'y', 'z')}
 local t,x,y,z = allCoords:unpack() 

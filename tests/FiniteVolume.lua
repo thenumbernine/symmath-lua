@@ -1,5 +1,7 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{MathJax={title='Finite Volume', usePartialLHSForDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='Finite Volume', usePartialLHSForDerivative=true}}
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'

@@ -258,31 +258,52 @@ symmath.setup = function(args)
 			symmath[k] = v
 		end
 	end
-	if getmetatable(env) then
-		io.stderr:write"Ut oh, looks like this environment already has a metatable.  Overriding...\n"
+	local mt = getmetatable(env)
+	if mt then
+		io.stderr:write"Looks like this environment already has a metatable.  Overriding...\n"
 		io.stderr:flush()
+		local nmt = {}	-- create a soft-copy
+		for k,v in pairs(mt) do nmt[k] = v end
+		mt = nmt
+	else
+		mt = {}
 	end
 	env.symmath = symmath
-	setmetatable(env, {
-		__index = function(t,k)
-			-- first check symmath (except tostring, for circular reference reasons)
-			local x
-			if k ~= 'tostring' then
-				x = symmath[k]
-				if x ~= nil then return x end
-			end
-			x = rawget(env,k)
-			if x ~= nil then return x end
-			
-			-- extra ugly hack - create vars by request?
-			-- maybe only with certain variable names?
-			if symmath.implicitVars then
-				return symmath.var(k)
-			end
+	
+	local oldIndex = mt.__index
 
-			return nil
+	function mt.__index(t,k)
+		-- first check symmath (except tostring, for circular reference reasons)
+		local x
+		if k ~= 'tostring' then
+			x = symmath[k]
+			if x ~= nil then return x end
 		end
-	})
+		x = rawget(env,k)
+		if x ~= nil then return x end
+
+		-- last fall back on the old metatable __index (if it did previously exist)
+		if oldIndex then
+			if type(oldIndex) == 'table' then	
+				x = oldIndex[k]
+			elseif type(oldIndex) == 'function' then
+				x = oldIndex(t,k)
+			else
+				error("I don't know how to handle this __index")
+			end
+			if x ~= nil then return x end
+		end
+		
+		-- if we are using implicitVars then create vars when we can't find anything else
+		if symmath.implicitVars then
+			return symmath.var(k)
+		end
+
+		return nil
+
+	end
+	
+	setmetatable(env, mt)
 	--]]
 
 	if args.MathJax then

@@ -1,7 +1,10 @@
 #!/usr/bin/env luajit
 -- schwarzschild in spherical form: (-(1-2m/r)) dt^2 + 1/(1-2m/r) dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
 require 'ext'
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{
+	env=env,
 	--implicitVars=true, 
 	MathJax={title='Schwarzschild - spherical - mass varying with time', usePartialLHSForDerivative=true}
 }

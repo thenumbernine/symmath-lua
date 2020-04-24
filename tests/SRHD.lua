@@ -1,6 +1,8 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{MathJax={title='special relativistic hydrodynamics'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='special relativistic hydrodynamics'}}
 
 local x,y,z = vars('x', 'y', 'z')
 local xs = table{x,y,z}

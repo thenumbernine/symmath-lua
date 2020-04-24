@@ -1,7 +1,9 @@
 #!/usr/bin/env luajit
 require 'ext'
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{
-	tostring='MathJax',
+	env=env,
 	MathJax={title='wave equation in spacetime'},
 	fixVariableNames=true,	-- automatically add the \\ to the greek letter names
 }

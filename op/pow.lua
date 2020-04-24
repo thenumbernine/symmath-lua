@@ -369,7 +369,7 @@ pow.rules = {
 						inside = inside:clone()
 						table.remove(inside, j)
 						if #inside == 1 then inside = inside[1] end
-						return cos(inside) + i * sin(inside)
+						return symmath.cos(inside) + symmath.i * symmath.sin(inside)
 					end
 				end
 			end

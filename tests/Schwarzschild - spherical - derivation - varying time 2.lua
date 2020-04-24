@@ -2,7 +2,9 @@
 -- spherical form: (-A dt^2 + B dr^2 + r^2 dtheta^2 + r^2 sin(theta)^2 dphi^2
 -- just like schwarzschild except A = A(t,r), B = B(t,r)
 require 'ext'
-require 'symmath'.setup{MathJax={title='Schwarzschild - spherical - derivation - varying time', useCommaDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='Schwarzschild - spherical - derivation - varying time', useCommaDerivative=true}}
 
 
 local Props = class(require 'symmath.physics.diffgeom')

@@ -1,5 +1,9 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{implicitVars=true, MathJax={title='ADM metric - mixed', usePartialLHSForDerivative=true}}
+
+-- unload API into env without polluting symmath's _G
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, implicitVars=true, MathJax={title='ADM metric - mixed', usePartialLHSForDerivative=true}}
 
 local t,x,y,z = vars('t','x','y','z')
 local ijk = var'ijk'	-- not sure about this ...

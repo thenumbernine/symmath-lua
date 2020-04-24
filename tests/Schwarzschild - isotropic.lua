@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{tostring='MathJax', MathJax={title='Schwarzschild - isotropic'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='Schwarzschild - isotropic'}}
 
 -- coordinates
 local t,x,y,z = vars('t','x','y','z')

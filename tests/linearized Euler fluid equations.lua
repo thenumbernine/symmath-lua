@@ -1,7 +1,9 @@
 #!/usr/bin/env luajit
 require 'ext'
 op = nil	-- make way for _G.op = symmath.op
-require 'symmath'.setup{MathJax={title='linearized Euler fluid equations', usePartialLHSForDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='linearized Euler fluid equations', usePartialLHSForDerivative=true}}
 
 -- TODO tidyIndexes() is breaking on this worksheet
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup()
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env}
 local MathJax = symmath.export.MathJax
 symmath.tostring = MathJax 
 local printbr = MathJax.print

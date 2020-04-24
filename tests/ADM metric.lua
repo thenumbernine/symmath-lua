@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{MathJax={title='ADM metric', useCommaDerivative=true}}
 require 'ext'
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='ADM metric', useCommaDerivative=true}}
 
 local t,x,y,z = vars('t','x','y','z')
 local spatialCoords = {x,y,z}

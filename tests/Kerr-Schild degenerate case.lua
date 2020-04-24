@@ -22,7 +22,9 @@ r^2 x^2 + r^2 y^2 + r^2 z^2 + a^2 z^2 = r^4 + a^2 r^2
 -- TODO inverting the metric goes really slow...
 
 require 'ext'
-require 'symmath'.setup{tostring='MathJax', MathJax={title='Kerr-Schild degenerate case', usePartialLHSForDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='Kerr-Schild degenerate case', usePartialLHSForDerivative=true}}
 
 -- coordinates
 local t, x, y, z = vars('t', 'x', 'y', 'z')

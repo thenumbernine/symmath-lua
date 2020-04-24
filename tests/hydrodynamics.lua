@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true, MathJax={title='hydrodynamics', usePartialLHSForDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, implicitVars=true, MathJax={title='hydrodynamics', usePartialLHSForDerivative=true}}
 
 function section(name)
 	print('<h2>'..name..'</h2>')

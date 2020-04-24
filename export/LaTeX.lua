@@ -190,7 +190,8 @@ LaTeX.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
-		local Variable = require 'symmath.Variable'
+		local symmath = require 'symmath'
+		local Variable = symmath.Variable
 
 		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars

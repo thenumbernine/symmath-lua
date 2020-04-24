@@ -1,6 +1,8 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{MathJax={title='SRHD 1D'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='SRHD 1D'}}
 
 local gamma = var'\\gamma'
 printbr(gamma..' = heat capacity ratio')

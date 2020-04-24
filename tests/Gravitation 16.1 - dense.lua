@@ -2,7 +2,9 @@
 -- MTW's Gravitation ch. 16 problem 1
 
 require 'ext'
-require 'symmath'.setup{MathJax={title='Gravitation 16.1 - dense', useCommaDerivative=true}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, MathJax={title='Gravitation 16.1 - dense', useCommaDerivative=true}}
 
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}
