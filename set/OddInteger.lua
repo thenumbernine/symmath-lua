@@ -14,4 +14,3 @@ function OddInteger:containsElement(x)
 end
 
 return OddInteger
-

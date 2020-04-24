@@ -184,8 +184,6 @@ In such a case, I would want to allow variable-dimension arrays:
 ... maybe? who knows.
 --]]
 function Array:dim()
-	local Constant = require 'symmath.Constant'
-	
 	local dim = table()
 	
 	if not Array.is(self) then return dim end
@@ -327,6 +325,7 @@ end
 -- creates an array of zeroes
 -- static, uses :
 function Array:zeros(dims)
+	local Constant = require 'symmath.Constant'
 	dims = range(#dims):map(function(i)
 		local x = dims[i]
 		if type(x) == 'number' then return x end

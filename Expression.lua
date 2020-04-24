@@ -91,7 +91,7 @@ end
 
 --[[
 compares metatable, children length, and children contents.
-child order must match.  if your node type order doesn't matter then use nodeCommutativeEqual
+child order must match.  if your node class's child order doesn't matter then use nodeCommutativeEqual
 
 this is used for comparing
 for equality and solving, use .eq()
@@ -197,7 +197,7 @@ function Expression.__pow(a,b)
 	return require 'symmath.op.pow'(a,b) 
 end
 function Expression.__mod(a,b) 
-	if type(a) == 'number' then a = Constant(a) end
+	if type(a) == 'number' then a = require 'symmath.Constant'(a) end
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__mod(a,b) end
 	return require 'symmath.op.mod'(a,b) 

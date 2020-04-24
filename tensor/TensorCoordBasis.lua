@@ -46,12 +46,11 @@ function TensorCoordBasis:init(args)
 		end
 	end
 	if args.signature or self.symbols then
-		local Constant = require 'symmath.Constant'
 		self.signature = range(#(self.symbols or args.signature)):mapi(function(i)
 			if args.signature then
 				return clone(args.signature[i])
 			end
-			return Constant(1)
+			return require 'symmath.Constant'(1)
 		end)
 	end
 	-- TODO inter-basis transforms as well?  i.e. vielbein would be the inter-transform from curved coords to Minkowski coords 
