@@ -250,9 +250,13 @@ Example used at http://christopheremoore.net/metric
 ### Overall
 
 `symmath.setup(args)`  
+`symmath(args)`  
 Use this if you want to copy the symmath namespace into the global namespace.  
 `args` can include the following:  
-`implicitVars` - set this to `true` to create a variable from any reference to an uninitialized variable. Otherwise variables must be initialized manually.  
+`implicitVars` - Set this to `true` to create a variable from any reference to an uninitialized variable. Otherwise variables must be initialized manually.  
+`env` - The destination to copy the symmath namespace into.  Default is `_G` / the global namespace. 
+`MathJax` - Set this to `true to enable MathJax output, to print MathJax.header, and to set a global function `printbr` for performing a typical `print` followed by a `<br>`.
+	Assign `MathJax` to a table to override specific values within the `symmath.export.MathJax` singleton variable.
 
 Using `symmath` without `symmath.setup()`.  
 ```
@@ -265,20 +269,20 @@ print((Delta - (r^2 + a^2)) * a * symmath.sin(theta)^2 / rho^2)
 Using `symmath` with `symmath.setup()` but without `implicitVars` removes the need to reference the `symmath` namespace, but still requires explicit creation of variables.  
 ```
 require 'symmath'.setup()
-local a, r, theta, rho, M, Q = vars('a','r','\\theta','\\rho','M','Q')
+local a, r, theta, rho, M, Q, Delta = vars('a','r','\\theta','\\rho','M','Q','\\Delta')
 print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
 print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
 ```
 
 Using `symmath` with `symmath.setup{implicitVars=true}` removes the need for `symmath` namespace references and the need for explicit creation of variables.  
-Notice that underscores and Greek letters are automatically converted to appropriate TeX symbols.
+Notice that underscores and Greek letters are automatically converted to appropriate TeX/unicode symbols.
 ```
-require 'symmath'.setup{implicitVars=true}
+require 'symmath'.setup{implicitVars=true, fixVariableNames=true}
 print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
 print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
 ```
 
-Alternatively, you can run Lua with `-lsymmath.setup`, which is equivalent to `require 'symmath.setup`, which calls `require 'symmath'.setup()`.
+Alternatively, you can run Lua with `-lsymmath.setup`, which is equivalent to `require 'symmath'.setup{implicitVars=true, fixVariableNames=true}`.
 
 ### Numbers
 
@@ -290,7 +294,7 @@ Complex values can be represented by symmath.complex, which uses builtin complex
 
 Some day I will properly represent sets (naturals, integers, rationals, reals, complex, etc), and maybe groups, rings, etc, but not for now.
 
-Some day I will also add support for infinite precision or big integers, but not right now.
+Some day I will also add support for infinite precision or big integers, but not right now.  Check out my BigNumber Lua library at https://github.com/thenumbernine/lua-bignumber for more on this..
 
 ### Variables
 
@@ -425,9 +429,16 @@ Returns a table of coefficients with keys 0 through the degree of the polynomial
 
 ### Calculus
 
+`symmath.Derivative(expr, var1, var2, ...)`  
 `symmath.diff(expr, var1, var2, ...)`  
 `expr:diff(var1, var2, ...)`  
-Differentiates the expression with respect to the given variable.  
+Specifies the derivative of the expression with respect to the given variable(s). 
+The derivative is evaluated upon calling `simplify()`, or by shorthand calling the object one more time: `expr:diff(var1, var2, ...)()`.
+
+`symmath.Integral(expr, x[, xL, xR])`
+`expr:integra(x[, xL, xR])`
+Specifies the integral of the expression with respect to a variable, optionally with left and right endpoints.
+The integral is evaluated upon calling `simplify()`, or by shorthand calling the object one more time: `expr:integrate(x, xL, xR)()`.
 
 ### Linear Algebra
 
@@ -437,7 +448,8 @@ Create a matrix of expressions.
 `A = symmath.Array(...)`  
 Create an array of expressions. Same deal as Matrix but with any arbitrary nesting depth, and without Matrix-specific operations.  
 
-`AInv, I, message = A:inverse([b, callback, allowRectangular])`  
+`AInv, I, message = A:inverse([b, callback, allowRectangular])`
+`AInv, I, message = A:inv([b, callback, allowRectangular])`
 returns  
 AInv = the inverse of matrix A.  
 I = what's left of the Gauss-Jordan solver (typically the identity matrix).  
@@ -451,9 +463,11 @@ allowRectangular = set to `true` to allow inverting rectangular matrices.
 Returns the pseudoinverse of A (stored in APlus) and whether the pseudoinverse is determinable.  
 
 `d = A:determinant()`  
+`d = A:det()`  
 Returns the determinant of A.  
 
 `At = A:transpose()`  
+`At = A:T()`  
 Returns the transpose of A
 
 `I = Matrix.identity([m, n])`  
@@ -466,6 +480,29 @@ Returns a n x n matrix with diagonal elements set to d1 ... dn, for n the number
 
 `tr = A:trace()`  
 Returns the trace of A.  
+
+`N = A:nullspace()`  
+Returns the nullspace of A.
+
+`ev = A:eigen()`
+Returns information pertaining to the eigendecomposition of A.
+ev contains the following information:
+lambdas = A table with each element containing the fields `expr` of the eigenvalue expression and `mult` of the eigenvalue multiplicity.
+defective = Set to `true` if the matrix A is defective, i.e. if an eigenvalue multiplicity was greater than its associated nullspace.
+allLambdas = A table of eigenvalue expressions, each repeated based on its multiplicity.
+Lambda = A diagonal matrix containing the values of `allLambdas`
+R = The right eigenvector matrix, whose right-eigenvectors are column vectors enumerated to match with the eigenvalues of `allLambdas`.
+L = The left eigenvector matrix, whose left-eigenvectors are row vectors enumerated to match with the eigenvalues of `allLambdas`.
+	`L` will not exist if `R` is not invertible (especially if the matrix is defective).
+
+`expA = A:exp()`
+Returns the matrix-exponent of A.
+
+`Rx, Ry, Rz = table.unpack(symmath.Matrix.eulerAngles)`
+Returns functions to produce the 3x3 rotation matrices around the x-, y-, and z- axis.
+
+`Rn = symmath.Matrix.rotation(theta, n)`
+Returns the 3x3 rotation matrix about axis `n[1], n[2], n[3]` by angle `theta` using the Rodrigues rotation matrix formula.
 
 ### Tensors
 
@@ -480,7 +517,7 @@ Specifies that tensors will be using coordinates t,x,y,z with metric 'g' (a Matr
 
 `Tensor.coords{ {variables={t,x,y,z}}, {symbols='ijklmn', variables={x,y,z}} }`  
 Specifies that tensors will be using coordinates t,x,y,z, except for indexes ijklmn which will only use x,y,z.  
-At the moment conversion between maps is very ugly/incomplete.
+At the moment conversion between multipoint Tensor indexes is very ugly/incomplete.
 
 `Tensor.metric(g, [gU, symbol])`  
 Specifies to use metric 'g' for the default coordinate system (assuming one has been defined with Tensor.coords).  
@@ -511,23 +548,39 @@ Prints the tensor's contents.
 `t:printElem't'`  
 Prints the individual nonzero values of the tensor, or '0' if they are all zero.  
 
-### Sets (WIP)
+### Sets
 
-Sets so far:
-* symmath.set.Universal
+Set classes so far:
+* symmath.set.Universal = This is a set that contains everything.
+* symmath.set.Null = This is a set that contains nothing.
 * symmath.set.Complex
-* symmath.set.Real
-* symmath.set.NonNegativeReal
+* symmath.set.RealInterval = This is a single interval on the (extended) Real number line, inclusive or exclusive of its endpoints.
+* symmath.set.RealDomain = This is a union of multiple RealIntervals.  Maybe I should change the name to RealSubset?
 * symmath.set.Integer
 * symmath.set.EvenInteger
 * symmath.set.OddInteger
 
-Set:var('x', ...)
+Set singleton objects so far:
+* symmath.set.universal
+* symmath.set.null
+* symmath.set.complex
+* symmath.set.real = The extended Real set interval, (-inf, inf).
+* symmath.set.negativeReal = (-inf,0)
+* symmath.set.positiveReal = (0,inf)
+* symmath.set.nonNegativeReal = [0,inf)
+* symmath.set.nonPositiveReal = (-inf,0]
+* symmath.set.integer
+* symmath.set.evenInteger
+* symmath.set.oddInteger
+
+`Set:var('x', ...)`
 shorthand for creating a variable associated with this set
 
-Set:contains(x)
+`Set:contains(x)`
 returns true/false if the set contains the element.
 returns nil if the answer is indeterminant.
+
+`Expression:getRealDomain()` = Returns the RealDomain object for this expression, specifying what possible values it can contain.
 
 ## Dependencies:
 
@@ -752,6 +805,8 @@ Output CDN URLs:
 [tests/output/Parallel Propagators](https://thenumbernine.github.io/symmath/tests/output/Parallel%20Propagators.html)
 
 [tests/output/SRHD](https://thenumbernine.github.io/symmath/tests/output/SRHD.html)
+
+[tests/output/SRHD_1D](https://thenumbernine.github.io/symmath/tests/output/SRHD_1D.html)
 
 [tests/output/Schwarzschild - isotropic](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20isotropic.html)
 

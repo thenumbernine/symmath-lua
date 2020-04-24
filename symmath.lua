@@ -238,6 +238,10 @@ symmath.inf = symmath.Variable('infty', nil, math.huge)	-- TODO use 'infinite' o
 
 -- hack implicit variable names to look good in TeX
 
+--[[
+args:
+	env = environment to copy namespace into.  default is _G.
+--]]
 symmath.setup = function(args)
 	args = args or {}
 	local env = args.env or _G	
