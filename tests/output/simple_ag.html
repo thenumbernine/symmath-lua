@@ -1,111 +1,70 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Symbolic Lua Output</title>
-		<script type="text/javascript">
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src; 
-}
-function init() {
-	console.log('init...');
-	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
-			src : urls[i],
-			done : function() {
-				console.log("success!");
-				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-			},
-			fail : function() {
-				++i;
-				if (i >= urls.length) {
-					console.log("looks like all our sources have failed!");
-				} else {
-					loadNext();
-				}
-			}
-		});
-	}
-	loadNext();
-}
-		</script>
-	</head>
-    <body onload='init();'>
+        <meta charset='utf-8'>
+        <title>simple_ag</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 
-	${{\eta}_T}_T = {-1}$
-;	${{\eta}_X}_X = 1$
-;	${{\eta}_Y}_Y = 1$
-;	${{\eta}_Z}_Z = 1$
+${{{ \eta}_T}_T} = {-1}$;
+${{{ \eta}_X}_X} = {1}$;
+${{{ \eta}_Y}_Y} = {1}$;
+${{{ \eta}_Z}_Z} = {1}$
 
 <br>
-$b = {\frac{{9.8} m}{{s}^{2}}}$
+${b} = {\frac{{{9.8}} {{m}}}{{s}^{2}}}$
 <br>
-$b = {\frac{1.0903970549325\cdot{10^{-16}}}{m}}$
+${b} = {\frac{1.0903970549325\cdot{10^{-16}}}{m}}$
 <br>
-${{e}_u}^I = {\overset{u\downarrow I\rightarrow}{\left[\matrix{{\sqrt{1 - {{2 b} z}}}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+${{{ e}_u}^I} = {\overset{u\downarrow I\rightarrow}{\left[\begin{matrix}  \sqrt{{1} - {{{{{2}} {{b}}}} {{z}}}} &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$
 
 <br>
 metric:
 <br>
-${{g}_a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{-{({1 - {2 b z}})}}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+${{{ g}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  -{({{1} - {{{2}} {{b}} {{z}}}})} &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$
 <br>
 metric inverse:
 <br>
-${{g}^a}^b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{-{\frac{1}{1 - {2 b z}}}}&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1}\right]}}$
+${{{ g}^a}^b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  -{\frac{1}{{1} - {{{2}} {{b}} {{z}}}}} &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$
 <br>
 metric derivative:
 <br>
-${{{g}_a}_b}_{,c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&{2 b}\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}}\right]}}$
+${{{{ g}_a}_b}_{,c}} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  0 &  0 &  0 &  {{2}} {{b}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\end{matrix}\right]}}$
 <br>
 1st kind Christoffel:
 <br>
-${{{\Gamma}_a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&b\\0&0&0&0\\0&0&0&0\\b&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{b\downarrow c\rightarrow}{\left[\matrix{{-b}&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}}\right]}}$
+${{{{ \Gamma}_a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  0 &  0 &  0 &  b \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  b &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  -{b} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\end{matrix}\right]}}$
 <br>
 connection coefficients / 2nd kind Christoffel:
 <br>
-${{{\Gamma}^a}_b}_c = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\matrix{{\left[\matrix{0&0&0&{\frac{-b}{1 - {2 b z}}}\\0&0&0&0\\0&0&0&0\\{\frac{-b}{1 - {2 b z}}}&0&0&0}\right]}\\{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}\\{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}\\{\left[\matrix{{-b}&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\right]}}$
+${{{{ \Gamma}^a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  0 &  0 &  0 &  \frac{-{b}}{{1} - {{{2}} {{b}} {{z}}}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  \frac{-{b}}{{1} - {{{2}} {{b}} {{z}}}} &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  -{b} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\end{matrix}\right]}}$
 <br>
 connection coefficients derivative:
 <br>
-${{{{\Gamma}^a}_b}_c}_{,d} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\matrix{{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&{\frac{-{2 {{b}^{2}}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&{\frac{-{2 {{b}^{2}}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}}\right]}}$
+${{{{{ \Gamma}^a}_b}_c}_{,d}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\begin{matrix}  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{-{{{2}} {{{b}^{2}}}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}}\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  \frac{-{{{2}} {{{b}^{2}}}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\end{matrix}\right]}}$
 <br>
 connection coefficients squared:
 <br>
-${{{{\Gamma}^a}_e}_c {{{\Gamma}^e}_b}_d} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\matrix{{\overset{c\downarrow d\rightarrow}{\left[\matrix{{\frac{{b}^{2}}{1 - {2 b z}}}&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&{\frac{{b}^{2}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\{\frac{{b}^{2}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&{\frac{{b}^{2}}{1 - {2 b z}}}\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{{\frac{{b}^{2}}{1 - {2 b z}}}&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}}\right]}}$
+${{{{{{ \Gamma}^a}_e}_c}} {{{{{ \Gamma}^e}_b}_d}}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\begin{matrix}  \left[\begin{matrix}  \frac{{b}^{2}}{{1} - {{{2}} {{b}} {{z}}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{{b}^{2}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}}\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  \frac{{b}^{2}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  \frac{{b}^{2}}{{1} - {{{2}} {{b}} {{z}}}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  \frac{{b}^{2}}{{1} - {{{2}} {{b}} {{z}}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\end{matrix}\right]}}$
 <br>
-Riemann curvature, sharp:
+Riemann curvature, $\sharp\flat\flat\flat$:
 <br>
-${{{{R}^a}_b}_c}_d = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\matrix{{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&{\frac{{b}^{2}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}\\0&0&0&0\\0&0&0&0\\{\frac{-{{b}^{2}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\\{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&{\frac{{b}^{2}}{1 - {2 b z}}}\\0&0&0&0\\0&0&0&0\\{\frac{-{{b}^{2}}}{1 - {2 b z}}}&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}&{\overset{c\downarrow d\rightarrow}{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}}\right]}}$
+${{{{{ R}^a}_b}_c}_d} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\begin{matrix}  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  \frac{{b}^{2}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  \frac{-{{b}^{2}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  \frac{{b}^{2}}{{1} - {{{2}} {{b}} {{z}}}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  \frac{-{{b}^{2}}}{{1} - {{{2}} {{b}} {{z}}}} &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\end{matrix}\right]}}$
 <br>
-Riemann curvature:
+Riemann curvature, $\sharp\sharp\flat\flat$:
 <br>
-${{{{R}^a}^b}_c}_d = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\matrix{{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&{\frac{{b}^{2}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}\\0&0&0&0\\0&0&0&0\\{\frac{-{{b}^{2}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}&0&0&0}\right]}\\{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}\\{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}\\{\left[\matrix{0&0&0&{\frac{-{{b}^{2}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}\\0&0&0&0\\0&0&0&0\\{\frac{{b}^{2}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}&{\left[\matrix{0&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&0}\right]}}\right]}}$
+${{{{{ R}^a}^b}_c}_d} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[\begin{matrix}  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  \frac{{b}^{2}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  \frac{-{{b}^{2}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] \\  \left[\begin{matrix}  0 &  0 &  0 &  \frac{-{{b}^{2}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  \frac{{b}^{2}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right] &  \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\end{matrix}\right]}}$
 <br>
-Ricci curvature:
+Ricci curvature, $\sharp\flat$:
 <br>
-${{R}^a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{{b}^{2}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&{\frac{{b}^{2}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}}\right]}}$
+${{{ R}^a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  \frac{{b}^{2}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{{b}^{2}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}}\end{matrix}\right]}}$
 <br>
 Gaussian curvature:
 <br>
-$R = {\frac{2 {{b}^{2}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}$
+${R} = {\frac{{{2}} {{{b}^{2}}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}}}$
 <br>
-trace-reversed Ricci curvature:
+Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
 <br>
-${{G}^a}_b = {\overset{a\downarrow b\rightarrow}{\left[\matrix{{\frac{-{{b}^{2}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}&0&0&0\\0&{\frac{-{2 {{b}^{2}}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}&0&0\\0&0&{\frac{-{2 {{b}^{2}}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}&0\\0&0&0&{\frac{-{{b}^{2}}}{{1 - {4 b z}} + {4 {{b}^{2}} {{z}^{2}}}}}}\right]}}$
+${{{ G}^a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  \frac{-{{b}^{2}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} &  0 &  0 &  0 \\  0 &  \frac{-{{{2}} {{{b}^{2}}}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} &  0 &  0 \\  0 &  0 &  \frac{-{{{2}} {{{b}^{2}}}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}} &  0 \\  0 &  0 &  0 &  \frac{-{{b}^{2}}}{{{1} - {{{4}} {{b}} {{z}}}} + {{{4}} {{{b}^{2}}} {{{z}^{2}}}}}\end{matrix}\right]}}$
 <br>

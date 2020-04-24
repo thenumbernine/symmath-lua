@@ -1,5 +1,6 @@
 #!/usr/bin/env luajit
 require 'symmath'.setup{MathJax = {title = 'Alcubierre warp bubble', usePartialLHSForDerivative = true}}
+require 'ext'
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local coords = {t,x,y,z}

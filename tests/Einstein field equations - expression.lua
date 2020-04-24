@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars=true, MathJax={title='Einstein field equations - expression'}}
+require 'symmath'.setup{implicitVars=true, fixVariableNames=true, MathJax={title='Einstein field equations - expression'}}
 
 local g_def = g'_ab'
 printbr(g_def)

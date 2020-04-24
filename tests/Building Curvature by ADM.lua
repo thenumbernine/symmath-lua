@@ -1,6 +1,7 @@
 #!/usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{MathJax={title='Building Curvature by ADM', useCommaDerivative=true}}
+op = symmath.op	-- override ext.op
 
 local x,y = vars('x','y')
 local coords = table{x,y}

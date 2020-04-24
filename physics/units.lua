@@ -48,7 +48,8 @@ return function(args)
 	local MathJax
 	local lprint	-- local print, specific to symmath.tostring
 	if args.verbose then
-		symmath.tostring = symmath.export.MathJax
+		MathJax = symmath.export.MathJax
+		symmath.tostring = MathJax 
 		lprint = MathJax.print
 		Gprint(MathJax.Header('Natural Units'))
 	else

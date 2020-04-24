@@ -509,10 +509,19 @@ printbr(conn5'_abc':eq(conn5L_def))
 
 local F = var'F'
 local conn4 = var'\\Gamma'
+--[[ why isn't this working anymore?
 conn5L_def = conn5L_def:replace(
 	(g' _\\alpha _\\beta _,\\gamma' + g' _\\alpha _\\gamma _,\\beta' - g' _\\beta _\\gamma _,\\alpha')(), 
 	2 * conn4'_\\alpha _\\beta _\\gamma'
 )()
+--]]
+-- [[ instead ...
+conn5L_def = conn5L_def:replace(
+	g' _\\alpha _\\beta _,\\gamma', 
+	2 * conn4'_\\alpha _\\beta _\\gamma' - g' _\\alpha _\\gamma _,\\beta' + g' _\\beta _\\gamma _,\\alpha'
+)()
+--]]
+
 --[[ TODO ... this only seems to make things worse.  seems it is replacing too many A_alpha,gamma's
 conn5L_def = conn5L_def:replaceIndex(
 	A' _\\alpha _,\\gamma',

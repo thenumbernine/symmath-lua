@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{implicitVars = true, MathJax=true}
+require 'symmath'.setup{implicitVars=true, fixVariableNames=true, MathJax={title='ADM gravity using expressions'}}
 
 local TensorRef = require 'symmath.tensor.TensorRef'
 

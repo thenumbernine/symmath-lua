@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 require 'ext'
-require 'symmath'.setup{implicitVars=true, MathJax=true}
+require 'symmath'.setup{implicitVars=true, fixVariableNames=true, MathJax={title='spinors'}}
 
 local i = var'i'	-- looks better than 0+1i
 

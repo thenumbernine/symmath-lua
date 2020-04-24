@@ -1,5 +1,6 @@
 #!/usr/bin/env luajit
 require 'symmath'.setup{MathJax={title='ADM metric', useCommaDerivative=true}}
+require 'ext'
 
 local t,x,y,z = vars('t','x','y','z')
 local spatialCoords = {x,y,z}

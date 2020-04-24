@@ -1,82 +1,41 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Symbolic Lua Output</title>
-		<script type="text/javascript">
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src; 
-}
-function init() {
-	console.log('init...');
-	var urls = [
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
-			src : urls[i],
-			done : function() {
-				console.log("success!");
-				MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-			},
-			fail : function() {
-				++i;
-				if (i >= urls.length) {
-					console.log("looks like all our sources have failed!");
-				} else {
-					loadNext();
-				}
-			}
-		});
-	}
-	loadNext();
-}
-		</script>
-	</head>
-    <body onload='init();'>
+        <meta charset='utf-8'>
+        <title>spinors</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
 
-${{{\sigma}_x}^A}_B = {\overset{A\downarrow B\rightarrow}{\left[\matrix{0&1\\1&0}\right]}}$
+${{{{ \sigma}_x}^A}_B} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  1 \\  1 &  0\end{matrix}\right]}}$
 <br>
 
 <br>
 
 <br>
-${{{\sigma}_x}^A}_B = {\overset{A\downarrow B\rightarrow}{\left[\matrix{0&1\\1&0}\right]}}$
+${{{{ \sigma}_x}^A}_B} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  1 \\  1 &  0\end{matrix}\right]}}$
 <br>
-${{{{\sigma}_x}^A}^B = {{\overset{A\downarrow C\rightarrow}{\left[\matrix{0&1\\1&0}\right]}} {\overset{C\downarrow B\rightarrow}{\left[\matrix{0&1\\{-1}&0}\right]}}}} = {\overset{A\downarrow B\rightarrow}{\left[\matrix{{-1}&0\\0&1}\right]}}$
+${{{{{ \sigma}_x}^A}^B} = {{{\overset{A\downarrow C\rightarrow}{\left[\begin{matrix}  0 &  1 \\  1 &  0\end{matrix}\right]}}} {{\overset{C\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  1 \\  -{1} &  0\end{matrix}\right]}}}}} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  -{1} &  0 \\  0 &  1\end{matrix}\right]}}$
 <br>
-${{{{\sigma}_x}_A}_B = {{\overset{A\downarrow C\rightarrow}{\left[\matrix{0&1\\{-1}&0}\right]}} {\overset{C\downarrow B\rightarrow}{\left[\matrix{0&1\\1&0}\right]}}}} = {\overset{A\downarrow B\rightarrow}{\left[\matrix{1&0\\0&{-1}}\right]}}$
-<br>
-
-<br>
-
-<br>
-${{{\sigma}_y}^A}_B = {\overset{A\downarrow B\rightarrow}{\left[\matrix{0&{-i}\\i&0}\right]}}$
-<br>
-${{{{\sigma}_y}^A}^B = {{\overset{A\downarrow C\rightarrow}{\left[\matrix{0&{-i}\\i&0}\right]}} {\overset{C\downarrow B\rightarrow}{\left[\matrix{0&1\\{-1}&0}\right]}}}} = {\overset{A\downarrow B\rightarrow}{\left[\matrix{i&0\\0&i}\right]}}$
-<br>
-${{{{\sigma}_y}_A}_B = {{\overset{A\downarrow C\rightarrow}{\left[\matrix{0&1\\{-1}&0}\right]}} {\overset{C\downarrow B\rightarrow}{\left[\matrix{0&{-i}\\i&0}\right]}}}} = {\overset{A\downarrow B\rightarrow}{\left[\matrix{i&0\\0&i}\right]}}$
+${{{{{ \sigma}_x}_A}_B} = {{{\overset{A\downarrow C\rightarrow}{\left[\begin{matrix}  0 &  1 \\  -{1} &  0\end{matrix}\right]}}} {{\overset{C\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  1 \\  1 &  0\end{matrix}\right]}}}}} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  -{1}\end{matrix}\right]}}$
 <br>
 
 <br>
 
 <br>
-${{{\sigma}_z}^A}_B = {\overset{A\downarrow B\rightarrow}{\left[\matrix{1&0\\0&{-1}}\right]}}$
+${{{{ \sigma}_y}^A}_B} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  -{i} \\  i &  0\end{matrix}\right]}}$
 <br>
-${{{{\sigma}_z}^A}^B = {{\overset{A\downarrow C\rightarrow}{\left[\matrix{1&0\\0&{-1}}\right]}} {\overset{C\downarrow B\rightarrow}{\left[\matrix{0&1\\{-1}&0}\right]}}}} = {\overset{A\downarrow B\rightarrow}{\left[\matrix{0&1\\1&0}\right]}}$
+${{{{{ \sigma}_y}^A}^B} = {{{\overset{A\downarrow C\rightarrow}{\left[\begin{matrix}  0 &  -{i} \\  i &  0\end{matrix}\right]}}} {{\overset{C\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  1 \\  -{1} &  0\end{matrix}\right]}}}}} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  i &  0 \\  0 &  i\end{matrix}\right]}}$
 <br>
-${{{{\sigma}_z}_A}_B = {{\overset{A\downarrow C\rightarrow}{\left[\matrix{0&1\\{-1}&0}\right]}} {\overset{C\downarrow B\rightarrow}{\left[\matrix{1&0\\0&{-1}}\right]}}}} = {\overset{A\downarrow B\rightarrow}{\left[\matrix{0&{-1}\\{-1}&0}\right]}}$
+${{{{{ \sigma}_y}_A}_B} = {{{\overset{A\downarrow C\rightarrow}{\left[\begin{matrix}  0 &  1 \\  -{1} &  0\end{matrix}\right]}}} {{\overset{C\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  -{i} \\  i &  0\end{matrix}\right]}}}}} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  i &  0 \\  0 &  i\end{matrix}\right]}}$
+<br>
+
+<br>
+
+<br>
+${{{{ \sigma}_z}^A}_B} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  -1\end{matrix}\right]}}$
+<br>
+${{{{{ \sigma}_z}^A}^B} = {{{\overset{A\downarrow C\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  -{1}\end{matrix}\right]}}} {{\overset{C\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  1 \\  -{1} &  0\end{matrix}\right]}}}}} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  1 \\  1 &  0\end{matrix}\right]}}$
+<br>
+${{{{{ \sigma}_z}_A}_B} = {{{\overset{A\downarrow C\rightarrow}{\left[\begin{matrix}  0 &  1 \\  -{1} &  0\end{matrix}\right]}}} {{\overset{C\downarrow B\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  -{1}\end{matrix}\right]}}}}} = {\overset{A\downarrow B\rightarrow}{\left[\begin{matrix}  0 &  -{1} \\  -{1} &  0\end{matrix}\right]}}$
 <br>

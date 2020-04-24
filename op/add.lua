@@ -47,6 +47,213 @@ function add:getRealDomain()
 	return I
 end
 
+
+--[[
+this is a single term^power
+--]]
+local ProdTerm = class()
+
+function ProdTerm:init(args)
+	self.term = args.term
+	self.power = args.power
+end
+
+
+--[[
+this is a multiplied collection of a1^b1 * a2^b2 * ...
+--]]
+local ProdList = class()
+
+ProdList.insert = table.insert
+ProdList.mapi = table.mapi
+ProdList.find = table.find
+
+
+function ProdList:toExpr()
+	local Constant = require 'symmath.Constant'
+	local Verbose = require 'symmath.export/Verbose'
+	local list = table.mapi(self, function(x)
+		if Constant.isValue(x.power, 1) then
+			return x.term
+		else
+			return x.term ^ x.power:simplify()
+		end
+	end)
+
+	list = list:filter(function(x)
+		return not Constant.isValue(x, 1)
+	end)
+
+	if #list == 0 then return Constant(1) end
+	if #list == 1 then return list[1] end
+	list = list:sort(function(a,b)
+		local sa = Verbose(a)
+		local sb = Verbose(b)
+		if #sa ~= #sb then return #sa < #sb end
+		return sa < sb 
+	end)
+	
+	return setmetatable(list, require 'symmath.op.mul')
+end
+
+
+
+-- pass it an element of the product list
+-- returns true if all the powers are even (and positive?)
+-- I'm not using this yet, but for the sake of generalizing, it would be good to switch to this
+function ProdList:isSquare()
+	local symmath = require 'symmath'
+	local Constant = symmath.Constant
+	for i,pi in ipairs(self) do
+		if 
+		-- [[ exclude any constants, especially the -1's
+		Constant.is(pi.term)
+		--]]
+		--[[ if power is 1 then treat 1^1 as an even power (i.e. anything^0)
+		(
+			Constant.isValue(pi.term, 1)
+			and Constant.isValue(pi.power, 1)
+		) 
+		--]]
+		or (
+			Constant.is(pi.power)
+			-- TODO positiveEvenInteger:contains
+			and symmath.set.evenInteger:contains(pi.power)
+			and pi.power.value > 0	-- I don't think any power==0's exist at this point
+		) then
+			-- we're an even power
+		else
+			return false
+		end
+	end
+	return true
+end
+
+
+-- for the i'th child of an add ...
+-- return a list of {term=term, power=power}
+function getProductList(x)
+	local symmath = require 'symmath'
+	local mul = symmath.op.mul
+	local pow = symmath.op.pow
+	local Constant = symmath.Constant
+
+	-- get products or individual terms
+	local prodList
+	if mul.is(x) then
+		prodList = table(x)
+	else
+		prodList = table{x}
+	end
+	
+	-- pick out any exponents in any of the products
+	prodList = prodList:mapi(function(ch)
+		if pow.is(ch) then
+			return ProdTerm{
+				term = ch[1],
+				power = assert(ch[2]),
+			}
+		else
+			return ProdTerm{
+				term = ch,
+				power = Constant(1),
+			}
+		end
+	end)
+
+	local newProdList = ProdList()
+	for k,x in ipairs(prodList) do
+		if Constant.is(x.term) then
+			local c = x.term.value
+			if c == 1 then
+				-- do nothing -- remove any 1's
+			elseif c == 0 then
+				newProdList:insert(x)
+			else
+				if c < 0 then
+					-- if it's a negative constant then split out the minus
+					newProdList:insert(ProdTerm{
+						term = Constant(-1),
+						power = x.power,
+					})
+					c = -c
+				end
+				
+				--if symmath.set.positiveInteger:contains(list[i])
+				if c == math.floor(c) then
+					local ppow = {}
+					for _,p in ipairs(math.primeFactorization(c)) do
+						ppow[p] = (ppow[p] or 0) + 1
+					end
+					for p,power in pairs(ppow) do
+						if power == 1 then
+							newProdList:insert(ProdTerm{
+								term = Constant(p),
+								power = x.power,
+							})
+						else
+							newProdList:insert(ProdTerm{
+								term = Constant(p),
+								power = x.power * power,
+							})
+						end
+					end
+				else
+					newProdList:insert(ProdTerm{
+						term = Constant(c),
+						power = x.power,
+					})
+				end
+			end
+		else
+			newProdList:insert(x)	-- add the new term
+		end
+	end
+	prodList = newProdList
+
+	return prodList
+end
+
+--[[
+this is a summed collection p1 + p2 + ... 
+where each pi is a ProdList above a1^b1 * a2^b2 * ...
+--]]
+local ProdLists = class()
+
+function ProdLists:init(expr)
+	for i,x in ipairs(expr) do
+		self[i] = getProductList(x)
+	end
+end
+
+function ProdLists:sort()
+	local Constant = require 'symmath.Constant'
+	local Verbose = require 'symmath.export.Verbose'
+	local function sortstr(list)
+		if #list == 0 then return '' end
+		if #list == 1 and Constant.is(list[1].term) then return '' end
+		return table.mapi(list, function(x,_,t)
+			if Constant.is(x.term) then return end
+			return Verbose(x.term), #t+1
+		end):concat(',')
+	end
+	-- sort the sum terms from shortest to longest
+	table.sort(self, function(a,b)
+		local sa = sortstr(a)
+		local sb = sortstr(b)
+		return sa < sb 
+	end)
+end
+
+function ProdLists:toExpr()
+	local expr = table.mapi(self, function(prodList) 
+		return prodList:toExpr() 
+	end)
+	expr = #expr == 1 and expr[1] or setmetatable(expr, require 'symmath.op.add')
+	return expr
+end
+
+
 add.rules = {
 	Eval = {
 		{apply = function(eval, expr)
@@ -68,14 +275,35 @@ add.rules = {
 			local Constant = symmath.Constant
 			local Verbose = symmath.export.Verbose
 
+
 			-- [[ x*a + x*b => x * (a + b)
 			-- the opposite of this is in mul:prune's applyDistribute
 			-- don't leave both of them uncommented or you'll get deadlock
 
-			-- [[
+
+			-- TODO make this a part of add's interface
+			-- an iterator / length operator for what terms and what powers are available.
+			-- have it return constants and cache low Constant() values
+			
+
+			-- 1) get all terms and powers
+			local prodLists = ProdLists(expr)
+			-- sort by prodLists[i].term, excluding all constants
+			prodLists:sort()
+
+
 			-- TODO where to put quadratic / polynomial division
 			-- I should do this somewhere else, but I'll do it here for now
 			-- a^2 - b^2 => (a+b) (a-b)
+
+			--[[ searching prodLists
+			if #prodLists == 2 then
+				if one of the two has a -1 Constant in its product list
+				if both are considered squares (i.e. other than constants, all have even powers)
+				then replace them with (x + y)(x - y)
+			end
+			--]]
+			-- [[ searching expr 
 			if #expr == 2 then
 				if symmath.op.pow.is(expr[1])
 				and symmath.set.evenInteger:contains(expr[1][2])
@@ -93,14 +321,14 @@ add.rules = {
 			-- TODO factoring higher polys ... this is just one specific case
 			--]]
 			-- [[ this is duplicated in sqrt.Prune
-			local function isSquare(x)
+			local function isSquarePow(x)
 				return pow.is(x) and Constant.isValue(x[2], 2)
 			end
 			if #expr == 3 then
 				local squares = table()
 				local notsquares = table()
 				for i,xi in ipairs(expr) do
-					(isSquare(xi) and squares or notsquares):insert(i)
+					(isSquarePow(xi) and squares or notsquares):insert(i)
 				end
 				if #squares == 2 then
 					assert(#notsquares == 1)
@@ -117,136 +345,9 @@ add.rules = {
 			--]]
 
 
-			local function nodeToProdList(x)
-				local prodList
-				
-				-- get products or individual terms
-				if mul.is(x) then
-					prodList = table(x)
-				else
-					prodList = table{x}
-				end
-				
-				-- pick out any exponents in any of the products
-				prodList = prodList:mapi(function(ch)
-					if pow.is(ch) then
-						return {
-							term = ch[1],
-							power = assert(ch[2]),
-						}
-					else
-						return {
-							term = ch,
-							power = Constant(1),
-						}
-					end
-				end)
-		
-				local newProdList = table()
-				for k,x in ipairs(prodList) do
-					if Constant.is(x.term) then
-						local c = x.term.value
-						if c == 1 then
-							-- do nothing -- remove any 1's
-						elseif c == 0 then
-							newProdList:insert(x)
-						else
-							if c < 0 then
-								-- if it's a negative constant then split out the minus
-								newProdList:insert{
-									term = Constant(-1),
-									power = x.power,
-								}
-								c = -c
-							end
-							
-							--if symmath.set.positiveInteger:contains(list[i])
-							if c == math.floor(c) then
-								local ppow = {}
-								for _,p in ipairs(math.primeFactorization(c)) do
-									ppow[p] = (ppow[p] or 0) + 1
-								end
-								for p,power in pairs(ppow) do
-									if power == 1 then
-										newProdList:insert{
-											term = Constant(p),
-											power = x.power,
-										}
-									else
-										newProdList:insert{
-											term = Constant(p),
-											power = x.power * power,
-										}
-									end
-								end
-							else
-								newProdList:insert{
-									term = Constant(c),
-									power = x.power,
-								}
-							end
-						end
-					else
-						newProdList:insert(x)	-- add the new term
-					end
-				end
-				prodList = newProdList
-
-				return prodList
-			end
-			
-			local function prodListToNode(list)
-				list = list:mapi(function(x)
-					if Constant.isValue(x.power, 1) then
-						return x.term
-					else
-						return x.term ^ x.power:simplify()
-					end
-				end)
-
-				list = list:filter(function(x)
-					return not Constant.isValue(x, 1)
-				end)
-
-				if #list == 0 then return Constant(1) end
-				if #list == 1 then return list[1] end
-				list = list:sort(function(a,b)
-					local sa = Verbose(a)
-					local sb = Verbose(b)
-					if #sa ~= #sb then return #sa < #sb end
-					return sa < sb 
-				end)
-				return setmetatable(list, mul)
-			end
-
-
-			-- 1) get all terms and powers
-			local prodLists = table()
-			for i=1,#expr do
-				prodLists[i] = nodeToProdList(expr[i])
-			end
-			-- sort by prodLists[i].term, excluding all constants
-			local function sortstr(list)
-				if #list == 0 then return '' end
-				if #list == 1 and Constant.is(list[1].term) then return '' end
-				return table.mapi(list, function(x,_,t)
-					if Constant.is(x.term) then return end
-					return Verbose(x.term), #t+1
-				end):concat(',')
-			end
-			-- sort the sum terms from shortest to longest
-			prodLists:sort(function(a,b)
-				local sa = sortstr(a)
-				local sb = sortstr(b)
-				return sa < sb 
-			end)
-
 			-- rebuild exprs accordingly
 			assert(#prodLists == #expr)
-			expr = setmetatable({}, symmath.op.add)
-			for i=1,#prodLists do
-				expr[i] = prodListToNode(prodLists[i])
-			end
+			expr = prodLists:toExpr()
 			assert(#expr > 1)
 
 	
@@ -380,8 +481,7 @@ add.rules = {
 			--]]
 
 			-- then add what's left of the original sum
-			local lastTerm = prodLists:mapi(prodListToNode)
-			lastTerm = #lastTerm == 1 and lastTerm[1] or add(lastTerm:unpack())
+			local lastTerm = prodLists:toExpr()
 
 			-- [[
 			-- if anything was factored out then try the quadratic rules on what's left

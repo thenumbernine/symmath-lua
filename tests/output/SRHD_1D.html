@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>SRHD 1D</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+$\gamma$ = heat capacity ratio
+<br>
+$\rho$ = rest-mass density
+<br>
+${v^x}$ = 3-velocity
+<br>
+${e_{int}}$ = rest-mass internal specific energy
+<br>
+primitives:
+<br>
+${{ w}^i} = {\left[\begin{matrix}  \rho \\  {v^x} \\  {e_{int}}\end{matrix}\right]}$
+<br>
+${W} = {\frac{1}{\sqrt{{1} - {{{v^x}}^{2}}}}}$ = Lorentz factor
+<br>
+${{{v^x}}^{2}} = {{1} - {\frac{1}{{W}^{2}}}}$ = velocity in terms of Lorentz factor
+<br>
+$P$ = pressure
+<br>
+${P} = {{{{{({{\gamma} - {1}})}} {{\rho}}}} {{{e_{int}}}}}$ = pressure for an ideal gas
+<br>
+${h} = {{{1} + {{e_{int}}}} + {{\frac{1}{\rho}}{({P})}}}$ = internal specific enthalpy
+<br>
+${h} = {{1} + {{{\gamma}} \cdot {{{e_{int}}}}}}$ = internal specific enthalpy for an ideal gas
+<br>
+${{e_{int}}} = {{\frac{1}{\gamma}}{({-{({{1} - {h}})}})}}$ = internal specific energy in terms of enthalpy
+<br>
+${{e_{int}}} = {{\frac{1}{\rho}}{({-{({{P} + {{\rho} - {{{h}} {{\rho}}}}})}})}}$
+<br>
+${D} = {{{\rho}} \cdot {{W}}}$ = density
+<br>
+${S^x}$ = momentum
+<br>
+$\tau$ = total energy density
+<br>
+conservatives:
+<br>
+${{ U}^i} = {\left[\begin{matrix}  D \\  {S^x} \\  \tau\end{matrix}\right]}$
+<br>
+conservative definitions:
+<br>
+${{ U}^i} = {\left[\begin{matrix}  {{\rho}} \cdot {{W}} \\  {{{{{{\rho}} \cdot {{h}}}} {{{W}^{2}}}}} {{{v^x}}} \\  {{{{{{\rho}} \cdot {{h}}}} {{{W}^{2}}}} - {P}} - {{{\rho}} \cdot {{W}}}\end{matrix}\right]}$
+<br>
+...in terms of primitives:
+<br>
+${{ U}^i} = {\left[\begin{matrix}  {{\rho}} \cdot {{\frac{1}{\sqrt{{1} - {{{v^x}}^{2}}}}}} \\  {{{{{{\rho}} \cdot {{({{{1} + {{e_{int}}}} + {{\frac{1}{\rho}}{({{{{{({{\gamma} - {1}})}} {{\rho}}}} {{{e_{int}}}}})}}})}}}} {{{({\frac{1}{\sqrt{{1} - {{{v^x}}^{2}}}}})}^{2}}}}} {{{v^x}}} \\  {{{{{{\rho}} \cdot {{({{{1} + {{e_{int}}}} + {{\frac{1}{\rho}}{({{{{{({{\gamma} - {1}})}} {{\rho}}}} {{{e_{int}}}}})}}})}}}} {{{({\frac{1}{\sqrt{{1} - {{{v^x}}^{2}}}}})}^{2}}}} - {{{{{({{\gamma} - {1}})}} {{\rho}}}} {{{e_{int}}}}}} - {{{\rho}} \cdot {{\frac{1}{\sqrt{{1} - {{{v^x}}^{2}}}}}}}\end{matrix}\right]}$
+<br>
+change in conservative vars wrt primitives:
+<br>
+${{\partial {U^i}}\over{\partial w^j}} = {\left[\begin{matrix}  W &  {{\rho}} \cdot {{{v^x}}} \cdot {{{W}^{3}}} &  0 \\  {{{v^x}}} \cdot {{{W}^{2}}} {{h}} &  \frac{-{{{\rho}} \cdot {{h}} {{({{1} - {{{2}} {{{W}^{2}}}}})}}}}{{2} + {{{{{{v^x}}^{4}}} {{{W}^{2}}}} - {{W}^{2}}}} &  {{\rho}} \cdot {{\gamma}} \cdot {{{v^x}}} \cdot {{{W}^{2}}} \\  {\frac{1}{\gamma}}{({-{({{1} + {{{{{W}} {{\gamma}}} - {\gamma}} - {h}} + {{{{h}} {{\gamma}}} - {{{h}} {{\gamma}} \cdot {{{W}^{2}}}}}})}})} &  \frac{-{{{\rho}} \cdot {{{v^x}}} \cdot {{W}} {{({{1} - {{{2}} {{W}} {{h}}}})}}}}{{2} + {{{{{{v^x}}^{4}}} {{{W}^{2}}}} - {{W}^{2}}}} &  {{\rho}} \cdot {{({{{1} - {\gamma}} + {{{\gamma}} \cdot {{{W}^{2}}}}})}}\end{matrix}\right]}$
+<br>
+flux in terms of conservative variables:
+<br>
+${{ F}^i} = {\left[\begin{matrix}  {{D}} {{{v^x}}} \\  {{{{S^x}}} \cdot {{{v^x}}}} - {P} \\  {{S^x}} - {{{D}} {{{v^x}}}}\end{matrix}\right]}$
+<br>
+flux in terms of primitive variables:
+<br>
+${{ F}^i} = {\left[\begin{matrix}  \frac{{{{v^x}}} \cdot {{\rho}}}{\sqrt{{1} - {{{v^x}}^{2}}}} \\  \frac{-{{{\rho}} \cdot {{({{{{{{\gamma}} \cdot {{{e_{int}}}}} - {{{2}} {{\gamma}} \cdot {{{e_{int}}}} \cdot {{{{v^x}}^{2}}}}} - {{e_{int}}}} + {{{{{e_{int}}}} \cdot {{{{v^x}}^{2}}}} - {{{v^x}}^{2}}}})}}}}{{1} - {{{v^x}}^{2}}} \\  \frac{{{\rho}} \cdot {{{v^x}}} \cdot {{({{{1} - {\sqrt{{1} - {{{v^x}}^{2}}}}} + {{{\gamma}} \cdot {{{e_{int}}}}}})}}}{{1} - {{{v^x}}^{2}}}\end{matrix}\right]}$
+<br>
+change in flux wrt primitives:
+<br>
+${{\partial {F^i}}\over{\partial w^j}} = {\left[\begin{matrix}  {{{v^x}}} \cdot {{W}} &  {{\rho}} \cdot {{{W}^{3}}} &  0 \\  {\frac{1}{\gamma}}{({-{({{{{1} - {\gamma}} - {h}} + {{{{2}} {{h}} {{\gamma}}} - {{{h}} {{\gamma}} \cdot {{{W}^{2}}}}}})}})} &  \frac{{{2}} {{\rho}} \cdot {{{v^x}}} \cdot {{{W}^{2}}} {{h}}}{{2} + {{{{{{v^x}}^{4}}} {{{W}^{2}}}} - {{W}^{2}}}} &  {{\rho}} \cdot {{({{{1} - {{{2}} {{\gamma}}}} + {{{\gamma}} \cdot {{{W}^{2}}}}})}} \\  -{{{{v^x}}} \cdot {{W}} {{({{1} - {{{W}} {{h}}}})}}} &  \frac{{{\rho}} \cdot {{({{1} + {{{{{W}^{4}} - {{{3}} {{{W}^{2}}}}} - {{{W}} {{h}}}} - {{{{W}^{4}}} {{{{v^x}}^{4}}}}} + {{{2}} {{h}} {{{W}^{3}}}}})}}}{{{W}} {{({{{2} - {{W}^{2}}} + {{{{W}^{2}}} {{{{v^x}}^{4}}}}})}}} &  {{\rho}} \cdot {{{v^x}}} \cdot {{\gamma}} \cdot {{{W}^{2}}}\end{matrix}\right]}$
+<br>

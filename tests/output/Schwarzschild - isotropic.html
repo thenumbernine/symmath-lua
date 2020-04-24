@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset='UTF-8'>
+        <meta charset='utf-8'>
         <title>Schwarzschild - isotropic</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
     </head>
@@ -15,253 +15,37 @@ ${{\mu_-}} = {{1} - {\mu}}$
 <br>
 metric:
 <br>
-${{{g}_u}_v} = {\overset{u\downarrow v\rightarrow}{
-\left[
-\begin{matrix}
-\frac{-{{{\mu_-}}^{2}}}{{{\mu_+}}^{2}} & 0 & 0 & 0 \\
-0 & {{\mu_+}}^{4} & 0 & 0 \\
-0 & 0 & {{\mu_+}}^{4} & 0 \\
-0 & 0 & 0 & {{\mu_+}}^{4}
-\end{matrix}
-\right]
-}}$
+${{{ g}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  \frac{-{{{\mu_-}}^{2}}}{{{\mu_+}}^{2}} &  0 &  0 &  0 \\  0 &  {{\mu_+}}^{4} &  0 &  0 \\  0 &  0 &  {{\mu_+}}^{4} &  0 \\  0 &  0 &  0 &  {{\mu_+}}^{4}\end{matrix}\right]}}$
 <br>
 metric inverse:
 <br>
-${{{g}^u}^v} = {\overset{u\downarrow v\rightarrow}{
-\left[
-\begin{matrix}
-\frac{{{\mu_+}}^{2}}{-{{{\mu_-}}^{2}}} & 0 & 0 & 0 \\
-0 & \frac{1}{{{\mu_+}}^{4}} & 0 & 0 \\
-0 & 0 & \frac{1}{{{\mu_+}}^{4}} & 0 \\
-0 & 0 & 0 & \frac{1}{{{\mu_+}}^{4}}
-\end{matrix}
-\right]
-}}$
+${{{ g}^u}^v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  \frac{{{\mu_+}}^{2}}{-{{{\mu_-}}^{2}}} &  0 &  0 &  0 \\  0 &  \frac{1}{{{\mu_+}}^{4}} &  0 &  0 \\  0 &  0 &  \frac{1}{{{\mu_+}}^{4}} &  0 \\  0 &  0 &  0 &  \frac{1}{{{\mu_+}}^{4}}\end{matrix}\right]}}$
 <br>
-${{{{{g}_u}_a}} {{{{g}^a}^v}}} = {\overset{u\downarrow v\rightarrow}{
-\left[
-\begin{matrix}
-1 & 0 & 0 & 0 \\
-0 & 1 & 0 & 0 \\
-0 & 0 & 1 & 0 \\
-0 & 0 & 0 & 1
-\end{matrix}
-\right]
-}}$
+${{{{{ g}_u}_a}} {{{{ g}^a}^v}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$
 <br>
 metric partial derivatives:
 <br>
-${{{{g}_u}_v}_{,w}} = {\overset{u\downarrow[{v\downarrow w\rightarrow}]}{
-\left[
-\begin{matrix}
-\overset{v\downarrow w\rightarrow}{
-\left[
-\begin{matrix}
-0 & \frac{-{{{{\mu_-}}} \cdot {{R}} {{x}}}}{{{{r}^{3}}} {{{{\mu_+}}^{3}}}} & \frac{-{{{{\mu_-}}} \cdot {{R}} {{y}}}}{{{{r}^{3}}} {{{{\mu_+}}^{3}}}} & \frac{-{{{{\mu_-}}} \cdot {{R}} {{z}}}}{{{{r}^{3}}} {{{{\mu_+}}^{3}}}} \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0
-\end{matrix}
-\right]
-} \\
-\overset{v\downarrow w\rightarrow}{
-\left[
-\begin{matrix}
-0 & 0 & 0 & 0 \\
-0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{r}^{3}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{r}^{3}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{r}^{3}} \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0
-\end{matrix}
-\right]
-} \\
-\overset{v\downarrow w\rightarrow}{
-\left[
-\begin{matrix}
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\
-0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{r}^{3}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{r}^{3}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{r}^{3}} \\
-0 & 0 & 0 & 0
-\end{matrix}
-\right]
-} \\
-\overset{v\downarrow w\rightarrow}{
-\left[
-\begin{matrix}
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\
-0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{r}^{3}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{r}^{3}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{r}^{3}}
-\end{matrix}
-\right]
-}
-\end{matrix}
-\right]
-}}$
+${{{{ g}_u}_v}_{,w}} = {\overset{u\downarrow[{v\downarrow w\rightarrow}]}{\left[\begin{matrix} \overset{v\downarrow w\rightarrow}{\left[\begin{matrix}  0 &  \frac{-{{{{\mu_-}}} \cdot {{R}} {{x}}}}{{{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  \frac{-{{{{\mu_-}}} \cdot {{R}} {{y}}}}{{{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  \frac{-{{{{\mu_-}}} \cdot {{R}} {{z}}}}{{{{r}^{3}}} {{{{\mu_+}}^{3}}}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]} \\ \overset{v\downarrow w\rightarrow}{\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{r}^{3}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{r}^{3}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{r}^{3}} \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]} \\ \overset{v\downarrow w\rightarrow}{\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{r}^{3}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{r}^{3}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{r}^{3}} \\  0 &  0 &  0 &  0\end{matrix}\right]} \\ \overset{v\downarrow w\rightarrow}{\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{r}^{3}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{r}^{3}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{r}^{3}}\end{matrix}\right]}\end{matrix}\right]}}$
 <br>
 1st kind Christoffel:
 <br>
-${{{{\Gamma}_u}_v}_w} = {\overset{u\downarrow[{v\downarrow w\rightarrow}]}{
-\left[
-\begin{matrix}
-
-\left[
-\begin{matrix}
-0 & \frac{-{{{{\mu_-}}} \cdot {{R}} {{x}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} & \frac{-{{{{\mu_-}}} \cdot {{R}} {{y}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} & \frac{-{{{{\mu_-}}} \cdot {{R}} {{z}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} \\
-\frac{-{{{{\mu_-}}} \cdot {{R}} {{x}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} & 0 & 0 & 0 \\
-\frac{-{{{{\mu_-}}} \cdot {{R}} {{y}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} & 0 & 0 & 0 \\
-\frac{-{{{{\mu_-}}} \cdot {{R}} {{z}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} & 0 & 0 & 0
-\end{matrix}
-\right]
- \\
-
-\left[
-\begin{matrix}
-\frac{{{{\mu_-}}} \cdot {{R}} {{x}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} & 0 & 0 & 0 \\
-0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}} \\
-0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} & \frac{{{{{\mu_+}}^{3}}} {{R}} {{x}}}{{{2}} {{{r}^{3}}}} & 0 \\
-0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}} & 0 & \frac{{{{{\mu_+}}^{3}}} {{R}} {{x}}}{{{2}} {{{r}^{3}}}}
-\end{matrix}
-\right]
- \\
-
-\left[
-\begin{matrix}
-\frac{{{{\mu_-}}} \cdot {{R}} {{y}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} & 0 & 0 & 0 \\
-0 & \frac{{{{{\mu_+}}^{3}}} {{R}} {{y}}}{{{2}} {{{r}^{3}}}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} & 0 \\
-0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}} \\
-0 & 0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}} & \frac{{{{{\mu_+}}^{3}}} {{R}} {{y}}}{{{2}} {{{r}^{3}}}}
-\end{matrix}
-\right]
- \\
-
-\left[
-\begin{matrix}
-\frac{{{{\mu_-}}} \cdot {{R}} {{z}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} & 0 & 0 & 0 \\
-0 & \frac{{{{{\mu_+}}^{3}}} {{R}} {{z}}}{{{2}} {{{r}^{3}}}} & 0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} \\
-0 & 0 & \frac{{{{{\mu_+}}^{3}}} {{R}} {{z}}}{{{2}} {{{r}^{3}}}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} \\
-0 & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} & \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}}
-\end{matrix}
-\right]
-
-\end{matrix}
-\right]
-}}$
+${{{{ \Gamma}_u}_v}_w} = {\overset{u\downarrow[{v\downarrow w\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  0 &  \frac{-{{{{\mu_-}}} \cdot {{R}} {{x}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  \frac{-{{{{\mu_-}}} \cdot {{R}} {{y}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  \frac{-{{{{\mu_-}}} \cdot {{R}} {{z}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} \\  \frac{-{{{{\mu_-}}} \cdot {{R}} {{x}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  0 &  0 &  0 \\  \frac{-{{{{\mu_-}}} \cdot {{R}} {{y}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  0 &  0 &  0 \\  \frac{-{{{{\mu_-}}} \cdot {{R}} {{z}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  \frac{{{{\mu_-}}} \cdot {{R}} {{x}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  0 &  0 &  0 \\  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}} \\  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} &  \frac{{{{{\mu_+}}^{3}}} {{R}} {{x}}}{{{2}} {{{r}^{3}}}} &  0 \\  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}} &  0 &  \frac{{{{{\mu_+}}^{3}}} {{R}} {{x}}}{{{2}} {{{r}^{3}}}}\end{matrix}\right] \\ \left[\begin{matrix}  \frac{{{{\mu_-}}} \cdot {{R}} {{y}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  0 &  0 &  0 \\  0 &  \frac{{{{{\mu_+}}^{3}}} {{R}} {{y}}}{{{2}} {{{r}^{3}}}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} &  0 \\  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}} \\  0 &  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}} &  \frac{{{{{\mu_+}}^{3}}} {{R}} {{y}}}{{{2}} {{{r}^{3}}}}\end{matrix}\right] \\ \left[\begin{matrix}  \frac{{{{\mu_-}}} \cdot {{R}} {{z}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{3}}}} &  0 &  0 &  0 \\  0 &  \frac{{{{{\mu_+}}^{3}}} {{R}} {{z}}}{{{2}} {{{r}^{3}}}} &  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} \\  0 &  0 &  \frac{{{{{\mu_+}}^{3}}} {{R}} {{z}}}{{{2}} {{{r}^{3}}}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} \\  0 &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{x}}}}{{{2}} {{{r}^{3}}}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{y}}}}{{{2}} {{{r}^{3}}}} &  \frac{-{{{{{\mu_+}}^{3}}} {{R}} {{z}}}}{{{2}} {{{r}^{3}}}}\end{matrix}\right]\end{matrix}\right]}}$
 <br>
 2nd kind Christoffel:
 <br>
-${{{{\Gamma}^u}_v}_w} = {\overset{u\downarrow[{v\downarrow w\rightarrow}]}{
-\left[
-\begin{matrix}
-
-\left[
-\begin{matrix}
-0 & \frac{{{R}} {{x}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} & \frac{{{R}} {{y}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} & \frac{{{R}} {{z}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} \\
-\frac{{{R}} {{x}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} & 0 & 0 & 0 \\
-\frac{{{R}} {{y}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} & 0 & 0 & 0 \\
-\frac{{{R}} {{z}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} & 0 & 0 & 0
-\end{matrix}
-\right]
- \\
-
-\left[
-\begin{matrix}
-\frac{{{{\mu_-}}} \cdot {{R}} {{x}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} & 0 & 0 & 0 \\
-0 & \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} \\
-0 & \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{{{R}} {{x}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & 0 \\
-0 & \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & 0 & \frac{{{R}} {{x}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}}
-\end{matrix}
-\right]
- \\
-
-\left[
-\begin{matrix}
-\frac{{{{\mu_-}}} \cdot {{R}} {{y}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} & 0 & 0 & 0 \\
-0 & \frac{{{R}} {{y}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & 0 \\
-0 & \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} \\
-0 & 0 & \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{{{R}} {{y}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}}
-\end{matrix}
-\right]
- \\
-
-\left[
-\begin{matrix}
-\frac{{{{\mu_-}}} \cdot {{R}} {{z}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} & 0 & 0 & 0 \\
-0 & \frac{{{R}} {{z}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & 0 & \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} \\
-0 & 0 & \frac{{{R}} {{z}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} \\
-0 & \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} & \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}}
-\end{matrix}
-\right]
-
-\end{matrix}
-\right]
-}}$
+${{{{ \Gamma}^u}_v}_w} = {\overset{u\downarrow[{v\downarrow w\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  0 &  \frac{{{R}} {{x}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} &  \frac{{{R}} {{y}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} &  \frac{{{R}} {{z}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} \\  \frac{{{R}} {{x}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} &  0 &  0 &  0 \\  \frac{{{R}} {{y}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} &  0 &  0 &  0 \\  \frac{{{R}} {{z}}}{{{2}} {{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} &  0 &  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  \frac{{{{\mu_-}}} \cdot {{R}} {{x}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} &  0 &  0 &  0 \\  0 &  \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} \\  0 &  \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{{{R}} {{x}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  0 \\  0 &  \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  0 &  \frac{{{R}} {{x}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}}\end{matrix}\right] \\ \left[\begin{matrix}  \frac{{{{\mu_-}}} \cdot {{R}} {{y}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} &  0 &  0 &  0 \\  0 &  \frac{{{R}} {{y}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  0 \\  0 &  \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} \\  0 &  0 &  \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{{{R}} {{y}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}}\end{matrix}\right] \\ \left[\begin{matrix}  \frac{{{{\mu_-}}} \cdot {{R}} {{z}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} &  0 &  0 &  0 \\  0 &  \frac{{{R}} {{z}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  0 &  \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} \\  0 &  0 &  \frac{{{R}} {{z}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} \\  0 &  \frac{-{{{R}} {{x}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{-{{{R}} {{y}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}} &  \frac{-{{{R}} {{z}}}}{{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}}}\end{matrix}\right]\end{matrix}\right]}}$
 <br>
-${{n}_u} = {\overset{u\downarrow}{
-\left[
-\begin{matrix}
-{\frac{1}{{\mu_+}}}{({{\mu_-}})} \\
-0 \\
-0 \\
-0
-\end{matrix}
-\right]
-}}$
+${{ n}_u} = {\overset{u\downarrow}{\left[\begin{matrix} {\frac{1}{{\mu_+}}}{({{\mu_-}})} \\ 0 \\ 0 \\ 0\end{matrix}\right]}}$
 <br>
-${{{P}_u}_v} = {\overset{u\downarrow v\rightarrow}{
-\left[
-\begin{matrix}
-0 & 0 & 0 & 0 \\
-0 & {{\mu_+}}^{4} & 0 & 0 \\
-0 & 0 & {{\mu_+}}^{4} & 0 \\
-0 & 0 & 0 & {{\mu_+}}^{4}
-\end{matrix}
-\right]
-}}$
+${{{ P}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  {{\mu_+}}^{4} &  0 &  0 \\  0 &  0 &  {{\mu_+}}^{4} &  0 \\  0 &  0 &  0 &  {{\mu_+}}^{4}\end{matrix}\right]}}$
 <br>
-${dn} = {\overset{u\downarrow v\rightarrow}{
-\left[
-\begin{matrix}
-0 & \frac{-{{{R}} {{x}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} & \frac{-{{{R}} {{y}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} & \frac{-{{{R}} {{z}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} \\
-\frac{{{{{2}} {{{\partial{\mu_-}}\over{\partial x}}} {{{\mu_+}}} \cdot {{{r}^{3}}}} - {{{R}} {{x}}}} - {{{2}} {{{\mu_-}}} \cdot {{{\partial{\mu_+}}\over{\partial x}}} {{{r}^{3}}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} & 0 & 0 & 0 \\
-\frac{{{{{2}} {{{\partial{\mu_-}}\over{\partial y}}} {{{\mu_+}}} \cdot {{{r}^{3}}}} - {{{R}} {{y}}}} - {{{2}} {{{\mu_-}}} \cdot {{{\partial{\mu_+}}\over{\partial y}}} {{{r}^{3}}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} & 0 & 0 & 0 \\
-\frac{{{{{2}} {{{\partial{\mu_-}}\over{\partial z}}} {{{\mu_+}}} \cdot {{{r}^{3}}}} - {{{R}} {{z}}}} - {{{2}} {{{\mu_-}}} \cdot {{{\partial{\mu_+}}\over{\partial z}}} {{{r}^{3}}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} & 0 & 0 & 0
-\end{matrix}
-\right]
-}}$
+${dn} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  0 &  \frac{-{{{R}} {{x}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} &  \frac{-{{{R}} {{y}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} &  \frac{-{{{R}} {{z}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} \\  \frac{-{({{{{{R}} {{x}}} - {{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}} {{{\partial {\mu_-}}\over{\partial x}}}}} + {{{2}} {{{\mu_-}}} \cdot {{{r}^{3}}} {{{\partial {\mu_+}}\over{\partial x}}}}})}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} &  0 &  0 &  0 \\  \frac{-{({{{{{R}} {{y}}} - {{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}} {{{\partial {\mu_-}}\over{\partial y}}}}} + {{{2}} {{{\mu_-}}} \cdot {{{r}^{3}}} {{{\partial {\mu_+}}\over{\partial y}}}}})}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} &  0 &  0 &  0 \\  \frac{-{({{{{{R}} {{z}}} - {{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}} {{{\partial {\mu_-}}\over{\partial z}}}}} + {{{2}} {{{\mu_-}}} \cdot {{{r}^{3}}} {{{\partial {\mu_+}}\over{\partial z}}}}})}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} &  0 &  0 &  0\end{matrix}\right]}}$
 <br>
-${{{\nabla n}_u}_v} = {\overset{u\downarrow v\rightarrow}{
-\left[
-\begin{matrix}
-0 & \frac{-{{{R}} {{x}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} & \frac{-{{{R}} {{y}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} & \frac{-{{{R}} {{z}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} \\
-\frac{{{{{2}} {{{\partial{\mu_-}}\over{\partial x}}} {{{\mu_+}}} \cdot {{{r}^{3}}}} - {{{R}} {{x}}}} - {{{2}} {{{\mu_-}}} \cdot {{{\partial{\mu_+}}\over{\partial x}}} {{{r}^{3}}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} & 0 & 0 & 0 \\
-\frac{{{{{2}} {{{\partial{\mu_-}}\over{\partial y}}} {{{\mu_+}}} \cdot {{{r}^{3}}}} - {{{R}} {{y}}}} - {{{2}} {{{\mu_-}}} \cdot {{{\partial{\mu_+}}\over{\partial y}}} {{{r}^{3}}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} & 0 & 0 & 0 \\
-\frac{{{{{2}} {{{\partial{\mu_-}}\over{\partial z}}} {{{\mu_+}}} \cdot {{{r}^{3}}}} - {{{R}} {{z}}}} - {{{2}} {{{\mu_-}}} \cdot {{{\partial{\mu_+}}\over{\partial z}}} {{{r}^{3}}}}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} & 0 & 0 & 0
-\end{matrix}
-\right]
-}}$
+${{{ \nabla n}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  0 &  \frac{-{{{R}} {{x}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} &  \frac{-{{{R}} {{y}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} &  \frac{-{{{R}} {{z}}}}{{{2}} {{{{\mu_+}}^{2}}} {{{r}^{3}}}} \\  \frac{-{({{{{{R}} {{x}}} - {{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}} {{{\partial {\mu_-}}\over{\partial x}}}}} + {{{2}} {{{\mu_-}}} \cdot {{{r}^{3}}} {{{\partial {\mu_+}}\over{\partial x}}}}})}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} &  0 &  0 &  0 \\  \frac{-{({{{{{R}} {{y}}} - {{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}} {{{\partial {\mu_-}}\over{\partial y}}}}} + {{{2}} {{{\mu_-}}} \cdot {{{r}^{3}}} {{{\partial {\mu_+}}\over{\partial y}}}}})}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} &  0 &  0 &  0 \\  \frac{-{({{{{{R}} {{z}}} - {{{2}} {{{\mu_+}}} \cdot {{{r}^{3}}} {{{\partial {\mu_-}}\over{\partial z}}}}} + {{{2}} {{{\mu_-}}} \cdot {{{r}^{3}}} {{{\partial {\mu_+}}\over{\partial z}}}}})}}{{{2}} {{{r}^{3}}} {{{{\mu_+}}^{2}}}} &  0 &  0 &  0\end{matrix}\right]}}$
 <br>
-${{{K}_u}_v} = {\overset{u\downarrow v\rightarrow}{
-\left[
-\begin{matrix}
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0
-\end{matrix}
-\right]
-}}$
+${{{ K}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}}$
 <br>
 geodesic equation
 <br>
-$\ddot{x}^a = $$\overset{u\downarrow}{
-\left[
-\begin{matrix}
-\frac{-{{{R}} {{{\dot{x}^t}}} \cdot {{({{{{x}} {{{\dot{x}^x}}}} + {{{y}} {{{\dot{x}^y}}}} + {{{z}} {{{\dot{x}^z}}}}})}}}}{{{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} \\
-\frac{-{{{R}} {{({{{{{{\mu_-}}} \cdot {{x}} {{{{\dot{x}^t}}^{2}}}} - {{{x}} {{{{\dot{x}^x}}^{2}}} {{{{\mu_+}}^{6}}}}} + {{{x}} {{{{\dot{x}^y}}^{2}}} {{{{\mu_+}}^{6}}}} + {{{{{x}} {{{{\dot{x}^z}}^{2}}} {{{{\mu_+}}^{6}}}} - {{{2}} {{y}} {{{\dot{x}^x}}} \cdot {{{\dot{x}^y}}} \cdot {{{{\mu_+}}^{6}}}}} - {{{2}} {{z}} {{{\dot{x}^x}}} \cdot {{{\dot{x}^z}}} \cdot {{{{\mu_+}}^{6}}}}}})}}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} \\
-\frac{-{{{R}} {{({{{{{{\mu_-}}} \cdot {{y}} {{{{\dot{x}^t}}^{2}}}} - {{{2}} {{x}} {{{\dot{x}^x}}} \cdot {{{\dot{x}^y}}} \cdot {{{{\mu_+}}^{6}}}}} + {{{{y}} {{{{\dot{x}^x}}^{2}}} {{{{\mu_+}}^{6}}}} - {{{y}} {{{{\dot{x}^y}}^{2}}} {{{{\mu_+}}^{6}}}}} + {{{{y}} {{{{\dot{x}^z}}^{2}}} {{{{\mu_+}}^{6}}}} - {{{2}} {{z}} {{{\dot{x}^y}}} \cdot {{{\dot{x}^z}}} \cdot {{{{\mu_+}}^{6}}}}}})}}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} \\
-\frac{-{{{R}} {{({{{{{{{\mu_-}}} \cdot {{z}} {{{{\dot{x}^t}}^{2}}}} - {{{2}} {{x}} {{{\dot{x}^x}}} \cdot {{{\dot{x}^z}}} \cdot {{{{\mu_+}}^{6}}}}} - {{{2}} {{y}} {{{\dot{x}^y}}} \cdot {{{\dot{x}^z}}} \cdot {{{{\mu_+}}^{6}}}}} + {{{z}} {{{{\dot{x}^x}}^{2}}} {{{{\mu_+}}^{6}}}} + {{{{z}} {{{{\dot{x}^y}}^{2}}} {{{{\mu_+}}^{6}}}} - {{{z}} {{{{\dot{x}^z}}^{2}}} {{{{\mu_+}}^{6}}}}}})}}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}}
-\end{matrix}
-\right]
-}$
+$\ddot{x}^a = $$\overset{u\downarrow}{\left[\begin{matrix} \frac{-{{{R}} {{{\dot{x}^t}}} \cdot {{({{{{x}} {{{\dot{x}^x}}}} + {{{y}} {{{\dot{x}^y}}}} + {{{z}} {{{\dot{x}^z}}}}})}}}}{{{{\mu_+}}} \cdot {{{\mu_-}}} \cdot {{{r}^{3}}}} \\ \frac{{{R}} {{({{{{{{{x}} {{{{\mu_+}}^{6}}} {{{{\dot{x}^x}}^{2}}}} - {{{x}} {{{{\mu_+}}^{6}}} {{{{\dot{x}^y}}^{2}}}}} - {{{x}} {{{{\mu_+}}^{6}}} {{{{\dot{x}^z}}^{2}}}}} - {{{x}} {{{\mu_-}}} \cdot {{{{\dot{x}^t}}^{2}}}}} + {{{2}} {{y}} {{{\dot{x}^x}}} \cdot {{{\dot{x}^y}}} \cdot {{{{\mu_+}}^{6}}}} + {{{2}} {{z}} {{{\dot{x}^x}}} \cdot {{{\dot{x}^z}}} \cdot {{{{\mu_+}}^{6}}}}})}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} \\ \frac{{{R}} {{({{{{{2}} {{x}} {{{\dot{x}^x}}} \cdot {{{\dot{x}^y}}} \cdot {{{{\mu_+}}^{6}}}} - {{{y}} {{{{\mu_+}}^{6}}} {{{{\dot{x}^x}}^{2}}}}} + {{{{{y}} {{{{\mu_+}}^{6}}} {{{{\dot{x}^y}}^{2}}}} - {{{y}} {{{{\mu_+}}^{6}}} {{{{\dot{x}^z}}^{2}}}}} - {{{y}} {{{\mu_-}}} \cdot {{{{\dot{x}^t}}^{2}}}}} + {{{2}} {{z}} {{{\dot{x}^y}}} \cdot {{{\dot{x}^z}}} \cdot {{{{\mu_+}}^{6}}}}})}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}} \\ \frac{{{R}} {{({{{{2}} {{x}} {{{\dot{x}^x}}} \cdot {{{\dot{x}^z}}} \cdot {{{{\mu_+}}^{6}}}} + {{{{{2}} {{y}} {{{\dot{x}^y}}} \cdot {{{\dot{x}^z}}} \cdot {{{{\mu_+}}^{6}}}} - {{{z}} {{{{\mu_+}}^{6}}} {{{{\dot{x}^x}}^{2}}}}} - {{{z}} {{{{\mu_+}}^{6}}} {{{{\dot{x}^y}}^{2}}}}} + {{{{z}} {{{{\mu_+}}^{6}}} {{{{\dot{x}^z}}^{2}}}} - {{{z}} {{{\mu_-}}} \cdot {{{{\dot{x}^t}}^{2}}}}}})}}}{{{2}} {{{{\mu_+}}^{7}}} {{{r}^{3}}}}\end{matrix}\right]}$
 <br>

@@ -115,11 +115,13 @@ end
 
 -- make sure to require Expression and then require the ops
 function Expression.__unm(a) 
+	if type(a) == 'number' then a = Constant(a) end
 	return require 'symmath.op.unm'(a) 
 end
 function Expression.__add(a,b)
 	local Constant = require 'symmath.Constant'
 	
+	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__add(a,b) end
 
@@ -131,6 +133,7 @@ end
 function Expression.__sub(a,b) 
 	local Constant = require 'symmath.Constant'
 	
+	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__sub(a,b) end
 	
@@ -142,6 +145,7 @@ end
 function Expression.__mul(a,b) 
 	local Constant = require 'symmath.Constant'
 	
+	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__mul(a,b) end
 
@@ -162,6 +166,7 @@ end
 function Expression.__div(a,b) 
 	local Constant = require 'symmath.Constant'
 	
+	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__div(a,b) end
 	
@@ -176,6 +181,7 @@ end
 function Expression.__pow(a,b) 
 	local Constant = require 'symmath.Constant'
 	
+	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__pow(a,b) end
 	
@@ -191,6 +197,7 @@ function Expression.__pow(a,b)
 	return require 'symmath.op.pow'(a,b) 
 end
 function Expression.__mod(a,b) 
+	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__mod(a,b) end
 	return require 'symmath.op.mod'(a,b) 
@@ -475,6 +482,7 @@ a_ijk b^jk + a_ilm b^lm => a_ijk b^jk + a_ijk b^jk => 2 a_jik b^jk
 
 args =
 	symbols = list of symbols to pick from when we need a new symbol.  default is Tensor.defaultSymbols.
+	fixed = which symbols to not consider summation symbols
 --]]
 function Expression:tidyIndexes(args)
 	-- process each part of an equation independently
@@ -601,7 +609,9 @@ function Expression:tidyIndexes(args)
 							
 							if symbol == fixedi[k].symbol then
 								--assert(not not fixed[j].lower ~= not not fixedi[j].lower, "can't sum two contra- or two co-variant indexes")
-								assert(not summed[symbol], "found a fixed symbol that's also a summed symbol...")
+								if summed[symbol] then
+									error("found a fixed symbol that's also a summed symbol: "..symbol)
+								end
 								summed[symbol] = true
 
 								-- at this point, when we find a fixed symbol of a child is really a summed symbol of a mul,
@@ -775,6 +785,9 @@ function Expression:__call(...)
 	local Tensor = require 'symmath.Tensor'
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 
+-- TODO hmm, why do I have this here?  self.variance is specific to Tensor, but not tested for isa Tensor
+-- so this breaks if you have something like x=var'x' x{'_i', '_j'}
+-- while x=var'x' x'_ij' and x' _i _j' works fine
 	if type(indexes) == 'table' then
 		indexes = {table.unpack(indexes)}
 		assert(#indexes == #self.variance)

@@ -34,6 +34,7 @@ end
 function Set:containsVariable(x)
 	if Variable.is(x) then
 		if x.value then
+			local Constant = require 'symmath.Constant'
 			return self:containsElement(Constant(x.value))
 		end
 		

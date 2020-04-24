@@ -1,71 +1,72 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset='UTF-8'>
+        <meta charset='utf-8'>
         <title>toy-1+1 spacetime</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
     </head>
 	<body onload='tryToFindMathJax();'>
 
-${{r}^I} = {\overset{I\downarrow}{\left[\begin{matrix}h \\x\end{matrix}\right]}}$
+${{ r}^I} = {\overset{I\downarrow}{\left[\begin{matrix} h \\ x\end{matrix}\right]}}$
 <br>
-${{{e}_u}^I} = {\overset{u\downarrow I\rightarrow}{\left[\begin{matrix}1 & 0 \\{\partial h}\over{\partial x} & 1\end{matrix}\right]}}$
+${{{ e}_u}^I} = {\overset{u\downarrow I\rightarrow}{\left[\begin{matrix}  1 &  0 \\  {\partial h}\over{\partial x} &  1\end{matrix}\right]}}$
 
 <br>
-${{{\eta}_I}_J} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}-1 & 0 \\0 & 1\end{matrix}\right]}}$
+${{{ \eta}_I}_J} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  -1 &  0 \\  0 &  1\end{matrix}\right]}}$
 
 <br>
-${{{g}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}-{1} & -{{\partial h}\over{\partial x}} \\-{{\partial h}\over{\partial x}} & {1} - {{({{\partial h}\over{\partial x}})}^{2}}\end{matrix}\right]}}$
+${{{ g}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  -{1} &  -{{\partial h}\over{\partial x}} \\  -{{\partial h}\over{\partial x}} &  {1} - {{{\partial h}\over{\partial x}}^{2}}\end{matrix}\right]}}$
 
 <br>
 zero skew components:
 <br>
-${{{g}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}-{1} & 0 \\0 & {1} - {{({{\partial h}\over{\partial x}})}^{2}}\end{matrix}\right]}}$
+${{{ g}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  -{1} &  0 \\  0 &  {1} - {{{\partial h}\over{\partial x}}^{2}}\end{matrix}\right]}}$
 
 <br>
 set metric
 <br>
-${{{g}^u}^v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}-{1} & 0 \\0 & \frac{1}{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}\end{matrix}\right]}}$
+${{{ g}^u}^v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  -{1} &  0 \\  0 &  \frac{1}{{1} - {{{\partial h}\over{\partial x}}^{2}}}\end{matrix}\right]}}$
 
 <br>
-${{n}^u} = {\overset{u\downarrow}{\left[\begin{matrix}{n^t} \\{n^x}\end{matrix}\right]}}$
+${{ n}^u} = {\overset{u\downarrow}{\left[\begin{matrix} {n^t} \\ {n^x}\end{matrix}\right]}}$
 
 <br>
-${{n}_I} = {{\overset{I\downarrow}{\left[\begin{matrix}{{n^t}} + {{{{n^x}}} \cdot {{{\partial h}\over{\partial x}}}} \\{n^x}\end{matrix}\right]}} = {\overset{I\downarrow}{\left[\begin{matrix}0 \\0\end{matrix}\right]}}}$
+${{ n}_I} = {{\overset{I\downarrow}{\left[\begin{matrix} {{n^t}} + {{{{n^x}}} \cdot {{{\partial h}\over{\partial x}}}} \\ {n^x}\end{matrix}\right]}} = {\overset{I\downarrow}{\left[\begin{matrix} 0 \\ 0\end{matrix}\right]}}}$
 <br>
-${n}^t$ from ${n}^x$ : ${{n^t}} = {-{{{{n^x}}} \cdot {{{\partial h}\over{\partial x}}}}}$
+${ n}^t$ from ${ n}^x$ : ${{n^t}} = {-{{{{n^x}}} \cdot {{{\partial h}\over{\partial x}}}}}$
 <br>
-$n \cdot n = -1$ : 	${-{({{{{{n^t}}^{2}} - {{{n^x}}^{2}}} + {{{{{n^x}}^{2}}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}} = {-1}$
+$n \cdot n = -1$ : 	${-{({{{{{n^t}}^{2}} - {{{n^x}}^{2}}} + {{{{{n^x}}^{2}}} {{{{\partial h}\over{\partial x}}^{2}}}}})}} = {-1}$
 <br>
-${{{{{n^x}}^{2}}} {{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}}} = {-{1}}$
+${{{{{n^x}}^{2}}} {{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}}} = {-{1}}$
 <br>
 $n^x$ solutions:
 <br>
-	${{n^x}} = {\frac{\sqrt-{1}}{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}}$
+	${{n^x}} = {\frac{ii}{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}}$<br>
+	${{n^x}} = {\frac{-{ii}}{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}}$
 <br>
 solving the first one first (keep note that they're plus or minus...)
 <br>
-${n}^x$ is  	$\frac{\sqrt-{1}}{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}$
+${ n}^x$ is  	$\frac{ii}{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}$
 <br>
-should be	$\frac{{-{{\partial h}\over{\partial x}}} {{\sqrt{{{4} + {{{8}} {{{({{\partial h}\over{\partial x}})}^{4}}}}} - {{{12}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}}}{{{-2} - {{{4}} {{{({{\partial h}\over{\partial x}})}^{4}}}}} + {{{6}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}$
+should be	$\frac{ {-{{\partial h}\over{\partial x}}} {{\sqrt{{{4} + {{{8}} {{{{\partial h}\over{\partial x}}^{4}}}}} - {{{12}} {{{{\partial h}\over{\partial x}}^{2}}}}}}}}{{{-2} - {{{4}} {{{{\partial h}\over{\partial x}}^{4}}}}} + {{{6}} {{{{\partial h}\over{\partial x}}^{2}}}}}$
 <br>
-rewritten by hand :	${{n^x}} = {\frac{{\partial h}\over{\partial x}}{\sqrt{{{({{1} - {{({{\partial h}\over{\partial x}})}^{2}}})}} {{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}}}}}$
+rewritten by hand :	${{n^x}} = {\frac{{\partial h}\over{\partial x}}{\sqrt{{{({{1} - {{{\partial h}\over{\partial x}}^{2}}})}} {{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}}}}}$
 <br>
 $n^t$ solutions:
 <br>
-${{n^t}} = {\frac{-{{({{\partial h}\over{\partial x}})}^{2}}}{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}}}}$
+${{n^t}} = {\frac{-{{{\partial h}\over{\partial x}}^{2}}}{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}}}}$
 <br>
-${{n^t}} = {\frac{{({{\partial h}\over{\partial x}})}^{2}}{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}}}}$
+${{n^t}} = {\frac{{{\partial h}\over{\partial x}}^{2}}{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}}}}$
 <br>
-should be	$\frac{{-1} + {{({{\partial h}\over{\partial x}})}^{2}}}{-{\sqrt{{{1} - {{{3}} {{{({{\partial h}\over{\partial x}})}^{2}}}}} + {{{2}} {{{({{\partial h}\over{\partial x}})}^{4}}}}}}}$
+should be	$\frac{{-1} + {{{\partial h}\over{\partial x}}^{2}}}{-{\sqrt{{{1} - {{{3}} {{{{\partial h}\over{\partial x}}^{2}}}}} + {{{2}} {{{{\partial h}\over{\partial x}}^{4}}}}}}}$
 <br>
-${{n^t}} = {\sqrt{\frac{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}}$
+${{n^t}} = {\sqrt{\frac{{1} - {{{\partial h}\over{\partial x}}^{2}}}{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}}$
 <br>
-${{n}^u} = {\overset{u\downarrow}{\left[\begin{matrix}\frac{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}} \\\frac{{\partial h}\over{\partial x}}{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}}}\end{matrix}\right]}}$
+${{ n}^u} = {\overset{u\downarrow}{\left[\begin{matrix} \frac{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}} \\ \frac{{\partial h}\over{\partial x}}{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}}}\end{matrix}\right]}}$
 <br>
 $n_\hat{x} = 0$
 <br>
-${\overset{I\downarrow}{\left[\begin{matrix}\frac{1}{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}}} \\\frac{{\partial h}\over{\partial x}}{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}}}\end{matrix}\right]}} = {0}$
+${\overset{I\downarrow}{\left[\begin{matrix} \frac{1}{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}}} \\ \frac{{\partial h}\over{\partial x}}{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}}}\end{matrix}\right]}} = {0}$
 <br>
 n dot n = -1
 <br>
@@ -73,29 +74,29 @@ ${-{1}} = {-1}$
 <br>
 1st kind Christoffel
 <br>
-${{{{\Gamma}_a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix}\left[\begin{matrix}0 & 0 \\0 & 0\end{matrix}\right] \\\left[\begin{matrix}0 & 0 \\0 & -{{{{\partial h}\over{\partial x}}} {{{\partial^2h}\over{\partial x^2}}}}\end{matrix}\right]\end{matrix}\right]}}$
+${{{{ \Gamma}_a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 \\  0 &  -{{{{\partial h}\over{\partial x}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}\end{matrix}\right]\end{matrix}\right]}}$
 <br>
 
 <br>
 2nd kind Christoffel
 <br>
-${{{{\Gamma}^a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix}\left[\begin{matrix}0 & 0 \\0 & 0\end{matrix}\right] \\\left[\begin{matrix}0 & 0 \\0 & \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^2h}\over{\partial x^2}}}}}{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}\end{matrix}\right]\end{matrix}\right]}}$
+${{{{ \Gamma}^a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 \\  0 &  \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}}{{1} - {{{\partial h}\over{\partial x}}^{2}}}\end{matrix}\right]\end{matrix}\right]}}$
 <br>
 
 <br>
-${{n}_u} = {\overset{u\downarrow}{\left[\begin{matrix}\frac{-{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}}{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}} \\\frac{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{{\partial h}\over{\partial x}}}}{\sqrt{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}}\end{matrix}\right]}}$
+${{ n}_u} = {\overset{u\downarrow}{\left[\begin{matrix} \frac{-{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}}{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}} \\ \frac{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{{\partial h}\over{\partial x}}}}{\sqrt{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}}\end{matrix}\right]}}$
 <br>
-$\partial_u n_v = $$\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}0 & \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^2h}\over{\partial x^2}}}}}{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{3}{2}})}}}} \\0 & \frac{{{{\partial^2h}\over{\partial x^2}}} {{({{1} + {{{{2}} {{{({{\partial h}\over{\partial x}})}^{4}}}} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}})}}}{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{3}{2}})}}}}\end{matrix}\right]}$
+$\partial_u n_v = $$\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  0 &  \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}}{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{3}{2}})}}}} \\  0 &  \frac{{{{\partial^ 2 h}\over{\partial x^ 2}}} {{({{1} + {{{{2}} {{{{\partial h}\over{\partial x}}^{4}}}} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}})}}}{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{3}{2}})}}}}\end{matrix}\right]}$
 <br>
-$\nabla_u n_v = $$\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}0 & \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^2h}\over{\partial x^2}}}}}{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{3}{2}})}}}} \\0 & \frac{{{{\partial^2h}\over{\partial x^2}}} {{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}}}{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{3}{2}})}}\end{matrix}\right]}$
+$\nabla_u n_v = $$\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  0 &  \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}}{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{3}{2}})}}}} \\  0 &  \frac{{{{\partial^ 2 h}\over{\partial x^ 2}}} {{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}}}{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{3}{2}})}}\end{matrix}\right]}$
 <br>
-${{\perp} = {{{P}^u}_v}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}\frac{-{{({{\partial h}\over{\partial x}})}^{2}}}{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}} & \frac{{{{\partial h}\over{\partial x}}} {{({{1} - {{({{\partial h}\over{\partial x}})}^{2}}})}}}{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}} \\\frac{-{{\partial h}\over{\partial x}}}{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}} & \frac{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}{{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}}\end{matrix}\right]}}$
+${{\perp} = {{{ P}^u}_v}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  \frac{-{{{\partial h}\over{\partial x}}^{2}}}{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}} &  \frac{{{{\partial h}\over{\partial x}}} {{({{1} - {{{\partial h}\over{\partial x}}^{2}}})}}}{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}} \\  \frac{-{{\partial h}\over{\partial x}}}{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}} &  \frac{{1} - {{{\partial h}\over{\partial x}}^{2}}}{{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}}\end{matrix}\right]}}$
 <br>
-$\perp \nabla_u n_v = $$\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{{{{({{\partial h}\over{\partial x}})}^{2}}} {{{\partial^2h}\over{\partial x^2}}}}{{{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}}} {{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}}} & \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^2h}\over{\partial x^2}}} {{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}}}}{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}} \\\frac{-{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{{\partial^2h}\over{\partial x^2}}} {{{\partial h}\over{\partial x}}}}}{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}} & \frac{{{{({{1} - {{({{\partial h}\over{\partial x}})}^{2}}})}^{({\frac{3}{2}})}}} {{{\partial^2h}\over{\partial x^2}}}}{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}}\end{matrix}\right]}$
+$\perp \nabla_u n_v = $$\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  \frac{{{{{\partial h}\over{\partial x}}^{2}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}{{{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}}} {{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}}} &  \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^ 2 h}\over{\partial x^ 2}}} {{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}}}}{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}} \\  \frac{-{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{{\partial^ 2 h}\over{\partial x^ 2}}} {{{\partial h}\over{\partial x}}}}}{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}} &  \frac{{{{({{1} - {{{\partial h}\over{\partial x}}^{2}}})}^{({\frac{3}{2}})}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}}\end{matrix}\right]}$
 <br>
-${{{K}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}\frac{-{{{{({{\partial h}\over{\partial x}})}^{2}}} {{{\partial^2h}\over{\partial x^2}}}}}{{{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}}} {{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}}} & \frac{{{{\partial h}\over{\partial x}}} {{{\partial^2h}\over{\partial x^2}}} {{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}}}{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}} \\\frac{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{{\partial^2h}\over{\partial x^2}}} {{{\partial h}\over{\partial x}}}}{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}} & \frac{-{{{{({{1} - {{({{\partial h}\over{\partial x}})}^{2}}})}^{({\frac{3}{2}})}}} {{{\partial^2h}\over{\partial x^2}}}}}{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}}\end{matrix}\right]}}$
+${{{ K}_u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  \frac{-{{{{{\partial h}\over{\partial x}}^{2}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}}{{{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}}} {{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}}} &  \frac{{{{\partial h}\over{\partial x}}} {{{\partial^ 2 h}\over{\partial x^ 2}}} {{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}}}{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}} \\  \frac{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{{\partial^ 2 h}\over{\partial x^ 2}}} {{{\partial h}\over{\partial x}}}}{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}} &  \frac{-{{{{({{1} - {{{\partial h}\over{\partial x}}^{2}}})}^{({\frac{3}{2}})}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}}{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}}\end{matrix}\right]}}$
 <br>
-${{{K}^u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}\frac{{{{({{\partial h}\over{\partial x}})}^{2}}} {{{\partial^2h}\over{\partial x^2}}}}{{{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}}} {{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}}} & \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^2h}\over{\partial x^2}}} {{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}}}}{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}} \\\frac{{{{\partial^2h}\over{\partial x^2}}} {{{\partial h}\over{\partial x}}}}{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}}}} & \frac{-{{{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}} {{{\partial^2h}\over{\partial x^2}}}}}{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{5}{2}})}}\end{matrix}\right]}}$
+${{{ K}^u}_v} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  \frac{{{{{\partial h}\over{\partial x}}^{2}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}{{{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}}} {{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}}} &  \frac{-{{{{\partial h}\over{\partial x}}} {{{\partial^ 2 h}\over{\partial x^ 2}}} {{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}}}}{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}} \\  \frac{{{{\partial^ 2 h}\over{\partial x^ 2}}} {{{\partial h}\over{\partial x}}}}{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}}}} &  \frac{-{{{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}} {{{\partial^ 2 h}\over{\partial x^ 2}}}}}{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{5}{2}})}}\end{matrix}\right]}}$
 <br>
-${K} = {\frac{-{{\partial^2h}\over{\partial x^2}}}{{{{({{1} - {{{2}} {{{({{\partial h}\over{\partial x}})}^{2}}}}})}^{({\frac{3}{2}})}}} {{\sqrt{{1} - {{({{\partial h}\over{\partial x}})}^{2}}}}}}}$
+${K} = {\frac{-{{\partial^ 2 h}\over{\partial x^ 2}}}{{{{({{1} - {{{2}} {{{{\partial h}\over{\partial x}}^{2}}}}})}^{({\frac{3}{2}})}}} {{\sqrt{{1} - {{{\partial h}\over{\partial x}}^{2}}}}}}}$
 <br>

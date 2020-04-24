@@ -1,323 +1,323 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset='UTF-8'>
-        <title>Symbolic Lua Output</title>
+        <meta charset='utf-8'>
+        <title>ADM gravity using expressions</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
     </head>
 	<body onload='tryToFindMathJax();'>
 
 <hr>
-${{{\Gamma}^t}_t}_t$
+${{{ \Gamma}^t}_t}_t$
 <br>
 factor out index raise
 <br>
-${{{{g}^t}^a}} {{{{{\Gamma}_a}_t}_t}}$
+${{{{ g}^t}^a}} {{{{{ \Gamma}_a}_t}_t}}$
 <br>
 substitute definition of connection
 <br>
-${\frac{1}{2}}{({-{{{{{g}^t}^a}} {{({{{{{{g}_a}_t}_{,t}} - {{{{g}_t}_a}_{,t}}} - {{{{g}_t}_t}_{,a}}})}}}})}$
+${\frac{1}{2}}{({-{{{{{ g}^t}^a}} {{({{{{{{ g}_a}_t}_{,t}} - {{{{ g}_t}_a}_{,t}}} - {{{{ g}_t}_t}_{,a}}})}}}})}$
 <br>
 split the index a into t and j
 <br>
-${\frac{1}{2}}{({-{({{{{{{{{g}^t}^j}} {{{{{g}_j}_t}_{,t}}}} - {{{{{g}^t}^j}} {{{{{g}_t}_j}_{,t}}}}} - {{{{{g}^t}^j}} {{{{{g}_t}_t}_{,j}}}}} - {{{{{g}^t}^t}} {{{{{g}_t}_t}_{,t}}}}})}})}$
+${\frac{1}{2}}{({-{({{{{{{{{ g}^t}^j}} {{{{{ g}_j}_t}_{,t}}}} - {{{{{ g}^t}^j}} {{{{{ g}_t}_j}_{,t}}}}} - {{{{{ g}^t}^j}} {{{{{ g}_t}_t}_{,j}}}}} - {{{{{ g}^t}^t}} {{{{{ g}_t}_t}_{,t}}}}})}})}$
 <br>
 replace ADM metric definitions
 <br>
-${\frac{1}{2}}{({-{({{{{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{\beta}_j}_{,t}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{\beta}_j}_{,t}}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,j}}}}} - {{{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,t}}} {{\frac{-1}{{\alpha}^{2}}}}}})}})}$
+${\frac{1}{2}}{({-{({{{{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ { \beta}_j}_{,t}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ { \beta}_j}_{,t}}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,j}}}}} - {{{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,t}}} {{\frac{-1}{{\alpha}^{2}}}}}})}})}$
 <br>
 raise $\beta_j$
 <br>
-${\frac{1}{2}}{({-{({{{{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{\left({{{{\gamma}_j}_k}} {{{\beta}^k}}\right)}_{,t}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{\left({{{{\gamma}_j}_k}} {{{\beta}^k}}\right)}_{,t}}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,j}}}}} - {{{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,t}}} {{\frac{-1}{{\alpha}^{2}}}}}})}})}$
+${\frac{1}{2}}{({-{({{{{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{\left( {{{{ \gamma}_j}_k}} {{{ \beta}^k}}\right)}_{,t}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{\left( {{{{ \gamma}_j}_k}} {{{ \beta}^k}}\right)}_{,t}}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,j}}}}} - {{{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,t}}} {{\frac{-1}{{\alpha}^{2}}}}}})}})}$
 <br>
 simplify...
 <br>
-$\frac{-{({{{{{{\beta}^i}} {{{{\beta}^k}_{,t}}} {{{{\gamma}_i}_k}}} - {{{{\beta}^i}} {{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_i}_k}_{,j}}}}} + {{{{{\beta}^i}} {{{\beta}^k}} {{{{{\gamma}_i}_k}_{,t}}}} - {{{{\beta}^i}} {{{\beta}_j}} {{{{\beta}^k}_{,j}}} {{{{\gamma}_i}_k}}}} + {{{{{{\beta}^k}} {{{{\beta}^i}_{,t}}} {{{{\gamma}_i}_k}}} - {{{{\beta}^k}} {{{\beta}_j}} {{{{\beta}^i}_{,j}}} {{{{\gamma}_i}_k}}}} - {{{2}} {{\alpha}} \cdot {{{\alpha}_{,t}}}}} + {{{2}} {{\alpha}} \cdot {{{\beta}_j}} {{{\alpha}_{,j}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{-{({{{{{{ \beta}^i}} {{{{ \beta}^k}_{,t}}} {{{{ \gamma}_i}_k}}} - {{{{ \beta}^i}} {{{ \beta}^k}} {{{ \beta}_j}} {{{{{ \gamma}_i}_k}_{,j}}}}} + {{{{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,t}}}} - {{{{ \beta}^i}} {{{ \beta}_j}} {{{{ \beta}^k}_{,j}}} {{{{ \gamma}_i}_k}}}} + {{{{{{ \beta}^k}} {{{{ \beta}^i}_{,t}}} {{{{ \gamma}_i}_k}}} - {{{{ \beta}^k}} {{{ \beta}_j}} {{{{ \beta}^i}_{,j}}} {{{{ \gamma}_i}_k}}}} - {{{2}} {{\alpha}} \cdot {{{ \alpha}_{,t}}}}} + {{{2}} {{\alpha}} \cdot {{{ \beta}_j}} {{{ \alpha}_{,j}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
 relabel...
 <br>
-$\frac{-{({{{{{{\beta}^i}} {{{{\beta}^k}_{,t}}} {{{{\gamma}_i}_k}}} - {{{{\beta}^i}} {{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_i}_k}_{,j}}}}} + {{{{{\beta}^i}} {{{\beta}^k}} {{{{{\gamma}_i}_k}_{,t}}}} - {{{{\beta}^i}} {{{\beta}_j}} {{{{\beta}^k}_{,j}}} {{{{\gamma}_i}_k}}}} + {{{{{{\beta}^k}} {{{{\beta}^i}_{,t}}} {{{{\gamma}_i}_k}}} - {{{{\beta}^k}} {{{\beta}_j}} {{{{\beta}^i}_{,j}}} {{{{\gamma}_i}_k}}}} - {{{2}} {{\alpha}} \cdot {{{\alpha}_{,t}}}}} + {{{2}} {{\alpha}} \cdot {{{\beta}_j}} {{{\alpha}_{,j}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{-{({{{{{{ \beta}^i}} {{{{ \beta}^k}_{,t}}} {{{{ \gamma}_i}_k}}} - {{{{ \beta}^i}} {{{ \beta}^k}} {{{ \beta}_j}} {{{{{ \gamma}_i}_k}_{,j}}}}} + {{{{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,t}}}} - {{{{ \beta}^i}} {{{ \beta}_j}} {{{{ \beta}^k}_{,j}}} {{{{ \gamma}_i}_k}}}} + {{{{{{ \beta}^k}} {{{{ \beta}^i}_{,t}}} {{{{ \gamma}_i}_k}}} - {{{{ \beta}^k}} {{{ \beta}_j}} {{{{ \beta}^i}_{,j}}} {{{{ \gamma}_i}_k}}}} - {{{2}} {{\alpha}} \cdot {{{ \alpha}_{,t}}}}} + {{{2}} {{\alpha}} \cdot {{{ \beta}_j}} {{{ \alpha}_{,j}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
-for 	${{\beta}^i} = {0}$
+for 	${{ \beta}^i} = {0}$
 <br>
-${\frac{1}{\alpha}}{({{\alpha}_{,t}})}$
+${\frac{1}{\alpha}}{({{ \alpha}_{,t}})}$
 <br>
 <hr>
-${{{\Gamma}^t}_t}_i$
+${{{ \Gamma}^t}_t}_i$
 <br>
 factor out index raise
 <br>
-${{{{g}^t}^a}} {{{{{\Gamma}_a}_t}_i}}$
+${{{{ g}^t}^a}} {{{{{ \Gamma}_a}_t}_i}}$
 <br>
 substitute definition of connection
 <br>
-${\frac{1}{2}}{({-{{{{{g}^t}^a}} {{({{{{{{g}_a}_i}_{,t}} - {{{{g}_t}_a}_{,i}}} - {{{{g}_t}_i}_{,a}}})}}}})}$
+${\frac{1}{2}}{({-{{{{{ g}^t}^a}} {{({{{{{{ g}_a}_i}_{,t}} - {{{{ g}_t}_a}_{,i}}} - {{{{ g}_t}_i}_{,a}}})}}}})}$
 <br>
 split the index a into t and j
 <br>
-${\frac{1}{2}}{({-{({{{{{{{{g}^t}^j}} {{{{{g}_j}_i}_{,t}}}} - {{{{{g}^t}^j}} {{{{{g}_t}_i}_{,j}}}}} - {{{{{g}^t}^j}} {{{{{g}_t}_j}_{,i}}}}} - {{{{{g}^t}^t}} {{{{{g}_t}_t}_{,i}}}}})}})}$
+${\frac{1}{2}}{({-{({{{{{{{{ g}^t}^j}} {{{{{ g}_j}_i}_{,t}}}} - {{{{{ g}^t}^j}} {{{{{ g}_t}_i}_{,j}}}}} - {{{{{ g}^t}^j}} {{{{{ g}_t}_j}_{,i}}}}} - {{{{{ g}^t}^t}} {{{{{ g}_t}_t}_{,i}}}}})}})}$
 <br>
 replace ADM metric definitions
 <br>
-${\frac{1}{2}}{({-{({{{{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_j}_i}_{,t}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_t}_i}_{,j}}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{\beta}_j}_{,i}}}}} - {{{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,i}}} {{\frac{-1}{{\alpha}^{2}}}}}})}})}$
+${\frac{1}{2}}{({-{({{{{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_j}_i}_{,t}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_t}_i}_{,j}}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ { \beta}_j}_{,i}}}}} - {{{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,i}}} {{\frac{-1}{{\alpha}^{2}}}}}})}})}$
 <br>
 raise $\beta_j$
 <br>
-${\frac{1}{2}}{({-{({{{{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_j}_i}_{,t}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_t}_i}_{,j}}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{\left({{{{\gamma}_j}_k}} {{{\beta}^k}}\right)}_{,i}}}}} - {{{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,i}}} {{\frac{-1}{{\alpha}^{2}}}}}})}})}$
+${\frac{1}{2}}{({-{({{{{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_j}_i}_{,t}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_t}_i}_{,j}}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{\left( {{{{ \gamma}_j}_k}} {{{ \beta}^k}}\right)}_{,i}}}}} - {{{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,i}}} {{\frac{-1}{{\alpha}^{2}}}}}})}})}$
 <br>
 simplify...
 <br>
-$\frac{-{({{{{{\beta}^i}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_i}_k}}} + {{{{\beta}^i}} {{{\beta}^k}} {{{{{\gamma}_i}_k}_{,i}}}} + {{{{{{\beta}^k}} {{{{\beta}^i}_{,i}}} {{{{\gamma}_i}_k}}} - {{{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_j}_k}_{,i}}}}} - {{{{\beta}_j}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_j}_k}}}} + {{{{{{\beta}_j}} {{{{{\gamma}_j}_i}_{,t}}}} - {{{{\beta}_j}} {{{{{\gamma}_t}_i}_{,j}}}}} - {{{2}} {{\alpha}} \cdot {{{\alpha}_{,i}}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{-{({{{{{ \beta}^i}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_i}_k}}} + {{{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,i}}}} + {{{{{{ \beta}^k}} {{{{ \beta}^i}_{,i}}} {{{{ \gamma}_i}_k}}} - {{{{ \beta}^k}} {{{ \beta}_j}} {{{{{ \gamma}_j}_k}_{,i}}}}} - {{{{ \beta}_j}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_j}_k}}}} + {{{{{{ \beta}_j}} {{{{{ \gamma}_j}_i}_{,t}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_t}_i}_{,j}}}}} - {{{2}} {{\alpha}} \cdot {{{ \alpha}_{,i}}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
 relabel...
 <br>
-$\frac{-{({{{{{\beta}^i}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_i}_k}}} + {{{{\beta}^i}} {{{\beta}^k}} {{{{{\gamma}_i}_k}_{,i}}}} + {{{{{{\beta}^k}} {{{{\beta}^i}_{,i}}} {{{{\gamma}_i}_k}}} - {{{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_j}_k}_{,i}}}}} - {{{{\beta}_j}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_j}_k}}}} + {{{{{{\beta}_j}} {{{{{\gamma}_j}_i}_{,t}}}} - {{{{\beta}_j}} {{{{{\gamma}_t}_i}_{,j}}}}} - {{{2}} {{\alpha}} \cdot {{{\alpha}_{,i}}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{-{({{{{{ \beta}^i}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_i}_k}}} + {{{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,i}}}} + {{{{{{ \beta}^k}} {{{{ \beta}^i}_{,i}}} {{{{ \gamma}_i}_k}}} - {{{{ \beta}^k}} {{{ \beta}_j}} {{{{{ \gamma}_j}_k}_{,i}}}}} - {{{{ \beta}_j}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_j}_k}}}} + {{{{{{ \beta}_j}} {{{{{ \gamma}_j}_i}_{,t}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_t}_i}_{,j}}}}} - {{{2}} {{\alpha}} \cdot {{{ \alpha}_{,i}}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
-for 	${{\beta}^i} = {0}$
+for 	${{ \beta}^i} = {0}$
 <br>
-${\frac{1}{\alpha}}{({{\alpha}_{,i}})}$
+${\frac{1}{\alpha}}{({{ \alpha}_{,i}})}$
 <br>
 <hr>
-${{{\Gamma}^i}_t}_t$
+${{{ \Gamma}^i}_t}_t$
 <br>
 factor out index raise
 <br>
-${{{{g}^t}^a}} {{{{{\Gamma}_a}_i}_t}}$
+${{{{ g}^t}^a}} {{{{{ \Gamma}_a}_i}_t}}$
 <br>
 substitute definition of connection
 <br>
-${\frac{1}{2}}{({-{{{{{g}^t}^a}} {{({{{{{{g}_a}_t}_{,i}} - {{{{g}_i}_a}_{,t}}} - {{{{g}_i}_t}_{,a}}})}}}})}$
+${\frac{1}{2}}{({-{{{{{ g}^t}^a}} {{({{{{{{ g}_a}_t}_{,i}} - {{{{ g}_i}_a}_{,t}}} - {{{{ g}_i}_t}_{,a}}})}}}})}$
 <br>
 split the index a into t and j
 <br>
-${\frac{1}{2}}{({{{{{{g}^t}^j}} {{{{{g}_i}_j}_{,t}}}} + {{{{{{g}^t}^j}} {{{{{g}_i}_t}_{,j}}}} - {{{{{g}^t}^j}} {{{{{g}_j}_t}_{,i}}}}} + {{{{2}} {{{{g}^t}^t}} {{{{{g}_i}_t}_{,t}}}} - {{{{{g}^t}^t}} {{{{{g}_t}_t}_{,i}}}}}})}$
+${\frac{1}{2}}{({{-{{{{{ g}^t}^j}} {{{{{ g}_j}_t}_{,i}}}}} + {{{{{ g}^t}^j}} {{{{{ g}_i}_j}_{,t}}}} + {{{{{ g}^t}^j}} {{{{{ g}_i}_t}_{,j}}}} + {{{{2}} {{{{ g}^t}^t}} {{{{{ g}_i}_t}_{,t}}}} - {{{{{ g}^t}^t}} {{{{{ g}_t}_t}_{,i}}}}}})}$
 <br>
 replace ADM metric definitions
 <br>
-${\frac{1}{2}}{({{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_j}_{,t}}}} + {{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_t}_{,j}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{\beta}_j}_{,i}}}}} + {{{{2}} {{{{{\gamma}_i}_t}_{,t}}} {{\frac{-1}{{\alpha}^{2}}}}} - {{{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,i}}} {{\frac{-1}{{\alpha}^{2}}}}}}})}$
+${\frac{1}{2}}{({{-{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ { \beta}_j}_{,i}}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_j}_{,t}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_t}_{,j}}}} + {{{{2}} {{{ {{ \gamma}_i}_t}_{,t}}} {{\frac{-1}{{\alpha}^{2}}}}} - {{{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,i}}} {{\frac{-1}{{\alpha}^{2}}}}}}})}$
 <br>
 raise $\beta_j$
 <br>
-${\frac{1}{2}}{({{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_j}_{,t}}}} + {{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_t}_{,j}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{\left({{{{\gamma}_j}_k}} {{{\beta}^k}}\right)}_{,i}}}}} + {{{{2}} {{{{{\gamma}_i}_t}_{,t}}} {{\frac{-1}{{\alpha}^{2}}}}} - {{{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,i}}} {{\frac{-1}{{\alpha}^{2}}}}}}})}$
+${\frac{1}{2}}{({{-{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{\left( {{{{ \gamma}_j}_k}} {{{ \beta}^k}}\right)}_{,i}}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_j}_{,t}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_t}_{,j}}}} + {{{{2}} {{{ {{ \gamma}_i}_t}_{,t}}} {{\frac{-1}{{\alpha}^{2}}}}} - {{{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,i}}} {{\frac{-1}{{\alpha}^{2}}}}}}})}$
 <br>
 simplify...
 <br>
-$\frac{{{{{\beta}^i}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_i}_k}}} + {{{{\beta}^i}} {{{\beta}^k}} {{{{{\gamma}_i}_k}_{,i}}}} + {{{{{{\beta}^k}} {{{{\beta}^i}_{,i}}} {{{{\gamma}_i}_k}}} - {{{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_j}_k}_{,i}}}}} - {{{{\beta}_j}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_j}_k}}}} + {{{{\beta}_j}} {{{{{\gamma}_i}_j}_{,t}}}} + {{{{{{\beta}_j}} {{{{{\gamma}_i}_t}_{,j}}}} - {{{2}} {{{{{\gamma}_i}_t}_{,t}}}}} - {{{2}} {{\alpha}} \cdot {{{\alpha}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{{-{{{2}} {{\alpha}} \cdot {{{ \alpha}_{,i}}}}} + {{{{{ \beta}^i}_{,i}}} {{{ \beta}^k}} {{{{ \gamma}_i}_k}}} + {{{{ \beta}^i}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_i}_k}}} + {{{{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,i}}}} - {{{2}} {{{{{ \gamma}_i}_t}_{,t}}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_i}_t}_{,j}}}} + {{{{{{ \beta}_j}} {{{{{ \gamma}_i}_j}_{,t}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_j}_k}_{,i}}} {{{ \beta}^k}}}} - {{{{ \beta}_j}} {{{{ \gamma}_j}_k}} {{{{ \beta}^k}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
 relabel...
 <br>
-$\frac{{{{{\beta}^i}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_i}_k}}} + {{{{\beta}^i}} {{{\beta}^k}} {{{{{\gamma}_i}_k}_{,i}}}} + {{{{{{\beta}^k}} {{{{\beta}^i}_{,i}}} {{{{\gamma}_i}_k}}} - {{{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_j}_k}_{,i}}}}} - {{{{\beta}_j}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_j}_k}}}} + {{{{\beta}_j}} {{{{{\gamma}_i}_j}_{,t}}}} + {{{{{{\beta}_j}} {{{{{\gamma}_i}_t}_{,j}}}} - {{{2}} {{{{{\gamma}_i}_t}_{,t}}}}} - {{{2}} {{\alpha}} \cdot {{{\alpha}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{{-{{{2}} {{\alpha}} \cdot {{{ \alpha}_{,i}}}}} + {{{{{ \beta}^i}_{,i}}} {{{ \beta}^k}} {{{{ \gamma}_i}_k}}} + {{{{ \beta}^i}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_i}_k}}} + {{{{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,i}}}} - {{{2}} {{{{{ \gamma}_i}_t}_{,t}}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_i}_t}_{,j}}}} + {{{{{{ \beta}_j}} {{{{{ \gamma}_i}_j}_{,t}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_j}_k}_{,i}}} {{{ \beta}^k}}}} - {{{{ \beta}_j}} {{{{ \gamma}_j}_k}} {{{{ \beta}^k}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
-for 	${{\beta}^i} = {0}$
+for 	${{ \beta}^i} = {0}$
 <br>
-$\frac{-{({{{{{\gamma}_i}_t}_{,t}} + {{{\alpha}} \cdot {{{\alpha}_{,i}}}}})}}{{\alpha}^{2}}$
+$\frac{-{({{{{{ \gamma}_i}_t}_{,t}} + {{{\alpha}} \cdot {{{ \alpha}_{,i}}}}})}}{{\alpha}^{2}}$
 <br>
 <hr>
-${{{\Gamma}^i}_m}_t$
+${{{ \Gamma}^i}_m}_t$
 <br>
 factor out index raise
 <br>
-${{{{g}^m}^a}} {{{{{\Gamma}_a}_i}_t}}$
+${{{{ g}^m}^a}} {{{{{ \Gamma}_a}_i}_t}}$
 <br>
 substitute definition of connection
 <br>
-${\frac{1}{2}}{({-{{{{{g}^m}^a}} {{({{{{{{g}_a}_t}_{,i}} - {{{{g}_i}_a}_{,t}}} - {{{{g}_i}_t}_{,a}}})}}}})}$
+${\frac{1}{2}}{({-{{{{{ g}^m}^a}} {{({{{{{{ g}_a}_t}_{,i}} - {{{{ g}_i}_a}_{,t}}} - {{{{ g}_i}_t}_{,a}}})}}}})}$
 <br>
 split the index a into t and j
 <br>
-${\frac{1}{2}}{({{{{{{g}^m}^j}} {{{{{g}_i}_j}_{,t}}}} + {{{{{{g}^m}^j}} {{{{{g}_i}_t}_{,j}}}} - {{{{{g}^m}^j}} {{{{{g}_j}_t}_{,i}}}}} + {{{{2}} {{{{g}^m}^t}} {{{{{g}_i}_t}_{,t}}}} - {{{{{g}^m}^t}} {{{{{g}_t}_t}_{,i}}}}}})}$
+${\frac{1}{2}}{({{-{{{{{ g}^m}^j}} {{{{{ g}_j}_t}_{,i}}}}} + {{{{{ g}^m}^j}} {{{{{ g}_i}_j}_{,t}}}} + {{{{{ g}^m}^j}} {{{{{ g}_i}_t}_{,j}}}} + {{{{2}} {{{{ g}^m}^t}} {{{{{ g}_i}_t}_{,t}}}} - {{{{{ g}^m}^t}} {{{{{ g}_t}_t}_{,i}}}}}})}$
 <br>
 replace ADM metric definitions
 <br>
-${\frac{1}{2}}{({{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_j}_{,t}}}} + {{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_t}_{,j}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{\beta}_j}_{,i}}}}} + {{{{2}} \cdot {{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{{{\gamma}_i}_t}_{,t}}}} - {{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,i}}}}}})}$
+${\frac{1}{2}}{({{-{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ { \beta}_j}_{,i}}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_j}_{,t}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_t}_{,j}}}} + {{{{2}} \cdot {{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_t}_{,t}}}} - {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,i}}}}}})}$
 <br>
 raise $\beta_j$
 <br>
-${\frac{1}{2}}{({{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_j}_{,t}}}} + {{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_t}_{,j}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{\left({{{{\gamma}_j}_k}} {{{\beta}^k}}\right)}_{,i}}}}} + {{{{2}} \cdot {{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{{{\gamma}_i}_t}_{,t}}}} - {{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,i}}}}}})}$
+${\frac{1}{2}}{({{-{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{\left( {{{{ \gamma}_j}_k}} {{{ \beta}^k}}\right)}_{,i}}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_j}_{,t}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_t}_{,j}}}} + {{{{2}} \cdot {{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_t}_{,t}}}} - {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,i}}}}}})}$
 <br>
 simplify...
 <br>
-$\frac{-{({{{{{\beta}^i}} {{{\beta}^k}} {{{\beta}_t}} {{{{{\gamma}_i}_k}_{,i}}}} + {{{{\beta}^i}} {{{\beta}_t}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_i}_k}}} + {{{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_j}_k}_{,i}}}} + {{{{\beta}^k}} {{{\beta}_t}} {{{{\beta}^i}_{,i}}} {{{{\gamma}_i}_k}}} + {{{{{{{{\beta}_j}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_j}_k}}} - {{{{\beta}_j}} {{{{{\gamma}_i}_j}_{,t}}}}} - {{{{\beta}_j}} {{{{{\gamma}_i}_t}_{,j}}}}} - {{{2}} {{{\beta}_t}} {{{{{\gamma}_i}_t}_{,t}}}}} - {{{2}} {{\alpha}} \cdot {{{\beta}_t}} {{{\alpha}_{,i}}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{{{{{{{2}} {{{ \beta}_t}} {{\alpha}} \cdot {{{ \alpha}_{,i}}}} - {{{{ \beta}_t}} {{{{ \beta}^i}_{,i}}} {{{ \beta}^k}} {{{{ \gamma}_i}_k}}}} - {{{{ \beta}_t}} {{{ \beta}^i}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_i}_k}}}} - {{{{ \beta}_t}} {{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,i}}}}} + {{{2}} {{{ \beta}_t}} {{{{{ \gamma}_i}_t}_{,t}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_i}_t}_{,j}}}} + {{{{{{ \beta}_j}} {{{{{ \gamma}_i}_j}_{,t}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_j}_k}_{,i}}} {{{ \beta}^k}}}} - {{{{ \beta}_j}} {{{{ \gamma}_j}_k}} {{{{ \beta}^k}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
 relabel...
 <br>
-$\frac{-{({{{{{\beta}^i}} {{{\beta}^k}} {{{\beta}_t}} {{{{{\gamma}_i}_k}_{,i}}}} + {{{{\beta}^i}} {{{\beta}_t}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_i}_k}}} + {{{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_j}_k}_{,i}}}} + {{{{\beta}^k}} {{{\beta}_t}} {{{{\beta}^i}_{,i}}} {{{{\gamma}_i}_k}}} + {{{{{{{{\beta}_j}} {{{{\beta}^k}_{,i}}} {{{{\gamma}_j}_k}}} - {{{{\beta}_j}} {{{{{\gamma}_i}_j}_{,t}}}}} - {{{{\beta}_j}} {{{{{\gamma}_i}_t}_{,j}}}}} - {{{2}} {{{\beta}_t}} {{{{{\gamma}_i}_t}_{,t}}}}} - {{{2}} {{\alpha}} \cdot {{{\beta}_t}} {{{\alpha}_{,i}}}}}})}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{{{{{{{2}} {{{ \beta}_t}} {{\alpha}} \cdot {{{ \alpha}_{,i}}}} - {{{{ \beta}_t}} {{{{ \beta}^i}_{,i}}} {{{ \beta}^k}} {{{{ \gamma}_i}_k}}}} - {{{{ \beta}_t}} {{{ \beta}^i}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_i}_k}}}} - {{{{ \beta}_t}} {{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,i}}}}} + {{{2}} {{{ \beta}_t}} {{{{{ \gamma}_i}_t}_{,t}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_i}_t}_{,j}}}} + {{{{{{ \beta}_j}} {{{{{ \gamma}_i}_j}_{,t}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_j}_k}_{,i}}} {{{ \beta}^k}}}} - {{{{ \beta}_j}} {{{{ \gamma}_j}_k}} {{{{ \beta}^k}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
-for 	${{\beta}^i} = {0}$
+for 	${{ \beta}^i} = {0}$
 <br>
 $0$
 <br>
 <hr>
-${{{\Gamma}^t}_i}_m$
+${{{ \Gamma}^t}_i}_m$
 <br>
 factor out index raise
 <br>
-${{{{g}^i}^a}} {{{{{\Gamma}_a}_t}_m}}$
+${{{{ g}^i}^a}} {{{{{ \Gamma}_a}_t}_m}}$
 <br>
 substitute definition of connection
 <br>
-${\frac{1}{2}}{({-{{{{{g}^i}^a}} {{({{{{{{g}_a}_m}_{,t}} - {{{{g}_t}_a}_{,m}}} - {{{{g}_t}_m}_{,a}}})}}}})}$
+${\frac{1}{2}}{({-{{{{{ g}^i}^a}} {{({{{{{{ g}_a}_m}_{,t}} - {{{{ g}_t}_a}_{,m}}} - {{{{ g}_t}_m}_{,a}}})}}}})}$
 <br>
 split the index a into t and j
 <br>
-${\frac{1}{2}}{({-{({{{{{{{{g}^i}^j}} {{{{{g}_j}_m}_{,t}}}} - {{{{{g}^i}^j}} {{{{{g}_t}_j}_{,m}}}}} - {{{{{g}^i}^j}} {{{{{g}_t}_m}_{,j}}}}} - {{{{{g}^i}^t}} {{{{{g}_t}_t}_{,m}}}}})}})}$
+${\frac{1}{2}}{({-{({{{{{{{{ g}^i}^j}} {{{{{ g}_j}_m}_{,t}}}} - {{{{{ g}^i}^j}} {{{{{ g}_t}_j}_{,m}}}}} - {{{{{ g}^i}^j}} {{{{{ g}_t}_m}_{,j}}}}} - {{{{{ g}^i}^t}} {{{{{ g}_t}_t}_{,m}}}}})}})}$
 <br>
 replace ADM metric definitions
 <br>
-${\frac{1}{2}}{({-{({{{{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_j}_m}_{,t}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{\beta}_j}_{,m}}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_t}_m}_{,j}}}}} - {{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,m}}}}})}})}$
+${\frac{1}{2}}{({-{({{{{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_j}_m}_{,t}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ { \beta}_j}_{,m}}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_t}_m}_{,j}}}}} - {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,m}}}}})}})}$
 <br>
 raise $\beta_j$
 <br>
-${\frac{1}{2}}{({-{({{{{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_j}_m}_{,t}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{\left({{{{\gamma}_j}_k}} {{{\beta}^k}}\right)}_{,m}}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_t}_m}_{,j}}}}} - {{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{\left({-{{\alpha}^{2}}} + {{{{{{\beta}^i}} {{{\beta}^k}}}} {{{{\gamma}_i}_k}}}\right)}_{,m}}}}})}})}$
+${\frac{1}{2}}{({-{({{{{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_j}_m}_{,t}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{\left( {{{{ \gamma}_j}_k}} {{{ \beta}^k}}\right)}_{,m}}}}} - {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_t}_m}_{,j}}}}} - {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{\left( {-{{\alpha}^{2}}} + {{{{{{ \beta}^i}} {{{ \beta}^k}}}} {{{{ \gamma}_i}_k}}}\right)}_{,m}}}}})}})}$
 <br>
 simplify...
 <br>
-$\frac{{{{{\beta}^i}} {{{\beta}^k}} {{{\beta}_t}} {{{{{\gamma}_i}_k}_{,m}}}} + {{{{\beta}^i}} {{{\beta}_t}} {{{{\beta}^k}_{,m}}} {{{{\gamma}_i}_k}}} + {{{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_j}_k}_{,m}}}} + {{{{\beta}^k}} {{{\beta}_t}} {{{{\beta}^i}_{,m}}} {{{{\gamma}_i}_k}}} + {{{{{\beta}_j}} {{{{\beta}^k}_{,m}}} {{{{\gamma}_j}_k}}} - {{{{\beta}_j}} {{{{{\gamma}_j}_m}_{,t}}}}} + {{{{{\beta}_j}} {{{{{\gamma}_t}_m}_{,j}}}} - {{{2}} {{\alpha}} \cdot {{{\beta}_t}} {{{\alpha}_{,m}}}}}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{{-{{{2}} {{{ \beta}_t}} {{\alpha}} \cdot {{{ \alpha}_{,m}}}}} + {{{{ \beta}_t}} {{{{ \beta}^i}_{,m}}} {{{ \beta}^k}} {{{{ \gamma}_i}_k}}} + {{{{ \beta}_t}} {{{ \beta}^i}} {{{{ \beta}^k}_{,m}}} {{{{ \gamma}_i}_k}}} + {{{{ \beta}_t}} {{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,m}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_t}_m}_{,j}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_j}_k}_{,m}}} {{{ \beta}^k}}} + {{{{{ \beta}_j}} {{{{ \gamma}_j}_k}} {{{{ \beta}^k}_{,m}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_j}_m}_{,t}}}}}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
 relabel...
 <br>
-$\frac{{{{{\beta}^i}} {{{\beta}^k}} {{{\beta}_t}} {{{{{\gamma}_i}_k}_{,m}}}} + {{{{\beta}^i}} {{{\beta}_t}} {{{{\beta}^k}_{,m}}} {{{{\gamma}_i}_k}}} + {{{{\beta}^k}} {{{\beta}_j}} {{{{{\gamma}_j}_k}_{,m}}}} + {{{{\beta}^k}} {{{\beta}_t}} {{{{\beta}^i}_{,m}}} {{{{\gamma}_i}_k}}} + {{{{{\beta}_j}} {{{{\beta}^k}_{,m}}} {{{{\gamma}_j}_k}}} - {{{{\beta}_j}} {{{{{\gamma}_j}_m}_{,t}}}}} + {{{{{\beta}_j}} {{{{{\gamma}_t}_m}_{,j}}}} - {{{2}} {{\alpha}} \cdot {{{\beta}_t}} {{{\alpha}_{,m}}}}}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{{-{{{2}} {{{ \beta}_t}} {{\alpha}} \cdot {{{ \alpha}_{,m}}}}} + {{{{ \beta}_t}} {{{{ \beta}^i}_{,m}}} {{{ \beta}^k}} {{{{ \gamma}_i}_k}}} + {{{{ \beta}_t}} {{{ \beta}^i}} {{{{ \beta}^k}_{,m}}} {{{{ \gamma}_i}_k}}} + {{{{ \beta}_t}} {{{ \beta}^i}} {{{ \beta}^k}} {{{{{ \gamma}_i}_k}_{,m}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_t}_m}_{,j}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_j}_k}_{,m}}} {{{ \beta}^k}}} + {{{{{ \beta}_j}} {{{{ \gamma}_j}_k}} {{{{ \beta}^k}_{,m}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_j}_m}_{,t}}}}}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
-for 	${{\beta}^i} = {0}$
+for 	${{ \beta}^i} = {0}$
 <br>
 $0$
 <br>
 <hr>
-${{{\Gamma}^i}_m}_n$
+${{{ \Gamma}^i}_m}_n$
 <br>
 factor out index raise
 <br>
-${{{{g}^m}^a}} {{{{{\Gamma}_a}_i}_n}}$
+${{{{ g}^m}^a}} {{{{{ \Gamma}_a}_i}_n}}$
 <br>
 substitute definition of connection
 <br>
-${\frac{1}{2}}{({-{{{{{g}^m}^a}} {{({{{{{{g}_a}_n}_{,i}} - {{{{g}_i}_a}_{,n}}} - {{{{g}_i}_n}_{,a}}})}}}})}$
+${\frac{1}{2}}{({-{{{{{ g}^m}^a}} {{({{{{{{ g}_a}_n}_{,i}} - {{{{ g}_i}_a}_{,n}}} - {{{{ g}_i}_n}_{,a}}})}}}})}$
 <br>
 split the index a into t and j
 <br>
-${\frac{1}{2}}{({{{{{{g}^m}^j}} {{{{{g}_i}_j}_{,n}}}} + {{{{{{g}^m}^j}} {{{{{g}_i}_n}_{,j}}}} - {{{{{g}^m}^j}} {{{{{g}_j}_n}_{,i}}}}} + {{{{{g}^m}^t}} {{{{{g}_i}_n}_{,t}}}} + {{{{{{g}^m}^t}} {{{{{g}_i}_t}_{,n}}}} - {{{{{g}^m}^t}} {{{{{g}_t}_n}_{,i}}}}}})}$
+${\frac{1}{2}}{({{-{{{{{ g}^m}^j}} {{{{{ g}_j}_n}_{,i}}}}} + {{{{{ g}^m}^j}} {{{{{ g}_i}_j}_{,n}}}} + {{{{{{ g}^m}^j}} {{{{{ g}_i}_n}_{,j}}}} - {{{{{ g}^m}^t}} {{{{{ g}_t}_n}_{,i}}}}} + {{{{{ g}^m}^t}} {{{{{ g}_i}_t}_{,n}}}} + {{{{{ g}^m}^t}} {{{{{ g}_i}_n}_{,t}}}}})}$
 <br>
 replace ADM metric definitions
 <br>
-${\frac{1}{2}}{({{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_j}_{,n}}}} + {{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_n}_{,j}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_j}_n}_{,i}}}}} + {{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{{{\gamma}_i}_n}_{,t}}}} + {{{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{{{\gamma}_i}_t}_{,n}}}} - {{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{{{\gamma}_t}_n}_{,i}}}}}})}$
+${\frac{1}{2}}{({{-{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_j}_n}_{,i}}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_j}_{,n}}}} + {{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_n}_{,j}}}} - {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{ {{ \gamma}_t}_n}_{,i}}}}} + {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_t}_{,n}}}} + {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_n}_{,t}}}}})}$
 <br>
 raise $\beta_j$
 <br>
-${\frac{1}{2}}{({{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_j}_{,n}}}} + {{{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_i}_n}_{,j}}}} - {{{\frac{{\beta}_j}{{\alpha}^{2}}}} {{{{{\gamma}_j}_n}_{,i}}}}} + {{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{{{\gamma}_i}_n}_{,t}}}} + {{{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{{{\gamma}_i}_t}_{,n}}}} - {{{\frac{{\beta}_t}{{\alpha}^{2}}}} {{{{{\gamma}_t}_n}_{,i}}}}}})}$
+${\frac{1}{2}}{({{-{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_j}_n}_{,i}}}}} + {{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_j}_{,n}}}} + {{{{\frac{{ \beta}_j}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_n}_{,j}}}} - {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{ {{ \gamma}_t}_n}_{,i}}}}} + {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_t}_{,n}}}} + {{{\frac{{ \beta}_t}{{\alpha}^{2}}}} {{{ {{ \gamma}_i}_n}_{,t}}}}})}$
 <br>
 simplify...
 <br>
-$\frac{{{{{\beta}_j}} {{{{{\gamma}_i}_j}_{,n}}}} + {{{{{\beta}_j}} {{{{{\gamma}_i}_n}_{,j}}}} - {{{{\beta}_j}} {{{{{\gamma}_j}_n}_{,i}}}}} + {{{{\beta}_t}} {{{{{\gamma}_i}_n}_{,t}}}} + {{{{{\beta}_t}} {{{{{\gamma}_i}_t}_{,n}}}} - {{{{\beta}_t}} {{{{{\gamma}_t}_n}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{{{{{ \beta}_t}} {{{{{ \gamma}_i}_n}_{,t}}}} + {{{{{ \beta}_t}} {{{{{ \gamma}_i}_t}_{,n}}}} - {{{{ \beta}_t}} {{{{{ \gamma}_t}_n}_{,i}}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_i}_n}_{,j}}}} + {{{{{ \beta}_j}} {{{{{ \gamma}_i}_j}_{,n}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_j}_n}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
 relabel...
 <br>
-$\frac{{{{{\beta}_j}} {{{{{\gamma}_i}_j}_{,n}}}} + {{{{{\beta}_j}} {{{{{\gamma}_i}_n}_{,j}}}} - {{{{\beta}_j}} {{{{{\gamma}_j}_n}_{,i}}}}} + {{{{\beta}_t}} {{{{{\gamma}_i}_n}_{,t}}}} + {{{{{\beta}_t}} {{{{{\gamma}_i}_t}_{,n}}}} - {{{{\beta}_t}} {{{{{\gamma}_t}_n}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
+$\frac{{{{{ \beta}_t}} {{{{{ \gamma}_i}_n}_{,t}}}} + {{{{{ \beta}_t}} {{{{{ \gamma}_i}_t}_{,n}}}} - {{{{ \beta}_t}} {{{{{ \gamma}_t}_n}_{,i}}}}} + {{{{ \beta}_j}} {{{{{ \gamma}_i}_n}_{,j}}}} + {{{{{ \beta}_j}} {{{{{ \gamma}_i}_j}_{,n}}}} - {{{{ \beta}_j}} {{{{{ \gamma}_j}_n}_{,i}}}}}}{{{2}} {{{\alpha}^{2}}}}$
 <br>
-for 	${{\beta}^i} = {0}$
+for 	${{ \beta}^i} = {0}$
 <br>
 $0$
 <br>
 <hr>
-${{{{R}^t}_t}_t}_i$
+${{{{ R}^t}_t}_t}_i$
 <br>
 substitute definition of Riemann curvature
 <br>
-${{{{{{{\Gamma}^t}_t}_i}_{,t}} - {{{{{\Gamma}^t}_t}_t}_{,i}}} + {{{{{{\Gamma}^t}_e}_t}} {{{{{\Gamma}^e}_t}_i}}}} - {{{{{{\Gamma}^t}_e}_i}} {{{{{\Gamma}^e}_t}_t}}}$
+${{{{ {{{ \Gamma}^t}_t}_i}_{,t}} - {{ {{{ \Gamma}^t}_t}_t}_{,i}}} + {{{{{{ \Gamma}^t}_e}_t}} {{{{{ \Gamma}^e}_t}_i}}}} - {{{{{{ \Gamma}^t}_e}_i}} {{{{{ \Gamma}^e}_t}_t}}}$
 <br>
 split the index e into t and m
 <br>
-${{{{{{{\Gamma}^t}_t}_i}_{,t}} - {{{{{\Gamma}^t}_t}_t}_{,i}}} + {{{({{{{{\Gamma}^t}_t}_t} + {{{{\Gamma}^t}_m}_t}})}} {{({{{{{\Gamma}^t}_t}_i} + {{{{\Gamma}^m}_t}_i}})}}}} - {{{({{{{{\Gamma}^t}_t}_i} + {{{{\Gamma}^t}_n}_i}})}} {{({{{{{\Gamma}^t}_t}_t} + {{{{\Gamma}^n}_t}_t}})}}}$
+${{{{ {{{ \Gamma}^t}_t}_i}_{,t}} - {{ {{{ \Gamma}^t}_t}_t}_{,i}}} + {{{({{{{{ \Gamma}^t}_t}_t} + {{{{ \Gamma}^t}_m}_t}})}} {{({{{{{ \Gamma}^t}_t}_i} + {{{{ \Gamma}^m}_t}_i}})}}}} - {{{({{{{{ \Gamma}^t}_t}_i} + {{{{ \Gamma}^t}_n}_i}})}} {{({{{{{ \Gamma}^t}_t}_t} + {{{{ \Gamma}^n}_t}_t}})}}}$
 <br>
-${{{{{{\Gamma}^m}_t}_i}} {{{{{\Gamma}^t}_m}_t}}} + {{{{{{{{\Gamma}^m}_t}_i}} {{{{{\Gamma}^t}_t}_t}}} - {{{{{{\Gamma}^n}_t}_t}} {{{{{\Gamma}^t}_n}_i}}}} - {{{{{{\Gamma}^n}_t}_t}} {{{{{\Gamma}^t}_t}_i}}}} + {{{{{{{\Gamma}^t}_m}_t}} {{{{{\Gamma}^t}_t}_i}}} - {{{{{{\Gamma}^t}_n}_i}} {{{{{\Gamma}^t}_t}_t}}}} + {{{{{{\Gamma}^t}_t}_i}_{,t}} - {{{{{\Gamma}^t}_t}_t}_{,i}}}$
+${{{{{{ \Gamma}^t}_t}_i}_{,t}} - {{{{{ \Gamma}^t}_t}_t}_{,i}}} + {{{{{{ \Gamma}^t}_t}_t}} {{{{{ \Gamma}^m}_t}_i}}} + {{{{{{ \Gamma}^t}_m}_t}} {{{{{ \Gamma}^t}_t}_i}}} + {{{{{{{{{ \Gamma}^t}_m}_t}} {{{{{ \Gamma}^m}_t}_i}}} - {{{{{{ \Gamma}^t}_t}_i}} {{{{{ \Gamma}^n}_t}_t}}}} - {{{{{{ \Gamma}^t}_n}_i}} {{{{{ \Gamma}^t}_t}_t}}}} - {{{{{{ \Gamma}^t}_n}_i}} {{{{{ \Gamma}^n}_t}_t}}}}$
 <br>
 <hr>
-${{{{R}^t}_t}_i}_j$
+${{{{ R}^t}_t}_i}_j$
 <br>
 substitute definition of Riemann curvature
 <br>
-${{{{{{{\Gamma}^t}_t}_j}_{,i}} - {{{{{\Gamma}^t}_t}_i}_{,j}}} + {{{{{{\Gamma}^t}_e}_i}} {{{{{\Gamma}^e}_t}_j}}}} - {{{{{{\Gamma}^t}_e}_j}} {{{{{\Gamma}^e}_t}_i}}}$
+${{{{ {{{ \Gamma}^t}_t}_j}_{,i}} - {{ {{{ \Gamma}^t}_t}_i}_{,j}}} + {{{{{{ \Gamma}^t}_e}_i}} {{{{{ \Gamma}^e}_t}_j}}}} - {{{{{{ \Gamma}^t}_e}_j}} {{{{{ \Gamma}^e}_t}_i}}}$
 <br>
 split the index e into t and m
 <br>
-${{{{{{{\Gamma}^t}_t}_j}_{,i}} - {{{{{\Gamma}^t}_t}_i}_{,j}}} + {{{({{{{{\Gamma}^t}_t}_i} + {{{{\Gamma}^t}_m}_i}})}} {{({{{{{\Gamma}^t}_t}_j} + {{{{\Gamma}^m}_t}_j}})}}}} - {{{({{{{{\Gamma}^t}_t}_j} + {{{{\Gamma}^t}_n}_j}})}} {{({{{{{\Gamma}^t}_t}_i} + {{{{\Gamma}^n}_t}_i}})}}}$
+${{{{ {{{ \Gamma}^t}_t}_j}_{,i}} - {{ {{{ \Gamma}^t}_t}_i}_{,j}}} + {{{({{{{{ \Gamma}^t}_t}_i} + {{{{ \Gamma}^t}_m}_i}})}} {{({{{{{ \Gamma}^t}_t}_j} + {{{{ \Gamma}^m}_t}_j}})}}}} - {{{({{{{{ \Gamma}^t}_t}_j} + {{{{ \Gamma}^t}_n}_j}})}} {{({{{{{ \Gamma}^t}_t}_i} + {{{{ \Gamma}^n}_t}_i}})}}}$
 <br>
-${{{{{{\Gamma}^m}_t}_j}} {{{{{\Gamma}^t}_m}_i}}} + {{{{{{{{\Gamma}^m}_t}_j}} {{{{{\Gamma}^t}_t}_i}}} - {{{{{{\Gamma}^n}_t}_i}} {{{{{\Gamma}^t}_n}_j}}}} - {{{{{{\Gamma}^n}_t}_i}} {{{{{\Gamma}^t}_t}_j}}}} + {{{{{{{{\Gamma}^t}_m}_i}} {{{{{\Gamma}^t}_t}_j}}} - {{{{{{\Gamma}^t}_n}_j}} {{{{{\Gamma}^t}_t}_i}}}} - {{{{{\Gamma}^t}_t}_i}_{,j}}} + {{{{{\Gamma}^t}_t}_j}_{,i}}$
+${{{{{{ \Gamma}^t}_t}_j}_{,i}} - {{{{{ \Gamma}^t}_t}_i}_{,j}}} + {{{{{{ \Gamma}^t}_t}_i}} {{{{{ \Gamma}^m}_t}_j}}} + {{{{{{ \Gamma}^t}_m}_i}} {{{{{ \Gamma}^t}_t}_j}}} + {{{{{{{{{ \Gamma}^t}_m}_i}} {{{{{ \Gamma}^m}_t}_j}}} - {{{{{{ \Gamma}^t}_t}_j}} {{{{{ \Gamma}^n}_t}_i}}}} - {{{{{{ \Gamma}^t}_n}_j}} {{{{{ \Gamma}^t}_t}_i}}}} - {{{{{{ \Gamma}^t}_n}_j}} {{{{{ \Gamma}^n}_t}_i}}}}$
 <br>
 <hr>
-${{{{R}^t}_i}_t}_j$
+${{{{ R}^t}_i}_t}_j$
 <br>
 substitute definition of Riemann curvature
 <br>
-${{{{{{{\Gamma}^t}_i}_j}_{,t}} - {{{{{\Gamma}^t}_i}_t}_{,j}}} + {{{{{{\Gamma}^t}_e}_t}} {{{{{\Gamma}^e}_i}_j}}}} - {{{{{{\Gamma}^t}_e}_j}} {{{{{\Gamma}^e}_i}_t}}}$
+${{{{ {{{ \Gamma}^t}_i}_j}_{,t}} - {{ {{{ \Gamma}^t}_i}_t}_{,j}}} + {{{{{{ \Gamma}^t}_e}_t}} {{{{{ \Gamma}^e}_i}_j}}}} - {{{{{{ \Gamma}^t}_e}_j}} {{{{{ \Gamma}^e}_i}_t}}}$
 <br>
 split the index e into t and m
 <br>
-${{{{{{{\Gamma}^t}_i}_j}_{,t}} - {{{{{\Gamma}^t}_i}_t}_{,j}}} + {{{({{{{{\Gamma}^t}_t}_t} + {{{{\Gamma}^t}_m}_t}})}} {{({{{{{\Gamma}^t}_i}_j} + {{{{\Gamma}^m}_i}_j}})}}}} - {{{({{{{{\Gamma}^t}_t}_j} + {{{{\Gamma}^t}_n}_j}})}} {{({{{{{\Gamma}^t}_i}_t} + {{{{\Gamma}^n}_i}_t}})}}}$
+${{{{ {{{ \Gamma}^t}_i}_j}_{,t}} - {{ {{{ \Gamma}^t}_i}_t}_{,j}}} + {{{({{{{{ \Gamma}^t}_t}_t} + {{{{ \Gamma}^t}_m}_t}})}} {{({{{{{ \Gamma}^t}_i}_j} + {{{{ \Gamma}^m}_i}_j}})}}}} - {{{({{{{{ \Gamma}^t}_t}_j} + {{{{ \Gamma}^t}_n}_j}})}} {{({{{{{ \Gamma}^t}_i}_t} + {{{{ \Gamma}^n}_i}_t}})}}}$
 <br>
-${{{{{{\Gamma}^m}_i}_j}} {{{{{\Gamma}^t}_m}_t}}} + {{{{{{{{\Gamma}^m}_i}_j}} {{{{{\Gamma}^t}_t}_t}}} - {{{{{{\Gamma}^n}_i}_t}} {{{{{\Gamma}^t}_n}_j}}}} - {{{{{{\Gamma}^n}_i}_t}} {{{{{\Gamma}^t}_t}_j}}}} + {{{{{\Gamma}^t}_i}_j}_{,t}} + {{{{{{\Gamma}^t}_i}_j}} {{{{{\Gamma}^t}_m}_t}}} + {{{{{{{{{\Gamma}^t}_i}_j}} {{{{{\Gamma}^t}_t}_t}}} - {{{{{\Gamma}^t}_i}_t}_{,j}}} - {{{{{{\Gamma}^t}_i}_t}} {{{{{\Gamma}^t}_n}_j}}}} - {{{{{{\Gamma}^t}_i}_t}} {{{{{\Gamma}^t}_t}_j}}}}$
+${{{{{{ \Gamma}^t}_i}_j}_{,t}} - {{{{{ \Gamma}^t}_i}_t}_{,j}}} + {{{{{{ \Gamma}^t}_t}_t}} {{{{{ \Gamma}^t}_i}_j}}} + {{{{{{ \Gamma}^t}_t}_t}} {{{{{ \Gamma}^m}_i}_j}}} + {{{{{{ \Gamma}^t}_m}_t}} {{{{{ \Gamma}^t}_i}_j}}} + {{{{{{{{{{ \Gamma}^t}_m}_t}} {{{{{ \Gamma}^m}_i}_j}}} - {{{{{{ \Gamma}^t}_t}_j}} {{{{{ \Gamma}^t}_i}_t}}}} - {{{{{{ \Gamma}^t}_t}_j}} {{{{{ \Gamma}^n}_i}_t}}}} - {{{{{{ \Gamma}^t}_n}_j}} {{{{{ \Gamma}^t}_i}_t}}}} - {{{{{{ \Gamma}^t}_n}_j}} {{{{{ \Gamma}^n}_i}_t}}}}$
 <br>
 <hr>
-${{{{R}^i}_t}_t}_j$
+${{{{ R}^i}_t}_t}_j$
 <br>
 substitute definition of Riemann curvature
 <br>
-${{{{{{{\Gamma}^i}_t}_j}_{,t}} - {{{{{\Gamma}^i}_t}_t}_{,j}}} + {{{{{{\Gamma}^i}_e}_t}} {{{{{\Gamma}^e}_t}_j}}}} - {{{{{{\Gamma}^i}_e}_j}} {{{{{\Gamma}^e}_t}_t}}}$
+${{{{ {{{ \Gamma}^i}_t}_j}_{,t}} - {{ {{{ \Gamma}^i}_t}_t}_{,j}}} + {{{{{{ \Gamma}^i}_e}_t}} {{{{{ \Gamma}^e}_t}_j}}}} - {{{{{{ \Gamma}^i}_e}_j}} {{{{{ \Gamma}^e}_t}_t}}}$
 <br>
 split the index e into t and m
 <br>
-${{{{{{{\Gamma}^i}_t}_j}_{,t}} - {{{{{\Gamma}^i}_t}_t}_{,j}}} + {{{({{{{{\Gamma}^i}_t}_t} + {{{{\Gamma}^i}_m}_t}})}} {{({{{{{\Gamma}^t}_t}_j} + {{{{\Gamma}^m}_t}_j}})}}}} - {{{({{{{{\Gamma}^i}_t}_j} + {{{{\Gamma}^i}_n}_j}})}} {{({{{{{\Gamma}^t}_t}_t} + {{{{\Gamma}^n}_t}_t}})}}}$
+${{{{ {{{ \Gamma}^i}_t}_j}_{,t}} - {{ {{{ \Gamma}^i}_t}_t}_{,j}}} + {{{({{{{{ \Gamma}^i}_t}_t} + {{{{ \Gamma}^i}_m}_t}})}} {{({{{{{ \Gamma}^t}_t}_j} + {{{{ \Gamma}^m}_t}_j}})}}}} - {{{({{{{{ \Gamma}^i}_t}_j} + {{{{ \Gamma}^i}_n}_j}})}} {{({{{{{ \Gamma}^t}_t}_t} + {{{{ \Gamma}^n}_t}_t}})}}}$
 <br>
-${{{{{{\Gamma}^i}_m}_t}} {{{{{\Gamma}^m}_t}_j}}} + {{{{{{{{\Gamma}^i}_m}_t}} {{{{{\Gamma}^t}_t}_j}}} - {{{{{{\Gamma}^i}_n}_j}} {{{{{\Gamma}^n}_t}_t}}}} - {{{{{{\Gamma}^i}_n}_j}} {{{{{\Gamma}^t}_t}_t}}}} + {{{{{{{{\Gamma}^i}_t}_j}_{,t}} - {{{{{{\Gamma}^i}_t}_j}} {{{{{\Gamma}^n}_t}_t}}}} - {{{{{{\Gamma}^i}_t}_j}} {{{{{\Gamma}^t}_t}_t}}}} - {{{{{\Gamma}^i}_t}_t}_{,j}}} + {{{{{{\Gamma}^i}_t}_t}} {{{{{\Gamma}^m}_t}_j}}} + {{{{{{\Gamma}^i}_t}_t}} {{{{{\Gamma}^t}_t}_j}}}$
+${{{{{{ \Gamma}^i}_t}_j}_{,t}} - {{{{{ \Gamma}^i}_t}_t}_{,j}}} + {{{{{{ \Gamma}^i}_t}_t}} {{{{{ \Gamma}^t}_t}_j}}} + {{{{{{ \Gamma}^i}_t}_t}} {{{{{ \Gamma}^m}_t}_j}}} + {{{{{{ \Gamma}^i}_m}_t}} {{{{{ \Gamma}^t}_t}_j}}} + {{{{{{{{{{ \Gamma}^i}_m}_t}} {{{{{ \Gamma}^m}_t}_j}}} - {{{{{{ \Gamma}^i}_t}_j}} {{{{{ \Gamma}^t}_t}_t}}}} - {{{{{{ \Gamma}^i}_t}_j}} {{{{{ \Gamma}^n}_t}_t}}}} - {{{{{{ \Gamma}^i}_n}_j}} {{{{{ \Gamma}^t}_t}_t}}}} - {{{{{{ \Gamma}^i}_n}_j}} {{{{{ \Gamma}^n}_t}_t}}}}$
 <br>
 <hr>
-${{{{R}^t}_i}_j}_k$
+${{{{ R}^t}_i}_j}_k$
 <br>
 substitute definition of Riemann curvature
 <br>
-${{{{{{{\Gamma}^t}_i}_k}_{,j}} - {{{{{\Gamma}^t}_i}_j}_{,k}}} + {{{{{{\Gamma}^t}_e}_j}} {{{{{\Gamma}^e}_i}_k}}}} - {{{{{{\Gamma}^t}_e}_k}} {{{{{\Gamma}^e}_i}_j}}}$
+${{{{ {{{ \Gamma}^t}_i}_k}_{,j}} - {{ {{{ \Gamma}^t}_i}_j}_{,k}}} + {{{{{{ \Gamma}^t}_e}_j}} {{{{{ \Gamma}^e}_i}_k}}}} - {{{{{{ \Gamma}^t}_e}_k}} {{{{{ \Gamma}^e}_i}_j}}}$
 <br>
 split the index e into t and m
 <br>
-${{{{{{{\Gamma}^t}_i}_k}_{,j}} - {{{{{\Gamma}^t}_i}_j}_{,k}}} + {{{({{{{{\Gamma}^t}_t}_j} + {{{{\Gamma}^t}_m}_j}})}} {{({{{{{\Gamma}^t}_i}_k} + {{{{\Gamma}^m}_i}_k}})}}}} - {{{({{{{{\Gamma}^t}_t}_k} + {{{{\Gamma}^t}_n}_k}})}} {{({{{{{\Gamma}^t}_i}_j} + {{{{\Gamma}^n}_i}_j}})}}}$
+${{{{ {{{ \Gamma}^t}_i}_k}_{,j}} - {{ {{{ \Gamma}^t}_i}_j}_{,k}}} + {{{({{{{{ \Gamma}^t}_t}_j} + {{{{ \Gamma}^t}_m}_j}})}} {{({{{{{ \Gamma}^t}_i}_k} + {{{{ \Gamma}^m}_i}_k}})}}}} - {{{({{{{{ \Gamma}^t}_t}_k} + {{{{ \Gamma}^t}_n}_k}})}} {{({{{{{ \Gamma}^t}_i}_j} + {{{{ \Gamma}^n}_i}_j}})}}}$
 <br>
-${{{{{{\Gamma}^m}_i}_k}} {{{{{\Gamma}^t}_m}_j}}} + {{{{{{{{{{{\Gamma}^m}_i}_k}} {{{{{\Gamma}^t}_t}_j}}} - {{{{{{\Gamma}^n}_i}_j}} {{{{{\Gamma}^t}_n}_k}}}} - {{{{{{\Gamma}^n}_i}_j}} {{{{{\Gamma}^t}_t}_k}}}} - {{{{{\Gamma}^t}_i}_j}_{,k}}} - {{{{{{\Gamma}^t}_i}_j}} {{{{{\Gamma}^t}_n}_k}}}} - {{{{{{\Gamma}^t}_i}_j}} {{{{{\Gamma}^t}_t}_k}}}} + {{{{{\Gamma}^t}_i}_k}_{,j}} + {{{{{{\Gamma}^t}_i}_k}} {{{{{\Gamma}^t}_m}_j}}} + {{{{{{\Gamma}^t}_i}_k}} {{{{{\Gamma}^t}_t}_j}}}$
+${{{{{{ \Gamma}^m}_i}_k}} {{{{{ \Gamma}^t}_m}_j}}} + {{{{{{{{{{{ \Gamma}^m}_i}_k}} {{{{{ \Gamma}^t}_t}_j}}} - {{{{{{ \Gamma}^n}_i}_j}} {{{{{ \Gamma}^t}_n}_k}}}} - {{{{{{ \Gamma}^n}_i}_j}} {{{{{ \Gamma}^t}_t}_k}}}} - {{{{{ \Gamma}^t}_i}_j}_{,k}}} - {{{{{{ \Gamma}^t}_i}_j}} {{{{{ \Gamma}^t}_n}_k}}}} - {{{{{{ \Gamma}^t}_i}_j}} {{{{{ \Gamma}^t}_t}_k}}}} + {{{{{ \Gamma}^t}_i}_k}_{,j}} + {{{{{{ \Gamma}^t}_i}_k}} {{{{{ \Gamma}^t}_m}_j}}} + {{{{{{ \Gamma}^t}_i}_k}} {{{{{ \Gamma}^t}_t}_j}}}$
 <br>
 <hr>
-${{{{R}^i}_t}_j}_k$
+${{{{ R}^i}_t}_j}_k$
 <br>
 substitute definition of Riemann curvature
 <br>
-${{{{{{{\Gamma}^i}_t}_k}_{,j}} - {{{{{\Gamma}^i}_t}_j}_{,k}}} + {{{{{{\Gamma}^i}_e}_j}} {{{{{\Gamma}^e}_t}_k}}}} - {{{{{{\Gamma}^i}_e}_k}} {{{{{\Gamma}^e}_t}_j}}}$
+${{{{ {{{ \Gamma}^i}_t}_k}_{,j}} - {{ {{{ \Gamma}^i}_t}_j}_{,k}}} + {{{{{{ \Gamma}^i}_e}_j}} {{{{{ \Gamma}^e}_t}_k}}}} - {{{{{{ \Gamma}^i}_e}_k}} {{{{{ \Gamma}^e}_t}_j}}}$
 <br>
 split the index e into t and m
 <br>
-${{{{{{{\Gamma}^i}_t}_k}_{,j}} - {{{{{\Gamma}^i}_t}_j}_{,k}}} + {{{({{{{{\Gamma}^i}_t}_j} + {{{{\Gamma}^i}_m}_j}})}} {{({{{{{\Gamma}^t}_t}_k} + {{{{\Gamma}^m}_t}_k}})}}}} - {{{({{{{{\Gamma}^i}_t}_k} + {{{{\Gamma}^i}_n}_k}})}} {{({{{{{\Gamma}^t}_t}_j} + {{{{\Gamma}^n}_t}_j}})}}}$
+${{{{ {{{ \Gamma}^i}_t}_k}_{,j}} - {{ {{{ \Gamma}^i}_t}_j}_{,k}}} + {{{({{{{{ \Gamma}^i}_t}_j} + {{{{ \Gamma}^i}_m}_j}})}} {{({{{{{ \Gamma}^t}_t}_k} + {{{{ \Gamma}^m}_t}_k}})}}}} - {{{({{{{{ \Gamma}^i}_t}_k} + {{{{ \Gamma}^i}_n}_k}})}} {{({{{{{ \Gamma}^t}_t}_j} + {{{{ \Gamma}^n}_t}_j}})}}}$
 <br>
-${{{{{{\Gamma}^i}_m}_j}} {{{{{\Gamma}^m}_t}_k}}} + {{{{{{{{{\Gamma}^i}_m}_j}} {{{{{\Gamma}^t}_t}_k}}} - {{{{{{\Gamma}^i}_n}_k}} {{{{{\Gamma}^n}_t}_j}}}} - {{{{{{\Gamma}^i}_n}_k}} {{{{{\Gamma}^t}_t}_j}}}} - {{{{{\Gamma}^i}_t}_j}_{,k}}} + {{{{{{\Gamma}^i}_t}_j}} {{{{{\Gamma}^m}_t}_k}}} + {{{{{{\Gamma}^i}_t}_j}} {{{{{\Gamma}^t}_t}_k}}} + {{{{{{{\Gamma}^i}_t}_k}_{,j}} - {{{{{{\Gamma}^i}_t}_k}} {{{{{\Gamma}^n}_t}_j}}}} - {{{{{{\Gamma}^i}_t}_k}} {{{{{\Gamma}^t}_t}_j}}}}$
+${{{{{{ \Gamma}^i}_t}_k}_{,j}} - {{{{{ \Gamma}^i}_t}_j}_{,k}}} + {{{{{{ \Gamma}^i}_t}_j}} {{{{{ \Gamma}^t}_t}_k}}} + {{{{{{ \Gamma}^i}_t}_j}} {{{{{ \Gamma}^m}_t}_k}}} + {{{{{{ \Gamma}^i}_m}_j}} {{{{{ \Gamma}^t}_t}_k}}} + {{{{{{{{{{ \Gamma}^i}_m}_j}} {{{{{ \Gamma}^m}_t}_k}}} - {{{{{{ \Gamma}^i}_t}_k}} {{{{{ \Gamma}^t}_t}_j}}}} - {{{{{{ \Gamma}^i}_t}_k}} {{{{{ \Gamma}^n}_t}_j}}}} - {{{{{{ \Gamma}^i}_n}_k}} {{{{{ \Gamma}^t}_t}_j}}}} - {{{{{{ \Gamma}^i}_n}_k}} {{{{{ \Gamma}^n}_t}_j}}}}$
 <br>
 <hr>
-${{{{R}^i}_j}_t}_k$
+${{{{ R}^i}_j}_t}_k$
 <br>
 substitute definition of Riemann curvature
 <br>
-${{{{{{{\Gamma}^i}_j}_k}_{,t}} - {{{{{\Gamma}^i}_j}_t}_{,k}}} + {{{{{{\Gamma}^i}_e}_t}} {{{{{\Gamma}^e}_j}_k}}}} - {{{{{{\Gamma}^i}_e}_k}} {{{{{\Gamma}^e}_j}_t}}}$
+${{{{ {{{ \Gamma}^i}_j}_k}_{,t}} - {{ {{{ \Gamma}^i}_j}_t}_{,k}}} + {{{{{{ \Gamma}^i}_e}_t}} {{{{{ \Gamma}^e}_j}_k}}}} - {{{{{{ \Gamma}^i}_e}_k}} {{{{{ \Gamma}^e}_j}_t}}}$
 <br>
 split the index e into t and m
 <br>
-${{{{{{{\Gamma}^i}_j}_k}_{,t}} - {{{{{\Gamma}^i}_j}_t}_{,k}}} + {{{({{{{{\Gamma}^i}_t}_t} + {{{{\Gamma}^i}_m}_t}})}} {{({{{{{\Gamma}^t}_j}_k} + {{{{\Gamma}^m}_j}_k}})}}}} - {{{({{{{{\Gamma}^i}_t}_k} + {{{{\Gamma}^i}_n}_k}})}} {{({{{{{\Gamma}^t}_j}_t} + {{{{\Gamma}^n}_j}_t}})}}}$
+${{{{ {{{ \Gamma}^i}_j}_k}_{,t}} - {{ {{{ \Gamma}^i}_j}_t}_{,k}}} + {{{({{{{{ \Gamma}^i}_t}_t} + {{{{ \Gamma}^i}_m}_t}})}} {{({{{{{ \Gamma}^t}_j}_k} + {{{{ \Gamma}^m}_j}_k}})}}}} - {{{({{{{{ \Gamma}^i}_t}_k} + {{{{ \Gamma}^i}_n}_k}})}} {{({{{{{ \Gamma}^t}_j}_t} + {{{{ \Gamma}^n}_j}_t}})}}}$
 <br>
-${{{{{{\Gamma}^i}_j}_k}_{,t}} - {{{{{\Gamma}^i}_j}_t}_{,k}}} + {{{{{{\Gamma}^i}_m}_t}} {{{{{\Gamma}^m}_j}_k}}} + {{{{{{{{{{\Gamma}^i}_m}_t}} {{{{{\Gamma}^t}_j}_k}}} - {{{{{{\Gamma}^i}_n}_k}} {{{{{\Gamma}^n}_j}_t}}}} - {{{{{{\Gamma}^i}_n}_k}} {{{{{\Gamma}^t}_j}_t}}}} - {{{{{{\Gamma}^i}_t}_k}} {{{{{\Gamma}^n}_j}_t}}}} - {{{{{{\Gamma}^i}_t}_k}} {{{{{\Gamma}^t}_j}_t}}}} + {{{{{{\Gamma}^i}_t}_t}} {{{{{\Gamma}^m}_j}_k}}} + {{{{{{\Gamma}^i}_t}_t}} {{{{{\Gamma}^t}_j}_k}}}$
+${{{{{{ \Gamma}^i}_j}_k}_{,t}} - {{{{{ \Gamma}^i}_j}_t}_{,k}}} + {{{{{{ \Gamma}^i}_t}_t}} {{{{{ \Gamma}^t}_j}_k}}} + {{{{{{ \Gamma}^i}_t}_t}} {{{{{ \Gamma}^m}_j}_k}}} + {{{{{{ \Gamma}^i}_m}_t}} {{{{{ \Gamma}^t}_j}_k}}} + {{{{{{{{{{ \Gamma}^i}_m}_t}} {{{{{ \Gamma}^m}_j}_k}}} - {{{{{{ \Gamma}^i}_t}_k}} {{{{{ \Gamma}^t}_j}_t}}}} - {{{{{{ \Gamma}^i}_t}_k}} {{{{{ \Gamma}^n}_j}_t}}}} - {{{{{{ \Gamma}^i}_n}_k}} {{{{{ \Gamma}^t}_j}_t}}}} - {{{{{{ \Gamma}^i}_n}_k}} {{{{{ \Gamma}^n}_j}_t}}}}$
 <br>
 <hr>
-${{{{R}^i}_j}_k}_l$
+${{{{ R}^i}_j}_k}_l$
 <br>
 substitute definition of Riemann curvature
 <br>
-${{{{{{{\Gamma}^i}_j}_l}_{,k}} - {{{{{\Gamma}^i}_j}_k}_{,l}}} + {{{{{{\Gamma}^i}_e}_k}} {{{{{\Gamma}^e}_j}_l}}}} - {{{{{{\Gamma}^i}_e}_l}} {{{{{\Gamma}^e}_j}_k}}}$
+${{{{ {{{ \Gamma}^i}_j}_l}_{,k}} - {{ {{{ \Gamma}^i}_j}_k}_{,l}}} + {{{{{{ \Gamma}^i}_e}_k}} {{{{{ \Gamma}^e}_j}_l}}}} - {{{{{{ \Gamma}^i}_e}_l}} {{{{{ \Gamma}^e}_j}_k}}}$
 <br>
 split the index e into t and m
 <br>
-${{{{{{{\Gamma}^i}_j}_l}_{,k}} - {{{{{\Gamma}^i}_j}_k}_{,l}}} + {{{({{{{{\Gamma}^i}_t}_k} + {{{{\Gamma}^i}_m}_k}})}} {{({{{{{\Gamma}^t}_j}_l} + {{{{\Gamma}^m}_j}_l}})}}}} - {{{({{{{{\Gamma}^i}_t}_l} + {{{{\Gamma}^i}_n}_l}})}} {{({{{{{\Gamma}^t}_j}_k} + {{{{\Gamma}^n}_j}_k}})}}}$
+${{{{ {{{ \Gamma}^i}_j}_l}_{,k}} - {{ {{{ \Gamma}^i}_j}_k}_{,l}}} + {{{({{{{{ \Gamma}^i}_t}_k} + {{{{ \Gamma}^i}_m}_k}})}} {{({{{{{ \Gamma}^t}_j}_l} + {{{{ \Gamma}^m}_j}_l}})}}}} - {{{({{{{{ \Gamma}^i}_t}_l} + {{{{ \Gamma}^i}_n}_l}})}} {{({{{{{ \Gamma}^t}_j}_k} + {{{{ \Gamma}^n}_j}_k}})}}}$
 <br>
-$-{({{{{{{{{{\Gamma}^i}_j}_k}_{,l}} - {{{{{\Gamma}^i}_j}_l}_{,k}}} - {{{{{{\Gamma}^i}_m}_k}} {{{{{\Gamma}^m}_j}_l}}}} - {{{{{{\Gamma}^i}_m}_k}} {{{{{\Gamma}^t}_j}_l}}}} + {{{{{{\Gamma}^i}_n}_l}} {{{{{\Gamma}^n}_j}_k}}} + {{{{{{{{\Gamma}^i}_n}_l}} {{{{{\Gamma}^t}_j}_k}}} - {{{{{{\Gamma}^i}_t}_k}} {{{{{\Gamma}^m}_j}_l}}}} - {{{{{{\Gamma}^i}_t}_k}} {{{{{\Gamma}^t}_j}_l}}}} + {{{{{{\Gamma}^i}_t}_l}} {{{{{\Gamma}^n}_j}_k}}} + {{{{{{\Gamma}^i}_t}_l}} {{{{{\Gamma}^t}_j}_k}}}})}$
+$-{({{{{{{{{{ \Gamma}^i}_j}_k}_{,l}} - {{{{{ \Gamma}^i}_j}_l}_{,k}}} - {{{{{{ \Gamma}^i}_m}_k}} {{{{{ \Gamma}^m}_j}_l}}}} - {{{{{{ \Gamma}^i}_m}_k}} {{{{{ \Gamma}^t}_j}_l}}}} + {{{{{{ \Gamma}^i}_n}_l}} {{{{{ \Gamma}^n}_j}_k}}} + {{{{{{{{ \Gamma}^i}_n}_l}} {{{{{ \Gamma}^t}_j}_k}}} - {{{{{{ \Gamma}^i}_t}_k}} {{{{{ \Gamma}^m}_j}_l}}}} - {{{{{{ \Gamma}^i}_t}_k}} {{{{{ \Gamma}^t}_j}_l}}}} + {{{{{{ \Gamma}^i}_t}_l}} {{{{{ \Gamma}^n}_j}_k}}} + {{{{{{ \Gamma}^i}_t}_l}} {{{{{ \Gamma}^t}_j}_k}}}})}$
 <br>

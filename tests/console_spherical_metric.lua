@@ -1,3 +1,5 @@
+#!/usr/bin/env lua
+require 'ext'
 require 'symmath'.setup{implicitVars=true}
 Tensor.coords{{variables={r,theta,phi}}}
 u = Tensor('^I', r*sin(theta)*cos(phi), r*sin(theta)*sin(phi), r*cos(theta))

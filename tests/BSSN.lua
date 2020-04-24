@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
-require 'ext'
 require 'symmath'.setup()
+require 'ext'
 
 local output = 'html'
 --local output = 'tex'

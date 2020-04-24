@@ -3,6 +3,8 @@ require 'ext'
 op = nil	-- make way for _G.op = symmath.op
 require 'symmath'.setup{MathJax={title='linearized Euler fluid equations', usePartialLHSForDerivative=true}}
 
+-- TODO tidyIndexes() is breaking on this worksheet
+
 local function sum(t)
 	if #t == 1 then return t[1] end
 	return op.add(table.unpack(t))
@@ -83,6 +85,7 @@ end)
 printbr(F'^I':eq(F_def))
 
 F_def = F_def()
+F_def = F_def:factorDivision()
 printbr(F'^I':eq(F_def))
 
 --local partial_dF_def = Matrix:lambda(F_def:dim(), function(x) return x'_,j' end)
@@ -91,6 +94,7 @@ local partial_dF_def = (Matrix{
 	F_def[2][1]'_,m',
 	F_def[3][1]'_,m',
 }:T() * n'^m')()
+partial_dF_def = partial_dF_def:factorDivision()
 printbr(F'^I_,n':eq(partial_dF_def))
 
 partial_dF_def = partial_dF_def()
@@ -109,6 +113,7 @@ end
 partial_dF_def = partial_dF_def:map(removeConstantDerivatives)
 
 partial_dF_def = partial_dF_def()
+partial_dF_def = partial_dF_def:factorDivision()
 printbr(F'^I_,n':eq(partial_dF_def))
 
 -- TODO here reindex so no one is using 'k'
@@ -132,7 +137,7 @@ partial_dF_def = partial_dF_def:map(function(x)
 end)
 
 partial_dF_def = partial_dF_def:replaceIndex(g'^ij_,m', -g'^ik' * g'_kl,m' * g'^lj')
-partial_dF_def = partial_dF_def:tidyIndexes()
+--partial_dF_def = partial_dF_def:tidyIndexes()
 partial_dF_def = partial_dF_def:factorDivision()
 partial_dF_def = partial_dF_def:reindex{mj='jm'} 
 
@@ -235,7 +240,7 @@ local function simplifyDeltasAndMetrics(expr)
 end
 S_def = simplifyDeltasAndMetrics(S_def)
 
-S_def = S_def:tidyIndexes()
+--S_def = S_def:tidyIndexes()
 --[[ TODO
 S_def = Matrix:lambda(S_def:dim(), function(i,j)
 	return S_def[i][j]:tidyIndexes()

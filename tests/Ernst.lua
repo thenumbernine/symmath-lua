@@ -1,10 +1,11 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{implicitVars=true, MathJax=true}
+require 'ext'
+require 'symmath'.setup{implicitVars=true, fixVariableNames=true, MathJax={title='Ernst'}}
 
 Tensor.coords{{variables = {t,r,theta,phi}}}
 
 --local Lambda = 1 + B^2 * r^2 * sin(theta)^2
-local Lambda = var('\\Lambda', {t,r,theta,phi})
+local Lambda = var('Lambda', {t,r,theta,phi})
 local M = 0
 g = Tensor('_ab', table.unpack(Matrix.diagonal( -Lambda^2 * (1 - 2 * M / r), Lambda^2 / (1 - 2 * M / r), Lambda^2 * r^2, r^2 * sin(theta)^2 / Lambda^2 )))
 print'<hr>'
@@ -26,7 +27,7 @@ GammaL['_abc'] = (frac(1,2) * (dg'_abc' + dg'_acb' - dg'_bca'))()
 
 local Gamma = (GammaL'^a_bc')()
 print'<hr>'
-Gamma:printElem'\\Gamma'
+Gamma:printElem'Gamma'
 printbr()
 
 local GammaSq = Tensor'^a_bcd'

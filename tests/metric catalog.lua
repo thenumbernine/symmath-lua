@@ -821,26 +821,62 @@ printbr()
 
 		print(P(' _'..name), '=', exp(-origIntConn))
 		local negIntConn = (-intConn)()
---[[ if :eigen() fails, this will show you what was being eigen'd
-printbr()
-printbr('negIntConn', negIntConn)
-printbr('negIntConn', negIntConn())
---]]		
 		--[[ you could exp, and that will eigen-decompose ...
 		local expNegIntExpr = negIntConn:exp()
 		local expIntExpr = expNegIntExpr:inverse()
 		--]]
 		-- [[ but eigen will let inverting be easy
+-- [[ if :eigen() fails, this will show you what was being eigen'd
+if not negIntConn.eigen then
+printbr()
+printbr('negIntConn', negIntConn)
+printbr('negIntConn', negIntConn())
+end
+--]]		
 		local ev = negIntConn:eigen()
 		local R, L, allLambdas = ev.R, ev.L, ev.allLambdas
-		local expLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
-			return exp(lambda) 
-		end):unpack() )
-		local expNegIntExpr = (R * expLambda * L)()
-		local invExpLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
-			return exp(-lambda) 
-		end):unpack() )
-		local expIntExpr = (R * invExpLambda * L)()
+		local expNegIntExpr, expIntExpr
+		if L then
+			local expLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
+				return exp(lambda) 
+			end):unpack() )
+			expNegIntExpr = (R * expLambda * L)()
+			local invExpLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
+				return exp(-lambda) 
+			end):unpack() )
+			expIntExpr = (R * invExpLambda * L)()
+		else
+			--printbr("Tried to eigendecompose "..negIntConn..", couldn't find left eigenvectors.  Is it defective? "..(ev.defective or false))
+			for _,A in ipairs{intConn, negIntConn} do
+				local powers = table{A}
+				local n = #A
+				local zero = Matrix:zeros{n,n}
+				local foundZeros
+				for i=2,n do
+					powers[i] = (powers[i-1] * A)()
+					if powers[i] == zero then 
+						foundZeros = true
+						break 
+					end
+				end
+				-- the matrix exp is a finite sum of powers of the matrix ... 
+				-- TODO include this branch into the matrix.exp function
+				local expA = A
+				local div = 1
+				for i=2,#powers do
+					div = div * i
+					expA = (expA + powers[i] / div)()
+				end
+				if not foundZeros then
+					expA = expA + var('\\mathcal{O}(A^'..(n+1)..')')
+				end
+				if rawequal(A, intConn) then
+					expIntExpr = expA
+				elseif rawequal(A, negIntConn) then
+					expNegIntExpr = expA
+				end
+			end
+		end
 		--]]
 		printbr('=', expNegIntExpr)
 		printbr()
