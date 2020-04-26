@@ -8,22 +8,25 @@
 	<body onload='tryToFindMathJax();'>
 
 <h3>cylindrical surface, anholonomic, conformal</h3>
-embedding:	$x$	$y$	$z$
+chart coordinates: $x^\tilde{\mu} = \{\phi, z\}$
 <br>
-base coords:	$\phi$	$z$
+chart coordinate basis: $e_\tilde{\mu} = \{e_{\tilde{\phi}}, e_{\tilde{z}}\}$
 <br>
-transform from non-coorinate to coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  \sqrt r &  0 \\  0 &  \sqrt r\end{matrix}\right]}$
+embedding coordinates: $u^I = \{x, y, z\}$
 <br>
-transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  \frac{1}{\sqrt r} &  0 \\  0 &  \frac{1}{\sqrt r}\end{matrix}\right]}$
+embedding basis $e_I = \{e_{x}, e_{y}, e_{z}\}$
 <br>
-non-coord associated with $\phi$ is coord $\hat{\phi}$ with operator $e_{\hat{\phi}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial\phi}}{\sqrt r}$
+transform from basis to coordinate:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  \sqrt r &  0 \\  0 &  \sqrt r\end{matrix}\right]}$
 <br>
-non-coord associated with $z$ is coord $\hat{z}$ with operator $e_{\hat{z}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial z}}{\sqrt r}$
+transform from coorinate to basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  \frac{1}{\sqrt r} &  0 \\  0 &  \frac{1}{\sqrt r}\end{matrix}\right]}$
 <br>
-coordinates:	$\hat{\phi}$	$\hat{z}$
+tensor index associated with coordinate $\phi$ is index $\hat{\phi}$ with operator $e_{\hat{\phi}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial\phi}}{\sqrt r}$
+<br>
+tensor index associated with coordinate $z$ is index $\hat{z}$ with operator $e_{\hat{z}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial z}}{\sqrt r}$
+<br>
+
 <br>
 flat metric:
-<br>
 ${{{ \eta}_x}_x} = {1}$;
 ${{{ \eta}_y}_y} = {1}$;
 ${{{ \eta}_z}_z} = {1}$

@@ -2,30 +2,33 @@
 <html>
     <head>
         <meta charset='utf-8'>
-        <title>spherical</title>
+        <title>spherical, coordinate</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
     </head>
 	<body onload='tryToFindMathJax();'>
 
-<h3>spherical</h3>
-embedding:	$x$	$y$	$z$
+<h3>spherical, coordinate</h3>
+chart coordinates: $x^\tilde{\mu} = \{r, \theta, \phi\}$
 <br>
-base coords:	$r$	$\theta$	$\phi$
+chart coordinate basis: $e_\tilde{\mu} = \{e_{\tilde{r}}, e_{\tilde{\theta}}, e_{\tilde{\phi}}\}$
 <br>
-transform from non-coorinate to coordinate basis:	$\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}$
+embedding coordinates: $u^I = \{x, y, z\}$
 <br>
-transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}$
+embedding basis $e_I = \{e_{x}, e_{y}, e_{z}\}$
 <br>
-non-coord associated with $r$ is coord $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
+transform from basis to coordinate:	$\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}$
 <br>
-non-coord associated with $\theta$ is coord $\theta$ with operator $e_{\theta}(\zeta) = $${\partial \zeta}\over{\partial\theta}$
+transform from coorinate to basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}$
 <br>
-non-coord associated with $\phi$ is coord $\phi$ with operator $e_{\phi}(\zeta) = $${\partial \zeta}\over{\partial\phi}$
+tensor index associated with coordinate $r$ is index $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
 <br>
-coordinates:	$r$	$\theta$	$\phi$
+tensor index associated with coordinate $\theta$ is index $\theta$ with operator $e_{\theta}(\zeta) = $${\partial \zeta}\over{\partial\theta}$
+<br>
+tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $${\partial \zeta}\over{\partial\phi}$
+<br>
+
 <br>
 flat metric:
-<br>
 ${{{ \eta}_x}_x} = {1}$;
 ${{{ \eta}_y}_y} = {1}$;
 ${{{ \eta}_z}_z} = {1}$

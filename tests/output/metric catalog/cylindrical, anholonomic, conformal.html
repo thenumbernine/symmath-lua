@@ -8,24 +8,27 @@
 	<body onload='tryToFindMathJax();'>
 
 <h3>cylindrical, anholonomic, conformal</h3>
-embedding:	$x$	$y$	$z$
+chart coordinates: $x^\tilde{\mu} = \{r, \theta, z\}$
 <br>
-base coords:	$r$	$\theta$	$z$
+chart coordinate basis: $e_\tilde{\mu} = \{e_{\tilde{r}}, e_{\tilde{\theta}}, e_{\tilde{z}}\}$
 <br>
-transform from non-coorinate to coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  {r}^{({\frac{1}{3}})} &  0 &  0 \\  0 &  {r}^{({\frac{1}{3}})} &  0 \\  0 &  0 &  {r}^{({\frac{1}{3}})}\end{matrix}\right]}$
+embedding coordinates: $u^I = \{x, y, z\}$
 <br>
-transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  \frac{1}{{r}^{({\frac{1}{3}})}} &  0 &  0 \\  0 &  \frac{1}{{r}^{({\frac{1}{3}})}} &  0 \\  0 &  0 &  \frac{1}{{r}^{({\frac{1}{3}})}}\end{matrix}\right]}$
+embedding basis $e_I = \{e_{x}, e_{y}, e_{z}\}$
 <br>
-non-coord associated with $r$ is coord $\hat{r}$ with operator $e_{\hat{r}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial r}}{{r}^{({\frac{1}{3}})}}$
+transform from basis to coordinate:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  {r}^{({\frac{1}{3}})} &  0 &  0 \\  0 &  {r}^{({\frac{1}{3}})} &  0 \\  0 &  0 &  {r}^{({\frac{1}{3}})}\end{matrix}\right]}$
 <br>
-non-coord associated with $\theta$ is coord $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial\theta}}{{r}^{({\frac{1}{3}})}}$
+transform from coorinate to basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  \frac{1}{{r}^{({\frac{1}{3}})}} &  0 &  0 \\  0 &  \frac{1}{{r}^{({\frac{1}{3}})}} &  0 \\  0 &  0 &  \frac{1}{{r}^{({\frac{1}{3}})}}\end{matrix}\right]}$
 <br>
-non-coord associated with $z$ is coord $\hat{z}$ with operator $e_{\hat{z}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial z}}{{r}^{({\frac{1}{3}})}}$
+tensor index associated with coordinate $r$ is index $\hat{r}$ with operator $e_{\hat{r}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial r}}{{r}^{({\frac{1}{3}})}}$
 <br>
-coordinates:	$\hat{r}$	$\hat{\theta}$	$\hat{z}$
+tensor index associated with coordinate $\theta$ is index $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial\theta}}{{r}^{({\frac{1}{3}})}}$
+<br>
+tensor index associated with coordinate $z$ is index $\hat{z}$ with operator $e_{\hat{z}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial z}}{{r}^{({\frac{1}{3}})}}$
+<br>
+
 <br>
 flat metric:
-<br>
 ${{{ \eta}_x}_x} = {1}$;
 ${{{ \eta}_y}_y} = {1}$;
 ${{{ \eta}_z}_z} = {1}$

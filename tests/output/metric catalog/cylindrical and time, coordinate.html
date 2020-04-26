@@ -2,32 +2,35 @@
 <html>
     <head>
         <meta charset='utf-8'>
-        <title>cylindrical and time</title>
+        <title>cylindrical and time, coordinate</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
     </head>
 	<body onload='tryToFindMathJax();'>
 
-<h3>cylindrical and time</h3>
-embedding:	$t$	$x$	$y$	$z$
+<h3>cylindrical and time, coordinate</h3>
+chart coordinates: $x^\tilde{\mu} = \{t, r, \phi, z\}$
 <br>
-base coords:	$t$	$r$	$\phi$	$z$
+chart coordinate basis: $e_\tilde{\mu} = \{e_{\tilde{t}}, e_{\tilde{r}}, e_{\tilde{\phi}}, e_{\tilde{z}}\}$
 <br>
-transform from non-coorinate to coordinate basis:	$\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}$
+embedding coordinates: $u^I = \{t, x, y, z\}$
 <br>
-transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}$
+embedding basis $e_I = \{e_{t}, e_{x}, e_{y}, e_{z}\}$
 <br>
-non-coord associated with $t$ is coord $t$ with operator $e_{t}(\zeta) = $${\partial \zeta}\over{\partial t}$
+transform from basis to coordinate:	$\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}$
 <br>
-non-coord associated with $r$ is coord $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
+transform from coorinate to basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}$
 <br>
-non-coord associated with $\phi$ is coord $\phi$ with operator $e_{\phi}(\zeta) = $${\partial \zeta}\over{\partial\phi}$
+tensor index associated with coordinate $t$ is index $t$ with operator $e_{t}(\zeta) = $${\partial \zeta}\over{\partial t}$
 <br>
-non-coord associated with $z$ is coord $z$ with operator $e_{z}(\zeta) = $${\partial \zeta}\over{\partial z}$
+tensor index associated with coordinate $r$ is index $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
 <br>
-coordinates:	$t$	$r$	$\phi$	$z$
+tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $${\partial \zeta}\over{\partial\phi}$
+<br>
+tensor index associated with coordinate $z$ is index $z$ with operator $e_{z}(\zeta) = $${\partial \zeta}\over{\partial z}$
+<br>
+
 <br>
 flat metric:
-<br>
 ${{{ \eta}_t}_t} = {-1}$;
 ${{{ \eta}_x}_x} = {1}$;
 ${{{ \eta}_y}_y} = {1}$;

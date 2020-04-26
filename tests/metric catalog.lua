@@ -38,11 +38,9 @@ local eta3 = Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 and -1 or 
 local eta4 = Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
 
--- TODO rename 'baseCoords' to 'coords'
--- and rename 'coords' to ... basis operator? idk, what is the technical term?
 local spacetimes = {
 	{
-		title = 'Cartesian',
+		title = 'Cartesian, coordinate',
 		baseCoords = {x,y},
 		embedded = {x,y},
 		flatMetric = delta2,
@@ -51,7 +49,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'polar',
+		title = 'polar, coordinate',
 		baseCoords = {r,phi},
 		embedded = {x,y},
 		flatMetric = delta2,
@@ -100,14 +98,14 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'cylindrical surface',
+		title = 'cylindrical surface, coordinate',
 		baseCoords = {phi,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
 			return Tensor('^I', r * cos(phi), r * sin(phi), z)
 		end,
-		-- for the time being, all coord charts where #coords < #embedded need to explicitly provide this.
+		-- for the time being, all coord charts where #basisOperators < #embedded need to explicitly provide this.
 		-- (which, for now, is only this coordinate chart)
 		-- it is equal to dx^a/dx^I in terms of x^a
 		eU = function()
@@ -171,7 +169,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'cylindrical',
+		title = 'cylindrical, coordinate',
 		baseCoords = {r,phi,z},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -218,7 +216,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'cylindrical and time',
+		title = 'cylindrical and time, coordinate',
 		baseCoords = {t,r,phi,z},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
@@ -227,7 +225,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'sphere surface',
+		title = 'sphere surface, coordinate',
 		baseCoords = {theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -310,7 +308,7 @@ local spacetimes = {
 	},
 --]]
 	{
-		title = 'spherical',
+		title = 'spherical, coordinate',
 		baseCoords = {r,theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -344,7 +342,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'spherical log-radial',
+		title = 'spherical, log-radial, coordinate',
 		baseCoords = {rho,theta,phi},	-- reminder, the connectins wrt r,theta,phi are the same as spherical above
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -361,7 +359,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'spherical and time',
+		title = 'spherical and time, coordinate',
 		baseCoords = {t,r,theta,phi},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
@@ -458,7 +456,7 @@ local spacetimes = {
 	},
 --]]
 	{
-		title = 'torus surface',
+		title = 'torus surface,coordinate',
 		baseCoords = {theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -477,7 +475,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'spiral',
+		title = 'spiral, coordinate',
 		baseCoords = {r,phi},
 		embedded = {x,y},
 		flatMetric = delta2,
@@ -489,7 +487,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'polar and time, constant rotation',
+		title = 'polar and time, constant rotation, coordinate',
 		baseCoords = {t,r,phi},
 		embedded = {t,x,y},
 		flatMetric = eta3,
@@ -501,7 +499,7 @@ local spacetimes = {
 		end,
 	},
 	{
-		title = 'polar and time, lapse varying in radial',
+		title = 'polar and time, lapse varying in radial, coordinate',
 		baseCoords = {t,r,phi},
 		embedded = {t,x,y},
 		flatMetric = eta3,
@@ -514,7 +512,7 @@ local spacetimes = {
 	},
 -- [[
 	{
-		title = 'polar and time, lapse varying in radial, rotation varying in time and radial',
+		title = 'polar and time, lapse varying in radial, rotation varying in time and radial, coordinate',
 		baseCoords = {t,r,phi},
 		embedded = {t,x,y},
 		flatMetric = eta3,
@@ -567,15 +565,14 @@ io.stderr:flush()
 
 
 	-- technically this is the variable whose derivative operator produces the basis, 
-	-- ... not the 'coords', since it can be non-coordinate
-	local coords = info.coords
 	-- and this is the associated coordinates
-	local baseCoords = info.baseCoords or coords
-
+	local baseCoords = info.baseCoords
 	local embedded = info.embedded
 	
-	printbr('embedding:', table.unpack(embedded))
-	printbr('base coords:', table.unpack(baseCoords))
+	printbr([[chart coordinates: $x^\tilde{\mu} = \{]]..table.mapi(baseCoords, function(x) return x.name end):concat', '..[[\}$]])
+	printbr([[chart coordinate basis: $e_\tilde{\mu} = \{]]..table.mapi(baseCoords, function(x) return 'e_{\\tilde{'..x.name..'}}' end):concat', '..[[\}$]])
+	printbr([[embedding coordinates: $u^I = \{]]..table.mapi(embedded, function(x) return x.name end):concat', '..[[\}$]])
+	printbr([[embedding basis $e_I = \{]]..table.mapi(embedded, function(x) return 'e_{'..x.name..'}' end):concat', '..[[\}$]])
 
 
 	-- dimension of manifold
@@ -583,6 +580,7 @@ io.stderr:flush()
 
 
 
+	-- TODO rename 'Tensor.coords' to 'Tensor.indexes' ?   Since they are possibly a non-coordinate basis.  Rename 'variables=' to 'operators='?  Maybe?  Maybe 'basisOperators='?
 	Tensor.coords{
 		{variables=baseCoords},
 		{variables=embedded, symbols='IJKLMN', metric=info.flatMetric}
@@ -611,18 +609,18 @@ io.stderr:flush()
 	local eToEHol = info.eToEHol and info.eToEHol() or Tensor('_A^a', function(A, a) 
 		return A == a and 1 or 0
 	end)
-printbr('transform from non-coorinate to coordinate basis:', eToEHol)
+	printbr('transform from basis to coordinate:', eToEHol)
 	-- transform from coordinate basis to chart basis
 	local eHolToE = Tensor('^a_A', table.unpack((Matrix.inverse(eToEHol))))
-printbr('transform from coorinate to non-coordinate basis:', eHolToE)
+	printbr('transform from coorinate to basis:', eHolToE)
 
 
-	-- create non-coords when available
-	local coords = table()
+	-- create basis operators - as non-coordinate linear combinations of coordinates when available 
+	local basisOperators = table()
 	for i=1,n do
 		local onesi = Matrix:lambda({1,n}, function(_,j) return j==i and 1 or 0 end)
 		if eHolToE[i] == onesi[1] then
-			coords[i] = baseCoords[i]
+			basisOperators[i] = baseCoords[i]
 		else
 			local ci = baseCoords[i].set:var('\\hat{'..baseCoords[i].name..'}')
 			function ci:applyDiff(x)
@@ -632,33 +630,30 @@ printbr('transform from coorinate to non-coordinate basis:', eHolToE)
 				end
 				return sum()
 			end
-			coords[i] = ci
+			basisOperators[i] = ci
 		end
 		local zeta = var('\\zeta', baseCoords)
-		printbr('non-coord associated with '..baseCoords[i]
-			..' is coord '..coords[i]
-			..' with operator $e_{'..coords[i].name..'}(\\zeta) = $'..coords[i]:applyDiff(zeta))
+		printbr('tensor index associated with coordinate '..baseCoords[i]
+			..' is index '..basisOperators[i]
+			..' with operator $e_{'..basisOperators[i].name..'}(\\zeta) = $'..basisOperators[i]:applyDiff(zeta))
 	end
-	
-	printbr('coordinates:', table.unpack(coords))
+	printbr()
 
 
 	-- TODO a set of indexes for the base coordinates?
 	Tensor.coords{
-		{variables=coords},
+		{variables=basisOperators},
 		{variables=embedded, symbols='IJKLMN', metric=info.flatMetric},
+-- TODO:
 --		{variables=baseCoords, symbols='ABCDEF'},
 	}
 
 
-
-
 	local eta = Tensor('_IJ', table.unpack(info.flatMetric))
-	printbr'flat metric:'
+	print'flat metric:'
 	eta:printElem('\\eta', write)
 	printbr()
 	printbr()
-
 
 
 	-- metric
@@ -697,7 +692,7 @@ printbr('transform from coorinate to non-coordinate basis:', eHolToE)
 		if info.eU then
 			eU = info.eU()
 		else
-			assert(#coords == #embedded)
+			assert(#basisOperators == #embedded)
 			eU = Tensor('^u_I', table.unpack(Matrix(table.unpack(e)):inverse():transpose()))
 		end
 
@@ -778,13 +773,13 @@ printbr('transform from coorinate to non-coordinate basis:', eHolToE)
 	local Gamma = props.Gamma
 
 	local dx = Tensor('^u', function(u)
-		return var('\\dot{' .. coords[u].name .. '}')
+		return var('\\dot{' .. basisOperators[u].name .. '}')
 	end)
 	local d2x = Tensor('^u', function(u)
-		return var('\\ddot{' .. coords[u].name .. '}')
+		return var('\\ddot{' .. basisOperators[u].name .. '}')
 	end)
 
-	local A = Tensor('^i', function(i) return var('A^{'..coords[i].name..'}', baseCoords) end)
+	local A = Tensor('^i', function(i) return var('A^{'..basisOperators[i].name..'}', baseCoords) end)
 	--[[
 	TODO can't use comma derivative, gotta override the :applyDiff of the anholonomic basis variables
 	 but when doing so, you must make the embedded variables dependent on the ... variables that the anholonomic are spun off of
@@ -1048,7 +1043,7 @@ end
 	printbr'finite volume (0,0)-form:'
 
 	local sum = 0
-	for k,coordk in ipairs(coords) do
+	for k,coordk in ipairs(basisOperators) do
 		local kLname = xLs[k].name
 		local kRname = xRs[k].name
 		local term = 
@@ -1059,7 +1054,7 @@ end
 			var('J('..kLname..')') 
 			* var('{e_{'..coordk.name..'}}^{\\bar{'..coordk.name..'}}('..kLname..')')
 			* FLs[k]
-		for j,coordj in ipairs(coords) do
+		for j,coordj in ipairs(basisOperators) do
 			if j ~= k then
 				term = term:integrate(coordj, xLs[j], xRs[j])
 			end
@@ -1097,18 +1092,18 @@ end
 	end
 
 	local sum = 0
-	for k,coordk in ipairs(coords) do
+	for k,coordk in ipairs(basisOperators) do
 		local kLname = xLs[k].name
 		local kRname = xRs[k].name
 		local term = 
-			coordVolumeElem:replace(coords[k], xRs[k])
-			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(coords[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
+			coordVolumeElem:replace(basisOperators[k], xRs[k])
+			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(basisOperators[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
 			* FRs[k]
 			-
-			coordVolumeElem:replace(coords[k], xLs[k])
-			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(coords[k], xLs[k])	-- diagonal {e_a}^I(x_L) quick fix
+			coordVolumeElem:replace(basisOperators[k], xLs[k])
+			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(basisOperators[k], xLs[k])	-- diagonal {e_a}^I(x_L) quick fix
 			* FLs[k]
-		for j,coordj in ipairs(coords) do
+		for j,coordj in ipairs(basisOperators) do
 			if j ~= k then
 				term = term:integrate(coordj, xLs[j], xRs[j])
 			end
@@ -1129,18 +1124,18 @@ end
 	-- now repeat, except as you eval, substitute for the deltas
 	
 	local sum = 0
-	for k,coordk in ipairs(coords) do
+	for k,coordk in ipairs(basisOperators) do
 		local kLname = xLs[k].name
 		local kRname = xRs[k].name
 		local term = 
-			coordVolumeElem:replace(coords[k], xRs[k])
-			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(coords[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
+			coordVolumeElem:replace(basisOperators[k], xRs[k])
+			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(basisOperators[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
 			* FRs[k]
 			-
-			coordVolumeElem:replace(coords[k], xLs[k])
-			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(coords[k], xLs[k])	-- diagonal {e_a}^I(x_L) quick fix
+			coordVolumeElem:replace(basisOperators[k], xLs[k])
+			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(basisOperators[k], xLs[k])	-- diagonal {e_a}^I(x_L) quick fix
 			* FLs[k]
-		for j,coordj in ipairs(coords) do
+		for j,coordj in ipairs(basisOperators) do
 			if j ~= k then
 				if not term:findChild(coordj) then
 					term = term * deltas[j]

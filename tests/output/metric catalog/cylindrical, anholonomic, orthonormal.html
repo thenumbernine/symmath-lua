@@ -8,24 +8,27 @@
 	<body onload='tryToFindMathJax();'>
 
 <h3>cylindrical, anholonomic, orthonormal</h3>
-embedding:	$x$	$y$	$z$
+chart coordinates: $x^\tilde{\mu} = \{r, \theta, z\}$
 <br>
-base coords:	$r$	$\theta$	$z$
+chart coordinate basis: $e_\tilde{\mu} = \{e_{\tilde{r}}, e_{\tilde{\theta}}, e_{\tilde{z}}\}$
 <br>
-transform from non-coorinate to coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  r &  0 \\  0 &  0 &  1\end{matrix}\right]}$
+embedding coordinates: $u^I = \{x, y, z\}$
 <br>
-transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  1\end{matrix}\right]}$
+embedding basis $e_I = \{e_{x}, e_{y}, e_{z}\}$
 <br>
-non-coord associated with $r$ is coord $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
+transform from basis to coordinate:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  r &  0 \\  0 &  0 &  1\end{matrix}\right]}$
 <br>
-non-coord associated with $\theta$ is coord $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $${\frac{1}{r}}{({{\partial \zeta}\over{\partial\theta}})}$
+transform from coorinate to basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  1\end{matrix}\right]}$
 <br>
-non-coord associated with $z$ is coord $z$ with operator $e_{z}(\zeta) = $${\partial \zeta}\over{\partial z}$
+tensor index associated with coordinate $r$ is index $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
 <br>
-coordinates:	$r$	$\hat{\theta}$	$z$
+tensor index associated with coordinate $\theta$ is index $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $${\frac{1}{r}}{({{\partial \zeta}\over{\partial\theta}})}$
+<br>
+tensor index associated with coordinate $z$ is index $z$ with operator $e_{z}(\zeta) = $${\partial \zeta}\over{\partial z}$
+<br>
+
 <br>
 flat metric:
-<br>
 ${{{ \eta}_x}_x} = {1}$;
 ${{{ \eta}_y}_y} = {1}$;
 ${{{ \eta}_z}_z} = {1}$

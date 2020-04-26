@@ -2,28 +2,31 @@
 <html>
     <head>
         <meta charset='utf-8'>
-        <title>Cartesian</title>
+        <title>Cartesian, coordinate</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
     </head>
 	<body onload='tryToFindMathJax();'>
 
-<h3>Cartesian</h3>
-embedding:	$x$	$y$
+<h3>Cartesian, coordinate</h3>
+chart coordinates: $x^\tilde{\mu} = \{x, y\}$
 <br>
-base coords:	$x$	$y$
+chart coordinate basis: $e_\tilde{\mu} = \{e_{\tilde{x}}, e_{\tilde{y}}\}$
 <br>
-transform from non-coorinate to coordinate basis:	$\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}$
+embedding coordinates: $u^I = \{x, y\}$
 <br>
-transform from coorinate to non-coordinate basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}$
+embedding basis $e_I = \{e_{x}, e_{y}\}$
 <br>
-non-coord associated with $x$ is coord $x$ with operator $e_{x}(\zeta) = $${\partial \zeta}\over{\partial x}$
+transform from basis to coordinate:	$\overset{A\downarrow a\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}$
 <br>
-non-coord associated with $y$ is coord $y$ with operator $e_{y}(\zeta) = $${\partial \zeta}\over{\partial y}$
+transform from coorinate to basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}$
 <br>
-coordinates:	$x$	$y$
+tensor index associated with coordinate $x$ is index $x$ with operator $e_{x}(\zeta) = $${\partial \zeta}\over{\partial x}$
+<br>
+tensor index associated with coordinate $y$ is index $y$ with operator $e_{y}(\zeta) = $${\partial \zeta}\over{\partial y}$
+<br>
+
 <br>
 flat metric:
-<br>
 ${{{ \eta}_x}_x} = {1}$;
 ${{{ \eta}_y}_y} = {1}$
 
