@@ -77,6 +77,9 @@ local spacetimes = {
 				{0, r}
 			)
 		end,
+		coordVolumeElem = function()
+			return r
+		end,
 	},
 	{
 		title = 'polar, anholonomic, conformal',
@@ -91,6 +94,9 @@ local spacetimes = {
 				{sqrt(r), 0},
 				{0, sqrt(r)}
 			)
+		end,
+		coordVolumeElem = function()
+			return r
 		end,
 	},
 	{
@@ -137,6 +143,9 @@ local spacetimes = {
 				{0, r}
 			)
 		end,
+		coordVolumeElem = function()
+			return r
+		end,
 	},
 	{
 		title = 'cylindrical surface, anholonomic, conformal',
@@ -156,6 +165,9 @@ local spacetimes = {
 				{sqrt(r), 0},
 				{0, sqrt(r)}
 			)
+		end,
+		coordVolumeElem = function()
+			return r
 		end,
 	},
 	{
@@ -182,6 +194,9 @@ local spacetimes = {
 				{0, 0, 1}
 			)
 		end,
+		coordVolumeElem = function()
+			return r
+		end,
 	},
 	{
 		title = 'cylindrical, anholonomic, conformal',
@@ -197,6 +212,9 @@ local spacetimes = {
 				{0, r^frac(1,3), 0},
 				{0, 0, r^frac(1,3)}
 			)
+		end,
+		coordVolumeElem = function()
+			return r
 		end,
 	},
 	{
@@ -255,6 +273,9 @@ local spacetimes = {
 				{0, r*sin(theta)}
 			)
 		end,
+		coordVolumeElem = function()
+			return r^2 * sin(theta)
+		end,
 	},
 --[[ not doing so well, with some abs derivatives
 	{
@@ -282,6 +303,9 @@ local spacetimes = {
 				{r * sqrt(abs(sin(theta))), 0},
 				{0, r * sqrt(abs(sin(theta)))},
 			)
+		end,
+		coordVolumeElem = function()
+			return r^2 * sin(theta)
 		end,
 	},
 --]]
@@ -315,6 +339,9 @@ local spacetimes = {
 				{0, 0, r*sin(theta)}
 			)
 		end,
+		coordVolumeElem = function()
+			return r^2 * sin(theta)
+		end,
 	},
 	{
 		title = 'spherical log-radial',
@@ -327,6 +354,10 @@ local spacetimes = {
 				rDef * sin(theta) * cos(phi),
 				rDef * sin(theta) * sin(phi),
 				rDef * cos(theta))
+		end,
+		coordVolumeElem = function()
+			local rDef = A * sinh(rho / w) / sinh(1 / w)
+			return rDef^2 * sin(theta)
 		end,
 	},
 	{
@@ -981,11 +1012,18 @@ end
 		return expr
 	end
 
-	--[[
-	coordVolumeElem should be the determinant of the chart from cartesian to the manifold
-	... or equal to the sqrt of the determinant of the coordinte-based metric tensor
-	local coordVolumeElem = sqrt(detg)()
-	local coordVolumeElem = info.coordVolumeElem
+	-- [[
+	--coordVolumeElem should be the determinant of the chart from cartesian to the manifold
+	--... or equal to the sqrt of the determinant of the coordinte-based metric tensor
+	local coordVolumeElem
+	if info.coordVolumeElem then
+		coordVolumeElem = info.coordVolumeElem()
+	else
+		-- determinant of matrix with column vectors equal to the chart coordinate basis vectors (in embedded coordinates)
+		-- TODO this needs to be sqrt(det(g-based-on-coordinates))
+		-- until then I need to explicitly state coordVolumeElem for all non-coordinate charts
+		coordVolumeElem = sqrt(detg)()
+	end
 	printbr('volume element: ', coordVolumeElem)
 	
 	local cellVolume = coordVolumeElem
@@ -1005,8 +1043,131 @@ end
 	local FRs = range(n):mapi(function(i)
 		return var('F^{'..baseCoords[i].name..'}('..xRs[i].name..')')
 	end)
-
 	--]]
+
+	printbr'finite volume (0,0)-form:'
+
+	local sum = 0
+	for k,coordk in ipairs(coords) do
+		local kLname = xLs[k].name
+		local kRname = xRs[k].name
+		local term = 
+			var('J('..kRname..')') 
+			* var('{e_{'..coordk.name..'}}^{\\bar{'..coordk.name..'}}('..kRname..')')
+			* FRs[k]
+			-
+			var('J('..kLname..')') 
+			* var('{e_{'..coordk.name..'}}^{\\bar{'..coordk.name..'}}('..kLname..')')
+			* FLs[k]
+		for j,coordj in ipairs(coords) do
+			if j ~= k then
+				term = term:integrate(coordj, xLs[j], xRs[j])
+			end
+		end
+		sum = sum - term
+	end
+	printbr(
+		var'u(x_C, t_R)':eq(
+			var'u(x_C, t_L)'
+			+ var'\\Delta t' * (
+				frac(1, var'\\mathcal{V}(x_C)') * sum
+				+ var'S(x_C)'
+			)
+		)
+	)
+	printbr()
+
+	-- TODO move to Matrix?
+	local function isDiagonal(m)
+		for i=1,#m do
+			for j=1,#m[1] do
+				if i ~= j then
+					if m[i][j] ~= Constant(0) then return false end
+				end
+			end
+		end
+		return true
+	end
+	if eToEHol then
+		if not isDiagonal(eToEHol) then
+			error('\n'..symmath.export.MultiLine(eToEHol)..'\n'
+				.."TODO add support for linear combinations of fluxes at cell surfaces for anholonomic coordinates"
+			)
+		end
+	end
+
+	local sum = 0
+	for k,coordk in ipairs(coords) do
+		local kLname = xLs[k].name
+		local kRname = xRs[k].name
+		local term = 
+			coordVolumeElem:replace(coords[k], xRs[k])
+			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(coords[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
+			* FRs[k]
+			-
+			coordVolumeElem:replace(coords[k], xLs[k])
+			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(coords[k], xLs[k])	-- diagonal {e_a}^I(x_L) quick fix
+			* FLs[k]
+		for j,coordj in ipairs(coords) do
+			if j ~= k then
+				term = term:integrate(coordj, xLs[j], xRs[j])
+			end
+		end
+		sum = sum - term
+	end
+	printbr(
+		var'u(x_C, t_R)':eq(
+			var'u(x_C, t_L)'
+			+ var'\\Delta t' * (
+				frac(1, cellVolume) * sum
+				+ var'S(x_C)'
+			)
+		)
+	)
+	printbr()
+
+	-- now repeat, except as you eval, substitute for the deltas
+	
+	local sum = 0
+	for k,coordk in ipairs(coords) do
+		local kLname = xLs[k].name
+		local kRname = xRs[k].name
+		local term = 
+			coordVolumeElem:replace(coords[k], xRs[k])
+			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(coords[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
+			* FRs[k]
+			-
+			coordVolumeElem:replace(coords[k], xLs[k])
+			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(coords[k], xLs[k])	-- diagonal {e_a}^I(x_L) quick fix
+			* FLs[k]
+		for j,coordj in ipairs(coords) do
+			if j ~= k then
+				if not term:findChild(coordj) then
+					term = term * deltas[j]
+				else
+					term = term:integrate(coordj, xLs[j], xRs[j])()
+					term = replaceDeltas(term):simplify()
+				end
+			end
+		end
+		sum = sum - term
+	end
+	local expr = var'u(x_C, t_R)':eq(
+		var'u(x_C, t_L)'
+		+ var'\\Delta t' * (
+			frac(1, cellVolume) * sum
+			+ var'S(x_C)'
+		)
+	)
+	printbr(expr)
+	printbr()
+
+	expr = expr():factorDivision()
+	printbr(expr)
+	printbr()
+
+
+
 
 
 	print(MathJax.footer)

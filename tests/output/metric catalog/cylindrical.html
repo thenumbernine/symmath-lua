@@ -243,6 +243,28 @@ ${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &
 <br>
 ${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
+volume element: 	$r$
+<br>
+volume integral: 	${{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}} {{\Delta z}}$
+<br>
+finite volume (0,0)-form:
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}}}} {{{F^{r}(r_R)}}}} - {{{{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}}}} {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}}}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{{{J(z_R)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_R)}}}}} {{{F^{z}(z_R)}}}} - {{{{{{J(z_L)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_L)}}}}} {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{{r_L}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{r}} {{{F^{z}(z_R)}}}} - {{{r}} {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{{-{{{{{({{{{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{{r_L}}} \cdot {{{F^{r}(r_L)}}}}})}} {{\Delta \phi}}}} {{\Delta z}}}} - {{{{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{({{{F^{\phi}(\phi_L)}} - {{F^{\phi}(\phi_R)}}})}}}})}}} {{\Delta z}}}} - {{{{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{({{{F^{z}(z_L)}} - {{F^{z}(z_R)}}})}}}})}}} {{\Delta \phi}}}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{{{u(x_C, t_L)}}} \cdot {{{r_L}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{{u(x_C, t_L)}}} \cdot {{{r_R}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{S(x_C)}}} \cdot {{{r_L}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{S(x_C)}}} \cdot {{{r_R}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{\Delta (r^2)}}} \cdot {{{F^{z}(z_L)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{\Delta z}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{\Delta z}} \cdot {{{r_R}}}}}}}} + {{{-1}} {{\Delta t}} \cdot {{{\Delta (r^2)}}} \cdot {{{F^{z}(z_R)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{\Delta z}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{\Delta z}} \cdot {{{r_R}}}}}}}} + {{{-2}} {{\Delta t}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{2}} {{\Delta t}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{\Delta t}} \cdot {{{\Delta (r^2)}}} \cdot {{{F^{\phi}(\phi_L)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{\Delta \phi}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{\Delta \phi}} \cdot {{{r_R}}}}}}}} + {{{-1}} {{\Delta t}} \cdot {{{\Delta (r^2)}}} \cdot {{{F^{\phi}(\phi_R)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{\Delta \phi}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{\Delta \phi}} \cdot {{{r_R}}}}}}}}}$
+<br>
+
+<br>
 	</body>
 </html>
 

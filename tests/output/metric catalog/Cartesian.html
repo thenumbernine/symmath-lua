@@ -182,6 +182,28 @@ ${{ \partial\over{\partial x}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end
 <br>
 ${{ \partial\over{\partial y}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
+volume element: 	$1$
+<br>
+volume integral: 	${{\Delta x}} \cdot {{\Delta y}}$
+<br>
+finite volume (0,0)-form:
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{-{({\int\limits_{{{y_L}}}^{{{y_R}}}d y\left({{{{{{{J(x_R)}}} \cdot {{{{e_{x}}^{\bar{x}}(x_R)}}}}} {{{F^{x}(x_R)}}}} - {{{{{{J(x_L)}}} \cdot {{{{e_{x}}^{\bar{x}}(x_L)}}}}} {{{F^{x}(x_L)}}}}}\right)})}} - {({\int\limits_{{{x_L}}}^{{{x_R}}}d x\left({{{{{{{J(y_R)}}} \cdot {{{{e_{y}}^{\bar{y}}(y_R)}}}}} {{{F^{y}(y_R)}}}} - {{{{{{J(y_L)}}} \cdot {{{{e_{y}}^{\bar{y}}(y_L)}}}}} {{{F^{y}(y_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{\Delta x}} \cdot {{\Delta y}}}}} {{({{-{({\int\limits_{{{y_L}}}^{{{y_R}}}d y\left({{{F^{x}(x_R)}} - {{F^{x}(x_L)}}}\right)})}} - {({\int\limits_{{{x_L}}}^{{{x_R}}}d x\left({{{F^{y}(y_R)}} - {{F^{y}(y_L)}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{\Delta x}} \cdot {{\Delta y}}}}} {{({{-{{{({{{F^{x}(x_R)}} - {{F^{x}(x_L)}}})}} {{\Delta y}}}} - {{{({{{F^{y}(y_R)}} - {{F^{y}(y_L)}}})}} {{\Delta x}}}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{{S(x_C)}}}} + {{{-1}} {{\Delta t}} \cdot {{{F^{x}(x_R)}}} \cdot {{\frac{1}{\Delta x}}}} + {{{\Delta t}} \cdot {{{F^{x}(x_L)}}} \cdot {{\frac{1}{\Delta x}}}} + {{{-1}} {{\Delta t}} \cdot {{{F^{y}(y_R)}}} \cdot {{\frac{1}{\Delta y}}}} + {{{\Delta t}} \cdot {{{F^{y}(y_L)}}} \cdot {{\frac{1}{\Delta y}}}}}$
+<br>
+
+<br>
 	</body>
 </html>
 

@@ -198,6 +198,28 @@ ${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L
 <br>
 ${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} \\  sin\left( {{{\theta_L}} - {{\theta_R}}}\right) &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
+volume element: 	$r$
+<br>
+volume integral: 	${{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}}$
+<br>
+finite volume (0,0)-form:
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{-{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}}}} {{{F^{r}(r_R)}}}} - {{{{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}}}} {{{F^{r}(r_L)}}}}}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{{{J(\theta_R)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_R)}}}}} {{{F^{\theta}(\theta_R)}}}} - {{{{{{J(\theta_L)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_L)}}}}} {{{F^{\theta}(\theta_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}}}}} {{({{-{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{{r_L}}} \cdot {{{F^{r}(r_L)}}}}}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{{r}} {{r}}}} {{{F^{\theta}(\theta_R)}}}} - {{{{{r}} {{r}}}} {{{F^{\theta}(\theta_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}}}}} {{({{-{{{({{{{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{{r_L}}} \cdot {{{F^{r}(r_L)}}}}})}} {{\Delta \theta}}}} - {{\frac{1}{3}}{({-{{{{\Delta (r^3)}}} \cdot {{({{{F^{\theta}(\theta_L)}} - {{F^{\theta}(\theta_R)}}})}}}})}}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{{{u(x_C, t_L)}}} \cdot {{{r_L}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{{u(x_C, t_L)}}} \cdot {{{r_R}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{S(x_C)}}} \cdot {{{r_L}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{S(x_C)}}} \cdot {{{r_R}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{-2}} {{\Delta t}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{2}} {{\Delta t}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{2}} {{\Delta t}} \cdot {{{\Delta (r^3)}}} \cdot {{{F^{\theta}(\theta_L)}}} \cdot {{\frac{1}{{{{3}} {{\Delta r}} \cdot {{\Delta \theta}} \cdot {{{r_L}}}} + {{{3}} {{\Delta r}} \cdot {{\Delta \theta}} \cdot {{{r_R}}}}}}}} + {{{-2}} {{\Delta t}} \cdot {{{\Delta (r^3)}}} \cdot {{{F^{\theta}(\theta_R)}}} \cdot {{\frac{1}{{{{3}} {{\Delta r}} \cdot {{\Delta \theta}} \cdot {{{r_L}}}} + {{{3}} {{\Delta r}} \cdot {{\Delta \theta}} \cdot {{{r_R}}}}}}}}}$
+<br>
+
+<br>
 	</body>
 </html>
 

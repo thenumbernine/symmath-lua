@@ -184,6 +184,28 @@ ${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\e
 <br>
 ${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
+volume element: 	$r$
+<br>
+volume integral: 	${{{{r}} {{\Delta \phi}}}} {{\Delta z}}$
+<br>
+finite volume (0,0)-form:
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({{{{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}}}} {{{F^{\phi}(\phi_L)}}}}}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{{{{J(z_R)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_R)}}}}} {{{F^{z}(z_R)}}}} - {{{{{{J(z_L)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_L)}}}}} {{{F^{z}(z_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{r}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{{{r}} {{r}}}} {{{F^{z}(z_R)}}}} - {{{{{r}} {{r}}}} {{{F^{z}(z_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{r}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{-{{{({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}})}} {{\Delta z}}}} - {{{({{{{{{r}} {{r}}}} {{{F^{z}(z_R)}}}} - {{{{{r}} {{r}}}} {{{F^{z}(z_L)}}}}})}} {{\Delta \phi}}}})}}} + {{S(x_C)}}})}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{{{S(x_C)}}} \cdot {{\Delta t}}} + {{{\Delta t}} \cdot {{{F^{\phi}(\phi_L)}}} \cdot {{\frac{1}{\Delta \phi}}}} + {{{-1}} {{\Delta t}} \cdot {{{F^{\phi}(\phi_R)}}} \cdot {{\frac{1}{\Delta \phi}}}} + {{{r}} {{\Delta t}} \cdot {{{F^{z}(z_L)}}} \cdot {{\frac{1}{\Delta z}}}} + {{{-1}} {{r}} {{\Delta t}} \cdot {{{F^{z}(z_R)}}} \cdot {{\frac{1}{\Delta z}}}} + {{u(x_C, t_L)}}}$
+<br>
+
+<br>
 	</body>
 </html>
 
