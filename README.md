@@ -802,8 +802,6 @@ Output CDN URLs:
 
 [tests/output/Newton method](https://thenumbernine.github.io/symmath/tests/output/Newton%20method.html)
 
-[tests/output/Parallel Propagators](https://thenumbernine.github.io/symmath/tests/output/Parallel%20Propagators.html)
-
 [tests/output/SRHD](https://thenumbernine.github.io/symmath/tests/output/SRHD.html)
 
 [tests/output/SRHD_1D](https://thenumbernine.github.io/symmath/tests/output/SRHD_1D.html)
