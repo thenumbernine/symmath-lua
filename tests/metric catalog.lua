@@ -25,6 +25,8 @@ local phi,theta,psi = vars('\\phi','\\theta','\\psi')
 -- this is used by sphere-log-radial
 local rho = set.nonNegativeReal:var'\\rho'
 
+-- used for Schwarzschild radius or for torus radius
+local R = set.nonNegativeReal:var'R'
 
 local alpha = var('\\alpha', {r})
 local omega = var('\\omega', {t, r})
@@ -609,10 +611,16 @@ io.stderr:flush()
 	local eToEHol = info.eToEHol and info.eToEHol() or Tensor('_A^a', function(A, a) 
 		return A == a and 1 or 0
 	end)
-	printbr('transform from basis to coordinate:', eToEHol)
+	printbr'transform from basis to coordinate:'
+	eToEHol:printElem('\\tilde{e}', write)
+	printbr()
+	printbr()
 	-- transform from coordinate basis to chart basis
 	local eHolToE = Tensor('^a_A', table.unpack((Matrix.inverse(eToEHol))))
-	printbr('transform from coorinate to basis:', eHolToE)
+	printbr'transform from coorinate to basis:'
+	eHolToE:printElem('\\tilde{e}', write)
+	printbr()
+	printbr()
 
 
 	-- create basis operators - as non-coordinate linear combinations of coordinates when available 

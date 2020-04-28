@@ -16,9 +16,21 @@ embedding coordinates: $u^I = \{x, y\}$
 <br>
 embedding basis $e_I = \{e_{x}, e_{y}\}$
 <br>
-transform from basis to coordinate:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  \sqrt r &  0 \\  0 &  \sqrt r\end{matrix}\right]}$
+transform from basis to coordinate:
 <br>
-transform from coorinate to basis:	$\overset{a\downarrow A\rightarrow}{\left[\begin{matrix}  \frac{1}{\sqrt r} &  0 \\  0 &  \frac{1}{\sqrt r}\end{matrix}\right]}$
+${{{ \tilde{e}}_r}^r} = {\sqrt r}$;
+${{{ \tilde{e}}_{\theta}}^{\theta}} = {\sqrt r}$
+
+<br>
+
+<br>
+transform from coorinate to basis:
+<br>
+${{{ \tilde{e}}^r}_r} = {\frac{1}{\sqrt r}}$;
+${{{ \tilde{e}}^{\theta}}_{\theta}} = {\frac{1}{\sqrt r}}$
+
+<br>
+
 <br>
 tensor index associated with coordinate $r$ is index $\hat{r}$ with operator $e_{\hat{r}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial r}}{\sqrt r}$
 <br>
@@ -164,17 +176,17 @@ ${{[\Gamma_r]}} = {\left[\begin{matrix}  -{\frac{1}{{{2}} {{r}}}} &  0 \\  0 &  
 
 <br>
 $\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  -{\frac{1}{{{2}} {{r}}}} &  0 \\  0 &  \frac{1}{{{2}} {{r}}}\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  {\frac{1}{4}}{({log\left( {\frac{{{r_L}}^{2}}{{{r_R}}^{2}}}\right)})} &  0 \\  0 &  {\frac{1}{4}}{({log\left( {\frac{{{r_R}}^{2}}{{{r_L}}^{2}}}\right)})}\end{matrix}\right]$
+=	$\left[\begin{matrix}  log\left( {{{\frac{1}{\sqrt {r_R}}}} {{\sqrt {r_L}}}}\right) &  0 \\  0 &  log\left( {{{\sqrt {r_R}}} {{\frac{1}{\sqrt {r_L}}}}}\right)\end{matrix}\right]$
 <br>
 
 <br>
 ${ P}_r$	=	${e}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  -{\frac{1}{{{2}} {{r}}}} &  0 \\  0 &  \frac{1}{{{2}} {{r}}}\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_R}}^{2}}{{{r_L}}^{2}}}\right)})}})} &  0 \\  0 &  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_L}}^{2}}{{{r_R}}^{2}}}\right)})}})}\end{matrix}\right]$
+=	$\left[\begin{matrix}  \frac{\sqrt {r_R}}{\sqrt {r_L}} &  0 \\  0 &  \frac{\sqrt {r_L}}{\sqrt {r_R}}\end{matrix}\right]$
 <br>
 
 <br>
 ${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  -{\frac{1}{{{2}} {{r}}}} &  0 \\  0 &  \frac{1}{{{2}} {{r}}}\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_L}}^{2}}{{{r_R}}^{2}}}\right)})}})} &  0 \\  0 &  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_R}}^{2}}{{{r_L}}^{2}}}\right)})}})}\end{matrix}\right]$
+=	$\left[\begin{matrix}  \frac{\sqrt {r_L}}{\sqrt {r_R}} &  0 \\  0 &  \frac{\sqrt {r_R}}{\sqrt {r_L}}\end{matrix}\right]$
 <br>
 
 <br>
@@ -201,15 +213,15 @@ propagator commutation:
 <br>
 
 <br>
-[	${ P}_r$	,	${ P}_{\theta}$	] =	${ {\left[\begin{matrix}  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_R}}^{2}}{{{r_L}}^{2}}}\right)})}})} &  0 \\  0 &  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_L}}^{2}}{{{r_R}}^{2}}}\right)})}})}\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}} {{{r_L}}}} \\  {\frac{1}{{r_L}}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]}} - { {\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}} {{{r_R}}}} \\  {\frac{1}{{r_R}}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]}  {\left[\begin{matrix}  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_R}}^{2}}{{{r_L}}^{2}}}\right)})}})} &  0 \\  0 &  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_L}}^{2}}{{{r_R}}^{2}}}\right)})}})}\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  -{{{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}} {{({{{r_L}} - {{{{r_R}}} \cdot {{{e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_L}}^{2}}{{{r_R}}^{2}}}\right)})}})}}}}})}}} \\  \frac{-{{{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}} {{({{{{{r_L}}} \cdot {{{e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_R}}^{2}}{{{r_L}}^{2}}}\right)})}})}}}} - {{r_R}}})}}}}{{{{r_R}}} \cdot {{{r_L}}}} &  0\end{matrix}\right]$
+[	${ P}_r$	,	${ P}_{\theta}$	] =	${ {\left[\begin{matrix}  \frac{\sqrt {r_R}}{\sqrt {r_L}} &  0 \\  0 &  \frac{\sqrt {r_L}}{\sqrt {r_R}}\end{matrix}\right]}  {\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}} {{{r_L}}}} \\  {\frac{1}{{r_L}}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]}} - { {\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}} {{{r_R}}}} \\  {\frac{1}{{r_R}}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]}  {\left[\begin{matrix}  \frac{\sqrt {r_R}}{\sqrt {r_L}} &  0 \\  0 &  \frac{\sqrt {r_L}}{\sqrt {r_R}}\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]$
 <br>
 
 <br>
 propagator partials
 <br>
-${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_R}}^{2}}{{{r_L}}^{2}}}\right)})}})} &  0 \\  0 &  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_L}}^{2}}{{{r_R}}^{2}}}\right)})}})}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  \frac{\sqrt {r_R}}{\sqrt {r_L}} &  0 \\  0 &  \frac{\sqrt {r_L}}{\sqrt {r_R}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_R}}^{2}}{{{r_L}}^{2}}}\right)})}})} &  0 \\  0 &  {e}^{({{\frac{1}{4}}{({log\left( {\frac{{{r_L}}^{2}}{{{r_R}}^{2}}}\right)})}})}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  \frac{\sqrt {r_R}}{\sqrt {r_L}} &  0 \\  0 &  \frac{\sqrt {r_L}}{\sqrt {r_R}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
 ${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} \\  \frac{-{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}{{r}^{2}} &  0\end{matrix}\right]}$
 <br>

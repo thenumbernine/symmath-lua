@@ -437,7 +437,6 @@ mul.rules = {
 			end	
 		end},
 
--- [[
 		{negLog = function(prune, expr)
 			local symmath = require 'symmath'
 			-- -1*log(a) => log(1/a)
@@ -448,7 +447,6 @@ mul.rules = {
 				return prune:apply(symmath.log(1/expr[2][1]))
 			end	
 		end},
---]]
 	},
 
 	Tidy = {

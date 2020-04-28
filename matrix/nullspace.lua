@@ -5,6 +5,7 @@ local function nullspace(A)
 	
 	local n = #A
 	local _, reduce = A:inverse()
+	
 	-- find all non-leading columns
 	local nonLeadingCols = table()
 	local firstNonZeroColPerRow = table()

@@ -81,7 +81,7 @@ div.rules = {
 		end},
 	},
 
-	Prune = {
+	Prune = {		
 		{apply = function(prune, expr)
 			local symmath = require 'symmath'	-- for debug flags ...
 			local add = symmath.op.add	
@@ -176,6 +176,8 @@ div.rules = {
 			end
 
 			-- (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
+			-- TODO combine this with the stuff in add.Factor somehow
+			-- that builds lists of term=, power= as well
 			do
 				local modified
 				local nums, denoms
@@ -189,7 +191,7 @@ div.rules = {
 				else
 					denoms = table{expr[2]}
 				end
-				
+			
 				local function listToBasesAndPowers(list)
 					local bases = table()
 					local powers = table()
@@ -342,7 +344,7 @@ div.rules = {
 			end
 			--]]
 		
-			-- [[ hmm, attempt polynomial division
+			--[[ TODO attempt polynomial division?  or put that in :factor()?
 			if add.is(expr[1]) then
 				local a,b = expr[1], expr[2]
 				local q = Constant(0)
@@ -365,8 +367,17 @@ div.rules = {
 				end
 			end
 			--]]
-			
-			return prune(expr[1]) / prune(expr[2])
+		end},	
+
+		-- this could go after the apply rule, but that ends with a subsequent prune(a)/prune(b) ..
+		{logPow = function(prune, expr)
+			local symmath = require 'symmath'
+			-- log(a) / b => log(a^(1/b))
+			if symmath.log.is(expr[1]) then
+				local a = expr[1][1]
+				local b = expr[2]
+				return prune:apply(symmath.log(a ^ (1 / b)))
+			end
 		end},
 	},
 
