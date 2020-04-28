@@ -57,8 +57,9 @@ function Visitor:apply(expr, ...)
 	local Expression = require 'symmath.Expression'
 
 -- TODO don't be lazy, only clone when you need to
+	-- expr = expr:cloneIfMutable()	--TODO
 	expr = clone(expr)
-	
+
 	local t = type(expr)
 	if t == 'table' then
 		local m = getmetatable(expr)

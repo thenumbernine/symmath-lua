@@ -9,7 +9,7 @@ div.name = '/'
 
 function div:evaluateDerivative(deriv, ...)
 	local a, b = self[1], self[2]
-	a, b = a:clone(), b:clone()
+	a, b = a:cloneIfMutable(), b:cloneIfMutable()
 	return (deriv(a, ...) * b - a * deriv(b, ...)) / (b * b)
 end
 
@@ -17,10 +17,10 @@ function div:reverse(soln, index)
 	local p,q = table.unpack(self)
 	-- y = p(x) / q => p(x) = q * y
 	if index == 1 then
-		soln = soln * q:clone()
+		soln = soln * q:cloneIfMutable()
 	-- y = p / q(x) => q(x) = p / y
 	elseif index == 2 then
-		soln = p:clone() / soln
+		soln = p:cloneIfMutable() / soln
 	end
 	return soln
 end

@@ -22,6 +22,7 @@ function Expression:init(...)
 	end
 end
 
+-- deep copy
 function Expression:clone()
 	local clone = require 'symmath.clone'
 	if self then
@@ -34,6 +35,44 @@ function Expression:clone()
 		-- why do I have this condition?
 		return getmetatable(self)()
 	end
+end
+
+--[[
+one thought immutability of objects ...
+what about all those test scripts wherein I am modifying Array elements?
+
+If objects are immutable then `A[i][j] = something` should produce an error.
+
+Hmm, it's as if I only need to clone for certain objects ...
+
+Array & children = mutable, all other expressions = immutable.
+
+...and use this function everywhere inside of simplify() functions
+
+
+So when should cloneIfMutable produce a clone?
+- Any time an Expression references it?
+- Any time a simplify or a visitor is processed?
+
+When should references be copied?
+- Always, any other situation?
+
+When should deep copies be used?
+- Never / only if the user wants it?
+
+--]]
+function Expression:cloneIfMutable()
+	if self.mutable then return self:clone() end
+	return self
+end
+
+-- create a shallow copy of this object
+function Expression:shallowCopy()
+	local t = setmetatable({}, getmetatable(self))
+	for k,v in pairs(self) do
+		t[k] = v
+	end
+	return t
 end
 
 --[[

@@ -14,6 +14,9 @@ Array.name = 'Array'
 Array.mulNonCommutative = true
 Array.precedence = 10
 
+-- allow/expect `A[i][j] = whatever` expressions
+Array.mutable = true
+
 --[[
 valid ctors:
 	Array(x1, x2, ..., xN)

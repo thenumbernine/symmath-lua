@@ -11,7 +11,7 @@ add.name = '+'
 function add:evaluateDerivative(deriv, ...)
 	local result = table()
 	for i=1,#self do
-		result[i] = deriv(self[i]:clone(), ...)
+		result[i] = deriv(self[i]:cloneIfMutable(), ...)
 	end
 	return add(result:unpack())
 end
@@ -30,7 +30,7 @@ function add:reverse(soln, index)
 	-- => a_j(x) = y - a_1 - ... - a_j-1 - a_j+1 - ... a_n
 	for k=1,#self do
 		if k ~= index then
-			soln = soln - self[k]:clone()
+			soln = soln - self[k]:cloneIfMutable()
 		end
 	end
 	return soln
@@ -249,8 +249,9 @@ function ProdLists:toExpr()
 	local expr = table.mapi(self, function(prodList) 
 		return prodList:toExpr() 
 	end)
-	expr = #expr == 1 and expr[1] or setmetatable(expr, require 'symmath.op.add')
-	return expr
+	return #expr == 1 
+		and expr[1]
+		or setmetatable(expr, add)
 end
 
 
@@ -507,7 +508,8 @@ add.rules = {
 			local div = require 'symmath.op.div'
 			local mul = require 'symmath.op.mul'
 			local pow = require 'symmath.op.pow'
-			
+	
+--[=[ old version
 			-- flatten additions
 			-- (x + y) + z => x + y + z
 			for i=#expr,1,-1 do
@@ -523,7 +525,32 @@ add.rules = {
 					return prune:apply(expr)
 				end
 			end
-			
+--]=]
+-- [=[ new version
+			-- flatten additions
+			-- (x + y) + z => x + y + z
+			local flattenArgs
+			for i,ch in ipairs(expr) do
+				if add.is(ch) then
+					if not flattenArgs then
+						flattenArgs = table.sub(expr, 1, i-1)
+					end
+					flattenArgs:append(ch)
+				else
+					if flattenArgs then
+						flattenArgs:insert(ch)
+					--else it will get appended in the table.sub
+					-- ... or never, if no add->add's exist
+					end
+				end
+			end
+			if flattenArgs then
+				return prune:apply(setmetatable(flattenArgs, add))
+			end
+--]=]
+
+
+--[=[ old version
 			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
 			local cval = 0
 			for i=#expr,1,-1 do
@@ -547,7 +574,40 @@ add.rules = {
 					return prune:apply(expr[1]) 
 				end
 			end
+--]=]
+-- [=[ new version
+-- TODO FIXME THIS DEPENDS ON MODIFICATION IN-PLACE (WHY?!?!?!)
+			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
+			local cval = 0
+			for i=#expr,1,-1 do
+				if Constant.is(expr[i]) then
+-- causes simplification loops ... hmm ...
+-- ... even if i set the metatable, so I'm just duplicating the object
+-- ... which means something depends on the 'expr' object ... from modifications in-place?
+					--expr = expr:shallowCopy()
+					cval = cval + table.remove(expr, i).value
+				end
+			end
+			
+			-- if it's all constants then return what we got
+			if #expr == 0 then 
+				return Constant(cval) 
+			end
+			
+			-- re-insert if we have a Constant
+			if cval ~= 0 then
+				table.insert(expr, 1, Constant(cval))
+			else
+				-- if cval is zero and we're not re-inserting a constant
+				-- then see if we have only one term ...
+				if #expr == 1 then 
+					return prune:apply(expr[1]) 
+				end
+			end
+--]=]
 
+
+--[=[ old version		
 			-- any overloaded subclass simplification
 			-- specifically used for vector/matrix addition
 			-- only operate on neighboring elements - don't assume commutativitiy, and that we can exchange elements to be arbitrary neighbors
@@ -570,6 +630,33 @@ add.rules = {
 					return prune:apply(expr)
 				end
 			end
+--]=]
+-- :[=[ new version
+			-- any overloaded subclass simplification
+			-- specifically used for vector/matrix addition
+			-- only operate on neighboring elements - don't assume commutativitiy, and that we can exchange elements to be arbitrary neighbors
+			for i=#expr,2,-1 do
+				local rhs = expr[i]
+				local lhs = expr[i-1]
+				
+				local result
+				if lhs.pruneAdd then
+					result = lhs.pruneAdd(lhs, rhs)
+				elseif rhs.pruneAdd then
+					result = rhs.pruneAdd(lhs, rhs)
+				end
+				if result then
+					expr = expr:shallowCopy()
+					table.remove(expr, i)
+					expr[i-1] = result
+					if #expr == 1 then
+						expr = expr[1]
+					end
+					return prune:apply(expr)
+				end
+			end
+--]=] 
+
 
 			-- [[ x * c1 + x * c2 => x * (c1 + c2) ... for constants
 			do
@@ -699,6 +786,7 @@ add.rules = {
 					if not constJ then constJ = Constant(1) end
 					
 					if not fail then
+						expr = expr:shallowCopy()
 						table.remove(expr, j)
 						if #commonTerms == 0 then
 							expr[i] = Constant(constI.value + constJ.value)
@@ -742,9 +830,10 @@ add.rules = {
 				if div.is(x) then
 					assert(#x == 2)
 					local a,b = table.unpack(x)
+					expr = expr:shallowCopy()
 					table.remove(expr, i)
 					if #expr == 1 then expr = expr[1] end
-					local expr = (expr * b + a) / b
+					expr = (expr * b + a) / b
 					return prune:apply(expr)
 				end
 			end
@@ -783,7 +872,7 @@ add.rules = {
 			--]]
 
 
-			-- [=[ trigonometry identities
+			--[=[ trigonometry identities
 			-- cos(theta)^2 + sin(theta)^2 => 1
 			-- TODO first get a working factor() function
 			-- then replace all nodes of cos^2 + sin^2 with 1
@@ -890,7 +979,7 @@ add.rules = {
 					local b = expr[j]
 					if log.is(a) and log.is(b) then
 						if not found then
-							expr = expr:clone()
+							expr = expr:shallowCopy()
 							found = true
 						end
 						table.remove(expr, j)
@@ -909,6 +998,7 @@ add.rules = {
 			for i=1,#expr-1 do
 				-- x + -y => x - y
 				if unm.is(expr[i+1]) then
+--[=[ old					
 					local a = table.remove(expr, i)
 					local b = table.remove(expr, i)[1]
 					assert(a)
@@ -921,6 +1011,21 @@ add.rules = {
 					end
 					assert(#expr > 1)
 					return tidy:apply(expr)
+--]=]
+-- [=[ new
+					expr = expr:shallowCopy()
+					local a = table.remove(expr, i)
+					assert(a)
+					local b = table.remove(expr, i)[1]
+					assert(b)
+					table.insert(expr, i, a - b)
+					assert(#expr > 0)
+					if #expr == 1 then
+						return expr[1]
+					end
+					assert(#expr > 1)
+					return tidy:apply(expr)
+--]=]
 				end
 			end
 		end},
