@@ -740,7 +740,21 @@ distinct functions for all languages:
 - __call = produces a single expression of code, without checking variables
 - generate = produces the function body.  multiple expressions.
 	doing tree searches and moving common variables out front would be good.
-- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler 
+- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler
+
+
+If you want to run this as a command-line with the API in global namespace:
+
+```
+#!/usr/bin/env sh
+lua -lext -lsymmath.setup -e "$*"
+```
+
+Then run with
+
+```
+symmath "print(Matrix{{u^2+1, u*v}, {u*v, v^2+1}}:inverse())"
+```
 
 Output CDN URLs:
 
@@ -842,6 +856,8 @@ Output CDN URLs:
 
 [tests/output/linearized Euler fluid equations](https://thenumbernine.github.io/symmath/tests/output/linearized%20Euler%20fluid%20equations.html)
 
+[tests/output/metric catalog](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog.html)
+
 [tests/output/metric catalog/Cartesian, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/Cartesian%2c%20coordinate.html)
 
 [tests/output/metric catalog/Schwarzschild](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/Schwarzschild.html)
@@ -859,6 +875,14 @@ Output CDN URLs:
 [tests/output/metric catalog/cylindrical, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20anholonomic%2c%20orthonormal.html)
 
 [tests/output/metric catalog/cylindrical, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20coordinate.html)
+
+[tests/output/metric catalog/paraboliod, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/paraboliod%2c%20coordinate.html)
+
+[tests/output/metric catalog/polar and time, constant rotation, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20constant%20rotation%2c%20coordinate.html)
+
+[tests/output/metric catalog/polar and time, lapse varying in radial, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20lapse%20varying%20in%20radial%2c%20coordinate.html)
+
+[tests/output/metric catalog/polar and time, lapse varying in radial, rotation varying in time and radial, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20lapse%20varying%20in%20radial%2c%20rotation%20varying%20in%20time%20and%20radial%2c%20coordinate.html)
 
 [tests/output/metric catalog/polar, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%2c%20anholonomic%2c%20conformal.html)
 
@@ -879,6 +903,10 @@ Output CDN URLs:
 [tests/output/metric catalog/spherical, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20coordinate.html)
 
 [tests/output/metric catalog/spherical, log-radial, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20log%2dradial%2c%20coordinate.html)
+
+[tests/output/metric catalog/spiral, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spiral%2c%20coordinate.html)
+
+[tests/output/metric catalog/torus surface, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/torus%20surface%2c%20coordinate.html)
 
 [tests/output/natural units](https://thenumbernine.github.io/symmath/tests/output/natural%20units.html)
 
