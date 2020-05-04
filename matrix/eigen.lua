@@ -61,7 +61,7 @@ local function eigen(A)
 		for i=1,n do
 			allLambdas:insert(lambdaInfo.expr)
 		end
-		return Ri:T()
+		return Ri and Ri:T() or nil
 	end)
 --for i,lambda in ipairs(lambdas) do
 --	printbr('right eigenvector of', lambda.expr, 'is', Rs[i]:T())

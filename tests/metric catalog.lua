@@ -5,12 +5,10 @@ if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{
 	env = env,
 	implicitVars = true,
-	--[[
 	MathJax = {
 		title = 'Metric Catalog',
 		pathToTryToFindMathJax = '..',
 	},
-	--]]
 }
 
 -- implicitVars will cover this automatically:
@@ -612,9 +610,9 @@ MathJax.header.pathToTryToFindMathJax = '..'
 symmath.tostring = MathJax
 
 os.execute('mkdir "output/metric catalog"')
---[[
+-- [[
 for _,info in ipairs(spacetimes) do
-	printbr('<a href="#'..info.title..'">'..info.title..'</a>')
+	printbr('<a href="metric catalog/'..info.title..'.html">'..info.title..'</a>')
 end
 printbr()
 --]]
@@ -1255,7 +1253,7 @@ end
 
 end
 
---[=[
+-- [=[
 printbr[[
 <br>
 Using 2010 Muller, Grave "Catalogue of Spacetimes" for a reference on the spacetime metrics.<br>
