@@ -107,7 +107,6 @@ function Visitor:apply(expr, ...)
 						expr = newexpr
 						-- if we change content then there's no guarantee the metatable -- or the rules -- will be the same
 						-- we probably need to start again
-						-- this would have the detriment
 						m = getmetatable(expr)
 						break
 					end

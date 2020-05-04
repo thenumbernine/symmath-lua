@@ -740,4 +740,16 @@ distinct functions for all languages:
 - __call = produces a single expression of code, without checking variables
 - generate = produces the function body.  multiple expressions.
 	doing tree searches and moving common variables out front would be good.
-- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler 
+- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler
+
+
+If you want to run this as a command-line with the API in global namespace:
+
+```
+#!/usr/bin/env sh
+lua -lext -lsymmath.setup -e "$*"
+```
+
+Then run with
+
+symmath "print(Matrix{{u^2+1, u*v}, {u*v, v^2+1}}:inverse())"

@@ -1,4 +1,13 @@
 --[[
+TODO split this into a few functions ...
+1) gaussJordan() - which would contain what it is right now for the n>3 case
+2) adjoint() - create adj(A) = det(A) * A^-1 based on permutation tensor identity ... adj(A)^u_a = (A^-1)^u_a det(A) = 1/(n-1)! kronDelta^{u1..un}_{a1..an} A^a1_u1 * ... * A^an_un (MTW "Gravitation" def)
+3) inverse() - to call the previous implementations (based on dimension?)
+4) pseudoInverse() - same, but without constraint of m==n
+5) linsolve() (or a better name) - A:linsolve(b) == solve for x when A x = b
+	(or for :solve() compatability ... (A*x):eq(b):solve(x) ... but this would require defining 'x' as a matrix-of-variables up front ... or even just as a variable up front ...)
+
+
 A = matrix to invert
 AInv = vector to solve the linear system inverse of.  default: identity, to produce the inverse matrix.
 callback = watch the progress!
@@ -62,46 +71,46 @@ end
 	end
 
 	-- shortcuts:
-	if m == 1 and n == 1 and not b then
-		local A_11 = A[1][1]
-		if Constant.isValue(A_11, 0) then
-			return AInv, A, "determinant is zero"
-		end
-		local result = Matrix{(1/A_11)()}
-		if b then result = (result * b)() end
-		return result, Matrix.identity(invdim[1], invdim[2])
---[[ this also breaks compat with nullspace()	
-	elseif m == 2 and n == 2 and not b then
-		A_det = A_det or A:determinant()
-		if Constant.isValue(A_det, 0) then
-			return AInv, A, "determinant is zero"
-		end
-		local result = (Matrix:convertTable{
-			{A[2][2], -A[1][2]},
-			{-A[2][1], A[1][1]},
-		} / A_det)()
-		--if b then result = (result * b)() end
-		return result, Matrix.identity(invdim[1], invdim[2])
+	if not b then
+		if m == 1 and n == 1 then
+			local A_11 = A[1][1]
+			if Constant.isValue(A_11, 0) then
+				return AInv, A, "determinant is zero"
+			end
+			local result = Matrix{(1/A_11)()}
+			if b then result = (result * b)() end
+			return result, Matrix.identity(invdim[1], invdim[2])
+-- [[ this also breaks compat with nullspace()	
+		elseif m == 2 and n == 2 then
+			A_det = A_det or A:determinant()
+			if not Constant.isValue(A_det, 0) then
+				local result = (Matrix:convertTable{
+					{A[2][2], -A[1][2]},
+					{-A[2][1], A[1][1]},
+				} / A_det)()
+				--if b then result = (result * b)() end
+				return result, Matrix.identity(invdim[1], invdim[2])
+			end
 --]]
---[[ 
+-- [[ 
 -- this breaks compatability with pseudoInverse() and nullspace()
 -- in fact, the 2D version probably does too
 -- TODO maybe put GaussJordan in one method and have inverse() and pseudoInverse() etc call it
 -- then give inverse() its own shortcut for the 2x2 and 3x3 methods?
 -- because right now this function does a few things: inverse, pseudoinverse, linear system solution
-	elseif m == 3 and n == 3 and not b then
-		A_det = A_det or A:determinant()
-		if Constant.isValue(A_det, 0) then
-			return AInv, A, "determinant is zero"
+		elseif m == 3 and n == 3 then
+			A_det = A_det or A:determinant()
+			if not Constant.isValue(A_det, 0) then
+				-- transpose, +-+- sign stagger, for each element remove that row and column and 
+				local result = (Matrix:convertTable{
+					{A[2][2]*A[3][3]-A[2][3]*A[3][2], A[1][3]*A[3][2]-A[1][2]*A[3][3], A[1][2]*A[2][3]-A[1][3]*A[2][2]},
+					{A[2][3]*A[3][1]-A[2][1]*A[3][3], A[1][1]*A[3][3]-A[1][3]*A[3][1], A[1][3]*A[2][1]-A[1][1]*A[2][3]},
+					{A[2][1]*A[3][2]-A[2][2]*A[3][1], A[1][2]*A[3][1]-A[1][1]*A[3][2], A[1][1]*A[2][2]-A[1][2]*A[2][1]},
+				} / A_det)()
+				--if b then result = (result * b)() end
+				return result, Matrix.identity(invdim[1], invdim[2])
 		end
-		-- transpose, +-+- sign stagger, for each element remove that row and column and 
-		local result = (Matrix:convertTable{
-			{A[2][2]*A[3][3]-A[2][3]*A[3][2], A[1][3]*A[3][2]-A[1][2]*A[3][3], A[1][2]*A[2][3]-A[1][3]*A[2][2]},
-			{A[2][3]*A[3][1]-A[2][1]*A[3][3], A[1][1]*A[3][3]-A[1][3]*A[3][1], A[1][3]*A[2][1]-A[1][1]*A[2][3]},
-			{A[2][1]*A[3][2]-A[2][2]*A[3][1], A[1][2]*A[3][1]-A[1][1]*A[3][2], A[1][1]*A[2][2]-A[1][2]*A[2][1]},
-		} / A_det)()
-		--if b then result = (result * b)() end
-		return result, Matrix.identity(invdim[1], invdim[2])
+	end
 --]]
 	end
 

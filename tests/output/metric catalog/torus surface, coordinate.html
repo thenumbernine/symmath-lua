@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>torus surface, coordinate</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+<h3>torus surface, coordinate</h3>
+chart coordinates: $x^\tilde{\mu} = \{\theta, \phi\}$
+<br>
+chart coordinate basis: $e_\tilde{\mu} = \{e_{\tilde{\theta}}, e_{\tilde{\phi}}\}$
+<br>
+embedding coordinates: $u^I = \{x, y, z\}$
+<br>
+embedding basis $e_I = \{e_{x}, e_{y}, e_{z}\}$
+<br>
+transform from basis to coordinate:
+<br>
+${{{ \tilde{e}}_{\theta}}^{\theta}} = {1}$;
+${{{ \tilde{e}}_{\phi}}^{\phi}} = {1}$
+
+<br>
+
+<br>
+transform from coorinate to basis:
+<br>
+${{{ \tilde{e}}^{\theta}}_{\theta}} = {1}$;
+${{{ \tilde{e}}^{\phi}}_{\phi}} = {1}$
+
+<br>
+
+<br>
+tensor index associated with coordinate $\theta$ is index $\theta$ with operator $e_{\theta}(\zeta) = $${\partial \zeta}\over{\partial\theta}$
+<br>
+tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $${\partial \zeta}\over{\partial\phi}$
+<br>
+
+<br>
+flat metric:
+${{{ \eta}_x}_x} = {1}$;
+${{{ \eta}_y}_y} = {1}$;
+${{{ \eta}_z}_z} = {1}$
+
+<br>
+
+<br>
+chart in embedded coordinates:
+<br>
+${{ u}^x} = {{{({{R} + {{{r}} {{sin\left(  \theta\right)}}}})}} {{cos\left(  \phi\right)}}}$;
+${{ u}^y} = {{{({{R} + {{{r}} {{sin\left(  \theta\right)}}}})}} {{sin\left(  \phi\right)}}}$;
+${{ u}^z} = {{{r}} {{cos\left(  \theta\right)}}}$
+
+<br>
+
+<br>
+basis operators applied to chart:
+<br>
+${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
+<br>
+${{{ e}_{\theta}}^x} = {{{r}} {{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
+${{{ e}_{\theta}}^y} = {{{r}} {{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
+${{{ e}_{\theta}}^z} = {-{{{r}} {{sin\left(  \theta\right)}}}}$;
+${{{ e}_{\phi}}^x} = {-{{{sin\left(  \phi\right)}} {{({{R} + {{{r}} {{sin\left(  \theta\right)}}}})}}}}$;
+${{{ e}_{\phi}}^y} = {{{cos\left(  \phi\right)}} {{({{R} + {{{r}} {{sin\left(  \theta\right)}}}})}}}$
+
+<br>
+${{{ e}^{\theta}}_x} = {{\frac{1}{r}}{({{{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}})}}$;
+${{{ e}^{\theta}}_y} = {{\frac{1}{r}}{({{{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}}})}}$;
+${{{ e}^{\theta}}_z} = {{\frac{1}{r}}{({-{sin\left(  \theta\right)}})}}$;
+${{{ e}^{\phi}}_x} = {\frac{-{sin\left(  \phi\right)}}{{R} + {{{r}} {{sin\left(  \theta\right)}}}}}$;
+${{{ e}^{\phi}}_y} = {\frac{cos\left(  \phi\right)}{{R} + {{{r}} {{sin\left(  \theta\right)}}}}}$
+
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
+<br>
+${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  {{1} - {{cos\left(  \phi\right)}^{2}}} + {{{{cos\left(  \theta\right)}^{2}}} {{{cos\left(  \phi\right)}^{2}}}} &  -{{{cos\left(  \phi\right)}} {{sin\left(  \phi\right)}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}} &  -{{{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}} {{sin\left(  \theta\right)}}} \\  -{{{cos\left(  \phi\right)}} {{sin\left(  \phi\right)}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}} &  {{cos\left(  \phi\right)}^{2}} + {{{cos\left(  \theta\right)}^{2}} - {{{{cos\left(  \theta\right)}^{2}}} {{{cos\left(  \phi\right)}^{2}}}}} &  -{{{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}} {{sin\left(  \theta\right)}}} \\  -{{{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}} &  -{{{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}}} &  {1} - {{cos\left(  \theta\right)}^{2}}\end{matrix}\right]}}$
+<br>
+${{{{ c}_a}_b}^c} = {0}$
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+${{{ g}_{\theta}}_{\theta}} = {{r}^{2}}$;
+${{{ g}_{\phi}}_{\phi}} = {{{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}} + {{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}}$
+
+<br>
+${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+<br>
+metric determinant:	${det(g)} = {{{{r}^{2}}} {{({{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}})}}}$
+<br>
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+<br>
+commutation coefficients:
+${{{{ c}_a}_b}^c} = {0}$
+<br>
+metric:
+${{{ g}_{\theta}}_{\theta}} = {{r}^{2}}$;
+${{{ g}_{\phi}}_{\phi}} = {{{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}} + {{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}}$
+
+<br>
+metric inverse:
+${{{ g}^{\theta}}^{\theta}} = {\frac{1}{{r}^{2}}}$;
+${{{ g}^{\phi}}^{\phi}} = {\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}$
+
+<br>
+metric derivative:
+${{{{ {\partial g}}_{\phi}}_{\phi}}_{\theta}} = {{{2}} {{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}$
+
+<br>
+1st kind Christoffel:
+${{{{ \Gamma}_{\theta}}_{\phi}}_{\phi}} = {-{{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}}$;
+${{{{ \Gamma}_{\phi}}_{\theta}}_{\phi}} = {{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}$;
+${{{{ \Gamma}_{\phi}}_{\phi}}_{\theta}} = {{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}$
+
+<br>
+connection coefficients / 2nd kind Christoffel:
+${{{{ \Gamma}^{\theta}}_{\phi}}_{\phi}} = {{\frac{1}{r}}{({-{{{cos\left(  \theta\right)}} {{({{R} + {{{r}} {{sin\left(  \theta\right)}}}})}}}})}}$;
+${{{{ \Gamma}^{\phi}}_{\theta}}_{\phi}} = {\frac{{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_{\theta}} = {\frac{{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}$
+
+<br>
+connection coefficients derivative:
+${{{{{ {\partial \Gamma}}^{\theta}}_{\phi}}_{\phi}}_{\theta}} = {{\frac{1}{r}}{({{{{R}} {{sin\left(  \theta\right)}}} + {{r} - {{{2}} {{r}} {{{cos\left(  \theta\right)}^{2}}}}}})}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_{\theta}}_{\phi}}_{\theta}} = {\frac{-{{{r}} {{({{{{2}} {{{r}^{3}}}} + {{{{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{3}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{3}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{{3}} {{r}} {{{R}^{2}}}} - {{{2}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}})}}}}{{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{{6}} {{{r}^{2}}} {{{R}^{2}}}} - {{{6}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{R}^{2}}}}} + {{{{4}} {{{r}^{3}}} {{sin\left(  \theta\right)}} {{R}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{R}}}} + {{R}^{4}} + {{{4}} {{{R}^{3}}} {{r}} {{sin\left(  \theta\right)}}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_{\theta}}_{\theta}} = {\frac{-{{{r}} {{({{{{2}} {{{r}^{3}}}} + {{{{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{3}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{3}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{{3}} {{r}} {{{R}^{2}}}} - {{{2}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}})}}}}{{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{{6}} {{{r}^{2}}} {{{R}^{2}}}} - {{{6}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{R}^{2}}}}} + {{{{4}} {{{r}^{3}}} {{sin\left(  \theta\right)}} {{R}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{R}}}} + {{R}^{4}} + {{{4}} {{{R}^{3}}} {{r}} {{sin\left(  \theta\right)}}}}}$
+
+<br>
+connection coefficients squared:
+${{{{{ {(\Gamma^2)}}^{\theta}}_{\theta}}_{\phi}}_{\phi}} = {\frac{-{({{{{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}} {{{cos\left(  \theta\right)}^{2}}}} + {{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{2}}} {{{sin\left(  \theta\right)}^{2}}}}}})}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\theta}}_{\phi}}_{\phi}}_{\theta}} = {\frac{-{({{{{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}} {{{cos\left(  \theta\right)}^{2}}}} + {{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{2}}} {{{sin\left(  \theta\right)}^{2}}}}}})}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\theta}}_{\theta}}_{\phi}} = {\frac{{{{r}^{2}}} {{({{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{2}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}} {{{cos\left(  \theta\right)}^{2}}}}})}}}{{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{{6}} {{{r}^{2}}} {{{R}^{2}}}} - {{{6}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{R}^{2}}}}} + {{{{4}} {{{r}^{3}}} {{sin\left(  \theta\right)}} {{R}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{R}}}} + {{R}^{4}} + {{{4}} {{{R}^{3}}} {{r}} {{sin\left(  \theta\right)}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\theta}}_{\theta}} = {\frac{{{{r}^{2}}} {{({{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{2}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}} {{{cos\left(  \theta\right)}^{2}}}}})}}}{{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{{6}} {{{r}^{2}}} {{{R}^{2}}}} - {{{6}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{R}^{2}}}}} + {{{{4}} {{{r}^{3}}} {{sin\left(  \theta\right)}} {{R}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{R}}}} + {{R}^{4}} + {{{4}} {{{R}^{3}}} {{r}} {{sin\left(  \theta\right)}}}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_{\phi}} = {\frac{-{({{{{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}} {{{cos\left(  \theta\right)}^{2}}}} + {{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{2}}} {{{sin\left(  \theta\right)}^{2}}}}}})}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}$
+
+<br>
+Riemann curvature, $\sharp\flat\flat\flat$:
+${{{{{ R}^{\theta}}_{\phi}}_{\theta}}_{\phi}} = {\frac{{{{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} - {{{3}} {{R}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}} + {{{2}} {{{r}^{3}}}} + {{{{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{{r}^{3}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}}{{{r}} {{({{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}})}}}}$;
+${{{{{ R}^{\theta}}_{\phi}}_{\phi}}_{\theta}} = {\frac{-{({{{{{sin\left(  \theta\right)}} {{{R}^{3}}}} - {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} + {{{2}} {{{r}^{3}}}} + {{{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{3}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}})}}{{{r}} {{({{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}})}}}}$;
+${{{{{ R}^{\phi}}_{\theta}}_{\theta}}_{\phi}} = {\frac{-{{{r}} {{({{{{r}^{3}} - {{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}})}}}}{{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{{6}} {{{r}^{2}}} {{{R}^{2}}}} - {{{6}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{R}^{2}}}}} + {{{{4}} {{{r}^{3}}} {{sin\left(  \theta\right)}} {{R}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{R}}}} + {{R}^{4}} + {{{4}} {{{R}^{3}}} {{r}} {{sin\left(  \theta\right)}}}}}$;
+${{{{{ R}^{\phi}}_{\theta}}_{\phi}}_{\theta}} = {\frac{{{r}} {{({{{{r}^{3}} - {{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}})}}}{{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{{6}} {{{r}^{2}}} {{{R}^{2}}}} - {{{6}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{{R}^{2}}}}} + {{{{4}} {{{r}^{3}}} {{sin\left(  \theta\right)}} {{R}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{R}}}} + {{R}^{4}} + {{{4}} {{{R}^{3}}} {{r}} {{sin\left(  \theta\right)}}}}}$
+
+<br>
+Riemann curvature, $\sharp\sharp\flat\flat$:
+${{{{{ R}^{\theta}}^{\phi}}_{\theta}}_{\phi}} = {\frac{{{{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} - {{{3}} {{R}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}} + {{{2}} {{{r}^{3}}}} + {{{{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{{r}^{3}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}}{{{r}} {{({{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{4}} {{r}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{R}^{4}} + {{{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{6}} {{{R}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}}}})}}}}$;
+${{{{{ R}^{\theta}}^{\phi}}_{\phi}}_{\theta}} = {\frac{-{({{{{{sin\left(  \theta\right)}} {{{R}^{3}}}} - {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} + {{{2}} {{{r}^{3}}}} + {{{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{3}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}})}}{{{r}} {{({{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{4}} {{r}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{R}^{4}} + {{{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{6}} {{{R}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}}}})}}}}$;
+${{{{{ R}^{\phi}}^{\theta}}_{\theta}}_{\phi}} = {\frac{-{({{{{{sin\left(  \theta\right)}} {{{R}^{3}}}} - {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} + {{{r}^{3}} - {{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}})}}{{{r}} {{({{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{4}} {{r}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{R}^{4}} + {{{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{6}} {{{R}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}}}})}}}}$;
+${{{{{ R}^{\phi}}^{\theta}}_{\phi}}_{\theta}} = {\frac{{{{r}^{3}} - {{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} - {{{3}} {{R}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}}}{{{r}} {{({{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{4}} {{r}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{R}^{4}} + {{{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{6}} {{{R}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}}}})}}}}$
+
+<br>
+Ricci curvature, $\sharp\flat$:
+${{{ R}^{\theta}}_{\theta}} = {\frac{{{{r}^{3}} - {{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} - {{{3}} {{R}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}}}{{{r}} {{({{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{4}} {{r}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{R}^{4}} + {{{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{6}} {{{R}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}}}})}}}}$;
+${{{ R}^{\phi}}_{\phi}} = {\frac{{{{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} - {{{3}} {{R}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}} + {{{2}} {{{r}^{3}}}} + {{{{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{{r}^{3}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}}{{{r}} {{({{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{4}} {{r}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{R}^{4}} + {{{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{6}} {{{R}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}}}})}}}}$
+
+<br>
+Gaussian curvature:
+$\frac{{{{2}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{{{6}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} - {{{6}} {{R}} {{{cos\left(  \theta\right)}^{2}}} {{sin\left(  \theta\right)}} {{{r}^{2}}}}} + {{{3}} {{{r}^{3}}}} + {{{{{3}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{6}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{{r}^{3}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} + {{{{6}} {{r}} {{{R}^{2}}}} - {{{6}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}}{{{r}} {{({{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{4}} {{r}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{R}^{4}} + {{{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{6}} {{{R}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}}}})}}}$
+
+<br>
+Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
+${{{ G}^{\theta}}_{\theta}} = {\frac{-{({{{{{sin\left(  \theta\right)}} {{{R}^{3}}}} - {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} + {{{2}} {{{r}^{3}}}} + {{{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{4}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}} {{{sin\left(  \theta\right)}^{2}}}} - {{{{r}^{3}}} {{{sin\left(  \theta\right)}^{2}}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}})}}{{{r}} {{({{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{4}} {{r}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{R}^{4}} + {{{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{6}} {{{R}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}}}})}}}}$;
+${{{ G}^{\phi}}_{\phi}} = {\frac{-{({{{{{sin\left(  \theta\right)}} {{{R}^{3}}}} - {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{3}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{2}}}} + {{{r}^{3}} - {{{2}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{{3}} {{r}} {{{R}^{2}}}} - {{{3}} {{r}} {{{R}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}})}}{{{r}} {{({{{{r}^{4}} - {{{2}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{4}} {{r}} {{sin\left(  \theta\right)}} {{{R}^{3}}}} + {{R}^{4}} + {{{{{6}} {{{R}^{2}}} {{{r}^{2}}}} - {{{6}} {{{R}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{4}} {{R}} {{sin\left(  \theta\right)}} {{{r}^{3}}}}})}}}}$
+
+<br>
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{{\partial {A^{\theta}}}\over{\partial\theta}}} {{{r}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{-1}} {{{\partial {A^{\theta}}}\over{\partial\theta}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{{\partial {A^{\theta}}}\over{\partial\theta}}} {{{R}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{2}} {{{\partial {A^{\theta}}}\over{\partial\theta}}} {{R}} {{r}} {{sin\left(  \theta\right)}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{{\partial {A^{\phi}}}\over{\partial\phi}}} {{{r}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{-1}} {{{\partial {A^{\phi}}}\over{\partial\phi}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{{\partial {A^{\phi}}}\over{\partial\phi}}} {{{R}^{2}}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{2}} {{{\partial {A^{\phi}}}\over{\partial\phi}}} {{R}} {{r}} {{sin\left(  \theta\right)}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{{r}^{2}}} {{cos\left(  \theta\right)}} {{{A^{\theta}}}} \cdot {{sin\left(  \theta\right)}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{r}} {{cos\left(  \theta\right)}} {{{A^{\theta}}}} \cdot {{R}} {{\frac{1}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}}}$
+<br>
+geodesic:
+<br>
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{\theta} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{{cos\left(  \theta\right)}} {{{\dot{\phi}}^{2}}} {{R}} {{\frac{1}{r}}}} + {{{cos\left(  \theta\right)}} {{{\dot{\phi}}^{2}}} {{r}} {{sin\left(  \theta\right)}} {{\frac{1}{r}}}} \\ {{{-2}} {{r}} {{cos\left(  \theta\right)}} {{\dot{\phi}}} \cdot {{\dot{\theta}}} \cdot {{r}} {{sin\left(  \theta\right)}} {{\frac{1}{{{r}^{2}} + {{{-1}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}} + {{{-2}} {{r}} {{cos\left(  \theta\right)}} {{\dot{\phi}}} \cdot {{\dot{\theta}}} \cdot {{R}} {{\frac{1}{{{r}^{2}} + {{{-1}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}}}}\end{matrix}\right]}}$
+<br>
+
+<br>
+parallel propagators:
+<br>
+
+<br>
+${{[\Gamma_\theta]}} = {\left[\begin{matrix}  0 &  0 \\  0 &  \frac{{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}\end{matrix}\right]\right)$
+=	$\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}\end{matrix}\right]\right)$
+<br>
+
+<br>
+${ P}_{\theta}$	=	${e}^{( -{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}\end{matrix}\right]\right)})})}$
+
+<br>
+negIntConn	$-{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}\end{matrix}\right]\right)})}$
+<br>
+negIntConn	$-{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  0 \\  0 &  \frac{{{r}} {{cos\left(  \theta\right)}} {{({{{{r}} {{sin\left(  \theta\right)}}} + {R}})}}}{{{{r}^{2}} - {{{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{R}^{2}} + {{{2}} {{R}} {{r}} {{sin\left(  \theta\right)}}}}\end{matrix}\right]\right)})}$
+<br>

@@ -60,6 +60,16 @@ When should references be copied?
 When should deep copies be used?
 - Never / only if the user wants it?
 
+all our Expression operators...
+- init = copy references
+- evaluateDerivative = cloneIfMutable
+- reverse = cloneIfMutable
+- simplify / prune / factor / expand / factorDivision
+	cloneIfMutable ... just put it inside the visitor, then you don't have to inside the rule code?
+		- maybe before each apply() call, to run cloneIfMutable() on every possible node in the tree?  
+		  ... that would still create an unnecessary number
+		- within the rules, whenever the tree changes.
+
 --]]
 function Expression:cloneIfMutable()
 	if self.mutable then return self:clone() end

@@ -17,6 +17,8 @@ Array.precedence = 10
 -- allow/expect `A[i][j] = whatever` expressions
 Array.mutable = true
 
+Array.unpack = table.unpack
+
 --[[
 valid ctors:
 	Array(x1, x2, ..., xN)

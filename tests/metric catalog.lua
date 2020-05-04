@@ -50,6 +50,78 @@ local spacetimes = {
 			return Tensor('^I', x, y)
 		end,
 	},
+
+--[[ 
+-- the latest thing this needs to pass: Integrate(u/(1 + u^2), u)()
+-- I need to either fix my polynomial factoring, or implement a matrix inverse based on adjacency matrix / Levi-Civita permutation tensor in order to get these to run automatically
+-- ... or (for the time being) just specify the inverse metric manually
+	{
+		title = 'paraboliod, coordinate',
+		baseCoords = {u,v},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', u, v, -frac(1,2) * (u^2 + v^2))
+		end,
+		-- e_u = [1, 0, -u]
+		-- e_v = [0, 1, -v]
+		-- g_ab = {{1 + u^2, uv}, {uv, 1 + v^2}}
+		-- g^ab = {{1 + v^2, -uv}, {-uv, 1 + u^2}} / (1 + u^2 + v^2)
+		-- det(g) = 1 + u^2 + v^2
+		-- n^i = eps^ijk e_j e_k ... is eps g-weighted? which g?
+		-- for no weight: n^i = [u, v, 1], |n| = sqrt(u^2 + v^2 + 1)
+		-- for the time being, all coord charts where #basisOperators < #embedded need to explicitly provide this.
+		-- (which, for now, is only this coordinate chart)
+		-- it is equal to dx^a/dx^I in terms of x^a
+		eU = function()
+			return Tensor('^a_I', 
+				--{du/dx, du/dy, du/dz}:
+				{1, 0, -1/u},
+				--{dv/dx, dv/dy, dv/dv}:
+				{0, 1, -1/v})
+		end,
+		-- same as |du^I/dx^a| for coordinate charts
+		-- which is equal to sqrt(det|g_ab|) for metrics based on coordinate (derivative) operators
+		-- (unless there is extrinsic curvature? as in this case?)
+		-- what about equal to the surface differential area? |e_u x e_v| = sqrt(u^2 + v^2 + 1)
+		coordVolumeElem = function()
+			return sqrt(u^2 + v^2 + 1)
+		end,
+	},
+	{
+		title = 'hyperboloid, coordinate',
+		baseCoords = {u,v},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', u, v, frac(1,2) * (u^2 - v^2))
+		end,
+		-- e_u = [1, 0, u]
+		-- e_v = [0, 1, -v]
+		-- g_ab = {{1 + u^2, -uv}, {-uv, 1 + v^2}}
+		-- g^ab = {{1 + v^2, uv}, {uv, 1 + u^2}} / (1 + u^2 + v^2)
+		-- det(g) = 1 + u^2 + v^2
+		-- n^i = eps^ijk e_j e_k ... is eps g-weighted? which g?
+		-- for no weight: n^i = [-u, v, 1], |n| = sqrt(u^2 + v^2 + 1)
+		-- for the time being, all coord charts where #basisOperators < #embedded need to explicitly provide this.
+		-- (which, for now, is only this coordinate chart)
+		-- it is equal to dx^a/dx^I in terms of x^a
+		eU = function()
+			return Tensor('^a_I', 
+				--{du/dx, du/dy, du/dz}:
+				{1, 0, 1/u},
+				--{dv/dx, dv/dy, dv/dv}:
+				{0, 1, -1/v})
+		end,
+		-- same as |du^I/dx^a| for coordinate charts
+		-- which is equal to sqrt(det|g_ab|) for metrics based on coordinate (derivative) operators
+		-- (unless there is extrinsic curvature? as in this case?)
+		-- what about equal to the surface differential area? |e_u x e_v| = sqrt(u^2 + v^2 + 1)
+		coordVolumeElem = function()
+			return sqrt(u^2 + v^2 + 1)
+		end,
+	},
+--]]	
 	{
 		title = 'polar, coordinate',
 		baseCoords = {r,phi},
@@ -99,6 +171,45 @@ local spacetimes = {
 			return r
 		end,
 	},
+	{
+		title = 'polar and time, constant rotation, coordinate',
+		baseCoords = {t,r,phi},
+		embedded = {t,x,y},
+		flatMetric = eta3,
+		chart = function()
+			return Tensor('^I', 
+				t,
+				r * cos(phi + t),
+				r * sin(phi + t))
+		end,
+	},
+--[[ these needs the FTC to work	... which needs functions / evaluation expressions
+	{
+		title = 'polar and time, lapse varying in radial, coordinate',
+		baseCoords = {t,r,phi},
+		embedded = {t,x,y},
+		flatMetric = eta3,
+		chart = function()
+			return Tensor('^I',
+				t * alpha,
+				r * cos(phi),
+				r * sin(phi))
+		end,
+	},
+	{
+		title = 'polar and time, lapse varying in radial, rotation varying in time and radial, coordinate',
+		baseCoords = {t,r,phi},
+		embedded = {t,x,y},
+		flatMetric = eta3,
+		chart = function()
+			return Tensor('^I', 
+				t,
+				r * cos(phi + omega),
+				r * sin(phi + omega)
+			)
+		end,
+	},
+--]]
 	{
 		title = 'cylindrical surface, coordinate',
 		baseCoords = {phi,z},
@@ -277,38 +388,6 @@ local spacetimes = {
 			return r^2 * sin(theta)
 		end,
 	},
---[[ not doing so well, with some abs derivatives
-	{
-		title = 'sphere surface, anholonomic, conformal',
-		baseCoords = {theta, phi},
-		embedded = {x,y,z},
-		flatMetric = delta3,
-		chart = function()
-			return Tensor('^I',
-				r * sin(theta) * cos(phi),
-				r * sin(theta) * sin(phi),
-				r * cos(theta))
-		end,
-		eU = function()
-			-- theta = acos(z/r)
-			-- phi = atan(y/x)
-			return Tensor('^a_I',
-				--{dtheta/dx, dtheta/dy, dtheta/dz}:
-				{cos(theta) * cos(phi), cos(theta) * sin(phi), -sin(theta)},
-				--{dphi/dx, dphi/dy, dphi/dz}:
-				{-sin(phi),cos(phi),0})
-		end,
-		eToEHol = function()
-			return Tensor('_a^A', 
-				{r * sqrt(abs(sin(theta))), 0},
-				{0, r * sqrt(abs(sin(theta)))},
-			)
-		end,
-		coordVolumeElem = function()
-			return r^2 * sin(theta)
-		end,
-	},
---]]
 	{
 		title = 'spherical, coordinate',
 		baseCoords = {r,theta,phi},
@@ -343,6 +422,38 @@ local spacetimes = {
 			return r^2 * sin(theta)
 		end,
 	},
+--[[ not doing so well, with some abs derivatives
+	{
+		title = 'sphere surface, anholonomic, conformal',
+		baseCoords = {theta, phi},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I',
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
+		end,
+		eU = function()
+			-- theta = acos(z/r)
+			-- phi = atan(y/x)
+			return Tensor('^a_I',
+				--{dtheta/dx, dtheta/dy, dtheta/dz}:
+				{cos(theta) * cos(phi), cos(theta) * sin(phi), -sin(theta)},
+				--{dphi/dx, dphi/dy, dphi/dz}:
+				{-sin(phi),cos(phi),0})
+		end,
+		eToEHol = function()
+			return Tensor('_a^A', 
+				{r * sqrt(abs(sin(theta))), 0},
+				{0, r * sqrt(abs(sin(theta)))},
+			)
+		end,
+		coordVolumeElem = function()
+			return r^2 * sin(theta)
+		end,
+	},
+--]]
 	{
 		title = 'spherical, log-radial, coordinate',
 		baseCoords = {rho,theta,phi},	-- reminder, the connectins wrt r,theta,phi are the same as spherical above
@@ -387,6 +498,8 @@ local spacetimes = {
 			)
 		end,
 	},
+--[[ this is having problems integrating alpha_,r
+-- TODO to implement FTC I need to have a function expression, or an evaluate-at expression (same idea)	
 	{
 		title = 'spherical and time, lapse varying in radial',
 		baseCoords = {t,r,theta,phi},
@@ -400,6 +513,7 @@ local spacetimes = {
 				r * cos(theta))
 		end,
 	},
+--]]
 --[[ hmm, those r's, too much memory used
 	{
 		title = 'Schwarzschild, pseudo-Cartesian',
@@ -457,8 +571,9 @@ local spacetimes = {
 		end,
 	},
 --]]
+--[[ needs integral evaluation
 	{
-		title = 'torus surface,coordinate',
+		title = 'torus surface, coordinate',
 		baseCoords = {theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -476,6 +591,7 @@ local spacetimes = {
 				{-sin(phi) / (R + r * sin(theta)), cos(phi) / (R + r * sin(theta)), 0})
 		end,
 	},
+--]]	
 	{
 		title = 'spiral, coordinate',
 		baseCoords = {r,phi},
@@ -488,45 +604,6 @@ local spacetimes = {
 			)
 		end,
 	},
-	{
-		title = 'polar and time, constant rotation, coordinate',
-		baseCoords = {t,r,phi},
-		embedded = {t,x,y},
-		flatMetric = eta3,
-		chart = function()
-			return Tensor('^I', 
-				t,
-				r * cos(phi + t),
-				r * sin(phi + t))
-		end,
-	},
-	{
-		title = 'polar and time, lapse varying in radial, coordinate',
-		baseCoords = {t,r,phi},
-		embedded = {t,x,y},
-		flatMetric = eta3,
-		chart = function()
-			return Tensor('^I',
-				t * alpha,
-				r * cos(phi),
-				r * sin(phi))
-		end,
-	},
--- [[
-	{
-		title = 'polar and time, lapse varying in radial, rotation varying in time and radial, coordinate',
-		baseCoords = {t,r,phi},
-		embedded = {t,x,y},
-		flatMetric = eta3,
-		chart = function()
-			return Tensor('^I', 
-				t,
-				r * cos(phi + omega),
-				r * sin(phi + omega)
-			)
-		end,
-	},
---]]
 }
 
 
@@ -869,7 +946,7 @@ printbr()
 printbr('negIntConn', negIntConn)
 printbr('negIntConn', negIntConn())
 end
---]]		
+--]]
 		local ev = negIntConn:eigen()
 		local R, L, allLambdas = ev.R, ev.L, ev.allLambdas
 		local expNegIntExpr, expIntExpr
