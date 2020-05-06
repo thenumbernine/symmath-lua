@@ -144,6 +144,10 @@ function complex.sqrt(x)
 	return complex(x)^.5
 end
 
+function complex.cbrt(x)
+	return complex(x)^(1/3)
+end
+
 function complex.sin(x)
 	local re, im = complex.unpack(x)
 	return complex(

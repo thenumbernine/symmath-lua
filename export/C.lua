@@ -12,8 +12,8 @@ C.name = 'C'
 this is really being used for OpenCL
 hence all the redundant real type casts
 TODO provide the type instead of using 'real'
-also TODO - merge common stuff between this and export.Lua into the Language class
-also TODO - fix differences with compile() and generate()
+TODO - merge common stuff between this and export.Lua into the Language class
+TODO - fix differences with compile() and generate()
 --]]
 
 function C:wrapStrOfChildWithParenthesis(parentNode, childIndex, ...)

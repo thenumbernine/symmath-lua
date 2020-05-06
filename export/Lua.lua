@@ -38,7 +38,12 @@ Lua.lookupTable = {
 			funcName = expr.name
 			predefs['local '..funcName..' = '..expr.code] = true
 		end
-		return {funcName .. '(' .. s .. ')', predefs}
+		
+		if expr.name == 'cbrt' then
+			return {'('..s..') ^ (1/3)', predefs}
+		else
+			return {funcName .. '(' .. s .. ')', predefs}
+		end
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		local sx = self:apply(expr[1])

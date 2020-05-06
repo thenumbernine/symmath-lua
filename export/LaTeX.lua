@@ -100,6 +100,9 @@ LaTeX.lookupTable = {
 	[require 'symmath.sqrt'] = function(self, expr)
 		return table{'\\sqrt', self:apply(expr[1])}
 	end,
+	[require 'symmath.cbrt'] = function(self, expr)
+		return table{'\\sqrt[3]', self:apply(expr[1])}
+	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		local res = table{'-'}:append(self:wrapStrOfChildWithParenthesis(expr, 1))
 		res.omit = true

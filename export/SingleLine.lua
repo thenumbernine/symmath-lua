@@ -29,12 +29,13 @@ end
 	
 local hasutf8, utf8 = pcall(require, 'utf8')
 
-local sqrtname, iname
+local sqrtname, cbrtname, iname
 if hasutf8 then
-	sqrtname, iname = assert(load[[
+	sqrtname, cbrtname, iname = assert(load[[
 	local sqrtname = '\u{221a}'
+	local cbrtname = '\u{221b}'
 	local iname = '\u{1d55a}'
-	return sqrtname, iname
+	return sqrtname, cbrtname, iname
 ]])()
 end
 
@@ -64,8 +65,12 @@ SingleLine.lookupTable = {
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr.name
-		if hasutf8 and name == 'sqrt' then
-			name = sqrtname
+		if hasutf8 then
+			if name == 'sqrt' then
+				name = sqrtname
+			elseif name == 'cbrt' then
+				name = cbrtname
+			end
 		end
 		return name..'(' .. table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end

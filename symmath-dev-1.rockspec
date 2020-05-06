@@ -37,6 +37,7 @@ build = {
 		["symmath.atan"] = "atan.lua",
 		["symmath.atan2"] = "atan2.lua",
 		["symmath.atanh"] = "atanh.lua",
+		["symmath.cbrt"] = "cbrt.lua",
 		["symmath.clone"] = "clone.lua",
 		["symmath.commutativeRemove"] = "commutativeRemove.lua",
 		["symmath.complex"] = "complex.lua",

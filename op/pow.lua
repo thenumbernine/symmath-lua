@@ -207,9 +207,8 @@ pow.rules = {
 				end
 			end
 
-			-- sqrt(something)
+			-- something^(1/2)
 			if (
-				-- expr[2] == frac(1,2) ... without extra object instanciation
 				div.is(expr[2])
 				and Constant.isValue(expr[2][1], 1)
 				and Constant.isValue(expr[2][2], 2)
@@ -405,7 +404,7 @@ pow.rules = {
 
 	Tidy = {
 		{apply = function(tidy, expr)
-			local symmath = require 'symmath'
+			local sets = require 'symmath.set.sets'
 			local unm = require 'symmath.op.unm'
 			local div = require 'symmath.op.div'
 			local Constant = require 'symmath.Constant'
@@ -416,28 +415,66 @@ pow.rules = {
 				return tidy:apply(Constant(1)/expr[1]^expr[2][1])
 			end
 			--]]
-			
-			-- x^.5 => sqrt(x)
-			-- x^(1/2) => sqrt(x)
-			if Constant.isValue(expr[2], .5)
-			or (
-				div.is(expr[2])
-				and Constant.isValue(expr[2][1], 1)
-				and Constant.isValue(expr[2][2], 2)
-			) then
-				return sqrt(expr[1])
-			end
+
+			-- x^(p/q) = x^((qk+m)/q)
+			-- p, q are integer Lua numbers
+			local function checkNthRoot(expr, p, q)
+				local m = p % q
+				local k = (p - m) / q
+				-- x^(p/q) = x^((qk+m)/q)
+				local f = ({
+					[2] = sqrt,
+					[3] = cbrt,
+				})[q]
+				if f then
+					-- TODO a n'th root Expression ?
+					if m == 0 then
+						-- x^((qk)/q) => x^k
+						if k == 0 then return Constant(1) end	-- shouldn't occur
+						if k == 1 then return expr end
+						return expr ^ k
+					elseif m == 1 then
+						-- x^((qk+1)/q) => x^k f(x)
+						if k == 0 then return f(expr) end
+						if k == 1 then return expr * f(expr) end
+						return expr ^ k * f(expr)
+					else	-- m >= 2
+						-- x^((qk+m)/q) => x^k f(x^m)
+						if k == 0 then return f(expr ^ m) end
+						if k == 1 then return expr * f(expr ^ m) end
+						return expr ^ k * f(expr ^ m)
+					end
+				end
 		
-			-- x^((2i+1)/2) => x^i sqrt(x)
-			if Constant.is(expr[1])
-			and div.is(expr[2])
-			and Constant.isValue(expr[2][2], 2)
+			end
+
+			-- x ^ (p/q)
+			-- p/q for p,q integers
+			if div.is(expr[2])
 			and Constant.is(expr[2][1])
+			and sets.integer:contains(expr[2][1])
+			and Constant.is(expr[2][2])
+			and sets.integer:contains(expr[2][2])
+			-- TODO alternatively c ^ d where d = Constant with d.value == p/q?
+			--  but how often can we detect the accuracy of that?  only for powers-of-two
 			then
-				if symmath.set.evenInteger:containsElement(expr[2][1]) then
-					return expr[1] ^ (expr[2][1].value / 2)
-				elseif symmath.set.oddInteger:containsElement(expr[2][1]) then
-					return expr[1] ^ ((expr[2][1].value - 1) / 2) * sqrt(expr[1])
+				local p = expr[2][1].value
+				local q = expr[2][2].value
+				local result = checkNthRoot(expr[1], p, q)
+				if result then return result end
+			end
+	
+			-- I'm not sure how many numbers I should entertain here
+			-- I should do like Maxima and try to auto-deduce the fraction upon Constant construction (though that seems iffy for any rounded constants)
+			-- That's why I only want to test for rational numbers from a few cases 
+			if Constant.is(expr[2]) then
+				for q=2,3 do
+					for p=1,q-1 do
+						if expr[2].value == p/q then
+							local result = checkNthRoot(expr[1], p, q)
+							if result then return result end
+						end
+					end
 				end
 			end
 		end},
