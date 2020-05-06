@@ -43,7 +43,6 @@ symmath.set = require 'symmath.set.sets'
 -- export expressions to various languages
 symmath.export = {
 	C = require 'symmath.export.C',
-	Console = require 'symmath.export.Console',
 	GnuPlot = require 'symmath.export.GnuPlot',
 	JavaScript = require 'symmath.export.JavaScript',
 	LaTeX = require 'symmath.export.LaTeX',
