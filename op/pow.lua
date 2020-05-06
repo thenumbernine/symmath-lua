@@ -405,6 +405,7 @@ pow.rules = {
 
 	Tidy = {
 		{apply = function(tidy, expr)
+			local symmath = require 'symmath'
 			local unm = require 'symmath.op.unm'
 			local div = require 'symmath.op.div'
 			local Constant = require 'symmath.Constant'
@@ -416,6 +417,8 @@ pow.rules = {
 			end
 			--]]
 			
+			-- x^.5 => sqrt(x)
+			-- x^(1/2) => sqrt(x)
 			if Constant.isValue(expr[2], .5)
 			or (
 				div.is(expr[2])
@@ -423,6 +426,19 @@ pow.rules = {
 				and Constant.isValue(expr[2][2], 2)
 			) then
 				return sqrt(expr[1])
+			end
+		
+			-- x^((2i+1)/2) => x^i sqrt(x)
+			if Constant.is(expr[1])
+			and div.is(expr[2])
+			and Constant.isValue(expr[2][2], 2)
+			and Constant.is(expr[2][1])
+			then
+				if symmath.set.evenInteger:containsElement(expr[2][1]) then
+					return expr[1] ^ (expr[2][1].value / 2)
+				elseif symmath.set.oddInteger:containsElement(expr[2][1]) then
+					return expr[1] ^ ((expr[2][1].value - 1) / 2) * sqrt(expr[1])
+				end
 			end
 		end},
 	},

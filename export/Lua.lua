@@ -118,9 +118,9 @@ function Lua:generate(expr, vars)
 	local predefs = info[2]
 	local code = predefs and table.keys(predefs):concat'\n'..'\n' or ''
 	-- TODO keep track of what vars are used, and compare it to the vars in the compile, to ensure correct code is generated.
-	return code..'return function('..
-		vars:map(function(var) return var.name end):concat(', ')
-	..') return '..body..' end'
+	return code..'return function('
+		..vars:map(function(var) return var.name end):concat(', ')
+		..') return '..body..' end'
 end
 
 -- returns (1) the function and (2) the code

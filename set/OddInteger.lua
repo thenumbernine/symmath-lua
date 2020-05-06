@@ -4,7 +4,7 @@ local Integer = require 'symmath.set.Integer'
 local OddInteger = class(Integer)
 
 function OddInteger:containsElement(x)
-	if OddInteger.super.containsElement(x) == false then return false end
+	if OddInteger.super.containsElement(self, x) == false then return false end
 	if self:containsVariable(x) then return true end
 
 	local Constant = require 'symmath.Constant'
