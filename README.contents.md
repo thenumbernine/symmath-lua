@@ -253,10 +253,10 @@ Example used at http://christopheremoore.net/metric
 `symmath(args)`  
 Use this if you want to copy the symmath namespace into the global namespace.  
 `args` can include the following:  
-`implicitVars` - Set this to `true` to create a variable from any reference to an uninitialized variable. Otherwise variables must be initialized manually.  
-`env` - The destination to copy the symmath namespace into.  Default is `_G` / the global namespace. 
-`MathJax` - Set this to `true to enable MathJax output, to print MathJax.header, and to set a global function `printbr` for performing a typical `print` followed by a `<br>`.
-	Assign `MathJax` to a table to override specific values within the `symmath.export.MathJax` singleton variable.
+	- `implicitVars` - Set this to `true` to create a variable from any reference to an uninitialized variable. Otherwise variables must be initialized manually.  
+	- `env` - The destination to copy the symmath namespace into.  Default is `_G` / the global namespace. 
+	- `MathJax` - Set this to `true to enable MathJax output, to print MathJax.header, and to set a global function `printbr` for performing a typical `print` followed by a `<br>`.
+		Assign `MathJax` to a table to override specific values within the `symmath.export.MathJax` singleton variable.
 
 Using `symmath` without `symmath.setup()`.  
 ```
