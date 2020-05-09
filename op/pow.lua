@@ -195,19 +195,22 @@ pow.rules = {
 			local mul = symmath.op.mul
 			local div = symmath.op.div
 			local Constant = symmath.Constant
+			local sets = symmath.set
 
 			local complex = require 'symmath.complex'
 
 			if Constant.is(expr[1]) and Constant.is(expr[2]) then
 				if symmath.simplifyConstantPowers
 				-- TODO this replaces some cases below
-				or require 'symmath.set.sets'.integer:contains(expr[1]) and expr[2].value > 0
+				or sets.integer:contains(expr[1]) and expr[2].value > 0
 				then
 					return Constant(expr[1].value ^ expr[2].value)
 				end
 			end
+			
+			-- this all matches the top of add.Factor
 
-			-- something^(1/2)
+			-- x^(1/2)
 			if (
 				div.is(expr[2])
 				and Constant.isValue(expr[2][1], 1)
@@ -223,7 +226,7 @@ pow.rules = {
 				local function isSquare(x)
 					return pow.is(x) and Constant.isValue(x[2], 2)
 				end
-				-- this matches the top of add.Factor
+				
 				if #x == 3 then
 					local squares = table()
 					local notsquares = table()
@@ -242,7 +245,17 @@ pow.rules = {
 						end
 					end
 				end
-				
+			end
+
+			-- x^(1/2) 
+			-- TODO x^(p/q) 
+			if (
+				div.is(expr[2])
+				and Constant.isValue(expr[2][1], 1)
+				and Constant.isValue(expr[2][2], 2)
+			) or Constant.isValue(expr[2], .5) then
+				local x = expr[1]
+
 				-- dealing with constants
 				local imag
 				if symmath.op.unm.is(x) 
@@ -251,11 +264,16 @@ pow.rules = {
 					x = x[1]
 					imag = true
 				end
-				if Constant.is(x) and x.value < 0 then
+				if Constant.is(x) 
+				and x.value < 0 
+				-- and q is even
+				then
 					imag = not imag
 					x = Constant(-x.value)
 				end
-				if require 'symmath.set.sets'.integer:contains(x) and x.value > 0 then
+				if sets.integer:contains(x) 
+				and x.value > 0 
+				then
 					local primes = require 'symmath.primeFactors'(x.value)
 					local outside = 1
 					local inside = 1
@@ -315,23 +333,34 @@ pow.rules = {
 			-- a^0 => 1
 			if Constant.isValue(expr[2], 0) then return Constant(1) end
 
-			-- i^n
-			if expr[1] == symmath.i 
-			and require 'symmath.set.sets'.integer:contains(expr[2]) 
-			then
-				local v = expr[2].value % 4
-				if v == 0 then
-					return Constant(1)
-				elseif v == 1 then
-					return symmath.i
-				elseif v == 2 then
-					return Constant(-1)
-				elseif v == 3 then
-					return -symmath.i
+			if expr[1] == symmath.i then
+				-- i^n
+				if Constant.is(expr[2])
+				and sets.integer:contains(expr[2]) 
+				then
+					local v = expr[2].value % 4
+					if v == 0 then
+						return Constant(1)
+					elseif v == 1 then
+						return symmath.i
+					elseif v == 2 then
+						return Constant(-1)
+					elseif v == 3 then
+						return -symmath.i
+					end
+					-- fraction?
+					if v < 0 or v >= 4 then
+						return symmath.i^(v%4)
+					end
 				end
-				-- fraction?
-				if v < 0 or v >= 4 then
-					return symmath.i^(v%4)
+			
+				-- sqrt(i) = sqrt(2) + i sqrt(2)
+				if div.is(expr[2])
+				and Constant.isValue(expr[2][1], 1)
+				and Constant.isValue(expr[2][2], 2)
+				then
+					local sqrt = require 'symmath.sqrt'
+					return div(1,sqrt(2)) + symmath.i * div(1,sqrt(2))
 				end
 			end
 			
@@ -409,6 +438,7 @@ pow.rules = {
 			local div = require 'symmath.op.div'
 			local Constant = require 'symmath.Constant'
 			local sqrt = require 'symmath.sqrt'
+			local cbrt = require 'symmath.cbrt'
 
 			-- [[ x^-a => 1/x^a ... TODO only do this when in a product?
 			if unm.is(expr[2]) then

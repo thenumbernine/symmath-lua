@@ -296,6 +296,15 @@ Some day I will properly represent sets (naturals, integers, rationals, reals, c
 
 Some day I will also add support for infinite precision or big integers, but not right now.  Check out my BigNumber Lua library at https://github.com/thenumbernine/lua-bignumber for more on this..
 
+### Constants
+
+There are a few common constants in the symmath namespace:
+
+`symmath.i` represents an imaginary unit.
+`symmath.e` represents Euler's natural base _e_.
+`symmath.pi` represents the ratio of a circle diameter to radius.
+`symmath.inf` represents infinity.
+
 ### Variables
 
 `var = symmath.Variable(name[, dependencies])`  
