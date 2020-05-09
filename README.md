@@ -301,8 +301,8 @@ Some day I will also add support for infinite precision or big integers, but not
 There are a few common constants in the symmath namespace:
 
 `symmath.i` represents an imaginary unit.
-`symmath.e` represents Euler's natural base _e_.
-`symmath.pi` represents the ratio of a circle diameter to radius.
+`symmath.e` represents Euler's number, the natural base _e_.
+`symmath.pi` represents Archimedes' constant, the ratio of a circle diameter to radius.
 `symmath.inf` represents infinity.
 
 ### Variables
