@@ -649,7 +649,12 @@ If you want to run this as a command-line with the API in global namespace:
 
 ```
 #!/usr/bin/env sh
-lua -lext -lsymmath.setup -e "$*"
+if [ $# = 0 ]
+then
+	lua -lext -lsymmath.setup
+else
+	lua -lext -lsymmath.setup -e "$*"
+fi
 ```
 
 Then run with

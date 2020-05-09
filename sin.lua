@@ -85,6 +85,32 @@ function sin:getRealDomain()
 	end))
 end
 
+local frac = require 'symmath.op.div'
+local sqrt = require 'symmath.sqrt'
+sin.lookup = {
+	[3] = {
+		[1] = frac(sqrt(3),2),						-- cos(π/6) = sin(π/3)
+	},
+	[4] = {
+		[1] = frac(1,sqrt(2)),						-- cos(π/4) = sin(π/4)
+	},
+	[5] = {
+		[1] = frac(1,4) * sqrt(10 - 2 * sqrt(5)),	-- cos(3π/10) = sin(π/5)
+		[2] = frac(1,4) * sqrt(10 + 2 * sqrt(5)),	-- cos(π/10) = sin(2π/5)
+	},
+	[6] = {
+		[1] = frac(1,2),							-- cos(π/3) = sin(π/6)
+	},
+	[8] = {
+		[1] = frac(1,2) * sqrt(2 - sqrt(2)),		-- cos(3π/8) = sin(π/8)
+		[3] = frac(1,2) * sqrt(2 + sqrt(2)),		-- cos(π/8) = sin(3π/8)
+	},
+	[10] = {
+		[1] = (sqrt(5) - 1) / 4,					-- cos(2π/5) = sin(π/10)
+		[3] = (sqrt(5) + 1) / 4,					-- cos(π/5) = sin(3π/10)
+	},
+}
+
 sin.rules = {
 	Prune = {
 		{apply = function(prune, expr)
@@ -122,20 +148,52 @@ sin.rules = {
 					return prune:apply(c == 1 and -sin(rest) or -sin(c * rest))
 				end
 			elseif div.is(theta) then
-				if Constant.isValue(theta[2], 2) then
-					-- sin(pi / 2) => 1
-					if theta[1] == symmath.pi then return Constant(1) end
-					if mul.is(theta[1])
-					and #theta[1] == 2
-					and Constant.is(theta[1][1])
-					and theta[1][2] == symmath.pi
-					then
-						-- sin((k * pi) / 2) for 1,5,9,... k => 1
-						if (theta[1][1].value - 1) / 4 == math.floor((theta[1][1].value - 1) / 4) then
-							return Constant(1)
-						-- sin((k * pi) / 2) for 3,7,11,... k => -1
-						elseif (theta[1][1].value - 3) / 4 == math.floor((theta[1][1].value - 3) / 4) then
-							return Constant(-1)
+				local function handleFrac(p,q)
+					p = p % (2 * q)
+				
+					local neg
+					if p == q then return Constant(0) end
+					if p > q then
+						p = 2 * q - p
+						neg = true
+					end
+
+					if p == q/2 then 
+						return neg and Constant(-1) or Constant(1)
+					end
+					if p > q/2 then
+						p = q - p
+					end
+
+					if p == 0 then return Constant(0) end
+					
+					local lookupq = sin.lookup[q]
+					if lookupq then
+						local lookuppq = lookupq[p]
+						if lookuppq then
+							return neg and -lookuppq or lookuppq
+						end
+					end
+				end
+				
+				if Constant.is(theta[2])
+				and symmath.set.integer:contains(theta[2])
+				then
+					local q = theta[2].value
+					-- sin(pi / q)
+					if theta[1] == symmath.pi then 
+						local result = handleFrac(1,q)
+						if result then return result end
+					else
+						-- cos((k * pi) / q)
+						if mul.is(theta[1])
+						and #theta[1] == 2
+						and Constant.is(theta[1][1])
+						and symmath.set.integer:contains(theta[1][1])
+						and theta[1][2] == symmath.pi
+						then
+							local result = handleFrac(theta[1][1].value, q)
+							if result then return result end
 						end
 					end
 				end

@@ -89,6 +89,38 @@ function cos:getRealDomain()
 	end))
 end
 
+-- assume irreducible form, so there exists no prime k such that k divides p and k divides q
+-- lookup[denom][num] = cos(denom * π / num)
+-- excluding cos((0 * π) / q) = 1 and cos((q * π) / q) = -1
+-- and cos(((q + k) π) / q) = cos(((q - k) π) / q)
+-- and for even q, cos( ((q/2) π) / q) = 0
+-- https://en.wikipedia.org/wiki/Trigonometric_constants_expressed_in_real_radicals
+-- TODO generate from half-angles and third-angles?
+local frac = require 'symmath.op.div'
+local sqrt = require 'symmath.sqrt'
+cos.lookup = {
+	[3] = {
+		[1] = frac(1,2),							-- cos(π/3) = sin(π/6)
+	},
+	[4] = {
+		[1] = frac(1,sqrt(2)),						-- cos(π/4) = sin(π/4)
+	},
+	[5] = {
+		[1] = (sqrt(5) + 1) / 4,					-- cos(π/5) = sin(3π/10)
+		[2] = (sqrt(5) - 1) / 4,					-- cos(2π/5) = sin(π/10)
+	},
+	[6] = {
+		[1] = frac(sqrt(3),2),						-- cos(π/6) = sin(π/3)
+	},
+	[8] = {
+		[1] = frac(1,2) * sqrt(2 + sqrt(2)),		-- cos(π/8) = sin(3π/8)
+		[3] = frac(1,2) * sqrt(2 - sqrt(2)),		-- cos(3π/8) = sin(π/8)
+	},
+	[10] = {
+		[1] = frac(1,4) * sqrt(10 + 2 * sqrt(5)),	-- sin(2π/5) = cos(π/10)
+		[3] = frac(1,4) * sqrt(10 - 2 * sqrt(5)),	-- sin(π/5) = cos(3π/10)
+	},
+}
 
 cos.rules = {
 	Prune = {
@@ -112,9 +144,9 @@ cos.rules = {
 				and theta[2] == symmath.pi 
 				then
 					-- cos(k * pi) for even k => 1
-					if require 'symmath.set.sets'.evenInteger:contains(theta[1]) then return Constant(1) end
+					if symmath.set.evenInteger:contains(theta[1]) then return Constant(1) end
 					-- cos(k * pi) for odd k => -1
-					if require 'symmath.set.sets'.oddInteger:contains(theta[1]) then return Constant(-1) end
+					if symmath.set.oddInteger:contains(theta[1]) then return Constant(-1) end
 				end
 			
 				-- cos(-c x y z) => cos(c x y z)
@@ -129,16 +161,51 @@ cos.rules = {
 					return prune:apply(c == 1 and cos(rest) or cos(c * rest))
 				end
 			elseif div.is(theta) then
-				if Constant.isValue(theta[2], 2) then
-					-- cos(pi / 2) => 0
-					if theta[1] == symmath.pi then return Constant(0) end
-					-- cos((k * pi) / 2) for odd k => 0
-					if mul.is(theta[1])
-					and #theta[1] == 2
-					and require 'symmath.set.sets'.oddInteger:contains(theta[1][1])
-					and theta[1][2] == symmath.pi
-					then
-						return Constant(0)
+				local function handleFrac(p,q)
+					p = p % (2 * q)
+
+					if p == q then return Constant(-1) end
+					if p > q then
+						p = 2 * q - p
+					end
+					
+					local neg
+					if p == q/2 then return Constant(0) end
+					if p > q/2 then
+						neg = true
+						p = q - p
+					end
+					
+					if p == 0 then return Constant(1) end
+
+					local lookupq = cos.lookup[q]
+					if lookupq then
+						local lookuppq = lookupq[p]
+						if lookuppq then
+							return neg and -lookuppq or lookuppq
+						end
+					end
+				end
+
+				if Constant.is(theta[2])
+				and symmath.set.integer:contains(theta[2])
+				then
+					local q = theta[2].value
+					-- cos(pi / q)
+					if theta[1] == symmath.pi then 
+						local result = handleFrac(1,q) 
+						if result then return result end
+					else
+						-- cos((k * pi) / q)
+						if mul.is(theta[1])
+						and #theta[1] == 2
+						and Constant.is(theta[1][1])
+						and symmath.set.integer:contains(theta[1][1])
+						and theta[1][2] == symmath.pi
+						then
+							local result = handleFrac(theta[1][1].value, q)
+							if result then return result end
+						end
 					end
 				end
 			end

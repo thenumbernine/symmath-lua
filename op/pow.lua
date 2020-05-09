@@ -359,7 +359,7 @@ pow.rules = {
 				and Constant.isValue(expr[2][1], 1)
 				and Constant.isValue(expr[2][2], 2)
 				then
-					local sqrt = require 'symmath.sqrt'
+					local sqrt = symmath.sqrt
 					return div(1,sqrt(2)) + symmath.i * div(1,sqrt(2))
 				end
 			end
@@ -424,7 +424,7 @@ pow.rules = {
 
 			-- e^log(x) == x
 			if symmath.e == expr[1]
-			and require 'symmath.log'.is(expr[2])
+			and symmath.log.is(expr[2])
 			then
 				return prune:apply(expr[2][1])
 			end
