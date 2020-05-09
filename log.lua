@@ -54,7 +54,7 @@ log.rules = {
 		
 			-- log(ab) = log(a) + log(b)
 			if symmath.op.mul.is(x) then
-				return op.add(table.mapi(x, function(xi)
+				return symmath.op.add(table.mapi(x, function(xi)
 					return log(xi)
 				end):unpack())
 			end
