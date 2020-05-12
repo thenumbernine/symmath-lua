@@ -649,7 +649,12 @@ If you want to run this as a command-line with the API in global namespace:
 
 ```
 #!/usr/bin/env sh
-lua -lext -lsymmath.setup -e "$*"
+if [ $# = 0 ]
+then
+	lua -lext -lsymmath.setup
+else
+	lua -lext -lsymmath.setup -e "$*"
+fi
 ```
 
 Then run with
@@ -681,6 +686,8 @@ Output CDN URLs:
 [tests/output/Einstein field equations - expression](https://thenumbernine.github.io/symmath/tests/output/Einstein%20field%20equations%20%2d%20expression.html)
 
 [tests/output/Ernst](https://thenumbernine.github.io/symmath/tests/output/Ernst.html)
+
+[tests/output/Euler fluid equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Euler%20fluid%20equations%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/FLRW](https://thenumbernine.github.io/symmath/tests/output/FLRW.html)
 
@@ -755,8 +762,6 @@ Output CDN URLs:
 [tests/output/exp_metric](https://thenumbernine.github.io/symmath/tests/output/exp_metric.html)
 
 [tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
-
-[tests/output/linearized Euler fluid equations](https://thenumbernine.github.io/symmath/tests/output/linearized%20Euler%20fluid%20equations.html)
 
 [tests/output/metric catalog](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog.html)
 

@@ -2,16 +2,66 @@
 <html>
     <head>
         <meta charset='utf-8'>
-        <title>linearized Euler fluid equations</title>
+        <title>Euler fluid equations - flux eigenvectors</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
     </head>
 	<body onload='tryToFindMathJax();'>
 
+variables:
+<br>
+${ n}^i$	= flux surface normal, in units of $[1]$
+<br>
+$\rho$	= density, in units of 	$\frac{kg}{{m}^{3}}$
+<br>
+${ v}^i$	= velocity, in units of 	${\frac{1}{s}}{({m})}$
+<br>
+${{ m}^i} = {{{\rho}} \cdot {{{ v}^i}}}$	= momentum, in units of 	$\frac{kg}{{{{m}^{2}}} {{s}}}$
+<br>
+$\gamma$	= heat capacity ratio, in units of $[1]$
+<br>
 ${\tilde{\gamma}} = {{\gamma} - {1}}$
 <br>
-equations:
+$P$	= pressure, in units of 	$\frac{kg}{{{m}} {{{s}^{2}}}}$
+<br>
+${{ g}_i}_j$	= metric tensor, in units of $[1]$
+<br>
+${{v}^{2}} = {{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}$	= velocity norm squared, in units of	$\frac{{m}^{2}}{{s}^{2}}$
+<br>
+
+<br>
+${{e_{kin}}} = {{{\frac{1}{2}}} {{{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}}}$	= specific kinetic energy, in units of	$\frac{{m}^{2}}{{s}^{2}}$
+<br>
+
+<br>
+${{e_{int}}} = {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}$	= specific internal energy, in units of	$\frac{{m}^{2}}{{s}^{2}}$
+<br>
+
+<br>
+${{E_{total}}} = {{{\rho}} \cdot {{({{{e_{int}}} + {{e_{kin}}}})}}}$	= densitized total energy, in units of	$\frac{kg}{{{m}} {{{s}^{2}}}}$
+<br>
+
+<br>
+${{H_{total}}} = {{{E_{total}}} + {P}}$	= total enthalpy, in units of	$\frac{kg}{{{m}} {{{s}^{2}}}}$
+<br>
+
+<br>
+Conservative and primitive variables:
+<br>
+${{ W}^I} = {\left[\begin{matrix}  \rho \\  { v}^i \\  P\end{matrix}\right]}$
 <br>
 ${{ U}^I} = {\left[\begin{matrix}  \rho \\  { m}^i \\  {E_{total}}\end{matrix}\right]}$
+<br>
+Partial of conservative quantities wrt primitives:
+<br>
+${{ \partial\over{\partial { W}^J}}\left( { U}^I\right)} = {\left[\begin{matrix}  1 &  {\partial \rho}\over{\partial { v}^j} &  {\partial \rho}\over{\partial P} \\  { \partial\over{\partial \rho}}\left( { m}^i\right) &  { \partial\over{\partial { v}^j}}\left( { m}^i\right) &  { \partial\over{\partial P}}\left( { m}^i\right) \\  {\partial {E_{total}}}\over{\partial \rho} &  {\partial {E_{total}}}\over{\partial { v}^j} &  {\partial {E_{total}}}\over{\partial P}\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial { W}^J}}\left( { U}^I\right)} = {\left[\begin{matrix}  1 &  {\partial \rho}\over{\partial { v}^j} &  {\partial \rho}\over{\partial P} \\  { \partial\over{\partial \rho}}\left({{{\rho}} \cdot {{{ v}^i}}}\right) &  { \partial\over{\partial { v}^j}}\left({{{\rho}} \cdot {{{ v}^i}}}\right) &  { \partial\over{\partial P}}\left({{{\rho}} \cdot {{{ v}^i}}}\right) \\  { \partial\over{\partial \rho}}\left({{{\rho}} \cdot {{({{{{\frac{1}{2}}} {{{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}}} + {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}})}}}\right) &  { \partial\over{\partial { v}^j}}\left({{{\rho}} \cdot {{({{{{\frac{1}{2}}} {{{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}}} + {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}})}}}\right) &  { \partial\over{\partial P}}\left({{{\rho}} \cdot {{({{{{\frac{1}{2}}} {{{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}}} + {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}})}}}\right)\end{matrix}\right]}$
+<br>
+${{ \partial\over{\partial { W}^J}}\left( { U}^I\right)} = {\left[\begin{matrix}  1 &  0 &  0 \\  { v}^i &  {{\rho}} \cdot {{{{ \delta}^i}_j}} &  0 \\  {\frac{1}{2}}{({{v}^{2}})} &  {{\rho}} \cdot {{{ v}_j}} &  \frac{1}{\tilde{\gamma}}\end{matrix}\right]}$
+<br>
+
+<br>
+equations:
 <br>
 ${{ F}^I} = {\left[\begin{matrix}  {{{{\rho}} \cdot {{{ v}^j}}}} {{{ n}_j}} \\  {{{{{{{\rho}} \cdot {{{ v}^i}}}} {{{ v}^j}}}} {{{ n}_j}}} + {{{{ n}^i}} {{P}}} \\  {{{{{ v}^j}} {{{ n}_j}}}} {{{H_{total}}}}\end{matrix}\right]}$
 <br>

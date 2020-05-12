@@ -211,9 +211,7 @@ LaTeX.lookupTable = {
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
 				end))
 			}
-		end
-		
-		if self.usePartialLHSForDerivative then
+		elseif self.usePartialLHSForDerivative then
 			local s = table{'\\partial_', 
 				range(#diffVars):map(function(i)
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
@@ -240,12 +238,7 @@ LaTeX.lookupTable = {
 	
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
-		
-			local varname = var.name
-			if symmath.fixVariableNames then
-				varname = symmath.tostring:fixVariableName(varname)
-			end
-			
+			local varname = self:applyLaTeX(var)
 			powersForDeriv[varname] = (powersForDeriv[varname] or 0) + 1
 		end
 	
