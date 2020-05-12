@@ -352,15 +352,16 @@ add.rules = {
 			assert(#expr > 1)
 
 	
-	-- without this (y-x)/(x-y) doesn't simplify to -1
-	-- [[
+-- without this (y-x)/(x-y) doesn't simplify to -1
+-- [=[
 			-- instead of only factoring the -1 out of the constant
 			-- also add double the -1 to the rest of the terms (which should equate to being positive)
 			-- so that signs don't mess with simplifying division
 			-- ex: -1+x => (-1)*1+(-1)*(-1)*x => -1*(1+(-1)*x) => -1*(1-x)
 			for i=1,#expr do
-				--if expr[i] has a leading negative constant
-				if #prodLists[i] > 0
+				if (
+					--if expr[i] has a leading negative constant
+					#prodLists[i] > 0
 				-- [[ old - expect a leading constant
 				and Constant.is(prodLists[i][1].term) 
 				and prodLists[i][1].term.value < 0 
@@ -369,28 +370,28 @@ add.rules = {
 				-- TODO enabling this breaks things, but the code above is inserting Constant(-1) not in front, so the old check would miss it?
 				and prodLists[i]:find(nil, function(x) return Constant.isValue(x, -1) end)
 				--]]
+				)
+				--and symmath.set.negativeReal:contains(expr)
+				--and not symmath.set.positiveReal:contains(expr)
 				then
-					for j=1,#expr do
-						--if j ~= i then	-- new ... fixing this? freezing?
-						if j > i then	-- old ... why for 1..n instead of i+1..n?
-							local index = prodLists[j]:find(nil, function(x)
-								return Constant.isValue(x.term, -1)
-							end)
-							if index then
-								prodLists[j][index].power = (prodLists[j][index].power + 2):simplify()
-							else
-								-- insert two copies so that one can be factored out
-								-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
-								prodLists[j]:insert{
-									term = Constant(-1),
-									power = Constant(2),
-								}
-							end
+					for j=i+1,#expr do
+						local index = prodLists[j]:find(nil, function(x)
+							return Constant.isValue(x.term, -1)
+						end)
+						if index then
+							prodLists[j][index].power = (prodLists[j][index].power + 2):simplify()
+						else
+							-- insert two copies so that one can be factored out
+							-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
+							prodLists[j]:insert{
+								term = Constant(-1),
+								power = Constant(2),
+							}
 						end
 					end
 				end
 			end
-	--]]
+--]=]
 			
 			
 			-- 2) find smallest set of common terms
@@ -550,7 +551,7 @@ add.rules = {
 --]=]
 
 
---[=[ old version
+-- [=[ old version
 			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
 			local cval = 0
 			for i=#expr,1,-1 do
@@ -575,16 +576,14 @@ add.rules = {
 				end
 			end
 --]=]
--- [=[ new version
--- TODO FIXME THIS DEPENDS ON MODIFICATION IN-PLACE (WHY?!?!?!)
+--[=[ halfway version
+-- the only difference between this and old version is that we make shallowCopy()'s before modifying 'expr'
+-- TODO FIXME THIS DEPENDS ON MODIFICATION IN-PLACE (WHY?!?!?!)	
 			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
 			local cval = 0
 			for i=#expr,1,-1 do
 				if Constant.is(expr[i]) then
--- causes simplification loops ... hmm ...
--- ... even if i set the metatable, so I'm just duplicating the object
--- ... which means something depends on the 'expr' object ... from modifications in-place?
-					--expr = expr:shallowCopy()
+					expr = expr:shallowCopy()
 					cval = cval + table.remove(expr, i).value
 				end
 			end
@@ -596,6 +595,7 @@ add.rules = {
 			
 			-- re-insert if we have a Constant
 			if cval ~= 0 then
+				expr = expr:shallowCopy()
 				table.insert(expr, 1, Constant(cval))
 			else
 				-- if cval is zero and we're not re-inserting a constant
@@ -603,6 +603,35 @@ add.rules = {
 				if #expr == 1 then 
 					return prune:apply(expr[1]) 
 				end
+			end
+--]=]
+--[=[ new version
+			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
+			local needToRearrangeConsts = Constant.isValue(expr[i], 0)
+			if not needToRearrangeConsts then
+				for i=2,#expr do
+					if Constant.is(expr[i]) then
+						needToRearrangeConsts = true
+						break
+					end
+				end
+			end
+			if needToRearrangeConsts then
+				local cval = 0
+				local result = table()
+				for i,x in ipairs(expr) do
+					if Constant.is(x) then
+						cval = cval + x.value
+					else
+						result:insert(x)
+					end
+				end
+				if cval ~= 0 then
+					result:insert(1, Constant(cval))
+				end
+				if #result == 0 then return Constant(0) end
+				if #result == 1 then return prune:apply(result[1]) end
+				return prune:apply(setmetatable(result, add))
 			end
 --]=]
 

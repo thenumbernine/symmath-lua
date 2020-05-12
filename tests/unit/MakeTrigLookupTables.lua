@@ -17,6 +17,8 @@ local function divides(p,q)
 	return false
 end
 
+-- taking a few base cases from...
+-- https://en.wikipedia.org/wiki/Trigonometric_constants_expressed_in_real_radicals
 local costable = {
 	[1] = {
 		[1] = Constant(1),

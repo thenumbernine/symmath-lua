@@ -67,13 +67,27 @@ L(v) = 	$\left[\begin{matrix}  \frac{-{{{\sqrt \epsilon}} {{({{{v_0}} - {{v_6}}}
 <br>
 right transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(v_0 - v_6)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((-(math.sqrt(\epsilon) * (v_3 - v_5))) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_2 - v_4)) / math.sqrt(2))}, {((-(v_1 - v_7)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((math.sqrt(\mu) * (v_2 + v_4)) / math.sqrt(2))}, {((math.sqrt(\mu) * (v_3 + v_5)) / math.sqrt(2))}, {((v_6 + v_0) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((v_7 + v_1) / (math.sqrt(2) * math.sqrt(\epsilon)))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu)
+	local tmp4 = math.sqrt(2)
+	local tmp3 = math.sqrt(\mu)
+	local tmp2 = math.sqrt(\epsilon)
+	local tmp1 = (tmp4 * tmp2)
+	return {{((-(v_0 - v_6)) / tmp1)}, {((-(tmp2 * (v_3 - v_5))) / tmp4)}, {((tmp2 * (v_2 - v_4)) / tmp4)}, {((-(v_1 - v_7)) / tmp1)}, {((tmp3 * (v_2 + v_4)) / tmp4)}, {((tmp3 * (v_3 + v_5)) / tmp4)}, {((v_6 + v_0) / tmp1)}, {((v_7 + v_1) / tmp1)}}
+end</pre>
 <br>
 left transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(math.sqrt(\epsilon) * (v_0 - v_6))) / math.sqrt(2))}, {((-(math.sqrt(\epsilon) * (v_3 - v_7))) / math.sqrt(2))}, {(((v_2 * math.sqrt(\mu)) + (v_4 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon)))}, {(((v_1 * math.sqrt(\mu)) - (v_5 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {((-((v_2 * math.sqrt(\mu)) - (v_4 * math.sqrt(\epsilon)))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {(((v_1 * math.sqrt(\mu)) + (v_5 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {((math.sqrt(\epsilon) * (v_0 + v_6)) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_3 + v_7)) / math.sqrt(2))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu)
+	local tmp8 = math.sqrt(\epsilon)
+	local tmp7 = math.sqrt(2)
+	local tmp6 = math.sqrt(\mu)
+	local tmp5 = (v_2 * tmp6)
+	local tmp4 = (v_5 * tmp8)
+	local tmp3 = (v_1 * tmp6)
+	local tmp2 = (v_4 * tmp8)
+	local tmp1 = (tmp6 * tmp7 * tmp8)
+	return {{((-(tmp8 * (v_0 - v_6))) / tmp7)}, {((-(tmp8 * (v_3 - v_7))) / tmp7)}, {((tmp5 + tmp2) / tmp1)}, {((tmp3 - tmp4) / (-tmp1))}, {((-(tmp5 - tmp2)) / tmp1)}, {((tmp3 + tmp4) / tmp1)}, {((tmp8 * (v_0 + v_6)) / tmp7)}, {((tmp8 * (v_3 + v_7)) / tmp7)}}
+end</pre>
 <br>
 side	2
 <br>
@@ -131,13 +145,27 @@ L(v) = 	$\left[\begin{matrix}  \frac{-{{{\sqrt \epsilon}} {{({{{v_1}} - {{v_6}}}
 <br>
 right transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((math.sqrt(\epsilon) * (v_3 - v_5)) / math.sqrt(2))}, {((-(v_0 - v_6)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((-(math.sqrt(\epsilon) * (v_2 - v_4))) / math.sqrt(2))}, {((math.sqrt(\mu) * (v_2 + v_4)) / math.sqrt(2))}, {((-(v_1 - v_7)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((math.sqrt(\mu) * (v_3 + v_5)) / math.sqrt(2))}, {((v_6 + v_0) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((v_7 + v_1) / (math.sqrt(2) * math.sqrt(\epsilon)))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu)
+	local tmp4 = math.sqrt(\mu)
+	local tmp3 = math.sqrt(2)
+	local tmp2 = math.sqrt(\epsilon)
+	local tmp1 = (tmp3 * tmp2)
+	return {{((tmp2 * (v_3 - v_5)) / tmp3)}, {((-(v_0 - v_6)) / tmp1)}, {((-(tmp2 * (v_2 - v_4))) / tmp3)}, {((tmp4 * (v_2 + v_4)) / tmp3)}, {((-(v_1 - v_7)) / tmp1)}, {((tmp4 * (v_3 + v_5)) / tmp3)}, {((v_6 + v_0) / tmp1)}, {((v_7 + v_1) / tmp1)}}
+end</pre>
 <br>
 left transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(math.sqrt(\epsilon) * (v_1 - v_6))) / math.sqrt(2))}, {((-(math.sqrt(\epsilon) * (v_4 - v_7))) / math.sqrt(2))}, {(((v_2 * math.sqrt(\mu)) - (v_3 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {(((v_0 * math.sqrt(\mu)) + (v_5 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon)))}, {(((v_2 * math.sqrt(\mu)) + (v_3 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {((-((v_0 * math.sqrt(\mu)) - (v_5 * math.sqrt(\epsilon)))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {((math.sqrt(\epsilon) * (v_1 + v_6)) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_4 + v_7)) / math.sqrt(2))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu)
+	local tmp8 = math.sqrt(\epsilon)
+	local tmp7 = math.sqrt(\mu)
+	local tmp6 = math.sqrt(2)
+	local tmp5 = (v_5 * tmp8)
+	local tmp4 = (v_3 * tmp8)
+	local tmp3 = (v_2 * tmp7)
+	local tmp2 = (v_0 * tmp7)
+	local tmp1 = (tmp7 * tmp6 * tmp8)
+	return {{((-(tmp8 * (v_1 - v_6))) / tmp6)}, {((-(tmp8 * (v_4 - v_7))) / tmp6)}, {((tmp3 - tmp4) / (-tmp1))}, {((tmp2 + tmp5) / tmp1)}, {((tmp3 + tmp4) / tmp1)}, {((-(tmp2 - tmp5)) / tmp1)}, {((tmp8 * (v_1 + v_6)) / tmp6)}, {((tmp8 * (v_4 + v_7)) / tmp6)}}
+end</pre>
 <br>
 side	3
 <br>
@@ -195,11 +223,26 @@ L(v) = 	$\left[\begin{matrix}  \frac{-{{{\sqrt \epsilon}} {{({{{v_2}} - {{v_6}}}
 <br>
 right transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(math.sqrt(\epsilon) * (v_3 - v_5))) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_2 - v_4)) / math.sqrt(2))}, {((-(v_0 - v_6)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((math.sqrt(\mu) * (v_2 + v_4)) / math.sqrt(2))}, {((math.sqrt(\mu) * (v_3 + v_5)) / math.sqrt(2))}, {((-(v_1 - v_7)) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((v_6 + v_0) / (math.sqrt(2) * math.sqrt(\epsilon)))}, {((v_7 + v_1) / (math.sqrt(2) * math.sqrt(\epsilon)))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu)
+	local tmp4 = math.sqrt(\mu)
+	local tmp3 = math.sqrt(\epsilon)
+	local tmp2 = math.sqrt(2)
+	local tmp1 = (tmp2 * tmp3)
+	return {{((-(tmp3 * (v_3 - v_5))) / tmp2)}, {((tmp3 * (v_2 - v_4)) / tmp2)}, {((-(v_0 - v_6)) / tmp1)}, {((tmp4 * (v_2 + v_4)) / tmp2)}, {((tmp4 * (v_3 + v_5)) / tmp2)}, {((-(v_1 - v_7)) / tmp1)}, {((v_6 + v_0) / tmp1)}, {((v_7 + v_1) / tmp1)}}
+end</pre>
 <br>
 left transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu) return {{((-(math.sqrt(\epsilon) * (v_2 - v_6))) / math.sqrt(2))}, {((-(math.sqrt(\epsilon) * (v_5 - v_7))) / math.sqrt(2))}, {(((v_1 * math.sqrt(\mu)) + (v_3 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon)))}, {(((v_0 * math.sqrt(\mu)) - (v_4 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {(((v_1 * math.sqrt(\mu)) - (v_3 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {(((v_0 * math.sqrt(\mu)) + (v_4 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {((math.sqrt(\epsilon) * (v_2 + v_6)) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_5 + v_7)) / math.sqrt(2))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, v_6, v_7, \epsilon, \mu)
+	local tmp9 = math.sqrt(2)
+	local tmp8 = math.sqrt(\epsilon)
+	local tmp7 = math.sqrt(\mu)
+	local tmp6 = (v_0 * tmp7)
+	local tmp5 = (v_4 * tmp8)
+	local tmp4 = (v_3 * tmp8)
+	local tmp3 = (v_1 * tmp7)
+	local tmp2 = (tmp7 * tmp9 * tmp8)
+	local tmp1 = (-tmp2)
+	return {{((-(tmp8 * (v_2 - v_6))) / tmp9)}, {((-(tmp8 * (v_5 - v_7))) / tmp9)}, {((tmp3 + tmp4) / tmp2)}, {((tmp6 - tmp5) / tmp1)}, {((tmp3 - tmp4) / tmp1)}, {((tmp6 + tmp5) / tmp2)}, {((tmp8 * (v_2 + v_6)) / tmp9)}, {((tmp8 * (v_5 + v_7)) / tmp9)}}
+end</pre>
 <br>

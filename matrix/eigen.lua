@@ -67,7 +67,7 @@ local function eigen(A)
 --	printbr('right eigenvector of', lambda.expr, 'is', Rs[i]:T())
 --end
 
-	local R = Matrix( 
+	local R = #Rs > 0 and Matrix( 
 		table():append(Rs:unpack()):unpack()
 		--Rs:mapi(function(Ri) return Ri[1] end):unpack() 
 	):T()

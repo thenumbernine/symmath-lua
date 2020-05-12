@@ -7,7 +7,6 @@ require 'symmath'.setup{
 	implicitVars = true,
 	MathJax = {
 		title = 'Metric Catalog',
-		pathToTryToFindMathJax = '..',
 	},
 }
 
