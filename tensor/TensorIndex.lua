@@ -1,6 +1,9 @@
 -- TensorIndex represents an entry in the Tensor.variance list
 local class = require 'ext.class'
-local TensorIndex = class()
+local Expression = require 'symmath.Expression'
+
+
+local TensorIndex = class(Expression)
 
 TensorIndex.name = 'TensorIndex'
 
@@ -15,12 +18,32 @@ function TensorIndex.clone(...)
 	return TensorIndex(...)	-- convert our type(x) from 'table' to 'function'
 end
 
-function TensorIndex.__eq(a,b)
-	return a.lower == b.lower
-	and a.derivative == b.derivative
-	and a.symbol == b.symbol
+
+-- TODO what about wildcards for specific upper or lowre?
+-- I guess I would need to make a Wildcard subclass for that, and have it instanciated by special string indexes like x' ^$1 _$2' etc
+function TensorIndex.match(a, b, state)
+	state = state or {matches=table()}
+	if require 'symmath.Wildcard'.is(b) then
+		if state.matches[b.index] == nil then
+			state.matches[b.index] = a
+			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+		else
+			if b ~= state.matches[b.index] then return false end
+		end	
+	end
+
+	if not (a.lower == b.lower
+		and a.derivative == b.derivative
+		and a.symbol == b.symbol
+	) then
+		return false
+	end
+	
+	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
 end
 
+
+-- TODO put this in each export/* like everything else?
 function TensorIndex:__tostring()
 	local s = ''
 	if self.derivative == 'covariant' then
@@ -41,10 +64,6 @@ function TensorIndex:__tostring()
 	else
 		error("TensorIndex expected a symbol or a number")
 	end
-end
-
-function TensorIndex.__concat(a,b)
-	return tostring(a) .. tostring(b)
 end
 
 return TensorIndex

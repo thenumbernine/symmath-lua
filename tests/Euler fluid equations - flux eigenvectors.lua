@@ -121,9 +121,7 @@ dU_dW_def = dU_dW_def()
 	:subst(vSq_def:switch()())
 
 -- TODO move simplifyMetrics from numerical-relativity-codegen/show_flux_matrix.lua into Expression
--- TODO before that, get wildcards and expr:match() to work, and rewrite that and replaceIndex in terms of wildcards
--- TODO before that, create a Wildcard object, but make it able to substitute for Expressions and for TensorIndex's
--- TODO before that, make TensorIndex an Expression, for traversal's sake
+-- TODO before that, rewrite that and replaceIndex in terms of wildcards
 -- [[
 dU_dW_def[3][2] = dU_dW_def[3][2]:factorDivision()
 	:replace((v'^k' * g'_kl' * delta'^l_j')(), v'_j')

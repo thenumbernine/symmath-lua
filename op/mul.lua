@@ -37,10 +37,18 @@ mul.removeIfContains = require 'symmath.commutativeRemove'
 -- now that we've got matrix multilpication, this becomes more difficult...
 -- non-commutative objects (matrices) need to be compared in-order
 -- commutative objects can be compared in any order
-mul.__eq = function(a,b)
-	if not mul.is(a) or not mul.is(b) then
-		return mul.super.__eq(a,b)
-	end
+mul.match = function(a, b, state)
+	state = state or {matches=table()}
+	if require 'symmath.Wildcard'.is(b) then
+		if state.matches[b.index] == nil then
+			state.matches[b.index] = a
+			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+		else
+			if b ~= state.matches[b.index] then return false end
+		end	
+	else
+		if not mul.is(a) or not mul.is(b) then return false end
+	end	
 	
 	-- order-independent
 	local a = table(a)
@@ -49,19 +57,29 @@ mul.__eq = function(a,b)
 		-- non-commutative compare...
 		if not a[ai].mulNonCommutative then
 			-- table.find uses == uses __eq which ... should ... only pick bi if it is mulNonCommutative as well (crossing fingers, it's based on the equality implementation)
-			local bi = b:find(a[ai])
+			--local bi = b:find(a[ai])
+			local bi
+			for _bi=1,#b do
+				if b[_bi]:match(a[ai], state) then
+					bi = _bi
+					break
+				end
+			end
 			if bi then
 				a:remove(ai)
 				b:remove(bi)
 			end
 		end
 	end
+	
 	-- now compare what's left in-order (since it's non-commutative)
-	if #a ~= #b then return false end
-	for i=1,#a do
-		if a[i] ~= b[i] then return false end
+	local n = #a
+	if n ~= #b then return false end
+	for i=1,n do
+		if not a[i]:match(b[i], state) then return false end
 	end
-	return true
+	
+	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
 end
 
 function mul:reverse(soln, index)

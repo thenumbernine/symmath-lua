@@ -25,16 +25,11 @@ end
 -- deep copy
 function Expression:clone()
 	local clone = require 'symmath.clone'
-	if self then
-		local xs = table()
-		for i=1,#self do
-			xs:insert(clone(self[i]))
-		end
-		return getmetatable(self)(xs:unpack())
-	else
-		-- why do I have this condition?
-		return getmetatable(self)()
+	local xs = table()
+	for i=1,#self do
+		xs:insert(clone(self[i]))
 	end
+	return getmetatable(self)(xs:unpack())
 end
 
 --[[
@@ -140,26 +135,48 @@ end
 
 --[[
 compares metatable, children length, and children contents.
-child order must match.  if your node class's child order doesn't matter then use nodeCommutativeEqual
+child order must match.  if your node class's child order doesn't matter then use tableCommutativeEqual
 
 this is used for comparing
 for equality and solving, use .eq()
 --]]
-function Expression.__eq(a,b)
-	-- if a or b is nil then they are different
-	if (a == nil) ~= (b == nil) then return false end
-	-- if the metatables differ then they are different
-	if getmetatable(a) ~= getmetatable(b) then return false end
-	if a and b then
-		-- if the number of children differ then they are different
-		if #a ~= #b then return false end
-		-- if the children themselves differ then they are different
-		for i=1,#a do
-			if a[i] ~= b[i] then return false end
+
+-- TODO this could double as __eq 
+-- TODO subclasses of Expression with __eq overrides have to be handled in here, because I can't just call __eq ... can I?
+-- TODO what about commutative expression comparison? 
+-- it seems more and more like every subclass should just override :match() instead of __eq
+-- and just assign __eq = match
+function Expression.match(a, b, state)
+	state = state or {matches=table()}
+	if require 'symmath.Wildcard'.is(b) then
+		if state.matches[b.index] == nil then
+			state.matches[b.index] = a
+			
+			-- return 'true' to match the end of match()
+			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+		else
+			if b ~= state.matches[b.index] then return false end
 		end
-		return true
+	else
+		if getmetatable(a) ~=  getmetatable(b) then return false end
 	end
-	error("tried to use generic compare on two objects without child nodes: "..a.." and "..b)
+	
+	if not a or not b then return false end
+	
+	-- check subexpressions
+	local n = #a
+	if n ~= #b then return false end
+	for i=1,n do
+		if not a[i]:match(b[i], state) then return false end
+	end
+
+	-- hmm, if we do a a:match() using no Wildcard(1)'s then the first arg will be nil
+	-- which will cause a 'if a:match()' to fail
+	-- so in the strange case that the user doesn't use a Wildcard(1) then put a 'true' in the first arg
+	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+end
+function Expression.__eq(a,b)
+	return a:match(b)
 end
 
 -- make sure to require Expression and then require the ops

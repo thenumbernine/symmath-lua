@@ -230,19 +230,35 @@ function Array:dim()
 end
 
 -- works like Expression.__eq except checks for Array subclass equality rather than strictly metatable equality
-function Array.__eq(a,b)
-	if not Array.is(a) 
-	or not Array.is(b) 
-	then 
-		return Array.super.__eq(a,b)
+-- TODO ... I think this matches Expression.match
+-- the one difference is that this doesn't include metatable compare
+-- and instead it compares isa relationship of metatables.
+-- Putting something into Expression would be nice, but I would like it to do like this and to test isa of the class associated with the match(), 
+--  and that would have to be implmented on a per-class basis.
+function Array.match(a, b, state)
+	-- same as in Expression.match
+	state = state or {matches=table()}
+	if require 'symmath.Wildcard'.is(b) then
+		if state.matches[b.index] == nil then
+			state.matches[b.index] = a
+			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+		else
+			if b ~= state.matches[b.index] then return false end
+		end	
+	else
+		if not Array.is(a) or not Array.is(b) then return false end
 	end
-	if a and b then
-		if #a ~= #b then return false end
-		for i=1,#a do
-			if a[i] ~= b[i] then return false end
-		end
-		return true
+
+	if not a or not b then return false end
+	
+	-- check subexpressions
+	local n = #a
+	if n ~= #b then return false end
+	for i=1,n do
+		if not a[i]:match(b[i], state) then return false end
 	end
+	
+	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
 end
 
 function Array.pruneAdd(a,b)

@@ -103,7 +103,18 @@ end
 
 -- this won't be called if a Lua number is used ...
 -- only when a Lua table is used
-function Constant.__eq(a,b)
+function Constant.match(a, b, state)
+	-- same as in Expression.match
+	state = state or {matches=table()}
+	if require 'symmath.Wildcard'.is(b) then
+		if state.matches[b.index] == nil then
+			state.matches[b.index] = a
+			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+		else
+			if b ~= state.matches[b.index] then return false end
+		end	
+	end
+
 	-- if either is a constant then get the value 
 	-- (which should not be an expression of its own)
 	if Constant.is(a) then a = a.value end
@@ -115,8 +126,12 @@ function Constant.__eq(a,b)
 	if complex.is(a) or complex.is(b) then
 		return complex.__eq(a,b)
 	end
+	
 	-- by here they both should be numbers
-	return a == b
+	if a ~= b then return false end
+
+	-- same as return true in Expression.match
+	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
 end
 
 function Constant:evaluateDerivative(deriv, ...)

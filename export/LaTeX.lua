@@ -193,6 +193,9 @@ LaTeX.lookupTable = {
 		--if expr.value then s:append{'|', expr.value} end
 		return s
 	end,
+	[require 'symmath.Wildcard'] = function(self, expr)
+		return '$'..self.index
+	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local symmath = require 'symmath'
 		local Variable = symmath.Variable

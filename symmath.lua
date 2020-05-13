@@ -6,7 +6,6 @@ symmath.simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
 symmath.debugSimplifyLoops = false		-- whether to debug simplification loops
 
 symmath.clone = require 'symmath.clone'	-- also casts numbers to Constant
-
 symmath.replace = require 'symmath.replace'
 symmath.solve = require 'symmath.solve'
 symmath.map = require 'symmath.map'
@@ -22,12 +21,20 @@ symmath.simplify = require 'symmath.simplify'
 symmath.polyCoeffs = require 'symmath.polyCoeffs'
 symmath.taylor = require 'symmath.taylor'
 
+-- TODO finishme
 symmath.dual = require 'symmath.tensor.dual'
 
 symmath.multiplicity = require 'symmath.multiplicity'
 
 -- replace variables with names as keys in evalmap with constants of the associated values
 symmath.eval = require 'symmath.eval'
+
+function symmath.match(a,b)
+	if not symmath.Expression.is(a) then
+		a = symmath.clone(a)
+	end
+	return a:match(b)
+end
 
 -- whether to replace variable names with unicode Greek symbols
 symmath.fixVariableNames = false
@@ -149,13 +156,13 @@ end
 --]]
 
 symmath.tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
-symmath.nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
 
 symmath.Expression = require 'symmath.Expression'
 symmath.Constant = require 'symmath.Constant'
 symmath.complex = require 'symmath.complex'
 symmath.Invalid = require 'symmath.Invalid'
 symmath.Function = require 'symmath.Function'
+symmath.Wildcard = require 'symmath.Wildcard'
 
 symmath.asin = require 'symmath.asin'
 symmath.asinh = require 'symmath.asinh'

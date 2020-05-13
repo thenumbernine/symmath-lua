@@ -1,7 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local math = require 'ext.math'
-local nodeCommutativeEqual = require 'symmath.nodeCommutativeEqual'
+local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 local Binary = require 'symmath.op.Binary'
 
 local add = class(Binary)
@@ -16,11 +16,49 @@ function add:evaluateDerivative(deriv, ...)
 	return add(result:unpack())
 end
 
-function add.__eq(a,b)
-	if not add.is(a) or not add.is(b) then
-		return add.super.__eq(a,b)
+function add.match(a, b, state)
+	state = state or {matches=table()}
+	if require 'symmath.Wildcard'.is(b) then
+		if state.matches[b.index] == nil then
+			state.matches[b.index] = a
+			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+		else
+			if b ~= state.matches[b.index] then return false end
+		end	
+	else
+		if not add.is(a) or not add.is(b) then return false end
+	end	
+	
+	-- order-independent
+	local a = table(a)
+	local b = table(b)
+	for ai=#a,1,-1 do
+		-- non-commutative compare...
+		if not a[ai].addNonCommutative then
+			-- table.find uses == uses __eq which ... should ... only pick bi if it is mulNonCommutative as well (crossing fingers, it's based on the equality implementation)
+			--local bi = b:find(a[ai])
+			local bi
+			for _bi=1,#b do
+				if b[_bi]:match(a[ai], state) then
+					bi = _bi
+					break
+				end
+			end
+			if bi then
+				a:remove(ai)
+				b:remove(bi)
+			end
+		end
 	end
-	return nodeCommutativeEqual(a,b)
+	
+	-- now compare what's left in-order (since it's non-commutative)
+	local n = #a
+	if n ~= #b then return false end
+	for i=1,n do
+		if not a[i]:match(b[i], state) then return false end
+	end
+	
+	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
 end
 
 add.removeIfContains = require 'symmath.commutativeRemove'

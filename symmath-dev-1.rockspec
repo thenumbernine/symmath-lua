@@ -80,7 +80,6 @@ build = {
 		["symmath.matrix.trace"] = "matrix/trace.lua",
 		["symmath.matrix.transpose"] = "matrix/transpose.lua",
 		["symmath.multiplicity"] = "multiplicity.lua",
-		["symmath.nodeCommutativeEqual"] = "nodeCommutativeEqual.lua",
 		["symmath.op.Binary"] = "op/Binary.lua",
 		["symmath.op.Equation"] = "op/Equation.lua",
 		["symmath.op.add"] = "op/add.lua",
@@ -204,6 +203,7 @@ build = {
 		["symmath.tests.unit.matrix"] = "tests/unit/matrix.lua",
 		["symmath.tests.unit.partial replace"] = "tests/unit/partial replace.lua",
 		["symmath.tests.unit.sub-tensor assignment"] = "tests/unit/sub-tensor assignment.lua",
+		["symmath.tests.unit.match"] = "tests/unit/match.lua",
 		["symmath.tests.unit.sets"] = "tests/unit/sets.lua",
 		["symmath.tests.unit.tensor use case"] = "tests/unit/tensor use case.lua",
 		["symmath.tests.unit.test"] = "tests/unit/test.lua",
@@ -221,6 +221,7 @@ build = {
 		["symmath.visitor.Prune"] = "visitor/Prune.lua",
 		["symmath.visitor.Tidy"] = "visitor/Tidy.lua",
 		["symmath.visitor.Visitor"] = "visitor/Visitor.lua"
+		["symmath.Wildcard"] = "Wildcard.lua",
 	},
 	copy_directories = {
 		"tests/output"

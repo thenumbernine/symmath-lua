@@ -1,4 +1,4 @@
--- this is going to work like the nodeCommutativeEqual
+-- this is going to work like the tableCommutativeEqual
 -- returns 'false' if self doesn't contain expr
 -- returns the set subtraction if it does
 local table = require 'ext.table'

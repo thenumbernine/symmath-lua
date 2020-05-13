@@ -213,6 +213,9 @@ MultiLine.lookupTable = {
 	[require 'symmath.Variable'] = function(self, expr)
 		return table{SingleLine(expr)}
 	end,
+	[require 'symmath.Wildcard'] = function(self, expr)
+		return table{SingleLine(expr)}
+	end,
 	[require 'symmath.Derivative'] = function(self, expr)
 		local topText = partialname 
 		local diffVars = table.sub(expr, 2)

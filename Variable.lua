@@ -50,7 +50,7 @@ function Variable:init(name, dependentVars, value, set)
 	end
 	self.set = set 
 	if dependentVars then
-		self:setDependentVars(dependentVars)
+		self:setDependentVars(table.unpack(dependentVars))
 	end
 end
 
@@ -83,11 +83,25 @@ end
 
 -- Variable equality is by name and value at the moment
 -- this way log(e) fails to simplify, but log(symmath.e) simplifies to 1 
-function Variable.__eq(a,b)
-	if getmetatable(a) ~= getmetatable(b) then 
-		return Variable.super.__eq(a,b)
+function Variable.match(a, b, state)
+	-- same as in Expression.match
+	state = state or {matches=table()}
+	if require 'symmath.Wildcard'.is(b) then
+		if state.matches[b.index] == nil then
+			state.matches[b.index] = a
+			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+		else
+			if b ~= state.matches[b.index] then return false end
+		end	
 	end
-	return a.name == b.name
+
+	-- if both aren't variables then return false?
+	-- what if it is a subclass?
+	if getmetatable(a) ~= getmetatable(b) then return false end
+	if a.name ~= b.name then return false end
+
+	-- same as return true in Expression.match
+	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
 end
 
 --[[

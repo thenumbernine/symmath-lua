@@ -497,16 +497,18 @@ function Tensor:clone(...)
 	return copy
 end
 
-function Tensor.__eq(a,b)
-	if not Tensor.super.__eq(a,b) then return false end
+--[=[
+function Tensor.match(a, b, state)
+	if not Tensor.super.match(a, b, state) then return false end
 --[[
 	assert(#a.variance == #b.variance)
 	for i=1,#a.variance do
 		if a.variance ~= b.variance then return false end
 	end
 --]]
-	return true
+	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
 end
+--]=]
 
 --[[
 produce a trace between dimensions i and j

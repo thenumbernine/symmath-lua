@@ -2,7 +2,7 @@
 require 'ext'
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='ADM metric', useCommaDerivative=true}}
+require 'symmath'{env=env, MathJax={title='ADM metric', useCommaDerivative=true}}
 
 local t,x,y,z = vars('t','x','y','z')
 local spatialCoords = {x,y,z}
@@ -84,4 +84,4 @@ printbr(Gamma'^a_bc':eq(GammaULLDense'^a_bc'()))
 local Riemann = var'R'
 local RiemannDense = Tensor'^a_bcd'
 RiemannDense['^a_bcd'] = (GammaULLDense'^a_bd,c' - GammaULLDense'^a_bc,d' + GammaULLDense'^a_ec' * GammaULLDense'^e_bd' - GammaULLDense'^a_ed' * GammaULLDense'^e_bc')()
-printbr(R'^a_bcd':eq(RiemannDense'^a_bcd'))
+printbr(Riemann'^a_bcd':eq(RiemannDense'^a_bcd'))

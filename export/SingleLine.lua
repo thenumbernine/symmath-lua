@@ -100,6 +100,9 @@ SingleLine.lookupTable = {
 		--if expr.value then s = s .. '|' .. expr.value end
 		return s
 	end,
+	[require 'symmath.Wildcard'] = function(self, expr)
+		return '$'..expr.index
+	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local topText = 'd'
 		local diffVars = table.sub(expr, 2)
