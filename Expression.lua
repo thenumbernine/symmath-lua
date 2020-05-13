@@ -357,6 +357,32 @@ except for TensorRefs it pattern matches indexes
 args =
 	symbols = list of symbols to pick from when we need a new symbol.  default is Tensor.defaultSymbols.
 --]]
+--[[ TODO pattern matching of trees ...
+-- use these with Integral, and use these with replaceIndex(), to make both pieces of code look muuuuch cleaner
+local i,j = x:matches( TensorRef(v, Wildcard(1)):diff(TensorRef(v, Wildcard(2))) ) 		-- v'^i':diff(v'^j') = delta^i_j
+if i and j then
+	return TensorRef(delta, i, j:lower())
+end
+local i, j = x:matches( TensorRef(v, Wildcard(1)):diff(Wildcard(2)) ) 					-- v'^i':diff(x) = 0
+if i and j then
+	return 0
+end
+local i,j,k = x:matches( TensorRef(g, Wildcard(1), Wildcard(2)):diff(Wildcard(3)) )		-- g'_ij':diff(x) = 0
+if i and j and k then
+	return 0
+end
+
+-- or also add reserve keywords of indexes that match to wildcards: '$#':
+
+local i,j = x:matches( v' ^$1':diff(v' _$2') )
+if i and j then return TensorRef(v, i, j) end
+
+local i,j = x:matches( v' ^$1':diff(Wildcard(2)) )
+if i and j then return 0 end
+
+local i,j,k = x:matches( g' _$1 _$2':diff( Wildcard(3) ) )
+if i and j and k then return 0 end
+--]]
 function Expression:replaceIndex(find, repl, cond, args)
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	

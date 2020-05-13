@@ -117,74 +117,19 @@ printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 dU_dW_def = dU_dW_def:subst(m_from_v, E_total_def, e_kin_def, vSq_def, e_int_def)
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
--- TODO what happened to setDependentVars() ?
--- seems that doesn't work for TensorRef's
-local function simplifyDerivatives(expr)
-	expr = expr()
-
-	expr = expr:map(function(x)
-		--[[ TODO pattern matching of trees ...
-		-- use these with Integral, and use these with replaceIndex(), to make both pieces of code look muuuuch cleaner
-		local i,j = x:matches( TensorRef(v, Wildcard(1)):diff(TensorRef(v, Wildcard(2))) ) 		-- v'^i':diff(v'^j') = delta^i_j
-		if i and j then
-			return TensorRef(delta, i, j:lower())
-		end
-		local i, j = x:matches( TensorRef(v, Wildcard(1)):diff(Wildcard(2)) ) 					-- v'^i':diff(x) = 0
-		if i and j then
-			return 0
-		end
-		local i,j,k = x:matches( TensorRef(g, Wildcard(1), Wildcard(2)):diff(Wildcard(3)) )		-- g'_ij':diff(x) = 0
-		if i and j and k then
-			return 0
-		end
-	
-		-- or also add reserve keywords of indexes that match to wildcards: '$#':
-
-		local i,j = x:matches( v' ^$1':diff(v' _$2') )
-		if i and j then return TensorRef(v, i, j) end
-
-		local i,j = x:matches( v' ^$1':diff(Wildcard(2)) )
-		if i and j then return 0 end
-
-		local i,j,k = x:matches( g' _$1 _$2':diff( Wildcard(3) ) )
-		if i and j and k then return 0 end
-
-		--]]
-		-- if x:matches( TensorRef(
-		if Derivative.is(x) then
-			if TensorRef.is(x[1]) and x[1][1] == v and #x[1] == 2		-- v'^i':diff(*)
-			and #x == 2	-- only a 1st derivative
-			then 
-				if x[2] == rho then return 0 end	-- dv^i/drho = 0
-				if x[2] == P then return 0 end		-- dv^i/P = 0
-				if TensorRef.is(x[2]) and x[2][1] == v then
-				end
-			end
-		end
-	end)
-		:replace(v'^i':diff(rho), 0)
-		:replace(v'^k':diff(rho), 0)
-		:replace(v'^l':diff(rho), 0)
-		:replace(v'^i':diff(v'^j'), delta'^i_j')
-		:replace(v'^l':diff(v'^j'), delta'^l_j')
-		:replace(v'^k':diff(v'^j'), delta'^k_j')
-		:replace(v'^i':diff(P), 0)
-		:replace(v'^k':diff(P), 0)
-		:replace(v'^l':diff(P), 0)
-		:replace(g'_kl':diff(rho), 0)
-		:replace(g'_kl':diff(v'^j'), 0)
-		:replace(g'_kl':diff(P), 0)
-
-	expr = expr()
-	return expr
-end
-
-dU_dW_def = simplifyDerivatives(dU_dW_def)
+dU_dW_def = dU_dW_def()
 	:subst(vSq_def:switch()())
+
+-- TODO move simplifyMetrics from numerical-relativity-codegen/show_flux_matrix.lua into Expression
+-- TODO before that, get wildcards and expr:match() to work, and rewrite that and replaceIndex in terms of wildcards
+-- TODO before that, create a Wildcard object, but make it able to substitute for Expressions and for TensorIndex's
+-- TODO before that, make TensorIndex an Expression, for traversal's sake
+-- [[
 dU_dW_def[3][2] = dU_dW_def[3][2]:factorDivision()
 	:replace((v'^k' * g'_kl' * delta'^l_j')(), v'_j')
 	:replace((v'^l' * g'_kl' * delta'^k_j')(), v'_j')
 	:simplify()
+--]]
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
 -- this doesn't work with indexed elements of the matrix.  you'd have to either expand it, or ... do some math 
@@ -214,7 +159,7 @@ local dF_dW_def = Matrix:lambda({3,3}, function(i,j)
 end)
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 
-dF_dW_def = simplifyDerivatives(dF_dW_def)
+dF_dW_def = dF_dW_def()
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 os.exit()
 

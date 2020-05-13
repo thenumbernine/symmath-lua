@@ -104,8 +104,11 @@ Derivative.rules = {
 								range(2,#expr[1]):mapi(function(k)
 									return expr[1][k]:clone()
 								end),
+								-- dx^i/dx^j = delta^i_j, so swap the raise/lower on all the wrt indexes
 								range(2,#expr[2]):mapi(function(k)
-									return expr[2][k]:clone()
+									local index = expr[2][k]:clone()
+									index.lower = not index.lower
+									return index
 								end)
 							):unpack()
 						)
