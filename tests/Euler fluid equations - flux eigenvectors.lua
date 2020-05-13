@@ -3,7 +3,7 @@ require 'ext'
 op = nil	-- make way for _G.op = symmath.op
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='Euler fluid equations - flux eigenvectors'}}
+require 'symmath'.setup{env=env, MathJax={title='Euler Fluid Equations - flux eigenvectors'}}
 
 -- TODO tidyIndexes() is breaking on this worksheet
 
@@ -110,29 +110,76 @@ printbr(U'^I':eq(U_def))
 printbr'Partial of conservative quantities wrt primitives:'
 
 local dU_dW_def = Matrix:lambda({3,3}, function(i,j)
-	return U_def[i][1]:diff( W_def:reindex{i='j'}[j][1] )
+	return U_def[i][1]:diff( W_def[j][1]:reindex{i='j'} )
 end)
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
 dU_dW_def = dU_dW_def:subst(m_from_v, E_total_def, e_kin_def, vSq_def, e_int_def)
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
--- TODO what happened to depends() ?
+-- TODO what happened to setDependentVars() ?
 -- seems that doesn't work for TensorRef's
-dU_dW_def = dU_dW_def()
-	:replace(v'^i':diff(rho), 0)
-	:replace(v'^k':diff(rho), 0)
-	:replace(v'^l':diff(rho), 0)
-	:replace(v'^i':diff(v'^j'), delta'^i_j')
-	:replace(v'^l':diff(v'^j'), delta'^l_j')
-	:replace(v'^k':diff(v'^j'), delta'^k_j')
-	:replace(v'^i':diff(P), 0)
-	:replace(v'^k':diff(P), 0)
-	:replace(v'^l':diff(P), 0)
-	:replace(g'_kl':diff(rho), 0)
-	:replace(g'_kl':diff(v'^j'), 0)
-	:replace(g'_kl':diff(P), 0)
-	:simplify()
+local function simplifyDerivatives(expr)
+	expr = expr()
+
+	expr = expr:map(function(x)
+		--[[ TODO pattern matching of trees ...
+		-- use these with Integral, and use these with replaceIndex(), to make both pieces of code look muuuuch cleaner
+		local i,j = x:matches( TensorRef(v, Wildcard(1)):diff(TensorRef(v, Wildcard(2))) ) 		-- v'^i':diff(v'^j') = delta^i_j
+		if i and j then
+			return TensorRef(delta, i, j:lower())
+		end
+		local i, j = x:matches( TensorRef(v, Wildcard(1)):diff(Wildcard(2)) ) 					-- v'^i':diff(x) = 0
+		if i and j then
+			return 0
+		end
+		local i,j,k = x:matches( TensorRef(g, Wildcard(1), Wildcard(2)):diff(Wildcard(3)) )		-- g'_ij':diff(x) = 0
+		if i and j and k then
+			return 0
+		end
+	
+		-- or also add reserve keywords of indexes that match to wildcards: '$#':
+
+		local i,j = x:matches( v' ^$1':diff(v' _$2') )
+		if i and j then return TensorRef(v, i, j) end
+
+		local i,j = x:matches( v' ^$1':diff(Wildcard(2)) )
+		if i and j then return 0 end
+
+		local i,j,k = x:matches( g' _$1 _$2':diff( Wildcard(3) ) )
+		if i and j and k then return 0 end
+
+		--]]
+		-- if x:matches( TensorRef(
+		if Derivative.is(x) then
+			if TensorRef.is(x[1]) and x[1][1] == v and #x[1] == 2		-- v'^i':diff(*)
+			and #x == 2	-- only a 1st derivative
+			then 
+				if x[2] == rho then return 0 end	-- dv^i/drho = 0
+				if x[2] == P then return 0 end		-- dv^i/P = 0
+				if TensorRef.is(x[2]) and x[2][1] == v then
+				end
+			end
+		end
+	end)
+		:replace(v'^i':diff(rho), 0)
+		:replace(v'^k':diff(rho), 0)
+		:replace(v'^l':diff(rho), 0)
+		:replace(v'^i':diff(v'^j'), delta'^i_j')
+		:replace(v'^l':diff(v'^j'), delta'^l_j')
+		:replace(v'^k':diff(v'^j'), delta'^k_j')
+		:replace(v'^i':diff(P), 0)
+		:replace(v'^k':diff(P), 0)
+		:replace(v'^l':diff(P), 0)
+		:replace(g'_kl':diff(rho), 0)
+		:replace(g'_kl':diff(v'^j'), 0)
+		:replace(g'_kl':diff(P), 0)
+
+	expr = expr()
+	return expr
+end
+
+dU_dW_def = simplifyDerivatives(dU_dW_def)
 	:subst(vSq_def:switch()())
 dU_dW_def[3][2] = dU_dW_def[3][2]:factorDivision()
 	:replace((v'^k' * g'_kl' * delta'^l_j')(), v'_j')
@@ -140,8 +187,17 @@ dU_dW_def[3][2] = dU_dW_def[3][2]:factorDivision()
 	:simplify()
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
+-- this doesn't work with indexed elements of the matrix.  you'd have to either expand it, or ... do some math 
+--local dW_dU_def = dU_dW_def:inverse()
+local dW_dU_def = Matrix(
+	{1, 0, 0},
+	{-v'^i' / rho, delta'^i_j' / rho, 0},
+	{frac(1,2) * tildeGamma * vSq, -tildeGamma * v'_j', tildeGamma}
+)
+printbr(W'^I':diff(U'^J'):eq(dW_dU_def))
+
 printbr()
-printbr'equations:'
+printbr'Flux:'
 
 local F = var'F'
 local F_def = Matrix{
@@ -150,6 +206,18 @@ local F_def = Matrix{
 	v'^j' * n'_j' * H_total
 }:T()
 printbr(F'^I':eq(F_def))
+
+
+printbr'Flux derivative wrt primitive variables:'
+local dF_dW_def = Matrix:lambda({3,3}, function(i,j)
+	return F_def[i][1]:diff( W_def[j][1]:reindex{i='j'})
+end)
+printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
+
+dF_dW_def = simplifyDerivatives(dF_dW_def)
+printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
+os.exit()
+
 
 F_def = F_def:map(function(x)
 	if not x.replace then return end

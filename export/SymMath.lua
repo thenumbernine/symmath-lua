@@ -16,9 +16,12 @@ SymMath.lookupTable = {
 	end,
 	[require 'symmath.Variable'] = function(self, x, indent)
 		local s = indent..'var('..tolua(x.name)
+		-- TODO I don't have support for serializing depvars of TensorRefs
 		if x.dependentVars and #x.dependentVars > 0 then
-			s = s .. ', {'..table.mapi(x.dependentVars, function(xi) 
-				return xi.name
+			s = s .. ', {'..x.dependentVars:filter(function(depvar)
+				return depvar.src == x
+			end):mapi(function(depvar) 
+				return self:apply(depvar.wrt)
 			end):concat', '..'}'
 		elseif x.value then	-- only add ,nil if we need to pad our expr
 			s = s .. ', nil'

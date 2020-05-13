@@ -29,7 +29,7 @@ local Bx,By,Bz = vars('B_x','B_y','B_z')
 local gamma,mu = vars('\\gamma','\\mu')
 local c,cs,cf,ca = vars('c','cs','cf','ca')
 for _,v in ipairs{rho,vx,vy,vz,p,P,Z,E,Bx,By,Bz,c,cs,cf,ca} do
-	v:depends(x,y,z,t)
+	v:setDependentVars(x,y,z,t)
 end
 
 local vs = table{vx, vy, vz}

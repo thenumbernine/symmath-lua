@@ -3,6 +3,8 @@ local table = require 'ext.table'
 -- single-line strings 
 local Console = require 'symmath.export.Console'
 
+local getUnicodeSymbol = Console.getUnicodeSymbol
+
 
 local SingleLine = class(Console)
 
@@ -29,15 +31,10 @@ end
 	
 local hasutf8, utf8 = pcall(require, 'utf8')
 
-local sqrtname, cbrtname, iname
-if hasutf8 then
-	sqrtname, cbrtname, iname = assert(load[[
-	local sqrtname = '\u{221a}'
-	local cbrtname = '\u{221b}'
-	local iname = '\u{1d55a}'
-	return sqrtname, cbrtname, iname
-]])()
-end
+local sqrtname = getUnicodeSymbol('221a', 'sqrt')
+local cbrtname = getUnicodeSymbol('221b', 'cbrt')
+local iname = getUnicodeSymbol('1d55a', 'i')
+
 
 SingleLine.lookupTable = {
 	--[[

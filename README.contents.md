@@ -312,8 +312,14 @@ There are a few common constants in the symmath namespace:
 `var1, var2, ... = symmath.vars(name1, name2, ...)`  
 Create a variable with given name, and optionally a list of which variables it is dependent on for differentiation. By default variables of different names have a derivative of zero.
 
-`var:depends(var1, var2, ...)`  
+`var:setDependentVars(var1, var2, ...)`  
 Specify the variables that var is dependent on for differentiation.
+`var`, `var1`, `var2`, etc can be Variables (i.e. `x`) or TensorRefs (i.e. `x'^i'`).
+Calling this function will clear all previous dependent vars only for the respective indexes it is called with.
+
+`expr:dependsOn(var)`
+Returns 'true' if an expression depends on a variable.
+Works for Variables 'var' (i.e. `x`) or TensorRef's of 'var' (i.e. `x'^i'`).
 
 `func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
 `func, code = expr:compile{var1, var2, ...}`  

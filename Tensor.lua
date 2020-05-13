@@ -1145,4 +1145,10 @@ function Tensor:antisym()
 	}
 end
 
+-- this is used with Derivative when it simplifies two equal TensorRefs
+function Tensor:deltaSymbol()
+	local Variable = require 'symmath.Variable'
+	return Variable'\\delta'
+end
+
 return Tensor

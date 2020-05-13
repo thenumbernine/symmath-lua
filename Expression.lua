@@ -268,7 +268,7 @@ Expression.eval = function(...) return require 'symmath.eval'(...) end
 Expression.compile = function(...) return require 'symmath'.compile(...) end
 
 function Expression:diff(...) 
--- [=[
+--[=[
 	local Constant = require 'symmath.Constant'
 	
 	-- TODO double diff() as differential when no variables are used?
@@ -291,16 +291,6 @@ function Expression:diff(...)
 			end
 		end
 	end
-
-	--[[
-	-- d/dx y = 0 unless y = y(x) ...
-	-- if y is a variable and *any* of xs are not dependent on y then
-	if Variable.is(self) and self.dependentVars:find(nil, function(var) 
-		return not vars:find(var)
-	end) then
-		return Constant(0)
-	end
-	--]]
 --]=]
 	return require 'symmath.Derivative'(self, ...) 
 end
@@ -1159,15 +1149,29 @@ end
 
 -- alternative name? is-function-of?
 function Expression:dependsOn(x)
-	local found = false
 	local Variable = require 'symmath.Variable'
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	local found = false
 	require 'symmath.map'(self, function(ai)
+		-- x is a sub-expression of the expression
 		if ai == x then 
 			found = true 
 			return 1	-- short-circuit
 		end
-		if Variable.is(ai) 
-		and table.find(ai.dependentVars, x) then 
+		-- x'^i' is a sub-expression of the expression
+		if TensorRef.is(ai) and TensorRef.is(x)
+		and ai[1] == x[1]
+		and #ai == #x
+		then
+			found = true
+			return 1	-- short-circuit
+		end
+		-- x or x^i is a dependent variable of a variable in the expression
+		if (
+			Variable.is(ai)
+			or (TensorRef.is(ai) and Variable.is(ai[1]))
+		) and ai:dependsOn(x) 
+		then 
 			found = true 
 			return 1	-- short-circuit
 		end

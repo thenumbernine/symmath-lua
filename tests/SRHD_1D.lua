@@ -56,7 +56,7 @@ local tauDef = tau:eq(rho*h*W^2-P-rho*W)
 printbr(tau..' = total energy density')
 
 local cons = table{D, Sx, tau}
-for i=1,#cons do cons[i]:depends(prims:unpack()) end
+for i=1,#cons do cons[i]:setDependentVars(prims:unpack()) end
 
 local U_for_cons = Matrix(cons):transpose()
 printbr'conservatives:'

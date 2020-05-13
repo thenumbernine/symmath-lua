@@ -3,11 +3,21 @@ local string = require 'ext.string'
 local table = require 'ext.table'
 local Export = require 'symmath.export.Export'
 
+local hasutf8, utf8 = pcall(require, 'utf8')
+if not hasutf8 then utf8 = nil end
+
+
 local Console = class(Export)
+
+function Console.getUnicodeSymbol(code, default)
+	if not hasutf8 then return default end
+	-- wrap the unicode in just one load() so Lua versions that don't support it will still compile
+	return assert(load([[return '\u{]]..code..[[}']]))()
+end
 
 Console.symbols = table(require 'symmath.tensor.symbols'.greekSymbolForNames, {
 	-- TODO rename to 'infinity'.  see symmath.lua and symmath/export/LaTeX.lua
-	infty = '∞',
+	infty = Console.getUnicodeSymbol('221e', 'inf'),
 })
 for _,k in ipairs(Console.symbols:keys()) do
 	Console.symbols[k] = string.trim(Console.symbols[k])

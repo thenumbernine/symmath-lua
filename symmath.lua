@@ -70,7 +70,7 @@ exprs - specifies the table of expressions that will be associated with function
 		... produces "function(y) return y^2 end"
 		
 		x,t=symmath.vars('x','t') 
-		x:depends(t) 
+		x:setDependentVars(t) 
 		symmath.exp(-x^2):diff(t):simplify():compile{x,{dx_dt=x:diff(t)}})
 		... produces "function(x, dx_dt) return -2 * x * dx_dt * math.exp(-x^2) end"
 

@@ -6,69 +6,49 @@ local Console = require 'symmath.export.Console'
 local SingleLine = require 'symmath.export.SingleLine'
 	
 local hasutf8, utf8 = pcall(require, 'utf8')
+if not hasutf8 then utf8 = nil end
+
+local getUnicodeSymbol = Console.getUnicodeSymbol
+
+-- [3][2] of the border chars of a box
+local box = {
+	{getUnicodeSymbol('250c', '['), getUnicodeSymbol('2510', ']')},
+	{getUnicodeSymbol('2502', '['), getUnicodeSymbol('2502', ']')},
+	{getUnicodeSymbol('2514', '['), getUnicodeSymbol('2518', ']')},
+	{'[', ']'},
+}
+-- [3][2] of the border chars of parenthesis
+local par = {
+	{getUnicodeSymbol('256d', ' /'), getUnicodeSymbol('256e', '\\ ')},
+	{getUnicodeSymbol('2502', '| '), getUnicodeSymbol('2502', ' |')},
+	{getUnicodeSymbol('2570', '\\ '), getUnicodeSymbol('256f', '/ ')},
+	{'(', ')'},
+}
+local line = {
+	getUnicodeSymbol('2576', '-'),
+	getUnicodeSymbol('2500', '-'),
+	getUnicodeSymbol('2574', '-'),
+}
+local sqrtname = getUnicodeSymbol('221a', 'sqrt')
+local cbrtname = getUnicodeSymbol('221b', 'cbrt')
+local intname = {
+	getUnicodeSymbol('2320', '\\'),	-- integral top symbol
+	getUnicodeSymbol('2502', '|'),	-- integral middle symbol
+	getUnicodeSymbol('2321', '\\'),	-- integral bottom symbol
+	getUnicodeSymbol('222b', 'int'),	-- integral symbol
+}
+local partialname = getUnicodeSymbol('2202', 'd')
+
 
 local strlen
-local box	-- [3][2] of the border chars of a box
-local par	-- [3][2] of the border chars of parenthesis
-local line	-- [3]
-local sqrtname
-local cbrtname
-local intname
-do
-	if hasutf8 then
-		strlen, box, par, line, sqrtname, cbrtname, intname = assert(load[[
-		local utf8 = ...
-		local strlen = utf8.len
-		local box = {
-			{'\u{250c}', '\u{2510}'},
-			{'\u{2502}', '\u{2502}'},
-			{'\u{2514}', '\u{2518}'},
-			{'[', ']'},
-		}
-		local par = {
-			{'\u{256d}', '\u{256e}'},
-			{'\u{2502}', '\u{2502}'},
-			{'\u{2570}', '\u{256f}'},
-			{'(', ')'},
-		}
-		local line = {'\u{2576}', '\u{2500}', '\u{2574}'}
-		local sqrtname = '\u{221a}'
-		local cbrtname = '\u{221b}'
-		local intname = {
-			'\u{2320}',		-- integral top symbol
-			'\u{2502}',		-- integral middle
-			'\u{2321}',		-- integral bottom symbol
-			'\u{222b}',		-- integral symbol
-		}
-		return strlen, box, par, line, sqrtname, cbrtname, intname
-]])(utf8)
-	end
-	if not strlen and rawlen then
-		strlen = rawlen
-	end
-	if not strlen then
-		strlen = function(s) return #s end
-	end
-	if not box then
-		box = {
-			{'[', ']'},
-			{'[', ']'},
-			{'[', ']'},
-			{'[', ']'},
-		}
-	end
-	if not par then
-		par = {
-			{' /', '\\ '},
-			{'| ', ' |'},
-			{'\\ ', '/ '},
-			{'(', ')'},
-		}
-	end
-	if not line then
-		line = {'-', '-', '-'}
-	end
+if hasutf8 then
+	strlen = utf8.len
+elseif rawlen then
+	strlen = rawlen
+else
+	strlen = function(s) return #s end
 end
+
 
 -- borp = box or par [4][2]
 local function wrap(rows, n, borp)
@@ -176,12 +156,10 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr.name	
-		if hasutf8 then
-			if name == 'sqrt' then
-				name = sqrtname
-			elseif name == 'cbrt' then
-				name = cbrtname
-			end
+		if name == 'sqrt' then
+			name = sqrtname
+		elseif name == 'cbrt' then
+			name = cbrtname
 		end
 		local res = {name..'('}
 		res = self:combine(res, self:apply(expr[1]))
@@ -236,7 +214,7 @@ MultiLine.lookupTable = {
 		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
-		local topText = 'd'
+		local topText = partialname 
 		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars
 		if diffPower > 1 then
@@ -244,18 +222,13 @@ MultiLine.lookupTable = {
 		end
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
-			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
+			varname = SingleLine(var)
+			powersForDeriv[varname] = (powersForDeriv[varname] or 0) + 1
 		end
 		local lhs = self:fraction(
 			{topText},
 			{table.map(powersForDeriv, function(power, name, newtable) 
-				if type(name) == 'string' then
-					local symmath = require 'symmath'
-					if symmath.fixVariableNames then
-						name = symmath.tostring:fixVariableName(name)
-					end
-				end
-				local s = 'd'..name
+				local s = partialname..name
 				if power > 1 then
 					s = s .. '^'..power
 				end

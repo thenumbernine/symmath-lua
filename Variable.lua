@@ -9,6 +9,19 @@ fields:
 	dependentVars = table of vars that this var depends on
 	value = (optional) value of this var ... as a Lua number
 	set = what set does this variable belong to?
+
+dependentVars = table of...
+	table containing...
+		src =
+			= self	for dx/dy
+			= TensorRef(self, ...) for dx^I/dy
+		
+		wrt =
+			= var	for dx/dy
+			= TensorRef(var, ...) for dx/dy^J
+
+	So I am going to consider TensorRef(Variable) different from Variable
+	But for now I'm not going to consider variance of TensorRef
 --]]
 local Variable = class(Expression)
 
@@ -24,7 +37,6 @@ args:
 --]]
 function Variable:init(name, dependentVars, value, set)
 	self.name = name
-	self.dependentVars = table(dependentVars)
 	self.value = value
 	if not set then
 		if complex.is(value) then 
@@ -37,6 +49,9 @@ function Variable:init(name, dependentVars, value, set)
 		end
 	end
 	self.set = set 
+	if dependentVars then
+		self:setDependentVars(dependentVars)
+	end
 end
 
 function Variable:clone()
@@ -75,12 +90,65 @@ function Variable.__eq(a,b)
 	return a.name == b.name
 end
 
--- assign or concatenate?
--- Maxima would concatenate 
--- but that'd leave us no room to remove
--- so I'll assign
-function Variable:depends(...)
-	self.dependentVars = table{...}
+--[[
+assign or concatenate?
+Maxima would concatenate 
+but that'd leave us no room to remove
+so I'll assign
+but I'll only assign for unique TensorRefs of self, so x'^i':setDependentVars(...) will clear all the other x'^i" setDependentVars but leave the x, x'^ij', etc setDependentVars based on # of tensor indexes
+--]]
+function Variable:setDependentVars(...)
+	-- filter out setDependentVars() of matching # of tensorref indexes
+	-- this way x:setDependentVars(y) and x'^i':setDependentVars(y) are separate
+	if self.dependentVars then
+		self.dependentVars = self.dependentVars:filter(function(depvar)
+			return depvar.src ~= self
+		end)
+	else
+		self.dependentVars = table()
+	end
+	self.dependentVars:append(table{...}:mapi(function(wrt)
+		return {src=self, wrt=wrt}
+	end))
+	self:removeDuplicateDepends()
+end
+
+function Variable:removeDuplicateDepends()
+	if self.dependentVars then
+		for i=#self.dependentVars-2,1,-1 do
+			local da = self.dependentVars[i]
+			local db = self.dependentVars[i+1]
+			if da.src == db.src
+			and da.wrt == db.wrt
+			then
+				self.dependentVars:remove(i)
+			end
+		end
+	end
+end
+
+-- only return true for the dependentVars entries with src==self
+-- that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
+function Variable:dependsOn(x)
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	if self.dependentVars then
+		for _,depvar in ipairs(self.dependentVars) do
+			if depvar.src == self then
+				local wrt = depvar.wrt
+				
+				if Variable.is(x) and wrt == x then return true end
+				
+				if TensorRef.is(x) 
+				and TensorRef.is(wrt)
+				and x[1] == wrt[1]
+				and #x == #wrt
+				then
+					return true
+				end
+			end
+		end
+	end
+	return false
 end
 
 function Variable:getRealDomain()

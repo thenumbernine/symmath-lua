@@ -208,6 +208,7 @@ build = {
 		["symmath.tests.unit.tensor use case"] = "tests/unit/tensor use case.lua",
 		["symmath.tests.unit.test"] = "tests/unit/test.lua",
 		["symmath.tests.unit.tidyIndexes"] = "tests/unit/tidyIndexes.lua",
+		["symmath.tests.unit.variable depends"] = "tests/unit/variable depends.lua",
 		["symmath.tests.wave equation in spacetime"] = "tests/wave equation in spacetime.lua",
 		["symmath.tests.wave equation in spacetime - flux eigenvectors"] = "tests/wave equation in spacetime - flux eigenvectors.lua",
 		["symmath.tidy"] = "tidy.lua",

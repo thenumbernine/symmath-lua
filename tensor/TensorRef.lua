@@ -51,14 +51,64 @@ function TensorRef:hasTensorIndex(symbol)
 	return false
 end
 
-
-
 -- how does this behave any different than Expression:clone() 
 function TensorRef:clone()
 	return TensorRef(range(#self):map(function(i)
 		return self[i]:clone()
 	end):unpack())
 end
+
+function TensorRef:setDependentVars(...)
+	local Variable = require 'symmath.Variable'
+	if not Variable.is(self[1]) then
+		error("cannot yet call a non-Variable, non-TensorRef(Variable) to :setDependentVars() on other variables/tensrrefs-of-variables")
+	end
+	local var = self[1]
+
+	-- filter out setDependentVars() of matching # of tensorref indexes
+	-- this way x:setDependentVars(y) and x'^i':setDependentVars(y) are separate
+	if var.dependentVars then
+		var.dependentVars = var.dependentVars:filter(function(depvar)
+			return depvar.src == var
+			or #depvar.src ~= #self
+		end)
+	else
+		var.dependentVars = table()
+	end
+	var.dependentVars:append(table{...}:mapi(function(wrt)
+		return {src=self:clone(), wrt=wrt:clone()}
+	end))
+	var:removeDuplicateDepends()
+end
+
+-- only return true for the dependentVars entries with src==TensorRef(self, ...) with matching # indexes
+-- that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
+function TensorRef:dependsOn(x)
+	local Variable = require 'symmath.Variable'
+	if not Variable.is(self[1]) then return end
+	if self[1].dependentVars then
+		for _,depvar in ipairs(self[1].dependentVars) do
+			if TensorRef.is(depvar.src)
+			and #depvar.src == #self
+			then
+				local wrt = depvar.wrt
+				
+				if Variable.is(x) and wrt == x then return true end
+				
+				if TensorRef.is(x) 
+				and TensorRef.is(wrt)
+				and x[1] == wrt[1]
+				and #x == #wrt
+				then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
+
 
 TensorRef.rules = {
 	Prune = {
