@@ -34,11 +34,11 @@ ${{{ \tilde{e}}^z}_z} = {1}$
 <br>
 
 <br>
-tensor index associated with coordinate $r$ is index $r$ with operator $e_{r}(\zeta) = $${\partial \zeta}\over{\partial r}$
+tensor index associated with coordinate $r$ is index $r$ with operator $e_{r}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
 <br>
-tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $${\partial \zeta}\over{\partial\phi}$
+tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
 <br>
-tensor index associated with coordinate $z$ is index $z$ with operator $e_{z}(\zeta) = $${\partial \zeta}\over{\partial z}$
+tensor index associated with coordinate $z$ is index $z$ with operator $e_{z}(\zeta) = $$\frac{\partial \zeta}{\partial z}$
 <br>
 
 <br>
@@ -159,7 +159,7 @@ $0$
 Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
 ${{{ G}^a}_b} = {0}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{\partial {A^{r}}}\over{\partial r}} + {{\partial {A^{\phi}}}\over{\partial\phi}} + {{\partial {A^{z}}}\over{\partial z}} + {{{{A^{r}}}} \cdot {{\frac{1}{r}}}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{r}}}{\partial r}} + {\frac{\partial {A^{\phi}}}{\partial \phi}} + {\frac{\partial {A^{z}}}{\partial z}} + {{{{A^{r}}}} \cdot {{\frac{1}{r}}}}}$
 <br>
 geodesic:
 <br>
@@ -242,23 +242,23 @@ propagator commutation:
 <br>
 propagator partials
 <br>
-${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  -{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)} &  0 \\  \frac{-{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}{{r}^{2}} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  -{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)} &  0 \\  \frac{-{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}{{r}^{2}} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
 volume element: 	$r$
 <br>

@@ -32,9 +32,9 @@ ${{{ \tilde{e}}^{\phi}}_{\phi}} = {\frac{1}{{{r}} {{sin\left(  \theta\right)}}}}
 <br>
 
 <br>
-tensor index associated with coordinate $\theta$ is index $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $${\frac{1}{r}}{({{\partial \zeta}\over{\partial\theta}})}$
+tensor index associated with coordinate $\theta$ is index $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $${\frac{1}{r}}{({\frac{\partial \zeta}{\partial \theta}})}$
 <br>
-tensor index associated with coordinate $\phi$ is index $\hat{\phi}$ with operator $e_{\hat{\phi}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial\phi}}{{{r}} {{sin\left(  \theta\right)}}}$
+tensor index associated with coordinate $\phi$ is index $\hat{\phi}$ with operator $e_{\hat{\phi}}(\zeta) = $$\frac{\frac{\partial \zeta}{\partial \phi}}{{{r}} {{sin\left(  \theta\right)}}}$
 <br>
 
 <br>
@@ -159,7 +159,7 @@ ${{{ G}^{\hat{\theta}}}_{\hat{\theta}}} = {-{\frac{1}{{r}^{2}}}}$;
 ${{{ G}^{\hat{\phi}}}_{\hat{\phi}}} = {-{\frac{1}{{r}^{2}}}}$
 
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{cos\left(  \theta\right)}} {{{A^{\hat{\theta}}}}} \cdot {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}} + {{{{\partial {A^{\hat{\theta}}}}\over{\partial\theta}}} {{\frac{1}{r}}}} + {{{{\partial {A^{\hat{\phi}}}}\over{\partial\phi}}} {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{cos\left(  \theta\right)}} {{{A^{\hat{\theta}}}}} \cdot {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}} + {{{\frac{\partial {A^{\hat{\theta}}}}{\partial \theta}}} {{\frac{1}{r}}}} + {{{\frac{\partial {A^{\hat{\phi}}}}{\partial \phi}}} {{\frac{1}{sin\left(  \theta\right)}}} {{\frac{1}{r}}}}}$
 <br>
 geodesic:
 <br>
@@ -219,13 +219,13 @@ propagator commutation:
 <br>
 propagator partials
 <br>
-${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \theta}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right) &  -{sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)} \\  sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right) &  cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  {{sin\left(  \theta\right)}} {{sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)}} {{({{{\phi_L}} - {{\phi_R}}})}} &  {{sin\left(  \theta\right)}} {{cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)}} {{({{{\phi_L}} - {{\phi_R}}})}} \\  -{{{sin\left(  \theta\right)}} {{cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}} &  {{sin\left(  \theta\right)}} {{sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}\end{matrix}\right]}$
+${{\frac{\partial}{\partial \theta}}\left( \left[\begin{matrix}  cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right) &  -{sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)} \\  sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right) &  cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  {{sin\left(  \theta\right)}} {{sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)}} {{({{{\phi_L}} - {{\phi_R}}})}} &  {{sin\left(  \theta\right)}} {{cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)}} {{({{{\phi_L}} - {{\phi_R}}})}} \\  -{{{sin\left(  \theta\right)}} {{cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}} &  {{sin\left(  \theta\right)}} {{sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\phi}}\left( \left[\begin{matrix}  cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right) &  -{sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)} \\  sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right) &  cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right) &  -{sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)} \\  sin\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right) &  cos\left( {{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
 volume element: 	${{{r}^{2}}} {{sin\left(  \theta\right)}}$
 <br>

@@ -34,11 +34,11 @@ ${{{ \tilde{e}}^z}_z} = {\frac{1}{\sqrt[3] r}}$
 <br>
 
 <br>
-tensor index associated with coordinate $r$ is index $\hat{r}$ with operator $e_{\hat{r}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial r}}{\sqrt[3] r}$
+tensor index associated with coordinate $r$ is index $\hat{r}$ with operator $e_{\hat{r}}(\zeta) = $$\frac{\frac{\partial \zeta}{\partial r}}{\sqrt[3] r}$
 <br>
-tensor index associated with coordinate $\theta$ is index $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial\theta}}{\sqrt[3] r}$
+tensor index associated with coordinate $\theta$ is index $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $$\frac{\frac{\partial \zeta}{\partial \theta}}{\sqrt[3] r}$
 <br>
-tensor index associated with coordinate $z$ is index $\hat{z}$ with operator $e_{\hat{z}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial z}}{\sqrt[3] r}$
+tensor index associated with coordinate $z$ is index $\hat{z}$ with operator $e_{\hat{z}}(\zeta) = $$\frac{\frac{\partial \zeta}{\partial z}}{\sqrt[3] r}$
 <br>
 
 <br>
@@ -179,7 +179,7 @@ $0$
 Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
 ${{{ G}^a}_b} = {0}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{{\partial {A^{\hat{z}}}}\over{\partial z}}} {{\frac{1}{\sqrt[3] r}}}} + {{{{\partial {A^{\hat{\theta}}}}\over{\partial\theta}}} {{\frac{1}{\sqrt[3] r}}}} + {{{{\partial {A^{\hat{r}}}}\over{\partial r}}} {{\frac{1}{\sqrt[3] r}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{A^{\hat{r}}}}} \cdot {{\frac{1}{r}}} {{\frac{1}{\sqrt[3] r}}}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{\frac{\partial {A^{\hat{z}}}}{\partial z}}} {{\frac{1}{\sqrt[3] r}}}} + {{{\frac{\partial {A^{\hat{\theta}}}}{\partial \theta}}} {{\frac{1}{\sqrt[3] r}}}} + {{{\frac{\partial {A^{\hat{r}}}}{\partial r}}} {{\frac{1}{\sqrt[3] r}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{A^{\hat{r}}}}} \cdot {{\frac{1}{r}}} {{\frac{1}{\sqrt[3] r}}}}}$
 <br>
 geodesic:
 <br>
@@ -262,23 +262,23 @@ propagator commutation:
 <br>
 propagator partials
 <br>
-${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}} &  0 &  0 \\  0 &  \frac{\sqrt[3]{{{r_L}}^{2}}}{\sqrt[3]{{{r_R}}^{2}}} &  0 \\  0 &  0 &  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}} &  0 &  0 \\  0 &  \frac{\sqrt[3]{{{r_L}}^{2}}}{\sqrt[3]{{{r_R}}^{2}}} &  0 \\  0 &  0 &  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}} &  0 &  0 \\  0 &  \frac{\sqrt[3]{{{r_L}}^{2}}}{\sqrt[3]{{{r_R}}^{2}}} &  0 \\  0 &  0 &  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \theta}}\left( \left[\begin{matrix}  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}} &  0 &  0 \\  0 &  \frac{\sqrt[3]{{{r_L}}^{2}}}{\sqrt[3]{{{r_R}}^{2}}} &  0 \\  0 &  0 &  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}} &  0 &  0 \\  0 &  \frac{\sqrt[3]{{{r_L}}^{2}}}{\sqrt[3]{{{r_R}}^{2}}} &  0 \\  0 &  0 &  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}} &  0 &  0 \\  0 &  \frac{\sqrt[3]{{{r_L}}^{2}}}{\sqrt[3]{{{r_R}}^{2}}} &  0 \\  0 &  0 &  \frac{\sqrt[3] {r_R}}{\sqrt[3] {r_L}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} &  0 \\  \frac{-{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}{{r}^{2}} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} &  0 \\  \frac{-{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}{{r}^{2}} &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \theta}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \theta}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
 volume element: 	$r$
 <br>

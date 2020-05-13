@@ -32,9 +32,9 @@ ${{{ \tilde{e}}^{\theta}}_{\theta}} = {\frac{1}{\sqrt r}}$
 <br>
 
 <br>
-tensor index associated with coordinate $r$ is index $\hat{r}$ with operator $e_{\hat{r}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial r}}{\sqrt r}$
+tensor index associated with coordinate $r$ is index $\hat{r}$ with operator $e_{\hat{r}}(\zeta) = $$\frac{\frac{\partial \zeta}{\partial r}}{\sqrt r}$
 <br>
-tensor index associated with coordinate $\theta$ is index $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $$\frac{{\partial \zeta}\over{\partial\theta}}{\sqrt r}$
+tensor index associated with coordinate $\theta$ is index $\hat{\theta}$ with operator $e_{\hat{\theta}}(\zeta) = $$\frac{\frac{\partial \zeta}{\partial \theta}}{\sqrt r}$
 <br>
 
 <br>
@@ -159,7 +159,7 @@ $0$
 Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
 ${{{ G}^a}_b} = {0}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{{\partial {A^{\hat{\theta}}}}\over{\partial\theta}}} {{\frac{1}{\sqrt r}}}} + {{{{\partial {A^{\hat{r}}}}\over{\partial r}}} {{\frac{1}{\sqrt r}}}} + {{{\frac{1}{2}}} {{{A^{\hat{r}}}}} \cdot {{\frac{1}{r}}} {{\frac{1}{\sqrt r}}}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{\frac{\partial {A^{\hat{\theta}}}}{\partial \theta}}} {{\frac{1}{\sqrt r}}}} + {{{\frac{\partial {A^{\hat{r}}}}{\partial r}}} {{\frac{1}{\sqrt r}}}} + {{{\frac{1}{2}}} {{{A^{\hat{r}}}}} \cdot {{\frac{1}{r}}} {{\frac{1}{\sqrt r}}}}}$
 <br>
 geodesic:
 <br>
@@ -219,13 +219,13 @@ propagator commutation:
 <br>
 propagator partials
 <br>
-${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  \frac{\sqrt {r_R}}{\sqrt {r_L}} &  0 \\  0 &  \frac{\sqrt {r_L}}{\sqrt {r_R}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  \frac{\sqrt {r_R}}{\sqrt {r_L}} &  0 \\  0 &  \frac{\sqrt {r_L}}{\sqrt {r_R}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  \frac{\sqrt {r_R}}{\sqrt {r_L}} &  0 \\  0 &  \frac{\sqrt {r_L}}{\sqrt {r_R}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \theta}}\left( \left[\begin{matrix}  \frac{\sqrt {r_R}}{\sqrt {r_L}} &  0 \\  0 &  \frac{\sqrt {r_L}}{\sqrt {r_R}}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} \\  \frac{-{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}{{r}^{2}} &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  -{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)} \\  \frac{-{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}{{r}^{2}} &  0\end{matrix}\right]}$
 <br>
-${{ \partial\over{\partial\theta}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \theta}}\left( \left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 \\  0 &  0\end{matrix}\right]}$
 <br>
 volume element: 	$r$
 <br>

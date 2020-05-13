@@ -144,6 +144,7 @@ end
 -- only return true for the dependentVars entries with src==self
 -- that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
 function Variable:dependsOn(x)
+	if x == self then return true end
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	if self.dependentVars then
 		for _,depvar in ipairs(self.dependentVars) do
