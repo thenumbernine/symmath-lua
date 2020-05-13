@@ -165,7 +165,8 @@ LaTeX.lookupTable = {
 			end
 		end
 
-		return table{'\\frac', 
+		return table{
+			'\\frac', 
 			table(self:apply(a), {force=true}),
 			table(self:apply(b), {force=true})
 		}
@@ -195,13 +196,15 @@ LaTeX.lookupTable = {
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local symmath = require 'symmath'
 		local Variable = symmath.Variable
+		local TensorRef = require 'symmath.tensor.TensorRef'
 
 		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars
 		
 		local diffExpr = expr[1]
 		local diffExprStr = self:apply(diffExpr)
-		local diffExprOnTop = Variable.is(diffExpr)
+		local diffExprOnTop = Variable.is(diffExpr) 
+			or (TensorRef.is(diffExpr) and Variable.is(diffExpr[1]))
 
 		if self.useCommaDerivative then
 			return table{ 
@@ -251,7 +254,11 @@ LaTeX.lookupTable = {
 				bottom:insert(explode(tostring(power)))
 			end
 		end
-		local s = table{top, '\\over', bottom}
+		local s = table{
+			'\\frac', 
+			table(top, {force=true}), 
+			table(bottom, {force=true}),
+		}
 		
 		if not diffExprOnTop then
 			s = table{s, '\\left(', diffExprStr, '\\right)'}
