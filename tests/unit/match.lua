@@ -25,5 +25,5 @@ local i = (x + y):match(y + symmath.Wildcard(1))
 assert(i == x)
 
 -- add match to zero, because nothing's left
-local i = (x + y):match((x + y + symmath.Wildcard(1))())
+local i = (x + y):match(x + y + symmath.Wildcard(1))
 assert(i == symmath.Constant(0))

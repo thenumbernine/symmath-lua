@@ -7,6 +7,20 @@ mul.implicitName = true
 mul.precedence = 3
 mul.name = '*'
 
+function mul:init(...)
+	mul.super.init(self, ...)
+
+	-- auto flatten any muls
+	for i=#self,1,-1 do
+		if mul.is(self[i]) then
+			local x = table.remove(self, i)
+			for j=#x,1,-1 do
+				table.insert(self, i, x[j])
+			end
+		end
+	end
+end
+
 function mul:evaluateDerivative(deriv, ...)
 	local add = require 'symmath.op.add'
 	local sums = table()

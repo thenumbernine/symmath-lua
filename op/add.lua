@@ -8,6 +8,22 @@ local add = class(Binary)
 add.precedence = 2
 add.name = '+'
 
+function add:init(...)
+	add.super.init(self, ...)
+
+	-- auto flatten any adds ...?
+	-- I don't think anyone depends on nested adds ... 
+	-- and flattening here will make the API easier, requiring less simplify's for matching and == 
+	for i=#self,1,-1 do
+		if add.is(self[i]) then
+			local x = table.remove(self, i)
+			for j=#x,1,-1 do
+				table.insert(self, i, x[j])
+			end
+		end
+	end
+end
+
 function add:evaluateDerivative(deriv, ...)
 	local result = table()
 	for i=1,#self do
