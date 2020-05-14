@@ -8,14 +8,14 @@ local Binary = require 'symmath.op.Binary'
 -- I would use binary operators for this, but Lua's overloading requires the return value be a boolean
 local Equation = class(Binary)
 
-function Equation.__eq(a,b)
-	state = state or {matches=table()}
-	if require 'symmath.Wildcard'.is(b) then
-		if state.matches[b.index] == nil then
-			state.matches[b.index] = a
-			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+function Equation.match(a, b, matches)
+	matches = matches or table()
+	if require 'symmath.Wildcard'.is(b) and b:wildcardMatches(a) then
+		if matches[b.index] == nil then
+			matches[b.index] = a
+			return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 		else
-			if b ~= state.matches[b.index] then return false end
+			if b ~= matches[b.index] then return false end
 		end	
 	else
 		if getmetatable(a) ~= getmetatable(b) then return false end
@@ -29,7 +29,7 @@ function Equation.__eq(a,b)
 		--local bi = b:find(a[ai])
 		local bi
 		for _bi=1,#b do
-			if b[_bi]:match(a[ai], state) then
+			if b[_bi]:match(a[ai], matches) then
 				bi = _bi
 				break
 			end
@@ -44,11 +44,10 @@ function Equation.__eq(a,b)
 	local n = #a
 	if n ~= #b then return false end
 	for i=1,n do
-		if not a[i]:match(b[i], state) then return false end
+		if not a[i]:match(b[i], matches) then return false end
 	end
 	
-	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
-
+	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
 Equation.solve = require 'symmath.solve'

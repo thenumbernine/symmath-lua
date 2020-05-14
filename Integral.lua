@@ -131,6 +131,46 @@ Integral.rules = {
 			local sinh = require 'symmath.sinh'
 			local cosh = require 'symmath.cosh'
 
+			-- TODO in :match() and Wildcard system,
+			-- need separate Wildcards for dependent and non-dependent ...
+			-- but now we have the issue, esp for add() and mul() which can have n children
+			-- which does Wildcard match?  individual?  greedy?  greedy I think ...
+			-- of course if they are greedy then that means (a * b):match(Wildcard(1) * Wildcard(2)) would return arbitrary results.
+			-- I think now we need regex-style matching, so wildcards for single nodes, for 0-or-more nodes, for 1-or-more nodes, etc
+			-- I could default to greedy 1-or-more, then (a * b):match(Wildcard(1) * Wildcard(2)) would work,
+			--  and (a * b * c):match(Wildcard(1) * Wildcard(2)) would return some combination of a, b*c or a*b, c
+			-- this would mean changing the add() and mul() match() to first match non-wildcards, then match each wildcard once, then continue to try and match the rest
+			--[[
+			-- int(c) = c x
+			if int:match(WildcardNotDep(1, x)) then
+				return int * x
+			end
+		
+			-- int(f(x) * c)
+			local f, c = int:match(Wildcard{index=1, dependsOn=x, atLeast=0} * Wildcard{index=2, cannotDependOn=x, atLeast=0})
+			if f then
+				if f == x then
+					return (c / 2) * x^2
+				end
+			
+				local n = f:match(x^Wildcard{index=1, cannotDependOn=x})
+				if n then
+					if Constant.isValue(n, -1) then
+						return c * log(abs(x))
+					else
+						return (c / (n+1)) * x^(n+1)
+					end
+				end
+			
+				local n = f:match(Wildcard{index=1, cannotDependOn=x}^x)
+				if n then
+					return (c / log(n)) * n^x
+				end
+			
+				... etc ...
+			end
+			--]]
+
 			if #dep == 0 then
 				return mulWithNonDep(x)
 			elseif #dep == 1 then	-- integrals of single f(x)

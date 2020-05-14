@@ -235,15 +235,15 @@ end
 -- and instead it compares isa relationship of metatables.
 -- Putting something into Expression would be nice, but I would like it to do like this and to test isa of the class associated with the match(), 
 --  and that would have to be implmented on a per-class basis.
-function Array.match(a, b, state)
+function Array.match(a, b, matches)
 	-- same as in Expression.match
-	state = state or {matches=table()}
-	if require 'symmath.Wildcard'.is(b) then
-		if state.matches[b.index] == nil then
-			state.matches[b.index] = a
-			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+	matches = matches or table()
+	if require 'symmath.Wildcard'.is(b) and b:wildcardMatches(a) then
+		if matches[b.index] == nil then
+			matches[b.index] = a
+			return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 		else
-			if b ~= state.matches[b.index] then return false end
+			if b ~= matches[b.index] then return false end
 		end	
 	else
 		if not Array.is(a) or not Array.is(b) then return false end
@@ -255,10 +255,10 @@ function Array.match(a, b, state)
 	local n = #a
 	if n ~= #b then return false end
 	for i=1,n do
-		if not a[i]:match(b[i], state) then return false end
+		if not a[i]:match(b[i], matches) then return false end
 	end
 	
-	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
 function Array.pruneAdd(a,b)

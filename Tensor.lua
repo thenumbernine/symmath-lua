@@ -498,15 +498,15 @@ function Tensor:clone(...)
 end
 
 --[=[
-function Tensor.match(a, b, state)
-	if not Tensor.super.match(a, b, state) then return false end
+function Tensor.match(a, b, matches)
+	if not Tensor.super.match(a, b, matches) then return false end
 --[[
 	assert(#a.variance == #b.variance)
 	for i=1,#a.variance do
 		if a.variance ~= b.variance then return false end
 	end
 --]]
-	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 --]=]
 

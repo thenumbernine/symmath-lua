@@ -146,16 +146,17 @@ for equality and solving, use .eq()
 -- TODO what about commutative expression comparison? 
 -- it seems more and more like every subclass should just override :match() instead of __eq
 -- and just assign __eq = match
-function Expression.match(a, b, state)
-	state = state or {matches=table()}
-	if require 'symmath.Wildcard'.is(b) then
-		if state.matches[b.index] == nil then
-			state.matches[b.index] = a
+-- TODO should wildcards also include matching + 0 in add and * 1 in mul?  Why not, I think so.
+function Expression.match(a, b, matches)
+	matches = matches or table()
+	if require 'symmath.Wildcard'.is(b) and b:wildcardMatches(a) then
+		if matches[b.index] == nil then
+			matches[b.index] = a
 			
 			-- return 'true' to match the end of match()
-			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+			return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 		else
-			if b ~= state.matches[b.index] then return false end
+			if b ~= matches[b.index] then return false end
 		end
 	else
 		if getmetatable(a) ~=  getmetatable(b) then return false end
@@ -167,13 +168,13 @@ function Expression.match(a, b, state)
 	local n = #a
 	if n ~= #b then return false end
 	for i=1,n do
-		if not a[i]:match(b[i], state) then return false end
+		if not a[i]:match(b[i], matches) then return false end
 	end
 
 	-- hmm, if we do a a:match() using no Wildcard(1)'s then the first arg will be nil
 	-- which will cause a 'if a:match()' to fail
 	-- so in the strange case that the user doesn't use a Wildcard(1) then put a 'true' in the first arg
-	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 function Expression.__eq(a,b)
 	return a:match(b)

@@ -1,5 +1,6 @@
 -- TensorIndex represents an entry in the Tensor.variance list
 local class = require 'ext.class'
+local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 
 
@@ -21,14 +22,14 @@ end
 
 -- TODO what about wildcards for specific upper or lowre?
 -- I guess I would need to make a Wildcard subclass for that, and have it instanciated by special string indexes like x' ^$1 _$2' etc
-function TensorIndex.match(a, b, state)
-	state = state or {matches=table()}
-	if require 'symmath.Wildcard'.is(b) then
-		if state.matches[b.index] == nil then
-			state.matches[b.index] = a
-			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+function TensorIndex.match(a, b, matches)
+	matches = matches or table()
+	if require 'symmath.Wildcard'.is(b) and b:wildcardMatches(a) then
+		if matches[b.index] == nil then
+			matches[b.index] = a
+			return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 		else
-			if b ~= state.matches[b.index] then return false end
+			if b ~= matches[b.index] then return false end
 		end	
 	end
 
@@ -39,7 +40,7 @@ function TensorIndex.match(a, b, state)
 		return false
 	end
 	
-	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
 

@@ -1,4 +1,5 @@
 local class = require 'ext.class'
+local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 
 --[[
@@ -103,15 +104,15 @@ end
 
 -- this won't be called if a Lua number is used ...
 -- only when a Lua table is used
-function Constant.match(a, b, state)
+function Constant.match(a, b, matches)
 	-- same as in Expression.match
-	state = state or {matches=table()}
-	if require 'symmath.Wildcard'.is(b) then
-		if state.matches[b.index] == nil then
-			state.matches[b.index] = a
-			return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+	matches = matches or table()
+	if require 'symmath.Wildcard'.is(b) and b:wildcardMatches(a) then
+		if matches[b.index] == nil then
+			matches[b.index] = a
+			return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 		else
-			if b ~= state.matches[b.index] then return false end
+			if b ~= matches[b.index] then return false end
 		end	
 	end
 
@@ -131,7 +132,7 @@ function Constant.match(a, b, state)
 	if a ~= b then return false end
 
 	-- same as return true in Expression.match
-	return (state.matches[1] or true), table.unpack(state.matches, 2, table.maxn(state.matches))
+	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
 function Constant:evaluateDerivative(deriv, ...)
