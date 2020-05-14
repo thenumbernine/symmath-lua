@@ -51,10 +51,15 @@ mul.removeIfContains = require 'symmath.commutativeRemove'
 -- now that we've got matrix multilpication, this becomes more difficult...
 -- non-commutative objects (matrices) need to be compared in-order
 -- commutative objects can be compared in any order
-mul.match = function(a, b, matches)
+function mul.match(a, b, matches)
+	local Wildcard = require 'symmath.Wildcard'
+	local Constant = require 'symmath.Constant'
+local SingleLine = require 'symmath.export.SingleLine'
+
 	matches = matches or table()
-	if require 'symmath.Wildcard'.is(b) and b:wildcardMatches(a) then
+	if Wildcard.is(b) and b:wildcardMatches(a) then
 		if matches[b.index] == nil then
+print("matching entire expr index "..b.index.." to "..SingleLine(a))	
 			matches[b.index] = a
 			return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 		else
@@ -64,36 +69,166 @@ mul.match = function(a, b, matches)
 		if not mul.is(a) or not mul.is(b) then return false end
 	end	
 	
-	-- order-independent
 	local a = table(a)
 	local b = table(b)
-	for ai=#a,1,-1 do
+	
+	-- compare things order-independent, remove as you go
+	-- skip wildcards, do those last
+	for i=#a,1,-1 do
+		local ai = a[i]
 		-- non-commutative compare...
-		if not a[ai].mulNonCommutative then
-			-- table.find uses == uses __eq which ... should ... only pick bi if it is mulNonCommutative as well (crossing fingers, it's based on the equality implementation)
-			--local bi = b:find(a[ai])
-			local bi
-			for _bi=1,#b do
-				if b[_bi]:match(a[ai], matches) then
-					bi = _bi
+		if not ai.mulNonCommutative then
+			-- table.find uses == uses __eq which ... should ... only pick j if it is mulNonCommutative as well (crossing fingers, it's based on the equality implementation)
+			--local j = b:find(ai)
+			local j
+			for _j=1,#b do
+				local bj = b[_j]
+				if not Wildcard.is(bj)
+				and bj:match(ai, matches)
+				then
+					j = _j
 					break
 				end
 			end
-			if bi then
-				a:remove(ai)
-				b:remove(bi)
+			if j then
+				a:remove(i)
+				b:remove(j)
 			end
 		end
 	end
-	
+
+--[[
+print("what's left after matching commutative non-wildcards:")
+print('a', a:mapi(SingleLine):concat', ')
+print('b', b:mapi(SingleLine):concat', ')
+--]]
+
 	-- now compare what's left in-order (since it's non-commutative)
-	local n = #a
-	if n ~= #b then return false end
-	for i=1,n do
-		if not a[i]:match(b[i], matches) then return false end
+	-- skip wildcards, do those last
+	-- TODO this is no longer true, since wildcards can match subsets
+	local function checkMatch(a,b, matches)
+		matches = matches or table()
+		a = table(a)
+		b = table(b)
+		
+--print("checking match of what's left with "..#a.." elements")
+
+		if #a == 0 and #b == 0 then 
+--print("matches - returning true")			
+			return true 
+		end
+
+		-- #a == 0 is fine if b is full of nothing but wildcards
+		if #b == 0 and #a > 0 then
+print("has remaining elements -- returning false")
+			return false 
+		end
+	
+		-- TODO bi isn't necessarily a wildcard -- it could be an 'mulNonCommutative' term (though nothing does this for multiplication yet)
+		if #b ~= 0 then
+			-- TODO verify that the matches are equal
+			for _,bi in ipairs(b) do
+				if not Wildcard.is(bi) then
+print("expected bi to be a Wildcard, found "..SingleLine(bi))
+					return false
+				end
+				if bi.atLeast and bi.atLeast > 0 then
+print("remaining Wildcard expected an expression when none are left, failing")
+					return false
+				end
+				matches[bi.index] = Constant(1)
+			end
+		end
+		if not Wildcard.is(b[1]) then
+			local a1 = a:remove(1)
+			local b1 = b:remove(1)
+
+--print"isn't a wildcard -- recursive call of match on what's left"
+			-- hmm, what if there's a sub-expression that has wildcard
+			-- then we need matches
+			-- then we need to push/pop matches
+			
+			local firstsubmatch = {a1:match(b1)}
+			local result = firstsubmatch[1]
+			if result == true then firstsubmatch[1] = nil end
+			if not result then 
+print("first match didn't match - failing")				
+				return false 
+			end
+
+			for i=1,table.maxn(firstsubmatch) do
+				if firstsubmatch[i] ~= nil then
+					if matches[i] ~= nil then
+						if matches[i] ~= firstsubmatch[i] then 
+print("first submatches don't match previous matches - index "..i.." "..SingleLine(matches[i]).." vs "..SingleLine(firstsubmatch[i]).." - failing")
+							return false 
+						end
+					else
+print("matching add subexpr from first match "..SingleLine(a1).." index "..b.index.." to "..SingleLine(a))	
+						matches[i] = firstsubmatch[i]
+					end
+				end
+			end
+
+
+			local restsubmatch = {checkMatch(a,b)}
+			local result = restsubmatch[1]
+			if result == true then restsubmatch[1] = nil end
+			if not result then 
+print("rest submatch failed - failing")				
+				return false 
+			end
+
+			for i=1,table.maxn(restsubmatch) do
+				if restsubmatch[i] ~= nil then
+					if matches[i] ~= nil then
+						if matches[i] ~= restsubmatch[i] then 
+print("rest submatches don't match previous matches - index "..i.." "..SingleLine(matches[i]).." vs "..SingleLine(restsubmatch[i]).." - failing")
+							return false 
+						end
+					else
+print("matching add subexpr from rest match index "..b.index.." to "..SingleLine(a))	
+						matches[i] = restsubmatch[i]
+					end
+				end
+			end
+
+			-- overlay match matches on what we have already matched so far
+			-- TODO what about verifying overlapping wildcard indexes are still equal?
+			return matches
+		end
+	
+		-- now if we have a wildcard ... try all 0-n possible matches of it
+		local b1 = b:remove(1)
+		for matchSize=#a,(b1.atLeast or 0),-1 do
+--print("checking match size "..matchSize)			
+			local b1match = matchSize == 0 and Constant(1)
+				or matchSize == 1 and a[1]
+				or setmetatable(table.sub(a, 1, matchSize), mul)
+			local matchesForSize = table(matches)
+			matchesForSize[b1.index] = b1match
+			local suba = table.sub(a, matchSize+1)
+			local submatches = {checkMatch(suba, b)}
+			if submatches[1] then 
+				if submatches[1] == true then submatches[1] = nil end
+				-- TODO verify that matchesForSize matches with submatches
+				local result = table(matchesForSize, submatches)
+				return result:unpack(1, result:maxn())
+			end
+			-- otherwise keep checking
+		end
+		
+		-- all sized matches failed? return false
+print("all sized matches failed - failing")	
+		return false
 	end
 	
-	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
+	-- now what's left in b[i] should all be wildcards
+	-- we just have to assign them between the a's
+	-- but if we want mul match to return wildcards of +0 then we can't just rely on a 1-or-more rule
+	-- for that reason, 
+	return checkMatch(a,b, matches)
+	--return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
 function mul:reverse(soln, index)

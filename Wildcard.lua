@@ -3,6 +3,17 @@ local Expression = require 'symmath.Expression'
 
 local Wildcard = class(Expression)
 
+--[[
+args:
+	index = which index slot to return in the wildcard matching
+		x1, x2, x3 = expr:match(...)
+		where x1 matches to the Wildcard with index==1
+	dependsOn = variable that the Wildcard expression must depend on
+	cannotDependOn = variable that the Wildcard expression cannot depend on
+	atLeast = for + and *, which match an arbitrary subset, this is at least the number of elements to match
+	atMost = for + and * this is the most number of elements to match.
+set 'args' to a number to only set that index
+--]]
 function Wildcard:init(args)
 	if type(args) == 'number' then
 		self.index = args
@@ -12,6 +23,10 @@ function Wildcard:init(args)
 		self.wildcardDependsOn = args.dependsOn
 		self.wildcardCannotDependOn = args.cannotDependOn
 		self.atLeast = args.atLeast
+		self.atMost = args.atMost
+		if self.atMost then
+			assert(self.atMost > 0, "if atMost <= 0 then what are you trying to match?")
+		end
 	elseif type(args) == 'nil' then
 		self.index = 1
 	end
