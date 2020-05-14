@@ -58,17 +58,30 @@ assert(i == x)
 assert(j == y)
 
 -- same with mul
-local i = (x * y):match(Wildcard(1) * y)
-assert(i == x)
 
--- add match to second term
-local i = (x * y):match(x * Wildcard(1))
-assert(i == y)
-
--- change order
 local i = (x * y):match(y * Wildcard(1))
 assert(i == x)
 
--- add match to zero, because nothing's left
 local i = (x * y):match(x * y * Wildcard(1))
 assert(i == Constant(1))
+
+local i = (x * y):match(Wildcard(1))
+assert(i == x * y)
+
+local i = (x * y):match(Wildcard(1) * Wildcard(1))
+assert(i == false)
+
+local i = (x * x):match(Wildcard(1) * Wildcard(1))
+assert(i == x)
+
+local i,j = (x * x):match(Wildcard{index=1, atMost=1} * Wildcard{index=2, atMost=1})
+assert(i == x)
+assert(j == x)
+
+local i,j = (x * y):match(Wildcard(1) * Wildcard(2))
+assert(i == x * y)
+assert(j == Constant(1))
+
+local i,j = (x * y):match(Wildcard{index=1, atMost=1} * Wildcard{index=2, atMost=1})
+assert(i == x)
+assert(j == y)
