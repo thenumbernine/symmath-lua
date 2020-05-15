@@ -32,7 +32,10 @@ function Wildcard:init(args)
 	end
 end
 
-function Wildcard:wildcardMatches(expr)
+-- this is a test-and-set operation.
+-- if it fails then nothing is set and it return false.
+-- if it succeeds then it will modify the 'matches' table and return true.
+function Wildcard:wildcardMatches(expr, matches)
 	-- if we said 'it must depend on var x' and it doesn't, then fail
 	if self.wildcardDependsOn 
 	and not expr:dependsOn(self.wildcardDependsOn)
@@ -47,6 +50,16 @@ function Wildcard:wildcardMatches(expr)
 		return false
 	end
 
+	-- wildcard matches expr -- now check the table
+	if matches[self.index] then
+		-- previous entry does not match the table - fail
+		return matches[self.index] == expr 
+	end
+	
+	-- success:
+	-- set the new entry in the 'matches' table
+	matches[self.index] = expr
+	
 	return true
 end
 

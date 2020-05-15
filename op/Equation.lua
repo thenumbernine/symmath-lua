@@ -10,13 +10,9 @@ local Equation = class(Binary)
 
 function Equation.match(a, b, matches)
 	matches = matches or table()
-	if require 'symmath.Wildcard'.is(b) and b:wildcardMatches(a) then
-		if matches[b.index] == nil then
-			matches[b.index] = a
-			return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
-		else
-			if b ~= matches[b.index] then return false end
-		end	
+	if b.wildcardMatches(a) then
+		if not b:wildcardMatches(a, matches) then return false end
+		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	else
 		if getmetatable(a) ~= getmetatable(b) then return false end
 	end	

@@ -57,14 +57,10 @@ function mul.match(a, b, matches)
 local SingleLine = require 'symmath.export.SingleLine'
 
 	matches = matches or table()
-	if Wildcard.is(b) and b:wildcardMatches(a) then
-		if matches[b.index] == nil then
+	if b.wildcardMatches then
+		if not b:wildcardMatches(a, matches) then return false end
 --print("matching entire expr index "..b.index.." to "..SingleLine(a))	
-			matches[b.index] = a
-			return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
-		else
-			if b ~= matches[b.index] then return false end
-		end	
+		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	else
 		if not mul.is(a) or not mul.is(b) then return false end
 	end	

@@ -126,6 +126,7 @@ Integral.rules = {
 				end
 			end			
 				
+			local Wildcard = require 'symmath.Wildcard'
 			local sin = require 'symmath.sin'
 			local cos = require 'symmath.cos'
 			local sinh = require 'symmath.sinh'
@@ -140,15 +141,21 @@ Integral.rules = {
 			-- I could default to greedy 1-or-more, then (a * b):match(Wildcard(1) * Wildcard(2)) would work,
 			--  and (a * b * c):match(Wildcard(1) * Wildcard(2)) would return some combination of a, b*c or a*b, c
 			-- this would mean changing the add() and mul() match() to first match non-wildcards, then match each wildcard once, then continue to try and match the rest
-			--[[
+--[[
 			-- int(c) = c x
-			if int:match(WildcardNotDep(1, x)) then
+			if int:match(Wildcard{index=1, cannotDependOn=x}) then
 				return int * x
 			end
-		
+			
 			-- int(f(x) * c)
-			local f, c = int:match(Wildcard{index=1, dependsOn=x, atLeast=0} * Wildcard{index=2, cannotDependOn=x, atLeast=0})
+			local f, c = int:match(Wildcard{index=1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x})
 			if f then
+-- TODO get multi-wildcard in non-wildcard elements working first
+print('f')
+print(f)
+print('c')
+print(c)
+error'c'
 				if f == x then
 					return (c / 2) * x^2
 				end
@@ -167,8 +174,9 @@ Integral.rules = {
 					return (c / log(n)) * n^x
 				end
 			
-				... etc ...
+				--... etc ...
 			end
+error'b'
 			--]]
 
 			if #dep == 0 then
