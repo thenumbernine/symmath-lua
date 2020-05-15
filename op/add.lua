@@ -53,7 +53,9 @@ function add.match(a, b, matches)
 local SingleLine = require 'symmath.export.SingleLine'
 
 	matches = matches or table()
-	if b.wildcardMatches then
+	-- if 'b' is an add then fall through 
+	-- this part is only for wildcard matching of the whole expression
+	if not add.is(b) and b.wildcardMatches then
 		if not b:wildcardMatches(a, matches) then return false end
 --print("matching entire expr index "..b.index.." to "..SingleLine(a))	
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
@@ -241,6 +243,76 @@ local SingleLine = require 'symmath.export.SingleLine'
 	
 	return checkMatch(a,b, matches)
 	--return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
+end
+
+--[[
+alright, what if we want to match Constant(0):match(Wildcard(1) + Wildcard(2) ?
+add needs its own 'wildcardMatches' function for that to happen
+... and that function needs to fall when it encounters adds 
+and if it doesn't ... 
+then it needs to look through its children and see if it has all-but-1...
+
+... if it has no non-wildcards then make sure we are matching against Constant(0), and match the wildcards with Constant(0)
+... if we have all-but-1 wildcards then make sure we are matching against the remaining non-wildcard, and match the wildcards with Constant(0)
+... if we have all-but-2 wildcards then fail
+
+TODO consider addNonCommutative operators
+--]]
+function add:wildcardMatches(a, matches)
+	local Constant = require 'symmath.Constant'
+
+	-- 'a' is the 'a' in Expression.match(a,b)
+	-- 'b' is 'self'
+	local nonWildcards = table()
+	local wildcards = table()
+	for _,w in ipairs(self) do
+		if w.wildcardMatches then
+			wildcards:insert(w)
+		else
+			nonWildcards:insert(w)
+		end
+	end
+
+	if #nonWildcards > 1 then
+		return false
+	end
+	if #nonWildcards == 1 then
+		-- TODO what if we are doing x:match(W{1,atLeast=1} + W{2}) ?
+		if not a:match(nonWildcards[1], matches) then
+			return false
+		end
+	end
+
+	-- if any of these wildcards needed a term then fail
+	-- (that will be handled in the add.match fallthrough
+	--  which is why add.match should not call this -- only other non-add Expressions' .match())			
+	for _,w in ipairs(wildcards) do
+		if w.atLeast and w.atLeast > 0 then
+			return false
+		end
+	end
+	-- match all wildcards to zero
+	-- test first, so we don't half-set the 'matches' before failing (TODO am I doing this elsewhere in :match()?)
+	-- TODO w.index IS NOT GUARANTEED, if we have (x):match(W(1) + W(2) * W(3)) and add and mul have wildcardMatches
+	-- in that case, you need to handle all possible sub-wildcardMatches specifically
+	for i,w in ipairs(wildcards) do
+		if i==1 then
+			if matches[w.index] and matches[w.index] ~= a then return false end
+		else
+			if matches[w.index] and not Constant.isValue(matches[w.index], 0) then return false end
+		end
+	end
+	-- finally set all matches to zero and return 'true'
+	for i,w in ipairs(wildcards) do
+		if i == 1 then
+--print('add.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(a))
+			matches[w.index] = a
+		else
+--print('add.wildcarddMatches setting '..w.index..' to 0')
+			matches[w.index] = Constant(0)
+		end
+	end
+	return (matches[1] or true), table.unpack(matches, 1, table.maxn(matches))
 end
 
 add.removeIfContains = require 'symmath.commutativeRemove'

@@ -8,6 +8,7 @@ args:
 	index = which index slot to return in the wildcard matching
 		x1, x2, x3 = expr:match(...)
 		where x1 matches to the Wildcard with index==1
+		(args[1] is a replacement for args.index)
 	dependsOn = variable that the Wildcard expression must depend on
 	cannotDependOn = variable that the Wildcard expression cannot depend on
 	atLeast = for + and *, which match an arbitrary subset, this is at least the number of elements to match
@@ -18,7 +19,7 @@ function Wildcard:init(args)
 	if type(args) == 'number' then
 		self.index = args
 	elseif type(args) == 'table' then
-		self.index = args.index or 1
+		self.index = args.index or args[1] or 1
 		-- use some field names that don't overlap with Expression methods like 'dependsOn'
 		self.wildcardDependsOn = args.dependsOn
 		self.wildcardCannotDependOn = args.cannotDependOn
