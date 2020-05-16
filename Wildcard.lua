@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
 
 local Wildcard = class(Expression)
+Wildcard.name = 'Wildcard'
 
 --[[
 args:

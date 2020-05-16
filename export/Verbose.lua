@@ -47,6 +47,15 @@ Verbose.lookupTable = {
 		-- and if it didn't override the original ... then this tostring() call would be a recursive call
 		return expr.name..'{'..tostring(expr)..'}'
 	end,
+	[require 'symmath.Wildcard'] = function(self, expr)
+		return expr.name..'{'
+			..'index='..expr.index
+			..(expr.atLeast and (', atLeast='..expr.atLeast) or '')
+			..(expr.atMost and (', atMost='..expr.atMost) or '')
+			..(expr.wildcardDependsOn and (', dependsOn='..self:apply(expr.wildcardDependsOn)) or '')
+			..(expr.wildcardCannotDependOn and (', cannotDependOn='..self:apply(expr.wildcardCannotDependOn)) or '')
+		..'}'
+	end,
 }
 
 return Verbose()	-- singleton

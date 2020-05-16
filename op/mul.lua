@@ -247,6 +247,112 @@ local SingleLine = require 'symmath.export.SingleLine'
 	--return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
+-- copy of op/add.wildcardMatches, just like match()
+function mul:wildcardMatches(a, matches)
+	local Constant = require 'symmath.Constant'
+
+	-- 'a' is the 'a' in Expression.match(a,b)
+	-- 'b' is 'self'
+	local nonWildcards = table()
+	local wildcards = table()
+	for _,w in ipairs(self) do
+		if w.wildcardMatches then
+			wildcards:insert(w)
+		else
+			nonWildcards:insert(w)
+		end
+	end
+
+local Verbose = require 'symmath.export.Verbose'
+print("mul children: "..table.mapi(self, Verbose):concat', ')
+print("mul wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
+print("mul non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
+	if #nonWildcards > 1 then
+		return false
+	end
+
+	local defaultValue = Constant(1)
+	local matchExpr = a
+	if #nonWildcards == 1 then
+		-- TODO what if we are doing x:match(W{1,atLeast=1} * W{2}) ?
+		if not a:match(nonWildcards[1], matches) then
+			return false
+		end
+		-- a matches nonWildcards[1]
+		matchExpr = defaultValue
+	end
+
+	-- if any of these wildcards needed a term then fail
+	-- (that will be handled in the mul.match fallthrough
+	--  which is why mul.match should not call this -- only other non-mul Expressions' .match())			
+	local totalAtLeast = 0
+	for _,w in ipairs(wildcards) do
+		if w.atLeast and w.atLeast > 0 then
+			totalAtLeast = totalAtLeast + w.atLeast
+			if totalAtLeast > 1 then 
+				return false
+			end
+		end
+	end
+
+	-- when matching wildcards, make sure to match any with 'atLeast' first
+	if totalAtLeast == 1 then
+		for i,w in ipairs(wildcards) do
+			-- TODO make this work for sub-expressions?
+			if w.atLeast and w.atLeast > 0 then
+				if i > 1 then
+--print("moving wildcard with 'atleast' from "..i.." to 1")				
+					table.remove(wildcards, i)
+					table.insert(wildcards, 1, w)
+				end
+				break
+			end
+		end
+	end
+
+	local Wildcard = require 'symmath.Wildcard'
+	local add = require 'symmath.op.add'
+	-- match all wildcards to zero
+	for i,w in ipairs(wildcards) do
+		if Wildcard.is(w) then
+			if matches[w.index] 
+			and matches[w.index] ~= (i == 1 and matchExpr or defaultValue)
+			then 
+				return false 
+			end
+		-- elseif mul.is shouldn't happen if all asdfs are flattened upon construction
+		elseif add.is(w) then
+print("found a match(mul(add()))...")			
+			-- check before going through with it
+			if not (i == 1 and matchExpr or defaultValue):match(w, table(matches)) then
+print(" - failing")				
+				return false
+			end
+print(" - success")		
+		elseif mul.is(w) then
+			error"match() doesn't work with unflattened mul's"
+		else
+			error("found match(mul(unknown))")
+		end
+	end
+	-- finally set all matches to zero and return 'true'
+	for i,w in ipairs(wildcards) do
+		if Wildcard.is(w) then
+--print('mul.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or defaultValue))
+			matches[w.index] = (i == 1 and matchExpr or defaultValue)
+		-- elseif mul.is shouldn't happen if all asdfs are flattened upon construction
+		elseif add.is(w) then
+			-- use the state this time, so it does modify "matches"
+			(i == 1 and matchExpr or defaultValue):match(w, matches)
+		elseif mul.is(w) then
+			error"match() doesn't work with unflattened mul's"
+		end
+	end
+	return (matches[1] or true), table.unpack(matches, 1, table.maxn(matches))
+end
+
+
+
 function mul:reverse(soln, index)
 	-- y = a_1 * ... * a_j(x) * ... * a_n
 	-- => a_j(x) = y / (a_1 * ... * a_j-1 * a_j+1 * ... * a_n)

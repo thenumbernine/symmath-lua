@@ -9,7 +9,7 @@ local one = Constant(1)
 local x = symmath.var'x'
 local y = symmath.var'y'
 
--- [[
+--[[
 assert(x:match(x))
 assert(x == x)
 assert(x ~= y)
@@ -43,7 +43,6 @@ assert(i == false)
 -- this too, this would work only if x + x and not x + y
 local i = (x + x):match(W(1) + W(1))
 assert(i == x)
---]]
 
 -- this too
 local i,j = (x + x):match(W{1, atMost=1} + W{2, atMost=1})
@@ -85,16 +84,6 @@ assert(k == zero)
 local i = (x * y):match(W(1) + x * y)
 assert(i == zero)
 
--- [[
--- for this to work, add.wildcardMatches must call the wildcard-capable objects' own wildcard handlers correctly (and use push/pop match states, instead of assigning to wildcard indexes directly?)
--- also, because add.wildcardMatches assigns the extra wildcards to zero, it will be assigning (W(2) * W(3)) to zero ... which means it must (a) handle mul.wildcardMatches and (b) pick who of mul's children gets the zero and who doesn't
---  it also means that a situation like add->mul->add might have problems ... x:match(W(1) + (W(2) + W(3)) * (W(4) + W(5)))
-local i,j,k = x:match(W(1) + W(2) * W(3))
-assert(i == x)
-assert(j == zero)	-- technically only one of these two needs to be zero
-assert(k == zero)
---]]
-
 -- same with mul
 
 local i = (x * y):match(y * W(1))
@@ -112,14 +101,32 @@ assert(i == false)
 local i = (x * x):match(W(1) * W(1))
 assert(i == x)
 
-local i,j = (x * x):match(W{1, atMost=1} * W{2, atMost=1})
-assert(i == x)
-assert(j == x)
-
+-- verify wildcards are greedy with multiple mul matching 
+-- the first will take all expressions, the second gets the empty set
 local i,j = (x * y):match(W(1) * W(2))
 assert(i == x * y)
 assert(j == one)
 
+-- verify 'atMost' works - since both need at least 1 entry, it will only match when each gets a separate term
+local i,j = (x * x):match(W{1, atMost=1} * W{2, atMost=1})
+assert(i == x)
+assert(j == x)
+
+-- verify 'atMost' cooperates with non-atMost wildcards
+local i,j = (x * y):match(W(1) * W{2, atLeast=1})
+assert(i == x)
+assert(j == y)
+
 local i,j = (x * y):match(W{1, atMost=1} * W{2, atMost=1})
 assert(i == x)
 assert(j == y)
+--]]
+
+-- combinations of add and mul
+
+-- for this to work, add.wildcardMatches must call the wildcard-capable objects' own wildcard handlers correctly (and use push/pop match states, instead of assigning to wildcard indexes directly?)
+-- also, because add.wildcardMatches assigns the extra wildcards to zero, it will be assigning (W(2) * W(3)) to zero ... which means it must (a) handle mul.wildcardMatches and (b) pick who of mul's children gets the zero and who doesn't
+--  it also means that a situation like add->mul->add might have problems ... x:match(W(1) + (W(2) + W(3)) * (W(4) + W(5)))
+local i,j,k = x:match(W(1) + W(2) * W(3))
+assert(i == x)
+assert(j == zero)	-- technically either j or k can be 0 

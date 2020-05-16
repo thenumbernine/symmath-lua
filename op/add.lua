@@ -272,10 +272,15 @@ function add:wildcardMatches(a, matches)
 		end
 	end
 
+local Verbose = require 'symmath.export.Verbose'
+print("add children: "..table.mapi(self, Verbose):concat', ')
+print("add wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
+print("add non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
 	if #nonWildcards > 1 then
 		return false
 	end
-	
+
+	local defaultValue = Constant(0)
 	local matchExpr = a
 	if #nonWildcards == 1 then
 		-- TODO what if we are doing x:match(W{1,atLeast=1} + W{2}) ?
@@ -283,7 +288,7 @@ function add:wildcardMatches(a, matches)
 			return false
 		end
 		-- a matches nonWildcards[1]
-		matchExpr = Constant(0)
+		matchExpr = defaultValue
 	end
 
 	-- if any of these wildcards needed a term then fail
@@ -323,38 +328,36 @@ function add:wildcardMatches(a, matches)
 	for i,w in ipairs(wildcards) do
 		if Wildcard.is(w) then
 			if matches[w.index] 
-			and matches[w.index] ~= (i == 1 and matchExpr or Constant(0))
+			and matches[w.index] ~= (i == 1 and matchExpr or defaultValue)
 			then 
 				return false 
 			end
 		-- elseif add.is shouldn't happen if all adds are flattened upon construction
 		elseif mul.is(w) then
-			-- this is a tough one ...
-			if i == 1 then
+print("found a match(add(mul()))...")			
+			-- check before going through with it
+			if not (i == 1 and matchExpr or defaultValue):match(w, table(matches)) then
+print(" - failing")				
 				return false
-				-- TODO what about (x * y):match(W(1) + x * y) ?
-				-- if it is the first, and it has any wildcard in its mul children
-				-- then we want to match to (1 * W) and match W to 'matchExpr'
-			else
-				return false
-				-- otherwise, if it has any wildcards in its mul children,
-				-- then match all of them to zero
 			end
-			return false
+print(" - success")		
 		elseif add.is(w) then
-			error'here'
+			error"match() doesn't work with unflattened add's"
 		else
-			return false
+			error("found match(add(unknown))")
 		end
 	end
 	-- finally set all matches to zero and return 'true'
 	for i,w in ipairs(wildcards) do
 		if Wildcard.is(w) then
---print('add.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or Constant(0)))
-			matches[w.index] = (i == 1 and matchExpr or Constant(0))
+--print('add.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or defaultValue))
+			matches[w.index] = (i == 1 and matchExpr or defaultValue)
 		-- elseif add.is shouldn't happen if all adds are flattened upon construction
+		elseif mul.is(w) then
+			-- use the state this time, so it does modify "matches"
+			(i == 1 and matchExpr or defaultValue):match(w, matches)
 		elseif add.is(w) then
-			error'here'
+			error"match() doesn't work with unflattened add's"
 		end
 	end
 	return (matches[1] or true), table.unpack(matches, 1, table.maxn(matches))
