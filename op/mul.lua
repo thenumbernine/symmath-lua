@@ -57,7 +57,9 @@ function mul.match(a, b, matches)
 local SingleLine = require 'symmath.export.SingleLine'
 
 	matches = matches or table()
-	if b.wildcardMatches then
+	if not mul.is(b)	-- if the wildcard is a mul then we want to test it here
+	and b.wildcardMatches 
+	then
 		if not b:wildcardMatches(a, matches) then return false end
 --print("matching entire expr index "..b.index.." to "..SingleLine(a))	
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
@@ -263,10 +265,10 @@ function mul:wildcardMatches(a, matches)
 		end
 	end
 
-local Verbose = require 'symmath.export.Verbose'
-print("mul children: "..table.mapi(self, Verbose):concat', ')
-print("mul wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
-print("mul non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
+--local Verbose = require 'symmath.export.Verbose'
+--print("mul children: "..table.mapi(self, Verbose):concat', ')
+--print("mul wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
+--print("mul non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
 	if #nonWildcards > 1 then
 		return false
 	end
@@ -322,13 +324,13 @@ print("mul non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', 
 			end
 		-- elseif mul.is shouldn't happen if all asdfs are flattened upon construction
 		elseif add.is(w) then
-print("found a match(mul(add()))...")			
+--print("found a match(mul(add()))...")			
 			-- check before going through with it
 			if not (i == 1 and matchExpr or defaultValue):match(w, table(matches)) then
-print(" - failing")				
+--print(" - failing")				
 				return false
 			end
-print(" - success")		
+--print(" - success")		
 		elseif mul.is(w) then
 			error"match() doesn't work with unflattened mul's"
 		else

@@ -9,7 +9,7 @@ local one = Constant(1)
 local x = symmath.var'x'
 local y = symmath.var'y'
 
---[[
+-- [[
 assert(x:match(x))
 assert(x == x)
 assert(x ~= y)

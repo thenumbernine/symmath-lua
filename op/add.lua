@@ -55,13 +55,16 @@ local SingleLine = require 'symmath.export.SingleLine'
 	matches = matches or table()
 	-- if 'b' is an add then fall through 
 	-- this part is only for wildcard matching of the whole expression
-	if not add.is(b) and b.wildcardMatches then
+	if not add.is(b) 	-- if the wildcard is a add then we want to test it here
+	and b.wildcardMatches 
+	then
 		if not b:wildcardMatches(a, matches) then return false end
 --print("matching entire expr index "..b.index.." to "..SingleLine(a))	
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	end	
 	if getmetatable(a) ~= getmetatable(b) then return false end
-	
+
+
 	local a = table(a)
 	local b = table(b)
 	
@@ -272,10 +275,10 @@ function add:wildcardMatches(a, matches)
 		end
 	end
 
-local Verbose = require 'symmath.export.Verbose'
-print("add children: "..table.mapi(self, Verbose):concat', ')
-print("add wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
-print("add non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
+--local Verbose = require 'symmath.export.Verbose'
+--print("add children: "..table.mapi(self, Verbose):concat', ')
+--print("add wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
+--print("add non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
 	if #nonWildcards > 1 then
 		return false
 	end
@@ -334,13 +337,13 @@ print("add non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', 
 			end
 		-- elseif add.is shouldn't happen if all adds are flattened upon construction
 		elseif mul.is(w) then
-print("found a match(add(mul()))...")			
+--print("found a match(add(mul()))...")			
 			-- check before going through with it
 			if not (i == 1 and matchExpr or defaultValue):match(w, table(matches)) then
-print(" - failing")				
+--print(" - failing")				
 				return false
 			end
-print(" - success")		
+--print(" - success")		
 		elseif add.is(w) then
 			error"match() doesn't work with unflattened add's"
 		else

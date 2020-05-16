@@ -11,6 +11,7 @@ local xR = var'xR'
 
 -- integrate constants
 assert(Constant(1):integrate(x)() == x)
+print(y:integrate(x)())
 assert(y:integrate(x)() == x * y)
 
 assert(Constant(1):integrate(x, xL, xR)() == (xR - xL)())
