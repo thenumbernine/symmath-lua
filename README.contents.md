@@ -462,11 +462,18 @@ This constructs a Wildcard object for Expression matching.
 - - atMost = The wildcard can only match at most this many sub-expressions.
 - - dependsOn = The wildcard must depend on the specified variable.  See 'Expression:dependsOn()' for more information.
 - - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
+
 Matching works something like this:
 ```
 local i = (x + y):match(x + Wildcard(1))
 assert(i == y)
 ```
+
+The index of the wildcard specifies which return argument the matched expression will be returned in.
+If two present wildcards have equal indexes then the test will only succeed if both wildcard matches are equal. 
+i.e. `(x + y):match(Wildcard(1) + Wildcard(1))` will fail because x != y,
+but `(x + x):match(Wildcard(1) + Wildcard(1))` will succeed and return `x`.
+
 Wildcards are greedy-matching and will match zero-or-more expressions unless stated otherwise.
 For example:
 ```

@@ -2,18 +2,48 @@
 
 local symmath = require 'symmath'
 local W = symmath.Wildcard
-local Constant = symmath.Constant
-local zero = Constant(0)
-local one = Constant(1)
+local const = symmath.Constant
+local zero = const(0)
+local one = const(1)
+local sin = symmath.sin
+local cos = symmath.cos
+
 
 local x = symmath.var'x'
 local y = symmath.var'y'
+
 
 -- [[
 assert(x:match(x))
 assert(x == x)
 assert(x ~= y)
 assert(not x:match(y))
+
+-- functions
+
+local i = sin(x):match(sin(W(1)))
+assert(i == x)
+
+-- functions and mul mixed
+local i = sin(2*x):match(sin(W(1)))
+assert(i == 2 * x)
+--]]
+
+--[[
+local i = sin(2*x):match(sin(2 * W(1)))
+assert(i == x)
+--]]
+
+--[[ matching c*f(x) => c*sin(a*x)
+local f, c = sin(2*x):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})
+local a = f:match(sin(W{1, cannotDependOn=x} * x))
+assert(c == one)
+assert(f == sin(2*x))
+assert(a == const(2))
+--]]
+
+-- add
+
 assert((x + y) == (x + y))
 assert((x + y):match(x + y))
 
@@ -81,9 +111,6 @@ assert(i == zero)
 assert(j == x)
 assert(k == zero)
 
-local i = (x * y):match(W(1) + x * y)
-assert(i == zero)
-
 -- same with mul
 
 local i = (x * y):match(y * W(1))
@@ -120,7 +147,6 @@ assert(j == y)
 local i,j = (x * y):match(W{1, atMost=1} * W{2, atMost=1})
 assert(i == x)
 assert(j == y)
---]]
 
 -- combinations of add and mul
 
@@ -130,3 +156,9 @@ assert(j == y)
 local i,j,k = x:match(W(1) + W(2) * W(3))
 assert(i == x)
 assert(j == zero)	-- technically either j or k can be 0 
+
+-- [[ cross over add and mul
+local i = (x * y):match(W(1) + x * y)
+print(i)
+assert(i == zero)
+--]]

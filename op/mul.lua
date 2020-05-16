@@ -91,6 +91,9 @@ local SingleLine = require 'symmath.export.SingleLine'
 				end
 			end
 			if j then
+--print('removing...')				
+--print(a[i])
+--print(b[j])
 				a:remove(i)
 				b:remove(j)
 			end
@@ -107,6 +110,9 @@ local SingleLine = require 'symmath.export.SingleLine'
 	-- now compare what's left in-order (since it's non-commutative)
 	-- skip wildcards, do those last
 	local function checkMatch(a,b, matches)
+		-- save the original here
+		-- upon success, merge the new matches back into the original argument
+		local origMatches = matches
 		matches = matches or table()
 		a = table(a)
 		b = table(b)
@@ -195,10 +201,12 @@ local SingleLine = require 'symmath.export.SingleLine'
 				end
 			end
 
-
 			-- overlay match matches on what we have already matched so far
-			-- TODO what about verifying overlapping wildcard indexes are still equal?
-			return matches
+			-- also write them back to the original argument since we are returning true
+			if origMatches then
+				for k,v in pairs(matches) do origMatches[k] = v end
+			end
+			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
 
 --print("before checking remaining terms, our matches is: "..table.mapi(matches, SingleLine):concat', ')
@@ -226,7 +234,11 @@ local SingleLine = require 'symmath.export.SingleLine'
 --print("returned results from the sub-checkMatch : "..table.mapi(results, SingleLine):concat', ')
 				if results[1] then
 --print("returning that list for matchSize="..matchSize.."...")
-					return table.unpack(results, 1, table.maxn(results))
+					-- also write them back to the original argument since we are returning true
+					if origMatches then
+						for k,v in pairs(matchesForThisSize) do origMatches[k] = v end
+					end
+					return table.unpack(matchesForThisSize, 1, table.maxn(matchesForThisSize))
 				end
 --print("continuing...")
 			else

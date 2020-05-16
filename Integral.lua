@@ -131,6 +131,7 @@ Integral.rules = {
 			local cos = require 'symmath.cos'
 			local sinh = require 'symmath.sinh'
 			local cosh = require 'symmath.cosh'
+			local div = require 'symmath.op.div'
 
 			-- TODO in :match() and Wildcard system,
 			-- need separate Wildcards for dependent and non-dependent ...
@@ -143,12 +144,12 @@ Integral.rules = {
 			-- this would mean changing the add() and mul() match() to first match non-wildcards, then match each wildcard once, then continue to try and match the rest
 -- [[
 			-- int(c) = c x
-			if int:match(Wildcard{index=1, cannotDependOn=x}) then
+			if int:match(Wildcard{1, cannotDependOn=x}) then
 				return int * x
 			end
 			
 			-- int(c * f(x))
-			local f, c = int:match(Wildcard{index=1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x})
+			local f, c = int:match(Wildcard{1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x})
 			if f then
 				-- int(c * x)
 				if f == x then
@@ -156,7 +157,7 @@ Integral.rules = {
 				end
 			
 				-- int(c * x^n)
-				local n = f:match(x^Wildcard{index=1, cannotDependOn=x})
+				local n = f:match(x^Wildcard{1, cannotDependOn=x})
 				if n then
 					--int(c * x^-1)
 					if Constant.isValue(n, -1) then
@@ -167,12 +168,49 @@ Integral.rules = {
 				end
 			
 				-- int(c * n^x)
-				local n = f:match(Wildcard{index=1, cannotDependOn=x}^x)
+				local n = f:match(Wildcard{1, cannotDependOn=x}^x)
 				if n then
 					return (c / log(n)) * n^x
 				end
+
+				-- int(c / n^x)
+				local n = f:match(1 / Wildcard{1, cannotDependOn=x}^x)
+				if n then
+					return -c / (log(n) * n^x)
+				end
+
+				-- https://en.wikipedia.org/wiki/List_of_integrals_of_trigonometric_functions
+				-- ...involving only sine
+
+				-- int(c*sin(a*x))
+				local a = f:match(sin(Wildcard{1, cannotDependOn=x} * x))
+				if a then
+					return -div(c,a) * cos(a * x)
+				end
 			
-				--... etc ...
+				-- int(c*sin(a*x)^2)
+				local a = f:match(sin(Wildcard{1, cannotDependOn=x} * x)^2)
+				if a then
+					return c/2 * (x - 1/(2*a) * sin(2*a*x))
+					-- equivalently:
+					--return c/2 * (x - 1/a * sin(a*x) * cos(a*x))
+				end
+				
+				-- ...involving only cosine
+				
+				-- int(c*cos(a*x))
+				local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x))
+				if a then
+					return div(c,a) * sin(a * x)
+				end
+
+				-- int(c*cos(a*x)^2)
+				local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x))
+				if a then
+					return c/2 * (x + 1/(2*a) * sin(2*a*x))
+					-- equivalently
+					--return c/2 * (x + 1/a * sin(a*x) * cos(a*x))
+				end
 			end
 --]]
 
@@ -181,17 +219,22 @@ Integral.rules = {
 
 
 			if #dep == 0 then
+--[[ already ported to wildcard method				
 				return mulWithNonDep(x)
+--]]	
 			elseif #dep == 1 then	-- integrals of single f(x)
 				local d = dep[1]
 
+--[[ already ported to wildcard method				
 				-- int(x,x) = x^2/2
 				if d == x then
 					return mulWithNonDep(x^2/2)
 				end
-				
+--]]
+
 				if pow.is(d) then	-- int(f(x)^g(x),x)
 
+--[[ already ported to wildcard method				
 					-- int(x^n, x)
 					if d[1] == x
 					and Constant.is(d[2])
@@ -213,8 +256,8 @@ Integral.rules = {
 						local n = d[1]
 						return mulWithNonDep(n^x/log(n))
 					end
-
-					-- int(sin(x)^2,x) = x/2 - 1/4a sin(2 a x)
+					
+					-- int(sin(a*x)^2,x) = x/2 - 1/4a sin(2 a x)
 					if sin.is(d[1]) 
 					and Constant.isValue(d[2], 2)
 					then
@@ -226,7 +269,7 @@ Integral.rules = {
 						end
 					end
 
-					-- int(cos(x)^2,x) = x/2 + 1/4a sin(2 a x)
+					-- int(cos(a*x)^2,x) = x/2 + 1/4a sin(2 a x)
 					if cos.is(d[1]) 
 					and Constant.isValue(d[2], 2)
 					then
@@ -237,6 +280,7 @@ Integral.rules = {
 							return x/2 + sin(2 * a * x)/(4 * a)
 						end
 					end
+--]]
 
 				-- TODO f(x)^g(x) 
 				
@@ -295,7 +339,8 @@ Integral.rules = {
 									return mulWithNonDep(x^(1-n)/(1-n))
 								end
 							end
-						
+
+--[[ already ported to wildcard method				
 							-- int(1/n^x,x)
 							if e[2] == x
 							and Constant.is(e[1])
@@ -303,6 +348,7 @@ Integral.rules = {
 								local n = e[1]
 								return mulWithNonDep(-1/(n^x*log(n)))
 							end
+--]]						
 						end
 					end
 				else
@@ -318,8 +364,10 @@ Integral.rules = {
 					end
 				
 					for _,p in ipairs{
+--[[ already ported to wildcard method				
 						{sin, function(x) return -cos(x) end},	-- int(sin(x),x) = -cos(x)
 						{cos, sin},			-- int(cos(x),x) = sin(x)
+--]]						
 						{sinh, cosh},
 						{cosh, sinh},
 						-- int(tanh(x)) = log(cosh(x)) ... but I'm keeping them separated atm
