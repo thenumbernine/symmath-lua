@@ -229,34 +229,6 @@ function Array:dim()
 	return dim
 end
 
--- works like Expression.__eq except checks for Array subclass equality rather than strictly metatable equality
--- TODO ... I think this matches Expression.match
--- the one difference is that this doesn't include metatable compare
--- and instead it compares isa relationship of metatables.
--- Putting something into Expression would be nice, but I would like it to do like this and to test isa of the class associated with the match(), 
---  and that would have to be implmented on a per-class basis.
-function Array.match(a, b, matches)
-	-- same as in Expression.match
-	matches = matches or table()
-	if b.wildcardMatches then
-		if not b:wildcardMatches(a) then return false end
-		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
-	else
-		if not Array.is(a) or not Array.is(b) then return false end
-	end
-
-	if not a or not b then return false end
-	
-	-- check subexpressions
-	local n = #a
-	if n ~= #b then return false end
-	for i=1,n do
-		if not a[i]:match(b[i], matches) then return false end
-	end
-	
-	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
-end
-
 function Array.pruneAdd(a,b)
 	if not Array.is(a) or not Array.is(b) then return end
 	-- else array+scalar?  nah, too ambiguous.  are you asking for adding to all elements, or just the diagonals? idk.

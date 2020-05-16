@@ -28,6 +28,7 @@ function TensorIndex.match(a, b, matches)
 		if not b:wildcardMatches(a, matches) then return false end
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	end
+	if getmetatable(a) ~= getmetatable(b) then return false end
 	
 	if not (a.lower == b.lower
 		and a.derivative == b.derivative

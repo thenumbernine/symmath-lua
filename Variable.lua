@@ -90,10 +90,9 @@ function Variable.match(a, b, matches)
 		if not b:wildcardMatches(a, matches) then return false end
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	end
-
-	-- if both aren't variables then return false?
-	-- what if it is a subclass?
 	if getmetatable(a) ~= getmetatable(b) then return false end
+
+	-- what if it is a subclass?
 	if a.name ~= b.name then return false end
 
 	-- same as return true in Expression.match

@@ -8,14 +8,14 @@ local Binary = require 'symmath.op.Binary'
 -- I would use binary operators for this, but Lua's overloading requires the return value be a boolean
 local Equation = class(Binary)
 
+-- TODO make this the same as op/add and op/mul
 function Equation.match(a, b, matches)
 	matches = matches or table()
 	if b.wildcardMatches(a) then
 		if not b:wildcardMatches(a, matches) then return false end
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
-	else
-		if getmetatable(a) ~= getmetatable(b) then return false end
 	end	
+	if getmetatable(a) ~= getmetatable(b) then return false end
 	
 	-- order-independent
 	local a = table(a)

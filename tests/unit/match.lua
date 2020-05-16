@@ -64,10 +64,28 @@ local i,j = x:match(W(1) + W(2))
 assert(i == x)
 assert(j == zero)
 
+local i,j = x:match(x + W(1) + W(2))
+assert(i == zero)
+assert(j == zero)
+
+local i,j = x:match(W(1) + x + W(2))
+assert(i == zero)
+assert(j == zero)
+
 local i,j = (x * y):match(W(1) + W(2))
 assert(i == x * y)
 assert(j == zero)
 
+-- make sure within add.wildcardMatches we greedy-match any wildcards with 'atLeast' before assigning the rest to zero
+local i,j,k = x:match(W(1) + W{2,atLeast=1} + W(3))
+assert(i == zero)
+assert(j == x)
+assert(k == zero)
+
+local i = (x * y):match(W(1) + x * y)
+assert(i == zero)
+
+-- [[
 -- for this to work, add.wildcardMatches must call the wildcard-capable objects' own wildcard handlers correctly (and use push/pop match states, instead of assigning to wildcard indexes directly?)
 -- also, because add.wildcardMatches assigns the extra wildcards to zero, it will be assigning (W(2) * W(3)) to zero ... which means it must (a) handle mul.wildcardMatches and (b) pick who of mul's children gets the zero and who doesn't
 --  it also means that a situation like add->mul->add might have problems ... x:match(W(1) + (W(2) + W(3)) * (W(4) + W(5)))
@@ -75,6 +93,7 @@ local i,j,k = x:match(W(1) + W(2) * W(3))
 assert(i == x)
 assert(j == zero)	-- technically only one of these two needs to be zero
 assert(k == zero)
+--]]
 
 -- same with mul
 

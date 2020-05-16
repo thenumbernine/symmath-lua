@@ -59,9 +59,8 @@ local SingleLine = require 'symmath.export.SingleLine'
 		if not b:wildcardMatches(a, matches) then return false end
 --print("matching entire expr index "..b.index.." to "..SingleLine(a))	
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
-	else
-		if not add.is(a) or not add.is(b) then return false end
 	end	
+	if getmetatable(a) ~= getmetatable(b) then return false end
 	
 	local a = table(a)
 	local b = table(b)
@@ -276,40 +275,86 @@ function add:wildcardMatches(a, matches)
 	if #nonWildcards > 1 then
 		return false
 	end
+	
+	local matchExpr = a
 	if #nonWildcards == 1 then
 		-- TODO what if we are doing x:match(W{1,atLeast=1} + W{2}) ?
 		if not a:match(nonWildcards[1], matches) then
 			return false
 		end
+		-- a matches nonWildcards[1]
+		matchExpr = Constant(0)
 	end
 
 	-- if any of these wildcards needed a term then fail
 	-- (that will be handled in the add.match fallthrough
 	--  which is why add.match should not call this -- only other non-add Expressions' .match())			
+	local totalAtLeast = 0
 	for _,w in ipairs(wildcards) do
 		if w.atLeast and w.atLeast > 0 then
-			return false
+			totalAtLeast = totalAtLeast + w.atLeast
+			if totalAtLeast > 1 then 
+				return false
+			end
 		end
 	end
+
+	-- when matching wildcards, make sure to match any with 'atLeast' first
+	if totalAtLeast == 1 then
+		for i,w in ipairs(wildcards) do
+			-- TODO make this work for sub-expressions?
+			if w.atLeast and w.atLeast > 0 then
+				if i > 1 then
+--print("moving wildcard with 'atleast' from "..i.." to 1")				
+					table.remove(wildcards, i)
+					table.insert(wildcards, 1, w)
+				end
+				break
+			end
+		end
+	end
+
+	local Wildcard = require 'symmath.Wildcard'
+	local mul = require 'symmath.op.mul'
 	-- match all wildcards to zero
 	-- test first, so we don't half-set the 'matches' before failing (TODO am I doing this elsewhere in :match()?)
 	-- TODO w.index IS NOT GUARANTEED, if we have (x):match(W(1) + W(2) * W(3)) and add and mul have wildcardMatches
 	-- in that case, you need to handle all possible sub-wildcardMatches specifically
 	for i,w in ipairs(wildcards) do
-		if i==1 then
-			if matches[w.index] and matches[w.index] ~= a then return false end
+		if Wildcard.is(w) then
+			if matches[w.index] 
+			and matches[w.index] ~= (i == 1 and matchExpr or Constant(0))
+			then 
+				return false 
+			end
+		-- elseif add.is shouldn't happen if all adds are flattened upon construction
+		elseif mul.is(w) then
+			-- this is a tough one ...
+			if i == 1 then
+				return false
+				-- TODO what about (x * y):match(W(1) + x * y) ?
+				-- if it is the first, and it has any wildcard in its mul children
+				-- then we want to match to (1 * W) and match W to 'matchExpr'
+			else
+				return false
+				-- otherwise, if it has any wildcards in its mul children,
+				-- then match all of them to zero
+			end
+			return false
+		elseif add.is(w) then
+			error'here'
 		else
-			if matches[w.index] and not Constant.isValue(matches[w.index], 0) then return false end
+			return false
 		end
 	end
 	-- finally set all matches to zero and return 'true'
 	for i,w in ipairs(wildcards) do
-		if i == 1 then
---print('add.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(a))
-			matches[w.index] = a
-		else
---print('add.wildcarddMatches setting '..w.index..' to 0')
-			matches[w.index] = Constant(0)
+		if Wildcard.is(w) then
+--print('add.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or Constant(0)))
+			matches[w.index] = (i == 1 and matchExpr or Constant(0))
+		-- elseif add.is shouldn't happen if all adds are flattened upon construction
+		elseif add.is(w) then
+			error'here'
 		end
 	end
 	return (matches[1] or true), table.unpack(matches, 1, table.maxn(matches))

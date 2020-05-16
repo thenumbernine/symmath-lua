@@ -61,10 +61,10 @@ local SingleLine = require 'symmath.export.SingleLine'
 		if not b:wildcardMatches(a, matches) then return false end
 --print("matching entire expr index "..b.index.." to "..SingleLine(a))	
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
-	else
-		if not mul.is(a) or not mul.is(b) then return false end
-	end	
-	
+	end
+	if getmetatable(a) ~= getmetatable(b) then return false end
+
+
 	local a = table(a)
 	local b = table(b)
 	

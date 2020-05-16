@@ -153,9 +153,8 @@ function Expression.match(a, b, matches)
 		if not b:wildcardMatches(a, matches) then return false end
 			-- return 'true' to match the end of match()
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
-	else
-		if getmetatable(a) ~=  getmetatable(b) then return false end
 	end
+	if getmetatable(a) ~= getmetatable(b) then return false end
 	
 	if not a or not b then return false end
 	
@@ -171,6 +170,8 @@ function Expression.match(a, b, matches)
 	-- so in the strange case that the user doesn't use a Wildcard(1) then put a 'true' in the first arg
 	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
+
+-- wrap it in a separate function so it can call into subclass :match()
 function Expression.__eq(a,b)
 	return a:match(b)
 end
