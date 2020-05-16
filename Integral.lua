@@ -141,27 +141,24 @@ Integral.rules = {
 			-- I could default to greedy 1-or-more, then (a * b):match(Wildcard(1) * Wildcard(2)) would work,
 			--  and (a * b * c):match(Wildcard(1) * Wildcard(2)) would return some combination of a, b*c or a*b, c
 			-- this would mean changing the add() and mul() match() to first match non-wildcards, then match each wildcard once, then continue to try and match the rest
---[[
+-- [[
 			-- int(c) = c x
 			if int:match(Wildcard{index=1, cannotDependOn=x}) then
 				return int * x
 			end
 			
-			-- int(f(x) * c)
+			-- int(c * f(x))
 			local f, c = int:match(Wildcard{index=1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x})
 			if f then
--- TODO get multi-wildcard in non-wildcard elements working first
-print('f')
-print(f)
-print('c')
-print(c)
-error'c'
+				-- int(c * x)
 				if f == x then
 					return (c / 2) * x^2
 				end
 			
+				-- int(c * x^n)
 				local n = f:match(x^Wildcard{index=1, cannotDependOn=x})
 				if n then
+					--int(c * x^-1)
 					if Constant.isValue(n, -1) then
 						return c * log(abs(x))
 					else
@@ -169,6 +166,7 @@ error'c'
 					end
 				end
 			
+				-- int(c * n^x)
 				local n = f:match(Wildcard{index=1, cannotDependOn=x}^x)
 				if n then
 					return (c / log(n)) * n^x
@@ -176,8 +174,11 @@ error'c'
 			
 				--... etc ...
 			end
-error'b'
-			--]]
+--]]
+
+
+			-- THE OLD WAY --
+
 
 			if #dep == 0 then
 				return mulWithNonDep(x)

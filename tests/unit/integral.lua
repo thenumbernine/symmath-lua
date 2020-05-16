@@ -11,7 +11,6 @@ local xR = var'xR'
 
 -- integrate constants
 assert(Constant(1):integrate(x)() == x)
-print(y:integrate(x)())
 assert(y:integrate(x)() == x * y)
 
 assert(Constant(1):integrate(x, xL, xR)() == (xR - xL)())
@@ -28,9 +27,8 @@ assert((1/x):integrate(x)() == log(abs(x)))
 assert((x^-1):integrate(x)() == log(abs(x)))
 
 -- [[ hmm, sqrt doesn't integrate yet..
-print((x^frac(1,2)):integrate(x)())
-print(sqrt(x):integrate(x)())
-print(1 / (2 * sqrt(x)))
+assert((x^frac(1,2)):integrate(x)() == frac(2 * x * sqrt(x), 3)())
+assert(sqrt(x):integrate(x)() == frac(2 * x * sqrt(x), 3)())
 
 assert(sin(x):integrate(x)() == -cos(x))
 assert(cos(x):integrate(x)() == sin(x))

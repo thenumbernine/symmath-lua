@@ -312,8 +312,15 @@ There are a few common constants in the symmath namespace:
 `var1, var2, ... = symmath.vars(name1, name2, ...)`  
 Create a variable with given name, and optionally a list of which variables it is dependent on for differentiation. By default variables of different names have a derivative of zero.
 
-`var:depends(var1, var2, ...)`  
+`var:setDependentVars(var1, var2, ...)`  
 Specify the variables that var is dependent on for differentiation.
+`var`, `var1`, `var2`, etc can be Variables (i.e. `x`) or TensorRefs (i.e. `x'^i'`).
+Calling this function will clear all previous dependent vars only for the respective indexes it is called with.
+
+`expr:dependsOn(var)`
+Returns 'true' if an expression depends on the specified Variable 'var'.
+Determines so by searching the expression for either the Variable itself, or any variables that are specified o depend on the Variable.
+Works if 'var' is a Variables  (i.e. `x`) or if 'var' is a TensorRef of a Variable (i.e. `x'^i'`).
 
 `func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
 `func, code = expr:compile{var1, var2, ...}`  
@@ -403,12 +410,19 @@ Returns solutions to the equation. If eqn is not an Equation then returns soluti
 `newexpr = expr:subst(eqn)`  
 Shorthand for `expr:replace(eqn:lhs(), eqn:rhs())`.
 
-### Expressions
+### Expression
 
 `symmath.simplify(expr)`  
 `expr:simplify()`  
 `expr()`  
 Simplifies the expression.
+
+`symmath.match(exprA, exprB)
+`exprA:match(exprB)`
+Match one expression to another.
+This is actually shorthand for equality, except in Lua the == operator won't let you return multiple values.
+The expr:match() function (and == operator) use wildcards and tree matching to return matched patterns.
+See 'Wildcard' for more information on how.
 
 `symmath.clone(expr)`  
 Clones an expression.  
@@ -435,6 +449,43 @@ Calculates the numeric value of the expression.
 `symmath.polyCoeffs(expr, var)`  
 `expr:polyCoeffs(var)`  
 Returns a table of coefficients with keys 0 through the degree of the polynomial, and 'extra' containing all non-polynomial terms.  
+
+### Wildcard
+
+`symmath.Wildcard(args)`
+This constructs a Wildcard object for Expression matching.
+`args` can be any of the following:
+- A number, which specifies the Wildcard index.
+- A table with the following:
+- - index = The wildcard index.  Optionally the first argument of the table can also specify the index.
+- - atLeast = The wildcard must match at least this many sub-expressions, if matching within variable-children expressions (such as + and *)
+- - atMost = The wildcard can only match at most this many sub-expressions.
+- - dependsOn = The wildcard must depend on the specified variable.  See 'Expression:dependsOn()' for more information.
+- - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
+Matching works something like this:
+```
+local i = (x + y):match(x + Wildcard(1))
+assert(i == y)
+```
+Wildcards are greedy-matching and will match zero-or-more expressions unless stated otherwise.
+For example:
+```
+local i,j = (x + y):match(Wildcard(1) + Wildcard(2))
+assert(i == x + y)
+assert(j == zero)
+```
+The first wildcard will greedily match both sub-expressions, unless stated otherwise:
+```
+local i,j = (x + y):match(W{1, atMost=1} + W{2, atMost=1})
+assert(i == x)
+assert(j == y)
+```
+In this case we specified 'atMost=1' to ensure that no single wildcard  would match to both elements.
+
+In the case of addition, unmatched wildcards will be assigned a value of 0.
+In the case of multiplication, unmatched wildcards will be assigned a value of 1.
+
+
 
 ### Calculus
 
@@ -845,7 +896,7 @@ Output CDN URLs:
 
 [tests/output/unit/matrix](https://thenumbernine.github.io/symmath/tests/output/unit/matrix.html)
 
-[tests/output/unit/partial replace](https://thenumbernine.github.io/symmath/tests/output/unit/partial%20replace.html)
+[tests/output/unit/replace](https://thenumbernine.github.io/symmath/tests/output/unit/replace.html)
 
 [tests/output/unit/sub-tensor assignment](https://thenumbernine.github.io/symmath/tests/output/unit/sub%2dtensor%20assignment.html)
 
