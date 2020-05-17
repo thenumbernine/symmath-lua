@@ -13,7 +13,6 @@ local x = symmath.var'x'
 local y = symmath.var'y'
 
 
--- [[
 assert(x:match(x))
 assert(x == x)
 assert(x ~= y)
@@ -27,20 +26,16 @@ assert(i == x)
 -- functions and mul mixed
 local i = sin(2*x):match(sin(W(1)))
 assert(i == 2 * x)
---]]
 
---[[
 local i = sin(2*x):match(sin(2 * W(1)))
 assert(i == x)
---]]
 
---[[ matching c*f(x) => c*sin(a*x)
+-- matching c*f(x) => c*sin(a*x)
 local f, c = sin(2*x):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})
 local a = f:match(sin(W{1, cannotDependOn=x} * x))
 assert(c == one)
 assert(f == sin(2*x))
 assert(a == const(2))
---]]
 
 -- add
 
@@ -157,8 +152,7 @@ local i,j,k = x:match(W(1) + W(2) * W(3))
 assert(i == x)
 assert(j == zero)	-- technically either j or k can be 0 
 
--- [[ cross over add and mul
+--  cross over add and mul ... not yet working
+--local i = (x):match(W(1) + x)	-- works
 local i = (x * y):match(W(1) + x * y)
-print(i)
 assert(i == zero)
---]]

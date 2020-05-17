@@ -33,4 +33,4 @@ assert(sqrt(x):integrate(x)() == frac(2 * x * sqrt(x), 3)())
 assert(sin(x):integrate(x)() == -cos(x))
 assert(cos(x):integrate(x)() == sin(x))
 
-assert(sin(2*x):integrate(x)() == (-cos(x)/2)())
+assert(sin(2*x):integrate(x)() == (-cos(2*x)/2)())

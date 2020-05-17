@@ -50,7 +50,9 @@ how to accomplish this:
 function add.match(a, b, matches)
 	local Wildcard = require 'symmath.Wildcard'
 	local Constant = require 'symmath.Constant'
-local SingleLine = require 'symmath.export.SingleLine'
+--local SingleLine = require 'symmath.export.SingleLine'
+--local Verbose = require 'symmath.export.Verbose'
+--print("add.match(a="..Verbose(a)..", b="..Verbose(b)..", matches={"..(matches or table()):mapi(Verbose):concat', '..'}) begin')
 
 	matches = matches or table()
 	-- if 'b' is an add then fall through 
@@ -59,7 +61,7 @@ local SingleLine = require 'symmath.export.SingleLine'
 	and b.wildcardMatches 
 	then
 		if not b:wildcardMatches(a, matches) then return false end
---print("matching entire expr index "..b.index.." to "..SingleLine(a))	
+--print("matching entire expr "..SingleLine(b).." to "..SingleLine(a))	
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	end	
 	if getmetatable(a) ~= getmetatable(b) then return false end
@@ -98,12 +100,9 @@ local SingleLine = require 'symmath.export.SingleLine'
 		end
 	end
 
---[[
-local SingleLine = require 'symmath.export.SingleLine'
 --print("what's left after matching commutative non-wildcards:")
---print('a', a:mapi(SingleLine):concat', ')
---print('b', b:mapi(SingleLine):concat', ')
---]]
+--print('a:', a:mapi(SingleLine):concat', ')
+--print('b:', b:mapi(SingleLine):concat', ')
 
 	-- now compare what's left in-order (since it's non-commutative)
 	-- skip wildcards, do those last
@@ -275,20 +274,36 @@ TODO consider addNonCommutative operators
 --]]
 function add:wildcardMatches(a, matches)
 	local Constant = require 'symmath.Constant'
+--local Verbose = require 'symmath.export.Verbose'
+--print("add.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'}')
 
+	local Wildcard = require 'symmath.Wildcard'	
+	-- TODO move this to Expression
+	local function find(expr, lookfor)
+		if lookfor(expr) then return true end
+		local found
+		expr:map(function(x)
+			if lookfor(x) then
+				found = true
+			end
+		end)
+		return found
+	end
+	
 	-- 'a' is the 'a' in Expression.match(a,b)
 	-- 'b' is 'self'
 	local nonWildcards = table()
 	local wildcards = table()
 	for _,w in ipairs(self) do
-		if w.wildcardMatches then
+		if w.wildcardMatches 
+		and find(w, function(x) return Wildcard.is(x) end)
+		then
 			wildcards:insert(w)
 		else
 			nonWildcards:insert(w)
 		end
 	end
 
---local Verbose = require 'symmath.export.Verbose'
 --print("add children: "..table.mapi(self, Verbose):concat', ')
 --print("add wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
 --print("add non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
@@ -301,6 +316,7 @@ function add:wildcardMatches(a, matches)
 	if #nonWildcards == 1 then
 		-- TODO what if we are doing x:match(W{1,atLeast=1} + W{2}) ?
 		if not a:match(nonWildcards[1], matches) then
+--print("single remaining add sub-term didn't match first non-wildcard - failing")
 			return false
 		end
 		-- a matches nonWildcards[1]
@@ -341,19 +357,22 @@ function add:wildcardMatches(a, matches)
 	-- test first, so we don't half-set the 'matches' before failing (TODO am I doing this elsewhere in :match()?)
 	-- TODO w.index IS NOT GUARANTEED, if we have (x):match(W(1) + W(2) * W(3)) and add and mul have wildcardMatches
 	-- in that case, you need to handle all possible sub-wildcardMatches specifically
+--print("testing against previous matches table...")	
 	for i,w in ipairs(wildcards) do
+		local cmpExpr = i == 1 and matchExpr or defaultValue
+--print("comparing lhs "..Verbose(cmpExpr))
 		if Wildcard.is(w) then
 			if matches[w.index] 
-			and matches[w.index] ~= (i == 1 and matchExpr or defaultValue)
+			and matches[w.index] ~= cmpExpr
 			then 
 				return false 
 			end
 		-- elseif add.is shouldn't happen if all adds are flattened upon construction
 		elseif mul.is(w) then
---print("found a match(add(mul()))...")			
+--print("found a add(mul()), comparing with "..Verbose(w))
 			-- check before going through with it
-			if not (i == 1 and matchExpr or defaultValue):match(w, table(matches)) then
---print(" - failing")				
+			if not cmpExpr:match(w, table(matches)) then
+--print("add(mul()) didn't match - failing")				
 				return false
 			end
 --print(" - success")		
@@ -365,13 +384,14 @@ function add:wildcardMatches(a, matches)
 	end
 	-- finally set all matches to zero and return 'true'
 	for i,w in ipairs(wildcards) do
+		local cmpExpr = i == 1 and matchExpr or defaultValue
 		if Wildcard.is(w) then
 --print('add.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or defaultValue))
-			matches[w.index] = (i == 1 and matchExpr or defaultValue)
+			matches[w.index] = cmpExpr
 		-- elseif add.is shouldn't happen if all adds are flattened upon construction
 		elseif mul.is(w) then
 			-- use the state this time, so it does modify "matches"
-			(i == 1 and matchExpr or defaultValue):match(w, matches)
+			cmpExpr:match(w, matches)
 		elseif add.is(w) then
 			error"match() doesn't work with unflattened add's"
 		end
