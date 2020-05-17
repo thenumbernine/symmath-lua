@@ -9,16 +9,19 @@ local y = var'y'
 local xL = var'xL'
 local xR = var'xR'
 
--- [[
+--[[
 -- integrate constants
 assert(Constant(1):integrate(x)() == x)
 assert(y:integrate(x)() == x * y)
 
 assert(Constant(1):integrate(x, xL, xR)() == (xR - xL)())
 
+--]]
 -- definite integral bounds:
 --assert(x:integrate(x, xL, xR)() == ((xR^2 - xL^2)/2)())	-- hmm, the infamous minus sign factoring simplificaiton error...
-assert((x:integrate(x, xL, xR) - (xR^2 - xL^2)/2)() == Constant(0))	-- instead I'll just test this ...
+print( x:integrate(x, xL, xR)() )
+--assert((x:integrate(x, xL, xR) - (xR^2 - xL^2)/2)() == Constant(0))	-- instead I'll just test this ...
+os.exit()
 
 --x^n integrals:
 assert(x:integrate(x)() == x^2 / 2)

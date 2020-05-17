@@ -149,7 +149,10 @@ Integral.rules = {
 			end
 			
 			-- int(c * f(x))
-			local f, c = int:match(Wildcard{1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x})
+			local f, c = int:match(Wildcard{index=2, cannotDependOn=x} * Wildcard{1, dependsOn=x})
+local Verbose = require 'symmath.export.Verbose'
+print('f', f and Verbose(f) or tostring(f))
+print('c', c and Verbose(c) or tostring(c))
 			if f then
 				-- int(c * x)
 				if f == x then
@@ -174,10 +177,6 @@ Integral.rules = {
 				end
 
 				-- int(c / x) = log(abs(x))
---local Verbose = require 'symmath.export.Verbose'
---print('int', Verbose(int))
---print('c', Verbose(c))
---print('f', Verbose(f))
 				local d = f:match(1 / (Wildcard{1, cannotDependOn=x} * x))
 				if d then
 					return (c / d) * log(abs(x))
@@ -299,7 +298,7 @@ Integral.rules = {
 					if Constant.isValue(d[1], 1) then	-- int(1/f(x), x)
 						local e = d[2]
 					
--- [[
+--[[
 						local depe, nondepe = getDepAndNonDep(e)
 						-- int(1/(cx),x) = 1/c ln|x|
 						--if e == x then

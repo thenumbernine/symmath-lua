@@ -12,7 +12,6 @@ local cos = symmath.cos
 local x = symmath.var'x'
 local y = symmath.var'y'
 
--- [[
 assert(x:match(x))
 assert(x == x)
 assert(x ~= y)
@@ -38,6 +37,10 @@ assert(f == sin(2*x))
 assert(a == const(2))
 
 -- add
+
+local i, j = x:match(W{2, cannotDependOn=x} + W{1, dependsOn=x})
+assert(i == x)
+assert(j == zero)
 
 assert((x + y) == (x + y))
 assert((x + y):match(x + y))
@@ -215,7 +218,7 @@ assert(c == const(2))
 assert(f == x)
 
 
--- use 'cannotDependOn' first for it to greedily match non-dep-on-x terms
+-- Put the 'cannotDependOn' wildcard first (leftmost) in the mul for it to greedily match non-dep-on-x terms
 -- otherwise 'dependsOn' will match everything, since the mul of a non-dep and a dep itself is dep on 'x', so it will include non-dep-on-terms
 local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x})
 assert(c == const(2))

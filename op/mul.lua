@@ -339,46 +339,47 @@ function mul:wildcardMatches(a, matches)
 	local Wildcard = require 'symmath.Wildcard'
 	local add = require 'symmath.op.add'
 	-- match all wildcards to zero
+	local function checkWildcardPermutation(wildcards, matches)
 --print("testing against previous matches table...")	
-	for i,w in ipairs(wildcards) do
-		local cmpExpr = i == 1 and matchExpr or defaultValue
+		for i,w in ipairs(wildcards) do
+			local cmpExpr = i == 1 and matchExpr or defaultValue
 --print("comparing lhs "..Verbose(cmpExpr))		
-		if Wildcard.is(w) then
-			if matches[w.index] 
-			and matches[w.index] ~= cmpExpr
-			then 
-				return false 
+			if mul.is(w) then
+				error"match() doesn't work with unflattened mul's"
+			elseif Wildcard.is(w) 
+			or add.is(w)
+			then
+				if not cmpExpr:match(w, table(matches)) then
+					return false 
+				end
+			else
+				error("found match(mul(unknown))")
 			end
-		-- elseif mul.is shouldn't happen if all muls are flattened upon construction
-		elseif add.is(w) then
---print("found a mul(add()), comparing with "..Verbose(w))
-			-- check before going through with it
-			if not cmpExpr:match(w, table(matches)) then
---print("add(mul()) didn't match - failing")				
-				return false
-			end
---print(" - success")		
-		elseif mul.is(w) then
-			error"match() doesn't work with unflattened mul's"
-		else
-			error("found match(mul(unknown))")
 		end
-	end
-	-- finally set all matches to zero and return 'true'
-	for i,w in ipairs(wildcards) do
-		local cmpExpr = i == 1 and matchExpr or defaultValue
-		if Wildcard.is(w) then
+		-- finally set all matches to zero and return 'true'
+		for i,w in ipairs(wildcards) do
+			local cmpExpr = i == 1 and matchExpr or defaultValue
+			if Wildcard.is(w) then
 --print('mul.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or defaultValue))
-			matches[w.index] = cmpExpr
-		-- elseif mul.is shouldn't happen if all muls are flattened upon construction
-		elseif add.is(w) then
-			-- use the state this time, so it does modify "matches"
-			cmpExpr:match(w, matches)
-		elseif mul.is(w) then
-			error"match() doesn't work with unflattened mul's"
+				cmpExpr:match(w, matches)
+			-- elseif mul.is shouldn't happen if all muls are flattened upon construction
+			elseif add.is(w) then
+				-- use the state this time, so it does modify "matches"
+				cmpExpr:match(w, matches)
+			elseif mul.is(w) then
+				error"match() doesn't work with unflattened mul's"
+			end
+		end
+		return true
+	end
+
+	for wildcards in wildcards:permutations() do
+		wildcards = table(wildcards)
+		if checkWildcardPermutation(wildcards, matches) then
+			return matches[1] or true, table.unpack(matches, 1, table.maxn(matches))
 		end
 	end
-	return (matches[1] or true), table.unpack(matches, 1, table.maxn(matches))
+	return false
 end
 
 

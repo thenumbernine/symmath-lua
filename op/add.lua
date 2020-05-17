@@ -50,8 +50,8 @@ how to accomplish this:
 function add.match(a, b, matches)
 	local Wildcard = require 'symmath.Wildcard'
 	local Constant = require 'symmath.Constant'
-local SingleLine = require 'symmath.export.SingleLine'
-local Verbose = require 'symmath.export.Verbose'
+--local SingleLine = require 'symmath.export.SingleLine'
+--local Verbose = require 'symmath.export.Verbose'
 --print("add.match(a="..Verbose(a)..", b="..Verbose(b)..", matches={"..(matches or table()):mapi(Verbose):concat', '..'}) begin')
 
 	matches = matches or table()
@@ -274,6 +274,7 @@ TODO consider addNonCommutative operators
 --]]
 function add:wildcardMatches(a, matches)
 	local Constant = require 'symmath.Constant'
+--local SingleLine = require 'symmath.export.SingleLine'
 --local Verbose = require 'symmath.export.Verbose'
 --print("add.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'}')
 
@@ -353,50 +354,54 @@ function add:wildcardMatches(a, matches)
 
 	local Wildcard = require 'symmath.Wildcard'
 	local mul = require 'symmath.op.mul'
-	-- match all wildcards to zero
-	-- test first, so we don't half-set the 'matches' before failing (TODO am I doing this elsewhere in :match()?)
-	-- TODO w.index IS NOT GUARANTEED, if we have (x):match(W(1) + W(2) * W(3)) and add and mul have wildcardMatches
-	-- in that case, you need to handle all possible sub-wildcardMatches specifically
+	local function checkWildcardPermutation(wildcards, matches)
+		-- match all wildcards to zero
+		-- test first, so we don't half-set the 'matches' before failing (TODO am I doing this elsewhere in :match()?)
+		-- TODO w.index IS NOT GUARANTEED, if we have (x):match(W(1) + W(2) * W(3)) and add and mul have wildcardMatches
+		-- in that case, you need to handle all possible sub-wildcardMatches specifically
 --print("testing against previous matches table...")	
-	for i,w in ipairs(wildcards) do
-		local cmpExpr = i == 1 and matchExpr or defaultValue
+		for i,w in ipairs(wildcards) do
+			local cmpExpr = i == 1 and matchExpr or defaultValue
 --print("comparing lhs "..Verbose(cmpExpr))
-		if Wildcard.is(w) then
-			if matches[w.index] 
-			and matches[w.index] ~= cmpExpr
-			then 
-				return false 
+			if add.is(w) then
+				error"match() doesn't work with unflattened add's"
+			elseif Wildcard.is(w) 
+			or mul.is(w)
+			then
+				-- check before going through with it
+				if not cmpExpr:match(w, table(matches)) then
+					return false 
+				end
+			else
+				error("found match(add(unknown))")
 			end
-		-- elseif add.is shouldn't happen if all adds are flattened upon construction
-		elseif mul.is(w) then
---print("found a add(mul()), comparing with "..Verbose(w))
-			-- check before going through with it
-			if not cmpExpr:match(w, table(matches)) then
---print("add(mul()) didn't match - failing")				
-				return false
+		end
+		-- finally set all matches to zero and return 'true'
+		for i,w in ipairs(wildcards) do
+			local cmpExpr = i == 1 and matchExpr or defaultValue
+			if Wildcard.is(w) then
+--print('add.wildcarddMatches setting '..w.index..' to '..SingleLine(i == 1 and matchExpr or defaultValue))
+				-- write matches.  should already be true.
+				assert(cmpExpr:match(w, matches))
+				--matches[w.index] = cmpExpr
+			-- elseif add.is shouldn't happen if all adds are flattened upon construction
+			elseif mul.is(w) then
+				-- use the state this time, so it does modify "matches"
+				assert(cmpExpr:match(w, matches))
+			elseif add.is(w) then
+				error"match() doesn't work with unflattened add's"
 			end
---print(" - success")		
-		elseif add.is(w) then
-			error"match() doesn't work with unflattened add's"
-		else
-			error("found match(add(unknown))")
+		end
+		return true
+	end
+	
+	for wildcards in wildcards:permutations() do
+		wildcards = table(wildcards)
+		if checkWildcardPermutation(wildcards, matches) then
+			return matches[1] or true, table.unpack(matches, 1, table.maxn(matches))
 		end
 	end
-	-- finally set all matches to zero and return 'true'
-	for i,w in ipairs(wildcards) do
-		local cmpExpr = i == 1 and matchExpr or defaultValue
-		if Wildcard.is(w) then
---print('add.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or defaultValue))
-			matches[w.index] = cmpExpr
-		-- elseif add.is shouldn't happen if all adds are flattened upon construction
-		elseif mul.is(w) then
-			-- use the state this time, so it does modify "matches"
-			cmpExpr:match(w, matches)
-		elseif add.is(w) then
-			error"match() doesn't work with unflattened add's"
-		end
-	end
-	return (matches[1] or true), table.unpack(matches, 1, table.maxn(matches))
+	return false
 end
 
 add.removeIfContains = require 'symmath.commutativeRemove'
