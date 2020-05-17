@@ -109,7 +109,28 @@ assert(i == zero)
 assert(j == x)
 assert(k == zero)
 
+-- [[ TODO working but now how I hoped
+-- I would like this to match but it is matching to 0, (x+y).
+-- I guess that is fair for greed matching of wildcards.
+-- TODO maybe I should change things to match less first
+-- The problem is that the algorithm tests the largest subset to each wildcard first
+-- i.e. first (x+y) is tested to W(1) then to W(2) which it matches
+-- For this match to work, I would want W(1) to greedily match first
+-- (matching to 'y')
+-- and then W(2) to greedily match next (matching to 'x')
+-- Changing the match algo to match wildcards left-to-right in associative operators like + and * would also give the API user more control over what they wanted to match (as in this case).
+local i, j = (x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})
+assert(i == zero)
+assert(j == x + y)
+--]]
+
+local i, j = (x + y):match(W{1, cannotDependOn=x, atLeast=1} + W{2, dependsOn=x})
+assert(i == y)
+assert(j == x)
+
+
 -- same with mul
+
 
 local i = (x * y):match(y * W(1))
 assert(i == x)
@@ -165,7 +186,27 @@ local i,j,k,l = x:match(x + W(1) * W(2) + W(3) * W(4))
 assert(i == zero or j == zero)
 assert(k == zero or l == zero)
 
+local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x})
+assert(c == const(2))
+assert(f == x)
+
+local c, f = (2 * x):factorDivision():match(W{1, cannotDependOn=x} * W{2, dependsOn=x})
+assert(c == const(2))
+assert(f == x)
+
+-- Put the 'cannotDependOn' wildcard first (leftmost) in the mul for it to greedily match non-dep-on-x terms
+-- otherwise 'dependsOn' will match everything, since the mul of a non-dep and a dep itself is dep on 'x', so it will include non-dep-on-terms
+local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x})
+assert(c == const(2))
+assert(f == 1/x)
+
+local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2))
+assert(c == const(2))
+assert(f == 1/x)
+
+
 -- div
+
 
 local i = (1/x):match(1 / W(1))
 assert(i == x)
@@ -189,41 +230,10 @@ assert(i == const(2))
 assert(j == 1/x)
 --]]
 
--- [[ TODO working but now how I hoped
--- I would like this to match but it is matching to 0, (x+y).
--- I guess that is fair for greed matching of wildcards.
--- TODO maybe I should change things to match less first
--- The problem is that the algorithm tests the largest subset to each wildcard first
--- i.e. first (x+y) is tested to W(1) then to W(2) which it matches
--- For this match to work, I would want W(1) to greedily match first
--- (matching to 'y')
--- and then W(2) to greedily match next (matching to 'x')
--- Changing the match algo to match wildcards left-to-right in associative operators like + and * would also give the API user more control over what they wanted to match (as in this case).
-local i, j = (x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})
-assert(i == zero)
-assert(j == x + y)
---]]
+local a, b = (1/(x*(3*x+4))):match(1 / (x * (W{1, cannotDependOn=x} * x + W{2, cannotDependOn=x})))
+assert(a == const(3))
+assert(b == const(4))
 
-local i, j = (x + y):match(W{1, cannotDependOn=x, atLeast=1} + W{2, dependsOn=x})
-assert(i == y)
-assert(j == x)
-
-local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x})
-assert(c == const(2))
-assert(f == x)
-
-
-local c, f = (2 * x):factorDivision():match(W{1, cannotDependOn=x} * W{2, dependsOn=x})
-assert(c == const(2))
-assert(f == x)
-
-
--- Put the 'cannotDependOn' wildcard first (leftmost) in the mul for it to greedily match non-dep-on-x terms
--- otherwise 'dependsOn' will match everything, since the mul of a non-dep and a dep itself is dep on 'x', so it will include non-dep-on-terms
-local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x})
-assert(c == const(2))
-assert(f == 1/x)
-
-local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2))
-assert(c == const(2))
-assert(f == 1/x)
+local a, b = (1/(x*(3*x+4))):factorDivision():match(1 / (W{1, cannotDependOn=x} * x * x + W{2, cannotDependOn=x} * x))
+assert(a == const(3))
+assert(b == const(4))

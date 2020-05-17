@@ -11,7 +11,7 @@ local Equation = class(Binary)
 -- TODO make this the same as op/add and op/mul
 function Equation.match(a, b, matches)
 	matches = matches or table()
-	if b.wildcardMatches(a) then
+	if b.wildcardMatches then
 		if not b:wildcardMatches(a, matches) then return false end
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	end	

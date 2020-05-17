@@ -9,19 +9,15 @@ local y = var'y'
 local xL = var'xL'
 local xR = var'xR'
 
---[[
 -- integrate constants
 assert(Constant(1):integrate(x)() == x)
 assert(y:integrate(x)() == x * y)
 
 assert(Constant(1):integrate(x, xL, xR)() == (xR - xL)())
 
---]]
 -- definite integral bounds:
 --assert(x:integrate(x, xL, xR)() == ((xR^2 - xL^2)/2)())	-- hmm, the infamous minus sign factoring simplificaiton error...
-print( x:integrate(x, xL, xR)() )
---assert((x:integrate(x, xL, xR) - (xR^2 - xL^2)/2)() == Constant(0))	-- instead I'll just test this ...
-os.exit()
+assert((x:integrate(x, xL, xR) - (xR^2 - xL^2)/2)() == Constant(0))	-- instead I'll just test this ...
 
 --x^n integrals:
 assert(x:integrate(x)() == x^2 / 2)
@@ -29,10 +25,21 @@ assert((x^2):integrate(x)() == x^3 / 3)
 assert(((x^-2):integrate(x) - (-1/x))() == Constant(0))
 assert((1/x):integrate(x)() == log(abs(x)))
 assert((x^-1):integrate(x)() == log(abs(x)))
+assert((1/(2*x^2)):integrate(x)() == -(1/(2*x)))
 
 -- [[ hmm, sqrt doesn't integrate yet..
 assert((x^frac(1,2)):integrate(x)() == frac(2 * x * sqrt(x), 3)())
 assert(sqrt(x):integrate(x)() == frac(2 * x * sqrt(x), 3)())
+
+assert((1/x):integrate(x)() == log(abs(x)))
+
+assert((2/x):integrate(x)() == (2*log(abs(x)))())
+assert((1/(2*x)):integrate(x)() == (log(abs(x))/2)())
+
+-- this does integrate successfully...
+-- hmm, simplification issues surrounding this one ...
+-- and maybe some MultiLine issues too
+assert((1/(x*(3*x+4))):integrate(x)() == log(1 / abs( (4 + 3 * x) / x)^frac(1,4)))
 
 assert(sin(x):integrate(x)() == -cos(x))
 assert(cos(x):integrate(x)() == sin(x))
@@ -40,8 +47,10 @@ assert(cos(x):integrate(x)() == sin(x))
 assert(sin(2*x):integrate(x)() == (-cos(2*x)/2)())
 assert(cos(y*x):integrate(x)() == (sin(y*x)/y)())
 
-assert((1/x):integrate(x)() == log(abs(x)))
+assert((cos(x)/sin(x)):integrate(x)() == log(abs(sin(x))))
+
+assert(sinh(x):integrate(x)() == cosh(x))
+assert(cosh(x):integrate(x)() == sinh(x))
+
 --]]
 
---print((2/x):integrate(x)() ..'\n'.. (2*log(abs(x)))())
-assert((1/(2*x)):integrate(x)() == (log(abs(x))/2)())
