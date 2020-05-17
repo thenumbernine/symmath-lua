@@ -150,9 +150,14 @@ assert(j == y)
 --  it also means that a situation like add->mul->add might have problems ... x:match(W(1) + (W(2) + W(3)) * (W(4) + W(5)))
 local i,j,k = x:match(W(1) + W(2) * W(3))
 assert(i == x)
-assert(j == zero)	-- technically either j or k can be 0 
+assert(j == zero or k == zero)
 
 --  cross over add and mul ... not yet working
 --local i = (x):match(W(1) + x)	-- works
 local i = (x * y):match(W(1) + x * y)
 assert(i == zero)
+
+local i,j,k,l = x:match(x + W(1) * W(2) + W(3) * W(4))
+-- either 1 or 2 must be zero, and either 3 or 4 must be zero
+assert(i == zero or j == zero)
+assert(k == zero or l == zero)
