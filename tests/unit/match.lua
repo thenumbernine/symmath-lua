@@ -215,20 +215,12 @@ assert(c == const(2))
 assert(f == x)
 
 
--- [[ TODO this is technically correct but not what I want 
-local f, c = (2 * 1/x):factorDivision():match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})
-print(f)
-print(c)
+-- use 'cannotDependOn' first for it to greedily match non-dep-on-x terms
+-- otherwise 'dependsOn' will match everything, since the mul of a non-dep and a dep itself is dep on 'x', so it will include non-dep-on-terms
+local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x})
 assert(c == const(2))
 assert(f == 1/x)
---]]
 
--- [[ TODO not working
--- TODO error - this returns (2 * 1/x) for W{1, cannotDependOn=x}
-local f, c = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2))
-print(f)
-print(c)
-print(f:dependsOn(x))
+local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2))
 assert(c == const(2))
 assert(f == 1/x)
---]]
