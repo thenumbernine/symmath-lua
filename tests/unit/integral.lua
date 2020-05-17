@@ -9,6 +9,7 @@ local y = var'y'
 local xL = var'xL'
 local xR = var'xR'
 
+-- [[
 -- integrate constants
 assert(Constant(1):integrate(x)() == x)
 assert(y:integrate(x)() == x * y)
@@ -34,3 +35,10 @@ assert(sin(x):integrate(x)() == -cos(x))
 assert(cos(x):integrate(x)() == sin(x))
 
 assert(sin(2*x):integrate(x)() == (-cos(2*x)/2)())
+assert(cos(y*x):integrate(x)() == (sin(y*x)/y)())
+
+assert((1/x):integrate(x)() == log(abs(x)))
+--]]
+
+--print((2/x):integrate(x)() ..'\n'.. (2*log(abs(x)))())
+assert((1/(2*x)):integrate(x)() == (log(abs(x))/2)())

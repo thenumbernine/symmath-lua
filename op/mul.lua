@@ -108,7 +108,7 @@ function mul.match(a, b, matches)
 
 	-- now compare what's left in-order (since it's non-commutative)
 	-- skip wildcards, do those last
-	local function checkMatch(a,b, matches)
+	local function checkWhatsLeft(a,b, matches)
 		-- save the original here
 		-- upon success, merge the new matches back into the original argument
 		local origMatches = matches
@@ -181,7 +181,7 @@ function mul.match(a, b, matches)
 
 
 			local restsubmatch = table()
-			if not checkMatch(a, b, restsubmatch) then
+			if not checkWhatsLeft(a, b, restsubmatch) then
 --print("first match didn't match - failing")				
 				return false 
 			end
@@ -202,9 +202,7 @@ function mul.match(a, b, matches)
 
 			-- overlay match matches on what we have already matched so far
 			-- also write them back to the original argument since we are returning true
-			if origMatches then
-				for k,v in pairs(matches) do origMatches[k] = v end
-			end
+			for k,v in pairs(matches) do origMatches[k] = v end
 			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
 
@@ -212,40 +210,36 @@ function mul.match(a, b, matches)
 
 		-- now if we have a wildcard ... try all 0-n possible matches of it
 		local b1 = b:remove(1)
-		for matchSize=math.min(#a, b1.atMost or math.huge),(b1.atLeast or 0),-1 do
+		for a in a:permutations() do
+			a = table(a)
+			for matchSize=math.min(#a, b1.atMost or math.huge),(b1.atLeast or 0),-1 do
 --print("checking match size "..matchSize.." based on a terms: "..table.mapi(a, SingleLine):concat', ')
-			local b1match = matchSize == 0 and Constant(1)
-				or matchSize == 1 and a[1]
-				or setmetatable(table.sub(a, 1, matchSize), mul)
+				local b1match = matchSize == 0 and Constant(1)
+					or matchSize == 1 and a[1]
+					or setmetatable(table.sub(a, 1, matchSize), mul)
 --print("b1match "..SingleLine(b1match))			
-			local matchesForThisSize = table(matches)
+				local matchesForThisSize = table(matches)
 --print("matchesForThisSize["..b1.index.."] was "..(matchesForThisSize[b1.index] and SingleLine(matchesForThisSize[b1.index]) or 'nil'))
-			if not matchesForThisSize[b1.index] 
-			or (
-				matchesForThisSize[b1.index] 
-				and matchesForThisSize[b1.index] == b1match 
-			) then
-				matchesForThisSize[b1.index] = b1match
+				if b1match:match(b1, matchesForThisSize) then
 --print("matchesForThisSize["..b1.index.."] is now "..SingleLine(matchesForThisSize[b1.index]))
-				local suba = table.sub(a, matchSize+1)
+					local suba = table.sub(a, matchSize+1)
 --print("calling recursively on "..#suba.." terms: "..table.mapi(suba, SingleLine):concat', ')			
-				local results = table{checkMatch(suba, b, matchesForThisSize)}
---print("returned results from the sub-checkMatch : "..table.mapi(results, SingleLine):concat', ')
-				if results[1] then
+					local results = table{checkWhatsLeft(suba, b, matchesForThisSize)}
+--print("returned results from the sub-checkWhatsLeft : "..table.mapi(results, SingleLine):concat', ')
+					if results[1] then
 --print("returning that list for matchSize="..matchSize.."...")
-					-- also write them back to the original argument since we are returning true
-					if origMatches then
+						-- also write them back to the original argument since we are returning true
 						for k,v in pairs(matchesForThisSize) do origMatches[k] = v end
+						return table.unpack(matchesForThisSize, 1, table.maxn(matchesForThisSize))
 					end
-					return table.unpack(matchesForThisSize, 1, table.maxn(matchesForThisSize))
-				end
 --print("continuing...")
-			else
+				else
+--print(Verbose(b1)..':match('..SingleLine(b1match)..') failed')
 --print("the next wildcard had already been matched to "..SingleLine(matchesForThisSize[b1.index]).." when we tried to match it to "..SingleLine(b1match))
+				end
+				-- otherwise keep checking
 			end
-			-- otherwise keep checking
 		end
-		
 		-- all sized matches failed? return false
 --print("all sized matches failed - failing")	
 		return false
@@ -256,7 +250,7 @@ function mul.match(a, b, matches)
 	-- but if we want mul match to return wildcards of +0 then we can't just rely on a 1-or-more rule
 	-- for that reason, 
 	
-	return checkMatch(a,b, matches)
+	return checkWhatsLeft(a,b, matches)
 	--return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
@@ -266,7 +260,6 @@ function mul:wildcardMatches(a, matches)
 --local Verbose = require 'symmath.export.Verbose'
 --print("mul.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'}')
 
-	local Wildcard = require 'symmath.Wildcard'	
 	-- TODO move this to Expression
 	local function find(expr, lookfor)
 		if lookfor(expr) then return true end
@@ -281,6 +274,7 @@ function mul:wildcardMatches(a, matches)
 
 	-- 'a' is the 'a' in Expression.match(a,b)
 	-- 'b' is 'self'
+	local Wildcard = require 'symmath.Wildcard'	
 	local nonWildcards = table()
 	local wildcards = table()
 	for _,w in ipairs(self) do

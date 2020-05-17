@@ -67,7 +67,7 @@ Integral.rules = {
 				return defFin - defStart
 			end
 			
-			-- TODO make this canonical form
+			-- TODO make this canonical form?
 			int = int():factorDivision()
 
 			if symmath.op.Equation.is(int) 
@@ -173,11 +173,22 @@ Integral.rules = {
 					return (c / log(n)) * n^x
 				end
 
+				-- int(c / x) = log(abs(x))
+--local Verbose = require 'symmath.export.Verbose'
+--print('int', Verbose(int))
+--print('c', Verbose(c))
+--print('f', Verbose(f))
+				local d = f:match(1 / (Wildcard{1, cannotDependOn=x} * x))
+				if d then
+					return (c / d) * log(abs(x))
+				end
+
 				-- int(c / n^x)
 				local n = f:match(1 / Wildcard{1, cannotDependOn=x}^x)
 				if n then
 					return -c / (log(n) * n^x)
 				end
+
 
 				-- https://en.wikipedia.org/wiki/List_of_integrals_of_trigonometric_functions
 				-- ...involving only sine
@@ -287,7 +298,8 @@ Integral.rules = {
 				elseif div.is(d) then	-- int(f(x)/g(x), x)
 					if Constant.isValue(d[1], 1) then	-- int(1/f(x), x)
 						local e = d[2]
-						
+					
+-- [[
 						local depe, nondepe = getDepAndNonDep(e)
 						-- int(1/(cx),x) = 1/c ln|x|
 						--if e == x then
@@ -296,6 +308,7 @@ Integral.rules = {
 						then
 							return mulWithNonDep(log(abs(x))) / tableToTerm(nondepe)
 						end
+--]]
 
 						-- int(1/(x*(ax+b)) = -1/b ln|(ax+b)/x|
 						-- This is just a single entry from https://en.wikipedia.org/wiki/List_of_integrals_of_rational_functions
