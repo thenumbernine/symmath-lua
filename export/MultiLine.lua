@@ -8,6 +8,10 @@ local SingleLine = require 'symmath.export.SingleLine'
 local hasutf8, utf8 = pcall(require, 'utf8')
 if not hasutf8 then utf8 = nil end
 
+-- luajit can do fine with unicode strings within the .lua file
+-- however what it can't do is compute their length in characters.
+-- that's why I'm defaulting to non-unicode characters.
+
 local getUnicodeSymbol = Console.getUnicodeSymbol
 
 -- [3][2] of the border chars of a box
@@ -39,6 +43,8 @@ local intname = {
 }
 local partialname = getUnicodeSymbol('2202', 'd')
 
+local downarrow = getUnicodeSymbol('2193', 'v')
+local rightarrow = getUnicodeSymbol('2192', '>')
 
 local strlen
 if hasutf8 then
@@ -405,7 +411,7 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
 		local s = self.lookupTable[require 'symmath.Array'](self, expr)
-		local arrows = {'↓', '→'}
+		local arrows = {downarrow, rightarrow}
 		if #expr.variance > 0 then
 			local prefix = ''
 			for i=#expr.variance,1,-1 do

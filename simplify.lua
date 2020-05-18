@@ -3,6 +3,7 @@ local table = require 'ext.table'
 local simplifyObj = {}
 
 local function simplify(x, ...)
+--print('start', require 'symmath.export.SingleLine'(x))	
 	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ... 
 	-- this doesn't make sense, but maybe it's true
 	local Array = require 'symmath.Array'
@@ -33,18 +34,23 @@ local function simplify(x, ...)
 	end
 	if stack then stack:insert(clone(x)) end
 	x = prune(x, ...)
+--print('prune', require 'symmath.export.SingleLine'(x))	
 	if stack then stack:insert(clone(x)) end
 	local i = 0
 	repeat
 		lastx = x	-- lastx = x invokes the simplification loop.  that means one of the next few commands operates in-place.
 		
 		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
+--print('expand', require 'symmath.export.SingleLine'(x))	
 		if stack then stack:insert(clone(x)) end
 		x = prune(x, ...)
+--print('prune', require 'symmath.export.SingleLine'(x))	
 		if stack then stack:insert(clone(x)) end
 		x = factor(x)
+--print('factor', require 'symmath.export.SingleLine'(x))	
 		if stack then stack:insert(clone(x)) end
 		x = prune(x)
+--print('prune', require 'symmath.export.SingleLine'(x))	
 		if stack then stack:insert(clone(x)) end
 
 
@@ -124,6 +130,7 @@ local function simplify(x, ...)
 
 	simplifyObj.stack = stack
 
+--print('end', require 'symmath.export.SingleLine'(x))	
 	return x
 end
 

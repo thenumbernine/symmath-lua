@@ -128,17 +128,26 @@ cos.rules = {
 			local symmath = require 'symmath'
 			local Constant = symmath.Constant
 			local Variable = symmath.Variable
+			local unm = symmath.op.unm
 			local mul = symmath.op.mul
 			local div = symmath.op.div
 		
 			local theta = expr[1]
+
+			-- cos(-x) = cos(x)
+			if unm.is(theta) then
+				return cos(theta[1])
+			end
 				
 			-- cos(pi) => -1
 			if theta == symmath.pi then return Constant(-1) end
 
 			if Constant.is(theta) then
 				-- cos(0) => 1
-				if Constant.isValue(theta, 0) then return Constant(1) end
+				if theta.value == 0 then return Constant(1) end
+			
+				-- cos(-c) = cos(c)
+				if theta.value < 0 then return cos(Constant(-theta.value)) end
 			elseif mul.is(theta) then
 				if #theta == 2 
 				and theta[2] == symmath.pi 

@@ -34,11 +34,11 @@ ${{{ \tilde{e}}^z}_z} = {1}$
 <br>
 
 <br>
-tensor index associated with coordinate $r$ is index $r$ with operator $e_{r}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
+tensor index associated with coordinate $r$ is index $\hat{r}$ with operator $e_{\hat{r}}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
 <br>
-tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
+tensor index associated with coordinate $\phi$ is index $\hat{\phi}$ with operator $e_{\hat{\phi}}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
 <br>
-tensor index associated with coordinate $z$ is index $z$ with operator $e_{z}(\zeta) = $$\frac{\partial \zeta}{\partial z}$
+tensor index associated with coordinate $z$ is index $\hat{z}$ with operator $e_{\hat{z}}(\zeta) = $$\frac{\partial \zeta}{\partial z}$
 <br>
 
 <br>
@@ -63,18 +63,18 @@ basis operators applied to chart:
 <br>
 ${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
 <br>
-${{{ e}_r}^x} = {cos\left(  \phi\right)}$;
-${{{ e}_r}^y} = {sin\left(  \phi\right)}$;
-${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left(  \phi\right)}}}}$;
-${{{ e}_{\phi}}^y} = {{{r}} {{cos\left(  \phi\right)}}}$;
-${{{ e}_z}^z} = {1}$
+${{{ e}_{\hat{r}}}^x} = {cos\left(  \phi\right)}$;
+${{{ e}_{\hat{r}}}^y} = {sin\left(  \phi\right)}$;
+${{{ e}_{\hat{\phi}}}^x} = {-{{{r}} {{sin\left(  \phi\right)}}}}$;
+${{{ e}_{\hat{\phi}}}^y} = {{{r}} {{cos\left(  \phi\right)}}}$;
+${{{ e}_{\hat{z}}}^z} = {1}$
 
 <br>
-${{{ e}^r}_x} = {cos\left(  \phi\right)}$;
-${{{ e}^r}_y} = {sin\left(  \phi\right)}$;
-${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left(  \phi\right)}})}}$;
-${{{ e}^{\phi}}_y} = {{\frac{1}{r}}{({cos\left(  \phi\right)})}}$;
-${{{ e}^z}_z} = {1}$
+${{{ e}^{\hat{r}}}_x} = {cos\left(  \phi\right)}$;
+${{{ e}^{\hat{r}}}_y} = {sin\left(  \phi\right)}$;
+${{{ e}^{\hat{\phi}}}_x} = {{\frac{1}{r}}{({-{sin\left(  \phi\right)}})}}$;
+${{{ e}^{\hat{\phi}}}_y} = {{\frac{1}{r}}{({cos\left(  \phi\right)})}}$;
+${{{ e}^{\hat{z}}}_z} = {1}$
 
 <br>
 ${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
@@ -87,9 +87,9 @@ ${{{{ c}_a}_b}^c} = {0}$
 <br>
 ${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
 <br>
-${{{ g}_r}_r} = {1}$;
-${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$;
-${{{ g}_z}_z} = {1}$
+${{{ g}_{\hat{r}}}_{\hat{r}}} = {1}$;
+${{{ g}_{\hat{\phi}}}_{\hat{\phi}}} = {{r}^{2}}$;
+${{{ g}_{\hat{z}}}_{\hat{z}}} = {1}$
 
 <br>
 ${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
@@ -102,45 +102,45 @@ commutation coefficients:
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
 metric:
-${{{ g}_r}_r} = {1}$;
-${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$;
-${{{ g}_z}_z} = {1}$
+${{{ g}_{\hat{r}}}_{\hat{r}}} = {1}$;
+${{{ g}_{\hat{\phi}}}_{\hat{\phi}}} = {{r}^{2}}$;
+${{{ g}_{\hat{z}}}_{\hat{z}}} = {1}$
 
 <br>
 metric inverse:
-${{{ g}^r}^r} = {1}$;
-${{{ g}^{\phi}}^{\phi}} = {\frac{1}{{r}^{2}}}$;
-${{{ g}^z}^z} = {1}$
+${{{ g}^{\hat{r}}}^{\hat{r}}} = {1}$;
+${{{ g}^{\hat{\phi}}}^{\hat{\phi}}} = {\frac{1}{{r}^{2}}}$;
+${{{ g}^{\hat{z}}}^{\hat{z}}} = {1}$
 
 <br>
 metric derivative:
-${{{{ {\partial g}}_{\phi}}_{\phi}}_r} = {{{2}} {{r}}}$
+${{{{ {\partial g}}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {{{2}} {{r}}}$
 
 <br>
 1st kind Christoffel:
-${{{{ \Gamma}_r}_{\phi}}_{\phi}} = {-{r}}$;
-${{{{ \Gamma}_{\phi}}_r}_{\phi}} = {r}$;
-${{{{ \Gamma}_{\phi}}_{\phi}}_r} = {r}$
+${{{{ \Gamma}_{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}} = {-{r}}$;
+${{{{ \Gamma}_{\hat{\phi}}}_{\hat{r}}}_{\hat{\phi}}} = {r}$;
+${{{{ \Gamma}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {r}$
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{r}}$;
-${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
+${{{{ \Gamma}^{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}} = {-{r}}$;
+${{{{ \Gamma}^{\hat{\phi}}}_{\hat{r}}}_{\hat{\phi}}} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {\frac{1}{r}}$
 
 <br>
 connection coefficients derivative:
-${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$
+${{{{{ {\partial \Gamma}}^{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {-{1}}$;
+${{{{{ {\partial \Gamma}}^{\hat{\phi}}}_{\hat{r}}}_{\hat{\phi}}}_{\hat{r}}} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}}_{\hat{r}}} = {-{\frac{1}{{r}^{2}}}}$
 
 <br>
 connection coefficients squared:
-${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_{\phi}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_{\phi}} = {-{1}}$
+${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{r}}}_{\hat{r}}}_{\hat{\phi}}} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}}_{\hat{r}}} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{\phi}}} = {-{1}}$
 
 <br>
 Riemann curvature, $\sharp\flat\flat\flat$:
@@ -159,11 +159,11 @@ $0$
 Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
 ${{{ G}^a}_b} = {0}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{r}}}{\partial r}} + {\frac{\partial {A^{\phi}}}{\partial \phi}} + {\frac{\partial {A^{z}}}{\partial z}} + {{{{A^{r}}}} \cdot {{\frac{1}{r}}}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{\hat{r}}}}{\partial r}} + {\frac{\partial {A^{\hat{\phi}}}}{\partial \phi}} + {\frac{\partial {A^{\hat{z}}}}{\partial z}} + {{{{A^{\hat{r}}}}} \cdot {{\frac{1}{r}}}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{r} \\ \ddot{\phi} \\ \ddot{z}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{r}} {{{\dot{\phi}}^{2}}} \\ {{-2}} {{\dot{\phi}}} \cdot {{\dot{r}}} \cdot {{\frac{1}{r}}} \\ 0\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{\hat{r}} \\ \ddot{\hat{\phi}} \\ \ddot{\hat{z}}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{r}} {{{\dot{\hat{\phi}}}^{2}}} \\ {{-2}} {{\dot{\hat{\phi}}}} \cdot {{\dot{\hat{r}}}} \cdot {{\frac{1}{r}}} \\ 0\end{matrix}\right]}}$
 <br>
 
 <br>
@@ -266,19 +266,19 @@ volume integral: 	${{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}}
 <br>
 finite volume (0,0)-form:
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}}}} {{{F^{r}(r_R)}}}} - {{{{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}}}} {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}}}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{{{J(z_R)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_R)}}}}} {{{F^{z}(z_R)}}}} - {{{{{{J(z_L)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_L)}}}}} {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({{{{{{{J(r_R)}}} \cdot {{{{e_{\hat{r}}}^{\bar{\hat{r}}}(r_R)}}}}} {{{F^{r}(r_R)}}}} - {{{{{{J(r_L)}}} \cdot {{{{e_{\hat{r}}}^{\bar{\hat{r}}}(r_L)}}}}} {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{{{J(\phi_R)}}} \cdot {{{{e_{\hat{\phi}}}^{\bar{\hat{\phi}}}(\phi_R)}}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{{J(\phi_L)}}} \cdot {{{{e_{\hat{\phi}}}^{\bar{\hat{\phi}}}(\phi_L)}}}}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{{{J(z_R)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_R)}}}}} {{{F^{z}(z_R)}}}} - {{{{{{J(z_L)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_L)}}}}} {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{{r_L}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{r}} {{{F^{z}(z_R)}}}} - {{{r}} {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({{{{r}} {{{F^{r}(r_R)}}}} - {{{r}} {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{r}} {{{F^{z}(z_R)}}}} - {{{r}} {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{{-{{{{{({{{{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{{r_L}}} \cdot {{{F^{r}(r_L)}}}}})}} {{\Delta \phi}}}} {{\Delta z}}}} - {{{{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{({{{F^{\phi}(\phi_L)}} - {{F^{\phi}(\phi_R)}}})}}}})}}} {{\Delta z}}}} - {{{{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{({{{F^{z}(z_L)}} - {{F^{z}(z_R)}}})}}}})}}} {{\Delta \phi}}}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{{-{{{{{({{{{r}} {{{F^{r}(r_R)}}}} - {{{r}} {{{F^{r}(r_L)}}}}})}} {{\Delta \phi}}}} {{\Delta z}}}} - {{{{{({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}})}} {{\Delta r}}}} {{\Delta z}}}} - {{{{{({{{{r}} {{{F^{z}(z_R)}}}} - {{{r}} {{{F^{z}(z_L)}}}}})}} {{\Delta r}}}} {{\Delta \phi}}}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{{{u(x_C, t_L)}}} \cdot {{{r_L}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{{u(x_C, t_L)}}} \cdot {{{r_R}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{S(x_C)}}} \cdot {{{r_L}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{S(x_C)}}} \cdot {{{r_R}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{\Delta (r^2)}}} \cdot {{{F^{z}(z_L)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{\Delta z}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{\Delta z}} \cdot {{{r_R}}}}}}}} + {{{-1}} {{\Delta t}} \cdot {{{\Delta (r^2)}}} \cdot {{{F^{z}(z_R)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{\Delta z}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{\Delta z}} \cdot {{{r_R}}}}}}}} + {{{-2}} {{\Delta t}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{2}} {{\Delta t}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{\Delta t}} \cdot {{{\Delta (r^2)}}} \cdot {{{F^{\phi}(\phi_L)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{\Delta \phi}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{\Delta \phi}} \cdot {{{r_R}}}}}}}} + {{{-1}} {{\Delta t}} \cdot {{{\Delta (r^2)}}} \cdot {{{F^{\phi}(\phi_R)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{\Delta \phi}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{\Delta \phi}} \cdot {{{r_R}}}}}}}}}$
+${{u(x_C, t_R)}} = {{{{{u(x_C, t_L)}}} \cdot {{{r_L}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{{u(x_C, t_L)}}} \cdot {{{r_R}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{S(x_C)}}} \cdot {{{r_L}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{\Delta t}} \cdot {{{S(x_C)}}} \cdot {{{r_R}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{-2}} {{\Delta t}} \cdot {{r}} {{{F^{r}(r_R)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{2}} {{\Delta t}} \cdot {{r}} {{{F^{r}(r_L)}}} \cdot {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{-2}} {{\Delta t}} \cdot {{r}} {{{F^{\phi}(\phi_R)}}} \cdot {{\frac{1}{{{{\Delta \phi}} \cdot {{{r_L}}}} + {{{\Delta \phi}} \cdot {{{r_R}}}}}}}} + {{{2}} {{\Delta t}} \cdot {{r}} {{{F^{\phi}(\phi_L)}}} \cdot {{\frac{1}{{{{\Delta \phi}} \cdot {{{r_L}}}} + {{{\Delta \phi}} \cdot {{{r_R}}}}}}}} + {{{-2}} {{\Delta t}} \cdot {{r}} {{{F^{z}(z_R)}}} \cdot {{\frac{1}{{{{\Delta z}} \cdot {{{r_L}}}} + {{{\Delta z}} \cdot {{{r_R}}}}}}}} + {{{2}} {{\Delta t}} \cdot {{r}} {{{F^{z}(z_L)}}} \cdot {{\frac{1}{{{{\Delta z}} \cdot {{{r_L}}}} + {{{\Delta z}} \cdot {{{r_R}}}}}}}}}$
 <br>
 
 <br>

@@ -128,6 +128,7 @@ local spacetimes = {
 			return Tensor('^I', r * cos(phi), r * sin(phi))
 		end,
 	},
+
 	{
 		title = 'polar, anholonomic, orthonormal',
 		baseCoords = {r,theta},
@@ -1244,12 +1245,8 @@ end
 	printbr()
 
 
-
-
-
 	print(MathJax.footer)
 	f:close()
-
 end
 
 -- [=[

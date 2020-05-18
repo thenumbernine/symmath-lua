@@ -47,17 +47,19 @@ end
 -- temporary ...
 function pow:expand()
 	local Constant = require 'symmath.Constant'
+	if not Constant.is(self[2]) then return end
+	local n = self[2].value
 	-- for certain small integer powers, expand 
 	-- ... or should we have all integer powers expended under a different command?
 	if require 'symmath.set.sets'.integer:contains(self[2])
-	and self[2].value >= 0
-	and self[2].value < 10
+	and n >= 0
+	and n < 10
 	then
 		local result = Constant(1)
-		for i=1,self[2].value do
-			result = result * self[1]:clone()
+		for i=1,n do
+			result = result * self[1]
 		end
-		return result:simplify()
+		return result
 	end
 end
 
@@ -106,8 +108,8 @@ pow.rules = {
 			-- not simplifying ...
 			-- maybe this should go in factor() or expand()
 			if div.is(expr[1]) then
-				local num = expr[1][1]:clone() ^ expr[2]:clone()
-				local denom = expr[1][2]:clone() ^ expr[2]:clone()
+				local num = expr[1][1] ^ expr[2]
+				local denom = expr[1][2] ^ expr[2]
 				local repl = num / denom
 				return expand:apply(repl)
 			end
@@ -125,12 +127,8 @@ pow.rules = {
 				then
 					return Constant(expr[1].value ^ expr[2].value)
 				end
-				local new = setmetatable(range(expr[2].value):mapi(function(i)
-					return expr[1]:clone()
-				end), mul)
-				return expand:apply(new)
+				return setmetatable(table{expr[1]}:rep(expr[2].value), mul)
 			end
-			--]]
 		end},
 	},
 
@@ -399,6 +397,8 @@ pow.rules = {
 						if #inside == 1 then inside = inside[1] end
 						return symmath.cos(inside) + symmath.i * symmath.sin(inside)
 					end
+				elseif inside == symmath.i then
+					return symmath.cos(Constant(1)) + symmath.i * symmath.sin(Constant(1))
 				end
 			end
 		

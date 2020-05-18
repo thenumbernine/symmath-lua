@@ -150,9 +150,9 @@ Integral.rules = {
 			
 			-- int(c * f(x))
 			local f, c = int:match(Wildcard{index=2, cannotDependOn=x} * Wildcard{1, dependsOn=x})
-local Verbose = require 'symmath.export.Verbose'
-print('f', f and Verbose(f) or tostring(f))
-print('c', c and Verbose(c) or tostring(c))
+--local Verbose = require 'symmath.export.Verbose'
+--print('f', f and Verbose(f) or tostring(f))
+--print('c', c and Verbose(c) or tostring(c))
 			if f then
 				-- int(c * x)
 				if f == x then

@@ -8,12 +8,13 @@ local add = class(Binary)
 add.precedence = 2
 add.name = '+'
 
+--[[
+-- auto flatten any adds ...?
+-- I don't think anyone depends on nested adds ... 
+-- and flattening here will make the API easier, requiring less simplify's for matching and == 
 function add:init(...)
 	add.super.init(self, ...)
 
-	-- auto flatten any adds ...?
-	-- I don't think anyone depends on nested adds ... 
-	-- and flattening here will make the API easier, requiring less simplify's for matching and == 
 	for i=#self,1,-1 do
 		if add.is(self[i]) then
 			local x = table.remove(self, i)
@@ -23,6 +24,7 @@ function add:init(...)
 		end
 	end
 end
+--]]
 
 function add:evaluateDerivative(deriv, ...)
 	local result = table()
@@ -648,7 +650,7 @@ add.rules = {
 	},
 
 	Factor = {
-		{apply = function(factor, expr, factors)
+		{apply = function(factor, expr)
 			assert(#expr > 1)
 			
 			local symmath = require 'symmath'

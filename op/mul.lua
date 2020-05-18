@@ -7,10 +7,13 @@ mul.implicitName = true
 mul.precedence = 3
 mul.name = '*'
 
+--[[
+-- auto flatten any muls
+-- this is useful for find/replace, since otherwise the API user has to simplify() everything to get it to match what the CAS produces
+-- the problem is, this modifies in-place, which breaks our cardinal rule (and a lot of our code)
 function mul:init(...)
 	mul.super.init(self, ...)
 
-	-- auto flatten any muls
 	for i=#self,1,-1 do
 		if mul.is(self[i]) then
 			local x = table.remove(self, i)
@@ -20,6 +23,7 @@ function mul:init(...)
 		end
 	end
 end
+--]]
 
 function mul:evaluateDerivative(deriv, ...)
 	local add = require 'symmath.op.add'
@@ -422,8 +426,7 @@ function mul:flatten()
 end
 
 --[[
-a * (b + c) * d * e becomes
-(a * b * d * e) + (a * c * d * e)
+a * (b + c) * d * e => (a * b * d * e) + (a * c * d * e)
 --]]
 function mul:distribute()
 	local add = require 'symmath.op.add'
@@ -433,7 +436,7 @@ function mul:distribute()
 			local terms = table()
 			for j,chch in ipairs(ch) do
 				local term = self:clone()
-				term[i] = chch:clone()
+				term[i] = chch
 				terms:insert(term)
 			end
 			return getmetatable(ch)(table.unpack(terms))
