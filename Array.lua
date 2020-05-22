@@ -26,24 +26,16 @@ valid ctors:
 --]]
 function Array:init(...)
 	Array.super.init(self, ...)
-			
+	local mt = getmetatable(self)
+
 	for i=1,#self do
 		local x = self[i]
 		assert(type(x) == 'table', "arrays can only be constructed with Expressions or tables of Expressions") 
 		if not Expression.is(x) then
 			-- then assume it's meant to be a sub-array
-			x = Array(table.unpack(x))
-			self[i] = x
+			self[i] = mt(table.unpack(x))
 		end
 	end
-end
-
--- using the Array constructor is slow, since it deep copies the contents
--- here's my alternative.  don't use this.  it's especially only for internal use.
--- use it as a static function, so 'Array:convertTable' or whatever subclass of Array
--- make sure you apply all nested tables (rows, etc) just as the constructor would when deep-copying.
-function Array:convertTable(t)
-	return setmetatable(t, self.class)
 end
 
 Array.__index = function(self, key)
