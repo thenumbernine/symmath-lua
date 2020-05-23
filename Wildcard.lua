@@ -1,4 +1,5 @@
 local class = require 'ext.class'
+local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 
 local Wildcard = class(Expression)
@@ -32,6 +33,17 @@ function Wildcard:init(args)
 	elseif type(args) == 'nil' then
 		self.index = 1
 	end
+	assert(self.index)
+end
+
+function Wildcard:clone()
+	return Wildcard{
+		index = self.index,
+		dependsOn = self.wildcardDependsOn and self.wildcardDependsOn:clone() or nil,
+		cannotDependOn = self.wildcardCannotDependOn and self.wildcardCannotDependOn:clone() or nil,
+		atLeast = self.atLeast and self.atLeast or nil,
+		atMost = self.atMost and self.atMost or nil,
+	}
 end
 
 -- this is a test-and-set operation.
