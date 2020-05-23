@@ -199,7 +199,7 @@
 <br>
 
 <br>
-<code>-- [[ trigonometry</code>
+<code>-- trigonometry</code>
 <br>
 
 <br>
@@ -211,15 +211,11 @@
 <br>
 
 <br>
-<code>asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 2*y)	-- works when combining y + y * trig ident</code>
+<code>asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 2*y)</code>
 <br>
 
 <br>
-<code>asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 1+y)	-- ... but not when combining 1 + y * trig ident (look in factor.lua)</code>
-<br>
-
-<br>
-<code>--]]</code>
+<code>asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 1+y)</code>
 <br>
 
 <br>
@@ -267,11 +263,11 @@
 <br>
 
 <br>
-<code>--asserteq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)</code>
+<code>asserteq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)</code>
 <br>
 
 <br>
-<code>--asserteq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)</code>
+<code>asserteq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)</code>
 <br>
 
 <br>

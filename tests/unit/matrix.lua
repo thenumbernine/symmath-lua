@@ -1,7 +1,10 @@
 #!/usr/bin/env luajit
-require 'symmath'.setup{implicitVars=true, MathJax={title='matrix', pathToTryToFindMathJax='..'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJax={title='matrix', pathToTryToFindMathJax='..'}}
 
 function asserteq(a,b)
+	printbr(a:eq(b))
 	if a() ~= b() then
 		local errorstr = "expected "..a.." == "..b
 		print(errorstr)
@@ -10,6 +13,7 @@ function asserteq(a,b)
 end
 
 function assertne(a,b)
+	printbr(a:ne(b))
 	if a() == b() then
 		local errorstr = "expected "..a.." $\\ne$ "..b
 		print(errorstr)
@@ -19,7 +23,7 @@ end
 
 local function exec(str)
 	printbr('<code>'..str..'</code>')
-	printbr(assert(loadstring('return '..str))())
+	printbr(assert(load('return '..str, nil, nil, env))())
 end
 
 -- vectors
@@ -51,7 +55,6 @@ exec[[asserteq(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse(), 
 
 m = Matrix({cos(theta), -sin(theta)}, {sin(theta), cos(theta)})
 mInv = m:inverse()
-mInv = mInv:replace(sin(theta)^2, 1-cos(theta)^2)()	-- almost there ... still have to trig simplify this ...
 
 exec[[m + mInv]]
 exec[[(m + mInv)()]]

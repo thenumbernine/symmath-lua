@@ -1,6 +1,8 @@
 #!/usr/bin/env luajit
-require 'ext'
-require 'symmath'.setup{debugSimplifyLoops=true, MathJax={title='test', pathToTryToFindMathJax='..'}}
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'ext.env'(env)
+require 'symmath'.setup{env=env, debugSimplifyLoops=true, MathJax={title='test', pathToTryToFindMathJax='..'}}
 
 function asserteq(a,b)
 	local sa = symmath.simplify(a)
@@ -19,11 +21,11 @@ end
 
 local function exec(str)
 	printbr('<code>'..str..'</code>')
-	printbr(assert(load(str))())
+	printbr(assert(load(str, nil, nil, env))())
 end
 
 -- constant simplificaiton
-for _,line in ipairs(([=[
+for _,line in ipairs(string.split(string.trim([=[
 asserteq(1, (Constant(1)*Constant(1))())
 asserteq(1, (Constant(1)/Constant(1))())
 asserteq(-1, (-Constant(1)/Constant(1))())	-- without the first 'simplify' we don't get the same canonical form with the unary - on the outside
@@ -72,12 +74,11 @@ asserteq((x-1)/(1-x), -1)
 
 -- factor(): mul add div
 
--- [[ trigonometry
+-- trigonometry
 asserteq((symmath.sin(x)^2+symmath.cos(x)^2)(), 1)
 asserteq((y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), y)
-asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 2*y)	-- works when combining y + y * trig ident
-asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 1+y)	-- ... but not when combining 1 + y * trig ident (look in factor.lua)
---]]
+asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 2*y)
+asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 1+y)
 
 asserteq(1+symmath.cos(x)^2+symmath.cos(x)^2, 1+2*symmath.cos(x)^2)
 asserteq(-1+symmath.cos(x)^2+symmath.cos(x)^2, -1+2*symmath.cos(x)^2)
@@ -89,12 +90,12 @@ asserteq((-x+y)/(-x+y)^2, 1/(-x+y))
 gUxx = var('\\gamma^{xx}')
 gUxy = var('\\gamma^{xy}')
 gUyy = var('\\gamma^{yy}')
---asserteq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)
---asserteq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)
+asserteq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)
+asserteq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)
 asserteq( gUxy * (gUxy - gUxx) / (gUxx - gUxy), -gUxy)
 
 -- and an example of what a failure looks like:
 asserteq(1,2)
-]=]):trim():split'\n') do
+]=]), '\n')) do
 	exec(line)
 end
