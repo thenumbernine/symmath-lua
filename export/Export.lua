@@ -28,8 +28,10 @@ function Export:apply(expr, ...)
 	if not lookup then 
 		local tolua = require 'ext.tolua'
 		error("in exporter "..self.name.." expected to find a lookup for class named "
-			..tostring(expr.name).." for expr\n"
-				..require 'symmath.export.MultiLine'(expr)..'\n'
+			..tostring(getmetatable(expr).name)
+				.." for expr\n"
+-- can't do this if our class is MultiLine ... it'll be infinite recursion
+--				..require 'symmath.export.MultiLine'(expr)..'\n'
 				..tolua(expr)) 
 	end
 	return (self.lookupTable[lookup])(self, expr, ...)
