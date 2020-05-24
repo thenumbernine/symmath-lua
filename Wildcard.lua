@@ -22,11 +22,11 @@ function Wildcard:init(args)
 		self.index = args
 	elseif type(args) == 'table' then
 		self.index = args.index or args[1] or 1
+		self.atLeast = args.atLeast
+		self.atMost = args.atMost
 		-- use some field names that don't overlap with Expression methods like 'dependsOn'
 		self.wildcardDependsOn = args.dependsOn
 		self.wildcardCannotDependOn = args.cannotDependOn
-		self.atLeast = args.atLeast
-		self.atMost = args.atMost
 		if self.atMost then
 			assert(self.atMost > 0, "if atMost <= 0 then what are you trying to match?")
 		end
@@ -39,10 +39,10 @@ end
 function Wildcard:clone()
 	return Wildcard{
 		index = self.index,
-		dependsOn = self.wildcardDependsOn and self.wildcardDependsOn:clone() or nil,
-		cannotDependOn = self.wildcardCannotDependOn and self.wildcardCannotDependOn:clone() or nil,
 		atLeast = self.atLeast and self.atLeast or nil,
 		atMost = self.atMost and self.atMost or nil,
+		dependsOn = self.wildcardDependsOn and self.wildcardDependsOn:clone() or nil,
+		cannotDependOn = self.wildcardCannotDependOn and self.wildcardCannotDependOn:clone() or nil,
 	}
 end
 

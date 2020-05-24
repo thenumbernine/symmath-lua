@@ -13,17 +13,43 @@ mul.name = '*'
 -- the problem is, this modifies in-place, which breaks our cardinal rule (and a lot of our code)
 function mul:init(...)
 	mul.super.init(self, ...)
+	self:flatten()
+end
+--]]
 
+function mul:flatten()
 	for i=#self,1,-1 do
 		if mul.is(self[i]) then
 			local x = table.remove(self, i)
 			for j=#x,1,-1 do
-				table.insert(self, i, x[j])
+				table.insert(self, i, x[j]:clone())
 			end
 		end
 	end
+	return self
 end
---]]
+
+function mul:flattenAndClone()
+	for i=#self,1,-1 do
+		local ch = self[i]
+		if mul.is(ch) then
+			local expr = {table.unpack(self)}
+			table.remove(expr, i)
+			for j=#ch,1,-1 do
+				local chch = ch[j]
+				table.insert(expr, i, chch)
+			end
+			return mul(table.unpack(expr))
+		end
+	end
+end
+
+function mul:isFlattened()
+	for i,ch in ipairs(self) do
+		if mul.is(ch) then return false end
+	end
+	return true
+end
 
 function mul:evaluateDerivative(deriv, ...)
 	local add = require 'symmath.op.add'
@@ -410,21 +436,6 @@ function mul:getRealDomain()
 	return I
 end
 
-function mul:flatten()
-	for i=#self,1,-1 do
-		local ch = self[i]
-		if mul.is(ch) then
-			local expr = {table.unpack(self)}
-			table.remove(expr, i)
-			for j=#ch,1,-1 do
-				local chch = ch[j]
-				table.insert(expr, i, chch)
-			end
-			return mul(table.unpack(expr))
-		end
-	end
-end
-
 --[[
 a * (b + c) * d * e => (a * b * d * e) + (a * c * d * e)
 --]]
@@ -473,7 +484,7 @@ mul.rules = {
 			-- but not recursively ... hmm ...
 			
 			-- flatten multiplications
-			local flat = expr:flatten()
+			local flat = expr:flattenAndClone()
 			if flat then return factorDivision:apply(flat) end
 
 			-- distribute multiplication
@@ -528,7 +539,7 @@ mul.rules = {
 			local div = require 'symmath.op.div'
 			
 			-- flatten multiplications
-			local flat = expr:flatten()
+			local flat = expr:flattenAndClone()
 			if flat then return prune:apply(flat) end
 			
 			-- move unary minuses up

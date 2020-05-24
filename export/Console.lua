@@ -9,6 +9,9 @@ if not hasutf8 then utf8 = nil end
 
 local Console = class(Export)
 
+-- Technically I could just paste the unicode symbol directly into the string and let the text editor and the console deal with it
+-- however unless I have a proper utf8.len function then the # length operator of Lua will screw up all the spacing.
+-- SO unless I have access to utf8.len() (which my luajit doesn't atm) then I won't use unicode characters.
 function Console.getUnicodeSymbol(code, default)
 	if not hasutf8 then return default end
 	-- wrap the unicode in just one load() so Lua versions that don't support it will still compile

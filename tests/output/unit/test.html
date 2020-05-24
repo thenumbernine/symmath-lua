@@ -7,315 +7,361 @@
     </head>
 	<body onload='tryToFindMathJax();'>
 
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b>multiply by 1</b><br>
 <code>asserteq(1, (Constant(1)*Constant(1))())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>divide by 1</b><br>
 <code>asserteq(1, (Constant(1)/Constant(1))())</code>
-<br>
+</td><td>
 
-<br>
-<code>asserteq(-1, (-Constant(1)/Constant(1))())	-- without the first 'simplify' we don't get the same canonical form with the unary - on the outside</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>divide by -1</b><br>
+<code>asserteq(-1, (-Constant(1)/Constant(1))())</code>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>multiply and divide by 1</b><br>
 <code>asserteq(1, (Constant(1)/(Constant(1)*Constant(1)))())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
-<code>x = symmath.Variable('x')</code>
-<br>
-
-<br>
-<code>y = symmath.Variable('y')</code>
-<br>
-
-<br>
-<code>t = symmath.Variable('t')</code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b>commutativity</b><br>
 <code></code>
-<br>
-
-<br>
-<code>-- commutativity</code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b>add commutative</b><br>
 <code>asserteq(x+y, y+x)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>mul commutative</b><br>
 <code>asserteq(x*y, y*x)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
-<code>-- pruning operations</code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b>pruning operations</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>prune 1*</b><br>
 <code>asserteq(x, (1*x)())</code>
-<br>
+</td><td>
 
-<br>
-<code>asserteq(0, (Constant(0)*x)())</code>
-<br>
-
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>prune *1</b><br>
 <code>asserteq(x, (x*1)())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>prune *0</b><br>
+<code>asserteq(0, (0*x)())</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((x/x)(), 1)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq(x^2, (x*x)())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
-<code>-- simplify(): div add mul</code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b>simplify(): div add mul</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq(((x+1)*y)(), (x*y + y)())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq(((x+1)*(y+1))(), (x*y + x + y + 1)())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((2/(2*x*y))(), (1/(x*y))())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((1-(1-x))(), x)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq(((1-(1-x))/x)(), 1)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((1 + 1/x + 1/x)(), (1 + 2/x)())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((1 + 1/x + 2/x)(), (1 + 3/x)())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
-<code>-- factoring integers</code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b>factoring integers</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq((Constant(2)/Constant(2))(), Constant(1))</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((Constant(2)/Constant(4))(), (Constant(1)/Constant(2))())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq(((2*x + 2*y)/2)(), (x+y)())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq(((-2*x + 2*y)/2)(), (-x+y)())</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq(-1-x, -(1+x))</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq((-x)/x, -1)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((x/(-x)), -1)</code>
-<br>
+</td><td>
 
-<br>
-<code>asserteq((-x-1)/(x+1), -1) </code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((-x-1)/(x+1), -1)</code>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((x-1)/(1-x), -1)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
-<code>-- expand(): add div mul</code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b>expand(): add div mul</b><br>
 <code></code>
-<br>
-
-<br>
-<code>-- factor(): mul add div</code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
-<code>-- trigonometry</code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b>factor(): mul add div</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>trigonometry</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq((symmath.sin(x)^2+symmath.cos(x)^2)(), 1)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), y)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 2*y)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 1+y)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq(1+symmath.cos(x)^2+symmath.cos(x)^2, 1+2*symmath.cos(x)^2)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq(-1+symmath.cos(x)^2+symmath.cos(x)^2, -1+2*symmath.cos(x)^2)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq((y-x)/(x-y), -1)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((x+y)/(x+y)^2, 1/(x+y))</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq((-x+y)/(-x+y)^2, 1/(-x+y))</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
-<br>
-
-<br>
-<code>gUxx = var('\\gamma^{xx}')</code>
-<br>
-
-<br>
-<code>gUxy = var('\\gamma^{xy}')</code>
-<br>
-
-<br>
-<code>gUyy = var('\\gamma^{yy}')</code>
-<br>
-
-<br>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)</code>
-<br>
+</td><td>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq( gUxy * (gUxy - gUxx) / (gUxx - gUxy), -gUxy)</code>
-<br>
+</td><td>
 
-<br>
-<code></code>
-<br>
-
-<br>
-<code>-- and an example of what a failure looks like:</code>
-<br>
-
-<br>
-<code>asserteq(1,2)</code>
-<br>
-expected 1 to equal 2
-<br>
-instead found $1$ vs $2$
-<br>
-lhs stack
-<br>
-$1$
-<br>
-$1$
-<br>
-$1$
-<br>
-$1$
-<br>
-$1$
-<br>
-$1$
-<br>
-rhs stack
-<br>
-$2$
-<br>
-$2$
-<br>
-$2$
-<br>
-$2$
-<br>
-$2$
-<br>
-$2$
-<br>
-
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>

@@ -32,26 +32,26 @@ local function simplify(x, ...)
 		clone = symmath.clone
 		stack = table()
 	end
-	if stack then stack:insert(clone(x)) end
+	if stack then stack:insert{'init', clone(x)} end
 	x = prune(x, ...)
 --print('prune', require 'symmath.export.SingleLine'(x))	
-	if stack then stack:insert(clone(x)) end
+	if stack then stack:insert{'prune', clone(x)} end
 	local i = 0
 	repeat
 		lastx = x	-- lastx = x invokes the simplification loop.  that means one of the next few commands operates in-place.
 		
 		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
 --print('expand', require 'symmath.export.SingleLine'(x))	
-		if stack then stack:insert(clone(x)) end
+		if stack then stack:insert{'expand', clone(x)} end
 		x = prune(x, ...)
 --print('prune', require 'symmath.export.SingleLine'(x))	
-		if stack then stack:insert(clone(x)) end
+		if stack then stack:insert{'prune', clone(x)} end
 		x = factor(x)
 --print('factor', require 'symmath.export.SingleLine'(x))	
-		if stack then stack:insert(clone(x)) end
+		if stack then stack:insert{'factor', clone(x)} end
 		x = prune(x)
 --print('prune', require 'symmath.export.SingleLine'(x))	
-		if stack then stack:insert(clone(x)) end
+		if stack then stack:insert{'prune', clone(x)} end
 
 
 		-- trigonometric
@@ -115,16 +115,19 @@ local function simplify(x, ...)
 		--do break end -- calling expand() again after this breaks things ...
 		i = i + 1
 	until i == simplifyMaxIter or x == lastx or getmetatable(x) == Invalid
-	-- [[ debugging simplify loop stack trace
+-- [[ debugging simplify loop stack trace
 	if i == simplifyMaxIter then
 		if stack then 
-			for i,xi in ipairs(stack) do
-				io.stderr:write('simplify stack #'..i..'\n'..xi..'\n')
+			local SingleLine = require 'symmath.export.SingleLine'
+			for i,kv in ipairs(stack) do
+				local op, xi = table.unpack(kv)
+				io.stderr:write('simplify stack #'..i..':\t'..op..'\t'..SingleLine(xi)..'\n')
 			end
 		end
 		io.stderr:write("simplification loop\n")
+		io.stderr:write(debug.traceback()..'\n')
 	end
-	--]]
+--]]
 	
 	x = tidy(x, ...)
 

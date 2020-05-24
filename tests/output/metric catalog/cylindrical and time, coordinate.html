@@ -93,7 +93,7 @@ basis determinant:	${det(e)} = {r}$
 <br>
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 ${{{ g}_t}_t} = {-{1}}$;
 ${{{ g}_r}_r} = {1}$;
@@ -101,11 +101,11 @@ ${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$;
 ${{{ g}_z}_z} = {1}$
 
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 metric determinant:	${det(g)} = {-{{r}^{2}}}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
 <br>
 commutation coefficients:
 ${{{{ c}_a}_b}^c} = {0}$
@@ -312,19 +312,19 @@ ${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\ 
 <br>
 volume element: 	${{ii}} \cdot {{r}}$
 <br>
-volume integral: 	${{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}}} {{\Delta z}}$
+volume integral: 	${{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}} \cdot {{\Delta z}}$
 <br>
 finite volume (0,0)-form:
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{{{J(t_R)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_R)}}}}} {{{F^{t}(t_R)}}}} - {{{{{{J(t_L)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_L)}}}}} {{{F^{t}(t_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}}}} {{{F^{r}(r_R)}}}} - {{{{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}}}} {{{F^{r}(r_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}}}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{{{J(z_R)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_R)}}}}} {{{F^{z}(z_R)}}}} - {{{{{{J(z_L)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_L)}}}}} {{{F^{z}(z_L)}}}}}\right)}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{J(t_R)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_R)}}} \cdot {{{F^{t}(t_R)}}}} - {{{{J(t_L)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_L)}}} \cdot {{{F^{t}(t_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}} \cdot {{{F^{r}(r_R)}}}} - {{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}} \cdot {{{F^{\phi}(\phi_R)}}}} - {{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}} \cdot {{{F^{\phi}(\phi_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(z_R)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_R)}}} \cdot {{{F^{z}(z_R)}}}} - {{{{J(z_L)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_L)}}} \cdot {{{F^{z}(z_L)}}}}}\right)}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{{ii}} \cdot {{r}}}} {{{F^{t}(t_R)}}}} - {{{{{ii}} \cdot {{r}}}} {{{F^{t}(t_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{{ii}} \cdot {{{r_R}}}}} {{{F^{r}(r_R)}}}} - {{{{{ii}} \cdot {{{r_L}}}}} {{{F^{r}(r_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{{ii}} \cdot {{r}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{ii}} \cdot {{r}}}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{{ii}} \cdot {{r}}}} {{{F^{z}(z_R)}}}} - {{{{{ii}} \cdot {{r}}}} {{{F^{z}(z_L)}}}}}\right)}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{({{{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{ii}} \cdot {{r}} {{{F^{t}(t_R)}}}} - {{{ii}} \cdot {{r}} {{{F^{t}(t_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ii}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ii}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ii}} \cdot {{r}} {{{F^{\phi}(\phi_R)}}}} - {{{ii}} \cdot {{r}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ii}} \cdot {{r}} {{{F^{z}(z_R)}}}} - {{{ii}} \cdot {{r}} {{{F^{z}(z_L)}}}}}\right)}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{{{-{{{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{({{{F^{t}(t_L)}} - {{F^{t}(t_R)}}})}}}\right)})}} {{\Delta \phi}}}} {{\Delta z}}}} - {{{{{{{({{{{{{ii}} \cdot {{{r_R}}}}} {{{F^{r}(r_R)}}}} - {{{{{ii}} \cdot {{{r_L}}}}} {{{F^{r}(r_L)}}}}})}} {{\Delta t}}}} {{\Delta \phi}}}} {{\Delta z}}}} - {{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{\Delta t}} \cdot {{({{{F^{\phi}(\phi_L)}} - {{F^{\phi}(\phi_R)}}})}}}\right)})}} {{\Delta z}}}} - {{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{\Delta t}} \cdot {{({{{F^{z}(z_L)}} - {{F^{z}(z_R)}}})}}}\right)})}} {{\Delta \phi}}}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{({{{{-{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{({{{F^{t}(t_L)}} - {{F^{t}(t_R)}}})}}}\right)})}} {{\Delta \phi}} \cdot {{\Delta z}}}} - {{{({{{{ii}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ii}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}})}} {{\Delta t}} \cdot {{\Delta \phi}} \cdot {{\Delta z}}}} - {{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{\Delta t}} \cdot {{({{{F^{\phi}(\phi_L)}} - {{F^{\phi}(\phi_R)}}})}}}\right)})}} {{\Delta z}}}} - {{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{\Delta t}} \cdot {{({{{F^{z}(z_L)}} - {{F^{z}(z_R)}}})}}}\right)})}} {{\Delta \phi}}}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>

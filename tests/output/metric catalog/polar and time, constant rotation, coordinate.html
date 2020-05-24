@@ -34,11 +34,11 @@ ${{{ \tilde{e}}^{\phi}}_{\phi}} = {1}$
 <br>
 
 <br>
-tensor index associated with coordinate $t$ is index $\hat{t}$ with operator $e_{\hat{t}}(\zeta) = $$\frac{\partial \zeta}{\partial t}$
+tensor index associated with coordinate $t$ is index $t$ with operator $e_{t}(\zeta) = $$\frac{\partial \zeta}{\partial t}$
 <br>
-tensor index associated with coordinate $r$ is index $\hat{r}$ with operator $e_{\hat{r}}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
+tensor index associated with coordinate $r$ is index $r$ with operator $e_{r}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
 <br>
-tensor index associated with coordinate $\phi$ is index $\hat{\phi}$ with operator $e_{\hat{\phi}}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
+tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
 <br>
 
 <br>
@@ -63,21 +63,21 @@ basis operators applied to chart:
 <br>
 ${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
 <br>
-${{{ e}_{\hat{t}}}^t} = {1}$;
-${{{ e}_{\hat{t}}}^x} = {-{{{r}} {{sin\left( {{\phi} + {t}}\right)}}}}$;
-${{{ e}_{\hat{t}}}^y} = {{{r}} {{cos\left( {{\phi} + {t}}\right)}}}$;
-${{{ e}_{\hat{r}}}^x} = {cos\left( {{\phi} + {t}}\right)}$;
-${{{ e}_{\hat{r}}}^y} = {sin\left( {{\phi} + {t}}\right)}$;
-${{{ e}_{\hat{\phi}}}^x} = {-{{{r}} {{sin\left( {{\phi} + {t}}\right)}}}}$;
-${{{ e}_{\hat{\phi}}}^y} = {{{r}} {{cos\left( {{\phi} + {t}}\right)}}}$
+${{{ e}_t}^t} = {1}$;
+${{{ e}_t}^x} = {-{{{r}} {{sin\left( {{\phi} + {t}}\right)}}}}$;
+${{{ e}_t}^y} = {{{r}} {{cos\left( {{\phi} + {t}}\right)}}}$;
+${{{ e}_r}^x} = {cos\left( {{\phi} + {t}}\right)}$;
+${{{ e}_r}^y} = {sin\left( {{\phi} + {t}}\right)}$;
+${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left( {{\phi} + {t}}\right)}}}}$;
+${{{ e}_{\phi}}^y} = {{{r}} {{cos\left( {{\phi} + {t}}\right)}}}$
 
 <br>
-${{{ e}^{\hat{t}}}_t} = {1}$;
-${{{ e}^{\hat{r}}}_x} = {cos\left( {{\phi} + {t}}\right)}$;
-${{{ e}^{\hat{r}}}_y} = {sin\left( {{\phi} + {t}}\right)}$;
-${{{ e}^{\hat{\phi}}}_t} = {-{1}}$;
-${{{ e}^{\hat{\phi}}}_x} = {{\frac{1}{r}}{({-{sin\left( {{\phi} + {t}}\right)}})}}$;
-${{{ e}^{\hat{\phi}}}_y} = {{\frac{1}{r}}{({cos\left( {{\phi} + {t}}\right)})}}$
+${{{ e}^t}_t} = {1}$;
+${{{ e}^r}_x} = {cos\left( {{\phi} + {t}}\right)}$;
+${{{ e}^r}_y} = {sin\left( {{\phi} + {t}}\right)}$;
+${{{ e}^{\phi}}_t} = {-{1}}$;
+${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left( {{\phi} + {t}}\right)}})}}$;
+${{{ e}^{\phi}}_y} = {{\frac{1}{r}}{({cos\left( {{\phi} + {t}}\right)})}}$
 
 <br>
 ${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
@@ -88,105 +88,105 @@ basis determinant:	${det(e)} = {r}$
 <br>
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
-${{{ g}_{\hat{t}}}_{\hat{t}}} = {-{({{1} - {{r}^{2}}})}}$;
-${{{ g}_{\hat{t}}}_{\hat{\phi}}} = {{r}^{2}}$;
-${{{ g}_{\hat{r}}}_{\hat{r}}} = {1}$;
-${{{ g}_{\hat{\phi}}}_{\hat{t}}} = {{r}^{2}}$;
-${{{ g}_{\hat{\phi}}}_{\hat{\phi}}} = {{r}^{2}}$
+${{{ g}_t}_t} = {-{({{1} - {{r}^{2}}})}}$;
+${{{ g}_t}_{\phi}} = {{r}^{2}}$;
+${{{ g}_r}_r} = {1}$;
+${{{ g}_{\phi}}_t} = {{r}^{2}}$;
+${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$
 
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 metric determinant:	${det(g)} = {-{{r}^{2}}}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
 <br>
 commutation coefficients:
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
 metric:
-${{{ g}_{\hat{t}}}_{\hat{t}}} = {-{({{1} - {{r}^{2}}})}}$;
-${{{ g}_{\hat{t}}}_{\hat{\phi}}} = {{r}^{2}}$;
-${{{ g}_{\hat{r}}}_{\hat{r}}} = {1}$;
-${{{ g}_{\hat{\phi}}}_{\hat{t}}} = {{r}^{2}}$;
-${{{ g}_{\hat{\phi}}}_{\hat{\phi}}} = {{r}^{2}}$
+${{{ g}_t}_t} = {-{({{1} - {{r}^{2}}})}}$;
+${{{ g}_t}_{\phi}} = {{r}^{2}}$;
+${{{ g}_r}_r} = {1}$;
+${{{ g}_{\phi}}_t} = {{r}^{2}}$;
+${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$
 
 <br>
 metric inverse:
-${{{ g}^{\hat{t}}}^{\hat{t}}} = {-{1}}$;
-${{{ g}^{\hat{t}}}^{\hat{\phi}}} = {1}$;
-${{{ g}^{\hat{r}}}^{\hat{r}}} = {1}$;
-${{{ g}^{\hat{\phi}}}^{\hat{t}}} = {1}$;
-${{{ g}^{\hat{\phi}}}^{\hat{\phi}}} = {\frac{{1} - {{r}^{2}}}{{r}^{2}}}$
+${{{ g}^t}^t} = {-{1}}$;
+${{{ g}^t}^{\phi}} = {1}$;
+${{{ g}^r}^r} = {1}$;
+${{{ g}^{\phi}}^t} = {1}$;
+${{{ g}^{\phi}}^{\phi}} = {\frac{{1} - {{r}^{2}}}{{r}^{2}}}$
 
 <br>
 metric derivative:
-${{{{ {\partial g}}_{\hat{t}}}_{\hat{t}}}_{\hat{r}}} = {{{2}} {{r}}}$;
-${{{{ {\partial g}}_{\hat{t}}}_{\hat{\phi}}}_{\hat{r}}} = {{{2}} {{r}}}$;
-${{{{ {\partial g}}_{\hat{\phi}}}_{\hat{t}}}_{\hat{r}}} = {{{2}} {{r}}}$;
-${{{{ {\partial g}}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {{{2}} {{r}}}$
+${{{{ {\partial g}}_t}_t}_r} = {{{2}} {{r}}}$;
+${{{{ {\partial g}}_t}_{\phi}}_r} = {{{2}} {{r}}}$;
+${{{{ {\partial g}}_{\phi}}_t}_r} = {{{2}} {{r}}}$;
+${{{{ {\partial g}}_{\phi}}_{\phi}}_r} = {{{2}} {{r}}}$
 
 <br>
 1st kind Christoffel:
-${{{{ \Gamma}_{\hat{t}}}_{\hat{t}}}_{\hat{r}}} = {r}$;
-${{{{ \Gamma}_{\hat{t}}}_{\hat{r}}}_{\hat{t}}} = {r}$;
-${{{{ \Gamma}_{\hat{t}}}_{\hat{r}}}_{\hat{\phi}}} = {r}$;
-${{{{ \Gamma}_{\hat{t}}}_{\hat{\phi}}}_{\hat{r}}} = {r}$;
-${{{{ \Gamma}_{\hat{r}}}_{\hat{t}}}_{\hat{t}}} = {-{r}}$;
-${{{{ \Gamma}_{\hat{r}}}_{\hat{t}}}_{\hat{\phi}}} = {-{r}}$;
-${{{{ \Gamma}_{\hat{r}}}_{\hat{\phi}}}_{\hat{t}}} = {-{r}}$;
-${{{{ \Gamma}_{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}} = {-{r}}$;
-${{{{ \Gamma}_{\hat{\phi}}}_{\hat{t}}}_{\hat{r}}} = {r}$;
-${{{{ \Gamma}_{\hat{\phi}}}_{\hat{r}}}_{\hat{t}}} = {r}$;
-${{{{ \Gamma}_{\hat{\phi}}}_{\hat{r}}}_{\hat{\phi}}} = {r}$;
-${{{{ \Gamma}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {r}$
+${{{{ \Gamma}_t}_t}_r} = {r}$;
+${{{{ \Gamma}_t}_r}_t} = {r}$;
+${{{{ \Gamma}_t}_r}_{\phi}} = {r}$;
+${{{{ \Gamma}_t}_{\phi}}_r} = {r}$;
+${{{{ \Gamma}_r}_t}_t} = {-{r}}$;
+${{{{ \Gamma}_r}_t}_{\phi}} = {-{r}}$;
+${{{{ \Gamma}_r}_{\phi}}_t} = {-{r}}$;
+${{{{ \Gamma}_r}_{\phi}}_{\phi}} = {-{r}}$;
+${{{{ \Gamma}_{\phi}}_t}_r} = {r}$;
+${{{{ \Gamma}_{\phi}}_r}_t} = {r}$;
+${{{{ \Gamma}_{\phi}}_r}_{\phi}} = {r}$;
+${{{{ \Gamma}_{\phi}}_{\phi}}_r} = {r}$
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma}^{\hat{r}}}_{\hat{t}}}_{\hat{t}}} = {-{r}}$;
-${{{{ \Gamma}^{\hat{r}}}_{\hat{t}}}_{\hat{\phi}}} = {-{r}}$;
-${{{{ \Gamma}^{\hat{r}}}_{\hat{\phi}}}_{\hat{t}}} = {-{r}}$;
-${{{{ \Gamma}^{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}} = {-{r}}$;
-${{{{ \Gamma}^{\hat{\phi}}}_{\hat{t}}}_{\hat{r}}} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\hat{\phi}}}_{\hat{r}}}_{\hat{t}}} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\hat{\phi}}}_{\hat{r}}}_{\hat{\phi}}} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {\frac{1}{r}}$
+${{{{ \Gamma}^r}_t}_t} = {-{r}}$;
+${{{{ \Gamma}^r}_t}_{\phi}} = {-{r}}$;
+${{{{ \Gamma}^r}_{\phi}}_t} = {-{r}}$;
+${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{r}}$;
+${{{{ \Gamma}^{\phi}}_t}_r} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_r}_t} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
 
 <br>
 connection coefficients derivative:
-${{{{{ {\partial \Gamma}}^{\hat{r}}}_{\hat{t}}}_{\hat{t}}}_{\hat{r}}} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^{\hat{r}}}_{\hat{t}}}_{\hat{\phi}}}_{\hat{r}}} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^{\hat{r}}}_{\hat{\phi}}}_{\hat{t}}}_{\hat{r}}} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^{\hat{\phi}}}_{\hat{t}}}_{\hat{r}}}_{\hat{r}}} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\hat{\phi}}}_{\hat{r}}}_{\hat{t}}}_{\hat{r}}} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\hat{\phi}}}_{\hat{r}}}_{\hat{\phi}}}_{\hat{r}}} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}}_{\hat{r}}} = {-{\frac{1}{{r}^{2}}}}$
+${{{{{ {\partial \Gamma}}^r}_t}_t}_r} = {-{1}}$;
+${{{{{ {\partial \Gamma}}^r}_t}_{\phi}}_r} = {-{1}}$;
+${{{{{ {\partial \Gamma}}^r}_{\phi}}_t}_r} = {-{1}}$;
+${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_t}_r}_r} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_t}_r} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$
 
 <br>
 connection coefficients squared:
-${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{t}}}_{\hat{t}}}_{\hat{r}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{t}}}_{\hat{\phi}}}_{\hat{r}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{r}}}_{\hat{t}}}_{\hat{t}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{r}}}_{\hat{t}}}_{\hat{\phi}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{r}}}_{\hat{\phi}}}_{\hat{t}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{\phi}}}_{\hat{t}}}_{\hat{r}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{r}}}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{t}}}_{\hat{t}}}_{\hat{t}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{t}}}_{\hat{t}}}_{\hat{\phi}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{t}}}_{\hat{r}}}_{\hat{r}}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{t}}}_{\hat{\phi}}}_{\hat{t}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{t}}}_{\hat{\phi}}}_{\hat{\phi}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{r}}}_{\hat{r}}}_{\hat{t}}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{r}}}_{\hat{r}}}_{\hat{\phi}}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{t}}}_{\hat{t}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{t}}}_{\hat{\phi}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{r}}}_{\hat{r}}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{t}}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\hat{\phi}}}_{\hat{\phi}}}_{\hat{\phi}}}_{\hat{\phi}}} = {-{1}}$
+${{{{{ {(\Gamma^2)}}^r}_t}_t}_r} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_t}_{\phi}}_r} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_t}_t} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_t}_{\phi}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_t} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_{\phi}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\phi}}_t}_r} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_t} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_{\phi}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_r}_r} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_t} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_{\phi}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_t} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_t} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_{\phi}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_t} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_{\phi}} = {-{1}}$
 
 <br>
 Riemann curvature, $\sharp\flat\flat\flat$:
@@ -205,11 +205,11 @@ $0$
 Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
 ${{{ G}^a}_b} = {0}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{\hat{t}}}}{\partial t}} + {\frac{\partial {A^{\hat{r}}}}{\partial r}} + {\frac{\partial {A^{\hat{\phi}}}}{\partial \phi}} + {{{{A^{\hat{r}}}}} \cdot {{\frac{1}{r}}}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{t}}}{\partial t}} + {\frac{\partial {A^{r}}}{\partial r}} + {\frac{\partial {A^{\phi}}}{\partial \phi}} + {{{{A^{r}}}} \cdot {{\frac{1}{r}}}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{\hat{t}} \\ \ddot{\hat{r}} \\ \ddot{\hat{\phi}}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ {{r}} {{{({{\dot{\hat{\phi}}} + {\dot{\hat{t}}}})}^{2}}} \\ {{{-2}} {{\dot{\hat{r}}}} \cdot {{\dot{\hat{\phi}}}} \cdot {{\frac{1}{r}}}} + {{{-2}} {{\dot{\hat{r}}}} \cdot {{\dot{\hat{t}}}} \cdot {{\frac{1}{r}}}}\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{t} \\ \ddot{r} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ {{r}} {{{({{\dot{\phi}} + {\dot{t}}})}^{2}}} \\ {{{-2}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{\frac{1}{r}}}} + {{{-2}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{\frac{1}{r}}}}\end{matrix}\right]}}$
 <br>
 
 <br>
@@ -312,19 +312,19 @@ volume integral: 	${{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r
 <br>
 finite volume (0,0)-form:
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{-{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{{{J(t_R)}}} \cdot {{{{e_{\hat{t}}}^{\bar{\hat{t}}}(t_R)}}}}} {{{F^{t}(t_R)}}}} - {{{{{{J(t_L)}}} \cdot {{{{e_{\hat{t}}}^{\bar{\hat{t}}}(t_L)}}}}} {{{F^{t}(t_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({\int\limits_{{{t_L}}}^{{{t_R}}}d \hat{t}\left({{{{{{{J(r_R)}}} \cdot {{{{e_{\hat{r}}}^{\bar{\hat{r}}}(r_R)}}}}} {{{F^{r}(r_R)}}}} - {{{{{{J(r_L)}}} \cdot {{{{e_{\hat{r}}}^{\bar{\hat{r}}}(r_L)}}}}} {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({\int\limits_{{{t_L}}}^{{{t_R}}}d \hat{t}\left({{{{{{{J(\phi_R)}}} \cdot {{{{e_{\hat{\phi}}}^{\bar{\hat{\phi}}}(\phi_R)}}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{{J(\phi_L)}}} \cdot {{{{e_{\hat{\phi}}}^{\bar{\hat{\phi}}}(\phi_L)}}}}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{-{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{J(t_R)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_R)}}} \cdot {{{F^{t}(t_R)}}}} - {{{{J(t_L)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_L)}}} \cdot {{{F^{t}(t_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}} \cdot {{{F^{r}(r_R)}}}} - {{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}} \cdot {{{F^{\phi}(\phi_R)}}}} - {{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}} \cdot {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}}}} {{({{{-{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{{ii}} \cdot {{r}}}} {{{F^{t}(t_R)}}}} - {{{{{ii}} \cdot {{r}}}} {{{F^{t}(t_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({\int\limits_{{{t_L}}}^{{{t_R}}}d \hat{t}\left({{{{{{ii}} \cdot {{r}}}} {{{F^{r}(r_R)}}}} - {{{{{ii}} \cdot {{r}}}} {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({\int\limits_{{{t_L}}}^{{{t_R}}}d \hat{t}\left({{{{{{ii}} \cdot {{r}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{ii}} \cdot {{r}}}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}}}} {{({{{-{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{ii}} \cdot {{r}} {{{F^{t}(t_R)}}}} - {{{ii}} \cdot {{r}} {{{F^{t}(t_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ii}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ii}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ii}} \cdot {{r}} {{{F^{\phi}(\phi_R)}}}} - {{{ii}} \cdot {{r}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}}}} {{({{{-{{{{{({{{{{{ii}} \cdot {{r}}}} {{{F^{t}(t_R)}}}} - {{{{{ii}} \cdot {{r}}}} {{{F^{t}(t_L)}}}}})}} {{\Delta r}}}} {{\Delta \phi}}}} - {{{{{({{{{{{ii}} \cdot {{r}}}} {{{F^{r}(r_R)}}}} - {{{{{ii}} \cdot {{r}}}} {{{F^{r}(r_L)}}}}})}} {{\Delta t}}}} {{\Delta \phi}}}} - {{{{{({{{{{{ii}} \cdot {{r}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{ii}} \cdot {{r}}}} {{{F^{\phi}(\phi_L)}}}}})}} {{\Delta t}}}} {{\Delta r}}}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}}}} {{({{{-{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{({{{F^{t}(t_L)}} - {{F^{t}(t_R)}}})}}}\right)})}} {{\Delta \phi}}}} - {{{({{{{ii}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ii}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}})}} {{\Delta t}} \cdot {{\Delta \phi}}}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{\Delta t}} \cdot {{({{{F^{\phi}(\phi_L)}} - {{F^{\phi}(\phi_R)}}})}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{{S(x_C)}}}} + {{{-1}} {{\Delta t}} \cdot {{ii}} \cdot {{r}} {{{F^{t}(t_R)}}} \cdot {{\Delta r}} \cdot {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}} + {{{\Delta t}} \cdot {{ii}} \cdot {{r}} {{{F^{t}(t_L)}}} \cdot {{\Delta r}} \cdot {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}} + {{{-1}} {{{\Delta t}^{2}}} {{ii}} \cdot {{r}} {{{F^{r}(r_R)}}} \cdot {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}} + {{{{\Delta t}^{2}}} {{ii}} \cdot {{r}} {{{F^{r}(r_L)}}} \cdot {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}} + {{{-1}} {{{\Delta t}^{2}}} {{ii}} \cdot {{r}} {{{F^{\phi}(\phi_R)}}} \cdot {{\Delta r}} \cdot {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}} {{\frac{1}{\Delta \phi}}}} + {{{{\Delta t}^{2}}} {{ii}} \cdot {{r}} {{{F^{\phi}(\phi_L)}}} \cdot {{\Delta r}} \cdot {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}} {{\frac{1}{\Delta \phi}}}}}$
+${{u(x_C, t_R)}} = {{{{{S(x_C)}}} \cdot {{\Delta t}}} + {{u(x_C, t_L)}} + {{{-1}} {{\Delta t}} \cdot {{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{-1}} {{ii}} \cdot {{r}} {{\Delta t}} \cdot {{{F^{\phi}(\phi_L)}}}} - {{{-1}} {{ii}} \cdot {{r}} {{\Delta t}} \cdot {{{F^{\phi}(\phi_R)}}}}}\right)})}} {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}} {{\frac{1}{\Delta \phi}}}} + {{{-1}} {{\Delta t}} \cdot {{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{-1}} {{ii}} \cdot {{r}} {{{F^{t}(t_L)}}}} - {{{-1}} {{ii}} \cdot {{r}} {{{F^{t}(t_R)}}}}}\right)})}} {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}} + {{{{r_L}}} \cdot {{ii}} \cdot {{{F^{r}(r_L)}}} \cdot {{{\Delta t}^{2}}} {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}} + {{{-1}} {{{r_R}}} \cdot {{ii}} \cdot {{{F^{r}(r_R)}}} \cdot {{{\Delta t}^{2}}} {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}}}$
 <br>
 
 <br>

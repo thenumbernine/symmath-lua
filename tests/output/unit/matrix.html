@@ -7,177 +7,324 @@
     </head>
 	<body onload='tryToFindMathJax();'>
 
-<code>Array(1,2,3)</code>
-<br>
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b></b><br>
+<code>printbr(Array(1,2,3))</code>
+</td><td>
 $\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]$
 <br>
-<code>Array(1,2) + Array(3,4)</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(Array(1,2) + Array(3,4))</code>
+</td><td>
 ${\left[\begin{matrix} 1 \\ 2\end{matrix}\right]} + {\left[\begin{matrix} 3 \\ 4\end{matrix}\right]}$
 <br>
-<code>(Array(1,2) + Array(3,4))()</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((Array(1,2) + Array(3,4))())</code>
+</td><td>
 $\left[\begin{matrix} 4 \\ 6\end{matrix}\right]$
 <br>
-<code>asserteq((Array(1,2) + Array(3,4))(), Array(4,6))</code>
-<br>
-${\left[\begin{matrix} 4 \\ 6\end{matrix}\right]} = {\left[\begin{matrix} 4 \\ 6\end{matrix}\right]}$
-<br>
 
-<br>
-<code>Matrix({1,2},{3,4})</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((Array(1,2) + Array(3,4))(), Array(4,6))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(Matrix({1,2},{3,4}))</code>
+</td><td>
 $\left[\begin{matrix}  1 &  2 \\  3 &  4\end{matrix}\right]$
 <br>
-<code>Matrix({1,2},{3,4}):inverse()</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(Matrix({1,2},{3,4}):inverse())</code>
+</td><td>
 $\left[\begin{matrix}  -{2} &  1 \\  \frac{3}{2} &  -{\frac{1}{2}}\end{matrix}\right]$	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
 <br>
-<code>asserteq(Matrix({1,2},{3,4}):inverse(), Matrix({-2,1},{frac(3,2),-frac(1,2)}))</code>
-<br>
-${\left[\begin{matrix}  -{2} &  1 \\  \frac{3}{2} &  -{\frac{1}{2}}\end{matrix}\right]} = {\left[\begin{matrix}  -2 &  1 \\  \frac{3}{2} &  -{\frac{1}{2}}\end{matrix}\right]}$
-<br>
 
-<br>
-<code>Matrix({a,b},{c,d})</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(Matrix({1,2},{3,4}):inverse(), Matrix({-2,1},{frac(3,2),-frac(1,2)}))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(Matrix({a,b},{c,d}))</code>
+</td><td>
 $\left[\begin{matrix}  a &  b \\  c &  d\end{matrix}\right]$
 <br>
-<code>Matrix({a,b},{c,d}):inverse()</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(Matrix({a,b},{c,d}):inverse())</code>
+</td><td>
 $\left[\begin{matrix}  \frac{d}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{-{b}}{{{{a}} {{d}}} - {{{b}} {{c}}}} \\  \frac{-{c}}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{a}{{{{a}} {{d}}} - {{{b}} {{c}}}}\end{matrix}\right]$	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
 <br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq(Matrix({a,b},{c,d}):inverse(), Matrix( {frac(d, a*d-b*c), frac(-b, a*d-b*c)}, {frac(-c, a*d-b*c), frac(a, a*d-b*c)} ))</code>
-<br>
-${\left[\begin{matrix}  \frac{d}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{-{b}}{{{{a}} {{d}}} - {{{b}} {{c}}}} \\  \frac{-{c}}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{a}{{{{a}} {{d}}} - {{{b}} {{c}}}}\end{matrix}\right]} = {\left[\begin{matrix}  \frac{d}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{-{b}}{{{{a}} {{d}}} - {{{b}} {{c}}}} \\  \frac{-{c}}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{a}{{{{a}} {{d}}} - {{{b}} {{c}}}}\end{matrix}\right]}$
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}))</code>
+</td><td>
+$\left[\begin{matrix}  1 &  0 &  0 &  {t_x} \\  0 &  1 &  0 &  {t_y} \\  0 &  0 &  1 &  {t_z} \\  0 &  0 &  0 &  1\end{matrix}\right]$
 <br>
 
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse())</code>
+</td><td>
+$\left[\begin{matrix}  1 &  0 &  0 &  -{{t_x}} \\  0 &  1 &  0 &  -{{t_y}} \\  0 &  0 &  1 &  -{{t_z}} \\  0 &  0 &  0 &  1\end{matrix}\right]$	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
 <br>
-<code>Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1})</code>
-<br>
-$\left[\begin{matrix}  1 &  0 &  0 &  {t_{x}} \\  0 &  1 &  0 &  {t_{y}} \\  0 &  0 &  1 &  {t_{z}} \\  0 &  0 &  0 &  1\end{matrix}\right]$
-<br>
-<code>Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse()</code>
-<br>
-$\left[\begin{matrix}  1 &  0 &  0 &  -{{t_{x}}} \\  0 &  1 &  0 &  -{{t_{y}}} \\  0 &  0 &  1 &  -{{t_{z}}} \\  0 &  0 &  0 &  1\end{matrix}\right]$	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse(), Matrix({1,0,0,-t_x},{0,1,0,-t_y},{0,0,1,-t_z},{0,0,0,1}))</code>
-<br>
-${\left[\begin{matrix}  1 &  0 &  0 &  -{{t_{x}}} \\  0 &  1 &  0 &  -{{t_{y}}} \\  0 &  0 &  1 &  -{{t_{z}}} \\  0 &  0 &  0 &  1\end{matrix}\right]} = {\left[\begin{matrix}  1 &  0 &  0 &  -{{t_{x}}} \\  0 &  1 &  0 &  -{{t_{y}}} \\  0 &  0 &  1 &  -{{t_{z}}} \\  0 &  0 &  0 &  1\end{matrix}\right]}$
-<br>
+</td><td>
 
-<br>
-<code>m + mInv</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(m + mInv)</code>
+</td><td>
 ${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} \\  sin\left(  \theta\right) &  cos\left(  \theta\right)\end{matrix}\right]} + {\left[\begin{matrix}  cos\left(  \theta\right) &  sin\left(  \theta\right) \\  -{sin\left(  \theta\right)} &  cos\left(  \theta\right)\end{matrix}\right]}$
 <br>
-<code>(m + mInv)()</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((m + mInv)())</code>
+</td><td>
 $\left[\begin{matrix}  {{2}} {{cos\left(  \theta\right)}} &  0 \\  0 &  {{2}} {{cos\left(  \theta\right)}}\end{matrix}\right]$
 <br>
-<code>m * mInv</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(m * mInv)</code>
+</td><td>
 ${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} \\  sin\left(  \theta\right) &  cos\left(  \theta\right)\end{matrix}\right]}  {\left[\begin{matrix}  cos\left(  \theta\right) &  sin\left(  \theta\right) \\  -{sin\left(  \theta\right)} &  cos\left(  \theta\right)\end{matrix}\right]}$
 <br>
-<code>(m * mInv)()</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((m * mInv)())</code>
+</td><td>
 $\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
 <br>
-<code>asserteq( (m*mInv)(), Matrix({1,0},{0,1}) )</code>
-<br>
-${\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]} = {\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}$
-<br>
 
-<br>
-<code>m*m</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( (m*mInv)(), Matrix({1,0},{0,1}) )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(m*m)</code>
+</td><td>
 ${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} \\  sin\left(  \theta\right) &  cos\left(  \theta\right)\end{matrix}\right]}  {\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} \\  sin\left(  \theta\right) &  cos\left(  \theta\right)\end{matrix}\right]}$
 <br>
-<code>(m*m)()</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((m*m)())</code>
+</td><td>
 $\left[\begin{matrix}  {{({{cos\left(  \theta\right)} + {sin\left(  \theta\right)}})}} {{({{cos\left(  \theta\right)} - {sin\left(  \theta\right)}})}} &  -{{{2}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}} \\  {{2}} {{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} &  -{({{1} - {{{2}} {{{cos\left(  \theta\right)}^{2}}}}})}\end{matrix}\right]$
 <br>
-<code>(m1)</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(m1)</code>
+</td><td>
 $\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]$
 <br>
-<code>(m2)</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(m2)</code>
+</td><td>
 $\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]$
 <br>
-<code>(m1*m2):eq((m1*m2)())</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((m1*m2):eq((m1*m2)()))</code>
+</td><td>
 ${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}} = {\left[\begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix}\right]}$
 <br>
-<code>(m2*m1):eq((m2*m1)())</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((m2*m1):eq((m2*m1)()))</code>
+</td><td>
 ${ {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}} = {\left[\begin{matrix}  1 &  a \\  b &  {1} + {{{b}} {{a}}}\end{matrix}\right]}$
 <br>
-<code>m1:eq(m2)</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(m1:eq(m2))</code>
+</td><td>
 ${\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]} = {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}$
 <br>
-<code>assertne(m1, m2)</code>
-<br>
-${\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]} != {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}$
-<br>
 
-<br>
-<code>(m1*m2):eq(m2*m1)</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertne(m1, m2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((m1*m2):eq(m2*m1))</code>
+</td><td>
 ${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}} = { {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}}$
 <br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>assertne(m1*m2, m2*m1)</code>
-<br>
-${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}} != { {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}}$
-<br>
+</td><td>
 
-<br>
-<code>(m1*m2):eq(m1*m2)</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((m1*m2):eq(m1*m2))</code>
+</td><td>
 ${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}} = { {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}}$
 <br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>asserteq(m1*m2, m1*m2)</code>
-<br>
-${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}} = { {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}}$
-<br>
+</td><td>
 
-<br>
-<code>(m1*m2):eq(m2*m1)()</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((m1*m2):eq(m2*m1)())</code>
+</td><td>
 ${\left[\begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix}\right]} = {\left[\begin{matrix}  1 &  a \\  b &  {1} + {{{b}} {{a}}}\end{matrix}\right]}$
 <br>
-<code>assertne((m1*m2)(), (m2*m1)())</code>
-<br>
-${\left[\begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix}\right]} != {\left[\begin{matrix}  1 &  a \\  b &  {1} + {{{b}} {{a}}}\end{matrix}\right]}$
-<br>
 
-<br>
-<code>(Matrix({a},{b}) + Matrix({c},{d})) / t</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertne((m1*m2)(), (m2*m1)())</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((Matrix({a},{b}) + Matrix({c},{d})) / t)</code>
+</td><td>
 ${\frac{1}{t}}{({{\left[\begin{matrix}  a \\  b\end{matrix}\right]} + {\left[\begin{matrix}  c \\  d\end{matrix}\right]}})}$
 <br>
-<code>((Matrix({a},{b}) + Matrix({c},{d})) / t)()</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(((Matrix({a},{b}) + Matrix({c},{d})) / t)())</code>
+</td><td>
 $\left[\begin{matrix}  {\frac{1}{t}}{({{a} + {c}})} \\  {\frac{1}{t}}{({{b} + {d}})}\end{matrix}\right]$
 <br>
-<code>asserteq( ((Matrix({a},{b}) + Matrix({c},{d})) / t)(), Matrix({frac(a+c,t)}, {frac(b+d,t)}) )</code>
-<br>
-${\left[\begin{matrix}  {\frac{1}{t}}{({{a} + {c}})} \\  {\frac{1}{t}}{({{b} + {d}})}\end{matrix}\right]} = {\left[\begin{matrix}  {\frac{1}{t}}{({{a} + {c}})} \\  {\frac{1}{t}}{({{b} + {d}})}\end{matrix}\right]}$
-<br>
 
-<br>
-<code>Matrix({1,2},{3,4}):inverse(Matrix({5},{6}))</code>
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( ((Matrix({a},{b}) + Matrix({c},{d})) / t)(), Matrix({frac(a+c,t)}, {frac(b+d,t)}) )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))</code>
+</td><td>
 $\left[\begin{matrix}  -{4} \\  \frac{9}{2}\end{matrix}\right]$	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
 <br>
-<code>(Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))()</code>
-<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr((Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))())</code>
+</td><td>
 $\left[\begin{matrix}  5 \\  6\end{matrix}\right]$
 <br>
-<code>asserteq( (Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))(), Matrix({5},{6}) )</code>
-<br>
-${\left[\begin{matrix}  5 \\  6\end{matrix}\right]} = {\left[\begin{matrix}  5 \\  6\end{matrix}\right]}$
-<br>
 
-<br>
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( (Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))(), Matrix({5},{6}) )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>

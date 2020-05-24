@@ -1,115 +1,82 @@
 #!/usr/bin/env lua
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'unit'(env, 'match')
+env.W = Wildcard
+env.const = Constant
+env.zero = const(0)
+env.one = const(1)
+env.x = var'x'
+env.y = var'y'
 
-local symmath = require 'symmath'
-local W = symmath.Wildcard
-local const = symmath.Constant
-local zero = const(0)
-local one = const(1)
-local sin = symmath.sin
-local cos = symmath.cos
+for _,line in ipairs(string.split(string.trim([=[
 
-
-local x = symmath.var'x'
-local y = symmath.var'y'
+asserteq(x, x)
+assertne(x, y)
 
 assert(x:match(x))
-assert(x == x)
-assert(x ~= y)
 assert(not x:match(y))
 
 -- functions
 
-local i = sin(x):match(sin(W(1)))
-assert(i == x)
+assertalleq({sin(x):match(sin(W(1)))}, {x})
 
 -- functions and mul mixed
-local i = sin(2*x):match(sin(W(1)))
-assert(i == 2 * x)
+assertalleq({sin(2*x):match(sin(W(1)))}, {2 * x})
 
-local i = sin(2*x):match(sin(2 * W(1)))
-assert(i == x)
+assertalleq({sin(2*x):match(sin(2 * W(1)))}, {x})
 
 -- matching c*f(x) => c*sin(a*x)
-local f, c = sin(2*x):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})
-local a = f:match(sin(W{1, cannotDependOn=x} * x))
-assert(c == one)
-assert(f == sin(2*x))
-assert(a == const(2))
+assertalleq({sin(2*x):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})}, {sin(2*x), one})
+assertalleq({sin(2*x):match(sin(W{1, cannotDependOn=x} * x))}, {const(2)})
 
 -- add
 
-local i, j = x:match(W{2, cannotDependOn=x} + W{1, dependsOn=x})
-assert(i == x)
-assert(j == zero)
-
-assert((x + y) == (x + y))
+assertalleq({x:match(W{2, cannotDependOn=x} + W{1, dependsOn=x})}, {x, zero})
+asserteq((x + y), (x + y))
 assert((x + y):match(x + y))
 
 -- add match to first term
-local i = (x + y):match(W(1) + y)
-assert(i == x)
+assertalleq({(x + y):match(W(1) + y)}, {x})
 
 -- add match to second term
-local i = (x + y):match(x + W(1))
-assert(i == y)
+assertalleq({(x + y):match(x + W(1))}, {y})
 
 -- change order
-local i = (x + y):match(y + W(1))
-assert(i == x)
+assertalleq({(x + y):match(y + W(1))}, {x})
 
 -- add match to zero, because nothing's left
-local i = (x + y):match(x + y + W(1))
-assert(i == zero)
+assertalleq({(x + y):match(x + y + W(1))}, {zero})
 
-local i = (x + y):match(W(1))
-assert(i == x + y)
+assertalleq({(x + y):match(W(1))}, {x + y})
 
 -- doubled-up matches should only work if they match
-local i = (x + y):match(W(1) + W(1))
-assert(i == false)
+assert(not (x + y):match(W(1) + W(1)))
 
 -- this too, this would work only if x + x and not x + y
-local i = (x + x):match(W(1) + W(1))
-assert(i == x)
+assertalleq({(x + x):match(W(1) + W(1))}, {x})
 
 -- this too
-local i,j = (x + x):match(W{1, atMost=1} + W{2, atMost=1})
-assert(i == x)
-assert(j == x)
+assertalleq({(x + x):match(W{1, atMost=1} + W{2, atMost=1})}, {x, x})
 
 -- this should match (x+y), 0
-local i,j = (x + y):match(W(1) + W(2))
-assert(i == x + y)
-assert(j == zero)
+assertalleq({(x + y):match(W(1) + W(2))}, {x + y, zero})
 
-local i,j = (x + y):match(W{1, atMost=1} + W{2, atMost=1})
-assert(i == x)
-assert(j == y)
+assertalleq({(x + y):match(W{1, atMost=1} + W{2, atMost=1})}, {x, y})
 
 -- for these to work, I have to add the multi-wildcard stuff to the non-wildcard elements, handled in add.wildcardMatches
-local i,j = x:match(W(1) + W(2))
-assert(i == x)
-assert(j == zero)
+assertalleq({x:match(W(1) + W(2))}, {x, zero})
 
-local i,j = x:match(x + W(1) + W(2))
-assert(i == zero)
-assert(j == zero)
+assertalleq({x:match(x + W(1) + W(2))}, {zero, zero})
 
-local i,j = x:match(W(1) + x + W(2))
-assert(i == zero)
-assert(j == zero)
+assertalleq({x:match(W(1) + x + W(2))}, {zero, zero})
 
-local i,j = (x * y):match(W(1) + W(2))
-assert(i == x * y)
-assert(j == zero)
+assertalleq({(x * y):match(W(1) + W(2))}, {x * y, zero})
 
 -- make sure within add.wildcardMatches we greedy-match any wildcards with 'atLeast' before assigning the rest to zero
-local i,j,k = x:match(W(1) + W{2,atLeast=1} + W(3))
-assert(i == zero)
-assert(j == x)
-assert(k == zero)
+assertalleq({x:match(W(1) + W{2,atLeast=1} + W(3))}, {zero, x, zero})
 
--- [[ TODO working but now how I hoped
+-- TODO working but now how I hoped
 -- I would like this to match but it is matching to 0, (x+y).
 -- I guess that is fair for greed matching of wildcards.
 -- TODO maybe I should change things to match less first
@@ -119,121 +86,85 @@ assert(k == zero)
 -- (matching to 'y')
 -- and then W(2) to greedily match next (matching to 'x')
 -- Changing the match algo to match wildcards left-to-right in associative operators like + and * would also give the API user more control over what they wanted to match (as in this case).
-local i, j = (x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})
-assert(i == zero)
-assert(j == x + y)
---]]
+assertalleq({(x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})}, {zero, x + y})
+--assertalleq({(x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})}, {y, x})
 
-local i, j = (x + y):match(W{1, cannotDependOn=x, atLeast=1} + W{2, dependsOn=x})
-assert(i == y)
-assert(j == x)
+assertalleq({(x + y):match(W{1, cannotDependOn=x, atLeast=1} + W{2, dependsOn=x})}, {y, x})
 
 
 -- same with mul
 
 
-local i = (x * y):match(y * W(1))
-assert(i == x)
+assertalleq({(x * y):match(y * W(1))}, {x})
 
-local i = (x * y):match(x * y * W(1))
-assert(i == one)
+assertalleq({(x * y):match(x * y * W(1))}, {one})
 
-local i = (x * y):match(W(1))
-assert(i == x * y)
+assertalleq({ (x * y):match(W(1))}, {x * y})
 
-local i = (x * y):match(W(1) * W(1))
-assert(i == false)
+assert(not (x * y):match(W(1) * W(1)))
 
-local i = (x * x):match(W(1) * W(1))
-assert(i == x)
+assertalleq({(x * x):match(W(1) * W(1))}, {x})
 
 -- verify wildcards are greedy with multiple mul matching 
 -- the first will take all expressions, the second gets the empty set
-local i,j = (x * y):match(W(1) * W(2))
-assert(i == x * y)
-assert(j == one)
+assertalleq({(x * y):match(W(1) * W(2))}, {x * y, one})
 
 -- verify 'atMost' works - since both need at least 1 entry, it will only match when each gets a separate term
-local i,j = (x * x):match(W{1, atMost=1} * W{2, atMost=1})
-assert(i == x)
-assert(j == x)
+assertalleq({(x * x):match(W{1, atMost=1} * W{2, atMost=1})}, {x, x})
 
 -- verify 'atMost' cooperates with non-atMost wildcards
-local i,j = (x * y):match(W(1) * W{2, atLeast=1})
-assert(i == x)
-assert(j == y)
+assertalleq({(x * y):match(W(1) * W{2, atLeast=1})}, {x, y})
 
-local i,j = (x * y):match(W{1, atMost=1} * W{2, atMost=1})
-assert(i == x)
-assert(j == y)
+assertalleq({(x * y):match(W{1, atMost=1} * W{2, atMost=1})}, {x, y})
+
 
 -- combinations of add and mul
 
 -- for this to work, add.wildcardMatches must call the wildcard-capable objects' own wildcard handlers correctly (and use push/pop match states, instead of assigning to wildcard indexes directly?)
 -- also, because add.wildcardMatches assigns the extra wildcards to zero, it will be assigning (W(2) * W(3)) to zero ... which means it must (a) handle mul.wildcardMatches and (b) pick who of mul's children gets the zero and who doesn't
 --  it also means that a situation like add->mul->add might have problems ... x:match(W(1) + (W(2) + W(3)) * (W(4) + W(5)))
-local i,j,k = x:match(W(1) + W(2) * W(3))
-assert(i == x)
-assert(j == zero or k == zero)
+(function() local i,j,k = x:match(W(1) + W(2) * W(3)) assert(i == x) assert(j == zero or k == zero) end)()
+
 
 --  cross over add and mul ... not yet working
 --local i = (x):match(W(1) + x)	-- works
-local i = (x * y):match(W(1) + x * y)
-assert(i == zero)
+(function() local i = (x * y):match(W(1) + x * y) assert(i == zero) end)()
 
-local i,j,k,l = x:match(x + W(1) * W(2) + W(3) * W(4))
 -- either 1 or 2 must be zero, and either 3 or 4 must be zero
-assert(i == zero or j == zero)
-assert(k == zero or l == zero)
+(function() local i,j,k,l = x:match(x + W(1) * W(2) + W(3) * W(4)) assert(i == zero or j == zero) assert(k == zero or l == zero) end)()
 
-local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x})
-assert(c == const(2))
-assert(f == x)
+(function() local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == x) end)()
 
-local c, f = (2 * x):factorDivision():match(W{1, cannotDependOn=x} * W{2, dependsOn=x})
-assert(c == const(2))
-assert(f == x)
+(function() local c, f = (2 * x):factorDivision():match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == x) end)()
 
 -- Put the 'cannotDependOn' wildcard first (leftmost) in the mul for it to greedily match non-dep-on-x terms
 -- otherwise 'dependsOn' will match everything, since the mul of a non-dep and a dep itself is dep on 'x', so it will include non-dep-on-terms
-local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x})
-assert(c == const(2))
-assert(f == 1/x)
+(function() local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == 1/x) end)()
 
-local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2))
-assert(c == const(2))
-assert(f == 1/x)
+(function() local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2)) assert(c == const(2)) assert(f == 1/x) end)()
 
 
 -- div
 
 
-local i = (1/x):match(1 / W(1))
-assert(i == x)
+(function() local i = (1/x):match(1 / W(1)) assert(i == x) end)()
 
-local i = (1/x):match(1 / (W(1) * x))
-assert(i == one)
+(function() local i = (1/x):match(1 / (W(1) * x)) assert(i == one) end)()
 
-local i = (1/x):match(1 / (W{1, cannotDependOn=x} * x))
-assert(i == one)
+(function() local i = (1/x):match(1 / (W{1, cannotDependOn=x} * x)) assert(i == one) end)()
 
 assert((2 * 1/x):match(2 * 1/x))
 
-local i = (2 * 1/x):match(2 * 1/W(1))
-assert(i == x)
+(function() local i = (2 * 1/x):match(2 * 1/W(1)) assert(i == x) end)()
 
-local i = (2 * 1/x):match(2 * 1/(W(1) * x))
-assert(i == one)
+(function() local i = (2 * 1/x):match(2 * 1/(W(1) * x)) assert(i == one) end)()
 
-local i, j = (2 * 1/x):factorDivision():match(W{1, atMost=1} * W{index=2, atMost=1})
-assert(i == const(2))
-assert(j == 1/x)
---]]
+(function() local i, j = (2 * 1/x):factorDivision():match(W{1, atMost=1} * W{index=2, atMost=1}) assert(i == const(2)) assert(j == 1/x) end)()
 
-local a, b = (1/(x*(3*x+4))):match(1 / (x * (W{1, cannotDependOn=x} * x + W{2, cannotDependOn=x})))
-assert(a == const(3))
-assert(b == const(4))
+(function() local a, b = (1/(x*(3*x+4))):match(1 / (x * (W{1, cannotDependOn=x} * x + W{2, cannotDependOn=x}))) assert(a == const(3)) assert(b == const(4)) end)()
 
-local a, b = (1/(x*(3*x+4))):factorDivision():match(1 / (W{1, cannotDependOn=x} * x * x + W{2, cannotDependOn=x} * x))
-assert(a == const(3))
-assert(b == const(4))
+(function() local a, b = (1/(x*(3*x+4))):factorDivision():match(1 / (W{1, cannotDependOn=x} * x * x + W{2, cannotDependOn=x} * x)) assert(a == const(3)) assert(b == const(4)) end)()
+
+]=]), '\n')) do
+	env.exec(line)
+end

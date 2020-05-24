@@ -32,9 +32,9 @@ ${{{ \tilde{e}}^z}_z} = {1}$
 <br>
 
 <br>
-tensor index associated with coordinate $\phi$ is index $\hat{\phi}$ with operator $e_{\hat{\phi}}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
+tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
 <br>
-tensor index associated with coordinate $z$ is index $\hat{z}$ with operator $e_{\hat{z}}(\zeta) = $$\frac{\partial \zeta}{\partial z}$
+tensor index associated with coordinate $z$ is index $z$ with operator $e_{z}(\zeta) = $$\frac{\partial \zeta}{\partial z}$
 <br>
 
 <br>
@@ -59,14 +59,14 @@ basis operators applied to chart:
 <br>
 ${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
 <br>
-${{{ e}_{\hat{\phi}}}^x} = {-{{{r}} {{sin\left(  \phi\right)}}}}$;
-${{{ e}_{\hat{\phi}}}^y} = {{{r}} {{cos\left(  \phi\right)}}}$;
-${{{ e}_{\hat{z}}}^z} = {1}$
+${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left(  \phi\right)}}}}$;
+${{{ e}_{\phi}}^y} = {{{r}} {{cos\left(  \phi\right)}}}$;
+${{{ e}_z}^z} = {1}$
 
 <br>
-${{{ e}^{\hat{\phi}}}_x} = {{\frac{1}{r}}{({-{sin\left(  \phi\right)}})}}$;
-${{{ e}^{\hat{\phi}}}_y} = {{\frac{1}{r}}{({cos\left(  \phi\right)})}}$;
-${{{ e}^{\hat{z}}}_z} = {1}$
+${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left(  \phi\right)}})}}$;
+${{{ e}^{\phi}}_y} = {{\frac{1}{r}}{({cos\left(  \phi\right)})}}$;
+${{{ e}^z}_z} = {1}$
 
 <br>
 ${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
@@ -75,29 +75,29 @@ ${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\be
 <br>
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
-${{{ g}_{\hat{\phi}}}_{\hat{\phi}}} = {{r}^{2}}$;
-${{{ g}_{\hat{z}}}_{\hat{z}}} = {1}$
+${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$;
+${{{ g}_z}_z} = {1}$
 
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 metric determinant:	${det(g)} = {{r}^{2}}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
 <br>
 commutation coefficients:
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
 metric:
-${{{ g}_{\hat{\phi}}}_{\hat{\phi}}} = {{r}^{2}}$;
-${{{ g}_{\hat{z}}}_{\hat{z}}} = {1}$
+${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$;
+${{{ g}_z}_z} = {1}$
 
 <br>
 metric inverse:
-${{{ g}^{\hat{\phi}}}^{\hat{\phi}}} = {\frac{1}{{r}^{2}}}$;
-${{{ g}^{\hat{z}}}^{\hat{z}}} = {1}$
+${{{ g}^{\phi}}^{\phi}} = {\frac{1}{{r}^{2}}}$;
+${{{ g}^z}^z} = {1}$
 
 <br>
 metric derivative:
@@ -131,11 +131,11 @@ $0$
 Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
 ${{{ G}^a}_b} = {0}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{\hat{\phi}}}}{\partial \phi}} + {\frac{\partial {A^{\hat{z}}}}{\partial z}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{\phi}}}{\partial \phi}} + {\frac{\partial {A^{z}}}{\partial z}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{\hat{\phi}} \\ \ddot{\hat{z}}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ 0\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{\phi} \\ \ddot{z}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ 0\end{matrix}\right]}}$
 <br>
 
 <br>
@@ -201,19 +201,19 @@ ${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 \\  0 &  1\en
 <br>
 volume element: 	$r$
 <br>
-volume integral: 	${{{{r}} {{\Delta \phi}}}} {{\Delta z}}$
+volume integral: 	${{r}} {{\Delta \phi}} \cdot {{\Delta z}}$
 <br>
 finite volume (0,0)-form:
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({{{{{{{J(\phi_R)}}} \cdot {{{{e_{\hat{\phi}}}^{\bar{\hat{\phi}}}(\phi_R)}}}}} {{{F^{\phi}(\phi_R)}}}} - {{{{{{J(\phi_L)}}} \cdot {{{{e_{\hat{\phi}}}^{\bar{\hat{\phi}}}(\phi_L)}}}}} {{{F^{\phi}(\phi_L)}}}}}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({{{{{{{J(z_R)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_R)}}}}} {{{F^{z}(z_R)}}}} - {{{{{{J(z_L)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_L)}}}}} {{{F^{z}(z_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}} \cdot {{{F^{\phi}(\phi_R)}}}} - {{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}} \cdot {{{F^{\phi}(\phi_L)}}}}}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{{J(z_R)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_R)}}} \cdot {{{F^{z}(z_R)}}}} - {{{{J(z_L)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_L)}}} \cdot {{{F^{z}(z_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{r}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \hat{\phi}\left({{{{r}} {{{F^{z}(z_R)}}}} - {{{r}} {{{F^{z}(z_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{r}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{({{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{r}} {{{F^{z}(z_R)}}}} - {{{r}} {{{F^{z}(z_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{r}} {{\Delta \phi}}}} {{\Delta z}}}}} {{({{-{{{({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}})}} {{\Delta z}}}} - {{{({{{{r}} {{{F^{z}(z_R)}}}} - {{{r}} {{{F^{z}(z_L)}}}}})}} {{\Delta \phi}}}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{r}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{({{-{{{({{{{r}} {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{{F^{\phi}(\phi_L)}}}}})}} {{\Delta z}}}} - {{{({{{{r}} {{{F^{z}(z_R)}}}} - {{{r}} {{{F^{z}(z_L)}}}}})}} {{\Delta \phi}}}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>

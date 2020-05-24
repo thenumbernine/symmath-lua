@@ -1,13 +1,14 @@
 #!/usr/bin/env lua
-require 'ext'
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'{env=env}
+require 'unit'(env, 'integral')
+env.x = var'x'
+env.y = var'y'
+env.xL = var'xL'
+env.xR = var'xR'
 
-local x = var'x'
-local y = var'y'
-local xL = var'xL'
-local xR = var'xR'
+
+for _,line in ipairs(string.split(string.trim([=[
 
 -- integrate constants
 assert(Constant(1):integrate(x)() == x)
@@ -19,7 +20,7 @@ assert(Constant(1):integrate(x, xL, xR)() == (xR - xL)())
 --assert(x:integrate(x, xL, xR)() == ((xR^2 - xL^2)/2)())	-- hmm, the infamous minus sign factoring simplificaiton error...
 assert((x:integrate(x, xL, xR) - (xR^2 - xL^2)/2)() == Constant(0))	-- instead I'll just test this ...
 
---x^n integrals:
+-- $x^n$ integrals:
 assert(x:integrate(x)() == x^2 / 2)
 assert((x^2):integrate(x)() == x^3 / 3)
 assert(((x^-2):integrate(x) - (-1/x))() == Constant(0))
@@ -27,7 +28,6 @@ assert((1/x):integrate(x)() == log(abs(x)))
 assert((x^-1):integrate(x)() == log(abs(x)))
 assert((1/(2*x^2)):integrate(x)() == -(1/(2*x)))
 
--- [[ hmm, sqrt doesn't integrate yet..
 assert((x^frac(1,2)):integrate(x)() == frac(2 * x * sqrt(x), 3)())
 assert(sqrt(x):integrate(x)() == frac(2 * x * sqrt(x), 3)())
 
@@ -36,10 +36,7 @@ assert((1/x):integrate(x)() == log(abs(x)))
 assert((2/x):integrate(x)() == (2*log(abs(x)))())
 assert((1/(2*x)):integrate(x)() == (log(abs(x))/2)())
 
--- this does integrate successfully...
--- hmm, simplification issues surrounding this one ...
--- and maybe some MultiLine issues too
-assert((1/(x*(3*x+4))):integrate(x)() == log(1 / abs( (4 + 3 * x) / x)^frac(1,4)))
+asserteq((1/(x*(3*x+4))):integrate(x)(), log(1 / abs( (4 + 3 * x) / x)^frac(1,4)))
 
 assert(sin(x):integrate(x)() == -cos(x))
 assert(cos(x):integrate(x)() == sin(x))
@@ -52,5 +49,6 @@ assert((cos(x)/sin(x)):integrate(x)() == log(abs(sin(x))))
 assert(sinh(x):integrate(x)() == cosh(x))
 assert(cosh(x):integrate(x)() == sinh(x))
 
---]]
-
+]=]), '\n')) do
+	env.exec(line)
+end

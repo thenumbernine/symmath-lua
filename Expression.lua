@@ -191,7 +191,7 @@ function Expression.__add(a,b)
 	if Constant.is(a) and a.value == 0 then return b end
 	if Constant.is(b) and b.value == 0 then return a end
 
-	return require 'symmath.op.add'(a,b) 
+	return require 'symmath.op.add'(a,b):flatten()
 end
 function Expression.__sub(a,b) 
 	local Constant = require 'symmath.Constant'
@@ -223,8 +223,8 @@ function Expression.__mul(a,b)
 	
 	if Constant.is(a) and a.value == 1 then return b end
 	if Constant.is(b) and b.value == 1 then return a end
-	
-	return require 'symmath.op.mul'(a,b) 
+
+	return require 'symmath.op.mul'(a,b):flatten()
 end
 function Expression.__div(a,b) 
 	local Constant = require 'symmath.Constant'

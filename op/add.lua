@@ -14,17 +14,29 @@ add.name = '+'
 -- and flattening here will make the API easier, requiring less simplify's for matching and == 
 function add:init(...)
 	add.super.init(self, ...)
+	self:flatten()
+end
+--]]
 
+-- in-place flatten
+function add:flatten()
 	for i=#self,1,-1 do
 		if add.is(self[i]) then
 			local x = table.remove(self, i)
 			for j=#x,1,-1 do
-				table.insert(self, i, x[j])
+				table.insert(self, i, x[j]:clone())
 			end
 		end
 	end
+	return self
 end
---]]
+
+function add:isFlattened()
+	for i,ch in ipairs(self) do
+		if add.is(ch) then return false end
+	end
+	return true
+end
 
 function add:evaluateDerivative(deriv, ...)
 	local result = table()

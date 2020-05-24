@@ -32,9 +32,9 @@ ${{{ \tilde{e}}^y}_y} = {1}$
 <br>
 
 <br>
-tensor index associated with coordinate $x$ is index $\hat{x}$ with operator $e_{\hat{x}}(\zeta) = $$\frac{\partial \zeta}{\partial x}$
+tensor index associated with coordinate $x$ is index $x$ with operator $e_{x}(\zeta) = $$\frac{\partial \zeta}{\partial x}$
 <br>
-tensor index associated with coordinate $y$ is index $\hat{y}$ with operator $e_{\hat{y}}(\zeta) = $$\frac{\partial \zeta}{\partial y}$
+tensor index associated with coordinate $y$ is index $y$ with operator $e_{y}(\zeta) = $$\frac{\partial \zeta}{\partial y}$
 <br>
 
 <br>
@@ -57,12 +57,12 @@ basis operators applied to chart:
 <br>
 ${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
 <br>
-${{{ e}_{\hat{x}}}^x} = {1}$;
-${{{ e}_{\hat{y}}}^y} = {1}$
+${{{ e}_x}^x} = {1}$;
+${{{ e}_y}^y} = {1}$
 
 <br>
-${{{ e}^{\hat{x}}}_x} = {1}$;
-${{{ e}^{\hat{y}}}_y} = {1}$
+${{{ e}^x}_x} = {1}$;
+${{{ e}^y}_y} = {1}$
 
 <br>
 ${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
@@ -73,29 +73,29 @@ basis determinant:	${det(e)} = {1}$
 <br>
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
-${{{ g}_{\hat{x}}}_{\hat{x}}} = {1}$;
-${{{ g}_{\hat{y}}}_{\hat{y}}} = {1}$
+${{{ g}_x}_x} = {1}$;
+${{{ g}_y}_y} = {1}$
 
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 metric determinant:	${det(g)} = {1}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
 <br>
 commutation coefficients:
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
 metric:
-${{{ g}_{\hat{x}}}_{\hat{x}}} = {1}$;
-${{{ g}_{\hat{y}}}_{\hat{y}}} = {1}$
+${{{ g}_x}_x} = {1}$;
+${{{ g}_y}_y} = {1}$
 
 <br>
 metric inverse:
-${{{ g}^{\hat{x}}}^{\hat{x}}} = {1}$;
-${{{ g}^{\hat{y}}}^{\hat{y}}} = {1}$
+${{{ g}^x}^x} = {1}$;
+${{{ g}^y}^y} = {1}$
 
 <br>
 metric derivative:
@@ -129,11 +129,11 @@ $0$
 Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
 ${{{ G}^a}_b} = {0}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{\hat{x}}}}{\partial x}} + {\frac{\partial {A^{\hat{y}}}}{\partial y}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{x}}}{\partial x}} + {\frac{\partial {A^{y}}}{\partial y}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{\hat{x}} \\ \ddot{\hat{y}}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ 0\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{x} \\ \ddot{y}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ 0\end{matrix}\right]}}$
 <br>
 
 <br>
@@ -203,11 +203,11 @@ volume integral: 	${{\Delta x}} \cdot {{\Delta y}}$
 <br>
 finite volume (0,0)-form:
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{-{({\int\limits_{{{y_L}}}^{{{y_R}}}d \hat{y}\left({{{{{{{J(x_R)}}} \cdot {{{{e_{\hat{x}}}^{\bar{\hat{x}}}(x_R)}}}}} {{{F^{x}(x_R)}}}} - {{{{{{J(x_L)}}} \cdot {{{{e_{\hat{x}}}^{\bar{\hat{x}}}(x_L)}}}}} {{{F^{x}(x_L)}}}}}\right)})}} - {({\int\limits_{{{x_L}}}^{{{x_R}}}d \hat{x}\left({{{{{{{J(y_R)}}} \cdot {{{{e_{\hat{y}}}^{\bar{\hat{y}}}(y_R)}}}}} {{{F^{y}(y_R)}}}} - {{{{{{J(y_L)}}} \cdot {{{{e_{\hat{y}}}^{\bar{\hat{y}}}(y_L)}}}}} {{{F^{y}(y_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{-{({\int\limits_{{{y_L}}}^{{{y_R}}}d y\left({{{{{J(x_R)}}} \cdot {{{{e_{x}}^{\bar{x}}(x_R)}}} \cdot {{{F^{x}(x_R)}}}} - {{{{J(x_L)}}} \cdot {{{{e_{x}}^{\bar{x}}(x_L)}}} \cdot {{{F^{x}(x_L)}}}}}\right)})}} - {({\int\limits_{{{x_L}}}^{{{x_R}}}d x\left({{{{{J(y_R)}}} \cdot {{{{e_{y}}^{\bar{y}}(y_R)}}} \cdot {{{F^{y}(y_R)}}}} - {{{{J(y_L)}}} \cdot {{{{e_{y}}^{\bar{y}}(y_L)}}} \cdot {{{F^{y}(y_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{\Delta x}} \cdot {{\Delta y}}}}} {{({{-{({\int\limits_{{{y_L}}}^{{{y_R}}}d \hat{y}\left({{{F^{x}(x_R)}} - {{F^{x}(x_L)}}}\right)})}} - {({\int\limits_{{{x_L}}}^{{{x_R}}}d \hat{x}\left({{{F^{y}(y_R)}} - {{F^{y}(y_L)}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{\Delta x}} \cdot {{\Delta y}}}}} {{({{-{({\int\limits_{{{y_L}}}^{{{y_R}}}d y\left({{{F^{x}(x_R)}} - {{F^{x}(x_L)}}}\right)})}} - {({\int\limits_{{{x_L}}}^{{{x_R}}}d x\left({{{F^{y}(y_R)}} - {{F^{y}(y_L)}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>

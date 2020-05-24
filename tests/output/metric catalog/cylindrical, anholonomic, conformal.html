@@ -89,18 +89,18 @@ ${{{{ c}_{\hat{\theta}}}_{\hat{r}}}^{\hat{\theta}}} = {\frac{1}{{{3}} {{{{r}} {{
 ${{{{ c}_{\hat{z}}}_{\hat{r}}}^{\hat{z}}} = {\frac{1}{{{3}} {{{{r}} {{\sqrt[3] r}}}}}}$
 
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 ${{{ g}_{\hat{r}}}_{\hat{r}}} = {\frac{1}{\sqrt[3]{{r}^{2}}}}$;
 ${{{ g}_{\hat{\theta}}}_{\hat{\theta}}} = {{{r}} {{\sqrt[3] r}}}$;
 ${{{ g}_{\hat{z}}}_{\hat{z}}} = {\frac{1}{\sqrt[3]{{r}^{2}}}}$
 
 <br>
-${{{ g}_u}_v} = {{{{{{{ e}_u}^I}} {{{{ e}_v}^J}}}} {{{{ \eta}_I}_J}}}$
+${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 metric determinant:	${det(g)} = {1}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c}} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
 <br>
 commutation coefficients:
 ${{{{ c}_{\hat{r}}}_{\hat{\theta}}}^{\hat{\theta}}} = {-{\frac{1}{{{3}} {{{{r}} {{\sqrt[3] r}}}}}}}$;
@@ -196,7 +196,7 @@ ${{[\Gamma_r]}} = {\left[\begin{matrix}  -{\frac{1}{{{3}} {{r}}}} &  0 &  0 \\  
 
 <br>
 $\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  -{\frac{1}{{{3}} {{r}}}} &  0 &  0 \\  0 &  \frac{2}{{{3}} {{r}}} &  0 \\  0 &  0 &  -{\frac{1}{{{3}} {{r}}}}\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  log\left( {{{\frac{1}{\sqrt[3] {r_R}}}} {{\sqrt[3] {r_L}}}}\right) &  0 &  0 \\  0 &  log\left( {{{\sqrt[3]{{{r_R}}^{2}}}} {{\frac{1}{\sqrt[3]{{{r_L}}^{2}}}}}}\right) &  0 \\  0 &  0 &  log\left( {{{\frac{1}{\sqrt[3] {r_R}}}} {{\sqrt[3] {r_L}}}}\right)\end{matrix}\right]$
+=	$\left[\begin{matrix}  log\left( {\frac{\sqrt[3] {r_L}}{\sqrt[3] {r_R}}}\right) &  0 &  0 \\  0 &  log\left( {\frac{\sqrt[3]{{{r_R}}^{2}}}{\sqrt[3]{{{r_L}}^{2}}}}\right) &  0 \\  0 &  0 &  log\left( {\frac{\sqrt[3] {r_L}}{\sqrt[3] {r_R}}}\right)\end{matrix}\right]$
 <br>
 
 <br>
@@ -282,19 +282,19 @@ ${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 & 
 <br>
 volume element: 	$r$
 <br>
-volume integral: 	${{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}}}} {{\Delta z}}$
+volume integral: 	${{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}} \cdot {{\Delta z}}$
 <br>
 finite volume (0,0)-form:
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{{{{J(r_R)}}} \cdot {{{{e_{\hat{r}}}^{\bar{\hat{r}}}(r_R)}}}}} {{{F^{r}(r_R)}}}} - {{{{{{J(r_L)}}} \cdot {{{{e_{\hat{r}}}^{\bar{\hat{r}}}(r_L)}}}}} {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{{{J(\theta_R)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_R)}}}}} {{{F^{\theta}(\theta_R)}}}} - {{{{{{J(\theta_L)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_L)}}}}} {{{F^{\theta}(\theta_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{{{J(z_R)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_R)}}}}} {{{F^{z}(z_R)}}}} - {{{{{{J(z_L)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_L)}}}}} {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{{J(r_R)}}} \cdot {{{{e_{\hat{r}}}^{\bar{\hat{r}}}(r_R)}}} \cdot {{{F^{r}(r_R)}}}} - {{{{J(r_L)}}} \cdot {{{{e_{\hat{r}}}^{\bar{\hat{r}}}(r_L)}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{J(\theta_R)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_R)}}} \cdot {{{F^{\theta}(\theta_R)}}}} - {{{{J(\theta_L)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_L)}}} \cdot {{{F^{\theta}(\theta_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{J(z_R)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_R)}}} \cdot {{{F^{z}(z_R)}}}} - {{{{J(z_L)}}} \cdot {{{{e_{\hat{z}}}^{\bar{\hat{z}}}(z_L)}}} \cdot {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}}}} {{\Delta z}}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{r}(r_R)}}}} - {{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{\theta}(\theta_R)}}}} - {{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{\theta}(\theta_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{z}(z_R)}}}} - {{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}} \cdot {{\Delta z}}}}} {{({{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{r}(r_R)}}}} - {{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d \hat{z}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{\theta}(\theta_R)}}}} - {{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{\theta}(\theta_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{z}(z_R)}}}} - {{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{z}(z_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}}}} {{\Delta z}}}}} {{({{{-{{{{{({{{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{r}(r_R)}}}} - {{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{r}(r_L)}}}}})}} {{\Delta \theta}}}} {{\Delta z}}}} - {{{{{({{{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{\theta}(\theta_R)}}}} - {{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{\theta}(\theta_L)}}}}})}} {{\Delta r}}}} {{\Delta z}}}} - {{{{{({{{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{z}(z_R)}}}} - {{{{{r}} {{{r}^{({\frac{1}{3}})}}}}} {{{F^{z}(z_L)}}}}})}} {{\Delta r}}}} {{\Delta \theta}}}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}} \cdot {{\Delta z}}}}} {{({{{-{{{({{{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{r}(r_R)}}}} - {{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{r}(r_L)}}}}})}} {{\Delta \theta}} \cdot {{\Delta z}}}} - {{{({{{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{\theta}(\theta_R)}}}} - {{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{\theta}(\theta_L)}}}}})}} {{\Delta r}} \cdot {{\Delta z}}}} - {{{({{{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{z}(z_R)}}}} - {{{r}} {{{r}^{({\frac{1}{3}})}}} {{{F^{z}(z_L)}}}}})}} {{\Delta r}} \cdot {{\Delta \theta}}}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>

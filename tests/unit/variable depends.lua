@@ -1,14 +1,18 @@
 #!/usr/bin/env lua
+local env = setmetatable({}, {__index=_G})
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'unit'(env, 'match')
 
-local symmath = require 'symmath'
-local x = symmath.var'x'
-local z = symmath.var'z'
+env.env = env
+env.x = var'x'
+env.z = var'z'
+env.zero = Constant(0)
 
-local zero = symmath.Constant(0)
+for _,line in ipairs(string.split(string.trim([=[
 
 -- testing dependency
 
-local y = symmath.var'y'
+y = symmath.var'y'
 assert(false == y:dependsOn(x))
 assert(false == y:dependsOn(x'^p'))
 assert(false == y:dependsOn(x'^pq'))
@@ -39,7 +43,7 @@ assert(y'^ij':diff(x'^p')() == zero)
 assert(y'^ij':diff(x'^pq')() == zero)
 assert(y:diff(x,z)() == zero)
 
-local y = symmath.var'y'
+y = symmath.var'y'
 y:setDependentVars(x'^a')
 assert(false == y:dependsOn(x))
 assert(true == y:dependsOn(x'^p'))
@@ -60,7 +64,7 @@ assert(y'^ij':diff(x)() == zero)
 assert(y'^ij':diff(x'^p')() == zero)
 assert(y'^ij':diff(x'^pq')() == zero)
 
-local y = symmath.var'y'
+y = symmath.var'y'
 y'^a':setDependentVars(x)
 assert(false == y:dependsOn(x))
 assert(false == y:dependsOn(x'^p'))
@@ -81,7 +85,7 @@ assert(y'^ij':diff(x)() == zero)
 assert(y'^ij':diff(x'^p')() == zero)
 assert(y'^ij':diff(x'^pq')() == zero)
 
-local y = symmath.var'y'
+y = symmath.var'y'
 y'^a':setDependentVars(x'^b')
 assert(false == y:dependsOn(x))
 assert(false == y:dependsOn(x'^p'))
@@ -101,3 +105,7 @@ assert(y'^i':diff(x'^pq')() == zero)
 assert(y'^ij':diff(x)() == zero)
 assert(y'^ij':diff(x'^p')() == zero)
 assert(y'^ij':diff(x'^pq')() == zero)
+
+]=]), '\n')) do
+	env.exec(line)
+end

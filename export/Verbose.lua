@@ -9,7 +9,8 @@ Verbose.name = 'Verbose'
 
 Verbose.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
-		return 'Constant['..tostring(expr.value)..']'
+		--return 'Constant['..tostring(expr.value)..']'
+		return tostring(expr.value)
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
 		return 'Invalid'
@@ -18,19 +19,22 @@ Verbose.lookupTable = {
 		return 'unm('..self:apply(expr[1])..')'
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
-		return 'Binary{'..expr.name..'}['..table.map(expr, function(x,k)
+		--return 'Binary{'..expr.name..'}['..table.map(expr, function(x,k)
+		return expr.name..'['..table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self(x)
 		end):concat(', ')..']'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return 'Function{'..expr.name..'}[' .. table.map(expr, function(x,k)
+		--return 'Function{'..expr.name..'}[' .. table.map(expr, function(x,k)
+		return expr.name..'[' .. table.map(expr, function(x,k)
 			if type(k) ~= 'number' then return end
 			return self(x)
 		end):concat(', ') .. ']'
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		local s = 'Variable['..expr.name..']'
+		--local s = 'Variable['..expr.name..']'
+		local s = expr.name
 		if expr.value then
 			s = s .. '|' .. expr.value
 		end

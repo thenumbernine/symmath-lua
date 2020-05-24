@@ -271,8 +271,9 @@ symmath.setup = function(args)
 	end
 	local mt = getmetatable(env)
 	if mt then
-		io.stderr:write"Looks like this environment already has a metatable.  Overriding...\n"
-		io.stderr:flush()
+		-- the user should already know if there is a metatable
+		--io.stderr:write"Looks like this environment already has a metatable.  Overriding...\n"
+		--io.stderr:flush()
 		local nmt = {}	-- create a soft-copy
 		for k,v in pairs(mt) do nmt[k] = v end
 		mt = nmt

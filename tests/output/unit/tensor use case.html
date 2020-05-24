@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset='UTF-8'>
+        <meta charset='utf-8'>
         <title>tensor use case</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
     </head>
@@ -2579,9 +2579,9 @@ ${1} = {1}$
 <br>
 ${1} = {1}$
 <br>
-${{{\overset{i\downarrow j\rightarrow}{\left[\begin{matrix}1\end{matrix}\right]}}_i}_i} = {1}$
+${{{ \overset{i\downarrow j\rightarrow}{\left[\begin{matrix}  1\end{matrix}\right]}}_i}_i} = {1}$
 <br>
-${{{{\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[\begin{matrix}\overset{j\downarrow k\rightarrow}{\left[\begin{matrix}1\end{matrix}\right]}\end{matrix}\right]}}_i}_k}_i} = {\overset{k\downarrow}{\left[\begin{matrix}1\end{matrix}\right]}}$
+${{{{ \overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[\begin{matrix} \overset{j\downarrow k\rightarrow}{\left[\begin{matrix}  1\end{matrix}\right]}\end{matrix}\right]}}_i}_k}_i} = {\overset{k\downarrow}{\left[\begin{matrix} 1\end{matrix}\right]}}$
 <br>
 ${1} = {1}$
 <br>
@@ -2599,9 +2599,9 @@ ${3} = {3}$
 <br>
 ${4} = {4}$
 <br>
-${{{\overset{i\downarrow j\rightarrow}{\left[\begin{matrix}1 & 2 \\3 & 4\end{matrix}\right]}}_i}_i} = {5}$
+${{{ \overset{i\downarrow j\rightarrow}{\left[\begin{matrix}  1 &  2 \\  3 &  4\end{matrix}\right]}}_i}_i} = {5}$
 <br>
-${{{{\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[\begin{matrix}\overset{j\downarrow k\rightarrow}{\left[\begin{matrix}1 & 5 \\3 & 7\end{matrix}\right]} \\\overset{j\downarrow k\rightarrow}{\left[\begin{matrix}2 & 6 \\4 & 8\end{matrix}\right]}\end{matrix}\right]}}_i}_k}_i} = {\overset{k\downarrow}{\left[\begin{matrix}7 \\11\end{matrix}\right]}}$
+${{{{ \overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[\begin{matrix} \overset{j\downarrow k\rightarrow}{\left[\begin{matrix}  1 &  5 \\  3 &  7\end{matrix}\right]} \\ \overset{j\downarrow k\rightarrow}{\left[\begin{matrix}  2 &  6 \\  4 &  8\end{matrix}\right]}\end{matrix}\right]}}_i}_k}_i} = {\overset{k\downarrow}{\left[\begin{matrix} 7 \\ 11\end{matrix}\right]}}$
 <br>
 ${1} = {1}$
 <br>
@@ -2639,9 +2639,9 @@ ${8} = {8}$
 <br>
 ${9} = {9}$
 <br>
-${{{\overset{i\downarrow j\rightarrow}{\left[\begin{matrix}1 & 2 & 3 \\4 & 5 & 6 \\7 & 8 & 9\end{matrix}\right]}}_i}_i} = {15}$
+${{{ \overset{i\downarrow j\rightarrow}{\left[\begin{matrix}  1 &  2 &  3 \\  4 &  5 &  6 \\  7 &  8 &  9\end{matrix}\right]}}_i}_i} = {15}$
 <br>
-${{{{\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[\begin{matrix}\overset{j\downarrow k\rightarrow}{\left[\begin{matrix}1 & 10 & 19 \\4 & 13 & 22 \\7 & 16 & 25\end{matrix}\right]} \\\overset{j\downarrow k\rightarrow}{\left[\begin{matrix}2 & 11 & 20 \\5 & 14 & 23 \\8 & 17 & 26\end{matrix}\right]} \\\overset{j\downarrow k\rightarrow}{\left[\begin{matrix}3 & 12 & 21 \\6 & 15 & 24 \\9 & 18 & 27\end{matrix}\right]}\end{matrix}\right]}}_i}_k}_i} = {\overset{k\downarrow}{\left[\begin{matrix}33 \\42 \\51\end{matrix}\right]}}$
+${{{{ \overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[\begin{matrix} \overset{j\downarrow k\rightarrow}{\left[\begin{matrix}  1 &  10 &  19 \\  4 &  13 &  22 \\  7 &  16 &  25\end{matrix}\right]} \\ \overset{j\downarrow k\rightarrow}{\left[\begin{matrix}  2 &  11 &  20 \\  5 &  14 &  23 \\  8 &  17 &  26\end{matrix}\right]} \\ \overset{j\downarrow k\rightarrow}{\left[\begin{matrix}  3 &  12 &  21 \\  6 &  15 &  24 \\  9 &  18 &  27\end{matrix}\right]}\end{matrix}\right]}}_i}_k}_i} = {\overset{k\downarrow}{\left[\begin{matrix} 33 \\ 42 \\ 51\end{matrix}\right]}}$
 <br>
 ${1} = {1}$
 <br>
@@ -2649,23 +2649,23 @@ ${1} = {1}$
 <br>
 ${0} = {0}$
 <br>
-${{\overset{i\downarrow}{\left[\begin{matrix}1 \\2 \\3\end{matrix}\right]}}^i} = {\overset{i\downarrow}{\left[\begin{matrix}1 \\1 \\1\end{matrix}\right]}}$
+${{ \overset{i\downarrow}{\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]}}^i} = {\overset{i\downarrow}{\left[\begin{matrix} 1 \\ 1 \\ 1\end{matrix}\right]}}$
 <br>
-${{\overset{i\downarrow}{\left[\begin{matrix}1 \\2 \\3\end{matrix}\right]}}^i} = {\overset{i\downarrow}{\left[\begin{matrix}1 \\1 \\1\end{matrix}\right]}}$
+${{ \overset{i\downarrow}{\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]}}^i} = {\overset{i\downarrow}{\left[\begin{matrix} 1 \\ 1 \\ 1\end{matrix}\right]}}$
 <br>
-${{\overset{i\downarrow}{\left[\begin{matrix}1 \\2 \\3\end{matrix}\right]}}_i} = {\overset{i\downarrow}{\left[\begin{matrix}1 \\4 \\9\end{matrix}\right]}}$
+${{ \overset{i\downarrow}{\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]}}_i} = {\overset{i\downarrow}{\left[\begin{matrix} 1 \\ 4 \\ 9\end{matrix}\right]}}$
 <br>
-${{\overset{i\downarrow}{\left[\begin{matrix}1 \\2 \\3\end{matrix}\right]}}_i} = {\overset{i\downarrow}{\left[\begin{matrix}1 \\4 \\9\end{matrix}\right]}}$
+${{ \overset{i\downarrow}{\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]}}_i} = {\overset{i\downarrow}{\left[\begin{matrix} 1 \\ 4 \\ 9\end{matrix}\right]}}$
 <br>
-${\overset{b\downarrow}{\left[\begin{matrix}1 \\-{1} \\0\end{matrix}\right]}} = {\overset{j\downarrow}{\left[\begin{matrix}1 \\-1 \\0\end{matrix}\right]}}$
+${\overset{b\downarrow}{\left[\begin{matrix} 1 \\ -{1} \\ 0\end{matrix}\right]}} = {\overset{j\downarrow}{\left[\begin{matrix} 1 \\ -1 \\ 0\end{matrix}\right]}}$
 <br>
-${\overset{b\downarrow}{\left[\begin{matrix}1 \\-{1} \\0\end{matrix}\right]}} = {\overset{j\downarrow}{\left[\begin{matrix}1 \\-1 \\0\end{matrix}\right]}}$
+${\overset{b\downarrow}{\left[\begin{matrix} 1 \\ -{1} \\ 0\end{matrix}\right]}} = {\overset{j\downarrow}{\left[\begin{matrix} 1 \\ -1 \\ 0\end{matrix}\right]}}$
 <br>
-${\overset{b\downarrow}{\left[\begin{matrix}0 \\1 \\0\end{matrix}\right]}} = {\overset{j\downarrow}{\left[\begin{matrix}0 \\1 \\0\end{matrix}\right]}}$
+${\overset{b\downarrow}{\left[\begin{matrix} 0 \\ 1 \\ 0\end{matrix}\right]}} = {\overset{j\downarrow}{\left[\begin{matrix} 0 \\ 1 \\ 0\end{matrix}\right]}}$
 <br>
-${\overset{b\downarrow}{\left[\begin{matrix}0 \\0 \\1\end{matrix}\right]}} = {\overset{j\downarrow}{\left[\begin{matrix}0 \\0 \\1\end{matrix}\right]}}$
+${\overset{b\downarrow}{\left[\begin{matrix} 0 \\ 0 \\ 1\end{matrix}\right]}} = {\overset{j\downarrow}{\left[\begin{matrix} 0 \\ 0 \\ 1\end{matrix}\right]}}$
 <br>
-${\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}1 & -{1} & 0 \\0 & 1 & 0 \\0 & 0 & 1\end{matrix}\right]}} = {\overset{i\downarrow j\rightarrow}{\left[\begin{matrix}1 & -1 & 0 \\0 & 1 & 0 \\0 & 0 & 1\end{matrix}\right]}}$
+${\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  1 &  -{1} &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}} = {\overset{i\downarrow j\rightarrow}{\left[\begin{matrix}  1 &  -1 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
 <br>
-${{\overset{i\downarrow}{\left[\begin{matrix}1 \\2 \\3\end{matrix}\right]}}_i} = {\overset{i\downarrow}{\left[\begin{matrix}3 \\2 \\3\end{matrix}\right]}}$
+${{ \overset{i\downarrow}{\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]}}_i} = {\overset{i\downarrow}{\left[\begin{matrix} 3 \\ 2 \\ 3\end{matrix}\right]}}$
 <br>

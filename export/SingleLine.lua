@@ -127,7 +127,7 @@ SingleLine.lookupTable = {
 		end):concat(' ')..'}['..diffexpr..']'
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
-		return 'integrate('..table.map(expr, tostring):concat(', ')..' )'
+		return 'integrate('..table.map(expr, function(x) return self:apply(x) end):concat(', ')..' )'
 	end,
 	[require 'symmath.Array'] = function(self, expr)
 		return '[' .. table.map(expr, function(x,k)

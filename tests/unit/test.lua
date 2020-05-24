@@ -1,48 +1,31 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'ext.env'(env)
-require 'symmath'.setup{env=env, debugSimplifyLoops=true, MathJax={title='test', pathToTryToFindMathJax='..'}}
+require 'unit'(env, 'test')
 
-function asserteq(a,b)
-	local sa = symmath.simplify(a)
-	local ta = symmath.simplify.stack
-	local sb = symmath.simplify(b)
-	local tb = symmath.simplify.stack
-	if sa ~= sb then
-		printbr('expected '..tostring(a)..' to equal '..tostring(b))
-		printbr('instead found '..tostring(sa)..' vs '..tostring(sb))
-		printbr('lhs stack')
-		for _,x in ipairs(ta) do printbr(x) end
-		printbr('rhs stack')
-		for _,x in ipairs(tb) do printbr(x) end
-	end
-end
+env.x = symmath.Variable('x')
+env.y = symmath.Variable('y')
+env.t = symmath.Variable('t')
 
-local function exec(str)
-	printbr('<code>'..str..'</code>')
-	printbr(assert(load(str, nil, nil, env))())
-end
+env.gUxx = var('\\gamma^{xx}')
+env.gUxy = var('\\gamma^{xy}')
+env.gUyy = var('\\gamma^{yy}')
 
 -- constant simplificaiton
 for _,line in ipairs(string.split(string.trim([=[
-asserteq(1, (Constant(1)*Constant(1))())
-asserteq(1, (Constant(1)/Constant(1))())
-asserteq(-1, (-Constant(1)/Constant(1))())	-- without the first 'simplify' we don't get the same canonical form with the unary - on the outside
-asserteq(1, (Constant(1)/(Constant(1)*Constant(1)))())
-
-x = symmath.Variable('x')
-y = symmath.Variable('y')
-t = symmath.Variable('t')
+asserteq(1, (Constant(1)*Constant(1))())					-- multiply by 1
+asserteq(1, (Constant(1)/Constant(1))())					-- divide by 1
+asserteq(-1, (-Constant(1)/Constant(1))())					-- divide by -1
+asserteq(1, (Constant(1)/(Constant(1)*Constant(1)))())		-- multiply and divide by 1
 
 -- commutativity
-asserteq(x+y, y+x)
-asserteq(x*y, y*x)
+asserteq(x+y, y+x)											-- add commutative
+asserteq(x*y, y*x)											-- mul commutative
 
 -- pruning operations
-asserteq(x, (1*x)())
-asserteq(0, (Constant(0)*x)())
-asserteq(x, (x*1)())
+asserteq(x, (1*x)())										-- prune 1*
+asserteq(x, (x*1)())										-- prune *1
+asserteq(0, (0*x)())										-- prune *0
 asserteq((x/x)(), 1)
 
 asserteq(x^2, (x*x)())
@@ -87,15 +70,10 @@ asserteq((y-x)/(x-y), -1)
 asserteq((x+y)/(x+y)^2, 1/(x+y))
 asserteq((-x+y)/(-x+y)^2, 1/(-x+y))
 
-gUxx = var('\\gamma^{xx}')
-gUxy = var('\\gamma^{xy}')
-gUyy = var('\\gamma^{yy}')
 asserteq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)
 asserteq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)
 asserteq( gUxy * (gUxy - gUxx) / (gUxx - gUxy), -gUxy)
 
--- and an example of what a failure looks like:
-asserteq(1,2)
 ]=]), '\n')) do
-	exec(line)
+	env.exec(line)
 end

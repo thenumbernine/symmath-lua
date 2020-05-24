@@ -42,6 +42,7 @@ log.rules = {
 		end},
 	},
 
+	-- NOTE TO SELF - without calling expand:apply on the returned values, we get simplification loops
 	Expand = {
 		{apply = function(expand, expr)
 			local symmath = require 'symmath'
@@ -54,14 +55,14 @@ log.rules = {
 		
 			-- log(ab) = log(a) + log(b)
 			if symmath.op.mul.is(x) then
-				return symmath.op.add(table.mapi(x, function(xi)
+				return expand:apply(symmath.op.add(table.mapi(x, function(xi)
 					return log(xi)
-				end):unpack())
+				end):unpack()))
 			end
 		
 			-- log(a/b) = log(a) - log(b)
 			if symmath.op.div.is(x) then
-				return log(x[1]) - log(x[2])
+				return expand:apply(log(x[1]) - log(x[2]))
 			end
 		end},
 	},
