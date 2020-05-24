@@ -462,11 +462,18 @@ This constructs a Wildcard object for Expression matching.
 - - atMost = The wildcard can only match at most this many sub-expressions.
 - - dependsOn = The wildcard must depend on the specified variable.  See 'Expression:dependsOn()' for more information.
 - - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
+
 Matching works something like this:
 ```
 local i = (x + y):match(x + Wildcard(1))
 assert(i == y)
 ```
+
+The index of the wildcard specifies which return argument the matched expression will be returned in.
+If two present wildcards have equal indexes then the test will only succeed if both wildcard matches are equal. 
+i.e. `(x + y):match(Wildcard(1) + Wildcard(1))` will fail because x != y,
+but `(x + x):match(Wildcard(1) + Wildcard(1))` will succeed and return `x`.
+
 Wildcards are greedy-matching and will match zero-or-more expressions unless stated otherwise.
 For example:
 ```
@@ -892,11 +899,21 @@ Output CDN URLs:
 
 [tests/output/toy-1+1 spacetime](https://thenumbernine.github.io/symmath/tests/output/toy%2d1%2b1%20spacetime.html)
 
+[tests/output/unit/MakeTrigLookupTables](https://thenumbernine.github.io/symmath/tests/output/unit/MakeTrigLookupTables.html)
+
+[tests/output/unit/determinant_performance](https://thenumbernine.github.io/symmath/tests/output/unit/determinant_performance.html)
+
+[tests/output/unit/integral](https://thenumbernine.github.io/symmath/tests/output/unit/integral.html)
+
 [tests/output/unit/linear solver](https://thenumbernine.github.io/symmath/tests/output/unit/linear%20solver.html)
+
+[tests/output/unit/match](https://thenumbernine.github.io/symmath/tests/output/unit/match.html)
 
 [tests/output/unit/matrix](https://thenumbernine.github.io/symmath/tests/output/unit/matrix.html)
 
 [tests/output/unit/replace](https://thenumbernine.github.io/symmath/tests/output/unit/replace.html)
+
+[tests/output/unit/sets](https://thenumbernine.github.io/symmath/tests/output/unit/sets.html)
 
 [tests/output/unit/sub-tensor assignment](https://thenumbernine.github.io/symmath/tests/output/unit/sub%2dtensor%20assignment.html)
 
@@ -905,6 +922,8 @@ Output CDN URLs:
 [tests/output/unit/test](https://thenumbernine.github.io/symmath/tests/output/unit/test.html)
 
 [tests/output/unit/tidyIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/tidyIndexes.html)
+
+[tests/output/unit/variable depends](https://thenumbernine.github.io/symmath/tests/output/unit/variable%20depends.html)
 
 [tests/output/wave equation in spacetime - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20in%20spacetime%20%2d%20flux%20eigenvectors.html)
 
