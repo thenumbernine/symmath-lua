@@ -25,11 +25,11 @@ $P$	= pressure, in units of 	$\frac{kg}{{{m}} {{{s}^{2}}}}$
 <br>
 ${{ g}_i}_j$	= metric tensor, in units of $[1]$
 <br>
-${{v}^{2}} = {{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}$	= velocity norm squared, in units of	$\frac{{m}^{2}}{{s}^{2}}$
+${{v}^{2}} = {{{{ v}^k}} {{{ v}^l}} {{{{ g}_k}_l}}}$	= velocity norm squared, in units of	$\frac{{m}^{2}}{{s}^{2}}$
 <br>
 
 <br>
-${{e_{kin}}} = {{{\frac{1}{2}}} {{{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}}}$	= specific kinetic energy, in units of	$\frac{{m}^{2}}{{s}^{2}}$
+${{e_{kin}}} = {{{\frac{1}{2}}} {{{ v}^k}} {{{ v}^l}} {{{{ g}_k}_l}}}$	= specific kinetic energy, in units of	$\frac{{m}^{2}}{{s}^{2}}$
 <br>
 
 <br>
@@ -55,21 +55,25 @@ Partial of conservative quantities wrt primitives:
 <br>
 ${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\partial \rho}{\partial \rho} &  \frac{\partial \rho}{\partial { v}^j} &  \frac{\partial \rho}{\partial P} \\  \frac{\partial { m}^i}{\partial \rho} &  \frac{\partial { m}^i}{\partial { v}^j} &  \frac{\partial { m}^i}{\partial P} \\  \frac{\partial {E_{total}}}{\partial \rho} &  \frac{\partial {E_{total}}}{\partial { v}^j} &  \frac{\partial {E_{total}}}{\partial P}\end{matrix}\right]}$
 <br>
-${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\partial \rho}{\partial \rho} &  \frac{\partial \rho}{\partial { v}^j} &  \frac{\partial \rho}{\partial P} \\  {\frac{\partial}{\partial \rho}}\left({{{\rho}} \cdot {{{ v}^i}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{\rho}} \cdot {{{ v}^i}}}\right) &  {\frac{\partial}{\partial P}}\left({{{\rho}} \cdot {{{ v}^i}}}\right) \\  {\frac{\partial}{\partial \rho}}\left({{{\rho}} \cdot {{({{{{\frac{1}{2}}} {{{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}}} + {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}})}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{\rho}} \cdot {{({{{{\frac{1}{2}}} {{{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}}} + {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}})}}}\right) &  {\frac{\partial}{\partial P}}\left({{{\rho}} \cdot {{({{{{\frac{1}{2}}} {{{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}}} + {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}})}}}\right)\end{matrix}\right]}$
+${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\partial \rho}{\partial \rho} &  \frac{\partial \rho}{\partial { v}^j} &  \frac{\partial \rho}{\partial P} \\  {\frac{\partial}{\partial \rho}}\left({{{\rho}} \cdot {{{ v}^i}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{\rho}} \cdot {{{ v}^i}}}\right) &  {\frac{\partial}{\partial P}}\left({{{\rho}} \cdot {{{ v}^i}}}\right) \\  {\frac{\partial}{\partial \rho}}\left({{{\rho}} \cdot {{({{{{\frac{1}{2}}} {{{ v}^k}} {{{ v}^l}} {{{{ g}_k}_l}}} + {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}})}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{\rho}} \cdot {{({{{{\frac{1}{2}}} {{{ v}^k}} {{{ v}^l}} {{{{ g}_k}_l}}} + {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}})}}}\right) &  {\frac{\partial}{\partial P}}\left({{{\rho}} \cdot {{({{{{\frac{1}{2}}} {{{ v}^k}} {{{ v}^l}} {{{{ g}_k}_l}}} + {\frac{P}{{{\tilde{\gamma}}} \cdot {{\rho}}}}})}}}\right)\end{matrix}\right]}$
 <br>
 ${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  1 &  0 &  0 \\  { v}^i &  {{\rho}} \cdot {{{{ \delta}^i}_j}} &  0 \\  {\frac{1}{2}}{({{v}^{2}})} &  {{\rho}} \cdot {{{ v}_j}} &  \frac{1}{\tilde{\gamma}}\end{matrix}\right]}$
 <br>
-${\frac{\partial { W}^I}{\partial { U}^J}} = {\left[\begin{matrix}  1 &  0 &  0 \\  {\frac{1}{\rho}}{({-{{ v}^i}})} &  {\frac{1}{\rho}}{({{{ \delta}^i}_j})} &  0 \\  {{{{\frac{1}{2}}} {{\tilde{\gamma}}}}} {{{{{{{ v}^k}} {{{ v}^l}}}} {{{{ g}_k}_l}}}} &   {-{\tilde{\gamma}}} {{{ v}_j}} &  \tilde{\gamma}\end{matrix}\right]}$
+${\frac{\partial { W}^I}{\partial { U}^J}} = {\left[\begin{matrix}  1 &  0 &  0 \\  {\frac{1}{\rho}}{({-{{ v}^i}})} &  {\frac{1}{\rho}}{({{{ \delta}^i}_j})} &  0 \\  {{\frac{1}{2}}} {{\tilde{\gamma}}} \cdot {{{ v}^k}} {{{ v}^l}} {{{{ g}_k}_l}} &   {-{\tilde{\gamma}}} {{{ v}_j}} &  \tilde{\gamma}\end{matrix}\right]}$
 <br>
 
 <br>
 Flux:
 <br>
-${{ F}^I} = {\left[\begin{matrix}  {{{{\rho}} \cdot {{{ v}^j}}}} {{{ n}_j}} \\  {{{{{{{\rho}} \cdot {{{ v}^i}}}} {{{ v}^j}}}} {{{ n}_j}}} + {{{{ n}^i}} {{P}}} \\  {{{{{ v}^j}} {{{ n}_j}}}} {{{H_{total}}}}\end{matrix}\right]}$
+${{ F}^I} = {\left[\begin{matrix}  {{\rho}} \cdot {{{ v}^j}} {{{ n}_j}} \\  {{{\rho}} \cdot {{{ v}^i}} {{{ v}^j}} {{{ n}_j}}} + {{{{ n}^i}} {{P}}} \\  {{{ v}^j}} {{{ n}_j}} {{{H_{total}}}}\end{matrix}\right]}$
 <br>
 Flux derivative wrt primitive variables:
 <br>
-${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {\frac{\partial}{\partial \rho}}\left({{{{{\rho}} \cdot {{{ v}^j}}}} {{{ n}_j}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{{{\rho}} \cdot {{{ v}^j}}}} {{{ n}_j}}}\right) &  {\frac{\partial}{\partial P}}\left({{{{{\rho}} \cdot {{{ v}^j}}}} {{{ n}_j}}}\right) \\  {\frac{\partial}{\partial \rho}}\left({{{{{{{{\rho}} \cdot {{{ v}^i}}}} {{{ v}^j}}}} {{{ n}_j}}} + {{{{ n}^i}} {{P}}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{{{{{{\rho}} \cdot {{{ v}^i}}}} {{{ v}^j}}}} {{{ n}_j}}} + {{{{ n}^i}} {{P}}}}\right) &  {\frac{\partial}{\partial P}}\left({{{{{{{{\rho}} \cdot {{{ v}^i}}}} {{{ v}^j}}}} {{{ n}_j}}} + {{{{ n}^i}} {{P}}}}\right) \\  {\frac{\partial}{\partial \rho}}\left({{{{{{ v}^j}} {{{ n}_j}}}} {{{H_{total}}}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{{{{ v}^j}} {{{ n}_j}}}} {{{H_{total}}}}}\right) &  {\frac{\partial}{\partial P}}\left({{{{{{ v}^j}} {{{ n}_j}}}} {{{H_{total}}}}}\right)\end{matrix}\right]}$
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {\frac{\partial}{\partial \rho}}\left({{{\rho}} \cdot {{{ v}^j}} {{{ n}_j}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{\rho}} \cdot {{{ v}^j}} {{{ n}_j}}}\right) &  {\frac{\partial}{\partial P}}\left({{{\rho}} \cdot {{{ v}^j}} {{{ n}_j}}}\right) \\  {\frac{\partial}{\partial \rho}}\left({{{{\rho}} \cdot {{{ v}^i}} {{{ v}^j}} {{{ n}_j}}} + {{{{ n}^i}} {{P}}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{{\rho}} \cdot {{{ v}^i}} {{{ v}^j}} {{{ n}_j}}} + {{{{ n}^i}} {{P}}}}\right) &  {\frac{\partial}{\partial P}}\left({{{{\rho}} \cdot {{{ v}^i}} {{{ v}^j}} {{{ n}_j}}} + {{{{ n}^i}} {{P}}}}\right) \\  {\frac{\partial}{\partial \rho}}\left({{{{ v}^j}} {{{ n}_j}} {{{H_{total}}}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{{ v}^j}} {{{ n}_j}} {{{H_{total}}}}}\right) &  {\frac{\partial}{\partial P}}\left({{{{ v}^j}} {{{ n}_j}} {{{H_{total}}}}}\right)\end{matrix}\right]}$
 <br>
 ${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ v}^j}} {{{ n}_j}} &  {{\rho}} \cdot {{{{ \delta}^j}_j}} {{{ n}_j}} &  0 \\  {{{ v}^i}} {{{ v}^j}} {{{ n}_j}} &  {{\rho}} \cdot {{{ n}_j}} {{({{{{{ v}^i}} {{{{ \delta}^j}_j}}} + {{{{ v}^j}} {{{{ \delta}^i}_j}}}})}} &  { n}^i \\  0 &  {{{{ \delta}^j}_j}} {{{ n}_j}} {{{H_{total}}}} &  0\end{matrix}\right]}$
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = { {\left[\begin{matrix}  {{{ v}^k}} {{{ n}_k}} &  {{\rho}} \cdot {{{{ \delta}^k}_k}} {{{ n}_k}} &  0 \\  {{{ v}^i}} {{{ v}^k}} {{{ n}_k}} &  {{\rho}} \cdot {{{ n}_k}} {{({{{{{ v}^i}} {{{{ \delta}^k}_k}}} + {{{{ v}^k}} {{{{ \delta}^i}_k}}}})}} &  { n}^i \\  0 &  {{{{ \delta}^k}_k}} {{{ n}_k}} {{{H_{total}}}} &  0\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  {\frac{1}{\rho}}{({-{{ v}^k}})} &  {\frac{1}{\rho}}{({{{ \delta}^k}_j})} &  0 \\  {{\frac{1}{2}}} {{\tilde{\gamma}}} \cdot {{{ v}^k}} {{{ v}^l}} {{{{ g}_k}_l}} &   {-{\tilde{\gamma}}} {{{ v}_j}} &  \tilde{\gamma}\end{matrix}\right]}}$
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  {{{ n}_k}} {{{ v}^k}} {{({{1} - {{{ \delta}^k}_k}})}} &  {{{{ \delta}^k}_k}} {{{ n}_k}} {{{{ \delta}^k}_j}} &  0 \\  {\frac{1}{2}}{({{{{ v}^k}} {{({{{{{{2}} {{{ n}_k}} {{{ v}^i}}} - {{{2}} {{{ n}_k}} {{{ v}^i}} {{{{ \delta}^k}_k}}}} - {{{2}} {{{ n}_k}} {{{ v}^k}} {{{{ \delta}^i}_k}}}} + {{{\tilde{\gamma}}} \cdot {{{ n}^i}} {{{ v}^l}} {{{{ g}_k}_l}}}})}}})} &  {{{{ n}_k}} {{{ v}^i}} {{{{ \delta}^k}_j}} {{{{ \delta}^k}_k}}} + {{{{{ n}_k}} {{{ v}^k}} {{{{ \delta}^i}_k}} {{{{ \delta}^k}_j}}} - {{{\tilde{\gamma}}} \cdot {{{ n}^i}} {{{ v}_j}}}} &  {{{ n}^i}} {{\tilde{\gamma}}} \\  {\frac{1}{\rho}}{({-{{{{{ \delta}^k}_k}} {{{ n}_k}} {{{H_{total}}}} \cdot {{{ v}^k}}}})} &  {\frac{1}{\rho}}{({{{{{ \delta}^k}_k}} {{{ n}_k}} {{{H_{total}}}} \cdot {{{{ \delta}^k}_j}}})} &  0\end{matrix}\right]}$
 <br>

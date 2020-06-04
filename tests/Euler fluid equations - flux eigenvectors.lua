@@ -13,6 +13,11 @@ local function sum(t)
 end
 
 
+-- TODO 
+local function simplifyMetrics(expr)
+end
+
+
 local kg = var'kg'
 local m = var'm'
 local s = var's'
@@ -159,7 +164,20 @@ printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 
 dF_dW_def = dF_dW_def()
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
+
+local dF_dU_def = dF_dW_def:reindex{j='k'} * dW_dU_def:reindex{i='k'}
+printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
+dF_dU_def = dF_dU_def()
+printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 os.exit()
+
+
+
+
+
+
+
+
 
 
 F_def = F_def:map(function(x)
