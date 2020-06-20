@@ -173,7 +173,7 @@ ${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} 
 <b></b><br>
 <code>printbr((m*m)())</code>
 </td><td>
-$\left[\begin{matrix}  {{({{cos\left(  \theta\right)} + {sin\left(  \theta\right)}})}} {{({{cos\left(  \theta\right)} - {sin\left(  \theta\right)}})}} &  -{{{2}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}} \\  {{2}} {{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} &  -{({{1} - {{{2}} {{{cos\left(  \theta\right)}^{2}}}}})}\end{matrix}\right]$
+$\left[\begin{matrix}  {{({{cos\left(  \theta\right)} - {sin\left(  \theta\right)}})}} {{({{cos\left(  \theta\right)} + {sin\left(  \theta\right)}})}} &  -{{{2}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}} \\  {{2}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}} &  -{({{1} - {{{2}} {{{cos\left(  \theta\right)}^{2}}}}})}\end{matrix}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -209,7 +209,7 @@ ${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{m
 <b></b><br>
 <code>printbr((m2*m1):eq((m2*m1)()))</code>
 </td><td>
-${ {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}} = {\left[\begin{matrix}  1 &  a \\  b &  {1} + {{{b}} {{a}}}\end{matrix}\right]}$
+${ {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}} = {\left[\begin{matrix}  1 &  a \\  b &  {1} + {{{a}} {{b}}}\end{matrix}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -266,7 +266,7 @@ ${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{m
 <b></b><br>
 <code>printbr((m1*m2):eq(m2*m1)())</code>
 </td><td>
-${\left[\begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix}\right]} = {\left[\begin{matrix}  1 &  a \\  b &  {1} + {{{b}} {{a}}}\end{matrix}\right]}$
+${\left[\begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix}\right]} = {\left[\begin{matrix}  1 &  a \\  b &  {1} + {{{a}} {{b}}}\end{matrix}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>

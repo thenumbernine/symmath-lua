@@ -2,96 +2,97 @@
 <html>
     <head>
         <meta charset='utf-8'>
-        <title>tidy indexes</title>
+        <title>tidyIndexes</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
     </head>
 	<body onload='tryToFindMathJax();'>
 
-${{{{ a}^i}_i}^j}_j$
-<br>
-${{{{ a}^a}_a}^b}_b$
-<br>
-${{{{ a}^a}_a}^b}_b$	vs	${{{{ a}^a}_a}^b}_b$	equal?	true
-<br>
-<hr>
-<br>
-${{{ a}^i}_i} + {{{ a}^j}_j}$
-<br>
-${{{ a}^a}_a} + {{{ a}^a}_a}$
-<br>
-${{{ a}^a}_a} + {{{ a}^a}_a}$	vs	${{2}} {{{{ a}^a}_a}}$	equal?	true
-<br>
-<hr>
-<br>
-${{{{ a}^i}^j}} {{({{{{ b}_j}_k} + {{{ c}_j}_k}})}}$
-<br>
-${{{{ a}^i}^a}} {{({{{{ b}_a}_k} + {{{ c}_a}_k}})}}$
-<br>
-${{{{ a}^i}^a}} {{({{{{ b}_a}_k} + {{{ c}_a}_k}})}}$	vs	${{{{ a}^i}^a}} {{({{{{ b}_a}_k} + {{{ c}_a}_k}})}}$	equal?	true
-<br>
-<hr>
-<br>
-${{{{{{ a}_i}_j}_k}} {{{{ b}^j}^k}}} + {{{{{{ a}_i}_l}_m}} {{{{ b}^l}^m}}}$
-<br>
-${{{{{{ a}_i}_a}_b}} {{{{ b}^a}^b}}} + {{{{{{ a}_i}_a}_b}} {{{{ b}^a}^b}}}$
-<br>
-${{{{{{ a}_i}_a}_b}} {{{{ b}^a}^b}}} + {{{{{{ a}_i}_a}_b}} {{{{ b}^a}^b}}}$	vs	${{2}} {{{{{ a}_i}_a}_b}} {{{{ b}^a}^b}}$	equal?	true
-<br>
-<hr>
-<br>
-${{{{{{ a}_a}_j}_k}} {{{{ b}^j}^k}}} + {{{{{{ a}_a}_l}_m}} {{{{ b}^l}^m}}}$
-<br>
-${{{{{{ a}_a}_b}_c}} {{{{ b}^b}^c}}} + {{{{{{ a}_a}_b}_c}} {{{{ b}^b}^c}}}$
-<br>
-${{{{{{ a}_a}_b}_c}} {{{{ b}^b}^c}}} + {{{{{{ a}_a}_b}_c}} {{{{ b}^b}^c}}}$	vs	${{2}} {{{{{ a}_a}_b}_c}} {{{{ b}^b}^c}}$	equal?	true
-<br>
-<hr>
-<br>
-${{{{{ c}^p}^q}} {{({{{{{{ d}_i}_p}_q}_j} + {{{{{ d}_j}_p}_q}_i}})}}} - {{{{{ c}^m}^r}} {{({{{{{{ d}_i}_m}_r}_j} + {{{{{ d}_j}_m}_r}_i}})}}}$
-<br>
-${{{{{ c}^a}^b}} {{({{{{{{ d}_i}_a}_b}_j} + {{{{{ d}_j}_a}_b}_i}})}}} - {{{{{ c}^a}^b}} {{({{{{{{ d}_i}_a}_b}_j} + {{{{{ d}_j}_a}_b}_i}})}}}$
-<br>
-${{{{{ c}^a}^b}} {{({{{{{{ d}_i}_a}_b}_j} + {{{{{ d}_j}_a}_b}_i}})}}} - {{{{{ c}^a}^b}} {{({{{{{{ d}_i}_a}_b}_j} + {{{{{ d}_j}_a}_b}_i}})}}}$	vs	0	equal?	true
-<br>
-<hr>
-<br>
-${{({{{ a}^k} + {{ b}^k}})}} {{({{{ c}_k} + {{ d}_k}})}}$
-<br>
-${{({{{ a}^a} + {{ b}^a}})}} {{({{{ c}_a} + {{ d}_a}})}}$
-<br>
-${{({{{ a}^a} + {{ b}^a}})}} {{({{{ c}_a} + {{ d}_a}})}}$	vs	${{({{{ a}^a} + {{ b}^a}})}} {{({{{ c}_a} + {{ d}_a}})}}$	equal?	true
-<br>
-<hr>
-<br>
-${{{ a}^i}} {{({{{ b}_i} + {{{{{ c}_i}^j}} {{{ d}_j}}}})}}$
-<br>
-${{{ a}^a}} {{({{{ b}_a} + {{{{{ c}_a}^b}} {{{ d}_b}}}})}}$
-<br>
-${{{ a}^a}} {{({{{ b}_a} + {{{{{ c}_a}^b}} {{{ d}_b}}}})}}$	vs	${{{ a}^a}} {{({{{ b}_a} + {{{{{ c}_a}^b}} {{{ d}_b}}}})}}$	equal?	true
-<br>
-<hr>
-<br>
-${{({{{ a}^i} + {{{{{ b}^i}_j}} {{{ c}^j}}}})}} {{({{{ d}_i} + {{{{{ e}_i}^k}} {{{ f}_k}}}})}}$
-<br>
-${{({{{ a}^a} + {{{{{ b}^a}_b}} {{{ c}^b}}}})}} {{({{{ d}_a} + {{{{{ e}_a}^c}} {{{ f}_c}}}})}}$
-<br>
-${{({{{ a}^a} + {{{{{ b}^a}_b}} {{{ c}^b}}}})}} {{({{{ d}_a} + {{{{{ e}_a}^c}} {{{ f}_c}}}})}}$	vs	${{({{{ a}^a} + {{{{{ b}^a}_b}} {{{ c}^b}}}})}} {{({{{ d}_a} + {{{{{ e}_a}^c}} {{{ f}_c}}}})}}$	equal?	true
-<br>
-<hr>
-<br>
-${ {-{{ a}_i}} {{{ a}_j}}} + {{{({{{{{{ d}_j}_i}^k} + {{{{ d}_i}_j}^k}} - {{{{ d}^k}_i}_j}})}} {{({{{{ a}_k} + {{ c}_k}} - {{{{ d}^l}_l}_k}})}}}$
-<br>
-${ {-{{ a}_i}} {{{ a}_j}}} + {{{({{{{{{ d}_j}_i}^a} + {{{{ d}_i}_j}^a}} - {{{{ d}^a}_i}_j}})}} {{({{{{ a}_a} + {{ c}_a}} - {{{{ d}^b}_b}_a}})}}}$
-<br>
-${ {-{{ a}_i}} {{{ a}_j}}} + {{{({{{{{{ d}_j}_i}^a} + {{{{ d}_i}_j}^a}} - {{{{ d}^a}_i}_j}})}} {{({{{{ a}_a} + {{ c}_a}} - {{{{ d}^b}_b}_a}})}}}$	vs	${ {-{{ a}_i}} {{{ a}_j}}} + {{{({{{{{{ d}_j}_i}^a} + {{{{ d}_i}_j}^a}} - {{{{ d}^a}_i}_j}})}} {{({{{{ a}_a} + {{ c}_a}} - {{{{ d}^b}_b}_a}})}}}$	equal?	true
-<br>
-<hr>
-<br>
-${{{{{{ a}^j}_a}_j}} {{{ b}^a}}} - {{{{{{ a}^k}_j}_k}} {{{ b}^j}}}$
-<br>
-${{{{{{ a}^c}_b}_c}} {{{ b}^b}}} - {{{{{{ a}^c}_b}_c}} {{{ b}^b}}}$
-<br>
-${{{{{{ a}^c}_b}_c}} {{{ b}^b}}} - {{{{{{ a}^c}_b}_c}} {{{ b}^b}}}$	vs	0	equal?	true
-<br>
-<hr>
-<br>
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b></b><br>
+<code>asserteq(a'^i_i^j_j':tidyIndexes(), a'^a_a^b_b')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^i_i' + a'^j_j'):tidyIndexes(), 2 * a'^a_a')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^ij' * (b'_jk' + c'_jk')):tidyIndexes(), a'^ia' * (b'_ak' + c'_ak'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'_ijk' * b'^jk' + a'_ilm' * b'^lm'):tidyIndexes(), 2 * a'_iab' * b'^ab')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'_ajk' * b'^jk' + a'_alm' * b'^lm'):tidyIndexes(), 2 * a'_abc' * b'^bc')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((c'^pq' * (d'_ipqj' + d'_jpqi') - c'^mr' * (d'_imrj' + d'_jmri')):tidyIndexes(), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(((a'^k' + b'^k') * (c'_k' + d'_k')):tidyIndexes(), (a'^a' + b'^a') * (c'_a' + d'_a'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^i' * (b'_i' + c'_i^j' * d'_j')):tidyIndexes(), a'^a' * (b'_a' + c'_a^b' * d'_b'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(((a'^i' + b'^i_j' * c'^j') * (d'_i' + e'_i^k' * f'_k')):tidyIndexes(), (a'^a' + b'^a_b' * c'^b') * (d'_a' + e'_a^c' * f'_c'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((-a'_i' * a'_j' + (d'_ji^k' + d'_ij^k' - d'^k_ij') * (a'_k' + c'_k' - d'^l_lk')):tidyIndexes(), -a'_i' * a'_j' + (d'_ji^a' + d'_ij^a' - d'^a_ij') * (a'_a' + c'_a' - d'^b_ba') )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^j_aj' * b'^a' - a'^k_jk' * b'^j'):tidyIndexes(), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>should tidyIndexes automatically simplify()?  or at least add.Factor?  otherwise mul terms don't get sorted.</b><br>
+<code>asserteq((2 * phi_K^4 * A' _\\alpha' * F' _\\gamma ^\\beta' * F' _\\beta ^\\gamma' * A' ^\\alpha' + phi_K^2 * F' _\\beta ^\\alpha' * F' _\\alpha ^\\beta' + 4 * R - 2 * phi_K^4 * F' _\\beta ^\\alpha' * A' _\\gamma' * F' _\\alpha ^\\beta' * A' ^\\gamma')():tidyIndexes()(), 4 * R + F'_a^b' * F'_b^a' * phi_K^2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>

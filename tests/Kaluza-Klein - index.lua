@@ -1054,6 +1054,10 @@ Ricci5_def = betterSimplify(Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'})
 Ricci5_def = Ricci5_def
 	:replace(F' _\\gamma _\\beta' * F' _\\alpha ^\\gamma', -F' _\\beta _\\gamma' * F'_\\alpha ^\\gamma')
 	:replace(F' _\\gamma _\\alpha' * F' _\\beta ^\\gamma', -F' _\\alpha ^\\gamma' * F'_\\beta _\\gamma')
+-- reindex only one of the sums.  why doesn't tidyIndexes() handle this?  maybe it does?
+Ricci5_def = Ricci5_def:replace(
+	A' _\\delta' * A' _\\gamma' * F' _\\alpha ^\\delta' * F' _\\beta ^\\gamma',
+	A' _\\delta' * A' _\\gamma' * F' _\\alpha ^\\gamma' * F' _\\beta ^\\delta')
 Ricci5_def = betterSimplify(Ricci5_def)
 if not constantScalarField then
 	Ricci5_def = Ricci5_def
@@ -1079,19 +1083,25 @@ printbr'Gaussian curvature:'
 
 local Gaussian5_def = (Ricci5_def'_ab' * g5U_def'^ab')()
 Gaussian5_def = Gaussian5_def:replace(R' _\\alpha _\\beta' * g' ^\\alpha ^\\beta', R)()
-Gaussian5_def = betterSimplify(Gaussian5_def:tidyIndexes())
+Gaussian5_def = betterSimplify(Gaussian5_def:tidyIndexes()())
+printbr(R5:eq(Gaussian5_def))
 
 Gaussian5_def = Gaussian5_def:replace( (A' _\\zeta' * g' ^\\zeta ^\\epsilon')(), A' ^\\epsilon' )()
 Gaussian5_def = Gaussian5_def:replace( (A' _\\epsilon' * g' ^\\zeta ^\\epsilon')(), A' ^\\zeta' )()
 Gaussian5_def = Gaussian5_def:replace( (A' _\\epsilon' * g' ^\\epsilon ^\\zeta')(), A' ^\\zeta' )()
-Gaussian5_def = Gaussian5_def:replace( (F' _\\zeta _\\eta' * g' ^\\eta ^\\epsilon')(), F' _\\zeta ^\\epsilon' )()
-Gaussian5_def = Gaussian5_def:replace( (F' _\\zeta _\\epsilon' * g' ^\\eta ^\\epsilon')(), F' _\\zeta ^\\eta' )()
-Gaussian5_def = Gaussian5_def:tidyIndexes()()
-Gaussian5_def = Gaussian5_def:reindex{[' \\alpha \\beta'] = ' \\mu \\nu'}	-- don't use alpha beta gamma delta, or anything already used in Ricci5_def ... in fact, add in an extra property for fixed indexes
-Gaussian5_def = Gaussian5_def:replace( F' _\\gamma _\\nu' * g' ^\\mu ^\\gamma', -F' _\\nu ^\\mu' )()
-Gaussian5_def = betterSimplify(Gaussian5_def)
-
 printbr(R5:eq(Gaussian5_def))
+
+Gaussian5_def = Gaussian5_def:replace( F' _\\eta _\\epsilon' * g' ^\\zeta ^\\eta', -F' _\\epsilon ^\\zeta' )()
+Gaussian5_def = Gaussian5_def:replace( A' _\\zeta' * F' _\\theta ^\\zeta' * g' ^\\eta ^\\theta', -A' ^\\zeta' * F' _\\zeta ^\\eta' )()
+Gaussian5_def = Gaussian5_def:replace( A' _\\zeta' * F' _\\eta ^\\zeta' * g' ^\\eta ^\\theta', -A' ^\\zeta' * F' _\\zeta ^\\theta' )()
+Gaussian5_def = Gaussian5_def:tidyIndexes()()
+printbr(R5:eq(Gaussian5_def))
+
+--Gaussian5_def = Gaussian5_def:reindex{[' \\alpha \\beta'] = ' \\mu \\nu'}      -- don't use alpha beta gamma delta, or anything already used in Ricci5_def ... in fact, add in an extra property for fixed indexes
+Gaussian5_def = Gaussian5_def:reindex{[' \\alpha \\beta \\gamma \\delta'] = ' \\mu \\nu \\rho \\sigma'}	-- don't use alpha beta gamma delta, or anything already used in Ricci5_def ... in fact, add in an extra property for fixed indexes
+Gaussian5_def = betterSimplify(Gaussian5_def)
+printbr(R5:eq(Gaussian5_def))
+
 printbr()
 
 

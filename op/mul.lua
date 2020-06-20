@@ -594,8 +594,6 @@ mul.rules = {
 			end
 			--]]
 
-
-
 			-- push all Constants to the lhs, sum as we go
 			local cval = 1
 			for i=#expr,1,-1 do
@@ -620,6 +618,73 @@ mul.rules = {
 					return prune:apply(expr[1]) 
 				end
 			end
+
+-- [[
+			local Variable = require 'symmath.Variable'
+			local TensorRef = require 'symmath.tensor.TensorRef'
+			local function compare(a, b) 
+				-- Constant
+				local ca, cb = Constant.is(a), Constant.is(b)
+				if ca and not cb then return true end
+				if cb and not ca then return false end
+				if ca and cb then return a.value < b.value end
+				-- div-of-Constants
+				local fa = div.is(a) and Constant.is(a[1]) and Constant.is(a[2])
+				local fb = div.is(b) and Constant.is(b[1]) and Constant.is(b[2])
+				if fa and not fb then return true end
+				if fb and not fa then return false end
+				if fa and fb then
+					if a[2].value < b[2].value then return true end
+					if a[2].value > b[2].value then return false end
+					if a[1].value < b[1].value then return true end
+					if a[1].value > b[1].value then return false end
+					return	-- a == b
+				end
+				-- Variable
+				local va, vb = Variable.is(a), Variable.is(b)
+				if va and not vb then return true end
+				if vb and not va then return false end
+				if va and vb then return a.name < b.name end
+				-- TensorRef-of-Variable
+				local ta = TensorRef.is(a) and Variable.is(a[1])
+				local tb = TensorRef.is(a) and Variable.is(a[1])
+				if ta and not tb then return true end
+				if tb and not ta then return false end
+				if ta and tb then 
+					local na, nb = #a, #b
+					if na < nb then return true end
+					if na > nb then return false end
+					if a[1].name < b[1].name then return true end
+					if a[1].name > b[1].name then return false end
+					for j=2,na do
+						local na = type(a[j].symbol) == 'number'
+						local nb = type(b[j].symbol) == 'number'
+						if na and not nb then return true end
+						if nb and not na then return false end
+						return a[j].symbol < b[j].symbol
+					end
+					return -- a == b
+				end
+				-- pow
+				local pa = pow.is(a)
+				local pb = pow.is(b)
+				if pa and not pb then return true end
+				if pb and not pa then return false end
+				if pa and pb then
+					local result = compare(a[1], b[1])
+					if result ~= nil then return result end
+					return compare(a[2], b[2])
+				end
+			end
+			for i=1,#expr-1 do
+				for j=i,#expr-1 do
+					local k = j + 1
+					if not compare(expr[j], expr[k]) then
+						expr[j], expr[k] = expr[k], expr[j]
+					end
+				end
+			end
+--]]
 
 			-- [[ a^m * a^n => a^(m + n)
 			do
