@@ -1,10 +1,13 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'unit'(env, 'test')
+require 'symmath.tests.unit.unit'(env, 'test')
 
+env.a = symmath.Variable('a')
+env.b = symmath.Variable('b')
 env.x = symmath.Variable('x')
 env.y = symmath.Variable('y')
+env.s = symmath.Variable('s')
 env.t = symmath.Variable('t')
 
 env.gUxx = var('\\gamma^{xx}')
@@ -73,6 +76,19 @@ asserteq((-x+y)/(-x+y)^2, 1/(-x+y))
 asserteq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)
 asserteq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)
 asserteq( gUxy * (gUxy - gUxx) / (gUxx - gUxy), -gUxy)
+
+print(sqrt(-1)())
+asserteq(sqrt(-1), i)
+
+-- make sure, when distributing sqrt()'s, that the negative signs on the inside are simplified in advance
+asserteq( ((((-x*a - x*b)))^frac(1,2)), i * (sqrt(x) * sqrt(a+b)) )
+asserteq( (-(((-x*a - x*b)))^frac(1,2)), -i * (sqrt(x) * sqrt(a+b)) )
+
+asserteq( ((((-x*a - x*b)*-1))^frac(1,2)), (sqrt(x) * sqrt(a+b)) )
+asserteq( (-(((-x*a - x*b)*-1))^frac(1,2)), -(sqrt(x) * sqrt(a+b)) )
+-- If sqrt, -1, and mul factor run out of order then -sqrt(-x) and sqrt(-x) will end up equal.  And that is bad for things like solve() on quadratics.
+asserteq( ((((-x*a - x*b)/-1)/y)^frac(1,2)), (sqrt(x) * sqrt(a+b)) / sqrt(y) )
+asserteq( (-(((-x*a - x*b)/-1)/y)^frac(1,2)), -(sqrt(x) * sqrt(a+b)) / sqrt(y) )
 
 ]=]), '\n')) do
 	env.exec(line)

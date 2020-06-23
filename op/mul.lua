@@ -647,7 +647,7 @@ mul.rules = {
 				if va and vb then return a.name < b.name end
 				-- TensorRef-of-Variable
 				local ta = TensorRef.is(a) and Variable.is(a[1])
-				local tb = TensorRef.is(a) and Variable.is(a[1])
+				local tb = TensorRef.is(b) and Variable.is(b[1])
 				if ta and not tb then return true end
 				if tb and not ta then return false end
 				if ta and tb then 

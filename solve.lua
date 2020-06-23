@@ -53,7 +53,7 @@ local function solve(eqn, x, hasSimplified)
 	recurse(eqn)
 	
 	if count == 0 then
-		error("couldn't find "..x.." in eqn "..eqn)
+		return nil, "couldn't find "..x.." in eqn "..eqn
 	end
 	-- in this case, find the variable, reverse each operation above it 
 --print('solving for ',x)	
@@ -103,6 +103,7 @@ local function solve(eqn, x, hasSimplified)
 -- [[ handle denominator
 	if div.is(lhs) then
 		local notZero = table{lhs[2]:eq(0):solve(x)}
+		if notZero[1] == nil then notZero = table() end	-- couldn't find the solve var
 		for i=1,#notZero do
 			assert(op.eq.is(notZero[i]))
 			setmetatable(notZero[i], op.ne)

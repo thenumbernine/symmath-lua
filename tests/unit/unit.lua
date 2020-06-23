@@ -20,9 +20,9 @@ return function(env, title)
 			print('expected '..tostring(a)..' to equal '..tostring(b)..'<br>')
 			print('instead found '..tostring(sa)..' vs '..tostring(sb)..'<br>')
 			print('lhs stack<br>')
-			for _,x in ipairs(ta) do print(x..'<br>') end
+			for _,x in ipairs(ta) do print(x[1], x[2], '<br>') end
 			print('rhs stack<br>')
-			for _,x in ipairs(tb) do print(x..'<br>') end
+			for _,x in ipairs(tb) do print(x[1], x[2], '<br>') end
 			error'failed'
 		end
 	end
@@ -36,9 +36,9 @@ return function(env, title)
 			print('expected '..tostring(a)..' to equal '..tostring(b)..'<br>')
 			print('instead found '..tostring(sa)..' vs '..tostring(sb)..'<br>')
 			print('lhs stack<br>')
-			for _,x in ipairs(ta) do print(x..'<br>') end
+			for _,x in ipairs(ta) do print(x[1], x[2], '<br>') end
 			print('rhs stack<br>')
-			for _,x in ipairs(tb) do print(x..'<br>') end
+			for _,x in ipairs(tb) do print(x[1], x[2], '<br>') end
 			error'failed'
 		end
 	end

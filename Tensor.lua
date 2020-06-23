@@ -111,17 +111,10 @@ function Tensor.parseIndexes(indexes)
 				print("got an index that was not a number or string: "..type(indexes[i]))
 			else
 				local function removeIfFound(sym)
-					local found = false
-					while true do
-						local symIndex = indexes[i]:find(sym,1,true)
-						if symIndex then
-							indexes[i] = indexes[i]:sub(1,symIndex-1) .. indexes[i]:sub(symIndex+#sym)
-							found = true
-						else
-							break
-						end
-					end
-					return found
+					local symIndex = indexes[i]:find(sym,1,true)
+					if not symIndex then return false end
+					indexes[i] = indexes[i]:sub(1,symIndex-1) .. indexes[i]:sub(symIndex+#sym)
+					return true
 				end
 				-- if the expression is upper/lower..comma then switch order so comma is first
 				if removeIfFound(',') then derivative = 'partial' end
@@ -135,8 +128,14 @@ function Tensor.parseIndexes(indexes)
 				if #indexes[i] == 0 then
 					print('got an index without a symbol')
 				end
-				
-				if tonumber(indexes[i]) ~= nil then
+
+				if removeIfFound'$' then
+					indexes[i] = Wildcard{
+						index = assert(tonumber(indexes[i])),
+						tensorIndexLower = lower,
+						tensorIndexDerivative = derivative,
+					}
+				elseif tonumber(indexes[i]) ~= nil then
 					indexes[i] = TensorIndex{
 						symbol = tonumber(indexes[i]),
 						lower = lower,
@@ -1149,8 +1148,11 @@ end
 
 -- this is used with Derivative when it simplifies two equal TensorRefs
 function Tensor:deltaSymbol()
-	local Variable = require 'symmath.Variable'
-	return Variable'\\delta'
+	if not Tensor.deltaVariable then
+		local Variable = require 'symmath.Variable'
+		Tensor.deltaVariable = Variable'\\delta'
+	end
+	return Tensor.deltaVariable
 end
 
 return Tensor

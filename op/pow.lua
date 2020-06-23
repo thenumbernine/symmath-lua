@@ -195,6 +195,38 @@ pow.rules = {
 			local Constant = symmath.Constant
 			local sets = symmath.set
 
+
+
+-- [[ here is me trying to solve a sqrt problem
+			-- x^(1/2) 
+			-- TODO x^(p/q) 
+			if (
+				div.is(expr[2])
+				and Constant.isValue(expr[2][1], 1)
+				and Constant.isValue(expr[2][2], 2)
+			) or Constant.isValue(expr[2], .5) then
+				local x = expr[1]
+				local add = require 'symmath.op.add'
+				if mul.is(x)
+				and #x == 2
+				and Constant.isValue(x[1], -1)
+				and add.is(x[2])
+				then
+					local dstr = x:distribute()
+					if dstr then return prune:apply(dstr^div(1,2)) end
+				end
+			end
+--]]
+
+
+
+			-- Hmm, i want the inside to distribute before the outside
+			--  so (-1*-a)^(1/2) => sqrt(a)
+			-- and not sqrt(-1)*sqrt(-a) = i*i*sqrt(a) = -sqrt(a)
+			--expr = expr:clone()
+			--expr[1] = expr[1]()
+			-- But doing this doens't work.  It leaves some extra (-1)^2 terms on the inside.
+
 			local complex = require 'symmath.complex'
 
 			if Constant.is(expr[1]) and Constant.is(expr[2]) then
@@ -244,6 +276,7 @@ pow.rules = {
 					end
 				end
 			end
+
 
 			-- x^(1/2) 
 			-- TODO x^(p/q) 

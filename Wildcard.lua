@@ -15,6 +15,8 @@ args:
 	cannotDependOn = variable that the Wildcard expression cannot depend on
 	atLeast = for + and *, which match an arbitrary subset, this is at least the number of elements to match
 	atMost = for + and * this is the most number of elements to match.
+	tensorIndexLower = when matching tensor indexes, whether to match to lower/upper.  nil means don't care.
+	tensorIndexDerivative = when matching tensor indexes, whether ot match a derivative.
 set 'args' to a number to only set that index
 --]]
 function Wildcard:init(args)
@@ -30,6 +32,9 @@ function Wildcard:init(args)
 		if self.atMost then
 			assert(self.atMost > 0, "if atMost <= 0 then what are you trying to match?")
 		end
+		-- TODO implementme
+		self.tensorIndexLower = args.tensorIndexLower
+		self.tensorIndexDerivative = args.tensorIndexDerivative
 	elseif type(args) == 'nil' then
 		self.index = 1
 	end
