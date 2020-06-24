@@ -21,47 +21,42 @@ flux jacobian:
 <br>
 ${A} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\mu} \\  0 &  0 &  0 &  0 &  \frac{-1}{\mu} &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{-1}{\epsilon} &  0 &  0 &  0 \\  0 &  \frac{1}{\epsilon} &  0 &  0 &  0 &  0\end{matrix}\right]}$
 <br>
-char poly:
-<br>
-${\frac{{{{\lambda}^{2}}} {{({{{1} - {{{2}} {{\mu}} \cdot {{\epsilon}} \cdot {{{\lambda}^{2}}}}} + {{{{\mu}^{2}}} {{{\lambda}^{4}}} {{{\epsilon}^{2}}}}})}}}{{{{\mu}^{2}}} {{{\epsilon}^{2}}}}} = {0}$
-<br>
-eigenvectors of 	${\lambda} = {\frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}}$
-<br>
-$\left[\begin{matrix}  0 &  0 \\  0 &  \frac{-{\sqrt \epsilon}}{{{\sqrt \mu}} {{\sqrt 2}}} \\  \frac{\sqrt \epsilon}{{{\sqrt \mu}} {{\sqrt 2}}} &  0 \\  0 &  0 \\  \frac{1}{\sqrt 2} &  0 \\  0 &  \frac{1}{\sqrt 2}\end{matrix}\right]$
-<br>
-eigenvectors of 	${\lambda} = {0}$
-<br>
-$\left[\begin{matrix}  \frac{1}{\sqrt 2} &  0 \\  0 &  0 \\  0 &  0 \\  0 &  \frac{1}{\sqrt 2} \\  0 &  0 \\  0 &  0\end{matrix}\right]$
-<br>
-eigenvectors of 	${\lambda} = {\frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}}$
-<br>
-$\left[\begin{matrix}  0 &  0 \\  0 &  \frac{\sqrt \epsilon}{{{\sqrt \mu}} {{\sqrt 2}}} \\  \frac{-{\sqrt \epsilon}}{{{\sqrt \mu}} {{\sqrt 2}}} &  0 \\  0 &  0 \\  \frac{1}{\sqrt 2} &  0 \\  0 &  \frac{1}{\sqrt 2}\end{matrix}\right]$
-<br>
 $\Lambda$:
 <br>
-$\left[\begin{matrix}  \frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 &  0 &  0 &  0 \\  0 &  \frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}\end{matrix}\right]$
+$\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 \\  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}}\end{matrix}\right]$
 <br>
 R:
 <br>
-$\left[\begin{matrix}  0 &  0 &  \frac{1}{\sqrt 2} &  0 &  0 &  0 \\  0 &  \frac{-{\sqrt \epsilon}}{\sqrt 2} &  0 &  0 &  0 &  \frac{\sqrt \epsilon}{\sqrt 2} \\  \frac{\sqrt \epsilon}{\sqrt 2} &  0 &  0 &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt 2} &  0 \\  0 &  0 &  0 &  \frac{1}{\sqrt 2} &  0 &  0 \\  \frac{\sqrt \mu}{\sqrt 2} &  0 &  0 &  0 &  \frac{\sqrt \mu}{\sqrt 2} &  0 \\  0 &  \frac{\sqrt \mu}{\sqrt 2} &  0 &  0 &  0 &  \frac{\sqrt \mu}{\sqrt 2}\end{matrix}\right]$
+$\left[\begin{matrix}  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} \\  0 &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 \\  0 &  1 &  0 &  0 &  0 &  0 \\  0 &  0 &  1 &  0 &  1 &  0 \\  0 &  0 &  0 &  1 &  0 &  1\end{matrix}\right]$
 <br>
 L:
 <br>
-$\left[\begin{matrix}  0 &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \epsilon}}} &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} &  0 \\  0 &  \frac{1}{-{{{\sqrt 2}} {{\sqrt \epsilon}}}} &  0 &  0 &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} \\  \sqrt 2 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \sqrt 2 &  0 &  0 \\  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt 2}}}} &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} &  0 \\  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt 2}}} &  0 &  0 &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}}\end{matrix}\right]$
+$\left[\begin{matrix}  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  1 &  0 &  0 \\  0 &  0 &  \frac{\sqrt \mu}{-{{{2}} {{\sqrt \epsilon}}}} &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  \frac{1}{2} \\  0 &  0 &  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{-{\sqrt \mu}}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  \frac{1}{2}\end{matrix}\right]$
 <br>
-R(v) = 	$\left[\begin{matrix}  \frac{{v_2}}{\sqrt 2} \\  \frac{-{{{\sqrt \epsilon}} {{({{{v_1}} - {{v_5}}})}}}}{\sqrt 2} \\  \frac{{{\sqrt \epsilon}} {{({{{v_0}} - {{v_4}}})}}}{\sqrt 2} \\  \frac{{v_3}}{\sqrt 2} \\  \frac{{{\sqrt \mu}} {{({{{v_0}} + {{v_4}}})}}}{\sqrt 2} \\  \frac{{{\sqrt \mu}} {{({{{v_1}} + {{v_5}}})}}}{\sqrt 2}\end{matrix}\right]$
+R(v) = 	$\left[\begin{matrix}  {v_0} \\  \frac{{{\sqrt \epsilon}} {{({{{v_3}} - {{v_5}}})}}}{\sqrt \mu} \\  \frac{-{{{\sqrt \epsilon}} {{({{{v_2}} - {{v_4}}})}}}}{\sqrt \mu} \\  {v_1} \\  {{v_2}} + {{v_4}} \\  {{v_3}} + {{v_5}}\end{matrix}\right]$
 <br>
-L(v) = 	$\left[\begin{matrix}  \frac{{{{{v_2}}} \cdot {{\sqrt \mu}}} + {{{{v_4}}} \cdot {{\sqrt \epsilon}}}}{{{\sqrt \mu}} {{\sqrt 2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_1}}} \cdot {{\sqrt \mu}}} - {{{{v_5}}} \cdot {{\sqrt \epsilon}}}}{-{{{\sqrt \mu}} {{\sqrt 2}} {{\sqrt \epsilon}}}} \\  {{\sqrt 2}} {{{v_0}}} \\  {{\sqrt 2}} {{{v_3}}} \\  \frac{-{({{{{{v_2}}} \cdot {{\sqrt \mu}}} - {{{{v_4}}} \cdot {{\sqrt \epsilon}}}})}}{{{\sqrt \mu}} {{\sqrt \epsilon}} {{\sqrt 2}}} \\  \frac{{{{{v_1}}} \cdot {{\sqrt \mu}}} + {{{{v_5}}} \cdot {{\sqrt \epsilon}}}}{{{\sqrt \mu}} {{\sqrt \epsilon}} {{\sqrt 2}}}\end{matrix}\right]$
+L(v) = 	$\left[\begin{matrix}  {v_0} \\  {v_3} \\  \frac{{-{{{{v_4}}} \cdot {{\sqrt \epsilon}}}} + {{{{v_2}}} \cdot {{\sqrt \mu}}}}{-{{{2}} {{\sqrt \epsilon}}}} \\  \frac{{{{{v_5}}} \cdot {{\sqrt \epsilon}}} + {{{{v_1}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_4}}} \cdot {{\sqrt \epsilon}}} + {{{{v_2}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{-{({{{{{v_1}}} \cdot {{\sqrt \mu}}} - {{{{v_5}}} \cdot {{\sqrt \epsilon}}}})}}{{{2}} {{\sqrt \epsilon}}}\end{matrix}\right]$
 <br>
 right transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu) return {{(v_2 / math.sqrt(2))}, {((-(math.sqrt(\epsilon) * (v_1 - v_5))) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_0 - v_4)) / math.sqrt(2))}, {(v_3 / math.sqrt(2))}, {((math.sqrt(\mu) * (v_0 + v_4)) / math.sqrt(2))}, {((math.sqrt(\mu) * (v_1 + v_5)) / math.sqrt(2))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
+	local tmp2 = math.sqrt(\epsilon)
+	local tmp1 = math.sqrt(\mu)
+	return {{v_0}, {((tmp2 * (v_3 - v_5)) / tmp1)}, {((-(tmp2 * (v_2 - v_4))) / tmp1)}, {v_1}, {(v_2 + v_4)}, {(v_3 + v_5)}}
+end</pre>
 <br>
 left transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu) return {{(((v_2 * math.sqrt(\mu)) + (v_4 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon)))}, {(((v_1 * math.sqrt(\mu)) - (v_5 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {(math.sqrt(2) * v_0)}, {(math.sqrt(2) * v_3)}, {((-((v_2 * math.sqrt(\mu)) - (v_4 * math.sqrt(\epsilon)))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {(((v_1 * math.sqrt(\mu)) + (v_5 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
+	local tmp7 = math.sqrt(\mu)
+	local tmp6 = math.sqrt(\epsilon)
+	local tmp5 = (2 * tmp6)
+	local tmp4 = (v_1 * tmp7)
+	local tmp3 = (v_2 * tmp7)
+	local tmp2 = (v_4 * tmp6)
+	local tmp1 = (v_5 * tmp6)
+	return {{v_0}, {v_3}, {(((-tmp2) + tmp3) / (-tmp5))}, {((tmp1 + tmp4) / tmp5)}, {((tmp2 + tmp3) / tmp5)}, {((-(tmp4 - tmp1)) / tmp5)}}
+end</pre>
 <br>
 side	2
 <br>
@@ -73,47 +68,42 @@ flux jacobian:
 <br>
 ${A} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  \frac{-1}{\mu} \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{1}{\mu} &  0 &  0 \\  0 &  0 &  \frac{1}{\epsilon} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  \frac{-1}{\epsilon} &  0 &  0 &  0 &  0 &  0\end{matrix}\right]}$
 <br>
-char poly:
-<br>
-${\frac{{{{\lambda}^{2}}} {{({{{1} - {{{2}} {{\mu}} \cdot {{\epsilon}} \cdot {{{\lambda}^{2}}}}} + {{{{\mu}^{2}}} {{{\lambda}^{4}}} {{{\epsilon}^{2}}}}})}}}{{{{\mu}^{2}}} {{{\epsilon}^{2}}}}} = {0}$
-<br>
-eigenvectors of 	${\lambda} = {\frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}}$
-<br>
-$\left[\begin{matrix}  0 &  \frac{\sqrt \epsilon}{{{\sqrt \mu}} {{\sqrt 2}}} \\  0 &  0 \\  \frac{-{\sqrt \epsilon}}{{{\sqrt \mu}} {{\sqrt 2}}} &  0 \\  \frac{1}{\sqrt 2} &  0 \\  0 &  0 \\  0 &  \frac{1}{\sqrt 2}\end{matrix}\right]$
-<br>
-eigenvectors of 	${\lambda} = {0}$
-<br>
-$\left[\begin{matrix}  0 &  0 \\  \frac{1}{\sqrt 2} &  0 \\  0 &  0 \\  0 &  0 \\  0 &  \frac{1}{\sqrt 2} \\  0 &  0\end{matrix}\right]$
-<br>
-eigenvectors of 	${\lambda} = {\frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}}$
-<br>
-$\left[\begin{matrix}  0 &  \frac{-{\sqrt \epsilon}}{{{\sqrt \mu}} {{\sqrt 2}}} \\  0 &  0 \\  \frac{\sqrt \epsilon}{{{\sqrt \mu}} {{\sqrt 2}}} &  0 \\  \frac{1}{\sqrt 2} &  0 \\  0 &  0 \\  0 &  \frac{1}{\sqrt 2}\end{matrix}\right]$
-<br>
 $\Lambda$:
 <br>
-$\left[\begin{matrix}  \frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 &  0 &  0 &  0 \\  0 &  \frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}\end{matrix}\right]$
+$\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 \\  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}}\end{matrix}\right]$
 <br>
 R:
 <br>
-$\left[\begin{matrix}  0 &  \frac{\sqrt \epsilon}{\sqrt 2} &  0 &  0 &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt 2} \\  0 &  0 &  \frac{1}{\sqrt 2} &  0 &  0 &  0 \\  \frac{-{\sqrt \epsilon}}{\sqrt 2} &  0 &  0 &  0 &  \frac{\sqrt \epsilon}{\sqrt 2} &  0 \\  \frac{\sqrt \mu}{\sqrt 2} &  0 &  0 &  0 &  \frac{\sqrt \mu}{\sqrt 2} &  0 \\  0 &  0 &  0 &  \frac{1}{\sqrt 2} &  0 &  0 \\  0 &  \frac{\sqrt \mu}{\sqrt 2} &  0 &  0 &  0 &  \frac{\sqrt \mu}{\sqrt 2}\end{matrix}\right]$
+$\left[\begin{matrix}  0 &  0 &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} \\  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} &  0 \\  0 &  0 &  1 &  0 &  1 &  0 \\  0 &  1 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  1 &  0 &  1\end{matrix}\right]$
 <br>
 L:
 <br>
-$\left[\begin{matrix}  0 &  0 &  \frac{1}{-{{{\sqrt 2}} {{\sqrt \epsilon}}}} &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} &  0 &  0 \\  \frac{1}{{{\sqrt 2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} \\  0 &  \sqrt 2 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  \sqrt 2 &  0 \\  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt 2}}} &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} &  0 &  0 \\  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt 2}}}} &  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}}\end{matrix}\right]$
+$\left[\begin{matrix}  0 &  1 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  1 &  0 \\  0 &  0 &  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  \frac{1}{2} &  0 &  0 \\  \frac{\sqrt \mu}{-{{{2}} {{\sqrt \epsilon}}}} &  0 &  0 &  0 &  0 &  \frac{1}{2} \\  0 &  0 &  \frac{-{\sqrt \mu}}{{{2}} {{\sqrt \epsilon}}} &  \frac{1}{2} &  0 &  0 \\  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  0 &  \frac{1}{2}\end{matrix}\right]$
 <br>
-R(v) = 	$\left[\begin{matrix}  \frac{{{\sqrt \epsilon}} {{({{{v_1}} - {{v_5}}})}}}{\sqrt 2} \\  \frac{{v_2}}{\sqrt 2} \\  \frac{-{{{\sqrt \epsilon}} {{({{{v_0}} - {{v_4}}})}}}}{\sqrt 2} \\  \frac{{{\sqrt \mu}} {{({{{v_0}} + {{v_4}}})}}}{\sqrt 2} \\  \frac{{v_3}}{\sqrt 2} \\  \frac{{{\sqrt \mu}} {{({{{v_1}} + {{v_5}}})}}}{\sqrt 2}\end{matrix}\right]$
+R(v) = 	$\left[\begin{matrix}  \frac{-{{{\sqrt \epsilon}} {{({{{v_3}} - {{v_5}}})}}}}{\sqrt \mu} \\  {v_0} \\  \frac{{{\sqrt \epsilon}} {{({{{v_2}} - {{v_4}}})}}}{\sqrt \mu} \\  {{v_2}} + {{v_4}} \\  {v_1} \\  {{v_3}} + {{v_5}}\end{matrix}\right]$
 <br>
-L(v) = 	$\left[\begin{matrix}  \frac{{{{{v_2}}} \cdot {{\sqrt \mu}}} - {{{{v_3}}} \cdot {{\sqrt \epsilon}}}}{-{{{\sqrt \mu}} {{\sqrt 2}} {{\sqrt \epsilon}}}} \\  \frac{{{{{v_0}}} \cdot {{\sqrt \mu}}} + {{{{v_5}}} \cdot {{\sqrt \epsilon}}}}{{{\sqrt \mu}} {{\sqrt 2}} {{\sqrt \epsilon}}} \\  {{\sqrt 2}} {{{v_1}}} \\  {{\sqrt 2}} {{{v_4}}} \\  \frac{{{{{v_2}}} \cdot {{\sqrt \mu}}} + {{{{v_3}}} \cdot {{\sqrt \epsilon}}}}{{{\sqrt \mu}} {{\sqrt \epsilon}} {{\sqrt 2}}} \\  \frac{-{({{{{{v_0}}} \cdot {{\sqrt \mu}}} - {{{{v_5}}} \cdot {{\sqrt \epsilon}}}})}}{{{\sqrt \mu}} {{\sqrt \epsilon}} {{\sqrt 2}}}\end{matrix}\right]$
+L(v) = 	$\left[\begin{matrix}  {v_1} \\  {v_4} \\  \frac{{{{{v_3}}} \cdot {{\sqrt \epsilon}}} + {{{{v_2}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{-{{{{v_5}}} \cdot {{\sqrt \epsilon}}}} + {{{{v_0}}} \cdot {{\sqrt \mu}}}}{-{{{2}} {{\sqrt \epsilon}}}} \\  \frac{-{({{{{{v_2}}} \cdot {{\sqrt \mu}}} - {{{{v_3}}} \cdot {{\sqrt \epsilon}}}})}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_5}}} \cdot {{\sqrt \epsilon}}} + {{{{v_0}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}}\end{matrix}\right]$
 <br>
 right transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu) return {{((math.sqrt(\epsilon) * (v_1 - v_5)) / math.sqrt(2))}, {(v_2 / math.sqrt(2))}, {((-(math.sqrt(\epsilon) * (v_0 - v_4))) / math.sqrt(2))}, {((math.sqrt(\mu) * (v_0 + v_4)) / math.sqrt(2))}, {(v_3 / math.sqrt(2))}, {((math.sqrt(\mu) * (v_1 + v_5)) / math.sqrt(2))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
+	local tmp2 = math.sqrt(\epsilon)
+	local tmp1 = math.sqrt(\mu)
+	return {{((-(tmp2 * (v_3 - v_5))) / tmp1)}, {v_0}, {((tmp2 * (v_2 - v_4)) / tmp1)}, {(v_2 + v_4)}, {v_1}, {(v_3 + v_5)}}
+end</pre>
 <br>
 left transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu) return {{(((v_2 * math.sqrt(\mu)) - (v_3 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {(((v_0 * math.sqrt(\mu)) + (v_5 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon)))}, {(math.sqrt(2) * v_1)}, {(math.sqrt(2) * v_4)}, {(((v_2 * math.sqrt(\mu)) + (v_3 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {((-((v_0 * math.sqrt(\mu)) - (v_5 * math.sqrt(\epsilon)))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
+	local tmp7 = math.sqrt(\mu)
+	local tmp6 = math.sqrt(\epsilon)
+	local tmp5 = (v_3 * tmp6)
+	local tmp4 = (v_0 * tmp7)
+	local tmp3 = (v_2 * tmp7)
+	local tmp2 = (2 * tmp6)
+	local tmp1 = (v_5 * tmp6)
+	return {{v_1}, {v_4}, {((tmp5 + tmp3) / tmp2)}, {(((-tmp1) + tmp4) / (-tmp2))}, {((-(tmp3 - tmp5)) / tmp2)}, {((tmp1 + tmp4) / tmp2)}}
+end</pre>
 <br>
 side	3
 <br>
@@ -125,45 +115,40 @@ flux jacobian:
 <br>
 ${A} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  \frac{1}{\mu} &  0 \\  0 &  0 &  0 &  \frac{-1}{\mu} &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  \frac{-1}{\epsilon} &  0 &  0 &  0 &  0 \\  \frac{1}{\epsilon} &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0\end{matrix}\right]}$
 <br>
-char poly:
-<br>
-${\frac{{{{\lambda}^{2}}} {{({{{1} - {{{2}} {{\mu}} \cdot {{\epsilon}} \cdot {{{\lambda}^{2}}}}} + {{{{\mu}^{2}}} {{{\lambda}^{4}}} {{{\epsilon}^{2}}}}})}}}{{{{\mu}^{2}}} {{{\epsilon}^{2}}}}} = {0}$
-<br>
-eigenvectors of 	${\lambda} = {\frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}}$
-<br>
-$\left[\begin{matrix}  0 &  \frac{-{\sqrt \epsilon}}{{{\sqrt \mu}} {{\sqrt 2}}} \\  \frac{\sqrt \epsilon}{{{\sqrt \mu}} {{\sqrt 2}}} &  0 \\  0 &  0 \\  \frac{1}{\sqrt 2} &  0 \\  0 &  \frac{1}{\sqrt 2} \\  0 &  0\end{matrix}\right]$
-<br>
-eigenvectors of 	${\lambda} = {0}$
-<br>
-$\left[\begin{matrix}  0 &  0 \\  0 &  0 \\  \frac{1}{\sqrt 2} &  0 \\  0 &  0 \\  0 &  0 \\  0 &  \frac{1}{\sqrt 2}\end{matrix}\right]$
-<br>
-eigenvectors of 	${\lambda} = {\frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}}$
-<br>
-$\left[\begin{matrix}  0 &  \frac{\sqrt \epsilon}{{{\sqrt \mu}} {{\sqrt 2}}} \\  \frac{-{\sqrt \epsilon}}{{{\sqrt \mu}} {{\sqrt 2}}} &  0 \\  0 &  0 \\  \frac{1}{\sqrt 2} &  0 \\  0 &  \frac{1}{\sqrt 2} \\  0 &  0\end{matrix}\right]$
-<br>
 $\Lambda$:
 <br>
-$\left[\begin{matrix}  \frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 &  0 &  0 &  0 \\  0 &  \frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}}\end{matrix}\right]$
+$\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 \\  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}}\end{matrix}\right]$
 <br>
 R:
 <br>
-$\left[\begin{matrix}  0 &  \frac{-{\sqrt \epsilon}}{\sqrt 2} &  0 &  0 &  0 &  \frac{\sqrt \epsilon}{\sqrt 2} \\  \frac{\sqrt \epsilon}{\sqrt 2} &  0 &  0 &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt 2} &  0 \\  0 &  0 &  \frac{1}{\sqrt 2} &  0 &  0 &  0 \\  \frac{\sqrt \mu}{\sqrt 2} &  0 &  0 &  0 &  \frac{\sqrt \mu}{\sqrt 2} &  0 \\  0 &  \frac{\sqrt \mu}{\sqrt 2} &  0 &  0 &  0 &  \frac{\sqrt \mu}{\sqrt 2} \\  0 &  0 &  0 &  \frac{1}{\sqrt 2} &  0 &  0\end{matrix}\right]$
+$\left[\begin{matrix}  0 &  0 &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} \\  0 &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 \\  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  1 &  0 &  1 &  0 \\  0 &  0 &  0 &  1 &  0 &  1 \\  0 &  1 &  0 &  0 &  0 &  0\end{matrix}\right]$
 <br>
 L:
 <br>
-$\left[\begin{matrix}  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \epsilon}}} &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} &  0 &  0 \\  \frac{1}{-{{{\sqrt 2}} {{\sqrt \epsilon}}}} &  0 &  0 &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} &  0 \\  0 &  0 &  \sqrt 2 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  \sqrt 2 \\  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt 2}}}} &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} &  0 &  0 \\  \frac{1}{{{\sqrt \epsilon}} {{\sqrt 2}}} &  0 &  0 &  0 &  \frac{1}{{{\sqrt 2}} {{\sqrt \mu}}} &  0\end{matrix}\right]$
+$\left[\begin{matrix}  0 &  0 &  1 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  1 \\  0 &  \frac{-{\sqrt \mu}}{{{2}} {{\sqrt \epsilon}}} &  0 &  \frac{1}{2} &  0 &  0 \\  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  \frac{1}{2} &  0 &  0 \\  \frac{-{\sqrt \mu}}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  \frac{1}{2} &  0\end{matrix}\right]$
 <br>
-R(v) = 	$\left[\begin{matrix}  \frac{-{{{\sqrt \epsilon}} {{({{{v_1}} - {{v_5}}})}}}}{\sqrt 2} \\  \frac{{{\sqrt \epsilon}} {{({{{v_0}} - {{v_4}}})}}}{\sqrt 2} \\  \frac{{v_2}}{\sqrt 2} \\  \frac{{{\sqrt \mu}} {{({{{v_0}} + {{v_4}}})}}}{\sqrt 2} \\  \frac{{{\sqrt \mu}} {{({{{v_1}} + {{v_5}}})}}}{\sqrt 2} \\  \frac{{v_3}}{\sqrt 2}\end{matrix}\right]$
+R(v) = 	$\left[\begin{matrix}  \frac{{{\sqrt \epsilon}} {{({{{v_3}} - {{v_5}}})}}}{\sqrt \mu} \\  \frac{-{{{\sqrt \epsilon}} {{({{{v_2}} - {{v_4}}})}}}}{\sqrt \mu} \\  {v_0} \\  {{v_2}} + {{v_4}} \\  {{v_3}} + {{v_5}} \\  {v_1}\end{matrix}\right]$
 <br>
-L(v) = 	$\left[\begin{matrix}  \frac{{{{{v_1}}} \cdot {{\sqrt \mu}}} + {{{{v_3}}} \cdot {{\sqrt \epsilon}}}}{{{\sqrt \mu}} {{\sqrt 2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_0}}} \cdot {{\sqrt \mu}}} - {{{{v_4}}} \cdot {{\sqrt \epsilon}}}}{-{{{\sqrt \mu}} {{\sqrt 2}} {{\sqrt \epsilon}}}} \\  {{\sqrt 2}} {{{v_2}}} \\  {{\sqrt 2}} {{{v_5}}} \\  \frac{-{({{{{{v_1}}} \cdot {{\sqrt \mu}}} - {{{{v_3}}} \cdot {{\sqrt \epsilon}}}})}}{{{\sqrt \mu}} {{\sqrt \epsilon}} {{\sqrt 2}}} \\  \frac{{{{{v_0}}} \cdot {{\sqrt \mu}}} + {{{{v_4}}} \cdot {{\sqrt \epsilon}}}}{{{\sqrt \mu}} {{\sqrt \epsilon}} {{\sqrt 2}}}\end{matrix}\right]$
+L(v) = 	$\left[\begin{matrix}  {v_2} \\  {v_5} \\  \frac{-{({{{{{v_1}}} \cdot {{\sqrt \mu}}} - {{{{v_3}}} \cdot {{\sqrt \epsilon}}}})}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_4}}} \cdot {{\sqrt \epsilon}}} + {{{{v_0}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_3}}} \cdot {{\sqrt \epsilon}}} + {{{{v_1}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{-{({{{{{v_0}}} \cdot {{\sqrt \mu}}} - {{{{v_4}}} \cdot {{\sqrt \epsilon}}}})}}{{{2}} {{\sqrt \epsilon}}}\end{matrix}\right]$
 <br>
 right transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu) return {{((-(math.sqrt(\epsilon) * (v_1 - v_5))) / math.sqrt(2))}, {((math.sqrt(\epsilon) * (v_0 - v_4)) / math.sqrt(2))}, {(v_2 / math.sqrt(2))}, {((math.sqrt(\mu) * (v_0 + v_4)) / math.sqrt(2))}, {((math.sqrt(\mu) * (v_1 + v_5)) / math.sqrt(2))}, {(v_3 / math.sqrt(2))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
+	local tmp2 = math.sqrt(\mu)
+	local tmp1 = math.sqrt(\epsilon)
+	return {{((tmp1 * (v_3 - v_5)) / tmp2)}, {((-(tmp1 * (v_2 - v_4))) / tmp2)}, {v_0}, {(v_2 + v_4)}, {(v_3 + v_5)}, {v_1}}
+end</pre>
 <br>
 left transform code:
 <br>
-<pre>
-return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu) return {{(((v_1 * math.sqrt(\mu)) + (v_3 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon)))}, {(((v_0 * math.sqrt(\mu)) - (v_4 * math.sqrt(\epsilon))) / (-(math.sqrt(\mu) * math.sqrt(2) * math.sqrt(\epsilon))))}, {(math.sqrt(2) * v_2)}, {(math.sqrt(2) * v_5)}, {((-((v_1 * math.sqrt(\mu)) - (v_3 * math.sqrt(\epsilon)))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}, {(((v_0 * math.sqrt(\mu)) + (v_4 * math.sqrt(\epsilon))) / (math.sqrt(\mu) * math.sqrt(\epsilon) * math.sqrt(2)))}} end</pre>
+<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
+	local tmp7 = math.sqrt(\mu)
+	local tmp6 = math.sqrt(\epsilon)
+	local tmp5 = (2 * tmp6)
+	local tmp4 = (v_0 * tmp7)
+	local tmp3 = (v_3 * tmp6)
+	local tmp2 = (v_4 * tmp6)
+	local tmp1 = (v_1 * tmp7)
+	return {{v_2}, {v_5}, {((-(tmp1 - tmp3)) / tmp5)}, {((tmp2 + tmp4) / tmp5)}, {((tmp3 + tmp1) / tmp5)}, {((-(tmp4 - tmp2)) / tmp5)}}
+end</pre>
 <br>

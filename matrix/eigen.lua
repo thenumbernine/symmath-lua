@@ -16,11 +16,15 @@ but provide functions for producing them?)
 	R = right eigenvectors, matching 1-1 with allLambdas
 	L = left eigenvectors.  produced by R:inverse()  these don't exist if A is defective.
 --]]
+
 local function eigen(A)
 	local symmath = require 'symmath'
 	local Matrix = symmath.Matrix
 	local var = symmath.var
---printbr(var'A':eq(A))
+local eigenVerbose = Matrix.eigenVerbose	
+if eigenVerbose then
+	printbr(var'A':eq(A))
+end
 	A = A:clone()
 	
 	local lambda = var'\\lambda'
@@ -32,19 +36,31 @@ local function eigen(A)
 
 	-- eigen-decompose
 	local I = Matrix.identity(#A)
---printbr(var'I':eq(I))
+if eigenVerbose then
+	printbr(var'I':eq(I))
+end	
 	local AminusLambda = (A - lambda * I)()
---printbr((var'A' - var'\\lambda' * var'I'):eq(AminusLambda))
+if eigenVerbose then
+	printbr((var'A' - var'\\lambda' * var'I'):eq(AminusLambda))
+end	
 	local charPoly = AminusLambda:det{dontSimplify=true}:eq(0)
---printbr(charPoly)
+if eigenVerbose then
+	printbr(charPoly)
+end	
 	local allLambdas = table{charPoly:solve(lambda)}
---printbr(allLambdas:mapi(tostring):concat', ')	
+if eigenVerbose then
+	printbr(allLambdas:mapi(tostring):concat', ')	
+end	
 	allLambdas = allLambdas:mapi(function(eqn) return eqn:rhs() end)	-- convert to lambda equality
---printbr(lambda, '$= \\{$', allLambdas:mapi(tostring):concat', ', '$\\}$')
+if eigenVerbose then
+	printbr(lambda, '$= \\{$', allLambdas:mapi(tostring):concat', ', '$\\}$')
+end	
 	local lambdas = symmath.multiplicity(allLambdas)	-- of equations
---for _,info in ipairs(lambdas) do
---	printbr('mult '..info.mult..' expr '..info.expr)
---end
+if eigenVerbose then
+	for _,info in ipairs(lambdas) do
+		printbr('mult '..info.mult..' expr '..info.expr)
+	end
+end
 
 	local defective
 	allLambdas = table()	-- redo allLambdas so the order matches the right-eigenvectors' order
@@ -63,25 +79,33 @@ local function eigen(A)
 		end
 		return Ri and Ri:T() or nil
 	end)
---for i,lambda in ipairs(lambdas) do
---	printbr('right eigenvector of', lambda.expr, 'is', Rs[i]:T())
---end
+if eigenVerbose then
+	for i,lambda in ipairs(lambdas) do
+		printbr('right eigenvector of', lambda.expr, 'is', Rs[i]:T())
+	end
+end
 
 	local R = #Rs > 0 and Matrix( 
 		table():append(Rs:unpack()):unpack()
 		--Rs:mapi(function(Ri) return Ri[1] end):unpack() 
 	):T()
---printbr(var'R':eq(R))
+if eigenVerbose then
+	printbr(var'R':eq(R))
+end	
 	-- inverse() isn't possible if R isn't square ... which happens when the charpoly mult != the nullspace dim
 	-- in that case, use SVD?
 	-- or solve manually for left-eigenvectors?
 	local L = not defective and R:inverse() or nil
---printbr(var'L':eq(L))
+if eigenVerbose then
+	printbr(var'L':eq(L))
+end	
 	local Lambda = Matrix.diagonal( allLambdas:unpack() )
---printbr(var'\\Lambda':eq(Lambda))
---printbr'verify:'
---printbr( (R * Lambda * L):eq( (R * Lambda * L)() ) )
-	
+if eigenVerbose then
+	printbr(var'\\Lambda':eq(Lambda))
+	printbr'verify:'
+	printbr( (R * Lambda * L):eq( (R * Lambda * L)() ) )
+end
+
 	symmath.op.mul:popRules()
 	symmath.log:popRules()
 

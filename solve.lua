@@ -132,10 +132,11 @@ local function solve(eqn, x, hasSimplified)
 	local function getCoeff(n)
 		return coeffs[n] or Constant(0)
 	end
+	
+	local n = maxn(coeffs)
 
 	-- 'homogeneous' polynomial
 	if not coeffs.extra then
-		local n = maxn(coeffs)
 		if n == 0 then return end	-- a = 0 <=> no solutions
 		if n == 1 then		-- c1 x + c0 = 0 <=> x = -c0/c1
 --print('coeffs',table.map(coeffs[1],tostring):concat('\n'),'\nend coeffs')
@@ -149,10 +150,20 @@ local function solve(eqn, x, hasSimplified)
 					eq(x, (-b+sqrt(b^2-4*a*c))/(2*a))()
 		end
 		-- and on ...
+	
+		if n == 4 then
+			if not coeffs[1] and not coeffs[3] then
+				-- ax^4 + bx^2 + c
+				local a,b,c = getCoeff(4), getCoeff(2), getCoeff(0)
+				local res1 = eq(x, sqrt((-b-sqrt(b^2-4*a*c))/(2*a)))()
+				local res2 = eq(x, sqrt((-b+sqrt(b^2-4*a*c))/(2*a)))()
+				return res1, (-res1)(), res2, (-res2)()
+			end
+		end
 	end
 
 	local result = Constant(0)
-	for i=0,maxn(coeffs) do
+	for i=0,n do
 		if coeffs[i] then
 			result = result + x^i * getCoeff(i) 
 		end

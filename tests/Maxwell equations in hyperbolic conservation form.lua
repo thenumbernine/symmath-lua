@@ -60,61 +60,14 @@ for side=1,3 do
 	local A_def = A:eq(As[side])
 	printbr(A_def)
 
-	local lambda = var'\\lambda'
-	local charpolymat = (A_def[2] - Matrix.identity(#A_def[2]) * lambda)()
-	local charpoly_eqn  = charpolymat:determinant():eq(0)
-	printbr'char poly:'
-	printbr(charpoly_eqn)
-	-- TODO solve charpoly_eqn for lambda ...
-	-- gives solutions lambda = 0, lambda = +- 1/sqrt(mu epsilon) = +- c
-	local lambdas = table{
-		-1/sqrt(mu * epsilon), 
-		0,
-		1/sqrt(mu * epsilon),
-	}
 
-	local n = #Us
-
-	local evs = table()
-	local multiplicity = table()
-	for _,lambda_ in ipairs(lambdas) do
-		local n = #A_def[2]
-		local A_minus_lambda_I = ((A_def[2] - Matrix.identity(n) * lambda_))()
-
-		local cols = A_minus_lambda_I:nullspace()
-		if not cols then
-			printbr("found no eigenvectors associated with eigenvalue",lambda_)
-		else
-			if lambda_ ~= Constant(0) then
-				cols = (cols / sqrt(2))()
-			end	
-			multiplicity:insert(#cols[1])
-			printbr('eigenvectors of ', lambda:eq(lambda_))
-			printbr(cols)
-			evs:insert(cols)
-		end
-	end
-	local lambdaMat = Matrix.diagonal( table():append(
-		lambdas:map(function(lambda,i)
-			return range(multiplicity[i]):map(function() return lambda end)
-		end):unpack()
-	):unpack() )
+	local A_eig = As[side]:eigen()
+	local evRMat = A_eig.R
+	local evLMat = A_eig.L
+	local lambdaMat = A_eig.Lambda
+	
 	printbr('$\\Lambda$:')
 	printbr(lambdaMat)
-
-	local evRMat = Matrix(
-		table():append(
-			evs:map(function(ev)
-				return ev:transpose()
-			end):unpack()
-		):unpack()
-	):transpose()
-
-	evRMat = (evRMat * ({
-		Matrix.diagonal(sqrt(mu), sqrt(mu), 1, 1, sqrt(mu), sqrt(mu)),
-		Matrix.diagonal(sqrt(mu), sqrt(mu), 1, 1, sqrt(mu), sqrt(mu)),
-		Matrix.diagonal(sqrt(mu), sqrt(mu), 1, 1, sqrt(mu), sqrt(mu)),
-	})[side])()
 
 	printbr('R:')
 	printbr(evRMat)
@@ -135,7 +88,8 @@ for side=1,3 do
 		end
 	end
 
-	local vs = range(0,5):map(function(i) return var('v_'..i) end)
+	local n = #As[side]
+	local vs = range(0,n-1):map(function(i) return var('v_'..i) end)
 	local evrxform = (evRMat * Matrix:lambda({n,1}, function(i) return vs[i] end))()
 	local evlxform = (evLMat * Matrix:lambda({n,1}, function(i) return vs[i] end))()
 	printbr('R(v) = ', evrxform)

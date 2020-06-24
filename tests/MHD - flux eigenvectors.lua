@@ -1,5 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
+
 op = nil	-- make way for _G.op = symmath.op
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
@@ -410,7 +411,7 @@ printbr(A_lhs:eq(A_plus_delta_def))
 
 local A_def = (A_plus_delta_def - Matrix.identity(#A_plus_delta_def) * Matrix:lambda({#A_plus_delta_def,#A_plus_delta_def}, function(i,j)
 	return i~=j and 0 or (n'_a' * v'^a' * ((i==2 or i==4) and delta'^i_j' or 1)) 
-end))()
+end)):replace(B'_a' * v'^a', B'_1' * v'^1' + B'_2' * v'^2' + B'_3' * v'^3')()
 printbr(A'^I_J':eq(A_def))
 printbr()
 
@@ -421,6 +422,9 @@ printbr(A'^I_J':eq(A_expanded))
 printbr()
 
 printbr'Acoustic matrix eigen-decomposition:'
+
+-- debugging:
+Matrix.eigenVerbose = true
 
 -- TODO this is as far as we are.
 -- it looks like the solver gets stuck on a cubic poly
