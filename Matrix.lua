@@ -38,4 +38,12 @@ function Matrix:charpoly(lambdaVar)
 	return charPolyEqn
 end
 
+function Matrix.permutation(...)
+	local n = select('#', ...)
+	local is = {...}
+	return Matrix:lambda({n, n}, function(i,j)
+		return is[j] == i and 1 or 0
+	end)
+end
+
 return Matrix

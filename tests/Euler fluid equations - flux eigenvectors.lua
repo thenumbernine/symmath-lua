@@ -5,6 +5,19 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Euler Fluid Equations - flux eigenvectors'}}
 
+local function betterSimplify(x)
+	return x():factorDivision()
+	:map(function(y)
+		if symmath.op.add.is(y) then
+			local newadd = table()
+			for i=1,#y do
+				newadd[i] = y[i]():factorDivision()
+			end
+			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
+		end
+	end)
+end
+
 local delta = Tensor:deltaSymbol()	-- Kronecher delta
 local g = var'g'					-- metric
 
@@ -20,7 +33,7 @@ local function simplifyMetrics(expr, deltas)
 	end
 
 	deltas = deltas or table{delta, g}
-	expr = expr():factorDivision()	-- put it in add-mul-div order
+	expr = betterSimplify(expr)	-- put it in add-mul-div order
 	expr = expr:clone()
 	local function checkMul(expr)
 		if not op.mul.is(expr) then return expr end
@@ -45,6 +58,10 @@ local function simplifyMetrics(expr, deltas)
 						if i ~= j
 						and TensorRef.is(xj) 
 						then
+							-- TODO here, only repace an index if ...
+							-- 1) the index is not a derivative and we are replacing with delta^i_j g^ij g_ij or g^i_j
+							-- 2) the index is a covariant derivative and we are replacing it with delta^i_j g^ij g_ij or g^i_j
+							-- 3) the index is a partial derivative and we are replacing it with delta_ij delta^ij delta^i_j or g^i_j
 --printbr('found non-delta at', j)
 							local indexIndex = table.sub(xj, 2):find(nil, function(xjIndex)
 --printbr("comparing symbols ",	xjIndex.symbol, deltaIndex.symbol, ' and comparing lowers', xjIndex.lower, deltaIndex.lower)
@@ -122,6 +139,10 @@ printbr(tildeGamma_def)
 local P = var'P'		-- pressure
 printbr(P, [[= pressure, in units of ]], kg / (m * s^2))
 
+local Cs = var'c_s'
+local Cs_def = Cs:eq(sqrt((gamma * P) / rho))
+printbr(Cs_def, [[= speed of sound in units of ]], m / s)
+
 printbr(g'_ij', [[= metric tensor, in units of $[1]$]])
 
 local vSq_var = var('(v)^2')
@@ -144,8 +165,7 @@ local E_total = var'E_{total}'
 local E_total_def = E_total:eq(rho * (e_int + e_kin))	-- total energy
 printbr(E_total_def, [[= densitized total energy, in units of]], kg / (m * s^2))
 
-local E_total_wrt_W = E_total_def:subst(e_int_def, e_kin_def)
-	:subst(vSq_def:switch())():factorDivision()
+local E_total_wrt_W = betterSimplify(E_total_def:subst(e_int_def, e_kin_def, vSq_def:switch()))
 printbr(E_total_wrt_W)
 printbr()
 
@@ -153,8 +173,7 @@ local H_total = var'H_{total}'
 local H_total_def = H_total:eq(E_total + P)
 printbr(H_total_def, [[= total enthalpy, in units of]], kg / (m * s^2))
 
-local H_total_wrt_W = H_total_def:subst(E_total_wrt_W)
-	:subst(vSq_def:switch())():factorDivision()
+local H_total_wrt_W = betterSimplify(H_total_def:subst(E_total_wrt_W, vSq_def:switch()))
 printbr(H_total_wrt_W)
 printbr()
 
@@ -233,7 +252,7 @@ local F_def = Matrix{
 }:T()
 printbr(F'^I':eq(F_def))
 
-F_def = F_def:subst(H_total_def, E_total_def, e_int_def, e_kin_def)():factorDivision()
+F_def = betterSimplify(F_def:subst(H_total_def, E_total_def, e_int_def, e_kin_def))
 printbr(F'^I':eq(F_def))
 printbr()
 
@@ -243,10 +262,10 @@ local dF_dW_def = Matrix:lambda({3,3}, function(i,j)
 end)
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 
-dF_dW_def = simplifyMetrics(dF_dW_def)():factorDivision()
+dF_dW_def = betterSimplify(simplifyMetrics(dF_dW_def))
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 
-dF_dW_def = dF_dW_def:tidyIndexes()():factorDivision() 
+dF_dW_def = betterSimplify(dF_dW_def:tidyIndexes())
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 
 -- doesn't work for all indexes, only 'a's
@@ -261,7 +280,8 @@ dF_dW_def = dF_dW_def
 	:subst(H_total_wrt_W:solve(P), tildeGamma_def)()
 	:subst(tildeGamma_def:solve(gamma))
 	:replace(vSq_var, v'^b' * v'_b')
-	():factorDivision():tidyIndexes()():factorDivision()
+dF_dW_def = betterSimplify(dF_dW_def):tidyIndexes()
+dF_dW_def = betterSimplify(dF_dW_def)
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 printbr()
 
@@ -272,11 +292,12 @@ printbr(F'^I':diff(U'^J'):eq(F'^I':diff(W'^L') * W'^L':diff(U'^J')))
 local dF_dU_def = dF_dW_def:reindex{j='k'} * dW_dU_def:reindex{ik='km'}
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 
-dF_dU_def = dF_dU_def():factorDivision()
+dF_dU_def = betterSimplify(dF_dU_def)
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 
 dF_dU_def = dF_dU_def:tidyIndexes()()
-dF_dU_def = simplifyMetrics(dF_dU_def)():factorDivision():tidyIndexes()():factorDivision()
+dF_dU_def = betterSimplify(simplifyMetrics(dF_dU_def))
+dF_dU_def = betterSimplify(dF_dU_def:tidyIndexes())
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 printbr()
 
@@ -295,7 +316,9 @@ A_plus_delta_def = A_plus_delta_def()
 printbr(A_lhs:eq(A_plus_delta_def))
 
 -- TODO if you don't do :factorDivision() before :tidyIndexes() then you can get mismatching indexes, and the subsequent :simplify() will cause a stack overflow
-A_plus_delta_def = simplifyMetrics(A_plus_delta_def)():factorDivision():tidyIndexes()()	
+A_plus_delta_def = betterSimplify(simplifyMetrics(A_plus_delta_def))
+A_plus_delta_def = betterSimplify(A_plus_delta_def:tidyIndexes())
+A_plus_delta_def = A_plus_delta_def  
 	:replace(n'^a' * v'_a', n'_a' * v'^a')
 	:replace(v'^a' * v'_a', vSq_var)
 	:subst(H_total_wrt_W, tildeGamma_def)()
@@ -307,24 +330,121 @@ end))()
 printbr(A'^I_J':eq(A_def))
 printbr()
 
+
+local function expandMatrix3to5(A)
+	return Matrix:lambda({5,5}, function(i,j)
+		local remap = {1,2,2,2,3}
+		local replace = {nil, 1,2,3, nil}
+		return A[remap[i]][remap[j]]:map(function(x)
+			if x == delta'^i_j' then
+				return i == j and 1 or 0
+			end
+		end):map(function(x)
+			if TensorIndex.is(x) then
+				if x.symbol == 'i' then
+					x = x:clone()
+					x.symbol = assert(replace[i])
+					return x
+				elseif x.symbol == 'j' then
+					x = x:clone()
+					x.symbol = assert(replace[j])
+					return x
+				end
+			end
+		end)()
+	end)
+end
+
 printbr'Acoustic matrix, expanded:'
-local A_expanded = Matrix:lambda({5,5}, function(i,j)
-	local remap = {1,2,2,2,3}
-	local replace = {nil, 1,2,3, nil}
-	return A_def[remap[i]][remap[j]]
-		:replace(n'^i', n('^'..replace[i]))
-		:replace(n'_j', n('_'..replace[j]))
-end)
+local A_expanded = expandMatrix3to5(A_def)
 
 printbr(A'^I_J':eq(A_expanded))
 printbr()
 
-printbr'Acoustic matrix eigenvalues:'
-local A_eig = A_expanded:eigen()
-for k,v in pairs(A_eig) do
-	printbr(k,'=',v)
-end
+printbr'Acoustic matrix eigen-decomposition:'
 
-printbr(A'^I_J':eq(
-	A_eig.R * A_eig.Lambda * A_eig.L
-))
+local A_eig = A_expanded:eigen()
+
+-- TODO if you want, (a) consider when n_1 = 0 or n_2 = 0
+-- and/or (b) just replace all the e_x, e_y cross n with a basis {n, n2, n3}
+-- (just like the MathWorksheets "Euler Fluid Equations - Curved Geometry - Contravariant" worksheet already does).
+
+local nLen = var'|n|'
+local nLenSq_def = (nLen^2):eq(n'^1' * n'_1' + n'^2' * n'_2' + n'^3' * n'_3')
+
+printbr(A'^I_J':eq(var'(R_A)''^I_M' * var'(\\Lambda_A)''^M_N' * var'(L_A)''^N_J'))
+
+local P_for_Cs = Cs_def:solve(P)
+
+A_eig.R = A_eig.R:subst(nLenSq_def:switch(), P_for_Cs)()
+A_eig.Lambda = A_eig.Lambda:subst(nLenSq_def:switch(), P_for_Cs)()
+A_eig.L = A_eig.L:subst(nLenSq_def:switch(), P_for_Cs)()
+
+printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
+
+local P = Matrix.permutation(5,1,2,3,4)
+local S = Matrix.diagonal(Cs^2, 1, n'_1' / rho, n'_1' / rho, Cs^2)
+local SInv = S:inv()
+
+printbr('permute by:', P, ', scale by:', S)
+
+A_eig.R = (A_eig.R * P * S)()
+A_eig.Lambda = (SInv * P:T() * A_eig.Lambda * P * S)()
+A_eig.L = (SInv * P:T() * A_eig.L)()
+
+A_eig.L[3][3] = (A_eig.L[3][3] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
+A_eig.L[4][4] = (A_eig.L[4][4] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
+
+printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
+printbr()
+
+printbr'Acoustic matrix, reconstructed from eigen-decomposition:'
+printbr(A'^I_J':eq( (A_eig.R * A_eig.Lambda * A_eig.L)() ))
+printbr()
+
+printbr'Orthogonality of left and right eigenvectors:'
+printbr((A_eig.L * A_eig.R)():subst(nLenSq_def)())
+printbr()
+
+printbr[[
+$A$'s eigensystem is $R_A \Lambda_A L_A$.<br>
+$A + v I$'s eigensystem is $R_A \Lambda_A L_A + v I 
+	= R_A \Lambda_A L_A + v R_A L_A 
+	= R_A (\Lambda_A + v I) L_A$
+.<br>
+$\frac{\partial W}{\partial U} \cdot \frac{\partial F}{\partial W} = A + v I$<br>
+$\frac{\partial F}{\partial U} = \frac{\partial U}{\partial W} \cdot \frac{\partial W}{\partial U} \cdot \frac{\partial F}{\partial W} \cdot \frac{\partial W}{\partial U} 
+	= \frac{\partial U}{\partial W} \cdot (A + v I) \cdot \frac{\partial W}{\partial U}
+	= \frac{\partial U}{\partial W} \cdot R_A (\Lambda_A + v I) L_A \cdot \frac{\partial W}{\partial U}$.<br>
+Let $R_F = \frac{\partial U}{\partial W} \cdot R_A,
+	\Lambda_F = \Lambda_A + v I,
+	L_F = L_A \cdot \frac{\partial W}{\partial U}$.<br>
+$\frac{\partial F}{\partial U} = R_F \Lambda_F L_F$.<br>
+
+]]
+
+printbr'Flux Jacobian with respect to conserved variables:'
+printbr(F'^I':diff(U'^J'):eq( U'^I':diff(W'^K') * W'^K':diff(U'^L') * F'^L':diff(W'^M') * W'^M':diff(U'^J') ))
+printbr()
+
+local F_eig_R_def = expandMatrix3to5(dU_dW_def) * A_eig.R
+printbr(var'R_F':eq(F_eig_R_def))
+
+F_eig_R_def = F_eig_R_def()
+F_eig_R_def = F_eig_R_def
+	:replace(n'_1' * v'^1', n'_k' * v'^k' - n'_2' * v'^2' - n'_3' * v'^3')
+	:replace(n'^1' * v'_1', n'_k' * v'^k' - n'^2' * v'_2' - n'^3' * v'_3')
+F_eig_R_def = betterSimplify(F_eig_R_def)
+printbr(var'R_F':eq(F_eig_R_def))
+
+local F_eig_L_def = A_eig.L * expandMatrix3to5(dW_dU_def:subst(vSq_def:switch()))
+printbr(var'L_F':eq(F_eig_L_def))
+
+F_eig_L_def = F_eig_L_def()
+F_eig_L_def = F_eig_L_def
+	:replace(n'_1' * v'^1', n'_k' * v'^k' - n'_2' * v'^2' - n'_3' * v'^3')
+	:replace(n'^1' * v'_1', n'_k' * v'^k' - n'^2' * v'_2' - n'^3' * v'_3')
+F_eig_L_def = betterSimplify(F_eig_L_def)
+printbr(var'L_F':eq(F_eig_L_def))
+
+printbr()
