@@ -186,6 +186,7 @@ build = {
 		["symmath.tests.hydrodynamics"] = "tests/hydrodynamics.lua",
 		["symmath.tests.Euler fluid equations - flux eigenvectors"] = "tests/Euler fluid equations - flux eigenvectors.lua",
 		["symmath.tests.metric catalog"] = "tests/metric catalog.lua",
+		["symmath.tests.MHD - flux eigenvectors"] = "tests/MHD - flux eigenvectors.lua",
 		["symmath.tests.natural units"] = "tests/natural units.lua",
 		["symmath.tests.numeric integration"] = "tests/numeric integration.lua",
 		["symmath.tests.remove beta from adm metric"] = "tests/remove beta from adm metric.lua",

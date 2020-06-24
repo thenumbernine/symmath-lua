@@ -55,6 +55,7 @@ return function(args)
 	else
 		function lprint() end
 	end
+	local push = symmath.simplifyConstantPowers
 	symmath.simplifyConstantPowers = true
 
 	-- make these available
@@ -472,6 +473,8 @@ return function(args)
 	-- by here we're done with the operations, 
 	-- so we no longer need the lookup tables in the environment which point back to the global namespace
 	setmetatable(env, nil)
+	
+	symmath.simplifyConstantPowers = push 
 
 	return env
 end

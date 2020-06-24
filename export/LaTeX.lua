@@ -174,14 +174,12 @@ LaTeX.lookupTable = {
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'
 		local name = expr.name
-		--[[ this is a painful workaround since neither LuaJIT nor MathJax 2.7 supports utf8
-		if iname and rawequal(expr, symmath.i) then
-			name = iname
-		end
-		--]]
 		if rawequal(expr, symmath.i) then
 			-- I'll just use the unicode here because LaTeX, unlike SingleLine, doesn't need utf8.len()
 			name = 'ⅈ'	--'\\textbf{i}'
+		end
+		if rawequal(expr, symmath.pi) then
+			name = '\\pi'
 		end
 		if symmath.fixVariableNames then
 			name = symmath.tostring:fixVariableName(name)

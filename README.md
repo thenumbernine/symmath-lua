@@ -747,6 +747,8 @@ Output CDN URLs:
 
 [tests/output/Euler fluid equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Euler%20fluid%20equations%20%2d%20flux%20eigenvectors.html)
 
+[tests/output/Euler fluid equations - primitive form](https://thenumbernine.github.io/symmath/tests/output/Euler%20fluid%20equations%20%2d%20primitive%20form.html)
+
 [tests/output/FLRW](https://thenumbernine.github.io/symmath/tests/output/FLRW.html)
 
 [tests/output/Faraday tensor in general relativity](https://thenumbernine.github.io/symmath/tests/output/Faraday%20tensor%20in%20general%20relativity.html)
@@ -774,6 +776,8 @@ Output CDN URLs:
 [tests/output/Kerr-Schild - expression](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20%2d%20expression.html)
 
 [tests/output/Kerr-Schild degenerate case](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20degenerate%20case.html)
+
+[tests/output/MHD - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/MHD%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/MHD inverse](https://thenumbernine.github.io/symmath/tests/output/MHD%20inverse.html)
 
