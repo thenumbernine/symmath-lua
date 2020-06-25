@@ -7,148 +7,55 @@
     </head>
 	<body onload='tryToFindMathJax();'>
 
-state:
+${{{{ D}^i}_{,t}} - {{\left( {{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{ B}_k}}\right)}_{,j}}} = {0}$
 <br>
-${U} = {\left[\begin{matrix}  {D_x} \\  {D_y} \\  {D_z} \\  {B_x} \\  {B_y} \\  {B_z}\end{matrix}\right]}$
+${{{{ B}^i}_{,t}} + {{\left( {{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{ D}_k}}\right)}_{,j}}} = {{ J}^i}$
 <br>
-side	1
+
 <br>
-flux:
+${{{{ D}^i}_{,t}} - {{\left( {{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ B}^l}}\right)}_{,j}}} = {0}$
 <br>
-${F} = {\left[\begin{matrix}  0 \\  {\frac{1}{\mu}}{({{B_z}})} \\  {\frac{1}{\mu}}{({-{{B_y}}})} \\  0 \\  {\frac{1}{\epsilon}}{({-{{D_z}}})} \\  {\frac{1}{\epsilon}}{({{D_y}})}\end{matrix}\right]}$
+${{{{ B}^i}_{,t}} + {{\left( {{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ D}^l}}\right)}_{,j}}} = {{ J}^i}$
 <br>
-flux jacobian:
+
 <br>
-${A} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\mu} \\  0 &  0 &  0 &  0 &  \frac{-1}{\mu} &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{-1}{\epsilon} &  0 &  0 &  0 \\  0 &  \frac{1}{\epsilon} &  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{{{{{{ D}^i}_{,t}} + {{{\frac{1}{{\mu}^{2}}}} {{{ \mu}_{,j}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ B}^l}}}} - {{{\frac{1}{\mu}}} {{{{{{ \epsilon}^i}^j}^k}_{,j}}} {{{{ g}_k}_l}} {{{ B}^l}}}} - {{{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{{{ g}_k}_l}_{,j}}} {{{ B}^l}}}} - {{{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{{ B}^l}_{,j}}}}} = {0}$
 <br>
-$\Lambda$:
+${{{{{ B}^i}_{,t}} - {{{\frac{1}{{\epsilon}^{2}}}} {{{ \epsilon}_{,j}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ D}^l}}}} + {{{\frac{1}{\epsilon}}} {{{{{{ \epsilon}^i}^j}^k}_{,j}}} {{{{ g}_k}_l}} {{{ D}^l}}} + {{{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{{{ g}_k}_l}_{,j}}} {{{ D}^l}}} + {{{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{{ D}^l}_{,j}}}}} = {{ J}^i}$
 <br>
-$\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 \\  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}}\end{matrix}\right]$
+
 <br>
-R:
+${{{{{{{ D}^i}_{,t}} + {{{\frac{1}{{\mu}^{2}}}} {{{ \mu}_{,j}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ B}^l}}}} - {{{\frac{1}{\mu}}} {{{\left( \frac{1}{\sqrt g}\right)}_{,j}}} {{{{{ \bar{\epsilon}}^i}^j}^k}} {{{{ g}_k}_l}} {{{ B}^l}}}} - {{{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{{{ g}_k}_l}_{,j}}} {{{ B}^l}}}} - {{{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{{ B}^l}_{,j}}}}} = {0}$
 <br>
-$\left[\begin{matrix}  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} \\  0 &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 \\  0 &  1 &  0 &  0 &  0 &  0 \\  0 &  0 &  1 &  0 &  1 &  0 \\  0 &  0 &  0 &  1 &  0 &  1\end{matrix}\right]$
+${{{{{ B}^i}_{,t}} - {{{\frac{1}{{\epsilon}^{2}}}} {{{ \epsilon}_{,j}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ D}^l}}}} + {{{\frac{1}{\epsilon}}} {{{\left( \frac{1}{\sqrt g}\right)}_{,j}}} {{{{{ \bar{\epsilon}}^i}^j}^k}} {{{{ g}_k}_l}} {{{ D}^l}}} + {{{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{{{ g}_k}_l}_{,j}}} {{{{ D}^l}_{,j}}}} + {{{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{{ D}^l}_{,j}}}}} = {{ J}^i}$
 <br>
-L:
+
 <br>
-$\left[\begin{matrix}  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  1 &  0 &  0 \\  0 &  0 &  \frac{\sqrt \mu}{-{{{2}} {{\sqrt \epsilon}}}} &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  \frac{1}{2} \\  0 &  0 &  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{-{\sqrt \mu}}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  \frac{1}{2}\end{matrix}\right]$
+${{{{ D}^i}_{,t}} - {{{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{{ B}^l}_{,j}}}}} = {{{ {-{\frac{1}{{\mu}^{2}}}} {{{ \mu}_{,j}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ B}^l}}} - {{{\frac{1}{\mu}}} {{\frac{{\left( \sqrt g\right)}_{,j}}{\sqrt g}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ B}^l}}}} + {{{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{{{ g}_k}_l}_{,j}}} {{{ B}^l}}}}$
 <br>
-R(v) = 	$\left[\begin{matrix}  {v_0} \\  \frac{{{\sqrt \epsilon}} {{({{{v_3}} - {{v_5}}})}}}{\sqrt \mu} \\  \frac{-{{{\sqrt \epsilon}} {{({{{v_2}} - {{v_4}}})}}}}{\sqrt \mu} \\  {v_1} \\  {{v_2}} + {{v_4}} \\  {{v_3}} + {{v_5}}\end{matrix}\right]$
+${{{{ B}^i}_{,t}} + {{{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{{ D}^l}_{,j}}}}} = {{{{ J}^i} + {{{\frac{1}{{\epsilon}^{2}}}} {{{ \epsilon}_{,j}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ D}^l}}} + {{{\frac{1}{\epsilon}}} {{\frac{{\left( \sqrt g\right)}_{,j}}{\sqrt g}}} {{{{{ \epsilon}^i}^j}^k}} {{{{ g}_k}_l}} {{{ D}^l}}}} - {{{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{{{ g}_k}_l}_{,j}}} {{{{ D}^l}_{,j}}}}}$
 <br>
-L(v) = 	$\left[\begin{matrix}  {v_0} \\  {v_3} \\  \frac{{-{{{{v_4}}} \cdot {{\sqrt \epsilon}}}} + {{{{v_2}}} \cdot {{\sqrt \mu}}}}{-{{{2}} {{\sqrt \epsilon}}}} \\  \frac{{{{{v_5}}} \cdot {{\sqrt \epsilon}}} + {{{{v_1}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_4}}} \cdot {{\sqrt \epsilon}}} + {{{{v_2}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{-{({{{{{v_1}}} \cdot {{\sqrt \mu}}} - {{{{v_5}}} \cdot {{\sqrt \epsilon}}}})}}{{{2}} {{\sqrt \epsilon}}}\end{matrix}\right]$
+
 <br>
-right transform code:
+Conserved quantities:
 <br>
-<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
-	local tmp2 = math.sqrt(\epsilon)
-	local tmp1 = math.sqrt(\mu)
-	return {{v_0}, {((tmp2 * (v_3 - v_5)) / tmp1)}, {((-(tmp2 * (v_2 - v_4))) / tmp1)}, {v_1}, {(v_2 + v_4)}, {(v_3 + v_5)}}
-end</pre>
+${{ U}^I} = {\left[\begin{matrix}  { D}^i \\  { B}^i\end{matrix}\right]}$
 <br>
-left transform code:
+
 <br>
-<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
-	local tmp7 = math.sqrt(\mu)
-	local tmp6 = math.sqrt(\epsilon)
-	local tmp5 = (2 * tmp6)
-	local tmp4 = (v_1 * tmp7)
-	local tmp3 = (v_2 * tmp7)
-	local tmp2 = (v_4 * tmp6)
-	local tmp1 = (v_5 * tmp6)
-	return {{v_0}, {v_3}, {(((-tmp2) + tmp3) / (-tmp5))}, {((tmp1 + tmp4) / tmp5)}, {((tmp2 + tmp3) / tmp5)}, {((-(tmp4 - tmp1)) / tmp5)}}
-end</pre>
+Flux:
 <br>
-side	2
+${{ F}^I} = {\left[\begin{matrix}  -{{\left( {{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{ B}_k}}\right)}_{,j}} \\  {\left( {{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{ D}_k}}\right)}_{,j}\end{matrix}\right]}$
 <br>
-flux:
+
 <br>
-${F} = {\left[\begin{matrix}  {\frac{1}{\mu}}{({-{{B_z}}})} \\  0 \\  {\frac{1}{\mu}}{({{B_x}})} \\  {\frac{1}{\epsilon}}{({{D_z}})} \\  0 \\  {\frac{1}{\epsilon}}{({-{{D_x}}})}\end{matrix}\right]}$
+${{{ \left[\begin{matrix}  { D}^i \\  { B}^i\end{matrix}\right]}_{,t}} + { {\left[\begin{matrix}  0 &   {-{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^l}^k}} \\  {{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^l}^k}} &  0\end{matrix}\right]} {{{ \left[\begin{matrix}  { D}_k \\  { B}_k\end{matrix}\right]}_{,j}}} {{{ n}_l}} {{{ n}^j}}}} = {\left[\begin{matrix}  { J}^i \\  0\end{matrix}\right]}$
 <br>
-flux jacobian:
+
 <br>
-${A} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  \frac{-1}{\mu} \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{1}{\mu} &  0 &  0 \\  0 &  0 &  \frac{1}{\epsilon} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  \frac{-1}{\epsilon} &  0 &  0 &  0 &  0 &  0\end{matrix}\right]}$
+neglecting normal gradient (which should emerge as an extra extrinsic curvature source term):
 <br>
-$\Lambda$:
+${{{ \left[\begin{matrix}  { D}^i \\  { B}^i\end{matrix}\right]}_{,t}} + { {\left[\begin{matrix}  0 &   {-{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^l}^k}} {{{ n}_l}} \\  {{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^l}^k}} {{{ n}_l}} &  0\end{matrix}\right]} {{{ \left[\begin{matrix}  { D}_k \\  { B}_k\end{matrix}\right]}_{,j}}} {{{ n}^j}}}} = {\left[\begin{matrix}  { J}^i \\  0\end{matrix}\right]}$
 <br>
-$\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 \\  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}}\end{matrix}\right]$
-<br>
-R:
-<br>
-$\left[\begin{matrix}  0 &  0 &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} \\  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} &  0 \\  0 &  0 &  1 &  0 &  1 &  0 \\  0 &  1 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  1 &  0 &  1\end{matrix}\right]$
-<br>
-L:
-<br>
-$\left[\begin{matrix}  0 &  1 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  1 &  0 \\  0 &  0 &  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  \frac{1}{2} &  0 &  0 \\  \frac{\sqrt \mu}{-{{{2}} {{\sqrt \epsilon}}}} &  0 &  0 &  0 &  0 &  \frac{1}{2} \\  0 &  0 &  \frac{-{\sqrt \mu}}{{{2}} {{\sqrt \epsilon}}} &  \frac{1}{2} &  0 &  0 \\  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  0 &  \frac{1}{2}\end{matrix}\right]$
-<br>
-R(v) = 	$\left[\begin{matrix}  \frac{-{{{\sqrt \epsilon}} {{({{{v_3}} - {{v_5}}})}}}}{\sqrt \mu} \\  {v_0} \\  \frac{{{\sqrt \epsilon}} {{({{{v_2}} - {{v_4}}})}}}{\sqrt \mu} \\  {{v_2}} + {{v_4}} \\  {v_1} \\  {{v_3}} + {{v_5}}\end{matrix}\right]$
-<br>
-L(v) = 	$\left[\begin{matrix}  {v_1} \\  {v_4} \\  \frac{{{{{v_3}}} \cdot {{\sqrt \epsilon}}} + {{{{v_2}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{-{{{{v_5}}} \cdot {{\sqrt \epsilon}}}} + {{{{v_0}}} \cdot {{\sqrt \mu}}}}{-{{{2}} {{\sqrt \epsilon}}}} \\  \frac{-{({{{{{v_2}}} \cdot {{\sqrt \mu}}} - {{{{v_3}}} \cdot {{\sqrt \epsilon}}}})}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_5}}} \cdot {{\sqrt \epsilon}}} + {{{{v_0}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}}\end{matrix}\right]$
-<br>
-right transform code:
-<br>
-<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
-	local tmp2 = math.sqrt(\epsilon)
-	local tmp1 = math.sqrt(\mu)
-	return {{((-(tmp2 * (v_3 - v_5))) / tmp1)}, {v_0}, {((tmp2 * (v_2 - v_4)) / tmp1)}, {(v_2 + v_4)}, {v_1}, {(v_3 + v_5)}}
-end</pre>
-<br>
-left transform code:
-<br>
-<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
-	local tmp7 = math.sqrt(\mu)
-	local tmp6 = math.sqrt(\epsilon)
-	local tmp5 = (v_3 * tmp6)
-	local tmp4 = (v_0 * tmp7)
-	local tmp3 = (v_2 * tmp7)
-	local tmp2 = (2 * tmp6)
-	local tmp1 = (v_5 * tmp6)
-	return {{v_1}, {v_4}, {((tmp5 + tmp3) / tmp2)}, {(((-tmp1) + tmp4) / (-tmp2))}, {((-(tmp3 - tmp5)) / tmp2)}, {((tmp1 + tmp4) / tmp2)}}
-end</pre>
-<br>
-side	3
-<br>
-flux:
-<br>
-${F} = {\left[\begin{matrix}  {\frac{1}{\mu}}{({{B_y}})} \\  {\frac{1}{\mu}}{({-{{B_x}}})} \\  0 \\  {\frac{1}{\epsilon}}{({-{{D_y}}})} \\  {\frac{1}{\epsilon}}{({{D_x}})} \\  0\end{matrix}\right]}$
-<br>
-flux jacobian:
-<br>
-${A} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  \frac{1}{\mu} &  0 \\  0 &  0 &  0 &  \frac{-1}{\mu} &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  \frac{-1}{\epsilon} &  0 &  0 &  0 &  0 \\  \frac{1}{\epsilon} &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0\end{matrix}\right]}$
-<br>
-$\Lambda$:
-<br>
-$\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}} &  0 &  0 \\  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  -{\frac{1}{{{\sqrt \epsilon}} {{\sqrt \mu}}}}\end{matrix}\right]$
-<br>
-R:
-<br>
-$\left[\begin{matrix}  0 &  0 &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} \\  0 &  0 &  \frac{-{\sqrt \epsilon}}{\sqrt \mu} &  0 &  \frac{\sqrt \epsilon}{\sqrt \mu} &  0 \\  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  1 &  0 &  1 &  0 \\  0 &  0 &  0 &  1 &  0 &  1 \\  0 &  1 &  0 &  0 &  0 &  0\end{matrix}\right]$
-<br>
-L:
-<br>
-$\left[\begin{matrix}  0 &  0 &  1 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  1 \\  0 &  \frac{-{\sqrt \mu}}{{{2}} {{\sqrt \epsilon}}} &  0 &  \frac{1}{2} &  0 &  0 \\  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{\sqrt \mu}{{{2}} {{\sqrt \epsilon}}} &  0 &  \frac{1}{2} &  0 &  0 \\  \frac{-{\sqrt \mu}}{{{2}} {{\sqrt \epsilon}}} &  0 &  0 &  0 &  \frac{1}{2} &  0\end{matrix}\right]$
-<br>
-R(v) = 	$\left[\begin{matrix}  \frac{{{\sqrt \epsilon}} {{({{{v_3}} - {{v_5}}})}}}{\sqrt \mu} \\  \frac{-{{{\sqrt \epsilon}} {{({{{v_2}} - {{v_4}}})}}}}{\sqrt \mu} \\  {v_0} \\  {{v_2}} + {{v_4}} \\  {{v_3}} + {{v_5}} \\  {v_1}\end{matrix}\right]$
-<br>
-L(v) = 	$\left[\begin{matrix}  {v_2} \\  {v_5} \\  \frac{-{({{{{{v_1}}} \cdot {{\sqrt \mu}}} - {{{{v_3}}} \cdot {{\sqrt \epsilon}}}})}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_4}}} \cdot {{\sqrt \epsilon}}} + {{{{v_0}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{{{{{v_3}}} \cdot {{\sqrt \epsilon}}} + {{{{v_1}}} \cdot {{\sqrt \mu}}}}{{{2}} {{\sqrt \epsilon}}} \\  \frac{-{({{{{{v_0}}} \cdot {{\sqrt \mu}}} - {{{{v_4}}} \cdot {{\sqrt \epsilon}}}})}}{{{2}} {{\sqrt \epsilon}}}\end{matrix}\right]$
-<br>
-right transform code:
-<br>
-<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
-	local tmp2 = math.sqrt(\mu)
-	local tmp1 = math.sqrt(\epsilon)
-	return {{((tmp1 * (v_3 - v_5)) / tmp2)}, {((-(tmp1 * (v_2 - v_4))) / tmp2)}, {v_0}, {(v_2 + v_4)}, {(v_3 + v_5)}, {v_1}}
-end</pre>
-<br>
-left transform code:
-<br>
-<pre>return function(v_0, v_1, v_2, v_3, v_4, v_5, \epsilon, \mu)
-	local tmp7 = math.sqrt(\mu)
-	local tmp6 = math.sqrt(\epsilon)
-	local tmp5 = (2 * tmp6)
-	local tmp4 = (v_0 * tmp7)
-	local tmp3 = (v_3 * tmp6)
-	local tmp2 = (v_4 * tmp6)
-	local tmp1 = (v_1 * tmp7)
-	return {{v_2}, {v_5}, {((-(tmp1 - tmp3)) / tmp5)}, {((tmp2 + tmp4) / tmp5)}, {((tmp3 + tmp1) / tmp5)}, {((-(tmp4 - tmp2)) / tmp5)}}
-end</pre>
+
 <br>
