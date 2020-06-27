@@ -245,7 +245,7 @@ Integral.rules = {
 				end
 
 				-- int(c*cos(a*x)^2)
-				local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x))
+				local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x)^2)
 				if a then
 					return c/2 * (x + 1/(2*a) * sin(2*a*x))
 					-- equivalently

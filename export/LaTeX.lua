@@ -189,6 +189,9 @@ LaTeX.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Wildcard'] = function(self, expr)
+		if not self.index then
+			error(require'ext.tolua'(self))
+		end
 		return '$'..self.index
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 

@@ -223,10 +223,9 @@ function add.match(a, b, matches)
 
 		-- now if we have a wildcard ... try all 0-n possible matches of it
 		local b1 = b:remove(1)
-		for a in a:permutations() do
-			a = table(a)
-
-			for matchSize=math.min(#a, b1.atMost or math.huge),(b1.atLeast or 0),-1 do
+		for matchSize=math.min(#a, b1.atMost or math.huge),(b1.atLeast or 0),-1 do
+			for a in a:permutations() do
+				a = table(a)
 				
 --print("checking match size "..matchSize.." based on a terms: "..table.mapi(a, SingleLine):concat', ')
 				local b1match = matchSize == 0 and Constant(0)

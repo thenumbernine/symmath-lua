@@ -5,6 +5,12 @@ local Tensor = require 'symmath.Tensor'
 
 --[[
 helper class for computing common differential geometry values from a metric tensor
+
+TODO 
+Bake this directly into the metric information of the Tensor.
+Compute it as requested.
+I am already doing so for the metric and its inverse.
+Next logical thing would be to do it for connections when they are needed.
 --]]
 local Props = class()
 

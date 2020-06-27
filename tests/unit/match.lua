@@ -76,18 +76,8 @@ assertalleq({(x * y):match(W(1) + W(2))}, {x * y, zero})
 -- make sure within add.wildcardMatches we greedy-match any wildcards with 'atLeast' before assigning the rest to zero
 assertalleq({x:match(W(1) + W{2,atLeast=1} + W(3))}, {zero, x, zero})
 
--- TODO working but now how I hoped
--- I would like this to match but it is matching to 0, (x+y).
--- I guess that is fair for greed matching of wildcards.
--- TODO maybe I should change things to match less first
--- The problem is that the algorithm tests the largest subset to each wildcard first
--- i.e. first (x+y) is tested to W(1) then to W(2) which it matches
--- For this match to work, I would want W(1) to greedily match first
--- (matching to 'y')
--- and then W(2) to greedily match next (matching to 'x')
--- Changing the match algo to match wildcards left-to-right in associative operators like + and * would also give the API user more control over what they wanted to match (as in this case).
-assertalleq({(x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})}, {zero, x + y})
---assertalleq({(x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})}, {y, x})
+-- now we match wildcards left-to-right, so the cannot-depend-on will match first
+assertalleq({(x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})}, {y, x})
 
 assertalleq({(x + y):match(W{1, cannotDependOn=x, atLeast=1} + W{2, dependsOn=x})}, {y, x})
 
@@ -118,7 +108,17 @@ assertalleq({(x * y):match(W(1) * W{2, atLeast=1})}, {x, y})
 assertalleq({(x * y):match(W{1, atMost=1} * W{2, atMost=1})}, {x, y})
 
 
+-- how can you take x*y and match only the 'x'?
+print((x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard{1, dependsOn=x}))
+print((x * y):match(Wildcard{1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x}))
+print((x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard(1)))
+print((x * y):match(Wildcard(1) * Wildcard{index=2, cannotDependOn=x}))
+print((x * y):match(Wildcard(1) * Wildcard(2)))
+
+
+
 -- combinations of add and mul
+
 
 -- for this to work, add.wildcardMatches must call the wildcard-capable objects' own wildcard handlers correctly (and use push/pop match states, instead of assigning to wildcard indexes directly?)
 -- also, because add.wildcardMatches assigns the extra wildcards to zero, it will be assigning (W(2) * W(3)) to zero ... which means it must (a) handle mul.wildcardMatches and (b) pick who of mul's children gets the zero and who doesn't
