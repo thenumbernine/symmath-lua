@@ -91,16 +91,18 @@ function mul.match(a, b, matches)
 --print("mul.match(a="..Verbose(a)..", b="..Verbose(b)..", matches={"..(matches or table()):mapi(Verbose):concat', '..'}) begin')
 
 	matches = matches or table()
+	-- if 'b' is a mul then fall through
+	-- this part is only for wildcard matching of the whole expression
 	if not mul.is(b)	-- if the wildcard is a mul then we want to test it here
-	and b.wildcardMatches 
+	and b.wildcardMatches
 	then
 		if not b:wildcardMatches(a, matches) then return false end
---print(" matching entire expr "..SingleLine(b).." to "..SingleLine(a))	
+--print(" matching entire expr "..SingleLine(b).." to "..SingleLine(a))
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	end
 	if getmetatable(a) ~= getmetatable(b) then return false end
 
-
+	-- NOTICE, this shallow copy means that the metatables are lost, so don't use "a" or "b" as expressions (unless you reset its metatable)
 	local a = table(a)
 	local b = table(b)
 	
@@ -125,7 +127,7 @@ function mul.match(a, b, matches)
 				end
 			end
 			if j then
---print(' removing...')				
+--print(' removing...')
 --print(a[i])
 --print(b[j])
 				a:remove(i)
@@ -138,12 +140,12 @@ function mul.match(a, b, matches)
 --print('a:', a:mapi(SingleLine):concat', ')
 --print('b:', b:mapi(SingleLine):concat', ')
 
---local indent=0
+local indent=0
 	-- now compare what's left in-order (since it's non-commutative)
 	-- skip wildcards, do those last
-	local function checkWhatsLeft(a,b, matches, indent)
---indent=(indent or -1) + 1
---local tab = (' '):rep(indent)
+	local function checkWhatsLeft(a, b, matches, indent)
+indent=(indent or -1) + 1
+local tab = (' '):rep(indent)
 		-- save the original here
 		-- upon success, merge the new matches back into the original argument
 		local origMatches = matches
@@ -153,7 +155,7 @@ function mul.match(a, b, matches)
 		
 --print(tab.."checking match of what's left with "..#a.." elements")
 
-		if #a == 0 and #b == 0 then 
+		if #a == 0 and #b == 0 then
 --print(tab.."matches - returning true")
 			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
@@ -161,10 +163,10 @@ function mul.match(a, b, matches)
 		-- #a == 0 is fine if b is full of nothing but wildcards
 		if #b == 0 and #a > 0 then
 --print(tab.."has remaining elements -- returning false")
-			return false 
+			return false
 		end
 		
-		-- TODO bi isn't necessarily a wildcard -- it could be an 'mulNonCommutative' term (though nothing does this for mulition yet)
+		-- TODO bi isn't necessarily a wildcard -- it could be an 'mulNonCommutative' term (though nothing does this for multiplication yet)
 		if #a == 0 and #b ~= 0 then
 			-- TODO verify that the matches are equal
 			for _,bi in ipairs(b) do
@@ -178,8 +180,8 @@ function mul.match(a, b, matches)
 				end
 				if matches[bi.index] then
 --print(tab.."matches["..bi.index.."] tried to set to Constant(1), but it already exists as "..SingleLine(matches[bi.index]).." -- failing")
-					if matches[bi.index] ~= Constant(1) then 
-						return false 
+					if matches[bi.index] ~= Constant(1) then
+						return false
 					end
 				else
 --print(tab.."setting matches["..bi.index.."] to Constant(1)")
@@ -198,19 +200,22 @@ function mul.match(a, b, matches)
 		
 			local firstsubmatch = table()
 			if not a1:match(b1, firstsubmatch) then
---print(tab.."first match didn't match - failing")				
-				return false 
+--print(tab.."first match didn't match - failing")
+				return false
 			end
 		
 			for i=1,table.maxn(firstsubmatch) do
 				if firstsubmatch[i] ~= nil then
 					if matches[i] ~= nil then
-						if matches[i] ~= firstsubmatch[i] then 
+						if matches[i] ~= firstsubmatch[i] then
 --print(tab.."first submatches don't match previous matches - index "..i.." "..SingleLine(matches[i]).." vs "..SingleLine(firstsubmatch[i]).." - failing")
-							return false 
+							return false
 						end
 					else
---print(tab.."matching mul subexpr from first match "..SingleLine(a1).." index "..b.index.." to "..SingleLine(a))	
+--print(tab.."index "..b.index)
+--print(tab.."a1: "..SingleLine(a1))
+--print(tab.."a: "..a:mapi(SingleLine):concat', ')
+--print(tab.."matching mul subexpr from first match "..SingleLine(a1).." index "..b.index.." to "..a:mapi(SingleLine):concat', ')
 						matches[i] = firstsubmatch[i]
 					end
 				end
@@ -219,19 +224,19 @@ function mul.match(a, b, matches)
 
 			local restsubmatch = table()
 			if not checkWhatsLeft(a, b, restsubmatch, indent) then
---print(tab.."first match didn't match - failing")				
-				return false 
+--print(tab.."first match didn't match - failing")
+				return false
 			end
 
 			for i=1,table.maxn(restsubmatch) do
 				if restsubmatch[i] ~= nil then
 					if matches[i] ~= nil then
-						if matches[i] ~= restsubmatch[i] then 
+						if matches[i] ~= restsubmatch[i] then
 --print(tab.."first submatches don't match previous matches - index "..i.." "..SingleLine(matches[i]).." vs "..SingleLine(firstsubmatch[i]).." - failing")
-							return false 
+							return false
 						end
 					else
---print(tab.."matching mul subexpr from first match "..SingleLine(a1).." index "..b.index.." to "..SingleLine(a))	
+--print(tab.."matching mul subexpr from first match "..SingleLine(a1).." index "..b.index.." to "..a:mapi(SingleLine):concat', ')
 						matches[i] = restsubmatch[i]
 					end
 				end
@@ -251,25 +256,29 @@ function mul.match(a, b, matches)
 --print(tab.."checking matches of size "..matchSize)
 			for a in a:permutations() do
 				a = table(a)
---print(tab.."checking a permutation "..table.mapi(a, SingleLine):concat', ')
+--print(tab.."checking a permutation "..a:mapi(SingleLine):concat', ')
 			
 				local b1match = matchSize == 0 and Constant(1)
 					or matchSize == 1 and a[1]
-					or setmetatable(table.sub(a, 1, matchSize), mul)
---print(tab.."b1match "..SingleLine(b1match))			
+					or setmetatable(a:sub(1, matchSize), mul)
+--print(tab.."b1match "..SingleLine(b1match))
 				local matchesForThisSize = table(matches)
 --print(tab.."matchesForThisSize["..b1.index.."] was "..(matchesForThisSize[b1.index] and SingleLine(matchesForThisSize[b1.index]) or 'nil'))
+-- this is going to get into a situation of comparing all possible permutations of what's left
+-- TODO get rid of this whole recursion system, and just use a permutation iterator
+-- then keep trying to match wildcards against what is left until things work
+-- you know, with nested wildcard/nonwildcards, we might as well just do this for everything.
 				if b1match:match(b1, matchesForThisSize) then
 --print(tab.."matchesForThisSize["..b1.index.."] is now "..SingleLine(matchesForThisSize[b1.index]))
-					local suba = table.sub(a, matchSize+1)
+					local suba = a:sub(matchSize+1)
 --print(tab.."calling recursively on "..#suba.." terms: "..table.mapi(suba, SingleLine):concat', ')			
-					local results = table{checkWhatsLeft(suba, b, matchesForThisSize, indent)}
+					local didMatch = checkWhatsLeft(suba, b, matchesForThisSize, indent)
 --print(tab.."returned results from the sub-checkWhatsLeft : "..table.mapi(results, SingleLine):concat', ')
-					if results[1] then
+					if didMatch then
 --print(tab.."returning that list for matchSize="..matchSize.."...")
 						-- also write them back to the original argument since we are returning true
 						for k,v in pairs(matchesForThisSize) do origMatches[k] = v end
-						return table.unpack(matchesForThisSize, 1, table.maxn(matchesForThisSize))
+						return matchesForThisSize[1] or true, table.unpack(matchesForThisSize, 2, table.maxn(matchesForThisSize))
 					end
 --print(tab.."continuing...")
 				else
@@ -280,14 +289,14 @@ function mul.match(a, b, matches)
 			end
 		end
 		-- all sized matches failed? return false
---print(tab.."all sized matches failed - failing")	
+--print(tab.."all sized matches failed - failing")
 		return false
 	end
 	
 	-- now what's left in b[i] should all be wildcards
 	-- we just have to assign them between the a's
 	-- but if we want mul match to return wildcards of +0 then we can't just rely on a 1-or-more rule
-	-- for that reason, 
+	-- for that reason,
 	
 	return checkWhatsLeft(a,b, matches)
 	--return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
@@ -296,6 +305,7 @@ end
 -- copy of op/add.wildcardMatches, just like match()
 function mul:wildcardMatches(a, matches)
 	local Constant = require 'symmath.Constant'
+--local SingleLine = require 'symmath.export.SingleLine'
 --local Verbose = require 'symmath.export.Verbose'
 --print("mul.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'}')
 
@@ -310,15 +320,15 @@ function mul:wildcardMatches(a, matches)
 		end)
 		return found
 	end
-
+	
 	-- 'a' is the 'a' in Expression.match(a,b)
 	-- 'b' is 'self'
-	local Wildcard = require 'symmath.Wildcard'	
+	local Wildcard = require 'symmath.Wildcard'
 	local nonWildcards = table()
 	local wildcards = table()
 	for _,w in ipairs(self) do
 		-- TODO what about when add/mul have no sub-wildcards?
-		if w.wildcardMatches 
+		if w.wildcardMatches
 		and find(w, function(x) return Wildcard.is(x) end)
 		then
 			wildcards:insert(w)
@@ -354,7 +364,7 @@ function mul:wildcardMatches(a, matches)
 	for _,w in ipairs(wildcards) do
 		if w.atLeast and w.atLeast > 0 then
 			totalAtLeast = totalAtLeast + w.atLeast
-			if totalAtLeast > 1 then 
+			if totalAtLeast > 1 then
 				return false
 			end
 		end
@@ -379,17 +389,22 @@ function mul:wildcardMatches(a, matches)
 	local add = require 'symmath.op.add'
 	-- match all wildcards to zero
 	local function checkWildcardPermutation(wildcards, matches)
---print("testing against previous matches table...")	
+		-- match all wildcards to zero
+		-- test first, so we don't half-set the 'matches' before failing (TODO am I doing this elsewhere in :match()?)
+		-- TODO w.index IS NOT GUARANTEED, if we have (x):match(W(1) + W(2) * W(3)) and add and mul have wildcardMatches
+		-- in that case, you need to handle all possible sub-wildcardMatches specifically
+--print("testing against previous matches table...")
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
---print("comparing lhs "..Verbose(cmpExpr))		
+--print("comparing lhs "..Verbose(cmpExpr))
 			if mul.is(w) then
 				error"match() doesn't work with unflattened mul's"
-			elseif Wildcard.is(w) 
+			elseif Wildcard.is(w)
 			or add.is(w)
 			then
+				-- check before going through with it
 				if not cmpExpr:match(w, table(matches)) then
-					return false 
+					return false
 				end
 			else
 				error("found match(mul(unknown))")
@@ -400,18 +415,20 @@ function mul:wildcardMatches(a, matches)
 			local cmpExpr = i == 1 and matchExpr or defaultValue
 			if Wildcard.is(w) then
 --print('mul.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or defaultValue))
+				-- write matches.  should already be true.
 				cmpExpr:match(w, matches)
-			-- elseif mul.is shouldn't happen if all muls are flattened upon construction
+				--matches[w.index] = cmpExpr
 			elseif add.is(w) then
 				-- use the state this time, so it does modify "matches"
 				cmpExpr:match(w, matches)
+			-- elseif mul.is shouldn't happen if all muls are flattened upon construction
 			elseif mul.is(w) then
 				error"match() doesn't work with unflattened mul's"
 			end
 		end
 		return true
 	end
-
+	
 	for wildcards in wildcards:permutations() do
 		wildcards = table(wildcards)
 		if checkWildcardPermutation(wildcards, matches) then

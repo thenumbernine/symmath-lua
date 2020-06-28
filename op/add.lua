@@ -69,18 +69,18 @@ function add.match(a, b, matches)
 --print("add.match(a="..Verbose(a)..", b="..Verbose(b)..", matches={"..(matches or table()):mapi(Verbose):concat', '..'}) begin')
 
 	matches = matches or table()
-	-- if 'b' is an add then fall through 
+	-- if 'b' is an add then fall through
 	-- this part is only for wildcard matching of the whole expression
-	if not add.is(b) 	-- if the wildcard is a add then we want to test it here
-	and b.wildcardMatches 
+	if not add.is(b) 	-- if the wildcard is an add then we want to test it here
+	and b.wildcardMatches
 	then
 		if not b:wildcardMatches(a, matches) then return false end
---print("matching entire expr "..SingleLine(b).." to "..SingleLine(a))	
+--print(" matching entire expr "..SingleLine(b).." to "..SingleLine(a))
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
-	end	
+	end
 	if getmetatable(a) ~= getmetatable(b) then return false end
 
-
+	-- NOTICE, this shallow copy means that the metatables are lost, so don't use "a" or "b" as expressions (unless you reset its metatable)
 	local a = table(a)
 	local b = table(b)
 	
@@ -105,7 +105,7 @@ function add.match(a, b, matches)
 				end
 			end
 			if j then
---print('removing...')				
+--print(' removing...')
 --print(a[i])
 --print(b[j])
 				a:remove(i)
@@ -115,12 +115,15 @@ function add.match(a, b, matches)
 	end
 
 --print("what's left after matching commutative non-wildcards:")
---print('a:', a:mapi(Verbose):concat', ')
---print('b:', b:mapi(Verbose):concat', ')
+--print('a:', a:mapi(SingleLine):concat', ')
+--print('b:', b:mapi(SingleLine):concat', ')
 
+local indent=0
 	-- now compare what's left in-order (since it's non-commutative)
 	-- skip wildcards, do those last
-	local function checkWhatsLeft(a,b, matches)
+	local function checkWhatsLeft(a, b, matches, indent)
+indent=(indent or -1) + 1
+local tab = (' '):rep(indent)
 		-- save the original here
 		-- upon success, merge the new matches back into the original argument
 		local origMatches = matches
@@ -128,17 +131,17 @@ function add.match(a, b, matches)
 		a = table(a)
 		b = table(b)
 		
---print("checking match of what's left with "..#a.." elements")
+--print(tab.."checking match of what's left with "..#a.." elements")
 
-		if #a == 0 and #b == 0 then 
---print("matches - returning true")
+		if #a == 0 and #b == 0 then
+--print(tab.."matches - returning true")
 			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
 		
 		-- #a == 0 is fine if b is full of nothing but wildcards
 		if #b == 0 and #a > 0 then
---print("has remaining elements -- returning false")
-			return false 
+--print(tab.."has remaining elements -- returning false")
+			return false
 		end
 		
 		-- TODO bi isn't necessarily a wildcard -- it could be an 'addNonCommutative' term (though nothing does this for addition yet)
@@ -146,18 +149,20 @@ function add.match(a, b, matches)
 			-- TODO verify that the matches are equal
 			for _,bi in ipairs(b) do
 				if not Wildcard.is(bi) then
---print("expected bi to be a Wildcard, found "..SingleLine(bi))
+--print(tab.."expected bi to be a Wildcard, found "..SingleLine(bi))
 					return false
 				end
 				if bi.atLeast and bi.atLeast > 0 then
---print("remaining Wildcard expected an expression when none are left, failing")
+--print(tab.."remaining Wildcard expected an expression when none are left, failing")
 					return false
 				end
 				if matches[bi.index] then
---print("matches["..bi.index.."] tried to set to Constant(0), but it already exists as "..SingleLine(matches[bi.index]).." -- failing")
-					if matches[bi.index] ~= Constant(0) then return false end
+--print(tab.."matches["..bi.index.."] tried to set to Constant(0), but it already exists as "..SingleLine(matches[bi.index]).." -- failing")
+					if matches[bi.index] ~= Constant(0) then
+						return false
+					end
 				else
---print("setting matches["..bi.index.."] to Constant(0)")
+--print(tab.."setting matches["..bi.index.."] to Constant(0)")
 					matches[bi.index] = Constant(0)
 				end
 			end
@@ -166,26 +171,29 @@ function add.match(a, b, matches)
 			local a1 = a:remove(1)
 			local b1 = b:remove(1)
 
---print"isn't a wildcard -- recursive call of match on what's left"
+--print(tab.."isn't a wildcard -- recursive call of match on what's left")
 			-- hmm, what if there's a sub-expression that has wildcard
 			-- then we need matches
 			-- then we need to push/pop matches
 		
 			local firstsubmatch = table()
 			if not a1:match(b1, firstsubmatch) then
---print("first match didn't match - failing")				
-				return false 
+--print(tab.."first match didn't match - failing")
+				return false
 			end
 		
 			for i=1,table.maxn(firstsubmatch) do
 				if firstsubmatch[i] ~= nil then
 					if matches[i] ~= nil then
-						if matches[i] ~= firstsubmatch[i] then 
---print("first submatches don't match previous matches - index "..i.." "..SingleLine(matches[i]).." vs "..SingleLine(firstsubmatch[i]).." - failing")
-							return false 
+						if matches[i] ~= firstsubmatch[i] then
+--print(tab.."first submatches don't match previous matches - index "..i.." "..SingleLine(matches[i]).." vs "..SingleLine(firstsubmatch[i]).." - failing")
+							return false
 						end
 					else
---print("matching add subexpr from first match "..SingleLine(a1).." index "..b.index.." to "..SingleLine(a))	
+--print(tab.."index "..b.index)
+--print(tab.."a1: "..SingleLine(a1))
+--print(tab.."a: "..a:mapi(SingleLine):concat', ')
+--print(tab.."matching add subexpr from first match "..SingleLine(a1).." index "..b.index.." to "..a:mapi(SingleLine):concat', ')
 						matches[i] = firstsubmatch[i]
 					end
 				end
@@ -193,80 +201,80 @@ function add.match(a, b, matches)
 
 
 			local restsubmatch = table()
-			if not checkWhatsLeft(a, b, restsubmatch) then
---print("first match didn't match - failing")				
-				return false 
+			if not checkWhatsLeft(a, b, restsubmatch, indent) then
+--print(tab.."first match didn't match - failing")
+				return false
 			end
 
 			for i=1,table.maxn(restsubmatch) do
 				if restsubmatch[i] ~= nil then
 					if matches[i] ~= nil then
-						if matches[i] ~= restsubmatch[i] then 
---print("first submatches don't match previous matches - index "..i.." "..SingleLine(matches[i]).." vs "..SingleLine(firstsubmatch[i]).." - failing")
-							return false 
+						if matches[i] ~= restsubmatch[i] then
+--print(tab.."first submatches don't match previous matches - index "..i.." "..SingleLine(matches[i]).." vs "..SingleLine(firstsubmatch[i]).." - failing")
+							return false
 						end
 					else
---print("matching add subexpr from first match "..SingleLine(a1).." index "..b.index.." to "..SingleLine(a))	
+--print(tab.."matching add subexpr from first match "..SingleLine(a1).." index "..b.index.." to "..a:mapi(SingleLine):concat', ')
 						matches[i] = restsubmatch[i]
 					end
 				end
 			end
 
-
 			-- overlay match matches on what we have already matched so far
 			-- also write them back to the original argument since we are returning true
 			for k,v in pairs(matches) do origMatches[k] = v end
-			return matches
+			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
 
---print("before checking remaining terms, our matches is: {"..table.mapi(matches, SingleLine):concat', '..'}')
+--print(tab.."before checking remaining terms, our matches is: "..table.mapi(matches, SingleLine):concat', ')
 
 		-- now if we have a wildcard ... try all 0-n possible matches of it
 		local b1 = b:remove(1)
 		for matchSize=math.min(#a, b1.atMost or math.huge),(b1.atLeast or 0),-1 do
+--print(tab.."checking matches of size "..matchSize)
 			for a in a:permutations() do
 				a = table(a)
-				
---print("checking match size "..matchSize.." based on a terms: "..table.mapi(a, SingleLine):concat', ')
+--print(tab.."checking a permutation "..a:mapi(SingleLine):concat', ')
+			
 				local b1match = matchSize == 0 and Constant(0)
 					or matchSize == 1 and a[1]
-					or setmetatable(table.sub(a, 1, matchSize), add)
---print("b1match "..SingleLine(b1match))			
+					or setmetatable(a:sub(1, matchSize), add)
+--print(tab.."b1match "..SingleLine(b1match))
 				local matchesForThisSize = table(matches)
---print("matchesForThisSize["..b1.index.."] before b1:match(): "..(matchesForThisSize[b1.index] and SingleLine(matchesForThisSize[b1.index]) or 'nil'))
+--print(tab.."matchesForThisSize["..b1.index.."] was "..(matchesForThisSize[b1.index] and SingleLine(matchesForThisSize[b1.index]) or 'nil'))
 -- this is going to get into a situation of comparing all possible permutations of what's left
 -- TODO get rid of this whole recursion system, and just use a permutation iterator
 -- then keep trying to match wildcards against what is left until things work
 -- you know, with nested wildcard/nonwildcards, we might as well just do this for everything.
 				if b1match:match(b1, matchesForThisSize) then
---print("matchesForThisSize["..b1.index.."] after b1:match(): "..SingleLine(matchesForThisSize[b1.index]))
-					local suba = table.sub(a, matchSize+1)
---print("calling recursively on "..#suba.." terms: "..table.mapi(suba, SingleLine):concat', ')			
-					local results = table{checkWhatsLeft(suba, b, matchesForThisSize)}
---print("returned results from the sub-checkWhatsLeft : "..table.mapi(results, SingleLine):concat', ')
-					if results[1] then
---print("returning that list for matchSize="..matchSize.."...")
+--print(tab.."matchesForThisSize["..b1.index.."] is now "..SingleLine(matchesForThisSize[b1.index]))
+					local suba = a:sub(matchSize+1)
+--print(tab.."calling recursively on "..#suba.." terms: "..table.mapi(suba, SingleLine):concat', ')			
+					local didMatch = checkWhatsLeft(suba, b, matchesForThisSize, indent)
+--print(tab.."returned results from the sub-checkWhatsLeft : "..table.mapi(results, SingleLine):concat', ')
+					if didMatch then
+--print(tab.."returning that list for matchSize="..matchSize.."...")
 						-- also write them back to the original argument since we are returning true
 						for k,v in pairs(matchesForThisSize) do origMatches[k] = v end
 						return matchesForThisSize[1] or true, table.unpack(matchesForThisSize, 2, table.maxn(matchesForThisSize))
 					end
---print("continuing...")
+--print(tab.."continuing...")
 				else
---print(Verbose(b1)..':match('..SingleLine(b1match)..') failed')
---print("the next wildcard had already been matched to "..SingleLine(matchesForThisSize[b1.index]).." when we tried to match it to "..SingleLine(b1match))
+--print(tab..Verbose(b1)..':match('..SingleLine(b1match)..') failed')
+--print(tab.."the next wildcard had already been matched to "..SingleLine(matchesForThisSize[b1.index]).." when we tried to match it to "..SingleLine(b1match))
 				end
 				-- otherwise keep checking
 			end
 		end
 		-- all sized matches failed? return false
---print("all sized matches failed - failing")	
+--print(tab.."all sized matches failed - failing")
 		return false
 	end
 	
 	-- now what's left in b[i] should all be wildcards
 	-- we just have to assign them between the a's
 	-- but if we want add match to return wildcards of +0 then we can't just rely on a 1-or-more rule
-	-- for that reason, 
+	-- for that reason,
 	
 	return checkWhatsLeft(a,b, matches)
 	--return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
@@ -305,11 +313,12 @@ function add:wildcardMatches(a, matches)
 	
 	-- 'a' is the 'a' in Expression.match(a,b)
 	-- 'b' is 'self'
-	local Wildcard = require 'symmath.Wildcard'	
+	local Wildcard = require 'symmath.Wildcard'
 	local nonWildcards = table()
 	local wildcards = table()
 	for _,w in ipairs(self) do
-		if w.wildcardMatches 
+		-- TODO what about when add/mul have no sub-wildcards?
+		if w.wildcardMatches
 		and find(w, function(x) return Wildcard.is(x) end)
 		then
 			wildcards:insert(w)
@@ -322,6 +331,7 @@ function add:wildcardMatches(a, matches)
 --print("add wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
 --print("add non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
 	if #nonWildcards > 1 then
+--print("too many non-wildcards - failing")
 		return false
 	end
 
@@ -344,7 +354,7 @@ function add:wildcardMatches(a, matches)
 	for _,w in ipairs(wildcards) do
 		if w.atLeast and w.atLeast > 0 then
 			totalAtLeast = totalAtLeast + w.atLeast
-			if totalAtLeast > 1 then 
+			if totalAtLeast > 1 then
 				return false
 			end
 		end
@@ -356,7 +366,7 @@ function add:wildcardMatches(a, matches)
 			-- TODO make this work for sub-expressions?
 			if w.atLeast and w.atLeast > 0 then
 				if i > 1 then
---print("moving wildcard with 'atleast' from "..i.." to 1")				
+--print("moving wildcard with 'atleast' from "..i.." to 1")
 					table.remove(wildcards, i)
 					table.insert(wildcards, 1, w)
 				end
@@ -367,23 +377,24 @@ function add:wildcardMatches(a, matches)
 
 	local Wildcard = require 'symmath.Wildcard'
 	local mul = require 'symmath.op.mul'
+	-- match all wildcards to zero
 	local function checkWildcardPermutation(wildcards, matches)
 		-- match all wildcards to zero
 		-- test first, so we don't half-set the 'matches' before failing (TODO am I doing this elsewhere in :match()?)
 		-- TODO w.index IS NOT GUARANTEED, if we have (x):match(W(1) + W(2) * W(3)) and add and mul have wildcardMatches
 		-- in that case, you need to handle all possible sub-wildcardMatches specifically
---print("testing against previous matches table...")	
+--print("testing against previous matches table...")
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
 --print("comparing lhs "..Verbose(cmpExpr))
 			if add.is(w) then
 				error"match() doesn't work with unflattened add's"
-			elseif Wildcard.is(w) 
+			elseif Wildcard.is(w)
 			or mul.is(w)
 			then
 				-- check before going through with it
 				if not cmpExpr:match(w, table(matches)) then
-					return false 
+					return false
 				end
 			else
 				error("found match(add(unknown))")
@@ -397,10 +408,10 @@ function add:wildcardMatches(a, matches)
 				-- write matches.  should already be true.
 				assert(cmpExpr:match(w, matches))
 				--matches[w.index] = cmpExpr
-			-- elseif add.is shouldn't happen if all adds are flattened upon construction
 			elseif mul.is(w) then
 				-- use the state this time, so it does modify "matches"
 				assert(cmpExpr:match(w, matches))
+			-- elseif add.is shouldn't happen if all adds are flattened upon construction
 			elseif add.is(w) then
 				error"match() doesn't work with unflattened add's"
 			end

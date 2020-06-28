@@ -48,7 +48,7 @@ local spacetimes = {
 		end,
 	},
 
---[[ 
+-- [[ 
 -- the latest thing this needs to pass: Integrate(u/(1 + u^2), u)()
 -- I need to either fix my polynomial factoring, or implement a matrix inverse based on adjacency matrix / Levi-Civita permutation tensor in order to get these to run automatically
 -- ... or (for the time being) just specify the inverse metric manually
@@ -169,6 +169,7 @@ local spacetimes = {
 			return r
 		end,
 	},
+--[[	
 	{
 		title = 'polar and time, constant rotation, coordinate',
 		baseCoords = {t,r,phi},
@@ -181,6 +182,7 @@ local spacetimes = {
 				r * sin(phi + t))
 		end,
 	},
+--]]
 --[[ these needs the FTC to work	... which needs functions / evaluation expressions
 	{
 		title = 'polar and time, lapse varying in radial, coordinate',

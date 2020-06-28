@@ -306,9 +306,9 @@ ${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  -{{{
 <br>
 ${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
 <br>
-volume element: 	${{ii}} \cdot {{r}}$
+volume element: 	${{ⅈ}} \cdot {{r}}$
 <br>
-volume integral: 	${{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}$
+volume integral: 	${{{\frac{1}{2}}{({{{\Delta r}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}$
 <br>
 finite volume (0,0)-form:
 <br>
@@ -316,18 +316,11 @@ ${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\math
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}}}} {{({{{-{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{ii}} \cdot {{r}} {{{F^{t}(t_R)}}}} - {{{ii}} \cdot {{r}} {{{F^{t}(t_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ii}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ii}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ii}} \cdot {{r}} {{{F^{\phi}(\phi_R)}}}} - {{{ii}} \cdot {{r}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}}} {{({{{-{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{ⅈ}} \cdot {{r}} {{{F^{t}(t_R)}}}} - {{{ⅈ}} \cdot {{r}} {{{F^{t}(t_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ⅈ}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ⅈ}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ⅈ}} \cdot {{r}} {{{F^{\phi}(\phi_R)}}}} - {{{ⅈ}} \cdot {{r}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)})}} {{\Delta \phi}}}}} {{({{{-{{{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{({{{F^{t}(t_L)}} - {{F^{t}(t_R)}}})}}}\right)})}} {{\Delta \phi}}}} - {{{({{{{ii}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ii}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}})}} {{\Delta t}} \cdot {{\Delta \phi}}}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( -{{{ii}} \cdot {{r}} {{\Delta t}} \cdot {{({{{F^{\phi}(\phi_L)}} - {{F^{\phi}(\phi_R)}}})}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}}} {{({{{-{{{{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{ⅈ}} \cdot {{({{{F^{t}(t_L)}} - {{F^{t}(t_R)}}})}}}})}}} {{\Delta \phi}}}} - {{{({{{{ⅈ}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ⅈ}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}})}} {{\Delta t}} \cdot {{\Delta \phi}}}} - {{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{F^{\phi}(\phi_L)}} - {{F^{\phi}(\phi_R)}}})}}}})}}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{{{S(x_C)}}} \cdot {{\Delta t}}} + {{u(x_C, t_L)}} + {{{-1}} {{\Delta t}} \cdot {{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{-1}} {{ii}} \cdot {{r}} {{\Delta t}} \cdot {{{F^{\phi}(\phi_L)}}}} - {{{-1}} {{ii}} \cdot {{r}} {{\Delta t}} \cdot {{{F^{\phi}(\phi_R)}}}}}\right)})}} {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}} {{\frac{1}{\Delta \phi}}}} + {{{-1}} {{\Delta t}} \cdot {{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{-1}} {{ii}} \cdot {{r}} {{{F^{t}(t_L)}}}} - {{{-1}} {{ii}} \cdot {{r}} {{{F^{t}(t_R)}}}}}\right)})}} {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}} + {{{{r_L}}} \cdot {{ii}} \cdot {{{F^{r}(r_L)}}} \cdot {{{\Delta t}^{2}}} {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}} + {{{-1}} {{{r_R}}} \cdot {{ii}} \cdot {{{F^{r}(r_R)}}} \cdot {{{\Delta t}^{2}}} {{\frac{1}{\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{ii}} \cdot {{r}} {{\Delta t}}}\right)}}}}}$
-<br>
-
-<br>
-	</body>
-</html>
-

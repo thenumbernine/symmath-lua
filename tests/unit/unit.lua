@@ -73,7 +73,7 @@ return function(env, title)
 			-- concise:
 			io.stderr:write(ansi_green..check..ansi_reset)
 		end, function(err)
-			print('<span style="color:red">BAD</span><br>'..err)
+			print('<span style="color:red">BAD</span><br>'..err..'<br>'..debug.traceback():gsub('\n', '<br>\n'))
 			-- verbose
 			--io.stderr:write(ansi_red..fail..ansi_reset..' '..comment..' '..err..'\n'..debug.traceback()..'\n')
 			-- concise
