@@ -120,14 +120,14 @@ function mul.match(a, b, matches)
 				if not Wildcard.is(bj)
 				-- if bj does match then this will fill in the appropriate match and return 'true'
 				-- if it fails to match then it won't fill in the match and will return false
-				and bj:match(ai, matches)
+				and ai:match(bj, matches)
 				then
 					j = _j
 					break
 				end
 			end
 			if j then
---print(' removing...')
+--print(' mul.match: removing matched terms...')
 --print(a[i])
 --print(b[j])
 				a:remove(i)
@@ -136,15 +136,14 @@ function mul.match(a, b, matches)
 		end
 	end
 
---print("what's left after matching commutative non-wildcards:")
+--print("mul.match: what's left after matching commutative non-wildcards:")
 --print('a:', a:mapi(SingleLine):concat', ')
 --print('b:', b:mapi(SingleLine):concat', ')
 
-local indent=0
 	-- now compare what's left in-order (since it's non-commutative)
 	-- skip wildcards, do those last
 	local function checkWhatsLeft(a, b, matches, indent)
-indent=(indent or -1) + 1
+indent=(indent or 0) + 1
 local tab = (' '):rep(indent)
 		-- save the original here
 		-- upon success, merge the new matches back into the original argument

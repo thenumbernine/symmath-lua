@@ -44,9 +44,18 @@ return function(env, title)
 	end
 
 	function env.assertalleq(ta,tb)
-		env.asserteq(#ta, #tb)
-		for i=1,#ta do
-			env.asserteq(ta[i], tb[i])
+		if not xpcall(function()
+			env.asserteq(#ta, #tb)
+			for i=1,#ta do
+				env.asserteq(ta[i], tb[i])
+			end
+		end, function(err)
+			print('lhs:', table.mapi(ta, tostring):concat', ', '<br>')
+			print('rhs:', table.mapi(tb, tostring):concat', ', '<br>')
+			print('<span style="color:red">BAD</span><br>'..err..'<br>')
+			print(debug.traceback():gsub('\n', '<br>\n'))
+		end) then
+			error'failed'
 		end
 	end
 

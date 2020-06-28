@@ -8,6 +8,7 @@ env.zero = const(0)
 env.one = const(1)
 env.x = var'x'
 env.y = var'y'
+env.z = var'z'
 
 for _,line in ipairs(string.split(string.trim([=[
 
@@ -123,58 +124,67 @@ print((x * y):match(Wildcard(1) * Wildcard(2)))
 -- for this to work, add.wildcardMatches must call the wildcard-capable objects' own wildcard handlers correctly (and use push/pop match states, instead of assigning to wildcard indexes directly?)
 -- also, because add.wildcardMatches assigns the extra wildcards to zero, it will be assigning (W(2) * W(3)) to zero ... which means it must (a) handle mul.wildcardMatches and (b) pick who of mul's children gets the zero and who doesn't
 --  it also means that a situation like add->mul->add might have problems ... x:match(W(1) + (W(2) + W(3)) * (W(4) + W(5)))
-(function() local i,j,k = x:match(W(1) + W(2) * W(3)) assert(i == x) assert(j == zero or k == zero) end)()
+do local i,j,k = x:match(W(1) + W(2) * W(3)) assert(i == x) assert(j == zero or k == zero) end
 
 
 --  cross over add and mul ... not yet working
 --local i = (x):match(W(1) + x)	-- works
-(function() local i = (x * y):match(W(1) + x * y) assert(i == zero) end)()
+do local i = (x * y):match(W(1) + x * y) assert(i == zero) end
 
 -- either 1 or 2 must be zero, and either 3 or 4 must be zero
-(function() local i,j,k,l = x:match(x + W(1) * W(2) + W(3) * W(4)) assert(i == zero or j == zero) assert(k == zero or l == zero) end)()
+do local i,j,k,l = x:match(x + W(1) * W(2) + W(3) * W(4)) assert(i == zero or j == zero) assert(k == zero or l == zero) end
 
-(function() local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == x) end)()
+do local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == x) end
 
-(function() local c, f = (2 * x):factorDivision():match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == x) end)()
+do local c, f = (2 * x):factorDivision():match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == x) end
 
 -- Put the 'cannotDependOn' wildcard first (leftmost) in the mul for it to greedily match non-dep-on-x terms
 -- otherwise 'dependsOn' will match everything, since the mul of a non-dep and a dep itself is dep on 'x', so it will include non-dep-on-terms
-(function() local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == 1/x) end)()
+do local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == 1/x) end
 
-(function() local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2)) assert(c == const(2)) assert(f == 1/x) end)()
+do local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2)) assert(c == const(2)) assert(f == 1/x) end
 
+assertalleq({ (x + 2*y):match(Wildcard(1) + Wildcard(2) * y) }, {x,2})
+
+assertalleq({ (x + 2*y):match(Wildcard(1) * x + Wildcard(2) * y) }, {1,2})
+
+assertalleq( {x:match( Wildcard(1)*x + Wildcard(2))}, {1, 0})
+
+assertalleq( {x:match( Wildcard(1)*x + Wildcard(2)*y)}, {1, 0})
 
 -- div
 
 
-(function() local i = (1/x):match(1 / W(1)) assert(i == x) end)()
+do local i = (1/x):match(1 / W(1)) assert(i == x) end
 
-(function() local i = (1/x):match(1 / (W(1) * x)) assert(i == one) end)()
+do local i = (1/x):match(1 / (W(1) * x)) assert(i == one) end
 
-(function() local i = (1/x):match(1 / (W{1, cannotDependOn=x} * x)) assert(i == one) end)()
+do local i = (1/x):match(1 / (W{1, cannotDependOn=x} * x)) assert(i == one) end
 
 assert((2 * 1/x):match(2 * 1/x))
 
-(function() local i = (2 * 1/x):match(2 * 1/W(1)) assert(i == x) end)()
+do local i = (2 * 1/x):match(2 * 1/W(1)) assert(i == x) end
 
-(function() local i = (2 * 1/x):match(2 * 1/(W(1) * x)) assert(i == one) end)()
+do local i = (2 * 1/x):match(2 * 1/(W(1) * x)) assert(i == one) end
 
-(function() local i, j = (2 * 1/x):factorDivision():match(W{1, atMost=1} * W{index=2, atMost=1}) assert(i == const(2)) assert(j == 1/x) end)()
+do local i, j = (2 * 1/x):factorDivision():match(W{1, atMost=1} * W{index=2, atMost=1}) assert(i == const(2)) assert(j == 1/x) end
 
-(function() local a, b = (1/(x*(3*x+4))):match(1 / (x * (W{1, cannotDependOn=x} * x + W{2, cannotDependOn=x}))) assert(a == const(3)) assert(b == const(4)) end)()
+do local a, b = (1/(x*(3*x+4))):match(1 / (x * (W{1, cannotDependOn=x} * x + W{2, cannotDependOn=x}))) assert(a == const(3)) assert(b == const(4)) end
 
-(function() local a, b = (1/(x*(3*x+4))):factorDivision():match(1 / (W{1, cannotDependOn=x} * x * x + W{2, cannotDependOn=x} * x)) assert(a == const(3)) assert(b == const(4)) end)()
+do local a, b = (1/(x*(3*x+4))):factorDivision():match(1 / (W{1, cannotDependOn=x} * x * x + W{2, cannotDependOn=x} * x)) assert(a == const(3)) assert(b == const(4)) end
 
 
-(function() local expr = sin(2*x) + cos(3*x) local a,b = expr:match( sin(W(1)) + cos(W(2)) ) print(a[1], a[2] ,b) end)()
-(function() local expr = sin(2*x) * cos(3*x) local a,b = expr:match( sin(W(1)) * cos(W(2)) ) print(a[1], a[2] ,b) end)()
+do local expr = sin(2*x) + cos(3*x) local a,b = expr:match( sin(W(1)) + cos(W(2)) ) print(a[1], a[2] ,b) end
+do local expr = sin(2*x) * cos(3*x) local a,b = expr:match( sin(W(1)) * cos(W(2)) ) print(a[1], a[2] ,b) end
 
-(function() local expr = (3*x^2 + 1) printbr('expr', expr) local a, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x}) printbr('a', a) printbr('c', c) assertalleq({a, c}, {3, 1}) end)()
+do local expr = (3*x^2 + 1) printbr('expr', expr) local a, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x}) printbr('a', a) printbr('c', c) assertalleq({a, c}, {3, 1}) end
 
-(function() local expr = (3*x^2 + 1) printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end)()
-(function() local expr = (3*x*x + 2*x + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end)()
-(function() local expr = (1/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end)()
-(function() local expr = (x/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end)()
+do local expr=(3*x^2 + 2*x + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end
+
+do local expr = (3*x^2 + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end
+do local expr = (3*x*x + 2*x + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end
+do local expr = (1/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end
+do local expr = (x/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end
 
 
 ]=]), '\n')) do
