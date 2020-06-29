@@ -85,7 +85,6 @@ assertalleq({(x + y):match(W{1, cannotDependOn=x, atLeast=1} + W{2, dependsOn=x}
 
 -- same with mul
 
-
 assertalleq({(x * y):match(y * W(1))}, {x})
 
 assertalleq({(x * y):match(x * y * W(1))}, {one})
@@ -109,13 +108,29 @@ assertalleq({(x * y):match(W(1) * W{2, atLeast=1})}, {x, y})
 assertalleq({(x * y):match(W{1, atMost=1} * W{2, atMost=1})}, {x, y})
 
 
--- how can you take x*y and match only the 'x'?
-print((x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard{1, dependsOn=x}))
-print((x * y):match(Wildcard{1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x}))
-print((x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard(1)))
-print((x * y):match(Wildcard(1) * Wildcard{index=2, cannotDependOn=x}))
-print((x * y):match(Wildcard(1) * Wildcard(2)))
+asserteq( zero:match(W(1) * x), zero )
+assert( not zero:match(W{1, dependsOn=x} * x) )
 
+asserteq( zero:match(W(1) * x * y), zero )
+
+asserteq( one:match(1 + W(1)), zero )
+
+asserteq( one:match(1 + W(1) * x), zero )
+
+asserteq( one:match(1 + W(1) * x * y), zero )
+
+
+-- how can you take x*y and match only the 'x'?
+
+assertalleq({(x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard{1, dependsOn=x})}, {x, y})
+
+assertalleq({(x * y):match(Wildcard{1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x})}, {x*y, 1})
+
+assertalleq({(x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard(1))}, {x, y})
+
+assertalleq({(x * y):match(Wildcard(1) * Wildcard{index=2, cannotDependOn=x})}, {x*y, 1})
+
+assertalleq({(x * y):match(Wildcard(1) * Wildcard(2))}, {x*y, 1})
 
 
 -- combinations of add and mul
@@ -136,7 +151,7 @@ do local i,j,k,l = x:match(x + W(1) * W(2) + W(3) * W(4)) assert(i == zero or j 
 
 do local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == x) end
 
-do local c, f = (2 * x):factorDivision():match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == x) end
+do local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assert(c == const(2)) assert(f == x) end
 
 -- Put the 'cannotDependOn' wildcard first (leftmost) in the mul for it to greedily match non-dep-on-x terms
 -- otherwise 'dependsOn' will match everything, since the mul of a non-dep and a dep itself is dep on 'x', so it will include non-dep-on-terms
@@ -179,7 +194,7 @@ do local expr = sin(2*x) * cos(3*x) local a,b = expr:match( sin(W(1)) * cos(W(2)
 
 do local expr = (3*x^2 + 1) printbr('expr', expr) local a, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x}) printbr('a', a) printbr('c', c) assertalleq({a, c}, {3, 1}) end
 
-do local expr=(3*x^2 + 2*x + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end
+do local expr=(3*x^2 + 2*x + 1) printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end
 
 do local expr = (3*x^2 + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end
 do local expr = (3*x*x + 2*x + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) assertalleq({a, b, c}, {3, 2, 1}) end

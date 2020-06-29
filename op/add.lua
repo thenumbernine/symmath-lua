@@ -297,7 +297,7 @@ function add:wildcardMatches(a, matches)
 	local Constant = require 'symmath.Constant'
 --local SingleLine = require 'symmath.export.SingleLine'
 --local Verbose = require 'symmath.export.Verbose'
---print("add.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'}')
+--print("add.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'})')
 
 	-- TODO move this to Expression
 	local function find(expr, lookfor)
@@ -327,11 +327,11 @@ function add:wildcardMatches(a, matches)
 		end
 	end
 
---print("add children: "..table.mapi(self, Verbose):concat', ')
---print("add wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
---print("add non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
+--print("add.wildcardMatches children: "..table.mapi(self, Verbose):concat', ')
+--print("add.wildcardMatches wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
+--print("add.wildcardMatches non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
 	if #nonWildcards > 1 then
---print("too many non-wildcards - failing")
+--print("add.wildcardMatches too many non-wildcards - failing")
 		return false
 	end
 
@@ -340,7 +340,7 @@ function add:wildcardMatches(a, matches)
 	if #nonWildcards == 1 then
 		-- TODO what if we are doing x:match(W{1,atLeast=1} + W{2}) ?
 		if not a:match(nonWildcards[1], matches) then
---print("single remaining add sub-term didn't match first non-wildcard - failing")
+--print("add.wildcardMatches single remaining add sub-term didn't match first non-wildcard - failing")
 			return false
 		end
 		-- a matches nonWildcards[1]
@@ -355,6 +355,7 @@ function add:wildcardMatches(a, matches)
 		if w.atLeast and w.atLeast > 0 then
 			totalAtLeast = totalAtLeast + w.atLeast
 			if totalAtLeast > 1 then
+--print("add.wildcardMatches: wildcard needs at least 1, and we have none left - failing") 
 				return false
 			end
 		end
@@ -366,7 +367,7 @@ function add:wildcardMatches(a, matches)
 			-- TODO make this work for sub-expressions?
 			if w.atLeast and w.atLeast > 0 then
 				if i > 1 then
---print("moving wildcard with 'atleast' from "..i.." to 1")
+--print("add.wildcardMatches moving wildcard with 'atleast' from "..i.." to 1")
 					table.remove(wildcards, i)
 					table.insert(wildcards, 1, w)
 				end
@@ -383,10 +384,10 @@ function add:wildcardMatches(a, matches)
 		-- test first, so we don't half-set the 'matches' before failing (TODO am I doing this elsewhere in :match()?)
 		-- TODO w.index IS NOT GUARANTEED, if we have (x):match(W(1) + W(2) * W(3)) and add and mul have wildcardMatches
 		-- in that case, you need to handle all possible sub-wildcardMatches specifically
---print("testing against previous matches table...")
+--print("add.wildcardMatches: testing against previous matches table...")
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
---print("comparing lhs "..Verbose(cmpExpr))
+--print("add.wildcardMatches: comparing lhs "..Verbose(cmpExpr))
 			if add.is(w) then
 				error"match() doesn't work with unflattened add's"
 			elseif Wildcard.is(w)
@@ -404,7 +405,7 @@ function add:wildcardMatches(a, matches)
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
 			if Wildcard.is(w) then
---print('add.wildcarddMatches setting '..w.index..' to '..SingleLine(i == 1 and matchExpr or defaultValue))
+--print('add.wildcardMatches setting index '..w.index..' to '..SingleLine(i == 1 and matchExpr or defaultValue))
 				-- write matches.  should already be true.
 				assert(cmpExpr:match(w, matches))
 				--matches[w.index] = cmpExpr
@@ -422,9 +423,11 @@ function add:wildcardMatches(a, matches)
 	for wildcards in wildcards:permutations() do
 		wildcards = table(wildcards)
 		if checkWildcardPermutation(wildcards, matches) then
-			return matches[1] or true, table.unpack(matches, 1, table.maxn(matches))
+--print("add.wildcardMatches: success")
+			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
 	end
+--print("add.wildcardMatches: found no matching permutations - failing")
 	return false
 end
 

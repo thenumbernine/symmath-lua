@@ -104,6 +104,7 @@ SingleLine.lookupTable = {
 		return '$'..expr.index
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
+		local symmath = require 'symmath'
 		local topText = 'd'
 		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars

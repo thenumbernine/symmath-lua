@@ -306,7 +306,7 @@ function mul:wildcardMatches(a, matches)
 	local Constant = require 'symmath.Constant'
 --local SingleLine = require 'symmath.export.SingleLine'
 --local Verbose = require 'symmath.export.Verbose'
---print("mul.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'}')
+--print("mul.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'})')
 
 	-- TODO move this to Expression
 	local function find(expr, lookfor)
@@ -336,20 +336,46 @@ function mul:wildcardMatches(a, matches)
 		end
 	end
 
---print("mul children: "..table.mapi(self, Verbose):concat', ')
---print("mul wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
---print("mul non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
+--print("mul.wildcardMatches children: "..table.mapi(self, Verbose):concat', ')
+--print("mul.wildcardMatches wildcard children: "..table.mapi(wildcards, Verbose):concat', ')
+--print("mul.wildcardMatches non-wildcard children: "..table.mapi(nonWildcards, Verbose):concat', ')
+
+	-- Constant(0):match(2 * Wildcard(1))
+	-- 2 is a non-wildcard, Wildcard(1) is a wildcard
+	-- but as long as we're inside mul, we just need to match a wildcard to 0
+	if Constant.isValue(a, 0) then
+		local zeroMatches = table(matches)
+		local failed
+		-- make sure the matches can match to zero (i.e. no 'dependsOn=x')
+		for _,w in ipairs(wildcards) do
+			if not a:match(w, zeroMatches) then 
+				failed = true
+				break
+			else
+--print("mul.wildcardMatches did match "..a.." to "..w.." with matches "..table.map(zeroMatches, function(v,k,t) return k..'='..v, #t+1 end):concat', ')
+			end
+		end
+		if not failed then
+			-- wildcardMatches has to write back to 'matches'
+			for k,v in pairs(zeroMatches) do matches[k] = v end
+			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
+		end
+		-- else if we failed then fall through
+		-- and most likely fail in the next 'return false'
+	end
+
 	if #nonWildcards > 1 then
---print("too many non-wildcards - failing")
+--print("mul.wildcardMatches too many non-wildcards - failing")
 		return false
 	end
 
 	local defaultValue = Constant(1)
 	local matchExpr = a
 	if #nonWildcards == 1 then
+--print("mul.wildcardMatches matchExpr "..require 'symmath.export.SingleLine'(a))
 		-- TODO what if we are doing x:match(W{1,atLeast=1} * W{2}) ?
 		if not a:match(nonWildcards[1], matches) then
---print("single remaining mul sub-term didn't match first non-wildcard - failing")
+--print("mul.wildcardMatches single remaining mul sub-term didn't match first non-wildcard - failing")
 			return false
 		end
 		-- a matches nonWildcards[1]
@@ -364,6 +390,7 @@ function mul:wildcardMatches(a, matches)
 		if w.atLeast and w.atLeast > 0 then
 			totalAtLeast = totalAtLeast + w.atLeast
 			if totalAtLeast > 1 then
+--print("mul.wildcardMatches: wildcard needs at least 1, and we have none left - failing") 
 				return false
 			end
 		end
@@ -375,7 +402,7 @@ function mul:wildcardMatches(a, matches)
 			-- TODO make this work for sub-expressions?
 			if w.atLeast and w.atLeast > 0 then
 				if i > 1 then
---print("moving wildcard with 'atleast' from "..i.." to 1")
+--print("mul.wildcardMatches moving wildcard with 'atleast' from "..i.." to 1")
 					table.remove(wildcards, i)
 					table.insert(wildcards, 1, w)
 				end
@@ -392,10 +419,10 @@ function mul:wildcardMatches(a, matches)
 		-- test first, so we don't half-set the 'matches' before failing (TODO am I doing this elsewhere in :match()?)
 		-- TODO w.index IS NOT GUARANTEED, if we have (x):match(W(1) + W(2) * W(3)) and add and mul have wildcardMatches
 		-- in that case, you need to handle all possible sub-wildcardMatches specifically
---print("testing against previous matches table...")
+--print("mul.wildcardMatches: testing against previous matches table...")
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
---print("comparing lhs "..Verbose(cmpExpr))
+--print("mul.wildcardMatches: comparing lhs "..Verbose(cmpExpr))
 			if mul.is(w) then
 				error"match() doesn't work with unflattened mul's"
 			elseif Wildcard.is(w)
@@ -413,7 +440,7 @@ function mul:wildcardMatches(a, matches)
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
 			if Wildcard.is(w) then
---print('mul.wildcarddMatches setting '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or defaultValue))
+--print('mul.wildcardMatches setting index '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or defaultValue))
 				-- write matches.  should already be true.
 				cmpExpr:match(w, matches)
 				--matches[w.index] = cmpExpr
@@ -431,9 +458,11 @@ function mul:wildcardMatches(a, matches)
 	for wildcards in wildcards:permutations() do
 		wildcards = table(wildcards)
 		if checkWildcardPermutation(wildcards, matches) then
-			return matches[1] or true, table.unpack(matches, 1, table.maxn(matches))
+--print("mul.wildcardMatches: success")
+			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
 	end
+--print("mul.wildcardMatches: found no matching permutations - failing")
 	return false
 end
 
