@@ -229,7 +229,7 @@ ${{\frac{\partial}{\partial \theta}}\left( \left[\begin{matrix}  cos\left( {{{\t
 <br>
 volume element: 	$r$
 <br>
-volume integral: 	${{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}}$
+volume integral: 	${{{\frac{1}{2}}{({{\Delta (r^2)}})}}} {{\Delta \theta}}$
 <br>
 finite volume (0,0)-form:
 <br>
@@ -237,15 +237,15 @@ ${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\math
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}}}}} {{({{-{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{r}} {{\sqrt r}} {{{F^{r}(r_R)}}}} - {{{r}} {{\sqrt r}} {{{F^{r}(r_L)}}}}}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{r}} {{\sqrt r}} {{{F^{\theta}(\theta_R)}}}} - {{{r}} {{\sqrt r}} {{{F^{\theta}(\theta_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{\Delta (r^2)}})}}} {{\Delta \theta}}}}} {{({{-{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{r}} {{\sqrt r}} {{{F^{r}(r_R)}}}} - {{{r}} {{\sqrt r}} {{{F^{r}(r_L)}}}}}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d \hat{r}\left({{{{r}} {{\sqrt r}} {{{F^{\theta}(\theta_R)}}}} - {{{r}} {{\sqrt r}} {{{F^{\theta}(\theta_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \theta}}}}} {{({{-{{{({{{{r}} {{\sqrt r}} {{{F^{r}(r_R)}}}} - {{{r}} {{\sqrt r}} {{{F^{r}(r_L)}}}}})}} {{\Delta \theta}}}} - {{{({{{{r}} {{\sqrt r}} {{{F^{\theta}(\theta_R)}}}} - {{{r}} {{\sqrt r}} {{{F^{\theta}(\theta_L)}}}}})}} {{\Delta r}}}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{\Delta (r^2)}})}}} {{\Delta \theta}}}}} {{({{-{{{({{{{r}} {{\sqrt r}} {{{F^{r}(r_R)}}}} - {{{r}} {{\sqrt r}} {{{F^{r}(r_L)}}}}})}} {{\Delta \theta}}}} - {{{({{{{r}} {{\sqrt r}} {{{F^{\theta}(\theta_R)}}}} - {{{r}} {{\sqrt r}} {{{F^{\theta}(\theta_L)}}}}})}} {{\Delta r}}}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{{{r_L}}} \cdot {{{u(x_C, t_L)}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{{r_R}}} \cdot {{{u(x_C, t_L)}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{{S(x_C)}}} \cdot {{\Delta t}} \cdot {{{r_L}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{{S(x_C)}}} \cdot {{\Delta t}} \cdot {{{r_R}}} \cdot {{\frac{1}{{{r_L}} + {{r_R}}}}}} + {{{-2}} {{{F^{r}(r_R)}}} \cdot {{\Delta t}} \cdot {{r}} {{\sqrt r}} {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{2}} {{{F^{r}(r_L)}}} \cdot {{\Delta t}} \cdot {{r}} {{\sqrt r}} {{\frac{1}{{{{\Delta r}} \cdot {{{r_L}}}} + {{{\Delta r}} \cdot {{{r_R}}}}}}}} + {{{-2}} {{{F^{\theta}(\theta_R)}}} \cdot {{\Delta t}} \cdot {{r}} {{\sqrt r}} {{\frac{1}{{{{\Delta \theta}} \cdot {{{r_L}}}} + {{{\Delta \theta}} \cdot {{{r_R}}}}}}}} + {{{2}} {{{F^{\theta}(\theta_L)}}} \cdot {{\Delta t}} \cdot {{r}} {{\sqrt r}} {{\frac{1}{{{{\Delta \theta}} \cdot {{{r_L}}}} + {{{\Delta \theta}} \cdot {{{r_R}}}}}}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{{S(x_C)}}} \cdot {{\Delta t}}} + {{{-2}} {{{F^{r}(r_R)}}} \cdot {{\Delta t}} \cdot {{r}} {{\sqrt r}} {{\frac{1}{{\Delta (r^2)}}}}} + {{{2}} {{{F^{r}(r_L)}}} \cdot {{\Delta t}} \cdot {{r}} {{\sqrt r}} {{\frac{1}{{\Delta (r^2)}}}}} + {{{-2}} {{{F^{\theta}(\theta_R)}}} \cdot {{\Delta r}} \cdot {{\Delta t}} \cdot {{r}} {{\sqrt r}} {{\frac{1}{{\Delta (r^2)}}}} {{\frac{1}{\Delta \theta}}}} + {{{2}} {{{F^{\theta}(\theta_L)}}} \cdot {{\Delta r}} \cdot {{\Delta t}} \cdot {{r}} {{\sqrt r}} {{\frac{1}{{\Delta (r^2)}}}} {{\frac{1}{\Delta \theta}}}}}$
 <br>
 
 <br>

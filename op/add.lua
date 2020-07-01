@@ -898,7 +898,8 @@ add.rules = {
 			if #terms > 0 then
 				-- prune is still needed here -- it looks like only to recombine constants (and move them to the left of the muls) before the quadratic testing at the top of Factor is run
 				lastTerm = prune(lastTerm)
-				lastTerm = factor(lastTerm)
+-- causing stack overflow:				
+--				lastTerm = factor(lastTerm)
 			end
 			--]]
 

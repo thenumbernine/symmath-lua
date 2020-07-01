@@ -36,6 +36,7 @@ Integral.rules = {
 			local map = symmath.map
 			local log = symmath.log
 			local exp = symmath.exp
+			local sqrt = symmath.sqrt
 			local abs = symmath.abs
 
 			local int, x, start, finish = table.unpack(expr)
@@ -85,6 +86,7 @@ Integral.rules = {
 			local Wildcard = require 'symmath.Wildcard'
 			local sin = require 'symmath.sin'
 			local cos = require 'symmath.cos'
+			local atan = require 'symmath.atan'
 			local sinh = require 'symmath.sinh'
 			local cosh = require 'symmath.cosh'
 			local div = require 'symmath.op.div'
@@ -146,13 +148,32 @@ Integral.rules = {
 				-- https://en.wikipedia.org/wiki/List_of_integrals_of_rational_functions
 
 				
-				local dg, g = f:match(Wildcard(1) / Wildcard(2))
-				if dg then
-					if Constant.isValue((g:diff(x) - dg)(), 0) then
-						return c * log(abs(g))
+				-- int(f'(x)/f(x))
+				local dgpat, g = f:match(Wildcard(1) * (1 / Wildcard(2)))
+--print('dgpat', dgpat and Verbose(dgpat) or tostring(dgpat))
+--print('g', g and Verbose(g) or tostring(g))
+				if dgpat then
+					local dgcalc = g:diff(x)()
+					if not Constant.isValue(dgcalc, 0) then
+						local ratio = (dgcalc / dgpat)()
+--print('ratio', ratio and Verbose(ratio) or tostring(ratio))
+						if not ratio:dependsOn(x) then
+							return frac(c, ratio) * log(abs(g))
+						end
 					end
 				end
 
+				-- TODO when do we want powers in the denominator and when do we want expanded terms?
+				-- this is 1/(x^2 + W(1)), next is 1/(x*x + x*W(1)), the difference is whether the 'x' could be factored out and then re-distributed
+				local a = f:match(1 / (x^2 + Wildcard{1, cannotDependOn=x}))
+				if a then
+--					if symmath.set.negativeReal:contains(a) then
+						local sqrtnega = sqrt(-a)()
+						return frac(c, 2*sqrtnega) * log(abs( (x - sqrtnega)/(x + sqrtnega) ))
+--					end
+--					local sqrta = sqrt(a)()
+--					return frac(c, sqrta) * atan(frac(x, sqrta))
+				end
 
 				-- int(1/(x*(a*x+b)))
 				-- if int is :simplify() then this will match:
@@ -163,9 +184,11 @@ Integral.rules = {
 					return -frac(c, b) * log(abs((a * x + b) / x))
 				end
 
-				--[[ TODO this match is failing
-				local a, b, c = f:match(x / (Wildcard{1, cannotDependOn=x} * x * x + Wildcard{2, cannotDependOn=x} * x + Wildcard{3, cannotDependOn=x}))
+				--[[ this is an ugly conditional one
+				-- I should get better conditional (/piecewise?) expressions working before embarking on this.
+				local a, b, d = f:match(x / (Wildcard{1, cannotDependOn=x} * x * x + Wildcard{2, cannotDependOn=x} * x + Wildcard{3, cannotDependOn=x}))
 				if a then
+					
 				end
 				--]]
 

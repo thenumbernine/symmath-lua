@@ -269,7 +269,7 @@ MultiLine.lookupTable = {
 							sLR:insert(l)
 						end
 					end
-					for i=1,math.max(1, n - #sL + #sR) do
+					for i=1,math.max(1, n - #sL - #sR) do
 						sLR:insert''
 					end
 					if sL then
@@ -278,12 +278,14 @@ MultiLine.lookupTable = {
 						end
 					end
 				end
-				local maxwidth = sLR:mapi(function(l) return #l end):sup()
+				local maxwidth = sLR:mapi(function(l) return strlen(l) end):sup()
 				for i=1,#sLR do
-					sLR[i] = sLR[i] .. (' '):rep(maxwidth-#sLR[i])
+					sLR[i] = sLR[i] .. (' '):rep(maxwidth-strlen(sLR[i]))
 				end
 				n = math.max(n, #sLR)
 			end
+		
+			-- TODO n should be the max of either the inner height or the sL height + sR height + padding
 			
 			local intstr = {}
 			for i=1,n do
