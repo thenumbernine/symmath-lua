@@ -90,6 +90,9 @@ asserteq( (-(((-x*a - x*b)*-1))^frac(1,2)), -(sqrt(x) * sqrt(a+b)) )
 asserteq( ((((-x*a - x*b)/-1)/y)^frac(1,2)), (sqrt(x) * sqrt(a+b)) / sqrt(y) )
 asserteq( (-(((-x*a - x*b)/-1)/y)^frac(1,2)), -(sqrt(x) * sqrt(a+b)) / sqrt(y) )
 
+-- it would be nice if the final form of sin(x)^2 was exactly that.
+assert( printbr((sin(x)^2)()) == sin(x)^2 )
+
 ]=]), '\n')) do
 	env.exec(line)
 end

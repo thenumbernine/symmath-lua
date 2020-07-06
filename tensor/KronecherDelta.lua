@@ -10,7 +10,8 @@ delta^{a1 ... ak}_{b1 ... bk} = k! delta^a1_[b1 delta^a2_b2 ... delta^ak_bk] (an
 --]]
 return function(rank, symbol)
 	rank = rank or 1
-	
+	local Tensor = require 'symmath.Tensor'
+
 	local basis = Tensor.findBasisForSymbol(symbol)
 
 	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols

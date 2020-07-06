@@ -58,10 +58,12 @@ local function simplify(x, ...)
 		-- where to put this, since doing one or the other means the other or the one missing out on div etc simplifications
 		
 		if x.map then
+--printbr('testing for trig squares:', x)				
 			local sin = symmath.sin
 			local cos = symmath.cos
 			local Constant = symmath.Constant
 			local found
+			-- cos(x)^n => (1 - sin(x)^2) cos(x)^(n-2)
 			x = x:map(function(expr)
 				if cos.is(expr[1])
 				and Constant.is(expr[2])
@@ -73,15 +75,27 @@ local function simplify(x, ...)
 					then
 						local th = expr[1][1]
 						found = true
-						return (1 - sin(th:clone())^2) * cos(th:clone())^(n-2)
+--printbr'here cos->sin'
+						if n==2 then
+							return 1 - sin(th:clone())^2
+						elseif n==3 then
+							return (1 - sin(th:clone())^2) * cos(th:clone())
+						else
+							return (1 - sin(th:clone())^2) * cos(th:clone())^(n-2)
+						end
 					end
 				end
 			end)
 			if found then
+--printbr(x)				
 				x = expand(x, ...)
+--printbr(x)				
 				x = prune(x, ...)
+--printbr(x)				
 				x = factor(x, ...)
+--printbr(x)				
 				x = prune(x, ...)
+--printbr(x)
 			end
 
 			found = false
@@ -98,15 +112,27 @@ local function simplify(x, ...)
 					then
 						local th = expr[1][1]
 						found = true
-						return (1 - cos(th:clone())^2) * sin(th:clone())^(n-2)
+--printbr'here sin->cos'
+						if n==2 then
+							return 1 - cos(th:clone())^2
+						elseif n==3 then
+							return (1 - cos(th:clone())^2) * sin(th:clone())
+						else
+							return (1 - cos(th:clone())^2) * sin(th:clone())^(n-2)
+						end
 					end
 				end		
 			end)
 			if found then
+--printbr(x)
 				x = expand(x, ...)
+--printbr(x)
 				x = prune(x, ...)
+--printbr(x)
 				x = factor(x, ...)
+--printbr(x)
 				x = prune(x, ...)
+--printbr(x)
 			end
 		end
 

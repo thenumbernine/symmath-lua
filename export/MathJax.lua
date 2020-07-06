@@ -124,6 +124,7 @@ function MathJax.print(...)
 	print(...)
 	print'<br>'
 	io.stdout:flush()
+	return ...		-- why isn't this a thing with Lua print()?
 end
 
 local inst = MathJax()
