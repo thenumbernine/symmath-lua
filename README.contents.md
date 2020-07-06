@@ -718,5 +718,5 @@ fi
 Then run with
 
 ```
-symmath "print(Matrix{{u^2+1, u*v}, {u*v, v^2+1}}:inverse())"
+symmath " print ( Matrix { { u ^ 2 + 1, u * v } , { u * v , v ^ 2 + 1 } } : inverse ( ) ) "
 ```
