@@ -465,6 +465,54 @@ expected false to be true<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:77: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:76><br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:76: in function 'exec'<br>
-	./test.lua:97: in main chunk<br>
-	[C]: at 0x55d7970b71c0
+	./test.lua:106: in main chunk<br>
+	[C]: at 0x55658a8091c0
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert( not( Constant(0) == x * y ) )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert( Constant(0) ~= x * y )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( Constant(0):subst( (v'^k' * v'^l' * g'_kl'):eq(var'vsq') ), Constant(0) )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( Constant(0):replace( v'^k' * v'^l' * g'_kl', var'vsq' ), Constant(0) )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr( Constant(0):replace( v'^k' * v'^l', var'vsq' ) )</code>
+</td><td>
+$0$
+<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
 </td></tr>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Euler fluid equations - primitive form</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+assuming ${{{{ g}_i}_j}_{,t}} = {0}$
+<br>
+Euler fluid equations in hyperbolic conservation law form:
+<br>
+${{{ \rho}_{,t}} + {{\left( {{\rho}} \cdot {{{ v}^j}}\right)}_{;j}}} = {0}$
+<br>
+${{{\left( {{\rho}} \cdot {{{ v}^i}}\right)}_{,t}} + {{\left( {{{\rho}} \cdot {{{ v}^i}} {{{ v}^j}}} + {{{{{ g}^i}^j}} {{P}}}\right)}_{;j}}} = {0}$
+<br>
+${{{\left( {{{\frac{1}{2}}} {{\rho}} \cdot {{{ v}^k}} {{{ v}_k}}} + {{\frac{1}{\tilde\gamma}}{({P})}}\right)}_{,t}} + {{\left( {{{ v}^j}} {{({{{{\frac{1}{2}}} {{\rho}} \cdot {{{ v}^k}} {{{ v}_k}}} + {{\frac{1}{\tilde\gamma}}{({P})}} + {P}})}}\right)}_{;j}}} = {0}$
+<br>
+
+<br>
+${{ \rho}_{,t}} = {-{({{{{{ v}^j}} {{{ \rho}_{;j}}}} + {{{\rho}} \cdot {{{{ v}^j}_{;j}}}}})}}$
+<br>
+
+<br>
+${{{{{ \rho}_{,t}}} {{{ v}^i}}} + {{{\rho}} \cdot {{{{ v}^i}_{,t}}}} + {{{{ \rho}_{;j}}} {{{ v}^i}} {{{ v}^j}}} + {{{\rho}} \cdot {{{{ v}^i}_{;j}}} {{{ v}^j}}} + {{{\rho}} \cdot {{{ v}^i}} {{{{ v}^j}_{;j}}}} + {{{{{{ g}^i}^j}_{;j}}} {{P}}} + {{{{{ g}^i}^j}} {{{ P}_{;j}}}}} = {0}$
+<br>
+${{{ v}_i}_{,t}} = {{\frac{1}{\rho}}{({-{({{{ P}_{;i}} + {{{\rho}} \cdot {{{ v}^j}} {{{{ v}_i}_{;j}}}}})}})}}$
+<br>
+
+<br>
+${{{{P}} {{{{ v}^j}_{;j}}}} + {{{P}} {{{{ v}^j}_{;j}}} {{\frac{1}{\tilde\gamma}}}} + {{{\frac{1}{2}}} {{\rho}} \cdot {{{ v}^j}} {{{ v}^k}} {{{{ v}_k}_{;j}}}} + {{{\frac{1}{2}}} {{\rho}} \cdot {{{ v}^j}} {{{ v}_k}} {{{{ v}^k}_{;j}}}} + {{{\frac{1}{2}}} {{\rho}} \cdot {{{ v}^k}} {{{{ v}_k}_{,t}}}} + {{{\frac{1}{2}}} {{\rho}} \cdot {{{ v}_k}} {{{{ v}^k}_{,t}}}} + {{{{ P}_{,t}}} {{\frac{1}{\tilde\gamma}}}} + {{{{ v}^j}} {{{ P}_{;j}}} {{\frac{1}{\tilde\gamma}}}} + {{{{ v}^j}} {{{ P}_{;j}}}}} = {0}$
+<br>
+${{ P}_{,t}} = {-{({{{{P}} {{\gamma}} \cdot {{{{ v}^j}_{;j}}}} + {{{{ v}^j}} {{{ P}_{;j}}}}})}}$
+<br>
+
+<br>
+Euler fluid equations in primitive initial-value problem form:
+<br>
+${{ \rho}_{,t}} = {-{({{{{{ v}^j}} {{{ \rho}_{;j}}}} + {{{\rho}} \cdot {{{{ v}^j}_{;j}}}}})}}$
+<br>
+${{{ v}_i}_{,t}} = {{\frac{1}{\rho}}{({-{({{{ P}_{;i}} + {{{\rho}} \cdot {{{ v}^j}} {{{{ v}_i}_{;j}}}}})}})}}$
+<br>
+${{ P}_{,t}} = {-{({{{{P}} {{\gamma}} \cdot {{{{ v}^j}_{;j}}}} + {{{{ v}^j}} {{{ P}_{;j}}}}})}}$
+<br>
+
+<br>
+Euler fluid equations in primitive material-derivative form:
+<br>
+${{{ \rho}_{,t}} + {{{{ \rho}_{;j}}} {{{ v}^j}}}} = {-{{{\rho}} \cdot {{{{ v}^j}_{;j}}}}}$
+<br>
+${{{{ v}_i}_{,t}} + {{{{{ v}_i}_{;j}}} {{{ v}^j}}}} = {{\frac{1}{\rho}}{({-{{ P}_{;i}}})}}$
+<br>
+${{{ P}_{,t}} + {{{{ P}_{;j}}} {{{ v}^j}}}} = {-{{{P}} {{\gamma}} \cdot {{{{ v}^j}_{;j}}}}}$
+<br>
+
+<br>
+Compressible steady state:
+<br>
+${{{{ \rho}_{;j}}} {{{ v}^j}}} = {-{{{\rho}} \cdot {{{{ v}^j}_{;j}}}}}$
+<br>
+${{{{{ v}_i}_{;j}}} {{{ v}^j}}} = {{\frac{1}{\rho}}{({-{{ P}_{;i}}})}}$
+<br>
+${{{{ P}_{;j}}} {{{ v}^j}}} = {-{{{P}} {{\gamma}} \cdot {{{{ v}^j}_{;j}}}}}$
+<br>
+
+<br>
+Compressible steady state pressure gradient:
+<br>
+${{ P}_{;i}} = {-{{{{{ v}_i}_{;j}}} {{{ v}^j}} {{\rho}}}}$
+<br>
+
+<br>
+Substitute into pressure steady state when allowing compressibility:
+<br>
+${{{{ v}^j}} {{{{ v}_j}_{;k}}} {{{ v}^k}} {{\rho}}} = {{{P}} {{\gamma}} \cdot {{{{ v}^j}_{;j}}}}$
+<br>
+${{\frac{1}{\rho}}{({{{P}} {{\gamma}}})}} = {\frac{{{{ v}^j}} {{{{ v}_j}_{;k}}} {{{ v}^k}}}{{{ v}^j}_{;j}}}$
+<br>
+So the speed of sound $C_s = \sqrt{\frac{\gamma P}{\rho}} = \sqrt{\frac{v \cdot \nabla_v v}{\nabla \cdot v}}$
+<br>
+
+<br>
+Incompressible steady-state:
+<br>
+${{{{ \rho}_{;j}}} {{{ v}^j}}} = {0}$
+<br>
+${{{{{ v}_i}_{;j}}} {{{ v}^j}}} = {{\frac{1}{\rho}}{({-{{ P}_{;i}}})}}$
+<br>
+${{{{ P}_{;j}}} {{{ v}^j}}} = {0}$
+<br>
+
+<br>
+Incompressible steady state pressure gradient:
+<br>
+${{ P}_{;i}} = {-{{{{{ v}_i}_{;j}}} {{{ v}^j}} {{\rho}}}}$
+<br>
+
+<br>
+Substitute into pressure steady state when allowing compressibility:
+<br>
+${{{{ v}^j}} {{{{ v}_j}_{;k}}} {{{ v}^k}} {{\rho}}} = {0}$
+<br>
+
+<br>

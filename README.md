@@ -737,6 +737,8 @@ Output CDN URLs:
 
 [tests/output/Building Curvature by ADM](https://thenumbernine.github.io/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
 
+[tests/output/Divergence Theorem in curvilinear coordinates](https://thenumbernine.github.io/symmath/tests/output/Divergence%20Theorem%20in%20curvilinear%20coordinates.html)
+
 [tests/output/EFE discrete solution - 1-var](https://thenumbernine.github.io/symmath/tests/output/EFE%20discrete%20solution%20%2d%201%2dvar.html)
 
 [tests/output/EFE discrete solution - 2-var](https://thenumbernine.github.io/symmath/tests/output/EFE%20discrete%20solution%20%2d%202%2dvar.html)
@@ -744,6 +746,8 @@ Output CDN URLs:
 [tests/output/Einstein field equations - expression](https://thenumbernine.github.io/symmath/tests/output/Einstein%20field%20equations%20%2d%20expression.html)
 
 [tests/output/Ernst](https://thenumbernine.github.io/symmath/tests/output/Ernst.html)
+
+[tests/output/Euler Angles in Higher Dimensions](https://thenumbernine.github.io/symmath/tests/output/Euler%20Angles%20in%20Higher%20Dimensions.html)
 
 [tests/output/Euler fluid equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Euler%20fluid%20equations%20%2d%20flux%20eigenvectors.html)
 
@@ -771,6 +775,8 @@ Output CDN URLs:
 
 [tests/output/Kaluza-Klein](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein.html)
 
+[tests/output/Kerr metric of Earth](https://thenumbernine.github.io/symmath/tests/output/Kerr%20metric%20of%20Earth.html)
+
 [tests/output/Kerr-Schild - dense](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20%2d%20dense.html)
 
 [tests/output/Kerr-Schild - expression](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20%2d%20expression.html)
@@ -784,6 +790,8 @@ Output CDN URLs:
 [tests/output/MHD symmetrization](https://thenumbernine.github.io/symmath/tests/output/MHD%20symmetrization.html)
 
 [tests/output/Maxwell equations in hyperbolic conservation form](https://thenumbernine.github.io/symmath/tests/output/Maxwell%20equations%20in%20hyperbolic%20conservation%20form.html)
+
+[tests/output/Navier-Stokes-Wilcox - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Navier%2dStokes%2dWilcox%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/Newton method](https://thenumbernine.github.io/symmath/tests/output/Newton%20method.html)
 

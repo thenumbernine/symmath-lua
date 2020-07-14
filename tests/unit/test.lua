@@ -5,10 +5,12 @@ require 'symmath.tests.unit.unit'(env, 'test')
 
 env.a = symmath.Variable('a')
 env.b = symmath.Variable('b')
-env.x = symmath.Variable('x')
-env.y = symmath.Variable('y')
+env.g = symmath.Variable('g')
 env.s = symmath.Variable('s')
 env.t = symmath.Variable('t')
+env.v = symmath.Variable('v')
+env.x = symmath.Variable('x')
+env.y = symmath.Variable('y')
 
 env.gUxx = var('\\gamma^{xx}')
 env.gUxy = var('\\gamma^{xy}')
@@ -92,6 +94,13 @@ asserteq( (-(((-x*a - x*b)/-1)/y)^frac(1,2)), -(sqrt(x) * sqrt(a+b)) / sqrt(y) )
 
 -- it would be nice if the final form of sin(x)^2 was exactly that.
 assert( printbr((sin(x)^2)()) == sin(x)^2 )
+
+assert( not( Constant(0) == x * y ) )
+assert( Constant(0) ~= x * y )
+asserteq( Constant(0):subst( (v'^k' * v'^l' * g'_kl'):eq(var'vsq') ), Constant(0) )
+asserteq( Constant(0):replace( v'^k' * v'^l' * g'_kl', var'vsq' ), Constant(0) )
+printbr( Constant(0):replace( v'^k' * v'^l', var'vsq' ) )
+asserteq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )
 
 ]=]), '\n')) do
 	env.exec(line)

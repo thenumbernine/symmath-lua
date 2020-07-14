@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Navier-Stokes-Wilcox equations - flux eigenvectors</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+From 2012 Petrova, "Finite Volume Methods- Powerful Means of Engineering Design"<br>
+<br>
+
+$\bar\phi = \frac{1}{\Delta t} \int_{t_0}^{t_0 + \Delta t} \phi dt = $ 
+Reynolds averaging over time.<br>
+<br>
+
+$\tilde \phi = \frac{1}{\bar{\rho}} \frac{1}{\Delta t} \int_{t_0}^{t_0 + \Delta t} (\rho \phi) dt = $ 
+Favre averaging.<br>
+<br>
+
+
+<br>
+variables:
+<br>
+${ n}^i$	= flux surface normal, in units of $[1]$
+<br>
+$\bar{\rho}$	= Reynolds-averaged density, in units of 	$\frac{kg}{{m}^{3}}$
+<br>
+${ \tilde{v}}^i$	= Favre-averaged velocity, in units of 	${\frac{1}{s}}{({m})}$
+<br>
+${{ \bar{m}}^i} = {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}$	$= \overline{\rho v^i} =$  Reynolds-averaged momentum, in units of 	$\frac{kg}{{{{m}^{2}}} {{s}}}$
+<br>
+$k$	= turbulent kinetic energy, in units of 	$\frac{{m}^{2}}{{s}^{2}}$
+<br>
+$\omega$	= specific turbulent dissipation rate, in units of ???
+<br>
+$\tilde{T}$	= Favre-averaged temperature, in units of 	$K$
+<br>
+${C_v}$	= constant-volume heat capacity, in units of 	$\frac{{{K}} {{{s}^{2}}}}{{m}^{2}}$
+<br>
+$R$	= specific heat constant, in units of 	$\frac{{m}^{2}}{{{K}} {{{s}^{2}}}}$
+<br>
+${\bar{P}} = {{{\bar{\rho}}} \cdot {{R}} {{\tilde{T}}}}$	= Reynolds-averaged pressure, in units of 	$\frac{kg}{{{m}} {{{s}^{2}}}}$
+<br>
+${P^*}$	=	${\bar{P}} + {{{\frac{2}{3}}} {{\bar{\rho}}} \cdot {{k}}}$	=	${\frac{1}{3}}{({{{\bar{\rho}}} \cdot {{({{{{3}} {{R}} {{\tilde{T}}}} + {{{2}} {{k}}}})}}})}$	= static pressure, in units of 	$\frac{kg}{{{m}} {{{s}^{2}}}}$
+<br>
+${{ g}_i}_j$	= metric tensor, in units of $[1]$
+<br>
+${{(\tilde{v})^2}} = {{{{ \tilde{v}}^k}} {{{ \tilde{v}}^l}} {{{{ g}_k}_l}}}$	= Favre-averaged velocity, norm squared, in units of	$\frac{{m}^{2}}{{s}^{2}}$
+<br>
+
+<br>
+${{\tilde{e}_{kin}}} = {{{\frac{1}{2}}} {{{ \tilde{v}}^k}} {{{ \tilde{v}}^l}} {{{{ g}_k}_l}}}$	= Favre-averaged specific kinetic energy, in units of	$\frac{{m}^{2}}{{s}^{2}}$
+<br>
+
+<br>
+${\tilde{e}_{int}}$	=	${{{C_v}}} \cdot {{\tilde{T}}}$	=	$\frac{{{{C_v}}} \cdot {{({{{{3}} {{{P^*}}}} - {{{2}} {{\bar{\rho}}} \cdot {{k}}}})}}}{{{3}} {{R}} {{\bar{\rho}}}}$	= Favre-averaged specific internal energy, in units of	$\frac{{m}^{2}}{{s}^{2}}$
+<br>
+
+<br>
+${{\tilde{e}_{total}}} = {{{\tilde{e}_{int}}} + {{\tilde{e}_{kin}}}}$	= Favre-averaged densitized total energy, in units of	$\frac{kg}{{{m}} {{{s}^{2}}}}$
+<br>
+${{\tilde{e}_{total}}} = {{{{{C_v}}} \cdot {{{P^*}}} \cdot {{\frac{1}{R}}} {{\frac{1}{\bar{\rho}}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{k}} {{\frac{1}{R}}}} + {{{\frac{1}{2}}} {{{(\tilde{v})^2}}}}}$
+<br>
+
+<br>
+Conservative and primitive variables:
+<br>
+${{ W}^I} = {\left[\begin{matrix}  \bar{\rho} \\  { \tilde{v}}^i \\  {P^*} \\  k \\  \omega\end{matrix}\right]}$
+<br>
+${{ U}^I} = {\left[\begin{matrix}  \bar{\rho} \\  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} \\  {{\bar{\rho}}} \cdot {{{\tilde{e}_{total}}}} \\  {{\bar{\rho}}} \cdot {{k}} \\  {{\bar{\rho}}} \cdot {{\omega}}\end{matrix}\right]}$
+<br>
+Partial of conservative quantities wrt primitives:
+<br>
+${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\partial \bar{\rho}}{\partial \bar{\rho}} &  \frac{\partial \bar{\rho}}{\partial { \tilde{v}}^j} &  \frac{\partial \bar{\rho}}{\partial {P^*}} &  \frac{\partial \bar{\rho}}{\partial k} &  \frac{\partial \bar{\rho}}{\partial \omega} \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{{\tilde{e}_{total}}}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{{\tilde{e}_{total}}}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{{\tilde{e}_{total}}}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{{\tilde{e}_{total}}}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{{\tilde{e}_{total}}}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right)\end{matrix}\right]}$
+<br>
+${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\partial \bar{\rho}}{\partial \bar{\rho}} &  \frac{\partial \bar{\rho}}{\partial { \tilde{v}}^j} &  \frac{\partial \bar{\rho}}{\partial {P^*}} &  \frac{\partial \bar{\rho}}{\partial k} &  \frac{\partial \bar{\rho}}{\partial \omega} \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{({{{{\frac{1}{2}}} {{{ \tilde{v}}^k}} {{{ \tilde{v}}^l}} {{{{ g}_k}_l}}} + {\frac{{{{C_v}}} \cdot {{({{{{3}} {{{P^*}}}} - {{{2}} {{\bar{\rho}}} \cdot {{k}}}})}}}{{{3}} {{R}} {{\bar{\rho}}}}}})}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{({{{{\frac{1}{2}}} {{{ \tilde{v}}^k}} {{{ \tilde{v}}^l}} {{{{ g}_k}_l}}} + {\frac{{{{C_v}}} \cdot {{({{{{3}} {{{P^*}}}} - {{{2}} {{\bar{\rho}}} \cdot {{k}}}})}}}{{{3}} {{R}} {{\bar{\rho}}}}}})}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{({{{{\frac{1}{2}}} {{{ \tilde{v}}^k}} {{{ \tilde{v}}^l}} {{{{ g}_k}_l}}} + {\frac{{{{C_v}}} \cdot {{({{{{3}} {{{P^*}}}} - {{{2}} {{\bar{\rho}}} \cdot {{k}}}})}}}{{{3}} {{R}} {{\bar{\rho}}}}}})}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{({{{{\frac{1}{2}}} {{{ \tilde{v}}^k}} {{{ \tilde{v}}^l}} {{{{ g}_k}_l}}} + {\frac{{{{C_v}}} \cdot {{({{{{3}} {{{P^*}}}} - {{{2}} {{\bar{\rho}}} \cdot {{k}}}})}}}{{{3}} {{R}} {{\bar{\rho}}}}}})}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{({{{{\frac{1}{2}}} {{{ \tilde{v}}^k}} {{{ \tilde{v}}^l}} {{{{ g}_k}_l}}} + {\frac{{{{C_v}}} \cdot {{({{{{3}} {{{P^*}}}} - {{{2}} {{\bar{\rho}}} \cdot {{k}}}})}}}{{{3}} {{R}} {{\bar{\rho}}}}}})}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{k}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{\omega}}}\right)\end{matrix}\right]}$
+<br>
+${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  1 &  0 &  0 &  0 &  0 \\  { \tilde{v}}^i &  {{\bar{\rho}}} \cdot {{{{ \delta}^i}_j}} &  0 &  0 &  0 \\  {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{k}} {{\frac{1}{R}}}} + {{{\frac{1}{2}}} {{{(\tilde{v})^2}}}} &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}_j}} &  {{{C_v}}} \cdot {{\frac{1}{R}}} &  {{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{\frac{1}{R}}} &  0 \\  k &  0 &  0 &  \bar{\rho} &  0 \\  \omega &  0 &  0 &  0 &  \bar{\rho}\end{matrix}\right]}$
+<br>
+Expanded:
+<br>
+${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  1 &  0 &  0 &  0 &  0 &  0 &  0 \\  { \tilde{v}}^1 &  \bar{\rho} &  0 &  0 &  0 &  0 &  0 \\  { \tilde{v}}^2 &  0 &  \bar{\rho} &  0 &  0 &  0 &  0 \\  { \tilde{v}}^3 &  0 &  0 &  \bar{\rho} &  0 &  0 &  0 \\  \frac{{-{{{4}} {{{C_v}}} \cdot {{k}}}} + {{{3}} {{{(\tilde{v})^2}}} \cdot {{R}}}}{{{6}} {{R}}} &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}_1}} &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}_2}} &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}_3}} &  {\frac{1}{R}}{({{C_v}})} &  \frac{-{{{2}} {{{C_v}}} \cdot {{\bar{\rho}}}}}{{{3}} {{R}}} &  0 \\  k &  0 &  0 &  0 &  0 &  \bar{\rho} &  0 \\  \omega &  0 &  0 &  0 &  0 &  0 &  \bar{\rho}\end{matrix}\right]}$
+<br>
+${\frac{\partial { W}^I}{\partial { U}^J}} = {\left[\begin{matrix}  1 &  0 &  0 &  0 &  0 &  0 &  0 \\  {\frac{1}{\bar{\rho}}}{({-{{ \tilde{v}}^1}})} &  \frac{1}{\bar{\rho}} &  0 &  0 &  0 &  0 &  0 \\  {\frac{1}{\bar{\rho}}}{({-{{ \tilde{v}}^2}})} &  0 &  \frac{1}{\bar{\rho}} &  0 &  0 &  0 &  0 \\  {\frac{1}{\bar{\rho}}}{({-{{ \tilde{v}}^3}})} &  0 &  0 &  \frac{1}{\bar{\rho}} &  0 &  0 &  0 \\  \frac{{{R}} {{{(\tilde{v})^2}}}}{{{2}} {{{C_v}}}} &  {\frac{1}{{C_v}}}{({-{{{R}} {{{ \tilde{v}}_1}}}})} &  {\frac{1}{{C_v}}}{({-{{{R}} {{{ \tilde{v}}_2}}}})} &  {\frac{1}{{C_v}}}{({-{{{R}} {{{ \tilde{v}}_3}}}})} &  {\frac{1}{{C_v}}}{({R})} &  \frac{2}{3} &  0 \\  {\frac{1}{\bar{\rho}}}{({-{k}})} &  0 &  0 &  0 &  0 &  \frac{1}{\bar{\rho}} &  0 \\  {\frac{1}{\bar{\rho}}}{({-{\omega}})} &  0 &  0 &  0 &  0 &  0 &  \frac{1}{\bar{\rho}}\end{matrix}\right]}$
+<br>
+${\frac{\partial { W}^I}{\partial { U}^J}} = {\left[\begin{matrix}  1 &  0 &  0 &  0 &  0 \\  {\frac{1}{\bar{\rho}}}{({-{{ \tilde{v}}^i}})} &  {\frac{1}{\bar{\rho}}}{({{{ \delta}^i}_j})} &  0 &  0 &  0 \\  {{\frac{1}{2}}} {{{\frac{1}{{C_v}}}{({R})}}} {{{(\tilde{v})^2}}} &   {-{{\frac{1}{{C_v}}}{({R})}}} {{{ \tilde{v}}_j}} &  {\frac{1}{{C_v}}}{({R})} &  \frac{2}{3} &  0 \\  {\frac{1}{\bar{\rho}}}{({-{k}})} &  0 &  0 &  \frac{1}{\bar{\rho}} &  0 \\  {\frac{1}{\bar{\rho}}}{({-{\omega}})} &  0 &  0 &  0 &  \frac{1}{\bar{\rho}}\end{matrix}\right]}$
+<br>
+
+<br>
+Flux:
+<br>
+${{ F}^I} = {\left[\begin{matrix}  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^j}} {{{ n}_j}} \\  {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ \tilde{v}}^j}} {{{ n}_j}}} + {{{{ n}^i}} {{{P^*}}}} \\  {{{ \tilde{v}}^j}} {{{ n}_j}} {{({{{{\bar{\rho}}} \cdot {{{\tilde{e}_{total}}}}} + {{P^*}}})}} \\  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^j}} {{{ n}_j}} {{k}} \\  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^j}} {{{ n}_j}} {{\omega}}\end{matrix}\right]}$
+<br>
+${{ F}^I} = {\left[\begin{matrix}  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^j}} {{{ n}_j}} \\  {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ \tilde{v}}^j}} {{{ n}_j}}} + {{{{P^*}}} \cdot {{{ n}^i}}} \\  {{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^j}} {{{ n}_j}}} + {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ \tilde{v}}^j}} {{{ n}_j}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^j}} {{{ n}_j}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ \tilde{v}}^j}} {{{ n}_j}}} \\  {{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^j}} {{{ n}_j}} \\  {{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ \tilde{v}}^j}} {{{ n}_j}}\end{matrix}\right]}$
+<br>
+
+<br>
+Flux derivative wrt primitive variables:
+<br>
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{P^*}}} \cdot {{{ n}^i}}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{P^*}}} \cdot {{{ n}^i}}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{P^*}}} \cdot {{{ n}^i}}}}\right) &  {\frac{\partial}{\partial k}}\left({{{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{P^*}}} \cdot {{{ n}^i}}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{P^*}}} \cdot {{{ n}^i}}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}}\right) &  {\frac{\partial}{\partial k}}\left({{{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) \\  {\frac{\partial}{\partial \bar{\rho}}}\left({{{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial { \tilde{v}}^j}}\left({{{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial {P^*}}}\left({{{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial k}}\left({{{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right) &  {\frac{\partial}{\partial \omega}}\left({{{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}}\right)\end{matrix}\right]}$
+<br>
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ \tilde{v}}^k}} {{{ n}_k}} &  {{\bar{\rho}}} \cdot {{{ n}_j}} &  0 &  0 &  0 \\  {{{ \tilde{v}}^i}} {{{ \tilde{v}}^k}} {{{ n}_k}} &  {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ n}_j}}} + {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} {{{{ \delta}^i}_j}}} &  { n}^i &  0 &  0 \\  {{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} &  {{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{\bar{\rho}}} \cdot {{{ n}_j}}} + {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ n}_j}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ n}_j}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ n}_j}}} &  {{{{C_v}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}}} + {{{{ \tilde{v}}^k}} {{{ n}_k}}} &  {{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} {{\frac{1}{R}}} &  0 \\  {{k}} {{{ \tilde{v}}^k}} {{{ n}_k}} &  {{\bar{\rho}}} \cdot {{k}} {{{ n}_j}} &  0 &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} &  0 \\  {{\omega}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}} &  {{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ n}_j}} &  0 &  0 &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^k}} {{{ n}_k}}\end{matrix}\right]}$
+<br>
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ \tilde{v}}^a}} {{{ n}_a}} &  {{\bar{\rho}}} \cdot {{{ n}_j}} &  0 &  0 &  0 \\  {{{ \tilde{v}}^a}} {{{ \tilde{v}}^i}} {{{ n}_a}} &  {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} {{{{ \delta}^i}_j}}} + {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ n}_j}}} &  { n}^i &  0 &  0 \\  {{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{k}} {{{ \tilde{v}}^a}} {{{ n}_a}} {{\frac{1}{R}}}} &  {{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{\bar{\rho}}} \cdot {{{ n}_j}}} + {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ n}_j}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ n}_j}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ n}_j}}} &  {{{{C_v}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} {{\frac{1}{R}}}} + {{{{ \tilde{v}}^a}} {{{ n}_a}}} &  {{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} {{\frac{1}{R}}} &  0 \\  {{k}} {{{ \tilde{v}}^a}} {{{ n}_a}} &  {{\bar{\rho}}} \cdot {{k}} {{{ n}_j}} &  0 &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} &  0 \\  {{\omega}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} &  {{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ n}_j}} &  0 &  0 &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}}\end{matrix}\right]}$
+<br>
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ \tilde{v}}^a}} {{{ n}_a}} &  {{\bar{\rho}}} \cdot {{{ n}_j}} &  0 &  0 &  0 \\  {{{ \tilde{v}}^a}} {{{ \tilde{v}}^i}} {{{ n}_a}} &  {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} {{{{ \delta}^i}_j}}} + {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ n}_j}}} &  { n}^i &  0 &  0 \\  {{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{k}} {{{ \tilde{v}}^a}} {{{ n}_a}} {{\frac{1}{R}}}} &  {{{\frac{1}{2}}} {{{(\tilde{v})^2}}} \cdot {{\bar{\rho}}} \cdot {{{ n}_j}}} + {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ n}_j}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ n}_j}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ n}_j}}} &  {{{{C_v}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} {{\frac{1}{R}}}} + {{{{ \tilde{v}}^a}} {{{ n}_a}}} &  {{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} {{\frac{1}{R}}} &  0 \\  {{k}} {{{ \tilde{v}}^a}} {{{ n}_a}} &  {{\bar{\rho}}} \cdot {{k}} {{{ n}_j}} &  0 &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} &  0 \\  {{\omega}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}} &  {{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ n}_j}} &  0 &  0 &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^a}} {{{ n}_a}}\end{matrix}\right]}$
+<br>
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ \tilde{v}}^b}} {{{ n}_b}} &  {{\bar{\rho}}} \cdot {{{ n}_j}} &  0 &  0 &  0 \\  {{{ \tilde{v}}^b}} {{{ \tilde{v}}^i}} {{{ n}_b}} &  {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^b}} {{{ n}_b}} {{{{ \delta}^i}_j}}} + {{{\bar{\rho}}} \cdot {{{ \tilde{v}}^i}} {{{ n}_j}}} &  { n}^i &  0 &  0 \\  {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{k}} {{{ \tilde{v}}^c}} {{{ n}_c}} {{\frac{1}{R}}}} + {{{\frac{1}{2}}} {{{ \tilde{v}}^c}} {{{ \tilde{v}}^d}} {{{ \tilde{v}}_d}} {{{ n}_c}}} &  {{{{C_v}}} \cdot {{{P^*}}} \cdot {{{ n}_j}} {{\frac{1}{R}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{k}} {{{ n}_j}} {{\frac{1}{R}}}} + {{{{P^*}}} \cdot {{{ n}_j}}} + {{{\frac{1}{2}}} {{\bar{\rho}}} \cdot {{{ \tilde{v}}^a}} {{{ \tilde{v}}_a}} {{{ n}_j}}} &  {{{{C_v}}} \cdot {{{ \tilde{v}}^b}} {{{ n}_b}} {{\frac{1}{R}}}} + {{{{ \tilde{v}}^b}} {{{ n}_b}}} &  {{-2}} \cdot {{\frac{1}{3}}} {{{C_v}}} \cdot {{\bar{\rho}}} \cdot {{{ \tilde{v}}^b}} {{{ n}_b}} {{\frac{1}{R}}} &  0 \\  {{k}} {{{ \tilde{v}}^b}} {{{ n}_b}} &  {{\bar{\rho}}} \cdot {{k}} {{{ n}_j}} &  0 &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^b}} {{{ n}_b}} &  0 \\  {{\omega}} \cdot {{{ \tilde{v}}^b}} {{{ n}_b}} &  {{\bar{\rho}}} \cdot {{\omega}} \cdot {{{ n}_j}} &  0 &  0 &  {{\bar{\rho}}} \cdot {{{ \tilde{v}}^b}} {{{ n}_b}}\end{matrix}\right]}$
+<br>
+
+<br>

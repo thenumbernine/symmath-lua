@@ -86,8 +86,8 @@ mul.removeIfContains = require 'symmath.commutativeRemove'
 function mul.match(a, b, matches)
 	local Wildcard = require 'symmath.Wildcard'
 	local Constant = require 'symmath.Constant'
---local SingleLine = require 'symmath.export.SingleLine'
---local Verbose = require 'symmath.export.Verbose'
+local SingleLine = require 'symmath.export.SingleLine'
+local Verbose = require 'symmath.export.Verbose'
 --print("mul.match(a="..Verbose(a)..", b="..Verbose(b)..", matches={"..(matches or table()):mapi(Verbose):concat', '..'}) begin')
 
 	matches = matches or table()
@@ -263,10 +263,10 @@ local tab = (' '):rep(indent)
 --print(tab.."b1match "..SingleLine(b1match))
 				local matchesForThisSize = table(matches)
 --print(tab.."matchesForThisSize["..b1.index.."] was "..(matchesForThisSize[b1.index] and SingleLine(matchesForThisSize[b1.index]) or 'nil'))
--- this is going to get into a situation of comparing all possible permutations of what's left
--- TODO get rid of this whole recursion system, and just use a permutation iterator
--- then keep trying to match wildcards against what is left until things work
--- you know, with nested wildcard/nonwildcards, we might as well just do this for everything.
+				-- this is going to get into a situation of comparing all possible permutations of what's left
+				-- TODO get rid of this whole recursion system, and just use a permutation iterator
+				-- then keep trying to match wildcards against what is left until things work
+				-- you know, with nested wildcard/nonwildcards, we might as well just do this for everything.
 				if b1match:match(b1, matchesForThisSize) then
 --print(tab.."matchesForThisSize["..b1.index.."] is now "..SingleLine(matchesForThisSize[b1.index]))
 					local suba = a:sub(matchSize+1)
@@ -301,11 +301,11 @@ local tab = (' '):rep(indent)
 	--return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
--- copy of op/add.wildcardMatches, just like match()
+	-- copy of op/add.wildcardMatches, just like match()
 function mul:wildcardMatches(a, matches)
 	local Constant = require 'symmath.Constant'
---local SingleLine = require 'symmath.export.SingleLine'
---local Verbose = require 'symmath.export.Verbose'
+local SingleLine = require 'symmath.export.SingleLine'
+local Verbose = require 'symmath.export.Verbose'
 --print("mul.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'})')
 
 	-- TODO move this to Expression
@@ -343,7 +343,10 @@ function mul:wildcardMatches(a, matches)
 	-- Constant(0):match(2 * Wildcard(1))
 	-- 2 is a non-wildcard, Wildcard(1) is a wildcard
 	-- but as long as we're inside mul, we just need to match a wildcard to 0
-	if Constant.isValue(a, 0) then
+	if Constant.isValue(a, 0) 
+	-- make sure we have a single wildcard in the mix 
+	and (#nonWildcards == 0 or #wildcards > 0)
+	then
 		local zeroMatches = table(matches)
 		local failed
 		-- make sure the matches can match to zero (i.e. no 'dependsOn=x')

@@ -107,6 +107,8 @@ assertalleq({(x * y):match(W(1) * W{2, atLeast=1})}, {x, y})
 
 assertalleq({(x * y):match(W{1, atMost=1} * W{2, atMost=1})}, {x, y})
 
+assert( not( Constant(0):match(x) ) )
+assert( not( Constant(0):match(x * y) ) )
 
 asserteq( zero:match(W(1) * x), zero )
 assert( not zero:match(W{1, dependsOn=x} * x) )
