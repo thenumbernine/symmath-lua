@@ -348,9 +348,6 @@ dF_dW_def = betterSimplify(dF_dW_def)
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 printbr()
 
-os.exit()
-
-
 
 printbr'Flux derivative wrt conserved variables:'
 printbr(F'^I':diff(U'^J'):eq(F'^I':diff(W'^L') * W'^L':diff(U'^J')))
@@ -371,58 +368,36 @@ printbr()
 printbr'Acoustic matrix:'
 
 local A = var'A'
-local A_lhs = A'^I_J' + n'_a' * v'^a' * delta'^I_J'
+local A_lhs = A'^I_J' + n'_a' * vTilde'^a' * delta'^I_J'
 
 printbr(A_lhs:eq(W'^I':diff(U'^K') * F'^K':diff(W'^J')))
 
 local A_plus_delta_def = dW_dU_def:reindex{jk='km'} * dF_dW_def:reindex{ik='kn'}
 printbr(A_lhs:eq(A_plus_delta_def))
 
-A_plus_delta_def = A_plus_delta_def()
+A_plus_delta_def = betterSimplify(A_plus_delta_def)
 printbr(A_lhs:eq(A_plus_delta_def))
 
 -- TODO if you don't do :factorDivision() before :tidyIndexes() then you can get mismatching indexes, and the subsequent :simplify() will cause a stack overflow
 A_plus_delta_def = betterSimplify(simplifyMetrics(A_plus_delta_def))
 A_plus_delta_def = betterSimplify(A_plus_delta_def:tidyIndexes())
 A_plus_delta_def = A_plus_delta_def  
-	:replace(n'^a' * v'_a', n'_a' * v'^a')
-	:replace(v'^a' * v'_a', vSq_var)
-	:subst(H_total_wrt_W, tildeGamma_def)()
+	:replace(n'^a' * vTilde'_a', n'_a' * vTilde'^a')
+	:replace(vTilde'^a' * vTilde'_a', vTildeSq_var)
+	:replace(vTilde'^c' * vTilde'_c', vTildeSq_var)
+	:replace(vTilde'^e' * vTilde'_e', vTildeSq_var)
+--	:subst(H_total_wrt_W, tildeGamma_def)()
+A_plus_delta_def = betterSimplify(A_plus_delta_def)
 printbr(A_lhs:eq(A_plus_delta_def))
 
-local A_def = (A_plus_delta_def - Matrix.identity(3) * Matrix:lambda({3,3}, function(i,j)
-	return i~=j and 0 or (n'_a' * v'^a' * (i==2 and delta'^i_j' or 1)) 
+local A_def = (A_plus_delta_def - Matrix.identity(5) * Matrix:lambda({5,5}, function(i,j)
+	return i~=j and 0 or (n'_a' * vTilde'^a' * (i==2 and delta'^i_j' or 1)) 
 end))()
 printbr(A'^I_J':eq(A_def))
 printbr()
 
-
-local function expandMatrix3to5(A)
-	return Matrix:lambda({5,5}, function(i,j)
-		local remap = {1,2,2,2,3}
-		local replace = {nil, 1,2,3, nil}
-		return A[remap[i]][remap[j]]:map(function(x)
-			if x == delta'^i_j' then
-				return i == j and 1 or 0
-			end
-		end):map(function(x)
-			if TensorIndex.is(x) then
-				if x.symbol == 'i' then
-					x = x:clone()
-					x.symbol = assert(replace[i])
-					return x
-				elseif x.symbol == 'j' then
-					x = x:clone()
-					x.symbol = assert(replace[j])
-					return x
-				end
-			end
-		end)()
-	end)
-end
-
 printbr'Acoustic matrix, expanded:'
-local A_expanded = expandMatrix3to5(A_def)
+local A_expanded = expandMatrix5to7(A_def)
 
 printbr(A'^I_J':eq(A_expanded))
 printbr()
@@ -440,13 +415,20 @@ local nLenSq_def = (nLen^2):eq(n'^1' * n'_1' + n'^2' * n'_2' + n'^3' * n'_3')
 
 printbr(A'^I_J':eq(var'(R_A)''^I_M' * var'(\\Lambda_A)''^M_N' * var'(L_A)''^N_J'))
 
+--[[
 local P_for_Cs = Cs_def:solve(P)
-
 A_eig.R = A_eig.R:subst(nLenSq_def:switch(), P_for_Cs)()
 A_eig.Lambda = A_eig.Lambda:subst(nLenSq_def:switch(), P_for_Cs)()
 A_eig.L = A_eig.L:subst(nLenSq_def:switch(), P_for_Cs)()
+--]]
+
+for k,v in pairs(A_eig) do
+	printbr(k, '=', v)
+end
 
 printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
+
+os.exit()
 
 local P = Matrix.permutation(5,1,2,3,4)
 local S = Matrix.diagonal(Cs^2, 1, n'_1' / rho, n'_1' / rho, Cs^2)

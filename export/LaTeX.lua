@@ -90,10 +90,10 @@ LaTeX.lookupTable = {
 			'\\right)'}
 	end,
 	[require 'symmath.sqrt'] = function(self, expr)
-		return table{'\\sqrt', self:apply(expr[1])}
+		return table{'\\sqrt', table(self:apply(expr[1]), {force=true})}
 	end,
 	[require 'symmath.cbrt'] = function(self, expr)
-		return table{'\\sqrt[3]', self:apply(expr[1])}
+		return table{'\\sqrt[3]', table(self:apply(expr[1]), {force=true})}
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		local res = table{'-'}:append(self:wrapStrOfChildWithParenthesis(expr, 1))
