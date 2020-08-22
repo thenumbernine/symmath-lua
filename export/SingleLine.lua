@@ -69,9 +69,8 @@ SingleLine.lookupTable = {
 				name = cbrtname
 			end
 		end
-		return name..'(' .. table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x)
+		return name..'(' .. table.mapi(expr, function(x)
+			return (self:apply(x))
 		end):concat(', ') .. ')'
 	end,
 	[require 'symmath.abs'] = function(self, expr)
@@ -81,8 +80,7 @@ SingleLine.lookupTable = {
 		return '-'..self:wrapStrOfChildWithParenthesis(expr, 1)
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
-		return table.map(expr, function(x,i)
-			if type(i) ~= 'number' then return end
+		return table.mapi(expr, function(x,i)
 			return self:wrapStrOfChildWithParenthesis(expr, i)
 		end):concat(expr:getSepStr())
 	end,
@@ -128,13 +126,14 @@ SingleLine.lookupTable = {
 		end):concat(' ')..'}['..diffexpr..']'
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
-		return 'integrate('..table.map(expr, function(x) return self:apply(x) end):concat(', ')..' )'
+		return 'integrate('..table.mapi(expr, function(x) 
+			return (self:apply(x)) 
+		end):concat', '..' )'
 	end,
 	[require 'symmath.Array'] = function(self, expr)
-		return '[' .. table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x)
-		end):concat(', ') .. ']'
+		return '[' .. table.mapi(expr, function(x)
+			return (self:apply(x))
+		end):concat', ' .. ']'
 	end,
 	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
 		return expr:__tostring()

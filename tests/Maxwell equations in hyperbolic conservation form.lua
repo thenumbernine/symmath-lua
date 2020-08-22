@@ -202,8 +202,8 @@ for side=1,3 do
 	printbr('R(v) = ', evrxform)
 	printbr('L(v) = ', evlxform)
 
-	local _, evrcode = evrxform:compile(table():append(vs, {epsilon, mu}), 'Lua')
-	local _, evlcode = evlxform:compile(table():append(vs, {epsilon, mu}), 'Lua')
+	local _, evrcode = evrxform:compile(table():append(vs, {{epsilon=epsilon}, {mu=mu}}))
+	local _, evlcode = evlxform:compile(table():append(vs, {{epsilon=epsilon}, {mu=mu}}))
 	printbr'right transform code:'
 	printbr('<pre>'..evrcode..'</pre>')
 	printbr'left transform code:'

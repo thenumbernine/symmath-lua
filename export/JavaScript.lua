@@ -2,7 +2,7 @@ local table = require 'ext.table'
 local class = require 'ext.class'
 local Language = require 'symmath.export.Language'
 
--- convert to JavaScript code.  use :compile to wrap in a function
+-- convert to JavaScript code.  use :toCode to wrap in a function
 local JavaScript = class(Language)
 
 JavaScript.name = 'JavaScript'
@@ -15,28 +15,25 @@ JavaScript.lookupTable = {
 		return '(0/0)'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return 'Math.' .. expr.name .. '(' .. table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x)
-		end):concat(',') .. ')'
+		return 'Math.' .. expr.name .. '(' .. table.mapi(expr, function(x)
+			return (self:apply(x))
+		end):concat', ' .. ')'
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		return '(-'..self:apply(expr[1])..')'
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
-		return '('..table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x)
+		return '('..table.mapi(expr, function(x)
+			return (self:apply(x))
 		end):concat(' '..expr.name..' ')..')'
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		if expr[1] == require 'symmath'.e then
 			return 'Math.exp('..self:apply(expr[2])..')'
 		else
-			return 'Math.pow(' .. table.map(expr, function(x,k)
-				if k ~= 'number' then return end
-				return self:apply(x)
-			end):concat(',')..')'
+			return 'Math.pow(' .. table.mapi(expr, function(x)
+				return (self:apply(x))
+			end):concat', '..')'
 		end
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
@@ -47,23 +44,24 @@ JavaScript.lookupTable = {
 	end,
 }
 
-function JavaScript:generate(expr, vars)
-	local info = self:apply(expr, vars)
-	local body = info[1]
-	local predefs = info[2]
-	local code = predefs and table.keys(predefs):concat'\n'..'\n' or ''
-	-- TODO keep track of what vars are used, and compare it to the vars in the compile, to ensure correct code is generated.
-	return code..'function tmp('
-		..vars:map(function(var) return var.name end):concat(', ')
-		..') { return '..body..'; }; tmp;'
-end
+JavaScript.generateParams = {
+	localType = 'var',
+	lineEnd = ';',
 
--- returns code that can be eval()'d to return a function
--- see Language:getCompileParameters for a description of paramInputs
-function JavaScript:compile(expr, paramInputs)
-	local expr, vars = self:prepareForCompile(expr, paramInputs)
-	local cmd = self:generate(expr, vars)
-	return cmd
-end
+	funcHeaderStart = function(inputs)
+		return 'function generatedFunction('
+	end,
+	funcHeaderEnd = ') {',
+	funcFooter = '}',
+	returnCode = function(outputs)
+		return '\treturn '
+			..(#outputs > 1 and '[' or '')
+			..outputs:mapi(function(output) 
+				return output.name 
+			end):concat', '
+			..(#outputs > 1 and ']' or '')
+			..';'
+	end,
+}
 
 return JavaScript()		-- singleton

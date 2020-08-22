@@ -20,17 +20,15 @@ Verbose.lookupTable = {
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
 		--return 'Binary{'..expr.name..'}['..table.map(expr, function(x,k)
-		return expr.name..'['..table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
+		return expr.name..'['..table.mapi(expr, function(x)
 			return self(x)
 		end):concat(', ')..']'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		--return 'Function{'..expr.name..'}[' .. table.map(expr, function(x,k)
-		return expr.name..'[' .. table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self(x)
-		end):concat(', ') .. ']'
+		return expr.name..'[' .. table.mapi(expr, function(x)
+			return (self(x))
+		end):concat', ' .. ']'
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		--local s = 'Variable['..expr.name..']'
@@ -41,10 +39,9 @@ Verbose.lookupTable = {
 		return s	
 	end,
 	[require 'symmath.Expression'] = function(self, expr)
-		return expr.name..'{'..table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
+		return expr.name..'{'..table.mapi(expr, function(x)
 			return self(x)
-		end):concat(', ')..'}'
+		end):concat', '..'}'
 	end,
 	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
 		-- NOTICE if TensorIndex ever became an Expression then its __tostring would be overriding the original

@@ -199,6 +199,7 @@ build = {
 		["symmath.tests.spring force"] = "tests/spring force.lua",
 		["symmath.tests.tensor coordinate invariance"] = "tests/tensor coordinate invariance.lua",
 		["symmath.tests.toy-1+1 spacetime"] = "tests/toy-1+1 spacetime.lua",
+		["symmath.tests.unit.compile"] = "tests/unit/compile.lua",
 		["symmath.tests.unit.determinant_performance"] = "tests/unit/determinant_performance.lua",
 		["symmath.tests.unit.integral"] = "tests/unit/integral.lua",
 		["symmath.tests.unit.linear solver"] = "tests/unit/linear solver.lua",

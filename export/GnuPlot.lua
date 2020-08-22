@@ -9,35 +9,32 @@ GnuPlot.name = 'GnuPlot'
 GnuPlot.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
 		local s = tostring(expr.value)
-		if not s:find'.' and not s:find'[eE]' then s = s .. '.' end
+		if not s:find'%.' and not s:find'[eE]' then s = s .. '.' end
 		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
 		return '(0/0)'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return expr.name .. '(' .. table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x)
-		end):concat(',') .. ')'
+		return expr.name .. '(' .. table.mapi(expr, function(x)
+			return (self:apply(x))
+		end):concat', ' .. ')'
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		return '(-'..self:apply(expr[1])..')'
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
-		return '('..table.map(expr, function(x,k)
-			if type(k) ~= 'number' then return end
-			return self:apply(x)
+		return '('..table.mapi(expr, function(x)
+			return (self:apply(x))
 		end):concat(' '..expr.name..' ')..')'
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		if expr[1] == require 'symmath'.e then
 			return '(exp('..self:apply(expr[2])..'))'
 		else
-			return '('..table.map(expr, function(x,k)
-				if type(k) ~= 'number' then return end
-				return self:apply(x)
-			end):concat(' ** ')..')'
+			return '('..table.mapi(expr, function(x)
+				return (self:apply(x))
+			end):concat' ** '..')'
 		end
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
@@ -51,10 +48,17 @@ GnuPlot.lookupTable = {
 	end,
 }
 
+-- TODO ... GnuPlot functions can't be multiple lines (I think)
+GnuPlot.generateParams = {
+	funcHeaderStart = function(inputs)
+		return 'f('
+	end,
+	funcHeaderEnd = ') =',
+}
+
 -- create a plot of an expression
-local io = require 'ext.io'
-local file = require 'ext.file'
 function GnuPlot:plot(args)
+	local file = require 'ext.file'
 	local gnuplot = require 'gnuplot'
 	local var = require 'symmath.Variable'
 	local Expression = require 'symmath.Expression'

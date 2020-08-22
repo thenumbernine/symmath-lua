@@ -242,7 +242,7 @@ MultiLine.lookupTable = {
 					s = s .. '^'..power
 				end
 				return s, #newtable+1
-			end):concat(' ')})
+			end):concat' '})
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, 1)
 		return self:combine(lhs, rhs)
 	end,

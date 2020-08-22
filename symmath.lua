@@ -70,27 +70,30 @@ exprs - specifies the table of expressions that will be associated with function
 	- ex: 
 		x=symmath.var'x' 
 		(x^2):compile{x} 
-		... produces "function(x) return x^2 end"
+		... produces function(x) return x^2 end
 		
 		x=symmath.var'x' 
 		(x^2):copmile{x='y'} 
-		... produces "function(y) return y^2 end"
+		... produces function(y) return y^2 end
 		
 		x,t=symmath.vars('x','t') 
 		x:setDependentVars(t) 
 		symmath.exp(-x^2):diff(t):simplify():compile{x,{dx_dt=x:diff(t)}})
 		... produces "function(x, dx_dt) return -2 * x * dx_dt * math.exp(-x^2) end"
 
-language - specifies the target language.  options are 'Lua' (default) and 'JavaScript'
-
 if there are any Derivatives or variables (other those listed) then compiling will produce an error
 so if you have any derivs you want as function parameters, use map() or replace() to replace them for new variables
 	and then put them in the vars list
+
+This function is used for Lua function generation.
+If you want code generation, look at symmath.export.Language's 'toCode' function
 --]]
 function symmath.compile(expr, vars, language, args)
-	language = language or 'Lua'
-	local exporter = symmath.export[language]
-	return exporter:compile(expr, vars, args)
+	assert(language == nil or language == 'Lua', "dropped support for compiling to non-Lua.  use toCode or toFunc instead.")
+	return symmath.export.Lua:toFunc(table({
+		output = {expr},
+		input = vars,
+	}, args))
 end
 
 --[[ potential new system based on breadth-first search ... not finished yet
