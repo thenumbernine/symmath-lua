@@ -24,6 +24,16 @@ for _,lang in ipairs{
 	print('==== lang: '..lang..' ====')
 	print()
 
+	print'x'
+	print()
+	print'code:'
+	print(symmath.export[lang]:toCode{output={x}})
+	print()
+	print'func code:'
+	print(symmath.export[lang]:toFuncCode{output={x}})
+	print()
+
+
 	print'expr1'
 	print()
 	print'code:'

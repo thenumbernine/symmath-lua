@@ -118,8 +118,8 @@ C.generateParams = {
 	localType = 'double',
 	lineEnd = ';',
 	
-	funcHeaderStart = function(inputs)
-		return 'void generatedFunction(double* out'
+	funcHeaderStart = function(name, inputs)
+		return 'void '..name..'(double* out'
 			..(#inputs > 0 and ', ' or '')
 	end,
 	funcArgType = 'double',

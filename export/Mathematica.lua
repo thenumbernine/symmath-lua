@@ -92,8 +92,8 @@ Mathematica.lookupTable = {
 -- TODO get 'toFuncCode' working by providing these correctly
 Mathematica.generateParams = {
 	lineEnd = ';',
-	funcHeader = function(inputs)
-		return 'f['..inputs:mapi(function(input)
+	funcHeader = function(name, inputs)
+		return name..'['..inputs:mapi(function(input)
 			return input.name..'_'
 		end):concat', '..'] :='
 	end,

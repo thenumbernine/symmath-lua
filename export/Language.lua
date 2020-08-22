@@ -266,6 +266,12 @@ print('RESULTING EXPR '..SingleLine(expr))
 	return lines:concat'\n'
 end
 
+--[[
+args:
+	input = ...
+	output = ...
+	func = name of function to generate
+--]]
 function Language:toFuncCode(args)
 	local genParams = self.generateParams or {}
 	
@@ -278,9 +284,10 @@ function Language:toFuncCode(args)
 
 	local funcHeader
 	if genParams.funcHeader then
-		funcHeader = genParams.funcHeader(inputs)
+		funcHeader = genParams.funcHeader(name, inputs)
 	else
-		funcHeader = (genParams.funcHeaderStart and genParams.funcHeaderStart(inputs) or '')
+		funcHeader = 
+			(genParams.funcHeaderStart and genParams.funcHeaderStart(args.func or 'f', inputs) or '')
 			..inputs:mapi(function(input)
 				return argType..input.name
 			end):concat', '

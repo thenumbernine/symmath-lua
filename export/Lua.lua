@@ -102,8 +102,8 @@ Lua.lookupTable = {
 Lua.generateParams = {
 	localType = 'local',
 
-	funcHeaderStart = function(inputs)
-		return 'return function('
+	funcHeaderStart = function(name, inputs)
+		return 'function '..name..'('
 	end,
 	funcHeaderEnd = ')',
 	funcFooter = 'end',
@@ -112,7 +112,9 @@ Lua.generateParams = {
 -- returns (1) the function and (2) the code
 -- see Language:getCompileParameters for a description of paramInputs
 function Lua:toFunc(args)
-	local code = self:toFuncCode(args)
+	args = table(args)
+	args.func = ''	-- toFunc returns a function object, this can't have a name, if you want it global then assign it once you get it
+	local code = 'return '..self:toFuncCode(args)
 	local result, err = load(code)
 	if not result then return false, code, err end
 	result = result()
