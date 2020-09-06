@@ -698,9 +698,11 @@ How to get around this:
 
 - distinct functions for all languages:
 	- __call = produces a single expression of code, without checking variables
-	- generate = produces the function body.  multiple expressions.
-		doing tree searches and moving common variables out front would be good.
-	- compile = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler
+	- toCode{output={name1=expr1, name2=expr2, expr3, ...}, input={{name1=input1, name2=input2, input3, ...}}} = produces code for the given expressions
+		input1, input2, ... = variables to be provided as inputs.  In the case that {name#=input#} is provided then the variable is renamed to 'name#' in the generated code.
+		outpu1, output2, ... = expressions that are to be generated.
+	
+	- toFunc = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler? Not yet though.
 
 
 If you want to run this as a command-line with the API in global namespace:
@@ -733,7 +735,7 @@ Output CDN URLs:
 
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
-[tests/output/BSSN](https://thenumbernine.github.io/symmath/tests/output/BSSN.html)
+[tests/output/BSSN - index](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index.html)
 
 [tests/output/Building Curvature by ADM](https://thenumbernine.github.io/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
 

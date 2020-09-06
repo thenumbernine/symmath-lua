@@ -141,11 +141,6 @@ this is used for comparing
 for equality and solving, use .eq()
 --]]
 
--- TODO this could double as __eq 
--- TODO subclasses of Expression with __eq overrides have to be handled in here, because I can't just call __eq ... can I?
--- TODO what about commutative expression comparison? 
--- it seems more and more like every subclass should just override :match() instead of __eq
--- and just assign __eq = match
 -- TODO should wildcards also include matching + 0 in add and * 1 in mul?  Why not, I think so.
 function Expression.match(a, b, matches)
 	matches = matches or table()
@@ -172,6 +167,8 @@ function Expression.match(a, b, matches)
 end
 
 -- wrap it in a separate function so it can call into subclass :match()
+-- TODO ... should this really be :match()?
+-- What if you want to compare equality of Wildcard objects?  Then this would return false positives.
 function Expression.__eq(a,b)
 	return a:match(b)
 end
@@ -188,8 +185,8 @@ function Expression.__add(a,b)
 	if type(b) == 'number' then b = Constant(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__add(a,b) end
 
-	if Constant.is(a) and a.value == 0 then return b end
-	if Constant.is(b) and b.value == 0 then return a end
+	if Constant.isValue(a, 0) then return b end
+	if Constant.isValue(b, 0) then return a end
 
 	return require 'symmath.op.add'(a,b):flatten()
 end
@@ -200,8 +197,8 @@ function Expression.__sub(a,b)
 	if type(b) == 'number' then b = Constant(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__sub(a,b) end
 	
-	if Constant.is(a) and a.value == 0 then return -b end
-	if Constant.is(b) and b.value == 0 then return a end
+	if Constant.isValue(a, 0) then return -b end
+	if Constant.isValue(b, 0) then return a end
 
 	return require 'symmath.op.sub'(a,b) 
 end
@@ -212,17 +209,23 @@ function Expression.__mul(a,b)
 	if type(b) == 'number' then b = Constant(b) end
 	if require 'symmath.op.Equation'.is(b) then return b.__mul(a,b) end
 
+--[[
 	-- only simplify c * 0 = 0 for constants
-	-- because if we have an Array then we want it to distribute to all elements
+	-- because if we have an Array or Equation then we want it to distribute to all elements
 	if Constant.is(a)
 	and Constant.is(b)
 	and (a.value == 0 or b.value == 0)
 	then
 		return Constant(0)
 	end
+--]]
+-- [[ test for array or equation, otherise simplify to zero
+	if Constant.isValue(a, 0) and not require 'symmath.Array'.is(b) and not require 'symmath.op.Equation'.is(b) then return Constant(0) end
+	if Constant.isValue(b, 0) and not require 'symmath.Array'.is(a) and not require 'symmath.op.Equation'.is(a) then return Constant(0) end
+--]]
 	
-	if Constant.is(a) and a.value == 1 then return b end
-	if Constant.is(b) and b.value == 1 then return a end
+	if Constant.isValue(a, 1) then return b end
+	if Constant.isValue(b, 1) then return a end
 
 	return require 'symmath.op.mul'(a,b):flatten()
 end
@@ -1065,6 +1068,140 @@ function Expression:symmetrizeIndexes(var, indexes)
 	end)
 end
 
+-- TODO make this a standard somewhere
+local function betterSimplify(x)
+	local symmath = require 'symmath'
+	return x():factorDivision()
+	:map(function(y)
+		if symmath.op.add.is(y) then
+			local newadd = table()
+			for i=1,#y do
+				newadd[i] = y[i]():factorDivision()
+			end
+			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
+		end
+	end)
+end
+
+-- TODO FIXME then use this elsewhere
+function Expression:simplifyMetrics(deltas)
+	local expr = self
+
+	local Array = require 'symmath.Array'
+	local Tensor = require 'symmath.Tensor'
+	local TensorRef = require 'symmath.tensor.TensorRef'
+	local add = require 'symmath.op.add'
+	local mul = require 'symmath.op.mul'
+	if Array.is(expr) then
+		return getmetatable(expr):lambda(expr:dim(), function(...)
+			local ei = expr:get{...}
+			return (ei:simplifyMetrics(deltas))
+		end)
+	end
+	if require 'symmath.op.Equation'.is(expr) then
+		return getmetatable(expr)(
+			expr[1]:simplifyMetrics(deltas),
+			expr[2]:simplifyMetrics(deltas)
+		)
+	end
+
+	-- TODO metricSymbols(), including delta, g, e, ...
+	-- also TODO, how to specify how to treat each symbol?
+	-- right now I'm just treating deltaSymbol as delta, and any other as a metric
+	-- but for a truly flexible framework, we would want to correlate metrics with covariant derivatives for simplification
+	local deltaSymbol = Tensor:deltaSymbol()
+	local metricSymbol = Tensor:metricSymbol()
+	if not deltas then
+		deltas = table()
+		deltas:insert(deltaSymbol)
+		deltas:insert(metricSymbol)
+	else
+		deltas = table(deltas)
+	end
+
+	expr = betterSimplify(expr)	-- put it in add-mul-div order
+	expr = expr:clone()
+	local function checkMul(expr)
+		if not mul.is(expr) then return expr end
+		for i=#expr,1,-1 do
+			local deltaTerm = expr[i]
+			local found
+			-- TODO also make sure there is no derivative or comma-derivative that is wrapping deltaTerm
+			if TensorRef.is(deltaTerm) 
+			and deltas:find(deltaTerm[1])
+			and #deltaTerm == 3 
+			-- TODO here, delta only simplifies with opposing index variance: delta^i_j
+			--  and g only simplifies with identical index variance: g_ij
+			--  (though if we are using the "g-raises-and-lowers" rule then g^i_j = delta^i_j)
+			-- don't simplify a^i delta_ij => a_j ... because a_j = a^i g_ij, and we don't know if g_ij == delta_ij
+			--and (not not deltaTerm[2].lower) = not (not not deltaTerm[3].lower)
+			then
+--printbr('found delta at', i)				
+				for deltaI=2,3 do
+					local deltaIndex = deltaTerm[deltaI]
+--printbr('checking delta index', deltaIndex.symbol)
+					for j,xj in ipairs(expr) do
+						if i ~= j
+						and TensorRef.is(xj) 
+						then
+--printbr('found non-delta at', j)
+							local indexIndex = table.sub(xj, 2):find(nil, function(xjIndex)
+--printbr("comparing symbols ",	xjIndex.symbol, deltaIndex.symbol, ' and comparing lowers', xjIndex.lower, deltaIndex.lower)
+								return xjIndex.symbol == deltaIndex.symbol 
+									and (not not xjIndex.lower) == not (not not deltaIndex.lower)
+							end)
+--printbr('found matching index at', indexIndex)
+							if indexIndex then
+								local commaLater = false
+								for k=indexIndex+1,#xj do
+									if xj[k].derivative then
+										commaLater = true
+										break
+									end
+								end
+								
+								-- only replace an index if ...
+								-- 1) the index is not a derivative and we are replacing with delta^i_j g^ij g_ij or g^i_j
+								-- 2) the index is a covariant derivative and we are replacing it with delta^i_j g^ij g_ij or g^i_j
+								-- 3) the index is a partial derivative and we are replacing it with delta_ij delta^ij delta^i_j or g^i_j
+								if deltaTerm[1] ~= deltaSymbol 
+								and commaLater
+								then
+									-- can't simplify
+								else
+									local replDeltaIndex = deltaTerm[5 - deltaI]
+	--printbr('replacing with opposing delta index', replDeltaIndex.symbol)								
+	--printbr('replacing...', xj)
+									xj[indexIndex+1].symbol = replDeltaIndex.symbol
+									xj[indexIndex+1].lower = replDeltaIndex.lower
+	--printbr('removing delta')								
+									table.remove(expr, i)
+									-- if we just removed our last delta then return what's left
+									
+									found = true
+									break
+								end
+							end
+						end
+					end
+					if found then break end
+				end
+			end
+		end
+		if #expr == 1 then expr = expr[1] end
+		return expr
+	end
+	if add.is(expr) then
+		for i=1,#expr do
+			expr[i] = checkMul(expr[i])
+		end
+		if #expr == 1 then expr = expr[1] end
+	else
+		expr = checkMul(expr)
+	end
+	return expr
+end
+
 
 -- returns fixedIndexes, sumIndexes
 function Expression:getIndexesUsed()
@@ -1223,6 +1360,16 @@ end
 -- TODO maybe a getDomain()?  but I would like separate evaluation for real and complex versions of functions...
 function Expression:getRealDomain()
 	return nil
+end
+
+function Expression:treeSize()
+	local n = 1
+	for i,x in ipairs(self) do
+		if x.treeSize then
+			n = n + x:treeSize()
+		end
+	end
+	return n
 end
 
 return Expression

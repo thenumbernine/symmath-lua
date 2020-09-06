@@ -102,7 +102,7 @@ Lua.lookupTable = {
 Lua.generateParams = {
 	localType = 'local',
 
-	funcHeaderStart = function(name, inputs)
+	funcHeaderStart = function(self, name, inputs)
 		return 'function '..name..'('
 	end,
 	funcHeaderEnd = ')',

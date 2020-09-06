@@ -9,8 +9,7 @@ local C = class(Language)
 C.name = 'C'
 
 --[[
-this is really being used for OpenCL
-TODO provide the type instead of using 'double'
+This is really being used for OpenCL
 --]]
 
 function C:wrapStrOfChildWithParenthesis(parentNode, childIndex, ...)
@@ -23,6 +22,7 @@ function C:wrapStrOfChildWithParenthesis(parentNode, childIndex, ...)
 	return s, predef
 end
 
+C.numberType = 'double'
 
 C.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
@@ -50,7 +50,7 @@ C.lookupTable = {
 			funcName = expr.name
 		else
 			funcName = expr.name
-			predefs['double '..funcName..'(double x) {'..expr.code..'}'] = true
+			predefs[self.numberType..' '..funcName..'('..self.numberType..' x) {'..expr.code..'}'] = true
 		end
 		return funcName .. '(' .. s .. ')', predefs
 	end,
@@ -115,14 +115,14 @@ C.lookupTable = {
 }
 
 C.generateParams = {
-	localType = 'double',
+	localType = function(self) return self.numberType end,
 	lineEnd = ';',
 	
-	funcHeaderStart = function(name, inputs)
-		return 'void '..name..'(double* out'
+	funcHeaderStart = function(self, name, inputs)
+		return 'void '..name..'('..self.numberType..'* out'
 			..(#inputs > 0 and ', ' or '')
 	end,
-	funcArgType = 'double',
+	funcArgType = function(self) return self.numberType end,
 	funcHeaderEnd = ') {',
 	prepareOutputs = function(outputs) 
 		return 

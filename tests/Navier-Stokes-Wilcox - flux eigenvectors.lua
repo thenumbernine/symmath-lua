@@ -175,11 +175,20 @@ printbr(PStar,
 	'=', PStar_wrt_TTilde:rhs(),
 	[[= static pressure, in units of ]], kg / (m * s^2))
 
---[=[
+
+-- TODO if you want, (a) consider when n_1 = 0 or n_2 = 0
+-- and/or (b) just replace all the e_x, e_y cross n with a basis {n, n2, n3}
+-- (just like the MathWorksheets "Euler Fluid Equations - Curved Geometry - Contravariant" worksheet already does).
+local nLen = var'|n|'
+local nLenSq_def = (nLen^2):eq(n'^1' * n'_1' + n'^2' * n'_2' + n'^3' * n'_3')
+
 local Cs = var'c_s'
-local Cs_def = Cs:eq(sqrt((gamma * P) / rho))
+local Cs_def = Cs:eq(sqrt(
+	(Cv * PStar * nLen^2 + PStar * R * nLen^2 - R * rhoBar * vTilde'^c' * vTilde'^d' * n'_c' * n'_d')
+	 / (Cv * rhoBar)
+))()
 printbr(Cs_def, [[= speed of sound in units of ]], m / s)
---]=]
+
 
 printbr(g'_ij', [[= metric tensor, in units of $[1]$]])
 
@@ -404,16 +413,71 @@ printbr()
 
 printbr'Acoustic matrix eigen-decomposition:'
 
-local A_eig = A_expanded:eigen()
-
--- TODO if you want, (a) consider when n_1 = 0 or n_2 = 0
--- and/or (b) just replace all the e_x, e_y cross n with a basis {n, n2, n3}
--- (just like the MathWorksheets "Euler Fluid Equations - Curved Geometry - Contravariant" worksheet already does).
-
-local nLen = var'|n|'
-local nLenSq_def = (nLen^2):eq(n'^1' * n'_1' + n'^2' * n'_2' + n'^3' * n'_3')
-
 printbr(A'^I_J':eq(var'(R_A)''^I_M' * var'(\\Lambda_A)''^M_N' * var'(L_A)''^N_J'))
+
+local vTilde_cross_n = var'(\\tilde{v} \\times n)'
+
+local vTilde_cross_n_def = table{
+	vTilde_cross_n'^1':eq(vTilde'_2' * n'_3' - vTilde'_3' * n'_2'),
+	vTilde_cross_n'^2':eq(vTilde'_3' * n'_1' - vTilde'_1' * n'_3'),
+	vTilde_cross_n'^3':eq(vTilde'_1' * n'_2' - vTilde'_2' * n'_1'),
+}
+
+local A_eig = A_expanded:eigen()
+if A_eig.defective then
+-- [[ hack for now ...
+-- TODO row/col-insert functionality
+	A_eig.R = Matrix:lambda({7,7}, function(i,j)
+		if j < 2 then
+			return A_eig.R[i][j]
+		elseif j == 2 then
+			--return (A_eig.R[i][j] * (vTilde'_1' * n'_2' - vTilde'_2' * n'_1'))()
+			if i >= 2 and i <= 4 then
+				--return vTilde_cross_n[i-1]
+				--return A_eig.R[i][j]
+				return (
+					-- I can scale it up here without worrying about its associated lambda because that lambda is zero
+					(A_eig.R[i][j] * (vTilde'_1' * n'_2' - vTilde'_2' * n'_1'))()
+					
+					- vTilde_cross_n_def[i-1][2] + vTilde_cross_n_def[i-1][1]
+				)()
+			else
+				return A_eig.R[i][j]
+			end
+		elseif j == 3 then
+			return i >= 2 and i <= 4 and vTilde('^'..(i-1)) or 0
+		else
+			if j >= 6 and i <= 4 then
+				if i == 1 then
+					return (A_eig.R[i][j-1] * Cs_def[2]^2 / Cs_def[1]^2)()
+				else
+					return (A_eig.R[i][j-1] * Cs_def[2] / Cs_def[1])()
+				end
+			end
+			return A_eig.R[i][j-1]
+		end
+	end)
+	
+	A_eig.R = A_eig.R:replace(n'_1' * n'^1', nLen^2 - n'_2' * n'^2' - n'_3' * n'^3')()
+	A_eig.R = A_eig.R:replace(vTilde'_1' * n'^1', vTilde'^d' * n'_d' - vTilde'_2' * n'^2' - vTilde'_3' * n'^3')()
+	for _,l in ipairs(A_eig.lambdas) do
+		l.expr = l.expr:replace(n'_1' * n'^1', nLen^2 - n'_2' * n'^2' - n'_3' * n'^3')()
+		l.expr = l.expr:replace(vTilde'_1' * n'^1', vTilde'^d' * n'_d' - vTilde'_2' * n'^2' - vTilde'_3' * n'^3')()
+		-- here's me manually replacing the Cs defs
+		-- TODO maybe, instead of using (Cv+R)/Cv everywhere, just use gamma?
+		l.expr = (l.expr * Cs_def[1] / Cs_def[2])()
+	end
+	
+
+	A_eig.allLambdas = table()
+	for _,l in ipairs(A_eig.lambdas) do
+		for i=1,l.mult do
+			A_eig.allLambdas:insert(l.expr)
+		end
+	end
+	A_eig.Lambda = Matrix.diagonal( A_eig.allLambdas:unpack() )
+--]]
+end
 
 --[[
 local P_for_Cs = Cs_def:solve(P)
@@ -426,12 +490,65 @@ for k,v in pairs(A_eig) do
 	printbr(k, '=', v)
 end
 
-printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
+-- this isn't working:
+A_eig.L = A_eig.R:inverse()
+printbr('L =', A_eig.L)
+
+--A_eig.L = A_eig.L:subst(vTilde_cross_n_def:unpack())()
+-- would be much easier if i did this in index notation...
+A_eig.L = A_eig.L
+	:replace(vTilde'^3' * n'^2', vTilde'^2' * n'^3' - vTilde_cross_n'_1')	-- keep this -'d to simplify more
+	:replace(vTilde'^3' * n'^1', vTilde'^1' * n'^3' + vTilde_cross_n'_2')
+	:replace(vTilde'^1' * n'^2', vTilde'^2' * n'^1' + vTilde_cross_n'_3')
+	()
+--[[
+vxn^i = e_ijk v^j n^k
+
+|vxn|^2
+= (vxn)^i (vxn)_i
+= ε_ijk v^j n^k ε^ilm v_l n_m
+= ε_jki ε^lmi v^j n^k v_l n_m
+= δ^lm_jk v^j n^k v_l n_m
+= (δ^l_j δ^m_k - δ^l_k δ^m_j) v^j n^k v_l n_m
+= v^l v_l n^m n_m - v^m n_m v_l n^l
+--]]
+local vTildeLen = var'|\\tilde{v}|'
+A_eig.L = A_eig.L
+	:replace( 
+		vTilde_cross_n'_1' * vTilde_cross_n'^1',
+		vTildeLen^2 * nLen^2 - vTilde'^c' * n'_c' * vTilde'^d' * n'_d'
+		- vTilde_cross_n'_2' * vTilde_cross_n'^2'
+		- vTilde_cross_n'_3' * vTilde_cross_n'^3')()
+
+
+A_eig.L = A_eig.L
+	:replace(vTilde'^2' * n'^3', vTilde'^3' * n'^2' + vTilde_cross_n'_1')	-- keep this -'d to simplify more
+	:replace(vTilde'^1' * n'^3', vTilde'^3' * n'^1' - vTilde_cross_n'_2')
+	:replace(vTilde'^2' * n'^1', vTilde'^1' * n'^2' - vTilde_cross_n'_3')
+	()
+--[[
+(vxn)xv
+= ε_ijk vxn^j v^k
+= ε_ijk (ε^jlm (v_l n_m) v^k
+= -(δ^l_i δ^m_k - δ^l_k δ^m_i) v_l n_m v^k
+= -v_i n_k v^k + n_i |v|^2
+--]]
+--[[
+A_eig.L = A_eig.L
+	:replace(vTilde_cross_n'^2' * vTilde'^3', vTilde_cross_n'^3' * vTilde'^2' - vTilde'_1' * vTilde'^c' * n'_c' + n'_1' * vTildeLen^2)
+	:replace(vTilde_cross_n'^3' * vTilde'^1', vTilde_cross_n'^1' * vTilde'^3' - vTilde'_2' * vTilde'^c' * n'_c' + n'_2' * vTildeLen^2)
+	:replace(vTilde_cross_n'^1' * vTilde'^2', vTilde_cross_n'^2' * vTilde'^1' - vTilde'_3' * vTilde'^c' * n'_c' + n'_3' * vTildeLen^2)
+	()
+--]]
+
+printbr('L =', A_eig.L)
 
 os.exit()
 
-local P = Matrix.permutation(5,1,2,3,4)
-local S = Matrix.diagonal(Cs^2, 1, n'_1' / rho, n'_1' / rho, Cs^2)
+printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
+
+local P = Matrix.permutation(7, 1, 2, 3, 4, 5, 6)
+local S = Matrix.diagonal(Cs^2, 1, 1, 1, 1, 1, Cs^2)
 local SInv = S:inv()
 
 printbr('permute by:', P, ', scale by:', S)
@@ -440,17 +557,24 @@ A_eig.R = (A_eig.R * P * S)()
 A_eig.Lambda = (SInv * P:T() * A_eig.Lambda * P * S)()
 A_eig.L = (SInv * P:T() * A_eig.L)()
 
-A_eig.L[3][3] = (A_eig.L[3][3] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
-A_eig.L[4][4] = (A_eig.L[4][4] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
+--A_eig.L[3][3] = (A_eig.L[3][3] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
+--A_eig.L[4][4] = (A_eig.L[4][4] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
 
 printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
 printbr()
 
 printbr'Acoustic matrix, reconstructed from eigen-decomposition:'
-printbr(A'^I_J':eq( (A_eig.R * A_eig.Lambda * A_eig.L)() ))
+
+local A_reconstructed = (A_eig.R * A_eig.Lambda * A_eig.L)()
+printbr(A'^I_J':eq( A_reconstructed ))
+printbr()
+
+A_reconstructed = A_reconstructed:subst(vTilde_cross_n_def:unpack())
+printbr(A'^I_J':eq( A_reconstructed ))
 printbr()
 
 printbr'Orthogonality of left and right eigenvectors:'
+
 printbr((A_eig.L * A_eig.R)():subst(nLenSq_def)())
 printbr()
 
@@ -475,23 +599,23 @@ printbr'Flux Jacobian with respect to conserved variables:'
 printbr(F'^I':diff(U'^J'):eq( U'^I':diff(W'^K') * W'^K':diff(U'^L') * F'^L':diff(W'^M') * W'^M':diff(U'^J') ))
 printbr()
 
-local F_eig_R_def = expandMatrix3to5(dU_dW_def) * A_eig.R
+local F_eig_R_def = expandMatrix5to7(dU_dW_def) * A_eig.R
 printbr(var'R_F':eq(F_eig_R_def))
 
 F_eig_R_def = F_eig_R_def()
 F_eig_R_def = F_eig_R_def
-	:replace(n'_1' * v'^1', n'_k' * v'^k' - n'_2' * v'^2' - n'_3' * v'^3')
-	:replace(n'^1' * v'_1', n'_k' * v'^k' - n'^2' * v'_2' - n'^3' * v'_3')
+	:replace(n'_1' * vTilde'^1', n'_k' * vTilde'^k' - n'_2' * vTilde'^2' - n'_3' * vTilde'^3')
+	:replace(n'^1' * vTilde'_1', n'_k' * vTilde'^k' - n'^2' * vTilde'_2' - n'^3' * vTilde'_3')
 F_eig_R_def = betterSimplify(F_eig_R_def)
 printbr(var'R_F':eq(F_eig_R_def))
 
-local F_eig_L_def = A_eig.L * expandMatrix3to5(dW_dU_def:subst(vSq_def:switch()))
+local F_eig_L_def = A_eig.L * expandMatrix5to7(dW_dU_def:subst(vTildeSq_def:switch()))
 printbr(var'L_F':eq(F_eig_L_def))
 
 F_eig_L_def = F_eig_L_def()
 F_eig_L_def = F_eig_L_def
-	:replace(n'_1' * v'^1', n'_k' * v'^k' - n'_2' * v'^2' - n'_3' * v'^3')
-	:replace(n'^1' * v'_1', n'_k' * v'^k' - n'^2' * v'_2' - n'^3' * v'_3')
+	:replace(n'_1' * vTilde'^1', n'_k' * vTilde'^k' - n'_2' * vTilde'^2' - n'_3' * vTilde'^3')
+	:replace(n'^1' * vTilde'_1', n'_k' * vTilde'^k' - n'^2' * vTilde'_2' - n'^3' * vTilde'_3')
 F_eig_L_def = betterSimplify(F_eig_L_def)
 printbr(var'L_F':eq(F_eig_L_def))
 

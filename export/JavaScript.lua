@@ -48,7 +48,7 @@ JavaScript.generateParams = {
 	localType = 'var',
 	lineEnd = ';',
 
-	funcHeaderStart = function(name, inputs)
+	funcHeaderStart = function(self, name, inputs)
 		return 'function '..name..'('
 	end,
 	funcHeaderEnd = ') {',

@@ -240,6 +240,7 @@ print('RESULTING EXPR '..SingleLine(expr))
 	local genParams = self.generateParams or {}
 	
 	local localType = genParams.localType
+	if type(localType) == 'function' then localType = localType(self) end
 	localType = localType and #localType > 0 and localType..' ' or ''
 	
 	local lineEnd = genParams.lineEnd or ''
@@ -276,6 +277,7 @@ function Language:toFuncCode(args)
 	local genParams = self.generateParams or {}
 	
 	local argType = genParams.funcArgType
+	if type(argType) == 'function' then argType = argType(self) end
 	argType = argType and #argType > 0 and (argType..' ') or ''
 	
 	local outputs, inputs = self:prepareToCodeArgs(args.output, args.input)
@@ -287,7 +289,7 @@ function Language:toFuncCode(args)
 		funcHeader = genParams.funcHeader(name, inputs)
 	else
 		funcHeader = 
-			(genParams.funcHeaderStart and genParams.funcHeaderStart(args.func or 'f', inputs) or '')
+			(genParams.funcHeaderStart and genParams.funcHeaderStart(self, args.func or 'f', inputs) or '')
 			..inputs:mapi(function(input)
 				return argType..input.name
 			end):concat', '

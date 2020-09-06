@@ -1155,4 +1155,14 @@ function Tensor:deltaSymbol()
 	return Tensor.deltaVariable
 end
 
+-- this as well as deltaSymbol are used with Expression.simplifyMetrics
+function Tensor:metricSymbol()
+	if not Tensor.metricVariable then
+		local Variable = require 'symmath.Variable'
+		Tensor.metricVariable = Variable'g'
+	end
+	return Tensor.metricVariable
+end
+
+
 return Tensor

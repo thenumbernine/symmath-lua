@@ -50,7 +50,7 @@ GnuPlot.lookupTable = {
 
 -- TODO ... GnuPlot functions can't be multiple lines (I think)
 GnuPlot.generateParams = {
-	funcHeaderStart = function(name, inputs)
+	funcHeaderStart = function(self, name, inputs)
 		return name..'('
 	end,
 	funcHeaderEnd = ') =',
