@@ -917,6 +917,8 @@ Output CDN URLs:
 
 [tests/output/unit/determinant_performance](https://thenumbernine.github.io/symmath/tests/output/unit/determinant_performance.html)
 
+[tests/output/unit/index_construction](https://thenumbernine.github.io/symmath/tests/output/unit/index_construction.html)
+
 [tests/output/unit/integral](https://thenumbernine.github.io/symmath/tests/output/unit/integral.html)
 
 [tests/output/unit/linear solver](https://thenumbernine.github.io/symmath/tests/output/unit/linear%20solver.html)
@@ -928,6 +930,8 @@ Output CDN URLs:
 [tests/output/unit/replace](https://thenumbernine.github.io/symmath/tests/output/unit/replace.html)
 
 [tests/output/unit/sets](https://thenumbernine.github.io/symmath/tests/output/unit/sets.html)
+
+[tests/output/unit/simplifyMetrics](https://thenumbernine.github.io/symmath/tests/output/unit/simplifyMetrics.html)
 
 [tests/output/unit/sub-tensor assignment](https://thenumbernine.github.io/symmath/tests/output/unit/sub%2dtensor%20assignment.html)
 
