@@ -1003,6 +1003,7 @@ g^kl d_jkl
 
 TODO swap the variance as well, not just the symbol ... and the derivative too ...
 ... (which means the danger of derivatives being moved out of the rhs places ... test for that)
+but if you don't swap variance then  symmetrizing a symbol with mixed variance will introduce mistakes as well
 --]]
 function Expression:symmetrizeIndexes(var, indexes)
 	return self:map(function(x)
@@ -1011,7 +1012,15 @@ function Expression:symmetrizeIndexes(var, indexes)
 		and x[1] == var
 		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
 		then
+			local lower
 			local sorted = table.mapi(indexes, function(i)
+				if lower == nil then 
+					lower = not not x[i+1].lower
+				else
+					if (not not x[i+1].lower) ~= lower then
+						error("found first lower="..lower.." next lower="..tostring(x[i+1].lower))
+					end
+				end
 				return x[i+1].symbol
 			end):sort(function(a,b) return tostring(a) < tostring(b) end)
 			for i,sorted in ipairs(sorted) do
@@ -1083,8 +1092,34 @@ local function betterSimplify(x)
 	end)
 end
 
--- TODO FIXME then use this elsewhere
-function Expression:simplifyMetrics(deltas)
+-- generalizing this is tough..
+-- this might be getting out of hand:
+Expression.simplifyMetricsRules = {
+	-- returns true/false on whether the simplify works
+	delta = {	-- delta^i_j T_ik = T_jk
+		isMetric = function(g)
+			return g[1] == require 'symmath.Tensor':deltaSymbol()
+			and g[2].lower ~= g[3].lower
+		end,
+		canSimplify = function(g, t, gi, ti)
+			return t[ti].lower ~= g[gi].lower
+		end,
+	},
+	metric = {	-- g^ij T_jk = T^i_k (provided T is not delta)
+		isMetric = function(g)
+			return g[1] == require 'symmath.Tensor':metricSymbol()
+		end,
+		canSimplify = function(g, t, gi, ti)
+			return t[1] ~= require 'symmath.Tensor':deltaSymbol()	-- don't apply g^ij * delta^k_j => delta^ki
+			and t[ti].lower ~= g[gi].lower
+			-- you know, if derivs are always rightmost, then this is basically if it has any deriv
+			--and not t:hasDerivAtOrAfter(ti)		-- don't apply g^ij to T_k,i => T_k^,i
+			and not t:hasDeriv()
+		end,
+	},
+}
+function Expression:simplifyMetrics(rules)
+	--deltas, onlyTheseSymbols)
 	local expr = self
 
 	local Array = require 'symmath.Array'
@@ -1095,99 +1130,87 @@ function Expression:simplifyMetrics(deltas)
 	if Array.is(expr) then
 		return getmetatable(expr):lambda(expr:dim(), function(...)
 			local ei = expr:get{...}
-			return (ei:simplifyMetrics(deltas))
+			return (ei:simplifyMetrics(rules))
 		end)
 	end
 	if require 'symmath.op.Equation'.is(expr) then
 		return getmetatable(expr)(
-			expr[1]:simplifyMetrics(deltas),
-			expr[2]:simplifyMetrics(deltas)
+			expr[1]:simplifyMetrics(rules),
+			expr[2]:simplifyMetrics(rules)
 		)
 	end
+
 
 	-- TODO metricSymbols(), including delta, g, e, ...
 	-- also TODO, how to specify how to treat each symbol?
 	-- right now I'm just treating deltaSymbol as delta, and any other as a metric
 	-- but for a truly flexible framework, we would want to correlate metrics with covariant derivatives for simplification
-	local deltaSymbol = Tensor:deltaSymbol()
-	local metricSymbol = Tensor:metricSymbol()
-	if not deltas then
-		deltas = table()
-		deltas:insert(deltaSymbol)
-		deltas:insert(metricSymbol)
+	if not rules then
+		rules = table()
+		rules:insert(self.simplifyMetricsRules.delta)
+		rules:insert(self.simplifyMetricsRules.metric)
 	else
-		deltas = table(deltas)
+		rules = table(rules)
 	end
 
 	expr = betterSimplify(expr)	-- put it in add-mul-div order
 	expr = expr:clone()
 	local function checkMul(expr)
 		if not mul.is(expr) then return expr end
-		for i=#expr,1,-1 do
-			local deltaTerm = expr[i]
-			local found
-			-- TODO also make sure there is no derivative or comma-derivative that is wrapping deltaTerm
-			if TensorRef.is(deltaTerm) 
-			and deltas:find(deltaTerm[1])
-			and #deltaTerm == 3 
-			-- TODO here, delta only simplifies with opposing index variance: delta^i_j
-			--  and g only simplifies with identical index variance: g_ij
-			--  (though if we are using the "g-raises-and-lowers" rule then g^i_j = delta^i_j)
-			-- don't simplify a^i delta_ij => a_j ... because a_j = a^i g_ij, and we don't know if g_ij == delta_ij
-			--and (not not deltaTerm[2].lower) = not (not not deltaTerm[3].lower)
-			then
---printbr('found delta at', i)				
-				for deltaI=2,3 do
-					local deltaIndex = deltaTerm[deltaI]
---printbr('checking delta index', deltaIndex.symbol)
-					for j,xj in ipairs(expr) do
-						if i ~= j
-						and TensorRef.is(xj) 
-						then
---printbr('found non-delta at', j)
-							local indexIndex = table.sub(xj, 2):find(nil, function(xjIndex)
---printbr("comparing symbols ",	xjIndex.symbol, deltaIndex.symbol, ' and comparing lowers', xjIndex.lower, deltaIndex.lower)
-								return xjIndex.symbol == deltaIndex.symbol 
-									and (not not xjIndex.lower) == not (not not deltaIndex.lower)
-							end)
---printbr('found matching index at', indexIndex)
-							if indexIndex then
-								local commaLater = false
-								for k=indexIndex+1,#xj do
-									if xj[k].derivative then
-										commaLater = true
-										break
+
+		local found
+		repeat
+			found = false
+			for ruleIndex,rule in ipairs(rules) do
+--print('checking rule ', rule)
+				for exprGIndex,g in ipairs(expr) do
+					if TensorRef.is(g) 
+					and #g == 3 -- no derivatives
+					and rule.isMetric(g) -- make sure it matches what we are looking for
+					then
+--print('found metric symbol '..g)						
+						for gi=2,3 do
+							local gTensorIndex = g[gi]
+							for exprTIndex,t in ipairs(expr) do
+								if exprGIndex ~= exprTIndex
+								and TensorRef.is(t) 
+								then
+									for ti=2,#t do
+										local tTensorIndex = t[ti]
+										if tTensorIndex.symbol == gTensorIndex.symbol 
+										and rule.canSimplify(g, t, gi, ti) 
+										then
+											local gReplTensorIndex = g[5 - gi]
+--print('applying '..g..' to '..t)
+											t[ti].symbol = gReplTensorIndex.symbol
+											t[ti].lower = gReplTensorIndex.lower
+											
+											-- hmm, general rule ...
+											-- metric^ik metric_kj = delta^i_j for any metric symbol
+											if g[1] == t[1]
+											and #t == 3
+											and t[2].lower ~= t[3].lower
+											then
+												t[1] = Tensor:deltaSymbol()
+											end
+
+											table.remove(expr, exprGIndex)
+--print('now we have '..expr)											
+											found = true
+											break
+										end
 									end
 								end
-								
-								-- only replace an index if ...
-								-- 1) the index is not a derivative and we are replacing with delta^i_j g^ij g_ij or g^i_j
-								-- 2) the index is a covariant derivative and we are replacing it with delta^i_j g^ij g_ij or g^i_j
-								-- 3) the index is a partial derivative and we are replacing it with delta_ij delta^ij delta^i_j or g^i_j
-								if deltaTerm[1] ~= deltaSymbol 
-								and commaLater
-								then
-									-- can't simplify
-								else
-									local replDeltaIndex = deltaTerm[5 - deltaI]
-	--printbr('replacing with opposing delta index', replDeltaIndex.symbol)								
-	--printbr('replacing...', xj)
-									xj[indexIndex+1].symbol = replDeltaIndex.symbol
-									xj[indexIndex+1].lower = replDeltaIndex.lower
-	--printbr('removing delta')								
-									table.remove(expr, i)
-									-- if we just removed our last delta then return what's left
-									
-									found = true
-									break
-								end
+								if found then break end
 							end
+							if found then break end
 						end
 					end
 					if found then break end
 				end
+				if found then break end
 			end
-		end
+		until not found
 		if #expr == 1 then expr = expr[1] end
 		return expr
 	end

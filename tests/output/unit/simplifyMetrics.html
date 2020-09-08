@@ -1,0 +1,293 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>simplifyMetrics</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b></b><br>
+<code>asserteq(a'^i':simplifyMetrics(), a'^i')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^min' * delta'_i^j'):simplifyMetrics(), a'^mjn')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>g shouldn't apply to delta, but delta should apply to g</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((g'^ij' * delta'_j^k'):simplifyMetrics(), g'^ik')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((delta'_j^k' * g'^ij'):simplifyMetrics(), g'^ik')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>delta works on mixed tensors</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^i' * delta'_i^j'):simplifyMetrics(), a'^j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^i' * delta'^j_i'):simplifyMetrics(), a'^j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((delta'_i^j' * a'^i'):simplifyMetrics(), a'^j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((delta'^j_i' * a'^i'):simplifyMetrics(), a'^j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>does delta work when not mixed?  it shouldn't (unless the metric is equal to identity)</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^i' * delta'_ij'):simplifyMetrics(), a'^i' * delta'_ij')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>g raises and lowers</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^i' * g'_ij'):simplifyMetrics(), a'_j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((g'_ij' * a'^i'):simplifyMetrics(), a'_j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'_i' * g'^ij'):simplifyMetrics(), a'^j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((g'^ij' * a'_i'):simplifyMetrics(), a'^j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>does g work when mixed?  technically $g^i_j == \delta^i_j$</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^i' * g'_i^j'):simplifyMetrics(), a'^j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>how about simplifying solely metrics without any non-metric tensors?</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((g'^ik' * delta'_k^l'):simplifyMetrics(), g'^il')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((g'^ik' * delta'_k^l' * delta'_l^m'):simplifyMetrics(), g'^im')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>how about simplifying from metrics to deltas?</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((g'^ik' * g'_kj'):simplifyMetrics(), delta'^i_j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((g'^ik' * delta'_k^l' * g'_lm'):simplifyMetrics(), delta'^i_m')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((g'^ik' * delta'_k^l' * delta'_l^m' * g'_mn'):simplifyMetrics(), delta'^i_n')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>how about derivatives?  delta should work but g should not.</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>TODO technically g should work on the last ... technically ...  but raised partials are awkward to deal with.</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>and on that note, I might as well lower with the metric</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'_,i' * g'^ij'):simplifyMetrics(), a'_,i' * g'^ij')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^,i' * g'_ij'):simplifyMetrics(), a'^,i' * g'_ij')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'_,im' * g'^ij'):simplifyMetrics(), a'_,im' * g'^ij')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^,im' * g'_ij'):simplifyMetrics(), a'^,im' * g'_ij')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>but delta should simplify with commas</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'_,i' * delta'^i_j'):simplifyMetrics(), a'_,j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^,i' * delta'_i^j'):simplifyMetrics(), a'^,j')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'_,im' * delta'^i_j'):simplifyMetrics(), a'_,jm')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^,im' * delta'_i^j'):simplifyMetrics(), a'^,jm')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'_i,m' * delta'^i_j'):simplifyMetrics(), a'_j_,m')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^i,m' * delta'_i^j'):simplifyMetrics(), a'^j^,m')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>

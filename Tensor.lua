@@ -160,7 +160,7 @@ function Tensor.parseIndexes(indexes)
 			-- special exception for the first space used to tell the parser it is multi-char even without multiple symbols, so trim the string
 			indexes = handleTable(string.split(string.trim(indexString),' '))
 		else
-			local lower = false
+			local lower
 			local derivative = nil
 			indexes = {}
 			for i=1,#indexString do
@@ -177,9 +177,10 @@ function Tensor.parseIndexes(indexes)
 				--	derivative = 'projection'
 				else
 					-- if the first index is a derivative the default to lower
+					if #indexes == 0 and derivative and lower == nil then lower = true end
 					-- otherwise default to upper
-					if #indexes == 0 and derivative then lower = true end
-					
+					if lower == nil then lower = false end
+
 					if tonumber(ch) ~= nil then
 						table.insert(indexes, TensorIndex{
 							symbol = tonumber(ch),

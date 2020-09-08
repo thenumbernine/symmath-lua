@@ -1079,7 +1079,21 @@ add.rules = {
 				
 				local result
 				if lhs.pruneAdd then
+					-- [[ original
 					result = lhs.pruneAdd(lhs, rhs)
+					--]]
+					--[[tempted to leave this here, even though it slows things down ...
+					local fail
+					xpcall(function()
+						result = lhs.pruneAdd(lhs, rhs)
+					end, function(err)
+						io.stderr:write(err..'\n'..debug.traceback()..'\n')
+						io.stderr:write('lhs =\n'..tostring(lhs)..'\n')
+						io.stderr:write('rhs =\n'..tostring(rhs)..'\n')
+						fail = true
+					end)
+					if fail then error'here' end
+					--]]
 				elseif rhs.pruneAdd then
 					result = rhs.pruneAdd(lhs, rhs)
 				end

@@ -10,6 +10,20 @@ MathJax.header.title = 'BSSN formalism - index notation'
 print(MathJax.header)
 
 
+local function betterSimplify(x)
+	return x():factorDivision()
+	:map(function(y)
+		if symmath.op.add.is(y) then
+			local newadd = table()
+			for i=1,#y do
+				newadd[i] = y[i]():factorDivision()
+			end
+			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
+		end
+	end)
+end
+
+
 --[[
 -- use i-z first, then a-h
 -- come to think of it, I should avoid txyz as well
@@ -17,10 +31,10 @@ Tensor.defaultSymbols = range(9,26):append(range(1,8)):mapi(function(x) return s
 --]]
 
 
+local delta = Tensor:deltaSymbol()
 local alpha = var'\\alpha'
 local beta = var'\\beta'
 local gamma = var'\\gamma'
-local delta = var'\\delta'
 local eta = var'\\eta'
 local chi = var'\\chi'
 local pi = var'\\pi'
@@ -36,15 +50,44 @@ local S = var'S'
 local W = var'W'
 local ABar = var'\\bar{A}'
 local RBar = var'\\bar{R}'
-local gammaHat = var'\\hat{\\gamma}'
 local gammaBar = var'\\bar{\\gamma}'
 local epsilonBar = var'\\bar{\\epsilon}'
 local GammaBar = var'\\bar{\\Gamma}'
 local DeltaBar = var'\\bar{\\Delta}'
 local LambdaBar = var'\\bar{\\Lambda}'
+
+local barVars = table{
+	ABar,
+	RBar,
+	gammaBar,
+	epsilonBar,
+	GammaBar,
+	DeltaBar,
+	LambdaBar,
+}
+
+local gammaHat = var'\\hat{\\gamma}'
 local GammaHat = var'\\hat{\\Gamma}'
 
 Tensor.metricVariable = gamma
+
+
+local simplifyMetricGammaBarRule = {
+	isMetric = function(g)
+		return g[1] == gammaBar
+	end,
+	canSimplify = function(g, t, gi, ti)
+		--return t[1] ~= require 'symmath.Tensor':deltaSymbol()
+		return barVars:find(t[1])
+		and t[ti].lower ~= g[gi].lower
+		and not t:hasDeriv()
+	end,
+}
+
+local function simplifyBarMetrics(expr)
+	return expr:simplifyMetrics{simplifyMetricGammaBarRule, Tensor.simplifyMetricsRules.delta}
+end
+
 
 printbr(K'_ij', ' = extrinsic curvature')
 printbr(gamma'_ij', ' = spatial metric')
@@ -54,6 +97,7 @@ printbr(gammaHat, ' = grid metric determinant')
 printbr(gammaBar'_ij', ' = conformal metric')
 printbr(gammaBar, ' = conformal metric determinant')
 printbr()
+
 
 printbr'useful identity:'
 local conn_lll_def = Gamma'_ijk':eq(frac(1,2) * (gamma'_ij,k' + gamma'_ik,j' - gamma'_jk,i'))
@@ -66,21 +110,22 @@ local conn_ull_def = (gamma'^im' * conn_lll_def:reindex{i='m'})():simplifyMetric
 printbr(conn_ull_def)
 printbr()
 
+
 printbr'useful identity:'
-local partial_gamma_lll_inv_from_partial_gamma_lll = (gamma'_li' * gamma'^ij')'_,t':eq(0)
-printbr(partial_gamma_lll_inv_from_partial_gamma_lll)
-partial_gamma_lll_inv_from_partial_gamma_lll = partial_gamma_lll_inv_from_partial_gamma_lll()
-printbr(partial_gamma_lll_inv_from_partial_gamma_lll)
-partial_gamma_lll_inv_from_partial_gamma_lll = (partial_gamma_lll_inv_from_partial_gamma_lll * gamma'^lm')():factorDivision()
-printbr(partial_gamma_lll_inv_from_partial_gamma_lll)
-partial_gamma_lll_inv_from_partial_gamma_lll = partial_gamma_lll_inv_from_partial_gamma_lll:replace(gamma'^lm' * gamma'_li', delta'^m_i')()
-printbr(partial_gamma_lll_inv_from_partial_gamma_lll)
-partial_gamma_lll_inv_from_partial_gamma_lll = partial_gamma_lll_inv_from_partial_gamma_lll:simplifyMetrics()
+local dt_gamma_uu_from_gamma_uu_partial_gamma_lll = (gamma'_li' * gamma'^ij')'_,t':eq(0)
+printbr(dt_gamma_uu_from_gamma_uu_partial_gamma_lll)
+dt_gamma_uu_from_gamma_uu_partial_gamma_lll = dt_gamma_uu_from_gamma_uu_partial_gamma_lll()
+printbr(dt_gamma_uu_from_gamma_uu_partial_gamma_lll)
+dt_gamma_uu_from_gamma_uu_partial_gamma_lll = (dt_gamma_uu_from_gamma_uu_partial_gamma_lll * gamma'^lm')():factorDivision()
+printbr(dt_gamma_uu_from_gamma_uu_partial_gamma_lll)
+dt_gamma_uu_from_gamma_uu_partial_gamma_lll = dt_gamma_uu_from_gamma_uu_partial_gamma_lll:simplifyMetrics()
 	:reindex{im='mi'}
 	:solve(gamma'^ij_,t')
-printbr(partial_gamma_lll_inv_from_partial_gamma_lll)
+printbr(dt_gamma_uu_from_gamma_uu_partial_gamma_lll)
 -- not the prettiest way to show that ...
 printbr()
+
+local dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll = dt_gamma_uu_from_gamma_uu_partial_gamma_lll:replace(gamma, gammaBar)
 
 
 printbr'ADM metric evolution:'
@@ -240,6 +285,10 @@ printbr(connBar_lll_from_conn_lll_W_gamma_ll)
 local conn_lll_from_connBar_lll_W_gamma_ll = connBar_lll_from_conn_lll_W_gamma_ll:solve(Gamma'_ijk')
 printbr(conn_lll_from_connBar_lll_W_gamma_ll)
 
+local conn_lll_from_connBar_lll_W_gammaBar_ll = conn_lll_from_connBar_lll_W_gamma_ll
+	:substIndex(gamma_ll_from_gammaBar_ll_W, gamma_uu_from_gammaBar_uu_W)()
+printbr(conn_lll_from_connBar_lll_W_gammaBar_ll)
+
 local connBar_ull_def = (gammaBar'^im' * connBar_lll_def:reindex{i='m'})()
 	:replace(gammaBar'^im' * GammaBar'_mjk', GammaBar'^i_jk')()
 printbr(connBar_ull_def)
@@ -257,6 +306,21 @@ printbr(connBar_ull_from_conn_ull_W_gamma_ll)
 
 local conn_ull_from_connBar_ull_W_gamma_ll = connBar_ull_from_conn_ull_W_gamma_ll:solve(Gamma'^i_jk')()
 printbr(conn_ull_from_connBar_ull_W_gamma_ll)
+
+local conn_ull_from_connBar_ull_W_gammaBar_ll = conn_ull_from_connBar_ull_W_gamma_ll
+	:substIndex(gamma_ll_from_gammaBar_ll_W, gamma_uu_from_gammaBar_uu_W)()
+printbr(conn_ull_from_connBar_ull_W_gammaBar_ll)
+printbr()
+
+
+
+printbr'extrinsic curvature trace:'
+local K_def = K:eq(K'_ij' * gamma'^ij')
+printbr(K_def)
+--[[
+local K_from_K_ll_gammaBar_uu = K_def:subst(gamma_uu_from_gammaBar_uu_W)
+printbr(K_from_K_ll_gammaBar_uu)
+--]]
 printbr()
 
 
@@ -271,13 +335,6 @@ printbr(A_uu_def)
 local K_uu_from_A_uu_K = A_uu_def:solve(K'^ij')
 printbr(K_uu_from_A_uu_K)
 printbr()
-
-
-printbr'trace-free extrinsic curvature derivative:'
-local partial_K_lll_from_partial_A_lll_K = K_ll_from_A_ll_K'_,k'()
-printbr(partial_K_lll_from_partial_A_lll_K)
-printbr()
-
 
 printbr'conformal trace-free extrinsic curvature:'
 local ABar_ll_def = ABar'_ij':eq(W^2 * A'_ij')
@@ -298,6 +355,15 @@ ABar_uu_from_A_uu = ABar_uu_from_A_uu
 printbr(ABar_uu_from_A_uu)
 local A_uu_from_ABar_uu = ABar_uu_from_A_uu:solve(A'^ij')
 printbr(A_uu_from_ABar_uu)
+
+local K_ll_from_ABar_ll_gammaBar_ll_K = K_ll_from_A_ll_K:subst(A_ll_from_ABar_ll, gamma_ll_from_gammaBar_ll_W)()
+printbr(K_ll_from_ABar_ll_gammaBar_ll_K)
+printbr()
+
+
+printbr'trace-free extrinsic curvature derivative:'
+local partial_K_lll_from_partial_A_lll_K = K_ll_from_A_ll_K'_,k'()
+printbr(partial_K_lll_from_partial_A_lll_K)
 printbr()
 
 
@@ -323,23 +389,11 @@ printbr(dt_W_def)
 dt_W_def = dt_W_def:replace(beta'_i,j', (beta'^k' * gamma'_ki')'_,j')()
 printbr(dt_W_def)
 dt_W_def = dt_W_def
-	:simplifyMetrics()()
-	:replace(beta'^k_,j' * gamma'_k^j', beta'^k_,k')
 	:subst(dgamma_lll_for_conn_lll:reindex{ijk='kij'})
-	:simplify()
 	:simplifyMetrics()
 	:replace(Gamma'_kj^j', Gamma'_k')
 	:simplify()
 printbr(dt_W_def)
---[[
-dt_W_def = dt_W_def
-	:subst(conn_ull_from_connBar_ull_W_gamma_ll:reindex{ijk='jjk'})
-	:replace(delta'^j_j', 3)
-	:simplifyMetrics()
-	:reindex{m='k'}
-	:simplify()
-printbr(dt_W_def)
---]]
 dt_W_def = dt_W_def
 	:subst(conn_ull_def:reindex{ijk='jjk'})
 	:simplify()
@@ -348,15 +402,17 @@ dt_W_def = dt_W_def
 	:subst(partial_gamma_lll_from_partial_gammaBar_lll_W:reindex{ijk='mjk'})
 	:subst(partial_gamma_lll_from_partial_gammaBar_lll_W:reindex{ijk='mkj'})
 	:simplify()
-	--:simplifyMetrics{gammaBar}	-- only safe to do if all of the same metric is used.  don't mix and match.
-	:replace(gammaBar'^jm' * gammaBar'_mk', delta'^j_k')
-	:replace(gammaBar'^jm' * gammaBar'_mj', delta'^j_j')
-	:replace(gammaBar'^jm' * gammaBar'_jk', delta'^m_k')
-	:simplifyMetrics{delta}
-	:replace(delta'^j_j', 3)
+printbr(dt_W_def)
+dt_W_def = simplifyBarMetrics(dt_W_def)
+	:replace(delta'_m^m', 3)
+	:replace(gammaBar'^jm' * gammaBar'_mk,j', gammaBar'^jm' * gammaBar'_jk,m')
 	:simplify()
+	:tidyIndexes()
+	:reindex{abc='ijk'}
+	:symmetrizeIndexes(gammaBar, {1,2})
 printbr(dt_W_def)
 printbr()
+
 
 --[[
 printbr'conformal W partial wrt $\\phi$:'
@@ -403,14 +459,13 @@ dt_gammaBar_ll_def = dt_gammaBar_ll_def
 	:subst(partial_gamma_lll_from_partial_gammaBar_lll_W:reindex{ijk='kji'})
 	:substIndex(gamma_ll_from_gammaBar_ll_W)
 	:simplify()
+	:tidyIndexes{fixed='ij'}
+	:simplify()
+	:reindex{abc='kmn'}
 printbr(dt_gammaBar_ll_def)
---[[ 
-dt_gammaBar_ll_def = dt_gammaBar_ll_def
-	:tidyIndexes()
-	:symmetrizeIndexes(gammaBar, {1,2})()
-printbr(dt_gammaBar_ll_def)
---]]
 printbr()
+
+
 
 printbr'conformal metric perturbation:'
 local epsilonBar_def = epsilonBar'_ij':eq(gammaBar'_ij' - gammaHat'_ij')
@@ -442,6 +497,44 @@ local calC = var'\\mathcal{C}'
 printbr(calC'^i', '= arbitrary constant')
 local LambdaBar_u_def = LambdaBar'^i':eq(DeltaBar'^i' + calC'^i')
 printbr(LambdaBar_u_def)
+local DeltaBar_u_from_LambdaBar_u = LambdaBar_u_def:solve(DeltaBar'^i')
+printbr(DeltaBar_u_from_LambdaBar_u)
+printbr()
+
+
+
+printbr'conformal connection evolution:'
+local dt_connBar_ull_def = connBar_ull_def'_,t'()
+printbr(dt_connBar_ull_def)
+dt_connBar_ull_def = dt_connBar_ull_def
+	--:substIndex(dt_gamma_uu_from_gamma_uu_partial_gamma_lll)
+	--:subst(dt_gamma_uu_from_gamma_uu_partial_gamma_lll:reindex{jm='mn'})
+	:substIndex(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)()
+printbr(dt_connBar_ull_def)
+dt_connBar_ull_def = dt_connBar_ull_def
+	:subst(dt_gammaBar_ll_def:reindex{ijkm='bapq'})
+printbr(dt_connBar_ull_def)
+dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)
+printbr(dt_connBar_ull_def)
+dt_connBar_ull_def = dt_connBar_ull_def
+	:replace(gammaBar'_jk,mt', gammaBar'_jk,t''_,m')
+	:replace(gammaBar'_mj,kt', gammaBar'_mj,t''_,k')
+	:replace(gammaBar'_mk,jt', gammaBar'_mk,t''_,j')
+	:subst(dt_gammaBar_ll_def:reindex{ijkm='jkpq'})
+	:subst(dt_gammaBar_ll_def:reindex{ijkm='mjpq'})
+	:subst(dt_gammaBar_ll_def:reindex{ijkm='mkpq'})
+	:symmetrizeIndexes(gammaBar, {1,2})
+dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)
+printbr(dt_connBar_ull_def)
+dt_connBar_ull_def = dt_connBar_ull_def:tidyIndexes()()
+dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)
+--dt_connBar_ull_def = dt_connBar_ull_def
+--	:symmetrizeIndexes(beta, {2,3})	-- hmm, turned a b^d_,cd into a b^c_,dd ... that's not good
+--	:symmetrizeIndexes(gammaBar, {3,4})
+	:replace(beta'^d_,kc', beta'^d_,ck')
+	:replace(beta'^d_,jc', beta'^d_,cj')
+	:simplify()
+printbr(dt_connBar_ull_def)
 printbr()
 
 
@@ -455,8 +548,8 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def
 	:simplify()
 printbr(dt_LambdaBar_u_def)
 dt_LambdaBar_u_def = dt_LambdaBar_u_def
-	:splitOffDerivIndexes()
-	:subst(DeltaBar_ull_def)
+	--:splitOffDerivIndexes()
+	:subst(DeltaBar_ull_def'_,t'())
 	:simplify()
 printbr(dt_LambdaBar_u_def)
 -- constant grid:
@@ -466,116 +559,143 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def
 	:subst(dt_GammaHat_ull_def)
 printbr(dt_LambdaBar_u_def)
 dt_LambdaBar_u_def = dt_LambdaBar_u_def
-	:subst(connBar_ull_def'_,t'())
-	:simplify()
-printbr(dt_LambdaBar_u_def)
-local partial_gammaBar_lll_inv_from_partial_gammaBar_lll = partial_gamma_lll_inv_from_partial_gamma_lll:replace(gamma, gammaBar)
-dt_LambdaBar_u_def = dt_LambdaBar_u_def
-	:subst(partial_gammaBar_lll_inv_from_partial_gammaBar_lll:reindex{ijm='jkn'})
-	:subst(partial_gammaBar_lll_inv_from_partial_gammaBar_lll:reindex{ijm='imn'})
+	:subst(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll:reindex{ijm='jkn'})
+	:subst(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll:reindex{ijm='imn'})
 	:simplify()
 printbr(dt_LambdaBar_u_def)
 dt_LambdaBar_u_def = dt_LambdaBar_u_def
-	:replace(gammaBar'_jk,mt', gammaBar'_jk,t''_,m')
-	:replace(gammaBar'_mj,kt', gammaBar'_mj,t''_,k')
-	:replace(gammaBar'_mk,jt', gammaBar'_mk,t''_,j')
-	:subst(dt_gammaBar_ll_def:reindex{ijk='jkp'})
-	:subst(dt_gammaBar_ll_def:reindex{ijk='mjp'})
-	:subst(dt_gammaBar_ll_def:reindex{ijk='mkp'})
-	:subst(dt_gammaBar_ll_def:reindex{ijk='lnp'})
+	:substIndex(dt_gammaBar_ll_def)
+printbr(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
 	:simplify()
 printbr(dt_LambdaBar_u_def)
--- TODO here 'simplifyMetrics' but only apply to certain children ...
--- gammaBar can only be applied to gammaBar
--- how to specify this?
 dt_LambdaBar_u_def = dt_LambdaBar_u_def
-	:replace(alpha'_,j' * gammaBar'^jk' * gammaBar'_mk' * gammaBar'^im', alpha'_,j' * gammaBar'^ij')
-	:replace(alpha'_,k' * gammaBar'^jk' * gammaBar'_mj' * gammaBar'^im', alpha'_,j' * gammaBar'^ij')
-	:replace(gammaBar'^jk' * gammaBar'_jk', 3)
-	:replace(alpha'_,m' * gammaBar'^im', alpha'_,j' * gammaBar'^im')
-	:replace(gammaBar'_ln' * gammaBar'^nm' * gammaBar'^li', gammaBar'^im')
-	:replace(gammaBar'_ln' * gammaBar'^nk' * gammaBar'^lj', gammaBar'^jk')
-	:replace(gammaBar'^im' * gammaBar'_mk' * gammaBar'^jk', gammaBar'^ij')
-	:replace(gammaBar'^im' * gammaBar'_mj' * gammaBar'^jk', gammaBar'^ik')
-	:replace(W'_,m' * gammaBar'^im', W'_,j' * gammaBar'^im')
-	:replace(GammaBar'^i_jk' * gammaBar'^jk', DeltaBar'^i' + GammaHat'^i_jk' * gammaBar'^jk')
+	:replace(gammaBar'^lj' * gammaBar'_ln' * gammaBar'^nk' * DeltaBar'^i_jk', DeltaBar'^i')
+	:replace(gammaBar'^lj' * gammaBar'^nk' * DeltaBar'^i_jk', DeltaBar'^iln')
+	:replace(
+		gammaBar'_cn' * beta'^c_,l' * DeltaBar'^iln', 
+		gammaBar'_cl' * beta'^c_,n' * DeltaBar'^iln')
 	:simplify()
+printbr(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
+	--:substIndex(dt_connBar_ull_def)	-- can't do this unless you set 't' to a fixed index, which subst() can't do just yet
+	:subst(dt_connBar_ull_def)
+-- here we have gammaBar^jk delta^i_j beta^c_,c,k
+printbr(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = simplifyBarMetrics(dt_LambdaBar_u_def)
+printbr(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
+	:replace(delta'^k_k', 3)
+	:replace(ABar'^k_k', 0)
+	:simplify()
+	-- tidyIndexes starts at 'g', why, because all the previous sum indexes ended at 'f' maybe?
+	-- so TODO allow tidyIndexes result sum indexes to take from the same pool as the input expression sum indexes, as long as they don't overlap any upon result
+	:tidyIndexes()
+	:symmetrizeIndexes(gammaBar, {1,2})
+	:simplify()
+	-- where did this come from?
+	:replace(delta'_p^p', 3)
+	:simplify()
+	:replaceIndex(ABar'^ij', gammaBar'^im' * ABar'_mn' * gammaBar'^nj')
+	:substIndex(DeltaBar_u_from_LambdaBar_u)
+	:replaceIndex(DeltaBar'^i_j^k', gammaBar'^km' * DeltaBar'^i_jm')
+	:replaceIndex(DeltaBar'^ij_k', gammaBar'^jm' * DeltaBar'^i_mk')
+	:replaceIndex(DeltaBar'^ijk', DeltaBar'^i_mn' * gammaBar'^jm' * gammaBar'^kn')
+	:substIndex(DeltaBar_ull_def)
+	:substIndex(connBar_ull_def)
 printbr(dt_LambdaBar_u_def)
 printbr()
+
 
 
 printbr'extrinsic curvature trace evolution:'
-local dt_K_def = dt_K_ll_def * gamma'^ij'
+local dt_K_def = K_def'_,t'()
 printbr(dt_K_def)
--- using K_,t = (K_ij gamma^ij)_,t = K_ij,t gamma^ij + K_ij gamma^ij_,t
-dt_K_def[1] = (dt_K_def[1] + K'_,t' - K'_ij,t' * gamma'^ij' - K'_ij' * gamma'^ij_,t')()
-dt_K_def = (dt_K_def + K'_ij' * gamma'^ij_,t')()
+dt_K_def = dt_K_def:subst(dt_gamma_uu_from_gamma_uu_partial_gamma_lll)
 printbr(dt_K_def)
-dt_K_def = dt_K_def
-	:replace(K'_ij' * gamma'^ij', K)
-	:replace(K'^k_j' * gamma'^ij', K'^ik')
-	:replace(K'_ik' * K'^ik', K'_ij' * K'^ij')
-	:replace(gamma'_ij' * gamma'^ij', 3)	-- gamma_ij gamma^ij = delta^i_k delta^k_i = delta^i_i = dim
-	:replace(R'_ij' * gamma'^ij', R)
-	:replace(S'_ij' * gamma'^ij', S)
--- K_ij,k gamma^ij = K_,k - K_ij gamma^ij_,k = 
-	:replace(gamma'^ij' * K'_ij,k', K'_,k' - K'_ij' * gamma'^ij_,k')
--- n_,t = 0 <=> (gamma^ij gamma_ij)_,t = 0 <=> gamma^ij_,t gamma_ij = -gamma^ij gamma_ij,t
-	:simplify()
+dt_K_def = dt_K_def:substIndex(dt_gamma_ll_def)
+	:replace(Gamma'^k_lm' * beta'_k', Gamma'_klm' * beta'^k')-- TODO make gamma_ij,t in terms of beta^k, not beta_k
 printbr(dt_K_def)
-dt_K_def = dt_K_def
-	:subst(partial_gamma_lll_inv_from_partial_gamma_lll)
-	:subst(partial_gamma_lll_inv_from_partial_gamma_lll:reindex{t='k'})
-	:simplify()
+dt_K_def = dt_K_def:replaceIndex(beta'_i,j', (gamma'_ik' * beta'^k')'_,j')
+printbr(dt_K_def)
+dt_K_def = dt_K_def()	
+printbr(dt_K_def)
+dt_K_def = dt_K_def:substIndex(K_ll_from_ABar_ll_gammaBar_ll_K, gamma_uu_from_gammaBar_uu_W, gamma_ll_from_gammaBar_ll_W)
+printbr(dt_K_def)
+dt_K_def = dt_K_def()
+printbr(dt_K_def)
+dt_K_def = simplifyBarMetrics(dt_K_def)
 printbr(dt_K_def)
 dt_K_def = dt_K_def
-	:subst(dt_gamma_ll_def:reindex{ij='lm'})()
-	:simplifyMetrics()()
-printbr(dt_K_def)
-dt_K_def = dt_K_def
-	:replace(beta'_l,m', (gamma'_ln' * beta'^n')'_,m')
-	:replace(beta'_m,l', (gamma'_mn' * beta'^n')'_,l')
-	:subst(dgamma_lll_for_conn_lll:reindex{ijk='lmk'})
-	:subst(dgamma_lll_for_conn_lll:reindex{ijk='lnm'})
-	:subst(dgamma_lll_for_conn_lll:reindex{ijk='mnl'})
+	--:replaceIndex(ABar'_i^i', 0)
+	:replace(ABar'_i^i', 0)
+	:replace(ABar'_j^j', 0)
+	--:replaceIndex(delta'_j^j', 3)
+	:replace(delta'_j^j', 3)
+	:simplify()
+	--:tidyIndexes()	--{fixed='t'}	-- the fact that K_,t has a t in it, and most expressions don't, breaks the tidyIndexes() function
+	--:simplify()
+	:symmetrizeIndexes(gammaBar, {1,2})
 	:simplify()
 printbr(dt_K_def)
-dt_K_def = dt_K_def
-	:subst(dgamma_lll_for_conn_lll:reindex{ijk='lnm'})
-	:subst(dgamma_lll_for_conn_lll:reindex{ijk='mnl'})
-	:simplify()
-dt_K_def = dt_K_def
-	:simplifyMetrics()()
-	:replace(K'^lm' * Gamma'_mkl', K'^lm' * Gamma'_lkm')
-	:reindex{n='k'}
-	:symmetrizeIndexes(Gamma,{2,3})
-	:simplify()
-	:replace(K'^lm' * Gamma'_mkl', K'^lm' * Gamma'_lkm')
-	:simplify()
-	:reindex{ml='ij'}
-	:replace(K'_k^j', K'^j_k')
-	:replace(beta'_k' * K'_ij' * Gamma'^kij', beta'^k' * K'^ij' * Gamma'_kij')
-	:replace(K'^ji' * Gamma'_kji', K'^ij' * Gamma'_kij')
-	:simplify()
+dt_K_def = dt_K_def:substIndex(dt_K_ll_def)()
 printbr(dt_K_def)
 dt_K_def = dt_K_def
-	:replace(Gamma'^kj_j', Gamma'^k_ij' * gamma'^ij')
-	:subst(conn_ull_def:reindex{ijk='kij'})
-	:subst(gamma_uu_from_gammaBar_uu_W)
-	:subst(gamma_uu_from_gammaBar_uu_W:reindex{ij='km'})
-	:subst(partial_gamma_lll_from_partial_gammaBar_lll_W:reindex{ijk='ijm'})
-	:subst(partial_gamma_lll_from_partial_gammaBar_lll_W:reindex{ijk='mij'})
-	:subst(partial_gamma_lll_from_partial_gammaBar_lll_W:reindex{ijk='mji'})
-	:simplify()
+	:replaceIndex(K'^k_j', gamma'^kl' * K'_lj')
+	:substIndex(K_ll_from_ABar_ll_gammaBar_ll_K, gamma_uu_from_gammaBar_uu_W, gamma_ll_from_gammaBar_ll_W)
+printbr(dt_K_def)
+dt_K_def = simplifyBarMetrics(dt_K_def)
 printbr(dt_K_def)
 dt_K_def = dt_K_def
-	:simplifyMetrics{gammaBar}() -- now that all metrics are gammaBar, and none are gamma, we can do this
-	:tidyIndexes()()
-	:symmetrizeIndexes(gammaBar, {1,2})()
-	:replace(gammaBar'^c_c', 3)()
-	:reindex{abcd='ijkl'}
+	:replace(delta'^j_j', 3)
+	:replace(delta'_j^j', 3)
+	:replace(ABar'^j_j', 0)
+	:simplify()
+	:symmetrizeIndexes(gammaBar, {1,2})
+	--:symmetrizeIndexes(ABar, {1,2})
+	:simplify()
 printbr(dt_K_def)
-printbr()
+-- now that there's no more _,t terms, I can use tidyIndexes on the RHS only
+dt_K_def[2] = dt_K_def[2]:tidyIndexes()()
+printbr(dt_K_def)
+dt_K_def = dt_K_def
+	:replace(K'_cd,b', K'_cd''_,b')
+	:substIndex(K_ll_from_ABar_ll_gammaBar_ll_K)
+	:simplify()
+dt_K_def = simplifyBarMetrics(dt_K_def)
+	:replace(delta'_d^d', 3)
+	:replace(ABar'^d_d', 0)
+dt_K_def = betterSimplify(dt_K_def)
+printbr(dt_K_def)
+dt_K_def = dt_K_def
+	:substIndex(conn_lll_def, conn_ull_def, gamma_uu_from_gammaBar_uu_W, gamma_ll_from_gammaBar_ll_W)
+	:simplify()
+	:symmetrizeIndexes(gammaBar, {1,2})
+	--:symmetrizeIndexes(ABar, {1,2})
+	:simplify()
+dt_K_def = betterSimplify(dt_K_def)
+printbr(dt_K_def)
+dt_K_def = dt_K_def:substIndex(partial_gamma_lll_from_partial_gammaBar_lll_W)
+dt_K_def = betterSimplify(dt_K_def)
+printbr(dt_K_def)
+dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = simplifyBarMetrics(dt_K_def)
+	:replace(delta'^d_d', 3)
+	:replace(delta'_d^d', 3)
+	:replace(ABar'_d^d', 0)
+	:replace(gammaBar'^cd' * gammaBar'_ad,c', gammaBar'^cd' * gammaBar'_ac,d')
+	--:replace(ABar'^cd' * gammaBar'_cb,d', ABar'^cd' * gammaBar'_bc,d')
+	--:replace(A
+	:symmetrizeIndexes(gammaBar, {1,2})
+	--:symmetrizeIndexes(ABar, {1,2})
+dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:tidyIndexes()
+	:symmetrizeIndexes(gammaBar, {1,2})
+	--:symmetrizeIndexes(ABar, {1,2})
+	:replace(ABar'^f_e', ABar'_e^f')
+	:replace(ABar'^fe', ABar'^ef')
+dt_K_def = betterSimplify(dt_K_def)
+printbr(dt_K_def)
 
 
 printbr'trace-free extrinsic curvature evolution:'
@@ -587,53 +707,37 @@ printbr()
 printbr'conformal trace-free extrinsic curvature evolution:'
 local dt_ABar_ll_def = ABar_ll_def'_,t'()
 printbr(dt_ABar_ll_def)
-dt_ABar_ll_def = dt_ABar_ll_def:subst(dt_W_def:reindex{j='n'}, dt_A_ll_def, dt_K_ll_def, dt_gamma_ll_def, dt_K_def:reindex{ij='mn'})()
+dt_ABar_ll_def = dt_ABar_ll_def:substIndex(dt_W_def)
+printbr(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:subst(dt_A_ll_def)
+printbr(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:subst(dt_K_ll_def)
+printbr(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:subst(dt_gamma_ll_def)
+	:replaceIndex(beta'_i,j', (beta'^k' * gamma'_ki')'_,j')
+printbr(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:subst(dt_K_def:reindex{ij='mn'})
+printbr(dt_ABar_ll_def)
+dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
 printbr(dt_ABar_ll_def)
 dt_ABar_ll_def = dt_ABar_ll_def
 	:replace(beta'_k' * Gamma'^k_ij', beta'^k' * Gamma'_kij')
-	:subst(conn_lll_def:reindex{ijk='kij'})
-	:subst(conn_ull_def:reindex{ijk='kij'})
-	:replace(K'^k_j', K'^kl' * gamma'_lj')
-	--:subst(K_ll_from_A_ll_K)
-	--:subst(K_ll_from_A_ll_K:reindex{ij='ik'})
-	--:subst(K_ll_from_A_ll_K:reindex{ij='ki'})
-	--:subst(K_ll_from_A_ll_K:reindex{ij='kj'})
+	:substIndex(conn_lll_def)
+	:substIndex(conn_ull_def)
+	:replaceIndex(K'^k_j', gamma'^kl' * K'_lj')
+	:replace(K'_ij,k', K'_ij''_,k')
 	:substIndex(K_ll_from_A_ll_K)
-	:subst(K_uu_from_A_uu_K:reindex{ij='kl'})
-	:replace(beta'_i,j', (beta'^k' * gamma'_ki')'_,j')
-	:replace(beta'_j,i', (beta'^k' * gamma'_kj')'_,i')
-	:simplify()
-printbr(dt_ABar_ll_def)
--- [[
-dt_ABar_ll_def = dt_ABar_ll_def
-	--:subst(gamma_ll_from_gammaBar_ll_W)
+	:substIndex(A_ll_from_ABar_ll)
 	:substIndex(gamma_ll_from_gammaBar_ll_W)
 	:substIndex(gamma_uu_from_gammaBar_uu_W)
 	:substIndex(partial_gamma_lll_from_partial_gammaBar_lll_W)
-	:substIndex(A_ll_from_ABar_ll)
-	:substIndex(A_uu_from_ABar_uu)
-	:simplify()
 printbr(dt_ABar_ll_def)
---]]
--- [[
-dt_ABar_ll_def = dt_ABar_ll_def
-	:tidyIndexes()()
-	:symmetrizeIndexes(gammaBar, {1,2})()
+dt_ABar_ll_def = simplifyBarMetrics(dt_ABar_ll_def)
+	:tidyIndexes()
+dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+	:replaceIndex(ABar'_i^j', ABar'_ik' * gammaBar'^kj')
+	:replaceIndex(ABar'^ij', gammaBar'^im' * ABar'_mn' * gammaBar'^nj')
 printbr(dt_ABar_ll_def)
---]]
--- only do this if there are no gamma_ij's left -- only gammaBar_ij's
--- even at that, there is a risk, because beta_i gammaBar^ij would require an extra conformal factor while ABar_i gammaBar^ij would not
-dt_ABar_ll_def = dt_ABar_ll_def
-	:replace(ABar'^ab' * gammaBar'_ai' * gammaBar'_bj', ABar'_ij')
-	:replace(alpha'_,a' * gammaBar'^ab' * gammaBar'_bj', alpha'_,j')
-	:replace(alpha'_,a' * gammaBar'^ab' * gammaBar'_bi', alpha'_,i')
-	:replace(gammaBar'_ai' * gammaBar'^ab' * gammaBar'_bj', gammaBar'_ij')
-	:replace(ABar'^ab' * gammaBar'_bj', ABar'^a_j')
-	:replace(ABar'_ia' * gammaBar'^ab' * gammaBar'_bj', ABar'_ij')
-	:reindex{abc='klm'}
-	:simplify()
-printbr(dt_ABar_ll_def)
-printbr()
 
 
 printbr'<hr>'
@@ -647,7 +751,40 @@ printbr(dt_W_def)
 printbr(dt_K_def)
 printbr(dt_epsilonBar_ll_def)
 printbr(dt_ABar_ll_def)
+printbr(dt_LambdaBar_u_def)
 
+
+-- now save them, and write them out for specific coordinate systems
+file['BSSN - index - cache.lua'] = table{
+	[[
+local env = setmetatable({}, {__index=_G})
+require 'ext.env'(env)
+if setfenv then setfenv(1, env) else _ENV = env end
+require 'symmath'.setup{env=env}
+]],
+	'dt_alpha_def = '..export.SymMath(dt_alpha_def),
+	'dt_beta_u_def = '..export.SymMath(dt_beta_u_def),
+	'dt_B_u_def = '..export.SymMath(dt_B_u_def),
+	'dt_W_def = '..export.SymMath(dt_W_def),
+	'dt_epsilonBar_ll_def = '..export.SymMath(dt_epsilonBar_ll_def),
+	'dt_K_def = '..export.SymMath(dt_K_def),
+	'dt_ABar_ll_def = '..export.SymMath(dt_ABar_ll_def),
+	'dt_LambdaBar_u_def = '..export.SymMath(dt_LambdaBar_u_def),
+	[[
+return 
+	dt_alpha_def,
+	dt_beta_u_def,
+	dt_W_def,
+	dt_K_def,
+	dt_epsilonBar_ll_def,
+	dt_ABar_ll_def,
+	dt_LambdaBar_u_def,
+	dt_B_u_def
+]]
+}:concat'\n\n\n'..'\n'
+
+
+--[[
 printbr()
 
 printbr'<hr>'
@@ -766,3 +903,4 @@ local dt_B_norm_def = B'^I_,t':eq(
 )
 printbr(dt_B_norm_def) 
 printbr()
+--]]

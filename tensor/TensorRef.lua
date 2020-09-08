@@ -51,6 +51,15 @@ function TensorRef:hasTensorIndex(symbol)
 	return false
 end
 
+-- returns true if we have any deriv
+function TensorRef:hasDeriv()
+	for i=2,#self do
+		if self[i].derivative then return true end
+	end
+	return false
+end
+
+
 -- how does this behave any different than Expression:clone() 
 function TensorRef:clone()
 	return TensorRef(range(#self):map(function(i)
@@ -107,7 +116,6 @@ function TensorRef:dependsOn(x)
 	end
 	return false
 end
-
 
 
 TensorRef.rules = {

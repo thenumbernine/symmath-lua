@@ -39,6 +39,18 @@ SymMath.lookupTable = {
 			end):concat(' '..x.name..'\n')..'\n'
 			..indent..')'
 	end,
+	-- these don't directly translate to their name, as math operators do
+	[require 'symmath.op.eq'] = function(self, x, indent)
+		return indent .. '(\n'
+			.. indent .. self:apply(x[1], indent..tab)
+			.. '\n'
+			.. indent .. '):eq(\n'
+			..table.sub(x,2):mapi(function(xi)
+				return self:apply(xi, indent..tab)
+			end):concat(' '..x.name..'\n')..'\n'
+			..indent..')'
+	end,
+	-- TODO same with ne, ge, gt, le, lt
 	-- 'unary' ?
 	[require 'symmath.op.unm'] = function(self, x, indent)
 		return indent..'-(\n'
@@ -52,7 +64,7 @@ SymMath.lookupTable = {
 		if x.derivative then s = s..sep..'derivative='..tolua(x.derivative) sep=', ' end
 		if x.symbol then s = s..sep..'symbol='..tolua(x.symbol) sep=', ' end
 		s = s ..'}'
-		return s
+		return indent .. s
 	end,
 	-- Tensor constructor is a mess
 	[require 'symmath.Tensor'] = function(self, x, indent)
