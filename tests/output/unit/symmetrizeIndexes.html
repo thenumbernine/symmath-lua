@@ -487,47 +487,42 @@
 <code></code>
 </td><td>
 <tr><td>
-<b></b><br>
-<code>asserterror(function() (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}) end)</code>
+<b>in fact, I vote yes, because of exchaning labels of indexes. g^ab t_a,b = g^ab t_b,a regardless of any symmetry between t_a,b and t_b,a.</b><br>
+<code></code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
 <tr><td>
-<b></b><br>
-<code>asserterror(function() (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}):symmetrizeIndexes(d, {2,3}) end)</code>
+<b>asserterror(function() (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}) end)</b><br>
+<code></code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
 <tr><td>
-<b></b><br>
-<code>asserterror(function() (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}):symmetrizeIndexes(d, {2,3})() end)</code>
+<b>asserterror(function() (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}):symmetrizeIndexes(d, {2,3}) end)</b><br>
+<code></code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
+<tr><td>
+<b>asserterror(function() (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}):symmetrizeIndexes(d, {2,3})() end)</b><br>
+<code></code>
+</td><td>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
 <tr><td>
 <b></b><br>
-<code>asserteq( (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}, true), g'^kl' * (d'_kl,j' + d'_jk,l' - d'_kj,l') )</code>
+<code>asserteq( (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}), g'^kl' * (d'_kl,j' + d'_jk,l' - d'_kj,l') )</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq( (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}, true):symmetrizeIndexes(d, {2,3}, true), g'^kl' * (d'_kj,l' + d'_jk,l' - d'_kj,l') )</code>
+<code>asserteq( (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}):symmetrizeIndexes(d, {2,3}, true), g'^kl' * (d'_kj,l' + d'_jk,l' - d'_kj,l') )</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq( (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}, true):symmetrizeIndexes(d, {2,3}, true)(), g'^kl' * d'_jk,l' )</code>
+<code>asserteq( (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}):symmetrizeIndexes(d, {2,3}, true)(), g'^kl' * d'_jk,l' )</code>
 </td><td>
 
 <span style="color:green">GOOD</span>

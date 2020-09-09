@@ -1061,6 +1061,25 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 					end):sort(function(a,b) 
 						return tostring(a.symbol) < tostring(b.symbol) 
 					end)
+					
+					if not override then
+						-- don't allow swaps of derivatives with non-derivatives
+						local derivative = sorted[1].derivative
+						for i=2,#sorted do
+							if sorted[i].derivative ~= derivative then
+								error("found first derivative="..tostring(derivative).." next derivative="..tostring(sorted[i].derivative))
+							end
+						end
+						-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
+						if derivative then
+							for i,s in ipairs(sorted) do
+								if not s.lower then
+									error("can't exchange derivative indexes")
+								end
+							end		
+						end
+					end
+
 					for i,s in ipairs(sorted) do
 						y[indexes[i]+1].symbol = s.symbol
 						y[indexes[i]+1].lower = s.lower
@@ -1085,30 +1104,32 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 							end
 						end
 						
-						--[[ TODO just use recursion?
-						do return y:symmetrizeIndexes(y[1], indexes) end
-						--]]
-						
-						-- until then, gotta do this check twice
-						if not override then
-							-- don't allow swaps of derivatives with non-derivatives
-							local derivative = indexObjs[1].derivative
-							for i=2,#indexObjs do
-								if indexObjs[i].derivative ~= derivative then
-									error("found first derivative="..tostring(derivative).." next derivative="..tostring(indexObjs[i].derivative))
+						if #indexObjs >= 2 then
+							--[[ TODO just use recursion?
+							do return y:symmetrizeIndexes(y[1], indexes) end
+							--]]
+							
+							--[[ until then, gotta do this check twice
+							-- then again, because these sorts are based on relabeling and not on tensor symmetry, it shouldn't matter if they have commas or not
+							if not override then
+								-- don't allow swaps of derivatives with non-derivatives
+								local derivative = indexObjs[1].derivative
+								for i=2,#indexObjs do
+									if indexObjs[i].derivative ~= derivative then
+										error("found first derivative="..tostring(derivative).." next derivative="..tostring(indexObjs[i].derivative))
+									end
+								end
+								-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
+								if derivative then
+									for i,s in ipairs(indexObjs) do
+										if not s.lower then
+											error("can't exchange derivative indexes")
+										end
+									end		
 								end
 							end
-							-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
-							if derivative then
-								for i,s in ipairs(indexObjs) do
-									if not s.lower then
-										error("can't exchange derivative indexes")
-									end
-								end		
-							end
-						end
+							--]]
 
-						if #indexObjs >= 2 then
 							indexObjs:sort(function(a,b) return tostring(a.symbol) < tostring(b.symbol) end)
 							for i,j in ipairs(indexes) do
 								y[j].symbol = indexObjs[i].symbol
