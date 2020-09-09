@@ -1001,30 +1001,46 @@ then another symmetrize d {2,3} gives us
 g^kl (d_kjl + d_jkl - d_kjl)
 g^kl d_jkl
 
-TODO swap the variance as well, not just the symbol ... and the derivative too ...
+swaps the variance as well, not just the symbol ... and the derivative too ...
 ... (which means the danger of derivatives being moved out of the rhs places ... test for that)
 but if you don't swap variance then  symmetrizing a symbol with mixed variance will introduce mistakes as well
+TODO support for covariant derivative
+also TODO a script for automatically expanding the upper/lowers and determining if the swapped indexes do in fact match
 --]]
-function Expression:symmetrizeIndexes(var, indexes)
+function Expression:symmetrizeIndexes(var, indexes, override)
 	return self:map(function(x)
 		local TensorRef = require 'symmath.tensor.TensorRef'
 		if TensorRef.is(x) 
 		and x[1] == var
 		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
 		then
-			local lower
 			local sorted = table.mapi(indexes, function(i)
-				if lower == nil then 
-					lower = not not x[i+1].lower
-				else
-					if (not not x[i+1].lower) ~= lower then
-						error("found first lower="..lower.." next lower="..tostring(x[i+1].lower))
+				return x[i+1]:clone()
+			end):sort(function(a,b) 
+				return tostring(a.symbol) < tostring(b.symbol) 
+			end)
+		
+			if not override then
+				-- don't allow swaps of derivatives with non-derivatives
+				local derivative = sorted[1].derivative
+				for i=2,#sorted do
+					if sorted[i].derivative ~= derivative then
+						error("found first derivative="..tostring(derivative).." next derivative="..tostring(sorted[i].derivative))
 					end
 				end
-				return x[i+1].symbol
-			end):sort(function(a,b) return tostring(a) < tostring(b) end)
-			for i,sorted in ipairs(sorted) do
-				x[indexes[i]+1].symbol = sorted
+				-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
+				if derivative then
+					for i,s in ipairs(sorted) do
+						if not s.lower then
+							error("can't exchange derivative indexes")
+						end
+					end		
+				end
+			end
+
+			for i,s in ipairs(sorted) do
+				x[indexes[i]+1].symbol = s.symbol
+				x[indexes[i]+1].lower = s.lower
 			end
 		end
 		
@@ -1041,10 +1057,13 @@ function Expression:symmetrizeIndexes(var, indexes)
 				and #y >= table.sup(indexes)+1
 				then
 					sorted = table.mapi(indexes, function(i)
-						return y[i+1].symbol
-					end):sort(function(a,b) return tostring(a) < tostring(b) end)
-					for i,sorted in ipairs(sorted) do
-						y[indexes[i]+1].symbol = sorted
+						return y[i+1]:clone()
+					end):sort(function(a,b) 
+						return tostring(a.symbol) < tostring(b.symbol) 
+					end)
+					for i,s in ipairs(sorted) do
+						y[indexes[i]+1].symbol = s.symbol
+						y[indexes[i]+1].lower = s.lower
 					end				
 					
 					found = true
@@ -1057,17 +1076,20 @@ function Expression:symmetrizeIndexes(var, indexes)
 					if TensorRef.is(y) then
 						local indexes = table()
 						local indexSymbols = table()
+						local indexLowers = table()
 						for j=2,#y do
 							local sym = y[j].symbol
-							if sorted:find(sym) then
+							if sorted:find(nil, function(s) return s.symbol == sym end) then
 								indexes:insert(j)
 								indexSymbols:insert(sym)
+								indexLowers:insert(not not y[j].lower)
 							end
 						end
 						if #indexSymbols >= 2 then
 							indexSymbols:sort(function(a,b) return tostring(a) < tostring(b) end)
 							for i,j in ipairs(indexes) do
 								y[j].symbol = indexSymbols[i]
+								y[j].lower = indexLowers[i]
 							end
 						end
 					end

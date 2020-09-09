@@ -27,6 +27,11 @@ return function(env, title)
 		end
 	end
 
+	function env.asserterror(f)
+		local result = xpcall(f, function() end)
+		assert(not result, "expected an error, but found none")
+	end
+
 	function env.assertne(a,b)
 		local sa = symmath.simplify(a)
 		local ta = symmath.simplify.stack

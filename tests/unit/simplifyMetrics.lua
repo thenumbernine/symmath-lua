@@ -49,6 +49,8 @@ asserteq((a'_,i' * g'^ij'):simplifyMetrics(), a'_,i' * g'^ij')
 asserteq((a'^,i' * g'_ij'):simplifyMetrics(), a'^,i' * g'_ij')
 asserteq((a'_,im' * g'^ij'):simplifyMetrics(), a'_,im' * g'^ij')
 asserteq((a'^,im' * g'_ij'):simplifyMetrics(), a'^,im' * g'_ij')
+asserteq((a'_i,m' * g'^ij'):simplifyMetrics(), a'_i,m' * g'^ij')
+asserteq((a'^i,m' * g'_ij'):simplifyMetrics(), a'^i,m' * g'_ij')
 
 -- but delta should simplify with commas
 asserteq((a'_,i' * delta'^i_j'):simplifyMetrics(), a'_,j')
@@ -57,6 +59,10 @@ asserteq((a'_,im' * delta'^i_j'):simplifyMetrics(), a'_,jm')
 asserteq((a'^,im' * delta'_i^j'):simplifyMetrics(), a'^,jm')
 asserteq((a'_i,m' * delta'^i_j'):simplifyMetrics(), a'_j_,m')
 asserteq((a'^i,m' * delta'_i^j'):simplifyMetrics(), a'^j^,m')
+
+-- TODO someday: 
+-- allow g_ij to raise/lower the last partial derivative
+-- allow g_ij to raise/lower any covariant derivatives not enclosed in partial derivatives.
 
 ]=]), '\n')) do
 	env.exec(line)
