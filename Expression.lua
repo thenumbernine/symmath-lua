@@ -1014,7 +1014,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 		and x[1] == var
 		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
 		then
-			local sorted = table.mapi(indexes, function(i)
+			local indexObjs = table.mapi(indexes, function(i)
 				return x[i+1]:clone()
 			end):sort(function(a,b) 
 				return tostring(a.symbol) < tostring(b.symbol) 
@@ -1022,15 +1022,15 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 		
 			if not override then
 				-- don't allow swaps of derivatives with non-derivatives
-				local derivative = sorted[1].derivative
-				for i=2,#sorted do
-					if sorted[i].derivative ~= derivative then
-						error("found first derivative="..tostring(derivative).." next derivative="..tostring(sorted[i].derivative))
+				local derivative = indexObjs[1].derivative
+				for i=2,#indexObjs do
+					if indexObjs[i].derivative ~= derivative then
+						error("found first derivative="..tostring(derivative).." next derivative="..tostring(indexObjs[i].derivative))
 					end
 				end
 				-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
 				if derivative then
-					for i,s in ipairs(sorted) do
+					for i,s in ipairs(indexObjs) do
 						if not s.lower then
 							error("can't exchange derivative indexes")
 						end
@@ -1038,7 +1038,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 				end
 			end
 
-			for i,s in ipairs(sorted) do
+			for i,s in ipairs(indexObjs) do
 				x[indexes[i]+1].symbol = s.symbol
 				x[indexes[i]+1].lower = s.lower
 			end
@@ -1075,21 +1075,44 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 				return x:map(function(y)
 					if TensorRef.is(y) then
 						local indexes = table()
-						local indexSymbols = table()
-						local indexLowers = table()
+						local indexObjs = table()
 						for j=2,#y do
 							local sym = y[j].symbol
-							if sorted:find(nil, function(s) return s.symbol == sym end) then
+							local _, s = sorted:find(nil, function(s) return s.symbol == sym end)
+							if s then
 								indexes:insert(j)
-								indexSymbols:insert(sym)
-								indexLowers:insert(not not y[j].lower)
+								indexObjs:insert(y[j]:clone())
 							end
 						end
-						if #indexSymbols >= 2 then
-							indexSymbols:sort(function(a,b) return tostring(a) < tostring(b) end)
+						
+						--[[ TODO just use recursion?
+						do return y:symmetrizeIndexes(y[1], indexes) end
+						--]]
+						
+						-- until then, gotta do this check twice
+						if not override then
+							-- don't allow swaps of derivatives with non-derivatives
+							local derivative = indexObjs[1].derivative
+							for i=2,#indexObjs do
+								if indexObjs[i].derivative ~= derivative then
+									error("found first derivative="..tostring(derivative).." next derivative="..tostring(indexObjs[i].derivative))
+								end
+							end
+							-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
+							if derivative then
+								for i,s in ipairs(indexObjs) do
+									if not s.lower then
+										error("can't exchange derivative indexes")
+									end
+								end		
+							end
+						end
+
+						if #indexObjs >= 2 then
+							indexObjs:sort(function(a,b) return tostring(a.symbol) < tostring(b.symbol) end)
 							for i,j in ipairs(indexes) do
-								y[j].symbol = indexSymbols[i]
-								y[j].lower = indexLowers[i]
+								y[j].symbol = indexObjs[i].symbol
+								y[j].lower = indexObjs[i].lower
 							end
 						end
 					end

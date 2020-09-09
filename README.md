@@ -735,6 +735,8 @@ Output CDN URLs:
 
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
+[tests/output/BSSN - generate](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate.html)
+
 [tests/output/BSSN - index](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index.html)
 
 [tests/output/Building Curvature by ADM](https://thenumbernine.github.io/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
@@ -934,6 +936,8 @@ Output CDN URLs:
 [tests/output/unit/simplifyMetrics](https://thenumbernine.github.io/symmath/tests/output/unit/simplifyMetrics.html)
 
 [tests/output/unit/sub-tensor assignment](https://thenumbernine.github.io/symmath/tests/output/unit/sub%2dtensor%20assignment.html)
+
+[tests/output/unit/symmetrizeIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/symmetrizeIndexes.html)
 
 [tests/output/unit/tensor use case](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20use%20case.html)
 
