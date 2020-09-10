@@ -610,7 +610,7 @@ function Tensor:simplifyTraces()
 				if self.variance[i].symbol == self.variance[j].symbol then
 					self = self:trace(i,j):contraction(i)
 					if not Tensor.is(self) then
-						return self:simplify()	-- if it's a scalra then return
+						return self:simplify()	-- if it's a scalar then return
 					end
 					modified = true
 					break

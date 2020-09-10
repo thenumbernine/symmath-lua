@@ -10,6 +10,52 @@ MathJax.header.title = 'BSSN formalism - index notation'
 print(MathJax.header)
 
 
+--[[ here's our latest times:
+useful identity: ... 0.147233s
+useful identity: ... 0.197672s
+ADM metric evolution: ... 0.202164s
+Bona-Masso lapse and shift evolution: ... 0.203148s
+conformal $\phi$: ... 0.203477s
+conformal $\chi$: ... 0.20359s
+conformal W: ... 0.206739s
+conformal metric: ... 0.210535s
+conformal metric inverse: ... 0.214369s
+conformal metric derivative: ... 0.258517s
+conformal metric determinant: ... 0.260157s
+conformal metric constraint: ... 0.260315s
+static grid assumption: ... 0.260608s
+conformal connection: ... 0.634896s
+extrinsic curvature trace: ... 0.635045s
+trace-free extrinsic curvature: ... 0.640456s
+conformal trace-free extrinsic curvature: ... 0.657977s
+trace-free extrinsic curvature derivative: ... 0.667849s
+conformal W derivative: ... 1.521122s
+conformal metric evolution: ... 2.126162s
+conformal metric perturbation: ... 2.126363s
+conformal metric perturbation spatial derivative: ... 2.129114s
+conformal metric perturbation evolution: ... 2.133503s
+grid vs conformal connection difference: ... 2.135797s
+	
+*** TODO *** from here on are our problem equations.  too complex.  maybe defer something like GammaBar^i_jk?
+
+conformal connection evolution: ... 29.204591s
+grid vs conformal connection difference evolution: ... 46.538782s
+extrinsic curvature trace evolution: ... 75.014834s
+trace-free extrinsic curvature evolution: ... 75.04504s
+conformal trace-free extrinsic curvature evolution: ... 91.904009s
+--]]
+local lastTime = os.clock()
+local function printHeader(str)
+	local thisTime = os.clock()
+	io.stderr:write(' ... '..(thisTime-lastTime)..'s\n')
+	if str then 
+		io.stderr:write(str) 
+		printbr(str)
+	end
+	io.stderr:flush()
+end
+
+
 local function betterSimplify(x)
 	return x():factorDivision()
 	:map(function(y)
@@ -99,7 +145,7 @@ printbr(gammaBar, ' = conformal metric determinant')
 printbr()
 
 
-printbr'useful identity:'
+printHeader'useful identity:'
 local conn_lll_def = Gamma'_ijk':eq(frac(1,2) * (gamma'_ij,k' + gamma'_ik,j' - gamma'_jk,i'))
 printbr(conn_lll_def)
 local dgamma_lll_for_conn_lll = (conn_lll_def + conn_lll_def:reindex{ijk='kji'}):symmetrizeIndexes(gamma,{1,2})():switch():reindex{jk='kj'}
@@ -111,7 +157,7 @@ printbr(conn_ull_def)
 printbr()
 
 
-printbr'useful identity:'
+printHeader'useful identity:'
 local dt_gamma_uu_from_gamma_uu_partial_gamma_lll = (gamma'_li' * gamma'^ij')'_,t':eq(0)
 printbr(dt_gamma_uu_from_gamma_uu_partial_gamma_lll)
 dt_gamma_uu_from_gamma_uu_partial_gamma_lll = dt_gamma_uu_from_gamma_uu_partial_gamma_lll()
@@ -128,7 +174,7 @@ printbr()
 local dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll = dt_gamma_uu_from_gamma_uu_partial_gamma_lll:replace(gamma, gammaBar)
 
 
-printbr'ADM metric evolution:'
+printHeader'ADM metric evolution:'
 --local dt_gamma_ll_def = gamma'_ij,t':eq(-2 * alpha * K'_ij' + beta'_i;j' + beta'_j;i')
 local dt_gamma_ll_def = gamma'_ij,t':eq(-2 * alpha * K'_ij' + beta'_i,j' + beta'_j,i' - 2 * Gamma'^k_ij' * beta'_k')
 printbr(dt_gamma_ll_def)
@@ -154,7 +200,7 @@ printbr(dt_K_ll_def)
 printbr()
 
 --[[
-printbr'contracted metric evolution:'
+printHeader'contracted metric evolution:'
 local tmp = (dt_gamma_ll_def * gamma'^ij')():factorDivision()
 printbr(tmp)
 tmp = tmp
@@ -166,7 +212,7 @@ printbr()
 --]]
 
 
-printbr'Bona-Masso lapse and shift evolution:'
+printHeader'Bona-Masso lapse and shift evolution:'
 local dt_alpha_def = alpha'_,t':eq(alpha'_,i' * beta'^i' - alpha^2 * f * K)
 printbr(dt_alpha_def)
 
@@ -177,21 +223,21 @@ local dt_B_u_def = B'^i_,t':eq(frac(3,4) * LambdaBar'^i_,t' - eta * B'^i')
 printbr(dt_B_u_def) 
 printbr()
 
---printbr('metric derivative:')
+--printHeader'metric derivative:'
 
-printbr('conformal $\\phi$:')
+printHeader'conformal $\\phi$:'
 local phi_def = phi:eq(frac(1,12) * log(frac(gamma, gammaHat)))
 printbr(phi_def)
 printbr()
 
 
-printbr('conformal $\\chi$:')
+printHeader'conformal $\\chi$:'
 local chi_def = chi:eq(cbrt(frac(gammaHat, gamma)))
 printbr(chi_def)
 printbr()
 
 
-printbr('conformal W:')
+printHeader'conformal W:'
 local W_def = W:eq(frac(gammaHat, gamma)^frac(1,6))
 printbr(W_def)
 local W_from_chi = W:eq(sqrt(chi))
@@ -201,7 +247,7 @@ printbr(W_from_phi)
 printbr()
 
 
-printbr'conformal metric:'
+printHeader'conformal metric:'
 local gammaBar_ll_from_gamma_ll_W = gammaBar'_ij':eq(W^2 * gamma'_ij')
 printbr(gammaBar_ll_from_gamma_ll_W)
 
@@ -209,7 +255,7 @@ local gamma_ll_from_gammaBar_ll_W = gammaBar_ll_from_gamma_ll_W:solve(gamma'_ij'
 printbr(gamma_ll_from_gammaBar_ll_W)
 printbr()
 
-printbr'conformal metric inverse:'
+printHeader'conformal metric inverse:'
 local gammaBar_uu_from_gamma_uu_W = gammaBar'^ij':eq(W^-2 * gamma'^ij')
 printbr(gammaBar_uu_from_gamma_uu_W)
 
@@ -217,7 +263,7 @@ local gamma_uu_from_gammaBar_uu_W = gammaBar_uu_from_gamma_uu_W:solve(gamma'^ij'
 printbr(gamma_uu_from_gammaBar_uu_W)
 printbr()
 
-printbr'conformal metric derivative:'
+printHeader'conformal metric derivative:'
 local partial_gammaBar_lll_from_partial_gamma_lll_W = gammaBar_ll_from_gamma_ll_W'_,k'()
 printbr(partial_gammaBar_lll_from_partial_gamma_lll_W)
 local partial_gamma_lll_from_partial_gammaBar_lll_W = partial_gammaBar_lll_from_partial_gamma_lll_W
@@ -228,7 +274,7 @@ printbr(partial_gamma_lll_from_partial_gammaBar_lll_W)
 printbr()
 
 
-printbr'conformal metric determinant:'
+printHeader'conformal metric determinant:'
 local det_gammaBar_ll_from_det_gamma_ll = gammaBar:eq(W^6 * gamma)	-- asserting that the dimension of the spatial metric is 3 ...
 printbr(det_gammaBar_ll_from_det_gamma_ll)
 local det_gamma_ll_from_det_gammaBar_ll = det_gammaBar_ll_from_det_gamma_ll:solve(gamma)
@@ -236,7 +282,7 @@ printbr(det_gamma_ll_from_det_gammaBar_ll)
 printbr()
 
 
-printbr('conformal metric constraint:')
+printHeader'conformal metric constraint:'
 local det_gammaBar_ll_from_det_gammaHat_ll = gammaBar:eq(gammaHat)
 printbr(det_gammaBar_ll_from_det_gammaHat_ll)
 local det_gammaHat_ll_from_det_gammaBar_ll = det_gammaBar_ll_from_det_gammaHat_ll:solve(gammaHat)
@@ -244,7 +290,7 @@ printbr(det_gammaHat_ll_from_det_gammaBar_ll)
 printbr()
 
 
-printbr('static grid assumption:')
+printHeader'static grid assumption:'
 local dt_gammaHat_ll_def = gammaHat'_ij,t':eq(0)
 printbr(dt_gammaHat_ll_def)
 local dt_det_gammaHat_def = gammaHat'_,t':eq(0)
@@ -253,7 +299,7 @@ printbr()
 
 
 --[[
-printbr'conformal $\\phi$ derivative:'
+printHeader'conformal $\\phi$ derivative:'
 local tmp = (12 * phi_def)()
 printbr(tmp)
 tmp[2] = tmp[2]:expand()
@@ -269,7 +315,7 @@ printbr()
 --]]
 
 
-printbr'conformal connection:'
+printHeader'conformal connection:'
 local connBar_lll_def = GammaBar'_ijk':eq(frac(1,2) * (gammaBar'_ij,k' + gammaBar'_ik,j' - gammaBar'_jk,i'))
 printbr(connBar_lll_def)
 local connBar_lll_from_W_gamma_ll = connBar_lll_def:subst(
@@ -314,7 +360,7 @@ printbr()
 
 
 
-printbr'extrinsic curvature trace:'
+printHeader'extrinsic curvature trace:'
 local K_def = K:eq(K'_ij' * gamma'^ij')
 printbr(K_def)
 --[[
@@ -325,7 +371,7 @@ printbr()
 
 
 
-printbr'trace-free extrinsic curvature:'
+printHeader'trace-free extrinsic curvature:'
 local A_ll_def = A'_ij':eq(K'_ij' - frac(1,3) * gamma'_ij' * K)
 printbr(A_ll_def)
 local K_ll_from_A_ll_K = A_ll_def:solve(K'_ij')
@@ -336,7 +382,7 @@ local K_uu_from_A_uu_K = A_uu_def:solve(K'^ij')
 printbr(K_uu_from_A_uu_K)
 printbr()
 
-printbr'conformal trace-free extrinsic curvature:'
+printHeader'conformal trace-free extrinsic curvature:'
 local ABar_ll_def = ABar'_ij':eq(W^2 * A'_ij')
 printbr(ABar_ll_def)
 local A_ll_from_ABar_ll = ABar_ll_def:solve(A'_ij')
@@ -361,14 +407,14 @@ printbr(K_ll_from_ABar_ll_gammaBar_ll_K)
 printbr()
 
 
-printbr'trace-free extrinsic curvature derivative:'
+printHeader'trace-free extrinsic curvature derivative:'
 local partial_K_lll_from_partial_A_lll_K = K_ll_from_A_ll_K'_,k'()
 printbr(partial_K_lll_from_partial_A_lll_K)
 printbr()
 
 
 
-printbr('conformal W derivative:')
+printHeader'conformal W derivative:'
 local dt_W_def = W_def'_,t'()
 printbr(dt_W_def)
 printbr('assuming', dt_det_gammaHat_def)
@@ -415,7 +461,7 @@ printbr()
 
 
 --[[
-printbr'conformal W partial wrt $\\phi$:'
+printHeader'conformal W partial wrt $\\phi$:'
 local partial_W_from_phi = W_from_phi'_,i'():replace(e'_,i', 0)()	-- TODO since e has no depends vars, make e'_,i' always replace to 0 by default.
 printbr(partial_W_from_phi)
 local tmp = partial_W_from_phi:subst(W_from_phi:switch())()
@@ -424,7 +470,7 @@ local partial_phi_from_W = tmp:solve(phi'_,i')()
 printbr(partial_phi_from_W)
 printbr()
 
-printbr('conformal W second derivative wrt $\\phi$:')
+printHeader'conformal W second derivative wrt $\\phi$:'
 local partial2_W_from_phi = partial_W_from_phi'_,j'():replace(e'_,j', 0)()
 printbr(partial2_W_from_phi)
 partial2_W_from_phi = partial2_W_from_phi:subst(W_from_phi:switch())()
@@ -436,7 +482,7 @@ printbr(partial2_phi_from_W)
 printbr()
 --]]
 
-printbr'conformal metric evolution:'
+printHeader'conformal metric evolution:'
 local dt_gammaBar_ll_def = gammaBar_ll_from_gamma_ll_W'_,t'()
 printbr(dt_gammaBar_ll_def)
 dt_gammaBar_ll_def = dt_gammaBar_ll_def:subst(dt_gamma_ll_def)()
@@ -467,16 +513,16 @@ printbr()
 
 
 
-printbr'conformal metric perturbation:'
+printHeader'conformal metric perturbation:'
 local epsilonBar_def = epsilonBar'_ij':eq(gammaBar'_ij' - gammaHat'_ij')
 printbr(epsilonBar_def)
 printbr()
 
-printbr'conformal metric perturbation spatial derivative:'
+printHeader'conformal metric perturbation spatial derivative:'
 printbr(epsilonBar_def'_,k'())
 printbr()
 
-printbr'conformal metric perturbation evolution:'
+printHeader'conformal metric perturbation evolution:'
 local dt_epsilonBar_ll_def = epsilonBar_def'_,t'()
 printbr(dt_epsilonBar_ll_def)
 printbr('assuming', dt_gammaHat_ll_def)
@@ -487,7 +533,7 @@ dt_epsilonBar_ll_def = dt_epsilonBar_ll_def:subst(dt_gammaBar_ll_def)
 -- no need to print it again
 
 
-printbr'grid vs conformal connection difference:'
+printHeader'grid vs conformal connection difference:'
 local DeltaBar_ull_def = DeltaBar'^i_jk':eq(GammaBar'^i_jk' - GammaHat'^i_jk')
 printbr(DeltaBar_ull_def)
 local DeltaBar_u_def = DeltaBar'^i':eq(DeltaBar'^i_jk' * gammaBar'^jk')
@@ -503,7 +549,7 @@ printbr()
 
 
 
-printbr'conformal connection evolution:'
+printHeader'conformal connection evolution:'
 local dt_connBar_ull_def = connBar_ull_def'_,t'()
 printbr(dt_connBar_ull_def)
 dt_connBar_ull_def = dt_connBar_ull_def
@@ -538,7 +584,7 @@ printbr(dt_connBar_ull_def)
 printbr()
 
 
-printbr'grid vs conformal connection difference evolution:'
+printHeader'grid vs conformal connection difference evolution:'
 local dt_LambdaBar_u_def = LambdaBar_u_def'_,t'()
 	:replace(calC'^i_,t', 0)()
 printbr(dt_LambdaBar_u_def)
@@ -604,11 +650,33 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def
 	:substIndex(DeltaBar_ull_def)
 	:substIndex(connBar_ull_def)
 printbr(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
+	:substIndex(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)
+-- [[
+	:symmetrizeIndexes(gammaBar, {1,2})
+-- can't call 'simplifyBarMetrics' without it simplifying the ABar's ... so I'll just ask simplify ot only run on the gammaBar's 
+--dt_LambdaBar_u_def = simplifyBarMetrics(dt_LambdaBar_u_def):replaceIndex(ABar'^ij', gammaBar'^im' * ABar'_mn' * gammaBar'^nj')
+-- the alternative: make your own rule, simplify gammaBar metrics, only apply to other gammaBar metrics, and then simplify deltas
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:simplifyMetrics{
+	{
+		isMetric = function(g)
+			return g[1] == gammaBar
+		end,
+		canSimplify = function(g, t, gi, ti)
+			return t[1] == gammaBar
+			and t[ti].lower ~= g[gi].lower
+			and not t:hasDeriv()
+		end,
+	},
+	Tensor.simplifyMetricsRules.delta,
+}
+--]]
+printbr(dt_LambdaBar_u_def)
 printbr()
 
 
 
-printbr'extrinsic curvature trace evolution:'
+printHeader'extrinsic curvature trace evolution:'
 local dt_K_def = K_def'_,t'()
 printbr(dt_K_def)
 dt_K_def = dt_K_def:subst(dt_gamma_uu_from_gamma_uu_partial_gamma_lll)
@@ -698,13 +766,13 @@ dt_K_def = betterSimplify(dt_K_def)
 printbr(dt_K_def)
 
 
-printbr'trace-free extrinsic curvature evolution:'
+printHeader'trace-free extrinsic curvature evolution:'
 local dt_A_ll_def = A_ll_def'_,t'()
 printbr(dt_A_ll_def)
 printbr()
 
 
-printbr'conformal trace-free extrinsic curvature evolution:'
+printHeader'conformal trace-free extrinsic curvature evolution:'
 local dt_ABar_ll_def = ABar_ll_def'_,t'()
 printbr(dt_ABar_ll_def)
 dt_ABar_ll_def = dt_ABar_ll_def:substIndex(dt_W_def)
@@ -742,7 +810,7 @@ printbr(dt_ABar_ll_def)
 
 printbr'<hr>'
 --]]
-printbr('collecting partial derivatives:')
+printHeader'collecting partial derivatives:'
 
 printbr(dt_alpha_def)
 printbr(dt_beta_u_def)
@@ -791,7 +859,7 @@ printbr'<hr>'
 
 -- final results, since I'm too lazy to derive them
 -- TODO copy these expressions over to bssnok-fd-sym and evaluate them for each grid.  no more intermediate simplifications required.
-printbr'using locally-Minkowski-normalized  non-coordinate components:'
+printHeader'using locally-Minkowski-normalized  non-coordinate components:'
 
 local dt_alpha_norm_def = dt_alpha_def:replace(beta'^i', e'^i_I' * beta'^I')()
 printbr(dt_alpha_norm_def) 
@@ -904,3 +972,8 @@ local dt_B_norm_def = B'^I_,t':eq(
 printbr(dt_B_norm_def) 
 printbr()
 --]]
+
+
+-- DONE
+printHeader()
+print(MathJax.footer)

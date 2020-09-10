@@ -21,6 +21,13 @@ local eqns = table{
 }
 
 
+--[[ hack for fixing things
+eqns = table{eqns[#eqns-1]}
+print(eqns[1][1])
+assert(eqns[1][1] == var'\\bar{\\Lambda}''^i_,t')
+--]]
+
+
 -- manifold info
 
 
@@ -44,6 +51,9 @@ local B_u_dense = Tensor('^i', function(i)
 end)
 local LambdaBar_u_dense = Tensor('^i', function(i)
 	return var('LambdaBar_u.'..xs[i])
+end)
+local C_u_dense = Tensor('^i', function(i)
+	return var('C_u.'..xs[i])
 end)
 local gammaBar_ll_dense = Tensor('_ij', function(i,j)
 	return var('gammaBar_ll.'..table{xs[i],xs[j]}:sort():concat())
@@ -94,19 +104,32 @@ end)
 	-- 2nd derivs
 
 local partial2_alpha_ll_dense = Tensor('_ij', function(i,j)
-	return var('partial_alpha_l.'..table{xs[i],xs[j]}:sort():concat())
+	return var('partial2_alpha_ll.'..table{xs[i],xs[j]}:sort():concat())
+end)
+local partial2_beta_ull_dense = Tensor('^i_jk', function(i,j,k)
+	return var('partial2_beta_ull['..(j-1)..']['..(k-1)..'].'..xs[i])
+end)
+local partial2_gammaBar_llll_dense = Tensor('_ijkl', function(i,j,k,l)
+	return var('partial2_gammaBar_llll['..(k-1)..']['..(l-1)..'].'..table{xs[i],xs[j]}:sort():concat())
 end)
 
 
 -- convert from tex vars and partials to C vars
 
+io.stderr:write('starting conversion...\n')
+io.stderr:flush()
 
 for i,eqn in ipairs(eqns) do
 	local lhs, rhs = table.unpack(eqn)
 	assert(TensorRef.is(lhs))
 	assert(lhs[#lhs].symbol == 't' and lhs[#lhs].lower)
 	printbr('variable: '..lhs[1])
-	
+	io.stderr:write('variable: '..lhs[1]..'\n')
+	io.stderr:flush()
+
+local origRhs = rhs
+	rhs = rhs:factorDivision()
+
 	rhs = rhs
 		--:splitOffDerivIndexes()
 		-- scalar 2nd derivs
@@ -115,13 +138,17 @@ for i,eqn in ipairs(eqns) do
 		:replaceIndex(var'\\alpha''_,i', partial_alpha_l_dense'_i')
 		:replaceIndex(var'W''_,i', partial_W_l_dense'_i')
 		:replaceIndex(var'K''_,i', partial_K_l_dense'_i')
-		-- tensor derivs - though shouldn't they autogen?
+		-- tensor 1st derivs - though shouldn't they autogen?
 		:replaceIndex(var'\\beta''^i_,j', partial_beta_ul_dense'^i_j')
 		:replaceIndex(var'\\bar{\\gamma}''_ij,k', partial_gammaBar_lll_dense'_ijk')
 		:replaceIndex(var'\\bar{A}''_ij,k', partial_ABar_lll_dense'_ijk')
+		-- tensor 2nd derivs 
+		:replaceIndex(var'\\beta''^i_,jk', partial2_beta_ull_dense'^i_jk')
+		:replaceIndex(var'\\bar{\\gamma}''_ij,kl', partial2_gammaBar_llll_dense'_ijkl')
 		-- tensor vars
 		:replaceIndex(var'\\beta''^i', beta_u_dense'^i')
 		:replaceIndex(var'B''^i', B_u_dense'^i')
+		:replaceIndex(var'\\mathcal{C}''^i', C_u_dense'^i')
 		:replaceIndex(var'\\bar{\\Lambda}''^i', LambdaBar_u_dense'^i')
 		:replaceIndex(var'\\bar{\\epsilon}''_ij', epsilonBar_ll_dense'_ij')
 		:replaceIndex(var'\\bar{\\gamma}''_ij', gammaBar_ll_dense'_ij')
@@ -135,14 +162,67 @@ for i,eqn in ipairs(eqns) do
 		:replace(var'\\rho', var'rho')
 		:replace(var'\\pi', var'M_PI')
 	printbr(rhs)
-	rhs = rhs
-		:simplify()	-- contract all the tensor operations
-	
+
+--[[	
+	rhs = rhs:simplify()	-- dies at the end as well 
+--]]
+--[[	
+	rhs = rhs:factorDivision()	-- got all the way to LambdaBar 
+--]]
+-- [[ dies at epsilonBar
+	if lhs == var'\\beta''^i_,t' then
+		rhs = rhs:simplify()
+	else
+		assert(symmath.op.add.is(rhs))
+		local newrhs = table()
+		for j=1,#rhs do
+io.stderr:write('simplifying term '..j..' of '..#rhs..'\n')
+io.stderr:flush()
+			xpcall(function()
+				newrhs[j] = rhs[j]:simplify()
+			end, function(err)
+				printbr('failed to simplify '..rhs[j])
+				io.stderr:write(err..'\n'..debug.backtrace())
+				os.exit(1)
+			end)
+		end
+		assert(#rhs >= 2)
+		-- each should be a tensor term of degree matching the partial on the lhs
+		rhs = setmetatable(newrhs, symmath.op.add)
+		
+		-- sum all the tensor terms together
+		xpcall(function()
+io.stderr:write('final simplification...\n')
+io.stderr:flush()
+			rhs = rhs()
+		end, function(err)
+			printbr('failed to simplify whole '..rhs)
+			io.stderr:write(err..'\n'..debug.backtrace())
+			-- hmm ... this isn't quitting. wtf.
+			os.exit(1)
+		end)
+		
+		if #lhs <= 1 then
+			error("seems you have a pde with a time-derivative index")
+		elseif #lhs == 2 then
+			-- this is a scalar: name'_,t'
+			-- rhs shouldn't be a tensor
+		elseif #lhs >= 3 then
+			-- simplified rhs should have become a tequl to the number of indexes of the_,t)
+			--assert(Tensor.is(rhs))
+		end
+	end
+--]]
+
+io.stderr:write('creating equations with new variable names...\n')
+io.stderr:flush()
+
 	local resultEqns = table()
 	
 	-- lazy arbitrary nested for-loop:
 	local variance = table.sub(lhs, 2,#lhs-1)
 	if #variance == 0 then
+		assert(rhs)
 		-- scalar
 		resultEqns:insert{['deriv->'..lhs[1].name:gsub('\\', '')] = rhs}
 	else
@@ -150,13 +230,20 @@ for i,eqn in ipairs(eqns) do
 		--printbr('variance: '..variance:mapi(tostring):concat())
 		Tensor(variance, function(...)
 			local is = table{...}
+			if not rhs[is] then
+				local msg = ("failed to find "..lhs.." "..is:concat','.." from orig eqn "..origRhs )
+				printbr(msg)
+				error(msg)
+			end
 			--printbr(...)
 			resultEqns:insert{['deriv->'..lhs[1].name:gsub('\\', '')..'.'..is:mapi(function(i) return xs[i] end):concat()] = rhs[is]}
 		end)
 	end
 
 	for _,eqn in ipairs(resultEqns) do
-		local k,v = next(eqn)
+		local k,v = next(eqn)	-- why would this ever fail?
+		assert(k, "failed on "..tolua(eqn))
+		assert(v, "failed on "..tolua(eqn))
 		printbr(var(k):eq(v))
 		printbr()
 	end
@@ -165,6 +252,8 @@ end
 
 -- to C code
 
+io.stderr:write('converting to C code:\n')
+io.stderr:flush()
 
 print'---------------------------'
 print(symmath.export.C:toCode{

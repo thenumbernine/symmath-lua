@@ -60,9 +60,9 @@ SymMath.lookupTable = {
 	[require 'symmath.tensor.TensorIndex'] = function(self, x, indent)
 		local sep = ''
 		local s = x.name..'{'
-		if x.lower then s = s..sep..'lower='..tolua(x.lower) sep=', ' end
-		if x.derivative then s = s..sep..'derivative='..tolua(x.derivative) sep=', ' end
-		if x.symbol then s = s..sep..'symbol='..tolua(x.symbol) sep=', ' end
+		if x.lower ~= nil then s = s..sep..'lower='..tolua(x.lower) sep=', ' end
+		if x.derivative ~= nil then s = s..sep..'derivative='..tolua(x.derivative) sep=', ' end
+		if x.symbol ~= nil then s = s..sep..'symbol='..tolua(x.symbol) sep=', ' end
 		s = s ..'}'
 		return indent .. s
 	end,
