@@ -30,6 +30,10 @@ asserteq((-a'_i' * a'_j' + (d'_ji^k' + d'_ij^k' - d'^k_ij') * (a'_k' + c'_k' - d
 asserteq((a'^j_aj' * b'^a' - a'^k_jk' * b'^j'):tidyIndexes(), 0)
 
 asserteq((2 * phi_K^4 * A' _\\alpha' * F' _\\gamma ^\\beta' * F' _\\beta ^\\gamma' * A' ^\\alpha' + phi_K^2 * F' _\\beta ^\\alpha' * F' _\\alpha ^\\beta' + 4 * R - 2 * phi_K^4 * F' _\\beta ^\\alpha' * A' _\\gamma' * F' _\\alpha ^\\beta' * A' ^\\gamma')():tidyIndexes()(), 4 * R + F'_a^b' * F'_b^a' * phi_K^2)	-- should tidyIndexes automatically simplify()?  or at least add.Factor?  otherwise mul terms don't get sorted.
+
+asserteq((a'^i_i' * b'^j_j'):tidyIndexes(), a'^a_a' * b'^b_b')		-- TODO sum indexes should be distinct within a term, but we are regurgitating them
+asserteq((a'^i' * b'^j_ji'):tidyIndexes(), a'^a' * b'^b_ba')		-- this uses the first available indexes
+asserteq((a'^a' * b'^b_ba'):tidyIndexes(), a'^a' * b'^b_ba')		-- ... but if they were used as sum indexes in the source, it skips them as sum indexes in the destination TODO FIXME
 ]=]), '\n')) do
 	env.exec(line)
 end

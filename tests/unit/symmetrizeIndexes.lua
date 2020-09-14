@@ -123,6 +123,15 @@ asserteq( (a'^c' * d'^d_dc'):symmetrizeIndexes(d, {2,3}), a'^c' * d'^d_cd')	-- t
 asserteq( (g'_ab' * a'^bac'):symmetrizeIndexes(g, {1,2}), g'_ab' * a'^abc')
 asserteq( (g'_ab' * a'^bac' * g'_ef' * b'^feg' ):symmetrizeIndexes(g, {1,2}), g'_ab' * a'^abc' * g'_ef' * b'^efg')
 
+asserterror(function() ( g'^ab' * b'_a,b' ):symmetrizeIndexes(b, {1,2}) end)		-- can't symmetrize b_a,b without override
+asserterror(function() ( b'^a_,b' ):symmetrizeIndexes(b, {1,2}) end)				-- can't symmetrize b^a_,b without override
+asserteq( ( g'^ba' * b'_a,b' ):symmetrizeIndexes(g, {1,2}), g'^ab' * b'_a,b' )		-- you can indirectly symmetrize b_a,b without override
+
+asserteq(( d'^ab' * b'_b,a' ):symmetrizeIndexes(d, {1,2}), d'^ab' * b'_a,b')			-- fine 
+asserteq(( d'_ab' * b'^b,a' ):symmetrizeIndexes(d, {1,2}), d'_ab' * b'^a,b')			-- fine 
+asserteq(( d'^a_b' * b'^b_,a' ):symmetrizeIndexes(d, {1,2}), d'^a_b' * b'^b_,a')		-- you can't indirectly symmetrize b^a_,b without override ... but because it's indirect, don't cause an error, just skip it.
+asserteq(( d'^a_b' * b'^b_,a' ):symmetrizeIndexes(d, {1,2}, true), d'^a_b' * b'_a^,b')	-- if you override, then fine , but maybe care about the commas and upper/lower a bit more? maybe not, it's overridden anyways
+
 ]=]), '\n')) do
 	env.exec(line)
 end

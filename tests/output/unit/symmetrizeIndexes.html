@@ -563,3 +563,60 @@
 
 <span style="color:green">GOOD</span>
 </td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>can't symmetrize b_a,b without override</b><br>
+<code>asserterror(function() ( g'^ab' * b'_a,b' ):symmetrizeIndexes(b, {1,2}) end)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>can't symmetrize b^a_,b without override</b><br>
+<code>asserterror(function() ( b'^a_,b' ):symmetrizeIndexes(b, {1,2}) end)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>you can indirectly symmetrize b_a,b without override</b><br>
+<code>asserteq( ( g'^ba' * b'_a,b' ):symmetrizeIndexes(g, {1,2}), g'^ab' * b'_a,b' )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>fine</b><br>
+<code>asserteq(( d'^ab' * b'_b,a' ):symmetrizeIndexes(d, {1,2}), d'^ab' * b'_a,b')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>fine</b><br>
+<code>asserteq(( d'_ab' * b'^b,a' ):symmetrizeIndexes(d, {1,2}), d'_ab' * b'^a,b')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>you can't indirectly symmetrize b^a_,b without override ... but because it's indirect, don't cause an error, just skip it.</b><br>
+<code>asserteq(( d'^a_b' * b'^b_,a' ):symmetrizeIndexes(d, {1,2}), d'^a_b' * b'^b_,a')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>if you override, then fine , but maybe care about the commas and upper/lower a bit more? maybe not, it's overridden anyways</b><br>
+<code>asserteq(( d'^a_b' * b'^b_,a' ):symmetrizeIndexes(d, {1,2}, true), d'^a_b' * b'_a^,b')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>

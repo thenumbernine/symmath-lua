@@ -1021,7 +1021,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 			end)
 --print('associated indexes: '..table.mapi(indexObjs, tostring):concat' ')
 			assert(#indexObjs == #indexes)
-			indexObjs = indexObjs:sort(function(a,b) 
+			indexObjs:sort(function(a,b) 
 				if a.symbol ~= b.symbol then
 					return tostring(a.symbol) < tostring(b.symbol) 
 				end
@@ -1083,7 +1083,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 					end)
 					assert(#srcIndexObjs == #indexes)
 --print('associated indexes: '..table.mapi(srcIndexObjs, tostring):concat' ')
-					srcIndexObjs = srcIndexObjs:sort(function(a,b) 
+					srcIndexObjs:sort(function(a,b) 
 						if a.symbol ~= b.symbol then
 							return tostring(a.symbol) < tostring(b.symbol) 
 						end
@@ -1142,33 +1142,37 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 										do return z:symmetrizeIndexes(z[1], dstIndexes) end
 										--]]
 										
-										--[[ until then, gotta do this check twice
-										-- then again, because these sorts are based on relabeling and not on tensor symmetry, it shouldn't matter if they have commas or not
-										if not override then
-											-- don't allow swaps of derivatives with non-derivatives
-											local derivative = indexObjs[1].derivative
-											for i=2,#indexObjs do
-												if indexObjs[i].derivative ~= derivative then
-													error("found first derivative="..tostring(derivative).." next derivative="..tostring(indexObjs[i].derivative))
-												end
-											end
-											-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
-											if derivative then
-												for i,s in ipairs(indexObjs) do
-													if not s.lower then
-														error("can't exchange derivative indexes")
-													end
-												end		
-											end
-										end
-										--]]
-
 										indexObjs:sort(function(a,b) 
 											if a.symbol ~= b.symbol then
 												return tostring(a.symbol) < tostring(b.symbol) 
 											end
 											return tostring(a.lower) < tostring(b.lower)
 										end)
+
+										-- [=[ until then, gotta do this check twice
+										-- then again, because these sorts are based on relabeling and not on tensor symmetry, it shouldn't matter if they have commas or not
+										-- then again, upper/lower does get switched, so if we have a comma then we don't want to switch that.
+										-- so we do want to do this, but only for derivative, not for upper/lower
+										-- so if we are indirectly sorting
+										-- then ...
+										-- if they have all the same upper/lower despite mixed commas, we are safe
+										-- if they have varying upper/lower but no commas anywhere then we are safe
+										-- otherwise, if the upper/lower varies, and we have commas anywhere, then we can't symmetrize this (indirectly)
+										if not override 
+										and z:hasDeriv()
+										then
+											-- don't allow swaps of derivatives with non-derivatives
+											--local lower = z[dstIndexes[1]].lower
+											local lower = not not z[dstIndexes[1]].lower
+											for m=1,#dstIndexes do
+												if not not z[dstIndexes[m]].lower ~= lower then
+													return
+													--error("found first derivative="..tostring(derivative).." next derivative="..tostring(indexObjs[m].derivative))
+												end
+											end
+										end
+										--]=]
+
 										z = z:clone()
 										for i,m in ipairs(dstIndexes) do
 											z[m].symbol = indexObjs[i].symbol
