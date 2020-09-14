@@ -10,40 +10,6 @@ MathJax.header.title = 'BSSN formalism - index notation'
 print(MathJax.header)
 
 
---[[ here's our latest times:
-useful identity: ... 0.147233s
-useful identity: ... 0.197672s
-ADM metric evolution: ... 0.202164s
-Bona-Masso lapse and shift evolution: ... 0.203148s
-conformal $\phi$: ... 0.203477s
-conformal $\chi$: ... 0.20359s
-conformal W: ... 0.206739s
-conformal metric: ... 0.210535s
-conformal metric inverse: ... 0.214369s
-conformal metric derivative: ... 0.258517s
-conformal metric determinant: ... 0.260157s
-conformal metric constraint: ... 0.260315s
-static grid assumption: ... 0.260608s
-conformal connection: ... 0.634896s
-extrinsic curvature trace: ... 0.635045s
-trace-free extrinsic curvature: ... 0.640456s
-conformal trace-free extrinsic curvature: ... 0.657977s
-trace-free extrinsic curvature derivative: ... 0.667849s
-conformal W derivative: ... 1.521122s
-conformal metric evolution: ... 2.126162s
-conformal metric perturbation: ... 2.126363s
-conformal metric perturbation spatial derivative: ... 2.129114s
-conformal metric perturbation evolution: ... 2.133503s
-grid vs conformal connection difference: ... 2.135797s
-	
-*** TODO *** from here on are our problem equations.  too complex.  maybe defer something like GammaBar^i_jk?
-
-conformal connection evolution: ... 29.204591s
-grid vs conformal connection difference evolution: ... 46.538782s
-extrinsic curvature trace evolution: ... 75.014834s
-trace-free extrinsic curvature evolution: ... 75.04504s
-conformal trace-free extrinsic curvature evolution: ... 91.904009s
---]]
 local lastTime = os.clock()
 local function printHeader(str)
 	local thisTime = os.clock()

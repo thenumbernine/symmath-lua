@@ -1008,17 +1008,26 @@ TODO support for covariant derivative
 also TODO a script for automatically expanding the upper/lowers and determining if the swapped indexes do in fact match
 --]]
 function Expression:symmetrizeIndexes(var, indexes, override)
+--print('symmetrizing '..var.name..' indexes '..require'ext.tolua'(indexes))
 	return self:map(function(x)
 		local TensorRef = require 'symmath.tensor.TensorRef'
 		if TensorRef.is(x) 
 		and x[1] == var
 		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
 		then
+--print('found matching var: '..x)			
 			local indexObjs = table.mapi(indexes, function(i)
 				return x[i+1]:clone()
-			end):sort(function(a,b) 
-				return tostring(a.symbol) < tostring(b.symbol) 
 			end)
+--print('associated indexes: '..table.mapi(indexObjs, tostring):concat' ')
+			assert(#indexObjs == #indexes)
+			indexObjs = indexObjs:sort(function(a,b) 
+				if a.symbol ~= b.symbol then
+					return tostring(a.symbol) < tostring(b.symbol) 
+				end
+				return tostring(a.lower) < tostring(b.lower)
+			end)
+--print('indexes, sorted: '..table.mapi(indexObjs, tostring):concat' ')
 		
 			if not override then
 				-- don't allow swaps of derivatives with non-derivatives
@@ -1038,10 +1047,14 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 				end
 			end
 
+			x = x:clone()
 			for i,s in ipairs(indexObjs) do
+--print('setting '..x[1].name..' index '..(indexes[i]+1)..' to '..s)				
 				x[indexes[i]+1].symbol = s.symbol
 				x[indexes[i]+1].lower = s.lower
 			end
+--print('resulting obj: '..x)
+			return x
 		end
 		
 		-- if there's a var^ijk... anywhere in the mul
@@ -1049,30 +1062,46 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 		local mul = require 'symmath.op.mul'
 		if mul.is(x) then
 			local found
-			local sorted
-			for i=1,#x do
-				local y = x[i]
+--print('checking mul: '..x)
+			
+			-- rather than only use the first set of symmetrized indexes, how about we re-sort other terms for all symmetrized indexes?
+			-- i.e. g_ab a^bac => g_(ab) => g_ab a^abc
+			-- but  g_ab a^bac g_ef b^feg => g_(ab) .... will only symmetrize the first and not the second (because we are only sorting one per term) 
+			for j,y in ipairs(x) do
+--print('checking mul term #'..j..': '..y)	
 				if TensorRef.is(y)
 				and y[1] == var
 				and #y >= table.sup(indexes)+1
 				then
-					sorted = table.mapi(indexes, function(i)
+					if not found then
+						x = x:clone()
+						found = true
+					end
+--print('found matching var: '..y)
+					local srcIndexObjs = table.mapi(indexes, function(i)
 						return y[i+1]:clone()
-					end):sort(function(a,b) 
-						return tostring(a.symbol) < tostring(b.symbol) 
 					end)
+					assert(#srcIndexObjs == #indexes)
+--print('associated indexes: '..table.mapi(srcIndexObjs, tostring):concat' ')
+					srcIndexObjs = srcIndexObjs:sort(function(a,b) 
+						if a.symbol ~= b.symbol then
+							return tostring(a.symbol) < tostring(b.symbol) 
+						end
+						return tostring(a.lower) < tostring(b.lower)
+					end)
+--print('associated indexes: '..table.mapi(srcIndexObjs, tostring):concat' ')
 					
 					if not override then
 						-- don't allow swaps of derivatives with non-derivatives
-						local derivative = sorted[1].derivative
-						for i=2,#sorted do
-							if sorted[i].derivative ~= derivative then
-								error("found first derivative="..tostring(derivative).." next derivative="..tostring(sorted[i].derivative))
+						local derivative = srcIndexObjs[1].derivative
+						for i=2,#srcIndexObjs do
+							if srcIndexObjs[i].derivative ~= derivative then
+								error("found first derivative="..tostring(derivative).." next derivative="..tostring(srcIndexObjs[i].derivative))
 							end
 						end
 						-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
 						if derivative then
-							for i,s in ipairs(sorted) do
+							for i,s in ipairs(srcIndexObjs) do
 								if not s.lower then
 									error("can't exchange derivative indexes")
 								end
@@ -1080,65 +1109,80 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 						end
 					end
 
-					for i,s in ipairs(sorted) do
+					for i,s in ipairs(srcIndexObjs) do
+--print('setting '..x[1].name..' index '..(indexes[i]+1)..' to '..s)				
 						y[indexes[i]+1].symbol = s.symbol
 						y[indexes[i]+1].lower = s.lower
-					end				
+					end
+--print('resulting obj: '..y)
 					
-					found = true
-					break
-				end
-			end
-			
-			if found then
-				return x:map(function(y)
-					if TensorRef.is(y) then
-						local indexes = table()
-						local indexObjs = table()
-						for j=2,#y do
-							local sym = y[j].symbol
-							local _, s = sorted:find(nil, function(s) return s.symbol == sym end)
-							if s then
-								indexes:insert(j)
-								indexObjs:insert(y[j]:clone())
-							end
-						end
-						
-						if #indexObjs >= 2 then
-							--[[ TODO just use recursion?
-							do return y:symmetrizeIndexes(y[1], indexes) end
-							--]]
-							
-							--[[ until then, gotta do this check twice
-							-- then again, because these sorts are based on relabeling and not on tensor symmetry, it shouldn't matter if they have commas or not
-							if not override then
-								-- don't allow swaps of derivatives with non-derivatives
-								local derivative = indexObjs[1].derivative
-								for i=2,#indexObjs do
-									if indexObjs[i].derivative ~= derivative then
-										error("found first derivative="..tostring(derivative).." next derivative="..tostring(indexObjs[i].derivative))
+					-- if we found a matching tensor in a mul - and we sorted it - then next we need to sort all associated indexes in other tensors in the mul
+
+--print('checking mul for matching indexes in other terms...')
+					for k=1,#x do
+						if k ~= j then -- don't re-sort your own symbols, or else G^d_dc : symmetrize(G, {2,3}) will sort index 1 as well and produce G_cd^d
+							x[k] = x[k]:map(function(z)
+								if TensorRef.is(z) then
+--print('checking term# '..k..': '..z)
+									local dstIndexes = table()
+									local indexObjs = table()
+									for m=2,#z do
+										local sym = z[m].symbol
+										local _, s = srcIndexObjs:find(nil, function(s) return s.symbol == sym end)
+										if s then
+											dstIndexes:insert(m)
+											indexObjs:insert(z[m]:clone())
+										end
+									end
+--print('found matching index objs '..table.mapi(indexObjs, tostring):concat' ')
+--print('...at indexes '..require 'ext.tolua'(dstIndexes))
+									assert(#dstIndexes <= #indexes)	-- can't share any more indexes with our source object than we are symmetrizing ... unless you are breaking index notation rules
+									if #indexObjs >= 2 then
+										--[[ TODO just use recursion?
+										do return z:symmetrizeIndexes(z[1], dstIndexes) end
+										--]]
+										
+										--[[ until then, gotta do this check twice
+										-- then again, because these sorts are based on relabeling and not on tensor symmetry, it shouldn't matter if they have commas or not
+										if not override then
+											-- don't allow swaps of derivatives with non-derivatives
+											local derivative = indexObjs[1].derivative
+											for i=2,#indexObjs do
+												if indexObjs[i].derivative ~= derivative then
+													error("found first derivative="..tostring(derivative).." next derivative="..tostring(indexObjs[i].derivative))
+												end
+											end
+											-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
+											if derivative then
+												for i,s in ipairs(indexObjs) do
+													if not s.lower then
+														error("can't exchange derivative indexes")
+													end
+												end		
+											end
+										end
+										--]]
+
+										indexObjs:sort(function(a,b) 
+											if a.symbol ~= b.symbol then
+												return tostring(a.symbol) < tostring(b.symbol) 
+											end
+											return tostring(a.lower) < tostring(b.lower)
+										end)
+										z = z:clone()
+										for i,m in ipairs(dstIndexes) do
+											z[m].symbol = indexObjs[i].symbol
+											z[m].lower = indexObjs[i].lower
+										end
+										return z
 									end
 								end
-								-- if swapping derivatives, don't swap uppers (TODO unless it's a covariant derivative)
-								if derivative then
-									for i,s in ipairs(indexObjs) do
-										if not s.lower then
-											error("can't exchange derivative indexes")
-										end
-									end		
-								end
-							end
-							--]]
-
-							indexObjs:sort(function(a,b) return tostring(a.symbol) < tostring(b.symbol) end)
-							for i,j in ipairs(indexes) do
-								y[j].symbol = indexObjs[i].symbol
-								y[j].lower = indexObjs[i].lower
-							end
+							end)
 						end
 					end
-				end)
+				end
 			end
+			if found then return x end
 		end
 	end)
 end

@@ -4,6 +4,7 @@ if setfenv then setfenv(1, env) else _ENV = env end
 require 'unit'(env, 'symmetrizeIndexes')
 
 env.a = var'a'
+env.b = var'b'
 env.d = var'd'
 env.g = var'g'
 env.delta  = Tensor:deltaSymbol()
@@ -115,6 +116,12 @@ asserteq( (delta'_k^l' * (d'^k_lj' + d'_jl^k' - d'_lj^k')):symmetrizeIndexes(del
 asserteq( (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}), g'^kl' * (d'_kl,j' + d'_jk,l' - d'_kj,l') )
 asserteq( (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}):symmetrizeIndexes(d, {2,3}, true), g'^kl' * (d'_kj,l' + d'_jk,l' - d'_kj,l') )
 asserteq( (g'^kl' * (d'_kl,j' + d'_jl,k' - d'_lj,k')):symmetrizeIndexes(g, {1,2}):symmetrizeIndexes(d, {2,3}, true)(), g'^kl' * d'_jk,l' )
+
+asserteq( (d'^d_dc'):symmetrizeIndexes(d, {2,3}), d'^d_cd')	-- this is working
+asserteq( (a'^c' * d'^d_dc'):symmetrizeIndexes(d, {2,3}), a'^c' * d'^d_cd')	-- this is failing
+
+asserteq( (g'_ab' * a'^bac'):symmetrizeIndexes(g, {1,2}), g'_ab' * a'^abc')
+asserteq( (g'_ab' * a'^bac' * g'_ef' * b'^feg' ):symmetrizeIndexes(g, {1,2}), g'_ab' * a'^abc' * g'_ef' * b'^efg')
 
 ]=]), '\n')) do
 	env.exec(line)
