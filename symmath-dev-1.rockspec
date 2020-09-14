@@ -141,6 +141,7 @@ build = {
 		["symmath.tests.ADM metric - mixed"] = "tests/ADM metric - mixed.lua",
 		["symmath.tests.Alcubierre"] = "tests/Alcubierre.lua",
 		["symmath.tests.BSSN - index"] = "tests/BSSN - index.lua",
+		["symmath.tests.BSSN - index - using GammaBar"] = "tests/BSSN - index - using GammaBar.lua",
 		["symmath.tests.BSSN - generate"] = "tests/BSSN - generate.lua",
 		["symmath.tests.Building Curvature by ADM"] = "tests/Building Curvature by ADM.lua",
 		["symmath.tests.EFE discrete solution - 1-var"] = "tests/EFE discrete solution - 1-var.lua",

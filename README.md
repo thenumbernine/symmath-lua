@@ -737,6 +737,8 @@ Output CDN URLs:
 
 [tests/output/BSSN - generate](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate.html)
 
+[tests/output/BSSN - index - using GammaBar](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index%20%2d%20using%20GammaBar.html)
+
 [tests/output/BSSN - index](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index.html)
 
 [tests/output/Building Curvature by ADM](https://thenumbernine.github.io/symmath/tests/output/Building%20Curvature%20by%20ADM.html)

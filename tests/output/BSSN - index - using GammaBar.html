@@ -1,0 +1,432 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>BSSN formalism - index notation</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+    </head>
+	<body onload='tryToFindMathJax();'>
+
+${{ K}_i}_j$	 = extrinsic curvature
+<br>
+${{ \gamma}_i}_j$	 = spatial metric
+<br>
+$\gamma$	 = spatial metric determinant
+<br>
+${{ \hat{\gamma}}_i}_j$	 = grid metric
+<br>
+$\hat{\gamma}$	 = grid metric determinant
+<br>
+${{ \bar{\gamma}}_i}_j$	 = conformal metric
+<br>
+$\bar{\gamma}$	 = conformal metric determinant
+<br>
+
+<br>
+useful identity:
+<br>
+${{{{ \Gamma}_i}_j}_k} = {{{\frac{1}{2}}} {{({{{{{{ \gamma}_i}_j}_{,k}} + {{{{ \gamma}_i}_k}_{,j}}} - {{{{ \gamma}_j}_k}_{,i}}})}}}$
+<br>
+${{{{ \gamma}_i}_j}_{,k}} = {{{{{ \Gamma}_i}_k}_j} + {{{{ \Gamma}_j}_k}_i}}$
+<br>
+${{{{ \bar{\gamma}}_i}_j}_{,k}} = {{{{{ \bar{\Gamma}}_i}_k}_j} + {{{{ \bar{\Gamma}}_j}_k}_i}}$
+<br>
+
+<br>
+${{{{ \Gamma}^i}_j}_k} = {{\frac{1}{2}}{({-{{{{{ \gamma}^i}^m}} {{({{{{{{ \gamma}_j}_k}_{,m}} - {{{{ \gamma}_m}_j}_{,k}}} - {{{{ \gamma}_m}_k}_{,j}}})}}}})}}$
+<br>
+
+<br>
+useful identity:
+<br>
+${{\left( {{{{ \gamma}_l}_i}} {{{{ \gamma}^i}^j}}\right)}_{,t}} = {0}$
+<br>
+${{{{{{ \gamma}_l}_i}} {{{{{ \gamma}^i}^j}_{,t}}}} + {{{{{ \gamma}^i}^j}} {{{{{ \gamma}_l}_i}_{,t}}}}} = {0}$
+<br>
+${{{{{{ \gamma}^l}^m}} {{{{ \gamma}^i}^j}} {{{{{ \gamma}_l}_i}_{,t}}}} + {{{{{ \gamma}^l}^m}} {{{{ \gamma}_l}_i}} {{{{{ \gamma}^i}^j}_{,t}}}}} = {0}$
+<br>
+${{{{ \gamma}^i}^j}_{,t}} = {-{{{{{ \gamma}^l}^i}} {{{{ \gamma}^m}^j}} {{{{{ \gamma}_l}_m}_{,t}}}}}$
+<br>
+
+<br>
+ADM metric evolution:
+<br>
+${{{{ \gamma}_i}_j}_{,t}} = {{{{{-2}} {{\alpha}} \cdot {{{{ K}_i}_j}}} + {{{ \beta}_i}_{,j}} + {{{ \beta}_j}_{,i}}} - {{{2}} {{{ \beta}^k}} {{{{{ \Gamma}_k}_i}_j}}}}$
+<br>
+${{{{ \gamma}_i}_j}_{,t}} = {{-{{{2}} {{\alpha}} \cdot {{{{ K}_i}_j}}}} + {{{{{ \beta}^k}_{,j}}} {{{{ \gamma}_k}_i}}} + {{{{ \beta}^k}} {{{{{ \gamma}_k}_i}_{,j}}}} + {{{{{ \beta}^k}_{,i}}} {{{{ \gamma}_k}_j}}} + {{{{{ \beta}^k}} {{{{{ \gamma}_k}_j}_{,i}}}} - {{{2}} {{{ \beta}^k}} {{{{{ \Gamma}_k}_i}_j}}}}}$
+<br>
+${{{{ \gamma}_i}_j}_{,t}} = {{-{{{2}} {{\alpha}} \cdot {{{{ K}_i}_j}}}} + {{{{{ \beta}^k}_{,j}}} {{{{ \gamma}_k}_i}}} + {{{{ \beta}^k}} {{{{{ \Gamma}_k}_j}_i}}} + {{{{ \beta}^k}} {{{{{ \Gamma}_i}_j}_k}}} + {{{{{{ \beta}^k}_{,i}}} {{{{ \gamma}_k}_j}}} - {{{{ \beta}^k}} {{{{{ \Gamma}_k}_i}_j}}}} + {{{{ \beta}^k}} {{{{{ \Gamma}_j}_i}_k}}}}$
+<br>
+${{{{ \gamma}_i}_j}_{,t}} = {{-{{{2}} {{\alpha}} \cdot {{{{ K}_i}_j}}}} + {{{{{ \beta}^k}_{,j}}} {{{{ \gamma}_k}_i}}} + {{{{ \beta}^k}} {{{{{ \Gamma}_i}_j}_k}}} + {{{{{ \beta}^k}_{,i}}} {{{{ \gamma}_k}_j}}} + {{{{ \beta}^k}} {{{{{ \Gamma}_j}_i}_k}}}}$
+<br>
+
+<br>
+${{{{ K}_i}_j}_{,t}} = {{-{{{ \alpha}_{,i}}_{,j}}} + {{{{{{ \Gamma}^k}_i}_j}} {{{ \alpha}_{,k}}}} + {{{\alpha}} \cdot {{({{{{{ R}_i}_j} + {{{K}} {{{{ K}_i}_j}}}} - {{{2}} {{{{ K}_i}_k}} {{{{ \gamma}^k}^l}} {{{{ K}_l}_j}}}})}}} + {{{4}} {{\pi}} \cdot {{\alpha}} \cdot {{({{{{{{ \gamma}_i}_j}} {{({{S} - {\rho}})}}} - {{{2}} {{{{ S}_i}_j}}}})}}} + {{{{{{ K}_i}_j}_{,k}}} {{{ \beta}^k}}} + {{{{{ K}_k}_i}} {{{{ \beta}^k}_{,j}}}} + {{{{{ K}_k}_j}} {{{{ \beta}^k}_{,i}}}}}$
+<br>
+
+<br>
+Bona-Masso lapse and shift evolution:
+<br>
+${{ \alpha}_{,t}} = {{{{{ \alpha}_{,i}}} {{{ \beta}^i}}} - {{{{\alpha}^{2}}} {{f}} {{K}}}}$
+<br>
+${{{ \beta}^i}_{,t}} = {{ B}^i}$
+<br>
+${{{ B}^i}_{,t}} = {{{{\frac{3}{4}}} {{{{ \bar{\Lambda}}^i}_{,t}}}} - {{{\eta}} \cdot {{{ B}^i}}}}$
+<br>
+
+<br>
+conformal $\phi$:
+<br>
+${\phi} = {{{\frac{1}{12}}} {{log\left( {{\frac{1}{\hat{\gamma}}}{({\gamma})}}\right)}}}$
+<br>
+
+<br>
+conformal $\chi$:
+<br>
+${\chi} = {\sqrt[3]{{\frac{1}{\gamma}}{({\hat{\gamma}})}}}$
+<br>
+
+<br>
+conformal W:
+<br>
+${W} = {{({{\frac{1}{\gamma}}{({\hat{\gamma}})}})}^{({\frac{1}{6}})}}$
+<br>
+${W} = {\sqrt{\chi}}$
+<br>
+${W} = {\frac{1}{{e}^{({{{4}} {{\phi}}})}}}$
+<br>
+
+<br>
+conformal metric:
+<br>
+${{{ \bar{\gamma}}_i}_j} = {{{{W}^{2}}} {{{{ \gamma}_i}_j}}}$
+<br>
+${{{ \gamma}_i}_j} = {\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}$
+<br>
+
+<br>
+conformal metric inverse:
+<br>
+${{{ \bar{\gamma}}^i}^j} = {{{{W}^{-2}}} {{{{ \gamma}^i}^j}}}$
+<br>
+${{{ \gamma}^i}^j} = {{{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}}$
+<br>
+
+<br>
+conformal metric derivative:
+<br>
+${{{{ \bar{\gamma}}_i}_j}_{,k}} = {{{W}} {{({{{{W}} {{{{{ \gamma}_i}_j}_{,k}}}} + {{{2}} {{{ W}_{,k}}} {{{{ \gamma}_i}_j}}}})}}}$
+<br>
+${{{{ \gamma}_i}_j}_{,k}} = {\frac{-{({{{{2}} {{{ W}_{,k}}} {{{{ \bar{\gamma}}_i}_j}}} - {{{W}} {{{{{ \bar{\gamma}}_i}_j}_{,k}}}}})}}{{W}^{3}}}$
+<br>
+
+<br>
+conformal metric determinant:
+<br>
+${\bar{\gamma}} = {{{{W}^{6}}} {{\gamma}}}$
+<br>
+${\gamma} = {\frac{\bar{\gamma}}{{W}^{6}}}$
+<br>
+
+<br>
+conformal metric constraint:
+<br>
+${\bar{\gamma}} = {\hat{\gamma}}$
+<br>
+${\hat{\gamma}} = {\bar{\gamma}}$
+<br>
+
+<br>
+static grid assumption:
+<br>
+${{{{ \hat{\gamma}}_i}_j}_{,t}} = {0}$
+<br>
+${{ \hat{\gamma}}_{,t}} = {0}$
+<br>
+
+<br>
+conformal connection:
+<br>
+${{{{ \bar{\Gamma}}_i}_j}_k} = {{{\frac{1}{2}}} {{({{{{{{ \bar{\gamma}}_i}_j}_{,k}} + {{{{ \bar{\gamma}}_i}_k}_{,j}}} - {{{{ \bar{\gamma}}_j}_k}_{,i}}})}}}$
+<br>
+${{{{ \bar{\Gamma}}_i}_j}_k} = {{\frac{1}{2}}{({{{W}} {{({{{{W}} {{{{{ \gamma}_i}_j}_{,k}}}} + {{{{{W}} {{{{{ \gamma}_i}_k}_{,j}}}} - {{{W}} {{{{{ \gamma}_j}_k}_{,i}}}}} - {{{2}} {{{ W}_{,i}}} {{{{ \gamma}_j}_k}}}} + {{{2}} {{{ W}_{,j}}} {{{{ \gamma}_i}_k}}} + {{{2}} {{{ W}_{,k}}} {{{{ \gamma}_i}_j}}}})}}})}}$
+<br>
+${{{{ \bar{\Gamma}}_i}_j}_k} = {{{W}} {{({{{{{W}} {{{{{ \Gamma}_i}_j}_k}}} - {{{{ W}_{,i}}} {{{{ \gamma}_j}_k}}}} + {{{{ W}_{,j}}} {{{{ \gamma}_i}_k}}} + {{{{ W}_{,k}}} {{{{ \gamma}_i}_j}}}})}}}$
+<br>
+${{{{ \Gamma}_i}_j}_k} = {\frac{{{{{{W}} {{{ W}_{,i}}} {{{{ \gamma}_j}_k}}} - {{{W}} {{{ W}_{,k}}} {{{{ \gamma}_i}_j}}}} - {{{W}} {{{ W}_{,j}}} {{{{ \gamma}_i}_k}}}} + {{{{ \bar{\Gamma}}_i}_j}_k}}{{W}^{2}}}$
+<br>
+${{{{ \Gamma}_i}_j}_k} = {\frac{{{{{{W}} {{{{{ \bar{\Gamma}}_i}_j}_k}}} - {{{{ W}_{,j}}} {{{{ \bar{\gamma}}_i}_k}}}} - {{{{ W}_{,k}}} {{{{ \bar{\gamma}}_i}_j}}}} + {{{{ W}_{,i}}} {{{{ \bar{\gamma}}_j}_k}}}}{{W}^{3}}}$
+<br>
+${{{{ \bar{\Gamma}}^i}_j}_k} = {{\frac{1}{2}}{({-{{{{{ \bar{\gamma}}^i}^m}} {{({{{{{{ \bar{\gamma}}_j}_k}_{,m}} - {{{{ \bar{\gamma}}_m}_j}_{,k}}} - {{{{ \bar{\gamma}}_m}_k}_{,j}}})}}}})}}$
+<br>
+${{{{ \bar{\Gamma}}^i}_j}_k} = {{\frac{1}{W}}{({{{{{W}} {{{{{ \Gamma}^i}_j}_k}}} - {{{{ W}_{,m}}} {{{{ \gamma}^i}^m}} {{{{ \gamma}_j}_k}}}} + {{{{ W}_{,k}}} {{{{ \delta}^i}_j}}} + {{{{ W}_{,j}}} {{{{ \delta}^i}_k}}}})}}$
+<br>
+${{{{ \Gamma}^i}_j}_k} = {{\frac{1}{W}}{({-{({{{{{ W}_{,j}}} {{{{ \delta}^i}_k}}} + {{{{{{ W}_{,k}}} {{{{ \delta}^i}_j}}} - {{{{ W}_{,m}}} {{{{ \gamma}^i}^m}} {{{{ \gamma}_j}_k}}}} - {{{W}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}}})}})}}$
+<br>
+${{{{ \Gamma}^i}_j}_k} = {{\frac{1}{W}}{({-{({{{{{ W}_{,j}}} {{{{ \delta}^i}_k}}} + {{{{{{ W}_{,k}}} {{{{ \delta}^i}_j}}} - {{{{ W}_{,m}}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_j}_k}}}} - {{{W}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}}})}})}}$
+<br>
+
+<br>
+extrinsic curvature trace:
+<br>
+${K} = {{{{{ K}_i}_j}} {{{{ \gamma}^i}^j}}}$
+<br>
+
+<br>
+trace-free extrinsic curvature:
+<br>
+${{{ A}_i}_j} = {{{{ K}_i}_j} - {{{\frac{1}{3}}} {{{{ \gamma}_i}_j}} {{K}}}}$
+<br>
+${{{ K}_i}_j} = {{\frac{1}{3}}{({{{{3}} {{{{ A}_i}_j}}} + {{{K}} {{{{ \gamma}_i}_j}}}})}}$
+<br>
+${{{ A}^i}^j} = {{{{ K}^i}^j} - {{{\frac{1}{3}}} {{{{ \gamma}^i}^j}} {{K}}}}$
+<br>
+${{{ K}^i}^j} = {{\frac{1}{3}}{({{{{3}} {{{{ A}^i}^j}}} + {{{K}} {{{{ \gamma}^i}^j}}}})}}$
+<br>
+
+<br>
+conformal trace-free extrinsic curvature:
+<br>
+${{{ \bar{A}}_i}_j} = {{{{W}^{2}}} {{{{ A}_i}_j}}}$
+<br>
+${{{ A}_i}_j} = {\frac{{{ \bar{A}}_i}_j}{{W}^{2}}}$
+<br>
+${{{{{ \bar{A}}_i}_j}} {{{{ \bar{\gamma}}^j}^n}} {{{{ \bar{\gamma}}^m}^i}}} = {{{{{ A}_i}_j}} {{{{ \bar{\gamma}}^j}^n}} {{{{ \bar{\gamma}}^m}^i}} {{{W}^{2}}}}$
+<br>
+${{{ \bar{A}}^m}^n} = {\frac{{{{{ A}_i}_j}} {{{{ \gamma}^j}^n}} {{{{ \gamma}^m}^i}}}{{W}^{2}}}$
+<br>
+${{{ \bar{A}}^i}^j} = {\frac{{{ A}^i}^j}{{W}^{2}}}$
+<br>
+${{{ A}^i}^j} = {{{{{ \bar{A}}^i}^j}} {{{W}^{2}}}}$
+<br>
+${{{ K}_i}_j} = {\frac{{{{K}} {{{{ \bar{\gamma}}_i}_j}}} + {{{3}} {{{{ \bar{A}}_i}_j}}}}{{{3}} {{{W}^{2}}}}}$
+<br>
+
+<br>
+trace-free extrinsic curvature derivative:
+<br>
+${{{{ K}_i}_j}_{,k}} = {{\frac{1}{3}}{({{{{3}} {{{{{ A}_i}_j}_{,k}}}} + {{{{ K}_{,k}}} {{{{ \gamma}_i}_j}}} + {{{K}} {{{{{ \gamma}_i}_j}_{,k}}}}})}}$
+<br>
+
+<br>
+conformal W evolution:
+<br>
+${{ W}_{,t}} = {\frac{-{{{\frac{1}{{\hat{\gamma}}^{({\frac{5}{6}})}}}} {{({{{{\hat{\gamma}}} \cdot {{{ \gamma}_{,t}}}} - {{{\gamma}} \cdot {{{ \hat{\gamma}}_{,t}}}}})}}}}{{{6}} {{{\gamma}^{({\frac{7}{6}})}}}}}$
+<br>
+assuming	${{ \hat{\gamma}}_{,t}} = {0}$
+<br>
+${{ W}_{,t}} = {\frac{-{{{{ \gamma}_{,t}}} {{{\hat{\gamma}}^{({\frac{1}{6}})}}}}}{{{6}} {{{\gamma}^{({\frac{7}{6}})}}}}}$
+<br>
+${{ W}_{,t}} = {\frac{-{{{W}} {{{ \gamma}_{,t}}}}}{{{6}} {{\gamma}}}}$
+<br>
+using	${{ \gamma}_{,t}} = {{{\gamma}} \cdot {{{{ \gamma}^i}^j}} {{{{{ \gamma}_i}_j}_{,t}}}}$
+<br>
+${{ W}_{,t}} = {{\frac{1}{6}}{({-{{{W}} {{{{ \gamma}^i}^j}} {{{{{ \gamma}_i}_j}_{,t}}}}})}}$
+<br>
+${{ W}_{,t}} = {{{{-1}} \cdot {{\frac{1}{6}}} {{W}} {{{{ \gamma}^i}^j}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_k}_j}}} + {{{-1}} \cdot {{\frac{1}{6}}} {{W}} {{{{ \gamma}^i}^j}} {{{{ \beta}^k}_{,j}}} {{{{ \gamma}_k}_i}}} + {{{-1}} \cdot {{\frac{1}{6}}} {{W}} {{{{ \gamma}^i}^j}} {{{ \beta}^k}} {{{{{ \Gamma}_i}_j}_k}}} + {{{-1}} \cdot {{\frac{1}{6}}} {{W}} {{{{ \gamma}^i}^j}} {{{ \beta}^k}} {{{{{ \Gamma}_j}_i}_k}}} + {{{2}} \cdot {{\frac{1}{6}}} {{W}} {{{{ \gamma}^i}^j}} {{\alpha}} \cdot {{{{ K}_i}_j}}}}$
+<br>
+${{ W}_{,t}} = {{\frac{1}{6}}{({{{W}} {{({{{{{{{2}} {{K}} {{\alpha}}} - {{{{{ \beta}^k}_{,i}}} {{{{ \gamma}^i}^j}} {{{{ \gamma}_k}_j}}}} - {{{{{ \beta}^k}_{,j}}} {{{{ \gamma}^i}^j}} {{{{ \gamma}_k}_i}}}} - {{{{ \beta}^k}} {{{{ \gamma}^i}^j}} {{{{{ \Gamma}_i}_j}_k}}}} - {{{{ \beta}^k}} {{{{ \gamma}^i}^j}} {{{{{ \Gamma}_j}_i}_k}}}})}}})}}$
+<br>
+${{ W}_{,t}} = {{\frac{1}{6}}{({{-{{{W}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ \bar{\Gamma}}_j}_i}_k}}}} + {{{{ W}_{,k}}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^i}^j}} {{{{ \bar{\gamma}}_j}_i}}} + {{{{{{2}} {{K}} {{W}} {{\alpha}}} - {{{W}} {{{{ \bar{\gamma}}^i}^j}} {{{{ \bar{\gamma}}_k}_j}} {{{{ \beta}^k}_{,i}}}}} - {{{W}} {{{{ \bar{\gamma}}^i}^j}} {{{{ \bar{\gamma}}_k}_i}} {{{{ \beta}^k}_{,j}}}}} - {{{W}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ \bar{\Gamma}}_i}_j}_k}}}} + {{{{ W}_{,k}}} {{{ \beta}^k}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^i}^j}}}})}}$
+<br>
+${{ W}_{,t}} = {{\frac{1}{3}}{({{{{{3}} {{{ W}_{,i}}} {{{ \beta}^i}}} - {{{W}} {{{{ \beta}^i}_{,i}}}}} + {{{{K}} {{W}} {{\alpha}}} - {{{W}} {{{ \beta}^i}} {{{{{ \bar{\Gamma}}^j}_j}_i}}}}})}}$
+<br>
+
+<br>
+conformal metric evolution:
+<br>
+${\left( {{{ \bar{\gamma}}_i}_j} = {{{{W}^{2}}} {{{{ \gamma}_i}_j}}}\right)}_{,t}$
+<br>
+${{{{ \bar{\gamma}}_i}_j}_{,t}} = {{{W}} {{({{{{W}} {{{{{ \gamma}_i}_j}_{,t}}}} + {{{2}} {{{ W}_{,t}}} {{{{ \gamma}_i}_j}}}})}}}$
+<br>
+${{{{ \bar{\gamma}}_i}_j}_{,t}} = {{{W}} {{({{{{W}} {{{{ \beta}^k}_{,i}}} {{{{ \gamma}_k}_j}}} + {{{W}} {{{{ \beta}^k}_{,j}}} {{{{ \gamma}_k}_i}}} + {{{W}} {{{ \beta}^k}} {{{{{ \Gamma}_i}_j}_k}}} + {{{W}} {{{ \beta}^k}} {{{{{ \Gamma}_j}_i}_k}}} + {{{{2}} {{{ W}_{,t}}} {{{{ \gamma}_i}_j}}} - {{{2}} {{W}} {{\alpha}} \cdot {{{{ K}_i}_j}}}}})}}}$
+<br>
+${{{{ \bar{\gamma}}_i}_j}_{,t}} = {{{W}} {{({{{{W}} {{{{ \beta}^k}_{,i}}} {{\frac{{{ \bar{\gamma}}_k}_j}{{W}^{2}}}}} + {{{W}} {{{{ \beta}^k}_{,j}}} {{\frac{{{ \bar{\gamma}}_k}_i}{{W}^{2}}}}} + {{{W}} {{{ \beta}^k}} {{\frac{{{{{{W}} {{{{{ \bar{\Gamma}}_i}_j}_k}}} - {{{{ W}_{,j}}} {{{{ \bar{\gamma}}_i}_k}}}} - {{{{ W}_{,k}}} {{{{ \bar{\gamma}}_i}_j}}}} + {{{{ W}_{,i}}} {{{{ \bar{\gamma}}_j}_k}}}}{{W}^{3}}}}} + {{{W}} {{{ \beta}^k}} {{\frac{{{{{{W}} {{{{{ \bar{\Gamma}}_j}_i}_k}}} - {{{{ W}_{,i}}} {{{{ \bar{\gamma}}_j}_k}}}} - {{{{ W}_{,k}}} {{{{ \bar{\gamma}}_j}_i}}}} + {{{{ W}_{,j}}} {{{{ \bar{\gamma}}_i}_k}}}}{{W}^{3}}}}} + {{{{2}} \cdot {{{\frac{1}{3}}{({{{{{3}} {{{ W}_{,a}}} {{{ \beta}^a}}} - {{{W}} {{{{ \beta}^a}_{,a}}}}} + {{{{K}} {{W}} {{\alpha}}} - {{{W}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_b}_a}}}}})}}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}}} - {{{2}} {{W}} {{\alpha}} \cdot {{\frac{{{{K}} {{{{ \bar{\gamma}}_i}_j}}} + {{{3}} {{{{ \bar{A}}_i}_j}}}}{{{3}} {{{W}^{2}}}}}}}}})}}}$
+<br>
+${{{{ \bar{\gamma}}_i}_j}_{,t}} = {{\frac{1}{3}}{({{{{3}} {{{{ \bar{\gamma}}_k}_i}} {{{{ \beta}^k}_{,j}}}} + {{{{3}} {{{{ \bar{\gamma}}_k}_j}} {{{{ \beta}^k}_{,i}}}} - {{{2}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \beta}^k}_{,k}}}}} + {{{3}} {{{ \beta}^k}} {{{{{ \bar{\Gamma}}_i}_j}_k}}} + {{{{{3}} {{{ \beta}^k}} {{{{{ \bar{\Gamma}}_j}_i}_k}}} - {{{2}} {{{ \beta}^k}} {{{{ \bar{\gamma}}_i}_j}} {{{{{ \bar{\Gamma}}^l}_l}_k}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}}}}})}}$
+<br>
+
+<br>
+conformal metric perturbation:
+<br>
+${{{ \bar{\epsilon}}_i}_j} = {{{{ \bar{\gamma}}_i}_j} - {{{ \hat{\gamma}}_i}_j}}$
+<br>
+
+<br>
+conformal metric perturbation spatial derivative:
+<br>
+${{{{ \bar{\epsilon}}_i}_j}_{,k}} = {{{{{ \bar{\gamma}}_i}_j}_{,k}} - {{{{ \hat{\gamma}}_i}_j}_{,k}}}$
+<br>
+
+<br>
+conformal metric perturbation evolution:
+<br>
+${{{{ \bar{\epsilon}}_i}_j}_{,t}} = {{{{{ \bar{\gamma}}_i}_j}_{,t}} - {{{{ \hat{\gamma}}_i}_j}_{,t}}}$
+<br>
+assuming	${{{{ \hat{\gamma}}_i}_j}_{,t}} = {0}$
+<br>
+${{{{ \bar{\epsilon}}_i}_j}_{,t}} = {{{{ \bar{\gamma}}_i}_j}_{,t}}$
+<br>
+
+<br>
+grid vs conformal connection difference:
+<br>
+${{{{ \bar{\Delta}}^i}_j}_k} = {{{{{ \bar{\Gamma}}^i}_j}_k} - {{{{ \hat{\Gamma}}^i}_j}_k}}$
+<br>
+${{ \bar{\Delta}}^i} = {{{{{{ \bar{\Delta}}^i}_j}_k}} {{{{ \bar{\gamma}}^j}^k}}}$
+<br>
+${ \mathcal{C}}^i$	= arbitrary constant
+<br>
+${{ \bar{\Lambda}}^i} = {{{ \bar{\Delta}}^i} + {{ \mathcal{C}}^i}}$
+<br>
+${{ \bar{\Delta}}^i} = {{{ \bar{\Lambda}}^i} - {{ \mathcal{C}}^i}}$
+<br>
+
+<br>
+conformal connection evolution:
+<br>
+${\left( {{{{ \bar{\Gamma}}^i}_j}_k} = {{\frac{1}{2}}{({-{{{{{ \bar{\gamma}}^i}^m}} {{({{{{{{ \bar{\gamma}}_j}_k}_{,m}} - {{{{ \bar{\gamma}}_m}_j}_{,k}}} - {{{{ \bar{\gamma}}_m}_k}_{,j}}})}}}})}}\right)}_{,t}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{\frac{1}{2}}{({-{({{{{{{{{{ \bar{\gamma}}^i}^m}_{,t}}} {{{{{ \bar{\gamma}}_j}_k}_{,m}}}} - {{{{{{ \bar{\gamma}}^i}^m}_{,t}}} {{{{{ \bar{\gamma}}_m}_j}_{,k}}}}} - {{{{{{ \bar{\gamma}}^i}^m}_{,t}}} {{{{{ \bar{\gamma}}_m}_k}_{,j}}}}} + {{{{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_j}_k}_{,m}}_{,t}}}} - {{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_j}_{,k}}_{,t}}}}} - {{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_k}_{,j}}_{,t}}}}}})}})}}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{\frac{1}{2}}{({{{{{2}} {{{{{ \bar{\Gamma}}_m}_j}_k}} {{{{{ \bar{\gamma}}^i}^m}_{,t}}}} - {{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_j}_k}_{,m}}_{,t}}}}} + {{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_j}_{,k}}_{,t}}}} + {{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_k}_{,j}}_{,t}}}}})}}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{\frac{1}{2}}{({-{({{{{2}} {{{{ \bar{\gamma}}^b}^i}} {{{{{ \bar{\Gamma}}^a}_j}_k}} {{{{{ \bar{\gamma}}_b}_a}_{,t}}}} + {{{{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_j}_k}_{,m}}_{,t}}}} - {{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_j}_{,k}}_{,t}}}}} - {{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_k}_{,j}}_{,t}}}}}})}})}}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{\frac{1}{2}}{({-{({{{{2}} {{{{ \bar{\gamma}}^b}^i}} {{{{{ \bar{\Gamma}}^a}_j}_k}} {{{\frac{1}{3}}{({{{{3}} {{{{ \bar{\gamma}}_p}_b}} {{{{ \beta}^p}_{,a}}}} + {{{{3}} {{{{ \bar{\gamma}}_p}_a}} {{{{ \beta}^p}_{,b}}}} - {{{2}} {{{{ \bar{\gamma}}_b}_a}} {{{{ \beta}^p}_{,p}}}}} + {{{3}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}_b}_a}_p}}} + {{{{{3}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}_a}_b}_p}}} - {{{2}} {{{ \beta}^p}} {{{{ \bar{\gamma}}_b}_a}} {{{{{ \bar{\Gamma}}^l}_l}_p}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_b}_a}}}}})}}}} + {{{{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_j}_k}_{,m}}_{,t}}}} - {{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_j}_{,k}}_{,t}}}}} - {{{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_k}_{,j}}_{,t}}}}}})}})}}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{{{-1}} {{{{ \bar{\gamma}}^b}^i}} {{{{ \beta}^p}_{,b}}} {{{{{ \bar{\Gamma}}_p}_j}_k}}} + {{{-1}} {{{{ \beta}^i}_{,a}}} {{{{{ \bar{\Gamma}}^a}_j}_k}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_j}_k}_{,m}}_{,t}}}} + {{{\frac{1}{2}}} {{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_j}_{,k}}_{,t}}}} + {{{\frac{1}{2}}} {{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\gamma}}_m}_k}_{,j}}_{,t}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{{ \beta}^p}_{,p}}} {{{{{ \bar{\Gamma}}^i}_j}_k}}} + {{{-1}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}_a}^i}_p}} {{{{{ \bar{\Gamma}}^a}_j}_k}}} + {{{-1}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}^a}_j}_k}} {{{{{ \bar{\Gamma}}^i}_a}_p}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}^i}_j}_k}} {{{{{ \bar{\Gamma}}^l}_l}_p}}} + {{{2}} {{\alpha}} \cdot {{{{ \bar{A}}^i}_a}} {{{{{ \bar{\Gamma}}^a}_j}_k}}}}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{{{-1}} {{{{ \bar{\gamma}}^b}^i}} {{{{ \beta}^p}_{,b}}} {{{{{ \bar{\Gamma}}_p}_j}_k}}} + {{{-1}} {{{{ \beta}^i}_{,a}}} {{{{{ \bar{\Gamma}}^a}_j}_k}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{ \bar{\gamma}}^i}^m}} {{{\left( {\frac{1}{3}}{({{{{3}} {{{{ \bar{\gamma}}_d}_j}} {{{{ \beta}^d}_{,m}}}} + {{{{3}} {{{{ \bar{\gamma}}_d}_m}} {{{{ \beta}^d}_{,j}}}} - {{{2}} {{{{ \bar{\gamma}}_j}_m}} {{{{ \beta}^d}_{,d}}}}} + {{{3}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_j}_m}_d}}} + {{{{{3}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_m}_j}_d}}} - {{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}_j}_m}} {{{{{ \bar{\Gamma}}^c}_c}_d}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_j}_m}}}}})}\right)}_{,k}}}} + {{{\frac{1}{2}}} {{{{ \bar{\gamma}}^i}^m}} {{{\left( {\frac{1}{3}}{({{{{3}} {{{{ \bar{\gamma}}_d}_m}} {{{{ \beta}^d}_{,k}}}} + {{{{3}} {{{{ \bar{\gamma}}_d}_k}} {{{{ \beta}^d}_{,m}}}} - {{{2}} {{{{ \bar{\gamma}}_m}_k}} {{{{ \beta}^d}_{,d}}}}} + {{{3}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_m}_k}_d}}} + {{{{{3}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_k}_m}_d}}} - {{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}_m}_k}} {{{{{ \bar{\Gamma}}^c}_c}_d}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_m}_k}}}}})}\right)}_{,j}}}} + {{{\frac{1}{2}}} {{{{ \bar{\gamma}}^i}^m}} {{{\left( {\frac{1}{3}}{({{{{3}} {{{{ \bar{\gamma}}_d}_m}} {{{{ \beta}^d}_{,j}}}} + {{{{3}} {{{{ \bar{\gamma}}_d}_j}} {{{{ \beta}^d}_{,m}}}} - {{{2}} {{{{ \bar{\gamma}}_m}_j}} {{{{ \beta}^d}_{,d}}}}} + {{{3}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_m}_j}_d}}} + {{{{{3}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_j}_m}_d}}} - {{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}_m}_j}} {{{{{ \bar{\Gamma}}^c}_c}_d}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_m}_j}}}}})}\right)}_{,k}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{{ \beta}^p}_{,p}}} {{{{{ \bar{\Gamma}}^i}_j}_k}}} + {{{-1}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}_a}^i}_p}} {{{{{ \bar{\Gamma}}^a}_j}_k}}} + {{{-1}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}^a}_j}_k}} {{{{{ \bar{\Gamma}}^i}_a}_p}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}^i}_j}_k}} {{{{{ \bar{\Gamma}}^l}_l}_p}}} + {{{2}} {{\alpha}} \cdot {{{{ \bar{A}}^i}_a}} {{{{{ \bar{\Gamma}}^a}_j}_k}}}}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{\frac{1}{6}}{({-{({{{{{6}} {{{ \alpha}_{,j}}} {{{{ \bar{A}}_m}_k}} {{{{ \bar{\gamma}}^i}^m}}} - {{{6}} {{{ \alpha}_{,k}}} {{{{ \bar{A}}_j}_m}} {{{{ \bar{\gamma}}^i}^m}}}} + {{{6}} {{{ \alpha}_{,k}}} {{{{ \bar{A}}_m}_j}} {{{{ \bar{\gamma}}^i}^m}}} + {{{{{6}} {{{{ \bar{\gamma}}^b}^i}} {{{{ \beta}^p}_{,b}}} {{{{{ \bar{\Gamma}}_p}_j}_k}}} - {{{2}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_j}_m}} {{{{{ \beta}^d}_{,d}}_{,k}}}}} - {{{2}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_j}_m}} {{{{ \beta}^d}_{,k}}} {{{{{ \bar{\Gamma}}^c}_c}_d}}}} + {{{2}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_m}_j}} {{{{{ \beta}^d}_{,d}}_{,k}}}} + {{{2}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_m}_j}} {{{{ \beta}^d}_{,k}}} {{{{{ \bar{\Gamma}}^c}_c}_d}}} + {{{2}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_m}_k}} {{{{{ \beta}^d}_{,d}}_{,j}}}} + {{{2}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_m}_k}} {{{{ \beta}^d}_{,j}}} {{{{{ \bar{\Gamma}}^c}_c}_d}}} + {{{2}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Gamma}}_k}_j}_m}}} + {{{{{{{{{{{2}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Gamma}}_m}_j}_k}}} - {{{3}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \beta}^d}_{,j}}} {{{{{ \bar{\Gamma}}_k}_m}_d}}}} - {{{3}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \beta}^d}_{,j}}} {{{{{ \bar{\Gamma}}_m}_k}_d}}}} - {{{3}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \beta}^d}_{,k}}} {{{{{ \bar{\Gamma}}_d}_j}_m}}}} - {{{3}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \beta}^d}_{,k}}} {{{{{ \bar{\Gamma}}_m}_j}_d}}}} - {{{3}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \beta}^d}_{,m}}} {{{{{ \bar{\Gamma}}_d}_j}_k}}}} - {{{3}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \beta}^d}_{,m}}} {{{{{ \bar{\Gamma}}_k}_j}_d}}}} - {{{3}} {{{{ \bar{\gamma}}_d}_k}} {{{{ \bar{\gamma}}^i}^m}} {{{{{ \beta}^d}_{,m}}_{,j}}}}} - {{{3}} {{{{ \bar{\gamma}}_d}_m}} {{{{ \bar{\gamma}}^i}^m}} {{{{{ \beta}^d}_{,k}}_{,j}}}}} + {{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^i}^m}} {{{{{ \bar{\Gamma}}^c}_c}_d}} {{{{{ \bar{\Gamma}}_k}_j}_m}}} + {{{{{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^i}^m}} {{{{{ \bar{\Gamma}}^c}_c}_d}} {{{{{ \bar{\Gamma}}_m}_j}_k}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\Gamma}}_k}_m}_d}_{,j}}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^i}^m}} {{{{{{ \bar{\Gamma}}_m}_k}_d}_{,j}}}}} - {{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_j}_m}} {{{{{{ \bar{\Gamma}}^c}_c}_d}_{,k}}}}} + {{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_m}_j}} {{{{{{ \bar{\Gamma}}^c}_c}_d}_{,k}}}} + {{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^i}^m}} {{{{ \bar{\gamma}}_m}_k}} {{{{{{ \bar{\Gamma}}^c}_c}_d}_{,j}}}} + {{{{6}} {{{{ \beta}^i}_{,a}}} {{{{{ \bar{\Gamma}}^a}_j}_k}}} - {{{4}} {{{{ \beta}^p}_{,p}}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}} + {{{{6}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}^a}_j}_k}} {{{{{ \bar{\Gamma}}^i}_a}_p}}} - {{{4}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}^i}_j}_k}} {{{{{ \bar{\Gamma}}^l}_l}_p}}}} + {{{{{6}} {{{ \beta}^p}} {{{{{ \bar{\Gamma}}_a}^i}_p}} {{{{{ \bar{\Gamma}}^a}_j}_k}}} - {{{12}} {{\alpha}} \cdot {{{{ \bar{A}}^i}_a}} {{{{{ \bar{\Gamma}}^a}_j}_k}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^i}^m}} {{{{{ \bar{A}}_j}_m}_{,k}}}}} + {{{6}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^i}^m}} {{{{{ \bar{A}}_m}_j}_{,k}}}} + {{{6}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^i}^m}} {{{{{ \bar{A}}_m}_k}_{,j}}}}})}})}}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{\frac{1}{6}}{({-{({{{{6}} {{{ \alpha}_{,j}}} {{{{ \bar{A}}^i}_k}}} + {{{{{{3}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \beta}^f}_{,e}}} {{{{{ \bar{\Gamma}}_f}_j}_k}}} - {{{3}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \beta}^f}_{,e}}} {{{{{ \bar{\Gamma}}_k}_j}_f}}}} - {{{3}} {{{{ \bar{\gamma}}_e}_k}} {{{{ \bar{\gamma}}^f}^i}} {{{{{ \beta}^e}_{,f}}_{,j}}}}} - {{{2}} {{{{ \beta}^e}_{,e}}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}} + {{{{{2}} {{{{ \beta}^e}_{,e}}} {{{{{ \bar{\Gamma}}_k}_j}^i}}} - {{{3}} {{{{ \beta}^e}_{,j}}} {{{{{ \bar{\Gamma}}^i}_k}_e}}}} - {{{3}} {{{{ \beta}^e}_{,j}}} {{{{{ \bar{\Gamma}}_k}^i}_e}}}} + {{{{{{2}} {{{{ \beta}^e}_{,j}}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}^f}_f}_e}}} - {{{3}} {{{{ \beta}^e}_{,k}}} {{{{{ \bar{\Gamma}}^i}_j}_e}}}} - {{{3}} {{{{ \beta}^e}_{,k}}} {{{{{ \bar{\Gamma}}_e}_j}^i}}}} - {{{2}} {{{ \beta}^e}} {{{{{ \bar{\Gamma}}^f}_f}_e}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}} + {{{2}} {{{ \beta}^e}} {{{{{ \bar{\Gamma}}^f}_f}_e}} {{{{{ \bar{\Gamma}}_k}_j}^i}}} + {{{6}} {{{ \beta}^e}} {{{{{ \bar{\Gamma}}^f}_j}_k}} {{{{{ \bar{\Gamma}}^i}_f}_e}}} + {{{{{6}} {{{ \beta}^e}} {{{{{ \bar{\Gamma}}_f}^i}_e}} {{{{{ \bar{\Gamma}}^f}_j}_k}}} - {{{3}} {{{ \beta}^e}} {{{{ \bar{\gamma}}^f}^i}} {{{{{{ \bar{\Gamma}}_f}_k}_e}_{,j}}}}} - {{{3}} {{{ \beta}^e}} {{{{ \bar{\gamma}}^f}^i}} {{{{{{ \bar{\Gamma}}_k}_f}_e}_{,j}}}}} + {{{2}} {{{ \beta}^e}} {{{{ \delta}^i}_k}} {{{{{{ \bar{\Gamma}}^f}_f}_e}_{,j}}}} + {{{{6}} {{{{ \beta}^i}_{,e}}} {{{{{ \bar{\Gamma}}^e}_j}_k}}} - {{{3}} {{{{{ \beta}^i}_{,k}}_{,j}}}}} + {{{{2}} {{{{ \delta}^i}_k}} {{{{{ \beta}^e}_{,e}}_{,j}}}} - {{{12}} {{\alpha}} \cdot {{{{ \bar{A}}_e}^i}} {{{{{ \bar{\Gamma}}^e}_j}_k}}}} + {{{6}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^e}^i}} {{{{{ \bar{A}}_e}_k}_{,j}}}}})}})}}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{\frac{1}{6}}{({-{({{{{6}} {{{ \alpha}_{,j}}} {{{{ \bar{A}}^i}_k}}} + {{{{{{3}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \beta}^f}_{,e}}} {{{{{ \bar{\Gamma}}_f}_j}_k}}} - {{{3}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \beta}^f}_{,e}}} {{{{{ \bar{\Gamma}}_k}_j}_f}}}} - {{{3}} {{{{ \bar{\gamma}}_e}_k}} {{{{ \bar{\gamma}}^f}^i}} {{{{{ \beta}^e}_{,f}}_{,j}}}}} - {{{2}} {{{{ \beta}^e}_{,e}}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}} + {{{{{2}} {{{{ \beta}^e}_{,e}}} {{{{{ \bar{\Gamma}}_k}_j}^i}}} - {{{3}} {{{{ \beta}^e}_{,j}}} {{{{{ \bar{\Gamma}}^i}_k}_e}}}} - {{{3}} {{{{ \beta}^e}_{,j}}} {{{{{ \bar{\Gamma}}_k}^i}_e}}}} + {{{{{{2}} {{{{ \beta}^e}_{,j}}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}^f}_f}_e}}} - {{{3}} {{{{ \beta}^e}_{,k}}} {{{{{ \bar{\Gamma}}^i}_j}_e}}}} - {{{3}} {{{{ \beta}^e}_{,k}}} {{{{{ \bar{\Gamma}}_e}_j}^i}}}} - {{{2}} {{{ \beta}^e}} {{{{{ \bar{\Gamma}}^f}_f}_e}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}} + {{{2}} {{{ \beta}^e}} {{{{{ \bar{\Gamma}}^f}_f}_e}} {{{{{ \bar{\Gamma}}_k}_j}^i}}} + {{{6}} {{{ \beta}^e}} {{{{{ \bar{\Gamma}}^f}_j}_k}} {{{{{ \bar{\Gamma}}^i}_f}_e}}} + {{{{{{{6}} {{{ \beta}^e}} {{{{{ \bar{\Gamma}}_f}^i}_e}} {{{{{ \bar{\Gamma}}^f}_j}_k}}} - {{{2}} {{{ \beta}^e}} {{{{ \bar{\gamma}}^a}^m}} {{{{ \bar{\gamma}}^b}^f}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}_a}_f}_b}} {{{{{ \bar{\Gamma}}_m}_e}_j}}}} - {{{2}} {{{ \beta}^e}} {{{{ \bar{\gamma}}^a}^m}} {{{{ \bar{\gamma}}^b}^f}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}_b}_f}_a}} {{{{{ \bar{\Gamma}}_m}_e}_j}}}} - {{{3}} {{{ \beta}^e}} {{{{ \bar{\gamma}}^f}^i}} {{{{{{ \bar{\Gamma}}_f}_k}_e}_{,j}}}}} - {{{3}} {{{ \beta}^e}} {{{{ \bar{\gamma}}^f}^i}} {{{{{{ \bar{\Gamma}}_k}_f}_e}_{,j}}}}} + {{{2}} {{{ \beta}^e}} {{{{ \bar{\gamma}}^f}^m}} {{{{ \delta}^i}_k}} {{{{{{ \bar{\Gamma}}_m}_e}_j}_{,f}}}} + {{{{6}} {{{{ \beta}^i}_{,e}}} {{{{{ \bar{\Gamma}}^e}_j}_k}}} - {{{3}} {{{{{ \beta}^i}_{,k}}_{,j}}}}} + {{{{2}} {{{{ \delta}^i}_k}} {{{{{ \beta}^e}_{,e}}_{,j}}}} - {{{12}} {{\alpha}} \cdot {{{{ \bar{A}}_e}^i}} {{{{{ \bar{\Gamma}}^e}_j}_k}}}} + {{{6}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^e}^i}} {{{{{ \bar{A}}_e}_k}_{,j}}}}})}})}}$
+<br>
+${{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}} = {{\frac{1}{12}}{({-{({{{{12}} {{{ \alpha}_{,j}}} {{{{ \bar{A}}^i}_k}}} + {{{{{{6}} {{{{ \bar{\gamma}}^a}^i}} {{{{ \beta}^b}_{,a}}} {{{{{ \bar{\Gamma}}_b}_j}_k}}} - {{{6}} {{{{ \bar{\gamma}}^a}^i}} {{{{ \beta}^b}_{,a}}} {{{{{ \bar{\Gamma}}_k}_j}_b}}}} - {{{6}} {{{{ \bar{\gamma}}_a}_k}} {{{{ \bar{\gamma}}^b}^i}} {{{{{ \beta}^a}_{,b}}_{,j}}}}} - {{{4}} {{{{ \beta}^a}_{,a}}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}} + {{{{{4}} {{{{ \beta}^a}_{,a}}} {{{{{ \bar{\Gamma}}_k}_j}^i}}} - {{{6}} {{{{ \beta}^a}_{,j}}} {{{{{ \bar{\Gamma}}^i}_k}_a}}}} - {{{6}} {{{{ \beta}^a}_{,j}}} {{{{{ \bar{\Gamma}}_k}^i}_a}}}} + {{{{{{4}} {{{{ \beta}^a}_{,j}}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}^b}_b}_a}}} - {{{6}} {{{{ \beta}^a}_{,k}}} {{{{{ \bar{\Gamma}}^i}_j}_a}}}} - {{{6}} {{{{ \beta}^a}_{,k}}} {{{{{ \bar{\Gamma}}_a}_j}^i}}}} - {{{4}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_b}_a}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}} + {{{4}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_b}_a}} {{{{{ \bar{\Gamma}}_k}_j}^i}}} + {{{12}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_j}_k}} {{{{{ \bar{\Gamma}}^i}_b}_a}}} + {{{12}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}_b}^i}_a}} {{{{{ \bar{\Gamma}}^b}_j}_k}}} + {{{{2}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^c}} {{{{ \delta}^i}_k}} {{{{{{ \bar{\gamma}}_b}_c}_{,a}}_{,j}}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_a}_b}_{,j}}_{,k}}}}} + {{{{{{{{6}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_a}_j}_{,b}}_{,k}}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_a}_k}_{,b}}_{,j}}}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_b}_j}_{,a}}_{,k}}}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_j}_k}_{,a}}_{,b}}}}} - {{{4}} {{{ \beta}^a}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}^b}_c}^c}} {{{{{ \bar{\Gamma}}_b}_a}_j}}}} - {{{4}} {{{ \beta}^a}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}_b}_a}_j}} {{{{{ \bar{\Gamma}}^c}_c}^b}}}} + {{{{12}} {{{{ \beta}^i}_{,a}}} {{{{{ \bar{\Gamma}}^a}_j}_k}}} - {{{6}} {{{{{ \beta}^i}_{,k}}_{,j}}}}} + {{{{4}} {{{{ \delta}^i}_k}} {{{{{ \beta}^a}_{,a}}_{,j}}}} - {{{24}} {{\alpha}} \cdot {{{{ \bar{A}}_a}^i}} {{{{{ \bar{\Gamma}}^a}_j}_k}}}} + {{{12}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^a}^i}} {{{{{ \bar{A}}_a}_k}_{,j}}}}})}})}}$
+<br>
+
+<br>
+grid vs conformal connection difference evolution:
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{{ \bar{\Delta}}^i}_{,t}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{{{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\gamma}}^j}^k}_{,t}}}} + {{{{{ \bar{\gamma}}^j}^k}} {{{{{{ \bar{\Delta}}^i}_j}_k}_{,t}}}}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{{{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\gamma}}^j}^k}_{,t}}}} + {{{{{{ \bar{\gamma}}^j}^k}} {{{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}}}} - {{{{{ \bar{\gamma}}^j}^k}} {{{{{{ \hat{\Gamma}}^i}_j}_k}_{,t}}}}}}$
+<br>
+assuming	${{{{{ \hat{\Gamma}}^i}_j}_k}_{,t}} = {0}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{{{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\gamma}}^j}^k}_{,t}}}} + {{{{{{ \bar{\gamma}}^j}^k}} {{{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}}}} - {{{{{ \bar{\gamma}}^j}^k}} {{0}}}}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{-{{{{{ \bar{\gamma}}^l}^j}} {{{{ \bar{\gamma}}^n}^k}} {{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\gamma}}_l}_n}_{,t}}}}} + {{{{{ \bar{\gamma}}^j}^k}} {{{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}}}}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{-{{{{{ \bar{\gamma}}^l}^j}} {{{{ \bar{\gamma}}^n}^k}} {{{{{ \bar{\Delta}}^i}_j}_k}} {{{\frac{1}{3}}{({{{{3}} {{{{ \bar{\gamma}}_a}_l}} {{{{ \beta}^a}_{,n}}}} + {{{{3}} {{{{ \bar{\gamma}}_a}_n}} {{{{ \beta}^a}_{,l}}}} - {{{2}} {{{{ \bar{\gamma}}_l}_n}} {{{{ \beta}^a}_{,a}}}}} + {{{3}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}_l}_n}_a}}} + {{{{{3}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}_n}_l}_a}}} - {{{2}} {{{ \beta}^a}} {{{{ \bar{\gamma}}_l}_n}} {{{{{ \bar{\Gamma}}^b}_b}_a}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_l}_n}}}}})}}}}} + {{{{{ \bar{\gamma}}^j}^k}} {{{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}}}}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{\frac{1}{3}}{({{{{{{3}} {{{{ \bar{\gamma}}^j}^k}} {{{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}}}} - {{{3}} {{{{ \bar{\gamma}}_a}_l}} {{{{ \bar{\gamma}}^l}^j}} {{{{ \bar{\gamma}}^n}^k}} {{{{ \beta}^a}_{,n}}} {{{{{ \bar{\Delta}}^i}_j}_k}}}} - {{{3}} {{{{ \bar{\gamma}}_a}_n}} {{{{ \bar{\gamma}}^l}^j}} {{{{ \bar{\gamma}}^n}^k}} {{{{ \beta}^a}_{,l}}} {{{{{ \bar{\Delta}}^i}_j}_k}}}} + {{{{{2}} {{{{ \bar{\gamma}}^l}^j}} {{{{ \bar{\gamma}}_l}_n}} {{{{ \bar{\gamma}}^n}^k}} {{{{ \beta}^a}_{,a}}} {{{{{ \bar{\Delta}}^i}_j}_k}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^l}^j}} {{{{ \bar{\gamma}}^n}^k}} {{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\Gamma}}_l}_n}_a}}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^l}^j}} {{{{ \bar{\gamma}}^n}^k}} {{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\Gamma}}_n}_l}_a}}}} + {{{2}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^l}^j}} {{{{ \bar{\gamma}}_l}_n}} {{{{ \bar{\gamma}}^n}^k}} {{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\Gamma}}^b}_b}_a}}} + {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_l}_n}} {{{{ \bar{\gamma}}^l}^j}} {{{{ \bar{\gamma}}^n}^k}} {{{{{ \bar{\Delta}}^i}_j}_k}}}})}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{{{{{ \bar{\gamma}}^j}^k}} {{{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}}}} + {{{-1}} {{{{ \beta}^j}_{,n}}} {{{{{ \bar{\Delta}}^i}_j}^n}}} + {{{-1}} {{{{ \beta}^k}_{,l}}} {{{{{ \bar{\Delta}}^i}^l}_k}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{{ \beta}^a}_{,a}}} {{{{{ \bar{\Delta}}^i}_j}^j}}} + {{{-1}} {{{ \beta}^a}} {{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\Gamma}}^j}^k}_a}}} + {{{-1}} {{{ \beta}^a}} {{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\Gamma}}^k}^j}_a}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{ \beta}^a}} {{{{{ \bar{\Delta}}^i}_j}^j}} {{{{{ \bar{\Gamma}}^b}_b}_a}}} + {{{2}} {{\alpha}} \cdot {{{{ \bar{A}}^j}^k}} {{{{{ \bar{\Delta}}^i}_j}_k}}}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{\frac{1}{3}}{({{{{{{{3}} {{{{ \bar{\gamma}}^j}^k}} {{{{{{ \bar{\Gamma}}^i}_j}_k}_{,t}}}} - {{{3}} {{{{ \beta}^j}_{,n}}} {{{{{ \bar{\Delta}}^i}_j}^n}}}} - {{{3}} {{{{ \beta}^k}_{,l}}} {{{{{ \bar{\Delta}}^i}_k}^l}}}} - {{{6}} {{{ \beta}^a}} {{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\Gamma}}^j}^k}_a}}}} + {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}^j}^k}} {{{{{ \bar{\Delta}}^i}_j}_k}}} + {{{2}} {{{ \beta}^a}} {{{{{ \bar{\Delta}}^i}^j}_j}} {{{{{ \bar{\Gamma}}^b}_b}_a}}} + {{{2}} {{{{ \beta}^a}_{,a}}} {{{{{ \bar{\Delta}}^i}^j}_j}}}})}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{\frac{1}{3}}{({{{{{{{3}} {{{{ \bar{\gamma}}^j}^k}} {{{\frac{1}{12}}{({-{({{{{12}} {{{ \alpha}_{,j}}} {{{{ \bar{A}}^i}_k}}} + {{{{{{6}} {{{{ \bar{\gamma}}^a}^i}} {{{{ \beta}^b}_{,a}}} {{{{{ \bar{\Gamma}}_b}_j}_k}}} - {{{6}} {{{{ \bar{\gamma}}^a}^i}} {{{{ \beta}^b}_{,a}}} {{{{{ \bar{\Gamma}}_k}_j}_b}}}} - {{{6}} {{{{ \bar{\gamma}}_a}_k}} {{{{ \bar{\gamma}}^b}^i}} {{{{{ \beta}^a}_{,b}}_{,j}}}}} - {{{4}} {{{{ \beta}^a}_{,a}}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}} + {{{{{4}} {{{{ \beta}^a}_{,a}}} {{{{{ \bar{\Gamma}}_k}_j}^i}}} - {{{6}} {{{{ \beta}^a}_{,j}}} {{{{{ \bar{\Gamma}}^i}_k}_a}}}} - {{{6}} {{{{ \beta}^a}_{,j}}} {{{{{ \bar{\Gamma}}_k}^i}_a}}}} + {{{{{{4}} {{{{ \beta}^a}_{,j}}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}^b}_b}_a}}} - {{{6}} {{{{ \beta}^a}_{,k}}} {{{{{ \bar{\Gamma}}^i}_j}_a}}}} - {{{6}} {{{{ \beta}^a}_{,k}}} {{{{{ \bar{\Gamma}}_a}_j}^i}}}} - {{{4}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_b}_a}} {{{{{ \bar{\Gamma}}^i}_j}_k}}}} + {{{4}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_b}_a}} {{{{{ \bar{\Gamma}}_k}_j}^i}}} + {{{12}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_j}_k}} {{{{{ \bar{\Gamma}}^i}_b}_a}}} + {{{12}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}_b}^i}_a}} {{{{{ \bar{\Gamma}}^b}_j}_k}}} + {{{{2}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^c}} {{{{ \delta}^i}_k}} {{{{{{ \bar{\gamma}}_b}_c}_{,a}}_{,j}}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_a}_b}_{,j}}_{,k}}}}} + {{{{{{{{6}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_a}_j}_{,b}}_{,k}}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_a}_k}_{,b}}_{,j}}}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_b}_j}_{,a}}_{,k}}}}} - {{{3}} {{{ \beta}^a}} {{{{ \bar{\gamma}}^b}^i}} {{{{{{ \bar{\gamma}}_j}_k}_{,a}}_{,b}}}}} - {{{4}} {{{ \beta}^a}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}^b}_c}^c}} {{{{{ \bar{\Gamma}}_b}_a}_j}}}} - {{{4}} {{{ \beta}^a}} {{{{ \delta}^i}_k}} {{{{{ \bar{\Gamma}}_b}_a}_j}} {{{{{ \bar{\Gamma}}^c}_c}^b}}}} + {{{{12}} {{{{ \beta}^i}_{,a}}} {{{{{ \bar{\Gamma}}^a}_j}_k}}} - {{{6}} {{{{{ \beta}^i}_{,k}}_{,j}}}}} + {{{{4}} {{{{ \delta}^i}_k}} {{{{{ \beta}^a}_{,a}}_{,j}}}} - {{{24}} {{\alpha}} \cdot {{{{ \bar{A}}_a}^i}} {{{{{ \bar{\Gamma}}^a}_j}_k}}}} + {{{12}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^a}^i}} {{{{{ \bar{A}}_a}_k}_{,j}}}}})}})}}}} - {{{3}} {{{{ \beta}^j}_{,n}}} {{{{{ \bar{\Delta}}^i}_j}^n}}}} - {{{3}} {{{{ \beta}^k}_{,l}}} {{{{{ \bar{\Delta}}^i}_k}^l}}}} - {{{6}} {{{ \beta}^a}} {{{{{ \bar{\Delta}}^i}_j}_k}} {{{{{ \bar{\Gamma}}^j}^k}_a}}}} + {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}^j}^k}} {{{{{ \bar{\Delta}}^i}_j}_k}}} + {{{2}} {{{ \beta}^a}} {{{{{ \bar{\Delta}}^i}^j}_j}} {{{{{ \bar{\Gamma}}^b}_b}_a}}} + {{{2}} {{{{ \beta}^a}_{,a}}} {{{{{ \bar{\Delta}}^i}^j}_j}}}})}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{\frac{1}{12}}{({-{({{{{{{{12}} {{{ \alpha}_{,d}}} {{{{ \bar{A}}^i}^d}}} - {{{6}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \beta}^i}_{,d}}_{,e}}}}} - {{{2}} {{{{ \bar{\gamma}}^d}^i}} {{{{{ \beta}^e}_{,d}}_{,e}}}}} - {{{2}} {{{{ \bar{\gamma}}^d}^i}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}^f}_e}_f}}}} + {{{{{6}} {{{{ \bar{\gamma}}^d}^i}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}_e}^f}_f}}} - {{{8}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Delta}}^i}^d}_d}}}} - {{{4}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Gamma}}^i}^d}_d}}}} + {{{4}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Gamma}}_d}^d}^i}}} + {{{{{24}} {{{{ \beta}^d}_{,e}}} {{{{{ \bar{\Delta}}^i}_d}^e}}} - {{{6}} {{{{ \beta}^d}_{,e}}} {{{{{ \bar{\Gamma}}_d}^e}^i}}}} - {{{8}} {{{ \beta}^d}} {{{{{ \bar{\Delta}}^i}^e}_e}} {{{{{ \bar{\Gamma}}^f}_d}_f}}}} + {{{24}} {{{ \beta}^d}} {{{{{ \bar{\Delta}}^i}_e}_f}} {{{{{ \bar{\Gamma}}^e}_d}^f}}} + {{{{12}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}^e}^f}_f}} {{{{{ \bar{\Gamma}}^i}_d}_e}}} - {{{4}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}^e}_d}_e}} {{{{{ \bar{\Gamma}}^i}^f}_f}}}} + {{{4}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}^e}_d}_e}} {{{{{ \bar{\Gamma}}_f}^f}^i}}} + {{{{8}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_e}_d}^i}} {{{{{ \bar{\Gamma}}^e}^f}_f}}} - {{{4}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_e}_d}^i}} {{{{{ \bar{\Gamma}}^f}^e}_f}}}} + {{{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^f}} {{{{ \bar{\gamma}}^g}^i}} {{{{{{ \bar{\gamma}}_e}_f}_{,d}}_{,g}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_d}_e}_{,f}}_{,g}}}}} + {{{{{{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_d}_f}_{,e}}_{,g}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_e}_f}_{,d}}_{,g}}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_f}_g}_{,d}}_{,e}}}}} - {{{6}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}^d}_e}^i}}}} - {{{12}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}^i}^d}_e}}}} + {{{{{12}} {{{{ \beta}^i}_{,d}}} {{{{{ \bar{\Gamma}}^d}^e}_e}}} - {{{24}} {{\alpha}} \cdot {{{{ \bar{A}}^d}^e}} {{{{{ \bar{\Delta}}^i}_d}_e}}}} - {{{24}} {{\alpha}} \cdot {{{{ \bar{A}}_d}^i}} {{{{{ \bar{\Gamma}}^d}^e}_e}}}} + {{{12}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^d}^i}} {{{{ \bar{\gamma}}^e}^f}} {{{{{ \bar{A}}_d}_e}_{,f}}}}})}})}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{\frac{1}{12}}{({-{({{{{{{{12}} {{{ \alpha}_{,d}}} {{{{{{ \bar{\gamma}}^i}^b}} {{{{ \bar{A}}_b}_a}} {{{{ \bar{\gamma}}^a}^d}}}}} - {{{6}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \beta}^i}_{,d}}_{,e}}}}} - {{{2}} {{{{ \bar{\gamma}}^d}^i}} {{{{{ \beta}^e}_{,d}}_{,e}}}}} - {{{2}} {{{{ \bar{\gamma}}^d}^i}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}^f}_e}_f}}}} + {{{{{6}} {{{{ \bar{\gamma}}^d}^i}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}_e}^f}_f}}} - {{{8}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Delta}}^i}^d}_d}}}} - {{{4}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Gamma}}^i}^d}_d}}}} + {{{4}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Gamma}}_d}^d}^i}}} + {{{{{24}} {{{{ \beta}^d}_{,e}}} {{{{{ \bar{\Delta}}^i}_d}^e}}} - {{{6}} {{{{ \beta}^d}_{,e}}} {{{{{ \bar{\Gamma}}_d}^e}^i}}}} - {{{8}} {{{ \beta}^d}} {{{{{ \bar{\Delta}}^i}^e}_e}} {{{{{ \bar{\Gamma}}^f}_d}_f}}}} + {{{24}} {{{ \beta}^d}} {{{{{ \bar{\Delta}}^i}_e}_f}} {{{{{ \bar{\Gamma}}^e}_d}^f}}} + {{{{12}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}^e}^f}_f}} {{{{{ \bar{\Gamma}}^i}_d}_e}}} - {{{4}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}^e}_d}_e}} {{{{{ \bar{\Gamma}}^i}^f}_f}}}} + {{{4}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}^e}_d}_e}} {{{{{ \bar{\Gamma}}_f}^f}^i}}} + {{{{8}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_e}_d}^i}} {{{{{ \bar{\Gamma}}^e}^f}_f}}} - {{{4}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_e}_d}^i}} {{{{{ \bar{\Gamma}}^f}^e}_f}}}} + {{{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^f}} {{{{ \bar{\gamma}}^g}^i}} {{{{{{ \bar{\gamma}}_e}_f}_{,d}}_{,g}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_d}_e}_{,f}}_{,g}}}}} + {{{{{{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_d}_f}_{,e}}_{,g}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_e}_f}_{,d}}_{,g}}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_f}_g}_{,d}}_{,e}}}}} - {{{6}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}^d}_e}^i}}}} - {{{12}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}^i}^d}_e}}}} + {{{{{12}} {{{{ \beta}^i}_{,d}}} {{{{{ \bar{\Gamma}}^d}^e}_e}}} - {{{24}} {{\alpha}} \cdot {{{{{{ \bar{\gamma}}^d}^b}} {{{{ \bar{A}}_b}_a}} {{{{ \bar{\gamma}}^a}^e}}}} {{{{{ \bar{\Delta}}^i}_d}_e}}}} - {{{24}} {{\alpha}} \cdot {{{{{{ \bar{A}}_d}_c}} {{{{ \bar{\gamma}}^c}^i}}}} {{{{{ \bar{\Gamma}}^d}^e}_e}}}} + {{{12}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^d}^i}} {{{{ \bar{\gamma}}^e}^f}} {{{{{ \bar{A}}_d}_e}_{,f}}}}})}})}}$
+<br>
+
+<br>
+extrinsic curvature trace evolution:
+<br>
+${{ K}_{,t}} = {{{{{{ \gamma}^i}^j}} {{{{{ K}_i}_j}_{,t}}}} + {{{{{ K}_i}_j}} {{{{{ \gamma}^i}^j}_{,t}}}}}$
+<br>
+${{ K}_{,t}} = {{{{{{ \gamma}^i}^j}} {{{{{ K}_i}_j}_{,t}}}} + {{{{{ K}_i}_j}} \cdot  {-{{{{{ \gamma}^l}^i}} {{{{ \gamma}^m}^j}} {{{{{ \gamma}_l}_m}_{,t}}}}}}}$
+<br>
+${{ K}_{,t}} = {{{{{{ \gamma}^i}^j}} {{{{{ K}_i}_j}_{,t}}}} + {{{{{ K}_i}_j}} \cdot  {-{{{{{ \gamma}^l}^i}} {{{{ \gamma}^m}^j}} {{({{-{{{2}} {{\alpha}} \cdot {{{{ K}_l}_m}}}} + {{{{{ \beta}^k}_{,m}}} {{{{ \gamma}_k}_l}}} + {{{{ \beta}^k}} {{{{{ \Gamma}_l}_m}_k}}} + {{{{{ \beta}^k}_{,l}}} {{{{ \gamma}_k}_m}}} + {{{{ \beta}^k}} {{{{{ \Gamma}_m}_l}_k}}}})}}}}}}$
+<br>
+${{ K}_{,t}} = {-{({{{{{{ K}_i}_j}} {{{{ \beta}^k}_{,l}}} {{{{ \gamma}_k}_m}} {{{{ \gamma}^l}^i}} {{{{ \gamma}^m}^j}}} + {{{{{ K}_i}_j}} {{{{ \beta}^k}_{,m}}} {{{{ \gamma}_k}_l}} {{{{ \gamma}^l}^i}} {{{{ \gamma}^m}^j}}} + {{{{ \beta}^k}} {{{{ K}_i}_j}} {{{{ \gamma}^l}^i}} {{{{ \gamma}^m}^j}} {{{{{ \Gamma}_l}_m}_k}}} + {{{{{{ \beta}^k}} {{{{ K}_i}_j}} {{{{ \gamma}^l}^i}} {{{{ \gamma}^m}^j}} {{{{{ \Gamma}_m}_l}_k}}} - {{{{{ \gamma}^i}^j}} {{{{{ K}_i}_j}_{,t}}}}} - {{{2}} {{\alpha}} \cdot {{{{ K}_i}_j}} {{{{ K}_l}_m}} {{{{ \gamma}^l}^i}} {{{{ \gamma}^m}^j}}}}})}}$
+<br>
+${{ K}_{,t}} = {-{({{{{\frac{{{{K}} {{{{ \bar{\gamma}}_i}_j}}} + {{{3}} {{{{ \bar{A}}_i}_j}}}}{{{3}} {{{W}^{2}}}}}} {{{{ \beta}^k}_{,l}}} {{\frac{{{ \bar{\gamma}}_k}_m}{{W}^{2}}}} {{{{{{ \bar{\gamma}}^l}^i}} {{{W}^{2}}}}} {{{{{{ \bar{\gamma}}^m}^j}} {{{W}^{2}}}}}} + {{{\frac{{{{K}} {{{{ \bar{\gamma}}_i}_j}}} + {{{3}} {{{{ \bar{A}}_i}_j}}}}{{{3}} {{{W}^{2}}}}}} {{{{ \beta}^k}_{,m}}} {{\frac{{{ \bar{\gamma}}_k}_l}{{W}^{2}}}} {{{{{{ \bar{\gamma}}^l}^i}} {{{W}^{2}}}}} {{{{{{ \bar{\gamma}}^m}^j}} {{{W}^{2}}}}}} + {{{{ \beta}^k}} {{\frac{{{{K}} {{{{ \bar{\gamma}}_i}_j}}} + {{{3}} {{{{ \bar{A}}_i}_j}}}}{{{3}} {{{W}^{2}}}}}} {{{{{{ \bar{\gamma}}^l}^i}} {{{W}^{2}}}}} {{{{{{ \bar{\gamma}}^m}^j}} {{{W}^{2}}}}} {{{{{ \Gamma}_l}_m}_k}}} + {{{{{{ \beta}^k}} {{\frac{{{{K}} {{{{ \bar{\gamma}}_i}_j}}} + {{{3}} {{{{ \bar{A}}_i}_j}}}}{{{3}} {{{W}^{2}}}}}} {{{{{{ \bar{\gamma}}^l}^i}} {{{W}^{2}}}}} {{{{{{ \bar{\gamma}}^m}^j}} {{{W}^{2}}}}} {{{{{ \Gamma}_m}_l}_k}}} - {{{{{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}}} {{{{{ K}_i}_j}_{,t}}}}} - {{{2}} {{\alpha}} \cdot {{\frac{{{{K}} {{{{ \bar{\gamma}}_i}_j}}} + {{{3}} {{{{ \bar{A}}_i}_j}}}}{{{3}} {{{W}^{2}}}}}} {{\frac{{{{K}} {{{{ \bar{\gamma}}_l}_m}}} + {{{3}} {{{{ \bar{A}}_l}_m}}}}{{{3}} {{{W}^{2}}}}}} {{{{{{ \bar{\gamma}}^l}^i}} {{{W}^{2}}}}} {{{{{{ \bar{\gamma}}^m}^j}} {{{W}^{2}}}}}}}})}}$
+<br>
+${{ K}_{,t}} = {{\frac{1}{9}}{({-{({{{{3}} {{K}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}_k}_l}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}} {{{{ \beta}^k}_{,m}}}} + {{{3}} {{K}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}_k}_m}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}} {{{{ \beta}^k}_{,l}}}} + {{{3}} {{K}} {{{ \beta}^k}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}} {{{{{ \Gamma}_l}_m}_k}} {{{W}^{2}}}} + {{{{{3}} {{K}} {{{ \beta}^k}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}} {{{{{ \Gamma}_m}_l}_k}} {{{W}^{2}}}} - {{{6}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}_l}_m}} {{{{ \bar{\gamma}}^m}^j}}}} - {{{6}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}_l}_m}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}}}} + {{{9}} {{{{ \bar{A}}_i}_j}} {{{{ \bar{\gamma}}_k}_l}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}} {{{{ \beta}^k}_{,m}}}} + {{{{9}} {{{{ \bar{A}}_i}_j}} {{{{ \bar{\gamma}}_k}_m}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}} {{{{ \beta}^k}_{,l}}}} - {{{9}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ K}_i}_j}_{,t}}} {{{W}^{2}}}}} + {{{9}} {{{ \beta}^k}} {{{{ \bar{A}}_i}_j}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}} {{{{{ \Gamma}_l}_m}_k}} {{{W}^{2}}}} + {{{{{9}} {{{ \beta}^k}} {{{{ \bar{A}}_i}_j}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}} {{{{{ \Gamma}_m}_l}_k}} {{{W}^{2}}}} - {{{18}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}} {{{{ \bar{A}}_l}_m}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}^m}^j}}}} - {{{2}} {{\alpha}} \cdot {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^l}^i}} {{{{ \bar{\gamma}}_l}_m}} {{{{ \bar{\gamma}}^m}^j}} {{{K}^{2}}}}}})}})}}$
+<br>
+${{ K}_{,t}} = {{{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{{ \beta}^k}_{,k}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{{ \beta}^j}_{,j}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^m}^j}} {{{{{ \Gamma}_j}_m}_k}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^m}^j}} {{{{{ \Gamma}_m}_j}_k}} {{{W}^{2}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}_i}^i}}} + {{{2}} \cdot {{\frac{1}{3}}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}_j}^j}}} + {{{-1}} {{{{ \bar{A}}_i}^m}} {{{{ \beta}^i}_{,m}}}} + {{{-1}} {{{{ \bar{A}}^l}_j}} {{{{ \beta}^j}_{,l}}}} + {{{{{ \bar{\gamma}}^i}^j}} {{{{{ K}_i}_j}_{,t}}} {{{W}^{2}}}} + {{{-1}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_l}_m}_k}} {{{W}^{2}}}} + {{{-1}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_m}_l}_k}} {{{W}^{2}}}} + {{{2}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}} {{{{ \bar{A}}^i}^j}}} + {{{2}} \cdot {{\frac{1}{9}}} {{\alpha}} \cdot {{{{ \delta}_j}^j}} {{{K}^{2}}}}}$
+<br>
+${{ K}_{,t}} = {{\frac{1}{3}}{({-{({{{{K}} {{{{ \beta}^j}_{,j}}}} + {{{K}} {{{{ \beta}^k}_{,k}}}} + {{{2}} {{K}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^j}^m}} {{{{{ \Gamma}_j}_m}_k}} {{{W}^{2}}}} + {{{3}} {{{{ \bar{A}}^l}_j}} {{{{ \beta}^j}_{,l}}}} + {{{{3}} {{{{ \bar{A}}_i}^m}} {{{{ \beta}^i}_{,m}}}} - {{{3}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ K}_i}_j}_{,t}}} {{{W}^{2}}}}} + {{{3}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_l}_m}_k}} {{{W}^{2}}}} + {{{{{3}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_m}_l}_k}} {{{W}^{2}}}} - {{{2}} {{\alpha}} \cdot {{{K}^{2}}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}} {{{{ \bar{A}}^i}^j}}}}})}})}}$
+<br>
+${{ K}_{,t}} = {{\frac{1}{3}}{({-{({{{{K}} {{{{ \beta}^j}_{,j}}}} + {{{K}} {{{{ \beta}^k}_{,k}}}} + {{{{{{{{2}} {{K}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^j}^m}} {{{{{ \Gamma}_j}_m}_k}} {{{W}^{2}}}} - {{{3}} {{K}} {{\alpha}} \cdot {{{{ K}_i}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}}} - {{{12}} {{S}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ \bar{\gamma}}^i}^j}} {{{{ \gamma}_i}_j}} {{{W}^{2}}}}} - {{{3}} {{{{ K}_b}_i}} {{{{ \bar{\gamma}}^i}^j}} {{{{ \beta}^b}_{,j}}} {{{W}^{2}}}}} - {{{3}} {{{{ K}_b}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{{ \beta}^b}_{,i}}} {{{W}^{2}}}}} - {{{3}} {{{ \alpha}_{,b}}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ \Gamma}^b}_i}_j}} {{{W}^{2}}}}} + {{{3}} {{{{ \alpha}_{,i}}_{,j}}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}} + {{{3}} {{{{ \bar{A}}^l}_j}} {{{{ \beta}^j}_{,l}}}} + {{{{3}} {{{{ \bar{A}}_i}^m}} {{{{ \beta}^i}_{,m}}}} - {{{3}} {{{ \beta}^b}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ K}_i}_j}_{,b}}} {{{W}^{2}}}}} + {{{3}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_l}_m}_k}} {{{W}^{2}}}} + {{{{3}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_m}_l}_k}} {{{W}^{2}}}} - {{{2}} {{\alpha}} \cdot {{{K}^{2}}}}} + {{{{{6}} {{\alpha}} \cdot {{{{ K}_a}_j}} {{{{ K}_i}_b}} {{{{ \bar{\gamma}}^i}^j}} {{{{ \gamma}^b}^a}} {{{W}^{2}}}} - {{{3}} {{\alpha}} \cdot {{{{ R}_i}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}} {{{{ \bar{A}}^i}^j}}}} + {{{24}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_i}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}} + {{{12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}} \cdot {{{{ \bar{\gamma}}^i}^j}} {{{{ \gamma}_i}_j}} {{{W}^{2}}}}})}})}}$
+<br>
+${{ K}_{,t}} = {{\frac{1}{3}}{({-{({{{{K}} {{{{ \beta}^j}_{,j}}}} + {{{K}} {{{{ \beta}^k}_{,k}}}} + {{{{{{{{2}} {{K}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^j}^m}} {{{{{ \Gamma}_j}_m}_k}} {{{W}^{2}}}} - {{{3}} {{K}} {{\alpha}} \cdot {{\frac{{{{K}} {{{{ \bar{\gamma}}_i}_j}}} + {{{3}} {{{{ \bar{A}}_i}_j}}}}{{{3}} {{{W}^{2}}}}}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}}} - {{{12}} {{S}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ \bar{\gamma}}^i}^j}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{W}^{2}}}}} - {{{3}} \cdot {{\frac{{{{K}} {{{{ \bar{\gamma}}_b}_i}}} + {{{3}} {{{{ \bar{A}}_b}_i}}}}{{{3}} {{{W}^{2}}}}}} {{{{ \bar{\gamma}}^i}^j}} {{{{ \beta}^b}_{,j}}} {{{W}^{2}}}}} - {{{3}} \cdot {{\frac{{{{K}} {{{{ \bar{\gamma}}_b}_j}}} + {{{3}} {{{{ \bar{A}}_b}_j}}}}{{{3}} {{{W}^{2}}}}}} {{{{ \bar{\gamma}}^i}^j}} {{{{ \beta}^b}_{,i}}} {{{W}^{2}}}}} - {{{3}} {{{ \alpha}_{,b}}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ \Gamma}^b}_i}_j}} {{{W}^{2}}}}} + {{{3}} {{{{ \alpha}_{,i}}_{,j}}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}} + {{{3}} {{{{ \bar{A}}^l}_j}} {{{{ \beta}^j}_{,l}}}} + {{{{3}} {{{{ \bar{A}}_i}^m}} {{{{ \beta}^i}_{,m}}}} - {{{3}} {{{ \beta}^b}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ K}_i}_j}_{,b}}} {{{W}^{2}}}}} + {{{3}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_l}_m}_k}} {{{W}^{2}}}} + {{{{3}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_m}_l}_k}} {{{W}^{2}}}} - {{{2}} {{\alpha}} \cdot {{{K}^{2}}}}} + {{{{{6}} {{\alpha}} \cdot {{\frac{{{{K}} {{{{ \bar{\gamma}}_a}_j}}} + {{{3}} {{{{ \bar{A}}_a}_j}}}}{{{3}} {{{W}^{2}}}}}} {{\frac{{{{K}} {{{{ \bar{\gamma}}_i}_b}}} + {{{3}} {{{{ \bar{A}}_i}_b}}}}{{{3}} {{{W}^{2}}}}}} {{{{ \bar{\gamma}}^i}^j}} {{{{{{ \bar{\gamma}}^b}^a}} {{{W}^{2}}}}} {{{W}^{2}}}} - {{{3}} {{\alpha}} \cdot {{{{ R}_i}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}} {{{{ \bar{A}}^i}^j}}}} + {{{24}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_i}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}} + {{{12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}} \cdot {{{{ \bar{\gamma}}^i}^j}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{W}^{2}}}}})}})}}$
+<br>
+${{ K}_{,t}} = {{{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{{ \beta}^j}_{,j}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{{ \beta}^k}_{,k}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{K}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^j}^m}} {{{{{ \Gamma}_j}_m}_k}} {{{W}^{2}}}} + {{{\frac{1}{3}}} {{\alpha}} \cdot {{{{ \delta}^j}_j}} {{{K}^{2}}}} + {{{K}} {{\alpha}} \cdot {{{{ \bar{A}}^j}_j}}} + {{{4}} {{S}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ \delta}^j}_j}}} + {{{\frac{1}{3}}} {{K}} {{{{ \beta}^j}_{,j}}}} + {{{{{ \bar{A}}_b}^j}} {{{{ \beta}^b}_{,j}}}} + {{{\frac{1}{3}}} {{K}} {{{{ \beta}^b}_{,b}}}} + {{{{{ \bar{A}}_b}^i}} {{{{ \beta}^b}_{,i}}}} + {{{{ \alpha}_{,b}}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ \Gamma}^b}_i}_j}} {{{W}^{2}}}} + {{{-1}} {{{{ \alpha}_{,i}}_{,j}}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}} + {{{-1}} {{{{ \bar{A}}^l}_j}} {{{{ \beta}^j}_{,l}}}} + {{{-1}} {{{{ \bar{A}}_i}^m}} {{{{ \beta}^i}_{,m}}}} + {{{{ \beta}^b}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ K}_i}_j}_{,b}}} {{{W}^{2}}}} + {{{-1}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_l}_m}_k}} {{{W}^{2}}}} + {{{-1}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_m}_l}_k}} {{{W}^{2}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{\alpha}} \cdot {{{K}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_i}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}} + {{{-4}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}} \cdot {{{{ \delta}^j}_j}}} + {{{2}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}} {{{{ \bar{A}}^i}^j}}} + {{{\alpha}} \cdot {{{{ R}_i}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}} + {{{-2}} \cdot {{\frac{1}{9}}} {{\alpha}} \cdot {{{{ \delta}_j}^j}} {{{K}^{2}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}_a}^a}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}^j}_j}}} + {{{-2}} {{\alpha}} \cdot {{{{ \bar{A}}_a}_j}} {{{{ \bar{A}}^j}^a}}}}$
+<br>
+${{ K}_{,t}} = {{\frac{1}{3}}{({{{{3}} {{\alpha}} \cdot {{{K}^{2}}}} + {{{36}} {{S}} {{\alpha}} \cdot {{\pi}}} + {{{3}} {{{{ \bar{A}}_b}^j}} {{{{ \beta}^b}_{,j}}}} + {{{3}} {{{{ \bar{A}}_b}^i}} {{{{ \beta}^b}_{,i}}}} + {{{{{{3}} {{{ \alpha}_{,b}}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ \Gamma}^b}_i}_j}} {{{W}^{2}}}} - {{{3}} {{{{ \alpha}_{,i}}_{,j}}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}}} - {{{3}} {{{{ \bar{A}}_j}^l}} {{{{ \beta}^j}_{,l}}}}} - {{{3}} {{{{ \bar{A}}_i}^m}} {{{{ \beta}^i}_{,m}}}}} + {{{{{{3}} {{{ \beta}^b}} {{{{ \bar{\gamma}}^i}^j}} {{{{{ K}_i}_j}_{,b}}} {{{W}^{2}}}} - {{{6}} {{{ \beta}^k}} {{{{ \bar{A}}^l}^m}} {{{{{ \Gamma}_l}_m}_k}} {{{W}^{2}}}}} - {{{24}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_i}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}}} - {{{36}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}}} + {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}} {{{{ \bar{A}}^i}^j}}} + {{{{{3}} {{\alpha}} \cdot {{{{ R}_i}_j}} {{{{ \bar{\gamma}}^i}^j}} {{{W}^{2}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}^a}^j}} {{{{ \bar{A}}_a}_j}}}} - {{{2}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}^a}_a}}}} + {{{{{K}} {{{{ \beta}^b}_{,b}}}} - {{{2}} {{K}} {{{ \beta}^k}} {{{{ \bar{\gamma}}^j}^m}} {{{{{ \Gamma}_j}_m}_k}} {{{W}^{2}}}}} - {{{K}} {{{{ \beta}^k}_{,k}}}}}})}}$
+<br>
+${{ K}_{,t}} = {{\frac{1}{3}}{({-{({{{{2}} {{K}} {{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \Gamma}_d}_e}_c}} {{{W}^{2}}}} + {{{{2}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}^c}_c}}} - {{{36}} {{S}} {{\alpha}} \cdot {{\pi}}}} + {{{{3}} {{{{ \alpha}_{,c}}_{,d}}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} - {{{3}} {{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \Gamma}^c}_d}_e}} {{{W}^{2}}}}} + {{{{{{6}} {{{ \beta}^c}} {{{{ \bar{A}}^d}^e}} {{{{{ \Gamma}_d}_e}_c}} {{{W}^{2}}}} - {{{3}} {{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ K}_d}_e}_{,c}}} {{{W}^{2}}}}} - {{{3}} {{\alpha}} \cdot {{{K}^{2}}}}} - {{{3}} {{\alpha}} \cdot {{{{ R}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}}} + {{{24}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{36}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}}})}})}}$
+<br>
+${{ K}_{,t}} = {{{{-2}} \cdot {{\frac{1}{3}}} {{K}} {{{ W}_{,c}}} {{{ \beta}^c}} {{{{ \delta}_e}^e}} {{\frac{1}{W}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{K}} {{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \Gamma}_d}_e}_c}} {{{W}^{2}}}} + {{{\frac{1}{3}}} {{K}} {{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{\gamma}}_d}_e}_{,c}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}^c}_c}}} + {{{12}} {{S}} {{\alpha}} \cdot {{\pi}}} + {{{-2}} {{{ W}_{,c}}} {{{ \beta}^c}} {{{{ \bar{A}}^e}_e}} {{\frac{1}{W}}}} + {{{-1}} {{{{ \alpha}_{,c}}_{,d}}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \Gamma}^c}_d}_e}} {{{W}^{2}}}} + {{{-2}} {{{ \beta}^c}} {{{{ \bar{A}}^d}^e}} {{{{{ \Gamma}_d}_e}_c}} {{{W}^{2}}}} + {{{\frac{1}{3}}} {{{ K}_{,c}}} {{{ \beta}^c}} {{{{ \delta}_e}^e}}} + {{{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{A}}_d}_e}_{,c}}}} + {{{\alpha}} \cdot {{{K}^{2}}}} + {{{-12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}} + {{{\alpha}} \cdot {{{{ R}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}}}$
+<br>
+${{ K}_{,t}} = {{{{-2}} {{K}} {{{ W}_{,c}}} {{{ \beta}^c}} {{\frac{1}{W}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \gamma}_d}_e}_{,c}}} {{{W}^{2}}}} + {{{\frac{1}{3}}} {{K}} {{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{\gamma}}_d}_e}_{,c}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{K}} {{\alpha}} \cdot {{{{ \bar{A}}^c}_c}}} + {{{12}} {{S}} {{\alpha}} \cdot {{\pi}}} + {{{-1}} {{{{ \alpha}_{,c}}_{,d}}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \gamma}_a}_d}_{,e}}} {{{W}^{4}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \gamma}_d}_e}_{,a}}} {{{W}^{4}}}} + {{{-1}} {{{ \beta}^c}} {{{{ \bar{A}}^d}^e}} {{{{{ \gamma}_d}_e}_{,c}}} {{{W}^{2}}}} + {{{{ K}_{,c}}} {{{ \beta}^c}}} + {{{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{A}}_d}_e}_{,c}}}} + {{{\alpha}} \cdot {{{K}^{2}}}} + {{{-12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}} + {{{\alpha}} \cdot {{{{ R}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}}}$
+<br>
+${{ K}_{,t}} = {{{{-2}} {{K}} {{{ W}_{,c}}} {{{ \beta}^c}} {{\frac{1}{W}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \gamma}_d}_e}_{,c}}} {{{W}^{2}}}} + {{{\frac{1}{3}}} {{K}} {{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{\gamma}}_d}_e}_{,c}}}} + {{{12}} {{S}} {{\alpha}} \cdot {{\pi}}} + {{{-1}} {{{{ \alpha}_{,c}}_{,d}}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \gamma}_a}_d}_{,e}}} {{{W}^{4}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \gamma}_d}_e}_{,a}}} {{{W}^{4}}}} + {{{-1}} {{{ \beta}^c}} {{{{ \bar{A}}^d}^e}} {{{{{ \gamma}_d}_e}_{,c}}} {{{W}^{2}}}} + {{{{ K}_{,c}}} {{{ \beta}^c}}} + {{{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{A}}_d}_e}_{,c}}}} + {{{\alpha}} \cdot {{{K}^{2}}}} + {{{-12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}} + {{{\alpha}} \cdot {{{{ R}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}}}$
+<br>
+${{ K}_{,t}} = {{{{-2}} {{K}} {{{ W}_{,c}}} {{{ \beta}^c}} {{\frac{1}{W}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{K}} {{{ W}_{,c}}} {{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{ \bar{\gamma}}_d}_e}} {{\frac{1}{W}}}} + {{{12}} {{S}} {{\alpha}} \cdot {{\pi}}} + {{{W}} {{{ W}_{,a}}} {{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}_d}_e}} {{{{ \bar{\gamma}}^d}^e}}} + {{{2}} {{{ W}_{,c}}} {{{ \beta}^c}} {{{{ \bar{A}}^d}^e}} {{{{ \bar{\gamma}}_d}_e}} {{\frac{1}{W}}}} + {{{-2}} {{W}} {{{ W}_{,e}}} {{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}_a}_d}} {{{{ \bar{\gamma}}^d}^e}}} + {{{-1}} {{{{ \alpha}_{,c}}_{,d}}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{\Gamma}}_a}_e}_d}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{\Gamma}}_d}_a}_e}} {{{W}^{2}}}} + {{{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{\Gamma}}_d}_e}_a}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{\Gamma}}_e}_a}_d}} {{{W}^{2}}}} + {{{{ K}_{,c}}} {{{ \beta}^c}}} + {{{-1}} {{{ \beta}^c}} {{{{ \bar{A}}^d}^e}} {{{{{ \bar{\Gamma}}_d}_c}_e}}} + {{{-1}} {{{ \beta}^c}} {{{{ \bar{A}}^d}^e}} {{{{{ \bar{\Gamma}}_e}_c}_d}}} + {{{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{A}}_d}_e}_{,c}}}} + {{{\alpha}} \cdot {{{K}^{2}}}} + {{{-12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}} + {{{\alpha}} \cdot {{{{ R}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}}}$
+<br>
+${{ K}_{,t}} = {{{{-2}} {{K}} {{{ W}_{,c}}} {{{ \beta}^c}} {{\frac{1}{W}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{K}} {{{ W}_{,c}}} {{{ \beta}^c}} {{{{ \delta}^e}_e}} {{\frac{1}{W}}}} + {{{12}} {{S}} {{\alpha}} \cdot {{\pi}}} + {{{W}} {{{ W}_{,a}}} {{{ \alpha}_{,c}}} {{{{ \bar{\gamma}}^a}^c}} {{{{ \delta}_e}^e}}} + {{{2}} {{{ W}_{,c}}} {{{ \beta}^c}} {{{{ \bar{A}}_e}^e}} {{\frac{1}{W}}}} + {{{-2}} {{W}} {{{ W}_{,e}}} {{{ \alpha}_{,d}}} {{{{ \bar{\gamma}}^d}^e}}} + {{{-1}} {{{{ \alpha}_{,c}}_{,d}}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{{ \alpha}_{,c}}} {{{{{ \bar{\Gamma}}^c}_e}^e}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ \alpha}_{,c}}} {{{{{ \bar{\Gamma}}^e}^c}_e}} {{{W}^{2}}}} + {{{{ \alpha}_{,c}}} {{{{{ \bar{\Gamma}}^e}_e}^c}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{ \alpha}_{,c}}} {{{{{ \bar{\Gamma}}_e}^c}^e}} {{{W}^{2}}}} + {{{{ K}_{,c}}} {{{ \beta}^c}}} + {{{-1}} {{{ \beta}^c}} {{{{ \bar{A}}^d}^e}} {{{{{ \bar{\Gamma}}_d}_c}_e}}} + {{{-1}} {{{ \beta}^c}} {{{{ \bar{A}}^d}^e}} {{{{{ \bar{\Gamma}}_e}_c}_d}}} + {{{{ \beta}^c}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \bar{A}}_d}_e}_{,c}}}} + {{{\alpha}} \cdot {{{K}^{2}}}} + {{{-12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}} + {{{\alpha}} \cdot {{{{ R}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_c}_d}} {{{{ \bar{\gamma}}^c}^d}} {{{W}^{2}}}}}$
+<br>
+${{ K}_{,t}} = {{{{4}} {{S}} {{\alpha}} \cdot {{\pi}}} + {{{W}} {{{ W}_{,b}}} {{{ \alpha}_{,f}}} {{{{ \bar{\gamma}}^b}^f}}} + {{{-1}} {{{{ \alpha}_{,b}}_{,f}}} {{{{ \bar{\gamma}}^b}^f}} {{{W}^{2}}}} + {{{{ \alpha}_{,b}}} {{{{{ \bar{\Gamma}}^b}^f}_f}} {{{W}^{2}}}} + {{{{ K}_{,b}}} {{{ \beta}^b}}} + {{{-2}} {{{ \beta}^b}} {{{{ \bar{A}}^f}^g}} {{{{{ \bar{\Gamma}}_f}_b}_g}}} + {{{{ \beta}^b}} {{{{ \bar{\gamma}}^f}^g}} {{{{{ \bar{A}}_f}_g}_{,b}}}} + {{{\alpha}} \cdot {{{K}^{2}}}} + {{{-12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}} + {{{\alpha}} \cdot {{{{ R}_b}_f}} {{{{ \bar{\gamma}}^b}^f}} {{{W}^{2}}}}}$
+<br>
+
+<br>
+trace-free extrinsic curvature evolution:
+<br>
+${{{{ A}_i}_j}_{,t}} = {{\frac{1}{3}}{({-{({{{{K}} {{{{{ \gamma}_i}_j}_{,t}}}} + {{{{{ K}_{,t}}} {{{{ \gamma}_i}_j}}} - {{{3}} {{{{{ K}_i}_j}_{,t}}}}}})}})}}$
+<br>
+
+<br>
+conformal trace-free extrinsic curvature evolution:
+<br>
+${{{{ \bar{A}}_i}_j}_{,t}} = {{{W}} {{({{{{W}} {{{{{ A}_i}_j}_{,t}}}} + {{{2}} {{{ W}_{,t}}} {{{{ A}_i}_j}}}})}}}$
+<br>
+${{{{ \bar{A}}_i}_j}_{,t}} = {{{W}} {{({{{{W}} {{{{{ A}_i}_j}_{,t}}}} + {{{2}} \cdot {{{\frac{1}{3}}{({{{{{3}} {{{ W}_{,a}}} {{{ \beta}^a}}} - {{{W}} {{{{ \beta}^a}_{,a}}}}} + {{{{K}} {{W}} {{\alpha}}} - {{{W}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_b}_a}}}}})}}} {{{{ A}_i}_j}}}})}}}$
+<br>
+${{{{ \bar{A}}_i}_j}_{,t}} = {{{W}} {{({{{{W}} {{{\frac{1}{3}}{({-{({{{{K}} {{{{{ \gamma}_i}_j}_{,t}}}} + {{{{{ K}_{,t}}} {{{{ \gamma}_i}_j}}} - {{{3}} {{{{{ K}_i}_j}_{,t}}}}}})}})}}}} + {{{2}} \cdot {{{\frac{1}{3}}{({{{{{3}} {{{ W}_{,a}}} {{{ \beta}^a}}} - {{{W}} {{{{ \beta}^a}_{,a}}}}} + {{{{K}} {{W}} {{\alpha}}} - {{{W}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_b}_a}}}}})}}} {{{{ A}_i}_j}}}})}}}$
+<br>
+${{{{ \bar{A}}_i}_j}_{,t}} = {{{W}} {{({{{{W}} {{{\frac{1}{3}}{({-{({{{{K}} {{{{{ \gamma}_i}_j}_{,t}}}} + {{{{{ K}_{,t}}} {{{{ \gamma}_i}_j}}} - {{{3}} {{({{-{{{ \alpha}_{,i}}_{,j}}} + {{{{{{ \Gamma}^k}_i}_j}} {{{ \alpha}_{,k}}}} + {{{\alpha}} \cdot {{({{{{{ R}_i}_j} + {{{K}} {{{{ K}_i}_j}}}} - {{{2}} {{{{ K}_i}_k}} {{{{ \gamma}^k}^l}} {{{{ K}_l}_j}}}})}}} + {{{4}} {{\pi}} \cdot {{\alpha}} \cdot {{({{{{{{ \gamma}_i}_j}} {{({{S} - {\rho}})}}} - {{{2}} {{{{ S}_i}_j}}}})}}} + {{{{{{ K}_i}_j}_{,k}}} {{{ \beta}^k}}} + {{{{{ K}_k}_i}} {{{{ \beta}^k}_{,j}}}} + {{{{{ K}_k}_j}} {{{{ \beta}^k}_{,i}}}}})}}}}})}})}}}} + {{{2}} \cdot {{{\frac{1}{3}}{({{{{{3}} {{{ W}_{,a}}} {{{ \beta}^a}}} - {{{W}} {{{{ \beta}^a}_{,a}}}}} + {{{{K}} {{W}} {{\alpha}}} - {{{W}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_b}_a}}}}})}}} {{{{ A}_i}_j}}}})}}}$
+<br>
+${{{{ \bar{A}}_i}_j}_{,t}} = {{{W}} {{({{{{W}} {{{\frac{1}{3}}{({-{({{{{K}} {{{{{ \gamma}_i}_j}_{,t}}}} + {{{{{{ \gamma}_i}_j}} {{({{{{4}} {{S}} {{\alpha}} \cdot {{\pi}}} + {{{W}} {{{ W}_{,b}}} {{{ \alpha}_{,f}}} {{{{ \bar{\gamma}}^b}^f}}} + {{{-1}} {{{{ \alpha}_{,b}}_{,f}}} {{{{ \bar{\gamma}}^b}^f}} {{{W}^{2}}}} + {{{{ \alpha}_{,b}}} {{{{{ \bar{\Gamma}}^b}^f}_f}} {{{W}^{2}}}} + {{{{ K}_{,b}}} {{{ \beta}^b}}} + {{{-2}} {{{ \beta}^b}} {{{{ \bar{A}}^f}^g}} {{{{{ \bar{\Gamma}}_f}_b}_g}}} + {{{{ \beta}^b}} {{{{ \bar{\gamma}}^f}^g}} {{{{{ \bar{A}}_f}_g}_{,b}}}} + {{{\alpha}} \cdot {{{K}^{2}}}} + {{{-12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}} + {{{\alpha}} \cdot {{{{ R}_b}_f}} {{{{ \bar{\gamma}}^b}^f}} {{{W}^{2}}}}})}}} - {{{3}} {{({{-{{{ \alpha}_{,i}}_{,j}}} + {{{{{{ \Gamma}^k}_i}_j}} {{{ \alpha}_{,k}}}} + {{{\alpha}} \cdot {{({{{{{ R}_i}_j} + {{{K}} {{{{ K}_i}_j}}}} - {{{2}} {{{{ K}_i}_k}} {{{{ \gamma}^k}^l}} {{{{ K}_l}_j}}}})}}} + {{{4}} {{\pi}} \cdot {{\alpha}} \cdot {{({{{{{{ \gamma}_i}_j}} {{({{S} - {\rho}})}}} - {{{2}} {{{{ S}_i}_j}}}})}}} + {{{{{{ K}_i}_j}_{,k}}} {{{ \beta}^k}}} + {{{{{ K}_k}_i}} {{{{ \beta}^k}_{,j}}}} + {{{{{ K}_k}_j}} {{{{ \beta}^k}_{,i}}}}})}}}}})}})}}}} + {{{2}} \cdot {{{\frac{1}{3}}{({{{{{3}} {{{ W}_{,a}}} {{{ \beta}^a}}} - {{{W}} {{{{ \beta}^a}_{,a}}}}} + {{{{K}} {{W}} {{\alpha}}} - {{{W}} {{{ \beta}^a}} {{{{{ \bar{\Gamma}}^b}_b}_a}}}}})}}} {{{{ A}_i}_j}}}})}}}$
+<br>
+${{{{ \bar{A}}_i}_j}_{,t}} = {{{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{{{ \gamma}_i}_j}_{,t}}} {{{W}^{2}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{K}} {{\alpha}} \cdot {{{{ A}_i}_j}} {{{W}^{2}}}} + {{{K}} {{\alpha}} \cdot {{{{ K}_i}_j}} {{{W}^{2}}}} + {{{8}} \cdot {{\frac{1}{3}}} {{S}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ \gamma}_i}_j}} {{{W}^{2}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{{ A}_i}_j}} {{{{ \beta}^a}_{,a}}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ K}_{,b}}} {{{ \beta}^b}} {{{{ \gamma}_i}_j}} {{{W}^{2}}}} + {{{{{ K}_k}_i}} {{{{ \beta}^k}_{,j}}} {{{W}^{2}}}} + {{{{{ K}_k}_j}} {{{{ \beta}^k}_{,i}}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ W}_{,b}}} {{{ \alpha}_{,f}}} {{{{ \bar{\gamma}}^b}^f}} {{{{ \gamma}_i}_j}} {{{W}^{3}}}} + {{{\frac{1}{3}}} {{{{ \alpha}_{,b}}_{,f}}} {{{{ \bar{\gamma}}^b}^f}} {{{{ \gamma}_i}_j}} {{{W}^{4}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ \alpha}_{,b}}} {{{{ \gamma}_i}_j}} {{{{{ \bar{\Gamma}}^b}^f}_f}} {{{W}^{4}}}} + {{{-1}} {{{{ \alpha}_{,i}}_{,j}}} {{{W}^{2}}}} + {{{{ \alpha}_{,k}}} {{{{{ \Gamma}^k}_i}_j}} {{{W}^{2}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{ \beta}^a}} {{{{ A}_i}_j}} {{{{{ \bar{\Gamma}}^b}_b}_a}} {{{W}^{2}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{ \beta}^b}} {{{{ \bar{A}}^f}^g}} {{{{ \gamma}_i}_j}} {{{{{ \bar{\Gamma}}_f}_b}_g}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ \beta}^b}} {{{{ \bar{\gamma}}^f}^g}} {{{{ \gamma}_i}_j}} {{{{{ \bar{A}}_f}_g}_{,b}}} {{{W}^{2}}}} + {{{{ \beta}^k}} {{{{{ K}_i}_j}_{,k}}} {{{W}^{2}}}} + {{{2}} {{W}} {{{ W}_{,a}}} {{{ \beta}^a}} {{{{ A}_i}_j}}} + {{{-2}} {{\alpha}} \cdot {{{{ K}_i}_k}} {{{{ K}_l}_j}} {{{{ \gamma}^k}^l}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{\alpha}} \cdot {{{{ R}_b}_f}} {{{{ \bar{\gamma}}^b}^f}} {{{{ \gamma}_i}_j}} {{{W}^{4}}}} + {{{\alpha}} \cdot {{{{ R}_i}_j}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{\alpha}} \cdot {{{{ \gamma}_i}_j}} {{{K}^{2}}} {{{W}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_i}_j}} {{{W}^{2}}}}}$
+<br>
+${{{{ \bar{A}}_i}_j}_{,t}} = {{{{-1}} \cdot {{\frac{1}{3}}} {{K}} {{{W}^{2}}} {{({{-{{{2}} {{\alpha}} \cdot {{{\frac{1}{3}}{({{{{3}} \cdot {{\frac{{{ \bar{A}}_i}_j}{{W}^{2}}}}} + {{{K}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}}}})}}}}} + {{{{{ \beta}^k}_{,j}}} {{\frac{{{ \bar{\gamma}}_k}_i}{{W}^{2}}}}} + {{{{ \beta}^k}} {{{{\frac{1}{2}}} {{({{{\frac{-{({{{{2}} {{{ W}_{,k}}} {{{{ \bar{\gamma}}_i}_j}}} - {{{W}} {{({{{{{ \bar{\Gamma}}_i}_k}_j} + {{{{ \bar{\Gamma}}_j}_k}_i}})}}}})}}{{W}^{3}}} + {\frac{-{({{{{2}} {{{ W}_{,j}}} {{{{ \bar{\gamma}}_i}_k}}} - {{{W}} {{({{{{{ \bar{\Gamma}}_i}_j}_k} + {{{{ \bar{\Gamma}}_k}_j}_i}})}}}})}}{{W}^{3}}}} - {\frac{-{({{{{2}} {{{ W}_{,i}}} {{{{ \bar{\gamma}}_j}_k}}} - {{{W}} {{({{{{{ \bar{\Gamma}}_j}_i}_k} + {{{{ \bar{\Gamma}}_k}_i}_j}})}}}})}}{{W}^{3}}}})}}}}} + {{{{{ \beta}^k}_{,i}}} {{\frac{{{ \bar{\gamma}}_k}_j}{{W}^{2}}}}} + {{{{ \beta}^k}} {{{{\frac{1}{2}}} {{({{{\frac{-{({{{{2}} {{{ W}_{,k}}} {{{{ \bar{\gamma}}_j}_i}}} - {{{W}} {{({{{{{ \bar{\Gamma}}_j}_k}_i} + {{{{ \bar{\Gamma}}_i}_k}_j}})}}}})}}{{W}^{3}}} + {\frac{-{({{{{2}} {{{ W}_{,i}}} {{{{ \bar{\gamma}}_j}_k}}} - {{{W}} {{({{{{{ \bar{\Gamma}}_j}_i}_k} + {{{{ \bar{\Gamma}}_k}_i}_j}})}}}})}}{{W}^{3}}}} - {\frac{-{({{{{2}} {{{ W}_{,j}}} {{{{ \bar{\gamma}}_i}_k}}} - {{{W}} {{({{{{{ \bar{\Gamma}}_i}_j}_k} + {{{{ \bar{\Gamma}}_k}_j}_i}})}}}})}}{{W}^{3}}}})}}}}}})}}} + {{{2}} \cdot {{\frac{1}{3}}} {{K}} {{\alpha}} \cdot {{\frac{{{ \bar{A}}_i}_j}{{W}^{2}}}} {{{W}^{2}}}} + {{{K}} {{\alpha}} \cdot {{{\frac{1}{3}}{({{{{3}} \cdot {{\frac{{{ \bar{A}}_i}_j}{{W}^{2}}}}} + {{{K}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}}}})}}} {{{W}^{2}}}} + {{{8}} \cdot {{\frac{1}{3}}} {{S}} {{\alpha}} \cdot {{\pi}} \cdot {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{W}^{2}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{\frac{{{ \bar{A}}_i}_j}{{W}^{2}}}} {{{{ \beta}^a}_{,a}}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ K}_{,b}}} {{{ \beta}^b}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{W}^{2}}}} + {{{{\frac{1}{3}}{({{{{3}} \cdot {{\frac{{{ \bar{A}}_k}_i}{{W}^{2}}}}} + {{{K}} {{\frac{{{ \bar{\gamma}}_k}_i}{{W}^{2}}}}}})}}} {{{{ \beta}^k}_{,j}}} {{{W}^{2}}}} + {{{{\frac{1}{3}}{({{{{3}} \cdot {{\frac{{{ \bar{A}}_k}_j}{{W}^{2}}}}} + {{{K}} {{\frac{{{ \bar{\gamma}}_k}_j}{{W}^{2}}}}}})}}} {{{{ \beta}^k}_{,i}}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ W}_{,b}}} {{{ \alpha}_{,f}}} {{{{ \bar{\gamma}}^b}^f}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{W}^{3}}}} + {{{\frac{1}{3}}} {{{{ \alpha}_{,b}}_{,f}}} {{{{ \bar{\gamma}}^b}^f}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{W}^{4}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ \alpha}_{,b}}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{{{ \bar{\Gamma}}^b}^f}_f}} {{{W}^{4}}}} + {{{-1}} {{{{ \alpha}_{,i}}_{,j}}} {{{W}^{2}}}} + {{{{ \alpha}_{,k}}} {{{\frac{1}{2}}{({-{{{{{{{ \bar{\gamma}}^k}^c}} {{{W}^{2}}}}} {{({{{\frac{-{({{{{2}} {{{ W}_{,c}}} {{{{ \bar{\gamma}}_i}_j}}} - {{{W}} {{({{{{{ \bar{\Gamma}}_i}_c}_j} + {{{{ \bar{\Gamma}}_j}_c}_i}})}}}})}}{{W}^{3}}} - {\frac{-{({{{{2}} {{{ W}_{,j}}} {{{{ \bar{\gamma}}_c}_i}}} - {{{W}} {{({{{{{ \bar{\Gamma}}_c}_j}_i} + {{{{ \bar{\Gamma}}_i}_j}_c}})}}}})}}{{W}^{3}}}} - {\frac{-{({{{{2}} {{{ W}_{,i}}} {{{{ \bar{\gamma}}_c}_j}}} - {{{W}} {{({{{{{ \bar{\Gamma}}_c}_i}_j} + {{{{ \bar{\Gamma}}_j}_i}_c}})}}}})}}{{W}^{3}}}})}}}})}}} {{{W}^{2}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{ \beta}^a}} {{\frac{{{ \bar{A}}_i}_j}{{W}^{2}}}} {{{{{ \bar{\Gamma}}^b}_b}_a}} {{{W}^{2}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{ \beta}^b}} {{{{ \bar{A}}^f}^g}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{{{ \bar{\Gamma}}_f}_b}_g}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ \beta}^b}} {{{{ \bar{\gamma}}^f}^g}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{{{ \bar{A}}_f}_g}_{,b}}} {{{W}^{2}}}} + {{{{ \beta}^k}} {{{W}^{2}}} {{{\left( {\frac{1}{3}}{({{{{3}} \cdot {{\frac{{{ \bar{A}}_i}_j}{{W}^{2}}}}} + {{{K}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}}}})}\right)}_{,k}}}} + {{{2}} {{W}} {{{ W}_{,a}}} {{{ \beta}^a}} {{\frac{{{ \bar{A}}_i}_j}{{W}^{2}}}}} + {{{-2}} {{\alpha}} \cdot {{{\frac{1}{3}}{({{{{3}} \cdot {{\frac{{{ \bar{A}}_i}_k}{{W}^{2}}}}} + {{{K}} {{\frac{{{ \bar{\gamma}}_i}_k}{{W}^{2}}}}}})}}} {{{\frac{1}{3}}{({{{{3}} \cdot {{\frac{{{ \bar{A}}_l}_j}{{W}^{2}}}}} + {{{K}} {{\frac{{{ \bar{\gamma}}_l}_j}{{W}^{2}}}}}})}}} {{{{{{ \bar{\gamma}}^k}^l}} {{{W}^{2}}}}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{\alpha}} \cdot {{{{ R}_b}_f}} {{{{ \bar{\gamma}}^b}^f}} {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{W}^{4}}}} + {{{\alpha}} \cdot {{{{ R}_i}_j}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{\alpha}} \cdot {{\frac{{{ \bar{\gamma}}_i}_j}{{W}^{2}}}} {{{K}^{2}}} {{{W}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_i}_j}} {{{W}^{2}}}}}$
+<br>
+${{{{ \bar{A}}_i}_j}_{,t}} = {{{{K}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}}} + {{{8}} \cdot {{\frac{1}{3}}} {{S}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ \bar{\gamma}}_i}_j}}} + {{{-1}} {{W}} {{{ W}_{,i}}} {{{ \alpha}_{,j}}}} + {{{-1}} {{W}} {{{ W}_{,j}}} {{{ \alpha}_{,i}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{W}} {{{ W}_{,m}}} {{{ \alpha}_{,n}}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^m}^n}}} + {{{-1}} {{{{ \alpha}_{,i}}_{,j}}} {{{W}^{2}}}} + {{{\frac{1}{3}}} {{{{ \alpha}_{,m}}_{,n}}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^m}^n}} {{{W}^{2}}}} + {{{{ \alpha}_{,m}}} {{{{{ \bar{\Gamma}}^m}_i}_j}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ \alpha}_{,m}}} {{{{ \bar{\gamma}}_i}_j}} {{{{{ \bar{\Gamma}}^m}^n}_n}} {{{W}^{2}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{{ \bar{A}}_i}_j}} {{{{ \beta}^m}_{,m}}}} + {{{{{ \bar{A}}_m}_i}} {{{{ \beta}^m}_{,j}}}} + {{{{{ \bar{A}}_m}_j}} {{{{ \beta}^m}_{,i}}}} + {{{{ \beta}^m}} {{{{{ \bar{A}}_i}_j}_{,m}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{ \beta}^m}} {{{{ \bar{A}}_i}_j}} {{{{{ \bar{\Gamma}}^n}_m}_n}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{ \beta}^m}} {{{{ \bar{A}}_p}_q}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^o}^q}} {{{{ \bar{\gamma}}^p}^n}} {{{{{ \bar{\Gamma}}_n}_m}_o}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ \beta}^m}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^n}^o}} {{{{{ \bar{A}}_n}_o}_{,m}}}} + {{{-2}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_n}} {{{{ \bar{A}}_m}_j}} {{{{ \bar{\gamma}}^n}^m}}} + {{{\alpha}} \cdot {{{{ R}_i}_j}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{\alpha}} \cdot {{{{ R}_m}_n}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^m}^n}} {{{W}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_i}_j}} {{{W}^{2}}}}}$
+<br>
+
+<br>
+<hr>
+<br>
+collecting partial derivatives:
+<br>
+${{ \alpha}_{,t}} = {{{{{ \alpha}_{,i}}} {{{ \beta}^i}}} - {{{{\alpha}^{2}}} {{f}} {{K}}}}$
+<br>
+${{{ \beta}^i}_{,t}} = {{ B}^i}$
+<br>
+${{{ B}^i}_{,t}} = {{{{\frac{3}{4}}} {{{{ \bar{\Lambda}}^i}_{,t}}}} - {{{\eta}} \cdot {{{ B}^i}}}}$
+<br>
+${{ W}_{,t}} = {{\frac{1}{3}}{({{{{{3}} {{{ W}_{,i}}} {{{ \beta}^i}}} - {{{W}} {{{{ \beta}^i}_{,i}}}}} + {{{{K}} {{W}} {{\alpha}}} - {{{W}} {{{ \beta}^i}} {{{{{ \bar{\Gamma}}^j}_j}_i}}}}})}}$
+<br>
+${{ K}_{,t}} = {{{{4}} {{S}} {{\alpha}} \cdot {{\pi}}} + {{{W}} {{{ W}_{,b}}} {{{ \alpha}_{,f}}} {{{{ \bar{\gamma}}^b}^f}}} + {{{-1}} {{{{ \alpha}_{,b}}_{,f}}} {{{{ \bar{\gamma}}^b}^f}} {{{W}^{2}}}} + {{{{ \alpha}_{,b}}} {{{{{ \bar{\Gamma}}^b}^f}_f}} {{{W}^{2}}}} + {{{{ K}_{,b}}} {{{ \beta}^b}}} + {{{-2}} {{{ \beta}^b}} {{{{ \bar{A}}^f}^g}} {{{{{ \bar{\Gamma}}_f}_b}_g}}} + {{{{ \beta}^b}} {{{{ \bar{\gamma}}^f}^g}} {{{{{ \bar{A}}_f}_g}_{,b}}}} + {{{\alpha}} \cdot {{{K}^{2}}}} + {{{-12}} {{\alpha}} \cdot {{\pi}} \cdot {{\rho}}} + {{{\alpha}} \cdot {{{{ R}_b}_f}} {{{{ \bar{\gamma}}^b}^f}} {{{W}^{2}}}}}$
+<br>
+${{{{ \bar{\epsilon}}_i}_j}_{,t}} = {{\frac{1}{3}}{({{{{3}} {{{{ \bar{\gamma}}_k}_i}} {{{{ \beta}^k}_{,j}}}} + {{{{3}} {{{{ \bar{\gamma}}_k}_j}} {{{{ \beta}^k}_{,i}}}} - {{{2}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \beta}^k}_{,k}}}}} + {{{3}} {{{ \beta}^k}} {{{{{ \bar{\Gamma}}_i}_j}_k}}} + {{{{{3}} {{{ \beta}^k}} {{{{{ \bar{\Gamma}}_j}_i}_k}}} - {{{2}} {{{ \beta}^k}} {{{{ \bar{\gamma}}_i}_j}} {{{{{ \bar{\Gamma}}^l}_l}_k}}}} - {{{6}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}}}}})}}$
+<br>
+${{{{ \bar{A}}_i}_j}_{,t}} = {{{{K}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_j}}} + {{{8}} \cdot {{\frac{1}{3}}} {{S}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ \bar{\gamma}}_i}_j}}} + {{{-1}} {{W}} {{{ W}_{,i}}} {{{ \alpha}_{,j}}}} + {{{-1}} {{W}} {{{ W}_{,j}}} {{{ \alpha}_{,i}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{W}} {{{ W}_{,m}}} {{{ \alpha}_{,n}}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^m}^n}}} + {{{-1}} {{{{ \alpha}_{,i}}_{,j}}} {{{W}^{2}}}} + {{{\frac{1}{3}}} {{{{ \alpha}_{,m}}_{,n}}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^m}^n}} {{{W}^{2}}}} + {{{{ \alpha}_{,m}}} {{{{{ \bar{\Gamma}}^m}_i}_j}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ \alpha}_{,m}}} {{{{ \bar{\gamma}}_i}_j}} {{{{{ \bar{\Gamma}}^m}^n}_n}} {{{W}^{2}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{{ \bar{A}}_i}_j}} {{{{ \beta}^m}_{,m}}}} + {{{{{ \bar{A}}_m}_i}} {{{{ \beta}^m}_{,j}}}} + {{{{{ \bar{A}}_m}_j}} {{{{ \beta}^m}_{,i}}}} + {{{{ \beta}^m}} {{{{{ \bar{A}}_i}_j}_{,m}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{ \beta}^m}} {{{{ \bar{A}}_i}_j}} {{{{{ \bar{\Gamma}}^n}_m}_n}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{ \beta}^m}} {{{{ \bar{A}}_p}_q}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^o}^q}} {{{{ \bar{\gamma}}^p}^n}} {{{{{ \bar{\Gamma}}_n}_m}_o}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{{ \beta}^m}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^n}^o}} {{{{{ \bar{A}}_n}_o}_{,m}}}} + {{{-2}} {{\alpha}} \cdot {{{{ \bar{A}}_i}_n}} {{{{ \bar{A}}_m}_j}} {{{{ \bar{\gamma}}^n}^m}}} + {{{\alpha}} \cdot {{{{ R}_i}_j}} {{{W}^{2}}}} + {{{-1}} \cdot {{\frac{1}{3}}} {{\alpha}} \cdot {{{{ R}_m}_n}} {{{{ \bar{\gamma}}_i}_j}} {{{{ \bar{\gamma}}^m}^n}} {{{W}^{2}}}} + {{{-8}} {{\alpha}} \cdot {{\pi}} \cdot {{{{ S}_i}_j}} {{{W}^{2}}}}}$
+<br>
+${{{ \bar{\Lambda}}^i}_{,t}} = {{\frac{1}{12}}{({-{({{{{{{{12}} {{{ \alpha}_{,d}}} {{{{{{ \bar{\gamma}}^i}^b}} {{{{ \bar{A}}_b}_a}} {{{{ \bar{\gamma}}^a}^d}}}}} - {{{6}} {{{{ \bar{\gamma}}^d}^e}} {{{{{ \beta}^i}_{,d}}_{,e}}}}} - {{{2}} {{{{ \bar{\gamma}}^d}^i}} {{{{{ \beta}^e}_{,d}}_{,e}}}}} - {{{2}} {{{{ \bar{\gamma}}^d}^i}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}^f}_e}_f}}}} + {{{{{6}} {{{{ \bar{\gamma}}^d}^i}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}_e}^f}_f}}} - {{{8}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Delta}}^i}^d}_d}}}} - {{{4}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Gamma}}^i}^d}_d}}}} + {{{4}} {{{{ \beta}^d}_{,d}}} {{{{{ \bar{\Gamma}}_d}^d}^i}}} + {{{{{24}} {{{{ \beta}^d}_{,e}}} {{{{{ \bar{\Delta}}^i}_d}^e}}} - {{{6}} {{{{ \beta}^d}_{,e}}} {{{{{ \bar{\Gamma}}_d}^e}^i}}}} - {{{8}} {{{ \beta}^d}} {{{{{ \bar{\Delta}}^i}^e}_e}} {{{{{ \bar{\Gamma}}^f}_d}_f}}}} + {{{24}} {{{ \beta}^d}} {{{{{ \bar{\Delta}}^i}_e}_f}} {{{{{ \bar{\Gamma}}^e}_d}^f}}} + {{{{12}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}^e}^f}_f}} {{{{{ \bar{\Gamma}}^i}_d}_e}}} - {{{4}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}^e}_d}_e}} {{{{{ \bar{\Gamma}}^i}^f}_f}}}} + {{{4}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}^e}_d}_e}} {{{{{ \bar{\Gamma}}_f}^f}^i}}} + {{{{8}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_e}_d}^i}} {{{{{ \bar{\Gamma}}^e}^f}_f}}} - {{{4}} {{{ \beta}^d}} {{{{{ \bar{\Gamma}}_e}_d}^i}} {{{{{ \bar{\Gamma}}^f}^e}_f}}}} + {{{{2}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^f}} {{{{ \bar{\gamma}}^g}^i}} {{{{{{ \bar{\gamma}}_e}_f}_{,d}}_{,g}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_d}_e}_{,f}}_{,g}}}}} + {{{{{{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_d}_f}_{,e}}_{,g}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_e}_f}_{,d}}_{,g}}}}} - {{{3}} {{{ \beta}^d}} {{{{ \bar{\gamma}}^e}^i}} {{{{ \bar{\gamma}}^f}^g}} {{{{{{ \bar{\gamma}}_f}_g}_{,d}}_{,e}}}}} - {{{6}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}^d}_e}^i}}}} - {{{12}} {{{{ \beta}^e}_{,d}}} {{{{{ \bar{\Gamma}}^i}^d}_e}}}} + {{{{{12}} {{{{ \beta}^i}_{,d}}} {{{{{ \bar{\Gamma}}^d}^e}_e}}} - {{{24}} {{\alpha}} \cdot {{{{{{ \bar{\gamma}}^d}^b}} {{{{ \bar{A}}_b}_a}} {{{{ \bar{\gamma}}^a}^e}}}} {{{{{ \bar{\Delta}}^i}_d}_e}}}} - {{{24}} {{\alpha}} \cdot {{{{{{ \bar{A}}_d}_c}} {{{{ \bar{\gamma}}^c}^i}}}} {{{{{ \bar{\Gamma}}^d}^e}_e}}}} + {{{12}} {{\alpha}} \cdot {{{{ \bar{\gamma}}^d}^i}} {{{{ \bar{\gamma}}^e}^f}} {{{{{ \bar{A}}_d}_e}_{,f}}}}})}})}}$
+<br>
+	</body>
+</html>
+
