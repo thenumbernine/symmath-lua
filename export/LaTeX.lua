@@ -174,10 +174,6 @@ LaTeX.lookupTable = {
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'
 		local name = expr.name
-		if rawequal(expr, symmath.i) then
-			-- I'll just use the unicode here because LaTeX, unlike SingleLine, doesn't need utf8.len()
-			name = 'ⅈ'	--'\\textbf{i}'
-		end
 		if rawequal(expr, symmath.pi) then
 			name = '\\pi'
 		end
