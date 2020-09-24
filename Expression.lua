@@ -658,7 +658,6 @@ function Expression:__call(...)
 	local indexes = ...
 
 	local clone = require 'symmath.clone'
-	local Tensor = require 'symmath.Tensor'
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 
 -- TODO hmm, why do I have this here?  self.variance is specific to Tensor, but not tested for isa Tensor
@@ -680,7 +679,7 @@ function Expression:__call(...)
 			end
 		end
 	end
-	indexes = Tensor.parseIndexes(indexes)
+	indexes = TensorIndex.parseIndexes(indexes)
 	-- by now 'indexes' should be a table of TensorIndex objects
 	-- possibly including comma derivatives
 	-- TODO replace comma derivatives with (or make them shorthand for) index-based partial derivative operators

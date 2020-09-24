@@ -80,138 +80,6 @@ to be used as vectors, vectors of them as matrices, etc ...
 local Tensor = class(Array)
 Tensor.name = 'Tensor'
 
---[[
-helper function
-accepts tensor string with ^, _, a-z, 1-9 
-returns table of the following fields for each index:
-	- whether this index is contra- (upper) or co-(lower)-variant
-	- whether this index is a variable, or a range of variables
-	- whether there is a particular kind of derivative associated with this index?  (i.e. comma, semicolon, projection, etc?)
-
-space separated for multi-char symbols/numbers
-	However space-separated means you *must* provide upper/lower prefix before *each* symbol/number
-	(TODO fix this)
-	Also how to tell a multi-char symbol that has just a single symbol and doesn't require a space?
-
-TODO move this to TensorIndex since non-dense tensors (Tensor) also use this, and since it creates TensorIndex objects, and has nothing to do with Tensor except that it is used by it.
---]]
-function Tensor.parseIndexes(indexes)
-	local TensorIndex = require 'symmath.tensor.TensorIndex'
-	
-	local function handleTable(indexes)
-		indexes = {table.unpack(indexes)}
-		local derivative = nil
-		for i=1,#indexes do
-			if type(indexes[i]) == 'number' then
-				indexes[i] = {
-					symbol = indexes[i],
-					derivative = derivative,
-				}
-			elseif type(indexes[i]) == 'table' and getmetatable(indexes[i]) == TensorIndex then
-				indexes[i] = indexes[i]:clone()
-			elseif type(indexes[i]) ~= 'string' then
-				print("got an index that was not a number or string: "..type(indexes[i]))
-			else
-				local function removeIfFound(sym)
-					local symIndex = indexes[i]:find(sym,1,true)
-					if not symIndex then return false end
-					indexes[i] = indexes[i]:sub(1,symIndex-1) .. indexes[i]:sub(symIndex+#sym)
-					return true
-				end
-				-- if the expression is upper/lower..comma then switch order so comma is first
-				if removeIfFound(',') then derivative = 'partial' end
-				if removeIfFound(';') then derivative = 'covariant' end
-				--if removeIfFound('|') then derivative = 'projection' end
-				local lower = not not removeIfFound('_')
-				if removeIfFound('^') then
-					--print('removing upper denotation from index table (it is default for tables of indices)')
-				end
-				-- if it has a '_' prefix then just leave it.  that'll be my denotation passed into TensorRepresentation
-				if #indexes[i] == 0 then
-					print('got an index without a symbol')
-				end
-
-				if removeIfFound'$' then
-					indexes[i] = Wildcard{
-						index = assert(tonumber(indexes[i])),
-						tensorIndexLower = lower,
-						tensorIndexDerivative = derivative,
-					}
-				elseif tonumber(indexes[i]) ~= nil then
-					indexes[i] = TensorIndex{
-						symbol = tonumber(indexes[i]),
-						lower = lower,
-						derivative = derivative,
-					}
-				else
-					indexes[i] = TensorIndex{
-						symbol = indexes[i],
-						lower = lower,
-						derivative = derivative,
-					}
-				end
-			end
-		end
-		return indexes	
-	end
-
-	if type(indexes) == 'string' then
-		local indexString = indexes
-		-- space means multi-character
-		if indexString:find(' ') then
-			-- special exception for the first space used to tell the parser it is multi-char even without multiple symbols, so trim the string
-			indexes = handleTable(string.split(string.trim(indexString),' '))
-		else
-			local lower
-			local derivative = nil
-			indexes = {}
-			for i=1,#indexString do
-				local ch = indexString:sub(i,i)
-				if ch == '^' then
-					lower = false 
-				elseif ch == '_' then
-					lower = true
-				elseif ch == ',' then
-					derivative = 'partial'
-				elseif ch == ';' then
-					derivative = 'covariant'
-				--elseif ch == '|' then
-				--	derivative = 'projection'
-				else
-					-- if the first index is a derivative the default to lower
-					if #indexes == 0 and derivative and lower == nil then lower = true end
-					-- otherwise default to upper
-					if lower == nil then lower = false end
-
-					if tonumber(ch) ~= nil then
-						table.insert(indexes, TensorIndex{
-							symbol = tonumber(ch),
-							lower = lower,
-							derivative = derivative,
-						})
-					else
-						table.insert(indexes, TensorIndex{
-							symbol = ch,
-							lower = lower,
-							derivative = derivative,
-						})
-					end
-				end
-			end
-		end
-	elseif type(indexes) == 'table' then
-		indexes = handleTable(indexes)
-	else
-		error('indexes had unknown type: '..type(indexes))
-	end
-	
-	for i,index in ipairs(indexes) do
-		assert(index.symbol, "index missing symbol")
-	end
-	
-	return indexes
-end
-
 -- array of TensorCoordBasis objects
 Tensor.__coordBasis = nil
 
@@ -356,7 +224,7 @@ function Tensor:init(...)
 	--]]
 	if argsAreNamed then
 		-- one of these two variables should be defined:
-		self.variance = args[1].indexes and Tensor.parseIndexes(args[1].indexes) or {}
+		self.variance = args[1].indexes and TensorIndex.parseIndexes(args[1].indexes) or {}
 		local dim = args[1].dim
 		--if dim and args[1].indexes then error("can't specify dim and indexes") end
 		if dim then
@@ -414,7 +282,7 @@ function Tensor:init(...)
 			
 			-- *) parse string into indicies (and what basis they belong to) and contra- vs co- variance
 			-- should I make a distinction for multi-letter variables? not allowed for the time being ...
-			self.variance = Tensor.parseIndexes(indexes)
+			self.variance = TensorIndex.parseIndexes(indexes)
 
 			-- *) complain if there is no Tensor.coords assignment
 			-- *) store index information (in this tensor and subtensors ... i.e. this may be {^i, _j, _k}, subtensors would be {_j, _k}, and their subtensors would be {_k}
@@ -756,7 +624,8 @@ end
 -- maybe I should have (variance string, tensor) as ctors for Tensor()'s and then permute them there, but then what about 1x1x1 tensor initialization?
 function Tensor:permute(dstVariance)
 	if type(dstVariance) == 'string' then
-		dstVariance = self.parseIndexes(dstVariance)
+		local TensorIndex = require 'symmath.tensor.TensorIndex'
+		dstVariance = TensorIndex.parseIndexes(dstVariance)
 	end
 	
 	-- determine index remapping
@@ -828,7 +697,8 @@ Tensor.__newindex = function(self, key, value)
 	if type(key) == 'string' 
 	and (key:sub(1,1) == '^' or key:sub(1,1) == '_')
 	then	
-		local dstVariance = Tensor.parseIndexes(key)
+		local TensorIndex = require 'symmath.tensor.TensorIndex'
+		local dstVariance = TensorIndex.parseIndexes(key)
 
 		-- assert no comma derivatives
 		for _,dstVar in ipairs(dstVariance) do
