@@ -9,11 +9,61 @@ local printbr = MathJax.print
 MathJax.header.title = 'BSSN formalism - index notation'
 print(MathJax.header)
 
+--[[ times:
+useful identity: ... 0.19531106948853s
+useful identity: ... 0.091263771057129s
+ADM metric evolution: ... 0.004716157913208s
+Bona-Masso lapse and shift evolution: ... 0.0013840198516846s
+conformal $\phi$: ... 0.00024604797363281s
+conformal $\chi$: ... 0.00031781196594238s
+conformal W: ... 0.0027329921722412s
+conformal metric: ... 0.0040051937103271s
+conformal metric inverse: ... 0.0064499378204346s
+conformal metric derivative: ... 0.061810970306396s
+conformal metric determinant: ... 0.0014359951019287s
+conformal metric constraint: ... 0.00031805038452148s
+static grid assumption: ... 0.00028300285339355s
+conformal connection: ... 0.6639039516449s
+extrinsic curvature trace: ... 0.00037002563476563s
+trace-free extrinsic curvature: ... 0.013814926147461s
+conformal trace-free extrinsic curvature: ... 0.049103975296021s
+trace-free extrinsic curvature derivative: ... 0.021255970001221s
+conformal W derivative: ... 1.1865050792694s
+conformal metric evolution: ... 0.85421395301819s
+conformal metric perturbation: ... 0.00016093254089355s
+conformal metric perturbation spatial derivative: ... 0.0035240650177002s
+conformal metric perturbation evolution: ... 0.011292934417725s
+grid vs conformal connection difference: ... 0.009087085723877s
+conformal connection evolution: ... 39.595111131668s
+grid vs conformal connection difference evolution: ... 26.742503881454s
+extrinsic curvature trace evolution: ... 30.551944971085s
+trace-free extrinsic curvature evolution: ... 0.044536113739014s
+conformal trace-free extrinsic curvature evolution: ... 21.1120429039s
+collecting partial derivatives: ... 0.025572061538696s
+TOTAL: 121.25661706924
+--]]
 
-local lastTime = os.clock()
+-- setup timer.  
+-- os.time() is second-resolution.  
+-- os.clock() has higher resolution, but counts time x # cores afaik
+-- nope.  looks like os.clock() matches gettimeofday() pretty closely
+local timer = os.clock
+local result, ffi = pcall(require, 'ffi')
+if result and ffi then
+	require 'ffi.c.sys.time'
+	local tv = ffi.new'struct timeval[1]'
+	timer = function()
+		ffi.C.gettimeofday(tv, nil)
+		return tonumber(tv[0].tv_sec) + 1e-6 * tonumber(tv[0].tv_usec)
+	end
+end
+
+local startTime = timer()
+local lastTime = startTime
 local function printHeader(str)
-	local thisTime = os.clock()
+	local thisTime = timer()
 	io.stderr:write(' ... '..(thisTime-lastTime)..'s\n')
+	lastTime = thisTime
 	if str then 
 		io.stderr:write(str) 
 		printbr(str)
@@ -942,4 +992,6 @@ printbr()
 
 -- DONE
 printHeader()
+io.stderr:write('TOTAL: '..(timer() - startTime)..'\n')
+io.stderr:flush()
 print(MathJax.footer)

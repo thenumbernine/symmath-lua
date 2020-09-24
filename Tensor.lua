@@ -92,6 +92,8 @@ space separated for multi-char symbols/numbers
 	However space-separated means you *must* provide upper/lower prefix before *each* symbol/number
 	(TODO fix this)
 	Also how to tell a multi-char symbol that has just a single symbol and doesn't require a space?
+
+TODO move this to TensorIndex since non-dense tensors (Tensor) also use this, and since it creates TensorIndex objects, and has nothing to do with Tensor except that it is used by it.
 --]]
 function Tensor.parseIndexes(indexes)
 	local TensorIndex = require 'symmath.tensor.TensorIndex'

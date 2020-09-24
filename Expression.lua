@@ -583,269 +583,63 @@ function Expression:tidyIndexes(args)
 		return cl
 	end
 
-	local TensorRef = require 'symmath.tensor.TensorRef'
-	local Verbose = symmath.export.Verbose
-	local unm = symmath.op.unm
-	local add = symmath.op.add
-	local sub = symmath.op.sub
-	local mul = symmath.op.mul
-	local div = symmath.op.div
-	
-	local replaces = table()
-
-	local function rmap(expr, parent, childIndex, parents)
-		--[[
-		new system:
-		for each node, recursively return ...
-		1) what fixed indexes there are (i.e. indexes not yet summed) ... and their variance
-		2) what indexes have already been summed
-		
-		for TensorRefs, just return the indexes
-		--]]
-		if TensorRef.is(expr) then
-			local fixed = table()
-			local summed = table()
-			for i=#expr,2,-1 do
-				local symbol = expr[i].symbol
-				-- if we have a duplicate index within the same tensor then denote it to be a summed index
-				local j = fixed:find(symbol)
-				if j then
-					fixed:remove(j)
-					summed:insert(symbol)
-					
-					-- TODO right here is where we should put in a request for substituting 'symbol' with whatever next free index is available
-					-- but we should store it for until after the whole expression is checked 
-					-- since if we replace symbols child-first then we'll get x_i^j y_j^k z_k => x_i^b y_b^a z_a
-					-- whereas if we replace symbols parent-first, we will get => x_i^a y_a^b z_b
-					-- however, to perform the global replace, I'll have to keep track of the information globally ...
-					-- i.e. what TensorRef to replace, and which indexes in the TensorRef to replace
-			
-					local repl = {
-						parent = parent,
-						childIndex = childIndex,
-						parents = table(parents),
-						from = symbol,
-						summed = table(summed),
-					}
-					replaces:insert(1, repl)
-				else
-					fixed:insert(symbol)
-				end
-			end
-			return fixed, summed
-		end
-
-		--[[
-		add and sub ops, assert the fixed indexes all match, and return a superset of all summed indexes (so no parent reuses any)
-		--]]
-		local tableCommutativeEqual = symmath.tableCommutativeEqual
-		if add.is(expr) or sub.is(expr) then
-			local fixed, summed = rmap(expr[1], expr, 1, table(parents):append{expr})
-			summed = summed:map(function(v) return true, v end)
-			for i=2,#expr do
-				local fixedi, summedi = rmap(expr[i], expr, i, table(parents):append{expr})
-				-- TODO only assert equality up to variance and symbol.  don't bother with derivative
-				if not tableCommutativeEqual(fixed, fixedi) then
-					error("found an addition expression whose fixed indexed didn't match:"
-						..require 'ext.tolua'(fixed)..' vs '
-						..require 'ext.tolua'(fixedi)..' in '..expr)
-				end
-				summed = table(summed, summedi:map(function(v) return true, v end))
-			end
-			summed = summed:keys()
-			return fixed, summed
-		end
-
-		if unm.is(expr) or div.is(expr) then
-			return rmap(expr[1], expr, 1, table(parents):append{expr})
-		end
-
-		--[[
-		for muls, accumulate indexes ...
-		... as you pair child nodes' fixed indexes, also keep track of index remapping information
-		... and of course replace indexes as you do this
-		--]]
-		if mul.is(expr) then
-			-- before traversing down into a mul
-			-- accumulate all the indexes of this mul
-			-- and then pass them down through the mul
-			-- so that way we know what symbols
-
-			local fixed, summed
-			for i=#expr,1,-1 do
-				if not fixed then
-					fixed, summed = rmap(expr[i], expr, i, table(parents):append{expr})
-					fixed = fixed:map(function(symbol) return {symbol=symbol, i=i} end)
-					summed = summed:map(function(v) return true, v end)
-				else
-					local fixedi, summedi = rmap(expr[i], expr, i, table(parents):append{expr})
-					fixedi = fixedi:map(function(symbol) return {symbol=symbol, i=i} end)
-					summed = table(summed, summedi:map(function(v) return true, v end))
-					
-					local j=1
-					while j <= #fixed do
-						local symbol = fixed[j].symbol
-					
-						local k=1
-						while k <= #fixedi do
-							
-							if symbol == fixedi[k].symbol then
-								--assert(not not fixed[j].lower ~= not not fixedi[j].lower, "can't sum two contra- or two co-variant indexes")
-								if summed[symbol] then
-									error("found a fixed symbol that's also a summed symbol: "..symbol)
-								end
-								summed[symbol] = true
-
-								-- at this point, when we find a fixed symbol of a child is really a summed symbol of a mul,
-								-- we want to tell other replaces related that info ...
-						
-								-- TODO 
-								-- replace another symbol here
-								-- for the replace info,
-								-- we have to keep track of which expr child index each symbol is in
-								local repl = {
-									parent = parent,
-									childIndex = childIndex,
-									parents = table(parents),
-									from = symbol,
-									summed = summed:keys(),
-								}
-								replaces:insert(1, repl)
-
-								fixed:remove(j) j=j-1
-								fixedi:remove(k) k=k-1
-							end
-							k=k+1
-						end
-					
-						j=j+1
-					end
-					
-					-- if 'fixed' and 'fixedi' have any symbols in common then
-					-- 1) assert they have nothing in common with 'summed' or 'summedi'
-					-- 2) assert their variance is opposite
-					-- 3) replace all instances in either expression of the symbol with a new symbol
-					-- pick the new symbol by
-					-- *) can't exist in summed or summedi
-					-- *) ... any other constraints?
-					fixed:append(fixedi)
-				end
-			end
-			fixed = fixed:map(function(t) return t.symbol end)
-			summed = summed:keys()
-			return fixed, summed
-		end
-
-		return table(), table()
-	end
-	local fixed, summed = rmap(self, nil, nil, table())
-
-	if args and args.fixed then
-		local Tensor = require 'symmath.Tensor'
-		fixed = fixed:append(
-			table.mapi(Tensor.parseIndexes(
-				args.fixed
-			), function(index)
-				return index.symbol
-			end)
-		)
-	end
-
-
 	local expr = self
---[[
-print('fixed', fixed:concat', ', '<br>')
-print('summed', summed:concat', ', '<br>')
-for _,repl in ipairs(replaces) do
-	print(repl.parent and repl.parent[repl.childIndex] or expr, 
-		'from', repl.from, 
-		'summed', repl.summed:concat',', 
-		'<br>')
-end
---]]	
-	local function getnewsymbol(repl)
-		local replexpr = repl.parent and repl.parent[repl.childIndex] or expr
-		local allsymbols = args and args.symbols or defaultSymbols
-		for _,symbol in ipairs(allsymbols) do
-			if not summed:find(symbol)
-			and not fixed:find(symbol)
-			and (not repl.block or not repl.block:find(symbol))
-			then
-				local blocked
+	--expr = expr()	-- hmm, simplify fails one of our tests
+	expr = expr:factorDivision()	-- hmm, so does factorDivision()
 
-				for _,repl2 in ipairs(replaces) do
-					local repl2expr = repl2.parent and repl2.parent[repl2.childIndex] or expr
-					--[[
-					if rawequal(replexpr, repl2expr)
-					and symbol == repl2.to then
-						blocked = true
-						break
-					end
-					--]]
-					for _,parent in ipairs(table(repl.parents):append{replexpr}) do
-						if rawequal(parent, repl2expr)
-						and repl2.block
-						and repl2.block:find(symbol)
-						then
-							blocked = true
-							break
-						end
-					end
-				end
+	local add = symmath.op.add
+	local mul = symmath.op.mul
+	local TensorRef = symmath.TensorRef
 
-				if not blocked then
-					return symbol
-				end
+	local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
+	
+	local function tidyTerm(term, checkFixed)
+		local fixed, summed = term:getIndexesUsed()
+--print('term fixed', require 'ext.tolua'(fixed), '<br>')
+--print('term summed', require 'ext.tolua'(summed), '<br>')
+		fixed = fixed:mapi(function(x) return x.symbol end)
+		summed = summed:mapi(function(x) return x.symbol end)
+		
+--print('term fixed', require 'ext.tolua'(fixed), '<br>')
+--print('term summed', require 'ext.tolua'(summed), '<br>')
+		if checkFixed then
+			if not tableCommutativeEqual(fixed, checkFixed) then
+				error("couldn't tidyIndexes() - two terms had differing fixed indexes")
 			end
 		end
-		error("couldn't find any new symbols")
-	end 
-	for i=1,#replaces do
-		local repl = replaces[i]
-		local replexpr = repl.parent and repl.parent[repl.childIndex] or expr 
 		
-		repl.to = getnewsymbol(repl)
-		repl.block = repl.block or table()
-		repl.block:insert(repl.to)
---print('replacing symbol in',replexpr,'from',repl.from,'to',repl.to,'<br>')
-	
-		-- now cycle through replaces and look for any children of repl
-		-- and tell it in advance what symbols to block
-		-- what a mess ...
-		-- another way around this is passing down the recursion tree what summed indexes are used
-		-- but this still requires two separate recursion passes at each node ...
+		local allSymbols = table(defaultSymbols)
+		for _,s in ipairs(fixed) do
+			allSymbols:removeObject(s)
+		end
 		
-		-- but here's the extra frustrating thing
-		-- (a^i + b^i_j c^j) (d_i + e_i^k f_k)
-		-- repl first the parent mul, then each child add ...
-		-- so the parent will pass on the block info to repl
-		-- but also -- the first child's block info will have to pass on to the second child
-	
-		-- so maybe the block info should be stored parent-most
-		-- and then checked parent-most	
-		for j=1,i-1 do
-			local repl2 = replaces[j]
-			local repl2expr = repl2.parent and repl2.parent[repl2.childIndex] or expr
-			--if in any of repl2's parents is repl then put repl.to in repl2's preemtive block symbol list
-			for _,parent in ipairs(repl.parents) do
-				if rawequal(parent, repl2expr) then
-					repl2.block = repl2.block or table()
-					repl2.block:insert(repl.to)
-				end
-			end
+		local indexMap = {}
+		for i,s in ipairs(summed) do
+			indexMap[' '..s] = ' '..allSymbols[i]
 		end
+--print('remapping', require 'ext.tolua'(indexMap), '<br>')		
+		term = term:reindex(indexMap)
+
+		return term, fixed
 	end
-	-- replace, children first
-	-- otherwise the replaced would be disconnected from the graph (replaced by clones)
-	for i=#replaces,1,-1 do
-		local repl = replaces[i]
-		if repl.parent then
-			repl.parent[repl.childIndex] = repl.parent[repl.childIndex]:reindex{[' '..repl.from] = ' '..repl.to}
-		else
-			expr = expr:reindex{[' '..repl.from] = ' '..repl.to}
+
+	-- if expr is an add then assert all its children have the same fixed indexes
+	if add.is(expr) then
+--print('found add<br>')	
+		expr[1] = tidyTerm(expr[1])
+
+		for i=2,#expr do
+			expr[i] = tidyTerm(expr[i], fixed)
 		end
+	elseif mul.is(expr) 
+	or TensorRef.is(expr)
+	then
+		expr = tidyTerm(expr)
+	else
+--print('found '..expr.name..'<br>')	
 	end
---print('expr', expr, '<br>')
+	-- if expr is a mul then its fixed are its fixed.  nothing more to it.
+	-- if expr is a function then it should only have sum indexes.
 	return expr
 end
 
@@ -1136,7 +930,12 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 									end
 --print('found matching index objs '..table.mapi(indexObjs, tostring):concat' ')
 --print('...at indexes '..require 'ext.tolua'(dstIndexes))
-									assert(#dstIndexes <= #indexes)	-- can't share any more indexes with our source object than we are symmetrizing ... unless you are breaking index notation rules
+									-- can't share any more indexes with our source object than we are symmetrizing ... unless you are breaking index notation rules
+									if #dstIndexes > #indexes then
+										local msg = "looks like you tried to symmetrize a tensor that was multiplied to another tensor ... and the other tensor was using duplicated sum indexes ... in mul expr "..tostring(x)
+										print(msg, '<br>')
+										error(msg)
+									end
 									if #indexObjs >= 2 then
 										--[[ TODO just use recursion?
 										do return z:symmetrizeIndexes(z[1], dstIndexes) end
@@ -1346,40 +1145,48 @@ function Expression:getIndexesUsed()
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	local add = require 'symmath.op.add'
 	local sub = require 'symmath.op.sub'
+	
 	local indexCounts = table()
 	local function rfind(x)
 		if TensorRef.is(x) then
 			for i=2,#x do
 				local symbol = x[i].symbol
-				if not indexCounts[symbol] then
-					indexCounts[symbol] = x[i]:clone()
-					indexCounts[symbol].count = 0	-- should I be using this field in TensorIndex?
+				local _,indexForSymbol = indexCounts:find(nil, function(index) return index.symbol == symbol end)
+				if not indexForSymbol then
+					indexForSymbol = x[i]:clone()
+					indexForSymbol.count = 0	-- should I be using this field in TensorIndex?
+					indexCounts:insert(indexForSymbol)
 				end
-				indexCounts[symbol].count = indexCounts[symbol].count + 1
+				indexForSymbol.count = indexForSymbol.count + 1
 			end
 		elseif add.is(x) or sub.is(x) then
-			local subIndexes = x[1]:getIndexesUsed():map(function(index)
+			local subIndexes = x[1]:getIndexesUsed()
+			local subIndexesForSymbol = subIndexes:map(function(index)
 				return index, index.symbol
 			end)
 			for i=2,#x do
-				local subIndexes2 = x[i]:getIndexesUsed():map(function(index)
+				local subIndexes2 = x[i]:getIndexesUsed()
+				local subIndexes2ForSymbol = subIndexes2:map(function(index)
 					return index, index.symbol
 				end)
 				
-				--assert(subIndexes == subIndexes2)
-				for symbol,index in pairs(subIndexes) do
-					assert(subIndexes2[symbol].count == index.count)
+				--assert(subIndexesForSymbol == subIndexes2ForSymbol)
+				for symbol,index in pairs(subIndexesForSymbol) do
+					assert(subIndexes2ForSymbol[symbol].count == index.count)
 				end
-				for symbol,index in pairs(subIndexes2) do
-					assert(subIndexes[symbol].count == index.count)
+				for symbol,index in pairs(subIndexes2ForSymbol) do
+					assert(subIndexesForSymbol[symbol].count == index.count)
 				end
 			end
-			for symbol,index in pairs(subIndexes) do
-				if not indexCounts[symbol] then
-					indexCounts[symbol] = index:clone()
-					indexCounts[symbol].count = 0
+			for _,index in pairs(subIndexes) do
+				local symbol = index.symbol
+				local _,indexForSymbol = indexCounts:find(nil, function(index) return index.symbol == symbol end)
+				if not indexForSymbol then
+					indexForSymbol = index:clone()
+					indexForSymbol.count = 0
+					indexCounts:insert(indexForSymbol)
 				end
-				indexCounts[symbol].count = indexCounts[symbol].count + index.count
+				indexForSymbol.count = indexForSymbol.count + index.count
 			end
 		elseif Expression.is(x) then
 			-- if it's a mul then recurse
@@ -1393,9 +1200,9 @@ function Expression:getIndexesUsed()
 	rfind(self)
 	return indexCounts:filter(function(index,symbol)
 		return index.count == 1
-	end):values(), indexCounts:filter(function(index,symbol)
+	end), indexCounts:filter(function(index,symbol)
 		return index.count > 1
-	end):values()
+	end)
 end
 
 -- TODO don't even use this, instead change tensor assignment

@@ -10,6 +10,35 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
+<code>asserteq((a'^b' * b'^in_n' * c'^a_ab'):tidyIndexes(), a'^a' * b'^ib_b' * c'^c_ca')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^a' * b'^b_ba'):tidyIndexes(), a'^a' * b'^b_ba')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((a'^i_i' * b'^j_j'):tidyIndexes(), a'^a_a' * b'^b_b')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq(a'^i_i^j_j':tidyIndexes(), a'^a_a^b_b')</code>
 </td><td>
 
@@ -66,7 +95,7 @@
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(((a'^i' + b'^i_j' * c'^j') * (d'_i' + e'_i^k' * f'_k')):tidyIndexes(), (a'^a' + b'^a_b' * c'^b') * (d'_a' + e'_a^c' * f'_c'))</code>
+<code>asserteq(((a'^i' + b'^i_j' * c'^j') * (d'_i' + e'_i^k' * f'_k')):tidyIndexes(), a'^a' * d'_a' + c'^a' * b'^b_a' * d'_b' + a'^a' * f'_b' * e'_a^b' + c'^a' * f'_b' * b'^c_a' * e'_c^b')</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -101,71 +130,9 @@
 <code></code>
 </td><td>
 <tr><td>
-<b>TODO sum indexes should be distinct within a term, but we are regurgitating them</b><br>
-<code>asserteq((a'^i_i' * b'^j_j'):tidyIndexes(), a'^a_a' * b'^b_b')</code>
-</td><td>
-expected ${{{{ a}^a}_a}} {{{{ b}^a}_a}}$ to equal ${{{{ a}^a}_a}} {{{{ b}^b}_b}}$<br>
-instead found ${{{{ a}^a}_a}} {{{{ b}^a}_a}}$ vs ${{{{ a}^a}_a}} {{{{ b}^b}_b}}$<br>
-lhs stack<br>
-init	${{{{ a}^a}_a}} {{{{ b}^a}_a}}$	<br>
-prune	${{{{ a}^a}_a}} {{{{ b}^a}_a}}$	<br>
-expand	${{{{ a}^a}_a}} {{{{ b}^a}_a}}$	<br>
-prune	${{{{ a}^a}_a}} {{{{ b}^a}_a}}$	<br>
-factor	${{{{ a}^a}_a}} {{{{ b}^a}_a}}$	<br>
-prune	${{{{ a}^a}_a}} {{{{ b}^a}_a}}$	<br>
-rhs stack<br>
-init	${{{{ a}^a}_a}} {{{{ b}^b}_b}}$	<br>
-prune	${{{{ a}^a}_a}} {{{{ b}^b}_b}}$	<br>
-expand	${{{{ a}^a}_a}} {{{{ b}^b}_b}}$	<br>
-prune	${{{{ a}^a}_a}} {{{{ b}^b}_b}}$	<br>
-factor	${{{{ a}^a}_a}} {{{{ b}^b}_b}}$	<br>
-prune	${{{{ a}^a}_a}} {{{{ b}^b}_b}}$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:26: failed<br>stack traceback:<br>
-	./unit.lua:90: in function <./unit.lua:89><br>
-	[C]: in function 'error'<br>
-	./unit.lua:26: in function 'asserteq'<br>
-	[string "asserteq((a'^i_i' * b'^j_j'):tidyIndexes(), a..."]:1: in main chunk<br>
-	./unit.lua:82: in function <./unit.lua:81><br>
-	[C]: in function 'xpcall'<br>
-	./unit.lua:81: in function 'exec'<br>
-	./tidyIndexes.lua:38: in main chunk<br>
-	[C]: at 0x5578f8e4a1c0
-</td></tr>
-<tr><td>
 <b>this uses the first available indexes</b><br>
 <code>asserteq((a'^i' * b'^j_ji'):tidyIndexes(), a'^a' * b'^b_ba')</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b>... but if they were used as sum indexes in the source, it skips them as sum indexes in the destination TODO FIXME</b><br>
-<code>asserteq((a'^a' * b'^b_ba'):tidyIndexes(), a'^a' * b'^b_ba')</code>
-</td><td>
-expected ${{{ a}^c}} {{{{{ b}^d}_d}_c}}$ to equal ${{{ a}^a}} {{{{{ b}^b}_b}_a}}$<br>
-instead found ${{{ a}^c}} {{{{{ b}^d}_d}_c}}$ vs ${{{ a}^a}} {{{{{ b}^b}_b}_a}}$<br>
-lhs stack<br>
-init	${{{ a}^c}} {{{{{ b}^d}_d}_c}}$	<br>
-prune	${{{ a}^c}} {{{{{ b}^d}_d}_c}}$	<br>
-expand	${{{ a}^c}} {{{{{ b}^d}_d}_c}}$	<br>
-prune	${{{ a}^c}} {{{{{ b}^d}_d}_c}}$	<br>
-factor	${{{ a}^c}} {{{{{ b}^d}_d}_c}}$	<br>
-prune	${{{ a}^c}} {{{{{ b}^d}_d}_c}}$	<br>
-rhs stack<br>
-init	${{{ a}^a}} {{{{{ b}^b}_b}_a}}$	<br>
-prune	${{{ a}^a}} {{{{{ b}^b}_b}_a}}$	<br>
-expand	${{{ a}^a}} {{{{{ b}^b}_b}_a}}$	<br>
-prune	${{{ a}^a}} {{{{{ b}^b}_b}_a}}$	<br>
-factor	${{{ a}^a}} {{{{{ b}^b}_b}_a}}$	<br>
-prune	${{{ a}^a}} {{{{{ b}^b}_b}_a}}$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:26: failed<br>stack traceback:<br>
-	./unit.lua:90: in function <./unit.lua:89><br>
-	[C]: in function 'error'<br>
-	./unit.lua:26: in function 'asserteq'<br>
-	[string "asserteq((a'^a' * b'^b_ba'):tidyIndexes(), a'..."]:1: in main chunk<br>
-	./unit.lua:82: in function <./unit.lua:81><br>
-	[C]: in function 'xpcall'<br>
-	./unit.lua:81: in function 'exec'<br>
-	./tidyIndexes.lua:38: in main chunk<br>
-	[C]: at 0x5578f8e4a1c0
 </td></tr>

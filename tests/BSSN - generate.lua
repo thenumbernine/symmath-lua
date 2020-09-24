@@ -17,7 +17,7 @@ print(MathJax.header)
 
 
 local eqns = table{
-	assert(loadfile'BSSN - index - cache.lua')()
+	assert(loadfile'BSSN - index - using GammaBar - cache.lua')()
 }
 
 
@@ -72,6 +72,15 @@ local R_ll_dense = Tensor('_ij', function(i,j)
 end)
 local S_ll_dense = Tensor('_ij', function(i,j)
 	return var('S_ll.'..table{xs[i],xs[j]}:sort():concat())
+end)
+local GammaBar_lll_dense = Tensor('_ijk', function(i,j,k)
+	return var('GammaBar_lll.'..xs[i]..'.'..table{xs[j],xs[k]}:sort():concat())
+end)
+local GammaBar_ull_dense = Tensor('^i_jk', function(i,j,k)
+	return var('GammaBar_ull.'..xs[i]..'.'..table{xs[j],xs[k]}:sort():concat())
+end)
+local GammaBar_u_dense = Tensor('^i', function(i)
+	return var('GammaBar_u.'..xs[i])
 end)
 local GammaHat_ull_dense = Tensor('^i_jk', function(i,j,k)
 	return var('GammaHat_ull.'..xs[i]..'.'..table{xs[j],xs[k]}:sort():concat())
@@ -156,11 +165,19 @@ local origRhs = rhs
 		:replaceIndex(var'\\bar{A}''_ij', ABar_ll_dense'_ij')
 		:replaceIndex(var'R''_ij', R_ll_dense'_ij')
 		:replaceIndex(var'S''_ij', S_ll_dense'_ij')
+		:replaceIndex(var'\\bar{\\Gamma}''^i', GammaBar_u_dense'^i') 
+		:replaceIndex(var'\\bar{\\Gamma}''_ijk', GammaBar_lll_dense'_ijk') 
+		:replaceIndex(var'\\bar{\\Gamma}''^i_jk', GammaBar_ull_dense'^i_jk') 
 		:replaceIndex(var'\\hat{\\Gamma}''^i_jk', GammaHat_ull_dense'^i_jk') 
 		-- rename greek to C var names
 		:replace(var'\\alpha', var'alpha')
 		:replace(var'\\rho', var'rho')
 		:replace(var'\\pi', var'M_PI')
+		-- scalar vars fine as they are:
+		-- var'S' 
+		-- var'K'
+		-- var'R'
+		-- var'W'
 	printbr(rhs)
 
 --[[	

@@ -9,47 +9,50 @@ local printbr = MathJax.print
 MathJax.header.title = 'BSSN formalism - index notation'
 print(MathJax.header)
 
+--[[ times:
+useful identity: ... 0.126633s
+useful identity: ... 0.061306s
+ADM metric evolution: ... 0.067632s
+Bona-Masso lapse and shift evolution: ... 0.001311s
+conformal $\phi$: ... 0.00032599999999999s
+conformal $\chi$: ... 0.00021899999999997s
+conformal W: ... 0.001671s
+conformal metric: ... 0.001867s
+conformal metric inverse: ... 0.002299s
+conformal metric derivative: ... 0.04122s
+conformal metric determinant: ... 0.00084800000000002s
+conformal metric constraint: ... 0.00025399999999998s
+static grid assumption: ... 0.00017300000000003s
+conformal connection: ... 0.457651s
+extrinsic curvature trace: ... 0.00011799999999995s
+trace-free extrinsic curvature: ... 0.01345s
+conformal trace-free extrinsic curvature: ... 0.04241s
+trace-free extrinsic curvature derivative: ... 0.02202s
+conformal W evolution: ... 0.645108s
+conformal metric evolution: ... 0.676557s
+conformal metric perturbation: ... 0.000251s
+conformal metric perturbation spatial derivative: ... 0.0037090000000002s
+conformal metric perturbation evolution: ... 0.0095679999999998s
+grid vs conformal connection difference: ... 0.0020720000000001s
+conformal connection evolution: ... 18.457025s
+grid vs conformal connection difference evolution: ... 11.12785s
+extrinsic curvature trace evolution: ... 17.178297s
+trace-free extrinsic curvature evolution: ... 0.036847999999999s
+conformal trace-free extrinsic curvature evolution: ... 18.900488s
+collecting partial derivatives: ... 0.020855000000012s
+TOTAL: 67.900628
+--]]
+
 
 local spatialDim = 3
 
---[[ here's our latest times:
-useful identity: ... 0.147233s														useful identity: ... 0.144005s
-useful identity: ... 0.197672s                                                      useful identity: ... 0.208187s
-ADM metric evolution: ... 0.202164s                                                 ADM metric evolution: ... 0.258593s
-Bona-Masso lapse and shift evolution: ... 0.203148s                                 Bona-Masso lapse and shift evolution: ... 0.259342s
-conformal $\phi$: ... 0.203477s                                                     conformal $\phi$: ... 0.259427s
-conformal $\chi$: ... 0.20359s                                                      conformal $\chi$: ... 0.259567s
-conformal W: ... 0.206739s                                                          conformal W: ... 0.260325s
-conformal metric: ... 0.210535s                                                     conformal metric: ... 0.261399s
-conformal metric inverse: ... 0.214369s                                             conformal metric inverse: ... 0.262456s
-conformal metric derivative: ... 0.258517s                                          conformal metric derivative: ... 0.29829s
-conformal metric determinant: ... 0.260157s                                         conformal metric determinant: ... 0.299043s
-conformal metric constraint: ... 0.260315s                                          conformal metric constraint: ... 0.299271s
-static grid assumption: ... 0.260608s                                               static grid assumption: ... 0.299401s
-conformal connection: ... 0.634896s                                                 conformal connection: ... 0.717049s
-extrinsic curvature trace: ... 0.635045s                                            extrinsic curvature trace: ... 0.717249s
-trace-free extrinsic curvature: ... 0.640456s                                       trace-free extrinsic curvature: ... 0.725716s
-conformal trace-free extrinsic curvature: ... 0.657977s                             conformal trace-free extrinsic curvature: ... 0.755749s
-trace-free extrinsic curvature derivative: ... 0.667849s                            trace-free extrinsic curvature derivative: ... 0.769473s
-conformal W derivative: ... 1.521122s                                               conformal W evolution: ... 1.520788s
-conformal metric evolution: ... 2.126162s                                           conformal metric evolution: ... 2.120768s
-conformal metric perturbation: ... 2.126363s                                        conformal metric perturbation: ... 2.120969s
-conformal metric perturbation spatial derivative: ... 2.129114s                     conformal metric perturbation spatial derivative: ... 2.124714s
-conformal metric perturbation evolution: ... 2.133503s                              conformal metric perturbation evolution: ... 2.131074s
-grid vs conformal connection difference: ... 2.135797s                              grid vs conformal connection difference: ... 2.133975s
-conformal connection evolution: ... 29.204591s                                      conformal connection evolution: ... 21.020741s
-grid vs conformal connection difference evolution: ... 46.538782s                   grid vs conformal connection difference evolution: ... 30.723423s
-extrinsic curvature trace evolution: ... 75.014834s                                 extrinsic curvature trace evolution: ... 51.759725s
-trace-free extrinsic curvature evolution: ... 75.04504s                             trace-free extrinsic curvature evolution: ... 51.800992s
-conformal trace-free extrinsic curvature evolution: ... 91.904009s                  conformal trace-free extrinsic curvature evolution: ... 75.346856s
-                                                                                    collecting partial derivatives: ... 75.359217s
-
-well, it goes a bit faster
---]]
-local lastTime = os.clock()
+local timer = os.clock
+local startTime = timer()
+local lastTime = startTime
 local function printHeader(str)
-	local thisTime = os.clock()
+	local thisTime = timer()
 	io.stderr:write(' ... '..(thisTime-lastTime)..'s\n')
+	lastTime = thisTime
 	if str then 
 		io.stderr:write(str) 
 		printbr(str)
@@ -496,6 +499,7 @@ dt_gammaBar_ll_def = dt_gammaBar_ll_def
 --	:symmetrizeIndexes(GammaBar, {2,3})
 	:simplify()
 	:reindex{cd='kl'}
+dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
 printbr(dt_gammaBar_ll_def)
 printbr()
 
@@ -546,18 +550,18 @@ dt_connBar_ull_def = dt_connBar_ull_def:subst( connBar_lll_def:solve(gammaBar'_i
 printbr(dt_connBar_ull_def)
 dt_connBar_ull_def = dt_connBar_ull_def:substIndex(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)()
 -- hmm, not working?
---dt_connBar_ull_def = dt_connBar_ull_def:replaceIndex(gammaBar'^im' * GammaBar'_mjk', GammaBar'^i_jk')()
-dt_connBar_ull_def = dt_connBar_ull_def:replace(gammaBar'^am' * GammaBar'_mjk', GammaBar'^a_jk')()
+dt_connBar_ull_def = dt_connBar_ull_def:replaceIndex(gammaBar'^im' * GammaBar'_mjk', GammaBar'^i_jk')()
 printbr(dt_connBar_ull_def)
-dt_connBar_ull_def = dt_connBar_ull_def:subst(dt_gammaBar_ll_def:reindex{ijkm='bapq'})
+--dt_connBar_ull_def = dt_connBar_ull_def:subst(dt_gammaBar_ll_def:reindex{ijkm='bapq'})
+dt_connBar_ull_def = dt_connBar_ull_def:substIndex(dt_gammaBar_ll_def)
 printbr(dt_connBar_ull_def)
 dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)
 printbr(dt_connBar_ull_def)
---dt_connBar_ull_def = dt_connBar_ull_def:tidyIndexes{fixed='t'}() 	-- can't do this yet.  the later add complains that it is combining T_ijk and T_ijkt's
---printbr(dt_connBar_ull_def)
+--dt_connBar_ull_def = dt_connBar_ull_def:tidyIndexes{fixed='t'} 	-- can't do this yet.  the later add complains that it is combining T_ijk and T_ijkt's, which is true.  i guess it is more proper wrt current system to substitute-away all the _,t's first.
+printbr(dt_connBar_ull_def)
 dt_connBar_ull_def = dt_connBar_ull_def
 	:replaceIndex(gammaBar'_jk,mt', gammaBar'_jk,t''_,m')
-	:substIndex(dt_gammaBar_ll_def:reindex{ijkm='jkpq'})
+	:substIndex(dt_gammaBar_ll_def:reindex{ijkm='jkpq'})		-- hmm, would be nice if substIndex correctly renamed sum terms to not collide with its insertions.
 	:substIndex(partial_gammaBar_lll_from_connBar_lll)
 printbr(dt_connBar_ull_def)
 dt_connBar_ull_def = dt_connBar_ull_def()		-- simplify to distribute derivative
@@ -627,7 +631,11 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def:subst(dt_connBar_ull_def)
 printbr(dt_LambdaBar_u_def)
 -- here we have gammaBar^jk delta^i_j beta^c_,c,k
 dt_LambdaBar_u_def = simplifyBarMetrics(dt_LambdaBar_u_def())
-	:tidyIndexes()()
+printbr(dt_LambdaBar_u_def)
+	-- once again, tidyIndexes is going wrong.  turns gammaBar^jk beta^a_,a GammaBar^i_jk => beta^d_,d GammaBar^id_d
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:tidyIndexes()
+printbr(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = simplifyBarMetrics(dt_LambdaBar_u_def())
 	:symmetrizeIndexes(beta, {2,3})()	-- derivatives
 	:replace(GammaBar'_f^f_e', GammaBar'^f_fe')()
 	:symmetrizeIndexes(GammaBar, {2,3})()
@@ -638,9 +646,21 @@ printbr(dt_LambdaBar_u_def)
 dt_LambdaBar_u_def = dt_LambdaBar_u_def
 	:replaceIndex(ABar'^ij', gammaBar'^ik' * ABar'_kl' * gammaBar'^lj')
 	:replaceIndex(ABar'_i^j', ABar'_ik' * gammaBar'^kj')
+dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'_cb^c', GammaBar'^c_bc')
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'_b^bi', GammaBar'^b_b^i')		-- TODO somewhere I need to sort internal summed indexes by upper/lower so long as they have no derivatives
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'_c^ci', GammaBar'^c_c^i')
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(DeltaBar'^ib_b', DeltaBar'^i')
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'^ib_b', GammaBar'^i')
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'^ic_c', GammaBar'^i')
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'_b^c_c', GammaBar'_b')
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'^bc_c', GammaBar'^b')
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'^ab_b', GammaBar'^a')
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'_a^b_b', GammaBar'_a')
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:replace(GammaBar'_a' * gammaBar'^af', GammaBar'^f')
+dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
 printbr(dt_LambdaBar_u_def)
 printbr()
-
 
 
 printHeader'extrinsic curvature trace evolution:'
@@ -719,17 +739,17 @@ dt_K_def = simplifyBarMetrics(dt_K_def):symmetrizeIndexes(gammaBar, {1,2})
 printbr(dt_K_def)
 dt_K_def = dt_K_def:tidyIndexes()
 	:symmetrizeIndexes(delta, {1,2})
-	:replace(delta'^e_e', spatialDim)
-	:replace(delta'^f_f', spatialDim)
-	:replace(delta'^g_g', spatialDim)
+	:replace(delta'^b_b', spatialDim)
+	:replace(delta'^c_c', spatialDim)
 	:symmetrizeIndexes(ABar, {1,2})
-	:replace(ABar'^e_e', 0)
-	:replace(ABar'^f_f', 0)
-	:replace(GammaBar'_f^bf', GammaBar'^fb_f')
+	:replace(ABar'^a_a', 0)
+	:replace(ABar'^b_b', 0)
+	:replace(GammaBar'_ba^b', GammaBar'^b_ab')
+	:replace(GammaBar'_b^ab', GammaBar'^ba_b')
 	:symmetrizeIndexes(GammaBar, {2,3})
 	:symmetrizeIndexes(gammaBar, {1,2})
-	:replace(S'_bf' * gammaBar'^bf', S / W^2)
-	:simplify()
+	:replace(S'_ab' * gammaBar'^ab', S / W^2)
+	:replaceIndex(ABar'^bc', gammaBar'^bd' * ABar'_de' * gammaBar'^ec')
 dt_K_def = betterSimplify(dt_K_def)
 printbr(dt_K_def)
 printbr()
@@ -776,6 +796,10 @@ dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
 	:symmetrizeIndexes(gammaBar, {1,2})
 	:symmetrizeIndexes(GammaBar, {2,3})
 dt_ABar_ll_def = dt_ABar_ll_def:tidyIndexes()
+dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:replace(GammaBar'^ab_b', GammaBar'^a')
+dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:replace(gammaBar'^db' * gammaBar'^ec' * GammaBar'_dae', GammaBar'^bc_a')
 dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
 printbr(dt_ABar_ll_def)
 printbr()
@@ -949,4 +973,6 @@ printbr()
 
 -- DONE
 printHeader()
+io.stderr:write('TOTAL: '..(timer() - startTime)..'\n')
+io.stderr:flush()
 print(MathJax.footer)
