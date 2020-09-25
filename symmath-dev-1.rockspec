@@ -136,6 +136,7 @@ build = {
 		["symmath.tensor.symbols"] = "tensor/symbols.lua",
 		["symmath.tensor.wedge"] = "tensor/wedge.lua",
 		["symmath.tests.ADM Levi-Civita"] = "tests/ADM Levi-Civita.lua",
+		["symmath.tests.ADM formalism"] = "tests/ADM formalism.lua",
 		["symmath.tests.ADM gravity using expressions"] = "tests/ADM gravity using expressions.lua",
 		["symmath.tests.ADM metric"] = "tests/ADM metric.lua",
 		["symmath.tests.ADM metric - mixed"] = "tests/ADM metric - mixed.lua",

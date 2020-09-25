@@ -9,6 +9,9 @@ local TensorIndex = class(Expression)
 
 TensorIndex.name = 'TensorIndex'
 
+-- valid derivative symbols for parseIndexes
+TensorIndex.derivativeSymbols = table{',', ';', '|'}
+
 function TensorIndex:init(args)
 	self.lower = args.lower or false
 	self.derivative = args.derivative
@@ -45,10 +48,8 @@ end
 -- TODO put this in each export/* like everything else?
 function TensorIndex:__tostring()
 	local s = ''
-	if self.derivative == 'covariant' then
-		s = ';' .. s
-	elseif self.derivative then
-		s = ',' .. s
+	if self.derivative then
+		s = self.derivative .. s
 	end
 	if self.lower then s = '_' .. s else s = '^' .. s end
 	if self.symbol then
@@ -102,9 +103,14 @@ function TensorIndex.parseIndexes(indexes)
 					return true
 				end
 				-- if the expression is upper/lower..comma then switch order so comma is first
-				if removeIfFound(',') then derivative = 'partial' end
-				if removeIfFound(';') then derivative = 'covariant' end
-				--if removeIfFound('|') then derivative = 'projection' end
+				
+				for _,d in ipairs(TensorIndex.derivativeSymbols) do
+					if removeIfFound(d) then 
+						derivative = d 
+						break
+					end
+				end
+				
 				local lower = not not removeIfFound('_')
 				if removeIfFound('^') then
 					--print('removing upper denotation from index table (it is default for tables of indices)')
@@ -154,12 +160,8 @@ function TensorIndex.parseIndexes(indexes)
 					lower = false 
 				elseif ch == '_' then
 					lower = true
-				elseif ch == ',' then
-					derivative = 'partial'
-				elseif ch == ';' then
-					derivative = 'covariant'
-				--elseif ch == '|' then
-				--	derivative = 'projection'
+				elseif TensorIndex.derivativeSymbols:find(ch) then
+					derivative = ch
 				else
 					-- if the first index is a derivative the default to lower
 					if #indexes == 0 and derivative and lower == nil then lower = true end
