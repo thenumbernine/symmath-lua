@@ -727,6 +727,8 @@ Output CDN URLs:
 
 [tests/output/ADM Levi-Civita](https://thenumbernine.github.io/symmath/tests/output/ADM%20Levi%2dCivita.html)
 
+[tests/output/ADM formalism](https://thenumbernine.github.io/symmath/tests/output/ADM%20formalism.html)
+
 [tests/output/ADM gravity using expressions](https://thenumbernine.github.io/symmath/tests/output/ADM%20gravity%20using%20expressions.html)
 
 [tests/output/ADM metric - mixed](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric%20%2d%20mixed.html)
