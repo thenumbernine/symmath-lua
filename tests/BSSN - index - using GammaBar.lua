@@ -131,7 +131,7 @@ local simplifyMetricGammaBarRule = {
 		--return t[1] ~= require 'symmath.Tensor':deltaSymbol()
 		return barVars:find(t[1])
 		and t[ti].lower ~= g[gi].lower
-		and not t:hasDeriv()
+		and not t:hasDerivIndex()
 	end,
 }
 

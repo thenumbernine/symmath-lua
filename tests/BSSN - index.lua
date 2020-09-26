@@ -139,10 +139,9 @@ local simplifyMetricGammaBarRule = {
 		return g[1] == gammaBar
 	end,
 	canSimplify = function(g, t, gi, ti)
-		--return t[1] ~= require 'symmath.Tensor':deltaSymbol()
 		return barVars:find(t[1])
 		and t[ti].lower ~= g[gi].lower
-		and not t:hasDeriv()
+		and not t:hasDerivIndex()
 	end,
 }
 
@@ -681,7 +680,7 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def:simplifyMetrics{
 		canSimplify = function(g, t, gi, ti)
 			return t[1] == gammaBar
 			and t[ti].lower ~= g[gi].lower
-			and not t:hasDeriv()
+			and not t:hasDerivIndex()
 		end,
 	},
 	Tensor.simplifyMetricsRules.delta,

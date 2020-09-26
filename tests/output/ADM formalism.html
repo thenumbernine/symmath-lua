@@ -9,7 +9,19 @@
 
 
 <br>
-definitions:
+properties of hypersurface normal:
+<br>
+${{{{ n}^a}} {{{ n}_a}}} = {-1}$	= unit hypersurface normal
+<br>
+${{{{{ n}_a}} {{{{ n}^a}_{;b}}}} + {{{{ n}^a}} {{{{ n}_a}_{;b}}}}} = {0}$
+<br>
+${{{{ n}^a}} {{{{ n}_a}_{;b}}}} = {0}$
+<br>
+${{{{ n}_a}} {{{{ n}^a}_{;b}}}} = {0}$
+<br>
+
+<br>
+matter hypersurface normal definition:
 <br>
 ${\rho} = {{{{ n}^a}} {{{ n}^b}} {{{{ T}_a}_b}}}$	= density
 <br>
@@ -27,15 +39,27 @@ ${{{{ n}_a}} {{{ n}^b}}} = {-{({{{{ \delta}_a}^b} - {{{ \gamma}_a}^b}})}}$
 <br>
 
 <br>
-properties of normal vectors:
+${{{{{ \gamma}_a}^c}} {{{{ \gamma}_c}^b}}} = {{{({{{{ \delta}_a}^c} + {{{{ n}_a}} {{{ n}^c}}}})}} {{({{{{ \delta}_c}^b} + {{{{ n}_c}} {{{ n}^b}}}})}}}$
 <br>
-${{{{ n}^a}} {{{ n}_a}}} = {-1}$	= unit hypersurface normal
+${{{{{ \gamma}_a}^c}} {{{{ \gamma}_c}^b}}} = {{{{{ n}_a}} {{{ n}^b}}} + {{{ \delta}_a}^b}}$
 <br>
-${{{{{ n}_a}} {{{{ n}^a}_{;b}}}} + {{{{ n}^a}} {{{{ n}_a}_{;b}}}}} = {0}$
+${{{{{ \gamma}_a}^c}} {{{{ \gamma}_c}^b}}} = {{{ \gamma}_a}^b}$
 <br>
-${{{{ n}^a}} {{{{ n}_a}_{;b}}}} = {0}$
+
 <br>
-${{{{ n}_a}} {{{{ n}^a}_{;b}}}} = {0}$
+${{{{ n}^a}} {{{{ \gamma}_a}^b}}} = {{{{ n}^a}} {{({{{{ \delta}_a}^b} + {{{{ n}_a}} {{{ n}^b}}}})}}}$
+<br>
+${{{{ n}^a}} {{{{ \gamma}_a}^b}}} = {{{ n}^b} + {{{{ n}_a}} {{{ n}^a}} {{{ n}^b}}}}$
+<br>
+${{{{ n}^b}} {{{{ \gamma}_b}^a}}} = {0}$
+<br>
+
+<br>
+${{{{ n}_b}} {{{{ \gamma}_a}^b}}} = {{{{ n}_b}} {{({{{{{ n}_a}} {{{ n}^b}}} + {{{ \delta}_a}^b}})}}}$
+<br>
+${{{{ n}_b}} {{{{ \gamma}_a}^b}}} = {{{{{ n}_a}} {{{ n}_b}} {{{ n}^b}}} + {{ n}_a}}$
+<br>
+${{{{ n}_b}} {{{{ \gamma}_a}^b}}} = {0}$
 <br>
 
 <br>
@@ -103,11 +127,29 @@ using	${{{{ n}^d}} {{{{ K}_c}_d}}} = {0}$
 <br>
 ${{{ v}^a}_{|b}} = {{{{ v}^a}_{;b}} + {{{{ n}_b}} {{{ n}^d}} {{{{ v}^a}_{;d}}}} + {{{{ n}^a}} {{{ v}^c}} {{{{ K}_c}_b}}}}$
 <br>
-${{{ v}^a}_{|b}} = {{{{{{ \gamma}_b}^d}} {{{{ v}^a}_{;d}}}} + {{{{ n}^a}} {{{ v}^c}} {{{{ K}_c}_b}}}}$
+${{{ v}^a}_{|b}} = {{{{{{ \gamma}_b}^c}} {{{{ v}^a}_{;c}}}} + {{{{ n}^a}} {{{ v}^c}} {{{{ K}_c}_b}}}}$
 <br>
 
 <br>
-section projection covariant derivative of a spatial vector
+2nd projection covariant derivative of a spatial vector
+<br>
+${{{{ v}^a}_{|b}}_{|c}} = {{\left( {{{{{ \gamma}_b}^d}} {{{{ v}^a}_{;d}}}} + {{{{ n}^a}} {{{ v}^d}} {{{{ K}_d}_b}}}\right)}_{|c}}$
+<br>
+${{{{ v}^a}_{|b}}_{|c}} = {{{{\left( {{{{{ \gamma}_e}^d}} {{{{ v}^g}_{;d}}}} + {{{{ n}^g}} {{{ v}^d}} {{{{ K}_d}_e}}}\right)}_{;f}}} {{{{ \gamma}_g}^a}} {{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}}}$
+<br>
+${{{{ v}^a}_{|b}}_{|c}} = {{{{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_e}^d}} {{{{ \gamma}_g}^a}} {{{{{ v}^g}_{;d}}_{;f}}}} + {{{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ v}^g}_{;d}}} {{{{{ \gamma}_e}^d}_{;f}}}} + {{{{ n}^g}} {{{{ K}_d}_e}} {{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ v}^d}_{;f}}}} + {{{{ n}^g}} {{{ v}^d}} {{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{{ K}_d}_e}_{;f}}}} + {{{{ v}^d}} {{{{ K}_d}_e}} {{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ n}^g}_{;f}}}}}$
+<br>
+${{{{ v}^a}_{|b}}_{|c}} = {{{{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{{ v}^g}_{;d}}_{;f}}} {{{{ \gamma}_b}^d}}} + {{{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ v}^g}_{;d}}} {{{{{ \gamma}_e}^d}_{;f}}}} + {{{{ n}^g}} {{{{ K}_d}_e}} {{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ v}^d}_{;f}}}} + {{{{ n}^g}} {{{ v}^d}} {{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{{ K}_d}_e}_{;f}}}} + {{{{ v}^d}} {{{{ K}_d}_e}} {{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ n}^g}_{;f}}}}}$
+<br>
+${{{{ v}^a}_{|b}}_{|c}} = {{{{{{ \gamma}_b}^d}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{{ v}^g}_{;d}}_{;f}}}} + {{{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ v}^g}_{;d}}} {{{{{ \gamma}_e}^d}_{;f}}}} + {{{{ n}^g}} {{{{ K}_d}_b}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ v}^d}_{;f}}}} + {{{{ n}^g}} {{{ v}^d}} {{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{{ K}_d}_e}_{;f}}}} + {{{{ v}^d}} {{{{ K}_d}_b}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ n}^g}_{;f}}}}}$
+<br>
+${{{{ v}^a}_{|b}}_{|c}} = {{{{{{ \gamma}_b}^d}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{{ v}^g}_{;d}}_{;f}}}} + {{{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ v}^g}_{;d}}} {{{{{ \gamma}_e}^d}_{;f}}}} + {{{{ v}^d}} {{{{ K}_d}_b}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ n}^g}_{;f}}}}}$
+<br>
+${{{{ v}^a}_{|b}}_{|c}} = {{{{{{ \gamma}_b}^d}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{{ v}^g}_{;d}}_{;f}}}} + {{{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ v}^g}_{;d}}} {{({{0} + {{{{ n}_e}} {{{{ n}^d}_{;f}}}} + {{{{ n}^d}} {{{{ n}_e}_{;f}}}}})}}} + {{{{ v}^d}} {{{{ K}_d}_b}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ n}^g}_{;f}}}}}$
+<br>
+${{{{ v}^a}_{|b}}_{|c}} = {{{{{{ \gamma}_b}^d}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{{ v}^g}_{;d}}_{;f}}}} + {{{{ n}^d}} {{{{ \gamma}_b}^e}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ n}_e}_{;f}}} {{{{ v}^g}_{;d}}}} + {{{{ v}^d}} {{{{ K}_d}_b}} {{{{ \gamma}_c}^f}} {{{{ \gamma}_g}^a}} {{{{ n}^g}_{;f}}}}}$
+<br>
+${{{{ v}^a}_{|b}}_{|c}} = {{{{{{ \gamma}_b}^d}} {{{{ \gamma}_c}^e}} {{{{ \gamma}_f}^a}} {{{{{ v}^f}_{;d}}_{;e}}}} + {{{-1}} {{{ n}^d}} {{{{ K}_b}_c}} {{{{ \gamma}_e}^a}} {{{{ v}^e}_{;d}}}} + {{{-1}} {{{ v}^d}} {{{{ K}_c}_e}} {{{{ K}_d}_b}} {{{{ \gamma}^a}^e}}}}$
 <br>
 
 <br>
@@ -117,13 +159,21 @@ ${{{{{{{ R}^a}_b}_c}_d}} {{{ v}^b}}} = {{{{{ v}^a}_{;d}}_{;c}} - {{{{ v}^a}_{;c}
 <br>
 
 <br>
-Riemann curvature of covariant derivative
+Riemann curvature of projection covariant derivative
 <br>
 ${{{{{{{ {(R^\perp)}}^a}_b}_c}_d}} {{{ v}^b}}} = {{{{{ v}^a}_{|d}}_{|c}} - {{{{ v}^a}_{|c}}_{|d}}}$
 <br>
-${{{{{{{ {(R^\perp)}}^a}_b}_c}_d}} {{{ v}^b}}} = {{{{ { v}^a}_{|d}}_{|c}} - {{{ { v}^a}_{|c}}_{|d}}}$
+${{{{{{{ {(R^\perp)}}^a}_b}_c}_d}} {{{ v}^b}}} = {{{{{{{ \gamma}_d}^g}} {{{{ \gamma}_c}^e}} {{{{ \gamma}_f}^a}} {{{{{ v}^f}_{;g}}_{;e}}}} + {{{-1}} {{{ n}^g}} {{{{ K}_d}_c}} {{{{ \gamma}_e}^a}} {{{{ v}^e}_{;g}}}} + {{{-1}} {{{ v}^g}} {{{{ K}_c}_e}} {{{{ K}_g}_d}} {{{{ \gamma}^a}^e}}}} - {({{{{{{ \gamma}_c}^g}} {{{{ \gamma}_d}^e}} {{{{ \gamma}_f}^a}} {{{{{ v}^f}_{;g}}_{;e}}}} + {{{-1}} {{{ n}^g}} {{{{ K}_c}_d}} {{{{ \gamma}_e}^a}} {{{{ v}^e}_{;g}}}} + {{{-1}} {{{ v}^g}} {{{{ K}_d}_e}} {{{{ K}_g}_c}} {{{{ \gamma}^a}^e}}}})}}$
 <br>
-${{{{{{{ {(R^\perp)}}^a}_b}_c}_d}} {{{ v}^b}}} = {{{{ { v}^a}_{|d}}_{|c}} - {{{ { v}^a}_{|c}}_{|d}}}$
+using	${{{{{{ v}^f}_{;g}}_{;e}}} {{{{ \gamma}_f}^a}} {{{{ \gamma}_c}^g}} {{{{ \gamma}_d}^e}}} = {{{({{{{{ v}^b}} {{{{{{ R}^f}_b}_e}_g}}} + {{{{ v}^f}_{;e}}_{;g}}})}} {{{{ \gamma}_f}^a}} {{{{ \gamma}_c}^g}} {{{{ \gamma}_d}^e}}}$
+<br>
+${{{{ v}^b}} {{{{{{ {(R^\perp)}}^a}_b}_c}_d}}} = {{{{{{ \gamma}_c}^e}} {{{{ \gamma}_d}^g}} {{{{ \gamma}_f}^a}} {{{{{ v}^f}_{;g}}_{;e}}}} + {{{-1}} {{{ n}^g}} {{{{ K}_d}_c}} {{{{ \gamma}_e}^a}} {{{{ v}^e}_{;g}}}} + {{{-1}} {{{ v}^g}} {{{{ K}_c}_e}} {{{{ K}_g}_d}} {{{{ \gamma}^a}^e}}} + {{{-1}} {{{{({{{{{ v}^b}} {{{{{{ R}^f}_b}_e}_g}}} + {{{{ v}^f}_{;e}}_{;g}}})}} {{{{ \gamma}_f}^a}} {{{{ \gamma}_c}^g}} {{{{ \gamma}_d}^e}}}}} + {{{{ n}^g}} {{{{ K}_c}_d}} {{{{ \gamma}_e}^a}} {{{{ v}^e}_{;g}}}} + {{{{ v}^g}} {{{{ K}_d}_e}} {{{{ K}_g}_c}} {{{{ \gamma}^a}^e}}}}$
+<br>
+${{{{ v}^b}} {{{{{{ {(R^\perp)}}^a}_b}_c}_d}}} = {{{{-1}} {{{ n}^b}} {{{{ K}_d}_c}} {{{{ \gamma}_e}^a}} {{{{ v}^e}_{;b}}}} + {{{-1}} {{{ v}^b}} {{{{ K}_b}_d}} {{{{ K}_c}_e}} {{{{ \gamma}^a}^e}}} + {{{-1}} {{{ v}^b}} {{{{ \gamma}_c}^e}} {{{{ \gamma}_d}^f}} {{{{ \gamma}_g}^a}} {{{{{{ R}^g}_b}_f}_e}}} + {{{{ n}^b}} {{{{ K}_c}_d}} {{{{ \gamma}_e}^a}} {{{{ v}^e}_{;b}}}} + {{{{ v}^b}} {{{{ K}_b}_c}} {{{{ K}_d}_e}} {{{{ \gamma}^a}^e}}}}$
+<br>
+${{{{ v}^b}} {{{{{{ {(R^\perp)}}^a}_b}_c}_d}}} = {{{{{ v}^b}} {{{{ K}_b}_c}} {{{{ K}_d}_e}} {{{{ \gamma}^a}^e}}} + {{{-1}} {{{ v}^b}} {{{{ K}_b}_d}} {{{{ K}_c}_e}} {{{{ \gamma}^a}^e}}} + {{{-1}} {{{ v}^b}} {{{{ \gamma}_c}^e}} {{{{ \gamma}_d}^f}} {{{{ \gamma}_g}^a}} {{{{{{ R}^g}_b}_f}_e}}}}$
+<br>
+${{{{{ \gamma}_b}^h}} {{{{{{ {(R^\perp)}}^a}_h}_c}_d}}} = {{{{-1}} {{{{ K}_c}_e}} {{{{ K}_h}_d}} {{{{ \gamma}^a}^e}} {{{{ \gamma}_b}^h}}} + {{{{{ K}_d}_e}} {{{{ K}_h}_c}} {{{{ \gamma}^a}^e}} {{{{ \gamma}_b}^h}}} + {{{-1}} {{{{ \gamma}_b}^h}} {{{{ \gamma}_c}^e}} {{{{ \gamma}_d}^f}} {{{{ \gamma}_g}^a}} {{{{{{ R}^g}_h}_f}_e}}}}$	Gauss' equation
 <br>
 
 <br>

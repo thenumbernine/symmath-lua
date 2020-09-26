@@ -29,32 +29,27 @@ function TensorRef:hasIndex(symbol)
 end
 
 --[[
-hasDerivIndex() return true if any indexes are derivatives
-hasDerivIndex(sym1, sym2, ... symN) returns true if any index is a derivative and has a symbol matching sym1...symN
+hasDerivIndex() if any indexes are derivatives then it returns the first derivative index
+hasDerivIndex(sym1, sym2, ... symN) if any index is a derivative and has a symbol matching sym1...symN, returns that index
 --]]
 function TensorRef:hasDerivIndex(...)
-	local symbols = table{...}
+	local n = select('#', ...)
 	for i=2,#self do
-		if self[i].derivative then 
-			if #symbols == 0 or symbols:find(self[i].symbol) then
-				return true 
+		local si = self[i]
+		if si.derivative then 
+			if n == 0 then return si end 
+			for j=1,n do
+				if si.symbol == select(j, ...) then return si end
 			end
 		end
 	end
 	return false
 end
 
+
 function TensorRef:hasTensorIndex(symbol)
 	for i=2,#self do
 		if self[i].symbol == symbol and not self[i].derivative then return true end
-	end
-	return false
-end
-
--- returns true if we have any deriv
-function TensorRef:hasDeriv()
-	for i=2,#self do
-		if self[i].derivative then return true end
 	end
 	return false
 end

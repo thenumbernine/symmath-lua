@@ -36,7 +36,6 @@ local function betterSimplify(x)
 	end)
 end
 
-
 local g = Tensor:metricSymbol()
 local n = var'n'
 local v = var'v'
@@ -50,8 +49,51 @@ local rho = var'\\rho'
 local RPerp = var[[(R^\perp)]]
 
 
+-- [[ allow simplifyMetrics to operate on gamma for raising and lowering spatial vectors/forms
+
+local perpVars = table{
+	RPerp,
+	K,
+	gamma,
+	--v?
+}
+
+local simplifyMetricPerpRule = {
+	isMetric = function(g)
+		return g[1] == gamma
+	end,
+	canSimplify = function(g, t, gi, ti)
+		return perpVars:find(t[1])
+		and t[ti].lower ~= g[gi].lower
+		and not t:hasDerivIndex()	-- only so long as deriv is not a comma
+	end,
+}
+
+local function simplifyPerpMetrics(expr)
+	return expr:simplifyMetrics{simplifyMetricPerpRule, Tensor.simplifyMetricsRules.delta}
+end
+
+--]]
+
+
+
 printbr()
-printHeader'definitions:'
+printHeader'properties of hypersurface normal:'
+local n_norm_def = (n'^a' * n'_a'):eq(-1)
+printbr(n_norm_def, '= unit hypersurface normal')
+local nabla_normLen_def = n_norm_def'_;b'()
+printbr(nabla_normLen_def)
+-- hmm, here is tidying lowers/uppers of indexes, taking account covariant derivative can factor out metrics
+local n_u_dot_nabla_n_ll_def = nabla_normLen_def() 
+n_u_dot_nabla_n_ll_def[1] = ((n_u_dot_nabla_n_ll_def[1] - n'_a' * n'^a_;b' + n'^a' * n'_a;b') / 2)()
+printbr(n_u_dot_nabla_n_ll_def)
+local n_l_dot_nabla_n_ul_def = nabla_normLen_def() 
+n_l_dot_nabla_n_ul_def[1] = ((n_l_dot_nabla_n_ul_def[1] - n'^a' * n'_a;b' + n'_a' * n'^a_;b') / 2)()
+printbr(n_l_dot_nabla_n_ul_def)
+
+
+printbr()
+printHeader'matter hypersurface normal definition:'
 local rho_def = rho:eq(n'^a' * n'^b' * T'_ab')
 printbr(rho_def, '= density')
 
@@ -67,20 +109,34 @@ printbr(delta_lu_from_gamma_lu)
 local nn_lu_from_delta_lu_gamma_lu = delta_lu_from_gamma_lu:solve(n'_a' * n'^b')()
 printbr(nn_lu_from_delta_lu_gamma_lu)
 
-
 printbr()
-printHeader'properties of normal vectors:'
-local n_norm_def = (n'^a' * n'_a'):eq(-1)
-printbr(n_norm_def, '= unit hypersurface normal')
-local nabla_normLen_def = n_norm_def'_;b'()
-printbr(nabla_normLen_def)
--- hmm, here is tidying lowers/uppers of indexes, taking account covariant derivative can factor out metrics
-local n_u_dot_nabla_n_ll_def = nabla_normLen_def() 
-n_u_dot_nabla_n_ll_def[1] = ((n_u_dot_nabla_n_ll_def[1] - n'_a' * n'^a_;b' + n'^a' * n'_a;b') / 2)()
-printbr(n_u_dot_nabla_n_ll_def)
-local n_l_dot_nabla_n_ul_def = nabla_normLen_def() 
-n_l_dot_nabla_n_ul_def[1] = ((n_l_dot_nabla_n_ul_def[1] - n'^a' * n'_a;b' + n'_a' * n'^a_;b') / 2)()
-printbr(n_l_dot_nabla_n_ul_def)
+local expr = gamma'_a^c' * gamma'_c^b'
+local gamma_lu_sq_def = expr:eq(expr:substIndex(gamma_lu_def))
+printbr(gamma_lu_sq_def)
+gamma_lu_sq_def = gamma_lu_sq_def():simplifyMetrics()
+--gamma_lu_sq_def = gamma_lu_sq_def:substIndex(n_norm_def)	-- not working
+gamma_lu_sq_def = gamma_lu_sq_def:subst(n_norm_def:reindex{a='c'})()
+printbr(gamma_lu_sq_def)
+gamma_lu_sq_def = gamma_lu_sq_def:subst(delta_lu_from_gamma_lu)()
+printbr(gamma_lu_sq_def)
+printbr()
+
+
+local n_u_times_gamma_lu_def = (gamma_lu_def * n'^a')()
+printbr(n_u_times_gamma_lu_def)
+n_u_times_gamma_lu_def = betterSimplify(n_u_times_gamma_lu_def):simplifyMetrics()
+printbr(n_u_times_gamma_lu_def)
+n_u_times_gamma_lu_def = n_u_times_gamma_lu_def:substIndex(n_norm_def)():reindex{ab='ba'}
+printbr(n_u_times_gamma_lu_def)
+printbr()
+
+local gamma_lu_times_n_l_def = (gamma_lu_def * n'_b')()
+printbr(gamma_lu_times_n_l_def)
+gamma_lu_times_n_l_def = betterSimplify(gamma_lu_times_n_l_def):simplifyMetrics()
+printbr(gamma_lu_times_n_l_def)
+gamma_lu_times_n_l_def = gamma_lu_times_n_l_def:substIndex(n_norm_def:reindex{a='b'})()
+printbr(gamma_lu_times_n_l_def)
+
 
 
 printbr()
@@ -155,11 +211,58 @@ printbr('using', using)
 proj_nabla_v_ul_def = proj_nabla_v_ul_def:subst(using)()
 printbr(proj_nabla_v_ul_def)
 proj_nabla_v_ul_def = proj_nabla_v_ul_def:subst(nn_lu_from_delta_lu_gamma_lu:reindex{ab='bd'})():simplifyMetrics()()
+proj_nabla_v_ul_def = proj_nabla_v_ul_def:tidyIndexes()
 printbr(proj_nabla_v_ul_def)
 
 
 printbr()
-printHeader'section projection covariant derivative of a spatial vector'
+printHeader'2nd projection covariant derivative of a spatial vector'
+local proj2_nabla2_v_ull_def = v'^a_|bc':eq(v'^a_|b''_|c'):substIndex(proj_nabla_v_ul_def)
+printbr(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def[2] = proj2_nabla2_v_ull_def[2]:replace(
+	TensorIndex{symbol='c', derivative='|', lower=true},
+	TensorIndex{symbol='c', derivative=';', lower=true}
+):reindex{abc='gef'} * gamma'_g^a' * gamma'_b^e' * gamma'_c^f'
+printbr(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+printbr(proj2_nabla2_v_ull_def)
+-- proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:substIndex(gamma_lu_sq_def)	-- not working
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:subst(gamma_lu_sq_def:reindex{acb='bed'})
+printbr(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def
+	:replace(K'_de' * gamma'_b^e', K'_db')	-- TODO prove this somewhere?
+proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+printbr(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def
+	:subst(n_u_times_gamma_lu_def:reindex{b='g'})
+proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+printbr(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def
+	:subst(gamma_lu_def:reindex{ab='ed'}'_;f'())
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def
+	:replaceIndex(delta'_a^b_;c', 0)
+printbr(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:substIndex(gamma_lu_times_n_l_def:reindex{ab='be'})
+proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+printbr(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:replace(
+	gamma'_g^a' * n'^g_;f',
+	gamma'^ah' * gamma'_h^g' * n'_g;f'
+)
+proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:replace(
+	gamma'_c^f' * gamma'_h^g' * n'_g;f',
+	-K'_ch'
+)
+proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:replace(
+	gamma'_b^e' * gamma'_c^f' * n'_e;f',
+	-K'_bc'
+)
+proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:tidyIndexes()
+printbr(proj2_nabla2_v_ull_def)
 
 
 printbr()
@@ -170,13 +273,31 @@ printbr(R_ulll_v_u_def)
 
 -- RPerp^a_bcd v^b = v^b_|dc - v^b_|cd
 printbr()
-printHeader'Riemann curvature of covariant derivative'
+printHeader'Riemann curvature of projection covariant derivative'
 local RPerp_ulll_v_u_def = (RPerp'^a_bcd' * v'^b'):eq(v'^a_|dc' - v'^a_|cd')
 printbr(RPerp_ulll_v_u_def)
-RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:splitOffDerivIndexes()
+-- not working ...
+--RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:substIndex(proj2_nabla2_v_ull_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:subst(
+	proj2_nabla2_v_ull_def:reindex{bcd='cdg'},
+	proj2_nabla2_v_ull_def:reindex{bcd='dcg'}
+)
 printbr(RPerp_ulll_v_u_def)
-RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:substIndex(proj_nabla_v_ul_def) 
+RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
+local using = R_ulll_v_u_def:solve(v'^a_;dc'):reindex{adc='fge'} * gamma'_f^a' * gamma'_c^g' * gamma'_d^e'
+printbr('using', using)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:subst(using)
 printbr(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:tidyIndexes()
+RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
+printbr(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:symmetrizeIndexes(K, {1,2})
+RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
+printbr(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:reindex{b='h'}:replace(v'^h', gamma'_b^h')
+RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
+printbr(RPerp_ulll_v_u_def, "Gauss' equation")
+
 
 
 printbr()

@@ -401,6 +401,8 @@ local i,j,k = x:matches( g' _$1 _$2':diff( Wildcard(3) ) )
 if i and j and k then return 0 end
 --]]
 function Expression:replaceIndex(find, repl, cond, args)
+	repl = require 'symmath.clone'(repl)	-- in case it's a number ...
+
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	
 	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being 
@@ -957,7 +959,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 										-- if they have varying upper/lower but no commas anywhere then we are safe
 										-- otherwise, if the upper/lower varies, and we have commas anywhere, then we can't symmetrize this (indirectly)
 										if not override 
-										and z:hasDeriv()
+										and z:hasDerivIndex()
 										then
 											-- don't allow swaps of derivatives with non-derivatives
 											--local lower = z[dstIndexes[1]].lower
@@ -1026,7 +1028,7 @@ Expression.simplifyMetricsRules = {
 			and t[ti].lower ~= g[gi].lower
 			-- you know, if derivs are always rightmost, then this is basically if it has any deriv
 			--and not t:hasDerivAtOrAfter(ti)		-- don't apply g^ij to T_k,i => T_k^,i
-			and not t:hasDeriv()
+			and not t:hasDerivIndex()
 		end,
 	},
 }
