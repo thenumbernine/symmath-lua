@@ -50,11 +50,14 @@ local RPerp = var[[(R^\perp)]]
 
 
 -- [[ allow simplifyMetrics to operate on gamma for raising and lowering spatial vectors/forms
-
+-- TODO but you can't just say "gamma is a metric" in that gamma_ac gamma^cb = delta_a^b
+-- instead it's only equal to gamma_a^b
+-- (while technically, g_a^b == delta_a^b, so I should be using 'g' for 'delta', but that's not convention)
+-- one way around that for now: don't let gamma simplify against gamma?
 local perpVars = table{
 	RPerp,
 	K,
-	gamma,
+	--gamma,	-- TODO change this to not create delta's.  until then, don't use this.  instead use gamma_lu_sq_def
 	--v?
 }
 
@@ -72,9 +75,7 @@ local simplifyMetricPerpRule = {
 local function simplifyPerpMetrics(expr)
 	return expr:simplifyMetrics{simplifyMetricPerpRule, Tensor.simplifyMetricsRules.delta}
 end
-
 --]]
-
 
 
 printbr()
@@ -296,8 +297,20 @@ RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
 printbr(RPerp_ulll_v_u_def)
 RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:reindex{b='h'}:replace(v'^h', gamma'_b^h')
 RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
-printbr(RPerp_ulll_v_u_def, "Gauss' equation")
-
+printbr(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = simplifyPerpMetrics(RPerp_ulll_v_u_def)
+printbr(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:reindex{a='k'} * gamma'_ak'
+printbr(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = simplifyPerpMetrics(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:replace(
+	gamma'_ak' * gamma'_g^k' * R'^g_hfe',
+	gamma'_a^g' * R'_ghfe'
+)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:symmetrizeIndexes(K, {1,2})
+RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def):reindex{ghef='efgh'}
+printbr(RPerp_ulll_v_u_def)
+printbr("Gauss' equation")
 
 
 printbr()
