@@ -122,6 +122,13 @@ gamma_lu_sq_def = gamma_lu_sq_def:subst(delta_lu_from_gamma_lu)()
 printbr(gamma_lu_sq_def)
 printbr()
 
+--[[
+gamma_ac g^cd gamma_db
+= (g_ac + n_a n_c) g^cd (g_db + n_d n_b)
+= (delta_a^d + n_a n^d) (g_db + n_d n_b)
+= g_ab + n_a n_b + n_a n_b + n_a n_b n^d n_d
+= gamma_ab
+--]]
 
 local n_u_times_gamma_lu_def = (gamma_lu_def * n'^a')()
 printbr(n_u_times_gamma_lu_def)

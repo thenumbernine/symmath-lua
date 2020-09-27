@@ -26,7 +26,7 @@ local rho = set.nonNegativeReal:var'\\rho'
 local R = set.nonNegativeReal:var'R'
 
 local alpha = var('\\alpha', {r})
-local omega = var('\\omega', {t, r})
+local omega = set.nonNegativeReal:var'\\omega'
 local q = var('q', {t,x,y,z})
 
 
@@ -169,7 +169,7 @@ local spacetimes = {
 			return r
 		end,
 	},
---[[	
+--[[	just by introducing omega, this takes too long to finish
 	{
 		title = 'polar and time, constant rotation, coordinate',
 		baseCoords = {t,r,phi},
@@ -178,8 +178,8 @@ local spacetimes = {
 		chart = function()
 			return Tensor('^I', 
 				t,
-				r * cos(phi + t),
-				r * sin(phi + t))
+				r * cos(phi + omega * t),
+				r * sin(phi + omega * t))
 		end,
 	},
 --]]
@@ -202,6 +202,7 @@ local spacetimes = {
 		embedded = {t,x,y},
 		flatMetric = eta3,
 		chart = function()
+			omega = var('\\omega', {t, r})
 			return Tensor('^I', 
 				t,
 				r * cos(phi + omega),

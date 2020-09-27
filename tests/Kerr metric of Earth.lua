@@ -4,60 +4,71 @@ if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Kerr metric of Earth'}}
 
 local units = require 'symmath.physics.units'()
-symmath.simplifyConstantPowers = true
 
 local m = units.m
 local s = units.s
 local kg = units.kg
 
 local c = units.c
-printbr(units.c_in_m_s)
-
 local G = units.G
-printbr(units.G_in_SI)
-
 local REarth = var'r_🜨'
-local REarthDef = REarth:eq(6371e+3 * m)
-printbr(REarthDef)
-
 local MEarth = var'm_🜨'
-local MEarthDef = MEarth:eq(5.792e+24 * kg)
-printbr(MEarthDef)
 
 local RSch = var'r_s'
 local RSchDef = RSch:eq(2 * G * MEarth / c^2)
-printbr(RSchDef)
-
-RSchDef = RSchDef:subst(units.G_in_SI, MEarthDef, units.c_in_m_s)()
 printbr(RSchDef)
 
 local IEarth = var'I_🜨'
 local IEarthDef = IEarth:eq(frac(2,5) * MEarth * REarth^2)
 printbr(IEarthDef)
 
-IEarthDef = IEarthDef:subst(MEarthDef, REarthDef)()
-printbr(IEarthDef)
-
 local omegaEarth = var'\\omega_🜨'
-local omegaEarthDef = omegaEarth:eq(2 * pi/((4 + 60*(56 + 60*23))*s))
-printbr(omegaEarthDef, [[= sidereal rotation of Earth]])
-
-omegaEarthDef = omegaEarthDef:subst(units.s_in_m)():factorDivision()
-printbr(omegaEarthDef)
 
 local JEarth = var'J_🜨'
 local JEarthDef = JEarth:eq(IEarth * omegaEarth)
 printbr(JEarthDef)
 
-JEarthDef = JEarthDef:subst(IEarthDef, omegaEarthDef, pi:eq(math.pi))():factorDivision()
+JEarthDef = JEarthDef:subst(IEarthDef)():factorDivision()
 printbr(JEarthDef)
 
 local a = var'a'
 local aDef = a:eq(JEarth / (MEarth * c))
 printbr(aDef)
 
-aDef = aDef:subst(JEarthDef, MEarthDef, units.c_eq_1)()
+aDef = aDef:subst(JEarthDef)()
 printbr(aDef)
+
+printbr'with numerical values:'
+
+symmath.simplifyConstantPowers = true
+
+printbr(units.c_in_m_s)
+printbr(units.G_in_SI)
+
+local REarthNumDef = REarth:eq(6371e+3 * m)
+printbr(REarthNumDef)
+
+local MEarthNumDef = MEarth:eq(5.792e+24 * kg)
+printbr(MEarthNumDef)
+
+local RSchNumDef = RSchDef:subst(units.G_in_SI, MEarthNumDef, units.c_in_m_s)()
+printbr(RSchNumDef)
+
+local omegaEarthNumDef = omegaEarth:eq(2 * pi/((4 + 60*(56 + 60*23))*s))
+printbr(omegaEarthNumDef, [[= sidereal rotation of Earth]])
+
+omegaEarthNumDef = omegaEarthNumDef:subst(units.s_in_m)():factorDivision()
+printbr(omegaEarthNumDef)
+
+local IEarthNumDef = IEarthDef:subst(MEarthNumDef, REarthNumDef)()
+printbr(IEarthNumDef)
+
+local JEarthNumDef = JEarthDef:subst(omegaEarthNumDef, MEarthNumDef, REarthNumDef, pi:eq(math.pi))():factorDivision()
+printbr(JEarthNumDef)
+
+local aNumDef = aDef:subst(omegaEarthNumDef, MEarthNumDef, REarthNumDef, units.c_eq_1, pi:eq(math.pi))()
+printbr(aNumDef)
+
 
 local t = var't'
 local r = var'r'
@@ -129,11 +140,11 @@ printbr(guDef)
 local gEarthDef = gDef:subst(
 	SigmaDef,
 	DeltaDef,
-	aDef,
-	RSchDef
+	aNumDef,
+	RSchNumDef
 )()
 printbr(gEarthDef)
 
 printbr'at earth surface:'
-gEarthDef = gEarthDef:replace(theta, pi/2):replace(r, REarthDef[2])()
+gEarthDef = gEarthDef:replace(theta, pi/2):replace(r, REarthNumDef[2])()
 printbr(gEarthDef)

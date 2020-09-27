@@ -53,8 +53,8 @@ ${{{ \eta}_y}_y} = {1}$
 chart in embedded coordinates:
 <br>
 ${{ u}^t} = {t}$;
-${{ u}^x} = {{{r}} {{cos\left( {{\phi} + {t}}\right)}}}$;
-${{ u}^y} = {{{r}} {{sin\left( {{\phi} + {t}}\right)}}}$
+${{ u}^x} = {{{r}} {{cos\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}}}$;
+${{ u}^y} = {{{r}} {{sin\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}}}$
 
 <br>
 
@@ -64,20 +64,20 @@ basis operators applied to chart:
 ${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
 <br>
 ${{{ e}_t}^t} = {1}$;
-${{{ e}_t}^x} = {-{{{r}} {{sin\left( {{\phi} + {t}}\right)}}}}$;
-${{{ e}_t}^y} = {{{r}} {{cos\left( {{\phi} + {t}}\right)}}}$;
-${{{ e}_r}^x} = {cos\left( {{\phi} + {t}}\right)}$;
-${{{ e}_r}^y} = {sin\left( {{\phi} + {t}}\right)}$;
-${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left( {{\phi} + {t}}\right)}}}}$;
-${{{ e}_{\phi}}^y} = {{{r}} {{cos\left( {{\phi} + {t}}\right)}}}$
+${{{ e}_t}^x} = {-{{{\omega}} \cdot {{r}} {{sin\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}}}}$;
+${{{ e}_t}^y} = {{{\omega}} \cdot {{r}} {{cos\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}}}$;
+${{{ e}_r}^x} = {cos\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}$;
+${{{ e}_r}^y} = {sin\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}$;
+${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}}}}$;
+${{{ e}_{\phi}}^y} = {{{r}} {{cos\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}}}$
 
 <br>
 ${{{ e}^t}_t} = {1}$;
-${{{ e}^r}_x} = {cos\left( {{\phi} + {t}}\right)}$;
-${{{ e}^r}_y} = {sin\left( {{\phi} + {t}}\right)}$;
-${{{ e}^{\phi}}_t} = {-{1}}$;
-${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left( {{\phi} + {t}}\right)}})}}$;
-${{{ e}^{\phi}}_y} = {{\frac{1}{r}}{({cos\left( {{\phi} + {t}}\right)})}}$
+${{{ e}^r}_x} = {cos\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}$;
+${{{ e}^r}_y} = {sin\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}$;
+${{{ e}^{\phi}}_t} = {-{\omega}}$;
+${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)}})}}$;
+${{{ e}^{\phi}}_y} = {{\frac{1}{r}}{({cos\left( {{\phi} + {{{\omega}} \cdot {{t}}}}\right)})}}$
 
 <br>
 ${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
@@ -90,10 +90,10 @@ ${{{{ c}_a}_b}^c} = {0}$
 <br>
 ${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
-${{{ g}_t}_t} = {-{({{1} - {{r}^{2}}})}}$;
-${{{ g}_t}_{\phi}} = {{r}^{2}}$;
+${{{ g}_t}_t} = {-{({{1} - {{{{\omega}^{2}}} {{{r}^{2}}}}})}}$;
+${{{ g}_t}_{\phi}} = {{{\omega}} \cdot {{{r}^{2}}}}$;
 ${{{ g}_r}_r} = {1}$;
-${{{ g}_{\phi}}_t} = {{r}^{2}}$;
+${{{ g}_{\phi}}_t} = {{{\omega}} \cdot {{{r}^{2}}}}$;
 ${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$
 
 <br>
@@ -107,85 +107,85 @@ commutation coefficients:
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
 metric:
-${{{ g}_t}_t} = {-{({{1} - {{r}^{2}}})}}$;
-${{{ g}_t}_{\phi}} = {{r}^{2}}$;
+${{{ g}_t}_t} = {-{({{1} - {{{{\omega}^{2}}} {{{r}^{2}}}}})}}$;
+${{{ g}_t}_{\phi}} = {{{\omega}} \cdot {{{r}^{2}}}}$;
 ${{{ g}_r}_r} = {1}$;
-${{{ g}_{\phi}}_t} = {{r}^{2}}$;
+${{{ g}_{\phi}}_t} = {{{\omega}} \cdot {{{r}^{2}}}}$;
 ${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$
 
 <br>
 metric inverse:
 ${{{ g}^t}^t} = {-{1}}$;
-${{{ g}^t}^{\phi}} = {1}$;
+${{{ g}^t}^{\phi}} = {\omega}$;
 ${{{ g}^r}^r} = {1}$;
-${{{ g}^{\phi}}^t} = {1}$;
-${{{ g}^{\phi}}^{\phi}} = {\frac{{1} - {{r}^{2}}}{{r}^{2}}}$
+${{{ g}^{\phi}}^t} = {\omega}$;
+${{{ g}^{\phi}}^{\phi}} = {\frac{{1} - {{{{\omega}^{2}}} {{{r}^{2}}}}}{{r}^{2}}}$
 
 <br>
 metric derivative:
-${{{{ {\partial g}}_t}_t}_r} = {{{2}} {{r}}}$;
-${{{{ {\partial g}}_t}_{\phi}}_r} = {{{2}} {{r}}}$;
-${{{{ {\partial g}}_{\phi}}_t}_r} = {{{2}} {{r}}}$;
+${{{{ {\partial g}}_t}_t}_r} = {{{2}} {{r}} {{{\omega}^{2}}}}$;
+${{{{ {\partial g}}_t}_{\phi}}_r} = {{{2}} {{\omega}} \cdot {{r}}}$;
+${{{{ {\partial g}}_{\phi}}_t}_r} = {{{2}} {{\omega}} \cdot {{r}}}$;
 ${{{{ {\partial g}}_{\phi}}_{\phi}}_r} = {{{2}} {{r}}}$
 
 <br>
 1st kind Christoffel:
-${{{{ \Gamma}_t}_t}_r} = {r}$;
-${{{{ \Gamma}_t}_r}_t} = {r}$;
-${{{{ \Gamma}_t}_r}_{\phi}} = {r}$;
-${{{{ \Gamma}_t}_{\phi}}_r} = {r}$;
-${{{{ \Gamma}_r}_t}_t} = {-{r}}$;
-${{{{ \Gamma}_r}_t}_{\phi}} = {-{r}}$;
-${{{{ \Gamma}_r}_{\phi}}_t} = {-{r}}$;
+${{{{ \Gamma}_t}_t}_r} = {{{r}} {{{\omega}^{2}}}}$;
+${{{{ \Gamma}_t}_r}_t} = {{{r}} {{{\omega}^{2}}}}$;
+${{{{ \Gamma}_t}_r}_{\phi}} = {{{\omega}} \cdot {{r}}}$;
+${{{{ \Gamma}_t}_{\phi}}_r} = {{{\omega}} \cdot {{r}}}$;
+${{{{ \Gamma}_r}_t}_t} = {-{{{r}} {{{\omega}^{2}}}}}$;
+${{{{ \Gamma}_r}_t}_{\phi}} = {-{{{\omega}} \cdot {{r}}}}$;
+${{{{ \Gamma}_r}_{\phi}}_t} = {-{{{\omega}} \cdot {{r}}}}$;
 ${{{{ \Gamma}_r}_{\phi}}_{\phi}} = {-{r}}$;
-${{{{ \Gamma}_{\phi}}_t}_r} = {r}$;
-${{{{ \Gamma}_{\phi}}_r}_t} = {r}$;
+${{{{ \Gamma}_{\phi}}_t}_r} = {{{\omega}} \cdot {{r}}}$;
+${{{{ \Gamma}_{\phi}}_r}_t} = {{{\omega}} \cdot {{r}}}$;
 ${{{{ \Gamma}_{\phi}}_r}_{\phi}} = {r}$;
 ${{{{ \Gamma}_{\phi}}_{\phi}}_r} = {r}$
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma}^r}_t}_t} = {-{r}}$;
-${{{{ \Gamma}^r}_t}_{\phi}} = {-{r}}$;
-${{{{ \Gamma}^r}_{\phi}}_t} = {-{r}}$;
+${{{{ \Gamma}^r}_t}_t} = {-{{{r}} {{{\omega}^{2}}}}}$;
+${{{{ \Gamma}^r}_t}_{\phi}} = {-{{{\omega}} \cdot {{r}}}}$;
+${{{{ \Gamma}^r}_{\phi}}_t} = {-{{{\omega}} \cdot {{r}}}}$;
 ${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{r}}$;
-${{{{ \Gamma}^{\phi}}_t}_r} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\phi}}_r}_t} = {\frac{1}{r}}$;
+${{{{ \Gamma}^{\phi}}_t}_r} = {{\frac{1}{r}}{({\omega})}}$;
+${{{{ \Gamma}^{\phi}}_r}_t} = {{\frac{1}{r}}{({\omega})}}$;
 ${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
 ${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
 
 <br>
 connection coefficients derivative:
-${{{{{ {\partial \Gamma}}^r}_t}_t}_r} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^r}_t}_{\phi}}_r} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^r}_{\phi}}_t}_r} = {-{1}}$;
+${{{{{ {\partial \Gamma}}^r}_t}_t}_r} = {-{{\omega}^{2}}}$;
+${{{{{ {\partial \Gamma}}^r}_t}_{\phi}}_r} = {-{\omega}}$;
+${{{{{ {\partial \Gamma}}^r}_{\phi}}_t}_r} = {-{\omega}}$;
 ${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_t}_r}_r} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_t}_r} = {-{\frac{1}{{r}^{2}}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_t}_r}_r} = {\frac{-{\omega}}{{r}^{2}}}$;
+${{{{{ {\partial \Gamma}}^{\phi}}_r}_t}_r} = {\frac{-{\omega}}{{r}^{2}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {-{\frac{1}{{r}^{2}}}}$;
 ${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$
 
 <br>
 connection coefficients squared:
-${{{{{ {(\Gamma^2)}}^r}_t}_t}_r} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_t}_{\phi}}_r} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_t}_t} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_t}_{\phi}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_t} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_t}_t}_r} = {-{{\omega}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^r}_t}_{\phi}}_r} = {-{\omega}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_t}_t} = {-{{\omega}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_t}_{\phi}} = {-{\omega}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_t} = {-{\omega}}$;
 ${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_{\phi}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_{\phi}}_t}_r} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\phi}}_t}_r} = {-{\omega}}$;
 ${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_t} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_{\phi}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_r}_r} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_t} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_{\phi}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_t} = {\frac{1}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_t} = {-{{\omega}^{3}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_t}_{\phi}} = {-{{\omega}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_r}_r} = {\frac{\omega}{{r}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_t} = {-{{\omega}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_t}_{\phi}}_{\phi}} = {-{\omega}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_t} = {\frac{\omega}{{r}^{2}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_t} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_{\phi}} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_t} = {-{{\omega}^{2}}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_t}_{\phi}} = {-{\omega}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_t} = {-{1}}$;
+${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_t} = {-{\omega}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_{\phi}} = {-{1}}$
 
 <br>
@@ -202,14 +202,29 @@ Gaussian curvature:
 $0$
 
 <br>
-Einstein $\sharp\flat$ / trace-reversed Ricci curvature:
+trace-free Ricci, $\sharp\flat$:
+${{{ {(R^{TF})}}^a}_b} = {0}$
+<br>
+Einstein / trace-reversed Ricci curvature, $\sharp\flat$:
 ${{{ G}^a}_b} = {0}$
+<br>
+Schouten, $\sharp\flat$:
+${{{ P}^a}_b} = {0}$
+<br>
+Weyl, $\sharp\sharp\flat\flat$:
+${{{{{ C}^a}^b}_c}_d} = {0}$
+<br>
+Weyl, $\flat\flat\flat\flat$:
+${{{{{ C}_a}_b}_c}_d} = {0}$
+<br>
+Plebanski, $\sharp\sharp\flat\flat$:
+${{{{{ P}^a}^b}_c}_d} = {0}$
 <br>
 divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{t}}}{\partial t}} + {\frac{\partial {A^{r}}}{\partial r}} + {\frac{\partial {A^{\phi}}}{\partial \phi}} + {{{{A^{r}}}} \cdot {{\frac{1}{r}}}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{t} \\ \ddot{r} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ {{r}} {{{({{\dot{\phi}} + {\dot{t}}})}^{2}}} \\ {{{-2}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{\frac{1}{r}}}} + {{{-2}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{\frac{1}{r}}}}\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{t} \\ \ddot{r} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ {{{2}} {{r}} {{\dot{\phi}}} \cdot {{\dot{t}}} \cdot {{\omega}}} + {{{r}} {{{\dot{\phi}}^{2}}}} + {{{r}} {{{\dot{t}}^{2}}} {{{\omega}^{2}}}} \\ {{{-2}} {{\dot{r}}} \cdot {{\dot{\phi}}} \cdot {{\frac{1}{r}}}} + {{{-2}} {{\dot{r}}} \cdot {{\dot{t}}} \cdot {{\omega}} \cdot {{\frac{1}{r}}}}\end{matrix}\right]}}$
 <br>
 
 <br>
@@ -217,110 +232,64 @@ parallel propagators:
 <br>
 
 <br>
-${{[\Gamma_t]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  -{r} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]}$
+${{[\Gamma_t]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  -{{{r}} {{{\omega}^{2}}}} &  0 &  -{{{\omega}} \cdot {{r}}} \\  0 &  {\frac{1}{r}}{({\omega})} &  0\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{r} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 &  0 \\  {{r}} {{({{{t_L}} - {{t_R}}})}} &  0 &  {{r}} {{({{{t_L}} - {{t_R}}})}} \\  0 &  {\frac{1}{r}}{({-{({{{t_L}} - {{t_R}}})}})} &  0\end{matrix}\right]$
+$\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{{{r}} {{{\omega}^{2}}}} &  0 &  -{{{\omega}} \cdot {{r}}} \\  0 &  {\frac{1}{r}}{({\omega})} &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  {{r}} {{{\omega}^{2}}} {{({{{t_L}} - {{t_R}}})}} &  0 &  {{\omega}} \cdot {{r}} {{({{{t_L}} - {{t_R}}})}} \\  0 &  {\frac{1}{r}}{({-{{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}})} &  0\end{matrix}\right]$
 <br>
 
 <br>
-${ P}_t$	=	${e}^{( -{({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{r} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 \\  -{{{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}}} &  cos\left( {{{t_L}} - {{t_R}}}\right) &  -{{{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}}} \\  -{({{1} - {cos\left( {{{t_L}} - {{t_R}}}\right)}})} &  {\frac{1}{r}}{({sin\left( {{{t_L}} - {{t_R}}}\right)})} &  cos\left( {{{t_L}} - {{t_R}}}\right)\end{matrix}\right]$
+${ P}_t$	=	${ⅇ}^{( -{({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{{{r}} {{{\omega}^{2}}}} &  0 &  -{{{\omega}} \cdot {{r}}} \\  0 &  {\frac{1}{r}}{({\omega})} &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  -{{{\omega}} \cdot {{r}} {{sin\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)}}} &  cos\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right) &  -{{{r}} {{sin\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)}}} \\  -{{{\omega}} \cdot {{({{1} - {cos\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)}})}}} &  {\frac{1}{r}}{({sin\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)})} &  cos\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)\end{matrix}\right]$
 <br>
 
 <br>
-${{ P}_t}^{-1}$	=	${e}^{({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{r} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 \\  {{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}} &  cos\left( {{{t_L}} - {{t_R}}}\right) &  {{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}} \\  -{({{1} - {cos\left( {{{t_L}} - {{t_R}}}\right)}})} &  {\frac{1}{r}}{({-{sin\left( {{{t_L}} - {{t_R}}}\right)}})} &  cos\left( {{{t_L}} - {{t_R}}}\right)\end{matrix}\right]$
+${{ P}_t}^{-1}$	=	${ⅇ}^{({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{{{r}} {{{\omega}^{2}}}} &  0 &  -{{{\omega}} \cdot {{r}}} \\  0 &  {\frac{1}{r}}{({\omega})} &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  {{\omega}} \cdot {{r}} {{sin\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)}} &  cos\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right) &  {{r}} {{sin\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)}} \\  -{{{\omega}} \cdot {{({{1} - {cos\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)}})}}} &  {\frac{1}{r}}{({-{sin\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)}})} &  cos\left( {{{\omega}} \cdot {{({{{t_L}} - {{t_R}}})}}}\right)\end{matrix}\right]$
 <br>
 
 <br>
-${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  \frac{1}{r} &  0 &  \frac{1}{r}\end{matrix}\right]}$
+${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  {\frac{1}{r}}{({\omega})} &  0 &  \frac{1}{r}\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  \frac{1}{r} &  0 &  \frac{1}{r}\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  log\left( {{\frac{1}{{r_L}}}{({{r_R}})}}\right) &  0 &  log\left( {{\frac{1}{{r_L}}}{({{r_R}})}}\right)\end{matrix}\right]$
+$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  {\frac{1}{r}}{({\omega})} &  0 &  \frac{1}{r}\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  log\left( {{{\frac{1}{{{r_L}}^{\omega}}}} {{{{r_R}}^{\omega}}}}\right) &  0 &  log\left( {{\frac{1}{{r_L}}}{({{r_R}})}}\right)\end{matrix}\right]$
 <br>
 
 <br>
-${ P}_r$	=	${e}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  \frac{1}{r} &  0 &  \frac{1}{r}\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  {\frac{1}{{r_R}}}{({{-{{r_R}}} + {{r_L}}})} &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]$
+${ P}_r$	=	${ⅇ}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  {\frac{1}{r}}{({\omega})} &  0 &  \frac{1}{r}\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  \frac{-{({{1} + {log\left( {{{{{r_L}}^{({\frac{-{{r_L}}}{log\left( {{{{{r_L}}^{log\left( {{{{{r_L}}^{({\frac{{{\omega}} \cdot {{{r_R}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}} {{{{r_R}}^{({\frac{-{{{\omega}} \cdot {{{r_R}}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}}\right)}}} {{{{r_R}}^{log\left( {{{{{r_L}}^{({\frac{-{{{\omega}} \cdot {{{r_R}}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}} {{{{r_R}}^{({\frac{{{\omega}} \cdot {{{r_R}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}}\right)}}}}\right)}})}}} {{{{r_R}}^{({\frac{{r_L}}{log\left( {{{{{r_L}}^{log\left( {{{{{r_L}}^{({\frac{{{\omega}} \cdot {{{r_R}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}} {{{{r_R}}^{({\frac{-{{{\omega}} \cdot {{{r_R}}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}}\right)}}} {{{{r_R}}^{log\left( {{{{{r_L}}^{({\frac{-{{{\omega}} \cdot {{{r_R}}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}} {{{{r_R}}^{({\frac{{{\omega}} \cdot {{{r_R}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}}\right)}}}}\right)}})}}}}\right)}})}}{log\left( {\frac{{{r_L}}^{({\frac{1}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}{{{r_R}}^{({\frac{1}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}\right)} &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]$
 <br>
 
 <br>
-${{ P}_r}^{-1}$	=	${e}^{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  \frac{1}{r} &  0 &  \frac{1}{r}\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  {\frac{1}{{r_L}}}{({-{({{{r_L}} - {{r_R}}})}})} &  0 &  {\frac{1}{{r_L}}}{({{r_R}})}\end{matrix}\right]$
+${{ P}_r}^{-1}$	=	${ⅇ}^{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  {\frac{1}{r}}{({\omega})} &  0 &  \frac{1}{r}\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  \frac{-{({{1} + {log\left( {{{{{r_L}}^{({\frac{-{{r_R}}}{log\left( {{{{{r_L}}^{log\left( {{{{{r_L}}^{({\frac{{{\omega}} \cdot {{{r_L}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}} {{{{r_R}}^{({\frac{-{{{\omega}} \cdot {{{r_L}}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}}\right)}}} {{{{r_R}}^{log\left( {{{{{r_L}}^{({\frac{-{{{\omega}} \cdot {{{r_L}}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}} {{{{r_R}}^{({\frac{{{\omega}} \cdot {{{r_L}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}}\right)}}}}\right)}})}}} {{{{r_R}}^{({\frac{{r_R}}{log\left( {{{{{r_L}}^{log\left( {{{{{r_L}}^{({\frac{{{\omega}} \cdot {{{r_L}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}} {{{{r_R}}^{({\frac{-{{{\omega}} \cdot {{{r_L}}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}}\right)}}} {{{{r_R}}^{log\left( {{{{{r_L}}^{({\frac{-{{{\omega}} \cdot {{{r_L}}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}} {{{{r_R}}^{({\frac{{{\omega}} \cdot {{{r_L}}}}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}}\right)}}}}\right)}})}}}}\right)}})}}{log\left( {\frac{{{r_L}}^{({\frac{1}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}{{{r_R}}^{({\frac{1}{log\left( {{{{{r_L}}^{\omega}}} {{\frac{1}{{{r_R}}^{\omega}}}}}\right)}})}}}\right)} &  0 &  {\frac{1}{{r_L}}}{({{r_R}})}\end{matrix}\right]$
 <br>
 
 <br>
-${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  -{r} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]}$
+${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  -{{{\omega}} \cdot {{r}}} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]}$
 <br>
 
 <br>
-$\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{r} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 &  0 \\  {{r}} {{({{{\phi_L}} - {{\phi_R}}})}} &  0 &  {{r}} {{({{{\phi_L}} - {{\phi_R}}})}} \\  0 &  {\frac{1}{r}}{({-{({{{\phi_L}} - {{\phi_R}}})}})} &  0\end{matrix}\right]$
+$\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{{{\omega}} \cdot {{r}}} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]\right)$
+=	$\left[\begin{matrix}  0 &  0 &  0 \\  {{\omega}} \cdot {{r}} {{({{{\phi_L}} - {{\phi_R}}})}} &  0 &  {{r}} {{({{{\phi_L}} - {{\phi_R}}})}} \\  0 &  {\frac{1}{r}}{({-{({{{\phi_L}} - {{\phi_R}}})}})} &  0\end{matrix}\right]$
 <br>
 
 <br>
-${ P}_{\phi}$	=	${e}^{( -{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{r} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 \\  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]$
+${ P}_{\phi}$	=	${ⅇ}^{( -{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{{{\omega}} \cdot {{r}}} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]\right)})})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  -{{{\omega}} \cdot {{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} \\  -{{{\omega}} \cdot {{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})}}} &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]$
 <br>
 
 <br>
-${{ P}_{\phi}}^{-1}$	=	${e}^{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{r} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 \\  {{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  {{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{r}}{({-{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]$
+${{ P}_{\phi}}^{-1}$	=	${ⅇ}^{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  0 \\  -{{{\omega}} \cdot {{r}}} &  0 &  -{r} \\  0 &  \frac{1}{r} &  0\end{matrix}\right]\right)})}$
+=	$\left[\begin{matrix}  1 &  0 &  0 \\  {{\omega}} \cdot {{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  {{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} \\  -{{{\omega}} \cdot {{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})}}} &  {\frac{1}{r}}{({-{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]$
 <br>
 
 <br>
 propagator commutation:
-<br>
-
-<br>
-[	${ P}_t$	,	${ P}_r$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 \\  -{{{sin\left( {{{t_L}} - {{t_R}}}\right)}} {{{r_R}}}} &  cos\left( {{{t_L}} - {{t_R}}}\right) &  -{{{sin\left( {{{t_L}} - {{t_R}}}\right)}} {{{r_R}}}} \\  -{({{1} - {cos\left( {{{t_L}} - {{t_R}}}\right)}})} &  {\frac{1}{{r_R}}}{({sin\left( {{{t_L}} - {{t_R}}}\right)})} &  cos\left( {{{t_L}} - {{t_R}}}\right)\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  {\frac{1}{{r_R}}}{({{-{{r_R}}} + {{r_L}}})} &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  {\frac{1}{{r_R}}}{({{-{{r_R}}} + {{r_L}}})} &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  -{{{sin\left( {{{t_L}} - {{t_R}}}\right)}} {{{r_L}}}} &  cos\left( {{{t_L}} - {{t_R}}}\right) &  -{{{sin\left( {{{t_L}} - {{t_R}}}\right)}} {{{r_L}}}} \\  -{({{1} - {cos\left( {{{t_L}} - {{t_R}}}\right)}})} &  {\frac{1}{{r_L}}}{({sin\left( {{{t_L}} - {{t_R}}}\right)})} &  cos\left( {{{t_L}} - {{t_R}}}\right)\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
-<br>
-[	${ P}_t$	,	${ P}_{\phi}$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 \\  -{{{sin\left( {{{t_L}} - {{t_R}}}\right)}} {{{r_L}}}} &  cos\left( {{{t_L}} - {{t_R}}}\right) &  -{{{sin\left( {{{t_L}} - {{t_R}}}\right)}} {{{r_L}}}} \\  -{({{1} - {cos\left( {{{t_L}} - {{t_R}}}\right)}})} &  {\frac{1}{{r_L}}}{({sin\left( {{{t_L}} - {{t_R}}}\right)})} &  cos\left( {{{t_L}} - {{t_R}}}\right)\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 \\  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  -{{{sin\left( {{{t_L}} - {{t_R}}}\right)}} {{{r_L}}}} &  cos\left( {{{t_L}} - {{t_R}}}\right) &  -{{{sin\left( {{{t_L}} - {{t_R}}}\right)}} {{{r_L}}}} \\  -{({{1} - {cos\left( {{{t_L}} - {{t_R}}}\right)}})} &  {\frac{1}{{r_L}}}{({sin\left( {{{t_L}} - {{t_R}}}\right)})} &  cos\left( {{{t_L}} - {{t_R}}}\right)\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
-<br>
-[	${ P}_r$	,	${ P}_{\phi}$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  {\frac{1}{{r_R}}}{({{-{{r_R}}} + {{r_L}}})} &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 \\  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_R}}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_R}}}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{{r_R}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  {\frac{1}{{r_R}}}{({{-{{r_R}}} + {{r_L}}})} &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]$
-<br>
-
-<br>
-propagator partials
-<br>
-${{\frac{\partial}{\partial t}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  -{{{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}}} &  cos\left( {{{t_L}} - {{t_R}}}\right) &  -{{{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}}} \\  -{({{1} - {cos\left( {{{t_L}} - {{t_R}}}\right)}})} &  {\frac{1}{r}}{({sin\left( {{{t_L}} - {{t_R}}}\right)})} &  cos\left( {{{t_L}} - {{t_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
-<br>
-${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  -{{{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}}} &  cos\left( {{{t_L}} - {{t_R}}}\right) &  -{{{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}}} \\  -{({{1} - {cos\left( {{{t_L}} - {{t_R}}}\right)}})} &  {\frac{1}{r}}{({sin\left( {{{t_L}} - {{t_R}}}\right)})} &  cos\left( {{{t_L}} - {{t_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  -{sin\left( {{{t_L}} - {{t_R}}}\right)} &  0 &  -{sin\left( {{{t_L}} - {{t_R}}}\right)} \\  0 &  \frac{-{sin\left( {{{t_L}} - {{t_R}}}\right)}}{{r}^{2}} &  0\end{matrix}\right]}$
-<br>
-${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  -{{{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}}} &  cos\left( {{{t_L}} - {{t_R}}}\right) &  -{{{r}} {{sin\left( {{{t_L}} - {{t_R}}}\right)}}} \\  -{({{1} - {cos\left( {{{t_L}} - {{t_R}}}\right)}})} &  {\frac{1}{r}}{({sin\left( {{{t_L}} - {{t_R}}}\right)})} &  cos\left( {{{t_L}} - {{t_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
-<br>
-${{\frac{\partial}{\partial t}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  {\frac{1}{{r_R}}}{({{-{{r_R}}} + {{r_L}}})} &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
-<br>
-${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  {\frac{1}{{r_R}}}{({{-{{r_R}}} + {{r_L}}})} &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
-<br>
-${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  {\frac{1}{{r_R}}}{({{-{{r_R}}} + {{r_L}}})} &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
-<br>
-${{\frac{\partial}{\partial t}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
-<br>
-${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  -{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)} &  0 &  -{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)} \\  0 &  \frac{-{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}{{r}^{2}} &  0\end{matrix}\right]}$
-<br>
-${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 \\  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} \\  -{({{1} - {cos\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right)\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix}\right]}$
-<br>
-volume element: 	${{ⅈ}} \cdot {{r}}$
-<br>
-volume integral: 	${{{\frac{1}{2}}{({{{\Delta r}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}$
-<br>
-finite volume (0,0)-form:
-<br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{-{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{J(t_R)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_R)}}} \cdot {{{F^{t}(t_R)}}}} - {{{{J(t_L)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_L)}}} \cdot {{{F^{t}(t_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}} \cdot {{{F^{r}(r_R)}}}} - {{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}} \cdot {{{F^{\phi}(\phi_R)}}}} - {{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}} \cdot {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
-<br>
-
-<br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}}} {{({{{-{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{ⅈ}} \cdot {{r}} {{{F^{t}(t_R)}}}} - {{{ⅈ}} \cdot {{r}} {{{F^{t}(t_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ⅈ}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ⅈ}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ⅈ}} \cdot {{r}} {{{F^{\phi}(\phi_R)}}}} - {{{ⅈ}} \cdot {{r}} {{{F^{\phi}(\phi_L)}}}}}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
-<br>
-
-<br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{\Delta r}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{r_L}} + {{r_R}}})}}})}}} {{\Delta \phi}}}}} {{({{{-{{{{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{ⅈ}} \cdot {{({{{F^{t}(t_L)}} - {{F^{t}(t_R)}}})}}}})}}} {{\Delta \phi}}}} - {{{({{{{ⅈ}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ⅈ}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}})}} {{\Delta t}} \cdot {{\Delta \phi}}}} - {{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{F^{\phi}(\phi_L)}} - {{F^{\phi}(\phi_R)}}})}}}})}}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
