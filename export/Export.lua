@@ -32,7 +32,9 @@ function Export:apply(expr, ...)
 				.." for expr\n"
 -- can't do this if our class is MultiLine ... it'll be infinite recursion
 --				..require 'symmath.export.MultiLine'(expr)..'\n'
-				..tolua(expr)) 
+				..require 'symmath.export.Verbose'(expr)..'\n'
+				..tolua(expr)
+			) 
 	end
 	return (self.lookupTable[lookup])(self, expr, ...)
 end

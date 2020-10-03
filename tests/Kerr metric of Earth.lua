@@ -10,23 +10,37 @@ local s = units.s
 local kg = units.kg
 
 local c = units.c
+printbr(c, '= speed of light')
+
 local G = units.G
+printbr(G, '= gravitational constant')
+
 local REarth = var'r_🜨'
+printbr(REarth, '= Earth radius at equator')
+
 local MEarth = var'm_🜨'
+printbr(MEarth, '= Earth mass')
 
 local RSch = var'r_s'
 local RSchDef = RSch:eq(2 * G * MEarth / c^2)
-printbr(RSchDef)
+printbr(RSchDef, '= Schwarzschild radius of Earth')
 
+local aSpheroid, bSpheroid = vars('a_{sph}', 'b_{sph}')
+local fEarth = var'f_🜨'
+local fEarthDef = fEarth:eq((aSpheroid - bSpheroid) / aSpheroid):eq(frac(1, 298.257222101))
+printbr(fEarthDef, '= flattening of Earth')
+
+-- and for ellipsoids, the inertia matrix is m/5*diag(b^2+c^2, a^2+c^2, a^2+b^2)
+-- meaning, for rotations around the z axis, the flattening does not matter
 local IEarth = var'I_🜨'
 local IEarthDef = IEarth:eq(frac(2,5) * MEarth * REarth^2)
-printbr(IEarthDef)
+printbr(IEarthDef, '= moment of inertia')
 
 local omegaEarth = var'\\omega_🜨'
 
 local JEarth = var'J_🜨'
 local JEarthDef = JEarth:eq(IEarth * omegaEarth)
-printbr(JEarthDef)
+printbr(JEarthDef, '= angular momentum')
 
 JEarthDef = JEarthDef:subst(IEarthDef)():factorDivision()
 printbr(JEarthDef)
@@ -45,7 +59,7 @@ symmath.simplifyConstantPowers = true
 printbr(units.c_in_m_s)
 printbr(units.G_in_SI)
 
-local REarthNumDef = REarth:eq(6371e+3 * m)
+local REarthNumDef = REarth:eq(63781e+3 * m)
 printbr(REarthNumDef)
 
 local MEarthNumDef = MEarth:eq(5.792e+24 * kg)
@@ -57,16 +71,16 @@ printbr(RSchNumDef)
 local omegaEarthNumDef = omegaEarth:eq(2 * pi/((4 + 60*(56 + 60*23))*s))
 printbr(omegaEarthNumDef, [[= sidereal rotation of Earth]])
 
-omegaEarthNumDef = omegaEarthNumDef:subst(units.s_in_m)():factorDivision()
+omegaEarthNumDef = omegaEarthNumDef:subst(units.s_in_m, pi:eq(math.pi))():factorDivision()
 printbr(omegaEarthNumDef)
 
 local IEarthNumDef = IEarthDef:subst(MEarthNumDef, REarthNumDef)()
 printbr(IEarthNumDef)
 
-local JEarthNumDef = JEarthDef:subst(omegaEarthNumDef, MEarthNumDef, REarthNumDef, pi:eq(math.pi))():factorDivision()
+local JEarthNumDef = JEarthDef:subst(omegaEarthNumDef, MEarthNumDef, REarthNumDef)():factorDivision()
 printbr(JEarthNumDef)
 
-local aNumDef = aDef:subst(omegaEarthNumDef, MEarthNumDef, REarthNumDef, units.c_eq_1, pi:eq(math.pi))()
+local aNumDef = aDef:subst(omegaEarthNumDef, MEarthNumDef, REarthNumDef, units.c_eq_1)()
 printbr(aNumDef)
 
 
@@ -148,3 +162,42 @@ printbr(gEarthDef)
 printbr'at earth surface:'
 gEarthDef = gEarthDef:replace(theta, pi/2):replace(r, REarthNumDef[2])()
 printbr(gEarthDef)
+
+
+local timevec = Tensor('^a', var'dt', 0, 0, 0)
+printbr('time vector = ', timevec)
+
+printbr'timelike arclength'
+local dsSq = (timevec'^a' * timevec'^b' * gDef[2]'_ab')()
+printbr((var'ds'^2):eq(dsSq))
+dsSq = dsSq:subst(SigmaDef, aNumDef, RSchNumDef)()
+printbr((var'ds'^2):eq(dsSq))
+
+--[[
+printbr'rotation:'
+printbr(var'd\\phi':eq(omegaEarthNumDef[2]))
+--]]
+
+printbr'time and rotating:'
+local dx_dl = Tensor('^a', var'dt', 0, 0, var'd\\phi')
+local dsSq = (dx_dl'^a' * dx_dl'^b' * gDef[2]'_ab')()
+printbr((var'ds'^2):eq(dsSq))
+dsSq = dsSq:subst(SigmaDef, aNumDef, RSchNumDef)()
+printbr((var'ds'^2):eq(dsSq))
+
+--[[ todo - this should be the flattened axis instead of the equatorial axis, right?
+printbr'earth spheroid curve:'
+local eSq = (2 / fEarth - 1) * fEarth^2
+printbr((var'e'^2):eq(eSq))
+local N = REarth / sqrt(1 - eSq * cos(theta)^2)
+printbr(var'r':eq(N))
+--[[
+local height = 0
+local NPlusH = N + height
+local x = NPlusH * sin(theta) * cos(phi)
+local y = NPlusH * sin(theta) * sin(phi)
+local z = (N * (1 - eSq) + height) * cos(theta)^2
+printbr(var'x':eq(x))
+printbr(var'y':eq(y))
+printbr(var'z':eq(z))
+--]]

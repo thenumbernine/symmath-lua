@@ -104,6 +104,10 @@ C.lookupTable = {
 		error("can't compile differentiation.  replace() your diff'd content first!\n"
 		..(require 'symmath.export.MultiLine')(expr))
 	end,
+	[require 'symmath.Integral'] = function(self, expr) 
+		error("can't compile integration.  replace() your diff'd content first!\n"
+		..(require 'symmath.export.MultiLine')(expr))
+	end,
 	[require 'symmath.Array'] = function(self, expr)
 		local predefs = table()
 		return '{'..table.mapi(expr, function(x, i)
