@@ -13,13 +13,14 @@ local Language = class(Export)
 args:
 	input = {var1, var2, {name3=var3}, ...}
 	output = {expr1, expr2, {name3=expr3}, ...}
+	notmp = disable tmp var generation
 --]]
 function Language:toCode(args)
 	local input = args.input	-- does it matter if there are explicitly specified inputs?  maybe only if we want a function prototype?
 	local output = assert(args.output)
 	local output, input = self:prepareToCodeArgs(output, input)
 	assert(input)
-	return self:toCodeInternal(output, input)
+	return self:toCodeInternal(output, input, args.notmp)
 end
 
 --[[
@@ -85,7 +86,7 @@ function Language:prepareToCodeArgs(outputs, inputs)
 end
 
 
-function Language:toCodeInternal(outputs, vars)
+function Language:toCodeInternal(outputs, vars, disableTmpVars)
 	local exprs = table.mapi(outputs, function(output)
 		return output.expr:clone()
 	end)
@@ -115,111 +116,82 @@ function Language:toCodeInternal(outputs, vars)
 --]=]
 
 -- [=[
-	local allsubexprinfos = table()	
-	local function recurse(expr)
-		local totalCount = 1
-		for _,x in ipairs(expr) do
-			if Expression.is(x) 
-			and not Constant.is(x)
-			then
-				local count = recurse(x)
-				totalCount = totalCount + count
-				if count > 1 then
-					allsubexprinfos:insert{expr=x, count=count}
-				end
-			else
-				totalCount = totalCount + 1
-			end
-		end
-		return totalCount
-	end
-	for _,expr in ipairs(exprs) do
-		recurse(expr)
-	end
-
-	-- sort by size, largest to smallest
-	allsubexprinfos:sort(function(a,b)
-		return a.count > b.count
-	end)
-	-- remove duplicates
-	for i=#allsubexprinfos-1,1,-1 do
-		if allsubexprinfos[i].expr == allsubexprinfos[i+1].expr then
-			allsubexprinfos:remove(i)
-		end
-	end
-
---[[
-print('FOR EXPR '..SingleLine(expr))
-print'BEGIN ALL SUBEXPRS'
-for _,s in ipairs(allsubexprinfos) do
-	print(s.count, SingleLine(s.expr))
-end
-print'END ALL SUBEXPRS'
-print()
---]]
-
-	local varindex = 0
-	-- TODO assert that this variable name doesn't exist in the expression
-	local function newvarname()
-		varindex = varindex + 1
-		return 'tmp'..varindex
-	end
-	
 	local tmpvardefs = table()
-	for _,subexprinfo in ipairs(allsubexprinfos) do
-		local subexpr = subexprinfo.expr
---[[
-print('CHECKING SUBEXPR '..SingleLine(subexpr))
---]]
-		-- first see how many occurences there are
-		-- only replace the sub-expression if there are more than 1 occurrences of it
-		local found
-		local count = 0
+	if not disableTmpVars then
+		local allsubexprinfos = table()	
 		local function recurse(expr)
-			for i=1,#expr do
-				local x = expr[i]
-				if Expression.is(x)
+			local totalCount = 1
+			for _,x in ipairs(expr) do
+				if Expression.is(x) 
 				and not Constant.is(x)
 				then
-					if x == subexpr then
-						count = count + 1
-						if count >= 2 then 
-							found = true
-							return
-						end
+					local count = recurse(x)
+					totalCount = totalCount + count
+					if count > 1 then
+						allsubexprinfos:insert{expr=x, count=count}
 					end
-					recurse(x)
-					if found then return end
+				else
+					totalCount = totalCount + 1
 				end
 			end
-		end
-		for j=1,#tmpvardefs do
-			recurse(tmpvardefs[j][2])
+			return totalCount
 		end
 		for _,expr in ipairs(exprs) do
 			recurse(expr)
 		end
 
-		if found then
-			local tmpvar
+		-- sort by size, largest to smallest
+		allsubexprinfos:sort(function(a,b)
+			return a.count > b.count
+		end)
+		-- remove duplicates
+		for i=#allsubexprinfos-1,1,-1 do
+			if allsubexprinfos[i].expr == allsubexprinfos[i+1].expr then
+				allsubexprinfos:remove(i)
+			end
+		end
+
+	--[[
+	print('FOR EXPR '..SingleLine(expr))
+	print'BEGIN ALL SUBEXPRS'
+	for _,s in ipairs(allsubexprinfos) do
+		print(s.count, SingleLine(s.expr))
+	end
+	print'END ALL SUBEXPRS'
+	print()
+	--]]
+
+		local varindex = 0
+		-- TODO assert that this variable name doesn't exist in the expression
+		local function newvarname()
+			varindex = varindex + 1
+			return 'tmp'..varindex
+		end
+		
+		for _,subexprinfo in ipairs(allsubexprinfos) do
+			local subexpr = subexprinfo.expr
+	--[[
+	print('CHECKING SUBEXPR '..SingleLine(subexpr))
+	--]]
+			-- first see how many occurences there are
+			-- only replace the sub-expression if there are more than 1 occurrences of it
+			local found
+			local count = 0
 			local function recurse(expr)
 				for i=1,#expr do
 					local x = expr[i]
-					if Expression.is(x) 
+					if Expression.is(x)
 					and not Constant.is(x)
 					then
 						if x == subexpr then
-							if not tmpvar then
-								tmpvar = Variable(newvarname())
-								local tmpvardef = tmpvar:eq(subexpr)
---[[
-print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))								
---]]
-								tmpvardefs:insert(tmpvardef)
+							count = count + 1
+							if count >= 2 then 
+								found = true
+								return
 							end
-							expr[i] = tmpvar
 						end
 						recurse(x)
+						if found then return end
 					end
 				end
 			end
@@ -229,11 +201,42 @@ print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))
 			for _,expr in ipairs(exprs) do
 				recurse(expr)
 			end
+
+			if found then
+				local tmpvar
+				local function recurse(expr)
+					for i=1,#expr do
+						local x = expr[i]
+						if Expression.is(x) 
+						and not Constant.is(x)
+						then
+							if x == subexpr then
+								if not tmpvar then
+									tmpvar = Variable(newvarname())
+									local tmpvardef = tmpvar:eq(subexpr)
+	--[[
+	print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))								
+	--]]
+									tmpvardefs:insert(tmpvardef)
+								end
+								expr[i] = tmpvar
+							end
+							recurse(x)
+						end
+					end
+				end
+				for j=1,#tmpvardefs do
+					recurse(tmpvardefs[j][2])
+				end
+				for _,expr in ipairs(exprs) do
+					recurse(expr)
+				end
+			end
 		end
+	--[[
+	print('RESULTING EXPR '..SingleLine(expr))
+	--]]
 	end
---[[
-print('RESULTING EXPR '..SingleLine(expr))
---]]
 --]=]
 
 	-- TODO parameter
@@ -272,6 +275,7 @@ args:
 	input = ...
 	output = ...
 	func = name of function to generate
+	notmp = disable generation of temp variables 
 --]]
 function Language:toFuncCode(args)
 	local genParams = self.generateParams or {}
@@ -298,7 +302,7 @@ function Language:toFuncCode(args)
 
 	return table{
 		funcHeader,
-		'\t'..self:toCodeInternal(outputs, inputs):gsub('\n', '\n\t'),
+		'\t'..self:toCodeInternal(outputs, inputs, args.notmp):gsub('\n', '\n\t'),
 	}:append{
 		genParams.prepareOutputs and genParams.prepareOutputs(outputs) or nil,
 	}:append{	
