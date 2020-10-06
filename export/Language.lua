@@ -156,6 +156,9 @@ function Language:toCodeInternal(args)
 	-- [[
 	do
 		local function recurse(x)
+			for i=1,#x do
+				recurse(x[i])
+			end
 			if symmath.op.add.is(x) or symmath.op.mul.is(x) then
 				local mt = getmetatable(x)
 				-- manually construct/modify, don't use constructor, or it will auto-flatten
@@ -166,10 +169,6 @@ function Language:toCodeInternal(args)
 					x[nn] = setmetatable({x[nn], x[n]}, mt)
 					x[n] = nil
 					n = nn
-				end
-			else
-				for i=1,#x do
-					recurse(x[i])
 				end
 			end
 		end
