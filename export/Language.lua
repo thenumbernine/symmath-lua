@@ -11,16 +11,23 @@ local Language = class(Export)
 
 --[[
 args:
-	input = {var1, var2, {name3=var3}, ...}
-	output = {expr1, expr2, {name3=expr3}, ...}
-	notmp = disable tmp var generation
+	input = these are input parameters.  honestly they aren't used in 'toCode' anymore, only 'toFuncCode'.
+			it's in the form:
+			{var1, var2, {name3=var3}, ...}
+	output = this is what expressions are converted to code.
+			it's in the form:
+			{expr1, expr2, {name3=expr3}, ...}		
+	other arguments are forwarded on to toCodeInternal
 --]]
 function Language:toCode(args)
 	local input = args.input	-- does it matter if there are explicitly specified inputs?  maybe only if we want a function prototype?
 	local output = assert(args.output)
 	local output, input = self:prepareToCodeArgs(output, input)
 	assert(input)
-	return self:toCodeInternal(output, input, args.notmp)
+	return self:toCodeInternal(table(args, {
+		output = output, 
+		input = input, 
+	}))
 end
 
 --[[
@@ -86,7 +93,19 @@ function Language:prepareToCodeArgs(outputs, inputs)
 end
 
 
-function Language:toCodeInternal(outputs, vars, disableTmpVars)
+--[[
+args:
+	input = list of variables to use
+	output = list of expressions to generate
+	notmp = don't produce tmpvars to cache reused expression trees
+	dontExpandIntegerPowers = don't do this
+--]]
+function Language:toCodeInternal(args)
+	local vars = assert(args.input)
+	local disableTmpVars = args.notmp
+
+	-- here is the last time that outputs[i].expr is used, though outputs[i].name is used later
+	local outputs = assert(args.output)
 	local exprs = table.mapi(outputs, function(output)
 		return output.expr:clone()
 	end)
@@ -97,25 +116,67 @@ function Language:toCodeInternal(outputs, vars, disableTmpVars)
 	local Variable = symmath.Variable
 	local Constant = symmath.Constant
 
--- [=[ replace x^n for integer 1 <= n < 100 with (x * x * ... * ) x n
+	-- replace x^n for integer 1 <= n < 100 with (x * x * ... * ) x n
 	-- represent integers as expanded multiplication
-	exprs = exprs:mapi(function(expr)
-		return expr:map(function(x)
-			if symmath.op.pow.is(x) then
-				if Constant.is(x[2]) then
-					local n = x[2].value
-					if n == math.floor(n) and n >= 0 and n < 100 then
-						if n == 0 then return Constant(1) end
-						if n == 1 then return x end
-						return setmetatable(table.rep({x[1]}, n), symmath.op.mul)
+	if not args.dontExpandIntegerPowers then
+		exprs = exprs:mapi(function(expr)
+			return expr:map(function(x)
+				if symmath.op.pow.is(x) then
+					if Constant.is(x[2]) then
+						local n = x[2].value
+						if n == math.floor(n) and n >= 0 and n < 100 then
+							if n == 0 then return Constant(1) end
+							if n == 1 then return x end
+							return setmetatable(table.rep({x[1]}, n), symmath.op.mul)
+						end
 					end
 				end
-			end
+			end)
 		end)
-	end)
---]=]
+	end
 
--- [=[
+	--[[
+	from this point on, there's no operations on the exprs except traversal and replacement
+	so for the sake of the tmpvar generation, I have an issue...
+	the tmpvars cache subtrees
+	but the * and + operators are flattened tree nodes
+	so even if a+b is found inside of a+b+c and a+b+d, it will not match in this algorithm because the trees are exact.
+	how to get around this?
+	
+	exhaustive: when counting trees, count all permutations of + and * subtrees, and then when replacing them later, chop them up
+	
+	combined: when chopping them up, count which subtree is most often used, and then chop up now accordingly.  
+		the challenge is whatever counts go towards copies of the + or * permutation subtrees that match elsewhere will have to be thrown away if that particular chop scheme isn't used
+		because, depending on what subtree partition choices you use, the counts of other trees will be affected.
+
+	lazy: just chop them up arbitrarily now
+	
+	of course for now I'm doing the lazy method.
+	--]]
+	-- [[
+	do
+		local function recurse(x)
+			if symmath.op.add.is(x) or symmath.op.mul.is(x) then
+				local mt = getmetatable(x)
+				-- manually construct/modify, don't use constructor, or it will auto-flatten
+				local n = #x
+				assert(n >= 2)
+				while n > 2 do
+					local nn = n - 1
+					x[nn] = setmetatable({x[nn], x[n]}, mt)
+					x[n] = nil
+					n = nn
+				end
+			else
+				for i=1,#x do
+					recurse(x[i])
+				end
+			end
+		end
+		recurse(exprs)
+	end
+	--]]
+
 	local tmpvardefs = table()
 	if not disableTmpVars then
 		local allsubexprinfos = table()	
@@ -151,15 +212,15 @@ function Language:toCodeInternal(outputs, vars, disableTmpVars)
 			end
 		end
 
-	--[[
-	print('FOR EXPR '..SingleLine(expr))
-	print'BEGIN ALL SUBEXPRS'
-	for _,s in ipairs(allsubexprinfos) do
-		print(s.count, SingleLine(s.expr))
-	end
-	print'END ALL SUBEXPRS'
-	print()
-	--]]
+--[[
+print('FOR EXPR '..SingleLine(expr))
+print'BEGIN ALL SUBEXPRS'
+for _,s in ipairs(allsubexprinfos) do
+	print(s.count, SingleLine(s.expr))
+end
+print'END ALL SUBEXPRS'
+print()
+--]]
 
 		local varindex = 0
 		-- TODO assert that this variable name doesn't exist in the expression
@@ -170,9 +231,9 @@ function Language:toCodeInternal(outputs, vars, disableTmpVars)
 		
 		for _,subexprinfo in ipairs(allsubexprinfos) do
 			local subexpr = subexprinfo.expr
-	--[[
-	print('CHECKING SUBEXPR '..SingleLine(subexpr))
-	--]]
+--[[
+print('CHECKING SUBEXPR '..SingleLine(subexpr))
+--]]
 			-- first see how many occurences there are
 			-- only replace the sub-expression if there are more than 1 occurrences of it
 			local found
@@ -214,9 +275,9 @@ function Language:toCodeInternal(outputs, vars, disableTmpVars)
 								if not tmpvar then
 									tmpvar = Variable(newvarname())
 									local tmpvardef = tmpvar:eq(subexpr)
-	--[[
-	print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))								
-	--]]
+--[[
+print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))								
+--]]
 									tmpvardefs:insert(tmpvardef)
 								end
 								expr[i] = tmpvar
@@ -233,11 +294,10 @@ function Language:toCodeInternal(outputs, vars, disableTmpVars)
 				end
 			end
 		end
-	--[[
-	print('RESULTING EXPR '..SingleLine(expr))
-	--]]
+--[[
+print('RESULTING EXPR '..SingleLine(expr))
+--]]
 	end
---]=]
 
 	-- TODO parameter
 	local genParams = self.generateParams or {}
@@ -272,10 +332,10 @@ end
 
 --[[
 args:
-	input = ...
-	output = ...
+	input = {var1, var2, {name3=var3}, ...}
+	output = {expr1, expr2, {name3=expr3}, ...}
 	func = name of function to generate
-	notmp = disable generation of temp variables 
+	other arguments are forwarded on to toCodeInternal
 --]]
 function Language:toFuncCode(args)
 	local genParams = self.generateParams or {}
@@ -302,7 +362,12 @@ function Language:toFuncCode(args)
 
 	return table{
 		funcHeader,
-		'\t'..self:toCodeInternal(outputs, inputs, args.notmp):gsub('\n', '\n\t'),
+		'\t'..self:toCodeInternal(
+			table(args, {
+				output = output, 
+				input = input, 
+			})
+		):gsub('\n', '\n\t'),
 	}:append{
 		genParams.prepareOutputs and genParams.prepareOutputs(outputs) or nil,
 	}:append{	
