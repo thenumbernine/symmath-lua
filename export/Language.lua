@@ -178,22 +178,31 @@ function Language:toCodeInternal(args)
 
 	local tmpvardefs = table()
 	if not disableTmpVars then
+	
+		local varindex = 0
+		-- TODO assert that this variable name doesn't exist in the expression
+		local function newvarname()
+			varindex = varindex + 1
+			return 'tmp'..varindex
+		end
+
+
+		--[=[ exhaustively enumerate all subtrees, then replace duplicates with temp vars
+
 		local allsubexprinfos = table()	
 		local function recurse(expr)
 			local totalCount = 1
 			for _,x in ipairs(expr) do
-				if Expression.is(x) 
-				and not Constant.is(x)
-				then
-					local count = recurse(x)
-					totalCount = totalCount + count
-					if count > 1 then
-						allsubexprinfos:insert{expr=x, count=count}
-					end
-				else
-					totalCount = totalCount + 1
-				end
+				totalCount = totalCount + recurse(x)
 			end
+			
+			if Expression.is(expr) 
+			and not Constant.is(expr)
+			and totalCount > 1
+			then
+				allsubexprinfos:insert{expr=expr, count=totalCount}
+			end
+
 			return totalCount
 		end
 		for _,expr in ipairs(exprs) do
@@ -204,15 +213,10 @@ function Language:toCodeInternal(args)
 		allsubexprinfos:sort(function(a,b)
 			return a.count > b.count
 		end)
-		-- remove duplicates
-		for i=#allsubexprinfos-1,1,-1 do
-			if allsubexprinfos[i].expr == allsubexprinfos[i+1].expr then
-				allsubexprinfos:remove(i)
-			end
-		end
 
---[[
+-- [[
 print('FOR EXPR '..SingleLine(expr))
+print'ALL SUBEXPRS, SORTED BY SIZE:'
 print'BEGIN ALL SUBEXPRS'
 for _,s in ipairs(allsubexprinfos) do
 	print(s.count, SingleLine(s.expr))
@@ -221,16 +225,27 @@ print'END ALL SUBEXPRS'
 print()
 --]]
 
-		local varindex = 0
-		-- TODO assert that this variable name doesn't exist in the expression
-		local function newvarname()
-			varindex = varindex + 1
-			return 'tmp'..varindex
+		-- remove duplicates
+		for i=#allsubexprinfos-1,1,-1 do
+			if allsubexprinfos[i].expr == allsubexprinfos[i+1].expr then
+print('REMOVING DUPLICATE '..SingleLine(allsubexprinfos[i].expr))
+				allsubexprinfos:remove(i)
+			end
 		end
-		
+
+-- [[
+print'AFTER REMOVE:'
+print'BEGIN ALL SUBEXPRS'
+for _,s in ipairs(allsubexprinfos) do
+	print(s.count, SingleLine(s.expr))
+end
+print'END ALL SUBEXPRS'
+print()
+--]]
+
 		for _,subexprinfo in ipairs(allsubexprinfos) do
 			local subexpr = subexprinfo.expr
---[[
+-- [[
 print('CHECKING SUBEXPR '..SingleLine(subexpr))
 --]]
 			-- first see how many occurences there are
@@ -255,12 +270,14 @@ print('CHECKING SUBEXPR '..SingleLine(subexpr))
 					end
 				end
 			end
+			
+			-- don't allow entire tmpvars[i] to be replaced with other tmpvars, (that would be redundant), only tmpvars[i][j] etc
 			for j=1,#tmpvardefs do
 				recurse(tmpvardefs[j][2])
 			end
-			for _,expr in ipairs(exprs) do
-				recurse(expr)
-			end
+			
+			-- allow exprs[i] to be replaced with tmpvars
+			recurse(exprs)
 
 			if found then
 				local tmpvar
@@ -274,7 +291,7 @@ print('CHECKING SUBEXPR '..SingleLine(subexpr))
 								if not tmpvar then
 									tmpvar = Variable(newvarname())
 									local tmpvardef = tmpvar:eq(subexpr)
---[[
+-- [[
 print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))								
 --]]
 									tmpvardefs:insert(tmpvardef)
@@ -288,14 +305,88 @@ print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))
 				for j=1,#tmpvardefs do
 					recurse(tmpvardefs[j][2])
 				end
-				for _,expr in ipairs(exprs) do
-					recurse(expr)
+				recurse(exprs)
+			end
+		end
+-- [[
+print('RESULTING EXPR '..SingleLine(expr))
+--]]
+--]=]
+
+-- [=[
+-- ok here's another option ...
+-- instead of enumerating all subtrees, counting frequency of usage, etc
+-- how about assigning temp vars to all subtrees irrespective of their redundancy?
+-- and sort them by the tree height
+-- and last, remove redundant tmp vars ... that will still require a tree compare, which is slow ...
+
+		local function recurse(expr)
+			for i=1,#expr do
+				recurse(expr[i])
+			end
+
+			for i=1,#expr do
+				x = expr[i]
+				if Expression.is(x)
+				and not Constant.is(x)
+				and #x > 0
+				then				
+					local tmpvar = Variable(newvarname())
+					local tmpvardef = tmpvar:eq(x)
+--[[
+print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))
+--]]
+					tmpvardefs:insert(1, tmpvardef)
+					expr[i] = tmpvar
 				end
 			end
 		end
+		recurse(exprs)
+
+		-- combine repeated temp vars
+		tmpvardefs = tmpvardefs:reverse()
+		local i = 2
+		local used = tmpvardefs:mapi(function(def) return 1, def[1].name end)
+		while i <= #tmpvardefs do
+			for j=1,i-1 do
+				if tmpvardefs[i][2] == tmpvardefs[j][2] then
 --[[
-print('RESULTING EXPR '..SingleLine(expr))
+print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 --]]
+					for k=1,#tmpvardefs do
+						tmpvardefs[k][2] = tmpvardefs[k][2]:replace(tmpvardefs[i][1], tmpvardefs[j][1])
+					end
+					for k=1,#exprs do
+						exprs[k] = exprs[k]:replace(tmpvardefs[i][1], tmpvardefs[j][1])
+					end
+					used[tmpvardefs[j][1].name] = used[tmpvardefs[j][1].name] + used[tmpvardefs[i][1].name]
+					used[tmpvardefs[i][1].name] = nil
+					tmpvardefs:remove(i)
+					i = i - 1
+					break
+				end
+			end
+			i = i + 1
+		end
+--print(require'ext.tolua'(used))	
+		-- [[ reinsert temp vars used only once
+		for i=#tmpvardefs,1,-1 do
+			local def = tmpvardefs[i]
+			if used[def[1].name] == 1 then
+				for j=i+1,#tmpvardefs do
+					tmpvardefs[j][2] = tmpvardefs[j][2]:subst(def)
+				end
+				for j=1,#exprs do
+					exprs[j] = exprs[j]:subst(def)
+				end
+				tmpvardefs:remove(i)
+				used[def[1].name] = nil
+			end
+		end
+		--]]
+		-- now if used[j] is not set then you can substitute it into whoever is using it
+		tmpvardefs = tmpvardefs:reverse()
+--]=]
 	end
 
 	-- TODO parameter
@@ -363,8 +454,8 @@ function Language:toFuncCode(args)
 		funcHeader,
 		'\t'..self:toCodeInternal(
 			table(args, {
-				output = output, 
-				input = input, 
+				output = outputs,
+				input = inputs,
 			})
 		):gsub('\n', '\n\t'),
 	}:append{

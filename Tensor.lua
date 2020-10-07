@@ -634,7 +634,9 @@ function Tensor:permute(dstVariance)
 		indexMap[i] = table.find(dstVariance, nil, function(dstVar)
 			return srcVar.symbol == dstVar.symbol
 		end)
-		if not indexMap[i] then error("assigning tensor with '"..srcVar.symbol.."' to tensor without that symbol") end
+		if not indexMap[i] then 
+			error("assigning tensor with '"..srcVar.symbol.."' to tensor without that symbol: "..self)
+		end
 	end
 
 	local olddim = self:dim()
