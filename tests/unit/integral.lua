@@ -66,6 +66,8 @@ asserteq((r * cos(x)):integrate(x)():integrate(r)(), frac(1,2) * r^2 * sin(x))
 asserteq( ( cosh(a * x) * sinh(a * x) ):integrate(x), cosh(a * x)^2 / (2 * a) )
 asserteq( ( cosh(a * x) * sinh(b * x) ):integrate(x), 1 / ((a + b) * (a - b)) * (-b * cosh(a*x) * cosh(b*x) + a * sinh(a*x) * sinh(b*x)) )
 
+asserteq( ( sinh(a * x)^2 * cosh(a * x) ):integrate(x), sinh(a * x)^3 / (3 * a) )
+
 ]=]), '\n')) do
 	env.exec(line)
 end

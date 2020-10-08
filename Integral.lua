@@ -356,7 +356,6 @@ Integral.rules = {
 					end
 				end
 
-
 				-- int(tanh(a*x))
 				-- int(sinh(a*x)/cosh(a*x))
 				local a = f:match(sinh(Wildcard{1, cannotDependOn=x} * x) * (1 / cosh(Wildcard{1, cannotDependOn=x} * x)))
@@ -369,6 +368,15 @@ Integral.rules = {
 				local a = f:match(cosh(Wildcard{1, cannotDependOn=x} * x) * (1 / sinh(Wildcard{1, cannotDependOn=x} * x)))
 				if a then
 					return frac(c, a) * log(abs(sinh(a * x)))
+				end
+				
+				-- int(sinh(a*x)^2*cosh(a*x))
+				-- = sinh(a*x)^3 / (3*a) for a = b
+				local a, b = f:match(sinh(Wildcard{2, cannotDependOn=x} * x)^2 * cosh(Wildcard{1, cannotDependOn=x} * x))
+				if a and b then
+					if a == b then
+						return sinh(a*x)^3 / (3 * a)
+					end
 				end
 
 			end
