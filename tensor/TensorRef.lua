@@ -209,7 +209,7 @@ TensorRef.rules = {
 			--]]
 			local rank = Tensor.rank(t)
 			if #nonDerivativeIndexes ~= rank then
-				error("Tensor() needs as many non-derivative indexes as the tensor's rank.  Found "..#nonDerivativeIndexes.." but needed "..rank)
+				error("Tensor() needs as many non-derivative indexes as the tensor's rank.  Found "..#nonDerivativeIndexes.." but needed "..rank.." for expression "..expr)
 			end
 
 			-- this operates on indexes
