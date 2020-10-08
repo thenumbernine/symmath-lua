@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'unit'(env, 'integral')
 
+env.a = var'a'
+env.b = var'b'
 env.x = var'x'
 env.y = var'y'
 env.xL = var'xL'
@@ -60,6 +62,9 @@ asserteq((x * y):integrate(x)():integrate(y)(), frac(1,4) * x^2 * y^2)
 asserteq((x * y):integrate(x):integrate(y)(), frac(1,4) * x^2 * y^2)
 asserteq((r * cos(x)):integrate(r)():integrate(x)(), frac(1,2) * r^2 * sin(x))
 asserteq((r * cos(x)):integrate(x)():integrate(r)(), frac(1,2) * r^2 * sin(x))
+
+asserteq( ( cosh(a * x) * sinh(a * x) ):integrate(x), cosh(a * x)^2 / (2 * a) )
+asserteq( ( cosh(a * x) * sinh(b * x) ):integrate(x), 1 / ((a + b) * (a - b)) * (-b * cosh(a*x) * cosh(b*x) + a * sinh(a*x) * sinh(b*x)) )
 
 ]=]), '\n')) do
 	env.exec(line)

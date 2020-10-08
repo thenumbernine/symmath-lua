@@ -344,6 +344,19 @@ Integral.rules = {
 				-- hyperbolic sine and hyperbolic cosine
 
 
+				-- int(cosh(a*x)*sinh(b*x))
+				-- = (a*sinh(a*x)*sinh(b*x) - b*cosh(a*x)*cosh(b*x))/(a^2 - b^2) for a != b
+				-- = cosh(a*x)^2 / (2 * a) for a == b
+				local a, b = f:match(cosh(Wildcard{1, cannotDependOn=x} * x) * sinh(Wildcard{2, cannotDependOn=x} * x))
+				if a and b then
+					if a == b then
+						return (c / (2 * a)) * cosh(a * x)^2
+					else
+						return (c / (a^2 - b^2)) * (a * sinh(a * x) * sinh(b * x) - b * cosh(a * x) * cosh(b * x))
+					end
+				end
+
+
 				-- int(tanh(a*x))
 				-- int(sinh(a*x)/cosh(a*x))
 				local a = f:match(sinh(Wildcard{1, cannotDependOn=x} * x) * (1 / cosh(Wildcard{1, cannotDependOn=x} * x)))
