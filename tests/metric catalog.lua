@@ -19,7 +19,7 @@ local r = set.nonNegativeReal:var'r'
 local phi,theta,psi = vars('\\phi','\\theta','\\psi')
 
 -- unless I set 'fixVariableNames' I will have to explicitly define all the Greek symbols...
--- this is used by sphere-log-radial
+-- this is used by sphere-sinh-radial
 local rho = set.nonNegativeReal:var'\\rho'
 
 -- used for Schwarzschild radius or for torus radius
@@ -456,7 +456,7 @@ local spacetimes = {
 	},
 --]]
 	{
-		title = 'spherical, log-radial, coordinate',
+		title = 'spherical, sinh-radial, coordinate',
 		baseCoords = {rho,theta,phi},	-- reminder, the connectins wrt r,theta,phi are the same as spherical above
 		embedded = {x,y,z},
 		flatMetric = delta3,
@@ -466,6 +466,30 @@ local spacetimes = {
 				rDef * sin(theta) * cos(phi),
 				rDef * sin(theta) * sin(phi),
 				rDef * cos(theta))
+		end,
+		coordVolumeElem = function()
+			local rDef = A * sinh(rho / w) / sinh(1 / w)
+			return rDef^2 * sin(theta)
+		end,
+	},
+	{
+		title = 'spherical, sinh-radial, anholonomic, orthonormal',
+		baseCoords = {rho,theta,phi},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			local rDef = A * sinh(rho / w) / sinh(1 / w)
+			return Tensor('^I',
+				rDef * sin(theta) * cos(phi),
+				rDef * sin(theta) * sin(phi),
+				rDef * cos(theta))
+		end,
+		eToEHol = function()
+			return Tensor('_a^A',
+				{(A*cosh(rho/w)) / (w * sinh(1/w)), 0, 0},
+				{0, (A*sinh(rho/w)) / sinh(1/w), 0},
+				{0, 0, (A*sinh(rho/w) * sin(theta)) / sinh(1/w)}
+			)
 		end,
 		coordVolumeElem = function()
 			local rDef = A * sinh(rho / w) / sinh(1 / w)
