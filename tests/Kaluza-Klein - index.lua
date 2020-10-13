@@ -1232,7 +1232,7 @@ if constantScalarField then
 $
 	(	
 		12 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
-		+ \delta^\mu_\alpha \nabla^\nu
+		+ \delta^\mu_\alpha \delta^\nu_\beta \nabla^\beta
 	) F_{\mu\nu} 
 	- (
 		16 \frac{1}{c^2} \pi G \rho u_\alpha u^\beta 
@@ -1242,7 +1242,7 @@ $
 $<br>
 
 In matter at macroscopic levels this becomes...<br>
-$\mu_0 \nabla_\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = \mu_0 J_\alpha$<br>
+$\mu_0 \nabla^\beta ( {Z_{\alpha\beta}}^{\mu\nu} F_{\mu\nu} ) = \mu_0 J_\alpha$<br>
 
 ...for some sort of operator $\nabla (Z \cdot ...)$...
 ]]
