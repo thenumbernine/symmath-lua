@@ -555,6 +555,17 @@ printbr('replsymbols', replsymbols:unpack())
 	end
 end
 
+-- if we find a space then treat it as space-separated multi-char indexes
+local function interpretSymbols(s)
+	if type(s) == 'number' then return {s} end
+	assert(type(s) == 'string', "expected a string, found "..type(s))
+	if s:find' ' then
+		return string.split(string.trim(s), ' ')
+	else
+		return string.split(s)
+	end
+end
+
 --[[
 This will try to pick consistent indexes for matching terms so that subsequent operations can simplify easier
 ex: K^a_a + K^b_b should produce K^a_a + K^a_a, which will simplify to 2 K^a_a
@@ -567,6 +578,7 @@ a_ijk b^jk + a_ilm b^lm => a_ijk b^jk + a_ijk b^jk => 2 a_jik b^jk
 args =
 	symbols = list of symbols to pick from when we need a new symbol.  default is Tensor.defaultSymbols.
 	fixed = which symbols to not consider summation symbols
+	checkFixed = ...
 --]]
 function Expression:tidyIndexes(args)
 	-- process each part of an equation independently
@@ -584,6 +596,8 @@ function Expression:tidyIndexes(args)
 		end
 		return cl
 	end
+
+	local extraFixed = args and args.fixed and interpretSymbols(args.fixed) or nil
 
 	local expr = self
 	--expr = expr()	-- hmm, simplify fails one of our tests
@@ -614,6 +628,11 @@ function Expression:tidyIndexes(args)
 		for _,s in ipairs(fixed) do
 			allSymbols:removeObject(s)
 		end
+		if extraFixed then
+			for _,s in ipairs(extraFixed) do
+				allSymbols:removeObject(s)
+			end
+		end
 		
 		local indexMap = {}
 		for i,s in ipairs(summed) do
@@ -631,7 +650,7 @@ function Expression:tidyIndexes(args)
 		expr[1] = tidyTerm(expr[1])
 
 		for i=2,#expr do
-			expr[i] = tidyTerm(expr[i], fixed)
+			expr[i] = tidyTerm(expr[i], args and args.checkFixed)
 		end
 	elseif mul.is(expr) 
 	or TensorRef.is(expr)
@@ -706,21 +725,10 @@ args =
 	[to] = from
 --]]
 function Expression:reindex(args, action)
-	-- if we find a space then treat it as space-separated multi-char indexes
-	local function interpret(s)
-		if type(s) == 'number' then return {s} end
-		assert(type(s) == 'string', "expected a string, found "..type(s))
-		if s:find' ' then
-			return string.split(string.trim(s), ' ')
-		else
-			return string.split(s)
-		end
-	end
-	
 	local swaps = table()
 	for k,v in pairs(args) do
-		local tk = interpret(k)
-		local tv = interpret(v)
+		local tk = interpretSymbols(k)
+		local tv = interpretSymbols(v)
 		
 		if #tk ~= #tv then
 			local tolua = require 'ext.tolua'

@@ -180,17 +180,19 @@ local phi_K_def = phi_K:eq( 2 / c * sqrt(frac(G, k_e)) )
 
 printbr()
 printbr(A'_u', '= electromagnetic four-potential, in units', (kg*m)/(C*s))
+
+
+symmath.simplifyConstantPowers = true
 printbr(
 	'$A_5$ is constant in natural units, but to cancel the units of $\\phi_K$ it is in units of', (kg*m)/(C*s),
 	'so $A_5$ is proportional to $c \\sqrt{\\frac{k_e}{G}} = $', (units.c_in_m_s:rhs() * sqrt(units.k_e_in_SI_and_C:rhs() / units.G_in_SI:rhs()))():factorDivision()
 )
+symmath.simplifyConstantPowers = false
 printbr()
 
 printbr(phi_K, '= scalar field, proportional to $\\frac{1}{A_5}$, in units', (C*s)/(kg*m))
 printbr()
 
-
-symmath.simplifyConstantPowers = false
 
 
 local g = var'g'
@@ -1032,6 +1034,7 @@ Riemann5_def = Riemann5_def:symmetrizeIndexes(conn4, {2,3})()
 Riemann5_def = betterSimplify(Riemann5_def)
 
 -- TODO honestly I should be doing this much earlier
+-- TODO fixed=gamma isn't being respected ... tidy is replacing R^alpha_beta_5_delta's zeta index with a gamma index
 Riemann5_def = Riemann5_def:tidyIndexes{fixed=' \\alpha \\beta \\gamma \\delta'}
 
 Riemann5_def = betterSimplify(Riemann5_def)
@@ -1041,24 +1044,36 @@ printbr()
 
 -- TODO a 'safeReindex' or a 'relabelToUnusedIndex' function: same as reindex, but errors if the new destination index is already present
 printbr'Ricci tensor:'
+
+printbr(R5'_ab':eq(R5'^c_acb'))
+printbr()
+
 local Ricci5_def = Riemann5_def'^e_aeb'()
-	:reindex{[' \\alpha \\beta \\gamma \\delta'] = ' \\sigma \\alpha \\sigma \\beta'}
-	:replace(R' ^\\sigma _\\alpha _\\sigma _\\beta', R' _\\alpha _\\beta')
-	:replace(F' _\\sigma ^\\sigma', 0)()
-	:replace(F' _\\gamma ^\\gamma _;\\beta', 0)()
-	:replace(F' _\\sigma ^\\sigma _;\\beta', 0)()
+
+Ricci5_def = Ricci5_def:reindex{[' \\alpha \\beta \\gamma \\delta'] = ' \\sigma \\alpha \\sigma \\beta'}
+Ricci5_def = Ricci5_def:replace(R' ^\\sigma _\\alpha _\\sigma _\\beta', R' _\\alpha _\\beta')
+Ricci5_def = Ricci5_def:replace(F' _\\sigma ^\\sigma', 0)()
+Ricci5_def = Ricci5_def:replace(F' _\\gamma ^\\gamma _;\\beta', 0)()
+Ricci5_def = Ricci5_def:replace(F' _\\sigma ^\\sigma _;\\beta', 0)()
+printbr(R5'_ab':eq(Ricci5_def))
 
 Ricci5_def = betterSimplify(Ricci5_def:symmetrizeIndexes(conn4, {2,3}))
+printbr(R5'_ab':eq(Ricci5_def))
 Ricci5_def = Ricci5_def:symmetrizeIndexes(g, {1,2})()
+printbr(R5'_ab':eq(Ricci5_def))
 Ricci5_def = betterSimplify(Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'})
+printbr(R5'_ab':eq(Ricci5_def))
 Ricci5_def = Ricci5_def
 	:replace(F' _\\gamma _\\beta' * F' _\\alpha ^\\gamma', -F' _\\beta _\\gamma' * F'_\\alpha ^\\gamma')
 	:replace(F' _\\gamma _\\alpha' * F' _\\beta ^\\gamma', -F' _\\alpha ^\\gamma' * F'_\\beta _\\gamma')
+printbr(R5'_ab':eq(Ricci5_def))
 -- reindex only one of the sums.  why doesn't tidyIndexes() handle this?  maybe it does?
 Ricci5_def = Ricci5_def:replace(
 	A' _\\delta' * A' _\\gamma' * F' _\\alpha ^\\delta' * F' _\\beta ^\\gamma',
 	A' _\\delta' * A' _\\gamma' * F' _\\alpha ^\\gamma' * F' _\\beta ^\\delta')
+printbr(R5'_ab':eq(Ricci5_def))
 Ricci5_def = betterSimplify(Ricci5_def)
+printbr(R5'_ab':eq(Ricci5_def))
 if not constantScalarField then
 	Ricci5_def = Ricci5_def
 		:replace(phi_K' ^,\\gamma _,\\gamma', phi_K' _;\\gamma ^;\\gamma' - phi_K' ^,\\gamma' * conn4' ^\\delta _\\delta _\\gamma')
@@ -1071,29 +1086,23 @@ if not constantScalarField then
 		:replace(A' _\\gamma' * phi_K' ^,\\gamma', A' ^\\gamma' * phi_K' _,\\gamma')
 	
 	Ricci5_def = betterSimplify(Ricci5_def)
+	printbr(R5'_ab':eq(Ricci5_def))
 end
-
-printbr(R5'_ab':eq(R5'^c_acb'))
 printbr()
-printbr(R5'_ab':eq(Ricci5_def))
-printbr()
-
 
 printbr'Gaussian curvature:'
 
 local Gaussian5_def = (Ricci5_def'_ab' * g5U_def'^ab')()
 Gaussian5_def = Gaussian5_def:replace(R' _\\alpha _\\beta' * g' ^\\alpha ^\\beta', R)()
-Gaussian5_def = betterSimplify(Gaussian5_def:tidyIndexes()())
+Gaussian5_def = betterSimplify(Gaussian5_def:tidyIndexes()():symmetrizeIndexes(g, {1,2}))
 printbr(R5:eq(Gaussian5_def))
 
-Gaussian5_def = Gaussian5_def:replace( (A' _\\zeta' * g' ^\\zeta ^\\epsilon')(), A' ^\\epsilon' )()
-Gaussian5_def = Gaussian5_def:replace( (A' _\\epsilon' * g' ^\\zeta ^\\epsilon')(), A' ^\\zeta' )()
-Gaussian5_def = Gaussian5_def:replace( (A' _\\epsilon' * g' ^\\epsilon ^\\zeta')(), A' ^\\zeta' )()
+Gaussian5_def = Gaussian5_def:replaceIndex( (A' _\\alpha' * g' ^\\alpha ^\\beta')(), A' ^\\beta' )()
 printbr(R5:eq(Gaussian5_def))
 
-Gaussian5_def = Gaussian5_def:replace( F' _\\eta _\\epsilon' * g' ^\\zeta ^\\eta', -F' _\\epsilon ^\\zeta' )()
-Gaussian5_def = Gaussian5_def:replace( A' _\\zeta' * F' _\\theta ^\\zeta' * g' ^\\eta ^\\theta', -A' ^\\zeta' * F' _\\zeta ^\\eta' )()
-Gaussian5_def = Gaussian5_def:replace( A' _\\zeta' * F' _\\eta ^\\zeta' * g' ^\\eta ^\\theta', -A' ^\\zeta' * F' _\\zeta ^\\theta' )()
+Gaussian5_def = Gaussian5_def:replace( F' _\\gamma _\\beta' * g' ^\\alpha ^\\gamma', -F' _\\beta ^\\alpha' )()
+Gaussian5_def = Gaussian5_def:replace( A' _\\alpha' * g' ^\\alpha ^\\gamma', A' ^\\gamma')()
+printbr(R5:eq(Gaussian5_def))
 Gaussian5_def = Gaussian5_def:tidyIndexes()()
 printbr(R5:eq(Gaussian5_def))
 
@@ -1190,11 +1199,20 @@ printbr'Looking at the $\\tilde{G}_{5\\mu}$ components:'
 local EFE5_5_mu_def = EFE5_def:lhs()[1][2]:eq( EFE5_def:rhs()[1][2] )
 printbr(EFE5_5_mu_def)
 printbr'Isolating the Faraday tensor divergence:'
-local divF_from_EFE5_5_mu = betterSimplify(EFE5_5_mu_def:solve(F' _\\alpha ^\\epsilon _;\\epsilon '))
+local divF_from_EFE5_5_mu = betterSimplify(EFE5_5_mu_def:solve(F' _\\alpha ^\\gamma _;\\gamma '))
 printbr(divF_from_EFE5_5_mu)
 printbr('Substitute', R_from_EFE5)
-divF_from_EFE5_5_mu = betterSimplify(divF_from_EFE5_5_mu:subst(R_from_EFE5)) 
+
+-- within divF_from_EFE5_5_mu, R is multiplied by A_alpha ... but R's def holds alphas as sum indexes ...
+-- so this will introduce duplicate sums ...
+--divF_from_EFE5_5_mu = betterSimplify(divF_from_EFE5_5_mu:subst(R_from_EFE5))
+-- so either (A) reindex R_from_EFE5 manually ... 
+--divF_from_EFE5_5_mu = betterSimplify(divF_from_EFE5_5_mu:subst(R_from_EFE5:reindex{[' \\alpha \\beta \\gamma'] = ' \\mu \\nu \\rho'}))
+-- or (B) try to rely on substIndex ... (which has problem?)
+divF_from_EFE5_5_mu = betterSimplify(divF_from_EFE5_5_mu:substIndex(R_from_EFE5))
+
 printbr(divF_from_EFE5_5_mu)
+
 printbr[[And that conveniently cancelled a term.  Now let's substitute the definition of $\tilde{T}_{55}$]]
 local rho = var'\\rho'
 
@@ -1260,8 +1278,11 @@ EFE5_mu_nu_def = EFE5_mu_nu_def - EFE5_mu_nu_def[1] + R' _\\alpha _\\beta' - fra
 EFE5_mu_nu_def = EFE5_mu_nu_def:replace(R' _\\alpha _\\beta', G' _\\alpha _\\beta' + frac(1,2) * R * g' _\\alpha _\\beta')
 EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def)
 printbr(EFE5_mu_nu_def)
-printbr('Substitute', R_from_EFE5, A5_def)
-EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:subst(R_from_EFE5, A5_def))
+local tmp = R_from_EFE5:reindex{[' \\alpha \\beta \\gamma'] = ' \\mu \\nu \\rho'}
+printbr('Substitute', tmp, A5_def)
+-- does substindex induce errors here?
+--EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:substIndex(tmp, A5_def))
+EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:subst(tmp, A5_def))
 printbr(EFE5_mu_nu_def)
 printbr'Notice that substituting R conveniently cancelled another of the terms on the r.h.s,'
 if constantScalarField then
@@ -1271,12 +1292,14 @@ if constantScalarField then
 	printbr(EFE5_mu_nu_def)
 end
 local T_EM = var'T_{EM}'
-printbr('Let ', T_EM' _\\alpha _\\beta':eq(frac(1, mu_0) * (F' _\\alpha _\\mu' * F' _\\beta ^\\mu' - frac(1,4) * g' _\\alpha _\\beta' * F' _\\mu _\\nu' * F' ^\\mu ^\\nu')))
+local tmp = T_EM' _\\alpha _\\beta':eq(-frac(1, mu_0) * (F' _\\alpha ^\\mu' * F' _\\mu _\\beta' - frac(1,4) * g' _\\alpha _\\beta' * F' _\\mu ^\\nu' * F' _\\nu ^\\mu'))
+printbr('Let ', tmp)
+local so = tmp:solve(F' _\\alpha ^\\mu' * F' _\\mu _\\beta')
+printbr('So', so)
 -- T_EM_ab = 1/mu0 (F_au F_b^u - 1/4 g_ab F_uv F^uv)
 -- so F_ae F_b^e = mu0 T_EM_ab + 1/4 g_ab F_uv F^uv 
 EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:replace(
-	F' _\\beta _\\epsilon' * F' _\\alpha ^\\epsilon',
-	mu_0 * T_EM' _\\alpha _\\beta' - frac(1,4) * g' _\\alpha _\\beta' * F' _\\epsilon ^\\zeta' * F' _\\zeta ^\\epsilon'
+	F' _\\alpha ^\\gamma' * F' _\\beta _\\gamma', -so[2]:reindex{[' \\alpha \\mu _\\beta'] = ' \\alpha \\gamma \\beta'}
 ))
 printbr(EFE5_mu_nu_def)
 -- can't just say "replace R" because it will substitute the indexed R's ... 
@@ -1328,7 +1351,19 @@ T5_def = T5_def
 	:replace(g5' _\\alpha _5', g5_def[1][2])
 	:replace(g5' _\\beta _5', g5_def[2][1])
 	:replace(g5'_55', g5_def[2][2])
-	:subst(u5L_def, u5U_def, A5_def)
+
+	-- if I substitute u5L^2 then i'll get repeated indexes
+	:replace(
+		u5L_def[1]^2,
+		u5L_def[2]:reindex{[' \\beta'] = ' \\gamma'}
+		* u5L_def[2]:reindex{[' \\beta'] = ' \\delta'}
+	)
+	
+	:subst(
+		u5L_def:reindex{[' \\beta'] = ' \\gamma'},
+		u5U_def,
+		A5_def
+	)
 if constantScalarField then
 	T5_def = T5_def:subst(phi_K_def)
 end
