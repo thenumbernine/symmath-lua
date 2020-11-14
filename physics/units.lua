@@ -15,6 +15,7 @@ return function(args)
 	local ipairs = _G.ipairs
 	local setmetatable = _G.setmetatable
 	local setfenv = rawget(_G, 'setfenv')	-- might not be there in Lua >5.1
+	local getfenv = rawget(_G, 'getfenv')
 	local require = _G.require
 	local Gprint = _G.print	-- global print
 	local math = _G.math
@@ -26,30 +27,33 @@ return function(args)
 			x = rawget(env,k)
 			if x ~= nil then return x end
 			-- symmath
-			if k ~= 'tostring' then	
+			if k ~= 'tostring' then
 				x = rawget(symmath,k)
 				if x ~= nil then return x end
 			end
-			-- _G	
+			-- _G
 			--x = rawget(_G,k)
 			--if x ~= nil then return x end
 			return nil
 		end,
 	})
-	-- if implicitVars is set then I can't test things in _G ... 
+	-- if implicitVars is set then I can't test things in _G ...
 	-- which might make implicitVars a bad idea ...
 	-- TODO have setup() take an _ENV and only apply the meta index to that env ...
-	if setfenv ~= nil then 
-		setfenv(1, env) 
+	local oldenv
+	if setfenv ~= nil then
+		oldenv = getfenv(1)
+		setfenv(1, env)
 	else
-		_ENV = env 
+		oldenv = _ENV
+		_ENV = env
 	end
 
 	local MathJax
 	local lprint	-- local print, specific to symmath.tostring
 	if args.verbose then
 		MathJax = symmath.export.MathJax
-		symmath.tostring = MathJax 
+		symmath.tostring = MathJax
 		lprint = MathJax.print
 		Gprint(MathJax.Header('Natural Units'))
 	else
@@ -59,7 +63,7 @@ return function(args)
 	symmath.simplifyConstantPowers = true
 
 	-- make these available
-	c_value_in_m_per_s = 299792458 
+	c_value_in_m_per_s = 299792458
 	G_value_in_m3_per_kg_s2 = 6.67384e-11
 	k_e_value_in_kg_m3_per_C2_s2 = 8.9875517873681764e+9
 	e_value_in_C = 6.2415093414e+18
@@ -169,7 +173,7 @@ return function(args)
 			env[symbol] = v
 			env[symbol..'_in_SI'] = v_in_SI
 			env[symbol..'_in_m'] = v_in_m
-			lprint(name..': '..v_in_SI:eq(v_in_m:rhs()))	
+			lprint(name..': '..v_in_SI:eq(v_in_m:rhs()))
 		end
 	end
 
@@ -234,7 +238,7 @@ return function(args)
 	cSq_in_mu_0_epsilon_0 = (c^2):eq(1 / (mu_0 * epsilon_0))
 	lprint(cSq_in_mu_0_epsilon_0)
 	mu_0_in_SI_and_C = cSq_in_mu_0_epsilon_0:subst(epsilon_0_in_SI_and_C):subst(c_in_m_s):solve(mu_0):factorDivision()
-	lprint(mu_0_in_SI_and_C)	
+	lprint(mu_0_in_SI_and_C)
 	mu_0_in_m = cSq_in_mu_0_epsilon_0:subst(c_eq_1, epsilon_0_in_m):solve(mu_0)
 	lprint('in natural units:',mu_0_in_m)
 
@@ -265,7 +269,7 @@ return function(args)
 	K_in_m = K_in_SI:subst(SI_in_m:unpack())()
 	lprint('Kelvin:', K_in_SI:eq(K_in_m:rhs()))
 
-	-- Planck constant 
+	-- Planck constant
 	hBar = var'\\hbar'
 	hBar_in_s_J = hBar:eq(hBar_value * J * s)
 	hBar_in_m = hBar_in_s_J:subst(s_in_m, J_in_m)()
@@ -426,8 +430,8 @@ return function(args)
 		1.05457173e-34^-1 * 299792458^-1 = (kg * m^2 * s^-2) * m
 		1.05457173e-34^-1 * 299792458^-1 = J * m
 		J = 1.05457173e-34^-1 * 299792458^-1 * m^-1
-		J = 3.1630289880628e+025 * m^-1 
-		m = 3.1630289880628e+025 * J^-1 
+		J = 3.1630289880628e+025 * m^-1
+		m = 3.1630289880628e+025 * J^-1
 		... there's distance in units of inverse energy
 		c says
 		m = 3.1630289880628e+025 * J^-1 * (299792458 * m * s^-1)
@@ -467,14 +471,20 @@ return function(args)
 	--]]
 	
 	if args.verbose then
-		Gprint(MathJax.footer)		
+		Gprint(MathJax.footer)
 	end
 
-	-- by here we're done with the operations, 
+	-- by here we're done with the operations,
 	-- so we no longer need the lookup tables in the environment which point back to the global namespace
 	setmetatable(env, nil)
 	
-	symmath.simplifyConstantPowers = push 
+	symmath.simplifyConstantPowers = push
+
+	if setfenv ~= nil then
+		setfenv(1, oldenv)
+	else
+		_ENV = oldenv
+	end
 
 	return env
 end
