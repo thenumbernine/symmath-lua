@@ -1055,18 +1055,14 @@ Ricci5_def = Ricci5_def:replace(R' ^\\sigma _\\alpha _\\sigma _\\beta', R' _\\al
 Ricci5_def = Ricci5_def:replace(F' _\\sigma ^\\sigma', 0)()
 Ricci5_def = Ricci5_def:replace(F' _\\gamma ^\\gamma _;\\beta', 0)()
 Ricci5_def = Ricci5_def:replace(F' _\\sigma ^\\sigma _;\\beta', 0)()
-printbr(R5'_ab':eq(Ricci5_def))
 
 Ricci5_def = betterSimplify(Ricci5_def:symmetrizeIndexes(conn4, {2,3}))
-printbr(R5'_ab':eq(Ricci5_def))
 Ricci5_def = Ricci5_def:symmetrizeIndexes(g, {1,2})()
 printbr(R5'_ab':eq(Ricci5_def))
 Ricci5_def = betterSimplify(Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'})
-printbr(R5'_ab':eq(Ricci5_def))
 Ricci5_def = Ricci5_def
 	:replace(F' _\\gamma _\\beta' * F' _\\alpha ^\\gamma', -F' _\\beta _\\gamma' * F'_\\alpha ^\\gamma')
 	:replace(F' _\\gamma _\\alpha' * F' _\\beta ^\\gamma', -F' _\\alpha ^\\gamma' * F'_\\beta _\\gamma')
-printbr(R5'_ab':eq(Ricci5_def))
 -- reindex only one of the sums.  why doesn't tidyIndexes() handle this?  maybe it does?
 Ricci5_def = Ricci5_def:replace(
 	A' _\\delta' * A' _\\gamma' * F' _\\alpha ^\\delta' * F' _\\beta ^\\gamma',
@@ -1279,10 +1275,10 @@ EFE5_mu_nu_def = EFE5_mu_nu_def:replace(R' _\\alpha _\\beta', G' _\\alpha _\\bet
 EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def)
 printbr(EFE5_mu_nu_def)
 local tmp = R_from_EFE5:reindex{[' \\alpha \\beta \\gamma'] = ' \\mu \\nu \\rho'}
-printbr('Substitute', tmp, A5_def)
+printbr('Substitute', tmp, ',', A5_def)
 -- does substindex induce errors here?
 --EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:substIndex(tmp, A5_def))
-EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:subst(tmp, A5_def))
+EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:subst(tmp, A5_def):tidyIndexes{fixed=' \\alpha \\beta'})
 printbr(EFE5_mu_nu_def)
 printbr'Notice that substituting R conveniently cancelled another of the terms on the r.h.s,'
 if constantScalarField then
@@ -1300,7 +1296,7 @@ printbr('So', so)
 -- so F_ae F_b^e = mu0 T_EM_ab + 1/4 g_ab F_uv F^uv 
 EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:replace(
 	F' _\\alpha ^\\gamma' * F' _\\beta _\\gamma', -so[2]:reindex{[' \\alpha \\mu _\\beta'] = ' \\alpha \\gamma \\beta'}
-))
+):tidyIndexes{fixed=' \\alpha \\beta'})
 printbr(EFE5_mu_nu_def)
 -- can't just say "replace R" because it will substitute the indexed R's ... 
 -- but I'll replace the R_αβ - 1/2 R g_αβ with G_αβ
@@ -1313,14 +1309,16 @@ local EFE5_mu_nu_def_A = betterSimplify(EFE5_mu_nu_def:subst(
 	k_e_in_mu_0
 ))
 printbr(EFE5_mu_nu_def_A)
-printbr'Substitute our specific stress-energy and four-current definitions:'
+printbr'Alternatively, substitute our specific stress-energy and four-current definitions:'
+local divF_from_EFE5_5_mu_J = divF_from_EFE5_5_mu_J:solve(F' _\\alpha ^\\gamma _;\\gamma')
 local EFE5_mu_nu_def_B = betterSimplify(EFE5_mu_nu_def:subst(
 	divF_from_EFE5_5_mu_J,
 	divF_from_EFE5_5_mu_J:reindex{[' \\alpha'] = ' \\beta'},
+	R_from_EFE5:reindex{[' \\alpha \\beta \\gamma'] = ' \\mu \\nu \\rho'},
 	A5_def,
 	phi_K_def,
 	k_e_in_mu_0
-))
+):tidyIndexes{fixed=' \\alpha \\beta'})
 printbr(EFE5_mu_nu_def_B)
 printbr()
 
