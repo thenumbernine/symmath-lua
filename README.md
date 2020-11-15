@@ -779,6 +779,8 @@ Output CDN URLs:
 
 [tests/output/Kaluza-Klein - index](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20index.html)
 
+[tests/output/Kaluza-Klein - real world values](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20real%20world%20values.html)
+
 [tests/output/Kaluza-Klein - varying scalar field - index](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20varying%20scalar%20field%20%2d%20index.html)
 
 [tests/output/Kaluza-Klein](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein.html)
@@ -820,6 +822,8 @@ Output CDN URLs:
 [tests/output/Schwarzschild - spherical](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical.html)
 
 [tests/output/TOV](https://thenumbernine.github.io/symmath/tests/output/TOV.html)
+
+[tests/output/console_spherical_metric](https://thenumbernine.github.io/symmath/tests/output/console_spherical_metric.html)
 
 [tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
 
@@ -888,6 +892,10 @@ Output CDN URLs:
 [tests/output/metric catalog/spherical, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20coordinate.html)
 
 [tests/output/metric catalog/spherical, log-radial, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20log%2dradial%2c%20coordinate.html)
+
+[tests/output/metric catalog/spherical, sinh-radial, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20sinh%2dradial%2c%20anholonomic%2c%20orthonormal.html)
+
+[tests/output/metric catalog/spherical, sinh-radial, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20sinh%2dradial%2c%20coordinate.html)
 
 [tests/output/metric catalog/spiral, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spiral%2c%20coordinate.html)
 
