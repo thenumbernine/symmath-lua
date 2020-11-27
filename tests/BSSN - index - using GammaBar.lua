@@ -258,7 +258,7 @@ local W_def = W:eq(frac(gammaHat, gamma)^frac(1,6))
 printbr(W_def)
 local W_from_chi = W:eq(sqrt(chi))
 printbr(W_from_chi)
-local W_from_phi = W:eq(exp(-4 * phi))()
+local W_from_phi = W:eq(exp(-2 * phi))()
 printbr(W_from_phi)
 printbr()
 

@@ -273,8 +273,9 @@ printbr'<hr>'
 -- I should put this in its own worksheet ...
 printbr'What if we require a unit 5-velocity?'
 
-local unitVelEqn = (g5'_ab' * u'^a' * u'^b'):eq(-1)()
-printbr(unitVelEqn)
+local origUnitVelEqn = (g5'_ab' * u'^a' * u'^b'):eq(-1)()
+printbr(origUnitVelEqn)
+local unitVelEqn = origUnitVelEqn:clone()
 
 printbr'split off spacetime indexes'
 --unitVelEqn[1] = splitTermIndexes(unitVelEqn[1], {a = {' \\alpha', 5}, b = {' \\beta ', 5}})
@@ -291,11 +292,19 @@ unitVelEqn = unitVelEqn
 	:replace(g5_parts[2][2], g5_def[2][2])()
 printbr(unitVelEqn)
 
+unitVelEqn = (unitVelEqn + 1)():replace(g' _\\alpha _\\beta' * u' ^\\alpha' * u' ^\\beta', u' _\\mu' * u' ^\\mu')
+printbr(unitVelEqn)
+
+local solns = table{unitVelEqn:solve(u'^5')}:mapi(function(soln)
+	return (soln:replace(A' _\\alpha'^2 * u' ^\\alpha'^2, A' _\\alpha' * u' ^\\alpha' * A' _\\beta' * u' ^\\beta'))():reindex{[' \\alpha'] = ' \\mu'}
+end)
+printbr(solns:mapi(tostring):concat',')
+
 --printbr('Assume', ( g' _\\alpha _\\beta' * u' ^\\alpha' * u' ^\\beta' ):eq(-1))
 --unitVelEqn = unitVelEqn:replace( (g' _\\alpha _\\beta' * u' ^\\alpha' * u' ^\\beta')(), -1)()
 --printbr(unitVelEqn)
 
-printbr('Solve quadratic for', A'_5' * u'^5', '...')
+printbr('Solve quadratic for', u'^5', ':')
 local plusminus = class(require 'symmath.op.sub', {name='\\pm'})
 plusminus.rules = nil
 local u5_for_A5_def = u'^5':eq(
@@ -303,15 +312,16 @@ local u5_for_A5_def = u'^5':eq(
 		plusminus(
 			-A' _\\mu' * u' ^\\mu',
 			sqrt(
-				(A' _\\mu' * u' ^\\mu')^2 - phi_K^-2 * (u' _\\mu' * u' ^\\mu' + 1)
+				-phi_K^-2 * (u' _\\mu' * u' ^\\mu' + 1)
 			)
 		)
 	)
 )
 printbr(u5_for_A5_def)
 -- TODO I'm redefining this because betterSimplify()ing sqrts seems to make ^(1/2)'s pop up everywhere
-local u5_for_A5_when_u4norm_is_unit = u'^5':eq( -2 * frac(1,A'_5') * A' _\\mu' * u' ^\\mu' )
-printbr([[Notice that if we assume $u_\mu u^\mu = -1$ then this simplifies to]], u5_for_A5_when_u4norm_is_unit, [[, however in reality things might instead be $u_\mu u^\mu \approx -1$]])
+local u5_for_A5_when_u4norm_is_unit = u'^5':eq( -frac(1,A'_5') * A' _\\mu' * u' ^\\mu' )
+printbr([[Notice that if we assume $u_\mu u^\mu = -1$ then this simplifies to]], u5_for_A5_when_u4norm_is_unit)
+printbr([[However since]], origUnitVelEqn, [[, it might instead be that $u_\mu u^\mu \approx -1$]])
 printbr()
 
 printbr'If we substitute our definition for $u^5$ then the solution of the quadratic looks like:'
@@ -319,10 +329,44 @@ u5_for_A5_def = u5_for_A5_def:subst(u5U_def)
 printbr(u5_for_A5_def)
 u5_for_A5_def = betterSimplify(u5_for_A5_def * 4 * sqrt(frac(G, k_e))):replace(A' _\\mu'^2 * u' ^\\mu'^2, (A' _\\mu' * u' ^\\mu')^2)
 printbr(u5_for_A5_def)
-printbr('And for a detour, what if we substitute', A5_def, ',', phi_K_def, '?')
-u5_for_A5_def = betterSimplify(u5_for_A5_def:subst(A5_def, phi_K_def)):replace(A' _\\mu'^2 * u' ^\\mu'^2, (A' _\\mu' * u' ^\\mu')^2)
-printbr(u5_for_A5_def)
 printbr()
+
+--[[
+is E ~ u?
+but ...
+J = rho/k u ... by charge conservation and charge current conservation?
+using: J = sigma E
+so u = sigma k / rho E
+so u ~ E
+in that case, E ~ rho/k u
+
+
+J = -eps0/mu0 d/dt E ... by Maxwell / Ampere's law, with the approx that curl B = 0
+--]]
+printbr[[Now if $J^\mu = \sigma E^\mu$, and $c \frac{q}{M} \rho u^\mu = J^\mu$, then $u^\mu = \frac{\sigma M}{c \rho q} E^\mu$.]]
+printbr[[And $E_\mu = (A_{\nu,\mu} - A_{\mu,\nu}) n^\nu$.]]
+printbr[[In Minkowski metric, $E_\mu = A_{0,\mu} - A_{\mu,0}$, so for $|A_{0,i}| << |A_{i,0}|$ we see that $E_i \approx -\dot{A}_i$.]]
+printbr[[So if $\dot{A}_\mu \approx -E_\mu \approx k u_\mu$ and $\dot{x}_\mu = u_\mu$ then $A_\mu \approx x_\mu$.]]
+printbr[[Also, since $u_\mu u^\mu \approx -1$, we know motion in relativity is constrained by $u_\mu x^\mu = 0$.]]
+printbr[[Therefore $A_\mu u^\mu \approx 0$.]]
+printbr('So what does it look like if we invoke the gauge that', (A' _\\mu' * u' ^\\mu'):eq(0), '?')
+local tmp = betterSimplify(u5_for_A5_def:replaceIndex(A' _\\mu' * u' ^\\mu', 0))
+printbr(tmp)
+printbr[[Now without approximations:]]
+printbr[[$J^\mu = \sigma_{\mu\nu} E^\nu$]]
+printbr[[$c \frac{q}{M} \rho u^\mu = J^\mu$]]
+printbr[[$u^\mu = \frac{M}{c \rho q} \sigma_{\mu\nu} E^\nu$]]
+printbr[[$u^\mu = 2 \frac{M}{c \rho q} \sigma^{\mu\nu} A_{[\nu,\rho]} n^\rho$]]
+printbr[[$x_\mu u^\mu = 0$ ... is it?]]
+printbr[[Therefore $x_\mu \sigma^{\mu\nu} A_{[\nu,\rho]} n^\rho = 0$]]
+printbr()
+
+printbr('For another detour, what if we substitute', A5_def, ',', phi_K_def, '?')
+local tmp = betterSimplify(u5_for_A5_def:subst(A5_def, phi_K_def)):replace(A' _\\mu'^2 * u' ^\\mu'^2, (A' _\\mu' * u' ^\\mu')^2)
+printbr(tmp)
+printbr()
+
+printbr[[<hr>]]
 
 printbr[[Let's look at the magnitude of this for some real-world values.]]
 printbr[[Electrons in a copper wire (from my 'magnetic field from a boosted charge' worksheet).]]
@@ -355,7 +399,7 @@ printbr[[So $A_\mu u^\mu = A_0 u^0 = \frac{1}{c} \phi_q \gamma = $ {=={ A_dot_u 
 printbr[[And $\frac{1}{A_5} A_\mu u^\mu = $ {=={ A_dot_u_over_A5L = A_dot_u / A5L }==} $ + \frac{1}{c A_5} \phi''_q \gamma$]]
 printbr()
 printbr[[Assume $u_\mu u^\mu = -1$.]]
-printbr[[$u^5 = -2 \frac{1}{A_5} A_\mu u^\mu = $ {=={ -2 * A_dot_u_over_A5L }==} $ - \frac{1}{c A_5} \gamma \phi''_q$]]
+printbr[[$u^5 = -\frac{1}{A_5} A_\mu u^\mu = $ {=={ -A_dot_u_over_A5L }==} $ - \frac{1}{c A_5} \gamma \phi''_q$]]
 printbr()
 printbr[[Let's insert this into the $u^5$ equation above and solve to find what $\phi''_q$ would be:]]
 -- TODO keep converting
@@ -382,17 +426,18 @@ any deviations in the electric potential $A_t$ could relate to deviations in the
 Let's look at $\delta u^5$ with respect to $\delta u^\mu$ in the constraint above:<br>
 
 $ \delta u^5 = 
--\frac{1}{(A_5)^2} \delta A_5 ( -A_\mu u^\mu \pm \sqrt{
-	(A_\mu u^\mu)^2 - {\phi_K}^{-2} ( u_\mu u^\mu + 1)
+-\frac{1}{(A_5)^2} \delta A_5 ( -A_\mu u^\mu \pm {\phi_K}^{-1} \sqrt{
+	-u_\mu u^\mu - 1
 } ) + \frac{1}{A_5} (
 	- \delta A_\mu u^\mu - A_\mu \delta u^\mu 
 	\pm \frac{
-		A_\mu u^\mu (\delta A_\mu u^\mu + A_\mu \delta u^\mu)
-		+ {\phi_K}^{-3} \delta \phi_K (u_\mu u^\mu + 1)
+		{\phi_K}^{-3} \delta \phi_K (u_\mu u^\mu + 1)
 		- {\phi_K}^{-2} u_\mu \delta u^\mu
-	}{\sqrt{
-		(A_\mu u^\mu)^2 - {\phi_K}^{-2} (u_\mu u^\mu + 1)
-	}}
+	}{
+		{\phi_K}^{-1} \sqrt{
+			-(u_\mu u^\mu + 1)
+		}
+	}
 )
 $<br>
 
@@ -401,7 +446,7 @@ $ \frac{\delta u^5}{\delta (u_\mu u^\mu)} =
 \mp \frac{
 	1
 }{2 A_5 {\phi_K}^2 \sqrt{
-	(A_\mu u^\mu)^2 - {\phi_K}^{-2} (u_\mu u^\mu + 1)
+	-{\phi_K}^{-2} (u_\mu u^\mu + 1)
 }}
 $<br>
 ...and if $A_5 = 2 (\phi_K)^{-1}$...<br>
@@ -409,7 +454,7 @@ $ \frac{\delta u^5}{\delta (u_\mu u^\mu)} =
 \mp \frac{
 	1
 }{4 \sqrt{
-	4 (\frac{1}{A_5} A_\mu u^\mu)^2 - u_\mu u^\mu + 1
+	- u_\mu u^\mu + 1
 }}
 $<br>
 

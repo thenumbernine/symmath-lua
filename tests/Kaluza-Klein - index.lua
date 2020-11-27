@@ -514,20 +514,21 @@ printbr()
 
 
 
-printbr'separate space and time, substitute spacetime geodesic with Newtonian gravity, etc:'
+printbr'Separate space and time, substitute spacetime geodesic with Newtonian gravity, etc:'
 printbr()
 
-printbr'spatial evolution:'
+printbr'Spatial evolution:'
 local spatialGeodesic_def = spacetimeGeodesic_def:reindex{[' \\alpha']='i'}
 printbr(spatialGeodesic_def)
-printbr'splitting spacetime indexes into space+time'
+printbr[[Notice, if we assume $A_\mu u^\mu = 0$ then we are left only with terms for gravitational acceleration the and Lorentz force.]]
+printbr'Splitting spacetime indexes into space+time'
 spatialGeodesic_def = splitIndexes(spatialGeodesic_def, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
 spatialGeodesic_def = betterSimplify(spatialGeodesic_def * c^2)	-- multiply by c^2 <=> convert units of rhs to m/s^2 
 printbr(spatialGeodesic_def)
 
 -- TODO just use a Lorentz factor and don't approximate anything
 -- same with the Faraday tensor substitutions ... just use an ADM metric breakdown
-printbr('low-velocity approximation:', u'^0':eq(1))
+printbr('Low-velocity approximation:', u'^0':eq(1))
 spatialGeodesic_def = betterSimplify(spatialGeodesic_def:replace(u'^0', 1))
 printbr(spatialGeodesic_def)
 
