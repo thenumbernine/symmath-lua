@@ -135,6 +135,7 @@ for i,eqn in ipairs(eqns) do
 	printbr('variable: '..lhs[1])
 	io.stderr:write('variable: '..lhs[1]..'\n')
 	io.stderr:flush()
+	printbr('rhs:'..rhs)
 
 local origRhs = rhs
 	rhs = rhs:factorDivision()
@@ -178,15 +179,15 @@ local origRhs = rhs
 		-- var'K'
 		-- var'R'
 		-- var'W'
-	printbr(rhs)
+	printbr('new rhs:', rhs)
 
 --[[	
 	rhs = rhs:simplify()	-- dies at the end as well 
 --]]
---[[	
+-- [[
 	rhs = rhs:factorDivision()	-- got all the way to LambdaBar 
 --]]
--- [[ dies at epsilonBar
+--[[ dies at epsilonBar
 	if lhs == var'\\beta''^i_,t' then
 		rhs = rhs:simplify()
 	else
@@ -248,7 +249,10 @@ io.stderr:flush()
 		Tensor(variance, function(...)
 			local is = table{...}
 			if not rhs[is] then
-				local msg = ("failed to find "..lhs.." "..is:concat','.." from orig eqn "..origRhs )
+				local msg = ("failed to find "..tostring(lhs).."["..is:concat','.."]<br>\n"
+							.."from orig eqn "..origRhs.."["..is:concat','.."]<br>\n"
+							.."rhs "..tostring(rhs).."<br>\n"
+							.."rhs["..is:concat','.."] = "..tostring(rhs[is]))
 				printbr(msg)
 				error(msg)
 			end

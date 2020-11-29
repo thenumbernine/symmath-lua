@@ -12,6 +12,8 @@ return function(env, title)
 	end
 
 	function env.asserteq(a,b)
+		assert(a ~= nil)
+		assert(b ~= nil)
 		local sa = symmath.simplify(a)
 		local ta = symmath.simplify.stack
 		local sb = symmath.simplify(b)

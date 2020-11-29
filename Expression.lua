@@ -412,7 +412,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 	local function rfind(x)
 		if TensorRef.is(x) then
 			for i=2,#x do
-				rfindsymbols[x[i].symbol] = true
+				rfindsymbols:insertUnique(x[i].symbol)
 			end
 		elseif Expression.is(x) then
 			for i=1,#x do
@@ -421,19 +421,18 @@ function Expression:replaceIndex(find, repl, cond, args)
 		end
 	end
 	rfind(self)
-	local selfsymbols = rfindsymbols:keys()
+	local selfsymbols = table(rfindsymbols)
 	rfindsymbols = table()
 	rfind(find)
-	local findsymbols = rfindsymbols:keys()
+	local findsymbols = table(rfindsymbols)
 	rfindsymbols = table()
 	rfind(repl)
-	local replsymbols = rfindsymbols:keys()
+	local replsymbols = table(rfindsymbols)
 
---[[
-printbr('selfsymbols', selfsymbols:unpack())
-printbr('findsymbols', findsymbols:unpack())
-printbr('replsymbols', replsymbols:unpack())
---]]
+--printbr('selfsymbols', selfsymbols:unpack())
+--printbr('findsymbols', findsymbols:unpack())
+--printbr('replsymbols', replsymbols:unpack())
+	
 	-- TODO, (a * b'^i'):replaceIndex(a, c'^i' * c'_i')) produces c'^i' * c'_i' * b'^i', not c'^j' * c'_j' * b'^i'
 	-- if repl contains a sum index which is already present in the expression then it won't reindex
 
@@ -506,8 +505,6 @@ printbr('replsymbols', replsymbols:unpack())
 				end)
 				-- reindex will convert xsymbols to findsymbols
 
---local tolua = require 'ext.tolua'
-
 				-- find new symbols that aren't in selfsymbols
 				local newsumsymbols = table()
 				local function getnewsymbol()
@@ -531,9 +528,10 @@ printbr('replsymbols', replsymbols:unpack())
 					newsumsymbols:insert(getnewsymbol())
 				end
 				newsumusedalready:append(newsumsymbols)
---print('selfsymbols', tolua(selfsymbols))
---print('xsymbols', tolua(xsymbols))
---print('newsumsumbols', tolua(newsumsymbols))
+--printbr('selfsymbols', require 'ext.tolua'(selfsymbols))
+--printbr('xsymbols', require 'ext.tolua'(xsymbols))
+--printbr('newsumsymbols', require 'ext.tolua'(newsumsymbols))
+--printbr('numsumusedalready', require 'ext.tolua'(numsumusedalready))
 
 -- TODO also go through and all the other replsymbols
 -- (i.e. sum indexes)

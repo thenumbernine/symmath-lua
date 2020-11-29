@@ -210,6 +210,7 @@ build = {
 		["symmath.tests.unit.match"] = "tests/unit/match.lua",
 		["symmath.tests.unit.matrix"] = "tests/unit/matrix.lua",
 		["symmath.tests.unit.replace"] = "tests/unit/replace.lua",
+		["symmath.tests.unit.replaceIndex"] = "tests/unit/replaceIndex.lua",
 		["symmath.tests.unit.run all tests"] = "tests/unit/run all tests.lua",
 		["symmath.tests.unit.sets"] = "tests/unit/sets.lua",
 		["symmath.tests.unit.simplifyMetrics"] = "tests/unit/simplifyMetrics.lua",
