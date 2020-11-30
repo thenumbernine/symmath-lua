@@ -38,7 +38,7 @@
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq( a'^a':replaceIndex(a'^b', b'^b' + c'^bc' * d'_c'), b'^a' + c'^ab' * d'_b' )</code>
+<code>asserteq( a'^a':replaceIndex(a'^b', b'^b' + c'^bc' * d'_c'), b'^a' + c'^ac' * d'_c' )</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -57,6 +57,27 @@
 <tr><td>
 <b></b><br>
 <code>asserteq( a'_ab':replaceIndex(a'_uv', b'_vu'), b'_ba')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'_ba':replaceIndex(a'_uv', b'_vu'), b'_ab')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'_ab':replaceIndex(a'_vu', b'_uv'), b'_ba')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'_ba':replaceIndex(a'_vu', b'_uv'), b'_ab')</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -99,33 +120,30 @@
 <code></code>
 </td><td>
 <tr><td>
-<b>what should this produce?  Technically it is invalid match, only matching one index.  All indexes should match for a replacement to be made.  Technically this maybe should be an error?</b><br>
-<code>asserteq( (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv'), a'_a' + c'_ab' * c'^b')</code>
+<b>what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?</b><br>
+<code>asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end)</code>
 </td><td>
-expected ${{ a}_a} + {{{{{ c}_b}_b}} {{{ c}^b}}}$ to equal ${{ a}_a} + {{{{{ c}_a}_b}} {{{ c}^b}}}$<br>
-instead found ${{ a}_a} + {{{{ c}^b}} {{{{ c}_b}_b}}}$ vs ${{ a}_a} + {{{{ c}^b}} {{{{ c}_a}_b}}}$<br>
-lhs stack<br>
-init	${{ a}_a} + {{{{{ c}_b}_b}} {{{ c}^b}}}$	<br>
-prune	${{ a}_a} + {{{{ c}^b}} {{{{ c}_b}_b}}}$	<br>
-expand	${{ a}_a} + {{{{ c}^b}} {{{{ c}_b}_b}}}$	<br>
-prune	${{ a}_a} + {{{{ c}^b}} {{{{ c}_b}_b}}}$	<br>
-factor	${{ a}_a} + {{{{ c}^b}} {{{{ c}_b}_b}}}$	<br>
-prune	${{ a}_a} + {{{{ c}^b}} {{{{ c}_b}_b}}}$	<br>
-rhs stack<br>
-init	${{ a}_a} + {{{{{ c}_a}_b}} {{{ c}^b}}}$	<br>
-prune	${{ a}_a} + {{{{ c}^b}} {{{{ c}_a}_b}}}$	<br>
-expand	${{ a}_a} + {{{{ c}^b}} {{{{ c}_a}_b}}}$	<br>
-prune	${{ a}_a} + {{{{ c}^b}} {{{{ c}_a}_b}}}$	<br>
-factor	${{ a}_a} + {{{{ c}^b}} {{{{ c}_a}_b}}}$	<br>
-prune	${{ a}_a} + {{{{ c}^b}} {{{{ c}_a}_b}}}$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:28: failed<br>stack traceback:<br>
-	./unit.lua:92: in function <./unit.lua:91><br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'^a_ab':replaceIndex(a'^a_ab', b'_b'), b'_b')</code>
+</td><td>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/Expression.lua:739: reindex key and value length needs to match.  got {"b", "a"} with 2 entries vs {"a", "a", "b"} with 3 entries<br>stack traceback:<br>
+	./unit.lua:93: in function <./unit.lua:92><br>
 	[C]: in function 'error'<br>
-	./unit.lua:28: in function 'asserteq'<br>
-	[string "asserteq( (a'_a' + b'_ab' * c'^b'):replaceInd..."]:1: in main chunk<br>
-	./unit.lua:84: in function <./unit.lua:83><br>
+	/home/chris/Projects/lua/symmath/Expression.lua:739: in function 'reindex'<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:548: in function 'callback'<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:486: in function 'replaceIndex'<br>
+	[string "asserteq( a'^a_ab':replaceIndex(a'^a_ab', b'_..."]:1: in main chunk<br>
+	./unit.lua:85: in function <./unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
-	./unit.lua:83: in function 'exec'<br>
-	./replaceIndex.lua:34: in main chunk<br>
-	[C]: at 0x5628a524f1c0
+	./unit.lua:84: in function 'exec'<br>
+	./replaceIndex.lua:39: in main chunk<br>
+	[C]: at 0x55a3f18e31c0
 </td></tr>

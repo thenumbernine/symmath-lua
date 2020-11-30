@@ -561,8 +561,6 @@ dt_W_def = dt_W_def:substIndex(tr_connBar_l_from_det_gammaBar:reindex{j='k'})
 printbr(dt_W_def)
 printbr()
 
-os.exit()
-
 
 --[[
 printHeader'conformal W partial wrt $\\phi$:'

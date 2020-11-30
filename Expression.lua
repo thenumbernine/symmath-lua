@@ -408,31 +408,37 @@ function Expression:replaceIndex(find, repl, cond, args)
 	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being 
 	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
 
-	local rfindsymbols = table()
-	local function rfind(x)
-		if TensorRef.is(x) then
-			for i=2,#x do
-				rfindsymbols:insertUnique(x[i].symbol)
-			end
-		elseif Expression.is(x) then
-			for i=1,#x do
-				rfind(x[i])
+	local selfFixed, selfSum = self:getIndexesUsed()
+	local findFixed, findSum = find:getIndexesUsed()
+	local replFixed, replSum = repl:getIndexesUsed()
+	local selfsymbols = selfFixed:mapi(function(i) return i.symbol end)
+		:append(selfSum:mapi(function(i) return i.symbol end))
+	local findsymbols = findFixed:mapi(function(i) return i.symbol end)
+		:append(findSum:mapi(function(i) return i.symbol end))
+	local replsymbols = replFixed:mapi(function(i) return i.symbol end)
+		:append(replSum:mapi(function(i) return i.symbol end))
+
+	if #findFixed ~= #replFixed then
+		error("your 'find' and 'replace' expressions have a different number of fixed indexes")
+	end
+	do
+		-- sort before comparing so that find/repl doesn't error when the caller wants to rearrange index orders
+		local cmp = function(a,b) 
+			-- compare lowers too?
+			return a.symbol < b.symbol 
+		end
+		local fs = table(findFixed):sort(cmp)
+		local rs = table(replFixed):sort(cmp)
+		for i=1,#findFixed do
+			if fs[i] ~= rs[i] then
+				error("'find' and 'replace' expressions' differe: 'find' has "
+					..fs:mapi(tostring):concat', '
+					.." while 'replace' has "
+					..rs:mapi(tostring):concat', ')
 			end
 		end
 	end
-	rfind(self)
-	local selfsymbols = table(rfindsymbols)
-	rfindsymbols = table()
-	rfind(find)
-	local findsymbols = table(rfindsymbols)
-	rfindsymbols = table()
-	rfind(repl)
-	local replsymbols = table(rfindsymbols)
 
---printbr('selfsymbols', selfsymbols:unpack())
---printbr('findsymbols', findsymbols:unpack())
---printbr('replsymbols', replsymbols:unpack())
-	
 	-- TODO, (a * b'^i'):replaceIndex(a, c'^i' * c'_i')) produces c'^i' * c'_i' * b'^i', not c'^j' * c'_j' * b'^i'
 	-- if repl contains a sum index which is already present in the expression then it won't reindex
 

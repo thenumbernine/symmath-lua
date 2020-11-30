@@ -29,6 +29,7 @@ return function(env, title)
 		end
 	end
 
+	-- TODO expect a specific error message
 	function env.asserterror(f)
 		local result = xpcall(f, function() end)
 		assert(not result, "expected an error, but found none")
