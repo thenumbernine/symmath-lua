@@ -411,12 +411,13 @@ function Expression:replaceIndex(find, repl, cond, args)
 	local selfFixed, selfSum = self:getIndexesUsed()
 	local findFixed, findSum = find:getIndexesUsed()
 	local replFixed, replSum = repl:getIndexesUsed()
-	local selfsymbols = selfFixed:mapi(function(i) return i.symbol end)
-		:append(selfSum:mapi(function(i) return i.symbol end))
-	local findsymbols = findFixed:mapi(function(i) return i.symbol end)
-		:append(findSum:mapi(function(i) return i.symbol end))
-	local replsymbols = replFixed:mapi(function(i) return i.symbol end)
-		:append(replSum:mapi(function(i) return i.symbol end))
+
+printbr('selfFixed: '..require 'ext.tolua'(selfFixed))
+printbr('selfSum: '..require 'ext.tolua'(selfSum))
+printbr('findFixed: '..require 'ext.tolua'(findFixed))
+printbr('findSum: '..require 'ext.tolua'(findSum))
+printbr('replFixed: '..require 'ext.tolua'(replFixed))
+printbr('replSum: '..require 'ext.tolua'(replSum))
 
 	if #findFixed ~= #replFixed then
 		error("your 'find' and 'replace' expressions have a different number of fixed indexes")
@@ -442,21 +443,24 @@ function Expression:replaceIndex(find, repl, cond, args)
 	-- TODO, (a * b'^i'):replaceIndex(a, c'^i' * c'_i')) produces c'^i' * c'_i' * b'^i', not c'^j' * c'_j' * b'^i'
 	-- if repl contains a sum index which is already present in the expression then it won't reindex
 
-	local sumsymbols = table()	
-	if #replsymbols > #findsymbols then
-		for _,replsymbol in ipairs(replsymbols) do
-			if not findsymbols:find(replsymbol) 
-			and not sumsymbols:find(replsymbol)
-			then
-				sumsymbols:insert(replsymbol)
-			end
-		end
-	end
+	local sumsymbols = replSum:mapi(function(i) return i.symbol end)
+	local selfsymbols = selfFixed:mapi(function(i) return i.symbol end)
+		:append(selfSum:mapi(function(i) return i.symbol end))
+	local findsymbols = findFixed:mapi(function(i) return i.symbol end)
+		:append(findSum:mapi(function(i) return i.symbol end))
+	local replsymbols = replFixed:mapi(function(i) return i.symbol end)
+		:append(replSum:mapi(function(i) return i.symbol end))
 
 	-- for Gamma^i_jk = gamma^im Gamma_mjk
 	-- findsymbols = ijk
 	-- replsymbols = ijkm
 	-- sumsymbols = m
+
+-- TODO
+-- so if there are sum symbols in 'self' then
+-- make sure there are equivalent sum symbols in 'find'
+-- and then create a mapping between them
+-- and do not pick new symbols to replace them with
 
 	if TensorRef.is(find) then
 		
@@ -506,9 +510,9 @@ function Expression:replaceIndex(find, repl, cond, args)
 			
 			and sameVariance(x, find)
 			then
-				local xsymbols = range(2,#x):map(function(i)
-					return x[i].symbol
-				end)
+				local xFixed, xSum = x:getIndexesUsed()
+				local xsymbols = xFixed:mapi(function(i) return i.symbol end)
+					:append(xSum:mapi(function(i) return i.symbol end))
 				-- reindex will convert xsymbols to findsymbols
 
 				-- find new symbols that aren't in selfsymbols
@@ -534,10 +538,10 @@ function Expression:replaceIndex(find, repl, cond, args)
 					newsumsymbols:insert(getnewsymbol())
 				end
 				newsumusedalready:append(newsumsymbols)
---printbr('selfsymbols', require 'ext.tolua'(selfsymbols))
---printbr('xsymbols', require 'ext.tolua'(xsymbols))
---printbr('newsumsymbols', require 'ext.tolua'(newsumsymbols))
---printbr('numsumusedalready', require 'ext.tolua'(numsumusedalready))
+printbr('selfsymbols', require 'ext.tolua'(selfsymbols))
+printbr('xsymbols', require 'ext.tolua'(xsymbols))
+printbr('newsumsymbols', require 'ext.tolua'(newsumsymbols))
+printbr('numsumusedalready', require 'ext.tolua'(numsumusedalready))
 
 -- TODO also go through and all the other replsymbols
 -- (i.e. sum indexes)

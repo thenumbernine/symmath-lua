@@ -9,9 +9,50 @@
 
 <table border="1" style="border-collapse:collapse">
 <tr><td>
-<b>variance must match in order for the replace to work</b><br>
-<code>asserteq( a'_a':replaceIndex(a'^u', b'^u'), a'_a')</code>
+<b></b><br>
+<code>asserteq( a:replaceIndex(a, b), b )</code>
 </td><td>
+selfFixed: {}
+<br>
+selfSum: {}
+<br>
+findFixed: {}
+<br>
+findSum: {}
+<br>
+replFixed: {}
+<br>
+replSum: {}
+<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>variance must match in order for the replace to work</b><br>
+<code>asserteq( a'_a':replaceIndex(a'^u', b'^u'), a'_a' )</code>
+</td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=false, symbol="u"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=false, symbol="u"}
+}
+<br>
+replSum: {}
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -19,6 +60,32 @@
 <b></b><br>
 <code>asserteq( a'^a':replaceIndex(a'^b', b'^b'), b'^a' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=false, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=false, symbol="b"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=false, symbol="b"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"a"}
+<br>
+xsymbols	{"a"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -26,6 +93,32 @@
 <b></b><br>
 <code>asserteq( a'^a':replaceIndex(a'^b', b'^b' + c'^b'), b'^a' + c'^a' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=false, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=false, symbol="b"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=false, symbol="b"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"a"}
+<br>
+xsymbols	{"a"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -33,6 +126,34 @@
 <b>the sum indexes won't use the same symbol, because the symbols are not preserved and instead chosen among unused symbols in the result expression</b><br>
 <code>asserteq( a'^a':replaceIndex(a'^b', b'^bc' * c'_c'), b'^ab' * c'_b' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=false, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=false, symbol="b"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=false, symbol="b"}
+}
+<br>
+replSum: {
+	{count=2, lower=false, symbol="c"}
+}
+<br>
+selfsymbols	{"a"}
+<br>
+xsymbols	{"a"}
+<br>
+newsumsymbols	{"b"}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -40,6 +161,32 @@
 <b></b><br>
 <code>asserteq( a'^a':replaceIndex(a'^b', b'^b' + c'^bc' * d'_c'), b'^a' + c'^ac' * d'_c' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=false, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=false, symbol="b"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=false, symbol="b"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"a"}
+<br>
+xsymbols	{"a"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -49,36 +196,181 @@
 </td><td>
 <tr><td>
 <b>TODO looks like indexes get reversed</b><br>
-<code>asserteq( a'_ab':replaceIndex(a'_uv', b'_uv'), b'_ab')</code>
+<code>asserteq( a'_ab':replaceIndex(a'_uv', b'_uv'), b'_ab' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="a"},
+	{count=1, lower=true, symbol="b"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"a", "b"}
+<br>
+xsymbols	{"a", "b"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq( a'_ab':replaceIndex(a'_uv', b'_vu'), b'_ba')</code>
+<code>asserteq( a'_ab':replaceIndex(a'_uv', b'_vu'), b'_ba' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="a"},
+	{count=1, lower=true, symbol="b"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="v"},
+	{count=1, lower=true, symbol="u"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"a", "b"}
+<br>
+xsymbols	{"a", "b"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq( a'_ba':replaceIndex(a'_uv', b'_vu'), b'_ab')</code>
+<code>asserteq( a'_ba':replaceIndex(a'_uv', b'_vu'), b'_ab' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="b"},
+	{count=1, lower=true, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="v"},
+	{count=1, lower=true, symbol="u"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"b", "a"}
+<br>
+xsymbols	{"b", "a"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq( a'_ab':replaceIndex(a'_vu', b'_uv'), b'_ba')</code>
+<code>asserteq( a'_ab':replaceIndex(a'_vu', b'_uv'), b'_ba' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="a"},
+	{count=1, lower=true, symbol="b"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="v"},
+	{count=1, lower=true, symbol="u"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"a", "b"}
+<br>
+xsymbols	{"a", "b"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq( a'_ba':replaceIndex(a'_vu', b'_uv'), b'_ab')</code>
+<code>asserteq( a'_ba':replaceIndex(a'_vu', b'_uv'), b'_ab' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="b"},
+	{count=1, lower=true, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="v"},
+	{count=1, lower=true, symbol="u"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"b", "a"}
+<br>
+xsymbols	{"b", "a"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -88,8 +380,34 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>asserteq( (a'_a' + b'_ab' * c'^b'):replaceIndex(a'_u', b'_u'), b'_a' + b'_ab' * c'^b')</code>
+<code>asserteq( (a'_a' + b'_ab' * c'^b'):replaceIndex(a'_u', b'_u'), b'_a' + b'_ab' * c'^b' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="u"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="u"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"a"}
+<br>
+xsymbols	{"a"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -99,8 +417,36 @@
 </td><td>
 <tr><td>
 <b>TODO this should preserve the order of b_ab -> c_ab</b><br>
-<code>asserteq( (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_uv'), a'_a' + c'_ab' * c'^b')</code>
+<code>asserteq( (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_uv'), a'_a' + c'_ab' * c'^b' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"a"}
+<br>
+xsymbols	{"a", "b"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -110,8 +456,36 @@
 </td><td>
 <tr><td>
 <b>TODO this should preserve the order of b_ab -> d_ab</b><br>
-<code>asserteq( (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', d'_uv'), a'_a' + d'_ab' * c'^b')</code>
+<code>asserteq( (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', d'_uv'), a'_a' + d'_ab' * c'^b' )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"a"}
+<br>
+xsymbols	{"a", "b"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -121,8 +495,28 @@
 </td><td>
 <tr><td>
 <b>what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?</b><br>
-<code>asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end)</code>
+<code>asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end )</code>
 </td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="a"}
+}
+<br>
+selfSum: {}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="u"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+findSum: {}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="b"},
+	{count=1, lower=true, symbol="v"}
+}
+<br>
+replSum: {}
+<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -132,18 +526,191 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>asserteq( a'^a_ab':replaceIndex(a'^a_ab', b'_b'), b'_b')</code>
+<code>asserteq( a'^a_a':replaceIndex(a'^a_a', b'^a_a'), b'^a_a')</code>
 </td><td>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/Expression.lua:739: reindex key and value length needs to match.  got {"b", "a"} with 2 entries vs {"a", "a", "b"} with 3 entries<br>stack traceback:<br>
-	./unit.lua:93: in function <./unit.lua:92><br>
-	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/Expression.lua:739: in function 'reindex'<br>
-	/home/chris/Projects/lua/symmath/Expression.lua:548: in function 'callback'<br>
-	/home/chris/Projects/lua/symmath/Expression.lua:486: in function 'replaceIndex'<br>
-	[string "asserteq( a'^a_ab':replaceIndex(a'^a_ab', b'_..."]:1: in main chunk<br>
-	./unit.lua:85: in function <./unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	./unit.lua:84: in function 'exec'<br>
-	./replaceIndex.lua:39: in main chunk<br>
-	[C]: at 0x55a3f18e31c0
+selfFixed: {}
+<br>
+selfSum: {
+	{count=2, lower=false, symbol="a"}
+}
+<br>
+findFixed: {}
+<br>
+findSum: {
+	{count=2, lower=false, symbol="a"}
+}
+<br>
+replFixed: {}
+<br>
+replSum: {
+	{count=2, lower=false, symbol="a"}
+}
+<br>
+selfsymbols	{"a"}
+<br>
+xsymbols	{"a"}
+<br>
+newsumsymbols	{"b"}
+<br>
+numsumusedalready	nil
+<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'^a_a':replaceIndex(a'^u_u', b'^u_u'), b'^a_a')</code>
+</td><td>
+selfFixed: {}
+<br>
+selfSum: {
+	{count=2, lower=false, symbol="a"}
+}
+<br>
+findFixed: {}
+<br>
+findSum: {
+	{count=2, lower=false, symbol="u"}
+}
+<br>
+replFixed: {}
+<br>
+replSum: {
+	{count=2, lower=false, symbol="u"}
+}
+<br>
+selfsymbols	{"a"}
+<br>
+xsymbols	{"a"}
+<br>
+newsumsymbols	{"b"}
+<br>
+numsumusedalready	nil
+<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq( (a'^a_a' * a'^b_b'):replaceIndex(a'^u_u', b'^u_u'), b'^a_a' * b'^b_b')</code>
+</td><td>
+selfFixed: {}
+<br>
+selfSum: {
+	{count=2, lower=false, symbol="a"},
+	{count=2, lower=false, symbol="b"}
+}
+<br>
+findFixed: {}
+<br>
+findSum: {
+	{count=2, lower=false, symbol="u"}
+}
+<br>
+replFixed: {}
+<br>
+replSum: {
+	{count=2, lower=false, symbol="u"}
+}
+<br>
+selfsymbols	{"a", "b"}
+<br>
+xsymbols	{"a"}
+<br>
+newsumsymbols	{"c"}
+<br>
+numsumusedalready	nil
+<br>
+selfsymbols	{"a", "b"}
+<br>
+xsymbols	{"b"}
+<br>
+newsumsymbols	{"d"}
+<br>
+numsumusedalready	nil
+<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'^a_ab':replaceIndex(a'^a_ab', b'_b'), b'_b' )</code>
+</td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="b"}
+}
+<br>
+selfSum: {
+	{count=2, lower=false, symbol="a"}
+}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="b"}
+}
+<br>
+findSum: {
+	{count=2, lower=false, symbol="a"}
+}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="b"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"b", "a"}
+<br>
+xsymbols	{"b", "a"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'^a_ab':replaceIndex(a'^a_ab', b'_b' + c'_a^a_b'), b'_b' + c'_a^a_b' )</code>
+</td><td>
+selfFixed: {
+	{count=1, lower=true, symbol="b"}
+}
+<br>
+selfSum: {
+	{count=2, lower=false, symbol="a"}
+}
+<br>
+findFixed: {
+	{count=1, lower=true, symbol="b"}
+}
+<br>
+findSum: {
+	{count=2, lower=false, symbol="a"}
+}
+<br>
+replFixed: {
+	{count=1, lower=true, symbol="b"}
+}
+<br>
+replSum: {}
+<br>
+selfsymbols	{"b", "a"}
+<br>
+xsymbols	{"b", "a"}
+<br>
+newsumsymbols	{}
+<br>
+numsumusedalready	nil
+<br>
+
+<span style="color:green">GOOD</span>
 </td></tr>
