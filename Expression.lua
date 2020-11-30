@@ -412,12 +412,12 @@ function Expression:replaceIndex(find, repl, cond, args)
 	local findFixed, findSum = find:getIndexesUsed()
 	local replFixed, replSum = repl:getIndexesUsed()
 
-printbr('selfFixed: '..require 'ext.tolua'(selfFixed))
-printbr('selfSum: '..require 'ext.tolua'(selfSum))
-printbr('findFixed: '..require 'ext.tolua'(findFixed))
-printbr('findSum: '..require 'ext.tolua'(findSum))
-printbr('replFixed: '..require 'ext.tolua'(replFixed))
-printbr('replSum: '..require 'ext.tolua'(replSum))
+--printbr('selfFixed: '..require 'ext.tolua'(selfFixed))
+--printbr('selfSum: '..require 'ext.tolua'(selfSum))
+--printbr('findFixed: '..require 'ext.tolua'(findFixed))
+--printbr('findSum: '..require 'ext.tolua'(findSum))
+--printbr('replFixed: '..require 'ext.tolua'(replFixed))
+--printbr('replSum: '..require 'ext.tolua'(replSum))
 
 	if #findFixed ~= #replFixed then
 		error("your 'find' and 'replace' expressions have a different number of fixed indexes")
@@ -538,10 +538,10 @@ printbr('replSum: '..require 'ext.tolua'(replSum))
 					newsumsymbols:insert(getnewsymbol())
 				end
 				newsumusedalready:append(newsumsymbols)
-printbr('selfsymbols', require 'ext.tolua'(selfsymbols))
-printbr('xsymbols', require 'ext.tolua'(xsymbols))
-printbr('newsumsymbols', require 'ext.tolua'(newsumsymbols))
-printbr('numsumusedalready', require 'ext.tolua'(numsumusedalready))
+--printbr('selfsymbols', require 'ext.tolua'(selfsymbols))
+--printbr('xsymbols', require 'ext.tolua'(xsymbols))
+--printbr('newsumsymbols', require 'ext.tolua'(newsumsymbols))
+--printbr('numsumusedalready', require 'ext.tolua'(numsumusedalready))
 
 -- TODO also go through and all the other replsymbols
 -- (i.e. sum indexes)
