@@ -419,6 +419,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 --printbr('replFixed: '..require 'ext.tolua'(replFixed))
 --printbr('replSum: '..require 'ext.tolua'(replSum))
 
+--[=[
 	if #findFixed ~= #replFixed then
 		error("your 'find' and 'replace' expressions have a different number of fixed indexes")
 	end
@@ -431,14 +432,22 @@ function Expression:replaceIndex(find, repl, cond, args)
 		local fs = table(findFixed):sort(cmp)
 		local rs = table(replFixed):sort(cmp)
 		for i=1,#findFixed do
+--[[ TODO compare symbol and derivative and lower?
 			if fs[i] ~= rs[i] then
-				error("'find' and 'replace' expressions' differe: 'find' has "
+--]]
+-- [[ or just symbol + lower?
+			if not (fs[i].lower == rs[i].lower
+				and fs[i].symbol == rs[i].symbol)
+			then
+--]]
+				error("'find' and 'replace' expressions' differ: 'find' has "
 					..fs:mapi(tostring):concat', '
 					.." while 'replace' has "
 					..rs:mapi(tostring):concat', ')
 			end
 		end
 	end
+--]=]
 
 	-- TODO, (a * b'^i'):replaceIndex(a, c'^i' * c'_i')) produces c'^i' * c'_i' * b'^i', not c'^j' * c'_j' * b'^i'
 	-- if repl contains a sum index which is already present in the expression then it won't reindex
@@ -446,6 +455,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 	local sumsymbols = replSum:mapi(function(i) return i.symbol end)
 	local selfsymbols = selfFixed:mapi(function(i) return i.symbol end)
 		:append(selfSum:mapi(function(i) return i.symbol end))
+-- TODO only use the common subset of these two?:
 	local findsymbols = findFixed:mapi(function(i) return i.symbol end)
 		:append(findSum:mapi(function(i) return i.symbol end))
 	local replsymbols = replFixed:mapi(function(i) return i.symbol end)
@@ -462,6 +472,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 -- and then create a mapping between them
 -- and do not pick new symbols to replace them with
 
+	-- TODO instead of TensorRef.is,, how about searching for 
 	if TensorRef.is(find) then
 		
 		local newsumusedalready = table()
@@ -486,6 +497,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 					newsumusedalready = table(pushnewsumusedalready)
 				end
 			end
+--			newsumusedalready = pushnewsumusedalready
 
 			expr = callback(expr) or expr
 		
@@ -1155,71 +1167,177 @@ function Expression:simplifyMetrics(rules)
 	return expr
 end
 
+--[[
+returns fixedIndexes, sumIndexes, extraIndexes
+fixedIndexes = the indexes that are used to uniquely index the expression
+				the indexes that are shared in common with every expression used
+sumIndexes = the indexes used for summing within/ specific to sub-expressions
+extraIndexes = any indexes that are not fixed (i.e. shared between all terms), and are not summed.
 
--- returns fixedIndexes, sumIndexes
+unm, falls through
+
+for any function ... sinh
+	- fixed turn into extra
+	- summed fall through
+
+--]]
 function Expression:getIndexesUsed()
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	local add = require 'symmath.op.add'
 	local sub = require 'symmath.op.sub'
-	
-	local indexCounts = table()
-	local function rfind(x)
-		if TensorRef.is(x) then
-			for i=2,#x do
-				local symbol = x[i].symbol
-				local _,indexForSymbol = indexCounts:find(nil, function(index) return index.symbol == symbol end)
-				if not indexForSymbol then
-					indexForSymbol = x[i]:clone()
-					indexForSymbol.count = 0	-- should I be using this field in TensorIndex?
-					indexCounts:insert(indexForSymbol)
+	local mul = require 'symmath.op.mul'
+
+	local function combine(a,b)
+		a = a or {}
+		b = b or {}
+		local s = {}
+		for _,t in ipairs{a,b} do
+			for _,i in ipairs(t) do
+				local symbol = i.symbol
+				if not s[symbol] then
+					s[symbol] = i:clone()
+					s[symbol].count = 1
+				else
+					s[symbol].count = s[symbol].count + 1
 				end
-				indexForSymbol.count = indexForSymbol.count + 1
-			end
-		elseif add.is(x) or sub.is(x) then
-			local subIndexes = x[1]:getIndexesUsed()
-			local subIndexesForSymbol = subIndexes:map(function(index)
-				return index, index.symbol
-			end)
-			for i=2,#x do
-				local subIndexes2 = x[i]:getIndexesUsed()
-				local subIndexes2ForSymbol = subIndexes2:map(function(index)
-					return index, index.symbol
-				end)
-				
-				--assert(subIndexesForSymbol == subIndexes2ForSymbol)
-				for symbol,index in pairs(subIndexesForSymbol) do
-					assert(subIndexes2ForSymbol[symbol].count == index.count)
-				end
-				for symbol,index in pairs(subIndexes2ForSymbol) do
-					assert(subIndexesForSymbol[symbol].count == index.count)
-				end
-			end
-			for _,index in pairs(subIndexes) do
-				local symbol = index.symbol
-				local _,indexForSymbol = indexCounts:find(nil, function(index) return index.symbol == symbol end)
-				if not indexForSymbol then
-					indexForSymbol = index:clone()
-					indexForSymbol.count = 0
-					indexCounts:insert(indexForSymbol)
-				end
-				indexForSymbol.count = indexForSymbol.count + index.count
-			end
-		elseif Expression.is(x) then
-			-- if it's a mul then recurse
-			-- if it's an add then don't ... instead test
-			
-			for i=1,#x do
-				rfind(x[i])
 			end
 		end
+		return table.values(s)
 	end
-	rfind(self)
-	return indexCounts:filter(function(index,symbol)
-		return index.count == 1
-	end), indexCounts:filter(function(index,symbol)
-		return index.count > 1
-	end)
+
+	--[[
+	- fixed indexes are those with 1 occurrence
+	- summed indexes are those with 2 occurrences
+	- ... 3 or more occurrences and it is technically not abstract index notation.
+		... TODO? return a 4th table of incorrect indexes?
+		or TODO error if you find 3 or more?
+	--]]
+	if TensorRef.is(self) then
+		
+		local indexCounts = table()
+		for i=2,#self do
+			local ti = self[i]
+			local symbol = ti.symbol
+			local _,indexForSymbol = indexCounts:find(nil, function(index)
+				return index.symbol == symbol
+			end)
+			if not indexForSymbol then
+				indexForSymbol = ti:clone()
+				indexForSymbol.count = 0	-- should I be using this field in TensorIndex?
+				indexCounts:insert(indexForSymbol)
+			end
+			indexForSymbol.count = indexForSymbol.count + 1
+		end
+		return 
+			-- fixed
+			indexCounts:filter(function(index,symbol)
+				return index.count == 1
+			end),
+			-- summed
+			indexCounts:filter(function(index,symbol)
+				return index.count > 1
+			end),
+			-- extra
+			table()
+	
+	--[[
+	- mul's fixed indexes are the superset of sub-expr fixed-indexes 
+		... unless they are matched between sub-exprs, then they are sum indexes
+	- mul's summed indexes are a superset of sub-exprs summed,
+		... plus those matched between
+	- mul's extras ... are also a superset of sub-exprs 
+		... unless they match, in which case they go to sum
+	--]]
+	elseif mul.is(self) then
+
+		local indexCounts = table()
+		local results = table.mapi(self, function(xi,i)
+			local fixed, summed, extra = xi:getIndexesUsed()
+			for _,ts in ipairs{fixed or {}, summed or {}, extra or {}} do
+				for _,ti in ipairs(ts) do
+					local symbol = ti.symbol
+					local _,indexForSymbol = indexCounts:find(nil, function(index)
+						return index.symbol == symbol
+					end)
+					if not indexForSymbol then
+						indexForSymbol = ti:clone()
+						indexForSymbol.count = 0	-- should I be using this field in TensorIndex?
+						indexForSymbol.extra = ti == extra or nil
+						indexCounts:insert(indexForSymbol)
+					end
+					indexForSymbol.count = indexForSymbol.count + 1
+				end
+			end
+		end)
+		return 
+			-- fixed
+			indexCounts:filter(function(index,symbol)
+				return index.count == 1 and not index.extra
+			end),
+			-- summed
+			indexCounts:filter(function(index,symbol)
+				return index.count > 1
+			end),
+			-- extra
+			indexCounts:filter(function(index,symbol)
+				return index.count == 1 and index.extra
+			end)
+
+	--[[
+	- fixed = the subset of its sub-expr's fixed indexes 
+		... or the super-set?
+		subset, this means the whole sum is indexed by these, whereas the individual subexprs could be indexed by more/other things
+	- summed = is the superset of its sub-expr's summed indexes
+	- extra = are the superset of fixed minus the subset
+	--]]
+	elseif add.is(self) or sub.is(self) then
+		local info = table.mapi(self, function(xi)
+			local fixed, summed, extra = xi:getIndexesUsed()
+			fixed = combine(fixed,extra)
+			return {
+				fixed = fixed,
+				summed = summed,
+				-- don't assume extras but deduce them from fixed terms that don't match up
+			}
+		end)
+
+		local fixedCombined = info[1].fixed
+		local summed = info[1].summed
+		for i=2,#info do
+			fixedCombined = combine(fixedCombined, info[i].fixed)
+			summed = combine(summed, info[i].summed)
+		end
+		
+		local fixed = table()
+		local extra = table()
+		for _,index in ipairs(fixedCombined) do
+			local count = index.count
+			index.count = 1
+			if count == #info then
+				fixed:insert(index)
+			else
+				extra:insert(index)
+			end
+		end
+
+		return fixed, summed, extra
+
+	elseif Expression.is(self) then
+		-- not an add, sub, mul ... pass through?
+		-- how to combine by default?
+		-- combine summed?
+		-- move all fixed into extra?
+		local summed = table()
+		local extra = table()
+		for i,xi in ipairs(self) do
+			local subFixed, subSummed, subExtra = xi:getIndexesUsed()
+			extra = combine(extra, subFixed)
+			extra = combine(extra, subExtra)
+			summed = combine(summed, subSummed)
+		end
+		return nil, summed, extra
+	end
 end
 
 -- TODO don't even use this, instead change tensor assignment
@@ -1242,6 +1360,8 @@ t[sym] = {{expr=expr, index=index}, ...}
 	index is which index holds this symbol
 maybe this will replace 'getIndexesUsed'
 at least if this is called on a flattened expression, then the 1-count symbols are the fixed symbols
+but getIndexesUsed' fixed indexes are those found in every expression
+so this function could replace getIndexesUsed' behavior if it compares the returned exprs to the entire set of exprs
 --]]
 function Expression:getExprsForIndexSymbols()
 	local TensorRef = require 'symmath.tensor.TensorRef'

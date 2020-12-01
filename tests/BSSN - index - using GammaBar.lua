@@ -588,23 +588,49 @@ printbr()
 printHeader'conformal metric evolution:'
 local dt_gammaBar_ll_def = gammaBar_ll_from_gamma_ll_W'_,t'
 printbr(dt_gammaBar_ll_def)
+
+printbr'distributing derivative...'
 dt_gammaBar_ll_def = dt_gammaBar_ll_def()
 printbr(dt_gammaBar_ll_def)
+
+printbr('substituting', dt_gamma_ll_def)
 dt_gammaBar_ll_def = dt_gammaBar_ll_def:subst(dt_gamma_ll_def)()
 printbr(dt_gammaBar_ll_def)
+
+--[[
 dt_gammaBar_ll_def = dt_gammaBar_ll_def:substIndex(dt_W_def, gamma_ll_from_gammaBar_ll_W, conn_lll_from_connBar_lll_W_gammaBar_ll, K_ll_from_ABar_ll_gammaBar_ll_K)
 printbr(dt_gammaBar_ll_def)
+--]]
+-- [[
+printbr('substituting', dt_W_def)
+dt_gammaBar_ll_def = dt_gammaBar_ll_def:substIndex(dt_W_def)
+dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
+printbr(dt_gammaBar_ll_def )
+
+printbr('substituting', gamma_ll_from_gammaBar_ll_W)
+dt_gammaBar_ll_def = dt_gammaBar_ll_def:substIndex(gamma_ll_from_gammaBar_ll_W)
+dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
+printbr(dt_gammaBar_ll_def )
+
+printbr('substituting', conn_lll_from_connBar_lll_W_gammaBar_ll)
+dt_gammaBar_ll_def = dt_gammaBar_ll_def:substIndex(conn_lll_from_connBar_lll_W_gammaBar_ll)
+dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
+printbr(dt_gammaBar_ll_def)
+
+printbr('substiting', K_ll_from_ABar_ll_gammaBar_ll_K)
+dt_gammaBar_ll_def = dt_gammaBar_ll_def:substIndex(K_ll_from_ABar_ll_gammaBar_ll_K)
+dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
+printbr(dt_gammaBar_ll_def)
+--]]
+
+printbr('tidying indexes, symmetrizing ', gammaBar,' and simplifying')
 dt_gammaBar_ll_def = dt_gammaBar_ll_def
-	:tidyIndexes()	-- TODO seems like tidyIndexes() doesn't ue source sum indexes as dest sum indexes ...
+	:tidyIndexes()
 	:symmetrizeIndexes(gammaBar, {1,2})
--- this still has errors.  beta^c Gamma^d_dc => beta^c Gamma_c^d_d
---	:symmetrizeIndexes(GammaBar, {2,3})
-	:simplify()
-	:reindex{cd='kl'}
+	:reindex{a='k'}
 dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
 printbr(dt_gammaBar_ll_def)
 printbr()
-
 
 
 printHeader'conformal metric perturbation:'
@@ -646,30 +672,53 @@ printbr()
 printHeader'conformal connection evolution:'
 local dt_connBar_ull_def = connBar_ull_def'_,t'
 printbr(dt_connBar_ull_def)
+
 dt_connBar_ull_def = dt_connBar_ull_def()
 printbr(dt_connBar_ull_def)
+
+printbr('solve for ',gammaBar'_ij,k')
 dt_connBar_ull_def = dt_connBar_ull_def:subst( connBar_lll_def:solve(gammaBar'_ij,k'):reindex{i='m'} )()
 printbr(dt_connBar_ull_def)
+
+printbr('substituting', dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)
 dt_connBar_ull_def = dt_connBar_ull_def:substIndex(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)()
+printbr(dt_connBar_ull_def)
+
 -- hmm, not working?
 dt_connBar_ull_def = dt_connBar_ull_def:replaceIndex(gammaBar'^im' * GammaBar'_mjk', GammaBar'^i_jk')()
 printbr(dt_connBar_ull_def)
+
 --dt_connBar_ull_def = dt_connBar_ull_def:subst(dt_gammaBar_ll_def:reindex{ijkm='bapq'})
+printbr('substituting', dt_gammaBar_ll_def)
 dt_connBar_ull_def = dt_connBar_ull_def:substIndex(dt_gammaBar_ll_def)
 printbr(dt_connBar_ull_def)
+
+printbr('simplifying metrics')
 dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)
 printbr(dt_connBar_ull_def)
---dt_connBar_ull_def = dt_connBar_ull_def:tidyIndexes{fixed='t'} 	-- can't do this yet.  the later add complains that it is combining T_ijk and T_ijkt's, which is true.  i guess it is more proper wrt current system to substitute-away all the _,t's first.
+
+--[[
+dt_connBar_ull_def = dt_connBar_ull_def:tidyIndexes{fixed='t'} 	-- can't do this yet.  the later add complains that it is combining T_ijk and T_ijkt's, which is true.  i guess it is more proper wrt current system to substitute-away all the _,t's first.
 printbr(dt_connBar_ull_def)
+--]]
+
+printbr('substituting', dt_gammaBar_ll_def)
 dt_connBar_ull_def = dt_connBar_ull_def
 	:replaceIndex(gammaBar'_jk,mt', gammaBar'_jk,t''_,m')
 	:substIndex(dt_gammaBar_ll_def:reindex{ijkm='jkpq'})		-- hmm, would be nice if substIndex correctly renamed sum terms to not collide with its insertions.
+printbr(dt_connBar_ull_def)
+
+printbr('substituting', partial_gammaBar_lll_from_connBar_lll)
+dt_connBar_ull_def = dt_connBar_ull_def
 	:substIndex(partial_gammaBar_lll_from_connBar_lll)
 printbr(dt_connBar_ull_def)
+
+printbr('substituting', partial_gammaBar_lll_from_connBar_lll)
 dt_connBar_ull_def = dt_connBar_ull_def()		-- simplify to distribute derivative
 	:substIndex(partial_gammaBar_lll_from_connBar_lll)()	-- and make this substitution again
 	--:tidyIndexes()()
 printbr(dt_connBar_ull_def)
+
 dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)
 	:symmetrizeIndexes(gammaBar, {1,2})
 	:tidyIndexes()()
@@ -681,12 +730,14 @@ dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)
 -- a better way is just simplifying by comparing graphs of tensors.
 	:simplify()			
 printbr(dt_connBar_ull_def)
+
 -- convert all connBar^i_jk,l's to connBar_ijk,l's
 dt_connBar_ull_def[2] = dt_connBar_ull_def[2]
 	:replaceIndex(GammaBar'^i_jk,l', (gammaBar'^im' * GammaBar'_mjk')'_,l')()
 	:substIndex(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)()
 	:substIndex(partial_gammaBar_lll_from_connBar_lll)()
 printbr(dt_connBar_ull_def)
+
 dt_connBar_ull_def = dt_connBar_ull_def
 	--:replaceIndex(GammaBar'_ijk,l', GammaBar'_ijk'',l')
 	:substIndex(connBar_lll_def'_,l'())()

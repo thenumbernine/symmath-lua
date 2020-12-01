@@ -134,7 +134,7 @@ ${{ a}^{\mu}}^{\nu}$
 </td><td>
 <tr><td>
 <b>commas are lower by default</b><br>
-<code>local x=a',i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative='partial'})</code>
+<code>local x=a',i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative=','})</code>
 </td><td>
 ${ a}_{,i}$
 
@@ -142,7 +142,7 @@ ${ a}_{,i}$
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a',^i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative='partial'})</code>
+<code>local x=a',^i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative=','})</code>
 </td><td>
 ${ a}^{,i}$
 
@@ -150,7 +150,7 @@ ${ a}^{,i}$
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a',_i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative='partial'})</code>
+<code>local x=a',_i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative=','})</code>
 </td><td>
 ${ a}_{,i}$
 
@@ -158,7 +158,7 @@ ${ a}_{,i}$
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a'^,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative='partial'})</code>
+<code>local x=a'^,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative=','})</code>
 </td><td>
 ${ a}^{,i}$
 
@@ -166,7 +166,7 @@ ${ a}^{,i}$
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a'_,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative='partial'})</code>
+<code>local x=a'_,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative=','})</code>
 </td><td>
 ${ a}_{,i}$
 

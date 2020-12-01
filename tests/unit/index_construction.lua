@@ -23,11 +23,11 @@ local x=a' ^\\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symb
 local x=a' _\\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='\\mu', lower=true})
 local x=a' \\mu \\nu' print(x)	assert(#x==3 and x[1]==a and x[2]==TensorIndex{symbol='\\mu', lower=false} and x[3]==TensorIndex{symbol='\\nu', lower=false})
 
-local x=a',i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative='partial'})	-- commas are lower by default
-local x=a',^i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative='partial'})
-local x=a',_i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative='partial'})
-local x=a'^,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative='partial'})
-local x=a'_,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative='partial'})
+local x=a',i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative=','})	-- commas are lower by default
+local x=a',^i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative=','})
+local x=a',_i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative=','})
+local x=a'^,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative=','})
+local x=a'_,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative=','})
 
 -- TODO multiple indexes with commas mixed
 -- TODO multiple indexes with commas mixed with multiple chars
