@@ -1189,21 +1189,21 @@ function Expression:getIndexesUsed()
 	local mul = require 'symmath.op.mul'
 
 	local function combine(a,b)
-		a = a or {}
-		b = b or {}
-		local s = {}
+		local s = table()
 		for _,t in ipairs{a,b} do
 			for _,i in ipairs(t) do
 				local symbol = i.symbol
-				if not s[symbol] then
-					s[symbol] = i:clone()
-					s[symbol].count = 1
+				local _,index = s:find(nil, function(i) return i.symbol == symbol end)
+				if not index then
+					i = i:clone()
+					i.count = 1
+					s:insert(i)
 				else
-					s[symbol].count = s[symbol].count + 1
+					index.count = index.count + 1
 				end
 			end
 		end
-		return table.values(s)
+		return s
 	end
 
 	--[[
@@ -1336,7 +1336,7 @@ function Expression:getIndexesUsed()
 			extra = combine(extra, subExtra)
 			summed = combine(summed, subSummed)
 		end
-		return nil, summed, extra
+		return table(), summed, extra
 	end
 end
 

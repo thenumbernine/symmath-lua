@@ -30,39 +30,10 @@ function env.assertIndexesUsed(expr, args)
 	local summedTensor = summedIndexes and #summedIndexes > 0 and TensorRef(summed, table.unpack(summedIndexes)) or env.summed
 	local extraTensor = extraIndexes and #extraIndexes > 0 and TensorRef(extra, table.unpack(extraIndexes)) or env.extra
 
---[[
-printbr('expected')
-printbr('fixed', expectedFixedIndexStr)
-printbr('summed', expectedSummedIndexStr)
-printbr('extra', expectedExtraIndexStr)
-printbr('got')
-printbr('fixed', tolua(fixedIndexes))
-printbr('summed', tolua(summedIndexes))
-printbr('extra', tolua(extraIndexes))
-printbr()
-printbr('expected, as a tensor')
-printbr('fixed', expectedFixedTensor)
-printbr('summed', expectedSummedTensor)
-printbr('extra', expectedExtraTensor)
-printbr('got, as tensor')
-printbr('fixed', fixedTensor)
-printbr('summed', summedTensor)
-printbr('extra', extraTensor)
-printbr()
-printbr'simplified, expected, as a tensor'
-printbr('fixed', expectedFixedTensor())
-printbr('summed', expectedSummedTensor())
-printbr('extra', expectedExtraTensor())
-printbr('simplified, got, as tensor')
-printbr('fixed', fixedTensor())
-printbr('summed', summedTensor())
-printbr('extra', extraTensor)
---]]
-
 	for _,info in ipairs{
 		{fixedTensor, expectedFixedTensor},
 		{summedTensor, expectedSummedTensor},
-		--{extraTensor, expectedExtraTensor},	-- TODO add this
+		{extraTensor, expectedExtraTensor},
 	} do 
 		asserteq(info[1], info[2])
 	end

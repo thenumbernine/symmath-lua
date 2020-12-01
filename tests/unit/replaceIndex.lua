@@ -41,7 +41,7 @@ asserteq( a'_a':replaceIndex(a'^u', b'^u'), a'_a' )			-- variance must match in 
 asserteq( a'^a':replaceIndex(a'^b', b'^b'), b'^a' )
 asserteq( a'^a':replaceIndex(a'^b', b'^b' + c'^b'), b'^a' + c'^a' )
 asserteq( a'^a':replaceIndex(a'^b', b'^bc' * c'_c'), b'^ab' * c'_b' )		-- the sum indexes won't use the same symbol, because the symbols are not preserved and instead chosen among unused symbols in the result expression
-asserteq( a'^a':replaceIndex(a'^b', b'^b' + c'^bc' * d'_c'), b'^a' + c'^ac' * d'_c' )
+asserteq( a'^a':replaceIndex(a'^b', b'^b' + c'^bc' * d'_c'), b'^a' + c'^ab' * d'_b' )
 
 asserteq( a'_ab':replaceIndex(a'_uv', b'_uv'), b'_ab' )			-- TODO looks like indexes get reversed
 asserteq( a'_ab':replaceIndex(a'_uv', b'_vu'), b'_ba' )
