@@ -408,171 +408,114 @@ function Expression:replaceIndex(find, repl, cond, args)
 	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being 
 	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
 
-	local selfFixed, selfSum = self:getIndexesUsed()
-	local findFixed, findSum = find:getIndexesUsed()
-	local replFixed, replSum = repl:getIndexesUsed()
+	local selfFixed, selfSum, selfExtra = self:getIndexesUsed()
+	local findFixed, findSum, findExtra = find:getIndexesUsed()
+	local replFixed, replSum, replExtra = repl:getIndexesUsed()
 
 --printbr('selfFixed: '..require 'ext.tolua'(selfFixed))
 --printbr('selfSum: '..require 'ext.tolua'(selfSum))
+--printbr('selfExtra: '..require 'ext.tolua'(selfExtra))
 --printbr('findFixed: '..require 'ext.tolua'(findFixed))
 --printbr('findSum: '..require 'ext.tolua'(findSum))
+--printbr('findExtra: '..require 'ext.tolua'(findExtra))
 --printbr('replFixed: '..require 'ext.tolua'(replFixed))
 --printbr('replSum: '..require 'ext.tolua'(replSum))
+--printbr('replExtra: '..require 'ext.tolua'(replExtra))
 
---[=[
-	if #findFixed ~= #replFixed then
-		error("your 'find' and 'replace' expressions have a different number of fixed indexes")
+	-- get a list of unused symbols
+	local unusedSymbols = table(defaultSymbols)
+	for _,s in ipairs(selfFixed) do
+		unusedSymbols:removeObject(s.symbol)
 	end
-	do
-		-- sort before comparing so that find/repl doesn't error when the caller wants to rearrange index orders
-		local cmp = function(a,b) 
-			-- compare lowers too?
-			return a.symbol < b.symbol 
-		end
-		local fs = table(findFixed):sort(cmp)
-		local rs = table(replFixed):sort(cmp)
-		for i=1,#findFixed do
---[[ TODO compare symbol and derivative and lower?
-			if fs[i] ~= rs[i] then
---]]
--- [[ or just symbol + lower?
-			if not (fs[i].lower == rs[i].lower
-				and fs[i].symbol == rs[i].symbol)
-			then
---]]
-				error("'find' and 'replace' expressions' differ: 'find' has "
-					..fs:mapi(tostring):concat', '
-					.." while 'replace' has "
-					..rs:mapi(tostring):concat', ')
-			end
-		end
+	-- TODO only remove the summed indexes that aren't being replaced
+	-- but that would mean moving the pick-new-sum-symbol code down into the replace-expression code
+	for _,s in ipairs(selfSum) do
+		unusedSymbols:removeObject(s.symbol)
 	end
---]=]
 
 	-- TODO, (a * b'^i'):replaceIndex(a, c'^i' * c'_i')) produces c'^i' * c'_i' * b'^i', not c'^j' * c'_j' * b'^i'
 	-- if repl contains a sum index which is already present in the expression then it won't reindex
 
-	local sumsymbols = replSum:mapi(function(i) return i.symbol end)
-	local selfsymbols = selfFixed:mapi(function(i) return i.symbol end)
-		:append(selfSum:mapi(function(i) return i.symbol end))
--- TODO only use the common subset of these two?:
-	local findsymbols = findFixed:mapi(function(i) return i.symbol end)
-		:append(findSum:mapi(function(i) return i.symbol end))
-	local replsymbols = replFixed:mapi(function(i) return i.symbol end)
-		:append(replSum:mapi(function(i) return i.symbol end))
-
 	-- for Gamma^i_jk = gamma^im Gamma_mjk
-	-- findsymbols = ijk
-	-- replsymbols = ijkm
-	-- sumsymbols = m
+	-- findFixed+findSum = ijk
+	-- replFixed+replSum = ijkm
+	-- replSum = m
 
--- TODO
--- so if there are sum symbols in 'self' then
--- make sure there are equivalent sum symbols in 'find'
--- and then create a mapping between them
--- and do not pick new symbols to replace them with
+	-- TODO
+	-- so if there are sum symbols in 'self' then
+	-- make sure there are equivalent sum symbols in 'find'
+	-- and then create a mapping between them
+	-- and do not pick new symbols to replace them with
 
 	-- TODO instead of TensorRef.is,, how about searching for 
-	if TensorRef.is(find) then
-		
-		local newsumusedalready = table()
-		
-		local mul = require 'symmath.op.mul'
-		local function rmap(expr, callback)
-			if expr.clone then expr = expr:clone() end
-		
-			--[[
-			while traversing parent-first,
-			if you come across a mul operation,
-			push and pop while new sum symbols you have already used.
-			This means not using self:map since it is always child-first, or expanding on it
-			--]]
-			local pushnewsumusedalready = table(newsumusedalready)
-			local ismul = mul.is(expr)
-			
-			for i=1,#expr do
-				expr[i] = rmap(expr[i], callback)
-			
-				if not ismul then
-					newsumusedalready = table(pushnewsumusedalready)
-				end
-			end
---			newsumusedalready = pushnewsumusedalready
-
-			expr = callback(expr) or expr
-		
-			return expr
-		end
-		
-		local function sameVariance(a,b)
-			if #a ~= #b then return false end
-			for i=2,#a do
-				if a[i].lower ~= b[i].lower then return false end
-				if a[i].derivative ~= b[i].derivative then return false end
-			end
-			return true
-		end
-		
-		return rmap(self, function(x)
-			if TensorRef.is(x) 
-			
--- if indexes are split (like for pattern matching derivatives)
--- then this equality will only be true if the nested tensorref's indexes are also identical -- thus defeating the purpose of the index-invariant replace
-			and x[1] == find[1]
-			
-			and sameVariance(x, find)
-			then
-				local xFixed, xSum = x:getIndexesUsed()
-				local xsymbols = xFixed:mapi(function(i) return i.symbol end)
-					:append(xSum:mapi(function(i) return i.symbol end))
-				-- reindex will convert xsymbols to findsymbols
-
-				-- find new symbols that aren't in selfsymbols
-				local newsumsymbols = table()
-				local function getnewsymbol()
-					local already = {}
-					for _,s in ipairs(selfsymbols) do already[s] = true end
-					for _,s in ipairs(xsymbols) do already[s] = true end
-					for _,s in ipairs(newsumsymbols) do already[s] = true end
-					for _,s in ipairs(newsumusedalready) do already[s] = true end
-				
-					-- TODO determine new from last used previous symbol?
-					-- TODO pick symbols from the basis associated with the to-be-replaced index
-					-- 	that means excluding those from all other basis
-					local allsymbols = args and args.symbols or defaultSymbols
-					for _,p in ipairs(allsymbols) do
-						if not already[p] then
-							return p
-						end
-					end
-				end
-				for i=1,#sumsymbols do
-					newsumsymbols:insert(getnewsymbol())
-				end
-				newsumusedalready:append(newsumsymbols)
---printbr('selfsymbols', require 'ext.tolua'(selfsymbols))
---printbr('xsymbols', require 'ext.tolua'(xsymbols))
---printbr('newsumsymbols', require 'ext.tolua'(newsumsymbols))
---printbr('numsumusedalready', require 'ext.tolua'(numsumusedalready))
-
--- TODO also go through and all the other replsymbols
--- (i.e. sum indexes)
--- and compare them to all indexes in self
--- and rename them to not collide
-				local result = repl
-				if result.reindex then
-					result = result:reindex{
-						[' '..table():append(findsymbols, sumsymbols):concat' '] =
-							' '..table():append(xsymbols, newsumsymbols):concat' '
-					}
-				end
-			
-				return result
-			end
-		end)
-	else
+	--if TensorRef.is(find) then
+	--if not require 'symmath.Variable'.is(find) then
+	--if true then
+	if not ((#selfFixed + #selfSum + #selfExtra) > 0
+	and (#findFixed + #findSum + #findExtra) > 0)
+	then
+--printbr'only replacing'
 		return self:replace(find, repl, cond)
 	end
+--printbr'reindexing and replacing'
+
+	local TensorIndex = require 'symmath.tensor.TensorIndex'
+	local Wildcard = require 'symmath.Wildcard'
+
+	-- create our :match() object by replacing all TensorIndex's with Wildcard's
+	local nextWildcardIndex = 1
+	local wildcardIndexToTensorIndex = table()
+	local tensorIndexToWildcardIndex = {}
+	local findWithWildcards = find:map(function(x)
+		if TensorIndex.is(x) then
+			-- return a tensor index with a wildcard
+			local wildcardIndex = tensorIndexToWildcardIndex[x.symbol..' '..tostring(not not x.lower)]
+			if wildcardIndex then
+				return Wildcard{index = assert(wildcardIndex)}
+			else
+				local w = Wildcard{index = assert(nextWildcardIndex)}
+				tensorIndexToWildcardIndex[x.symbol..' '..tostring(not not x.lower)] = nextWildcardIndex
+				wildcardIndexToTensorIndex[nextWildcardIndex] = x:clone()
+				nextWildcardIndex = nextWildcardIndex + 1
+				return w
+			end
+		end
+	end)
+--printbr('looking for matches against ', find)
+--printbr('...with wildcards replaced, looking for ', findWithWildcards)
+	return self:map(function(x)
+
+		local results = table{x:match(findWithWildcards)}
+		if results[1] ~= false then
+--printbr('found', x)
+			for wildcardIndex,xIndex in ipairs(results) do
+--printbr('match', wildcardIndex, 'is', xIndex)			
+				local selfIndex = wildcardIndexToTensorIndex[wildcardIndex]
+				if not (xIndex.lower == selfIndex.lower and xIndex.derivative == selfIndex.derivative) then
+--printbr("lower or derivative doesn't match original -- failing")
+					-- index variance and symbol don't match ... don't replace this one
+					return nil
+				end
+			end
+
+			-- repl except remap the indexes to match
+			local from = ' '..wildcardIndexToTensorIndex:mapi(function(i) return i.symbol end):concat' '
+			local to = ' '..results:mapi(function(i) return i.symbol end):concat' '
+			
+			-- also, reindex the replSum indexes into unused symbols
+			-- but don't use 
+			for i=1,#replSum do
+				from = from .. ' ' .. replSum[i].symbol
+				to = to .. ' ' .. assert(unusedSymbols[i], "ran out of symbols")
+			end
+
+			local replReindexed = repl:reindex{[from] = to}
+--printbr("replacing with (before reindexing) ", repl)
+--printbr("reindexing from", from, "to", to)	
+--printbr("replacing with (after reindexing) ", replReindexed)
+			return replReindexed
+		end
+	end)
 end
 
 -- if we find a space then treat it as space-separated multi-char indexes
@@ -1266,7 +1209,7 @@ function Expression:getIndexesUsed()
 						indexForSymbol.extra = ti == extra or nil
 						indexCounts:insert(indexForSymbol)
 					end
-					indexForSymbol.count = indexForSymbol.count + 1
+					indexForSymbol.count = indexForSymbol.count + (ts == summed and 2 or 1)
 				end
 			end
 		end)
@@ -1382,7 +1325,6 @@ function Expression:getExprsForIndexSymbols()
 	rfind(self)
 	return exprsForSymbol
 end
-
 
 
 -- hmm, rules ...

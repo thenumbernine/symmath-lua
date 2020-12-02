@@ -55,7 +55,10 @@ assertIndexesUsed(c'^i_i', {summed='^i'})
 -- single TensorRef, mixed
 assertIndexesUsed(c'^i_ij', {fixed='_j', summed='^i'})
 
--- mul
+-- mul, fixed * summed
+assertIndexesUsed(a'_i' * b'^j_j', {fixed='_i', summed='^j'})
+
+-- mul, fixed * fixed => summed
 assertIndexesUsed(g'^im' * c'_mjk', {fixed='^i_jk', summed='^m'})
 
 -- add, nothing
@@ -103,7 +106,6 @@ assertIndexesUsed(a'^i' * b'_i', {summed='^i'})
 assertIndexesUsed(a'^i' * b'_i' + c, {summed='^i'}) 
 
 assertIndexesUsed(a'^i' * b'_i' + c'^i' * d'_i', {summed='^i'})
-
 
 ]=]), '\n')) do
 	env.exec(line)

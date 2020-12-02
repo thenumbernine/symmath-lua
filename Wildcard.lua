@@ -4,6 +4,7 @@ local Expression = require 'symmath.Expression'
 
 local Wildcard = class(Expression)
 Wildcard.name = 'Wildcard'
+Wildcard.mutable = true
 
 --[[
 args:
@@ -48,7 +49,14 @@ function Wildcard:clone()
 		atMost = self.atMost and self.atMost or nil,
 		dependsOn = self.wildcardDependsOn and self.wildcardDependsOn:clone() or nil,
 		cannotDependOn = self.wildcardCannotDependOn and self.wildcardCannotDependOn:clone() or nil,
+		-- TODO implementme
+		tensorIndexLower = self.tensorIndexLower,
+		tensorIndexDerivative = self.tensorIndexDerivative,
 	}
+end
+
+function Wildcard:shallowCopy()
+	return self:clone()
 end
 
 -- this is a test-and-set operation.

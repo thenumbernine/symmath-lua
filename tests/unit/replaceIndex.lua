@@ -35,7 +35,7 @@ end
 
 for _,line in ipairs(string.split(string.trim([=[
 
-asserteq( a:replaceIndex(a, b), b )
+asserteq( a:replaceIndex(a, b), b )				-- if there are no indexes in the expr or in find then it falls back on 'replace'
 
 asserteq( a'_a':replaceIndex(a'^u', b'^u'), a'_a' )			-- variance must match in order for the replace to work
 asserteq( a'^a':replaceIndex(a'^b', b'^b'), b'^a' )
@@ -43,7 +43,7 @@ asserteq( a'^a':replaceIndex(a'^b', b'^b' + c'^b'), b'^a' + c'^a' )
 asserteq( a'^a':replaceIndex(a'^b', b'^bc' * c'_c'), b'^ab' * c'_b' )		-- the sum indexes won't use the same symbol, because the symbols are not preserved and instead chosen among unused symbols in the result expression
 asserteq( a'^a':replaceIndex(a'^b', b'^b' + c'^bc' * d'_c'), b'^a' + c'^ab' * d'_b' )
 
-asserteq( a'_ab':replaceIndex(a'_uv', b'_uv'), b'_ab' )			-- TODO looks like indexes get reversed
+asserteq( a'_ab':replaceIndex(a'_uv', b'_uv'), b'_ab' )
 asserteq( a'_ab':replaceIndex(a'_uv', b'_vu'), b'_ba' )
 asserteq( a'_ba':replaceIndex(a'_uv', b'_vu'), b'_ab' )
 asserteq( a'_ab':replaceIndex(a'_vu', b'_uv'), b'_ba' )
@@ -51,7 +51,9 @@ asserteq( a'_ba':replaceIndex(a'_vu', b'_uv'), b'_ab' )
 
 
 asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^am' * c'_mbc', c'^a_bc' ), c'^a_bc')
-asserteq( (g'^ad' * c'_dbc'):replaceIndex( g'^im' * c'_mjk', c'^i_jk' ), c'^a_bc')
+asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^an' * c'_nbc', c'^a_bc' ), c'^a_bc')	-- mapping the sum index
+asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^im' * c'_mjk', c'^i_jk' ), c'^a_bc')	-- mapping the fixed indexes
+asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^im' * c'_djk', c'^i_jk' ), c'^a_bc')	-- mapping both
 
 asserteq( (a'_a' + b'_ab' * c'^b'):replaceIndex(a'_u', b'_u'), b'_a' + b'_ab' * c'^b' )
 

@@ -9,7 +9,7 @@
 
 <table border="1" style="border-collapse:collapse">
 <tr><td>
-<b></b><br>
+<b>if there are no indexes in the expr or in find then it falls back on 'replace'</b><br>
 <code>asserteq( a:replaceIndex(a, b), b )</code>
 </td><td>
 
@@ -59,7 +59,7 @@
 <code></code>
 </td><td>
 <tr><td>
-<b>TODO looks like indexes get reversed</b><br>
+<b></b><br>
 <code>asserteq( a'_ab':replaceIndex(a'_uv', b'_uv'), b'_ab' )</code>
 </td><td>
 
@@ -109,35 +109,25 @@
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
-<b></b><br>
-<code>asserteq( (g'^ad' * c'_dbc'):replaceIndex( g'^im' * c'_mjk', c'^i_jk' ), c'^a_bc')</code>
+<b>mapping the sum index</b><br>
+<code>asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^an' * c'_nbc', c'^a_bc' ), c'^a_bc')</code>
 </td><td>
-expected ${{{{ g}^a}^d}} {{{{{ c}_d}_b}_c}}$ to equal ${{{ c}^a}_b}_c$<br>
-instead found ${{{{ g}^a}^d}} {{{{{ c}_d}_b}_c}}$ vs ${{{ c}^a}_b}_c$<br>
-lhs stack<br>
-init	${{{{ g}^a}^d}} {{{{{ c}_d}_b}_c}}$	<br>
-prune	${{{{ g}^a}^d}} {{{{{ c}_d}_b}_c}}$	<br>
-expand	${{{{ g}^a}^d}} {{{{{ c}_d}_b}_c}}$	<br>
-prune	${{{{ g}^a}^d}} {{{{{ c}_d}_b}_c}}$	<br>
-factor	${{{{ g}^a}^d}} {{{{{ c}_d}_b}_c}}$	<br>
-prune	${{{{ g}^a}^d}} {{{{{ c}_d}_b}_c}}$	<br>
-rhs stack<br>
-init	${{{ c}^a}_b}_c$	<br>
-prune	${{{ c}^a}_b}_c$	<br>
-expand	${{{ c}^a}_b}_c$	<br>
-prune	${{{ c}^a}_b}_c$	<br>
-factor	${{{ c}^a}_b}_c$	<br>
-prune	${{{ c}^a}_b}_c$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:28: failed<br>stack traceback:<br>
-	./unit.lua:93: in function <./unit.lua:92><br>
-	[C]: in function 'error'<br>
-	./unit.lua:28: in function 'asserteq'<br>
-	[string "asserteq( (g'^ad' * c'_dbc'):replaceIndex( g'..."]:1: in main chunk<br>
-	./unit.lua:85: in function <./unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	./unit.lua:84: in function 'exec'<br>
-	./replaceIndex.lua:91: in main chunk<br>
-	[C]: at 0x5597582361c0
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>mapping the fixed indexes</b><br>
+<code>asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^im' * c'_mjk', c'^i_jk' ), c'^a_bc')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>mapping both</b><br>
+<code>asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^im' * c'_djk', c'^i_jk' ), c'^a_bc')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -249,32 +239,8 @@ prune	${{{ c}^a}_b}_c$	<br>
 <b></b><br>
 <code>asserteq( (a'_t' * b'^a_a'):replaceIndex(a'_t', c'_u' * d'^a_a'), c'_u' * b'^a_a' * d'^b_b')</code>
 </td><td>
-expected ${{{{{ c}_u}} {{{{ d}^a}_a}}}} {{{{ b}^a}_a}}$ to equal ${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^b}_b}}$<br>
-instead found ${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^a}_a}}$ vs ${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^b}_b}}$<br>
-lhs stack<br>
-init	${{{{{ c}_u}} {{{{ d}^a}_a}}}} {{{{ b}^a}_a}}$	<br>
-prune	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^a}_a}}$	<br>
-expand	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^a}_a}}$	<br>
-prune	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^a}_a}}$	<br>
-factor	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^a}_a}}$	<br>
-prune	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^a}_a}}$	<br>
-rhs stack<br>
-init	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^b}_b}}$	<br>
-prune	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^b}_b}}$	<br>
-expand	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^b}_b}}$	<br>
-prune	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^b}_b}}$	<br>
-factor	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^b}_b}}$	<br>
-prune	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^b}_b}}$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:28: failed<br>stack traceback:<br>
-	./unit.lua:93: in function <./unit.lua:92><br>
-	[C]: in function 'error'<br>
-	./unit.lua:28: in function 'asserteq'<br>
-	[string "asserteq( (a'_t' * b'^a_a'):replaceIndex(a'_t..."]:1: in main chunk<br>
-	./unit.lua:85: in function <./unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	./unit.lua:84: in function 'exec'<br>
-	./replaceIndex.lua:91: in main chunk<br>
-	[C]: at 0x5597582361c0
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b>what does this mean? the fixed indexes shouldn't have to match ...</b><br>
@@ -292,63 +258,15 @@ prune	${{{ c}_u}} {{{{ b}^a}_a}} {{{{ d}^b}_b}}$	<br>
 <b></b><br>
 <code>asserteq( (a'_ij' + c'_,t' * b'_ij'):replaceIndex( c'_,t', c * d'^i_i' ), a'_ij' + c * d'^a_a' * b'_ij' )</code>
 </td><td>
-expected ${{{ a}_i}_j} + {{{{{c}} {{{{ d}^i}_i}}}} {{{{ b}_i}_j}}}$ to equal ${{{ a}_i}_j} + {{{c}} {{{{ d}^a}_a}} {{{{ b}_i}_j}}}$<br>
-instead found ${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^i}_i}}}$ vs ${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^a}_a}}}$<br>
-lhs stack<br>
-init	${{{ a}_i}_j} + {{{{{c}} {{{{ d}^i}_i}}}} {{{{ b}_i}_j}}}$	<br>
-prune	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^i}_i}}}$	<br>
-expand	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^i}_i}}}$	<br>
-prune	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^i}_i}}}$	<br>
-factor	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^i}_i}}}$	<br>
-prune	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^i}_i}}}$	<br>
-rhs stack<br>
-init	${{{ a}_i}_j} + {{{c}} {{{{ d}^a}_a}} {{{{ b}_i}_j}}}$	<br>
-prune	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^a}_a}}}$	<br>
-expand	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^a}_a}}}$	<br>
-prune	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^a}_a}}}$	<br>
-factor	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^a}_a}}}$	<br>
-prune	${{{ a}_i}_j} + {{{c}} {{{{ b}_i}_j}} {{{{ d}^a}_a}}}$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:28: failed<br>stack traceback:<br>
-	./unit.lua:93: in function <./unit.lua:92><br>
-	[C]: in function 'error'<br>
-	./unit.lua:28: in function 'asserteq'<br>
-	[string "asserteq( (a'_ij' + c'_,t' * b'_ij'):replaceI..."]:1: in main chunk<br>
-	./unit.lua:85: in function <./unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	./unit.lua:84: in function 'exec'<br>
-	./replaceIndex.lua:91: in main chunk<br>
-	[C]: at 0x5597582361c0
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq( (a'_ab' + c'_,t' * b'_ab'):replaceIndex( c'_,t', c * d'^a_a' ), a'_ab' + c * d'^c_c' * b'_ab' )</code>
 </td><td>
-expected ${{{ a}_a}_b} + {{{{{c}} {{{{ d}^a}_a}}}} {{{{ b}_a}_b}}}$ to equal ${{{ a}_a}_b} + {{{c}} {{{{ d}^c}_c}} {{{{ b}_a}_b}}}$<br>
-instead found ${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^a}_a}}}$ vs ${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^c}_c}}}$<br>
-lhs stack<br>
-init	${{{ a}_a}_b} + {{{{{c}} {{{{ d}^a}_a}}}} {{{{ b}_a}_b}}}$	<br>
-prune	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^a}_a}}}$	<br>
-expand	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^a}_a}}}$	<br>
-prune	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^a}_a}}}$	<br>
-factor	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^a}_a}}}$	<br>
-prune	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^a}_a}}}$	<br>
-rhs stack<br>
-init	${{{ a}_a}_b} + {{{c}} {{{{ d}^c}_c}} {{{{ b}_a}_b}}}$	<br>
-prune	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^c}_c}}}$	<br>
-expand	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^c}_c}}}$	<br>
-prune	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^c}_c}}}$	<br>
-factor	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^c}_c}}}$	<br>
-prune	${{{ a}_a}_b} + {{{c}} {{{{ b}_a}_b}} {{{{ d}^c}_c}}}$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:28: failed<br>stack traceback:<br>
-	./unit.lua:93: in function <./unit.lua:92><br>
-	[C]: in function 'error'<br>
-	./unit.lua:28: in function 'asserteq'<br>
-	[string "asserteq( (a'_ab' + c'_,t' * b'_ab'):replaceI..."]:1: in main chunk<br>
-	./unit.lua:85: in function <./unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	./unit.lua:84: in function 'exec'<br>
-	./replaceIndex.lua:91: in main chunk<br>
-	[C]: at 0x5597582361c0
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -402,6 +320,6 @@ ${{{{ g}_i}_j}_{,t}} = {{{d}} {{({{{{{d}} {{{{ b}^k}_{,i}}} {{{{ g}_k}_j}}} + {{
 	./unit.lua:85: in function <./unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
 	./unit.lua:84: in function 'exec'<br>
-	./replaceIndex.lua:91: in main chunk<br>
-	[C]: at 0x5597582361c0
+	./replaceIndex.lua:93: in main chunk<br>
+	[C]: at 0x561316af41c0
 </td></tr>

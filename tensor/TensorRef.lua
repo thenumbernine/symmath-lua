@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
+local Wildcard = require 'symmath.Wildcard'
 
 local TensorRef = class(Expression)
 TensorRef.name = 'TensorRef'
@@ -17,7 +18,7 @@ function TensorRef:init(tensor, ...)
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	for i=1,select('#',...) do
 		local index = select(i, ...)
-		assert(TensorIndex.is(index), 'argument '..i..' of TensorRef is not a TensorIndex: '..require 'ext.tolua'(index))
+		assert(TensorIndex.is(index) or Wildcard.is(index), 'argument '..(i+1)..' of TensorRef is not a TensorIndex or Wildcard: '..require 'ext.tolua'(index))
 	end
 end
 

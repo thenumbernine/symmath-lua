@@ -185,10 +185,10 @@ LaTeX.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Wildcard'] = function(self, expr)
-		if not self.index then
-			error(require'ext.tolua'(self))
+		if not expr.index then
+			error("tried to serialize a Wildcard without an index: "..require'ext.tolua'(expr))
 		end
-		return '$'..self.index
+		return ' \\{'..expr.index..'\\} '
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local symmath = require 'symmath'
