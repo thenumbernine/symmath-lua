@@ -3,6 +3,18 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'unit'(env, 'replaceIndex')
 
+--[[
+TODO 
+expr:replaceIndex(a'_i', b)
+does that mean all a'_a' through a'_z' get replaced with 'b' (as a fixed index)
+or does it mean that only a'_i' gets replaced with 'b' and the rest of a'_j' a'_k' etc remain unchanged?
+
+this is a practical question, since I do my index notation stuff with _ij being arbitary indexes, but with _t being the specific time index
+how to specify that '_t' should be a specific index, while the others are arbitrary? 
+
+for now I'll say that, if the index isn't matched between find and replace, it is assumed to be an extra index (not-to-be-remapped)
+--]]
+
 env.a = var'a'
 env.b = var'b'
 env.c = var'c'
@@ -53,7 +65,7 @@ asserteq( a'_ba':replaceIndex(a'_vu', b'_uv'), b'_ab' )
 asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^am' * c'_mbc', c'^a_bc' ), c'^a_bc')
 asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^an' * c'_nbc', c'^a_bc' ), c'^a_bc')	-- mapping the sum index
 asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^im' * c'_mjk', c'^i_jk' ), c'^a_bc')	-- mapping the fixed indexes
-asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^im' * c'_djk', c'^i_jk' ), c'^a_bc')	-- mapping both
+asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^id' * c'_djk', c'^i_jk' ), c'^a_bc')	-- mapping both
 
 asserteq( (a'_a' + b'_ab' * c'^b'):replaceIndex(a'_u', b'_u'), b'_a' + b'_ab' * c'^b' )
 
@@ -85,6 +97,19 @@ asserteq( (a'_ab' + c'_,t' * b'_ab'):replaceIndex( c'_,t', c * d'^a_a' ), a'_ab'
 asserteq( (a'_ij' + c'_,t' * b'_ij'):replaceIndex( c'_,t', c * d'^i_i' + e'^i_i' ), a'_ij' + (c * d'^a_a' + e'^a_a') * b'_ij' )
 
 printbr( g'_ij,t':eq(d * (d * b'^k_,i' * g'_kj' + d * b'^k_,j' * g'_ki' + d * b'^k' * c'_ijk' + d * b'^k' * c'_jik' + 2 * d'_,t' * g'_ij' - 2 * d * a * e'_ij') ):replaceIndex( d'_,t',  frac(1,3) * (3 * d'_,i' * b'^i' - d * b'^i_,i' - frac(1,2) * d * b'^i' * g'_,i' / g + e * d * a) ) )
+
+-- only if extra indexes match.  in this case, extra is 'k'.
+asserteq( (g'_ab,t' * g'_cd,e'):replaceIndex(g'_ij,k', c'_ij'), g'_ab,t' * g'_cd,e')
+asserteq( (g'_ab,t' * g'_cd,e'):replaceIndex(g'_ij,t', c'_ij'), c'_ab' * g'_cd,e')
+
+-- TODO make sure summed indexes aren't matched incorreclty
+asserteq( a'^a_a':replaceIndex( a'^a_b', b'^a_b'), b'^a_a')	-- replaceIndex with more general indexes should work
+asserteq( a'^a_b':replaceIndex( a'^a_a', b'^a_a'), a'^a_b')	-- replaceIndex with more specific (summed) indexes shouldn't
+asserteq( (a'^a_b' * a'^c_c'):replaceIndex( a'^a_a', b'^a_a'), (a'^a_b' * b'^c_c'))	-- and the two should be discernable
+-- same but replace with scalars
+asserteq( a'^a_a':replaceIndex( a'^a_b', b), b)	
+asserteq( a'^a_b':replaceIndex( a'^a_a', b), a'^a_b')	
+asserteq( (a'^a_b' * a'^c_c'):replaceIndex( a'^a_a', b), (a'^a_b' * b))	
 
 -- and what about when find/replace has a partial number of fixed indexes
 asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end )	-- what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?

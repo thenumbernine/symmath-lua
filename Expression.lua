@@ -422,14 +422,15 @@ function Expression:replaceIndex(find, repl, cond, args)
 --printbr('replSum: '..require 'ext.tolua'(replSum))
 --printbr('replExtra: '..require 'ext.tolua'(replExtra))
 
+	local selfAll = table():append(selfFixed, selfSum, selfExtra)
+	local findAll = table():append(findFixed, findSum, findExtra)
+	local replAll = table():append(replFixed, replSum, replExtra)
+
 	-- get a list of unused symbols
-	local unusedSymbols = table(defaultSymbols)
-	for _,s in ipairs(selfFixed) do
-		unusedSymbols:removeObject(s.symbol)
-	end
 	-- TODO only remove the summed indexes that aren't being replaced
 	-- but that would mean moving the pick-new-sum-symbol code down into the replace-expression code
-	for _,s in ipairs(selfSum) do
+	local unusedSymbols = table(defaultSymbols)
+	for _,s in ipairs(selfAll) do
 		unusedSymbols:removeObject(s.symbol)
 	end
 
@@ -451,9 +452,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 	--if TensorRef.is(find) then
 	--if not require 'symmath.Variable'.is(find) then
 	--if true then
-	if not ((#selfFixed + #selfSum + #selfExtra) > 0
-	and (#findFixed + #findSum + #findExtra) > 0)
-	then
+	if not (#selfAll > 0 and #findAll > 0) then
 --printbr'only replacing'
 		return self:replace(find, repl, cond)
 	end
@@ -463,11 +462,21 @@ function Expression:replaceIndex(find, repl, cond, args)
 	local Wildcard = require 'symmath.Wildcard'
 
 	-- create our :match() object by replacing all TensorIndex's with Wildcard's
+	-- only replace wildcards for the indexes shared in common between 'find' and 'replace'
 	local nextWildcardIndex = 1
 	local wildcardIndexToTensorIndex = table()
 	local tensorIndexToWildcardIndex = {}
 	local findWithWildcards = find:map(function(x)
-		if TensorIndex.is(x) then
+		if TensorIndex.is(x)
+-- [[ only match wildcards indexes shared between find and replace?  maybe?
+-- but what about when we want to replace a TensorRef with a non-TensorRef?
+-- TODO think about this ... when should a'_i' => b mean the i is fixed, and when should it mean the i is extra?
+		and (
+			replFixed:find(nil, function(i) return i.symbol == x.symbol end)
+			or findSum:find(nil, function(i) return i.symbol == x.symbol end)
+		)
+--]]		
+		then
 			-- return a tensor index with a wildcard
 			local wildcardIndex = tensorIndexToWildcardIndex[x.symbol..' '..tostring(not not x.lower)]
 			if wildcardIndex then
@@ -483,11 +492,18 @@ function Expression:replaceIndex(find, repl, cond, args)
 	end)
 --printbr('looking for matches against ', find)
 --printbr('...with wildcards replaced, looking for ', findWithWildcards)
+
 	return self:map(function(x)
 
 		local results = table{x:match(findWithWildcards)}
 		if results[1] ~= false then
 --printbr('found', x)
+			
+			-- if there were no wildcards then we would've just got back a 'true'
+			-- in that case, no need to replace anything?
+			-- unless there are any sum indexes in the repl.
+			-- in that case, just nil the results[1] so it doesn't mess things up later.
+			if results[1] == true then results[1] = nil end
 			for wildcardIndex,xIndex in ipairs(results) do
 --printbr('match', wildcardIndex, 'is', xIndex)			
 				local selfIndex = wildcardIndexToTensorIndex[wildcardIndex]
@@ -495,6 +511,20 @@ function Expression:replaceIndex(find, repl, cond, args)
 --printbr("lower or derivative doesn't match original -- failing")
 					-- index variance and symbol don't match ... don't replace this one
 					return nil
+				end
+			end
+
+			-- make sure the matching symbols in 'find' are also matching in 'x'
+			-- if wildcardIndexToTensorIndex[1] symbol matches wildcardIndexToTensorIndex[2] symbol
+			-- then results[1].symbol should match results[2].symbol
+			for i=1,#wildcardIndexToTensorIndex-1 do
+				for j=i+1,#wildcardIndexToTensorIndex do
+					if wildcardIndexToTensorIndex[i].symbol == wildcardIndexToTensorIndex[j].symbol then
+						if results[i].symbol ~= results[j].symbol then 
+--printbr("find wildcards "..i.." and "..j.." match, but results don't")
+							return false 
+						end
+					end
 				end
 			end
 

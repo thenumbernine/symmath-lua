@@ -114,7 +114,7 @@ local function insertMetricsToSetVariance(expr, t, metric)
 							symbol = sumSymbol,
 						}
 					)
-					replx:insert(g)
+					gs:insert(g)
 					replx[i].lower = t[i].lower
 					replx[i].symbol = sumSymbol
 				end
@@ -623,11 +623,17 @@ dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
 printbr(dt_gammaBar_ll_def)
 --]]
 
+printbr('substituting', connBar_lll_def)
+dt_gammaBar_ll_def = dt_gammaBar_ll_def:substIndex(connBar_lll_def)
+dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
+printbr(dt_gammaBar_ll_def)
+
 printbr('tidying indexes, symmetrizing ', gammaBar,' and simplifying')
 dt_gammaBar_ll_def = dt_gammaBar_ll_def
 	:tidyIndexes()
 	:symmetrizeIndexes(gammaBar, {1,2})
 	:reindex{a='k'}
+	:tidyIndexes()
 dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
 printbr(dt_gammaBar_ll_def)
 printbr()
@@ -641,6 +647,7 @@ printbr()
 printHeader'conformal metric perturbation spatial derivative:'
 printbr(epsilonBar_def'_,k'())
 printbr()
+
 
 printHeader'conformal metric perturbation evolution:'
 local dt_epsilonBar_ll_def = epsilonBar_def'_,t'()
@@ -676,19 +683,10 @@ printbr(dt_connBar_ull_def)
 dt_connBar_ull_def = dt_connBar_ull_def()
 printbr(dt_connBar_ull_def)
 
-printbr('solve for ',gammaBar'_ij,k')
-dt_connBar_ull_def = dt_connBar_ull_def:subst( connBar_lll_def:solve(gammaBar'_ij,k'):reindex{i='m'} )()
-printbr(dt_connBar_ull_def)
-
 printbr('substituting', dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)
 dt_connBar_ull_def = dt_connBar_ull_def:substIndex(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)()
 printbr(dt_connBar_ull_def)
 
--- hmm, not working?
-dt_connBar_ull_def = dt_connBar_ull_def:replaceIndex(gammaBar'^im' * GammaBar'_mjk', GammaBar'^i_jk')()
-printbr(dt_connBar_ull_def)
-
---dt_connBar_ull_def = dt_connBar_ull_def:subst(dt_gammaBar_ll_def:reindex{ijkm='bapq'})
 printbr('substituting', dt_gammaBar_ll_def)
 dt_connBar_ull_def = dt_connBar_ull_def:substIndex(dt_gammaBar_ll_def)
 printbr(dt_connBar_ull_def)
@@ -697,55 +695,19 @@ printbr('simplifying metrics')
 dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)
 printbr(dt_connBar_ull_def)
 
---[[
-dt_connBar_ull_def = dt_connBar_ull_def:tidyIndexes{fixed='t'} 	-- can't do this yet.  the later add complains that it is combining T_ijk and T_ijkt's, which is true.  i guess it is more proper wrt current system to substitute-away all the _,t's first.
-printbr(dt_connBar_ull_def)
---]]
-
 printbr('substituting', dt_gammaBar_ll_def)
 dt_connBar_ull_def = dt_connBar_ull_def
 	:replaceIndex(gammaBar'_jk,mt', gammaBar'_jk,t''_,m')
-	:substIndex(dt_gammaBar_ll_def:reindex{ijkm='jkpq'})		-- hmm, would be nice if substIndex correctly renamed sum terms to not collide with its insertions.
+	:substIndex(dt_gammaBar_ll_def:reindex{ijkm='jkpq'})
 printbr(dt_connBar_ull_def)
-
-printbr('substituting', partial_gammaBar_lll_from_connBar_lll)
 dt_connBar_ull_def = dt_connBar_ull_def
-	:substIndex(partial_gammaBar_lll_from_connBar_lll)
-printbr(dt_connBar_ull_def)
-
-printbr('substituting', partial_gammaBar_lll_from_connBar_lll)
-dt_connBar_ull_def = dt_connBar_ull_def()		-- simplify to distribute derivative
-	:substIndex(partial_gammaBar_lll_from_connBar_lll)()	-- and make this substitution again
-	--:tidyIndexes()()
-printbr(dt_connBar_ull_def)
-
-dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)
-	:symmetrizeIndexes(gammaBar, {1,2})
-	:tidyIndexes()()
+	:tidyIndexes()
 	:symmetrizeIndexes(gammaBar, {1,2})
 	:symmetrizeIndexes(ABar, {1,2})
 	:symmetrizeIndexes(delta, {1,2})
--- TODO how about adding index symmetry rule to tensors (and of course by default for derivatives), then any time a function inserts a tensor - like simplifyMetrics(), have it auto-sort the indexes?  
--- but this is problematic with the mul symmetrizeIndexes rules, where symmetrizing a tensor that is * another tensor does symmetrize the other tensor too
--- a better way is just simplifying by comparing graphs of tensors.
-	:simplify()			
+dt_connBar_ull_def = betterSimplify(dt_connBar_ull_def)
 printbr(dt_connBar_ull_def)
 
--- convert all connBar^i_jk,l's to connBar_ijk,l's
-dt_connBar_ull_def[2] = dt_connBar_ull_def[2]
-	:replaceIndex(GammaBar'^i_jk,l', (gammaBar'^im' * GammaBar'_mjk')'_,l')()
-	:substIndex(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)()
-	:substIndex(partial_gammaBar_lll_from_connBar_lll)()
-printbr(dt_connBar_ull_def)
-
-dt_connBar_ull_def = dt_connBar_ull_def
-	--:replaceIndex(GammaBar'_ijk,l', GammaBar'_ijk'',l')
-	:substIndex(connBar_lll_def'_,l'())()
-dt_connBar_ull_def = simplifyBarMetrics(dt_connBar_ull_def)	
-	:tidyIndexes()()
-	:symmetrizeIndexes(gammaBar, {1,2})()
-	:symmetrizeIndexes(gammaBar, {3,4})()
-printbr(dt_connBar_ull_def)
 printbr()
 
 

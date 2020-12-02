@@ -124,7 +124,7 @@
 </td></tr>
 <tr><td>
 <b>mapping both</b><br>
-<code>asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^im' * c'_djk', c'^i_jk' ), c'^a_bc')</code>
+<code>asserteq( (g'^am' * c'_mbc'):replaceIndex( g'^id' * c'_djk', c'^i_jk' ), c'^a_bc')</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -305,6 +305,106 @@ ${{{{ g}_i}_j}_{,t}} = {{{d}} {{({{{{{d}} {{{{ b}^k}_{,i}}} {{{{ g}_k}_j}}} + {{
 <code></code>
 </td><td>
 <tr><td>
+<b>only if extra indexes match.  in this case, extra is 'k'.</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq( (g'_ab,t' * g'_cd,e'):replaceIndex(g'_ij,k', c'_ij'), g'_ab,t' * g'_cd,e')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( (g'_ab,t' * g'_cd,e'):replaceIndex(g'_ij,t', c'_ij'), c'_ab' * g'_cd,e')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>TODO make sure summed indexes aren't matched incorreclty</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>replaceIndex with more general indexes should work</b><br>
+<code>asserteq( a'^a_a':replaceIndex( a'^a_b', b'^a_b'), b'^a_a')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>replaceIndex with more specific (summed) indexes shouldn't</b><br>
+<code>asserteq( a'^a_b':replaceIndex( a'^a_a', b'^a_a'), a'^a_b')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>and the two should be discernable</b><br>
+<code>asserteq( (a'^a_b' * a'^c_c'):replaceIndex( a'^a_a', b'^a_a'), (a'^a_b' * b'^c_c'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>same but replace with scalars</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'^a_a':replaceIndex( a'^a_b', b), b)</code>
+</td><td>
+expected ${{ a}^a}_a$ to equal $b$<br>
+instead found ${{ a}^a}_a$ vs $b$<br>
+lhs stack<br>
+init	${{ a}^a}_a$	<br>
+prune	${{ a}^a}_a$	<br>
+expand	${{ a}^a}_a$	<br>
+prune	${{ a}^a}_a$	<br>
+factor	${{ a}^a}_a$	<br>
+prune	${{ a}^a}_a$	<br>
+rhs stack<br>
+init	$b$	<br>
+prune	$b$	<br>
+expand	$b$	<br>
+prune	$b$	<br>
+factor	$b$	<br>
+prune	$b$	<br>
+<span style="color:red">BAD</span><br>./unit.lua:28: failed<br>stack traceback:<br>
+	./unit.lua:93: in function <./unit.lua:92><br>
+	[C]: in function 'error'<br>
+	./unit.lua:28: in function 'asserteq'<br>
+	[string "asserteq( a'^a_a':replaceIndex( a'^a_b', b), b)"]:1: in main chunk<br>
+	./unit.lua:85: in function <./unit.lua:84><br>
+	[C]: in function 'xpcall'<br>
+	./unit.lua:84: in function 'exec'<br>
+	./replaceIndex.lua:118: in main chunk<br>
+	[C]: at 0x55ca686b51c0
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'^a_b':replaceIndex( a'^a_a', b), a'^a_b')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( (a'^a_b' * a'^c_c'):replaceIndex( a'^a_a', b), (a'^a_b' * b))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
 <b>and what about when find/replace has a partial number of fixed indexes</b><br>
 <code></code>
 </td><td>
@@ -320,6 +420,6 @@ ${{{{ g}_i}_j}_{,t}} = {{{d}} {{({{{{{d}} {{{{ b}^k}_{,i}}} {{{{ g}_k}_j}}} + {{
 	./unit.lua:85: in function <./unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
 	./unit.lua:84: in function 'exec'<br>
-	./replaceIndex.lua:93: in main chunk<br>
-	[C]: at 0x561316af41c0
+	./replaceIndex.lua:118: in main chunk<br>
+	[C]: at 0x55ca686b51c0
 </td></tr>
