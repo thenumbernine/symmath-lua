@@ -107,9 +107,16 @@ asserteq( a'^a_a':replaceIndex( a'^a_b', b'^a_b'), b'^a_a')	-- replaceIndex with
 asserteq( a'^a_b':replaceIndex( a'^a_a', b'^a_a'), a'^a_b')	-- replaceIndex with more specific (summed) indexes shouldn't
 asserteq( (a'^a_b' * a'^c_c'):replaceIndex( a'^a_a', b'^a_a'), (a'^a_b' * b'^c_c'))	-- and the two should be discernable
 -- same but replace with scalars
-asserteq( a'^a_a':replaceIndex( a'^a_b', b), b)	
+asserteq( a'^a_a':replaceIndex( a'^a_b', b), a'^a_a')			-- in this case, a^a_b's indexes are considered extra since they are not in b as well, so they will be exactly matched in the expression.  since no a^a_b exists, it will not match and not replace.
 asserteq( a'^a_b':replaceIndex( a'^a_a', b), a'^a_b')	
 asserteq( (a'^a_b' * a'^c_c'):replaceIndex( a'^a_a', b), (a'^a_b' * b))	
+
+printbr( d'_,t':eq( frac(1,6) * ( d * ( 2 * e * a - b'^k_,i' * g'^ij' * g'_jk' - b'^k_,j' * g'_ik' * g'^ij' - b'^k' * g'^ij' * g'_ij,k' ) )):replaceIndex( g'_ij', c'_ij' / d^2  ) )
+printbr( d'_,t':eq( 2 * e * a - b'^k_,i' * g'^ij' * g'_jk' - b'^k_,j' * g'_ik' * g'^ij' - b'^k' * g'^ij' * g'_ij,k' ):replaceIndex( g'_ij', c'_ij' / d^2  ) )
+
+asserteq( d'_,t':eq( b'^k_,i' * g'^ij' * g'_jk' ):replaceIndex( g'_ij', c'_ij' / d^2  ), d'_,t':eq(b'^k_,i' * g'^ij' * c'_jk' / d^2) )
+
+asserteq( d'_,t':eq( g'^jk' * g'_jk' ):replaceIndex( g'_ij', c'_ij' / d^2  ), d'_,t':eq( g'^jk' * c'_jk' / d^2) )
 
 -- and what about when find/replace has a partial number of fixed indexes
 asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end )	-- what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?

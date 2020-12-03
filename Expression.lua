@@ -473,6 +473,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 -- TODO think about this ... when should a'_i' => b mean the i is fixed, and when should it mean the i is extra?
 		and (
 			replFixed:find(nil, function(i) return i.symbol == x.symbol end)
+			or replExtra:find(nil, function(i) return i.symbol == x.symbol end)
 			or findSum:find(nil, function(i) return i.symbol == x.symbol end)
 		)
 --]]		
