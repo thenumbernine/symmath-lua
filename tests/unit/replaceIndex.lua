@@ -118,6 +118,9 @@ asserteq( d'_,t':eq( b'^k_,i' * g'^ij' * g'_jk' ):replaceIndex( g'_ij', c'_ij' /
 
 asserteq( d'_,t':eq( g'^jk' * g'_jk' ):replaceIndex( g'_ij', c'_ij' / d^2  ), d'_,t':eq( g'^jk' * c'_jk' / d^2) )
 
+-- does fixed in the find/repl to map into sums in the expr
+asserteq( a'^i_i':replaceIndex(a'^i_j', b'^i_j'), b'^i_i')
+
 -- and what about when find/replace has a partial number of fixed indexes
 asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end )	-- what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?
 

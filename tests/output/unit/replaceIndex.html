@@ -425,6 +425,21 @@ ${{ d}_{,t}} = {{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\fra
 <code></code>
 </td><td>
 <tr><td>
+<b>does fixed in the find/repl to map into sums in the expr</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq( a'^i_i':replaceIndex(a'^i_j', b'^i_j'), b'^i_i')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
 <b>and what about when find/replace has a partial number of fixed indexes</b><br>
 <code></code>
 </td><td>
@@ -440,6 +455,6 @@ ${{ d}_{,t}} = {{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\fra
 	./unit.lua:85: in function <./unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
 	./unit.lua:84: in function 'exec'<br>
-	./replaceIndex.lua:125: in main chunk<br>
-	[C]: at 0x564f072fc1c0
+	./replaceIndex.lua:128: in main chunk<br>
+	[C]: at 0x564c8174d1c0
 </td></tr>

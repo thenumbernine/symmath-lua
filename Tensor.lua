@@ -646,18 +646,27 @@ function Tensor:permute(dstVariance)
 	end
 
 	-- perform assignment
-	return Tensor{
-		indexes = dstVariance,
-		dim = newdim,
-		values = function(...)
-			local dstIndex = {...}
-			local srcIndex = {}	
-			for i=1,#dstIndex do
-				srcIndex[i] = dstIndex[indexMap[i]]
-			end
-			return self:get(srcIndex)
-		end,
-	}
+	local result
+	xpcall(function()
+		result = Tensor{
+			indexes = dstVariance,
+			dim = newdim,
+			values = function(...)
+				local dstIndex = {...}
+				local srcIndex = {}	
+				for i=1,#dstIndex do
+					srcIndex[i] = dstIndex[indexMap[i]]
+				end
+				return self:get(srcIndex)
+			end,
+		}
+	end, function(err)
+		io.stderr:write("failed for tensor "..self.."\n")
+		io.stderr:write(err..'\n'..debug.traceback())
+		io.stderr:flush()
+		os.exit(1)
+	end)
+	return result
 end
 
 -- have to be copied?

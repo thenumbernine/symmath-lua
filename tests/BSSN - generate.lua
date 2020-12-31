@@ -17,7 +17,7 @@ print(MathJax.header)
 
 
 local eqns = table{
-	assert(loadfile'BSSN - index - using GammaBar - cache.lua')()
+	assert(loadfile'BSSN - index - cache.lua')()
 }
 
 
@@ -42,15 +42,14 @@ Tensor.coords{
 
 -- variables
 
-
 local beta_u_dense = Tensor('^i', function(i)
-	return var('beta_u.'..xs[i])
+	return var('U->beta_u.'..xs[i])
 end)
 local B_u_dense = Tensor('^i', function(i)
-	return var('B_u.'..xs[i])
+	return var('U->B_u.'..xs[i])
 end)
 local LambdaBar_u_dense = Tensor('^i', function(i)
-	return var('LambdaBar_u.'..xs[i])
+	return var('U->LambdaBar_u.'..xs[i])
 end)
 local C_u_dense = Tensor('^i', function(i)
 	return var('C_u.'..xs[i])
@@ -79,8 +78,8 @@ end)
 local GammaBar_ull_dense = Tensor('^i_jk', function(i,j,k)
 	return var('GammaBar_ull.'..xs[i]..'.'..table{xs[j],xs[k]}:sort():concat())
 end)
-local GammaBar_u_dense = Tensor('^i', function(i)
-	return var('GammaBar_u.'..xs[i])
+local GammaHat_u_dense = Tensor('^i', function(i)
+	return var('GammaHat_u.'..xs[i])
 end)
 local GammaHat_ull_dense = Tensor('^i_jk', function(i,j,k)
 	return var('GammaHat_ull.'..xs[i]..'.'..table{xs[j],xs[k]}:sort():concat())
@@ -90,6 +89,9 @@ end)
 -- derivatives
 
 
+local partial_det_gammaBar_l_dense = Tensor('_i', function(i)
+	return var('partial_det_gammaBar_l.'..xs[i])
+end)
 local partial_alpha_l_dense = Tensor('_i', function(i)
 	return var('partial_alpha_l.'..xs[i])
 end)
@@ -122,7 +124,6 @@ local partial2_gammaBar_llll_dense = Tensor('_ijkl', function(i,j,k,l)
 	return var('partial2_gammaBar_llll['..(k-1)..']['..(l-1)..'].'..table{xs[i],xs[j]}:sort():concat())
 end)
 
-
 -- convert from tex vars and partials to C vars
 
 io.stderr:write('starting conversion...\n')
@@ -148,6 +149,7 @@ local origRhs = rhs
 		:replaceIndex(var'\\alpha''_,i', partial_alpha_l_dense'_i')
 		:replaceIndex(var'W''_,i', partial_W_l_dense'_i')
 		:replaceIndex(var'K''_,i', partial_K_l_dense'_i')
+		:replaceIndex(var'\\bar{\\gamma}''_,i', partial_det_gammaBar_l_dense'_i')
 		-- tensor 1st derivs - though shouldn't they autogen?
 		:replaceIndex(var'\\beta''^i_,j', partial_beta_ul_dense'^i_j')
 		:replaceIndex(var'\\bar{\\gamma}''_ij,k', partial_gammaBar_lll_dense'_ijk')
@@ -166,14 +168,15 @@ local origRhs = rhs
 		:replaceIndex(var'\\bar{A}''_ij', ABar_ll_dense'_ij')
 		:replaceIndex(var'R''_ij', R_ll_dense'_ij')
 		:replaceIndex(var'S''_ij', S_ll_dense'_ij')
-		:replaceIndex(var'\\bar{\\Gamma}''^i', GammaBar_u_dense'^i') 
 		:replaceIndex(var'\\bar{\\Gamma}''_ijk', GammaBar_lll_dense'_ijk') 
 		:replaceIndex(var'\\bar{\\Gamma}''^i_jk', GammaBar_ull_dense'^i_jk') 
 		:replaceIndex(var'\\hat{\\Gamma}''^i_jk', GammaHat_ull_dense'^i_jk') 
+		:replaceIndex(var'\\hat{\\Gamma}''^i', GammaHat_u_dense'^i') 
 		-- rename greek to C var names
-		:replace(var'\\alpha', var'alpha')
-		:replace(var'\\rho', var'rho')
+		:replace(var'\\alpha', var'U->alpha')
+		:replace(var'\\rho', var'U->rho')
 		:replace(var'\\pi', var'M_PI')
+		:replace(var'\\bar{\\gamma}', var'det_gammaBar')
 		-- scalar vars fine as they are:
 		-- var'S' 
 		-- var'K'
@@ -181,56 +184,8 @@ local origRhs = rhs
 		-- var'W'
 	printbr('new rhs:', rhs)
 
---[[	
-	rhs = rhs:simplify()	-- dies at the end as well 
---]]
--- [[
-	rhs = rhs:factorDivision()	-- got all the way to LambdaBar 
---]]
---[[ dies at epsilonBar
-	if lhs == var'\\beta''^i_,t' then
-		rhs = rhs:simplify()
-	else
-		assert(symmath.op.add.is(rhs))
-		local newrhs = table()
-		for j=1,#rhs do
-io.stderr:write('simplifying term '..j..' of '..#rhs..'\n')
-io.stderr:flush()
-			xpcall(function()
-				newrhs[j] = rhs[j]:simplify()
-			end, function(err)
-				printbr('failed to simplify '..rhs[j])
-				io.stderr:write(err..'\n'..debug.backtrace())
-				os.exit(1)
-			end)
-		end
-		assert(#rhs >= 2)
-		-- each should be a tensor term of degree matching the partial on the lhs
-		rhs = setmetatable(newrhs, symmath.op.add)
-		
-		-- sum all the tensor terms together
-		xpcall(function()
-io.stderr:write('final simplification...\n')
-io.stderr:flush()
-			rhs = rhs()
-		end, function(err)
-			printbr('failed to simplify whole '..rhs)
-			io.stderr:write(err..'\n'..debug.backtrace())
-			-- hmm ... this isn't quitting. wtf.
-			os.exit(1)
-		end)
-		
-		if #lhs <= 1 then
-			error("seems you have a pde with a time-derivative index")
-		elseif #lhs == 2 then
-			-- this is a scalar: name'_,t'
-			-- rhs shouldn't be a tensor
-		elseif #lhs >= 3 then
-			-- simplified rhs should have become a tequl to the number of indexes of the_,t)
-			--assert(Tensor.is(rhs))
-		end
-	end
---]]
+	rhs = rhs()
+	--rhs = rhs:factorDivision()	-- got all the way to LambdaBar 
 
 io.stderr:write('creating equations with new variable names...\n')
 io.stderr:flush()
@@ -265,7 +220,7 @@ io.stderr:flush()
 		local k,v = next(eqn)	-- why would this ever fail?
 		assert(k, "failed on "..tolua(eqn))
 		assert(v, "failed on "..tolua(eqn))
-		printbr(var(k):eq(v))
+		printbr('<pre>', export.C(var(k):eq(v)), '</pre>')
 		printbr()
 	end
 end
