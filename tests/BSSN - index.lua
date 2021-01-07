@@ -27,6 +27,7 @@ local function printHeader(str)
 end
 
 
+-- TODO put an add-mul-div simplification inside Expression somewhere
 local function betterSimplify(x)
 	return x():factorDivision()
 	:map(function(y)

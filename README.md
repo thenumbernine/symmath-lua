@@ -739,8 +739,6 @@ Output CDN URLs:
 
 [tests/output/BSSN - generate](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate.html)
 
-[tests/output/BSSN - index - using GammaBar](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index%20%2d%20using%20GammaBar.html)
-
 [tests/output/BSSN - index](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index.html)
 
 [tests/output/Building Curvature by ADM](https://thenumbernine.github.io/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
@@ -845,6 +843,8 @@ Output CDN URLs:
 
 [tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
 
+[tests/output/hyperbolic gamma driver in ADM terms](https://thenumbernine.github.io/symmath/tests/output/hyperbolic%20gamma%20driver%20in%20ADM%20terms.html)
+
 [tests/output/metric catalog](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog.html)
 
 [tests/output/metric catalog/Cartesian, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/Cartesian%2c%20coordinate.html)
@@ -921,15 +921,19 @@ Output CDN URLs:
 
 [tests/output/spring force](https://thenumbernine.github.io/symmath/tests/output/spring%20force.html)
 
+[tests/output/sum of two metrics](https://thenumbernine.github.io/symmath/tests/output/sum%20of%20two%20metrics.html)
+
 [tests/output/symbols](https://thenumbernine.github.io/symmath/tests/output/symbols.html)
 
 [tests/output/tensor coordinate invariance](https://thenumbernine.github.io/symmath/tests/output/tensor%20coordinate%20invariance.html)
 
 [tests/output/toy-1+1 spacetime](https://thenumbernine.github.io/symmath/tests/output/toy%2d1%2b1%20spacetime.html)
 
-[tests/output/unit/MakeTrigLookupTables](https://thenumbernine.github.io/symmath/tests/output/unit/MakeTrigLookupTables.html)
+[tests/output/unit/compile](https://thenumbernine.github.io/symmath/tests/output/unit/compile.html)
 
 [tests/output/unit/determinant_performance](https://thenumbernine.github.io/symmath/tests/output/unit/determinant_performance.html)
+
+[tests/output/unit/getIndexesUsed](https://thenumbernine.github.io/symmath/tests/output/unit/getIndexesUsed.html)
 
 [tests/output/unit/index_construction](https://thenumbernine.github.io/symmath/tests/output/unit/index_construction.html)
 
@@ -942,6 +946,8 @@ Output CDN URLs:
 [tests/output/unit/matrix](https://thenumbernine.github.io/symmath/tests/output/unit/matrix.html)
 
 [tests/output/unit/replace](https://thenumbernine.github.io/symmath/tests/output/unit/replace.html)
+
+[tests/output/unit/replaceIndex](https://thenumbernine.github.io/symmath/tests/output/unit/replaceIndex.html)
 
 [tests/output/unit/sets](https://thenumbernine.github.io/symmath/tests/output/unit/sets.html)
 

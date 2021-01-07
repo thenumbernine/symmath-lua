@@ -121,7 +121,7 @@ function TensorIndex.parseIndexes(indexes)
 				end
 
 				if removeIfFound'$' then
-					indexes[i] = Wildcard{
+					indexes[i] = require 'symmath.Wildcard'{
 						index = assert(tonumber(indexes[i])),
 						tensorIndexLower = lower,
 						tensorIndexDerivative = derivative,
