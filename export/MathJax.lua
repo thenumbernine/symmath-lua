@@ -28,13 +28,13 @@ function Header:__tostring()
 	return [=[
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>]=] .. self.title .. [=[</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>]=] .. self.title .. [=[</title>
 		<script type="text/javascript" async src="]=]..self.url..[=["></script>
 		<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
 	</head>
-    <body>
+	<body>
 ]=]
 --]==]
 --[==[ new header, which tries multiple sources, and works great (except doesn't work with htmlpreview)
@@ -42,9 +42,9 @@ function Header:__tostring()
 	return [=[
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>]=] .. self.title .. [=[</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>]=] .. self.title .. [=[</title>
 		<script type='text/javascript'>
 function loadScript(args) {
 	console.log("loading "+args.src);
@@ -89,18 +89,18 @@ function init() {
 }
 		</script>
 	</head>
-    <body onload='init();'>
+	<body onload='init();'>
 ]=]
 --]==]
 -- [==[ next iteration -- in one tryToFindMathJax.js file -- which ignores the URLs here
 	return [=[
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>]=] .. self.title .. [=[</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>]=] .. self.title .. [=[</title>
 		<script type='text/javascript' src=']=] .. self.pathToTryToFindMathJax .. [=[/tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 ]=]
 --]==]

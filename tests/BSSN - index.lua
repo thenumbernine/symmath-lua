@@ -12,6 +12,48 @@ print(MathJax.header)
 
 local spatialDim = 3
 
+--[[ latest times:
+useful identity: ... 0.072s
+useful identity: ... 0.037s
+ADM metric evolution: ... 0.259s
+Bona-Masso lapse and shift evolution: ... 0.001s
+using locally-Minkowski normalized coordinates: ... 0.051s
+using locally-Minkowski normalized coordinates: ... 0.027s
+using locally-Minkowski normalized coordinates: ... 0.148s
+conformal $\phi$: ... 0.002s
+conformal $\chi$: ... 0s
+conformal W: ... 0.001s
+conformal metric: ... 0.001s
+conformal metric inverse: ... 0.001s
+conformal metric derivative: ... 0.018s
+conformal metric determinant: ... 0.001s
+conformal metric constraint: ... 0.001s
+static grid assumption: ... 0.001s
+conformal connection: ... 0.435s
+extrinsic curvature trace: ... 0.0010000000000001s
+trace-free extrinsic curvature: ... 0.006s
+conformal trace-free extrinsic curvature: ... 0.039s
+trace-free extrinsic curvature derivative: ... 0.0070000000000001s
+Jacobi identity: ... 0s
+conformal W evolution: ... 0.57s
+using locally-Minkowski normalized coordinates: ... 0.257s
+conformal metric evolution: ... 0.924s
+conformal metric perturbation: ... 0.00099999999999989s
+conformal metric perturbation spatial derivative: ... 0.0060000000000002s
+conformal metric perturbation evolution: ... 0.0059999999999998s
+using locally-Minkowski normalized coordinates: ... 2.639s
+grid vs conformal connection difference: ... 0.0030000000000001s
+grid vs conformal connection difference evolution: ... 104.327s
+using locally-Minkowski normalized coordinates: ... 324.763s
+extrinsic curvature trace evolution: ... 17.434s
+using locally-Minkowski normalized coordinates: ... 1.532s
+trace-free extrinsic curvature evolution: ... 0.016999999999996s
+conformal trace-free extrinsic curvature evolution: ... 27.296s
+using locally-Minkowski normalized coordinates: ... 58.253s
+collecting partial derivatives: ... 0.013000000000034s
+writing results... ... 0.021999999999935s
+TOTAL: 539.172
+--]]
 local timer = os.clock
 local startTime = timer()
 local lastTime = startTime
@@ -379,6 +421,46 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 	})
 end
 
+local delta = Tensor:deltaSymbol()
+
+local function replaceNormalizationTransformsWithDeltas(expr)
+	local mul = require 'symmath.op.mul'
+	return expr:map(function(x)
+		if mul.is(x) then
+			x = x:clone()
+			local found
+			repeat
+				found = false
+				for i=#x,1,-1 do
+					local xi = x[i]
+					for j=1,i-1 do
+						local xj = x[j]
+						if TensorRef.is(xi)
+						and #xi == 3
+						and xi[1] == e
+						and TensorRef.is(xj)
+						and #xj == 3
+						and xj[1] == e
+						and xi[2].symbol == xj[2].symbol
+						and xi[2].lower ~= xj[2].lower
+						then
+							assert(xi[3].lower ~= xj[3].lower)
+							assert(xi[3].symbol:upper() == xi[3].symbol)
+							assert(xj[3].symbol:upper() == xj[3].symbol)
+							table.remove(x, i)
+							table.remove(x, j)
+							table.insert(x, TensorRef(delta, xi[3], xj[3]))
+							found = true
+							break
+						end
+					end
+					if found then break end
+				end
+			until not found
+			return x
+		end
+	end)
+end
 
 
 --[[
@@ -388,7 +470,6 @@ Tensor.defaultSymbols = range(9,26):append(range(1,8)):mapi(function(x) return s
 --]]
 
 
-local delta = Tensor:deltaSymbol()
 local alpha = var'\\alpha'
 local beta = var'\\beta'
 local gamma = var'\\gamma'
@@ -631,6 +712,13 @@ local dt_alpha_norm_def = insertNormalizationToSetVariance(dt_alpha_def:splitOff
 printbr(dt_alpha_norm_def)
 printbr()
 
+--[[ not needed because there are no (non-derivative) summed indexes in alpha_,t's rhs
+printbr'cancelling forward and inverse transforms, and simplifying deltas...'
+dt_alpha_norm_def = replaceNormalizationTransformsWithDeltas(dt_alpha_norm_def)
+	:simplifyMetrics()
+printbr(dt_alpha_norm_def) 
+--]]
+
 
 -- beta^i
 
@@ -651,12 +739,7 @@ printbr(dt_beta_U_norm_def)
 printbr'transforming by inverse of normalization basis'
 dt_beta_U_norm_def = dt_beta_U_norm_def * e'_i^J'
 dt_beta_U_norm_def = betterSimplify(dt_beta_U_norm_def )
-	--[[ not working
-	:replaceIndex(e'^i_I' * e'_i^J', delta'_I^J')
-	--]]
-	-- [[
-	:replace(e'^i_I' * e'_i^J', delta'_I^J')
-	--]]
+dt_beta_U_norm_def = replaceNormalizationTransformsWithDeltas(dt_beta_U_norm_def)
 	:simplifyMetrics()
 	:reindex{J='I'}
 dt_beta_U_norm_def = betterSimplify(dt_beta_U_norm_def)
@@ -682,12 +765,11 @@ printbr(dt_B_U_norm_def)
 -- remove basis transform on lhs
 dt_B_U_norm_def = dt_B_U_norm_def * e'_i^J'
 dt_B_U_norm_def = betterSimplify(dt_B_U_norm_def)
-	:replace(e'^i_I' * e'_i^J', delta'_I^J')
+dt_B_U_norm_def = replaceNormalizationTransformsWithDeltas(dt_B_U_norm_def)
 	:simplifyMetrics()
 	:reindex{J='I'}
 printbr(dt_B_U_norm_def) 
 printbr()
-
 
 
 --printHeader'metric derivative:'
@@ -985,6 +1067,15 @@ local dt_W_norm_def = insertNormalizationToSetVariance(dt_W_def)
 dt_W_norm_def = betterSimplify(dt_W_norm_def)
 printbr(dt_W_norm_def) 
 
+--[[ not needed because there are no (non-derivative) summed indexes in W_,t's rhs
+printbr'cancelling forward and inverse transforms, and simplifying deltas...'
+dt_W_norm_def = replaceNormalizationTransformsWithDeltas(dt_W_norm_def)
+	:simplifyMetrics()
+printbr(dt_W_norm_def) 
+--]]
+
+printbr()
+
 
 --[[
 printHeader'conformal W partial wrt $\\phi$:'
@@ -1009,6 +1100,8 @@ printbr()
 --]]
 
 
+--printHeader'skipping epsilonBar_ij,t'
+-- [=====[
 printHeader'conformal metric evolution:'
 local dt_gammaBar_ll_def = gammaBar_ll_from_gamma_ll_W'_,t'
 printbr(dt_gammaBar_ll_def)
@@ -1077,13 +1170,12 @@ printbr()
 -- remove basis transform on lhs
 dt_epsilonBar_LL_norm_def = dt_epsilonBar_LL_norm_def * e'^i_M' * e'^j_N'
 dt_epsilonBar_LL_norm_def = betterSimplify(dt_epsilonBar_LL_norm_def)
-	:replace(e'^k_A' * e'_k^K', delta'^K_A')
-	:replace(e'_i^I' * e'^i_M', delta'^I_M')
-	:replace(e'_j^J' * e'^j_N', delta'^J_N')
+dt_epsilonBar_LL_norm_def = replaceNormalizationTransformsWithDeltas(dt_epsilonBar_LL_norm_def)
 	:simplifyMetrics()
 	:reindex{IJMN='MNIJ'}
 printbr(dt_epsilonBar_LL_norm_def) 
 printbr()
+--]=====]
 
 
 printHeader'grid vs conformal connection difference:'
@@ -1287,17 +1379,8 @@ printbr(dt_LambdaBar_U_norm_def)
 printbr'cancelling forward and inverse transforms, and simplifying deltas...'
 dt_LambdaBar_U_norm_def = dt_LambdaBar_U_norm_def * e'_i^J'
 dt_LambdaBar_U_norm_def = betterSimplify(dt_LambdaBar_U_norm_def)
-	:replace(e'^a_A' * e'_a^D', delta'_A^D')
-	:replace(e'^a_A' * e'_a^E', delta'_A^E')
-	:replace(e'^b_E' * e'_b^B', delta'_E^B')
-	:replace(e'^b_B' * e'_b^E', delta'_B^E')
-	:replace(e'^c_D' * e'_c^C', delta'_D^C')
-	:replace(e'^c_C' * e'_c^E', delta'_C^E')
-	:replace(e'^c_C' * e'_c^F', delta'_C^F')
-	:replace(e'^d_D' * e'_d^F', delta'_D^F')
-	:replace(e'_i^J' * e'^i_I', delta'_I^J')
-printbr(dt_LambdaBar_U_norm_def) 
-dt_LambdaBar_U_norm_def = dt_LambdaBar_U_norm_def
+	
+dt_LambdaBar_U_norm_def = replaceNormalizationTransformsWithDeltas(dt_LambdaBar_U_norm_def)
 	:simplifyMetrics()
 	:reindex{IJ='JI'}
 printbr(dt_LambdaBar_U_norm_def) 
@@ -1512,6 +1595,11 @@ local dt_K_norm_def = insertNormalizationToSetVariance(dt_K_def)
 	:replace(e'^i_I,t', 0)		-- set normalization transform time derivative to zero
 dt_K_norm_def = betterSimplify(dt_K_norm_def)
 printbr(dt_K_norm_def) 
+
+printbr'cancelling forward and inverse transforms, and simplifying deltas...'
+dt_K_norm_def = replaceNormalizationTransformsWithDeltas(dt_K_norm_def)
+	:simplifyMetrics()
+printbr(dt_K_norm_def) 
 printbr()
 
 
@@ -1603,25 +1691,15 @@ printbr(dt_ABar_LL_norm_def)
 printbr'cancelling forward and inverse transforms, and simplifying deltas...'
 dt_ABar_LL_norm_def = dt_ABar_LL_norm_def * e'^i_M' * e'^j_N'
 dt_ABar_LL_norm_def = betterSimplify(dt_ABar_LL_norm_def)
-	:replace(e'^a_A' * e'_a^D', delta'_A^D')
-	:replace(e'^a_A' * e'_a^E', delta'_A^E')
-	:replace(e'^b_E' * e'_b^B', delta'_E^B')
-	:replace(e'^b_B' * e'_b^E', delta'_B^E')
-	:replace(e'^c_D' * e'_c^C', delta'_D^C')
-	:replace(e'^c_C' * e'_c^E', delta'_C^E')
-	:replace(e'^c_C' * e'_c^F', delta'_C^F')
-	:replace(e'^d_D' * e'_d^F', delta'_D^F')
-	:replace(e'_i^J' * e'^i_I', delta'_I^J')
-printbr(dt_ABar_LL_norm_def) 
-dt_ABar_LL_norm_def = dt_ABar_LL_norm_def
-	:replace(e'_i^I' * e'^i_M', delta'^I_M')
-	:replace(e'_j^J' * e'^j_N', delta'^J_N')
+
+dt_ABar_LL_norm_def = replaceNormalizationTransformsWithDeltas(dt_ABar_LL_norm_def)
 	:simplifyMetrics()
 	:reindex{IJMN='MNIJ'}
 printbr(dt_ABar_LL_norm_def) 
 printbr()
 
 printbr()
+
 
 
 printbr'<hr>'

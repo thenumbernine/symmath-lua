@@ -10,7 +10,7 @@ require 'symmath'.setup{env=env}
 local MathJax = symmath.export.MathJax
 symmath.tostring = MathJax 
 local printbr = MathJax.print
-MathJax.header.title = 'BSSN formalism - index notation'
+MathJax.header.title = 'BSSN formalism - code generation'
 print(MathJax.header)
 
 
@@ -68,6 +68,7 @@ end
 local beta_U_dense = makeVars_U'U->beta_U'
 local B_U_dense = makeVars_U'U->B_U'
 local LambdaBar_U_dense = makeVars_U'U->LambdaBar_U'
+local dt_LambdaBar_U_dense = makeVars_U'dt_LambdaBar_U'
 local C_U_dense = makeVars_U'C_U'
 local gammaBar_LL_dense = makeVars_sym_LL'gammaBar_LL'
 local gammaBar_UU_dense = makeVars_sym_UU'gammaBar_UU'
@@ -78,6 +79,19 @@ local S_LL_dense = makeVars_sym_LL'S_LL'
 local GammaHat_U_dense = makeVars_U'GammaHat_U'
 local GammaHat_ULL_dense = makeVars_sym_ULL'GammaHat_ULL'
 
+-- this is going to be metric-specific
+-- Cartesian
+local e_lU_dense = Tensor('_i^I', 
+	{1,0,0},
+	{0,1,0},
+	{0,0,1})
+local e_uL_dense = Tensor('^i_I', 
+	{1,0,0},
+	{0,1,0},
+	{0,0,1})
+
+local e_lUl_dense = e_lU_dense'_i^I_,j'():permute'_i^I_j'
+local e_uLl_dense = e_uL_dense'^i_I_,j'():permute'^i_I_j'
 
 -- derivatives
 
@@ -94,14 +108,14 @@ end)
 local partial_K_l_dense = Tensor('_i', function(i)
 	return var('partial_K_l.'..xs[i])
 end)
-local partial_beta_ul_dense = Tensor('^i_j', function(i,j)
-	return var('partial_beta_ul['..(j-1)..'].'..xs[i])
+local partial_beta_Ul_dense = Tensor('^I_j', function(i,j)
+	return var('partial_beta_Ul['..(j-1)..'].'..xs[i])
 end)
-local partial_gammaBar_lll_dense = Tensor('_ijk', function(i,j,k)
-	return var('partial_gammaBar_lll['..(k-1)..'].'..table{xs[i],xs[j]}:sort():concat())
+local partial_gammaBar_LLl_dense = Tensor('_IJk', function(i,j,k)
+	return var('partial_gammaBar_LLl['..(k-1)..'].'..table{xs[i],xs[j]}:sort():concat())
 end)
-local partial_ABar_lll_dense = Tensor('_ijk', function(i,j,k)
-	return var('partial_ABar_lll['..(k-1)..'].'..table{xs[i],xs[j]}:sort():concat())
+local partial_ABar_LLl_dense = Tensor('_IJk', function(i,j,k)
+	return var('partial_ABar_LLl['..(k-1)..'].'..table{xs[i],xs[j]}:sort():concat())
 end)
 
 
@@ -110,11 +124,11 @@ end)
 local partial2_alpha_ll_dense = Tensor('_ij', function(i,j)
 	return var('partial2_alpha_ll.'..table{xs[i],xs[j]}:sort():concat())
 end)
-local partial2_beta_ull_dense = Tensor('^i_jk', function(i,j,k)
-	return var('partial2_beta_ull['..(j-1)..']['..(k-1)..'].'..xs[i])
+local partial2_beta_Ull_dense = Tensor('^I_jk', function(i,j,k)
+	return var('partial2_beta_Ull['..(j-1)..']['..(k-1)..'].'..xs[i])
 end)
-local partial2_gammaBar_llll_dense = Tensor('_ijkl', function(i,j,k,l)
-	return var('partial2_gammaBar_llll['..(k-1)..']['..(l-1)..'].'..table{xs[i],xs[j]}:sort():concat())
+local partial2_gammaBar_LLll_dense = Tensor('_IJkl', function(i,j,k,l)
+	return var('partial2_gammaBar_LLll['..(k-1)..']['..(l-1)..'].'..table{xs[i],xs[j]}:sort():concat())
 end)
 
 -- convert from tex vars and partials to C vars
@@ -129,7 +143,10 @@ for _,nameAndEqn in ipairs(eqns) do
 	if name:match'_norm_def$' then	-- use the normalized version
 
 		local lhs, rhs = table.unpack(eqn)
-		assert(TensorRef.is(lhs))
+		if not TensorRef.is(lhs) then
+			printbr("expected lhs to be a TensorRef, found: ", lhs)
+			error'expected lhs to be a TensorRef'
+		end
 		assert(lhs[#lhs].symbol == 't' and lhs[#lhs].lower)
 		printbr('variable: '..lhs[1])
 		io.stderr:write('variable: '..lhs[1]..'\n')
@@ -141,6 +158,11 @@ local origRhs = rhs
 
 		rhs = rhs
 			--:splitOffDerivIndexes()
+			
+			-- special for B^I_,t's replacement ,which has another _,t in its rhs:
+
+			:replace(var'\\bar{\\Lambda}''^I_,t', dt_LambdaBar_U_dense'^I')
+
 			-- scalar 2nd derivs
 			:replaceIndex(var'\\alpha''_,ij', partial2_alpha_ll_dense'_ij')
 			-- scalar 1st derivs
@@ -149,27 +171,25 @@ local origRhs = rhs
 			:replaceIndex(var'K''_,i', partial_K_l_dense'_i')
 			:replaceIndex(var'\\bar{\\gamma}''_,i', partial_det_gammaBar_l_dense'_i')
 			-- tensor 1st derivs - though shouldn't they autogen?
-			:replaceIndex(var'\\beta''^i_,j', partial_beta_ul_dense'^i_j')
-			:replaceIndex(var'\\bar{\\gamma}''_ij,k', partial_gammaBar_lll_dense'_ijk')
-			:replaceIndex(var'\\bar{A}''_ij,k', partial_ABar_lll_dense'_ijk')
+			:replaceIndex(var'\\beta''^I_,j', partial_beta_Ul_dense'^I_j')
+			:replaceIndex(var'\\bar{\\gamma}''_IJ,k', partial_gammaBar_LLl_dense'_IJk')
+			:replaceIndex(var'\\bar{A}''_IJ,k', partial_ABar_LLl_dense'_IJk')
 			-- tensor 2nd derivs 
-			:replaceIndex(var'\\beta''^i_,jk', partial2_beta_ull_dense'^i_jk')
-			:replaceIndex(var'\\bar{\\gamma}''_ij,kl', partial2_gammaBar_llll_dense'_ijkl')
+			:replaceIndex(var'\\beta''^I_,jk', partial2_beta_Ull_dense'^I_jk')
+			:replaceIndex(var'\\bar{\\gamma}''_IJ,kl', partial2_gammaBar_LLll_dense'_IJkl')
 			-- tensor vars
-			:replaceIndex(var'\\beta''^i', beta_u_dense'^i')
-			:replaceIndex(var'B''^i', B_u_dense'^i')
-			:replaceIndex(var'\\mathcal{C}''^i', C_u_dense'^i')
-			:replaceIndex(var'\\bar{\\Lambda}''^i', LambdaBar_u_dense'^i')
-			:replaceIndex(var'\\bar{\\epsilon}''_ij', epsilonBar_ll_dense'_ij')
-			:replaceIndex(var'\\bar{\\gamma}''_ij', gammaBar_ll_dense'_ij')
-			:replaceIndex(var'\\bar{\\gamma}''^ij', gammaBar_uu_dense'^ij')
-			:replaceIndex(var'\\bar{A}''_ij', ABar_ll_dense'_ij')
-			:replaceIndex(var'R''_ij', R_ll_dense'_ij')
-			:replaceIndex(var'S''_ij', S_ll_dense'_ij')
-			:replaceIndex(var'\\bar{\\Gamma}''_ijk', GammaBar_lll_dense'_ijk') 
-			:replaceIndex(var'\\bar{\\Gamma}''^i_jk', GammaBar_ull_dense'^i_jk') 
-			:replaceIndex(var'\\hat{\\Gamma}''^i_jk', GammaHat_ull_dense'^i_jk') 
-			:replaceIndex(var'\\hat{\\Gamma}''^i', GammaHat_u_dense'^i') 
+			:replaceIndex(var'\\beta''^I', beta_U_dense'^I')
+			:replaceIndex(var'B''^I', B_U_dense'^I')
+			:replaceIndex(var'\\mathcal{C}''^I', C_U_dense'^I')
+			:replaceIndex(var'\\bar{\\Lambda}''^I', LambdaBar_U_dense'^I')
+			:replaceIndex(var'\\bar{\\epsilon}''_IJ', epsilonBar_LL_dense'_IJ')
+			:replaceIndex(var'\\bar{\\gamma}''_IJ', gammaBar_LL_dense'_IJ')
+			:replaceIndex(var'\\bar{\\gamma}''^IJ', gammaBar_UU_dense'^IJ')
+			:replaceIndex(var'\\bar{A}''_IJ', ABar_LL_dense'_IJ')
+			:replaceIndex(var'R''_IJ', R_LL_dense'_IJ')
+			:replaceIndex(var'S''_IJ', S_LL_dense'_IJ')
+			:replaceIndex(var'\\hat{\\Gamma}''^I_JK', GammaHat_ULL_dense'^I_JK') 
+			:replaceIndex(var'\\hat{\\Gamma}''^I', GammaHat_U_dense'^I') 
 			-- rename greek to C var names
 			:replace(var'\\alpha', var'U->alpha')
 			:replace(var'\\rho', var'U->rho')
@@ -180,13 +200,22 @@ local origRhs = rhs
 			:replace(var'K', var'U->K')
 			-- var'R'
 			-- var'W'
-			
+		
+			-- e_i^I and e^i_I are special, because replaceIndex can't discern the i's from I's, so i'll use map()
+			-- actually I will just assume that the e indexes haven't been raised or lowered
+			-- (and so far I'm not doing this)
+			-- which means the upper/lower will determine the direction of the transform
+			:replaceIndex(var'e''_i^I', e_lU_dense'_i^I')
+			:replaceIndex(var'e''^i_I', e_uL_dense'^i_I')
+			:replaceIndex(var'e''_i^I_,j', e_lUl_dense'_i^I_j')
+			:replaceIndex(var'e''^i_I_,j', e_uLl_dense'^i_I_j')
+
+
 			-- TODO what about f?  what about substituting its analytical value?
 			--  f = 2 / alpha for Bona-Masso slicing
 
 		printbr('new rhs:', rhs)
 
-os.exit()
 
 		rhs = rhs()
 		--rhs = rhs:factorDivision()	-- got all the way to LambdaBar 
