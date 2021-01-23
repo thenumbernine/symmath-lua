@@ -40,48 +40,43 @@ Tensor.coords{
 
 -- variables
 
-local beta_u_dense = Tensor('^i', function(i)
-	return var('U->beta_u.'..xs[i])
-end)
-local B_u_dense = Tensor('^i', function(i)
-	return var('U->B_u.'..xs[i])
-end)
-local LambdaBar_u_dense = Tensor('^i', function(i)
-	return var('U->LambdaBar_u.'..xs[i])
-end)
-local C_u_dense = Tensor('^i', function(i)
-	return var('C_u.'..xs[i])
-end)
-local gammaBar_ll_dense = Tensor('_ij', function(i,j)
-	return var('gammaBar_ll.'..table{xs[i],xs[j]}:sort():concat())
-end)
-local gammaBar_uu_dense = Tensor('^ij', function(i,j)
-	return var('gammaBar_uu.'..table{xs[i],xs[j]}:sort():concat())
-end)
-local epsilonBar_ll_dense = Tensor('_ij', function(i,j)
-	return var('epsilonBar_ll.'..table{xs[i],xs[j]}:sort():concat())
-end)
-local ABar_ll_dense = Tensor('_ij', function(i,j)
-	return var('ABar_ll.'..table{xs[i],xs[j]}:sort():concat())
-end)
-local R_ll_dense = Tensor('_ij', function(i,j)
-	return var('R_ll.'..table{xs[i],xs[j]}:sort():concat())
-end)
-local S_ll_dense = Tensor('_ij', function(i,j)
-	return var('S_ll.'..table{xs[i],xs[j]}:sort():concat())
-end)
-local GammaBar_lll_dense = Tensor('_ijk', function(i,j,k)
-	return var('GammaBar_lll.'..xs[i]..'.'..table{xs[j],xs[k]}:sort():concat())
-end)
-local GammaBar_ull_dense = Tensor('^i_jk', function(i,j,k)
-	return var('GammaBar_ull.'..xs[i]..'.'..table{xs[j],xs[k]}:sort():concat())
-end)
-local GammaHat_u_dense = Tensor('^i', function(i)
-	return var('GammaHat_u.'..xs[i])
-end)
-local GammaHat_ull_dense = Tensor('^i_jk', function(i,j,k)
-	return var('GammaHat_ull.'..xs[i]..'.'..table{xs[j],xs[k]}:sort():concat())
-end)
+local function makeVars_U(name)
+	return Tensor('^i', function(i)
+		return var(name..'.'..xs[i])
+	end)
+end
+
+local function makeVars_sym_LL(name)
+	return Tensor('_ij', function(i,j)
+		return var(name..'.'..table{xs[i],xs[j]}:sort():concat())
+	end)
+end
+
+local function makeVars_sym_UU(name)
+	return Tensor('^ij', function(i,j)
+		return var(name..'.'..table{xs[i],xs[j]}:sort():concat())
+	end)
+end
+
+local function makeVars_sym_ULL(name)
+	return Tensor('^i_jk', function(i,j,k)
+		return var(name..'.'..xs[i]..'.'..table{xs[j],xs[k]}:sort():concat())
+	end)
+end
+
+-- [[ coordinate form
+local beta_U_dense = makeVars_U'U->beta_U'
+local B_U_dense = makeVars_U'U->B_U'
+local LambdaBar_U_dense = makeVars_U'U->LambdaBar_U'
+local C_U_dense = makeVars_U'C_U'
+local gammaBar_LL_dense = makeVars_sym_LL'gammaBar_LL'
+local gammaBar_UU_dense = makeVars_sym_UU'gammaBar_UU'
+local epsilonBar_LL_dense = makeVars_sym_LL'epsilonBar_LL'
+local ABar_LL_dense = makeVars_sym_LL'ABar_LL'
+local R_LL_dense = makeVars_sym_LL'R_LL'
+local S_LL_dense = makeVars_sym_LL'S_LL'
+local GammaHat_U_dense = makeVars_U'GammaHat_U'
+local GammaHat_ULL_dense = makeVars_sym_ULL'GammaHat_ULL'
 
 
 -- derivatives

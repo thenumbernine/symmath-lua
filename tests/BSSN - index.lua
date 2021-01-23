@@ -626,7 +626,7 @@ local dt_alpha_def = alpha'_,t':eq(alpha'_,i' * beta'^i' - alpha^2 * f * K)
 printbr(dt_alpha_def)
 
 
-printbr'using locally-Minkowski normalized coordinates:'
+printHeader'using locally-Minkowski normalized coordinates:'
 local dt_alpha_norm_def = insertNormalizationToSetVariance(dt_alpha_def:splitOffDerivIndexes())
 printbr(dt_alpha_norm_def)
 printbr()
@@ -638,7 +638,7 @@ printbr'shift evolution:'
 local dt_beta_u_def = beta'^i_,t':eq(B'^i')
 printbr(dt_beta_u_def)
 
-printbr'using locally-Minkowski normalized coordinates:'
+printHeader'using locally-Minkowski normalized coordinates:'
 local dt_beta_U_norm_def = insertNormalizationToSetVariance(dt_beta_u_def)
 printbr(dt_beta_U_norm_def)
 dt_beta_U_norm_def = betterSimplify(dt_beta_U_norm_def)
@@ -672,7 +672,7 @@ local dt_B_u_def = B'^i_,t':eq(frac(3,4) * LambdaBar'^i_,t' - eta * B'^i')
 printbr(dt_B_u_def) 
 printbr()
 
-printbr'using locally-Minkowski normalized coordinates:'
+printHeader'using locally-Minkowski normalized coordinates:'
 local dt_B_U_norm_def = insertNormalizationToSetVariance(dt_B_u_def)
 	:simplify()
 	:replace(e'^i_I,t', 0)		-- set normalization transform time derivative to zero
@@ -978,7 +978,7 @@ printbr()
 
 
 
-printbr'using locally-Minkowski normalized coordinates:'
+printHeader'using locally-Minkowski normalized coordinates:'
 local dt_W_norm_def = insertNormalizationToSetVariance(dt_W_def)
 	:simplify()
 	:replace(e'^i_I,t', 0)		-- set normalization transform time derivative to zero
@@ -1063,7 +1063,7 @@ printbr()
 dt_epsilonBar_ll_def = dt_epsilonBar_ll_def:subst(dt_gammaBar_ll_def)
 -- no need to print it again
 
-printbr'using locally-Minkowski normalized coordinates:'
+printHeader'using locally-Minkowski normalized coordinates:'
 local dt_epsilonBar_LL_norm_def = insertNormalizationToSetVariance(dt_epsilonBar_ll_def)
 	:simplify()
 	-- set normalization transform time derivative to zero
@@ -1138,6 +1138,8 @@ printbr()
 --]]
 
 
+--printHeader'skipping LambdaBar^i_,t'
+-- [=====[
 printHeader'grid vs conformal connection difference evolution:'
 
 local using = calC'^i_,t':eq(0)
@@ -1274,7 +1276,7 @@ printbr()
 
 -- TODO properly reindex
 -- maybe make a function to automatically do it
-printbr'using locally-Minkowski normalized coordinates:'
+printHeader'using locally-Minkowski normalized coordinates:'
 local dt_LambdaBar_U_norm_def = insertNormalizationToSetVariance(dt_LambdaBar_u_def)
 	:simplify()
 	:replace(e'^i_I,t', 0)		-- set normalization transform time derivative to zero
@@ -1300,6 +1302,7 @@ dt_LambdaBar_U_norm_def = dt_LambdaBar_U_norm_def
 	:reindex{IJ='JI'}
 printbr(dt_LambdaBar_U_norm_def) 
 printbr()
+--]=====]
 
 
 printHeader'extrinsic curvature trace evolution:'
@@ -1503,7 +1506,7 @@ dt_K_def = betterSimplify(dt_K_def)
 printbr(dt_K_def)
 printbr()
 
-printbr'using locally-Minkowski normalized coordinates:'
+printHeader'using locally-Minkowski normalized coordinates:'
 local dt_K_norm_def = insertNormalizationToSetVariance(dt_K_def)
 	:simplify()
 	:replace(e'^i_I,t', 0)		-- set normalization transform time derivative to zero
@@ -1573,17 +1576,22 @@ printbr(dt_ABar_ll_def)
 dt_ABar_ll_def = dt_ABar_ll_def
 	:substIndex(connBar_ull_def)
 
-dt_ABar_ll_def = dt_ABar_ll_def:replace(GammaBar'^b_a^c', gammaBar'^bd' * GammaBar'_dae' * gammaBar'^ec')
+dt_ABar_ll_def = dt_ABar_ll_def:replace(GammaBar'^bc_a', gammaBar'^bd' * GammaBar'_dea' * gammaBar'^ec')
 	:substIndex(connBar_lll_def)
 dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
 	:tidyIndexes()
 dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def 
+	:symmetrizeIndexes(ABar, {1,2})
+	:symmetrizeIndexes(gammaBar, {1,2})
+dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+
 
 printbr(dt_ABar_ll_def)
 printbr()
 
 
-printbr'using locally-Minkowski normalized coordinates:'
+printHeader'using locally-Minkowski normalized coordinates:'
 local dt_ABar_LL_norm_def = insertNormalizationToSetVariance(dt_ABar_ll_def)
 	:simplify()
 	:replace(e'_i^I_,t', 0)		-- set normalization transform time derivative to zero
