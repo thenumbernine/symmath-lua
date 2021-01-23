@@ -406,7 +406,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	
 	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being 
-	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
+	local defaultSymbols = args and args.symbols or require 'symmath.Tensor'.defaultSymbols
 
 	local selfFixed, selfSum, selfExtra = self:getIndexesUsed()
 	local findFixed, findSum, findExtra = find:getIndexesUsed()
@@ -1008,8 +1008,12 @@ local function betterSimplify(x)
 	end)
 end
 
--- generalizing this is tough..
--- this might be getting out of hand:
+--[[
+generalizing this is tough..
+this might be getting out of hand:
+isMetric(g) = returns true if g is a metric TensorRef
+canSimplify(g,t,gi,ti) = returns true if g can be combined with TensorRef t at g's TensorIndex gi and t's TensorIndex ti
+--]]
 Expression.simplifyMetricsRules = {
 	-- returns true/false on whether the simplify works
 	delta = {	-- delta^i_j T_ik = T_jk
@@ -1425,5 +1429,9 @@ function Expression:treeSize()
 	end
 	return n
 end
+
+-- candidates:
+-- betterSimplify in 'BSSN - index'
+-- insertMetricsToSetVariance in 'BSSN - index'
 
 return Expression

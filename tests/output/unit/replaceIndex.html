@@ -447,14 +447,46 @@ ${{ d}_{,t}} = {{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\fra
 <b>what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?</b><br>
 <code>asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end )</code>
 </td><td>
-<span style="color:red">BAD</span><br>./unit.lua:35: expected an error, but found none<br>stack traceback:<br>
-	./unit.lua:93: in function <./unit.lua:92><br>
+<span style="color:red">BAD</span><br>.\unit.lua:35: expected an error, but found none<br>stack traceback:<br>
+	.\unit.lua:93: in function <.\unit.lua:92><br>
 	[C]: in function 'assert'<br>
-	./unit.lua:35: in function 'asserterror'<br>
+	.\unit.lua:35: in function 'asserterror'<br>
 	[string "asserterror(function() (a'_a' + b'_ab' * c'^b..."]:1: in main chunk<br>
-	./unit.lua:85: in function <./unit.lua:84><br>
+	.\unit.lua:85: in function <.\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
-	./unit.lua:84: in function 'exec'<br>
-	./replaceIndex.lua:128: in main chunk<br>
-	[C]: at 0x564c8174d1c0
+	.\unit.lua:84: in function 'exec'<br>
+	replaceIndex.lua:133: in main chunk<br>
+	[C]: at 0x7ff68b224950
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>why do neither of these work?  because if there are *only* sum-indexes won't match, however if there are extra indexes then it will match.  why do we have this constraint again?</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>print( (a'^a' * a'_a'):replaceIndex(a'^a' * a'_a', 2))</code>
+</td><td>
+${{{ a}^a}} {{{ a}_a}}$
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>print( (a'^a' * a'_a'):replaceIndex(a'^a' * a'_a', b'^a' * b'_a'))</code>
+</td><td>
+${{{ a}^a}} {{{ a}_a}}$
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>print( (c'_b' * a'^a' * a'_a'):replaceIndex(c'_b' * a'^a' * a'_a', 2))</code>
+</td><td>
+${{{ c}_b}} {{{ a}^a}} {{{ a}_a}}$
+
+<span style="color:green">GOOD</span>
 </td></tr>

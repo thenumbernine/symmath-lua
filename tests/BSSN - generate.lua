@@ -179,9 +179,13 @@ local origRhs = rhs
 		:replace(var'\\bar{\\gamma}', var'det_gammaBar')
 		-- scalar vars fine as they are:
 		-- var'S' 
-		-- var'K'
+		:replace(var'K', var'U->K')
 		-- var'R'
 		-- var'W'
+		
+		-- TODO what about f?  what about substituting its analytical value?
+		--  f = 2 / alpha for Bona-Masso slicing
+
 	printbr('new rhs:', rhs)
 
 	rhs = rhs()

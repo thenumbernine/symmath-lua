@@ -124,6 +124,12 @@ asserteq( a'^i_i':replaceIndex(a'^i_j', b'^i_j'), b'^i_i')
 -- and what about when find/replace has a partial number of fixed indexes
 asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end )	-- what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?
 
+-- why do neither of these work?  because if there are *only* sum-indexes won't match, however if there are extra indexes then it will match.  why do we have this constraint again?
+-- internal sum indexes do seem to work in replaceIndex, like A^a_a, but externally shared between two tensors don't: A^a * A_a ... why distinguish?
+print( (a'^a' * a'_a'):replaceIndex(a'^a' * a'_a', 2))
+print( (a'^a' * a'_a'):replaceIndex(a'^a' * a'_a', b'^a' * b'_a'))
+print( (c'_b' * a'^a' * a'_a'):replaceIndex(c'_b' * a'^a' * a'_a', 2))
+
 ]=]), '\n')) do
 	env.exec(line)
 end
