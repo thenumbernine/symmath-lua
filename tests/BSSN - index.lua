@@ -80,20 +80,22 @@ local function insertTransformsToSetVariance(expr, rule)
 	end
 	-- so for now i will choose unnecessarily differing symbols
 	-- just call tidyIndexes() afterwards to fix this
+	
+	local handleTerm
 
 	local function fixTensorRef(x)
-		
 		x = x:clone()
-		
 		-- TODO move this to 'rule'
-		if TensorRef.is(x)
-		and rule.matches(x)
-		then
-			local gs = table()
-			for i=2,#x do
-				rule.applyToIndex(x, i, gs, unusedSymbols)
+		if TensorRef.is(x) then
+			if not Variable.is(x[1]) then
+				x[1] = handleTerm(x[1])
+			elseif rule.matches(x) then
+				local gs = table()
+				for i=2,#x do
+					rule.applyToIndex(x, i, gs, unusedSymbols)
+				end
+				return x, gs:unpack()
 			end
-			return x, gs:unpack()
 		end
 		return x
 	end
@@ -106,22 +108,28 @@ local function insertTransformsToSetVariance(expr, rule)
 		return mul(newMul:unpack())
 	end
 
-	if mul.is(expr) then
-		return handleMul(expr)
-	else
-		return expr:map(function(x)
-			if mul.is(x) then
-				return handleMul(x)
-			else
-				local results = {fixTensorRef(x)}
-				if #results == 1 then
-					return results[1]
+	-- could be a single term or multiple multiplied terms
+	handleTerm = function (expr)
+		expr = expr:clone()
+		if mul.is(expr) then
+			return handleMul(expr)
+		else
+			return expr:map(function(x)
+				if mul.is(x) then
+					return handleMul(x)
 				else
-					return mul(table.unpack(results))
+					local results = {fixTensorRef(x)}
+					if #results == 1 then
+						return results[1]
+					else
+						return mul(table.unpack(results))
+					end
 				end
-			end
-		end)
+			end)
+		end
+		return expr
 	end
+	return handleTerm(expr)
 end
 
 -- [=[
@@ -484,6 +492,18 @@ expr = insertNormalizationToSetVariance(expr)
 printbr(expr)
 printbr()
 
+local expr = beta'^i_,j'
+printbr(expr)
+expr = insertNormalizationToSetVariance(expr)
+printbr(expr)
+printbr()
+
+local expr = beta'^i_,j' * alpha'_,i'
+printbr(expr)
+expr = insertNormalizationToSetVariance(expr)
+printbr(expr)
+printbr()
+
 os.exit()
 --]]
 
@@ -667,6 +687,7 @@ dt_B_U_norm_def = betterSimplify(dt_B_U_norm_def)
 	:reindex{J='I'}
 printbr(dt_B_U_norm_def) 
 printbr()
+
 
 
 --printHeader'metric derivative:'
@@ -1651,26 +1672,25 @@ require 'symmath'.setup{env=env}
 	'dt_LambdaBar_U_norm_def = '..export.SymMath(dt_LambdaBar_U_norm_def),
 
 	[[
-return 
-	dt_alpha_def,
-	dt_beta_u_def,
-	dt_W_def,
-	dt_K_def,
-	dt_epsilonBar_ll_def,
-	dt_ABar_ll_def,
-	dt_LambdaBar_u_def,
-	dt_B_u_def,
+return {
+	{dt_alpha_def = dt_alpha_def},
+	{dt_beta_u_def = dt_beta_u_def},
+	{dt_W_def = dt_W_def},
+	{dt_K_def = dt_K_def},
+	{dt_epsilonBar_ll_def = dt_epsilonBar_ll_def},
+	{dt_ABar_ll_def = dt_ABar_ll_def},
+	{dt_LambdaBar_u_def = dt_LambdaBar_u_def},
+	{dt_B_u_def = dt_B_u_def},
 
-	dt_alpha_norm_def,
-	dt_beta_U_norm_def,
-	dt_B_U_norm_def,
-	dt_W_norm_def,
-	dt_K_norm_def,
-	dt_epsilonBar_LL_norm_def,
-	dt_ABar_LL_norm_def,
-	dt_LambdaBar_U_norm_def,
-
-	nil
+	{dt_alpha_norm_def = dt_alpha_norm_def},
+	{dt_beta_U_norm_def = dt_beta_U_norm_def},
+	{dt_B_U_norm_def = dt_B_U_norm_def},
+	{dt_W_norm_def = dt_W_norm_def},
+	{dt_K_norm_def = dt_K_norm_def},
+	{dt_epsilonBar_LL_norm_def = dt_epsilonBar_LL_norm_def},
+	{dt_ABar_LL_norm_def = dt_ABar_LL_norm_def},
+	{dt_LambdaBar_U_norm_def = dt_LambdaBar_U_norm_def},
+}
 ]]
 }:concat'\n\n\n'..'\n'
 
