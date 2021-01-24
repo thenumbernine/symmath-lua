@@ -662,6 +662,7 @@ function Tensor:permute(dstVariance)
 		}
 	end, function(err)
 		io.stderr:write("failed for tensor "..self.."\n")
+		io.stderr:write("when converting it to variance "..table.mapi(dstVariance, tostring):concat', '.."\n")
 		io.stderr:write(err..'\n'..debug.traceback())
 		io.stderr:flush()
 		os.exit(1)

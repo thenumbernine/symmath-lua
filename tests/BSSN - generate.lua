@@ -14,8 +14,6 @@ MathJax.header.title = 'BSSN formalism - code generation'
 print(MathJax.header)
 
 
-
-
 local eqns = assert(loadfile'BSSN - index - cache.lua')()
 
 
@@ -64,11 +62,10 @@ local function makeVars_sym_ULL(name)
 	end)
 end
 
--- [[ coordinate form
+-- coordinate form
 local beta_U_dense = makeVars_U'U->beta_U'
 local B_U_dense = makeVars_U'U->B_U'
 local LambdaBar_U_dense = makeVars_U'U->LambdaBar_U'
-local dt_LambdaBar_U_dense = makeVars_U'dt_LambdaBar_U'
 local C_U_dense = makeVars_U'C_U'
 local gammaBar_LL_dense = makeVars_sym_LL'gammaBar_LL'
 local gammaBar_UU_dense = makeVars_sym_UU'gammaBar_UU'
@@ -78,6 +75,7 @@ local R_LL_dense = makeVars_sym_LL'R_LL'
 local S_LL_dense = makeVars_sym_LL'S_LL'
 local GammaHat_U_dense = makeVars_U'GammaHat_U'
 local GammaHat_ULL_dense = makeVars_sym_ULL'GammaHat_ULL'
+
 
 -- this is going to be metric-specific
 -- Cartesian
@@ -92,9 +90,11 @@ local e_uL_dense = Tensor('^i_I',
 
 local e_lUl_dense = e_lU_dense'_i^I_,j'():permute'_i^I_j'
 local e_uLl_dense = e_uL_dense'^i_I_,j'():permute'^i_I_j'
+local e_lUll_dense = e_lU_dense'_i^I_,jk'():permute'_i^I_jk'
+local e_uLll_dense = e_uL_dense'^i_I_,jk'():permute'^i_I_jk'
+
 
 -- derivatives
-
 
 local partial_det_gammaBar_l_dense = Tensor('_i', function(i)
 	return var('partial_det_gammaBar_l.'..xs[i])
@@ -131,6 +131,17 @@ local partial2_gammaBar_LLll_dense = Tensor('_IJkl', function(i,j,k,l)
 	return var('partial2_gammaBar_LLll['..(k-1)..']['..(l-1)..'].'..table{xs[i],xs[j]}:sort():concat())
 end)
 
+-- time derivatives of state variables:
+local dt_alpha = var'dt_alpha'
+local dt_beta_U_dense = makeVars_U'dt_beta_U'
+local dt_W = var'dt_W'
+local dt_K = var'dt_K'
+local dt_epsilonBar_LL_dense = makeVars_sym_LL'dt_epsilonBar_LL'
+local dt_ABar_LL_dense = makeVars_sym_LL'dt_ABar_LL'
+local dt_LambdaBar_U_dense = makeVars_U'dt_LambdaBar_U'
+local dt_B_U_dense = makeVars_U'dt_B_U'
+
+
 -- convert from tex vars and partials to C vars
 
 io.stderr:write('starting conversion...\n')
@@ -151,17 +162,25 @@ for _,nameAndEqn in ipairs(eqns) do
 		printbr('variable: '..lhs[1])
 		io.stderr:write('variable: '..lhs[1]..'\n')
 		io.stderr:flush()
-		printbr('rhs:'..rhs)
+		printbr('eqn:'..eqn)
 
-local origRhs = rhs
-		rhs = rhs:factorDivision()
+local origRhs = rhs:clone()
+		eqn = eqn:factorDivision()
 
-		rhs = rhs
+		eqn = eqn
 			--:splitOffDerivIndexes()
 			
 			-- special for B^I_,t's replacement ,which has another _,t in its rhs:
-
+			-- why not just do this with all of them?  to fix the variable assignment names...
+			-- TODO don't do replaceIndex since we don't want the 't' remapped
+			:replace(var'\\alpha''_,t', dt_alpha)
+			:replace(var'\\beta''^I_,t', dt_beta_U_dense'^I')
+			:replace(var'W''_,t', dt_W)
+			:replace(var'K''_,t', dt_K)
+			:replace(var'\\bar{\\epsilon}''_IJ,t', dt_epsilonBar_LL_dense'_IJ')
+			:replace(var'\\bar{A}''_IJ,t', dt_ABar_LL_dense'_IJ')
 			:replace(var'\\bar{\\Lambda}''^I_,t', dt_LambdaBar_U_dense'^I')
+			:replace(var'B''^I_,t', dt_B_U_dense'^I')
 
 			-- scalar 2nd derivs
 			:replaceIndex(var'\\alpha''_,ij', partial2_alpha_ll_dense'_ij')
@@ -209,53 +228,65 @@ local origRhs = rhs
 			:replaceIndex(var'e''^i_I', e_uL_dense'^i_I')
 			:replaceIndex(var'e''_i^I_,j', e_lUl_dense'_i^I_j')
 			:replaceIndex(var'e''^i_I_,j', e_uLl_dense'^i_I_j')
+			:replaceIndex(var'e''_i^I_,jk', e_lUll_dense'_i^I_jk')
+			:replaceIndex(var'e''^i_I_,jk', e_uLll_dense'^i_I_jk')
 
 
 			-- TODO what about f?  what about substituting its analytical value?
 			--  f = 2 / alpha for Bona-Masso slicing
 
-		printbr('new rhs:', rhs)
+		printbr('new eqn:', eqn)
 
 
-		rhs = rhs()
-		--rhs = rhs:factorDivision()	-- got all the way to LambdaBar 
+		eqn = eqn()
+		--eqn = eqn:factorDivision()	-- got all the way to LambdaBar 
 
 io.stderr:write('creating equations with new variable names...\n')
 io.stderr:flush()
 
 		local resultEqns = table()
 		
+		local lhs, rhs = table.unpack(eqn)
+		
 		-- lazy arbitrary nested for-loop:
-		local variance = table.sub(lhs, 2,#lhs-1)
-		if #variance == 0 then
+		if not Tensor.is(lhs) then
+			assert(Variable.is(lhs), "expected TensorRef or Variable on lhs, found "..lhs.name)
 			assert(rhs)
 			-- scalar
-			resultEqns:insert{['deriv->'..lhs[1].name:gsub('\\', '')] = rhs}
+			resultEqns:insert{[lhs.name] = rhs}
 		else
+			local variance = table.sub(lhs, 2,#lhs-1) 
 			-- tensor
 			--printbr('variance: '..variance:mapi(tostring):concat())
-			Tensor(variance, function(...)
-				local is = table{...}
-				if not rhs[is] then
+			for is,lhsvalue in lhs:iter() do
+				local rhsvalue = rhs[is]
+				if not rhsvalue then
 					local msg = ("failed to find "..tostring(lhs).."["..is:concat','.."]<br>\n"
 								.."from orig eqn "..origRhs.."["..is:concat','.."]<br>\n"
 								.."rhs "..tostring(rhs).."<br>\n"
-								.."rhs["..is:concat','.."] = "..tostring(rhs[is]))
+								.."rhs["..is:concat','.."] = "..tostring(rhsvalue))
 					printbr(msg)
 					error(msg)
 				end
 				--printbr(...)
-				resultEqns:insert{['deriv->'..lhs[1].name:gsub('\\', '')..'.'..is:mapi(function(i) return xs[i] end):concat()] = rhs[is]}
-			end)
+				resultEqns:insert{[lhsvalue.name] = rhs[is]}
+			end
 		end
 
+		printbr'<pre>'
+		--[[ single-line output
 		for _,eqn in ipairs(resultEqns) do
 			local k,v = next(eqn)	-- why would this ever fail?
-			assert(k, "failed on "..tolua(eqn))
-			assert(v, "failed on "..tolua(eqn))
-			printbr('<pre>', export.C(var(k):eq(v)), '</pre>')
-			printbr()
+			printbr(export.C(var(k):eq(v)))
 		end
+		--]]
+		-- [[ cache the like expressions
+		printbr(export.C:toCode{
+			output = resultEqns,
+		})
+		--]]
+		printbr'</pre>'
+		printbr()
 	end
 
 	allResultEqns:append(resultEqns)
@@ -268,6 +299,6 @@ io.stderr:write('converting to C code:\n')
 io.stderr:flush()
 
 print'---------------------------'
-print(symmath.export.C:toCode{
+print(export.C:toCode{
 	output = allResultEqns,
 })

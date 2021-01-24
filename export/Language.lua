@@ -23,6 +23,7 @@ function Language:toCode(args)
 	local input = args.input	-- does it matter if there are explicitly specified inputs?  maybe only if we want a function prototype?
 	local output = assert(args.output)
 	local output, input = self:prepareToCodeArgs(output, input)
+-- TODO seems to be an error, if you use {name=expr} instead of just expr then the order of tmps is backwards	
 	assert(input)
 	return self:toCodeInternal(table(args, {
 		output = output, 
