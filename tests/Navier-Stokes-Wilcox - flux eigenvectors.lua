@@ -155,6 +155,8 @@ printbr(TTilde, [[= Favre-averaged temperature, in units of ]], K)
 local Cv = var'C_v'
 printbr(Cv, [[= constant-volume heat capacity, in units of ]], (K * s^2) / m^2)
 
+local Cp = var'C_p'
+printbr(Cp, [[= constant-pressure heat capacity, in units of ]], (K * s^2) / m^2)
 -- R = Cp - Cv
 -- so R/Cv = Cp/Cv - 1 = gamma - 1
 -- where gamma = Cp/Cv
@@ -162,6 +164,13 @@ printbr(Cv, [[= constant-volume heat capacity, in units of ]], (K * s^2) / m^2)
 -- gamma is unitless, so Cv/R is unitless, so [Cv] = 1/[R]
 local R = var'R'
 printbr(R, [[= specific heat constant, in units of ]], m^2/(K * s^2))
+local R_from_Cp_Cv = R:eq(Cp - Cv)
+printbr(R_from_Cp_Cv)
+
+local gamma = var'\\gamma'
+printbr(gamma, [[= heat capacity ratio, unitless]])
+local gamma_from_Cp_Cv = gamma:eq(Cp / Cv)
+printbr(gamma_from_Cp_Cv)
 
 local PBar = var'\\bar{P}'
 local PBar_wrt_TTilde = PBar:eq(rhoBar * R * TTilde)
@@ -393,20 +402,47 @@ A_plus_delta_def = betterSimplify(A_plus_delta_def:tidyIndexes())
 A_plus_delta_def = A_plus_delta_def  
 	:replace(n'^a' * vTilde'_a', n'_a' * vTilde'^a')
 	:replace(vTilde'^a' * vTilde'_a', vTildeSq_var)
+	:replace(vTilde'^b' * vTilde'_b', vTildeSq_var)
 	:replace(vTilde'^c' * vTilde'_c', vTildeSq_var)
 	:replace(vTilde'^e' * vTilde'_e', vTildeSq_var)
+
+local vTilde_n = var'\\tilde{v}_n'
+A_plus_delta_def = A_plus_delta_def  
+	:replace(vTilde'^a' * n'_a', vTilde_n)
+
 --	:subst(H_total_wrt_W, tildeGamma_def)()
 A_plus_delta_def = betterSimplify(A_plus_delta_def)
 printbr(A_lhs:eq(A_plus_delta_def))
 
 local A_def = (A_plus_delta_def - Matrix.identity(5) * Matrix:lambda({5,5}, function(i,j)
-	return i~=j and 0 or (n'_a' * vTilde'^a' * (i==2 and delta'^i_j' or 1)) 
+	return i~=j and 0 or (vTilde_n * (i==2 and delta'^i_j' or 1)) 
 end))()
 printbr(A'^I_J':eq(A_def))
 printbr()
 
 printbr'Acoustic matrix, expanded:'
 local A_expanded = expandMatrix5to7(A_def)
+
+printbr('...removing the last two rows and columns, which are all zero...')
+for i=1,7 do
+	for j=6,7 do
+		assert(Constant.isValue(A_expanded[i][j], 0))
+		assert(Constant.isValue(A_expanded[j][i], 0))
+	end
+end
+A_expanded = Matrix:lambda({5,5}, function(i,j)
+	return A_expanded[i][j]:clone()
+end)
+printbr(A'^I_J':eq(A_expanded))
+
+local Cp_from_gamma_Cv = gamma_from_Cp_Cv:solve(Cp)
+local gammaMinusOne = var'\\gamma_1'
+local gammaMinusOne_def =  gammaMinusOne:eq(gamma - 1)
+
+printbr('using', R_from_Cp_Cv, ',', Cp_from_gamma_Cv, ',', gammaMinusOne_def)
+A_expanded = A_expanded:subst(R_from_Cp_Cv)()
+	:subst(Cp_from_gamma_Cv)()
+	:replace(rhoBar * gamma, rhoBar * (gammaMinusOne + 1))()
 
 printbr(A'^I_J':eq(A_expanded))
 printbr()
@@ -423,60 +459,86 @@ local vTilde_cross_n_def = table{
 	vTilde_cross_n'^3':eq(vTilde'_1' * n'_2' - vTilde'_2' * n'_1'),
 }
 
+local nvn_var = var'(n \\times \\tilde{v} \\times n)'
+
 local A_eig = A_expanded:eigen()
+
+local better_Cs_def = Cs_def
+	:replace(vTilde'^c' * n'_c', vTilde_n)
+	:replace(vTilde'^d' * n'_d', vTilde_n)
+	:subst(R_from_Cp_Cv)()
+	:subst(Cp_from_gamma_Cv)()
+	:replace(rhoBar * gamma, rhoBar * (gammaMinusOne + 1))()
+	:subst(nLenSq_def:solve(n'^1' * n'_1'))()
+	:subst(vTilde_n:eq(
+			n'^1' * vTilde'_1'
+			+ n'^2' * vTilde'_2'
+			+ n'^3' * vTilde'_3'
+		):solve(n'^1' * vTilde'_1'))()
+printbr(better_Cs_def)
+
+local PStar_from_Cs = (better_Cs_def^2)():solve(PStar)
+printbr(PStar_from_Cs)
+
 if A_eig.defective then
--- [[ hack for now ...
--- TODO row/col-insert functionality
-	A_eig.R = Matrix:lambda({7,7}, function(i,j)
-		if j < 2 then
-			return A_eig.R[i][j]
-		elseif j == 2 then
-			--return (A_eig.R[i][j] * (vTilde'_1' * n'_2' - vTilde'_2' * n'_1'))()
-			if i >= 2 and i <= 4 then
-				--return vTilde_cross_n[i-1]
-				--return A_eig.R[i][j]
-				return (
-					-- I can scale it up here without worrying about its associated lambda because that lambda is zero
-					(A_eig.R[i][j] * (vTilde'_1' * n'_2' - vTilde'_2' * n'_1'))()
-					
-					- vTilde_cross_n_def[i-1][2] + vTilde_cross_n_def[i-1][1]
-				)()
+-- fixed up the hack for now...
+	A_eig.R = A_eig.R:subst(nLenSq_def:solve(n'^1' * n'_1'))()
+	printbr(R:eq(A_eig.R))
+	A_eig.R = A_eig.R:subst(vTilde_n:eq(
+			n'^1' * vTilde'_1'
+			+ n'^2' * vTilde'_2'
+			+ n'^3' * vTilde'_3'
+		):solve(n'^1' * vTilde'_1'))()
+		:subst(PStar_from_Cs)()
+		-- without this substutition, the matrix inverse operation runs out of memory
+		:subst(vTilde_cross_n_def:mapi(function(eqn,i)
+			if i == 2 then 
+				eqn = eqn:solve(vTilde'_1' * n'_3')
 			else
-				return A_eig.R[i][j]
+				eqn = eqn:switch()
 			end
-		elseif j == 3 then
-			return i >= 2 and i <= 4 and vTilde('^'..(i-1)) or 0
+			return eqn
+		end):unpack())()
+	printbr(R:eq(A_eig.R))
+	assert(#A_eig.R == 5 and #A_eig.R[1] == 4)
+	A_eig.R = Matrix:lambda({5,5}, function(i,j)
+		if j == 5 then 
+			if i == 1 or i == 5 then
+				return 0
+			else
+				return nvn_var('^'..(i-1))
+			end
 		else
-			if j >= 6 and i <= 4 then
-				if i == 1 then
-					return (A_eig.R[i][j-1] * Cs_def[2]^2 / Cs_def[1]^2)()
-				else
-					return (A_eig.R[i][j-1] * Cs_def[2] / Cs_def[1])()
-				end
-			end
-			return A_eig.R[i][j-1]
+			return A_eig.R[i][j]
 		end
 	end)
-	
-	A_eig.R = A_eig.R:replace(n'_1' * n'^1', nLen^2 - n'_2' * n'^2' - n'_3' * n'^3')()
-	A_eig.R = A_eig.R:replace(vTilde'_1' * n'^1', vTilde'^d' * n'_d' - vTilde'_2' * n'^2' - vTilde'_3' * n'^3')()
-	for _,l in ipairs(A_eig.lambdas) do
-		l.expr = l.expr:replace(n'_1' * n'^1', nLen^2 - n'_2' * n'^2' - n'_3' * n'^3')()
-		l.expr = l.expr:replace(vTilde'_1' * n'^1', vTilde'^d' * n'_d' - vTilde'_2' * n'^2' - vTilde'_3' * n'^3')()
-		-- here's me manually replacing the Cs defs
-		-- TODO maybe, instead of using (Cv+R)/Cv everywhere, just use gamma?
-		l.expr = (l.expr * Cs_def[1] / Cs_def[2])()
-	end
-	
 
-	A_eig.allLambdas = table()
-	for _,l in ipairs(A_eig.lambdas) do
-		for i=1,l.mult do
-			A_eig.allLambdas:insert(l.expr)
-		end
-	end
+	A_eig.allLambdas = A_eig.allLambdas:mapi(function(lambda)
+		return lambda
+			:subst(R_from_Cp_Cv)()
+			:subst(Cp_from_gamma_Cv)()
+			:replace(rhoBar * gamma, rhoBar * (gammaMinusOne + 1))()
+			:subst(nLenSq_def:solve(n'^1' * n'_1'))()
+			:subst(vTilde_n:eq(
+					n'^1' * vTilde'_1'
+					+ n'^2' * vTilde'_2'
+					+ n'^3' * vTilde'_3'
+				):solve(n'^1' * vTilde'_1'))()
+
+
+			:subst(PStar_from_Cs)()
+			:subst(vTilde_cross_n_def:mapi(function(eqn,i)
+				if i == 2 then 
+					eqn = eqn:solve(vTilde'_1' * n'_3')
+				else
+					eqn = eqn:switch()
+				end
+				return eqn
+			end):unpack())()
+	end)
+
+	A_eig.allLambdas:insert(Constant(0))
 	A_eig.Lambda = Matrix.diagonal( A_eig.allLambdas:unpack() )
---]]
 end
 
 --[[
@@ -486,13 +548,31 @@ A_eig.Lambda = A_eig.Lambda:subst(nLenSq_def:switch(), P_for_Cs)()
 A_eig.L = A_eig.L:subst(nLenSq_def:switch(), P_for_Cs)()
 --]]
 
+--[[
 for k,v in pairs(A_eig) do
 	printbr(k, '=', v)
 end
+--]]
 
 -- this isn't working:
 A_eig.L = A_eig.R:inverse()
 printbr('L =', A_eig.L)
+
+
+
+local P = Matrix.permutation(4,1,2,5,3)
+local S = Matrix.diagonal(Cs^2, 1, vTilde_cross_n'^3', 1, Cs^2)
+local SInv = S:inv()
+
+printbr('permute by:', P, ', scale by:', S)
+
+A_eig.R = (A_eig.R * P * S)()
+A_eig.Lambda = (SInv * P:T() * A_eig.Lambda * P * S)()
+A_eig.L = (SInv * P:T() * A_eig.L)()
+
+printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
+printbr()
+
 
 --A_eig.L = A_eig.L:subst(vTilde_cross_n_def:unpack())()
 -- would be much easier if i did this in index notation...
@@ -546,16 +626,6 @@ printbr('L =', A_eig.L)
 os.exit()
 
 printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
-
-local P = Matrix.permutation(7, 1, 2, 3, 4, 5, 6)
-local S = Matrix.diagonal(Cs^2, 1, 1, 1, 1, 1, Cs^2)
-local SInv = S:inv()
-
-printbr('permute by:', P, ', scale by:', S)
-
-A_eig.R = (A_eig.R * P * S)()
-A_eig.Lambda = (SInv * P:T() * A_eig.Lambda * P * S)()
-A_eig.L = (SInv * P:T() * A_eig.L)()
 
 --A_eig.L[3][3] = (A_eig.L[3][3] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
 --A_eig.L[4][4] = (A_eig.L[4][4] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
