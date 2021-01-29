@@ -17,23 +17,52 @@ print(MathJax.header)
 local eqns = assert(loadfile'BSSN - index - cache.lua')()
 
 
---[[ hack for fixing things
-eqns = table{eqns[#eqns-1]}
-print(eqns[1][1])
-assert(eqns[1][1] == var'\\bar{\\Lambda}''^i_,t')
---]]
+local xs = table{'x','y','z'}	-- names of the fields in the internal real3 type in the simulation code
 
 
 -- manifold info
 
 
-local xs = table{'x','y','z'}
-local x,y,z = vars(xs:unpack())
-local coords = table{x,y,z}
 
+
+-- this is going to be metric-specific
+-- [[ Cartesian
+
+local x,y,z = vars('x', 'y', 'z')
+local coords = table{x,y,z}
 Tensor.coords{
-	{variables={x,y,z}}
+	{variables=coords}
 }
+
+local e_lU_dense = Tensor('_i^I', 
+	{1,0,0},
+	{0,1,0},
+	{0,0,1})
+local e_uL_dense = Tensor('^i_I', 
+	{1,0,0},
+	{0,1,0},
+	{0,0,1})
+
+--]]
+--[[ spherical
+
+local r, theta, phi = vars('r', 'theta', 'phi')
+local coords = table{r, theta, phi}
+Tensor.coords{
+	{variables=coords}
+}
+
+local e_lU_dense = Tensor('_i^I', 
+	{1,0,0},
+	{0,r,0},
+	{0,0,r*sin(theta)})
+local e_uL_dense = Tensor('^i_I', 
+	{1,0,0},
+	{0,1/r,0},
+	{0,0,1/(r*sin(theta))})
+
+--]]
+
 
 
 -- variables
@@ -73,32 +102,54 @@ local epsilonBar_LL_dense = makeVars_sym_LL'epsilonBar_LL'
 local ABar_LL_dense = makeVars_sym_LL'ABar_LL'
 local R_LL_dense = makeVars_sym_LL'R_LL'
 local S_LL_dense = makeVars_sym_LL'S_LL'
-local GammaHat_U_dense = makeVars_U'GammaHat_U'
-local GammaHat_ULL_dense = makeVars_sym_ULL'GammaHat_ULL'
 
 
--- this is going to be metric-specific
--- Cartesian
-local e_lU_dense = Tensor('_i^I', 
-	{1,0,0},
-	{0,1,0},
-	{0,0,1})
-local e_uL_dense = Tensor('^i_I', 
-	{1,0,0},
-	{0,1,0},
-	{0,0,1})
-
+-- local orthonormal non-coordinate transform derivatives:
 local e_lUl_dense = e_lU_dense'_i^I_,j'():permute'_i^I_j'
 local e_uLl_dense = e_uL_dense'^i_I_,j'():permute'^i_I_j'
 local e_lUll_dense = e_lU_dense'_i^I_,jk'():permute'_i^I_jk'
 local e_uLll_dense = e_uL_dense'^i_I_,jk'():permute'^i_I_jk'
 
 
+-- locally-Minkowski spatial metric
+local eta_LL_dense = Tensor('_IJ', function(i,j) return i == j and 1 or 0 end)
+printbr(var'\\eta''_IJ':eq(eta_LL_dense))
+
+local eta_UU_dense = Tensor('^IJ', function(i,j) return i == j and 1 or 0 end)
+printbr(var'\\eta''^IJ':eq(eta_UU_dense))
+
+-- grid metric, calculated based on the local transformations
+local gammaHat_ll_dense = (e_lU_dense'_a^I' * e_lU_dense'_b^J' * eta_LL_dense'_IJ')()
+printbr(var'\\hat{\\gamma}''_ij':eq(gammaHat_ll_dense))
+
+local det_gammaHat_ll = Matrix.determinant(gammaHat_ll_dense)
+printbr(var'\\hat{\\gamma}':eq(det_gammaHat_ll))
+
+local GammaHat_lll_dense = (frac(1,2) * (gammaHat_ll_dense'_ij,k' + gammaHat_ll_dense'_ik,j' - gammaHat_ll_dense'_jk,i'))():permute'_ijk'
+printbr(var'\\hat{\\Gamma}''_ijk':eq(GammaHat_lll_dense))
+
+local GammaHat_LLL_dense = (e_uL_dense'^i_I' * e_uL_dense'^j_J' * e_uL_dense'^k_K' * GammaHat_lll_dense'_ijk')():permute'_IJK'
+printbr(var'\\hat{\\Gamma}''_IJK':eq(GammaHat_LLL_dense))
+
+local GammaHat_ULL_dense = (eta_UU_dense'^IM' * GammaHat_LLL_dense'_MJK')():permute'^I_JK'	-- since the metric is locally-Minkowski 
+printbr(var'\\hat{\\Gamma}''^I_JK':eq(GammaHat_ULL_dense))
+
+-- looks like in my 'BSSN - index.lua', GammaHat^a isn't GammaHat^a_bc gammaHat^bc, but is GammaHat^a_bc gammaBar^bc
+-- maybe I shouldn't even save it in the output of 'BSSN - index.lua' ?
+
+local GammaHat_U_dense = (GammaHat_ULL_dense'^I_JK' * gammaBar_UU_dense'^JK')()
+printbr(var'\\hat{\\Gamma}''^I':eq(GammaHat_U_dense))
+
+-- by BSSN assertion, det_gammaBar = det_gammaHat, so:
+local partial_det_gammaBar_l_dense = Tensor('_i', function(i)
+	return det_gammaHat_ll:diff(coords[i])()
+end)
+printbr(var'\\hat{\\gamma}''_,i':eq(partial_det_gammaBar_l_dense))
+
+
 -- derivatives
 
-local partial_det_gammaBar_l_dense = Tensor('_i', function(i)
-	return var('partial_det_gammaBar_l.'..xs[i])
-end)
+
 local partial_alpha_l_dense = Tensor('_i', function(i)
 	return var('partial_alpha_l.'..xs[i])
 end)
