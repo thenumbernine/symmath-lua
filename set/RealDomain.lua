@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local math = require 'ext.math'
 local Universal = require 'symmath.set.Universal'
 local RealInterval = require 'symmath.set.RealInterval'
 
@@ -27,6 +28,8 @@ function RealDomain:init(start, finish, includeStart, includeFinish)
 		end
 		self:checkMerge()
 	elseif type(start) == 'number' then
+		assert(not math.isnan(start))
+		assert(not math.isnan(finish))
 		self[1] = RealInterval(start, finish, includeStart, includeFinish)
 	elseif type(start) == 'nil' then
 		self[1] = RealInterval()	-- full domain
@@ -144,10 +147,10 @@ function RealDomain:containsElement(x)
 	return gotfalse
 end
 
-function RealDomain.__unm(I)
+function RealDomain.__unm(A)
 	return RealDomain(
-		table.mapi(self, function(selfI)
-			return -selfI
+		table.mapi(A, function(I)
+			return -I
 		end)
 	)
 end

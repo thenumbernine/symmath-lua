@@ -1,4 +1,5 @@
 local class = require 'ext.class'
+local math = require 'ext.math'
 local Universal = require 'symmath.set.Universal'
 local complex = require 'symmath.complex'
 
@@ -17,6 +18,10 @@ function RealInterval:init(start, finish, includeStart, includeFinish)
 	self.includeFinish = includeFinish
 	if self.start == -math.huge or self.start == math.huge then self.includeStart = false end
 	if self.finish == -math.huge or self.finish == math.huge then self.includeFinish = false end
+	if math.isnan(self.start) or math.isnan(self.finish) then
+		error('tried to construct a RealInterval with nan bounds:\n'
+				..require'ext.tolua'(self))
+	end
 end
 
 function RealInterval:clone()
@@ -222,69 +227,81 @@ for a <= 0 <= b and c <= 0 <= d it is
 	union of [a,b]*[c,0] = [c*b, c*a]
 		and [a,b]*[0,d] = [a*d, b*d]
 ...
---]]	
+--]]
+local function intervalmul(a,b)
+	-- this is usually nan ...
+	if a == 0 then
+		if b == math.huge then return math.huge end
+		if b == -math.huge then return -math.huge end
+	end
+	if b == 0 then
+		if a == math.huge then return math.huge end
+		if a == -math.huge then return -math.huge end
+	end
+	return a * b
+end
 function RealInterval.__mul(A,B)
 	if 0 <= A.start and 0 <= B.start then
 		return RealInterval(
-			A.start * B.start,
-			A.finish * B.finish,
+			intervalmul(A.start, B.start),
+			intervalmul(A.finish, B.finish),
 			A.includeStart and B.includeStart,
 			A.includeFinish and B.includeFinish
 		)
 	elseif A.finish <= 0 and 0 <= B.start then
 		return RealInterval(
-			A.start * B.finish,
-			A.finish * B.start,
+			intervalmul(A.start, B.finish),
+			intervalmul(A.finish, B.start),
 			A.includeStart and B.includeFinish,
 			A.includeFinish and B.includeStart
 		)
 	elseif 0 <= A.start and B.finish <= 0 then
 		return RealInterval(
-			A.finish * B.start,
-			A.start * B.finish,
+			intervalmul(A.finish, B.start),
+			intervalmul(A.start, B.finish),
 			A.includeFinish and B.includeStart,
 			A.includeStart and B.includeFinish
 		)
 	elseif A.finish <= 0 and B.finish <= 0 then
 		return RealInterval(
-			A.finish * B.finish,
-			A.start * B.start,
+			intervalmul(A.finish, B.finish),
+			intervalmul(A.start, B.start),
 			A.includeFinish and B.includeFinish,
 			A.includeStart and B.includeStart
 		)
 	elseif A.start <= 0 and 0 <= A.finish and 0 <= B.start then
 		return RealInterval(
-			A.start * B.finish,
-			A.finish * B.finish,
+			intervalmul(A.start, B.finish),
+			intervalmul(A.finish, B.finish),
 			A.includeStart and B.includeFinish,
 			A.includeFinish and B.includeFinish
 		)
 	elseif A.start <= 0 and 0 <= A.finish and B.finish <= 0 then
 		return RealInterval(
-			B.start * A.finish,
-			B.start * A.start,
+			intervalmul(B.start, A.finish),
+			intervalmul(B.start, A.start),
 			A.includeFinish and B.includeStart,
 			A.includeStart and B.includeStart
 		)
 	elseif B.start <= 0 and 0 <= B.finish and 0 <= A.start then
 		return RealInterval(
-			B.start * A.finish,
-			B.finish * A.finish,
+			intervalmul(B.start, A.finish),
+			intervalmul(B.finish, A.finish),
 			A.includeFinish and B.includeStart,
 			A.includeFinish and B.includeFinish
 		)
 	elseif B.start <= 0 and 0 <= B.finish and A.finish <= 0 then
 		return RealInterval(
-			A.start * B.finish,
-			A.start * B.start,
+			intervalmul(A.start, B.finish),
+			intervalmul(A.start, B.start),
 			A.includeStart and B.includeFinish,
 			A.includeStart and B.includeStart
 		)
 	elseif B.start <= 0 and 0 <= B.finish and A.start <= 0 and 0 <= A.finish then
-		local AstartBfinish = A.start * B.finish
-		local AfinishBstart = A.finish * B.start
-		local AstartBstart = A.start * B.start
-		local AfinishBfinish = A.finish * B.finish
+		local AstartBfinish = intervalmul(A.start, B.finish)
+		local AfinishBstart = intervalmul(A.finish, B.start)
+		local AstartBstart = intervalmul(A.start, B.start)
+		local AfinishBfinish = intervalmul(A.finish, B.finish)
 		local includeStart
 		if AstartBfinish < AfinishBstart then
 			includeStart = A.includeStart and B.includeFinish

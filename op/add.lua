@@ -1286,40 +1286,34 @@ add.rules = {
 					table.remove(expr, i)
 					if #expr == 1 then expr = expr[1] end
 					expr = (expr * b + a) / b
+					--return expr	-- runs much faster (5s vs 60s) without the final prune:apply, but doesn't finish simplifying ...
 					return prune:apply(expr)
 				end
 			end
 			--]]
 			--[[ divs all at once: a/b + c/d + e => (d*a + b*d + b*d*e) / (b*d)
-			do
-				local denom 
-				for i,x in ipairs(expr) do
-					if div.is(x) then
-						denom = denom or table()
-						denom:insert(x[2])
-					end
-				end
-				if denom then
-					denom = #denom == 1 and denom[1] or mul(denom:unpack())
-					local nums = table()
-					for i,x in ipairs(expr) do
-						local num = table()
-						for j,y in ipairs(expr) do
-							if div.is(y) and i ~= j then num:insert(y[2]) end
-						end				
-						if div.is(x) then
-							num:insert(1, x[1])
-							num = #num == 1 and num[1] or mul(num:unpack()) 
-							nums:insert(num)
-						else
-							num:insert(1, x)
-							num = #num == 1 and num[1] or mul(num:unpack())
-							nums:insert(num)
+			-- much faster when you remove the final prune:apply() (5s vs 60s) but doesn't seem to finish simplifying all cases 
+			local denom
+			for i,x in ipairs(expr) do
+				if div.is(x) then
+					local xdenom = x[2]
+					denom = denom and (denom * xdenom) or xdenom
+					expr[i] = x[1]
+					for j,y in ipairs(expr) do
+						if j ~= i then
+							if div.is(expr[j]) then
+								expr[j][1] = expr[j][1] * xdenom
+							else
+								expr[j] = expr[j] * xdenom
+							end
 						end
 					end
-					nums = #nums == 1 and nums[1] or add(nums:unpack())
-					return prune:apply(nums / denom)
 				end
+			end
+			if denom then
+				return expr / denom
+				-- this is usually a recursive call, but that seems to be pretty slow, due to something in op.div.rules.Prune maybe?
+				--return prune:apply(expr / denom)
 			end
 			--]]
 

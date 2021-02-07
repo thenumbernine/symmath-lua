@@ -85,6 +85,32 @@ function Array:set(index, value)
 	-- or just ignore it, since this is predominantly the implementation of __newindex, which has no return type?
 end
 
+-- too useful not to have here
+-- dim = array of numbers to iterate across
+-- TODO turn Array:iter() into something that just uses this?  or would that go too slow?
+-- TODO put this in ext? because it's so useful?  I think matrix-lua has a similar loop inside of it.
+function Array.iterForDim(dim)
+	local n = #dim
+	if n == 0 then return coroutine.wrap(function() end) end
+
+	local index = {}
+	for i=1,n do
+		index[i] = 1
+	end
+	
+	return coroutine.wrap(function()
+		while true do
+			coroutine.yield(index)
+			for i=n,1,-1 do
+				index[i] = index[i] + 1
+				if index[i] <= dim[i] then break end
+				index[i] = 1
+				if i == 1 then return end
+			end
+		end
+	end)
+end
+
 --[[
 returns a for loop iterator that cycles across all indexes and values within the array
 usage: for index,value in t:iter() do ... end

@@ -16,17 +16,12 @@ print(MathJax.header)
 
 local eqns = assert(loadfile'BSSN - index - cache.lua')()
 
-
 local xs = table{'x','y','z'}	-- names of the fields in the internal real3 type in the simulation code
-
 
 -- manifold info
 
-
-
-
 -- this is going to be metric-specific
--- [[ Cartesian
+--[[ Cartesian
 
 local x,y,z = vars('x', 'y', 'z')
 local coords = table{x,y,z}
@@ -38,13 +33,9 @@ local e_lU_dense = Tensor('_i^I',
 	{1,0,0},
 	{0,1,0},
 	{0,0,1})
-local e_uL_dense = Tensor('^i_I', 
-	{1,0,0},
-	{0,1,0},
-	{0,0,1})
 
 --]]
---[[ spherical
+-- [[ spherical
 
 local r, theta, phi = vars('r', 'theta', 'phi')
 local coords = table{r, theta, phi}
@@ -56,13 +47,13 @@ local e_lU_dense = Tensor('_i^I',
 	{1,0,0},
 	{0,r,0},
 	{0,0,r*sin(theta)})
-local e_uL_dense = Tensor('^i_I', 
-	{1,0,0},
-	{0,1/r,0},
-	{0,0,1/(r*sin(theta))})
 
 --]]
 
+
+local e_uL_dense = Tensor('^i_I', 
+	table.unpack((Matrix.inverse(e_lU_dense)))
+)
 
 
 -- variables
@@ -218,6 +209,7 @@ for _,nameAndEqn in ipairs(eqns) do
 local origRhs = rhs:clone()
 		eqn = eqn:factorDivision()
 
+timer('replacing tensors with dense tensors', function()
 		eqn = eqn
 			--:splitOffDerivIndexes()
 			
@@ -281,16 +273,38 @@ local origRhs = rhs:clone()
 			:replaceIndex(var'e''^i_I_,j', e_uLl_dense'^i_I_j')
 			:replaceIndex(var'e''_i^I_,jk', e_lUll_dense'_i^I_jk')
 			:replaceIndex(var'e''^i_I_,jk', e_uLll_dense'^i_I_jk')
-
+end)
 
 			-- TODO what about f?  what about substituting its analytical value?
 			--  f = 2 / alpha for Bona-Masso slicing
 
 		printbr('new eqn:', eqn)
 
-
+timer('simplifying', function()
+		-- all of these are too slow
+		--[[
 		eqn = eqn()
-		--eqn = eqn:factorDivision()	-- got all the way to LambdaBar 
+		--]]
+		--[[
+		eqn = eqn:factorDivision()	-- got all the way to LambdaBar 
+		--]]
+		-- [[
+		eqn[1] = eqn[1]()
+		if symmath.op.add.is(eqn[2]) then
+			for i=1,#eqn[2] do
+timer('simplifying term '..i, function()
+				eqn[2][i] = eqn[2][i]()
+end)			
+			end
+-- this is the worst wrt performance
+timer('simplifying addition of terms', function()
+			eqn[2] = eqn[2]()
+end)
+		else
+			eqn[2] = eqn[2]()
+		end
+		--]]
+end)
 
 io.stderr:write('creating equations with new variable names...\n')
 io.stderr:flush()
@@ -306,14 +320,16 @@ io.stderr:flush()
 			-- scalar
 			resultEqns:insert{[lhs.name] = rhs}
 		else
+			assert(Tensor.is(rhs), "lhs is a Tensor but rhs didn't simplify to a Tensor")
 			local variance = table.sub(lhs, 2,#lhs-1) 
 			-- tensor
 			--printbr('variance: '..variance:mapi(tostring):concat())
 			for is,lhsvalue in lhs:iter() do
+				is = table(is)
 				local rhsvalue = rhs[is]
 				if not rhsvalue then
 					local msg = ("failed to find "..tostring(lhs).."["..is:concat','.."]<br>\n"
-								.."from orig eqn "..origRhs.."["..is:concat','.."]<br>\n"
+								.."from orig eqn "..tostring(origRhs).."["..is:concat','.."]<br>\n"
 								.."rhs "..tostring(rhs).."<br>\n"
 								.."rhs["..is:concat','.."] = "..tostring(rhsvalue))
 					printbr(msg)
@@ -325,6 +341,7 @@ io.stderr:flush()
 		end
 
 		printbr'<pre>'
+timer('exporting to C', function()
 		--[[ single-line output
 		for _,eqn in ipairs(resultEqns) do
 			local k,v = next(eqn)	-- why would this ever fail?
@@ -335,6 +352,7 @@ io.stderr:flush()
 		printbr(export.C:toCode{
 			output = resultEqns,
 		})
+end)		
 		--]]
 		printbr'</pre>'
 		printbr()
@@ -349,7 +367,9 @@ end
 io.stderr:write('converting to C code:\n')
 io.stderr:flush()
 
-print'---------------------------'
-print(export.C:toCode{
+printbr'---------------------------'
+printbr(export.C:toCode{
 	output = allResultEqns,
 })
+
+print(MathJax.footer)

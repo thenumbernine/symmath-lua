@@ -911,6 +911,7 @@ function Tensor.pruneMul(lhs, rhs)
 	local rhsIsScalar = not rhsIsTensor and not rhsIsArray
 	assert(lhsIsTensor or rhsIsTensor)
 	if lhsIsTensor and rhsIsTensor then
+--[[ old way (7.5 seconds on my problem term)
 		-- tensor-tensor mul
 		local result = Tensor{
 			indexes = table():append(lhs.variance):append(rhs.variance),
@@ -925,6 +926,132 @@ function Tensor.pruneMul(lhs, rhs)
 		}
 		result = result:simplifyTraces()
 		return result
+--]]
+-- [[ less temporary Tensor constructions.  faster? barely.  7.0 instead of 7.5 
+		-- has: variance, tensor, loc, dim
+		local resultIndexes = setmetatable({}, table)
+		local resultIndexInfos = setmetatable({}, table)
+		local resultDims = setmetatable({}, table)
+		local lhsDim = lhs:dim()
+		for i,index in ipairs(lhs.variance) do 
+			resultIndexes:insert(index) 
+			local dim = lhsDim[i]
+			resultDims:insert(dim)
+			resultIndexInfos:insert{loc = i, dim = dim, side = 1}
+		end
+		local rhsDim = rhs:dim()
+		for i,index in ipairs(rhs.variance) do 
+			resultIndexes:insert(index) 
+			local dim = rhsDim[i]
+			resultDims:insert(dim)
+			resultIndexInfos:insert{loc = i, dim = dim, side = 2}
+		end
+--print("before: "..resultIndexes:mapi(tostring):concat' ')
+		local sumAcrossPairs = setmetatable({}, table)
+		local sumDims = setmetatable({}, table)
+		do
+			local found
+			repeat
+				found = false
+				for i=1,#resultIndexInfos-1 do
+					for j=i+1,#resultIndexInfos do
+						if resultIndexes[i].symbol == resultIndexes[j].symbol then
+--print("removing indexes", i, j)							
+--print("with symbols", resultIndexes[i].symbol, resultIndexes[j].symbol)							
+							
+							local infoj = resultIndexInfos:remove(j)	-- remove larger first
+							resultIndexes:remove(j)
+							resultDims:remove(j)
+							
+							local infoi = resultIndexInfos:remove(i)
+							resultIndexes:remove(i)
+							resultDims:remove(i)
+
+--print("removing for summing: ", infoj.index, infoi.index)
+							assert(infoi.dim == infoj.dim)	-- instead of error, maybe just don't simplify?
+							sumAcrossPairs:insert{infoi, infoj}				
+							sumDims:insert(infoi.dim)
+							found = true
+							break
+						end
+					end
+					if found then break end
+				end
+			until not found
+		end
+		local numSums = #sumDims
+		local iter = {}
+--print("after: "..resultIndexes:mapi(tostring):concat' ')
+		local dst = {}
+		local srca = {}
+		local srcb = {}
+		local srcs = {srca, srcb}
+		local function resultValueForIndex(...)
+			for i=1,select('#', ...) do
+				dst[i] = select(i, ...)
+			end
+			
+			for i,info in ipairs(resultIndexInfos) do
+				srcs[info.side][info.loc] = dst[i]
+			end
+--print('setting fixed read indexes of lhs '..require'ext.tolua'(srca)..' rhs '..require'ext.tolua'(srcb))
+			
+			-- now we can assert all the sumAcrossPairs' index locations are nil in srca and srcb
+
+			local result = setmetatable({}, table)
+			--assert(numSum == #sumAcrossPairs)
+			if #sumAcrossPairs == 0 then
+				-- outer product = no summing, just multiply and return
+				-- assert that srca and srcb are already full
+				return lhs:get(srca) * rhs:get(srcb)
+			end
+			
+
+			if numSums > 0 then
+				for i=1,numSums do
+					iter[i] = 1
+				end
+				
+				local iterdone 
+				while not iterdone do
+					-- callback(indexes) here:
+					for pairIndex,pair in ipairs(sumAcrossPairs) do
+						for _,info in ipairs(pair) do
+							srcs[info.side][info.loc] = iter[pairIndex]
+						end
+					end
+					result:insert(lhs:get(srca) * rhs:get(srcb))
+					
+					for i=numSums,1,-1 do
+						iter[i] = iter[i] + 1
+						if iter[i] <= sumDims[i] then break end
+						iter[i] = 1
+						if i == 1 then iterdone = true end
+					end
+				end
+			end
+
+
+			if #result == 0 then
+				error('somehow our sum indexes iterated over no source values\n'
+					..'lhs = '..tostring(lhs)..'\n'
+					..'rhs = '..tostring(rhs))
+			elseif #result == 1 then
+				return result[1]
+			end
+			return setmetatable(result, require 'symmath.op.add')	
+		end
+
+		if #resultIndexes == 0 then -- return a scalar value
+			return resultValueForIndex():simplify()
+		else
+			return Tensor{
+				indexes = resultIndexes,
+				dim = resultDims,
+				values = resultValueForIndex,
+			}:simplify()
+		end
+--]]
 	end
 	if lhsIsTensor and rhsIsScalar then
 		return Tensor{

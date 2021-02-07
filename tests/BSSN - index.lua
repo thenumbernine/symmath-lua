@@ -421,11 +421,13 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 	})
 end
 
+local simplifyOnlyBarMetrics
+
 local delta = Tensor:deltaSymbol()
 
 local function replaceNormalizationTransformsWithDeltas(expr)
 	local mul = require 'symmath.op.mul'
-	return expr:map(function(x)
+	expr = expr:map(function(x)
 		if mul.is(x) then
 			x = x:clone()
 			local found
@@ -460,6 +462,8 @@ local function replaceNormalizationTransformsWithDeltas(expr)
 			return x
 		end
 	end)
+	expr = simplifyOnlyBarMetrics(expr)
+	return expr
 end
 
 
@@ -524,6 +528,22 @@ local simplifyMetricGammaBarRule = {
 
 local function simplifyBarMetrics(expr)
 	return expr:simplifyMetrics{simplifyMetricGammaBarRule, Tensor.simplifyMetricsRules.delta}
+end
+
+local simplifyMetricGammaBarOnlyRule = {
+	isMetric = function(g)
+		return g[1] == gammaBar
+	end,
+	canSimplify = function(g, t, gi, ti)
+		return t[1] == gammaBar
+		and t[ti].lower ~= g[gi].lower
+		and not t:hasDerivIndex()
+	end,
+}
+
+-- only simplify gammaBar^ij gammaBar_jk -> delta^i_k and delta^i_k t^k_j -> t^i_j
+function simplifyOnlyBarMetrics(expr)
+	return expr:simplifyMetrics{simplifyMetricGammaBarOnlyRule, Tensor.simplifyMetricsRules.delta}
 end
 
 
@@ -715,7 +735,6 @@ printbr()
 --[[ not needed because there are no (non-derivative) summed indexes in alpha_,t's rhs
 printbr'cancelling forward and inverse transforms, and simplifying deltas...'
 dt_alpha_norm_def = replaceNormalizationTransformsWithDeltas(dt_alpha_norm_def)
-	:simplifyMetrics()
 printbr(dt_alpha_norm_def) 
 --]]
 
@@ -740,7 +759,6 @@ printbr'transforming by inverse of normalization basis'
 dt_beta_U_norm_def = dt_beta_U_norm_def * e'_i^J'
 dt_beta_U_norm_def = betterSimplify(dt_beta_U_norm_def )
 dt_beta_U_norm_def = replaceNormalizationTransformsWithDeltas(dt_beta_U_norm_def)
-	:simplifyMetrics()
 	:reindex{J='I'}
 dt_beta_U_norm_def = betterSimplify(dt_beta_U_norm_def)
 
@@ -766,7 +784,6 @@ printbr(dt_B_U_norm_def)
 dt_B_U_norm_def = dt_B_U_norm_def * e'_i^J'
 dt_B_U_norm_def = betterSimplify(dt_B_U_norm_def)
 dt_B_U_norm_def = replaceNormalizationTransformsWithDeltas(dt_B_U_norm_def)
-	:simplifyMetrics()
 	:reindex{J='I'}
 printbr(dt_B_U_norm_def) 
 printbr()
@@ -1070,7 +1087,6 @@ printbr(dt_W_norm_def)
 --[[ not needed because there are no (non-derivative) summed indexes in W_,t's rhs
 printbr'cancelling forward and inverse transforms, and simplifying deltas...'
 dt_W_norm_def = replaceNormalizationTransformsWithDeltas(dt_W_norm_def)
-	:simplifyMetrics()
 printbr(dt_W_norm_def) 
 --]]
 
@@ -1171,7 +1187,6 @@ printbr()
 dt_epsilonBar_LL_norm_def = dt_epsilonBar_LL_norm_def * e'^i_M' * e'^j_N'
 dt_epsilonBar_LL_norm_def = betterSimplify(dt_epsilonBar_LL_norm_def)
 dt_epsilonBar_LL_norm_def = replaceNormalizationTransformsWithDeltas(dt_epsilonBar_LL_norm_def)
-	:simplifyMetrics()
 	:reindex{IJMN='MNIJ'}
 printbr(dt_epsilonBar_LL_norm_def) 
 printbr()
@@ -1381,7 +1396,6 @@ dt_LambdaBar_U_norm_def = dt_LambdaBar_U_norm_def * e'_i^J'
 dt_LambdaBar_U_norm_def = betterSimplify(dt_LambdaBar_U_norm_def)
 	
 dt_LambdaBar_U_norm_def = replaceNormalizationTransformsWithDeltas(dt_LambdaBar_U_norm_def)
-	:simplifyMetrics()
 	:reindex{IJ='JI'}
 printbr(dt_LambdaBar_U_norm_def) 
 printbr()
@@ -1598,7 +1612,6 @@ printbr(dt_K_norm_def)
 
 printbr'cancelling forward and inverse transforms, and simplifying deltas...'
 dt_K_norm_def = replaceNormalizationTransformsWithDeltas(dt_K_norm_def)
-	:simplifyMetrics()
 printbr(dt_K_norm_def) 
 printbr()
 
@@ -1693,7 +1706,6 @@ dt_ABar_LL_norm_def = dt_ABar_LL_norm_def * e'^i_M' * e'^j_N'
 dt_ABar_LL_norm_def = betterSimplify(dt_ABar_LL_norm_def)
 
 dt_ABar_LL_norm_def = replaceNormalizationTransformsWithDeltas(dt_ABar_LL_norm_def)
-	:simplifyMetrics()
 	:reindex{IJMN='MNIJ'}
 printbr(dt_ABar_LL_norm_def) 
 printbr()
