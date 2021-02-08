@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
 
 local Binary = class(Expression)
+Binary.name = 'Binary'
 
 function Binary:init(...)
 	Binary.super.init(self, ...)

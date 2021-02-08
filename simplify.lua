@@ -2,7 +2,10 @@ local table = require 'ext.table'
 
 local simplifyObj = {}
 
+simplifyObj.useTrigSimplify = true
+
 local function simplify(x, ...)
+--return timer('simplify', function(...)
 --print('start', require 'symmath.export.SingleLine'(x))	
 	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ... 
 	-- this doesn't make sense, but maybe it's true
@@ -33,27 +36,30 @@ local function simplify(x, ...)
 		stack = table()
 	end
 	if stack then stack:insert{'init', clone(x)} end
+	
 	x = prune(x, ...)
---print('prune', require 'symmath.export.SingleLine'(x))	
 	if stack then stack:insert{'prune', clone(x)} end
+	
 	local i = 0
 	repeat
 		lastx = x	-- lastx = x invokes the simplification loop.  that means one of the next few commands operates in-place.
-		
+
 		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
---print('expand', require 'symmath.export.SingleLine'(x))	
 		if stack then stack:insert{'expand', clone(x)} end
+
 		x = prune(x, ...)
---print('prune', require 'symmath.export.SingleLine'(x))	
 		if stack then stack:insert{'prune', clone(x)} end
+		
 		x = factor(x)
---print('factor', require 'symmath.export.SingleLine'(x))	
 		if stack then stack:insert{'factor', clone(x)} end
+		
 		x = prune(x)
---print('prune', require 'symmath.export.SingleLine'(x))	
 		if stack then stack:insert{'prune', clone(x)} end
 
-
+-- [==[ goes horribly slow
+if simplifyObj.useTrigSimplify then
+--timer('trigsimp', function(...)
+		
 		-- trigonometric
 		-- where to put this, since doing one or the other means the other or the one missing out on div etc simplifications
 		
@@ -87,13 +93,13 @@ local function simplify(x, ...)
 				end
 			end)
 			if found then
---printbr(x)				
+--printbr(x)
 				x = expand(x, ...)
---printbr(x)				
+--printbr(x)
 				x = prune(x, ...)
---printbr(x)				
+--printbr(x)
 				x = factor(x, ...)
---printbr(x)				
+--printbr(x)
 				x = prune(x, ...)
 --printbr(x)
 			end
@@ -135,14 +141,17 @@ local function simplify(x, ...)
 --printbr(x)
 			end
 		end
-
-
+--print('trigsimp size', x:countNodes())
+--end, ...)
+end
+--]==]
 
 		--do break end -- calling expand() again after this breaks things ...
 		i = i + 1
 	until i == simplifyMaxIter or x == lastx or getmetatable(x) == Invalid
 -- [[ debugging simplify loop stack trace
 	if i == simplifyMaxIter then
+print('reached maxiter', simplifyMaxIter)
 		if stack then 
 			local SingleLine = require 'symmath.export.SingleLine'
 			for i,kv in ipairs(stack) do
@@ -154,13 +163,14 @@ local function simplify(x, ...)
 		io.stderr:write(debug.traceback()..'\n')
 	end
 --]]
-	
+
 	x = tidy(x, ...)
 
 	simplifyObj.stack = stack
 
 --print('end', require 'symmath.export.SingleLine'(x))	
 	return x
+--end, ...)
 end
 
 setmetatable(simplifyObj, {

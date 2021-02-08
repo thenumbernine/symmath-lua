@@ -493,6 +493,7 @@ function mul:getRealDomain()
 	return I
 end
 
+-- goes horribly slow
 --[[
 a * (b + c) * d * e => (a * b * d * e) + (a * c * d * e)
 --]]

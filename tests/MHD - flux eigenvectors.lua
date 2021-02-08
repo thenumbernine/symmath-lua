@@ -6,102 +6,11 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Ideal Magnetohydrodynamics - flux eigenvectors'}}
 
-local function betterSimplify(x)
-	return x():factorDivision()
-	:map(function(y)
-		if symmath.op.add.is(y) then
-			local newadd = table()
-			for i=1,#y do
-				newadd[i] = y[i]():factorDivision()
-			end
-			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
-		end
-	end)
-end
-
 local delta = Tensor:deltaSymbol()	-- Kronecher delta
 local g = var'g'					-- metric
 
 -- TODO tidyIndexes() is breaking on this worksheet
 -- it seems like it does work if you are sure to :simplify():factorDivision() beforehand
-
--- TODO 
-local function simplifyMetrics(expr, deltas)
-	if Array.is(expr) then
-		return getmetatable(expr):lambda(expr:dim(), function(...)
-			return simplifyMetrics(expr:get{...}, deltas)
-		end)
-	end
-
-	deltas = deltas or table{delta, g}
-	expr = betterSimplify(expr)	-- put it in add-mul-div order
-	expr = expr:clone()
-	local function checkMul(expr)
-		if not op.mul.is(expr) then return expr end
-		for i=#expr,1,-1 do
-			local deltaTerm = expr[i]
-			local found
-			-- TODO also make sure there is no derivative or comma-derivative that is wrapping deltaTerm
-			if TensorRef.is(deltaTerm) 
-			and deltas:find(deltaTerm[1])
-			and #deltaTerm == 3 
-			-- TODO here, delta only simplifies with opposing index variance: delta^i_j
-			--  and g only simplifies with identical index variance: g_ij
-			--  (though if we are using the "g-raises-and-lowers" rule then g^i_j = delta^i_j)
-			-- don't simplify a^i delta_ij => a_j ... because a_j = a^i g_ij, and we don't know if g_ij == delta_ij
-			--and (not not deltaTerm[2].lower) = not (not not deltaTerm[3].lower)
-			then
---printbr('found delta at', i)				
-				for deltaI=2,3 do
-					local deltaIndex = deltaTerm[deltaI]
---printbr('checking delta index', deltaIndex.symbol)
-					for j,xj in ipairs(expr) do
-						if i ~= j
-						and TensorRef.is(xj) 
-						then
-							-- TODO here, only repace an index if ...
-							-- 1) the index is not a derivative and we are replacing with delta^i_j g^ij g_ij or g^i_j
-							-- 2) the index is a covariant derivative and we are replacing it with delta^i_j g^ij g_ij or g^i_j
-							-- 3) the index is a partial derivative and we are replacing it with delta_ij delta^ij delta^i_j or g^i_j
---printbr('found non-delta at', j)
-							local indexIndex = table.sub(xj, 2):find(nil, function(xjIndex)
---printbr("comparing symbols ",	xjIndex.symbol, deltaIndex.symbol, ' and comparing lowers', xjIndex.lower, deltaIndex.lower)
-								return xjIndex.symbol == deltaIndex.symbol 
-									and (not not xjIndex.lower) == not (not not deltaIndex.lower)
-							end)
---printbr('found matching index at', indexIndex)							
-							if indexIndex then
-								local replDeltaIndex = deltaTerm[5 - deltaI]
---printbr('replacing with opposing delta index', replDeltaIndex.symbol)								
---printbr('replacing...', xj)
-								xj[indexIndex+1].symbol = replDeltaIndex.symbol
-								xj[indexIndex+1].lower = replDeltaIndex.lower
---printbr('removing delta')								
-								table.remove(expr, i)
-								-- if we just removed our last delta then return what's left
-								
-								found = true
-								break
-							end
-						end
-					end
-					if found then break end
-				end
-			end
-		end
-		if #expr == 1 then expr = expr[1] end
-		return expr
-	end
-	if op.add.is(expr) then
-		for i=1,#expr do
-			expr[i] = checkMul(expr[i])
-		end
-		if #expr == 1 then expr = expr[1] end
-	else
-		expr = checkMul(expr)
-	end
-	return expr
-end
 
 printbr'units of measurement:'
 
@@ -191,7 +100,7 @@ local E_hydro = var'E_{hydro}'
 local E_hydro_def = E_hydro:eq(rho * (e_int + e_kin))	-- hydro energy
 printbr(E_hydro_def, [[= densitized hydro energy, in units of]], kg / (m * s^2))
 
-local E_hydro_wrt_W = betterSimplify(E_hydro_def:subst(e_int_def, e_kin_def, vSq_def:switch()))
+local E_hydro_wrt_W = E_hydro_def:subst(e_int_def, e_kin_def, vSq_def:switch()):simplifyAddMulDiv()
 printbr(E_hydro_wrt_W)
 
 local E_mag = var'E_{mag}'
@@ -203,14 +112,14 @@ local E_total_with_mag = var'E_{total with mag}'
 local E_total_with_mag_def = E_total_with_mag:eq(rho * (e_int + e_kin) + E_mag)
 printbr(E_total_with_mag_def, [[= total energy, in units of]], kg/(m*s^2))
 
-local E_total_with_mag_wrt_W = betterSimplify(E_total_with_mag_def:subst(e_int_def, e_kin_def, vSq_def:switch(), E_mag_def))
+local E_total_with_mag_wrt_W = E_total_with_mag_def:subst(e_int_def, e_kin_def, vSq_def:switch(), E_mag_def):simplifyAddMulDiv()
 printbr(E_total_with_mag_wrt_W)
 
 local H_total_with_mag = var'H_{total with mag}'
 local H_total_with_mag_def = H_total_with_mag:eq(E_total_with_mag + P_total_with_mag)
 printbr(H_total_with_mag_def, [[= total enthalpy, in units of]], kg / (m * s^2))
 
-local H_total_with_mag_wrt_W = betterSimplify(H_total_with_mag_def:subst(E_total_with_mag_wrt_W, P_total_with_mag_wrt_W, vSq_def:switch()))
+local H_total_with_mag_wrt_W = H_total_with_mag_def:subst(E_total_with_mag_wrt_W, P_total_with_mag_wrt_W, vSq_def:switch()):simplifyAddMulDiv()
 printbr(H_total_with_mag_wrt_W)
 
 local Cs = var'c_s'
@@ -292,7 +201,7 @@ dU_dW_def = dU_dW_def:subst(m_from_v, E_total_with_mag_wrt_W, vSq_def, BSq_def)
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
 dU_dW_def = dU_dW_def():subst(vSq_def:switch()())
-dU_dW_def = betterSimplify(simplifyMetrics(dU_dW_def))
+dU_dW_def = dU_dW_def:simplifyMetrics():simplifyAddMulDiv()
 
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
@@ -328,7 +237,7 @@ local F_def = Matrix{
 }:T()
 printbr(F'^I':eq(F_def))
 
-F_def = betterSimplify(F_def:subst(H_total_with_mag_wrt_W, P_total_with_mag_wrt_W, vSq_def, BSq_def))
+F_def = F_def:subst(H_total_with_mag_wrt_W, P_total_with_mag_wrt_W, vSq_def, BSq_def):simplifyAddMulDiv()
 printbr(F'^I':eq(F_def))
 printbr()
 
@@ -338,11 +247,11 @@ local dF_dW_def = Matrix:lambda({#F_def,#W_def}, function(i,j)
 end)
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 
-dF_dW_def = betterSimplify(simplifyMetrics(dF_dW_def))
+dF_dW_def = dF_dW_def:simplifyMetrics():simplifyAddMulDiv()
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 
 -- tidyIndexes doesn't do anything except relabel.  it doesn't aid in simplification at all.
-dF_dW_def = betterSimplify(dF_dW_def:tidyIndexes())
+dF_dW_def = dF_dW_def:tidyIndexes():simplifyAddMulDiv()
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 
 -- doesn't work for all indexes, only 'a's
@@ -357,8 +266,8 @@ dF_dW_def = dF_dW_def
 	:subst(H_total_with_mag_wrt_W:solve(P), tildeGamma_def)()
 	:subst(tildeGamma_def:solve(gamma))
 	:replace(BSq_var, B'^b' * B'_b')
-dF_dW_def = betterSimplify(dF_dW_def):tidyIndexes()
-dF_dW_def = betterSimplify(dF_dW_def)
+dF_dW_def = dF_dW_def:simplifyAddMulDiv():tidyIndexes()
+dF_dW_def = dF_dW_def:simplifyAddMulDiv()
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 printbr()
 
@@ -369,12 +278,12 @@ printbr(F'^I':diff(U'^J'):eq(F'^I':diff(W'^L') * W'^L':diff(U'^J')))
 local dF_dU_def = dF_dW_def:reindex{j='k'} * dW_dU_def:reindex{ik='km'}
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 
-dF_dU_def = betterSimplify(dF_dU_def)
+dF_dU_def = dF_dU_def:simplifyAddMulDiv()
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 
 dF_dU_def = dF_dU_def:tidyIndexes()()
-dF_dU_def = betterSimplify(simplifyMetrics(dF_dU_def))
-dF_dU_def = betterSimplify(dF_dU_def:tidyIndexes())
+dF_dU_def = dF_dU_def:simplifyMetrics():simplifyAddMulDiv()
+dF_dU_def = dF_dU_def:tidyIndexes():simplifyAddMulDiv()
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 printbr()
 
@@ -392,8 +301,8 @@ printbr(A_lhs:eq(A_plus_delta_def))
 -- hmm, the wrong combination of these didn't allow simplifyMetrics() to work 
 -- TODO if you don't do :factorDivision() before :tidyIndexes() then you can get mismatching indexes, and the subsequent :simplify() will cause a stack overflow
 A_plus_delta_def = A_plus_delta_def:tidyIndexes()()
-A_plus_delta_def = betterSimplify(simplifyMetrics(A_plus_delta_def))
-A_plus_delta_def = betterSimplify(A_plus_delta_def:tidyIndexes())
+A_plus_delta_def = A_plus_delta_def:simplifyMetrics():simplifyAddMulDiv()
+A_plus_delta_def = A_plus_delta_def:tidyIndexes():simplifyAddMulDiv()
 printbr(A_lhs:eq(A_plus_delta_def))
 
 A_plus_delta_def = A_plus_delta_def:subst(H_total_with_mag_wrt_W)
@@ -406,7 +315,7 @@ A_plus_delta_def = A_plus_delta_def:subst(H_total_with_mag_wrt_W)
 -- only substitute gamma on (A+I)_3,2, but leave tildeGamma on (A+I)_3,4
 A_plus_delta_def[3][2] = A_plus_delta_def[3][2]:subst(tildeGamma_def)
 
-A_plus_delta_def = betterSimplify(A_plus_delta_def)
+A_plus_delta_def = A_plus_delta_def:simplifyAddMulDiv()
 printbr(A_lhs:eq(A_plus_delta_def))
 
 local A_def = (A_plus_delta_def - Matrix.identity(#A_plus_delta_def) * Matrix:lambda({#A_plus_delta_def,#A_plus_delta_def}, function(i,j)
@@ -502,7 +411,7 @@ F_eig_R_def = F_eig_R_def()
 F_eig_R_def = F_eig_R_def
 	:replace(n'_1' * v'^1', n'_k' * v'^k' - n'_2' * v'^2' - n'_3' * v'^3')
 	:replace(n'^1' * v'_1', n'_k' * v'^k' - n'^2' * v'_2' - n'^3' * v'_3')
-F_eig_R_def = betterSimplify(F_eig_R_def)
+F_eig_R_def = F_eig_R_def:simplifyAddMulDiv()
 printbr(var'R_F':eq(F_eig_R_def))
 
 local F_eig_L_def = A_eig.L * expandMatrix3to5(dW_dU_def:subst(vSq_def:switch()))
@@ -512,7 +421,7 @@ F_eig_L_def = F_eig_L_def()
 F_eig_L_def = F_eig_L_def
 	:replace(n'_1' * v'^1', n'_k' * v'^k' - n'_2' * v'^2' - n'_3' * v'^3')
 	:replace(n'^1' * v'_1', n'_k' * v'^k' - n'^2' * v'_2' - n'^3' * v'_3')
-F_eig_L_def = betterSimplify(F_eig_L_def)
+F_eig_L_def = F_eig_L_def:simplifyAddMulDiv()
 printbr(var'L_F':eq(F_eig_L_def))
 
 printbr()

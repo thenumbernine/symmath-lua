@@ -24,22 +24,6 @@ local function printHeader(str)
 end
 
 
--- TODO put an add-mul-div simplification inside Expression somewhere
-local function betterSimplify(x)
-	return x():factorDivision()
-	:map(function(y)
-		if symmath.op.add.is(y) then
-			local newadd = table()
-			for i=1,#y do
-				newadd[i] = y[i]():factorDivision()
-			end
-			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
-		end
-	end)
-end
-
-
-
 local g = var'g'
 local g1 = var'\\hat{g}'
 local g2 = var'\\tilde{g}'

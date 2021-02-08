@@ -23,19 +23,6 @@ local function printHeader(str)
 	io.stderr:flush()
 end
 
-local function betterSimplify(x)
-	return x():factorDivision()
-	:map(function(y)
-		if symmath.op.add.is(y) then
-			local newadd = table()
-			for i=1,#y do
-				newadd[i] = y[i]():factorDivision()
-			end
-			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
-		end
-	end)
-end
-
 local g = Tensor:metricSymbol()
 local n = var'n'
 local v = var'v'
@@ -132,7 +119,7 @@ gamma_ac g^cd gamma_db
 
 local n_u_times_gamma_lu_def = (gamma_lu_def * n'^a')()
 printbr(n_u_times_gamma_lu_def)
-n_u_times_gamma_lu_def = betterSimplify(n_u_times_gamma_lu_def):simplifyMetrics()
+n_u_times_gamma_lu_def = n_u_times_gamma_lu_def:simplifyAddMulDiv():simplifyMetrics()
 printbr(n_u_times_gamma_lu_def)
 n_u_times_gamma_lu_def = n_u_times_gamma_lu_def:substIndex(n_norm_def)():reindex{ab='ba'}
 printbr(n_u_times_gamma_lu_def)
@@ -140,7 +127,7 @@ printbr()
 
 local gamma_lu_times_n_l_def = (gamma_lu_def * n'_b')()
 printbr(gamma_lu_times_n_l_def)
-gamma_lu_times_n_l_def = betterSimplify(gamma_lu_times_n_l_def):simplifyMetrics()
+gamma_lu_times_n_l_def = gamma_lu_times_n_l_def:simplifyAddMulDiv():simplifyMetrics()
 printbr(gamma_lu_times_n_l_def)
 gamma_lu_times_n_l_def = gamma_lu_times_n_l_def:substIndex(n_norm_def:reindex{a='b'})()
 printbr(gamma_lu_times_n_l_def)
@@ -177,7 +164,7 @@ local nabla_n_ll_from_K_ll = K_ll_def:clone()
 printbr(nabla_n_ll_from_K_ll)
 nabla_n_ll_from_K_ll = nabla_n_ll_from_K_ll:substIndex(gamma_lu_def)
 printbr(nabla_n_ll_from_K_ll)
-nabla_n_ll_from_K_ll = betterSimplify(nabla_n_ll_from_K_ll):simplifyMetrics()
+nabla_n_ll_from_K_ll = nabla_n_ll_from_K_ll:simplifyAddMulDiv():simplifyMetrics()
 printbr(nabla_n_ll_from_K_ll)
 -- substIndex not working
 --nabla_n_ll_from_K_ll = nabla_n_ll_from_K_ll:substIndex(n_u_dot_nabla_n_ll_def)()
@@ -202,7 +189,7 @@ printbr(proj_nabla_v_ul_def)
 printbr('using', gamma_lu_def:reindex{b='c'})
 proj_nabla_v_ul_def = proj_nabla_v_ul_def:subst(gamma_lu_def:reindex{ab='ca'})	-- just the first gamma_a^c
 printbr(proj_nabla_v_ul_def)
-proj_nabla_v_ul_def = betterSimplify(proj_nabla_v_ul_def):simplifyMetrics()
+proj_nabla_v_ul_def = proj_nabla_v_ul_def:simplifyAddMulDiv():simplifyMetrics()
 printbr(proj_nabla_v_ul_def)
 proj_nabla_v_ul_def = proj_nabla_v_ul_def:subst(n_l_dot_nabla_v_ul_def:reindex{ab='cd'})()
 printbr(proj_nabla_v_ul_def)
@@ -232,43 +219,43 @@ proj2_nabla2_v_ull_def[2] = proj2_nabla2_v_ull_def[2]:replace(
 	TensorIndex{symbol='c', derivative=';', lower=true}
 ):reindex{abc='gef'} * gamma'_g^a' * gamma'_b^e' * gamma'_c^f'
 printbr(proj2_nabla2_v_ull_def)
-proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:simplifyAddMulDiv()
 printbr(proj2_nabla2_v_ull_def)
 -- proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:substIndex(gamma_lu_sq_def)	-- not working
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:subst(gamma_lu_sq_def:reindex{acb='bed'})
 printbr(proj2_nabla2_v_ull_def)
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def
 	:replace(K'_de' * gamma'_b^e', K'_db')	-- TODO prove this somewhere?
-proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:simplifyAddMulDiv()
 printbr(proj2_nabla2_v_ull_def)
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def
 	:subst(n_u_times_gamma_lu_def:reindex{b='g'})
-proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:simplifyAddMulDiv()
 printbr(proj2_nabla2_v_ull_def)
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def
 	:subst(gamma_lu_def:reindex{ab='ed'}'_;f'())
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def
 	:replaceIndex(delta'_a^b_;c', 0)
 printbr(proj2_nabla2_v_ull_def)
-proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:simplifyAddMulDiv()
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:substIndex(gamma_lu_times_n_l_def:reindex{ab='be'})
-proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:simplifyAddMulDiv()
 printbr(proj2_nabla2_v_ull_def)
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:replace(
 	gamma'_g^a' * n'^g_;f',
 	gamma'^ah' * gamma'_h^g' * n'_g;f'
 )
-proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:simplifyAddMulDiv()
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:replace(
 	gamma'_c^f' * gamma'_h^g' * n'_g;f',
 	-K'_ch'
 )
-proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:simplifyAddMulDiv()
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:replace(
 	gamma'_b^e' * gamma'_c^f' * n'_e;f',
 	-K'_bc'
 )
-proj2_nabla2_v_ull_def = betterSimplify(proj2_nabla2_v_ull_def)
+proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:simplifyAddMulDiv()
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:tidyIndexes()
 printbr(proj2_nabla2_v_ull_def)
 
@@ -291,19 +278,19 @@ RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:subst(
 	proj2_nabla2_v_ull_def:reindex{bcd='dcg'}
 )
 printbr(RPerp_ulll_v_u_def)
-RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:simplifyAddMulDiv()
 local using = R_ulll_v_u_def:solve(v'^a_;dc'):reindex{adc='fge'} * gamma'_f^a' * gamma'_c^g' * gamma'_d^e'
 printbr('using', using)
 RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:subst(using)
 printbr(RPerp_ulll_v_u_def)
 RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:tidyIndexes()
-RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:simplifyAddMulDiv()
 printbr(RPerp_ulll_v_u_def)
 RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:symmetrizeIndexes(K, {1,2})
-RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:simplifyAddMulDiv()
 printbr(RPerp_ulll_v_u_def)
 RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:reindex{b='h'}:replace(v'^h', gamma'_b^h')
-RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:simplifyAddMulDiv()
 printbr(RPerp_ulll_v_u_def)
 RPerp_ulll_v_u_def = simplifyPerpMetrics(RPerp_ulll_v_u_def)
 printbr(RPerp_ulll_v_u_def)
@@ -315,7 +302,7 @@ RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:replace(
 	gamma'_a^g' * R'_ghfe'
 )
 RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:symmetrizeIndexes(K, {1,2})
-RPerp_ulll_v_u_def = betterSimplify(RPerp_ulll_v_u_def):reindex{ghef='efgh'}
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:simplifyAddMulDiv():reindex{ghef='efgh'}
 printbr(RPerp_ulll_v_u_def)
 printbr("Gauss' equation")
 
@@ -339,7 +326,7 @@ EFE_tt_def = EFE_tt_def:simplifyMetrics()
 printbr(EFE_tt_def)
 printbr('using', n_norm_def, ',', rho_def)
 EFE_tt_def = EFE_tt_def:substIndex(n_norm_def, rho_def:switch())	-- TOOD substIndex not working for matching sum indexes
-EFE_tt_def = betterSimplify(EFE_tt_def)
+EFE_tt_def = EFE_tt_def:simplifyAddMulDiv()
 printbr(EFE_tt_def)
 
 

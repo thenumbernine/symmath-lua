@@ -8,20 +8,6 @@ require 'symmath'.setup{
 	fixVariableNames=true,	-- automatically add the \\ to the greek letter names
 }
 
--- used here and in 'Kaluza-Klein - index' ... maybe I should just change 'simplify'
-local function betterSimplify(x)
-	return x():factorDivision()
-	:map(function(y)
-		if symmath.op.add.is(y) then
-			local newadd = table()
-			for i=1,#y do
-				newadd[i] = y[i]():factorDivision()
-			end
-			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
-		end
-	end)
-end
-
 printbr[[
 Sources:<br>
 2010 Alcubierre, Mendez, "Formulations of the 3+1 evolution equations in curvilinear coordinates"<br>
@@ -81,11 +67,11 @@ printbr'split space and time:'
 waveEqn = (g'^00' * Phi'_,00' + 2 * g'^0i' * Phi'_,0i' + g'^ij' * Phi'_,ij' - conn4'^0' * Phi'_,0' - conn4'^i' * Phi'_,i'):eq(f)
 printbr(waveEqn)
 printbr'substitute ADM metric components into wave equation:'
-waveEqn = betterSimplify(waveEqn
+waveEqn = waveEqn
 	:replace(g'^00', ADMInv_def:rhs()[1][1])
 	:replace(g'^0i', ADMInv_def:rhs()[2][1])
 	:replace(g'^ij', ADMInv_def:rhs()[2][2])
-)
+	:simplifyAddMulDiv()
 printbr(waveEqn)
 printbr[[solve for $\Phi_{,00}$:]]
 local d00_Phi_def = waveEqn:solve(Phi'_,00')
@@ -98,10 +84,10 @@ printbr('Let ', Pi_def)
 -- Pi_def = splitIndexes(Pi_def, {' mu' = {'0', 'i'}})
 Pi_def = Pi:eq(n'^0' * Phi'_,0' + n'^i' * Phi'_,i')
 printbr(Pi_def)
-Pi_def = betterSimplify(Pi_def
+Pi_def = Pi_def
 	:replace(n'^0', normalU_def:rhs()[1][1])
 	:replace(n'^i', normalU_def:rhs()[1][2])
-)
+	:simplifyAddMulDiv()
 printbr(Pi_def, '(eqn. 5)')
 printbr()
 
@@ -114,40 +100,40 @@ local di_Phi_def = Psi_def:solve(Phi'_,i')	-- this is just switching the equatio
 printbr()
 
 printbr[[Solve $\Pi$ for $\Phi_{,0}$:]]
-local d0_Phi_def = betterSimplify(Pi_def:solve(Phi'_,0'))
+local d0_Phi_def = Pi_def:solve(Phi'_,0'):simplifyAddMulDiv()
 printbr(d0_Phi_def, '(eqn. 7)')
 printbr[[$\frac{d}{dx^0} \Phi = \alpha \Pi$]]
-d0_Phi_def = betterSimplify(d0_Phi_def:subst(Psi_def:switch()))
+d0_Phi_def = d0_Phi_def:subst(Psi_def:switch()):simplifyAddMulDiv()
 printbr(d0_Phi_def )
 printbr()
 
 printbr[[Solve $\Pi_{,i}$ for $\Psi_{i,0}$:]]
-di_Pi_def = betterSimplify(Pi_def:reindex{i='j'}'_,i'():symmetrizeIndexes(Phi, {1,2}))
+di_Pi_def = Pi_def:reindex{i='j'}'_,i'():symmetrizeIndexes(Phi, {1,2}):simplifyAddMulDiv()
 printbr(di_Pi_def)
 printbr('substitute', d0_Phi_def, ',', di_Phi_def, ',', di_Phi_def'_,0'():symmetrizeIndexes(Phi, {1,2}))
-di_Pi_def = betterSimplify(di_Pi_def:subst(
-	d0_Phi_def:reindex{i='j'},
-	di_Phi_def:reindex{i='j'},
-	di_Phi_def'_,0'():symmetrizeIndexes(Phi, {1,2})
-))
+di_Pi_def = di_Pi_def:subst(
+		d0_Phi_def:reindex{i='j'},
+		di_Phi_def:reindex{i='j'},
+		di_Phi_def'_,0'():symmetrizeIndexes(Phi, {1,2})
+	):simplifyAddMulDiv()
 printbr(di_Pi_def)
 printbr('solve for', Psi'_i,0')
 local d0_Psi_def = di_Pi_def:solve(Psi'_i,0')
 printbr(d0_Psi_def)
-d0_Psi_def[2] = betterSimplify((d0_Psi_def[2] - (alpha * Pi)'_,i'())) + (alpha * Pi)'_,i'
+d0_Psi_def[2] = ((d0_Psi_def[2] - (alpha * Pi)'_,i'())):simplifyAddMulDiv() + (alpha * Pi)'_,i'
 printbr(d0_Psi_def, '(eqn. 8)')
 -- TODO this needs to be updated manually
 printbr[[$\frac{d}{dx^0} \Psi_i = (\alpha \Pi)_{,i}$]]
 printbr()
 
 printbr[[Solve $\Pi_{,0}$]]
-local d0_Pi_def = betterSimplify(Pi_def'_,0'():symmetrizeIndexes(Phi, {1,2}))
+local d0_Pi_def = Pi_def'_,0'():symmetrizeIndexes(Phi, {1,2}):simplifyAddMulDiv()
 printbr(d0_Pi_def)
 printbr('substitute', di_Phi_def, ',', d0_Phi_def)
-d0_Pi_def = betterSimplify(d0_Pi_def:subst(di_Phi_def, d0_Phi_def))
+d0_Pi_def = d0_Pi_def:subst(di_Phi_def, d0_Phi_def):simplifyAddMulDiv()
 printbr(d0_Pi_def)
 printbr('substitute', d00_Phi_def, ',', di_Phi_def, ',', di_Phi_def'_,j'())
-d0_Pi_def = betterSimplify(d0_Pi_def:subst(d00_Phi_def, di_Phi_def, di_Phi_def'_,j'()))
+d0_Pi_def = d0_Pi_def:subst(d00_Phi_def, di_Phi_def, di_Phi_def'_,j'()):simplifyAddMulDiv()
 printbr(d0_Pi_def)
 printbr('substitute', conn40U_def, ',', d0_Phi_def, ',', d0_Phi_def:reindex{i='j'}'_,i'())
 d0_Pi_def = d0_Pi_def:subst(
@@ -157,7 +143,7 @@ d0_Pi_def = d0_Pi_def:subst(
 ):replace(Psi'_j,i', Psi'_i,j')()
 d0_Pi_def = d0_Pi_def:replace( beta'^i' * alpha'_,i', beta'^m' * alpha'_,m')()
 d0_Pi_def = d0_Pi_def:reindex{m='j'}
-d0_Pi_def = betterSimplify(d0_Pi_def)
+d0_Pi_def = d0_Pi_def:simplifyAddMulDiv()
 printbr(d0_Pi_def)
 -- hmm, I need to get this to ignore indexes... otherwise it gives an error
 ---d0_Pi_def = d0_Pi_def:tidyIndexes{fixed='0'}	
@@ -166,9 +152,9 @@ printbr('substitute', conn4iU_def:reindex{m='j'})
 d0_Pi_def = d0_Pi_def:subst(conn4iU_def:reindex{m='j'})()
 -- I can't do this on all of d0_Pi_def, but only on the rhs (because it has no _,0's)
 d0_Pi_def[2] = d0_Pi_def[2]:tidyIndexes():reindex{ab='ij'}
-d0_Pi_def = betterSimplify(d0_Pi_def)
+d0_Pi_def = d0_Pi_def:simplifyAddMulDiv()
 printbr(d0_Pi_def)
-printbr([[$\frac{d}{dx^0} \Pi = $]], betterSimplify(d0_Pi_def:rhs() - Pi'_,i' * beta'^i') )
+printbr([[$\frac{d}{dx^0} \Pi = $]], (d0_Pi_def:rhs() - Pi'_,i' * beta'^i'):simplifyAddMulDiv() )
 printbr()
 
 printbr'collected:'

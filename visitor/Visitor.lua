@@ -40,6 +40,9 @@ Inherit from Visitor, instanciate that class as 'x', and x() will call Visitor:a
 
 --]]
 function Visitor:apply(expr, ...)
+--return require 'ext.timer'(self.name, function(...)	
+--local changeInNodes = {}
+
 	local debugVisitors = require 'symmath'.debugVisitors
 
 	local Verbose
@@ -63,7 +66,6 @@ function Visitor:apply(expr, ...)
 	local t = type(expr)
 	if t == 'table' then
 		local m = getmetatable(expr)
-
 		--[[
 		local rules = self:lookup(m)
 		if rules then
@@ -95,19 +97,33 @@ function Visitor:apply(expr, ...)
 		-- stop at null
 
 		-- if we found an entry then apply it
+--local rulesSrcNodeName = m.name		
+--assert(rulesSrcNodeName ~= 'Expression')
 		local rules = self:lookup(m)
 		if rules then
 			for _,rule in ipairs(rules) do
+				-- TODO why pushedRules?  why not just ... push the rules?
+				-- probably because subclasses flatten, so if you push a superclass from the table then the subclass will still have it.
+				-- TODO iterate through subclasses?  you can use 'isaKey' for this.
 				if not m.pushedRules
 				or not m.pushedRules[rule]
 				then
 					local name, func = next(rule)
+
+--local beforeCount = Expression.countNodes(expr)
+					
 					local newexpr = func(self, expr, ...)
 					if newexpr then
 						expr = newexpr
+
+--local afterCount = Expression.countNodes(expr)
+--local changeKey = (rulesSrcNodeName or '?') .. ' ' .. (self.name or '?') .. ' ' .. name
+--changeInNodes[changeKey] = (changeInNodes[changeKey] or 0) + afterCount - beforeCount
 						-- if we change content then there's no guarantee the metatable -- or the rules -- will be the same
 						-- we probably need to start again
 						m = getmetatable(expr)
+--rulesSrcNodeName = m.name		
+--assert(rulesSrcNodeName ~= 'Expression')
 						break
 					end
 				end
@@ -117,7 +133,13 @@ function Visitor:apply(expr, ...)
 	if debugVisitors then
 		print(id, 'done pruning with', Verbose(expr))
 	end
+----print('prune', require 'symmath.export.SingleLine'(x))	
+--if next(changeInNodes) then
+--	print(self.name..' size', expr:countNodes(), 'changed by', require 'ext.tolua'(changeInNodes))
+--end
+
 	return expr
+--end, ...)
 end
 
 -- wrapping this so child classes can add prefix/postfix custom code apart from the recursive case

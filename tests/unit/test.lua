@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'test')
 
+timer(nil, function()
+
 env.a = symmath.Variable('a')
 env.b = symmath.Variable('b')
 env.g = symmath.Variable('g')
@@ -105,3 +107,5 @@ asserteq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

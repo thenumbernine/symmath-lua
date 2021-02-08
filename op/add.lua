@@ -484,7 +484,7 @@ function ProdList:toExpr()
 		if Constant.isValue(x.power, 1) then
 			return x.term
 		else
-			return x.term ^ x.power:simplify()
+			return x.term ^ x.power:prune()
 		end
 	end)
 
@@ -787,7 +787,7 @@ add.rules = {
 							return Constant.isValue(x.term, -1)
 						end)
 						if index then
-							prodLists[j][index].power = (prodLists[j][index].power + 2):simplify()
+							prodLists[j][index].power = (prodLists[j][index].power + 2):prune()
 						else
 							-- insert two copies so that one can be factored out
 							-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
@@ -912,13 +912,7 @@ add.rules = {
 	},
 
 	Prune = {
-		{apply = function(prune, expr, ...)
-			local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
-			local Constant = require 'symmath.Constant'
-			local div = require 'symmath.op.div'
-			local mul = require 'symmath.op.mul'
-			local pow = require 'symmath.op.pow'
-	
+		{flatten = function(prune, expr, ...)
 --[=[ old version
 			-- flatten additions
 			-- (x + y) + z => x + y + z
@@ -958,8 +952,10 @@ add.rules = {
 				return prune:apply(setmetatable(flattenArgs, add))
 			end
 --]=]
+		end},
 
-
+		{combineConstants = function(prune, expr, ...)
+			local Constant = require 'symmath.Constant'
 -- [=[ old version
 			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
 			local cval = 0
@@ -1043,7 +1039,9 @@ add.rules = {
 				return prune:apply(setmetatable(result, add))
 			end
 --]=]
-
+		end},
+	
+		{['Array.pruneAdd'] = function(prune, expr, ...)
 
 --[=[ old version		
 			-- any overloaded subclass simplification
@@ -1108,8 +1106,11 @@ add.rules = {
 				end
 			end
 --]=] 
-
-
+		end},
+		
+		{combineMultipliedConstants = function(prune, expr, ...) 
+			local Constant = require 'symmath.Constant'
+			local mul = require 'symmath.op.mul'
 			-- [[ x * c1 + x * c2 => x * (c1 + c2) ... for constants
 			do
 				local muls = table()
@@ -1171,7 +1172,12 @@ add.rules = {
 				end
 			end
 			--]]
-
+		end},
+		
+		{flattenAddMul = function(prune, expr, ...)
+			local Constant = require 'symmath.Constant'
+			local mul = require 'symmath.op.mul'
+			
 			-- TODO shouldn't this be regardless of the outer add ?
 			-- turn any a + (b * (c + d)) => a + (b * c) + (b * d)
 			-- [[ if any two children are muls,
@@ -1251,7 +1257,11 @@ add.rules = {
 				end
 			end
 			--]]
-			
+		end},
+
+		{factorOutDivs = function(prune, expr, ...)
+			local div = require 'symmath.op.div'
+
 			--[[ factor out divs ...
 			local denom
 			local denomIndex
@@ -1277,7 +1287,7 @@ add.rules = {
 			end
 			--]]
 
-			-- [[ divs: c + a/b => (c * b + a) / b
+			--[[ divs: c + a/b => (c * b + a) / b
 			for i,x in ipairs(expr) do
 				if div.is(x) then
 					assert(#x == 2)
@@ -1291,7 +1301,7 @@ add.rules = {
 				end
 			end
 			--]]
-			--[[ divs all at once: a/b + c/d + e => (d*a + b*d + b*d*e) / (b*d)
+			-- [[ divs all at once: a/b + c/d + e => (d*a + b*d + b*d*e) / (b*d)
 			-- much faster when you remove the final prune:apply() (5s vs 60s) but doesn't seem to finish simplifying all cases 
 			local denom
 			for i,x in ipairs(expr) do
@@ -1316,14 +1326,19 @@ add.rules = {
 				--return prune:apply(expr / denom)
 			end
 			--]]
+		end},
 
+		--[=[ trigonometry identities
+		-- cos(theta)^2 + sin(theta)^2 => 1
+		-- TODO first get a working factor() function
+		-- then replace all nodes of cos^2 + sin^2 with 1
+		-- ... or of cos^2 with 1 - sin^2 and let the rest cancel out  (best to operate on one function rather than two)
+		--  (that 2nd step possibly in a separate simplifyTrig() function of its own?)
+		{apply = function(prune, expr, ...)
+			local Constant = require 'symmath.Constant'
+			local mul = require 'symmath.op.mul'
+			local pow = require 'symmath.op.pow'
 
-			--[=[ trigonometry identities
-			-- cos(theta)^2 + sin(theta)^2 => 1
-			-- TODO first get a working factor() function
-			-- then replace all nodes of cos^2 + sin^2 with 1
-			-- ... or of cos^2 with 1 - sin^2 and let the rest cancel out  (best to operate on one function rather than two)
-			--  (that 2nd step possibly in a separate simplifyTrig() function of its own?)
 			do
 				local cos = require 'symmath.cos'
 				local sin = require 'symmath.sin'
@@ -1411,8 +1426,8 @@ add.rules = {
 				end
 				--]]
 			end
-			--]=]
 		end},
+		--]=]
 	
 		-- log(a) + log(b) = log(ab)
 		{logMul = function(prune, expr)

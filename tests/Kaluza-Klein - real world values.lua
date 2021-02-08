@@ -33,19 +33,6 @@ end
 local units = require 'symmath.physics.units'()	--{valuesAsVars=true}
 
 
-local function betterSimplify(x)
-	return x():factorDivision()
-	:map(function(y)
-		if symmath.op.add.is(y) then
-			local newadd = table()
-			for i=1,#y do
-				newadd[i] = y[i]():factorDivision()
-			end
-			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
-		end
-	end)
-end
-
 function splitTermIndexes(x, splitMap)
 	local newAdd = table()
 	local forThisTerm = table{x:clone()}
@@ -318,7 +305,7 @@ local u5_for_A5_def = u'^5':eq(
 	)
 )
 printbr(u5_for_A5_def)
--- TODO I'm redefining this because betterSimplify()ing sqrts seems to make ^(1/2)'s pop up everywhere
+-- TODO I'm redefining this because :simplifyAddMulDiv()ing sqrts seems to make ^(1/2)'s pop up everywhere
 local u5_for_A5_when_u4norm_is_unit = u'^5':eq( -frac(1,A'_5') * A' _\\mu' * u' ^\\mu' )
 printbr([[Notice that if we assume $u_\mu u^\mu = -1$ then this simplifies to]], u5_for_A5_when_u4norm_is_unit)
 printbr([[However since]], origUnitVelEqn, [[, it might instead be that $u_\mu u^\mu \approx -1$]])
@@ -327,7 +314,7 @@ printbr()
 printbr'If we substitute our definition for $u^5$ then the solution of the quadratic looks like:'
 u5_for_A5_def = u5_for_A5_def:subst(u5U_def)
 printbr(u5_for_A5_def)
-u5_for_A5_def = betterSimplify(u5_for_A5_def * 4 * sqrt(frac(G, k_e))):replace(A' _\\mu'^2 * u' ^\\mu'^2, (A' _\\mu' * u' ^\\mu')^2)
+u5_for_A5_def = (u5_for_A5_def * 4 * sqrt(frac(G, k_e))):simplifyAddMulDiv():replace(A' _\\mu'^2 * u' ^\\mu'^2, (A' _\\mu' * u' ^\\mu')^2)
 printbr(u5_for_A5_def)
 printbr()
 
@@ -350,7 +337,7 @@ printbr[[So if $\dot{A}_\mu \approx -E_\mu \approx k u_\mu$ and $\dot{x}_\mu = u
 printbr[[Also, since $u_\mu u^\mu \approx -1$, we know motion in relativity is constrained by $u_\mu x^\mu = 0$.]]
 printbr[[Therefore $A_\mu u^\mu \approx 0$.]]
 printbr('So what does it look like if we invoke the gauge that', (A' _\\mu' * u' ^\\mu'):eq(0), '?')
-local tmp = betterSimplify(u5_for_A5_def:replaceIndex(A' _\\mu' * u' ^\\mu', 0))
+local tmp = u5_for_A5_def:replaceIndex(A' _\\mu' * u' ^\\mu', 0):simplifyAddMulDiv()
 printbr(tmp)
 printbr[[Now without approximations:]]
 printbr[[$J^\mu = \sigma_{\mu\nu} E^\nu$]]
@@ -362,7 +349,7 @@ printbr[[Therefore $x_\mu \sigma^{\mu\nu} A_{[\nu,\rho]} n^\rho = 0$]]
 printbr()
 
 printbr('For another detour, what if we substitute', A5_def, ',', phi_K_def, '?')
-local tmp = betterSimplify(u5_for_A5_def:subst(A5_def, phi_K_def)):replace(A' _\\mu'^2 * u' ^\\mu'^2, (A' _\\mu' * u' ^\\mu')^2)
+local tmp = u5_for_A5_def:subst(A5_def, phi_K_def):simplifyAddMulDiv():replace(A' _\\mu'^2 * u' ^\\mu'^2, (A' _\\mu' * u' ^\\mu')^2)
 printbr(tmp)
 printbr()
 

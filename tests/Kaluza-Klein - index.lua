@@ -33,19 +33,6 @@ end
 local units = require 'symmath.physics.units'()	--{valuesAsVars=true}
 
 
-local function betterSimplify(x)
-	return x():factorDivision()
-	:map(function(y)
-		if symmath.op.add.is(y) then
-			local newadd = table()
-			for i=1,#y do
-				newadd[i] = y[i]():factorDivision()
-			end
-			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
-		end
-	end)
-end
-
 function splitTermIndexes(x, splitMap)
 	local newAdd = table()
 	local forThisTerm = table{x:clone()}
@@ -405,7 +392,7 @@ local conn5U_def = (
 	* conn5L_def'_ebc':reindex{[' \\alpha'] = ' \\epsilon'}()
 )
 printbr(conn5'^a_bc':eq(conn5U_def))
-conn5U_def = betterSimplify(conn5U_def)
+conn5U_def = conn5U_def:simplifyAddMulDiv()
 printbr(conn5'^a_bc':eq(conn5U_def))
 conn5U_def = conn5U_def:replace(
 	g' ^\\alpha ^\\epsilon' * conn4' _\\epsilon _\\beta _\\gamma',
@@ -442,7 +429,7 @@ if not constantScalarField then
 		phi_K' ^,\\alpha'
 	)()
 end
-conn5U_def = betterSimplify(conn5U_def)
+conn5U_def = conn5U_def:simplifyAddMulDiv()
 printbr(conn5'^a_bc':eq(conn5U_def))
 printbr()
 
@@ -464,39 +451,39 @@ printbr'only look at spacetime components:'
 local spacetimeGeodesic_def
 --spacetimeGeodesic_def = geodesic5_def:reindex{a = ' \\alpha'}
 --spacetimeGeodesic_def = splitIndexes(spacetimeGeodesic_def, {b = {0, ' \\beta'}, c = {0, ' \\gamma'}})
-spacetimeGeodesic_def = betterSimplify(du_ds' ^\\alpha':eq(
+spacetimeGeodesic_def = du_ds' ^\\alpha':eq(
 	- conn5' ^\\alpha _\\beta _\\gamma' * u' ^\\beta' * u' ^\\gamma'
 	- 2 * conn5' ^\\alpha _\\beta _5' * u' ^\\beta' * u'^5'
 	- conn5' ^\\alpha _5 _5' * u'^5' * u'^5'
-))
+):simplifyAddMulDiv()
 printbr(spacetimeGeodesic_def)
 
-spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _\\beta _\\gamma',
 	conn5U_def[1][1][1]
-))
-spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
+):simplifyAddMulDiv()
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _\\beta _5',
 	conn5U_def[1][1][2]
-))
-spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
+):simplifyAddMulDiv()
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _5 _\\gamma',
 	conn5U_def[1][2][1]
-))
-spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
+):simplifyAddMulDiv()
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	conn5' ^\\alpha _5 _5',
 	conn5U_def[1][2][2]
-))
-spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
+):simplifyAddMulDiv()
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	(phi_K^2 * A' _\\gamma' * u' ^\\beta' * u' ^\\gamma' * F' _\\beta ^\\alpha')(),
 	phi_K^2 * A' _\\beta' * u' ^\\beta' * u' ^\\gamma' * F' _\\gamma ^\\alpha'
-))
+):simplifyAddMulDiv()
 printbr(spacetimeGeodesic_def)
 
-spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:replace(
+spacetimeGeodesic_def = spacetimeGeodesic_def:replace(
 	phi_K' _,\\mu' * g' ^\\alpha ^\\mu',
 	phi_K' ^,\\alpha'
-))
+):simplifyAddMulDiv()
 printbr(spacetimeGeodesic_def)
 
 
@@ -506,7 +493,7 @@ if constantScalarField then
 end
 printbr('Substitute', substitutions:mapi(tostring):concat', ')
 
-spacetimeGeodesic_def = betterSimplify(spacetimeGeodesic_def:subst(substitutions:unpack()))
+spacetimeGeodesic_def = spacetimeGeodesic_def:subst(substitutions:unpack()):simplifyAddMulDiv()
 printbr(spacetimeGeodesic_def)
 printbr()
 printbr'There you have gravitational force, Lorentz force, and an extra term.'
@@ -523,13 +510,13 @@ printbr(spatialGeodesic_def)
 printbr[[Notice, if we assume $A_\mu u^\mu = 0$ then we are left only with terms for gravitational acceleration the and Lorentz force.]]
 printbr'Splitting spacetime indexes into space+time'
 spatialGeodesic_def = splitIndexes(spatialGeodesic_def, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
-spatialGeodesic_def = betterSimplify(spatialGeodesic_def * c^2)	-- multiply by c^2 <=> convert units of rhs to m/s^2 
+spatialGeodesic_def = (spatialGeodesic_def * c^2):simplifyAddMulDiv()	-- multiply by c^2 <=> convert units of rhs to m/s^2 
 printbr(spatialGeodesic_def)
 
 -- TODO just use a Lorentz factor and don't approximate anything
 -- same with the Faraday tensor substitutions ... just use an ADM metric breakdown
 printbr('Low-velocity approximation:', u'^0':eq(1))
-spatialGeodesic_def = betterSimplify(spatialGeodesic_def:replace(u'^0', 1))
+spatialGeodesic_def = spatialGeodesic_def:replace(u'^0', 1):simplifyAddMulDiv()
 printbr(spatialGeodesic_def)
 
 printbr('Assume spacetime connection is only', conn4'^i_00')
@@ -557,18 +544,18 @@ spatialGeodesic_def = spatialGeodesic_def:subst(
 	(B'_l' * epsilon'_j^il'):eq(-B'^k' * epsilon'^i_jk')
 )
 
-spatialGeodesic_def = betterSimplify(spatialGeodesic_def)
+spatialGeodesic_def = spatialGeodesic_def:simplifyAddMulDiv()
 printbr(spatialGeodesic_def)
 
 local phi_q = var('\\phi_q')
 printbr('Substitute', A'_0':eq(frac(1,c) * phi_q), 'is the electric field potential')
-spatialGeodesic_def = betterSimplify(spatialGeodesic_def:replace(A'_0', frac(1,c) * phi_q))
+spatialGeodesic_def = spatialGeodesic_def:replace(A'_0', frac(1,c) * phi_q):simplifyAddMulDiv()
 printbr(spatialGeodesic_def)
 local r = var'r'
 local mass2 = var'M_2'
 local Newton_gravity_conn_def = conn4'^i_00':eq( frac(G * mass2 * var'x''^i', c^2 * r^3 ))
 printbr('Assume', Newton_gravity_conn_def)
-spatialGeodesic_def = betterSimplify(spatialGeodesic_def:subst(Newton_gravity_conn_def))
+spatialGeodesic_def = spatialGeodesic_def:subst(Newton_gravity_conn_def):simplifyAddMulDiv()
 printbr(spatialGeodesic_def)
 -- u = v/c <-> v = c u
 -- du/ds = 1/c^2 dv/dt <-> dv/dt = c^2 du/ds
@@ -577,12 +564,12 @@ local v = var('v', {t})
 local u_from_v = u'^i':eq(frac(1,c) * v'^i')
 local du_ds_from_dv_dt = du_ds'^i':eq(frac(1,c^2) * diff(v'^i', t))
 printbr('Let', u_from_v, ',', du_ds_from_dv_dt)
-spatialGeodesic_def = betterSimplify(spatialGeodesic_def:subst(
+spatialGeodesic_def = spatialGeodesic_def:subst(
 	u_from_v,
 	u_from_v:reindex{i='j'},
 	u_from_v:reindex{i='k'},
 	du_ds_from_dv_dt
-))
+):simplifyAddMulDiv()
 printbr(spatialGeodesic_def)
 -- TODO real-world values ... 
 -- *) what is the force produced on an electron in the magnetic field around the wire given above?
@@ -611,7 +598,7 @@ symmath.simplifyConstantPowers = true
 if symmath.op.add.is(spatialGeodesic_def:rhs()) then
 	printbr[[...and looking at each term:]]
 	for _,term in ipairs(spatialGeodesic_def:rhs()) do
-		local realWorldValue = betterSimplify(term:subst(substitutions:unpack()))
+		local realWorldValue = term:subst(substitutions:unpack()):simplifyAddMulDiv()
 		printbr(term:eq(realWorldValue))
 	end
 end
@@ -640,7 +627,7 @@ timeGeodesic_def = timeGeodesic_def
 	:subst(EL_from_F:reindex{i='k'})
 
 printbr('Substitute', A'_0':eq(frac(1,c) * phi_q), 'is the electric field potential')
-timeGeodesic_def = betterSimplify(timeGeodesic_def:replace(A'_0', frac(1,c) * phi_q))
+timeGeodesic_def = timeGeodesic_def:replace(A'_0', frac(1,c) * phi_q):simplifyAddMulDiv()
 printbr(timeGeodesic_def)
 printbr()
 
@@ -658,11 +645,11 @@ _5thGeodesic_def = du_ds'^5':eq(
 	-conn5'^5_55' * (u'^5')^2
 )
 printbr(_5thGeodesic_def)
-_5thGeodesic_def = betterSimplify(_5thGeodesic_def
+_5thGeodesic_def = _5thGeodesic_def
 	:replace(conn5' ^5 _\\beta _\\gamma', conn5U_def[2][1][1])
 	:replace(conn5' ^5 _5 _\\beta', conn5U_def[2][1][2])
 	:replace(conn5' ^5 _5 _5', conn5U_def[2][2][2])
-)
+	:simplifyAddMulDiv()
 printbr(_5thGeodesic_def)
 printbr('Substitute', A5_def)
 _5thGeodesic_def = _5thGeodesic_def:subst(A5_def)
@@ -672,17 +659,17 @@ if constantScalarField then
 	_5thGeodesic_def = _5thGeodesic_def:subst(phi_K_def)
 	printbr(_5thGeodesic_def)
 end
-_5thGeodesic_def = betterSimplify(_5thGeodesic_def)
+_5thGeodesic_def = _5thGeodesic_def:simplifyAddMulDiv()
 printbr(_5thGeodesic_def)
 
 
 --[[ A_5 doesn't seem to appear anywhere
-_5thGeodesic_def = betterSimplify(_5thGeodesic_def:subst(A5_def))
+_5thGeodesic_def = _5thGeodesic_def:subst(A5_def):simplifyAddMulDiv()
 printbr(_5thGeodesic_def)
 --]]
 
 --[[
-_5thGeodesic_def = betterSimplify(_5thGeodesic_def
+_5thGeodesic_def = _5thGeodesic_def
 	:replace(
 		u' ^\\beta' * A' _\\beta' * u' ^\\gamma' * F' _\\gamma ^\\mu' * A' _\\mu',
 		u' ^\\gamma' * A' _\\gamma' * u' ^\\beta' * F' _\\beta^\\mu' * A' _\\mu'
@@ -691,10 +678,10 @@ _5thGeodesic_def = betterSimplify(_5thGeodesic_def
 		u' ^\\beta' * F' _\\beta ^\\mu' * A' _\\mu',
 		u' ^\\beta' * A' ^\\gamma' * (A' _\\gamma _,\\beta' - A' _\\beta _,\\gamma')
 	)
-)
+	:simplifyAddMulDiv()
 --]]
 -- [[
-_5thGeodesic_def[2] = betterSimplify(_5thGeodesic_def[2]
+_5thGeodesic_def[2] = (_5thGeodesic_def[2]
 	- 2 * (G/(k_e*c^2))^frac(3,2) * u' ^\\beta' * A' _\\mu' * A' _\\beta' * u' ^\\gamma' * F' _\\gamma ^\\mu'
 	+ 2 * (G/(k_e*c^2))^frac(3,2) * u' ^\\mu' * A' _\\mu' * u' ^\\beta' * A' ^\\gamma' * (A' _\\gamma _,\\beta' - A' _\\beta _,\\gamma')
 
@@ -703,11 +690,11 @@ _5thGeodesic_def[2] = betterSimplify(_5thGeodesic_def[2]
 
 	- 4 * (G/(k_e*c^2)) * u' ^\\beta' * u'^5' * A' _\\mu' * F' _\\beta ^\\mu'
 	+ 4 * (G/(k_e*c^2)) * u' ^\\beta' * u'^5' * A' ^\\gamma' * (A' _\\gamma _,\\beta' - A' _\\beta _,\\gamma')
-)
+):simplifyAddMulDiv()
 --]]
 printbr(_5thGeodesic_def)
 
-_5thGeodesic_def = betterSimplify(_5thGeodesic_def:subst(u5U_def))
+_5thGeodesic_def = _5thGeodesic_def:subst(u5U_def):simplifyAddMulDiv()
 printbr(_5thGeodesic_def)
 
 printbr()
@@ -724,7 +711,7 @@ local dconn5_2x2x2_def = Tensor('^a_bc', function(a,b,c)
 	x = x:map(function(x)
 		if TensorRef.is(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
 	end)
-	return betterSimplify(x)
+	return x:simplifyAddMulDiv()
 end)
 printbr(conn5'^a_bc,d':eq(dconn5_2x2x2_def))
 
@@ -737,7 +724,7 @@ local dconn5U_def = Tensor('^a_bcd', function(a,b,c,d)
 end):map(function(x)
 	if TensorRef.is(x) and x:hasDerivIndex(5) then return 0 end
 end)()
-dconn5U_def = betterSimplify(dconn5U_def)
+dconn5U_def = dconn5U_def:simplifyAddMulDiv()
 printbr(conn5'^a_bc,d':eq(dconn5U_def))
 printbr()
 
@@ -751,7 +738,7 @@ if not constantScalarField then
 	-- this is to cancel a pair of terms in conn5USq^5_555
 	conn5USq_def = conn5USq_def:replaceIndex(A' _\\epsilon' * phi_K' ^,\\epsilon', A' ^\\nu' * phi_K' _,\\nu')()
 end
-conn5USq_def = betterSimplify(conn5USq_def)
+conn5USq_def = conn5USq_def:simplifyAddMulDiv()
 printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_def))
 printbr()
 
@@ -818,7 +805,7 @@ if not constantScalarField then
 end
 
 Riemann5_def = Riemann5_def:symmetrizeIndexes(conn4, {2,3})()
-Riemann5_def = betterSimplify(Riemann5_def)
+Riemann5_def = Riemann5_def:simplifyAddMulDiv()
 printbr(R5'^a_bcd':eq(Riemann5_def))
 printbr()
 
@@ -885,13 +872,13 @@ Riemann5_def = (Riemann5_def
 
 )()
 Riemann5_def = Riemann5_def:symmetrizeIndexes(conn4, {2,3})()
-Riemann5_def = betterSimplify(Riemann5_def)
+Riemann5_def = Riemann5_def:simplifyAddMulDiv()
 
 -- TODO honestly I should be doing this much earlier
 -- TODO fixed=gamma isn't being respected ... tidy is replacing R^alpha_beta_5_delta's zeta index with a gamma index
 Riemann5_def = Riemann5_def:tidyIndexes{fixed=' \\alpha \\beta \\gamma \\delta'}
 
-Riemann5_def = betterSimplify(Riemann5_def)
+Riemann5_def = Riemann5_def:simplifyAddMulDiv()
 printbr(R5'^a_bcd':eq(Riemann5_def))
 printbr()
 
@@ -910,10 +897,10 @@ Ricci5_def = Ricci5_def:replace(F' _\\sigma ^\\sigma', 0)()
 Ricci5_def = Ricci5_def:replace(F' _\\gamma ^\\gamma _;\\beta', 0)()
 Ricci5_def = Ricci5_def:replace(F' _\\sigma ^\\sigma _;\\beta', 0)()
 
-Ricci5_def = betterSimplify(Ricci5_def:symmetrizeIndexes(conn4, {2,3}))
+Ricci5_def = Ricci5_def:symmetrizeIndexes(conn4, {2,3}):simplifyAddMulDiv()
 Ricci5_def = Ricci5_def:symmetrizeIndexes(g, {1,2})()
 printbr(R5'_ab':eq(Ricci5_def))
-Ricci5_def = betterSimplify(Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'})
+Ricci5_def = Ricci5_def:tidyIndexes{fixed=' \\alpha \\beta'}:simplifyAddMulDiv()
 Ricci5_def = Ricci5_def
 	:replace(F' _\\gamma _\\beta' * F' _\\alpha ^\\gamma', -F' _\\beta _\\gamma' * F'_\\alpha ^\\gamma')
 	:replace(F' _\\gamma _\\alpha' * F' _\\beta ^\\gamma', -F' _\\alpha ^\\gamma' * F'_\\beta _\\gamma')
@@ -922,7 +909,7 @@ Ricci5_def = Ricci5_def:replace(
 	A' _\\delta' * A' _\\gamma' * F' _\\alpha ^\\delta' * F' _\\beta ^\\gamma',
 	A' _\\delta' * A' _\\gamma' * F' _\\alpha ^\\gamma' * F' _\\beta ^\\delta')
 printbr(R5'_ab':eq(Ricci5_def))
-Ricci5_def = betterSimplify(Ricci5_def)
+Ricci5_def = Ricci5_def:simplifyAddMulDiv()
 printbr(R5'_ab':eq(Ricci5_def))
 if not constantScalarField then
 	Ricci5_def = Ricci5_def
@@ -935,7 +922,7 @@ if not constantScalarField then
 		:replace(phi_K' _,\\alpha _,\\beta', phi_K' _;\\alpha _;\\beta' + phi_K' _,\\gamma' * conn4' ^\\gamma _\\alpha _\\beta')
 		:replace(A' _\\gamma' * phi_K' ^,\\gamma', A' ^\\gamma' * phi_K' _,\\gamma')
 	
-	Ricci5_def = betterSimplify(Ricci5_def)
+	Ricci5_def = Ricci5_def:simplifyAddMulDiv()
 	printbr(R5'_ab':eq(Ricci5_def))
 end
 printbr()
@@ -944,7 +931,7 @@ printbr'Gaussian curvature:'
 
 local Gaussian5_def = (Ricci5_def'_ab' * g5U_def'^ab')()
 Gaussian5_def = Gaussian5_def:replace(R' _\\alpha _\\beta' * g' ^\\alpha ^\\beta', R)()
-Gaussian5_def = betterSimplify(Gaussian5_def:tidyIndexes()():symmetrizeIndexes(g, {1,2}))
+Gaussian5_def = Gaussian5_def:tidyIndexes()():symmetrizeIndexes(g, {1,2}):simplifyAddMulDiv()
 printbr(R5:eq(Gaussian5_def))
 
 Gaussian5_def = Gaussian5_def:replaceIndex( (A' _\\alpha' * g' ^\\alpha ^\\beta')(), A' ^\\beta' )()
@@ -958,7 +945,7 @@ printbr(R5:eq(Gaussian5_def))
 
 --Gaussian5_def = Gaussian5_def:reindex{[' \\alpha \\beta'] = ' \\mu \\nu'}      -- don't use alpha beta gamma delta, or anything already used in Ricci5_def ... in fact, add in an extra property for fixed indexes
 Gaussian5_def = Gaussian5_def:reindex{[' \\alpha \\beta \\gamma \\delta'] = ' \\mu \\nu \\rho \\sigma'}	-- don't use alpha beta gamma delta, or anything already used in Ricci5_def ... in fact, add in an extra property for fixed indexes
-Gaussian5_def = betterSimplify(Gaussian5_def)
+Gaussian5_def = Gaussian5_def:simplifyAddMulDiv()
 printbr(R5:eq(Gaussian5_def))
 
 printbr()
@@ -968,20 +955,20 @@ printbr'Einstein curvature:'
 local G5 = var'\\tilde{G}'
 local Einstein5_def = (Ricci5_def'_ab' - frac(1,2) * Gaussian5_def * g5_def'_ab')()
 Einstein5_def = Einstein5_def:tidyIndexes{fixed=' \\alpha \\beta'}()
-Einstein5_def = betterSimplify(Einstein5_def
+Einstein5_def = Einstein5_def
 	:replace( F' _\\beta ^\\epsilon' * F' _\\epsilon _\\alpha',  -F' _\\beta _\\epsilon' * F' _\\alpha ^\\epsilon' )
 	:replace( F' _\\epsilon _\\beta', -F' _\\beta _\\epsilon')
-)
+	:simplifyAddMulDiv()
 if not constantScalarField then
 	Einstein5_def = Einstein5_def:replace(g' ^\\epsilon ^\\zeta' * phi_K' _;\\epsilon _;\\zeta', phi_K' _;\\epsilon ^;\\epsilon')
 	Einstein5_def = Einstein5_def:replace(A' _\\epsilon' * g' ^\\epsilon ^\\eta', A' ^\\eta')
-	Einstein5_def = betterSimplify(Einstein5_def)
+	Einstein5_def = Einstein5_def:simplifyAddMulDiv()
 	Einstein5_def = Einstein5_def:tidyIndexes{fixed=' \\alpha \\beta'}()
-	Einstein5_def = betterSimplify(Einstein5_def)
+	Einstein5_def = Einstein5_def:simplifyAddMulDiv()
 	Einstein5_def = Einstein5_def:replace(A' _\\gamma' * g' ^\\theta ^\\gamma', A' ^\\theta')
-	Einstein5_def = betterSimplify(Einstein5_def)
+	Einstein5_def = Einstein5_def:simplifyAddMulDiv()
 	Einstein5_def = Einstein5_def:tidyIndexes{fixed=' \\alpha \\beta'}()
-	Einstein5_def = betterSimplify(Einstein5_def)
+	Einstein5_def = Einstein5_def:simplifyAddMulDiv()
 end
 printbr(G5'_ab':eq(Einstein5_def))
 printbr()
@@ -1001,7 +988,7 @@ local T5_def = Tensor('_ab',
 )
 
 printbr[[$\tilde{G}_{ab} = \frac{8 \pi G}{c^4} T_{ab}$]]
-local EFE5_def = betterSimplify(Einstein5_def:eq(frac(8 * pi * G, c^4) * T5_def))
+local EFE5_def = (Einstein5_def:eq(frac(8 * pi * G, c^4) * T5_def)):simplifyAddMulDiv()
 printbr(EFE5_def)
 printbr()
 
@@ -1013,10 +1000,10 @@ printbr'Looking at the $\\tilde{G}_{55}$ components:'
 local EFE5_55_def = EFE5_def:lhs()[2][2]:eq( EFE5_def:rhs()[2][2] )
 printbr(EFE5_55_def)
 printbr'Isolating the $\\tilde{T}_{55}$ stress-energy term:'
-local T5_55_def_from_EFE5_55 = betterSimplify(EFE5_55_def:solve(T5'_55'))
+local T5_55_def_from_EFE5_55 = EFE5_55_def:solve(T5'_55'):simplifyAddMulDiv()
 printbr(T5_55_def_from_EFE5_55)
 printbr'Isolating the spacetime scalar curvature R:'
-local R_from_EFE5 = betterSimplify(EFE5_55_def:solve(R))
+local R_from_EFE5 = EFE5_55_def:solve(R):simplifyAddMulDiv()
 printbr(R_from_EFE5)
 
 printbr[[Look at it with our substituted values:]]
@@ -1026,7 +1013,7 @@ if constantScalarField then
 end
 substitutions:insert(k_e_in_mu_0)
 printbr('Substitute', substitutions:mapi(tostring):concat', ')
-local R_from_EFE5_wrt_mu0 = betterSimplify(R_from_EFE5:subst(substitutions:unpack()))
+local R_from_EFE5_wrt_mu0 = R_from_EFE5:subst(substitutions:unpack()):simplifyAddMulDiv()
 printbr(R_from_EFE5_wrt_mu0)
 printbr[[It looks like $\tilde{T}_{55}$ provides the scalar curvature information ... with the exception of that extra term]]
 printbr'What is the magnitude of that extra term?'
@@ -1037,7 +1024,7 @@ printbr'What is the magnitude of that extra term?'
 local lastCoeff = frac(3,4) * frac(G, k_e * c^2)
 symmath.simplifyConstantPowers = true
 printbr(lastCoeff:eq(
-	betterSimplify(lastCoeff:subst(units.k_e_in_SI_and_C, units.G_in_SI, units.c_in_m_s))
+	lastCoeff:subst(units.k_e_in_SI_and_C, units.G_in_SI, units.c_in_m_s):simplifyAddMulDiv()
 ))
 symmath.simplifyConstantPowers = false
 --]]
@@ -1049,17 +1036,17 @@ printbr'Looking at the $\\tilde{G}_{5\\mu}$ components:'
 local EFE5_5_mu_def = EFE5_def:lhs()[1][2]:eq( EFE5_def:rhs()[1][2] )
 printbr(EFE5_5_mu_def)
 printbr'Isolating the Faraday tensor divergence:'
-local divF_from_EFE5_5_mu = betterSimplify(EFE5_5_mu_def:solve(F' _\\alpha ^\\gamma _;\\gamma '))
+local divF_from_EFE5_5_mu = EFE5_5_mu_def:solve(F' _\\alpha ^\\gamma _;\\gamma '):simplifyAddMulDiv()
 printbr(divF_from_EFE5_5_mu)
 printbr('Substitute', R_from_EFE5)
 
 -- within divF_from_EFE5_5_mu, R is multiplied by A_alpha ... but R's def holds alphas as sum indexes ...
 -- so this will introduce duplicate sums ...
---divF_from_EFE5_5_mu = betterSimplify(divF_from_EFE5_5_mu:subst(R_from_EFE5))
+--divF_from_EFE5_5_mu = divF_from_EFE5_5_mu:subst(R_from_EFE5):simplifyAddMulDiv()
 -- so either (A) reindex R_from_EFE5 manually ... 
---divF_from_EFE5_5_mu = betterSimplify(divF_from_EFE5_5_mu:subst(R_from_EFE5:reindex{[' \\alpha \\beta \\gamma'] = ' \\mu \\nu \\rho'}))
+--divF_from_EFE5_5_mu = divF_from_EFE5_5_mu:subst(R_from_EFE5:reindex{[' \\alpha \\beta \\gamma'] = ' \\mu \\nu \\rho'}):simplifyAddMulDiv()
 -- or (B) try to rely on substIndex ... (which has problem?)
-divF_from_EFE5_5_mu = betterSimplify(divF_from_EFE5_5_mu:substIndex(R_from_EFE5))
+divF_from_EFE5_5_mu = divF_from_EFE5_5_mu:substIndex(R_from_EFE5):simplifyAddMulDiv()
 
 printbr(divF_from_EFE5_5_mu)
 
@@ -1082,16 +1069,16 @@ printbr()
 printbr'Now to take a detour and write the stress-energy in terms of the four-current to see the Gauss-Ampere laws emerge:'
 printbr'Bring back the scalar curvature term R from $\\tilde{T}_{55}$ and rewrite $\\tilde{T}_{5\\alpha}$ in terms of five-momentum:'
 printbr('Substitute', substitutions:mapi(tostring):concat', ')
-local divF_from_EFE5_5_mu_J = betterSimplify(divF_from_EFE5_5_mu:subst(substitutions:unpack()))
+local divF_from_EFE5_5_mu_J = divF_from_EFE5_5_mu:subst(substitutions:unpack()):simplifyAddMulDiv()
 printbr(divF_from_EFE5_5_mu_J)
 local J = var'J'
 local fourCurrentDef = J' _\\alpha':eq( c * frac(q,mass) * rho * u' _\\alpha' )
 printbr('Define our four-current as', fourCurrentDef)
-divF_from_EFE5_5_mu_J = betterSimplify(divF_from_EFE5_5_mu_J:lhs():eq(divF_from_EFE5_5_mu_J:rhs() - mu_0 * fourCurrentDef:rhs() + mu_0 * fourCurrentDef:lhs()))
+divF_from_EFE5_5_mu_J = (divF_from_EFE5_5_mu_J:lhs():eq(divF_from_EFE5_5_mu_J:rhs() - mu_0 * fourCurrentDef:rhs() + mu_0 * fourCurrentDef:lhs())):simplifyAddMulDiv()
 printbr(divF_from_EFE5_5_mu_J)
 printbr'Move all but current to the left side:'
 -- move all except mu_0 J to the other side
-divF_from_EFE5_5_mu_J = betterSimplify( -divF_from_EFE5_5_mu_J + divF_from_EFE5_5_mu_J:lhs() + mu_0 * J' _\\alpha' ):switch()
+divF_from_EFE5_5_mu_J = ( -divF_from_EFE5_5_mu_J + divF_from_EFE5_5_mu_J:lhs() + mu_0 * J' _\\alpha' ):simplifyAddMulDiv():switch()
 printbr(divF_from_EFE5_5_mu_J)
 if constantScalarField then
 	printbr'Rewriting the right hand side as an operator'
@@ -1126,19 +1113,19 @@ printbr(EFE5_mu_nu_def)
 printbr'Isolating the spacetime Einstein tensor.'
 EFE5_mu_nu_def = EFE5_mu_nu_def - EFE5_mu_nu_def[1] + R' _\\alpha _\\beta' - frac(1,2) * R * g' _\\alpha _\\beta'
 EFE5_mu_nu_def = EFE5_mu_nu_def:replace(R' _\\alpha _\\beta', G' _\\alpha _\\beta' + frac(1,2) * R * g' _\\alpha _\\beta')
-EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def)
+EFE5_mu_nu_def = EFE5_mu_nu_def:simplifyAddMulDiv()
 printbr(EFE5_mu_nu_def)
 local tmp = R_from_EFE5:reindex{[' \\alpha \\beta \\gamma'] = ' \\mu \\nu \\rho'}
 printbr('Substitute', tmp, ',', A5_def)
 -- does substindex induce errors here?
---EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:substIndex(tmp, A5_def))
-EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:subst(tmp, A5_def):tidyIndexes{fixed=' \\alpha \\beta'})
+--EFE5_mu_nu_def = EFE5_mu_nu_def:substIndex(tmp, A5_def):simplifyAddMulDiv()
+EFE5_mu_nu_def = EFE5_mu_nu_def:subst(tmp, A5_def):tidyIndexes{fixed=' \\alpha \\beta'}:simplifyAddMulDiv()
 printbr(EFE5_mu_nu_def)
 printbr'Notice that substituting R conveniently cancelled another of the terms on the r.h.s,'
 if constantScalarField then
 	local substitutions = table{phi_K_def, k_e_in_mu_0}
 	printbr('Substitute', substitutions:mapi(tostring):concat', ')
-	EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:subst(substitutions:unpack()))
+	EFE5_mu_nu_def = EFE5_mu_nu_def:subst(substitutions:unpack()):simplifyAddMulDiv()
 	printbr(EFE5_mu_nu_def)
 end
 local T_EM = var'T_{EM}'
@@ -1148,31 +1135,31 @@ local so = tmp:solve(F' _\\alpha ^\\mu' * F' _\\mu _\\beta')
 printbr('So', so)
 -- T_EM_ab = 1/mu0 (F_au F_b^u - 1/4 g_ab F_uv F^uv)
 -- so F_ae F_b^e = mu0 T_EM_ab + 1/4 g_ab F_uv F^uv 
-EFE5_mu_nu_def = betterSimplify(EFE5_mu_nu_def:replace(
+EFE5_mu_nu_def = EFE5_mu_nu_def:replace(
 	F' _\\alpha ^\\gamma' * F' _\\beta _\\gamma', -so[2]:reindex{[' \\alpha \\mu _\\beta'] = ' \\alpha \\gamma \\beta'}
-):tidyIndexes{fixed=' \\alpha \\beta'})
+):tidyIndexes{fixed=' \\alpha \\beta'}:simplifyAddMulDiv()
 printbr(EFE5_mu_nu_def)
 -- can't just say "replace R" because it will substitute the indexed R's ... 
 -- but I'll replace the R_αβ - 1/2 R g_αβ with G_αβ
 printbr('Substitute', divF_from_EFE5_5_mu)
-local EFE5_mu_nu_def_A = betterSimplify(EFE5_mu_nu_def:subst(
+local EFE5_mu_nu_def_A = EFE5_mu_nu_def:subst(
 	divF_from_EFE5_5_mu,
 	divF_from_EFE5_5_mu:reindex{[' \\alpha'] = ' \\beta'},
 	A5_def,
 	phi_K_def,
 	k_e_in_mu_0
-))
+):simplifyAddMulDiv()
 printbr(EFE5_mu_nu_def_A)
 printbr'Alternatively, substitute our specific stress-energy and four-current definitions:'
 local divF_from_EFE5_5_mu_J = divF_from_EFE5_5_mu_J:solve(F' _\\alpha ^\\gamma _;\\gamma')
-local EFE5_mu_nu_def_B = betterSimplify(EFE5_mu_nu_def:subst(
+local EFE5_mu_nu_def_B = EFE5_mu_nu_def:subst(
 	divF_from_EFE5_5_mu_J,
 	divF_from_EFE5_5_mu_J:reindex{[' \\alpha'] = ' \\beta'},
 	R_from_EFE5:reindex{[' \\alpha \\beta \\gamma'] = ' \\mu \\nu \\rho'},
 	A5_def,
 	phi_K_def,
 	k_e_in_mu_0
-):tidyIndexes{fixed=' \\alpha \\beta'})
+):tidyIndexes{fixed=' \\alpha \\beta'}:simplifyAddMulDiv()
 printbr(EFE5_mu_nu_def_B)
 printbr()
 
@@ -1219,7 +1206,7 @@ T5_def = T5_def
 if constantScalarField then
 	T5_def = T5_def:subst(phi_K_def)
 end
-T5_def = betterSimplify(T5_def)
+T5_def = T5_def:simplifyAddMulDiv()
 printbr(T5'_ab':eq(T5_def))
 printbr()
 

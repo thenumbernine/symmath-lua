@@ -14,6 +14,13 @@ MathJax.header.title = 'BSSN formalism - code generation'
 print(MathJax.header)
 
 
+-- [=[ these are going slow
+local mul = symmath.op.mul
+mul.pushedRules = {[mul.rules.Expand[1]] = true}
+require 'symmath.simplify'.useTrigSimplify = false
+--]=]
+
+
 local eqns = assert(loadfile'BSSN - index - cache.lua')()
 
 local xs = table{'x','y','z'}	-- names of the fields in the internal real3 type in the simulation code
@@ -293,15 +300,18 @@ timer('simplifying', function()
 		if symmath.op.add.is(eqn[2]) then
 			for i=1,#eqn[2] do
 timer('simplifying term '..i, function()
-				eqn[2][i] = eqn[2][i]()
+printbr('simplifying term '..i)
+printbr('from', eqn[2][i])
+				eqn[2][i] = eqn[2][i]:simplifyAddMulDiv()
+printbr('to', eqn[2][i])
 end)			
 			end
 -- this is the worst wrt performance
 timer('simplifying addition of terms', function()
-			eqn[2] = eqn[2]()
+			eqn[2] = eqn[2]:simplifyAddMulDiv()
 end)
 		else
-			eqn[2] = eqn[2]()
+			eqn[2] = eqn[2]:simplifyAddMulDiv()
 		end
 		--]]
 end)

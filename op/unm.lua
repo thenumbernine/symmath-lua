@@ -4,6 +4,7 @@ local Expression = require 'symmath.Expression'
 
 local unm = class(Expression)
 unm.precedence = 3	--4	--make it match mul and div so there aren't extra parenthesis around mul and div
+unm.name = 'unm'	-- hmm, same name as sub ... is that a problem?
 
 function unm:evaluateDerivative(deriv, ...)
 	local x = unpack(self):clone()

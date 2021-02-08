@@ -368,6 +368,15 @@ function Expression:substIndex(...)
 	return result
 end
 
+-- return the # of nodes in this tree, including this node
+function Expression:countNodes()
+	local count = 1
+	for i,x in ipairs(self) do
+		if x.countNodes then count = count + x:countNodes() end
+	end
+	return count
+end
+
 --[[
 this is like replace()
 except for TensorRefs it pattern matches indexes
@@ -993,10 +1002,14 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 	end)
 end
 
--- TODO make this a standard somewhere
-local function betterSimplify(x)
+--[[
+right now symmath.simplify() puts in the order of div -> mul -> add
+this puts things in the order of add -> mul -> div
+it does so very poorly, using both simplify() and factorDivision() (which is probably improperly named)
+--]]
+function Expression:simplifyAddMulDiv()
 	local symmath = require 'symmath'
-	return x():factorDivision()
+	return self():factorDivision()
 	:map(function(y)
 		if symmath.op.add.is(y) then
 			local newadd = table()
@@ -1073,7 +1086,7 @@ function Expression:simplifyMetrics(rules)
 		rules = table(rules)
 	end
 
-	expr = betterSimplify(expr)	-- put it in add-mul-div order
+	expr = expr:simplifyAddMulDiv()	-- put it in add-mul-div order
 	expr = expr:clone()
 	local function checkMul(expr)
 		if not mul.is(expr) then return expr end
@@ -1430,8 +1443,7 @@ function Expression:treeSize()
 	return n
 end
 
--- candidates:
--- betterSimplify in 'BSSN - index'
+-- candidates to add here:
 -- insertMetricsToSetVariance in 'BSSN - index'
 
 return Expression

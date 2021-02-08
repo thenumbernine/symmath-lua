@@ -5,21 +5,6 @@ if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Acoustic Black Hole', usePartialLHSForDerivative=true}}
 
 
-local function betterSimplify(x)
-	return x():factorDivision()
-	:map(function(y)
-		if symmath.op.add.is(y) then
-			local newadd = table()
-			for i=1,#y do
-				newadd[i] = y[i]():factorDivision()
-			end
-			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
-		end
-	end)
-end
-
-
-
 Tensor.coords{
 	{variables={'0', 'xyz'}},
 }
@@ -87,7 +72,7 @@ printbr(conn4_0_U_def)
 local conn4_i_U_def = conn4'^i':eq(conn3'^i' + frac(1, alpha^3) * beta'^i' * (alpha'_,0' - beta'^k' * alpha'_,k' + alpha^2 * K) - frac(1, alpha^2) * (beta'^i_,0' - beta'^k' * beta'^i_,k' + alpha * alpha'_,j' * gamma'^ij'))
 printbr(conn4_i_U_def)
 partial00_Phi_def = partial00_Phi_def:subst(conn4_0_U_def, conn4_i_U_def )
-partial00_Phi_def = betterSimplify(partial00_Phi_def)
+partial00_Phi_def = partial00_Phi_def:simplifyAddMulDiv()
 printbr(partial00_Phi_def)
 printbr()
 
@@ -158,7 +143,7 @@ printbr(ab1_conn4tijLLL_def)
 local ab1_conn4tijLLL_def = conn4'_0ij':eq( frac(1,2) * (ab1_gLL[2][1]'_,j' + ab1_gLL[1][2]'_,i' - ab1_gLL[2][2]'_,0'))
 printbr(ab1_conn4tijLLL_def)
 ab1_conn4tijLLL_def = ab1_conn4tijLLL_def():replaceIndex(delta'_ij,k', 0)
-ab1_conn4tijLLL_def = betterSimplify(ab1_conn4tijLLL_def)
+ab1_conn4tijLLL_def = ab1_conn4tijLLL_def:simplifyAddMulDiv()
 printbr(ab1_conn4tijLLL_def)
 printbr()
 
@@ -171,21 +156,21 @@ ab1_conn40jkULL_def = ab1_conn40jkULL_def
 	:subst(ab1_conn4ijkLLL_def)
 	():replace(v'^i' * delta'_ik', v'_k')
 	():replace(v'^i' * delta'_ij', v'_j')
-ab1_conn40jkULL_def = betterSimplify(ab1_conn40jkULL_def)
+ab1_conn40jkULL_def = ab1_conn40jkULL_def:simplifyAddMulDiv()
 printbr(ab1_conn40jkULL_def)
 printbr()
 
 local ab1_KLL_def = K'_ij':eq(-alpha * conn4'^0_ij')
 printbr(ab1_KLL_def)
 ab1_KLL_def = ab1_KLL_def:subst(ab1_alpha_def,  ab1_conn40jkULL_def:reindex{jki='ijk'})
-ab1_KLL_def = betterSimplify(ab1_KLL_def)
+ab1_KLL_def = ab1_KLL_def:simplifyAddMulDiv()
 printbr(ab1_KLL_def)
 printbr()
 
 local K_def = K:eq(gamma'^ij' * K'_ij')
 printbr(K_def)
 local ab1_K_def = K_def:subst(ab1_gammaUU_def, ab1_KLL_def)
-ab1_K_def = betterSimplify(ab1_K_def)
+ab1_K_def = ab1_K_def:simplifyAddMulDiv()
 printbr(ab1_K_def)
 ab1_K_def = ab1_K_def
 	:replace(delta'^ij' * delta'_ij', n)
@@ -205,7 +190,7 @@ local ab1_partial00_Phi_def = partial00_Phi_def
 	:subst(ab1_gammaUU_def)
 	:simplify()
 	--:tidyIndexes()	-- tidyIndexes() doesnt like specific indexes, like _0
-ab1_partial00_Phi_def = betterSimplify(ab1_partial00_Phi_def)
+ab1_partial00_Phi_def = ab1_partial00_Phi_def:simplifyAddMulDiv()
 printbr(ab1_partial00_Phi_def)
 printbr()
 
@@ -275,14 +260,14 @@ local ab2_conn3_def = conn3_def
 	:substIndex(ab2_gammaLL_def)
 printbr(ab2_conn3_def)
 ab2_conn3_def = ab2_conn3_def():replaceIndex(delta'_ij,k', 0)
-ab2_conn3_def = betterSimplify(ab2_conn3_def)
+ab2_conn3_def = ab2_conn3_def:simplifyAddMulDiv()
 printbr(ab2_conn3_def)
 printbr()
 
 printbr'spatial metric contracted on 2nd and 3rd indexes:'
 local ab2_conn3_tr23_def = (ab2_conn3_def * gamma'^jk')()
 ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:substIndex(ab2_gammaUU_def)
-ab2_conn3_tr23_def[2] = betterSimplify(ab2_conn3_tr23_def[2])	-- betterSimplify() distributes the deltas so they are next to one another so replace() can work
+ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:simplifyAddMulDiv()	-- :simplifyAddMulDiv() distributes the deltas so they are next to one another so replace() can work
 ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:replace(delta'^jk' * delta'_jk', n)
 ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:replaceIndex(delta'^jk' * delta'_ik', delta'^j_i')
 ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:replaceIndex(delta'^jk' * delta'_ij', delta'^k_i')
@@ -290,9 +275,9 @@ ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:replaceIndex(c'_,j' * delta'^j_i',
 ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:replaceIndex(c'_,k' * delta'^k_i', c'_,i')
 ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:replaceIndex(rho'_,j' * delta'^j_i', rho'_,i')
 ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:replaceIndex(rho'_,k' * delta'^k_i', rho'_,i')
-ab2_conn3_tr23_def[2] = betterSimplify(ab2_conn3_tr23_def[2])
+ab2_conn3_tr23_def[2] = ab2_conn3_tr23_def[2]:simplifyAddMulDiv()
 printbr(ab2_conn3_tr23_def)
---ab2_conn3_tr23_def = betterSimplify(ab2_conn3_tr23_def)
+--ab2_conn3_tr23_def = ab2_conn3_tr23_def:simplifyAddMulDiv()
 --printbr(ab2_conn3_tr23_def)
 printbr()
 
@@ -303,7 +288,7 @@ printbr(ab2_conn4tijLLL_def)
 local ab2_conn4tijLLL_def = conn4'_0ij':eq( frac(1,2) * (ab2_gLL[2][1]'_,j' + ab2_gLL[1][2]'_,i' - ab2_gLL[2][2]'_,0'))
 printbr(ab2_conn4tijLLL_def)
 ab2_conn4tijLLL_def = ab2_conn4tijLLL_def():replaceIndex(delta'_ij,k', 0)
-ab2_conn4tijLLL_def = betterSimplify(ab2_conn4tijLLL_def)
+ab2_conn4tijLLL_def = ab2_conn4tijLLL_def:simplifyAddMulDiv()
 printbr(ab2_conn4tijLLL_def)
 printbr()
 
@@ -312,7 +297,7 @@ printbr(ab2_conn4ijkLLL_def)
 ab2_conn4ijkLLL_def = ab2_conn4ijkLLL_def:splitOffDerivIndexes():replaceIndex(g'_ij', ab2_gLL[2][2])
 printbr(ab2_conn4ijkLLL_def)
 ab2_conn4ijkLLL_def = ab2_conn4ijkLLL_def():replaceIndex(delta'_ij,k', 0)
-ab2_conn4ijkLLL_def = betterSimplify(ab2_conn4ijkLLL_def)
+ab2_conn4ijkLLL_def = ab2_conn4ijkLLL_def:simplifyAddMulDiv()
 printbr(ab2_conn4ijkLLL_def)
 printbr()
 
@@ -325,7 +310,7 @@ ab2_conn40jkULL_def = ab2_conn40jkULL_def
 	:subst(ab2_conn4ijkLLL_def)
 	():replace(v'^i' * delta'_ik', v'_k')
 	():replace(v'^i' * delta'_ij', v'_j')
-ab2_conn40jkULL_def = betterSimplify(ab2_conn40jkULL_def)
+ab2_conn40jkULL_def = ab2_conn40jkULL_def:simplifyAddMulDiv()
 printbr(ab2_conn40jkULL_def)
 printbr()
 
@@ -333,14 +318,14 @@ local K = var'K'
 local ab2_KLL_def = K'_ij':eq(-alpha * conn4'^0_ij')
 printbr(ab2_KLL_def)
 ab2_KLL_def = ab2_KLL_def:subst(ab2_alpha_def,  ab2_conn40jkULL_def:reindex{jki='ijk'})
-ab2_KLL_def = betterSimplify(ab2_KLL_def)
+ab2_KLL_def = ab2_KLL_def:simplifyAddMulDiv()
 printbr(ab2_KLL_def)
 printbr()
 
 local K_def = K:eq(gamma'^ij' * K'_ij')
 printbr(K_def)
 local ab2_K_def = K_def:subst(ab2_gammaUU_def, ab2_KLL_def)
-ab2_K_def = betterSimplify(ab2_K_def)
+ab2_K_def = ab2_K_def:simplifyAddMulDiv()
 printbr(ab2_K_def)
 ab2_K_def = ab2_K_def
 	:replace(delta'^ij' * delta'_ij', n)

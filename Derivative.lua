@@ -9,6 +9,7 @@ local Expression = require 'symmath.Expression'
 
 local Derivative = class(Expression)
 Derivative.precedence = 6
+Derivative.name = 'Derivative'
 
 function Derivative:init(...)
 	local Variable = require 'symmath.Variable'

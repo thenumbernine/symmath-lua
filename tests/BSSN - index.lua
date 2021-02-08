@@ -69,21 +69,6 @@ local function printHeader(str)
 end
 
 
--- TODO put an add-mul-div simplification inside Expression somewhere
-local function betterSimplify(x)
-	return x():factorDivision()
-	:map(function(y)
-		if symmath.op.add.is(y) then
-			local newadd = table()
-			for i=1,#y do
-				newadd[i] = y[i]():factorDivision()
-			end
-			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
-		end
-	end)
-end
-
-
 --[[
 transform all indexes by a specific transformation
 this is a lot like the above function
@@ -224,7 +209,7 @@ end
 local e = var'e'
 
 local function check(x)
-	x = betterSimplify(x)
+	x = x:simplifyAddMulDiv()
 
 	local function subcheck(x)
 		if require 'symmath.op.add'.is(x) or require 'symmath.op.Equation'.is(x) then
@@ -251,7 +236,7 @@ end
 -- TODO remove #find == #x constraint
 local function insertNormalizationToSetVariance(expr, transformVar)
 	transformVar = transformVar or e
-	expr = betterSimplify(expr)	-- get into add-mul-div form
+	expr = expr:simplifyAddMulDiv()
 
 	local function isNormalizedSymbol(symbol)
 		return symbol:match'^[A-Z]' 
@@ -700,7 +685,7 @@ printbr('using', using)
 dt_K_ll_def = dt_K_ll_def
 	--:substIndex(conn_ull_def:switch())
 	:subst(using)
-dt_K_ll_def = betterSimplify(dt_K_ll_def)
+	:simplifyAddMulDiv()
 printbr(dt_K_ll_def)
 printbr()
 
@@ -748,19 +733,19 @@ printbr(dt_beta_u_def)
 printHeader'using locally-Minkowski normalized coordinates:'
 local dt_beta_U_norm_def = insertNormalizationToSetVariance(dt_beta_u_def)
 printbr(dt_beta_U_norm_def)
-dt_beta_U_norm_def = betterSimplify(dt_beta_U_norm_def)
+dt_beta_U_norm_def = dt_beta_U_norm_def:simplifyAddMulDiv()
 printbr(dt_beta_U_norm_def)
 
 printbr('using', e'^i_I,t':eq(0))
-dt_beta_U_norm_def = betterSimplify(dt_beta_U_norm_def:replace(e'^i_I,t', 0))
+dt_beta_U_norm_def = dt_beta_U_norm_def:replace(e'^i_I,t', 0):simplifyAddMulDiv()
 printbr(dt_beta_U_norm_def)
 
 printbr'transforming by inverse of normalization basis'
-dt_beta_U_norm_def = dt_beta_U_norm_def * e'_i^J'
-dt_beta_U_norm_def = betterSimplify(dt_beta_U_norm_def )
+dt_beta_U_norm_def = (dt_beta_U_norm_def * e'_i^J')
+	:simplifyAddMulDiv()
 dt_beta_U_norm_def = replaceNormalizationTransformsWithDeltas(dt_beta_U_norm_def)
 	:reindex{J='I'}
-dt_beta_U_norm_def = betterSimplify(dt_beta_U_norm_def)
+	:simplifyAddMulDiv()
 
 printbr(dt_beta_U_norm_def)
 printbr()
@@ -777,12 +762,12 @@ printHeader'using locally-Minkowski normalized coordinates:'
 local dt_B_U_norm_def = insertNormalizationToSetVariance(dt_B_u_def)
 	:simplify()
 	:replace(e'^i_I,t', 0)		-- set normalization transform time derivative to zero
-dt_B_U_norm_def = betterSimplify(dt_B_U_norm_def)
-printbr(dt_B_U_norm_def) 
+	:simplifyAddMulDiv()
+printbr(dt_B_U_norm_def)
 
 -- remove basis transform on lhs
-dt_B_U_norm_def = dt_B_U_norm_def * e'_i^J'
-dt_B_U_norm_def = betterSimplify(dt_B_U_norm_def)
+dt_B_U_norm_def = (dt_B_U_norm_def * e'_i^J')
+	:simplifyAddMulDiv()
 dt_B_U_norm_def = replaceNormalizationTransformsWithDeltas(dt_B_U_norm_def)
 	:reindex{J='I'}
 printbr(dt_B_U_norm_def) 
@@ -898,11 +883,11 @@ local connBar_lll_from_conn_lll_W_gamma_ll = connBar_lll_from_W_gamma_ll:subst(
 printbr(connBar_lll_from_conn_lll_W_gamma_ll)
 
 local conn_lll_from_connBar_lll_W_gamma_ll = connBar_lll_from_conn_lll_W_gamma_ll:solve(Gamma'_ijk')
-conn_lll_from_connBar_lll_W_gamma_ll = betterSimplify(conn_lll_from_connBar_lll_W_gamma_ll )
+	:simplifyAddMulDiv()
 printbr(conn_lll_from_connBar_lll_W_gamma_ll)
 
 local conn_lll_from_connBar_lll_W_gammaBar_ll = conn_lll_from_connBar_lll_W_gamma_ll:substIndex(gamma_ll_from_gammaBar_ll_W, gamma_uu_from_gammaBar_uu_W)
-conn_lll_from_connBar_lll_W_gammaBar_ll = betterSimplify(conn_lll_from_connBar_lll_W_gammaBar_ll)
+	:simplifyAddMulDiv()
 printbr(conn_lll_from_connBar_lll_W_gammaBar_ll)
 
 local connBar_ull_def = simplifyBarMetrics(gammaBar'^im' * connBar_lll_def:reindex{i='m'})
@@ -958,7 +943,7 @@ printHeader'conformal trace-free extrinsic curvature:'
 local ABar_ll_def = ABar'_ij':eq(W^2 * A'_ij')
 printbr(ABar_ll_def)
 
-local A_ll_from_ABar_ll = betterSimplify(ABar_ll_def:solve(A'_ij'))
+local A_ll_from_ABar_ll = ABar_ll_def:solve(A'_ij'):simplifyAddMulDiv()
 printbr(A_ll_from_ABar_ll)
 
 local ABar_uu_from_A_uu = (gammaBar'^mi' * ABar_ll_def * gammaBar'^jn')()
@@ -966,7 +951,7 @@ printbr(ABar_uu_from_A_uu)
 
 ABar_uu_from_A_uu[1] = simplifyBarMetrics(ABar_uu_from_A_uu[1])
 ABar_uu_from_A_uu = ABar_uu_from_A_uu:substIndex(gammaBar_uu_from_gamma_uu_W)
-ABar_uu_from_A_uu = betterSimplify(ABar_uu_from_A_uu)
+	:simplifyAddMulDiv()
 printbr(ABar_uu_from_A_uu)
 
 ABar_uu_from_A_uu = ABar_uu_from_A_uu:simplifyMetrics()():reindex{mn='ij'}
@@ -976,7 +961,7 @@ local A_uu_from_ABar_uu = ABar_uu_from_A_uu:solve(A'^ij')
 printbr(A_uu_from_ABar_uu)
 
 local K_ll_from_ABar_ll_gammaBar_ll_K = K_ll_from_A_ll_K:subst(A_ll_from_ABar_ll, gamma_ll_from_gammaBar_ll_W)
-K_ll_from_ABar_ll_gammaBar_ll_K = betterSimplify(K_ll_from_ABar_ll_gammaBar_ll_K)
+	:simplifyAddMulDiv()
 printbr(K_ll_from_ABar_ll_gammaBar_ll_K)
 printbr()
 
@@ -1039,10 +1024,10 @@ printbr(dt_W_def)
 
 printbr('using', gamma_ll_from_gammaBar_ll_W, ',', gamma_uu_from_gammaBar_uu_W, ',', partial_gamma_lll_from_partial_gammaBar_lll_W)
 dt_W_def = dt_W_def:substIndex(
-	gamma_ll_from_gammaBar_ll_W,
-	gamma_uu_from_gammaBar_uu_W,
-	partial_gamma_lll_from_partial_gammaBar_lll_W)
-dt_W_def = betterSimplify(dt_W_def)
+		gamma_ll_from_gammaBar_ll_W,
+		gamma_uu_from_gammaBar_uu_W,
+		partial_gamma_lll_from_partial_gammaBar_lll_W)
+	:simplifyAddMulDiv()
 printbr(dt_W_def)
 
 printbr('simplifying')
@@ -1050,7 +1035,7 @@ dt_W_def = simplifyBarMetrics(dt_W_def)
 	:tidyIndexes()
 	:symmetrizeIndexes(GammaBar, {2,3})
 	:symmetrizeIndexes(delta, {1,2})
-dt_W_def = betterSimplify(dt_W_def)
+	:simplifyAddMulDiv()
 printbr(dt_W_def)
 
 local using = (delta'^b_b'):eq(spatialDim)
@@ -1063,7 +1048,7 @@ printbr(dt_W_def)
 
 printbr('using', jacobi_identity_def)
 dt_W_def = dt_W_def:subst(jacobi_identity_def)
-dt_W_def = betterSimplify(dt_W_def)
+	:simplifyAddMulDiv()
 printbr(dt_W_def)
 
 -- why won't substindex work?
@@ -1071,7 +1056,7 @@ printbr(dt_W_def)
 -- TODO test case plz
 --dt_W_def = dt_W_def:substIndet(tr_connBar_l_from_det_gammaBar)
 --dt_W_def = dt_W_def:substIndex(tr_connBar_l_from_det_gammaBar:reindex{j='k'})
---dt_W_def = betterSimplify(dt_W_def:subst(tr_connBar_l_from_det_gammaBar))
+--dt_W_def = dt_W_def:subst(tr_connBar_l_from_det_gammaBar):simplifyAddMulDiv()
 --printbr(dt_W_def)
 printbr()
 
@@ -1081,7 +1066,7 @@ printHeader'using locally-Minkowski normalized coordinates:'
 local dt_W_norm_def = insertNormalizationToSetVariance(dt_W_def)
 	:simplify()
 	:replace(e'^i_I,t', 0)		-- set normalization transform time derivative to zero
-dt_W_norm_def = betterSimplify(dt_W_norm_def)
+	:simplifyAddMulDiv()
 printbr(dt_W_norm_def) 
 
 --[[ not needed because there are no (non-derivative) summed indexes in W_,t's rhs
@@ -1131,22 +1116,24 @@ dt_gammaBar_ll_def = dt_gammaBar_ll_def:subst(dt_gamma_ll_def)()
 printbr(dt_gammaBar_ll_def)
 
 printbr('using', dt_W_def)
-dt_gammaBar_ll_def = dt_gammaBar_ll_def:substIndex(dt_W_def)
-dt_gammaBar_ll_def = dt_gammaBar_ll_def:tidyIndexes():reindex{a='k'}
-dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
+dt_gammaBar_ll_def = dt_gammaBar_ll_def
+	:substIndex(dt_W_def)
+	:tidyIndexes():reindex{a='k'}
+	:simplifyAddMulDiv()
 printbr(dt_gammaBar_ll_def )
 
 printbr('using', gamma_ll_from_gammaBar_ll_W)
 dt_gammaBar_ll_def = dt_gammaBar_ll_def:substIndex(
-	gamma_ll_from_gammaBar_ll_W,
-	partial_gamma_lll_from_partial_gammaBar_lll_W:reindex{ijk='ija'}
-)
-dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
+		gamma_ll_from_gammaBar_ll_W,
+		partial_gamma_lll_from_partial_gammaBar_lll_W:reindex{ijk='ija'}
+	)
+	:simplifyAddMulDiv()
 printbr(dt_gammaBar_ll_def )
 
 printbr('using', K_ll_from_ABar_ll_gammaBar_ll_K)
-dt_gammaBar_ll_def = dt_gammaBar_ll_def:substIndex(K_ll_from_ABar_ll_gammaBar_ll_K)
-dt_gammaBar_ll_def = betterSimplify(dt_gammaBar_ll_def)
+dt_gammaBar_ll_def = dt_gammaBar_ll_def
+	:substIndex(K_ll_from_ABar_ll_gammaBar_ll_K)
+	:simplifyAddMulDiv()
 printbr(dt_gammaBar_ll_def)
 printbr()
 
@@ -1179,13 +1166,13 @@ local dt_epsilonBar_LL_norm_def = insertNormalizationToSetVariance(dt_epsilonBar
 	:replace(e'^k_K,t', 0)
 	:replace(e'_i^I_,t', 0)
 	:replace(e'_j^J_,t', 0)
-dt_epsilonBar_LL_norm_def = betterSimplify(dt_epsilonBar_LL_norm_def)
+	:simplifyAddMulDiv()
 printbr(dt_epsilonBar_LL_norm_def) 
 printbr()
 
 -- remove basis transform on lhs
-dt_epsilonBar_LL_norm_def = dt_epsilonBar_LL_norm_def * e'^i_M' * e'^j_N'
-dt_epsilonBar_LL_norm_def = betterSimplify(dt_epsilonBar_LL_norm_def)
+dt_epsilonBar_LL_norm_def = (dt_epsilonBar_LL_norm_def * e'^i_M' * e'^j_N')
+	:simplifyAddMulDiv()
 dt_epsilonBar_LL_norm_def = replaceNormalizationTransformsWithDeltas(dt_epsilonBar_LL_norm_def)
 	:reindex{IJMN='MNIJ'}
 printbr(dt_epsilonBar_LL_norm_def) 
@@ -1239,7 +1226,7 @@ dt_connBar_ull_def = dt_connBar_ull_def
 	:symmetrizeIndexes(gammaBar, {1,2})
 	:symmetrizeIndexes(ABar, {1,2})
 	:symmetrizeIndexes(delta, {1,2})
-dt_connBar_ull_def = betterSimplify(dt_connBar_ull_def)
+	:simplifyAddMulDiv()
 printbr(dt_connBar_ull_def)
 printbr()
 --]]
@@ -1276,7 +1263,7 @@ printbr('using', connBar_ull_def)
 dt_LambdaBar_u_def = dt_LambdaBar_u_def
 	:splitOffDerivIndexes()
 	:substIndex(connBar_ull_def)
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+	:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr('symmetrize', gammaBar'_ij')
@@ -1286,12 +1273,14 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def
 printbr(dt_LambdaBar_u_def)
 
 printbr('using', dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)
-dt_LambdaBar_u_def = dt_LambdaBar_u_def:substIndex(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
+	:substIndex(dt_gammaBar_uu_from_gammaBar_uu_partial_gammaBar_lll)
+	:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr('rearrange time derivative of', gammaBar'_ij', 'to come first')
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
+	:simplifyAddMulDiv()
 	--[[ TODO fixme?
 	:replaceIndex(gammaBar'_ab,cd', gammaBar'_ab,d''_,c')	-- assume the ,t is first
 	--]]	
@@ -1306,7 +1295,7 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def:substIndex(dt_gammaBar_ll_def)
 printbr(dt_LambdaBar_u_def)
 
 printbr'simplifying'
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr'tidying indexes'
@@ -1314,7 +1303,7 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def:tidyIndexes()
 printbr(dt_LambdaBar_u_def)
 
 printbr'simplifying'
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr'simplifying bar metrics'
@@ -1328,15 +1317,16 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def
 printbr(dt_LambdaBar_u_def)
 
 printbr('using', tr_ABar_eq_0)
-dt_LambdaBar_u_def = dt_LambdaBar_u_def:substIndex(tr_ABar_eq_0)
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
+	:substIndex(tr_ABar_eq_0)
+	:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr('tidying indexes')
 -- TODO make sure this case is in unit tests: gammaBar^jk beta^a_,a GammaBar^i_jk (was producing erroneously beta^d_,d GammaBar^id_d)
-dt_LambdaBar_u_def = dt_LambdaBar_u_def:tidyIndexes()
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
+	:tidyIndexes()
+	:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr('symmetrize', gammaBar'_ij')
@@ -1344,7 +1334,7 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def
 	:symmetrizeIndexes(gammaBar, {1,2})
 	:symmetrizeIndexes(beta, {2,3})	-- symmetrize derivative indexes
 	:symmetrizeIndexes(GammaHat, {2,3})	-- TODO do this when GammaHat is substituted in
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+	:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr('factoring out', gammaBar'^ij', 'to form', ABar'_ij')
@@ -1354,8 +1344,9 @@ dt_LambdaBar_u_def = insertMetricsToSetVariance(dt_LambdaBar_u_def, ABar'_ij', g
 printbr(dt_LambdaBar_u_def)
 
 printbr('tidying indexes')
-dt_LambdaBar_u_def = dt_LambdaBar_u_def:tidyIndexes()
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
+	:tidyIndexes()
+	:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr('using', jacobi_identity_def)
@@ -1370,12 +1361,13 @@ dt_LambdaBar_u_def = dt_LambdaBar_u_def
 	:replace(gammaBar'^bc' * gammaBar'_bc,e', gammaBar'_,e' / gammaBar)
 	:replace(gammaBar'^de' * gammaBar'_de,c', gammaBar'_,c' / gammaBar)
 --]]
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+	:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr'tidying indexes'
-dt_LambdaBar_u_def = dt_LambdaBar_u_def:tidyIndexes()
-dt_LambdaBar_u_def = betterSimplify(dt_LambdaBar_u_def)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def
+	:tidyIndexes()
+	:simplifyAddMulDiv()
 printbr(dt_LambdaBar_u_def)
 
 printbr()
@@ -1387,14 +1379,13 @@ printHeader'using locally-Minkowski normalized coordinates:'
 local dt_LambdaBar_U_norm_def = insertNormalizationToSetVariance(dt_LambdaBar_u_def)
 	:simplify()
 	:replace(e'^i_I,t', 0)		-- set normalization transform time derivative to zero
-dt_LambdaBar_U_norm_def = betterSimplify(dt_LambdaBar_U_norm_def) 
+	:simplifyAddMulDiv() 
 printbr(dt_LambdaBar_U_norm_def) 
 
 -- remove basis transform on lhs
 printbr'cancelling forward and inverse transforms, and simplifying deltas...'
-dt_LambdaBar_U_norm_def = dt_LambdaBar_U_norm_def * e'_i^J'
-dt_LambdaBar_U_norm_def = betterSimplify(dt_LambdaBar_U_norm_def)
-	
+dt_LambdaBar_U_norm_def = (dt_LambdaBar_U_norm_def * e'_i^J')
+	:simplifyAddMulDiv()
 dt_LambdaBar_U_norm_def = replaceNormalizationTransformsWithDeltas(dt_LambdaBar_U_norm_def)
 	:reindex{IJ='JI'}
 printbr(dt_LambdaBar_U_norm_def) 
@@ -1459,7 +1450,7 @@ printbr(dt_K_def)
 printbr('simplifying bar metrics')
 dt_K_def = simplifyBarMetrics(dt_K_def)
 	:symmetrizeIndexes(gammaBar, {1,2})
-dt_K_def = betterSimplify(dt_K_def)
+	:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', tr_ABar_eq_0)
@@ -1467,33 +1458,33 @@ dt_K_def = dt_K_def
 	:symmetrizeIndexes(ABar, {1,2})
 	:replaceIndex(ABar'_j^j', 0)
 	:replaceIndex(ABar'^j_j', 0)
-dt_K_def = betterSimplify(dt_K_def)
+	:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', delta'_j^j':eq(spatialDim))
 dt_K_def = dt_K_def
 	:replaceIndex(delta'_j^j', spatialDim)
 	:replaceIndex(delta'^j_j', spatialDim)
-dt_K_def = betterSimplify(dt_K_def)
+	:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 -- now that there's no more _,t terms, I can use tidyIndexes on the RHS only
 printbr'tidying indexes'
 dt_K_def[2] = dt_K_def[2]:tidyIndexes()
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', K_ll_from_ABar_ll_gammaBar_ll_K)
 dt_K_def = dt_K_def
 	:replace(K'_bc,a', K'_bc''_,a')
 	:substIndex(K_ll_from_ABar_ll_gammaBar_ll_K)
-dt_K_def = betterSimplify(dt_K_def)
+	:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('simplifying bar metrics')
 dt_K_def = simplifyBarMetrics(dt_K_def)
 	:symmetrizeIndexes(gammaBar, {1,2})
-dt_K_def = betterSimplify(dt_K_def)
+	:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', tr_ABar_eq_0)
@@ -1501,25 +1492,26 @@ dt_K_def = dt_K_def
 	:symmetrizeIndexes(ABar, {1,2})
 	:replaceIndex(ABar'_j^j', 0)
 	:replaceIndex(ABar'^j_j', 0)
-dt_K_def = betterSimplify(dt_K_def)
+	:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', delta'_j^j':eq(spatialDim))
 dt_K_def = simplifyBarMetrics(dt_K_def)()
 	:replaceIndex(delta'_j^j', spatialDim)
 	:replaceIndex(delta'^j_j', spatialDim)
-dt_K_def = betterSimplify(dt_K_def)
+	:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', conn_lll_def, ',', conn_ull_def, ',', gamma_uu_from_gammaBar_uu_W, ',', gamma_ll_from_gammaBar_ll_W)
-dt_K_def = dt_K_def:substIndex(conn_lll_def, conn_ull_def, gamma_uu_from_gammaBar_uu_W, gamma_ll_from_gammaBar_ll_W)
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def
+	:substIndex(conn_lll_def, conn_ull_def, gamma_uu_from_gammaBar_uu_W, gamma_ll_from_gammaBar_ll_W)
+	:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('simplifying bar metrics')
 dt_K_def = simplifyBarMetrics(dt_K_def)
 	:symmetrizeIndexes(gammaBar, {1,2})
-dt_K_def = betterSimplify(dt_K_def)
+	:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', tr_ABar_eq_0)
@@ -1527,25 +1519,25 @@ dt_K_def = dt_K_def
 	:symmetrizeIndexes(ABar, {1,2})
 	:replaceIndex(ABar'_j^j', 0)
 	:replaceIndex(ABar'^j_j', 0)
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', delta'_j^j':eq(spatialDim))
 dt_K_def = simplifyBarMetrics(dt_K_def)()
 	:replaceIndex(delta'_j^j', spatialDim)
 	:replaceIndex(delta'^j_j', spatialDim)
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', partial_gamma_lll_from_partial_gammaBar_lll_W, ',', partial_gammaBar_lll_from_connBar_lll)
 dt_K_def = dt_K_def:substIndex(partial_gamma_lll_from_partial_gammaBar_lll_W, partial_gammaBar_lll_from_connBar_lll)
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('simplifying bar metrics')
 dt_K_def = simplifyBarMetrics(dt_K_def)
 	:symmetrizeIndexes(gammaBar, {1,2})
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', tr_ABar_eq_0)
@@ -1553,14 +1545,14 @@ dt_K_def = dt_K_def
 	:symmetrizeIndexes(ABar, {1,2})
 	:replaceIndex(ABar'_j^j', 0)
 	:replaceIndex(ABar'^j_j', 0)
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('using', delta'_j^j':eq(spatialDim))
 dt_K_def = simplifyBarMetrics(dt_K_def)()
 	:replaceIndex(delta'_j^j', spatialDim)
 	:replaceIndex(delta'^j_j', spatialDim)
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('symmetrizing', GammaBar'^i_jk')
@@ -1587,19 +1579,19 @@ dt_K_def = dt_K_def
 	:replaceIndex(GammaBar'_b^ab', gammaBar'^ab' * gammaBar'_,b' / gammaBar)
 	:subst(connBar_lll_def:reindex{ijk='bac'})
 --	:reindex{abc='ijk'}
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 	:symmetrizeIndexes(gammaBar, {1,2})
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 printbr(dt_K_def)
 
 printbr('symmetrizing', GammaBar'^i_jk')
 dt_K_def = dt_K_def:tidyIndexes()
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 dt_K_def = dt_K_def
 	:symmetrizeIndexes(ABar, {1,2})
 	:symmetrizeIndexes(gammaBar, {1,2})
 	:symmetrizeIndexes(GammaBar, {2,3})
-dt_K_def = betterSimplify(dt_K_def)
+dt_K_def = dt_K_def:simplifyAddMulDiv()
 printbr(dt_K_def)
 printbr()
 
@@ -1607,7 +1599,7 @@ printHeader'using locally-Minkowski normalized coordinates:'
 local dt_K_norm_def = insertNormalizationToSetVariance(dt_K_def)
 	:simplify()
 	:replace(e'^i_I,t', 0)		-- set normalization transform time derivative to zero
-dt_K_norm_def = betterSimplify(dt_K_norm_def)
+dt_K_norm_def = dt_K_norm_def:simplifyAddMulDiv()
 printbr(dt_K_norm_def) 
 
 printbr'cancelling forward and inverse transforms, and simplifying deltas...'
@@ -1643,7 +1635,7 @@ dt_ABar_ll_def = dt_ABar_ll_def:subst(dt_K_def:reindex{ij='mn'})
 printbr(dt_ABar_ll_def)
 
 printbr'simplifying'
-dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:simplifyAddMulDiv()
 printbr(dt_ABar_ll_def)
 
 dt_ABar_ll_def = dt_ABar_ll_def
@@ -1662,30 +1654,30 @@ dt_ABar_ll_def = dt_ABar_ll_def
 printbr(dt_ABar_ll_def)
 dt_ABar_ll_def = simplifyBarMetrics(dt_ABar_ll_def)
 	:substIndex(partial_gammaBar_lll_from_connBar_lll)
-dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:simplifyAddMulDiv()
 	:replaceIndex(ABar'_i^j', ABar'_ik' * gammaBar'^kj')
 	:replaceIndex(ABar'^ij', gammaBar'^im' * ABar'_mn' * gammaBar'^nj')
 	:symmetrizeIndexes(gammaBar, {1,2})
 	:symmetrizeIndexes(GammaBar, {2,3})
 dt_ABar_ll_def = dt_ABar_ll_def:tidyIndexes()
-dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:simplifyAddMulDiv()
 dt_ABar_ll_def = dt_ABar_ll_def:replace(GammaBar'^ab_b', GammaBar'^a')
-dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:simplifyAddMulDiv()
 dt_ABar_ll_def = dt_ABar_ll_def:replace(gammaBar'^db' * gammaBar'^ec' * GammaBar'_dae', GammaBar'^bc_a')
-dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:simplifyAddMulDiv()
 printbr(dt_ABar_ll_def)
 dt_ABar_ll_def = dt_ABar_ll_def
 	:substIndex(connBar_ull_def)
 
 dt_ABar_ll_def = dt_ABar_ll_def:replace(GammaBar'^bc_a', gammaBar'^bd' * GammaBar'_dea' * gammaBar'^ec')
 	:substIndex(connBar_lll_def)
-dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:simplifyAddMulDiv()
 	:tidyIndexes()
-dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:simplifyAddMulDiv()
 dt_ABar_ll_def = dt_ABar_ll_def 
 	:symmetrizeIndexes(ABar, {1,2})
 	:symmetrizeIndexes(gammaBar, {1,2})
-dt_ABar_ll_def = betterSimplify(dt_ABar_ll_def)
+dt_ABar_ll_def = dt_ABar_ll_def:simplifyAddMulDiv()
 
 
 printbr(dt_ABar_ll_def)
@@ -1697,13 +1689,13 @@ local dt_ABar_LL_norm_def = insertNormalizationToSetVariance(dt_ABar_ll_def)
 	:simplify()
 	:replace(e'_i^I_,t', 0)		-- set normalization transform time derivative to zero
 	:replace(e'_j^J_,t', 0)
-dt_ABar_LL_norm_def = betterSimplify(dt_ABar_LL_norm_def)
+dt_ABar_LL_norm_def = dt_ABar_LL_norm_def:simplifyAddMulDiv()
 printbr(dt_ABar_LL_norm_def) 
 
 -- remove basis transform on lhs
 printbr'cancelling forward and inverse transforms, and simplifying deltas...'
 dt_ABar_LL_norm_def = dt_ABar_LL_norm_def * e'^i_M' * e'^j_N'
-dt_ABar_LL_norm_def = betterSimplify(dt_ABar_LL_norm_def)
+dt_ABar_LL_norm_def = dt_ABar_LL_norm_def:simplifyAddMulDiv()
 
 dt_ABar_LL_norm_def = replaceNormalizationTransformsWithDeltas(dt_ABar_LL_norm_def)
 	:reindex{IJMN='MNIJ'}
