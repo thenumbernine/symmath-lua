@@ -65,7 +65,7 @@ end
 -- this should replace all terms, summed together ... unless they are multiplied, then replace the multiplication as a whole
 function splitIndexes(expr, splitMap)
 	return symmath.map(expr, function(term)
-		if symmath.op.add.is(term) then
+		if symmath.op.add:isa(term) then
 			local newAdd = table()
 			for i,x in ipairs(term) do
 				local forThisTerm = table{x:clone()}
@@ -325,11 +325,11 @@ local dg5_def = Tensor('_cab', function(c,a,b)
 		return dg5_2x2_def[a][b]:reindex{c=' \\gamma'}
 	elseif c == 2 then
 		return dg5_2x2_def[a][b]:reindex{c=5}():map(function(x)
-			if TensorRef.is(x) and x:hasDerivIndex(5) then return 0 end
+			if TensorRef:isa(x) and x:hasDerivIndex(5) then return 0 end
 		end)()
 	end
 end):map(function(x)
-	if TensorRef.is(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
+	if TensorRef:isa(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
 end)()
 printbr(g5'_ab,c':eq(dg5_def))
 printbr()
@@ -595,7 +595,7 @@ local substitutions = table{
 }
 printbr([[Using real-world values:]], substitutions:mapi(tostring):concat', ')
 symmath.simplifyConstantPowers = true
-if symmath.op.add.is(spatialGeodesic_def:rhs()) then
+if symmath.op.add:isa(spatialGeodesic_def:rhs()) then
 	printbr[[...and looking at each term:]]
 	for _,term in ipairs(spatialGeodesic_def:rhs()) do
 		local realWorldValue = term:subst(substitutions:unpack()):simplifyAddMulDiv()
@@ -709,7 +709,7 @@ local dconn5_2x2x2_def = Tensor('^a_bc', function(a,b,c)
 		x = x:replace(phi_K'_,d', 0)()
 	end
 	x = x:map(function(x)
-		if TensorRef.is(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
+		if TensorRef:isa(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
 	end)
 	return x:simplifyAddMulDiv()
 end)
@@ -722,7 +722,7 @@ local dconn5U_def = Tensor('^a_bcd', function(a,b,c,d)
 		return dconn5_2x2x2_def[a][b][c]:reindex{d=5}
 	end
 end):map(function(x)
-	if TensorRef.is(x) and x:hasDerivIndex(5) then return 0 end
+	if TensorRef:isa(x) and x:hasDerivIndex(5) then return 0 end
 end)()
 dconn5U_def = dconn5U_def:simplifyAddMulDiv()
 printbr(conn5'^a_bc,d':eq(dconn5U_def))

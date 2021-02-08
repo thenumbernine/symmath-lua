@@ -445,7 +445,7 @@ MultiLine.lookupTable = {
 		local indexes = {table.unpack(expr, 2)}
 
 		local s = self:apply(t)
-		if not (Variable.is(t) or Array.is(t) or TensorRef.is(t)) then 
+		if not (Variable:isa(t) or Array:isa(t) or TensorRef:isa(t)) then 
 			s = self:combine(
 				range(#s):mapi(function() return '(' end), 
 				self:combine(

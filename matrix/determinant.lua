@@ -6,7 +6,7 @@ local simplify = require 'symmath.simplify'
 local Array = require 'symmath.Array'
 
 local function isZero(x)
-	return Constant.is(x) and x.value == 0
+	return Constant:isa(x) and x.value == 0
 end
 
 --[[
@@ -32,7 +32,7 @@ local function determinant(m, args)
 	-- require the caller to simplify beforehand
 
 	-- non-array?  return itself
-	if not Array.is(m) then return m end
+	if not Array:isa(m) then return m end
 	local dim = m:dim()
 	if #dim == 0 then return Constant(1) end
 	

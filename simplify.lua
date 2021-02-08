@@ -10,7 +10,7 @@ local function simplify(x, ...)
 	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ... 
 	-- this doesn't make sense, but maybe it's true
 	local Array = require 'symmath.Array'
-	if Array.is(x) then
+	if Array:isa(x) then
 		x = x:clone()
 		for i in x:iter() do
 			x[i] = simplify(x[i])
@@ -71,8 +71,8 @@ if simplifyObj.useTrigSimplify then
 			local found
 			-- cos(x)^n => (1 - sin(x)^2) cos(x)^(n-2)
 			x = x:map(function(expr)
-				if cos.is(expr[1])
-				and Constant.is(expr[2])
+				if cos:isa(expr[1])
+				and Constant:isa(expr[2])
 				then
 					local n = expr[2].value
 					if n >= 2
@@ -108,8 +108,8 @@ if simplifyObj.useTrigSimplify then
 			x = x:map(function(expr)
 				-- TODO this isn't being called
 				-- where to put sin^2(theta) -> 1 - cos^2(theta) ...
-				if sin.is(expr[1])
-				and Constant.is(expr[2])
+				if sin:isa(expr[1])
+				and Constant:isa(expr[2])
 				then
 					local n = expr[2].value
 					if n >= 2

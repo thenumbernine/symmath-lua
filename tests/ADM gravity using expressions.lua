@@ -44,7 +44,7 @@ end
 -- if the pattern matches up
 -- then replace it with the 'to' tensor with 'x's index pattern
 local function replaceForAnyIndex(expr, from, to)
-	assert(TensorRef.is(from))
+	assert(TensorRef:isa(from))
 	-- no substituting derivatives just yet (right?)
 	-- but if you were, an easy fix would be to just call splitOffDerivRefs on 'from' to get it into 'canonical form'
 	assert(not table.find( table.sub(from, 2), nil, function(x) return x.derivative end))	
@@ -52,7 +52,7 @@ local function replaceForAnyIndex(expr, from, to)
 	expr = expr:splitOffDerivIndexes()
 	return expr:map(function(x)
 		-- if we find a tensor 
-		if TensorRef.is(x) 
+		if TensorRef:isa(x) 
 		-- whose name matches what we're searching for
 		and from[1] == x[1] 
 		-- and which contains the same number of indexes

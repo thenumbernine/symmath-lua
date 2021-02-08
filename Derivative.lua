@@ -32,7 +32,7 @@ Derivative.rules = {
 		-- d/dx{y_i} = {dy_i/dx}
 		{arrays = function(prune, expr)
 			local Array = require 'symmath.Array'
-			if Array.is(expr[1]) then
+			if Array:isa(expr[1]) then
 				local res = expr[1]:clone()
 				for i=1,#res do
 					res[i] = prune:apply(res[i]:diff(table.unpack(expr, 2)))
@@ -44,14 +44,14 @@ Derivative.rules = {
 		-- d/dx c = 0
 		{constants = function(prune, expr)
 			local Constant = require 'symmath.Constant'
-			if Constant.is(expr[1]) then
+			if Constant:isa(expr[1]) then
 				return Constant(0)
 			end
 		end},
 
 		-- d/dx d/dy = d/dxy
 		{combine = function(prune, expr)
-			if Derivative.is(expr[1]) then
+			if Derivative:isa(expr[1]) then
 				return prune:apply(
 					Derivative(
 						
@@ -72,7 +72,7 @@ Derivative.rules = {
 			local Variable = require 'symmath.Variable'
 			local Constant = require 'symmath.Constant'
 			local TensorRef = require 'symmath.tensor.TensorRef'
-			if Variable.is(expr[1]) then
+			if Variable:isa(expr[1]) then
 				local var = expr[1]
 				-- dx/dx = 1
 				if #expr == 2 then
@@ -87,14 +87,14 @@ Derivative.rules = {
 						end
 					end
 				end
-			elseif TensorRef.is(expr[1])
-			and Variable.is(expr[1][1])
+			elseif TensorRef:isa(expr[1])
+			and Variable:isa(expr[1][1])
 			then
 				local tvar = expr[1]	-- tensor-ref of the variable
 				local var = expr[1][1]	-- the variable itself
 				-- dx^I/dx^J = delta^I_J
 				if #expr == 2 then
-					if TensorRef.is(expr[2])
+					if TensorRef:isa(expr[2])
 					and var == expr[2][1] 
 					and #expr[1] == #expr[2]	-- only matching # of symbols
 					then
@@ -117,7 +117,7 @@ Derivative.rules = {
 				-- d/dy dx^I/dx^J = 0
 				elseif #expr > 2 then
 					for i=2,#expr do
-						if TensorRef.is(expr[i])
+						if TensorRef:isa(expr[i])
 						and var == expr[i][1]
 						and #expr[1] == #expr[i]
 						then
@@ -136,10 +136,10 @@ Derivative.rules = {
 			local TensorRef = require 'symmath.tensor.TensorRef'
 			-- apply differentiation
 			-- don't do so if it's a diff of a variable that requests not to
-			if Variable.is(expr[1]) 
+			if Variable:isa(expr[1]) 
 			or (
-				TensorRef.is(expr[1])
-				and Variable.is(expr[1][1])
+				TensorRef:isa(expr[1])
+				and Variable:isa(expr[1][1])
 			) then
 				local var = expr[1]
 				for i=2,#expr do

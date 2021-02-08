@@ -39,7 +39,7 @@ function Variable:init(name, dependentVars, value, set)
 	self.name = name
 	self.value = value
 	if not set then
-		if complex.is(value) then 
+		if complex:isa(value) then 
 			set = require 'symmath.set.sets'.complex
 		elseif type(value) == 'number' then
 			set = require 'symmath.set.sets'.real
@@ -146,10 +146,10 @@ function Variable:dependsOn(x)
 			if depvar.src == self then
 				local wrt = depvar.wrt
 				
-				if Variable.is(x) and wrt == x then return true end
+				if Variable:isa(x) and wrt == x then return true end
 				
-				if TensorRef.is(x) 
-				and TensorRef.is(wrt)
+				if TensorRef:isa(x) 
+				and TensorRef:isa(wrt)
 				and x[1] == wrt[1]
 				and #x == #wrt
 				then
@@ -166,11 +166,11 @@ function Variable:getRealDomain()
 	if self.value then 
 		if type(self.value) == 'number' then
 			return RealDomain(self.value, self.value, true, true)
-		elseif complex.is(self.value) and self.value.im == 0 then
+		elseif complex:isa(self.value) and self.value.im == 0 then
 			return RealDomain(self.value.re, self.value.re, true, true)
 		end
 	end
-	if RealDomain.is(self.set) then return self.set end
+	if RealDomain:isa(self.set) then return self.set end
 	-- assuming start and finish are defined in all Real's subclasses
 	-- what about Integer?  Integer's RealInterval is discontinuous ...
 end

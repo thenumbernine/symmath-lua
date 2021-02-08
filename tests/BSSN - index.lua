@@ -113,8 +113,8 @@ local function insertTransformsToSetVariance(expr, rule)
 	local function fixTensorRef(x)
 		x = x:clone()
 		-- TODO move this to 'rule'
-		if TensorRef.is(x) then
-			if not Variable.is(x[1]) then
+		if TensorRef:isa(x) then
+			if not Variable:isa(x[1]) then
 				x[1] = handleTerm(x[1])
 			elseif rule.matches(x) then
 				local gs = table()
@@ -138,11 +138,11 @@ local function insertTransformsToSetVariance(expr, rule)
 	-- could be a single term or multiple multiplied terms
 	handleTerm = function (expr)
 		expr = expr:clone()
-		if mul.is(expr) then
+		if mul:isa(expr) then
 			return handleMul(expr)
 		else
 			return expr:map(function(x)
-				if mul.is(x) then
+				if mul:isa(x) then
 					return handleMul(x)
 				else
 					local results = {fixTensorRef(x)}
@@ -173,8 +173,8 @@ and insert enough metric terms to raise/lower these so that they will match the 
 local function insertMetricsToSetVariance(expr, find, metric)
 	assert(metric)
 	
-	assert(TensorRef.is(find))
-	--assert(Variable.is(find[1]))
+	assert(TensorRef:isa(find))
+	--assert(Variable:isa(find[1]))
 	assert(not find:hasDerivIndex())	-- TODO handle derivs later?  also TODO call splitOffDerivIndexes() first? or expect the caller to do this 
 
 	return insertTransformsToSetVariance(expr, {
@@ -212,7 +212,7 @@ local function check(x)
 	x = x:simplifyAddMulDiv()
 
 	local function subcheck(x)
-		if require 'symmath.op.add'.is(x) or require 'symmath.op.Equation'.is(x) then
+		if require 'symmath.op.add':isa(x) or require 'symmath.op.Equation':isa(x) then
 			for i=1,#x do
 				subcheck(x[i])
 			end
@@ -292,7 +292,7 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 		-- I would use getIndexesUsed() but I want to filter out indexes inside of derivatives
 		local symbolInfo = table()
 		for i,mi in ipairs(mulexpr) do
-			if TensorRef.is(mi) then
+			if TensorRef:isa(mi) then
 				for j=2,#mi do
 					local mindex = mi[j]
 					local si = symbolInfo[mindex.symbol]
@@ -348,11 +348,11 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 	end
 
 	local mul = require 'symmath.op.mul'
-	if mul.is(expr) then
+	if mul:isa(expr) then
 		expr = handleMul(expr)
 	else
 		expr = expr:map(function(x)
-			if mul.is(x) then
+			if mul:isa(x) then
 				return handleMul(x)
 			end
 		end)
@@ -363,7 +363,7 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 
 	-- handle these cases separately so we reset the uniqueVars per term 
 	-- alternatively i could just go looking for muls, but also single TensorRefs ...
-	if require 'symmath.op.add'.is(expr) or require 'symmath.op.Equation'.is(expr) then
+	if require 'symmath.op.add':isa(expr) or require 'symmath.op.Equation':isa(expr) then
 		expr = expr:clone()
 		for i=1,#expr do
 			expr[i] = insertNormalizationToSetVariance(expr[i], transformVar)
@@ -413,7 +413,7 @@ local delta = Tensor:deltaSymbol()
 local function replaceNormalizationTransformsWithDeltas(expr)
 	local mul = require 'symmath.op.mul'
 	expr = expr:map(function(x)
-		if mul.is(x) then
+		if mul:isa(x) then
 			x = x:clone()
 			local found
 			repeat
@@ -422,10 +422,10 @@ local function replaceNormalizationTransformsWithDeltas(expr)
 					local xi = x[i]
 					for j=1,i-1 do
 						local xj = x[j]
-						if TensorRef.is(xi)
+						if TensorRef:isa(xi)
 						and #xi == 3
 						and xi[1] == e
-						and TensorRef.is(xj)
+						and TensorRef:isa(xj)
 						and #xj == 3
 						and xj[1] == e
 						and xi[2].symbol == xj[2].symbol

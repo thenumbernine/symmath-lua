@@ -30,7 +30,7 @@ symmath.multiplicity = require 'symmath.multiplicity'
 symmath.eval = require 'symmath.eval'
 
 function symmath.match(a,b)
-	if not symmath.Expression.is(a) then
+	if not symmath.Expression:isa(a) then
 		a = symmath.clone(a)
 	end
 	return a:match(b)

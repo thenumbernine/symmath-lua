@@ -29,8 +29,8 @@ abs.rules = {
 			
 			local x = expr[1]	-- abs(x)
 			
-			if mul.is(x) 
-			and Constant.is(x[1])
+			if mul:isa(x) 
+			and Constant:isa(x[1])
 			and x[1].value < 0
 			then
 				return prune:apply(
@@ -41,7 +41,7 @@ abs.rules = {
 				)
 			end
 		
-			if Constant.is(x)
+			if Constant:isa(x)
 			and x.value < 0
 			then
 				return prune:apply(Constant(math.abs(x.value)))

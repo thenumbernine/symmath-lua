@@ -12,7 +12,7 @@ function Integer:containsElement(x)
 	if self:containsVariable(x) then return true end
 
 	local Constant = require 'symmath.Constant'
-	if Constant.is(x) 
+	if Constant:isa(x) 
 	and type(x.value) == 'number'
 	then
 		return x.value == math.floor(x.value)

@@ -78,7 +78,7 @@ RicciFromManualMetric:print'R'
 printbr()
 
 local FaradayFromMetric = require 'symmath.physics.Faraday'{g=g, gU=gU}
-	:map(function(expr) if abs.is(expr) then return expr[1] end end)()
+	:map(function(expr) if abs:isa(expr) then return expr[1] end end)()
 printbr'Faraday in spherical geometry'
 FaradayFromMetric:print'F'
 printbr()

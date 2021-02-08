@@ -12,13 +12,13 @@ function TensorRef:init(tensor, ...)
 	TensorRef.super.init(self, tensor, ...)
 	
 	-- not necessarily true, for comma derivatives of scalars/expressions
-	--assert(Tensor.is(tensor))	
+	--assert(Tensor:isa(tensor))	
 
 	-- make sure the rest of the arguments are tensor indexes
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	for i=1,select('#',...) do
 		local index = select(i, ...)
-		assert(TensorIndex.is(index) or Wildcard.is(index), 'argument '..(i+1)..' of TensorRef is not a TensorIndex or Wildcard: '..require 'ext.tolua'(index))
+		assert(TensorIndex:isa(index) or Wildcard:isa(index), 'argument '..(i+1)..' of TensorRef is not a TensorIndex or Wildcard: '..require 'ext.tolua'(index))
 	end
 end
 
@@ -65,7 +65,7 @@ end
 
 function TensorRef:setDependentVars(...)
 	local Variable = require 'symmath.Variable'
-	if not Variable.is(self[1]) then
+	if not Variable:isa(self[1]) then
 		error("cannot yet call a non-Variable, non-TensorRef(Variable) to :setDependentVars() on other variables/tensrrefs-of-variables")
 	end
 	local var = self[1]
@@ -90,18 +90,18 @@ end
 -- that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
 function TensorRef:dependsOn(x)
 	local Variable = require 'symmath.Variable'
-	if not Variable.is(self[1]) then return end
+	if not Variable:isa(self[1]) then return end
 	if self[1].dependentVars then
 		for _,depvar in ipairs(self[1].dependentVars) do
-			if TensorRef.is(depvar.src)
+			if TensorRef:isa(depvar.src)
 			and #depvar.src == #self
 			then
 				local wrt = depvar.wrt
 				
-				if Variable.is(x) and wrt == x then return true end
+				if Variable:isa(x) and wrt == x then return true end
 				
-				if TensorRef.is(x) 
-				and TensorRef.is(wrt)
+				if TensorRef:isa(x) 
+				and TensorRef:isa(wrt)
 				and x[1] == wrt[1]
 				and #x == #wrt
 				then
@@ -120,8 +120,8 @@ TensorRef.rules = {
 		{combine = function(prune, expr)
 			local Tensor = require 'symmath.Tensor'
 			local t = expr[1]
-			if not Tensor.is(t) then 
-				if TensorRef.is(t) then
+			if not Tensor:isa(t) then 
+				if TensorRef:isa(t) then
 					local indexes = {table.unpack(expr,2)}
 					return prune:apply(
 						TensorRef(t[1], table():append{table.unpack(t,2)}:append(indexes):unpack())
@@ -133,7 +133,7 @@ TensorRef.rules = {
 		{evalDeriv = function(prune, expr)
 			local Tensor = require 'symmath.Tensor'
 			local t = expr[1]
-			if not Tensor.is(t) 
+			if not Tensor:isa(t) 
 			and expr[2].derivative
 			then 
 				-- if it can be evaluated then apply differentiation
@@ -149,7 +149,7 @@ TensorRef.rules = {
 		{replacePartial = function(prune, expr)
 			local Tensor = require 'symmath.Tensor'
 			local t = expr[1]
-			if not Tensor.is(t)			-- if it's not a tensor ...
+			if not Tensor:isa(t)			-- if it's not a tensor ...
 			and expr[2].derivative then	-- if this is a derivative then 
 				local indexes = {table.unpack(expr,2)}
 				-- if any derivative indexes are for single variables then apply them directly
@@ -184,7 +184,7 @@ TensorRef.rules = {
 
 			-- if it's not a tensor ...
 			-- ...then just leave the indexing there 
-			if not Tensor.is(t) then return end
+			if not Tensor:isa(t) then return end
 
 			-- now transform all indexes that don't match up
 			
@@ -365,7 +365,7 @@ TensorRef.rules = {
 			--  (scaling with the delta tensor)
 
 			t = t:simplifyTraces()
-			if Tensor.is(t) then 
+			if Tensor:isa(t) then 
 				for i,index in ipairs(t.variance) do
 					assert(index.symbol, "failed to find index on "..i.." of "..#t.variance)
 				end	

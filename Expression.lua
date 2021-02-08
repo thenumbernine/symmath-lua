@@ -183,7 +183,7 @@ function Expression.__add(a,b)
 	
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	if require 'symmath.op.Equation'.is(b) then return b.__add(a,b) end
+	if require 'symmath.op.Equation':isa(b) then return b.__add(a,b) end
 
 	if Constant.isValue(a, 0) then return b end
 	if Constant.isValue(b, 0) then return a end
@@ -195,7 +195,7 @@ function Expression.__sub(a,b)
 	
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	if require 'symmath.op.Equation'.is(b) then return b.__sub(a,b) end
+	if require 'symmath.op.Equation':isa(b) then return b.__sub(a,b) end
 	
 	if Constant.isValue(a, 0) then return -b end
 	if Constant.isValue(b, 0) then return a end
@@ -207,21 +207,21 @@ function Expression.__mul(a,b)
 	
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	if require 'symmath.op.Equation'.is(b) then return b.__mul(a,b) end
+	if require 'symmath.op.Equation':isa(b) then return b.__mul(a,b) end
 
 --[[
 	-- only simplify c * 0 = 0 for constants
 	-- because if we have an Array or Equation then we want it to distribute to all elements
-	if Constant.is(a)
-	and Constant.is(b)
+	if Constant:isa(a)
+	and Constant:isa(b)
 	and (a.value == 0 or b.value == 0)
 	then
 		return Constant(0)
 	end
 --]]
 -- [[ test for array or equation, otherise simplify to zero
-	if Constant.isValue(a, 0) and not require 'symmath.Array'.is(b) and not require 'symmath.op.Equation'.is(b) then return Constant(0) end
-	if Constant.isValue(b, 0) and not require 'symmath.Array'.is(a) and not require 'symmath.op.Equation'.is(a) then return Constant(0) end
+	if Constant.isValue(a, 0) and not require 'symmath.Array':isa(b) and not require 'symmath.op.Equation':isa(b) then return Constant(0) end
+	if Constant.isValue(b, 0) and not require 'symmath.Array':isa(a) and not require 'symmath.op.Equation':isa(a) then return Constant(0) end
 --]]
 	
 	if Constant.isValue(a, 1) then return b end
@@ -234,13 +234,13 @@ function Expression.__div(a,b)
 	
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	if require 'symmath.op.Equation'.is(b) then return b.__div(a,b) end
+	if require 'symmath.op.Equation':isa(b) then return b.__div(a,b) end
 	
-	if Constant.is(b) then
+	if Constant:isa(b) then
 		if b.value == 0 then return require 'symmath'.Invalid() end
 		if b.value == 1 then return a end
 	end
-	if Constant.is(a) and a.value == 0 then return Constant(0) end
+	if Constant:isa(a) and a.value == 0 then return Constant(0) end
 	
 	return require 'symmath.op.div'(a,b) 
 end
@@ -249,23 +249,23 @@ function Expression.__pow(a,b)
 	
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	if require 'symmath.op.Equation'.is(b) then return b.__pow(a,b) end
+	if require 'symmath.op.Equation':isa(b) then return b.__pow(a,b) end
 	
-	if Constant.is(a) and a.value == 0 then 
-		if Constant.is(b) then
+	if Constant:isa(a) and a.value == 0 then 
+		if Constant:isa(b) then
 			if b.value > 0 then return Constant(0) end
 			if b.value == 0 then return Constant(1) end
 			if b.value < 0 then return require 'symmath'.inf end
 		end
 	end
-	if Constant.is(b) and b.value == 1 then return a end
+	if Constant:isa(b) and b.value == 1 then return a end
 	
 	return require 'symmath.op.pow'(a,b) 
 end
 function Expression.__mod(a,b) 
 	if type(a) == 'number' then a = require 'symmath.Constant'(a) end
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
-	if require 'symmath.op.Equation'.is(b) then return b.__mod(a,b) end
+	if require 'symmath.op.Equation':isa(b) then return b.__mod(a,b) end
 	return require 'symmath.op.mod'(a,b) 
 end
 
@@ -292,7 +292,7 @@ function Expression:diff(...)
 	-- or should that be a separate operator?
 
 	-- d/dx c = 0
-	if Constant.is(self) then
+	if Constant:isa(self) then
 		return Constant(0)
 	end
 
@@ -317,7 +317,7 @@ Expression.taylor = function(...) return require 'symmath'.taylor(...) end
 
 function Expression.wedge(a,b) 
 	if type(b) == 'number' then b = require 'symmath.Constant'(b) end
-	if require 'symmath.op.Equation'.is(b) then return b.wedge(a,b) end
+	if require 'symmath.op.Equation':isa(b) then return b.wedge(a,b) end
 	return require 'symmath.tensor.wedge'(a,b)
 end
 Expression.dual = function(...) return require 'symmath'.dual(...) end
@@ -348,7 +348,7 @@ function Expression:subst(...)
 	local result = self:clone()
 	for i=1,select('#', ...) do
 		local eqn = select(i, ...)
-		assert(eq.is(eqn), "Expression:subst() argument "..i.." is not an equals operator") 
+		assert(eq:isa(eqn), "Expression:subst() argument "..i.." is not an equals operator") 
 		result = result:replace(eqn:lhs(), eqn:rhs())
 	end
 	return result
@@ -362,7 +362,7 @@ function Expression:substIndex(...)
 	local result = self:clone()
 	for i=1,select('#', ...) do
 		local eqn = select(i, ...)
-		assert(eq.is(eqn), "Expression:subst() argument "..i.." is not an equals operator") 
+		assert(eq:isa(eqn), "Expression:subst() argument "..i.." is not an equals operator") 
 		result = result:replaceIndex(eqn:lhs(), eqn:rhs())
 	end
 	return result
@@ -458,8 +458,8 @@ function Expression:replaceIndex(find, repl, cond, args)
 	-- and do not pick new symbols to replace them with
 
 	-- TODO instead of TensorRef.is,, how about searching for 
-	--if TensorRef.is(find) then
-	--if not require 'symmath.Variable'.is(find) then
+	--if TensorRef:isa(find) then
+	--if not require 'symmath.Variable':isa(find) then
 	--if true then
 	if not (#selfAll > 0 and #findAll > 0) then
 --printbr'only replacing'
@@ -476,7 +476,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 	local wildcardIndexToTensorIndex = table()
 	local tensorIndexToWildcardIndex = {}
 	local findWithWildcards = find:map(function(x)
-		if TensorIndex.is(x)
+		if TensorIndex:isa(x)
 -- [[ only match wildcards indexes shared between find and replace?  maybe?
 -- but what about when we want to replace a TensorRef with a non-TensorRef?
 -- TODO think about this ... when should a'_i' => b mean the i is fixed, and when should it mean the i is extra?
@@ -590,8 +590,8 @@ function Expression:tidyIndexes(args)
 	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being 
 	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
 
-	if symmath.Array.is(self) 
-	or symmath.op.Equation.is(self)
+	if symmath.Array:isa(self) 
+	or symmath.op.Equation:isa(self)
 	then
 		local cl = self:clone()
 		for i=1,#cl do
@@ -648,15 +648,15 @@ function Expression:tidyIndexes(args)
 	end
 
 	-- if expr is an add then assert all its children have the same fixed indexes
-	if add.is(expr) then
+	if add:isa(expr) then
 --print('found add<br>')	
 		expr[1] = tidyTerm(expr[1])
 
 		for i=2,#expr do
 			expr[i] = tidyTerm(expr[i], args and args.checkFixed)
 		end
-	elseif mul.is(expr) 
-	or TensorRef.is(expr)
+	elseif mul:isa(expr) 
+	or TensorRef:isa(expr)
 	then
 		expr = tidyTerm(expr)
 	else
@@ -697,7 +697,7 @@ function Expression:__call(...)
 					symbol = indexes[i],
 				}
 			elseif type(indexes[i]) == 'table' then
-				assert(TensorIndex.is(indexes[i]))
+				assert(TensorIndex:isa(indexes[i]))
 			else
 				error("indexes["..i.."] got unknown type "..type(indexes[i]))
 			end
@@ -755,9 +755,9 @@ function Expression:reindex(args, action)
 		end
 	end
 	return self:map(function(expr)
-		if TensorIndex.is(expr) then
+		if TensorIndex:isa(expr) then
 			replaceAllSymbols(expr)
-		elseif Tensor.is(expr) then
+		elseif Tensor:isa(expr) then
 			for _,index in ipairs(expr.variance) do
 				replaceAllSymbols(index)
 			end
@@ -777,7 +777,7 @@ it is very helpful for replacing tensors
 function Expression:splitOffDerivIndexes()
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	return self:map(function(x)
-		if TensorRef.is(x) then
+		if TensorRef:isa(x) then
 			local derivIndex = table.sub(x, 2):find(nil, function(ref)
 				return ref.derivative
 			end) 
@@ -817,7 +817,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 --print('symmetrizing '..var.name..' indexes '..require'ext.tolua'(indexes))
 	return self:map(function(x)
 		local TensorRef = require 'symmath.tensor.TensorRef'
-		if TensorRef.is(x) 
+		if TensorRef:isa(x) 
 		and x[1] == var
 		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
 		then
@@ -866,7 +866,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 		-- if there's a var^ijk... anywhere in the mul
 		-- then look for matching indexes in any other TensorRef's in the mul
 		local mul = require 'symmath.op.mul'
-		if mul.is(x) then
+		if mul:isa(x) then
 			local found
 --print('checking mul: '..x)
 			
@@ -875,7 +875,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 			-- but  g_ab a^bac g_ef b^feg => g_(ab) .... will only symmetrize the first and not the second (because we are only sorting one per term) 
 			for j,y in ipairs(x) do
 --print('checking mul term #'..j..': '..y)	
-				if TensorRef.is(y)
+				if TensorRef:isa(y)
 				and y[1] == var
 				and #y >= table.sup(indexes)+1
 				then
@@ -928,7 +928,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 					for k=1,#x do
 						if k ~= j then -- don't re-sort your own symbols, or else G^d_dc : symmetrize(G, {2,3}) will sort index 1 as well and produce G_cd^d
 							x[k] = x[k]:map(function(z)
-								if TensorRef.is(z) then
+								if TensorRef:isa(z) then
 --print('checking term# '..k..': '..z)
 									local dstIndexes = table()
 									local indexObjs = table()
@@ -1011,7 +1011,7 @@ function Expression:simplifyAddMulDiv()
 	local symmath = require 'symmath'
 	return self():factorDivision()
 	:map(function(y)
-		if symmath.op.add.is(y) then
+		if symmath.op.add:isa(y) then
 			local newadd = table()
 			for i=1,#y do
 				newadd[i] = y[i]():factorDivision()
@@ -1060,13 +1060,13 @@ function Expression:simplifyMetrics(rules)
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	local add = require 'symmath.op.add'
 	local mul = require 'symmath.op.mul'
-	if Array.is(expr) then
+	if Array:isa(expr) then
 		return getmetatable(expr):lambda(expr:dim(), function(...)
 			local ei = expr:get{...}
 			return (ei:simplifyMetrics(rules))
 		end)
 	end
-	if require 'symmath.op.Equation'.is(expr) then
+	if require 'symmath.op.Equation':isa(expr) then
 		return getmetatable(expr)(
 			expr[1]:simplifyMetrics(rules),
 			expr[2]:simplifyMetrics(rules)
@@ -1089,7 +1089,7 @@ function Expression:simplifyMetrics(rules)
 	expr = expr:simplifyAddMulDiv()	-- put it in add-mul-div order
 	expr = expr:clone()
 	local function checkMul(expr)
-		if not mul.is(expr) then return expr end
+		if not mul:isa(expr) then return expr end
 
 		local found
 		repeat
@@ -1097,7 +1097,7 @@ function Expression:simplifyMetrics(rules)
 			for ruleIndex,rule in ipairs(rules) do
 --print('checking rule ', rule)
 				for exprGIndex,g in ipairs(expr) do
-					if TensorRef.is(g) 
+					if TensorRef:isa(g) 
 					and #g == 3 -- no derivatives
 					and rule.isMetric(g) -- make sure it matches what we are looking for
 					then
@@ -1106,7 +1106,7 @@ function Expression:simplifyMetrics(rules)
 							local gTensorIndex = g[gi]
 							for exprTIndex,t in ipairs(expr) do
 								if exprGIndex ~= exprTIndex
-								and TensorRef.is(t) 
+								and TensorRef:isa(t) 
 								then
 									for ti=2,#t do
 										local tTensorIndex = t[ti]
@@ -1147,7 +1147,7 @@ function Expression:simplifyMetrics(rules)
 		if #expr == 1 then expr = expr[1] end
 		return expr
 	end
-	if add.is(expr) then
+	if add:isa(expr) then
 		for i=1,#expr do
 			expr[i] = checkMul(expr[i])
 		end
@@ -1204,7 +1204,7 @@ function Expression:getIndexesUsed()
 		... TODO? return a 4th table of incorrect indexes?
 		or TODO error if you find 3 or more?
 	--]]
-	if TensorRef.is(self) then
+	if TensorRef:isa(self) then
 		
 		local indexCounts = table()
 		for i=2,#self do
@@ -1240,7 +1240,7 @@ function Expression:getIndexesUsed()
 	- mul's extras ... are also a superset of sub-exprs 
 		... unless they match, in which case they go to sum
 	--]]
-	elseif mul.is(self) then
+	elseif mul:isa(self) then
 
 		local indexCounts = table()
 		local results = table.mapi(self, function(xi,i)
@@ -1282,7 +1282,7 @@ function Expression:getIndexesUsed()
 	- summed = is the superset of its sub-expr's summed indexes
 	- extra = are the superset of fixed minus the subset
 	--]]
-	elseif add.is(self) or sub.is(self) then
+	elseif add:isa(self) or sub:isa(self) then
 		local info = table.mapi(self, function(xi)
 			local fixed, summed, extra = xi:getIndexesUsed()
 			fixed = combine(fixed,extra)
@@ -1314,7 +1314,7 @@ function Expression:getIndexesUsed()
 
 		return fixed, summed, extra
 
-	elseif Expression.is(self) then
+	elseif Expression:isa(self) then
 		-- not an add, sub, mul ... pass through?
 		-- how to combine by default?
 		-- combine summed?
@@ -1358,13 +1358,13 @@ function Expression:getExprsForIndexSymbols()
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	local exprsForSymbol = {}
 	local function rfind(x)
-		if TensorRef.is(x) then
+		if TensorRef:isa(x) then
 			for i=2,#x do
 				local symbol = x[i].symbol
 				exprsForSymbol[symbol] = exprsForSymbol[symbol] or table()
 				exprsForSymbol[symbol]:insert{expr=x, index=i}
 			end
-		elseif Expression.is(x) then
+		elseif Expression:isa(x) then
 			for i=1,#x do
 				rfind(x[i])
 			end
@@ -1407,7 +1407,7 @@ function Expression:dependsOn(x)
 			return 1	-- short-circuit
 		end
 		-- x'^i' is a sub-expression of the expression
-		if TensorRef.is(ai) and TensorRef.is(x)
+		if TensorRef:isa(ai) and TensorRef:isa(x)
 		and ai[1] == x[1]
 		and #ai == #x
 		then
@@ -1416,8 +1416,8 @@ function Expression:dependsOn(x)
 		end
 		-- x or x^i is a dependent variable of a variable in the expression
 		if (
-			Variable.is(ai)
-			or (TensorRef.is(ai) and Variable.is(ai[1]))
+			Variable:isa(ai)
+			or (TensorRef:isa(ai) and Variable:isa(ai[1]))
 		) and ai:dependsOn(x) 
 		then 
 			found = true 

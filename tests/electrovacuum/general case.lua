@@ -345,14 +345,14 @@ if showFlatSpaceApproximationRiemannSolution then
 			local rhs = eqn:rhs()[i]
 			-- hack in the mean time ...
 			local eqn = lhs:eq(rhs)
-			if symmath.op.div.is(rhs) then
+			if symmath.op.div:isa(rhs) then
 				eqn = (eqn * rhs[2]:clone())()
-			elseif symmath.op.mul.is(rhs) then
+			elseif symmath.op.mul:isa(rhs) then
 				eqn = (eqn / rhs[1]:clone())()
 			end
 			eqn = (eqn + A[i%3+2]:diff(spatialCoords[(i+1)%3+1]))()
 			eqn = eqn:switch()
-			assert(Derivative.is(eqn:lhs()))
+			assert(Derivative:isa(eqn:lhs()))
 			printbr(eqn)
 			return eqn
 		end)
@@ -558,7 +558,7 @@ if showFlatSpaceApproximationRiemannSolution then
 
 	local function isZero(t)
 		for k,v in t:iter() do
-			if not Constant.is(v) then return false end
+			if not Constant:isa(v) then return false end
 			if v.value ~= 0 then return false end
 		end
 		return true

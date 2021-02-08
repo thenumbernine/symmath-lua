@@ -193,7 +193,7 @@ for i=2,4 do
 
 	-- get rid of any Phi,j times u,k of any kind ... hmm ...
 	divTVal[i] = divTVal[i]:map(function(expr)
-		if not symmath.op.mul.is(expr) then return end
+		if not symmath.op.mul:isa(expr) then return end
 		local dPhi = Phi'_,i'()
 		local foundDPhi
 		local foundU

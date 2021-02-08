@@ -50,7 +50,7 @@ symbol = override display of the constant (i.e. 'pi', 'e', etc)
 --]]
 function Constant:init(value, symbol)
 	if type(value) ~= 'number'
-	and not complex.is(value)
+	and not complex:isa(value)
 	then
 		error('tried to init constant with non-number type '..type(value)..' value '..tostring(value))
 	end
@@ -114,13 +114,13 @@ function Constant.match(a, b, matches)
 
 	-- if either is a constant then get the value 
 	-- (which should not be an expression of its own)
-	if Constant.is(a) then a = a.value end
-	if Constant.is(b) then b = b.value end
+	if Constant:isa(a) then a = a.value end
+	if Constant:isa(b) then b = b.value end
 	-- if it is an expression then it must not have been a constant
 	-- so we can assume it differs
-	if Expression.is(a) or Expression.is(b) then return false end
+	if Expression:isa(a) or Expression:isa(b) then return false end
 	-- if either is complex then convert the other to complex
-	if complex.is(a) or complex.is(b) then
+	if complex:isa(a) or complex:isa(b) then
 		return complex.__eq(a,b)
 	end
 	
@@ -143,7 +143,7 @@ function Constant:getRealDomain()
 		return RealDomain(self.value, self.value, true, true)
 	end
 	
-	if complex.is(self.value) then 
+	if complex:isa(self.value) then 
 		if self.im ~= 0 then return nil end
 		return RealDomain(self.re, self.re, true, true)
 	end
@@ -172,9 +172,9 @@ Constant.rules = {
 }
 
 -- static method
--- Constant.is(x) and x.value == value, combined
+-- Constant:isa(x) and x.value == value, combined
 function Constant.isValue(x, value)
-	return Constant.is(x) and x.value == value
+	return Constant:isa(x) and x.value == value
 end
 
 return Constant

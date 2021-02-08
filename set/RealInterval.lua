@@ -45,7 +45,7 @@ end
 --   (I'm suspicious that I'm going to need to start associating each expression with its domain/range)
 
 function RealInterval:containsNumber(x)
-	if complex.is(x) then
+	if complex:isa(x) then
 		if x.im ~= 0 then return false end
 		x = x.re
 	end
@@ -65,16 +65,16 @@ function RealInterval:containsNumber(x)
 end
 
 function RealInterval:containsVariable(x)
-	if require 'symmath.Variable'.is(x) then
+	if require 'symmath.Variable':isa(x) then
 		if x.value then 
 			return self:containsNumber(x.value) 
 		end
 		
 		-- right now :containsSet returns nil if the domains are overlapping
 		-- in that case, the variable *could* be inside 'self'
-		assert(not RealInterval.is(x.set)) -- phasing this out -- use RealDomain as a single interval
+		assert(not RealInterval:isa(x.set)) -- phasing this out -- use RealDomain as a single interval
 		local RealDomain = require 'symmath.set.RealDomain'
-		if RealDomain.is(x.set) then
+		if RealDomain:isa(x.set) then
 			if #x.set == 1 then
 				return self:containsSet(x.set)
 			else
@@ -86,7 +86,7 @@ function RealInterval:containsVariable(x)
 end
 
 function RealInterval:intersects(x)
-	if RealInterval.is(x) then
+	if RealInterval:isa(x) then
 		local result = true
 		if self.includeStart and x.includeFinish then
 			-- does [a,... contain ...,b]
@@ -121,7 +121,7 @@ function RealInterval:intersects(x)
 end
 
 function RealInterval:containsSet(I)
-	if RealInterval.is(I) then
+	if RealInterval:isa(I) then
 		local result = true
 		
 		if self.includeStart and I.includeStart then
@@ -167,7 +167,7 @@ end
 
 function RealInterval:containsElement(x)
 	if type(x) == 'number' 
-	or complex.is(x)
+	or complex:isa(x)
 	then 
 		return self:containsNumber(x) 
 	end
@@ -176,9 +176,9 @@ function RealInterval:containsElement(x)
 	-- but for now it is only used here, so only keep it here
 	local I = x:getRealDomain()
 	if I == nil then return end
-	assert(not RealInterval.is(I))
+	assert(not RealInterval:isa(I))
 	local RealDomain = require 'symmath.set.RealDomain'
-	if RealDomain.is(I) then
+	if RealDomain:isa(I) then
 		if RealDomain(self.start, self.finish, self.includeStart, self.includeFinish):containsSet(I) then return true end
 	end
 end

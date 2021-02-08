@@ -135,20 +135,20 @@ cos.rules = {
 			local theta = expr[1]
 
 			-- cos(-x) = cos(x)
-			if unm.is(theta) then
+			if unm:isa(theta) then
 				return cos(theta[1])
 			end
 				
 			-- cos(pi) => -1
 			if theta == symmath.pi then return Constant(-1) end
 
-			if Constant.is(theta) then
+			if Constant:isa(theta) then
 				-- cos(0) => 1
 				if theta.value == 0 then return Constant(1) end
 			
 				-- cos(-c) = cos(c)
 				if theta.value < 0 then return cos(Constant(-theta.value)) end
-			elseif mul.is(theta) then
+			elseif mul:isa(theta) then
 				if #theta == 2 
 				and theta[2] == symmath.pi 
 				then
@@ -159,7 +159,7 @@ cos.rules = {
 				end
 			
 				-- cos(-c x y z) => cos(c x y z)
-				if Constant.is(theta[1])
+				if Constant:isa(theta[1])
 				and theta[1].value < 0
 				then
 					local mulArgs = range(#theta):map(function(i)
@@ -169,7 +169,7 @@ cos.rules = {
 					local rest = #mulArgs == 1 and mulArgs[1] or mul(mulArgs:unpack()) 
 					return prune:apply(c == 1 and cos(rest) or cos(c * rest))
 				end
-			elseif div.is(theta) then
+			elseif div:isa(theta) then
 				local function handleFrac(p,q)
 					p = p % (2 * q)
 
@@ -196,7 +196,7 @@ cos.rules = {
 					end
 				end
 
-				if Constant.is(theta[2])
+				if Constant:isa(theta[2])
 				and symmath.set.integer:contains(theta[2])
 				then
 					local q = theta[2].value
@@ -206,9 +206,9 @@ cos.rules = {
 						if result then return result end
 					else
 						-- cos((k * pi) / q)
-						if mul.is(theta[1])
+						if mul:isa(theta[1])
 						and #theta[1] == 2
-						and Constant.is(theta[1][1])
+						and Constant:isa(theta[1][1])
 						and symmath.set.integer:contains(theta[1][1])
 						and theta[1][2] == symmath.pi
 						then

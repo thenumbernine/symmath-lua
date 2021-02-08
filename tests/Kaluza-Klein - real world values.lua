@@ -65,7 +65,7 @@ end
 -- this should replace all terms, summed together ... unless they are multiplied, then replace the multiplication as a whole
 function splitIndexes(expr, splitMap)
 	return symmath.map(expr, function(term)
-		if symmath.op.add.is(term) then
+		if symmath.op.add:isa(term) then
 			local newAdd = table()
 			for i,x in ipairs(term) do
 				local forThisTerm = table{x:clone()}

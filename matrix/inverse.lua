@@ -37,7 +37,7 @@ return function(A, b, callback, allowRectangular, A_det)
 	local clone = require 'symmath.clone'
 	
 	if type(A) == 'number' then return 1/Constant(A) end
-	if not Array.is(A) then return Constant(1)/A end
+	if not Array:isa(A) then return Constant(1)/A end
 
 	-- expects A to be  
 	local dim = A:dim()

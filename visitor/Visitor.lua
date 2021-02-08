@@ -83,7 +83,7 @@ function Visitor:apply(expr, ...)
 		-- TODO bubble-in and bubble-out
 
 		-- if it's an expression then apply to all children first
-		if Expression.is(m) then
+		if Expression:isa(m) then
 			if expr then
 				for i=1,#expr do
 					if debugVisitors then
@@ -104,7 +104,7 @@ function Visitor:apply(expr, ...)
 			for _,rule in ipairs(rules) do
 				-- TODO why pushedRules?  why not just ... push the rules?
 				-- probably because subclasses flatten, so if you push a superclass from the table then the subclass will still have it.
-				-- TODO iterate through subclasses?  you can use 'isaKey' for this.
+				-- TODO iterate through subclasses?  you can use 'isaSet' defined in ext.class for this.
 				if not m.pushedRules
 				or not m.pushedRules[rule]
 				then

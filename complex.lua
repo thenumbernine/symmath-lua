@@ -15,10 +15,10 @@ if not ffi then
 
 	-- accepts (complex) or (re, im)
 	function complex:init(re, im)
-		if complex.is(re) then
+		if complex:isa(re) then
 			self.re = re.re
 			self.im = re.im
-		elseif require 'symmath.Variable'.is(re) then
+		elseif require 'symmath.Variable':isa(re) then
 			self.init(re.value)
 		else
 			self.re = assert(tonumber(re))
@@ -45,7 +45,8 @@ else
 		end,
 	})
 
-	function complex.is(x)
+	-- called with class as 1st param
+	function complex:isa(x)
 		if type(x) ~= 'cdata' then return false end
 		local xt = tostring(ffi.typeof(x))
 		return xt == 'ctype<complex>'
@@ -54,7 +55,7 @@ else
 end
 
 function complex.__eq(a,b)
-	if not complex.is(a) or not complex.is(b) then return false end
+	if not complex:isa(a) or not complex:isa(b) then return false end
 	a = complex(a)
 	b = complex(b)
 	return a.re == b.re and a.im == b.im
@@ -102,7 +103,7 @@ end
 
 function complex.unpack(x)
 	if type(x) == 'number' then return x, 0 end
-	if complex.is(x) then return x.re, x.im end
+	if complex:isa(x) then return x.re, x.im end
 	error("can't complex-unpack a non-complex")
 end
 

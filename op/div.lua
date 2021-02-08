@@ -38,7 +38,7 @@ div.rules = {
 		{apply = function(distributeDivision, expr)
 			local add = require 'symmath.op.add'
 			local num, denom = expr[1], expr[2]
-			if not add.is(num) then return end
+			if not add:isa(num) then return end
 			return getmetatable(num)(range(#num):map(function(k)
 				return (num[k] / denom):simplify()
 			end):unpack())
@@ -69,7 +69,7 @@ div.rules = {
 			if Constant.isValue(expr[1], 1) then return end
 		
 			-- a/(b1 * ... * bn) => a * 1/b1 * ... * 1/bn
-			if mul.is(expr[2]) then
+			if mul:isa(expr[2]) then
 				local prod = mul(expr[1], range(#expr[2]):mapi(function(i)
 					return 1 / expr[2][i]:clone()
 				end):unpack())
@@ -93,7 +93,7 @@ div.rules = {
 			-- matrix/scalar
 			do
 				local a, b = table.unpack(expr)
-				if Array.is(a) and not Array.is(b) then
+				if Array:isa(a) and not Array:isa(b) then
 					local result = a:clone()
 					for i=1,#result do
 						result[i] = result[i] / b
@@ -109,32 +109,32 @@ div.rules = {
 			
 			if symmath.simplifyConstantPowers  then
 				-- Constant / Constant => Constant
-				if Constant.is(expr[1]) and Constant.is(expr[2]) then
+				if Constant:isa(expr[1]) and Constant:isa(expr[2]) then
 					return Constant(expr[1].value / expr[2].value)
 				end
 
 				-- q / Constant = 1/Constant * q
-				if Constant.is(expr[2]) then
+				if Constant:isa(expr[2]) then
 					return prune:apply(
 						Constant(1/expr[2].value) * expr[1]
 					)
 				end
 		
 				-- (c1 * m) / c2 => (c1 / c2) * m
-				if mul.is(expr[1]) and Constant.is(expr[1][1]) and Constant.is(expr[2]) then
+				if mul:isa(expr[1]) and Constant:isa(expr[1][1]) and Constant:isa(expr[2]) then
 					local rest = #expr[1] == 2 and expr[1][2] or mul(table.unpack(expr[1], 2))
 					return Constant(expr[1][1].value / expr[2].value) * rest
 				end
 			
 				-- c1 / (c2 * m) => (c1/c2) / m
-				if Constant.is(expr[1]) and mul.is(expr[2]) and Constant.is(expr[2][1]) then
+				if Constant:isa(expr[1]) and mul:isa(expr[2]) and Constant:isa(expr[2][1]) then
 					local rest = #expr[2] == 2 and expr[2][2] or mul(table.unpack(expr[2], 2))
 					return Constant(expr[1].value / expr[2][1].value) / rest
 				end
 		
 				-- (c1 * m1) / (c2 * m2) => ((c1/c2) * m1) / m2
-				if mul.is(expr[1]) and Constant.is(expr[1][1])
-				and mul.is(expr[2]) and Constant.is(expr[2][1])
+				if mul:isa(expr[1]) and Constant:isa(expr[1][1])
+				and mul:isa(expr[2]) and Constant:isa(expr[2][1])
 				then
 					local rest1 = #expr[1] == 2 and expr[1][2] or mul(table.unpack(expr[1], 2))
 					local rest2 = #expr[2] == 2 and expr[2][2] or mul(table.unpack(expr[2], 2))
@@ -148,7 +148,7 @@ div.rules = {
 			end
 
 			-- x / -1 => -1 * x
-			if Constant.is(expr[2]) and expr[2].value < 0 then
+			if Constant:isa(expr[2]) and expr[2].value < 0 then
 				return prune:apply(Constant(-1) * expr[1] / Constant(-expr[2].value))
 			end
 			
@@ -160,12 +160,12 @@ div.rules = {
 			end
 			
 			-- (a / b) / c => a / (b * c)
-			if div.is(expr[1]) then
+			if div:isa(expr[1]) then
 				return prune:apply(expr[1][1] / (expr[1][2] * expr[2]))
 			end
 			
 			-- a / (b / c) => (a * c) / b
-			if div.is(expr[2]) then
+			if div:isa(expr[2]) then
 				local a, b = table.unpack(expr)
 				local b, c = table.unpack(b)
 				return prune:apply((a * c) / b)
@@ -181,12 +181,12 @@ div.rules = {
 			do
 				local modified
 				local nums, denoms
-				if mul.is(expr[1]) then
+				if mul:isa(expr[1]) then
 					nums = table(expr[1])
 				else
 					nums = table{expr[1]}
 				end
-				if mul.is(expr[2]) then
+				if mul:isa(expr[2]) then
 					denoms = table(expr[2])
 				else
 					denoms = table{expr[2]}
@@ -198,7 +198,7 @@ div.rules = {
 					for i=1,#list do
 						local x = list[i]
 						local base, power
-						if pow.is(x) then
+						if pow:isa(x) then
 							base, power = table.unpack(x)
 						else
 							base, power = x, Constant(1)
@@ -310,7 +310,7 @@ div.rules = {
 
 			--[[ (a + b) / c => a/c + b/c ...
 			local add = require 'symmath.op.add'
-			if add.is(expr[1]) then
+			if add:isa(expr[1]) then
 				return prune:apply(add(
 					table.map(expr[1], function(x,k)
 						if type(k) ~= 'number' then return end
@@ -326,18 +326,18 @@ div.rules = {
 			-- but that screws up things elsewhere ...
 			--[[
 			-- x / x^a => x^(1-a)
-			if pow.is(expr[2]) and expr[1] == expr[2][1] then
+			if pow:isa(expr[2]) and expr[1] == expr[2][1] then
 				return prune:apply(expr[1]:clone() ^ (1 - expr[2][2]:clone()))
 			end
 			
 			-- x^a / x => x^(a-1)
-			if pow.is(expr[1]) and expr[1][1] == expr[2] then
+			if pow:isa(expr[1]) and expr[1][1] == expr[2] then
 				return prune:apply(expr[1][1]:clone() ^ (expr[1][2]:clone() - 1))
 			end
 			
 			-- x^a / x^b => x^(a-b)
-			if pow.is(expr[1])
-			and pow.is(expr[2])
+			if pow:isa(expr[1])
+			and pow:isa(expr[2])
 			and expr[1][1] == expr[2][1]
 			then
 				return prune:apply(expr[1][1]:clone() ^ (expr[1][2]:clone() - expr[2][2]:clone()))
@@ -345,7 +345,7 @@ div.rules = {
 			--]]
 		
 			--[[ TODO attempt polynomial division?  or put that in :factor()?
-			if add.is(expr[1]) then
+			if add:isa(expr[1]) then
 				local a,b = expr[1], expr[2]
 				local q = Constant(0)
 				local r = a
@@ -359,7 +359,7 @@ div.rules = {
 			do
 				local sin = require 'symmath.sin'
 				local cos = require 'symmath.cos'
-				if cos.is(expr[2]) then
+				if cos:isa(expr[2]) then
 					local inside = expr[2][1]
 					if expr[1]() == (1 - sin(inside)^2)() then
 						return cos(inside)
@@ -373,7 +373,7 @@ div.rules = {
 		{logPow = function(prune, expr)
 			local symmath = require 'symmath'
 			-- log(a) / b => log(a^(1/b))
-			if symmath.log.is(expr[1]) then
+			if symmath.log:isa(expr[1]) then
 				local a = expr[1][1]
 				local b = expr[2]
 				return prune:apply(symmath.log(a ^ (1 / b)))
@@ -387,11 +387,11 @@ div.rules = {
 			local Constant = require 'symmath.Constant'
 			
 			local a, b = table.unpack(expr)
-			local ua = unm.is(a)
-			local ub = unm.is(b)
+			local ua = unm:isa(a)
+			local ub = unm:isa(b)
 			if ua and ub then return tidy:apply(a[1] / b[1]) end
-			if ua and Constant.is(a[1]) then return tidy:apply(-(a[1] / b)) end
-			if ub and Constant.is(b[1]) then return tidy:apply(-(a / b[1])) end
+			if ua and Constant:isa(a[1]) then return tidy:apply(-(a[1] / b)) end
+			if ub and Constant:isa(b[1]) then return tidy:apply(-(a / b[1])) end
 		end},
 	},
 }

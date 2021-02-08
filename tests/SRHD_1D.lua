@@ -85,7 +85,7 @@ end):unpack())
 	:replace(vx^2,1-1/W^2)()
 	--[[ useful when not computing the ideal gas pressure
 	:replace(eInt, eInt_for_h:rhs(), function(expr)
-		return Derivative.is(expr)
+		return Derivative:isa(expr)
 	end)()
 	--]]
 	:subst(eInt_for_h_idealGas)()
@@ -111,7 +111,7 @@ end):unpack())()
 	:replace((1/W^2)^2,1/W^4)()
 	--[[ general
 	:replace(eInt, eInt_for_h:rhs(), function(expr)
-		return Derivative.is(expr)
+		return Derivative:isa(expr)
 	end)()
 	--]]
 	:subst(eInt_for_h_idealGas)()

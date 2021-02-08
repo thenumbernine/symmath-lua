@@ -35,7 +35,7 @@ local function replaceRecurse(expr, find, repl, cond)
 --print("# children left", #removed, '<br>')
 			-- bit of a hack
 			local BinaryOp = require 'symmath.op.Binary'
-			if BinaryOp.is(removed) then
+			if BinaryOp:isa(removed) then
 				if #removed == 0 then
 					expr = repl
 					replacedAll = true

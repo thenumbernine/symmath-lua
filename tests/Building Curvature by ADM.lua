@@ -45,13 +45,13 @@ io.stderr:write'Conn^a_bc,d...\n'
 local dConn = Tensor'^a_bcd'
 dConn['^a_bcd'] = Conn'^a_bc,d'()
 dConn = dConn:map(function(x)	-- replace derivatives
-	if Derivative.is(x) and x[1] == det_g then
+	if Derivative:isa(x) and x[1] == det_g then
 		return x:subst(det_g_def)()
 	end
 end)()
 -- don't substitute g's on the denominator
 dConn = dConn:map(function(x)
-	if op.div.is(x) then
+	if op.div:isa(x) then
 		return (x[1]:subst(det_g_def) / x[2])()
 	end
 end)
@@ -62,7 +62,7 @@ local ConnSq = Tensor'^a_bcd'
 ConnSq['^a_bcd'] = (Conn'^a_ec' * Conn'^e_bd')()
 -- don't substitute g's on the denominator
 ConnSq = ConnSq:map(function(x)
-	if op.div.is(x) then
+	if op.div:isa(x) then
 		return (x[1]:subst(det_g_def) / x[2])()
 	end
 end)

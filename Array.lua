@@ -31,7 +31,7 @@ function Array:init(...)
 	for i=1,#self do
 		local x = self[i]
 		assert(type(x) == 'table', "arrays can only be constructed with Expressions or tables of Expressions") 
-		if not Expression.is(x) then
+		if not Expression:isa(x) then
 			-- then assume it's meant to be a sub-array
 			self[i] = mt(table.unpack(x))
 		end
@@ -209,7 +209,7 @@ In such a case, I would want to allow variable-dimension arrays:
 function Array:dim()
 	local dim = table()
 	
-	if not Array.is(self) then return dim end
+	if not Array:isa(self) then return dim end
 
 	local rankfunc = self.rank or Array.rank
 	local rank = rankfunc(self)
@@ -248,7 +248,7 @@ function Array:dim()
 end
 
 function Array.pruneAdd(a,b)
-	if not Array.is(a) or not Array.is(b) then return end
+	if not Array:isa(a) or not Array:isa(b) then return end
 	-- else array+scalar?  nah, too ambiguous.  are you asking for adding to all elements, or just the diagonals? idk.
 	if #a ~= #b then return end
 	local result = a:clone()
@@ -308,8 +308,8 @@ local function scalarArrayMul(s,m)
 end
 
 function Array.pruneMul(lhs,rhs)
-	local lhsIsArray = Array.is(lhs)
-	local rhsIsArray = Array.is(rhs)
+	local lhsIsArray = Array:isa(lhs)
+	local rhsIsArray = Array:isa(rhs)
 	assert(lhsIsArray or rhsIsArray)
 	if lhsIsArray and rhsIsArray then
 		return matrixMatrixMul(lhs, rhs)
@@ -336,7 +336,7 @@ function Array:zeros(dims)
 	dims = range(#dims):map(function(i)
 		local x = dims[i]
 		if type(x) == 'number' then return x end
-		if Constant.is(x) then return x.value end
+		if Constant:isa(x) then return x.value end
 		return x
 	end)
 	-- assert self is Array or a subclass of Array

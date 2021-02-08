@@ -11,9 +11,9 @@ function Function:evaluateConstants()
 	local Constant = require 'symmath.Constant'
 	local complex = require 'symmath.complex'
 	for i=1,#self do
-		if Constant.is(self[i]) then
+		if Constant:isa(self[i]) then
 			self = self:shallowCopy()
-			if complex.is(self[i].value) then
+			if complex:isa(self[i].value) then
 				self[i] = Constant(self.cplxFunc(node.value))
 			else
 				self[i] = Constant(self.realFunc(node.value))

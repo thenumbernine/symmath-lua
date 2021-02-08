@@ -15,9 +15,9 @@ function RealDomain:init(start, finish, includeStart, includeFinish)
 			if m == nil or m == table then
 				table.insert(self, RealInterval(table.unpack(entry)))
 			else
-				if RealInterval.is(entry) then
+				if RealInterval:isa(entry) then
 					table.insert(self, entry:clone())
-				elseif RealDomain.is(entry) then
+				elseif RealDomain:isa(entry) then
 					for j,interval in ipairs(entry) do
 						table.insert(self, interval:clone())
 					end
@@ -105,11 +105,11 @@ function RealDomain:containsVariable(x)
 end
 
 function RealDomain:intersects(set)
-	if RealInterval.is(set) then	
+	if RealInterval:isa(set) then	
 		for _,selfi in ipairs(self) do
 			if selfi:intersects(set) then return true end
 		end
-	elseif RealDomain.is(set) then
+	elseif RealDomain:isa(set) then
 		for _,seti in ipairs(set) do
 			if self:intersects(seti) then return true end
 		end
@@ -117,7 +117,7 @@ function RealDomain:intersects(set)
 end
 
 function RealDomain:containsSet(set)
-	if RealInterval.is(set) then
+	if RealInterval:isa(set) then
 		-- if any of self's intervals contains 'set' then return true
 		local gotfalse
 		for _,selfI in ipairs(self) do
@@ -126,7 +126,7 @@ function RealDomain:containsSet(set)
 			if selfIcontains == false then gotfalse = false end
 		end
 		return gotfalse
-	elseif RealDomain.is(set) then
+	elseif RealDomain:isa(set) then
 		-- if all of set's intervals are contained within this interval then return true
 		for _,setI in ipairs(set) do
 			local containsI = self:contains(setI)

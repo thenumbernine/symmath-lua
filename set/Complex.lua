@@ -14,7 +14,7 @@ end
 
 function Complex:containsVariable(x)
 	if Complex.super.containsVariable(self, x) == false then return false end
-	if complex.is(x.value) then return true end
+	if complex:isa(x.value) then return true end
 end
 
 function Complex:containsElement(x)
@@ -22,8 +22,8 @@ function Complex:containsElement(x)
 	if self:containsVariable(x) then return true end
 
 	-- right now Constant is either symmath.complex or Lua number.
-	if Constant.is(x) then return true end
-	if complex.is(x) then return true end
+	if Constant:isa(x) then return true end
+	if complex:isa(x) then return true end
 
 	if require 'symmath.set.sets'.real:contains(x) then return true end
 end

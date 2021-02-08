@@ -42,7 +42,7 @@ unm.rules = {
 
 	Prune = {
 		{apply = function(prune, expr)
-			if unm.is(expr[1]) then
+			if unm:isa(expr[1]) then
 				return prune:apply(expr[1][1]:clone())
 			end
 			return prune:apply(-1 * expr[1])
@@ -54,12 +54,12 @@ unm.rules = {
 			local add = require 'symmath.op.add'
 			
 			-- --x => x
-			if unm.is(expr[1]) then
+			if unm:isa(expr[1]) then
 				return tidy:apply(expr[1][1])
 			end
 			
 			-- distribute through addition/subtraction
-			if add.is(expr[1]) then
+			if add:isa(expr[1]) then
 				return add(table.map(expr[1], function(x,k) 
 					if type(k) ~= 'number' then return end
 					return -x

@@ -124,29 +124,29 @@ sin.rules = {
 			local theta = expr[1]
 
 			-- sin(-x) = -sin(x)
-			if unm.is(theta) then
+			if unm:isa(theta) then
 				return -sin(theta[1])
 			end
 			
 			-- sin(pi) => 0
 			if theta == symmath.pi then return Constant(0) end
 
-			if Constant.is(theta) then
+			if Constant:isa(theta) then
 				-- sin(0) => 0
 				if theta.value == 0 then return Constant(0) end
 			
 				-- sin(-c) = -sin(c)
 				if theta.value < 0 then return -sin(Constant(-theta.value)) end
-			elseif mul.is(theta) then
+			elseif mul:isa(theta) then
 				if #theta == 2 
 				and theta[2] == symmath.pi 
 				then
 					-- sin(k * pi) => 0
-					if Constant.is(theta[1]) then return Constant(0) end
+					if Constant:isa(theta[1]) then return Constant(0) end
 				end
 			
 				-- sin(-c x y z) => -sin(c x y z)
-				if Constant.is(theta[1])
+				if Constant:isa(theta[1])
 				and theta[1].value < 0
 				then
 					local mulArgs = range(#theta):map(function(i)
@@ -156,7 +156,7 @@ sin.rules = {
 					local rest = #mulArgs == 1 and mulArgs[1] or mul(mulArgs:unpack()) 
 					return prune:apply(c == 1 and -sin(rest) or -sin(c * rest))
 				end
-			elseif div.is(theta) then
+			elseif div:isa(theta) then
 				local function handleFrac(p,q)
 					p = p % (2 * q)
 				
@@ -185,7 +185,7 @@ sin.rules = {
 					end
 				end
 				
-				if Constant.is(theta[2])
+				if Constant:isa(theta[2])
 				and symmath.set.integer:contains(theta[2])
 				then
 					local q = theta[2].value
@@ -195,9 +195,9 @@ sin.rules = {
 						if result then return result end
 					else
 						-- cos((k * pi) / q)
-						if mul.is(theta[1])
+						if mul:isa(theta[1])
 						and #theta[1] == 2
-						and Constant.is(theta[1][1])
+						and Constant:isa(theta[1][1])
 						and symmath.set.integer:contains(theta[1][1])
 						and theta[1][2] == symmath.pi
 						then

@@ -19,7 +19,7 @@ end
 
 function mul:flatten()
 	for i=#self,1,-1 do
-		if mul.is(self[i]) then
+		if mul:isa(self[i]) then
 			local x = table.remove(self, i)
 			for j=#x,1,-1 do
 				table.insert(self, i, x[j]:clone())
@@ -32,7 +32,7 @@ end
 function mul:flattenAndClone()
 	for i=#self,1,-1 do
 		local ch = self[i]
-		if mul.is(ch) then
+		if mul:isa(ch) then
 			local expr = {table.unpack(self)}
 			table.remove(expr, i)
 			for j=#ch,1,-1 do
@@ -46,7 +46,7 @@ end
 
 function mul:isFlattened()
 	for i,ch in ipairs(self) do
-		if mul.is(ch) then return false end
+		if mul:isa(ch) then return false end
 	end
 	return true
 end
@@ -93,7 +93,7 @@ local Verbose = require 'symmath.export.Verbose'
 	matches = matches or table()
 	-- if 'b' is a mul then fall through
 	-- this part is only for wildcard matching of the whole expression
-	if not mul.is(b)	-- if the wildcard is a mul then we want to test it here
+	if not mul:isa(b)	-- if the wildcard is a mul then we want to test it here
 	and b.wildcardMatches
 	then
 		if not b:wildcardMatches(a, matches) then return false end
@@ -117,7 +117,7 @@ local Verbose = require 'symmath.export.Verbose'
 			local j
 			for _j=1,#b do
 				local bj = b[_j]
-				if not Wildcard.is(bj)
+				if not Wildcard:isa(bj)
 				-- if bj does match then this will fill in the appropriate match and return 'true'
 				-- if it fails to match then it won't fill in the match and will return false
 				and ai:match(bj, matches)
@@ -169,7 +169,7 @@ local tab = (' '):rep(indent)
 		if #a == 0 and #b ~= 0 then
 			-- TODO verify that the matches are equal
 			for _,bi in ipairs(b) do
-				if not Wildcard.is(bi) then
+				if not Wildcard:isa(bi) then
 --print(tab.."expected bi to be a Wildcard, found "..SingleLine(bi))
 					return false
 				end
@@ -188,7 +188,7 @@ local tab = (' '):rep(indent)
 				end
 			end
 		end
-		if not Wildcard.is(b[1]) then
+		if not Wildcard:isa(b[1]) then
 			local a1 = a:remove(1)
 			local b1 = b:remove(1)
 
@@ -328,7 +328,7 @@ local Verbose = require 'symmath.export.Verbose'
 	for _,w in ipairs(self) do
 		-- TODO what about when add/mul have no sub-wildcards?
 		if w.wildcardMatches
-		and find(w, function(x) return Wildcard.is(x) end)
+		and find(w, function(x) return Wildcard:isa(x) end)
 		then
 			wildcards:insert(w)
 		else
@@ -426,10 +426,10 @@ local Verbose = require 'symmath.export.Verbose'
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
 --print("mul.wildcardMatches: comparing lhs "..Verbose(cmpExpr))
-			if mul.is(w) then
+			if mul:isa(w) then
 				error"match() doesn't work with unflattened mul's"
-			elseif Wildcard.is(w)
-			or add.is(w)
+			elseif Wildcard:isa(w)
+			or add:isa(w)
 			then
 				-- check before going through with it
 				if not cmpExpr:match(w, table(matches)) then
@@ -442,16 +442,16 @@ local Verbose = require 'symmath.export.Verbose'
 		-- finally set all matches to zero and return 'true'
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
-			if Wildcard.is(w) then
+			if Wildcard:isa(w) then
 --print('mul.wildcardMatches setting index '..w.index..' to '..require 'symmath.export.SingleLine'(i == 1 and matchExpr or defaultValue))
 				-- write matches.  should already be true.
 				cmpExpr:match(w, matches)
 				--matches[w.index] = cmpExpr
-			elseif add.is(w) then
+			elseif add:isa(w) then
 				-- use the state this time, so it does modify "matches"
 				cmpExpr:match(w, matches)
 			-- elseif mul.is shouldn't happen if all muls are flattened upon construction
-			elseif mul.is(w) then
+			elseif mul:isa(w) then
 				error"match() doesn't work with unflattened mul's"
 			end
 		end
@@ -501,7 +501,7 @@ function mul:distribute()
 	local add = require 'symmath.op.add'
 	local sub = require 'symmath.op.sub'
 	for i,ch in ipairs(self) do
-		if add.is(ch) or sub.is(ch) then
+		if add:isa(ch) or sub:isa(ch) then
 			local terms = table()
 			for j,chch in ipairs(ch) do
 				local term = self:clone()
@@ -553,9 +553,9 @@ mul.rules = {
 
 			-- push all fractions to the left
 			for i=#expr,2,-1 do
-				if div.is(expr[i])
-				and Constant.is(expr[i][1])
-				and Constant.is(expr[i][2])
+				if div:isa(expr[i])
+				and Constant:isa(expr[i][1])
+				and Constant:isa(expr[i][2])
 				then
 					table.insert(expr, 1, table.remove(expr, i))
 				end
@@ -564,7 +564,7 @@ mul.rules = {
 			-- push all Constants to the lhs, sum as we go
 			local cval = 1
 			for i=#expr,1,-1 do
-				if Constant.is(expr[i]) then
+				if Constant:isa(expr[i]) then
 					cval = cval * table.remove(expr, i).value
 				end
 			end
@@ -607,7 +607,7 @@ mul.rules = {
 				local unmCount = 0
 				for i=1,#expr do
 					local ch = expr[i]
-					if unm.is(ch) then
+					if unm:isa(ch) then
 						unmCount = unmCount + 1
 						expr[i] = ch[1]
 					end
@@ -622,9 +622,9 @@ mul.rules = {
 
 			-- push all fractions to the left
 			for i=#expr,2,-1 do
-				if div.is(expr[i])
-				and Constant.is(expr[i][1])
-				and Constant.is(expr[i][2])
+				if div:isa(expr[i])
+				and Constant:isa(expr[i][1])
+				and Constant:isa(expr[i][2])
 				then
 					table.insert(expr, 1, table.remove(expr, i))
 				end
@@ -655,7 +655,7 @@ mul.rules = {
 			-- push all Constants to the lhs, sum as we go
 			local cval = 1
 			for i=#expr,1,-1 do
-				if Constant.is(expr[i]) then
+				if Constant:isa(expr[i]) then
 					cval = cval * table.remove(expr, i).value
 				end
 			end
@@ -682,13 +682,13 @@ mul.rules = {
 			local TensorRef = require 'symmath.tensor.TensorRef'
 			local function compare(a, b) 
 				-- Constant
-				local ca, cb = Constant.is(a), Constant.is(b)
+				local ca, cb = Constant:isa(a), Constant:isa(b)
 				if ca and not cb then return true end
 				if cb and not ca then return false end
 				if ca and cb then return a.value < b.value end
 				-- div-of-Constants
-				local fa = div.is(a) and Constant.is(a[1]) and Constant.is(a[2])
-				local fb = div.is(b) and Constant.is(b[1]) and Constant.is(b[2])
+				local fa = div:isa(a) and Constant:isa(a[1]) and Constant:isa(a[2])
+				local fb = div:isa(b) and Constant:isa(b[1]) and Constant:isa(b[2])
 				if fa and not fb then return true end
 				if fb and not fa then return false end
 				if fa and fb then
@@ -699,13 +699,13 @@ mul.rules = {
 					return	-- a == b
 				end
 				-- Variable
-				local va, vb = Variable.is(a), Variable.is(b)
+				local va, vb = Variable:isa(a), Variable:isa(b)
 				if va and not vb then return true end
 				if vb and not va then return false end
 				if va and vb then return a.name < b.name end
 				-- TensorRef-of-Variable
-				local ta = TensorRef.is(a) and Variable.is(a[1])
-				local tb = TensorRef.is(b) and Variable.is(b[1])
+				local ta = TensorRef:isa(a) and Variable:isa(a[1])
+				local tb = TensorRef:isa(b) and Variable:isa(b[1])
 				if ta and not tb then return true end
 				if tb and not ta then return false end
 				if ta and tb then 
@@ -724,8 +724,8 @@ mul.rules = {
 					return -- a == b
 				end
 				-- pow
-				local pa = pow.is(a)
-				local pb = pow.is(b)
+				local pa = pow:isa(a)
+				local pb = pow:isa(b)
 				if pa and not pb then return true end
 				if pb and not pa then return false end
 				if pa and pb then
@@ -752,7 +752,7 @@ mul.rules = {
 					local x = expr[i]
 					local base
 					local power
-					if pow.is(x) then
+					if pow:isa(x) then
 						base = x[1]
 						power = x[2]
 					else
@@ -766,7 +766,7 @@ mul.rules = {
 							local x2 = expr[j]
 							local base2
 							local power2
-							if pow.is(x2) then
+							if pow:isa(x2) then
 								base2 = x2[1]
 								power2 = x2[2]
 							else
@@ -812,10 +812,10 @@ mul.rules = {
 					local power = Constant(1)
 					local denom = Constant(1)
 
-					if pow.is(base) then
+					if pow:isa(base) then
 						base, power = table.unpack(base)
 					end
-					if div.is(base) then
+					if div:isa(base) then
 						base, denom = table.unpack(base)
 					end
 					if not Constant.isValue(denom, 1) then
@@ -885,7 +885,7 @@ mul.rules = {
 			-- but I would like to keep -1 * log(y) => log(y^-1)
 			-- so I'll make a separate rule for that ...
 			for i=1,#expr do
-				if symmath.log.is(expr[i]) then
+				if symmath.log:isa(expr[i]) then
 					expr = expr:clone()
 					local a = table.remove(expr,i)
 					if #expr == 1 then expr = expr[1] end
@@ -899,7 +899,7 @@ mul.rules = {
 			-- -1*log(a) => log(1/a)
 			if #expr == 2
 			and expr[1] == symmath.Constant(-1)
-			and symmath.log.is(expr[2])
+			and symmath.log:isa(expr[2])
 			then
 				return prune:apply(symmath.log(1/expr[2][1]))
 			end	
@@ -917,7 +917,7 @@ mul.rules = {
 				local unmCount = 0
 				for i=1,#expr do
 					local ch = expr[i]
-					if unm.is(ch) then
+					if unm:isa(ch) then
 						unmCount = unmCount + 1
 						expr[i] = ch[1]
 					end
@@ -933,7 +933,7 @@ mul.rules = {
 			-- (has to be solved post-prune() because tidy's Constant+unm will have made some new ones)
 			-- 1 * x => x 	
 			local first = expr[1]
-			if Constant.is(first) and first.value == 1 then
+			if Constant:isa(first) and first.value == 1 then
 				table.remove(expr, 1)
 				if #expr == 1 then
 					expr = expr[1]

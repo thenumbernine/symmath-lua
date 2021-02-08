@@ -34,7 +34,7 @@ function env.assertIndexesUsed(expr, ft, st)
 		{s, st},
 	} do 
 		local indexes, t = table.unpack(info)
-		if Variable.is(t) then
+		if Variable:isa(t) then
 			if #indexes ~= 0 then
 				error(t.." expected no indexes, but found "..tolua(indexes))
 			end

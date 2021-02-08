@@ -6,7 +6,7 @@ return function(self, expr)
 	local clone = self:clone()
 
 	local exprs
-	if not getmetatable(self).is(expr) then
+	if not getmetatable(self):isa(expr) then
 		exprs = {expr}
 	else
 		exprs = expr

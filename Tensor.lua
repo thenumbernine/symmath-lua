@@ -93,7 +93,7 @@ function Tensor.coords(newCoords)
 		Tensor.__coordBasis = newCoords
 		for i=1,#Tensor.__coordBasis do
 			assert(type(Tensor.__coordBasis[i]) == 'table')
-			if not TensorCoordBasis.is(Tensor.__coordBasis[i]) then
+			if not TensorCoordBasis:isa(Tensor.__coordBasis[i]) then
 				Tensor.__coordBasis[i] = TensorCoordBasis(Tensor.__coordBasis[i])
 			end
 		end
@@ -231,7 +231,7 @@ function Tensor:init(...)
 			assert(type(dim) == 'table')
 			dim = range(#dim):map(function(i)
 				local di = dim[i]
-				if Constant.is(di) then di = di.value end
+				if Constant:isa(di) then di = di.value end
 				assert(type(di) == 'number')
 				return di
 			end)
@@ -275,7 +275,7 @@ function Tensor:init(...)
 		-- got a string of indexes
 		if type(args[1]) == 'string'	
 		-- got an array of TensorIndexes
-		or (type(args[1]) == 'table' and TensorIndex.is(args[1][1]))
+		or (type(args[1]) == 'table' and TensorIndex:isa(args[1][1]))
 		then
 			
 			local indexes = table.remove(args, 1)
@@ -299,7 +299,7 @@ function Tensor:init(...)
 				for i=1,#self do
 					local x = self[i]
 					assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions") 
-					if not Expression.is(x) then
+					if not Expression:isa(x) then
 						-- then assume it's meant to be a sub-tensor
 						x = Tensor(subVariance, table.unpack(x))
 						self[i] = x
@@ -338,7 +338,7 @@ function Tensor:init(...)
 			for i=1,#self do
 				local x = self[i]
 				assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions") 
-				if not Expression.is(x) then
+				if not Expression:isa(x) then
 					-- then assume it's meant to be a sub-tensor
 					x = Tensor(table.unpack(x))
 					self[i] = x
@@ -352,7 +352,7 @@ function Tensor:init(...)
 		for index,_ in self:iter() do
 			if type(valueCallback) == 'function' then
 				self[index] = clone(valueCallback(table.unpack(index)))
-			elseif Array.is(valueCallback) then
+			elseif Array:isa(valueCallback) then
 				self[index] = clone(valueCallback[index])
 			end
 		end
@@ -479,7 +479,7 @@ function Tensor:simplifyTraces()
 			for j=i+1,#self.variance do
 				if self.variance[i].symbol == self.variance[j].symbol then
 					self = self:trace(i,j):contraction(i)
-					if not Tensor.is(self) then
+					if not Tensor:isa(self) then
 						return self:simplify()	-- if it's a scalar then return
 					end
 					modified = true
@@ -561,8 +561,8 @@ function Tensor.metric(metric, metricInverse, symbol)
 		a,b = 'a','b'
 	end
 	assert(a and b and #a>0 and #b>0)
-	if not Tensor.is(basis.metric) then basis.metric = Tensor{indexes={'_'..a, '_'..b}, values=basis.metric} end
-	if not Tensor.is(basis.metricInverse) then basis.metricInverse = Tensor{indexes={'^'..a, '^'..b}, values=basis.metricInverse} end
+	if not Tensor:isa(basis.metric) then basis.metric = Tensor{indexes={'_'..a, '_'..b}, values=basis.metric} end
+	if not Tensor:isa(basis.metricInverse) then basis.metricInverse = Tensor{indexes={'^'..a, '^'..b}, values=basis.metricInverse} end
 	return basis
 end
 
@@ -719,7 +719,7 @@ Tensor.__newindex = function(self, key, value)
 
 		-- if we're assigning a non-tensor to a tensor
 		-- then implicitly wrap it in a tensor
-		if not Tensor.is(value) then
+		if not Tensor:isa(value) then
 			local clone = require 'symmath.clone'
 			value = Tensor(dstVariance, function(...) return clone(value) end)
 		end
@@ -804,7 +804,7 @@ Tensor.__newindex = function(self, key, value)
 		end
 
 		-- simplify any expressions ... automatically here?
-		--if not Tensor.is(value) then value = value:simplify() end
+		--if not Tensor:isa(value) then value = value:simplify() end
 
 		-- permute the indexes of the value to match the source
 		-- TODO no need to permute it if the index is entirely variables/numbers, such that the assignment is to a single element in the tensor
@@ -883,7 +883,7 @@ Tensor.__newindex = function(self, key, value)
 end
 
 function Tensor.pruneAdd(lhs,rhs)
-	if not Tensor.is(lhs) or not Tensor.is(rhs) then return end
+	if not Tensor:isa(lhs) or not Tensor:isa(rhs) then return end
 
 	-- reorganize the elements of rhs so the letters match lhs 
 	rhs = rhs:permute(lhs.variance)
@@ -903,10 +903,10 @@ end
 function Tensor.pruneMul(lhs, rhs)
 	local Array = require 'symmath.Array'
 	local table = require 'ext.table'
-	local lhsIsArray = Array.is(lhs)
-	local rhsIsArray = Array.is(rhs)
-	local lhsIsTensor = Tensor.is(lhs)
-	local rhsIsTensor = Tensor.is(rhs)
+	local lhsIsArray = Array:isa(lhs)
+	local rhsIsArray = Array:isa(rhs)
+	local lhsIsTensor = Tensor:isa(lhs)
+	local rhsIsTensor = Tensor:isa(rhs)
 	local lhsIsScalar = not lhsIsTensor and not lhsIsArray
 	local rhsIsScalar = not rhsIsTensor and not rhsIsArray
 	assert(lhsIsTensor or rhsIsTensor)

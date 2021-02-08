@@ -103,7 +103,7 @@ for dim=2,5 do
 
 		local uVal = expr:replace(xHat, Matrix( range(dim):mapi(function(i) return i==1 and r or 0 end) ):T())
 		uVal = uVal:map(function(x)
-			if RotFunc.is(x) then
+			if RotFunc:isa(x) then
 				local param = x[1]
 				return rotMats[x.i][x.j]:replace(phi, param)
 			end

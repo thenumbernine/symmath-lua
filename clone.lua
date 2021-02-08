@@ -7,7 +7,7 @@ return function(obj, ...)
 	if type(obj) ~= 'table' then return obj end
 	
 	local Expression = require 'symmath.Expression'
-	if Expression.is(obj) then return obj:clone() end
+	if Expression:isa(obj) then return obj:clone() end
 	
 	return obj
 end

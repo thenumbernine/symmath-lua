@@ -65,7 +65,7 @@ function GnuPlot:plot(args)
 	-- TODO accept *all* vars used, and define vars in gnuplot before producing the plot command
 	for i,arg in ipairs(args) do
 		local expr = arg[1]
-		if Expression.is(expr) then
+		if Expression:isa(expr) then
 			local x = arg.x or var'x' arg.x = nil
 			args[i][1] = self:apply(expr:replace(x, var'x'))
 		end

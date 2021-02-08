@@ -271,8 +271,8 @@ if RicciFromManualMetric then
 	printbr'manual metric Gaussian -- equal to zero according to EM stress-energy trace:'
 	printbr(Constant(0):eq(GaussianFromMetric))
 	local iszero = GaussianFromMetric
-	if symmath.op.div.is(iszero) then iszero = iszero[1] end
-	if symmath.op.unm.is(iszero) then iszero = iszero[1] end
+	if symmath.op.div:isa(iszero) then iszero = iszero[1] end
+	if symmath.op.unm:isa(iszero) then iszero = iszero[1] end
 	printbr(iszero:eq(0))
 	printbr()
 end

@@ -21,7 +21,7 @@ end
 -- in-place flatten
 function add:flatten()
 	for i=#self,1,-1 do
-		if add.is(self[i]) then
+		if add:isa(self[i]) then
 			local x = table.remove(self, i)
 			for j=#x,1,-1 do
 				table.insert(self, i, x[j]:clone())
@@ -33,7 +33,7 @@ end
 
 function add:isFlattened()
 	for i,ch in ipairs(self) do
-		if add.is(ch) then return false end
+		if add:isa(ch) then return false end
 	end
 	return true
 end
@@ -72,7 +72,7 @@ function add.match(a, b, matches)
 	matches = matches or table()
 	-- if 'b' is an add then fall through
 	-- this part is only for wildcard matching of the whole expression
-	if not add.is(b) 	-- if the wildcard is an add then we want to test it here
+	if not add:isa(b) 	-- if the wildcard is an add then we want to test it here
 	and b.wildcardMatches
 	then
 		if not b:wildcardMatches(a, matches) then return false end
@@ -96,7 +96,7 @@ function add.match(a, b, matches)
 			local j
 			for _j=1,#b do
 				local bj = b[_j]
-				if not Wildcard.is(bj)
+				if not Wildcard:isa(bj)
 				-- if bj does match then this will fill in the appropriate match and return 'true'
 				-- if it fails to match then it won't fill in the match and will return false
 				and ai:match(bj, matches)
@@ -148,7 +148,7 @@ local tab = (' '):rep(indent)
 		if #a == 0 and #b ~= 0 then
 			-- TODO verify that the matches are equal
 			for _,bi in ipairs(b) do
-				if not Wildcard.is(bi) then
+				if not Wildcard:isa(bi) then
 --print(tab.."expected bi to be a Wildcard, found "..SingleLine(bi))
 					return false
 				end
@@ -167,7 +167,7 @@ local tab = (' '):rep(indent)
 				end
 			end
 		end
-		if not Wildcard.is(b[1]) then
+		if not Wildcard:isa(b[1]) then
 			local a1 = a:remove(1)
 			local b1 = b:remove(1)
 
@@ -319,7 +319,7 @@ function add:wildcardMatches(a, matches)
 	for _,w in ipairs(self) do
 		-- TODO what about when add/mul have no sub-wildcards?
 		if w.wildcardMatches
-		and find(w, function(x) return Wildcard.is(x) end)
+		and find(w, function(x) return Wildcard:isa(x) end)
 		then
 			wildcards:insert(w)
 		else
@@ -388,10 +388,10 @@ function add:wildcardMatches(a, matches)
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
 --print("add.wildcardMatches: comparing lhs "..Verbose(cmpExpr))
-			if add.is(w) then
+			if add:isa(w) then
 				error"match() doesn't work with unflattened add's"
-			elseif Wildcard.is(w)
-			or mul.is(w)
+			elseif Wildcard:isa(w)
+			or mul:isa(w)
 			then
 				-- check before going through with it
 				if not cmpExpr:match(w, table(matches)) then
@@ -404,16 +404,16 @@ function add:wildcardMatches(a, matches)
 		-- finally set all matches to zero and return 'true'
 		for i,w in ipairs(wildcards) do
 			local cmpExpr = i == 1 and matchExpr or defaultValue
-			if Wildcard.is(w) then
+			if Wildcard:isa(w) then
 --print('add.wildcardMatches setting index '..w.index..' to '..SingleLine(i == 1 and matchExpr or defaultValue))
 				-- write matches.  should already be true.
 				assert(cmpExpr:match(w, matches))
 				--matches[w.index] = cmpExpr
-			elseif mul.is(w) then
+			elseif mul:isa(w) then
 				-- use the state this time, so it does modify "matches"
 				assert(cmpExpr:match(w, matches))
 			-- elseif add.is shouldn't happen if all adds are flattened upon construction
-			elseif add.is(w) then
+			elseif add:isa(w) then
 				error"match() doesn't work with unflattened add's"
 			end
 		end
@@ -515,7 +515,7 @@ function ProdList:isSquare()
 	for i,pi in ipairs(self) do
 		if 
 		-- [[ exclude any constants, especially the -1's
-		Constant.is(pi.term)
+		Constant:isa(pi.term)
 		--]]
 		--[[ if power is 1 then treat 1^1 as an even power (i.e. anything^0)
 		(
@@ -524,7 +524,7 @@ function ProdList:isSquare()
 		) 
 		--]]
 		or (
-			Constant.is(pi.power)
+			Constant:isa(pi.power)
 			-- TODO positiveEvenInteger:contains
 			and symmath.set.evenInteger:contains(pi.power)
 			and pi.power.value > 0	-- I don't think any power==0's exist at this point
@@ -548,7 +548,7 @@ function getProductList(x)
 
 	-- get products or individual terms
 	local prodList
-	if mul.is(x) then
+	if mul:isa(x) then
 		prodList = table(x)
 	else
 		prodList = table{x}
@@ -556,7 +556,7 @@ function getProductList(x)
 	
 	-- pick out any exponents in any of the products
 	prodList = prodList:mapi(function(ch)
-		if pow.is(ch) then
+		if pow:isa(ch) then
 			return ProdTerm{
 				term = ch[1],
 				power = assert(ch[2]),
@@ -571,7 +571,7 @@ function getProductList(x)
 
 	local newProdList = ProdList()
 	for k,x in ipairs(prodList) do
-		if Constant.is(x.term) then
+		if Constant:isa(x.term) then
 			local c = x.term.value
 			if c == 1 then
 				-- do nothing -- remove any 1's
@@ -639,9 +639,9 @@ function ProdLists:sort()
 	local Verbose = require 'symmath.export.Verbose'
 	local function sortstr(list)
 		if #list == 0 then return '' end
-		if #list == 1 and Constant.is(list[1].term) then return '' end
+		if #list == 1 and Constant:isa(list[1].term) then return '' end
 		return table.mapi(list, function(x,_,t)
-			if Constant.is(x.term) then return end
+			if Constant:isa(x.term) then return end
 			return Verbose(x.term), #t+1
 		end):concat(',')
 	end
@@ -714,12 +714,12 @@ add.rules = {
 			--]]
 			-- [[ searching expr 
 			if #expr == 2 then
-				if symmath.op.pow.is(expr[1])
+				if symmath.op.pow:isa(expr[1])
 				and symmath.set.evenInteger:contains(expr[1][2])
-				and symmath.op.mul.is(expr[2])
+				and symmath.op.mul:isa(expr[2])
 				and #expr[2] == 2
 				and Constant.isValue(expr[2][1], -1)
-				and symmath.op.pow.is(expr[2][2])
+				and symmath.op.pow:isa(expr[2][2])
 				and symmath.set.evenInteger:contains(expr[2][2][2])
 				then
 					local a = (expr[1][1] ^ (expr[1][2]/2))
@@ -731,7 +731,7 @@ add.rules = {
 			--]]
 			-- [[ this is duplicated in sqrt.Prune
 			local function isSquarePow(x)
-				return pow.is(x) and Constant.isValue(x[2], 2)
+				return pow:isa(x) and Constant.isValue(x[2], 2)
 			end
 			if #expr == 3 then
 				local squares = table()
@@ -771,7 +771,7 @@ add.rules = {
 					--if expr[i] has a leading negative constant
 					#prodLists[i] > 0
 				-- [[ old - expect a leading constant
-				and Constant.is(prodLists[i][1].term) 
+				and Constant:isa(prodLists[i][1].term) 
 				and prodLists[i][1].term.value < 0 
 				--]]
 				--[[ new - look through all constants
@@ -834,7 +834,7 @@ add.rules = {
 				for i=1,#prodLists do
 					for j=1,#prodLists[i] do
 						if prodLists[i][j].term == minProd then
-							if Constant.is(prodLists[i][j].power) then
+							if Constant:isa(prodLists[i][j].power) then
 								if minPower == nil then
 									minPower = prodLists[i][j].power.value
 								else
@@ -918,7 +918,7 @@ add.rules = {
 			-- (x + y) + z => x + y + z
 			for i=#expr,1,-1 do
 				local ch = expr[i]
-				if add.is(ch) then
+				if add:isa(ch) then
 					expr = expr:clone()
 					-- this looks like a job for splice ...
 					table.remove(expr, i)
@@ -935,7 +935,7 @@ add.rules = {
 			-- (x + y) + z => x + y + z
 			local flattenArgs
 			for i,ch in ipairs(expr) do
-				if add.is(ch) then
+				if add:isa(ch) then
 					if not flattenArgs then
 						flattenArgs = table.sub(expr, 1, i-1)
 					end
@@ -960,7 +960,7 @@ add.rules = {
 			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
 			local cval = 0
 			for i=#expr,1,-1 do
-				if Constant.is(expr[i]) then
+				if Constant:isa(expr[i]) then
 					cval = cval + table.remove(expr, i).value
 				end
 			end
@@ -987,7 +987,7 @@ add.rules = {
 			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
 			local cval = 0
 			for i=#expr,1,-1 do
-				if Constant.is(expr[i]) then
+				if Constant:isa(expr[i]) then
 					expr = expr:shallowCopy()
 					cval = cval + table.remove(expr, i).value
 				end
@@ -1015,7 +1015,7 @@ add.rules = {
 			local needToRearrangeConsts = Constant.isValue(expr[i], 0)
 			if not needToRearrangeConsts then
 				for i=2,#expr do
-					if Constant.is(expr[i]) then
+					if Constant:isa(expr[i]) then
 						needToRearrangeConsts = true
 						break
 					end
@@ -1025,7 +1025,7 @@ add.rules = {
 				local cval = 0
 				local result = table()
 				for i,x in ipairs(expr) do
-					if Constant.is(x) then
+					if Constant:isa(x) then
 						cval = cval + x.value
 					else
 						result:insert(x)
@@ -1116,7 +1116,7 @@ add.rules = {
 				local muls = table()
 				local nonMuls = table()
 				for i,x in ipairs(expr) do
-					if mul.is(x) then
+					if mul:isa(x) then
 						muls:insert(x)
 					else
 						nonMuls:insert(x)
@@ -1129,7 +1129,7 @@ add.rules = {
 					for _,mul in ipairs(muls) do
 						local nonConstTerms = table.filter(mul, function(x,k) 
 							if type(k) ~= 'number' then return end
-							return not Constant.is(x)
+							return not Constant:isa(x)
 						end)
 						if not baseTerms then
 							baseTerms = nonConstTerms
@@ -1141,7 +1141,7 @@ add.rules = {
 						end
 						local constTerms = table.filter(mul, function(x,k) 
 							if type(k) ~= 'number' then return end
-							return Constant.is(x)
+							return Constant:isa(x)
 						end)
 
 						local thisConst = 1
@@ -1187,7 +1187,7 @@ add.rules = {
 			for i=1,#expr-1 do
 				local xI = expr[i]
 				local termsI
-				if mul.is(xI) then
+				if mul:isa(xI) then
 					termsI = table(xI)
 				else
 					termsI = table{xI}
@@ -1195,7 +1195,7 @@ add.rules = {
 				for j=i+1,#expr do
 					local xJ = expr[j]
 					local termsJ
-					if mul.is(xJ) then
+					if mul:isa(xJ) then
 						termsJ = table(xJ)
 					else
 						termsJ = table{xJ}
@@ -1208,7 +1208,7 @@ add.rules = {
 					local constI
 					for _,ch in ipairs(termsI) do
 						if not termsJ:find(ch) then
-							if Constant.is(ch) then
+							if Constant:isa(ch) then
 								if not constI then
 									constI = Constant(ch.value)
 								else
@@ -1228,7 +1228,7 @@ add.rules = {
 					if not fail then
 						for _,ch in ipairs(termsJ) do
 							if not termsI:find(ch) then
-								if Constant.is(ch) then
+								if Constant:isa(ch) then
 									if not constJ then
 										constJ = Constant(ch.value)
 									else
@@ -1266,7 +1266,7 @@ add.rules = {
 			local denom
 			local denomIndex
 			for i,x in ipairs(expr) do
-				if not div.is(x) then
+				if not div:isa(x) then
 					denom = nil
 					break
 				else
@@ -1289,7 +1289,7 @@ add.rules = {
 
 			--[[ divs: c + a/b => (c * b + a) / b
 			for i,x in ipairs(expr) do
-				if div.is(x) then
+				if div:isa(x) then
 					assert(#x == 2)
 					local a,b = table.unpack(x)
 					expr = expr:shallowCopy()
@@ -1305,13 +1305,13 @@ add.rules = {
 			-- much faster when you remove the final prune:apply() (5s vs 60s) but doesn't seem to finish simplifying all cases 
 			local denom
 			for i,x in ipairs(expr) do
-				if div.is(x) then
+				if div:isa(x) then
 					local xdenom = x[2]
 					denom = denom and (denom * xdenom) or xdenom
 					expr[i] = x[1]
 					for j,y in ipairs(expr) do
 						if j ~= i then
-							if div.is(expr[j]) then
+							if div:isa(expr[j]) then
 								expr[j][1] = expr[j][1] * xdenom
 							else
 								expr[j] = expr[j] * xdenom
@@ -1349,11 +1349,11 @@ add.rules = {
 					local cosIndex, sinIndex
 					for i,x in ipairs(ch) do
 						
-						if pow.is(x)
-						and Function.is(x[1])
+						if pow:isa(x)
+						and Function:isa(x[1])
 						and Constant.isValue(x[2], 2)
 						then
-							if cos.is(x[1]) then
+							if cos:isa(x[1]) then
 								if sinAngle then
 									if sinAngle == x[1][1] then
 										-- then remove sine and cosine and replace with a '1' and set modified
@@ -1366,7 +1366,7 @@ add.rules = {
 									cosIndex = i
 									cosAngle = x[1][1]
 								end
-							elseif sin.is(x[1]) then
+							elseif sin:isa(x[1]) then
 								if cosAngle then
 									if cosAngle == x[1][1] then
 										table.remove(expr, i)
@@ -1393,7 +1393,7 @@ add.rules = {
 					-- how about only using it if we find a cos or a sin in our tree?
 					local foundTrig = false
 					require 'symmath.map'(expr, function(node)
-						if cos.is(node) or sin.is(node) then
+						if cos:isa(node) or sin:isa(node) then
 							foundTrig = true
 						end
 					end)
@@ -1414,9 +1414,9 @@ add.rules = {
 				end	
 				--]]
 				--[[ 
-				if mul.is(f) then	-- should always be a mul unless there was nothing to factor
+				if mul:isa(f) then	-- should always be a mul unless there was nothing to factor
 					for _,ch in ipairs(f) do
-						if add.is(ch) then
+						if add:isa(ch) then
 							local result = checkAdd(ch)
 							if result then 
 								return prune:apply(result) 
@@ -1438,7 +1438,7 @@ add.rules = {
 				local a = expr[i]
 				for j=#expr,i+1,-1 do
 					local b = expr[j]
-					if log.is(a) and log.is(b) then
+					if log:isa(a) and log:isa(b) then
 						if not found then
 							expr = expr:shallowCopy()
 							found = true
@@ -1458,7 +1458,7 @@ add.rules = {
 			local unm = require 'symmath.op.unm'
 			for i=1,#expr-1 do
 				-- x + -y => x - y
-				if unm.is(expr[i+1]) then
+				if unm:isa(expr[i+1]) then
 --[=[ old					
 					local a = table.remove(expr, i)
 					local b = table.remove(expr, i)[1]
@@ -1498,14 +1498,14 @@ add.rules = {
 			local pow = require 'symmath.op.pow'
 			local cos = require 'symmath.cos'
 			if #self == 1
-			and Constant.is(self[1]) 
+			and Constant:isa(self[1]) 
 			and self[1].value == 1
-			and mul.is(self[2])
-			and Constant.is(self[2][1])
+			and mul:isa(self[2])
+			and Constant:isa(self[2][1])
 			and self[2][1].value == -1
-			and pow.is(self[2][2])
-			and cos.is(self[2][2][1])
-			and Constant.is(self[2][2][2])
+			and pow:isa(self[2][2])
+			and cos:isa(self[2][2][1])
+			and Constant:isa(self[2][2][2])
 			and self[2][2][2].value == 2
 			then
 				local sin = require 'symmath.sin'

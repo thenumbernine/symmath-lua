@@ -12,14 +12,14 @@ function Eval:__call(expr, evalmap, ...)
 	-- do the replaces based on the evalmap
 	if evalmap then
 		for k,v in pairs(evalmap) do
-			if type(v) ~= 'number' and not complex.is(v) then
+			if type(v) ~= 'number' and not complex:isa(v) then
 				error("expected the values of the evaluation map to be numbers, but found "..tostring(k).." = ("..type(v)..")"..tostring(v))
 			end
 			if type(k) == 'table' then
 				expr = expr:replace(k,Constant(v))
 			elseif type(k) == 'string' then
 				expr = symmath.map(expr, function(node)
-					if not Variable.is(node) or node.name ~= k then return end
+					if not Variable:isa(node) or node.name ~= k then return end
 					return Constant(v)
 				end)
 			end

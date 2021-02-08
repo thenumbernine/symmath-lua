@@ -244,7 +244,7 @@ local function expandMatrix3to5(A)
 				return i == j and 1 or 0
 			end
 		end):map(function(x)
-			if TensorIndex.is(x) then
+			if TensorIndex:isa(x) then
 				if x.symbol == 'i' then
 					x = x:clone()
 					x.symbol = assert(replace[i])

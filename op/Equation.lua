@@ -81,8 +81,8 @@ end
 function Equation:unravel()
 	local Array = require 'symmath.Array'
 	local lhs, rhs = table.unpack(self)
-	local lhsIsArray = Array.is(lhs)
-	local rhsIsArray = Array.is(rhs)
+	local lhsIsArray = Array:isa(lhs)
+	local rhsIsArray = Array:isa(rhs)
 	if not lhsIsArray or not rhsIsArray then
 		return table{lhs:eq(rhs)}
 	end
@@ -94,7 +94,7 @@ function Equation:unravel()
 		assert(ldim[i] == rdim[i])
 	end
 	local Tensor = require 'symmath.Tensor'
-	if Tensor.is(lhs) and Tensor.is(rhs) then
+	if Tensor:isa(lhs) and Tensor:isa(rhs) then
 		rhs = rhs:permute(lhs.variance)
 	end
 
@@ -131,14 +131,14 @@ for _,op in ipairs{
 		local Constant = require 'symmath.Constant'
 		if type(a) == 'number' then a = Constant(a) end
 		if type(b) == 'number' then b = Constant(b) end
-		if Equation.is(a) and not Equation.is(b) then
+		if Equation:isa(a) and not Equation:isa(b) then
 			a = a:clone()
 			for i=1,#a do
 				a[i] = op.f(a[i], b)
 			end
 			return a
 		end
-		if not Equation.is(a) and Equation.is(b) then
+		if not Equation:isa(a) and Equation:isa(b) then
 			b = b:clone()
 			for i=1,#b do
 				b[i] = op.f(a, b[i])
@@ -146,7 +146,7 @@ for _,op in ipairs{
 			return b
 		end
 		if op.field == '__add' or op.field == '__sub' then
-			if Equation.is(a) and Equation.is(b) then
+			if Equation:isa(a) and Equation:isa(b) then
 				assert(#a == #b)
 				a = a:clone()
 				for i=1,#a do

@@ -49,7 +49,7 @@ Integral.rules = {
 				-- but if we simply detect a child integral to short-circuit then what if we are using an integral whose definition is another integral?
 				local hasInt
 				expr:map(function(ch) 
-					hasInt = hasInt or Integral.is(ch) 
+					hasInt = hasInt or Integral:isa(ch) 
 				end)
 				-- and if we do want prune to map integrals to integrals, it would be nice to know the new integral (with constants factored out) so I can re-substitute the bounds
 				--if hasInt then return expr end	-- loses the bounds
@@ -61,7 +61,7 @@ Integral.rules = {
 				-- for a variable 'v' dependent on x, if we don't have an evaluation expression then we just simplify v - v = 0
 				local function replaceDefinite(ex, with)
 					return ex:replace(x, with, function(ei)
-						return Integral.is(ei) 
+						return Integral:isa(ei) 
 					end)
 				end
 				local defFin = replaceDefinite(expr, finish)
@@ -72,9 +72,9 @@ Integral.rules = {
 			-- TODO make this canonical form?
 			int = int():factorDivision()
 
-			if symmath.op.Equation.is(int) 
-			or add.is(int)
-			or symmath.Array.is(int)
+			if symmath.op.Equation:isa(int) 
+			or add:isa(int)
+			or symmath.Array:isa(int)
 			then
 				return setmetatable(table.mapi(int, function(xi)
 					return prune(Integral(xi, table.unpack(expr, 2)))

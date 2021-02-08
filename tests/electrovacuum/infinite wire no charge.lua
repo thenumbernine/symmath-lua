@@ -131,8 +131,8 @@ local GaussianFromManualMetric = (gU'^ab' * RicciFromManualMetric'_ab')()
 printbr(R:eq(GaussianFromManualMetric):eq(0))
 do
 	local expr = GaussianFromManualMetric
-	if symmath.op.div.is(expr) then expr = expr[1] end
-	if symmath.op.unm.is(expr) then expr = expr[1] end
+	if symmath.op.div:isa(expr) then expr = expr[1] end
+	if symmath.op.unm:isa(expr) then expr = expr[1] end
 	printbr(expr:eq(0))
 
 	printbr'$R_{tt} - R_{rr}$:'

@@ -24,7 +24,7 @@ local function solve(eqn, x, hasSimplified)
 	local sqrt = require 'symmath.sqrt'
 	
 	assert(eqn, 'expected equation to solve, or expression to solve for zero')
-	if not Equation.is(eqn) then	
+	if not Equation:isa(eqn) then	
 		error("expected the expression to be an equation or inequality: "..eqn)
 	end
 
@@ -98,14 +98,14 @@ local function solve(eqn, x, hasSimplified)
 --print('...got',lhs)
 
 	-- -x = 0 => x = 0
-	if unm.is(lhs) then lhs = lhs[1] end
+	if unm:isa(lhs) then lhs = lhs[1] end
 
 -- [[ handle denominator
-	if div.is(lhs) then
+	if div:isa(lhs) then
 		local notZero = table{lhs[2]:eq(0):solve(x)}
 		if notZero[1] == nil then notZero = table() end	-- couldn't find the solve var
 		for i=1,#notZero do
-			assert(op.eq.is(notZero[i]))
+			assert(op.eq:isa(notZero[i]))
 			setmetatable(notZero[i], op.ne)
 		end
 		local solns = notZero
@@ -116,7 +116,7 @@ local function solve(eqn, x, hasSimplified)
 --]]
 	
 	-- handle multiplication separately
-	if mul.is(lhs) then
+	if mul:isa(lhs) then
 		local solns = table()
 		for _,term in ipairs(lhs) do
 			if term:dependsOn(x) then

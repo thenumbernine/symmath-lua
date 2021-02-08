@@ -871,7 +871,7 @@ io.stderr:flush()
 	function Props:doPrint(field)
 		print(field.title..':')
 		local t = self[field.name]
-		if Tensor.is(t) then
+		if Tensor:isa(t) then
 			t:printElem(field.symbol, write)
 		else
 			print(t)

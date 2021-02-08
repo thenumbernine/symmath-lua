@@ -66,7 +66,7 @@ C.lookupTable = {
 		else
 			-- represent integers as expanded multiplication
 			local Constant = symmath.Constant
-			if Constant.is(expr[2])
+			if Constant:isa(expr[2])
 			and expr[2].value == math.floor(expr[2].value)
 			and expr[2].value > 1
 			and expr[2].value < 100

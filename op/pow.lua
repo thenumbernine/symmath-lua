@@ -24,15 +24,15 @@ function pow:evaluateDerivative(deriv, ...)
 -- [[
 	-- shorthand ...
 	local Constant = require 'symmath.Constant'
-	if Constant.is(b) then
-		if Constant.is(a) then
+	if Constant:isa(b) then
+		if Constant:isa(a) then
 			-- a & b are constant ... a^b is constant ... d/dx (a^b) = 0
 			return Constant(0)
 		end
 	
 		-- b is constant, a is not ... d/dx (a^b) = b a^(b-1) * d/dx(a)
 		return b * a ^ Constant(b.value-1) * deriv(a, ...)
-	elseif Constant.is(a) then
+	elseif Constant:isa(a) then
 		-- a is constant, b is not
 		-- d/dx a^b = d/dx exp(b log(a)) = log(a) d/dx(b) exp(b log(a)) = a^b log(a) d/dx(b)
 		return a ^ b * log(a) * deriv(b, ...)
@@ -47,7 +47,7 @@ end
 -- temporary ...
 function pow:expand()
 	local Constant = require 'symmath.Constant'
-	if not Constant.is(self[2]) then return end
+	if not Constant:isa(self[2]) then return end
 	local n = self[2].value
 	-- for certain small integer powers, expand 
 	-- ... or should we have all integer powers expended under a different command?
@@ -107,7 +107,7 @@ pow.rules = {
 			-- (a / b)^n => a^n / b^n
 			-- not simplifying ...
 			-- maybe this should go in factor() or expand()
-			if div.is(expr[1]) then
+			if div:isa(expr[1]) then
 				local num = expr[1][1] ^ expr[2]
 				local denom = expr[1][2] ^ expr[2]
 				local repl = num / denom
@@ -123,7 +123,7 @@ pow.rules = {
 			then
 				local symmath = require 'symmath'
 				if symmath.simplifyConstantPowers 
-				and Constant.is(expr[1])
+				and Constant:isa(expr[1])
 				then
 					return Constant(expr[1].value ^ expr[2].value)
 				end
@@ -145,7 +145,7 @@ pow.rules = {
 			expr = clone(expr)
 	--local original = clone(expr)
 			local maxPowerExpand = 10
-			if Constant.is(expr[2]) then
+			if Constant:isa(expr[2]) then
 				local value = expr[2].value
 				local absValue = math.abs(value)
 				if absValue < maxPowerExpand then
@@ -201,16 +201,16 @@ pow.rules = {
 			-- x^(1/2) 
 			-- TODO x^(p/q) 
 			if (
-				div.is(expr[2])
+				div:isa(expr[2])
 				and Constant.isValue(expr[2][1], 1)
 				and Constant.isValue(expr[2][2], 2)
 			) or Constant.isValue(expr[2], .5) then
 				local x = expr[1]
 				local add = require 'symmath.op.add'
-				if mul.is(x)
+				if mul:isa(x)
 				and #x == 2
 				and Constant.isValue(x[1], -1)
-				and add.is(x[2])
+				and add:isa(x[2])
 				then
 					local dstr = x:distribute()
 					if dstr then return prune:apply(dstr^div(1,2)) end
@@ -229,7 +229,7 @@ pow.rules = {
 
 			local complex = require 'symmath.complex'
 
-			if Constant.is(expr[1]) and Constant.is(expr[2]) then
+			if Constant:isa(expr[1]) and Constant:isa(expr[2]) then
 				if symmath.simplifyConstantPowers
 				-- TODO this replaces some cases below
 				or sets.integer:contains(expr[1]) and expr[2].value > 0
@@ -242,7 +242,7 @@ pow.rules = {
 
 			-- x^(1/2)
 			if (
-				div.is(expr[2])
+				div:isa(expr[2])
 				and Constant.isValue(expr[2][1], 1)
 				and Constant.isValue(expr[2][2], 2)
 			) or Constant.isValue(expr[2], .5) then
@@ -254,7 +254,7 @@ pow.rules = {
 				-- TODO now we have to consider domains ... this is only true for (a+b)>0 ... or two roots for +-
 				-- ... hmm, this is looking very ugly and specific
 				local function isSquare(x)
-					return pow.is(x) and Constant.isValue(x[2], 2)
+					return pow:isa(x) and Constant.isValue(x[2], 2)
 				end
 				
 				if #x == 3 then
@@ -281,7 +281,7 @@ pow.rules = {
 			-- x^(1/2) 
 			-- TODO x^(p/q) 
 			if (
-				div.is(expr[2])
+				div:isa(expr[2])
 				and Constant.isValue(expr[2][1], 1)
 				and Constant.isValue(expr[2][2], 2)
 			) or Constant.isValue(expr[2], .5) then
@@ -289,13 +289,13 @@ pow.rules = {
 
 				-- dealing with constants
 				local imag
-				if symmath.op.unm.is(x) 
-				and Constant.is(x[1])
+				if symmath.op.unm:isa(x) 
+				and Constant:isa(x[1])
 				then
 					x = x[1]
 					imag = true
 				end
-				if Constant.is(x) 
+				if Constant:isa(x) 
 				and x.value < 0 
 				-- and q is even
 				then
@@ -337,11 +337,11 @@ pow.rules = {
 		
 			-- 0^a = 0 for a>0
 			if Constant.isValue(expr[1], 0) then
-				if (Constant.is(expr[2]) and expr[2].value > 0) 
+				if (Constant:isa(expr[2]) and expr[2].value > 0) 
 				or (
-					div.is(expr[2]) 
-					and Constant.is(expr[2][1]) 
-					and Constant.is(expr[2][2]) 
+					div:isa(expr[2]) 
+					and Constant:isa(expr[2][1]) 
+					and Constant:isa(expr[2][2]) 
 					and (expr[2][1].value > 0) == (expr[2][2].value > 0)
 				) then
 					return Constant(0)
@@ -352,7 +352,7 @@ pow.rules = {
 			if Constant.isValue(expr[1], 1) then return Constant(1) end
 			
 			-- (-1)^odd = -1, (-1)^even = 1
-			if Constant.isValue(expr[1], -1) and Constant.is(expr[2]) then
+			if Constant.isValue(expr[1], -1) and Constant:isa(expr[2]) then
 				local powModTwo = expr[2].value % 2
 				if powModTwo == 0 then return Constant(1) end
 				if powModTwo == 1 then return Constant(-1) end
@@ -366,7 +366,7 @@ pow.rules = {
 
 			if expr[1] == symmath.i then
 				-- i^n
-				if Constant.is(expr[2])
+				if Constant:isa(expr[2])
 				and sets.integer:contains(expr[2]) 
 				then
 					local v = expr[2].value % 4
@@ -386,7 +386,7 @@ pow.rules = {
 				end
 			
 				-- sqrt(i) = sqrt(2) + i sqrt(2)
-				if div.is(expr[2])
+				if div:isa(expr[2])
 				and Constant.isValue(expr[2][1], 1)
 				and Constant.isValue(expr[2][2], 2)
 				then
@@ -399,12 +399,12 @@ pow.rules = {
 			-- unless b is 2 and c is 1/2 ...
 			-- in fact, only if c is integer
 			-- in fact, better add complex numbers
-			if pow.is(expr[1]) then
+			if pow:isa(expr[1]) then
 				return prune:apply(expr[1][1] ^ (expr[1][2] * expr[2]))
 			end
 			
 			-- (a * b) ^ c => a^c * b^c
-			if mul.is(expr[1]) then
+			if mul:isa(expr[1]) then
 				local result = table.map(expr[1], function(v,k)
 					if type(k) ~= 'number' then return end
 					return v ^ expr[2]
@@ -422,7 +422,7 @@ pow.rules = {
 			-- do this before a^-c => 1/a^c, 
 			if symmath.e == expr[1] then
 				local inside = expr[2]
-				if symmath.op.mul.is(inside) then
+				if symmath.op.mul:isa(inside) then
 					local j = table.find(inside, nil, function(y) return y == symmath.i end)
 					if j then
 						inside = inside:clone()
@@ -436,13 +436,13 @@ pow.rules = {
 			end
 		
 			-- a^(-c) => 1/a^c
-			if Constant.is(expr[2]) and expr[2].value < 0 then
+			if Constant:isa(expr[2]) and expr[2].value < 0 then
 				return prune:apply(Constant(1)/(expr[1]^Constant(-expr[2].value)))
 			end
 
 			--[[ for simplification's sake ... (like -a => -1 * a)
 			-- x^c => x*x*...*x (c times)
-			if Constant.is(expr[2])
+			if Constant:isa(expr[2])
 			and expr[2].value > 0 
 			and expr[2].value == math.floor(expr[2].value)
 			then
@@ -457,7 +457,7 @@ pow.rules = {
 
 			-- e^log(x) == x
 			if symmath.e == expr[1]
-			and symmath.log.is(expr[2])
+			and symmath.log:isa(expr[2])
 			then
 				return prune:apply(expr[2][1])
 			end
@@ -474,7 +474,7 @@ pow.rules = {
 			local cbrt = require 'symmath.cbrt'
 
 			-- [[ x^-a => 1/x^a ... TODO only do this when in a product?
-			if unm.is(expr[2]) then
+			if unm:isa(expr[2]) then
 				return tidy:apply(Constant(1)/expr[1]^expr[2][1])
 			end
 			--]]
@@ -513,10 +513,10 @@ pow.rules = {
 
 			-- x ^ (p/q)
 			-- p/q for p,q integers
-			if div.is(expr[2])
-			and Constant.is(expr[2][1])
+			if div:isa(expr[2])
+			and Constant:isa(expr[2][1])
 			and sets.integer:contains(expr[2][1])
-			and Constant.is(expr[2][2])
+			and Constant:isa(expr[2][2])
 			and sets.integer:contains(expr[2][2])
 			-- TODO alternatively c ^ d where d = Constant with d.value == p/q?
 			--  but how often can we detect the accuracy of that?  only for powers-of-two
@@ -530,7 +530,7 @@ pow.rules = {
 			-- I'm not sure how many numbers I should entertain here
 			-- I should do like Maxima and try to auto-deduce the fraction upon Constant construction (though that seems iffy for any rounded constants)
 			-- That's why I only want to test for rational numbers from a few cases 
-			if Constant.is(expr[2]) then
+			if Constant:isa(expr[2]) then
 				for q=2,3 do
 					for p=1,q-1 do
 						if expr[2].value == p/q then

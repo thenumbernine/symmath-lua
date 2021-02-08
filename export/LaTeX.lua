@@ -120,18 +120,18 @@ LaTeX.lookupTable = {
 		for i=#expr,2,-1 do
 			-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
 			-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
-			if (Variable.is(expr[i-1])
+			if (Variable:isa(expr[i-1])
 			and #expr[i-1].name > 1)
-			or require 'symmath.op.unm'.is(expr[i])
-			or (Constant.is(expr[i]) and expr[i].value < 0)
-			--and Variable.is(expr[i])
+			or require 'symmath.op.unm':isa(expr[i])
+			or (Constant:isa(expr[i]) and expr[i].value < 0)
+			--and Variable:isa(expr[i])
 			then
 				res:insert(i, '\\cdot')
 			-- insert \cdot between neighboring numbers
-			elseif Constant.is(expr[i-1]) then
-				if Constant.is(expr[i])
-				or div.is(expr[i])
-				or (pow.is(expr[i]) and Constant.is(expr[i][1]))
+			elseif Constant:isa(expr[i-1]) then
+				if Constant:isa(expr[i])
+				or div:isa(expr[i])
+				or (pow:isa(expr[i]) and Constant:isa(expr[i][1]))
 				then
 					res:insert(i, '\\cdot')
 				end
@@ -146,9 +146,9 @@ LaTeX.lookupTable = {
 		-- for now, just look for single constants or Variables (or both?)
 		-- this could be done in tidy ...
 		local a,b = table.unpack(expr)
-		if not a.is(Constant) then
-			if Constant.is(b) 
-			or Variable.is(b)
+		if not a:isa(Constant) then
+			if Constant:isa(b) 
+			or Variable:isa(b)
 			then
 				return table{
 					table{'\\frac', '{1}', table(self:apply(b), {force=true})},
@@ -200,8 +200,8 @@ LaTeX.lookupTable = {
 		
 		local diffExpr = expr[1]
 		local diffExprStr = self:apply(diffExpr)
-		local diffExprOnTop = Variable.is(diffExpr) 
-			or (TensorRef.is(diffExpr) and Variable.is(diffExpr[1]))
+		local diffExprOnTop = Variable:isa(diffExpr) 
+			or (TensorRef:isa(diffExpr) and Variable:isa(diffExpr[1]))
 
 		if self.useCommaDerivative then
 			return table{ 
@@ -371,7 +371,7 @@ LaTeX.lookupTable = {
 		local indexes = {table.unpack(expr, 2)}
 
 		local s = self:applyLaTeX(t)
-		if not (Variable.is(t) or Array.is(t) or TensorRef.is(t)) then s = '\\left(' .. s .. '\\right)' end
+		if not (Variable:isa(t) or Array:isa(t) or TensorRef:isa(t)) then s = '\\left(' .. s .. '\\right)' end
 		
 		for _,index in ipairs(indexes) do
 			s = '{' .. s .. '}' .. self:apply(index)

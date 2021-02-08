@@ -49,19 +49,19 @@ log.rules = {
 			local x = expr[1]
 			
 			-- log(a^b) = b log(a)
-			if symmath.op.pow.is(x) then
+			if symmath.op.pow:isa(x) then
 				return expand:apply(x[2] * log(x[1]))
 			end	
 		
 			-- log(ab) = log(a) + log(b)
-			if symmath.op.mul.is(x) then
+			if symmath.op.mul:isa(x) then
 				return expand:apply(symmath.op.add(table.mapi(x, function(xi)
 					return log(xi)
 				end):unpack()))
 			end
 		
 			-- log(a/b) = log(a) - log(b)
-			if symmath.op.div.is(x) then
+			if symmath.op.div:isa(x) then
 				return expand:apply(log(x[1]) - log(x[2]))
 			end
 		end},

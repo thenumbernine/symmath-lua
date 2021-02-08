@@ -8,7 +8,7 @@ function OddInteger:containsElement(x)
 	if self:containsVariable(x) then return true end
 
 	local Constant = require 'symmath.Constant'
-	if Constant.is(x) then
+	if Constant:isa(x) then
 		return (x.value + 1) / 2 == math.floor((x.value + 1) / 2)
 	end
 end

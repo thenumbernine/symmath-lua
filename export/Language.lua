@@ -43,11 +43,11 @@ function Language:prepareToCodeArgs(outputs, inputs)
 	local Expression = require 'symmath.Expression'
 	inputs = inputs or {}
 	
-	assert(not Expression.is(outputs), "prepareToCodeArgs() expects arg 1 to be a non-Expression")
+	assert(not Expression:isa(outputs), "prepareToCodeArgs() expects arg 1 to be a non-Expression")
 	local fixedOutputs = table()
 	for i,output in ipairs(outputs) do
 		if type(output) == 'table' then
-			if Expression.is(output) then
+			if Expression:isa(output) then
 				fixedOutputs:insert{name='out'..i, expr=output}
 			else
 				-- TODO maybe, make sure this is only one entry?
@@ -64,8 +64,8 @@ function Language:prepareToCodeArgs(outputs, inputs)
 	local fixedInputs = table()
 	for _,input in ipairs(inputs) do
 		if type(input) == 'table' then
-			if Expression.is(input) then
-				assert(Variable.is(input), "can only implicitly use Variables for compile function parameters.  For non-variables, use {parameter_name = expression}")
+			if Expression:isa(input) then
+				assert(Variable:isa(input), "can only implicitly use Variables for compile function parameters.  For non-variables, use {parameter_name = expression}")
 				fixedInputs:insert(input)
 			else 
 				-- if it's a table and not an Expression (the root of our class tree)
@@ -74,7 +74,7 @@ function Language:prepareToCodeArgs(outputs, inputs)
 				for key,value in pairs(input) do
 					if not found then	-- only allow one key/value pair per list
 						found = true
-						assert(Expression.is(value), "expected parameter pair value to be an Expression")
+						assert(Expression:isa(value), "expected parameter pair value to be an Expression")
 						local tmpvar = Variable(tostring(key))
 						fixedInputs:insert(tmpvar)
 						for _,output in ipairs(fixedOutputs) do
@@ -122,8 +122,8 @@ function Language:toCodeInternal(args)
 	if not args.dontExpandIntegerPowers then
 		exprs = exprs:mapi(function(expr)
 			return expr:map(function(x)
-				if symmath.op.pow.is(x) then
-					if Constant.is(x[2]) then
+				if symmath.op.pow:isa(x) then
+					if Constant:isa(x[2]) then
 						local n = x[2].value
 						if n == math.floor(n) and n >= 0 and n < 100 then
 							if n == 0 then return Constant(1) end
@@ -160,7 +160,7 @@ function Language:toCodeInternal(args)
 			for i=1,#x do
 				recurse(x[i])
 			end
-			if symmath.op.add.is(x) or symmath.op.mul.is(x) then
+			if symmath.op.add:isa(x) or symmath.op.mul:isa(x) then
 				local mt = getmetatable(x)
 				-- manually construct/modify, don't use constructor, or it will auto-flatten
 				local n = #x
@@ -197,8 +197,8 @@ function Language:toCodeInternal(args)
 				totalCount = totalCount + recurse(x)
 			end
 			
-			if Expression.is(expr) 
-			and not Constant.is(expr)
+			if Expression:isa(expr) 
+			and not Constant:isa(expr)
 			and totalCount > 1
 			then
 				allsubexprinfos:insert{expr=expr, count=totalCount}
@@ -256,8 +256,8 @@ print('CHECKING SUBEXPR '..SingleLine(subexpr))
 			local function recurse(expr)
 				for i=1,#expr do
 					local x = expr[i]
-					if Expression.is(x)
-					and not Constant.is(x)
+					if Expression:isa(x)
+					and not Constant:isa(x)
 					then
 						if x == subexpr then
 							count = count + 1
@@ -285,8 +285,8 @@ print('CHECKING SUBEXPR '..SingleLine(subexpr))
 				local function recurse(expr)
 					for i=1,#expr do
 						local x = expr[i]
-						if Expression.is(x) 
-						and not Constant.is(x)
+						if Expression:isa(x) 
+						and not Constant:isa(x)
 						then
 							if x == subexpr then
 								if not tmpvar then
@@ -328,8 +328,8 @@ print('RESULTING EXPR '..SingleLine(expr))
 
 			for i=1,#expr do
 				x = expr[i]
-				if Expression.is(x)
-				and not Constant.is(x)
+				if Expression:isa(x)
+				and not Constant:isa(x)
 				and #x > 0
 				then				
 					local tmpvar = Variable(newvarname())

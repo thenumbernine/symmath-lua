@@ -203,7 +203,7 @@ for _,nameAndEqn in ipairs(eqns) do
 	if name:match'_norm_def$' then	-- use the normalized version
 
 		local lhs, rhs = table.unpack(eqn)
-		if not TensorRef.is(lhs) then
+		if not TensorRef:isa(lhs) then
 			printbr("expected lhs to be a TensorRef, found: ", lhs)
 			error'expected lhs to be a TensorRef'
 		end
@@ -297,7 +297,7 @@ timer('simplifying', function()
 		--]]
 		-- [[
 		eqn[1] = eqn[1]()
-		if symmath.op.add.is(eqn[2]) then
+		if symmath.op.add:isa(eqn[2]) then
 			for i=1,#eqn[2] do
 timer('simplifying term '..i, function()
 printbr('simplifying term '..i)
@@ -324,13 +324,13 @@ io.stderr:flush()
 		local lhs, rhs = table.unpack(eqn)
 		
 		-- lazy arbitrary nested for-loop:
-		if not Tensor.is(lhs) then
-			assert(Variable.is(lhs), "expected TensorRef or Variable on lhs, found "..lhs.name)
+		if not Tensor:isa(lhs) then
+			assert(Variable:isa(lhs), "expected TensorRef or Variable on lhs, found "..lhs.name)
 			assert(rhs)
 			-- scalar
 			resultEqns:insert{[lhs.name] = rhs}
 		else
-			assert(Tensor.is(rhs), "lhs is a Tensor but rhs didn't simplify to a Tensor")
+			assert(Tensor:isa(rhs), "lhs is a Tensor but rhs didn't simplify to a Tensor")
 			local variance = table.sub(lhs, 2,#lhs-1) 
 			-- tensor
 			--printbr('variance: '..variance:mapi(tostring):concat())

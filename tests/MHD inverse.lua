@@ -12,8 +12,8 @@ require 'symmath'.setup{env=env, MathJax={title='MHD inverse'}}
 function expandPowers(self)
 	return self()
 		:map(function(x) 	-- expand powers ...
-			if symmath.op.pow.is(x) 
-			and Constant.is(x[2])
+			if symmath.op.pow:isa(x) 
+			and Constant:isa(x[2])
 			and x[2].value == math.floor(x[2].value)
 			and x[2].value > 0
 			then 
@@ -162,13 +162,13 @@ for i=1,8 do
 			YYInv_rhs = YYInv_rhs + Y[i][k] * YInv[k][j]
 		end
 		local YInvYEqn = lhs:eq(YInvY_rhs)()
-		if symmath.op.div.is(YInvYEqn:rhs()) then YInvYEqn = (YInvYEqn * YInvYEqn:rhs()[2])() end
+		if symmath.op.div:isa(YInvYEqn:rhs()) then YInvYEqn = (YInvYEqn * YInvYEqn:rhs()[2])() end
 		YInvYEqn = YInvYEqn:subst(B_from_BSq)()
 		if not YInvYEqn:isTrue() then
 			YInvYEqns:insert{i,j,YInvYEqn}
 		end
 		local YYInvEqn = lhs:eq(YYInv_rhs)()
-		if symmath.op.div.is(YYInvEqn:rhs()) then YYInvEqn = (YYInvEqn * YYInvEqn:rhs()[2])() end
+		if symmath.op.div:isa(YYInvEqn:rhs()) then YYInvEqn = (YYInvEqn * YYInvEqn:rhs()[2])() end
 		YYInvEqn = YYInvEqn:subst(B_from_BSq)()
 		if not YYInvEqn:isTrue() then
 			YYInvEqns:insert{i,j,YYInvEqn}
@@ -187,7 +187,7 @@ local constraints = table()
 for _,eqnlist in ipairs{YInvYEqns, YYInvEqns} do
 	for k=#eqnlist,1,-1 do
 		local i,j,eqn = table.unpack(eqnlist[k])
-		if var.is(eqn[2]) then
+		if var:isa(eqn[2]) then
 			eqnlist:remove(k)
 			constraints:insert(eqn:switch())
 		end
@@ -211,7 +211,7 @@ end
 local YInvRemainingVars = Matrix()
 for i=1,8 do
 	for j=1,8 do
-		if var.is(YInv[i][j]) then
+		if var:isa(YInv[i][j]) then
 			table.insert(YInvRemainingVars, Array(YInv[i][j]))
 		end
 	end

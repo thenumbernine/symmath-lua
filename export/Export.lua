@@ -53,7 +53,7 @@ end
 
 function Export:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local sub = require 'symmath.op.sub'
-	if sub.is(parentNode) and childIndex > 1 then
+	if sub:isa(parentNode) and childIndex > 1 then
 		return precedence(parentNode[childIndex]) <= precedence(parentNode)
 	else
 		return precedence(parentNode[childIndex]) < precedence(parentNode)

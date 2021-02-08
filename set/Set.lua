@@ -32,7 +32,7 @@ function Set:vars(...)
 end
 
 function Set:containsVariable(x)
-	if Variable.is(x) then
+	if Variable:isa(x) then
 		if x.value then
 			local Constant = require 'symmath.Constant'
 			return self:containsElement(Constant(x.value))
@@ -55,7 +55,7 @@ function Set:containsElement(x)
 end
 
 function Set:contains(x)
-	if Set.is(x) then return self:containsSet(x) end
+	if Set:isa(x) then return self:containsSet(x) end
 	return self:containsElement(x)
 end
 
