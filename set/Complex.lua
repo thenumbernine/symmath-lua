@@ -5,8 +5,10 @@ local Constant = require 'symmath.Constant'
 
 local Complex = class(Universal)
 
+local sets
 function Complex:containsSet(other)
-	if require 'symmath.set.sets'.real:contains(other) then
+	sets = sets or require 'symmath.set.sets'
+	if sets.real:contains(other) then
 		return true
 	end
 	return Complex.super.containsSet(self, other)
@@ -25,7 +27,8 @@ function Complex:containsElement(x)
 	if Constant:isa(x) then return true end
 	if complex:isa(x) then return true end
 
-	if require 'symmath.set.sets'.real:contains(x) then return true end
+	sets = sets or require 'symmath.set.sets'
+	if sets.real:contains(x) then return true end
 end
 
 return Complex

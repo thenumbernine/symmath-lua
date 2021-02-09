@@ -1,6 +1,8 @@
 local class = require 'ext.class'
 local Binary = require 'symmath.op.Binary'
 
+local add
+
 local sub = class(Binary)
 sub.precedence = 2
 sub.name = '-'
@@ -57,7 +59,7 @@ sub.rules = {
 	
 	Expand = {
 		{apply = function(expand, expr)
-			local add = require 'symmath.op.add'
+			add = add or require 'symmath.op.add'
 			
 			--assert(#expr > 1) -- TODO
 			if #expr == 1 then return expand:apply(expr[1]) end

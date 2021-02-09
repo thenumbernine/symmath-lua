@@ -64,8 +64,11 @@ function RealInterval:containsNumber(x)
 	return result
 end
 
+local Variable
+local RealDomain 
 function RealInterval:containsVariable(x)
-	if require 'symmath.Variable':isa(x) then
+	Variable = Variable or require 'symmath.Variable'
+	if Variable:isa(x) then
 		if x.value then 
 			return self:containsNumber(x.value) 
 		end
@@ -73,7 +76,7 @@ function RealInterval:containsVariable(x)
 		-- right now :containsSet returns nil if the domains are overlapping
 		-- in that case, the variable *could* be inside 'self'
 		assert(not RealInterval:isa(x.set)) -- phasing this out -- use RealDomain as a single interval
-		local RealDomain = require 'symmath.set.RealDomain'
+		RealDomain = RealDomain or require 'symmath.set.RealDomain'
 		if RealDomain:isa(x.set) then
 			if #x.set == 1 then
 				return self:containsSet(x.set)
@@ -165,6 +168,7 @@ function RealInterval:containsSet(I)
 	end
 end
 
+local RealDomain 
 function RealInterval:containsElement(x)
 	if type(x) == 'number' 
 	or complex:isa(x)
@@ -177,7 +181,7 @@ function RealInterval:containsElement(x)
 	local I = x:getRealDomain()
 	if I == nil then return end
 	assert(not RealInterval:isa(I))
-	local RealDomain = require 'symmath.set.RealDomain'
+	RealDomain = RealDomain or require 'symmath.set.RealDomain'
 	if RealDomain:isa(I) then
 		if RealDomain(self.start, self.finish, self.includeStart, self.includeFinish):containsSet(I) then return true end
 	end

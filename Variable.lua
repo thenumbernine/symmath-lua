@@ -54,8 +54,13 @@ function Variable:init(name, dependentVars, value, set)
 	end
 end
 
+-- return variable references ... so if the original gets modified, the rest will be updated as well
 function Variable:clone()
-	-- return variable references ... so if the original gets modified, the rest will be updated as well
+	return self
+end
+
+-- same
+function Variable:shallowCopy()
 	return self
 end
 
@@ -97,6 +102,12 @@ function Variable.match(a, b, matches)
 
 	-- same as return true in Expression.match
 	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
+end
+
+-- ok for performance's sake, since :match() is so slow, I'm overriding __eq
+function Variable.__eq(a,b)
+	return getmetatable(a) == getmetatable(b)
+		and a.name == b.name
 end
 
 --[[
@@ -161,8 +172,9 @@ function Variable:dependsOn(x)
 	return false
 end
 
+local RealDomain
 function Variable:getRealDomain()
-	local RealDomain = require 'symmath.set.RealDomain'
+	RealDomain = RealDomain or require 'symmath.set.RealDomain'
 	if self.value then 
 		if type(self.value) == 'number' then
 			return RealDomain(self.value, self.value, true, true)
@@ -170,7 +182,12 @@ function Variable:getRealDomain()
 			return RealDomain(self.value.re, self.value.re, true, true)
 		end
 	end
-	if RealDomain:isa(self.set) then return self.set end
+	
+	-- TODO why test this?  when won't it be true?
+	if RealDomain:isa(self.set) then
+		return self.set
+	end
+	
 	-- assuming start and finish are defined in all Real's subclasses
 	-- what about Integer?  Integer's RealInterval is discontinuous ...
 end

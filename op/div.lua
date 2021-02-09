@@ -3,6 +3,8 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local Binary = require 'symmath.op.Binary'
 
+local Constant, add, mul, primeFactors, symmath, unm
+
 local div = class(Binary)
 div.precedence = 3.5
 div.name = '/'
@@ -36,7 +38,7 @@ end
 div.rules = {
 	DistributeDivision = {
 		{apply = function(distributeDivision, expr)
-			local add = require 'symmath.op.add'
+			add = add or require 'symmath.op.add'
 			local num, denom = expr[1], expr[2]
 			if not add:isa(num) then return end
 			return getmetatable(num)(range(#num):map(function(k)
@@ -63,8 +65,8 @@ div.rules = {
 
 	FactorDivision = {
 		{apply = function(factorDivision, expr)
-			local Constant = require 'symmath.Constant'
-			local mul = require 'symmath.op.mul'
+			Constant = Constant or require 'symmath.Constant'
+			mul = mul or require 'symmath.op.mul'
 
 			if Constant.isValue(expr[1], 1) then return end
 		
@@ -83,7 +85,7 @@ div.rules = {
 
 	Prune = {		
 		{apply = function(prune, expr)
-			local symmath = require 'symmath'	-- for debug flags ...
+			symmath = symmath or require 'symmath'	-- for debug flags ...
 			local add = symmath.op.add	
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
@@ -235,7 +237,7 @@ div.rules = {
 								bases:insert(i, Constant(1))
 								powers:insert(i, power:clone())
 							else
-								local primeFactors = require 'symmath.primeFactors'
+								primeFactors = primeFactors or require 'symmath.primeFactors'
 								local fs = primeFactors(value)	-- 1 returns a nil list
 								for _,f in ipairs(fs) do
 									bases:insert(i, f)
@@ -371,7 +373,7 @@ div.rules = {
 
 		-- this could go after the apply rule, but that ends with a subsequent prune(a)/prune(b) ..
 		{logPow = function(prune, expr)
-			local symmath = require 'symmath'
+			symmath = symmath or require 'symmath'
 			-- log(a) / b => log(a^(1/b))
 			if symmath.log:isa(expr[1]) then
 				local a = expr[1][1]
@@ -383,8 +385,8 @@ div.rules = {
 
 	Tidy = {
 		{apply = function(tidy, expr)
-			local unm = require 'symmath.op.unm'
-			local Constant = require 'symmath.Constant'
+			unm = unm or require 'symmath.op.unm'
+			Constant = Constant or require 'symmath.Constant'
 			
 			local a, b = table.unpack(expr)
 			local ua = unm:isa(a)

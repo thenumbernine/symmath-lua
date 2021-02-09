@@ -2,6 +2,7 @@
 expr = expression to change
 callback(node) = callback that returns nil if it leaves the tree untouched, returns a value if it wishes to change the tree
 --]]
+local Constant
 local function map(expr, callback)
 	-- clone
 	if expr.clone then expr = expr:clone() end
@@ -14,8 +15,8 @@ local function map(expr, callback)
 	-- process this node
 	expr = callback(expr) or expr
 	if type(expr) == 'number' then 
-		local Constant = require 'symmath.Constant'
-		expr = Constant(expr)
+		Constant = Constant or require 'symmath.Constant'
+		return Constant(expr)
 	end
 	-- done
 	return expr

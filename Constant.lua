@@ -55,11 +55,11 @@ function Constant:init(value, symbol)
 		error('tried to init constant with non-number type '..type(value)..' value '..tostring(value))
 	end
 	value = value * 1.0	-- convert from long to double
---[[ read/write original behavior:
+-- [[ read/write original behavior:
 	self.value = value
 	self.symbol = symbol
 -- ]]
--- [[ read-only:
+--[[ read-only:
 -- if I'm going to use cached objects then I had better prevent them from being modified
 -- mind you, switching to cached objects without this saved 25% of the time taken
 -- but this might slow us down a bit ...
@@ -81,7 +81,7 @@ end
 --  then there would be no pure lua function for __index (and it'd go a bit faster)
 --  but then you'd still need to move all Constant's other metafuncs over to self's mt
 --  so it might be ugly to implement.
--- [[
+--[[
 function Constant:__index(k)
 	local private = rawget(self, '__private')
 	local v
@@ -129,6 +129,23 @@ function Constant.match(a, b, matches)
 
 	-- same as return true in Expression.match
 	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
+end
+
+function Constant.__eq(a,b)
+	-- if either is a constant then get the value 
+	-- (which should not be an expression of its own)
+	if Constant:isa(a) then a = a.value end
+	if Constant:isa(b) then b = b.value end
+	-- if it is an expression then it must not have been a constant
+	-- so we can assume it differs
+	if Expression:isa(a) or Expression:isa(b) then return false end
+	-- if either is complex then convert the other to complex
+	if complex:isa(a) or complex:isa(b) then
+		return complex.__eq(a,b)
+	end
+	
+	-- by here they both should be numbers
+	return a == b
 end
 
 function Constant:evaluateDerivative(deriv, ...)

@@ -2,6 +2,10 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Binary = require 'symmath.op.Binary'
+local complex = require 'symmath.complex'
+local primeFactors = require 'symmath.primeFactors'
+
+local symmath
 
 local pow = class(Binary)
 pow.omitSpace = true
@@ -17,13 +21,14 @@ a^b * (db/dx * log(a) + b * d/dx[log(a)])
 a^b * (db/dx * log(a) + da/dx * b / a)
 --]]
 function pow:evaluateDerivative(deriv, ...)
-	local log = require 'symmath.log'
+	symmath = symmath or require 'symmath'
+	local log = symmath.log
 	local a, b = table.unpack(self)
 	a, b = a:clone(), b:clone()
 
 -- [[
 	-- shorthand ...
-	local Constant = require 'symmath.Constant'
+	local Constant = symmath.Constant
 	if Constant:isa(b) then
 		if Constant:isa(a) then
 			-- a & b are constant ... a^b is constant ... d/dx (a^b) = 0
@@ -46,7 +51,8 @@ end
 -- just for this
 -- temporary ...
 function pow:expand()
-	local Constant = require 'symmath.Constant'
+	symmath = symmath or require 'symmath'
+	local Constant = symmath.Constant
 	if not Constant:isa(self[2]) then return end
 	local n = self[2].value
 	-- for certain small integer powers, expand 
@@ -64,7 +70,8 @@ function pow:expand()
 end
 
 function pow:reverse(soln, index)
-	local Constant = require 'symmath'.Constant
+	symmath = symmath or require 'symmath'
+	local Constant = symmath.Constant
 	local p,q = table.unpack(self)
 	-- y = p(x)^q => y^(1/q) = p(x)
 	if index == 1 then
@@ -77,7 +84,7 @@ function pow:reverse(soln, index)
 		return soln^(1/q)
 	-- y = p^q(x) => log(y) / log(p) = q(x)
 	elseif index == 2 then
-		local log = require 'symmath.log'
+		local log = symmath.log
 		return log(y) / log(p)
 	end
 end
@@ -100,9 +107,10 @@ pow.rules = {
 
 	Expand = {
 		{apply = function(expand, expr)
-			local div = require 'symmath.op.div'
-			local mul = require 'symmath.op.mul'
-			local Constant = require 'symmath.Constant'
+			symmath = symmath or require 'symmath'
+			local div = symmath.op.div
+			local mul = symmath.op.mul
+			local Constant = symmath.Constant
 			
 			-- (a / b)^n => a^n / b^n
 			-- not simplifying ...
@@ -121,7 +129,7 @@ pow.rules = {
 			and expr[2].value >= 2
 			and expr[2].value < 10
 			then
-				local symmath = require 'symmath'
+				symmath = symmath or require 'symmath'
 				if symmath.simplifyConstantPowers 
 				and Constant:isa(expr[1])
 				then
@@ -139,8 +147,9 @@ pow.rules = {
 -- [[
 	ExpandPolynomial = {
 		{apply = function(expandPolynomial, expr)
-			local clone = require 'symmath.clone'
-			local Constant = require 'symmath.Constant'
+			symmath = symmath or require 'symmath'
+			local clone = symmath.clone
+			local Constant = symmath.Constant
 			
 			expr = clone(expr)
 	--local original = clone(expr)
@@ -174,7 +183,7 @@ pow.rules = {
 					if #terms == 1 then
 						expr = terms[1]
 					else
-						local mul = require 'symmath.op.mul'
+						local mul = symmath.op.mul
 						expr = mul(terms:unpack())
 					end
 					
@@ -189,12 +198,11 @@ pow.rules = {
 
 	Prune = {
 		{apply = function(prune, expr)
-			local symmath = require 'symmath'	-- needed for flags
+			symmath = symmath or require 'symmath'	-- needed for flags
 			local mul = symmath.op.mul
 			local div = symmath.op.div
 			local Constant = symmath.Constant
 			local sets = symmath.set
-
 
 
 -- [[ here is me trying to solve a sqrt problem
@@ -206,7 +214,7 @@ pow.rules = {
 				and Constant.isValue(expr[2][2], 2)
 			) or Constant.isValue(expr[2], .5) then
 				local x = expr[1]
-				local add = require 'symmath.op.add'
+				local add = symmath.op.add
 				if mul:isa(x)
 				and #x == 2
 				and Constant.isValue(x[1], -1)
@@ -226,8 +234,6 @@ pow.rules = {
 			--expr = expr:clone()
 			--expr[1] = expr[1]()
 			-- But doing this doens't work.  It leaves some extra (-1)^2 terms on the inside.
-
-			local complex = require 'symmath.complex'
 
 			if Constant:isa(expr[1]) and Constant:isa(expr[2]) then
 				if symmath.simplifyConstantPowers
@@ -305,7 +311,7 @@ pow.rules = {
 				if sets.integer:contains(x) 
 				and x.value > 0 
 				then
-					local primes = require 'symmath.primeFactors'(x.value)
+					local primes = primeFactors(x.value)
 					local outside = 1
 					local inside = 1
 					for i=#primes-1,1,-1 do
@@ -466,12 +472,13 @@ pow.rules = {
 
 	Tidy = {
 		{apply = function(tidy, expr)
-			local sets = require 'symmath.set.sets'
-			local unm = require 'symmath.op.unm'
-			local div = require 'symmath.op.div'
-			local Constant = require 'symmath.Constant'
-			local sqrt = require 'symmath.sqrt'
-			local cbrt = require 'symmath.cbrt'
+			symmath = symmath or require 'symmath'	-- needed for flags
+			local sets = symmath.set
+			local unm = symmath.op.unm
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+			local sqrt = symmath.sqrt
+			local cbrt = symmath.cbrt
 
 			-- [[ x^-a => 1/x^a ... TODO only do this when in a product?
 			if unm:isa(expr[2]) then

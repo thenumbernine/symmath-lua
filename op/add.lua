@@ -62,9 +62,11 @@ how to accomplish this:
 		of coures to be certain to match all, might have to try all possible combinations =(
 		so iterate over permutations of non-matched order-independent terms.  if all match then go with it.
 --]]
+local Wildcard
+local Constant
 function add.match(a, b, matches)
-	local Wildcard = require 'symmath.Wildcard'
-	local Constant = require 'symmath.Constant'
+	Wildcard = Wildcard or require 'symmath.Wildcard'
+	Constant = Constant or require 'symmath.Constant'
 --local SingleLine = require 'symmath.export.SingleLine'
 --local Verbose = require 'symmath.export.Verbose'
 --print("add.match(a="..Verbose(a)..", b="..Verbose(b)..", matches={"..(matches or table()):mapi(Verbose):concat', '..'}) begin')
@@ -293,8 +295,12 @@ then it needs to look through its children and see if it has all-but-1...
 
 TODO consider addNonCommutative operators
 --]]
+local Wildcard
+local Constant
+local mul
 function add:wildcardMatches(a, matches)
-	local Constant = require 'symmath.Constant'
+	Constant = Constant or require 'symmath.Constant'
+	Wildcard = Wildcard or require 'symmath.Wildcard'
 --local SingleLine = require 'symmath.export.SingleLine'
 --local Verbose = require 'symmath.export.Verbose'
 --print("add.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'})')
@@ -313,7 +319,6 @@ function add:wildcardMatches(a, matches)
 	
 	-- 'a' is the 'a' in Expression.match(a,b)
 	-- 'b' is 'self'
-	local Wildcard = require 'symmath.Wildcard'
 	local nonWildcards = table()
 	local wildcards = table()
 	for _,w in ipairs(self) do
@@ -376,8 +381,7 @@ function add:wildcardMatches(a, matches)
 		end
 	end
 
-	local Wildcard = require 'symmath.Wildcard'
-	local mul = require 'symmath.op.mul'
+	mul = mul or require 'symmath.op.mul'
 	-- match all wildcards to zero
 	local function checkWildcardPermutation(wildcards, matches)
 		-- match all wildcards to zero
@@ -431,6 +435,43 @@ function add:wildcardMatches(a, matches)
 	return false
 end
 
+
+-- TODO if you keep add() constantly sorted then you can just compare element by element
+function add.__eq(a,b)
+	if getmetatable(a) ~= getmetatable(b) then return false end
+
+	-- compare things order-independent, remove as you go
+	local a = table(a)
+	local b = table(b)
+	for i=#a,1,-1 do
+		local ai = a[i]
+		-- non-commutative compare...
+		if not ai.addNonCommutative then
+			local j
+			for _j=1,#b do
+				local bj = b[_j]
+				if ai == bj then
+					j = _j
+					break
+				end
+			end
+			if j then
+				a:remove(i)
+				b:remove(j)
+			end
+		end
+	end
+
+	local n = #a
+	if n ~= #b then return false end
+	for i=1,n do
+		if a[i] ~= b[i] then return false end
+	end
+	
+	return true
+end
+
+
 add.removeIfContains = require 'symmath.commutativeRemove'
 
 function add:reverse(soln, index)
@@ -477,9 +518,12 @@ ProdList.mapi = table.mapi
 ProdList.find = table.find
 
 
+local Constant
+local Verbose
+local mul
 function ProdList:toExpr()
-	local Constant = require 'symmath.Constant'
-	local Verbose = require 'symmath.export/Verbose'
+	Constant = Constant or require 'symmath.Constant'
+	Verbose = Verbose or require 'symmath.export/Verbose'
 	local list = table.mapi(self, function(x)
 		if Constant.isValue(x.power, 1) then
 			return x.term
@@ -500,8 +544,9 @@ function ProdList:toExpr()
 		if #sa ~= #sb then return #sa < #sb end
 		return sa < sb 
 	end)
-	
-	return setmetatable(list, require 'symmath.op.mul')
+
+	mul = mul or require 'symmath.op.mul'
+	return setmetatable(list, mul)
 end
 
 
@@ -509,8 +554,9 @@ end
 -- pass it an element of the product list
 -- returns true if all the powers are even (and positive?)
 -- I'm not using this yet, but for the sake of generalizing, it would be good to switch to this
+local symmath
 function ProdList:isSquare()
-	local symmath = require 'symmath'
+	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
 	for i,pi in ipairs(self) do
 		if 
@@ -540,8 +586,9 @@ end
 
 -- for the i'th child of an add ...
 -- return a list of {term=term, power=power}
+local symmath
 function getProductList(x)
-	local symmath = require 'symmath'
+	symmath = symmath or require 'symmath'
 	local mul = symmath.op.mul
 	local pow = symmath.op.pow
 	local Constant = symmath.Constant
@@ -634,9 +681,11 @@ function ProdLists:init(expr)
 	end
 end
 
+local Constant
+local Verbose
 function ProdLists:sort()
-	local Constant = require 'symmath.Constant'
-	local Verbose = require 'symmath.export.Verbose'
+	Constant = Constant or require 'symmath.Constant'
+	Verbose = Verbose or require 'symmath.export.Verbose'
 	local function sortstr(list)
 		if #list == 0 then return '' end
 		if #list == 1 and Constant:isa(list[1].term) then return '' end
@@ -663,6 +712,11 @@ function ProdLists:toExpr()
 end
 
 
+local symmath
+local Constant
+local mul
+local div
+local unm
 add.rules = {
 	Eval = {
 		{apply = function(eval, expr)
@@ -678,7 +732,7 @@ add.rules = {
 		{apply = function(factor, expr)
 			assert(#expr > 1)
 			
-			local symmath = require 'symmath'
+			symmath = symmath or require 'symmath'
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
@@ -955,7 +1009,7 @@ add.rules = {
 		end},
 
 		{combineConstants = function(prune, expr, ...)
-			local Constant = require 'symmath.Constant'
+			Constant = Constant or require 'symmath.Constant'
 -- [=[ old version
 			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
 			local cval = 0
@@ -1109,8 +1163,8 @@ add.rules = {
 		end},
 		
 		{combineMultipliedConstants = function(prune, expr, ...) 
-			local Constant = require 'symmath.Constant'
-			local mul = require 'symmath.op.mul'
+			Constant = Constant or require 'symmath.Constant'
+			mul = mul or require 'symmath.op.mul'
 			-- [[ x * c1 + x * c2 => x * (c1 + c2) ... for constants
 			do
 				local muls = table()
@@ -1175,8 +1229,8 @@ add.rules = {
 		end},
 		
 		{flattenAddMul = function(prune, expr, ...)
-			local Constant = require 'symmath.Constant'
-			local mul = require 'symmath.op.mul'
+			Constant = Constant or require 'symmath.Constant'
+			mul = mul or require 'symmath.op.mul'
 			
 			-- TODO shouldn't this be regardless of the outer add ?
 			-- turn any a + (b * (c + d)) => a + (b * c) + (b * d)
@@ -1260,7 +1314,7 @@ add.rules = {
 		end},
 
 		{factorOutDivs = function(prune, expr, ...)
-			local div = require 'symmath.op.div'
+			div = div or require 'symmath.op.div'
 
 			--[[ factor out divs ...
 			local denom
@@ -1431,7 +1485,7 @@ add.rules = {
 	
 		-- log(a) + log(b) = log(ab)
 		{logMul = function(prune, expr)
-			local symmath = require 'symmath'
+			symmath = symmath or require 'symmath'
 			local found
 			local log = symmath.log
 			for i=#expr-1,1,-1 do
@@ -1455,7 +1509,7 @@ add.rules = {
 
 	Tidy = {
 		{apply = function(tidy, expr)
-			local unm = require 'symmath.op.unm'
+			unm = unm or require 'symmath.op.unm'
 			for i=1,#expr-1 do
 				-- x + -y => x - y
 				if unm:isa(expr[i+1]) then

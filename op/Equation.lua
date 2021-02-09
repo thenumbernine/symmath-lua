@@ -46,6 +46,36 @@ function Equation.match(a, b, matches)
 	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
+function Equation.__eq(a,b)
+	if getmetatable(a) ~= getmetatable(b) then return false end
+	
+	-- order-independent
+	local a = table(a)
+	local b = table(b)
+	for ai=#a,1,-1 do
+		local bi
+		for _bi=1,#b do
+			if b[_bi] == a[ai] then
+				bi = _bi
+				break
+			end
+		end
+		if bi then
+			a:remove(ai)
+			b:remove(bi)
+		end
+	end
+	
+	-- now compare what's left in-order (since it's non-commutative)
+	local n = #a
+	if n ~= #b then return false end
+	for i=1,n do
+		if a[i] ~= b[i] then return false end
+	end
+	
+	return true
+end
+
 Equation.solve = require 'symmath.solve'
 
 function Equation:evaluateDerivative(deriv, ...)

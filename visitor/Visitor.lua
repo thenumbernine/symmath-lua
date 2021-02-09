@@ -39,15 +39,17 @@ Visitor is the metatable of instances of it and all its subclasses.
 Inherit from Visitor, instanciate that class as 'x', and x() will call Visitor:apply (or an overload of it in a child class)
 
 --]]
+local symmath
 function Visitor:apply(expr, ...)
 --return require 'ext.timer'(self.name, function(...)	
 --local changeInNodes = {}
 
-	local debugVisitors = require 'symmath'.debugVisitors
+	symmath = symmath or require 'symmath'
+	local debugVisitors = symmath.debugVisitors
 
 	local Verbose
 	if debugVisitors then
-		Verbose = require 'symmath.export.Verbose'
+		Verbose = symmath.Verbose
 	end
 
 	local id
@@ -56,8 +58,8 @@ function Visitor:apply(expr, ...)
 		print(id, 'begin Visitor', Verbose(expr))
 	end
 	
-	local clone = require 'symmath.clone'
-	local Expression = require 'symmath.Expression'
+	local clone = symmath.clone
+	local Expression = symmath.Expression
 
 	-- TODO only clone when you need to
 	-- expr = expr:cloneIfMutable()	--TODO

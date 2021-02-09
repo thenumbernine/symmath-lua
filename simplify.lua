@@ -1,16 +1,18 @@
 local table = require 'ext.table'
 
+local symmath
+
 local simplifyObj = {}
 
 simplifyObj.useTrigSimplify = true
 
 local function simplify(x, ...)
+	symmath = symmath or require 'symmath'
 --return timer('simplify', function(...)
 --print('start', require 'symmath.export.SingleLine'(x))	
 	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ... 
 	-- this doesn't make sense, but maybe it's true
-	local Array = require 'symmath.Array'
-	if Array:isa(x) then
+	if symmath.Array:isa(x) then
 		x = x:clone()
 		for i in x:iter() do
 			x[i] = simplify(x[i])
@@ -18,7 +20,6 @@ local function simplify(x, ...)
 		return x
 	end
 	
-	local symmath = require 'symmath'
 	local debugSimplifyLoops = symmath.debugSimplifyLoops
 	local simplifyMaxIter = symmath.simplifyMaxIter or 10
 
@@ -153,7 +154,7 @@ end
 	if i == simplifyMaxIter then
 print('reached maxiter', simplifyMaxIter)
 		if stack then 
-			local SingleLine = require 'symmath.export.SingleLine'
+			local SingleLine = symmath.export.SingleLine
 			for i,kv in ipairs(stack) do
 				local op, xi = table.unpack(kv)
 				io.stderr:write('simplify stack #'..i..':\t'..op..'\t'..SingleLine(xi)..'\n')

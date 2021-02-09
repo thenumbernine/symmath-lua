@@ -31,10 +31,11 @@ function Set:vars(...)
 	end):unpack()
 end
 
+local Constant
 function Set:containsVariable(x)
 	if Variable:isa(x) then
 		if x.value then
-			local Constant = require 'symmath.Constant'
+			Constant = Constant or require 'symmath.Constant'
 			return self:containsElement(Constant(x.value))
 		end
 		

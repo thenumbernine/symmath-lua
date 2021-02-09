@@ -288,6 +288,11 @@ end)
 		printbr('new eqn:', eqn)
 
 timer('simplifying', function()
+--[[
+local profiler = require 'profiler'
+profiler.configuration{fW=99, tW=10, cW=10}
+profiler.start()
+--]]
 		-- all of these are too slow
 		--[[
 		eqn = eqn()
@@ -300,10 +305,10 @@ timer('simplifying', function()
 		if symmath.op.add:isa(eqn[2]) then
 			for i=1,#eqn[2] do
 timer('simplifying term '..i, function()
-printbr('simplifying term '..i)
-printbr('from', eqn[2][i])
+--printbr('simplifying term '..i)
+--printbr('from', eqn[2][i])
 				eqn[2][i] = eqn[2][i]:simplifyAddMulDiv()
-printbr('to', eqn[2][i])
+--printbr('to', eqn[2][i])
 end)			
 			end
 -- this is the worst wrt performance
@@ -314,6 +319,10 @@ end)
 			eqn[2] = eqn[2]:simplifyAddMulDiv()
 		end
 		--]]
+--[[
+profiler.stop()
+profiler.report'profiler.log'
+--]]
 end)
 
 io.stderr:write('creating equations with new variable names...\n')

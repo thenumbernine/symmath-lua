@@ -44,6 +44,19 @@ function TensorIndex.match(a, b, matches)
 	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
+function TensorIndex.__eq(a, b)
+	if getmetatable(a) ~= getmetatable(b) then return false end
+	
+	if not (a.lower == b.lower
+		and a.derivative == b.derivative
+		and a.symbol == b.symbol
+	) then
+		return false
+	end
+	
+	return true	
+end
+
 
 -- TODO put this in each export/* like everything else?
 function TensorIndex:__tostring()
