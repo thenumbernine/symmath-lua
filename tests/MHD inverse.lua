@@ -57,13 +57,11 @@ printbr(var'u':eq(u))
 local w = Matrix{rho, vx, vy, vz, Bx, By, Bz, p}:transpose()	-- primitive variables
 printbr(var'w':eq(w))
 
-local du_dw = Array(table.map(u, function(u_i,i)
+local du_dw = Array(table.mapi(u, function(u_i,i)
 	u_i = u_i[1]
 	u_i = u_i:subst(BSq_from_v, vSq_from_v)
-	if type(i) ~= 'number' then return end
-	return table.map(w, function(w_j,j)
+	return table.mapi(w, function(w_j,j)
 		w_j = w_j[1]
-		if type(j) ~= 'number' then return end
 		return u_i:diff(w_j)()
 	end)
 end):unpack())

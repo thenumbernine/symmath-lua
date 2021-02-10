@@ -1,6 +1,8 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
+local complex = require 'symmath.complex'
+local RealDomain 
 
 --[[
 what about complex numbers?
@@ -9,12 +11,6 @@ what about infinite precision numbers?
 
 I'll let .value hold whatever is essential to the constant - whatever class of constant it is.
 --]]
-
--- for now I'll allow value to be ffi.typeof(...) == 'ctype<complex>' or 'ctype<complex float>'
-local result, ffi = pcall(require,'ffi')
-ffi = result and ffi
-
-local complex = require 'symmath.complex'
 
 local Constant = class(Expression)
 Constant.precedence = 10	-- high since it can't have child nodes 
@@ -153,16 +149,22 @@ function Constant:evaluateDerivative(deriv, ...)
 end
 
 function Constant:getRealDomain()
-	local RealDomain = require 'symmath.set.RealDomain'
+	if self.cachedSet then return self.cachedSet end
+	RealDomain = RealDomain or require 'symmath.set.RealDomain'
 	
 	if type(self.value) == 'number' then
 		-- should a Constant's domain be the single value of the constant?
-		return RealDomain(self.value, self.value, true, true)
+		self.cachedSet = RealDomain(self.value, self.value, true, true)
+		return self.cachedSet
 	end
 	
 	if complex:isa(self.value) then 
-		if self.im ~= 0 then return nil end
-		return RealDomain(self.re, self.re, true, true)
+		if self.im ~= 0 then 
+			self.cachedSet = nil
+			return nil 
+		end
+		self.cachedSet = RealDomain(self.re, self.re, true, true)
+		return self.cachedSet
 	end
 end
 

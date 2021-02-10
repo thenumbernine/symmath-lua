@@ -1,6 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Function = require 'symmath.Function'
+local symmath
 
 local sqrt = class(Function)
 sqrt.name = 'sqrt'
@@ -23,7 +24,7 @@ sqrt.rules = table(sqrt.rules)
 
 sqrt.rules.Prune = {
 	{apply = function(prune, expr)
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		local div = symmath.op.div
 		-- sqrt(a) = a^div(1,2)
 		return prune:apply(expr[1]^div(1,2))

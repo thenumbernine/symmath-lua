@@ -1548,10 +1548,17 @@ function Expression:dependsOn(x)
 	return found
 end
 
--- function for telling the interval of arbitrary expressions
--- TODO maybe a getDomain()?  but I would like separate evaluation for real and complex versions of functions...
+--[[
+function for telling the interval of arbitrary expressions
+TODO maybe a getDomain()?  but I would like separate evaluation for real and complex versions of functions...
+
+ok for performance I'm going to cache this, in '.cachedSet'
+this isn't too far from Variable's explicit override, '.set' ... maybe I should just use .set for every node?
+but what happens if an expression is initialized with a variable, the cachedSet is calculated and cached, then the Variable .set is changed? 
+well then, you can clear all nodes' .cachedSet by :clone()ing it.  if that's even undesired behavior.
+--]]
 function Expression:getRealDomain()
-	return nil
+	return self.cachedSet
 end
 
 function Expression:treeSize()

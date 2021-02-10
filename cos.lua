@@ -2,6 +2,10 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Function = require 'symmath.Function'
+local frac = require 'symmath.op.div'
+local sqrt = require 'symmath.sqrt'
+local symmath
+local RealDomain
 
 local cos = class(Function)
 
@@ -11,20 +15,25 @@ cos.cplxFunc = require 'symmath.complex'.cos
 
 function cos:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
-	local sin = require 'symmath.sin'
-	return -deriv(x,...) * sin(x)
+	symmath = symmath or require 'symmath'
+	return -deriv(x,...) * symmath.sin(x)
 end
 
 function cos:reverse(soln, index)
-	return require 'symmath.acos'(soln)
+	symmath = symmath or require 'symmath'
+	return symmath.acos(soln)
 end
 
 function cos:getRealDomain()
-	local RealDomain = require 'symmath.set.RealDomain'
+	if self.cachedSet then return self.cachedSet end
+	RealDomain = RealDomain or require 'symmath.set.RealDomain'
 	-- (-inf,inf) => (-1,1)
 	local Is = self[1]:getRealDomain()
-	if Is == nil then return nil end
-	return RealDomain(table.mapi(Is, function(I)
+	if Is == nil then 
+		self.cachedSet = nil
+		return nil 
+	end
+	self.cachedSet = RealDomain(table.mapi(Is, function(I)
 		if I.start == -math.huge or I.finish == math.huge then return RealDomain(-1, 1, true, true) end
 		-- here I'm going to add pi/2 and then just copy the sin:getRealDomain() code
 		I.start = I.start + math.pi/2
@@ -87,6 +96,7 @@ function cos:getRealDomain()
 		end
 		return RealDomain(-1, 1, true, true)
 	end))
+	return self.cachedSet
 end
 
 -- assume irreducible form, so there exists no prime k such that k divides p and k divides q
@@ -96,8 +106,6 @@ end
 -- and for even q, cos( ((q/2) π) / q) = 0
 -- https://en.wikipedia.org/wiki/Trigonometric_constants_expressed_in_real_radicals
 -- TODO generate from half-angles and third-angles?
-local frac = require 'symmath.op.div'
-local sqrt = require 'symmath.sqrt'
 cos.lookup = {
 	[3] = {
 		[1] = frac(1,2),							-- cos(π/3) = sin(π/6)
@@ -125,7 +133,7 @@ cos.lookup = {
 cos.rules = {
 	Prune = {
 		{apply = function(prune, expr)
-			local symmath = require 'symmath'
+			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local Variable = symmath.Variable
 			local unm = symmath.op.unm

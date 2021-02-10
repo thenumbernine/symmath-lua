@@ -1,7 +1,6 @@
 local class = require 'ext.class'
 local Binary = require 'symmath.op.Binary'
-
-local add
+local symmath
 
 local sub = class(Binary)
 sub.precedence = 2
@@ -36,14 +35,19 @@ function sub:reverse(soln, index)
 end
 
 function sub:getRealDomain()
+	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealDomain()
-	if I == nil then return nil end
+	if I == nil then 
+		self.cachedSet = nil
+		return nil 
+	end
 	for i=2,#self do
 		local I2 = self[i]:getRealDomain()
 		if I2 == nil then return nil end
 		I = I - I2
 	end
-	return I
+	self.cachedSet = I
+	return self.cachedSet
 end
 
 sub.rules = {
@@ -59,7 +63,8 @@ sub.rules = {
 	
 	Expand = {
 		{apply = function(expand, expr)
-			add = add or require 'symmath.op.add'
+			symmath = symmath or require 'symmath'
+			local add = symmath.op.add
 			
 			--assert(#expr > 1) -- TODO
 			if #expr == 1 then return expand:apply(expr[1]) end

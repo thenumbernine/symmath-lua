@@ -2,8 +2,9 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Binary = require 'symmath.op.Binary'
+local primeFactors = require 'symmath.primeFactors'
 
-local Constant, add, mul, primeFactors, symmath, unm
+local symmath
 
 local div = class(Binary)
 div.precedence = 3.5
@@ -28,17 +29,26 @@ function div:reverse(soln, index)
 end
 
 function div:getRealDomain()
+	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealDomain()
-	if I == nil then return nil end
+	if I == nil then 
+		self.cachedSet = nil
+		return nil 
+	end
 	local I2 = self[2]:getRealDomain()
-	if I2 == nil then return nil end
-	return I / I2
+	if I2 == nil then 
+		self.cachedSet = nil
+		return nil 
+	end
+	self.cachedSet = I / I2
+	return self.cachedSet
 end
 
 div.rules = {
 	DistributeDivision = {
 		{apply = function(distributeDivision, expr)
-			add = add or require 'symmath.op.add'
+			symmath = symmath or require 'symmath'
+			local add = symmath.op.add
 			local num, denom = expr[1], expr[2]
 			if not add:isa(num) then return end
 			return getmetatable(num)(range(#num):map(function(k)
@@ -65,8 +75,9 @@ div.rules = {
 
 	FactorDivision = {
 		{apply = function(factorDivision, expr)
-			Constant = Constant or require 'symmath.Constant'
-			mul = mul or require 'symmath.op.mul'
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local mul = symmath.op.mul
 
 			if Constant.isValue(expr[1], 1) then return end
 		
@@ -85,7 +96,7 @@ div.rules = {
 
 	Prune = {		
 		{apply = function(prune, expr)
-			symmath = symmath or require 'symmath'	-- for debug flags ...
+			symmath = symmath or require 'symmath'
 			local add = symmath.op.add	
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
@@ -222,7 +233,7 @@ div.rules = {
 					local bases, powers = table.unpack(info)
 					for i=#bases,1,-1 do
 						local b = bases[i]
-						if require 'symmath.set.sets'.integer:contains(b) 
+						if symmath.set.integer:contains(b) 
 						and b.value ~= 0 
 						then
 							bases:remove(i)
@@ -237,7 +248,6 @@ div.rules = {
 								bases:insert(i, Constant(1))
 								powers:insert(i, power:clone())
 							else
-								primeFactors = primeFactors or require 'symmath.primeFactors'
 								local fs = primeFactors(value)	-- 1 returns a nil list
 								for _,f in ipairs(fs) do
 									bases:insert(i, f)
@@ -314,8 +324,7 @@ div.rules = {
 			local add = require 'symmath.op.add'
 			if add:isa(expr[1]) then
 				return prune:apply(add(
-					table.map(expr[1], function(x,k)
-						if type(k) ~= 'number' then return end
+					table.mapi(expr[1], function(x)
 						return x / expr[2]
 					end):unpack()))
 			end
@@ -385,8 +394,9 @@ div.rules = {
 
 	Tidy = {
 		{apply = function(tidy, expr)
-			unm = unm or require 'symmath.op.unm'
-			Constant = Constant or require 'symmath.Constant'
+			symmath = symmath or require 'symmath'
+			local unm = symmath.op.unm
+			local Constant = symmath.Constant
 			
 			local a, b = table.unpack(expr)
 			local ua = unm:isa(a)

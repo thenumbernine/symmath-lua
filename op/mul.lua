@@ -2,7 +2,7 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local Binary = require 'symmath.op.Binary'
 
-local Constant, SingleLine, TensorRef, Variable, Verbose, Wildcard, add, div, pow, sub, symmath, unm
+local symmath
 
 local mul = class(Binary)
 mul.implicitName = true
@@ -54,7 +54,8 @@ function mul:isFlattened()
 end
 
 function mul:evaluateDerivative(deriv, ...)
-	add = add or require 'symmath.op.add'
+	symmath = symmath or require 'symmath'
+	local add = symmath.op.add
 	local sums = table()
 	for i=1,#self do
 		local terms = table()
@@ -86,10 +87,11 @@ mul.removeIfContains = require 'symmath.commutativeRemove'
 -- non-commutative objects (matrices) need to be compared in-order
 -- commutative objects can be compared in any order
 function mul.match(a, b, matches)
-	Wildcard = Wildcard or require 'symmath.Wildcard'
-	Constant = Constant or require 'symmath.Constant'
-SingleLine = SingleLine or require 'symmath.export.SingleLine'
-Verbose = Verbose or require 'symmath.export.Verbose'
+	symmath = symmath or require 'symmath'
+	local Wildcard = symmath.Wildcard
+	local Constant = symmath.Constant
+local SingleLine = symmath.export.SingleLine
+local Verbose = symmath.export.Verbose
 --print("mul.match(a="..Verbose(a)..", b="..Verbose(b)..", matches={"..(matches or table()):mapi(Verbose):concat', '..'}) begin')
 
 	matches = matches or table()
@@ -305,9 +307,12 @@ end
 
 	-- copy of op/add.wildcardMatches, just like match()
 function mul:wildcardMatches(a, matches)
-	Constant = Constant or require 'symmath.Constant'
-SingleLine = SingleLine or require 'symmath.export.SingleLine'
-Verbose = Verbose or require 'symmath.export.Verbose'
+	symmath = symmath or require 'symmath'
+	local Constant = symmath.Constant
+	local Wildcard = symmath.Wildcard
+	local add = symmath.op.add
+local SingleLine = symmath.export.SingleLine
+local Verbose = symmath.export.Verbose
 --print("mul.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'})')
 
 	-- TODO move this to Expression
@@ -324,7 +329,6 @@ Verbose = Verbose or require 'symmath.export.Verbose'
 	
 	-- 'a' is the 'a' in Expression.match(a,b)
 	-- 'b' is 'self'
-	Wildcard = Wildcard or require 'symmath.Wildcard'
 	local nonWildcards = table()
 	local wildcards = table()
 	for _,w in ipairs(self) do
@@ -416,8 +420,6 @@ Verbose = Verbose or require 'symmath.export.Verbose'
 		end
 	end
 
-	Wildcard = Wildcard or require 'symmath.Wildcard'
-	add = add or require 'symmath.op.add'
 	-- match all wildcards to zero
 	local function checkWildcardPermutation(wildcards, matches)
 		-- match all wildcards to zero
@@ -517,14 +519,19 @@ function mul:reverse(soln, index)
 end
 
 function mul:getRealDomain()
+	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealDomain()
-	if I == nil then return nil end
+	if I == nil then 
+		self.cachedSet = nil
+		return nil 
+	end
 	for i=2,#self do
 		local I2 = self[i]:getRealDomain()
 		if I2 == nil then return nil end
 		I = I * I2
 	end
-	return I
+	self.cachedSet = I
+	return self.cachedSet
 end
 
 -- goes horribly slow
@@ -532,8 +539,9 @@ end
 a * (b + c) * d * e => (a * b * d * e) + (a * c * d * e)
 --]]
 function mul:distribute()
-	add = add or require 'symmath.op.add'
-	sub = sub or require 'symmath.op.sub'
+	symmath = symmath or require 'symmath'
+	local add = symmath.op.add
+	local sub = symmath.op.sub
 	for i,ch in ipairs(self) do
 		if add:isa(ch) or sub:isa(ch) then
 			local terms = table()
@@ -567,8 +575,9 @@ mul.rules = {
 
 	FactorDivision = {
 		{apply = function(factorDivision, expr)
-			Constant = Constant or require 'symmath.Constant'
-			div = div or require 'symmath.op.div'
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local div = symmath.op.div
 			
 			-- first time processing we want to simplify()
 			--  to remove powers and divisions
@@ -626,9 +635,10 @@ mul.rules = {
 
 	Prune = {
 		{apply = function(prune, expr)	
-			Constant = Constant or require 'symmath.Constant'
-			pow = pow or require 'symmath.op.pow'
-			div = div or require 'symmath.op.div'
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local pow = symmath.op.pow
+			local div = symmath.op.div
 			
 			-- flatten multiplications
 			local flat = expr:flattenAndClone()
@@ -712,8 +722,8 @@ mul.rules = {
 			end
 
 -- [[
-			Variable = Variable or require 'symmath.Variable'
-			TensorRef = TensorRef or require 'symmath.tensor.TensorRef'
+			local Variable = symmath.Variable
+			local TensorRef = symmath.TensorRef
 			local function compare(a, b) 
 				-- Constant
 				local ca, cb = Constant:isa(a), Constant:isa(b)
@@ -942,8 +952,9 @@ mul.rules = {
 
 	Tidy = {
 		{apply = function(tidy, expr)
-			unm = unm or require 'symmath.op.unm'
-			Constant = Constant or require 'symmath.Constant'
+			symmath = symmath or require 'symmath'
+			local unm = symmath.op.unm
+			local Constant = symmath.Constant
 			
 			-- -x * y * z => -(x * y * z)
 			-- -x * y * -z => x * y * z

@@ -4,7 +4,6 @@ local range = require 'ext.range'
 local Binary = require 'symmath.op.Binary'
 local complex = require 'symmath.complex'
 local primeFactors = require 'symmath.primeFactors'
-
 local symmath
 
 local pow = class(Binary)
@@ -57,7 +56,7 @@ function pow:expand()
 	local n = self[2].value
 	-- for certain small integer powers, expand 
 	-- ... or should we have all integer powers expended under a different command?
-	if require 'symmath.set.sets'.integer:contains(self[2])
+	if symmath.set.integer:contains(self[2])
 	and n >= 0
 	and n < 10
 	then
@@ -90,11 +89,19 @@ function pow:reverse(soln, index)
 end
 
 function pow:getRealDomain()
+	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealDomain()
-	if I == nil then return nil end
+	if I == nil then 
+		self.cachedSet = nil
+		return nil 
+	end
 	local I2 = self[2]:getRealDomain()
-	if I2 == nil then return nil end
-	return I ^ I2
+	if I2 == nil then 
+		self.cachedSet = nil
+		return nil 
+	end
+	self.cachedSet = I ^ I2
+	return self.cachedSet
 end
 
 pow.rules = {
@@ -125,11 +132,10 @@ pow.rules = {
 			-- a^n => a*a*...*a,  n times, only for integer 2 <= n < 10
 			-- hmm this can cause problems in some cases ... 
 			-- comment this out to get schwarzschild_spherical_to_cartesian to work
-			if require 'symmath.set.sets'.integer:contains(expr[2])
+			if symmath.set.integer:contains(expr[2])
 			and expr[2].value >= 2
 			and expr[2].value < 10
 			then
-				symmath = symmath or require 'symmath'
 				if symmath.simplifyConstantPowers 
 				and Constant:isa(expr[1])
 				then
@@ -411,8 +417,7 @@ pow.rules = {
 			
 			-- (a * b) ^ c => a^c * b^c
 			if mul:isa(expr[1]) then
-				local result = table.map(expr[1], function(v,k)
-					if type(k) ~= 'number' then return end
+				local result = table.mapi(expr[1], function(v)
 					return v ^ expr[2]
 				end)
 				assert(#result > 0)

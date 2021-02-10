@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local math = require 'ext.math'	-- cbrt
 local Function = require 'symmath.Function'
+local symmath
 
 local cbrt = class(Function)
 cbrt.name = 'cbrt'
@@ -25,7 +26,7 @@ cbrt.rules = table(cbrt.rules)
 
 cbrt.rules.Prune = {
 	{apply = function(prune, expr)
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		local div = symmath.op.div
 		-- cbrt(a) = a^div(1,3)
 		return prune:apply(expr[1]^div(1,3))

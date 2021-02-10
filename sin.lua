@@ -2,6 +2,10 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Function = require 'symmath.Function'
+local frac = require 'symmath.op.div'
+local sqrt = require 'symmath.sqrt'
+local symmath
+local RealDomain
 
 local sin = class(Function)
 sin.name = 'sin'
@@ -10,20 +14,25 @@ sin.cplxFunc = require 'symmath.complex'.sin
 
 function sin:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
-	local cos = require 'symmath.cos'
-	return deriv(x, ...) * cos(x)
+	symmath = symmath or require 'symmath'
+	return deriv(x, ...) * symmath.cos(x)
 end
 
 function sin:reverse(soln, index)
-	return require 'symmath.asin'(soln)
+	symmath = symmath or require 'symmath'
+	return symmath.asin(soln)
 end
 
 function sin:getRealDomain()
-	local RealDomain = require 'symmath.set.RealDomain'
+	if self.cachedSet then return self.cachedSet end
+	RealDomain = RealDomain or require 'symmath.set.RealDomain'
 	-- (-inf,inf) => (-1,1)
 	local Is = self[1]:getRealDomain()
-	if Is == nil then return nil end
-	return RealDomain(table.mapi(Is, function(I)	
+	if Is == nil then 
+		self.cachedSet = nil
+		return nil 
+	end
+	self.cachedSet = RealDomain(table.mapi(Is, function(I)	
 		if I.start == -math.huge or I.finish == math.huge then return RealDomain(-1, 1, true, true) end
 		-- map by quadrant
 		local startQ = math.floor(I.start / (math.pi/2))
@@ -83,10 +92,9 @@ function sin:getRealDomain()
 		end
 		return RealDomain(-1, 1, true, true)
 	end))
+	return self.cachedSet
 end
 
-local frac = require 'symmath.op.div'
-local sqrt = require 'symmath.sqrt'
 sin.lookup = {
 	[3] = {
 		[1] = frac(sqrt(3),2),						-- cos(π/6) = sin(π/3)
@@ -114,7 +122,7 @@ sin.lookup = {
 sin.rules = {
 	Prune = {
 		{apply = function(prune, expr)
-			local symmath = require 'symmath'
+			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local Variable = symmath.Variable
 			local unm = symmath.op.unm

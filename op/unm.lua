@@ -1,6 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
+local symmath
 
 local unm = class(Expression)
 unm.precedence = 3	--4	--make it match mul and div so there aren't extra parenthesis around mul and div
@@ -16,9 +17,14 @@ function unm:reverse(soln, index)
 end
 
 function unm:getRealDomain()
+	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealDomain()
-	if I == nil then return nil end
-	return -I
+	if I == nil then 
+		self.cachedSet = nil 
+		return nil
+	end
+	self.cachedSet = -I
+	return self.cachedSet
 end
 
 unm.rules = {
@@ -51,7 +57,8 @@ unm.rules = {
 
 	Tidy = {
 		{apply = function(tidy, expr)
-			local add = require 'symmath.op.add'
+			symmath = symmath or require 'symmath'
+			local add = symmath.op.add
 			
 			-- --x => x
 			if unm:isa(expr[1]) then
@@ -60,10 +67,7 @@ unm.rules = {
 			
 			-- distribute through addition/subtraction
 			if add:isa(expr[1]) then
-				return add(table.map(expr[1], function(x,k) 
-					if type(k) ~= 'number' then return end
-					return -x
-				end):unpack())
+				return add(table.mapi(expr[1], function(x) return -x end):unpack())
 			end
 		end},
 	},

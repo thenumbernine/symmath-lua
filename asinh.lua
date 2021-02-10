@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local Function = require 'symmath.Function'
+local symmath
 
 local asinh = class(Function)
 asinh.name = 'asinh'
@@ -14,12 +15,13 @@ asinh.cplxFunc = require 'symmath.complex'.asinh
 -- domain: reals
 function asinh:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self)
-	local sqrt = require 'symmath.sqrt'
-	return deriv(x, ...) / sqrt(x^2 + 1)
+	symmath = symmath or require 'symmath'
+	return deriv(x, ...) / symmath.sqrt(x^2 + 1)
 end
 
 function asinh:reverse(soln, index)
-	return require 'symmath.sinh'(soln)
+	symmath = symmath or require 'symmath'
+	return symmath.sinh(soln)
 end
 
 asinh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc

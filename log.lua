@@ -1,6 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Function = require 'symmath.Function'
+local symmath
 
 local log = class(Function)
 log.name = 'log'
@@ -13,7 +14,8 @@ function log:evaluateDerivative(deriv, ...)
 end
 
 function log:reverse(soln, index)
-	return require 'symmath'.e ^ soln
+	symmath = symmath or require 'symmath'
+	return symmath.e ^ soln
 end
 
 log.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_posInc_negIm
@@ -21,7 +23,7 @@ log.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_posInc_negIm
 log.rules = {
 	Prune = {
 		{apply = function(prune, expr)
-			local symmath = require 'symmath'
+			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local x = table.unpack(expr)
 		
@@ -45,7 +47,7 @@ log.rules = {
 	-- NOTE TO SELF - without calling expand:apply on the returned values, we get simplification loops
 	Expand = {
 		{apply = function(expand, expr)
-			local symmath = require 'symmath'
+			symmath = symmath or require 'symmath'
 			local x = expr[1]
 			
 			-- log(a^b) = b log(a)

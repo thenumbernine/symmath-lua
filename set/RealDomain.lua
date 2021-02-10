@@ -222,9 +222,13 @@ end
 -- (-inf,inf) even, increasing from zero
 -- abs, cosh
 function RealDomain.getRealDomain_evenIncreasing(x)
+	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealDomain()
-	if Is == nil then return nil end
-	return RealDomain(table.mapi(Is, function(I)
+	if Is == nil then 
+		x.cachedSet = nil
+		return nil 
+	end
+	x.cachedSet = RealDomain(table.mapi(Is, function(I)
 		if I.finish <= 0 then
 			return RealDomain(
 				x.realFunc(I.finish),
@@ -259,58 +263,80 @@ function RealDomain.getRealDomain_evenIncreasing(x)
 			)
 		end
 	end))
+	return x.cachedSet
 end
 
 -- (0,inf) increasing, (-inf,0) imaginary
 -- sqrt, log
 function RealDomain.getRealDomain_posInc_negIm(x)
+	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealDomain()
-	if Is == nil then return nil end
+	if Is == nil then 
+		x.cachedSet = nil
+		return nil 
+	end
 	-- if the input touches (-inf,0) but is not contained by (-inf,0) then we are uncertain
 	-- but if it is contained then we are an empty set
 	-- either way, nil for now
 	for _,I in ipairs(Is) do
-		if I.start < 0 then return nil end
+		if I.start < 0 then 
+			x.cachedSet = nil
+			return nil 
+		end
 	end
-	return RealDomain(table.mapi(Is, function(I)
+	x.cachedSet = RealDomain(table.mapi(Is, function(I)
 		return RealDomain(
 			x.realFunc(I.start),
 			x.realFunc(I.finish),
 			I.includeStart,
 			I.includeFinish)
 	end))
+	return x.cachedSet
 end
 
 -- (-1,1) => (-inf,inf) increasing, (-inf,-1) and (1,inf) imaginary
 -- asin, atanh
 function RealDomain.getRealDomain_pmOneInc(x)
+	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealDomain()
-	if Is == nil then return nil end
+	if Is == nil then 
+		x.cachedSet = nil
+		return nil 
+	end
 	-- not real
 	for _,I in ipairs(Is) do
-		if I.start < -1 or 1 < I.finish then return nil end
+		if I.start < -1 or 1 < I.finish then 
+			x.cachedSet = nil
+			return nil 
+		end
 	end
-	return RealDomain(table.mapi(Is, function(I)
+	x.cachedSet = RealDomain(table.mapi(Is, function(I)
 		return RealDomain(
 			x.realFunc(I.start),
 			x.realFunc(I.finish),
 			I.includeStart,
 			I.includeFinish)
 	end))
+	return x.cachedSet
 end
 
 -- (-inf,inf) increasing
 -- sinh, tanh, asinh, atan
 function RealDomain.getRealDomain_inc(x)
+	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealDomain()
-	if Is == nil then return nil end
-	return RealDomain(table.mapi(Is, function(I)
+	if Is == nil then 
+		x.cachedSet = nil
+		return nil 
+	end
+	x.cachedSet = RealDomain(table.mapi(Is, function(I)
 		return RealDomain(
 			x.realFunc(I.start),
 			x.realFunc(I.finish),
 			I.includeStart,
 			I.includeFinish)
 	end))
+	return x.cachedSet
 end
 
 return RealDomain

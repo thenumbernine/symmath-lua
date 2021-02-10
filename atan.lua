@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local Function = require 'symmath.Function'
+local symmath
 
 local atan = class(Function)
 atan.name = 'atan'
@@ -12,7 +13,8 @@ function atan:evaluateDerivative(deriv, ...)
 end
 
 function atan:reverse(soln, index)
-	return require 'symmath.tan'(soln)
+	symmath = symmath or require 'symmath'
+	return symmath.tan(soln)
 end
 
 -- technically this is a Riemann surface, and the codomain repeats every pi

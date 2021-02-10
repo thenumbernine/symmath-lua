@@ -174,18 +174,24 @@ end
 
 local RealDomain
 function Variable:getRealDomain()
+	if not rawequal(self.set, self.cachedSet) then self.cachedSet = nil end
+	if self.cachedSet then return self.cachedSet end
+	
 	RealDomain = RealDomain or require 'symmath.set.RealDomain'
 	if self.value then 
 		if type(self.value) == 'number' then
-			return RealDomain(self.value, self.value, true, true)
+			self.cachedSet = RealDomain(self.value, self.value, true, true)
+			return self.cachedSet
 		elseif complex:isa(self.value) and self.value.im == 0 then
-			return RealDomain(self.value.re, self.value.re, true, true)
+			self.cachedSet = RealDomain(self.value.re, self.value.re, true, true)
+			return self.cachedSet
 		end
 	end
 	
 	-- TODO why test this?  when won't it be true?
 	if RealDomain:isa(self.set) then
-		return self.set
+		self.cachedSet = self.set
+		return self.cachedSet
 	end
 	
 	-- assuming start and finish are defined in all Real's subclasses

@@ -15,8 +15,10 @@ print(MathJax.header)
 
 
 -- [=[ these are going slow
-local mul = symmath.op.mul
-mul.pushedRules = {[mul.rules.Expand[1]] = true}
+-- this doesn't stop all calls
+--symmath.op.mul.pushedRules = {[symmath.op.mul.rules.Expand[1]] = true}
+-- this does
+symmath.op.mul.distribute = function() end
 require 'symmath.simplify'.useTrigSimplify = false
 --]=]
 
@@ -288,7 +290,7 @@ end)
 		printbr('new eqn:', eqn)
 
 timer('simplifying', function()
---[[
+-- [[
 local profiler = require 'profiler'
 profiler.configuration{fW=99, tW=10, cW=10}
 profiler.start()
@@ -304,22 +306,22 @@ profiler.start()
 		eqn[1] = eqn[1]()
 		if symmath.op.add:isa(eqn[2]) then
 			for i=1,#eqn[2] do
-timer('simplifying term '..i, function()
+--timer('simplifying term '..i, function()
 --printbr('simplifying term '..i)
 --printbr('from', eqn[2][i])
 				eqn[2][i] = eqn[2][i]:simplifyAddMulDiv()
 --printbr('to', eqn[2][i])
-end)			
+--end)			
 			end
 -- this is the worst wrt performance
-timer('simplifying addition of terms', function()
+--timer('simplifying addition of terms', function()
 			eqn[2] = eqn[2]:simplifyAddMulDiv()
-end)
+--end)
 		else
 			eqn[2] = eqn[2]:simplifyAddMulDiv()
 		end
 		--]]
---[[
+-- [[
 profiler.stop()
 profiler.report'profiler.log'
 --]]

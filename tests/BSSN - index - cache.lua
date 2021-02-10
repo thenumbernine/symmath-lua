@@ -9268,8 +9268,8 @@ return {
 --	{dt_B_U_norm_def = dt_B_U_norm_def},
 --	{dt_W_norm_def = dt_W_norm_def},
 --	{dt_K_norm_def = dt_K_norm_def},
---	{dt_epsilonBar_LL_norm_def = dt_epsilonBar_LL_norm_def},
+	{dt_epsilonBar_LL_norm_def = dt_epsilonBar_LL_norm_def},
 --	{dt_ABar_LL_norm_def = dt_ABar_LL_norm_def},
-	{dt_LambdaBar_U_norm_def = dt_LambdaBar_U_norm_def},
+--	{dt_LambdaBar_U_norm_def = dt_LambdaBar_U_norm_def},
 }
 

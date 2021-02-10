@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local Heaviside = require 'symmath.Heaviside'
 local Function = require 'symmath.Function'
+local symmath
 
 local abs = class(Function)
 abs.name = 'abs'
@@ -23,9 +24,10 @@ abs.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_evenIncreasin
 abs.rules = {
 	Prune = {
 		{apply = function(prune, expr)
+			symmath = symmath or require 'symmath'
 			-- unm's are converted to -1 * 's
-			local mul = require 'symmath.op.mul'
-			local Constant = require 'symmath.Constant'
+			local mul = symmath.op.mul
+			local Constant = symmath.Constant
 			
 			local x = expr[1]	-- abs(x)
 			
@@ -47,7 +49,7 @@ abs.rules = {
 				return prune:apply(Constant(math.abs(x.value)))
 			end
 		
-			if require 'symmath.set.sets'.nonNegativeReal:contains(x) then
+			if symmath.set.nonNegativeReal:contains(x) then
 				return x
 			end
 		end},
