@@ -535,7 +535,8 @@ function ProdList:toExpr()
 		if Constant.isValue(x.power, 1) then
 			return x.term
 		else
-			return x.term ^ x.power:prune()
+			--return x.term ^ x.power:prune()
+			return x.term ^ x.power:simplify()
 		end
 	end)
 
@@ -839,7 +840,8 @@ add.rules = {
 							return Constant.isValue(x.term, -1)
 						end)
 						if index then
-							prodLists[j][index].power = (prodLists[j][index].power + 2):prune()
+							--prodLists[j][index].power = (prodLists[j][index].power + 2):prune()
+							prodLists[j][index].power = (prodLists[j][index].power + 2):simplify()
 						else
 							-- insert two copies so that one can be factored out
 							-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
@@ -1343,7 +1345,7 @@ add.rules = {
 			end
 			--]]
 
-			--[[ divs: c + a/b => (c * b + a) / b
+			-- [[ divs: c + a/b => (c * b + a) / b
 			for i,x in ipairs(expr) do
 				if div:isa(x) then
 					assert(#x == 2)
@@ -1357,7 +1359,7 @@ add.rules = {
 				end
 			end
 			--]]
-			-- [[ divs all at once: a/b + c/d + e => (d*a + b*d + b*d*e) / (b*d)
+			--[[ divs all at once: a/b + c/d + e => (d*a + b*d + b*d*e) / (b*d)
 			-- much faster when you remove the final prune:apply() (5s vs 60s) but doesn't seem to finish simplifying all cases 
 			local denom
 			for i,x in ipairs(expr) do

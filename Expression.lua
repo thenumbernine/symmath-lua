@@ -1561,16 +1561,6 @@ function Expression:getRealDomain()
 	return self.cachedSet
 end
 
-function Expression:treeSize()
-	local n = 1
-	for i,x in ipairs(self) do
-		if x.treeSize then
-			n = n + x:treeSize()
-		end
-	end
-	return n
-end
-
 -- candidates to add here:
 -- insertMetricsToSetVariance in 'BSSN - index'
 

@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>polar, anholonomic, orthonormal</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>polar, anholonomic, orthonormal</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
 <h3>polar, anholonomic, orthonormal</h3>
@@ -27,7 +27,7 @@ ${{{ \tilde{e}}_{\theta}}^{\theta}} = {r}$
 transform from coorinate to basis:
 <br>
 ${{{ \tilde{e}}^r}_r} = {1}$;
-${{{ \tilde{e}}^{\theta}}_{\theta}} = {\frac{1}{r}}$
+${{{ \tilde{e}}^{\theta}}_{\theta}} = {{\frac{1}{r}}{({1})}}$
 
 <br>
 
@@ -75,8 +75,8 @@ ${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\be
 <br>
 basis determinant:	${det(e)} = {1}$
 <br>
-${{{{ c}_r}_{\hat{\theta}}}^{\hat{\theta}}} = {-{\frac{1}{r}}}$;
-${{{{ c}_{\hat{\theta}}}_r}^{\hat{\theta}}} = {\frac{1}{r}}$
+${{{{ c}_r}_{\hat{\theta}}}^{\hat{\theta}}} = {-{{\frac{1}{r}}{({1})}}}$;
+${{{{ c}_{\hat{\theta}}}_r}^{\hat{\theta}}} = {{\frac{1}{r}}{({1})}}$
 
 <br>
 ${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
@@ -89,11 +89,11 @@ ${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 metric determinant:	${det(g)} = {1}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+${{{{ \Gamma}_a}_b}_c} = {{{{\frac{1}{2}}{({1})}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
 <br>
 commutation coefficients:
-${{{{ c}_r}_{\hat{\theta}}}^{\hat{\theta}}} = {-{\frac{1}{r}}}$;
-${{{{ c}_{\hat{\theta}}}_r}^{\hat{\theta}}} = {\frac{1}{r}}$
+${{{{ c}_r}_{\hat{\theta}}}^{\hat{\theta}}} = {-{{\frac{1}{r}}{({1})}}}$;
+${{{{ c}_{\hat{\theta}}}_r}^{\hat{\theta}}} = {{\frac{1}{r}}{({1})}}$
 
 <br>
 metric:
@@ -110,13 +110,13 @@ metric derivative:
 ${{{{ {\partial g}}_a}_b}_c} = {0}$
 <br>
 1st kind Christoffel:
-${{{{ \Gamma}_r}_{\hat{\theta}}}_{\hat{\theta}}} = {-{\frac{1}{r}}}$;
-${{{{ \Gamma}_{\hat{\theta}}}_{\hat{\theta}}}_r} = {\frac{1}{r}}$
+${{{{ \Gamma}_r}_{\hat{\theta}}}_{\hat{\theta}}} = {-{{\frac{1}{r}}{({1})}}}$;
+${{{{ \Gamma}_{\hat{\theta}}}_{\hat{\theta}}}_r} = {{\frac{1}{r}}{({1})}}$
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma}^r}_{\hat{\theta}}}_{\hat{\theta}}} = {-{\frac{1}{r}}}$;
-${{{{ \Gamma}^{\hat{\theta}}}_{\hat{\theta}}}_r} = {\frac{1}{r}}$
+${{{{ \Gamma}^r}_{\hat{\theta}}}_{\hat{\theta}}} = {-{{\frac{1}{r}}{({1})}}}$;
+${{{{ \Gamma}^{\hat{\theta}}}_{\hat{\theta}}}_r} = {{\frac{1}{r}}{({1})}}$
 
 <br>
 connection coefficients derivative:
@@ -160,11 +160,11 @@ ${{{{{ C}_a}_b}_c}_d} = {0}$
 Plebanski, $\sharp\sharp\flat\flat$:
 ${{{{{ P}^a}^b}_c}_d} = {0}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{{A^{r}}}} \cdot {{\frac{1}{r}}}} + {\frac{\partial {A^{r}}}{\partial r}} + {{{\frac{\partial {A^{\hat{\theta}}}}{\partial \theta}}} {{\frac{1}{r}}}}}$
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{{{{A^{r}}}} \cdot {{{\frac{1}{r}}{({1})}}}} + {\frac{\partial {A^{r}}}{\partial r}} + {{{\frac{\partial {A^{\hat{\theta}}}}{\partial \theta}}} {{{\frac{1}{r}}{({1})}}}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{r} \\ \ddot{\hat{\theta}}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{{\dot{\hat{\theta}}}^{2}}} {{\frac{1}{r}}} \\ {{-1}} {{\dot{\hat{\theta}}}} \cdot {{\dot{r}}} \cdot {{\frac{1}{r}}}\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{r} \\ \ddot{\hat{\theta}}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{{\dot{\hat{\theta}}}^{2}}} {{{\frac{1}{r}}{({1})}}} \\ {{-1}} {{\dot{\hat{\theta}}}} \cdot {{\dot{r}}} \cdot {{{\frac{1}{r}}{({1})}}}\end{matrix}\right]}}$
 <br>
 
 <br>
@@ -234,7 +234,7 @@ volume integral: 	${{{\frac{1}{2}}{({{\Delta (r^2)}})}}} {{\Delta \theta}}$
 <br>
 finite volume (0,0)-form:
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{-{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}} \cdot {{{F^{r}(r_R)}}}} - {{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}} \cdot {{{F^{r}(r_L)}}}}}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{J(\theta_R)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_R)}}} \cdot {{{F^{\theta}(\theta_R)}}}} - {{{{J(\theta_L)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_L)}}} \cdot {{{F^{\theta}(\theta_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{{\frac{1}{{\mathcal{V}(x_C)}}}{({1})}}} {{({{-{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \hat{\theta}\left({{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}} \cdot {{{F^{r}(r_R)}}}} - {{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}} \cdot {{{F^{r}(r_L)}}}}}\right)})}} - {({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{J(\theta_R)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_R)}}} \cdot {{{F^{\theta}(\theta_R)}}}} - {{{{J(\theta_L)}}} \cdot {{{{e_{\hat{\theta}}}^{\bar{\hat{\theta}}}(\theta_L)}}} \cdot {{{F^{\theta}(\theta_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
@@ -246,7 +246,7 @@ ${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\fr
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{{S(x_C)}}} \cdot {{\Delta t}}} + {{{-2}} {{{F^{r}(r_R)}}} \cdot {{\Delta t}} \cdot {{{r_R}}} \cdot {{\frac{1}{{\Delta (r^2)}}}}} + {{{2}} {{{F^{r}(r_L)}}} \cdot {{\Delta t}} \cdot {{{r_L}}} \cdot {{\frac{1}{{\Delta (r^2)}}}}} + {{{2}} \cdot {{\frac{1}{3}}} {{{F^{\theta}(\theta_L)}}} \cdot {{{\Delta (r^3)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{{\Delta (r^2)}}}} {{\frac{1}{\Delta \theta}}}} + {{{-2}} \cdot {{\frac{1}{3}}} {{{F^{\theta}(\theta_R)}}} \cdot {{{\Delta (r^3)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{{\Delta (r^2)}}}} {{\frac{1}{\Delta \theta}}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{{S(x_C)}}} \cdot {{\Delta t}}} + {{{-2}} {{{F^{r}(r_R)}}} \cdot {{\Delta t}} \cdot {{{r_R}}} \cdot {{{\frac{1}{{\Delta (r^2)}}}{({1})}}}} + {{{2}} {{{F^{r}(r_L)}}} \cdot {{\Delta t}} \cdot {{{r_L}}} \cdot {{{\frac{1}{{\Delta (r^2)}}}{({1})}}}} + {{{2}} \cdot {{{\frac{1}{3}}{({1})}}} {{{F^{\theta}(\theta_L)}}} \cdot {{{\Delta (r^3)}}} \cdot {{\Delta t}} \cdot {{{\frac{1}{{\Delta (r^2)}}}{({1})}}} {{{\frac{1}{\Delta \theta}}{({1})}}}} + {{{-2}} \cdot {{{\frac{1}{3}}{({1})}}} {{{F^{\theta}(\theta_R)}}} \cdot {{{\Delta (r^3)}}} \cdot {{\Delta t}} \cdot {{{\frac{1}{{\Delta (r^2)}}}{({1})}}} {{{\frac{1}{\Delta \theta}}{({1})}}}}}$
 <br>
 
 <br>

@@ -99,10 +99,12 @@ printbr()
 printbr()
 printbr'let $\\Phi$ ~ 0, but keep $\\partial\\Phi$ to find:'
 
-GammaUVal = GammaUVal:replace(Phi, 0, Derivative.is)()
+local function isDerivative(x) return Derivative:isa(x) end
+
+GammaUVal = GammaUVal:replace(Phi, 0, isDerivative)()
 printbr(Gamma'^a_bc':eq(GammaUVal'^a_bc'()))
 
-gVal = gVal:replace(Phi, 0, Derivative.is)()
+gVal = gVal:replace(Phi, 0, isDerivative)()
 Tensor.metric(gVal)
 local gVal = gVal'_uv'()
 local gValDef = g'_uv':eq(gVal)
@@ -186,7 +188,7 @@ for i=2,4 do
 	divTVal[i] = (divTVal[i] - div_Pu * uVal[i])()
 
 	-- this one too ... get rid of the P that's just floating out there.  but leave its gradients.
-	divTVal[i] = divTVal[i]:replace(P, 0, Derivative.is)()
+	divTVal[i] = divTVal[i]:replace(P, 0, isDerivative)()
 
 	-- substitute drho/dt definition to cancel some terms out
 	divTVal[i] = divTVal[i]:subst(drho_dt_def)()

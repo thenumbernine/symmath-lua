@@ -161,10 +161,12 @@ printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 printbr()
 printbr[[let $\Phi$ ~ 0, but keep $d\Phi$]]
 
-Gamma = Gamma:replace(Phi, 0, Derivative.is)()
+local function isDerivative(x) return Derivative:isa(x) end
+
+Gamma = Gamma:replace(Phi, 0, isDerivative)()
 printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
-g = g:replace(Phi, 0, Derivative.is)()
+g = g:replace(Phi, 0, isDerivative)()
 Tensor.metric(g)
 printbr(var'g''_uv':eq(g'_uv'()))
 printbr(var'g''^uv':eq(g'^uv'()))
@@ -223,7 +225,7 @@ for i=2,4 do
 	div_T[i] = (div_T[i] - div_Pu * u[i])()
 
 	-- this one too ... get rid of the P that's just floating out there.  but leave its gradients.
-	div_T[i] = div_T[i]:replace(P, 0, Derivative.is)()
+	div_T[i] = div_T[i]:replace(P, 0, isDerivative)()
 
 	-- substitute drho/dt definition to cancel some terms out
 	div_T[i] = div_T[i]:subst(drho_dt_def)()

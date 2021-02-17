@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>spiral, coordinate</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>spiral, coordinate</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
 <h3>spiral, coordinate</h3>
@@ -89,7 +89,7 @@ ${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 metric determinant:	${det(g)} = {{r}^{2}}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+${{{{ \Gamma}_a}_b}_c} = {{{{\frac{1}{2}}{({1})}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
 <br>
 commutation coefficients:
 ${{{{ c}_a}_b}^c} = {0}$
@@ -103,8 +103,8 @@ ${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$
 <br>
 metric inverse:
 ${{{ g}^r}^r} = {1}$;
-${{{ g}^r}^{\phi}} = {-{\frac{1}{r}}}$;
-${{{ g}^{\phi}}^r} = {-{\frac{1}{r}}}$;
+${{{ g}^r}^{\phi}} = {-{{\frac{1}{r}}{({1})}}}$;
+${{{ g}^{\phi}}^r} = {-{{\frac{1}{r}}{({1})}}}$;
 ${{{ g}^{\phi}}^{\phi}} = {\frac{{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}}{{r}^{2}}}$
 
 <br>
@@ -122,7 +122,7 @@ ${{{{ \Gamma}_{\phi}}_{\phi}}_r} = {r}$
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma}^r}_r}_r} = {-{\frac{1}{r}}}$;
+${{{{ \Gamma}^r}_r}_r} = {-{{\frac{1}{r}}{({1})}}}$;
 ${{{{ \Gamma}^r}_r}_{\phi}} = {-{1}}$;
 ${{{{ \Gamma}^r}_{\phi}}_r} = {-{1}}$;
 ${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{r}}$;
@@ -142,10 +142,10 @@ ${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {-{\frac{2}{{r}^{2}}}}$
 <br>
 connection coefficients squared:
 ${{{{{ {(\Gamma^2)}}^r}_r}_r}_r} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_r}_{\phi}} = {-{\frac{1}{r}}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_r} = {-{\frac{1}{r}}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_r}_{\phi}} = {-{{\frac{1}{r}}{({1})}}}$;
+${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_r} = {-{{\frac{1}{r}}{({1})}}}$;
 ${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_{\phi}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_{\phi}}_r}_r} = {-{\frac{1}{r}}}$;
+${{{{{ {(\Gamma^2)}}^r}_{\phi}}_r}_r} = {-{{\frac{1}{r}}{({1})}}}$;
 ${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_r} = {\frac{{{2}} {{({{{3} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} + {{{2}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{2}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}} - {{{2}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}}})}}}{{r}^{3}}}$;
 ${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{{{2}} {{({{{3} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} + {{{2}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{2}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}} - {{{2}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}}})}}}{{r}^{2}}}$;
@@ -201,4 +201,39 @@ ${{{{{ C}_r}_r}_{\phi}}_r} = {{\frac{1}{r}}{({{{4}} {{({{{121} - {{{2}} {{{cos\l
 ${{{{{ C}_{\phi}}_r}_r}_{\phi}} = {-{{{4}} {{({{{{121} - {{{244}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{2}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{{125}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} - {{{2}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} + {{{127}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}} + {{{{{2}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} - {{{123}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{4}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}}})}}}}$;
 ${{{{{ C}_{\phi}}_r}_{\phi}}_r} = {{{4}} {{({{{{121} - {{{244}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{2}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{{125}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} - {{{2}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} + {{{127}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}} + {{{{{2}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} - {{{123}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{4}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}}})}}}$
 
+<br>
+Plebanski, $\sharp\sharp\flat\flat$:
+${{{{{ P}^r}^{\phi}}_r}_{\phi}} = {\frac{-{{{2}} {{({{911965} + {{{801}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{8}}}} + {{{{{{{993746}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} - {{{1864424}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{42084}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{10}}}}} - {{{23778}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} + {{{{998634}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{957}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{{148}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}} - {{{934654}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{144}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{22833}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{{{1610}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}} - {{{12}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} - {{{65578}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} - {{{12}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{8}}}}}})}}}}{{{3}} {{{r}^{4}}}}}$;
+${{{{{ P}^r}^{\phi}}_{\phi}}_r} = {\frac{{{2}} {{({{911965} + {{{801}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{8}}}} + {{{{{{{993746}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} - {{{1864424}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{42084}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{10}}}}} - {{{23778}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} + {{{{998634}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{957}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{{148}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}} - {{{934654}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{144}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{22833}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{{{1610}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}} - {{{12}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} - {{{65578}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} - {{{12}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{8}}}}}})}}}{{{3}} {{{r}^{4}}}}}$;
+${{{{{ P}^{\phi}}^r}_r}_{\phi}} = {\frac{{{2}} {{({{911965} + {{{801}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{8}}}} + {{{{{{{993746}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} - {{{1864424}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{42084}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{10}}}}} - {{{23778}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} + {{{{998634}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{957}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{{148}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}} - {{{934654}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{144}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{22833}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{{{1610}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}} - {{{12}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} - {{{65578}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} - {{{12}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{8}}}}}})}}}{{{3}} {{{r}^{4}}}}}$;
+${{{{{ P}^{\phi}}^r}_{\phi}}_r} = {\frac{-{{{2}} {{({{911965} + {{{801}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{8}}}} + {{{{{{{993746}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} - {{{1864424}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{42084}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{10}}}}} - {{{23778}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} + {{{{998634}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}} - {{{4}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{957}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{{148}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}} - {{{934654}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}}}} - {{{144}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} + {{{22833}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}} + {{{{{{1610}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}} - {{{12}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{6}}}}} - {{{65578}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{4}}}}} - {{{12}} {{{sin\left( {{\phi} + {log\left(  r\right)}}\right)}^{2}}} {{{cos\left( {{\phi} + {log\left(  r\right)}}\right)}^{8}}}}}})}}}}{{{3}} {{{r}^{4}}}}}$
+
+<br>
+divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{r}}}{\partial r}} + {\frac{\partial {A^{\phi}}}{\partial \phi}} + {{{{A^{r}}}} \cdot {{{\frac{1}{r}}{({1})}}}}}$
+<br>
+geodesic:
+<br>
+${\overset{a\downarrow}{\left[\begin{matrix} \ddot{r} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{{2}} {{\dot{\phi}}} \cdot {{\dot{r}}}} + {{{r}} {{{\dot{\phi}}^{2}}}} + {{{{\dot{r}}^{2}}} {{{\frac{1}{r}}{({1})}}}} \\ {{{-4}} {{\dot{\phi}}} \cdot {{\dot{r}}} \cdot {{r}} {{\frac{1}{{r}^{2}}}}} + {{{-1}} {{{\dot{\phi}}^{2}}} {{{r}^{2}}} {{\frac{1}{{r}^{2}}}}} + {{{-2}} {{{\dot{r}}^{2}}} {{\frac{1}{{r}^{2}}}}}\end{matrix}\right]}}$
+<br>
+
+<br>
+parallel propagators:
+<br>
+
+<br>
+${{[\Gamma_r]}} = {\left[\begin{matrix}  -{{\frac{1}{r}}{({1})}} &  -{1} \\  \frac{{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}}{{r}^{2}} &  {\frac{1}{r}}{({{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}})}\end{matrix}\right]}$
+<br>
+
+<br>
+$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  -{{\frac{1}{r}}{({1})}} &  -{1} \\  \frac{{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}}{{r}^{2}} &  {\frac{1}{r}}{({{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}})}\end{matrix}\right]\right)$
+=	$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  -{{\frac{1}{r}}{({1})}} &  -{1} \\  \frac{{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}}{{r}^{2}} &  {\frac{1}{r}}{({{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}})}\end{matrix}\right]\right)$
+<br>
+
+<br>
+${ P}_r$	=	${ⅇ}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  -{{\frac{1}{r}}{({1})}} &  -{1} \\  \frac{{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}}{{r}^{2}} &  {\frac{1}{r}}{({{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}})}\end{matrix}\right]\right)})})}$
+
+<br>
+negIntConn	$-{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  -{{\frac{1}{r}}{({1})}} &  -{1} \\  \frac{{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}}{{r}^{2}} &  {\frac{1}{r}}{({{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}})}\end{matrix}\right]\right)})}$
+<br>
+negIntConn	$-{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  -{{\frac{1}{r}}{({1})}} &  -{1} \\  \frac{{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}}{{r}^{2}} &  {\frac{1}{r}}{({{{({{cos\left( {{\phi} + {log\left(  r\right)}}\right)} - {sin\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}} + {{({{sin\left( {{\phi} + {log\left(  r\right)}}\right)} + {cos\left( {{\phi} + {log\left(  r\right)}}\right)}})}^{2}}})}\end{matrix}\right]\right)})}$
 <br>

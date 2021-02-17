@@ -55,8 +55,10 @@ printbr(Conn_def)
 Conn_def = Conn_def:subst(gU_def:reindex{ab='ad'}, ConnL_def:reindex{abc='dbc'})()
 printbr(Conn_def)
 
+local function isTensorRef(x) return require 'symmath.tensor.TensorRef':isa(x) end
+
 printbr('let ', Phi:eq(0), ', but keep ', Phi'_,a', 'to find:')
-Conn_def = Conn_def:replace(Phi, 0, require 'symmath.tensor.TensorRef'.is)()
+Conn_def = Conn_def:replace(Phi, 0, isTensorRef)()
 printbr(Conn_def)
 printbr()
 
