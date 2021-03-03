@@ -367,7 +367,8 @@ K_x P | K_y P | K_z P
 	printbr((var'e''_u^I' * var'e''^v_I'):eq((e'_u^I' * eU'^v_I')()))
 	printbr((var'e''_u^I' * var'e''^u_J'):eq((e'_u^I' * eU'^u_J')()))
 
-	printbr'metric:'
+	-- TODO this is the coordinate metric, not the orthonormalized non-coordinate metric that has commutation equal to the permutation tensor
+	printbr'coordinate metric:'
 	local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 
 	printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))

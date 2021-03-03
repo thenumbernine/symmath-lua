@@ -1,9 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local math = require 'ext.math'
-local tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 local Binary = require 'symmath.op.Binary'
-
 local symmath
 
 local add = class(Binary)
@@ -1165,6 +1163,7 @@ add.rules = {
 		
 		{combineMultipliedConstants = function(prune, expr, ...) 
 			symmath = symmath or require 'symmath'
+			local tableCommutativeEqual = symmath.tableCommutativeEqual
 			local Constant = symmath.Constant
 			local mul = symmath.op.mul
 			-- [[ x * c1 + x * c2 => x * (c1 + c2) ... for constants
@@ -1512,8 +1511,33 @@ add.rules = {
 	},
 
 	Tidy = {
+		
+		{trig = function(tidy, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local cos = symmath.cos
+			local sin = symmath.sin
+			local Wildcard = symmath.Wildcard
+			
+			-- 1 + -1 * cos(x)^2 => sin(x)^2
+			-- this form isn't used by the time this code is reached 
+			local theta = expr:match(1 + -1 * cos(Wildcard(1))^2)
+			if theta then return sin(theta)^2 end
+			
+			-- but this form is:
+			-- 1 + -(cos(x)^2) => sin(x)^2
+			local theta = expr:match(1 + -cos(Wildcard(1))^2)
+			if theta then return sin(theta)^2 end
+
+			-- -(1) + cos(x)^2 => -sin(x)^2
+			local theta = expr:match(-Constant(1) + cos(Wildcard(1))^2)
+			if theta then return -sin(theta)^2 end
+		end},
+
 		{apply = function(tidy, expr)
 			symmath = symmath or require 'symmath'
+--local tostring = symmath.Verbose
+--print('op.add.rules.Tidy.apply with', tostring(expr))
 			local unm = symmath.op.unm
 			for i=1,#expr-1 do
 				-- x + -y => x - y
@@ -1549,29 +1573,6 @@ add.rules = {
 				end
 			end
 		end},
-	
-		-- can't seem to catch this at the right place 
-		--[[
-		{trig = function(tidy, expr)
-			local Constant = require 'symmath.Constant'
-			local pow = require 'symmath.op.pow'
-			local cos = require 'symmath.cos'
-			if #self == 1
-			and Constant:isa(self[1]) 
-			and self[1].value == 1
-			and mul:isa(self[2])
-			and Constant:isa(self[2][1])
-			and self[2][1].value == -1
-			and pow:isa(self[2][2])
-			and cos:isa(self[2][2][1])
-			and Constant:isa(self[2][2][2])
-			and self[2][2][2].value == 2
-			then
-				local sin = require 'symmath.sin'
-				return sin(x[2][2][1][1])^2
-			end
-		end},
-		--]]
 	},
 }
 

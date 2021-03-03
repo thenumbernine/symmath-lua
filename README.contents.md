@@ -3,239 +3,13 @@
 ## TLDR
 
 ```
-require 'symmath'.setup{implicitVars=true}
-Tensor.coords{{variables={r,theta,phi}}}
-u = Tensor('^I', r*sin(theta)*cos(phi), r*sin(theta)*sin(phi), r*cos(theta))
-print('u^I:\n'..u)
-e = Tensor'_i^I'
-e['_a^I'] = u'^I_,a'()
-print('e_a^I:\n'..e)
-delta = Tensor('_IJ', table.unpack(Matrix.identity(3)))
-print('delta_IJ:\n'..delta)
-g = (e'_a^I' * e'_b^J' * delta'_IJ')()
-print('g_ab:\n'..g)
-Tensor.metric(g)
-dg = Tensor'_abc'
-dg['_abc'] = g'_ab,c'()
-print('g_ab,c:\n'..dg)
-GammaL = ((dg'_abc' + dg'_acb' - dg'_bca')/2)()
-print('Gamma_abc:\n'..GammaL)
-Gamma = GammaL'^a_bc'()
-print('Gamma^a_bc:\n'..Gamma)
-dGamma = Tensor'^a_bcd'
-dGamma['^a_bcd'] = Gamma'^a_bc,d'()
-print('Gamma^a_bc,d:\n'..dGamma)
-GammaSq = Tensor'^a_bcd'
-GammaSq['^a_bcd'] = (Gamma'^a_ce' * Gamma'^e_db')()
-Riemann = Tensor'^a_bcd'
-Riemann['^a_bcd'] = (dGamma'^a_dbc' - dGamma'^a_cbd' + GammaSq'^a_bcd' - GammaSq'^a_bdc')()
-print('Riemann^a_bcd:\n'..Riemann)
+<?=file['tests/console_spherical_metric.lua']?>
 ```
 
 ...makes this...
 
 ```
-u^I:
-       I↓        
-┌r sin(θ) cos(φ)┐
-│               │
-│r sin(θ) sin(φ)│
-│               │
-└   r cos(θ)    ┘
-e_a^I:
-                       i↓I→                       
-┌                                                ┐
-│   sin(θ) cos(φ)     sin(θ) sin(φ)      cos(θ)  │
-│                                                │
-│  r cos(θ) cos(φ)   r cos(θ) sin(φ)   - r sin(θ)│
-│                                                │
-│ - r sin(θ) sin(φ)  r sin(θ) cos(φ)       0     │
-└                                                ┘
-delta_IJ:
-  I↓J→   
-┌       ┐
-│1  0  0│
-│       │
-│0  1  0│
-│       │
-│0  0  1│
-└       ┘
-g_ab:
-       a↓b→        
-┌                 ┐
-│1   0       0    │
-│                 │
-│    2            │
-│0  r        0    │
-│                 │
-│        2       2│
-│0   0  r  sin(θ) │
-└                 ┘
-g_ab,c:
-                 a↓[b↓c→]                 
-┌                 b↓c→                   ┐
-│               ┌       ┐                │
-│               │0  0  0│                │
-│               │       │                │
-│               │0  0  0│                │
-│               │       │                │
-│               │0  0  0│                │
-│               └       ┘                │
-│                                        │
-│                 b↓c→                   │
-│             ┌           ┐              │
-│             │  0    0  0│              │
-│             │           │              │
-│             │2.0 r  0  0│              │
-│             │           │              │
-│             │  0    0  0│              │
-│             └           ┘              │
-│                                        │
-│                  b↓c→                  │
-│┌                                      ┐│
-││      0                  0           0││
-││                                      ││
-││      0                  0           0││
-││                                      ││
-││            2       2                 ││
-││2.0 r sin(θ)   2.0 r  sin(θ) cos(θ)  0││
-└└                                      ┘┘
-Gamma_abc:
-                    a↓[b↓c→]                     
-┌             ┌                   ┐             ┐
-│             │0   0        0     │             │
-│             │                   │             │
-│             │0  -r        0     │             │
-│             │                   │             │
-│             │                  2│             │
-│             │0   0   - r sin(θ) │             │
-│             └                   ┘             │
-│                                               │
-│          ┌                         ┐          │
-│          │0  r           0         │          │
-│          │                         │          │
-│          │r  0           0         │          │
-│          │                         │          │
-│          │          2              │          │
-│          │0  0   - r  sin(θ) cos(θ)│          │
-│          └                         ┘          │
-│                                               │
-│┌                                             ┐│
-││                                         2   ││
-││    0              0             r sin(θ)    ││
-││                                             ││
-││                              2              ││
-││    0              0         r  sin(θ) cos(θ)││
-││                                             ││
-││        2   2                                ││
-││r sin(θ)   r  sin(θ) cos(θ)          0       ││
-└└                                             ┘┘
-Gamma^a_bc:
-           a↓[b↓c→]           
-┌   ┌                   ┐    ┐
-│   │0   0        0     │    │
-│   │                   │    │
-│   │0  -r        0     │    │
-│   │                   │    │
-│   │                  2│    │
-│   │0   0   - r sin(θ) │    │
-│   └                   ┘    │
-│                            │
-│┌                          ┐│
-││      1                   ││
-││ 0   ╶─╴          0       ││
-││      r                   ││
-││                          ││
-││ 1                        ││
-││╶─╴   0           0       ││
-││ r                        ││
-││                          ││
-││ 0    0    - sin(θ) cos(θ)││
-│└                          ┘│
-│                            │
-│ ┌                       ┐  │
-│ │                   1   │  │
-│ │ 0       0        ╶─╴  │  │
-│ │                   r   │  │
-│ │                       │  │
-│ │                cos(θ) │  │
-│ │ 0       0     ╶──────╴│  │
-│ │                sin(θ) │  │
-│ │                       │  │
-│ │ 1    cos(θ)           │  │
-│ │╶─╴  ╶──────╴      0   │  │
-│ │ r    sin(θ)           │  │
-└ └                       ┘  ┘
-Gamma^a_bc,d:
-                                   a↓b→[c↓d→]                                   
-┌                                                                              ┐
-│                                                        c↓d→                  │
-│     c↓d→                c↓d→          ┌                                     ┐│
-│   ┌       ┐          ┌        ┐       │     0                 0            0││
-│   │0  0  0│          │ 0  0  0│       │                                     ││
-│   │       │          │        │       │     0                 0            0││
-│   │0  0  0│          │-1  0  0│       │                                     ││
-│   │       │          │        │       │         2                           ││
-│   │0  0  0│          │ 0  0  0│       │ - sin(θ)    - 2.0 r sin(θ) cos(θ)  0││
-│   └       ┘          └        ┘       └                                     ┘│
-│                                                                              │
-│     c↓d→                c↓d→                                                 │
-│┌             ┐     ┌             ┐                      c↓d→                 │
-││   0     0  0│     │     1       │         ┌                            ┐    │
-││             │     │   ╶──╴      │         │0             0            0│    │
-││     1       │     │ -   2   0  0│         │                            │    │
-││   ╶──╴      │     │    r        │         │0             0            0│    │
-││ -   2   0  0│     │             │         │                            │    │
-││    r        │     │   0     0  0│         │      ╭                2╮   │    │
-││             │     │             │         │0   - ╰1.0 - 2.0 sin(θ) ╯  0│    │
-││   0     0  0│     │   0     0  0│         └                            ┘    │
-│└             ┘     └             ┘                                           │
-│                                                                              │
-│                                                         c↓d→                 │
-│                                              ┌                        ┐      │
-│     c↓d→                c↓d→                 │     1                  │      │
-│┌             ┐  ┌                  ┐         │   ╶──╴                 │      │
-││   0     0  0│  │0        0       0│         │ -   2         0       0│      │
-││             │  │                  │         │    r                   │      │
-││   0     0  0│  │0        0       0│         │                        │      │
-││             │  │                  │         │                1       │      │
-││     1       │  │          1       │         │            ╶───────╴   │      │
-││   ╶──╴      │  │      ╶───────╴   │         │   0      -        2   0│      │
-││ -   2   0  0│  │0   -        2   0│         │             sin(θ)     │      │
-││    r        │  │       sin(θ)     │         │                        │      │
-│└             ┘  └                  ┘         │   0           0       0│      │
-│                                              └                        ┘      │
-└                                                                              ┘
-Riemann^a_bcd:
-           a↓b→[c↓d→]            
-┌                               ┐
-│  c↓d→       c↓d→       c↓d→   │
-│┌       ┐  ┌       ┐  ┌       ┐│
-││0  0  0│  │0  0  0│  │0  0  0││
-││       │  │       │  │       ││
-││0  0  0│  │0  0  0│  │0  0  0││
-││       │  │       │  │       ││
-││0  0  0│  │0  0  0│  │0  0  0││
-│└       ┘  └       ┘  └       ┘│
-│                               │
-│  c↓d→       c↓d→       c↓d→   │
-│┌       ┐  ┌       ┐  ┌       ┐│
-││0  0  0│  │0  0  0│  │0  0  0││
-││       │  │       │  │       ││
-││0  0  0│  │0  0  0│  │0  0  0││
-││       │  │       │  │       ││
-││0  0  0│  │0  0  0│  │0  0  0││
-│└       ┘  └       ┘  └       ┘│
-│                               │
-│  c↓d→       c↓d→       c↓d→   │
-│┌       ┐  ┌       ┐  ┌       ┐│
-││0  0  0│  │0  0  0│  │0  0  0││
-││       │  │       │  │       ││
-││0  0  0│  │0  0  0│  │0  0  0││
-││       │  │       │  │       ││
-││0  0  0│  │0  0  0│  │0  0  0││
-│└       ┘  └       ┘  └       ┘│
-└                               ┘
+<?=file['tests/output/console_spherical_metric.txt']?>
 ```
 
 ## Goals:
@@ -707,6 +481,7 @@ How to get around this:
 
 If you want to run this as a command-line with the API in global namespace:
 
+` symmath.sh `:
 ```
 #!/usr/bin/env sh
 if [ $# = 0 ]
@@ -717,8 +492,46 @@ else
 fi
 ```
 
+` symmath.bat `:
+```
+@echo off
+if not [%1]==[] goto interactive
+lua -lext -lsymmath.setup
+echo this line is unreachable
+:interactive
+lua -lext -lsymmath.setup -e %*
+```
+
 Then run with
 
 ```
 symmath " print ( Matrix { { u ^ 2 + 1, u * v } , { u * v , v ^ 2 + 1 } } : inverse ( ) ) "
 ```
+
+<?
+require 'ext'
+local url = require 'socket.url'
+
+--local base = [[https://cdn.rawgit.com/thenumbernine/symmath-lua/master/]]
+--local base = [[https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/]]
+local base = [[https://thenumbernine.github.io/symmath/]]
+
+local s = table{[[
+Output CDN URLs:
+]]}
+
+os.rlistdir('.', function(f, isdir)
+	return f ~= '.git' and (isdir or f:sub(-5) == '.html')
+end):mapi(function(f)
+	assert(f:sub(1,2) == './')
+	return f:sub(3)
+end):sort():mapi(function(f)
+	local name = f:sub(1,-6)
+	s:insert('['..name..']('..base..
+		url.escape(f)
+			:gsub('%%2f','/')
+			:gsub('%%2e','.')
+		..')\n')
+end)
+?>
+<?=s:concat'\n'?>
