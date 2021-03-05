@@ -23,10 +23,6 @@ ${{c_s}} = {\sqrt{{{\gamma}} \cdot {{h}}}}$	= speed of sound in units of 	${\fra
 <br>
 ${{ g}_i}_j$	= metric tensor, in units of $[1]$
 <br>
-${{(v)^2}} = {{{{ v}^k}} {{{ v}^l}} {{{{ g}_k}_l}}}$	= velocity norm squared, in units of	$\frac{{m}^{2}}{{s}^{2}}$
-<br>
-
-<br>
 Conservative and primitive variables:
 <br>
 ${{ W}^I} = {\left[\begin{matrix}  h \\  { v}^i\end{matrix}\right]}$
@@ -39,7 +35,7 @@ ${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\parti
 <br>
 ${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\partial h}{\partial h} &  \frac{\partial h}{\partial { v}^j} \\  {\frac{\partial}{\partial h}}\left({{{h}} {{{ v}^i}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{h}} {{{ v}^i}}}\right)\end{matrix}\right]}$
 <br>
-${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  1 &  0 \\  { v}^i &  {{h}} {{{{ \delta}^i}_j}}\end{matrix}\right]}$
+${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\partial h}{\partial h} &  \frac{\partial h}{\partial { v}^j} \\  {\frac{\partial}{\partial h}}\left({{{h}} {{{ v}^i}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{h}} {{{ v}^i}}}\right)\end{matrix}\right]}$
 <br>
 ${\frac{\partial { W}^I}{\partial { U}^J}} = {\left[\begin{matrix}  1 &  0 \\  {\frac{1}{h}}{({-{{ v}^i}})} &  {\frac{1}{h}}{({{{ \delta}^i}_j})}\end{matrix}\right]}$
 <br>
@@ -141,9 +137,9 @@ ${\frac{\partial { F}^I}{\partial { U}^J}} = {{{\frac{\partial { U}^I}{\partial 
 <br>
 
 <br>
-${{R_F}} = { {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  { v}^1 &  h &  0 &  0 \\  { v}^2 &  0 &  h &  0 \\  { v}^3 &  0 &  0 &  h\end{matrix}\right]}  {\left[\begin{matrix}  -{{{h}} {{|n|}}} &  0 &  0 &  {{h}} {{|n|}} \\  {{{c_s}}} \cdot {{{ n}^1}} &  -{{ n}_2} &  -{{ n}_3} &  {{{c_s}}} \cdot {{{ n}^1}} \\  {{{c_s}}} \cdot {{{ n}^2}} &  { n}_1 &  0 &  {{{c_s}}} \cdot {{{ n}^2}} \\  {{{c_s}}} \cdot {{{ n}^3}} &  0 &  { n}_1 &  {{{c_s}}} \cdot {{{ n}^3}}\end{matrix}\right]}}$
+${{R_F}} = { {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  { v}^1 &  {{h}} {{{{ \delta}^1}_1}} &  {{h}} {{{{ \delta}^1}_2}} &  {{h}} {{{{ \delta}^1}_3}} \\  { v}^2 &  {{h}} {{{{ \delta}^2}_1}} &  {{h}} {{{{ \delta}^2}_2}} &  {{h}} {{{{ \delta}^2}_3}} \\  { v}^3 &  {{h}} {{{{ \delta}^3}_1}} &  {{h}} {{{{ \delta}^3}_2}} &  {{h}} {{{{ \delta}^3}_3}}\end{matrix}\right]}  {\left[\begin{matrix}  -{{{h}} {{|n|}}} &  0 &  0 &  {{h}} {{|n|}} \\  {{{c_s}}} \cdot {{{ n}^1}} &  -{{ n}_2} &  -{{ n}_3} &  {{{c_s}}} \cdot {{{ n}^1}} \\  {{{c_s}}} \cdot {{{ n}^2}} &  { n}_1 &  0 &  {{{c_s}}} \cdot {{{ n}^2}} \\  {{{c_s}}} \cdot {{{ n}^3}} &  0 &  { n}_1 &  {{{c_s}}} \cdot {{{ n}^3}}\end{matrix}\right]}}$
 <br>
-${{R_F}} = {\left[\begin{matrix}  {{-1}} {{h}} {{|n|}} &  0 &  0 &  {{h}} {{|n|}} \\  {{{{c_s}}} \cdot {{h}} {{{ n}^1}}} + {{{-1}} {{h}} {{|n|}} \cdot {{{ v}^1}}} &  {{-1}} {{h}} {{{ n}_2}} &  {{-1}} {{h}} {{{ n}_3}} &  {{{{c_s}}} \cdot {{h}} {{{ n}^1}}} + {{{h}} {{|n|}} \cdot {{{ v}^1}}} \\  {{{{c_s}}} \cdot {{h}} {{{ n}^2}}} + {{{-1}} {{h}} {{|n|}} \cdot {{{ v}^2}}} &  {{h}} {{{ n}_1}} &  0 &  {{{{c_s}}} \cdot {{h}} {{{ n}^2}}} + {{{h}} {{|n|}} \cdot {{{ v}^2}}} \\  {{{{c_s}}} \cdot {{h}} {{{ n}^3}}} + {{{-1}} {{h}} {{|n|}} \cdot {{{ v}^3}}} &  0 &  {{h}} {{{ n}_1}} &  {{{{c_s}}} \cdot {{h}} {{{ n}^3}}} + {{{h}} {{|n|}} \cdot {{{ v}^3}}}\end{matrix}\right]}$
+${{R_F}} = {\left[\begin{matrix}  {{-1}} {{h}} {{|n|}} &  0 &  0 &  {{h}} {{|n|}} \\  {{{{c_s}}} \cdot {{h}} {{{ n}^1}} {{{{ \delta}^1}_1}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^2}} {{{{ \delta}^1}_2}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^3}} {{{{ \delta}^1}_3}}} + {{{-1}} {{h}} {{|n|}} \cdot {{{ v}^1}}} &  {{{h}} {{{ n}_1}} {{{{ \delta}^1}_2}}} + {{{-1}} {{h}} {{{ n}_2}} {{{{ \delta}^1}_1}}} &  {{{h}} {{{ n}_1}} {{{{ \delta}^1}_3}}} + {{{-1}} {{h}} {{{ n}_3}} {{{{ \delta}^1}_1}}} &  {{{{c_s}}} \cdot {{h}} {{{ n}^1}} {{{{ \delta}^1}_1}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^2}} {{{{ \delta}^1}_2}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^3}} {{{{ \delta}^1}_3}}} + {{{h}} {{|n|}} \cdot {{{ v}^1}}} \\  {{{{c_s}}} \cdot {{h}} {{{ n}^1}} {{{{ \delta}^2}_1}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^2}} {{{{ \delta}^2}_2}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^3}} {{{{ \delta}^2}_3}}} + {{{-1}} {{h}} {{|n|}} \cdot {{{ v}^2}}} &  {{{h}} {{{ n}_1}} {{{{ \delta}^2}_2}}} + {{{-1}} {{h}} {{{ n}_2}} {{{{ \delta}^2}_1}}} &  {{{h}} {{{ n}_1}} {{{{ \delta}^2}_3}}} + {{{-1}} {{h}} {{{ n}_3}} {{{{ \delta}^2}_1}}} &  {{{{c_s}}} \cdot {{h}} {{{ n}^1}} {{{{ \delta}^2}_1}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^2}} {{{{ \delta}^2}_2}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^3}} {{{{ \delta}^2}_3}}} + {{{h}} {{|n|}} \cdot {{{ v}^2}}} \\  {{{{c_s}}} \cdot {{h}} {{{ n}^1}} {{{{ \delta}^3}_1}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^2}} {{{{ \delta}^3}_2}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^3}} {{{{ \delta}^3}_3}}} + {{{-1}} {{h}} {{|n|}} \cdot {{{ v}^3}}} &  {{{h}} {{{ n}_1}} {{{{ \delta}^3}_2}}} + {{{-1}} {{h}} {{{ n}_2}} {{{{ \delta}^3}_1}}} &  {{{h}} {{{ n}_1}} {{{{ \delta}^3}_3}}} + {{{-1}} {{h}} {{{ n}_3}} {{{{ \delta}^3}_1}}} &  {{{{c_s}}} \cdot {{h}} {{{ n}^1}} {{{{ \delta}^3}_1}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^2}} {{{{ \delta}^3}_2}}} + {{{{c_s}}} \cdot {{h}} {{{ n}^3}} {{{{ \delta}^3}_3}}} + {{{h}} {{|n|}} \cdot {{{ v}^3}}}\end{matrix}\right]}$
 <br>
 ${{L_F}} = { {\left[\begin{matrix}  -{\frac{1}{{{2}} {{h}} {{|n|}}}} &  \frac{{ n}_1}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^2}}{{|n|}^{2}} &  \frac{{{{{ n}^1}} {{{ n}_1}}} + {{{{ n}^3}} {{{ n}_3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{-{{{{ n}^2}} {{{ n}_3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^3}}{{|n|}^{2}} &  \frac{-{{{{ n}_2}} {{{ n}^3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{{{{{ n}^1}} {{{ n}_1}}} + {{{{ n}^2}} {{{ n}_2}}}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  \frac{1}{{{2}} {{h}} {{|n|}}} &  \frac{{ n}_1}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}}\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  {\frac{1}{h}}{({-{{ v}^1}})} &  {\frac{1}{h}}{({1})} &  0 &  0 \\  {\frac{1}{h}}{({-{{ v}^2}})} &  0 &  {\frac{1}{h}}{({1})} &  0 \\  {\frac{1}{h}}{({-{{ v}^3}})} &  0 &  0 &  {\frac{1}{h}}{({1})}\end{matrix}\right]}}$
 <br>

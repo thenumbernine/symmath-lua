@@ -46,11 +46,6 @@ printbr(Cs_def, [[= speed of sound in units of ]], m / s)
 
 printbr(g'_ij', [[= metric tensor, in units of $[1]$]])
 
-local vSq_var = var('(v)^2')
-local vSq_wrt_v = v'^k' * v'^l' * g'_kl'
-local vSq_def = vSq_var:eq(vSq_wrt_v)
-printbr(vSq_def, [[= velocity norm squared, in units of]], m^2/s^2)
-printbr()
 
 
 local c = var'c'		-- commutation
@@ -86,10 +81,8 @@ local dU_dW_def = Matrix:lambda({2,2}, function(i,j)
 end)
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
-dU_dW_def = dU_dW_def:subst(m_from_v, vSq_def)
+dU_dW_def = dU_dW_def:subst(m_from_v)
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
-
-dU_dW_def = dU_dW_def():subst(vSq_def:switch()())
 
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
@@ -161,9 +154,7 @@ printbr(A_lhs:eq(A_plus_delta_def))
 -- TODO if you don't do :factorDivision() before :tidyIndexes() then you can get mismatching indexes, and the subsequent :simplify() will cause a stack overflow
 A_plus_delta_def = A_plus_delta_def:simplifyMetrics():simplifyAddMulDiv()
 A_plus_delta_def = A_plus_delta_def:tidyIndexes():simplifyAddMulDiv()
-A_plus_delta_def = A_plus_delta_def  
-	:replace(n'^a' * v'_a', n'_a' * v'^a')
-	:replace(v'^a' * v'_a', vSq_var)()
+A_plus_delta_def = A_plus_delta_def:replace(n'^a' * v'_a', n'_a' * v'^a')()
 printbr(A_lhs:eq(A_plus_delta_def))
 
 local A_def = (A_plus_delta_def - Matrix.identity(2) * Matrix:lambda({2,2}, function(i,j)
@@ -289,7 +280,7 @@ F_eig_R_def = F_eig_R_def
 F_eig_R_def = F_eig_R_def:simplifyAddMulDiv()
 printbr(var'R_F':eq(F_eig_R_def))
 
-local F_eig_L_def = A_eig.L * expandMatrix2to4(dW_dU_def:subst(vSq_def:switch()))
+local F_eig_L_def = A_eig.L * expandMatrix2to4(dW_dU_def)
 printbr(var'L_F':eq(F_eig_L_def))
 
 F_eig_L_def = F_eig_L_def()
