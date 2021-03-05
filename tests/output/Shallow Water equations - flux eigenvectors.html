@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Euler Fluid Equations - flux eigenvectors</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+variables:
+<br>
+${ n}^i$	= flux surface normal, in units of $[1]$
+<br>
+$h$	= wave height, in units of 	$m$
+<br>
+${ v}^i$	= velocity, in units of 	${\frac{1}{s}}{({m})}$
+<br>
+${{ m}^i} = {{{h}} {{{ v}^i}}}$	= momentum, in units of 	$\frac{kg}{{{{m}^{2}}} {{s}}}$
+<br>
+$\gamma$	= pull of gravitation, in units of 	$\frac{m}{{s}^{2}}$
+<br>
+${{c_s}} = {\sqrt{{{\gamma}} \cdot {{h}}}}$	= speed of sound in units of 	${\frac{1}{s}}{({m})}$
+<br>
+${{ g}_i}_j$	= metric tensor, in units of $[1]$
+<br>
+${{(v)^2}} = {{{{ v}^k}} {{{ v}^l}} {{{{ g}_k}_l}}}$	= velocity norm squared, in units of	$\frac{{m}^{2}}{{s}^{2}}$
+<br>
+
+<br>
+Conservative and primitive variables:
+<br>
+${{ W}^I} = {\left[\begin{matrix}  h \\  { v}^i\end{matrix}\right]}$
+<br>
+${{ U}^I} = {\left[\begin{matrix}  h \\  { m}^i\end{matrix}\right]}$
+<br>
+Partial of conservative quantities wrt primitives:
+<br>
+${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\partial h}{\partial h} &  \frac{\partial h}{\partial { v}^j} \\  \frac{\partial { m}^i}{\partial h} &  \frac{\partial { m}^i}{\partial { v}^j}\end{matrix}\right]}$
+<br>
+${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  \frac{\partial h}{\partial h} &  \frac{\partial h}{\partial { v}^j} \\  {\frac{\partial}{\partial h}}\left({{{h}} {{{ v}^i}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{h}} {{{ v}^i}}}\right)\end{matrix}\right]}$
+<br>
+${\frac{\partial { U}^I}{\partial { W}^J}} = {\left[\begin{matrix}  1 &  0 \\  { v}^i &  {{h}} {{{{ \delta}^i}_j}}\end{matrix}\right]}$
+<br>
+${\frac{\partial { W}^I}{\partial { U}^J}} = {\left[\begin{matrix}  1 &  0 \\  {\frac{1}{h}}{({-{{ v}^i}})} &  {\frac{1}{h}}{({{{ \delta}^i}_j})}\end{matrix}\right]}$
+<br>
+
+<br>
+Flux:
+<br>
+${{ F}^I} = {\left[\begin{matrix}  {{h}} {{{ v}^j}} {{{ n}_j}} \\  {{{h}} {{{ v}^i}} {{{ v}^j}} {{{ n}_j}}} + {{{{\frac{1}{2}}{({1})}}} {{\gamma}} \cdot {{{h}^{2}}} {{{ n}^i}}}\end{matrix}\right]}$
+<br>
+${{ F}^I} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{{{\frac{1}{2}}{({1})}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}\end{matrix}\right]}$
+<br>
+
+<br>
+Flux derivative wrt primitive variables:
+<br>
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {\frac{\partial}{\partial h}}\left({{{h}} {{{ n}_k}} {{{ v}^k}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{h}} {{{ n}_k}} {{{ v}^k}}}\right) \\  {\frac{\partial}{\partial h}}\left({{{{{\frac{1}{2}}{({1})}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_k}} {{{ v}^i}} {{{ v}^k}}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{{{\frac{1}{2}}{({1})}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_k}} {{{ v}^i}} {{{ v}^k}}}}\right)\end{matrix}\right]}$
+<br>
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ n}_k}} {{{ v}^k}} &  {{h}} {{{ n}_j}} \\  {{{{ n}_k}} {{{ v}^i}} {{{ v}^k}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{h}} {{{ n}_j}} {{{ v}^i}}} + {{{h}} {{{ n}_k}} {{{ v}^k}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}$
+<br>
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{h}} {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}} + {{{h}} {{{ n}_j}} {{{ v}^i}}}\end{matrix}\right]}$
+<br>
+
+<br>
+Flux derivative wrt conserved variables:
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {{{\frac{\partial { F}^I}{\partial { W}^L}}} {{\frac{\partial { W}^L}{\partial { U}^J}}}}$
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = { {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_k}} \\  {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{h}} {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_k}}} + {{{h}} {{{ n}_k}} {{{ v}^i}}}\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  {\frac{1}{h}}{({-{{ v}^k}})} &  {\frac{1}{h}}{({{{ \delta}^k}_j})}\end{matrix}\right]}}$
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  {{{{ n}_a}} {{{ v}^a}}} + {{{-1}} {{{ n}_k}} {{{ v}^k}}} &  {{{ n}_k}} {{{{ \delta}^k}_j}} \\  {{{\gamma}} \cdot {{h}} {{{ n}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^k}} {{{{ \delta}^i}_k}}} + {{{-1}} {{{ n}_k}} {{{ v}^i}} {{{ v}^k}}} &  {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_k}} {{{{ \delta}^k}_j}}} + {{{{ n}_k}} {{{ v}^i}} {{{{ \delta}^k}_j}}}\end{matrix}\right]}$
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  { n}_j \\  {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_j}} {{{ v}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}$
+<br>
+
+<br>
+Acoustic matrix:
+<br>
+${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = {{{\frac{\partial { W}^I}{\partial { U}^K}}} {{\frac{\partial { F}^K}{\partial { W}^J}}}}$
+<br>
+${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = { {\left[\begin{matrix}  1 &  0 \\  {\frac{1}{h}}{({-{{ v}^i}})} &  {\frac{1}{h}}{({{{ \delta}^i}_k})}\end{matrix}\right]}  {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {{{{ n}_a}} {{{ v}^a}} {{{ v}^k}}} + {{{\gamma}} \cdot {{h}} {{{ n}^k}}} &  {{{h}} {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^k}_j}}} + {{{h}} {{{ n}_j}} {{{ v}^k}}}\end{matrix}\right]}}$
+<br>
+${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {\frac{1}{h}}{({-{({{{{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} - {{{{ n}_a}} {{{ v}^a}} {{{ v}^k}} {{{{ \delta}^i}_k}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^k}} {{{{ \delta}^i}_k}}}})}})} &  {{{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_k}} {{{{ \delta}^k}_j}}} - {{{{ n}_j}} {{{ v}^i}}}} + {{{{ n}_j}} {{{ v}^k}} {{{{ \delta}^i}_k}}}\end{matrix}\right]}$
+<br>
+${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {{\gamma}} \cdot {{{ n}^i}} &  {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}\end{matrix}\right]}$
+<br>
+${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_j}} \\  {{\gamma}} \cdot {{{ n}^i}} &  0\end{matrix}\right]}$
+<br>
+
+<br>
+Acoustic matrix, expanded:
+<br>
+${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_1}} &  {{h}} {{{ n}_2}} &  {{h}} {{{ n}_3}} \\  {{\gamma}} \cdot {{{ n}^1}} &  0 &  0 &  0 \\  {{\gamma}} \cdot {{{ n}^2}} &  0 &  0 &  0 \\  {{\gamma}} \cdot {{{ n}^3}} &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+Acoustic matrix eigen-decomposition:
+<br>
+${{{ A}^I}_J} = {{{{{ {(R_A)}}^I}_M}} {{{{ {(\Lambda_A)}}^M}_N}} {{{{ {(L_A)}}^N}_J}}}$
+<br>
+${{{ A}^I}_J} = { {\left[\begin{matrix}  \frac{{{h}} {{|n|}}}{{{{c_s}}} \cdot {{{ n}^3}}} &  \frac{-{{{h}} {{|n|}}}}{{{{c_s}}} \cdot {{{ n}^3}}} &  0 &  0 \\  \frac{{ n}^1}{{ n}^3} &  \frac{{ n}^1}{{ n}^3} &  \frac{-{{ n}_2}}{{ n}_1} &  \frac{-{{ n}_3}}{{ n}_1} \\  \frac{{ n}^2}{{ n}^3} &  \frac{{ n}^2}{{ n}^3} &  1 &  0 \\  1 &  1 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  {{{c_s}}} \cdot {{|n|}} &  0 &  0 &  0 \\  0 &  -{{{{c_s}}} \cdot {{|n|}}} &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}  {\left[\begin{matrix}  \frac{{{{c_s}}} \cdot {{{ n}^3}}}{{{2}} {{h}} {{|n|}}} &  \frac{{{{ n}_1}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}_2}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}_3}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} \\  \frac{-{{{{c_s}}} \cdot {{{ n}^3}}}}{{{2}} {{h}} {{|n|}}} &  \frac{{{{ n}_1}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}_2}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}^3}} {{{ n}_3}}}{{{2}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{{{ n}_1}} {{{ n}^2}}}}{{|n|}^{2}} &  \frac{{{{{ n}^1}} {{{ n}_1}}} + {{{{ n}^3}} {{{ n}_3}}}}{{|n|}^{2}} &  \frac{-{{{{ n}^2}} {{{ n}_3}}}}{{|n|}^{2}} \\  0 &  \frac{-{{{{ n}_1}} {{{ n}^3}}}}{{|n|}^{2}} &  \frac{-{{{{ n}_2}} {{{ n}^3}}}}{{|n|}^{2}} &  \frac{{{{{ n}^1}} {{{ n}_1}}} + {{{{ n}^2}} {{{ n}_2}}}}{{|n|}^{2}}\end{matrix}\right]}}$
+<br>
+scale by:	$\left[\begin{matrix}  {{{c_s}}} \cdot {{{ n}^3}} &  0 &  0 &  0 \\  0 &  {{{c_s}}} \cdot {{{ n}^3}} &  0 &  0 \\  0 &  0 &  { n}_1 &  0 \\  0 &  0 &  0 &  { n}_1\end{matrix}\right]$	, permute by:	$\left[\begin{matrix}  0 &  0 &  0 &  1 \\  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0\end{matrix}\right]$
+<br>
+${{{ A}^I}_J} = { {\left[\begin{matrix}  -{{{h}} {{|n|}}} &  0 &  0 &  {{h}} {{|n|}} \\  {{{c_s}}} \cdot {{{ n}^1}} &  -{{ n}_2} &  -{{ n}_3} &  {{{c_s}}} \cdot {{{ n}^1}} \\  {{{c_s}}} \cdot {{{ n}^2}} &  { n}_1 &  0 &  {{{c_s}}} \cdot {{{ n}^2}} \\  {{{c_s}}} \cdot {{{ n}^3}} &  0 &  { n}_1 &  {{{c_s}}} \cdot {{{ n}^3}}\end{matrix}\right]}  {\left[\begin{matrix}  -{{{{c_s}}} \cdot {{|n|}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  {{{c_s}}} \cdot {{|n|}}\end{matrix}\right]}  {\left[\begin{matrix}  -{\frac{1}{{{2}} {{h}} {{|n|}}}} &  \frac{{ n}_1}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^2}}{{|n|}^{2}} &  \frac{{{{{ n}^1}} {{{ n}_1}}} + {{{{ n}^3}} {{{ n}_3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{-{{{{ n}^2}} {{{ n}_3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^3}}{{|n|}^{2}} &  \frac{-{{{{ n}_2}} {{{ n}^3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{{{{{ n}^1}} {{{ n}_1}}} + {{{{ n}^2}} {{{ n}_2}}}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  \frac{1}{{{2}} {{h}} {{|n|}}} &  \frac{{ n}_1}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}}\end{matrix}\right]}}$
+<br>
+
+<br>
+Acoustic matrix, reconstructed from eigen-decomposition:
+<br>
+${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_1}} &  {{h}} {{{ n}_2}} &  {{h}} {{{ n}_3}} \\  {\frac{1}{h}}{({{{{ n}^1}} {{{{c_s}}^{2}}}})} &  0 &  0 &  0 \\  {\frac{1}{h}}{({{{{ n}^2}} {{{{c_s}}^{2}}}})} &  0 &  0 &  0 \\  {\frac{1}{h}}{({{{{ n}^3}} {{{{c_s}}^{2}}}})} &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+Orthogonality of left and right eigenvectors:
+<br>
+$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+<br>
+
+<br>
+$A$'s eigensystem is $R_A \Lambda_A L_A$.<br>
+$A + v I$'s eigensystem is $R_A \Lambda_A L_A + v I 
+	= R_A \Lambda_A L_A + v R_A L_A 
+	= R_A (\Lambda_A + v I) L_A$
+.<br>
+$\frac{\partial W}{\partial U} \cdot \frac{\partial F}{\partial W} = A + v I$<br>
+$\frac{\partial F}{\partial U} = \frac{\partial U}{\partial W} \cdot \frac{\partial W}{\partial U} \cdot \frac{\partial F}{\partial W} \cdot \frac{\partial W}{\partial U} 
+	= \frac{\partial U}{\partial W} \cdot (A + v I) \cdot \frac{\partial W}{\partial U}
+	= \frac{\partial U}{\partial W} \cdot R_A (\Lambda_A + v I) L_A \cdot \frac{\partial W}{\partial U}$.<br>
+Let $R_F = \frac{\partial U}{\partial W} \cdot R_A,
+	\Lambda_F = \Lambda_A + v I,
+	L_F = L_A \cdot \frac{\partial W}{\partial U}$.<br>
+$\frac{\partial F}{\partial U} = R_F \Lambda_F L_F$.<br>
+
+
+<br>
+Flux Jacobian with respect to conserved variables:
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {{{\frac{\partial { U}^I}{\partial { W}^K}}} {{\frac{\partial { W}^K}{\partial { U}^L}}} {{\frac{\partial { F}^L}{\partial { W}^M}}} {{\frac{\partial { W}^M}{\partial { U}^J}}}}$
+<br>
+
+<br>
+${{R_F}} = { {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  { v}^1 &  h &  0 &  0 \\  { v}^2 &  0 &  h &  0 \\  { v}^3 &  0 &  0 &  h\end{matrix}\right]}  {\left[\begin{matrix}  -{{{h}} {{|n|}}} &  0 &  0 &  {{h}} {{|n|}} \\  {{{c_s}}} \cdot {{{ n}^1}} &  -{{ n}_2} &  -{{ n}_3} &  {{{c_s}}} \cdot {{{ n}^1}} \\  {{{c_s}}} \cdot {{{ n}^2}} &  { n}_1 &  0 &  {{{c_s}}} \cdot {{{ n}^2}} \\  {{{c_s}}} \cdot {{{ n}^3}} &  0 &  { n}_1 &  {{{c_s}}} \cdot {{{ n}^3}}\end{matrix}\right]}}$
+<br>
+${{R_F}} = {\left[\begin{matrix}  {{-1}} {{h}} {{|n|}} &  0 &  0 &  {{h}} {{|n|}} \\  {{{{c_s}}} \cdot {{h}} {{{ n}^1}}} + {{{-1}} {{h}} {{|n|}} \cdot {{{ v}^1}}} &  {{-1}} {{h}} {{{ n}_2}} &  {{-1}} {{h}} {{{ n}_3}} &  {{{{c_s}}} \cdot {{h}} {{{ n}^1}}} + {{{h}} {{|n|}} \cdot {{{ v}^1}}} \\  {{{{c_s}}} \cdot {{h}} {{{ n}^2}}} + {{{-1}} {{h}} {{|n|}} \cdot {{{ v}^2}}} &  {{h}} {{{ n}_1}} &  0 &  {{{{c_s}}} \cdot {{h}} {{{ n}^2}}} + {{{h}} {{|n|}} \cdot {{{ v}^2}}} \\  {{{{c_s}}} \cdot {{h}} {{{ n}^3}}} + {{{-1}} {{h}} {{|n|}} \cdot {{{ v}^3}}} &  0 &  {{h}} {{{ n}_1}} &  {{{{c_s}}} \cdot {{h}} {{{ n}^3}}} + {{{h}} {{|n|}} \cdot {{{ v}^3}}}\end{matrix}\right]}$
+<br>
+${{L_F}} = { {\left[\begin{matrix}  -{\frac{1}{{{2}} {{h}} {{|n|}}}} &  \frac{{ n}_1}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^2}}{{|n|}^{2}} &  \frac{{{{{ n}^1}} {{{ n}_1}}} + {{{{ n}^3}} {{{ n}_3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{-{{{{ n}^2}} {{{ n}_3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^3}}{{|n|}^{2}} &  \frac{-{{{{ n}_2}} {{{ n}^3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{{{{{ n}^1}} {{{ n}_1}}} + {{{{ n}^2}} {{{ n}_2}}}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  \frac{1}{{{2}} {{h}} {{|n|}}} &  \frac{{ n}_1}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{c_s}}} \cdot {{{|n|}^{2}}}}\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  {\frac{1}{h}}{({-{{ v}^1}})} &  {\frac{1}{h}}{({1})} &  0 &  0 \\  {\frac{1}{h}}{({-{{ v}^2}})} &  0 &  {\frac{1}{h}}{({1})} &  0 \\  {\frac{1}{h}}{({-{{ v}^3}})} &  0 &  0 &  {\frac{1}{h}}{({1})}\end{matrix}\right]}}$
+<br>
+${{L_F}} = {\left[\begin{matrix}  {{{-1}} \cdot {{{\frac{1}{2}}{({1})}}} {{{ n}_k}} {{{ v}^k}} {{{\frac{1}{{c_s}}}{({1})}}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}}} + {{{-1}} \cdot {{{\frac{1}{2}}{({1})}}} {{{\frac{1}{h}}{({1})}}} {{{\frac{1}{|n|}}{({1})}}}} &  {{{\frac{1}{2}}{({1})}}} {{{ n}_1}} {{{\frac{1}{{c_s}}}{({1})}}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}} &  {{{\frac{1}{2}}{({1})}}} {{{ n}_2}} {{{\frac{1}{{c_s}}}{({1})}}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}} &  {{{\frac{1}{2}}{({1})}}} {{{ n}_3}} {{{\frac{1}{{c_s}}}{({1})}}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}} \\  {{{-1}} {{{ n}^1}} {{{ v}^2}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}}} + {{{{ n}^2}} {{{ n}_k}} {{{ v}^k}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}}} + {{{-1}} {{{ n}^3}} {{{ n}_3}} {{{ v}^2}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}}} + {{{-1}} {{{ n}^2}} {{{ n}_2}} {{{ v}^2}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}}} &  {{-1}} {{{ n}^2}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}} &  {{{{ n}^1}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}}} + {{{{ n}_3}} {{{ n}^3}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}}} &  {{-1}} {{{ n}^2}} {{{ n}_3}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}} \\  {{{-1}} {{{ n}^1}} {{{ v}^3}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}}} + {{{-1}} {{{ n}^2}} {{{ n}_2}} {{{ v}^3}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}}} + {{{{ n}^3}} {{{ n}_k}} {{{ v}^k}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}}} + {{{-1}} {{{ n}^3}} {{{ n}_3}} {{{ v}^3}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}}} &  {{-1}} {{{ n}^3}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}} &  {{-1}} {{{ n}_2}} {{{ n}^3}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}} &  {{{{ n}^1}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}}} + {{{{ n}_2}} {{{ n}^2}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{ n}_1}}} {{\frac{1}{{|n|}^{2}}}}} \\  {{{-1}} \cdot {{{\frac{1}{2}}{({1})}}} {{{ n}_k}} {{{ v}^k}} {{{\frac{1}{{c_s}}}{({1})}}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}}} + {\frac{1}{{{2}} {{h}} {{|n|}}}} &  {{{\frac{1}{2}}{({1})}}} {{{ n}_1}} {{{\frac{1}{{c_s}}}{({1})}}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}} &  {{{\frac{1}{2}}{({1})}}} {{{ n}_2}} {{{\frac{1}{{c_s}}}{({1})}}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}} &  {{{\frac{1}{2}}{({1})}}} {{{ n}_3}} {{{\frac{1}{{c_s}}}{({1})}}} {{{\frac{1}{h}}{({1})}}} {{\frac{1}{{|n|}^{2}}}}\end{matrix}\right]}$
+<br>
+
+<br>
