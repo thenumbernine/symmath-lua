@@ -207,8 +207,14 @@ local A_eig = A_expanded:eigen()
 -- TODO if you want, (a) consider when n_1 = 0 or n_2 = 0
 -- and/or (b) just replace all the e_x, e_y cross n with a basis {n, n2, n3}
 
+-- upper and lower column and row coefficients
+local nU = Matrix:lambda({3,1}, function(i,j) return n('^'..i) end)
+local nL = Matrix:lambda({1,3}, function(i,j) return n('_'..j) end)
+
 local nLen = var'|n|'
-local nLenSq_def = (nLen^2):eq(n'^1' * n'_1' + n'^2' * n'_2' + n'^3' * n'_3')
+local nLenSq_def = (nLen^2):eq( (nL * nU)()[1][1] )
+printbr(nLenSq_def)
+printbr()
 
 printbr(A'^I_J':eq(var'(R_A)''^I_M' * var'(\\Lambda_A)''^M_N' * var'(L_A)''^N_J'))
 
@@ -241,8 +247,8 @@ printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
 
 local P = Matrix.permutation(4,1,2,3):T()
 local S = Matrix.diagonal(
-	c * n'^3',
-	c * n'^3',
+	n'^3',
+	n'^3',
 	n'_1',
 	n'_1'
 )
@@ -257,12 +263,80 @@ A_eig.L = (P:T() * SInv * A_eig.L)()
 printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
 printbr()
 
+--[[
+we get [-n_2, n_1, 0] and [-n_3, 0, n_1]
+for [-n_2, n_1, 0] = [0,0,1] cross [n_1, n_2, n_3]
+and [-n_3, 0, n_1] = [0,-1,0] cross [n_1, n_2, n_3]
+--]]
+printbr[[Replace $n \times e_x$ and $n \times e_y$ with $n_2, n_3$:]]
+
+local n2 = var'(n_2)'
+local n3 = var'(n_3)'
+
+local n2U = Matrix:lambda({3,1}, function(i,j) return n2('^'..i) end)
+local n2L = Matrix:lambda({1,3}, function(i,j) return n2('_'..j) end)
+local n3U = Matrix:lambda({3,1}, function(i,j) return n3('^'..i) end)
+local n3L = Matrix:lambda({1,3}, function(i,j) return n3('_'..j) end)
+
+local nLs = table{nL, n2L, n3L}
+local nUs = table{nU, n2U, n3U}
+-- TODO derive this from the matrix mul that comes next
+local nDotN_defs = table()
+for i=1,3 do
+	for j=1,3 do
+		local ni_dot_nj_def = (nLs[i] * nUs[j])()[1][1]:eq( i == j and nLen^2 or 0)
+		nDotN_defs:insert(ni_dot_nj_def)
+	end
+end
+
+-- TODO all of the above as this:
+printbr(
+	(Matrix:lambda({3,3}, function(i,j)
+		return nLs[i][1][j]
+	end) * Matrix:lambda({3,3}, function(i,j)
+		return nUs[j][i][1]
+	end)):eq(
+		(Matrix.identity(3) * nLen^2)()
+	))
+
+
+--[[
+n2_i = epsilon_ijk n^j (e_x)^k
+n3_i = epsilon_ijk n^j (e_y)^k
+well, 
+epsilon_ijk n^i n2^j n3^k 
+= epsilon^ijk n_i n2_j n3_k  by raising and lowering by the metric
+mind  you, epsilon^ijk = 1/g epsilonBar^ijk n_i n_j n_k
+and if n_i = grad_n (sum x^j) in a coordinate basis then it will have coefficients of 1 coinciding with the coordinate along which the normal points
+in that case the determinant of the column matrix of normal coefficients would be 1 ... i.e. epsilonBar^ijk n1_i n2_j n3_k = 1
+and in that case, after raising, we find epsilonBar_ijk n1^i n2^j n3^k = |g|
+this might be the motivation behind Nakahara choosing |epsilon_ijk| = 1 and |epsilon^ijk| = 1/|g|
+but I'm more a fan of |epsilon_ijk| = sqrt|g| and |epsilon^ijk| = 1/sqrt|g|, because the permutation weight always coincides with the magnitude of the tensor component's basis
+--]]
+for i=1,3 do
+	A_eig.R[i+1][2] = n2('^'..i)
+	A_eig.R[i+1][3] = n3('^'..i)
+	
+	A_eig.L[2][i+1] = n2('_'..i) / nLen^2
+	A_eig.L[3][i+1] = n3('_'..i) / nLen^2
+end
+--A_eig.L = A_eig.R:inverse()
+
+printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
+printbr()
+
 printbr'Acoustic matrix, reconstructed from eigen-decomposition:'
 printbr(A'^I_J':eq( (A_eig.R * A_eig.Lambda * A_eig.L)() ))
 printbr()
 
+
 printbr'Orthogonality of left and right eigenvectors:'
-printbr((A_eig.L * A_eig.R)():subst(nLenSq_def)())
+printbr(
+	(A_eig.L * A_eig.R)()
+		:subst(
+			nDotN_defs:unpack()
+		)()
+)
 printbr()
 
 printbr[[
@@ -307,3 +381,66 @@ F_eig_L_def = F_eig_L_def:simplifyAddMulDiv()
 printbr(var'L_F':eq(F_eig_L_def))
 
 printbr()
+
+printbr'eigensystem transforms applied to vectors:'
+
+local X = Matrix:lambda({4,1}, function(i) return var('X^'..(i-1)) end)
+
+local F_eig_L_times_X_def = (F_eig_L_def * X)()
+printbr((var'L_F' * var'X'):eq(F_eig_L_times_X_def))
+printbr()
+
+local LF_scale = h * nLen^2
+local scaled_F_eig_L_times_X_def = (LF_scale * F_eig_L_def * X)()
+printbr((LF_scale * var'L_F' * var'X'):eq(scaled_F_eig_L_times_X_def))
+printbr()
+
+local F_eig_R_times_X_def = (F_eig_R_def * X)()
+printbr((var'R_F' * var'X'):eq(F_eig_R_times_X_def))
+printbr()
+
+
+local xs = table{'x', 'y', 'z'}
+local function replaceVars(expr)
+	expr = expr
+	:replace(n'_k' * v'^k', var'v_n')
+	:replace(nLen, var'nLen')
+	:map(function(x)
+		for i,xi in ipairs(xs) do
+			if x == n('^'..i) then return var('nU.'..xi) end
+			if x == n('_'..i) then return var('nL.'..xi) end
+			if x == n2('^'..i) then return var('n2U.'..xi) end
+			if x == n2('_'..i) then return var('n2L.'..xi) end
+			if x == n3('^'..i) then return var('n3U.'..xi) end
+			if x == n3('_'..i) then return var('n3L.'..xi) end
+			if x == v('^'..i) then return var('U->v.'..xi) end
+		end
+	end)
+	for i=1,4 do
+		expr = expr:replace(X[i][1], var('(X)->ptr['..(i-1)..']'))
+	end
+	return expr
+end
+
+symmath.export.C.numberType = 'real const'
+
+printbr(LF_scale * var'L_F' * var'X', 'as code:')
+print'<pre>'
+print(symmath.export.C:toCode{
+	output = range(4):mapi(function(i)
+		return replaceVars(scaled_F_eig_L_times_X_def[i][1])
+	end),
+})
+printbr'</pre>'
+printbr()
+
+printbr(var'R_F' * var'X', 'as code:')
+print'<pre>'
+print(symmath.export.C:toCode{
+	output = range(4):mapi(function(i)
+		return replaceVars(F_eig_R_times_X_def[i][1])
+	end),
+})
+printbr'</pre>'
+printbr()
+
