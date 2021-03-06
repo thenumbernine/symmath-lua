@@ -53,7 +53,8 @@ function Language:prepareToCodeArgs(outputs, inputs)
 				-- TODO maybe, make sure this is only one entry?
 				local name, expr = next(output)
 				local name2, expr2 = next(output, name)
-				assert(name2 == nil and expr2 == nil, "expected output elements to be single-entry tables of {[name] = Expression}")
+				assert(name2 == nil and expr2 == nil, "expected output elements to be single-entry tables of {[name] = Expression}, but found more than one entry")
+				assert(Expression:isa(expr), "expected output elements to be a table of {[name] = Expression}, but didn't find an expression")
 				fixedOutputs:insert{name=name, expr=expr}
 			end
 		else

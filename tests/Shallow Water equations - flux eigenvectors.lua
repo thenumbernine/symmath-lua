@@ -167,6 +167,10 @@ dF_dU_def = dF_dU_def:tidyIndexes():simplifyAddMulDiv()
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 printbr()
 
+printbr'Flux derivative wrt conserved variables, expanded:'
+local dF_dU_expanded_def = expandMatrix2to4(dF_dU_def):replace(n'_a' * v'^a', n'_k' * v'^k')
+printbr(F'^I':diff(U'^J'):eq(dF_dU_expanded_def))
+printbr()
 
 printbr'Acoustic matrix:'
 
@@ -390,21 +394,32 @@ local F_eig_L_times_X_def = (F_eig_L_def * X)()
 printbr((var'L_F' * var'X'):eq(F_eig_L_times_X_def))
 printbr()
 
-local LF_scale = h * nLen^2
-local scaled_F_eig_L_times_X_def = (LF_scale * F_eig_L_def * X)()
-printbr((LF_scale * var'L_F' * var'X'):eq(scaled_F_eig_L_times_X_def))
-printbr()
-
 local F_eig_R_times_X_def = (F_eig_R_def * X)()
 printbr((var'R_F' * var'X'):eq(F_eig_R_times_X_def))
 printbr()
 
+local LF_scale = 2 * h * nLen^2
+local scaled_F_eig_L_times_X_def = (LF_scale * F_eig_L_def * X)()
+printbr((LF_scale * var'L_F' * var'X'):eq(scaled_F_eig_L_times_X_def))
+printbr()
+
+local RF_scale = c
+local scaled_F_eig_R_times_X_def = (RF_scale * F_eig_R_def * X)()
+printbr((RF_scale * var'R_F' * var'X'):eq(scaled_F_eig_R_times_X_def))
+printbr()
+
+local dF_dU_times_X_def = (dF_dU_expanded_def * X)()
+printbr((F'^I':diff(U'^J') * var'X'):eq(dF_dU_times_X_def))
+printbr()
 
 local xs = table{'x', 'y', 'z'}
 local function replaceVars(expr)
 	expr = expr
 	:replace(n'_k' * v'^k', var'v_n')
 	:replace(nLen, var'nLen')
+	:replace(gravity, var'solver->gravity')
+	:replace(h, var'(eig)->h')
+	:replace(c, var'(eig)->C')
 	:map(function(x)
 		for i,xi in ipairs(xs) do
 			if x == n('^'..i) then return var('nU.'..xi) end
@@ -413,7 +428,7 @@ local function replaceVars(expr)
 			if x == n2('_'..i) then return var('n2L.'..xi) end
 			if x == n3('^'..i) then return var('n3U.'..xi) end
 			if x == n3('_'..i) then return var('n3L.'..xi) end
-			if x == v('^'..i) then return var('U->v.'..xi) end
+			if x == v('^'..i) then return var('(eig)->v.'..xi) end
 		end
 	end)
 	for i=1,4 do
@@ -426,9 +441,12 @@ symmath.export.C.numberType = 'real const'
 
 printbr(LF_scale * var'L_F' * var'X', 'as code:')
 print'<pre>'
+print((symmath.export.C(
+	replaceVars(var'invDenom':eq(1 / LF_scale))
+))..';')
 print(symmath.export.C:toCode{
 	output = range(4):mapi(function(i)
-		return replaceVars(scaled_F_eig_L_times_X_def[i][1])
+		return {['(result)->ptr['..(i-1)..']'] = replaceVars(scaled_F_eig_L_times_X_def[i][1] * var'invDenom')}
 	end),
 })
 printbr'</pre>'
@@ -436,11 +454,23 @@ printbr()
 
 printbr(var'R_F' * var'X', 'as code:')
 print'<pre>'
+print((symmath.export.C(
+	replaceVars(var'invDenom':eq(1 / RF_scale))
+))..';')
 print(symmath.export.C:toCode{
 	output = range(4):mapi(function(i)
-		return replaceVars(F_eig_R_times_X_def[i][1])
+		return {['(result)->ptr['..(i-1)..']'] = replaceVars(scaled_F_eig_R_times_X_def[i][1] * var'invDenom')}
 	end),
 })
 printbr'</pre>'
 printbr()
 
+printbr(F'^I':diff(U'^J') * var'X', 'as code:')
+print'<pre>'
+print(symmath.export.C:toCode{
+	output = range(4):mapi(function(i)
+		return {['(result)->ptr['..(i-1)..']'] = replaceVars(dF_dU_times_X_def[i][1])}
+	end),
+})
+printbr'</pre>'
+printbr()
