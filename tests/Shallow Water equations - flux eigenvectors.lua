@@ -3,13 +3,13 @@ require 'ext'
 op = nil	-- make way for _G.op = symmath.op
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='Euler Fluid Equations - flux eigenvectors'}}
+require 'symmath'.setup{env=env, MathJax={title='Shallow Water Equations - flux eigenvectors'}}
 
 local delta = Tensor:deltaSymbol()	-- Kronecher delta
 local g = var'g'					-- metric
 
 -- TODO tidyIndexes() is breaking on this worksheet
--- it seems like it does work if you are sure to :simplify():factorDivision() beforehand
+-- it seems like it does work if you are sure to :simplify():simplifyAddMulDiv() beforehand
 
 local function sum(t)
 	if #t == 1 then return t[1] end
@@ -40,18 +40,38 @@ printbr(m_from_v, [[= momentum, in units of ]], kg/(m^2 * s))
 local gravity = var'\\gamma'
 printbr(gravity, [[= pull of gravitation, in units of ]], m/s^2)
 
-local Cs = var'c_s'
-local Cs_def = Cs:eq(sqrt(gravity * h))
-printbr(Cs_def, [[= speed of sound in units of ]], m / s)
+local c = var'c'
+local c_def = c:eq(sqrt(gravity * h))
+printbr(c_def, [[= speed of sound in units of ]], m / s)
 
 printbr(g'_ij', [[= metric tensor, in units of $[1]$]])
 
 
 
-local c = var'c'		-- commutation
-local Gamma = var'\\Gamma'
-local B = var'B'	-- magnetic field
-local S = var'S'		-- source terms
+local function expandMatrix2to4(A)
+	return Matrix:lambda({4,4}, function(i,j)
+		local remap = {1,2,2,2}
+		local replace = {nil, 1,2,3}
+		return A[remap[i]][remap[j]]:map(function(x)
+			if x == delta'^i_j' then
+				return i == j and 1 or 0
+			end
+		end):map(function(x)
+			if TensorIndex:isa(x) then
+				if x.symbol == 'i' then
+					x = x:clone()
+					x.symbol = assert(replace[i])
+					return x
+				elseif x.symbol == 'j' then
+					x = x:clone()
+					x.symbol = assert(replace[j])
+					return x
+				end
+			end
+		end)()
+	end)
+end
+
 
 --[[ another fixme ... this works fine as long as the find doesn't have sum indexes
 printbr(g'^ij_,j')
@@ -74,6 +94,7 @@ local U = var'U'
 local U_def = Matrix{h, m'^i'}:T()
 printbr(U'^I':eq(U_def))
 
+
 printbr'Partial of conservative quantities wrt primitives:'
 
 local dU_dW_def = Matrix:lambda({2,2}, function(i,j)
@@ -84,15 +105,24 @@ printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 dU_dW_def = dU_dW_def:subst(m_from_v)
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 
+dU_dW_def = dU_dW_def()
 printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
+
+local dU_dW_expanded_def = expandMatrix2to4(dU_dW_def)
+printbr(U'^I':diff(W'^J'):eq(dU_dW_expanded_def))
+
 
 -- this doesn't work with indexed elements of the matrix.  you'd have to either expand it, or ... do some math 
 --local dW_dU_def = dU_dW_def:inverse()
+local dW_dU_expanded_def = dU_dW_expanded_def:inverse()
+printbr(W'^I':diff(U'^J'):eq(dW_dU_expanded_def))
+
 local dW_dU_def = Matrix(
 	{1, 0},
 	{-v'^i' / h, delta'^i_j' / h}
 )
 printbr(W'^I':diff(U'^J'):eq(dW_dU_def))
+
 
 printbr()
 printbr'Flux:'
@@ -151,7 +181,7 @@ printbr(A_lhs:eq(A_plus_delta_def))
 A_plus_delta_def = A_plus_delta_def()
 printbr(A_lhs:eq(A_plus_delta_def))
 
--- TODO if you don't do :factorDivision() before :tidyIndexes() then you can get mismatching indexes, and the subsequent :simplify() will cause a stack overflow
+-- TODO if you don't do :simplifyAddMulDiv() before :tidyIndexes() then you can get mismatching indexes, and the subsequent :simplify() will cause a stack overflow
 A_plus_delta_def = A_plus_delta_def:simplifyMetrics():simplifyAddMulDiv()
 A_plus_delta_def = A_plus_delta_def:tidyIndexes():simplifyAddMulDiv()
 A_plus_delta_def = A_plus_delta_def:replace(n'^a' * v'_a', n'_a' * v'^a')()
@@ -163,30 +193,6 @@ end))()
 printbr(A'^I_J':eq(A_def))
 printbr()
 
-
-local function expandMatrix2to4(A)
-	return Matrix:lambda({4,4}, function(i,j)
-		local remap = {1,2,2,2}
-		local replace = {nil, 1,2,3}
-		return A[remap[i]][remap[j]]:map(function(x)
-			if x == delta'^i_j' then
-				return i == j and 1 or 0
-			end
-		end):map(function(x)
-			if TensorIndex:isa(x) then
-				if x.symbol == 'i' then
-					x = x:clone()
-					x.symbol = assert(replace[i])
-					return x
-				elseif x.symbol == 'j' then
-					x = x:clone()
-					x.symbol = assert(replace[j])
-					return x
-				end
-			end
-		end)()
-	end)
-end
 
 printbr'Acoustic matrix, expanded:'
 local A_expanded = expandMatrix2to4(A_def)
@@ -200,19 +206,18 @@ local A_eig = A_expanded:eigen()
 
 -- TODO if you want, (a) consider when n_1 = 0 or n_2 = 0
 -- and/or (b) just replace all the e_x, e_y cross n with a basis {n, n2, n3}
--- (just like the MathWorksheets "Euler Fluid Equations - Curved Geometry - Contravariant" worksheet already does).
 
 local nLen = var'|n|'
 local nLenSq_def = (nLen^2):eq(n'^1' * n'_1' + n'^2' * n'_2' + n'^3' * n'_3')
 
 printbr(A'^I_J':eq(var'(R_A)''^I_M' * var'(\\Lambda_A)''^M_N' * var'(L_A)''^N_J'))
 
-local gravity_for_Cs = Cs_def:solve(gravity)
+local gravity_for_c = c_def:solve(gravity)
 
 
-A_eig.R = A_eig.R:subst(nLenSq_def:switch(), gravity_for_Cs)()
-A_eig.Lambda = A_eig.Lambda:subst(nLenSq_def:switch(), gravity_for_Cs)()
-A_eig.L = A_eig.L:subst(nLenSq_def:switch(), gravity_for_Cs)()
+A_eig.R = A_eig.R:subst(nLenSq_def:switch(), gravity_for_c)()
+A_eig.Lambda = A_eig.Lambda:subst(nLenSq_def:switch(), gravity_for_c)()
+A_eig.L = A_eig.L:subst(nLenSq_def:switch(), gravity_for_c)()
 
 local tmp = (nLenSq_def:switch() * (n'^1' * n'_1' + n'^2' * n'_2'))()
 A_eig.L[1][2] = A_eig.L[1][2]:subst(tmp)
@@ -223,13 +228,24 @@ A_eig.L[2][3] = A_eig.L[2][3]:subst(tmp)
 A_eig.L[3][3] = A_eig.L[3][3]:subst(tmp)
 A_eig.L[3][3] = A_eig.L[3][3]:replace(
 	((n'^1' * n'_1' + n'^2' * n'_2') * (n'^1' * n'_1' + n'^3' * n'_3'))(),
-	(n'^1' * n'_1' + n'^2' * n'_2') * (n'^1' * n'_1' + n'^3' * n'_3') )
+	(n'^1' * n'_1' + n'^2' * n'_2') * (n'^1' * n'_1' + n'^3' * n'_3') )()
+A_eig.L[3][3] = A_eig.L[3][3]:replace(
+	n'^1' * n'_1' + n'^3' * n'_3',
+	nLen^2 - n'^2' * n'_2')
+A_eig.L[4][4] = A_eig.L[4][4]:replace(
+	n'^1' * n'_1' + n'^2' * n'_2',
+	nLen^2 - n'^3' * n'_3')
 A_eig.L = A_eig.L()
 
 printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
 
 local P = Matrix.permutation(4,1,2,3):T()
-local S = Matrix.diagonal(Cs * n'^3', Cs * n'^3', n'_1', n'_1')
+local S = Matrix.diagonal(
+	c * n'^3',
+	c * n'^3',
+	n'_1',
+	n'_1'
+)
 local SInv = S:inv()
 
 printbr('scale by:', S, ', permute by:', P)
@@ -270,7 +286,7 @@ printbr'Flux Jacobian with respect to conserved variables:'
 printbr(F'^I':diff(U'^J'):eq( U'^I':diff(W'^K') * W'^K':diff(U'^L') * F'^L':diff(W'^M') * W'^M':diff(U'^J') ))
 printbr()
 
-local F_eig_R_def = expandMatrix2to4(dU_dW_def) * A_eig.R
+local F_eig_R_def = dU_dW_expanded_def * A_eig.R
 printbr(var'R_F':eq(F_eig_R_def))
 
 F_eig_R_def = F_eig_R_def()
@@ -280,7 +296,7 @@ F_eig_R_def = F_eig_R_def
 F_eig_R_def = F_eig_R_def:simplifyAddMulDiv()
 printbr(var'R_F':eq(F_eig_R_def))
 
-local F_eig_L_def = A_eig.L * expandMatrix2to4(dW_dU_def)
+local F_eig_L_def = A_eig.L * dW_dU_expanded_def
 printbr(var'L_F':eq(F_eig_L_def))
 
 F_eig_L_def = F_eig_L_def()

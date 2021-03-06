@@ -146,7 +146,7 @@ LaTeX.lookupTable = {
 		-- for now, just look for single constants or Variables (or both?)
 		-- this could be done in tidy ...
 		local a,b = table.unpack(expr)
-		if not a:isa(Constant) then
+		if not Constant:isa(a) then
 			if Constant:isa(b) 
 			or Variable:isa(b)
 			then
