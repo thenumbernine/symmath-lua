@@ -18,7 +18,9 @@ function TensorRef:init(tensor, ...)
 	local TensorIndex = require 'symmath.tensor.TensorIndex'
 	for i=1,select('#',...) do
 		local index = select(i, ...)
-		assert(TensorIndex:isa(index) or Wildcard:isa(index), 'argument '..(i+1)..' of TensorRef is not a TensorIndex or Wildcard: '..require 'ext.tolua'(index))
+		if not (TensorIndex:isa(index) or Wildcard:isa(index)) then
+			error('argument '..(i+1)..' of TensorRef is not a TensorIndex or Wildcard: '..require 'ext.tolua'(index))
+		end
 	end
 end
 

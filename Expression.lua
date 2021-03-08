@@ -1205,8 +1205,8 @@ function Expression:simplifyMetrics(rules)
 		rules = table(rules)
 	end
 
-	expr = expr:simplifyAddMulDiv()	-- put it in add-mul-div order
 	expr = expr:clone()
+	expr = expr:simplifyAddMulDiv()	-- put it in add-mul-div order
 	local function checkMul(expr)
 		if not mul:isa(expr) then return expr end
 

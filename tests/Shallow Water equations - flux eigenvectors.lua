@@ -167,6 +167,32 @@ dF_dU_def = dF_dU_def:tidyIndexes():simplifyAddMulDiv()
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 printbr()
 
+
+printbr'Flux derivative matrix times state'
+
+local dF_dU_times_U_def = dF_dU_def * U_def:reindex{i='j'}
+printbr((F'^I':diff(U'^J') * U):eq(dF_dU_times_U_def))
+
+dF_dU_times_U_def = dF_dU_times_U_def:subst(m_from_v:reindex{i='j'})
+printbr((F'^I':diff(U'^J') * U):eq(dF_dU_times_U_def))
+
+dF_dU_times_U_def = dF_dU_times_U_def()
+printbr((F'^I':diff(U'^J') * U):eq(dF_dU_times_U_def))
+
+dF_dU_times_U_def = dF_dU_times_U_def
+	:simplifyMetrics()
+	:tidyIndexes()
+	:reindex{ab='jk'}
+	:replace(v'_k', g'_kl' * v'^l')
+	:simplifyAddMulDiv()
+printbr((F'^I':diff(U'^J') * U):eq(dF_dU_times_U_def))
+
+printbr(F'^I':eq(F_def))
+printbr()
+
+printbr[[As you can see, the shallow water equations' $\frac{\partial F}{\partial U} \cdot U \ne F$.  This statement happens to be true for the Euler fluid equations, and lots of literature of solvers based on the Euler fluid equations depend on this equality, which is simply not always true.]]
+printbr()
+
 printbr'Flux derivative wrt conserved variables, expanded:'
 local dF_dU_expanded_def = expandMatrix2to4(dF_dU_def):replace(n'_a' * v'^a', n'_k' * v'^k')
 printbr(F'^I':diff(U'^J'):eq(dF_dU_expanded_def))

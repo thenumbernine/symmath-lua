@@ -144,8 +144,9 @@ local dW_dU_def = Matrix(
 	{frac(1,2) * tildeGamma * vSq_wrt_v, -tildeGamma * v'_j', tildeGamma}
 )
 printbr(W'^I':diff(U'^J'):eq(dW_dU_def))
-
 printbr()
+
+
 printbr'Flux:'
 
 local F = var'F'
@@ -159,6 +160,7 @@ printbr(F'^I':eq(F_def))
 F_def = F_def:subst(H_total_def, E_total_def, e_int_def, e_kin_def):simplifyAddMulDiv()
 printbr(F'^I':eq(F_def))
 printbr()
+
 
 printbr'Flux derivative wrt primitive variables:'
 local dF_dW_def = Matrix:lambda({3,3}, function(i,j)
@@ -205,6 +207,31 @@ dF_dU_def = dF_dU_def:tidyIndexes():simplifyAddMulDiv()
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 printbr()
 
+printbr[[Flux derivative matrix times state.  Seems I see this in Roe solver literature a lot, under the (false?) presumption that $\frac{\partial F}{\partial U} \cdot U = F$, when the correct statement $\frac{\partial F}{\partial U} \cdot dU = dF$.]]
+
+local dF_dU_times_U_def = dF_dU_def * U_def:reindex{i='j'}
+
+printbr((F'^I':diff(U'^J') * U):eq(dF_dU_times_U_def))
+
+dF_dU_times_U_def = dF_dU_times_U_def:subst(H_total_wrt_W, m_from_v:reindex{i='j'}, E_total_def, e_kin_def, vSq_def, e_int_def)
+
+printbr((F'^I':diff(U'^J') * U):eq(dF_dU_times_U_def))
+
+dF_dU_times_U_def = dF_dU_times_U_def()
+printbr((F'^I':diff(U'^J') * U):eq(dF_dU_times_U_def))
+
+dF_dU_times_U_def = dF_dU_times_U_def
+	:simplifyMetrics()
+	:tidyIndexes()
+	:reindex{ab='jk'}
+	:replace(v'_k', g'_kl' * v'^l')
+	:simplifyAddMulDiv()
+printbr((F'^I':diff(U'^J') * U):eq(dF_dU_times_U_def))
+
+printbr(F'^I':eq(F_def))
+printbr()
+printbr[[Oh wow, what do you know, for the Euler fluid equations it just so happens that $\frac{\partial F}{\partial U} \cdot U = F$.]]
+printbr()
 
 printbr'Acoustic matrix:'
 
@@ -220,8 +247,10 @@ A_plus_delta_def = A_plus_delta_def()
 printbr(A_lhs:eq(A_plus_delta_def))
 
 -- TODO if you don't do :factorDivision() before :tidyIndexes() then you can get mismatching indexes, and the subsequent :simplify() will cause a stack overflow
-A_plus_delta_def = A_plus_delta_def:simplifyMetrics():simplifyAddMulDiv()
-A_plus_delta_def = A_plus_delta_def:tidyIndexes():simplifyAddMulDiv()
+A_plus_delta_def = A_plus_delta_def:simplifyMetrics()
+A_plus_delta_def = A_plus_delta_def:simplifyAddMulDiv()
+A_plus_delta_def = A_plus_delta_def:tidyIndexes()
+A_plus_delta_def = A_plus_delta_def:simplifyAddMulDiv()
 A_plus_delta_def = A_plus_delta_def  
 	:replace(n'^a' * v'_a', n'_a' * v'^a')
 	:replace(v'^a' * v'_a', vSq_var)

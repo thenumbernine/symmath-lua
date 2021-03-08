@@ -985,15 +985,20 @@ mul.rules = {
 				return tidy:apply(expr)
 			end
 
-
+			--[[
 			-- TODO incorporate the rule x^a * x^b * ... => x^(a+b+...)
 			-- but that means separating it out from Prune.apply, and that uses some in-place modification stuff
 			-- until then, this is me being lazy and hoping for no infinite recursion:
+			-- hmm, and who could've expected, this is causing stack overflows:
 			local result = symmath.prune(expr)
 			for i=1,#result do
 				result[i] = tidy:apply(result[i])
 			end
 			return result
+			--]]
+			-- [
+			return expr
+			--]]
 		end},
 	
 	},

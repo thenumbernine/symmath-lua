@@ -75,6 +75,24 @@ ${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  { n}_j 
 <br>
 
 <br>
+Flux derivative matrix times state
+<br>
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = { {\left[\begin{matrix}  0 &  { n}_j \\  {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_j}} {{{ v}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}  {\left[\begin{matrix}  h \\  { m}^j\end{matrix}\right]}}$
+<br>
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = { {\left[\begin{matrix}  0 &  { n}_j \\  {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_j}} {{{ v}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}  {\left[\begin{matrix}  h \\  {{h}} {{{ v}^j}}\end{matrix}\right]}}$
+<br>
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{h}} {{({{{{{\gamma}} \cdot {{h}} {{{ n}^i}}} - {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}}} + {{{{ n}_a}} {{{ v}^a}} {{{ v}^j}} {{{{ \delta}^i}_j}}} + {{{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}})}}\end{matrix}\right]}$
+<br>
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}\end{matrix}\right]}$
+<br>
+${{ F}^I} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{{\frac{1}{2}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}\end{matrix}\right]}$
+<br>
+
+<br>
+As you can see, the shallow water equations' $\frac{\partial F}{\partial U} \cdot U \ne F$.  This statement happens to be true for the Euler fluid equations, and lots of literature of solvers based on the Euler fluid equations depend on this equality, which is simply not always true.
+<br>
+
+<br>
 Flux derivative wrt conserved variables, expanded:
 <br>
 ${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  { n}_1 &  { n}_2 &  { n}_3 \\  -{({{{{{ v}^1}} {{{{{ n}_k}} {{{ v}^k}}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^1}}}})} &  {{{{ n}_1}} {{{ v}^1}}} + {{{{ n}_k}} {{{ v}^k}}} &  {{{ n}_2}} {{{ v}^1}} &  {{{ n}_3}} {{{ v}^1}} \\  -{({{{{{ v}^2}} {{{{{ n}_k}} {{{ v}^k}}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^2}}}})} &  {{{ n}_1}} {{{ v}^2}} &  {{{{ n}_2}} {{{ v}^2}}} + {{{{ n}_k}} {{{ v}^k}}} &  {{{ n}_3}} {{{ v}^2}} \\  -{({{{{{ v}^3}} {{{{{ n}_k}} {{{ v}^k}}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^3}}}})} &  {{{ n}_1}} {{{ v}^3}} &  {{{ n}_2}} {{{ v}^3}} &  {{{{ n}_3}} {{{ v}^3}}} + {{{{ n}_k}} {{{ v}^k}}}\end{matrix}\right]}$
@@ -103,17 +121,17 @@ ${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_1}} &  {{h}} {{{ n}_2}}
 <br>
 Acoustic matrix eigen-decomposition:
 <br>
-${{|n|}^{2}} = {{{{{ n}_1}} {{{ n}^1}}} + {{{{ n}_2}} {{{ n}^2}}} + {{{{ n}_3}} {{{ n}^3}}}}$
+${{|n|}^{2}} = {{{{{ n}^1}} {{{ n}_1}}} + {{{{ n}^2}} {{{ n}_2}}} + {{{{ n}^3}} {{{ n}_3}}}}$
 <br>
 
 <br>
 ${{{ A}^I}_J} = {{{{{ {(R_A)}}^I}_M}} {{{{ {(\Lambda_A)}}^M}_N}} {{{{ {(L_A)}}^N}_J}}}$
 <br>
-${{{ A}^I}_J} = { {\left[\begin{matrix}  \frac{{{h}} {{|n|}}}{{{c}} {{{ n}^3}}} &  \frac{-{{{h}} {{|n|}}}}{{{c}} {{{ n}^3}}} &  0 &  0 \\  \frac{{ n}^1}{{ n}^3} &  \frac{{ n}^1}{{ n}^3} &  \frac{-{{ n}_2}}{{ n}_1} &  \frac{-{{ n}_3}}{{ n}_1} \\  \frac{{ n}^2}{{ n}^3} &  \frac{{ n}^2}{{ n}^3} &  1 &  0 \\  1 &  1 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  {{c}} {{|n|}} &  0 &  0 &  0 \\  0 &  -{{{c}} {{|n|}}} &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}  {\left[\begin{matrix}  \frac{{{c}} {{{ n}^3}}}{{{2}} {{h}} {{|n|}}} &  \frac{{{{ n}_1}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}_2}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}_3}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} \\  \frac{-{{{c}} {{{ n}^3}}}}{{{2}} {{h}} {{|n|}}} &  \frac{{{{ n}_1}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}_2}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}^3}} {{{ n}_3}}}{{{2}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{{{ n}_1}} {{{ n}^2}}}}{{|n|}^{2}} &  \frac{-{({{{{{ n}^2}} {{{ n}_2}}} - {{|n|}^{2}}})}}{{|n|}^{2}} &  \frac{-{{{{ n}^2}} {{{ n}_3}}}}{{|n|}^{2}} \\  0 &  \frac{-{{{{ n}_1}} {{{ n}^3}}}}{{|n|}^{2}} &  \frac{-{{{{ n}_2}} {{{ n}^3}}}}{{|n|}^{2}} &  \frac{-{({{{{{ n}^3}} {{{ n}_3}}} - {{|n|}^{2}}})}}{{|n|}^{2}}\end{matrix}\right]}}$
+${{{ A}^I}_J} = { {\left[\begin{matrix}  \frac{{{h}} {{|n|}}}{{{c}} {{{ n}^3}}} &  \frac{-{{{h}} {{|n|}}}}{{{c}} {{{ n}^3}}} &  0 &  0 \\  \frac{{ n}^1}{{ n}^3} &  \frac{{ n}^1}{{ n}^3} &  \frac{-{{ n}_2}}{{ n}_1} &  \frac{-{{ n}_3}}{{ n}_1} \\  \frac{{ n}^2}{{ n}^3} &  \frac{{ n}^2}{{ n}^3} &  1 &  0 \\  1 &  1 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  {{c}} {{|n|}} &  0 &  0 &  0 \\  0 &  -{{{c}} {{|n|}}} &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}  {\left[\begin{matrix}  \frac{{{c}} {{{ n}^3}}}{{{2}} {{h}} {{|n|}}} &  \frac{{{{ n}_1}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}_2}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}_3}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} \\  \frac{-{{{c}} {{{ n}^3}}}}{{{2}} {{h}} {{|n|}}} &  \frac{{{{ n}_1}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}_2}} {{{ n}^3}}}{{{2}} {{{|n|}^{2}}}} &  \frac{{{{ n}^3}} {{{ n}_3}}}{{{2}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{{{ n}_1}} {{{ n}^2}}}}{{|n|}^{2}} &  \frac{-{({{{{{ n}_2}} {{{ n}^2}}} - {{|n|}^{2}}})}}{{|n|}^{2}} &  \frac{-{{{{ n}^2}} {{{ n}_3}}}}{{|n|}^{2}} \\  0 &  \frac{-{{{{ n}_1}} {{{ n}^3}}}}{{|n|}^{2}} &  \frac{-{{{{ n}_2}} {{{ n}^3}}}}{{|n|}^{2}} &  \frac{-{({{{{{ n}_3}} {{{ n}^3}}} - {{|n|}^{2}}})}}{{|n|}^{2}}\end{matrix}\right]}}$
 <br>
 scale by:	$\left[\begin{matrix}  { n}^3 &  0 &  0 &  0 \\  0 &  { n}^3 &  0 &  0 \\  0 &  0 &  { n}_1 &  0 \\  0 &  0 &  0 &  { n}_1\end{matrix}\right]$	, permute by:	$\left[\begin{matrix}  0 &  0 &  0 &  1 \\  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0\end{matrix}\right]$
 <br>
-${{{ A}^I}_J} = { {\left[\begin{matrix}  {\frac{1}{c}}{({-{{{h}} {{|n|}}}})} &  0 &  0 &  {\frac{1}{c}}{({{{h}} {{|n|}}})} \\  { n}^1 &  -{{ n}_2} &  -{{ n}_3} &  { n}^1 \\  { n}^2 &  { n}_1 &  0 &  { n}^2 \\  { n}^3 &  0 &  { n}_1 &  { n}^3\end{matrix}\right]}  {\left[\begin{matrix}  -{{{c}} {{|n|}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  {{c}} {{|n|}}\end{matrix}\right]}  {\left[\begin{matrix}  \frac{-{c}}{{{2}} {{h}} {{|n|}}} &  \frac{{ n}_1}{{{2}} {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^2}}{{|n|}^{2}} &  \frac{-{({{{{{ n}^2}} {{{ n}_2}}} - {{|n|}^{2}}})}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{-{{{{ n}^2}} {{{ n}_3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^3}}{{|n|}^{2}} &  \frac{-{{{{ n}_2}} {{{ n}^3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{-{({{{{{ n}^3}} {{{ n}_3}}} - {{|n|}^{2}}})}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  \frac{c}{{{2}} {{h}} {{|n|}}} &  \frac{{ n}_1}{{{2}} {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{|n|}^{2}}}}\end{matrix}\right]}}$
+${{{ A}^I}_J} = { {\left[\begin{matrix}  {\frac{1}{c}}{({-{{{h}} {{|n|}}}})} &  0 &  0 &  {\frac{1}{c}}{({{{h}} {{|n|}}})} \\  { n}^1 &  -{{ n}_2} &  -{{ n}_3} &  { n}^1 \\  { n}^2 &  { n}_1 &  0 &  { n}^2 \\  { n}^3 &  0 &  { n}_1 &  { n}^3\end{matrix}\right]}  {\left[\begin{matrix}  -{{{c}} {{|n|}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  {{c}} {{|n|}}\end{matrix}\right]}  {\left[\begin{matrix}  \frac{-{c}}{{{2}} {{h}} {{|n|}}} &  \frac{{ n}_1}{{{2}} {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^2}}{{|n|}^{2}} &  \frac{-{({{{{{ n}_2}} {{{ n}^2}}} - {{|n|}^{2}}})}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{-{{{{ n}^2}} {{{ n}_3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  0 &  \frac{-{{ n}^3}}{{|n|}^{2}} &  \frac{-{{{{ n}_2}} {{{ n}^3}}}}{{{{ n}_1}} {{{|n|}^{2}}}} &  \frac{-{({{{{{ n}_3}} {{{ n}^3}}} - {{|n|}^{2}}})}}{{{{ n}_1}} {{{|n|}^{2}}}} \\  \frac{c}{{{2}} {{h}} {{|n|}}} &  \frac{{ n}_1}{{{2}} {{{|n|}^{2}}}} &  \frac{{ n}_2}{{{2}} {{{|n|}^{2}}}} &  \frac{{ n}_3}{{{2}} {{{|n|}^{2}}}}\end{matrix}\right]}}$
 <br>
 
 <br>
