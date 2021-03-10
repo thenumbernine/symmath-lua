@@ -190,7 +190,7 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
 		local res = self:wrapStrOfChildWithParenthesis(expr, 1)
-		local sep = {expr:getSepStr()}
+		local sep = {expr:getSepStr(self)}
 		for i=2,#expr do
 			res = self:combine(res, sep)
 			res = self:combine(res, self:wrapStrOfChildWithParenthesis(expr, i))

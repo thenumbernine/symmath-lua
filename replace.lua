@@ -5,6 +5,7 @@ repl = sub-expression to replace
 cond(node) = condition per node, returns 'true' if we don't want to find/replace this tree
 
 TODO rewrite to use symmath.map() ?
+TODO rewrite to use symmath.match() ?  But match() returns matched objects ... I don't think it returns indexes/paths into expression trees to look them up (for the sake of replacing them)
 --]]
 local function replaceRecurse(expr, find, repl, cond)
 	local Constant = require 'symmath.Constant'

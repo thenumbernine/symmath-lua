@@ -27,7 +27,7 @@ printbr'variables:'
 local n = var'n'
 printbr(n'^i', '= flux surface normal, in units of $[1]$')
 
-local h = var'h'	-- density
+local h = var'h'	-- wave height
 printbr(h, [[= wave height, in units of ]], m)
 
 local v = var'v'	-- velocity
@@ -40,11 +40,22 @@ printbr(m_from_v, [[= momentum, in units of ]], kg/(m^2 * s))
 local gravity = var'\\gamma'
 printbr(gravity, [[= pull of gravitation, in units of ]], m/s^2)
 
+local H = var'H'	-- bathymetry
+printbr(H, [[= seafloor depth, in units of ]], m)
+
+local extraTermInFlux = true
+
+local eta = var'\\eta'
+local eta_def = eta:eq(h 
+	- (extraTermInFlux and H or 0))
+printbr(eta_def, [[= difference in wave height above resting height in units of ]], m)
+
 local c = var'c'
-local c_def = c:eq(sqrt(gravity * h))
+local c_def = c:eq(sqrt(gravity * eta))
 printbr(c_def, [[= speed of sound in units of ]], m / s)
 
 printbr(g'_ij', [[= metric tensor, in units of $[1]$]])
+
 
 
 
@@ -130,7 +141,9 @@ printbr'Flux:'
 local F = var'F'
 local F_def = Matrix{
 	h * v'^j' * n'_j',
-	h * v'^i' * v'^j' * n'_j' + frac(1,2) * gravity * h^2 * n'^i'
+	h * v'^i' * v'^j' * n'_j' + frac(1,2) * gravity * (h^2 
+		- (extraTermInFlux and (2 * h * H) or 0)		-- some papers like 2018 Turchetto et al add this, but the worksheet needs extra tweaking to get it to work
+	) * n'^i'
 }:T()
 printbr(F'^I':eq(F_def))
 
@@ -221,6 +234,10 @@ local A_def = (A_plus_delta_def - Matrix.identity(2) * Matrix:lambda({2,2}, func
 	return i~=j and 0 or (n'_a' * v'^a' * (i==2 and delta'^i_j' or 1)) 
 end))()
 printbr(A'^I_J':eq(A_def))
+
+A_def = A_def:subst(eta_def:solve(H))()
+printbr(A'^I_J':eq(A_def))
+
 printbr()
 
 
@@ -356,7 +373,9 @@ printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
 printbr()
 
 printbr'Acoustic matrix, reconstructed from eigen-decomposition:'
-printbr(A'^I_J':eq( (A_eig.R * A_eig.Lambda * A_eig.L)() ))
+printbr(A'^I_J':eq( 
+	(A_eig.R * A_eig.Lambda * A_eig.L)():subst(c_def)()
+))
 printbr()
 
 

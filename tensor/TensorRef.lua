@@ -34,6 +34,7 @@ end
 --[[
 hasDerivIndex() if any indexes are derivatives then it returns the first derivative index
 hasDerivIndex(sym1, sym2, ... symN) if any index is a derivative and has a symbol matching sym1...symN, returns that index
+TODO maybe return the location within TensorIndex of the derivative?
 --]]
 function TensorRef:hasDerivIndex(...)
 	local n = select('#', ...)

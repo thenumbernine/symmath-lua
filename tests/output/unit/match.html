@@ -596,7 +596,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assertalleq({(x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard{1, dependsOn=x})}, {x, y})</code>
+<code>assertalleq({(x * y):match(W{index=2, cannotDependOn=x} * W{1, dependsOn=x})}, {x, y})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -607,7 +607,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assertalleq({(x * y):match(Wildcard{1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x})}, {x*y, 1})</code>
+<code>assertalleq({(x * y):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})}, {x*y, 1})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -618,7 +618,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assertalleq({(x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard(1))}, {x, y})</code>
+<code>assertalleq({(x * y):match(W{index=2, cannotDependOn=x} * W(1))}, {x, y})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -629,7 +629,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assertalleq({(x * y):match(Wildcard(1) * Wildcard{index=2, cannotDependOn=x})}, {x*y, 1})</code>
+<code>assertalleq({(x * y):match(W(1) * W{index=2, cannotDependOn=x})}, {x*y, 1})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -640,7 +640,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assertalleq({(x * y):match(Wildcard(1) * Wildcard(2))}, {x*y, 1})</code>
+<code>assertalleq({(x * y):match(W(1) * W(2))}, {x*y, 1})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -780,7 +780,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assertalleq({ (x + 2*y):match(Wildcard(1) + Wildcard(2) * y) }, {x,2})</code>
+<code>assertalleq({ (x + 2*y):match(W(1) + W(2) * y) }, {x,2})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -791,7 +791,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assertalleq({ (x + 2*y):match(Wildcard(1) * x + Wildcard(2) * y) }, {1,2})</code>
+<code>assertalleq({ (x + 2*y):match(W(1) * x + W(2) * y) }, {1,2})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -802,7 +802,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assertalleq( {x:match( Wildcard(1)*x + Wildcard(2))}, {1, 0})</code>
+<code>assertalleq( {x:match( W(1)*x + W(2))}, {1, 0})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -813,7 +813,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assertalleq( {x:match( Wildcard(1)*x + Wildcard(2)*y)}, {1, 0})</code>
+<code>assertalleq( {x:match( W(1)*x + W(2)*y)}, {1, 0})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -1021,16 +1021,16 @@ expand	$3$	<br>
 prune	$3$	<br>
 factor	$3$	<br>
 prune	$3$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:66: failed<br>stack traceback:<br>
-	./unit.lua:93: in function <./unit.lua:92><br>
+<span style="color:red">BAD</span><br>.\unit.lua:66: failed<br>stack traceback:<br>
+	.\unit.lua:93: in function <.\unit.lua:92><br>
 	[C]: in function 'error'<br>
-	./unit.lua:66: in global 'assertalleq'<br>
+	.\unit.lua:66: in function 'assertalleq'<br>
 	[string "do local expr = (3*x^2 + 1):factorDivision() ..."]:1: in main chunk<br>
-	./unit.lua:85: in function <./unit.lua:84><br>
+	.\unit.lua:85: in function <.\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
-	./unit.lua:84: in field 'exec'<br>
-	./match.lua:212: in main chunk<br>
-	[C]: in ?
+	.\unit.lua:84: in function 'exec'<br>
+	match.lua:212: in main chunk<br>
+	[C]: at 0x7ff687284950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1090,16 +1090,16 @@ expand	$3$	<br>
 prune	$3$	<br>
 factor	$3$	<br>
 prune	$3$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:66: failed<br>stack traceback:<br>
-	./unit.lua:93: in function <./unit.lua:92><br>
+<span style="color:red">BAD</span><br>.\unit.lua:66: failed<br>stack traceback:<br>
+	.\unit.lua:93: in function <.\unit.lua:92><br>
 	[C]: in function 'error'<br>
-	./unit.lua:66: in global 'assertalleq'<br>
+	.\unit.lua:66: in function 'assertalleq'<br>
 	[string "do local expr = (x/(3*x*x + 2*x + 1)):factorD..."]:1: in main chunk<br>
-	./unit.lua:85: in function <./unit.lua:84><br>
+	.\unit.lua:85: in function <.\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
-	./unit.lua:84: in field 'exec'<br>
-	./match.lua:212: in main chunk<br>
-	[C]: in ?
+	.\unit.lua:84: in function 'exec'<br>
+	match.lua:212: in main chunk<br>
+	[C]: at 0x7ff687284950
 </td></tr>
 <tr><td>
 <b></b><br>

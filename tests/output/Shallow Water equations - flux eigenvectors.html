@@ -19,7 +19,11 @@ ${{ m}^i} = {{{h}} {{{ v}^i}}}$	= momentum, in units of 	$\frac{kg}{{{{m}^{2}}} 
 <br>
 $\gamma$	= pull of gravitation, in units of 	$\frac{m}{{s}^{2}}$
 <br>
-${c} = {\sqrt{{{\gamma}} \cdot {{h}}}}$	= speed of sound in units of 	${\frac{1}{s}}{({m})}$
+$H$	= seafloor depth, in units of 	$m$
+<br>
+${\eta} = {{h} - {H}}$	= difference in wave height above resting height in units of 	$m$
+<br>
+${c} = {\sqrt{{{\gamma}} \cdot {{\eta}}}}$	= speed of sound in units of 	${\frac{1}{s}}{({m})}$
 <br>
 ${{ g}_i}_j$	= metric tensor, in units of $[1]$
 <br>
@@ -47,19 +51,19 @@ ${\frac{\partial { W}^I}{\partial { U}^J}} = {\left[\begin{matrix}  1 &  0 \\  {
 <br>
 Flux:
 <br>
-${{ F}^I} = {\left[\begin{matrix}  {{h}} {{{ v}^j}} {{{ n}_j}} \\  {{{h}} {{{ v}^i}} {{{ v}^j}} {{{ n}_j}}} + {{{\frac{1}{2}}} {{\gamma}} \cdot {{{h}^{2}}} {{{ n}^i}}}\end{matrix}\right]}$
+${{ F}^I} = {\left[\begin{matrix}  {{h}} {{{ v}^j}} {{{ n}_j}} \\  {{{h}} {{{ v}^i}} {{{ v}^j}} {{{ n}_j}}} + {{{\frac{1}{2}}} {{\gamma}} \cdot {{({{{h}^{2}} - {{{2}} {{h}} {{H}}}})}} {{{ n}^i}}}\end{matrix}\right]}$
 <br>
-${{ F}^I} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{{\frac{1}{2}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}\end{matrix}\right]}$
+${{ F}^I} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{{-1}} {{H}} {{\gamma}} \cdot {{h}} {{{ n}^i}}} + {{{\frac{1}{2}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}\end{matrix}\right]}$
 <br>
 
 <br>
 Flux derivative wrt primitive variables:
 <br>
-${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {\frac{\partial}{\partial h}}\left({{{h}} {{{ n}_k}} {{{ v}^k}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{h}} {{{ n}_k}} {{{ v}^k}}}\right) \\  {\frac{\partial}{\partial h}}\left({{{{\frac{1}{2}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_k}} {{{ v}^i}} {{{ v}^k}}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{{\frac{1}{2}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_k}} {{{ v}^i}} {{{ v}^k}}}}\right)\end{matrix}\right]}$
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {\frac{\partial}{\partial h}}\left({{{h}} {{{ n}_k}} {{{ v}^k}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{h}} {{{ n}_k}} {{{ v}^k}}}\right) \\  {\frac{\partial}{\partial h}}\left({{{{-1}} {{H}} {{\gamma}} \cdot {{h}} {{{ n}^i}}} + {{{\frac{1}{2}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_k}} {{{ v}^i}} {{{ v}^k}}}}\right) &  {\frac{\partial}{\partial { v}^j}}\left({{{{-1}} {{H}} {{\gamma}} \cdot {{h}} {{{ n}^i}}} + {{{\frac{1}{2}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_k}} {{{ v}^i}} {{{ v}^k}}}}\right)\end{matrix}\right]}$
 <br>
-${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ n}_k}} {{{ v}^k}} &  {{h}} {{{ n}_j}} \\  {{{{ n}_k}} {{{ v}^i}} {{{ v}^k}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{h}} {{{ n}_j}} {{{ v}^i}}} + {{{h}} {{{ n}_k}} {{{ v}^k}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}$
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ n}_k}} {{{ v}^k}} &  {{h}} {{{ n}_j}} \\  {{{-1}} {{H}} {{\gamma}} \cdot {{{ n}^i}}} + {{{{ n}_k}} {{{ v}^i}} {{{ v}^k}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{h}} {{{ n}_j}} {{{ v}^i}}} + {{{h}} {{{ n}_k}} {{{ v}^k}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}$
 <br>
-${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{h}} {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}} + {{{h}} {{{ n}_j}} {{{ v}^i}}}\end{matrix}\right]}$
+${\frac{\partial { F}^I}{\partial { W}^J}} = {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {{{-1}} {{H}} {{\gamma}} \cdot {{{ n}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{h}} {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}} + {{{h}} {{{ n}_j}} {{{ v}^i}}}\end{matrix}\right]}$
 <br>
 
 <br>
@@ -67,25 +71,25 @@ Flux derivative wrt conserved variables:
 <br>
 ${\frac{\partial { F}^I}{\partial { U}^J}} = {{{\frac{\partial { F}^I}{\partial { W}^L}}} {{\frac{\partial { W}^L}{\partial { U}^J}}}}$
 <br>
-${\frac{\partial { F}^I}{\partial { U}^J}} = { {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_k}} \\  {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{h}} {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_k}}} + {{{h}} {{{ n}_k}} {{{ v}^i}}}\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  {\frac{1}{h}}{({-{{ v}^k}})} &  {\frac{1}{h}}{({{{ \delta}^k}_j})}\end{matrix}\right]}}$
+${\frac{\partial { F}^I}{\partial { U}^J}} = { {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_k}} \\  {{{-1}} {{H}} {{\gamma}} \cdot {{{ n}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{h}} {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_k}}} + {{{h}} {{{ n}_k}} {{{ v}^i}}}\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  {\frac{1}{h}}{({-{{ v}^k}})} &  {\frac{1}{h}}{({{{ \delta}^k}_j})}\end{matrix}\right]}}$
 <br>
-${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  {{{{ n}_a}} {{{ v}^a}}} + {{{-1}} {{{ n}_k}} {{{ v}^k}}} &  {{{ n}_k}} {{{{ \delta}^k}_j}} \\  {{{\gamma}} \cdot {{h}} {{{ n}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^k}} {{{{ \delta}^i}_k}}} + {{{-1}} {{{ n}_k}} {{{ v}^i}} {{{ v}^k}}} &  {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_k}} {{{{ \delta}^k}_j}}} + {{{{ n}_k}} {{{ v}^i}} {{{{ \delta}^k}_j}}}\end{matrix}\right]}$
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  {{{{ n}_a}} {{{ v}^a}}} + {{{-1}} {{{ n}_k}} {{{ v}^k}}} &  {{{ n}_k}} {{{{ \delta}^k}_j}} \\  {{{-1}} {{H}} {{\gamma}} \cdot {{{ n}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^k}} {{{{ \delta}^i}_k}}} + {{{-1}} {{{ n}_k}} {{{ v}^i}} {{{ v}^k}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_k}} {{{{ \delta}^k}_j}}} + {{{{ n}_k}} {{{ v}^i}} {{{{ \delta}^k}_j}}}\end{matrix}\right]}$
 <br>
-${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  { n}_j \\  {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_j}} {{{ v}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}$
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  { n}_j \\  {{{-1}} {{H}} {{\gamma}} \cdot {{{ n}^i}}} + {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_j}} {{{ v}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}$
 <br>
 
 <br>
 Flux derivative matrix times state
 <br>
-${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = { {\left[\begin{matrix}  0 &  { n}_j \\  {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_j}} {{{ v}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}  {\left[\begin{matrix}  h \\  { m}^j\end{matrix}\right]}}$
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = { {\left[\begin{matrix}  0 &  { n}_j \\  {{{-1}} {{H}} {{\gamma}} \cdot {{{ n}^i}}} + {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_j}} {{{ v}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}  {\left[\begin{matrix}  h \\  { m}^j\end{matrix}\right]}}$
 <br>
-${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = { {\left[\begin{matrix}  0 &  { n}_j \\  {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_j}} {{{ v}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}  {\left[\begin{matrix}  h \\  {{h}} {{{ v}^j}}\end{matrix}\right]}}$
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = { {\left[\begin{matrix}  0 &  { n}_j \\  {{{-1}} {{H}} {{\gamma}} \cdot {{{ n}^i}}} + {{{-1}} {{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} + {{{\gamma}} \cdot {{h}} {{{ n}^i}}} &  {{{{ n}_j}} {{{ v}^i}}} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}}\end{matrix}\right]}  {\left[\begin{matrix}  h \\  {{h}} {{{ v}^j}}\end{matrix}\right]}}$
 <br>
-${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{h}} {{({{{{{\gamma}} \cdot {{h}} {{{ n}^i}}} - {{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}}} + {{{{ n}_a}} {{{ v}^a}} {{{ v}^j}} {{{{ \delta}^i}_j}}} + {{{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}})}}\end{matrix}\right]}$
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  -{{{h}} {{({{{{{H}} {{\gamma}} \cdot {{{ n}^i}}} - {{{\gamma}} \cdot {{h}} {{{ n}^i}}}} + {{{{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} - {{{{ n}_a}} {{{ v}^a}} {{{ v}^j}} {{{{ \delta}^i}_j}}}} - {{{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}}})}}}\end{matrix}\right]}$
 <br>
-${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}\end{matrix}\right]}$
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{U}}} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{{-1}} {{H}} {{\gamma}} \cdot {{h}} {{{ n}^i}}} + {{{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}\end{matrix}\right]}$
 <br>
-${{ F}^I} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{{\frac{1}{2}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}\end{matrix}\right]}$
+${{ F}^I} = {\left[\begin{matrix}  {{h}} {{{ n}_j}} {{{ v}^j}} \\  {{{-1}} {{H}} {{\gamma}} \cdot {{h}} {{{ n}^i}}} + {{{\frac{1}{2}}} {{\gamma}} \cdot {{{ n}^i}} {{{h}^{2}}}} + {{{h}} {{{ n}_j}} {{{ v}^i}} {{{ v}^j}}}\end{matrix}\right]}$
 <br>
 
 <br>
@@ -95,7 +99,7 @@ As you can see, the shallow water equations' $\frac{\partial F}{\partial U} \cdo
 <br>
 Flux derivative wrt conserved variables, expanded:
 <br>
-${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  { n}_1 &  { n}_2 &  { n}_3 \\  -{({{{{{ v}^1}} {{{{{ n}_k}} {{{ v}^k}}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^1}}}})} &  {{{{ n}_1}} {{{ v}^1}}} + {{{{ n}_k}} {{{ v}^k}}} &  {{{ n}_2}} {{{ v}^1}} &  {{{ n}_3}} {{{ v}^1}} \\  -{({{{{{ v}^2}} {{{{{ n}_k}} {{{ v}^k}}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^2}}}})} &  {{{ n}_1}} {{{ v}^2}} &  {{{{ n}_2}} {{{ v}^2}}} + {{{{ n}_k}} {{{ v}^k}}} &  {{{ n}_3}} {{{ v}^2}} \\  -{({{{{{ v}^3}} {{{{{ n}_k}} {{{ v}^k}}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^3}}}})} &  {{{ n}_1}} {{{ v}^3}} &  {{{ n}_2}} {{{ v}^3}} &  {{{{ n}_3}} {{{ v}^3}}} + {{{{ n}_k}} {{{ v}^k}}}\end{matrix}\right]}$
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  { n}_1 &  { n}_2 &  { n}_3 \\  -{({{{{H}} {{\gamma}} \cdot {{{ n}^1}}} + {{{{{ v}^1}} {{{{{ n}_k}} {{{ v}^k}}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^1}}}}})} &  {{{{ n}_1}} {{{ v}^1}}} + {{{{ n}_k}} {{{ v}^k}}} &  {{{ n}_2}} {{{ v}^1}} &  {{{ n}_3}} {{{ v}^1}} \\  -{({{{{H}} {{\gamma}} \cdot {{{ n}^2}}} + {{{{{ v}^2}} {{{{{ n}_k}} {{{ v}^k}}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^2}}}}})} &  {{{ n}_1}} {{{ v}^2}} &  {{{{ n}_2}} {{{ v}^2}}} + {{{{ n}_k}} {{{ v}^k}}} &  {{{ n}_3}} {{{ v}^2}} \\  -{({{{{H}} {{\gamma}} \cdot {{{ n}^3}}} + {{{{{ v}^3}} {{{{{ n}_k}} {{{ v}^k}}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^3}}}}})} &  {{{ n}_1}} {{{ v}^3}} &  {{{ n}_2}} {{{ v}^3}} &  {{{{ n}_3}} {{{ v}^3}}} + {{{{ n}_k}} {{{ v}^k}}}\end{matrix}\right]}$
 <br>
 
 <br>
@@ -103,19 +107,21 @@ Acoustic matrix:
 <br>
 ${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = {{{\frac{\partial { W}^I}{\partial { U}^K}}} {{\frac{\partial { F}^K}{\partial { W}^J}}}}$
 <br>
-${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = { {\left[\begin{matrix}  1 &  0 \\  {\frac{1}{h}}{({-{{ v}^i}})} &  {\frac{1}{h}}{({{{ \delta}^i}_k})}\end{matrix}\right]}  {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {{{{ n}_a}} {{{ v}^a}} {{{ v}^k}}} + {{{\gamma}} \cdot {{h}} {{{ n}^k}}} &  {{{h}} {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^k}_j}}} + {{{h}} {{{ n}_j}} {{{ v}^k}}}\end{matrix}\right]}}$
+${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = { {\left[\begin{matrix}  1 &  0 \\  {\frac{1}{h}}{({-{{ v}^i}})} &  {\frac{1}{h}}{({{{ \delta}^i}_k})}\end{matrix}\right]}  {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {{{-1}} {{H}} {{\gamma}} \cdot {{{ n}^k}}} + {{{{ n}_a}} {{{ v}^a}} {{{ v}^k}}} + {{{\gamma}} \cdot {{h}} {{{ n}^k}}} &  {{{h}} {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^k}_j}}} + {{{h}} {{{ n}_j}} {{{ v}^k}}}\end{matrix}\right]}}$
 <br>
-${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {\frac{1}{h}}{({-{({{{{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} - {{{{ n}_a}} {{{ v}^a}} {{{ v}^k}} {{{{ \delta}^i}_k}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^k}} {{{{ \delta}^i}_k}}}})}})} &  {{{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_k}} {{{{ \delta}^k}_j}}} - {{{{ n}_j}} {{{ v}^i}}}} + {{{{ n}_j}} {{{ v}^k}} {{{{ \delta}^i}_k}}}\end{matrix}\right]}$
+${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {\frac{1}{h}}{({-{({{{{H}} {{\gamma}} \cdot {{{ n}^k}} {{{{ \delta}^i}_k}}} + {{{{{{ n}_a}} {{{ v}^a}} {{{ v}^i}}} - {{{{ n}_a}} {{{ v}^a}} {{{ v}^k}} {{{{ \delta}^i}_k}}}} - {{{\gamma}} \cdot {{h}} {{{ n}^k}} {{{{ \delta}^i}_k}}}}})}})} &  {{{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_k}} {{{{ \delta}^k}_j}}} - {{{{ n}_j}} {{{ v}^i}}}} + {{{{ n}_j}} {{{ v}^k}} {{{{ \delta}^i}_k}}}\end{matrix}\right]}$
 <br>
-${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {{\gamma}} \cdot {{{ n}^i}} &  {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}\end{matrix}\right]}$
+${{{{ A}^I}_J} + {{{{ n}_a}} {{{ v}^a}} {{{{ \delta}^I}_J}}}} = {\left[\begin{matrix}  {{{ n}_a}} {{{ v}^a}} &  {{h}} {{{ n}_j}} \\  {\frac{1}{h}}{({-{{{\gamma}} \cdot {{{ n}^i}} {{({{H} - {h}})}}}})} &  {{{ n}_a}} {{{ v}^a}} {{{{ \delta}^i}_j}}\end{matrix}\right]}$
 <br>
-${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_j}} \\  {{\gamma}} \cdot {{{ n}^i}} &  0\end{matrix}\right]}$
+${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_j}} \\  {\frac{1}{h}}{({-{{{\gamma}} \cdot {{{ n}^i}} {{({{H} - {h}})}}}})} &  0\end{matrix}\right]}$
+<br>
+${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_j}} \\  {\frac{1}{h}}{({{{\eta}} \cdot {{\gamma}} \cdot {{{ n}^i}}})} &  0\end{matrix}\right]}$
 <br>
 
 <br>
 Acoustic matrix, expanded:
 <br>
-${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_1}} &  {{h}} {{{ n}_2}} &  {{h}} {{{ n}_3}} \\  {{\gamma}} \cdot {{{ n}^1}} &  0 &  0 &  0 \\  {{\gamma}} \cdot {{{ n}^2}} &  0 &  0 &  0 \\  {{\gamma}} \cdot {{{ n}^3}} &  0 &  0 &  0\end{matrix}\right]}$
+${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_1}} &  {{h}} {{{ n}_2}} &  {{h}} {{{ n}_3}} \\  {\frac{1}{h}}{({{{\eta}} \cdot {{\gamma}} \cdot {{{ n}^1}}})} &  0 &  0 &  0 \\  {\frac{1}{h}}{({{{\eta}} \cdot {{\gamma}} \cdot {{{ n}^2}}})} &  0 &  0 &  0 \\  {\frac{1}{h}}{({{{\eta}} \cdot {{\gamma}} \cdot {{{ n}^3}}})} &  0 &  0 &  0\end{matrix}\right]}$
 <br>
 
 <br>
@@ -145,7 +151,7 @@ ${{{ A}^I}_J} = { {\left[\begin{matrix}  {\frac{1}{c}}{({-{{{h}} {{|n|}}}})} &  
 <br>
 Acoustic matrix, reconstructed from eigen-decomposition:
 <br>
-${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_1}} &  {{h}} {{{ n}_2}} &  {{h}} {{{ n}_3}} \\  {\frac{1}{h}}{({{{{ n}^1}} {{{c}^{2}}}})} &  0 &  0 &  0 \\  {\frac{1}{h}}{({{{{ n}^2}} {{{c}^{2}}}})} &  0 &  0 &  0 \\  {\frac{1}{h}}{({{{{ n}^3}} {{{c}^{2}}}})} &  0 &  0 &  0\end{matrix}\right]}$
+${{{ A}^I}_J} = {\left[\begin{matrix}  0 &  {{h}} {{{ n}_1}} &  {{h}} {{{ n}_2}} &  {{h}} {{{ n}_3}} \\  {\frac{1}{h}}{({{{\eta}} \cdot {{\gamma}} \cdot {{{ n}^1}}})} &  0 &  0 &  0 \\  {\frac{1}{h}}{({{{\eta}} \cdot {{\gamma}} \cdot {{{ n}^2}}})} &  0 &  0 &  0 \\  {\frac{1}{h}}{({{{\eta}} \cdot {{\gamma}} \cdot {{{ n}^3}}})} &  0 &  0 &  0\end{matrix}\right]}$
 <br>
 
 <br>
@@ -205,7 +211,7 @@ ${{{c}} {{{R_F}}} \cdot {{X}}} = {\left[\begin{matrix}  -{{{h}} {{|n|}} \cdot {{
 <br>
 
 <br>
-${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{X}}} = {\left[\begin{matrix}  {{{{X^1}}} \cdot {{{ n}_1}}} + {{{{X^2}}} \cdot {{{ n}_2}}} + {{{{X^3}}} \cdot {{{ n}_3}}} \\  -{({{{{{{{{{X^0}}} \cdot {{{ n}_k}} {{{ v}^1}} {{{ v}^k}}} - {{{{X^0}}} \cdot {{\gamma}} \cdot {{h}} {{{ n}^1}}}} - {{{{X^1}}} \cdot {{{ n}_1}} {{{ v}^1}}}} - {{{{X^1}}} \cdot {{{ n}_k}} {{{ v}^k}}}} - {{{{X^2}}} \cdot {{{ n}_2}} {{{ v}^1}}}} - {{{{X^3}}} \cdot {{{ n}_3}} {{{ v}^1}}}})} \\  -{({{{{{{{{{X^0}}} \cdot {{{ n}_k}} {{{ v}^2}} {{{ v}^k}}} - {{{{X^0}}} \cdot {{\gamma}} \cdot {{h}} {{{ n}^2}}}} - {{{{X^1}}} \cdot {{{ n}_1}} {{{ v}^2}}}} - {{{{X^2}}} \cdot {{{ n}_2}} {{{ v}^2}}}} - {{{{X^2}}} \cdot {{{ n}_k}} {{{ v}^k}}}} - {{{{X^3}}} \cdot {{{ n}_3}} {{{ v}^2}}}})} \\  -{({{{{{{{{{X^0}}} \cdot {{{ n}_k}} {{{ v}^3}} {{{ v}^k}}} - {{{{X^0}}} \cdot {{\gamma}} \cdot {{h}} {{{ n}^3}}}} - {{{{X^1}}} \cdot {{{ n}_1}} {{{ v}^3}}}} - {{{{X^2}}} \cdot {{{ n}_2}} {{{ v}^3}}}} - {{{{X^3}}} \cdot {{{ n}_3}} {{{ v}^3}}}} - {{{{X^3}}} \cdot {{{ n}_k}} {{{ v}^k}}}})}\end{matrix}\right]}$
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{X}}} = {\left[\begin{matrix}  {{{{X^1}}} \cdot {{{ n}_1}}} + {{{{X^2}}} \cdot {{{ n}_2}}} + {{{{X^3}}} \cdot {{{ n}_3}}} \\  -{({{{{H}} {{{X^0}}} \cdot {{\gamma}} \cdot {{{ n}^1}}} + {{{{{{{{{X^0}}} \cdot {{{ n}_k}} {{{ v}^1}} {{{ v}^k}}} - {{{{X^0}}} \cdot {{\gamma}} \cdot {{h}} {{{ n}^1}}}} - {{{{X^1}}} \cdot {{{ n}_1}} {{{ v}^1}}}} - {{{{X^1}}} \cdot {{{ n}_k}} {{{ v}^k}}}} - {{{{X^2}}} \cdot {{{ n}_2}} {{{ v}^1}}}} - {{{{X^3}}} \cdot {{{ n}_3}} {{{ v}^1}}}}})} \\  -{({{{{H}} {{{X^0}}} \cdot {{\gamma}} \cdot {{{ n}^2}}} + {{{{{{{{{X^0}}} \cdot {{{ n}_k}} {{{ v}^2}} {{{ v}^k}}} - {{{{X^0}}} \cdot {{\gamma}} \cdot {{h}} {{{ n}^2}}}} - {{{{X^1}}} \cdot {{{ n}_1}} {{{ v}^2}}}} - {{{{X^2}}} \cdot {{{ n}_2}} {{{ v}^2}}}} - {{{{X^2}}} \cdot {{{ n}_k}} {{{ v}^k}}}} - {{{{X^3}}} \cdot {{{ n}_3}} {{{ v}^2}}}}})} \\  -{({{{{H}} {{{X^0}}} \cdot {{\gamma}} \cdot {{{ n}^3}}} + {{{{{{{{{X^0}}} \cdot {{{ n}_k}} {{{ v}^3}} {{{ v}^k}}} - {{{{X^0}}} \cdot {{\gamma}} \cdot {{h}} {{{ n}^3}}}} - {{{{X^1}}} \cdot {{{ n}_1}} {{{ v}^3}}}} - {{{{X^2}}} \cdot {{{ n}_2}} {{{ v}^3}}}} - {{{{X^3}}} \cdot {{{ n}_3}} {{{ v}^3}}}} - {{{{X^3}}} \cdot {{{ n}_k}} {{{ v}^k}}}}})}\end{matrix}\right]}$
 <br>
 
 <br>
@@ -252,13 +258,14 @@ real const (result)->ptr[3] = tmp22 * ((eig)->v.z * tmp12 + nU.z * tmp11 + n3U.z
 ${{\frac{\partial { F}^I}{\partial { U}^J}}} {{X}}$	as code:
 <br>
 <pre>
-real const tmp5 = v_n * (X)->ptr[0];
-real const tmp6 = (eig)->h * (X)->ptr[0];
-real const tmp7 = solver->gravity * tmp6;
+real const tmp5 = solver->gravity * (X)->ptr[0];
+real const tmp7 = v_n * (X)->ptr[0];
+real const tmp8 = (eig)->h * (X)->ptr[0];
+real const tmp9 = solver->gravity * tmp8;
 real const (result)->ptr[0] = nL.z * (X)->ptr[3] + nL.y * (X)->ptr[2] + nL.x * (X)->ptr[1];
-real const (result)->ptr[1] = -((eig)->v.x * tmp5 - nU.x * tmp7 - nL.x * (eig)->v.x * (X)->ptr[1] - v_n * (X)->ptr[1] - nL.y * (eig)->v.x * (X)->ptr[2] - nL.z * (eig)->v.x * (X)->ptr[3]);
-real const (result)->ptr[2] = -((eig)->v.y * tmp5 - nU.y * tmp7 - nL.x * (eig)->v.y * (X)->ptr[1] - nL.y * (eig)->v.y * (X)->ptr[2] - v_n * (X)->ptr[2] - nL.z * (eig)->v.y * (X)->ptr[3]);
-real const (result)->ptr[3] = -((eig)->v.z * tmp5 - nU.z * tmp7 - nL.x * (eig)->v.z * (X)->ptr[1] - nL.y * (eig)->v.z * (X)->ptr[2] - nL.z * (eig)->v.z * (X)->ptr[3] - v_n * (X)->ptr[3]);
+real const (result)->ptr[1] = -((eig)->v.x * tmp7 - nU.x * tmp9 - nL.x * (eig)->v.x * (X)->ptr[1] - v_n * (X)->ptr[1] - nL.y * (eig)->v.x * (X)->ptr[2] - nL.z * (eig)->v.x * (X)->ptr[3] + H * nU.x * tmp5);
+real const (result)->ptr[2] = -((eig)->v.y * tmp7 - nU.y * tmp9 - nL.x * (eig)->v.y * (X)->ptr[1] - nL.y * (eig)->v.y * (X)->ptr[2] - v_n * (X)->ptr[2] - nL.z * (eig)->v.y * (X)->ptr[3] + H * nU.y * tmp5);
+real const (result)->ptr[3] = -((eig)->v.z * tmp7 - nU.z * tmp9 - nL.x * (eig)->v.z * (X)->ptr[1] - nL.y * (eig)->v.z * (X)->ptr[2] - nL.z * (eig)->v.z * (X)->ptr[3] - v_n * (X)->ptr[3] + H * nU.z * tmp5);
 </pre>
 <br>
 

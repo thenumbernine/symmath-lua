@@ -103,7 +103,7 @@ LaTeX.lookupTable = {
 	[require 'symmath.op.Binary'] = function(self, expr)
 		local res = table()
 		for i=1,#expr do
-			if i > 1 then res:insert(expr:getSepStr()) end
+			if i > 1 then res:insert(expr:getSepStr(self)) end
 			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
 		end
 		return res
@@ -137,7 +137,7 @@ LaTeX.lookupTable = {
 				end
 			end
 		end
-		return tableConcat(res, expr:getSepStr())
+		return tableConcat(res, expr:getSepStr(self))
 	end,
 	[require 'symmath.op.div'] = function(self, expr)
 		local Constant = require 'symmath.Constant'
@@ -166,7 +166,7 @@ LaTeX.lookupTable = {
 	[require 'symmath.op.pow'] = function(self, expr)
 		local res = table()
 		for i=1,#expr do
-			if i > 1 then res:insert(expr:getSepStr()) end
+			if i > 1 then res:insert(expr:getSepStr(self)) end
 			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
 		end
 		return res

@@ -204,6 +204,7 @@ symmath.op = {
 	le = require 'symmath.op.le',
 	gt = require 'symmath.op.gt',
 	ge = require 'symmath.op.ge',
+	approx = require 'symmath.op.approx',
 }
 -- shorthand
 symmath.frac = symmath.op.div

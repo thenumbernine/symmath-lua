@@ -180,10 +180,36 @@ local Riemann_from_g_def = Riemann_from_dconn_L_def
 	:tidyIndexes()
 	:symmetrizeIndexes(g, {1,2})
 	:symmetrizeIndexes(g, {3,4})
-	:simplify()
+	:simplifyAddMulDiv()
+	--:simplify()
 
 printbr(Riemann_from_g_def)
 printbr()
+
+printbr('Riemann curvature if the ', (g'_ab,c')^2, 'terms vanish:')
+
+local Riemann_linear_def = Riemann_from_g_def:map(function(x)
+	if symmath.op.mul:isa(x) then
+		-- match to g'_ab,c'
+		local numdgs = 0
+		for i,xi in ipairs(x) do
+			if TensorRef:isa(xi)
+			and #xi == 4	-- { g  _a  _b  _,c }
+			and xi[1] == g
+			and not xi[2].derivative
+			and not xi[3].derivative
+			and xi[4].derivative
+			then
+				numdgs = numdgs + 1
+				if numdgs >= 2 then return 0 end
+			end
+		end
+	end
+end)()
+printbr(Riemann_linear_def)
+printbr()
+
+printbr'Riemann curvature of a sum of two metrics'
 
 local Riemann_from_conn1_conn2_def = Riemann_from_dconn_L_def
 	:splitOffDerivIndexes()
@@ -230,28 +256,28 @@ printbr(Riemann_from_conn1_conn2_def)
 printbr()
 
 
-printbr('assuming', g'^ab', '$\\approx$', g1'^ab', '$\\approx$', g2'^ab')
+printbr('What if we assume', g'^ab':approx(g1'^ab'):approx(g2'^ab'))
 printbr()
 
 -- R^a_bcd only holds common terms with R1^a_bcd if their inverse metrics match
 -- otherwise we are just adding more terms 
-local Riemann1_from_g1_def = Riemann_from_g_def:replace(g, g1):replace(R, R1)
+local Riemann1_from_g1_assuming_uppers_equal = Riemann_from_g_def:replace(g, g1):replace(R, R1)
 	:replaceIndex(g1'^ab', g'^ab')
-local Riemann2_from_g2_def = Riemann_from_g_def:replace(g, g2):replace(R, R2)
+local Riemann2_from_g2_assuming_uppers_equal = Riemann_from_g_def:replace(g, g2):replace(R, R2)
 	:replaceIndex(g2'^ab', g'^ab')
 
-local Riemann_from_Riemann1_Riemann2_def = Riemann_from_conn1_conn2_def:clone()
-Riemann_from_Riemann1_Riemann2_def[2] = Riemann_from_Riemann1_Riemann2_def[2]
-	- Riemann1_from_g1_def[2] + Riemann1_from_g1_def[1]
-	- Riemann2_from_g2_def[2] + Riemann2_from_g2_def[1]
-Riemann_from_Riemann1_Riemann2_def = Riemann_from_Riemann1_Riemann2_def()
-printbr(Riemann_from_Riemann1_Riemann2_def)
+local Riemann_from_Riemann1_Riemann2_assuming_uppers_equal = Riemann_from_conn1_conn2_def:clone()
+Riemann_from_Riemann1_Riemann2_assuming_uppers_equal[2] = Riemann_from_Riemann1_Riemann2_assuming_uppers_equal[2]
+	- Riemann1_from_g1_assuming_uppers_equal[2] + Riemann1_from_g1_assuming_uppers_equal[1]
+	- Riemann2_from_g2_assuming_uppers_equal[2] + Riemann2_from_g2_assuming_uppers_equal[1]
+Riemann_from_Riemann1_Riemann2_assuming_uppers_equal = Riemann_from_Riemann1_Riemann2_assuming_uppers_equal()
+printbr(Riemann_from_Riemann1_Riemann2_assuming_uppers_equal)
 printbr()
 
 --[=[ turns out all the (g1_ab,c)^2 terms are stored within R1_abcd
 printbr('assuming', (g1'_ab,c'^2):eq(0))
 
-local approx_Riemann_from_conn1_conn2_def = Riemann_from_Riemann1_Riemann2_def 
+local approx_Riemann_from_conn1_conn2_def = Riemann_from_Riemann1_Riemann2_assuming_uppers_equal 
 	--[[ not working
 	:replaceIndex(g1'_ab,c' * g1'_de,f', 0)
 	--]]
@@ -287,6 +313,50 @@ local approx_Riemann_from_conn1_conn2_def = Riemann_from_Riemann1_Riemann2_def
 printbr(approx_Riemann_from_conn1_conn2_def)
 printbr()
 --]=]
+
+printbr('What if instead we assume', g'^ab':approx(g1'^ab'), ',', g2'_ab', '$ << 1$ s.t. ', ((g2'_ab')^2):approx(0), '?')
+
+local Riemann_perturbed_def = Riemann_from_conn1_conn2_def
+	:simplifyAddMulDiv()
+	-- TODO just like above but with g2 instead of g
+	:map(function(x)
+		if symmath.op.mul:isa(x) then
+			-- match to g'_ab,c'
+			local numdgs = 0
+			for i,xi in ipairs(x) do
+				if TensorRef:isa(xi)
+				and #xi == 4	-- { g  _a  _b  _,c }
+				and xi[1] == g2
+				and not xi[2].derivative
+				and not xi[3].derivative
+				and xi[4].derivative
+				then
+					numdgs = numdgs + 1
+					if numdgs >= 2 then return 0 end
+				end
+			end
+		end
+	end)()
+printbr(Riemann_perturbed_def)
+printbr()
+
+printbr[[Now from here most perturbative literature assumes the background metric uses constant components, i.e. $\hat{g}_{ab} = \eta_{ab}$ and $\partial \eta_{ab} = 0$, and that removes all the other terms except for the 4 second-derivative perturbation terms.]]
+
+--[[
+In terms of group actions / basis transformations
+
+E = matrix whose column elements are coefficients of basis vectors
+
+E = [e_1 | ... e_i ... | e_n], for e_i = i'th basis vector
+
+g = E^T * E, s.t. g_ij = e_i^T e_j = e_i dot e_j
+
+E' = transform perturbation from E, E' ~ I + h, h_ij << 1
+
+E2 = E * E'
+
+g2 = E'^T * E^T * E * E' = E'^T * g * E'
+--]]
 
 -- DONE
 printHeader()

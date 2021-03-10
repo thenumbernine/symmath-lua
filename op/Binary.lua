@@ -12,7 +12,7 @@ function Binary:init(...)
 	end
 end
 
-function Binary:getSepStr()
+function Binary:getSepStr(export)
 	local sep = self.name
 	if self.implicitName then 
 		sep = ' '

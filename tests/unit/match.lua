@@ -124,15 +124,15 @@ asserteq( one:match(1 + W(1) * x * y), zero )
 
 -- how can you take x*y and match only the 'x'?
 
-assertalleq({(x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard{1, dependsOn=x})}, {x, y})
+assertalleq({(x * y):match(W{index=2, cannotDependOn=x} * W{1, dependsOn=x})}, {x, y})
 
-assertalleq({(x * y):match(Wildcard{1, dependsOn=x} * Wildcard{index=2, cannotDependOn=x})}, {x*y, 1})
+assertalleq({(x * y):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})}, {x*y, 1})
 
-assertalleq({(x * y):match(Wildcard{index=2, cannotDependOn=x} * Wildcard(1))}, {x, y})
+assertalleq({(x * y):match(W{index=2, cannotDependOn=x} * W(1))}, {x, y})
 
-assertalleq({(x * y):match(Wildcard(1) * Wildcard{index=2, cannotDependOn=x})}, {x*y, 1})
+assertalleq({(x * y):match(W(1) * W{index=2, cannotDependOn=x})}, {x*y, 1})
 
-assertalleq({(x * y):match(Wildcard(1) * Wildcard(2))}, {x*y, 1})
+assertalleq({(x * y):match(W(1) * W(2))}, {x*y, 1})
 
 
 -- combinations of add and mul
@@ -161,13 +161,13 @@ do local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * 
 
 do local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2)) assert(c == const(2)) assert(f == 1/x) end
 
-assertalleq({ (x + 2*y):match(Wildcard(1) + Wildcard(2) * y) }, {x,2})
+assertalleq({ (x + 2*y):match(W(1) + W(2) * y) }, {x,2})
 
-assertalleq({ (x + 2*y):match(Wildcard(1) * x + Wildcard(2) * y) }, {1,2})
+assertalleq({ (x + 2*y):match(W(1) * x + W(2) * y) }, {1,2})
 
-assertalleq( {x:match( Wildcard(1)*x + Wildcard(2))}, {1, 0})
+assertalleq( {x:match( W(1)*x + W(2))}, {1, 0})
 
-assertalleq( {x:match( Wildcard(1)*x + Wildcard(2)*y)}, {1, 0})
+assertalleq( {x:match( W(1)*x + W(2)*y)}, {1, 0})
 
 -- div
 

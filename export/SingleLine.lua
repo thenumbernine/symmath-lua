@@ -81,7 +81,7 @@ SingleLine.lookupTable = {
 	[require 'symmath.op.Binary'] = function(self, expr)
 		return table.mapi(expr, function(x,i)
 			return self:wrapStrOfChildWithParenthesis(expr, i)
-		end):concat(expr:getSepStr())
+		end):concat(expr:getSepStr(self))
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'

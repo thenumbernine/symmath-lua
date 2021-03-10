@@ -6,6 +6,7 @@ local string = require 'ext.string'
 local Expression = class()
 
 -- no circular dependencies, so load as you need these:
+local symmath
 local Array, Constant, Derivative, Equation, Invalid, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, distributeDivision, div, eval, expand, factor, factorDivision, inf, inverse, map, mod, mul, polyCoeffs, pow, prune, sub, symmath, tableCommutativeEqual, tidy, transpose, unm, wedge
 local eq, ne, gt, ge, lt, le
 
@@ -431,6 +432,10 @@ end
 Expression.le = function(...) 
 	le = le or require 'symmath.op.le'
 	return le(...) 
+end
+Expression.approx = function(...)
+	symmath = symmath or require 'symmath'
+	return symmath.op.approx(...)
 end
 
 -- linear system stuff.  do we want these here, or only as a child of Matrix?
