@@ -738,6 +738,8 @@ Output CDN URLs:
 
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
+[tests/output/BSSN - generate - cartesian - single-line](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20cartesian%20%2d%20single%2dline.html)
+
 [tests/output/BSSN - generate - cartesian](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20cartesian.html)
 
 [tests/output/BSSN - generate - spherical](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical.html)
@@ -865,6 +867,8 @@ Output CDN URLs:
 [tests/output/metric catalog/cylindrical, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20anholonomic%2c%20orthonormal.html)
 
 [tests/output/metric catalog/cylindrical, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20coordinate.html)
+
+[tests/output/metric catalog/geodetic, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/geodetic%2c%20coordinate.html)
 
 [tests/output/metric catalog/paraboliod, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/paraboliod%2c%20coordinate.html)
 
