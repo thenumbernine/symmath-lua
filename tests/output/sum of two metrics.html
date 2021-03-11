@@ -7,6 +7,22 @@
 	</head>
 	<body onload='tryToFindMathJax();'>
 
+This is supposed to generalize perturbative metric math.
+Typical perturbative metric math is done using $g_{ab} = \eta_{ab} + h_{ab}$, where $\eta_{ab}$ must be $\pm diag\{-1, 1, 1, 1\}$ so that its derivative will be zero (or else a lot of other terms pop up) and $h_{ab}$ must be small.
+This is shit-tier because most the physicists who use this metric themselves only do math in non-Cartesian background metrics (like spherical, cylindrical, etc).
+This is also shit-tier because the metric is quadratic in nature ($ds = \int \sqrt{ g_{uv} \frac{\partial x^u}{\partial \lambda} \frac{\partial x^v}{\partial \lambda}} d\lambda$) 
+and represents the inner product of basis vectors ($g_{uv} = e_u \cdot e_v$), such that, if you perturb the basis then you find $|g'_{ab}| = |g_{ab}|(1 + 2 |{\epsilon_a}^u| + |{\epsilon_a}^u|^2)$), 
+and this $h_{ab}$ is only accounting for the $|{\epsilon_a}^u|^2$ term.
+If you use this model then you are essentially throwing away the linear error term and only looking exclusively at quadratic error.<br>
+<br>
+
+With that disclaimer aside, I was asked once to extend gravitoelectrmagnetics to non-Cartesian backgrounds.  GEM relies on perturbative metrics and de-Donder gauge.  So let's see what a perturbed metric would look like with a non-Cartesian background metric.<br>
+<br>
+
+
+<br>
+
+<br>
 ${{ \hat{g}}_a}_b$	= first metric
 <br>
 ${{ \tilde{g}}_a}_b$	= second metric
@@ -28,6 +44,10 @@ ${{{ g}^a}^b} = {{{{ \hat{g}}^a}^b} - {\frac{{{{{ \hat{g}}^a}^c}} {{{{ \tilde{g}
 
 <br>
 useful identity:
+<br>
+${{ \delta}_i}^j$	= 1 for i=j, 0 otherwise
+<br>
+${{{{ \delta}_i}^j}_{,k}} = {0}$
 <br>
 ${{\left( {{{{ g}_l}_i}} {{{{ g}^i}^j}}\right)}_{,k}} = {0}$
 <br>
@@ -133,13 +153,43 @@ ${{{{{ R}^a}_b}_c}_d} = {{\frac{1}{4}}{({{{{4}} {{{{{{ \tilde{R}}^a}_b}_c}_d}}} 
 <br>
 
 <br>
-What if instead we assume	${{{ g}^a}^b}\approx{{{ \hat{g}}^a}^b}$	,	${{ \tilde{g}}_a}_b$	$ << 1$ s.t. 	${{{{ \tilde{g}}_a}_b}^{2}}\approx{0}$	?
+What if instead we assume	${{{ g}^a}^b}\approx{{{ \hat{g}}^a}^b}$	,	${{ \tilde{g}}_a}_b$	$ << 1$ s.t. 	${{{{{ \tilde{g}}_a}_b}_{,c}}^{2}}\approx{0}$	?
 <br>
-${{{{{ R}^a}_b}_c}_d} = {{\frac{1}{4}}{({{{{{ g}^a}^e}} {{({{{{{{2}} {{{{{{ \hat{g}}_b}_c}_{,d}}_{,e}}}} - {{{2}} {{{{{{ \hat{g}}_b}_d}_{,c}}_{,e}}}}} - {{{2}} {{{{{{ \hat{g}}_c}_e}_{,b}}_{,d}}}}} + {{{2}} {{{{{{ \hat{g}}_d}_e}_{,b}}_{,c}}}} + {{{{{2}} {{{{{{ \tilde{g}}_b}_c}_{,d}}_{,e}}}} - {{{2}} {{{{{{ \tilde{g}}_b}_d}_{,c}}_{,e}}}}} - {{{2}} {{{{{{ \tilde{g}}_c}_e}_{,b}}_{,d}}}}} + {{{2}} {{{{{{ \tilde{g}}_d}_e}_{,b}}_{,c}}}} + {{{{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_c}_{,g}}} {{{{{ \hat{g}}_d}_e}_{,f}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_c}_{,g}}} {{{{{ \hat{g}}_d}_f}_{,e}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_c}_{,g}}} {{{{{ \hat{g}}_e}_f}_{,d}}}}} + {{{{{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_c}_{,g}}} {{{{{ \tilde{g}}_d}_e}_{,f}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_c}_{,g}}} {{{{{ \tilde{g}}_d}_f}_{,e}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_c}_{,g}}} {{{{{ \tilde{g}}_e}_f}_{,d}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_d}_{,g}}} {{{{{ \hat{g}}_c}_e}_{,f}}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_d}_{,g}}} {{{{{ \hat{g}}_c}_f}_{,e}}}} + {{{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_d}_{,g}}} {{{{{ \hat{g}}_e}_f}_{,c}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_d}_{,g}}} {{{{{ \tilde{g}}_c}_e}_{,f}}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_d}_{,g}}} {{{{{ \tilde{g}}_c}_f}_{,e}}}} + {{{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_d}_{,g}}} {{{{{ \tilde{g}}_e}_f}_{,c}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,c}}} {{{{{ \hat{g}}_d}_e}_{,f}}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,c}}} {{{{{ \hat{g}}_d}_f}_{,e}}}} + {{{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,c}}} {{{{{ \hat{g}}_e}_f}_{,d}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,c}}} {{{{{ \tilde{g}}_d}_e}_{,f}}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,c}}} {{{{{ \tilde{g}}_d}_f}_{,e}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,c}}} {{{{{ \tilde{g}}_e}_f}_{,d}}}} + {{{{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,d}}} {{{{{ \hat{g}}_c}_e}_{,f}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,d}}} {{{{{ \hat{g}}_c}_f}_{,e}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,d}}} {{{{{ \hat{g}}_e}_f}_{,c}}}}} + {{{{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,d}}} {{{{{ \tilde{g}}_c}_e}_{,f}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,d}}} {{{{{ \tilde{g}}_c}_f}_{,e}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_b}_g}_{,d}}} {{{{{ \tilde{g}}_e}_f}_{,c}}}}} + {{{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_e}_{,f}}} {{{{{ \hat{g}}_d}_g}_{,b}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_e}_{,f}}} {{{{{ \tilde{g}}_b}_d}_{,g}}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_e}_{,f}}} {{{{{ \tilde{g}}_b}_g}_{,d}}}} + {{{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_e}_{,f}}} {{{{{ \tilde{g}}_d}_g}_{,b}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_f}_{,e}}} {{{{{ \hat{g}}_d}_g}_{,b}}}}} + {{{{{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_f}_{,e}}} {{{{{ \tilde{g}}_b}_d}_{,g}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_f}_{,e}}} {{{{{ \tilde{g}}_b}_g}_{,d}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_f}_{,e}}} {{{{{ \tilde{g}}_d}_g}_{,b}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_g}_{,b}}} {{{{{ \hat{g}}_d}_e}_{,f}}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_g}_{,b}}} {{{{{ \hat{g}}_d}_f}_{,e}}}} + {{{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_g}_{,b}}} {{{{{ \hat{g}}_e}_f}_{,d}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_g}_{,b}}} {{{{{ \tilde{g}}_d}_e}_{,f}}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_g}_{,b}}} {{{{{ \tilde{g}}_d}_f}_{,e}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_c}_g}_{,b}}} {{{{{ \tilde{g}}_e}_f}_{,d}}}} + {{{{{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_e}_{,f}}} {{{{{ \tilde{g}}_b}_c}_{,g}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_e}_{,f}}} {{{{{ \tilde{g}}_b}_g}_{,c}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_e}_{,f}}} {{{{{ \tilde{g}}_c}_g}_{,b}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_f}_{,e}}} {{{{{ \tilde{g}}_b}_c}_{,g}}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_f}_{,e}}} {{{{{ \tilde{g}}_b}_g}_{,c}}}} + {{{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_f}_{,e}}} {{{{{ \tilde{g}}_c}_g}_{,b}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_g}_{,b}}} {{{{{ \hat{g}}_e}_f}_{,c}}}}} + {{{{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_g}_{,b}}} {{{{{ \tilde{g}}_c}_e}_{,f}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_g}_{,b}}} {{{{{ \tilde{g}}_c}_f}_{,e}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_d}_g}_{,b}}} {{{{{ \tilde{g}}_e}_f}_{,c}}}}} + {{{{{{{{ g}^f}^g}} {{{{{ \hat{g}}_e}_f}_{,c}}} {{{{{ \tilde{g}}_b}_d}_{,g}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_e}_f}_{,c}}} {{{{{ \tilde{g}}_b}_g}_{,d}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_e}_f}_{,c}}} {{{{{ \tilde{g}}_d}_g}_{,b}}}}} - {{{{{ g}^f}^g}} {{{{{ \hat{g}}_e}_f}_{,d}}} {{{{{ \tilde{g}}_b}_c}_{,g}}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_e}_f}_{,d}}} {{{{{ \tilde{g}}_b}_g}_{,c}}}} + {{{{{ g}^f}^g}} {{{{{ \hat{g}}_e}_f}_{,d}}} {{{{{ \tilde{g}}_c}_g}_{,b}}}}})}}})}}$
+${{{{{ R}^a}_b}_c}_d} = {{{{{{{{ \Gamma}^a}_b}_d}_{,c}} - {{{{{ \Gamma}^a}_b}_c}_{,d}}} + {{{{{{ \Gamma}^a}_e}_c}} {{{{{ \Gamma}^e}_b}_d}}}} - {{{{{{ \Gamma}^a}_e}_d}} {{{{{ \Gamma}^e}_b}_c}}}}$
 <br>
-
-Now from here most perturbative literature assumes the background metric uses constant components, i.e. $\hat{g}_{ab} = \eta_{ab}$ and $\partial \eta_{ab} = 0$, and that removes all the other terms except for the 4 second-derivative perturbation terms.<br>
-
+${{{{{ R}^a}_b}_c}_d} = {{{{-1}} {{{{{ \Gamma}_e}_b}_c}} {{{{{ g}^a}^e}_{,d}}}} + {{{{{{ \Gamma}_e}_b}_d}} {{{{{ g}^a}^e}_{,c}}}} + {{{-1}} {{{{ g}^a}^e}} {{{{{{ \Gamma}_e}_b}_c}_{,d}}}} + {{{{{ g}^a}^e}} {{{{{{ \Gamma}_e}_b}_d}_{,c}}}} + {{{{{ g}^a}^f}} {{{{ g}^e}^h}} {{{{{ \Gamma}_f}_e}_c}} {{{{{ \Gamma}_h}_b}_d}}} + {{{-1}} {{{{ g}^a}^f}} {{{{ g}^e}^h}} {{{{{ \Gamma}_f}_e}_d}} {{{{{ \Gamma}_h}_b}_c}}}}$
+<br>
+using	${{{ g}^a}^b}\approx{{{ \hat{g}}^a}^b}$
+<br>
+${{{{{ R}^a}_b}_c}_d} = {{{{-1}} {{{{{ \Gamma}_e}_b}_c}} {{{{{ \hat{g}}^a}^e}_{,d}}}} + {{{{{{ \Gamma}_e}_b}_d}} {{{{{ \hat{g}}^a}^e}_{,c}}}} + {{{-1}} {{{{ \hat{g}}^a}^e}} {{{{{{ \Gamma}_e}_b}_c}_{,d}}}} + {{{{{ \hat{g}}^a}^e}} {{{{{{ \Gamma}_e}_b}_d}_{,c}}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \Gamma}_f}_e}_c}} {{{{{ \Gamma}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \Gamma}_f}_e}_d}} {{{{{ \Gamma}_h}_b}_c}}}}$
+<br>
+using	${{{{ \Gamma}_a}_b}_c} = {{{{{ \hat{\Gamma}}_a}_b}_c} + {{{{ \tilde{\Gamma}}_a}_b}_c}}$
+<br>
+${{{{{ R}^a}_b}_c}_d} = {{{{-1}} {{{{{ \hat{\Gamma}}_e}_b}_c}} {{{{{ \hat{g}}^a}^e}_{,d}}}} + {{{{{{ \hat{\Gamma}}_e}_b}_d}} {{{{{ \hat{g}}^a}^e}_{,c}}}} + {{{{{{ \hat{g}}^a}^e}_{,c}}} {{{{{ \tilde{\Gamma}}_e}_b}_d}}} + {{{-1}} {{{{{ \hat{g}}^a}^e}_{,d}}} {{{{{ \tilde{\Gamma}}_e}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^e}} {{{{{{ \hat{\Gamma}}_e}_b}_c}_{,d}}}} + {{{{{ \hat{g}}^a}^e}} {{{{{{ \hat{\Gamma}}_e}_b}_d}_{,c}}}} + {{{-1}} {{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{\Gamma}}_e}_b}_c}_{,d}}}} + {{{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{\Gamma}}_e}_b}_d}_{,c}}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_c}} {{{{{ \hat{\Gamma}}_h}_b}_d}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_c}} {{{{{ \tilde{\Gamma}}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_d}} {{{{{ \hat{\Gamma}}_h}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_d}} {{{{{ \tilde{\Gamma}}_h}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_c}} {{{{{ \tilde{\Gamma}}_f}_e}_d}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_d}} {{{{{ \tilde{\Gamma}}_f}_e}_c}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \tilde{\Gamma}}_f}_e}_c}} {{{{{ \tilde{\Gamma}}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \tilde{\Gamma}}_f}_e}_d}} {{{{{ \tilde{\Gamma}}_h}_b}_c}}}}$
+<br>
+recombining terms of	${{{{ \hat{R}}^a}_b}_c}_d$
+<br>
+${{{{{ R}^a}_b}_c}_d} = {{{{-1}} {{{{{{ \hat{\Gamma}}^a}_b}_c}_{,d}}}} + {{{{{ \hat{\Gamma}}^a}_b}_d}_{,c}} + {{{{{{ \hat{\Gamma}}^a}_e}_c}} {{{{{ \hat{\Gamma}}^e}_b}_d}}} + {{{-1}} {{{{{ \hat{\Gamma}}^a}_e}_d}} {{{{{ \hat{\Gamma}}^e}_b}_c}}} + {{{{{{ \hat{g}}^a}^e}_{,c}}} {{{{{ \tilde{\Gamma}}_e}_b}_d}}} + {{{-1}} {{{{{ \hat{g}}^a}^e}_{,d}}} {{{{{ \tilde{\Gamma}}_e}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{\Gamma}}_e}_b}_c}_{,d}}}} + {{{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{\Gamma}}_e}_b}_d}_{,c}}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_c}} {{{{{ \tilde{\Gamma}}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_d}} {{{{{ \tilde{\Gamma}}_h}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_c}} {{{{{ \tilde{\Gamma}}_f}_e}_d}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_d}} {{{{{ \tilde{\Gamma}}_f}_e}_c}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \tilde{\Gamma}}_f}_e}_c}} {{{{{ \tilde{\Gamma}}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \tilde{\Gamma}}_f}_e}_d}} {{{{{ \tilde{\Gamma}}_h}_b}_c}}}}$
+<br>
+${{{{{ R}^a}_b}_c}_d} = {{{{{{{ \hat{g}}^a}^e}_{,c}}} {{{{{ \tilde{\Gamma}}_e}_b}_d}}} + {{{-1}} {{{{{ \hat{g}}^a}^e}_{,d}}} {{{{{ \tilde{\Gamma}}_e}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{\Gamma}}_e}_b}_c}_{,d}}}} + {{{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{\Gamma}}_e}_b}_d}_{,c}}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_c}} {{{{{ \tilde{\Gamma}}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_d}} {{{{{ \tilde{\Gamma}}_h}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_c}} {{{{{ \tilde{\Gamma}}_f}_e}_d}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_d}} {{{{{ \tilde{\Gamma}}_f}_e}_c}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \tilde{\Gamma}}_f}_e}_c}} {{{{{ \tilde{\Gamma}}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \tilde{\Gamma}}_f}_e}_d}} {{{{{ \tilde{\Gamma}}_h}_b}_c}}} + {{{{{ \hat{R}}^a}_b}_c}_d}}$
+<br>
+Take note that I'm not touching	${{ \tilde{g}}^a}^b$	specifically because	${{ \tilde{g}}_a}_b$	<< 1 implies	${{ \tilde{g}}^a}^b$	>> 1.  Another detail I think everyone who ever did perturbative metric / weak field GR ignores.
+<br>
+Next comes 	${{{{{ \tilde{g}}_a}_b}_{,c}}^{2}} = {0}$	and	${{{{{{ \tilde{g}}_a}_b}_{,c}}} {{{{{ \tilde{\Gamma}}_a}_b}_c}}} = {0}$	.  I don't know why.  It's not like $|y|<<1$ ever implied $|\frac{\partial y}{\partial x}|<<1$ ever in the history of math.  But this is part of the weak-field process.  Surprisingly this only removes two terms.
+<br>
+${{{{{ R}^a}_b}_c}_d} = {{{{{{{ \hat{g}}^a}^e}_{,c}}} {{{{{ \tilde{\Gamma}}_e}_b}_d}}} + {{{-1}} {{{{{ \hat{g}}^a}^e}_{,d}}} {{{{{ \tilde{\Gamma}}_e}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{\Gamma}}_e}_b}_c}_{,d}}}} + {{{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{\Gamma}}_e}_b}_d}_{,c}}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_c}} {{{{{ \tilde{\Gamma}}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_d}} {{{{{ \tilde{\Gamma}}_h}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_c}} {{{{{ \tilde{\Gamma}}_f}_e}_d}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_d}} {{{{{ \tilde{\Gamma}}_f}_e}_c}}} + {{{{{ \hat{R}}^a}_b}_c}_d}}$
+<br>
+So since that just removes two terms, I'm not going to remove them from here on.  I'll let you do that yourself if you want.
+<br>
+Now expand the 	${{{{ \tilde{\Gamma}}_a}_b}_c}_{,d}$	terms
+<br>
+${{{{{ R}^a}_b}_c}_d} = {{{{{{{ \hat{g}}^a}^e}_{,c}}} {{{{{ \tilde{\Gamma}}_e}_b}_d}}} + {{{-1}} {{{{{ \hat{g}}^a}^e}_{,d}}} {{{{{ \tilde{\Gamma}}_e}_b}_c}}} + {{{{{ \hat{g}}^a}^e}} {{{{ \hat{g}}^f}^g}} {{{{{ \hat{\Gamma}}_e}_f}_c}} {{{{{ \tilde{\Gamma}}_g}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^e}} {{{{ \hat{g}}^f}^g}} {{{{{ \hat{\Gamma}}_e}_f}_d}} {{{{{ \tilde{\Gamma}}_g}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^e}} {{{{ \hat{g}}^f}^g}} {{{{{ \hat{\Gamma}}_g}_b}_c}} {{{{{ \tilde{\Gamma}}_e}_f}_d}}} + {{{{{ \hat{g}}^a}^e}} {{{{ \hat{g}}^f}^g}} {{{{{ \hat{\Gamma}}_g}_b}_d}} {{{{{ \tilde{\Gamma}}_e}_f}_c}}} + {{{{{ \hat{g}}^a}^e}} {{{{ \hat{g}}^f}^g}} {{{{{ \tilde{\Gamma}}_e}_f}_c}} {{{{{ \tilde{\Gamma}}_g}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^e}} {{{{ \hat{g}}^f}^g}} {{{{{ \tilde{\Gamma}}_e}_f}_d}} {{{{{ \tilde{\Gamma}}_g}_b}_c}}} + {{{{{ \hat{R}}^a}_b}_c}_d} + {{{\frac{1}{2}}} {{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{g}}_b}_c}_{,d}}_{,e}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{g}}_e}_c}_{,b}}_{,d}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{g}}_b}_d}_{,c}}_{,e}}}} + {{{\frac{1}{2}}} {{{{ \hat{g}}^a}^e}} {{{{{{ \tilde{g}}_e}_d}_{,b}}_{,c}}}}}$
+<br>
+Now from here most perturbative literature assumes the background metric uses constant components, i.e. 	${{{ \hat{g}}_a}_b} = {{{ \eta}_a}_b}$	and	${{{{ \eta}_a}_b}_{,c}} = {0}$	, and that removes all the other terms except for the 4	${{{{ \tilde{g}}_a}_b}_{,c}}_{,d}$	 perturbation terms.
+<br>
+Mind you, if you don't expand the perturbation connection to produce those 4 	${{{{ \tilde{g}}_a}_b}_{,c}}_{,d}$	terms then instead you can recombine the partial to see it is the antisymmetric portion of 	${\left( {{{{ \hat{g}}^a}^e}} {{{{{ \tilde{\Gamma}}_e}_b}_c}}\right)}_{,d}$
+<br>
+${{{{{ R}^a}_b}_c}_d} = {{{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_c}} {{{{{ \tilde{\Gamma}}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_f}_e}_d}} {{{{{ \tilde{\Gamma}}_h}_b}_c}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_c}} {{{{{ \tilde{\Gamma}}_f}_e}_d}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \hat{\Gamma}}_h}_b}_d}} {{{{{ \tilde{\Gamma}}_f}_e}_c}}} + {{{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \tilde{\Gamma}}_f}_e}_c}} {{{{{ \tilde{\Gamma}}_h}_b}_d}}} + {{{-1}} {{{{ \hat{g}}^a}^f}} {{{{ \hat{g}}^e}^h}} {{{{{ \tilde{\Gamma}}_f}_e}_d}} {{{{{ \tilde{\Gamma}}_h}_b}_c}}} + {{{{{ \hat{R}}^a}_b}_c}_d} + {{\left( {{{{ \hat{g}}^a}^e}} {{{{{ \tilde{\Gamma}}_e}_b}_d}}\right)}_{,c}} + {{\left(  {-{{{ \hat{g}}^a}^e}} {{{{{ \tilde{\Gamma}}_e}_b}_c}}\right)}_{,d}}}$
 <br>
 	</body>
 </html>

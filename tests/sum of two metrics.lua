@@ -23,6 +23,8 @@ local function printHeader(str)
 	io.stderr:flush()
 end
 
+local delta = var'\\delta'
+local eta = var'\\eta'
 
 local g = var'g'
 local g1 = var'\\hat{g}'
@@ -35,6 +37,24 @@ local Gamma2 = var'\\tilde{\\Gamma}'
 local R = var'R'
 local R1 = var'\\hat{R}'
 local R2 = var'\\tilde{R}'
+
+
+printbr[[
+This is supposed to generalize perturbative metric math.
+Typical perturbative metric math is done using $g_{ab} = \eta_{ab} + h_{ab}$, where $\eta_{ab}$ must be $\pm diag\{-1, 1, 1, 1\}$ so that its derivative will be zero (or else a lot of other terms pop up) and $h_{ab}$ must be small.
+This is shit-tier because most the physicists who use this metric themselves only do math in non-Cartesian background metrics (like spherical, cylindrical, etc).
+This is also shit-tier because the metric is quadratic in nature ($ds = \int \sqrt{ g_{uv} \frac{\partial x^u}{\partial \lambda} \frac{\partial x^v}{\partial \lambda}} d\lambda$) 
+and represents the inner product of basis vectors ($g_{uv} = e_u \cdot e_v$), such that, if you perturb the basis then you find $|g'_{ab}| = |g_{ab}|(1 + 2 |{\epsilon_a}^u| + |{\epsilon_a}^u|^2)$), 
+and this $h_{ab}$ is only accounting for the $|{\epsilon_a}^u|^2$ term.
+If you use this model then you are essentially throwing away the linear error term and only looking exclusively at quadratic error.<br>
+<br>
+
+With that disclaimer aside, I was asked once to extend gravitoelectrmagnetics to non-Cartesian backgrounds.  GEM relies on perturbative metrics and de-Donder gauge.  So let's see what a perturbed metric would look like with a non-Cartesian background metric.<br>
+<br>
+
+]]
+printbr()
+
 
 
 printbr(g1'_ab', '= first metric')
@@ -60,6 +80,8 @@ printbr()
 
 
 printHeader'useful identity:'
+printbr(delta'_i^j', [[= 1 for i=j, 0 otherwise]])
+printbr(delta'_i^j_,k':eq(0))
 local dg_uu_from_g_uu_parkial_g_lll = (g'_li' * g'^ij')'_,k':eq(0)
 printbr(dg_uu_from_g_uu_parkial_g_lll)
 dg_uu_from_g_uu_parkial_g_lll = dg_uu_from_g_uu_parkial_g_lll()
@@ -217,7 +239,7 @@ local Riemann_from_conn1_conn2_def = Riemann_from_dconn_L_def
 	:simplify()
 printbr(Riemann_from_conn1_conn2_def)
 
-Riemann_from_conn1_conn2_def = Riemann_from_conn1_conn2_def 
+local Riemann_from_g1_g2_def = Riemann_from_conn1_conn2_def 
 	--[[ TODO here, two 'h' sum indexes get introduced
 	:substIndex(connU_from_conn1U_conn2U)
 	--]]
@@ -231,9 +253,9 @@ Riemann_from_conn1_conn2_def = Riemann_from_conn1_conn2_def
 	--]]
 	:simplify()
 
-printbr(Riemann_from_conn1_conn2_def)
+printbr(Riemann_from_g1_g2_def)
 
-Riemann_from_conn1_conn2_def = Riemann_from_conn1_conn2_def
+Riemann_from_g1_g2_def = Riemann_from_g1_g2_def
 	:splitOffDerivIndexes()
 	:substIndex(conn1L_def, conn2L_def, g_def)
 	
@@ -252,7 +274,7 @@ Riemann_from_conn1_conn2_def = Riemann_from_conn1_conn2_def
 	--:tidyIndexes()
 	:simplify()
 
-printbr(Riemann_from_conn1_conn2_def)
+printbr(Riemann_from_g1_g2_def)
 printbr()
 
 
@@ -266,18 +288,18 @@ local Riemann1_from_g1_assuming_uppers_equal = Riemann_from_g_def:replace(g, g1)
 local Riemann2_from_g2_assuming_uppers_equal = Riemann_from_g_def:replace(g, g2):replace(R, R2)
 	:replaceIndex(g2'^ab', g'^ab')
 
-local Riemann_from_Riemann1_Riemann2_assuming_uppers_equal = Riemann_from_conn1_conn2_def:clone()
-Riemann_from_Riemann1_Riemann2_assuming_uppers_equal[2] = Riemann_from_Riemann1_Riemann2_assuming_uppers_equal[2]
+local Riemann_from_g1_g2_assumingUppersEqual = Riemann_from_g1_g2_def:clone()
+Riemann_from_g1_g2_assumingUppersEqual[2] = Riemann_from_g1_g2_assumingUppersEqual[2]
 	- Riemann1_from_g1_assuming_uppers_equal[2] + Riemann1_from_g1_assuming_uppers_equal[1]
 	- Riemann2_from_g2_assuming_uppers_equal[2] + Riemann2_from_g2_assuming_uppers_equal[1]
-Riemann_from_Riemann1_Riemann2_assuming_uppers_equal = Riemann_from_Riemann1_Riemann2_assuming_uppers_equal()
-printbr(Riemann_from_Riemann1_Riemann2_assuming_uppers_equal)
+Riemann_from_g1_g2_assumingUppersEqual = Riemann_from_g1_g2_assumingUppersEqual()
+printbr(Riemann_from_g1_g2_assumingUppersEqual)
 printbr()
 
 --[=[ turns out all the (g1_ab,c)^2 terms are stored within R1_abcd
 printbr('assuming', (g1'_ab,c'^2):eq(0))
 
-local approx_Riemann_from_conn1_conn2_def = Riemann_from_Riemann1_Riemann2_assuming_uppers_equal 
+local approx_Riemann_from_conn1_conn2_def = Riemann_from_g1_g2_assumingUppersEqual 
 	--[[ not working
 	:replaceIndex(g1'_ab,c' * g1'_de,f', 0)
 	--]]
@@ -314,33 +336,115 @@ printbr(approx_Riemann_from_conn1_conn2_def)
 printbr()
 --]=]
 
-printbr('What if instead we assume', g'^ab':approx(g1'^ab'), ',', g2'_ab', '$ << 1$ s.t. ', ((g2'_ab')^2):approx(0), '?')
+printbr('What if instead we assume', g'^ab':approx(g1'^ab'), ',', g2'_ab', '$ << 1$ s.t. ', ((g2'_ab,c')^2):approx(0), '?')
 
-local Riemann_perturbed_def = Riemann_from_conn1_conn2_def
-	:simplifyAddMulDiv()
-	-- TODO just like above but with g2 instead of g
-	:map(function(x)
-		if symmath.op.mul:isa(x) then
-			-- match to g'_ab,c'
-			local numdgs = 0
-			for i,xi in ipairs(x) do
-				if TensorRef:isa(xi)
-				and #xi == 4	-- { g  _a  _b  _,c }
-				and xi[1] == g2
-				and not xi[2].derivative
-				and not xi[3].derivative
-				and xi[4].derivative
-				then
-					numdgs = numdgs + 1
-					if numdgs >= 2 then return 0 end
-				end
-			end
-		end
-	end)()
+local Riemann_perturbed_def = Riemann_def:clone()
 printbr(Riemann_perturbed_def)
-printbr()
 
-printbr[[Now from here most perturbative literature assumes the background metric uses constant components, i.e. $\hat{g}_{ab} = \eta_{ab}$ and $\partial \eta_{ab} = 0$, and that removes all the other terms except for the 4 second-derivative perturbation terms.]]
+Riemann_perturbed_def = Riemann_perturbed_def
+	:splitOffDerivIndexes()
+	:replace(Gamma'^a_bd', g'^ae' * Gamma'_ebd')
+	:replace(Gamma'^a_bc', g'^ae' * Gamma'_ebc')
+	
+--[[ TODO FIXME causes duplicate sum terms...
+substIndex(connU_from_conn1U_conn2U)
+--]]
+-- [[ instead:
+	:replace(
+		Gamma'^a_ec' * Gamma'^e_bd',
+		g'^af' * Gamma'_fec' * g'^eh' * Gamma'_hbd'
+	)
+	:replace(
+		Gamma'^a_ed' * Gamma'^e_bc',
+		g'^af' * Gamma'_fed' * g'^eh' * Gamma'_hbc'
+	)
+--]]
+
+	:simplifyAddMulDiv()
+printbr(Riemann_perturbed_def)
+
+printbr('using', g'^ab':approx(g1'^ab'))
+Riemann_perturbed_def = Riemann_perturbed_def
+	:splitOffDerivIndexes()
+	:replaceIndex(g'^ab', g1'^ab')
+	:simplifyAddMulDiv()
+printbr(Riemann_perturbed_def)
+
+printbr('using', connL_from_conn1L_conn2L_def)
+Riemann_perturbed_def = Riemann_perturbed_def
+	:splitOffDerivIndexes()
+	:substIndex(connL_from_conn1L_conn2L_def)
+	:simplifyAddMulDiv()
+printbr(Riemann_perturbed_def)
+
+printbr('recombining terms of', R1'^a_bcd')
+
+Riemann_perturbed_def = Riemann_perturbed_def
+	:replace(
+		-1 * Gamma1'_ebc' * g1'^ae_,d' + -1 * g1'^ae' * Gamma1'_ebc,d',
+		-Gamma1'^a_bc,d'
+	)
+	:replace(
+		Gamma1'_ebd' * g1'^ae_,c' + g1'^ae' * Gamma1'_ebd,c',
+		Gamma1'^a_bd,c'
+	)
+	
+
+	:replace(
+		g1'^af' * g1'^eh' * Gamma1'_fec' * Gamma1'_hbd',
+		Gamma1'^a_ec' * Gamma1'^e_bd'
+	)
+	:replace(
+		g1'^af' * g1'^eh' * Gamma1'_fed' * Gamma1'_hbc',
+		Gamma1'^a_ed' * Gamma1'^e_bc'
+	)
+
+	:simplifyAddMulDiv()
+printbr(Riemann_perturbed_def)
+
+Riemann_perturbed_def = Riemann_perturbed_def
+	:subst(
+		Riemann_def:switch()
+			:replace(Gamma, Gamma1)
+			:replace(R, R1)
+			:simplifyAddMulDiv()
+	)
+	:simplifyAddMulDiv()
+printbr(Riemann_perturbed_def)
+
+printbr("Take note that I'm not touching", g2'^ab', "specifically because", g2'_ab', "<< 1 implies", g2'^ab', ">> 1.  Another detail I think everyone who ever did perturbative metric / weak field GR ignores.")
+printbr('Next comes ', (g2'_ab,c'^2):eq(0), 'and', (g2'_ab,c' * Gamma2'_abc'):eq(0), [[.  I don't know why.  It's not like $|y|<<1$ ever implied $|\frac{\partial y}{\partial x}|<<1$ ever in the history of math.  But this is part of the weak-field process.  Surprisingly this only removes two terms.]])
+
+local Riemann_perturbed_dh2_removed_def = Riemann_perturbed_def
+	:replace(Gamma2'_fec' * Gamma2'_hbd', 0)
+	:replace(Gamma2'_fed' * Gamma2'_hbc', 0)
+	:simplifyAddMulDiv()
+printbr(Riemann_perturbed_dh2_removed_def)
+
+printbr("So since that just removes two terms, I'm not going to remove them from here on.  I'll let you do that yourself if you want.")
+printbr("Now expand the ", Gamma2'_abc,d', "terms")
+
+local Riemann_perturbed_with_d2g_def = Riemann_perturbed_def
+	:substIndex(conn2L_def'_,d'())
+	:tidyIndexes()
+	:symmetrizeIndexes(g2, {3,4})
+	:simplifyAddMulDiv()
+printbr(Riemann_perturbed_with_d2g_def)
+
+
+printbr([[Now from here most perturbative literature assumes the background metric uses constant components, i.e. ]], g1'_ab':eq(eta'_ab'), 'and', eta'_ab,c':eq(0), ', and that removes all the other terms except for the 4', g2'_ab,cd', [[ perturbation terms.]])
+printbr([[Mind you, if you don't expand the perturbation connection to produce those 4 ]], g2'_ab,cd', "terms then instead you can recombine the partial to see it is the antisymmetric portion of ", (g1'^ae' * Gamma2'_ebc')'_,d')
+
+Riemann_perturbed_def = Riemann_perturbed_def 
+	:replace(
+		g1'^ae_,c' * Gamma2'_ebd' + g1'^ae' * Gamma2'_ebd,c',
+		(g1'^ae' * Gamma2'_ebd')'_,c'
+	)
+	:replace(
+		-1 * g1'^ae_,d' * Gamma2'_ebc' + -1 * g1'^ae' * Gamma2'_ebc,d',
+		(-g1'^ae' * Gamma2'_ebc')'_,d'
+	)
+printbr(Riemann_perturbed_def)
 
 --[[
 In terms of group actions / basis transformations
@@ -356,6 +460,25 @@ E' = transform perturbation from E, E' ~ I + h, h_ij << 1
 E2 = E * E'
 
 g2 = E'^T * E^T * E * E' = E'^T * g * E'
+
+this could be written as a change-of-index <-> change-of-basis:
+
+g2'_IJ' = g'_ab' * e'^a_I' * e'^b_J'
+
+and honestly makes more sense to analyze instead of a "perturbed metric" g_ab = eta_ab + h_ab
+
+just redo all the typical coordinate math, but in the perturbed coordinate, where 'e^a_I' is the perturbation ~ delta^a_I
+
+of course thise brings us to 
+
+g2'_IJ' = (delta'^a_I' + h'^a_I') * g'_ab' * (delta'^b_J' + h'^b_J')
+g2'_IJ' = g'_ab' * (delta'^a_I' * delta'^b_J' + delta'^a_I' * h'^b_J' + h'^a_I' * delta'^b_J' + h'^a_I' * h'^b_J')
+g2'_IJ' = g'_ab' * delta'^a_I' * delta'^b_J' + g'_ab' * delta'^a_I' * h'^b_J' + g'_ab' * h'^a_I' * delta'^b_J' + g'_ab' * h'^a_I' * h'^b_J'
+let g_IJ indexes be implicit for g_ab delta^a_I delta^b_J (as oppposed to being implicit for g_ab e^b_I e^b_J)
+g2'_IJ' = g'_IJ' + g'_Ib' * h'^b_J' + g'_aJ' * h'^a_I' + g'_ab' * h'^a_I' * h'^b_J'
+g2'_IJ' = g'_IJ' + 2 g'_u(I' * h'^u_J)' + g'_ab' * h'^a_I' * h'^b_J'
+Now if h^a_I = sqrt(h_IJ) then this shows that perturbative g2_IJ = g_IJ + h_IJ is missing that middle 2 g_u(I h^u_J) term.
+
 --]]
 
 -- DONE
