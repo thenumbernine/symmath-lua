@@ -15,9 +15,13 @@ but provide functions for producing them?)
 	Lambda = diagonal matrix of the eigenvalues.  equivalent of Matrix.diag(allLambdas:unpack())
 	R = right eigenvectors, matching 1-1 with allLambdas
 	L = left eigenvectors.  produced by R:inverse()  these don't exist if A is defective.
+
+args:
+	dontCalcL = don't calculate L = R:inverse()
 --]]
 
-local function eigen(A)
+local function eigen(A, args)
+	args = args or {}
 	local symmath = require 'symmath'
 	local Matrix = symmath.Matrix
 	local var = symmath.var
@@ -95,13 +99,19 @@ end
 	-- inverse() isn't possible if R isn't square ... which happens when the charpoly mult != the nullspace dim
 	-- in that case, use SVD?
 	-- or solve manually for left-eigenvectors?
-	local L = not defective and R:inverse() or nil
+	local L
+	if not (defective or args.dontCalcL) then
+		L = R:inverse() 
 if eigenVerbose then
-	printbr(var'L':eq(L))
+		printbr(var'L':eq(L))
 end	
+	end
+	
 	local Lambda = Matrix.diagonal( allLambdas:unpack() )
 if eigenVerbose then
 	printbr(var'\\Lambda':eq(Lambda))
+end
+if eigenVerbose and L then
 	printbr'verify:'
 	printbr( (R * Lambda * L):eq( (R * Lambda * L)() ) )
 end

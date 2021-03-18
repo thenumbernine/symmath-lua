@@ -1,12 +1,32 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>Maxwell hyperbolic conservation law</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>Maxwell hyperbolic conservation law</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
+state variables:
+<br>
+
+<br>
+${{ U}^I} = {\left[\begin{matrix}  { D}^i \\  { B}^i\end{matrix}\right]}$
+<br>
+
+<br>
+hyperbolic balance law:
+<br>
+
+<br>
+${\int d { x}^4\left({{\frac{\partial { U}^I}{\partial t}} + {\frac{\partial { F}^I}{\partial x}}}\right)} = {\int d { x}^4\left( { S}^I\right)}$
+<br>
+
+<br>
+separating state variables:
+<br>
+
+<br>
 ${{{{ D}^i}_{,t}} - {{\left( {{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{ B}_k}}\right)}_{,j}}} = {0}$
 <br>
 ${{{{ B}^i}_{,t}} + {{\left( {{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{ D}_k}}\right)}_{,j}}} = {{ J}^i}$
@@ -55,7 +75,123 @@ ${{{ \left[\begin{matrix}  { D}^i \\  { B}^i\end{matrix}\right]}_{,t}} + { {\lef
 <br>
 neglecting normal gradient (which should emerge as an extra extrinsic curvature source term):
 <br>
-${{{ \left[\begin{matrix}  { D}^i \\  { B}^i\end{matrix}\right]}_{,t}} + { {\left[\begin{matrix}  0 &   {-{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^l}^k}} {{{ n}_l}} \\  {{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^l}^k}} {{{ n}_l}} &  0\end{matrix}\right]} {{{ \left[\begin{matrix}  { D}_k \\  { B}_k\end{matrix}\right]}_{,j}}} {{{ n}^j}}}} = {\left[\begin{matrix}  { J}^i \\  0\end{matrix}\right]}$
+
+<br>
+${{{ \left[\begin{matrix}  { D}^i \\  { B}^i\end{matrix}\right]}_{,t}} + { {\left[\begin{matrix}  0 &   {-{\frac{1}{\mu}}} {{{{ g}^i}^m}} {{{{{ \epsilon}_m}_l}_k}} {{{ n}^l}} \\  {{\frac{1}{\epsilon}}} {{{{ g}^i}^m}} {{{{{ \epsilon}_m}_l}_k}} {{{ n}^l}} &  0\end{matrix}\right]} {{{ \left[\begin{matrix}  { D}^k \\  { B}^k\end{matrix}\right]}_{,j}}} {{{ n}^j}}}} = {\left[\begin{matrix}  { J}^i \\  0\end{matrix}\right]}$
 <br>
 
+<br>
+or in lowered form:
+<br>
+${{{ \left[\begin{matrix}  { D}_i \\  { B}_i\end{matrix}\right]}_{,t}} + { {\left[\begin{matrix}  0 &   {-{\frac{1}{\mu}}} {{{{ g}_i}_m}} {{{{{ \epsilon}^m}^l}^j}} {{{ n}_l}} \\  {{\frac{1}{\epsilon}}} {{{{ g}_i}_m}} {{{{{ \epsilon}^m}^l}^j}} {{{ n}_l}} &  0\end{matrix}\right]} {{{ \left[\begin{matrix}  { D}_j \\  { B}_j\end{matrix}\right]}_{,k}}} {{{ n}^k}}}} = {\left[\begin{matrix}  { J}^i \\  0\end{matrix}\right]}$
+<br>
+
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  0 &  0 &  \frac{{{{{ {(n_1)}}_2}} {{{{ g}_1}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_1}_2}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  \frac{-{({{{{{ {(n_1)}}_1}} {{{{ g}_1}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_1}_1}}}})}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  \frac{{{{{ {(n_1)}}_1}} {{{{ g}_1}_2}}} - {{{{ {(n_1)}}_2}} {{{{ g}_1}_1}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}} \\  0 &  0 &  0 &  \frac{{{{{ {(n_1)}}_2}} {{{{ g}_2}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_2}_2}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  \frac{-{({{{{{ {(n_1)}}_1}} {{{{ g}_2}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_1}_2}}}})}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  \frac{{{{{ {(n_1)}}_1}} {{{{ g}_2}_2}}} - {{{{ {(n_1)}}_2}} {{{{ g}_1}_2}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}} \\  0 &  0 &  0 &  \frac{{{{{ {(n_1)}}_2}} {{{{ g}_3}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_2}_3}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  \frac{-{({{{{{ {(n_1)}}_1}} {{{{ g}_3}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_1}_3}}}})}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  \frac{{{{{ {(n_1)}}_1}} {{{{ g}_2}_3}}} - {{{{ {(n_1)}}_2}} {{{{ g}_1}_3}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}} \\  \frac{-{({{{{{ {(n_1)}}_2}} {{{{ g}_1}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_1}_2}}}})}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  \frac{{{{{ {(n_1)}}_1}} {{{{ g}_1}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_1}_1}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  \frac{-{({{{{{ {(n_1)}}_1}} {{{{ g}_1}_2}}} - {{{{ {(n_1)}}_2}} {{{{ g}_1}_1}}}})}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  0 &  0 &  0 \\  \frac{-{({{{{{ {(n_1)}}_2}} {{{{ g}_2}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_2}_2}}}})}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  \frac{{{{{ {(n_1)}}_1}} {{{{ g}_2}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_1}_2}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  \frac{-{({{{{{ {(n_1)}}_1}} {{{{ g}_2}_2}}} - {{{{ {(n_1)}}_2}} {{{{ g}_1}_2}}}})}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  0 &  0 &  0 \\  \frac{-{({{{{{ {(n_1)}}_2}} {{{{ g}_3}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_2}_3}}}})}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  \frac{{{{{ {(n_1)}}_1}} {{{{ g}_3}_3}}} - {{{{ {(n_1)}}_3}} {{{{ g}_1}_3}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  \frac{-{({{{{{ {(n_1)}}_1}} {{{{ g}_2}_3}}} - {{{{ {(n_1)}}_2}} {{{{ g}_1}_3}}}})}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+with a Cartesian metric:
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  {\frac{1}{\mu}}{({{ {(n_1)}}_3})} &  {\frac{1}{\mu}}{({-{{ {(n_1)}}_2}})} \\  0 &  0 &  0 &  {\frac{1}{\mu}}{({-{{ {(n_1)}}_3}})} &  0 &  {\frac{1}{\mu}}{({{ {(n_1)}}_1})} \\  0 &  0 &  0 &  {\frac{1}{\mu}}{({{ {(n_1)}}_2})} &  {\frac{1}{\mu}}{({-{{ {(n_1)}}_1}})} &  0 \\  0 &  {\frac{1}{\epsilon}}{({-{{ {(n_1)}}_3}})} &  {\frac{1}{\epsilon}}{({{ {(n_1)}}_2})} &  0 &  0 &  0 \\  {\frac{1}{\epsilon}}{({{ {(n_1)}}_3})} &  0 &  {\frac{1}{\epsilon}}{({-{{ {(n_1)}}_1}})} &  0 &  0 &  0 \\  {\frac{1}{\epsilon}}{({-{{ {(n_1)}}_2}})} &  {\frac{1}{\epsilon}}{({{ {(n_1)}}_1})} &  0 &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+with the normal aligned to the x-axis:
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\mu} \\  0 &  0 &  0 &  0 &  -{\frac{1}{\mu}} &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  -{\frac{1}{\epsilon}} &  0 &  0 &  0 \\  0 &  \frac{1}{\epsilon} &  0 &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+I think my formulation is wrong, and that's why I am getting $|n|^2 = \Sigma_i (n_i)^2$ instead of $(n_i n^i)$.
+
+<br>
+${{|n|}^{2}} = {{{{ {(n_1)}}_1}^{2}} + {{{ {(n_1)}}_2}^{2}} + {{{ {(n_1)}}_3}^{2}}}$
+<br>
+
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = { {\left[\begin{matrix}  0 &  0 &  1 &  0 &  0 &  0 \\  0 &  \frac{-{\sqrt{\epsilon}}}{\sqrt{\mu}} &  0 &  0 &  0 &  \frac{\sqrt{\epsilon}}{\sqrt{\mu}} \\  \frac{\sqrt{\epsilon}}{\sqrt{\mu}} &  0 &  0 &  0 &  \frac{-{\sqrt{\epsilon}}}{\sqrt{\mu}} &  0 \\  0 &  0 &  0 &  1 &  0 &  0 \\  1 &  0 &  0 &  0 &  1 &  0 \\  0 &  1 &  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  -{\frac{1}{{{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}} &  0 &  0 &  0 &  0 &  0 \\  0 &  -{\frac{1}{{{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}} &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt{\epsilon}}} {{\sqrt{\mu}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}\end{matrix}\right]}  {\left[\begin{matrix}  0 &  0 &  \frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{-{\sqrt{\mu}}}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  0 &  0 &  \frac{1}{2} \\  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  1 &  0 &  0 \\  0 &  0 &  \frac{\sqrt{\mu}}{-{{{2}} {{\sqrt{\epsilon}}}}} &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  0 &  0 &  \frac{1}{2}\end{matrix}\right]}}$
+<br>
+
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\mu} \\  0 &  0 &  0 &  0 &  -{\frac{1}{\mu}} &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  -{\frac{1}{\epsilon}} &  0 &  0 &  0 \\  0 &  \frac{1}{\epsilon} &  0 &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+now in the frame of the normal:
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = { {\left[\begin{matrix}  { {(n_1)}}_1 &  { {(n_1)}}_2 &  { {(n_1)}}_3 &  0 &  0 &  0 \\  { {(n_2)}}_1 &  { {(n_2)}}_2 &  { {(n_2)}}_3 &  0 &  0 &  0 \\  { {(n_3)}}_1 &  { {(n_3)}}_2 &  { {(n_3)}}_3 &  0 &  0 &  0 \\  0 &  0 &  0 &  { {(n_1)}}_1 &  { {(n_1)}}_2 &  { {(n_1)}}_3 \\  0 &  0 &  0 &  { {(n_2)}}_1 &  { {(n_2)}}_2 &  { {(n_2)}}_3 \\  0 &  0 &  0 &  { {(n_3)}}_1 &  { {(n_3)}}_2 &  { {(n_3)}}_3\end{matrix}\right]}  {\left[\begin{matrix}  0 &  0 &  1 &  0 &  0 &  0 \\  0 &  \frac{-{\sqrt{\epsilon}}}{\sqrt{\mu}} &  0 &  0 &  0 &  \frac{\sqrt{\epsilon}}{\sqrt{\mu}} \\  \frac{\sqrt{\epsilon}}{\sqrt{\mu}} &  0 &  0 &  0 &  \frac{-{\sqrt{\epsilon}}}{\sqrt{\mu}} &  0 \\  0 &  0 &  0 &  1 &  0 &  0 \\  1 &  0 &  0 &  0 &  1 &  0 \\  0 &  1 &  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  -{\frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}} &  0 &  0 &  0 &  0 &  0 \\  0 &  -{\frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}} &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}\end{matrix}\right]}  {\left[\begin{matrix}  0 &  0 &  \frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{-{\sqrt{\mu}}}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  0 &  0 &  \frac{1}{2} \\  1 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  1 &  0 &  0 \\  0 &  0 &  \frac{\sqrt{\mu}}{-{{{2}} {{\sqrt{\epsilon}}}}} &  0 &  \frac{1}{2} &  0 \\  0 &  \frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  0 &  0 &  \frac{1}{2}\end{matrix}\right]}  {\left[\begin{matrix}  { {(n_1)}}_1 &  { {(n_2)}}_1 &  { {(n_3)}}_1 &  0 &  0 &  0 \\  { {(n_1)}}_2 &  { {(n_2)}}_2 &  { {(n_3)}}_2 &  0 &  0 &  0 \\  { {(n_1)}}_3 &  { {(n_2)}}_3 &  { {(n_3)}}_3 &  0 &  0 &  0 \\  0 &  0 &  0 &  { {(n_1)}}_1 &  { {(n_2)}}_1 &  { {(n_3)}}_1 \\  0 &  0 &  0 &  { {(n_1)}}_2 &  { {(n_2)}}_2 &  { {(n_3)}}_2 \\  0 &  0 &  0 &  { {(n_1)}}_3 &  { {(n_2)}}_3 &  { {(n_3)}}_3\end{matrix}\right]}}$
+<br>
+
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = { {\left[\begin{matrix}  \frac{{{{ {(n_1)}}_3}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}} &  \frac{-{{{{ {(n_1)}}_2}} {{\sqrt{\epsilon}}}}}{\sqrt{\mu}} &  { {(n_1)}}_1 &  0 &  \frac{-{{{{ {(n_1)}}_3}} {{\sqrt{\epsilon}}}}}{\sqrt{\mu}} &  \frac{{{{ {(n_1)}}_2}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}} \\  \frac{{{{ {(n_2)}}_3}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}} &  \frac{-{{{{ {(n_2)}}_2}} {{\sqrt{\epsilon}}}}}{\sqrt{\mu}} &  { {(n_2)}}_1 &  0 &  \frac{-{{{{ {(n_2)}}_3}} {{\sqrt{\epsilon}}}}}{\sqrt{\mu}} &  \frac{{{{ {(n_2)}}_2}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}} \\  \frac{{{{ {(n_3)}}_3}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}} &  \frac{-{{{{ {(n_3)}}_2}} {{\sqrt{\epsilon}}}}}{\sqrt{\mu}} &  { {(n_3)}}_1 &  0 &  \frac{-{{{{ {(n_3)}}_3}} {{\sqrt{\epsilon}}}}}{\sqrt{\mu}} &  \frac{{{{ {(n_3)}}_2}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}} \\  { {(n_1)}}_2 &  { {(n_1)}}_3 &  0 &  { {(n_1)}}_1 &  { {(n_1)}}_2 &  { {(n_1)}}_3 \\  { {(n_2)}}_2 &  { {(n_2)}}_3 &  0 &  { {(n_2)}}_1 &  { {(n_2)}}_2 &  { {(n_2)}}_3 \\  { {(n_3)}}_2 &  { {(n_3)}}_3 &  0 &  { {(n_3)}}_1 &  { {(n_3)}}_2 &  { {(n_3)}}_3\end{matrix}\right]}  {\left[\begin{matrix}  -{\frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}} &  0 &  0 &  0 &  0 &  0 \\  0 &  -{\frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}} &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}} &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}\end{matrix}\right]}  {\left[\begin{matrix}  \frac{{{{ {(n_1)}}_3}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}} &  \frac{{{{ {(n_2)}}_3}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}} &  \frac{{{{ {(n_3)}}_3}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}} &  {\frac{1}{2}}{({{ {(n_1)}}_2})} &  {\frac{1}{2}}{({{ {(n_2)}}_2})} &  {\frac{1}{2}}{({{ {(n_3)}}_2})} \\  \frac{-{{{{ {(n_1)}}_2}} {{\sqrt{\mu}}}}}{{{2}} {{\sqrt{\epsilon}}}} &  \frac{-{{{{ {(n_2)}}_2}} {{\sqrt{\mu}}}}}{{{2}} {{\sqrt{\epsilon}}}} &  \frac{-{{{{ {(n_3)}}_2}} {{\sqrt{\mu}}}}}{{{2}} {{\sqrt{\epsilon}}}} &  {\frac{1}{2}}{({{ {(n_1)}}_3})} &  {\frac{1}{2}}{({{ {(n_2)}}_3})} &  {\frac{1}{2}}{({{ {(n_3)}}_3})} \\  { {(n_1)}}_1 &  { {(n_2)}}_1 &  { {(n_3)}}_1 &  0 &  0 &  0 \\  0 &  0 &  0 &  { {(n_1)}}_1 &  { {(n_2)}}_1 &  { {(n_3)}}_1 \\  \frac{{{{ {(n_1)}}_3}} {{\sqrt{\mu}}}}{-{{{2}} {{\sqrt{\epsilon}}}}} &  \frac{{{{ {(n_2)}}_3}} {{\sqrt{\mu}}}}{-{{{2}} {{\sqrt{\epsilon}}}}} &  \frac{{{{ {(n_3)}}_3}} {{\sqrt{\mu}}}}{-{{{2}} {{\sqrt{\epsilon}}}}} &  {\frac{1}{2}}{({{ {(n_1)}}_2})} &  {\frac{1}{2}}{({{ {(n_2)}}_2})} &  {\frac{1}{2}}{({{ {(n_3)}}_2})} \\  \frac{{{{ {(n_1)}}_2}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}} &  \frac{{{{ {(n_2)}}_2}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}} &  \frac{{{{ {(n_3)}}_2}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}} &  {\frac{1}{2}}{({{ {(n_1)}}_3})} &  {\frac{1}{2}}{({{ {(n_2)}}_3})} &  {\frac{1}{2}}{({{ {(n_3)}}_3})}\end{matrix}\right]}}$
+<br>
+
+<br>
+${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  \frac{{{{{ {(n_1)}}_2}} {{{ {(n_2)}}_3}}} - {{{{ {(n_1)}}_3}} {{{ {(n_2)}}_2}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  \frac{{{{{ {(n_1)}}_2}} {{{ {(n_3)}}_3}}} - {{{{ {(n_1)}}_3}} {{{ {(n_3)}}_2}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}} \\  0 &  0 &  0 &  \frac{-{({{{{{ {(n_1)}}_2}} {{{ {(n_2)}}_3}}} - {{{{ {(n_1)}}_3}} {{{ {(n_2)}}_2}}}})}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  0 &  \frac{{{{{ {(n_2)}}_2}} {{{ {(n_3)}}_3}}} - {{{{ {(n_2)}}_3}} {{{ {(n_3)}}_2}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}} \\  0 &  0 &  0 &  \frac{-{({{{{{ {(n_1)}}_2}} {{{ {(n_3)}}_3}}} - {{{{ {(n_1)}}_3}} {{{ {(n_3)}}_2}}}})}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  \frac{-{({{{{{ {(n_2)}}_2}} {{{ {(n_3)}}_3}}} - {{{{ {(n_2)}}_3}} {{{ {(n_3)}}_2}}}})}}{{{\mu}} \cdot {{\sqrt{|g|}}}} &  0 \\  0 &  \frac{-{({{{{{ {(n_1)}}_2}} {{{ {(n_2)}}_3}}} - {{{{ {(n_1)}}_3}} {{{ {(n_2)}}_2}}}})}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  \frac{-{({{{{{ {(n_1)}}_2}} {{{ {(n_3)}}_3}}} - {{{{ {(n_1)}}_3}} {{{ {(n_3)}}_2}}}})}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  0 &  0 &  0 \\  \frac{{{{{ {(n_1)}}_2}} {{{ {(n_2)}}_3}}} - {{{{ {(n_1)}}_3}} {{{ {(n_2)}}_2}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  0 &  \frac{-{({{{{{ {(n_2)}}_2}} {{{ {(n_3)}}_3}}} - {{{{ {(n_2)}}_3}} {{{ {(n_3)}}_2}}}})}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  0 &  0 &  0 \\  \frac{{{{{ {(n_1)}}_2}} {{{ {(n_3)}}_3}}} - {{{{ {(n_1)}}_3}} {{{ {(n_3)}}_2}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  \frac{{{{{ {(n_2)}}_2}} {{{ {(n_3)}}_3}}} - {{{{ {(n_2)}}_3}} {{{ {(n_3)}}_2}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}} &  0 &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+R(v) = 	$\left[\begin{matrix}  {{{{v_2}}} \cdot {{{ {(n_1)}}_1}}} + {{{{{{v_5}}} \cdot {{{ {(n_1)}}_2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}} - {{{{v_4}}} \cdot {{{ {(n_1)}}_3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} - {{{{v_1}}} \cdot {{{ {(n_1)}}_2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} + {{{{v_0}}} \cdot {{{ {(n_1)}}_3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}} \\  {{{{v_2}}} \cdot {{{ {(n_2)}}_1}}} + {{{{{{v_5}}} \cdot {{{ {(n_2)}}_2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}} - {{{{v_4}}} \cdot {{{ {(n_2)}}_3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} - {{{{v_1}}} \cdot {{{ {(n_2)}}_2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} + {{{{v_0}}} \cdot {{{ {(n_2)}}_3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}} \\  {{{{v_2}}} \cdot {{{ {(n_3)}}_1}}} + {{{{{{v_5}}} \cdot {{{ {(n_3)}}_2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}} - {{{{v_4}}} \cdot {{{ {(n_3)}}_3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} - {{{{v_1}}} \cdot {{{ {(n_3)}}_2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} + {{{{v_0}}} \cdot {{{ {(n_3)}}_3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}} \\  {{{{v_0}}} \cdot {{{ {(n_1)}}_2}}} + {{{{v_1}}} \cdot {{{ {(n_1)}}_3}}} + {{{{v_3}}} \cdot {{{ {(n_1)}}_1}}} + {{{{v_4}}} \cdot {{{ {(n_1)}}_2}}} + {{{{v_5}}} \cdot {{{ {(n_1)}}_3}}} \\  {{{{v_0}}} \cdot {{{ {(n_2)}}_2}}} + {{{{v_1}}} \cdot {{{ {(n_2)}}_3}}} + {{{{v_3}}} \cdot {{{ {(n_2)}}_1}}} + {{{{v_4}}} \cdot {{{ {(n_2)}}_2}}} + {{{{v_5}}} \cdot {{{ {(n_2)}}_3}}} \\  {{{{v_0}}} \cdot {{{ {(n_3)}}_2}}} + {{{{v_1}}} \cdot {{{ {(n_3)}}_3}}} + {{{{v_3}}} \cdot {{{ {(n_3)}}_1}}} + {{{{v_4}}} \cdot {{{ {(n_3)}}_2}}} + {{{{v_5}}} \cdot {{{ {(n_3)}}_3}}}\end{matrix}\right]$
+<br>
+L(v) = 	$\left[\begin{matrix}  {{{\frac{1}{2}}} {{{v_5}}} \cdot {{{ {(n_3)}}_2}}} + {{{\frac{1}{2}}} {{{v_4}}} \cdot {{{ {(n_2)}}_2}}} + {{{\frac{1}{2}}} {{{v_3}}} \cdot {{{ {(n_1)}}_2}}} + {{{\frac{1}{2}}} {{{v_2}}} \cdot {{{ {(n_3)}}_3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_1}}} \cdot {{{ {(n_2)}}_3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_0}}} \cdot {{{ {(n_1)}}_3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} \\  {{{-{{{\frac{1}{2}}} {{{v_0}}} \cdot {{{ {(n_1)}}_2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}} - {{{\frac{1}{2}}} {{{v_1}}} \cdot {{{ {(n_2)}}_2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}} - {{{\frac{1}{2}}} {{{v_2}}} \cdot {{{ {(n_3)}}_2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}} + {{{\frac{1}{2}}} {{{v_3}}} \cdot {{{ {(n_1)}}_3}}} + {{{\frac{1}{2}}} {{{v_4}}} \cdot {{{ {(n_2)}}_3}}} + {{{\frac{1}{2}}} {{{v_5}}} \cdot {{{ {(n_3)}}_3}}} \\  {{{{v_0}}} \cdot {{{ {(n_1)}}_1}}} + {{{{v_1}}} \cdot {{{ {(n_2)}}_1}}} + {{{{v_2}}} \cdot {{{ {(n_3)}}_1}}} \\  {{{{v_3}}} \cdot {{{ {(n_1)}}_1}}} + {{{{v_4}}} \cdot {{{ {(n_2)}}_1}}} + {{{{v_5}}} \cdot {{{ {(n_3)}}_1}}} \\  {{{\frac{1}{2}}} {{{v_5}}} \cdot {{{ {(n_3)}}_2}}} + {{{\frac{1}{2}}} {{{v_4}}} \cdot {{{ {(n_2)}}_2}}} + {{{{{{\frac{1}{2}}} {{{v_3}}} \cdot {{{ {(n_1)}}_2}}} - {{{\frac{1}{2}}} {{{v_2}}} \cdot {{{ {(n_3)}}_3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}} - {{{\frac{1}{2}}} {{{v_1}}} \cdot {{{ {(n_2)}}_3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}} - {{{\frac{1}{2}}} {{{v_0}}} \cdot {{{ {(n_1)}}_3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}} \\  {{{\frac{1}{2}}} {{{v_5}}} \cdot {{{ {(n_3)}}_3}}} + {{{\frac{1}{2}}} {{{v_4}}} \cdot {{{ {(n_2)}}_3}}} + {{{\frac{1}{2}}} {{{v_3}}} \cdot {{{ {(n_1)}}_3}}} + {{{\frac{1}{2}}} {{{v_2}}} \cdot {{{ {(n_3)}}_2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_1}}} \cdot {{{ {(n_2)}}_2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_0}}} \cdot {{{ {(n_1)}}_2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}\end{matrix}\right]$
+<br>
+right transform code:
+<br>
+<pre>double tmp1 = 1. / sqrt_mu;
+double tmp2 = n_l.y * sqrt_epsilon;
+double tmp3 = tmp1 * tmp2;
+double tmp5 = n_l.z * sqrt_epsilon;
+double tmp6 = tmp5 * tmp1;
+double tmp23 = n2_l.y * sqrt_epsilon;
+double tmp24 = tmp23 * tmp1;
+double tmp26 = n2_l.z * sqrt_epsilon;
+double tmp27 = tmp26 * tmp1;
+double tmp44 = n3_l.y * sqrt_epsilon;
+double tmp45 = tmp44 * tmp1;
+double tmp47 = n3_l.z * sqrt_epsilon;
+double tmp48 = tmp47 * tmp1;
+double out1 = {{v_0 * tmp6 + v_5 * tmp3 - v_4 * tmp6 - v_1 * tmp3 + v_2 * n_l.x}, {v_0 * tmp27 + v_5 * tmp24 - v_4 * tmp27 - v_1 * tmp24 + v_2 * n2_l.x}, {v_0 * tmp48 + v_5 * tmp45 - v_4 * tmp48 - v_1 * tmp45 + v_2 * n3_l.x}, {v_5 * n_l.z + v_4 * n_l.y + v_3 * n_l.x + v_1 * n_l.z + v_0 * n_l.y}, {v_5 * n2_l.z + v_4 * n2_l.y + v_3 * n2_l.x + v_1 * n2_l.z + v_0 * n2_l.y}, {v_5 * n3_l.z + v_4 * n3_l.y + v_3 * n3_l.x + v_1 * n3_l.z + v_0 * n3_l.y}};</pre>
+<br>
+left transform code:
+<br>
+<pre>double tmp1 = 1. / 2.;
+double tmp2 = v_5 * n3_l.y;
+double tmp4 = v_4 * n2_l.y;
+double tmp6 = v_3 * n_l.y;
+double tmp7 = 1. / sqrt_epsilon;
+double tmp8 = n3_l.z * sqrt_mu;
+double tmp9 = tmp7 * tmp8;
+double tmp11 = v_2 * tmp9;
+double tmp13 = n2_l.z * sqrt_mu;
+double tmp14 = tmp13 * tmp7;
+double tmp16 = v_1 * tmp14;
+double tmp18 = n_l.z * sqrt_mu;
+double tmp19 = tmp18 * tmp7;
+double tmp21 = v_0 * tmp19;
+double tmp22 = tmp16 * tmp1;
+double tmp23 = tmp21 * tmp1;
+double tmp24 = tmp11 * tmp1;
+double tmp26 = tmp6 * tmp1;
+double tmp28 = tmp4 * tmp1;
+double tmp30 = tmp1 * tmp2;
+double tmp34 = n_l.y * sqrt_mu;
+double tmp35 = tmp34 * tmp7;
+double tmp37 = v_0 * tmp35;
+double tmp38 = tmp37 * tmp1;
+double tmp40 = n2_l.y * sqrt_mu;
+double tmp41 = tmp40 * tmp7;
+double tmp43 = v_1 * tmp41;
+double tmp45 = tmp43 * tmp1;
+double tmp47 = n3_l.y * sqrt_mu;
+double tmp48 = tmp47 * tmp7;
+double tmp50 = v_2 * tmp48;
+double tmp52 = tmp50 * tmp1;
+double tmp54 = v_3 * n_l.z;
+double tmp56 = v_4 * n2_l.z;
+double tmp58 = v_5 * n3_l.z;
+double tmp59 = tmp56 * tmp1;
+double tmp60 = tmp58 * tmp1;
+double tmp61 = tmp54 * tmp1;
+double out1 = {{tmp30 + tmp28 + tmp26 + tmp24 + tmp22 + tmp23}, {tmp61 + tmp59 + tmp60 + -tmp38 - tmp45 - tmp52}, {v_2 * n3_l.x + v_1 * n2_l.x + v_0 * n_l.x}, {v_5 * n3_l.x + v_4 * n2_l.x + v_3 * n_l.x}, {tmp30 + tmp28 + tmp26 - tmp24 - tmp22 - tmp23}, {tmp60 + tmp59 + tmp61 + tmp52 + tmp45 + tmp38}};</pre>
 <br>
