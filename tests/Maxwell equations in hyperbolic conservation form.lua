@@ -341,6 +341,16 @@ printbr()
 printbr(F'^I':diff(U'^J'):eq((eig.R * eig.Lambda * eig.L)()))
 printbr()
 
+eig.R = eig.R
+	:replace(epsilon, 1/var'(eig)->sqrt_1_eps'^2)
+	:replace(mu, 1/var'(eig)->sqrt_1_mu'^2)
+	:simplify()
+
+eig.L = eig.L
+	:replace(epsilon, 1/var'(eig)->sqrt_1_eps'^2)
+	:replace(mu, 1/var'(eig)->sqrt_1_mu'^2)
+	:simplify()
+
 
 local n = #dF_dU_dense
 local vs = range(0,n-1):map(function(i) return var('v_'..i) end)
@@ -357,12 +367,27 @@ local args = table(vs)
 	:append(table.mapi(nus[2], function(xi,i) return {['n2_u.'..xs[i]] = xi} end))
 	:append(table.mapi(nus[3], function(xi,i) return {['n3_u.'..xs[i]] = xi} end))
 	:append{
-		{sqrt_epsilon = sqrt(epsilon)},
-		{sqrt_mu = sqrt(mu)},
 		{sqrt_det_g  =  sqrt_det_g},
-	}
-local evrcode = export.C:toCode{output={evrxform}, input=args}
-local evlcode = export.C:toCode{output={evlxform}, input=args}
+	}:append(
+		vs:mapi(function(vi,i)
+			return {['(X)->ptr['..(i-1)..']'] = vi}
+		end)
+	)
+
+export.C.numberType = 'real const'
+
+local evrcode = export.C:toCode{
+	input = args,
+	output = range(n):mapi(function(i)
+		return {['(Y)->ptr['..(i-1)..']'] = evrxform[i][1]}
+	end),
+}
+local evlcode = export.C:toCode{
+	input = args,
+	output = range(n):mapi(function(i)
+		return {['(Y)->ptr['..(i-1)..']'] = evlxform[i][1]}
+	end),
+}
 printbr'right transform code:'
 printbr('<pre>'..evrcode..'</pre>')
 printbr'left transform code:'
