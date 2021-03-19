@@ -95,13 +95,11 @@ printbr(U'^I':eq(Matrix{D'^i', B'^i'}:T()))
 printbr()
 
 printbr'Flux:'
-
 printbr(F'^I':eq(Matrix{
-	- (frac(1,mu) * epsilon'^ijk' * B'_k')'_,j',
-	(frac(1,epsilon) * epsilon'^ijk' * D'_k')'_,j'
+	- (frac(1,mu) * epsilon'^ijk' * n'_j' * B'_k'),
+	(frac(1,epsilon) * epsilon'^ijk' * n'_j' * D'_k')
 }:T()))
 printbr()
-
 
 printbr(
 	(
@@ -230,6 +228,17 @@ dF_dU_dense = dF_dU_dense:map(function(x)
 		end
 	end)()
 printbr(F'^I':diff(U'^J'):eq(dF_dU_dense))
+printbr()
+
+
+printbr((F'^I':diff(U'^J') * U'^J'):eq(
+	(dF_dU_dense * U_dense)()
+))
+printbr()
+printbr([[So the flux jacobian is linear wrt the state vector, therefore ]], 
+	(F'^I':diff(U'^J') * U'^J'):eq(U'^I'),
+	[[.  Remember, this is not always the case, esp with nonlinear terms.]]
+)
 printbr()
 
 printbr'with the normal aligned to the x-axis:'
@@ -367,7 +376,7 @@ local args = table(vs)
 	:append(table.mapi(nus[2], function(xi,i) return {['n2_u.'..xs[i]] = xi} end))
 	:append(table.mapi(nus[3], function(xi,i) return {['n3_u.'..xs[i]] = xi} end))
 	:append{
-		{sqrt_det_g  =  sqrt_det_g},
+		{sqrt_det_g = sqrt_det_g},
 	}:append(
 		vs:mapi(function(vi,i)
 			return {['(X)->ptr['..(i-1)..']'] = vi}

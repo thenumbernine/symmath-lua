@@ -18,6 +18,7 @@ but provide functions for producing them?)
 
 args:
 	dontCalcL = don't calculate L = R:inverse()
+	lambda = which lambda variable to use.  defaults to \\lambda.  TODO default to 'lambda' and rely upon 'fixVariableNames' more, for utf8 console support as well?
 --]]
 
 local function eigen(A, args)
@@ -31,7 +32,7 @@ if eigenVerbose then
 end
 	A = A:clone()
 	
-	local lambda = var'\\lambda'
+	local lambda = args.lambda or var'\\lambda'
 	A:map(function(x) assert(x ~= lambda) end)
 
 	-- lambda * log(x) => log(x^lambda) is messing this up ...

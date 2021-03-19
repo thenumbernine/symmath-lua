@@ -65,7 +65,7 @@ ${{ U}^I} = {\left[\begin{matrix}  { D}^i \\  { B}^i\end{matrix}\right]}$
 <br>
 Flux:
 <br>
-${{ F}^I} = {\left[\begin{matrix}  -{{\left( {{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{ B}_k}}\right)}_{,j}} \\  {\left( {{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{ D}_k}}\right)}_{,j}\end{matrix}\right]}$
+${{ F}^I} = {\left[\begin{matrix}  -{{{\frac{1}{\mu}}} {{{{{ \epsilon}^i}^j}^k}} {{{ n}_j}} {{{ B}_k}}} \\  {{\frac{1}{\epsilon}}} {{{{{ \epsilon}^i}^j}^k}} {{{ n}_j}} {{{ D}_k}}\end{matrix}\right]}$
 <br>
 
 <br>
@@ -94,6 +94,14 @@ ${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  0 &  0 
 with a Cartesian metric:
 <br>
 ${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  {\frac{1}{\mu}}{({{ {(n_1)}}_3})} &  {\frac{1}{\mu}}{({-{{ {(n_1)}}_2}})} \\  0 &  0 &  0 &  {\frac{1}{\mu}}{({-{{ {(n_1)}}_3}})} &  0 &  {\frac{1}{\mu}}{({{ {(n_1)}}_1})} \\  0 &  0 &  0 &  {\frac{1}{\mu}}{({{ {(n_1)}}_2})} &  {\frac{1}{\mu}}{({-{{ {(n_1)}}_1}})} &  0 \\  0 &  {\frac{1}{\epsilon}}{({-{{ {(n_1)}}_3}})} &  {\frac{1}{\epsilon}}{({{ {(n_1)}}_2})} &  0 &  0 &  0 \\  {\frac{1}{\epsilon}}{({{ {(n_1)}}_3})} &  0 &  {\frac{1}{\epsilon}}{({-{{ {(n_1)}}_1}})} &  0 &  0 &  0 \\  {\frac{1}{\epsilon}}{({-{{ {(n_1)}}_2}})} &  {\frac{1}{\epsilon}}{({{ {(n_1)}}_1})} &  0 &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{{ U}^J}}} = {\left[\begin{matrix}  {\frac{1}{\mu}}{({-{({{{{{ {(n_1)}}_2}} {{{ B}_3}}} - {{{{ {(n_1)}}_3}} {{{ B}_2}}}})}})} \\  {\frac{1}{\mu}}{({{{{{ {(n_1)}}_1}} {{{ B}_3}}} - {{{{ {(n_1)}}_3}} {{{ B}_1}}}})} \\  {\frac{1}{\mu}}{({-{({{{{{ {(n_1)}}_1}} {{{ B}_2}}} - {{{{ {(n_1)}}_2}} {{{ B}_1}}}})}})} \\  {\frac{1}{\epsilon}}{({{{{{ {(n_1)}}_2}} {{{ D}_3}}} - {{{{ {(n_1)}}_3}} {{{ D}_2}}}})} \\  {\frac{1}{\epsilon}}{({-{({{{{{ {(n_1)}}_1}} {{{ D}_3}}} - {{{{ {(n_1)}}_3}} {{{ D}_1}}}})}})} \\  {\frac{1}{\epsilon}}{({{{{{ {(n_1)}}_1}} {{{ D}_2}}} - {{{{ {(n_1)}}_2}} {{{ D}_1}}}})}\end{matrix}\right]}$
+<br>
+
+<br>
+So the flux jacobian is linear wrt the state vector, therefore 	${{{\frac{\partial { F}^I}{\partial { U}^J}}} {{{ U}^J}}} = {{ U}^I}$	.  Remember, this is not always the case, esp with nonlinear terms.
 <br>
 
 <br>

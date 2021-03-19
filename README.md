@@ -772,7 +772,7 @@ Output CDN URLs:
 
 [tests/output/FiniteVolume](https://thenumbernine.github.io/symmath/tests/output/FiniteVolume.html)
 
-[tests/output/GLM-Maxwell](https://thenumbernine.github.io/symmath/tests/output/GLM%2dMaxwell.html)
+[tests/output/GLM-Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/GLM%2dMaxwell%20equations%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/Gravitation 16.1 - dense](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20dense.html)
 
@@ -802,7 +802,7 @@ Output CDN URLs:
 
 [tests/output/MHD symmetrization](https://thenumbernine.github.io/symmath/tests/output/MHD%20symmetrization.html)
 
-[tests/output/Maxwell equations in hyperbolic conservation form](https://thenumbernine.github.io/symmath/tests/output/Maxwell%20equations%20in%20hyperbolic%20conservation%20form.html)
+[tests/output/Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Maxwell%20equations%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/Navier-Stokes-Wilcox - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Navier%2dStokes%2dWilcox%20%2d%20flux%20eigenvectors.html)
 
