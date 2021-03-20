@@ -334,8 +334,8 @@ end)
 
 -- if I am not lowering eps^ijk then how about I just multiply by n_i instead of n^i?
 -- so multiply lower on left and right of the eigensystem
-eig.R = Nl:T() * eig.R
-eig.L = eig.L * Nl
+eig.R = Nl * eig.R
+eig.L = eig.L * Nl:T()
 eig.Lambda = (eig.Lambda * Matrix.diagonal(range(6):mapi(function() return 1/sqrt_det_g end):unpack()))()
 
 printbr(F'^I':diff(U'^J'):eq(eig.R * eig.Lambda * eig.L))
@@ -350,6 +350,18 @@ printbr()
 printbr(F'^I':diff(U'^J'):eq((eig.R * eig.Lambda * eig.L)()))
 printbr()
 
+local n = #dF_dU_dense
+
+-- [[ for show
+local vs = range(1,n):map(function(i) return var('v_'..i) end)
+local evrxform = (eig.R * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
+local evlxform = (eig.L * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
+printbr('R(v) = ', evrxform)
+printbr()
+printbr('L(v) = ', evlxform)
+printbr()
+--]]
+
 eig.R = eig.R
 	:replace(epsilon, 1/var'(eig)->sqrt_1_eps'^2)
 	:replace(mu, 1/var'(eig)->sqrt_1_mu'^2)
@@ -361,27 +373,20 @@ eig.L = eig.L
 	:simplify()
 
 
-local n = #dF_dU_dense
-local vs = range(0,n-1):map(function(i) return var('v_'..i) end)
+local vs = range(0,n-1):map(function(i) return var('(X)->ptr['..i..']') end)
 local evrxform = (eig.R * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
 local evlxform = (eig.L * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
-printbr('R(v) = ', evrxform)
-printbr('L(v) = ', evlxform)
 
 local args = table(vs)
 	:append(table.mapi(nls[1], function(xi,i) return {['n_l.'..xs[i]] = xi} end))
 	:append(table.mapi(nls[2], function(xi,i) return {['n2_l.'..xs[i]] = xi} end))
 	:append(table.mapi(nls[3], function(xi,i) return {['n3_l.'..xs[i]] = xi} end))
-	:append(table.mapi(nus[1], function(xi,i) return {['n_u.'..xs[i]] = xi} end))
-	:append(table.mapi(nus[2], function(xi,i) return {['n2_u.'..xs[i]] = xi} end))
-	:append(table.mapi(nus[3], function(xi,i) return {['n3_u.'..xs[i]] = xi} end))
+	--:append(table.mapi(nus[1], function(xi,i) return {['n_u.'..xs[i]] = xi} end))
+	--:append(table.mapi(nus[2], function(xi,i) return {['n2_u.'..xs[i]] = xi} end))
+	--:append(table.mapi(nus[3], function(xi,i) return {['n3_u.'..xs[i]] = xi} end))
 	:append{
 		{sqrt_det_g = sqrt_det_g},
-	}:append(
-		vs:mapi(function(vi,i)
-			return {['(X)->ptr['..(i-1)..']'] = vi}
-		end)
-	)
+	}
 
 export.C.numberType = 'real const'
 
@@ -397,7 +402,7 @@ local evlcode = export.C:toCode{
 		return {['(Y)->ptr['..(i-1)..']'] = evlxform[i][1]}
 	end),
 }
-printbr'right transform code:'
-printbr('<pre>'..evrcode..'</pre>')
 printbr'left transform code:'
 printbr('<pre>'..evlcode..'</pre>')
+printbr'right transform code:'
+printbr('<pre>'..evrcode..'</pre>')

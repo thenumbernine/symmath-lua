@@ -93,11 +93,9 @@ local lambdas = table{
 
 
 local eig = A_def[2]:eigen{lambdas=lambdas, dontCalcL=true}
-local evRMat = eig.R
-local lambdaMat = eig.Lambda
 
 -- rescale rows
-evRMat = (evRMat * 
+eig.R = (eig.R * 
 	Matrix.diagonal(
 		1/sqrt(epsilon),
 		1/sqrt(epsilon),
@@ -110,14 +108,14 @@ evRMat = (evRMat *
 	)
 )()
 
-local evLMat, _, reason = evRMat:inverse()
+eig.L, _, reason = eig.R:inverse()
 assert(not reason, reason)	-- hmm, make Matrix.inverse more assert-compatible?
 
 printbr'in the x direction:'
-printbr(F'^I':diff(U'^J'):eq(evRMat * lambdaMat * evLMat))
+printbr(F'^I':diff(U'^J'):eq(eig.R * eig.Lambda * eig.L))
 printbr()
 
-local A_check = (evRMat * lambdaMat * evLMat)()
+local A_check = (eig.R * eig.Lambda * eig.L)()
 printbr'verify reconstruction:'
 printbr(F'^I':diff(U'^J'):eq(A_check))
 printbr()
@@ -144,47 +142,47 @@ local Nl = Matrix:lambda({8,8}, function(i,j)
 	return nls[j][i]
 end)
 
-evRMat = Nl:T() * evRMat
-evLMat = evLMat * Nl
+eig.R = Nl * eig.R
+eig.L = eig.L * Nl:T()
 local sqrt_det_g = var'\\sqrt{|g|}'
-lambdaMat = (lambdaMat * Matrix.diagonal(range(8):mapi(function() return 1/sqrt_det_g end):unpack()))()
+eig.Lambda = (eig.Lambda * Matrix.diagonal(range(8):mapi(function() return 1/sqrt_det_g end):unpack()))()
 
 printbr'in a normal basis:'
-printbr(F'^I':diff(U'^J'):eq(evRMat * lambdaMat * evLMat))
+printbr(F'^I':diff(U'^J'):eq(eig.R * eig.Lambda * eig.L))
 printbr()
 
-evRMat = evRMat()
-evLMat = evLMat()
+eig.R = eig.R()
+eig.L = eig.L()
 
-printbr(F'^I':diff(U'^J'):eq(evRMat * lambdaMat * evLMat))
+printbr(F'^I':diff(U'^J'):eq(eig.R * eig.Lambda * eig.L))
 printbr()
 
-printbr(F'^I':diff(U'^J'):eq((evRMat * lambdaMat * evLMat)()))
+printbr(F'^I':diff(U'^J'):eq((eig.R * eig.Lambda * eig.L)()))
 printbr()
 
 -- [[ for show
 local vs = range(n):map(function(i) return var('v_'..i) end)
-local evrxform = (evRMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
-local evlxform = (evLMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
+local evrxform = (eig.R * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
+local evlxform = (eig.L * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
 printbr('L(v) = ', evlxform)
 printbr()
 printbr('R(v) = ', evrxform)
 printbr()
 --]]
 
-evRMat = evRMat
-	:replace(epsilon, 1/var'(eig)->sqrt_1_eps'^2)
-	:replace(mu, 1/var'(eig)->sqrt_1_mu'^2)
+eig.R = eig.R
+	:replace(epsilon, 1/var'sqrt_1_eps'^2)
+	:replace(mu, 1/var'sqrt_1_mu'^2)
 	:simplify()
 
-evLMat = evLMat
-	:replace(epsilon, 1/var'(eig)->sqrt_1_eps'^2)
-	:replace(mu, 1/var'(eig)->sqrt_1_mu'^2)
+eig.L = eig.L
+	:replace(epsilon, 1/var'sqrt_1_eps'^2)
+	:replace(mu, 1/var'sqrt_1_mu'^2)
 	:simplify()
 
 local vs = range(0,n-1):map(function(i) return var('(X)->ptr['..i..']') end)
-local evrxform = (evRMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
-local evlxform = (evLMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
+local evrxform = (eig.R * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
+local evlxform = (eig.L * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
 
 local xs = table{'x', 'y', 'z'}
 local args = table(vs)
