@@ -159,11 +159,15 @@ evLMat = evLMat()
 printbr(F'^I':diff(U'^J'):eq(evRMat * lambdaMat * evLMat))
 printbr()
 
+printbr(F'^I':diff(U'^J'):eq((evRMat * lambdaMat * evLMat)()))
+printbr()
+
 -- [[ for show
 local vs = range(n):map(function(i) return var('v_'..i) end)
 local evrxform = (evRMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
 local evlxform = (evLMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
 printbr('L(v) = ', evlxform)
+printbr()
 printbr('R(v) = ', evrxform)
 printbr()
 --]]
