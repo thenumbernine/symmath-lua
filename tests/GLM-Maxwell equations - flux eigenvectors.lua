@@ -38,9 +38,11 @@ local A_dense = Matrix(
 	{0,			0,			0,					chi_psi, 	0,			0,				0,			0}
 )
 
-printbr'state:'
+local n = #Us
+
 local U_def = Matrix(Us):T()
-printbr(U:eq(U_def))
+printbr'conserved quantities:'
+printbr(U:eq(Matrix{D'_i', B'_i', phi, psi}:T()))
 
 printbr'flux:'
 local F_def = (A_dense * U_def)()
@@ -52,14 +54,11 @@ local A_dense = require 'symmath.factorLinearSystem'(
 	U:T()[1]
 )
 --]]
-printbr'flux jacobian:'
 local A_def = A:eq(A_dense)
+printbr'flux jacobian:'
 printbr(A_def)
+printbr()
 
-local ch = A_dense:charpoly():replace(var'lambda', lambda)
-printbr(ch)
-local solns = table{ch:solve(lambda)}
-printbr(solns:mapi(tostring):concat',')
 --[[
 local eig = A_dense:eigen{dontCalcL=true}
 for k,v in pairs(eig) do
@@ -72,10 +71,15 @@ printbr()
 os.exit()
 --]]
 
-
-local charpoly_eqn  = A_def[2]:charpoly(lambda)
+-- the weakness so far:
+local charpoly_eqn  = (A_def[2]:charpoly(lambda) * epsilon^2 * mu^2)()
 printbr'char poly:'
 printbr(charpoly_eqn)
+printbr'char poly solutions:'
+local solns = table{charpoly_eqn:solve(lambda)}
+printbr(solns:mapi(tostring):concat',')
+printbr()
+
 -- TODO solve charpoly_eqn for lambda ...
 -- gives solutions lambda = 0, lambda = +- 1/sqrt(mu epsilon) = +- c
 local lambdas = table{
@@ -87,40 +91,10 @@ local lambdas = table{
 	chi_psi, 
 }
 
-local n = #Us
 
-local evs = table()
-local multiplicity = table()
-for _,lambda_ in ipairs(lambdas) do
-	local n = #A_def[2]
-	local A_minus_lambda_I = ((A_def[2] - Matrix.identity(n) * lambda_))()
-
-	local cols = A_minus_lambda_I:nullspace()
-	if not cols then
-		printbr("found no eigenvectors associated with eigenvalue",lambda_)
-	else
---		if lambda_ ~= Constant(0) then
---			cols = (cols / sqrt(2))()
---		end	
-		multiplicity:insert(#cols[1])
-		printbr('eigenvectors of ', lambda:eq(lambda_))
-		printbr(cols)
-		evs:insert(cols)
-	end
-end
-local lambdaMat = Matrix.diagonal( table():append(
-	lambdas:map(function(lambda,i)
-		return range(multiplicity[i]):map(function() return lambda end)
-	end):unpack()
-):unpack() )
-
-local evRMat = Matrix(
-	table():append(
-		evs:map(function(ev)
-			return ev:transpose()
-		end):unpack()
-	):unpack()
-):transpose()
+local eig = A_def[2]:eigen{lambdas=lambdas, dontCalcL=true}
+local evRMat = eig.R
+local lambdaMat = eig.Lambda
 
 -- rescale rows
 evRMat = (evRMat * 
@@ -144,6 +118,9 @@ printbr(F'^I':diff(U'^J'):eq(evRMat * lambdaMat * evLMat))
 printbr()
 
 local A_check = (evRMat * lambdaMat * evLMat)()
+printbr'verify reconstruction:'
+printbr(F'^I':diff(U'^J'):eq(A_check))
+printbr()
 local diff = (A_check - A_dense)()
 for i=1,8 do
 	for j=1,8 do
@@ -182,6 +159,15 @@ evLMat = evLMat()
 printbr(F'^I':diff(U'^J'):eq(evRMat * lambdaMat * evLMat))
 printbr()
 
+-- [[ for show
+local vs = range(n):map(function(i) return var('v_'..i) end)
+local evrxform = (evRMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
+local evlxform = (evLMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
+printbr('L(v) = ', evlxform)
+printbr('R(v) = ', evrxform)
+printbr()
+--]]
+
 evRMat = evRMat
 	:replace(epsilon, 1/var'(eig)->sqrt_1_eps'^2)
 	:replace(mu, 1/var'(eig)->sqrt_1_mu'^2)
@@ -192,11 +178,9 @@ evLMat = evLMat
 	:replace(mu, 1/var'(eig)->sqrt_1_mu'^2)
 	:simplify()
 
-local vs = range(0,n-1):map(function(i) return var('v_'..i) end)
+local vs = range(0,n-1):map(function(i) return var('(X)->ptr['..i..']') end)
 local evrxform = (evRMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
 local evlxform = (evLMat * Matrix:lambda({n,1}, function(i) return vs[i] end)):simplifyAddMulDiv():tidy()
-printbr('R(v) = ', evrxform)
-printbr('L(v) = ', evlxform)
 
 local xs = table{'x', 'y', 'z'}
 local args = table(vs)
@@ -208,11 +192,7 @@ local args = table(vs)
 	--:append(table.mapi(nus[3], function(xi,i) return {['n3_u.'..xs[i]] = xi} end))
 	:append{
 		{sqrt_det_g = sqrt_det_g},
-	}:append(
-		vs:mapi(function(vi,i)
-			return {['(X)->ptr['..(i-1)..']'] = vi}
-		end)
-	)
+	}
 
 export.C.numberType = 'real const'
 
@@ -228,7 +208,7 @@ local evlcode = export.C:toCode{
 		return {['(Y)->ptr['..(i-1)..']'] = evlxform[i][1]}
 	end),
 }
-printbr'right transform code:'
-printbr('<pre>'..evrcode..'</pre>')
 printbr'left transform code:'
 printbr('<pre>'..evlcode..'</pre>')
+printbr'right transform code:'
+printbr('<pre>'..evrcode..'</pre>')

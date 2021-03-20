@@ -18,7 +18,8 @@ but provide functions for producing them?)
 
 args:
 	dontCalcL = don't calculate L = R:inverse()
-	lambda = which lambda variable to use.  defaults to \\lambda.  TODO default to 'lambda' and rely upon 'fixVariableNames' more, for utf8 console support as well?
+	lambdaVar = which lambda variable to use.  defaults to \\lambda.  TODO default to 'lambda' and rely upon 'fixVariableNames' more, for utf8 console support as well?
+	lambdas = provide eigen with a list of lambdas, since its weakness is solving the char poly
 --]]
 
 local function eigen(A, args)
@@ -26,13 +27,13 @@ local function eigen(A, args)
 	local symmath = require 'symmath'
 	local Matrix = symmath.Matrix
 	local var = symmath.var
-local eigenVerbose = Matrix.eigenVerbose	
-if eigenVerbose then
-	printbr(var'A':eq(A))
-end
+	local eigenVerbose = Matrix.eigenVerbose	
+	if eigenVerbose then
+		printbr(var'A':eq(A))
+	end
 	A = A:clone()
 	
-	local lambda = args.lambda or var'\\lambda'
+	local lambda = args.lambdaVar or var'\\lambda'
 	A:map(function(x) assert(x ~= lambda) end)
 
 	-- lambda * log(x) => log(x^lambda) is messing this up ...
@@ -41,31 +42,40 @@ end
 
 	-- eigen-decompose
 	local I = Matrix.identity(#A)
-if eigenVerbose then
-	printbr(var'I':eq(I))
-end	
-	local AminusLambda = (A - lambda * I)()
-if eigenVerbose then
-	printbr((var'A' - var'\\lambda' * var'I'):eq(AminusLambda))
-end	
-	local charPoly = AminusLambda:det{dontSimplify=true}:eq(0)
-if eigenVerbose then
-	printbr(charPoly)
-end	
-	local allLambdas = table{charPoly:solve(lambda)}
-if eigenVerbose then
-	printbr(allLambdas:mapi(tostring):concat', ')	
-end	
-	allLambdas = allLambdas:mapi(function(eqn) return eqn:rhs() end)	-- convert to lambda equality
-if eigenVerbose then
-	printbr(lambda, '$= \\{$', allLambdas:mapi(tostring):concat', ', '$\\}$')
-end	
-	local lambdas = symmath.multiplicity(allLambdas)	-- of equations
-if eigenVerbose then
-	for _,info in ipairs(lambdas) do
-		printbr('mult '..info.mult..' expr '..info.expr)
+	if eigenVerbose then
+		printbr(var'I':eq(I))
+	end	
+
+	local allLambdas
+	if args.lambdas then
+		allLambdas = table(args.lambdas)
+	else
+		local AminusLambda = (A - lambda * I)()
+		if eigenVerbose then
+			printbr((var'A' - var'\\lambda' * var'I'):eq(AminusLambda))
+		end	
+	
+		local charPoly = AminusLambda:det{dontSimplify=true}:eq(0)
+		if eigenVerbose then
+			printbr(charPoly)
+		end	
+	
+		allLambdas = table{charPoly:solve(lambda)}
+		if eigenVerbose then
+			printbr(allLambdas:mapi(tostring):concat', ')	
+		end	
+		allLambdas = allLambdas:mapi(function(eqn) return eqn:rhs() end)	-- convert to lambda equality
+		if eigenVerbose then
+			printbr(lambda, '$= \\{$', allLambdas:mapi(tostring):concat', ', '$\\}$')
+		end	
 	end
-end
+
+	local lambdas = symmath.multiplicity(allLambdas)	-- of equations
+	if eigenVerbose then
+		for _,info in ipairs(lambdas) do
+			printbr('mult '..info.mult..' expr '..info.expr)
+		end
+	end
 
 	local defective
 	allLambdas = table()	-- redo allLambdas so the order matches the right-eigenvectors' order
@@ -84,38 +94,38 @@ end
 		end
 		return Ri and Ri:T() or nil
 	end)
-if eigenVerbose then
-	for i,lambda in ipairs(lambdas) do
-		printbr('right eigenvector of', lambda.expr, 'is', Rs[i]:T())
+	if eigenVerbose then
+		for i,lambda in ipairs(lambdas) do
+			printbr('right eigenvector of', lambda.expr, 'is', Rs[i]:T())
+		end
 	end
-end
 
 	local R = #Rs > 0 and Matrix( 
 		table():append(Rs:unpack()):unpack()
 		--Rs:mapi(function(Ri) return Ri[1] end):unpack() 
 	):T()
-if eigenVerbose then
-	printbr(var'R':eq(R))
-end	
+	if eigenVerbose then
+		printbr(var'R':eq(R))
+	end	
 	-- inverse() isn't possible if R isn't square ... which happens when the charpoly mult != the nullspace dim
 	-- in that case, use SVD?
 	-- or solve manually for left-eigenvectors?
 	local L
 	if not (defective or args.dontCalcL) then
 		L = R:inverse() 
-if eigenVerbose then
-		printbr(var'L':eq(L))
-end	
+		if eigenVerbose then
+				printbr(var'L':eq(L))
+		end	
 	end
 	
 	local Lambda = Matrix.diagonal( allLambdas:unpack() )
-if eigenVerbose then
-	printbr(var'\\Lambda':eq(Lambda))
-end
-if eigenVerbose and L then
-	printbr'verify:'
-	printbr( (R * Lambda * L):eq( (R * Lambda * L)() ) )
-end
+	if eigenVerbose then
+		printbr(var'\\Lambda':eq(Lambda))
+	end
+	if eigenVerbose and L then
+		printbr'verify:'
+		printbr( (R * Lambda * L):eq( (R * Lambda * L)() ) )
+	end
 
 	symmath.op.mul:popRules()
 	symmath.log:popRules()
