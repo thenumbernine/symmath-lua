@@ -39,8 +39,9 @@ function sin:getRealDomain()
 		local finishQ = math.floor(I.finish / (math.pi/2))
 		local startQmod4 = startQ % 4
 		local finishQmod4 = finishQ % 4
+		local deltaQ = finishQ - startQ
 		local behavior
-		if startQ == finishQ then
+		if deltaQ == 0 then
 			if startQmod4 == 0 or startQmod4 == 3 then
 				behavior = 0	-- all inc
 			elseif startQmod4 == 1 or startQmod4 == 2 then
@@ -48,7 +49,7 @@ function sin:getRealDomain()
 			else
 				error'here'
 			end
-		elseif startQ + 1 == finishQ then
+		elseif deltaQ == 1 then
 			if startQmod4 == 3 then
 				behavior = 0	-- all inc
 			elseif startQmod4 == 0 then	
@@ -60,7 +61,7 @@ function sin:getRealDomain()
 			else
 				error'here'
 			end
-		elseif startQ + 2 == finishQ then
+		elseif deltaQ == 2 then
 			if startQmod4 == 3 or startQmod4 == 0 then
 				behavior = 2	-- inc dec
 			elseif startQmod4 == 1 or startQmod4 == 2 then
@@ -68,7 +69,7 @@ function sin:getRealDomain()
 			else
 				error'here'
 			end
-		elseif startQ + 3 >= finishQ then
+		elseif deltaQ >= 3 then
 			return RealDomain(-1, 1, true, true)
 		end
 		if behavior == 0 then

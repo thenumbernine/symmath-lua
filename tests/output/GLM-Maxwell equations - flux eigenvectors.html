@@ -15,9 +15,21 @@ flux:
 <br>
 ${F} = {\left[\begin{matrix}  {{{\chi_\phi}}} \cdot {{\phi}} \\  {\frac{1}{\mu}}{({{ B}_z})} \\  {\frac{1}{\mu}}{({-{{ B}_y}})} \\  {{{\chi_\psi}}} \cdot {{\psi}} \\  {\frac{1}{\epsilon}}{({-{{ D}_z}})} \\  {\frac{1}{\epsilon}}{({{ D}_y})} \\  {{{\chi_\phi}}} \cdot {{{ D}_x}} \\  {{{\chi_\psi}}} \cdot {{{ B}_x}}\end{matrix}\right]}$
 <br>
-flux jacobian:
+Flux jacobian:
 <br>
 ${A} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 &  {\chi_\phi} &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\mu} &  0 &  0 \\  0 &  0 &  0 &  0 &  \frac{-1}{\mu} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  0 &  {\chi_\psi} \\  0 &  0 &  \frac{-1}{\epsilon} &  0 &  0 &  0 &  0 &  0 \\  0 &  \frac{1}{\epsilon} &  0 &  0 &  0 &  0 &  0 &  0 \\  {\chi_\phi} &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  {\chi_\psi} &  0 &  0 &  0 &  0\end{matrix}\right]}$
+<br>
+
+<br>
+Testing for homogeneity property.  Does $\frac{\partial F}{\partial U} \cdot U = F$ ?
+<br>
+
+<br>
+${\frac{\partial F}{\partial U}} = {\left[\begin{matrix}  {{{\chi_\phi}}} \cdot {{\phi}} \\  {\frac{1}{\mu}}{({{ B}_z})} \\  {\frac{1}{\mu}}{({-{{ B}_y}})} \\  {{{\chi_\psi}}} \cdot {{\psi}} \\  {\frac{1}{\epsilon}}{({-{{ D}_z}})} \\  {\frac{1}{\epsilon}}{({{ D}_y})} \\  {{{\chi_\phi}}} \cdot {{{ D}_x}} \\  {{{\chi_\psi}}} \cdot {{{ B}_x}}\end{matrix}\right]}$
+<br>
+
+<br>
+Looks true.
 <br>
 
 <br>
@@ -31,19 +43,19 @@ ${{{{{\lambda}^{0}}} {{{{\chi_\phi}}^{2}}} {{{{\chi_\psi}}^{2}}}} + {{{{\lambda}
 <br>
 
 <br>
-in the x direction:
+Flux in the x direction:
 <br>
 ${\frac{\partial { F}^I}{\partial { U}^J}} = { {\left[\begin{matrix}  -{\frac{1}{\sqrt{\epsilon}}} &  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{\epsilon}} &  0 \\  0 &  0 &  0 &  -{\sqrt{\epsilon}} &  0 &  \sqrt{\epsilon} &  0 &  0 \\  0 &  0 &  \sqrt{\epsilon} &  0 &  -{\sqrt{\epsilon}} &  0 &  0 &  0 \\  0 &  -{\frac{1}{\sqrt{\epsilon}}} &  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{\epsilon}} \\  0 &  0 &  \sqrt{\mu} &  0 &  \sqrt{\mu} &  0 &  0 &  0 \\  0 &  0 &  0 &  \sqrt{\mu} &  0 &  \sqrt{\mu} &  0 &  0 \\  \frac{1}{\sqrt{\epsilon}} &  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{\epsilon}} &  0 \\  0 &  \frac{1}{\sqrt{\epsilon}} &  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{\epsilon}}\end{matrix}\right]}  {\left[\begin{matrix}  -{{\chi_\phi}} &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  -{{\chi_\psi}} &  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{-1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{{{\mu}} \cdot {{\epsilon}}}} &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  {\chi_\phi} &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  0 &  {\chi_\psi}\end{matrix}\right]}  {\left[\begin{matrix}  {\frac{1}{2}}{({-{\sqrt{\epsilon}}})} &  0 &  0 &  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})} &  0 \\  0 &  0 &  0 &  {\frac{1}{2}}{({-{\sqrt{\epsilon}}})} &  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})} \\  0 &  0 &  \frac{1}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  \frac{1}{{{2}} {{\sqrt{\mu}}}} &  0 &  0 &  0 \\  0 &  \frac{1}{-{{{2}} {{\sqrt{\epsilon}}}}} &  0 &  0 &  0 &  \frac{1}{{{2}} {{\sqrt{\mu}}}} &  0 &  0 \\  0 &  0 &  -{\frac{1}{{{2}} {{\sqrt{\epsilon}}}}} &  0 &  \frac{1}{{{2}} {{\sqrt{\mu}}}} &  0 &  0 &  0 \\  0 &  \frac{1}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  0 &  0 &  \frac{1}{{{2}} {{\sqrt{\mu}}}} &  0 &  0 \\  {\frac{1}{2}}{({\sqrt{\epsilon}})} &  0 &  0 &  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})} &  0 \\  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})} &  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})}\end{matrix}\right]}}$
 <br>
 
 <br>
-verify reconstruction:
+Verify reconstruction from eigensystem:
 <br>
 ${\frac{\partial { F}^I}{\partial { U}^J}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 &  0 &  0 &  {\chi_\phi} &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{\mu} &  0 &  0 \\  0 &  0 &  0 &  0 &  -{\frac{1}{\mu}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  0 &  {\chi_\psi} \\  0 &  0 &  -{\frac{1}{\epsilon}} &  0 &  0 &  0 &  0 &  0 \\  0 &  \frac{1}{\epsilon} &  0 &  0 &  0 &  0 &  0 &  0 \\  {\chi_\phi} &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  {\chi_\psi} &  0 &  0 &  0 &  0\end{matrix}\right]}$
 <br>
 
 <br>
-in a normal basis:
+Flux in a normal basis:
 <br>
 ${\frac{\partial { F}^I}{\partial { U}^J}} = { {\left[\begin{matrix}  { {(n_1)}}_1 &  { {(n_2)}}_1 &  { {(n_3)}}_1 &  0 &  0 &  0 &  0 &  0 \\  { {(n_1)}}_2 &  { {(n_2)}}_2 &  { {(n_3)}}_2 &  0 &  0 &  0 &  0 &  0 \\  { {(n_1)}}_3 &  { {(n_2)}}_3 &  { {(n_3)}}_3 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  { {(n_1)}}_1 &  { {(n_2)}}_1 &  { {(n_3)}}_1 &  0 &  0 \\  0 &  0 &  0 &  { {(n_1)}}_2 &  { {(n_2)}}_2 &  { {(n_3)}}_2 &  0 &  0 \\  0 &  0 &  0 &  { {(n_1)}}_3 &  { {(n_2)}}_3 &  { {(n_3)}}_3 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  -{\frac{1}{\sqrt{\epsilon}}} &  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{\epsilon}} &  0 \\  0 &  0 &  0 &  -{\sqrt{\epsilon}} &  0 &  \sqrt{\epsilon} &  0 &  0 \\  0 &  0 &  \sqrt{\epsilon} &  0 &  -{\sqrt{\epsilon}} &  0 &  0 &  0 \\  0 &  -{\frac{1}{\sqrt{\epsilon}}} &  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{\epsilon}} \\  0 &  0 &  \sqrt{\mu} &  0 &  \sqrt{\mu} &  0 &  0 &  0 \\  0 &  0 &  0 &  \sqrt{\mu} &  0 &  \sqrt{\mu} &  0 &  0 \\  \frac{1}{\sqrt{\epsilon}} &  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{\epsilon}} &  0 \\  0 &  \frac{1}{\sqrt{\epsilon}} &  0 &  0 &  0 &  0 &  0 &  \frac{1}{\sqrt{\epsilon}}\end{matrix}\right]}  {\left[\begin{matrix}  {\frac{1}{\sqrt{|g|}}}{({-{{\chi_\phi}}})} &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  {\frac{1}{\sqrt{|g|}}}{({-{{\chi_\psi}}})} &  0 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  -{\frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}} &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  -{\frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}}} &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  \frac{1}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}} {{\sqrt{\mu}}}} &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  {\frac{1}{\sqrt{|g|}}}{({{\chi_\phi}})} &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  0 &  {\frac{1}{\sqrt{|g|}}}{({{\chi_\psi}})}\end{matrix}\right]}  {\left[\begin{matrix}  {\frac{1}{2}}{({-{\sqrt{\epsilon}}})} &  0 &  0 &  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})} &  0 \\  0 &  0 &  0 &  {\frac{1}{2}}{({-{\sqrt{\epsilon}}})} &  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})} \\  0 &  0 &  \frac{1}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  \frac{1}{{{2}} {{\sqrt{\mu}}}} &  0 &  0 &  0 \\  0 &  \frac{1}{-{{{2}} {{\sqrt{\epsilon}}}}} &  0 &  0 &  0 &  \frac{1}{{{2}} {{\sqrt{\mu}}}} &  0 &  0 \\  0 &  0 &  -{\frac{1}{{{2}} {{\sqrt{\epsilon}}}}} &  0 &  \frac{1}{{{2}} {{\sqrt{\mu}}}} &  0 &  0 &  0 \\  0 &  \frac{1}{{{2}} {{\sqrt{\epsilon}}}} &  0 &  0 &  0 &  \frac{1}{{{2}} {{\sqrt{\mu}}}} &  0 &  0 \\  {\frac{1}{2}}{({\sqrt{\epsilon}})} &  0 &  0 &  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})} &  0 \\  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})} &  0 &  0 &  0 &  {\frac{1}{2}}{({\sqrt{\epsilon}})}\end{matrix}\right]}  {\left[\begin{matrix}  { {(n_1)}}_1 &  { {(n_1)}}_2 &  { {(n_1)}}_3 &  0 &  0 &  0 &  0 &  0 \\  { {(n_2)}}_1 &  { {(n_2)}}_2 &  { {(n_2)}}_3 &  0 &  0 &  0 &  0 &  0 \\  { {(n_3)}}_1 &  { {(n_3)}}_2 &  { {(n_3)}}_3 &  0 &  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  { {(n_1)}}_1 &  { {(n_1)}}_2 &  { {(n_1)}}_3 &  0 &  0 \\  0 &  0 &  0 &  { {(n_2)}}_1 &  { {(n_2)}}_2 &  { {(n_2)}}_3 &  0 &  0 \\  0 &  0 &  0 &  { {(n_3)}}_1 &  { {(n_3)}}_2 &  { {(n_3)}}_3 &  0 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  0 &  0 &  0 &  0 &  1\end{matrix}\right]}}$
 <br>

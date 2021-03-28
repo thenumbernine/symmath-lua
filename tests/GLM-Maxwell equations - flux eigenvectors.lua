@@ -55,8 +55,19 @@ local A_dense = require 'symmath.factorLinearSystem'(
 )
 --]]
 local A_def = A:eq(A_dense)
-printbr'flux jacobian:'
+printbr'Flux jacobian:'
 printbr(A_def)
+printbr()
+
+printbr[[Testing for homogeneity property.  Does $\frac{\partial F}{\partial U} \cdot U = F$ ?]]
+printbr()
+
+printbr(var'F':diff(var'U'):eq(
+	(A_dense * U_def)()
+))
+printbr()
+
+printbr[[Looks true.]]
 printbr()
 
 --[[
@@ -111,12 +122,12 @@ eig.R = (eig.R *
 eig.L, _, reason = eig.R:inverse()
 assert(not reason, reason)	-- hmm, make Matrix.inverse more assert-compatible?
 
-printbr'in the x direction:'
+printbr'Flux in the x direction:'
 printbr(F'^I':diff(U'^J'):eq(eig.R * eig.Lambda * eig.L))
 printbr()
 
 local A_check = (eig.R * eig.Lambda * eig.L)()
-printbr'verify reconstruction:'
+printbr'Verify reconstruction from eigensystem:'
 printbr(F'^I':diff(U'^J'):eq(A_check))
 printbr()
 local diff = (A_check - A_dense)()
@@ -147,7 +158,7 @@ eig.L = eig.L * Nl:T()
 local sqrt_det_g = var'\\sqrt{|g|}'
 eig.Lambda = (eig.Lambda * Matrix.diagonal(range(8):mapi(function() return 1/sqrt_det_g end):unpack()))()
 
-printbr'in a normal basis:'
+printbr'Flux in a normal basis:'
 printbr(F'^I':diff(U'^J'):eq(eig.R * eig.Lambda * eig.L))
 printbr()
 

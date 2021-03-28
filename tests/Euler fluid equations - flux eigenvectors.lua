@@ -5,6 +5,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Euler Fluid Equations - flux eigenvectors'}}
 
+local MathJax = symmath.export.MathJax
+
 local delta = Tensor:deltaSymbol()	-- Kronecher delta
 local g = var'g'					-- metric
 
@@ -24,7 +26,7 @@ local s = var's'
 
 printbr'variables:'
 
-local n = var'n'
+local n = var'(n_1)'
 printbr(n'^i', '= flux surface normal, in units of $[1]$')
 
 local rho = var'\\rho'	-- density
@@ -207,7 +209,7 @@ dF_dU_def = dF_dU_def:tidyIndexes():simplifyAddMulDiv()
 printbr(F'^I':diff(U'^J'):eq(dF_dU_def))
 printbr()
 
-printbr[[Flux derivative matrix times state.  Seems I see this in Roe solver literature a lot, under the (false?) presumption that $\frac{\partial F}{\partial U} \cdot U = F$, when the correct statement $\frac{\partial F}{\partial U} \cdot dU = dF$.]]
+printbr[[Flux derivative matrix times state.  If $\frac{\partial F}{\partial U} \cdot U = F$ then the equation is said to have the Homogeneity property (Toro proposition 3.4).]]
 
 local dF_dU_times_U_def = dF_dU_def * U_def:reindex{i='j'}
 
@@ -230,7 +232,7 @@ printbr((F'^I':diff(U'^J') * U):eq(dF_dU_times_U_def))
 
 printbr(F'^I':eq(F_def))
 printbr()
-printbr[[Oh wow, what do you know, for the Euler fluid equations it just so happens that $\frac{\partial F}{\partial U} \cdot U = F$.]]
+printbr[[Looks like for the Euler fluid equations, $\frac{\partial F}{\partial U} \cdot U = F$.]]
 printbr()
 
 printbr'Acoustic matrix:'
@@ -294,49 +296,207 @@ local A_expanded = expandMatrix3to5(A_def)
 printbr(A'^I_J':eq(A_expanded))
 printbr()
 
+local P_for_Cs = Cs_def:solve(P)
+A_expanded = A_expanded:subst(P_for_Cs)()
+printbr(A'^I_J':eq(A_expanded))
+printbr()
+
+printbr'...in just the Cartesian x-axis...'
+A_expanded = A_expanded
+	:replace(n'_1', 1)
+	:replace(n'_2', 0)
+	:replace(n'_3', 0)
+	:replace(n'^1', 1)
+	:replace(n'^2', 0)
+	:replace(n'^3', 0)
+	:simplify()
+printbr(A'^I_J':eq(A_expanded))
+printbr()
+
+local xs = table{'x', 'y', 'z'}
+Tensor.coords{{variables=xs}}
+
+local nl_dense = Tensor('_i', function(i) return n('_'..i) end)
+local nu_dense = Tensor('^i', function(i) return n('^'..i) end)
+local n2 = var'(n_2)'
+local n2l_dense = Tensor('_i', function(i) return n2('_'..i) end)
+local n2u_dense = Tensor('^i', function(i) return n2('^'..i) end)
+local n3 = var'(n_3)'
+local n3l_dense = Tensor('_i', function(i) return n3('_'..i) end)
+local n3u_dense = Tensor('^i', function(i) return n3('^'..i) end)
+
+local nls = {nl_dense, n2l_dense, n3l_dense}
+local nus = {nu_dense, n2u_dense, n3u_dense}
+
+-- TODO this is just |n_1|, but in non-Cartesian metric |n_1| != |n_2| != |n_3|
+-- for example, in a coordinate basis, n_i = d/dx^i, so (n_i)_j = delta_ij, so |(n_i) lowered|L2 = 1
+-- and (n_i)^j = g^ij ... in a diagonal metric ... g^ii delta^ij ... so |(n_i) raised|L2 = sqrt(g^ii)
+-- and the metric weighted length: |n_i| = sqrt((n_i)_j (n_i)^j) = sqrt(g^ii)
+-- so as you can see, each separate normal basis has a separate length.  
+-- so much for orthonormalizing.
+local n1Len = var'|n_1|'
+local n2Len = var'|n_2|'
+local n3Len = var'|n_3|'
+local n1LenSq_def = (n1Len^2):eq((nl_dense'_i' * nu_dense'^i')())
+local n2LenSq_def = (n2Len^2):eq((n2l_dense'_i' * n2u_dense'^i')())
+local n3LenSq_def = (n3Len^2):eq((n3l_dense'_i' * n3u_dense'^i')())
+printbr(n1LenSq_def)
+printbr(n2LenSq_def)
+printbr(n3LenSq_def)
+printbr()
+
+
+printbr[[ $(n_m)_i (n_n)^i = (n_m)_i (n_n)_j g^{ij} = \delta_{mn} |n_m|^2$ ]]
+printbr[[ For $|n_i|$ is the metric-weighted norm. ]]
+printbr()
+
+
+local Nl_3x3mat = Matrix(
+	{nl_dense[1], nl_dense[2], nl_dense[3]},
+	{n2l_dense[1], n2l_dense[2], n2l_dense[3]},
+	{n3l_dense[1], n3l_dense[2], n3l_dense[3]}
+):T()
+local Nu_3x3mat = Matrix(
+	{nu_dense[1], nu_dense[2], nu_dense[3]},
+	{n2u_dense[1], n2u_dense[2], n2u_dense[3]},
+	{n3u_dense[1], n3u_dense[2], n3u_dense[3]}
+):T()
+
+printbr((var'N^\\flat_{3x3}''^T' * var'N^\\sharp_{3x3}'):eq(
+	Nl_3x3mat:T() * Nu_3x3mat
+):eq(
+	(Nl_3x3mat:T() * Nu_3x3mat)()
+):eq(
+	Matrix.diagonal(n1Len^2, n2Len^2, n3Len^2)
+))
+printbr()
+
+printbr('In terms of identity:')
+printbr((var'N^\\flat_{3x3}''^T' * (var'N^\\sharp_{3x3}' * var'N^\\parallel_{3x3}'^-1)):eq(
+	Nl_3x3mat:T() * (
+		Nu_3x3mat * Matrix.diagonal(1/n1Len^2, 1/n2Len^2, 1/n3Len^2)
+	)()
+):eq(
+	Matrix.identity(3)
+))
+printbr()
+
+printbr'Now if $A A^{-1} = I$ then $A^{-1} A = I$:'
+printbr()
+
+printbr((
+	(var'N^\\sharp_{3x3}' * var'N^\\parallel_{3x3}'^-1) * var'N^\\flat_{3x3}''^T'
+):eq(
+	(Nu_3x3mat * Matrix.diagonal(1/n1Len^2, 1/n2Len^2, 1/n3Len^2))() * Nl_3x3mat:T()
+):eq(
+	(
+		Nu_3x3mat * Matrix.diagonal(1/n1Len^2, 1/n2Len^2, 1/n3Len^2) * Nl_3x3mat:T()
+	):simplifyAddMulDiv()
+):eq(
+	Matrix.identity(3)
+))
+printbr()
+
+
+local Nl = Matrix(
+	{1, 0, 0, 0, 0},
+	{0, nl_dense[1], nl_dense[2], nl_dense[3], 0},
+	{0, n2l_dense[1], n2l_dense[2], n2l_dense[3], 0},
+	{0, n3l_dense[1], n3l_dense[2], n3l_dense[3], 0},
+	{0, 0, 0, 0, 1}
+):T()
+local Nu = Matrix(
+	{1, 0, 0, 0, 0},
+	{0, nu_dense[1], nu_dense[2], nu_dense[3], 0},
+	{0, n2u_dense[1], n2u_dense[2], n2u_dense[3], 0},
+	{0, n3u_dense[1], n3u_dense[2], n3u_dense[3], 0},
+	{0, 0, 0, 0, 1}
+):T()
+
+printbr'Realigned, using the normal basis, which is inverses of one another, so that I can just apply it to the left and right eigenvector transforms.'
+printbr()
+
+local A_expanded_with_Ns = (
+		Nu * Matrix.diagonal(1, 1/n1Len^2, 1/n2Len^2, 1/n3Len^2, 1)
+	)() 
+	* (
+		Matrix.diagonal(1, n1Len^2, n2Len^2, n3Len^2, 1) * A_expanded
+	)() 
+	* Nl:T()
+A_expanded = A_expanded_with_Ns()
+printbr(A'^I_J':eq(A_expanded_with_Ns):eq(A_expanded))
+printbr()
+-- if this reproduces the original then just factor out Nl and Nu from both sides and do the eigen-decomposition of the x-axis version
+-- since it is easier to do
+
+printbr'So now we know the left and right transforms to apply to our right and left eigennvector matrices to align them into an arbitrary normal frame, even with an arbitrary metric.'
+printbr'Now to eigen-decompose the normal magnitude diagonal matrix multiplied with the acoustic matrix.'
+printbr()
+
 printbr'Acoustic matrix eigen-decomposition:'
 
-local A_eig = A_expanded:eigen()
+local eig = A_expanded:eigen()
 
 -- TODO if you want, (a) consider when n_1 = 0 or n_2 = 0
 -- and/or (b) just replace all the e_x, e_y cross n with a basis {n, n2, n3}
 -- (just like the MathWorksheets "Euler Fluid Equations - Curved Geometry - Contravariant" worksheet already does).
 
-local nLen = var'|n|'
-local nLenSq_def = (nLen^2):eq(n'^1' * n'_1' + n'^2' * n'_2' + n'^3' * n'_3')
-
 printbr(A'^I_J':eq(var'(R_A)''^I_M' * var'(\\Lambda_A)''^M_N' * var'(L_A)''^N_J'))
 
-local P_for_Cs = Cs_def:solve(P)
+eig.R = eig.R:subst(n1LenSq_def:switch())()
+eig.Lambda = eig.Lambda:subst(n1LenSq_def:switch())()
+eig.L = eig.L:subst(n1LenSq_def:switch())()
 
-A_eig.R = A_eig.R:subst(nLenSq_def:switch(), P_for_Cs)()
-A_eig.Lambda = A_eig.Lambda:subst(nLenSq_def:switch(), P_for_Cs)()
-A_eig.L = A_eig.L:subst(nLenSq_def:switch(), P_for_Cs)()
+printbr(A'^I_J':eq(eig.R * eig.Lambda * eig.L))
+printbr()
 
-printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
+--[[
+printbr('insert the normal basis')
+printbr()
+
+-- use replace instead of assign just in case i forget this is here some day
+-- but this won't invert ...
+eig.R[2][2] = eig.R[2][2]:replace(-n'_2' / n'_1', n2'_1')
+eig.R[3][2] = eig.R[3][2]:replace(1, n2'_2')
+eig.R[4][2] = eig.R[4][2]:replace(0, n2'_3')
+eig.R[2][3] = eig.R[2][3]:replace(-n'_3' / n'_1', n3'_1')
+eig.R[3][3] = eig.R[3][3]:replace(0, n3'_2')
+eig.R[4][3] = eig.R[4][3]:replace(1, n3'_3')
+eig.L = eig.R:inverse()
+--]]
+
+printbr(A'^I_J':eq(eig.R * eig.Lambda * eig.L))
+printbr()
 
 local P = Matrix.permutation(5,1,2,3,4)
-local S = Matrix.diagonal(Cs^2, 1, n'_1' / rho, n'_1' / rho, Cs^2)
+local S = Matrix.diagonal(Cs^2 * n1Len, 1, n'_1' / rho, n'_1' / rho, Cs^2 * n1Len)
 local SInv = S:inv()
 
 printbr('permute by:', P, ', scale by:', S)
 
-A_eig.R = (A_eig.R * P * S)()
-A_eig.Lambda = (SInv * P:T() * A_eig.Lambda * P * S)()
-A_eig.L = (SInv * P:T() * A_eig.L)()
+eig.R = (eig.R * P * S)()
+eig.Lambda = (SInv * P:T() * eig.Lambda * P * S)()
+eig.L = (SInv * P:T() * eig.L)()
 
-A_eig.L[3][3] = (A_eig.L[3][3] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
-A_eig.L[4][4] = (A_eig.L[4][4] + (nLenSq_def[1] - nLenSq_def[2]) * rho / (n'_1' * nLen^2))()
+--eig.L[3][3] = (eig.L[3][3] + (n1LenSq_def[1] - n1LenSq_def[2]) * rho / (n'_1' * n1Len^2))()
+--eig.L[4][4] = (eig.L[4][4] + (n1LenSq_def[1] - n1LenSq_def[2]) * rho / (n'_1' * n1Len^2))()
+eig.L = eig.L:subst(
+	(n1LenSq_def - n'_2' * n'^2')():switch()
+):subst(
+	(n1LenSq_def - n'_3' * n'^3')():switch()
+)
 
-printbr(A'^I_J':eq(A_eig.R * A_eig.Lambda * A_eig.L))
+printbr(A'^I_J':eq(eig.R * eig.Lambda * eig.L))
 printbr()
 
 printbr'Acoustic matrix, reconstructed from eigen-decomposition:'
-printbr(A'^I_J':eq( (A_eig.R * A_eig.Lambda * A_eig.L)() ))
+printbr()
+printbr(A'^I_J':eq( (eig.R * eig.Lambda * eig.L)() ))
 printbr()
 
 printbr'Orthogonality of left and right eigenvectors:'
-printbr((A_eig.L * A_eig.R)():subst(nLenSq_def)())
+printbr()
+printbr((eig.L * eig.R)():subst(n1LenSq_def)())
 printbr()
 
 printbr[[
@@ -360,7 +520,10 @@ printbr'Flux Jacobian with respect to conserved variables:'
 printbr(F'^I':diff(U'^J'):eq( U'^I':diff(W'^K') * W'^K':diff(U'^L') * F'^L':diff(W'^M') * W'^M':diff(U'^J') ))
 printbr()
 
-local F_eig_R_def = expandMatrix3to5(dU_dW_def) * A_eig.R
+local F_eig_R_def = 
+	expandMatrix3to5(dU_dW_def) 
+--	(Nu * Matrix.diagonal(1, 1/n1Len^2, 1/n2Len^2, 1/n3Len^2, 1))()
+	* eig.R
 printbr(var'R_F':eq(F_eig_R_def))
 
 F_eig_R_def = F_eig_R_def()
@@ -370,7 +533,10 @@ F_eig_R_def = F_eig_R_def
 F_eig_R_def = F_eig_R_def:simplifyAddMulDiv()
 printbr(var'R_F':eq(F_eig_R_def))
 
-local F_eig_L_def = A_eig.L * expandMatrix3to5(dW_dU_def:subst(vSq_def:switch()))
+local F_eig_L_def = 
+	eig.L 
+--	* Nl:T()
+	* expandMatrix3to5(dW_dU_def:subst(vSq_def:switch()))
 printbr(var'L_F':eq(F_eig_L_def))
 
 F_eig_L_def = F_eig_L_def()
@@ -379,5 +545,6 @@ F_eig_L_def = F_eig_L_def
 	:replace(n'^1' * v'_1', n'_k' * v'^k' - n'^2' * v'_2' - n'^3' * v'_3')
 F_eig_L_def = F_eig_L_def:simplifyAddMulDiv()
 printbr(var'L_F':eq(F_eig_L_def))
-
 printbr()
+
+print(MathJax.footer)
