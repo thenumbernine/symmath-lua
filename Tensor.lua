@@ -1078,9 +1078,12 @@ function Tensor:print(name)
 	print(TensorRef(Variable(name), table.unpack(self.variance)):eq(self))
 end
 
+Tensor.printElemDefaultSeparator = ';'
+
 -- print non-zero elements
-function Tensor:printElem(name, write)
+function Tensor:printElem(name, write, defaultsep)
 	write = write or io.write
+	defaultsep = defaultsep or Tensor.printElemDefaultSeparator
 	local Variable = require 'symmath.Variable'
 	local Constant = require 'symmath.Constant'
 	local TensorRef = require 'symmath.tensor.TensorRef'
@@ -1103,7 +1106,7 @@ function Tensor:printElem(name, write)
 						return v
 					end):unpack()
 				):eq(x)))
-			sep = ';'
+			sep = defaultsep
 		end
 	end
 	

@@ -744,13 +744,39 @@ add.rules = {
 			-- TODO make this a part of add's interface
 			-- an iterator / length operator for what terms and what powers are available.
 			-- have it return constants and cache low Constant() values
-			
+
+-- [[ makes asserteq( (4*2^frac(-1,2) + 2^frac(1,2))(), 3 * sqrt(2) ) work
+-- TODO same with other bases, not just base 2
+local frac = symmath.frac
+local unm = symmath.op.unm
+--print('expr before', expr, '<br>')
+expr = expr:map(function(x)
+	if x == pow(2, frac(unm(1),2)):prune() then
+		return frac(1,2) * pow(2, frac(1,2))
+	end
+end)
+--print('expr after', expr, '<br>')
+--]]
 
 			-- 1) get all terms and powers
 			local prodLists = ProdLists(expr)
 			-- sort by prodLists[i].term, excluding all constants
 			prodLists:sort()
-
+--[[
+-- maybe changing sort can fix this?
+print('prodList', prodLists:toExpr(), '<br>')
+for i=1,#prodLists do	-- these are added
+	local prodList = prodLists[i]
+	-- prodList is a list of a^b's that are mul'd together
+	for j=1,#prodList do
+		local pi = prodList[j]
+		if symmath.set.negativeReal:contains(pi.power) then
+			pi.term = pi.term 
+		end
+	end
+end
+print('prodList', prodLists:toExpr(), '<br>')
+--]]
 
 			-- TODO where to put quadratic / polynomial division
 			-- I should do this somewhere else, but I'll do it here for now
@@ -912,6 +938,7 @@ add.rules = {
 					end
 				end
 			end
+
 
 			-- start with all the factored-out terms
 			-- [[ old

@@ -9,7 +9,11 @@ return function(theta, n)
 	local nx, ny, nz = table.unpack(n)
 	local I = Matrix.identity(3)
 	local K = Matrix({0, -nz, ny}, {nz, 0, -nx}, {-ny, nx, 0})
-	local K2 = (K * K + I * (nx^2 + ny^2 + nz^2 - 1))()
+	local K2 = (K * K 
+-- why did I have this here?
+-- is this really all that's needed if 'n' isn't normalized?
+		+ I * (nx^2 + ny^2 + nz^2 - 1)
+	)()
 	return (I
 		+ K * sin(theta)
 		+ K2 * (1 - cos(theta))

@@ -20,6 +20,7 @@ env.gUyy = var('\\gamma^{yy}')
 
 -- constant simplificaiton
 for _,line in ipairs(string.split(string.trim([=[
+
 asserteq(1, (Constant(1)*Constant(1))())					-- multiply by 1
 asserteq(1, (Constant(1)/Constant(1))())					-- divide by 1
 asserteq(-1, (-Constant(1)/Constant(1))())					-- divide by -1
@@ -103,6 +104,12 @@ asserteq( Constant(0):subst( (v'^k' * v'^l' * g'_kl'):eq(var'vsq') ), Constant(0
 asserteq( Constant(0):replace( v'^k' * v'^l' * g'_kl', var'vsq' ), Constant(0) )
 printbr( Constant(0):replace( v'^k' * v'^l', var'vsq' ) )
 asserteq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )
+
+asserteq( (2^frac(-1,2) + 2^frac(1,2))(), frac(3, sqrt(2)) )	-- works
+asserteq( (2*2^frac(-1,2) + 2^frac(1,2))(), 2 * sqrt(2) )		-- works
+asserteq( (4*2^frac(-1,2) + 2^frac(1,2))(), 3 * sqrt(2) )		-- doesn't work without some help
+
+
 
 ]=]), '\n')) do
 	env.exec(line)
