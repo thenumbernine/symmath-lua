@@ -8,14 +8,14 @@ require 'symmath'.setup{env=env, MathJax={title='Platonic Solids'}}
 local n = 3
 
 
--- [[ matrix to rotate 1/sqrt(3) (1,1,1) to (1,0,0)
+--[[ matrix to rotate 1/sqrt(3) (1,1,1) to (1,0,0)
 local M = Matrix(
 	{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) },
 	{ -1/sqrt(3), (1 + sqrt(3))/(2*sqrt(3)), (1 - sqrt(3))/(2*sqrt(3)) },
 	{ -1/sqrt(3), (1 - sqrt(3))/(2*sqrt(3)), (1 + sqrt(3))/(2*sqrt(3)) }
 )
 --]]
---[[
+-- [[
 local M = Matrix.identity(3)
 --]]
 
