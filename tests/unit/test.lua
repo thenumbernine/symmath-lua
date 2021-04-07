@@ -105,11 +105,12 @@ asserteq( Constant(0):replace( v'^k' * v'^l' * g'_kl', var'vsq' ), Constant(0) )
 printbr( Constant(0):replace( v'^k' * v'^l', var'vsq' ) )
 asserteq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )
 
-asserteq( (2^frac(-1,2) + 2^frac(1,2))(), frac(3, sqrt(2)) )	-- works
-asserteq( (2*2^frac(-1,2) + 2^frac(1,2))(), 2 * sqrt(2) )		-- works
-asserteq( (4*2^frac(-1,2) + 2^frac(1,2))(), 3 * sqrt(2) )		-- doesn't work without some help
+asserteq( (2^frac(-1,2) + 2^frac(1,2))(), frac(3, sqrt(2)) )
+asserteq( (2*2^frac(-1,2) + 2^frac(1,2))(), 2 * sqrt(2) )
+asserteq( (4*2^frac(-1,2) + 2^frac(1,2))(), 3 * sqrt(2) )
 
 
+asserteq( (1 + sqrt(3))^2 + (1 - sqrt(3))^2, 8 )
 
 ]=]), '\n')) do
 	env.exec(line)

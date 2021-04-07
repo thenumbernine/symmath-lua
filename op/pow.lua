@@ -141,7 +141,7 @@ pow.rules = {
 				then
 					return Constant(expr[1].value ^ expr[2].value)
 				end
-				return setmetatable(table{expr[1]}:rep(expr[2].value), mul)
+				return expand:apply(setmetatable(table{expr[1]}:rep(expr[2].value), mul))
 			end
 		end},
 	},

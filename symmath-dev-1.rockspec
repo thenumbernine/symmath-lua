@@ -168,6 +168,7 @@ build = {
 		["symmath.tests.Maxwell equations - flux eigenvectors"] = "tests/Maxwell equations - flux eigenvectors.lua",
 		["symmath.tests.Newton method"] = "tests/Newton method.lua",
 		["symmath.tests.Parallel Propagators"] = "tests/Parallel Propagators.lua",
+		["symmath.tests.Platonic Solids"] = "tests/Platonic Solids.lua",
 		["symmath.tests.SRHD"] = "tests/SRHD.lua",
 		["symmath.tests.SRHD_1D"] = "tests/SRHD_1D.lua",
 		["symmath.tests.Schwarzschild - isotropic"] = "tests/Schwarzschild - isotropic.lua",

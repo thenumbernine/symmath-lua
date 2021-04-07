@@ -8,15 +8,16 @@ require 'symmath'.setup{env=env, MathJax={title='Platonic Solids'}}
 local n = 3
 
 
--- matrix to rotate 1/sqrt(3) (1,1,1) to (1,0,0)
+-- [[ matrix to rotate 1/sqrt(3) (1,1,1) to (1,0,0)
 local M = Matrix(
 	{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) },
 	{ -1/sqrt(3), (1 + sqrt(3))/(2*sqrt(3)), (1 - sqrt(3))/(2*sqrt(3)) },
 	{ -1/sqrt(3), (1 - sqrt(3))/(2*sqrt(3)), (1 + sqrt(3))/(2*sqrt(3)) }
 )
-
-printbr((M * M:T())())
-os.exit()
+--]]
+--[[
+local M = Matrix.identity(3)
+--]]
 
 --[[
 how to define the transforms?
@@ -40,21 +41,21 @@ local shapes = {
 		name = 'Cube',
 		
 		-- TODO rotote this to [1,0,0]
-		vtx1 = Matrix{sqrt(frac(1,3)), sqrt(frac(1,3)), sqrt(frac(1,3))}:T(),	-- column-matrix
+		vtx1 = (M * Matrix{sqrt(frac(1,3)), sqrt(frac(1,3)), sqrt(frac(1,3))}:T())(),	-- column-matrix
 		
 		genxforms = {
-			Matrix.rotation(frac(pi,2), {1,0,0}),
-			Matrix.rotation(frac(pi,2), {0,1,0}),
-			Matrix.rotation(frac(pi,2), {0,0,1}),
+			(M * Matrix.rotation(frac(pi,2), {1,0,0}) * M:T())(),
+			(M * Matrix.rotation(frac(pi,2), {0,1,0}) * M:T())(),
+			(M * Matrix.rotation(frac(pi,2), {0,0,1}) * M:T())(),
 		},
 	
 		identxforms = {
-			Matrix.rotation(frac(pi,2), {1,0,0}),
-			Matrix.rotation(frac(pi,2), {0,1,0}),
-			Matrix.rotation(frac(pi,2), {0,0,1}),
-			Matrix.rotation(frac(pi,2), {-1,0,0}),
-			Matrix.rotation(frac(pi,2), {0,-1,0}),
-			Matrix.rotation(frac(pi,2), {0,0,-1}),
+			(M * Matrix.rotation(frac(pi,2), {1,0,0}) * M:T())(),
+			(M * Matrix.rotation(frac(pi,2), {0,1,0}) * M:T())(),
+			(M * Matrix.rotation(frac(pi,2), {0,0,1}) * M:T())(),
+			(M * Matrix.rotation(frac(pi,2), {-1,0,0}) * M:T())(),
+			(M * Matrix.rotation(frac(pi,2), {0,-1,0}) * M:T())(),
+			(M * Matrix.rotation(frac(pi,2), {0,0,-1}) * M:T())(),
 		},
 	},
 
@@ -165,11 +166,14 @@ for _,shape in ipairs(shapes) do
 		local v = vtxs[j]
 		for i,xform in ipairs(genxforms) do
 			local xv = (xform * v)()
-			if not vtxs:find(xv) then
+			local k = vtxs:find(xv)
+			if not k then
 				vtxs:insert(xv)
 				local k = #vtxs
 				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 				build(k, depth + 1)
+			else
+				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 			end
 		end
 	end
