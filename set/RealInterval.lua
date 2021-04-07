@@ -386,6 +386,48 @@ fractional (even denominator) powers of negative numbers make complex
 fractional (odd denominator) powers of negative numbers make real
 --]]
 function RealInterval.__pow(A,B)
+	
+	-- for (a,b)^(c,d), d <= 0
+	-- try (1/(a,b)) ^ (-d, -c)
+	if B.finish <= 0 then
+		return (RealInterval(1,1,true,true) / A) ^ -B
+	end
+
+	-- for 0 < a, 0 < c, (a,b) ^ (c,d) = (a^c, b^d)
+	-- mind you, for 0 <= c <= 1, the interval (a,b)^c will increase, but for 1 < c, (a,b)^c will decrease, but it will maintain its order 
+	-- this means (.5, .6) ^ (.5, 2) will reverse its order
+	if 0 <= A.start then
+		if 0 <= B.start and B.finish <= 1 then
+			-- order will be preserved
+			-- (a,b)^(c,d) will converge towards 1
+			return RealInterval(
+				A.start ^ B.start,
+				A.finish ^ B.finish,
+				A.includeStart and B.includeStart,
+				A.includeFinish and B.includeFinish)
+		elseif 0 <= B.start and B.start <= 1 and 1 <= B.finish then
+			-- the order of a ^ c and b ^ d could reverse
+			-- but everything will still be positive since 0<a
+			local ac = A.start ^ B.start
+			local ad = A.start ^ B.finish
+			local bc = A.finish ^ B.start
+			local bd = A.finish ^ B.finish
+			return RealInterval(
+				math.min(ac, ad, bc, bd),
+				math.max(ac, ad, bc, bd),
+				A.includeStart and B.includeStart,
+				A.includeFinish and B.includeFinish)
+		elseif 1 <= B.start then
+			-- order will be preserved
+			-- (a,b)^(c,d) will diverge away from 1
+			return RealInterval(
+				A.start ^ B.start,
+				A.finish ^ B.finish,
+				A.includeStart and B.includeStart,
+				A.includeFinish and B.includeFinish)
+		end
+	end
+	
 	return RealInterval(-math.huge, math.huge)
 end
 

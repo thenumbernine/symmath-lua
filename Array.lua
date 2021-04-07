@@ -8,6 +8,7 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local tolua = require 'ext.tolua'
 local Expression = require 'symmath.Expression'
+local symmath
 
 local Array = class(Expression)
 Array.name = 'Array'
@@ -255,7 +256,10 @@ function Array.pruneAdd(a,b)
 	for i=1,#result do
 		result[i] = result[i] + b[i]
 	end
-	local prune = require 'symmath.prune'
+	
+	symmath = symmath or require 'symmath'
+	local prune = symmath.prune
+	
 	return prune(result)
 end
 
@@ -272,7 +276,7 @@ local function matrixMatrixMul(a,b)
 	local bh = bdim[1]
 	local bw = bdim[2]
 	if aw ~= bh then return end
-	return require 'symmath.Matrix'(range(ah):map(function(i)
+	return symmath.Matrix(range(ah):map(function(i)
 		return range(bw):map(function(j)
 			local s
 			for k=1,aw do
@@ -294,7 +298,10 @@ local function arrayScalarMul(m,s)
 	for i=1,#result do
 		result[i] = result[i] * s
 	end
-	local prune = require 'symmath.prune'
+	
+	symmath = symmath or require 'symmath'
+	local prune = symmath.prune
+	
 	return prune:apply(result)
 end
 
@@ -303,7 +310,10 @@ local function scalarArrayMul(s,m)
 	for i=1,#result do
 		result[i] = s * result[i]
 	end
-	local prune = require 'symmath.prune'
+	
+	symmath = symmath or require 'symmath'
+	local prune = symmath.prune
+	
 	return prune(result)
 end
 
@@ -311,6 +321,8 @@ function Array.pruneMul(lhs,rhs)
 	local lhsIsArray = Array:isa(lhs)
 	local rhsIsArray = Array:isa(rhs)
 	assert(lhsIsArray or rhsIsArray)
+	
+	-- hmm but this converts the result to a Matrix ... not whatever class the members are
 	if lhsIsArray and rhsIsArray then
 		return matrixMatrixMul(lhs, rhs)
 	end
@@ -332,7 +344,8 @@ end
 -- creates an array of zeroes
 -- static, uses :
 function Array:zeros(dims)
-	local Constant = require 'symmath.Constant'
+	symmath = symmath or require 'symmath'
+	local Constant = symmath.Constant
 	dims = range(#dims):map(function(i)
 		local x = dims[i]
 		if type(x) == 'number' then return x end
@@ -349,12 +362,45 @@ end
 -- create an Array from a function
 -- static, but uses : (so I know what class is calling it)
 function Array:lambda(dims, f)
-	local clone = require 'symmath.clone'
+	symmath = symmath or require 'symmath'
+	local clone = symmath.clone
 	local m = self:zeros(dims)
 	for i in m:iter() do
 		m[i] = clone(f(table.unpack(i)))
 	end
 	return m
+end
+
+-- Forbenius norm
+function Array:normSq()
+	symmath = symmath or require 'symmath'
+	local Constant = symmath.Constant
+	local sum = Constant(0)
+	for i,x in self:iter() do
+		sum = sum + x * x
+	end
+	return sum()
+end
+
+-- L2 norm
+function Array:norm()
+	symmath = symmath or require 'symmath'
+	return symmath.sqrt(self:normSq())()
+end
+
+function Array:unit()
+	return (self / self:norm())()
+end
+
+-- special-case for R3
+-- I do have Levi-Civita in Tensor. TODO generalize?
+function Array.cross(a, b)
+	assert(#a == 3)
+	assert(#b == 3)
+	return (getmetatable(a) or getmetatable(b) or Array)(
+		a[2] * b[3] - a[3] * b[2],
+		a[3] * b[1] - a[1] * b[3],
+		a[1] * b[2] - a[2] * b[1])()
 end
 
 return Array

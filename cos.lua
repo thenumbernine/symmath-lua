@@ -143,6 +143,19 @@ cos.rules = {
 		
 			local theta = expr[1]
 
+			-- cos(acos(x)) = x
+			if symmath.acos:isa(theta) then 
+				-- TODO only if x's domain is a subset of cos's realDomain
+				if symmath.set.RealInterval(-1, 1, true, true):containsElement(theta[1]) then
+					return theta[1]
+				end
+			end
+
+			if symmath.asin:isa(theta) then
+				-- TODO domains ...
+				return sqrt(1 - theta[1]^2)()
+			end
+			
 			-- cos(-x) = cos(x)
 			if unm:isa(theta) then
 				return cos(theta[1])

@@ -132,6 +132,20 @@ sin.rules = {
 		
 			local theta = expr[1]
 
+			-- sin(asin(x)) = x
+			if symmath.asin:isa(theta) then 
+				-- TODO only if theta[1] is in (-1, 1)
+				if symmath.set.RealInterval(-1, 1, true, true):containsElement(theta[1]) then
+					return theta[1]
+				end
+			end
+		
+			if symmath.acos:isa(theta) then
+				-- TODO domains ...
+				-- only if 
+				return sqrt(1 - theta[1]^2)()
+			end
+
 			-- sin(-x) = -sin(x)
 			if unm:isa(theta) then
 				return -sin(theta[1])

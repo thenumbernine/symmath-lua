@@ -16,11 +16,19 @@ so we should be able to define a cube by a single vertex
 v_0 = [1,1,1] 
 times any combination of traversals along its edges
 which for [1,1,1] would just three transforms, where the other 3 are redundant:
+
+
+identity transforms:
+this can be the axis from the center of object to any vertex, with rotation angle equal to the edge-vertex-edge angle
+or it can be the axis from center of object to center of any face, with rotation angle equal to 2pi/n for face with n edges
+or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
 	-- dual of octahedron
 	{
 		name = 'Cube',
+		
+		-- TODO rotote this to [1,0,0]
 		vtx1 = Matrix{sqrt(frac(1,3)), sqrt(frac(1,3)), sqrt(frac(1,3))}:T(),	-- column-matrix
 		
 		genxforms = {
@@ -39,6 +47,7 @@ local shapes = {
 		},
 	},
 
+-- [=[
 	-- dual of cube
 	{
 		name = 'Octahedron',
@@ -63,8 +72,9 @@ local shapes = {
 	{
 		name = 'Tetrahedron',
 		vtx1 = Matrix{1,0,0}:T(),
-		-- vtx2 = {-1/2, sqrt(3)/2, 0}
-		
+
+		-- something tells me vertex generation is going to become more complex soon 
+
 		genxforms = {
 			Matrix(
 				{frac(-1,3), 0, -sqrt(frac(8,9))},
@@ -94,6 +104,23 @@ local shapes = {
 			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	sqrt(frac(2,3)), 	-sqrt(frac(2,9))	}),
 		},
 	},
+
+--[[
+	-- dual of icosahedron
+	{
+		name = 'Dodecahedron',
+		vtx1 = Matrix{1,0,0}:T(),
+	
+
+	},
+
+	-- dual of dodecahedron
+	{
+		name = 'Icosahedron',
+		vtx1 = Matrix{1,0,0}:T(),
+	},
+--]]
+--]=]
 }
 for _,shape in ipairs(shapes) do
 	shapes[shape.name] = shape
