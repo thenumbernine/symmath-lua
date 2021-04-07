@@ -7,6 +7,17 @@ require 'symmath'.setup{env=env, MathJax={title='Platonic Solids'}}
 -- 3-dimensions: xyz
 local n = 3
 
+
+-- matrix to rotate 1/sqrt(3) (1,1,1) to (1,0,0)
+local M = Matrix(
+	{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) },
+	{ -1/sqrt(3), (1 + sqrt(3))/(2*sqrt(3)), (1 - sqrt(3))/(2*sqrt(3)) },
+	{ -1/sqrt(3), (1 - sqrt(3))/(2*sqrt(3)), (1 + sqrt(3))/(2*sqrt(3)) }
+)
+
+printbr((M * M:T())())
+os.exit()
+
 --[[
 how to define the transforms?
 these should generate the vertexes, right?

@@ -276,6 +276,7 @@ local function matrixMatrixMul(a,b)
 	local bh = bdim[1]
 	local bw = bdim[2]
 	if aw ~= bh then return end
+	symmath = symmath or require 'symmath'
 	return symmath.Matrix(range(ah):map(function(i)
 		return range(bw):map(function(j)
 			local s
