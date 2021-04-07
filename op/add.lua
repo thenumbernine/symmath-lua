@@ -506,6 +506,9 @@ end
 
 --[[
 this is a single term^power
+
+TODO ... maybe all expressions should be stored in this form by default?
+I think that is similar to how sympy works?
 --]]
 local ProdTerm = class()
 
@@ -745,23 +748,76 @@ add.rules = {
 			-- an iterator / length operator for what terms and what powers are available.
 			-- have it return constants and cache low Constant() values
 
--- [[ makes asserteq( (4*2^frac(-1,2) + 2^frac(1,2))(), 3 * sqrt(2) ) work
--- TODO same with other bases, not just base 2
-local frac = symmath.frac
-local unm = symmath.op.unm
---print('expr before', expr, '<br>')
-expr = expr:map(function(x)
-	if x == pow(2, frac(unm(1),2)):prune() then
-		return frac(1,2) * pow(2, frac(1,2))
-	end
-end)
---print('expr after', expr, '<br>')
---]]
+			local frac = symmath.frac
 
 			-- 1) get all terms and powers
 			local prodLists = ProdLists(expr)
+
+
+			--[[ right now - for some constant c, c^n*c^(-1/2) + sqrt(c), for n an integer > 1, gets stuck in a simplification loop
+			-- so this helps it out to c^(n-1)*c^(1/2) + sqrt(c) 
+			do
+				local found
+				repeat
+					found = false
+					for i=1,#prodLists do
+						for j=1,#prodLists[i] do
+							print('prodLists['..i..']['..j..'].power:', symmath.Verbose(prodLists[i][j].power), '<br>')
+						end
+						local negSqrtTerm
+						for j=1,#prodLists[i] do
+							if prodLists[i][j].power == frac(-1,2) then 
+								negSqrtTerm = j
+								print'found neg sqrt term' 
+								break
+							end
+						end
+						if negSqrtTerm then
+							local scalarTerm
+							for j=1,#prodLists[i] do
+								if prodLists[i][j].term == prodLists[i][negSqrtTerm].term then 
+									scalarTerm = j
+									print'found scalar term' 
+									break
+								end
+							end
+							if scalarTerm then
+								print'here'
+								prodLists[i][negSqrtTerm].power = (prodLists[i][negSqrtTerm].power + 1):prune()
+								prodLists[i][scalarTerm].power = (prodLists[i][scalarTerm].power - 1):prune()
+								found = true
+							end
+						end
+						if found then break end
+					end
+				until not found
+			end
+			--]]
+			-- [[ actually ... why are there two c's? shouldn't they all be combined?
+			do
+				for i=1,#prodLists do
+					local found
+					repeat
+						found = false
+						for j=1,#prodLists[i]-1 do
+							for k=#prodLists[i],j+1,-1 do
+								if prodLists[i][j].term == prodLists[i][k].term then
+									prodLists[i][j].power = (prodLists[i][j].power + prodLists[i][k].power):prune()
+									table.remove(prodLists[i], k)
+									found = true
+									break
+								end
+							end
+							if found then break end
+						end
+					until not found
+				end
+			end
+			--]]
+
 			-- sort by prodLists[i].term, excluding all constants
 			prodLists:sort()
+
 --[[
 -- maybe changing sort can fix this?
 print('prodList', prodLists:toExpr(), '<br>')
