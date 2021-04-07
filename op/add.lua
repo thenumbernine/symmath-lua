@@ -748,52 +748,11 @@ add.rules = {
 			-- an iterator / length operator for what terms and what powers are available.
 			-- have it return constants and cache low Constant() values
 
-			local frac = symmath.frac
-
 			-- 1) get all terms and powers
 			local prodLists = ProdLists(expr)
 
-
-			--[[ right now - for some constant c, c^n*c^(-1/2) + sqrt(c), for n an integer > 1, gets stuck in a simplification loop
+			-- [[ right now - for some constant c, c^n*c^(-1/2) + sqrt(c), for n an integer > 1, gets stuck in a simplification loop
 			-- so this helps it out to c^(n-1)*c^(1/2) + sqrt(c) 
-			do
-				local found
-				repeat
-					found = false
-					for i=1,#prodLists do
-						for j=1,#prodLists[i] do
-							print('prodLists['..i..']['..j..'].power:', symmath.Verbose(prodLists[i][j].power), '<br>')
-						end
-						local negSqrtTerm
-						for j=1,#prodLists[i] do
-							if prodLists[i][j].power == frac(-1,2) then 
-								negSqrtTerm = j
-								print'found neg sqrt term' 
-								break
-							end
-						end
-						if negSqrtTerm then
-							local scalarTerm
-							for j=1,#prodLists[i] do
-								if prodLists[i][j].term == prodLists[i][negSqrtTerm].term then 
-									scalarTerm = j
-									print'found scalar term' 
-									break
-								end
-							end
-							if scalarTerm then
-								print'here'
-								prodLists[i][negSqrtTerm].power = (prodLists[i][negSqrtTerm].power + 1):prune()
-								prodLists[i][scalarTerm].power = (prodLists[i][scalarTerm].power - 1):prune()
-								found = true
-							end
-						end
-						if found then break end
-					end
-				until not found
-			end
-			--]]
-			-- [[ actually ... why are there two c's? shouldn't they all be combined?
 			do
 				for i=1,#prodLists do
 					local found
