@@ -1133,7 +1133,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 			end
 --]=]
 		end},
-	
+
 		{['Array.pruneAdd'] = function(prune, expr, ...)
 
 --[=[ old version		
@@ -1273,7 +1273,40 @@ print('prodList', prodLists:toExpr(), '<br>')
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local mul = symmath.op.mul
-			
+			local div = symmath.op.div
+			local pow = symmath.op.pow
+	
+			local function toTerms(x)
+				local t = table()
+				if mul:isa(x) then
+					t:append(x)
+				else
+					t:insert(x)
+				end
+
+				for i=#t,1,-1 do
+					local y = t[i]
+					-- break down primes/sqrts here
+					-- c^((2n+1)/2) => c^n c^(1/2)
+					if pow:isa(y)
+					and Constant:isa(y[1])
+					and div:isa(y[2])
+					and Constant:isa(y[2][1])
+					and y[2][1].value > 1
+					and y[2][1].value < 20	-- upper bound?
+					and y[2][1].value % 2 == 1
+					and Constant.isValue(y[2][2], 2) 
+					then
+						local n = (y[2][1].value - 1) / 2
+						table.remove(t, i)
+						table.insert(t, i, y[1] ^ div(1,2))
+						table.insert(t, i, Constant(y[1].value ^ n))
+					end
+				end
+
+				return t
+			end
+
 			-- TODO shouldn't this be regardless of the outer add ?
 			-- turn any a + (b * (c + d)) => a + (b * c) + (b * d)
 			-- [[ if any two children are muls,
@@ -1281,26 +1314,12 @@ print('prodList', prodLists:toExpr(), '<br>')
 			--  then combine them, and combine their constants
 			-- x * c1 + x * c2 => x * (c1 + c2) (for c1,c2 constants)
 			for i=1,#expr-1 do
-				local xI = expr[i]
-				local termsI
-				if mul:isa(xI) then
-					termsI = table(xI)
-				else
-					termsI = table{xI}
-				end
+				local termsI = toTerms(expr[i])
 				for j=i+1,#expr do
-					local xJ = expr[j]
-					local termsJ
-					if mul:isa(xJ) then
-						termsJ = table(xJ)
-					else
-						termsJ = table{xJ}
-					end
+					local termsJ = toTerms(expr[j])
 
 					local fail
-					
 					local commonTerms = table()
-
 					local constI
 					for _,ch in ipairs(termsI) do
 						if not termsJ:find(ch) then

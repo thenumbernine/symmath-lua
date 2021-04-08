@@ -120,6 +120,10 @@ asserteq( -frac(1,3)*-frac(1+sqrt(3),3) + -frac(2,3)*frac(1,3) + -frac(2,3) * fr
 
 asserteq( -sqrt(3)*sqrt(2)/(2*sqrt(3)) + sqrt(2)/6, -sqrt(2)/3 )
 
+asserteq( 1 + 5*sqrt(5) + sqrt(5), 1 + 6*sqrt(5) )
+asserteq( 1 + 25*sqrt(5) + sqrt(5), 1 + 26*sqrt(5) )
+asserteq( 1 + 5*sqrt(5) - 5*sqrt(5), 1 )
+
 ]=]), '\n')) do
 	env.exec(line)
 end
