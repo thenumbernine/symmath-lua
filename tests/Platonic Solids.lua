@@ -8,16 +8,19 @@ require 'symmath'.setup{env=env, MathJax={title='Platonic Solids'}}
 local n = 3
 
 
---[[ matrix to rotate 1/sqrt(3) (1,1,1) to (1,0,0)
+-- [[ matrix to rotate 1/sqrt(3) (1,1,1) to (1,0,0)
+-- applying this isn't as isometric as I thought it would be
 local M = Matrix(
 	{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) },
 	{ -1/sqrt(3), (1 + sqrt(3))/(2*sqrt(3)), (1 - sqrt(3))/(2*sqrt(3)) },
 	{ -1/sqrt(3), (1 - sqrt(3))/(2*sqrt(3)), (1 + sqrt(3))/(2*sqrt(3)) }
 )
 --]]
--- [[
+--[[
 local M = Matrix.identity(3)
 --]]
+
+local phi = (1 - sqrt(5)) / 2
 
 --[[
 how to define the transforms?
@@ -36,102 +39,60 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
+-- [=[
 	-- dual of octahedron
 	{
 		name = 'Cube',
 		
-		-- TODO rotote this to [1,0,0]
-		vtx1 = (M * Matrix{sqrt(frac(1,3)), sqrt(frac(1,3)), sqrt(frac(1,3))}:T())(),	-- column-matrix
-		
-		genxforms = {
+		xforms = {
 			(M * Matrix.rotation(frac(pi,2), {1,0,0}) * M:T())(),
 			(M * Matrix.rotation(frac(pi,2), {0,1,0}) * M:T())(),
 			(M * Matrix.rotation(frac(pi,2), {0,0,1}) * M:T())(),
-		},
-	
-		identxforms = {
-			(M * Matrix.rotation(frac(pi,2), {1,0,0}) * M:T())(),
-			(M * Matrix.rotation(frac(pi,2), {0,1,0}) * M:T())(),
-			(M * Matrix.rotation(frac(pi,2), {0,0,1}) * M:T())(),
-			(M * Matrix.rotation(frac(pi,2), {-1,0,0}) * M:T())(),
-			(M * Matrix.rotation(frac(pi,2), {0,-1,0}) * M:T())(),
-			(M * Matrix.rotation(frac(pi,2), {0,0,-1}) * M:T())(),
 		},
 	},
 
--- [=[
 	-- dual of cube
 	{
 		name = 'Octahedron',
-		vtx1 = Matrix{1,0,0}:T(),
 		
-		genxforms = {
-			Matrix.rotation(frac(pi,2), {1,0,0}),
-			Matrix.rotation(frac(pi,2), {0,1,0}),
-			Matrix.rotation(frac(pi,2), {0,0,1}),
-		},
-	
-		identxforms = {
-			Matrix.rotation(frac(pi,2), {1,0,0}),
-			Matrix.rotation(frac(pi,2), {0,1,0}),
-			Matrix.rotation(frac(pi,2), {0,0,1}),
-			Matrix.rotation(frac(pi,2), {-1,0,0}),
-			Matrix.rotation(frac(pi,2), {0,-1,0}),
-			Matrix.rotation(frac(pi,2), {0,0,-1}),
+		xforms = {
+			Matrix.rotation(frac(pi,2), {1,0,0})(),
+			Matrix.rotation(frac(pi,2), {0,1,0})(),
+			Matrix.rotation(frac(pi,2), {0,0,1})(),
 		},
 	},
 
 	{
 		name = 'Tetrahedron',
-		vtx1 = Matrix{1,0,0}:T(),
 
-		-- something tells me vertex generation is going to become more complex soon 
-
-		genxforms = {
-			Matrix(
-				{frac(-1,3), 0, -sqrt(frac(8,9))},
-				{0, 1, 0},
-				{sqrt(frac(8,9)), 0, frac(-1,3)}
-			)(),
-			(Matrix.rotation(frac(2*pi,3), {1,0,0}) * Matrix(
-				{frac(-1,3), 0, -sqrt(frac(8,9))},
-				{0, 1, 0},
-				{sqrt(frac(8,9)), 0, frac(-1,3)}
-			))(),
-			(Matrix.rotation(frac(4*pi,3), {1,0,0}) * Matrix(
-				{frac(-1,3), 0, -sqrt(frac(8,9))},
-				{0, 1, 0},
-				{sqrt(frac(8,9)), 0, frac(-1,3)}
-			))(),
-		},
-		
-		-- alright, we can only apply one at a time ... this is where platonic solid generation becomes tricky ...
-		generateMaxDepth = 1,
-		-- or another perspective is .. you can only apply a transform T_i whose axis is on an edge with the original vertex once, or three times (which is identity), but not twice ... 
-		
-		identxforms = {
-			Matrix.rotation(frac(2*pi,3), {	1,			0, 					0 					}),
-			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	0, 					sqrt(frac(8,9))		}),
-			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	}),
-			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	sqrt(frac(2,3)), 	-sqrt(frac(2,9))	}),
+		xforms = {
+			Matrix.rotation(frac(2*pi,3), {	1,			0, 					0 					})(),
+			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	0, 					sqrt(frac(8,9))		})(),
+			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})(),
+			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})(),
 		},
 	},
+--]=]
 
---[[
+-- [=[
 	-- dual of icosahedron
 	{
 		name = 'Dodecahedron',
-		vtx1 = Matrix{1,0,0}:T(),
-	
 
+		vtx1 = Matrix{1/phi, 0, phi}:T():unit(),
+
+		xforms = {
+			-- axis will be the center of the face adjacent to the first vertex at [1,0,0]
+			Matrix.rotation(frac(2*pi,3), Matrix{-1/phi, 0, phi}:unit()[1] ),	-- correctly produces 3 vertices 
+			Matrix.rotation(frac(2*pi,3), Matrix{0, phi, 1/phi}:unit()[1] ),
+			--Matrix.rotation(frac(2*pi,3), Matrix{0, -1/phi, phi}:unit()[1] ),
+		},
 	},
 
 	-- dual of dodecahedron
 	{
 		name = 'Icosahedron',
-		vtx1 = Matrix{1,0,0}:T(),
 	},
---]]
 --]=]
 }
 for _,shape in ipairs(shapes) do
@@ -145,10 +106,12 @@ for _,shape in ipairs(shapes) do
 	printbr(shape.name..':')
 	printbr()
 
-	printbr('Initial vertex:', var'V''_1':eq(shape.vtx1))
+	local vtx1 = shape.vtx1 or Matrix{1,0,0}:T()
+
+	printbr('Initial vertex:', var'V''_1':eq(vtx1))
 	printbr()
 
-	local genxforms = table(shape.genxforms)
+	local genxforms = table(shape.genxforms or shape.identxforms or shape.xforms)
 
 	printbr'Transforms for vertex generation:'
 	printbr()
@@ -158,7 +121,7 @@ for _,shape in ipairs(shapes) do
 	printbr'Vertexes:'
 	printbr()
 
-	local vtxs = table{shape.vtx1()}
+	local vtxs = table{vtx1()}
 
 	local function build(j, depth)
 		depth = depth or 1
@@ -173,7 +136,7 @@ for _,shape in ipairs(shapes) do
 				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 				build(k, depth + 1)
 			else
-				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
+--				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 			end
 		end
 	end
@@ -192,7 +155,7 @@ for _,shape in ipairs(shapes) do
 	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq((Vmat:T() * Vmat)()))
 	printbr()
 
-	local identxforms = table(shape.identxforms)
+	local identxforms = table(shape.identxforms or shape.genxforms or shape.xforms)
 
 	printbr'Transforms of all vertexes vs permutations of all vertexes:'
 	printbr()

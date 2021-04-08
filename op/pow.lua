@@ -210,6 +210,16 @@ pow.rules = {
 			local Constant = symmath.Constant
 			local sets = symmath.set
 
+--[[ another sqrt problem
+-- does a stack overflow, proly because it turns into x^(1 - 1/2) => x^(-1/2) => back here
+			-- x^(-1/2) = x^(1/2) / x
+			if div:isa(expr[2])
+			and Constant.isValue(expr[2][1], -1)
+			and Constant.isValue(expr[2][2], 2)
+			then
+				return prune:apply(expr[1] ^ (-expr[2][1].value / expr[2][2]) * (1 / expr[1]))
+			end
+--]]
 
 -- [[ here is me trying to solve a sqrt problem
 			-- x^(1/2) 
@@ -232,8 +242,6 @@ pow.rules = {
 			end
 --]]
 
-
-
 			-- Hmm, i want the inside to distribute before the outside
 			--  so (-1*-a)^(1/2) => sqrt(a)
 			-- and not sqrt(-1)*sqrt(-a) = i*i*sqrt(a) = -sqrt(a)
@@ -241,10 +249,12 @@ pow.rules = {
 			--expr[1] = expr[1]()
 			-- But doing this doens't work.  It leaves some extra (-1)^2 terms on the inside.
 
-			if Constant:isa(expr[1]) and Constant:isa(expr[2]) then
+			if Constant:isa(expr[1])
+			and Constant:isa(expr[2])
+			then
 				if symmath.simplifyConstantPowers
 				-- TODO this replaces some cases below
-				or sets.integer:contains(expr[1]) and expr[2].value > 0
+				or (sets.integer:contains(expr[1]) and expr[2].value > 0)
 				then
 					return Constant(expr[1].value ^ expr[2].value)
 				end

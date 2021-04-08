@@ -20,15 +20,15 @@ end
 
 sqrt.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_posInc_negIm
 
-sqrt.rules = table(sqrt.rules)
-
-sqrt.rules.Prune = {
-	{apply = function(prune, expr)
-		symmath = symmath or require 'symmath'
-		local div = symmath.op.div
-		-- sqrt(a) = a^div(1,2)
-		return prune:apply(expr[1]^div(1,2))
-	end},
-}
+sqrt.rules = table(sqrt.rules, {
+	Prune = {
+		{apply = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local div = symmath.op.div
+			-- sqrt(a) = a^div(1,2)
+			return prune:apply(expr[1]^div(1,2))
+		end},
+	},
+})
 
 return sqrt

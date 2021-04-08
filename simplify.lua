@@ -37,14 +37,14 @@ local function simplify(x, ...)
 		stack = table()
 	end
 	if stack then stack:insert{'init', clone(x)} end
-	
+		
 	x = prune(x, ...)
 	if stack then stack:insert{'prune', clone(x)} end
 	
 	local i = 0
 	repeat
 		lastx = x	-- lastx = x invokes the simplification loop.  that means one of the next few commands operates in-place.
-
+	
 		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
 		if stack then stack:insert{'expand', clone(x)} end
 
@@ -146,7 +146,7 @@ if simplifyObj.useTrigSimplify then
 --end, ...)
 end
 --]==]
-
+	
 		--do break end -- calling expand() again after this breaks things ...
 		i = i + 1
 	until i == simplifyMaxIter or x == lastx or getmetatable(x) == Invalid
@@ -164,8 +164,9 @@ print('reached maxiter', simplifyMaxIter)
 		io.stderr:write(debug.traceback()..'\n')
 	end
 --]]
-
+		
 	x = tidy(x, ...)
+	if stack then stack:insert{'tidy', clone(x)} end
 
 	simplifyObj.stack = stack
 

@@ -97,8 +97,10 @@ div.rules = {
 	Prune = {		
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
-			local add = symmath.op.add	
+			local unm = symmath.op.unm
+			local add = symmath.op.add
 			local mul = symmath.op.mul
+			local div = symmath.op.div
 			local pow = symmath.op.pow
 			local Array = symmath.Array
 			local Constant = symmath.Constant
@@ -187,6 +189,48 @@ div.rules = {
 			if expr[1] == expr[2] then
 				return Constant(1)		-- ... for expr[1] != 0
 			end
+
+			-- [[ 
+			-- conjugates of square-roots in denominator
+			-- a / (b + sqrt(c)) => a (b - sqrt(c)) / ((b + sqrt(c)) (b - sqrt(c))) => a (b - sqrt(c)) / (b^2 - c)
+			--[=[ the (b + sqrt(c)) matches the remaining Wildcard 
+			local a,b,c,d = expr:match(Wildcard(1) / ((Wildcard(2) + Wildcard(3) ^ div(1,2)) * Wildcard(4)))
+			if a then
+				print('a\n'..a..'\nb\n'..b..'\nc\n'..c..'\nd\n'..d)
+				error'here'
+			end
+			--]=]
+			local Wildcard = symmath.Wildcard
+			local num, denom = table.unpack(expr)
+			if mul:isa(denom) then
+				for i=1,#denom do
+					if add:isa(denom[i]) then
+						local a, b, c = denom[i]:match(Wildcard(1) + Wildcard(2) * Wildcard(3) ^ div(1,2)) 
+						if a then
+							denom = denom:clone()
+							table.remove(denom, i)
+							table.insert(denom, (a^2 - b^2 * c))
+							return prune:apply((expr[1] * (a - b * c ^ div(1,2))) / denom)
+						end
+					end
+				end
+			end
+			--]]
+
+			-- [[ a / (-c * b) => -a / (c * b)
+			local num, denom = table.unpack(expr)
+			if mul:isa(denom) then
+				for i=1,#denom do
+					if Constant:isa(denom[i])
+					and denom[i].value < 0
+					then
+						denom = denom:clone()
+						denom[i] = Constant(-denom[i].value)
+						return prune:apply(-num / denom)
+					end
+				end
+			end
+			--]]
 
 			-- (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
 			-- TODO combine this with the stuff in add.Factor somehow
@@ -319,6 +363,18 @@ div.rules = {
 					return prune:apply(result)
 				end
 			end
+
+			-- [[ a / b^(p/q) => (a / b^(p/q)) * (b^((q-p)/q) / b^((q-p)/q)) => (a * b^((q-p)/q)) / b
+			local Wildcard = symmath.Wildcard
+			local a, b, p, q = expr:match(Wildcard(1) / Wildcard(2) ^ (Wildcard(3) / Wildcard(4)))
+			if a then
+				if Constant.isValue(a, 1) then
+					return prune:apply(b ^ ((q - p) / q) / b)
+				else
+					return prune:apply(a * b ^ ((q - p) / q) / b)
+				end
+			end
+			--]]
 
 			--[[ (a + b) / c => a/c + b/c ...
 			local add = require 'symmath.op.add'

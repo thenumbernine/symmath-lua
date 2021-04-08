@@ -716,7 +716,12 @@ mul.rules = {
 				table.insert(expr, 1, Constant(cval))
 			else
 				if #expr == 1 then 
-					return prune:apply(expr[1]) 
+					--return prune:apply(expr[1])
+					-- cheap trick to fix the problem
+					-- (frac(1,2)*sqrt(3))*(frac(sqrt(2),sqrt(3))) + (-frac(1,2))*(frac(1,3)*-sqrt(2)) 
+					-- is requiring two :simplify()'s in order to simplify fully
+					-- just insert a :tidy() for the time being and things seem to work
+					return prune:apply(expr[1]:tidy())
 				end
 			end
 
@@ -786,36 +791,52 @@ mul.rules = {
 				end
 			end
 --]]
-
+			
+			-- [[ before combining powers, separate out any -1's from constants
+			-- this fixes my -2 * 2^(-1/2) simplify bug, but 
+			--  somehow screws up everything
+			if mul:isa(expr)
+			and Constant:isa(expr[1])
+			and expr[1].value < 0 
+			and expr[1].value ~= -1
+			then
+				expr[1] = Constant(-expr[1].value)
+				table.insert(expr, 1, Constant(-1))
+			end
+			--]]
+			
 			-- [[ a^m * a^n => a^(m + n)
 			do
+				local function getBasePower(x)
+					if pow:isa(x) then
+						return x[1], x[2]
+					end
+					
+					-- [[ I have a weird bug where 4 * 2^(-1/2) won't simplify to 2 sqrt(2)
+					if Constant:isa(x) then
+						if x.value > 1 then
+							local sqrtx = math.sqrt(x.value)
+							if sqrtx == math.floor(sqrtx) then
+								return Constant(sqrtx), Constant(2)
+							end
+						end
+					end
+					--]]
+					-- same with -2 * 2^(-1/2) ... hmm ...
+					
+					return x, Constant(1)
+				end
+
 				local modified = false
 				local i = 1
 				while i <= #expr do
 					local x = expr[i]
-					local base
-					local power
-					if pow:isa(x) then
-						base = x[1]
-						power = x[2]
-					else
-						base = x
-						power = Constant(1)
-					end
-					
+					local base, power = getBasePower(x)
 					if base then
 						local j = i + 1
 						while j <= #expr do
 							local x2 = expr[j]
-							local base2
-							local power2
-							if pow:isa(x2) then
-								base2 = x2[1]
-								power2 = x2[2]
-							else
-								base2 = x2
-								power2 = Constant(1)
-							end
+							local base2, power2 = getBasePower(x2)
 							if base2 == base then
 								modified = true
 								table.remove(expr, j)
@@ -836,7 +857,17 @@ mul.rules = {
 				end
 			end
 			--]]
-			
+
+			-- [[ after combining powers, re-merge any leading -1's
+			if mul:isa(expr)
+			and Constant.isValue(expr[1], -1)
+			and Constant:isa(expr[2])
+			then
+				expr[2] = Constant(-expr[2].value)
+				table.remove(expr, 1)
+			end
+			--]]
+
 			-- [[ factor out denominators
 			-- a * b * (c / d) => (a * b * c) / d
 			--  generalization:

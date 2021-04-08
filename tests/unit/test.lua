@@ -102,15 +102,23 @@ assert( not( Constant(0) == x * y ) )
 assert( Constant(0) ~= x * y )
 asserteq( Constant(0):subst( (v'^k' * v'^l' * g'_kl'):eq(var'vsq') ), Constant(0) )
 asserteq( Constant(0):replace( v'^k' * v'^l' * g'_kl', var'vsq' ), Constant(0) )
-printbr( Constant(0):replace( v'^k' * v'^l', var'vsq' ) )
+asserteq( Constant(0):replace( v'^k' * v'^l', var'vsq' ), Constant(0) )
 asserteq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )
 
+-- simplifying expressions with sqrts in them
 asserteq( (2^frac(-1,2) + 2^frac(1,2))(), frac(3, sqrt(2)) )
 asserteq( (2*2^frac(-1,2) + 2^frac(1,2))(), 2 * sqrt(2) )
 asserteq( (4*2^frac(-1,2) + 2^frac(1,2))(), 3 * sqrt(2) )
 
-
 asserteq( (1 + sqrt(3))^2 + (1 - sqrt(3))^2, 8 )
+
+asserteq( ((frac(1,2)*sqrt(3))*(frac(sqrt(2),sqrt(3))) + (-frac(1,2))*(frac(1,3)*-sqrt(2)))() , 2 * sqrt(2) / 3)
+asserteq( (frac(1,2)*sqrt(3))*(frac(sqrt(2),sqrt(3))) + (-frac(1,2))*(frac(1,3)*-sqrt(2)) , 2 * sqrt(2) / 3)
+
+asserteq( (-frac(1,3)*-frac(1+sqrt(3),3) + -frac(2,3)*frac(1,3) + -frac(2,3) * frac(1-sqrt(3),3))(), -frac(1 - sqrt(3), 3))
+asserteq( -frac(1,3)*-frac(1+sqrt(3),3) + -frac(2,3)*frac(1,3) + -frac(2,3) * frac(1-sqrt(3),3), -frac(1 - sqrt(3), 3))
+
+asserteq( -sqrt(3)*sqrt(2)/(2*sqrt(3)) + sqrt(2)/6, -sqrt(2)/3 )
 
 ]=]), '\n')) do
 	env.exec(line)

@@ -753,24 +753,22 @@ add.rules = {
 
 			-- [[ right now - for some constant c, c^n*c^(-1/2) + sqrt(c), for n an integer > 1, gets stuck in a simplification loop
 			-- so this helps it out to c^(n-1)*c^(1/2) + sqrt(c) 
-			do
-				for i=1,#prodLists do
-					local found
-					repeat
-						found = false
-						for j=1,#prodLists[i]-1 do
-							for k=#prodLists[i],j+1,-1 do
-								if prodLists[i][j].term == prodLists[i][k].term then
-									prodLists[i][j].power = (prodLists[i][j].power + prodLists[i][k].power):prune()
-									table.remove(prodLists[i], k)
-									found = true
-									break
-								end
+			for i=1,#prodLists do
+				local found
+				repeat
+					found = false
+					for j=1,#prodLists[i]-1 do
+						for k=#prodLists[i],j+1,-1 do
+							if prodLists[i][j].term == prodLists[i][k].term then
+								prodLists[i][j].power = (prodLists[i][j].power + prodLists[i][k].power):prune()
+								table.remove(prodLists[i], k)
+								found = true
+								break
 							end
-							if found then break end
 						end
-					until not found
-				end
+						if found then break end
+					end
+				until not found
 			end
 			--]]
 
@@ -1308,9 +1306,9 @@ print('prodList', prodLists:toExpr(), '<br>')
 						if not termsJ:find(ch) then
 							if Constant:isa(ch) then
 								if not constI then
-									constI = Constant(ch.value)
+									constI = ch.value
 								else
-									constI.value = constI.value * ch.value
+									constI = constI * ch.value
 								end
 							else
 								fail = true
@@ -1320,7 +1318,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 							commonTerms:insert(ch)
 						end
 					end
-					if not constI then constI = Constant(1) end
+					if not constI then constI = 1 end
 					
 					local constJ
 					if not fail then
@@ -1328,9 +1326,9 @@ print('prodList', prodLists:toExpr(), '<br>')
 							if not termsI:find(ch) then
 								if Constant:isa(ch) then
 									if not constJ then
-										constJ = Constant(ch.value)
+										constJ = ch.value
 									else
-										constJ.value = constJ.value * ch.value
+										constJ = constJ * ch.value
 									end
 								else
 									fail = true
@@ -1339,15 +1337,15 @@ print('prodList', prodLists:toExpr(), '<br>')
 							end
 						end
 					end
-					if not constJ then constJ = Constant(1) end
+					if not constJ then constJ = 1 end
 					
 					if not fail then
 						expr = expr:shallowCopy()
 						table.remove(expr, j)
 						if #commonTerms == 0 then
-							expr[i] = Constant(constI.value + constJ.value)
+							expr[i] = Constant(constI + constJ)
 						else
-							expr[i] = mul(Constant(constI.value + constJ.value), table.unpack(commonTerms))
+							expr[i] = mul(Constant(constI + constJ), table.unpack(commonTerms))
 						end
 						if #expr == 1 then expr = expr[1] end
 						return prune:apply(expr)
