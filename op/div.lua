@@ -217,6 +217,56 @@ div.rules = {
 			end
 			--]]
 
+			-- [[ div -> mul -> pow -> unm, put them on the opposite side of the div
+			local mul = symmath.op.mul
+			local pow = symmath.op.pow
+			local unm = symmath.op.unm
+			local function toProdList(x)
+				if mul:isa(x) then return table(x) end
+				return table{x}
+			end
+			local num, denom = table.unpack(expr)
+			local numlist = toProdList(num)
+			local denomlist = toProdList(denom)
+			local lists = {numlist, denomlist}
+			local modified
+			for k=1,2 do
+				local fromlist = lists[k]
+				local tolist = lists[3-k]
+				for i=#fromlist,1,-1 do
+					if pow:isa(fromlist[i]) then
+						if symmath.set.negativeReal:contains(fromlist[i][2]) then
+							modified = true
+							local repl = symmath.clone(table.remove(fromlist, i))
+							if Constant:isa(repl[2]) then
+								repl[2] = Constant(-repl[2].value)
+							elseif unm:isa(repl[2]) then
+								repl[2] = repl[2][1]
+							elseif div:isa(repl[2]) then
+								repl[2][1] = prune:apply(-repl[2][1])
+							else
+								repl[2] = prune:apply(-repl[2])
+							end
+							tolist:insert(repl)
+						end
+					end
+				end
+			end
+			if modified then
+				local function fromProdList(x)
+					if #x == 0 then return Constant(1) end
+					if #x == 1 then 
+						return 
+						assert(x[1]) 
+					end
+					return mul(x:unpack())
+				end
+				-- prune:apply() causes an infinite loop ... 
+				--return prune:apply(fromProdList(numlist) / fromProdList(denomlist))
+				return fromProdList(numlist) / fromProdList(denomlist)
+			end
+			--]]
+
 			-- [[ a / (-c * b) => -a / (c * b)
 			local num, denom = table.unpack(expr)
 			if mul:isa(denom) then

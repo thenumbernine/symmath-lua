@@ -23,6 +23,7 @@ local cubeRot = Matrix.identity(3)
 
 local phi = (1 - sqrt(5)) / 2
 
+--[[
 local dodVtx = Matrix{
 	(-1 - sqrt(5)) / (2 * sqrt(3)),
 	0,
@@ -32,6 +33,10 @@ local dodRot = Matrix.rotation(
 	acos( (-1 - sqrt(5)) / (2 * sqrt(3)) ), 
 	dodVtx[1]:cross{1, 0, 0}:unit()
 )
+--]]
+-- [[
+local dodRot = Matrix.identity(3)
+--]]
 
 --[[
 how to define the transforms?
@@ -96,7 +101,7 @@ local shapes = {
 			-- axis will be the center of the face adjacent to the first vertex at [1,0,0]
 			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{-1/phi, 0, phi}:unit()[1] ) * dodRot:T())(),	-- correctly produces 3 vertices 
 			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{0, phi, 1/phi}:unit()[1] ) * dodRot:T())(),
-			--Matrix.rotation(frac(2*pi,3), Matrix{0, -1/phi, phi}:unit()[1] ),
+			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{1,1,1}:unit()[1] ) * dodRot:T())(),
 		},
 	},
 

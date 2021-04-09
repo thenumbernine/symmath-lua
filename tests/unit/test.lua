@@ -124,6 +124,8 @@ asserteq( 1 + 5*sqrt(5) + sqrt(5), 1 + 6*sqrt(5) )
 asserteq( 1 + 25*sqrt(5) + sqrt(5), 1 + 26*sqrt(5) )
 asserteq( 1 + 5*sqrt(5) - 5*sqrt(5), 1 )
 
+asserteq( -(1 + sqrt(5))/(2*sqrt(3)) , frac(1,2)*(-frac(1,sqrt(3)))*(1 + sqrt(5)) ) 
+
 ]=]), '\n')) do
 	env.exec(line)
 end
