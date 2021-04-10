@@ -517,6 +517,12 @@ function ProdTerm:init(args)
 	self.power = args.power
 end
 
+function ProdTerm:__tostring()
+	symmath = symmath or require 'symmath'
+	local SingleLine = symmath.export.SingleLine
+	return SingleLine(self.term)..'^('..SingleLine(self.power)..')'
+end
+
 
 --[[
 this is a multiplied collection of a1^b1 * a2^b2 * ...
@@ -526,7 +532,6 @@ local ProdList = class()
 ProdList.insert = table.insert
 ProdList.mapi = table.mapi
 ProdList.find = table.find
-
 
 function ProdList:toExpr()
 	symmath = symmath or require 'symmath'
@@ -557,8 +562,6 @@ function ProdList:toExpr()
 	return setmetatable(list, symmath.op.mul)
 end
 
-
-
 -- pass it an element of the product list
 -- returns true if all the powers are even (and positive?)
 -- I'm not using this yet, but for the sake of generalizing, it would be good to switch to this
@@ -588,6 +591,11 @@ function ProdList:isSquare()
 		end
 	end
 	return true
+end
+
+function ProdList:__tostring()
+	if #self == 0 then return '1' end
+	return table.mapi(self, tostring):concat' * '
 end
 
 
@@ -621,7 +629,7 @@ function getProductList(x)
 			}
 		end
 	end)
-
+	
 	local newProdList = ProdList()
 	for k,x in ipairs(prodList) do
 		if Constant:isa(x.term) then
@@ -708,14 +716,18 @@ function ProdLists:sort()
 end
 
 function ProdLists:toExpr()
-	local expr = table.mapi(self, function(prodList) 
-		return prodList:toExpr() 
+	local expr = table.mapi(self, function(prodList)
+		return prodList:toExpr()
 	end)
-	return #expr == 1 
+	return #expr == 1
 		and expr[1]
 		or setmetatable(expr, add)
 end
 
+function ProdLists:__tostring()
+	if #self == 0 then return '0' end
+	return table.mapi(self, tostring):concat'  +  '
+end
 
 add.rules = {
 	Eval = {
@@ -751,8 +763,8 @@ add.rules = {
 			-- 1) get all terms and powers
 			local prodLists = ProdLists(expr)
 
-			-- [[ right now - for some constant c, c^n*c^(-1/2) + sqrt(c), for n an integer > 1, gets stuck in a simplification loop
-			-- so this helps it out to c^(n-1)*c^(1/2) + sqrt(c) 
+			-- [[ combine any matching terms
+			-- TODO should this be done in the ProdLists() ctor?
 			for i=1,#prodLists do
 				local found
 				repeat
@@ -819,7 +831,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 			end
 			-- TODO factoring higher polys ... this is just one specific case
 			--]]
-			-- [[ this is duplicated in sqrt.Prune
+			-- [=[ this is duplicated in sqrt.Prune
 			local function isSquarePow(x)
 				return pow:isa(x) and Constant.isValue(x[2], 2)
 			end
@@ -841,7 +853,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 					end
 				end
 			end
-			--]]
+			--]=]
 
 
 			-- rebuild exprs accordingly
@@ -895,36 +907,38 @@ print('prodList', prodLists:toExpr(), '<br>')
 			
 			-- 2) find smallest set of common terms
 			
-			local minProds = prodLists[1]:mapi(function(prod) return prod.term end)
+			local minProds = setmetatable(prodLists[1]:mapi(function(prod) 
+				return ProdTerm{
+					term = prod.term,
+					power = 1,
+				}
+			end), ProdList)
 			for i=2,#prodLists do
-				local otherProds = prodLists[i]:mapi(function(prod) return prod.term end)
 				for j=#minProds,1,-1 do
 					local found = false
-					for k=1,#otherProds do
-						if minProds[j] == otherProds[k] then
+					for k=1,#prodLists[i] do
+						if minProds[j].term == prodLists[i][k].term then
 							found = true
 							break
 						end
 					end
 					if not found then
-						minProds:remove(j)
+						table.remove(minProds, j)
 					end
 				end
 			end
 
-
+			-- found no common factors -- don't touch the expression
 			if #minProds == 0 then return end
 				
 			local prune = symmath.prune
-
-			local minPowers = {}
 			for i,minProd in ipairs(minProds) do
 				-- 3) find abs min power of all terms
 				local minPower
 				local foundNonConstMinPower
 				for i=1,#prodLists do
 					for j=1,#prodLists[i] do
-						if prodLists[i][j].term == minProd then
+						if prodLists[i][j].term == minProd.term then
 							if Constant:isa(prodLists[i][j].power) then
 								if minPower == nil then
 									minPower = prodLists[i][j].power.value
@@ -940,30 +954,31 @@ print('prodList', prodLists:toExpr(), '<br>')
 					end
 					if foundNonConstMinPower then break end
 				end
-				minPowers[i] = minPower
+				minProds[i].power = minPower
 				-- 4) factor them out
 				for i=1,#prodLists do
 					for j=1,#prodLists[i] do
-						if prodLists[i][j].term == minProd then
-							prodLists[i][j].power = prodLists[i][j].power - minPower
-							prodLists[i][j].power = prune(prodLists[i][j].power) or prodLists[i][j].power
+						if prodLists[i][j].term == minProd.term then
+							prodLists[i][j].power = prune:apply(prodLists[i][j].power - minPower)
+							-- just factor out the first encounter within a mul
+							-- in case there are repeated matching terms
+							break
 						end
 					end
 				end
 			end
 
-
 			-- start with all the factored-out terms
 			-- [[ old
-			local terms = minProds:mapi(function(minProd,i) return minProd ^ minPowers[i] end)
+			local terms = minProds:mapi(function(minProd,i) return minProd.term ^ minProd.power end)
 			--]]
 			--[[ new ... causes simplification loops
 			local terms = table()
 			for i=1,#minProds do
-				if type(minPowers[i]) == 'number'
-				and minPowers[i] > 0 
+				if type(minProds[i].power) == 'number'
+				and minProds[i].power > 0 
 				then
-					terms:insert(minProds[i] ^ minPowers[i])
+					terms:insert(minProds[i].term ^ minProds[i].power)
 				end
 			end
 			--]]

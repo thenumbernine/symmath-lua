@@ -23,7 +23,7 @@ local cubeRot = Matrix.identity(3)
 
 local phi = (1 - sqrt(5)) / 2
 
---[[
+-- [[
 local dodVtx = Matrix{
 	(-1 - sqrt(5)) / (2 * sqrt(3)),
 	0,
@@ -34,9 +34,11 @@ local dodRot = Matrix.rotation(
 	dodVtx[1]:cross{1, 0, 0}:unit()
 )
 --]]
--- [[
+--[[
 local dodRot = Matrix.identity(3)
 --]]
+
+local icoRot = Matrix.identity(3)
 
 --[[
 how to define the transforms?
@@ -59,6 +61,8 @@ local shapes = {
 	-- dual of octahedron
 	{
 		name = 'Cube',
+		
+		vtx1 = (cubeRot * Matrix{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) }:T():unit())(),
 		
 		xforms = {
 			(cubeRot * Matrix.rotation(frac(pi,2), {1,0,0}) * cubeRot:T())(),
@@ -88,9 +92,7 @@ local shapes = {
 			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})(),
 		},
 	},
---]=]
 
--- [=[
 	-- dual of icosahedron
 	{
 		name = 'Dodecahedron',
@@ -104,10 +106,21 @@ local shapes = {
 			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{1,1,1}:unit()[1] ) * dodRot:T())(),
 		},
 	},
+--]=]
 
+--[=[
 	-- dual of dodecahedron
 	{
 		name = 'Icosahedron',
+	
+		--vtx1 = (icoRot * Matrix{ 0, 1, phi }:T():unit())(),
+		vtx1 = (icoRot * Matrix{ 0, 1, phi }:T())(),		-- don't unit.
+
+		xforms = {
+			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phi}:unit()[1] ) * icoRot:T())(),
+			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{1, phi, 0}:unit()[1] ) * icoRot:T())(),
+			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{-1, phi, 0}:unit()[1] ) * icoRot:T())(),
+		},
 	},
 --]=]
 }

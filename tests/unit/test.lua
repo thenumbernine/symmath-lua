@@ -126,6 +126,12 @@ asserteq( 1 + 5*sqrt(5) - 5*sqrt(5), 1 )
 
 asserteq( -(1 + sqrt(5))/(2*sqrt(3)) , frac(1,2)*(-frac(1,sqrt(3)))*(1 + sqrt(5)) ) 
 
+asserteq( (-(1-sqrt(3))/3)*(frac(1,3)) + ((2+sqrt(3))/6)*(-(1-sqrt(3))/3) + (-(1+2*sqrt(3))/6)*(-(1+sqrt(3))/3) , (1 + sqrt(3))/3 )
+
+asserteq( ((-sqrt(sqrt(5) + 1) * (1 - sqrt(5))) / (4 * sqrt(sqrt(5) - 1)))() , frac(1,2))
+
+assertne( 6 + 6 * sqrt(3), 12)	-- ok this is hard to explain ..
+
 ]=]), '\n')) do
 	env.exec(line)
 end

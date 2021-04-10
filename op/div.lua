@@ -44,6 +44,24 @@ function div:getRealDomain()
 	return self.cachedSet
 end
 
+local function toProdList(x)
+	symmath = symmath or require 'symmath'
+	local mul = symmath.op.mul
+	local Constant = symmath.Constant
+	if mul:isa(x) then return table(x) end
+	if Constant.isValue(x, 1) then return table() end
+	return table{x}
+end
+
+local function fromProdList(x)
+	symmath = symmath or require 'symmath'
+	local mul = symmath.op.mul
+	local Constant = symmath.Constant
+	if #x == 0 then return Constant(1) end
+	if #x == 1 then return x[1] end
+	return mul(x:unpack())
+end
+
 div.rules = {
 	DistributeDivision = {
 		{apply = function(distributeDivision, expr)
@@ -217,19 +235,18 @@ div.rules = {
 			end
 			--]]
 
-			-- [[ div -> mul -> pow -> unm, put them on the opposite side of the div
-			local mul = symmath.op.mul
-			local pow = symmath.op.pow
-			local unm = symmath.op.unm
-			local function toProdList(x)
-				if mul:isa(x) then return table(x) end
-				return table{x}
-			end
+
 			local num, denom = table.unpack(expr)
 			local numlist = toProdList(num)
 			local denomlist = toProdList(denom)
 			local lists = {numlist, denomlist}
 			local modified
+
+			-- [[ put negative powers on the opposite side of the div
+			-- div -> mul -> pow -> unm => switch side of div and negative pow
+			local mul = symmath.op.mul
+			local pow = symmath.op.pow
+			local unm = symmath.op.unm
 			for k=1,2 do
 				local fromlist = lists[k]
 				local tolist = lists[3-k]
@@ -253,17 +270,28 @@ div.rules = {
 				end
 			end
 			if modified then
-				local function fromProdList(x)
-					if #x == 0 then return Constant(1) end
-					if #x == 1 then 
-						return 
-						assert(x[1]) 
-					end
-					return mul(x:unpack())
-				end
 				-- prune:apply() causes an infinite loop ... 
 				--return prune:apply(fromProdList(numlist) / fromProdList(denomlist))
 				return fromProdList(numlist) / fromProdList(denomlist)
+			end
+			--]]
+
+			-- [[ any sqrt()s on the bottom, multiply by bottom and top 
+			for i=1,#denomlist do
+				if pow:isa(denomlist[i])
+				and div:isa(denomlist[i][2])
+				-- TODO any fraction, esp odd fractions
+				and Constant.isValue(denomlist[i][2][1], 1)
+				and Constant.isValue(denomlist[i][2][2], 2)
+				then
+					modified = true
+					numlist:insert(denomlist[i])
+					denomlist[i] = denomlist[i][1]
+				end
+			end
+			if modified then
+				return prune:apply(fromProdList(numlist) / fromProdList(denomlist))
+				--return fromProdList(numlist) / fromProdList(denomlist)
 			end
 			--]]
 
