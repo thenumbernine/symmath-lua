@@ -17,7 +17,7 @@ local cubeRot = Matrix(
 	{ -1/sqrt(3), (1 - sqrt(3))/(2*sqrt(3)), (1 + sqrt(3))/(2*sqrt(3)) }
 )
 --]]
---[[
+--[[ use [1,1,1]/sqrt(3)
 local cubeRot = Matrix.identity(3)
 --]]
 
@@ -86,10 +86,8 @@ local shapes = {
 		name = 'Tetrahedron',
 
 		xforms = {
-			Matrix.rotation(frac(2*pi,3), {	1,			0, 					0 					})(),
 			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	0, 					sqrt(frac(8,9))		})(),
 			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})(),
-			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})(),
 		},
 	},
 
@@ -99,6 +97,7 @@ local shapes = {
 
 		vtx1 = (dodRot * Matrix{1/phi, 0, phi}:T():unit())(),
 
+-- TODO there's an infinite loop in here with the new rules
 		xforms = {
 			-- axis will be the center of the face adjacent to the first vertex at [1,0,0]
 			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{-1/phi, 0, phi}:unit()[1] ) * dodRot:T())(),	-- correctly produces 3 vertices 
@@ -106,8 +105,8 @@ local shapes = {
 			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{1,1,1}:unit()[1] ) * dodRot:T())(),
 		},
 	},
+	
 --]=]
-
 --[=[
 	-- dual of dodecahedron
 	{
@@ -140,11 +139,12 @@ for _,shape in ipairs(shapes) do
 	printbr('Initial vertex:', var'V''_1':eq(vtx1))
 	printbr()
 
-	local genxforms = table(shape.genxforms or shape.identxforms or shape.xforms)
+	local xforms = table(shape.xforms)
+	xforms:insert(1, Matrix.identity(3))
 
 	printbr'Transforms for vertex generation:'
 	printbr()
-	printbr(var'T''_i', [[$\in \{$]], genxforms:mapi(tostring):concat',', [[$\}$]])
+	printbr(var'T''_i', [[$\in \{$]], xforms:mapi(tostring):concat',', [[$\}$]])
 	printbr()
 
 	printbr'Vertexes:'
@@ -152,46 +152,76 @@ for _,shape in ipairs(shapes) do
 
 	local vtxs = table{vtx1()}
 
-	local function build(j, depth)
+	local function buildvtxs(j, depth)
 		depth = depth or 1
-		if shape.generateMaxDepth and depth > shape.generateMaxDepth then return end
 		local v = vtxs[j]
-		for i,xform in ipairs(genxforms) do
+		for i,xform in ipairs(xforms) do
 			local xv = (xform * v)()
 			local k = vtxs:find(xv)
 			if not k then
 				vtxs:insert(xv)
-				local k = #vtxs
+				k = #vtxs
 				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
-				build(k, depth + 1)
+				buildvtxs(k, depth + 1)
 			else
 --				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 			end
 		end
 	end
-
-	build(1)
+	buildvtxs(1)
+	printbr()
 
 	-- number of vertexes
 	local nvtxs = #vtxs
 
+	local allxforms = table(xforms)
+--[[
+	printbr'All Transforms:'
+	printbr()
+
+	local function buildxforms(j, depth)
+		depth = depth or 1
+		local M = allxforms[j]
+		for i,xform in ipairs(xforms) do
+			local xM = (xform * M)()
+			local k = allxforms:find(xM)
+			if not k then
+				allxforms:insert(xM)
+				k = #allxforms
+				printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
+				buildxforms(k, depth + 1)
+			else
+--				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
+			end
+		end
+	end
+	for i=1,#xforms do
+		buildxforms(i)
+	end
+	printbr()
+--]]
+
 	local VmatT = Matrix(vtxs:mapi(function(v) return v:T()[1] end):unpack())
 	local Vmat = VmatT:T()
 
+	printbr'Vertexes as column vectors:'
+	printbr()
+
 	printbr(var'V':eq(Vmat))
+	printbr()
+
+	printbr'Vertex inner products:'
 	printbr()
 
 	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq((Vmat:T() * Vmat)()))
 	printbr()
 
-	local identxforms = table(shape.identxforms or shape.genxforms or shape.xforms)
-
 	printbr'Transforms of all vertexes vs permutations of all vertexes:'
 	printbr()
-	printbr(var'T''_i', [[$\in \{$]], identxforms:mapi(tostring):concat',', [[$\}$]])
+	printbr(var'T''_i', [[$\in \{$]], allxforms:mapi(tostring):concat',', [[$\}$]])
 	printbr()
 
-	for _,xform in ipairs(identxforms) do
+	for i,xform in ipairs(allxforms) do
 		local xv = (xform * Vmat)()	
 		local xvT = xv:T()
 
@@ -199,7 +229,7 @@ for _,shape in ipairs(shapes) do
 			return xvT[j]() == VmatT[i]() and 1 or 0 
 		end)
 		
-		printbr((xform * var'V'):eq(xv):eq(var'V' * rx))
+		printbr((var'T'('_'..i) * var'V'):eq(xv):eq(var'V' * rx))
 		printbr()
 
 		local Vmat_rx = (Vmat * rx)()
@@ -207,6 +237,15 @@ for _,shape in ipairs(shapes) do
 		local zeros = Matrix:zeros{n, nvtxs}
 		if diff ~= zeros then
 			printbr('expected', xv:eq(Vmat * rx), 'found difference', (xv - Vmat * rx)())
+		end
+	end
+
+	for j=2,#allxforms do
+		for i=1,j-1 do
+			if (allxforms[i] - allxforms[j])() == Matrix:zeros{3,3} then
+				printbr(var'T'('_'..i), 'should equal', var'T'('_'..j), ':',
+					allxforms[i], ',', allxforms[j])
+			end
 		end
 	end
 

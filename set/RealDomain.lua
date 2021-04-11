@@ -8,6 +8,8 @@ local RealInterval = require 'symmath.set.RealInterval'
 -- maybe I should change the name to RealCompositeInterval or RealSubset
 local RealDomain = class(Universal)
 
+RealDomain.last = table.last
+
 function RealDomain:init(start, finish, includeStart, includeFinish)
 	if type(start) == 'table' then
 		for i,entry in ipairs(start) do

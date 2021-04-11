@@ -115,7 +115,6 @@ div.rules = {
 	Prune = {		
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
-			local unm = symmath.op.unm
 			local add = symmath.op.add
 			local mul = symmath.op.mul
 			local div = symmath.op.div
@@ -219,6 +218,7 @@ div.rules = {
 			end
 			--]=]
 			local Wildcard = symmath.Wildcard
+			local mul = symmath.op.mul
 			local num, denom = table.unpack(expr)
 			if mul:isa(denom) then
 				for i=1,#denom do
@@ -237,46 +237,49 @@ div.rules = {
 
 
 			local num, denom = table.unpack(expr)
-			local numlist = toProdList(num)
-			local denomlist = toProdList(denom)
-			local lists = {numlist, denomlist}
-			local modified
-
-			-- [[ put negative powers on the opposite side of the div
-			-- div -> mul -> pow -> unm => switch side of div and negative pow
-			local mul = symmath.op.mul
+			
+			-- [[ maybe this should replace the rule above?
+			-- if any sqrt()s are found within any adds or muls on the top then multiply them on the bottom and top
 			local pow = symmath.op.pow
-			local unm = symmath.op.unm
+			for x in num:iteradd() do
+				for y in x:itermul() do
+					if pow:isa(y)
+					and symmath.set.negativeReal:contains(y[2]) 
+					then
+						local fix = y[1] ^ -y[2]
+						num = num * fix
+						denom = denom * fix
+						return prune:apply(num) / prune:apply(denom)
+					end
+				end
+			end
+			--]]
+
+			--[[ put negative powers on the opposite side of the div
+			-- div -> mul -> pow -> unm => switch side of div and negative pow
+			local pow = symmath.op.pow
 			for k=1,2 do
-				local fromlist = lists[k]
-				local tolist = lists[3-k]
-				for i=#fromlist,1,-1 do
-					if pow:isa(fromlist[i]) then
-						if symmath.set.negativeReal:contains(fromlist[i][2]) then
-							modified = true
-							local repl = symmath.clone(table.remove(fromlist, i))
-							if Constant:isa(repl[2]) then
-								repl[2] = Constant(-repl[2].value)
-							elseif unm:isa(repl[2]) then
-								repl[2] = repl[2][1]
-							elseif div:isa(repl[2]) then
-								repl[2][1] = prune:apply(-repl[2][1])
-							else
-								repl[2] = prune:apply(-repl[2])
-							end
-							tolist:insert(repl)
+				local from = expr[k]
+				local to = expr[3-k]
+				for x in from:iteradd() do
+					for y in x:itermul() do
+						if pow:isa(y)
+						and symmath.set.negativeReal:contains(y[2]) 
+						then
+							num = prune:apply(num * y[1] ^ -y[2])
+							denom = prune:apply(denom * y[1] ^ -y[2])
+							return prune:apply(num / denom)
 						end
 					end
 				end
 			end
-			if modified then
-				-- prune:apply() causes an infinite loop ... 
-				--return prune:apply(fromProdList(numlist) / fromProdList(denomlist))
-				return fromProdList(numlist) / fromProdList(denomlist)
-			end
 			--]]
 
-			-- [[ any sqrt()s on the bottom, multiply by bottom and top 
+			-- [[ any sqrt()s on the bottom, multiply by bottom and top
+			-- TODO conjugate pairs?
+			local numlist = toProdList(num)
+			local denomlist = toProdList(denom)
+			local modified
 			for i=1,#denomlist do
 				if pow:isa(denomlist[i])
 				and div:isa(denomlist[i][2])
@@ -291,7 +294,6 @@ div.rules = {
 			end
 			if modified then
 				return prune:apply(fromProdList(numlist) / fromProdList(denomlist))
-				--return fromProdList(numlist) / fromProdList(denomlist)
 			end
 			--]]
 

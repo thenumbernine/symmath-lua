@@ -765,6 +765,7 @@ add.rules = {
 
 			-- [[ combine any matching terms
 			-- TODO should this be done in the ProdLists() ctor?
+			-- but without this, Platonic Solid test has simplification loops ...
 			for i=1,#prodLists do
 				local found
 				repeat
@@ -783,6 +784,7 @@ add.rules = {
 				until not found
 			end
 			--]]
+--print('a prodLists', prodLists)
 
 			-- sort by prodLists[i].term, excluding all constants
 			prodLists:sort()
@@ -802,6 +804,7 @@ for i=1,#prodLists do	-- these are added
 end
 print('prodList', prodLists:toExpr(), '<br>')
 --]]
+--print('c prodLists', prodLists)
 
 			-- TODO where to put quadratic / polynomial division
 			-- I should do this somewhere else, but I'll do it here for now
@@ -854,12 +857,15 @@ print('prodList', prodLists:toExpr(), '<br>')
 				end
 			end
 			--]=]
+--print('d prodLists', prodLists)
 
 
 			-- rebuild exprs accordingly
 			assert(#prodLists == #expr)
 			expr = prodLists:toExpr()
 			assert(#expr > 1)
+
+--print('e prodLists', prodLists)
 
 	
 -- without this (y-x)/(x-y) doesn't simplify to -1
@@ -894,17 +900,17 @@ print('prodList', prodLists:toExpr(), '<br>')
 						else
 							-- insert two copies so that one can be factored out
 							-- TODO, instead of squaring it, raise it to 2x the power of the constant's separated -1^x
-							prodLists[j]:insert{
+							prodLists[j]:insert(ProdTerm{
 								term = Constant(-1),
 								power = Constant(2),
-							}
+							})
 						end
 					end
 				end
 			end
 --]=]
-			
-			
+		
+--print('f prodLists', prodLists)
 			-- 2) find smallest set of common terms
 			
 			local minProds = setmetatable(prodLists[1]:mapi(function(prod) 
@@ -927,11 +933,13 @@ print('prodList', prodLists:toExpr(), '<br>')
 					end
 				end
 			end
-
+--print('minProds', minProds)
+			
 			-- found no common factors -- don't touch the expression
 			if #minProds == 0 then return end
 				
 			local prune = symmath.prune
+			local div = symmath.op.div
 			for i,minProd in ipairs(minProds) do
 				-- 3) find abs min power of all terms
 				local minPower
@@ -939,16 +947,31 @@ print('prodList', prodLists:toExpr(), '<br>')
 				for i=1,#prodLists do
 					for j=1,#prodLists[i] do
 						if prodLists[i][j].term == minProd.term then
-							if Constant:isa(prodLists[i][j].power) then
+							-- TODO isConstant ?
+							-- or should I just handle Constant and div-of-Constant ?
+							if Constant:isa(prodLists[i][j].power) 
+							or (
+								div:isa(prodLists[i][j].power)
+								and Constant:isa(prodLists[i][j].power[1])
+								and Constant:isa(prodLists[i][j].power[2])
+							)
+							-- TODO also sqrts, adds, blah blah etc - any expression whose leafs are Constants
+							-- (which means who does not contain any variables?)
+							then
 								if minPower == nil then
-									minPower = prodLists[i][j].power.value
+									minPower = symmath.clone(prodLists[i][j].power)
 								else
-									minPower = math.min(minPower, prodLists[i][j].power.value)
+									local new = prodLists[i][j].power
+									if new:le(minPower):isTrue() then
+										minPower = new
+									end
 								end
 							else	-- if it is variable then ... just use the ... first?
-								minPower = prodLists[i][j].power
-								foundNonConstMinPower = true
-								break
+								if not minPower then
+									minPower = prodLists[i][j].power
+									foundNonConstMinPower = true
+									break
+								end
 							end
 						end
 					end
@@ -967,6 +990,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 					end
 				end
 			end
+--print('minProds with powers', minProds)
 
 			-- start with all the factored-out terms
 			-- [[ old
@@ -996,7 +1020,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 				end
 			end
 			--]]
-
+--print('prodLists', prodLists)
 			-- then add what's left of the original sum
 			local lastTerm = prodLists:toExpr()
 

@@ -96,8 +96,9 @@ function Equation:switch()
 	return b:clone():eq(a:clone())
 end
 
+-- TODO how about using eval() ?
 function Equation:isTrue()
-	return self[1] == self[2]
+	error'not implemented'
 end
 
 function Equation:simplify()

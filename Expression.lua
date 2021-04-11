@@ -1569,4 +1569,34 @@ end
 -- candidates to add here:
 -- insertMetricsToSetVariance in 'BSSN - index'
 
+-- maybe coroutines will help my whole problem of testing when a mul or add is present ?
+
+function Expression:iteradd()
+	return coroutine.wrap(function()
+		symmath = symmath or require 'symmath'
+		local add = symmath.op.add
+		if not add:isa(self) then
+			coroutine.yield(self)
+			return
+		end
+		for i=1,#self do
+			coroutine.yield(self[i])
+		end
+	end)
+end
+
+function Expression:itermul()
+	return coroutine.wrap(function()
+		symmath = symmath or require 'symmath'
+		local mul = symmath.op.mul
+		if not mul:isa(self) then
+			coroutine.yield(self)
+			return
+		end
+		for i=1,#self do
+			coroutine.yield(self[i])
+		end
+	end)
+end
+
 return Expression

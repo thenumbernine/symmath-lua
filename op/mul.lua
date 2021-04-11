@@ -572,6 +572,38 @@ mul.rules = {
 		end},
 	},
 
+	-- not sure where this rule should go, or if I already have a copy somewhere ....
+	Factor = {
+		{apply = function(factor, expr)
+			symmath = symmath or require 'symmath'
+			
+			--[[ a^n * b^n => (a * b)^n
+			local pow = symmath.op.pow
+			for i=1,#expr-1 do
+				if pow:isa(expr[i]) then
+					for j=i+1,#expr do
+						if pow:isa(expr[j]) then
+							if expr[i][2] == expr[j][2] then
+								-- powers match, combine
+								local repl = (expr[i][1] * expr[j][1]) ^ expr[i][2]
+								expr = expr:clone()
+								table.remove(expr, j)
+								expr[i] = repl
+								if #expr == 1 then expr = expr[1] end
+								--expr = expr:prune()
+								--expr = expr:expand()
+								--expr = expr:prune()
+								expr = factor:apply(expr)
+								return expr
+							end
+						end
+					end
+				end
+			end
+			--]]
+		end},
+	},
+
 	FactorDivision = {
 		{apply = function(factorDivision, expr)
 			symmath = symmath or require 'symmath'
@@ -947,6 +979,32 @@ mul.rules = {
 						expr = expr / denom
 					end
 					return prune:apply(expr)
+				end
+			end
+			--]]
+	
+			-- [[ a^n * b^n => (a * b)^n
+			-- this rule here passes the unit tests
+			-- but it puts Platonic Solids in a simplification loop...
+			-- TODO respect mulCommutative
+			-- only test to your neighbor
+			-- and have a step above for pushing all commutative terms to one side
+			local pow = symmath.op.pow
+			for i=1,#expr-1 do
+				if pow:isa(expr[i]) then
+					for j=i+1,#expr do
+						if pow:isa(expr[j]) then
+							if expr[i][2] == expr[j][2] then
+								-- powers match, combine
+								local repl = (expr[i][1] * expr[j][1]) ^ expr[i][2]
+								expr = expr:clone()
+								table.remove(expr, j)
+								expr[i] = repl
+								if #expr == 1 then expr = expr[1] end
+								return expr
+							end
+						end
+					end
 				end
 			end
 			--]]
