@@ -1,8 +1,8 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
+local math = require 'ext.math'
 local Binary = require 'symmath.op.Binary'
-local primeFactors = require 'symmath.primeFactors'
 
 local symmath
 
@@ -87,6 +87,33 @@ div.rules = {
 	Expand = {
 		{apply = function(expand, expr)
 			return expand:apply(expr[1]) / expr[2]
+		end},
+	},
+	--]]
+
+	--[[
+	-- hmm ... raise everything to the lowest power? 
+	-- if there are any sqrts, square everything?
+	-- but what i was trying to fix was actually just a c^(-1/2)
+	Factor = {
+		{apply = function(factor, expr)
+			symmath = symmath or require 'symmath'
+			local sqrt = symmath.sqrt
+			local pow = symmath.op.pow
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+			for x in expr[2]:itermul() do
+				if pow:isa(x)
+				and div:isa(x[2])
+				and Constant.isValue(x[2][1], 1)
+				and Constant.isValue(x[2][2], 2)
+				then
+					return sqrt(
+						(expr[1]^2):prune() / 
+						(expr[2]^2):prune()
+					)
+				end
+			end
 		end},
 	},
 	--]]
@@ -372,7 +399,7 @@ div.rules = {
 								bases:insert(i, Constant(1))
 								powers:insert(i, power:clone())
 							else
-								local fs = primeFactors(value)	-- 1 returns a nil list
+								local fs = math.primeFactorization(value)	-- 1 returns a nil list
 								for _,f in ipairs(fs) do
 									bases:insert(i, f)
 									powers:insert(i, power:clone())

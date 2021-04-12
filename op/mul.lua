@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local math = require 'ext.math'
 local Binary = require 'symmath.op.Binary'
 local symmath
 
@@ -598,6 +599,27 @@ mul.rules = {
 							end
 						end
 					end
+				end
+			end
+			--]]
+		
+			-- [[
+			-- hmm ... raise everything to the lowest power? 
+			-- if there are any sqrts, square everything?
+			-- this is for 2/sqrt(6) => sqrt(2)/sqrt(3)
+			local sqrt = symmath.sqrt
+			local pow = symmath.op.pow
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+			for i,x in ipairs(expr) do
+				if pow:isa(x)
+				and symmath.set.integer:contains(x[1])
+				and #math.primeFactorization(x[1].value) > 1
+				and div:isa(x[2])
+				and Constant.isValue(x[2][2], 2)
+				and Constant.isValue(x[2][1], -1)
+				then
+					return factor:apply(sqrt((expr^2):prune()))
 				end
 			end
 			--]]

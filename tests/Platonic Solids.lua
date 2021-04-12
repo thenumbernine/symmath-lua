@@ -70,7 +70,6 @@ local shapes = {
 			(cubeRot * Matrix.rotation(frac(pi,2), {0,0,1}) * cubeRot:T())(),
 		},
 	},
-
 	-- dual of cube
 	{
 		name = 'Octahedron',
@@ -90,7 +89,8 @@ local shapes = {
 			Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})(),
 		},
 	},
-
+--]=]
+-- [=[
 	-- dual of icosahedron
 	{
 		name = 'Dodecahedron',
@@ -105,7 +105,6 @@ local shapes = {
 			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{1,1,1}:unit()[1] ) * dodRot:T())(),
 		},
 	},
-	
 --]=]
 --[=[
 	-- dual of dodecahedron

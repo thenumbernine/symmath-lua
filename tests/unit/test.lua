@@ -106,16 +106,14 @@ asserteq( Constant(0):replace( v'^k' * v'^l', var'vsq' ), Constant(0) )
 asserteq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )
 
 -- simplifying expressions with sqrts in them
-asserteq( (2^frac(-1,2) + 2^frac(1,2))(), frac(3, sqrt(2)) )
-asserteq( (2*2^frac(-1,2) + 2^frac(1,2))(), 2 * sqrt(2) )
-asserteq( (4*2^frac(-1,2) + 2^frac(1,2))(), 3 * sqrt(2) )
+asserteq( 2^frac(-1,2) + 2^frac(1,2), frac(3, sqrt(2)) )
+asserteq( 2*2^frac(-1,2) + 2^frac(1,2), 2 * sqrt(2) )
+asserteq( 4*2^frac(-1,2) + 2^frac(1,2), 3 * sqrt(2) )
 
 asserteq( (1 + sqrt(3))^2 + (1 - sqrt(3))^2, 8 )
 
-asserteq( ((frac(1,2)*sqrt(3))*(frac(sqrt(2),sqrt(3))) + (-frac(1,2))*(frac(1,3)*-sqrt(2)))() , 2 * sqrt(2) / 3)
 asserteq( (frac(1,2)*sqrt(3))*(frac(sqrt(2),sqrt(3))) + (-frac(1,2))*(frac(1,3)*-sqrt(2)) , 2 * sqrt(2) / 3)
 
-asserteq( (-frac(1,3)*-frac(1+sqrt(3),3) + -frac(2,3)*frac(1,3) + -frac(2,3) * frac(1-sqrt(3),3))(), -frac(1 - sqrt(3), 3))
 asserteq( -frac(1,3)*-frac(1+sqrt(3),3) + -frac(2,3)*frac(1,3) + -frac(2,3) * frac(1-sqrt(3),3), -frac(1 - sqrt(3), 3))
 
 asserteq( -sqrt(3)*sqrt(2)/(2*sqrt(3)) + sqrt(2)/6, -sqrt(2)/3 )
@@ -128,7 +126,7 @@ asserteq( -(1 + sqrt(5))/(2*sqrt(3)) , frac(1,2)*(-frac(1,sqrt(3)))*(1 + sqrt(5)
 
 asserteq( (-(1-sqrt(3))/3)*(frac(1,3)) + ((2+sqrt(3))/6)*(-(1-sqrt(3))/3) + (-(1+2*sqrt(3))/6)*(-(1+sqrt(3))/3) , (1 + sqrt(3))/3 )
 
-asserteq( ((-sqrt(sqrt(5) + 1) * (1 - sqrt(5))) / (4 * sqrt(sqrt(5) - 1)))() , frac(1,2))
+asserteq( (-sqrt(sqrt(5) + 1) * (1 - sqrt(5))) / (4 * sqrt(sqrt(5) - 1)) , frac(1,2))
 
 assertne( 6 + 6 * sqrt(3), 12)	-- ok this is hard to explain ..
 
@@ -138,6 +136,10 @@ asserteq( sqrt((sqrt(5) + 1) * (sqrt(5) - 1)), 2)
 asserteq( (1 + 2 / sqrt(3)) / (2 * sqrt(3)), (2 + sqrt(3)) / 6 )
 
 asserteq( (frac(1,3)*(-(1-sqrt(3)))) * (frac(1,3)*(-(1-sqrt(3)))) + (frac(1,6)*(2+sqrt(3))) * (frac(1,3)*(1+sqrt(3))) + (frac(1,6)*-(1+2*sqrt(3))) * frac(1,3), (4 - sqrt(3))/6 )
+
+asserteq( 1/sqrt(6) + 1/sqrt(6), 2/sqrt(6) )
+
+asserteq( (32 * sqrt(3) + 32 * sqrt(15)) / 384, (sqrt(3) + sqrt(15)) / 12 )
 
 ]=]), '\n')) do
 	env.exec(line)

@@ -1,9 +1,9 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
+local math = require 'ext.math'
 local Binary = require 'symmath.op.Binary'
 local complex = require 'symmath.complex'
-local primeFactors = require 'symmath.primeFactors'
 local symmath
 
 local pow = class(Binary)
@@ -327,7 +327,7 @@ pow.rules = {
 				if sets.integer:contains(x) 
 				and x.value > 0 
 				then
-					local primes = primeFactors(x.value)
+					local primes = math.primeFactorization(x.value)
 					local outside = 1
 					local inside = 1
 					for i=#primes-1,1,-1 do
