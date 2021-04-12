@@ -276,6 +276,11 @@ LaTeX.lookupTable = {
 		return omit(result)
 	end,
 	[require 'symmath.Matrix'] = function(self, expr)
+		-- if the Matrix is a row-Matrix, or degree-1, then use Array encoding:
+		if not require 'symmath.Array':isa(expr[1]) then
+			return self.lookupTable[require 'symmath.Array'](self, expr)
+		end
+
 		local rows = table()
 		for i=1,#expr do
 			if type(expr[i]) ~= 'table' then 

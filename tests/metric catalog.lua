@@ -636,7 +636,7 @@ local MathJax = symmath.export.MathJax
 MathJax.header.pathToTryToFindMathJax = '..'
 symmath.tostring = MathJax
 
-os.execute('mkdir "output/metric catalog"')
+os.mkdir'output/metric catalog'
 -- [[
 for _,info in ipairs(spacetimes) do
 	printbr('<a href="metric catalog/'..info.title..'.html">'..info.title..'</a>')
@@ -645,8 +645,8 @@ printbr()
 --]]
 for _,info in ipairs(spacetimes) do
 
-io.stderr:write(info.title,'\n')
-io.stderr:flush()
+	io.stderr:write(info.title,'\n')
+	io.stderr:flush()
 
 	MathJax.header.title = info.title
 

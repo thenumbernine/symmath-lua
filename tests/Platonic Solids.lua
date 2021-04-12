@@ -4,11 +4,30 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Platonic Solids'}}
 
+printbr[[
+$n =$ dimension of manifold which our shape resides in.<br>
+$\tilde{T}_i \in \mathbb{R}^{n \times n} =$ i'th isomorphic transform in the minimal set.<br>
+$\tilde{\textbf{T}} = \{ 1 \le i \le p, \tilde{T}_i \} =$ minimum set of isomorphic transforms that can be used to recreate all isomorphic transforms.<br>
+$p = |\tilde{\textbf{T}}| =$ the number of minimal isomorphic transforms.<br>
+$T_i \in \mathbb{R}^{n \times n} =$ i'th isomorphic transform in the set of all unique transforms.<br>
+$\textbf{T} = \{ T_i \} = \{ 1 \le k, i_1, ..., i_k \in [1,m], \tilde{T}_{i_1} \cdot ... \cdot \tilde{T}_{i_k} \} =$ set of all unique isomorphic transforms.<br>
+$q = |\textbf{T}| =$ the number of unique isomorphic transforms.<br>
+$v_1 \in \mathbb{R}^n =$ some arbitrary initial vertex.<br>
+$\textbf{v} = \{v_i \} = \{ T_i \cdot v_1 \} =$ the set of all vertices.<br>
+$m = |\textbf{v}| =$ the number of vertices.<br>
+(Notice that $m \le q$, i.e. the number of vertices is $\le$ the number of unique isomorphic transforms.) <br>
+$V \in \mathbb{R}^{n \times m}=$ matrix with column vectors the set of all vertices, such that $V_{ij} = (v_j)_i$.<br>
+$P_i \in \mathbb{R}^{m \times m} =$ permutation transform of vertices corresponding with i'th transformation, such that $T_i V = V P_i$.<br>
+<br>
+]]
+
 -- 3-dimensions: xyz
 local n = 3
 
+local phi = (sqrt(5) - 1) / 2
 
--- [[ matrix to rotate 1/sqrt(3) (1,1,1) to (1,0,0)
+
+--[[ matrix to rotate 1/sqrt(3) (1,1,1) to (1,0,0)
 -- applying this isn't as isometric as I thought it would be
 -- cubeRot = Matrix.rotation(acos(1/sqrt(3)), Matrix(1,1,1):cross{1,0,0}:unit())		-- rotate from unit(1,1,1) to (1,0,0)
 local cubeRot = Matrix(
@@ -17,28 +36,38 @@ local cubeRot = Matrix(
 	{ -1/sqrt(3), (1 - sqrt(3))/(2*sqrt(3)), (1 + sqrt(3))/(2*sqrt(3)) }
 )
 --]]
---[[ use [1,1,1]/sqrt(3)
+-- [[ use [1,1,1]/sqrt(3)
 local cubeRot = Matrix.identity(3)
 --]]
 
-local phi = (1 - sqrt(5)) / 2
 
--- [[
+--[[
 local dodVtx = Matrix{
 	(-1 - sqrt(5)) / (2 * sqrt(3)),
 	0,
 	(1 - sqrt(5)) / (2 * sqrt(3))
 }
-local dodRot = Matrix.rotation(
-	acos( (-1 - sqrt(5)) / (2 * sqrt(3)) ), 
-	dodVtx[1]:cross{1, 0, 0}:unit()
-)
+local dodRot = Matrix.rotation(acos(dodVtx[1][1]), dodVtx[1]:cross{1, 0, 0}:unit())
 --]]
---[[
+-- [[
 local dodRot = Matrix.identity(3)
 --]]
 
+
+--[[ produces an overly complex poly that can't simplify 
+--[=[
+local icoRot = Matrix.rotation(acos(0), Array(0, 1, phi):cross{1,0,0}:unit())
+--]=]
+local icoVtx = Matrix{0, 1, phi}
+printbr(icoVtx)
+local icoRot = Matrix.rotation(
+	acos(icoVtx[1][1]), 
+	icoVtx[1]:cross{1,0,0}:unit())
+--]]
+-- [[ works
 local icoRot = Matrix.identity(3)
+--]]
+
 
 --[[
 how to define the transforms?
@@ -108,7 +137,7 @@ local shapes = {
 		},
 	},
 --]=]
---[=[
+-- [=[
 	-- dual of dodecahedron
 	{
 		name = 'Icosahedron',
@@ -124,20 +153,52 @@ local shapes = {
 	},
 --]=]
 }
+
 for _,shape in ipairs(shapes) do
 	shapes[shape.name] = shape
 end
 
---local shape = shapes.Cube
+
+
+local MathJax = symmath.export.MathJax
+MathJax.header.pathToTryToFindMathJax = '..'
+symmath.tostring = MathJax
+
+os.mkdir'output/Platonic Solids'
+for _,shape in ipairs(shapes) do
+	printbr('<a href="Platonic Solids/'..shape.name..'.html">'..shape.name..'</a>')
+end
+printbr()
 
 for _,shape in ipairs(shapes) do
 
-	printbr(shape.name..':')
-	printbr()
+	io.stderr:write(shape.name,'\n')
+	io.stderr:flush()
+
+	MathJax.header.title = shape.name
+
+	local f = assert(io.open('output/Platonic Solids/'..shape.name..'.html', 'w'))
+	local function write(...)
+		return f:write(...)
+	end
+	local function print(...)
+		write(table{...}:mapi(tostring):concat'\t'..'\n')
+	end
+	local function printbr(...)
+		print(...)
+		print'<br>'
+	end
+	
+	print(MathJax.header)
+
+--print('<a name="'..shape.name..'">')
+	print('<h3>'..shape.name..'</h3>')
+
+
 
 	local vtx1 = shape.vtx1 or Matrix{1,0,0}:T()
 
-	printbr('Initial vertex:', var'V''_1':eq(vtx1))
+	printbr('Initial vertex:', var'v''_1':eq(vtx1))
 	printbr()
 
 	local xforms = table(shape.xforms)
@@ -145,7 +206,7 @@ for _,shape in ipairs(shapes) do
 
 	printbr'Transforms for vertex generation:'
 	printbr()
-	printbr(var'T''_i', [[$\in \{$]], xforms:mapi(tostring):concat',', [[$\}$]])
+	printbr(var'\\tilde{T}''_i', [[$\in \{$]], xforms:mapi(tostring):concat',', [[$\}$]])
 	printbr()
 
 	printbr'Vertexes:'
@@ -250,7 +311,8 @@ for _,shape in ipairs(shapes) do
 		end
 	end
 
-	printbr'<hr>'
+	print(MathJax.footer)
+	f:close()
 end
 
 print(export.MathJax.footer)
