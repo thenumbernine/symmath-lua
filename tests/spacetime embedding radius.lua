@@ -51,7 +51,10 @@ function process(args)
 		title = name..' embedding radius',
 		-- TODO ... I need to embed the image into the html ...
 		-- or determine in advance the destination of the output ...
-		{z(x), title='z(r)'}
+		{
+			z(x),
+			title='z(r)',
+		}
 	}
 end
 
@@ -60,19 +63,27 @@ local pc = 3.1e+16 * m	-- = pc
 local nanoarcsec = 1e-9 * pc	-- = mu as ... why do I not think this is related directly to parsec without factoring in distance?
 
 local earthradius = 6.371e+6 * m
-local earth = {radius = earthradius, mass = 5.972e+24 * kg, distance = earthradius}
+local earth = {radius = earthradius, mass = 5.972e+24 * kg}
 process{name='earth', body=earth}
 
 local msun = 1.989e+30 * kg
-local sun = {radius = 6.955e+8 * m, mass = msun, distance = 1 * au}
+local sun = {radius = 6.955e+8 * m, mass = msun}
 process{name='sun', body=sun}
 
-local psr_J1614_2230 = {radius = 1.8729e-5 * sun.radius, mass = 1.97 * sun.mass, distance = 1200 * pc}
+local psr_J1614_2230 = {radius = 1.8729e-5 * sun.radius, mass = 1.97 * sun.mass}
 process{name='psr_J1614_2230', body=psr_J1614_2230}
 
 local electronradius = 1.3807e-36 * m
-local electron = {radius = electronradius, mass = 9.109e-31 * kg, distance = electronradius}
+local electron = {radius = electronradius, mass = 9.109e-31 * kg}
 process{name='electron', body=electron}
 
-local sgtastar = {radius = 52 * nanoarcsec, mass = 4e+4 * msun, distance = 8000 * pc}
+local sgtastar = {radius = 52 * nanoarcsec, mass = 4e+4 * msun}
 process{name='sgtastar', body=sgtastar}
+
+process{
+	name = 'human',
+	body = {
+		radius = .86 * m,
+		mass = 80 * kg,
+	},
+}

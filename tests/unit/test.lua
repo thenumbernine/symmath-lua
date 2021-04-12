@@ -141,6 +141,15 @@ asserteq( 1/sqrt(6) + 1/sqrt(6), 2/sqrt(6) )
 
 asserteq( (32 * sqrt(3) + 32 * sqrt(15)) / 384, (sqrt(3) + sqrt(15)) / 12 )
 
+asserteq( sqrt(5)/(2*sqrt(3)), sqrt(15)/6 )
+
+asserteq( -1/(2*sqrt(3)), -sqrt(frac(1,12)) )
+assertne( -sqrt(frac(1,12)), sqrt(frac(1,12)) )
+
+asserteq( (sqrt(2)*sqrt(frac(1,3))) * -frac(1,3) + (-frac(1,2)) * (sqrt(2)/sqrt(3)) + (frac(1,2)*1/sqrt(3)) * (-sqrt(2)/3), -sqrt(2) / sqrt(3) )
+
+asserteq( 1 + ( -(7 - 3*sqrt(5)) / (3*(3 - sqrt(5))) )*(1 + frac(1,2)), (1 + sqrt(5))/4 )
+
 ]=]), '\n')) do
 	env.exec(line)
 end

@@ -70,6 +70,8 @@ local shapes = {
 			(cubeRot * Matrix.rotation(frac(pi,2), {0,0,1}) * cubeRot:T())(),
 		},
 	},
+--]=]
+-- [=[
 	-- dual of cube
 	{
 		name = 'Octahedron',
@@ -80,7 +82,8 @@ local shapes = {
 			Matrix.rotation(frac(pi,2), {0,0,1})(),
 		},
 	},
-
+--]=]
+-- [=[
 	{
 		name = 'Tetrahedron',
 
@@ -97,7 +100,6 @@ local shapes = {
 
 		vtx1 = (dodRot * Matrix{1/phi, 0, phi}:T():unit())(),
 
--- TODO there's an infinite loop in here with the new rules
 		xforms = {
 			-- axis will be the center of the face adjacent to the first vertex at [1,0,0]
 			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{-1/phi, 0, phi}:unit()[1] ) * dodRot:T())(),	-- correctly produces 3 vertices 
@@ -174,7 +176,7 @@ for _,shape in ipairs(shapes) do
 	local nvtxs = #vtxs
 
 	local allxforms = table(xforms)
---[[
+-- [[
 	printbr'All Transforms:'
 	printbr()
 

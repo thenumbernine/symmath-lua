@@ -158,10 +158,13 @@ print('reached maxiter', simplifyMaxIter)
 			for i,kv in ipairs(stack) do
 				local op, xi = table.unpack(kv)
 				io.stderr:write('simplify stack #'..i..':\t'..op..'\t'..SingleLine(xi)..'\n')
+				printbr('simplify stack #'..i..':\t'..op..'\t'..SingleLine(xi))
 			end
 		end
 		io.stderr:write("simplification loop\n")
+		printbr("simplification loop")
 		io.stderr:write(debug.traceback()..'\n')
+		printbr(debug.traceback())
 	end
 --]]
 		

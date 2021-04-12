@@ -594,7 +594,7 @@ mul.rules = {
 								--expr = expr:prune()
 								--expr = expr:expand()
 								--expr = expr:prune()
-								expr = factor:apply(expr)
+								--expr = factor:apply(expr)
 								return expr
 							end
 						end
@@ -603,10 +603,12 @@ mul.rules = {
 			end
 			--]]
 		
-			-- [[
+			--[[
 			-- hmm ... raise everything to the lowest power? 
 			-- if there are any sqrts, square everything?
 			-- this is for 2/sqrt(6) => sqrt(2)/sqrt(3)
+			-- this seems to do more harm than good, esp when summing fractions of sqrts
+			-- This also looks dangerous, like it would be cancelling negatives somewhere.
 			local sqrt = symmath.sqrt
 			local pow = symmath.op.pow
 			local div = symmath.op.div
@@ -622,6 +624,29 @@ mul.rules = {
 					return factor:apply(sqrt((expr^2):prune()))
 				end
 			end
+			--]]
+		
+			-- [[ how about turning c*x^-1/2 into c/sqrt(x) here?
+			-- still prevents sums of fractions of sqrts ...
+			local sqrt = symmath.sqrt
+			local pow = symmath.op.pow
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+			for i,x in ipairs(expr) do
+				if pow:isa(x)
+				and symmath.set.integer:contains(x[1])
+				--and #math.primeFactorization(x[1].value) > 1
+				and div:isa(x[2])
+				and Constant.isValue(x[2][2], 2)
+				and Constant.isValue(x[2][1], -1)
+				then
+					expr = expr:clone()
+					table.remove(expr, i)
+					if #expr == 1 then expr = expr[1] end
+					return factor:apply(expr / sqrt(x[1]))
+					--return factor:apply(sqrt((expr^2):prune()))
+				end
+			end		
 			--]]
 		end},
 	},
@@ -1018,17 +1043,44 @@ mul.rules = {
 						if pow:isa(expr[j]) then
 							if expr[i][2] == expr[j][2] then
 								-- powers match, combine
-								local repl = (expr[i][1] * expr[j][1]) ^ expr[i][2]
+								local repl = (expr[i][1] * expr[j][1]):prune() ^ expr[i][2]
 								expr = expr:clone()
 								table.remove(expr, j)
 								expr[i] = repl
 								if #expr == 1 then expr = expr[1] end
+								--expr = prune:apply(expr)
 								return expr
 							end
 						end
 					end
 				end
 			end
+			--]]
+		
+			--[[ how about turning c*x^-1/2 into c/sqrt(x) here?
+			-- still prevents sums of fractions of sqrts ...
+			local sqrt = symmath.sqrt
+			local pow = symmath.op.pow
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+			for i,x in ipairs(expr) do
+				if pow:isa(x)
+				and symmath.set.integer:contains(x[1])
+				-- without this we get a stack overflow:
+				-- but without this, and without the return prune, it fixes 3*1/sqrt(2) not simplifying
+				and #math.primeFactorization(x[1].value) > 1
+				and div:isa(x[2])
+				and Constant.isValue(x[2][2], 2)
+				and Constant.isValue(x[2][1], -1)
+				then
+					expr = expr:clone()
+					table.remove(expr, i)
+					if #expr == 1 then expr = expr[1] end
+					--return prune:apply(expr / sqrt(x[1]))
+					return expr / sqrt(x[1])
+					--return factor:apply(sqrt((expr^2):prune()))
+				end
+			end		
 			--]]
 		end},
 	

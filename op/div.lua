@@ -44,24 +44,6 @@ function div:getRealDomain()
 	return self.cachedSet
 end
 
-local function toProdList(x)
-	symmath = symmath or require 'symmath'
-	local mul = symmath.op.mul
-	local Constant = symmath.Constant
-	if mul:isa(x) then return table(x) end
-	if Constant.isValue(x, 1) then return table() end
-	return table{x}
-end
-
-local function fromProdList(x)
-	symmath = symmath or require 'symmath'
-	local mul = symmath.op.mul
-	local Constant = symmath.Constant
-	if #x == 0 then return Constant(1) end
-	if #x == 1 then return x[1] end
-	return mul(x:unpack())
-end
-
 div.rules = {
 	DistributeDivision = {
 		{apply = function(distributeDivision, expr)
@@ -82,19 +64,11 @@ div.rules = {
 		end},
 	},
 
-	--[[ here's me trying to better simplify fractions ...
-	-- but it requires parent traversal first ...
-	Expand = {
-		{apply = function(expand, expr)
-			return expand:apply(expr[1]) / expr[2]
-		end},
-	},
-	--]]
-
 	--[[
 	-- hmm ... raise everything to the lowest power? 
 	-- if there are any sqrts, square everything?
 	-- but what i was trying to fix was actually just a c^(-1/2)
+	-- TODO this produces incorrect results for negatives
 	Factor = {
 		{apply = function(factor, expr)
 			symmath = symmath or require 'symmath'
@@ -267,16 +241,19 @@ div.rules = {
 			
 			-- [[ maybe this should replace the rule above?
 			-- if any sqrt()s are found within any adds or muls on the top then multiply them on the bottom and top
+			-- hmm this leaves sqrt(5)/(2*sqrt(3)) in a bad state ...
 			local pow = symmath.op.pow
 			for x in num:iteradd() do
 				for y in x:itermul() do
 					if pow:isa(y)
-					and symmath.set.negativeReal:contains(y[2]) 
+					and symmath.set.negativeReal:contains(y[2])
 					then
 						local fix = y[1] ^ -y[2]
 						num = num * fix
 						denom = denom * fix
 						return prune:apply(num) / prune:apply(denom)
+						-- this causes stack overflows
+						--return prune:apply(num / denom)
 					end
 				end
 			end
@@ -295,7 +272,8 @@ div.rules = {
 						then
 							num = prune:apply(num * y[1] ^ -y[2])
 							denom = prune:apply(denom * y[1] ^ -y[2])
-							return prune:apply(num / denom)
+							--return prune:apply(num / denom)
+							return num / denom
 						end
 					end
 				end
@@ -304,19 +282,39 @@ div.rules = {
 
 			-- [[ any sqrt()s on the bottom, multiply by bottom and top
 			-- TODO conjugate pairs?
+			local function toProdList(x)
+				symmath = symmath or require 'symmath'
+				local mul = symmath.op.mul
+				local Constant = symmath.Constant
+				if mul:isa(x) then return table(x) end
+				if Constant.isValue(x, 1) then return table() end
+				return table{x}
+			end
+
+			local function fromProdList(x)
+				symmath = symmath or require 'symmath'
+				local mul = symmath.op.mul
+				local Constant = symmath.Constant
+				if #x == 0 then return Constant(1) end
+				if #x == 1 then return x[1] end
+				return mul(x:unpack())
+			end
+
 			local numlist = toProdList(num)
 			local denomlist = toProdList(denom)
 			local modified
-			for i=1,#denomlist do
-				if pow:isa(denomlist[i])
-				and div:isa(denomlist[i][2])
-				-- TODO any fraction, esp odd fractions
-				and Constant.isValue(denomlist[i][2][1], 1)
-				and Constant.isValue(denomlist[i][2][2], 2)
-				then
-					modified = true
-					numlist:insert(denomlist[i])
-					denomlist[i] = denomlist[i][1]
+			if #denomlist > 1 then
+				for i=1,#denomlist do
+					if pow:isa(denomlist[i])
+					and div:isa(denomlist[i][2])
+					-- TODO any fraction, esp odd fractions
+					and Constant.isValue(denomlist[i][2][1], 1)
+					and Constant.isValue(denomlist[i][2][2], 2)
+					then
+						modified = true
+						numlist:insert(denomlist[i])
+						denomlist[i] = denomlist[i][1]
+					end
 				end
 			end
 			if modified then
@@ -471,7 +469,7 @@ div.rules = {
 				end
 			end
 
-			-- [[ a / b^(p/q) => (a / b^(p/q)) * (b^((q-p)/q) / b^((q-p)/q)) => (a * b^((q-p)/q)) / b
+			--[[ a / b^(p/q) => (a / b^(p/q)) * (b^((q-p)/q) / b^((q-p)/q)) => (a * b^((q-p)/q)) / b
 			local Wildcard = symmath.Wildcard
 			local a, b, p, q = expr:match(Wildcard(1) / Wildcard(2) ^ (Wildcard(3) / Wildcard(4)))
 			if a then
