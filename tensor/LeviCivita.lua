@@ -42,33 +42,39 @@ local function makeLeviCivita(symbol, sqrtDetG)
 			or error("ran out of symbols")
 		)
 	end):concat' '
-	
-	return Tensor(variance, function(...)
-		local indexes = {...}
-		-- duplicates mean 0
-		for i=1,#indexes-1 do
-			for j=i+1,#indexes do
-				if indexes[i] == indexes[j] then return 0 end
-			end
-		end
-		-- bubble sort, count the flips
-		local parity = 1
-		for i=1,#indexes-1 do
-			for j=1,#indexes-i do
-				if indexes[j] > indexes[j+1] then
-					indexes[j], indexes[j+1] = indexes[j+1], indexes[j]
-					parity = -parity
+
+	local dim = range(rank):mapi(function() return rank end)
+
+	return Tensor{
+		indexes = variance,
+		dim = dim,
+		values = function(...)
+			local indexes = {...}
+			-- duplicates mean 0
+			for i=1,#indexes-1 do
+				for j=i+1,#indexes do
+					if indexes[i] == indexes[j] then return 0 end
 				end
 			end
-		end
-		local result = parity * sqrtDetG
-		if type(result) == 'number' then 
-			result = Constant(result) 
-		else
-			result = result()
-		end
-		return result
-	end)
+			-- bubble sort, count the flips
+			local parity = 1
+			for i=1,#indexes-1 do
+				for j=1,#indexes-i do
+					if indexes[j] > indexes[j+1] then
+						indexes[j], indexes[j+1] = indexes[j+1], indexes[j]
+						parity = -parity
+					end
+				end
+			end
+			local result = parity * sqrtDetG
+			if type(result) == 'number' then 
+				result = Constant(result) 
+			else
+				result = result()
+			end
+			return result
+		end,
+	}
 end
 
 return makeLeviCivita

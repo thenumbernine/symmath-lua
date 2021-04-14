@@ -242,7 +242,8 @@ function Tensor:init(...)
 			local superArgs = {}
 			for i=1,thisdim do
 				if #subdim > 0 then
-					superArgs[i] = Tensor{dim=subdim}
+					local subindexes = self.variance and setmetatable(table.sub(self.variance, 2), nil) or nil
+					superArgs[i] = Tensor{indexes=subindexes, dim=subdim}
 				else
 					superArgs[i] = Constant(0)
 				end
@@ -1179,5 +1180,6 @@ function Tensor:metricSymbol()
 	return Tensor.metricVariable
 end
 
+Tensor.LeviCivita = require 'symmath.tensor.LeviCivita'
 
 return Tensor

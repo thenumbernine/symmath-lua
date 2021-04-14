@@ -638,6 +638,7 @@ mul.rules = {
 				--and #math.primeFactorization(x[1].value) > 1
 				and div:isa(x[2])
 				and Constant.isValue(x[2][2], 2)
+				--[=[
 				and Constant.isValue(x[2][1], -1)
 				then
 					expr = expr:clone()
@@ -646,6 +647,19 @@ mul.rules = {
 					return factor:apply(expr / sqrt(x[1]))
 					--return factor:apply(sqrt((expr^2):prune()))
 				end
+				--]=]
+				-- [=[
+				and Constant:isa(x[2][1])
+				and x[2][1].value < 0
+				and (x[2][1].value % 2) == 1
+				then
+					expr = expr:clone()
+					table.remove(expr, i)
+					if #expr == 1 then expr = expr[1] end
+					return factor:apply(expr / x[1]^div(-x[2][1].value, x[2][2].value))
+					--return factor:apply(sqrt((expr^2):prune()))
+				end
+				--]=]
 			end		
 			--]]
 		end},

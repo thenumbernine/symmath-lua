@@ -46,4 +46,10 @@ function Matrix.permutation(...)
 	end)
 end
 
+function Matrix.reflection(axis)
+	local n = #axis			-- assumes it's a table / row vector / Array
+	axis = Matrix(axis):T()	-- now it's a column
+	return (Matrix.identity(n) - 2 * axis * axis:T() / (axis:T() * axis)()[1][1])()
+end
+
 return Matrix
