@@ -10,23 +10,30 @@ Matrix.__index = Matrix.super.__index
 
 Matrix.name = 'Matrix'
 
+-- TODO "invert"
 Matrix.inverse = require 'symmath.matrix.inverse'
+Matrix.inv = Matrix.inverse	-- shorthand
+
 Matrix.determinant = require 'symmath.matrix.determinant'
+Matrix.det = Matrix.determinant	-- shorthand
+
 Matrix.identity = require 'symmath.matrix.identity'
+
 Matrix.transpose = require 'symmath.matrix.transpose'
+Matrix.T = Matrix.transpose	-- shorthand
+
 Matrix.diagonal = require 'symmath.matrix.diagonal'
 Matrix.trace = require 'symmath.matrix.trace'
 Matrix.pseudoInverse = require 'symmath.matrix.pseudoInverse'
 Matrix.nullspace = require 'symmath.matrix.nullspace'
+
+-- TODO "rotate"
 Matrix.rotation = require 'symmath.matrix.Rotation'
+
 Matrix.eulerAngles = require 'symmath.matrix.EulerAngles'
 Matrix.eigen = require 'symmath.matrix.eigen'
 Matrix.exp = require 'symmath.matrix.exp'
 
--- shorthand
-Matrix.inv = Matrix.inverse	
-Matrix.T = Matrix.transpose
-Matrix.det = Matrix.determinant
 
 function Matrix:charpoly(lambdaVar)
 	if not lambdaVar then
@@ -46,8 +53,40 @@ function Matrix.permutation(...)
 	end)
 end
 
+--[[
+create a projection matrix which removes component of 'normal'
+
+'normal' is a table / row vector / Array
+
+TODO call it "project"
+and maybe TODO put it in Array if it is a vector operation?
+and maybe TODO the implicit inner multiplication of first and last ranks like 'matrix' my numerical matrix library uses?
+
+
+v' = v - n (v.n) / (n.n)
+	= (I - n n' / n' n) v
+
+v" = (I - a a' / a' a) (I - b b' / b' b) v
+	= (I - a a' / a' a - b b' / b' b + a a' b b' / ((a' a) (b' b))) v
+
+so the commutativity of projections is based on the commutativity of (a a' b b')
+--]]
+function Matrix.projection(normal)
+	local n = #normal
+	normal = Matrix(normal):T()	-- now it's a column vector
+	-- now technically (n n' / n' n) is the "vector projection", projecting the rhs mul vector onto 'normal'
+	-- then subtracting I - this turns it into a "projection linear operator", which projects the rhs mul vector onto the subspace excluding 'normal'
+	return (Matrix.identity(n) - normal * normal:T() / (normal:T() * normal)()[1][1] )()
+end
+
+--[[
+create a reflection matrix which, when multiplied with a vector, will reflect the vector about the axis.
+assumes axis is a table / row vector / Array
+
+TODO call it "reflect"
+--]]
 function Matrix.reflection(axis)
-	local n = #axis			-- assumes it's a table / row vector / Array
+	local n = #axis
 	axis = Matrix(axis):T()	-- now it's a column
 	return (Matrix.identity(n) - 2 * axis * axis:T() / (axis:T() * axis)()[1][1])()
 end
