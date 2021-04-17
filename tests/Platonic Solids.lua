@@ -21,6 +21,83 @@ $P_i \in \mathbb{R}^{m \times m} =$ permutation transform of vertices correspond
 <br>
 ]]
 
+--[[ trying to verify that 4D rotations not orthogonal to {0,0,0,1} actually do work ... not seeing it.
+-- two vtxs in the R3 tetrahedron
+local a = Array(-frac(1,3),	0, 					sqrt(frac(8,9)))
+printbr('a', a)
+local b = Array(-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9)))
+printbr('b', b)
+local cosphi = (Matrix(a) * Matrix(b):T())()[1][1]
+local sinphi = sin(acos(cosphi))()
+printbr('a dot b = cosphi =', cosphi)
+printbr('sinphi =', sinphi)
+local c = Array(a[2] * b[3] - a[3] * b[2], a[3] * b[1] - a[1] * b[3], a[1] * b[2] - a[2] * b[1])()
+printbr('c', c)
+local cosac = (Matrix(a) * Matrix(c):T())()[1][1]
+printbr('a dot c =', cosac)
+local cosbc = (Matrix(a) * Matrix(c):T())()[1][1]
+printbr('b dot c =', cosbc)
+-- converting to R4 ...
+a = (a * sqrt(15)/4)()
+b = (b * sqrt(15)/4)()
+c = (c * sqrt(15)/4)()
+a[4] = -frac(1,4)
+b[4] = -frac(1,4)
+c[4] = -frac(1,4)
+printbr('a4', a)
+printbr('b4', b)
+printbr('c4', c)
+printbr('a4 dot b4', (Matrix(a) * Matrix(b):T())()[1][1])
+printbr('a4 dot c4', (Matrix(a) * Matrix(c):T())()[1][1])
+printbr('b4 dot c4', (Matrix(b) * Matrix(c):T())()[1][1])
+--local R = Matrix.rotation(frac(2*pi,3), a, b)
+local R = Matrix.rotation(frac(pi,2), a, b)	-- R^2 isn't identity like it should be...
+--local R = Matrix.rotation(frac(2*pi,3), c, {0,0,0,1})
+print(R)
+print((R*R)())
+print((R*R*R)())
+os.exit()
+--]]
+
+--[[
+ok here's another thought ...
+rotation from a to b, assuming a and b are orthonormal:
+
+R v 
+	= v - a (v.a) - b (v.b) 
+	+ (a (v.a) + b (v.b)) cos(θ)
+	+ (b (v.a) - a (v.b)) sin(θ)
+	
+	= v - a (v.a) - b (v.b) 
+	+ (a (v.a) + b (v.b)) cos(θ)
+	+ (b (v.a) - a (v.b)) sin(θ)
+	
+	= (I + (cos(θ)-1) aa' - sin(θ) ab' + sin(θ) ba' + (cos(θ)-1) bb') v
+	= (I + (cos(θ)-1) (aa' + bb') + sin(θ) (ba' - ab')) v
+--]]
+local function rotfromto(theta, from, to)
+	from = from:unit()
+	to = (Matrix.projection(from:T()[1]) * to)():unit()
+	return (
+		Matrix.identity(#from) 
+		+ (cos(theta) - 1) * (from * from:T() + to * to:T())
+		+ sin(theta) * (to * from:T() - from * to:T())
+	)()
+end
+
+--[=[
+--[[
+for a 3D platonic solid, if you know the vertices, you can make a rotation
+from (proj a) * b to (proj a) * c
+--]]
+printbr(rotfromto(
+	frac(2*pi,3), 
+	(Matrix.projection{1,0,0} * Matrix{-frac(1,3), sqrt(frac(2,3)), -frac(sqrt(2),3)}:T())(),
+	(Matrix.projection{1,0,0} * Matrix{-frac(1,3), 0, frac(sqrt(8),3)}:T())()
+))
+os.exit()
+--]=]
+
 local phi = (sqrt(5) - 1) / 2
 
 -- [[
@@ -239,8 +316,9 @@ local shapes = {
 		dim = 4,
 		
 		--vtx1 = Matrix{1, 0, 0, 0}:T(),
-		vtx1 = Matrix{sqrt(frac(15,16)), 0, 0, 0}:T(),
-		--vtx1 = Matrix{sqrt(frac(15,16)), 0, 0, -frac(1,4)}:T(),
+		--vtx1 = Matrix{sqrt(frac(15,16)), 0, 0, 0}:T(),
+		vtx1 = Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T(),
+		--vtx1 = Matrix{0, 0, 0, 1}:T(),
 
 --[==[
 set of vertices:
@@ -273,20 +351,101 @@ hmm, no, not so much.
 
 		
 
-		xforms = {
-			-- rotate from [1, 0, 0, 0] through plane of [-1/3, 0, √8/3, 0] and [0, 0, 0, 1]
-			Matrix.rotation(
-				frac(2*pi,3),
-				{-frac(1,3), 0, sqrt(frac(8,9)), 0},
-				{0, 0, 0, 1}
+		xforms = 
+			(function()
+				--[[ as angle-axis:
+				-- rotate from [1, 0, 0, 0] to [-1/3, sqrt(2/3), -sqrt(2)/3] 
+				--  through plane of [-1/3, 0, √8/3, 0] and [0, 0, 0, 1]
+				Matrix.rotation(
+					frac(2*pi,3),
+					{-frac(1,3), 0, sqrt(frac(8,9)), 0},
+					{0, 0, 0, 1}
+				),
+				-- angle-axis rotation of 2π/3 through plane of [-1/3, 0, √8/3, 0] and [0, 0, 0, 1]
+				Matrix.rotation(
+					frac(2*pi,3),
+					{-frac(1,3), -sqrt(frac(2, 3)), -sqrt(frac(2,9)), 0},
+					{0, 0, 0, 1}
+				),
+				--]]
+				-- [[ as from-to rotations, projected:
+				-- for tetrahedron with 4 vertices in 3D: 
+				-- * rot from proj A B to proj A C
+				-- * rot from proj B A to proj B C
+				-- mind you there is a vertex 'D' that is also in the plane of rotation of B->C and A->C
+				-- but we don't project it, because that would remove B or C and we'd just be rotating along a line, and the orthonormalization would fail.
+				-- for 5-cell in 4D
+				-- just add one additional projection? idk.
+				--[=[ original 3D vertexes, requires no 4D projection
+				local a = {1, 0, 0, 0}
+				local b = {-frac(1,3), 0, frac(sqrt(8),3), 0}
+				local c = {-frac(1,3), sqrt(frac(2,3)), -frac(sqrt(2),3), 0}
+				local d = {0,0,0,1}	
+				--]=]
+				-- [=[ 4D vertexes, requires 4D projection TODO FIXME
+				local a = {sqrt(15)/4, 0, 0, -frac(1,4)}
+				local b = {-sqrt(frac(5,3))/4, 0, sqrt(frac(5,6)), -frac(1,4)}
+				local c = {-sqrt(frac(5,3))/4, sqrt(frac(5,2))/2, -sqrt(frac(5,24)), -frac(1,4)}
+				local d = {0,0,0,1}	
+				local e = {-sqrt(frac(5,3))/4, -sqrt(frac(5,2))/2, -sqrt(frac(5,24)), -frac(1,4)}
+				--]=]
+				return table{
+					-- generate a tetrahedron:
+					rotfromto(
+						frac(2*pi,3), 
+						(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(a):T())(),
+						(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(b):T())()
+					),
+					rotfromto(
+						frac(2*pi,3), 
+						(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(a):T())():T()[1] ) * Matrix(c):T())(),
+						(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(a):T())():T()[1] ) * Matrix(b):T())()
+					),
+					-- generate the entire 5-cell
+					rotfromto(
+						frac(2*pi,3), 
+						(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(c):T())(),
+						(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(d):T())()
+					),			
+				}
+				--]]
+			end)()
+		:append(
+			--[[ tetrahedron as one of the 3D surfaces of a 4D 5-cell
+			rotfromto(
+				frac(2*pi,3), 
+				(Matrix.projection{0,0,0,1} * Matrix.projection{-frac(1,3), sqrt(frac(2,3)), -frac(sqrt(2),3), 0} * Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T())(),
+				(Matrix.projection{0,0,0,1} * Matrix.projection{-frac(1,3), sqrt(frac(2,3)), -frac(sqrt(2),3), 0} * Matrix{-frac(1,3), 0, frac(sqrt(8),3), 0}:T())()
 			),
-			-- angle-axis rotation of 2π/3 through plane of [-1/3, 0, √8/3, 0] and [0, 0, 0, 1]
-			Matrix.rotation(
-				frac(2*pi,3),
-				{-frac(1,3), -sqrt(frac(2, 3)), -sqrt(frac(2,9)), 0},
-				{0, 0, 0, 1}
-			),
-		},
+			rotfromto(
+				frac(2*pi,3), 
+				(Matrix.projection{0,0,0,1} * Matrix.projection{frac(sqrt(15),4), 0, 0, -frac(1,4)} * Matrix{-frac(1,3), sqrt(frac(2,3)), -frac(sqrt(2),3), 0}:T())(),
+				(Matrix.projection{0,0,0,1} * Matrix.projection{frac(sqrt(15),4), 0, 0, -frac(1,4)} * Matrix{-frac(1,3), 0, frac(sqrt(8),3), 0}:T())()
+			),		
+			--]]
+
+			--[[ now rotate from {sqrt(15)/4, 0, 0, -1/4} back to {0,0,0,1}
+			-- this doesn't work so well.  maybe you need some yz rotation as well?
+			-- maybe I need a better description: to rotate two sides of one tetrahedron to two sides of another
+			-- R*a = b, R*b = c, R R' = I ... this is a desc of a 3D rotation.
+			-- for 4D we'd need an extra R*c = d constraint
+			(function()
+				return table{
+					rotfromto(
+						2*pi/3,
+						
+						(Matrix.projection{-frac(1,3), sqrt(frac(2,3)), -sqrt(2)/3, 0} 
+						* Matrix.projection{-frac(1,3), 0, sqrt(frac(8,9)), 0}
+						* Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T())(),
+						
+						(Matrix.projection{-frac(1,3), sqrt(frac(2,3)), -sqrt(2)/3, 0} 
+						* Matrix.projection{-frac(1,3), 0, sqrt(frac(8,9)), 0}
+						* Matrix{0, 0, 0, 1}:T())()
+					),
+				}
+			end)()
+			--]]
+		),
 	}
 --]=]
 }
