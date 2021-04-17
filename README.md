@@ -810,6 +810,22 @@ Output CDN URLs:
 
 [tests/output/Platonic Solids](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids.html)
 
+[tests/output/Platonic Solids/16-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/16%2dcell.html)
+
+[tests/output/Platonic Solids/5-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/5%2dcell.html)
+
+[tests/output/Platonic Solids/8-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/8%2dcell.html)
+
+[tests/output/Platonic Solids/Cube](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Cube.html)
+
+[tests/output/Platonic Solids/Dodecahedron](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Dodecahedron.html)
+
+[tests/output/Platonic Solids/Icosahedron](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Icosahedron.html)
+
+[tests/output/Platonic Solids/Octahedron](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Octahedron.html)
+
+[tests/output/Platonic Solids/Tetrahedron](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Tetrahedron.html)
+
 [tests/output/SRHD](https://thenumbernine.github.io/symmath/tests/output/SRHD.html)
 
 [tests/output/SRHD_1D](https://thenumbernine.github.io/symmath/tests/output/SRHD_1D.html)
