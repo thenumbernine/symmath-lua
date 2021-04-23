@@ -660,7 +660,7 @@ mul.rules = {
 					--return factor:apply(sqrt((expr^2):prune()))
 				end
 				--]=]
-			end		
+			end
 			--]]
 		end},
 	},

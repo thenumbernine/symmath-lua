@@ -128,16 +128,38 @@ local shapes = {
 -- [=[
 	{	-- self-dual
 		name = 'Tetrahedron',
-		vtx1 = (tetRot * Matrix{1,0,0}:T())(),
+		vtx1 = (tetRot * Matrix{0, 0, 1}:T())(),
 		
 		dim = 3,
-		xforms = {
-			(tetRot * Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	0, 					sqrt(frac(8,9))		}) * tetRot:T())(),
-			(tetRot * Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	}) * tetRot:T())(),
-		},
+		xforms = (function()
+			local a = {-sqrt(frac(2,3)), -sqrt(2)/3, -frac(1,3)}
+			local b = {sqrt(frac(2,3)), -sqrt(2)/3, -frac(1,3)}
+			local c = {0, sqrt(8)/3, -frac(1,3)}
+			local d = {0, 0, 1}
+			return table{
+				
+				(tetRot * 
+					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	0, 					sqrt(frac(8,9))		}) 
+					rotfromto(
+						frac(2*pi,3),
+						(Matrix.projection(c) * Matrix(a):T())(),
+						(Matrix.projection(c) * Matrix(b):T())()
+					)
+					* tetRot:T())(),
+				
+				(tetRot * 
+					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	}) 
+					rotfromto(
+						frac(2*pi,3),
+						(Matrix.projection(d) * Matrix(a):T())(),
+						(Matrix.projection(d) * Matrix(b):T())()
+					)
+					* tetRot:T())(),
+			}
+		end)(),
 	},
 --]=]
--- [=[
+--[=[
 	-- dual of octahedron
 	{
 		name = 'Cube',
@@ -155,7 +177,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
+--[=[
 	-- dual of cube
 	{
 		name = 'Octahedron',
@@ -168,7 +190,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
+--[=[
 	-- dual of icosahedron
 	{
 		name = 'Dodecahedron',
@@ -185,7 +207,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
+--[=[
 	-- dual of dodecahedron
 	{
 		name = 'Icosahedron',
@@ -201,7 +223,44 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
+--[=[
+	{	-- self-dual
+		name = '5-cell',
+		dim = 4,
+		
+		vtx1 = Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T(),
+		--vtx1 = Matrix{0, 0, 0, 1}:T(),
+	
+		xforms = (function()
+			local a = {sqrt(15)/4, 0, 0, -frac(1,4)}
+			local b = {-sqrt(frac(5,3))/4, 0, sqrt(frac(5,6)), -frac(1,4)}
+			local c = {-sqrt(frac(5,3))/4, sqrt(frac(5,2))/2, -sqrt(frac(5,24)), -frac(1,4)}
+			local d = {0,0,0,1}	
+			--local e = {-sqrt(frac(5,3))/4, -sqrt(frac(5,2))/2, -sqrt(frac(5,24)), -frac(1,4)}		-- not used, in the cd rotation plane anyways
+			return table{
+				-- generate a tetrahedron:
+				rotfromto(
+					frac(2*pi,3), 
+					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(a):T())(),
+					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(b):T())()
+				),
+				rotfromto(
+					frac(2*pi,3), 
+					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(a):T())():T()[1] ) * Matrix(c):T())(),
+					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(a):T())():T()[1] ) * Matrix(b):T())()
+				),
+				-- generate the entire 5-cell
+				rotfromto(
+					frac(2*pi,3), 
+					(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(c):T())(),
+					(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(d):T())()
+				),			
+			}
+			--]]
+		end)(),
+	}
+--]=]
+--[=[
 	{	-- hypercube, dual to 16-cell
 		name = '8-cell',
 		dim = 4,
@@ -231,7 +290,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
+--[=[
 	{	-- dual to 8-cell
 		name = '16-cell',
 		dim = 4,
@@ -260,43 +319,25 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
-	{	-- self-dual
-		name = '5-cell',
-		dim = 4,
-		
-		vtx1 = Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T(),
-		--vtx1 = Matrix{0, 0, 0, 1}:T(),
-	
-		xforms = (function()
-			local a = {sqrt(15)/4, 0, 0, -frac(1,4)}
-			local b = {-sqrt(frac(5,3))/4, 0, sqrt(frac(5,6)), -frac(1,4)}
-			local c = {-sqrt(frac(5,3))/4, sqrt(frac(5,2))/2, -sqrt(frac(5,24)), -frac(1,4)}
-			local d = {0,0,0,1}	
-			local e = {-sqrt(frac(5,3))/4, -sqrt(frac(5,2))/2, -sqrt(frac(5,24)), -frac(1,4)}
-			return table{
-				-- generate a tetrahedron:
-				rotfromto(
-					frac(2*pi,3), 
-					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(a):T())(),
-					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(b):T())()
-				),
-				rotfromto(
-					frac(2*pi,3), 
-					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(a):T())():T()[1] ) * Matrix(c):T())(),
-					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(a):T())():T()[1] ) * Matrix(b):T())()
-				),
-				-- generate the entire 5-cell
-				rotfromto(
-					frac(2*pi,3), 
-					(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(c):T())(),
-					(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(d):T())()
-				),			
-			}
-			--]]
-		end)(),
-	}
---]=]
+-- TODO 4D 24-cell self-dual
+-- TODO 4D 600-cell dual to 120-cell
+-- TODO 4D 120-cell dual to 600-cell
+
+-- TODO 5D 5-simplex self-dual
+-- TODO 5D 5-cube dual to 5-orthoplex
+-- TODO 5D 5-orthoplex dual to 5-cube
+
+-- TODO 6D 6-simplex
+-- TODO 6D 6-orthoplex
+-- TODO 6D 6-cube
+
+-- TODO 7D 7-simplex self-dual
+-- TODO 7D 7-cube dual to 7-orthoplex
+-- TODO 7D 7-orthoplex dual to 7-cube
+
+-- TODO 8D 8-simplex self-dual
+-- TODO 8D 8-cube dual to 8-orthoplex
+-- TODO 8D 8-orthoplex dual to 8-cube
 }
 
 for _,shape in ipairs(shapes) do
@@ -314,6 +355,12 @@ for _,shape in ipairs(shapes) do
 	printbr('<a href="Platonic Solids/'..shape.name..'.html">'..shape.name..'</a> ('..shape.dim..' dim)')
 end
 printbr()
+
+local cache = {}
+local cacheFilename = 'Platonic Solids - cache.lua'
+if io.fileexists(cacheFilename) then
+	cache = load('return '..io.readfile(cacheFilename), nil, nil, env)()
+end
 
 for _,shape in ipairs(shapes) do
 
@@ -348,19 +395,28 @@ table td {
 </style>
 ]]
 
+	local shapeCache = cache[shape.name]
+	if not shapeCache then
+		shapeCache = {}
+		cache[shape.name] = shapeCache
+	end
+
 --print('<a name="'..shape.name..'">')
 	print('<h3>'..shape.name..'</h3>')
 
 	local n = shape.dim
+	shapeCache.n = shape.dim
 
 	local vtx1 = shape.vtx1 or Matrix:lambda({n,1}, function(i,j) return i==1 and 1 or 0 end)
+	shapeCache.vtx1 = vtx1
 
 	printbr('Initial vertex:', var'v''_1':eq(vtx1))
 	printbr()
 
 	local xforms = table(shape.xforms)
 	xforms:insert(1, Matrix.identity(n))
-
+	shapeCache.xforms = xforms
+	
 	printbr'Transforms for vertex generation:'
 	printbr()
 	printbr(var'\\tilde{T}''_i', [[$\in \{$]], xforms:mapi(tostring):concat',', [[$\}$]])
@@ -370,6 +426,7 @@ table td {
 	printbr()
 
 	local vtxs = table{vtx1()}
+	shapeCache.vtxs = vtxs
 
 	local function buildvtxs(j, depth)
 		depth = depth or 1
@@ -392,8 +449,10 @@ table td {
 
 	-- number of vertexes
 	local nvtxs = #vtxs
+	shapeCache.nvtxs = nvtxs
 
 	local allxforms = table(xforms)
+	shapeCache.allxforms = allxforms
 -- [[
 	printbr'All Transforms:'
 	printbr()
@@ -422,6 +481,7 @@ table td {
 
 	local VmatT = Matrix(vtxs:mapi(function(v) return v:T()[1] end):unpack())
 	local Vmat = VmatT:T()
+	shapeCache.Vmat = Vmat
 
 	printbr'Vertexes as column vectors:'
 	printbr()
@@ -432,7 +492,9 @@ table td {
 	printbr'Vertex inner products:'
 	printbr()
 
-	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq((Vmat:T() * Vmat)()))
+	local vdots = (Vmat:T() * Vmat)()
+	shapeCache.vdots = vdots 
+	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq(vdots))
 	printbr()
 
 	printbr'Transforms of all vertexes vs permutations of all vertexes:'
@@ -502,6 +564,7 @@ table td {
 
 
 	local mulTable = {}
+	shapeCache.mulTable = mulTable
 	for i,xi in ipairs(allxforms) do
 		mulTable[i] = {}
 		for j,xj in ipairs(allxforms) do
@@ -561,7 +624,7 @@ table td {
 	end
 	--]=]
 
-	-- [=[ rename by grouping transforms
+	--[=[ rename by grouping transforms
 
 	-- rename[to] = from
 	local whatsleft = range(#allxforms)
@@ -590,6 +653,7 @@ table td {
 	rename = rename:mapi(function(v,k) return k,v end)
 	--]=]
 
+	--[=[
 	-- now first remap mulTable[i][j]
 	-- then remap the indexes of mulTable
 	local mulTableRenamed = {}
@@ -605,6 +669,7 @@ table td {
 
 	mulTable = mulTableRenamed
 	printXformMulTable()
+	--]=]
 
 --[=[ not sure if this is useful.  can't seem to visualize anything useful from it.
 	file['tmp.dot'] = table{
@@ -625,5 +690,32 @@ table td {
 	print(MathJax.footer)
 	f:close()
 end
+
+-- can symmath.export.SymMath export Lua tables?
+--io.writefile(cacheFilename, symmath.export.SymMath(cache))
+io.writefile(cacheFilename, tolua(cache, {
+	serializeForType = {
+		table = function(state, x, tab, path, keyRef, ...)
+			local mt = getmetatable(x)
+			if mt and (
+				Expression:isa(mt) 
+				-- TODO 'or' any other classes in symmath that aren't subclasses of Expression (are there any?)
+			) then
+				return symmath.export.SymMath(x)	
+			end
+			return tolua.defaultSerializeForType.table(state, x, tab, path, keyRef, ...)
+		end,
+	}
+}))
+-- is there some sort of tolua args that will encode the symmath with symmath.export.SymMath?
+--[[
+local s = table()
+s:insert'{'
+for k,v in pairs(cache) do
+	
+end
+s:insert'}'
+io.writefile(cacheFilename, s:concat'\n')
+--]]
 
 print(export.MathJax.footer)

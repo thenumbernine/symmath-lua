@@ -564,6 +564,23 @@ pow.rules = {
 			end
 		end},
 	},
+
+	Factor = {
+		{apply = function(factor, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			if mul:isa(expr[1]) then
+				--[[
+				return expr:expand()
+				--]]
+				-- [[
+				return setmetatable(table.mapi(expr[1], function(x,i)
+					return x^expr[2]
+				end), mul)
+				--]]
+			end
+		end},
+	},
 }
 -- ExpandPolynomial inherits from Expand
 --pow.rules.ExpandPolynomial = pow.rules.Expand

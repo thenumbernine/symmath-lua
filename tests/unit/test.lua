@@ -66,13 +66,18 @@ asserteq((x-1)/(1-x), -1)
 -- factor(): mul add div
 
 -- trigonometry
-asserteq((symmath.sin(x)^2+symmath.cos(x)^2)(), 1)
-asserteq((y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), y)
-asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 2*y)
-asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 1+y)
+asserteq((sin(x)^2+cos(x)^2)(), 1)
+asserteq((y*sin(x)^2+y*cos(x)^2)(), y)
+asserteq((y+y*sin(x)^2+y*cos(x)^2)(), 2*y)
+asserteq((1+y*sin(x)^2+y*cos(x)^2)(), 1+y)
 
-asserteq(1+symmath.cos(x)^2+symmath.cos(x)^2, 1+2*symmath.cos(x)^2)
-asserteq(-1+symmath.cos(x)^2+symmath.cos(x)^2, -1+2*symmath.cos(x)^2)
+asserteq(1+cos(x)^2+cos(x)^2, 1+2*cos(x)^2)
+asserteq(-1+cos(x)^2+cos(x)^2, -1+2*cos(x)^2)
+
+asserteq( cos(x)^2 + sin(x)^2, 1)
+asserteq( (cos(x)*y)^2 + (sin(x)*y)^2, y^2)
+
+-- some more stuff
 
 asserteq((y-x)/(x-y), -1)
 asserteq((x+y)/(x+y)^2, 1/(x+y))

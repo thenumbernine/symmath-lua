@@ -271,28 +271,28 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>asserteq((symmath.sin(x)^2+symmath.cos(x)^2)(), 1)</code>
+<code>asserteq((sin(x)^2+cos(x)^2)(), 1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), y)</code>
+<code>asserteq((y*sin(x)^2+y*cos(x)^2)(), y)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((y+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 2*y)</code>
+<code>asserteq((y+y*sin(x)^2+y*cos(x)^2)(), 2*y)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((1+y*symmath.sin(x)^2+y*symmath.cos(x)^2)(), 1+y)</code>
+<code>asserteq((1+y*sin(x)^2+y*cos(x)^2)(), 1+y)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -303,18 +303,44 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>asserteq(1+symmath.cos(x)^2+symmath.cos(x)^2, 1+2*symmath.cos(x)^2)</code>
+<code>asserteq(1+cos(x)^2+cos(x)^2, 1+2*cos(x)^2)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(-1+symmath.cos(x)^2+symmath.cos(x)^2, -1+2*symmath.cos(x)^2)</code>
+<code>asserteq(-1+cos(x)^2+cos(x)^2, -1+2*cos(x)^2)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq( cos(x)^2 + sin(x)^2, 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( (cos(x)*y)^2 + (sin(x)*y)^2, y^2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>some more stuff</b><br>
+<code></code>
+</td><td>
 <tr><td>
 <b></b><br>
 <code></code>
@@ -817,15 +843,15 @@ init	$\sqrt{{\frac{1}{10}}{({{5} + {\sqrt{5}}})}}$	<br>
 prune	${({{\frac{1}{10}}{({{5} + {{5}^{({\frac{1}{2}})}}})}})}^{({\frac{1}{2}})}$	<br>
 expand	$\frac{{({{5} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}{{10}^{({\frac{1}{2}})}}$	<br>
 prune	$\frac{{({{5} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}{{10}^{({\frac{1}{2}})}}$	<br>
-factor	$\frac{{({{{{5}^{({\frac{1}{2}})}}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{10}^{({\frac{1}{2}})}}$	<br>
+factor	$\frac{{{{{5}^{({\frac{1}{2}})}}^{({\frac{1}{2}})}}} {{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}}}{{10}^{({\frac{1}{2}})}}$	<br>
 prune	$\frac{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}{{{{2}^{({\frac{1}{2}})}}} {{{5}^{({\frac{1}{4}})}}}}$	<br>
 expand	$\frac{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}{{{{2}^{({\frac{1}{2}})}}} {{{5}^{({\frac{1}{4}})}}}}$	<br>
 prune	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
-factor	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
+factor	$\frac{{{{2}^{({\frac{1}{2}})}}} {{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 prune	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 expand	$\frac{{({{{{2}} \cdot {{1}}} + {{{2}} \cdot {{{5}^{({\frac{1}{2}})}}}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 prune	$\frac{{({{2} + {{{2}} \cdot {{{5}^{({\frac{1}{2}})}}}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
-factor	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
+factor	$\frac{{{{2}^{({\frac{1}{2}})}}} {{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 prune	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 tidy	$\frac{\sqrt{{{2}} {{({{1} + {\sqrt{5}}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
@@ -836,10 +862,10 @@ tidy	$\frac{\sqrt{{{2}} {{({{1} + {\sqrt{5}}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
-	unit\test.lua:162: in function 'cb'<br>
+	unit\test.lua:167: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	unit\test.lua:6: in main chunk<br>
-	[C]: at 0x7ff6bde94950
+	[C]: at 0x7ff6d3744950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -868,15 +894,15 @@ init	$\sqrt{{\frac{1}{10}}{({{5} + {\sqrt{5}}})}}$	<br>
 prune	${({{\frac{1}{10}}{({{5} + {{5}^{({\frac{1}{2}})}}})}})}^{({\frac{1}{2}})}$	<br>
 expand	$\frac{{({{5} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}{{10}^{({\frac{1}{2}})}}$	<br>
 prune	$\frac{{({{5} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}{{10}^{({\frac{1}{2}})}}$	<br>
-factor	$\frac{{({{{{5}^{({\frac{1}{2}})}}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{10}^{({\frac{1}{2}})}}$	<br>
+factor	$\frac{{{{{5}^{({\frac{1}{2}})}}^{({\frac{1}{2}})}}} {{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}}}{{10}^{({\frac{1}{2}})}}$	<br>
 prune	$\frac{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}{{{{2}^{({\frac{1}{2}})}}} {{{5}^{({\frac{1}{4}})}}}}$	<br>
 expand	$\frac{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}{{{{2}^{({\frac{1}{2}})}}} {{{5}^{({\frac{1}{4}})}}}}$	<br>
 prune	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
-factor	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
+factor	$\frac{{{{2}^{({\frac{1}{2}})}}} {{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 prune	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 expand	$\frac{{({{{{2}} \cdot {{1}}} + {{{2}} \cdot {{{5}^{({\frac{1}{2}})}}}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 prune	$\frac{{({{2} + {{{2}} \cdot {{{5}^{({\frac{1}{2}})}}}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
-factor	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
+factor	$\frac{{{{2}^{({\frac{1}{2}})}}} {{{({{1} + {{5}^{({\frac{1}{2}})}}})}^{({\frac{1}{2}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 prune	$\frac{{({{{2}} {{({{1} + {{5}^{({\frac{1}{2}})}}})}}})}^{({\frac{1}{2}})}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 tidy	$\frac{\sqrt{{{2}} {{({{1} + {\sqrt{5}}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}{4}})}}}}$	<br>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
@@ -887,8 +913,8 @@ tidy	$\frac{\sqrt{{{2}} {{({{1} + {\sqrt{5}}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
-	unit\test.lua:162: in function 'cb'<br>
+	unit\test.lua:167: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	unit\test.lua:6: in main chunk<br>
-	[C]: at 0x7ff6bde94950
+	[C]: at 0x7ff6d3744950
 </td></tr>
