@@ -253,36 +253,8 @@
 <b></b><br>
 <code>asserteq( (x*y)/(x*y)^2, 1/(x*y) )</code>
 </td><td>
-expected $\frac{{{x}} {{y}}}{{({{{x}} {{y}}})}^{2}}$ to equal $\frac{1}{{{x}} {{y}}}$<br>
-instead found $\frac{{{x}} {{y}}}{{({{{x}} {{y}}})}^{2}}$ vs $\frac{1}{{{x}} {{y}}}$<br>
-lhs stack<br>
-init	$\frac{{{x}} {{y}}}{{({{{x}} {{y}}})}^{2}}$	<br>
-prune	$\frac{{{x}} {{y}}}{{({{{x}} {{y}}})}^{2}}$	<br>
-expand	$\frac{{{x}} {{y}}}{{{{{x}} {{y}}}} {{{{x}} {{y}}}}}$	<br>
-prune	$\frac{{{x}} {{y}}}{{({{{x}} {{y}}})}^{2}}$	<br>
-factor	$\frac{{{x}} {{y}}}{{{{x}^{2}}} {{{y}^{2}}}}$	<br>
-prune	$\frac{{{x}} {{y}}}{{({{{x}} {{y}}})}^{2}}$	<br>
-tidy	$\frac{{{x}} {{y}}}{{({{{x}} {{y}}})}^{2}}$	<br>
-rhs stack<br>
-init	$\frac{1}{{{x}} {{y}}}$	<br>
-prune	$\frac{1}{{{x}} {{y}}}$	<br>
-expand	$\frac{1}{{{x}} {{y}}}$	<br>
-prune	$\frac{1}{{{x}} {{y}}}$	<br>
-factor	$\frac{1}{{{x}} {{y}}}$	<br>
-prune	$\frac{1}{{{x}} {{y}}}$	<br>
-tidy	$\frac{1}{{{x}} {{y}}}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
-	[string "asserteq( (x*y)/(x*y)^2, 1/(x*y) )"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
-	unit\test.lua:169: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	unit\test.lua:6: in main chunk<br>
-	[C]: at 0x7ff7008a4950
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -904,7 +876,7 @@ tidy	$\frac{\sqrt{{{2}} {{({{1} + {\sqrt{5}}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}
 	unit\test.lua:169: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	unit\test.lua:6: in main chunk<br>
-	[C]: at 0x7ff7008a4950
+	[C]: at 0x7ff737084950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -955,5 +927,5 @@ tidy	$\frac{\sqrt{{{2}} {{({{1} + {\sqrt{5}}})}}}}{{{2}} \cdot {{{5}^{({\frac{1}
 	unit\test.lua:169: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	unit\test.lua:6: in main chunk<br>
-	[C]: at 0x7ff7008a4950
+	[C]: at 0x7ff737084950
 </td></tr>

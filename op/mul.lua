@@ -1045,16 +1045,32 @@ mul.rules = {
 			--]]
 	
 			-- [[ a^n * b^n => (a * b)^n
-			-- this rule here passes the unit tests
-			-- but it puts Platonic Solids in a simplification loop...
-			-- TODO respect mulCommutative
-			-- only test to your neighbor
-			-- and have a step above for pushing all commutative terms to one side
+			--[=[
+			this rule here passes the unit tests
+			but it puts Platonic Solids in a simplification loop...
+			TODO respect mulCommutative
+			only test to your neighbor
+			and have a step above for pushing all commutative terms to one side
+			
+			turns out this also kills: (x*y)/(x*y)^2 => 1/(x*y)
+			but this makes work: sqrt(sqrt(sqrt(5) + 1) * sqrt(sqrt(5) - 1)) => 2
+			
+			what if I only do this for sqrts?
+			that appeases the unit tests.  but how will it do in the wild?
+			--]=]
 			local pow = symmath.op.pow
 			for i=1,#expr-1 do
-				if pow:isa(expr[i]) then
+				if pow:isa(expr[i]) 
+				and div:isa(expr[i][2])
+				and Constant.isValue(expr[i][2][1], 1)
+				and Constant.isValue(expr[i][2][2], 2)
+				then
 					for j=i+1,#expr do
-						if pow:isa(expr[j]) then
+						if pow:isa(expr[j]) 
+						and div:isa(expr[j][2])
+						and Constant.isValue(expr[j][2][1], 1)
+						and Constant.isValue(expr[j][2][2], 2)
+						then
 							if expr[i][2] == expr[j][2] then
 								-- powers match, combine
 								local repl = (expr[i][1] * expr[j][1]):prune() ^ expr[i][2]
