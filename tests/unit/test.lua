@@ -61,6 +61,8 @@ asserteq((x/(-x)), -1)
 asserteq((-x-1)/(x+1), -1) 
 asserteq((x-1)/(1-x), -1)
 
+asserteq( (x*y)/(x*y)^2, 1/(x*y) )
+
 -- expand(): add div mul
 
 -- factor(): mul add div
