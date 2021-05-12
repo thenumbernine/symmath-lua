@@ -74,13 +74,16 @@ end
 
 function RealDomain:__tostring()
 	local s = ''
+	local sep = ''
 	if #self > 1 then s = s .. '{' end
 	for _,I in ipairs(self) do
-		s = s .. (I.includeStart and '[' or '(')
+		s = s .. sep
+			.. (I.includeStart and '[' or '(')
 			.. I.start
 			.. ', '
 			.. I.finish
 			.. (I.includeFinish and ']' or ')')
+		sep = ', '
 	end
 	if #self > 1 then s = s .. '}' end
 	return s
