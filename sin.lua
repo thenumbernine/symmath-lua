@@ -22,14 +22,14 @@ function sin:reverse(soln, index)
 	return symmath.asin(soln)
 end
 
-function sin:getRealDomain()
+function sin:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 
 	symmath = symmath or require 'symmath'
 	local RealSubset = RealSubset or symmath.set.RealSubset
 	
 	-- (-inf,inf) => (-1,1)
-	local Is = self[1]:getRealDomain()
+	local Is = self[1]:getRealRange()
 	if Is == nil then 
 		self.cachedSet = nil
 		return nil 

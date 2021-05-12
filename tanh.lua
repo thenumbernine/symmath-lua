@@ -20,6 +20,6 @@ function tanh:reverse(soln, index)
 	return symmath.atanh(soln)
 end
 
-tanh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_inc
+tanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
 return tanh

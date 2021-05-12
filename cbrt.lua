@@ -20,7 +20,7 @@ function cbrt:reverse(soln, index)
 	return soln^3
 end
 
-cbrt.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_inc
+cbrt.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
 cbrt.rules = table(cbrt.rules)
 

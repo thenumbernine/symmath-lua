@@ -148,7 +148,7 @@ function Constant:evaluateDerivative(deriv, ...)
 	return Constant(0)
 end
 
-function Constant:getRealDomain()
+function Constant:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	
 	symmath = symmath or require 'symmath'

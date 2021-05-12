@@ -179,7 +179,7 @@ function RealInterval:containsElement(x)
 
 	-- this function is specific to each function -- maybe make it a member?
 	-- but for now it is only used here, so only keep it here
-	local I = x:getRealDomain()
+	local I = x:getRealRange()
 	if I == nil then return end
 	assert(not RealInterval:isa(I))
 	

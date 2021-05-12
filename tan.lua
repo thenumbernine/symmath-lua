@@ -17,10 +17,10 @@ function tan:reverse(soln, index)
 	return require 'symmath.atan'(soln)
 end
 
-function tan:getRealDomain()
+function tan:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	-- (-inf,inf) => (-inf,inf) increasing, periodic
-	local Is = self[1]:getRealDomain()
+	local Is = self[1]:getRealRange()
 	if Is == nil then 
 		self.cachedSet = nil
 		return nil 

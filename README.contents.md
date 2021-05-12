@@ -422,7 +422,7 @@ Ex: `x = symmath.set.positiveReal:var'x'` creates a positive real variable.
 returns true/false if the set contains the element.
 returns nil if the answer is indeterminate.
 
-`Expression:getRealDomain()` = Returns the RealSubset object for this expression, specifying what possible values it can contain.
+`Expression:getRealRange()` = Returns the RealSubset object for the range of this expression, specifying what possible values it can contain.
 
 ## Dependencies:
 

@@ -24,6 +24,6 @@ function asinh:reverse(soln, index)
 	return symmath.sinh(soln)
 end
 
-asinh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_inc
+asinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
 return asinh

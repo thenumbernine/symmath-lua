@@ -227,13 +227,13 @@ function RealSubset.__mod(A,B)
 	return RealSubset(newints)
 end
 
--- commonly used versions of the Expression:getRealDomain function
+-- commonly used versions of the Expression:getRealRange function
 
 -- (-inf,inf) even, increasing from zero
 -- abs, cosh
 function RealSubset.getRealDomain_evenIncreasing(x)
 	if x.cachedSet then return x.cachedSet end
-	local Is = x[1]:getRealDomain()
+	local Is = x[1]:getRealRange()
 	if Is == nil then 
 		x.cachedSet = nil
 		return nil 
@@ -280,7 +280,7 @@ end
 -- sqrt, log
 function RealSubset.getRealDomain_posInc_negIm(x)
 	if x.cachedSet then return x.cachedSet end
-	local Is = x[1]:getRealDomain()
+	local Is = x[1]:getRealRange()
 	if Is == nil then 
 		x.cachedSet = nil
 		return nil 
@@ -308,7 +308,7 @@ end
 -- asin, atanh
 function RealSubset.getRealDomain_pmOneInc(x)
 	if x.cachedSet then return x.cachedSet end
-	local Is = x[1]:getRealDomain()
+	local Is = x[1]:getRealRange()
 	if Is == nil then 
 		x.cachedSet = nil
 		return nil 
@@ -334,7 +334,7 @@ end
 -- sinh, tanh, asinh, atan
 function RealSubset.getRealDomain_inc(x)
 	if x.cachedSet then return x.cachedSet end
-	local Is = x[1]:getRealDomain()
+	local Is = x[1]:getRealRange()
 	if Is == nil then 
 		x.cachedSet = nil
 		return nil 

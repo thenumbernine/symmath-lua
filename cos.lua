@@ -23,21 +23,21 @@ function cos:reverse(soln, index)
 	return symmath.acos(soln)
 end
 
-function cos:getRealDomain()
+function cos:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
 	
 	-- (-inf,inf) => (-1,1)
-	local Is = self[1]:getRealDomain()
+	local Is = self[1]:getRealRange()
 	if Is == nil then 
 		self.cachedSet = nil
 		return nil 
 	end
 	self.cachedSet = RealSubset(table.mapi(Is, function(I)
 		if I.start == -math.huge or I.finish == math.huge then return RealSubset(-1, 1, true, true) end
-		-- here I'm going to add pi/2 and then just copy the sin:getRealDomain() code
+		-- here I'm going to add pi/2 and then just copy the sin:getRealRange() code
 		I.start = I.start + math.pi/2
 		I.finish = I.finish + math.pi/2
 		-- map by quadrant

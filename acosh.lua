@@ -20,9 +20,9 @@ function acosh:evaluateDerivative(deriv, ...)
 end
 
 -- (1,inf) increasing, (-inf,1) imaginary
-function acosh:getRealDomain()
+function acosh:getRealRange()
 	if self.cachedSet then return self.cachedSet end
-	local Is = x[1]:getRealDomain()
+	local Is = x[1]:getRealRange()
 	if Is == nil then 
 		self.cachedSet = nil
 		return nil 

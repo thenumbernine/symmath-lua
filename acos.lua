@@ -22,9 +22,9 @@ end
 
 -- technically a Riemann surface with a repeating codomain
 -- (-1,1) => (-inf,inf) decreasing, (-inf,-1) and (1,inf) imaginary
-function acos:getRealDomain()
+function acos:getRealRange()
 	if self.cachedSet then return self.cachedSet end
-	local Is = self[1]:getRealDomain()
+	local Is = self[1]:getRealRange()
 	if Is == nil then 
 		self.cachedSet = nil
 		return nil 

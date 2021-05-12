@@ -16,9 +16,9 @@ function unm:reverse(soln, index)
 	return -soln
 end
 
-function unm:getRealDomain()
+function unm:getRealRange()
 	if self.cachedSet then return self.cachedSet end
-	local I = self[1]:getRealDomain()
+	local I = self[1]:getRealRange()
 	if I == nil then 
 		self.cachedSet = nil 
 		return nil

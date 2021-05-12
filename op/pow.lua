@@ -88,14 +88,14 @@ function pow:reverse(soln, index)
 	end
 end
 
-function pow:getRealDomain()
+function pow:getRealRange()
 	if self.cachedSet then return self.cachedSet end
-	local I = self[1]:getRealDomain()
+	local I = self[1]:getRealRange()
 	if I == nil then 
 		self.cachedSet = nil
 		return nil 
 	end
-	local I2 = self[2]:getRealDomain()
+	local I2 = self[2]:getRealRange()
 	if I2 == nil then 
 		self.cachedSet = nil
 		return nil 

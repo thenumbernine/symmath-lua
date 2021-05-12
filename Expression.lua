@@ -1563,7 +1563,7 @@ this isn't too far from Variable's explicit override, '.set' ... maybe I should 
 but what happens if an expression is initialized with a variable, the cachedSet is calculated and cached, then the Variable .set is changed? 
 well then, you can clear all nodes' .cachedSet by :clone()ing it.  if that's even undesired behavior.
 --]]
-function Expression:getRealDomain()
+function Expression:getRealRange()
 	return self.cachedSet
 end
 

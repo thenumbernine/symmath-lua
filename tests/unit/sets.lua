@@ -27,7 +27,7 @@ assert(set.complex:contains(x))
 (function() local x = set.RealSubset(-1,1,true,true):var'x' assert(set.real:contains(asin(x))) end)()
 (function() local x = set.RealSubset(-1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()
 
-print(acos(x):getRealDomain())
+print(acos(x):getRealRange())
 (function() local x = set.RealSubset(1,math.huge,true,false):var'x' assert(not set.real:contains(acos(x))) end)()	-- TODO eventually return uncertain / touches but not contains
 (function() local x = set.RealSubset(1,math.huge,false,false):var'x' assert(not set.real:contains(acos(x))) end)()	-- TODO return definitely false
 
@@ -41,75 +41,75 @@ print(acos(x):getRealDomain())
 
 
 -- x^2 should be positive
-assert((x^2):getRealDomain() == set.positiveReal)
+assert((x^2):getRealRange() == set.positiveReal)
 assert(set.nonNegativeReal:contains(x^2))
 
-assert((Constant(2)^2):getRealDomain() == set.RealSubset(4,4,true,true))
-assert((Constant(-2)^2):getRealDomain() == set.RealSubset(4,4,true,true))
+assert((Constant(2)^2):getRealRange() == set.RealSubset(4,4,true,true))
+assert((Constant(-2)^2):getRealRange() == set.RealSubset(4,4,true,true))
 
 assert(set.nonNegativeReal:contains(exp(x)))
 
 -- 1/x should be disjoint
-print((1/x):getRealDomain())
-assert((1/x):getRealDomain():contains(0) == false)
-assert((1/x):getRealDomain():contains(1))
+print((1/x):getRealRange())
+assert((1/x):getRealRange():contains(0) == false)
+assert((1/x):getRealRange():contains(1))
 
-assert((1/x):getRealDomain():contains(set.positiveReal))
+assert((1/x):getRealRange():contains(set.positiveReal))
 
--- ../../sin.lua:function sin:getRealDomain()
--- ../../sin.lua:	local Is = self[1]:getRealDomain()
--- ../../asinh.lua:asinh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_inc
--- ../../atan.lua:atan.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_inc
--- ../../cosh.lua:cosh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
--- ../../acos.lua:function acos:getRealDomain()
--- ../../acos.lua:	local Is = self[1]:getRealDomain()
--- ../../tanh.lua:tanh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_inc
--- ../../asin.lua:asin.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc
--- ../../sqrt.lua:sqrt.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm
--- ../../log.lua:log.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm
--- ../../acosh.lua:function acosh:getRealDomain()
--- ../../acosh.lua:	local Is = x[1]:getRealDomain()
--- ../../atanh.lua:atanh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc
--- ../../tan.lua:function tan:getRealDomain()
--- ../../tan.lua:	local Is = self[1]:getRealDomain()
--- ../../cos.lua:function cos:getRealDomain()
--- ../../cos.lua:	local Is = self[1]:getRealDomain()
--- ../../cos.lua:		-- here I'm going to add pi/2 and then just copy the sin:getRealDomain() code
--- ../../sinh.lua:sinh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_inc
--- ../../abs.lua:abs.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
+-- ../../sin.lua:function sin:getRealRange()
+-- ../../sin.lua:	local Is = self[1]:getRealRange()
+-- ../../asinh.lua:asinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
+-- ../../atan.lua:atan.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
+-- ../../cosh.lua:cosh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
+-- ../../acos.lua:function acos:getRealRange()
+-- ../../acos.lua:	local Is = self[1]:getRealRange()
+-- ../../tanh.lua:tanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
+-- ../../asin.lua:asin.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc
+-- ../../sqrt.lua:sqrt.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm
+-- ../../log.lua:log.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm
+-- ../../acosh.lua:function acosh:getRealRange()
+-- ../../acosh.lua:	local Is = x[1]:getRealRange()
+-- ../../atanh.lua:atanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc
+-- ../../tan.lua:function tan:getRealRange()
+-- ../../tan.lua:	local Is = self[1]:getRealRange()
+-- ../../cos.lua:function cos:getRealRange()
+-- ../../cos.lua:	local Is = self[1]:getRealRange()
+-- ../../cos.lua:		-- here I'm going to add pi/2 and then just copy the sin:getRealRange() code
+-- ../../sinh.lua:sinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
+-- ../../abs.lua:abs.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
 -- 
--- ../../Constant.lua:function Constant:getRealDomain()
--- ../../Expression.lua:function Expression:getRealDomain()
--- ../../Variable.lua:function Variable:getRealDomain()
+-- ../../Constant.lua:function Constant:getRealRange()
+-- ../../Expression.lua:function Expression:getRealRange()
+-- ../../Variable.lua:function Variable:getRealRange()
 -- 
--- ../../op/mul.lua:function mul:getRealDomain()
--- ../../op/mul.lua:	local I = self[1]:getRealDomain()
--- ../../op/mul.lua:		local I2 = self[i]:getRealDomain()
--- ../../op/div.lua:function div:getRealDomain()
--- ../../op/div.lua:	local I = self[1]:getRealDomain()
--- ../../op/div.lua:	local I2 = self[2]:getRealDomain()
--- ../../op/sub.lua:function sub:getRealDomain()
--- ../../op/sub.lua:	local I = self[1]:getRealDomain()
--- ../../op/sub.lua:		local I2 = self[i]:getRealDomain()
--- ../../op/add.lua:function add:getRealDomain()
--- ../../op/add.lua:	local I = self[1]:getRealDomain()
--- ../../op/add.lua:		local I2 = self[i]:getRealDomain()
--- ../../op/pow.lua:function pow:getRealDomain()
--- ../../op/pow.lua:	local I = self[1]:getRealDomain()
--- ../../op/pow.lua:	local I2 = self[2]:getRealDomain()
--- ../../op/unm.lua:function unm:getRealDomain()
--- ../../op/unm.lua:	local I = self[1]:getRealDomain()
+-- ../../op/mul.lua:function mul:getRealRange()
+-- ../../op/mul.lua:	local I = self[1]:getRealRange()
+-- ../../op/mul.lua:		local I2 = self[i]:getRealRange()
+-- ../../op/div.lua:function div:getRealRange()
+-- ../../op/div.lua:	local I = self[1]:getRealRange()
+-- ../../op/div.lua:	local I2 = self[2]:getRealRange()
+-- ../../op/sub.lua:function sub:getRealRange()
+-- ../../op/sub.lua:	local I = self[1]:getRealRange()
+-- ../../op/sub.lua:		local I2 = self[i]:getRealRange()
+-- ../../op/add.lua:function add:getRealRange()
+-- ../../op/add.lua:	local I = self[1]:getRealRange()
+-- ../../op/add.lua:		local I2 = self[i]:getRealRange()
+-- ../../op/pow.lua:function pow:getRealRange()
+-- ../../op/pow.lua:	local I = self[1]:getRealRange()
+-- ../../op/pow.lua:	local I2 = self[2]:getRealRange()
+-- ../../op/unm.lua:function unm:getRealRange()
+-- ../../op/unm.lua:	local I = self[1]:getRealRange()
 -- 
--- ../../set/RealSubset.lua:-- commonly used versions of the Expression:getRealDomain function
+-- ../../set/RealSubset.lua:-- commonly used versions of the Expression:getRealRange function
 -- ../../set/RealSubset.lua:function RealSubset.getRealDomain_evenIncreasing(x)
--- ../../set/RealSubset.lua:	local Is = x[1]:getRealDomain()
+-- ../../set/RealSubset.lua:	local Is = x[1]:getRealRange()
 -- ../../set/RealSubset.lua:function RealSubset.getRealDomain_posInc_negIm(x)
--- ../../set/RealSubset.lua:	local Is = x[1]:getRealDomain()
+-- ../../set/RealSubset.lua:	local Is = x[1]:getRealRange()
 -- ../../set/RealSubset.lua:function RealSubset.getRealDomain_pmOneInc(x)
--- ../../set/RealSubset.lua:	local Is = x[1]:getRealDomain()
+-- ../../set/RealSubset.lua:	local Is = x[1]:getRealRange()
 -- ../../set/RealSubset.lua:function RealSubset.getRealDomain_inc(x)
--- ../../set/RealSubset.lua:	local Is = x[1]:getRealDomain()
--- ../../set/RealInterval.lua:	local I = x:getRealDomain()
+-- ../../set/RealSubset.lua:	local Is = x[1]:getRealRange()
+-- ../../set/RealInterval.lua:	local I = x:getRealRange()
 
 ]=]), '\n')) do
 	env.exec(line)

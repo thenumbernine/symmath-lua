@@ -173,7 +173,7 @@ function Variable:dependsOn(x)
 	return false
 end
 
-function Variable:getRealDomain()
+function Variable:getRealRange()
 	if not rawequal(self.set, self.cachedSet) then self.cachedSet = nil end
 	if self.cachedSet then return self.cachedSet end
 

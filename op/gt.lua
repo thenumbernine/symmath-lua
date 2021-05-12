@@ -11,8 +11,8 @@ function gt:switch()
 end
 
 function gt:isTrue()
-	if self[1]:getRealDomain()[1].start > self[2]:getRealDomain():last().finish then return true end
-	if self[1]:getRealDomain():last().finish < self[2]:getRealDomain()[1].start then return false end
+	if self[1]:getRealRange()[1].start > self[2]:getRealRange():last().finish then return true end
+	if self[1]:getRealRange():last().finish < self[2]:getRealRange()[1].start then return false end
 end
 
 return gt

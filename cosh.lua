@@ -18,6 +18,6 @@ function cosh:reverse(soln, index)
 	return symmath.acosh(soln)
 end
 
-cosh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
+cosh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
 
 return cosh
