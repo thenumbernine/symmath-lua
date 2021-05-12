@@ -9,6 +9,25 @@
 
 <table border="1" style="border-collapse:collapse">
 <tr><td>
+<b>TODO do unit tests with the RealInterval / RealDomain operators</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert(set.positiveReal:contains(set.positiveReal))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
 <b></b><br>
 <code>assert(set.real:containsElement(x))</code>
 </td><td>
@@ -106,16 +125,20 @@
 <code></code>
 </td><td>
 <tr><td>
+<b></b><br>
+<code>print(acos(x):getRealDomain())</code>
+</td><td>
+nil
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
 <b>TODO eventually return uncertain / touches but not contains</b><br>
 <code>(function() local x = set.RealDomain(1,math.huge,true,false):var'x' assert(not set.real:contains(acos(x))) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
 <tr><td>
 <b>TODO return definitely false</b><br>
 <code>(function() local x = set.RealDomain(1,math.huge,false,false):var'x' assert(not set.real:contains(acos(x))) end)()</code>
@@ -163,6 +186,102 @@
 <tr><td>
 <b></b><br>
 <code>(function() local x = set.nonNegativeReal:var'x' assert(abs(sinh(x))() == sinh(x)) end)()</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>x^2 should be positive</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert((x^2):getRealDomain() == set.positiveReal)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.nonNegativeReal:contains(x^2))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert((Constant(2)^2):getRealDomain() == set.RealDomain(4,4,true,true))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert((Constant(-2)^2):getRealDomain() == set.RealDomain(4,4,true,true))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert(set.nonNegativeReal:contains(exp(x)))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>1/x should be disjoint</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>print((1/x):getRealDomain())</code>
+</td><td>
+{(-inf, -0)(0, inf)}
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert((1/x):getRealDomain():contains(0) == false)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert((1/x):getRealDomain():contains(1))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert((1/x):getRealDomain():contains(set.positiveReal))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>

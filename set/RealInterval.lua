@@ -353,15 +353,32 @@ function RealInterval.__div(A,B)
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
 	elseif A.start <= 0 and 0 <= A.finish and B.finish <= 0 then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
+
+	--[[
+	these produce disjoint domains, not intervals, 
+	so they cannot be handled in the RealInterval operator, 
+	but they are in the RealDomain operator
 	
+	better to err on the side of a larger domain than a smaller domain
+	and built-in operators don't support multiple return
+	so for these, I'll have the first result by (-inf,inf) - for doing operators on intervals
+	and then afterwards I'll return the separate disjoint intervals.
+	and then I'll change RealDomain to explicitly call the __div member and to look for multiple return values
+	--]]
 	elseif 0 <= A.start and B.start <= 0 and 0 <= B.finish then
-		return RealInterval(-math.huge, math.huge)
+		return RealInterval(-math.huge, math.huge),
+			A * RealInterval(-math.huge, 1/B.start, false, B.includeStart),
+			A * RealInterval(1/B.finish, math.huge, B.includeStart, false)
 	elseif A.finish <= 0 and B.start <= 0 and 0 <= B.finish then
-		return RealInterval(-math.huge, math.huge)
-	
+		return RealInterval(-math.huge, math.huge),
+			A * RealInterval(-math.huge, 1/B.start, false, B.includeStart),
+			A * RealInterval(1/B.finish, math.huge, B.includeStart, false)
 	elseif A.start <= 0 and 0 <= A.finish and B.start <= 0 and 0 <= B.finish then
-		return RealInterval(-math.huge, math.huge)
+		return RealInterval(-math.huge, math.huge),
+			A * RealInterval(-math.huge, 1/B.start, false, B.includeStart),
+			A * RealInterval(1/B.finish, math.huge, B.includeStart, false)
 	else
+		-- that should be all possible cases
 		error'here'
 	end
 end
@@ -393,9 +410,50 @@ function RealInterval.__pow(A,B)
 		return (RealInterval(1,1,true,true) / A) ^ -B
 	end
 
-	-- for 0 < a, 0 < c, (a,b) ^ (c,d) = (a^c, b^d)
-	-- mind you, for 0 <= c <= 1, the interval (a,b)^c will increase, but for 1 < c, (a,b)^c will decrease, but it will maintain its order 
-	-- this means (.5, .6) ^ (.5, 2) will reverse its order
+	--[[
+	if any of the (a,b) interval is negative:
+	if (c,d) *contains* a non-integer then our domain is not real and therefore invalid
+	however if it is solely an integer then, for odd integers, we preserve sign and apply power
+	for even integers we make it positive 
+	--]]
+	if A.start < 0 then
+		-- if it is an interval at all then there will be an irrational point within it, and our exponent will be a root and therefore not real and therefore invalid
+		-- if it not inclusive on both sides then it won't contain its sole point and therefore will be invalid
+		if not (B.start == B.finish and B.includeStart and B.includeFinish) then return nil end
+			
+		-- roots of negatives are not real:
+		if B.start ~= math.floor(B.start) then return nil end
+		
+		if B.start % 2 == 1 then 	-- odd: preserve sign
+			return RealInterval(
+				A.start ^ B.start,
+				A.finish ^ B.start,
+				A.includeStart and B.includeStart,
+				A.includeFinish and B.includeFinish)
+		else	-- even: make positive
+			-- if A's endpoints are on either side of 0 then 0 will be the range minimum
+			if A.finish > 0 then
+				return RealInterval(
+					0,
+					math.max(A.start ^ B.start, A.finish ^ B.start),
+					true,
+					A.includeFinish and B.includeFinish)
+			-- otherwise, with a<0 and b<0, we know the signs will be flipped
+			else
+				return RealInterval(
+					A.finish ^ B.start,
+					A.start ^ B.start,
+					A.includeStart and B.includeStart,
+					A.includeFinish and B.includeFinish)
+			end
+		end
+	end
+
+	--[[
+	for 0 < a, 0 < c, (a,b) ^ (c,d) = (a^c, b^d)
+	mind you, for 0 <= c <= 1, the interval (a,b)^c will increase, but for 1 < c, (a,b)^c will decrease, but it will maintain its order 
+	this means (.5, .6) ^ (.5, 2) will reverse its order
+	--]]
 	if 0 <= A.start then
 		if 0 <= B.start and B.finish <= 1 then
 			-- order will be preserved
@@ -425,6 +483,18 @@ function RealInterval.__pow(A,B)
 				A.finish ^ B.finish,
 				A.includeStart and B.includeStart,
 				A.includeFinish and B.includeFinish)
+		end
+
+		-- if 1<=a then even for c=-inf we will map to positives
+		-- but we still have the dilemma that c,d < 0 will go down and >0 will go up
+		-- if c,d < 0 then b will be the minimum
+		-- if c,d > 0 then a will be the minimum
+		if 1 <= A.start then
+			return RealInterval(
+				math.min(A.start ^ B.start, A.start ^ B.finish),
+				math.max(A.finish ^ B.start, A.finish ^ B.finish),
+				A.includeStart and B.includeStart,
+				A.includeFinish and B.includeFinish)	
 		end
 	end
 	

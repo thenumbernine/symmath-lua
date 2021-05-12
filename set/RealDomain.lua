@@ -193,7 +193,11 @@ function RealDomain.__div(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
-			newints:insert(ai / bi)
+			-- __div produce multiple disjoint intervals, and therefore can have multiple return
+			-- in the event of multiple intervals, the first value is throw-away
+			local is = table{ai:__div(bi)}
+			if #is > 1 then is:remove(1) end
+			newints:append(is)
 		end
 	end
 	return RealDomain(newints)

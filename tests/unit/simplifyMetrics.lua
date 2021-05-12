@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'unit'(env, 'simplifyMetrics')
+require 'symmath.tests.unit.unit'(env, 'simplifyMetrics')
 
 env.a = var'a'
 env.delta = Tensor:deltaSymbol()

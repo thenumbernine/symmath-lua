@@ -1,11 +1,15 @@
 #!/usr/bin/env lua
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'unit'(env, 'match')
+require 'symmath.tests.unit.unit'(env, 'match')
 
 env.x = set.real:var'x'
 
 for _,line in ipairs(string.split(string.trim([=[
+
+-- TODO do unit tests with the RealInterval / RealDomain operators
+
+assert(set.positiveReal:contains(set.positiveReal))
 
 assert(set.real:containsElement(x))
 assert(set.RealDomain():contains(x))
@@ -23,8 +27,8 @@ assert(set.complex:contains(x))
 (function() local x = set.RealDomain(-1,1,true,true):var'x' assert(set.real:contains(asin(x))) end)()
 (function() local x = set.RealDomain(-1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()
 
+print(acos(x):getRealDomain())
 (function() local x = set.RealDomain(1,math.huge,true,false):var'x' assert(not set.real:contains(acos(x))) end)()	-- TODO eventually return uncertain / touches but not contains
-
 (function() local x = set.RealDomain(1,math.huge,false,false):var'x' assert(not set.real:contains(acos(x))) end)()	-- TODO return definitely false
 
 (function() local x = set.RealDomain(1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()
@@ -34,6 +38,23 @@ assert(set.complex:contains(x))
 (function() local x = set.nonNegativeReal:var'x' assert(abs(x)() == x) end)()
 
 (function() local x = set.nonNegativeReal:var'x' assert(abs(sinh(x))() == sinh(x)) end)()
+
+
+-- x^2 should be positive
+assert((x^2):getRealDomain() == set.positiveReal)
+assert(set.nonNegativeReal:contains(x^2))
+
+assert((Constant(2)^2):getRealDomain() == set.RealDomain(4,4,true,true))
+assert((Constant(-2)^2):getRealDomain() == set.RealDomain(4,4,true,true))
+
+assert(set.nonNegativeReal:contains(exp(x)))
+
+-- 1/x should be disjoint
+print((1/x):getRealDomain())
+assert((1/x):getRealDomain():contains(0) == false)
+assert((1/x):getRealDomain():contains(1))
+
+assert((1/x):getRealDomain():contains(set.positiveReal))
 
 -- ../../sin.lua:function sin:getRealDomain()
 -- ../../sin.lua:	local Is = self[1]:getRealDomain()

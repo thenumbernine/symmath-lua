@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'unit'(env, 'symmetrizeIndexes')
+require 'symmath.tests.unit.unit'(env, 'symmetrizeIndexes')
 
 env.a = var'a'
 env.b = var'b'

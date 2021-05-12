@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'unit'(env, 'matrix')
+require 'symmath.tests.unit.unit'(env, 'matrix')
 
 for n in ([[a b c d t t_x t_y t_z]]):gmatch'%S+' do
 	env[n] = env.var(n)
