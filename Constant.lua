@@ -2,7 +2,7 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 local complex = require 'symmath.complex'
-local RealDomain 
+local symmath 
 
 --[[
 what about complex numbers?
@@ -150,11 +150,13 @@ end
 
 function Constant:getRealDomain()
 	if self.cachedSet then return self.cachedSet end
-	RealDomain = RealDomain or require 'symmath.set.RealDomain'
+	
+	symmath = symmath or require 'symmath'
+	local RealSubset = symmath.set.RealSubset
 	
 	if type(self.value) == 'number' then
 		-- should a Constant's domain be the single value of the constant?
-		self.cachedSet = RealDomain(self.value, self.value, true, true)
+		self.cachedSet = RealSubset(self.value, self.value, true, true)
 		return self.cachedSet
 	end
 	
@@ -163,7 +165,7 @@ function Constant:getRealDomain()
 			self.cachedSet = nil
 			return nil 
 		end
-		self.cachedSet = RealDomain(self.re, self.re, true, true)
+		self.cachedSet = RealSubset(self.re, self.re, true, true)
 		return self.cachedSet
 	end
 end

@@ -18,6 +18,6 @@ function sinh:reverse(soln, index)
 	return symmath.asinh(soln)
 end
 
-sinh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc
+sinh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_inc
 
 return sinh

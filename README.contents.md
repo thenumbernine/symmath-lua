@@ -396,7 +396,7 @@ Set classes so far:
 * symmath.set.Null = This is a set that contains nothing.
 * symmath.set.Complex
 * symmath.set.RealInterval = This is a single interval on the (extended) Real number line, inclusive or exclusive of its endpoints.
-* symmath.set.RealDomain = This is a union of multiple RealIntervals.  Maybe I should change the name to RealSubset?
+* symmath.set.RealSubset = This is a union of multiple RealIntervals.
 * symmath.set.Integer
 * symmath.set.EvenInteger
 * symmath.set.OddInteger
@@ -422,7 +422,7 @@ Ex: `x = symmath.set.positiveReal:var'x'` creates a positive real variable.
 returns true/false if the set contains the element.
 returns nil if the answer is indeterminate.
 
-`Expression:getRealDomain()` = Returns the RealDomain object for this expression, specifying what possible values it can contain.
+`Expression:getRealDomain()` = Returns the RealSubset object for this expression, specifying what possible values it can contain.
 
 ## Dependencies:
 

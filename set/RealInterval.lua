@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local math = require 'ext.math'
 local Universal = require 'symmath.set.Universal'
 local complex = require 'symmath.complex'
+local symmath
 
 -- in some places I'm using subclasses to represent subsets ...
 local RealInterval = class(Universal)
@@ -64,25 +65,26 @@ function RealInterval:containsNumber(x)
 	return result
 end
 
-local Variable
-local RealDomain 
 function RealInterval:containsVariable(x)
-	Variable = Variable or require 'symmath.Variable'
-	if Variable:isa(x) then
+	symmath = symmath or require 'symmath'
+	if symmath.Variable:isa(x) then
 		if x.value then 
 			return self:containsNumber(x.value) 
 		end
 		
 		-- right now :containsSet returns nil if the domains are overlapping
 		-- in that case, the variable *could* be inside 'self'
-		assert(not RealInterval:isa(x.set)) -- phasing this out -- use RealDomain as a single interval
-		RealDomain = RealDomain or require 'symmath.set.RealDomain'
-		if RealDomain:isa(x.set) then
+		assert(not RealInterval:isa(x.set)) -- phasing this out -- use RealSubset as a single interval
+		
+		symmath = symmath or require 'symmath'
+		local RealSubset = symmath.set.RealSubset
+		
+		if RealSubset:isa(x.set) then
 			if #x.set == 1 then
 				return self:containsSet(x.set)
 			else
 				-- if this interval contains all of x.set's intervals then we are good
-				return RealDomain(self.start, self.finish, self.containsStart, self.containsFinish):containsSet(x.set)
+				return RealSubset(self.start, self.finish, self.containsStart, self.containsFinish):containsSet(x.set)
 			end
 		end
 	end
@@ -168,7 +170,6 @@ function RealInterval:containsSet(I)
 	end
 end
 
-local RealDomain 
 function RealInterval:containsElement(x)
 	if type(x) == 'number' 
 	or complex:isa(x)
@@ -181,9 +182,12 @@ function RealInterval:containsElement(x)
 	local I = x:getRealDomain()
 	if I == nil then return end
 	assert(not RealInterval:isa(I))
-	RealDomain = RealDomain or require 'symmath.set.RealDomain'
-	if RealDomain:isa(I) then
-		if RealDomain(self.start, self.finish, self.includeStart, self.includeFinish):containsSet(I) then return true end
+	
+	symmath = symmath or require 'symmath'
+	local RealSubset = symmath.set.RealSubset
+	
+	if RealSubset:isa(I) then
+		if RealSubset(self.start, self.finish, self.includeStart, self.includeFinish):containsSet(I) then return true end
 	end
 end
 
@@ -357,13 +361,13 @@ function RealInterval.__div(A,B)
 	--[[
 	these produce disjoint domains, not intervals, 
 	so they cannot be handled in the RealInterval operator, 
-	but they are in the RealDomain operator
+	but they are in the RealSubset operator
 	
 	better to err on the side of a larger domain than a smaller domain
 	and built-in operators don't support multiple return
 	so for these, I'll have the first result by (-inf,inf) - for doing operators on intervals
 	and then afterwards I'll return the separate disjoint intervals.
-	and then I'll change RealDomain to explicitly call the __div member and to look for multiple return values
+	and then I'll change RealSubset to explicitly call the __div member and to look for multiple return values
 	--]]
 	elseif 0 <= A.start and B.start <= 0 and 0 <= B.finish then
 		return RealInterval(-math.huge, math.huge),

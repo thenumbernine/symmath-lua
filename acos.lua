@@ -2,7 +2,6 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local symmath
-local RealDomain 
 
 local acos = class(Function)
 acos.name = 'acos'
@@ -37,9 +36,12 @@ function acos:getRealDomain()
 			return nil 
 		end
 	end
-	RealDomain = RealDomain or require 'symmath.set.RealDomain'	
-	self.cachedSet = RealDomain(table.mapi(Is, function(I)
-		return RealDomain(
+	
+	symmath = symmath or require 'symmath'
+	local RealSubset = symmath.set.RealSubset
+	
+	self.cachedSet = RealSubset(table.mapi(Is, function(I)
+		return RealSubset(
 			math.acos(I.finish),
 			math.acos(I.start),
 			I.includeFinish,

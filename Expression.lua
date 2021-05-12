@@ -1556,6 +1556,7 @@ end
 --[[
 function for telling the interval of arbitrary expressions
 TODO maybe a getDomain()?  but I would like separate evaluation for real and complex versions of functions...
+technically getRealRange()? since domain is the valid input.
 
 ok for performance I'm going to cache this, in '.cachedSet'
 this isn't too far from Variable's explicit override, '.set' ... maybe I should just use .set for every node?

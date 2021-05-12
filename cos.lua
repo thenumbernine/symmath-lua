@@ -5,7 +5,6 @@ local Function = require 'symmath.Function'
 local frac = require 'symmath.op.div'
 local sqrt = require 'symmath.sqrt'
 local symmath
-local RealDomain
 
 local cos = class(Function)
 
@@ -26,15 +25,18 @@ end
 
 function cos:getRealDomain()
 	if self.cachedSet then return self.cachedSet end
-	RealDomain = RealDomain or require 'symmath.set.RealDomain'
+	
+	symmath = symmath or require 'symmath'
+	local RealSubset = symmath.set.RealSubset
+	
 	-- (-inf,inf) => (-1,1)
 	local Is = self[1]:getRealDomain()
 	if Is == nil then 
 		self.cachedSet = nil
 		return nil 
 	end
-	self.cachedSet = RealDomain(table.mapi(Is, function(I)
-		if I.start == -math.huge or I.finish == math.huge then return RealDomain(-1, 1, true, true) end
+	self.cachedSet = RealSubset(table.mapi(Is, function(I)
+		if I.start == -math.huge or I.finish == math.huge then return RealSubset(-1, 1, true, true) end
 		-- here I'm going to add pi/2 and then just copy the sin:getRealDomain() code
 		I.start = I.start + math.pi/2
 		I.finish = I.finish + math.pi/2
@@ -74,28 +76,28 @@ function cos:getRealDomain()
 				error'here'
 			end
 		elseif deltaQ >= 3 then
-			return RealDomain(-1, 1, true, true)
+			return RealSubset(-1, 1, true, true)
 		end
 		if behavior == 0 then
 			-- all increasing
-			return RealDomain(math.sin(I.start), math.sin(I.finish), I.includeStart, I.includeFinish)
+			return RealSubset(math.sin(I.start), math.sin(I.finish), I.includeStart, I.includeFinish)
 		elseif behavior == 1 then
 			-- all decreasing
-			return RealDomain(math.sin(I.finish), math.sin(I.start), I.includeFinish, I.includeStart)
+			return RealSubset(math.sin(I.finish), math.sin(I.start), I.includeFinish, I.includeStart)
 		elseif behavior == 2 then
 			-- increasing then decreasing
-			return RealDomain(
+			return RealSubset(
 				math.min(math.sin(I.start), math.sin(I.finish)), math.sin(math.pi/2),
 				I.includeStart or I.includeFinish, true)	
 		elseif behavior == 3 then
 			-- decreasing then increasing
-			return RealDomain(
+			return RealSubset(
 				math.sin(3*math.pi/2), math.max(math.sin(I.start), math.sin(I.finish)),
 				true, I.includeStart or I.includeFinish)
 		else
 			error'here'
 		end
-		return RealDomain(-1, 1, true, true)
+		return RealSubset(-1, 1, true, true)
 	end))
 	return self.cachedSet
 end

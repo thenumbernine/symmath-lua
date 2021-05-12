@@ -5,12 +5,13 @@ local Universal = require 'symmath.set.Universal'
 local RealInterval = require 'symmath.set.RealInterval'
 
 -- composites of intervals
--- maybe I should change the name to RealCompositeInterval or RealSubset
-local RealDomain = class(Universal)
+-- TODO better term?  
+-- the math term "subset" could also define things with :nfinite regions, which cannot be defined by this class
+local RealSubset = class(Universal)
 
-RealDomain.last = table.last
+RealSubset.last = table.last
 
-function RealDomain:init(start, finish, includeStart, includeFinish)
+function RealSubset:init(start, finish, includeStart, includeFinish)
 	if type(start) == 'table' then
 		for i,entry in ipairs(start) do
 			local m = getmetatable(entry) 
@@ -19,7 +20,7 @@ function RealDomain:init(start, finish, includeStart, includeFinish)
 			else
 				if RealInterval:isa(entry) then
 					table.insert(self, entry:clone())
-				elseif RealDomain:isa(entry) then
+				elseif RealSubset:isa(entry) then
 					for j,interval in ipairs(entry) do
 						table.insert(self, interval:clone())
 					end
@@ -41,7 +42,7 @@ function RealDomain:init(start, finish, includeStart, includeFinish)
 end
 
 -- merge any contained intervals that overlap
-function RealDomain:checkMerge()
+function RealSubset:checkMerge()
 	-- first sort intervals by start
 	table.sort(self, function(a,b)
 		return a.start < b.start
@@ -72,7 +73,7 @@ function RealDomain:checkMerge()
 	end
 end
 
-function RealDomain:__tostring()
+function RealSubset:__tostring()
 	local s = ''
 	local sep = ''
 	if #self > 1 then s = s .. '{' end
@@ -89,7 +90,7 @@ function RealDomain:__tostring()
 	return s
 end
 
-function RealDomain:containsNumber(x)
+function RealSubset:containsNumber(x)
 	local gotfalse
 	for _,I in ipairs(self) do
 		local containsI = I:containsNumber(x) 
@@ -99,7 +100,7 @@ function RealDomain:containsNumber(x)
 	return gotfalse
 end
 
-function RealDomain:containsVariable(x)
+function RealSubset:containsVariable(x)
 	local gotfalse
 	for _,I in ipairs(self) do
 		local containsI = I:containsVariable(x) 
@@ -109,19 +110,19 @@ function RealDomain:containsVariable(x)
 	return gotfalse
 end
 
-function RealDomain:intersects(set)
+function RealSubset:intersects(set)
 	if RealInterval:isa(set) then	
 		for _,selfi in ipairs(self) do
 			if selfi:intersects(set) then return true end
 		end
-	elseif RealDomain:isa(set) then
+	elseif RealSubset:isa(set) then
 		for _,seti in ipairs(set) do
 			if self:intersects(seti) then return true end
 		end
 	end
 end
 
-function RealDomain:containsSet(set)
+function RealSubset:containsSet(set)
 	if RealInterval:isa(set) then
 		-- if any of self's intervals contains 'set' then return true
 		local gotfalse
@@ -131,7 +132,7 @@ function RealDomain:containsSet(set)
 			if selfIcontains == false then gotfalse = false end
 		end
 		return gotfalse
-	elseif RealDomain:isa(set) then
+	elseif RealSubset:isa(set) then
 		-- if all of set's intervals are contained within this interval then return true
 		for _,setI in ipairs(set) do
 			local containsI = self:contains(setI)
@@ -142,7 +143,7 @@ function RealDomain:containsSet(set)
 	end
 end
 
-function RealDomain:containsElement(x)
+function RealSubset:containsElement(x)
 	local gotfalse
 	for _,I in ipairs(self) do
 		local containsI = I:containsElement(x) 
@@ -152,8 +153,8 @@ function RealDomain:containsElement(x)
 	return gotfalse
 end
 
-function RealDomain.__unm(A)
-	return RealDomain(
+function RealSubset.__unm(A)
+	return RealSubset(
 		table.mapi(A, function(I)
 			return -I
 		end)
@@ -162,37 +163,37 @@ end
 
 -- {[a1,b1],[a2,b]} + {[c1,d1],[c2,d2]}
 -- this becomes the union of the cartesian product of all set additions
-function RealDomain.__add(A,B)
+function RealSubset.__add(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
 			newints:insert(ai + bi)
 		end
 	end
-	return RealDomain(newints)
+	return RealSubset(newints)
 end
 
-function RealDomain.__sub(A,B)
+function RealSubset.__sub(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
 			newints:insert(ai - bi)
 		end
 	end
-	return RealDomain(newints)
+	return RealSubset(newints)
 end
 
-function RealDomain.__mul(A,B)
+function RealSubset.__mul(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
 			newints:insert(ai * bi)
 		end
 	end
-	return RealDomain(newints)
+	return RealSubset(newints)
 end
 
-function RealDomain.__div(A,B)
+function RealSubset.__div(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
@@ -203,43 +204,43 @@ function RealDomain.__div(A,B)
 			newints:append(is)
 		end
 	end
-	return RealDomain(newints)
+	return RealSubset(newints)
 end
 
-function RealDomain.__pow(A,B)
+function RealSubset.__pow(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
 			newints:insert(ai ^ bi)
 		end
 	end
-	return RealDomain(newints)
+	return RealSubset(newints)
 end
 
-function RealDomain.__mod(A,B)
+function RealSubset.__mod(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
 		for _,bi in ipairs(B) do
 			newints:insert(ai % bi)
 		end
 	end
-	return RealDomain(newints)
+	return RealSubset(newints)
 end
 
 -- commonly used versions of the Expression:getRealDomain function
 
 -- (-inf,inf) even, increasing from zero
 -- abs, cosh
-function RealDomain.getRealDomain_evenIncreasing(x)
+function RealSubset.getRealDomain_evenIncreasing(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealDomain()
 	if Is == nil then 
 		x.cachedSet = nil
 		return nil 
 	end
-	x.cachedSet = RealDomain(table.mapi(Is, function(I)
+	x.cachedSet = RealSubset(table.mapi(Is, function(I)
 		if I.finish <= 0 then
-			return RealDomain(
+			return RealSubset(
 				x.realFunc(I.finish),
 				x.realFunc(I.start),
 				I.includeFinish,
@@ -257,14 +258,14 @@ function RealDomain.getRealDomain_evenIncreasing(x)
 				finish = fStart
 				includeFinish = I.includeStart
 			end
-			return RealDomain(
+			return RealSubset(
 				x.realFunc(0),
 				finish,
 				true,
 				includeFinish
 			)
 		elseif 0 <= I.start then
-			return RealDomain(
+			return RealSubset(
 				x.realFunc(I.start),
 				x.realFunc(I.finish),
 				I.includeStart,
@@ -277,7 +278,7 @@ end
 
 -- (0,inf) increasing, (-inf,0) imaginary
 -- sqrt, log
-function RealDomain.getRealDomain_posInc_negIm(x)
+function RealSubset.getRealDomain_posInc_negIm(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealDomain()
 	if Is == nil then 
@@ -293,8 +294,8 @@ function RealDomain.getRealDomain_posInc_negIm(x)
 			return nil 
 		end
 	end
-	x.cachedSet = RealDomain(table.mapi(Is, function(I)
-		return RealDomain(
+	x.cachedSet = RealSubset(table.mapi(Is, function(I)
+		return RealSubset(
 			x.realFunc(I.start),
 			x.realFunc(I.finish),
 			I.includeStart,
@@ -305,7 +306,7 @@ end
 
 -- (-1,1) => (-inf,inf) increasing, (-inf,-1) and (1,inf) imaginary
 -- asin, atanh
-function RealDomain.getRealDomain_pmOneInc(x)
+function RealSubset.getRealDomain_pmOneInc(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealDomain()
 	if Is == nil then 
@@ -319,8 +320,8 @@ function RealDomain.getRealDomain_pmOneInc(x)
 			return nil 
 		end
 	end
-	x.cachedSet = RealDomain(table.mapi(Is, function(I)
-		return RealDomain(
+	x.cachedSet = RealSubset(table.mapi(Is, function(I)
+		return RealSubset(
 			x.realFunc(I.start),
 			x.realFunc(I.finish),
 			I.includeStart,
@@ -331,15 +332,15 @@ end
 
 -- (-inf,inf) increasing
 -- sinh, tanh, asinh, atan
-function RealDomain.getRealDomain_inc(x)
+function RealSubset.getRealDomain_inc(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealDomain()
 	if Is == nil then 
 		x.cachedSet = nil
 		return nil 
 	end
-	x.cachedSet = RealDomain(table.mapi(Is, function(I)
-		return RealDomain(
+	x.cachedSet = RealSubset(table.mapi(Is, function(I)
+		return RealSubset(
 			x.realFunc(I.start),
 			x.realFunc(I.finish),
 			I.includeStart,
@@ -348,4 +349,4 @@ function RealDomain.getRealDomain_inc(x)
 	return x.cachedSet
 end
 
-return RealDomain
+return RealSubset

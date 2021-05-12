@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local complex = require 'symmath.complex'
 local Expression = require 'symmath.Expression'
+local symmath
 
 --[[
 fields:
@@ -172,24 +173,25 @@ function Variable:dependsOn(x)
 	return false
 end
 
-local RealDomain
 function Variable:getRealDomain()
 	if not rawequal(self.set, self.cachedSet) then self.cachedSet = nil end
 	if self.cachedSet then return self.cachedSet end
+
+	symmath = symmath or require 'symmath'
+	local RealSubset = symmath.set.RealSubset
 	
-	RealDomain = RealDomain or require 'symmath.set.RealDomain'
 	if self.value then 
 		if type(self.value) == 'number' then
-			self.cachedSet = RealDomain(self.value, self.value, true, true)
+			self.cachedSet = RealSubset(self.value, self.value, true, true)
 			return self.cachedSet
 		elseif complex:isa(self.value) and self.value.im == 0 then
-			self.cachedSet = RealDomain(self.value.re, self.value.re, true, true)
+			self.cachedSet = RealSubset(self.value.re, self.value.re, true, true)
 			return self.cachedSet
 		end
 	end
 	
 	-- TODO why test this?  when won't it be true?
-	if RealDomain:isa(self.set) then
+	if RealSubset:isa(self.set) then
 		self.cachedSet = self.set
 		return self.cachedSet
 	end

@@ -1,7 +1,6 @@
 local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local symmath
-local RealDomain
 
 local tan = class(Function)
 tan.name = 'tan'
@@ -26,22 +25,25 @@ function tan:getRealDomain()
 		self.cachedSet = nil
 		return nil 
 	end
-	RealDomain = RealDomain or require 'symmath.set.RealDomain'
-	self.cachedSet = RealDomain(table.mapi(Is, function(I)
+
+	symmath = symmath or require 'symmath'
+	local RealSubset = RealSubset or symmath.set.RealSubset
+	
+	self.cachedSet = RealSubset(table.mapi(Is, function(I)
 		local startHalf = math.floor((I.start + math.pi) / (2 * math.pi))
 		local finishHalf = math.floor((I.finish + math.pi) / (2 * math.pi))
 		if startHalf == finishHalf then
-			return RealDomain(self.realFunc(I.start), self.realFunc(I.finish), I.includeStart, I.includeFinish)
+			return RealSubset(self.realFunc(I.start), self.realFunc(I.finish), I.includeStart, I.includeFinish)
 		end
 		-- if we cross one period then we have to include the separate infinities
 		if startHalf + 1 == finishHalf then
-			return RealDomain{
+			return RealSubset{
 				{-math.huge, self.realFunc(I.finish), false, I.includeFinish},
 				{self.realFunc(I.start), math.huge, I.includeStart, false},
 			}
 		end
 		-- if we span more than one period then we are covering the entire reals
-		return RealDomain()
+		return RealSubset()
 	end))
 	return self.cachedSet
 end

@@ -19,7 +19,7 @@ function abs:reverse(soln, index)
 	return soln, -soln
 end
 
-abs.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_evenIncreasing
+abs.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
 
 abs.rules = {
 	Prune = {

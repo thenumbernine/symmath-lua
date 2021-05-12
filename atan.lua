@@ -18,6 +18,6 @@ function atan:reverse(soln, index)
 end
 
 -- technically this is a Riemann surface, and the codomain repeats every pi
-atan.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc
+atan.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_inc
 
 return atan

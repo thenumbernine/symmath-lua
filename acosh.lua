@@ -1,7 +1,6 @@
 local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local symmath
-local RealDomain
 
 local acosh = class(Function)
 acosh.name = 'acosh'
@@ -34,9 +33,12 @@ function acosh:getRealDomain()
 			return nil 
 		end
 	end
-	RealDomain = RealDomain or require 'symmath.set.RealDomain'
-	self.cachedSet = RealDomain(table.mapi(Is, function(I)
-		return RealDomain(
+	
+	symmath = symmath or require 'symmath'
+	local RealSubset = symmath.set.RealSubset
+	
+	self.cachedSet = RealSubset(table.mapi(Is, function(I)
+		return RealSubset(
 			x.realFunc(I.start),
 			x.realFunc(I.finish),
 			I.includeStart,
