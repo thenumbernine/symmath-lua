@@ -10,7 +10,7 @@ return function(expr, vars)
 
 	for k,v in pairs(vars) do
 		local k = k
-		if type(k) == 'string' then k = var(k) end
+		if type(k) == 'string' then k = symmath.var(k) end
 		-- clone so we can handle numbers and variable constants
 		expr = expr:replace(k, symmath.clone(v))
 	end
