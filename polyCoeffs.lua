@@ -1,3 +1,4 @@
+-- I would use 'dependsOn', but that also returns true if a variable is defined as depending on this variable
 local function has(expr, x)
 	local found = false
 	expr:map(function(y)
@@ -8,6 +9,7 @@ end
 
 -- if expr == x^n for some nonnegative integer n then returns n
 -- otherwise returns nil
+-- TODO use :match() maybe?  add support for Wildcard matching only constants? only to a specific class?
 local function isXToTheNth(expr, x)
 	if expr == x then return 1 end
 	local pow = require 'symmath.op.pow'
@@ -90,48 +92,19 @@ local function processTerm(coeffs, expr, x)
 end
 
 -- assumes this is in a add -> mul form
--- checks if it's in a div -> add -> mul form, and (if so) tosses the denominator
 -- returns coefficients of a non-equation expression
 -- such that (sum for n=0 to table.max(result) of x^n * result[n]) + result.extra == expr
 return function(expr, x)
---print('polyCoeffs',expr,x)
-	local add = require 'symmath.op.add'
-	local div = require 'symmath.op.div'
-	local mul = require 'symmath.op.mul'
-	local Constant = require 'symmath.Constant'
-
 	local ExpandPolynomial = require 'symmath.visitor.ExpandPolynomial'
 	expr = ExpandPolynomial()(expr)
 	expr = expr():factorDivision()
 	
-	-- ... but don't run tidy (to keep unms consts from being factored out) ... so, here's a final prune ...
-	local prune = require 'symmath.prune'
-	expr = prune(expr)
---print('simplifying',expr)
-	--simplify/canoncial form is atm div -> add -> mul
-	-- so a), cross-multiply denominator (if it's there)
-	-- b) solve polynomial 
-	
-	-- here is the equivalent of multipling by denomiators
-	if div:isa(expr) then
-		expr = expr[1]	-- cross multiply the denom across with the zero 
-	end
-	
 	-- group terms by polynomial coefficients
 	local coeffs = {}	-- result = coeffs[n] * x^n + coeffs.extra, where coeffs.extra holds all the nonlinear x references
 
-	if not add:isa(expr) then
---print('not add')
-		processTerm(coeffs, expr, x)
-	else
---print('is add')
-		for i=#expr,1,-1 do
-			processTerm(coeffs, expr[i], x)
-		end
+	for term in expr:iteradd() do
+		processTerm(coeffs, term, x)
 	end
-
---print('got coeffs')
---for k,v in pairs(coeffs) do print(k,v) end
 
 	return coeffs
 end

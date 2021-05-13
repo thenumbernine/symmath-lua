@@ -1,4 +1,5 @@
 local class = require 'ext.class'
+local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local symmath
 
@@ -27,7 +28,7 @@ function tan:getRealRange()
 	end
 
 	symmath = symmath or require 'symmath'
-	local RealSubset = RealSubset or symmath.set.RealSubset
+	local RealSubset = symmath.set.RealSubset
 	
 	self.cachedSet = RealSubset(table.mapi(Is, function(I)
 		local startHalf = math.floor((I.start + math.pi) / (2 * math.pi))

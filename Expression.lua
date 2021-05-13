@@ -7,7 +7,7 @@ local Expression = class()
 
 -- no circular dependencies, so load as you need these:
 local symmath
-local Array, Constant, Derivative, Equation, Invalid, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, distributeDivision, div, eval, expand, factor, factorDivision, inf, inverse, map, mod, mul, polyCoeffs, pow, prune, sub, symmath, tableCommutativeEqual, tidy, transpose, unm, wedge
+local Array, Constant, Derivative, Equation, Invalid, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, distributeDivision, div, eval, expand, factor, factorDivision, inf, inverse, map, mod, mul, pow, prune, sub, symmath, tableCommutativeEqual, tidy, transpose, unm, wedge
 local eq, ne, gt, ge, lt, le
 
 Expression.precedence = 1
@@ -343,10 +343,13 @@ Expression.tidy = function(...)
 	return tidy(...) 
 end
 Expression.simplify = require 'symmath.simplify'
+
+local polyCoeffs
 Expression.polyCoeffs = function(...) 
 	polyCoeffs = polyCoeffs or require 'symmath.polyCoeffs'
 	return polyCoeffs(...) 
 end
+
 Expression.eval = function(...) 
 	eval = eval or require 'symmath.eval'
 	return eval(...) 

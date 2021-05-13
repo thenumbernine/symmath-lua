@@ -2,8 +2,6 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Function = require 'symmath.Function'
-local frac = require 'symmath.op.div'
-local sqrt = require 'symmath.sqrt'
 local symmath
 
 local sin = class(Function)
@@ -26,7 +24,7 @@ function sin:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 
 	symmath = symmath or require 'symmath'
-	local RealSubset = RealSubset or symmath.set.RealSubset
+	local RealSubset = symmath.set.RealSubset
 	
 	-- (-inf,inf) => (-1,1)
 	local Is = self[1]:getRealRange()
@@ -98,6 +96,8 @@ function sin:getRealRange()
 	return self.cachedSet
 end
 
+local frac = require 'symmath.op.div'
+local sqrt = require 'symmath.sqrt'
 sin.lookup = {
 	[3] = {
 		[1] = frac(sqrt(3),2),						-- cos(π/6) = sin(π/3)
