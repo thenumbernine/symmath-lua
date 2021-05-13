@@ -71,7 +71,7 @@ ${{{ e}^z}_z} = {1}$
 <br>
 ${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]}}$
 <br>
-${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  {1} - {{cos\left(  \phi\right)}^{2}} &  -{{{cos\left(  \phi\right)}} {{sin\left(  \phi\right)}}} &  0 \\  -{{{cos\left(  \phi\right)}} {{sin\left(  \phi\right)}}} &  {cos\left(  \phi\right)}^{2} &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
+${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  {sin\left(  \phi\right)}^{2} &  -{{{cos\left(  \phi\right)}} {{sin\left(  \phi\right)}}} &  0 \\  -{{{cos\left(  \phi\right)}} {{sin\left(  \phi\right)}}} &  {cos\left(  \phi\right)}^{2} &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
 <br>
 ${{{{ c}_a}_b}^c} = {0}$
 <br>
@@ -85,7 +85,7 @@ ${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
 <br>
 metric determinant:	${det(g)} = {{r}^{2}}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{{\frac{1}{2}}{({1})}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
 <br>
 commutation coefficients:
 ${{{{ c}_a}_b}^c} = {0}$
@@ -220,7 +220,7 @@ volume integral: 	${{r}} {{\Delta \phi}} \cdot {{\Delta z}}$
 <br>
 finite volume (0,0)-form:
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{{\frac{1}{{\mathcal{V}(x_C)}}}{({1})}}} {{({{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}} \cdot {{{F^{\phi}(\phi_R)}}}} - {{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}} \cdot {{{F^{\phi}(\phi_L)}}}}}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{{J(z_R)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_R)}}} \cdot {{{F^{z}(z_R)}}}} - {{{{J(z_L)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_L)}}} \cdot {{{F^{z}(z_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}} \cdot {{{F^{\phi}(\phi_R)}}}} - {{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}} \cdot {{{F^{\phi}(\phi_L)}}}}}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({{{{{J(z_R)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_R)}}} \cdot {{{F^{z}(z_R)}}}} - {{{{J(z_L)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_L)}}} \cdot {{{F^{z}(z_L)}}}}}\right)})}})}}} + {{S(x_C)}}})}}}}$
 <br>
 
 <br>
@@ -232,7 +232,7 @@ ${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{r}} 
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{{{F^{\phi}(\phi_L)}}} \cdot {{\Delta t}} \cdot {{{\frac{1}{\Delta \phi}}{({1})}}}} + {{{-1}} {{{F^{\phi}(\phi_R)}}} \cdot {{\Delta t}} \cdot {{{\frac{1}{\Delta \phi}}{({1})}}}} + {{{{F^{z}(z_L)}}} \cdot {{\Delta t}} \cdot {{{\frac{1}{\Delta z}}{({1})}}}} + {{{-1}} {{{F^{z}(z_R)}}} \cdot {{\Delta t}} \cdot {{{\frac{1}{\Delta z}}{({1})}}}} + {{{{S(x_C)}}} \cdot {{\Delta t}}} + {{u(x_C, t_L)}}}$
+${{u(x_C, t_R)}} = {{{{{F^{\phi}(\phi_L)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{\Delta \phi}}}} + {{{-1}} {{{F^{\phi}(\phi_R)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{\Delta \phi}}}} + {{{{F^{z}(z_L)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{\Delta z}}}} + {{{-1}} {{{F^{z}(z_R)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{\Delta z}}}} + {{{{S(x_C)}}} \cdot {{\Delta t}}} + {{u(x_C, t_L)}}}$
 <br>
 
 <br>

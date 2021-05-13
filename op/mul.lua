@@ -556,16 +556,6 @@ function mul:distribute()
 end
 
 mul.rules = {
-	Eval = {
-		{apply = function(eval, expr)
-			local result = 1
-			for _,x in ipairs(expr) do
-				result = result * eval:apply(x)
-			end
-			return result
-		end},
-	},
-
 	Expand = {
 		{apply = function(expand, expr)
 			local dstr = expr:distribute()

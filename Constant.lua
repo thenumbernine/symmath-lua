@@ -171,12 +171,6 @@ function Constant:getRealRange()
 end
 
 Constant.rules = {
-	Eval = {
-		{apply = function(eval, expr)
-			return expr.value
-		end},
-	},
-
 	Tidy = {
 		{apply = function(tidy, expr)
 			-- for formatting's sake ...

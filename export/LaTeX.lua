@@ -25,6 +25,19 @@ local LaTeX = class(Export)
 
 LaTeX.name = 'LaTeX'
 
+-- wrappers for output.  common ones are $ $ or \( \)
+LaTeX.openSymbol = '$'
+LaTeX.closeSymbol = '$'
+
+--[[
+matrix open/close
+common options:
+	\left[ \begin{matrix} \end{matrix} \right]
+	\begin{pmatrix} \end{pmatrix}
+--]]
+LaTeX.matrixOpenSymbol = '\\left[ \\begin{matrix}'
+LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
+
 -- just like super except uses a table combine
 function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local node = parentNode[childIndex]
@@ -268,11 +281,11 @@ LaTeX.lookupTable = {
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
 		
-		local result = table(omit{'\\left[', '\\begin{matrix}'})
+		local result = table(omit{self.matrixOpenSymbol})
 		result:append(omit(tableConcat(range(#expr):map(function(i)
 			return omit(self:apply(expr[i]))
 		end), ' \\\\')))
-		result:append(omit{'\\end{matrix}', '\\right]'})
+		result:append(omit{self.matrixCloseSymbol})
 		return omit(result)
 	end,
 	[require 'symmath.Matrix'] = function(self, expr)
@@ -292,9 +305,9 @@ LaTeX.lookupTable = {
 			if #expr > 1 then rows[i] = omit(rows[i]) end
 		end
 		
-		local result = table{'\\left[', '\\begin{matrix}'}
+		local result = table{self.matrixOpenSymbol}
 		result:append(omit(tableConcat(rows, ' \\\\')))
-		result:append{'\\end{matrix}', '\\right]'}
+		result:append{self.matrixCloseSymbol}
 		return omit(result)
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
@@ -451,8 +464,6 @@ function LaTeX:applyLaTeX(...)
 	return flatten(result)--:gsub('%s+', ' ')
 end
 
-LaTeX.openSymbol = '$'
-LaTeX.closeSymbol = '$'
 function LaTeX:__call(...)
 	local result = self:applyLaTeX(...)
 	result = string.trim(result)

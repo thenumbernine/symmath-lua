@@ -21,12 +21,6 @@ function Derivative:init(...)
 end
 
 Derivative.rules = {
-	Eval = {
-		{apply = function(eval, expr)
-			error("cannot evaluate derivative"..tostring(expr)..".  try replace()ing derivatives.")
-		end},
-	},
-
 	Prune = {
 
 		-- d/dx{y_i} = {dy_i/dx}

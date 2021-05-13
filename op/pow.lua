@@ -105,13 +105,6 @@ function pow:getRealRange()
 end
 
 pow.rules = {
-	Eval = {
-		{apply = function(eval, expr)
-			local a, b = table.unpack(expr)
-			return eval:apply(a) ^ eval:apply(b)
-		end},
-	},
-
 	Expand = {
 		{apply = function(expand, expr)
 			symmath = symmath or require 'symmath'

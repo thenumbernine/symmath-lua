@@ -11,12 +11,4 @@ function Invalid:evaluateDerivative(deriv, ...)
 	return self
 end
 
-Invalid.rules = {
-	Eval = {
-		{apply = function(eval, expr)
-			return 0/0
-		end},
-	},
-}
-
 return Invalid

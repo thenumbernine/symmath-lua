@@ -28,12 +28,6 @@ function unm:getRealRange()
 end
 
 unm.rules = {
-	Eval = {
-		{apply = function(eval, expr)
-			return -eval:apply(expr[1])
-		end},
-	},
-
 	Expand = {
 		{apply = function(expand, expr)
 			return expand:apply(-1 * expr[1])

@@ -730,16 +730,6 @@ function ProdLists:__tostring()
 end
 
 add.rules = {
-	Eval = {
-		{apply = function(eval, expr)
-			local result = 0
-			for _,x in ipairs(expr) do
-				result = result + eval:apply(x)
-			end
-			return result
-		end},
-	},
-
 	Factor = {
 		{apply = function(factor, expr)
 			assert(#expr > 1)

@@ -51,16 +51,6 @@ function sub:getRealRange()
 end
 
 sub.rules = {
-	Eval = {
-		{apply = function(eval, expr)
-			local result = eval:apply(expr[1])
-			for i=2,#expr do
-				result = result - eval:apply(expr[i])
-			end
-			return result
-		end},
-	},
-	
 	Expand = {
 		{apply = function(expand, expr)
 			symmath = symmath or require 'symmath'

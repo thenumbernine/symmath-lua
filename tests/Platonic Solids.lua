@@ -358,7 +358,7 @@ printbr()
 
 local cache = {}
 local cacheFilename = 'Platonic Solids - cache.lua'
-if io.fileexists(cacheFilename) then
+if os.fileexists(cacheFilename) then
 	cache = load('return '..io.readfile(cacheFilename), nil, nil, env)()
 end
 

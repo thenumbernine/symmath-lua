@@ -241,7 +241,6 @@ build = {
 		["symmath.tests.wave equation in spacetime - flux eigenvectors"] = "tests/wave equation in spacetime - flux eigenvectors.lua",
 		["symmath.tidy"] = "tidy.lua",
 		["symmath.visitor.DistributeDivision"] = "visitor/DistributeDivision.lua",
-		["symmath.visitor.Eval"] = "visitor/Eval.lua",
 		["symmath.visitor.Expand"] = "visitor/Expand.lua",
 		["symmath.visitor.ExpandPolynomial"] = "visitor/ExpandPolynomial.lua",
 		["symmath.visitor.Factor"] = "visitor/Factor.lua",

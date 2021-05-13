@@ -17,13 +17,6 @@ I need a new system for pattern-matching
 --]]
 
 Integral.rules = {
-	-- TODO numerical integration methods
-	Eval = {
-		{apply = function(eval, expr)
-			error("cannot evaluate integral "..tostring(expr)..".  try replace()ing integrals.")
-		end},
-	},
-
 	Prune = {
 		{apply = function(prune, expr)
 			local symmath = require 'symmath'

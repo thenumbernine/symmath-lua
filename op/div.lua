@@ -57,13 +57,6 @@ div.rules = {
 		end},
 	},
 
-	Eval = {
-		{apply = function(eval, expr)
-			local a, b = table.unpack(expr)
-			return eval:apply(a) / eval:apply(b)
-		end},
-	},
-
 	--[[
 	-- hmm ... raise everything to the lowest power? 
 	-- if there are any sqrts, square everything?

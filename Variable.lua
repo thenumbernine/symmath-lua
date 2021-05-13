@@ -200,16 +200,4 @@ function Variable:getRealRange()
 	-- what about Integer?  Integer's RealInterval is discontinuous ...
 end
 
-Variable.rules = {
-	Eval = {
-		{apply = function(eval, expr)
-			if expr.value then 
-				assert(type(expr.value) == 'number')
-				return expr.value
-			end
-			error("Eval: Variable "..tostring(expr).." wasn't given a value, or replace()'d with a Constant")
-		end},
-	},
-}
-
 return Variable
