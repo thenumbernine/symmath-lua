@@ -835,8 +835,6 @@ Output CDN URLs:
 
 [tests/output/ADM metric](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric.html)
 
-[tests/output/Acoustic Black Hole](https://thenumbernine.github.io/symmath/tests/output/Acoustic%20Black%20Hole.html)
-
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
 [tests/output/BSSN - generate - cartesian - single-line](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20cartesian%20%2d%20single%2dline.html)
