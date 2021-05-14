@@ -40,6 +40,9 @@ LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
 --  but then tidy() wouldn't be guaranteed div -> add -> mul ...
 LaTeX.showDivConstAsMulFrac = false
 
+-- flag for outputting e^x as exp(x)
+LaTeX.showExpAsFunction = true
+
 -- just like super except uses a table combine
 function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local node = parentNode[childIndex]
@@ -59,6 +62,43 @@ function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	s:insert('}')
 	return s
 end
+
+LaTeX.builtinLaTeXFuncNames = setmetatable(table{
+	'arccos',		-- TODO I use the math lib names: asin, acos, atan
+	'arcsin',
+	'arctan',
+	'arg',
+	'cos',
+	'cosh',
+	'cot',
+	'coth',
+	'csc',
+	'deg',
+	'det',
+	'dim',
+	'exp',
+	'gcd',
+	'hom',
+	'inf',
+	'injlim',
+	'ker',
+	'lg',
+	'lim',
+	'liminf',
+	'limsup',
+	'ln',
+	'log',
+	'max',
+	'min',
+	'Pr',
+	'projlim',
+	'sec',
+	'sin',
+	'sinh',
+	'sup',
+	'tan',
+	'tanh',
+}:mapi(function(v) return true, v end), nil)
 
 local function prepareName(name)
 	if name:find'%^' or name:find'_' then
@@ -98,7 +138,17 @@ LaTeX.lookupTable = {
 		return table{'?'}
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return table{prepareName(expr.name), '\\left(', 
+		local name = expr.name
+	
+		-- check for builtin function names:
+		-- only exact matches
+		local found = self.builtinLaTeXFuncNames[name]
+		if found then name = '\\'..name end
+
+		name = prepareName(name)
+
+
+		return table{prepareName(name), '\\left(', 
 			tableConcat(range(#expr):map(function(i)
 				return self:apply(expr[i])
 			end), ','),
@@ -183,6 +233,14 @@ LaTeX.lookupTable = {
 		}
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
+		
+		local symmath = require 'symmath'
+		if self.showExpAsFunction
+		and rawequal(expr[1], symmath.e) 
+		then
+			return table{'\\exp', '\\left(', self:apply(expr[2]), '\\right)'}
+		end
+
 		local res = table()
 		for i=1,#expr do
 			if i > 1 then res:insert(expr:getSepStr(self)) end
@@ -193,9 +251,21 @@ LaTeX.lookupTable = {
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'
 		local name = expr.name
+		
+		-- this is basically 'fixVariableNames' but forced for builtin
+		if rawequal(expr, symmath.i) then
+			name = 'i'
+		end
+		if rawequal(expr, symmath.e) then
+			name = 'e'
+		end
 		if rawequal(expr, symmath.pi) then
 			name = '\\pi'
 		end
+		if rawequal(expr, symmath.infty) then
+			name = '\\infty'
+		end
+		
 		if symmath.fixVariableNames then
 			name = symmath.tostring:fixVariableName(name)
 		end
