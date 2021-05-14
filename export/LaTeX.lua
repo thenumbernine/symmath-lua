@@ -35,6 +35,11 @@ common options:
 LaTeX.matrixOpenSymbol = '\\left[ \\begin{matrix}'
 LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
 
+-- set this to 'true' to automatically convert in output "x/2" into "1/2 x"
+-- TODO shouldn't this step just be done in :tidy() ?  
+--  but then tidy() wouldn't be guaranteed div -> add -> mul ...
+LaTeX.showDivConstAsMulFrac = false
+
 -- just like super except uses a table combine
 function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local node = parentNode[childIndex]
@@ -152,21 +157,24 @@ LaTeX.lookupTable = {
 	[require 'symmath.op.div'] = function(self, expr)
 		local Constant = require 'symmath.Constant'
 		local Variable = require 'symmath.Variable'
-		-- TODO if the second term is small enough ...
+		
+		-- if the second term is small enough ...
 		-- for now, just look for single constants or Variables (or both?)
 		-- this could be done in tidy ...
-		local a,b = table.unpack(expr)
-		if not Constant:isa(a) then
-			if Constant:isa(b) 
-			or Variable:isa(b)
-			then
-				return table{
-					table{'\\frac', '{1}', table(self:apply(b), {force=true})},
-					table{'(', table(self:apply(a), {force=true}), ')'},
-				}
+		if self.showDivConstAsMulFrac then
+			local a,b = table.unpack(expr)
+			if not Constant:isa(a) then
+				if Constant:isa(b) 
+				or Variable:isa(b)
+				then
+					return table{
+						table{'\\frac', '{1}', table(self:apply(b), {force=true})},
+						table{table(self:apply(a), {force=true})},
+					}
+				end
 			end
 		end
-
+		
 		return table{
 			'\\frac', 
 			table(self:apply(a), {force=true}),
