@@ -227,7 +227,7 @@ Riemann^a_bcd:
 
 ```
 
-## Goals:
+## Goals
 
 - Everything done in pure Lua / Lua syntax.  No/minimal parsing.
 - Originally intended for computational physics.  Implement equations in Lua, perform symbolic manipulation, generate functions (via symmath.compile)
@@ -236,7 +236,9 @@ Online demo and API at http://christopheremoore.net/symbolic-lua
 Example used at http://christopheremoore.net/metric  
 	and http://christopheremoore.net/gravitational-wave-simulation  
 
-### Overall
+## Reference
+
+### Namespace
 
 `symmath.setup(args)`  
 `symmath(args)`  
@@ -310,21 +312,6 @@ Calling this function will clear all previous dependent vars only for the respec
 Returns 'true' if an expression depends on the specified Variable 'var'.
 Determines so by searching the expression for either the Variable itself, or any variables that are specified o depend on the Variable.
 Works if 'var' is a Variables  (i.e. `x`) or if 'var' is a TensorRef of a Variable (i.e. `x'^i'`).
-
-`func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
-`func, code = expr:compile{var1, var2, ...}`  
-Compiles an expression to a Lua function with the listed vars as parameters.  
-`language` can be one of the following:  
-* Lua
-* JavaScript
-* C
-* LaTeX
-* MathJax
-* GnuPlot
-
-`symmath.GnuPlot:plot(args)`  
-Produces SVG of a plot. Requires my `lua-gnuplot` library.  
-Arguments are forwarded to the `gnuplot` lua module, with the expression provided in place of the plot command.  
 
 `symmath.fixVariableNames = true`
 Set this flag to true to have the LaTex and console outputs replace variable names with their associated unicode characters.
@@ -438,50 +425,6 @@ Calculates the numeric value of the expression.
 `symmath.polyCoeffs(expr, var)`  
 `expr:polyCoeffs(var)`  
 Returns a table of coefficients with keys 0 through the degree of the polynomial, and 'extra' containing all non-polynomial terms.  
-
-### Wildcard
-
-`symmath.Wildcard(args)`
-This constructs a Wildcard object for Expression matching.
-`args` can be any of the following:
-- A number, which specifies the Wildcard index.
-- A table with the following:
-- - index = The wildcard index.  Optionally the first argument of the table can also specify the index.
-- - atLeast = The wildcard must match at least this many sub-expressions, if matching within variable-children expressions (such as + and *)
-- - atMost = The wildcard can only match at most this many sub-expressions.
-- - dependsOn = The wildcard must depend on the specified variable.  See 'Expression:dependsOn()' for more information.
-- - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
-
-Matching works something like this:
-```
-local i = (x + y):match(x + Wildcard(1))
-assert(i == y)
-```
-
-The index of the wildcard specifies which return argument the matched expression will be returned in.
-If two present wildcards have equal indexes then the test will only succeed if both wildcard matches are equal. 
-i.e. `(x + y):match(Wildcard(1) + Wildcard(1))` will fail because x != y,
-but `(x + x):match(Wildcard(1) + Wildcard(1))` will succeed and return `x`.
-
-Wildcards are greedy-matching and will match zero-or-more expressions unless stated otherwise.
-For example:
-```
-local i,j = (x + y):match(Wildcard(1) + Wildcard(2))
-assert(i == x + y)
-assert(j == zero)
-```
-The first wildcard will greedily match both sub-expressions, unless stated otherwise:
-```
-local i,j = (x + y):match(W{1, atMost=1} + W{2, atMost=1})
-assert(i == x)
-assert(j == y)
-```
-In this case we specified 'atMost=1' to ensure that no single wildcard  would match to both elements.
-
-In the case of addition, unmatched wildcards will be assigned a value of 0.
-In the case of multiplication, unmatched wildcards will be assigned a value of 1.
-
-
 
 ### Calculus
 
@@ -611,7 +554,7 @@ Set classes so far:
 * symmath.set.Null = This is a set that contains nothing.
 * symmath.set.Complex
 * symmath.set.RealInterval = This is a single interval on the (extended) Real number line, inclusive or exclusive of its endpoints.
-* symmath.set.RealDomain = This is a union of multiple RealIntervals.  Maybe I should change the name to RealSubset?
+* symmath.set.RealSubset = This is a union of multiple RealIntervals.
 * symmath.set.Integer
 * symmath.set.EvenInteger
 * symmath.set.OddInteger
@@ -637,9 +580,172 @@ Ex: `x = symmath.set.positiveReal:var'x'` creates a positive real variable.
 returns true/false if the set contains the element.
 returns nil if the answer is indeterminate.
 
-`Expression:getRealDomain()` = Returns the RealDomain object for this expression, specifying what possible values it can contain.
+`Expression:getRealRange()` = Returns the RealSubset object for the range of this expression, specifying what possible values it can contain.
 
-## Dependencies:
+
+### Plotting
+
+`symmath.GnuPlot:plot(args)`  
+Produces SVG of a plot. Requires my `lua-gnuplot` library.  
+Arguments are forwarded to the `gnuplot` lua module, with the expression provided in place of the plot command.  
+See the file `tests/unit/plot.lua` for examples of how to use this.
+
+
+### Exporting / Code Generation
+
+Exporting works with one of the many exporters in the `export` folder.
+
+You can set the default tostring to one of the methods:
+
+`symmath.tostring = symmath.export.SingleLine`
+
+The default tostring exporter is MultiLine.
+
+Valid output exporters are: 
+* LaTeX - LaTeX math expression.
+* MathJax - This is a subclass of LaTeX, which additionally provides header and footer for html document generation.
+* MultiLine - Multi-line console output.
+* SingleLine - Single-line text / console ouptut.
+* SymMath - Serialize back into Lua code for generating the expression.
+* Verbose - Useful for debugging the contents of an expression tree.
+Valid language exporters are:
+* C - C code.
+* GnuPlot - Gnuplot formula.
+* JavaScript - JavaScript code.
+* Lua - Lua code.
+* Mathematica - Mathematica code.
+
+Any of the above exporters can be used with `symmath.tostring` to change the default string conversion.
+
+Any of them can also be manually invoked by calling the exporter with the expression.  For example:
+`symmath.export.Lua(symmath.var'x'^3/3)` will produce the string `((x ^ 3.0) / 3.0)`. 
+`symmath.export.LaTeX(symmath.var'x'^3/3)` will produce the string `${\frac{1}{3}}{({{x}^{3}})}$`.
+
+
+Language exporters have a few extra functions for code generation:
+
+`func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
+`func, code = expr:compile{var1, var2, ...}`  
+Compiles an expression to a Lua function with the listed vars as parameters.  
+`language` can be one of the following:  
+* Lua
+* JavaScript
+* C
+* LaTeX
+* MathJax
+* GnuPlot
+
+`Exporter:toCode(args)`
+`args` can include the following:
+	- `input = {var1, var2, {name3=var3}, ...}` - contains a list of input variables, or maps from variables to variable names to use within the code. For function code generation, this is the list of generated function parameters.
+	- `output = {expr1, expr2, {name3=expr3}, ...}` - contains a list of expression which we are producing the code for.
+	- `notmp` - set this to `true` to disable generation of temporary variables used to reduce calculations of repeated portions of the expression.
+	- `dontExpandIntegerPowers` - set this to `true` to disable the expanding of integer powers, and to instead use the language's builtin `pow` function.
+
+`Exporter:toFuncCode(args)`
+`args` is the same as `toCode`, with some additions:
+	- `func` - the name of the function that is generated.
+
+`Lua:toFunc(args)`
+`args` is the same as `toFuncCode`, with the exception that the name is ignored.
+This is shorthand for Lua alone for generating the function code and compiling it into a Lua function object.
+
+examples:
+
+```
+> export.Lua:toCode{output={x^3/3}}
+local out1 = ((x * (x * x)) / 3.0)
+
+> export.Lua:toCode{output={{result=x^3/3}}}
+local result = ((x * (x * x)) / 3.0)
+
+> export.Lua:toCode{input={x}, output={x^3/3}}
+local out1 = ((x * (x * x)) / 3.0)
+
+> export.Lua:toCode{input={{y=x}}, output={x^3/3}}
+local out1 = ((y * (y * y)) / 3.0)
+
+> export.Lua:toFuncCode{input={x}, output={x^3/3}}
+function f(x)
+        local out1 = ((x * (x * x)) / 3.0)
+        return out1
+end
+
+> export.Lua:toFuncCode{func='generated', input={{y=x}}, output={x^3/3}}
+function generated(y)
+        local out1 = ((y * (y * y)) / 3.0)
+        return out1
+end
+
+> export.Lua:toFuncCode{input={{y=x}}, output={{result=x^3/3}}}
+function f(y)
+        local result = ((y * (y * y)) / 3.0)
+        return result
+end
+
+> export.C:toCode{output={{result=x^3/3}}}
+double result = (x * x * x) / 3.0;
+
+> export.C:toFuncCode{input={x}, output={{result=x^3/3}}}
+void f(double* out, double x) {
+        double result = (x * x * x) / 3.0;
+        out[0] = result;
+}
+
+> export.C:toCode{output={x^2/2 + sin(x^2)}}
+double tmp1 = x * x;
+double out1 = sin(tmp1) + tmp1 / 2.0;
+
+> export.C:toCode{output={x^2/2 + sin(x^2)}, notmp=true}
+double out1 = (x * x) / 2.0 + sin(x * x);
+```
+
+### Wildcard
+
+`symmath.Wildcard(args)`
+This constructs a Wildcard object for Expression matching.
+`args` can be any of the following:
+- A number, which specifies the Wildcard index.
+- A table with the following:
+- - index = The wildcard index.  Optionally the first argument of the table can also specify the index.
+- - atLeast = The wildcard must match at least this many sub-expressions, if matching within variable-children expressions (such as + and *)
+- - atMost = The wildcard can only match at most this many sub-expressions.
+- - dependsOn = The wildcard must depend on the specified variable.  See 'Expression:dependsOn()' for more information.
+- - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
+
+Matching works something like this:
+```
+local i = (x + y):match(x + Wildcard(1))
+assert(i == y)
+```
+
+The index of the wildcard specifies which return argument the matched expression will be returned in.
+If two present wildcards have equal indexes then the test will only succeed if both wildcard matches are equal. 
+i.e. `(x + y):match(Wildcard(1) + Wildcard(1))` will fail because x != y,
+but `(x + x):match(Wildcard(1) + Wildcard(1))` will succeed and return `x`.
+
+Wildcards are greedy-matching and will match zero-or-more expressions unless stated otherwise.
+For example:
+```
+local i,j = (x + y):match(Wildcard(1) + Wildcard(2))
+assert(i == x + y)
+assert(j == zero)
+```
+The first wildcard will greedily match both sub-expressions, unless stated otherwise:
+```
+local i,j = (x + y):match(W{1, atMost=1} + W{2, atMost=1})
+assert(i == x)
+assert(j == y)
+```
+In this case we specified 'atMost=1' to ensure that no single wildcard  would match to both elements.
+
+In the case of addition, unmatched wildcards will be assigned a value of 0.
+In the case of multiplication, unmatched wildcards will be assigned a value of 1.
+
+
+
+
+## Dependencies
 
 - https://github.com/thenumbernine/lua-ext
 - https://github.com/thenumbernine/lua-gnuplot (optionally, for plotting graphs)
@@ -685,14 +791,7 @@ How to get around this:
 
 - finish Integer and Rational sets, maybe better support for Complex set.
 
-- distinct functions for all languages:
-	- __call = produces a single expression of code, without checking variables
-	- toCode{output={name1=expr1, name2=expr2, expr3, ...}, input={{name1=input1, name2=input2, input3, ...}}} = produces code for the given expressions
-		input1, input2, ... = variables to be provided as inputs.  In the case that {name#=input#} is provided then the variable is renamed to 'name#' in the generated code.
-		outpu1, output2, ... = expressions that are to be generated.
-	
-	- toFunc = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler? Not yet though.
-
+## SymMath Interpreter
 
 If you want to run this as a command-line with the API in global namespace:
 
@@ -735,6 +834,8 @@ Output CDN URLs:
 [tests/output/ADM metric - mixed](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric%20%2d%20mixed.html)
 
 [tests/output/ADM metric](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric.html)
+
+[tests/output/Acoustic Black Hole](https://thenumbernine.github.io/symmath/tests/output/Acoustic%20Black%20Hole.html)
 
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
@@ -952,6 +1053,8 @@ Output CDN URLs:
 
 [tests/output/tensor coordinate invariance](https://thenumbernine.github.io/symmath/tests/output/tensor%20coordinate%20invariance.html)
 
+[tests/output/tmp](https://thenumbernine.github.io/symmath/tests/output/tmp.html)
+
 [tests/output/toy-1+1 spacetime](https://thenumbernine.github.io/symmath/tests/output/toy%2d1%2b1%20spacetime.html)
 
 [tests/output/unit/getIndexesUsed](https://thenumbernine.github.io/symmath/tests/output/unit/getIndexesUsed.html)
@@ -965,6 +1068,8 @@ Output CDN URLs:
 [tests/output/unit/match](https://thenumbernine.github.io/symmath/tests/output/unit/match.html)
 
 [tests/output/unit/matrix](https://thenumbernine.github.io/symmath/tests/output/unit/matrix.html)
+
+[tests/output/unit/plot](https://thenumbernine.github.io/symmath/tests/output/unit/plot.html)
 
 [tests/output/unit/replace](https://thenumbernine.github.io/symmath/tests/output/unit/replace.html)
 
