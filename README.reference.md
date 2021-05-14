@@ -75,21 +75,6 @@ Returns 'true' if an expression depends on the specified Variable 'var'.
 Determines so by searching the expression for either the Variable itself, or any variables that are specified o depend on the Variable.
 Works if 'var' is a Variables  (i.e. `x`) or if 'var' is a TensorRef of a Variable (i.e. `x'^i'`).
 
-`func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
-`func, code = expr:compile{var1, var2, ...}`  
-Compiles an expression to a Lua function with the listed vars as parameters.  
-`language` can be one of the following:  
-* Lua
-* JavaScript
-* C
-* LaTeX
-* MathJax
-* GnuPlot
-
-`symmath.GnuPlot:plot(args)`  
-Produces SVG of a plot. Requires my `lua-gnuplot` library.  
-Arguments are forwarded to the `gnuplot` lua module, with the expression provided in place of the plot command.  
-
 `symmath.fixVariableNames = true`
 Set this flag to true to have the LaTex and console outputs replace variable names with their associated unicode characters.
 For example, `var'theta'` will produce a variable with the name `θ`.
@@ -202,50 +187,6 @@ Calculates the numeric value of the expression.
 `symmath.polyCoeffs(expr, var)`  
 `expr:polyCoeffs(var)`  
 Returns a table of coefficients with keys 0 through the degree of the polynomial, and 'extra' containing all non-polynomial terms.  
-
-### Wildcard
-
-`symmath.Wildcard(args)`
-This constructs a Wildcard object for Expression matching.
-`args` can be any of the following:
-- A number, which specifies the Wildcard index.
-- A table with the following:
-- - index = The wildcard index.  Optionally the first argument of the table can also specify the index.
-- - atLeast = The wildcard must match at least this many sub-expressions, if matching within variable-children expressions (such as + and *)
-- - atMost = The wildcard can only match at most this many sub-expressions.
-- - dependsOn = The wildcard must depend on the specified variable.  See 'Expression:dependsOn()' for more information.
-- - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
-
-Matching works something like this:
-```
-local i = (x + y):match(x + Wildcard(1))
-assert(i == y)
-```
-
-The index of the wildcard specifies which return argument the matched expression will be returned in.
-If two present wildcards have equal indexes then the test will only succeed if both wildcard matches are equal. 
-i.e. `(x + y):match(Wildcard(1) + Wildcard(1))` will fail because x != y,
-but `(x + x):match(Wildcard(1) + Wildcard(1))` will succeed and return `x`.
-
-Wildcards are greedy-matching and will match zero-or-more expressions unless stated otherwise.
-For example:
-```
-local i,j = (x + y):match(Wildcard(1) + Wildcard(2))
-assert(i == x + y)
-assert(j == zero)
-```
-The first wildcard will greedily match both sub-expressions, unless stated otherwise:
-```
-local i,j = (x + y):match(W{1, atMost=1} + W{2, atMost=1})
-assert(i == x)
-assert(j == y)
-```
-In this case we specified 'atMost=1' to ensure that no single wildcard  would match to both elements.
-
-In the case of addition, unmatched wildcards will be assigned a value of 0.
-In the case of multiplication, unmatched wildcards will be assigned a value of 1.
-
-
 
 ### Calculus
 
@@ -402,5 +343,78 @@ returns true/false if the set contains the element.
 returns nil if the answer is indeterminate.
 
 `Expression:getRealRange()` = Returns the RealSubset object for the range of this expression, specifying what possible values it can contain.
+
+
+### Plotting
+
+`symmath.GnuPlot:plot(args)`  
+Produces SVG of a plot. Requires my `lua-gnuplot` library.  
+Arguments are forwarded to the `gnuplot` lua module, with the expression provided in place of the plot command.  
+See the file `tests/unit/plot.lua` for examples of how to use this.
+
+
+### Exporting / Code Generation
+
+Exporting works with one of the many exporters in the `export` folder.
+
+You can set the default tostring to one of the methods:
+
+`symmath.tostring = symmath.export.SingleLine`
+
+Valid options are: C, GnuPlot, JavaScript, LaTeX, Lua, Mathematica, MathJax, MultiLine, SingleLine, SymMath, Verbose.
+
+`func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
+`func, code = expr:compile{var1, var2, ...}`  
+Compiles an expression to a Lua function with the listed vars as parameters.  
+`language` can be one of the following:  
+* Lua
+* JavaScript
+* C
+* LaTeX
+* MathJax
+* GnuPlot
+
+
+### Wildcard
+
+`symmath.Wildcard(args)`
+This constructs a Wildcard object for Expression matching.
+`args` can be any of the following:
+- A number, which specifies the Wildcard index.
+- A table with the following:
+- - index = The wildcard index.  Optionally the first argument of the table can also specify the index.
+- - atLeast = The wildcard must match at least this many sub-expressions, if matching within variable-children expressions (such as + and *)
+- - atMost = The wildcard can only match at most this many sub-expressions.
+- - dependsOn = The wildcard must depend on the specified variable.  See 'Expression:dependsOn()' for more information.
+- - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
+
+Matching works something like this:
+```
+local i = (x + y):match(x + Wildcard(1))
+assert(i == y)
+```
+
+The index of the wildcard specifies which return argument the matched expression will be returned in.
+If two present wildcards have equal indexes then the test will only succeed if both wildcard matches are equal. 
+i.e. `(x + y):match(Wildcard(1) + Wildcard(1))` will fail because x != y,
+but `(x + x):match(Wildcard(1) + Wildcard(1))` will succeed and return `x`.
+
+Wildcards are greedy-matching and will match zero-or-more expressions unless stated otherwise.
+For example:
+```
+local i,j = (x + y):match(Wildcard(1) + Wildcard(2))
+assert(i == x + y)
+assert(j == zero)
+```
+The first wildcard will greedily match both sub-expressions, unless stated otherwise:
+```
+local i,j = (x + y):match(W{1, atMost=1} + W{2, atMost=1})
+assert(i == x)
+assert(j == y)
+```
+In this case we specified 'atMost=1' to ensure that no single wildcard  would match to both elements.
+
+In the case of addition, unmatched wildcards will be assigned a value of 0.
+In the case of multiplication, unmatched wildcards will be assigned a value of 1.
 
 

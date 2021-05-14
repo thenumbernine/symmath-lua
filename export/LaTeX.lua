@@ -5,9 +5,6 @@ local string = require 'ext.string'
 local Export = require 'symmath.export.Export'
 
 
---local getUnicodeSymbol = require 'symmath.export.Console'.getUnicodeSymbol
---local iname = getUnicodeSymbol('1d55a', 'i')
-
 local function omit(t)
 	t.omit = true
 	return t

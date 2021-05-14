@@ -239,14 +239,14 @@ symmath.pi = symmath.Constant(math.pi, 'pi')
 symmath.inf = symmath.Constant(math.huge, 'infty')	-- TODO use 'infinite' or 'infinity' and fix the LaTex gsub fixVariableName code to handle renaming instead of just padding with symbols
 --]]
 -- [[
--- TODO right now I'm comparing variables by name ... don't do that.  Or else complex's "i" will match an iterator's "i".
--- a temporary fix in the mean time ... I'll use 'ii' for the name and swap it out with a unicode char, just like Mathematica does.  
+-- right now I'm comparing variables by name ... don't do that.  Or else complex's "i" will match an iterator's "i".
+-- a temporary fix in the mean time ... I'll use '_i' for the name and swap it out with a unicode char, just like Mathematica does.  
 -- This way users who use 'i' as an arbitrary variable won't have it collide with symmath.i
--- (why not use unicode all around?  don't use unicode escape codes, since lua 5.2 can't handle it, but just use unicode strings here.)
-symmath.i = symmath.Variable('ⅈ', nil, symmath.complex(0,1))
-symmath.e = symmath.Variable('ⅇ', nil, math.exp(1))
-symmath.pi = symmath.Variable('π', nil, math.pi)
-symmath.inf = symmath.Variable('∞', nil, math.huge)
+-- (why not use unicode all around?  don't use unicode escape codes, since lua 5.2 can't handle it with string length, but just use unicode strings here.)
+symmath.i = symmath.Variable('_i', nil, symmath.complex(0,1))	-- ⅈ
+symmath.e = symmath.Variable('_e', nil, math.exp(1))	-- ⅇ
+symmath.pi = symmath.Variable('pi', nil, math.pi)	-- π
+symmath.inf = symmath.Variable('infty', nil, math.huge)	-- ∞
 --]]
 
 -- hack implicit variable names to look good in TeX

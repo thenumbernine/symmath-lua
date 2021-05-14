@@ -33,8 +33,6 @@ local line = {
 	getUnicodeSymbol('2500', '-'),
 	getUnicodeSymbol('2574', '-'),
 }
-local sqrtname = getUnicodeSymbol('221a', 'sqrt')
-local cbrtname = getUnicodeSymbol('221b', 'cbrt')
 local intname = {
 	getUnicodeSymbol('2320', '\\'),	-- integral top symbol
 	getUnicodeSymbol('2502', '|'),	-- integral middle symbol
@@ -161,12 +159,7 @@ MultiLine.lookupTable = {
 		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		local name = expr.name	
-		if name == 'sqrt' then
-			name = sqrtname
-		elseif name == 'cbrt' then
-			name = cbrtname
-		end
+		local name = self:fixFunctionName(expr.name)
 		local res = {name..'('}
 		res = self:combine(res, self:apply(expr[1]))
 		local sep = {', '}

@@ -28,12 +28,6 @@ function SingleLine:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
 		return childPrecedence < parentPrecedence
 	end
 end
-	
-local hasutf8, utf8 = pcall(require, 'utf8')
-
-local sqrtname = getUnicodeSymbol('221a', 'sqrt')
-local cbrtname = getUnicodeSymbol('221b', 'cbrt')
-
 
 SingleLine.lookupTable = {
 	--[[
@@ -60,14 +54,7 @@ SingleLine.lookupTable = {
 		return 'Invalid'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		local name = expr.name
-		if hasutf8 then
-			if name == 'sqrt' then
-				name = sqrtname
-			elseif name == 'cbrt' then
-				name = cbrtname
-			end
-		end
+		local name = self:fixFunctionName(expr.name)
 		return name..'(' .. table.mapi(expr, function(x)
 			return (self:apply(x))
 		end):concat(', ') .. ')'
@@ -86,9 +73,15 @@ SingleLine.lookupTable = {
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'
 		local name = expr.name
+		
+		-- Console.symbols replaces subsets of a variable name,
+		-- so here (for builtins) replace any exact names
+		name = self.builtinVariableNames[name] or name
+		
 		if symmath.fixVariableNames then
 			name = symmath.tostring:fixVariableName(name)
 		end
+		
 		local s = name
 		--if expr.value then s = s .. '|' .. expr.value end
 		return s

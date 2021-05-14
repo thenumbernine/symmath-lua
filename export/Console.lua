@@ -42,4 +42,26 @@ local orig = name
 	return name
 end
 
+-- these have to match the names of builtin vars in symmath
+-- TODO move this all into the specific variable somehow - per-exporter serialization.
+-- for modularity of both, I should have tables in both the var and the exporter
+Console.builtinVariableNames = {
+	-- these unicode chars don't work on the windows default terminal:
+	-- _i = Console.getUnicodeSymbol('2148', '_i'),
+	-- _e = Console.getUnicodeSymbol('2147', '_e'),
+	-- pi is already handled by 'fixVariableNames'
+	-- TODO just add a utf8 lib that < lua 5.3 can use
+	infty = Console.getUnicodeSymbol('221e', 'inf'),
+}
+
+Console.builtinFunctionNames = {
+	sqrt = Console.getUnicodeSymbol('221a', 'sqrt'),
+	cbrt = Console.getUnicodeSymbol('221b', 'cbrt'),
+}
+
+function Console:fixFunctionName(name)
+	return self.builtinFunctionNames[name] or name
+end
+
+
 return Console

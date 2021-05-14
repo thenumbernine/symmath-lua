@@ -328,7 +328,7 @@ print('RESULTING EXPR '..SingleLine(expr))
 			end
 
 			for i=1,#expr do
-				x = expr[i]
+				local x = expr[i]
 				if Expression:isa(x)
 				and not Constant:isa(x)
 				and #x > 0

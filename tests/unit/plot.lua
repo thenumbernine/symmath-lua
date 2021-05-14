@@ -5,8 +5,6 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='tests/unit/plot'}}
 
-local GnuPlot = symmath.export.GnuPlot
-
 local function header(s)
 	print('<h3>'..s..'</h3>')
 end
@@ -29,19 +27,10 @@ end
 printbr'This only works with MathJax output at the moment.'
 printbr()
 
-header'using symmath expressions:'
+header'using the gnuplot language:'
 printAndRun[[
-local x = var'x'
-GnuPlot:plot{
-	title = 'test expression',
-	xrange = {-2,2},
-	{x^2, title=GnuPlot(x^2)},
-	{x^3, title=GnuPlot(x^3)},
-}
-]]
-
-header'using gnuplot strings for formula:'
-printAndRun[[
+local symmath = require 'symmath'
+local GnuPlot = symmath.export.GnuPlot
 GnuPlot:plot{
 	title = 'test plot',
 	xrange = {-2,2},
@@ -50,19 +39,59 @@ GnuPlot:plot{
 }
 ]]
 
+header'using symmath expressions:'
+printAndRun[[
+local symmath = require 'symmath'
+local GnuPlot = symmath.export.GnuPlot
+local x = symmath.var'x'
+GnuPlot:plot{
+	title = 'test expression',
+	xrange = {-2,2},
+	{x^2, title=GnuPlot(x^2)},
+	{x^3, title=GnuPlot(x^3)},
+}
+]]
 
 header'using Lua data for formula:'
 printAndRun[[
+local symmath = require 'symmath'
+local GnuPlot = symmath.export.GnuPlot
 local n = 50
 local xmin, xmax = -10, 10
-local xs = range(n):mapi(function(i) return (i-.5)/n * (xmax - xmin) + xmin end)
+local xs, ys = {}, {}
+for i=1,n do
+	local x = (i-.5)/n * (xmax - xmin) + xmin
+	xs[i] = x
+	ys[i] = math.sin(x) / x
+end
 GnuPlot:plot{
 	title = 'test data title',
 	style = 'data linespoints',
-	data = {
-		xs,
-		xs:mapi(function(x) return math.sin(x)/x end),
-	},
+	data = {xs, ys},
 	{using = '1:2', title = 'test data sin(x)/x'},
+}
+]]
+
+header'using symmath expressions, code generation, and Lua data:'
+printAndRun[[
+local symmath = require 'symmath'
+local GnuPlot = symmath.export.GnuPlot
+
+local x = symmath.var'x'
+local f = symmath.sin(x) / x
+local ff = symmath.export.Lua:toFunc{input={x}, output={f}}
+local n = 50
+local xmin, xmax = -10, 10
+local xs, ys = {}, {}
+for i=1,n do
+	local x = (i-.5)/n * (xmax - xmin) + xmin
+	xs[i] = x
+	ys[i] = ff(x)
+end
+GnuPlot:plot{
+	title = 'test data title',
+	style = 'data linespoints',
+	data = {xs, ys},
+	{using = '1:2', title = 'test data '..export.GnuPlot(f)},
 }
 ]]
