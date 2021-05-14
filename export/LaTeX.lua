@@ -158,11 +158,12 @@ LaTeX.lookupTable = {
 		local Constant = require 'symmath.Constant'
 		local Variable = require 'symmath.Variable'
 		
+		local a,b = table.unpack(expr)
+		
 		-- if the second term is small enough ...
 		-- for now, just look for single constants or Variables (or both?)
 		-- this could be done in tidy ...
 		if self.showDivConstAsMulFrac then
-			local a,b = table.unpack(expr)
 			if not Constant:isa(a) then
 				if Constant:isa(b) 
 				or Variable:isa(b)
