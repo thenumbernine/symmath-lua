@@ -225,6 +225,7 @@ build = {
 		["symmath.tests.unit.linear solver"] = "tests/unit/linear solver.lua",
 		["symmath.tests.unit.match"] = "tests/unit/match.lua",
 		["symmath.tests.unit.matrix"] = "tests/unit/matrix.lua",
+		["symmath.tests.unit.plot"] = "tests/unit/plot.lua",
 		["symmath.tests.unit.replace"] = "tests/unit/replace.lua",
 		["symmath.tests.unit.replaceIndex"] = "tests/unit/replaceIndex.lua",
 		["symmath.tests.unit.run all tests"] = "tests/unit/run all tests.lua",
