@@ -361,7 +361,30 @@ You can set the default tostring to one of the methods:
 
 `symmath.tostring = symmath.export.SingleLine`
 
-Valid options are: C, GnuPlot, JavaScript, LaTeX, Lua, Mathematica, MathJax, MultiLine, SingleLine, SymMath, Verbose.
+The default tostring exporter is MultiLine.
+
+Valid output exporters are: 
+* LaTeX - LaTeX math expression.
+* MathJax - This is a subclass of LaTeX, which additionally provides header and footer for html document generation.
+* MultiLine - Multi-line console output.
+* SingleLine - Single-line text / console ouptut.
+* SymMath - Serialize back into Lua code for generating the expression.
+* Verbose - Useful for debugging the contents of an expression tree.
+Valid language exporters are:
+* C - C code.
+* GnuPlot - Gnuplot formula.
+* JavaScript - JavaScript code.
+* Lua - Lua code.
+* Mathematica - Mathematica code.
+
+Any of the above exporters can be used with `symmath.tostring` to change the default string conversion.
+
+Any of them can also be manually invoked by calling the exporter with the expression.  For example:
+`symmath.export.Lua(symmath.var'x'^3/3)` will produce the string `((x ^ 3.0) / 3.0)`. 
+`symmath.export.LaTeX(symmath.var'x'^3/3)` will produce the string `${\frac{1}{3}}{({{x}^{3}})}$`.
+
+
+Language exporters have a few extra functions for code generation:
 
 `func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
 `func, code = expr:compile{var1, var2, ...}`  
@@ -374,6 +397,70 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 * MathJax
 * GnuPlot
 
+`Exporter:toCode(args)`
+`args` can include the following:
+	- `input = {var1, var2, {name3=var3}, ...}` - contains a list of input variables, or maps from variables to variable names to use within the code. For function code generation, this is the list of generated function parameters.
+	- `output = {expr1, expr2, {name3=expr3}, ...}` - contains a list of expression which we are producing the code for.
+	- `notmp` - set this to `true` to disable generation of temporary variables used to reduce calculations of repeated portions of the expression.
+	- `dontExpandIntegerPowers` - set this to `true` to disable the expanding of integer powers, and to instead use the language's builtin `pow` function.
+
+`Exporter:toFuncCode(args)`
+`args` is the same as `toCode`, with some additions:
+	- `func` - the name of the function that is generated.
+
+`Lua:toFunc(args)`
+`args` is the same as `toFuncCode`, with the exception that the name is ignored.
+This is shorthand for Lua alone for generating the function code and compiling it into a Lua function object.
+
+examples:
+
+```
+> export.Lua:toCode{output={x^3/3}}
+local out1 = ((x * (x * x)) / 3.0)
+
+> export.Lua:toCode{output={{result=x^3/3}}}
+local result = ((x * (x * x)) / 3.0)
+
+> export.Lua:toCode{input={x}, output={x^3/3}}
+local out1 = ((x * (x * x)) / 3.0)
+
+> export.Lua:toCode{input={{y=x}}, output={x^3/3}}
+local out1 = ((y * (y * y)) / 3.0)
+
+> export.Lua:toFuncCode{input={x}, output={x^3/3}}
+function f(x)
+        local out1 = ((x * (x * x)) / 3.0)
+        return out1
+end
+
+> export.Lua:toFuncCode{func='generated', input={{y=x}}, output={x^3/3}}
+function generated(y)
+        local out1 = ((y * (y * y)) / 3.0)
+        return out1
+end
+
+> export.Lua:toFuncCode{input={{y=x}}, output={{result=x^3/3}}}
+function f(y)
+        local result = ((y * (y * y)) / 3.0)
+        return result
+end
+
+> export.C:toCode{output={{result=x^3/3}}}
+double result = (x * x * x) / 3.0;
+
+> export.C:toFuncCode{input={x}, output={{result=x^3/3}}}
+void f(double* out, double x) {
+        double result = (x * x * x) / 3.0;
+        out[0] = result;
+}
+
+> export.C:toCode{output={x^2/2 + sin(x^2)}}
+double tmp1 = x * x;
+double out1 = sin(tmp1) + tmp1 / 2.0;
+
+> export.C:toCode{output={x^2/2 + sin(x^2)}, notmp=true}
+double out1 = (x * x) / 2.0 + sin(x * x);
+```
 
 ### Wildcard
 

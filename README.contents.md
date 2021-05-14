@@ -69,15 +69,6 @@ How to get around this:
 
 - finish Integer and Rational sets, maybe better support for Complex set.
 
-- distinct functions for all languages:
-	- __call = produces a single expression of code, without checking variables
-	- toCode{output={name1=expr1, name2=expr2, expr3, ...}, input={{name1=input1, name2=input2, input3, ...}}} = produces code for the given expressions
-		input1, input2, ... = variables to be provided as inputs.  In the case that {name#=input#} is provided then the variable is renamed to 'name#' in the generated code.
-		outpu1, output2, ... = expressions that are to be generated.
-	
-	- toFunc = produces the Lua function.  only for Lua.  maybe for C if you are using LuaJIT and have access to a compiler? Not yet though.
-
-
 ## SymMath Interpreter
 
 If you want to run this as a command-line with the API in global namespace:
