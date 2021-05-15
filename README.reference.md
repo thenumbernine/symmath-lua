@@ -422,6 +422,12 @@ Change the characters wrapping matrices in LaTeX.
 `LaTeX.showExpAsFunction = true`
 By default symmath represents exp(x) as e^x, so when exporting expressions it will produce e^x instead of exp(x).  This flag lets you choose which output method to use.
 
+LaTeX.parOpenSymbol = '\\left('
+LaTeX.parCloseSymbol = '\\right)'
+Change the opening and closing symbols for parenthesis.
+
+`LaTeX.powWrapExpInParenthesis = false`
+Whether to wrap an exponent's exponent in parenthesis if the precedence of operators says so.
 
 Notice that subclasses are copied upon construction rather than referenced by dynamic lookup as in other languages.  This means that, while these options exist in subclasses, changing the parent class static members will not change the subclass static members.    You must change subclass static members.  For example, export.MathJax is a subclass of export.LaTeX.  If you are using the MathJax exporter and you want to change the openSymbol, closeSymbol, etc then you must modify MathJax.openSymbol and not LaTeX.openSymbol.
 

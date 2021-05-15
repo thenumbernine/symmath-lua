@@ -48,6 +48,11 @@ LaTeX.showExpAsFunction = true
 LaTeX.parOpenSymbol = '\\left('
 LaTeX.parCloseSymbol = '\\right)'
 
+-- Usually operators use precedence to decide whether to wrap in parenthesis -- which is essential to code exporters 
+-- but with LaTeX / math notation, in the power operator, in the power, the fact that it is raised is all the denotation you need -- parenthesis not required
+-- so I will omit parenthesis unless you set this flag:
+LaTeX.powWrapExpInParenthesis = false
+
 -- just like super except uses a table combine
 function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local node = parentNode[childIndex]
@@ -259,9 +264,17 @@ LaTeX.lookupTable = {
 
 		local res = table()
 		for i=1,#expr do
-			if i > 1 then res:insert(expr:getSepStr(self)) end
-			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+			if i > 1 then
+				res:insert(expr:getSepStr(self))
+			end
+
+			if i > 1 and not self.powWrapExpInParenthesis then
+				res:append(table{table(self:apply(expr[i]), {force=true})})
+			else
+				res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+			end
 		end
+		
 		return res
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
