@@ -7,6 +7,7 @@ local MathJax = symmath.export.MathJax
 symmath.tostring = MathJax 
 local printbr = MathJax.print
 MathJax.header.title = 'Kaluza-Klein - index notation'
+MathJax.showDivConstAsMulFrac = true
 print(
 	(tostring(MathJax.header):gsub(
 		'</head>',

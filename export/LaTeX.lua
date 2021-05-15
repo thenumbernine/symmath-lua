@@ -43,6 +43,11 @@ LaTeX.showDivConstAsMulFrac = false
 -- flag for outputting e^x as exp(x)
 LaTeX.showExpAsFunction = true
 
+-- left and right parenthesis symbols
+-- TODO maybe make these separately customizable variables in each situation they are used?
+LaTeX.leftPar = '\\left('
+LaTeX.rightPar = '\\right)'
+
 -- just like super except uses a table combine
 function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local node = parentNode[childIndex]
@@ -53,9 +58,9 @@ function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	
 	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
 		if type(s) == 'string' then
-			return table{'(', s, ')'}
+			return table{self.leftPar, s, self.rightPar}
 		else
-			s = table{'(', s, ')'}
+			s = table{self.leftPar, s, self.rightPar}
 		end
 	end
 	s:insert(1, '{')
@@ -205,8 +210,9 @@ LaTeX.lookupTable = {
 		return tableConcat(res, expr:getSepStr(self))
 	end,
 	[require 'symmath.op.div'] = function(self, expr)
-		local Constant = require 'symmath.Constant'
-		local Variable = require 'symmath.Variable'
+		local symmath = require 'symmath'
+		local Constant = symmath.Constant
+		local Variable = symmath.Variable
 		
 		local a,b = table.unpack(expr)
 		
@@ -218,9 +224,19 @@ LaTeX.lookupTable = {
 				if Constant:isa(b) 
 				or Variable:isa(b)
 				then
+					local astr = table{table(self:apply(a), {force=true})}
+					
+					-- parenthesis if precedence is needed
+					if symmath.op.add:isa(a) 
+					or symmath.op.unm:isa(a)
+					then
+						astr:insert(1, self.leftPar)
+						astr:insert(self.rightPar)
+					end
+
 					return table{
 						table{'\\frac', '{1}', table(self:apply(b), {force=true})},
-						table{table(self:apply(a), {force=true})},
+						astr,
 					}
 				end
 			end
@@ -306,11 +322,11 @@ LaTeX.lookupTable = {
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
 				end)}
 			--if not diffExprOnTop then 
-				s:insert'('
+				s:insert(self.leftPar)
 			--end
 			s:insert(diffExprStr)
 			--if not diffExprOnTop then 
-				s:insert')'
+				s:insert(self.rightPar)
 			--end
 			return s
 		end
@@ -347,7 +363,7 @@ LaTeX.lookupTable = {
 		}
 		
 		if not diffExprOnTop then
-			s = table{s, '\\left(', diffExprStr, '\\right)'}
+			s = table{s, self.leftPar, diffExprStr, self.rightPar}
 		end
 		return s
 	end,
@@ -450,9 +466,9 @@ LaTeX.lookupTable = {
 			s:insert'd'
 			s:insert(self:apply(var))
 		end
-		s:insert'\\left('
+		s:insert(self.leftPar)
 		s:insert(self:apply(intexpr))
-		s:insert'\\right)'
+		s:insert(self.rightPar)
 		return s
 	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
@@ -465,7 +481,9 @@ LaTeX.lookupTable = {
 		local indexes = {table.unpack(expr, 2)}
 
 		local s = self:applyLaTeX(t)
-		if not (Variable:isa(t) or Array:isa(t) or TensorRef:isa(t)) then s = '\\left(' .. s .. '\\right)' end
+		if not (Variable:isa(t) or Array:isa(t) or TensorRef:isa(t)) then
+			s = self.leftPar .. s .. self.rightPar
+		end
 		
 		for _,index in ipairs(indexes) do
 			s = '{' .. s .. '}' .. self:apply(index)
