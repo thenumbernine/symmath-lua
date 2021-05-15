@@ -45,8 +45,8 @@ LaTeX.showExpAsFunction = true
 
 -- left and right parenthesis symbols
 -- TODO maybe make these separately customizable variables in each situation they are used?
-LaTeX.leftPar = '\\left('
-LaTeX.rightPar = '\\right)'
+LaTeX.parOpenSymbol = '\\left('
+LaTeX.parCloseSymbol = '\\right)'
 
 -- just like super except uses a table combine
 function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
@@ -58,9 +58,9 @@ function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	
 	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
 		if type(s) == 'string' then
-			return table{self.leftPar, s, self.rightPar}
+			return table{self.parOpenSymbol, s, self.parCloseSymbol}
 		else
-			s = table{self.leftPar, s, self.rightPar}
+			s = table{self.parOpenSymbol, s, self.parCloseSymbol}
 		end
 	end
 	s:insert(1, '{')
@@ -230,8 +230,8 @@ LaTeX.lookupTable = {
 					if symmath.op.add:isa(a) 
 					or symmath.op.unm:isa(a)
 					then
-						astr:insert(1, self.leftPar)
-						astr:insert(self.rightPar)
+						astr:insert(1, self.parOpenSymbol)
+						astr:insert(self.parCloseSymbol)
 					end
 
 					return table{
@@ -322,11 +322,11 @@ LaTeX.lookupTable = {
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
 				end)}
 			--if not diffExprOnTop then 
-				s:insert(self.leftPar)
+				s:insert(self.parOpenSymbol)
 			--end
 			s:insert(diffExprStr)
 			--if not diffExprOnTop then 
-				s:insert(self.rightPar)
+				s:insert(self.parCloseSymbol)
 			--end
 			return s
 		end
@@ -363,7 +363,7 @@ LaTeX.lookupTable = {
 		}
 		
 		if not diffExprOnTop then
-			s = table{s, self.leftPar, diffExprStr, self.rightPar}
+			s = table{s, self.parOpenSymbol, diffExprStr, self.parCloseSymbol}
 		end
 		return s
 	end,
@@ -466,9 +466,9 @@ LaTeX.lookupTable = {
 			s:insert'd'
 			s:insert(self:apply(var))
 		end
-		s:insert(self.leftPar)
+		s:insert(self.parOpenSymbol)
 		s:insert(self:apply(intexpr))
-		s:insert(self.rightPar)
+		s:insert(self.parCloseSymbol)
 		return s
 	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
@@ -482,7 +482,7 @@ LaTeX.lookupTable = {
 
 		local s = self:applyLaTeX(t)
 		if not (Variable:isa(t) or Array:isa(t) or TensorRef:isa(t)) then
-			s = self.leftPar .. s .. self.rightPar
+			s = self.parOpenSymbol .. s .. self.parCloseSymbol
 		end
 		
 		for _,index in ipairs(indexes) do
