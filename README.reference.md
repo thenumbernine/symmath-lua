@@ -386,17 +386,6 @@ Any of them can also be manually invoked by calling the exporter with the expres
 
 Language exporters have a few extra functions for code generation:
 
-`func, code = symmath.compile(expr, {var1, var2, ...}, language)`  
-`func, code = expr:compile{var1, var2, ...}`  
-Compiles an expression to a Lua function with the listed vars as parameters.  
-`language` can be one of the following:  
-* Lua
-* JavaScript
-* C
-* LaTeX
-* MathJax
-* GnuPlot
-
 `Exporter:toCode(args)`
 `args` can include the following:
 	- `input = {var1, var2, {name3=var3}, ...}` - contains a list of input variables, or maps from variables to variable names to use within the code. For function code generation, this is the list of generated function parameters.
@@ -408,11 +397,37 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 `args` is the same as `toCode`, with some additions:
 	- `func` - the name of the function that is generated.
 
+
+Some specific options per exporter:
+
 `Lua:toFunc(args)`
 `args` is the same as `toFuncCode`, with the exception that the name is ignored.
 This is shorthand for Lua alone for generating the function code and compiling it into a Lua function object.
 
-examples:
+The Lua exporter's function generation can be accessed shorthand:
+
+`func, code = symmath.compile(expr, {var1, var2, ...})`  
+`func, code = expr:compile{var1, var2, ...}`  
+Compiles an expression to a Lua function with the listed vars as parameters.  
+
+
+`LaTeX.openSymbol = '$'`
+`LaTeX.closeSymbol = '$'`
+Change the characters wrapping LaTeX expressions.
+
+LaTeX.matrixOpenSymbol = '\\left[ \\begin{matrix}'
+LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
+Change the characters wrapping matrices in LaTeX.
+
+`LaTeX.showExpAsFunction = true`
+By default symmath represents exp(x) as e^x, so when exporting expressions it will produce e^x instead of exp(x).  This flag lets you choose which output method to use.
+
+
+Notice that subclasses are copied upon construction rather than referenced by dynamic lookup as in other languages.  This means that, while these options exist in subclasses, changing the parent class static members will not change the subclass static members.    You must change subclass static members.  For example, export.MathJax is a subclass of export.LaTeX.  If you are using the MathJax exporter and you want to change the openSymbol, closeSymbol, etc then you must modify MathJax.openSymbol and not LaTeX.openSymbol.
+
+
+
+Examples of exporters:
 
 ```
 > export.Lua:toCode{output={x^3/3}}
