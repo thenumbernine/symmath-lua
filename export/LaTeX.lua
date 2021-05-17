@@ -75,40 +75,43 @@ end
 
 -- TODO insert these into symmath functions upon LaTeX init?
 LaTeX.builtinLaTeXFuncNames = setmetatable(table{
+	-- functions symmath uses
+	'log',
+	'cos',
+	'cosh',
+	'sin',
+	'sinh',
+	'tan',
+	'tanh',
+	-- functions symmath uses under a different name
 	'arccos',		-- TODO I use the math lib names: asin, acos, atan
 	'arcsin',
 	'arctan',
-	'arg',
-	'cos',
-	'cosh',
+	'ln',
+	-- functions symmath doesn't use
+	--'exp',	-- symmath uses 'e^', but LaTeX has an override: showExpAsFunction 
+	'csc',
+	'sec',
 	'cot',
 	'coth',
-	'csc',
+	'arg',
 	'deg',
 	'det',
-	'dim',
-	'exp',
 	'gcd',
-	'hom',
-	'inf',
-	'injlim',
-	'ker',
+	'dim',
 	'lg',
-	'lim',
-	'liminf',
-	'limsup',
-	'ln',
-	'log',
+	'hom',
+	'ker',
+	'sup',
+	'inf',
 	'max',
 	'min',
 	'Pr',
+	'injlim',
+	'lim',
+	'liminf',
+	'limsup',
 	'projlim',
-	'sec',
-	'sin',
-	'sinh',
-	'sup',
-	'tan',
-	'tanh',
 }:mapi(function(v) return true, v end), nil)
 
 
@@ -151,15 +154,8 @@ LaTeX.lookupTable = {
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr:nameForExporter(self)
-	
-		-- check for builtin function names:
-		-- only exact matches
-		-- TODO use each func's nameForExporter instead
-		local found = self.builtinLaTeXFuncNames[name]
-		if found then name = '\\'..name end
 
 		name = prepareName(name)
-
 
 		return table{prepareName(name), '\\left(', 
 			tableConcat(range(#expr):map(function(i)
@@ -198,6 +194,7 @@ LaTeX.lookupTable = {
 		for i=#expr,2,-1 do
 			-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
 			-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
+			-- in fact, for that case, it would be best to convert symbols to utf8 characters before using LaTeX escaping.
 			if (Variable:isa(expr[i-1])
 			and #expr[i-1]:nameForExporter(self) > 1)
 			or require 'symmath.op.unm':isa(expr[i])
@@ -626,6 +623,15 @@ function LaTeX:fixVariableName(name)
 		i=i+1
 	end
 	return name
+end
+
+function LaTeX:addFunctionNames(symmath)
+	for name,_ in pairs(self.builtinLaTeXFuncNames) do
+		local f = symmath[name]
+		if f then
+			f:nameForExporter('LaTeX', '\\'..name)
+		end
+	end
 end
 
 return LaTeX()	-- singleton

@@ -286,7 +286,11 @@ do
 	-- but ... what a strange combination of flags
 	symmath.pi:nameForExporter('LaTeX', '\\pi')
 	symmath.inf:nameForExporter('LaTeX', '\\infty')
+
+	-- add LaTeX escaped names for builtin functions
+	symmath.export.LaTeX:addFunctionNames(symmath)
 end
+
 
 
 -- hack implicit variable names to look good in TeX

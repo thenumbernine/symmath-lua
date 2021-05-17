@@ -3,9 +3,11 @@
 require 'ext'
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='tests/unit/nameForExporter'}}
+require 'symmath'.setup{env=env, MathJax={title='tests/unit/nameForExporter'
+	--, pathToTryToFindMathJax='..'
+}}
 
-print('generated with '..(jit and jit.version or _VERSION))
+printbr('generated with '..(jit and jit.version or _VERSION))
 printbr()
 
 local x = var'x'
@@ -41,7 +43,7 @@ local es = {
 	export.Verbose,
 }
 
-print'<table border="l" style="border-collapse:collapse">'
+print'<table border="1" style="border-collapse:collapse">'
 print'<tr>'
 print'<th>.name</th>'
 for _,e in ipairs(es) do
@@ -54,7 +56,7 @@ for _,expr in ipairs(exprs) do
 	print'<tr>'
 	print('<td><pre>'..expr.name..'</pre></td>')
 	for _,e in ipairs(es) do
-		printbr('<td><pre>'..e(expr)..'</pre></td>')
+		print('<td><pre>'..e(expr)..'</pre></td>')
 	end
 	print'</tr>'
 end
