@@ -54,6 +54,10 @@ C.lookupTable = {
 		end
 		return funcName .. '(' .. s .. ')', predefs
 	end,
+	[require 'symmath.Heaviside'] = function(self, expr)
+		local xs = self:apply(expr[1])
+		return '('..xs..' >= 0 ? 1 : 0)'
+	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, 1)
 		return '-'..sx1, sx2

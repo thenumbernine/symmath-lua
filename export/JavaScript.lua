@@ -2,6 +2,9 @@ local table = require 'ext.table'
 local class = require 'ext.class'
 local Language = require 'symmath.export.Language'
 
+-- TODO JavaScript is a Java derivative, which is a C++ derivative, which is a C derivative
+-- so should JavaScript inherit from C?
+
 -- convert to JavaScript code.  use :toCode to wrap in a function
 local JavaScript = class(Language)
 
@@ -18,6 +21,10 @@ JavaScript.lookupTable = {
 		return 'Math.' .. expr:nameForExporter(self) .. '(' .. table.mapi(expr, function(x)
 			return (self:apply(x))
 		end):concat', ' .. ')'
+	end,
+	[require 'symmath.Heaviside'] = function(self, expr)
+		local xs = self:apply(expr[1])
+		return '('..xs..' >= 0 ? 1 : 0)'
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		return '(-'..self:apply(expr[1])..')'

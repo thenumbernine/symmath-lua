@@ -11,6 +11,7 @@ printbr('generated with '..(jit and jit.version or _VERSION))
 printbr()
 
 local x = var'x'
+local y = var'y'
 
 local exprs = {
 	i,
@@ -18,12 +19,71 @@ local exprs = {
 	pi,
 	inf,
 	x,
-	x^2,
-	exp(x),
-	sin(x),
-	cos(x),
+	y,
+	x + y,
+	x - y,
+	x * y,
+	x / y,
+	x % y,
+	x ^ y,
+	-x,
 	x/2,
 	frac(1,2)*x,
+	2*x,
+	2*(x+1),
+	x^2,
+	(1+x)^2,
+	(1+x)^(1+y),
+	2^(1+y),
+	e^(1+y),
+	
+	abs(x),
+	
+	sqrt(x),
+	cbrt(x),
+	
+	exp(x),
+	log(x),
+	
+	sin(x),
+	cos(x),
+	tan(x),
+	
+	asin(x),
+	acos(x),
+	atan(x),
+	atan2(x),
+	
+	sinh(x),
+	cosh(x),
+	tanh(x),
+	
+	asinh(x),
+	acosh(x),
+	atanh(x),
+	
+	Heaviside(x),
+	x:eq(y),	
+	x:ne(y),
+	x:lt(y),
+	x:le(y),
+	x:gt(y),
+	x:ge(y),
+	x:approx(y),
+	x:diff(y),
+	x:integrate(y),
+	x:integrate(y, 0, 1),
+	Array(x,y),
+	Matrix({x}, {y}),
+	Matrix{x, y},
+	x'_a',
+	x'^a',
+	x' _\\mu',
+	x' ^\\mu',
+	x'_ab',
+	x'^ab',
+	x' _\\mu _\\nu',
+	x' ^\\mu ^\\nu',
 }
 
 local es = {
@@ -56,7 +116,16 @@ for _,expr in ipairs(exprs) do
 	print'<tr>'
 	print('<td><pre>'..expr.name..'</pre></td>')
 	for _,e in ipairs(es) do
-		print('<td><pre>'..e(expr)..'</pre></td>')
+		print'<td><pre>'
+		local s
+		xpcall(function()
+			s = e(expr)
+		end, function(err)
+			s = 'error'
+			--s = err .. '\n' .. debug.traceback()
+		end)
+		print(s)
+		print'</pre></td>'
 	end
 	print'</tr>'
 end
