@@ -34,14 +34,14 @@ Lua.lookupTable = {
 		-- put it before the actual function definition at the end
 		local funcName
 		if not expr.code then
-			funcName = 'math.'..expr.name
+			funcName = 'math.'..expr:nameForExporter(self)
 		-- otherwise just use the function name
 		else
-			funcName = expr.name
+			funcName = expr:nameForExporter(self)
 			predefs['local '..funcName..' = '..expr.code] = true
 		end
 		
-		if expr.name == 'cbrt' then
+		if expr:nameForExporter(self) == 'cbrt' then
 			return '('..s..') ^ (1/3)', predefs
 		else
 			return funcName .. '(' .. s .. ')', predefs
@@ -59,7 +59,7 @@ Lua.lookupTable = {
 			s:insert(sx1)
 			predefs = table(predefs, sx2)
 		end
-		s = s:concat(' '..expr.name..' ')
+		s = s:concat(' '..expr:nameForExporter(self)..' ')
 		return '('..s..')', predefs
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
@@ -75,12 +75,12 @@ Lua.lookupTable = {
 				s:insert(sx1)
 				predefs = table(predefs, sx2)
 			end
-			s = s:concat(' '..expr.name..' ')
+			s = s:concat(' '..expr:nameForExporter(self)..' ')
 			return '('..s..')', predefs
 		end
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		return expr.name
+		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!\n"

@@ -15,7 +15,7 @@ JavaScript.lookupTable = {
 		return '(0/0)'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return 'Math.' .. expr.name .. '(' .. table.mapi(expr, function(x)
+		return 'Math.' .. expr:nameForExporter(self) .. '(' .. table.mapi(expr, function(x)
 			return (self:apply(x))
 		end):concat', ' .. ')'
 	end,
@@ -25,7 +25,7 @@ JavaScript.lookupTable = {
 	[require 'symmath.op.Binary'] = function(self, expr)
 		return '('..table.mapi(expr, function(x)
 			return (self:apply(x))
-		end):concat(' '..expr.name..' ')..')'
+		end):concat(' '..expr:nameForExporter(self)..' ')..')'
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		if expr[1] == require 'symmath'.e then
@@ -37,7 +37,7 @@ JavaScript.lookupTable = {
 		end
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		return expr.name
+		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!")

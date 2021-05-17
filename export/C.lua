@@ -47,9 +47,9 @@ C.lookupTable = {
 		
 		local funcName
 		if not expr.code then
-			funcName = expr.name
+			funcName = expr:nameForExporter(self)
 		else
-			funcName = expr.name
+			funcName = expr:nameForExporter(self)
 			predefs[self.numberType..' '..funcName..'('..self.numberType..' x) {'..expr.code..'}'] = true
 		end
 		return funcName .. '(' .. s .. ')', predefs
@@ -95,10 +95,10 @@ C.lookupTable = {
 			local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, i)
 			predefs = table(predefs, sx2)
 			return sx1
-		end):concat(' '..expr.name..' '), predefs
+		end):concat(' '..expr:nameForExporter(self)..' '), predefs
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		return expr.name
+		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!\n"

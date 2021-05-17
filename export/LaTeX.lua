@@ -73,6 +73,7 @@ function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	return s
 end
 
+-- TODO insert these into symmath functions upon LaTeX init?
 LaTeX.builtinLaTeXFuncNames = setmetatable(table{
 	'arccos',		-- TODO I use the math lib names: asin, acos, atan
 	'arcsin',
@@ -109,6 +110,7 @@ LaTeX.builtinLaTeXFuncNames = setmetatable(table{
 	'tan',
 	'tanh',
 }:mapi(function(v) return true, v end), nil)
+
 
 local function prepareName(name)
 	if name:find'%^' or name:find'_' then
@@ -148,10 +150,11 @@ LaTeX.lookupTable = {
 		return table{'?'}
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		local name = expr.name
+		local name = expr:nameForExporter(self)
 	
 		-- check for builtin function names:
 		-- only exact matches
+		-- TODO use each func's nameForExporter instead
 		local found = self.builtinLaTeXFuncNames[name]
 		if found then name = '\\'..name end
 
@@ -196,7 +199,7 @@ LaTeX.lookupTable = {
 			-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
 			-- TODO don't do this if those >1 length variables are LaTeX strings for single-char greek letters
 			if (Variable:isa(expr[i-1])
-			and #expr[i-1].name > 1)
+			and #expr[i-1]:nameForExporter(self) > 1)
 			or require 'symmath.op.unm':isa(expr[i])
 			or (Constant:isa(expr[i]) and expr[i].value < 0)
 			--and Variable:isa(expr[i])
@@ -257,7 +260,7 @@ LaTeX.lookupTable = {
 		
 		local symmath = require 'symmath'
 		if self.showExpAsFunction
-		and rawequal(expr[1], symmath.e) 
+		and expr[1] == symmath.e
 		then
 			return table{'\\exp', '\\left(', self:apply(expr[2]), '\\right)'}
 		end
@@ -279,26 +282,15 @@ LaTeX.lookupTable = {
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'
-		local name = expr.name
+		local name = expr:nameForExporter(self)
 		
-		-- this is basically 'fixVariableNames' but forced for builtin
-		if rawequal(expr, symmath.i) then
-			name = 'i'
-		end
-		if rawequal(expr, symmath.e) then
-			name = 'e'
-		end
-		if rawequal(expr, symmath.pi) then
-			name = '\\pi'
-		end
-		if rawequal(expr, symmath.infty) then
-			name = '\\infty'
-		end
-		
+		-- fixVariableNames might mess us up ...
 		if symmath.fixVariableNames then
 			name = symmath.tostring:fixVariableName(name)
 		end
+		
 		local s = table{prepareName(name)}
+		
 		--if expr.value then s:append{'|', expr.value} end
 		return s
 	end,

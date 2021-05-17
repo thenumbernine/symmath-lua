@@ -31,9 +31,9 @@ Mathematica.lookupTable = {
 		
 		local funcName
 		if not expr.code then
-			funcName = 'math.'..expr.name
+			funcName = expr:nameForExporter(self)
 		else
-			funcName = expr.name
+			funcName = expr:nameForExporter(self)
 			predefs['local '..funcName..' = '..expr.code] = true
 		end
 		return funcName .. '[' .. s .. ']', predefs
@@ -50,7 +50,7 @@ Mathematica.lookupTable = {
 			s:insert(sx1)
 			predefs = table(predefs, sx2)
 		end
-		s = s:concat(' '..expr.name..' ')
+		s = s:concat(' '..expr:nameForExporter(self)..' ')
 		return '('..s..')', predefs
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
@@ -65,12 +65,12 @@ Mathematica.lookupTable = {
 				s:insert(sx1)
 				predefs = table(predefs, sx2)
 			end
-			s = s:concat(' '..expr.name..' ')
+			s = s:concat(' '..expr:nameForExporter(self)..' ')
 			return '('..s..')', predefs
 		end
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		return expr.name
+		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!\n"

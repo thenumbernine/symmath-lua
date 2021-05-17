@@ -16,7 +16,7 @@ GnuPlot.lookupTable = {
 		return '(0/0)'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		return expr.name .. '(' .. table.mapi(expr, function(x)
+		return expr:nameForExporter(self) .. '(' .. table.mapi(expr, function(x)
 			return (self:apply(x))
 		end):concat', ' .. ')'
 	end,
@@ -26,7 +26,7 @@ GnuPlot.lookupTable = {
 	[require 'symmath.op.Binary'] = function(self, expr)
 		return '('..table.mapi(expr, function(x)
 			return (self:apply(x))
-		end):concat(' '..expr.name..' ')..')'
+		end):concat(' '..expr:nameForExporter(self)..' ')..')'
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		if expr[1] == require 'symmath'.e then
@@ -38,7 +38,7 @@ GnuPlot.lookupTable = {
 		end
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		return expr.name
+		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		error("can't compile differentiation.  replace() your diff'd content first!")

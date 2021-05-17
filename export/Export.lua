@@ -18,6 +18,8 @@ local class = require 'ext.class'
 -- [[
 local Export = class()
 
+Export.name = 'Export'
+
 function Export:apply(expr, ...)
 	if type(expr) ~= 'table' then return tostring(expr) end
 	local lookup = expr.class
@@ -70,5 +72,105 @@ function Export:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 end
 
 function Export:fixVariableName(name) return name end
+
+
+
+-- [==[ all this just to get uint8-capable bitwise _and_ working...
+-- TODO looks like a job for lua-ext ...
+local band
+-- [=[ try the operator
+if not band then
+	local f, err = load[[return function(a,b) return a & b end]]
+	if f then 
+--print'using operator'
+		band = assert(f())
+	end
+end
+--]=]
+-- try global
+for _,lib in ipairs{'bit', 'bit32'} do
+	if _G[lib] then 
+--print('using global lib', lib)
+		band = _G[lib].band 
+	end
+end
+-- try bit library
+for _,lib in ipairs{'bit', 'bit32'} do
+	if not band then
+		local has, bit = pcall(require, lib)
+		if has then 
+--print('using lib ', lib)
+			band = bit.band 
+		end
+	end
+end
+-- implement in vanilla old lua
+if not band then
+--print('using vanilla')
+	band = function(a,b)
+		local two = 2
+		local res = 0
+		for i=1,8 do
+			local u = a % two
+			local v = b % two
+			if u ~= 0 and v ~= 0 then res = res + u end
+			a = a - u
+			b = b - v
+			two = two * 2
+		end
+		return res
+	end
+end
+
+--[[ verify
+for i=0,255 do
+	for j=0,255 do
+		--io.write('\t',band(i,j))
+		local a = band(i,j)
+		local b = i & j
+		assert(a == b, "failed for i="..i.." j="..j.." band(i,j)="..a.." i & j ="..b)
+	end
+	--print()
+end
+os.exit()
+--]]
+--]==]
+
+
+
+-- I'm using utf8 length often enough,
+-- and some builds like luajit don't always have it,
+-- and I haven't found a pure lua library that I like enough to depend on yet, 
+-- so here's my own utf8 strlen:
+function Export.strlen(s)
+	assert(type(s) == 'string')
+	local n = #s	-- raw len
+	local len = 0
+	local i = 1
+	while i <= n do
+		local b = s:byte(i)
+		if band(b, 0x80) == 0 then	-- 0xxx:xxxx
+		else
+			if band(b, 0xe0) == 0xc0 then		-- 110x:xxxx
+				m = 1
+			elseif band(b, 0xf0) == 0xe0 then	-- 1110:xxxx
+				m = 2
+			elseif band(b, 0xf8) == 0xf0 then	-- 1111:0xxx
+				m = 3
+			else
+				error'here'
+			end
+			for j=1,m do
+				i = i + 1
+				if band(s:byte(i), 0xc0) ~= 0x80 then
+					error'here'
+				end
+			end
+		end
+		len = len + 1
+		i = i + 1
+	end
+	return len
+end
 
 return Export

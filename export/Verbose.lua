@@ -19,37 +19,37 @@ Verbose.lookupTable = {
 		return 'unm('..self:apply(expr[1])..')'
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
-		--return 'Binary{'..expr.name..'}['..table.map(expr, function(x,k)
-		return expr.name..'['..table.mapi(expr, function(x)
+		--return 'Binary{'..expr:nameForExporter(self)..'}['..table.map(expr, function(x,k)
+		return expr:nameForExporter(self)..'['..table.mapi(expr, function(x)
 			return self(x)
 		end):concat(', ')..']'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		--return 'Function{'..expr.name..'}[' .. table.map(expr, function(x,k)
-		return expr.name..'[' .. table.mapi(expr, function(x)
+		--return 'Function{'..expr:nameForExporter(self)..'}[' .. table.map(expr, function(x,k)
+		return expr:nameForExporter(self)..'[' .. table.mapi(expr, function(x)
 			return (self(x))
 		end):concat', ' .. ']'
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		--local s = 'Variable['..expr.name..']'
-		local s = expr.name
+		--local s = 'Variable['..expr:nameForExporter(self)..']'
+		local s = expr:nameForExporter(self)
 		if expr.value then
 			s = s .. '|' .. expr.value
 		end
 		return s	
 	end,
 	[require 'symmath.Expression'] = function(self, expr)
-		return expr.name..'{'..table.mapi(expr, function(x)
+		return expr:nameForExporter(self)..'{'..table.mapi(expr, function(x)
 			return self(x)
 		end):concat', '..'}'
 	end,
 	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
 		-- NOTICE if TensorIndex ever became an Expression then its __tostring would be overriding the original
 		-- and if it didn't override the original ... then this tostring() call would be a recursive call
-		return expr.name..'{'..tostring(expr)..'}'
+		return expr:nameForExporter(self)..'{'..tostring(expr)..'}'
 	end,
 	[require 'symmath.Wildcard'] = function(self, expr)
-		return expr.name..'{'
+		return expr:nameForExporter(self)..'{'
 			..'index='..expr.index
 			..(expr.atLeast and (', atLeast='..expr.atLeast) or '')
 			..(expr.atMost and (', atMost='..expr.atMost) or '')

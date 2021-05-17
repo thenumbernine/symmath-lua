@@ -37,6 +37,10 @@ inputs: {var1, var2, {name3=expr3}, ...}
 
 replaces all non-Variable expressions with Variables of matching names
 then generates the code
+
+returns fixedInputs, fixedOutputs
+fixedInputs is a list of variables
+fixedOutputs is a list of {name=string, expr=Expression}
 --]]
 function Language:prepareToCodeArgs(outputs, inputs)
 	local Variable = require 'symmath.Variable'
@@ -348,7 +352,9 @@ print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))
 		-- combine repeated temp vars
 		tmpvardefs = tmpvardefs:reverse()
 		local i = 2
-		local used = tmpvardefs:mapi(function(def) return 1, def[1].name end)
+		local used = tmpvardefs:mapi(function(def) 
+			return 1, def[1].name 
+		end)
 		while i <= #tmpvardefs do
 			for j=1,i-1 do
 				if tmpvardefs[i][2] == tmpvardefs[j][2] then
@@ -447,7 +453,7 @@ function Language:toFuncCode(args)
 		funcHeader = 
 			(genParams.funcHeaderStart and genParams.funcHeaderStart(self, args.func or 'f', inputs) or '')
 			..inputs:mapi(function(input)
-				return argType..input.name
+				return argType..input:nameForExporter(self)
 			end):concat', '
 			..(genParams.funcHeaderEnd or '')
 	end

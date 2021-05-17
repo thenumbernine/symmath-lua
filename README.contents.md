@@ -69,6 +69,8 @@ How to get around this:
 
 - finish Integer and Rational sets, maybe better support for Complex set.
 
+- better polynomial factoring.
+
 ## SymMath Interpreter
 
 If you want to run this as a command-line with the API in global namespace:

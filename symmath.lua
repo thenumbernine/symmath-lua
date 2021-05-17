@@ -243,11 +243,51 @@ symmath.inf = symmath.Constant(math.huge, 'infty')	-- TODO use 'infinite' or 'in
 -- a temporary fix in the mean time ... I'll use '_i' for the name and swap it out with a unicode char, just like Mathematica does.  
 -- This way users who use 'i' as an arbitrary variable won't have it collide with symmath.i
 -- (why not use unicode all around?  don't use unicode escape codes, since lua 5.2 can't handle it with string length, but just use unicode strings here.)
-symmath.i = symmath.Variable('_i', nil, symmath.complex(0,1))	-- ⅈ
-symmath.e = symmath.Variable('_e', nil, math.exp(1))	-- ⅇ
-symmath.pi = symmath.Variable('pi', nil, math.pi)	-- π
-symmath.inf = symmath.Variable('infty', nil, math.huge)	-- ∞
+symmath.i = symmath.Variable('_i', nil, symmath.complex(0,1))	-- ⅈ (doesn't show up in Windows Consolas)
+symmath.e = symmath.Variable('_e', nil, math.exp(1))			-- ⅇ (doesn't show up in Windows Consolas)
+symmath.pi = symmath.Variable('π', nil, math.pi)				-- π
+symmath.inf = symmath.Variable('inf', nil, math.huge)		-- ∞
 --]]
+	
+do
+	-- C ... i ... should we use gnu or microsoft?
+	symmath.e:nameForExporter('C', 'M_E')
+	symmath.pi:nameForExporter('C', 'M_PI')
+	symmath.inf:nameForExporter('C', 'INFINITY')
+
+	symmath.i:nameForExporter('GnuPlot', '{0,1}')
+	symmath.e:nameForExporter('GnuPlot', 'exp(1.)')
+	symmath.pi:nameForExporter('GnuPlot', 'pi')
+	-- does inf have a representation in gnuplot?
+
+	-- i doesn't have a representation in JavaScript
+	symmath.e:nameForExporter('JavaScript', 'Math.exp(1)')
+	symmath.pi:nameForExporter('JavaScript', 'Math.PI')
+	symmath.inf:nameForExporter('JavaScript', 'Infinity')
+	
+	local Console = require 'symmath.export.Console'
+	-- hmm, MultiLine goes to SingleLine for its variable name encoding
+	-- so nameForExporter will use SingleLine, even for MultiLine encoding
+	-- how about making MultiLine a subclass of SingleLine?
+	--symmath.inf:nameForExporter('SingleLine', '∞')
+	symmath.inf:nameForExporter(Console, '∞')
+
+	symmath.i:nameForExporter('Lua', 'ffi.new("complex", 0, 1)')
+	symmath.e:nameForExporter('Lua', 'math.exp(1)')
+	symmath.pi:nameForExporter('Lua', 'math.pi')
+	symmath.inf:nameForExporter('Lua', 'math.huge')
+	
+	symmath.i:nameForExporter('Mathematica', 'ii')
+	symmath.e:nameForExporter('Mathematica', 'e')
+
+	symmath.i:nameForExporter('LaTeX', 'i')
+	symmath.e:nameForExporter('LaTeX', 'e')
+	-- with this, with tostring=MultiLine, with fixVariableNames, when printing export.LaTeX(pi), it shows up as $\π$
+	-- but ... what a strange combination of flags
+	symmath.pi:nameForExporter('LaTeX', '\\pi')
+	symmath.inf:nameForExporter('LaTeX', '\\infty')
+end
+
 
 -- hack implicit variable names to look good in TeX
 

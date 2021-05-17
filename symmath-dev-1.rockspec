@@ -219,6 +219,7 @@ build = {
 		["symmath.tests.toy-1+1 spacetime"] = "tests/toy-1+1 spacetime.lua",
 		["symmath.tests.unit.compile"] = "tests/unit/compile.lua",
 		["symmath.tests.unit.determinant_performance"] = "tests/unit/determinant_performance.lua",
+		["symmath.tests.unit.export"] = "tests/unit/export.lua",
 		["symmath.tests.unit.getIndexesUsed"] = "tests/unit/getIndexesUsed.lua",
 		["symmath.tests.unit.index_construction"] = "tests/unit/index_construction.lua",
 		["symmath.tests.unit.integral"] = "tests/unit/integral.lua",

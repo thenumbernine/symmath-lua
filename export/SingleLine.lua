@@ -3,8 +3,6 @@ local table = require 'ext.table'
 -- single-line strings 
 local Console = require 'symmath.export.Console'
 
-local getUnicodeSymbol = Console.getUnicodeSymbol
-
 
 local SingleLine = class(Console)
 
@@ -39,13 +37,16 @@ SingleLine.lookupTable = {
 	--]]
 	[require 'symmath.Constant'] = function(self, expr) 
 		local symmath = require 'symmath'
-		local symbol = expr.symbol	
+		
+		-- .symbol was a quick fix to give constants symbols ... keep it? 
+		local symbol = expr.symbol
 		if symbol then
 			if symmath.fixVariableNames then
 				symbol = symmath.tostring:fixVariableName(symbol)
 			end
 			return symbol
 		end
+		
 		local s = tostring(expr.value) 
 		if s:sub(-2) == '.0' then s = s:sub(1,-3) end
 		return s
@@ -54,7 +55,7 @@ SingleLine.lookupTable = {
 		return 'Invalid'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		local name = self:fixFunctionName(expr.name)
+		local name = self:fixFunctionName(expr:nameForExporter(self))
 		return name..'(' .. table.mapi(expr, function(x)
 			return (self:apply(x))
 		end):concat(', ') .. ')'
@@ -72,12 +73,7 @@ SingleLine.lookupTable = {
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'
-		local name = expr.name
-		
-		-- Console.symbols replaces subsets of a variable name,
-		-- so here (for builtins) replace any exact names
-		name = self.builtinVariableNames[name] or name
-		
+		local name = expr:nameForExporter(self)
 		if symmath.fixVariableNames then
 			name = symmath.tostring:fixVariableName(name)
 		end
@@ -98,14 +94,33 @@ SingleLine.lookupTable = {
 			topText = topText .. '^'..diffPower
 		end	
 		local powersForDeriv = {}
+		
+		-- used to look the var back up for calling nameForExporter
+		-- this means multiple Variable objects with separate nameForExporterTable's will have undefined behavior
+		-- good thing Variable:clone() returns the original var
+		local varForName = diffVars:mapi(function(var) return var, var.name end)
+		
 		for _,var in ipairs(diffVars) do
+			-- don't fix name -- since var.name is used for variable equality
 			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
 		end
 		local diffexpr = self:apply(assert(expr[1]))
 		return topText..'/{'..table.map(powersForDeriv, function(power, name, newtable)
-			if type(name) == 'string' and symmath.fixVariableNames then
+			
+			-- get the var for this name
+			local var = varForName[name]
+			
+			-- get the var's name for this exporter
+			name = var:nameForExporter(self)
+		
+			-- see if it we are supposed to fix this
+			-- when is it not a string?
+			if type(name) == 'string'	
+			and symmath.fixVariableNames
+			then
 				name = symmath.tostring:fixVariableName(name)
 			end
+			
 			local s = 'd'..name
 			if power > 1 then
 				s = s .. '^' .. power

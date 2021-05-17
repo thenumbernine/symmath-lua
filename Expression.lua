@@ -1603,4 +1603,73 @@ function Expression:itermul()
 	end)
 end
 
+
+--[[
+Variable and Function names ... and anything else
+
+Right now in Variables I pass in an arg to override the .name field.
+But for some variables (the builtin i,e, pi, inf) and for some exporters, it is nice to have custom names.
+so how to define this?
+How about var.nameForExporter[exporter] = 'some name' ?
+
+and then, the exporter calls ":nameForExporter(exporter.name)" for Variables (and functions too, why not)
+and :nameForExporter(exporter) returns the name override, if provided, or otherwise returns the base name?
+--]]
+local Export
+function Expression:nameForExporter(...)
+	local n = select('#', ...)
+	local exporter, newName = ...
+	if n < 1 or n > 2 then
+		error("usage: expr:nameForExporter(exporter, [new name]) - gets or sets the name for the specific exporter")
+	end
+
+--print((n == 1 and 'getting' or 'setting')..' var.name='..self.name..' args=', ...)
+
+	if type(exporter) == 'string' then
+		exporter = require ('symmath.export.'..exporter)
+	end
+
+	Export = Export or require 'symmath.export.Export'
+	assert(Export:isa(exporter), "expected an Export subclass")
+
+--print('using nameForExporterTable='..self.nameForExporterTable)
+--print('...which contains '..require 'ext.tolua'(self.nameForExporterTable and table.map(self.nameForExporterTable, function(v,k) return v, k.name end) or self.nameForExporterTable))
+	-- get old name associated with the exporter, or one of its ancestors
+	local oldName
+	if self.nameForExporterTable then
+		local e = exporter
+		while e do
+--print('checking against exporter='..e..' exporter.name='..e.name)
+			local name = self.nameForExporterTable[e.name]
+			if name then 
+--print('...found '..name)
+				oldName = name 
+				break
+			end
+			e = e.super
+		end
+	end
+	-- last use the .name field
+	if not oldName then
+		oldName = self.name
+	end
+
+	-- set new name
+	if n == 2 then
+		self.nameForExporterTable = self.nameForExporterTable or {}
+		-- if the class has it then copy it over
+		if self.nameForExporterTable == getmetatable(self.nameForExporterTable) then
+			self.nameForExporterTable = setmetatable(table(self.nameForExporterTable), nil)
+		end
+--print('setting nameForExporterTable='..self.nameForExporterTable..' key/exporter='..exporter..' key/exporter.name='..exporter.name..' value='..newName)
+		self.nameForExporterTable[exporter.name] = newName
+	end
+
+	-- TODO here - do 'fixVariableNames' - and then use this function everywhere for the name getter.
+
+--print('done and returning name '..oldName)
+--print()
+	return oldName 
+end
+
 return Expression

@@ -5,53 +5,36 @@ local range = require 'ext.range'
 local Console = require 'symmath.export.Console'
 local SingleLine = require 'symmath.export.SingleLine'
 	
-local hasutf8, utf8 = pcall(require, 'utf8')
-if not hasutf8 then utf8 = nil end
-
 -- luajit can do fine with unicode strings within the .lua file
 -- however what it can't do is compute their length in characters.
 -- that's why I'm defaulting to non-unicode characters.
 
-local getUnicodeSymbol = Console.getUnicodeSymbol
-
 -- [3][2] of the border chars of a box
 local box = {
-	{getUnicodeSymbol('250c', '['), getUnicodeSymbol('2510', ']')},
-	{getUnicodeSymbol('2502', '['), getUnicodeSymbol('2502', ']')},
-	{getUnicodeSymbol('2514', '['), getUnicodeSymbol('2518', ']')},
+	{'┌', '┐'},
+	{'│', '│'},
+	{'└', '┘'},
 	{'[', ']'},
 }
 -- [3][2] of the border chars of parenthesis
 local par = {
-	{getUnicodeSymbol('256d', ' /'), getUnicodeSymbol('256e', '\\ ')},
-	{getUnicodeSymbol('2502', '| '), getUnicodeSymbol('2502', ' |')},
-	{getUnicodeSymbol('2570', '\\ '), getUnicodeSymbol('256f', '/ ')},
+	{'╭', '╮'},
+	{'│', '│'},
+	{'╰', '╯'},
 	{'(', ')'},
 }
-local line = {
-	getUnicodeSymbol('2576', '-'),
-	getUnicodeSymbol('2500', '-'),
-	getUnicodeSymbol('2574', '-'),
-}
+local line = {'╶', '─', '╴'}
 local intname = {
-	getUnicodeSymbol('2320', '\\'),	-- integral top symbol
-	getUnicodeSymbol('2502', '|'),	-- integral middle symbol
-	getUnicodeSymbol('2321', '\\'),	-- integral bottom symbol
-	getUnicodeSymbol('222b', 'int'),	-- integral symbol
+	'⌠',
+	'│',
+	'⌡',
+	'∫',
 }
-local partialname = getUnicodeSymbol('2202', 'd')
+local partialname = '∂'
+local downarrow = '↓'
+local rightarrow = '→'
 
-local downarrow = getUnicodeSymbol('2193', 'v')
-local rightarrow = getUnicodeSymbol('2192', '>')
-
-local strlen
-if hasutf8 then
-	strlen = utf8.len
-elseif rawlen then
-	strlen = rawlen
-else
-	strlen = function(s) return #s end
-end
+local strlen = Console.strlen
 
 
 -- borp = box or par [4][2]
@@ -159,7 +142,7 @@ MultiLine.lookupTable = {
 		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		local name = self:fixFunctionName(expr.name)
+		local name = self:fixFunctionName(expr:nameForExporter(self))
 		local res = {name..'('}
 		res = self:combine(res, self:apply(expr[1]))
 		local sep = {', '}
@@ -224,6 +207,8 @@ MultiLine.lookupTable = {
 		end
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
+			-- TODO this will call SingleLine's var:nameForExporter
+			-- so overrides specified for MultiLine will be ignored
 			varname = SingleLine(var)
 			powersForDeriv[varname] = (powersForDeriv[varname] or 0) + 1
 		end
@@ -247,61 +232,51 @@ MultiLine.lookupTable = {
 		
 		local dx = self:combine({' d'}, self:apply(expr[2]))
 		s = self:combine(s, dx)
-	
-		local name
-		if hasutf8 then
-			local n = math.max(2, #s)
-			local sLR
-			if xL and xR then
-				sLR = table()
-				local sL = xL and self:apply(xL) or nil
-				local sR = xR and self:apply(xR) or nil
-				if sL or sR then
-					if sR then
-						for _,l in ipairs(sR) do
-							sLR:insert(l)
-						end
-					end
-					for i=1,math.max(1, n - #sL - #sR) do
-						sLR:insert''
-					end
-					if sL then
-						for _,l in ipairs(sL) do
-							sLR:insert(l)
-						end
-					end
-				end
-				local maxwidth = sLR:mapi(function(l) return strlen(l) end):sup()
-				for i=1,#sLR do
-					sLR[i] = sLR[i] .. (' '):rep(maxwidth-strlen(sLR[i]))
-				end
-				n = math.max(n, #sLR)
-			end
 		
-			-- TODO n should be the max of either the inner height or the sL height + sR height + padding
-			
-			local intstr = {}
-			for i=1,n do
-				if i == 1 then
-					intstr[i] = intname[1]
-				elseif i == n then
-					intstr[i] = intname[3]
-				else
-					intstr[i] = intname[2]
+		local n = math.max(2, #s)
+		local sLR
+		if xL and xR then
+			sLR = table()
+			local sL = xL and self:apply(xL) or nil
+			local sR = xR and self:apply(xR) or nil
+			if sL or sR then
+				if sR then
+					for _,l in ipairs(sR) do
+						sLR:insert(l)
+					end
+				end
+				for i=1,math.max(1, n - #sL - #sR) do
+					sLR:insert''
+				end
+				if sL then
+					for _,l in ipairs(sL) do
+						sLR:insert(l)
+					end
 				end
 			end
-			if sLR then
-				intstr = self:combine(intstr, sLR)
+			local maxwidth = sLR:mapi(function(l) return strlen(l) end):sup()
+			for i=1,#sLR do
+				sLR[i] = sLR[i] .. (' '):rep(maxwidth-strlen(sLR[i]))
 			end
-			s = self:combine(self:combine(intstr, {' '}), s)
-		else
-			for i=3,#expr do
-				s = self:combine(s, {', '})
-				s = self:combine(s, self:apply(expr[i]))
-			end
-			wrap(s, nil, par)
-			s = self:combine({'integrate'}, s)
+			n = math.max(n, #sLR)
 		end
+	
+		-- TODO n should be the max of either the inner height or the sL height + sR height + padding
+		
+		local intstr = {}
+		for i=1,n do
+			if i == 1 then
+				intstr[i] = intname[1]
+			elseif i == n then
+				intstr[i] = intname[3]
+			else
+				intstr[i] = intname[2]
+			end
+		end
+		if sLR then
+			intstr = self:combine(intstr, sLR)
+		end
+		s = self:combine(self:combine(intstr, {' '}), s)
 		
 		return s
 	end,
