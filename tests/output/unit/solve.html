@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>solve</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b></b><br>
+<code>asserteq(#{x:eq(0):solve(x)}, 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(x:eq(0):solve(x), x:eq(0))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(#{x:eq(1):solve(x)}, 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(x:eq(1):solve(x), x:eq(1))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(#{(x+1):eq(0):solve(x)}, 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((x+1):eq(0):solve(x), x:eq(-1))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>TODO only return a single value if it is duplicated? or is multiplicity important? what does the eigenvalue solver think of this?</b><br>
+<code>asserteq(#{(x^2):eq(0):solve(x)}, 1)</code>
+</td><td>
+expected 2 to equal 1<br>
+instead found $2$ vs $1$<br>
+lhs stack<br>
+init	$2$	<br>
+prune	$2$	<br>
+expand	$2$	<br>
+prune	$2$	<br>
+factor	$2$	<br>
+prune	$2$	<br>
+tidy	$2$	<br>
+rhs stack<br>
+init	$1$	<br>
+prune	$1$	<br>
+expand	$1$	<br>
+prune	$1$	<br>
+factor	$1$	<br>
+prune	$1$	<br>
+tidy	$1$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	[string "asserteq(#{(x^2):eq(0):solve(x)}, 1)"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	solve.lua:35: in main chunk<br>
+	[C]: at 0x7ff6c3fa4950
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((x^2):eq(0):solve(x), x:eq(0))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(#{(x^2):eq(1):solve(x)}, 2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((x^2):eq(1):solve(x), x:eq(1))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(select(2, (x^2):eq(1):solve(x)), x:eq(-1))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(#{(x^2):eq(-1):solve(x)}, 2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((x^2):eq(-1):solve(x), x:eq(i))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(select(2, (x^2):eq(-1):solve(x)), x:eq(-i))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>distinguish between x*(x^2 + 2x + 1) and (x^3 + 2x^2 + x) , because the solver handles one but not the other</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(#{(x * (x^2 + 2*x + 1)):eq(0)}, 3)</code>
+</td><td>
+expected 1 to equal 3<br>
+instead found $1$ vs $3$<br>
+lhs stack<br>
+init	$1$	<br>
+prune	$1$	<br>
+expand	$1$	<br>
+prune	$1$	<br>
+factor	$1$	<br>
+prune	$1$	<br>
+tidy	$1$	<br>
+rhs stack<br>
+init	$3$	<br>
+prune	$3$	<br>
+expand	$3$	<br>
+prune	$3$	<br>
+factor	$3$	<br>
+prune	$3$	<br>
+tidy	$3$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	[string "asserteq(#{(x * (x^2 + 2*x + 1)):eq(0)}, 3)"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	solve.lua:35: in main chunk<br>
+	[C]: at 0x7ff6c3fa4950
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(#{(x^3 + 2*x^2 + x):eq(0)}, 3)</code>
+</td><td>
+expected 1 to equal 3<br>
+instead found $1$ vs $3$<br>
+lhs stack<br>
+init	$1$	<br>
+prune	$1$	<br>
+expand	$1$	<br>
+prune	$1$	<br>
+factor	$1$	<br>
+prune	$1$	<br>
+tidy	$1$	<br>
+rhs stack<br>
+init	$3$	<br>
+prune	$3$	<br>
+expand	$3$	<br>
+prune	$3$	<br>
+factor	$3$	<br>
+prune	$3$	<br>
+tidy	$3$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	[string "asserteq(#{(x^3 + 2*x^2 + x):eq(0)}, 3)"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	solve.lua:35: in main chunk<br>
+	[C]: at 0x7ff6c3fa4950
+</td></tr>

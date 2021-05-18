@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>replaceIndex</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>replaceIndex</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
 <table border="1" style="border-collapse:collapse">
@@ -295,7 +295,7 @@
 <b></b><br>
 <code>printbr( g'_ij,t':eq(d * (d * b'^k_,i' * g'_kj' + d * b'^k_,j' * g'_ki' + d * b'^k' * c'_ijk' + d * b'^k' * c'_jik' + 2 * d'_,t' * g'_ij' - 2 * d * a * e'_ij') ):replaceIndex( d'_,t',  frac(1,3) * (3 * d'_,i' * b'^i' - d * b'^i_,i' - frac(1,2) * d * b'^i' * g'_,i' / g + e * d * a) ) )</code>
 </td><td>
-${{{{ g}_i}_j}_{,t}} = {{{d}} {{({{{{{d}} {{{{ b}^k}_{,i}}} {{{{ g}_k}_j}}} + {{{d}} {{{{ b}^k}_{,j}}} {{{{ g}_k}_i}}} + {{{d}} {{{ b}^k}} {{{{{ c}_i}_j}_k}}} + {{{d}} {{{ b}^k}} {{{{{ c}_j}_i}_k}}} + {{{2}} {{{{\frac{1}{3}}} {{({{{{{{3}} {{{ d}_{,a}}} {{{ b}^a}}} - {{{d}} {{{{ b}^a}_{,a}}}}} - {{\frac{1}{g}}{({{{\frac{1}{2}}} {{d}} {{{ b}^a}} {{{ g}_{,a}}}})}}} + {{{e}} {{d}} {{a}}}})}}}} {{{{ g}_i}_j}}}} - {{{2}} {{d}} {{a}} {{{{ e}_i}_j}}}})}}}$
+${{{{ g}_i}_j}_{,t}} = {{{d}} {{\left({{{{{d}} {{{{ b}^k}_{,i}}} {{{{ g}_k}_j}}} + {{{d}} {{{{ b}^k}_{,j}}} {{{{ g}_k}_i}}} + {{{d}} {{{ b}^k}} {{{{{ c}_i}_j}_k}}} + {{{d}} {{{ b}^k}} {{{{{ c}_j}_i}_k}}} + {{{2}} {{{{\frac{1}{3}}} {{\left({{{{{{3}} {{{ d}_{,a}}} {{{ b}^a}}} - {{{d}} {{{{ b}^a}_{,a}}}}} - {\frac{{{\frac{1}{2}}} {{d}} {{{ b}^a}} {{{ g}_{,a}}}}{g}}} + {{{e}} {{d}} {{a}}}}\right)}}}} {{{{ g}_i}_j}}}} - {{{2}} {{d}} {{a}} {{{{ e}_i}_j}}}}\right)}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -384,7 +384,7 @@ ${{{{ g}_i}_j}_{,t}} = {{{d}} {{({{{{{d}} {{{{ b}^k}_{,i}}} {{{{ g}_k}_j}}} + {{
 <b></b><br>
 <code>printbr( d'_,t':eq( frac(1,6) * ( d * ( 2 * e * a - b'^k_,i' * g'^ij' * g'_jk' - b'^k_,j' * g'_ik' * g'^ij' - b'^k' * g'^ij' * g'_ij,k' ) )):replaceIndex( g'_ij', c'_ij' / d^2  ) )</code>
 </td><td>
-${{ d}_{,t}} = {{{\frac{1}{6}}} {{d}} {{({{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\frac{{{ c}_j}_k}{{d}^{2}}}}}} - {{{{{ b}^k}_{,j}}} {{\frac{{{ c}_i}_k}{{d}^{2}}}} {{{{ g}^i}^j}}}} - {{{{ b}^k}} {{{{ g}^i}^j}} {{{{{ g}_i}_j}_{,k}}}}})}}}$
+${{ d}_{,t}} = {{{\frac{1}{6}}} {{d}} {{\left({{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\frac{{{ c}_j}_k}{{d}^{2}}}}}} - {{{{{ b}^k}_{,j}}} {{\frac{{{ c}_i}_k}{{d}^{2}}}} {{{{ g}^i}^j}}}} - {{{{ b}^k}} {{{{ g}^i}^j}} {{{{{ g}_i}_j}_{,k}}}}}\right)}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -447,16 +447,16 @@ ${{ d}_{,t}} = {{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\fra
 <b>what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?</b><br>
 <code>asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end )</code>
 </td><td>
-<span style="color:red">BAD</span><br>.\unit.lua:35: expected an error, but found none<br>stack traceback:<br>
-	.\unit.lua:93: in function <.\unit.lua:92><br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:35: expected an error, but found none<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
 	[C]: in function 'assert'<br>
-	.\unit.lua:35: in function 'asserterror'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:35: in function 'asserterror'<br>
 	[string "asserterror(function() (a'_a' + b'_ab' * c'^b..."]:1: in main chunk<br>
-	.\unit.lua:85: in function <.\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
-	.\unit.lua:84: in function 'exec'<br>
-	replaceIndex.lua:133: in main chunk<br>
-	[C]: at 0x7ff68b224950
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	replaceIndex.lua:134: in main chunk<br>
+	[C]: at 0x7ff6d3fb4950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -464,6 +464,10 @@ ${{ d}_{,t}} = {{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\fra
 </td><td>
 <tr><td>
 <b>why do neither of these work?  because if there are *only* sum-indexes won't match, however if there are extra indexes then it will match.  why do we have this constraint again?</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>internal sum indexes do seem to work in replaceIndex, like A^a_a, but externally shared between two tensors don't: A^a * A_a ... why distinguish?</b><br>
 <code></code>
 </td><td>
 <tr><td>

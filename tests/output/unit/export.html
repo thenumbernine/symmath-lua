@@ -1,0 +1,2534 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>tests/unit/nameForExporter</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+generated with LuaJIT 2.1.0-beta3
+<br>
+
+<br>
+<table border="1" style="border-collapse:collapse">
+<tr>
+<th>.name</th>
+<th>
+LaTeX
+</th>
+<th>
+MathJax
+</th>
+<th>
+SingleLine
+</th>
+<th>
+MultiLine
+</th>
+<th>
+Verbose
+</th>
+<th>
+C
+</th>
+<th>
+JavaScript
+</th>
+<th>
+Lua
+</th>
+<th>
+GnuPlot
+</th>
+<th>
+Mathematica
+</th>
+<th>
+SymMath
+</th>
+</tr>
+<tr>
+<td><pre>_i</pre></td>
+<td><pre>
+$i$
+</pre></td>
+<td><pre>
+$i$
+</pre></td>
+<td><pre>
+_i
+</pre></td>
+<td><pre>
+_i
+</pre></td>
+<td><pre>
+_i|0+1i
+</pre></td>
+<td><pre>
+_i
+</pre></td>
+<td><pre>
+_i
+</pre></td>
+<td><pre>
+ffi.new("complex", 0, 1)
+</pre></td>
+<td><pre>
+{0,1}
+</pre></td>
+<td><pre>
+ii
+</pre></td>
+<td><pre>
+symmath.i
+</pre></td>
+</tr>
+<tr>
+<td><pre>_e</pre></td>
+<td><pre>
+$e$
+</pre></td>
+<td><pre>
+$e$
+</pre></td>
+<td><pre>
+_e
+</pre></td>
+<td><pre>
+_e
+</pre></td>
+<td><pre>
+_e|2.718281828459
+</pre></td>
+<td><pre>
+M_E
+</pre></td>
+<td><pre>
+Math.exp(1)
+</pre></td>
+<td><pre>
+math.exp(1)
+</pre></td>
+<td><pre>
+exp(1.)
+</pre></td>
+<td><pre>
+e
+</pre></td>
+<td><pre>
+symmath.e
+</pre></td>
+</tr>
+<tr>
+<td><pre>π</pre></td>
+<td><pre>
+$\pi$
+</pre></td>
+<td><pre>
+$\pi$
+</pre></td>
+<td><pre>
+π
+</pre></td>
+<td><pre>
+π
+</pre></td>
+<td><pre>
+π|3.1415926535898
+</pre></td>
+<td><pre>
+M_PI
+</pre></td>
+<td><pre>
+Math.PI
+</pre></td>
+<td><pre>
+math.pi
+</pre></td>
+<td><pre>
+pi
+</pre></td>
+<td><pre>
+π
+</pre></td>
+<td><pre>
+symmath.pi
+</pre></td>
+</tr>
+<tr>
+<td><pre>inf</pre></td>
+<td><pre>
+$\inf$
+</pre></td>
+<td><pre>
+$\inf$
+</pre></td>
+<td><pre>
+∞
+</pre></td>
+<td><pre>
+∞
+</pre></td>
+<td><pre>
+inf|inf
+</pre></td>
+<td><pre>
+INFINITY
+</pre></td>
+<td><pre>
+Infinity
+</pre></td>
+<td><pre>
+math.huge
+</pre></td>
+<td><pre>
+inf
+</pre></td>
+<td><pre>
+inf
+</pre></td>
+<td><pre>
+symmath.inf
+</pre></td>
+</tr>
+<tr>
+<td><pre>x</pre></td>
+<td><pre>
+$x$
+</pre></td>
+<td><pre>
+$x$
+</pre></td>
+<td><pre>
+x
+</pre></td>
+<td><pre>
+x
+</pre></td>
+<td><pre>
+x
+</pre></td>
+<td><pre>
+x
+</pre></td>
+<td><pre>
+x
+</pre></td>
+<td><pre>
+x
+</pre></td>
+<td><pre>
+x
+</pre></td>
+<td><pre>
+x
+</pre></td>
+<td><pre>
+var("x")
+</pre></td>
+</tr>
+<tr>
+<td><pre>y</pre></td>
+<td><pre>
+$y$
+</pre></td>
+<td><pre>
+$y$
+</pre></td>
+<td><pre>
+y
+</pre></td>
+<td><pre>
+y
+</pre></td>
+<td><pre>
+y
+</pre></td>
+<td><pre>
+y
+</pre></td>
+<td><pre>
+y
+</pre></td>
+<td><pre>
+y
+</pre></td>
+<td><pre>
+y
+</pre></td>
+<td><pre>
+y
+</pre></td>
+<td><pre>
+var("y")
+</pre></td>
+</tr>
+<tr>
+<td><pre>+</pre></td>
+<td><pre>
+${x} + {y}$
+</pre></td>
+<td><pre>
+${x} + {y}$
+</pre></td>
+<td><pre>
+x + y
+</pre></td>
+<td><pre>
+x + y
+</pre></td>
+<td><pre>
++[x, y]
+</pre></td>
+<td><pre>
+x + y
+</pre></td>
+<td><pre>
+(x + y)
+</pre></td>
+<td><pre>
+(x + y)
+</pre></td>
+<td><pre>
+(x + y)
+</pre></td>
+<td><pre>
+(x + y)
+</pre></td>
+<td><pre>
+(
+	var("x") +
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>-</pre></td>
+<td><pre>
+${x} - {y}$
+</pre></td>
+<td><pre>
+${x} - {y}$
+</pre></td>
+<td><pre>
+x - y
+</pre></td>
+<td><pre>
+x - y
+</pre></td>
+<td><pre>
+-[x, y]
+</pre></td>
+<td><pre>
+x - y
+</pre></td>
+<td><pre>
+(x - y)
+</pre></td>
+<td><pre>
+(x - y)
+</pre></td>
+<td><pre>
+(x - y)
+</pre></td>
+<td><pre>
+(x - y)
+</pre></td>
+<td><pre>
+(
+	var("x") -
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>*</pre></td>
+<td><pre>
+${{x}} {{y}}$
+</pre></td>
+<td><pre>
+${{x}} {{y}}$
+</pre></td>
+<td><pre>
+x y
+</pre></td>
+<td><pre>
+x y
+</pre></td>
+<td><pre>
+*[x, y]
+</pre></td>
+<td><pre>
+x * y
+</pre></td>
+<td><pre>
+(x * y)
+</pre></td>
+<td><pre>
+(x * y)
+</pre></td>
+<td><pre>
+(x * y)
+</pre></td>
+<td><pre>
+(x * y)
+</pre></td>
+<td><pre>
+(
+	var("x") *
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>/</pre></td>
+<td><pre>
+$\frac{x}{y}$
+</pre></td>
+<td><pre>
+$\frac{x}{y}$
+</pre></td>
+<td><pre>
+x / y
+</pre></td>
+<td><pre>
+ x 
+╶─╴
+ y 
+</pre></td>
+<td><pre>
+/[x, y]
+</pre></td>
+<td><pre>
+x / y
+</pre></td>
+<td><pre>
+(x / y)
+</pre></td>
+<td><pre>
+(x / y)
+</pre></td>
+<td><pre>
+(x / y)
+</pre></td>
+<td><pre>
+(x / y)
+</pre></td>
+<td><pre>
+(
+	var("x") /
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>%</pre></td>
+<td><pre>
+${x} % {y}$
+</pre></td>
+<td><pre>
+${x} % {y}$
+</pre></td>
+<td><pre>
+x % y
+</pre></td>
+<td><pre>
+x % y
+</pre></td>
+<td><pre>
+%[x, y]
+</pre></td>
+<td><pre>
+x % y
+</pre></td>
+<td><pre>
+(x % y)
+</pre></td>
+<td><pre>
+(x % y)
+</pre></td>
+<td><pre>
+(x % y)
+</pre></td>
+<td><pre>
+(x % y)
+</pre></td>
+<td><pre>
+(
+	var("x") %
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>^</pre></td>
+<td><pre>
+${x}^{y}$
+</pre></td>
+<td><pre>
+${x}^{y}$
+</pre></td>
+<td><pre>
+x^y
+</pre></td>
+<td><pre>
+ y
+x 
+</pre></td>
+<td><pre>
+^[x, y]
+</pre></td>
+<td><pre>
+pow(x, y)
+</pre></td>
+<td><pre>
+Math.pow(x, y)
+</pre></td>
+<td><pre>
+(x ^ y)
+</pre></td>
+<td><pre>
+(x ** y)
+</pre></td>
+<td><pre>
+(x ^ y)
+</pre></td>
+<td><pre>
+(
+	var("x") ^
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>unm</pre></td>
+<td><pre>
+$-{x}$
+</pre></td>
+<td><pre>
+$-{x}$
+</pre></td>
+<td><pre>
+-x
+</pre></td>
+<td><pre>
+-x
+</pre></td>
+<td><pre>
+unm(x)
+</pre></td>
+<td><pre>
+-x
+</pre></td>
+<td><pre>
+(-x)
+</pre></td>
+<td><pre>
+(-x)
+</pre></td>
+<td><pre>
+(-x)
+</pre></td>
+<td><pre>
+(-x)
+</pre></td>
+<td><pre>
+-(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>/</pre></td>
+<td><pre>
+$\frac{x}{2}$
+</pre></td>
+<td><pre>
+$\frac{x}{2}$
+</pre></td>
+<td><pre>
+x / 2
+</pre></td>
+<td><pre>
+ x 
+╶─╴
+ 2 
+</pre></td>
+<td><pre>
+/[x, 2]
+</pre></td>
+<td><pre>
+x / 2.
+</pre></td>
+<td><pre>
+(x / 2)
+</pre></td>
+<td><pre>
+(x / 2)
+</pre></td>
+<td><pre>
+(x / 2.)
+</pre></td>
+<td><pre>
+(x / 2)
+</pre></td>
+<td><pre>
+(
+	var("x") /
+	Constant(2)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>*</pre></td>
+<td><pre>
+${{\frac{1}{2}}} {{x}}$
+</pre></td>
+<td><pre>
+${{\frac{1}{2}}} {{x}}$
+</pre></td>
+<td><pre>
+1 / 2 x
+</pre></td>
+<td><pre>
+ 1   
+╶─╴ x
+ 2   
+</pre></td>
+<td><pre>
+*[/[1, 2], x]
+</pre></td>
+<td><pre>
+1. / 2. * x
+</pre></td>
+<td><pre>
+((1 / 2) * x)
+</pre></td>
+<td><pre>
+((1 / 2) * x)
+</pre></td>
+<td><pre>
+((1. / 2.) * x)
+</pre></td>
+<td><pre>
+((1 / 2) * x)
+</pre></td>
+<td><pre>
+(
+	(
+		Constant(1) /
+		Constant(2)
+	) *
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>*</pre></td>
+<td><pre>
+${{2}} {{x}}$
+</pre></td>
+<td><pre>
+${{2}} {{x}}$
+</pre></td>
+<td><pre>
+2 x
+</pre></td>
+<td><pre>
+2 x
+</pre></td>
+<td><pre>
+*[2, x]
+</pre></td>
+<td><pre>
+2. * x
+</pre></td>
+<td><pre>
+(2 * x)
+</pre></td>
+<td><pre>
+(2 * x)
+</pre></td>
+<td><pre>
+(2. * x)
+</pre></td>
+<td><pre>
+(2 * x)
+</pre></td>
+<td><pre>
+(
+	Constant(2) *
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>*</pre></td>
+<td><pre>
+${{2}} {{\left({{x} + {1}}\right)}}$
+</pre></td>
+<td><pre>
+${{2}} {{\left({{x} + {1}}\right)}}$
+</pre></td>
+<td><pre>
+2 (x + 1)
+</pre></td>
+<td><pre>
+2 (x + 1)
+</pre></td>
+<td><pre>
+*[2, +[x, 1]]
+</pre></td>
+<td><pre>
+2. * (x + 1.)
+</pre></td>
+<td><pre>
+(2 * (x + 1))
+</pre></td>
+<td><pre>
+(2 * (x + 1))
+</pre></td>
+<td><pre>
+(2. * (x + 1.))
+</pre></td>
+<td><pre>
+(2 * (x + 1))
+</pre></td>
+<td><pre>
+(
+	Constant(2) *
+	(
+		var("x") +
+		Constant(1)
+	)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>^</pre></td>
+<td><pre>
+${x}^{2}$
+</pre></td>
+<td><pre>
+${x}^{2}$
+</pre></td>
+<td><pre>
+x^2
+</pre></td>
+<td><pre>
+ 2
+x 
+</pre></td>
+<td><pre>
+^[x, 2]
+</pre></td>
+<td><pre>
+(x * x)
+</pre></td>
+<td><pre>
+Math.pow(x, 2)
+</pre></td>
+<td><pre>
+(x ^ 2)
+</pre></td>
+<td><pre>
+(x ** 2.)
+</pre></td>
+<td><pre>
+(x ^ 2)
+</pre></td>
+<td><pre>
+(
+	var("x") ^
+	Constant(2)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>^</pre></td>
+<td><pre>
+${\left({{1} + {x}}\right)}^{2}$
+</pre></td>
+<td><pre>
+${\left({{1} + {x}}\right)}^{2}$
+</pre></td>
+<td><pre>
+(1 + x)^2
+</pre></td>
+<td><pre>
+       2
+(1 + x) 
+</pre></td>
+<td><pre>
+^[+[1, x], 2]
+</pre></td>
+<td><pre>
+((1. + x) * (1. + x))
+</pre></td>
+<td><pre>
+Math.pow((1 + x), 2)
+</pre></td>
+<td><pre>
+((1 + x) ^ 2)
+</pre></td>
+<td><pre>
+((1. + x) ** 2.)
+</pre></td>
+<td><pre>
+((1 + x) ^ 2)
+</pre></td>
+<td><pre>
+(
+	(
+		Constant(1) +
+		var("x")
+	) ^
+	Constant(2)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>^</pre></td>
+<td><pre>
+${\left({{1} + {x}}\right)}^{{1} + {y}}$
+</pre></td>
+<td><pre>
+${\left({{1} + {x}}\right)}^{{1} + {y}}$
+</pre></td>
+<td><pre>
+(1 + x)^(1 + y)
+</pre></td>
+<td><pre>
+       (1 + y)
+(1 + x)       
+</pre></td>
+<td><pre>
+^[+[1, x], +[1, y]]
+</pre></td>
+<td><pre>
+pow(1. + x, 1. + y)
+</pre></td>
+<td><pre>
+Math.pow((1 + x), (1 + y))
+</pre></td>
+<td><pre>
+((1 + x) ^ (1 + y))
+</pre></td>
+<td><pre>
+((1. + x) ** (1. + y))
+</pre></td>
+<td><pre>
+((1 + x) ^ (1 + y))
+</pre></td>
+<td><pre>
+(
+	(
+		Constant(1) +
+		var("x")
+	) ^
+	(
+		Constant(1) +
+		var("y")
+	)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>^</pre></td>
+<td><pre>
+${2}^{{1} + {y}}$
+</pre></td>
+<td><pre>
+${2}^{{1} + {y}}$
+</pre></td>
+<td><pre>
+2^(1 + y)
+</pre></td>
+<td><pre>
+ (1 + y)
+2       
+</pre></td>
+<td><pre>
+^[2, +[1, y]]
+</pre></td>
+<td><pre>
+pow(2., 1. + y)
+</pre></td>
+<td><pre>
+Math.pow(2, (1 + y))
+</pre></td>
+<td><pre>
+(2 ^ (1 + y))
+</pre></td>
+<td><pre>
+(2. ** (1. + y))
+</pre></td>
+<td><pre>
+(2 ^ (1 + y))
+</pre></td>
+<td><pre>
+(
+	Constant(2) ^
+	(
+		Constant(1) +
+		var("y")
+	)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>^</pre></td>
+<td><pre>
+$\exp\left({{1} + {y}}\right)$
+</pre></td>
+<td><pre>
+$\exp\left({{1} + {y}}\right)$
+</pre></td>
+<td><pre>
+_e^(1 + y)
+</pre></td>
+<td><pre>
+  (1 + y)
+_e       
+</pre></td>
+<td><pre>
+^[_e|2.718281828459, +[1, y]]
+</pre></td>
+<td><pre>
+exp(1. + y)
+</pre></td>
+<td><pre>
+Math.exp((1 + y))
+</pre></td>
+<td><pre>
+math.exp((1 + y))
+</pre></td>
+<td><pre>
+(exp((1. + y)))
+</pre></td>
+<td><pre>
+exp[(1 + y)]
+</pre></td>
+<td><pre>
+(
+symmath.e ^
+	(
+		Constant(1) +
+		var("y")
+	)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>abs</pre></td>
+<td><pre>
+$| x|$
+</pre></td>
+<td><pre>
+$| x|$
+</pre></td>
+<td><pre>
+|x|
+</pre></td>
+<td><pre>
+│x│
+</pre></td>
+<td><pre>
+abs[x]
+</pre></td>
+<td><pre>
+abs(x)
+</pre></td>
+<td><pre>
+Math.abs(x)
+</pre></td>
+<td><pre>
+math.abs(x)
+</pre></td>
+<td><pre>
+abs(x)
+</pre></td>
+<td><pre>
+abs[x]
+</pre></td>
+<td><pre>
+abs(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>sqrt</pre></td>
+<td><pre>
+$\sqrt{x}$
+</pre></td>
+<td><pre>
+$\sqrt{x}$
+</pre></td>
+<td><pre>
+√(x)
+</pre></td>
+<td><pre>
+√(x)
+</pre></td>
+<td><pre>
+sqrt[x]
+</pre></td>
+<td><pre>
+sqrt(x)
+</pre></td>
+<td><pre>
+Math.sqrt(x)
+</pre></td>
+<td><pre>
+math.sqrt(x)
+</pre></td>
+<td><pre>
+sqrt(x)
+</pre></td>
+<td><pre>
+sqrt[x]
+</pre></td>
+<td><pre>
+sqrt(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>cbrt</pre></td>
+<td><pre>
+$\sqrt[3]{x}$
+</pre></td>
+<td><pre>
+$\sqrt[3]{x}$
+</pre></td>
+<td><pre>
+cbrt(x)
+</pre></td>
+<td><pre>
+cbrt(x)
+</pre></td>
+<td><pre>
+cbrt[x]
+</pre></td>
+<td><pre>
+cbrt(x)
+</pre></td>
+<td><pre>
+Math.cbrt(x)
+</pre></td>
+<td><pre>
+(x) ^ (1/3)
+</pre></td>
+<td><pre>
+cbrt(x)
+</pre></td>
+<td><pre>
+cbrt[x]
+</pre></td>
+<td><pre>
+cbrt(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>^</pre></td>
+<td><pre>
+$\exp\left( x\right)$
+</pre></td>
+<td><pre>
+$\exp\left( x\right)$
+</pre></td>
+<td><pre>
+_e^x
+</pre></td>
+<td><pre>
+  x
+_e 
+</pre></td>
+<td><pre>
+^[_e|2.718281828459, x]
+</pre></td>
+<td><pre>
+exp(x)
+</pre></td>
+<td><pre>
+Math.exp(x)
+</pre></td>
+<td><pre>
+math.exp(x)
+</pre></td>
+<td><pre>
+(exp(x))
+</pre></td>
+<td><pre>
+exp[x]
+</pre></td>
+<td><pre>
+(
+symmath.e ^
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>log</pre></td>
+<td><pre>
+$\log\left(  x\right)$
+</pre></td>
+<td><pre>
+$\log\left(  x\right)$
+</pre></td>
+<td><pre>
+log(x)
+</pre></td>
+<td><pre>
+log(x)
+</pre></td>
+<td><pre>
+log[x]
+</pre></td>
+<td><pre>
+log(x)
+</pre></td>
+<td><pre>
+Math.log(x)
+</pre></td>
+<td><pre>
+math.log(x)
+</pre></td>
+<td><pre>
+log(x)
+</pre></td>
+<td><pre>
+log[x]
+</pre></td>
+<td><pre>
+log(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>Heaviside</pre></td>
+<td><pre>
+$Heaviside\left(  x\right)$
+</pre></td>
+<td><pre>
+$Heaviside\left(  x\right)$
+</pre></td>
+<td><pre>
+Heaviside(x)
+</pre></td>
+<td><pre>
+Heaviside(x)
+</pre></td>
+<td><pre>
+Heaviside[x]
+</pre></td>
+<td><pre>
+(x >= 0 ? 1 : 0)
+</pre></td>
+<td><pre>
+(x >= 0 ? 1 : 0)
+</pre></td>
+<td><pre>
+((x >= 0) and 1 or 0)
+</pre></td>
+<td><pre>
+(x >= 0.)
+</pre></td>
+<td><pre>
+Heaviside[x]
+</pre></td>
+<td><pre>
+Heaviside(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>sin</pre></td>
+<td><pre>
+$\sin\left(  x\right)$
+</pre></td>
+<td><pre>
+$\sin\left(  x\right)$
+</pre></td>
+<td><pre>
+sin(x)
+</pre></td>
+<td><pre>
+sin(x)
+</pre></td>
+<td><pre>
+sin[x]
+</pre></td>
+<td><pre>
+sin(x)
+</pre></td>
+<td><pre>
+Math.sin(x)
+</pre></td>
+<td><pre>
+math.sin(x)
+</pre></td>
+<td><pre>
+sin(x)
+</pre></td>
+<td><pre>
+sin[x]
+</pre></td>
+<td><pre>
+sin(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>cos</pre></td>
+<td><pre>
+$\cos\left(  x\right)$
+</pre></td>
+<td><pre>
+$\cos\left(  x\right)$
+</pre></td>
+<td><pre>
+cos(x)
+</pre></td>
+<td><pre>
+cos(x)
+</pre></td>
+<td><pre>
+cos[x]
+</pre></td>
+<td><pre>
+cos(x)
+</pre></td>
+<td><pre>
+Math.cos(x)
+</pre></td>
+<td><pre>
+math.cos(x)
+</pre></td>
+<td><pre>
+cos(x)
+</pre></td>
+<td><pre>
+cos[x]
+</pre></td>
+<td><pre>
+cos(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>tan</pre></td>
+<td><pre>
+$\tan\left(  x\right)$
+</pre></td>
+<td><pre>
+$\tan\left(  x\right)$
+</pre></td>
+<td><pre>
+tan(x)
+</pre></td>
+<td><pre>
+tan(x)
+</pre></td>
+<td><pre>
+tan[x]
+</pre></td>
+<td><pre>
+tan(x)
+</pre></td>
+<td><pre>
+Math.tan(x)
+</pre></td>
+<td><pre>
+math.tan(x)
+</pre></td>
+<td><pre>
+tan(x)
+</pre></td>
+<td><pre>
+tan[x]
+</pre></td>
+<td><pre>
+tan(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>asin</pre></td>
+<td><pre>
+$asin\left(  x\right)$
+</pre></td>
+<td><pre>
+$asin\left(  x\right)$
+</pre></td>
+<td><pre>
+asin(x)
+</pre></td>
+<td><pre>
+asin(x)
+</pre></td>
+<td><pre>
+asin[x]
+</pre></td>
+<td><pre>
+asin(x)
+</pre></td>
+<td><pre>
+Math.asin(x)
+</pre></td>
+<td><pre>
+math.asin(x)
+</pre></td>
+<td><pre>
+asin(x)
+</pre></td>
+<td><pre>
+asin[x]
+</pre></td>
+<td><pre>
+asin(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>acos</pre></td>
+<td><pre>
+$acos\left(  x\right)$
+</pre></td>
+<td><pre>
+$acos\left(  x\right)$
+</pre></td>
+<td><pre>
+acos(x)
+</pre></td>
+<td><pre>
+acos(x)
+</pre></td>
+<td><pre>
+acos[x]
+</pre></td>
+<td><pre>
+acos(x)
+</pre></td>
+<td><pre>
+Math.acos(x)
+</pre></td>
+<td><pre>
+math.acos(x)
+</pre></td>
+<td><pre>
+acos(x)
+</pre></td>
+<td><pre>
+acos[x]
+</pre></td>
+<td><pre>
+acos(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>atan</pre></td>
+<td><pre>
+$atan\left(  x\right)$
+</pre></td>
+<td><pre>
+$atan\left(  x\right)$
+</pre></td>
+<td><pre>
+atan(x)
+</pre></td>
+<td><pre>
+atan(x)
+</pre></td>
+<td><pre>
+atan[x]
+</pre></td>
+<td><pre>
+atan(x)
+</pre></td>
+<td><pre>
+Math.atan(x)
+</pre></td>
+<td><pre>
+math.atan(x)
+</pre></td>
+<td><pre>
+atan(x)
+</pre></td>
+<td><pre>
+atan[x]
+</pre></td>
+<td><pre>
+atan(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>atan2</pre></td>
+<td><pre>
+$atan2\left(  x\right)$
+</pre></td>
+<td><pre>
+$atan2\left(  x\right)$
+</pre></td>
+<td><pre>
+atan2(x)
+</pre></td>
+<td><pre>
+atan2(x)
+</pre></td>
+<td><pre>
+atan2[x]
+</pre></td>
+<td><pre>
+atan2(x)
+</pre></td>
+<td><pre>
+Math.atan2(x)
+</pre></td>
+<td><pre>
+math.atan2(x)
+</pre></td>
+<td><pre>
+atan2(x)
+</pre></td>
+<td><pre>
+atan2[x]
+</pre></td>
+<td><pre>
+atan2(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>sinh</pre></td>
+<td><pre>
+$\sinh\left(  x\right)$
+</pre></td>
+<td><pre>
+$\sinh\left(  x\right)$
+</pre></td>
+<td><pre>
+sinh(x)
+</pre></td>
+<td><pre>
+sinh(x)
+</pre></td>
+<td><pre>
+sinh[x]
+</pre></td>
+<td><pre>
+sinh(x)
+</pre></td>
+<td><pre>
+Math.sinh(x)
+</pre></td>
+<td><pre>
+math.sinh(x)
+</pre></td>
+<td><pre>
+sinh(x)
+</pre></td>
+<td><pre>
+sinh[x]
+</pre></td>
+<td><pre>
+sinh(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>cosh</pre></td>
+<td><pre>
+$\cosh\left(  x\right)$
+</pre></td>
+<td><pre>
+$\cosh\left(  x\right)$
+</pre></td>
+<td><pre>
+cosh(x)
+</pre></td>
+<td><pre>
+cosh(x)
+</pre></td>
+<td><pre>
+cosh[x]
+</pre></td>
+<td><pre>
+cosh(x)
+</pre></td>
+<td><pre>
+Math.cosh(x)
+</pre></td>
+<td><pre>
+math.cosh(x)
+</pre></td>
+<td><pre>
+cosh(x)
+</pre></td>
+<td><pre>
+cosh[x]
+</pre></td>
+<td><pre>
+cosh(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>tanh</pre></td>
+<td><pre>
+$\tanh\left(  x\right)$
+</pre></td>
+<td><pre>
+$\tanh\left(  x\right)$
+</pre></td>
+<td><pre>
+tanh(x)
+</pre></td>
+<td><pre>
+tanh(x)
+</pre></td>
+<td><pre>
+tanh[x]
+</pre></td>
+<td><pre>
+tanh(x)
+</pre></td>
+<td><pre>
+Math.tanh(x)
+</pre></td>
+<td><pre>
+math.tanh(x)
+</pre></td>
+<td><pre>
+tanh(x)
+</pre></td>
+<td><pre>
+tanh[x]
+</pre></td>
+<td><pre>
+tanh(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>asinh</pre></td>
+<td><pre>
+$asinh\left(  x\right)$
+</pre></td>
+<td><pre>
+$asinh\left(  x\right)$
+</pre></td>
+<td><pre>
+asinh(x)
+</pre></td>
+<td><pre>
+asinh(x)
+</pre></td>
+<td><pre>
+asinh[x]
+</pre></td>
+<td><pre>
+asinh(x)
+</pre></td>
+<td><pre>
+Math.asinh(x)
+</pre></td>
+<td><pre>
+math.asinh(x)
+</pre></td>
+<td><pre>
+asinh(x)
+</pre></td>
+<td><pre>
+asinh[x]
+</pre></td>
+<td><pre>
+asinh(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>acosh</pre></td>
+<td><pre>
+$acosh\left(  x\right)$
+</pre></td>
+<td><pre>
+$acosh\left(  x\right)$
+</pre></td>
+<td><pre>
+acosh(x)
+</pre></td>
+<td><pre>
+acosh(x)
+</pre></td>
+<td><pre>
+acosh[x]
+</pre></td>
+<td><pre>
+acosh(x)
+</pre></td>
+<td><pre>
+Math.acosh(x)
+</pre></td>
+<td><pre>
+math.acosh(x)
+</pre></td>
+<td><pre>
+acosh(x)
+</pre></td>
+<td><pre>
+acosh[x]
+</pre></td>
+<td><pre>
+acosh(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>atanh</pre></td>
+<td><pre>
+$atanh\left(  x\right)$
+</pre></td>
+<td><pre>
+$atanh\left(  x\right)$
+</pre></td>
+<td><pre>
+atanh(x)
+</pre></td>
+<td><pre>
+atanh(x)
+</pre></td>
+<td><pre>
+atanh[x]
+</pre></td>
+<td><pre>
+atanh(x)
+</pre></td>
+<td><pre>
+Math.atanh(x)
+</pre></td>
+<td><pre>
+math.atanh(x)
+</pre></td>
+<td><pre>
+atanh(x)
+</pre></td>
+<td><pre>
+atanh[x]
+</pre></td>
+<td><pre>
+atanh(
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>=</pre></td>
+<td><pre>
+${x} = {y}$
+</pre></td>
+<td><pre>
+${x} = {y}$
+</pre></td>
+<td><pre>
+x = y
+</pre></td>
+<td><pre>
+x = y
+</pre></td>
+<td><pre>
+=[x, y]
+</pre></td>
+<td><pre>
+x = y
+</pre></td>
+<td><pre>
+(x = y)
+</pre></td>
+<td><pre>
+(x = y)
+</pre></td>
+<td><pre>
+(x = y)
+</pre></td>
+<td><pre>
+(x = y)
+</pre></td>
+<td><pre>
+(
+	var("x")
+):eq(
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>!=</pre></td>
+<td><pre>
+${x} != {y}$
+</pre></td>
+<td><pre>
+${x} != {y}$
+</pre></td>
+<td><pre>
+x != y
+</pre></td>
+<td><pre>
+x != y
+</pre></td>
+<td><pre>
+!=[x, y]
+</pre></td>
+<td><pre>
+x != y
+</pre></td>
+<td><pre>
+(x != y)
+</pre></td>
+<td><pre>
+(x != y)
+</pre></td>
+<td><pre>
+(x != y)
+</pre></td>
+<td><pre>
+(x != y)
+</pre></td>
+<td><pre>
+(
+	var("x") !=
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre><</pre></td>
+<td><pre>
+${x} < {y}$
+</pre></td>
+<td><pre>
+${x} < {y}$
+</pre></td>
+<td><pre>
+x < y
+</pre></td>
+<td><pre>
+x < y
+</pre></td>
+<td><pre>
+<[x, y]
+</pre></td>
+<td><pre>
+x < y
+</pre></td>
+<td><pre>
+(x < y)
+</pre></td>
+<td><pre>
+(x < y)
+</pre></td>
+<td><pre>
+(x < y)
+</pre></td>
+<td><pre>
+(x < y)
+</pre></td>
+<td><pre>
+(
+	var("x") <
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre><=</pre></td>
+<td><pre>
+${x} <= {y}$
+</pre></td>
+<td><pre>
+${x} <= {y}$
+</pre></td>
+<td><pre>
+x <= y
+</pre></td>
+<td><pre>
+x <= y
+</pre></td>
+<td><pre>
+<=[x, y]
+</pre></td>
+<td><pre>
+x <= y
+</pre></td>
+<td><pre>
+(x <= y)
+</pre></td>
+<td><pre>
+(x <= y)
+</pre></td>
+<td><pre>
+(x <= y)
+</pre></td>
+<td><pre>
+(x <= y)
+</pre></td>
+<td><pre>
+(
+	var("x") <=
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>></pre></td>
+<td><pre>
+${x} > {y}$
+</pre></td>
+<td><pre>
+${x} > {y}$
+</pre></td>
+<td><pre>
+x > y
+</pre></td>
+<td><pre>
+x > y
+</pre></td>
+<td><pre>
+>[x, y]
+</pre></td>
+<td><pre>
+x > y
+</pre></td>
+<td><pre>
+(x > y)
+</pre></td>
+<td><pre>
+(x > y)
+</pre></td>
+<td><pre>
+(x > y)
+</pre></td>
+<td><pre>
+(x > y)
+</pre></td>
+<td><pre>
+(
+	var("x") >
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>>=</pre></td>
+<td><pre>
+${x} >= {y}$
+</pre></td>
+<td><pre>
+${x} >= {y}$
+</pre></td>
+<td><pre>
+x >= y
+</pre></td>
+<td><pre>
+x >= y
+</pre></td>
+<td><pre>
+>=[x, y]
+</pre></td>
+<td><pre>
+x >= y
+</pre></td>
+<td><pre>
+(x >= y)
+</pre></td>
+<td><pre>
+(x >= y)
+</pre></td>
+<td><pre>
+(x >= y)
+</pre></td>
+<td><pre>
+(x >= y)
+</pre></td>
+<td><pre>
+(
+	var("x") >=
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>~</pre></td>
+<td><pre>
+${x}\approx{y}$
+</pre></td>
+<td><pre>
+${x}\approx{y}$
+</pre></td>
+<td><pre>
+x ~ y
+</pre></td>
+<td><pre>
+x ~ y
+</pre></td>
+<td><pre>
+~[x, y]
+</pre></td>
+<td><pre>
+x ~ y
+</pre></td>
+<td><pre>
+(x ~ y)
+</pre></td>
+<td><pre>
+(x ~ y)
+</pre></td>
+<td><pre>
+(x ~ y)
+</pre></td>
+<td><pre>
+(x ~ y)
+</pre></td>
+<td><pre>
+(
+	var("x")
+):eq(
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>Derivative</pre></td>
+<td><pre>
+$\frac{d y}{d x}$
+</pre></td>
+<td><pre>
+$\frac{d y}{d x}$
+</pre></td>
+<td><pre>
+d/{dx}[y]
+</pre></td>
+<td><pre>
+  d  
+╶──╴y
+ dx  
+</pre></td>
+<td><pre>
+Derivative{y, x}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+Derivative(
+	var("y"),
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>PartialDerivative</pre></td>
+<td><pre>
+$\frac{\partial y}{\partial x}$
+</pre></td>
+<td><pre>
+$\frac{\partial y}{\partial x}$
+</pre></td>
+<td><pre>
+∂/{∂x}[y]
+</pre></td>
+<td><pre>
+  ∂  
+╶──╴y
+ ∂x  
+</pre></td>
+<td><pre>
+PartialDerivative{y, x}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+PartialDerivative(
+	var("y"),
+	var("x")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>Integral</pre></td>
+<td><pre>
+$\int d y\left( x\right)$
+</pre></td>
+<td><pre>
+$\int d y\left( x\right)$
+</pre></td>
+<td><pre>
+integrate(x, y )
+</pre></td>
+<td><pre>
+⌠     
+⌡ x dy
+</pre></td>
+<td><pre>
+Integral{x, y}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+Integral(
+	var("x"),
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>Integral</pre></td>
+<td><pre>
+$\int\limits_{{0}}^{{1}}d y\left( x\right)$
+</pre></td>
+<td><pre>
+$\int\limits_{{0}}^{{1}}d y\left( x\right)$
+</pre></td>
+<td><pre>
+integrate(x, y, 0, 1 )
+</pre></td>
+<td><pre>
+⌠1     
+│  x dy
+⌡0     
+</pre></td>
+<td><pre>
+Integral{x, y, 0, 1}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+Integral(
+	var("x"),
+	var("y"),
+	Constant(0),
+	Constant(1)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>Array</pre></td>
+<td><pre>
+$\left[ \begin{matrix} x \\ y\end{matrix} \right]$
+</pre></td>
+<td><pre>
+$\left[ \begin{matrix} x \\ y\end{matrix} \right]$
+</pre></td>
+<td><pre>
+[x, y]
+</pre></td>
+<td><pre>
+┌x┐
+│ │
+└y┘
+</pre></td>
+<td><pre>
+Array{x, y}
+</pre></td>
+<td><pre>
+{x, y}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+{x, y}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+{x, y}
+</pre></td>
+<td><pre>
+Array(
+	var("x"),
+	var("y")
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>Matrix</pre></td>
+<td><pre>
+$\left[ \begin{matrix}  x \\  y\end{matrix} \right]$
+</pre></td>
+<td><pre>
+$\left[ \begin{matrix}  x \\  y\end{matrix} \right]$
+</pre></td>
+<td><pre>
+[[x], [y]]
+</pre></td>
+<td><pre>
+┌ ┐
+│x│
+│ │
+│y│
+└ ┘
+</pre></td>
+<td><pre>
+Matrix{Matrix{x}, Matrix{y}}
+</pre></td>
+<td><pre>
+{{x}, {y}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+{{x}, {y}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+{{x}, {y}}
+</pre></td>
+<td><pre>
+Matrix(
+	Matrix(
+		var("x")
+	),
+	Matrix(
+		var("y")
+	)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>Matrix</pre></td>
+<td><pre>
+$\left[ \begin{matrix}  x &  y\end{matrix} \right]$
+</pre></td>
+<td><pre>
+$\left[ \begin{matrix}  x &  y\end{matrix} \right]$
+</pre></td>
+<td><pre>
+[[x, y]]
+</pre></td>
+<td><pre>
+┌    ┐
+│x  y│
+└    ┘
+</pre></td>
+<td><pre>
+Matrix{Matrix{x, y}}
+</pre></td>
+<td><pre>
+{{x, y}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+{{x, y}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+{{x, y}}
+</pre></td>
+<td><pre>
+Matrix(
+	Matrix(
+		var("x"),
+		var("y")
+	)
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>TensorRef</pre></td>
+<td><pre>
+${ x}_a$
+</pre></td>
+<td><pre>
+${ x}_a$
+</pre></td>
+<td><pre>
+$x$_a
+</pre></td>
+<td><pre>
+x_a
+</pre></td>
+<td><pre>
+TensorRef{x, TensorIndex{_a}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+TensorRef(
+	var("x"),
+	TensorIndex{lower=true, symbol="a"}
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>TensorRef</pre></td>
+<td><pre>
+${ x}^a$
+</pre></td>
+<td><pre>
+${ x}^a$
+</pre></td>
+<td><pre>
+$x$^a
+</pre></td>
+<td><pre>
+x^a
+</pre></td>
+<td><pre>
+TensorRef{x, TensorIndex{^a}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+TensorRef(
+	var("x"),
+	TensorIndex{lower=false, symbol="a"}
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>TensorRef</pre></td>
+<td><pre>
+${ x}_{\mu}$
+</pre></td>
+<td><pre>
+${ x}_{\mu}$
+</pre></td>
+<td><pre>
+$x$_\mu
+</pre></td>
+<td><pre>
+x_\mu
+</pre></td>
+<td><pre>
+TensorRef{x, TensorIndex{_\mu}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+TensorRef(
+	var("x"),
+	TensorIndex{lower=true, symbol="\\mu"}
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>TensorRef</pre></td>
+<td><pre>
+${ x}^{\mu}$
+</pre></td>
+<td><pre>
+${ x}^{\mu}$
+</pre></td>
+<td><pre>
+$x$^\mu
+</pre></td>
+<td><pre>
+x^\mu
+</pre></td>
+<td><pre>
+TensorRef{x, TensorIndex{^\mu}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+TensorRef(
+	var("x"),
+	TensorIndex{lower=false, symbol="\\mu"}
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>TensorRef</pre></td>
+<td><pre>
+${{ x}_a}_b$
+</pre></td>
+<td><pre>
+${{ x}_a}_b$
+</pre></td>
+<td><pre>
+$x$_a_b
+</pre></td>
+<td><pre>
+x_ab
+</pre></td>
+<td><pre>
+TensorRef{x, TensorIndex{_a}, TensorIndex{_b}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+TensorRef(
+	var("x"),
+	TensorIndex{lower=true, symbol="a"},
+	TensorIndex{lower=true, symbol="b"}
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>TensorRef</pre></td>
+<td><pre>
+${{ x}^a}^b$
+</pre></td>
+<td><pre>
+${{ x}^a}^b$
+</pre></td>
+<td><pre>
+$x$^a^b
+</pre></td>
+<td><pre>
+x^ab
+</pre></td>
+<td><pre>
+TensorRef{x, TensorIndex{^a}, TensorIndex{^b}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+TensorRef(
+	var("x"),
+	TensorIndex{lower=false, symbol="a"},
+	TensorIndex{lower=false, symbol="b"}
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>TensorRef</pre></td>
+<td><pre>
+${{ x}_{\mu}}_{\nu}$
+</pre></td>
+<td><pre>
+${{ x}_{\mu}}_{\nu}$
+</pre></td>
+<td><pre>
+$x$_\mu_\nu
+</pre></td>
+<td><pre>
+x_\mu\nu
+</pre></td>
+<td><pre>
+TensorRef{x, TensorIndex{_\mu}, TensorIndex{_\nu}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+TensorRef(
+	var("x"),
+	TensorIndex{lower=true, symbol="\\mu"},
+	TensorIndex{lower=true, symbol="\\nu"}
+)
+</pre></td>
+</tr>
+<tr>
+<td><pre>TensorRef</pre></td>
+<td><pre>
+${{ x}^{\mu}}^{\nu}$
+</pre></td>
+<td><pre>
+${{ x}^{\mu}}^{\nu}$
+</pre></td>
+<td><pre>
+$x$^\mu^\nu
+</pre></td>
+<td><pre>
+x^\mu\nu
+</pre></td>
+<td><pre>
+TensorRef{x, TensorIndex{^\mu}, TensorIndex{^\nu}}
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+error
+</pre></td>
+<td><pre>
+TensorRef(
+	var("x"),
+	TensorIndex{lower=false, symbol="\\mu"},
+	TensorIndex{lower=false, symbol="\\nu"}
+)
+</pre></td>
+</tr>
+</table>

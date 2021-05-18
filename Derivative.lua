@@ -1,6 +1,48 @@
 --[[
-self[1] is the expression
-all subsequent children are variables
+How Derivative, and diff, works:
+
+First, user calls y:diff(x) or y:pdiff(x) or etc for other subclasses.  
+Right now the base class is a total derivative.
+That sits as-is, and does not evaluate immediately, in case you want to print it.
+
+Upon prune() (done by simplify(), implicitly ())
+- for variables dependent on the variable differentiating, but without definition we just leave it as is
+- (TODO merge UserFunction with Variable)
+- (TODO unit test to make sure dependsOn traversese graph , so y=y(x), x=x(t) means y:dependsOn(t) is true, and same with preserving derivatives of dy/dt)
+-  (TODO make sure that graph traversal handles circular graphs somehow, without getting stuck in a loop)
+
+	- in prune(),
+		- - for Array's, applies the Derivative obj's class + params to all the Array elements
+		- - for Constant's return 0
+		- - for Derivative's, consolidates variables (i.e. x:diff(y):diff(z) => x:diff(y,z)) 
+		- - for self, i.e. x:diff(x), return 1
+				- for x^I:diff(x^J), return delta^I_J
+				- in both cases, if we have more vars after, then short-circuit (0 or 1):diff(x) to just return 0
+		- - for dy/dx:
+			- - for partial, return 0
+			- - for total, just don't evalulate? TODO insert the def here and evaluate. 
+
+		- for all else, for d/dx expr: call expr:evaluateDerivative() wrt each var of the derivative
+
+		- expr:evaluateDerivative(deriv, vars...) does ...
+			- this contains the builtin derivative evaluation for each builtin function:
+
+	- in prune() for TensorRef (i.e. var'x''^I') in the rule 'evalDeriv',
+		- for comma derivative, Variable:applyDiff() is called
+		- NOTICE this is the ONLY place applyDiff is called
+			so TODO maybe call it something like "applyComma" ?
+			or rewrite the :diff() and :pdiff() operators to use the applyDiff() variable
+			or redo comma derivatives to use operators instead of derivative,
+				and just introduce operators (basically functions, amirite?)
+			also TODO make sure comma derivative is calling :pdiff()
+
+
+what does (Expression expr):evaluateDerivative(Variable x) do?
+
+
+internal structure:
+	self[1] is the expression
+	all subsequent children are variables
 --]]
 
 local class = require 'ext.class'
@@ -9,7 +51,15 @@ local Expression = require 'symmath.Expression'
 
 local Derivative = class(Expression)
 Derivative.precedence = 6
+
+-- default is for Verbose and SymMath output
 Derivative.name = 'Derivative'
+Derivative.nameForExporterTable = table(Derivative.nameForExporterTable)
+Derivative.nameForExporterTable.Console = 'd'
+Derivative.nameForExporterTable.LaTeX = 'd'
+
+-- base class is the total derivative
+Derivative.isPartial = false
 
 function Derivative:init(...)
 	local Variable = require 'symmath.Variable'
@@ -29,7 +79,7 @@ Derivative.rules = {
 			if Array:isa(expr[1]) then
 				local res = expr[1]:clone()
 				for i=1,#res do
-					res[i] = prune:apply(res[i]:diff(table.unpack(expr, 2)))
+					res[i] = prune:apply(getmetatable(expr)(res[i], table.unpack(expr, 2)))
 				end
 				return res
 			end
@@ -47,10 +97,8 @@ Derivative.rules = {
 		{combine = function(prune, expr)
 			if Derivative:isa(expr[1]) then
 				return prune:apply(
-					Derivative(
-						
+					getmetatable(expr)(
 						expr[1][1], 
-						
 						table.unpack(
 							table.append({table.unpack(expr, 2)}, {table.unpack(expr[1], 2)})
 						)
@@ -123,7 +171,7 @@ Derivative.rules = {
 		end},
 --]]
 
-		--dx/dy = 0 (unless x is a function of y ... but I only have partials)
+		--dx/dy = 0 (unless x is a function of y and we are not a partial derivative)
 		{other = function(prune, expr)
 			local Constant = require 'symmath.Constant'
 			local Variable = require 'symmath.Variable'
@@ -135,6 +183,9 @@ Derivative.rules = {
 				TensorRef:isa(expr[1])
 				and Variable:isa(expr[1][1])
 			) then
+				if expr.isPartial then
+					return Constant(0)
+				end
 				local var = expr[1]
 				for i=2,#expr do
 					local wrt = expr[i]
@@ -227,7 +278,7 @@ otherwise we return zero
 			if expr[1].evaluateDerivative then
 				local result = expr[1]:clone()
 				for i=2,#expr do
-					result = prune:apply(result:evaluateDerivative(Derivative, expr[i]))
+					result = prune:apply(result:evaluateDerivative(getmetatable(expr), expr[i]))
 					-- failed -- bail out early
 					if not result then return end
 				end

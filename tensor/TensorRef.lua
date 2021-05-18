@@ -89,27 +89,36 @@ function TensorRef:setDependentVars(...)
 	var:removeDuplicateDepends()
 end
 
--- only return true for the dependentVars entries with src==TensorRef(self, ...) with matching # indexes
--- that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
+--[[
+similar function is found in symmath/Variable.lua
+only return true for the dependentVars entries with src==TensorRef(self, ...) with matching # indexes
+that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
+--]]
 function TensorRef:dependsOn(x)
+--print('does TensorRef '..self..' depend on '..x..'?')
 	local Variable = require 'symmath.Variable'
+
+	-- TODO handle dense tensor? idk, this is for variables wrt other variables
+
+	-- not handling non-variable T^ij
 	if not Variable:isa(self[1]) then return end
+
+	-- y^i depends on y^j
+	-- (but y^ij is considered a different variable, so is not dependent on y^i)
+	if TensorRef:isa(x) 
+	and self[1] == x[1] 
+	and #self == #x
+	then 
+		return true 
+	end
+
 	if self[1].dependentVars then
 		for _,depvar in ipairs(self[1].dependentVars) do
 			if TensorRef:isa(depvar.src)
 			and #depvar.src == #self
 			then
 				local wrt = depvar.wrt
-				
-				if Variable:isa(x) and wrt == x then return true end
-				
-				if TensorRef:isa(x) 
-				and TensorRef:isa(wrt)
-				and x[1] == wrt[1]
-				and #x == #wrt
-				then
-					return true
-				end
+				if wrt:dependsOn(x) then return true end
 			end
 		end
 	end

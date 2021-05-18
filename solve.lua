@@ -89,6 +89,7 @@ local function solve(eqn, x, hasSimplified)
 			return x:eq(soln()) 
 		end):unpack()
 	end
+	
 	-- otherwise, polynomial solver?
 
 	local eq = getmetatable(eqn)
@@ -165,11 +166,11 @@ local function solve(eqn, x, hasSimplified)
 	local result = Constant(0)
 	for i=0,n do
 		if coeffs[i] then
-			result = result + x^i * getCoeff(i) 
+			result = result + x^i * coeffs[n]
 		end
 	end
 	if coeffs.extra then
-		result = result + getCoeff'extra'
+		result = result + coeffs.extra
 	end
 
 	if not hasSimplified then

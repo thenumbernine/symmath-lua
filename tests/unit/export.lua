@@ -10,6 +10,27 @@ require 'symmath'.setup{env=env, MathJax={title='tests/unit/nameForExporter'
 printbr('generated with '..(jit and jit.version or _VERSION))
 printbr()
 
+local es = {
+	-- text
+	export.LaTeX,
+	export.MathJax,
+	export.SingleLine,
+	export.MultiLine,
+	export.Verbose,
+
+	-- code 
+	export.C,
+	export.JavaScript,
+	export.Lua,
+	
+	-- code
+	export.GnuPlot,
+	export.Mathematica,
+	export.SymMath,
+}
+
+
+
 local x = var'x'
 local y = var'y'
 
@@ -45,6 +66,8 @@ local exprs = {
 	exp(x),
 	log(x),
 	
+	Heaviside(x),
+	
 	sin(x),
 	cos(x),
 	tan(x),
@@ -62,7 +85,6 @@ local exprs = {
 	acosh(x),
 	atanh(x),
 	
-	Heaviside(x),
 	x:eq(y),	
 	x:ne(y),
 	x:lt(y),
@@ -70,7 +92,8 @@ local exprs = {
 	x:gt(y),
 	x:ge(y),
 	x:approx(y),
-	x:diff(y),
+	y:diff(x),
+	y:pdiff(x),
 	x:integrate(y),
 	x:integrate(y, 0, 1),
 	Array(x,y),
@@ -84,23 +107,6 @@ local exprs = {
 	x'^ab',
 	x' _\\mu _\\nu',
 	x' ^\\mu ^\\nu',
-}
-
-local es = {
-	-- code 
-	export.C,
-	export.JavaScript,
-	export.Lua,
-	-- code
-	export.GnuPlot,
-	export.Mathematica,
-	export.SymMath,
-	-- text
-	export.LaTeX,
-	export.MathJax,
-	export.SingleLine,
-	export.MultiLine,
-	export.Verbose,
 }
 
 print'<table border="1" style="border-collapse:collapse">'

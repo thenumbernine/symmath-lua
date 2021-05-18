@@ -7,7 +7,7 @@ local Expression = class()
 
 -- no circular dependencies, so load as you need these:
 local symmath
-local Array, Constant, Derivative, Equation, Invalid, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, distributeDivision, div, eval, expand, factor, factorDivision, inf, inverse, map, mod, mul, pow, prune, sub, symmath, tableCommutativeEqual, tidy, transpose, unm, wedge
+local Array, Constant, Equation, Invalid, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, distributeDivision, div, eval, expand, factor, factorDivision, inf, inverse, map, mod, mul, pow, prune, sub, symmath, tableCommutativeEqual, tidy, transpose, unm, wedge
 local eq, ne, gt, ge, lt, le
 
 Expression.precedence = 1
@@ -384,10 +384,14 @@ function Expression:diff(...)
 		end
 	end
 --]=]
-	Derivative = Derivative or require 'symmath.Derivative'
-	return Derivative(self, ...) 
+	symmath = symmath or require 'symmath'
+	return symmath.Derivative(self, ...) 
 end
 
+function Expression:pdiff(...)
+	symmath = symmath or require 'symmath'
+	return symmath.PartialDerivative(self, ...) 
+end
 Expression.integrate = function(...) 
 	symmath = symmath or require 'symmath'
 	return symmath.Integral(...) 

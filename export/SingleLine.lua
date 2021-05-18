@@ -87,7 +87,8 @@ SingleLine.lookupTable = {
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local symmath = require 'symmath'
-		local topText = 'd'
+		local d = expr:nameForExporter(self)
+		local topText = d
 		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars
 		if diffPower > 1 then
@@ -121,7 +122,7 @@ SingleLine.lookupTable = {
 				name = symmath.tostring:fixVariableName(name)
 			end
 			
-			local s = 'd'..name
+			local s = d..name
 			if power > 1 then
 				s = s .. '^' .. power
 			end

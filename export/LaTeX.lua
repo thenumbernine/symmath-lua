@@ -309,6 +309,8 @@ LaTeX.lookupTable = {
 		local diffExprStr = self:apply(diffExpr)
 		local diffExprOnTop = Variable:isa(diffExpr) 
 			or (TensorRef:isa(diffExpr) and Variable:isa(diffExpr[1]))
+			
+		local d = expr:nameForExporter(self)
 
 		if self.useCommaDerivative then
 			return table{ 
@@ -318,8 +320,10 @@ LaTeX.lookupTable = {
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
 				end))
 			}
-		elseif self.usePartialLHSForDerivative then
-			local s = table{'\\partial_', 
+		elseif self.usePartialLHSForDerivative 
+		and require 'symmath.PartialDerivative':isa(expr)
+		then
+			local s = table{d..'_', 
 				range(#diffVars):map(function(i)
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
 				end)}
@@ -333,7 +337,7 @@ LaTeX.lookupTable = {
 			return s
 		end
 
-		local top = table{'\\partial'}
+		local top = table{d}
 		if diffPower > 1 then
 			top:insert('^')
 			top:insert(explode(tostring(diffPower)))
@@ -351,7 +355,7 @@ LaTeX.lookupTable = {
 	
 		local bottom = table()
 		for name,power in pairs(powersForDeriv) do	
-			bottom:insert'\\partial'
+			bottom:insert(d)
 			bottom:insert(name)
 			if power > 1 then
 				bottom:insert('^')

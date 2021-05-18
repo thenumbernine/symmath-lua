@@ -37,8 +37,12 @@ args:
 	value = numerical value of this variable
 --]]
 function Variable:init(name, dependentVars, value, set)
-	self.name = name
+	self.name = assert(name, "Variable expected name")
+
+	-- optional
 	self.value = value
+
+	-- optional - inferred otherwise
 	if not set then
 		if complex:isa(value) then 
 			set = require 'symmath.set.sets'.complex
@@ -49,7 +53,9 @@ function Variable:init(name, dependentVars, value, set)
 			set = require 'symmath.set.sets'.real	
 		end
 	end
-	self.set = set 
+	self.set = set
+
+	-- optional
 	if dependentVars then
 		self:setDependentVars(table.unpack(dependentVars))
 	end
@@ -148,25 +154,22 @@ function Variable:removeDuplicateDepends()
 	end
 end
 
--- only return true for the dependentVars entries with src==self
--- that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
+--[[
+similar function is found in symmath/tensor/TensorRef.lua
+only return true for the dependentVars entries with src==self
+that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
+--]]
 function Variable:dependsOn(x)
+--print('does Variable '..self..' depend on '..x..'?')
+	
 	if x == self then return true end
+	
 	local TensorRef = require 'symmath.tensor.TensorRef'
 	if self.dependentVars then
 		for _,depvar in ipairs(self.dependentVars) do
 			if depvar.src == self then
 				local wrt = depvar.wrt
-				
-				if Variable:isa(x) and wrt == x then return true end
-				
-				if TensorRef:isa(x) 
-				and TensorRef:isa(wrt)
-				and x[1] == wrt[1]
-				and #x == #wrt
-				then
-					return true
-				end
+				if wrt:dependsOn(x) then return true end
 			end
 		end
 	end

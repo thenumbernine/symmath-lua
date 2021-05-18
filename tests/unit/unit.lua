@@ -85,7 +85,7 @@ return function(env, title)
 			print(assert(load(code, nil, nil, env))())
 			--print'<br>'
 			print'<span style="color:green">GOOD</span>'
-			-- verbose stderr output:	
+			-- verbose stderr output:
 			--io.stderr:write(ansi_green..check..ansi_reset..' '..comment..'\n')
 			-- concise:
 			io.stderr:write(ansi_green..check..ansi_reset)

@@ -2,14 +2,14 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>match</title>
+		<title>sets</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
 
 <table border="1" style="border-collapse:collapse">
 <tr><td>
-<b>TODO do unit tests with the RealInterval / RealDomain operators</b><br>
+<b>TODO do unit tests with the RealInterval / RealSubset operators</b><br>
 <code></code>
 </td><td>
 <tr><td>
@@ -36,7 +36,7 @@
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(set.RealDomain():contains(x))</code>
+<code>assert(set.RealSubset():contains(x))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -68,7 +68,7 @@
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(set.RealDomain(-1,1,true,true):contains(sin(x)))</code>
+<code>assert(set.RealSubset(-1,1,true,true):contains(sin(x)))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -108,14 +108,14 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>(function() local x = set.RealDomain(-1,1,true,true):var'x' assert(set.real:contains(asin(x))) end)()</code>
+<code>(function() local x = set.RealSubset(-1,1,true,true):var'x' assert(set.real:contains(asin(x))) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>(function() local x = set.RealDomain(-1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()</code>
+<code>(function() local x = set.RealSubset(-1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -126,7 +126,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>print(acos(x):getRealDomain())</code>
+<code>print(acos(x):getRealRange())</code>
 </td><td>
 nil
 
@@ -134,14 +134,14 @@ nil
 </td></tr>
 <tr><td>
 <b>TODO eventually return uncertain / touches but not contains</b><br>
-<code>(function() local x = set.RealDomain(1,math.huge,true,false):var'x' assert(not set.real:contains(acos(x))) end)()</code>
+<code>(function() local x = set.RealSubset(1,math.huge,true,false):var'x' assert(not set.real:contains(acos(x))) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b>TODO return definitely false</b><br>
-<code>(function() local x = set.RealDomain(1,math.huge,false,false):var'x' assert(not set.real:contains(acos(x))) end)()</code>
+<code>(function() local x = set.RealSubset(1,math.huge,false,false):var'x' assert(not set.real:contains(acos(x))) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -152,7 +152,7 @@ nil
 </td><td>
 <tr><td>
 <b></b><br>
-<code>(function() local x = set.RealDomain(1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()</code>
+<code>(function() local x = set.RealSubset(1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -204,7 +204,7 @@ nil
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assert((x^2):getRealDomain() == set.positiveReal)</code>
+<code>assert((x^2):getRealRange() == set.positiveReal)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -222,14 +222,14 @@ nil
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assert((Constant(2)^2):getRealDomain() == set.RealDomain(4,4,true,true))</code>
+<code>assert((Constant(2)^2):getRealRange() == set.RealSubset(4,4,true,true))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert((Constant(-2)^2):getRealDomain() == set.RealDomain(4,4,true,true))</code>
+<code>assert((Constant(-2)^2):getRealRange() == set.RealSubset(4,4,true,true))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -255,33 +255,22 @@ nil
 </td><td>
 <tr><td>
 <b></b><br>
-<code>print((1/x):getRealDomain())</code>
+<code>print((1/x):getRealRange())</code>
 </td><td>
-{(-inf, -0)(0, inf)}
+{(-inf, -0), (0, inf)}
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert((1/x):getRealDomain():contains(0) == false)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assert((1/x):getRealDomain():contains(1))</code>
+<code>assert((1/x):getRealRange():contains(0) == false)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>assert((1/x):getRealDomain():contains(set.positiveReal))</code>
+<code>assert((1/x):getRealRange():contains(1))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -291,87 +280,98 @@ nil
 <code></code>
 </td><td>
 <tr><td>
-<b>../../sin.lua:function sin:getRealDomain()</b><br>
+<b></b><br>
+<code>assert((1/x):getRealRange():contains(set.positiveReal))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../sin.lua:	local Is = self[1]:getRealDomain()</b><br>
+<b>../../sin.lua:function sin:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../asinh.lua:asinh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc</b><br>
+<b>../../sin.lua:	local Is = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../atan.lua:atan.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc</b><br>
+<b>../../asinh.lua:asinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../cosh.lua:cosh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_evenIncreasing</b><br>
+<b>../../atan.lua:atan.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../acos.lua:function acos:getRealDomain()</b><br>
+<b>../../cosh.lua:cosh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../acos.lua:	local Is = self[1]:getRealDomain()</b><br>
+<b>../../acos.lua:function acos:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../tanh.lua:tanh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc</b><br>
+<b>../../acos.lua:	local Is = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../asin.lua:asin.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_pmOneInc</b><br>
+<b>../../tanh.lua:tanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../sqrt.lua:sqrt.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_posInc_negIm</b><br>
+<b>../../asin.lua:asin.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../log.lua:log.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_posInc_negIm</b><br>
+<b>../../sqrt.lua:sqrt.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../acosh.lua:function acosh:getRealDomain()</b><br>
+<b>../../log.lua:log.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../acosh.lua:	local Is = x[1]:getRealDomain()</b><br>
+<b>../../acosh.lua:function acosh:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../atanh.lua:atanh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_pmOneInc</b><br>
+<b>../../acosh.lua:	local Is = x[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../tan.lua:function tan:getRealDomain()</b><br>
+<b>../../atanh.lua:atanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../tan.lua:	local Is = self[1]:getRealDomain()</b><br>
+<b>../../tan.lua:function tan:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../cos.lua:function cos:getRealDomain()</b><br>
+<b>../../tan.lua:	local Is = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../cos.lua:	local Is = self[1]:getRealDomain()</b><br>
+<b>../../cos.lua:function cos:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../cos.lua:		-- here I'm going to add pi/2 and then just copy the sin:getRealDomain() code</b><br>
+<b>../../cos.lua:	local Is = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../sinh.lua:sinh.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_inc</b><br>
+<b>../../cos.lua:		-- here I'm going to add pi/2 and then just copy the sin:getRealRange() code</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../abs.lua:abs.getRealDomain = require 'symmath.set.RealDomain'.getRealDomain_evenIncreasing</b><br>
+<b>../../sinh.lua:sinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../abs.lua:abs.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing</b><br>
 <code></code>
 </td><td>
 <tr><td>
@@ -379,87 +379,15 @@ nil
 <code></code>
 </td><td>
 <tr><td>
-<b>../../Constant.lua:function Constant:getRealDomain()</b><br>
+<b>../../Constant.lua:function Constant:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../Expression.lua:function Expression:getRealDomain()</b><br>
+<b>../../Expression.lua:function Expression:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../Variable.lua:function Variable:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/mul.lua:function mul:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/mul.lua:	local I = self[1]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/mul.lua:		local I2 = self[i]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/div.lua:function div:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/div.lua:	local I = self[1]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/div.lua:	local I2 = self[2]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/sub.lua:function sub:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/sub.lua:	local I = self[1]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/sub.lua:		local I2 = self[i]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/add.lua:function add:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/add.lua:	local I = self[1]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/add.lua:		local I2 = self[i]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/pow.lua:function pow:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/pow.lua:	local I = self[1]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/pow.lua:	local I2 = self[2]:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/unm.lua:function unm:getRealDomain()</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>../../op/unm.lua:	local I = self[1]:getRealDomain()</b><br>
+<b>../../Variable.lua:function Variable:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
@@ -467,42 +395,114 @@ nil
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealDomain.lua:-- commonly used versions of the Expression:getRealDomain function</b><br>
+<b>../../op/mul.lua:function mul:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealDomain.lua:function RealDomain.getRealDomain_evenIncreasing(x)</b><br>
+<b>../../op/mul.lua:	local I = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealDomain.lua:	local Is = x[1]:getRealDomain()</b><br>
+<b>../../op/mul.lua:		local I2 = self[i]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealDomain.lua:function RealDomain.getRealDomain_posInc_negIm(x)</b><br>
+<b>../../op/div.lua:function div:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealDomain.lua:	local Is = x[1]:getRealDomain()</b><br>
+<b>../../op/div.lua:	local I = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealDomain.lua:function RealDomain.getRealDomain_pmOneInc(x)</b><br>
+<b>../../op/div.lua:	local I2 = self[2]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealDomain.lua:	local Is = x[1]:getRealDomain()</b><br>
+<b>../../op/sub.lua:function sub:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealDomain.lua:function RealDomain.getRealDomain_inc(x)</b><br>
+<b>../../op/sub.lua:	local I = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealDomain.lua:	local Is = x[1]:getRealDomain()</b><br>
+<b>../../op/sub.lua:		local I2 = self[i]:getRealRange()</b><br>
 <code></code>
 </td><td>
 <tr><td>
-<b>../../set/RealInterval.lua:	local I = x:getRealDomain()</b><br>
+<b>../../op/add.lua:function add:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../op/add.lua:	local I = self[1]:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../op/add.lua:		local I2 = self[i]:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../op/pow.lua:function pow:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../op/pow.lua:	local I = self[1]:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../op/pow.lua:	local I2 = self[2]:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../op/unm.lua:function unm:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../op/unm.lua:	local I = self[1]:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealSubset.lua:-- commonly used versions of the Expression:getRealRange function</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealSubset.lua:function RealSubset.getRealDomain_evenIncreasing(x)</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealSubset.lua:	local Is = x[1]:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealSubset.lua:function RealSubset.getRealDomain_posInc_negIm(x)</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealSubset.lua:	local Is = x[1]:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealSubset.lua:function RealSubset.getRealDomain_pmOneInc(x)</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealSubset.lua:	local Is = x[1]:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealSubset.lua:function RealSubset.getRealDomain_inc(x)</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealSubset.lua:	local Is = x[1]:getRealRange()</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>../../set/RealInterval.lua:	local I = x:getRealRange()</b><br>
 <code></code>
 </td><td>

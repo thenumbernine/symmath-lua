@@ -30,7 +30,6 @@ local intname = {
 	'⌡',
 	'∫',
 }
-local partialname = '∂'
 local downarrow = '↓'
 local rightarrow = '→'
 
@@ -199,7 +198,8 @@ MultiLine.lookupTable = {
 		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
-		local topText = partialname 
+		local d = expr:nameForExporter(self)
+		local topText = d 
 		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars
 		if diffPower > 1 then
@@ -215,7 +215,7 @@ MultiLine.lookupTable = {
 		local lhs = self:fraction(
 			{topText},
 			{table.map(powersForDeriv, function(power, name, newtable) 
-				local s = partialname..name
+				local s = d..name
 				if power > 1 then
 					s = s .. '^'..power
 				end

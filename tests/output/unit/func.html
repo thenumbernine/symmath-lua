@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>func</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b></b><br>
+<code>x = var'x'</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>y = func('y', {x}, x^2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>TODO what to display...</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>y = x</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>y(x) = x</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>y(x) := x</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>printbr(y:defeq())</code>
+</td><td>
+${y} = {{x}^{2}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(UserFunction.registeredFunctions.y == y)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>f = func('f', {x, y}, x*y)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>print(f:defeq())</code>
+</td><td>
+${f} = {{{x}} {{y}}}$
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(UserFunction.registeredFunctions.f == f)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>diff() is total derivative</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>pdiff() is partial derivative</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>total derivative evaluation</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>substitute chain rule for all terms</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>df/dx, when simplified, does not go anywhere, because f is dependent on x</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>for that reason, I can just build the equality f:eq(f.def) and apply :diff() to the whole thing:</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>print(f:defeq():diff(x)())</code>
+</td><td>
+${\frac{d f}{d x}} = {{y} + {{{x}} {{\frac{d y}{d x}}}}}$
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>print(f:defeq():diff(y)())</code>
+</td><td>
+${\frac{d f}{d y}} = {x}$
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>print(f:diff(x):eq(f.def:diff(x)()))</code>
+</td><td>
+${\frac{d f}{d x}} = {{y} + {{{x}} {{\frac{d y}{d x}}}}}$
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>print(f:diff(y):eq(f.def:diff(y)()))</code>
+</td><td>
+${\frac{d f}{d y}} = {x}$
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>partial derivative evaluation ...</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>notice that var'f':pdiff(var'x') will return a zero,</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>because the expression we are partially-differentiating against (f) does not contain the derivative variable (x)</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>so I have to construct each side of the equality separately for it to display correctly</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>print(f:pdiff(x):eq(f.def:pdiff(x)()))</code>
+</td><td>
+${\frac{\partial f}{\partial x}} = {y}$
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>print(f:pdiff(y):eq(f.def:pdiff(y)()))</code>
+</td><td>
+${\frac{\partial f}{\partial y}} = {x}$
+
+<span style="color:green">GOOD</span>
+</td></tr>

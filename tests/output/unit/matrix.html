@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>matrix</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>matrix</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
 <table border="1" style="border-collapse:collapse">
@@ -12,7 +12,7 @@
 <b></b><br>
 <code>printbr(Array(1,2,3))</code>
 </td><td>
-$\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]$
+$\left[ \begin{matrix} 1 \\ 2 \\ 3\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -21,7 +21,7 @@ $\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]$
 <b></b><br>
 <code>printbr(Array(1,2) + Array(3,4))</code>
 </td><td>
-${\left[\begin{matrix} 1 \\ 2\end{matrix}\right]} + {\left[\begin{matrix} 3 \\ 4\end{matrix}\right]}$
+${\left[ \begin{matrix} 1 \\ 2\end{matrix} \right]} + {\left[ \begin{matrix} 3 \\ 4\end{matrix} \right]}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -30,7 +30,7 @@ ${\left[\begin{matrix} 1 \\ 2\end{matrix}\right]} + {\left[\begin{matrix} 3 \\ 4
 <b></b><br>
 <code>printbr((Array(1,2) + Array(3,4))())</code>
 </td><td>
-$\left[\begin{matrix} 4 \\ 6\end{matrix}\right]$
+$\left[ \begin{matrix} 4 \\ 6\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -46,7 +46,7 @@ $\left[\begin{matrix} 4 \\ 6\end{matrix}\right]$
 <b></b><br>
 <code>printbr(Matrix({1,2},{3,4}))</code>
 </td><td>
-$\left[\begin{matrix}  1 &  2 \\  3 &  4\end{matrix}\right]$
+$\left[ \begin{matrix}  1 &  2 \\  3 &  4\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -55,7 +55,7 @@ $\left[\begin{matrix}  1 &  2 \\  3 &  4\end{matrix}\right]$
 <b></b><br>
 <code>printbr(Matrix({1,2},{3,4}):inverse())</code>
 </td><td>
-$\left[\begin{matrix}  -{2} &  1 \\  \frac{3}{2} &  -{\frac{1}{2}}\end{matrix}\right]$	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+$\left[ \begin{matrix}  -{2} &  1 \\  \frac{3}{2} &  -{\frac{1}{2}}\end{matrix} \right]$	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -71,7 +71,7 @@ $\left[\begin{matrix}  -{2} &  1 \\  \frac{3}{2} &  -{\frac{1}{2}}\end{matrix}\r
 <b></b><br>
 <code>printbr(Matrix({a,b},{c,d}))</code>
 </td><td>
-$\left[\begin{matrix}  a &  b \\  c &  d\end{matrix}\right]$
+$\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -80,7 +80,7 @@ $\left[\begin{matrix}  a &  b \\  c &  d\end{matrix}\right]$
 <b></b><br>
 <code>printbr(Matrix({a,b},{c,d}):inverse())</code>
 </td><td>
-$\left[\begin{matrix}  \frac{d}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{-{b}}{{{{a}} {{d}}} - {{{b}} {{c}}}} \\  \frac{-{c}}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{a}{{{{a}} {{d}}} - {{{b}} {{c}}}}\end{matrix}\right]$	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+$\left[ \begin{matrix}  \frac{d}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{-{b}}{{{{a}} {{d}}} - {{{b}} {{c}}}} \\  \frac{-{c}}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{a}{{{{a}} {{d}}} - {{{b}} {{c}}}}\end{matrix} \right]$	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -96,7 +96,7 @@ $\left[\begin{matrix}  \frac{d}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{-{b}}{{{
 <b></b><br>
 <code>printbr(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}))</code>
 </td><td>
-$\left[\begin{matrix}  1 &  0 &  0 &  {t_x} \\  0 &  1 &  0 &  {t_y} \\  0 &  0 &  1 &  {t_z} \\  0 &  0 &  0 &  1\end{matrix}\right]$
+$\left[ \begin{matrix}  1 &  0 &  0 &  {t_x} \\  0 &  1 &  0 &  {t_y} \\  0 &  0 &  1 &  {t_z} \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -105,7 +105,7 @@ $\left[\begin{matrix}  1 &  0 &  0 &  {t_x} \\  0 &  1 &  0 &  {t_y} \\  0 &  0 
 <b></b><br>
 <code>printbr(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse())</code>
 </td><td>
-$\left[\begin{matrix}  1 &  0 &  0 &  -{{t_x}} \\  0 &  1 &  0 &  -{{t_y}} \\  0 &  0 &  1 &  -{{t_z}} \\  0 &  0 &  0 &  1\end{matrix}\right]$	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+$\left[ \begin{matrix}  1 &  0 &  0 &  -{{t_x}} \\  0 &  1 &  0 &  -{{t_y}} \\  0 &  0 &  1 &  -{{t_z}} \\  0 &  0 &  0 &  1\end{matrix} \right]$	$\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -121,7 +121,7 @@ $\left[\begin{matrix}  1 &  0 &  0 &  -{{t_x}} \\  0 &  1 &  0 &  -{{t_y}} \\  0
 <b></b><br>
 <code>printbr(m + mInv)</code>
 </td><td>
-${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} \\  sin\left(  \theta\right) &  cos\left(  \theta\right)\end{matrix}\right]} + {\left[\begin{matrix}  cos\left(  \theta\right) &  sin\left(  \theta\right) \\  -{sin\left(  \theta\right)} &  cos\left(  \theta\right)\end{matrix}\right]}$
+${\left[ \begin{matrix}  \cos\left(  \theta\right) &  -{\sin\left(  \theta\right)} \\  \sin\left(  \theta\right) &  \cos\left(  \theta\right)\end{matrix} \right]} + {\left[ \begin{matrix}  \cos\left(  \theta\right) &  \sin\left(  \theta\right) \\  -{\sin\left(  \theta\right)} &  \cos\left(  \theta\right)\end{matrix} \right]}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -130,7 +130,7 @@ ${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} 
 <b></b><br>
 <code>printbr((m + mInv)())</code>
 </td><td>
-$\left[\begin{matrix}  {{2}} {{cos\left(  \theta\right)}} &  0 \\  0 &  {{2}} {{cos\left(  \theta\right)}}\end{matrix}\right]$
+$\left[ \begin{matrix}  {{2}} {{\cos\left(  \theta\right)}} &  0 \\  0 &  {{2}} {{\cos\left(  \theta\right)}}\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -139,7 +139,7 @@ $\left[\begin{matrix}  {{2}} {{cos\left(  \theta\right)}} &  0 \\  0 &  {{2}} {{
 <b></b><br>
 <code>printbr(m * mInv)</code>
 </td><td>
-${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} \\  sin\left(  \theta\right) &  cos\left(  \theta\right)\end{matrix}\right]}  {\left[\begin{matrix}  cos\left(  \theta\right) &  sin\left(  \theta\right) \\  -{sin\left(  \theta\right)} &  cos\left(  \theta\right)\end{matrix}\right]}$
+${\left[ \begin{matrix}  \cos\left(  \theta\right) &  -{\sin\left(  \theta\right)} \\  \sin\left(  \theta\right) &  \cos\left(  \theta\right)\end{matrix} \right]}  {\left[ \begin{matrix}  \cos\left(  \theta\right) &  \sin\left(  \theta\right) \\  -{\sin\left(  \theta\right)} &  \cos\left(  \theta\right)\end{matrix} \right]}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -148,7 +148,7 @@ ${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} 
 <b></b><br>
 <code>printbr((m * mInv)())</code>
 </td><td>
-$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -164,7 +164,7 @@ $\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
 <b></b><br>
 <code>printbr(m*m)</code>
 </td><td>
-${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} \\  sin\left(  \theta\right) &  cos\left(  \theta\right)\end{matrix}\right]}  {\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} \\  sin\left(  \theta\right) &  cos\left(  \theta\right)\end{matrix}\right]}$
+${\left[ \begin{matrix}  \cos\left(  \theta\right) &  -{\sin\left(  \theta\right)} \\  \sin\left(  \theta\right) &  \cos\left(  \theta\right)\end{matrix} \right]}  {\left[ \begin{matrix}  \cos\left(  \theta\right) &  -{\sin\left(  \theta\right)} \\  \sin\left(  \theta\right) &  \cos\left(  \theta\right)\end{matrix} \right]}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -173,7 +173,7 @@ ${\left[\begin{matrix}  cos\left(  \theta\right) &  -{sin\left(  \theta\right)} 
 <b></b><br>
 <code>printbr((m*m)())</code>
 </td><td>
-$\left[\begin{matrix}  {{({{cos\left(  \theta\right)} - {sin\left(  \theta\right)}})}} {{({{cos\left(  \theta\right)} + {sin\left(  \theta\right)}})}} &  -{{{2}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}} \\  {{2}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}} &  -{({{1} - {{{2}} {{{cos\left(  \theta\right)}^{2}}}}})}\end{matrix}\right]$
+$\left[ \begin{matrix}  {{\left({{\cos\left(  \theta\right)} - {\sin\left(  \theta\right)}}\right)}} {{\left({{\cos\left(  \theta\right)} + {\sin\left(  \theta\right)}}\right)}} &  -{{{2}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}}} \\  {{2}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}} &  -{\left({{1} - {{{2}} {{{\cos\left(  \theta\right)}^{2}}}}}\right)}\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -182,7 +182,7 @@ $\left[\begin{matrix}  {{({{cos\left(  \theta\right)} - {sin\left(  \theta\right
 <b></b><br>
 <code>printbr(m1)</code>
 </td><td>
-$\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]$
+$\left[ \begin{matrix}  1 &  a \\  0 &  1\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -191,7 +191,7 @@ $\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]$
 <b></b><br>
 <code>printbr(m2)</code>
 </td><td>
-$\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]$
+$\left[ \begin{matrix}  1 &  0 \\  b &  1\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -200,7 +200,7 @@ $\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]$
 <b></b><br>
 <code>printbr((m1*m2):eq((m1*m2)()))</code>
 </td><td>
-${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}} = {\left[\begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix}\right]}$
+${ {\left[ \begin{matrix}  1 &  a \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  b &  1\end{matrix} \right]}} = {\left[ \begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix} \right]}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -209,7 +209,7 @@ ${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{m
 <b></b><br>
 <code>printbr((m2*m1):eq((m2*m1)()))</code>
 </td><td>
-${ {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}} = {\left[\begin{matrix}  1 &  a \\  b &  {1} + {{{a}} {{b}}}\end{matrix}\right]}$
+${ {\left[ \begin{matrix}  1 &  0 \\  b &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  a \\  0 &  1\end{matrix} \right]}} = {\left[ \begin{matrix}  1 &  a \\  b &  {1} + {{{a}} {{b}}}\end{matrix} \right]}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -218,7 +218,7 @@ ${ {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}  {\left[\begin{m
 <b></b><br>
 <code>printbr(m1:eq(m2))</code>
 </td><td>
-${\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]} = {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}$
+${\left[ \begin{matrix}  1 &  a \\  0 &  1\end{matrix} \right]} = {\left[ \begin{matrix}  1 &  0 \\  b &  1\end{matrix} \right]}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -234,7 +234,7 @@ ${\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]} = {\left[\begin{ma
 <b></b><br>
 <code>printbr((m1*m2):eq(m2*m1))</code>
 </td><td>
-${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}} = { {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}}$
+${ {\left[ \begin{matrix}  1 &  a \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  b &  1\end{matrix} \right]}} = { {\left[ \begin{matrix}  1 &  0 \\  b &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  a \\  0 &  1\end{matrix} \right]}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -250,7 +250,7 @@ ${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{m
 <b></b><br>
 <code>printbr((m1*m2):eq(m1*m2))</code>
 </td><td>
-${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}} = { {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 \\  b &  1\end{matrix}\right]}}$
+${ {\left[ \begin{matrix}  1 &  a \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  b &  1\end{matrix} \right]}} = { {\left[ \begin{matrix}  1 &  a \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  b &  1\end{matrix} \right]}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -266,7 +266,7 @@ ${ {\left[\begin{matrix}  1 &  a \\  0 &  1\end{matrix}\right]}  {\left[\begin{m
 <b></b><br>
 <code>printbr((m1*m2):eq(m2*m1)())</code>
 </td><td>
-${\left[\begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix}\right]} = {\left[\begin{matrix}  1 &  a \\  b &  {1} + {{{a}} {{b}}}\end{matrix}\right]}$
+${\left[ \begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix} \right]} = {\left[ \begin{matrix}  1 &  a \\  b &  {1} + {{{a}} {{b}}}\end{matrix} \right]}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -282,7 +282,7 @@ ${\left[\begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix}\right]} 
 <b></b><br>
 <code>printbr((Matrix({a},{b}) + Matrix({c},{d})) / t)</code>
 </td><td>
-${\frac{1}{t}}{({{\left[\begin{matrix}  a \\  b\end{matrix}\right]} + {\left[\begin{matrix}  c \\  d\end{matrix}\right]}})}$
+$\frac{{\left[ \begin{matrix}  a \\  b\end{matrix} \right]} + {\left[ \begin{matrix}  c \\  d\end{matrix} \right]}}{t}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -291,7 +291,7 @@ ${\frac{1}{t}}{({{\left[\begin{matrix}  a \\  b\end{matrix}\right]} + {\left[\be
 <b></b><br>
 <code>printbr(((Matrix({a},{b}) + Matrix({c},{d})) / t)())</code>
 </td><td>
-$\left[\begin{matrix}  {\frac{1}{t}}{({{a} + {c}})} \\  {\frac{1}{t}}{({{b} + {d}})}\end{matrix}\right]$
+$\left[ \begin{matrix}  \frac{{a} + {c}}{t} \\  \frac{{b} + {d}}{t}\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -307,7 +307,7 @@ $\left[\begin{matrix}  {\frac{1}{t}}{({{a} + {c}})} \\  {\frac{1}{t}}{({{b} + {d
 <b></b><br>
 <code>printbr(Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))</code>
 </td><td>
-$\left[\begin{matrix}  -{4} \\  \frac{9}{2}\end{matrix}\right]$	$\left[\begin{matrix}  1 &  0 \\  0 &  1\end{matrix}\right]$
+$\left[ \begin{matrix}  -{4} \\  \frac{9}{2}\end{matrix} \right]$	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -316,7 +316,7 @@ $\left[\begin{matrix}  -{4} \\  \frac{9}{2}\end{matrix}\right]$	$\left[\begin{ma
 <b></b><br>
 <code>printbr((Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))())</code>
 </td><td>
-$\left[\begin{matrix}  5 \\  6\end{matrix}\right]$
+$\left[ \begin{matrix}  5 \\  6\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>

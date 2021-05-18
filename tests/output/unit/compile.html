@@ -1,0 +1,303 @@
+expr1
+         1   
+   x   ╶───╴ 
+ _e  -    x  
+        _e   
+╶───────────╴
+      2      
+expr2
+         1   
+   x   ╶───╴ 
+ _e  +    x  
+        _e   
+╶───────────╴
+      2      
+
+==== lang: C ====
+
+x
+
+code:
+double out1 = x;
+
+func code:
+void f(double* out) {
+	double out1 = x;
+	out[0] = out1;
+}
+
+expr1
+
+code:
+double tmp1 = exp(x);
+double out1 = (tmp1 - 1. / tmp1) / 2.;
+
+func code:
+void f(double* out, double x) {
+	double tmp1 = exp(x);
+	double out1 = (tmp1 - 1. / tmp1) / 2.;
+	out[0] = out1;
+}
+
+expr2
+
+code:
+double tmp1 = exp(x);
+double out1 = (tmp1 + 1. / tmp1) / 2.;
+
+func code:
+void f(double* out, double x) {
+	double tmp1 = exp(x);
+	double out1 = (tmp1 + 1. / tmp1) / 2.;
+	out[0] = out1;
+}
+
+expr1 & expr2
+
+code:
+double tmp1 = exp(x);
+double tmp3 = 1. / tmp1;
+double out1 = (tmp1 - tmp3) / 2.;
+double out2 = (tmp1 + tmp3) / 2.;
+
+func code:
+void f(double* out, double x) {
+	double tmp1 = exp(x);
+	double tmp3 = 1. / tmp1;
+	double out1 = (tmp1 - tmp3) / 2.;
+	double out2 = (tmp1 + tmp3) / 2.;
+	out[0] = out1;
+	out[1] = out2;
+}
+
+
+==== lang: JavaScript ====
+
+x
+
+code:
+var out1 = x;
+
+func code:
+function f() {
+	var out1 = x;
+	return out1;
+}
+
+expr1
+
+code:
+var tmp1 = Math.exp(x);
+var out1 = ((tmp1 - (1 / tmp1)) / 2);
+
+func code:
+function f(x) {
+	var tmp1 = Math.exp(x);
+	var out1 = ((tmp1 - (1 / tmp1)) / 2);
+	return out1;
+}
+
+expr2
+
+code:
+var tmp1 = Math.exp(x);
+var out1 = ((tmp1 + (1 / tmp1)) / 2);
+
+func code:
+function f(x) {
+	var tmp1 = Math.exp(x);
+	var out1 = ((tmp1 + (1 / tmp1)) / 2);
+	return out1;
+}
+
+expr1 & expr2
+
+code:
+var tmp1 = Math.exp(x);
+var tmp3 = (1 / tmp1);
+var out1 = ((tmp1 - tmp3) / 2);
+var out2 = ((tmp1 + tmp3) / 2);
+
+func code:
+function f(x) {
+	var tmp1 = Math.exp(x);
+	var tmp3 = (1 / tmp1);
+	var out1 = ((tmp1 - tmp3) / 2);
+	var out2 = ((tmp1 + tmp3) / 2);
+	return [out1, out2];
+}
+
+
+==== lang: Lua ====
+
+x
+
+code:
+local out1 = x
+
+func code:
+function f()
+	local out1 = x
+	return out1
+end
+
+expr1
+
+code:
+local tmp1 = math.exp(x)
+local out1 = ((tmp1 - (1 / tmp1)) / 2)
+
+func code:
+function f(x)
+	local tmp1 = math.exp(x)
+	local out1 = ((tmp1 - (1 / tmp1)) / 2)
+	return out1
+end
+
+expr2
+
+code:
+local tmp1 = math.exp(x)
+local out1 = ((tmp1 + (1 / tmp1)) / 2)
+
+func code:
+function f(x)
+	local tmp1 = math.exp(x)
+	local out1 = ((tmp1 + (1 / tmp1)) / 2)
+	return out1
+end
+
+expr1 & expr2
+
+code:
+local tmp1 = math.exp(x)
+local tmp3 = (1 / tmp1)
+local out1 = ((tmp1 - tmp3) / 2)
+local out2 = ((tmp1 + tmp3) / 2)
+
+func code:
+function f(x)
+	local tmp1 = math.exp(x)
+	local tmp3 = (1 / tmp1)
+	local out1 = ((tmp1 - tmp3) / 2)
+	local out2 = ((tmp1 + tmp3) / 2)
+	return out1, out2
+end
+
+
+==== lang: Mathematica ====
+
+x
+
+code:
+out1 = x;
+
+func code:
+nil[] :=
+	out1 = x;
+	out1;
+
+expr1
+
+code:
+tmp1 = exp[x];
+out1 = ((tmp1 - (1 / tmp1)) / 2);
+
+func code:
+nil[x_] :=
+	tmp1 = exp[x];
+	out1 = ((tmp1 - (1 / tmp1)) / 2);
+	out1;
+
+expr2
+
+code:
+tmp1 = exp[x];
+out1 = ((tmp1 + (1 / tmp1)) / 2);
+
+func code:
+nil[x_] :=
+	tmp1 = exp[x];
+	out1 = ((tmp1 + (1 / tmp1)) / 2);
+	out1;
+
+expr1 & expr2
+
+code:
+tmp1 = exp[x];
+tmp3 = (1 / tmp1);
+out1 = ((tmp1 - tmp3) / 2);
+out2 = ((tmp1 + tmp3) / 2);
+
+func code:
+nil[x_] :=
+	tmp1 = exp[x];
+	tmp3 = (1 / tmp1);
+	out1 = ((tmp1 - tmp3) / 2);
+	out2 = ((tmp1 + tmp3) / 2);
+	[out1, out2];
+
+
+==== lang: GnuPlot ====
+
+x
+
+code:
+out1 = x
+
+func code:
+f() =
+	out1 = x
+	return out1
+
+expr1
+
+code:
+tmp1 = (exp(x))
+out1 = ((tmp1 - (1. / tmp1)) / 2.)
+
+func code:
+f(x) =
+	tmp1 = (exp(x))
+	out1 = ((tmp1 - (1. / tmp1)) / 2.)
+	return out1
+
+expr2
+
+code:
+tmp1 = (exp(x))
+out1 = ((tmp1 + (1. / tmp1)) / 2.)
+
+func code:
+f(x) =
+	tmp1 = (exp(x))
+	out1 = ((tmp1 + (1. / tmp1)) / 2.)
+	return out1
+
+expr1 & expr2
+
+code:
+tmp1 = (exp(x))
+tmp3 = (1. / tmp1)
+out1 = ((tmp1 - tmp3) / 2.)
+out2 = ((tmp1 + tmp3) / 2.)
+
+func code:
+f(x) =
+	tmp1 = (exp(x))
+	tmp3 = (1. / tmp1)
+	out1 = ((tmp1 - tmp3) / 2.)
+	out2 = ((tmp1 + tmp3) / 2.)
+	return out1, out2
+
+double tmp1 = sinh(w);
+double tmp2 = rho / tmp1;
+double tmp3 = sinh(tmp2);
+double tmp5 = 1. / tmp1;
+double tmp6 = A * tmp3;
+double tmp7 = sinh(tmp5);
+double tmp8 = sin(theta);
+double tmp10 = tmp6 / tmp7;
+double x = tmp10 * tmp8 * cos(phi);
+double y = tmp10 * tmp8 * sin(phi);
+double z = tmp10 * cos(theta);

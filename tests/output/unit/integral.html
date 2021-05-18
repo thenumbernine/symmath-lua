@@ -306,36 +306,8 @@
 <b></b><br>
 <code>asserteq( ( cosh(a * x) * sinh(b * x) ):integrate(x), 1 / ((a + b) * (a - b)) * (-b * cosh(a*x) * cosh(b*x) + a * sinh(a*x) * sinh(b*x)) )</code>
 </td><td>
-expected $\int d x\left({{{cosh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}\right)$ to equal ${{\frac{1}{{{({{a} + {b}})}} {{({{a} - {b}})}}}}} {{({{ {-{b}} {{cosh\left( {{{a}} {{x}}}\right)}} {{cosh\left( {{{b}} {{x}}}\right)}}} + {{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}})}}$<br>
-instead found $\frac{{{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}} - {{{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}}}}{{{({{a} - {b}})}} {{({{a} + {b}})}}}$ vs $\frac{{-{{{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}}}} + {{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}}{{{({{a} - {b}})}} {{({{a} + {b}})}}}$<br>
-lhs stack<br>
-init	$\int d x\left({{{cosh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}\right)$	<br>
-prune	${{\frac{1}{{{a}^{2}} - {{b}^{2}}}}} {{({{{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}} - {{{b}} {{cosh\left( {{{a}} {{x}}}\right)}} {{cosh\left( {{{b}} {{x}}}\right)}}}})}}$	<br>
-expand	${{{\frac{1}{{{{a}} {{a}}} + {{{-1}} {{b}} {{b}}}}}} {{{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}}} + {{{\frac{1}{{{{a}} {{a}}} + {{{-1}} {{b}} {{b}}}}}} {{{{-1}} {{b}} {{cosh\left( {{{a}} {{x}}}\right)}} {{cosh\left( {{{b}} {{x}}}\right)}}}}}$	<br>
-prune	$\frac{{{{a}} {{sinh\left( {{{b}} {{x}}}\right)}} {{sinh\left( {{{a}} {{x}}}\right)}} {{({{{a}^{2}} + {{{-1}} {{{b}^{2}}}}})}}} + {{{-1}} {{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}} {{({{{a}^{2}} + {{{-1}} {{{b}^{2}}}}})}}}}{{{({{{a}^{2}} + {{{-1}} {{{b}^{2}}}}})}} {{({{{a}^{2}} + {{{-1}} {{{b}^{2}}}}})}}}$	<br>
-factor	$\frac{{{({{a} + {b}})}} {{({{a} + {{{-1}} {{b}}}})}} {{({{{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}} + {{{-1}} {{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}}}})}}}{{{{{({{{a}^{({\frac{2}{2}})}} + {{b}^{({\frac{2}{2}})}}})}} {{({{{a}^{({\frac{2}{2}})}} - {{b}^{({\frac{2}{2}})}}})}}}} {{{{({{{a}^{({\frac{2}{2}})}} + {{b}^{({\frac{2}{2}})}}})}} {{({{{a}^{({\frac{2}{2}})}} - {{b}^{({\frac{2}{2}})}}})}}}}}$	<br>
-prune	$\frac{{{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}} + {{{-1}} {{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}}}}{{{({{a} + {{{-1}} {{b}}}})}} {{({{a} + {b}})}}}$	<br>
-expand	$\frac{{{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}} + {{{-1}} {{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}}}}{{{{{a}} {{a}}} + {{{a}} {{b}}}} + {{{{{{-1}} {{b}}}} {{a}}} + {{{{{-1}} {{b}}}} {{b}}}}}$	<br>
-prune	$\frac{{{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}} + {{{-1}} {{b}} {{cosh\left( {{{a}} {{x}}}\right)}} {{cosh\left( {{{b}} {{x}}}\right)}}}}{{{a}^{2}} + {{{-1}} {{{b}^{2}}}}}$	<br>
-factor	$\frac{{{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}} + {{{-1}} {{b}} {{cosh\left( {{{a}} {{x}}}\right)}} {{cosh\left( {{{b}} {{x}}}\right)}}}}{{{({{{a}^{({\frac{2}{2}})}} + {{b}^{({\frac{2}{2}})}}})}} {{({{{a}^{({\frac{2}{2}})}} - {{b}^{({\frac{2}{2}})}}})}}}$	<br>
-prune	$\frac{{{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}} + {{{-1}} {{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}}}}{{{({{a} + {{{-1}} {{b}}}})}} {{({{a} + {b}})}}}$	<br>
-rhs stack<br>
-init	${{\frac{1}{{{({{a} + {b}})}} {{({{a} - {b}})}}}}} {{({{ {-{b}} {{cosh\left( {{{a}} {{x}}}\right)}} {{cosh\left( {{{b}} {{x}}}\right)}}} + {{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}})}}$	<br>
-prune	$\frac{{{{-1}} {{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}}} + {{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}}{{{({{a} + {b}})}} {{({{a} + {{{-1}} {{b}}}})}}}$	<br>
-expand	$\frac{{{{-1}} {{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}}} + {{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}}{{{{{a}} {{a}}} + {{{a}} {{{{-1}} {{b}}}}}} + {{{{b}} {{a}}} + {{{b}} {{{{-1}} {{b}}}}}}}$	<br>
-prune	$\frac{{{{-1}} {{b}} {{cosh\left( {{{a}} {{x}}}\right)}} {{cosh\left( {{{b}} {{x}}}\right)}}} + {{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}}{{{a}^{2}} + {{{-1}} {{{b}^{2}}}}}$	<br>
-factor	$\frac{{{{-1}} {{b}} {{cosh\left( {{{a}} {{x}}}\right)}} {{cosh\left( {{{b}} {{x}}}\right)}}} + {{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}}{{{({{{a}^{({\frac{2}{2}})}} + {{b}^{({\frac{2}{2}})}}})}} {{({{{a}^{({\frac{2}{2}})}} - {{b}^{({\frac{2}{2}})}}})}}}$	<br>
-prune	$\frac{{{{-1}} {{b}} {{cosh\left( {{{b}} {{x}}}\right)}} {{cosh\left( {{{a}} {{x}}}\right)}}} + {{{a}} {{sinh\left( {{{a}} {{x}}}\right)}} {{sinh\left( {{{b}} {{x}}}\right)}}}}{{{({{a} + {{{-1}} {{b}}}})}} {{({{a} + {b}})}}}$	<br>
-<span style="color:red">BAD</span><br>./unit.lua:28: failed<br>stack traceback:<br>
-	./unit.lua:93: in function <./unit.lua:92><br>
-	[C]: in function 'error'<br>
-	./unit.lua:28: in global 'asserteq'<br>
-	[string "asserteq( ( cosh(a * x) * sinh(b * x) ):integ..."]:1: in main chunk<br>
-	./unit.lua:85: in function <./unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	./unit.lua:84: in field 'exec'<br>
-	./integral.lua:72: in main chunk<br>
-	[C]: in ?
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>

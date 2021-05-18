@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>match</title>
+		<title>variable depends</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
@@ -24,7 +24,92 @@
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
+<b>depends regardless of specification</b><br>
+<code>assert(true == y:dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>was not specified</b><br>
+<code>assert(false == y:dependsOn(y'^p'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>was not specified</b><br>
+<code>assert(false == y'^p':dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>dependsregardless of specification</b><br>
+<code>assert(true == y'^p':dependsOn(y'^q'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
 <b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>y = symmath.var'y'</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>y:setDependentVars(x'^a')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>was not specified</b><br>
+<code>assert(false == y'^p':dependsOn(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>was not specified</b><br>
+<code>assert(false == y'^p':dependsOn(x'^q'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>was specified</b><br>
+<code>assert(true == y:dependsOn(x'^q'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>was not specified</b><br>
+<code>assert(false == y:dependsOn(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>y = symmath.var'y'</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>not by default</b><br>
 <code>assert(false == y:dependsOn(x))</code>
 </td><td>
 
@@ -156,6 +241,10 @@
 
 <span style="color:green">GOOD</span>
 </td></tr>
+<tr><td>
+<b>TODO this should be in tests/unit/diff.lua</b><br>
+<code></code>
+</td><td>
 <tr><td>
 <b></b><br>
 <code>assert(y:diff(x)() == y:diff(x))</code>
@@ -654,6 +743,417 @@
 <tr><td>
 <b></b><br>
 <code>assert(y'^ij':diff(x'^pq')() == zero)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>testing graph dependency z(y(x)), z depends on x</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>x = symmath.var'x'</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>y = symmath.var('y', {x})</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>z = symmath.var('z', {y})</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert(true == z:dependsOn(z))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == z:dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == z:dependsOn(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y:dependsOn(z))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == y:dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == y:dependsOn(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x:dependsOn(z))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x:dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == x:dependsOn(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert(false == z:dependsOn(z'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == z:dependsOn(y'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == z:dependsOn(x'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y:dependsOn(z'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y:dependsOn(y'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y:dependsOn(x'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x:dependsOn(z'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x:dependsOn(y'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x:dependsOn(x'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert(false == z'^I':dependsOn(z))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == z'^I':dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == z'^I':dependsOn(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y'^I':dependsOn(z))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y'^I':dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y'^I':dependsOn(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x'^I':dependsOn(z))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x'^I':dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x'^I':dependsOn(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>by default</b><br>
+<code>assert(true == z'^I':dependsOn(z'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == z'^I':dependsOn(y'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == z'^I':dependsOn(x'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y'^I':dependsOn(z'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>by default</b><br>
+<code>assert(true == y'^I':dependsOn(y'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y'^I':dependsOn(x'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x'^I':dependsOn(z'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x'^I':dependsOn(y'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>by default</b><br>
+<code>assert(true == x'^I':dependsOn(x'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>testing graph dependency z(y(x'^I')), z depends on x</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>x = symmath.var'x'</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>y = symmath.var'y'</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>y:setDependentVars(x'^I')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>z = symmath.var'z'</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>z:setDependentVars(y)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert(true == z:dependsOn(z))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == z:dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == z:dependsOn(x'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == y:dependsOn(z))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == y:dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == y:dependsOn(x'^I'))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x'^I':dependsOn(z))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(false == x'^I':dependsOn(y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(true == x'^I':dependsOn(x'^I'))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>

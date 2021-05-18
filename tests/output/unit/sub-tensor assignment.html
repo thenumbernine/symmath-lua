@@ -1,35 +1,35 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>sub-tensor assignment</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>sub-tensor assignment</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
 rank-1 subtensor assignment
 <br>
-A = $\overset{a\downarrow}{\left[\begin{matrix} { a}^t \\ { a}^x \\ { a}^y \\ { a}^z\end{matrix}\right]}$
+A = $\overset{a\downarrow}{\left[ \begin{matrix} { a}^t \\ { a}^x \\ { a}^y \\ { a}^z\end{matrix} \right]}$
 <br>
-B = $\overset{i\downarrow}{\left[\begin{matrix} { b}^x \\ { b}^y \\ { b}^z\end{matrix}\right]}$
+B = $\overset{i\downarrow}{\left[ \begin{matrix} { b}^x \\ { b}^y \\ { b}^z\end{matrix} \right]}$
 <br>
-A = $\overset{a\downarrow}{\left[\begin{matrix} { a}^t \\ { b}^x \\ { b}^y \\ { b}^z\end{matrix}\right]}$
+A = $\overset{a\downarrow}{\left[ \begin{matrix} { a}^t \\ { b}^x \\ { b}^y \\ { b}^z\end{matrix} \right]}$
 <br>
 rank-2 subtensor assignment
 <br>
-A = $\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ a}^t}^t &  {{ a}^t}^x &  {{ a}^t}^y &  {{ a}^t}^z \\  {{ a}^x}^t &  {{ a}^x}^x &  {{ a}^x}^y &  {{ a}^x}^z \\  {{ a}^y}^t &  {{ a}^y}^x &  {{ a}^y}^y &  {{ a}^y}^z \\  {{ a}^z}^t &  {{ a}^z}^x &  {{ a}^z}^y &  {{ a}^z}^z\end{matrix}\right]}$
+A = $\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {{ a}^t}^t &  {{ a}^t}^x &  {{ a}^t}^y &  {{ a}^t}^z \\  {{ a}^x}^t &  {{ a}^x}^x &  {{ a}^x}^y &  {{ a}^x}^z \\  {{ a}^y}^t &  {{ a}^y}^x &  {{ a}^y}^y &  {{ a}^y}^z \\  {{ a}^z}^t &  {{ a}^z}^x &  {{ a}^z}^y &  {{ a}^z}^z\end{matrix} \right]}$
 <br>
-B = $\overset{i\downarrow j\rightarrow}{\left[\begin{matrix}  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix}\right]}$
+B = $\overset{i\downarrow j\rightarrow}{\left[ \begin{matrix}  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix} \right]}$
 <br>
-A = $\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ a}^t}^t &  {{ a}^t}^x &  {{ a}^t}^y &  {{ a}^t}^z \\  {{ a}^x}^t &  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ a}^y}^t &  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ a}^z}^t &  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix}\right]}$
+A = $\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {{ a}^t}^t &  {{ a}^t}^x &  {{ a}^t}^y &  {{ a}^t}^z \\  {{ a}^x}^t &  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ a}^y}^t &  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ a}^z}^t &  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix} \right]}$
 <br>
-C = $\overset{i\downarrow}{\left[\begin{matrix} { c}^x \\ { c}^y \\ { c}^z\end{matrix}\right]}$
+C = $\overset{i\downarrow}{\left[ \begin{matrix} { c}^x \\ { c}^y \\ { c}^z\end{matrix} \right]}$
 <br>
-A = $\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ a}^t}^t &  { c}^x &  { c}^y &  { c}^z \\  {{ a}^x}^t &  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ a}^y}^t &  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ a}^z}^t &  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix}\right]}$
+A = $\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {{ a}^t}^t &  { c}^x &  { c}^y &  { c}^z \\  {{ a}^x}^t &  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ a}^y}^t &  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ a}^z}^t &  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix} \right]}$
 <br>
-A = $\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ a}^t}^t &  { c}^x &  { c}^y &  { c}^z \\  {{ b}^x}^x &  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ b}^y}^x &  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ b}^z}^x &  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix}\right]}$
+A = $\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {{ a}^t}^t &  { c}^x &  { c}^y &  { c}^z \\  {{ b}^x}^x &  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ b}^y}^x &  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ b}^z}^x &  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix} \right]}$
 <br>
-A = $\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  2 &  { c}^x &  { c}^y &  { c}^z \\  {{ b}^x}^x &  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ b}^y}^x &  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ b}^z}^x &  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix}\right]}$
+A = $\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  2 &  { c}^x &  { c}^y &  { c}^z \\  {{ b}^x}^x &  {{ b}^x}^x &  {{ b}^x}^y &  {{ b}^x}^z \\  {{ b}^y}^x &  {{ b}^y}^x &  {{ b}^y}^y &  {{ b}^y}^z \\  {{ b}^z}^x &  {{ b}^z}^x &  {{ b}^z}^y &  {{ b}^z}^z\end{matrix} \right]}$
 <br>
-A = $\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  2 &  { c}^x &  { c}^y &  { c}^z \\  {{ b}^x}^x &  1 &  1 &  1 \\  {{ b}^y}^x &  1 &  1 &  1 \\  {{ b}^z}^x &  1 &  1 &  1\end{matrix}\right]}$
+A = $\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  2 &  { c}^x &  { c}^y &  { c}^z \\  {{ b}^x}^x &  1 &  1 &  1 \\  {{ b}^y}^x &  1 &  1 &  1 \\  {{ b}^z}^x &  1 &  1 &  1\end{matrix} \right]}$
 <br>

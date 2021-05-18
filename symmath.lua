@@ -45,6 +45,10 @@ function symmath.vars(...)						--create variables for each string parameter
 	return table{...}:mapi(function(x) return symmath.var(x) end):unpack()
 end
 
+-- TODO call Function BuiltinFunction and call UserFunction Function?
+symmath.UserFunction = require 'symmath.UserFunction'
+symmath.func = symmath.UserFunction
+
 symmath.set = require 'symmath.set.sets'
 
 -- export expressions to various languages
@@ -211,6 +215,9 @@ symmath.frac = symmath.op.div
 
 symmath.Derivative = require 'symmath.Derivative'
 symmath.diff = symmath.Derivative	-- shorthand ... TODO shorthand for Expression.diff?
+
+symmath.PartialDerivative = require 'symmath.PartialDerivative'
+symmath.pdiff = symmath.PartialDerivative
 
 -- thinking of lowercasing all of these ...
 symmath.Sum = require 'symmath.Sum'
