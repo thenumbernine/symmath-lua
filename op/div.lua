@@ -555,9 +555,20 @@ div.rules = {
 			local a, b = table.unpack(expr)
 			local ua = unm:isa(a)
 			local ub = unm:isa(b)
+			
 			if ua and ub then return tidy:apply(a[1] / b[1]) end
-			if ua and Constant:isa(a[1]) then return tidy:apply(-(a[1] / b)) end
-			if ub and Constant:isa(b[1]) then return tidy:apply(-(a / b[1])) end
+			
+			if ua 
+			--and Constant:isa(a[1]) 
+			then 
+				return tidy:apply(-(a[1] / b)) 
+			end
+			
+			if ub 
+			--and Constant:isa(b[1]) 
+			then 
+				return tidy:apply(-(a / b[1])) 
+			end
 		end},
 	},
 }
