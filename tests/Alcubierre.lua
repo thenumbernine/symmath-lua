@@ -6,11 +6,11 @@ require 'symmath'.setup{
 	env = env,
 	MathJax = {
 		title = 'Alcubierre warp bubble',
-		useCommaDerivative = true,
 		showDivConstAsMulFrac = true,
 	},
 }
-require 'ext'
+local MathJax = export.MathJax
+require 'ext.env'(env)
 
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local coords = {t,x,y,z}
@@ -40,16 +40,52 @@ printbr(1/sigma, '= warp bubble thickness.')
 local xs = var('x_s', {t})
 printbr(xs, '= warp bubble center location along the x axis.')
 
--- TODO :diff partial vs total derivative
-local vs = var('v_s', {t,x})
-printbr[[$v_s(t) = \frac{dx_s(t)}{dt}$ = warp bubble velocity, as a function of $t$]]
+--[[
+local vs = func('v_s', {t}, xs:diff(t))
+printbr(vs:printEqn(), '= warp bubble velocity, as a function of t')
+--]]
+-- [[
+local vs = var('v_s', {t})
+local vsdef = vs:eq(xs:diff(t))
+printbr(vsdef, '= warp bubble velocity, as a function of t')
+--]]
 
-local rs = var'r_s(t)'
-printbr(rs:eq(sqrt((x - var'x_s')^2 + y^2 + z^2)), '= warp bubble radial coordinate')
+--[[
+local rs = func('r_s', {x,y,z,xs}, sqrt((x - var'x_s')^2 + y^2 + z^2))
+printbr(rs:printEqn(), '= warp bubble radial coordinate')
+--]]
+-- [[
+local rs = var('r_s', {x,y,z,xs})
+local rsdef = rs:eq(sqrt((x - var'x_s')^2 + y^2 + z^2))
+printbr(rsdef, '= warp bubble radial coordinate')
+--]]
 
-local f = var('f(r_s(t))', {t,x,y,z})
-printbr(f, '= shape of bubble')
-printbr(f:eq((tanh(sigma * (rs + R)) - tanh(sigma * (rs - R))) / (2 * tanh(sigma * R))))
+local u = var('u', {t,x,y,z})
+
+-- TODO HOW TO DEFINE CUSTOM FUNCTIONS?
+
+local fdefrhs = (tanh(sigma * (rs + R)) - tanh(sigma * (rs - R))) / (2 * tanh(sigma * R))
+--[[ using 'func' as 'Variable' ... doesn't have partial derivative evaluation
+local f = func('f', {rs})
+printbr(f:printEqn():eq(fdefrhs), '= shape of bubble')
+local udef = u:eq(vs * f)
+--]]
+--[[ using Function subclass, and inserting in my own derivative evaluation
+-- TODO how would I insert the derivative evaluation into symmath/Function.lua ?
+local f = class(Function, {name='f'})
+function f:evaluateDerivative(deriv, ...)
+	local x = table.unpack(self):clone()
+	return deriv(x, ...) * class(Function, {name="f'"})(x)
+end
+printbr(f(rs):eq(fdefrhs), '= shape of bubble')
+local udef = u:eq(vs * f(rs))
+--]]
+-- [[ using 'func' as 'Function'
+local f = func('f', {rs})	--, fdefrhs)
+local fdef = f(rs):eq(fdefrhs)
+printbr(fdef, '= shape of bubble')
+local udef = u:eq(vs * f(rs))
+--]]
 
 --[[
 u = v_s(t) * f(r_s(t))
@@ -60,8 +96,6 @@ du/dt = dv_s/dt * f + v_s * df/dt
 
 TODO total derivative
 --]]
-local u = var('u', {t,x,y,z})
-local udef = u:eq(vs * f)
 printbr(udef)
 printbr()
 
@@ -70,6 +104,21 @@ printbr(udef:diff(x)())
 printbr(udef:diff(y)())
 printbr(udef:diff(z)())
 printbr()
+
+-- in the mean time
+local udefraw = udef
+	--:replace(f, fdefrhs)	-- needed for the var version?
+	:subst(rsdef)
+printbr(udefraw():subst(rsdef():switch()))
+local du_dx_def = udefraw:diff(x)():subst(rsdef():switch())
+printbr(du_dx_def)
+local du_dy_def = udefraw:diff(y)():subst(rsdef():switch())
+printbr(du_dy_def)
+local du_dz_def = udefraw:diff(z)():subst(rsdef():switch())
+printbr(du_dz_def)
+
+MathJax.useCommaDerivative = true
+
 
 local alpha_var = var'\\alpha'
 local alpha = 1
@@ -162,9 +211,34 @@ local Einstein = (Ricci'_ab' - g'_ab' * Gaussian / 2)()
 printbr(var'G''_ab':eq(Einstein'_ab'()))
 printbr()
 
-printbr'Einstein curvature density:'
-local EinsteinDensity = (Einstein'_ab' * nU'^a' * nU'^b')()
-printbr((var'G''_ab' * var'n''^a' * var'n''^b'):eq(EinsteinDensity))
+printbr'Einstein field equation:'
+local c = var'c'
+local T = var'T'
+local EFEdef = var'G''_ab':eq( (8 * pi * var'G') / c^4 * T'_ab')
+printbr(EFEdef)
+local EFEdef_wrt_T = EFEdef:solve(T'_ab')
+printbr(EFEdef_wrt_T)
+EFEdef_wrt_T = EFEdef_wrt_T:replace(var'G''_ab', Einstein'_ab')()
+printbr(EFEdef_wrt_T)
+printbr()
+
+
+local rho = var'\\rho'
+local n = var'n'
+local rho_def = rho:eq(T'_ab' * n'^a' * n'^b')
+printbr'density:'
+printbr(rho_def)
+printbr()
+
+rho_def = rho_def:subst(EFEdef_wrt_T)
+	:replace(n'^a', nU'^a')
+	:replace(n'^b', nU'^b')
+	:simplify()
+
+printbr(rho_def)
+printbr('using', du_dy_def, ',', du_dz_def)
+rho_def = rho_def:subst(du_dy_def, du_dz_def)()
+printbr(rho_def)
 printbr()
 
 -- for G_uv = 8 pi G/c^4 T_uv
@@ -172,3 +246,5 @@ printbr()
 -- should be rho = c^4 / (8 pi G) * (-vs^2 df/drs^2 (y^2 + z^2) / (4 g^2 rs^2))
 -- for g = det(g_uv)
 -- but why is g a variable?  for the provided metric, det(g_uv) = -1
+
+

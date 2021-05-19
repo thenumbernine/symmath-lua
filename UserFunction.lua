@@ -1,5 +1,20 @@
 --[[
 
+Should this be a Variable subclass?
+Yes, because 
+	- Variable is almost there.  it already has name, depends, and value.  This is 1-1 with a function's name, arguments, and definition.
+	- other expressions can be defined / can be differentiated with respect to this (can they?)
+	in fact, can they?  f(x) = x^2 sin(x) ... can be dif'd wrt x, wrt sin(x), but not wrt sin....
+No, because we only ever operate on the evaluated expression after substituting parameters
+	so instead subclass Function
+
+
+should it be a subclass of Expression?  Function?  Variable?
+Expression: last resort
+Function: easy for substitution, differentiation, and output generation
+Variable: easy for integration with variable dependencies.
+
+
 xdef = x(t) = t^2
 ydef = y(x,t) = x^2 + t^2
 
@@ -51,18 +66,13 @@ but something tells me I should unify __call, TensorIndex, and Variable first be
 
 --]]
 local class = require 'ext.class'
+local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 local Function = require 'symmath.Function'
 local Variable = require 'symmath.Variable'
 
---[[
-subclass of Expression?  Function?  Variable?
-Expression: last resort
-Function: easy for output generation
-Variable: easy for integration with variable dependencies.
---]]
---local UserFunction = class(Expression)
---local UserFunction = class(Function)
+--[===[ UserFunction based on Variable :
+
 local UserFunction = class(Variable)
 
 --[[
@@ -91,5 +101,120 @@ end
 function UserFunction:defeq()
 	return self:eq(self.def)
 end
+
+function UserFunction:printEqn()
+	local TempFn = class(Function)
+	TempFn.name = self.name
+	TempFn.nameForExporterTable = table(self.nameForExporterTable)
+	local args = self.dependentVars and self.dependentVars:mapi(function(var)
+		return var.wrt
+	end) or table()
+	if self.def then
+		return TempFn(args:unpack()):eq(self.def)
+	end
+	return TempFn(args:unpack())
+end
+
+-- UserFunction based on Variable ]===]
+-- [===[ UserFunction based on Function:
+
+local UserFunction = class(Function)
+
+--[[
+static (weak) table of all user functions
+use this for looking up function definitions when evaluating total derivatives
+--]]
+UserFunction.registeredFunctions = setmetatable({}, {__mode='v'})
+
+--[[
+same arguments as Variable
+
+TODO should variable store 'src' and 'wrt' in case either is TensorRef's?
+
+TODO variable has a single 'set', but function should have 'domain' and 'range'
+and technically both should be inferred... domain from args[i].set, and range deduced from the expression
+though in math the range and the image are separate ... the set of all outputs of the expression may be different than the specified set of outputs.
+
+TODO ... the variables in a function's definition are internal, not external.
+f(x) = x^2, the x in f(x) refers to the x^2, not to any other x's on the worksheet.
+However defining a function as "f = func('f', {x})" would require an externally declared variable ...
+... however however, you would still need an "x" with a locally shared scope of defining "f(x)" and "x^2", 
+ 	so techniaclly it would be "external", however it would just be just "local".
+--]]
+
+function UserFunction:evaluateDerivative(deriv, ...)
+	local x = table.unpack(self):clone()
+	if not self.cached_df then
+		self.cached_df = UserFunction(
+			self.name.."'",
+			self.args,
+			self.def and self.def:diff(x)() or nil, 
+			self.set	-- will set be the same?
+		)
+	end
+	local x = table.unpack(self):clone()
+	return deriv(x, ...) * self.cached_df(x)
+end
+
+function UserFunction:printEqn()
+	if self.def then
+		return self(self.args:unpack()):eq(self.def)
+	else
+		return self(self.args:unpack())
+	end
+end
+
+--[[
+Last, override UserFunction's :new() to produce subclasses:
+remember ext/class.lua, in :init() the obj is 'self', in :new() the class is 'self'
+
+The other option is to make UserFunction() produce objects and for the objects to have their respective __call operators.
+--]]
+function UserFunction:new(name, args, def, set)
+	local f = class(UserFunction)
+	f.name = assert(name)
+	f.args = table(args)	-- optional
+	f.set = set or require 'symmath.set.sets'.real
+
+	for _,arg in ipairs(f.args) do
+		assert(Variable:isa(arg), "args must be a table of Variables")
+	end
+	
+	f.def = def	-- optional
+	if def then assert(Expression:isa(def), "def must be an Expression or nil") end
+	
+	-- TODO warn if we override our definition?
+	self.registeredFunctions[f.name] = f
+
+	return f
+end
+
+function UserFunction:defeq()
+	return self(self.args:unpack()):eq(self.def)
+end
+
+-- with this, evals too much
+-- without this, doesn't eval enough
+-- though with this you have the option to just not assign .def
+-- [[ 
+UserFunction.rules = {
+	Prune = {
+		{apply = function(prune, expr)
+			if expr.def then
+				-- expr holds the user-class instance, with called expressions as children
+				-- expr.args holds the function definition
+				if #expr ~= #expr.args then return end	-- args don't match. error? or SFINAE?
+				local def = expr.def
+				for i,arg in ipairs(expr.args) do
+					def = def:replace(arg, expr[i])
+				end
+				return def
+			end
+		end},
+	},
+}
+--]]
+
+-- UserFunction based on Function ]===]
 
 return UserFunction 

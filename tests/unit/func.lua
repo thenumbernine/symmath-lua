@@ -13,10 +13,20 @@ y = func('y', {x}, x^2)
 -- y = x
 -- y(x) = x
 -- y(x) := x
+print(y(x))
+print(y(x)())
 printbr(y:defeq())
 assert(UserFunction.registeredFunctions.y == y)
 
-f = func('f', {x, y}, x*y)
+-- if UserFunction is not a Variable then this is invalid
+-- because you cannot have Functions as Variables in the arg list
+-- f = func('f', {x, y}, x*y)
+-- print(f:defeq())
+-- assert(UserFunction.registeredFunctions.f == f)
+
+-- instead, if UserFunction returns Functions, this is what you would see
+-- and with this the derivative evaluation is obvious
+f = func('f', {x}, x*y(x))
 print(f:defeq())
 assert(UserFunction.registeredFunctions.f == f)
 
@@ -27,19 +37,20 @@ assert(UserFunction.registeredFunctions.f == f)
 -- substitute chain rule for all terms
 -- df/dx, when simplified, does not go anywhere, because f is dependent on x
 -- for that reason, I can just build the equality f:eq(f.def) and apply :diff() to the whole thing:
-print(f:defeq():diff(x)())
-print(f:defeq():diff(y)())
+print(f:defeq():diff(x):prune())
+print(f:defeq():diff(y):prune())
 
-print(f:diff(x):eq(f.def:diff(x)()))
-print(f:diff(y):eq(f.def:diff(y)()))
-
--- partial derivative evaluation ...
--- notice that var'f':pdiff(var'x') will return a zero, 
--- because the expression we are partially-differentiating against (f) does not contain the derivative variable (x)
--- so I have to construct each side of the equality separately for it to display correctly
-print(f:pdiff(x):eq(f.def:pdiff(x)()))
-print(f:pdiff(y):eq(f.def:pdiff(y)()))
-
+s = var's'
+t = var't'
+x = func('x', {s,t})
+y = func('y', {s,t})
+f = func('f', {x,y})
+print(f:diff(x):prune())	-- ∂f/∂x
+print(f:diff(y):prune())	-- ∂f/∂y
+print(f:diff(s):prune())	-- ∂f/∂x ∂x/∂s + ∂f/∂y ∂y/∂s
+print(f:diff(t):prune())	-- ∂f/∂x ∂x/∂t + ∂f/∂y ∂y/∂t
+-- TODO I need something to represent ∂/∂x "the def of f", rather than ∂/∂x "f", which is zero.
+-- in contrast ∂/∂x "the def of f" would be a placeholder (in absense of f's provided definition)
 
 ]=]), '\n')) do
 	env.exec(line)

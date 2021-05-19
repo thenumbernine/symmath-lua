@@ -37,7 +37,19 @@ Upon prune() (done by simplify(), implicitly ())
 			also TODO make sure comma derivative is calling :pdiff()
 
 
+alright, comma derivative represents the partial derivative
+but chain rule is especially defined in terms of the total derivative
+so what is the chain rule of a partial derivative in a multivariate formula?
+hmm 
+https://math.stackexchange.com/questions/2354875/partial-derivatives-vs-total-derivatives-for-chain-rule
+https://math.stackexchange.com/questions/174270/what-exactly-is-the-difference-between-a-derivative-and-a-total-derivative
+
 what does (Expression expr):evaluateDerivative(Variable x) do?
+
+
+what kind of notation should I use:
+
+d/dx( f(g(x)) ) = df/dg (g(x)) * dg/dx (x)
 
 
 internal structure:
