@@ -129,27 +129,51 @@ local beta = Tensor('^i', -u, 0, 0)
 printbr(var'\\beta''^i':eq(beta'^i'()), '= metric shift')
 
 local gamma = Tensor('_ij', {1,0,0}, {0,1,0}, {0,0,1})
+
 printbr'spatial metric:'
 printbr(var'\\gamma''_ij':eq(gamma'_ij'()))
 printbr(var'\\gamma''^ij':eq(gamma'^ij'()))
+printbr()
 
+local eta = var'\\eta'
+local etadef = Tensor('_IJ', function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
+local e = var'e'
+local edef = Tensor('_a^I',
+	{sqrt(1-u^2), 0, 0, 0},
+	{u/sqrt(1-u^2), 1/sqrt(1-u^2), 0, 0},
+	{0, 0, 1, 0},
+	{0, 0, 0, 1})
+printbr(e'_a^I':eq(edef'_a^I'()))
+printbr()
+
+printbr'4-metric:'
+local gvar = var'g'
+local g_from_e = gvar'_ab':eq(e'_a^I' * e'_b^J' * eta'_IJ')
+printbr(g_from_e)
+printbr()
+g_from_e = g_from_e:replace(e, edef):replace(eta, etadef)()
+printbr(g_from_e)
+
+--[[ manually specify metric
 local g = Tensor'_ab'
 g['_tt'] = (-alpha^2 + beta'^i' * beta'^j' * gamma'_ij')()
 g['_it'] = (beta'^i' / alpha^2)()
 g['_ti'] = (beta'^i' / alpha^2)()
 g['_ij'] = gamma'_ij'()
-g=g()
-printbr'4-metric:'
-printbr(var'g''_ab':eq(g'_ab'()))
+g = g()
+--]]
+-- [[ derive from tetrad
+local g = g_from_e:rhs()
+--]]
 
 local detg = var('g', {t,x,y,z})
 local detg_def = Matrix(table.unpack(g)):determinant()
-printbr(var'g':eq(detg_def))
+printbr(gvar:eq(detg_def))
 
 local gU = Tensor('^ab', table.unpack(
 	(Matrix(table.unpack(g)):inverse())
 ))
-printbr(var'g''^ab':eq(gU'^ab'()))
+printbr(gvar'^ab':eq(gU'^ab'()))
 
 Tensor.metric(g, gU)
 
