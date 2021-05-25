@@ -67,6 +67,89 @@ asserteq( (x*y)/(x*y)^2, 1/(x*y) )
 
 -- factor(): mul add div
 
+-- infinite.  
+-- using https://en.wikipedia.org/wiki/Limit_of_a_function 
+-- TODO should these be valid, or should they always produce 'invalid' 
+-- and only Limit() produce valid operations on infinity?
+
+asserteq(inf, inf)
+assertne(inf, -inf)
+assertne(inf, invalid)
+
+-- q + inf = inf for q != -inf
+asserteq(inf + inf, inf)
+asserteq(inf + 0, inf)
+asserteq(inf + 1, inf)
+asserteq(inf - 1, inf)
+asserteq(inf + x + y, inf)
+
+-- q * inf = inf for q > 0 (incl q == inf)
+-- q * inf = -inf for q < 0 (incl q == -inf)
+asserteq((inf * inf), inf)
+asserteq((inf * -inf), -inf)
+asserteq((inf * -1), -inf)
+asserteq((inf * -1 * -2), inf)
+asserteq((inf * 1 * 2), inf)
+asserteq(inf * x, inf)		-- TODO this should be unknown unless x is defined as a positive or negative real
+asserteq(inf / 2, inf)
+
+-- 0 * inf = invalid
+asserteq(inf * 0, invalid)
+asserteq(inf / 0, invalid)
+
+-- q / inf = 0 for q != inf and q != -inf
+asserteq(-2 / inf, 0)
+asserteq(-1 / inf, 0)
+asserteq(-.5 / inf, 0)
+asserteq(0 / inf, 0)
+asserteq(.5 / inf, 0)
+asserteq(1 / inf, 0)
+asserteq(2 / inf, 0)
+
+-- inf^q = 0 for q < 0
+-- inf^q = inf for q > 0
+asserteq(inf ^ -inf, invalid)
+asserteq(inf ^ -2, 0)
+asserteq(inf ^ -1, 0)
+asserteq(inf ^ -.5, 0)
+asserteq(inf ^ 0, invalid)
+asserteq(inf ^ .5, inf)
+asserteq(inf ^ 1, inf)
+asserteq(inf ^ 2, inf)
+asserteq(inf ^ inf, inf)
+
+-- q^inf = 0 for 0 < q < 1
+-- q^inf = inf for 1 < q
+asserteq((-2) ^ inf, invalid)
+asserteq((-.5) ^ inf, invalid)
+asserteq(0 ^ inf, invalid)
+asserteq(.5 ^ inf, 0)
+asserteq(2 ^ inf, inf)
+
+-- q^-inf = inf for 0 < q < 1
+-- q^-inf = 0 for 1 < q
+asserteq((-2) ^ -inf, invalid)
+asserteq((-.5) ^ -inf, invalid)
+asserteq(0 ^ -inf, invalid)
+asserteq(.5 ^ -inf, inf)
+asserteq(2 ^ -inf, 0)
+
+-- indeterminant:
+asserteq(Constant(0) / 0, invalid)
+asserteq(-inf / inf, invalid)
+asserteq(inf / inf, invalid)
+asserteq(inf / -inf, invalid)
+asserteq(-inf / -inf, invalid)
+asserteq(0 * inf, invalid)
+asserteq(0 * -inf, invalid)
+asserteq(inf + -inf, invalid)
+asserteq(Constant(0) ^ 0, invalid)
+asserteq(inf ^ 0, invalid)
+asserteq((-1) ^ inf, invalid)
+asserteq((-1) ^ -inf, invalid)
+asserteq(1 ^ inf, invalid)
+asserteq(1 ^ -inf, invalid)
+
 -- trigonometry
 asserteq((sin(x)^2+cos(x)^2)(), 1)
 asserteq((y*sin(x)^2+y*cos(x)^2)(), y)

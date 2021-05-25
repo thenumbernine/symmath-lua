@@ -7,7 +7,7 @@ local Expression = class()
 
 -- no circular dependencies, so load as you need these:
 local symmath
-local Array, Constant, Equation, Invalid, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, distributeDivision, div, eval, expand, factor, factorDivision, inf, inverse, map, mod, mul, pow, prune, sub, symmath, tableCommutativeEqual, tidy, transpose, unm, wedge
+local Array, Constant, Equation, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, distributeDivision, div, eval, expand, factor, factorDivision, inverse, map, mod, mul, pow, prune, sub, symmath, tableCommutativeEqual, tidy, transpose, unm, wedge
 local eq, ne, gt, ge, lt, le
 
 Expression.precedence = 1
@@ -226,7 +226,7 @@ function Expression.__sub(a,b)
 	return sub(a,b) 
 end
 
-function Expression.__mul(a,b) 
+function Expression.__mul(a,b)
 	Constant = Constant or require 'symmath.Constant'
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
@@ -244,7 +244,8 @@ function Expression.__mul(a,b)
 		return Constant(0)
 	end
 --]]
--- [[ test for array or equation, otherise simplify to zero
+--[[ test for array or equation, otherise simplify to zero
+-- don't do this for inf ... instead 0 * inf = indeterminate form
 	Array = Array or require 'symmath.Array'
 	if Constant.isValue(a, 0) and not Array:isa(b) and not Equation:isa(b) then return a end
 	if Constant.isValue(b, 0) and not Array:isa(a) and not Equation:isa(a) then return b end
@@ -267,8 +268,8 @@ function Expression.__div(a,b)
 	
 	if Constant:isa(b) then
 		if b.value == 0 then 
-			Invalid = Invalid or require 'symmath'.Invalid
-			return Invalid() 
+			symmath = symmath or require 'symmath'
+			return symmath.invalid
 		end
 		if b.value == 1 then return a end
 	end
@@ -289,10 +290,13 @@ function Expression.__pow(a,b)
 	if Constant:isa(a) and a.value == 0 then 
 		if Constant:isa(b) then
 			if b.value > 0 then return Constant(0) end
-			if b.value == 0 then return Constant(1) end
+			if b.value == 0 then 
+				symmath = symmath or require 'symmath'
+				return symmath.invalid 
+			end
 			if b.value < 0 then 
-				inf = inf or require 'symmath'.inf 
-				return inf
+				symmath = symmath or require 'symmath'
+				return symmath.inf
 			end
 		end
 	end

@@ -203,6 +203,47 @@ pow.rules = {
 			local Constant = symmath.Constant
 			local sets = symmath.set
 
+			if expr[1] == symmath.inf then
+				-- inf ^ -inf = invalid
+				if expr[2] == Constant(-1) * symmath.inf then
+					return symmath.invalid
+				end
+				-- inf^-1 = 1/inf = 0
+				if symmath.set.negativeReal:contains(expr[2]) then
+					return 0
+				end
+				-- inf^0 = invalid 
+				if Constant.isValue(expr[2], 0) then
+					return symmath.invalid
+				end
+				-- inf^+1 = inf
+				return symmath.inf
+			end
+
+			if expr[2] == symmath.inf then
+				-- q^inf = 0 for 1<q<0 = 0
+				if symmath.set.RealSubset(0, 1, false, false):contains(expr[1]) then
+					return Constant(0)
+				end
+				-- q^inf = inf for 1<q
+				if symmath.set.RealSubset(1, math.huge, false, false):contains(expr[1]) then
+					return symmath.inf
+				end
+				return symmath.invalid
+			end
+
+			if expr[2] == Constant(-1) * symmath.inf then
+				-- q^-inf = inf for 1<q<0 = 0
+				if symmath.set.RealSubset(0, 1, false, false):contains(expr[1]) then
+					return symmath.inf
+				end
+				-- q^-inf = 0 for 1<q
+				if symmath.set.RealSubset(1, math.huge, false, false):contains(expr[1]) then
+					return Constant(0)
+				end
+				return symmath.invalid		
+			end
+
 --[[ another sqrt problem
 -- does a stack overflow, proly because it turns into x^(1 - 1/2) => x^(-1/2) => back here
 			-- x^(-1/2) = x^(1/2) / x
@@ -360,6 +401,11 @@ pow.rules = {
 					and (expr[2][1].value > 0) == (expr[2][2].value > 0)
 				) then
 					return Constant(0)
+				end
+			
+				-- 0^0 => invalid
+				if Constant.isValue(expr[2], 0) then
+					return symmath.invalid
 				end
 			end
 

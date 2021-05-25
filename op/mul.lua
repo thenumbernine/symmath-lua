@@ -746,6 +746,46 @@ mul.rules = {
 			end
 			--]]
 
+
+
+			-- anything * invalid is invalid
+			for i=1,#expr do
+				if expr[i] == symmath.invalid then 
+					return symmath.invalid 
+				end
+			end
+
+			-- inf * anything = inf
+			-- inf * -anything = -inf
+			local hasinf
+			local haszero
+			local sign = 1
+			for i=1,#expr do
+				if expr[i] == symmath.inf then
+					hasinf = true
+				end
+				if Constant.isValue(expr[i], 0) then
+					haszero = true
+				end
+				-- TODO recursively call instead of for-loop
+				-- and TODO if expr[i] is not in positive or negative real then don't simplify it, because it is arbitrary.  
+				-- x * inf cannot be simplified to +inf or -inf.
+				if symmath.set.negativeReal:contains(expr[i]) then
+					sign = -sign
+				end
+			end
+			if hasinf then
+				if haszero then
+					return symmath.invalid
+				end
+				if sign == -1 then
+					-- use the pruned form, but don't call prune, or it gets an infinite loop
+					return Constant(-1) * symmath.inf
+				end
+				return symmath.inf
+			end
+
+
 			-- push all fractions to the left
 			for i=#expr,2,-1 do
 				if div:isa(expr[i])

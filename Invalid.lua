@@ -1,3 +1,6 @@
+--[[
+when is this used?
+--]]
 local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
 

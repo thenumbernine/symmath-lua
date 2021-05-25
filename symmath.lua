@@ -167,7 +167,11 @@ symmath.tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 symmath.Expression = require 'symmath.Expression'
 symmath.Constant = require 'symmath.Constant'
 symmath.complex = require 'symmath.complex'
+
+-- TODO singleton?  constant?
 symmath.Invalid = require 'symmath.Invalid'
+symmath.invalid = symmath.Invalid()
+
 symmath.Function = require 'symmath.Function'
 symmath.Wildcard = require 'symmath.Wildcard'
 
@@ -212,6 +216,9 @@ symmath.op = {
 }
 -- shorthand
 symmath.frac = symmath.op.div
+
+symmath.Limit = require 'symmath.Limit'
+symmath.lim = symmath.Limit	-- shorthand
 
 symmath.Derivative = require 'symmath.Derivative'
 symmath.diff = symmath.Derivative	-- shorthand ... TODO shorthand for Expression.diff?

@@ -52,7 +52,7 @@ SingleLine.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
-		return 'Invalid'
+		return 'invalid'
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local name = self:fixFunctionName(expr:nameForExporter(self))
@@ -84,6 +84,11 @@ SingleLine.lookupTable = {
 	end,
 	[require 'symmath.Wildcard'] = function(self, expr)
 		return '$'..expr.index
+	end,
+	[require 'symmath.Limit'] = function(self, expr)
+		local f, x, a, side = table.unpack(expr)
+		side = side or ''
+		return 'lim_'..self:apply(x)..'→'..self:apply(a)..side..' '..self:apply(f)
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
 		local symmath = require 'symmath'

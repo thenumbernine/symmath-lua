@@ -660,6 +660,12 @@ Change the characters wrapping matrices in LaTeX.
 `LaTeX.showExpAsFunction = true`
 By default symmath represents exp(x) as e^x, so when exporting expressions it will produce e^x instead of exp(x).  This flag lets you choose which output method to use.
 
+LaTeX.parOpenSymbol = '\\left('
+LaTeX.parCloseSymbol = '\\right)'
+Change the opening and closing symbols for parenthesis.
+
+`LaTeX.powWrapExpInParenthesis = false`
+Whether to wrap an exponent's exponent in parenthesis if the precedence of operators says so.
 
 Notice that subclasses are copied upon construction rather than referenced by dynamic lookup as in other languages.  This means that, while these options exist in subclasses, changing the parent class static members will not change the subclass static members.    You must change subclass static members.  For example, export.MathJax is a subclass of export.LaTeX.  If you are using the MathJax exporter and you want to change the openSymbol, closeSymbol, etc then you must modify MathJax.openSymbol and not LaTeX.openSymbol.
 
@@ -805,6 +811,8 @@ How to get around this:
 - change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
 
 - finish Integer and Rational sets, maybe better support for Complex set.
+
+- better polynomial factoring.
 
 ## SymMath Interpreter
 
@@ -1066,15 +1074,23 @@ Output CDN URLs:
 
 [tests/output/tensor coordinate invariance](https://thenumbernine.github.io/symmath/tests/output/tensor%20coordinate%20invariance.html)
 
-[tests/output/tmp](https://thenumbernine.github.io/symmath/tests/output/tmp.html)
-
 [tests/output/toy-1+1 spacetime](https://thenumbernine.github.io/symmath/tests/output/toy%2d1%2b1%20spacetime.html)
+
+[tests/output/unit/compile](https://thenumbernine.github.io/symmath/tests/output/unit/compile.html)
+
+[tests/output/unit/determinant_performance](https://thenumbernine.github.io/symmath/tests/output/unit/determinant_performance.html)
+
+[tests/output/unit/export](https://thenumbernine.github.io/symmath/tests/output/unit/export.html)
+
+[tests/output/unit/func](https://thenumbernine.github.io/symmath/tests/output/unit/func.html)
 
 [tests/output/unit/getIndexesUsed](https://thenumbernine.github.io/symmath/tests/output/unit/getIndexesUsed.html)
 
 [tests/output/unit/index_construction](https://thenumbernine.github.io/symmath/tests/output/unit/index_construction.html)
 
 [tests/output/unit/integral](https://thenumbernine.github.io/symmath/tests/output/unit/integral.html)
+
+[tests/output/unit/limit](https://thenumbernine.github.io/symmath/tests/output/unit/limit.html)
 
 [tests/output/unit/linear solver](https://thenumbernine.github.io/symmath/tests/output/unit/linear%20solver.html)
 
@@ -1091,6 +1107,8 @@ Output CDN URLs:
 [tests/output/unit/sets](https://thenumbernine.github.io/symmath/tests/output/unit/sets.html)
 
 [tests/output/unit/simplifyMetrics](https://thenumbernine.github.io/symmath/tests/output/unit/simplifyMetrics.html)
+
+[tests/output/unit/solve](https://thenumbernine.github.io/symmath/tests/output/unit/solve.html)
 
 [tests/output/unit/sub-tensor assignment](https://thenumbernine.github.io/symmath/tests/output/unit/sub%2dtensor%20assignment.html)
 

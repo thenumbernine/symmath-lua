@@ -1075,6 +1075,38 @@ print('prodList', prodLists:toExpr(), '<br>')
 --]=]
 		end},
 
+		-- TODO is this technically valid? inf + c = inf?  
+		-- or is it only valid in the context of a limit? inf + c = invalid, lim(x+c, x, inf) = inf
+		-- also TODO distinct reals vs extendedReals
+		{handleInfAndInvalid = function(prune, expr, ...)
+			symmath = symmath or require 'symmath'
+				-- anything + invalid is invalid
+			for i=1,#expr do
+				if expr[i] == symmath.invalid then 
+					return symmath.invalid 
+				end
+			end
+			-- inf + -inf is invalid
+			for i=1,#expr do
+				if expr[i] == symmath.inf then
+					for j=1,#expr do
+						if j ~= i then
+							if expr[j] == symmath.Constant(-1) * symmath.inf then
+								return symmath.invalid
+							end
+						end
+					end
+				end
+			end
+			-- inf + anything else is inf
+			for i=1,#expr do
+				if expr[i] == symmath.inf then 
+					return symmath.inf 
+				end
+			end
+	
+		end},
+
 		{combineConstants = function(prune, expr, ...)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant

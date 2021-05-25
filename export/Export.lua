@@ -35,7 +35,8 @@ function Export:apply(expr, ...)
 				.." for expr\n"
 -- can't do this if our class is MultiLine ... it'll be infinite recursion
 --				..require 'symmath.export.MultiLine'(expr)..'\n'
-				..require 'symmath.export.Verbose'(expr)..'\n'
+-- still causes stack overflow
+--				..require 'symmath.export.Verbose'(expr)..'\n'
 				..tolua(expr)
 			) 
 	end

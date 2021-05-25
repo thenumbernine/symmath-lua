@@ -131,7 +131,64 @@ function MultiLine:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	return res
 end
 
+function MultiLine:matrixBody(parts)
+	local matheight = #parts
+	local matwidth = #parts[1]
+	parts = table(parts)
+	for i=1,#parts do
+		parts[i] = table(parts[i])
+	end
 
+	local allparts = table():append(parts:unpack())
+
+	local partwidths = range(matheight):mapi(function(i)
+		return range(matwidth):mapi(function(j)
+			return (table.mapi(parts[i][j], function(l) return strlen(l) end):sup())
+		end)
+	end)
+	
+	local widths = range(matwidth):mapi(function(j)
+		return (range(matheight):mapi(function(i)
+			return partwidths[i][j]
+		end):sup() or 0)
+	end)
+
+	local heights = range(matheight):mapi(function(i)
+		return (range(matwidth):mapi(function(j)
+			return #parts[i][j]
+		end):sup() or 0)
+	end)
+
+	local res = table()
+
+	for i,partrow in ipairs(parts) do
+		local row = range(heights[i]):mapi(function() return '' end)
+		local sep = ''
+		for j,part in ipairs(partrow) do
+			local cell = table()
+			local padding = widths[j] - partwidths[i][j]
+			local leftWidth = padding - math.floor(padding/2)
+			local rightWidth = padding - leftWidth
+			local left = (' '):rep(leftWidth)
+			local right = (' '):rep(rightWidth)
+			for k=1,#part do
+				part[k] = sep .. left .. part[k] .. right
+			end
+			row = self:combine(row, part)
+			sep = '  '
+		end
+		if i > 1 then
+			res:insert((' '):rep(strlen(res[1])))
+		end
+		res = res:append(row)
+	end
+
+	res:insert((' '):rep(strlen(res[1])))
+	res:insert(1, (' '):rep(strlen(res[1])))
+
+	return res
+
+end
 
 MultiLine.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
@@ -196,6 +253,35 @@ MultiLine.lookupTable = {
 	end,
 	[require 'symmath.Wildcard'] = function(self, expr)
 		return table{SingleLine(expr)}
+	end,
+	[require 'symmath.Limit'] = function(self, expr)
+		local f, x, a, side = table.unpack(expr)
+		local astr = self:apply(a)
+		if side then
+			astr = self:combine(astr, {side})
+		end
+		return self:combine(
+			self:matrixBody{
+				-- 1,1 block
+				{
+					{'lim'},
+				},
+				-- 1,2 block
+				{
+					self:combine(
+						self:apply(x),
+						self:combine(
+							{'→'},
+							astr
+						)
+					)
+				}
+			},
+			self:combine(
+				{' '},
+				self:wrapStrOfChildWithParenthesis(expr, 1)
+			)
+		)
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
 		local d = expr:nameForExporter(self)
@@ -288,66 +374,15 @@ MultiLine.lookupTable = {
 		-- even if it doesn't have a Matrix metatable, if it's rank-2 then display it as a matrix ...
 		-- TODO just put Matrix's entry here and get rid of its empty, let its subclass fall through to here instead
 		if rank % 2 == 0 then
-
-			local matheight = #expr
-			local matwidth = #expr[1]
-
-			local parts = table()
-			for i=1,matheight do
-				parts[i] = table()
-				for j=1,matwidth do
-					parts[i][j] = self:apply(expr[i][j])
+			local strs = {}
+			for i,row in ipairs(expr) do
+				strs[i] = {}
+				for j,cell in ipairs(row) do
+					strs[i][j] = self:apply(expr[i][j])
 				end
 			end
-
-			local allparts = table():append(parts:unpack())
-
-			local partwidths = range(matheight):mapi(function(i)
-				return range(matwidth):mapi(function(j)
-					return (table.mapi(parts[i][j], function(l) return strlen(l) end):sup())
-				end)
-			end)
-			
-			local widths = range(matwidth):mapi(function(j)
-				return (range(matheight):mapi(function(i)
-					return partwidths[i][j]
-				end):sup() or 0)
-			end)
-		
-			local heights = range(matheight):mapi(function(i)
-				return (range(matwidth):mapi(function(j)
-					return #parts[i][j]
-				end):sup() or 0)
-			end)
-
-			local res = table()
-
-			for i,partrow in ipairs(parts) do
-				local row = range(heights[i]):mapi(function() return '' end)
-				local sep = ''
-				for j,part in ipairs(partrow) do
-					local cell = table()
-					local padding = widths[j] - partwidths[i][j]
-					local leftWidth = padding - math.floor(padding/2)
-					local rightWidth = padding - leftWidth
-					local left = (' '):rep(leftWidth)
-					local right = (' '):rep(rightWidth)
-					for k=1,#part do
-						part[k] = sep .. left .. part[k] .. right
-					end
-					row = self:combine(row, part)
-					sep = '  '
-				end
-				if i > 1 then
-					res:insert((' '):rep(strlen(res[1])))
-				end
-				res = res:append(row)
-			end
-	
-			res:insert((' '):rep(strlen(res[1])))
-			res:insert(1, (' '):rep(strlen(res[1])))
+			local res = self:matrixBody(strs)
 			wrap(res, nil, box)
-
 			return res
 		else
 			local parts = table()

@@ -373,6 +373,26 @@ LaTeX.lookupTable = {
 		end
 		return s
 	end,
+	[require 'symmath.Limit'] = function(self, expr)
+		local f, x, a, side = table.unpack(expr)
+		local astr = self:apply(a)
+		if side then
+			astr = table{astr, '^', side, force=true}
+		end
+		return table{
+			table{
+				'\\underset',
+				table{
+					self:apply(x),
+					'\\rightarrow',
+					astr,
+					force=true,
+				},
+				table{'\\lim', force=true},
+			},
+			self:apply(f),
+		}
+	end,
 	[require 'symmath.Array'] = function(self, expr)
 		-- non-Matrix Arrays that are rank-2 can be displayed as Matrixes
 		if expr:rank() % 2 == 0 then

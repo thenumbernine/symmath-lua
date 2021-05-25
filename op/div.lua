@@ -128,11 +128,32 @@ div.rules = {
 				end
 			end
 
-			-- x / 0 => Invalid
-			if Constant.isValue(expr[2], 0) then
-				return symmath.Invalid()
+			-- p/inf is 0 for p != inf
+			if expr[2] == symmath.inf 
+			or expr[2] == Constant(-1) * symmath.inf 
+			then
+				if expr[1] ~= symmath.inf 
+				and expr[1] ~= Constant(-1) * symmath.inf
+				then
+					return 0
+				end
+				return symmath.invalid
 			end
-			
+
+			-- x / 0 => invalid
+			if Constant.isValue(expr[2], 0) then
+				return symmath.invalid
+			end
+
+			if expr[1] == symmath.inf then
+				-- inf / negative = -inf
+				if symmath.set.negativeReal:contains(expr[2]) then
+					return -inf
+				end
+				-- inf / 0 = invalid
+				return symmath.inf
+			end
+
 			if symmath.simplifyConstantPowers  then
 				-- Constant / Constant => Constant
 				if Constant:isa(expr[1]) and Constant:isa(expr[2]) then

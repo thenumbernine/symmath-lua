@@ -277,6 +277,509 @@
 <code></code>
 </td><td>
 <tr><td>
+<b>infinite.</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>using https://en.wikipedia.org/wiki/Limit_of_a_function</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>TODO should these be valid, or should they always produce 'invalid'</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>and only Limit() produce valid operations on infinity?</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertne(inf, -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertne(inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>q + inf = inf for q != -inf</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf + inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf + 0, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf + 1, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf - 1, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf + x + y, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>q * inf = inf for q > 0 (incl q == inf)</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>q * inf = -inf for q < 0 (incl q == -inf)</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((inf * inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((inf * -inf), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((inf * -1), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((inf * -1 * -2), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((inf * 1 * 2), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>TODO this should be unknown unless x is defined as a positive or negative real</b><br>
+<code>asserteq(inf * x, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf / 2, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>0 * inf = invalid</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf * 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf / 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>q / inf = 0 for q != inf and q != -inf</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(-2 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(-1 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(-.5 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(0 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(.5 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(1 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(2 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>inf^q = 0 for q < 0</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>inf^q = inf for q > 0</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ -2, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ -1, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ -.5, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ .5, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ 1, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ 2, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>q^inf = 0 for 0 < q < 1</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>q^inf = inf for 1 < q</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((-2) ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((-.5) ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(0 ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(.5 ^ inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(2 ^ inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>q^-inf = inf for 0 < q < 1</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>q^-inf = 0 for 1 < q</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq((-2) ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((-.5) ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(0 ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(.5 ^ -inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(2 ^ -inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>indeterminant:</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(Constant(0) / 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(-inf / inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf / inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf / -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(-inf / -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(0 * inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(0 * -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf + -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(Constant(0) ^ 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(inf ^ 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((-1) ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq((-1) ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(1 ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(1 ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
 <b>trigonometry</b><br>
 <code></code>
 </td><td>
@@ -832,7 +1335,7 @@ ${\sin\left(  x\right)}^{2}$
 <code>asserteq( -1 / ( sqrt(sqrt(5) * (sqrt(5) - 1)) / sqrt(2) ), sqrt((5  + sqrt(5)) / 10))</code>
 </td><td>
 expected $\frac{-1}{\frac{\sqrt{{{\sqrt{5}}} {{\left({{\sqrt{5}} - {1}}\right)}}}}{\sqrt{2}}}$ to equal $\sqrt{\frac{{5} + {\sqrt{5}}}{10}}$<br>
-instead found $\frac{-{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$ vs $\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$<br>
+instead found $-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$ vs $\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$<br>
 lhs stack<br>
 init	$\frac{-1}{\frac{\sqrt{{{\sqrt{5}}} {{\left({{\sqrt{5}} - {1}}\right)}}}}{\sqrt{2}}}$	<br>
 prune	$\frac{{{{\left({{{2}} {{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}{{{4}} \cdot {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
@@ -848,7 +1351,7 @@ expand	$\frac{{{{-1}} {{i}} {{{\left({{{{10}} \cdot {{1}}} + {{{10}} {{{{-1}} \c
 prune	$\frac{{{{-1}} {{i}} {{{\left({{10} + {{{-10}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{2} + {{{-2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
 factor	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
 prune	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-tidy	$\frac{-{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
+tidy	$-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$	<br>
 rhs stack<br>
 init	$\sqrt{\frac{{5} + {\sqrt{5}}}{10}}$	<br>
 prune	${\left({\frac{{5} + {{5}^{\frac{1}{2}}}}{10}}\right)}^{\frac{1}{2}}$	<br>
@@ -873,17 +1376,17 @@ tidy	$\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
-	test.lua:169: in function 'cb'<br>
+	tests\unit\test.lua:252: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	test.lua:6: in main chunk<br>
-	[C]: at 0x7ff6d3fb4950
+	tests\unit\test.lua:6: in main chunk<br>
+	[C]: at 0x7ff667544950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq( -(sqrt( 10 * (sqrt(5) - 1) ) + sqrt(2 * (sqrt(5) - 1))) / (4 * sqrt(sqrt(5))), sqrt((5  + sqrt(5)) / 10))</code>
 </td><td>
 expected $\frac{-{\left({{\sqrt{{{10}} {{\left({{\sqrt{5}} - {1}}\right)}}}} + {\sqrt{{{2}} {{\left({{\sqrt{5}} - {1}}\right)}}}}}\right)}}{{{4}} {{\sqrt{\sqrt{5}}}}}$ to equal $\sqrt{\frac{{5} + {\sqrt{5}}}{10}}$<br>
-instead found $\frac{-{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$ vs $\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$<br>
+instead found $-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$ vs $\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$<br>
 lhs stack<br>
 init	$\frac{-{\left({{\sqrt{{{10}} {{\left({{\sqrt{5}} - {1}}\right)}}}} + {\sqrt{{{2}} {{\left({{\sqrt{5}} - {1}}\right)}}}}}\right)}}{{{4}} {{\sqrt{\sqrt{5}}}}}$	<br>
 prune	$\frac{{{-1}} {{\left({{{\left({{{10}} {{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
@@ -899,7 +1402,7 @@ expand	$\frac{{{{-1}} {{i}} {{{\left({{{{10}} \cdot {{1}}} + {{{10}} {{{{-1}} \c
 prune	$\frac{{{{-1}} {{i}} {{{\left({{10} + {{{-10}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{2} + {{{-2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
 factor	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
 prune	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-tidy	$\frac{-{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
+tidy	$-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$	<br>
 rhs stack<br>
 init	$\sqrt{\frac{{5} + {\sqrt{5}}}{10}}$	<br>
 prune	${\left({\frac{{5} + {{5}^{\frac{1}{2}}}}{10}}\right)}^{\frac{1}{2}}$	<br>
@@ -924,8 +1427,8 @@ tidy	$\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
-	test.lua:169: in function 'cb'<br>
+	tests\unit\test.lua:252: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	test.lua:6: in main chunk<br>
-	[C]: at 0x7ff6d3fb4950
+	tests\unit\test.lua:6: in main chunk<br>
+	[C]: at 0x7ff667544950
 </td></tr>

@@ -1,0 +1,279 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>limit</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x, x, a), a)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x, x, a, '+'), a)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x, x, a, '-'), a)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>constants</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(0, x, a), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(1, x, a), 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>ops</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x + 2, x, a), a + 2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x + x, x, a), 2 * a)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x + a, x, a), 2 * a)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(a + a, x, a), 2 * a)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x * 2, x, a), 2 * a)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x / 2, x, a), a / 2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>involving infinity</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x, x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x, x, -inf), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x, x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(1/x, x, inf), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(1/x, x, -inf), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(1/x, x, 0), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(1/x, x, 0, '+'), inf)</code>
+</td><td>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+	[string "asserteq(lim(1/x, x, 0, '+'), inf)"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	tests\unit\limit.lua:55: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	tests\unit\limit.lua:6: in main chunk<br>
+	[C]: at 0x7ff7a9074950
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(1/x, x, 0, '-'), -inf)</code>
+</td><td>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+	[string "asserteq(lim(1/x, x, 0, '-'), -inf)"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	tests\unit\limit.lua:55: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	tests\unit\limit.lua:6: in main chunk<br>
+	[C]: at 0x7ff7a9074950
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(1/x^2, x, 0, '+'), inf)</code>
+</td><td>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+	[string "asserteq(lim(1/x^2, x, 0, '+'), inf)"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	tests\unit\limit.lua:55: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	tests\unit\limit.lua:6: in main chunk<br>
+	[C]: at 0x7ff7a9074950
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(1/x^2, x, 0, '-'), inf)</code>
+</td><td>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+	[string "asserteq(lim(1/x^2, x, 0, '-'), inf)"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	tests\unit\limit.lua:55: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	tests\unit\limit.lua:6: in main chunk<br>
+	[C]: at 0x7ff7a9074950
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>functions</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>functions</b><br>
+<code>asserteq(lim(x * sin(x), x, a), a * sin(a))</code>
+</td><td>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
+	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+	[string "asserteq(lim(x * sin(x), x, a), a * sin(a))"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	tests\unit\limit.lua:55: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	tests\unit\limit.lua:6: in main chunk<br>
+	[C]: at 0x7ff7a9074950
+</td></tr>
