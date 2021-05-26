@@ -65,6 +65,10 @@ function TensorIndex:__tostring()
 		s = self.derivative .. s
 	end
 	if self.lower then s = '_' .. s else s = '^' .. s end
+	
+	-- TODO how about making symbol a Variable?
+	-- and then specifying subsets / spans?  i in x,y,z; mu in t,x,y,z, etc.
+	-- that would easily merge with _,t differentiation, with tostring(), and with other things.
 	if self.symbol then
 		local name = self.symbol
 		if type(name) == 'string' then

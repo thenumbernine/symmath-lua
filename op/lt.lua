@@ -4,6 +4,9 @@ local Equation = require 'symmath.op.Equation'
 local lt = class(Equation)
 
 lt.name = '<'
+lt.nameForExporterTable = {}
+lt.nameForExporterTable.LaTeX = '\\lt'
+lt.nameForExporterTable.SymMath = 'lt'
 
 function lt:switch()
 	local a,b = table.unpack(self)

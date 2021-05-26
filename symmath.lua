@@ -218,7 +218,7 @@ symmath.op = {
 symmath.frac = symmath.op.div
 
 symmath.Limit = require 'symmath.Limit'
-symmath.lim = symmath.Limit	-- shorthand
+symmath.lim = symmath.Limit	-- shorthand ... TODO shorthand for Expression.lim
 
 symmath.Derivative = require 'symmath.Derivative'
 symmath.diff = symmath.Derivative	-- shorthand ... TODO shorthand for Expression.diff?

@@ -3,7 +3,11 @@ local Equation = require 'symmath.op.Equation'
 
 local le = class(Equation)
 
-le.name = '<='
+le.name = '≤'
+le.nameForExporterTable = {}
+le.nameForExporterTable.LaTeX = '\\le'
+le.nameForExporterTable.Language = '<='
+le.nameForExporterTable.SymMath = 'le'
 
 function le:switch()
 	local a,b = table.unpack(self)

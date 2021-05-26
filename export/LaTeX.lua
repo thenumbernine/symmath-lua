@@ -150,7 +150,7 @@ LaTeX.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
-		return table{'?'}
+		return table{expr:nameForExporter(self)}
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr:nameForExporter(self)
@@ -202,7 +202,7 @@ LaTeX.lookupTable = {
 			--and Variable:isa(expr[i])
 			then
 				res:insert(i, '\\cdot')
-			-- insert \cdot between neighboring numbers
+			-- insert \cdot between neighboring numbers, or else the digits look combined
 			elseif Constant:isa(expr[i-1]) then
 				if Constant:isa(expr[i])
 				or div:isa(expr[i])
@@ -376,8 +376,8 @@ LaTeX.lookupTable = {
 	[require 'symmath.Limit'] = function(self, expr)
 		local f, x, a, side = table.unpack(expr)
 		local astr = self:apply(a)
-		if side then
-			astr = table{astr, '^', side, force=true}
+		if side.name and side.name ~= '' then
+			astr = table{astr, '{}^', side.name, force=true}
 		end
 		return table{
 			table{
@@ -543,7 +543,7 @@ LaTeX.lookupTable = {
 -- but not quite call, because MathJax overloads that
 function LaTeX:applyLaTeX(...)
 	local result = LaTeX.super.__call(self, ...)
-	
+
 	-- now combine the symbols conscious of LaTeX grammar ... 
 
 	local function flatten(result)

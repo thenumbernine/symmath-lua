@@ -1,4 +1,5 @@
 -- multi-line strings
+-- TODO subclass SingleLine, rewrite the apply() to handle string results (implicitly wrap in {}, and viola. win.)
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
@@ -257,8 +258,8 @@ MultiLine.lookupTable = {
 	[require 'symmath.Limit'] = function(self, expr)
 		local f, x, a, side = table.unpack(expr)
 		local astr = self:apply(a)
-		if side then
-			astr = self:combine(astr, {side})
+		if side.name and side.name ~= '' then
+			astr = self:combine(astr, {side.name})
 		end
 		return self:combine(
 			self:matrixBody{

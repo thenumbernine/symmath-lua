@@ -3,7 +3,12 @@ local Equation = require 'symmath.op.Equation'
 
 local ne = class(Equation)
 
-ne.name = '!='	-- sorry Lua ...
+ne.name = '≠'
+ne.nameForExporterTable = {}
+ne.nameForExporterTable.LaTeX = '\\ne'
+ne.nameForExporterTable.Language = '!='
+ne.nameForExporterTable.Lua = '~='
+ne.nameForExporterTable.SymMath = 'ne'
 
 function ne:switch()
 	local a,b = table.unpack(self)

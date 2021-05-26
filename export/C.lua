@@ -33,7 +33,7 @@ C.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
-		return 'NAN'
+		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local predefs = table()
@@ -99,7 +99,7 @@ C.lookupTable = {
 			local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, i)
 			predefs = table(predefs, sx2)
 			return sx1
-		end):concat(' '..expr:nameForExporter(self)..' '), predefs
+		end):concat(expr:getSepStr(self)), predefs
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		return expr:nameForExporter(self)
@@ -120,6 +120,23 @@ C.lookupTable = {
 			return sx1
 		end):concat', '..'}', predefs
 	end,
+
+-- [[ TODO put this block in Language, and have subclasses copy over lookupTable
+-- and then inline the Language:varNameForTensorRef function
+	
+	-- TODO re-encode to work with language valid variable names special chars 
+	-- but looking at TensorIndex's own tostring(), looks like that could be merged with Variable's exporter too ...
+	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+		return (expr:__tostring()
+			:gsub('_', '_D')
+			:gsub('%^', '_U'))
+	end,
+
+	-- TODO inherit lookupTable entry from export/Language.lua instead of just inheriting its function call
+	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		return self:varNameForTensorRef(expr)
+	end,
+--]]
 }
 
 C.generateParams = {

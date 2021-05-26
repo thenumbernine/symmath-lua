@@ -5,9 +5,10 @@ local Binary = require 'symmath.op.Binary'
 local symmath
 
 local mul = class(Binary)
-mul.implicitName = true
 mul.precedence = 3
 mul.name = '*'
+mul.nameForExporterTable = {}
+mul.nameForExporterTable.LaTeX = ''	-- implicit mul, no symbol, but export/LaTeX.lua's symmath.op.mul exporter already has custom code, so you don't need this...
 
 --[[
 -- auto flatten any muls

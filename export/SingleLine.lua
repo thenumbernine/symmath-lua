@@ -52,7 +52,7 @@ SingleLine.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
-		return 'invalid'
+		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local name = self:fixFunctionName(expr:nameForExporter(self))
@@ -87,7 +87,7 @@ SingleLine.lookupTable = {
 	end,
 	[require 'symmath.Limit'] = function(self, expr)
 		local f, x, a, side = table.unpack(expr)
-		side = side or ''
+		side = side.name or ''
 		return 'lim_'..self:apply(x)..'→'..self:apply(a)..side..' '..self:apply(f)
 	end,
 	[require 'symmath.Derivative'] = function(self, expr) 
@@ -148,7 +148,9 @@ SingleLine.lookupTable = {
 		return expr:__tostring()
 	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
-		return table.mapi(expr, tostring):concat()
+		return table.mapi(expr, function(x)
+			return self:apply(x)
+		end):concat()
 	end,
 }
 

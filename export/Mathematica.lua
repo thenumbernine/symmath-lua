@@ -11,7 +11,7 @@ Mathematica.lookupTable = {
 		return tostring(expr.value)
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
-		return '(0/0)'
+		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		--[[
@@ -34,6 +34,9 @@ Mathematica.lookupTable = {
 			funcName = expr:nameForExporter(self)
 		else
 			funcName = expr:nameForExporter(self)
+			-- TODO this is legacy stuff copied from export.Lua that was later half-replaced by the export.Language
+			-- (though there is still a legitimate need for custom function exporting)
+			-- so maybe get rid of it
 			predefs['local '..funcName..' = '..expr.code] = true
 		end
 		return funcName .. '[' .. s .. ']', predefs
@@ -50,7 +53,7 @@ Mathematica.lookupTable = {
 			s:insert(sx1)
 			predefs = table(predefs, sx2)
 		end
-		s = s:concat(' '..expr:nameForExporter(self)..' ')
+		s = s:concat(expr:getSepStr(self))
 		return '('..s..')', predefs
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
@@ -87,6 +90,23 @@ Mathematica.lookupTable = {
 		s = s:concat', '
 		return '{'..s..'}', predefs
 	end,
+
+-- [[ TODO put this block in Language, and have subclasses copy over lookupTable
+-- and then inline the Language:varNameForTensorRef function
+	
+	-- TODO re-encode to work with language valid variable names special chars 
+	-- but looking at TensorIndex's own tostring(), looks like that could be merged with Variable's exporter too ...
+	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+		return (expr:__tostring()
+			:gsub('_', '_D')
+			:gsub('%^', '_U'))
+	end,
+
+	-- TODO inherit lookupTable entry from export/Language.lua instead of just inheriting its function call
+	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		return self:varNameForTensorRef(expr)
+	end,
+--]]
 }
 
 -- TODO get 'toFuncCode' working by providing these correctly

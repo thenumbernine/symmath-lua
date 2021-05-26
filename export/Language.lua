@@ -9,6 +9,8 @@ local Export = require 'symmath.export.Export'
 
 local Language = class(Export)
 
+Language.name = 'Language'
+
 --[[
 args:
 	input = these are input parameters.  honestly they aren't used in 'toCode' anymore, only 'toFuncCode'.
@@ -477,6 +479,13 @@ function Language:toFuncCode(args)
 	}:append{
 		genParams.funcFooter or nil,
 	}:concat'\n'
+end
+
+-- helper for subclasses.  TODO make this a rule here, and have subclasses copy rules from parent class.
+function Language:varNameForTensorRef(expr)
+	return table.mapi(expr, function(x)
+		return self:apply(x)
+	end):concat()
 end
 
 return Language

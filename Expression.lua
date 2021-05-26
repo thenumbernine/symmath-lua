@@ -363,6 +363,11 @@ Expression.compile = function(...)
 	return symmath.compile(...) 
 end
 
+function Expression:lim(...)
+	symmath = symmath or require 'symmath'
+	return symmath.Limit(self, ...)
+end
+
 function Expression:diff(...) 
 --[=[
 	local Constant = require 'symmath.Constant'
@@ -396,10 +401,12 @@ function Expression:pdiff(...)
 	symmath = symmath or require 'symmath'
 	return symmath.PartialDerivative(self, ...) 
 end
+
 Expression.integrate = function(...) 
 	symmath = symmath or require 'symmath'
 	return symmath.Integral(...) 
 end
+
 Expression.taylor = function(...) 
 	symmath = symmath or require 'symmath'
 	return symmath.taylor(...) 

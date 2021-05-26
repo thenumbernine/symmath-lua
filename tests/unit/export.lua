@@ -3,20 +3,42 @@
 require 'ext'
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='tests/unit/nameForExporter'
-	--, pathToTryToFindMathJax='..'
-}}
+require 'symmath'.setup{env=env, MathJax={title='tests/unit/nameForExporter', pathToTryToFindMathJax='..'}}
 
 printbr('generated with '..(jit and jit.version or _VERSION))
 printbr()
 
+print[[
+<style>
+/* TODO this breaks multi-line output formatting in the html */
+/* and disabling this only for multiline causes text to overflow into the multiline output */
+/* quick fix: put MultiLine first */
+.pre-not-multiline {
+	white-space: pre;		   /* CSS 2.0 */
+	white-space: pre-wrap;	  /* CSS 2.1 */
+	white-space: pre-line;	  /* CSS 3.0 */
+	white-space: -pre-wrap;	 /* Opera 4-6 */
+	white-space: -o-pre-wrap;   /* Opera 7 */
+	white-space: -moz-pre-wrap; /* Mozilla */
+	white-space: -hp-pre-wrap;  /* HP Printers */
+	word-wrap: break-word;	  /* IE 5+ */
+}
+table {
+	table-layout: fixed;
+	width: 100%;
+}
+td {
+	padding: 5px;
+}
+</style>
+]]
+
 local es = {
 	-- text
-	export.LaTeX,
-	export.MathJax,
-	export.SingleLine,
 	export.MultiLine,
-	export.Verbose,
+	export.SingleLine,
+	export.LaTeX,
+	--export.MathJax,	-- identical to LaTeX.
 
 	-- code 
 	export.C,
@@ -26,13 +48,16 @@ local es = {
 	-- code
 	export.GnuPlot,
 	export.Mathematica,
+	
+	-- support
+	export.Verbose,
 	export.SymMath,
 }
 
 
 
-local x = var'x'
-local y = var'y'
+local a,b,c,d = vars('a', 'b', 'c', 'd')
+local x,y = vars('x', 'y')
 
 local exprs = {
 	i,
@@ -92,6 +117,14 @@ local exprs = {
 	x:gt(y),
 	x:ge(y),
 	x:approx(y),
+	
+	y:lim(x, 0),
+	y:lim(x, 0, '+'),
+	y:lim(x, 0, '-'),
+	(1/x):lim(x, 0, '-'),
+	(1/x^2):lim(x, 0, '-'),
+	exp(-1/x):lim(x, 0, '-'),
+	
 	y:diff(x),
 	y:pdiff(x),
 	x:integrate(y),
@@ -99,6 +132,7 @@ local exprs = {
 	Array(x,y),
 	Matrix({x}, {y}),
 	Matrix{x, y},
+	Matrix{{a, b}, {c,d}},
 	x'_a',
 	x'^a',
 	x' _\\mu',
@@ -122,16 +156,31 @@ for _,expr in ipairs(exprs) do
 	print'<tr>'
 	print('<td><pre>'..expr.name..'</pre></td>')
 	for _,e in ipairs(es) do
-		print'<td><pre>'
+		print'<td>'
 		local s
+		local error
 		xpcall(function()
 			s = e(expr)
-		end, function(err)
-			s = 'error'
-			--s = err .. '\n' .. debug.traceback()
+		end, function(errstr)
+			error = 'error'
+			--error = errstr .. '\n' .. debug.traceback()
 		end)
-		print(s)
-		print'</pre></td>'
+		if error then
+			print'<span style="color:red">error</span>'
+		else
+			if e.name == 'MultiLine' then
+				print'<pre>'
+			else
+				print'<pre class="pre-not-multiline">'
+			end
+			print(s)
+			print'</pre>'
+			if e.name == 'LaTeX' then	-- since this is a Mathjax document, why not use it
+				print(s)
+			end
+		end
+
+		print'</td>'
 	end
 	print'</tr>'
 end

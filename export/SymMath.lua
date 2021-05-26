@@ -44,17 +44,13 @@ SymMath.lookupTable = {
 				return self:apply(xi, indent..tab)
 			end):concat(' '..expr:nameForExporter(self)..'\n')..'\n'
 			..indent..')'
-	end,
-	-- these don't directly translate to their name, as math operators do
-	[require 'symmath.op.eq'] = function(self, expr, indent)
+	end,	
+	[require 'symmath.op.Equation'] = function(self, expr, indent)
 		return indent .. '(\n'
-			.. indent .. self:apply(expr[1], indent..tab)
-			.. '\n'
-			.. indent .. '):eq(\n'
-			..table.sub(expr,2):mapi(function(xi)
+			..table.mapi(expr, function(xi)
 				return self:apply(xi, indent..tab)
-			end):concat(' '..expr:nameForExporter(self)..'\n')..'\n'
-			..indent..')'
+			end):concat('\n'..indent..'):'..expr:nameForExporter(self)..'(\n')..'\n'
+			..indent..')'	
 	end,
 	-- TODO same with ne, ge, gt, le, lt
 	-- 'unary' ?

@@ -13,7 +13,7 @@ GnuPlot.lookupTable = {
 		return s
 	end,
 	[require 'symmath.Invalid'] = function(self, expr)
-		return '(0/0)'
+		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		return expr:nameForExporter(self) .. '(' .. table.mapi(expr, function(x)
@@ -26,7 +26,7 @@ GnuPlot.lookupTable = {
 	[require 'symmath.op.Binary'] = function(self, expr)
 		return '('..table.mapi(expr, function(x)
 			return (self:apply(x))
-		end):concat(' '..expr:nameForExporter(self)..' ')..')'
+		end):concat(expr:getSepStr(self))..')'
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		if expr[1] == require 'symmath'.e then
@@ -46,6 +46,23 @@ GnuPlot.lookupTable = {
 	[require 'symmath.Heaviside'] = function(self, expr)
 		return '('..self:apply(expr[1])..' >= 0.)'
 	end,
+
+-- [[ TODO put this block in Language, and have subclasses copy over lookupTable
+-- and then inline the Language:varNameForTensorRef function
+	
+	-- TODO re-encode to work with language valid variable names special chars 
+	-- but looking at TensorIndex's own tostring(), looks like that could be merged with Variable's exporter too ...
+	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+		return (expr:__tostring()
+			:gsub('_', '_D')
+			:gsub('%^', '_U'))
+	end,
+
+	-- TODO inherit lookupTable entry from export/Language.lua instead of just inheriting its function call
+	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		return self:varNameForTensorRef(expr)
+	end,
+--]]
 }
 
 -- TODO ... GnuPlot functions can't be multiple lines (I think)

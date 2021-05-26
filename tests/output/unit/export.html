@@ -3,31 +3,48 @@
 	<head>
 		<meta charset='utf-8'>
 		<title>tests/unit/nameForExporter</title>
-		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
 
-generated with LuaJIT 2.1.0-beta3
+generated with Lua 5.3
 <br>
 
 <br>
+<style>
+/* TODO this breaks multi-line output formatting in the html */
+/* and disabling this only for multiline causes text to overflow into the multiline output */
+/* quick fix: put MultiLine first */
+.pre-not-multiline {
+	white-space: pre;		   /* CSS 2.0 */
+	white-space: pre-wrap;	  /* CSS 2.1 */
+	white-space: pre-line;	  /* CSS 3.0 */
+	white-space: -pre-wrap;	 /* Opera 4-6 */
+	white-space: -o-pre-wrap;   /* Opera 7 */
+	white-space: -moz-pre-wrap; /* Mozilla */
+	white-space: -hp-pre-wrap;  /* HP Printers */
+	word-wrap: break-word;	  /* IE 5+ */
+}
+table {
+	table-layout: fixed;
+	width: 100%;
+}
+td {
+	padding: 5px;
+}
+</style>
+
 <table border="1" style="border-collapse:collapse">
 <tr>
 <th>.name</th>
 <th>
-LaTeX
-</th>
-<th>
-MathJax
+MultiLine
 </th>
 <th>
 SingleLine
 </th>
 <th>
-MultiLine
-</th>
-<th>
-Verbose
+LaTeX
 </th>
 <th>
 C
@@ -45,2123 +62,3403 @@ GnuPlot
 Mathematica
 </th>
 <th>
+Verbose
+</th>
+<th>
 SymMath
 </th>
 </tr>
 <tr>
 <td><pre>_i</pre></td>
-<td><pre>
+<td>
+<pre>
+_i
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+_i
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $i$
-</pre></td>
-<td><pre>
+</pre>
 $i$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 _i
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 _i
-</pre></td>
-<td><pre>
-_i|0+1i
-</pre></td>
-<td><pre>
-_i
-</pre></td>
-<td><pre>
-_i
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 ffi.new("complex", 0, 1)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 {0,1}
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 ii
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+_i|0+i1
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 symmath.i
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>_e</pre></td>
-<td><pre>
-$e$
-</pre></td>
-<td><pre>
-$e$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 _e
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 _e
-</pre></td>
-<td><pre>
-_e|2.718281828459
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$e$
+</pre>
+$e$
+</td>
+<td>
+<pre class="pre-not-multiline">
 M_E
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.exp(1)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.exp(1)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 exp(1.)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 e
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+_e|2.718281828459
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 symmath.e
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>π</pre></td>
-<td><pre>
-$\pi$
-</pre></td>
-<td><pre>
-$\pi$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 π
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 π
-</pre></td>
-<td><pre>
-π|3.1415926535898
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\pi$
+</pre>
+$\pi$
+</td>
+<td>
+<pre class="pre-not-multiline">
 M_PI
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.PI
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.pi
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 pi
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 π
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+π|3.1415926535898
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 symmath.pi
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>inf</pre></td>
-<td><pre>
-$\inf$
-</pre></td>
-<td><pre>
-$\inf$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 ∞
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 ∞
-</pre></td>
-<td><pre>
-inf|inf
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\inf$
+</pre>
+$\inf$
+</td>
+<td>
+<pre class="pre-not-multiline">
 INFINITY
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Infinity
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.huge
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 inf
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 inf
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+inf|inf
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 symmath.inf
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>x</pre></td>
-<td><pre>
+<td>
+<pre>
+x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $x$
-</pre></td>
-<td><pre>
+</pre>
 $x$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x
-</pre></td>
-<td><pre>
-x
-</pre></td>
-<td><pre>
-x
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 var("x")
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>y</pre></td>
-<td><pre>
+<td>
+<pre>
+y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $y$
-</pre></td>
-<td><pre>
+</pre>
 $y$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 y
-</pre></td>
-<td><pre>
-y
-</pre></td>
-<td><pre>
-y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 var("y")
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>+</pre></td>
-<td><pre>
-${x} + {y}$
-</pre></td>
-<td><pre>
-${x} + {y}$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x + y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x + y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} + {y}$
+</pre>
+${x} + {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x + y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 +[x, y]
-</pre></td>
-<td><pre>
-x + y
-</pre></td>
-<td><pre>
-(x + y)
-</pre></td>
-<td><pre>
-(x + y)
-</pre></td>
-<td><pre>
-(x + y)
-</pre></td>
-<td><pre>
-(x + y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x") +
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>-</pre></td>
-<td><pre>
-${x} - {y}$
-</pre></td>
-<td><pre>
-${x} - {y}$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x - y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x - y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} - {y}$
+</pre>
+${x} - {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x - y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x - y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x - y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x - y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x - y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 -[x, y]
-</pre></td>
-<td><pre>
-x - y
-</pre></td>
-<td><pre>
-(x - y)
-</pre></td>
-<td><pre>
-(x - y)
-</pre></td>
-<td><pre>
-(x - y)
-</pre></td>
-<td><pre>
-(x - y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x") -
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>*</pre></td>
-<td><pre>
-${{x}} {{y}}$
-</pre></td>
-<td><pre>
-${{x}} {{y}}$
-</pre></td>
-<td><pre>
-x y
-</pre></td>
-<td><pre>
-x y
-</pre></td>
-<td><pre>
-*[x, y]
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x * y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x * y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${{x}} {{y}}$
+</pre>
+${{x}} {{y}}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x * y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x * y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x * y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x * y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x * y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+*[x, y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x") *
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>/</pre></td>
-<td><pre>
-$\frac{x}{y}$
-</pre></td>
-<td><pre>
-$\frac{x}{y}$
-</pre></td>
-<td><pre>
-x / y
-</pre></td>
-<td><pre>
+<td>
+<pre>
  x 
 ╶─╴
  y 
-</pre></td>
-<td><pre>
-/[x, y]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x / y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\frac{x}{y}$
+</pre>
+$\frac{x}{y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x / y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x / y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x / y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x / y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x / y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+/[x, y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x") /
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>%</pre></td>
-<td><pre>
-${x} % {y}$
-</pre></td>
-<td><pre>
-${x} % {y}$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x % y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x % y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} % {y}$
+</pre>
+${x} % {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x % y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x % y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x % y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x % y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x % y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 %[x, y]
-</pre></td>
-<td><pre>
-x % y
-</pre></td>
-<td><pre>
-(x % y)
-</pre></td>
-<td><pre>
-(x % y)
-</pre></td>
-<td><pre>
-(x % y)
-</pre></td>
-<td><pre>
-(x % y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x") %
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>^</pre></td>
-<td><pre>
-${x}^{y}$
-</pre></td>
-<td><pre>
-${x}^{y}$
-</pre></td>
-<td><pre>
-x^y
-</pre></td>
-<td><pre>
+<td>
+<pre>
  y
 x 
-</pre></td>
-<td><pre>
-^[x, y]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x^y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x}^{y}$
+</pre>
+${x}^{y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
 pow(x, y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.pow(x, y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x ^ y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x ** y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x ^ y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+^[x, y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x") ^
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>unm</pre></td>
-<td><pre>
-$-{x}$
-</pre></td>
-<td><pre>
-$-{x}$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 -x
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 -x
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$-{x}$
+</pre>
+$-{x}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+-x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(-x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(-x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(-x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(-x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 unm(x)
-</pre></td>
-<td><pre>
--x
-</pre></td>
-<td><pre>
-(-x)
-</pre></td>
-<td><pre>
-(-x)
-</pre></td>
-<td><pre>
-(-x)
-</pre></td>
-<td><pre>
-(-x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 -(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>/</pre></td>
-<td><pre>
-$\frac{x}{2}$
-</pre></td>
-<td><pre>
-$\frac{x}{2}$
-</pre></td>
-<td><pre>
-x / 2
-</pre></td>
-<td><pre>
+<td>
+<pre>
  x 
 ╶─╴
  2 
-</pre></td>
-<td><pre>
-/[x, 2]
-</pre></td>
-<td><pre>
-x / 2.
-</pre></td>
-<td><pre>
-(x / 2)
-</pre></td>
-<td><pre>
-(x / 2)
-</pre></td>
-<td><pre>
-(x / 2.)
-</pre></td>
-<td><pre>
-(x / 2)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x / 2
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\frac{x}{2}$
+</pre>
+$\frac{x}{2}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x / 2.0
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x / 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x / 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x / 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x / 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+/[x, 2.0]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x") /
-	Constant(2)
+	Constant(2.0)
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>*</pre></td>
-<td><pre>
+<td>
+<pre>
+ 1     
+╶─╴ * x
+ 2     
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+1 / 2 * x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 ${{\frac{1}{2}}} {{x}}$
-</pre></td>
-<td><pre>
+</pre>
 ${{\frac{1}{2}}} {{x}}$
-</pre></td>
-<td><pre>
-1 / 2 x
-</pre></td>
-<td><pre>
- 1   
-╶─╴ x
- 2   
-</pre></td>
-<td><pre>
-*[/[1, 2], x]
-</pre></td>
-<td><pre>
-1. / 2. * x
-</pre></td>
-<td><pre>
-((1 / 2) * x)
-</pre></td>
-<td><pre>
-((1 / 2) * x)
-</pre></td>
-<td><pre>
-((1. / 2.) * x)
-</pre></td>
-<td><pre>
-((1 / 2) * x)
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+1.0 / 2.0 * x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 / 2.0) * x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 / 2.0) * x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 / 2.0) * x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 / 2.0) * x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+*[/[1.0, 2.0], x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	(
-		Constant(1) /
-		Constant(2)
+		Constant(1.0) /
+		Constant(2.0)
 	) *
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>*</pre></td>
-<td><pre>
+<td>
+<pre>
+2 * x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+2 * x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 ${{2}} {{x}}$
-</pre></td>
-<td><pre>
+</pre>
 ${{2}} {{x}}$
-</pre></td>
-<td><pre>
-2 x
-</pre></td>
-<td><pre>
-2 x
-</pre></td>
-<td><pre>
-*[2, x]
-</pre></td>
-<td><pre>
-2. * x
-</pre></td>
-<td><pre>
-(2 * x)
-</pre></td>
-<td><pre>
-(2 * x)
-</pre></td>
-<td><pre>
-(2. * x)
-</pre></td>
-<td><pre>
-(2 * x)
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+2.0 * x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 * x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 * x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 * x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 * x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+*[2.0, x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
-	Constant(2) *
+	Constant(2.0) *
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>*</pre></td>
-<td><pre>
+<td>
+<pre>
+2 * (x + 1)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+2 * (x + 1)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 ${{2}} {{\left({{x} + {1}}\right)}}$
-</pre></td>
-<td><pre>
+</pre>
 ${{2}} {{\left({{x} + {1}}\right)}}$
-</pre></td>
-<td><pre>
-2 (x + 1)
-</pre></td>
-<td><pre>
-2 (x + 1)
-</pre></td>
-<td><pre>
-*[2, +[x, 1]]
-</pre></td>
-<td><pre>
-2. * (x + 1.)
-</pre></td>
-<td><pre>
-(2 * (x + 1))
-</pre></td>
-<td><pre>
-(2 * (x + 1))
-</pre></td>
-<td><pre>
-(2. * (x + 1.))
-</pre></td>
-<td><pre>
-(2 * (x + 1))
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+2.0 * (x + 1.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 * (x + 1.0))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 * (x + 1.0))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 * (x + 1.0))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 * (x + 1.0))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+*[2.0, +[x, 1.0]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
-	Constant(2) *
+	Constant(2.0) *
 	(
 		var("x") +
-		Constant(1)
+		Constant(1.0)
 	)
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>^</pre></td>
-<td><pre>
-${x}^{2}$
-</pre></td>
-<td><pre>
-${x}^{2}$
-</pre></td>
-<td><pre>
-x^2
-</pre></td>
-<td><pre>
+<td>
+<pre>
  2
 x 
-</pre></td>
-<td><pre>
-^[x, 2]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x^2
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x}^{2}$
+</pre>
+${x}^{2}$
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x * x)
-</pre></td>
-<td><pre>
-Math.pow(x, 2)
-</pre></td>
-<td><pre>
-(x ^ 2)
-</pre></td>
-<td><pre>
-(x ** 2.)
-</pre></td>
-<td><pre>
-(x ^ 2)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Math.pow(x, 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x ^ 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x ** 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x ^ 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+^[x, 2.0]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x") ^
-	Constant(2)
+	Constant(2.0)
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>^</pre></td>
-<td><pre>
-${\left({{1} + {x}}\right)}^{2}$
-</pre></td>
-<td><pre>
-${\left({{1} + {x}}\right)}^{2}$
-</pre></td>
-<td><pre>
-(1 + x)^2
-</pre></td>
-<td><pre>
+<td>
+<pre>
        2
 (1 + x) 
-</pre></td>
-<td><pre>
-^[+[1, x], 2]
-</pre></td>
-<td><pre>
-((1. + x) * (1. + x))
-</pre></td>
-<td><pre>
-Math.pow((1 + x), 2)
-</pre></td>
-<td><pre>
-((1 + x) ^ 2)
-</pre></td>
-<td><pre>
-((1. + x) ** 2.)
-</pre></td>
-<td><pre>
-((1 + x) ^ 2)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(1 + x)^2
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\left({{1} + {x}}\right)}^{2}$
+</pre>
+${\left({{1} + {x}}\right)}^{2}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 + x) * (1.0 + x))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Math.pow((1.0 + x), 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 + x) ^ 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 + x) ** 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 + x) ^ 2.0)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+^[+[1.0, x], 2.0]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	(
-		Constant(1) +
+		Constant(1.0) +
 		var("x")
 	) ^
-	Constant(2)
+	Constant(2.0)
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>^</pre></td>
-<td><pre>
-${\left({{1} + {x}}\right)}^{{1} + {y}}$
-</pre></td>
-<td><pre>
-${\left({{1} + {x}}\right)}^{{1} + {y}}$
-</pre></td>
-<td><pre>
-(1 + x)^(1 + y)
-</pre></td>
-<td><pre>
+<td>
+<pre>
        (1 + y)
 (1 + x)       
-</pre></td>
-<td><pre>
-^[+[1, x], +[1, y]]
-</pre></td>
-<td><pre>
-pow(1. + x, 1. + y)
-</pre></td>
-<td><pre>
-Math.pow((1 + x), (1 + y))
-</pre></td>
-<td><pre>
-((1 + x) ^ (1 + y))
-</pre></td>
-<td><pre>
-((1. + x) ** (1. + y))
-</pre></td>
-<td><pre>
-((1 + x) ^ (1 + y))
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(1 + x)^(1 + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\left({{1} + {x}}\right)}^{{1} + {y}}$
+</pre>
+${\left({{1} + {x}}\right)}^{{1} + {y}}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+pow(1.0 + x, 1.0 + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Math.pow((1.0 + x), (1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 + x) ^ (1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 + x) ** (1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+((1.0 + x) ^ (1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+^[+[1.0, x], +[1.0, y]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	(
-		Constant(1) +
+		Constant(1.0) +
 		var("x")
 	) ^
 	(
-		Constant(1) +
+		Constant(1.0) +
 		var("y")
 	)
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>^</pre></td>
-<td><pre>
-${2}^{{1} + {y}}$
-</pre></td>
-<td><pre>
-${2}^{{1} + {y}}$
-</pre></td>
-<td><pre>
-2^(1 + y)
-</pre></td>
-<td><pre>
+<td>
+<pre>
  (1 + y)
 2       
-</pre></td>
-<td><pre>
-^[2, +[1, y]]
-</pre></td>
-<td><pre>
-pow(2., 1. + y)
-</pre></td>
-<td><pre>
-Math.pow(2, (1 + y))
-</pre></td>
-<td><pre>
-(2 ^ (1 + y))
-</pre></td>
-<td><pre>
-(2. ** (1. + y))
-</pre></td>
-<td><pre>
-(2 ^ (1 + y))
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+2^(1 + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${2}^{{1} + {y}}$
+</pre>
+${2}^{{1} + {y}}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+pow(2.0, 1.0 + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Math.pow(2.0, (1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 ^ (1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 ** (1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(2.0 ^ (1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+^[2.0, +[1.0, y]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
-	Constant(2) ^
+	Constant(2.0) ^
 	(
-		Constant(1) +
+		Constant(1.0) +
 		var("y")
 	)
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>^</pre></td>
-<td><pre>
-$\exp\left({{1} + {y}}\right)$
-</pre></td>
-<td><pre>
-$\exp\left({{1} + {y}}\right)$
-</pre></td>
-<td><pre>
-_e^(1 + y)
-</pre></td>
-<td><pre>
+<td>
+<pre>
   (1 + y)
 _e       
-</pre></td>
-<td><pre>
-^[_e|2.718281828459, +[1, y]]
-</pre></td>
-<td><pre>
-exp(1. + y)
-</pre></td>
-<td><pre>
-Math.exp((1 + y))
-</pre></td>
-<td><pre>
-math.exp((1 + y))
-</pre></td>
-<td><pre>
-(exp((1. + y)))
-</pre></td>
-<td><pre>
-exp[(1 + y)]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+_e^(1 + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\exp\left({{1} + {y}}\right)$
+</pre>
+$\exp\left({{1} + {y}}\right)$
+</td>
+<td>
+<pre class="pre-not-multiline">
+exp(1.0 + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Math.exp((1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+math.exp((1.0 + y))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(exp((1.0 + y)))
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+exp[(1.0 + y)]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+^[_e|2.718281828459, +[1.0, y]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 symmath.e ^
 	(
-		Constant(1) +
+		Constant(1.0) +
 		var("y")
 	)
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>abs</pre></td>
-<td><pre>
-$| x|$
-</pre></td>
-<td><pre>
-$| x|$
-</pre></td>
-<td><pre>
-|x|
-</pre></td>
-<td><pre>
+<td>
+<pre>
 │x│
-</pre></td>
-<td><pre>
-abs[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+|x|
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$| x|$
+</pre>
+$| x|$
+</td>
+<td>
+<pre class="pre-not-multiline">
 abs(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.abs(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.abs(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 abs(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 abs[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+abs[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 abs(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>sqrt</pre></td>
-<td><pre>
-$\sqrt{x}$
-</pre></td>
-<td><pre>
-$\sqrt{x}$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 √(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 √(x)
-</pre></td>
-<td><pre>
-sqrt[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\sqrt{x}$
+</pre>
+$\sqrt{x}$
+</td>
+<td>
+<pre class="pre-not-multiline">
 sqrt(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.sqrt(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.sqrt(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sqrt(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sqrt[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+sqrt[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sqrt(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>cbrt</pre></td>
-<td><pre>
+<td>
+<pre>
+cbrt(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+cbrt(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $\sqrt[3]{x}$
-</pre></td>
-<td><pre>
+</pre>
 $\sqrt[3]{x}$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cbrt(x)
-</pre></td>
-<td><pre>
-cbrt(x)
-</pre></td>
-<td><pre>
-cbrt[x]
-</pre></td>
-<td><pre>
-cbrt(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.cbrt(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x) ^ (1/3)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cbrt(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cbrt[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+cbrt[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cbrt(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>^</pre></td>
-<td><pre>
-$\exp\left( x\right)$
-</pre></td>
-<td><pre>
-$\exp\left( x\right)$
-</pre></td>
-<td><pre>
-_e^x
-</pre></td>
-<td><pre>
+<td>
+<pre>
   x
 _e 
-</pre></td>
-<td><pre>
-^[_e|2.718281828459, x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+_e^x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\exp\left( x\right)$
+</pre>
+$\exp\left( x\right)$
+</td>
+<td>
+<pre class="pre-not-multiline">
 exp(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.exp(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.exp(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (exp(x))
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 exp[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+^[_e|2.718281828459, x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 symmath.e ^
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>log</pre></td>
-<td><pre>
+<td>
+<pre>
+log(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+log(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $\log\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $\log\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 log(x)
-</pre></td>
-<td><pre>
-log(x)
-</pre></td>
-<td><pre>
-log[x]
-</pre></td>
-<td><pre>
-log(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.log(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.log(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 log(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 log[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+log[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 log(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>Heaviside</pre></td>
-<td><pre>
-$Heaviside\left(  x\right)$
-</pre></td>
-<td><pre>
-$Heaviside\left(  x\right)$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 Heaviside(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Heaviside(x)
-</pre></td>
-<td><pre>
-Heaviside[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\mathcal{H}\left(  x\right)$
+</pre>
+$\mathcal{H}\left(  x\right)$
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x >= 0 ? 1 : 0)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x >= 0 ? 1 : 0)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 ((x >= 0) and 1 or 0)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x >= 0.)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Heaviside[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Heaviside[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Heaviside(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>sin</pre></td>
-<td><pre>
+<td>
+<pre>
+sin(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+sin(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $\sin\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $\sin\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sin(x)
-</pre></td>
-<td><pre>
-sin(x)
-</pre></td>
-<td><pre>
-sin[x]
-</pre></td>
-<td><pre>
-sin(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.sin(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.sin(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sin(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sin[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+sin[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sin(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>cos</pre></td>
-<td><pre>
+<td>
+<pre>
+cos(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+cos(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $\cos\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $\cos\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cos(x)
-</pre></td>
-<td><pre>
-cos(x)
-</pre></td>
-<td><pre>
-cos[x]
-</pre></td>
-<td><pre>
-cos(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.cos(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.cos(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cos(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cos[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+cos[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cos(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>tan</pre></td>
-<td><pre>
+<td>
+<pre>
+tan(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+tan(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $\tan\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $\tan\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 tan(x)
-</pre></td>
-<td><pre>
-tan(x)
-</pre></td>
-<td><pre>
-tan[x]
-</pre></td>
-<td><pre>
-tan(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.tan(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.tan(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 tan(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 tan[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+tan[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 tan(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>asin</pre></td>
-<td><pre>
+<td>
+<pre>
+asin(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+asin(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $asin\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $asin\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 asin(x)
-</pre></td>
-<td><pre>
-asin(x)
-</pre></td>
-<td><pre>
-asin[x]
-</pre></td>
-<td><pre>
-asin(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.asin(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.asin(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 asin(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 asin[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+asin[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 asin(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>acos</pre></td>
-<td><pre>
+<td>
+<pre>
+acos(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+acos(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $acos\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $acos\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 acos(x)
-</pre></td>
-<td><pre>
-acos(x)
-</pre></td>
-<td><pre>
-acos[x]
-</pre></td>
-<td><pre>
-acos(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.acos(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.acos(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 acos(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 acos[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+acos[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 acos(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>atan</pre></td>
-<td><pre>
+<td>
+<pre>
+atan(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+atan(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $atan\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $atan\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atan(x)
-</pre></td>
-<td><pre>
-atan(x)
-</pre></td>
-<td><pre>
-atan[x]
-</pre></td>
-<td><pre>
-atan(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.atan(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.atan(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atan(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atan[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+atan[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atan(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>atan2</pre></td>
-<td><pre>
+<td>
+<pre>
+atan2(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+atan2(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $atan2\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $atan2\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atan2(x)
-</pre></td>
-<td><pre>
-atan2(x)
-</pre></td>
-<td><pre>
-atan2[x]
-</pre></td>
-<td><pre>
-atan2(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.atan2(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.atan2(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atan2(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atan2[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+atan2[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atan2(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>sinh</pre></td>
-<td><pre>
+<td>
+<pre>
+sinh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+sinh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $\sinh\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $\sinh\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sinh(x)
-</pre></td>
-<td><pre>
-sinh(x)
-</pre></td>
-<td><pre>
-sinh[x]
-</pre></td>
-<td><pre>
-sinh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.sinh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.sinh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sinh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sinh[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+sinh[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 sinh(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>cosh</pre></td>
-<td><pre>
+<td>
+<pre>
+cosh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+cosh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $\cosh\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $\cosh\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cosh(x)
-</pre></td>
-<td><pre>
-cosh(x)
-</pre></td>
-<td><pre>
-cosh[x]
-</pre></td>
-<td><pre>
-cosh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.cosh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.cosh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cosh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cosh[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+cosh[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 cosh(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>tanh</pre></td>
-<td><pre>
+<td>
+<pre>
+tanh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+tanh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $\tanh\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $\tanh\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 tanh(x)
-</pre></td>
-<td><pre>
-tanh(x)
-</pre></td>
-<td><pre>
-tanh[x]
-</pre></td>
-<td><pre>
-tanh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.tanh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.tanh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 tanh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 tanh[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+tanh[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 tanh(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>asinh</pre></td>
-<td><pre>
+<td>
+<pre>
+asinh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+asinh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $asinh\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $asinh\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 asinh(x)
-</pre></td>
-<td><pre>
-asinh(x)
-</pre></td>
-<td><pre>
-asinh[x]
-</pre></td>
-<td><pre>
-asinh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.asinh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.asinh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 asinh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 asinh[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+asinh[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 asinh(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>acosh</pre></td>
-<td><pre>
+<td>
+<pre>
+acosh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+acosh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $acosh\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $acosh\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 acosh(x)
-</pre></td>
-<td><pre>
-acosh(x)
-</pre></td>
-<td><pre>
-acosh[x]
-</pre></td>
-<td><pre>
-acosh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.acosh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.acosh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 acosh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 acosh[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+acosh[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 acosh(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>atanh</pre></td>
-<td><pre>
+<td>
+<pre>
+atanh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+atanh(x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 $atanh\left(  x\right)$
-</pre></td>
-<td><pre>
+</pre>
 $atanh\left(  x\right)$
-</pre></td>
-<td><pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atanh(x)
-</pre></td>
-<td><pre>
-atanh(x)
-</pre></td>
-<td><pre>
-atanh[x]
-</pre></td>
-<td><pre>
-atanh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Math.atanh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 math.atanh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atanh(x)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atanh[x]
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+atanh[x]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 atanh(
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>=</pre></td>
-<td><pre>
-${x} = {y}$
-</pre></td>
-<td><pre>
-${x} = {y}$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x = y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x = y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} = {y}$
+</pre>
+${x} = {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x == y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x == y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x == y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x == y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x == y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 =[x, y]
-</pre></td>
-<td><pre>
-x = y
-</pre></td>
-<td><pre>
-(x = y)
-</pre></td>
-<td><pre>
-(x = y)
-</pre></td>
-<td><pre>
-(x = y)
-</pre></td>
-<td><pre>
-(x = y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x")
 ):eq(
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
-<td><pre>!=</pre></td>
-<td><pre>
-${x} != {y}$
-</pre></td>
-<td><pre>
-${x} != {y}$
-</pre></td>
-<td><pre>
+<td><pre>≠</pre></td>
+<td>
+<pre>
+x ≠ y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x ≠ y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} \ne {y}$
+</pre>
+${x} \ne {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
 x != y
-</pre></td>
-<td><pre>
-x != y
-</pre></td>
-<td><pre>
-!=[x, y]
-</pre></td>
-<td><pre>
-x != y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x != y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x ~= y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x != y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x != y)
-</pre></td>
-<td><pre>
-(x != y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+≠[x, y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
-	var("x") !=
+	var("x")
+):ne(
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre><</pre></td>
-<td><pre>
-${x} < {y}$
-</pre></td>
-<td><pre>
-${x} < {y}$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x < y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x < y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} \lt {y}$
+</pre>
+${x} \lt {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x < y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x < y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x < y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x < y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x < y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 <[x, y]
-</pre></td>
-<td><pre>
-x < y
-</pre></td>
-<td><pre>
-(x < y)
-</pre></td>
-<td><pre>
-(x < y)
-</pre></td>
-<td><pre>
-(x < y)
-</pre></td>
-<td><pre>
-(x < y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
-	var("x") <
+	var("x")
+):lt(
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
-<td><pre><=</pre></td>
-<td><pre>
-${x} <= {y}$
-</pre></td>
-<td><pre>
-${x} <= {y}$
-</pre></td>
-<td><pre>
+<td><pre>≤</pre></td>
+<td>
+<pre>
+x ≤ y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x ≤ y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} \le {y}$
+</pre>
+${x} \le {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
 x <= y
-</pre></td>
-<td><pre>
-x <= y
-</pre></td>
-<td><pre>
-<=[x, y]
-</pre></td>
-<td><pre>
-x <= y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x <= y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x <= y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x <= y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (x <= y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+≤[x, y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
-	var("x") <=
+	var("x")
+):le(
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>></pre></td>
-<td><pre>
-${x} > {y}$
-</pre></td>
-<td><pre>
-${x} > {y}$
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x > y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 x > y
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} \gt {y}$
+</pre>
+${x} \gt {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x > y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x > y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x > y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x > y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x > y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 >[x, y]
-</pre></td>
-<td><pre>
-x > y
-</pre></td>
-<td><pre>
-(x > y)
-</pre></td>
-<td><pre>
-(x > y)
-</pre></td>
-<td><pre>
-(x > y)
-</pre></td>
-<td><pre>
-(x > y)
-</pre></td>
-<td><pre>
-(
-	var("x") >
-	var("y")
-)
-</pre></td>
-</tr>
-<tr>
-<td><pre>>=</pre></td>
-<td><pre>
-${x} >= {y}$
-</pre></td>
-<td><pre>
-${x} >= {y}$
-</pre></td>
-<td><pre>
-x >= y
-</pre></td>
-<td><pre>
-x >= y
-</pre></td>
-<td><pre>
->=[x, y]
-</pre></td>
-<td><pre>
-x >= y
-</pre></td>
-<td><pre>
-(x >= y)
-</pre></td>
-<td><pre>
-(x >= y)
-</pre></td>
-<td><pre>
-(x >= y)
-</pre></td>
-<td><pre>
-(x >= y)
-</pre></td>
-<td><pre>
-(
-	var("x") >=
-	var("y")
-)
-</pre></td>
-</tr>
-<tr>
-<td><pre>~</pre></td>
-<td><pre>
-${x}\approx{y}$
-</pre></td>
-<td><pre>
-${x}\approx{y}$
-</pre></td>
-<td><pre>
-x ~ y
-</pre></td>
-<td><pre>
-x ~ y
-</pre></td>
-<td><pre>
-~[x, y]
-</pre></td>
-<td><pre>
-x ~ y
-</pre></td>
-<td><pre>
-(x ~ y)
-</pre></td>
-<td><pre>
-(x ~ y)
-</pre></td>
-<td><pre>
-(x ~ y)
-</pre></td>
-<td><pre>
-(x ~ y)
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 (
 	var("x")
-):eq(
+):gt(
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>≥</pre></td>
+<td>
+<pre>
+x ≥ y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x ≥ y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} \ge {y}$
+</pre>
+${x} \ge {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x >= y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x >= y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x >= y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x >= y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x >= y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+≥[x, y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(
+	var("x")
+):ge(
+	var("y")
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>≈</pre></td>
+<td>
+<pre>
+x ≈ y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x ≈ y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${x} \approx {y}$
+</pre>
+${x} \approx {y}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x == y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x == y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x == y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x == y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(x == y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+≈[x, y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+(
+	var("x")
+):approx(
+	var("y")
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Limit</pre></td>
+<td>
+<pre>
+     
+lim  
+    y
+x→0  
+     
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+lim_x→0 y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\underset{ x\rightarrow 0}{\lim}} y$
+</pre>
+${\underset{ x\rightarrow 0}{\lim}} y$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit{y, x, 0.0, {}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit(
+	var("y"),
+	var("x"),
+	Constant(0.0),
+	(
+
+	)
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Limit</pre></td>
+<td>
+<pre>
+      
+ lim  
+     y
+x→0+  
+      
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+lim_x→0+ y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\underset{ x\rightarrow{ 0{}^+}}{\lim}} y$
+</pre>
+${\underset{ x\rightarrow{ 0{}^+}}{\lim}} y$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit{y, x, 0.0, +{}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit(
+	var("y"),
+	var("x"),
+	Constant(0.0),
+	+(
+
+	)
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Limit</pre></td>
+<td>
+<pre>
+      
+ lim  
+     y
+x→0-  
+      
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+lim_x→0- y
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}} y$
+</pre>
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}} y$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit{y, x, 0.0, -{}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit(
+	var("y"),
+	var("x"),
+	Constant(0.0),
+	-(
+
+	)
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Limit</pre></td>
+<td>
+<pre>
+        
+ lim  1 
+     ╶─╴
+x→0-  x 
+        
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+lim_x→0- 1 / x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{x}}$
+</pre>
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{x}}$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit{/[1.0, x], x, 0.0, -{}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit(
+	(
+		Constant(1.0) /
+		var("x")
+	),
+	var("x"),
+	Constant(0.0),
+	-(
+
+	)
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Limit</pre></td>
+<td>
+<pre>
+         
+ lim   1 
+     ╶──╴
+x→0-   2 
+      x  
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+lim_x→0- 1 / x^2
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{{x}^{2}}}$
+</pre>
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{{x}^{2}}}$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit{/[1.0, ^[x, 2.0]], x, 0.0, -{}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit(
+	(
+		Constant(1.0) /
+		(
+			var("x") ^
+			Constant(2.0)
+		)
+	),
+	var("x"),
+	Constant(0.0),
+	-(
+
+	)
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Limit</pre></td>
+<td>
+<pre>
+             
+ lim   ╭ -1 ╮
+       │╶──╴│
+x→0-   ╰  x ╯
+     _e      
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+lim_x→0- _e^(-1 / x)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\exp\left({\frac{-1}{x}}\right)}$
+</pre>
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\exp\left({\frac{-1}{x}}\right)}$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit{^[_e|2.718281828459, /[-1.0, x]], x, 0.0, -{}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit(
+	(
+symmath.e ^
+		(
+			Constant(-1.0) /
+			var("x")
+		)
+	),
+	var("x"),
+	Constant(0.0),
+	-(
+
+	)
+)
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>Derivative</pre></td>
-<td><pre>
-$\frac{d y}{d x}$
-</pre></td>
-<td><pre>
-$\frac{d y}{d x}$
-</pre></td>
-<td><pre>
-d/{dx}[y]
-</pre></td>
-<td><pre>
+<td>
+<pre>
   d  
 ╶──╴y
  dx  
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d/{dx}[y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\frac{d y}{d x}$
+</pre>
+$\frac{d y}{d x}$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Derivative{y, x}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Derivative(
 	var("y"),
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>PartialDerivative</pre></td>
-<td><pre>
-$\frac{\partial y}{\partial x}$
-</pre></td>
-<td><pre>
-$\frac{\partial y}{\partial x}$
-</pre></td>
-<td><pre>
-∂/{∂x}[y]
-</pre></td>
-<td><pre>
+<td>
+<pre>
   ∂  
 ╶──╴y
  ∂x  
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+∂/{∂x}[y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\frac{\partial y}{\partial x}$
+</pre>
+$\frac{\partial y}{\partial x}$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
 PartialDerivative{y, x}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 PartialDerivative(
 	var("y"),
 	var("x")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>Integral</pre></td>
-<td><pre>
-$\int d y\left( x\right)$
-</pre></td>
-<td><pre>
-$\int d y\left( x\right)$
-</pre></td>
-<td><pre>
-integrate(x, y )
-</pre></td>
-<td><pre>
+<td>
+<pre>
 ⌠     
 ⌡ x dy
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+integrate(x, y )
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\int d y\left( x\right)$
+</pre>
+$\int d y\left( x\right)$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Integral{x, y}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Integral(
 	var("x"),
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>Integral</pre></td>
-<td><pre>
-$\int\limits_{{0}}^{{1}}d y\left( x\right)$
-</pre></td>
-<td><pre>
-$\int\limits_{{0}}^{{1}}d y\left( x\right)$
-</pre></td>
-<td><pre>
-integrate(x, y, 0, 1 )
-</pre></td>
-<td><pre>
+<td>
+<pre>
 ⌠1     
 │  x dy
 ⌡0     
-</pre></td>
-<td><pre>
-Integral{x, y, 0, 1}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+integrate(x, y, 0, 1 )
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\int\limits_{{0}}^{{1}}d y\left( x\right)$
+</pre>
+$\int\limits_{{0}}^{{1}}d y\left( x\right)$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Integral{x, y, 0.0, 1.0}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Integral(
 	var("x"),
 	var("y"),
-	Constant(0),
-	Constant(1)
+	Constant(0.0),
+	Constant(1.0)
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>Array</pre></td>
-<td><pre>
-$\left[ \begin{matrix} x \\ y\end{matrix} \right]$
-</pre></td>
-<td><pre>
-$\left[ \begin{matrix} x \\ y\end{matrix} \right]$
-</pre></td>
-<td><pre>
-[x, y]
-</pre></td>
-<td><pre>
+<td>
+<pre>
 ┌x┐
 │ │
 └y┘
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[x, y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\left[ \begin{matrix} x \\ y\end{matrix} \right]$
+</pre>
+$\left[ \begin{matrix} x \\ y\end{matrix} \right]$
+</td>
+<td>
+<pre class="pre-not-multiline">
+{x, y}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[x, y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{x, y}
+</pre>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{x, y}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Array{x, y}
-</pre></td>
-<td><pre>
-{x, y}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-{x, y}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-{x, y}
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Array(
 	var("x"),
 	var("y")
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>Matrix</pre></td>
-<td><pre>
-$\left[ \begin{matrix}  x \\  y\end{matrix} \right]$
-</pre></td>
-<td><pre>
-$\left[ \begin{matrix}  x \\  y\end{matrix} \right]$
-</pre></td>
-<td><pre>
-[[x], [y]]
-</pre></td>
-<td><pre>
+<td>
+<pre>
 ┌ ┐
 │x│
 │ │
 │y│
 └ ┘
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[x], [y]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\left[ \begin{matrix}  x \\  y\end{matrix} \right]$
+</pre>
+$\left[ \begin{matrix}  x \\  y\end{matrix} \right]$
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{x}, {y}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[x], [y]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{x}, {y}}
+</pre>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{x}, {y}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Matrix{Matrix{x}, Matrix{y}}
-</pre></td>
-<td><pre>
-{{x}, {y}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-{{x}, {y}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-{{x}, {y}}
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Matrix(
 	Matrix(
 		var("x")
@@ -2170,365 +3467,593 @@ Matrix(
 		var("y")
 	)
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>Matrix</pre></td>
-<td><pre>
-$\left[ \begin{matrix}  x &  y\end{matrix} \right]$
-</pre></td>
-<td><pre>
-$\left[ \begin{matrix}  x &  y\end{matrix} \right]$
-</pre></td>
-<td><pre>
-[[x, y]]
-</pre></td>
-<td><pre>
+<td>
+<pre>
 ┌    ┐
 │x  y│
 └    ┘
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[x, y]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\left[ \begin{matrix}  x &  y\end{matrix} \right]$
+</pre>
+$\left[ \begin{matrix}  x &  y\end{matrix} \right]$
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{x, y}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[x, y]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{x, y}}
+</pre>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{x, y}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Matrix{Matrix{x, y}}
-</pre></td>
-<td><pre>
-{{x, y}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-{{x, y}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-{{x, y}}
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 Matrix(
 	Matrix(
 		var("x"),
 		var("y")
 	)
 )
-</pre></td>
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Matrix</pre></td>
+<td>
+<pre>
+┌┌    ┐┐
+││a  b││
+││    ││
+││c  d││
+└└    ┘┘
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[[a, b], [c, d]]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\left[ \begin{matrix}  \left[ \begin{matrix} a \\ b\end{matrix} \right] &  \left[ \begin{matrix} c \\ d\end{matrix} \right]\end{matrix} \right]$
+</pre>
+$\left[ \begin{matrix}  \left[ \begin{matrix} a \\ b\end{matrix} \right] &  \left[ \begin{matrix} c \\ d\end{matrix} \right]\end{matrix} \right]$
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{{a, b}, {c, d}}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[[a, b], [c, d]]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{{a, b}, {c, d}}}
+</pre>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{{a, b}, {c, d}}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Matrix{Matrix{Matrix{a, b}, Matrix{c, d}}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Matrix(
+	Matrix(
+		Matrix(
+			var("a"),
+			var("b")
+		),
+		Matrix(
+			var("c"),
+			var("d")
+		)
+	)
+)
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>TensorRef</pre></td>
-<td><pre>
-${ x}_a$
-</pre></td>
-<td><pre>
-${ x}_a$
-</pre></td>
-<td><pre>
-$x$_a
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x_a
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_a
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${ x}_a$
+</pre>
+${ x}_a$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef{x, TensorIndex{_a}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef(
 	var("x"),
 	TensorIndex{lower=true, symbol="a"}
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>TensorRef</pre></td>
-<td><pre>
-${ x}^a$
-</pre></td>
-<td><pre>
-${ x}^a$
-</pre></td>
-<td><pre>
-$x$^a
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x^a
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x^a
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${ x}^a$
+</pre>
+${ x}^a$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef{x, TensorIndex{^a}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef(
 	var("x"),
 	TensorIndex{lower=false, symbol="a"}
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>TensorRef</pre></td>
-<td><pre>
-${ x}_{\mu}$
-</pre></td>
-<td><pre>
-${ x}_{\mu}$
-</pre></td>
-<td><pre>
-$x$_\mu
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x_\mu
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${ x}_{\mu}$
+</pre>
+${ x}_{\mu}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef{x, TensorIndex{_\mu}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef(
 	var("x"),
 	TensorIndex{lower=true, symbol="\\mu"}
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>TensorRef</pre></td>
-<td><pre>
-${ x}^{\mu}$
-</pre></td>
-<td><pre>
-${ x}^{\mu}$
-</pre></td>
-<td><pre>
-$x$^\mu
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x^\mu
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x^\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${ x}^{\mu}$
+</pre>
+${ x}^{\mu}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef{x, TensorIndex{^\mu}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef(
 	var("x"),
 	TensorIndex{lower=false, symbol="\\mu"}
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>TensorRef</pre></td>
-<td><pre>
-${{ x}_a}_b$
-</pre></td>
-<td><pre>
-${{ x}_a}_b$
-</pre></td>
-<td><pre>
-$x$_a_b
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x_ab
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_a_b
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${{ x}_a}_b$
+</pre>
+${{ x}_a}_b$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da_Db
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da_Db
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da_Db
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da_Db
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Da_Db
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef{x, TensorIndex{_a}, TensorIndex{_b}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef(
 	var("x"),
 	TensorIndex{lower=true, symbol="a"},
 	TensorIndex{lower=true, symbol="b"}
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>TensorRef</pre></td>
-<td><pre>
-${{ x}^a}^b$
-</pre></td>
-<td><pre>
-${{ x}^a}^b$
-</pre></td>
-<td><pre>
-$x$^a^b
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x^ab
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x^a^b
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${{ x}^a}^b$
+</pre>
+${{ x}^a}^b$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua_Ub
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua_Ub
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua_Ub
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua_Ub
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_Ua_Ub
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef{x, TensorIndex{^a}, TensorIndex{^b}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef(
 	var("x"),
 	TensorIndex{lower=false, symbol="a"},
 	TensorIndex{lower=false, symbol="b"}
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>TensorRef</pre></td>
-<td><pre>
-${{ x}_{\mu}}_{\nu}$
-</pre></td>
-<td><pre>
-${{ x}_{\mu}}_{\nu}$
-</pre></td>
-<td><pre>
-$x$_\mu_\nu
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x_\mu\nu
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_\mu_\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${{ x}_{\mu}}_{\nu}$
+</pre>
+${{ x}_{\mu}}_{\nu}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu_D\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu_D\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu_D\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu_D\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_D\mu_D\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef{x, TensorIndex{_\mu}, TensorIndex{_\nu}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef(
 	var("x"),
 	TensorIndex{lower=true, symbol="\\mu"},
 	TensorIndex{lower=true, symbol="\\nu"}
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 <tr>
 <td><pre>TensorRef</pre></td>
-<td><pre>
-${{ x}^{\mu}}^{\nu}$
-</pre></td>
-<td><pre>
-${{ x}^{\mu}}^{\nu}$
-</pre></td>
-<td><pre>
-$x$^\mu^\nu
-</pre></td>
-<td><pre>
+<td>
+<pre>
 x^\mu\nu
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x^\mu^\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${{ x}^{\mu}}^{\nu}$
+</pre>
+${{ x}^{\mu}}^{\nu}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu_U\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu_U\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu_U\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu_U\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+x_U\mu_U\nu
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef{x, TensorIndex{^\mu}, TensorIndex{^\nu}}
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
-error
-</pre></td>
-<td><pre>
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
 TensorRef(
 	var("x"),
 	TensorIndex{lower=false, symbol="\\mu"},
 	TensorIndex{lower=false, symbol="\\nu"}
 )
-</pre></td>
+</pre>
+</td>
 </tr>
 </table>
