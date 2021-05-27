@@ -36,7 +36,7 @@ LaTeX.matrixOpenSymbol = '\\left[ \\begin{matrix}'
 LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
 
 -- set this to 'true' to automatically convert in output "x/2" into "1/2 x"
--- TODO shouldn't this step just be done in :tidy() ?  
+-- TODO shouldn't this step just be done in :tidy() ?
 --  but then tidy() wouldn't be guaranteed div -> add -> mul ...
 LaTeX.showDivConstAsMulFrac = false
 
@@ -48,10 +48,14 @@ LaTeX.showExpAsFunction = true
 LaTeX.parOpenSymbol = '\\left('
 LaTeX.parCloseSymbol = '\\right)'
 
--- Usually operators use precedence to decide whether to wrap in parenthesis -- which is essential to code exporters 
+-- Usually operators use precedence to decide whether to wrap in parenthesis -- which is essential to code exporters
 -- but with LaTeX / math notation, in the power operator, in the power, the fact that it is raised is all the denotation you need -- parenthesis not required
 -- so I will omit parenthesis unless you set this flag:
 LaTeX.powWrapExpInParenthesis = false
+
+-- whether to use int expr dx vs. int dx expr
+-- I grew up with the 1st, but lots of physics texts I see use the 2nd
+LaTeX.integralDxBeforeExpr = false
 
 -- just like super except uses a table combine
 function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
@@ -89,7 +93,7 @@ LaTeX.builtinLaTeXFuncNames = setmetatable(table{
 	'arctan',
 	'ln',
 	-- functions symmath doesn't use
-	--'exp',	-- symmath uses 'e^', but LaTeX has an override: showExpAsFunction 
+	--'exp',	-- symmath uses 'e^', but LaTeX has an override: showExpAsFunction
 	'csc',
 	'sec',
 	'cot',
@@ -133,7 +137,7 @@ end
 
 LaTeX.lookupTable = {
 	[require 'symmath.Constant'] = function(self, expr)
-		if expr.symbol then 
+		if expr.symbol then
 			return table{prepareName(expr.symbol)}
 		end
 		local value = expr.value
@@ -157,7 +161,7 @@ LaTeX.lookupTable = {
 
 		name = prepareName(name)
 
-		return table{prepareName(name), '\\left(', 
+		return table{prepareName(name), '\\left(',
 			tableConcat(range(#expr):map(function(i)
 				return self:apply(expr[i])
 			end), ','),
@@ -226,13 +230,13 @@ LaTeX.lookupTable = {
 		-- this could be done in tidy ...
 		if self.showDivConstAsMulFrac then
 			if not Constant:isa(a) then
-				if Constant:isa(b) 
+				if Constant:isa(b)
 				or Variable:isa(b)
 				then
 					local astr = table{table(self:apply(a), {force=true})}
 					
 					-- parenthesis if precedence is needed
-					if symmath.op.add:isa(a) 
+					if symmath.op.add:isa(a)
 					or symmath.op.unm:isa(a)
 					then
 						astr:insert(1, self.parOpenSymbol)
@@ -248,7 +252,7 @@ LaTeX.lookupTable = {
 		end
 		
 		return table{
-			'\\frac', 
+			'\\frac',
 			table(self:apply(a), {force=true}),
 			table(self:apply(b), {force=true})
 		}
@@ -297,7 +301,7 @@ LaTeX.lookupTable = {
 		end
 		return ' \\{'..expr.index..'\\} '
 	end,
-	[require 'symmath.Derivative'] = function(self, expr) 
+	[require 'symmath.Derivative'] = function(self, expr)
 		local symmath = require 'symmath'
 		local Variable = symmath.Variable
 		local TensorRef = require 'symmath.tensor.TensorRef'
@@ -307,31 +311,31 @@ LaTeX.lookupTable = {
 		
 		local diffExpr = expr[1]
 		local diffExprStr = self:apply(diffExpr)
-		local diffExprOnTop = Variable:isa(diffExpr) 
+		local diffExprOnTop = Variable:isa(diffExpr)
 			or (TensorRef:isa(diffExpr) and Variable:isa(diffExpr[1]))
 			
 		local d = expr:nameForExporter(self)
 
 		if self.useCommaDerivative then
-			return table{ 
-				table{diffExprStr}, 
-				'_', 
+			return table{
+				table{diffExprStr},
+				'_',
 				table{','}:append(range(#diffVars):map(function(i)
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
 				end))
 			}
-		elseif self.usePartialLHSForDerivative 
+		elseif self.usePartialLHSForDerivative
 		and require 'symmath.PartialDerivative':isa(expr)
 		then
-			local s = table{d..'_', 
+			local s = table{d..'_',
 				range(#diffVars):map(function(i)
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
 				end)}
-			--if not diffExprOnTop then 
+			--if not diffExprOnTop then
 				s:insert(self.parOpenSymbol)
 			--end
 			s:insert(diffExprStr)
-			--if not diffExprOnTop then 
+			--if not diffExprOnTop then
 				s:insert(self.parCloseSymbol)
 			--end
 			return s
@@ -354,7 +358,7 @@ LaTeX.lookupTable = {
 		end
 	
 		local bottom = table()
-		for name,power in pairs(powersForDeriv) do	
+		for name,power in pairs(powersForDeriv) do
 			bottom:insert(d)
 			bottom:insert(name)
 			if power > 1 then
@@ -363,8 +367,8 @@ LaTeX.lookupTable = {
 			end
 		end
 		local s = table{
-			'\\frac', 
-			table(top, {force=true}), 
+			'\\frac',
+			table(top, {force=true}),
 			table(bottom, {force=true}),
 		}
 		
@@ -416,7 +420,7 @@ LaTeX.lookupTable = {
 
 		local rows = table()
 		for i=1,#expr do
-			if type(expr[i]) ~= 'table' then 
+			if type(expr[i]) ~= 'table' then
 				error("expected matrix children to be Arrays (or at least tables), but got ("..type(expr[i])..") "..tostring(expr[i]))
 			end
 			rows[i] = omit(tableConcat(range(#expr[i]):map(function(j)
@@ -448,7 +452,7 @@ LaTeX.lookupTable = {
 		return s
 	end,
 	[require 'symmath.abs'] = function(self, expr)
-		return table{'|', self:apply(expr[1]), '|'}
+		return table{'\\left|', self:apply(expr[1]), '\\right|'}
 	end,
 	[require 'symmath.Sum'] = function(self, expr)
 		local s = table{'\\sum'}
@@ -490,13 +494,19 @@ LaTeX.lookupTable = {
 				s:insert(table{'{'}:append(self:apply(to)):append{'}'})
 			end
 		end
-		if var then
+		
+		if var and self.integralDxBeforeExpr then
 			s:insert'd'
 			s:insert(self:apply(var))
 		end
-		s:insert(self.parOpenSymbol)
-		s:insert(self:apply(intexpr))
-		s:insert(self.parCloseSymbol)
+	
+		s:insert(self:wrapStrOfChildWithParenthesis(expr, 1))
+		
+		if var and not self.integralDxBeforeExpr then
+			s:insert'd'
+			s:insert(self:apply(var))
+		end
+
 		return s
 	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
@@ -523,7 +533,7 @@ LaTeX.lookupTable = {
 	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
 		local s = ''
 		if expr.derivative then
-			s = expr.derivative .. s 
+			s = expr.derivative .. s
 		end
 		if expr.symbol then
 			local symmath = require 'symmath'
@@ -546,7 +556,7 @@ LaTeX.lookupTable = {
 function LaTeX:applyLaTeX(...)
 	local result = LaTeX.super.__call(self, ...)
 
-	-- now combine the symbols conscious of LaTeX grammar ... 
+	-- now combine the symbols conscious of LaTeX grammar ...
 
 	local function flatten(result)
 		if type(result) == 'string' then return result end
@@ -572,9 +582,9 @@ function LaTeX:applyLaTeX(...)
 		
 		--result = range(#result):map(function(i) return flatten(result[i]) end):concat' '
 		if force then
-			result = '{' .. result .. '}' 
-		elseif count > 1 and not omit then 
-			result = '{' .. result .. '}' 
+			result = '{' .. result .. '}'
+		elseif count > 1 and not omit then
+			result = '{' .. result .. '}'
 		else
 			result = ' ' .. result
 		end

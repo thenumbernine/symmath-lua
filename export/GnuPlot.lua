@@ -6,27 +6,13 @@ local GnuPlot = class(Language)
 
 GnuPlot.name = 'GnuPlot'
 
+GnuPlot.constantPeriodRequired = true
+
 GnuPlot.lookupTable = setmetatable(table(GnuPlot.lookupTable, {
-	[require 'symmath.Constant'] = function(self, expr)
-		local s = tostring(expr.value)
-		if not s:find'%.' and not s:find'[eE]' then s = s .. '.' end
-		return s
-	end,
-	[require 'symmath.Invalid'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
 	[require 'symmath.Function'] = function(self, expr)
 		return expr:nameForExporter(self) .. '(' .. table.mapi(expr, function(x)
 			return (self:apply(x))
 		end):concat', ' .. ')'
-	end,
-	[require 'symmath.op.unm'] = function(self, expr)
-		return '(-'..self:apply(expr[1])..')'
-	end,
-	[require 'symmath.op.Binary'] = function(self, expr)
-		return '('..table.mapi(expr, function(x)
-			return (self:apply(x))
-		end):concat(expr:getSepStr(self))..')'
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		if expr[1] == require 'symmath'.e then
@@ -37,12 +23,6 @@ GnuPlot.lookupTable = setmetatable(table(GnuPlot.lookupTable, {
 			end):concat' ** '..')'
 		end
 	end,
-	[require 'symmath.Variable'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
-	[require 'symmath.Derivative'] = function(self, expr) 
-		error("can't compile differentiation.  replace() your diff'd content first!")
-	end,
 	[require 'symmath.Heaviside'] = function(self, expr)
 		return '('..self:apply(expr[1])..' >= 0.)'
 	end,
@@ -51,7 +31,7 @@ GnuPlot.lookupTable = setmetatable(table(GnuPlot.lookupTable, {
 -- TODO ... GnuPlot functions can't be multiple lines (I think)
 GnuPlot.generateParams = {
 	funcHeaderStart = function(self, name, inputs)
-		return name..'('
+		return (name or '')..'('
 	end,
 	funcHeaderEnd = ') =',
 }

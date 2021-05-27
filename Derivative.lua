@@ -69,6 +69,7 @@ Derivative.name = 'Derivative'
 Derivative.nameForExporterTable = table(Derivative.nameForExporterTable)
 Derivative.nameForExporterTable.Console = 'd'
 Derivative.nameForExporterTable.LaTeX = 'd'
+Derivative.nameForExporterTable.Language = 'd'	-- used as variable name prefixes
 
 -- base class is the total derivative
 Derivative.isPartial = false

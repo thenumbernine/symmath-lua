@@ -5,6 +5,7 @@ local Expression = require 'symmath.Expression'
 
 local Integral = class(Expression)
 Integral.name = 'Integral'
+Integral.precedence = 3.5	-- wrap + and unm
 
 -- Integral:init(expr, var[, start, finish])
 function Integral:expr() return self[1] end

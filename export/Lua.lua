@@ -8,12 +8,6 @@ local Lua = class(Language)
 Lua.name = 'Lua'
 
 Lua.lookupTable = setmetatable(table(Lua.lookupTable, {
-	[require 'symmath.Constant'] = function(self, expr)
-		return tostring(expr.value)
-	end,
-	[require 'symmath.Invalid'] = function(self, expr)
-		return '(0/0)'
-	end,
 	[require 'symmath.Function'] = function(self, expr)
 		--[[
 		TODO
@@ -51,21 +45,6 @@ Lua.lookupTable = setmetatable(table(Lua.lookupTable, {
 		local xs = self:apply(expr[1])
 		return '(('..xs..' >= 0) and 1 or 0)'
 	end,
-	[require 'symmath.op.unm'] = function(self, expr)
-		local sx1, sx2 = self:apply(expr[1])
-		return '(-'..sx1..')', sx2
-	end,
-	[require 'symmath.op.Binary'] = function(self, expr)
-		local predefs = table()
-		local s = table()
-		for i,x in ipairs(expr) do
-			local sx1, sx2 = self:apply(x)
-			s:insert(sx1)
-			predefs = table(predefs, sx2)
-		end
-		s = s:concat(expr:getSepStr(self))
-		return '('..s..')', predefs
-	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		local symmath = require 'symmath'
 		if expr[1] == symmath.e then
@@ -83,31 +62,13 @@ Lua.lookupTable = setmetatable(table(Lua.lookupTable, {
 			return '('..s..')', predefs
 		end
 	end,
-	[require 'symmath.Variable'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
-	[require 'symmath.Derivative'] = function(self, expr) 
-		error("can't compile differentiation.  replace() your diff'd content first!\n"
-		..(require 'symmath.export.MultiLine')(expr))
-	end,
-	[require 'symmath.Array'] = function(self, expr)
-		local predefs = table()
-		local s = table()
-		for i,x in ipairs(expr) do
-			local sx1, sx2 = self:apply(x)
-			s:insert(sx1)
-			predefs = table(predefs, sx2)
-		end
-		s = s:concat', '
-		return '{'..s..'}', predefs
-	end,
 }), nil)
 
 Lua.generateParams = {
 	localType = 'local',
 
 	funcHeaderStart = function(self, name, inputs)
-		return 'function '..name..'('
+		return 'function'..(name and (' '..name) or '')..'('
 	end,
 	funcHeaderEnd = ')',
 	funcFooter = 'end',

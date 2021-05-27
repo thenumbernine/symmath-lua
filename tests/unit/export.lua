@@ -64,6 +64,7 @@ local exprs = {
 	e,
 	pi,
 	inf,
+	invalid,
 	x,
 	y,
 	x + y,
@@ -129,8 +130,15 @@ local exprs = {
 
 	y:diff(x),
 	y:pdiff(x),
-	x:integrate(y),
-	x:integrate(y, 0, 1),
+	exp(x):diff(x),
+	sqrt(1-x^2):diff(x),
+
+	y:integrate(x),
+	y:integrate(x, 0, 1),
+	sqrt(1-x^2):integrate(x, -1, 1),
+	(-x):integrate(x, 0, 1),
+	(1+x):integrate(x, 0, 1),
+	
 	Array(x,y),
 	Matrix({x}, {y}),
 	Matrix{x, y},
@@ -166,10 +174,10 @@ for _,expr in ipairs(exprs) do
 			s = e(expr)
 		end, function(errstr)
 			error = 'error'
-			--error = errstr .. '\n' .. debug.traceback()
+			--error = '<pre>'..errstr .. '\n' .. debug.traceback()..'</pre>'
 		end)
 		if error then
-			print'<span style="color:red">error</span>'
+			print('<span style="color:red">'..error..'</span>')
 		else
 			if e.name == 'MultiLine' then
 				print'<pre>'

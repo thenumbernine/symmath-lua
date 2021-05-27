@@ -24,17 +24,9 @@ end
 
 C.numberType = 'double'
 
+C.constantPeriodRequired = true
+
 C.lookupTable = setmetatable(table(C.lookupTable, {
-	[require 'symmath.Constant'] = function(self, expr)
-		local s = tostring(expr.value)
-		if not s:find'e' then
-			if not s:find'%.' then s = s .. '.' end
-		end
-		return s
-	end,
-	[require 'symmath.Invalid'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local predefs = table()
 		local s = table()
@@ -57,10 +49,6 @@ C.lookupTable = setmetatable(table(C.lookupTable, {
 	[require 'symmath.Heaviside'] = function(self, expr)
 		local xs = self:apply(expr[1])
 		return '('..xs..' >= 0 ? 1 : 0)'
-	end,
-	[require 'symmath.op.unm'] = function(self, expr)
-		local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, 1)
-		return '-'..sx1, sx2
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		local symmath = require 'symmath'
@@ -93,33 +81,6 @@ C.lookupTable = setmetatable(table(C.lookupTable, {
 			end
 		end
 	end,
-	[require 'symmath.op.Binary'] = function(self, expr)
-		local predefs = table()
-		return table.mapi(expr, function(x,i)
-			local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, i)
-			predefs = table(predefs, sx2)
-			return sx1
-		end):concat(expr:getSepStr(self)), predefs
-	end,
-	[require 'symmath.Variable'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
-	[require 'symmath.Derivative'] = function(self, expr) 
-		error("can't compile differentiation.  replace() your diff'd content first!\n"
-		..(require 'symmath.export.MultiLine')(expr))
-	end,
-	[require 'symmath.Integral'] = function(self, expr) 
-		error("can't compile integration.  replace() your diff'd content first!\n"
-		..(require 'symmath.export.MultiLine')(expr))
-	end,
-	[require 'symmath.Array'] = function(self, expr)
-		local predefs = table()
-		return '{'..table.mapi(expr, function(x, i)
-			local sx1, sx2 = self:apply(x)
-			predefs = table(predefs, sx2)
-			return sx1
-		end):concat', '..'}', predefs
-	end,
 }), nil)
 
 C.generateParams = {
@@ -127,13 +88,16 @@ C.generateParams = {
 	lineEnd = ';',
 	
 	funcHeaderStart = function(self, name, inputs)
-		return 'void '..name..'('..self.numberType..'* out'
+		-- technically this is straying into C++ realm...
+		local prefix = name and ('void '..name) or '[]'
+		
+		return prefix..'('..self.numberType..'* out'
 			..(#inputs > 0 and ', ' or '')
 	end,
 	funcArgType = function(self) return self.numberType end,
 	funcHeaderEnd = ') {',
-	prepareOutputs = function(outputs) 
-		return 
+	prepareOutputs = function(outputs)
+		return
 			outputs:mapi(function(output,i)
 				return '\tout['..(i-1)..'] = '..output.name..';'
 			end):concat'\n'

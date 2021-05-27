@@ -7,12 +7,6 @@ local Mathematica = class(Language)
 Mathematica.name = 'Mathematica'
 
 Mathematica.lookupTable = setmetatable(table(Mathematica.lookupTable, {
-	[require 'symmath.Constant'] = function(self, expr)
-		return tostring(expr.value)
-	end,
-	[require 'symmath.Invalid'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
 	[require 'symmath.Function'] = function(self, expr)
 		--[[
 		TODO
@@ -41,21 +35,6 @@ Mathematica.lookupTable = setmetatable(table(Mathematica.lookupTable, {
 		end
 		return funcName .. '[' .. s .. ']', predefs
 	end,
-	[require 'symmath.op.unm'] = function(self, expr)
-		local sx1, sx2 = self:apply(expr[1])
-		return '(-'..sx1..')', sx2
-	end,
-	[require 'symmath.op.Binary'] = function(self, expr)
-		local predefs = table()
-		local s = table()
-		for i,x in ipairs(expr) do
-			local sx1, sx2 = self:apply(x)
-			s:insert(sx1)
-			predefs = table(predefs, sx2)
-		end
-		s = s:concat(expr:getSepStr(self))
-		return '('..s..')', predefs
-	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		if expr[1] == require 'symmath'.e then
 			local sx1, sx2 = self:apply(expr[2])
@@ -72,33 +51,17 @@ Mathematica.lookupTable = setmetatable(table(Mathematica.lookupTable, {
 			return '('..s..')', predefs
 		end
 	end,
-	[require 'symmath.Variable'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
-	[require 'symmath.Derivative'] = function(self, expr) 
-		error("can't compile differentiation.  replace() your diff'd content first!\n"
-		..(require 'symmath.export.MultiLine')(expr))
-	end,
-	[require 'symmath.Array'] = function(self, expr)
-		local predefs = table()
-		local s = table()
-		for i,x in ipairs(expr) do
-			local sx1, sx2 = self:apply(x)
-			s:insert(sx1)
-			predefs = table(predefs, sx2)
-		end
-		s = s:concat', '
-		return '{'..s..'}', predefs
-	end,
 }), nil)
 
 -- TODO get 'toFuncCode' working by providing these correctly
 Mathematica.generateParams = {
 	lineEnd = ';',
 	funcHeader = function(name, inputs)
-		return name..'['..inputs:mapi(function(input)
-			return input.name..'_'
-		end):concat', '..'] :='
+		return 
+			(name or '')	-- TODO what is Mathematica lambda syntax?
+			..'['..inputs:mapi(function(input)
+				return input.name..'_'
+			end):concat', '..'] :='
 	end,
 	returnCode = function(outputs)
 		return '\t'

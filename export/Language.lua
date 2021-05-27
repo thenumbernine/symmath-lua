@@ -5,15 +5,108 @@ parent class of all language-specific Export child classes
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Export = require 'symmath.export.Export'
-
+local symmath
 
 local Language = class(Export)
 
 Language.name = 'Language'
 
+Language.arrayOpenSymbol = '{'
+Language.arrayCloseSymbol = '}'
+
+Language.constantPeriodRequired = false
+
 -- some common rules for subclasses:
 Language.lookupTable = {
-	-- TODO re-encode to work with language valid variable names special chars 
+
+	[require 'symmath.Constant'] = function(self, expr)
+		local s = tostring(expr.value)
+		
+		if s:sub(-2) == '.0' then s = s:sub(1,-3) end
+		
+		if self.constantPeriodRequired
+		and not s:find'e'
+		and not s:find'%.' 
+		then 
+			s = s .. '.'
+		end
+		return s
+	end,
+	
+	[require 'symmath.Variable'] = function(self, expr)
+		return expr:nameForExporter(self)
+	end,
+	
+	[require 'symmath.Invalid'] = function(self, expr)
+		return expr:nameForExporter(self)
+	end,
+
+	[require 'symmath.op.Binary'] = function(self, expr)
+		local predefs = table()
+		return table.mapi(expr, function(x,i)
+			local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, i)
+			predefs = table(predefs, sx2)
+			return sx1
+		end):concat(expr:getSepStr(self)), predefs
+	end,
+
+	[require 'symmath.op.unm'] = function(self, expr)
+		local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, 1)
+		return '-'..sx1, sx2
+	end,
+
+	-- the 'predefs' idea is half baked.  temp vars of common subtrees might replace it. maybe it won't completely replace it.
+	[require 'symmath.Array'] = function(self, expr)
+		local predefs = table()
+		local s = table()
+		for i,x in ipairs(expr) do
+			local sx1, sx2 = self:apply(x)
+			s:insert(sx1)
+			predefs = table(predefs, sx2)
+		end
+		s = s:concat', '
+		return self.arrayOpenSymbol..s..self.arrayCloseSymbol, predefs
+	end,
+
+
+	[require 'symmath.Derivative'] = function(self, expr)
+		symmath = symmath or require 'symmath'
+		
+		if symmath.Variable:isa(expr[1]) then
+			return expr:nameForExporter(self)
+				..(#expr == 2 and '' or (#expr-1))
+				..expr[1]:nameForExporter(self)
+				..'_'..table.sub(expr, 2):mapi(function(x)
+					return 'd'..x:nameForExporter(self)
+				end):concat'_'
+		end
+
+		-- [[ this would make sense if the internal of the derivative was a function wrt the variables
+		-- but evaluating the derivative would remove a need for this in the first place
+		-- so ultimately, the most likely derivatives we will encounter here are unreplaced variables.
+		return 
+			expr:nameForExporter(self)
+			.. '('
+			.. self:toFuncCode{
+				input = table.sub(expr, 2),
+				output = {expr[1]},
+				func = nil,
+			}
+			..')'
+		--]]
+	
+		--[[
+		error("can't compile differentiation.  replace() your derivatives with variables or function parameters first!\n"
+			..symmath.export.MultiLine(expr))
+		--]]
+	end,
+	
+	[require 'symmath.Integral'] = function(self, expr)
+		error("can't compile integration.  replace() your diff'd content first!\n"
+		..(require 'symmath.export.MultiLine')(expr))
+	end,
+
+	-- TODO re-encode to work with language valid variable names special chars
 	-- but looking at TensorIndex's own tostring(), looks like that could be merged with Variable's exporter too ...
 	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
 		return (expr:__tostring()
@@ -35,18 +128,18 @@ args:
 			{var1, var2, {name3=var3}, ...}
 	output = this is what expressions are converted to code.
 			it's in the form:
-			{expr1, expr2, {name3=expr3}, ...}		
+			{expr1, expr2, {name3=expr3}, ...}
 	other arguments are forwarded on to toCodeInternal
 --]]
 function Language:toCode(args)
 	local input = args.input	-- does it matter if there are explicitly specified inputs?  maybe only if we want a function prototype?
 	local output = assert(args.output)
 	local output, input = self:prepareToCodeArgs(output, input)
--- TODO seems to be an error, if you use {name=expr} instead of just expr then the order of tmps is backwards	
+-- TODO seems to be an error, if you use {name=expr} instead of just expr then the order of tmps is backwards
 	assert(input)
 	return self:toCodeInternal(table(args, {
-		output = output, 
-		input = input, 
+		output = output,
+		input = input,
 	}))
 end
 
@@ -91,7 +184,7 @@ function Language:prepareToCodeArgs(outputs, inputs)
 			if Expression:isa(input) then
 				assert(Variable:isa(input), "can only implicitly use Variables for compile function parameters.  For non-variables, use {parameter_name = expression}")
 				fixedInputs:insert(input)
-			else 
+			else
 				-- if it's a table and not an Expression (the root of our class tree)
 				-- then assume it's a key/value pair
 				local found = false
@@ -170,7 +263,7 @@ function Language:toCodeInternal(args)
 	
 	exhaustive: when counting trees, count all permutations of + and * subtrees, and then when replacing them later, chop them up
 	
-	combined: when chopping them up, count which subtree is most often used, and then chop up now accordingly.  
+	combined: when chopping them up, count which subtree is most often used, and then chop up now accordingly.
 		the challenge is whatever counts go towards copies of the + or * permutation subtrees that match elsewhere will have to be thrown away if that particular chop scheme isn't used
 		because, depending on what subtree partition choices you use, the counts of other trees will be affected.
 
@@ -214,14 +307,14 @@ function Language:toCodeInternal(args)
 
 		--[=[ exhaustively enumerate all subtrees, then replace duplicates with temp vars
 
-		local allsubexprinfos = table()	
+		local allsubexprinfos = table()
 		local function recurse(expr)
 			local totalCount = 1
 			for _,x in ipairs(expr) do
 				totalCount = totalCount + recurse(x)
 			end
 			
-			if Expression:isa(expr) 
+			if Expression:isa(expr)
 			and not Constant:isa(expr)
 			and totalCount > 1
 			then
@@ -285,7 +378,7 @@ print('CHECKING SUBEXPR '..SingleLine(subexpr))
 					then
 						if x == subexpr then
 							count = count + 1
-							if count >= 2 then 
+							if count >= 2 then
 								found = true
 								return
 							end
@@ -309,7 +402,7 @@ print('CHECKING SUBEXPR '..SingleLine(subexpr))
 				local function recurse(expr)
 					for i=1,#expr do
 						local x = expr[i]
-						if Expression:isa(x) 
+						if Expression:isa(x)
 						and not Constant:isa(x)
 						then
 							if x == subexpr then
@@ -317,7 +410,7 @@ print('CHECKING SUBEXPR '..SingleLine(subexpr))
 									tmpvar = Variable(newvarname())
 									local tmpvardef = tmpvar:eq(subexpr)
 -- [[
-print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))								
+print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))
 --]]
 									tmpvardefs:insert(tmpvardef)
 								end
@@ -355,7 +448,7 @@ print('RESULTING EXPR '..SingleLine(expr))
 				if Expression:isa(x)
 				and not Constant:isa(x)
 				and #x > 0
-				then				
+				then
 					local tmpvar = Variable(newvarname())
 					local tmpvardef = tmpvar:eq(x)
 --[[
@@ -371,8 +464,8 @@ print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))
 		-- combine repeated temp vars
 		tmpvardefs = tmpvardefs:reverse()
 		local i = 2
-		local used = tmpvardefs:mapi(function(def) 
-			return 1, def[1].name 
+		local used = tmpvardefs:mapi(function(def)
+			return 1, def[1].name
 		end)
 		while i <= #tmpvardefs do
 			for j=1,i-1 do
@@ -395,7 +488,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 			end
 			i = i + 1
 		end
---print(require'ext.tolua'(used))	
+--print(require'ext.tolua'(used))
 		-- [[ reinsert temp vars used only once
 		for i=#tmpvardefs,1,-1 do
 			local def = tmpvardefs[i]
@@ -436,7 +529,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 
 	for i,expr in ipairs(exprs) do
 		local body, predefs = self:apply(expr, vars)
--- [=[ TODO what to do with predefs...  it was a first attempt at the subtree multi-expr generation 
+-- [=[ TODO what to do with predefs...  it was a first attempt at the subtree multi-expr generation
 		if predefs then
 			lines:append(table.keys(predefs))
 		end
@@ -452,6 +545,7 @@ args:
 	input = {var1, var2, {name3=var3}, ...}
 	output = {expr1, expr2, {name3=expr3}, ...}
 	func = name of function to generate
+		TODO support for lambdas ... via func name == nil?
 	other arguments are forwarded on to toCodeInternal
 --]]
 function Language:toFuncCode(args)
@@ -469,8 +563,8 @@ function Language:toFuncCode(args)
 	if genParams.funcHeader then
 		funcHeader = genParams.funcHeader(name, inputs)
 	else
-		funcHeader = 
-			(genParams.funcHeaderStart and genParams.funcHeaderStart(self, args.func or 'f', inputs) or '')
+		funcHeader =
+			(genParams.funcHeaderStart and genParams.funcHeaderStart(self, args.func, inputs) or '')
 			..inputs:mapi(function(input)
 				return argType..input:nameForExporter(self)
 			end):concat', '
@@ -487,7 +581,7 @@ function Language:toFuncCode(args)
 		):gsub('\n', '\n\t'),
 	}:append{
 		genParams.prepareOutputs and genParams.prepareOutputs(outputs) or nil,
-	}:append{	
+	}:append{
 		(function()
 			local ret = genParams.returnCode
 			if ret then return ret(outputs) end
