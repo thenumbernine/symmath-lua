@@ -11,6 +11,23 @@ local Language = class(Export)
 
 Language.name = 'Language'
 
+-- some common rules for subclasses:
+Language.lookupTable = {
+	-- TODO re-encode to work with language valid variable names special chars 
+	-- but looking at TensorIndex's own tostring(), looks like that could be merged with Variable's exporter too ...
+	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+		return (expr:__tostring()
+			:gsub('_', '_D')
+			:gsub('%^', '_U'))
+	end,
+
+	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+		return table.mapi(expr, function(x)
+			return self:apply(x)
+		end):concat()
+	end,
+}
+
 --[[
 args:
 	input = these are input parameters.  honestly they aren't used in 'toCode' anymore, only 'toFuncCode'.
@@ -479,13 +496,6 @@ function Language:toFuncCode(args)
 	}:append{
 		genParams.funcFooter or nil,
 	}:concat'\n'
-end
-
--- helper for subclasses.  TODO make this a rule here, and have subclasses copy rules from parent class.
-function Language:varNameForTensorRef(expr)
-	return table.mapi(expr, function(x)
-		return self:apply(x)
-	end):concat()
 end
 
 return Language

@@ -6,7 +6,7 @@ local Mathematica = class(Language)
 
 Mathematica.name = 'Mathematica'
 
-Mathematica.lookupTable = {
+Mathematica.lookupTable = setmetatable(table(Mathematica.lookupTable, {
 	[require 'symmath.Constant'] = function(self, expr)
 		return tostring(expr.value)
 	end,
@@ -90,24 +90,7 @@ Mathematica.lookupTable = {
 		s = s:concat', '
 		return '{'..s..'}', predefs
 	end,
-
--- [[ TODO put this block in Language, and have subclasses copy over lookupTable
--- and then inline the Language:varNameForTensorRef function
-	
-	-- TODO re-encode to work with language valid variable names special chars 
-	-- but looking at TensorIndex's own tostring(), looks like that could be merged with Variable's exporter too ...
-	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
-		return (expr:__tostring()
-			:gsub('_', '_D')
-			:gsub('%^', '_U'))
-	end,
-
-	-- TODO inherit lookupTable entry from export/Language.lua instead of just inheriting its function call
-	[require 'symmath.tensor.TensorRef'] = function(self, expr)
-		return self:varNameForTensorRef(expr)
-	end,
---]]
-}
+}), nil)
 
 -- TODO get 'toFuncCode' working by providing these correctly
 Mathematica.generateParams = {

@@ -2,12 +2,12 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>tests/unit/nameForExporter</title>
+		<title>tests/unit/export</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
 
-generated with Lua 5.3
+generated with LuaJIT 2.1.0-beta3
 <br>
 
 <br>
@@ -45,6 +45,7 @@ SingleLine
 </th>
 <th>
 LaTeX
+ / MathJax
 </th>
 <th>
 C
@@ -113,7 +114,7 @@ ii
 </td>
 <td>
 <pre class="pre-not-multiline">
-_i|0+i1
+_i|0+1i
 </pre>
 </td>
 <td>
@@ -815,39 +816,39 @@ $\frac{x}{2}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-x / 2.0
+x / 2.
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(x / 2.0)
+(x / 2)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(x / 2.0)
+(x / 2)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(x / 2.0)
+(x / 2.)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(x / 2.0)
+(x / 2)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-/[x, 2.0]
+/[x, 2]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	var("x") /
-	Constant(2.0)
+	Constant(2)
 )
 </pre>
 </td>
@@ -874,40 +875,40 @@ ${{\frac{1}{2}}} {{x}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-1.0 / 2.0 * x
+1. / 2. * x
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 / 2.0) * x)
+((1 / 2) * x)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 / 2.0) * x)
+((1 / 2) * x)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 / 2.0) * x)
+((1. / 2.) * x)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 / 2.0) * x)
+((1 / 2) * x)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-*[/[1.0, 2.0], x]
+*[/[1, 2], x]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	(
-		Constant(1.0) /
-		Constant(2.0)
+		Constant(1) /
+		Constant(2)
 	) *
 	var("x")
 )
@@ -934,38 +935,38 @@ ${{2}} {{x}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-2.0 * x
+2. * x
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 * x)
+(2 * x)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 * x)
+(2 * x)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 * x)
+(2. * x)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 * x)
+(2 * x)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-*[2.0, x]
+*[2, x]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
-	Constant(2.0) *
+	Constant(2) *
 	var("x")
 )
 </pre>
@@ -991,41 +992,41 @@ ${{2}} {{\left({{x} + {1}}\right)}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-2.0 * (x + 1.0)
+2. * (x + 1.)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 * (x + 1.0))
+(2 * (x + 1))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 * (x + 1.0))
+(2 * (x + 1))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 * (x + 1.0))
+(2. * (x + 1.))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 * (x + 1.0))
+(2 * (x + 1))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-*[2.0, +[x, 1.0]]
+*[2, +[x, 1]]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
-	Constant(2.0) *
+	Constant(2) *
 	(
 		var("x") +
-		Constant(1.0)
+		Constant(1)
 	)
 )
 </pre>
@@ -1057,34 +1058,34 @@ ${x}^{2}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-Math.pow(x, 2.0)
+Math.pow(x, 2)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(x ^ 2.0)
+(x ^ 2)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(x ** 2.0)
+(x ** 2.)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(x ^ 2.0)
+(x ^ 2)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[x, 2.0]
+^[x, 2]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	var("x") ^
-	Constant(2.0)
+	Constant(2)
 )
 </pre>
 </td>
@@ -1110,42 +1111,42 @@ ${\left({{1} + {x}}\right)}^{2}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 + x) * (1.0 + x))
+((1. + x) * (1. + x))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-Math.pow((1.0 + x), 2.0)
+Math.pow((1 + x), 2)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 + x) ^ 2.0)
+((1 + x) ^ 2)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 + x) ** 2.0)
+((1. + x) ** 2.)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 + x) ^ 2.0)
+((1 + x) ^ 2)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[+[1.0, x], 2.0]
+^[+[1, x], 2]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("x")
 	) ^
-	Constant(2.0)
+	Constant(2)
 )
 </pre>
 </td>
@@ -1171,43 +1172,43 @@ ${\left({{1} + {x}}\right)}^{{1} + {y}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-pow(1.0 + x, 1.0 + y)
+pow(1. + x, 1. + y)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-Math.pow((1.0 + x), (1.0 + y))
+Math.pow((1 + x), (1 + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 + x) ^ (1.0 + y))
+((1 + x) ^ (1 + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 + x) ** (1.0 + y))
+((1. + x) ** (1. + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-((1.0 + x) ^ (1.0 + y))
+((1 + x) ^ (1 + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[+[1.0, x], +[1.0, y]]
+^[+[1, x], +[1, y]]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("x")
 	) ^
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("y")
 	)
 )
@@ -1235,40 +1236,40 @@ ${2}^{{1} + {y}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-pow(2.0, 1.0 + y)
+pow(2., 1. + y)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-Math.pow(2.0, (1.0 + y))
+Math.pow(2, (1 + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 ^ (1.0 + y))
+(2 ^ (1 + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 ** (1.0 + y))
+(2. ** (1. + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(2.0 ^ (1.0 + y))
+(2 ^ (1 + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[2.0, +[1.0, y]]
+^[2, +[1, y]]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
-	Constant(2.0) ^
+	Constant(2) ^
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("y")
 	)
 )
@@ -1296,32 +1297,32 @@ $\exp\left({{1} + {y}}\right)$
 </td>
 <td>
 <pre class="pre-not-multiline">
-exp(1.0 + y)
+exp(1. + y)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-Math.exp((1.0 + y))
+Math.exp((1 + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-math.exp((1.0 + y))
+math.exp((1 + y))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(exp((1.0 + y)))
+(exp((1. + y)))
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-exp[(1.0 + y)]
+exp[(1 + y)]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[_e|2.718281828459, +[1.0, y]]
+^[_e|2.718281828459, +[1, y]]
 </pre>
 </td>
 <td>
@@ -1329,7 +1330,7 @@ exp[(1.0 + y)]
 (
 symmath.e ^
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("y")
 	)
 )
@@ -2826,9 +2827,9 @@ lim_x→0 y
 </td>
 <td>
 <pre class="pre-not-multiline">
-${\underset{ x\rightarrow 0}{\lim}} y$
+${\underset{ x\rightarrow 0}{\lim}}{{y}}$
 </pre>
-${\underset{ x\rightarrow 0}{\lim}} y$
+${\underset{ x\rightarrow 0}{\lim}}{{y}}$
 </td>
 <td>
 <span style="color:red">error</span>
@@ -2847,7 +2848,7 @@ ${\underset{ x\rightarrow 0}{\lim}} y$
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{y, x, 0.0, {}}
+Limit{y, x, 0, {}}
 </pre>
 </td>
 <td>
@@ -2855,7 +2856,7 @@ Limit{y, x, 0.0, {}}
 Limit(
 	var("y"),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	(
 
 	)
@@ -2881,9 +2882,9 @@ lim_x→0+ y
 </td>
 <td>
 <pre class="pre-not-multiline">
-${\underset{ x\rightarrow{ 0{}^+}}{\lim}} y$
+${\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{y}}$
 </pre>
-${\underset{ x\rightarrow{ 0{}^+}}{\lim}} y$
+${\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{y}}$
 </td>
 <td>
 <span style="color:red">error</span>
@@ -2902,7 +2903,7 @@ ${\underset{ x\rightarrow{ 0{}^+}}{\lim}} y$
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{y, x, 0.0, +{}}
+Limit{y, x, 0, +{}}
 </pre>
 </td>
 <td>
@@ -2910,7 +2911,7 @@ Limit{y, x, 0.0, +{}}
 Limit(
 	var("y"),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	+(
 
 	)
@@ -2936,9 +2937,9 @@ lim_x→0- y
 </td>
 <td>
 <pre class="pre-not-multiline">
-${\underset{ x\rightarrow{ 0{}^-}}{\lim}} y$
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{y}}$
 </pre>
-${\underset{ x\rightarrow{ 0{}^-}}{\lim}} y$
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{y}}$
 </td>
 <td>
 <span style="color:red">error</span>
@@ -2957,7 +2958,7 @@ ${\underset{ x\rightarrow{ 0{}^-}}{\lim}} y$
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{y, x, 0.0, -{}}
+Limit{y, x, 0, -{}}
 </pre>
 </td>
 <td>
@@ -2965,7 +2966,7 @@ Limit{y, x, 0.0, -{}}
 Limit(
 	var("y"),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	-(
 
 	)
@@ -2991,9 +2992,9 @@ lim_x→0- 1 / x
 </td>
 <td>
 <pre class="pre-not-multiline">
-${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{x}}$
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{x}}}$
 </pre>
-${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{x}}$
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{x}}}$
 </td>
 <td>
 <span style="color:red">error</span>
@@ -3012,18 +3013,18 @@ ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{x}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{/[1.0, x], x, 0.0, -{}}
+Limit{/[1, x], x, 0, -{}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 Limit(
 	(
-		Constant(1.0) /
+		Constant(1) /
 		var("x")
 	),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	-(
 
 	)
@@ -3049,9 +3050,9 @@ lim_x→0- 1 / x^2
 </td>
 <td>
 <pre class="pre-not-multiline">
-${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{{x}^{2}}}$
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}$
 </pre>
-${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{{x}^{2}}}$
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}$
 </td>
 <td>
 <span style="color:red">error</span>
@@ -3070,21 +3071,21 @@ ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\frac{1}{{x}^{2}}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{/[1.0, ^[x, 2.0]], x, 0.0, -{}}
+Limit{/[1, ^[x, 2]], x, 0, -{}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 Limit(
 	(
-		Constant(1.0) /
+		Constant(1) /
 		(
 			var("x") ^
-			Constant(2.0)
+			Constant(2)
 		)
 	),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	-(
 
 	)
@@ -3110,9 +3111,9 @@ lim_x→0- _e^(-1 / x)
 </td>
 <td>
 <pre class="pre-not-multiline">
-${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\exp\left({\frac{-1}{x}}\right)}$
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\exp\left({\frac{-1}{x}}\right)}}$
 </pre>
-${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\exp\left({\frac{-1}{x}}\right)}$
+${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\exp\left({\frac{-1}{x}}\right)}}$
 </td>
 <td>
 <span style="color:red">error</span>
@@ -3131,7 +3132,7 @@ ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{\exp\left({\frac{-1}{x}}\right)}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{^[_e|2.718281828459, /[-1.0, x]], x, 0.0, -{}}
+Limit{^[_e|2.718281828459, /[-1, x]], x, 0, -{}}
 </pre>
 </td>
 <td>
@@ -3140,13 +3141,128 @@ Limit(
 	(
 symmath.e ^
 		(
-			Constant(-1.0) /
+			Constant(-1) /
 			var("x")
 		)
 	),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	-(
+
+	)
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Limit</pre></td>
+<td>
+<pre>
+           
+lim        
+    (1 + x)
+x→0        
+           
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+lim_x→0 1 + x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\underset{ x\rightarrow 0}{\lim}}{{\left({{1} + {x}}\right)}}$
+</pre>
+${\underset{ x\rightarrow 0}{\lim}}{{\left({{1} + {x}}\right)}}$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit{+[1, x], x, 0, {}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit(
+	(
+		Constant(1) +
+		var("x")
+	),
+	var("x"),
+	Constant(0),
+	(
+
+	)
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Limit</pre></td>
+<td>
+<pre>
+        
+lim     
+    (-x)
+x→0     
+        
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+lim_x→0 -x
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+${\underset{ x\rightarrow 0}{\lim}}{{\left( -{x}\right)}}$
+</pre>
+${\underset{ x\rightarrow 0}{\lim}}{{\left( -{x}\right)}}$
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<span style="color:red">error</span>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit{unm(x), x, 0, {}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Limit(
+	-(
+		var("x")
+	),
+	var("x"),
+	Constant(0),
+	(
 
 	)
 )
@@ -3336,7 +3452,7 @@ $\int\limits_{{0}}^{{1}}d y\left( x\right)$
 </td>
 <td>
 <pre class="pre-not-multiline">
-Integral{x, y, 0.0, 1.0}
+Integral{x, y, 0, 1}
 </pre>
 </td>
 <td>
@@ -3344,8 +3460,8 @@ Integral{x, y, 0.0, 1.0}
 Integral(
 	var("x"),
 	var("y"),
-	Constant(0.0),
-	Constant(1.0)
+	Constant(0),
+	Constant(1)
 )
 </pre>
 </td>

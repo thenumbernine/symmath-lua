@@ -390,7 +390,9 @@ LaTeX.lookupTable = {
 				},
 				table{'\\lim', force=true},
 			},
-			self:apply(f),
+			
+			--self:apply(f),
+			self:wrapStrOfChildWithParenthesis(expr, 1),
 		}
 	end,
 	[require 'symmath.Array'] = function(self, expr)

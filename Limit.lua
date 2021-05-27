@@ -21,7 +21,9 @@ local Limit = class(Expression)
 Limit.name = 'Limit'
 
 -- higher than +, so wrap + with ()'s
-Limit.precedence = 2.5
+--Limit.precedence = 2.5
+-- higher than unm
+Limit.precedence = 3.5
 
 -- init: Limit(f(x),x,a, side): 
 -- lim(x->a)(f(x)) = Limit(f(x), x, a, side)

@@ -6,7 +6,7 @@ local GnuPlot = class(Language)
 
 GnuPlot.name = 'GnuPlot'
 
-GnuPlot.lookupTable = {
+GnuPlot.lookupTable = setmetatable(table(GnuPlot.lookupTable, {
 	[require 'symmath.Constant'] = function(self, expr)
 		local s = tostring(expr.value)
 		if not s:find'%.' and not s:find'[eE]' then s = s .. '.' end
@@ -46,24 +46,7 @@ GnuPlot.lookupTable = {
 	[require 'symmath.Heaviside'] = function(self, expr)
 		return '('..self:apply(expr[1])..' >= 0.)'
 	end,
-
--- [[ TODO put this block in Language, and have subclasses copy over lookupTable
--- and then inline the Language:varNameForTensorRef function
-	
-	-- TODO re-encode to work with language valid variable names special chars 
-	-- but looking at TensorIndex's own tostring(), looks like that could be merged with Variable's exporter too ...
-	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
-		return (expr:__tostring()
-			:gsub('_', '_D')
-			:gsub('%^', '_U'))
-	end,
-
-	-- TODO inherit lookupTable entry from export/Language.lua instead of just inheriting its function call
-	[require 'symmath.tensor.TensorRef'] = function(self, expr)
-		return self:varNameForTensorRef(expr)
-	end,
---]]
-}
+}), nil)
 
 -- TODO ... GnuPlot functions can't be multiple lines (I think)
 GnuPlot.generateParams = {

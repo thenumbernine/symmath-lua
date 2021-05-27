@@ -3,7 +3,7 @@
 require 'ext'
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='tests/unit/nameForExporter', pathToTryToFindMathJax='..'}}
+require 'symmath'.setup{env=env, MathJax={title='tests/unit/export', pathToTryToFindMathJax='..'}}
 
 printbr('generated with '..(jit and jit.version or _VERSION))
 printbr()
@@ -124,7 +124,9 @@ local exprs = {
 	(1/x):lim(x, 0, '-'),
 	(1/x^2):lim(x, 0, '-'),
 	exp(-1/x):lim(x, 0, '-'),
-	
+	(1+x):lim(x, 0),
+	(-x):lim(x, 0),
+
 	y:diff(x),
 	y:pdiff(x),
 	x:integrate(y),
@@ -149,6 +151,7 @@ print'<th>.name</th>'
 for _,e in ipairs(es) do
 	print'<th>'
 	print(e.name)
+	if e.name == 'LaTeX' then print(' / MathJax') end
 	print'</th>'
 end
 print'</tr>'
