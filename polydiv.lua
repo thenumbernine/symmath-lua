@@ -52,12 +52,15 @@ return function(a, b, x)
 
 --print('coeffs of res:')
 --for k,v in pairs(res) do print(k,v) end
-	local sum = symmath.Constant(0)
+	local sum = Constant(0)
 	local keys = table.keys(res):sort(function(a,b) return a > b end)
 	for _,k in ipairs(keys) do
 		local v = res[k]
 --print('adding', v, k)
-		sum = sum + v * (k == 0 and 1 or (k == 1 and x or x^k))
+		sum = sum + v * (k == 0 and Constant(1) or (k == 1 and x or x^k))
 	end
+
+-- TODO 'extra'  ... shouldn't it just be a part of 0? not if it is a function of x, but not a polynomial.
+
 	return sum + a / b
 end
