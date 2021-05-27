@@ -106,6 +106,7 @@ build = {
 		["symmath.physics.diffgeom"] = "physics/diffgeom.lua",
 		["symmath.physics.units"] = "physics/units.lua",
 		["symmath.polyCoeffs"] = "polyCoeffs.lua",
+		["symmath.polydiv"] = "polydiv.lua",
 		["symmath.prune"] = "prune.lua",
 		["symmath.replace"] = "replace.lua",
 		["symmath.server.conn"] = "server/conn.lua",

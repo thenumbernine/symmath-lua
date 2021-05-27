@@ -24,6 +24,7 @@ symmath.factorLinearSystem = require 'symmath.factorLinearSystem'
 symmath.tidy = require 'symmath.tidy'
 symmath.simplify = require 'symmath.simplify'
 symmath.polyCoeffs = require 'symmath.polyCoeffs'
+symmath.polydiv = require 'symmath.polydiv'
 symmath.taylor = require 'symmath.taylor'
 
 -- TODO finishme

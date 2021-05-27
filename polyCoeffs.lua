@@ -28,6 +28,8 @@ local function isXToTheNth(expr, x)
 end
 
 local function addToCoeffs(coeffs, n, expr)
+	local Constant = require 'symmath.Constant'
+	if Constant.isValue(expr, 0) then return end
 	if not coeffs[n] then
 		coeffs[n] = expr
 	else
