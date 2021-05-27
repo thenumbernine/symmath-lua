@@ -601,12 +601,12 @@ function LaTeX:__call(...)
 	return self.openSymbol .. result .. self.closeSymbol
 end
 
-local texSymbols = {}
+local texSymbols = table()
 for k in ([[
 alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
 nu xi omicron pi rho sigma tau upsilon phi chi psi omega
 ]]):gmatch'%S+' do
-	texSymbols[k] = '\\'..k
+	texSymbols:insert{k, '\\'..k}
 	
 	k = k:sub(1,1):upper() .. k:sub(2)
 	-- a few capitol Greek letters are also capitol Latin, so LaTeX doesn't support escapes for them:
@@ -625,10 +625,10 @@ nu xi omicron pi rho sigma tau upsilon phi chi psi omega
 		Tau = 'T',
 		Chi = 'X',
 	})[k] or ('\\'..k)
-	texSymbols[k] = v
+	texSymbols:insert{k, v}
 end
 -- sort these largest to smallest so replacements work
-table.sort(texSymbols, function(a,b) return #a > #b end)
+texSymbols:sort(function(a,b) return #a[1] > #b[1] end)
 
 LaTeX.header = [[
 \documentclass{article}
@@ -657,6 +657,8 @@ function LaTeX:fixVariableName(name)
 	if type(name) == 'number' then name = tostring(name) end
 	local i=1
 	while i < #name do
+		
+		-- automatically convert subscript/superscript within a name?
 		if i>1 then
 			if name:sub(i):match'^_' then
 				name = name:sub(1,i-1) .. '_{' .. name:sub(i+1) .. '}'
@@ -664,9 +666,11 @@ function LaTeX:fixVariableName(name)
 				name = name:sub(1,i-1) .. '^{' .. name:sub(i+1) .. '}'
 			end
 		end
+		
 		-- replace all greek letter names in the string with \\+the greek letter name
 		-- replace any tex symbols?  is this necessary?  I've already got inf handled
-		for symname, symchar in pairs(texSymbols) do
+		for _,v in ipairs(texSymbols) do
+			local symname, symchar = table.unpack(v)
 			if name:sub(i):match('^'..symname) then
 				name = name:sub(1,i-1) .. symchar .. name:sub(i+#symname)
 				i = i + #symname - 1
