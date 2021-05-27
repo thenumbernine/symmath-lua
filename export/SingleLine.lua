@@ -55,7 +55,7 @@ SingleLine.lookupTable = {
 		return expr:nameForExporter(self)
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		local name = self:fixFunctionName(expr:nameForExporter(self))
+		local name = expr:nameForExporter(self)
 		return name..'(' .. table.mapi(expr, function(x)
 			return (self:apply(x))
 		end):concat(', ') .. ')'
@@ -74,10 +74,6 @@ SingleLine.lookupTable = {
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'
 		local name = expr:nameForExporter(self)
-		if symmath.fixVariableNames then
-			name = symmath.tostring:fixVariableName(name)
-		end
-		
 		local s = name
 		--if expr.value then s = s .. '|' .. expr.value end
 		return s
@@ -118,14 +114,6 @@ SingleLine.lookupTable = {
 			
 			-- get the var's name for this exporter
 			name = var:nameForExporter(self)
-		
-			-- see if it we are supposed to fix this
-			-- when is it not a string?
-			if type(name) == 'string'	
-			and symmath.fixVariableNames
-			then
-				name = symmath.tostring:fixVariableName(name)
-			end
 			
 			local s = d..name
 			if power > 1 then

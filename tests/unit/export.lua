@@ -25,9 +25,11 @@ print[[
 }
 table {
 	table-layout: fixed;
-	width: 100%;
+	width:100%;
+	border-collapse:collapse;
 }
-td {
+td, th {
+	border:1px solid black;
 	padding: 5px;
 }
 </style>
@@ -153,46 +155,81 @@ local exprs = {
 	x' ^\\mu ^\\nu',
 }
 
-print'<table border="1" style="border-collapse:collapse">'
-print'<tr>'
-print'<th>.name</th>'
-for _,e in ipairs(es) do
-	print'<th>'
-	print(e.name)
-	if e.name == 'LaTeX' then print(' / MathJax') end
-	print'</th>'
-end
-print'</tr>'
-for _,expr in ipairs(exprs) do
-	print'<tr>'
-	print('<td><pre>'..expr.name..'</pre></td>')
-	for _,e in ipairs(es) do
-		print'<td>'
-		local s
-		local error
-		xpcall(function()
-			s = e(expr)
-		end, function(errstr)
-			error = 'error'
-			--error = '<pre>'..errstr .. '\n' .. debug.traceback()..'</pre>'
-		end)
-		if error then
-			print('<span style="color:red">'..error..'</span>')
-		else
-			if e.name == 'MultiLine' then
-				print'<pre>'
-			else
-				print'<pre class="pre-not-multiline">'
-			end
-			print(s)
-			print'</pre>'
-			if e.name == 'LaTeX' then	-- since this is a Mathjax document, why not use it
-				print(s)
-			end
+-- vars have to be rebuilt after changing 'fixVariableNames'
+local function buildExprsFixVarNames()
+	return table.mapi(
+		require 'symmath.tensor.symbols'.greekSymbolNames,
+		function(name)
+			return var(name)
 		end
+	)
+	:append{
+		x' _mu',
+		x' ^mu',
+		x' _mu _nu',
+		x' ^mu ^nu',
 
-		print'</td>'
+	}
+end
+
+local function tableForExprs(exprs)
+	print'<table>'
+	print'<tr>'
+	print'<th>.name</th>'
+	for _,e in ipairs(es) do
+		print'<th>'
+		print(e.name)
+		if e.name == 'LaTeX' then print(' / MathJax') end
+		print'</th>'
 	end
 	print'</tr>'
+	for _,expr in ipairs(exprs) do
+		print'<tr>'
+		print('<td><pre>'..expr.name..'</pre></td>')
+		for _,e in ipairs(es) do
+			print'<td>'
+			local s
+			local error
+			xpcall(function()
+				s = e(expr)
+			end, function(errstr)
+				error = 'error'
+				--error = '<pre>'..errstr .. '\n' .. debug.traceback()..'</pre>'
+			end)
+			if error then
+				print('<span style="color:red">'..error..'</span>')
+			else
+				if e.name == 'MultiLine' then
+					print'<pre>'
+				else
+					print'<pre class="pre-not-multiline">'
+				end
+				print(s)
+				print'</pre>'
+				if e.name == 'LaTeX' then	-- since this is a Mathjax document, why not use it
+					print(s)
+				end
+			end
+
+			print'</td>'
+		end
+		print'</tr>'
+	end
+	print'</table>'
 end
-print'</table>'
+
+tableForExprs(exprs)
+
+printbr()
+printbr()
+print('with symmath.fixVariableNames == false:')
+
+tableForExprs(buildExprsFixVarNames())
+
+
+printbr()
+printbr()
+print('with symmath.fixVariableNames == true:')
+
+symmath.fixVariableNames = true
+tableForExprs(buildExprsFixVarNames())

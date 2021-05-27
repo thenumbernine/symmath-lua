@@ -4,7 +4,12 @@ local Function = require 'symmath.Function'
 local symmath
 
 local sqrt = class(Function)
+
 sqrt.name = 'sqrt'
+sqrt.nameForExporterTable = {}
+sqrt.nameForExporterTable.Console = '√'
+sqrt.nameForExporterTable.LaTeX = '\\sqrt'
+
 sqrt.realFunc = math.sqrt
 sqrt.cplxFunc = require 'symmath.complex'.sqrt
 

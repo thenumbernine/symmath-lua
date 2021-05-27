@@ -1,6 +1,11 @@
 local table = require 'ext.table'
 
 local symmath = {}
+
+-- hack for require'ing symmath within the construction of symmath's namespace without causing a require() infinite loop
+-- so instead of require 'symmath', preferrable is require 'symmath.namespace'()
+require 'symmath.namespace'(symmath)
+
 symmath.verbose = false
 symmath.simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
 symmath.debugSimplifyLoops = false		-- whether to debug simplification loops
@@ -64,6 +69,9 @@ symmath.export = {
 	SingleLine = require 'symmath.export.SingleLine',
 	SymMath = require 'symmath.export.SymMath',
 	Verbose = require 'symmath.export.Verbose',
+	-- abstract class, not a singleton:
+	Console = require 'symmath.export.Console',
+	Language = require 'symmath.export.Language',
 }
 
 --[[
@@ -257,10 +265,11 @@ symmath.inf = symmath.Constant(math.huge, 'infty')	-- TODO use 'infinite' or 'in
 -- a temporary fix in the mean time ... I'll use '_i' for the name and swap it out with a unicode char, just like Mathematica does.  
 -- This way users who use 'i' as an arbitrary variable won't have it collide with symmath.i
 -- (why not use unicode all around?  don't use unicode escape codes, since lua 5.2 can't handle it with string length, but just use unicode strings here.)
-symmath.i = symmath.Variable('_i', nil, symmath.complex(0,1))	-- ⅈ (doesn't show up in Windows Consolas)
-symmath.e = symmath.Variable('_e', nil, math.exp(1))			-- ⅇ (doesn't show up in Windows Consolas)
-symmath.pi = symmath.Variable('π', nil, math.pi)				-- π
-symmath.inf = symmath.Variable('inf', nil, math.huge)		-- ∞
+symmath.i = symmath.Variable('_i', nil, symmath.complex(0,1), nil, symmath)	-- ⅈ (doesn't show up in Windows Consolas)
+symmath.e = symmath.Variable('_e', nil, math.exp(1), nil, symmath)			-- ⅇ (doesn't show up in Windows Consolas)
+symmath.pi = symmath.Variable('π', nil, math.pi, nil, symmath)				-- π
+symmath.inf = symmath.Variable('inf', nil, math.huge, nil, symmath)		-- ∞
+-- TODO symmath.nan = symmath.Variable('nan', nil, math.nan, nil, symmath)	-- ¿
 --]]
 	
 do

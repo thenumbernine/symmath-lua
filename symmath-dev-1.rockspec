@@ -84,6 +84,7 @@ build = {
 		["symmath.matrix.trace"] = "matrix/trace.lua",
 		["symmath.matrix.transpose"] = "matrix/transpose.lua",
 		["symmath.multiplicity"] = "multiplicity.lua",
+		["symmath.namespace"] = "namespace.lua",
 		["symmath.op.Binary"] = "op/Binary.lua",
 		["symmath.op.Equation"] = "op/Equation.lua",
 		["symmath.op.add"] = "op/add.lua",

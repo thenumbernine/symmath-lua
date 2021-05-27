@@ -158,20 +158,26 @@ LaTeX.lookupTable = {
 	end,
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr:nameForExporter(self)
-
 		name = prepareName(name)
-
-		return table{prepareName(name), '\\left(',
+		return table{
+			prepareName(name), '\\left(',
 			tableConcat(range(#expr):map(function(i)
 				return self:apply(expr[i])
 			end), ','),
-			'\\right)'}
+			'\\right)',
+		}
 	end,
 	[require 'symmath.sqrt'] = function(self, expr)
-		return table{'\\sqrt', table(self:apply(expr[1]), {force=true})}
+		return table{
+			expr:nameForExporter(self),
+			table(self:apply(expr[1]), {force=true}),
+		}
 	end,
 	[require 'symmath.cbrt'] = function(self, expr)
-		return table{'\\sqrt[3]', table(self:apply(expr[1]), {force=true})}
+		return table{
+			expr:nameForExporter(self),
+			table(self:apply(expr[1]), {force=true}),
+		}
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		local res = table{'-'}:append(self:wrapStrOfChildWithParenthesis(expr, 1))
@@ -284,14 +290,7 @@ LaTeX.lookupTable = {
 	[require 'symmath.Variable'] = function(self, expr)
 		local symmath = require 'symmath'
 		local name = expr:nameForExporter(self)
-		
-		-- fixVariableNames might mess us up ...
-		if symmath.fixVariableNames then
-			name = symmath.tostring:fixVariableName(name)
-		end
-		
 		local s = table{prepareName(name)}
-		
 		--if expr.value then s:append{'|', expr.value} end
 		return s
 	end,
@@ -606,11 +605,27 @@ local texSymbols = {}
 for k in ([[
 alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
 nu xi omicron pi rho sigma tau upsilon phi chi psi omega
-hBar infty
 ]]):gmatch'%S+' do
-	table.insert(texSymbols, k)
+	texSymbols[k] = '\\'..k
+	
 	k = k:sub(1,1):upper() .. k:sub(2)
-	table.insert(texSymbols, k)
+	-- a few capitol Greek letters are also capitol Latin, so LaTeX doesn't support escapes for them:
+	local v = ({
+		Alpha = 'A',
+		Beta = 'B',
+		Epsilon = 'E',
+		Zeta = 'Z',
+		Eta = 'H',
+		Iota = 'I',
+		Kappa = 'K',
+		Mu = 'M',
+		Nu = 'N',
+		Omicron = 'O',
+		Rho = 'P',
+		Tau = 'T',
+		Chi = 'X',
+	})[k] or ('\\'..k)
+	texSymbols[k] = v
 end
 -- sort these largest to smallest so replacements work
 table.sort(texSymbols, function(a,b) return #a > #b end)
@@ -650,10 +665,11 @@ function LaTeX:fixVariableName(name)
 			end
 		end
 		-- replace all greek letter names in the string with \\+the greek letter name
-		for _,w in ipairs(texSymbols) do
-			if name:sub(i):match('^'..w) then
-				name = name:sub(1,i-1) .. '\\' .. name:sub(i)
-				i = i + #w
+		-- replace any tex symbols?  is this necessary?  I've already got inf handled
+		for symname, symchar in pairs(texSymbols) do
+			if name:sub(i):match('^'..symname) then
+				name = name:sub(1,i-1) .. symchar .. name:sub(i+#symname)
+				i = i + #symname - 1
 			end
 		end
 		i=i+1

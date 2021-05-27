@@ -39,6 +39,21 @@ args:
 function Variable:init(name, dependentVars, value, set)
 	self.name = assert(name, "Variable expected name")
 
+	-- here, instead of in tostring()/Export, apply the 'fixVariableName'
+	-- so that all the exporter conditional stuff is handled by nameForExporter()
+	-- but how to avoid the require() infinite loop if symmath itself is building these Variables?
+	symmath = symmath or require 'symmath.namespace'()
+	if symmath.fixVariableNames then
+		self.nameForExporterTable = setmetatable(table(self.nameForExporterTable), nil)
+		-- manually apply over all exporters that have their own 'fixVariableName' functions
+		for _,exporter in ipairs{
+			'Console',
+			'LaTeX',
+		} do
+			self.nameForExporterTable[exporter] = symmath.export[exporter]:fixVariableName(self.name)
+		end
+	end
+
 	-- optional
 	self.value = value
 

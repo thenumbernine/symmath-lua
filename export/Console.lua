@@ -21,21 +21,12 @@ local orig = name
 			and not name:sub(i+#symname):match('%a')	-- check 'not %w' rather than %W so that '' will hit the condition 
 			then
 				name = name:sub(1,i-1) .. symchar .. name:sub(i+#symname)
+				i = i + #symname - 1
 			end
 		end
 		i=i+1
 	end
 	return name
 end
-
-Console.builtinFunctionNames = {
-	sqrt = '√',
-	--cbrt = '∛',	-- not supported by Windows Consolas ...
-}
-
-function Console:fixFunctionName(name)
-	return self.builtinFunctionNames[name] or name
-end
-
 
 return Console

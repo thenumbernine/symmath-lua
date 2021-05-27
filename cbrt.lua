@@ -5,7 +5,12 @@ local Function = require 'symmath.Function'
 local symmath
 
 local cbrt = class(Function)
+
 cbrt.name = 'cbrt'
+cbrt.nameForExporterTable = {}
+--cbrt.nameForExporterTable.Console = '∛' -- not supported by Windows Consolas
+cbrt.nameForExporterTable.LaTeX = '\\sqrt[3]'
+
 cbrt.realFunc = math.cbrt
 cbrt.cplxFunc = require 'symmath.complex'.cbrt
 

@@ -199,7 +199,7 @@ MultiLine.lookupTable = {
 		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Function'] = function(self, expr)
-		local name = self:fixFunctionName(expr:nameForExporter(self))
+		local name = expr:nameForExporter(self)
 		local res = {name..'('}
 		res = self:combine(res, self:apply(expr[1]))
 		local sep = {', '}
