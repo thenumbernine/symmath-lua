@@ -348,10 +348,14 @@ Expression.tidy = function(...)
 end
 Expression.simplify = require 'symmath.simplify'
 
-local polyCoeffs
 Expression.polyCoeffs = function(...) 
-	polyCoeffs = polyCoeffs or require 'symmath.polyCoeffs'
-	return polyCoeffs(...) 
+	symmath = symmath or require 'symmath'
+	return symmath.polyCoeffs(...) 
+end
+
+Expression.polydiv = function(...) 
+	symmath = symmath or require 'symmath'
+	return symmath.polydiv(...) 
 end
 
 Expression.eval = function(...) 
