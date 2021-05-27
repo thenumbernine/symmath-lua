@@ -84,6 +84,9 @@ SymMath.lookupTable = {
 			..indent..')'
 		return s
 	end,
+	[require 'symmath.Invalid'] = function(self, expr)
+		return expr:nameForExporter(self)
+	end,
 	[require 'symmath.Expression'] = function(self, expr, indent)
 		local name = expr:nameForExporter(self)
 		return indent..expr:nameForExporter(self)..'(\n'
