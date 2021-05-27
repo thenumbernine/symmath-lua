@@ -5,7 +5,8 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local Console = require 'symmath.export.Console'
 local SingleLine = require 'symmath.export.SingleLine'
-	
+local symmath
+
 -- luajit can do fine with unicode strings within the .lua file
 -- however what it can't do is compute their length in characters.
 -- that's why I'm defaulting to non-unicode characters.
@@ -292,6 +293,18 @@ MultiLine.lookupTable = {
 		if diffPower > 1 then
 			topText = topText .. '^'..diffPower
 		end
+		
+		topText = {topText}
+		symmath = symmath or require 'symmath'
+		local diffIsVar = symmath.Variable:isa(expr[1])
+		if diffIsVar then
+			local varText = self:apply(expr[1])
+			if diffPower > 1 then
+				varText = self:combine({' '}, varText)
+			end
+			topText = self:combine(topText, varText)
+		end
+		
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
 			-- TODO this will call SingleLine's var:nameForExporter
@@ -299,8 +312,8 @@ MultiLine.lookupTable = {
 			varname = SingleLine(var)
 			powersForDeriv[varname] = (powersForDeriv[varname] or 0) + 1
 		end
-		local lhs = self:fraction(
-			{topText},
+		local text = self:fraction(
+			topText,
 			{table.map(powersForDeriv, function(power, name, newtable) 
 				local s = d..name
 				if power > 1 then
@@ -308,8 +321,13 @@ MultiLine.lookupTable = {
 				end
 				return s, #newtable+1
 			end):concat' '})
-		local rhs = self:wrapStrOfChildWithParenthesis(expr, 1)
-		return self:combine(lhs, rhs)
+	
+		-- vars go on the top, exprs go to the right
+		if not diffIsVar then
+			local rhs = self:wrapStrOfChildWithParenthesis(expr, 1)
+			text = self:combine(text, rhs)
+		end
+		return text
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
 		local s = self:apply(expr[1])
@@ -386,32 +404,12 @@ MultiLine.lookupTable = {
 			wrap(res, nil, box)
 			return res
 		else
-			local parts = table()
+			local strs = {}
 			for i=1,#expr do
-				parts[i] = self:apply(expr[i])
+				strs[i] = {self:apply(expr[i])}
 			end
-			
-			local widths = parts:map(function(part) 
-				return strlen(part[1])
-			end)
-			local width = widths:sup() or 0
-			
-			local sep
-			local res = table()
-			for i=1,#parts do
-				res:insert(sep)
-				sep = (' '):rep(width)
-				local pad = (' '):rep(math.floor(math.max((width - widths[i]) / 2, 0)))
-				for j=1,#parts[i] do
-					res:insert(pad..parts[i][j])
-				end
-			end
-			for i=1,#res do
-				res[i] = res[i] .. (' '):rep(width - strlen(res[i]))
-			end
-	
+			local res = self:matrixBody(strs)
 			wrap(res, nil, box)
-			
 			return res
 		end
 	end,
@@ -440,7 +438,7 @@ MultiLine.lookupTable = {
 		return {expr:__tostring()}
 	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		local Array = symmath.Array
 		local TensorRef = require 'symmath.tensor.TensorRef'
 		local Variable = symmath.Variable

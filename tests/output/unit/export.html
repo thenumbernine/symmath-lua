@@ -126,41 +126,10 @@ symmath.i
 </td>
 </tr>
 <tr>
-<td><pre>_e</pre></td>
+<td><pre>e</pre></td>
 <td>
 <pre>
-_e
-</pre>
-</td>
-<td>
-<pre class="pre-not-multiline">
-_e
-</pre>
-</td>
-<td>
-<pre class="pre-not-multiline">
-$e$
-</pre>
-$e$
-</td>
-<td>
-<pre class="pre-not-multiline">
-M_E
-</pre>
-</td>
-<td>
-<pre class="pre-not-multiline">
-Math.exp(1)
-</pre>
-</td>
-<td>
-<pre class="pre-not-multiline">
-math.exp(1)
-</pre>
-</td>
-<td>
-<pre class="pre-not-multiline">
-exp(1.)
+e
 </pre>
 </td>
 <td>
@@ -170,12 +139,43 @@ e
 </td>
 <td>
 <pre class="pre-not-multiline">
-_e|2.718281828459
+$e$
+</pre>
+$e$
+</td>
+<td>
+<pre class="pre-not-multiline">
+e
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-symmath.e
+e
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+e
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+e
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+e
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+e
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+var("e")
 </pre>
 </td>
 </tr>
@@ -1336,55 +1336,55 @@ Math.pow(2, 1 + y)
 <td><pre>^</pre></td>
 <td>
 <pre>
-  (1 + y)
-_e       
+ (1 + y)
+e       
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-_e^(1 + y)
+e^(1 + y)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\exp\left({{1} + {y}}\right)$
+${e}^{{1} + {y}}$
 </pre>
-$\exp\left({{1} + {y}}\right)$
+${e}^{{1} + {y}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-exp(1. + y)
-</pre>
-</td>
-<td>
-<pre class="pre-not-multiline">
-Math.exp(1 + y)
+pow(e, 1. + y)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-math.exp(1 + y)
+Math.pow(e, 1 + y)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-(exp(1. + y))
+(e ^ 1 + y)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-exp[1 + y]
+(e ** 1. + y)
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[_e|2.718281828459, +[1, y]]
+(e ^ 1 + y)
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+^[e, +[1, y]]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
-symmath.e ^
+	var("e") ^
 	(
 		Constant(1) +
 		var("y")
@@ -3513,9 +3513,9 @@ Limit(
 <td><pre>Derivative</pre></td>
 <td>
 <pre>
-  d  
-╶──╴y
- dx  
+ dy 
+╶──╴
+ dx 
 </pre>
 </td>
 <td>
@@ -3572,9 +3572,9 @@ Derivative(
 <td><pre>PartialDerivative</pre></td>
 <td>
 <pre>
-  ∂  
-╶──╴y
- ∂x  
+ ∂y 
+╶──╴
+ ∂x 
 </pre>
 </td>
 <td>
@@ -3623,6 +3623,246 @@ PartialDerivative{y, x}
 PartialDerivative(
 	var("y"),
 	var("x")
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Derivative</pre></td>
+<td>
+<pre>
+ d^2 y 
+╶─────╴
+  dx^2 
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d^2/{dx^2}[y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\frac{d^ 2 y}{d x^ 2}$
+</pre>
+$\frac{d^ 2 y}{d x^ 2}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Derivative{y, x, x}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Derivative(
+	var("y"),
+	var("x"),
+	var("x")
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>PartialDerivative</pre></td>
+<td>
+<pre>
+ ∂^2 y 
+╶─────╴
+  ∂x^2 
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+∂^2/{∂x^2}[y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\frac{\partial^ 2 y}{\partial x^ 2}$
+</pre>
+$\frac{\partial^ 2 y}{\partial x^ 2}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dx
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+PartialDerivative{y, x, x}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+PartialDerivative(
+	var("y"),
+	var("x"),
+	var("x")
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Derivative</pre></td>
+<td>
+<pre>
+ d^2 y 
+╶─────╴
+ dy dx 
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d^2/{dy dx}[y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\frac{d^ 2 y}{d y d x}$
+</pre>
+$\frac{d^ 2 y}{d y d x}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+d2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Derivative{y, x, y}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Derivative(
+	var("y"),
+	var("x"),
+	var("y")
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>PartialDerivative</pre></td>
+<td>
+<pre>
+ ∂^2 y 
+╶─────╴
+ ∂y ∂x 
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+∂^2/{∂y ∂x}[y]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\frac{\partial^ 2 y}{\partial y\partial x}$
+</pre>
+$\frac{\partial^ 2 y}{\partial y\partial x}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+pd2y_dx_dy
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+PartialDerivative{y, x, y}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+PartialDerivative(
+	var("y"),
+	var("x"),
+	var("y")
 )
 </pre>
 </td>
@@ -4166,9 +4406,11 @@ Integral(
 <td><pre>Array</pre></td>
 <td>
 <pre>
-┌x┐
+┌ ┐
+│x│
 │ │
-└y┘
+│y│
+└ ┘
 </pre>
 </td>
 <td>
@@ -4351,65 +4593,321 @@ Matrix(
 <td><pre>Matrix</pre></td>
 <td>
 <pre>
-┌┌    ┐┐
-││a  b││
-││    ││
-││c  d││
-└└    ┘┘
+┌    ┐
+│a  b│
+│    │
+│c  d│
+└    ┘
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-[[[a, b], [c, d]]]
+[[a, b], [c, d]]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\left[ \begin{matrix}  \left[ \begin{matrix} a \\ b\end{matrix} \right] &  \left[ \begin{matrix} c \\ d\end{matrix} \right]\end{matrix} \right]$
+$\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]$
 </pre>
-$\left[ \begin{matrix}  \left[ \begin{matrix} a \\ b\end{matrix} \right] &  \left[ \begin{matrix} c \\ d\end{matrix} \right]\end{matrix} \right]$
+$\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]$
 </td>
 <td>
 <pre class="pre-not-multiline">
-{{{a, b}, {c, d}}}
-</pre>
-</td>
-<td>
-<pre class="pre-not-multiline">
-[[[a, b], [c, d]]]
+{{a, b}, {c, d}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-{{{a, b}, {c, d}}}
+[[a, b], [c, d]]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-{{{a, b}, {c, d}}}
+{{a, b}, {c, d}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-{{{a, b}, {c, d}}}
+{{a, b}, {c, d}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-Matrix{Matrix{Matrix{a, b}, Matrix{c, d}}}
+{{a, b}, {c, d}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Matrix{Matrix{a, b}, Matrix{c, d}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 Matrix(
 	Matrix(
-		Matrix(
+		var("a"),
+		var("b")
+	),
+	Matrix(
+		var("c"),
+		var("d")
+	)
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Tensor</pre></td>
+<td>
+<pre>
+_i↓
+┌ ┐
+│a│
+│ │
+│b│
+└ ┘
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[a, b]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\overset{i\downarrow}{\left[ \begin{matrix} a \\ b\end{matrix} \right]}$
+</pre>
+$\overset{i\downarrow}{\left[ \begin{matrix} a \\ b\end{matrix} \right]}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+{a, b}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[a, b]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{a, b}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{a, b}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{a, b}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Tensor{a, b}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Tensor(
+	{
+TensorIndex{lower=true, symbol="i"}
+	},
+	var("a"),
+	var("b")
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Tensor</pre></td>
+<td>
+<pre>
+_i↓_j→
+┌    ┐
+│a  b│
+│    │
+│c  d│
+└    ┘
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[a, b], [c, d]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\overset{i\downarrow j\rightarrow}{\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]}$
+</pre>
+$\overset{i\downarrow j\rightarrow}{\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{a, b}, {c, d}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[a, b], [c, d]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{a, b}, {c, d}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{a, b}, {c, d}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{a, b}, {c, d}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Tensor{Tensor{a, b}, Tensor{c, d}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Tensor(
+	{
+TensorIndex{lower=true, symbol="i"},
+TensorIndex{lower=true, symbol="j"}
+	},
+	Tensor(
+		{
+TensorIndex{lower=true, symbol="j"}
+		},
+		var("a"),
+		var("b")
+	),
+	Tensor(
+		{
+TensorIndex{lower=true, symbol="j"}
+		},
+		var("c"),
+		var("d")
+	)
+)
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre>Tensor</pre></td>
+<td>
+<pre>
+_i↓[_j↓_k→]
+┌      ┐   
+│_j↓_k→│   
+│┌    ┐│   
+││a  b││   
+││    ││   
+││c  d││   
+│└    ┘│   
+│      │   
+│_j↓_k→│   
+│┌    ┐│   
+││e  f││   
+││    ││   
+││g  h││   
+│└    ┘│   
+└      ┘   
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[[a, b], [c, d]], [[e, f], [g, h]]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+$\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[ \begin{matrix} \overset{j\downarrow k\rightarrow}{\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]} \\ \overset{j\downarrow k\rightarrow}{\left[ \begin{matrix}  e &  f \\  g &  h\end{matrix} \right]}\end{matrix} \right]}$
+</pre>
+$\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[ \begin{matrix} \overset{j\downarrow k\rightarrow}{\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]} \\ \overset{j\downarrow k\rightarrow}{\left[ \begin{matrix}  e &  f \\  g &  h\end{matrix} \right]}\end{matrix} \right]}$
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{{a, b}, {c, d}}, {{e, f}, {g, h}}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+[[[a, b], [c, d]], [[e, f], [g, h]]]
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{{a, b}, {c, d}}, {{e, f}, {g, h}}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{{a, b}, {c, d}}, {{e, f}, {g, h}}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+{{{a, b}, {c, d}}, {{e, f}, {g, h}}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Tensor{Tensor{Tensor{a, b}, Tensor{c, d}}, Tensor{Tensor{e, f}, Tensor{g, h}}}
+</pre>
+</td>
+<td>
+<pre class="pre-not-multiline">
+Tensor(
+	{
+TensorIndex{lower=true, symbol="i"},
+TensorIndex{lower=true, symbol="j"},
+TensorIndex{lower=true, symbol="k"}
+	},
+	Tensor(
+		{
+TensorIndex{lower=true, symbol="j"},
+TensorIndex{lower=true, symbol="k"}
+		},
+		Tensor(
+			{
+TensorIndex{lower=true, symbol="k"}
+			},
 			var("a"),
 			var("b")
 		),
-		Matrix(
+		Tensor(
+			{
+TensorIndex{lower=true, symbol="k"}
+			},
 			var("c"),
 			var("d")
+		)
+	),
+	Tensor(
+		{
+TensorIndex{lower=true, symbol="j"},
+TensorIndex{lower=true, symbol="k"}
+		},
+		Tensor(
+			{
+TensorIndex{lower=true, symbol="k"}
+			},
+			var("e"),
+			var("f")
+		),
+		Tensor(
+			{
+TensorIndex{lower=true, symbol="k"}
+			},
+			var("g"),
+			var("h")
 		)
 	)
 )

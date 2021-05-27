@@ -58,7 +58,7 @@ local es = {
 
 
 
-local a,b,c,d = vars('a', 'b', 'c', 'd')
+local a,b,c,d,e,f,g,h = vars('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
 local x,y = vars('x', 'y')
 
 local exprs = {
@@ -132,6 +132,10 @@ local exprs = {
 
 	y:diff(x),
 	y:pdiff(x),
+	y:diff(x,x),
+	y:pdiff(x,x),
+	y:diff(x,y),
+	y:pdiff(x,y),
 	exp(x):diff(x),
 	sqrt(1-x^2):diff(x),
 
@@ -141,10 +145,15 @@ local exprs = {
 	(-x):integrate(x, 0, 1),
 	(1+x):integrate(x, 0, 1),
 	
-	Array(x,y),
-	Matrix({x}, {y}),
-	Matrix{x, y},
-	Matrix{{a, b}, {c,d}},
+	Array(x,y),				-- should these be row or column display?
+	Matrix({x}, {y}),		-- 2x1 matrix
+	Matrix{x, y},			-- 1x2 matrix
+	Matrix({a, b}, {c,d}),	-- 2x2 matrix
+	
+	Tensor('_i', a, b),
+	Tensor('_ij', {a, b}, {c, d}),
+	Tensor('_ijk', {{a, b}, {c, d}}, {{e, f}, {g, h}}),
+
 	x'_a',
 	x'^a',
 	x' _\\mu',
@@ -168,7 +177,6 @@ local function buildExprsFixVarNames()
 		x' ^mu',
 		x' _mu _nu',
 		x' ^mu ^nu',
-
 	}
 end
 

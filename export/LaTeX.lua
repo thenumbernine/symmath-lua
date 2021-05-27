@@ -352,6 +352,8 @@ LaTeX.lookupTable = {
 	
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
+			-- TODO this will call LaTeX's var:nameForExporter
+			-- so overrides specified for MultiLine will be ignored
 			local varname = self:applyLaTeX(var)
 			powersForDeriv[varname] = (powersForDeriv[varname] or 0) + 1
 		end
