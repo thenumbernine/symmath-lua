@@ -4,7 +4,11 @@ local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
 
 local Integral = class(Expression)
+
 Integral.name = 'Integral'
+Integral.nameForExporterTable = {}
+Integral.nameForExporterTable.Language = 'integrate'
+
 Integral.precedence = 3.5	-- wrap + and unm
 
 -- Integral:init(expr, var[, start, finish])

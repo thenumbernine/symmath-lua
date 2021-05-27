@@ -693,9 +693,9 @@ x % y
 </td>
 <td>
 <pre class="pre-not-multiline">
-${x} % {y}$
+${x} \mod {y}$
 </pre>
-${x} % {y}$
+${x} \mod {y}$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -2888,19 +2888,42 @@ ${\underset{ x\rightarrow 0}{\lim}}{{y}}$
 ${\underset{ x\rightarrow 0}{\lim}}{{y}}$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit([](double* out, double x) {
+	double out1 = y;
+	out[0] = out1;
+}, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit(function(x) {
+	var out1 = y;
+	return out1;
+}, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit(function(x)
+	local out1 = y
+	return out1
+end, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit((x) =
+	out1 = y
+	return out1, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit([x_] :=
+	out1 = y;
+	out1;, 0)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -2943,19 +2966,42 @@ ${\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{y}}$
 ${\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{y}}$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_plus([](double* out, double x) {
+	double out1 = y;
+	out[0] = out1;
+}, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_plus(function(x) {
+	var out1 = y;
+	return out1;
+}, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_plus(function(x)
+	local out1 = y
+	return out1
+end, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_plus((x) =
+	out1 = y
+	return out1, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_plus([x_] :=
+	out1 = y;
+	out1;, 0)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -2998,19 +3044,42 @@ ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{y}}$
 ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{y}}$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus([](double* out, double x) {
+	double out1 = y;
+	out[0] = out1;
+}, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus(function(x) {
+	var out1 = y;
+	return out1;
+}, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus(function(x)
+	local out1 = y
+	return out1
+end, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus((x) =
+	out1 = y
+	return out1, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus([x_] :=
+	out1 = y;
+	out1;, 0)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3053,19 +3122,42 @@ ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{x}}}$
 ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{x}}}$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus([](double* out, double x) {
+	double out1 = 1. / x;
+	out[0] = out1;
+}, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus(function(x) {
+	var out1 = 1 / x;
+	return out1;
+}, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus(function(x)
+	local out1 = 1 / x
+	return out1
+end, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus((x) =
+	out1 = 1. / x
+	return out1, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus([x_] :=
+	out1 = 1 / x;
+	out1;, 0)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3111,19 +3203,42 @@ ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}$
 ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus([](double* out, double x) {
+	double out1 = 1. / (x * x);
+	out[0] = out1;
+}, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus(function(x) {
+	var out1 = 1 / (x * x);
+	return out1;
+}, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus(function(x)
+	local out1 = 1 / (x * x)
+	return out1
+end, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus((x) =
+	out1 = 1. / (x * x)
+	return out1, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus([x_] :=
+	out1 = 1 / (x * x);
+	out1;, 0)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3172,19 +3287,42 @@ ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\exp\left({\frac{-1}{x}}\right)}}$
 ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\exp\left({\frac{-1}{x}}\right)}}$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus([](double* out, double x) {
+	double out1 = exp(-1. / x);
+	out[0] = out1;
+}, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus(function(x) {
+	var out1 = Math.exp(-1 / x);
+	return out1;
+}, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus(function(x)
+	local out1 = math.exp(-1 / x)
+	return out1
+end, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus((x) =
+	out1 = (exp(-1. / x))
+	return out1, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit_minus([x_] :=
+	out1 = exp[-1 / x];
+	out1;, 0)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3233,19 +3371,42 @@ ${\underset{ x\rightarrow 0}{\lim}}{{\left({{1} + {x}}\right)}}$
 ${\underset{ x\rightarrow 0}{\lim}}{{\left({{1} + {x}}\right)}}$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit([](double* out, double x) {
+	double out1 = 1. + x;
+	out[0] = out1;
+}, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit(function(x) {
+	var out1 = 1 + x;
+	return out1;
+}, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit(function(x)
+	local out1 = 1 + x
+	return out1
+end, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit((x) =
+	out1 = 1. + x
+	return out1, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit([x_] :=
+	out1 = 1 + x;
+	out1;, 0)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3291,19 +3452,42 @@ ${\underset{ x\rightarrow 0}{\lim}}{{\left( -{x}\right)}}$
 ${\underset{ x\rightarrow 0}{\lim}}{{\left( -{x}\right)}}$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit([](double* out, double x) {
+	double out1 = -x;
+	out[0] = out1;
+}, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit(function(x) {
+	var out1 = -x;
+	return out1;
+}, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit(function(x)
+	local out1 = -x
+	return out1
+end, 0)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit((x) =
+	out1 = -x
+	return out1, 0.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+limit([x_] :=
+	out1 = -x;
+	out1;, 0)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3618,19 +3802,42 @@ $\int{{y}}d x$
 $\int{{y}}d x$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([](double* out, double x) {
+	double out1 = y;
+	out[0] = out1;
+})
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x) {
+	var out1 = y;
+	return out1;
+})
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x)
+	local out1 = y
+	return out1
+end)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate((x) =
+	out1 = y
+	return out1)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([x_] :=
+	out1 = y;
+	out1;)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3667,19 +3874,42 @@ $\int\limits_{{0}}^{{1}}{{y}}d x$
 $\int\limits_{{0}}^{{1}}{{y}}d x$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([](double* out, double x) {
+	double out1 = y;
+	out[0] = out1;
+}, 0., 1.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x) {
+	var out1 = y;
+	return out1;
+}, 0, 1)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x)
+	local out1 = y
+	return out1
+end, 0, 1)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate((x) =
+	out1 = y
+	return out1, 0., 1.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([x_] :=
+	out1 = y;
+	out1;, 0, 1)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3718,19 +3948,42 @@ $\int\limits_{{-1}}^{{1}}{{\sqrt{{1} - {{x}^{2}}}}}d x$
 $\int\limits_{{-1}}^{{1}}{{\sqrt{{1} - {{x}^{2}}}}}d x$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([](double* out, double x) {
+	double out1 = sqrt(1. - x * x);
+	out[0] = out1;
+}, -1., 1.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x) {
+	var out1 = Math.sqrt(1 - x * x);
+	return out1;
+}, -1, 1)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x)
+	local out1 = math.sqrt(1 - x * x)
+	return out1
+end, -1, 1)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate((x) =
+	out1 = sqrt(1. - x * x)
+	return out1, -1., 1.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([x_] :=
+	out1 = sqrt[1 - x * x];
+	out1;, -1, 1)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3777,19 +4030,42 @@ $\int\limits_{{0}}^{{1}}{{\left( -{x}\right)}}d x$
 $\int\limits_{{0}}^{{1}}{{\left( -{x}\right)}}d x$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([](double* out, double x) {
+	double out1 = -x;
+	out[0] = out1;
+}, 0., 1.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x) {
+	var out1 = -x;
+	return out1;
+}, 0, 1)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x)
+	local out1 = -x
+	return out1
+end, 0, 1)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate((x) =
+	out1 = -x
+	return out1, 0., 1.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([x_] :=
+	out1 = -x;
+	out1;, 0, 1)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3830,19 +4106,42 @@ $\int\limits_{{0}}^{{1}}{{\left({{1} + {x}}\right)}}d x$
 $\int\limits_{{0}}^{{1}}{{\left({{1} + {x}}\right)}}d x$
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([](double* out, double x) {
+	double out1 = 1. + x;
+	out[0] = out1;
+}, 0., 1.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x) {
+	var out1 = 1 + x;
+	return out1;
+}, 0, 1)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate(function(x)
+	local out1 = 1 + x
+	return out1
+end, 0, 1)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate((x) =
+	out1 = 1. + x
+	return out1, 0., 1.)
+</pre>
 </td>
 <td>
-<span style="color:red">error</span>
+<pre class="pre-not-multiline">
+integrate([x_] :=
+	out1 = 1 + x;
+	out1;, 0, 1)
+</pre>
 </td>
 <td>
 <pre class="pre-not-multiline">

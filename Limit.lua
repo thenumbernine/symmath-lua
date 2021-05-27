@@ -19,6 +19,8 @@ end
 local Limit = class(Expression)
 
 Limit.name = 'Limit'
+Limit.nameForExporterTable = {}
+Limit.nameForExporterTable.Language = 'limit'
 
 -- higher than +, so wrap + with ()'s
 --Limit.precedence = 2.5

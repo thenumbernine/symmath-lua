@@ -68,6 +68,24 @@ Language.lookupTable = {
 		return self.arrayOpenSymbol..s..self.arrayCloseSymbol, predefs
 	end,
 
+	[require 'symmath.Limit'] = function(self, expr)
+		return 
+			expr:nameForExporter(self)
+			.. ({
+				[''] = '',
+				['+'] = '_plus',
+				['-'] = '_minus',
+			})[expr[4].name]
+			.. '('
+			.. self:toFuncCode{
+				input = {expr[2]},
+				output = {expr[1]},
+				func = nil,
+			}
+			..', '..self:apply(expr[3])
+			..')'
+	end,
+
 
 	[require 'symmath.Derivative'] = function(self, expr)
 		symmath = symmath or require 'symmath'
@@ -81,7 +99,7 @@ Language.lookupTable = {
 				end):concat'_'
 		end
 
-		-- [[ this would make sense if the internal of the derivative was a function wrt the variables
+		-- this would make sense if the internal of the derivative was a function wrt the variables
 		-- but evaluating the derivative would remove a need for this in the first place
 		-- so ultimately, the most likely derivatives we will encounter here are unreplaced variables.
 		return 
@@ -93,17 +111,19 @@ Language.lookupTable = {
 				func = nil,
 			}
 			..')'
-		--]]
-	
-		--[[
-		error("can't compile differentiation.  replace() your derivatives with variables or function parameters first!\n"
-			..symmath.export.MultiLine(expr))
-		--]]
 	end,
 	
 	[require 'symmath.Integral'] = function(self, expr)
-		error("can't compile integration.  replace() your diff'd content first!\n"
-		..(require 'symmath.export.MultiLine')(expr))
+		return 
+			expr:nameForExporter(self)
+			.. '('
+			.. self:toFuncCode{
+				input = {expr[2]},
+				output = {expr[1]},
+				func = nil,
+			}
+			..(#expr > 2 and (', '..self:apply(expr[3])..', '..self:apply(expr[4])) or '')
+			..')'
 	end,
 
 	-- TODO re-encode to work with language valid variable names special chars
