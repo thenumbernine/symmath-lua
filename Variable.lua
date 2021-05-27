@@ -44,13 +44,16 @@ function Variable:init(name, dependentVars, value, set)
 	-- but how to avoid the require() infinite loop if symmath itself is building these Variables?
 	symmath = symmath or require 'symmath.namespace'()
 	if symmath.fixVariableNames then
-		self.nameForExporterTable = setmetatable(table(self.nameForExporterTable), nil)
+			
 		-- manually apply over all exporters that have their own 'fixVariableName' functions
 		for _,exporter in ipairs{
 			'Console',
 			'LaTeX',
 		} do
-			self.nameForExporterTable[exporter] = symmath.export[exporter]:fixVariableName(self.name)
+			local overrideName = symmath.export[exporter]:fixVariableName(self.name)
+			if overrideName ~= self.name then
+				self:nameForExporter(exporter, overrideName)
+			end
 		end
 	end
 

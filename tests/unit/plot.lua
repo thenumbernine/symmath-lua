@@ -24,7 +24,7 @@ local function printAndRun(code)
 	run(code)
 end
 
-printbr'This only works with MathJax output at the moment.'
+printbr'This only works with MathJax inline SVG and Console output at the moment.'
 printbr()
 
 header'using the gnuplot language:'
@@ -50,6 +50,20 @@ GnuPlot:plot{
 	{x^2, title=GnuPlot(x^2)},
 	{x^3, title=GnuPlot(x^3)},
 }
+]]
+
+header'using plot member function:'
+printAndRun[[
+local symmath = require 'symmath'
+local x = symmath.var'x'
+-- unless it's assigned to another var, or an argument of a function call, math operators will screw up Lua grammar so a subsequent member call is ignored
+-- to get around this I'm wrapping the call in print()
+-- but take note: (x^2):plot(...) will cause a Lua error
+print((x^2):plot{
+	title = 'test expression',
+	xrange = {-2,2},
+	{title=GnuPlot(x^2)},	-- the first table is assumed to be associated with the calling expression 
+})
 ]]
 
 header'using Lua data for formula:'
@@ -94,4 +108,19 @@ GnuPlot:plot{
 	data = {xs, ys},
 	{using = '1:2', title = 'test data '..export.GnuPlot(f)},
 }
+]]
+
+header'using the gnuplot language:'
+printAndRun[[
+local symmath = require 'symmath'
+local GnuPlot = symmath.export.GnuPlot
+print'<pre>'
+GnuPlot:plot{
+	outputType = 'Console',
+	title = 'test plot',
+	xrange = {-2,2},
+	{'x**2.', title='test plot "x**2."'},
+	{'x**3.', title='test plot "x**3."'},
+}
+print'</pre>'
 ]]

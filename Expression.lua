@@ -1687,4 +1687,26 @@ function Expression:nameForExporter(...)
 	return oldName 
 end
 
+-- 
+function Expression:plot(args)
+	symmath = symmath or require 'symmath'
+
+	-- override args
+	args = args or {}
+	args[1] = args[1] or {}
+	args[1][1] = self
+	if not args.outputType then
+		if symmath.export.Console:isa(symmath.tostring) then
+			-- inline text
+			args.outputType = 'Console'
+		else
+			-- inline SVG
+			args.outputType = 'MathJax'
+		-- else TODO png? i guess you can just specify this in 'args' with 'terminal' and 'output'
+		end
+	end
+
+	symmath.export.GnuPlot:plot(args)
+end
+
 return Expression

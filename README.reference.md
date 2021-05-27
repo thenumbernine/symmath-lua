@@ -352,6 +352,8 @@ Produces SVG of a plot. Requires my `lua-gnuplot` library.
 Arguments are forwarded to the `gnuplot` lua module, with the expression provided in place of the plot command.  
 See the file `tests/unit/plot.lua` for examples of how to use this.
 
+`expr:plot(args)`
+Shorthand for calling GnuPlot on a single expression.  The output (text vs svg) is inferred from whatever exporter `symmath.tostring` is currently assigned to.
 
 ### Exporting / Code Generation
 

@@ -590,6 +590,8 @@ Produces SVG of a plot. Requires my `lua-gnuplot` library.
 Arguments are forwarded to the `gnuplot` lua module, with the expression provided in place of the plot command.  
 See the file `tests/unit/plot.lua` for examples of how to use this.
 
+`expr:plot(args)`
+Shorthand for calling GnuPlot on a single expression.  The output (text vs svg) is inferred from whatever exporter `symmath.tostring` is currently assigned to.
 
 ### Exporting / Code Generation
 
@@ -987,8 +989,6 @@ Output CDN URLs:
 [tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
 
 [tests/output/hyperbolic gamma driver in ADM terms](https://thenumbernine.github.io/symmath/tests/output/hyperbolic%20gamma%20driver%20in%20ADM%20terms.html)
-
-[tests/output/latex_spherical_metric](https://thenumbernine.github.io/symmath/tests/output/latex_spherical_metric.html)
 
 [tests/output/metric catalog](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog.html)
 
