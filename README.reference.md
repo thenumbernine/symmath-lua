@@ -421,6 +421,10 @@ LaTeX.matrixOpenSymbol = '\\left[ \\begin{matrix}'
 LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
 Change the characters wrapping matrices in LaTeX.
 
+`LaTeX.showDivConstAsMulFrac = true`
+When this is true, fractions with expressions in the numerator and nothing but a constant in the denominator are rewritten as having a leading 1/constant multiplied by the expression.
+Set this to false to always produce fractions as they are.
+
 `LaTeX.showExpAsFunction = true`
 By default symmath represents exp(x) as e^x, so when exporting expressions it will produce e^x instead of exp(x).  This flag lets you choose which output method to use.
 
