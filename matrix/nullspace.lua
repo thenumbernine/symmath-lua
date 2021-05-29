@@ -1,3 +1,6 @@
+local table = require 'ext.table'
+local range = require 'ext.range'
+
 -- returns a matrix with column vectors of the nullspace basis, or an empty table for no nullspace
 local function nullspace(A)
 	local Constant = require 'symmath.Constant'

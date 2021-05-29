@@ -41,7 +41,9 @@ return function(A, b, callback, allowRectangular, A_det)
 
 	-- expects A to be  
 	local dim = A:dim()
-	assert(#dim == 2, "expected A to be a rank-2 Array")
+	if #dim ~= 2 then
+		error("expected A to be a index-2 Array, found index-"..#dim)
+	end
 
 -- still toying with the notion of allowing rectangular matrices ...
 -- and simply returning what progress was made in the inversion
@@ -49,9 +51,11 @@ return function(A, b, callback, allowRectangular, A_det)
 -- I think I will make this assertion here for Matrix.inverse
 -- then remove it for another function called 'linsolve'
 -- and have the two use the same code
-if not allowRectangular then
-	assert(dim[1] == dim[2], "expected A to be square")
-end
+	if not allowRectangular then
+		if dim[1] ~= dim[2] then
+			error("expected A to be square, found dimensions "..dim[1]..", "..dim[2])
+		end
+	end
 
 	local m, n = dim[1], dim[2]
 

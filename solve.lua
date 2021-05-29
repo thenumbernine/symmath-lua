@@ -1,13 +1,11 @@
 local table = require 'ext.table'
 
-local function maxn(t)
-	local m = 0
-	for k,v in pairs(t) do
-		if type(k) == 'number' then
-			m = math.max(m, k)
-		end
+local function filterUnique(...)
+	local t = table()
+	for i=1,select('#', ...) do
+		t:insertUnique((select(i, ...)))
 	end
-	return m
+	return t:unpack()
 end
 
 --[[
@@ -33,6 +31,7 @@ local function solve(eqn, x, hasSimplified)
 	-- should I then simplify()
 	-- 		which cross-multiplies fractions and potentially changes denominators, and therefore solution sets
 	-- 		but also groups terms and therefore could reduce the # of variables in the equation
+	eqn = eqn:prune():factor()	-- or should I do this per-part?
 
 	-- count occurrences
 	local count = 0
@@ -55,6 +54,7 @@ local function solve(eqn, x, hasSimplified)
 	if count == 0 then
 		return nil, "couldn't find "..x.." in eqn "..eqn
 	end
+	
 	-- in this case, find the variable, reverse each operation above it 
 --print('solving for ',x)	
 	if count == 1 then
@@ -84,10 +84,14 @@ local function solve(eqn, x, hasSimplified)
 			solns = nextsolns
 --print('got',solns:unpack())
 		end
-	
-		return solns:map(function(soln) 
-			return x:eq(soln()) 
-		end):unpack()
+
+		-- fwiw here's the pathway that (x^2):eq(0) uses
+		return 
+		--filterUnique(
+			solns:mapi(function(soln) 
+				return x:eq(soln()) 
+			end):unpack()
+		--)
 	end
 	
 	-- otherwise, polynomial solver?
@@ -112,7 +116,10 @@ local function solve(eqn, x, hasSimplified)
 		local solns = notZero
 		-- TODO remove contraditions, {x!=y, x==y} => {x!=y}
 		solns:append{lhs[1]:eq(0):solve(x)}
-		return solns:unpack()
+		return 
+		--filterUnique(
+			solns:unpack()
+		--)
 	end
 --]]
 	
@@ -124,7 +131,10 @@ local function solve(eqn, x, hasSimplified)
 				solns:append{term:eq(0):solve(x)}
 			end
 		end
-		return solns:unpack()
+		return 
+		--filterUnique(
+			solns:unpack()
+		--)
 	end
 
 --print('looking for coeffs wrt',x)	
@@ -134,7 +144,7 @@ local function solve(eqn, x, hasSimplified)
 		return coeffs[n] or Constant(0)
 	end
 	
-	local n = maxn(coeffs)
+	local n = table.maxn(coeffs)
 
 	-- 'homogeneous' polynomial
 	if not coeffs.extra then
@@ -146,19 +156,28 @@ local function solve(eqn, x, hasSimplified)
 		-- quadratic solution
 		-- this is where factor() comes in handy ...
 		if n == 2 then
+--print('solving poly n==2')			
 			local a,b,c = getCoeff(2), getCoeff(1), getCoeff(0)
-			return eq(x, (-b-sqrt(b^2-4*a*c))/(2*a))(),
-					eq(x, (-b+sqrt(b^2-4*a*c))/(2*a))()
+			local res1 = eq(x, (-b-sqrt(b^2-4*a*c))/(2*a))()
+			local res2 = eq(x, (-b+sqrt(b^2-4*a*c))/(2*a))()
+			return 
+			--filterUnique(
+				res1, res2
+			--)
 		end
 		-- and on ...
 	
 		if n == 4 then
+--print('solving poly n==4')			
 			if not coeffs[1] and not coeffs[3] then
 				-- ax^4 + bx^2 + c
 				local a,b,c = getCoeff(4), getCoeff(2), getCoeff(0)
 				local res1 = eq(x, sqrt((-b-sqrt(b^2-4*a*c))/(2*a)))()
 				local res2 = eq(x, sqrt((-b+sqrt(b^2-4*a*c))/(2*a)))()
-				return res1, (-res1)(), res2, (-res2)()
+				return 
+				--filterUnique(
+					res1, (-res1)(), res2, (-res2)()
+				--)
 			end
 		end
 	end

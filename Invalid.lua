@@ -1,5 +1,5 @@
 --[[
-TODO rename this to 'indeterminate', as in 'indeterminate form':
+TODO rename this to "Indeterminate", as in "indeterminate form":
 https://en.wikipedia.org/wiki/Indeterminate_form
 https://functions.wolfram.com/Constants/Indeterminate/introductions/Symbols/ShowAll.html
 0/0, inf/inf, 0*inf, inf-inf, 0^0, 1^inf, inf^0

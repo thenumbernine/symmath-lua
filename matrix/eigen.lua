@@ -18,7 +18,7 @@ but provide functions for producing them?)
 
 args:
 	dontCalcL = don't calculate L = R:inverse()
-	lambdaVar = which lambda variable to use.  defaults to \\lambda.  TODO default to 'lambda' and rely upon 'fixVariableNames' more, for utf8 console support as well?
+	lambdaVar = which lambda variable to use.  defaults to 'lambda'.
 	lambdas = provide eigen with a list of lambdas, since its weakness is solving the char poly
 --]]
 
@@ -28,12 +28,18 @@ local function eigen(A, args)
 	local Matrix = symmath.Matrix
 	local var = symmath.var
 	local eigenVerbose = Matrix.eigenVerbose	
+	
+	local printbr	--debugging
+	if eigenVerbose then
+		printbr = _G.printbr or _G.print
+	end
+
 	if eigenVerbose then
 		printbr(var'A':eq(A))
 	end
 	A = A:clone()
-	
-	local lambda = args.lambdaVar or var'\\lambda'
+
+	local lambda = args.lambdaVar or var'lambda'
 	A:map(function(x) assert(x ~= lambda) end)
 
 	-- lambda * log(x) => log(x^lambda) is messing this up ...
@@ -46,19 +52,26 @@ local function eigen(A, args)
 		printbr(var'I':eq(I))
 	end	
 
+	local charPoly
 	local allLambdas
 	if args.lambdas then
 		allLambdas = table(args.lambdas)
 	else
 		local AminusLambda = (A - lambda * I)()
 		if eigenVerbose then
-			printbr((var'A' - var'\\lambda' * var'I'):eq(AminusLambda))
+			printbr((var'A' - lambda * var'I'):eq(AminusLambda))
 		end	
 	
-		local charPoly = AminusLambda:det{dontSimplify=true}:eq(0)
+		charPoly = AminusLambda:det{dontSimplify=true}:eq(0)
 		if eigenVerbose then
-			printbr(charPoly)
-		end	
+			printbr('charPoly', charPoly)
+		end
+
+		-- I have a bad feeling about this ...
+		charPoly = charPoly()
+		if eigenVerbose then
+			printbr('after simplify(), charPoly', charPoly)
+		end
 	
 		allLambdas = table{charPoly:solve(lambda)}
 		if eigenVerbose then
@@ -114,7 +127,7 @@ local function eigen(A, args)
 	if not (defective or args.dontCalcL) then
 		L = R:inverse() 
 		if eigenVerbose then
-				printbr(var'L':eq(L))
+			printbr(var'L':eq(L))
 		end	
 	end
 	
@@ -135,6 +148,7 @@ local function eigen(A, args)
 	return {
 		lambdas = lambdas,			-- this holds {expr=, mult=} multiplicity
 		allLambdas = allLambdas,	-- this just holds a list
+		charPoly = charPoly,
 		
 		Lambda = Lambda,
 		R = R,

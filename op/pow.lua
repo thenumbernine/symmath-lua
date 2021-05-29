@@ -68,16 +68,37 @@ function pow:expand()
 	end
 end
 
+-- TODO put this somewhere else
+local function rootOfUnity(j, n)
+	symmath = symmath or require 'symmath'
+	local theta = symmath.frac(2 * j, n) * symmath.pi
+	return (symmath.cos(theta) + symmath.i * symmath.sin(theta))()
+end
+
 function pow:reverse(soln, index)
 	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
 	local p,q = table.unpack(self)
 	-- y = p(x)^q => y^(1/q) = p(x)
 	if index == 1 then
-		-- TODO for q is integer, include all 1/q roots
-		-- here it is for square
-		if Constant.isValue(q, 2) then
-			return soln^(1/q), -soln^(1/q)
+		-- for q is integer, include all 1/q roots
+		
+		-- TODO positive integer please
+		if symmath.set.integer:contains(q)
+		and symmath.set.positiveReal:contains(q)
+		then
+			-- only provide all unity roots up to some 'n'
+			local n = q.value
+			if n <= 10 then
+				return range(0,q.value-1):mapi(function(i)
+					return rootOfUnity(i,n) * soln^(1/q)
+				end):unpack()
+			end
+			--[[ here it is for square
+			if Constant.isValue(q, 2) then
+				return soln^(1/q), -soln^(1/q)
+			end
+			--]]
 		end
 		
 		return soln^(1/q)

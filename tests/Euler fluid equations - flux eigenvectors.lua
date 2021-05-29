@@ -3,7 +3,7 @@ require 'ext'
 op = nil	-- make way for _G.op = symmath.op
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='Euler Fluid Equations - flux eigenvectors'}}
+require 'symmath'.setup{env=env, MathJax={title='Euler Fluid Equations - flux eigenvectors', showDivConstAsMulFrac=true}}
 
 local MathJax = symmath.export.MathJax
 
@@ -42,9 +42,10 @@ printbr(m_from_v, [[= momentum, in units of ]], kg/(m^2 * s))
 local gamma = var'\\gamma'
 printbr(gamma, [[= heat capacity ratio, in units of $[1]$]])
 
-local tildeGamma = var'\\tilde{\\gamma}'	-- = gamma - 1
-local tildeGamma_def = tildeGamma:eq(gamma - 1)
-printbr(tildeGamma_def)
+local gammaMinusOne = var'(\\gamma_{-1})'	-- = gamma - 1
+--local gammaMinusOne = var'\\tilde{\\gamma}'
+local gammaMinusOne_def = gammaMinusOne:eq(gamma - 1)
+printbr(gammaMinusOne_def)
 
 local P = var'P'		-- pressure
 printbr(P, [[= pressure, in units of ]], kg / (m * s^2))
@@ -67,7 +68,7 @@ printbr(e_kin_def, [[= specific kinetic energy, in units of]], m^2/s^2)
 printbr()
 
 local e_int = var'e_{int}'
-local e_int_def = e_int:eq(P / (tildeGamma * rho))		-- specific internal energy 
+local e_int_def = e_int:eq(P / (gammaMinusOne * rho))		-- specific internal energy 
 printbr(e_int_def, [[= specific internal energy, in units of]], m^2/s^2)
 printbr()
 
@@ -143,7 +144,7 @@ printbr(U'^I':diff(W'^J'):eq(dU_dW_def))
 local dW_dU_def = Matrix(
 	{1, 0, 0},
 	{-v'^i' / rho, delta'^i_j' / rho, 0},
-	{frac(1,2) * tildeGamma * vSq_wrt_v, -tildeGamma * v'_j', tildeGamma}
+	{frac(1,2) * gammaMinusOne * vSq_wrt_v, -gammaMinusOne * v'_j', gammaMinusOne}
 )
 printbr(W'^I':diff(U'^J'):eq(dW_dU_def))
 printbr()
@@ -185,8 +186,8 @@ dF_dW_def = dF_dW_def
 printbr(F'^I':diff(W'^J'):eq(dF_dW_def))
 
 dF_dW_def = dF_dW_def 
-	:subst(H_total_wrt_W:solve(P), tildeGamma_def)()
-	:subst(tildeGamma_def:solve(gamma))
+	:subst(H_total_wrt_W:solve(P), gammaMinusOne_def)()
+	:subst(gammaMinusOne_def:solve(gamma))
 	:replace(vSq_var, v'^b' * v'_b')
 dF_dW_def = dF_dW_def:simplifyAddMulDiv():tidyIndexes()
 dF_dW_def = dF_dW_def:simplifyAddMulDiv()
@@ -256,7 +257,7 @@ A_plus_delta_def = A_plus_delta_def:simplifyAddMulDiv()
 A_plus_delta_def = A_plus_delta_def  
 	:replace(n'^a' * v'_a', n'_a' * v'^a')
 	:replace(v'^a' * v'_a', vSq_var)
-	:subst(H_total_wrt_W, tildeGamma_def)()
+	:subst(H_total_wrt_W, gammaMinusOne_def)()
 printbr(A_lhs:eq(A_plus_delta_def))
 
 local A_def = (A_plus_delta_def - Matrix.identity(3) * Matrix:lambda({3,3}, function(i,j)
@@ -435,7 +436,7 @@ printbr()
 
 printbr'Acoustic matrix eigen-decomposition:'
 
-local eig = A_expanded:eigen()
+local eig = A_expanded:eigen{lambdaVar=var'\\lambda'}
 
 -- TODO if you want, (a) consider when n_1 = 0 or n_2 = 0
 -- and/or (b) just replace all the e_x, e_y cross n with a basis {n, n2, n3}
