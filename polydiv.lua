@@ -9,58 +9,37 @@ a:polydiv(b)
 returns a / b where a and b are polynomials wrt the variable x
 --]]
 return function(a, b, x)
---print('a', a)
---print('b', b)
---print('x', x)
-		
+	
+	if not x then
+		-- infer x.  from the highest variable integer power of a? ... of b?
+		-- from whatever the two have in common?
+	end
+
 	local res = {}
 
 	local cb = polyCoeffs(b, x)
---print('coeffs of b:')
---for k,v in pairs(cb) do print(k,v) end
 	local db = table.maxn(cb)
---print('degree of b', db)
 	local lb = cb[db]
---print('lead of b', lb)
 	
 	local ca = polyCoeffs(a, x)
---print('coeffs of a:')
---for k,v in pairs(ca) do print(k,v) end
 	local da = table.maxn(ca)
---print('degree of a', da)
 	local la = ca[da]
---print('lead of a', la)
 	
 	while da >= db do
 		local r = (la / lb)()
 		local i = da-db
---print('scaling by x^'..i)
 		res[i] = r:clone()
---print('setting res', i, 'to', r)		
 		a = (a - r * b * x^i)()
---print('new a:', a)		
 		ca = polyCoeffs(a, x)
---print('coeffs of a:')
---for k,v in pairs(ca) do print(k,v) end
 		da = table.maxn(ca)
---print('degree of a', da)
 		la = ca[da]
---print('lead of a', la)
-
---do break end
 	end
 
---print('coeffs of res:')
---for k,v in pairs(res) do print(k,v) end
 	local sum = Constant(0)
 	local keys = table.keys(res):sort(function(a,b) return a > b end)
 	for _,k in ipairs(keys) do
 		local v = res[k]
---print('adding', v, k)
 		sum = sum + v * (k == 0 and Constant(1) or (k == 1 and x or x^k))
 	end
-
--- TODO 'extra'  ... shouldn't it just be a part of 0? not if it is a function of x, but not a polynomial.
-
-	return sum + a / b
+	return sum + (a / b)()
 end

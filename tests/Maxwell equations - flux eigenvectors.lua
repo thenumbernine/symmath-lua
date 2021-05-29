@@ -2,7 +2,7 @@
 require 'ext'
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='Maxwell hyperbolic conservation law'}}
+require 'symmath'.setup{env=env, MathJax={title='Maxwell hyperbolic conservation law', showDivConstAsMulFrac=true}}
 
 local A = var'A'
 local B = var'B'
@@ -20,11 +20,38 @@ local epsilon = var'\\epsilon'
 local epsilonBar = var'\\bar{\\epsilon}'
 local mu = var'\\mu'
 
-printbr'state variables:'
+printbr(A'_u', '= Electromagnetic 4-potential')
 printbr()
 
-printbr((U'^I'):eq(Matrix{D'^i', B'^i'}:T()))
+printbr'Faraday tensor:'
+printbr(F'_uv':eq(A'_v,u' - A'_u,v'))
 printbr()
+
+printbr'Maxwell equations:'
+printbr(F'^uv_;v':eq(mu * J'^u'))
+printbr(var'\\star F''^uv_;v':eq(0))
+printbr((frac(1,2) * epsilon'^uvab' * F'_ab_;v'):eq(0))
+printbr()
+
+--[[
+TODO
+
+E^u = F^uv n_v
+
+E^u n_u = 0, because it is orthogonal to n
+F^uv n_u n_v = 0, because F is antisymmetric and n^2 is symmetric
+
+B^u = epsilon^uvab F_ab n_v
+
+for ADM: n_a = -alpha grad t = (for vars t,x^i) [-alpha, 0]
+
+so E^t = 0 and E^i is in reals
+
+alternative option: E_u = F_uv n^v
+
+then evaluate in a Minkowski metric frame
+
+--]]
 
 printbr'hyperbolic balance law:'
 printbr()
@@ -35,57 +62,37 @@ printbr()
 printbr'separating state variables:'
 printbr()
 
-printbr((D'^i_,t' - (frac(1,mu) * epsilon'^ijk' * B'_k')'_,j'):eq(0))
-printbr((B'^i_,t' + (frac(1,epsilon) * epsilon'^ijk' * D'_k')'_,j'):eq(J'^i'))
+local Ddef = (D'^i_,t' - (frac(1,mu) * epsilon'^ijk' * B'_k')'_,j'):eq(J'^i')
+local Bdef = (B'^i_,t' + (frac(1,epsilon) * epsilon'^ijk' * D'_k')'_,j'):eq(0)
+
+printbr(Ddef)
+printbr(Bdef)
 printbr()
 
-printbr((D'^i_,t' - (frac(1,mu) * epsilon'^ijk' * g'_kl' * B'^l')'_,j'):eq(0))
-printbr((B'^i_,t' + (frac(1,epsilon) * epsilon'^ijk' * g'_kl' * D'^l')'_,j'):eq(J'^i'))
+Ddef = Ddef:replace(B'_k', g'_kl' * B'^l')
+Bdef = Bdef:replace(D'_k', g'_kl' * D'^l')
+printbr(Ddef)
+printbr(Bdef)
 printbr()
 
-printbr((D'^i_,t' 
-	+ frac(1,mu^2) * mu'_,j' * epsilon'^ijk' * g'_kl' * B'^l'
-	- frac(1,mu) * epsilon'^ijk_,j' * g'_kl' * B'^l'
-	- frac(1,mu) * epsilon'^ijk' * g'_kl,j' * B'^l'
-	- frac(1,mu) * epsilon'^ijk' * g'_kl' * B'^l_,j'
-):eq(0))
-printbr((B'^i_,t' 
-	- frac(1,epsilon^2) * epsilon'_,j' * epsilon'^ijk' * g'_kl' * D'^l'
-	+ frac(1,epsilon) * epsilon'^ijk_,j' * g'_kl' * D'^l'
-	+ frac(1,epsilon) * epsilon'^ijk' * g'_kl,j' * D'^l'
-	+ frac(1,epsilon) * epsilon'^ijk' * g'_kl' * D'^l_,j'
-):eq(J'^i'))
+Ddef = Ddef:simplifyAddMulDiv():tidy()
+Bdef = Bdef:simplifyAddMulDiv():tidy()
+printbr(Ddef)
+printbr(Bdef)
 printbr()
 
-printbr((D'^i_,t' 
-	+ frac(1,mu^2) * mu'_,j' * epsilon'^ijk' * g'_kl' * B'^l'
-	- frac(1,mu) * (1/sqrt(g))'_,j' * epsilonBar'^ijk' * g'_kl' * B'^l'
-	- frac(1,mu) * epsilon'^ijk' * g'_kl,j' * B'^l'
-	- frac(1,mu) * epsilon'^ijk' * g'_kl' * B'^l_,j'
-):eq(0))
-printbr((B'^i_,t' 
-	- frac(1,epsilon^2) * epsilon'_,j' * epsilon'^ijk' * g'_kl' * D'^l'
-	+ frac(1,epsilon) * (1/sqrt(g))'_,j' * epsilonBar'^ijk' * g'_kl' * D'^l'
-	+ frac(1,epsilon) * epsilon'^ijk' * g'_kl,j' * D'^l_,j'
-	+ frac(1,epsilon) * epsilon'^ijk' * g'_kl' * D'^l_,j'
-):eq(J'^i'))
+Ddef = Ddef:replace(epsilon'^ijk_,j', frac(1, sqrt(g))'_,j' * epsilonBar'^ijk')
+Bdef = Bdef:replace(epsilon'^ijk_,j', frac(1, sqrt(g))'_,j' * epsilonBar'^ijk')
+printbr(Ddef)
+printbr(Bdef)
 printbr()
 
-printbr((D'^i_,t' 
-	- frac(1,mu) * epsilon'^ijk' * g'_kl' * B'^l_,j'
-):eq(
-	- frac(1,mu^2) * mu'_,j' * epsilon'^ijk' * g'_kl' * B'^l'
-	- frac(1,mu) * frac(sqrt(g)'_,j', sqrt(g)) * epsilon'^ijk' * g'_kl' * B'^l'
-	+ frac(1,mu) * epsilon'^ijk' * g'_kl,j' * B'^l'
-))
-printbr((B'^i_,t' 
-	+ frac(1,epsilon) * epsilon'^ijk' * g'_kl' * D'^l_,j'
-):eq(
-	J'^i'
-	+ frac(1,epsilon^2) * epsilon'_,j' * epsilon'^ijk' * g'_kl' * D'^l'
-	+ frac(1,epsilon) * frac(sqrt(g)'_,j', sqrt(g)) * epsilon'^ijk' * g'_kl' * D'^l'
-	- frac(1,epsilon) * epsilon'^ijk' * g'_kl,j' * D'^l_,j'
-))
+Ddef = Ddef():replace(epsilonBar'^ijk', sqrt(g) * epsilon'^ijk'):simplifyAddMulDiv():tidy()
+Bdef = Bdef():replace(epsilonBar'^ijk', sqrt(g) * epsilon'^ijk'):simplifyAddMulDiv():tidy()
+printbr(Ddef)
+printbr(Bdef)
+-- the old version had sqrt(g)_,j / sqrt(g), the new version has -1/2 g_,j / g, same same, neither are used later in the worksheet
+-- since the hyperbolic conservation representation below starts from a few steps above
 printbr()
 
 
