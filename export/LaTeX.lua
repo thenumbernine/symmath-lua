@@ -38,7 +38,7 @@ LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
 -- set this to 'true' to automatically convert in output "x/2" into "1/2 x"
 -- TODO shouldn't this step just be done in :tidy() ?
 --  but then tidy() wouldn't be guaranteed div -> add -> mul ...
-LaTeX.showDivConstAsMulFrac = false
+LaTeX.showDivConstAsMulFrac = true
 
 -- flag for outputting e^x as exp(x)
 LaTeX.showExpAsFunction = true

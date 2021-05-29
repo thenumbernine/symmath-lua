@@ -3,7 +3,7 @@ require 'ext'
 op = nil	-- make way for _G.op = symmath.op
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='Euler Fluid Equations - flux eigenvectors', showDivConstAsMulFrac=true}}
+require 'symmath'.setup{env=env, MathJax={title='Euler Fluid Equations - flux eigenvectors'}}
 
 local MathJax = symmath.export.MathJax
 

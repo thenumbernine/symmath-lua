@@ -2,13 +2,7 @@
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'ext.env'(env)
-require 'symmath'.setup{
-	env = env,
-	MathJax = {
-		title = 'Alcubierre warp bubble',
-		showDivConstAsMulFrac = true,
-	},
-}
+require 'symmath'.setup{env = env, MathJax = {title = 'Alcubierre warp bubble'}}
 local MathJax = export.MathJax
 require 'ext.env'(env)
 

@@ -16,6 +16,9 @@ for now I will instead have eigen() use the nullspace dim to determine multiplic
 however, if you want to add checks back in, and also add support for x^40 or sin(x), how about letting solve() return a 'mult' field instead of doing this separately in symmath/multiplicity.lua?
 hmm, but if we don't let solve() return multiplicity, then how can eigen() determine a defective system?
 and what about (x^expr):eq(0):solve(x), which would be x:eq(0) with multiplicity expr?
+
+For now, for eigen()'s sake, for determining deficiency, to compare poly mult with nullspace, I'm returning solve() with multiplicity.
+However I'm capping it at x^10. TODO make that a parameter to be adjusted.
 --]]
 
 local solveReturnsMultiplicity = [=[
@@ -64,8 +67,6 @@ asserteq(#{(x^3 + x^2 - x):eq(0):solve(x)}, 3)
 asserteq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))
 asserteq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))
 asserteq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))
-
-
 
 ]=]
 

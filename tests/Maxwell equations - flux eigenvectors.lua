@@ -2,7 +2,7 @@
 require 'ext'
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath'.setup{env=env, MathJax={title='Maxwell hyperbolic conservation law', showDivConstAsMulFrac=true}}
+require 'symmath'.setup{env=env, MathJax={title='Maxwell hyperbolic conservation law'}}
 
 local A = var'A'
 local B = var'B'
