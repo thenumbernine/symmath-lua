@@ -22,6 +22,17 @@ local Export = class()
 Export.name = 'Export'
 
 Export.lookupTable = {
+
+	-- default
+	[require 'symmath.Expression'] = function(self, expr)
+		return expr:nameForExporter(self)
+			..'('
+			..table.mapi(expr, function(x)
+				return self:apply(x)
+			end):concat', '
+			..')'
+	end,
+
 	[require 'symmath.Invalid'] = function(self, expr)
 		return expr:nameForExporter(self)
 	end,

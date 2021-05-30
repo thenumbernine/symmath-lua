@@ -135,7 +135,8 @@ local function explode(s)
 	return t
 end
 
-LaTeX.lookupTable = {
+LaTeX.lookupTable = table(LaTeX.lookupTable):union{
+	
 	[require 'symmath.Constant'] = function(self, expr)
 		if expr.symbol then
 			return table{prepareName(expr.symbol)}
@@ -153,9 +154,11 @@ LaTeX.lookupTable = {
 		s = explode(s)
 		return s
 	end,
+	
 	[require 'symmath.Invalid'] = function(self, expr)
 		return table{expr:nameForExporter(self)}
 	end,
+
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr:nameForExporter(self)
 		name = prepareName(name)
@@ -550,7 +553,16 @@ LaTeX.lookupTable = {
 		if expr.lower then s = '_' .. s else s = '^' .. s end
 		return s
 	end,
-}
+}:setmetatable(nil)
+
+-- make sure apply() returns a table
+-- even for parent classes that return strings
+-- so this is similar to MultiLine:appy()
+function LaTeX:apply(...)
+	local result = table.pack(LaTeX.super.apply(self, ...))
+	if type(result[1]) == 'string' then result[1] = table{result[1]} end
+	return result:unpack()
+end
 
 -- not quite apply, because that returns a table
 -- but not quite call, because MathJax overloads that

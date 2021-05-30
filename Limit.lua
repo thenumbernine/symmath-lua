@@ -5,6 +5,7 @@ local symmath
 
 
 local Side = class(Expression)
+Side.name = 'Side'
 Side.plus = setmetatable({name='+'}, Side)
 Side.minus = setmetatable({name='-'}, Side)
 Side.both = setmetatable({name=''}, Side)
@@ -14,6 +15,8 @@ function Side:new(name)
 	if name == nil or name == 'both' then return self.both end
 	error("unknown side")
 end
+function Side:clone() return self end
+Side.__eq = rawequal
 
 
 local Limit = class(Expression)
@@ -38,19 +41,32 @@ function Limit:init(...)
 	local f, x, a, side = ...
 	
 	assert(require 'symmath.Variable':isa(x))
-	
+
 	if not Side:isa(side) then side = Side(side) end
-	
+
 	Limit.super.init(self, f, x, a, side)
 end
 
+--[[
+alright, here we get a reason to use a bubble-in phase.  (parent-first)
+right now visitor only does bubble-out. (child-first)
+and that means that the indeterminate expressions will be replaced with 'invalid' before the limit can reach them.
+solutions.
+
+otherwise we just get lim(1/x, x, 0) = lim(nan, x, 0) = nan
+
+another fix: don't evaluate indeterminates outside of limits.
+but that would just leave expressions sitting, rather than telling the user "hey this doesn't work"
+--]]
+Limit.rulesBubbleIn = {
+	Prune = {
+		{apply = function(prune, expr)
+		
+		end},
+	},
+}
+
 Limit.rules = {
-	--[[
-	alright, here we get a reason to use a bubble-in phase.  (parent-first)
-	right now visitor only does bubble-out. (child-first)
-	and that means that the indeterminate expressions will be replaced with 'invalid' before the limit can reach them.
-	solutions.
-	--]]
 	Prune = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -59,22 +75,13 @@ Limit.rules = {
 			-- put this in their own Expression member function?
 			local f, x, a, side = table.unpack(expr)
 
---[[
-print('f = '..f)
-print('x = '..x)
-print('a = '..a)
-print('side = '..side)
---]]
-
 			-- TODO shouldn't prune() already be called on the children before the parent?
 			--f = prune:apply(f)
 			f = symmath.simplify(f)
 
-
 -- [=[
 			-- lim x->a f(x) = lim x->a+ f(x) = lim x->a- f(x) only when the + and - limit are equal
-			if side == nil then
-
+			if side == Side.both then
 				local ll = Limit(f, x, a, '+')
 				local left = prune:apply(ll)
 
@@ -175,9 +182,9 @@ print('side = '..side)
 
 					-- TODO only for 1/x or c/x for positive c (or swap for negative)
 
-					if side == '+' then
+					if side == Side.plus then
 						return inf
-					elseif side == '-' then
+					elseif side == Side.minus then
 						return -inf
 					else
 						-- when lim g = 0 then we have to use L'Hopital's rule, or resort to the +/- side of the limit

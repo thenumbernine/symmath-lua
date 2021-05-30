@@ -467,10 +467,10 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 	end,
 }:setmetatable(nil)
 
+-- MultiLine passes around tables of strings, but sometimes falls back on SingleLine.
+-- In that case just wrap it in {} so MultiLine:apply() will always return a table-of-strings
 function MultiLine:apply(...)
 	local result = table.pack(MultiLine.super.apply(self, ...))
-	-- MultiLine passes around tables of strings, but sometimes falls back on SingleLine.
-	-- In that case just wrap it in {} so MultiLine:apply() will always return a table-of-strings
 	if type(result[1]) == 'string' then result[1] = table{result[1]} end
 	return result:unpack()
 end

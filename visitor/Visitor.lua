@@ -16,10 +16,13 @@ also look in this vistor's lookup table for the key matching the object's metata
 I can't use the table key here and the line above because
 that would cause a dependency loop for the construction of both
 --]]
-function Visitor:lookup(m)
-	-- check in the metatable for our visitor name.
-	local f = m.rules and m.rules[self.name]
-	if f then return f end
+function Visitor:lookup(m, bubbleIn)
+	if bubbleIn then
+		return m.rulesBubbleIn and m.rulesBubbleIn[self.name] or nil
+	else
+		-- check in the metatable for our visitor name.
+		return m.rules and m.rules[self.name] or nil
+	end
 end
 
 -- [[ debugging:
@@ -82,7 +85,23 @@ function Visitor:apply(expr, ...)
 		end
 		--]]
 	
-		-- TODO bubble-in and bubble-out
+		-- bubble-in
+		local rules = self:lookup(m, true)
+		if rules then
+			for _,rule in ipairs(rules) do
+				if not m.pushedRules
+				or not m.pushedRules[rule]
+				then
+					local name, func = next(rule)
+					local newexpr = func(self, expr, ...)
+					if newexpr then
+						expr = newexpr
+						m = getmetatable(expr)
+						break
+					end
+				end
+			end
+		end
 
 		-- if it's an expression then apply to all children first
 		if Expression:isa(m) then
@@ -97,6 +116,8 @@ function Visitor:apply(expr, ...)
 		end
 		-- traverse class parentwise til a key in the lookup table is found
 		-- stop at null
+
+		-- bubble-out
 
 		-- if we found an entry then apply it
 --local rulesSrcNodeName = m.name		
