@@ -57,16 +57,12 @@ otherwise we just get lim(1/x, x, 0) = lim(nan, x, 0) = nan
 
 another fix: don't evaluate indeterminates outside of limits.
 but that would just leave expressions sitting, rather than telling the user "hey this doesn't work"
+
+so we do want simplfiications to go on ?right? 
+but we definitely do not want indeterminate forms replaced.  maybe push only that rule? 
+maybe just do everything for Limit in bubble-in?
 --]]
 Limit.rulesBubbleIn = {
-	Prune = {
-		{apply = function(prune, expr)
-		
-		end},
-	},
-}
-
-Limit.rules = {
 	Prune = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -74,6 +70,14 @@ Limit.rules = {
 			-- limits ...
 			-- put this in their own Expression member function?
 			local f, x, a, side = table.unpack(expr)
+
+--[[
+local var = symmath.var
+printbr(var'f':eq(f))
+printbr(var'x':eq(x))
+printbr(var'a':eq(a))
+printbr(var'side':eq(side))
+--]]
 
 			-- TODO shouldn't prune() already be called on the children before the parent?
 			--f = prune:apply(f)
@@ -185,14 +189,14 @@ Limit.rules = {
 					if side == Side.plus then
 						return inf
 					elseif side == Side.minus then
-						return -inf
+						return Constant(-1) * inf
 					else
 						-- when lim g = 0 then we have to use L'Hopital's rule, or resort to the +/- side of the limit
 						return symmath.invalid
 					end
 --]=]				
 				elseif lq == inf or lq == Constant(-1) * inf then		-- p/inf
-					return 0
+					return Constant(0)
 				else
 					return prune:apply(lp / lq)
 				end
@@ -204,6 +208,14 @@ Limit.rules = {
 				local p, q = table.unpack(f)
 				return prune:apply(Limit(p, x, a, side) ^ Limit(q, x, a, side))
 			end
+	
+		end},
+	},
+}
+
+Limit.rules = {
+	Prune = {
+		{apply = function(prune, expr)
 		end},
 	}
 }

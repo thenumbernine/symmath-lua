@@ -17,6 +17,7 @@ I can't use the table key here and the line above because
 that would cause a dependency loop for the construction of both
 --]]
 function Visitor:lookup(m, bubbleIn)
+	assert(m, "expression metatable is nil")
 	if bubbleIn then
 		return m.rulesBubbleIn and m.rulesBubbleIn[self.name] or nil
 	else
@@ -71,21 +72,9 @@ function Visitor:apply(expr, ...)
 	local t = type(expr)
 	if t == 'table' then
 		local m = getmetatable(expr)
-		--[[
-		local rules = self:lookup(m)
-		if rules then
-			for _,rule in ipairs(rules) do
-				local name, func = next(rule)
-				local newexpr = func(self, expr, ...) 
-				if newexpr then
-					expr = newexpr
-					m = getmetatable(expr)
-				end
-			end
-		end
-		--]]
-	
-		-- bubble-in
+		assert(m, "got back a result with no metatable")
+		
+		-- bubble-in	
 		local rules = self:lookup(m, true)
 		if rules then
 			for _,rule in ipairs(rules) do
@@ -97,6 +86,7 @@ function Visitor:apply(expr, ...)
 					if newexpr then
 						expr = newexpr
 						m = getmetatable(expr)
+						assert(m, "got back a result with no metatable")
 						break
 					end
 				end
@@ -145,6 +135,7 @@ function Visitor:apply(expr, ...)
 						-- if we change content then there's no guarantee the metatable -- or the rules -- will be the same
 						-- we probably need to start again
 						m = getmetatable(expr)
+						assert(m, "got back a result with no metatable")
 --rulesSrcNodeName = m.name		
 --assert(rulesSrcNodeName ~= 'Expression')
 						break
