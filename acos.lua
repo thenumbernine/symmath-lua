@@ -50,4 +50,27 @@ function acos:getRealRange()
 	return self.cachedSet
 end
 
+acos.rules = {
+	Prune = {
+		{apply = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+
+			local x = expr[1]
+
+			if Constant.isValue(x, 0) then
+				return symmath.pi / 2
+			end
+			
+			if symmath.set.RealSubset(-math.huge, -1, false, true):contains(x) then
+				return symmath.invalid
+			end
+			
+			if symmath.set.RealSubset(1, math.huge, true, false):contains(x) then
+				return symmath.invalid
+			end
+		end},
+	},
+}
+
 return acos

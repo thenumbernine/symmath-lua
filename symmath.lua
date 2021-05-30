@@ -177,7 +177,7 @@ symmath.Expression = require 'symmath.Expression'
 symmath.Constant = require 'symmath.Constant'
 symmath.complex = require 'symmath.complex'
 
--- TODO singleton?  constant?
+-- TODO singleton?  constant?  Variable with value=nan?
 symmath.Invalid = require 'symmath.Invalid'
 symmath.invalid = symmath.Invalid()
 

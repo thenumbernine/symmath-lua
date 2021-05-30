@@ -65,19 +65,22 @@ function GnuPlot:plot(args)
 	--local outputType = 'Console'
 	local outputType = args.outputType or 'MathJax'
 
-	local capture = not args.persist and not args.terminal
+	-- how about if we have outputType and output ?
+	local capture = not (args.persist and args.terminal)
 	if capture then
 		if outputType == 'MathJax' then
-			args.terminal = 'svg size 800,600'
+			args.terminal = args.terminal or 'svg size 800,600'
 			args.output = 'tmp.svg'
 		elseif outputType == 'Console' then
-			args.terminal = 'dumb'
+			args.terminal = args.terminal or 'dumb'
 			args.output = 'tmp.txt'
 		end
 	end
 	
 	gnuplot(args)
 
+	-- TODO print or return?
+	-- print probably esp if plot() is used with persistent windows.
 	if outputType == 'MathJax' then
 		local data = file['tmp.svg']
 		file['tmp.svg'] = nil

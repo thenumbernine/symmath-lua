@@ -22,4 +22,27 @@ end
 
 tanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
+tanh.rules = {
+	Prune = {
+		{apply = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+
+			local x = expr[1]
+
+			if Constant.isValue(x, 0) then
+				return Constant(0)
+			end
+			
+			if x == symmath.inf then
+				return Constant(1)
+			end
+			
+			if x == Constant(-1) * symmath.inf then
+				return Constant(-1)
+			end
+		end},
+	},
+}
+
 return tanh

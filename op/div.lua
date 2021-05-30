@@ -128,6 +128,12 @@ div.rules = {
 				end
 			end
 
+			if expr[1] == symmath.invalid
+			or expr[2] == symmath.invalid
+			then
+				return symmath.invalid
+			end
+
 			-- p/inf is 0 for p != inf
 			if expr[2] == symmath.inf 
 			or expr[2] == Constant(-1) * symmath.inf 

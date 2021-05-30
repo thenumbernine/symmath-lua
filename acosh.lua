@@ -47,4 +47,23 @@ function acosh:getRealRange()
 	return self.cachedSet
 end
 
+acosh.rules = {
+	Prune = {
+		{apply = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			
+			local x = expr[1]
+
+			if Constant.isValue(x, 1) then
+				return Constant(0)
+			end
+
+			if x == symmath.inf then
+				return symmath.inf
+			end
+		end},
+	},
+}
+
 return acosh

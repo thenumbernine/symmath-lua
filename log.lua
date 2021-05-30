@@ -36,10 +36,16 @@ log.rules = {
 			if Constant.isValue(x, 1) then
 				return Constant(0)
 			end
+
+			if x == symmath.inf then
+				return symmath.inf
+			end
 			
 			-- log(0) = -infinity
+			-- TODO technically, as a limit, it is only -inf when approached from +
+			-- and because + and - differ, this is indeterminate
 			if Constant.isValue(x, 0) then
-				return -Constant.inf
+				return -symmath.inf
 			end
 		end},
 	},

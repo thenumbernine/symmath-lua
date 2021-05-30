@@ -12,30 +12,6 @@
 <b></b><br>
 <code>asserteq(lim(x, x, a), a)</code>
 </td><td>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -43,14 +19,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(x, x, a, '+'), a)</code>
 </td><td>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -58,14 +26,6 @@ ${side} = {+()}$
 <b></b><br>
 <code>asserteq(lim(x, x, a, '-'), a)</code>
 </td><td>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -81,30 +41,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(0, x, a), 0)</code>
 </td><td>
-${f} = {0}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {0}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {0}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -112,30 +48,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(1, x, a), 1)</code>
 </td><td>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -151,62 +63,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(x + 2, x, a), a + 2)</code>
 </td><td>
-${f} = {{x} + {2}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {{2} + {x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {{2} + {x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -214,62 +70,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(x + x, x, a), 2 * a)</code>
 </td><td>
-${f} = {{x} + {x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {{{2}} {{x}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {{{2}} {{x}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -277,62 +77,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(x + a, x, a), 2 * a)</code>
 </td><td>
-${f} = {{x} + {a}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {{x} + {a}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {a}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {{x} + {a}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {a}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -340,62 +84,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(a + a, x, a), 2 * a)</code>
 </td><td>
-${f} = {{a} + {a}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {{{2}} {{a}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {a}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {{{2}} {{a}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {a}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -403,62 +91,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(x * 2, x, a), 2 * a)</code>
 </td><td>
-${f} = {{{x}} {{2}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {{{2}} {{x}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {{{2}} {{x}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -466,62 +98,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(x / 2, x, a), a / 2)</code>
 </td><td>
-${f} = {{\frac{1}{2}} {x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {{\frac{1}{2}} {x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {{\frac{1}{2}} {x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -537,30 +113,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(x, x, inf), inf)</code>
 </td><td>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -568,30 +120,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(x, x, -inf), -inf)</code>
 </td><td>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -599,30 +127,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(x, x, inf), inf)</code>
 </td><td>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -630,62 +134,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(1/x, x, inf), 0)</code>
 </td><td>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {()}$
-<br>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {\inf}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -693,62 +141,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(1/x, x, -inf), 0)</code>
 </td><td>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {()}$
-<br>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {-{\inf}}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -756,62 +148,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(1/x, x, 0), invalid)</code>
 </td><td>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {()}$
-<br>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -823,30 +159,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(1/x, x, 0, '+'), inf)</code>
 </td><td>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -854,30 +166,6 @@ ${side} = {+()}$
 <b></b><br>
 <code>asserteq(lim(1/x, x, 0, '-'), -inf)</code>
 </td><td>
-${f} = {\frac{1}{x}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -889,46 +177,6 @@ ${side} = {-()}$
 <b></b><br>
 <code>asserteq(lim(1/x^2, x, 0, '+'), inf)</code>
 </td><td>
-${f} = {\frac{1}{{x}^{2}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {{x}^{2}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {+()}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -936,77 +184,17 @@ ${side} = {+()}$
 <b></b><br>
 <code>asserteq(lim(1/x^2, x, 0, '-'), inf)</code>
 </td><td>
-${f} = {\frac{1}{{x}^{2}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {1}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {{x}^{2}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {2}$
-<br>
-${x} = {x}$
-<br>
-${a} = {0}$
-<br>
-${side} = {-()}$
-<br>
-expected ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}$ to equal $\inf$<br>
-instead found $-{\inf}$ vs $\inf$<br>
-lhs stack<br>
-init	${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}$	<br>
-prune	${{-1}} {{\inf}}$	<br>
-expand	${{-1}} {{\inf}}$	<br>
-prune	${{-1}} {{\inf}}$	<br>
-factor	${{-1}} {{\inf}}$	<br>
-prune	${{-1}} {{\inf}}$	<br>
-tidy	$-{\inf}$	<br>
-rhs stack<br>
-init	$\inf$	<br>
-prune	$\inf$	<br>
-expand	$\inf$	<br>
-prune	$\inf$	<br>
-factor	$\inf$	<br>
-prune	$\inf$	<br>
-tidy	$\inf$	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:28: failed<br>stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:93: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:92><br>
-	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:28: in function 'asserteq'<br>
-	[string "asserteq(lim(1/x^2, x, 0, '-'), inf)"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:85: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:84: in function 'exec'<br>
-	./tests/unit/limit.lua:55: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
-	./tests/unit/limit.lua:6: in main chunk<br>
-	[C]: at 0x558595fd42e0
+
+<span style="color:green">GOOD</span>
 </td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>TODO sqrts, cbrts</b><br>
+<code></code>
+</td><td>
 <tr><td>
 <b></b><br>
 <code></code>
@@ -1016,109 +204,666 @@ tidy	$\inf$	<br>
 <code></code>
 </td><td>
 <tr><td>
-<b>functions</b><br>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>TODO all of these are only good for 'a' in Real, not necessarily extended-Real, because I don't distinguish them</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>another thing to consider ... most these are set up so that the limit is the same as the evaluation without a limit</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>technically this is not true.  technically atan(inf) is not pi/2 but is instead undefined outside of the limit.</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>should I enforce this?</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sin(x), x, a), sin(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sin(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sin(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(cos(x), x, a), cos(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(cos(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(cos(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(abs(x), x, a), abs(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(abs(x), x, -inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(abs(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(exp(x), x, a), exp(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(exp(x), x, -inf), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(exp(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atan(x), x, a), atan(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atan(x), x, -inf), -pi/2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atan(x), x, inf), pi/2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tanh(x), x, a), tanh(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tanh(x), x, -inf), -1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tanh(x), x, inf), 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asinh(x), x, a), asinh(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asinh(x), x, -inf), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asinh(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(cosh(x), x, a), cosh(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(cosh(x), x, -inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(cosh(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sinh(x), x, a), sinh(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sinh(x), x, -inf), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sinh(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sin(x), x, a), sin(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sin(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sin(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(cos(x), x, a), cos(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(cos(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(cos(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, a), tan(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, -3*pi/2), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, -pi), tan(-pi))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, -pi/2), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, 0), tan(0))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, pi/2), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, pi/2, '+'), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, pi/2, '-'), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, pi), tan(pi))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, 3*pi/2), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(tan(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(log(x), x, a), log(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(log(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(log(x), x, 0), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(log(x), x, 0, '+'), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(log(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acosh(x), x, a), acosh(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acosh(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acosh(x), x, 1), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acosh(x), x, 1, '+'), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acosh(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atanh(x), x, a), atanh(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atanh(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atanh(x), x, -1), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atanh(x), x, -1, '+'), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atanh(x), x, 0), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atanh(x), x, 1), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atanh(x), x, 1, '-'), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(atanh(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asin(x), x, a), asin(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asin(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asin(x), x, -1), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asin(x), x, -1, '+'), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asin(x), x, 0), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asin(x), x, 1), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asin(x), x, 1, '-'), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(asin(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acos(x), x, a), acos(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acos(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acos(x), x, -1), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acos(x), x, -1, '+'), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acos(x), x, 0), pi/2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acos(x), x, 1), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acos(x), x, 1, '-'), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(acos(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>TODO Heaviside</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>products of functions</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
 <code>asserteq(lim(x * sin(x), x, a), a * sin(a))</code>
 </td><td>
-${f} = {{{x}} {{\sin\left(  x\right)}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {()}$
-<br>
-${f} = {{{x}} {{\sin\left(  x\right)}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {\sin\left(  x\right)}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {\sin\left(  x\right)}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {+()}$
-<br>
-${f} = {{{x}} {{\sin\left(  x\right)}}}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {x}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {\sin\left(  x\right)}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-${f} = {\sin\left(  x\right)}$
-<br>
-${x} = {x}$
-<br>
-${a} = {a}$
-<br>
-${side} = {-()}$
-<br>
-expected ${\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{\sin\left(  x\right)}}}\right)}}$ to equal ${{a}} {{\sin\left(  a\right)}}$<br>
-instead found $¿$ vs ${{a}} {{\sin\left(  a\right)}}$<br>
-lhs stack<br>
-init	${\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{\sin\left(  x\right)}}}\right)}}$	<br>
-prune	$¿$	<br>
-expand	$¿$	<br>
-prune	$¿$	<br>
-factor	$¿$	<br>
-prune	$¿$	<br>
-tidy	$¿$	<br>
-rhs stack<br>
-init	${{a}} {{\sin\left(  a\right)}}$	<br>
-prune	${{a}} {{\sin\left(  a\right)}}$	<br>
-expand	${{a}} {{\sin\left(  a\right)}}$	<br>
-prune	${{a}} {{\sin\left(  a\right)}}$	<br>
-factor	${{a}} {{\sin\left(  a\right)}}$	<br>
-prune	${{a}} {{\sin\left(  a\right)}}$	<br>
-tidy	${{a}} {{\sin\left(  a\right)}}$	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:28: failed<br>stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:93: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:92><br>
-	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:28: in function 'asserteq'<br>
-	[string "asserteq(lim(x * sin(x), x, a), a * sin(a))"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:85: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:84: in function 'exec'<br>
-	./tests/unit/limit.lua:55: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
-	./tests/unit/limit.lua:6: in main chunk<br>
-	[C]: at 0x558595fd42e0
+
+<span style="color:green">GOOD</span>
 </td></tr>

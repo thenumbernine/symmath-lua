@@ -53,9 +53,18 @@ tan.rules = {
 	Prune = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
 			local sin = symmath.sin
 			local cos = symmath.cos
+			
 			local th = expr[1]
+
+			if th == symmath.inf 
+			or th == Constant(-1) * symmath.inf
+			then
+				return symmath.invalid
+			end
+
 			return prune:apply(sin(th:clone()) / cos(th:clone()))
 		end},
 	},

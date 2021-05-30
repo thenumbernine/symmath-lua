@@ -20,4 +20,20 @@ end
 -- technically this is a Riemann surface, and the codomain repeats every pi
 atan.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
+atan.rules = {
+	Prune = {
+		{apply = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			if expr[1] == symmath.inf then
+				return symmath.pi / 2
+			end
+			
+			local Constant = symmath.Constant
+			if expr[1] == Constant(-1) * symmath.inf then
+				return (Constant(-1) * symmath.pi) / 2
+			end
+		end},
+	},
+}
+
 return atan

@@ -231,6 +231,12 @@ sin.rules = {
 					end
 				end
 			end
+		
+			if expr[1] == symmath.inf 
+			or expr[1] == Constant(-1) * symmath.inf
+			then
+				return symmath.invalid
+			end
 		end},
 	},
 }

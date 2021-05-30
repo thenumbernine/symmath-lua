@@ -1,3 +1,9 @@
+--[[
+formal mathematicaal definition of limit:
+
+lim x→c+ f(x) = L <=> for all ε > 0 there exists δ > 0 s.t. ( 0 < x − c < δ) => |f(x) − L| < ε 
+lim x→c- f(x) = L <=> for all ε > 0 there exists δ > 0 s.t. (-δ < x - c < 0) => |f(x) − L| < ε
+--]]
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
@@ -61,15 +67,32 @@ but that would just leave expressions sitting, rather than telling the user "hey
 so we do want simplfiications to go on ?right? 
 but we definitely do not want indeterminate forms replaced.  maybe push only that rule? 
 maybe just do everything for Limit in bubble-in?
+
+how about the insides? what form should we use?
+	lim x->0- (1/x^2) = ...
+	... if you simplify the insides first, you get 'invalid' ... I need to push exactly that "invalid" generation rule.
+	= lim x->0- (1/x)^2
+	= (lim x->0- 1/x)^(lim x->0- 2)
+	= (-inf)^2
+	= inf
+should I put this in pow -> div -> mul -> add format?
+or should I just have an exceptional rule for p/q(x)^n => (p^(1/n)/q(x))^n
 --]]
 Limit.rulesBubbleIn = {
 	Prune = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
+			local inf = symmath.inf
+			local invalid = symmath.invalid
 			
 			-- limits ...
 			-- put this in their own Expression member function?
 			local f, x, a, side = table.unpack(expr)
+
+			-- put any infs into prune() form, -inf => -1 * inf
+			-- but what if 'a' is a limit too?
+			-- what about lim x->(lim ...) f(x) ?
+			a = a:prune()
 
 --[[
 local var = symmath.var
@@ -81,6 +104,11 @@ printbr(var'side':eq(side))
 
 			-- TODO shouldn't prune() already be called on the children before the parent?
 			--f = prune:apply(f)
+			--f = symmath.simplify(f)
+			-- yeah, well, this is a tough one, because tan(x) simplifies to sin(x)/cos(x)
+			-- but x/x^2 simplifies to 1/x
+			-- so how about i just keep the original for tan's sake
+			local origf = f
 			f = symmath.simplify(f)
 
 -- [=[
@@ -95,14 +123,14 @@ printbr(var'side':eq(side))
 					return left 
 				else
 				-- if lim x->a+ ~= lim x->a- then lim x->a is unknown
-					return symmath.invalid		-- return nil?
+					return invalid		-- return nil?
 				end
 			end
 --]=]
 
 			-- lim x->a x+ = lim x-> a- = a
 			if f == x then
-				return a 
+				return a
 			end
 		
 			-- lim x->a c => c
@@ -132,30 +160,38 @@ printbr(var'side':eq(side))
 			-- lim mul = mul lim
 			local mul = symmath.op.mul
 			if mul:isa(f) then
-				return prune:apply(
-					mul(
+--print'evaluating a mul limit'
+				local L = mul(
 						table.mapi(f, function(fi)
 							return Limit(fi, x, a, side)
 						end):unpack()
 					)
-				)
+--print('lim applied to subexprs:')
+--print(L)
+				L = prune:apply(L)
+--print'pruning lim'
+--print(L)
+				return L
 			end	
 		
 			-- lim (f/g) = (lim f)/(lim g) so long as (lim g) ~= 0
 			local div = symmath.op.div
-			local inf = symmath.inf
 			if div:isa(f) then
 				local p, q = table.unpack(f)
 				
-
 				local lp = prune:apply(Limit(p, x, a, side))
 				local lq = prune:apply(Limit(q, x, a, side))
 				
-
--- [=[
-				if (Constant.isValue(lp, 0) or lp == inf or lus == Constant(-1) * inf)
-				and (Constant.isValue(lq, 0) or lq == inf or lus == Constant(-1) * inf)
-				then
+--[=[
+				if (
+					Constant.isValue(lp, 0) 
+--					or lp == inf 
+--					or lus == Constant(-1) * inf
+				) and (
+					Constant.isValue(lq, 0) 
+--					or lq == inf 
+--					or lus == Constant(-1) * inf
+				) then
 					-- L'Hospital:
 					p = p:diff(x)()
 					q = q:diff(x)()
@@ -163,41 +199,89 @@ printbr(var'side':eq(side))
 				end
 --]=]
 
-
-				--[[ 
-				alright, p/q has an asymptote here ... how to determine which way it goes.
-				
-				lim x->0+ 1/x is inf
-				lim x->0- 1/x is -inf
-				
-				lim x->0+ 1/x^2 is inf
-				lim x->0- 1/x^2 is inf
-				
-				lim x->0+ x/x^2 is inf
-				lim x->0- x/x^2 is -inf
-
-				... how do you convince it which to pick?
-
-				first, simplfy, second, look at denominator power?
-				
+				--[[
+				how to determine when lim (x -> root) of p(q) / prod of (x - roots) is approaching from +inf or -inf
+				seems you would want the limit in the form of pow -> div -> mul -> add/sub, 
+				and then to compare the roots of the denominator with x->a, to see if we are approaching from the left or right.
+				... and then looking at the sign of p(x) / prod of (x - all other roots) to see if we should be flipping the sign of the limit's +-inf
 				--]]
 				if Constant.isValue(lq, 0) then
--- [=[
+					if not p:dependsOn(x) then
+						
+						-- lim x->root+- 1/x = +-inf
+						if q == x then
+							if side == Side.plus then
+								return (p * inf):prune()
+							else
+								return (-p * inf):prune()
+							end
+						end
+						
+						-- lim x->root+- 1/x^n = +-inf
+						local Wildcard = symmath.Wildcard
+						-- x:match(x^Wildcard(1)) won't match x^Constant(1)
+						local n = q:match(x^Wildcard{1, cannotDependOn=x})
+						if n 
+						and symmath.set.integer:contains(n)
+						then
 
-					-- TODO only for 1/x or c/x for positive c (or swap for negative)
-
-					if side == Side.plus then
-						return inf
-					elseif side == Side.minus then
-						return Constant(-1) * inf
-					else
-						-- when lim g = 0 then we have to use L'Hopital's rule, or resort to the +/- side of the limit
-						return symmath.invalid
+							if symmath.set.evenInteger:contains(n) then
+								return (p * inf):prune()
+							elseif symmath.set.oddInteger:contains(n) then
+								if side == Side.plus then
+									return (p * inf):prune()
+								else
+									return (-p * inf):prune()
+								end
+							else
+								error'here'
+							end
+						end
 					end
---]=]				
-				elseif lq == inf or lq == Constant(-1) * inf then		-- p/inf
-					return Constant(0)
-				else
+				end
+
+				-- lim x->+-inf p(x) / q(x)
+				if a == inf
+				or a == Constant(-1) * inf
+				then
+					local cp = p:polyCoeffs(x)
+					local cq = q:polyCoeffs(x)
+					
+					-- if we got two polynomials ...
+					if cp.extra == nil
+					and cq.extra == nil
+					then
+						local dp = table.maxn(cp)
+						local dq = table.maxn(cq)
+--printbr('p: ', p)
+--printbr('q: ', q)
+--printbr('keys of coeffs of p: ', table.keys(cp):concat', ')
+--printbr('keys of coeffs of q: ', table.keys(cq):concat', ')
+--printbr('degrees if p(x)/q(x): ', dp, dq)
+--printbr('leading coeff of p:', cp[dp])
+--printbr('leading coeff of q:', cq[dq])
+						if dp > dq then
+--printbr'using degree(p) > degree(q)...'							
+							local leadingCoeffRatio = (cp[dp] / cq[dq]):prune()
+							if leadingCoeffRatio:lt(0):isTrue() then
+								return Constant(-1) * inf 
+							elseif leadingCoeffRatio:gt(0):isTrue() then
+								return inf
+							else
+								error("how do I fix this?")
+							end
+						elseif dp == dq then
+--printbr'using degree(p) == degree(q)...'							
+							local leadingCoeffRatio = (cp[dp] / cq[dq]):prune()
+							return leadingCoeffRatio 
+						elseif dp < dq then
+--printbr'using degree(p) < degree(q)...'							
+							return Constant(0)
+						end
+					end
+				end
+			
+				if not Constant.isValue(lq, 0) then
 					return prune:apply(lp / lq)
 				end
 			end
@@ -208,7 +292,179 @@ printbr(var'side':eq(side))
 				local p, q = table.unpack(f)
 				return prune:apply(Limit(p, x, a, side) ^ Limit(q, x, a, side))
 			end
-	
+
+
+			-- functions whose limit is the same as their value
+			-- abs
+			-- exp
+			-- atan
+			-- tanh
+			-- asinh
+			-- cosh
+			-- sinh
+			-- cos
+			-- sin
+			if symmath.abs:isa(f) 
+			--or symmath.exp:isa(f)	-- exp(x) is shorthand for pow(e, x)
+			or symmath.atan:isa(f)
+			or symmath.tanh:isa(f)
+			or symmath.asinh:isa(f)
+			or symmath.cosh:isa(f)
+			or symmath.sinh:isa(f)
+			or symmath.sin:isa(f) 
+			or symmath.cos:isa(f)
+			then
+				return getmetatable(f)(
+					Limit(f[1], x, a, side):prune()
+				)
+			end
+			
+			-- functions with asymptotes
+			-- tan
+			if symmath.tan:isa(origf) then
+				local f = origf
+				local L = Limit(f[1], x, a, side):prune()
+				if L == symmath.pi/2 then
+					if side == Side.plus then return Constant(-1) * inf end
+					if side == Side.minus then return inf end
+				end
+				-- for that matter, if L == integer * pi / 2
+				local n = (symmath.Wildcard(1) * symmath.pi) / 2
+				if n and symmath.set.integer:contains(n) then
+					if side == Side.plus then return Constant(-1) * inf end
+					if side == Side.minus then return inf end
+					error'here'
+				end
+				-- otherwise. ... can we assert L isn't going to be in the set of {n in Z, n pi / 2}?
+				-- if we can assert that then return tan(L)
+				--return symmath.tan(L)
+				return getmetatable(f)(
+					Limit(f[1], x, a, side):prune()
+				)
+			end
+
+			-- functions that are only true on (0, inf) 
+			-- log
+			-- sqrt ... sqrt is going to be under pow()... and TODO I don't think I've added these edge cases
+			-- cbrt ... same with cbrt
+			if symmath.log:isa(f)
+			then
+				local L = Limit(f[1], x, a, side):prune()
+				if symmath.set.positiveReal:contains(L) then
+					return getmetatable(f)(L)
+				end
+				if symmath.set.negativeReal:contains(L) then
+					return invalid
+				end
+				if Constant.isValue(L, 0) then
+					if side == Side.plus then
+						return Constant(-1) * inf
+					end
+					return invalid
+				end
+				return getmetatable(f)(
+					Limit(f[1], x, a, side):prune()
+				)
+			end
+
+			-- functions only true on (1, inf)
+			-- acosh
+			if symmath.acosh:isa(f)
+			then
+				local L = Limit(f[1], x, a, side):prune()
+				if symmath.set.RealSubset(1, math.huge, false, false):contains(L) then
+					return getmetatable(f)(L)
+				end
+				if symmath.set.RealSubset(-math.huge, 1, false, false):contains(L) then
+					return invalid
+				end
+				if Constant.isValue(L, 1) then
+					if side == Side.plus then
+						return Constant(0)
+					end
+					return invalid
+				end
+				-- TODO this?
+				return getmetatable(f)(
+					Limit(f[1], x, a, side):prune()
+				)
+			end
+			
+			-- functions that are only true on (-1, 1)
+			-- asin
+			-- acos
+			-- atanh
+			if symmath.atanh:isa(f) 
+			or symmath.asin:isa(f)
+			or symmath.acos:isa(f)
+			then
+				local L = Limit(f[1], x, a, side):prune()
+				if symmath.set.RealSubset(-1, 1, false, false):contains(L) then
+					return getmetatable(f)(L)
+				end
+				-- TODO use this elsewhere.  it's preferrable to Constant.isValue(L, -1), right?
+				-- then again, the only difference is that RealSubset(-1,-1,true,true):contains(L) will also pick up variables defined to exist only on the set {-1} ...
+				-- so it's basically the same as Constant.isValue(L, -1)
+				--if symmath.set.RealSubset(-1, -1, true, true):contains(L) then
+				if Constant.isValue(L, -1) and side == Side.plus then 
+					if symmath.acos:isa(f) then
+						return inf
+					else
+						return Constant(-1) * inf 
+					end
+				end
+				if Constant.isValue(L, 1) and side == Side.minus then 
+					if symmath.acos:isa(f) then
+						return Constant(-1) * inf
+					else
+						return inf 
+					end
+				end
+			
+				if symmath.set.RealSubset{
+					{-math.huge, -1, false, false},
+					{1, math.huge, false, false}
+				}:contains(L) then
+					return invalid
+				end
+			
+				-- otherwise ... ?
+				return getmetatable(f)(
+					Limit(f[1], x, a, side):prune()
+				)
+			end
+		
+		
+			-- multivariate functions
+			-- atan2
+			
+			-- Heaviside
+			if symmath.Heaviside:isa(f) then
+				local L = Limit(f[1], x, a, side):prune()
+				if Constant.isValue(L, 0) then
+					if side == Side.plus then return Constant(1) end
+					if side == Side.minus then return Constant(0) end
+					if side == Side.both then return invalid end
+					error'here'
+				end
+				if L:lt(0):isTrue() then return Constant(0) end
+				if L:gt(0):isTrue() then return Constant(1) end
+				-- here: lim x->a H(x) when a>0 is undetermined
+			end
+
+
+			--[[
+			but this ends up returning 'invalid' ... why is that?
+			especially when the only thing in Limit's rules that returns 'invalid' is when left limit and right limit don't agree
+			ahh that's exactly it ... 
+			if you just request any f(x):lim(x,a) then it will test the + limit and the - limit
+			and if they aren't caught and replaced in this function then what comes back is
+			Limit(f(x), x, a, '+') == Limit(f(x), x, a, '-')
+			and that will always be 'false' because the sides differ
+			technically the comparator should not say 'false' all the time.
+			technically I shouldn't use == but Equality and :isTrue()
+			and in taht case, return no definite answer for comparing unresolved limits ...
+			--]]
 		end},
 	},
 }

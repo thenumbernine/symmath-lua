@@ -26,4 +26,20 @@ end
 
 asinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
+asinh.rules = {
+	Prune = {
+		{apply = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			
+			if expr[1] == symmath.inf then
+				return symmath.inf
+			end
+			if expr[1] == Constant(-1) * symmath.inf then
+				return Constant(-1) * symmath.inf
+			end
+		end},
+	},
+}
+
 return asinh
