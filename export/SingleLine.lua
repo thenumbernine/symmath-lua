@@ -27,7 +27,7 @@ function SingleLine:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
 	end
 end
 
-SingleLine.lookupTable = {
+SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 	--[[
 	[require 'symmath.Expression'] = function(self, expr)
 		local s = table()
@@ -35,25 +35,7 @@ SingleLine.lookupTable = {
 		return 'Expression{'..s:concat(', ')..'}'
 	end,
 	--]]
-	[require 'symmath.Constant'] = function(self, expr) 
-		local symmath = require 'symmath'
-		
-		-- .symbol was a quick fix to give constants symbols ... keep it? 
-		local symbol = expr.symbol
-		if symbol then
-			if symmath.fixVariableNames then
-				symbol = symmath.tostring:fixVariableName(symbol)
-			end
-			return symbol
-		end
-		
-		local s = tostring(expr.value) 
-		if s:sub(-2) == '.0' then s = s:sub(1,-3) end
-		return s
-	end,
-	[require 'symmath.Invalid'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
+
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr:nameForExporter(self)
 		return name..'(' .. table.mapi(expr, function(x)
@@ -70,13 +52,6 @@ SingleLine.lookupTable = {
 		return table.mapi(expr, function(x,i)
 			return self:wrapStrOfChildWithParenthesis(expr, i)
 		end):concat(expr:getSepStr(self))
-	end,
-	[require 'symmath.Variable'] = function(self, expr)
-		local symmath = require 'symmath'
-		local name = expr:nameForExporter(self)
-		local s = name
-		--if expr.value then s = s .. '|' .. expr.value end
-		return s
 	end,
 	[require 'symmath.Wildcard'] = function(self, expr)
 		return '$'..expr.index
@@ -140,6 +115,6 @@ SingleLine.lookupTable = {
 			return self:apply(x)
 		end):concat()
 	end,
-}
+}:setmetatable(nil)
 
 return SingleLine()		-- singleton

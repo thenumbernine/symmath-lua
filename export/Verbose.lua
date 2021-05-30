@@ -7,13 +7,10 @@ local Verbose = class(Export)
 
 Verbose.name = 'Verbose'
 
-Verbose.lookupTable = {
+Verbose.lookupTable = table(Verbose.lookupTable):union{
 	[require 'symmath.Constant'] = function(self, expr)
 		--return 'Constant['..tostring(expr.value)..']'
 		return tostring(expr.value)
-	end,
-	[require 'symmath.Invalid'] = function(self, expr)
-		return 'Invalid'
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
 		return 'unm('..self:apply(expr[1])..')'
@@ -57,6 +54,6 @@ Verbose.lookupTable = {
 			..(expr.wildcardCannotDependOn and (', cannotDependOn='..self:apply(expr.wildcardCannotDependOn)) or '')
 		..'}'
 	end,
-}
+}:setmetatable(nil)
 
 return Verbose()	-- singleton

@@ -6,7 +6,7 @@ local Mathematica = class(Language)
 
 Mathematica.name = 'Mathematica'
 
-Mathematica.lookupTable = setmetatable(table(Mathematica.lookupTable, {
+Mathematica.lookupTable = table(Mathematica.lookupTable):union{
 	[require 'symmath.Function'] = function(self, expr)
 		--[[
 		TODO
@@ -51,7 +51,7 @@ Mathematica.lookupTable = setmetatable(table(Mathematica.lookupTable, {
 			return '('..s..')', predefs
 		end
 	end,
-}), nil)
+}:setmetatable(nil)
 
 -- TODO get 'toFuncCode' working by providing these correctly
 Mathematica.generateParams = {

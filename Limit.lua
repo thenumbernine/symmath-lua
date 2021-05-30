@@ -45,6 +45,12 @@ function Limit:init(...)
 end
 
 Limit.rules = {
+	--[[
+	alright, here we get a reason to use a bubble-in phase.  (parent-first)
+	right now visitor only does bubble-out. (child-first)
+	and that means that the indeterminate expressions will be replaced with 'invalid' before the limit can reach them.
+	solutions.
+	--]]
 	Prune = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -52,7 +58,14 @@ Limit.rules = {
 			-- limits ...
 			-- put this in their own Expression member function?
 			local f, x, a, side = table.unpack(expr)
-			
+
+--[[
+print('f = '..f)
+print('x = '..x)
+print('a = '..a)
+print('side = '..side)
+--]]
+
 			-- TODO shouldn't prune() already be called on the children before the parent?
 			--f = prune:apply(f)
 			f = symmath.simplify(f)

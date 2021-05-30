@@ -159,15 +159,28 @@
 <b></b><br>
 <code>asserteq(lim(1/x, x, 0, '+'), inf)</code>
 </td><td>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+expected ${\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\frac{1}{x}}}$ to equal $\inf$<br>
+instead found $¿$ vs $\inf$<br>
+lhs stack<br>
+init	${\underset{ x\rightarrow 0}{\lim}}{{\frac{1}{x}}}$	<br>
+prune	$¿$	<br>
+expand	$¿$	<br>
+prune	$¿$	<br>
+factor	$¿$	<br>
+prune	$¿$	<br>
+tidy	$¿$	<br>
+rhs stack<br>
+init	$\inf$	<br>
+prune	$\inf$	<br>
+expand	$\inf$	<br>
+prune	$\inf$	<br>
+factor	$\inf$	<br>
+prune	$\inf$	<br>
+tidy	$\inf$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
 	[string "asserteq(lim(1/x, x, 0, '+'), inf)"]:1: in main chunk<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
@@ -175,21 +188,34 @@
 	tests\unit\limit.lua:55: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7a9074950
+	[C]: at 0x7ff7a8ee4950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq(lim(1/x, x, 0, '-'), -inf)</code>
 </td><td>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+expected ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{x}}}$ to equal $-{\inf}$<br>
+instead found $¿$ vs $-{\inf}$<br>
+lhs stack<br>
+init	${\underset{ x\rightarrow 0}{\lim}}{{\frac{1}{x}}}$	<br>
+prune	$¿$	<br>
+expand	$¿$	<br>
+prune	$¿$	<br>
+factor	$¿$	<br>
+prune	$¿$	<br>
+tidy	$¿$	<br>
+rhs stack<br>
+init	$-{\inf}$	<br>
+prune	${{-1}} {{\inf}}$	<br>
+expand	${{-1}} {{\inf}}$	<br>
+prune	${{-1}} {{\inf}}$	<br>
+factor	${{-1}} {{\inf}}$	<br>
+prune	${{-1}} {{\inf}}$	<br>
+tidy	$-{\inf}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
 	[string "asserteq(lim(1/x, x, 0, '-'), -inf)"]:1: in main chunk<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
@@ -197,7 +223,7 @@
 	tests\unit\limit.lua:55: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7a9074950
+	[C]: at 0x7ff7a8ee4950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -207,15 +233,28 @@
 <b></b><br>
 <code>asserteq(lim(1/x^2, x, 0, '+'), inf)</code>
 </td><td>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+expected ${\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\frac{1}{{x}^{2}}}}$ to equal $\inf$<br>
+instead found $¿$ vs $\inf$<br>
+lhs stack<br>
+init	${\underset{ x\rightarrow 0}{\lim}}{{\frac{1}{{x}^{2}}}}$	<br>
+prune	$¿$	<br>
+expand	$¿$	<br>
+prune	$¿$	<br>
+factor	$¿$	<br>
+prune	$¿$	<br>
+tidy	$¿$	<br>
+rhs stack<br>
+init	$\inf$	<br>
+prune	$\inf$	<br>
+expand	$\inf$	<br>
+prune	$\inf$	<br>
+factor	$\inf$	<br>
+prune	$\inf$	<br>
+tidy	$\inf$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
 	[string "asserteq(lim(1/x^2, x, 0, '+'), inf)"]:1: in main chunk<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
@@ -223,21 +262,34 @@
 	tests\unit\limit.lua:55: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7a9074950
+	[C]: at 0x7ff7a8ee4950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq(lim(1/x^2, x, 0, '-'), inf)</code>
 </td><td>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+expected ${\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}$ to equal $\inf$<br>
+instead found $¿$ vs $\inf$<br>
+lhs stack<br>
+init	${\underset{ x\rightarrow 0}{\lim}}{{\frac{1}{{x}^{2}}}}$	<br>
+prune	$¿$	<br>
+expand	$¿$	<br>
+prune	$¿$	<br>
+factor	$¿$	<br>
+prune	$¿$	<br>
+tidy	$¿$	<br>
+rhs stack<br>
+init	$\inf$	<br>
+prune	$\inf$	<br>
+expand	$\inf$	<br>
+prune	$\inf$	<br>
+factor	$\inf$	<br>
+prune	$\inf$	<br>
+tidy	$\inf$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
 	[string "asserteq(lim(1/x^2, x, 0, '-'), inf)"]:1: in main chunk<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
@@ -245,7 +297,7 @@
 	tests\unit\limit.lua:55: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7a9074950
+	[C]: at 0x7ff7a8ee4950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -259,15 +311,28 @@
 <b>functions</b><br>
 <code>asserteq(lim(x * sin(x), x, a), a * sin(a))</code>
 </td><td>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: attempt to call method 'concat' (a nil value)<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function 'concat'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:569: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'flatten'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:561: in function 'applyLaTeX'<br>
-	C:\Users\Chris\Projects\lua\symmath\export\LaTeX.lua:588: in function 'tostring'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:22: in function 'asserteq'<br>
+expected ${\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{\sin\left(  x\right)}}}\right)}}$ to equal ${{a}} {{\sin\left(  a\right)}}$<br>
+instead found ${{a}} {{{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}}}$ vs ${{a}} {{\sin\left(  a\right)}}$<br>
+lhs stack<br>
+init	${\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{\sin\left(  x\right)}}}\right)}}$	<br>
+prune	${{a}} {{{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}}}$	<br>
+expand	${{a}} {{{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}}}$	<br>
+prune	${{a}} {{{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}}}$	<br>
+factor	${{a}} {{{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}}}$	<br>
+prune	${{a}} {{{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}}}$	<br>
+tidy	${{a}} {{{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}}}$	<br>
+rhs stack<br>
+init	${{a}} {{\sin\left(  a\right)}}$	<br>
+prune	${{a}} {{\sin\left(  a\right)}}$	<br>
+expand	${{a}} {{\sin\left(  a\right)}}$	<br>
+prune	${{a}} {{\sin\left(  a\right)}}$	<br>
+factor	${{a}} {{\sin\left(  a\right)}}$	<br>
+prune	${{a}} {{\sin\left(  a\right)}}$	<br>
+tidy	${{a}} {{\sin\left(  a\right)}}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
 	[string "asserteq(lim(x * sin(x), x, a), a * sin(a))"]:1: in main chunk<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
 	[C]: in function 'xpcall'<br>
@@ -275,5 +340,5 @@
 	tests\unit\limit.lua:55: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7a9074950
+	[C]: at 0x7ff7a8ee4950
 </td></tr>

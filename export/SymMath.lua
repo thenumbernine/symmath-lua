@@ -8,7 +8,8 @@ local SymMath = class(Export)
 SymMath.name = 'SymMath'
 
 local tab = '\t'
-SymMath.lookupTable = {
+
+SymMath.lookupTable = table(SymMath.lookupTable):union{
 	[require 'symmath.Constant'] = function(self, expr, indent)
 		-- TODO only for simple numbers just return the value
 		-- and only if it is a child of another expression.  don't assign Lua numbers to vars who are supposed to be symmath Constants
@@ -84,9 +85,6 @@ SymMath.lookupTable = {
 			..indent..')'
 		return s
 	end,
-	[require 'symmath.Invalid'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
 	[require 'symmath.Expression'] = function(self, expr, indent)
 		local name = expr:nameForExporter(self)
 		return indent..expr:nameForExporter(self)..'(\n'
@@ -95,7 +93,7 @@ SymMath.lookupTable = {
 			end):concat(',\n')..'\n'
 			..indent..')'
 	end,
-}
+}:setmetatable(nil)
 
 function SymMath:apply(expr, indent, ...)
 	return SymMath.super.apply(self, expr, indent or '', ...)

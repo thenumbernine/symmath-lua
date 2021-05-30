@@ -8,6 +8,7 @@ I made this before I made the symmath.Visitor parent class, so consider merging 
 --]]
 
 local class = require 'ext.class'
+local table = require 'ext.table'
 
 --local Visitor = require 'symmath.visitor.Visitor'
 -- Visitor...
@@ -19,6 +20,43 @@ local class = require 'ext.class'
 local Export = class()
 
 Export.name = 'Export'
+
+Export.lookupTable = {
+	[require 'symmath.Invalid'] = function(self, expr)
+		return expr:nameForExporter(self)
+	end,
+
+	[require 'symmath.Variable'] = function(self, expr)
+		return expr:nameForExporter(self)
+	end,
+
+	[require 'symmath.Constant'] = function(self, expr) 
+		-- .symbol was a quick fix to give constants symbols ... keep it? 
+		-- TODO get rid of Constant.symbol. 
+		-- and just use Variable and Variable.value instead.
+		local symbol = expr.symbol
+		if symbol then
+			local symmath = require 'symmath'
+			if symmath.fixVariableNames then
+				symbol = symmath.tostring:fixVariableName(symbol)
+			end
+			return symbol
+		end
+		
+		local s = tostring(expr.value) 
+		
+		if s:sub(-2) == '.0' then s = s:sub(1,-3) end
+	
+		if self.constantPeriodRequired
+		and not s:find'e'
+		and not s:find'%.' 
+		then 
+			s = s .. '.'
+		end
+		
+		return s
+	end,
+}
 
 function Export:apply(expr, ...)
 	if type(expr) ~= 'table' then return tostring(expr) end
@@ -65,11 +103,11 @@ end
 
 function Export:wrapStrOfChildWithParenthesis(parentNode, childIndex)
 	local node = parentNode[childIndex]
-	local s = self:apply(node)
+	local results = table.pack(self:apply(node))
 	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
-		s = '(' .. s .. ')'
+		results[1] = '(' .. results[1] .. ')'
 	end
-	return s
+	return results:unpack()
 end
 
 function Export:fixVariableName(name) return name end

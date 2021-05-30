@@ -8,7 +8,7 @@ GnuPlot.name = 'GnuPlot'
 
 GnuPlot.constantPeriodRequired = true
 
-GnuPlot.lookupTable = setmetatable(table(GnuPlot.lookupTable, {
+GnuPlot.lookupTable = table(GnuPlot.lookupTable):union{
 	[require 'symmath.Function'] = function(self, expr)
 		return expr:nameForExporter(self) .. '(' .. table.mapi(expr, function(x)
 			return (self:apply(x))
@@ -26,7 +26,7 @@ GnuPlot.lookupTable = setmetatable(table(GnuPlot.lookupTable, {
 	[require 'symmath.Heaviside'] = function(self, expr)
 		return '('..self:apply(expr[1])..' >= 0.)'
 	end,
-}), nil)
+}:setmetatable(nil)
 
 -- TODO ... GnuPlot functions can't be multiple lines (I think)
 GnuPlot.generateParams = {

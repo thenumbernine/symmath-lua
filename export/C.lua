@@ -26,7 +26,7 @@ C.numberType = 'double'
 
 C.constantPeriodRequired = true
 
-C.lookupTable = setmetatable(table(C.lookupTable, {
+C.lookupTable = table(C.lookupTable):union{
 	[require 'symmath.Function'] = function(self, expr)
 		local predefs = table()
 		local s = table()
@@ -81,7 +81,7 @@ C.lookupTable = setmetatable(table(C.lookupTable, {
 			end
 		end
 	end,
-}), nil)
+}:setmetatable(nil)
 
 C.generateParams = {
 	localType = function(self) return self.numberType end,

@@ -17,29 +17,7 @@ Language.arrayCloseSymbol = '}'
 Language.constantPeriodRequired = false
 
 -- some common rules for subclasses:
-Language.lookupTable = {
-
-	[require 'symmath.Constant'] = function(self, expr)
-		local s = tostring(expr.value)
-		
-		if s:sub(-2) == '.0' then s = s:sub(1,-3) end
-		
-		if self.constantPeriodRequired
-		and not s:find'e'
-		and not s:find'%.' 
-		then 
-			s = s .. '.'
-		end
-		return s
-	end,
-	
-	[require 'symmath.Variable'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
-	
-	[require 'symmath.Invalid'] = function(self, expr)
-		return expr:nameForExporter(self)
-	end,
+Language.lookupTable = table(Language.lookupTable):union{
 
 	[require 'symmath.op.Binary'] = function(self, expr)
 		local predefs = table()
@@ -139,7 +117,7 @@ Language.lookupTable = {
 			return self:apply(x)
 		end):concat()
 	end,
-}
+}:setmetatable(nil)
 
 --[[
 args:

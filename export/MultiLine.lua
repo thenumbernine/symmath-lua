@@ -3,7 +3,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
-local Console = require 'symmath.export.Console'
 local SingleLine = require 'symmath.export.SingleLine'
 local symmath
 
@@ -35,8 +34,6 @@ local intname = {
 local downarrow = '↓'
 local rightarrow = '→'
 
-local strlen = Console.strlen
-
 
 -- borp = box or par [4][2]
 local function wrap(rows, n, borp)
@@ -62,9 +59,11 @@ local function vert(n)
 	return line[1]..line[2]:rep(n-2)..line[3]
 end
 
-local MultiLine = class(Console)
+local MultiLine = class(SingleLine.class)
 
 MultiLine.name = 'MultiLine'
+
+local strlen = MultiLine.strlen
 
 --[[
 produces:
@@ -192,13 +191,7 @@ function MultiLine:matrixBody(parts)
 
 end
 
-MultiLine.lookupTable = {
-	[require 'symmath.Constant'] = function(self, expr)
-		return table{SingleLine(expr)}
-	end,
-	[require 'symmath.Invalid'] = function(self, expr)
-		return table{SingleLine(expr)}
-	end,
+MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr:nameForExporter(self)
 		local res = {name..'('}
@@ -249,12 +242,6 @@ MultiLine.lookupTable = {
 			res:insert(lhs[i]..(' '):rep(rhswidth))
 		end
 		return res
-	end,
-	[require 'symmath.Variable'] = function(self, expr)
-		return table{SingleLine(expr)}
-	end,
-	[require 'symmath.Wildcard'] = function(self, expr)
-		return table{SingleLine(expr)}
 	end,
 	[require 'symmath.Limit'] = function(self, expr)
 		local f, x, a, side = table.unpack(expr)
@@ -478,7 +465,15 @@ MultiLine.lookupTable = {
 		
 		return s
 	end,
-}
+}:setmetatable(nil)
+
+function MultiLine:apply(...)
+	local result = table.pack(MultiLine.super.apply(self, ...))
+	-- MultiLine passes around tables of strings, but sometimes falls back on SingleLine.
+	-- In that case just wrap it in {} so MultiLine:apply() will always return a table-of-strings
+	if type(result[1]) == 'string' then result[1] = table{result[1]} end
+	return result:unpack()
+end
 
 -- while most Export.__call methods deal in strings,
 --  MultiLine passes around an array of strings (per-newline)

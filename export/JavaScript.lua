@@ -13,7 +13,7 @@ JavaScript.name = 'JavaScript'
 JavaScript.arrayOpenSymbol = '['
 JavaScript.arrayCloseSymbol = ']'
 
-JavaScript.lookupTable = setmetatable(table(JavaScript.lookupTable, {
+JavaScript.lookupTable = table(JavaScript.lookupTable):union{
 	[require 'symmath.Function'] = function(self, expr)
 		return 'Math.' .. expr:nameForExporter(self) .. '(' .. table.mapi(expr, function(x)
 			return (self:apply(x))
@@ -32,7 +32,7 @@ JavaScript.lookupTable = setmetatable(table(JavaScript.lookupTable, {
 			end):concat', '..')'
 		end
 	end,
-}), nil)
+}:setmetatable(nil)
 
 JavaScript.generateParams = {
 	localType = 'var',

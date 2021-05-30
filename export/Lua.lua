@@ -7,7 +7,7 @@ local Lua = class(Language)
 
 Lua.name = 'Lua'
 
-Lua.lookupTable = setmetatable(table(Lua.lookupTable, {
+Lua.lookupTable = table(Lua.lookupTable):union{
 	[require 'symmath.Function'] = function(self, expr)
 		--[[
 		TODO
@@ -62,7 +62,7 @@ Lua.lookupTable = setmetatable(table(Lua.lookupTable, {
 			return '('..s..')', predefs
 		end
 	end,
-}), nil)
+}:setmetatable(nil)
 
 Lua.generateParams = {
 	localType = 'local',
