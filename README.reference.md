@@ -188,7 +188,19 @@ Calculates the numeric value of the expression.
 `expr:polyCoeffs(var)`  
 Returns a table of coefficients with keys 0 through the degree of the polynomial, and 'extra' containing all non-polynomial terms.  
 
+`symmath.polydiv(a, b[, x])`
+`a:polydiv(b[, x])`
+Performs polynomial division `a / b`, with `x` the polynomial variable.
+`x` can be inferred if only one variable is used in the `a` and `b` expressions.
+
 ### Calculus
+
+`symmath.Limit(expr, var, limit[, side])`
+`symmath.lim(expr, var, limit[, side])` 
+`expr:lim(var, limit[, side])`  
+Calculates the limit of the expression with respect to the specified variable, limit, and optionally side.
+Side is '+' or '-', or nil for both sides.
+The derivative is evaluated upon calling `simplify()`, or by shorthand calling the object one more time: `(1/x):lim(x, 0, '+')()`.
 
 `symmath.Derivative(expr, var1, var2, ...)`  
 `symmath.diff(expr, var1, var2, ...)`  

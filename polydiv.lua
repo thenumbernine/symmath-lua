@@ -1,18 +1,46 @@
 local table = require 'ext.table'
-local polyCoeffs = require 'symmath.polyCoeffs'
-local Constant = require 'symmath.Constant'
+local symmath
 
 --[[
-polydiv(a,b)
-a:polydiv(b)
+polydiv(a,b[,x])
+a:polydiv(b[,x])
 
 returns a / b where a and b are polynomials wrt the variable x
 --]]
 return function(a, b, x)
+	symmath = symmath or require 'symmath'
+	local Constant = symmath.Constant
+	local polyCoeffs = symmath.polyCoeffs
+	local clone = symmath.clone
 	
+	-- in case someone is dividing by a Lua number...
+	a = clone(a)
+	b = clone(b)
+
 	if not x then
 		-- infer x.  from the highest variable integer power of a? ... of b?
 		-- from whatever the two have in common?
+		local vars = {}
+		local function collectVars(x)
+			if symmath.Variable:isa(x) then
+				vars[x.name] = x
+			end
+		end
+		a:map(collectVars)
+		b:map(collectVars)
+		local keys = table.keys(vars)
+		if #keys == 0 then
+			-- no variables at all?  no polynomial division 
+			-- ... just use regular division
+			return symmath.simplify(a / b)
+		end
+		
+		if #keys == 1 then
+			x = vars[keys[1]]
+		end
+		if #keys == 2 then
+			error("you didn't specify an 'x' variable, and there are more than one variables for me to choose from.")
+		end
 	end
 
 	local res = {}
