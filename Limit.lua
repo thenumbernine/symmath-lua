@@ -46,7 +46,8 @@ function Limit:init(...)
 	
 	local f, x, a, side = ...
 	
-	assert(require 'symmath.Variable':isa(x))
+	symmath = symmath or require 'symmath.namespace'()
+	assert(symmath.Variable:isa(x))
 
 	if not Side:isa(side) then side = Side(side) end
 
@@ -54,6 +55,8 @@ function Limit:init(...)
 end
 
 --[[
+TODO turn this into member methods
+
 alright, here we get a reason to use a bubble-in phase.  (parent-first)
 right now visitor only does bubble-out. (child-first)
 and that means that the indeterminate expressions will be replaced with 'invalid' before the limit can reach them.
@@ -78,7 +81,7 @@ how about the insides? what form should we use?
 should I put this in pow -> div -> mul -> add format?
 or should I just have an exceptional rule for p/q(x)^n => (p^(1/n)/q(x))^n
 --]]
-Limit.rulesBubbleIn = {
+Limit.rules = {
 	Prune = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -92,7 +95,8 @@ Limit.rulesBubbleIn = {
 			-- put any infs into prune() form, -inf => -1 * inf
 			-- but what if 'a' is a limit too?
 			-- what about lim x->(lim ...) f(x) ?
-			a = a:prune()
+			--a = a:prune()
+			-- or just do this rule on the bubble-out
 
 --[[
 local var = symmath.var
@@ -108,8 +112,12 @@ printbr(var'side':eq(side))
 			-- yeah, well, this is a tough one, because tan(x) simplifies to sin(x)/cos(x)
 			-- but x/x^2 simplifies to 1/x
 			-- so how about i just keep the original for tan's sake
-			local origf = f
-			f = symmath.simplify(f)
+			--local origf = f
+			-- instead I'll just look for tan()'s replacement: sin()/cos()
+			-- but if I'm pruning f and a in advance ...
+			-- ... maybe this whole rule isn't a bubble-in rule after all?
+			--f = f:prune()
+			-- or just do this rule on the bubble-out
 
 -- [=[
 			-- lim x->a f(x) = lim x->a+ f(x) = lim x->a- f(x) only when the + and - limit are equal
@@ -280,7 +288,34 @@ printbr(var'side':eq(side))
 						end
 					end
 				end
+
 			
+				-- handle cos(x)/sin(x) == tan(x) here
+				-- do this before 
+				if symmath.sin:isa(p)
+				and symmath.cos:isa(q)
+				then
+					if p[1] == q[1] then
+						local th = p[1]
+						local L = Limit(th, x, a, side):prune()
+						if L == symmath.pi/2 then
+							if side == Side.plus then return Constant(-1) * inf end
+							if side == Side.minus then return inf end
+						end
+						-- for that matter, if L == integer * pi / 2
+						local n = (symmath.Wildcard(1) * symmath.pi) / 2
+						if n and symmath.set.integer:contains(n) then
+							if side == Side.plus then return Constant(-1) * inf end
+							if side == Side.minus then return inf end
+							error'got an invalid Limit side'
+						end
+						-- otherwise. ... can we assert L isn't going to be in the set of {n in Z, n pi / 2}?
+						-- if we can assert that then return tan(L)
+						return symmath.tan(L)
+					end
+				end
+		
+				-- TODO only for lq's set NOT INTERSECTING {0}
 				if not Constant.isValue(lq, 0) then
 					return prune:apply(lp / lq)
 				end
@@ -290,7 +325,21 @@ printbr(var'side':eq(side))
 			local pow = symmath.op.pow
 			if pow:isa(f) then
 				local p, q = table.unpack(f)
-				return prune:apply(Limit(p, x, a, side) ^ Limit(q, x, a, side))
+				-- TODO what about sqrts?  
+				-- in that case we should handle lim x->0+ sqrt(x) differently from lim x->0- sqrt(x)
+				local lp = Limit(p, x, a, side):prune()
+				local lq = Limit(q, x, a, side):prune()
+				-- handle sqrt(0)
+				if Constant.isValue(lp, 0)
+				-- or any (2m+1)/(2n) root, for m,n integers
+				and symmath.op.div:isa(lq)
+				and symmath.set.oddInteger:contains(lq[1])
+				and symmath.set.evenInteger:contains(lq[2])
+				then
+					if side == Side.plus then return Constant(0) end
+					return invalid
+				end
+				return prune:apply(lp ^ lq)
 			end
 
 
@@ -314,6 +363,7 @@ printbr(var'side':eq(side))
 			or symmath.sin:isa(f) 
 			or symmath.cos:isa(f)
 			then
+				-- TODO only for 'a' contained within the domain of H
 				return getmetatable(f)(
 					Limit(f[1], x, a, side):prune()
 				)
@@ -321,6 +371,12 @@ printbr(var'side':eq(side))
 			
 			-- functions with asymptotes
 			-- tan
+			--[[
+			-- TODO don't use 'origf'
+			-- instead just don't always replace tan(x) with sin(x)/cos(x)
+			-- but this means adding in a few more simplification rules for arithmetic operations
+			-- or for trig simplification (wherever that will eventually go)
+			-- instead, how about for now we check the simplified form for sin(x)/cos(x) ?
 			if symmath.tan:isa(origf) then
 				local f = origf
 				local L = Limit(f[1], x, a, side):prune()
@@ -342,6 +398,7 @@ printbr(var'side':eq(side))
 					Limit(f[1], x, a, side):prune()
 				)
 			end
+			--]]
 
 			-- functions that are only true on (0, inf) 
 			-- log
@@ -362,6 +419,8 @@ printbr(var'side':eq(side))
 					end
 					return invalid
 				end
+				
+				-- TODO only for 'a' contained within the domain of H
 				return getmetatable(f)(
 					Limit(f[1], x, a, side):prune()
 				)
@@ -384,7 +443,8 @@ printbr(var'side':eq(side))
 					end
 					return invalid
 				end
-				-- TODO this?
+				
+				-- TODO only for 'a' contained within the domain of H
 				return getmetatable(f)(
 					Limit(f[1], x, a, side):prune()
 				)
@@ -428,7 +488,7 @@ printbr(var'side':eq(side))
 					return invalid
 				end
 			
-				-- otherwise ... ?
+				-- TODO only for 'a' contained within the domain of H
 				return getmetatable(f)(
 					Limit(f[1], x, a, side):prune()
 				)
@@ -445,11 +505,22 @@ printbr(var'side':eq(side))
 					if side == Side.plus then return Constant(1) end
 					if side == Side.minus then return Constant(0) end
 					if side == Side.both then return invalid end
-					error'here'
+					error'got a bad limit side'
 				end
+				--[[ TODO get isTrue() to work
 				if L:lt(0):isTrue() then return Constant(0) end
 				if L:gt(0):isTrue() then return Constant(1) end
+				--]]
+				-- [[
+				if symmath.set.negativeReal:contains(L) then return Constant(0) end
+				if symmath.set.positiveReal:contains(L) then return Constant(1) end
+				--]]
 				-- here: lim x->a H(x) when a>0 is undetermined
+				
+				-- TODO only for 'a' contained within the domain of H
+				return getmetatable(f)(
+					Limit(f[1], x, a, side):prune()
+				)
 			end
 
 
@@ -467,13 +538,6 @@ printbr(var'side':eq(side))
 			--]]
 		end},
 	},
-}
-
-Limit.rules = {
-	Prune = {
-		{apply = function(prune, expr)
-		end},
-	}
 }
 
 return Limit

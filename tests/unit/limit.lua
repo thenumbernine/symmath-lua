@@ -47,7 +47,19 @@ asserteq(lim(1/x, x, 0, '-'), -inf)
 asserteq(lim(1/x^2, x, 0, '+'), inf)
 asserteq(lim(1/x^2, x, 0, '-'), inf)
 
--- TODO sqrts, cbrts
+-- sqrts
+asserteq(lim(sqrt(x), x, 0), invalid)
+asserteq(lim(sqrt(x), x, 0, '-'), invalid)
+asserteq(lim(sqrt(x), x, 0, '+'), 0)
+-- in each form ...
+asserteq(lim(x^frac(1,2), x, 0), invalid)
+asserteq(lim(x^frac(1,2), x, 0, '-'), invalid)
+asserteq(lim(x^frac(1,2), x, 0, '+'), 0)
+-- and one more power up ...
+asserteq(lim(x^frac(1,4), x, 0), invalid)
+asserteq(lim(x^frac(1,4), x, 0, '-'), invalid)
+asserteq(lim(x^frac(1,4), x, 0, '+'), 0)
+
 
 -- functions
 --
@@ -152,10 +164,19 @@ asserteq(lim(acos(x), x, 1), invalid)
 asserteq(lim(acos(x), x, 1, '-'), -inf)
 asserteq(lim(acos(x), x, inf), invalid)
 
--- TODO Heaviside
+asserteq(lim(Heaviside(x), x, a), Heaviside(a))
+asserteq(lim(Heaviside(x), x, -inf), 0)
+asserteq(lim(Heaviside(x), x, -1), 0)
+asserteq(lim(Heaviside(x), x, 0), invalid)
+asserteq(lim(Heaviside(x), x, 0, '-'), 0)
+asserteq(lim(Heaviside(x), x, 0, '+'), 1)
+asserteq(lim(Heaviside(x), x, 1), 1)
+asserteq(lim(Heaviside(x), x, inf), 1)
 
 -- products of functions
 asserteq(lim(x * sin(x), x, a), a * sin(a))
+
+-- polynomial roots ... this is going to be tough
 
 
 ]=]), '\n')) do

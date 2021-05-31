@@ -192,7 +192,82 @@
 <code></code>
 </td><td>
 <tr><td>
-<b>TODO sqrts, cbrts</b><br>
+<b>sqrts</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sqrt(x), x, 0), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sqrt(x), x, 0, '-'), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(sqrt(x), x, 0, '+'), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>in each form ...</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x^frac(1,2), x, 0), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x^frac(1,2), x, 0, '-'), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x^frac(1,2), x, 0, '+'), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>and one more power up ...</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x^frac(1,4), x, 0), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x^frac(1,4), x, 0, '-'), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(x^frac(1,4), x, 0, '+'), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code></code>
 </td><td>
 <tr><td>
@@ -849,9 +924,61 @@
 <code></code>
 </td><td>
 <tr><td>
-<b>TODO Heaviside</b><br>
-<code></code>
+<b></b><br>
+<code>asserteq(lim(Heaviside(x), x, a), Heaviside(a))</code>
 </td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(Heaviside(x), x, -inf), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(Heaviside(x), x, -1), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(Heaviside(x), x, 0), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(Heaviside(x), x, 0, '-'), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(Heaviside(x), x, 0, '+'), 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(Heaviside(x), x, 1), 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(lim(Heaviside(x), x, inf), 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
@@ -867,3 +994,11 @@
 
 <span style="color:green">GOOD</span>
 </td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>polynomial roots ... this is going to be tough</b><br>
+<code></code>
+</td><td>

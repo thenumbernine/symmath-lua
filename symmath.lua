@@ -51,7 +51,8 @@ function symmath.vars(...)						--create variables for each string parameter
 	return table{...}:mapi(function(x) return symmath.var(x) end):unpack()
 end
 
--- TODO call Function BuiltinFunction and call UserFunction Function?
+-- TODO call Function => BuiltinFunction and call UserFunction => Function?
+-- or call UserFunction => Function, and use it to create all current subclasses of Function?
 symmath.UserFunction = require 'symmath.UserFunction'
 symmath.func = symmath.UserFunction
 
@@ -399,11 +400,6 @@ symmath.setup = function(args)
 end
 
 symmath.Visitor = require 'symmath.visitor.Visitor'
-
-function symmath.makefunc(name)
-	local Function = symmath.Function
-	return class(Function, {name=name})
-end
 
 -- make require'symmath'() shorthand for require'symmath'.setup()
 setmetatable(symmath, {
