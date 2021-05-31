@@ -26,6 +26,8 @@ end
 
 asinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
+asinh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
+
 asinh.rules = {
 	Prune = {
 		{apply = function(prune, expr)

@@ -17,6 +17,8 @@ end
 
 atanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc
 
+atanh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_plusMinusOne_to_plusMinusInf
+
 atanh.rules = {
 	Prune = {
 		{apply = function(prune, expr)

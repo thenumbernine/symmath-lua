@@ -44,6 +44,157 @@ function div:getRealRange()
 	return self.cachedSet
 end
 
+-- lim (f/g) = (lim f)/(lim g) so long as (lim g) ~= 0
+function div:evaluateLimit(x, a, side)
+	symmath = symmath or require 'symmath'
+	local prune = symmath.prune
+	local Limit = symmath.Limit
+	local Constant = symmath.Constant
+	local inf = symmath.inf
+
+	local p, q = table.unpack(self)
+	
+	local Lp = prune(Limit(p, x, a, side))
+	local Lq = prune(Limit(q, x, a, side))
+	
+--[=[
+	if (
+		Constant.isValue(Lp, 0) 
+--					or Lp == inf 
+--					or lus == Constant(-1) * inf
+	) and (
+		Constant.isValue(Lq, 0) 
+--					or Lq == inf 
+--					or lus == Constant(-1) * inf
+	) then
+		-- L'Hospital:
+		p = p:diff(x)()
+		q = q:diff(x)()
+		return prune(
+			Limit(
+				prune(p/q), 
+				x, a, side
+			)
+		)
+	end
+--]=]
+
+	--[[
+	how to determine when lim (x -> root) of p(q) / prod of (x - roots) is approaching from +inf or -inf
+	seems you would want the limit in the form of pow -> div -> mul -> add/sub, 
+	and then to compare the roots of the denominator with x->a, to see if we are approaching from the left or right.
+	... and then looking at the sign of p(x) / prod of (x - all other roots) to see if we should be flipping the sign of the limit's +-inf
+	--]]
+	if Constant.isValue(Lq, 0) then
+		if not p:dependsOn(x) then
+			
+			-- lim x->root+- 1/x = +-inf
+			if q == x then
+				if side == Limit.Side.plus then
+					return prune(p * inf)
+				else
+					return prune(-p * inf)
+				end
+			end
+			
+			-- lim x->root+- 1/x^n = +-inf
+			local Wildcard = symmath.Wildcard
+			-- x:match(x^Wildcard(1)) won't match x^Constant(1)
+			local n = q:match(x^Wildcard{1, cannotDependOn=x})
+			if n 
+			and symmath.set.integer:contains(n)
+			then
+
+				if symmath.set.evenInteger:contains(n) then
+					return prune(p * inf)
+				elseif symmath.set.oddInteger:contains(n) then
+					if side == Limit.Side.plus then
+						return prune(p * inf)
+					else
+						return prune(-p * inf)
+					end
+				else
+					error'here'
+				end
+			end
+		end
+	end
+
+	-- lim x->+-inf p(x) / q(x)
+	if a == inf
+	or a == Constant(-1) * inf
+	then
+		local cp = p:polyCoeffs(x)
+		local cq = q:polyCoeffs(x)
+		
+		-- if we got two polynomials ...
+		if cp.extra == nil
+		and cq.extra == nil
+		then
+			local dp = table.maxn(cp)
+			local dq = table.maxn(cq)
+--printbr('p: ', p)
+--printbr('q: ', q)
+--printbr('keys of coeffs of p: ', table.keys(cp):concat', ')
+--printbr('keys of coeffs of q: ', table.keys(cq):concat', ')
+--printbr('degrees if p(x)/q(x): ', dp, dq)
+--printbr('leading coeff of p:', cp[dp])
+--printbr('leading coeff of q:', cq[dq])
+			if dp > dq then
+--printbr'using degree(p) > degree(q)...'							
+				local leadingCoeffRatio = prune(cp[dp] / cq[dq])
+				if leadingCoeffRatio:lt(0):isTrue() then
+					return Constant(-1) * inf 
+				elseif leadingCoeffRatio:gt(0):isTrue() then
+					return inf
+				else
+					error("how do I fix this?")
+				end
+			elseif dp == dq then
+--printbr'using degree(p) == degree(q)...'							
+				local leadingCoeffRatio = prune(cp[dp] / cq[dq])
+				return leadingCoeffRatio 
+			elseif dp < dq then
+--printbr'using degree(p) < degree(q)...'							
+				return Constant(0)
+			end
+		end
+	end
+
+
+	-- handle cos(x)/sin(x) == tan(x) here
+	-- TODO this is here only because tan() prune()'s into sin()/cos()
+	-- if instead we keep tan() as-is then move this into tan:evaluateLimit()
+	if symmath.sin:isa(p)
+	and symmath.cos:isa(q)
+	then
+		if p[1] == q[1] then
+			local th = p[1]
+			local L = prune(Limit(th, x, a, side))
+			if L == symmath.pi/2 then
+				if side == Limit.Side.plus then return Constant(-1) * inf end
+				if side == Limit.Side.minus then return inf end
+			end
+			-- for that matter, if L == integer * pi / 2
+			local n = (symmath.Wildcard(1) * symmath.pi) / 2
+			if n and symmath.set.integer:contains(n) then
+				if side == Limit.Side.plus then return Constant(-1) * inf end
+				if side == Limit.Side.minus then return inf end
+				error'got an invalid Limit side'
+			end
+			-- TODO only for L contained within the domain of H
+			-- i.e. only for L's set NOT INTERSECTING {(2n+1)/pi} for n in Z
+			return symmath.tan(L)
+		end
+	end
+
+
+	-- TODO only for Lq's set NOT INTERSECTING {0}
+	if not Constant.isValue(Lq, 0) then
+		return prune(Lp / Lq)
+	end
+end
+
 div.rules = {
 	DistributeDivision = {
 		{apply = function(distributeDivision, expr)

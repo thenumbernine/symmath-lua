@@ -47,6 +47,29 @@ function acosh:getRealRange()
 	return self.cachedSet
 end
 
+function acosh:evaluateLimit(x, a, side)
+	symmath = symmath or require 'symmath'
+	local Constant = symmath.Constant
+	local Limit = symmath.Limit
+
+	local L = symmath.prune(Limit(self[1], x, a, side))
+	if symmath.set.RealSubset(1, math.huge, false, false):contains(L) then
+		return acosh(L)
+	end
+	if symmath.set.RealSubset(-math.huge, 1, false, false):contains(L) then
+		return symmath.invalid
+	end
+	if Constant.isValue(L, 1) then
+		if side == Limit.Side.plus then
+			return Constant(0)
+		end
+		return symmath.invalid
+	end
+	
+	-- TODO only for L contained within the domain of H
+	return acosh(L)
+end
+
 acosh.rules = {
 	Prune = {
 		{apply = function(prune, expr)

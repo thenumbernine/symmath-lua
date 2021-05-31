@@ -20,6 +20,8 @@ end
 
 asin.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc
 
+asin.evaluateLimit = require 'symmath.Limit'.evaluateLimit_plusMinusOne_to_plusMinusInf
+
 asin.rules = {
 	Prune = {
 		{apply = function(prune, expr)

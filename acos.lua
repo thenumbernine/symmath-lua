@@ -50,6 +50,8 @@ function acos:getRealRange()
 	return self.cachedSet
 end
 
+acos.evaluateLimit = require 'symmath.Limit'.evaluateLimit_plusMinusOne_to_minusPlusInf
+
 acos.rules = {
 	Prune = {
 		{apply = function(prune, expr)

@@ -221,4 +221,12 @@ function Variable:getRealRange()
 	-- what about Integer?  Integer's RealInterval is discontinuous ...
 end
 
+-- lim x->a x => a
+-- otherwise lim x->a y = y
+-- TODO but what if y depends on x ?  would that be a Variable?  what is the scope of use of Variable.value ?  esp when considering total derivatives?
+function Variable:evaluateLimit(x, a, side)
+	if x == self then return a end
+	return self
+end
+
 return Variable

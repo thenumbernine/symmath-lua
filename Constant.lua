@@ -19,9 +19,8 @@ Constant.name = 'Constant'
 -- [[ override 'new' operator and fall back on caching
 -- saves 25% of time on the 'metric catalog' test
 local cache = {}
-local oldcall = getmetatable(Constant).__call
-local mt = {}
-function mt:__call(value, ...)
+local newmember = Constant.new
+function Constant:new(value, ...)	-- 'self' is the class for calls to :new()
 	if type(value) == 'number'		-- it could be a complex ...
 	and value == math.floor(value)
 	and value >= -100
@@ -29,15 +28,14 @@ function mt:__call(value, ...)
 	then
 		local obj = cache[value]
 		if obj == nil then 
-			obj = oldcall(self, value, ...)
+			obj = newmember(self, value, ...)
 			cache[value] = obj
 		end
 		return obj
 	else
-		return oldcall(self, value, ...)
+		return newmember(self, value, ...)
 	end
 end
-setmetatable(Constant, mt)
 --]]
 
 --[[
@@ -170,6 +168,17 @@ function Constant:getRealRange()
 	end
 end
 
+-- static method
+-- Constant:isa(x) and x.value == value, combined
+function Constant.isValue(x, value)
+	return Constant:isa(x) and x.value == value
+end
+
+-- lim x->a c => c
+function Constant:evaluateLimit(x, a, side)
+	return self
+end
+
 Constant.rules = {
 	Tidy = {
 		{apply = function(tidy, expr)
@@ -185,11 +194,5 @@ Constant.rules = {
 		end},
 	},
 }
-
--- static method
--- Constant:isa(x) and x.value == value, combined
-function Constant.isValue(x, value)
-	return Constant:isa(x) and x.value == value
-end
 
 return Constant

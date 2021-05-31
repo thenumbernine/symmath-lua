@@ -22,6 +22,8 @@ end
 
 tanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
+tanh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
+
 tanh.rules = {
 	Prune = {
 		{apply = function(prune, expr)

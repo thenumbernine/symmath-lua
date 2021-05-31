@@ -125,6 +125,31 @@ function pow:getRealRange()
 	return self.cachedSet
 end
 
+-- lim (p^q) => (lim p)^(lim q)
+function pow:evaluateLimit(x, a, side)
+	symmath = symmath or require 'symmath'
+	local prune = symmath.prune
+	local Limit = symmath.Limit
+	local Constant = symmath.Constant
+	
+	local p, q = table.unpack(self)
+	-- TODO what about sqrts?  
+	-- in that case we should handle lim x->0+ sqrt(x) differently from lim x->0- sqrt(x)
+	local Lp = prune(Limit(p, x, a, side))
+	local Lq = prune(Limit(q, x, a, side))
+	-- handle sqrt(0)
+	if Constant.isValue(Lp, 0)
+	-- or any (2m+1)/(2n) root, for m,n integers
+	and symmath.op.div:isa(Lq)
+	and symmath.set.oddInteger:contains(Lq[1])
+	and symmath.set.evenInteger:contains(Lq[2])
+	then
+		if side == Limit.Side.plus then return Constant(0) end
+		return symmath.invalid
+	end
+	return prune(Lp ^ Lq)
+end
+
 pow.rules = {
 	Expand = {
 		{apply = function(expand, expr)

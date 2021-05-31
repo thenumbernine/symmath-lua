@@ -96,6 +96,8 @@ function sin:getRealRange()
 	return self.cachedSet
 end
 
+sin.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
+
 local frac = require 'symmath.op.div'
 local sqrt = require 'symmath.sqrt'
 sin.lookup = {

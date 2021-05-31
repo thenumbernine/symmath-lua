@@ -503,6 +503,17 @@ function add:getRealRange()
 	return self.cachedSet
 end
 
+-- lim add = add lim
+function add:evaluateLimit(x, a, side)
+	symmath = symmath or require 'symmath'
+	return symmath.prune(
+		add(
+			table.mapi(self, function(xi)
+				return symmath.Limit(xi, x, a, side)
+			end):unpack()
+		)
+	)
+end
 
 --[[
 this is a single term^power

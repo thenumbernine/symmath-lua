@@ -20,6 +20,8 @@ end
 
 cosh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
 
+cosh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
+
 cosh.rules = {
 	Prune = {
 		{apply = function(prune, expr)

@@ -102,6 +102,8 @@ function cos:getRealRange()
 	return self.cachedSet
 end
 
+cos.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
+
 -- assume irreducible form, so there exists no prime k such that k divides p and k divides q
 -- lookup[denom][num] = cos(denom * π / num)
 -- excluding cos((0 * π) / q) = 1 and cos((q * π) / q) = -1

@@ -20,6 +20,30 @@ end
 
 log.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm
 
+function log:evaluateLimit(x, a, side)
+	symmath = symmath or require 'symmath'
+	local prune = symmath.prune
+	local Constant = symmath.Constant
+	local Limit = symmath.Limit
+
+	local L = prune(Limit(self[1], x, a, side))
+	if symmath.set.positiveReal:contains(L) then
+		return log(L)
+	end
+	if symmath.set.negativeReal:contains(L) then
+		return symmath.invalid
+	end
+	if Constant.isValue(L, 0) then
+		if side == Limit.Side.plus then
+			return Constant(-1) * symmath.inf
+		end
+		return symmath.invalid
+	end
+	
+	-- TODO only for L contained within the domain of H
+	return log(L)
+end
+
 log.rules = {
 	Prune = {
 		{apply = function(prune, expr)

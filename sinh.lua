@@ -20,6 +20,8 @@ end
 
 sinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
+sinh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
+
 sinh.rules = {
 	Prune = {
 		{apply = function(prune, expr)

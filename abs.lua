@@ -21,6 +21,8 @@ end
 
 abs.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
 
+abs.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
+
 abs.rules = {
 	Prune = {
 		{apply = function(prune, expr)

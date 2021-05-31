@@ -535,6 +535,20 @@ function mul:getRealRange()
 	return self.cachedSet
 end
 
+-- lim mul = mul lim
+function mul:evaluateLimit(x, a, side)
+	symmath = symmath or require 'symmath'
+	-- TODO handle indeterminate forms here?  or outside of limits?
+	-- right now they are evaluated outside of limits...
+	return symmath.prune(
+		mul(
+			table.mapi(self, function(fi)
+				return symmath.Limit(fi, x, a, side)
+			end):unpack()
+		)
+	)
+end
+
 -- goes horribly slow
 --[[
 a * (b + c) * d * e => (a * b * d * e) + (a * c * d * e)

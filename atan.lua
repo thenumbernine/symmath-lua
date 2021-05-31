@@ -20,6 +20,8 @@ end
 -- technically this is a Riemann surface, and the codomain repeats every pi
 atan.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 
+atan.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
+
 atan.rules = {
 	Prune = {
 		{apply = function(prune, expr)
