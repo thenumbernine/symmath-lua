@@ -19,7 +19,8 @@ function abs:reverse(soln, index)
 	return soln, -soln
 end
 
-abs.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
+abs.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+abs.getRealRange = require 'symmath.set.RealSubset'.getRealRange_evenIncreasing
 
 abs.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
 
@@ -54,6 +55,13 @@ abs.rules = {
 			if symmath.set.nonNegativeReal:contains(x) then
 				return x
 			end
+		
+--[[ TODO this should be on all Function's prune()'s
+-- but for this set the complement of real is empty			
+			if expr:getRealDomain():complement():open():contains(x) then
+				return symmath.invalid
+			end
+--]]
 		end},
 	},
 }

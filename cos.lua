@@ -23,6 +23,8 @@ function cos:reverse(soln, index)
 	return symmath.acos(soln)
 end
 
+cos.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+
 function cos:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	
@@ -250,6 +252,14 @@ cos.rules = {
 			then
 				return symmath.invalid
 			end
+		
+--[[ TODO this should be on all Function's prune()'s
+-- but in this case the complement of the real is the empty set			
+			if expr:getRealDomain():complement():open():contains(x) then
+				return symmath.invalid
+			end
+--]]
+
 		end},
 	},
 }

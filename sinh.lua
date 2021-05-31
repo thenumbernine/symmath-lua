@@ -18,7 +18,8 @@ function sinh:reverse(soln, index)
 	return symmath.asinh(soln)
 end
 
-sinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
+sinh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+sinh.getRealRange = require 'symmath.set.RealSubset'.getRealRange_inc
 
 sinh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
 
@@ -34,6 +35,14 @@ sinh.rules = {
 			if expr[1] == Constant(-1) * symmath.inf then
 				return Constant(-1) * symmath.inf
 			end
+		
+--[[ TODO this should be on all Function's prune()'s
+-- but since this is reals, the complement is empty	
+			if expr:getRealDomain():complement():open():contains(x) then
+				return symmath.invalid
+			end
+--]]
+
 		end},
 	},
 }

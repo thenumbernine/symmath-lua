@@ -19,7 +19,13 @@ function acosh:evaluateDerivative(deriv, ...)
 	return deriv(x, ...) / symmath.sqrt(x^2 - 1)
 end
 
--- (1,inf) increasing, (-inf,1) imaginary
+-- (1,inf)
+function acosh:getRealDomain()
+	symmath = symmath or require 'symmath'
+	return symmath.set.RealSubset(1, math.huge, true, false)
+end
+
+-- (0,inf) increasing, (-inf,0) imaginary
 function acosh:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	local Is = x[1]:getRealRange()
@@ -53,12 +59,6 @@ function acosh:evaluateLimit(x, a, side)
 	local Limit = symmath.Limit
 
 	local L = symmath.prune(Limit(self[1], x, a, side))
-	if symmath.set.RealSubset(1, math.huge, false, false):contains(L) then
-		return acosh(L)
-	end
-	if symmath.set.RealSubset(-math.huge, 1, false, false):contains(L) then
-		return symmath.invalid
-	end
 	if Constant.isValue(L, 1) then
 		if side == Limit.Side.plus then
 			return Constant(0)
@@ -66,8 +66,7 @@ function acosh:evaluateLimit(x, a, side)
 		return symmath.invalid
 	end
 	
-	-- TODO only for L contained within the domain of H
-	return acosh(L)
+	return Limit.evaluateLimit_ifInDomain(self, L)
 end
 
 acosh.rules = {
@@ -84,6 +83,11 @@ acosh.rules = {
 
 			if x == symmath.inf then
 				return symmath.inf
+			end
+			
+			-- TODO this should be on all Function's prune()'s
+			if expr:getRealDomain():complement():open():contains(x) then
+				return symmath.invalid
 			end
 		end},
 	},

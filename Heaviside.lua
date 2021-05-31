@@ -13,6 +13,8 @@ function Heaviside:evaluateDerivative(deriv, ...)
 	return require 'symmath.Constant'(0)
 end
 
+Heaviside.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+
 function Heaviside:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	

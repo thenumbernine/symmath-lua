@@ -18,6 +18,10 @@ function tan:reverse(soln, index)
 	return require 'symmath.atan'(soln)
 end
 
+-- TODO technically this is the reals minus holes at {(n+1/2) pi, n in Z}
+-- but I don't have any way to represent this yet
+tan.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+
 function tan:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	-- (-inf,inf) => (-inf,inf) increasing, periodic
@@ -48,6 +52,9 @@ function tan:getRealRange()
 	end))
 	return self.cachedSet
 end
+
+-- no need for evaluateLimit if we are immediately converting tan() to sin()/cos()
+-- so instead you can find that code in op.div's evaluateLimit()
 
 tan.rules = {
 	Prune = {

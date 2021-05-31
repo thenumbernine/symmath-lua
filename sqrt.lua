@@ -23,13 +23,17 @@ function sqrt:reverse(soln, index)
 	return soln^2
 end
 
-sqrt.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm
+sqrt.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_nonNegativeReal
+sqrt.getRealRange = require 'symmath.set.RealSubset'.getRealRange_posInc_negIm
+
+-- don't bother with evaluateLimit, since prune() will convert it into a power
 
 sqrt.rules = table(sqrt.rules, {
 	Prune = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local div = symmath.op.div
+			
 			-- sqrt(a) = a^div(1,2)
 			return prune:apply(expr[1]^div(1,2))
 		end},

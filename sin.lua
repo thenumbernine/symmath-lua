@@ -20,6 +20,8 @@ function sin:reverse(soln, index)
 	return symmath.asin(soln)
 end
 
+sin.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+
 function sin:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 
@@ -239,6 +241,13 @@ sin.rules = {
 			then
 				return symmath.invalid
 			end
+		
+--[[ TODO this should be on all Function's prune()'s
+-- but in this case it's the reals whose complement is empty			
+			if expr:getRealDomain():complement():open():contains(x) then
+				return symmath.invalid
+			end
+--]]
 		end},
 	},
 }

@@ -20,6 +20,8 @@ function acos:reverse(soln, index)
 	return symmath.cos(soln)
 end
 
+acos.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_plusMinusOneClosed
+
 -- technically a Riemann surface with a repeating codomain
 -- (-1,1) => (-inf,inf) decreasing, (-inf,-1) and (1,inf) imaginary
 function acos:getRealRange()
@@ -68,7 +70,8 @@ acos.rules = {
 				return symmath.invalid
 			end
 			
-			if symmath.set.RealSubset(1, math.huge, true, false):contains(x) then
+			-- TODO this should be on all Function's prune()'s
+			if expr:getRealDomain():complement():open():contains(x) then
 				return symmath.invalid
 			end
 		end},

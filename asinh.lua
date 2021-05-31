@@ -24,7 +24,8 @@ function asinh:reverse(soln, index)
 	return symmath.sinh(soln)
 end
 
-asinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
+asinh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+asinh.getRealRange = require 'symmath.set.RealSubset'.getRealRange_inc
 
 asinh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
 
@@ -40,6 +41,13 @@ asinh.rules = {
 			if expr[1] == Constant(-1) * symmath.inf then
 				return Constant(-1) * symmath.inf
 			end
+		
+--[[ TODO this should be on all Function's prune()'s
+-- but in this case it is empty anyways
+			if expr:getRealDomain():complement():open():contains(x) then
+				return symmath.invalid
+			end
+--]]
 		end},
 	},
 }

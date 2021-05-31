@@ -125,19 +125,25 @@ asserteq(lim(tan(x), x, pi), tan(pi))
 asserteq(lim(tan(x), x, 3*pi/2), invalid)
 asserteq(lim(tan(x), x, inf), invalid)
 
-asserteq(lim(log(x), x, a), log(a))
+do local a = set.positiveReal:var'a' asserteq(lim(log(x), x, a), log(a)) end	-- if the input is within the domain of the function then we can evaluate it for certain
+do local a = set.negativeReal:var'a' asserteq(lim(log(x), x, a), invalid) end	-- if the input is outside the domain of the function then we know the result is invalid. TODO is this the same as indeterminate?  Or should I introduce a new singleton?
+do local a = set.real:var'a' print(lim(log(x), x, a):prune()) assert(lim(log(x), x, a):prune() == lim(log(x), x, a)) end	-- if the input covers both the domain and its complement, and we can't determine the limit evaluation, then don't touch the expression
 asserteq(lim(log(x), x, -inf), invalid)
 asserteq(lim(log(x), x, 0), invalid)
 asserteq(lim(log(x), x, 0, '+'), -inf)
 asserteq(lim(log(x), x, inf), inf)
 
-asserteq(lim(acosh(x), x, a), acosh(a))
+do local a = set.RealSubset(-1, 1, false, false):var'a' asserteq(lim(acosh(x), x, a), acosh(a)) end
+do local a = set.RealSubset(-math.huge, -1, false, false):var'a' asserteq(lim(acosh(x), x, a), invalid) end
+do local a = set.real:var'a' print(lim(acosh(x), x, a):prune()) assert(lim(acosh(x), x, a):prune() == lim(acosh(x), x, a)) end
 asserteq(lim(acosh(x), x, -inf), invalid)
 asserteq(lim(acosh(x), x, 1), invalid)
 asserteq(lim(acosh(x), x, 1, '+'), 0)
 asserteq(lim(acosh(x), x, inf), inf)
 
-asserteq(lim(atanh(x), x, a), atanh(a))
+do local a = set.RealSubset(-1, 1, false, false):var'a' asserteq(lim(atanh(x), x, a), atanh(a)) end
+do local a = set.RealSubset(-math.huge, -1, false, false):var'a' asserteq(lim(atanh(x), x, a), invalid) end
+do local a = set.real:var'a' print(lim(atanh(x), x, a):prune()) assert(lim(atanh(x), x, a):prune() == lim(atanh(x), x, a)) end
 asserteq(lim(atanh(x), x, -inf), invalid)
 asserteq(lim(atanh(x), x, -1), invalid)
 asserteq(lim(atanh(x), x, -1, '+'), -inf)
@@ -146,7 +152,9 @@ asserteq(lim(atanh(x), x, 1), invalid)
 asserteq(lim(atanh(x), x, 1, '-'), inf)
 asserteq(lim(atanh(x), x, inf), invalid)
 
-asserteq(lim(asin(x), x, a), asin(a))
+do local a = set.RealSubset(-1, 1, false, false):var'a' asserteq(lim(asin(x), x, a), asin(a)) end
+do local a = set.RealSubset(-math.huge, -1, false, false):var'a' asserteq(lim(asin(x), x, a), invalid) end
+do local a = set.real:var'a' print(lim(asin(x), x, a):prune()) assert(lim(asin(x), x, a):prune() == lim(asin(x), x, a)) end
 asserteq(lim(asin(x), x, -inf), invalid)
 asserteq(lim(asin(x), x, -1), invalid)
 asserteq(lim(asin(x), x, -1, '+'), -inf)
@@ -155,7 +163,9 @@ asserteq(lim(asin(x), x, 1), invalid)
 asserteq(lim(asin(x), x, 1, '-'), inf)
 asserteq(lim(asin(x), x, inf), invalid)
 
-asserteq(lim(acos(x), x, a), acos(a))
+do local a = set.RealSubset(-1, 1, false, false):var'a' asserteq(lim(acos(x), x, a), acos(a)) end
+do local a = set.RealSubset(-math.huge, -1, false, false):var'a' asserteq(lim(acos(x), x, a), invalid) end
+do local a = set.real:var'a' print(lim(acos(x), x, a):prune()) assert(lim(acos(x), x, a):prune() == lim(acos(x), x, a)) end
 asserteq(lim(acos(x), x, -inf), invalid)
 asserteq(lim(acos(x), x, -1), invalid)
 asserteq(lim(acos(x), x, -1, '+'), inf)

@@ -60,11 +60,27 @@ end
 -- here's some commonly used functions by a class' evaluateLimit()
 -- all static functions:
 
+function Limit.evaluateLimit_ifInDomain(f, L)
+	symmath = symmath or require 'symmath'
+	
+	local domain = f:getRealDomain()
+	if domain:contains(L) then
+		return getmetatable(f)(L)
+	end
+	
+	-- is it enough that the complement contains L?
+	-- or should we be safe?  only the open complement?
+	if domain:complement():open():contains(L) then
+		return symmath.invalid
+	end
+	
+	-- SFINAE: if we cannot determine whether f(x) is inside or outside the function domain then don't touch the limit
+end
+
 function Limit.evaluateLimit_continuousFunction(f, x, a, side)
 	symmath = symmath or require 'symmath'
 	local L = symmath.prune(Limit(f[1], x, a, side))
-	-- TODO only for L contained within the domain of H
-	return getmetatable(f)(L)
+	return Limit.evaluateLimit_ifInDomain(f, L)
 end
 
 -- functions that are continuous and increasing/decreasing on (-1, 1) -> (-inf, inf)
@@ -74,9 +90,7 @@ function Limit.evaluateLimit_plusMinusOne_to_plusMinusInf(f, x, a, side, decreas
 	local inf = symmath.inf
 
 	local L = symmath.prune(Limit(f[1], x, a, side))
-	if symmath.set.RealSubset(-1, 1, false, false):contains(L) then
-		return getmetatable(f)(L)
-	end
+	
 	-- TODO use this elsewhere.  it's preferrable to Constant.isValue(L, -1), right?
 	-- then again, the only difference is that RealSubset(-1,-1,true,true):contains(L) will also pick up variables defined to exist only on the set {-1} ...
 	-- so it's basically the same as Constant.isValue(L, -1)
@@ -96,15 +110,10 @@ function Limit.evaluateLimit_plusMinusOne_to_plusMinusInf(f, x, a, side, decreas
 		end
 	end
 
-	if symmath.set.RealSubset{
-		{-math.huge, -1, false, false},
-		{1, math.huge, false, false}
-	}:contains(L) then
-		return symmath.invalid
-	end
-
-	-- TODO only for L contained within the domain of H
-	return getmetatable(f)(L)
+	-- this will handle returning the value for L in (-1, 1)
+	-- or returning invalid for L in (-inf, -1) or (1, inf)
+	-- so long as the function's getRealDomain is set to (-1, 1)
+	return Limit.evaluateLimit_ifInDomain(f, L)
 end
 
 function Limit.evaluateLimit_plusMinusOne_to_minusPlusInf(f, x, a, side)
@@ -144,7 +153,6 @@ Limit.rules = {
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local inf = symmath.inf
-			local invalid = symmath.invalid
 			
 			-- limits ...
 			-- put this in their own Expression member function?
@@ -170,39 +178,44 @@ Limit.rules = {
 			--f = prune:apply(f)
 			-- or just do this rule on the bubble-out
 
--- [=[
 			-- lim x->a f(x) = lim x->a+ f(x) = lim x->a- f(x) only when the + and - limit are equal
 			if side == Side.both then
 				local ll = Limit(f, x, a, '+')
-				local left = prune:apply(ll)
-
 				local lr = Limit(f, x, a, '-')
-				local right = prune:apply(lr)
-				if left == right then 
-					return left 
+
+				local pl = prune:apply(ll)
+				local pr = prune:apply(lr)
+				
+				if pl == pr then 
+					return pl 
 				else
-				-- if lim x->a+ ~= lim x->a- then lim x->a is unknown
-					return invalid		-- return nil?
+					-- if lim x->a+ ~= lim x->a- then lim x->a is unknown
+					-- so SFINAE: don't touch the result
+					--return nil
+					-- but that causes the assumption that certain only-one-sided-limit's two-sided-limit is indeterminate to fail
+					-- so return indeterminate?
+					--return symmath.invalid
+					-- but this causes the default unknown return of Limit, to return itself as is, 
+					--  to cause this to compare lim x->a+ to lim x->a- , and see the two are separate expressions, and return 'invalid'
+					-- so which is it?
+				
+					-- how about both?
+					-- if the left and right limits are untouched (i.e. equal to the original expression before pruning)
+					-- then return the original both-sides limit
+					-- otherwise return invalid.
+					if pl == ll and pr == lr then
+						return
+					else
+						return symmath.invalid
+					end
 				end
 			end
---]=]
 
 			if f.evaluateLimit then
 				return f:evaluateLimit(x, a, side)
 			end
 
-			--[[
-			but this ends up returning 'invalid' ... why is that?
-			especially when the only thing in Limit's rules that returns 'invalid' is when left limit and right limit don't agree
-			ahh that's exactly it ... 
-			if you just request any f(x):lim(x,a) then it will test the + limit and the - limit
-			and if they aren't caught and replaced in this function then what comes back is
-			Limit(f(x), x, a, '+') == Limit(f(x), x, a, '-')
-			and that will always be 'false' because the sides differ
-			technically the comparator should not say 'false' all the time.
-			technically I shouldn't use == but Equality and :isTrue()
-			and in taht case, return no definite answer for comparing unresolved limits ...
-			--]]
+			-- if we haven't figured it out then don't touch the result
 		end},
 	},
 }

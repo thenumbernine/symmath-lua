@@ -18,7 +18,8 @@ function asin:reverse(soln, index)
 	return symmath.sin(soln)
 end
 
-asin.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc
+asin.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_plusMinusOneClosed
+asin.getRealRange = require 'symmath.set.RealSubset'.getRealRange_pmOneInc
 
 asin.evaluateLimit = require 'symmath.Limit'.evaluateLimit_plusMinusOne_to_plusMinusInf
 
@@ -34,13 +35,11 @@ asin.rules = {
 				return Constant(0)
 			end
 			
-			if symmath.set.RealSubset(-math.huge, -1, false, true):contains(x) then
+-- [[ TODO this should be on all Function's prune()'s
+			if expr:getRealDomain():complement():open():contains(x) then
 				return symmath.invalid
 			end
-			
-			if symmath.set.RealSubset(1, math.huge, true, false):contains(x) then
-				return symmath.invalid
-			end
+--]]
 		end},
 	},
 }

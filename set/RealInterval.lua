@@ -7,21 +7,23 @@ local symmath
 -- in some places I'm using subclasses to represent subsets ...
 local RealInterval = class(Universal)
 
-RealInterval.start = start or -math.huge
-RealInterval.finish = finish or math.huge
-RealInterval.includeStart = false
-RealInterval.includeFinish = false
-
 function RealInterval:init(start, finish, includeStart, includeFinish)
+	-- if any values are nil then all values should be nil, meaning an empty interval
 	self.start = start
 	self.finish = finish
 	self.includeStart = includeStart
 	self.includeFinish = includeFinish
 	if self.start == -math.huge or self.start == math.huge then self.includeStart = false end
 	if self.finish == -math.huge or self.finish == math.huge then self.includeFinish = false end
-	if math.isnan(self.start) or math.isnan(self.finish) then
-		error('tried to construct a RealInterval with nan bounds:\n'
-				..require'ext.tolua'(self))
+	if self.start == nil
+	or self.finish == nil
+	then
+		assert(self.start == nil and self.finish == nil, "either provide both a start and finish to the RealInterval, or leave both as nil to designate an empty interval")
+	else
+		if math.isnan(self.start) or math.isnan(self.finish) then
+			error('tried to construct a RealInterval with nan bounds:\n'
+					..require'ext.tolua'(self))
+		end
 	end
 end
 
@@ -34,6 +36,9 @@ function RealInterval:clone()
 end
 
 function RealInterval:__tostring()
+	if self.start == nil then
+		return '{}'	-- Windows Consolas can't handle ∅
+	end
 	return (self.includeStart and '[' or '(')
 		.. self.start
 		.. ', '
@@ -46,6 +51,9 @@ end
 --   (I'm suspicious that I'm going to need to start associating each expression with its domain/range)
 
 function RealInterval:containsNumber(x)
+	-- empty set:
+	if self.start == nil then return false end
+
 	if complex:isa(x) then
 		if x.im ~= 0 then return false end
 		x = x.re
@@ -66,6 +74,9 @@ function RealInterval:containsNumber(x)
 end
 
 function RealInterval:containsVariable(x)
+	-- empty set:
+	if self.start == nil then return false end
+	
 	symmath = symmath or require 'symmath'
 	if symmath.Variable:isa(x) then
 		if x.value then 
@@ -91,6 +102,9 @@ function RealInterval:containsVariable(x)
 end
 
 function RealInterval:intersects(x)
+	-- empty set:
+	if self.start == nil then return false end
+	
 	if RealInterval:isa(x) then
 		local result = true
 		if self.includeStart and x.includeFinish then
@@ -126,6 +140,9 @@ function RealInterval:intersects(x)
 end
 
 function RealInterval:containsSet(I)
+	-- empty set:
+	if self.start == nil then return false end
+	
 	if RealInterval:isa(I) then
 		local result = true
 		
@@ -171,6 +188,9 @@ function RealInterval:containsSet(I)
 end
 
 function RealInterval:containsElement(x)
+	-- empty set:
+	if self.start == nil then return false end
+	
 	if type(x) == 'number' 
 	or complex:isa(x)
 	then 
@@ -194,11 +214,18 @@ end
 -- ops might break my use of classes as singletons, since classes don't have the same op metatable as objects
 
 function RealInterval.__unm(I)
+	-- empty set:
+	if I.start == nil then return I end
+	
 	return RealInterval(-I.finish, -I.start, I.includeFinish, I.includeStart)
 end
 
 -- [a,b] + [c,d] = [a+c,b+d]
 function RealInterval.__add(A,B)
+	-- empty set:
+	if A.start == nil then return B end
+	if B.start == nil then return A end
+	
 	return RealInterval(
 		A.start + B.start,
 		A.finish + B.finish,
@@ -208,6 +235,10 @@ end
 
 -- [a,b] - [c,d] = [a-d, b-c]
 function RealInterval.__sub(A,B)
+	-- empty set:
+	if A.start == nil then return -B end
+	if B.start == nil then return A end
+	
 	return RealInterval(
 		A.start - B.finish,
 		A.finish - B.start,
@@ -249,6 +280,10 @@ local function intervalmul(a,b)
 	return a * b
 end
 function RealInterval.__mul(A,B)
+	-- empty set:
+	if A.start == nil then return A end
+	if B.start == nil then return B end
+	
 	if 0 <= A.start and 0 <= B.start then
 		return RealInterval(
 			intervalmul(A.start, B.start),
@@ -343,6 +378,10 @@ for c <= 0 <= d this is the same as
 this brings us to the world of separate contiguous domains ...
 --]]
 function RealInterval.__div(A,B)
+	-- empty set:
+	if A.start == nil then return A end
+	if B.start == nil then return RealInterval(math.nan, math.nan, false, false) end	-- undefined?  error?
+
 	if 0 <= A.start and 0 <= B.start then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
 	elseif 0 <= A.start and B.finish <= 0 then
@@ -407,6 +446,9 @@ fractional (even denominator) powers of negative numbers make complex
 fractional (odd denominator) powers of negative numbers make real
 --]]
 function RealInterval.__pow(A,B)
+	-- empty set:
+	if A.start == nil then return A end	-- more uncertainties ...
+	if B.start == nil then return B end	-- TODO ... ?
 	
 	-- for (a,b)^(c,d), d <= 0
 	-- try (1/(a,b)) ^ (-d, -c)

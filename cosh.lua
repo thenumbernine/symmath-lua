@@ -18,7 +18,8 @@ function cosh:reverse(soln, index)
 	return symmath.acosh(soln)
 end
 
-cosh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
+cosh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+cosh.getRealRange = require 'symmath.set.RealSubset'.getRealRange_evenIncreasing
 
 cosh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
 
@@ -27,13 +28,28 @@ cosh.rules = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
+			local inf = symmath.inf
+
+			local x = expr[1]
 			
-			if expr[1] == symmath.inf then
-				return symmath.inf
+			if Constant.isValue(x, 0) then
+				return Constant(1)
 			end
-			if expr[1] == Constant(-1) * symmath.inf then
-				return symmath.inf
+
+			if x == inf then
+				return inf
 			end
+			if x == Constant(-1) * inf then
+				return inf
+			end
+		
+--[[ TODO this should be on all Function's prune()'s
+-- but this has domain real, so complement is empty
+			if expr:getRealDomain():complement():open():contains(x) then
+				return symmath.invalid
+			end
+--]]
+
 		end},
 	},
 }

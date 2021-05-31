@@ -20,7 +20,8 @@ function tanh:reverse(soln, index)
 	return symmath.atanh(soln)
 end
 
-tanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
+tanh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+tanh.getRealRange = require 'symmath.set.RealSubset'.getRealRange_inc
 
 tanh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
 
@@ -43,6 +44,14 @@ tanh.rules = {
 			if x == Constant(-1) * symmath.inf then
 				return Constant(-1)
 			end
+		
+--[[ TODO this should be on all Function's prune()'s
+-- but this domain is reals so the complement is empty			
+			if expr:getRealDomain():complement():open():contains(x) then
+				return symmath.invalid
+			end
+--]]
+
 		end},
 	},
 }

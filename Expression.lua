@@ -1586,7 +1586,13 @@ but what happens if an expression is initialized with a variable, the cachedSet 
 well then, you can clear all nodes' .cachedSet by :clone()ing it.  if that's even undesired behavior.
 --]]
 function Expression:getRealRange()
+	-- TODO default to 'real' ?
 	return self.cachedSet
+end
+
+-- TODO caching as well? or TODO get rid of caching in both?
+function Expression:getRealDomain()
+	return symmath.set.real
 end
 
 -- candidates to add here:

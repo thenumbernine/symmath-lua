@@ -35,7 +35,7 @@ function RealSubset:init(start, finish, includeStart, includeFinish)
 		assert(not math.isnan(finish))
 		self[1] = RealInterval(start, finish, includeStart, includeFinish)
 	elseif type(start) == 'nil' then
-		self[1] = RealInterval()	-- full domain
+		self[1] = RealInterval(-math.huge, math.huge, false, false)	-- full domain
 	else
 		error'here'
 	end
@@ -47,6 +47,17 @@ function RealSubset:checkMerge()
 	table.sort(self, function(a,b)
 		return a.start < b.start
 	end)
+	
+	-- get rid of any redundant sets
+	for i=#self,1,-1 do
+		local I = self[i]
+		if I.start == I.finish 
+		and not (I.includeStart and I.includeFinish)
+		then
+			table.remove(self, i)
+		end
+	end
+
 	-- next see if finish overruns any
 	local i=2
 	while i <= #self do
@@ -71,6 +82,37 @@ function RealSubset:checkMerge()
 		end
 		i = i + 1
 	end
+end
+
+function RealSubset:complement()
+	if #self == 0 then
+		-- in the reals, the complement of the empty set is the whole real line
+		return RealSubset(-math.huge, math.huge, false, false)
+	end
+	local ints = table()
+	local n = #self
+	local first = self[1]
+	local last = self[n]
+	if first.start ~= -math.huge then
+		ints:insert(RealInterval(-math.huge, first.start, false, not self[1].includeStart))
+	end
+	for i=1,n-1 do
+		ints:insert(RealInterval(self[i].finish, self[i+1].start, not self[i].includeFinish, not self[i+1].includeStart))
+	end
+	if last.finish ~= math.huge then
+		ints:insert(RealInterval(last.finish, math.huge, not last.includeStart, false))
+	end
+	return RealSubset(ints)
+end
+
+function RealSubset:open()
+	local result = RealSubset(self)
+	for i=1,#result do
+		result[i].includeStart = false
+		result[i].includeFinish = false
+	end
+	result:checkMerge()
+	return result
 end
 
 function RealSubset:__tostring()
@@ -227,11 +269,41 @@ function RealSubset.__mod(A,B)
 	return RealSubset(newints)
 end
 
+-- commonly used versions of the Expression:getRealDomain function
+
+-- all reals
+-- used by: abs, asinh
+function RealSubset.getRealDomain_real()
+	local set = require 'symmath.set.sets'
+	return set.real
+end
+
+-- used by: log
+function RealSubset.getRealDomain_positiveReal()
+	local set = require 'symmath.set.sets'
+	return set.positiveReal
+end
+
+-- used by: asin, acos
+function RealSubset.getRealDomain_plusMinusOneClosed()
+	return RealSubset(-1, 1, true, true)
+end
+
+-- used by: atanh
+function RealSubset.getRealDomain_plusMinusOneOpen()
+	return RealSubset(-1, 1, false, false)
+end
+
+-- used by sqrt
+function RealSubset.getRealDomain_nonNegativeReal()
+	return RealSubset(0, math.huge, true, false)
+end
+
 -- commonly used versions of the Expression:getRealRange function
 
 -- (-inf,inf) even, increasing from zero
--- abs, cosh
-function RealSubset.getRealDomain_evenIncreasing(x)
+-- used by: abs, cosh
+function RealSubset.getRealRange_evenIncreasing(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealRange()
 	if Is == nil then 
@@ -277,8 +349,8 @@ function RealSubset.getRealDomain_evenIncreasing(x)
 end
 
 -- (0,inf) increasing, (-inf,0) imaginary
--- sqrt, log
-function RealSubset.getRealDomain_posInc_negIm(x)
+-- used by: sqrt, log
+function RealSubset.getRealRange_posInc_negIm(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealRange()
 	if Is == nil then 
@@ -305,8 +377,8 @@ function RealSubset.getRealDomain_posInc_negIm(x)
 end
 
 -- (-1,1) => (-inf,inf) increasing, (-inf,-1) and (1,inf) imaginary
--- asin, atanh
-function RealSubset.getRealDomain_pmOneInc(x)
+-- used by: asin, atanh
+function RealSubset.getRealRange_pmOneInc(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealRange()
 	if Is == nil then 
@@ -331,8 +403,8 @@ function RealSubset.getRealDomain_pmOneInc(x)
 end
 
 -- (-inf,inf) increasing
--- sinh, tanh, asinh, atan
-function RealSubset.getRealDomain_inc(x)
+-- used by: sinh, tanh, asinh, atan
+function RealSubset.getRealRange_inc(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealRange()
 	if Is == nil then 
