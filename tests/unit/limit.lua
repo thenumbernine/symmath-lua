@@ -201,6 +201,9 @@ asserteq(lim(Heaviside(x), x, inf), 1)
 asserteq(lim(x * sin(x), x, a), a * sin(a))
 
 -- TODO polynomial roots
+asserteq(lim( 1 / (x - 1), x, 1), invalid)
+asserteq(lim( 1 / (x - 1), x, 1, '+'), inf)
+asserteq(lim( 1 / (x - 1), x, 1, '-'), -inf)
 asserteq(lim( (x + 1) / (x^2 - 1), x, 1), invalid)
 asserteq(lim( (x + 1) / (x^2 - 1), x, 1, '+'), inf)
 asserteq(lim( (x + 1) / (x^2 - 1), x, 1, '-'), -inf)

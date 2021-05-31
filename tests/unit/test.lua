@@ -63,6 +63,22 @@ asserteq((x-1)/(1-x), -1)
 
 asserteq( (x*y)/(x*y)^2, 1/(x*y) )
 
+-- without needing to factor the polynomial
+asserteq(((x-1)*(x+1))/(x+1), x-1)
+asserteq(((x-1)*(x+1))/(x-1), x+1)
+asserteq((x-1)/((x+1)*(x-1)), 1/(x+1))
+asserteq((x+1)/((x+1)*(x-1)), 1/(x-1))
+-- with needing to factor the polynomial
+asserteq((x^2-1)/(x+1), x-1)
+asserteq((x^2-1)/(x-1), x+1)
+asserteq((x-1)/(x^2-1), 1/(x+1))
+asserteq((x+1)/(x^2-1), 1/(x-1))
+-- ... and with signs flipped
+asserteq((1-x^2)/(x+1), -(x-1))
+asserteq((1-x^2)/(x-1), -(x+1))
+asserteq((x-1)/(1-x^2), -1/(x+1))
+asserteq((x+1)/(1-x^2), -1/(x-1))
+
 -- expand(): add div mul
 
 -- factor(): mul add div

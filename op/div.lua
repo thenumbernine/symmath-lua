@@ -208,12 +208,12 @@ div.rules = {
 		end},
 	},
 
-	--[[
-	-- hmm ... raise everything to the lowest power? 
-	-- if there are any sqrts, square everything?
-	-- but what i was trying to fix was actually just a c^(-1/2)
-	-- TODO this produces incorrect results for negatives
 	Factor = {
+--[[
+-- hmm ... raise everything to the lowest power? 
+-- if there are any sqrts, square everything?
+-- but what i was trying to fix was actually just a c^(-1/2)
+-- TODO this produces incorrect results for negatives
 		{apply = function(factor, expr)
 			symmath = symmath or require 'symmath'
 			local sqrt = symmath.sqrt
@@ -233,8 +233,152 @@ div.rules = {
 				end
 			end
 		end},
+--]]
+	
+-- [[ trying for polynomial division using polydiv
+-- I'm not sure if I should put this in Factor or Prune 
+-- if it's in Prune then just return the polydivr results
+-- if it's in Factor then maybe I should recursively build roots and return the product of (x - roots)
+-- ... and then let the next Prune() call divide them out
+		{polydiv = function(factor, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			
+			-- now when polydiv encounters a non-poly situation, it calls simplify()
+			-- so ... don't use polydiv ... use its internal
+			local polydivr = symmath.polydiv.polydivr
+		
+			
+			local function candivide(p, q)
+				-- for expr == p / q
+				-- if p and q are polynomials of some var (with no 'extra')
+				-- then try to divide p from q and see if no remainer exists
+				-- and then try to divide q from p
+
+				local vars = expr:getDependentVars()
+				for _,x in ipairs(vars) do
+					
+					local c, r = polydivr(p, q, x)
+					if Constant.isValue(r, 0) then
+	--printbr('1. dividing', p, 'by', q, 'wrt x', x, 'and getting', c,' remainder', r)					
+						-- with simplification
+						-- return c
+						-- without
+						return c * q, q
+					end
+				
+					local c, r = polydivr(q, p, x)
+					if Constant.isValue(r, 0) then
+	--printbr('2. dividing', q, 'by', p, 'wrt x', x, 'and getting', c,' remainder', r)					
+						-- with simplification
+						--return 1/c
+						-- without
+						return p, c * p
+					end
+				end
+			end
+		
+--[=[ TODO HAS BUGS DON'T USE THIS
+			local mp, mq = table.unpack(expr)
+
+			-- if p or q is mul -> add then ...
+			-- polydiv needs add -> mul
+			-- but don't rearrange so fast!
+			-- instead cycle through mul's terms and check them individually
+			--  and pick them apart
+			--  maybe remove them too?
+			
+			local srcp = table(symmath.op.mul:isa(mp) and mp or {mp})
+			local srcq = table(symmath.op.mul:isa(mq) and mq or {mq})
+
+			local dstp = table()
+			local dstq = table()
+
+			-- now go through the pairs of srcq/srcq and, if they do divide, put their results into dstp/dstq
+			-- if they don't then skip them, and pile them on in the end
+			-- mind you this will approach terms on a first-come, first-serve basis
+			-- should i repeat until we get no more results?
+
+			local found
+			repeat
+				found = nil
+				for i,p in ipairs(srcp) do
+					for j,q in ipairs(srcq) do
+					
+						local newp, newq = candivide(p, q)
+						if newp then
+							assert(newq)
+
+							dstp:insert(newp)
+							dstq:insert(newq)
+							srcp:remove(i)
+							srcq:remove(j)
+							found = true
+							break
+						end
+					end
+					if found then break end
+				end
+			until not found
+
+			dstp:append(srcp)	-- append what's left
+			dstq:append(srcq)
+
+			return (#dstp == 1 and dstp[1] or symmath.op.mul(dstp:unpack()))
+					/ (#dstq == 1 and dstq[1] or symmath.op.mul(dstq:unpack()))
+--]=]			
+-- [=[ or just try the num/denom as-is
+			local np, nq = candivide(expr[1], expr[2])
+			if np then
+				return np / nq
+			end
+--]=]
+		end},
+--]]
+	
+--[[ trying for polynomial division using polydiv
+-- I'm not sure if I should put this in Factor or Prune 
+-- if it's in Prune then just return the polydivr results
+-- if it's in Factor then maybe I should recursively build roots and return the product of (x - roots)
+-- ... and then let the next Prune() call divide them out
+-- don't enable this in Prune and Factor
+-- 
+-- ... however *WARNING* here in Prune it gets stuck somewhere.
+-- but if my modification of the above fails then copy this back into Factor		
+		{polydiv = function(factor, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			
+			local p, q = table.unpack(expr)
+			
+			-- for expr == p / q
+			-- if p and q are polynomials of some var (with no 'extra')
+			-- then try to divide p from q and see if no remainer exists
+			-- and then try to divide q from p
+
+			-- now when polydiv encounters a non-poly situation, it calls simplify()
+			-- so ... don't use polydiv ... use its internal
+			local polydivr = symmath.polydiv.polydivr
+		
+			local vars = expr:getDependentVars()
+			for _,x in ipairs(vars) do
+				
+				local c, r = polydivr(p, q, x)
+				if Constant.isValue(r, 0) then
+					return c
+				end
+			
+				local c, r = polydivr(q, p, x)
+				if Constant.isValue(r, 0) then
+					return 1/c
+				end
+			end
+			
+		end},
+--]]
+
+
 	},
-	--]]
 
 	FactorDivision = {
 		{apply = function(factorDivision, expr)

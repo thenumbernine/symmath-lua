@@ -1575,6 +1575,21 @@ function Expression:dependsOn(x)
 	return found
 end
 
+-- returns a table of all variables used by all the expression passed to it
+function Expression.getDependentVars(...)
+	symmath = symmath or require 'symmath'
+	local vars = {}
+	local function collectVars(x)
+		if symmath.Variable:isa(x) then
+			vars[x.name] = x
+		end
+	end
+	for i=1,select('#', ...) do
+		select(i, ...):map(collectVars)
+	end
+	return table.values(vars)
+end
+
 --[[
 function for telling the interval of arbitrary expressions
 TODO maybe a getDomain()?  but I would like separate evaluation for real and complex versions of functions...
