@@ -256,7 +256,7 @@ pow.rules = {
 				end
 				-- inf^-1 = 1/inf = 0
 				if symmath.set.negativeReal:contains(expr[2]) then
-					return 0
+					return Constant(0)
 				end
 				-- inf^0 = invalid 
 				if Constant.isValue(expr[2], 0) then

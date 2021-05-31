@@ -292,7 +292,7 @@ div.rules = {
 				if expr[1] ~= symmath.inf 
 				and expr[1] ~= Constant(-1) * symmath.inf
 				then
-					return 0
+					return Constant(0)
 				end
 				return symmath.invalid
 			end

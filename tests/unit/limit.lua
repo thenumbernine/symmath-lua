@@ -7,12 +7,26 @@ timer(nil, function()
 
 env.a = symmath.Variable('a')
 env.b = symmath.Variable('b')
+env.c = symmath.Variable('c')
 env.g = symmath.Variable('g')
+env.h = symmath.Variable('h')
 env.s = symmath.Variable('s')
 env.t = symmath.Variable('t')
 env.v = symmath.Variable('v')
 env.x = symmath.Variable('x')
 env.y = symmath.Variable('y')
+
+function env.difftest(expr)
+	local f = func('f', {x}, expr)
+	local diffexpr = f(x):diff(x)
+	local diffexpreval = diffexpr:prune()
+	local limexpr = ((f(x + h) - f(x)) / h):lim(h, 0, '+')
+	local limexpreval = limexpr:prune()
+	printbr(f:defeq())
+	printbr('limit:', limexpr:eq(limexpreval))
+	printbr('derivative:', diffexpr:eq(diffexpreval))
+	asserteq(limexpreval, diffexpreval)
+end
 
 -- constant simplificaiton
 for _,line in ipairs(string.split(string.trim([=[
@@ -186,8 +200,27 @@ asserteq(lim(Heaviside(x), x, inf), 1)
 -- products of functions
 asserteq(lim(x * sin(x), x, a), a * sin(a))
 
--- polynomial roots ... this is going to be tough
+-- TODO polynomial roots
+asserteq(lim( (x + 1) / (x^2 - 1), x, 1), invalid)
+asserteq(lim( (x + 1) / (x^2 - 1), x, 1, '+'), inf)
+asserteq(lim( (x + 1) / (x^2 - 1), x, 1, '-'), -inf)
 
+-- can we evaluate derivatives as limits?
+difftest(x)
+difftest(c * x)
+difftest(x^2)
+difftest(x^3)
+difftest(1/x)
+
+-- can't handle these yet. 
+-- TODO give unit.lua a 'reach' section? 
+-- so console can show that these tests aren't 100% certified.
+
+-- TODO use infinite taylor expansion:
+difftest(sqrt(x))
+difftest(sin(x))
+difftest(cos(x))
+difftest(exp(x))
 
 ]=]), '\n')) do
 	env.exec(line)

@@ -1334,7 +1334,7 @@ ${\sin\left(  x\right)}^{2}$
 <b></b><br>
 <code>asserteq( -1 / ( sqrt(sqrt(5) * (sqrt(5) - 1)) / sqrt(2) ), sqrt((5  + sqrt(5)) / 10))</code>
 </td><td>
-expected $\frac{-1}{\frac{\sqrt{{{\sqrt{5}}} {{\left({{\sqrt{5}} - {1}}\right)}}}}{\sqrt{2}}}$ to equal $\sqrt{\frac{{5} + {\sqrt{5}}}{10}}$<br>
+expected $\frac{-1}{\frac{\sqrt{{{\sqrt{5}}} {{\left({{\sqrt{5}} - {1}}\right)}}}}{\sqrt{2}}}$ to equal $\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$<br>
 instead found $-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$ vs $\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$<br>
 lhs stack<br>
 init	$\frac{-1}{\frac{\sqrt{{{\sqrt{5}}} {{\left({{\sqrt{5}} - {1}}\right)}}}}{\sqrt{2}}}$	<br>
@@ -1353,8 +1353,8 @@ factor	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot
 prune	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
 tidy	$-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$	<br>
 rhs stack<br>
-init	$\sqrt{\frac{{5} + {\sqrt{5}}}{10}}$	<br>
-prune	${\left({\frac{{5} + {{5}^{\frac{1}{2}}}}{10}}\right)}^{\frac{1}{2}}$	<br>
+init	$\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$	<br>
+prune	${\left({{\frac{1}{10}}{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}}\right)}^{\frac{1}{2}}$	<br>
 expand	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
 prune	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
 factor	$\frac{{{{{5}^{\frac{1}{2}}}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{10}^{\frac{1}{2}}}$	<br>
@@ -1379,13 +1379,13 @@ tidy	$\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^
 	tests\unit\test.lua:252: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\test.lua:6: in main chunk<br>
-	[C]: at 0x7ff667544950
+	[C]: at 0x7ff653554950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq( -(sqrt( 10 * (sqrt(5) - 1) ) + sqrt(2 * (sqrt(5) - 1))) / (4 * sqrt(sqrt(5))), sqrt((5  + sqrt(5)) / 10))</code>
 </td><td>
-expected $\frac{-{\left({{\sqrt{{{10}} {{\left({{\sqrt{5}} - {1}}\right)}}}} + {\sqrt{{{2}} {{\left({{\sqrt{5}} - {1}}\right)}}}}}\right)}}{{{4}} {{\sqrt{\sqrt{5}}}}}$ to equal $\sqrt{\frac{{5} + {\sqrt{5}}}{10}}$<br>
+expected $\frac{-{\left({{\sqrt{{{10}} {{\left({{\sqrt{5}} - {1}}\right)}}}} + {\sqrt{{{2}} {{\left({{\sqrt{5}} - {1}}\right)}}}}}\right)}}{{{4}} {{\sqrt{\sqrt{5}}}}}$ to equal $\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$<br>
 instead found $-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$ vs $\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$<br>
 lhs stack<br>
 init	$\frac{-{\left({{\sqrt{{{10}} {{\left({{\sqrt{5}} - {1}}\right)}}}} + {\sqrt{{{2}} {{\left({{\sqrt{5}} - {1}}\right)}}}}}\right)}}{{{4}} {{\sqrt{\sqrt{5}}}}}$	<br>
@@ -1404,8 +1404,8 @@ factor	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot
 prune	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
 tidy	$-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$	<br>
 rhs stack<br>
-init	$\sqrt{\frac{{5} + {\sqrt{5}}}{10}}$	<br>
-prune	${\left({\frac{{5} + {{5}^{\frac{1}{2}}}}{10}}\right)}^{\frac{1}{2}}$	<br>
+init	$\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$	<br>
+prune	${\left({{\frac{1}{10}}{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}}\right)}^{\frac{1}{2}}$	<br>
 expand	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
 prune	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
 factor	$\frac{{{{{5}^{\frac{1}{2}}}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{10}^{\frac{1}{2}}}$	<br>
@@ -1430,5 +1430,5 @@ tidy	$\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^
 	tests\unit\test.lua:252: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\test.lua:6: in main chunk<br>
-	[C]: at 0x7ff667544950
+	[C]: at 0x7ff653554950
 </td></tr>
