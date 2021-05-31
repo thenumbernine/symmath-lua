@@ -95,7 +95,7 @@ Limit.rules = {
 			-- put any infs into prune() form, -inf => -1 * inf
 			-- but what if 'a' is a limit too?
 			-- what about lim x->(lim ...) f(x) ?
-			--a = a:prune()
+			--a = prune:apply(a)
 			-- or just do this rule on the bubble-out
 
 --[[
@@ -116,7 +116,7 @@ printbr(var'side':eq(side))
 			-- instead I'll just look for tan()'s replacement: sin()/cos()
 			-- but if I'm pruning f and a in advance ...
 			-- ... maybe this whole rule isn't a bubble-in rule after all?
-			--f = f:prune()
+			--f = prune:apply(f)
 			-- or just do this rule on the bubble-out
 
 -- [=[
@@ -187,23 +187,28 @@ printbr(var'side':eq(side))
 			if div:isa(f) then
 				local p, q = table.unpack(f)
 				
-				local lp = prune:apply(Limit(p, x, a, side))
-				local lq = prune:apply(Limit(q, x, a, side))
+				local Lp = prune:apply(Limit(p, x, a, side))
+				local Lq = prune:apply(Limit(q, x, a, side))
 				
 --[=[
 				if (
-					Constant.isValue(lp, 0) 
---					or lp == inf 
+					Constant.isValue(Lp, 0) 
+--					or Lp == inf 
 --					or lus == Constant(-1) * inf
 				) and (
-					Constant.isValue(lq, 0) 
---					or lq == inf 
+					Constant.isValue(Lq, 0) 
+--					or Lq == inf 
 --					or lus == Constant(-1) * inf
 				) then
 					-- L'Hospital:
 					p = p:diff(x)()
 					q = q:diff(x)()
-					return prune:apply(Limit((p/q):prune(), x, a, side))
+					return prune:apply(
+						Limit(
+							prune:apply(p/q), 
+							x, a, side
+						)
+					)
 				end
 --]=]
 
@@ -213,15 +218,15 @@ printbr(var'side':eq(side))
 				and then to compare the roots of the denominator with x->a, to see if we are approaching from the left or right.
 				... and then looking at the sign of p(x) / prod of (x - all other roots) to see if we should be flipping the sign of the limit's +-inf
 				--]]
-				if Constant.isValue(lq, 0) then
+				if Constant.isValue(Lq, 0) then
 					if not p:dependsOn(x) then
 						
 						-- lim x->root+- 1/x = +-inf
 						if q == x then
 							if side == Side.plus then
-								return (p * inf):prune()
+								return prune:apply(p * inf)
 							else
-								return (-p * inf):prune()
+								return prune:apply(-p * inf)
 							end
 						end
 						
@@ -234,12 +239,12 @@ printbr(var'side':eq(side))
 						then
 
 							if symmath.set.evenInteger:contains(n) then
-								return (p * inf):prune()
+								return prune:apply(p * inf)
 							elseif symmath.set.oddInteger:contains(n) then
 								if side == Side.plus then
-									return (p * inf):prune()
+									return prune:apply(p * inf)
 								else
-									return (-p * inf):prune()
+									return prune:apply(-p * inf)
 								end
 							else
 								error'here'
@@ -270,7 +275,7 @@ printbr(var'side':eq(side))
 --printbr('leading coeff of q:', cq[dq])
 						if dp > dq then
 --printbr'using degree(p) > degree(q)...'							
-							local leadingCoeffRatio = (cp[dp] / cq[dq]):prune()
+							local leadingCoeffRatio = prune:apply(cp[dp] / cq[dq])
 							if leadingCoeffRatio:lt(0):isTrue() then
 								return Constant(-1) * inf 
 							elseif leadingCoeffRatio:gt(0):isTrue() then
@@ -280,7 +285,7 @@ printbr(var'side':eq(side))
 							end
 						elseif dp == dq then
 --printbr'using degree(p) == degree(q)...'							
-							local leadingCoeffRatio = (cp[dp] / cq[dq]):prune()
+							local leadingCoeffRatio = prune:apply(cp[dp] / cq[dq])
 							return leadingCoeffRatio 
 						elseif dp < dq then
 --printbr'using degree(p) < degree(q)...'							
@@ -297,7 +302,7 @@ printbr(var'side':eq(side))
 				then
 					if p[1] == q[1] then
 						local th = p[1]
-						local L = Limit(th, x, a, side):prune()
+						local L = prune:apply(Limit(th, x, a, side))
 						if L == symmath.pi/2 then
 							if side == Side.plus then return Constant(-1) * inf end
 							if side == Side.minus then return inf end
@@ -309,15 +314,15 @@ printbr(var'side':eq(side))
 							if side == Side.minus then return inf end
 							error'got an invalid Limit side'
 						end
-						-- otherwise. ... can we assert L isn't going to be in the set of {n in Z, n pi / 2}?
-						-- if we can assert that then return tan(L)
+						-- TODO only for L contained within the domain of H
+						-- i.e. only for L's set NOT INTERSECTING {(2n+1)/pi} for n in Z
 						return symmath.tan(L)
 					end
 				end
 		
-				-- TODO only for lq's set NOT INTERSECTING {0}
-				if not Constant.isValue(lq, 0) then
-					return prune:apply(lp / lq)
+				-- TODO only for Lq's set NOT INTERSECTING {0}
+				if not Constant.isValue(Lq, 0) then
+					return prune:apply(Lp / Lq)
 				end
 			end
 
@@ -327,19 +332,19 @@ printbr(var'side':eq(side))
 				local p, q = table.unpack(f)
 				-- TODO what about sqrts?  
 				-- in that case we should handle lim x->0+ sqrt(x) differently from lim x->0- sqrt(x)
-				local lp = Limit(p, x, a, side):prune()
-				local lq = Limit(q, x, a, side):prune()
+				local Lp = prune:apply(Limit(p, x, a, side))
+				local Lq = prune:apply(Limit(q, x, a, side))
 				-- handle sqrt(0)
-				if Constant.isValue(lp, 0)
+				if Constant.isValue(Lp, 0)
 				-- or any (2m+1)/(2n) root, for m,n integers
-				and symmath.op.div:isa(lq)
-				and symmath.set.oddInteger:contains(lq[1])
-				and symmath.set.evenInteger:contains(lq[2])
+				and symmath.op.div:isa(Lq)
+				and symmath.set.oddInteger:contains(Lq[1])
+				and symmath.set.evenInteger:contains(Lq[2])
 				then
 					if side == Side.plus then return Constant(0) end
 					return invalid
 				end
-				return prune:apply(lp ^ lq)
+				return prune:apply(Lp ^ Lq)
 			end
 
 
@@ -363,10 +368,9 @@ printbr(var'side':eq(side))
 			or symmath.sin:isa(f) 
 			or symmath.cos:isa(f)
 			then
-				-- TODO only for 'a' contained within the domain of H
-				return getmetatable(f)(
-					Limit(f[1], x, a, side):prune()
-				)
+				local L = prune:apply(Limit(f[1], x, a, side))
+				-- TODO only for L contained within the domain of H
+				return getmetatable(f)(L)
 			end
 			
 			-- functions with asymptotes
@@ -379,7 +383,7 @@ printbr(var'side':eq(side))
 			-- instead, how about for now we check the simplified form for sin(x)/cos(x) ?
 			if symmath.tan:isa(origf) then
 				local f = origf
-				local L = Limit(f[1], x, a, side):prune()
+				local L = prune:apply(Limit(f[1], x, a, side))
 				if L == symmath.pi/2 then
 					if side == Side.plus then return Constant(-1) * inf end
 					if side == Side.minus then return inf end
@@ -394,9 +398,7 @@ printbr(var'side':eq(side))
 				-- otherwise. ... can we assert L isn't going to be in the set of {n in Z, n pi / 2}?
 				-- if we can assert that then return tan(L)
 				--return symmath.tan(L)
-				return getmetatable(f)(
-					Limit(f[1], x, a, side):prune()
-				)
+				return getmetatable(f)(L)
 			end
 			--]]
 
@@ -406,7 +408,7 @@ printbr(var'side':eq(side))
 			-- cbrt ... same with cbrt
 			if symmath.log:isa(f)
 			then
-				local L = Limit(f[1], x, a, side):prune()
+				local L = prune:apply(Limit(f[1], x, a, side))
 				if symmath.set.positiveReal:contains(L) then
 					return getmetatable(f)(L)
 				end
@@ -420,17 +422,15 @@ printbr(var'side':eq(side))
 					return invalid
 				end
 				
-				-- TODO only for 'a' contained within the domain of H
-				return getmetatable(f)(
-					Limit(f[1], x, a, side):prune()
-				)
+				-- TODO only for L contained within the domain of H
+				return getmetatable(f)(L)
 			end
 
 			-- functions only true on (1, inf)
 			-- acosh
 			if symmath.acosh:isa(f)
 			then
-				local L = Limit(f[1], x, a, side):prune()
+				local L = prune:apply(Limit(f[1], x, a, side))
 				if symmath.set.RealSubset(1, math.huge, false, false):contains(L) then
 					return getmetatable(f)(L)
 				end
@@ -444,10 +444,8 @@ printbr(var'side':eq(side))
 					return invalid
 				end
 				
-				-- TODO only for 'a' contained within the domain of H
-				return getmetatable(f)(
-					Limit(f[1], x, a, side):prune()
-				)
+				-- TODO only for L contained within the domain of H
+				return getmetatable(f)(L)
 			end
 			
 			-- functions that are only true on (-1, 1)
@@ -458,7 +456,7 @@ printbr(var'side':eq(side))
 			or symmath.asin:isa(f)
 			or symmath.acos:isa(f)
 			then
-				local L = Limit(f[1], x, a, side):prune()
+				local L = prune:apply(Limit(f[1], x, a, side))
 				if symmath.set.RealSubset(-1, 1, false, false):contains(L) then
 					return getmetatable(f)(L)
 				end
@@ -488,10 +486,8 @@ printbr(var'side':eq(side))
 					return invalid
 				end
 			
-				-- TODO only for 'a' contained within the domain of H
-				return getmetatable(f)(
-					Limit(f[1], x, a, side):prune()
-				)
+				-- TODO only for L contained within the domain of H
+				return getmetatable(f)(L)
 			end
 		
 		
@@ -500,7 +496,7 @@ printbr(var'side':eq(side))
 			
 			-- Heaviside
 			if symmath.Heaviside:isa(f) then
-				local L = Limit(f[1], x, a, side):prune()
+				local L = prune:apply(Limit(f[1], x, a, side))
 				if Constant.isValue(L, 0) then
 					if side == Side.plus then return Constant(1) end
 					if side == Side.minus then return Constant(0) end
@@ -517,10 +513,8 @@ printbr(var'side':eq(side))
 				--]]
 				-- here: lim x->a H(x) when a>0 is undetermined
 				
-				-- TODO only for 'a' contained within the domain of H
-				return getmetatable(f)(
-					Limit(f[1], x, a, side):prune()
-				)
+				-- TODO only for L contained within the domain of H
+				return getmetatable(f)(L)
 			end
 
 
