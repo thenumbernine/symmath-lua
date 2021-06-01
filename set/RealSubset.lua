@@ -82,6 +82,23 @@ function RealSubset:checkMerge()
 		end
 		i = i + 1
 	end
+
+	return self
+end
+
+-- only represent empty RealSubsets as a single child that is an empty RealInterval
+-- or TODO should I represent it as an empty RealSubset?
+function RealSubset:isEmpty()
+	if self[1]:isEmpty() then
+		assert(#self == 1)
+		return true
+	else
+		assert(#self > 0)
+		for i=2,#self do
+			assert(not self[i]:isEmpty())
+		end
+		return false
+	end
 end
 
 function RealSubset:complement()
@@ -111,8 +128,7 @@ function RealSubset:open()
 		result[i].includeStart = false
 		result[i].includeFinish = false
 	end
-	result:checkMerge()
-	return result
+	return result:checkMerge()
 end
 
 function RealSubset:__tostring()
@@ -212,7 +228,7 @@ function RealSubset.__add(A,B)
 			newints:insert(ai + bi)
 		end
 	end
-	return RealSubset(newints)
+	return RealSubset(newints):checkMerge()
 end
 
 function RealSubset.__sub(A,B)
@@ -222,7 +238,7 @@ function RealSubset.__sub(A,B)
 			newints:insert(ai - bi)
 		end
 	end
-	return RealSubset(newints)
+	return RealSubset(newints):checkMerge()
 end
 
 function RealSubset.__mul(A,B)
@@ -232,7 +248,7 @@ function RealSubset.__mul(A,B)
 			newints:insert(ai * bi)
 		end
 	end
-	return RealSubset(newints)
+	return RealSubset(newints):checkMerge()
 end
 
 function RealSubset.__div(A,B)
@@ -246,9 +262,15 @@ function RealSubset.__div(A,B)
 			newints:append(is)
 		end
 	end
-	return RealSubset(newints)
+	return RealSubset(newints):checkMerge()
 end
 
+-- RealInterval ops return nil when the result is invalid, such as raising a negative number to a fractional number.
+-- this only happens in RealInterval.__pow, since the rest of the operations are determinable
+-- so ... as a hack ... if __pow produces no intervals (because they were all nil)
+-- (as when evaluating (-inf,inf)^(-inf,inf))
+-- I am going to have a special condition to just insert the whole real line
+-- TODO think this through.
 function RealSubset.__pow(A,B)
 	local newints = table()
 	for _,ai in ipairs(A) do
@@ -256,7 +278,11 @@ function RealSubset.__pow(A,B)
 			newints:insert(ai ^ bi)
 		end
 	end
-	return RealSubset(newints)
+	-- if we should've produced something, but we produced nothing...
+	if not A:isEmpty() and not B:isEmpty() and #newints == 0 then
+		return RealSubset(-math.huge, math.huge, false, false)	-- just produce the whole reals?
+	end
+	return RealSubset(newints):checkMerge()
 end
 
 function RealSubset.__mod(A,B)
@@ -266,7 +292,7 @@ function RealSubset.__mod(A,B)
 			newints:insert(ai % bi)
 		end
 	end
-	return RealSubset(newints)
+	return RealSubset(newints):checkMerge()
 end
 
 -- commonly used versions of the Expression:getRealDomain function

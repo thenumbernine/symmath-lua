@@ -49,6 +49,7 @@ function div:evaluateLimit(x, a, side)
 	symmath = symmath or require 'symmath'
 	local prune = symmath.prune
 	local Limit = symmath.Limit
+	local Side = Limit.Side
 	local Constant = symmath.Constant
 	local inf = symmath.inf
 
@@ -56,23 +57,19 @@ function div:evaluateLimit(x, a, side)
 	
 	local Lp = prune(Limit(p, x, a, side))
 	local Lq = prune(Limit(q, x, a, side))
-	
---[=[
-	if (
-		Constant.isValue(Lp, 0) 
---					or Lp == inf 
---					or lus == Constant(-1) * inf
-	) and (
-		Constant.isValue(Lq, 0) 
---					or Lq == inf 
---					or lus == Constant(-1) * inf
+
+-- [=[ L'Hospital:
+	if (	-- 0 / 0
+		Constant.isValue(Lp, 0) and Constant.isValue(Lq, 0)
+	) or (	-- |inf| / |inf|
+		(Lp == inf or Lp == Constant(-1) * inf)
+		and (Lq == inf or Lq == Constant(-1) * inf)
 	) then
-		-- L'Hospital:
 		p = p:diff(x)()
 		q = q:diff(x)()
 		return prune(
 			Limit(
-				prune(p/q), 
+				prune(p / q), 
 				x, a, side
 			)
 		)
@@ -90,7 +87,7 @@ function div:evaluateLimit(x, a, side)
 			
 			-- lim x->root+- 1/x = +-inf
 			if q == x then
-				if side == Limit.Side.plus then
+				if side == Side.plus then
 					return prune(p * inf)
 				else
 					return prune(-p * inf)
@@ -108,7 +105,7 @@ function div:evaluateLimit(x, a, side)
 				if symmath.set.evenInteger:contains(n) then
 					return prune(p * inf)
 				elseif symmath.set.oddInteger:contains(n) then
-					if side == Limit.Side.plus then
+					if side == Side.plus then
 						return prune(p * inf)
 					else
 						return prune(-p * inf)
@@ -161,7 +158,6 @@ function div:evaluateLimit(x, a, side)
 		end
 	end
 
-
 	-- handle cos(x)/sin(x) == tan(x) here
 	-- TODO this is here only because tan() prune()'s into sin()/cos()
 	-- if instead we keep tan() as-is then move this into tan:evaluateLimit()
@@ -172,14 +168,14 @@ function div:evaluateLimit(x, a, side)
 			local th = p[1]
 			local L = prune(Limit(th, x, a, side))
 			if L == symmath.pi/2 then
-				if side == Limit.Side.plus then return Constant(-1) * inf end
-				if side == Limit.Side.minus then return inf end
+				if side == Side.plus then return Constant(-1) * inf end
+				if side == Side.minus then return inf end
 			end
 			-- for that matter, if L == integer * pi / 2
 			local n = (symmath.Wildcard(1) * symmath.pi) / 2
 			if n and symmath.set.integer:contains(n) then
-				if side == Limit.Side.plus then return Constant(-1) * inf end
-				if side == Limit.Side.minus then return inf end
+				if side == Side.plus then return Constant(-1) * inf end
+				if side == Side.minus then return inf end
 				error'got an invalid Limit side'
 			end
 			-- TODO only for L contained within the domain of H

@@ -27,6 +27,14 @@ function RealInterval:init(start, finish, includeStart, includeFinish)
 	end
 end
 
+function RealInterval:isEmpty()
+	if not self.start then
+		assert(not self.finish)
+		return true
+	end
+	return false
+end
+
 function RealInterval:clone()
 	return RealInterval(
 		self.start,
@@ -449,7 +457,7 @@ function RealInterval.__pow(A,B)
 	-- empty set:
 	if A.start == nil then return A end	-- more uncertainties ...
 	if B.start == nil then return B end	-- TODO ... ?
-	
+
 	-- for (a,b)^(c,d), d <= 0
 	-- try (1/(a,b)) ^ (-d, -c)
 	if B.finish <= 0 then
@@ -465,10 +473,18 @@ function RealInterval.__pow(A,B)
 	if A.start < 0 then
 		-- if it is an interval at all then there will be an irrational point within it, and our exponent will be a root and therefore not real and therefore invalid
 		-- if it not inclusive on both sides then it won't contain its sole point and therefore will be invalid
-		if not (B.start == B.finish and B.includeStart and B.includeFinish) then return nil end
+		if not (B.start == B.finish and B.includeStart and B.includeFinish) then 
+			return nil 
+		end
 			
 		-- roots of negatives are not real:
-		if B.start ~= math.floor(B.start) then return nil end
+		if B.start ~= math.floor(B.start) then 
+			
+-- however ... R^R lies in this condition
+-- x^x, x in reals, has a range of (-inf,inf)^(-inf,inf)
+-- and this will lie here ...
+			return nil 
+		end
 		
 		if B.start % 2 == 1 then 	-- odd: preserve sign
 			return RealInterval(

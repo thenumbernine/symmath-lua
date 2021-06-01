@@ -65,7 +65,7 @@ function Limit.evaluateLimit_ifInDomain(f, L)
 	
 	local domain = f:getRealDomain()
 	if domain:contains(L) then
-		return getmetatable(f)(L)
+		return symmath.prune(getmetatable(f)(L))
 	end
 	
 	-- is it enough that the complement contains L?
@@ -164,7 +164,6 @@ Limit.rules = {
 			--a = prune:apply(a)
 			-- or just do this rule on the bubble-out
 
-
 			-- TODO shouldn't prune() already be called on the children before the parent?
 			--f = prune:apply(f)
 			--f = symmath.simplify(f)
@@ -177,6 +176,14 @@ Limit.rules = {
 			-- ... maybe this whole rule isn't a bubble-in rule after all?
 			--f = prune:apply(f)
 			-- or just do this rule on the bubble-out
+
+			-- before applying our lim both sides = lim + == lim -
+			-- try to short-circuit any inf limits
+			if a == inf then
+				side = Side.plus
+			elseif a == Constant(-1) * inf then
+				side = Side.minus
+			end
 
 			-- lim x->a f(x) = lim x->a+ f(x) = lim x->a- f(x) only when the + and - limit are equal
 			if side == Side.both then

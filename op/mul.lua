@@ -538,12 +538,15 @@ end
 -- lim mul = mul lim
 function mul:evaluateLimit(x, a, side)
 	symmath = symmath or require 'symmath'
+	local Constant = symmath.Constant
+	local Limit = symmath.Limit
+	
 	-- TODO handle indeterminate forms here?  or outside of limits?
 	-- right now they are evaluated outside of limits...
 	return symmath.prune(
 		mul(
 			table.mapi(self, function(fi)
-				return symmath.Limit(fi, x, a, side)
+				return Limit(fi, x, a, side)
 			end):unpack()
 		)
 	)
@@ -766,6 +769,7 @@ mul.rules = {
 			-- anything * invalid is invalid
 			for i=1,#expr do
 				if expr[i] == symmath.invalid then 
+print("mul by invalid ... makes invalid")					
 					return symmath.invalid 
 				end
 			end
@@ -791,6 +795,7 @@ mul.rules = {
 			end
 			if hasinf then
 				if haszero then
+print("mul hasinf and hazero ... makes invalid")
 					return symmath.invalid
 				end
 				if sign == -1 then

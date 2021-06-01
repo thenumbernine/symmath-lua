@@ -27,8 +27,18 @@ function log:evaluateLimit(x, a, side)
 	local Constant = symmath.Constant
 	local Limit = symmath.Limit
 
-	local L = prune(Limit(self[1], x, a, side))
-	
+	local expr = self[1]
+
+	-- special case: lim x -> 0+ (x * log(x)) == 0
+	if expr == x ^ x
+	and Constant.isValue(a, 0)
+	then
+		if side == Limit.Side.plus then return Constant(0) end
+		if side == Limit.Side.minus then return symmath.invalid end
+	end
+
+	local L = prune(Limit(expr, x, a, side))
+
 	if Constant.isValue(L, 0) then
 		if side == Limit.Side.plus then
 			return Constant(-1) * symmath.inf
@@ -68,6 +78,7 @@ log.rules = {
 			end
 		
 -- [[ TODO this should be on all Function's prune()'s
+-- contains() should mean fully-contains, not intersects ...
 			if expr:getRealDomain():complement():open():contains(x) then
 				return symmath.invalid
 			end

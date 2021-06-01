@@ -10,6 +10,7 @@ env.b = symmath.Variable('b')
 env.c = symmath.Variable('c')
 env.g = symmath.Variable('g')
 env.h = symmath.Variable('h')
+env.n = symmath.Variable('n')
 env.s = symmath.Variable('s')
 env.t = symmath.Variable('t')
 env.v = symmath.Variable('v')
@@ -201,14 +202,14 @@ asserteq(lim(Heaviside(x), x, inf), 1)
 asserteq(lim(x * sin(x), x, a), a * sin(a))
 
 -- TODO polynomial roots
-asserteq(lim( 1 / (x - 1), x, 1), invalid)
-asserteq(lim( 1 / (x - 1), x, 1, '+'), inf)
-asserteq(lim( 1 / (x - 1), x, 1, '-'), -inf)
-asserteq(lim( (x + 1) / (x^2 - 1), x, 1), invalid)
-asserteq(lim( (x + 1) / (x^2 - 1), x, 1, '+'), inf)
-asserteq(lim( (x + 1) / (x^2 - 1), x, 1, '-'), -inf)
+asserteq(lim(1 / (x - 1), x, 1), invalid)
+asserteq(lim(1 / (x - 1), x, 1, '+'), inf)
+asserteq(lim(1 / (x - 1), x, 1, '-'), -inf)
+asserteq(lim((x + 1) / (x^2 - 1), x, 1), invalid)
+asserteq(lim((x + 1) / (x^2 - 1), x, 1, '+'), inf)
+asserteq(lim((x + 1) / (x^2 - 1), x, 1, '-'), -inf)
 
--- can we evaluate derivatives as limits?
+-- can we evaluate derivatives as limits?  yes.
 difftest(x)
 difftest(c * x)
 difftest(x^2)
@@ -216,14 +217,33 @@ difftest(x^3)
 difftest(1/x)
 
 -- can't handle these yet. 
--- TODO give unit.lua a 'reach' section? 
+-- TODO give unit tests a 'reach' section? 
 -- so console can show that these tests aren't 100% certified.
-
--- TODO use infinite taylor expansion:
+-- use infinite taylor expansion?
+-- or just use L'Hospital's rule -- that solves these too, because, basically, that replaces the limit with the derivative, so it will always be equal.
 difftest(sqrt(x))
 difftest(sin(x))
 difftest(cos(x))
 difftest(exp(x))
+
+-- some other L'Hospital rule problems:
+asserteq(lim(sin(x) / x, x, 0), 1)
+asserteq(lim(exp(x) / x^2, x, inf), inf)
+asserteq(lim((e^x - 1) / (x^2 + x), x, 0), 1)
+asserteq(lim((2*sin(x) - sin(2*x)) / (x - sin(x)), x, 0), 6)
+
+-- TODO this one, repeatedly apply L'Hospital until the power of x on top is <= 0
+-- but this seems like it would need a special case of evaluating into a factorial
+asserteq(lim(x^n * e^x, x, 0), 0)
+
+-- TODO this requires representing x ln x as (ln x) / (1/x) before applying L'Hospital
+asserteq(lim(x * log(x), x, 0, '+'), 0)
+
+-- mortgage repayment formula -- works
+asserteq(lim( (a * x * (1 + x)^n) / ((1 + x)^n - 1), x, 0 ), a / n)
+
+-- the infamous tanh(x) ... works?  hmm ... this is infamous for taking an infinite number of L'Hospital applications.  Why is it working?
+print( ((e^x + e^-x) / (e^x - e^-x)):lim(x, inf):prune() )
 
 ]=]), '\n')) do
 	env.exec(line)
