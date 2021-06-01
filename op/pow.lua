@@ -439,13 +439,7 @@ pow.rules = {
 		
 			-- 0^a = 0 for a>0
 			if Constant.isValue(expr[1], 0) then
-				if (Constant:isa(expr[2]) and expr[2].value > 0) 
-				or (
-					div:isa(expr[2]) 
-					and Constant:isa(expr[2][1]) 
-					and Constant:isa(expr[2][2]) 
-					and (expr[2][1].value > 0) == (expr[2][2].value > 0)
-				) then
+				if symmath.set.positiveReal:contains(expr[2]) then
 					return Constant(0)
 				end
 			
@@ -459,16 +453,17 @@ pow.rules = {
 			if Constant.isValue(expr[1], 1) then return Constant(1) end
 			
 			-- (-1)^odd = -1, (-1)^even = 1
-			if Constant.isValue(expr[1], -1) and Constant:isa(expr[2]) then
-				local powModTwo = expr[2].value % 2
-				if powModTwo == 0 then return Constant(1) end
-				if powModTwo == 1 then return Constant(-1) end
+			if Constant.isValue(expr[1], -1) 
+			then
+				if symmath.set.evenInteger:contains(expr[2]) then return Constant(1) end
+				if symmath.set.oddInteger:contains(expr[2]) then return Constant(-1) end
 			end
 			
 			-- a^1 => a
 			if Constant.isValue(expr[2], 1) then return prune:apply(expr[1]) end
 			
 			-- a^0 => 1
+			-- except 0^0 which is considered above
 			if Constant.isValue(expr[2], 0) then return Constant(1) end
 
 			if expr[1] == symmath.i then
