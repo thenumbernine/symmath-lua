@@ -18,7 +18,7 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assert(set.positiveReal:contains(set.positiveReal))</code>
+<code>assert(set.real:contains(x))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -29,25 +29,228 @@
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assert(set.real:containsElement(x))</code>
+<code>assert(set.real:contains(set.real) == true)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(set.RealSubset():contains(x))</code>
+<code>assert(set.real:contains(set.positiveReal) == true)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(set.real:contains(x))</code>
+<code>assert(set.real:contains(set.negativeReal) == true)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.real:contains(set.integer) == true)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.real:contains(set.evenInteger) == true)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.real:contains(set.oddInteger) == true)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert(set.integer:contains(set.real) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.integer:contains(set.positiveReal) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.integer:contains(set.negativeReal) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.integer:contains(set.integer) == true)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.integer:contains(set.evenInteger) == true)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.integer:contains(set.oddInteger) == true)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert(set.evenInteger:contains(set.real) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.evenInteger:contains(set.positiveReal) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.evenInteger:contains(set.negativeReal) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.evenInteger:contains(set.integer) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.evenInteger:contains(set.evenInteger) == true)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.evenInteger:contains(set.oddInteger) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert(set.oddInteger:contains(set.real) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.oddInteger:contains(set.positiveReal) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.oddInteger:contains(set.negativeReal) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.oddInteger:contains(set.integer) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.oddInteger:contains(set.evenInteger) == nil)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(set.oddInteger:contains(set.oddInteger) == true)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>x is in (-inf, inf).</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>is x in (0, inf)?</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>maybe.</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>not certainly yes (subset).</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>not certainly no (complement intersection / set subtraction is empty).</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>so return nil</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>if x's set is a subset of this set then return true</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>if x's set is an intersection of this set then return nil</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>if x's set does not intersect this set then return false</b><br>
+<code></code>
+</td><td>
 <tr><td>
 <b></b><br>
 <code>assert(set.positiveReal:contains(x) == nil)</code>
@@ -204,7 +407,7 @@ nil
 </td><td>
 <tr><td>
 <b></b><br>
-<code>assert((x^2):getRealRange() == set.positiveReal)</code>
+<code>assert((x^2):getRealRange() == set.nonNegativeReal)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>

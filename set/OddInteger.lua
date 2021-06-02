@@ -1,16 +1,23 @@
 local class = require 'ext.class'
-local Integer = require 'symmath.set.Integer'
+local Set = require 'symmath.set.Set'
+local symmath
 
-local OddInteger = class(Integer)
+-- TODO IntegerQuotientRingCoset to hold {p n + q}
 
-function OddInteger:containsElement(x)
-	if OddInteger.super.containsElement(self, x) == false then return false end
-	if self:containsVariable(x) then return true end
+local OddInteger = class(Set)
 
-	local Constant = require 'symmath.Constant'
-	if Constant:isa(x) then
-		return (x.value + 1) / 2 == math.floor((x.value + 1) / 2)
-	end
+function OddInteger:isSubsetOf(s)
+	symmath = symmath or require 'symmath'
+	if OddInteger:isa(s) then return true end
+	if symmath.set.integer:isSubsetOf(s) then return true end
+end
+
+function OddInteger:containsNumber(x)
+	assert(type(x) == 'number')
+	symmath = symmath or require 'symmath'
+	local isInteger = symmath.set.integer:containsNumber(x)
+	if isInteger ~= true then return isInteger end
+	return x % 2 == 1 
 end
 
 return OddInteger

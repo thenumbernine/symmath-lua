@@ -1,22 +1,16 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local Variable = require 'symmath.Variable'
+local symmath
 
 -- abstract parent class
 local Set = class()
 
 Set.name = 'Set'
 
--- cheap trick for now: let inheritence double as set-contains
-function Set:containsSet(s)
-	local m = getmetatable(self)
-	local is = m.is or self.is
-	if is then return is(s) end
-end
-
 function Set:variable(name, dependentVars, value)
+	symmath = symmath or require 'symmath'
 	-- TODO args are getting unruly, just use a table?
-	return Variable(name, dependentVars, value, self)
+	return symmath.Variable(name, dependentVars, value, self)
 end
 -- shorthand
 Set.var = Set.variable
@@ -31,18 +25,68 @@ function Set:vars(...)
 	end):unpack()
 end
 
-local Constant
-function Set:containsVariable(x)
-	if Variable:isa(x) then
-		if x.value then
-			Constant = Constant or require 'symmath.Constant'
-			return self:containsElement(Constant(x.value))
-		end
-		
-		-- if x's set is a subset of this set then true
-		-- but if x's set is not a subset ... x could still be contained
-		if self:containsSet(x.set) then return true end
+function Set:containsNumber(x)
+	assert(type(x) == 'number')
+end
+
+local complex = require 'symmath.complex'
+function Set:containsComplex(x)
+	assert(complex:isa(x))
+
+	if x.im == 0 then
+		return self:containsNumber(x.re)
 	end
+end
+
+-- only call this on Constant's
+function Set:containsConstant(x)
+	symmath = symmath or require 'symmath'
+	assert(symmath.Constant:isa(x))
+	return self:contains(x.value)
+end
+
+-- only call this on Variable's
+function Set:containsVariable(x)
+	symmath = symmath or require 'symmath'
+	assert(symmath.Variable:isa(x))
+
+	-- TODO should I care about x.value?
+	-- it is more accurate to use its 'containsConstant' for sure
+	-- then the resolution is specific to the number value.
+	-- 
+	-- TODO what is x.value? is it always a Constant?
+	-- if it's an expression then shouldn't it be a UserFunction?
+	-- just let :contains()'s cases handle it
+	if x.value then
+		return self:contains(x.value)
+	end
+	
+	-- if x's set is a subset of this set then true
+	-- but if x's set is not a subset ... x could still be contained
+	assert(Set:isa(x.set))
+	if self:containsSet(x.set) then return true end
+end
+
+-- class Set
+-- does 'self' contain 's'?
+function Set:containsSet(s)
+	-- rather than consider all possible subsets 's'...
+	-- how about asking the opposite question?
+	if s == self then return true end
+	return s:isSubsetOf(self)
+end
+
+-- does 's' contain 'self'? 
+-- called by 'containsSet', which subclasses hopefully shouldn't need to modify
+--  because there are usually too many subsets to enumerate
+-- instead just modify this function, 
+--  and check against a minimal number of possible supersets
+--  and trust them to check against a minimal number of supersets too
+function Set:isSubsetOf(s)
+end
+
+-- any non-Variable non-Constant Expression 
+function Set:containsExpression(x)
 end
 
 --[[
@@ -51,13 +95,60 @@ returns
 	false = no
 	nil = indetermined
 --]]
-function Set:containsElement(x)
-	return self:containsVariable(x)
-end
-
 function Set:contains(x)
-	if Set:isa(x) then return self:containsSet(x) end
-	return self:containsElement(x)
+	symmath = symmath or require 'symmath'
+
+	if type(x) == 'number' then
+		return self:containsNumber(x)
+	end
+
+	-- TODO
+	-- Class:isa(obj) tests type(obj) and obj.isaSet, then does the lookup
+	-- so just do those tests once?
+
+	if complex:isa(x) then
+		return self:containsComplex(x)
+	end
+	
+	if Set:isa(x) then 
+		return self:containsSet(x) 
+	end
+
+	-- returns ~= nil when we get a Variable
+	-- should I test for Variable outside 'containsVariable' ?
+	if symmath.Variable:isa(x) then
+		return self:containsVariable(x)
+	end
+
+	if symmath.Constant:isa(x) then
+		return self:containsConstant(x)
+	end
+
+	-- for any other genetic Expressions
+	-- hmm, looking like visitor and inheritence and rules once again
+	if symmath.Expression:isa(x) then
+		return self:containsExpression(x)
+	end
+
+--[[
+so TODO something like:
+	local t = type(x)
+	if t ~= 'table' then
+		local rule = self.containsRules[t] 
+		if rule then return rule(self, x) end
+	else
+		local m = getmetatable(x)
+		repeat
+			local rule = self.containsRules[m]
+			if rule then return rule(self, x) end
+			m = m.super
+		until m == nil
+		local rule = self.containsRule.table 
+		if rule then return rule(self, x) end
+	end
+	local rule = self.containsRule['*']
+	if rule then return rule(self, x) end
+--]]
 end
 
 return Set

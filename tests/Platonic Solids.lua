@@ -497,6 +497,16 @@ table td {
 	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq(vdots))
 	printbr()
 
+--[[
+T V = V P
+we are first finding all T's from a basis of T's, then using all T's to determine associated P's
+but alternatively, because there are a fixed number of P's, we can solve: T = V P V^T
+and then filter only T's that coincide with proper rotations: A^-1 = A^T <=> A A^T = I
+actually depending on the permutation (i.e. a permutation that flipped vertexes 1 and 2 but left 3-n untouched), 
+ they can't be represented by linear transforms, will the result T be zero?  or have a >{} nullspace at least?
+either way, if you have all the vertices, here's how you can find all the transforms.  especially easy for simplexes.
+--]]
+
 	printbr'Transforms of all vertexes vs permutations of all vertexes:'
 	printbr()
 	printbr(var'T''_i', [[$\in \{$]], allxforms:mapi(tostring):concat',', [[$\}$]])
@@ -535,6 +545,7 @@ table td {
 	-- show vtx multiplication table
 	-- btw, do i need to show the details of this above?  or should I just show this?
 	local function printVtxMulTable()
+		printbr[[Table of $T_i \cdot v_j = v_k$:]]
 		print'<table>\n'
 		print'<tr><td></td>'
 		for j=1,#vtxs do
@@ -573,6 +584,7 @@ table td {
 	end
 
 	local function printXformMulTable()
+		printbr[[Table of $T_i \cdot T_j = T_k$:]]
 		print'<table>\n'
 		print'<tr><td></td>'
 		for i=1,#allxforms do

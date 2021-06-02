@@ -152,7 +152,7 @@ cos.rules = {
 			-- cos(acos(x)) = x
 			if symmath.acos:isa(theta) then 
 				-- TODO only if x's domain is a subset of cos's realDomain
-				if symmath.set.RealInterval(-1, 1, true, true):containsElement(theta[1]) then
+				if symmath.set.RealInterval(-1, 1, true, true):contains(theta[1]) then
 					return theta[1]
 				end
 			end

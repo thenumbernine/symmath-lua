@@ -472,7 +472,7 @@ pow.rules = {
 				and sets.integer:contains(expr[2]) 
 				then
 					local v = expr[2].value % 4
-					if v == 0 then
+					if v == 0 then		-- integer mod 4 == 0 set... TODO implement
 						return Constant(1)
 					elseif v == 1 then
 						return symmath.i

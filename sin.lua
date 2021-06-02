@@ -141,7 +141,7 @@ sin.rules = {
 			-- sin(asin(x)) = x
 			if symmath.asin:isa(theta) then 
 				-- TODO only if theta[1] is in (-1, 1)
-				if symmath.set.RealInterval(-1, 1, true, true):containsElement(theta[1]) then
+				if symmath.set.RealInterval(-1, 1, true, true):contains(theta[1]) then
 					return theta[1]
 				end
 			end

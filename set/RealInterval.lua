@@ -1,11 +1,11 @@
 local class = require 'ext.class'
 local math = require 'ext.math'
-local Universal = require 'symmath.set.Universal'
+local Set = require 'symmath.set.Set'
 local complex = require 'symmath.complex'
 local symmath
 
 -- in some places I'm using subclasses to represent subsets ...
-local RealInterval = class(Universal)
+local RealInterval = class(Set)
 
 function RealInterval:init(start, finish, includeStart, includeFinish)
 	-- if any values are nil then all values should be nil, meaning an empty interval
@@ -15,15 +15,9 @@ function RealInterval:init(start, finish, includeStart, includeFinish)
 	self.includeFinish = includeFinish
 	if self.start == -math.huge or self.start == math.huge then self.includeStart = false end
 	if self.finish == -math.huge or self.finish == math.huge then self.includeFinish = false end
-	if self.start == nil
-	or self.finish == nil
-	then
-		assert(self.start == nil and self.finish == nil, "either provide both a start and finish to the RealInterval, or leave both as nil to designate an empty interval")
-	else
-		if math.isnan(self.start) or math.isnan(self.finish) then
-			error('tried to construct a RealInterval with nan bounds:\n'
-					..require'ext.tolua'(self))
-		end
+	if math.isnan(self.start) or math.isnan(self.finish) then
+		error('tried to construct a RealInterval with nan bounds:\n'
+				..require'ext.tolua'(self))
 	end
 end
 
@@ -44,9 +38,6 @@ function RealInterval:clone()
 end
 
 function RealInterval:__tostring()
-	if self.start == nil then
-		return '{}'	-- Windows Consolas can't handle ∅
-	end
 	return (self.includeStart and '[' or '(')
 		.. self.start
 		.. ', '
@@ -54,65 +45,7 @@ function RealInterval:__tostring()
 		.. (self.includeFinish and ']' or ')')
 end
 
--- TODO add in PositiveReals, NonPositiveReals, and NegativeReals all as RealIntervals
--- TODO add in Rational, Irrational, Transcendental sets, and do similar function mapping stuff below for them too (IntegerInterval, Natural=IntegerInterval(0,inf), RationalInterval, IrrationalInterval, TranscendentalInterval, etc)
---   (I'm suspicious that I'm going to need to start associating each expression with its domain/range)
-
-function RealInterval:containsNumber(x)
-	-- empty set:
-	if self.start == nil then return false end
-
-	if complex:isa(x) then
-		if x.im ~= 0 then return false end
-		x = x.re
-	end
-	
-	local result = true
-	if self.includeStart then
-		result = result and self.start <= x
-	else
-		result = result and self.start < x
-	end
-	if self.includeFinish then
-		result = result and x <= self.finish
-	else
-		result = result and x < self.finish
-	end
-	return result
-end
-
-function RealInterval:containsVariable(x)
-	-- empty set:
-	if self.start == nil then return false end
-	
-	symmath = symmath or require 'symmath'
-	if symmath.Variable:isa(x) then
-		if x.value then 
-			return self:containsNumber(x.value) 
-		end
-		
-		-- right now :containsSet returns nil if the domains are overlapping
-		-- in that case, the variable *could* be inside 'self'
-		assert(not RealInterval:isa(x.set)) -- phasing this out -- use RealSubset as a single interval
-		
-		symmath = symmath or require 'symmath'
-		local RealSubset = symmath.set.RealSubset
-		
-		if RealSubset:isa(x.set) then
-			if #x.set == 1 then
-				return self:containsSet(x.set)
-			else
-				-- if this interval contains all of x.set's intervals then we are good
-				return RealSubset(self.start, self.finish, self.containsStart, self.containsFinish):containsSet(x.set)
-			end
-		end
-	end
-end
-
 function RealInterval:intersects(x)
-	-- empty set:
-	if self.start == nil then return false end
-	
 	if RealInterval:isa(x) then
 		local result = true
 		if self.includeStart and x.includeFinish then
@@ -147,10 +80,26 @@ function RealInterval:intersects(x)
 	end
 end
 
+-- TODO add in PositiveReals, NonPositiveReals, and NegativeReals all as RealIntervals
+-- TODO add in Rational, Irrational, Transcendental sets, and do similar function mapping stuff below for them too (IntegerInterval, Natural=IntegerInterval(0,inf), RationalInterval, IrrationalInterval, TranscendentalInterval, etc)
+--   (I'm suspicious that I'm going to need to start associating each expression with its domain/range)
+
+function RealInterval:containsNumber(x)
+	local result = true
+	if self.includeStart then
+		result = result and self.start <= x
+	else
+		result = result and self.start < x
+	end
+	if self.includeFinish then
+		result = result and x <= self.finish
+	else
+		result = result and x < self.finish
+	end
+	return result
+end
+
 function RealInterval:containsSet(I)
-	-- empty set:
-	if self.start == nil then return false end
-	
 	if RealInterval:isa(I) then
 		local result = true
 		
@@ -193,18 +142,42 @@ function RealInterval:containsSet(I)
 		-- and containsVariable wants to return nil when the sets overlap
 		-- and I'm too lazy to write a separate :touchesSet function
 	end
+
+	-- if interval A contains multiple intervals of B...
+	-- ... it's true only if all intervals of B are in A
+	-- if any are uncertain then return uncertain
+	-- if all are false then return false
+	symmath = symmath or require 'symmath'
+	local RealSubset = symmath.set.RealSubset
+	if RealSubset:isa(I) then
+		-- if all of set's intervals are contained within this interval then return true
+		local result -- return true if all is true
+		for _,setI in ipairs(I) do
+			local containsI = self:contains(setI)
+			-- TODO what about uncertainty?
+			if containsI == nil then
+				return nil	-- if any are uncertain then return uncertain
+			elseif containsI == false then 
+				-- if a previous interval was true, but this interval is false,
+				-- then return uncertain
+				if result == true then
+					return nil
+				end
+				result = false 	-- only return false if all are false
+			else
+				assert(containsI == true)
+				result = true
+			end
+		end
+		return result
+	end
 end
 
-function RealInterval:containsElement(x)
-	-- empty set:
-	if self.start == nil then return false end
-	
-	if type(x) == 'number' 
-	or complex:isa(x)
-	then 
-		return self:containsNumber(x) 
-	end
-
+function RealInterval:containsExpression(x)
+	-- Expressions, other than Variable, Constant, etc
+	-- is Set an Expression?  not right now.
+	-- should it be?
+	-- 
 	-- this function is specific to each function -- maybe make it a member?
 	-- but for now it is only used here, so only keep it here
 	local I = x:getRealRange()
@@ -213,7 +186,6 @@ function RealInterval:containsElement(x)
 	
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
-	
 	if RealSubset:isa(I) then
 		if RealSubset(self.start, self.finish, self.includeStart, self.includeFinish):containsSet(I) then return true end
 	end
@@ -222,18 +194,11 @@ end
 -- ops might break my use of classes as singletons, since classes don't have the same op metatable as objects
 
 function RealInterval.__unm(I)
-	-- empty set:
-	if I.start == nil then return I end
-	
 	return RealInterval(-I.finish, -I.start, I.includeFinish, I.includeStart)
 end
 
 -- [a,b] + [c,d] = [a+c,b+d]
 function RealInterval.__add(A,B)
-	-- empty set:
-	if A.start == nil then return B end
-	if B.start == nil then return A end
-	
 	return RealInterval(
 		A.start + B.start,
 		A.finish + B.finish,
@@ -243,10 +208,6 @@ end
 
 -- [a,b] - [c,d] = [a-d, b-c]
 function RealInterval.__sub(A,B)
-	-- empty set:
-	if A.start == nil then return -B end
-	if B.start == nil then return A end
-	
 	return RealInterval(
 		A.start - B.finish,
 		A.finish - B.start,
@@ -288,10 +249,6 @@ local function intervalmul(a,b)
 	return a * b
 end
 function RealInterval.__mul(A,B)
-	-- empty set:
-	if A.start == nil then return A end
-	if B.start == nil then return B end
-	
 	if 0 <= A.start and 0 <= B.start then
 		return RealInterval(
 			intervalmul(A.start, B.start),
@@ -386,10 +343,6 @@ for c <= 0 <= d this is the same as
 this brings us to the world of separate contiguous domains ...
 --]]
 function RealInterval.__div(A,B)
-	-- empty set:
-	if A.start == nil then return A end
-	if B.start == nil then return RealInterval(math.nan, math.nan, false, false) end	-- undefined?  error?
-
 	if 0 <= A.start and 0 <= B.start then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
 	elseif 0 <= A.start and B.finish <= 0 then
@@ -454,10 +407,6 @@ fractional (even denominator) powers of negative numbers make complex
 fractional (odd denominator) powers of negative numbers make real
 --]]
 function RealInterval.__pow(A,B)
-	-- empty set:
-	if A.start == nil then return A end	-- more uncertainties ...
-	if B.start == nil then return B end	-- TODO ... ?
-
 	-- for (a,b)^(c,d), d <= 0
 	-- try (1/(a,b)) ^ (-d, -c)
 	if B.finish <= 0 then
@@ -568,5 +517,12 @@ end
 function RealInterval.__mod(A,B)
 end
 --]]
+
+function RealInterval.__eq(A,B)
+	return A.start == B.start
+	and A.finish == B.finish
+	and A.includeStart == B.includeStart
+	and A.includeFinish == B.includeFinish
+end
 
 return RealInterval 

@@ -9,12 +9,47 @@ for _,line in ipairs(string.split(string.trim([=[
 
 -- TODO do unit tests with the RealInterval / RealSubset operators
 
-assert(set.positiveReal:contains(set.positiveReal))
-
-assert(set.real:containsElement(x))
-assert(set.RealSubset():contains(x))
 assert(set.real:contains(x))
-assert(set.positiveReal:contains(x) == nil)
+
+assert(set.real:contains(set.real) == true)
+assert(set.real:contains(set.positiveReal) == true)
+assert(set.real:contains(set.negativeReal) == true)
+assert(set.real:contains(set.integer) == true)
+assert(set.real:contains(set.evenInteger) == true)
+assert(set.real:contains(set.oddInteger) == true)
+
+assert(set.integer:contains(set.real) == nil)
+assert(set.integer:contains(set.positiveReal) == nil)
+assert(set.integer:contains(set.negativeReal) == nil)
+assert(set.integer:contains(set.integer) == true)
+assert(set.integer:contains(set.evenInteger) == true)
+assert(set.integer:contains(set.oddInteger) == true)
+
+assert(set.evenInteger:contains(set.real) == nil)
+assert(set.evenInteger:contains(set.positiveReal) == nil)
+assert(set.evenInteger:contains(set.negativeReal) == nil)
+assert(set.evenInteger:contains(set.integer) == nil)
+assert(set.evenInteger:contains(set.evenInteger) == true)
+assert(set.evenInteger:contains(set.oddInteger) == nil)
+
+assert(set.oddInteger:contains(set.real) == nil)
+assert(set.oddInteger:contains(set.positiveReal) == nil)
+assert(set.oddInteger:contains(set.negativeReal) == nil)
+assert(set.oddInteger:contains(set.integer) == nil)
+assert(set.oddInteger:contains(set.evenInteger) == nil)
+assert(set.oddInteger:contains(set.oddInteger) == true)
+
+
+-- x is in (-inf, inf).  
+-- is x in (0, inf)?  
+-- maybe.  
+-- not certainly yes (subset).  
+-- not certainly no (complement intersection / set subtraction is empty).  
+-- so return nil
+-- if x's set is a subset of this set then return true
+-- if x's set is an intersection of this set then return nil
+-- if x's set does not intersect this set then return false
+assert(set.positiveReal:contains(x) == nil)	
 
 assert(set.real:contains(sin(x)))
 assert(set.RealSubset(-1,1,true,true):contains(sin(x)))
@@ -41,7 +76,7 @@ print(acos(x):getRealRange())
 
 
 -- x^2 should be positive
-assert((x^2):getRealRange() == set.positiveReal)
+assert((x^2):getRealRange() == set.nonNegativeReal)
 assert(set.nonNegativeReal:contains(x^2))
 
 assert((Constant(2)^2):getRealRange() == set.RealSubset(4,4,true,true))

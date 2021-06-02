@@ -1,13 +1,14 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local math = require 'ext.math'
-local Universal = require 'symmath.set.Universal'
+local Set = require 'symmath.set.Set'
 local RealInterval = require 'symmath.set.RealInterval'
+local symmath
 
 -- composites of intervals
 -- TODO better term?  
 -- the math term "subset" could also define things with :nfinite regions, which cannot be defined by this class
-local RealSubset = class(Universal)
+local RealSubset = class(Set)
 
 RealSubset.last = table.last
 
@@ -148,6 +149,18 @@ function RealSubset:__tostring()
 	return s
 end
 
+function RealSubset:intersects(set)
+	if RealInterval:isa(set) then	
+		for _,selfi in ipairs(self) do
+			if selfi:intersects(set) then return true end
+		end
+	elseif RealSubset:isa(set) then
+		for _,seti in ipairs(set) do
+			if self:intersects(seti) then return true end
+		end
+	end
+end
+
 function RealSubset:containsNumber(x)
 	local gotfalse
 	for _,I in ipairs(self) do
@@ -168,43 +181,36 @@ function RealSubset:containsVariable(x)
 	return gotfalse
 end
 
-function RealSubset:intersects(set)
-	if RealInterval:isa(set) then	
-		for _,selfi in ipairs(self) do
-			if selfi:intersects(set) then return true end
-		end
-	elseif RealSubset:isa(set) then
-		for _,seti in ipairs(set) do
-			if self:intersects(seti) then return true end
-		end
-	end
+function RealSubset:containsSet(set)
+	local result = RealSubset.super.containsSet(self, set)
+	if result ~= nil then return result end
+
 end
 
-function RealSubset:containsSet(set)
-	if RealInterval:isa(set) then
-		-- if any of self's intervals contains 'set' then return true
-		local gotfalse
-		for _,selfI in ipairs(self) do
-			local selfIcontains = selfI:containsSet(set) 
-			if selfIcontains then return true end
-			if selfIcontains == false then gotfalse = false end
+function RealSubset:isSubsetOf(s)
+	symmath = symmath or require 'symmath'
+	-- real is RealSubset
+	--if symmath.set.real:isSubsetOf(s) then return true end
+	-- so use a minimal superset
+	if symmath.set.complex:isSubsetOf(s) then return true end
+
+	if RealSubset:isa(s) then
+		-- if any of s's intervals contains 'self' then return true
+		local gotfalse = false
+		for _,sI in ipairs(s) do
+			local sIcontains = sI:containsSet(self) 
+			if sIcontains then return true end
+			if sIcontains == nil then gotfalse = nil end
 		end
 		return gotfalse
-	elseif RealSubset:isa(set) then
-		-- if all of set's intervals are contained within this interval then return true
-		for _,setI in ipairs(set) do
-			local containsI = self:contains(setI)
-			-- TODO what about uncertainty?
-			if not containsI then return false end
-		end
-		return true 
 	end
 end
 
-function RealSubset:containsElement(x)
+-- any non-Variable non-Constant Expression 
+function RealSubset:containsExpression(x)
 	local gotfalse
 	for _,I in ipairs(self) do
-		local containsI = I:containsElement(x) 
+		local containsI = I:contains(x) 
 		if containsI then return true end
 		if containsI == false then gotfalse = false end
 	end
@@ -293,6 +299,15 @@ function RealSubset.__mod(A,B)
 		end
 	end
 	return RealSubset(newints):checkMerge()
+end
+
+function RealSubset.__eq(A,B)
+	local nA, nB = #A, #B
+	if nA ~= nB then return false end
+	for i=1,nA do
+		if A[i] ~= B[i] then return false end
+	end
+	return true
 end
 
 -- commonly used versions of the Expression:getRealDomain function

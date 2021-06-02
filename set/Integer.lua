@@ -1,25 +1,35 @@
 local class = require 'ext.class'
-local Universal = require 'symmath.set.Universal'
+local Set = require 'symmath.set.Set'
+local symmath
 
-local Integer = class(Universal)
+--[[
+TODO subclass of Real?  just like EvenInteger is subclass of Integer
+but Real itself isn't a class.
+real is an instance of RealSubset of (-inf, inf)
+but idk if the Integer set should possess all behavior of RealSubset
+esp the operators
 
-local sets
-local Constant
-function Integer:containsElement(x)
+how about a separate Real class,
+which always contains any RealSubset / RealInterval
+--]]
+local Integer = class(Set)
+
+function Integer:isSubsetOf(s)
+	symmath = symmath or require 'symmath'
+	if Integer:isa(s) then return true end
+	if symmath.set.real:isSubsetOf(s) then return true end
+end
+
+function Integer:containsNumber(x)
+	assert(type(x) == 'number')
+	
 	-- if it isn't a real then it isn't an integer
-	sets = sets or require 'symmath.set.sets'
-	if sets.real:containsElement(x) == false then 
-		return false 
-	end
-
-	if self:containsVariable(x) then return true end
-
-	Constant = Constant or require 'symmath.Constant'
-	if Constant:isa(x) 
-	and type(x.value) == 'number'
-	then
-		return x.value == math.floor(x.value)
-	end
+	-- TODO make a class for Real based on RealSubset(-huge,huge) ?
+	symmath = symmath or require 'symmath'
+	local isReal = symmath.set.real:containsNumber(x)
+	if isReal ~= true then return isReal end
+	
+	if x == math.floor(x) then return true end
 end
 
 return Integer
