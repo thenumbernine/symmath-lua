@@ -528,7 +528,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		end
 		
 		for _,index in ipairs(indexes) do
-			s = '{' .. s .. '}' .. self:apply(index)
+			s = '{' .. s .. '}' .. self:applyLaTeX(index)
 		end
 		
 		return table{s}
