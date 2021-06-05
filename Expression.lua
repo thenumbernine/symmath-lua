@@ -1607,6 +1607,7 @@ end
 
 -- TODO caching as well? or TODO get rid of caching in both?
 function Expression:getRealDomain()
+	symmath = symmath or require 'symmath'
 	return symmath.set.real
 end
 

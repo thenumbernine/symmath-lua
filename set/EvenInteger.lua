@@ -20,7 +20,7 @@ function EvenInteger:containsNumber(x)
 	assert(type(x) == 'number')
 	symmath = symmath or require 'symmath'
 	-- if it is not an integer then fail
-	local isInteger = set.integer:containsNumber(self, x)
+	local isInteger = symmath.set.integer:containsNumber(x)
 	if isInteger ~= true then return isInteger end
 	return x % 2 == 0
 end

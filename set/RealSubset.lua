@@ -9,6 +9,7 @@ local symmath
 -- TODO better term?  
 -- the math term "subset" could also define things with :nfinite regions, which cannot be defined by this class
 local RealSubset = class(Set)
+RealSubset.name = 'RealSubset' 
 
 RealSubset.last = table.last
 
@@ -32,11 +33,9 @@ function RealSubset:init(start, finish, includeStart, includeFinish)
 		end
 		self:checkMerge()
 	elseif type(start) == 'number' then
-		assert(not math.isnan(start))
-		assert(not math.isnan(finish))
 		self[1] = RealInterval(start, finish, includeStart, includeFinish)
 	elseif type(start) == 'nil' then
-		self[1] = RealInterval(-math.huge, math.huge, false, false)	-- full domain
+		self[1] = RealInterval(-math.huge, math.huge, true, true)	-- full domain
 	else
 		error'here'
 	end
@@ -105,29 +104,36 @@ end
 function RealSubset:complement()
 	if #self == 0 then
 		-- in the reals, the complement of the empty set is the whole real line
-		return RealSubset(-math.huge, math.huge, false, false)
+		return RealSubset(-math.huge, math.huge, true, true)
 	end
 	local ints = table()
 	local n = #self
 	local first = self[1]
 	local last = self[n]
 	if first.start ~= -math.huge then
-		ints:insert(RealInterval(-math.huge, first.start, false, not self[1].includeStart))
+		ints:insert(RealInterval(-math.huge, first.start, true, not self[1].includeStart))
 	end
 	for i=1,n-1 do
 		ints:insert(RealInterval(self[i].finish, self[i+1].start, not self[i].includeFinish, not self[i+1].includeStart))
 	end
 	if last.finish ~= math.huge then
-		ints:insert(RealInterval(last.finish, math.huge, not last.includeStart, false))
+		ints:insert(RealInterval(last.finish, math.huge, not last.includeStart, true))
 	end
 	return RealSubset(ints)
 end
 
 function RealSubset:open()
 	local result = RealSubset(self)
-	for i=1,#result do
-		result[i].includeStart = false
-		result[i].includeFinish = false
+	local n = #result
+	for i=1,n do
+		-- back to extended-real exceptions:
+		-- [-inf,inf] open is going to still be [-inf, inf]
+		if not (i == 1 and result[i].start == -math.huge) then
+			result[i].includeStart = false
+		end
+		if not (i == n and result[i].finish == math.huge) then
+			result[i].includeFinish = false
+		end
 	end
 	return result:checkMerge()
 end
@@ -147,6 +153,10 @@ function RealSubset:__tostring()
 	end
 	if #self > 1 then s = s .. '}' end
 	return s
+end
+
+function RealSubset.__concat(a,b) 
+	return tostring(a) .. tostring(b) 
 end
 
 function RealSubset:intersects(set)
@@ -181,28 +191,47 @@ function RealSubset:containsVariable(x)
 	return gotfalse
 end
 
-function RealSubset:containsSet(set)
-	local result = RealSubset.super.containsSet(self, set)
-	if result ~= nil then return result end
-
-end
-
 function RealSubset:isSubsetOf(s)
+	assert(#self > 0)	-- using the empty set? use set.null
+	
 	symmath = symmath or require 'symmath'
 	-- real is RealSubset
 	--if symmath.set.real:isSubsetOf(s) then return true end
 	-- so use a minimal superset
 	if symmath.set.complex:isSubsetOf(s) then return true end
 
+	-- if we are a subset of any i'th interval of s then return true
+	-- if we are not a subset of all intervals of s then return false
+	-- otherwise nil?
 	if RealSubset:isa(s) then
-		-- if any of s's intervals contains 'self' then return true
-		local gotfalse = false
+		local result = false
 		for _,sI in ipairs(s) do
-			local sIcontains = sI:containsSet(self) 
-			if sIcontains then return true end
-			if sIcontains == nil then gotfalse = nil end
+			local containsSI = self:isSubsetOf(sI)
+			if containsSI == true then 
+				return true
+			elseif containsSI == nil then
+				result = nil
+			end
 		end
-		return gotfalse
+		return result
+	end
+
+	-- if all our intervals are within RealInterval 's' then return true
+	-- if all are outside then return false
+	-- if we have any intersection then return nil
+	if RealInterval:isa(s) then
+		local alltrue = true
+		local allfalse = true
+		for _,selfI in ipairs(self) do
+			local selfIcontains = selfI:isSubsetOf(s) 
+			if selfIcontains ~= true then alltrue = false end
+			if selfIcontains ~= false then allfalse = false end
+			if selfIcontains == nil then return nil end
+		end
+		assert(not (alltrue and allfalse))	-- should only happen in the caese of the empty set, which I assert'd against at the top of the function
+		if alltrue then return true end
+		if allfalse then return false end
+		return nil	-- short-circuit should stop us from getting here
 	end
 end
 
@@ -286,7 +315,7 @@ function RealSubset.__pow(A,B)
 	end
 	-- if we should've produced something, but we produced nothing...
 	if not A:isEmpty() and not B:isEmpty() and #newints == 0 then
-		return RealSubset(-math.huge, math.huge, false, false)	-- just produce the whole reals?
+		return RealSubset(-math.huge, math.huge, true, true)	-- just produce the whole reals?
 	end
 	return RealSubset(newints):checkMerge()
 end
@@ -337,7 +366,7 @@ end
 
 -- used by sqrt
 function RealSubset.getRealDomain_nonNegativeReal()
-	return RealSubset(0, math.huge, true, false)
+	return RealSubset(0, math.huge, true, true)
 end
 
 -- commonly used versions of the Expression:getRealRange function

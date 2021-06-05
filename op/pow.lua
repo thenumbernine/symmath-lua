@@ -353,7 +353,7 @@ pow.rules = {
 				-- polynomials 
 				-- quadratic so far
 				-- sqrt(a^2 + 2ab + b^2) = a + b
-				-- TODO now we have to consider domains ... this is only true for (a+b)>0 ... or two roots for +-
+				-- TODO now we have to consider domains ... this is only true for (a+b)>0 ... or two roots for ±
 				-- ... hmm, this is looking very ugly and specific
 				local function isSquare(x)
 					return pow:isa(x) and Constant.isValue(x[2], 2)

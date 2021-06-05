@@ -6,15 +6,25 @@ local symmath
 
 -- in some places I'm using subclasses to represent subsets ...
 local RealInterval = class(Set)
+RealInterval.name = 'RealInterval'
 
 function RealInterval:init(start, finish, includeStart, includeFinish)
 	-- if any values are nil then all values should be nil, meaning an empty interval
-	self.start = start
-	self.finish = finish
+	self.start = assert(start)
+	self.finish = assert(finish)
 	self.includeStart = includeStart
 	self.includeFinish = includeFinish
-	if self.start == -math.huge or self.start == math.huge then self.includeStart = false end
-	if self.finish == -math.huge or self.finish == math.huge then self.includeFinish = false end
+-- extended real stuff
+--[[ 
+assert(self.start ~= -math.huge or self.includeStart)
+assert(self.finish ~= math.huge or self.includeFinish)
+--]]
+-- [[
+if self.start == -math.huge then self.includeStart = true end
+if self.finish == math.huge then self.includeFinish = true end
+--]]	
+	assert(type(self.includeStart) == 'boolean')
+	assert(type(self.includeFinish) == 'boolean')
 	if math.isnan(self.start) or math.isnan(self.finish) then
 		error('tried to construct a RealInterval with nan bounds:\n'
 				..require'ext.tolua'(self))
@@ -43,6 +53,10 @@ function RealInterval:__tostring()
 		.. ', '
 		.. self.finish
 		.. (self.includeFinish and ']' or ')')
+end
+
+function RealInterval.__concat(a,b) 
+	return tostring(a) .. tostring(b) 
 end
 
 function RealInterval:intersects(x)
@@ -99,62 +113,64 @@ function RealInterval:containsNumber(x)
 	return result
 end
 
-function RealInterval:containsSet(I)
-	if RealInterval:isa(I) then
+-- A:isSubsetOf(B) == A ⊆ B
+function RealInterval.isSubsetOf(subI, supI)
+	symmath = symmath or require 'symmath'
+	-- minimal superset test
+	if symmath.set.complex:isSubsetOf(s) then return true end
+	local RealSubset = symmath.set.RealSubset
+
+	if RealInterval:isa(subI) then
 		local result = true
-		
-		if self.includeStart and I.includeStart then
+		if supI.includeStart and subI.includeStart then
 			-- does [a,... contain [b,...
-			result = result and self.start <= I.start
-		elseif self.includeStart and not I.includeStart then
+			result = result and supI.start <= subI.start
+		elseif supI.includeStart and not subI.includeStart then
 			-- does [a,... contain (b,...
-			result = result and self.start <= I.start
-		elseif not self.includeStart and I.includeStart then
+			result = result and supI.start <= subI.start
+		elseif not supI.includeStart and subI.includeStart then
 			-- does (a,... contain [b,...
-			result = result and self.start < I.start
-		elseif not self.includeStart and not I.includeStart then
+			result = result and supI.start < subI.start
+		elseif not supI.includeStart and not subI.includeStart then
 			-- does (a,... contain (b,...
-			result = result and self.start <= I.start
+			result = result and supI.start <= subI.start
 		end
 		
-		if self.includeFinish and I.includeFinish then
+		if supI.includeFinish and subI.includeFinish then
 			-- does ...,a] contain ...,b]
-			result = result and I.finish <= self.finish
-		elseif self.includeFinish and not I.includeFinish then
+			result = result and subI.finish <= supI.finish
+		elseif supI.includeFinish and not subI.includeFinish then
 			-- does ...,a] contain ...,b)
-			result = result and I.finish <= self.finish
-		elseif not self.includeFinish and I.includeFinish then
+			result = result and subI.finish <= supI.finish
+		elseif not supI.includeFinish and subI.includeFinish then
 			-- does ...,a) contain ...,b]
-			result = result and I.finish < self.finish
-		elseif not self.includeFinish and not I.includeFinish then
+			result = result and subI.finish < supI.finish
+		elseif not supI.includeFinish and not subI.includeFinish then
 			-- does ...,a) contain ...,b)
-			result = result and I.finish <= self.finish
+			result = result and subI.finish <= supI.finish
 		end
 		
 		if result == true then return true end
 		
-		if I.finish < self.start then return false end
-		if self.finish < I.start then return false end
+		if subI.finish < supI.start then return false end
+		if supI.finish < subI.start then return false end
 
-		-- by here the two sets are overlapping but I isn't contained in self
+		-- by here the two sets are overlapping but I isn't contained in supI
 		-- so technically 'containsSet' is false
 		-- but right now :containsVariable is calling this
 		-- and containsVariable wants to return nil when the sets overlap
 		-- and I'm too lazy to write a separate :touchesSet function
 	end
 
-	-- if interval A contains multiple intervals of B...
-	-- ... it's true only if all intervals of B are in A
-	-- if any are uncertain then return uncertain
-	-- if all are false then return false
-	symmath = symmath or require 'symmath'
-	local RealSubset = symmath.set.RealSubset
-	if RealSubset:isa(I) then
-		-- if all of set's intervals are contained within this interval then return true
-		local result -- return true if all is true
-		for _,setI in ipairs(I) do
-			local containsI = self:contains(setI)
-			-- TODO what about uncertainty?
+	-- are we a subset of a set of intervals?
+	-- true if any of those intervals contain this interval
+	-- nil if any overlap
+	-- false if all exclude
+	if RealSubset:isa(supI) then
+		assert(#supI > 0)
+		local result
+		for _,setI in ipairs(supI) do
+			local containsI = self:isSubsetOf(setI)
 			if containsI == nil then
 				return nil	-- if any are uncertain then return uncertain
 			elseif containsI == false then 
@@ -187,7 +203,7 @@ function RealInterval:containsExpression(x)
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
 	if RealSubset:isa(I) then
-		if RealSubset(self.start, self.finish, self.includeStart, self.includeFinish):containsSet(I) then return true end
+		if I:isSubsetOf(RealSubset(self.start, self.finish, self.includeStart, self.includeFinish)) then return true end
 	end
 end
 
@@ -343,6 +359,11 @@ for c <= 0 <= d this is the same as
 this brings us to the world of separate contiguous domains ...
 --]]
 function RealInterval.__div(A,B)
+	-- reals are (-inf, inf)
+	-- I saw shorthand for extended reals to be [-inf, inf] and jumped on it
+	-- but using this concept comes with its own set of problems
+	-- for example, when considering the boundary of 1/(a,b), it's nice for inf to be open by default 
+
 	if 0 <= A.start and 0 <= B.start then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
 	elseif 0 <= A.start and B.finish <= 0 then
@@ -370,17 +391,29 @@ function RealInterval.__div(A,B)
 	and then I'll change RealSubset to explicitly call the __div member and to look for multiple return values
 	--]]
 	elseif 0 <= A.start and B.start <= 0 and 0 <= B.finish then
-		return RealInterval(-math.huge, math.huge),
-			A * RealInterval(-math.huge, 1/B.start, false, B.includeStart),
-			A * RealInterval(1/B.finish, math.huge, B.includeStart, false)
+		local invBincludeStart = B.includeStart
+		if B.start == -math.huge then invBincludeStart = false end
+		local invBincludeFinish = B.includeFinish
+		if B.finish == math.huge then invBincludeFinish = false end
+		return RealInterval(-math.huge, math.huge, true, true),
+			A * RealInterval(-math.huge, 1/B.start, true, invBincludeStart),
+			A * RealInterval(1/B.finish, math.huge, invBincludeFinish, true)
 	elseif A.finish <= 0 and B.start <= 0 and 0 <= B.finish then
-		return RealInterval(-math.huge, math.huge),
-			A * RealInterval(-math.huge, 1/B.start, false, B.includeStart),
-			A * RealInterval(1/B.finish, math.huge, B.includeStart, false)
+		local invBincludeStart = B.includeStart
+		if B.start == -math.huge then invBincludeStart = false end
+		local invBincludeFinish = B.includeFinish
+		if B.finish == math.huge then invBincludeFinish = false end
+		return RealInterval(-math.huge, math.huge, true, true),
+			A * RealInterval(-math.huge, 1/B.start, true, invBincludeStart),
+			A * RealInterval(1/B.finish, math.huge, invBincludeFinish, true)
 	elseif A.start <= 0 and 0 <= A.finish and B.start <= 0 and 0 <= B.finish then
-		return RealInterval(-math.huge, math.huge),
-			A * RealInterval(-math.huge, 1/B.start, false, B.includeStart),
-			A * RealInterval(1/B.finish, math.huge, B.includeStart, false)
+		local invBincludeStart = B.includeStart
+		if B.start == -math.huge then invBincludeStart = false end
+		local invBincludeFinish = B.includeFinish
+		if B.finish == math.huge then invBincludeFinish = false end
+		return RealInterval(-math.huge, math.huge, true, true),
+			A * RealInterval(-math.huge, 1/B.start, true, invBincludeStart),
+			A * RealInterval(1/B.finish, math.huge, invBincludeFinish, true)
 	else
 		-- that should be all possible cases
 		error'here'
@@ -509,7 +542,7 @@ function RealInterval.__pow(A,B)
 		end
 	end
 	
-	return RealInterval(-math.huge, math.huge)
+	return RealInterval(-math.huge, math.huge, true, true)
 end
 
 --[[ TODO modulo 

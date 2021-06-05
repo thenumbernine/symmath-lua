@@ -22,4 +22,4 @@ function Natural:containsNumber(x)
 	return x > 0
 end
 
-return Integer
+return Natural

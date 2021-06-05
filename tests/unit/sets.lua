@@ -9,35 +9,71 @@ for _,line in ipairs(string.split(string.trim([=[
 
 -- TODO do unit tests with the RealInterval / RealSubset operators
 
+-- subsets
+-- TODO don't use ":contains()" except for element testing, as in sets-of-sets
+-- instead here use isSubsetOf
+
+assert(set.real:isSubsetOf(set.real) == true)
+assert(set.positiveReal:isSubsetOf(set.real) == true)
+assert(set.negativeReal:isSubsetOf(set.real) == true)
+assert(set.integer:isSubsetOf(set.real) == true)
+assert(set.evenInteger:isSubsetOf(set.real) == true)
+assert(set.oddInteger:isSubsetOf(set.real) == true)
+
+assert(set.real:isSubsetOf(set.integer) == nil)
+assert(set.positiveReal:isSubsetOf(set.integer) == nil)
+assert(set.negativeReal:isSubsetOf(set.integer) == nil)
+assert(set.integer:isSubsetOf(set.integer) == true)
+assert(set.evenInteger:isSubsetOf(set.integer) == true)
+assert(set.oddInteger:isSubsetOf(set.integer) == true)
+
+assert(set.real:isSubsetOf(set.evenInteger) == nil)
+assert(set.positiveReal:isSubsetOf(set.evenInteger) == nil)
+assert(set.negativeReal:isSubsetOf(set.evenInteger) == nil)
+assert(set.integer:isSubsetOf(set.evenInteger) == nil)
+assert(set.evenInteger:isSubsetOf(set.evenInteger) == true)
+assert(set.oddInteger:isSubsetOf(set.evenInteger) == nil)
+
+assert(set.real:isSubsetOf(set.oddInteger) == nil)
+assert(set.positiveReal:isSubsetOf(set.oddInteger) == nil)
+assert(set.negativeReal:isSubsetOf(set.oddInteger) == nil)
+assert(set.integer:isSubsetOf(set.oddInteger) == nil)
+assert(set.evenInteger:isSubsetOf(set.oddInteger) == nil)
+assert(set.oddInteger:isSubsetOf(set.oddInteger) == true)
+
+
+-- realinterval 
+
+assert(set.RealInterval(-2, -1, true, true):isSubsetOf(set.RealInterval(1, 2, true, true)) == false)
+assert(set.RealInterval(-2, -1, true, true):isSubsetOf(set.RealInterval(-1, 2, true, true)) == nil)
+assert(set.RealInterval(-2, -1, true, true):isSubsetOf(set.RealInterval(-2, 2, true, true)) == true)
+assert(set.RealInterval(-2, -1, true, true):isSubsetOf(set.RealInterval(-2, 2, false, true)) == nil)
+
+local A = set.RealInterval(0, 1, false, true) printbr(A, 'isSubsetOf', A) assert(A:isSubsetOf(A))
+
+-- realsubset
+
+local A = set.RealSubset(0, 1, false, true) printbr(A, 'isSubsetOf', A) assert(A:isSubsetOf(A))
+
+local A = set.RealSubset(0, 1, false, true) local B = set.RealSubset{{-1, 0, true, false}, {0, 1, false, true}} printbr(A, 'isSubsetOf', B) assert(A:isSubsetOf(B))
+assert(set.RealSubset(0, math.huge, false, true):isSubsetOf(set.RealSubset{{-math.huge, 0, true, false}, {0, math.huge, false, true}}))
+
+-- containing constants
+
+assert(set.real:contains(inf) == true)	-- TODO technically that makes set.real the extended reals.  should I distinguish between real and extended real?
+assert(set.positiveReal:contains(inf) == true)
+assert(set.negativeReal:contains(inf) == false)
+assert(set.nonNegativeReal:contains(inf) == true)
+assert(set.nonPositiveReal:contains(inf) == false)
+assert(set.positiveReal:contains(-inf) == nil)
+assert(set.negativeReal:contains(-inf) == true)
+assert(set.nonNegativeReal:contains(-inf) == nil)
+assert(set.nonPositiveReal:contains(-inf) == true)
+
+
+-- containing ranges of expressions
+
 assert(set.real:contains(x))
-
-assert(set.real:contains(set.real) == true)
-assert(set.real:contains(set.positiveReal) == true)
-assert(set.real:contains(set.negativeReal) == true)
-assert(set.real:contains(set.integer) == true)
-assert(set.real:contains(set.evenInteger) == true)
-assert(set.real:contains(set.oddInteger) == true)
-
-assert(set.integer:contains(set.real) == nil)
-assert(set.integer:contains(set.positiveReal) == nil)
-assert(set.integer:contains(set.negativeReal) == nil)
-assert(set.integer:contains(set.integer) == true)
-assert(set.integer:contains(set.evenInteger) == true)
-assert(set.integer:contains(set.oddInteger) == true)
-
-assert(set.evenInteger:contains(set.real) == nil)
-assert(set.evenInteger:contains(set.positiveReal) == nil)
-assert(set.evenInteger:contains(set.negativeReal) == nil)
-assert(set.evenInteger:contains(set.integer) == nil)
-assert(set.evenInteger:contains(set.evenInteger) == true)
-assert(set.evenInteger:contains(set.oddInteger) == nil)
-
-assert(set.oddInteger:contains(set.real) == nil)
-assert(set.oddInteger:contains(set.positiveReal) == nil)
-assert(set.oddInteger:contains(set.negativeReal) == nil)
-assert(set.oddInteger:contains(set.integer) == nil)
-assert(set.oddInteger:contains(set.evenInteger) == nil)
-assert(set.oddInteger:contains(set.oddInteger) == true)
 
 
 -- x is in (-inf, inf).  
@@ -63,8 +99,8 @@ assert(set.complex:contains(x))
 (function() local x = set.RealSubset(-1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()
 
 print(acos(x):getRealRange())
-(function() local x = set.RealSubset(1,math.huge,true,false):var'x' assert(not set.real:contains(acos(x))) end)()	-- TODO eventually return uncertain / touches but not contains
-(function() local x = set.RealSubset(1,math.huge,false,false):var'x' assert(not set.real:contains(acos(x))) end)()	-- TODO return definitely false
+(function() local x = set.RealSubset(1,math.huge,true,true):var'x' assert(not set.real:contains(acos(x))) end)()	-- TODO eventually return uncertain / touches but not contains
+(function() local x = set.RealSubset(1,math.huge,false,true):var'x' assert(not set.real:contains(acos(x))) end)()	-- TODO return definitely false
 
 (function() local x = set.RealSubset(1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()
 

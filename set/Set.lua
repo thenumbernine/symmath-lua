@@ -64,11 +64,16 @@ function Set:containsVariable(x)
 	-- if x's set is a subset of this set then true
 	-- but if x's set is not a subset ... x could still be contained
 	assert(Set:isa(x.set))
-	if self:containsSet(x.set) then return true end
+	return x.set:isSubsetOf(self)
 end
 
 -- class Set
 -- does 'self' contain 's'?
+-- TODO another math technicality ... subset and containment are two separate things
+-- you can have a set of elements of sets, and those sets are not subsets of the set
+-- also, in that case, the set does not necessarily contain itself
+-- so I'm really starting to lean away from this function name 
+-- and from this function altogether
 function Set:containsSet(s)
 	-- rather than consider all possible subsets 's'...
 	-- how about asking the opposite question?
@@ -111,7 +116,7 @@ function Set:contains(x)
 	end
 	
 	if Set:isa(x) then 
-		return self:containsSet(x) 
+		return x:isSubsetOf(self) 
 	end
 
 	-- returns ~= nil when we get a Variable
@@ -123,6 +128,15 @@ function Set:contains(x)
 	if symmath.Constant:isa(x) then
 		return self:containsConstant(x)
 	end
+
+--[[
+	set-containment 
+	and at that, make Set a subclass of Expression
+	and add set operators
+	if symmath.Set:isa(x) then
+		return self:containsSet(x)
+	end
+--]]
 
 	-- for any other genetic Expressions
 	-- hmm, looking like visitor and inheritence and rules once again

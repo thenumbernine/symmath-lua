@@ -80,12 +80,12 @@ function div:evaluateLimit(x, a, side)
 	how to determine when lim (x -> root) of p(q) / prod of (x - roots) is approaching from +inf or -inf
 	seems you would want the limit in the form of pow -> div -> mul -> add/sub, 
 	and then to compare the roots of the denominator with x->a, to see if we are approaching from the left or right.
-	... and then looking at the sign of p(x) / prod of (x - all other roots) to see if we should be flipping the sign of the limit's +-inf
+	... and then looking at the sign of p(x) / prod of (x - all other roots) to see if we should be flipping the sign of the limit's ±inf
 	--]]
 	if Constant.isValue(Lq, 0) then
 		if not p:dependsOn(x) then
 			
-			-- lim x->root+- 1/x = +-inf
+			-- lim x->root± 1/x = ±inf
 			if q == x then
 				if side == Side.plus then
 					return prune(p * inf)
@@ -94,7 +94,7 @@ function div:evaluateLimit(x, a, side)
 				end
 			end
 			
-			-- lim x->root+- 1/x^n = +-inf
+			-- lim x->root± 1/x^n = ±inf
 			local Wildcard = symmath.Wildcard
 			-- x:match(x^Wildcard(1)) won't match x^Constant(1)
 			local n = q:match(x^Wildcard{1, cannotDependOn=x})
@@ -117,7 +117,7 @@ function div:evaluateLimit(x, a, side)
 		end
 	end
 
-	-- lim x->+-inf p(x) / q(x)
+	-- lim x->±inf p(x) / q(x)
 	if a == inf
 	or a == Constant(-1) * inf
 	then

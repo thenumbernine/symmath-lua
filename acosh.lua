@@ -5,27 +5,27 @@ local symmath
 local acosh = class(Function)
 acosh.name = 'acosh'
 
--- domain: [1, inf)
+-- domain: [1, inf]
 function acosh.realFunc(x)
 	return math.log(x + math.sqrt(x*x - 1))
 end
 
 acosh.cplxFunc = require 'symmath.complex'.acosh
 
--- domain: x > 1
+-- domain: (1, inf]
 function acosh:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self)
 	symmath = symmath or require 'symmath'
 	return deriv(x, ...) / symmath.sqrt(x^2 - 1)
 end
 
--- (1,inf)
+-- [1,inf]
 function acosh:getRealDomain()
 	symmath = symmath or require 'symmath'
-	return symmath.set.RealSubset(1, math.huge, true, false)
+	return symmath.set.RealSubset(1, math.huge, true, true)
 end
 
--- (0,inf) increasing, (-inf,0) imaginary
+-- (0,inf] increasing, [-inf,0) imaginary
 function acosh:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	local Is = x[1]:getRealRange()
