@@ -237,6 +237,7 @@ build = {
 		["symmath.tests.unit.sets"] = "tests/unit/sets.lua",
 		["symmath.tests.unit.simplifyMetrics"] = "tests/unit/simplifyMetrics.lua",
 		["symmath.tests.unit.solve"] = "tests/unit/solve.lua",
+		["symmath.tests.unit.sqrt"] = "tests/unit/sqrt.lua",
 		["symmath.tests.unit.sub-tensor assignment"] = "tests/unit/sub-tensor assignment.lua",
 		["symmath.tests.unit.symmetrizeIndexes"] = "tests/unit/symmetrizeIndexes.lua",
 		["symmath.tests.unit.tensor use case"] = "tests/unit/tensor use case.lua",
