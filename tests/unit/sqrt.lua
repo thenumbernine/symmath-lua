@@ -1,12 +1,16 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath.tests.unit.unit'(env, 'test')
+require 'symmath.tests.unit.unit'(env, 'sqrt')
+
+-- goes much slower ... I think?
+symmath.simplify.debugLoops = 'rules'
 
 timer(nil, function()
 
 env.a = symmath.Variable('a')
 env.b = symmath.Variable('b')
+env.f = symmath.Variable('f')
 env.g = symmath.Variable('g')
 env.s = symmath.Variable('s')
 env.t = symmath.Variable('t')
@@ -26,7 +30,7 @@ asserteq( (-(((-x*a - x*b)))^frac(1,2)), -i * (sqrt(x) * sqrt(a+b)) )
 
 asserteq( ((((-x*a - x*b)*-1))^frac(1,2)), (sqrt(x) * sqrt(a+b)) )
 asserteq( (-(((-x*a - x*b)*-1))^frac(1,2)), -(sqrt(x) * sqrt(a+b)) )
--- If sqrt, -1, and mul factor run out of order then -sqrt(-x) and sqrt(-x) will end up equal.  And that is bad for things like solve() on quadratics.
+-- If sqrt, -1, and mul factor run out of order then -sqrt(-x) and sqrt(-x) will end up equal.  And that isn't good for things like solve() on quadratics.
 asserteq( ((((-x*a - x*b)/-1)/y)^frac(1,2)), (sqrt(x) * sqrt(a+b)) / sqrt(y) )
 asserteq( (-(((-x*a - x*b)/-1)/y)^frac(1,2)), -(sqrt(x) * sqrt(a+b)) / sqrt(y) )
 
@@ -80,12 +84,16 @@ asserteq( (-(sqrt(5)-1)/2)/sqrt((-(sqrt(5)-1)/2)^2 + 1), -sqrt( (sqrt(5) - 1) / 
 
 asserteq(sqrt(frac(15,16)) * sqrt(frac(2,3)), sqrt(5)/(2*sqrt(2)))
 
+-- these go bad when I don't have mul/Prune/combineMulOfLikePow_mulPowAdd
+asserteq( ( sqrt(f) * (g + f * sqrt(g)) )() , sqrt(f) * sqrt(g) * (sqrt(g) + f)) 
+asserteq( ( sqrt(f) * (g + sqrt(g)) )() , sqrt(f) * sqrt(g) * (sqrt(g) + 1)) 
+
+-- these are in simplification loops
+
 -- start with -1 / ( (√√5 √(√5 - 1)) / √2 ) ... what mine gets now vs what mathematica gets
 asserteq( -1 / ( sqrt(sqrt(5) * (sqrt(5) - 1)) / sqrt(2) ), sqrt((5  + sqrt(5)) / 10))
 asserteq( -(sqrt( 10 * (sqrt(5) - 1) ) + sqrt(2 * (sqrt(5) - 1))) / (4 * sqrt(sqrt(5))), sqrt((5  + sqrt(5)) / 10))
 
--- these are in simplification loops
-print( ( sqrt(f) * (g + f * sqrt(g)) )() ) 
 
 
 ]=]), '\n')) do

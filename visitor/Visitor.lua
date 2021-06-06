@@ -75,6 +75,8 @@ function Visitor:apply(expr, ...)
 		assert(m, "got back a result with no metatable")
 		
 		-- bubble-in	
+		-- nobody's using this right now
+		--[[
 		local rules = self:lookup(m, true)
 		if rules then
 			for _,rule in ipairs(rules) do
@@ -92,6 +94,7 @@ function Visitor:apply(expr, ...)
 				end
 			end
 		end
+		--]]
 
 		-- if it's an expression then apply to all children first
 		if Expression:isa(m) then
@@ -128,6 +131,12 @@ function Visitor:apply(expr, ...)
 					local newexpr = func(self, expr, ...)
 					if newexpr then
 						expr = newexpr
+
+						if symmath.simplify.debugLoops == 'rules'
+						and symmath.simplify.stack
+						then
+							symmath.simplify.stack:insert{m.name..'/'..self.name..'/'..name, symmath.clone(newexpr)}
+						end
 
 --local afterCount = Expression.countNodes(expr)
 --local changeKey = (rulesSrcNodeName or '?') .. ' ' .. (self.name or '?') .. ' ' .. name

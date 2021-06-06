@@ -1,8 +1,9 @@
 return function(env, title)
 	require 'ext.env'(env)
 	local string = env.string
-	require 'symmath'.setup{env=env, debugSimplifyLoops=true, MathJax={title=title, pathToTryToFindMathJax='..'}}
+	require 'symmath'.setup{env=env, MathJax={title=title, pathToTryToFindMathJax='..'}}
 	local symmath = env.symmath
+	symmath.simplify.debugLoops = true
 
 	function env.assert(a)
 		if not a then

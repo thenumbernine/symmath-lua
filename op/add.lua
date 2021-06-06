@@ -830,7 +830,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 				then
 					local a = (expr[1][1] ^ (expr[1][2]/2))
 					local b = (expr[2][2][1] ^ (expr[2][2][2]/2))
-					return (a + b) * (a - b)
+					return factor:apply( (a + b) * (a - b) )
 				end
 			end
 			-- TODO factoring higher polys ... this is just one specific case
@@ -850,10 +850,10 @@ print('prodList', prodLists:toExpr(), '<br>')
 					local a,c = expr[squares[1]], expr[squares[2]]
 					local b = expr[notsquares[1]]
 					if b == symmath.op.mul(2, a[1], c[1]) then
-						return (a[1] + c[1]) * (a[1] + c[1])
+						return factor:apply( (a[1] + c[1]) * (a[1] + c[1]) )
 					end
 					if b == symmath.op.mul(Constant(-2), a[1], c[1]) then
-						return (a[1] - c[1]) * (a[1] - c[1])
+						return factor:apply( (a[1] - c[1]) * (a[1] - c[1]) )
 					end
 				end
 			end

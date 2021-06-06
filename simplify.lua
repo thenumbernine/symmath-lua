@@ -3,10 +3,20 @@ local table = require 'ext.table'
 local symmath
 
 local simplifyObj = {}
+	
+simplifyObj.simplifyMaxIter = 10
 
 simplifyObj.useTrigSimplify = true
 
-local function simplify(x, ...)
+--[[
+whether to debug simplification loops
+set this to true for default behavior
+set this to "rules" to also insert each rule applied during each visitor phase of simplify() 
+ but this goes much slower(?)
+--]]
+simplifyObj.debugLoops = false
+
+local function simplifyCall(simplifyObj, x, ...)
 	symmath = symmath or require 'symmath'
 --return timer('simplify', function(...)
 --print('start', require 'symmath.export.SingleLine'(x))	
@@ -15,13 +25,12 @@ local function simplify(x, ...)
 	if symmath.Array:isa(x) then
 		x = x:clone()
 		for i in x:iter() do
-			x[i] = simplify(x[i])
+			x[i] = simplifyCall(x[i])
 		end
 		return x
 	end
-	
-	local debugSimplifyLoops = symmath.debugSimplifyLoops
-	local simplifyMaxIter = symmath.simplifyMaxIter or 10
+
+	local simplifyMaxIter = simplifyObj.simplifyMaxIter
 
 	local expand = symmath.expand
 	local prune = symmath.prune
@@ -31,31 +40,36 @@ local function simplify(x, ...)
 	local lastx
 	
 	local clone, stack
-	if debugSimplifyLoops then
+	if simplifyObj.debugLoops then
 		-- [[ with stack trace on loop  
 		clone = symmath.clone
 		stack = table()
 	end
-	if stack then stack:insert{'init', clone(x)} end
+	
+	-- TODO if we get nested calls then this gets overwritten and we lose the ability for Visitor to store extra rules ... 
+	-- unless instead we return this object, so we don't rely on globals
+	simplifyObj.stack = stack
+	
+	if stack then stack:insert{'Init', clone(x)} end
 		
 	x = prune(x, ...)
-	if stack then stack:insert{'prune', clone(x)} end
+	if stack then stack:insert{'Prune', clone(x)} end
 	
 	local i = 0
 	repeat
 		lastx = x	-- lastx = x invokes the simplification loop.  that means one of the next few commands operates in-place.
 	
 		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
-		if stack then stack:insert{'expand', clone(x)} end
+		if stack then stack:insert{'Expand', clone(x)} end
 
 		x = prune(x, ...)
-		if stack then stack:insert{'prune', clone(x)} end
+		if stack then stack:insert{'Prune', clone(x)} end
 		
 		x = factor(x)
-		if stack then stack:insert{'factor', clone(x)} end
+		if stack then stack:insert{'Factor', clone(x)} end
 		
 		x = prune(x)
-		if stack then stack:insert{'prune', clone(x)} end
+		if stack then stack:insert{'Prune', clone(x)} end
 
 -- [==[ goes horribly slow
 if simplifyObj.useTrigSimplify then
@@ -152,6 +166,7 @@ end
 	until i == simplifyMaxIter or x == lastx or getmetatable(x) == Invalid
 -- [[ debugging simplify loop stack trace
 	if i == simplifyMaxIter then
+local print = printbr or print
 print('reached maxiter', simplifyMaxIter)
 		if stack then 
 			local SingleLine = symmath.export.SingleLine
@@ -169,7 +184,7 @@ print('reached maxiter', simplifyMaxIter)
 --]]
 		
 	x = tidy(x, ...)
-	if stack then stack:insert{'tidy', clone(x)} end
+	if stack then stack:insert{'Tidy', clone(x)} end
 
 	simplifyObj.stack = stack
 
@@ -179,9 +194,7 @@ print('reached maxiter', simplifyMaxIter)
 end
 
 setmetatable(simplifyObj, {
-	__call = function(_, ...)
-		return simplify(...)
-	end
+	__call = simplifyCall,
 })
 
 return simplifyObj

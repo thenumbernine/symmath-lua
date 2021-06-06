@@ -152,25 +152,29 @@ end
 
 pow.rules = {
 	Expand = {
-		{apply = function(expand, expr)
+		
+		-- (a / b)^n => a^n / b^n
+		-- not simplifying ...
+		-- maybe this should go in factor() or expand()
+		{frac = function(expand, expr)
 			symmath = symmath or require 'symmath'
 			local div = symmath.op.div
-			local mul = symmath.op.mul
-			local Constant = symmath.Constant
-			
-			-- (a / b)^n => a^n / b^n
-			-- not simplifying ...
-			-- maybe this should go in factor() or expand()
 			if div:isa(expr[1]) then
 				local num = expr[1][1] ^ expr[2]
 				local denom = expr[1][2] ^ expr[2]
 				local repl = num / denom
 				return expand:apply(repl)
 			end
+		end},
 
-			-- a^n => a*a*...*a,  n times, only for integer 2 <= n < 10
-			-- hmm this can cause problems in some cases ... 
-			-- comment this out to get schwarzschild_spherical_to_cartesian to work
+		-- a^n => a*a*...*a,  n times, only for integer 2 <= n < 10
+		-- hmm this can cause problems in some cases ... 
+		-- comment this out to get schwarzschild_spherical_to_cartesian to work
+		{integerPower = function(expand, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			local Constant = symmath.Constant
+
 			if symmath.set.integer:contains(expr[2])
 			and expr[2].value >= 2
 			and expr[2].value < 10
@@ -180,9 +184,35 @@ pow.rules = {
 				then
 					return Constant(expr[1].value ^ expr[2].value)
 				end
-				return expand:apply(setmetatable(table{expr[1]}:rep(expr[2].value), mul))
+				return expand:apply(
+					mul(
+						table{expr[1]}:rep(expr[2].value):unpack()
+					)
+				)
 			end
 		end},
+
+-- [[ (a * b) ^ c => a^c * b^c
+-- doesn't help me like I thought it would
+-- also in pow/Prune/expandMulOfLikePow 
+-- the opposite of this is in mul/Prune/combineMulOfLikePow and mul/Factor/combineMulOfLikePow
+		{expandMulOfLikePow = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			if mul:isa(expr[1]) then
+				local result = table.mapi(expr[1], function(v)
+					return v ^ expr[2]
+				end)
+				assert(#result > 0)
+				if #result == 1 then
+					result = result[1]
+				else
+					result = mul(result:unpack())
+				end
+				return prune:apply(result)
+			end
+		end},
+--]]
 	},
 
 -- with this, polyCoeffs works
@@ -242,56 +272,64 @@ pow.rules = {
 	},
 
 	Prune = {
-		{apply = function(prune, expr)
-			symmath = symmath or require 'symmath'	-- needed for flags
-			local mul = symmath.op.mul
-			local div = symmath.op.div
+		{handleInfAndNan = function(prune, expr)
+			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
+			local inf = symmath.inf
+			local invalid = symmath.invalid
 			local sets = symmath.set
-
-			if expr[1] == symmath.inf then
+			local RealSubset = sets.RealSubset
+			local negativeReal = sets.negativeReal
+		
+			if expr[1] == inf then
 				-- inf ^ -inf = invalid
-				if expr[2] == Constant(-1) * symmath.inf then
-					return symmath.invalid
+				if expr[2] == Constant(-1) * inf then
+					return invalid
 				end
 				-- inf^-1 = 1/inf = 0
-				if symmath.set.negativeReal:contains(expr[2]) then
+				if negativeReal:contains(expr[2]) then
 					return Constant(0)
 				end
 				-- inf^0 = invalid 
 				if Constant.isValue(expr[2], 0) then
-					return symmath.invalid
+					return invalid
 				end
 				-- inf^+1 = inf
-				return symmath.inf
+				return inf
 			end
 
-			if expr[2] == symmath.inf then
+			if expr[2] == inf then
 				-- q^inf = 0 for 1<q<0 = 0
-				if symmath.set.RealSubset(0, 1, false, false):contains(expr[1]) then
+				if RealSubset(0, 1, false, false):contains(expr[1]) then
 					return Constant(0)
 				end
 				-- q^inf = inf for 1<q
-				if symmath.set.RealSubset(1, math.huge, false, false):contains(expr[1]) then
-					return symmath.inf
+				if RealSubset(1, math.huge, false, false):contains(expr[1]) then
+					return inf
 				end
-				return symmath.invalid
+				return invalid
 			end
 
-			if expr[2] == Constant(-1) * symmath.inf then
+			if expr[2] == Constant(-1) * inf then
 				-- q^-inf = inf for 1<q<0 = 0
-				if symmath.set.RealSubset(0, 1, false, false):contains(expr[1]) then
-					return symmath.inf
+				if RealSubset(0, 1, false, false):contains(expr[1]) then
+					return inf
 				end
 				-- q^-inf = 0 for 1<q
-				if symmath.set.RealSubset(1, math.huge, false, false):contains(expr[1]) then
+				if RealSubset(1, math.huge, false, false):contains(expr[1]) then
 					return Constant(0)
 				end
-				return symmath.invalid		
+				return invalid
 			end
+		end},
 
 --[[ another sqrt problem
 -- does a stack overflow, proly because it turns into x^(1 - 1/2) => x^(-1/2) => back here
+		{sqrtFix1 = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+			
 			-- x^(-1/2) = x^(1/2) / x
 			if div:isa(expr[2])
 			and Constant.isValue(expr[2][1], -1)
@@ -299,18 +337,31 @@ pow.rules = {
 			then
 				return prune:apply(expr[1] ^ (-expr[2][1].value / expr[2][2]) * (1 / expr[1]))
 			end
+		end},
 --]]
 
 -- [[ here is me trying to solve a sqrt problem
+		{sqrtFix2 = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local add = symmath.op.add
+			local mul = symmath.op.mul
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+	
 			-- x^(1/2) 
 			-- TODO x^(p/q) 
 			if (
 				div:isa(expr[2])
-				and Constant.isValue(expr[2][1], 1)
 				and Constant.isValue(expr[2][2], 2)
-			) or Constant.isValue(expr[2], .5) then
+				
+				and Constant.isValue(expr[2][1], 1)
+				--and symmath.set.oddInteger:contains(expr[2][1])
+			) 
+			-- does tidy() or prune() already turn this into a fraction? 
+			-- seems like one of the should be doing this...
+			or Constant.isValue(expr[2], .5) 
+			then
 				local x = expr[1]
-				local add = symmath.op.add
 				if mul:isa(x)
 				and #x == 2
 				and Constant.isValue(x[1], -1)
@@ -320,28 +371,218 @@ pow.rules = {
 					if dstr then return prune:apply(dstr^div(1,2)) end
 				end
 			end
+		end},
 --]]
+		-- Hmm, i want the inside to distribute before the outside
+		--  so (-1*-a)^(1/2) => sqrt(a)
+		-- and not sqrt(-1)*sqrt(-a) = i*i*sqrt(a) = -sqrt(a)
+		--expr = expr:clone()
+		--expr[1] = expr[1]()
+		-- But doing this doens't work.  It leaves some extra (-1)^2 terms on the inside.
 
-			-- Hmm, i want the inside to distribute before the outside
-			--  so (-1*-a)^(1/2) => sqrt(a)
-			-- and not sqrt(-1)*sqrt(-a) = i*i*sqrt(a) = -sqrt(a)
-			--expr = expr:clone()
-			--expr[1] = expr[1]()
-			-- But doing this doens't work.  It leaves some extra (-1)^2 terms on the inside.
-
+		{simplifyConstantPowers = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			
 			if Constant:isa(expr[1])
 			and Constant:isa(expr[2])
 			then
 				if symmath.simplifyConstantPowers
 				-- TODO this replaces some cases below
-				or (sets.integer:contains(expr[1]) and expr[2].value > 0)
+				or (symmath.set.integer:contains(expr[1]) and expr[2].value > 0)
 				then
 					return Constant(expr[1].value ^ expr[2].value)
 				end
 			end
-			
-			-- this all matches the top of add.Factor
+		end},
 
+		{zeroToTheX = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+		
+			-- 0^a = 0 for a>0
+			if Constant.isValue(expr[1], 0) then
+				if symmath.set.positiveReal:contains(expr[2]) then
+					return Constant(0)
+				end
+			
+				-- 0^0 => invalid
+				if Constant.isValue(expr[2], 0) then
+					return symmath.invalid
+				end
+			end
+		end},
+
+		-- 1^a => 1
+		{oneToTheX = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			if Constant.isValue(expr[1], 1) then return Constant(1) end
+		end},
+
+		-- (-1)^odd = -1, (-1)^even = 1
+		{minusOneToTheX = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local sets = symmath.set
+			
+			if Constant.isValue(expr[1], -1) 
+			then
+				if sets.evenInteger:contains(expr[2]) then return Constant(1) end
+				if sets.oddInteger:contains(expr[2]) then return Constant(-1) end
+			end
+		end},
+
+		-- a^1 => a
+		{xToTheOne = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			if Constant.isValue(expr[2], 1) then return prune:apply(expr[1]) end
+		end},
+
+		-- a^0 => 1
+		-- except 0^0 which is considered above
+		{xToTheZero = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			if Constant.isValue(expr[2], 0) then return Constant(1) end
+		end},
+
+		-- i^n
+		{iToTheX = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local div = symmath.op.div
+			local i = symmath.i
+			
+			if expr[1] == i then
+				if Constant:isa(expr[2])
+				and symmath.set.integer:contains(expr[2]) 
+				then
+					local v = expr[2].value % 4
+					if v == 0 then		-- integer mod 4 == 0 set... TODO implement
+						return Constant(1)
+					elseif v == 1 then
+						return i
+					elseif v == 2 then
+						return Constant(-1)
+					elseif v == 3 then
+						return -i
+					end
+					-- fraction?
+					if v < 0 or v >= 4 then
+						return i^(v%4)
+					end
+				end
+			
+				-- sqrt(i) = sqrt(2) + i sqrt(2)
+				if div:isa(expr[2])
+				and Constant.isValue(expr[2][1], 1)
+				and Constant.isValue(expr[2][2], 2)
+				then
+					return div(1, Constant(2)^frac(1,2)) + i * div(1, Constant(2)^frac(1,2))
+				end
+			end
+		end},
+
+		-- (a ^ b) ^ c => a ^ (b * c)
+		-- unless b is 2 and c is 1/2 ...
+		-- in fact, only if c is integer
+		-- in fact, better add complex numbers
+		{distributePow = function(prune, expr)
+			if pow:isa(expr[1]) then
+				return prune:apply(expr[1][1] ^ (expr[1][2] * expr[2]))
+			end	
+		end},
+
+-- [[ (a * b) ^ c => a^c * b^c
+-- also in pow/Expand/expandMulOfLikePow 
+-- the opposite of this is in mul/Prune/combineMulOfLikePow and mul/Factor/combineMulOfLikePow
+		{expandMulOfLikePow = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			if mul:isa(expr[1]) then
+				local result = table.mapi(expr[1], function(v)
+					return v ^ expr[2]
+				end)
+				assert(#result > 0)
+				if #result == 1 then
+					result = result[1]
+				else
+					result = mul(result:unpack())
+				end
+				return prune:apply(result)
+			end
+		end},
+--]]
+
+		-- exp(i*x) => cos(x) + i*sin(x)
+		-- do this before a^-c => 1/a^c, 
+		{expToTheI = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			local Constant = symmath.Constant
+			if symmath.e == expr[1] then
+				local inside = expr[2]
+				if mul:isa(inside) then
+					local j = table.find(inside, nil, function(y) return y == symmath.i end)
+					if j then
+						inside = inside:clone()
+						table.remove(inside, j)
+						if #inside == 1 then inside = inside[1] end
+						return symmath.cos(inside) + symmath.i * symmath.sin(inside)
+					end
+				elseif inside == symmath.i then
+					return symmath.cos(Constant(1)) + symmath.i * symmath.sin(Constant(1))
+				end
+			end
+		end},
+
+		-- a^(-c) => 1/a^c
+		{xToTheNegY = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			if Constant:isa(expr[2]) and expr[2].value < 0 then
+				return prune:apply(Constant(1)/(expr[1]^Constant(-expr[2].value)))
+			end
+		end},
+
+--[[ for simplification's sake ... (like -a => -1 * a)
+		-- x^c => x*x*...*x (c times)
+		{xToTheIntExpand = function(prune, expr)
+			if Constant:isa(expr[2])
+			and expr[2].value > 0 
+			and expr[2].value == math.floor(expr[2].value)
+			then
+				local m = mul()
+				for i=1,expr[2].value do
+					table.insert(m, expr[1]:clone())
+				end
+				
+				return prune:apply(m)
+			end
+		end},
+--]]
+
+		-- e^log(x) == x
+		{expLogX = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			if symmath.e == expr[1]
+			and symmath.log:isa(expr[2])
+			then
+				return prune:apply(expr[2][1])
+			end
+		end},
+
+
+		-- this all matches the top of add.Factor:
+		
+		{sqrtFix3 = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+			
 			-- x^(1/2)
 			if (
 				div:isa(expr[2])
@@ -369,19 +610,25 @@ pow.rules = {
 						assert(#notsquares == 1)
 						local a,c = x[squares[1]], x[squares[2]]
 						local b = x[notsquares[1]]
-						if b == symmath.op.mul(2, a[1], c[1]) then
+						if b == mul(2, a[1], c[1]) then
 							return prune:apply(a[1] + c[1])
 						end
-						if b == symmath.op.mul(Constant(-2), a[1], c[1]) then
+						if b == mul(Constant(-2), a[1], c[1]) then
 							return prune:apply(a[1] - c[1])
 						end
 					end
 				end
 			end
+		end},
 
-
-			-- x^(1/2) 
-			-- TODO x^(p/q) 
+		-- x^(1/2) 
+		-- TODO x^(p/q) 
+		{sqrtFix4 = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+			local sets = symmath.set
+		
 			if (
 				div:isa(expr[2])
 				and Constant.isValue(expr[2][1], 1)
@@ -436,138 +683,12 @@ pow.rules = {
 					return result
 				end
 			end
-		
-			-- 0^a = 0 for a>0
-			if Constant.isValue(expr[1], 0) then
-				if symmath.set.positiveReal:contains(expr[2]) then
-					return Constant(0)
-				end
-			
-				-- 0^0 => invalid
-				if Constant.isValue(expr[2], 0) then
-					return symmath.invalid
-				end
-			end
-
-			-- 1^a => 1
-			if Constant.isValue(expr[1], 1) then return Constant(1) end
-			
-			-- (-1)^odd = -1, (-1)^even = 1
-			if Constant.isValue(expr[1], -1) 
-			then
-				if symmath.set.evenInteger:contains(expr[2]) then return Constant(1) end
-				if symmath.set.oddInteger:contains(expr[2]) then return Constant(-1) end
-			end
-			
-			-- a^1 => a
-			if Constant.isValue(expr[2], 1) then return prune:apply(expr[1]) end
-			
-			-- a^0 => 1
-			-- except 0^0 which is considered above
-			if Constant.isValue(expr[2], 0) then return Constant(1) end
-
-			if expr[1] == symmath.i then
-				-- i^n
-				if Constant:isa(expr[2])
-				and sets.integer:contains(expr[2]) 
-				then
-					local v = expr[2].value % 4
-					if v == 0 then		-- integer mod 4 == 0 set... TODO implement
-						return Constant(1)
-					elseif v == 1 then
-						return symmath.i
-					elseif v == 2 then
-						return Constant(-1)
-					elseif v == 3 then
-						return -symmath.i
-					end
-					-- fraction?
-					if v < 0 or v >= 4 then
-						return symmath.i^(v%4)
-					end
-				end
-			
-				-- sqrt(i) = sqrt(2) + i sqrt(2)
-				if div:isa(expr[2])
-				and Constant.isValue(expr[2][1], 1)
-				and Constant.isValue(expr[2][2], 2)
-				then
-					local sqrt = symmath.sqrt
-					return div(1,sqrt(2)) + symmath.i * div(1,sqrt(2))
-				end
-			end
-			
-			-- (a ^ b) ^ c => a ^ (b * c)
-			-- unless b is 2 and c is 1/2 ...
-			-- in fact, only if c is integer
-			-- in fact, better add complex numbers
-			if pow:isa(expr[1]) then
-				return prune:apply(expr[1][1] ^ (expr[1][2] * expr[2]))
-			end
-			
-			-- (a * b) ^ c => a^c * b^c
-			if mul:isa(expr[1]) then
-				local result = table.mapi(expr[1], function(v)
-					return v ^ expr[2]
-				end)
-				assert(#result > 0)
-				if #result == 1 then
-					result = result[1]
-				else
-					result = mul(result:unpack())
-				end
-				return prune:apply(result)
-			end
-
-			-- exp(i*x) => cos(x) + i*sin(x)
-			-- do this before a^-c => 1/a^c, 
-			if symmath.e == expr[1] then
-				local inside = expr[2]
-				if symmath.op.mul:isa(inside) then
-					local j = table.find(inside, nil, function(y) return y == symmath.i end)
-					if j then
-						inside = inside:clone()
-						table.remove(inside, j)
-						if #inside == 1 then inside = inside[1] end
-						return symmath.cos(inside) + symmath.i * symmath.sin(inside)
-					end
-				elseif inside == symmath.i then
-					return symmath.cos(Constant(1)) + symmath.i * symmath.sin(Constant(1))
-				end
-			end
-		
-			-- a^(-c) => 1/a^c
-			if Constant:isa(expr[2]) and expr[2].value < 0 then
-				return prune:apply(Constant(1)/(expr[1]^Constant(-expr[2].value)))
-			end
-
-			--[[ for simplification's sake ... (like -a => -1 * a)
-			-- x^c => x*x*...*x (c times)
-			if Constant:isa(expr[2])
-			and expr[2].value > 0 
-			and expr[2].value == math.floor(expr[2].value)
-			then
-				local m = mul()
-				for i=1,expr[2].value do
-					table.insert(m, expr[1]:clone())
-				end
-				
-				return prune:apply(m)
-			end
-			--]]
-
-			-- e^log(x) == x
-			if symmath.e == expr[1]
-			and symmath.log:isa(expr[2])
-			then
-				return prune:apply(expr[2][1])
-			end
 		end},
 	},
 
 	Tidy = {
 		{apply = function(tidy, expr)
-			symmath = symmath or require 'symmath'	-- needed for flags
+			symmath = symmath or require 'symmath'
 			local sets = symmath.set
 			local unm = symmath.op.unm
 			local div = symmath.op.div

@@ -104,7 +104,7 @@ function div:evaluateLimit(x, a, side)
 
 				if symmath.set.evenInteger:contains(n) then
 					return prune(p * inf)
-				elseif symmath.set.oddInteger:contains(n) then
+				elseif symmath.set.oddInteger:contains(n) then	-- TODO just else, so long as inf is alreayd excluded
 					if side == Side.plus then
 						return prune(p * inf)
 					else

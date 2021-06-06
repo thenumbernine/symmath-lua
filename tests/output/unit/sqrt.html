@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>test</title>
+		<title>sqrt</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
@@ -64,7 +64,7 @@ $i$
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
-<b>If sqrt, -1, and mul factor run out of order then -sqrt(-x) and sqrt(-x) will end up equal.  And that is bad for things like solve() on quadratics.</b><br>
+<b>If sqrt, -1, and mul factor run out of order then -sqrt(-x) and sqrt(-x) will end up equal.  And that isn't good for things like solve() on quadratics.</b><br>
 <code></code>
 </td><td>
 <tr><td>
@@ -375,102 +375,253 @@ $i$
 <code>asserteq( -1 / ( sqrt(sqrt(5) * (sqrt(5) - 1)) / sqrt(2) ), sqrt((5  + sqrt(5)) / 10))</code>
 </td><td>
 expected $\frac{-1}{\frac{\sqrt{{{\sqrt{5}}} {{\left({{\sqrt{5}} - {1}}\right)}}}}{\sqrt{2}}}$ to equal $\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$<br>
-instead found $-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$ vs $\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$<br>
+instead found $-{\frac{{{i}} {{\left({{{{\sqrt{5}}} {{\sqrt{{1} - {\sqrt{5}}}}}} + {\sqrt{{1} - {\sqrt{5}}}}}\right)}}}{{{{{2}} {{\sqrt{2}}}}} {{{5}^{\frac{1}{4}}}}}}$ vs $\frac{\sqrt{{1} + {\sqrt{5}}}}{{{\sqrt{2}}} {{{5}^{\frac{1}{4}}}}}$<br>
 lhs stack<br>
-init	$\frac{-1}{\frac{\sqrt{{{\sqrt{5}}} {{\left({{\sqrt{5}} - {1}}\right)}}}}{\sqrt{2}}}$	<br>
-prune	$\frac{{{{\left({{{2}} {{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}{{{4}} \cdot {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
-expand	$\frac{{{{{\left({{{{2}} \cdot {{-1}}} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} \cdot {{-1}}} + {{{{\left({{{{2}} \cdot {{-1}}} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}{{{4}} \cdot {{{5}^{\frac{{{1}} \cdot {{1}}}{{{2}} \cdot {{2}}}}}}}$	<br>
-prune	$\frac{{{{-1}} {{{\left({{-2} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{{\left({{{5}} {{\left({{-2} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{\frac{{{-1}} {{\left({{{{i}} {{{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}} + {{{i}} {{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}} {{4}} \cdot {{{5}^{\frac{1}{4}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{-1}} {{\left({{{{i}} {{{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}} + {{{i}} {{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-expand	$\frac{{{{-1}} {{{{i}} {{{\left({{{{2}} \cdot {{1}}} + {{{2}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}^{\frac{1}{2}}}}}}} + {{{-1}} {{{{i}} {{{\left({{{{10}} \cdot {{1}}} + {{{10}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}^{\frac{1}{2}}}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{{-1}} {{i}} {{{\left({{2} + {{{-2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{10} + {{{-10}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}} {{4}} \cdot {{{5}^{\frac{1}{4}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-expand	$\frac{{{{-1}} {{i}} {{{\left({{{{10}} \cdot {{1}}} + {{{10}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{{{2}} \cdot {{1}}} + {{{2}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{{-1}} {{i}} {{{\left({{10} + {{{-10}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{2} + {{{-2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}} {{4}} \cdot {{{5}^{\frac{1}{4}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-tidy	$-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$	<br>
+Init	$\frac{-1}{\frac{\sqrt{{{\sqrt{5}}} {{\left({{\sqrt{5}} - {1}}\right)}}}}{\sqrt{2}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {{5}^{\frac{1}{2}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${\left({\frac{1}{2}}\right)}^{2}$	<br>
+^/Prune/distributePow	${5}^{{\left({\frac{1}{2}}\right)}^{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/expandMulOfLikePow	${{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}$	<br>
+sqrt/Prune/apply	${{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	${{-1}} \cdot {{{5}^{\frac{1}{2}}}}$	<br>
+-/Prune/apply	${-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+*/Prune/apply	$5$	<br>
+*/Prune/apply	$-5$	<br>
+unm/Prune/apply	$-5$	<br>
++/Prune/combineConstants	$-4$	<br>
+-/Prune/apply	$-4$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	${{{2}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+unm/Prune/apply	$-1$	<br>
+*/Prune/apply	$-2$	<br>
++/Prune/combineConstants	$-1$	<br>
++/Prune/factorOutDivs	$\frac{-1}{2}$	<br>
+-/Prune/apply	$\frac{-1}{2}$	<br>
+unm/Prune/apply	$-1$	<br>
+*/Prune/apply	$-2$	<br>
++/Prune/combineConstants	$-3$	<br>
++/Prune/factorOutDivs	$\frac{-3}{2}$	<br>
+-/Prune/apply	$\frac{-3}{2}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+*/Prune/apply	$3$	<br>
+*/Prune/factorDenominators	$\frac{3}{2}$	<br>
+unm/Prune/apply	$\frac{3}{2}$	<br>
+*/Prune/apply	$6$	<br>
+unm/Prune/apply	$-1$	<br>
++/Prune/combineConstants	$0$	<br>
+-/Prune/apply	$0$	<br>
+^/Prune/xToTheZero	$1$	<br>
+*/Prune/apply	$3$	<br>
+//Prune/apply	$3$	<br>
+*/Prune/factorDenominators	$3$	<br>
++/Prune/combineConstants	$0$	<br>
+//Prune/apply	$0$	<br>
++/Prune/factorOutDivs	$0$	<br>
+^/Prune/xToTheZero	$1$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+*/Prune/apply	${{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+*/Prune/apply	$3$	<br>
+*/Prune/factorDenominators	$\frac{3}{2}$	<br>
+unm/Prune/apply	$\frac{3}{2}$	<br>
+//Prune/apply	$\frac{{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
+//Prune/apply	$\frac{{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
+//Prune/apply	$\frac{{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
+//Prune/apply	$\frac{{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
+//Prune/apply	$\frac{{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
+//Prune/apply	$\frac{{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
+Prune	$\frac{{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
+*/Expand/apply	${{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} \cdot {{-1}}} + {{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}$	<br>
+^/Expand/integerPower	${{1}} \cdot {{1}}$	<br>
+^/Expand/integerPower	${{2}} \cdot {{2}}$	<br>
+^/Expand/frac	$\frac{{{1}} \cdot {{1}}}{{{2}} \cdot {{2}}}$	<br>
+Expand	$\frac{{{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} \cdot {{-1}}} + {{{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{{{1}} \cdot {{1}}}{{{2}} \cdot {{2}}}}}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+*/Prune/flatten	${{-1}} \cdot {{{5}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}$	<br>
+*/Prune/apply	$1$	<br>
+*/Prune/apply	$4$	<br>
+Prune	$\frac{{{{-1}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Factor	$\frac{{{\frac{{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}}} {{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Expand	$\frac{{{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} {{1}}} + {{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} {{{5}^{\frac{1}{2}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Factor	$\frac{{{\frac{{{-1}} {{i}} {{\left({{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}}} {{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{-1}} {{i}} {{\left({{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Expand	$\frac{{{{-1}} {{i}} {{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}} + {{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{{-1}} {{i}} {{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Factor	$\frac{{{\frac{{{-1}} {{i}} {{\left({{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}}} {{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{-1}} {{i}} {{\left({{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Tidy	$-{\frac{{{i}} {{\left({{{{\sqrt{5}}} {{\sqrt{{1} - {\sqrt{5}}}}}} + {\sqrt{{1} - {\sqrt{5}}}}}\right)}}}{{{{{2}} {{\sqrt{2}}}}} {{{5}^{\frac{1}{4}}}}}}$	<br>
 rhs stack<br>
-init	$\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$	<br>
-prune	${\left({{\frac{1}{10}}{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}}\right)}^{\frac{1}{2}}$	<br>
-expand	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
-prune	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
-factor	$\frac{{{{{5}^{\frac{1}{2}}}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{10}^{\frac{1}{2}}}$	<br>
-prune	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
-expand	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{\left({{{2}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{{2}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{\left({{{2}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-expand	$\frac{{\left({{{{2}} \cdot {{1}}} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{\left({{2} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{{2}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{\left({{{2}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-tidy	$\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+Init	$\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${\left({{\frac{1}{10}}{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}}\right)}^{\frac{1}{2}}$	<br>
+Prune	${\left({{\frac{1}{10}}{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}}\right)}^{\frac{1}{2}}$	<br>
+^/Expand/frac	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
+Expand	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${10}^{\frac{1}{2}}$	<br>
+Prune	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
+Factor	$\frac{{{{{5}^{\frac{1}{2}}}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{10}^{\frac{1}{2}}}$	<br>
+Prune	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Expand	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Factor	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Tidy	$\frac{\sqrt{{1} + {\sqrt{5}}}}{{{\sqrt{2}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:29: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:29: in function 'asserteq'<br>
 	[string "asserteq( -1 / ( sqrt(sqrt(5) * (sqrt(5) - 1)..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:86: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
-	tests\unit\sqrt.lua:96: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function 'exec'<br>
+	tests\unit\sqrt.lua:97: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	tests\unit\sqrt.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+	tests\unit\sqrt.lua:9: in main chunk<br>
+	[C]: at 0x7ff64a814950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq( -(sqrt( 10 * (sqrt(5) - 1) ) + sqrt(2 * (sqrt(5) - 1))) / (4 * sqrt(sqrt(5))), sqrt((5  + sqrt(5)) / 10))</code>
 </td><td>
 expected $\frac{-{\left({{\sqrt{{{10}} {{\left({{\sqrt{5}} - {1}}\right)}}}} + {\sqrt{{{2}} {{\left({{\sqrt{5}} - {1}}\right)}}}}}\right)}}{{{4}} {{\sqrt{\sqrt{5}}}}}$ to equal $\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$<br>
-instead found $-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$ vs $\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$<br>
+instead found $-{\frac{{{i}} {{\left({{{{\sqrt{5}}} {{\sqrt{{1} - {\sqrt{5}}}}}} + {\sqrt{{1} - {\sqrt{5}}}}}\right)}}}{{{{{2}} {{\sqrt{2}}}}} {{{5}^{\frac{1}{4}}}}}}$ vs $\frac{\sqrt{{1} + {\sqrt{5}}}}{{{\sqrt{2}}} {{{5}^{\frac{1}{4}}}}}$<br>
 lhs stack<br>
-init	$\frac{-{\left({{\sqrt{{{10}} {{\left({{\sqrt{5}} - {1}}\right)}}}} + {\sqrt{{{2}} {{\left({{\sqrt{5}} - {1}}\right)}}}}}\right)}}{{{4}} {{\sqrt{\sqrt{5}}}}}$	<br>
-prune	$\frac{{{-1}} {{\left({{{\left({{{10}} {{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
-expand	$\frac{{{{-1}} {{{\left({{{{10}} \cdot {{-1}}} + {{{10}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{{\left({{{{2}} \cdot {{-1}}} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{{{1}} \cdot {{1}}}{{{2}} \cdot {{2}}}}}}}$	<br>
-prune	$\frac{{{{-1}} {{{\left({{-10} + {{{10}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{{\left({{-2} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{\frac{{{-1}} {{\left({{{{i}} {{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}} + {{{i}} {{{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}} {{4}} \cdot {{{5}^{\frac{1}{4}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{-1}} {{\left({{{{i}} {{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}} + {{{i}} {{{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-expand	$\frac{{{{-1}} {{{{i}} {{{\left({{{{10}} \cdot {{1}}} + {{{10}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}^{\frac{1}{2}}}}}}} + {{{-1}} {{{{i}} {{{\left({{{{2}} \cdot {{1}}} + {{{2}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}^{\frac{1}{2}}}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{{-1}} {{i}} {{{\left({{10} + {{{-10}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{2} + {{{-2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}} {{4}} \cdot {{{5}^{\frac{1}{4}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-expand	$\frac{{{{-1}} {{i}} {{{\left({{{{10}} \cdot {{1}}} + {{{10}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{{{2}} \cdot {{1}}} + {{{2}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{{-1}} {{i}} {{{\left({{10} + {{{-10}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{2} + {{{-2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}} {{4}} \cdot {{{5}^{\frac{1}{4}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{{-1}} {{i}} {{\left({{{\left({{{10}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}} + {{\left({{{2}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-tidy	$-{\frac{{{i}} {{\left({{\sqrt{{{10}} {{\left({{1} - {\sqrt{5}}}\right)}}}} + {\sqrt{{{2}} {{\left({{1} - {\sqrt{5}}}\right)}}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}$	<br>
+Init	$\frac{-{\left({{\sqrt{{{10}} {{\left({{\sqrt{5}} - {1}}\right)}}}} + {\sqrt{{{2}} {{\left({{\sqrt{5}} - {1}}\right)}}}}}\right)}}{{{4}} {{\sqrt{\sqrt{5}}}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {{5}^{\frac{1}{2}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${10}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/expandMulOfLikePow	${{{10}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}$	<br>
+sqrt/Prune/apply	${{{10}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {{5}^{\frac{1}{2}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/expandMulOfLikePow	${{{2}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}$	<br>
+sqrt/Prune/apply	${{{2}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}$	<br>
+^/Prune/sqrtFix4	${10}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	${{-1}} {{\left({{{{{10}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}} + {{{{2}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}}\right)}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${\left({\frac{1}{2}}\right)}^{2}$	<br>
+^/Prune/distributePow	${5}^{{\left({\frac{1}{2}}\right)}^{2}}$	<br>
+sqrt/Prune/apply	${5}^{{\left({\frac{1}{2}}\right)}^{2}}$	<br>
+Prune	$\frac{{{-1}} {{\left({{{{{10}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}} + {{{{2}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}}\right)}}}{{{4}} \cdot {{{5}^{{\left({\frac{1}{2}}\right)}^{2}}}}}$	<br>
+*/Expand/apply	${{{-1}} {{{{{10}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}}} + {{{-1}} {{{{{2}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}}}$	<br>
+^/Expand/integerPower	${{1}} \cdot {{1}}$	<br>
+^/Expand/integerPower	${{2}} \cdot {{2}}$	<br>
+^/Expand/frac	$\frac{{{1}} \cdot {{1}}}{{{2}} \cdot {{2}}}$	<br>
+Expand	$\frac{{{{-1}} {{{{{10}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}}} + {{{-1}} {{{{{2}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}}}}{{{4}} \cdot {{{5}^{\frac{{{1}} \cdot {{1}}}{{{2}} \cdot {{2}}}}}}}$	<br>
+^/Prune/sqrtFix4	${10}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${10}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+*/Prune/flatten	${{-1}} \cdot {{{10}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${2}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+*/Prune/flatten	${{-1}} \cdot {{{2}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}$	<br>
+*/Prune/apply	$1$	<br>
+*/Prune/apply	$4$	<br>
+Prune	$\frac{{{{-1}} \cdot {{{10}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} \cdot {{{2}^{\frac{1}{2}}}} {{{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
+Factor	$\frac{{{\frac{{{-1}} {{i}} {{{2}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}}} {{4}} \cdot {{{5}^{\frac{1}{4}}}}}{{{4}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Expand	$\frac{{{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} {{1}}} + {{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}} {{{5}^{\frac{1}{2}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Factor	$\frac{{{\frac{{{-1}} {{i}} {{\left({{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}}} {{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{-1}} {{i}} {{\left({{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Expand	$\frac{{{{-1}} {{i}} {{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}} + {{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{{-1}} {{i}} {{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{{-1}} {{i}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Factor	$\frac{{{\frac{{{-1}} {{i}} {{\left({{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}}} {{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{{-1}} {{i}} {{\left({{{{{5}^{\frac{1}{2}}}} {{{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}} + {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}}\right)}}}{{{{2}^{\frac{3}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Tidy	$-{\frac{{{i}} {{\left({{{{\sqrt{5}}} {{\sqrt{{1} - {\sqrt{5}}}}}} + {\sqrt{{1} - {\sqrt{5}}}}}\right)}}}{{{{{2}} {{\sqrt{2}}}}} {{{5}^{\frac{1}{4}}}}}}$	<br>
 rhs stack<br>
-init	$\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$	<br>
-prune	${\left({{\frac{1}{10}}{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}}\right)}^{\frac{1}{2}}$	<br>
-expand	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
-prune	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
-factor	$\frac{{{{{5}^{\frac{1}{2}}}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{10}^{\frac{1}{2}}}$	<br>
-prune	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
-expand	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{\left({{{2}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{{2}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{\left({{{2}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-expand	$\frac{{\left({{{{2}} \cdot {{1}}} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{\left({{2} + {{{2}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-factor	$\frac{{{{2}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-prune	$\frac{{\left({{{2}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}\right)}^{\frac{1}{2}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-tidy	$\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^{\frac{1}{4}}}}}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+Init	$\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${\left({{\frac{1}{10}}{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}}\right)}^{\frac{1}{2}}$	<br>
+Prune	${\left({{\frac{1}{10}}{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}}\right)}^{\frac{1}{2}}$	<br>
+^/Expand/frac	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
+Expand	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${10}^{\frac{1}{2}}$	<br>
+Prune	$\frac{{\left({{5} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{10}^{\frac{1}{2}}}$	<br>
+Factor	$\frac{{{{{5}^{\frac{1}{2}}}^{\frac{1}{2}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{10}^{\frac{1}{2}}}$	<br>
+Prune	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Expand	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Factor	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Prune	$\frac{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}{{{{2}^{\frac{1}{2}}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+Tidy	$\frac{\sqrt{{1} + {\sqrt{5}}}}{{{\sqrt{2}}} {{{5}^{\frac{1}{4}}}}}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:29: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:29: in function 'asserteq'<br>
 	[string "asserteq( -(sqrt( 10 * (sqrt(5) - 1) ) + sqrt..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:86: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
-	tests\unit\sqrt.lua:96: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function 'exec'<br>
+	tests\unit\sqrt.lua:97: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	tests\unit\sqrt.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+	tests\unit\sqrt.lua:9: in main chunk<br>
+	[C]: at 0x7ff64a814950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -482,19 +633,15 @@ tidy	$\frac{\sqrt{{{2}} {{\left({{1} + {\sqrt{5}}}\right)}}}}{{{2}} \cdot {{{5}^
 </td><td>
 <tr><td>
 <b></b><br>
-<code>print( ( sqrt(f) * (g + f * sqrt(g)) )() )</code>
+<code>asserteq( ( sqrt(f) * (g + f * sqrt(g)) )() , sqrt(f) * sqrt(g) * (sqrt(g) + f))</code>
 </td><td>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\Expression.lua:23: can't initialize an expression with a nil child<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\Expression.lua:23: in function 'init'<br>
-	C:\Users\Chris\Projects\lua\ext\class.lua:7: in function 'sqrt'<br>
-	[string "print( ( sqrt(f) * (g + f * sqrt(g)) )() )"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
-	tests\unit\sqrt.lua:96: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	tests\unit\sqrt.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq( ( sqrt(f) * (g + sqrt(g)) )() , sqrt(f) * sqrt(g) * (sqrt(g) + 1))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
 </td></tr>

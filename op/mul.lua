@@ -583,10 +583,12 @@ mul.rules = {
 
 	-- not sure where this rule should go, or if I already have a copy somewhere ....
 	Factor = {
-		{apply = function(factor, expr)
+
+-- [[ a^n * b^n => (a * b)^n
+-- this is also in mul/Prune/combineMulOfLikePow
+-- and the opposite is in pow/Expand/expandMulOfLikePow and pow/Prune/expandMulOfLikePow
+		{combineMulOfLikePow = function(factor, expr)
 			symmath = symmath or require 'symmath'
-			
-			--[[ a^n * b^n => (a * b)^n
 			local pow = symmath.op.pow
 			for i=1,#expr-1 do
 				if pow:isa(expr[i]) then
@@ -609,14 +611,17 @@ mul.rules = {
 					end
 				end
 			end
-			--]]
-		
-			--[[
-			-- hmm ... raise everything to the lowest power? 
-			-- if there are any sqrts, square everything?
-			-- this is for 2/sqrt(6) => sqrt(2)/sqrt(3)
-			-- this seems to do more harm than good, esp when summing fractions of sqrts
-			-- This also looks dangerous, like it would be cancelling negatives somewhere.
+		end},
+--]]
+
+--[[
+-- hmm ... raise everything to the lowest power? 
+-- if there are any sqrts, square everything?
+-- this is for 2/sqrt(6) => sqrt(2)/sqrt(3)
+-- this seems to do more harm than good, esp when summing fractions of sqrts
+-- This also looks dangerous, like it would be cancelling negatives somewhere.
+		{raiseEverythingToLowestPower = function(factor, expr)
+			symmath = symmath or require 'symmath'
 			local sqrt = symmath.sqrt
 			local pow = symmath.op.pow
 			local div = symmath.op.div
@@ -632,11 +637,13 @@ mul.rules = {
 					return factor:apply(sqrt((expr^2):prune()))
 				end
 			end
-			--]]
-		
-			-- [[ how about turning c*x^-1/2 into c/sqrt(x) here?
-			-- still prevents sums of fractions of sqrts ...
-			local sqrt = symmath.sqrt
+		end},
+--]]
+
+-- [[ how about turning p*x^-q/2 into p/x^(q/2) here?
+-- still prevents sums of fractions of sqrts ...
+		{negPowToDivPow = function(factor, expr)
+			symmath = symmath or require 'symmath'
 			local pow = symmath.op.pow
 			local div = symmath.op.div
 			local Constant = symmath.Constant
@@ -652,25 +659,31 @@ mul.rules = {
 					expr = expr:clone()
 					table.remove(expr, i)
 					if #expr == 1 then expr = expr[1] end
-					return factor:apply(expr / sqrt(x[1]))
-					--return factor:apply(sqrt((expr^2):prune()))
+					return factor:apply(expr / symmath.sqrt(x[1]))
+					--return factor:apply(symmath.sqrt((expr^2):prune()))
 				end
 				--]=]
 				-- [=[
+				--[==[
 				and Constant:isa(x[2][1])
 				and x[2][1].value < 0
 				and (x[2][1].value % 2) == 1
+				--]==]
+				-- [==[ TODO oddNegativeInteger .. or sets based on conditions ...
+				and symmath.set.oddInteger:contains(x[2][1])
+				and symmath.set.negativeReal:contains(x[2][1])
+				--]==]
 				then
 					expr = expr:clone()
 					table.remove(expr, i)
 					if #expr == 1 then expr = expr[1] end
-					return factor:apply(expr / x[1]^div(-x[2][1].value, x[2][2].value))
-					--return factor:apply(sqrt((expr^2):prune()))
+					return factor:apply(expr / x[1]^div(-x[2][1], x[2][2]))
+					--return factor:apply(symmath.sqrt((expr^2):prune()))
 				end
 				--]=]
 			end
-			--]]
 		end},
+--]]
 	},
 
 	FactorDivision = {
@@ -734,43 +747,49 @@ mul.rules = {
 	},
 
 	Prune = {
-		{apply = function(prune, expr)	
-			symmath = symmath or require 'symmath'
-			local Constant = symmath.Constant
-			local pow = symmath.op.pow
-			local div = symmath.op.div
-			
+		{flatten = function(prune, expr)
 			-- flatten multiplications
 			local flat = expr:flattenAndClone()
 			if flat then return prune:apply(flat) end
-			
-			-- move unary minuses up
-			--[[ pruning unm immediately
-			do
-				local unm = require 'symmath.op.unm'
-				local unmCount = 0
-				for i=1,#expr do
-					local ch = expr[i]
-					if unm:isa(ch) then
-						unmCount = unmCount + 1
-						expr[i] = ch[1]
-					end
+		end},
+
+-- move unary minuses up
+--[[ pruning unm immediately
+		{moveUnmUp = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local unm = symmath.op.unm
+			local unmCount = 0
+			local modified
+			for i=1,#expr do
+				local ch = expr[i]
+				if unm:isa(ch) then
+					unmCount = unmCount + 1
+					expr[i] = ch[1]
+					modified = true
 				end
+			end
+			if modified then
 				if unmCount % 2 == 1 then
 					return -prune:apply(expr)	-- move unm outside and simplify what's left
 				elseif unmCount ~= 0 then
 					return prune:apply(expr)	-- got an even number?  remove it and simplify this
 				end
 			end
-			--]]
+		end},
+--]]
 
-
+		{handleInfAndNan = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local invalid = symmath.invalid
+			local inf = symmath.inf
+			local negativeReal = symmath.set.negativeReal
 
 			-- anything * invalid is invalid
 			for i=1,#expr do
-				if expr[i] == symmath.invalid then 
-print("mul by invalid ... makes invalid")					
-					return symmath.invalid 
+				if expr[i] == invalid then 
+--print("mul by invalid ... makes invalid")					
+					return invalid
 				end
 			end
 
@@ -780,7 +799,7 @@ print("mul by invalid ... makes invalid")
 			local haszero
 			local sign = 1
 			for i=1,#expr do
-				if expr[i] == symmath.inf then
+				if expr[i] == inf then
 					hasinf = true
 				end
 				if Constant.isValue(expr[i], 0) then
@@ -789,22 +808,28 @@ print("mul by invalid ... makes invalid")
 				-- TODO recursively call instead of for-loop
 				-- and TODO if expr[i] is not in positive or negative real then don't simplify it, because it is arbitrary.  
 				-- x * inf cannot be simplified to +inf or -inf.
-				if symmath.set.negativeReal:contains(expr[i]) then
+				if negativeReal:contains(expr[i]) then
 					sign = -sign
 				end
 			end
 			if hasinf then
 				if haszero then
-print("mul hasinf and hazero ... makes invalid")
-					return symmath.invalid
+--print("mul hasinf and hazero ... makes invalid")
+					return invalid
 				end
 				if sign == -1 then
 					-- use the pruned form, but don't call prune, or it gets an infinite loop
-					return Constant(-1) * symmath.inf
+					return Constant(-1) * inf
 				end
-				return symmath.inf
+				return inf
 			end
+		end},
 
+		{apply = function(prune, expr)	
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local pow = symmath.op.pow
+			local div = symmath.op.div
 
 			-- push all fractions to the left
 			for i=#expr,2,-1 do
@@ -815,7 +840,6 @@ print("mul hasinf and hazero ... makes invalid")
 					table.insert(expr, 1, table.remove(expr, i))
 				end
 			end
-
 			
 			-- [[ and now for Matrix*Matrix multiplication ...
 			-- do this before the c * 0 = 0 rule
@@ -1010,135 +1034,166 @@ print("mul hasinf and hazero ... makes invalid")
 				table.remove(expr, 1)
 			end
 			--]]
+		end},
 
-			-- [[ factor out denominators
-			-- a * b * (c / d) => (a * b * c) / d
-			--  generalization:
-			-- a^m * b^n * (c/d)^p = (a^m * b^n * c^p) / d^p
-			do
-				local uniqueDenomIndexes = table()
-				
-				local denoms = table()
-				local powers = table()
-				local bases = table()
-				
-				for i=1,#expr do
-					-- decompose expressions of the form 
-					--  (base / denom) ^ power
-					local base = expr[i]
-					local power = Constant(1)
-					local denom = Constant(1)
-
-					if pow:isa(base) then
-						base, power = table.unpack(base)
-					end
-					if div:isa(base) then
-						base, denom = table.unpack(base)
-					end
-					if not Constant.isValue(denom, 1) then
-						uniqueDenomIndexes:insert(i)
-					end
-
-					denoms:insert(denom)
-					powers:insert(power)
-					bases:insert(base)
-				end
-				
-				if #uniqueDenomIndexes > 0 then	
-					
-					local num
-					if #bases == 1 then
-						num = bases[1]
-						if not Constant.isValue(powers[1], 1) then
-							num = num ^ powers[1]
-						end
-					else
-						num = bases:map(function(base,i)
-							if Constant.isValue(powers[i], 1) then
-								return base
-							else
-								return base ^ powers[i]
-							end
-						end)
-						assert(#num > 0)
-						if #num == 1 then
-							num = num[1]
-						else
-							num = mul(num:unpack())
-						end
-					end
-					
-					local denom
-					if #uniqueDenomIndexes == 1 then
-						local i = uniqueDenomIndexes[1]
-						denom = denoms[i]
-						if not Constant.isValue(powers[i], 1) then
-							denom = denom^powers[i]
-						end
-					elseif #denoms > 1 then
-						denom = mul(table.unpack(uniqueDenomIndexes:map(function(i)
-							if Constant.isValue(powers[i], 1) then
-								return denoms[i]
-							else
-								return denoms[i]^powers[i]
-							end
-						end)))
-					end
-					
-					local expr = num
-					if not Constant.isValue(denom, 1) then
-						expr = expr / denom
-					end
-					return prune:apply(expr)
-				end
-			end
-			--]]
-	
-			-- [[ a^n * b^n => (a * b)^n
-			--[=[
-			this rule here passes the unit tests
-			but it puts Platonic Solids in a simplification loop...
-			TODO respect mulCommutative
-			only test to your neighbor
-			and have a step above for pushing all commutative terms to one side
-			
-			turns out this also kills: (x*y)/(x*y)^2 => 1/(x*y)
-			but this makes work: sqrt(sqrt(sqrt(5) + 1) * sqrt(sqrt(5) - 1)) => 2
-			
-			what if I only do this for sqrts?
-			that appeases the unit tests.  but how will it do in the wild?
-			--]=]
+-- [[ factor out denominators
+-- a * b * (c / d) => (a * b * c) / d
+--  generalization:
+-- a^m * b^n * (c/d)^p = (a^m * b^n * c^p) / d^p
+		{factorDenominators = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
 			local pow = symmath.op.pow
+			local div = symmath.op.div
+			
+			local uniqueDenomIndexes = table()
+			
+			local denoms = table()
+			local powers = table()
+			local bases = table()
+			
+			for i=1,#expr do
+				-- decompose expressions of the form 
+				--  (base / denom) ^ power
+				local base = expr[i]
+				local power = Constant(1)
+				local denom = Constant(1)
+
+				if pow:isa(base) then
+					base, power = table.unpack(base)
+				end
+				if div:isa(base) then
+					base, denom = table.unpack(base)
+				end
+				if not Constant.isValue(denom, 1) then
+					uniqueDenomIndexes:insert(i)
+				end
+
+				denoms:insert(denom)
+				powers:insert(power)
+				bases:insert(base)
+			end
+			
+			if #uniqueDenomIndexes > 0 then	
+				
+				local num
+				if #bases == 1 then
+					num = bases[1]
+					if not Constant.isValue(powers[1], 1) then
+						num = num ^ powers[1]
+					end
+				else
+					num = bases:map(function(base,i)
+						if Constant.isValue(powers[i], 1) then
+							return base
+						else
+							return base ^ powers[i]
+						end
+					end)
+					assert(#num > 0)
+					if #num == 1 then
+						num = num[1]
+					else
+						num = mul(num:unpack())
+					end
+				end
+				
+				local denom
+				if #uniqueDenomIndexes == 1 then
+					local i = uniqueDenomIndexes[1]
+					denom = denoms[i]
+					if not Constant.isValue(powers[i], 1) then
+						denom = denom^powers[i]
+					end
+				elseif #denoms > 1 then
+					denom = mul(table.unpack(uniqueDenomIndexes:map(function(i)
+						if Constant.isValue(powers[i], 1) then
+							return denoms[i]
+						else
+							return denoms[i]^powers[i]
+						end
+					end)))
+				end
+				
+				local expr = num
+				if not Constant.isValue(denom, 1) then
+					expr = expr / denom
+				end
+				return prune:apply(expr)
+			end
+		end},
+--]]
+
+-- [[ a^n * b^n => (a * b)^n
+--[=[
+this rule here passes the unit tests
+but it puts Platonic Solids in a simplification loop...
+TODO respect mulCommutative
+only test to your neighbor
+and have a step above for pushing all commutative terms to one side
+
+it turns out this also kills: (x*y)/(x*y)^2 => 1/(x*y)
+but this makes work: sqrt(sqrt(sqrt(5) + 1) * sqrt(sqrt(5) - 1)) => 2
+
+but if I only do this for sqrts?
+that appeases that particular unit tests.
+
+but even that also kills simplification of sqrt(f) * (g + sqrt(g))
+
+so between the two cases...
+
+looks like I can solve both unit tests if I only apply this to powers-of-adds
+so when we find mul -> pow -> add
+--]=]
+		{combineMulOfLikePow_mulPowAdd = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local pow = symmath.op.pow
+			local div = symmath.op.div
+			local Constant = symmath.Constant
+			local add = symmath.op.add
 			for i=1,#expr-1 do
 				if pow:isa(expr[i]) 
+				--[=[ only for pow-of-sqrts?
 				and div:isa(expr[i][2])
 				and Constant.isValue(expr[i][2][1], 1)
 				and Constant.isValue(expr[i][2][2], 2)
+				--]=]
+				-- [=[ only for pow-of-add?
+				and add:isa(expr[i][1])
+				--]=]
 				then
 					for j=i+1,#expr do
 						if pow:isa(expr[j]) 
+						--[=[ only for pow-of-sqrts?
 						and div:isa(expr[j][2])
 						and Constant.isValue(expr[j][2][1], 1)
 						and Constant.isValue(expr[j][2][2], 2)
+						--]=]
+						-- [=[ only for pow-of-add?
+						and add:isa(expr[j][1])
+						--]=]
 						then
 							if expr[i][2] == expr[j][2] then
 								-- powers match, combine
 								local repl = (expr[i][1] * expr[j][1]):prune() ^ expr[i][2]
+								--repl = repl:prune()	-- causes loops
 								expr = expr:clone()
 								table.remove(expr, j)
 								expr[i] = repl
 								if #expr == 1 then expr = expr[1] end
-								--expr = prune:apply(expr)
+								--expr = prune:apply(expr)	-- causes loops
 								return expr
 							end
 						end
 					end
 				end
 			end
-			--]]
-		
-			--[[ how about turning c*x^-1/2 into c/sqrt(x) here?
-			-- still prevents sums of fractions of sqrts ...
+		end},
+--]]	
+
+--[[ how about turning c*x^-1/2 into c/sqrt(x) here?
+-- still prevents sums of fractions of sqrts ...
+		{replacePowHalfWithSqrt = function(prune, expr)
 			local sqrt = symmath.sqrt
 			local pow = symmath.op.pow
 			local div = symmath.op.div
@@ -1161,8 +1216,8 @@ print("mul hasinf and hazero ... makes invalid")
 					--return factor:apply(sqrt((expr^2):prune()))
 				end
 			end		
-			--]]
 		end},
+--]]	
 	
 		{logPow = function(prune, expr)
 			symmath = symmath or require 'symmath'
