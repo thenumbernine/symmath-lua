@@ -25,7 +25,7 @@ local function simplifyCall(simplifyObj, x, ...)
 	if symmath.Array:isa(x) then
 		x = x:clone()
 		for i in x:iter() do
-			x[i] = simplifyCall(x[i])
+			x[i] = simplifyCall(simplifyObj, x[i])
 		end
 		return x
 	end
