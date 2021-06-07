@@ -201,11 +201,12 @@ asserteq( Constant(0):replace( v'^k' * v'^l' * g'_kl', var'vsq' ), Constant(0) )
 asserteq( Constant(0):replace( v'^k' * v'^l', var'vsq' ), Constant(0) )
 asserteq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )
 
-asserteq(-f * a^2 + f^3 * a^2 - f^5 * a^2, -f * a^2 * (1 - f^2 + f^4))			-- 'a' var lexically before 'f' var, squared, times -1's, simplification loop.  oscillates between factoring out the -1 or not.
-asserteq(-f * g^2 + f^3 * g^2 - f^5 * g^2, -f * g^2 * (1 - f^2 + f^4), true)	-- 'g' var lexically before 'f' var, no simplification loop
-asserteq(f * a^2 + f^3 * a^2 + f^5 * a^2, f * a^2 * (1 + f^2 + f^4), true)		-- replace -1's with +1's, no simplification loop
-asserteq(-f * a + f^3 * a - f^5 * a, -f * a * (1 - f^2 + f^4), true)			-- replace a^2 with a, no simplification loop
-asserteq(-f * a^2 + f^2 * a^2 - f^3 * a^2, -f * a^2 * (1 - f  + f^2), true)		-- replace f * quadratic of f^2 with f * quadratic of f, no simplification loop
+-- fixed this bug with op.div.rules.Prune.negOverNeg
+asserteq(-f * a^2 + f^3 * a^2 - f^5 * a^2, -f * a^2 * (1 - f^2 + f^4))	-- 'a' var lexically before 'f' var, squared, times -1's, simplification loop.  oscillates between factoring out the -1 or not.
+asserteq(-f * g^2 + f^3 * g^2 - f^5 * g^2, -f * g^2 * (1 - f^2 + f^4))	-- 'g' var lexically before 'f' var, no simplification loop
+asserteq(f * a^2 + f^3 * a^2 + f^5 * a^2, f * a^2 * (1 + f^2 + f^4))	-- replace -1's with +1's, no simplification loop
+asserteq(-f * a + f^3 * a - f^5 * a, -f * a * (1 - f^2 + f^4))			-- replace a^2 with a, no simplification loop
+asserteq(-f * a^2 + f^2 * a^2 - f^3 * a^2, -f * a^2 * (1 - f  + f^2))	-- replace f * quadratic of f^2 with f * quadratic of f, no simplification loop
 
 ]=]), '\n')) do
 	env.exec(line)
