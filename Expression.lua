@@ -401,9 +401,9 @@ function Expression:diff(...)
 	return symmath.Derivative(self, ...) 
 end
 
-function Expression:pdiff(...)
+function Expression:totalDiff(...)
 	symmath = symmath or require 'symmath'
-	return symmath.PartialDerivative(self, ...) 
+	return symmath.TotalDerivative(self, ...) 
 end
 
 Expression.integrate = function(...) 

@@ -326,9 +326,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}
 				end))
 			}
-		elseif self.usePartialLHSForDerivative
-		and require 'symmath.PartialDerivative':isa(expr)
-		then
+		elseif self.usePartialLHSForDerivative then
 			local s = table{d..'_',
 				range(#diffVars):map(function(i)
 					return table{'{'}:append(self:apply(diffVars[i])):append{'}'}

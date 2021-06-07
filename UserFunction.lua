@@ -127,51 +127,12 @@ use this for looking up function definitions when evaluating total derivatives
 UserFunction.registeredFunctions = setmetatable({}, {__mode='v'})
 
 --[[
-same arguments as Variable
-
-TODO should variable store 'src' and 'wrt' in case either is TensorRef's?
-
-TODO variable has a single 'set', but function should have 'domain' and 'range'
-and technically both should be inferred... domain from args[i].set, and range deduced from the expression
-though in math the range and the image are separate ... the set of all outputs of the expression may be different than the specified set of outputs.
-
-TODO ... the variables in a function's definition are internal, not external.
-f(x) = x^2, the x in f(x) refers to the x^2, not to any other x's on the worksheet.
-However defining a function as "f = func('f', {x})" would require an externally declared variable ...
-... however however, you would still need an "x" with a locally shared scope of defining "f(x)" and "x^2", 
- 	so techniaclly it would be "external", however it would just be just "local".
+Static method to produce subclasses.
+Call with Class:makeSubclass(name, args, def, set).
+Another option is to make UserFunction() produce objects and for the objects to have their respective __call operators.
 --]]
-
-function UserFunction:evaluateDerivative(deriv, ...)
-	local x = table.unpack(self):clone()
-	if not self.cached_df then
-		self.cached_df = UserFunction(
-			self.name.."'",
-			self.args,
-			self.def and self.def:diff(x)() or nil, 
-			self.set	-- will set be the same?
-		)
-	end
-	local x = table.unpack(self):clone()
-	return deriv(x, ...) * self.cached_df(x)
-end
-
-function UserFunction:printEqn()
-	if self.def then
-		return self(self.args:unpack()):eq(self.def)
-	else
-		return self(self.args:unpack())
-	end
-end
-
---[[
-Last, override UserFunction's :new() to produce subclasses:
-remember ext/class.lua, in :init() the obj is 'self', in :new() the class is 'self'
-
-The other option is to make UserFunction() produce objects and for the objects to have their respective __call operators.
---]]
-function UserFunction:new(name, args, def, set)
-	local f = class(UserFunction)
+function UserFunction:makeSubclass(name, args, def, set)
+	local f = class(self)
 	f.name = assert(name)
 	f.args = table(args)	-- optional
 	f.set = set or require 'symmath.set.sets'.real
@@ -189,8 +150,49 @@ function UserFunction:new(name, args, def, set)
 	return f
 end
 
+--[[
+same arguments as Variable
+
+TODO should variable store 'src' and 'wrt' in case either is TensorRef's?
+
+TODO variable has a single 'set', but function should have 'domain' and 'range'
+and technically both should be inferred... domain from args[i].set, and range deduced from the expression
+though in math the range and the image are separate ... the set of all outputs of the expression may be different than the specified set of outputs.
+
+TODO ... the variables in a function's definition are internal, not external.
+f(x) = x^2, the x in f(x) refers to the x^2, not to any other x's on the worksheet.
+However defining a function as "f = func('f', {x})" would require an externally declared variable ...
+... however however, you would still need an "x" with a locally shared scope of defining "f(x)" and "x^2", 
+ 	so techniaclly it would be "external", however it would just be just "local".
+--]]
+
+function UserFunction:evaluateDerivative(deriv, ...)
+	local x = table.unpack(self):clone()
+	local cl = self.class
+	if not cl.cached_df then
+		cl.cached_df = UserFunction:makeSubclass(
+			cl.name.."'",
+			cl.args,
+			cl.def and self.def:diff(x)() or nil, 
+			cl.set	-- will set be the same?
+		)
+	end
+	local x = table.unpack(self):clone()
+	return deriv(x, ...) * cl.cached_df(x)
+end
+
+function UserFunction:printEqn()
+	local cl = self.class
+	if cl.def then
+		return cl(cl.args:unpack()):eq(cl.def)
+	else
+		return cl(cl.args:unpack())
+	end
+end
+
 function UserFunction:defeq()
-	return self(self.args:unpack()):eq(self.def)
+	local cl = self.class
+	return cl(cl.args:unpack()):eq(cl.def)
 end
 
 -- with this, evals too much

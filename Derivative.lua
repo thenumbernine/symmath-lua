@@ -1,7 +1,7 @@
 --[[
 How Derivative, and diff, works:
 
-First, user calls y:diff(x) or y:pdiff(x) or etc for other subclasses.  
+First, user calls y:diff(x) or y:totalDiff(x) or etc for other subclasses.  
 Right now the base class is a total derivative.
 That sits as-is, and does not evaluate immediately, in case you want to print it.
 
@@ -31,10 +31,10 @@ Upon prune() (done by simplify(), implicitly ())
 		- for comma derivative, Variable:applyDiff() is called
 		- NOTICE this is the ONLY place applyDiff is called
 			so TODO maybe call it something like "applyComma" ?
-			or rewrite the :diff() and :pdiff() operators to use the applyDiff() variable
+			or rewrite the :diff() and :totalDiff() operators to use the applyDiff() variable
 			or redo comma derivatives to use operators instead of derivative,
 				and just introduce operators (basically functions, amirite?)
-			also TODO make sure comma derivative is calling :pdiff()
+			also TODO make sure comma derivative is calling :totalDiff()
 
 
 alright, comma derivative represents the partial derivative

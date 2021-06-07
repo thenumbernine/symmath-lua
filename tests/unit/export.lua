@@ -131,11 +131,11 @@ local exprs = {
 	(-x):lim(x, 0),
 
 	y:diff(x),
-	y:pdiff(x),
+	y:totalDiff(x),
 	y:diff(x,x),
-	y:pdiff(x,x),
+	y:totalDiff(x,x),
 	y:diff(x,y),
-	y:pdiff(x,y),
+	y:totalDiff(x,y),
 	exp(x):diff(x),
 	sqrt(1-x^2):diff(x),
 

@@ -30,15 +30,22 @@ f = func('f', {x}, x*y(x))
 print(f:defeq())
 assert(UserFunction.registeredFunctions.f == f)
 
--- diff() is total derivative
--- pdiff() is partial derivative
+-- diff() is partial derivative
+-- totalDiff() is total derivative
 
 -- total derivative evaluation
 -- substitute chain rule for all terms
 -- df/dx, when simplified, does not go anywhere, because f is dependent on x
 -- for that reason, I can just build the equality f:eq(f.def) and apply :diff() to the whole thing:
 print(f:defeq():diff(x):prune())
+-- but TODO wrt total derivatives ... diff(y) ...
+-- y(x) above is a UserFunction subclass
+-- which means it isn't a Variable
+-- which means you can't diff(y) ...
+-- though you could diff(y(x)) ...
+-- but that would be diff'ing wrt expressions, which I don't have support for
 print(f:defeq():diff(y):prune())
+print(f:defeq():diff(y(x)):prune())
 
 s = var's'
 t = var't'

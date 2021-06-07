@@ -53,7 +53,10 @@ end
 -- TODO call Function => BuiltinFunction and call UserFunction => Function?
 -- or call UserFunction => Function, and use it to create all current subclasses of Function?
 symmath.UserFunction = require 'symmath.UserFunction'
-symmath.func = symmath.UserFunction
+
+function symmath.func(...)
+	return symmath.UserFunction:makeSubclass(...)
+end
 
 symmath.set = require 'symmath.set.sets'
 
@@ -229,11 +232,11 @@ symmath.frac = symmath.op.div
 symmath.Limit = require 'symmath.Limit'
 symmath.lim = symmath.Limit	-- shorthand ... TODO shorthand for Expression.lim
 
-symmath.Derivative = require 'symmath.Derivative'
+symmath.Derivative = require 'symmath.Derivative'	-- partial is default
 symmath.diff = symmath.Derivative	-- shorthand ... TODO shorthand for Expression.diff?
 
-symmath.PartialDerivative = require 'symmath.PartialDerivative'
-symmath.pdiff = symmath.PartialDerivative
+symmath.TotalDerivative = require 'symmath.TotalDerivative'
+symmath.totalDiff = symmath.TotalDerivative
 
 -- thinking of lowercasing all of these ...
 symmath.Sum = require 'symmath.Sum'
