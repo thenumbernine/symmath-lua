@@ -3,7 +3,7 @@ return function(env, title)
 	local string = env.string
 	require 'symmath'.setup{env=env, MathJax={title=title, pathToTryToFindMathJax='..'}}
 	local symmath = env.symmath
-	symmath.simplify.debugLoops = true
+	symmath.simplify.debugLoops = 'rules'
 
 	function env.assert(a)
 		if not a then
@@ -12,21 +12,22 @@ return function(env, title)
 		end
 	end
 
-	function env.asserteq(a,b)
+	function env.asserteq(a,b, showStackAnyways)
 		assert(a ~= nil)
 		assert(b ~= nil)
 		local sa = symmath.simplify(a)
 		local ta = symmath.simplify.stack
 		local sb = symmath.simplify(b)
 		local tb = symmath.simplify.stack
-		if sa ~= sb then
+		local fail = sa ~= sb
+		if fail or showStackAnyways then
 			print('expected '..tostring(a)..' to equal '..tostring(b)..'<br>')
-			print('instead found '..tostring(sa)..' vs '..tostring(sb)..'<br>')
+			print('found '..tostring(sa)..' vs '..tostring(sb)..'<br>')
 			print('lhs stack<br>')
 			for _,x in ipairs(ta) do print(x[1], x[2], '<br>') end
 			print('rhs stack<br>')
 			for _,x in ipairs(tb) do print(x[1], x[2], '<br>') end
-			error'failed'
+			if fail then error'failed' end
 		end
 	end
 
@@ -36,19 +37,20 @@ return function(env, title)
 		assert(not result, "expected an error, but found none")
 	end
 
-	function env.assertne(a,b)
+	function env.assertne(a,b, showStackAnyways)
 		local sa = symmath.simplify(a)
 		local ta = symmath.simplify.stack
 		local sb = symmath.simplify(b)
 		local tb = symmath.simplify.stack
-		if sa == sb then
+		local fail = sa == sb
+		if fail or showStackAnyways then
 			print('expected '..tostring(a)..' to equal '..tostring(b)..'<br>')
-			print('instead found '..tostring(sa)..' vs '..tostring(sb)..'<br>')
+			print('found '..tostring(sa)..' vs '..tostring(sb)..'<br>')
 			print('lhs stack<br>')
 			for _,x in ipairs(ta) do print(x[1], x[2], '<br>') end
 			print('rhs stack<br>')
 			for _,x in ipairs(tb) do print(x[1], x[2], '<br>') end
-			error'failed'
+			if fail then error'failed' end
 		end
 	end
 

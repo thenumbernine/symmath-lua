@@ -398,58 +398,64 @@ div.rules = {
 	},
 
 	Prune = {		
-		{apply = function(prune, expr)
+		{matrixScalar = function(prune, expr)
 			symmath = symmath or require 'symmath'
-			local add = symmath.op.add
-			local mul = symmath.op.mul
-			local div = symmath.op.div
-			local pow = symmath.op.pow
 			local Array = symmath.Array
-			local Constant = symmath.Constant
 
 			-- matrix/scalar
-			do
-				local a, b = table.unpack(expr)
-				if Array:isa(a) and not Array:isa(b) then
-					local result = a:clone()
-					for i=1,#result do
-						result[i] = result[i] / b
-					end
-					return prune:apply(result)
+			local a, b = table.unpack(expr)
+			if Array:isa(a) and not Array:isa(b) then
+				local result = a:clone()
+				for i=1,#result do
+					result[i] = result[i] / b
 				end
+				return prune:apply(result)
+			end	
+		end},
+
+		{handleInfAndNan = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local invalid = symmath.invalid
+			local inf = symmath.inf
+		
+			if expr[1] == invalid
+			or expr[2] == invalid
+			then
+				return invalid
 			end
 
-			if expr[1] == symmath.invalid
-			or expr[2] == symmath.invalid
+			-- p/inf => 0 for p != inf
+			if expr[2] == inf 
+			or expr[2] == Constant(-1) * inf 
 			then
-				return symmath.invalid
-			end
-
-			-- p/inf is 0 for p != inf
-			if expr[2] == symmath.inf 
-			or expr[2] == Constant(-1) * symmath.inf 
-			then
-				if expr[1] ~= symmath.inf 
-				and expr[1] ~= Constant(-1) * symmath.inf
+				if expr[1] ~= inf 
+				and expr[1] ~= Constant(-1) * inf
 				then
 					return Constant(0)
 				end
-				return symmath.invalid
+				return invalid
 			end
 
 			-- x / 0 => invalid
 			if Constant.isValue(expr[2], 0) then
-				return symmath.invalid
+				return invalid
 			end
 
-			if expr[1] == symmath.inf then
+			if expr[1] == inf then
 				-- inf / negative = -inf
 				if symmath.set.negativeReal:contains(expr[2]) then
 					return -inf
 				end
 				-- inf / 0 = invalid
-				return symmath.inf
+				return inf
 			end
+		end},
+
+		{simplifyConstantPowers = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			local Constant = symmath.Constant
 
 			if symmath.simplifyConstantPowers  then
 				-- Constant / Constant => Constant
@@ -485,94 +491,150 @@ div.rules = {
 					return (Constant(expr[1][1].value / expr[2][1].value) * rest1) / rest2
 				end
 			end
+		end},
 
-			-- x / 1 => x
+		-- x / 1 => x
+		{xOverOne = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
 			if Constant.isValue(expr[2], 1) then
 				return expr[1]
 			end
+		end},
 
-			-- x / -1 => -1 * x
-			if Constant:isa(expr[2]) and expr[2].value < 0 then
-				return prune:apply(Constant(-1) * expr[1] / Constant(-expr[2].value))
+		--[[ -c / x => c / -x
+		-- stack overflow
+		{minusOneOverX = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local p, q = table.unpack(expr)
+			if Constant:isa(p) and p.value < 0 
+			--if Constant.isValue(p, -1)
+			then
+				return prune:apply(
+					Constant(-p.value) / (Constant(-1) * q)
+				)
 			end
-			
-			-- 0 / x => 0
-			if Constant.isValue(expr[1], 0) then
-				if expr[1].value == 0 then
-					return Constant(0)
-				end
+		end},
+		--]]
+
+		-- x / -c => -1 * (x / c)
+		{xOverMinusOne = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+		
+			if Constant:isa(expr[2]) 
+			and expr[2].value < 0 
+			then
+				return prune:apply(
+					Constant(-1) * expr[1] / Constant(-expr[2].value)
+				)
 			end
-			
-			-- (a / b) / c => a / (b * c)
+		end},
+
+		-- 0 / q => 0 for q != 0
+		{zeroOverX = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+		
+			if Constant.isValue(expr[1], 0) 
+			and not Constant.isValue(expr[2], 0) 
+			then
+				return Constant(0)
+			end
+		end},
+
+		-- p/q => (a / b) / q => a / (b * q)
+		{pIsDiv = function(prune, expr)
 			if div:isa(expr[1]) then
-				return prune:apply(expr[1][1] / (expr[1][2] * expr[2]))
+				local p, q = table.unpack(expr)
+				local a, b = table.unpack(p)
+				return prune:apply(a / (b * q))
 			end
-			
-			-- a / (b / c) => (a * c) / b
+		end},
+
+		-- p/q => p / (a / b) => (p * b) / a
+		{qIsDiv = function(prune, expr)
 			if div:isa(expr[2]) then
-				local a, b = table.unpack(expr)
-				local b, c = table.unpack(b)
-				return prune:apply((a * c) / b)
+				local p, q = table.unpack(expr)
+				local a, b = table.unpack(q)
+				return prune:apply((p * b) / a)
 			end
+		end},
 
+		-- x/x => 1
+		-- TODO only for x's domain does not include 0
+		-- but this is basically everything at the moment ...
+		{xOverX = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
 			if expr[1] == expr[2] then
-				return Constant(1)		-- ... for expr[1] != 0
+				return Constant(1)
 			end
+		end},
 
-			-- [[ 
-			-- conjugates of square-roots in denominator
-			-- a / (b + sqrt(c)) => a (b - sqrt(c)) / ((b + sqrt(c)) (b - sqrt(c))) => a (b - sqrt(c)) / (b^2 - c)
-			--[=[ the (b + sqrt(c)) matches the remaining Wildcard 
-			local a,b,c,d = expr:match(Wildcard(1) / ((Wildcard(2) + Wildcard(3) ^ div(1,2)) * Wildcard(4)))
-			if a then
-				print('a\n'..a..'\nb\n'..b..'\nc\n'..c..'\nd\n'..d)
-				error'here'
-			end
-			--]=]
-			local Wildcard = symmath.Wildcard
+		-- [[ 
+		-- conjugates of square-roots in denominator
+		-- a / (b + sqrt(c)) => a (b - sqrt(c)) / ((b + sqrt(c)) (b - sqrt(c))) => a (b - sqrt(c)) / (b^2 - c)
+		--[=[ the (b + sqrt(c)) matches the remaining Wildcard 
+		local a,b,c,d = expr:match(Wildcard(1) / ((Wildcard(2) + Wildcard(3) ^ div(1,2)) * Wildcard(4)))
+		if a then
+			print('a\n'..a..'\nb\n'..b..'\nc\n'..c..'\nd\n'..d)
+			error'here'
+		end
+		--]=]
+		{conjOfSqrtInDenom = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local add = symmath.op.add
 			local mul = symmath.op.mul
-			local num, denom = table.unpack(expr)
-			if mul:isa(denom) then
-				for i=1,#denom do
-					if add:isa(denom[i]) then
-						local a, b, c = denom[i]:match(Wildcard(1) + Wildcard(2) * Wildcard(3) ^ div(1,2)) 
+			local Wildcard = symmath.Wildcard
+			local p, q = table.unpack(expr)
+			if mul:isa(q) then
+				for i=1,#q do
+					if add:isa(q[i]) then
+						local a, b, c = q[i]:match(Wildcard(1) + Wildcard(2) * Wildcard(3) ^ div(1,2))
 						if a then
-							denom = denom:clone()
-							table.remove(denom, i)
-							table.insert(denom, (a^2 - b^2 * c))
-							return prune:apply((expr[1] * (a - b * c ^ div(1,2))) / denom)
+							q = q:clone()
+							table.remove(q, i)
+							table.insert(q, (a^2 - b^2 * c))
+							return prune:apply((expr[1] * (a - b * c ^ div(1,2))) / q)
 						end
 					end
 				end
 			end
-			--]]
+		end},
+		--]]
 
-
-			local num, denom = table.unpack(expr)
-			
-			-- [[ maybe this should replace the rule above?
-			-- if any sqrt()s are found within any adds or muls on the top then multiply them on the bottom and top
-			-- hmm this leaves sqrt(5)/(2*sqrt(3)) in a bad state ...
+		--[[ maybe the rule above already handles this case?
+		-- if any sqrt()s are found within any adds or muls on the top then multiply them on the bottom and top
+		-- hmm this leaves sqrt(5)/(2*sqrt(3)) in a bad state ...
+		{prodOfSqrtOverProdOfSqrt = function(prune, expr)
+			symmath = symmath or require 'symmath'
 			local pow = symmath.op.pow
-			for x in num:iteradd() do
+			local p, q = table.unpack(expr)
+			for x in p:iteradd() do
 				for y in x:itermul() do
 					if pow:isa(y)
 					and symmath.set.negativeReal:contains(y[2])
 					then
 						local fix = y[1] ^ -y[2]
-						num = num * fix
-						denom = denom * fix
-						return prune:apply(num) / prune:apply(denom)
+						p = p * fix
+						q = q * fix
+						return prune:apply(p) / prune:apply(q)
 						-- this causes stack overflows
-						--return prune:apply(num / denom)
+						--return prune:apply(p / q)
 					end
 				end
 			end
-			--]]
+		end},
+		--]]
 
-			--[[ put negative powers on the opposite side of the div
-			-- div -> mul -> pow -> unm => switch side of div and negative pow
+		--[[ put negative powers on the opposite side of the div
+		-- div -> mul -> pow -> unm => switch side of div and negative pow
+		{divNegPowFlip = function(prune, expr)
+			symmath = symmath or require 'symmath'
 			local pow = symmath.op.pow
+			local p, q = table.unpack(expr)
 			for k=1,2 do
 				local from = expr[k]
 				local to = expr[3-k]
@@ -581,15 +643,25 @@ div.rules = {
 						if pow:isa(y)
 						and symmath.set.negativeReal:contains(y[2]) 
 						then
-							num = prune:apply(num * y[1] ^ -y[2])
-							denom = prune:apply(denom * y[1] ^ -y[2])
-							--return prune:apply(num / denom)
-							return num / denom
+							p = prune:apply(p * y[1] ^ -y[2])
+							q = prune:apply(q * y[1] ^ -y[2])
+							--return prune:apply(p / q)
+							return p / q
 						end
 					end
 				end
 			end
-			--]]
+		end},
+		--]]
+
+		{apply = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local add = symmath.op.add
+			local mul = symmath.op.mul
+			local pow = symmath.op.pow
+			local Constant = symmath.Constant
+			
+			local num, denom = table.unpack(expr)
 
 			-- [[ any sqrt()s on the bottom, multiply by bottom and top
 			-- TODO conjugate pairs?

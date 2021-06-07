@@ -47,6 +47,76 @@ function pow:evaluateDerivative(deriv, ...)
 	return a ^ b * (deriv(b, ...) * log(a) + deriv(a, ...) * b / a)
 end
 
+-- [==[
+-- for a:match(b), calling this where b == self 
+function pow:wildcardMatches(a, matches)
+	local b = self
+	symmath = symmath or require 'symmath'
+	local Wildcard = symmath.Wildcard
+	local Constant = symmath.Constant
+
+-- [=[ match to defaults
+-- TODO avoid indeterminate forms
+	local w1 = Wildcard:isa(self[1])
+	local w2 = Wildcard:isa(self[2])
+	if not pow:isa(a) then
+		-- (non-power):match( non-wildcard ^ wildcard)
+		if not w1 and w2 then
+			-- [[ if non-wildcard == non-power then return true with  wildcard = 1 
+			if a == self[1] then
+				if Constant(1):match(self[2], matches) then
+					return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
+				end
+			end
+			--]]
+			-- [[ or for unknown-substitution, return true with wildcard = log(non-power)/log(non-wildcard)
+			-- but only for non-wildcard > 0
+			--]]
+	
+		-- (non-power):match( wildcard ^ non-wildcard)
+		elseif w1 and not w2 then
+			-- [[ if non-wildcard == 1 then return true with wildcard = non-power
+			if Constant.isValue(self[2], 1) then
+				if a:match(self[1], matches) then
+					return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
+				end
+			end
+			--]]
+			-- [[ or for unknown-substitution, return true with wildcard = (non-power) ^ (1/(non-wildcard))
+			--]]
+		
+		-- (non-power):match( wildcard[1] ^ wildcard[2] )
+		elseif w1 and w2 then
+			-- assuming they are dif index wildcards
+			-- return true with wildcard[2] = 1, wildcard[1] = non-power
+			-- but don't fall through, because 'b' is not a pow, so the metatable test will fail
+			-- TODO what about x:match(W(1)^W(1)) ? how do you solve x = y^y ?
+			local pushmatches = table(matches)
+			if not Constant(1):match(self[2], matches) then return false end
+			if not a:match(self[1], matches) then 
+				-- restore from previous match
+				for k,v in pairs(matches) do matches[k] = nil end
+				for k,v in pairs(pushmatches) do matches[k] = v end
+				return false 
+			end
+			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
+		end
+	end
+--]=]
+
+	-- from Expression.match	
+	if getmetatable(a) ~= getmetatable(b) then return false end
+	-- check subexpressions
+	local n = #a
+	if n ~= #b then return false end
+	for i=1,n do
+		if not a[i]:match(b[i], matches) then return false end
+	end
+
+	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
+end
+--]==]
+
 -- just for this
 -- temporary ...
 function pow:expand()

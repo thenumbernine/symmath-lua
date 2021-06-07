@@ -101,6 +101,12 @@ end
 function Constant.match(a, b, matches)
 	-- same as in Expression.match
 	matches = matches or table()
+	
+	-- this will insert muls where necessary, 
+	-- so Constant(2):match(Constant(2)*Wildcard()) returns (1),
+	-- and Constant(2):match(Constant(1)*Wildcard()) returns Constant(2)
+	-- but doesn't implicitly factor 
+	-- or divide? TODO Constant(2):match(Constant(2)/Wildcard()) 
 	if b.wildcardMatches then
 		if not b:wildcardMatches(a, matches) then return false end
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))

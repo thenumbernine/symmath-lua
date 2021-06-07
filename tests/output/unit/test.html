@@ -261,6 +261,49 @@
 <code></code>
 </td><td>
 <tr><td>
+<b>origin of the error:</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq( 1/(1-x), -1/(x-1) )</code>
+</td><td>
+expected $\frac{1}{{1} - {x}}$ to equal $\frac{-1}{{x} - {1}}$<br>
+found $\frac{1}{{1} - {x}}$ vs $-{\frac{1}{{-{1}} + {x}}}$<br>
+lhs stack<br>
+Init	$\frac{1}{{1} - {x}}$	<br>
+unm/Prune/apply	${{-1}} {{x}}$	<br>
+-/Prune/apply	${1} + {{{-1}} {{x}}}$	<br>
+Prune	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Expand	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Prune	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Factor	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Prune	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Tidy	$\frac{1}{{1} - {x}}$	<br>
+rhs stack<br>
+Init	$\frac{-1}{{x} - {1}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {x}$	<br>
+Prune	$\frac{-1}{{-1} + {x}}$	<br>
+Expand	$\frac{-1}{{-1} + {x}}$	<br>
+Prune	$\frac{-1}{{-1} + {x}}$	<br>
+Factor	$\frac{-1}{{{{\frac{1}{-1}}{\left({{-1} + {x}}\right)}}} \cdot {{-1}}}$	<br>
+Prune	$\frac{-1}{{-1} + {x}}$	<br>
+Tidy	$-{\frac{1}{{-{1}} + {x}}}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
+	[string "asserteq( 1/(1-x), -1/(x-1) )"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
+	tests\unit\test.lua:211: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	tests\unit\test.lua:6: in main chunk<br>
+	[C]: at 0x7ff74d444950
+</td></tr>
+<tr><td>
 <b>without needing to factor the polynomial</b><br>
 <code></code>
 </td><td>
@@ -353,8 +396,47 @@
 <b></b><br>
 <code>asserteq((x+1)/(1-x^2), -1/(x-1))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
+expected $\frac{{x} + {1}}{{1} - {{x}^{2}}}$ to equal $\frac{-1}{{x} - {1}}$<br>
+found $\frac{1}{{1} - {x}}$ vs $-{\frac{1}{{-{1}} + {x}}}$<br>
+lhs stack<br>
+Init	$\frac{{x} + {1}}{{1} - {{x}^{2}}}$	<br>
+unm/Prune/apply	${{-1}} {{{x}^{2}}}$	<br>
+-/Prune/apply	${1} + {{{-1}} {{{x}^{2}}}}$	<br>
+Prune	$\frac{{1} + {x}}{{1} + {{{-1}} {{{x}^{2}}}}}$	<br>
+^/Expand/integerPower	${{x}} {{x}}$	<br>
+Expand	$\frac{{1} + {x}}{{1} + {{{-1}} {{{{x}} {{x}}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${x}^{2}$	<br>
+Prune	$\frac{{1} + {x}}{{1} + {{{-1}} {{{x}^{2}}}}}$	<br>
+Factor	$\frac{{1} + {x}}{{{\left({{ {-{1}} {{x}}} + {1}}\right)}} {{\left({{1} + {x}}\right)}}}$	<br>
+Prune	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Expand	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Prune	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Factor	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Prune	$\frac{1}{{1} + {{{-1}} {{x}}}}$	<br>
+Tidy	$\frac{1}{{1} - {x}}$	<br>
+rhs stack<br>
+Init	$\frac{-1}{{x} - {1}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {x}$	<br>
+Prune	$\frac{-1}{{-1} + {x}}$	<br>
+Expand	$\frac{-1}{{-1} + {x}}$	<br>
+Prune	$\frac{-1}{{-1} + {x}}$	<br>
+Factor	$\frac{-1}{{{{\frac{1}{-1}}{\left({{-1} + {x}}\right)}}} \cdot {{-1}}}$	<br>
+Prune	$\frac{-1}{{-1} + {x}}$	<br>
+Tidy	$-{\frac{1}{{-{1}} + {x}}}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
+	[string "asserteq((x+1)/(1-x^2), -1/(x-1))"]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
+	tests\unit\test.lua:211: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	tests\unit\test.lua:6: in main chunk<br>
+	[C]: at 0x7ff74d444950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1065,6 +1147,286 @@ ${\sin\left(  x\right)}^{2}$
 <b></b><br>
 <code>asserteq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )</code>
 </td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>'a' var lexically before 'f' var, squared, times -1's, simplification loop.  oscillates between factoring out the -1 or not.</b><br>
+<code>asserteq(-f * a^2 + f^3 * a^2 - f^5 * a^2, -f * a^2 * (1 - f^2 + f^4))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>'g' var lexically before 'f' var, no simplification loop</b><br>
+<code>asserteq(-f * g^2 + f^3 * g^2 - f^5 * g^2, -f * g^2 * (1 - f^2 + f^4), true)</code>
+</td><td>
+expected ${{ {-{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}}} - {{{{f}^{5}}} {{{g}^{2}}}}$ to equal ${-{f}} {{{g}^{2}}} {{\left({{{1} - {{f}^{2}}} + {{f}^{4}}}\right)}}$<br>
+found ${{f}} {{{g}^{2}}} {{\left({{-{1}} + {{{f}^{2}} - {{f}^{4}}}}\right)}}$ vs ${{f}} {{{g}^{2}}} {{\left({{-{1}} + {{{f}^{2}} - {{f}^{4}}}}\right)}}$<br>
+lhs stack<br>
+Init	${{ {-{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}}} - {{{{f}^{5}}} {{{g}^{2}}}}$	<br>
+unm/Prune/apply	${{-1}} {{f}}$	<br>
+*/Prune/flatten	${{-1}} {{f}} {{{g}^{2}}}$	<br>
+unm/Prune/apply	${{-1}} {{{f}^{5}}} {{{g}^{2}}}$	<br>
+-/Prune/apply	${{{-1}} {{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}} + {{{-1}} {{{f}^{5}}} {{{g}^{2}}}}$	<br>
+Prune	${{{-1}} {{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}} + {{{-1}} {{{f}^{5}}} {{{g}^{2}}}}$	<br>
+^/Expand/integerPower	${{g}} {{g}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}}$	<br>
+^/Expand/integerPower	${{g}} {{g}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}} {{f}} {{f}}$	<br>
+^/Expand/integerPower	${{g}} {{g}}$	<br>
+Expand	${{{-1}} {{f}} {{{{g}} {{g}}}}} + {{{{{f}} {{f}} {{f}}}} {{{{g}} {{g}}}}} + {{{-1}} {{{{f}} {{f}} {{f}} {{f}} {{f}}}} {{{{g}} {{g}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${g}^{2}$	<br>
++/Prune/combineConstants	$3$	<br>
+*/Prune/apply	${f}^{3}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${g}^{2}$	<br>
++/Prune/combineConstants	$5$	<br>
+*/Prune/apply	${f}^{5}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${g}^{2}$	<br>
+Prune	${{{-1}} {{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}} + {{{-1}} {{{f}^{5}}} {{{g}^{2}}}}$	<br>
+Factor	${{f}} {{{g}^{2}}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Prune	${{f}} {{{g}^{2}}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Expand	${{{f}} {{{{g}} {{g}}}} \cdot {{-1}}} + {{{f}} {{{{g}} {{g}}}} {{{{f}} {{f}}}}} + {{{f}} {{{{g}} {{g}}}} {{{{-1}} {{{{f}} {{f}} {{f}} {{f}}}}}}}$	<br>
+Prune	${{{-1}} {{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}} + {{{-1}} {{{f}^{5}}} {{{g}^{2}}}}$	<br>
+Factor	${{f}} {{{g}^{2}}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Prune	${{f}} {{{g}^{2}}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Tidy	${{f}} {{{g}^{2}}} {{\left({{-{1}} + {{{f}^{2}} - {{f}^{4}}}}\right)}}$	<br>
+rhs stack<br>
+Init	${-{f}} {{{g}^{2}}} {{\left({{{1} - {{f}^{2}}} + {{f}^{4}}}\right)}}$	<br>
+unm/Prune/apply	${{-1}} {{f}}$	<br>
+unm/Prune/apply	${{-1}} {{{f}^{2}}}$	<br>
+-/Prune/apply	${1} + {{{-1}} {{{f}^{2}}}}$	<br>
++/Prune/flatten	${1} + {{{-1}} {{{f}^{2}}}} + {{f}^{4}}$	<br>
+*/Prune/flatten	${{-1}} {{f}} {{{g}^{2}}} {{\left({{1} + {{{-1}} {{{f}^{2}}}} + {{f}^{4}}}\right)}}$	<br>
+Prune	${{-1}} {{f}} {{{g}^{2}}} {{\left({{1} + {{{-1}} {{{f}^{2}}}} + {{f}^{4}}}\right)}}$	<br>
+^/Expand/integerPower	${{g}} {{g}}$	<br>
+^/Expand/integerPower	${{f}} {{f}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}} {{f}}$	<br>
+*/Expand/apply	${{{-1}} {{f}} {{{{g}} {{g}}}} {{1}}} + {{{-1}} {{f}} {{{{g}} {{g}}}} {{{{-1}} {{{{f}} {{f}}}}}}} + {{{-1}} {{f}} {{{{g}} {{g}}}} {{{{f}} {{f}} {{f}} {{f}}}}}$	<br>
+Expand	${{{-1}} {{f}} {{{{g}} {{g}}}} {{1}}} + {{{-1}} {{f}} {{{{g}} {{g}}}} {{{{-1}} {{{{f}} {{f}}}}}}} + {{{-1}} {{f}} {{{{g}} {{g}}}} {{{{f}} {{f}} {{f}} {{f}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${g}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${g}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${f}^{2}$	<br>
++/Prune/combineConstants	$3$	<br>
+*/Prune/apply	${{{f}^{3}}} {{{g}^{2}}}$	<br>
+*/Prune/flatten	${{{f}^{3}}} {{{g}^{2}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${g}^{2}$	<br>
++/Prune/combineConstants	$4$	<br>
+*/Prune/apply	${f}^{4}$	<br>
++/Prune/combineConstants	$5$	<br>
+*/Prune/apply	${{-1}} {{{f}^{5}}} {{{g}^{2}}}$	<br>
+Prune	${{{-1}} {{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}} + {{{-1}} {{{f}^{5}}} {{{g}^{2}}}}$	<br>
+Factor	${{f}} {{{g}^{2}}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Prune	${{f}} {{{g}^{2}}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Expand	${{{f}} {{{{g}} {{g}}}} \cdot {{-1}}} + {{{f}} {{{{g}} {{g}}}} {{{{f}} {{f}}}}} + {{{f}} {{{{g}} {{g}}}} {{{{-1}} {{{{f}} {{f}} {{f}} {{f}}}}}}}$	<br>
+Prune	${{{-1}} {{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}} + {{{-1}} {{{f}^{5}}} {{{g}^{2}}}}$	<br>
+Factor	${{f}} {{{g}^{2}}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Prune	${{f}} {{{g}^{2}}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Tidy	${{f}} {{{g}^{2}}} {{\left({{-{1}} + {{{f}^{2}} - {{f}^{4}}}}\right)}}$	<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>replace -1's with +1's, no simplification loop</b><br>
+<code>asserteq(f * a^2 + f^3 * a^2 + f^5 * a^2, f * a^2 * (1 + f^2 + f^4), true)</code>
+</td><td>
+expected ${{{f}} {{{a}^{2}}}} + {{{{f}^{3}}} {{{a}^{2}}}} + {{{{f}^{5}}} {{{a}^{2}}}}$ to equal ${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{2}} + {{f}^{4}}}\right)}}$<br>
+found ${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{2}} + {{f}^{4}}}\right)}}$ vs ${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{4}} + {{f}^{2}}}\right)}}$<br>
+lhs stack<br>
+Init	${{{f}} {{{a}^{2}}}} + {{{{f}^{3}}} {{{a}^{2}}}} + {{{{f}^{5}}} {{{a}^{2}}}}$	<br>
+Prune	${{{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{3}}}} + {{{{a}^{2}}} {{{f}^{5}}}}$	<br>
+^/Expand/integerPower	${{a}} {{a}}$	<br>
+^/Expand/integerPower	${{a}} {{a}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}}$	<br>
+^/Expand/integerPower	${{a}} {{a}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}} {{f}} {{f}}$	<br>
+Expand	${{{f}} {{{{a}} {{a}}}}} + {{{{{a}} {{a}}}} {{{{f}} {{f}} {{f}}}}} + {{{{{a}} {{a}}}} {{{{f}} {{f}} {{f}} {{f}} {{f}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$3$	<br>
+*/Prune/apply	${f}^{3}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$5$	<br>
+*/Prune/apply	${f}^{5}$	<br>
+Prune	${{{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{3}}}} + {{{{a}^{2}}} {{{f}^{5}}}}$	<br>
+Factor	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{4}} + {{f}^{2}}}\right)}}$	<br>
+Prune	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{4}} + {{f}^{2}}}\right)}}$	<br>
+Expand	${{{f}} {{{{a}} {{a}}}} {{1}}} + {{{f}} {{{{a}} {{a}}}} {{{{f}} {{f}} {{f}} {{f}}}}} + {{{f}} {{{{a}} {{a}}}} {{{{f}} {{f}}}}}$	<br>
+Prune	${{{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{5}}}} + {{{{a}^{2}}} {{{f}^{3}}}}$	<br>
+Factor	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{2}} + {{f}^{4}}}\right)}}$	<br>
+Prune	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{2}} + {{f}^{4}}}\right)}}$	<br>
+Tidy	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{2}} + {{f}^{4}}}\right)}}$	<br>
+rhs stack<br>
+Init	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{2}} + {{f}^{4}}}\right)}}$	<br>
+Prune	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{2}} + {{f}^{4}}}\right)}}$	<br>
+^/Expand/integerPower	${{a}} {{a}}$	<br>
+^/Expand/integerPower	${{f}} {{f}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}} {{f}}$	<br>
+*/Expand/apply	${{{f}} {{{{a}} {{a}}}} {{1}}} + {{{f}} {{{{a}} {{a}}}} {{{{f}} {{f}}}}} + {{{f}} {{{{a}} {{a}}}} {{{{f}} {{f}} {{f}} {{f}}}}}$	<br>
+Expand	${{{f}} {{{{a}} {{a}}}} {{1}}} + {{{f}} {{{{a}} {{a}}}} {{{{f}} {{f}}}}} + {{{f}} {{{{a}} {{a}}}} {{{{f}} {{f}} {{f}} {{f}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${f}^{2}$	<br>
++/Prune/combineConstants	$3$	<br>
+*/Prune/apply	${{{a}^{2}}} {{{f}^{3}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$4$	<br>
+*/Prune/apply	${f}^{4}$	<br>
++/Prune/combineConstants	$5$	<br>
+*/Prune/apply	${{{a}^{2}}} {{{f}^{5}}}$	<br>
+Prune	${{{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{3}}}} + {{{{a}^{2}}} {{{f}^{5}}}}$	<br>
+Factor	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{4}} + {{f}^{2}}}\right)}}$	<br>
+Prune	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{4}} + {{f}^{2}}}\right)}}$	<br>
+Tidy	${{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{4}} + {{f}^{2}}}\right)}}$	<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>replace a^2 with a, no simplification loop</b><br>
+<code>asserteq(-f * a + f^3 * a - f^5 * a, -f * a * (1 - f^2 + f^4), true)</code>
+</td><td>
+expected ${{ {-{f}} {{a}}} + {{{{f}^{3}}} {{a}}}} - {{{{f}^{5}}} {{a}}}$ to equal ${-{f}} {{a}} {{\left({{{1} - {{f}^{2}}} + {{f}^{4}}}\right)}}$<br>
+found ${{a}} {{f}} {{\left({{-{1}} + {{{f}^{2}} - {{f}^{4}}}}\right)}}$ vs ${{a}} {{f}} {{\left({{-{1}} + {{{f}^{2}} - {{f}^{4}}}}\right)}}$<br>
+lhs stack<br>
+Init	${{ {-{f}} {{a}}} + {{{{f}^{3}}} {{a}}}} - {{{{f}^{5}}} {{a}}}$	<br>
+unm/Prune/apply	${{-1}} {{f}}$	<br>
+*/Prune/flatten	${{-1}} {{a}} {{f}}$	<br>
+unm/Prune/apply	${{-1}} {{a}} {{{f}^{5}}}$	<br>
+-/Prune/apply	${{{-1}} {{a}} {{f}}} + {{{a}} {{{f}^{3}}}} + {{{-1}} {{a}} {{{f}^{5}}}}$	<br>
+Prune	${{{-1}} {{a}} {{f}}} + {{{a}} {{{f}^{3}}}} + {{{-1}} {{a}} {{{f}^{5}}}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}} {{f}} {{f}}$	<br>
+Expand	${{{-1}} {{a}} {{f}}} + {{{a}} {{{{f}} {{f}} {{f}}}}} + {{{-1}} {{a}} {{{{f}} {{f}} {{f}} {{f}} {{f}}}}}$	<br>
++/Prune/combineConstants	$3$	<br>
+*/Prune/apply	${f}^{3}$	<br>
++/Prune/combineConstants	$5$	<br>
+*/Prune/apply	${f}^{5}$	<br>
+Prune	${{{-1}} {{a}} {{f}}} + {{{a}} {{{f}^{3}}}} + {{{-1}} {{a}} {{{f}^{5}}}}$	<br>
+Factor	${{a}} {{f}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Prune	${{a}} {{f}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Expand	${{{a}} {{f}} \cdot {{-1}}} + {{{a}} {{f}} {{{{f}} {{f}}}}} + {{{a}} {{f}} {{{{-1}} {{{{f}} {{f}} {{f}} {{f}}}}}}}$	<br>
+Prune	${{{-1}} {{a}} {{f}}} + {{{a}} {{{f}^{3}}}} + {{{-1}} {{a}} {{{f}^{5}}}}$	<br>
+Factor	${{a}} {{f}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Prune	${{a}} {{f}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Tidy	${{a}} {{f}} {{\left({{-{1}} + {{{f}^{2}} - {{f}^{4}}}}\right)}}$	<br>
+rhs stack<br>
+Init	${-{f}} {{a}} {{\left({{{1} - {{f}^{2}}} + {{f}^{4}}}\right)}}$	<br>
+unm/Prune/apply	${{-1}} {{f}}$	<br>
+unm/Prune/apply	${{-1}} {{{f}^{2}}}$	<br>
+-/Prune/apply	${1} + {{{-1}} {{{f}^{2}}}}$	<br>
++/Prune/flatten	${1} + {{{-1}} {{{f}^{2}}}} + {{f}^{4}}$	<br>
+*/Prune/flatten	${{-1}} {{a}} {{f}} {{\left({{1} + {{{-1}} {{{f}^{2}}}} + {{f}^{4}}}\right)}}$	<br>
+Prune	${{-1}} {{a}} {{f}} {{\left({{1} + {{{-1}} {{{f}^{2}}}} + {{f}^{4}}}\right)}}$	<br>
+^/Expand/integerPower	${{f}} {{f}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}} {{f}}$	<br>
+*/Expand/apply	${{{-1}} {{a}} {{f}} {{1}}} + {{{-1}} {{a}} {{f}} {{{{-1}} {{{{f}} {{f}}}}}}} + {{{-1}} {{a}} {{f}} {{{{f}} {{f}} {{f}} {{f}}}}}$	<br>
+Expand	${{{-1}} {{a}} {{f}} {{1}}} + {{{-1}} {{a}} {{f}} {{{{-1}} {{{{f}} {{f}}}}}}} + {{{-1}} {{a}} {{f}} {{{{f}} {{f}} {{f}} {{f}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${f}^{2}$	<br>
++/Prune/combineConstants	$3$	<br>
+*/Prune/apply	${{a}} {{{f}^{3}}}$	<br>
+*/Prune/flatten	${{a}} {{{f}^{3}}}$	<br>
++/Prune/combineConstants	$4$	<br>
+*/Prune/apply	${f}^{4}$	<br>
++/Prune/combineConstants	$5$	<br>
+*/Prune/apply	${{-1}} {{a}} {{{f}^{5}}}$	<br>
+Prune	${{{-1}} {{a}} {{f}}} + {{{a}} {{{f}^{3}}}} + {{{-1}} {{a}} {{{f}^{5}}}}$	<br>
+Factor	${{a}} {{f}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Prune	${{a}} {{f}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Expand	${{{a}} {{f}} \cdot {{-1}}} + {{{a}} {{f}} {{{{f}} {{f}}}}} + {{{a}} {{f}} {{{{-1}} {{{{f}} {{f}} {{f}} {{f}}}}}}}$	<br>
+Prune	${{{-1}} {{a}} {{f}}} + {{{a}} {{{f}^{3}}}} + {{{-1}} {{a}} {{{f}^{5}}}}$	<br>
+Factor	${{a}} {{f}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Prune	${{a}} {{f}} {{\left({{-1} + {{f}^{2}} + {{{-1}} {{{f}^{4}}}}}\right)}}$	<br>
+Tidy	${{a}} {{f}} {{\left({{-{1}} + {{{f}^{2}} - {{f}^{4}}}}\right)}}$	<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>replace f * quadratic of f^2 with f * quadratic of f, no simplification loop</b><br>
+<code>asserteq(-f * a^2 + f^2 * a^2 - f^3 * a^2, -f * a^2 * (1 - f  + f^2), true)</code>
+</td><td>
+expected ${{ {-{f}} {{{a}^{2}}}} + {{{{f}^{2}}} {{{a}^{2}}}}} - {{{{f}^{3}}} {{{a}^{2}}}}$ to equal ${-{f}} {{{a}^{2}}} {{\left({{{1} - {f}} + {{f}^{2}}}\right)}}$<br>
+found ${-{{{f}} {{{a}^{2}}}}} + {{{{{a}^{2}}} {{{f}^{2}}}} - {{{{a}^{2}}} {{{f}^{3}}}}}$ vs ${-{{{f}} {{{a}^{2}}}}} + {{{{{a}^{2}}} {{{f}^{2}}}} - {{{{a}^{2}}} {{{f}^{3}}}}}$<br>
+lhs stack<br>
+Init	${{ {-{f}} {{{a}^{2}}}} + {{{{f}^{2}}} {{{a}^{2}}}}} - {{{{f}^{3}}} {{{a}^{2}}}}$	<br>
+unm/Prune/apply	${{-1}} {{f}}$	<br>
+*/Prune/flatten	${{-1}} {{f}} {{{a}^{2}}}$	<br>
+unm/Prune/apply	${{-1}} {{{a}^{2}}} {{{f}^{3}}}$	<br>
+-/Prune/apply	${{{-1}} {{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{2}}}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+Prune	${{{-1}} {{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{2}}}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+^/Expand/integerPower	${{a}} {{a}}$	<br>
+^/Expand/integerPower	${{a}} {{a}}$	<br>
+^/Expand/integerPower	${{f}} {{f}}$	<br>
+^/Expand/integerPower	${{a}} {{a}}$	<br>
+^/Expand/integerPower	${{f}} {{f}} {{f}}$	<br>
+Expand	${{{-1}} {{f}} {{{{a}} {{a}}}}} + {{{{{a}} {{a}}}} {{{{f}} {{f}}}}} + {{{-1}} {{{{a}} {{a}}}} {{{{f}} {{f}} {{f}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${f}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$3$	<br>
+*/Prune/apply	${f}^{3}$	<br>
+Prune	${{{-1}} {{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{2}}}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+*/Factor/combineMulOfLikePow	${\left({{{a}} {{f}}}\right)}^{2}$	<br>
+Factor	${{{-1}} {{f}} {{{a}^{2}}}} + {{\left({{{a}} {{f}}}\right)}^{2}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+Prune	${{{-1}} {{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{2}}}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+Tidy	${-{{{f}} {{{a}^{2}}}}} + {{{{{a}^{2}}} {{{f}^{2}}}} - {{{{a}^{2}}} {{{f}^{3}}}}}$	<br>
+rhs stack<br>
+Init	${-{f}} {{{a}^{2}}} {{\left({{{1} - {f}} + {{f}^{2}}}\right)}}$	<br>
+unm/Prune/apply	${{-1}} {{f}}$	<br>
+unm/Prune/apply	${{-1}} {{f}}$	<br>
+-/Prune/apply	${1} + {{{-1}} {{f}}}$	<br>
++/Prune/flatten	${1} + {{{-1}} {{f}}} + {{f}^{2}}$	<br>
+*/Prune/flatten	${{-1}} {{f}} {{{a}^{2}}} {{\left({{1} + {{{-1}} {{f}}} + {{f}^{2}}}\right)}}$	<br>
+Prune	${{-1}} {{f}} {{{a}^{2}}} {{\left({{1} + {{{-1}} {{f}}} + {{f}^{2}}}\right)}}$	<br>
+^/Expand/integerPower	${{a}} {{a}}$	<br>
+^/Expand/integerPower	${{f}} {{f}}$	<br>
+*/Expand/apply	${{{-1}} {{f}} {{{{a}} {{a}}}} {{1}}} + {{{-1}} {{f}} {{{{a}} {{a}}}} {{{{-1}} {{f}}}}} + {{{-1}} {{f}} {{{{a}} {{a}}}} {{{{f}} {{f}}}}}$	<br>
+Expand	${{{-1}} {{f}} {{{{a}} {{a}}}} {{1}}} + {{{-1}} {{f}} {{{{a}} {{a}}}} {{{{-1}} {{f}}}}} + {{{-1}} {{f}} {{{{a}} {{a}}}} {{{{f}} {{f}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${{{a}^{2}}} {{{f}^{2}}}$	<br>
+*/Prune/flatten	${{{a}^{2}}} {{{f}^{2}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${a}^{2}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${f}^{2}$	<br>
++/Prune/combineConstants	$3$	<br>
+*/Prune/apply	${{-1}} {{{a}^{2}}} {{{f}^{3}}}$	<br>
+Prune	${{{-1}} {{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{2}}}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+*/Factor/combineMulOfLikePow	${\left({{{a}} {{f}}}\right)}^{2}$	<br>
+Factor	${{{-1}} {{f}} {{{a}^{2}}}} + {{\left({{{a}} {{f}}}\right)}^{2}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+Prune	${{{-1}} {{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{2}}}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+Expand	${{{-1}} {{f}} {{{{a}} {{a}}}}} + {{{{{a}} {{a}}}} {{{{f}} {{f}}}}} + {{{-1}} {{{{a}} {{a}}}} {{{{f}} {{f}} {{f}}}}}$	<br>
+Prune	${{{-1}} {{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{2}}}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+Factor	${{{-1}} {{f}} {{{a}^{2}}}} + {{\left({{{a}} {{f}}}\right)}^{2}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+Prune	${{{-1}} {{f}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{f}^{2}}}} + {{{-1}} {{{a}^{2}}} {{{f}^{3}}}}$	<br>
+Tidy	${-{{{f}} {{{a}^{2}}}}} + {{{{{a}^{2}}} {{{f}^{2}}}} - {{{{a}^{2}}} {{{f}^{3}}}}}$	<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>

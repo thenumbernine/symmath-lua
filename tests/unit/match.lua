@@ -18,6 +18,13 @@ assertne(x, y)
 assert(x:match(x))
 assert(not x:match(y))
 
+-- constants
+
+assertalleq({const(2):match(const(2)*W(1))}, {const(1)})	-- implicit mul by 1
+assertalleq({const(2):match(const(1)*W(1))}, {const(2)})
+assertalleq({const(2):match(const(2)/W(1))}, {const(1)})	-- implicit divide by 1
+assertalleq({const(4):match(const(2)*W(1))}, {const(2)})	-- implicit integer factoring
+
 -- functions
 
 assertalleq({sin(x):match(sin(W(1)))}, {x})
@@ -190,6 +197,17 @@ do local a, b = (1/(x*(3*x+4))):match(1 / (x * (W{1, cannotDependOn=x} * x + W{2
 
 do local a, b = (1/(x*(3*x+4))):factorDivision():match(1 / (W{1, cannotDependOn=x} * x * x + W{2, cannotDependOn=x} * x)) assert(a == const(3)) assert(b == const(4)) end
 
+-- pow
+
+assertalleq({(x^2):match(x^W(1))}, {const(2)})
+assertalleq({(x^2):match(W(1)^2)}, {x})
+assertalleq({(x^2):match(W(1)^W(2))}, {x, 2})
+-- defaults:
+assertalleq({(x):match(x^W(1))}, {const(1)})
+assertalleq({(x):match(W(1)^1)}, {x})
+assertalleq({(x):match(W(1)^W(2))}, {x, const(1)})
+
+-- etc
 
 do local expr = sin(2*x) + cos(3*x) local a,b = expr:match( sin(W(1)) + cos(W(2)) ) print(a[1], a[2] ,b) end
 do local expr = sin(2*x) * cos(3*x) local a,b = expr:match( sin(W(1)) * cos(W(2)) ) print(a[1], a[2] ,b) end

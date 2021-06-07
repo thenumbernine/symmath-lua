@@ -312,6 +312,7 @@ function mul:wildcardMatches(a, matches)
 	local Constant = symmath.Constant
 	local Wildcard = symmath.Wildcard
 	local add = symmath.op.add
+	local pow = symmath.op.pow
 local SingleLine = symmath.export.SingleLine
 local Verbose = symmath.export.Verbose
 --print("mul.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'})')
@@ -381,15 +382,59 @@ local Verbose = symmath.export.Verbose
 
 	local defaultValue = Constant(1)
 	local matchExpr = a
-	if #nonWildcards == 1 then
+	if #nonWildcards == 1 
+	and #wildcards > 0
+	then
 --print("mul.wildcardMatches matchExpr "..require 'symmath.export.SingleLine'(a))
 		-- TODO what if we are doing x:match(W{1,atLeast=1} * W{2}) ?
-		if not a:match(nonWildcards[1], matches) then
+		local submatches = table(matches)
+		if not a:match(nonWildcards[1], submatches) then
 --print("mul.wildcardMatches single remaining mul sub-term didn't match first non-wildcard - failing")
+			
+			--[[
+			(a = Constant(4)) : match ( b = mul(Constant (2), Wildcard(1)) )
+			calls (b = mul(Constant (2), Wildcard(1))) : wildcardMatches ( (a = Constant(4)) )
+			has 1 non-wildcard: Constant(2)
+			and 1 wildcard: Wildcard(1)
+			
+			now if (a = Constant(4)) matches (nw[1] = Constant(2)) then the next condition hits 
+			 and we continue on with our matched expresssion set to the operator identity of Constant(1)
+			but if it doesn't match ...
+			... what if we can just factor one out of the other?
+			
+			this is a question of the scope of the function:
+			how much is this tree matching, and how much is this unknown substitution?
+			tree matching? fail here.
+			unknown-substitution? set the match to the fraction of 
+			--]]
+
+			-- [[ unknown-substitution
+			-- this does fix Constant(4):match(Constant(2) * Wildcard(1))
+			-- but this causes op/div's pattern matching to a / (b + sqrt(c)) 
+			--  to successfully match a nil value
+			if #wildcards > 0 then
+				matchExpr = (a / nonWildcards[1])()
+				submatches = table(matches)
+				if matchExpr:match(wildcards[1], submatches) then
+					for k,v in pairs(matches) do matches[k] = nil end
+					for k,v in pairs(submatches) do matches[k] = v end
+					for i=2,#wildcards do defaultValue:match(wildcadrs[i], matches) end
+--for i=1,#wildcards do
+--	print('wildcards['..wildcards[i].index..'] = '..symmath.export.SingleLine(matches[wildcards[i].index]))
+--end
+					return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
+				end
+			end
+			--]]
 			return false
+		else
+			-- a:match(nonWildcards[1]) success so keep the matches:
+			for k,v in pairs(matches) do matches[k] = nil end
+			for k,v in pairs(submatches) do matches[k] = v end
+			-- success, so matches have been written
+			-- a matches nonWildcards[1]
+			matchExpr = defaultValue
 		end
-		-- a matches nonWildcards[1]
-		matchExpr = defaultValue
 	end
 
 	-- if any of these wildcards needed a term then fail
@@ -435,6 +480,7 @@ local Verbose = symmath.export.Verbose
 				error"match() doesn't work with unflattened mul's"
 			elseif Wildcard:isa(w)
 			or add:isa(w)
+			or pow:isa(w)
 			then
 				-- check before going through with it
 				if not cmpExpr:match(w, table(matches)) then
@@ -454,6 +500,8 @@ local Verbose = symmath.export.Verbose
 				--matches[w.index] = cmpExpr
 			elseif add:isa(w) then
 				-- use the state this time, so it does modify "matches"
+				cmpExpr:match(w, matches)
+			elseif pow:isa(w) then
 				cmpExpr:match(w, matches)
 			-- elseif mul.is shouldn't happen if all muls are flattened upon construction
 			elseif mul:isa(w) then

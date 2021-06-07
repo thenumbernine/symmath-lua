@@ -830,7 +830,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 				then
 					local a = (expr[1][1] ^ (expr[1][2]/2))
 					local b = (expr[2][2][1] ^ (expr[2][2][2]/2))
-					return factor:apply( (a + b) * (a - b) )
+					return factor:apply( ((a + b) * (a - b)):prune() )
 				end
 			end
 			-- TODO factoring higher polys ... this is just one specific case
@@ -850,10 +850,10 @@ print('prodList', prodLists:toExpr(), '<br>')
 					local a,c = expr[squares[1]], expr[squares[2]]
 					local b = expr[notsquares[1]]
 					if b == symmath.op.mul(2, a[1], c[1]) then
-						return factor:apply( (a[1] + c[1]) * (a[1] + c[1]) )
+						return factor:apply( ((a[1] + c[1]) * (a[1] + c[1])):prune() )
 					end
 					if b == symmath.op.mul(Constant(-2), a[1], c[1]) then
-						return factor:apply( (a[1] - c[1]) * (a[1] - c[1]) )
+						return factor:apply( ((a[1] - c[1]) * (a[1] - c[1])):prune() )
 					end
 				end
 			end
@@ -870,7 +870,13 @@ print('prodList', prodLists:toExpr(), '<br>')
 
 	
 -- without this (y-x)/(x-y) doesn't simplify to -1
--- [=[
+-- but with this, -f * a^2 + f^3 * a^2 - f^5 * a^2 will fail
+--[=[
+			local minusOneIndexes = table.mapi(prodLists, function(pj,j)
+				return pj:find(nil, function(x)
+					return Constant.isValue(x.term, -1)
+				end)
+			end)
 			-- instead of only factoring the -1 out of the constant
 			-- also add double the -1 to the rest of the terms (which should equate to being positive)
 			-- so that signs don't mess with simplifying division
@@ -879,22 +885,26 @@ print('prodList', prodLists:toExpr(), '<br>')
 				if (
 					--if expr[i] has a leading negative constant
 					#prodLists[i] > 0
-				-- [[ old - expect a leading constant
-				and Constant:isa(prodLists[i][1].term) 
-				and prodLists[i][1].term.value < 0 
-				--]]
-				--[[ new - look through all constants
-				-- TODO enabling this breaks things, but the code above is inserting Constant(-1) not in front, so the old check would miss it?
-				and prodLists[i]:find(nil, function(x) return Constant.isValue(x, -1) end)
-				--]]
+					-- [[ old - expect a leading constant
+					and Constant:isa(prodLists[i][1].term) 
+					and prodLists[i][1].term.value < 0 
+					--]]
+					--[[ alternative to old, but doesn't work like the old does
+					and symmath.set.negativeReal:contains(prodLists[i][1])
+					--]]
+					--[[ new - look through all constants
+					-- TODO enabling this breaks things, but the code above is inserting Constant(-1) not in front, so the old check would miss it?
+					and prodLists[i]:find(nil, function(x) return Constant.isValue(x, -1) end)
+					--]]
 				)
 				--and symmath.set.negativeReal:contains(expr)
 				--and not symmath.set.positiveReal:contains(expr)
 				then
+					-- only factoring -1's out of i+1 causes us to choose which -1's to factor out based on whatever sorting prodList used
+					--  and that's what allows (x-1)/(1-x) => (-1+x)/(1-x) => ((-1)*1 + (-1)^2*x) / (1 + (-1)*x) => ((-1)*(1 + (-1)*x)) / (1 + (-1)*x) => -1
 					for j=i+1,#expr do
-						local index = prodLists[j]:find(nil, function(x)
-							return Constant.isValue(x.term, -1)
-						end)
+						-- find a -1
+						local index = minusOneIndexes[j]
 						if index then
 							--prodLists[j][index].power = (prodLists[j][index].power + 2):prune()
 							prodLists[j][index].power = (prodLists[j][index].power + 2):simplify()

@@ -320,7 +320,6 @@
 <b></b><br>
 <code>asserteq(lim(sin(x), x, -inf), invalid)</code>
 </td><td>
-mul by invalid ... makes invalid
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -539,7 +538,6 @@ mul by invalid ... makes invalid
 <b></b><br>
 <code>asserteq(lim(sin(x), x, -inf), invalid)</code>
 </td><td>
-mul by invalid ... makes invalid
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -590,7 +588,6 @@ mul by invalid ... makes invalid
 <b></b><br>
 <code>asserteq(lim(tan(x), x, -inf), invalid)</code>
 </td><td>
-mul by invalid ... makes invalid
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -1085,246 +1082,385 @@ ${\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}$
 <code>asserteq(lim(1 / (x - 1), x, 1), invalid)</code>
 </td><td>
 expected ${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{x} - {1}}}}$ to equal $¿$<br>
-instead found ${\underset{ x\rightarrow 1}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$ vs $¿$<br>
+found ${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $¿$<br>
 lhs stack<br>
-init	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{x} - {1}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-expand	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{{-1}} {{\left({{1} + {{{-1}} {{x}}}}\right)}}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-expand	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{{{\frac{1}{-1}}{\left({{1} + {{{-1}} {{x}}}}\right)}}} \cdot {{-1}}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-tidy	${\underset{ x\rightarrow 1}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$	<br>
+Init	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{x} - {1}}}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {x}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Expand	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Tidy	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-init	$¿$	<br>
-prune	$¿$	<br>
-expand	$¿$	<br>
-prune	$¿$	<br>
-factor	$¿$	<br>
-prune	$¿$	<br>
-tidy	$¿$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+Init	$¿$	<br>
+Prune	$¿$	<br>
+Expand	$¿$	<br>
+Prune	$¿$	<br>
+Factor	$¿$	<br>
+Prune	$¿$	<br>
+Tidy	$¿$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
 	[string "asserteq(lim(1 / (x - 1), x, 1), invalid)"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+	[C]: at 0x7ff74d444950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq(lim(1 / (x - 1), x, 1, '+'), inf)</code>
 </td><td>
 expected ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{x} - {1}}}}$ to equal $\inf$<br>
-instead found ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$ vs $\inf$<br>
+found ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $\inf$<br>
 lhs stack<br>
-init	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{x} - {1}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{{-1}} {{\left({{1} + {{{-1}} {{x}}}}\right)}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{{{\frac{1}{-1}}{\left({{1} + {{{-1}} {{x}}}}\right)}}} \cdot {{-1}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-tidy	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$	<br>
+Init	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{x} - {1}}}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {x}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Expand	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Tidy	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-init	$\inf$	<br>
-prune	$\inf$	<br>
-expand	$\inf$	<br>
-prune	$\inf$	<br>
-factor	$\inf$	<br>
-prune	$\inf$	<br>
-tidy	$\inf$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+Init	$\inf$	<br>
+Prune	$\inf$	<br>
+Expand	$\inf$	<br>
+Prune	$\inf$	<br>
+Factor	$\inf$	<br>
+Prune	$\inf$	<br>
+Tidy	$\inf$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
 	[string "asserteq(lim(1 / (x - 1), x, 1, '+'), inf)"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+	[C]: at 0x7ff74d444950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq(lim(1 / (x - 1), x, 1, '-'), -inf)</code>
 </td><td>
 expected ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{x} - {1}}}}$ to equal $-{\inf}$<br>
-instead found ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$ vs $-{\inf}$<br>
+found ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $-{\inf}$<br>
 lhs stack<br>
-init	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{x} - {1}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{{-1}} {{\left({{1} + {{{-1}} {{x}}}}\right)}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{{{\frac{1}{-1}}{\left({{1} + {{{-1}} {{x}}}}\right)}}} \cdot {{-1}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-tidy	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$	<br>
+Init	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{x} - {1}}}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {x}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Expand	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Tidy	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-init	$-{\inf}$	<br>
-prune	${{-1}} {{\inf}}$	<br>
-expand	${{-1}} {{\inf}}$	<br>
-prune	${{-1}} {{\inf}}$	<br>
-factor	${{-1}} {{\inf}}$	<br>
-prune	${{-1}} {{\inf}}$	<br>
-tidy	$-{\inf}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+Init	$-{\inf}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
+unm/Prune/apply	${{-1}} {{\inf}}$	<br>
+Prune	${{-1}} {{\inf}}$	<br>
+Expand	${{-1}} {{\inf}}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
+Prune	${{-1}} {{\inf}}$	<br>
+Factor	${{-1}} {{\inf}}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
+Prune	${{-1}} {{\inf}}$	<br>
+Constant/Tidy/apply	$-{1}$	<br>
+*/Tidy/apply	$\inf$	<br>
+*/Tidy/apply	$-{\inf}$	<br>
+Tidy	$-{\inf}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
 	[string "asserteq(lim(1 / (x - 1), x, 1, '-'), -inf)"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+	[C]: at 0x7ff74d444950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq(lim((x + 1) / (x^2 - 1), x, 1), invalid)</code>
 </td><td>
 expected ${\underset{ x\rightarrow 1}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$ to equal $¿$<br>
-instead found ${\underset{ x\rightarrow 1}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$ vs $¿$<br>
+found ${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $¿$<br>
 lhs stack<br>
-init	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
-expand	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{-1} + {{{x}} {{x}}}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
-factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{{\left({{x} + {-{1}}}\right)}} {{\left({{1} + {x}}\right)}}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-expand	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{{-1}} {{\left({{1} + {{{-1}} {{x}}}}\right)}}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-expand	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{{{\frac{1}{-1}}{\left({{1} + {{{-1}} {{x}}}}\right)}}} \cdot {{-1}}}}}$	<br>
-prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-tidy	${\underset{ x\rightarrow 1}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$	<br>
+Init	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {{x}^{2}}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$2$	<br>
+Limit/Prune/apply	$2$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$2$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$2$	<br>
+Limit/Prune/apply	$2$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$2$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
+^/Expand/integerPower	${{x}} {{x}}$	<br>
+Expand	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{-1} + {{{x}} {{x}}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${x}^{2}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$2$	<br>
+Limit/Prune/apply	$2$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$2$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$2$	<br>
+Limit/Prune/apply	$2$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$2$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
+Factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{{\left({{x} + {-{1}}}\right)}} {{\left({{1} + {x}}\right)}}}}}$	<br>
+Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Expand	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Tidy	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-init	$¿$	<br>
-prune	$¿$	<br>
-expand	$¿$	<br>
-prune	$¿$	<br>
-factor	$¿$	<br>
-prune	$¿$	<br>
-tidy	$¿$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+Init	$¿$	<br>
+Prune	$¿$	<br>
+Expand	$¿$	<br>
+Prune	$¿$	<br>
+Factor	$¿$	<br>
+Prune	$¿$	<br>
+Tidy	$¿$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
 	[string "asserteq(lim((x + 1) / (x^2 - 1), x, 1), inva..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+	[C]: at 0x7ff74d444950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq(lim((x + 1) / (x^2 - 1), x, 1, '+'), inf)</code>
 </td><td>
 expected ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$ to equal $\inf$<br>
-instead found ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$ vs $\inf$<br>
+found ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $\inf$<br>
 lhs stack<br>
-init	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{{x}} {{x}}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{{\left({{x} + {-{1}}}\right)}} {{\left({{1} + {x}}\right)}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{{-1}} {{\left({{1} + {{{-1}} {{x}}}}\right)}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{{{\frac{1}{-1}}{\left({{1} + {{{-1}} {{x}}}}\right)}}} \cdot {{-1}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-tidy	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$	<br>
+Init	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {{x}^{2}}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$2$	<br>
+Limit/Prune/apply	$2$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$2$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
+^/Expand/integerPower	${{x}} {{x}}$	<br>
+Expand	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{{x}} {{x}}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${x}^{2}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$2$	<br>
+Limit/Prune/apply	$2$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$2$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
+Factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{{\left({{x} + {-{1}}}\right)}} {{\left({{1} + {x}}\right)}}}}}$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Expand	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Tidy	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-init	$\inf$	<br>
-prune	$\inf$	<br>
-expand	$\inf$	<br>
-prune	$\inf$	<br>
-factor	$\inf$	<br>
-prune	$\inf$	<br>
-tidy	$\inf$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+Init	$\inf$	<br>
+Prune	$\inf$	<br>
+Expand	$\inf$	<br>
+Prune	$\inf$	<br>
+Factor	$\inf$	<br>
+Prune	$\inf$	<br>
+Tidy	$\inf$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
 	[string "asserteq(lim((x + 1) / (x^2 - 1), x, 1, '+'),..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+	[C]: at 0x7ff74d444950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq(lim((x + 1) / (x^2 - 1), x, 1, '-'), -inf)</code>
 </td><td>
 expected ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$ to equal $-{\inf}$<br>
-instead found ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$ vs $-{\inf}$<br>
+found ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $-{\inf}$<br>
 lhs stack<br>
-init	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{{x}} {{x}}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{{\left({{x} + {-{1}}}\right)}} {{\left({{1} + {x}}\right)}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{{-1}} {{\left({{1} + {{{-1}} {{x}}}}\right)}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-expand	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{{{\frac{1}{-1}}{\left({{1} + {{{-1}} {{x}}}}\right)}}} \cdot {{-1}}}}}$	<br>
-prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{-1}{{1} + {{{-1}} {{x}}}}}}$	<br>
-tidy	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\left( -{\frac{1}{{1} - {x}}}\right)}}$	<br>
+Init	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$	<br>
+unm/Prune/apply	$-1$	<br>
+-/Prune/apply	${-1} + {{x}^{2}}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$2$	<br>
+Limit/Prune/apply	$2$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$2$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
+^/Expand/integerPower	${{x}} {{x}}$	<br>
+Expand	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{{x}} {{x}}}}}}$	<br>
++/Prune/combineConstants	$2$	<br>
+*/Prune/apply	${x}^{2}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$2$	<br>
+Limit/Prune/apply	$2$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$2$	<br>
+^/Prune/simplifyConstantPowers	$1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
+Factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{{\left({{x} + {-{1}}}\right)}} {{\left({{1} + {x}}\right)}}}}}$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Expand	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Tidy	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-init	$-{\inf}$	<br>
-prune	${{-1}} {{\inf}}$	<br>
-expand	${{-1}} {{\inf}}$	<br>
-prune	${{-1}} {{\inf}}$	<br>
-factor	${{-1}} {{\inf}}$	<br>
-prune	${{-1}} {{\inf}}$	<br>
-tidy	$-{\inf}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+Init	$-{\inf}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
+unm/Prune/apply	${{-1}} {{\inf}}$	<br>
+Prune	${{-1}} {{\inf}}$	<br>
+Expand	${{-1}} {{\inf}}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
+Prune	${{-1}} {{\inf}}$	<br>
+Factor	${{-1}} {{\inf}}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
+Prune	${{-1}} {{\inf}}$	<br>
+Constant/Tidy/apply	$-{1}$	<br>
+*/Tidy/apply	$\inf$	<br>
+*/Tidy/apply	$-{\inf}$	<br>
+Tidy	$-{\inf}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
 	[string "asserteq(lim((x + 1) / (x^2 - 1), x, 1, '-'),..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+	[C]: at 0x7ff74d444950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1528,35 +1664,58 @@ derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {\exp\left( x\r
 <code>asserteq(lim(x^n * e^x, x, 0), 0)</code>
 </td><td>
 expected ${\underset{ x\rightarrow 0}{\lim}}{{\left({{{{x}^{n}}} {{\exp\left( x\right)}}}\right)}}$ to equal 0<br>
-instead found ${0}^{n}$ vs $0$<br>
+found ${0}^{n}$ vs $0$<br>
 lhs stack<br>
-init	${\underset{ x\rightarrow 0}{\lim}}{{\left({{{{x}^{n}}} {{\exp\left( x\right)}}}\right)}}$	<br>
-prune	${0}^{n}$	<br>
-expand	${0}^{n}$	<br>
-prune	${0}^{n}$	<br>
-factor	${0}^{n}$	<br>
-prune	${0}^{n}$	<br>
-tidy	${0}^{n}$	<br>
+Init	${\underset{ x\rightarrow 0}{\lim}}{{\left({{{{x}^{n}}} {{\exp\left( x\right)}}}\right)}}$	<br>
+Limit/Prune/apply	$e$	<br>
+Limit/Prune/apply	$0$	<br>
+^/Prune/xToTheZero	$1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$0$	<br>
+Limit/Prune/apply	$n$	<br>
+Limit/Prune/apply	${0}^{n}$	<br>
+Constant/Tidy/apply	$0$	<br>
+*/Prune/apply	${0}^{n}$	<br>
+Limit/Prune/apply	${0}^{n}$	<br>
+Limit/Prune/apply	$e$	<br>
+Limit/Prune/apply	$0$	<br>
+^/Prune/xToTheZero	$1$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$0$	<br>
+Limit/Prune/apply	$n$	<br>
+Limit/Prune/apply	${0}^{n}$	<br>
+Constant/Tidy/apply	$0$	<br>
+*/Prune/apply	${0}^{n}$	<br>
+Limit/Prune/apply	${0}^{n}$	<br>
+Limit/Prune/apply	${0}^{n}$	<br>
+Prune	${0}^{n}$	<br>
+Expand	${0}^{n}$	<br>
+Prune	${0}^{n}$	<br>
+Factor	${0}^{n}$	<br>
+Prune	${0}^{n}$	<br>
+Constant/Tidy/apply	$0$	<br>
+Tidy	${0}^{n}$	<br>
 rhs stack<br>
-init	$0$	<br>
-prune	$0$	<br>
-expand	$0$	<br>
-prune	$0$	<br>
-factor	$0$	<br>
-prune	$0$	<br>
-tidy	$0$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+Init	$0$	<br>
+Prune	$0$	<br>
+Expand	$0$	<br>
+Prune	$0$	<br>
+Factor	$0$	<br>
+Prune	$0$	<br>
+Constant/Tidy/apply	$0$	<br>
+Tidy	$0$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:28: in function 'asserteq'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
 	[string "asserteq(lim(x^n * e^x, x, 0), 0)"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff637734950
+	[C]: at 0x7ff74d444950
 </td></tr>
 <tr><td>
 <b></b><br>
