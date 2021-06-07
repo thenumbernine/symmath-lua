@@ -67,12 +67,12 @@ Derivative.precedence = 6
 -- default is for Verbose and SymMath output
 Derivative.name = 'Derivative'
 Derivative.nameForExporterTable = table(Derivative.nameForExporterTable)
-Derivative.nameForExporterTable.Console = 'd'
-Derivative.nameForExporterTable.LaTeX = 'd'
-Derivative.nameForExporterTable.Language = 'd'	-- used as variable name prefixes
+Derivative.nameForExporterTable.Console = '∂'
+Derivative.nameForExporterTable.LaTeX = '\\partial'
+Derivative.nameForExporterTable.Language = 'd'	-- used for variable name prefix
 
--- base class is the total derivative
-Derivative.isPartial = false
+-- base class is the partial derivative
+Derivative.isTotal = false
 
 function Derivative:init(...)
 	local Variable = require 'symmath.Variable'
@@ -196,9 +196,6 @@ Derivative.rules = {
 				TensorRef:isa(expr[1])
 				and Variable:isa(expr[1][1])
 			) then
-				if expr.isPartial then
-					return Constant(0)
-				end
 				local var = expr[1]
 				for i=2,#expr do
 					local wrt = expr[i]
