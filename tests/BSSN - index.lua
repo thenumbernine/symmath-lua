@@ -68,144 +68,6 @@ local function printHeader(str)
 	io.stderr:flush()
 end
 
-
---[[
-transform all indexes by a specific transformation
-this is a lot like the above function
-
-how to generalize the above function?
-above: if the lower/upper doesn't match our lower/upper then insert multiplciations with metric tensors
-ours: if the capital/lowercase doesn't match our capital/lowercase then do the same
-
-rule:
-	defaultSymbols = what default symbols to use.  if this isn't specified then Tensor.defaultSymbols is used
-	matches = function(x) returns true to use this TensorRef
-	applyToIndex = function(x,i,gs,unusedSymbols)
-		x = TensorRef we are examining
-		i = the i'th index we are examining
-		gs = list of added expressions to insert into
-		unusedSymbols = list of unused symbols to take from
-		returns true if the TensorRef's index needs to be changed
---]]
-local function insertTransformsToSetVariance(expr, rule)
-	local mul = require 'symmath.op.mul'
-
-	local defaultSymbols = nil 
-		--or args and args.symbols
-		or rule.defaultSymbols
-		or require 'symmath.Tensor'.defaultSymbols
-
-
-	-- TODO assert that we are in add-mul-div form?
-	-- otherwise this could introduce bad indexes ...
-	-- in fact, even if we are in add-mul-div, applying to multiple products will still run into this issue
-	local exprFixed, exprSum, exprExtra = expr:getIndexesUsed()
-	local exprAll = table():append(exprFixed, exprSum, exprExtra)
-	local unusedSymbols = table(defaultSymbols)
-	for _,s in ipairs(exprAll) do
-		unusedSymbols:removeObject(s.symbol)
-	end
-	-- so for now i will choose unnecessarily differing symbols
-	-- just call tidyIndexes() afterwards to fix this
-	
-	local handleTerm
-
-	local function fixTensorRef(x)
-		x = x:clone()
-		-- TODO move this to 'rule'
-		if TensorRef:isa(x) then
-			if not Variable:isa(x[1]) then
-				x[1] = handleTerm(x[1])
-			elseif rule.matches(x) then
-				local gs = table()
-				for i=2,#x do
-					rule.applyToIndex(x, i, gs, unusedSymbols)
-				end
-				return x, gs:unpack()
-			end
-		end
-		return x
-	end
-
-	local function handleMul(x)
-		local newMul = table()
-		for i=1,#x do
-			newMul:append{fixTensorRef(x[i])}
-		end
-		return mul(newMul:unpack())
-	end
-
-	-- could be a single term or multiple multiplied terms
-	handleTerm = function (expr)
-		expr = expr:clone()
-		if mul:isa(expr) then
-			return handleMul(expr)
-		else
-			return expr:map(function(x)
-				if mul:isa(x) then
-					return handleMul(x)
-				else
-					local results = {fixTensorRef(x)}
-					if #results == 1 then
-						return results[1]
-					else
-						return mul(table.unpack(results))
-					end
-				end
-			end)
-		end
-		return expr
-	end
-	return handleTerm(expr)
-end
-
--- [=[
---[[
-expr = expression to replace TensorRef's of
-t = TensorRef
-metric (optional) = metric to use
-
-For this particular TensorRef (of a variable and indexes),
-looks for all the TensorRefs of matching variable with matching # of indexes
-(and no derivatives for that matter ... unless they are covariant derivatives, or the last index only is changed?),
-and insert enough metric terms to raise/lower these so that they will match the 't' argument.
---]]
-local function insertMetricsToSetVariance(expr, find, metric)
-	assert(metric)
-	
-	assert(TensorRef:isa(find))
-	--assert(Variable:isa(find[1]))
-	assert(not find:hasDerivIndex())	-- TODO handle derivs later?  also TODO call splitOffDerivIndexes() first? or expect the caller to do this 
-
-	return insertTransformsToSetVariance(expr, {
-		matches = function(x)
-			return find[1] == x[1]			-- TensorRef base variable matches
-			and #find == #x					-- number of indexes match
-			and not x:hasDerivIndex()	-- not doing this right now
-		end,
-		applyToIndex = function(x, i, gs, unusedSymbols)
-			local xi = x[i]
-			local findi = find[i]
-			if not not findi.lower ~= not not xi.lower then
-				local sumSymbol = unusedSymbols:remove(1)
-				assert(sumSymbol, "couldn't get a new symbol")
-				local g = TensorRef(
-					metric,
-					xi:clone(),
-					TensorIndex{
-						lower = xi.lower,
-						symbol = sumSymbol,
-					}
-				)
-				gs:insert(g)
-				xi.lower = findi.lower
-				xi.symbol = sumSymbol
-			end
-		end,
-	})
-end
---]=]
-
 local e = var'e'
 
 local function check(x)
@@ -371,7 +233,7 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 		return expr
 	end
 
-	return insertTransformsToSetVariance(expr, {
+	return expr:insertTransformsToSetVariance{
 		defaultSymbols = defaultSymbols,
 		matches = function(x)
 			return not x:hasDerivIndex()
@@ -403,7 +265,7 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 				end
 			end
 		end,
-	})
+	}
 end
 
 local simplifyOnlyBarMetrics
@@ -535,13 +397,13 @@ end
 --[[ testing:
 local expr = ABar'_ij'
 printbr(expr)
-expr = insertMetricsToSetVariance(expr, ABar'^ij', gammaBar)
+expr = expr:insertMetricsToSetVariance(ABar'^ij', gammaBar)
 printbr(expr)
 printbr()
 
 local expr = ABar'_ij' + gammaBar'_ij' * ABar'^kl' * ABar'_kl'
 printbr(expr)
-expr = insertMetricsToSetVariance(expr, ABar'^ij', gammaBar)
+expr = expr:insertMetricsToSetVariance(ABar'^ij', gammaBar)
 printbr(expr)
 printbr()
 
@@ -645,7 +507,7 @@ local dt_gamma_ll_def = gamma'_ij,t':eq(-2 * alpha * K'_ij' + beta'_i,j' + beta'
 printbr(dt_gamma_ll_def)
 
 dt_gamma_ll_def = dt_gamma_ll_def:splitOffDerivIndexes()
-dt_gamma_ll_def = insertMetricsToSetVariance(dt_gamma_ll_def, beta'^i', gamma)
+dt_gamma_ll_def = dt_gamma_ll_def:insertMetricsToSetVariance(beta'^i', gamma)
 	:tidyIndexes()
 	:reindex{a='k'}
 printbr(dt_gamma_ll_def)
@@ -1340,7 +1202,7 @@ printbr(dt_LambdaBar_u_def)
 printbr('factoring out', gammaBar'^ij', 'to form', ABar'_ij')
 -- now put the ABar's in lower-lower form so they can be treated as a state variable
 --dt_LambdaBar_u_def = dt_LambdaBar_u_def:replaceIndex(ABar'^ij', gammaBar'^ik' * ABar'_kl' * gammaBar'^lj')
-dt_LambdaBar_u_def = insertMetricsToSetVariance(dt_LambdaBar_u_def, ABar'_ij', gammaBar)
+dt_LambdaBar_u_def = dt_LambdaBar_u_def:insertMetricsToSetVariance(ABar'_ij', gammaBar)
 printbr(dt_LambdaBar_u_def)
 
 printbr('tidying indexes')
@@ -1566,8 +1428,8 @@ dt_K_def = dt_K_def :subst(using)
 printbr(dt_K_def)
 
 printbr('factoring out', gammaBar'^ij', 'to form', ABar'_ij')
-dt_K_def = insertMetricsToSetVariance(dt_K_def, ABar'_ij', gammaBar)
-printbr(dt_K_def)	
+dt_K_def = dt_K_def:insertMetricsToSetVariance(ABar'_ij', gammaBar)
+printbr(dt_K_def)
 
 printbr('using', GammaBar'^ab_b':eq(LambdaBar'^a' - calC'^a' + GammaHat'^a'))
 dt_K_def = dt_K_def 

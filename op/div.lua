@@ -595,9 +595,10 @@ div.rules = {
 		end},
 
 		-- [[ 
-		-- conjugates of square-roots in denominator
-		-- a / (b + sqrt(c)) => a (b - sqrt(c)) / ((b + sqrt(c)) (b - sqrt(c))) => a (b - sqrt(c)) / (b^2 - c)
-		--[=[ the (b + sqrt(c)) matches the remaining Wildcard 
+		--[=[ 
+		conjugates of square-roots in denominator
+		a / (b + sqrt(c)) => a (b - sqrt(c)) / ((b + sqrt(c)) (b - sqrt(c))) => a (b - sqrt(c)) / (b^2 - c)
+		the (b + sqrt(c)) matches the remaining Wildcard 
 		local a,b,c,d = expr:match(Wildcard(1) / ((Wildcard(2) + Wildcard(3) ^ div(1,2)) * Wildcard(4)))
 		if a then
 			print('a\n'..a..'\nb\n'..b..'\nc\n'..c..'\nd\n'..d)
@@ -610,15 +611,23 @@ div.rules = {
 			local mul = symmath.op.mul
 			local Wildcard = symmath.Wildcard
 			local p, q = table.unpack(expr)
-			if mul:isa(q) then
-				for i=1,#q do
-					if add:isa(q[i]) then
-						local a, b, c = q[i]:match(Wildcard(1) + Wildcard(2) * Wildcard(3) ^ div(1,2))
-						if a then
-							q = q:clone()
-							table.remove(q, i)
-							table.insert(q, (a^2 - b^2 * c))
-							return prune:apply((expr[1] * (a - b * c ^ div(1,2))) / q)
+			-- match() going too slow? maybe search for sqrt first?
+			if expr:hasChild(function(x) 
+				return pow:isa(x)
+				and div:isa(x[2])
+				and Constant.isValue(x[2][1], 1)
+				and Constant.isValue(x[2][2], 2)
+			end) then
+				if mul:isa(q) then
+					for i=1,#q do
+						if add:isa(q[i]) then
+							local a, b, c = q[i]:match(Wildcard(1) + Wildcard(2) * Wildcard(3) ^ div(1,2))
+							if a then
+								q = q:clone()
+								table.remove(q, i)
+								table.insert(q, (a^2 - b^2 * c))
+								return prune:apply((expr[1] * (a - b * c ^ div(1,2))) / q)
+							end
 						end
 					end
 				end

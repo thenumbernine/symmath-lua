@@ -68,6 +68,7 @@ build = {
 		["symmath.factor"] = "factor.lua",
 		["symmath.factorDivision"] = "factorDivision.lua",
 		["symmath.factorLinearSystem"] = "factorLinearSystem.lua",
+		["symmath.hasChild"] = "hasChild.lua",
 		["symmath.log"] = "log.lua",
 		["symmath.make_README"] = "make_README.lua",
 		["symmath.map"] = "map.lua",

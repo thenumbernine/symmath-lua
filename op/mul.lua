@@ -317,18 +317,6 @@ local SingleLine = symmath.export.SingleLine
 local Verbose = symmath.export.Verbose
 --print("mul.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'})')
 
-	-- TODO move this to Expression
-	local function find(expr, lookfor)
-		if lookfor(expr) then return true end
-		local found
-		expr:map(function(x)
-			if lookfor(x) then
-				found = true
-			end
-		end)
-		return found
-	end
-	
 	-- 'a' is the 'a' in Expression.match(a,b)
 	-- 'b' is 'self'
 	local nonWildcards = table()
@@ -336,7 +324,7 @@ local Verbose = symmath.export.Verbose
 	for _,w in ipairs(self) do
 		-- TODO what about when add/mul have no sub-wildcards?
 		if w.wildcardMatches
-		and find(w, function(x) return Wildcard:isa(x) end)
+		and w:hasChild(function(x) return Wildcard:isa(x) end)
 		then
 			wildcards:insert(w)
 		else

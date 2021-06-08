@@ -319,6 +319,8 @@ function Expression.__mod(a,b)
 end
 
 -- root-level functions that always apply to expressions
+
+Expression.hasChild = require 'symmath.hasChild'
 Expression.replace = require 'symmath.replace'
 Expression.solve = require 'symmath.solve'
 Expression.map = require 'symmath.map'
@@ -1611,8 +1613,150 @@ function Expression:getRealDomain()
 	return symmath.set.real
 end
 
--- candidates to add here:
--- insertMetricsToSetVariance in 'BSSN - index'
+
+--[[
+transform all indexes by a specific transformation
+this is a lot like the above function
+
+how to generalize the above function?
+above: if the lower/upper doesn't match our lower/upper then insert multiplciations with metric tensors
+ours: if the capital/lowercase doesn't match our capital/lowercase then do the same
+
+rule:
+	defaultSymbols = what default symbols to use.  if this isn't specified then Tensor.defaultSymbols is used
+	matches = function(x) returns true to use this TensorRef
+	applyToIndex = function(x,i,gs,unusedSymbols)
+		x = TensorRef we are examining
+		i = the i'th index we are examining
+		gs = list of added expressions to insert into
+		unusedSymbols = list of unused symbols to take from
+		returns true if the TensorRef's index needs to be changed
+--]]
+function Expression:insertTransformsToSetVariance(rule)
+	symmath = symmath or require 'symmath'
+	local mul = symmath.op.mul
+	local Variable = symmath.Variable
+	local Tensor = symmath.Tensor
+	local TensorRef = symmath.TensorRef
+
+	local defaultSymbols = nil 
+		--or args and args.symbols
+		or rule.defaultSymbols
+		or Tensor.defaultSymbols
+
+
+	-- TODO assert that we are in add-mul-div form?
+	-- otherwise this could introduce bad indexes ...
+	-- in fact, even if we are in add-mul-div, applying to multiple products will still run into this issue
+	local exprFixed, exprSum, exprExtra = self:getIndexesUsed()
+	local exprAll = table():append(exprFixed, exprSum, exprExtra)
+	local unusedSymbols = table(defaultSymbols)
+	for _,s in ipairs(exprAll) do
+		unusedSymbols:removeObject(s.symbol)
+	end
+	-- so for now i will choose unnecessarily differing symbols
+	-- just call tidyIndexes() afterwards to fix this
+	
+	local handleTerm
+
+	local function fixTensorRef(x)
+		x = x:clone()
+		-- TODO move this to 'rule'
+		if TensorRef:isa(x) then
+			if not Variable:isa(x[1]) then
+				x[1] = handleTerm(x[1])
+			elseif rule.matches(x) then
+				local gs = table()
+				for i=2,#x do
+					rule.applyToIndex(x, i, gs, unusedSymbols)
+				end
+				return x, gs:unpack()
+			end
+		end
+		return x
+	end
+
+	local function handleMul(x)
+		local newMul = table()
+		for i=1,#x do
+			newMul:append{fixTensorRef(x[i])}
+		end
+		return mul(newMul:unpack())
+	end
+
+	-- could be a single term or multiple multiplied terms
+	handleTerm = function(expr)
+		expr = expr:clone()
+		if mul:isa(expr) then
+			return handleMul(expr)
+		else
+			return expr:map(function(x)
+				if mul:isa(x) then
+					return handleMul(x)
+				else
+					local results = {fixTensorRef(x)}
+					if #results == 1 then
+						return results[1]
+					else
+						return mul(table.unpack(results))
+					end
+				end
+			end)
+		end
+		return expr
+	end
+	return handleTerm(self)
+end
+
+
+--[[
+self = expression to replace TensorRef's of
+t = TensorRef
+metric (optional) = metric to use
+
+For this particular TensorRef (of a variable and indexes),
+looks for all the TensorRefs of matching variable with matching # of indexes
+(and no derivatives for that matter ... unless they are covariant derivatives, or the last index only is changed?),
+and insert enough metric terms to raise/lower these so that they will match the 't' argument.
+--]]
+function Expression:insertMetricsToSetVariance(find, metric)
+	symmath = symmath or require 'symmath'
+	local TensorRef = symmath.TensorRef
+	local TensorIndex = symmath.TensorIndex
+
+	assert(metric)
+	
+	assert(TensorRef:isa(find))
+	--assert(Variable:isa(find[1]))
+	assert(not find:hasDerivIndex())	-- TODO handle derivs later?  also TODO call splitOffDerivIndexes() first? or expect the caller to do this 
+
+	return self:insertTransformsToSetVariance{
+		matches = function(x)
+			return find[1] == x[1]			-- TensorRef base variable matches
+			and #find == #x					-- number of indexes match
+			and not x:hasDerivIndex()	-- not doing this right now
+		end,
+		applyToIndex = function(x, i, gs, unusedSymbols)
+			local xi = x[i]
+			local findi = find[i]
+			if not not findi.lower ~= not not xi.lower then
+				local sumSymbol = unusedSymbols:remove(1)
+				assert(sumSymbol, "couldn't get a new symbol")
+				local g = TensorRef(
+					metric,
+					xi:clone(),
+					TensorIndex{
+						lower = xi.lower,
+						symbol = sumSymbol,
+					}
+				)
+				gs:insert(g)
+				xi.lower = findi.lower
+				xi.symbol = sumSymbol
+			end
+		end,
+	}
+end
 
 -- maybe coroutines will help my whole problem of testing when a mul or add is present ?
 
