@@ -400,7 +400,9 @@ local Verbose = symmath.export.Verbose
 			-- this does fix Constant(4):match(Constant(2) * Wildcard(1))
 			-- but this causes op/div's pattern matching to a / (b + sqrt(c)) 
 			--  to successfully match a nil value
-			if #wildcards > 0 then
+			if symmath.matchMulUnknownSubstitution
+			and #wildcards > 0 
+			then
 				matchExpr = (a / nonWildcards[1])()
 				submatches = table(matches)
 				if matchExpr:match(wildcards[1], submatches) then

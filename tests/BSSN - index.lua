@@ -10,6 +10,17 @@ MathJax.header.title = 'BSSN formalism - index notation'
 print(MathJax.header)
 
 
+--[[
+I've done something that is causing this to run too slow to finish.
+I'm trying to narrow it down.
+These two are going slow, because of their use of match() (which seems to host most the problems):
+--]]
+symmath.op.div:pushRule'Prune/conjOfSqrtInDenom'
+symmath.op.div:pushRule'Factor/polydiv'
+-- this also seems to be doing it:
+symmath.op.pow.wildcardMatches = nil
+symmath.matchMulUnknownSubstitution = false
+
 local spatialDim = 3
 
 --[[ latest times:

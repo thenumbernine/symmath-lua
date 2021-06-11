@@ -47,7 +47,7 @@ function pow:evaluateDerivative(deriv, ...)
 	return a ^ b * (deriv(b, ...) * log(a) + deriv(a, ...) * b / a)
 end
 
--- [==[
+-- [==[ going slow...
 -- for a:match(b), calling this where b == self 
 function pow:wildcardMatches(a, matches)
 	local b = self

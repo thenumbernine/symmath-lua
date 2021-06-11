@@ -9,6 +9,9 @@ require 'symmath.namespace'(symmath)
 symmath.verbose = false
 symmath.simplifyConstantPowers = false	-- whether 1/3 stays or becomes .33333...
 
+-- flag to disable for debugging.  seems this might be making things go slower:
+symmath.matchMulUnknownSubstitution = true
+
 symmath.clone = require 'symmath.clone'	-- also casts numbers to Constant
 symmath.hasChild = require 'symmath.hasChild'
 symmath.replace = require 'symmath.replace'

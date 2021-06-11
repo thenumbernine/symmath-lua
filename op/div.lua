@@ -612,6 +612,8 @@ div.rules = {
 			local Wildcard = symmath.Wildcard
 			local p, q = table.unpack(expr)
 			-- match() going too slow? maybe search for sqrt first?
+			local pow = symmath.op.pow
+			local Constant = symmath.Constant
 			if expr:hasChild(function(x) 
 				return pow:isa(x)
 				and div:isa(x[2])
