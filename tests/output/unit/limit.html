@@ -1132,7 +1132,7 @@ Tidy	$¿$	<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	[C]: at 0x7ff6abf94950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1179,7 +1179,7 @@ Tidy	$\inf$	<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	[C]: at 0x7ff6abf94950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1233,7 +1233,7 @@ Tidy	$-{\inf}$	<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	[C]: at 0x7ff6abf94950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1321,7 +1321,7 @@ Tidy	$¿$	<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	[C]: at 0x7ff6abf94950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1387,7 +1387,7 @@ Tidy	$\inf$	<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	[C]: at 0x7ff6abf94950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1460,7 +1460,7 @@ Tidy	$-{\inf}$	<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	[C]: at 0x7ff6abf94950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1478,7 +1478,7 @@ ${f\left(  x\right)} = {x}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {1}$
 <br>
-derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {1}$
+derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {1}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -1491,7 +1491,7 @@ ${f\left(  x\right)} = {{{c}} {{x}}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {c}$
 <br>
-derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {c}$
+derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {c}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -1504,7 +1504,7 @@ ${f\left(  x\right)} = {{x}^{2}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {{{2}} {{x}}}$
 <br>
-derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {{{2}} {{x}}}$
+derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{{2}} {{x}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -1517,7 +1517,7 @@ ${f\left(  x\right)} = {{x}^{3}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {{{3}} {{{x}^{2}}}}$
 <br>
-derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {{{3}} {{{x}^{2}}}}$
+derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{{3}} {{{x}^{2}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -1530,7 +1530,7 @@ ${f\left(  x\right)} = {\frac{1}{x}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {\frac{-1}{{x}^{2}}}$
 <br>
-derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {\frac{-1}{{x}^{2}}}$
+derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\frac{-1}{{x}^{2}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -1567,7 +1567,7 @@ ${f\left(  x\right)} = {\sqrt{x}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {{\frac{1}{2}} {{x}^{\frac{-1}{2}}}}$
 <br>
-derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {{\frac{1}{2}} {{x}^{\frac{-1}{2}}}}$
+derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{\frac{1}{2}} {{x}^{\frac{-1}{2}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -1580,7 +1580,7 @@ ${f\left(  x\right)} = {\sin\left(  x\right)}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {\cos\left(  x\right)}$
 <br>
-derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {\cos\left(  x\right)}$
+derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\cos\left(  x\right)}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -1593,7 +1593,7 @@ ${f\left(  x\right)} = {\cos\left(  x\right)}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {{{-1}} {{\sin\left(  x\right)}}}$
 <br>
-derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {{{-1}} {{\sin\left(  x\right)}}}$
+derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{{-1}} {{\sin\left(  x\right)}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -1606,7 +1606,7 @@ ${f\left(  x\right)} = {\exp\left( x\right)}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {\exp\left( x\right)}$
 <br>
-derivative:	${{\frac{d}{d x}}\left({f\left(  x\right)}\right)} = {\exp\left( x\right)}$
+derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\exp\left( x\right)}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -1715,7 +1715,7 @@ Tidy	$0$	<br>
 	tests\unit\limit.lua:249: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
 	tests\unit\limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	[C]: at 0x7ff6abf94950
 </td></tr>
 <tr><td>
 <b></b><br>

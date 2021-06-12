@@ -17,53 +17,53 @@ These two are going slow, because of their use of match() (which seems to host m
 --]]
 symmath.op.div:pushRule'Prune/conjOfSqrtInDenom'
 symmath.op.div:pushRule'Factor/polydiv'
--- this also seems to be doing it:
 symmath.op.pow.wildcardMatches = nil
 symmath.matchMulUnknownSubstitution = false
 
 local spatialDim = 3
 
 --[[ latest times:
-useful identity: ... 0.072s
-useful identity: ... 0.037s
-ADM metric evolution: ... 0.259s
-Bona-Masso lapse and shift evolution: ... 0.001s
-using locally-Minkowski normalized coordinates: ... 0.051s
-using locally-Minkowski normalized coordinates: ... 0.027s
-using locally-Minkowski normalized coordinates: ... 0.148s
-conformal $\phi$: ... 0.002s
-conformal $\chi$: ... 0s
-conformal W: ... 0.001s
-conformal metric: ... 0.001s
-conformal metric inverse: ... 0.001s
-conformal metric derivative: ... 0.018s
-conformal metric determinant: ... 0.001s
-conformal metric constraint: ... 0.001s
-static grid assumption: ... 0.001s
-conformal connection: ... 0.435s
-extrinsic curvature trace: ... 0.0010000000000001s
-trace-free extrinsic curvature: ... 0.006s
-conformal trace-free extrinsic curvature: ... 0.039s
-trace-free extrinsic curvature derivative: ... 0.0070000000000001s
-Jacobi identity: ... 0s
-conformal W evolution: ... 0.57s
-using locally-Minkowski normalized coordinates: ... 0.257s
-conformal metric evolution: ... 0.924s
-conformal metric perturbation: ... 0.00099999999999989s
-conformal metric perturbation spatial derivative: ... 0.0060000000000002s
-conformal metric perturbation evolution: ... 0.0059999999999998s
-using locally-Minkowski normalized coordinates: ... 2.639s
-grid vs conformal connection difference: ... 0.0030000000000001s
-grid vs conformal connection difference evolution: ... 104.327s
-using locally-Minkowski normalized coordinates: ... 324.763s
-extrinsic curvature trace evolution: ... 17.434s
-using locally-Minkowski normalized coordinates: ... 1.532s
-trace-free extrinsic curvature evolution: ... 0.016999999999996s
-conformal trace-free extrinsic curvature evolution: ... 27.296s
-using locally-Minkowski normalized coordinates: ... 58.253s
-collecting partial derivatives: ... 0.013000000000034s
-writing results... ... 0.021999999999935s
-TOTAL: 539.172
+														| old comp / a year ago	| new comp / all rules pushed	| no rules pushed
+useful identity:										| 0.072s                | 0.03s							| 
+useful identity:										| 0.037s                | 0.018s						| 
+ADM metric evolution:									| 0.259s                | 0.112s                        | 
+Bona-Masso lapse and shift evolution:					| 0.001s                | 0.00099999999999989s          | 
+using locally-Minkowski normalized coordinates:			| 0.051s                | 0.022s                        | 
+using locally-Minkowski normalized coordinates:			| 0.027s                | 0.014s                        | 
+using locally-Minkowski normalized coordinates:			| 0.148s                | 0.073s                        | 
+conformal $\phi$:										| 0.002s                | 0s                            | 
+conformal $\chi$:										| 0s                    | 0.002s                        | 
+conformal W:											| 0.001s                | 0.0010000000000001s           | 
+conformal metric:										| 0.001s                | 0.002s                        | 
+conformal metric inverse:								| 0.001s                | 0.002s                        | 
+conformal metric derivative:							| 0.018s                | 0.012s                        | 
+conformal metric determinant:							| 0.001s                | 0.00099999999999989s          | 
+conformal metric constraint:							| 0.001s                | 0.0010000000000001s           | 
+static grid assumption:									| 0.001s                | 0.00099999999999989s          | 
+conformal connection:									| 0.435s                | 0.2s                          | 
+extrinsic curvature trace:								| 0.0010000000000001s   | 0s                            | 
+trace-free extrinsic curvature:							| 0.006s                | 0.0070000000000001s           | 
+conformal trace-free extrinsic curvature:				| 0.039s                | 0.024s                        | 
+trace-free extrinsic curvature derivative:				| 0.0070000000000001s   | 0.004s                        | 
+Jacobi identity:										| 0s                    | 0.00099999999999989s          | 
+conformal W evolution:									| 0.57s                 | 0.321s                        | 
+using locally-Minkowski normalized coordinates:			| 0.257s                | 0.124s                        | 
+conformal metric evolution:								| 0.924s                | 0.479s                        | 
+conformal metric perturbation:							| 0.00099999999999989s  | 0s                            | 
+conformal metric perturbation spatial derivative:		| 0.0060000000000002s   | 0.0030000000000001s           | 
+conformal metric perturbation evolution:				| 0.0059999999999998s   | 0.0030000000000001s           | 
+using locally-Minkowski normalized coordinates:			| 2.639s                | 0.614s                        | 
+grid vs conformal connection difference:				| 0.0030000000000001s   | 0.0020000000000002s           | 
+grid vs conformal connection difference evolution:		| 104.327s              | 39.723s                       | 
+using locally-Minkowski normalized coordinates:			| 324.763s              | 183.135s                      | 
+extrinsic curvature trace evolution:					| 17.434s               | 5.964s                        | 
+using locally-Minkowski normalized coordinates:			| 1.532s                | 0.60900000000001s             | 
+trace-free extrinsic curvature evolution:				| 0.016999999999996s    | 0.0080000000000098s           | 
+conformal trace-free extrinsic curvature evolution:		| 27.296s               | 10.568s                       | 
+using locally-Minkowski normalized coordinates:			| 58.253s               | 12.762s                       | 
+collecting partial derivatives:							| 0.013000000000034s    | 0.01600000000002s             | 
+writing results...										| 0.021999999999935s    | 0.014999999999986s            | 
+TOTAL: 													| 539.172               | 254.876                       | 
 --]]
 local timer = os.clock
 local startTime = timer()

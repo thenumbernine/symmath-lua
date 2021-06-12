@@ -2,13 +2,38 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 
 -- returns a matrix with column vectors of the nullspace basis, or an empty table for no nullspace
-local function nullspace(A)
+local function nullspace(A, verbose)
 	local Constant = require 'symmath.Constant'
 	local Matrix = require 'symmath.Matrix'
-	
+
+	if verbose and type(verbose) ~= 'function' then
+		verbose = print
+	end
+
 	local n = #A
-	local _, reduce = A:inverse()
-	
+
+	if verbose then
+		verbose('calculating inverse...')
+	end
+
+	local _, reduce
+	if not verbose then
+		_, reduce = A:inverse()
+	else
+		local n = 0
+		_, reduce = A:inverse(nil, function(AInv, A, row, i, j, op)
+			n = n + 1
+			verbose('op # '..n
+				..' op = '..op
+				..' row = '..row
+				..' i,j = '..i..','..j
+			)
+			verbose('A | AInv = '..Matrix{A, AInv})
+		end)
+		verbose('inverse result is: '.._)
+		verbose('reduced result is: '..reduce)
+	end
+
 	-- find all non-leading columns
 	local nonLeadingCols = table()
 	local firstNonZeroColPerRow = table()
@@ -55,10 +80,16 @@ local function nullspace(A)
 					-- but while simultaneously separating the coefficients into the u[l][m] locations
 					local paramIndex = nonLeadingCols:find(k)
 					if paramIndex then
+						if verbose then
+							verbose('A['..j..']['..paramIndex..'] = A['..j..']['..paramIndex..' - (AInv['..i..']['..k..'] = '..reduce[i][k]..') / (AInv['..i..']['..j..'] = '..reduce[i][j]..')')
+						end
 						-- if col 'k' is a free variable 'u'
 						-- insert into u's row -reduce[i][k] / reduce[i][j]
 						ev[j][paramIndex] = ev[j][paramIndex] - reduce[i][k] / reduce[i][j]
 					else
+						if verbose then
+							verbose('row '..j..' = row '..j..' - row '..k..' * (AInv['..i..']['..k..'] = '..reduce[i][k]..') / (AInv['..i..']['..j..'] = '..reduce[i][j]..')')
+						end
 						-- else if col 'k' is a previous 'x' ...
 						-- lookup the value of x[k] in terms of each u ...
 						-- add -reduce[i][k] / reduce[i][j] times those u coeffs into this row's u's

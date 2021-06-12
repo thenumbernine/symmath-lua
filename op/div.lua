@@ -594,7 +594,7 @@ div.rules = {
 			end
 		end},
 
-		-- [[ 
+		--[[ 
 		--[=[ 
 		conjugates of square-roots in denominator
 		a / (b + sqrt(c)) => a (b - sqrt(c)) / ((b + sqrt(c)) (b - sqrt(c))) => a (b - sqrt(c)) / (b^2 - c)
@@ -635,6 +635,93 @@ div.rules = {
 				end
 			end
 		end},
+		--]]
+
+		-- [[ same as above, but trying to not use match so that it will run fatser, since match now seems to have some NP code in it (the permutation matching stuff most likely)
+		{conjOfSqrtInDenom = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local add = symmath.op.add
+			local mul = symmath.op.mul
+			local div = symmath.op.div
+			local pow = symmath.op.pow
+			local Constant = symmath.Constant
+			local Wildcard = symmath.Wildcard
+			local p, q = table.unpack(expr)
+			-- match() going too slow? maybe search for sqrt first?
+			if expr:hasChild(function(x) 
+				return pow:isa(x)
+				and div:isa(x[2])
+				and Constant.isValue(x[2][1], 1)
+				and Constant.isValue(x[2][2], 2)
+			end) then
+				if mul:isa(q) then
+					for i=1,#q do
+						local qi = q[i]
+						if add:isa(qi) then
+							-- if any of qi's children are ch^div(1,2) or are mul(..., ch^div(1,2) then ...
+							-- pick out the rest of qi's children (this is 'a')
+							-- pick out the coeff of the ^div(1,2) (this is 'b')
+							-- pick out the c^div(1,2) (this is 'c')
+							
+							--[=[ this sure is more convenient to write:
+							local a, b, c = qi:match(Wildcard(1) + Wildcard(2) * Wildcard(3) ^ div(1,2))
+							--]=]
+
+							-- [=[
+							local function isSqrt(x)
+								return pow:isa(x)
+								and div:isa(x[2])
+								and Constant.isValue(x[2][1], 1)
+								and Constant.isValue(x[2][2], 2)
+							end
+							local a,b,c
+							for j=1,#qi do		-- j'th add term
+								local qij = qi[j]
+								
+								if isSqrt(qij) then
+									b = Constant(1)
+									c = qij[1]
+								elseif mul:isa(qij) then
+									c = table()
+									b = table(qij)
+									for k=#b,1,-1 do
+										if isSqrt(b[k]) then
+											c:insert(1, b:remove(k)[1])
+											break
+										end
+									end
+									if #c == 0 then
+										c = nil
+									else
+										b = #b == 0 and Constant(1) or (#b == 1 and b[1] or mul(b:unpack()))
+										c = #c == 1 and c[1] or mul(c:unpack())
+									end
+								end
+								if c then
+									a = table(qi)
+									a:remove(j)
+									assert(#a > 0) -- we should be only removing one j from the add op qi
+									a = #a == 1 and a[1] or add(a:unpack())
+									break
+								end
+							end
+							--]=]
+
+--printbr('a = ', a)
+--printbr('b = ', b)
+--printbr('c = ', c)
+
+							if a then
+								q = q:clone()
+								table.remove(q, i)
+								table.insert(q, (a^2 - b^2 * c))
+								return prune:apply((expr[1] * (a - b * c ^ div(1,2))) / q)
+							end
+						end
+					end
+				end
+			end
+		end},	
 		--]]
 
 		--[[ maybe the rule above already handles this case?
