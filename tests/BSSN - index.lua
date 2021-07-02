@@ -81,30 +81,7 @@ end
 
 local e = var'e'
 
-local function check(x)
-	x = x:simplifyAddMulDiv()
-
-	local function subcheck(x)
-		if require 'symmath.op.add':isa(x) or require 'symmath.op.Equation':isa(x) then
-			for i=1,#x do
-				subcheck(x[i])
-			end
-			do return end
-		end
-
-		local symbols = x:getExprsForIndexSymbols()
-		for symbol,v in pairs(symbols) do
-			if #v > 2 then
-				printbr("got symbol "..symbol.." with "..#v.." occurrences in expr", x)
-				for _,p in ipairs(v) do
-					printbr('index', p.index, 'expr', p.expr)
-				end
-			end
-		end
-	end
-	subcheck(x)
-end
-
+-- insert e's to transform equation
 -- TODO remove 'find'
 -- TODO remove #find == #x constraint
 local function insertNormalizationToSetVariance(expr, transformVar)

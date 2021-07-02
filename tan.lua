@@ -55,6 +55,7 @@ end
 
 -- no need for evaluateLimit if we are immediately converting tan() to sin()/cos()
 -- so instead you can find that code in op.div's evaluateLimit()
+-- or in wherever other trigsimp()'s go, which is in simplify() now but maybe should be its own function?
 
 tan.rules = {
 	Prune = {

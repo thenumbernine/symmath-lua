@@ -194,6 +194,7 @@ build = {
 		["symmath.tests.Schwarzschild - spherical - mass varying with time"] = "tests/Schwarzschild - spherical - mass varying with time.lua",
 		["symmath.tests.Shallow Water equations - flux eigenvectors"] = "tests/Shallow Water equations - flux eigenvectors.lua",
 		["symmath.tests.TOV"] = "tests/TOV.lua",
+		["symmath.tests.Z4"] = "tests/Z4.lua",
 		["symmath.tests.console_spherical_metric"] = "tests/console_spherical_metric.lua",
 		["symmath.tests.electrovacuum.black hole electron"] = "tests/electrovacuum/black hole electron.lua",
 		["symmath.tests.electrovacuum.general case"] = "tests/electrovacuum/general case.lua",

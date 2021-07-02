@@ -986,6 +986,8 @@ Output CDN URLs:
 
 [tests/output/TOV](https://thenumbernine.github.io/symmath/tests/output/TOV.html)
 
+[tests/output/Z4](https://thenumbernine.github.io/symmath/tests/output/Z4.html)
+
 [tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
 
 [tests/output/electrovacuum/general case](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/general%20case.html)
