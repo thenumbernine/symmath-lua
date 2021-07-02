@@ -4,6 +4,10 @@ Z4 equations, in index notation
 rewritten in terms of first order hyperbolic coordinates
 and for a general metric (i.e. difference-of-connections) instead of strictly for cartesian.
 same idea as my 'BSSN - index' worksheet (why not just call it 'BSSN' ?)
+
+in fact this is a lot like my 'numerical-relativity-codegen'
+but runs a lot faster ... maybe it should replace it?
+and it produces the tensor linear systems that my "Documents/Math/Numerical Relativity" notes have, which is nice
 --]]
 local env = setmetatable({}, {__index=_G})
 require 'ext.env'(env)
@@ -22,6 +26,20 @@ symmath.op.div:pushRule'Factor/polydiv'
 symmath.op.pow.wildcardMatches = nil
 symmath.matchMulUnknownSubstitution = false
 
+--[[
+connections: ... 0.039s
+metric inverse partial: ... 0.022s
+log lapse derivative: ... 0.252s
+metric evolution: ... 0.04s
+metric partial delta evolution: ... 2.581s
+Gaussian curvature ... 1.593s
+extrinsic curvature evolution: ... 0.877s
+Z4 $\Theta$ definition ... 1.362s
+Z4 $Z_k$ definition ... 0.192s
+TOTAL: 6.967
+
+This is quite a bit faster than the 'BSSN - index' worksheet
+--]]
 
 local spatialDim = 3
 
@@ -38,6 +56,129 @@ local function printHeader(str)
 	end
 	io.stderr:flush()
 end
+
+
+--[[
+look for instances of the TensorRef 'find', with matching lower/deriv
+insert deltas to give it symbols matching 'find'
+
+this goes orders of magnitude faster if it processes multiple finds at once
+TODO maybe it wouldn't if it didn't rebuild every time, but only upon finding a needed var?  nah, still have to query term indexes as many times
+--]]
+local function insertDeltasToSetIndexSymbols(expr, finds)
+	for _,find in ipairs(finds) do
+		assert(TensorRef:isa(find))
+	end
+	local delta = Tensor:deltaSymbol()
+
+	-- TODO maybe I don't need this constraint
+	-- if I just make use of 'getIndexesUsed()'
+	-- which I should do for other reasons
+	expr = expr:simplifyAddMulDiv()
+
+	local newaddterms = table()
+	for x in expr:iteradd() do
+		local newmulterms = table()
+		-- how come this isn't producing mul terms?
+		local remapPerMul = {}
+		for y in x:itermul() do
+			if TensorRef:isa(y) then
+				
+				local indexRemap = {}
+				local function addSymbol(ti, target)
+					assert(TensorIndex:isa(ti))
+					assert(not not ti.lower == not not target.lower)
+					assert(ti.derivative == target.derivative)
+					if ti.symbol ~= target.symbol then
+						
+						-- remapPerMul to make sure if we insert deltas to change the index on the tensor, that this tensor isn't used elsewhere in the mul term
+						-- what if it is used elsewhere?
+						-- I should be just query indexes used up front.
+						local prevSymbol = remapPerMul[ti.symbol]
+						if prevSymbol and prevSymbol ~= target.symbol then
+							error("tried to remap mul to "..target.symbol.." from "..prevSymbol.." and then from "..ti.symbol)
+						end
+						remapPerMul[ti.symbol] = target.symbol
+
+						local prevSymbol = indexRemap[ti.symbol] and indexRemap[ti.symbol].symbol
+						if prevSymbol then
+							if prevSymbol ~= target.symbol then
+								error("tried to remap to "..target.symbol.." from "..prevSymbol.." and then from "..ti.symbol)
+							end
+							assert(indexRemap[ti.symbol].deriv == target.derivative, "index changed derivative")
+						end
+						indexRemap[ti.symbol] = target:clone()
+					end
+				end
+		
+				for _,find in ipairs(finds) do
+					if y[1] == find[1] 
+					and #y == #find
+					then	-- ignore non-index-matching form
+						
+						local matchingLowers = true
+						for i=2,#y do
+							if not not y[i].lower ~= not not find[i].lower 
+							-- TODO check deriv match and bail on fail, don't assert it will match
+							then
+								matchingLowers = false
+							end
+						end
+						-- TODO if not matchingLowres then insert metric symbols instead of delta symbols
+						if matchingLowers then
+							for i=2,#y do
+								addSymbol(y[i], find[i])
+							end
+							break
+						end
+					end
+				end
+				
+				if next(indexRemap) then
+					--newTI.lower must match the old ti's lower
+					for oldSym,newTI in pairs(indexRemap) do
+						newmulterms:insert(
+							TensorRef(
+								delta,
+								TensorIndex{
+									lower = not newTI.lower,
+									symbol = assert(newTI.symbol),
+								},
+								TensorIndex{
+									lower = newTI.lower,
+									symbol = assert(oldSym),
+								}
+							)
+						)
+					end
+					newmulterms:insert(y:reindex(table.map(indexRemap, function(v,k)
+						return v.symbol, k
+					end):setmetatable(nil)))
+				else
+					newmulterms:insert(y)
+				end
+			else
+				newmulterms:insert(y)
+			end
+		end
+		if #newmulterms == 1 then
+			newaddterms:insert(newmulterms[1])
+		else
+			newmulterms:setmetatable(symmath.op.mul)
+			newaddterms:insert(newmulterms)
+		end
+	end
+	if #newaddterms == 1 then
+		expr = newaddterms[1]
+	else
+		newaddterms:setmetatable(symmath.op.add)
+		expr = newaddterms
+	end
+	return expr
+end
+
+
+
 
 
 local e = var'e'
@@ -213,8 +354,8 @@ printbr(a_l_def)
 a_l_def = a_l_def()
 printbr(a_l_def)
 
-local d_alpha_from_a_l = a_l_def:solve(alpha'_,i')
-printbr(d_alpha_from_a_l)
+local d_alpha_l_from_a_l = a_l_def:solve(alpha'_,i')
+printbr(d_alpha_l_from_a_l)
 
 printbr()
 
@@ -227,7 +368,7 @@ printbr(dt_alpha_def)
 
 -- rhs only so alpha_,t isn't simplified
 dt_alpha_def[2] = dt_alpha_def[2]
-	:substIndex(d_alpha_from_a_l)
+	:substIndex(d_alpha_l_from_a_l)
 	:simplify()
 printbr(dt_alpha_def)
 
@@ -252,10 +393,10 @@ dt_a_l_def = dt_a_l_def:substIndex(dalpha_f_def)()
 printbr(dt_a_l_def)
 
 local using = alpha'_,t,k':eq(alpha'_,k''_,t')
-printbr('using', using, ';', d_alpha_from_a_l)
+printbr('using', using, ';', d_alpha_l_from_a_l)
 dt_a_l_def = dt_a_l_def  
 	:subst(using)
-	:substIndex(d_alpha_from_a_l)
+	:substIndex(d_alpha_l_from_a_l)
 	:simplify()
 printbr(dt_a_l_def)
 
@@ -347,8 +488,8 @@ dt_dDelta_lll_def = dt_dDelta_lll_def
 	:solve(dDelta'_kij,t')
 printbr(dt_dDelta_lll_def)
 
-printbr('using', d_alpha_from_a_l, ';', d_beta_ul_from_b_ul)
-dt_dDelta_lll_def = dt_dDelta_lll_def:substIndex(d_alpha_from_a_l, d_beta_ul_from_b_ul)()
+printbr('using', d_alpha_l_from_a_l, ';', d_beta_ul_from_b_ul)
+dt_dDelta_lll_def = dt_dDelta_lll_def:substIndex(d_alpha_l_from_a_l, d_beta_ul_from_b_ul)()
 printbr(dt_dDelta_lll_def)
 
 printbr()
@@ -510,26 +651,26 @@ dt_K_ll_def = dt_K_ll_def
 	:simplify()
 printbr(dt_K_ll_def)
 
-printbr('using', d_alpha_from_a_l)
+printbr('using', d_alpha_l_from_a_l)
 --[[ not working for 1st derivs
 dt_K_ll_def = dt_K_ll_def 
 	:splitOffDerivIndexes()
-	:substIndex(d_alpha_from_a_l)
+	:substIndex(d_alpha_l_from_a_l)
 	:simplify()
 --]]
 --[[ also not working for 1st derivs
 dt_K_ll_def = dt_K_ll_def 
 	:splitOffDerivIndexes()
-	:subst(d_alpha_from_a_l, d_alpha_from_a_l:reindex{i='j'})
+	:subst(d_alpha_l_from_a_l, d_alpha_l_from_a_l:reindex{i='j'})
 	:simplify()
 --]]
 -- [[
 dt_K_ll_def = dt_K_ll_def 
 	:subst(
-		d_alpha_from_a_l'_,j'(),
-		d_alpha_from_a_l:reindex{i='j'}'_,i'()
+		d_alpha_l_from_a_l'_,j'(),
+		d_alpha_l_from_a_l:reindex{i='j'}'_,i'()
 	)
-	:substIndex(d_alpha_from_a_l)
+	:substIndex(d_alpha_l_from_a_l)
 	:simplify()
 --]]
 printbr(dt_K_ll_def)
@@ -561,7 +702,8 @@ printHeader[[Z4 $\Theta$ definition]]
 -- TODO derive me plz from the original R_uv + 2 Z_(u;v) = 8 pi (T^TR)_uv
 -- are you sure there's no beta^i's?
 local dt_Theta_def = Theta'_,t':eq(
-	frac(1,2) * alpha * (
+	Theta'_,k' * beta'^k'
+	+ frac(1,2) * alpha * (
 		R
 		+ 2 * gamma'^kl' * Z'_k,l'
 		- 2 * gamma'^kl' * Gamma'^m_kl' * Z'_m'
@@ -573,8 +715,8 @@ local dt_Theta_def = Theta'_,t':eq(
 )
 printbr(dt_Theta_def)
 
-printbr('using', d_alpha_from_a_l)
-dt_Theta_def = dt_Theta_def:substIndex(d_alpha_from_a_l)()
+printbr('using', d_alpha_l_from_a_l)
+dt_Theta_def = dt_Theta_def:substIndex(d_alpha_l_from_a_l)()
 printbr(dt_Theta_def)
 
 printbr('using', conn_ull_def)
@@ -614,7 +756,9 @@ printHeader[[Z4 $Z_k$ definition]]
 -- TODO derive me plz
 -- are you sure there's no beta^i's?
 local dt_Z_l_def = Z'_k,t':eq(
-	alpha * (
+	Z'_k,l' * beta'^l'
+	+ Z'_l' * beta'^l_,k'
+	+ alpha * (
 		gamma'^lm' * (
 			K'_kl,m'
 			- Gamma'^n_km' * K'_nl'
@@ -636,8 +780,12 @@ printbr('using', d_gamma_uul_from_dHat_lll_dDelta_lll)
 dt_Z_l_def = dt_Z_l_def:subst(d_gamma_uul_from_dHat_lll_dDelta_lll:reindex{ijklm='mnklp'})()
 printbr(dt_Z_l_def)
 
-printbr('using', d_alpha_from_a_l)
-dt_Z_l_def = dt_Z_l_def:substIndex(d_alpha_from_a_l)()
+printbr('using', d_alpha_l_from_a_l)
+dt_Z_l_def = dt_Z_l_def:substIndex(d_alpha_l_from_a_l)()
+printbr(dt_Z_l_def)
+
+printbr('using', d_beta_ul_from_b_ul)
+dt_Z_l_def = dt_Z_l_def:substIndex(d_beta_ul_from_b_ul)()
 printbr(dt_Z_l_def)
 
 printbr('using', conn_ull_def)
@@ -667,7 +815,7 @@ printbr()
 
 -- beta^i
 
-printbr'Bona-Masso shift evolution:'
+printHeader'Bona-Masso shift evolution:'
 local dt_beta_u_def = beta'^i_,t':eq(B'^i')
 printbr(dt_beta_u_def)
 printbr()
@@ -676,11 +824,23 @@ printbr()
 -- B^i
 
 local LambdaBar = var'\\bar{\\Lambda}'	--TODO replace this with its value
-printbr('hyperbolic shift $B^i$ evolution:')
+printHeader('hyperbolic shift $B^i$ evolution:')
 local dt_B_u_def = B'^i_,t':eq(frac(3,4) * LambdaBar'^i_,t' - eta * B'^i')
 printbr(dt_B_u_def) 
 printbr()
 
+
+printHeader'factor linear system:'
+
+local function assertAndRemoveLastTensorIndex(exprs, lastTensorIndex)
+	return exprs:mapi(function(expr)
+		local dt = expr:splitOffDerivIndexes()
+		assert(TensorRef:isa(dt) 
+			and #dt == 2 
+			and dt[2] == lastTensorIndex)
+		return dt[1]
+	end)
+end
 
 local dt_eqns = table{
 	dt_alpha_def,
@@ -695,19 +855,64 @@ local dt_eqns = table{
 -- ijk on the partial_t's
 -- pqm on the partial_x's
 
-local U_vars = Matrix(dt_eqns:mapi(function(eqn) 
-	local dt = eqn[1]:splitOffDerivIndexes()
-	assert(TensorRef:isa(dt) 
-		and #dt == 2 
-		and dt[2].symbol == 't'
-		and dt[2].lower
-		and dt[2].derivative)
-	return dt[1]
+-- factor out the _,t from the lhs
+local U_vars = Matrix(
+	assertAndRemoveLastTensorIndex(	
+		dt_eqns:mapi(function(eqn) 
+			return eqn[1]
+		end),
+		TensorIndex{lower=true, symbol='t', derivative=','}
+	)
+):T()
+
+local U_defs = Matrix(dt_eqns:mapi(function(eqn) 
+	return eqn[2]:clone():simplifyAddMulDiv()
 end)):T()
-
-local U_defs = Matrix(dt_eqns:mapi(function(eqn) return eqn[2]:clone() end)):T()
-
 printbr(U_vars'_,t':eq(U_defs))
+
+
+--[[
+now in advance of calling 'factorLinearSystem', make sure our terms are all using common indexes:
+alpha_,r except all the alpha_,r's are already in the form of a_r's
+beta^n,r except they are already b^n_r
+a_m,r
+d_mpq,r
+K_pq,r
+Z_m,r
+b^n_m,r
+--]]
+
+local dxVars = table{
+	alpha'_,r',
+	gammaDelta'_pq,r',
+	a'_m,r',
+	dDelta'_mpq,r',
+	K'_pq,r',
+	Theta'_,r',
+	Z'_m,r',
+}
+local A, b = factorLinearSystem(
+	dt_eqns:mapi(function(eqn) 
+		rhs = eqn[2]:clone()
+		rhs = insertDeltasToSetIndexSymbols(rhs, dxVars)
+		return rhs
+	end),
+	dxVars
+)
+
+printbr(
+	(
+		U_vars'_,t'
+		+ (-A)() * Matrix(
+			assertAndRemoveLastTensorIndex(
+				dxVars,
+				TensorIndex{lower=true, symbol='r', derivative=','}
+			)
+		):T()
+	):eq(
+		b
+	)
+)
 
 
 -- DONE

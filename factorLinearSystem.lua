@@ -1,5 +1,5 @@
 --[[
-accepts a list of equations and a list of factors x_i
+accepts a list of expressions and a list of factors x_i
 returns matrices A and b:
 
 [a11 ... a1m][x1]   [b1]

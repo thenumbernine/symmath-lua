@@ -1761,9 +1761,9 @@ end
 -- maybe coroutines will help my whole problem of testing when a mul or add is present ?
 
 function Expression:iteradd()
+	symmath = symmath or require 'symmath'
+	local add = symmath.op.add
 	return coroutine.wrap(function()
-		symmath = symmath or require 'symmath'
-		local add = symmath.op.add
 		if not add:isa(self) then
 			coroutine.yield(self)
 			return
@@ -1775,9 +1775,9 @@ function Expression:iteradd()
 end
 
 function Expression:itermul()
+	symmath = symmath or require 'symmath'
+	local mul = symmath.op.mul
 	return coroutine.wrap(function()
-		symmath = symmath or require 'symmath'
-		local mul = symmath.op.mul
 		if not mul:isa(self) then
 			coroutine.yield(self)
 			return
