@@ -79,8 +79,12 @@ local function insertDeltasToSetIndexSymbols(expr, finds)
 	local newaddterms = table()
 	for x in expr:iteradd() do
 		local newmulterms = table()
+		
+		local mulFixed, mulSum, mulExtra = x:getIndexesUsed()
+
 		-- how come this isn't producing mul terms?
-		local remapPerMul = {}
+		local reallyReindexTheMul = {}
+		local verifyNoDuplicateRemapsInsideTheMul = {}
 		for y in x:itermul() do
 			if TensorRef:isa(y) then
 				
@@ -91,14 +95,14 @@ local function insertDeltasToSetIndexSymbols(expr, finds)
 					assert(ti.derivative == target.derivative)
 					if ti.symbol ~= target.symbol then
 						
-						-- remapPerMul to make sure if we insert deltas to change the index on the tensor, that this tensor isn't used elsewhere in the mul term
+						-- verifyNoDuplicateRemapsInsideTheMul to make sure if we insert deltas to change the index on the tensor, that this tensor isn't used elsewhere in the mul term
 						-- what if it is used elsewhere?
 						-- I should be just query indexes used up front.
-						local prevSymbol = remapPerMul[ti.symbol]
+						local prevSymbol = verifyNoDuplicateRemapsInsideTheMul[ti.symbol]
 						if prevSymbol and prevSymbol ~= target.symbol then
 							error("tried to remap mul to "..target.symbol.." from "..prevSymbol.." and then from "..ti.symbol)
 						end
-						remapPerMul[ti.symbol] = target.symbol
+						verifyNoDuplicateRemapsInsideTheMul[ti.symbol] = target.symbol
 
 						local prevSymbol = indexRemap[ti.symbol] and indexRemap[ti.symbol].symbol
 						if prevSymbol then
@@ -137,19 +141,28 @@ local function insertDeltasToSetIndexSymbols(expr, finds)
 				if next(indexRemap) then
 					--newTI.lower must match the old ti's lower
 					for oldSym,newTI in pairs(indexRemap) do
-						newmulterms:insert(
-							TensorRef(
-								delta,
-								TensorIndex{
-									lower = not newTI.lower,
-									symbol = assert(newTI.symbol),
-								},
-								TensorIndex{
-									lower = newTI.lower,
-									symbol = assert(oldSym),
-								}
+						
+						-- if it's a sum term then just relabel the sum term in the entire mul
+						if mulSum:find(nil, function(t)
+							return t.symbol == oldSym
+						end) then
+							reallyReindexTheMul[oldSym] = newTI.symbol
+						else
+							-- only insert deltas if it's not a sum term
+							newmulterms:insert(
+								TensorRef(
+									delta,
+									TensorIndex{
+										lower = not newTI.lower,
+										symbol = assert(newTI.symbol),
+									},
+									TensorIndex{
+										lower = newTI.lower,
+										symbol = assert(oldSym),
+									}
+								)
 							)
-						)
+						end
 					end
 					newmulterms:insert(y:reindex(table.map(indexRemap, function(v,k)
 						return v.symbol, k
@@ -161,12 +174,17 @@ local function insertDeltasToSetIndexSymbols(expr, finds)
 				newmulterms:insert(y)
 			end
 		end
+		
+		local newMul
 		if #newmulterms == 1 then
-			newaddterms:insert(newmulterms[1])
+			newMul = newmulterms[1]
 		else
-			newmulterms:setmetatable(symmath.op.mul)
-			newaddterms:insert(newmulterms)
+			newMul = newmulterms:setmetatable(symmath.op.mul)
 		end
+		if next(reallyReindexTheMul) then
+			newMul = newMul:reindex(reallyReindexTheMul)
+		end
+		newaddterms:insert(newMul)
 	end
 	if #newaddterms == 1 then
 		expr = newaddterms[1]
@@ -298,9 +316,9 @@ printbr(d_lll_from_dHat_lll_dDelta_lll)
 printbr()
 
 
-local b_ul_from_d_beta_ul = b'^i_j':eq(beta'^i_,j')
-printbr(b_ul_from_d_beta_ul)
-local d_beta_ul_from_b_ul = b_ul_from_d_beta_ul:solve(beta'^i_,j')
+local b_ul_def = b'^i_j':eq(beta'^i_,j')
+printbr(b_ul_def)
+local d_beta_ul_from_b_ul = b_ul_def:solve(beta'^i_,j')
 printbr(d_beta_ul_from_b_ul)
 printbr()
 
@@ -830,7 +848,7 @@ printbr(dt_B_u_def)
 printbr()
 
 
-printHeader'factor linear system:'
+printHeader'as a linear system:'
 
 local function assertAndRemoveLastTensorIndex(exprs, lastTensorIndex)
 	return exprs:mapi(function(expr)
@@ -869,6 +887,7 @@ local U_defs = Matrix(dt_eqns:mapi(function(eqn)
 	return eqn[2]:clone():simplifyAddMulDiv()
 end)):T()
 printbr(U_vars'_,t':eq(U_defs))
+printbr()
 
 
 --[[
@@ -891,12 +910,19 @@ local dxVars = table{
 	Theta'_,r',
 	Z'_m,r',
 }
+
+printHeader'inserting deltas to help factor linear system'
+
+local rhsWithDeltas = dt_eqns:mapi(function(eqn) 
+	rhs = eqn[2]:clone()
+	rhs = insertDeltasToSetIndexSymbols(rhs, dxVars)
+	return rhs
+end)
+
+printHeader'as a balance law system:'
+
 local A, b = factorLinearSystem(
-	dt_eqns:mapi(function(eqn) 
-		rhs = eqn[2]:clone()
-		rhs = insertDeltasToSetIndexSymbols(rhs, dxVars)
-		return rhs
-	end),
+	rhsWithDeltas,
 	dxVars
 )
 
@@ -909,10 +935,56 @@ printbr(
 				TensorIndex{lower=true, symbol='r', derivative=','}
 			)
 		):T()
-	):eq(
-		b
-	)
+	):eq(b)
 )
+
+
+printHeader'favoring flux terms'
+
+-- ok now try to replace all the hyperbolic 1st deriv state vars that are not derivatives themselves with the original vars' derivatives
+rhsWithDeltas = dt_eqns:mapi(function(eqn)
+	local rhs = eqn[2]:clone()
+	return rhs
+		:simplifyAddMulDiv()
+		:substIndex(a_l_def)
+		:substIndex(dDelta_lll_def)
+		:substIndex(b_ul_def)
+		:simplify()
+		:symmetrizeIndexes(dHat, {2,3})
+		:symmetrizeIndexes(dHat, {1,4}, true)
+		:symmetrizeIndexes(dDelta, {2,3})
+		:symmetrizeIndexes(dDelta, {1,4}, true)
+		:symmetrizeIndexes(gamma, {1,2})
+		:simplify()
+end)
+
+printHeader'inserting deltas to help factor linear system'
+
+rhsWithDeltas = rhsWithDeltas:mapi(function(rhs) 
+	return insertDeltasToSetIndexSymbols(rhs, dxVars)
+end)
+
+printHeader'as a balance law system:'
+
+local A, b = factorLinearSystem(
+	rhsWithDeltas,
+	dxVars
+)
+for i=1,#b do
+	b[i][1] = b[i][1]:simplifyAddMulDiv()
+end
+printbr(
+	(
+		U_vars'_,t'
+		+ (-A)() * Matrix(
+			assertAndRemoveLastTensorIndex(
+				dxVars,
+				TensorIndex{lower=true, symbol='r', derivative=','}
+			)
+		):T()
+	):eq(b)
+)
+
 
 
 -- DONE
