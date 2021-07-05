@@ -396,10 +396,11 @@ local Verbose = symmath.export.Verbose
 			unknown-substitution? set the match to the fraction of 
 			--]]
 
-			-- [[ unknown-substitution
+			--[[ unknown-substitution
 			-- this does fix Constant(4):match(Constant(2) * Wildcard(1))
 			-- but this causes op/div's pattern matching to a / (b + sqrt(c)) 
 			--  to successfully match a nil value
+			-- TODO this is breaking a lot of integral tests as well 
 			if symmath.matchMulUnknownSubstitution
 			and #wildcards > 0 
 			then

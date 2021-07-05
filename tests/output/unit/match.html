@@ -78,15 +78,23 @@
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	match.lua:230: in main chunk<br>
+	tests\unit\match.lua:230: in main chunk<br>
 	[C]: at 0x7ff76c974950
 </td></tr>
 <tr><td>
 <b>implicit integer factoring</b><br>
 <code>assertalleq({const(4):match(const(2)*W(1))}, {const(2)})</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:69: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:69: in function 'assertalleq'<br>
+	[string "assertalleq({const(4):match(const(2)*W(1))}, ..."]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
+	tests\unit\match.lua:230: in main chunk<br>
+	[C]: at 0x7ff76c974950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1141,7 +1149,7 @@ Tidy	$3$	<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	match.lua:230: in main chunk<br>
+	tests\unit\match.lua:230: in main chunk<br>
 	[C]: at 0x7ff76c974950
 </td></tr>
 <tr><td>
@@ -1212,7 +1220,7 @@ Tidy	$3$	<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
 	[C]: in function 'xpcall'<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	match.lua:230: in main chunk<br>
+	tests\unit\match.lua:230: in main chunk<br>
 	[C]: at 0x7ff76c974950
 </td></tr>
 <tr><td>
