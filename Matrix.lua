@@ -35,13 +35,13 @@ Matrix.eigen = require 'symmath.matrix.eigen'
 Matrix.exp = require 'symmath.matrix.exp'
 
 
-function Matrix:charpoly(lambdaVar)
+function Matrix:charpoly(lambdaVar, dontSimplify)
 	if not lambdaVar then
 		local Variable = require 'symmath.Variable'
 		lambdaVar = Variable'lambda'
 	end
 	local charPolyMat = (self - Matrix.identity(#self) * lambdaVar)()
-	local charPolyEqn = charPolyMat:determinant(--[[{dontSimplify=true}--]]):eq(0)
+	local charPolyEqn = charPolyMat:determinant{dontSimplify=dontSimplify}:eq(0)
 	return charPolyEqn
 end
 

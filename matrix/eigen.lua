@@ -20,6 +20,7 @@ args:
 	dontCalcL = don't calculate L = R:inverse()
 	lambdaVar = which lambda variable to use.  defaults to 'lambda'.
 	lambdas = provide eigen with a list of lambdas, since its weakness is solving the char poly
+	verbose = verbose?
 --]]
 
 local function eigen(A, args)
@@ -27,7 +28,7 @@ local function eigen(A, args)
 	local symmath = require 'symmath'
 	local Matrix = symmath.Matrix
 	local var = symmath.var
-	local eigenVerbose = Matrix.eigenVerbose	
+	local eigenVerbose = args.verbose or Matrix.eigenVerbose
 	
 	local printbr	--debugging
 	if eigenVerbose then

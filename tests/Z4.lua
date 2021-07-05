@@ -206,6 +206,7 @@ local alpha = var'\\alpha'
 local beta = var'\\beta'
 local gamma = var'\\gamma'
 local eta = var'\\eta'
+local lambda = var'\\lambda'
 local rho = var'\\rho'
 local dHat = var'\\hat{d}'
 local dDelta = var[[\overset{\Delta}{d}]]
@@ -253,16 +254,7 @@ b^i_j = β^i_,j
 B^i = β^i_,t
 
 so our state variables will be:
-α
-Δγ_ij
-a_i
-Δd_kij
-K_ij
-Θ
-Z^i
-β^i
-b^i_j
-B^i
+{α, Δγ_ij, a_k, Δd_kij, K_ij, Θ, Z_k, β^l, b^l_k, B^l}
 
 --]]
 
@@ -359,6 +351,9 @@ printbr()
 
 
 -- alpha
+-- TODO why use a_i = log(alpha)_,i?
+-- esp if alpha can go negative within event horizons
+-- in that case, we are guaranteeing a numerical error inside horizons 
 
 
 printbr(alpha, '= lapse')
@@ -366,7 +361,12 @@ printbr()
 
 printHeader'log lapse derivative:'
 
+--[[ this is the standard Bona-Masso hyperbolic variable
 local a_l_def = a'_i':eq(log(alpha)'_,i')
+--]]
+-- [[ but why use log(alpha) when that restricts us to only positive alpha?  esp when we know inside event horizons of charged rotating black holes that alpha can be negative?
+local a_l_def = a'_i':eq(alpha'_,i')
+--]]
 printbr(a_l_def)
 
 a_l_def = a_l_def()
@@ -384,7 +384,13 @@ printbr'Bona-Masso lapse evolution:'
 local dt_alpha_def = alpha'_,t':eq(alpha'_,i' * beta'^i' - alpha^2 * f * (gamma'^ij' * K'_ij' - 2 * Theta))
 printbr(dt_alpha_def)
 
+local f_def = f:eq(2 / alpha)
+printbr('using 1+log slicing: ', f_def)
+dt_alpha_def = dt_alpha_def:subst(f_def)()
+printbr(dt_alpha_def)
+
 -- rhs only so alpha_,t isn't simplified
+printbr('using', d_alpha_l_from_a_l)
 dt_alpha_def[2] = dt_alpha_def[2]
 	:substIndex(d_alpha_l_from_a_l)
 	:simplify()
@@ -393,6 +399,13 @@ printbr(dt_alpha_def)
 printbr()
 
 
+printbr'hyperbolic alpha var time evolution'
+
+local dt_a_l_def = dt_alpha_def'_,k'()
+printbr(dt_a_l_def)
+
+
+--[[ for the sake of eigenvector calculations, lets choose our lapse f up front
 printbr'lapse parameter'
 
 local dalpha_f_var = var"f'"	-- TODO alpha is dependent
@@ -400,15 +413,10 @@ local dalpha_f_def = f'_,k':eq(dalpha_f_var * alpha'_,k')
 printbr(dalpha_f_def)
 printbr()
 
-
-printbr'hyperbolic alpha var time evolution'
-
-local dt_a_l_def = dt_alpha_def'_,k'()
-printbr(dt_a_l_def)
-
 printbr('using', dalpha_f_def)
 dt_a_l_def = dt_a_l_def:substIndex(dalpha_f_def)()
 printbr(dt_a_l_def)
+--]]
 
 local using = alpha'_,t,k':eq(alpha'_,k''_,t')
 printbr('using', using, ';', d_alpha_l_from_a_l)
@@ -431,6 +439,11 @@ printbr(dt_a_l_def)
 
 printbr('using', d_beta_ul_from_b_ul)
 dt_a_l_def = dt_a_l_def:substIndex(d_beta_ul_from_b_ul)
+printbr(dt_a_l_def)
+
+local using = a'_i,k':eq(a'_k,i')
+printbr('using', using)
+dt_a_l_def = dt_a_l_def:subst(using)
 printbr(dt_a_l_def)
 
 printbr()
@@ -508,6 +521,11 @@ printbr(dt_dDelta_lll_def)
 
 printbr('using', d_alpha_l_from_a_l, ';', d_beta_ul_from_b_ul)
 dt_dDelta_lll_def = dt_dDelta_lll_def:substIndex(d_alpha_l_from_a_l, d_beta_ul_from_b_ul)()
+printbr(dt_dDelta_lll_def)
+
+local using = dDelta'_lij,k':eq(dDelta'_kij,l')
+printbr('using', using)
+dt_dDelta_lll_def = dt_dDelta_lll_def:subst(using)
 printbr(dt_dDelta_lll_def)
 
 printbr()
@@ -725,7 +743,7 @@ local dt_Theta_def = Theta'_,t':eq(
 		R
 		+ 2 * gamma'^kl' * Z'_k,l'
 		- 2 * gamma'^kl' * Gamma'^m_kl' * Z'_m'
-		+ K * (K - 2 * Theta)
+		+ gamma'^kl' * K'_kl' * (gamma'^mn' * K'_mn' - 2 * Theta)
 		- gamma'^kl' * gamma'^mn' * K'_km' * K'_ln'
 		- 16 * pi * rho
 	)
@@ -834,21 +852,93 @@ printbr()
 -- beta^i
 
 printHeader'Bona-Masso shift evolution:'
-local dt_beta_u_def = beta'^i_,t':eq(B'^i')
+
+--[[
+hyperbolic gamma driver shift
+--]]
+local dt_beta_u_def = beta'^i_,t':eq(
+	B'^i'
+	+ beta'^j' * beta'^i_,j'
+)
 printbr(dt_beta_u_def)
 printbr()
 
 
 -- B^i
-
-local LambdaBar = var'\\bar{\\Lambda}'	--TODO replace this with its value
+local LambdaBar = var[[\bar{\Lambda}]]
 printHeader('hyperbolic shift $B^i$ evolution:')
-local dt_B_u_def = B'^i_,t':eq(frac(3,4) * LambdaBar'^i_,t' - eta * B'^i')
+local dt_B_u_def = B'^i_,t':eq(
+	beta'^j' * B'^i_,j'
+	- eta * B'^i'
+	+ frac(3,4) * LambdaBar
+)
 printbr(dt_B_u_def) 
 printbr()
+--[[ TODO
+LambdaBar_def = LambdaBar:eq(cbrt(gamma / gammaHat) * (
+		
+		+ gamma'^jk' * connHat_j connHat_k beta'^i'
+
+		+ frac(1,3) * gamma'^ij' connBar_j (connBar_l beta^l)
+		
+		+ (
+			frac(1,3) * gamma'^jk' * (
+				beta'^l_,l' 
+				+ frac(1,2) * beta'^m' * (
+					+ gamma'^ln' * gamma'_ln,m'
+					- gamma'_,m' / gamma 
+					+ gammaHat'_,m' / gammaHat
+				)
+			)
+			
+			+ alpha * (K'^jk' - frac(1,3) * K * gamma'^jk')
+		
+		) * (
+			- frac(1,3) * (gamma'_,k' / gamma - gammaHat'_,k' / gammaHat) * delta'^i_j'
+			- frac(1,3) * (gamma'_,j' / gamma - gammaHat'_,j' / gammaHat) * delta'^i_k'
+			+ frac(1,3) * (gamma'_,m' / gamma - gammaHat'_,m' / gammaHat) * gamma'^im' * gamma'_jk'
+			+ gamma'^im' (
+				+ gamma'_mj,k'
+				+ gamma'_mk,j'
+				- gamma'_jk,m'
+			)
+			
+			- gammaHat'^im' * (
+				gammaHat'_mj,k' 
+				+ gammaHat'_mk,j' 
+				- gammaHat'_jk,m'
+			)
+		)
+	
+		+ (K'^ik' - frac(1,3) * K * gamma'^ik') * (
+			alpha * (gamma'_,k' / gamma - gammaHat'_,k' / gammaHat)
+			- 2 * alpha'_,k'
+		)
+
+		- frac(4,3) * alpha * gamma'^ij' * K'_,j'
+		
+		+ 2 * gamma'^ij' * (
+			alpha * Theta'_,j'
+			- Theta * alpha'_,j'
+		)
+		
+		- frac(4,3) * alpha * K * Z'^i'
+		
+		+ 2 * (
+			frac(2,3) * Z'^i' * delta'^k_j'
+			- Z'^k' * delta'^j_i'
+		) * (
+			beta'^j_,k' 
+			+ frac(1,2) * gammaHat'^jm' * (gammaHat'_ml,k' + gammaHat'_mk,l' - gammaHat'_lk,m') * beta'^l'
+		)
+
+		- 16 * pi * alpha * gamma'^ij' * S'_j'
+	)
+)
+--]]
 
 
-printHeader'as a linear system:'
+printHeader'as a system:'
 
 local function assertAndRemoveLastTensorIndex(exprs, lastTensorIndex)
 	return exprs:mapi(function(expr)
@@ -860,90 +950,395 @@ local function assertAndRemoveLastTensorIndex(exprs, lastTensorIndex)
 	end)
 end
 
-local dt_eqns = table{
+local UkijtEqns = table{
+--[[
+for lapse f=2/α:
+matrix of {α, Δγ_ij, a_r, Δd_kij, K_ij}
+... give us 0 x15, ±α√(γ^11) x5
+--]]
 	dt_alpha_def,
 	dt_gammaDelta_ll_def,
 	dt_a_l_def,
 	dt_dDelta_lll_def,
 	dt_K_ll_def,
-	dt_Theta_def,
-	dt_Z_l_def
+
+--[[
+matrix of {α, Δγ_ij, a_k, Δd_kij, K_ij, Θ, Z_k} 
+... gives us 0 x17, ±α√(γ^11) x5
+... and 4 extra waves:
+	... for lapse f arbitrary:
+		± α √(± 1/2 γ^11 √( (f - 1) (f - 5) ) + f + 1)
+	... for lapse f=2/α:
+		± √( α γ^11 (α + 1 ± 1/2 √( (α - 2) (5 α - 2) )))
+
+--]]
+--seems these have some ugly wavespeeds
+--	dt_Theta_def,
+--	dt_Z_l_def
+-- so ... how do we change that?
 }
 
+local UkijVars = assertAndRemoveLastTensorIndex(	
+	UkijtEqns:mapi(function(eqn) return eqn[1] end),
+	TensorIndex{lower=true, symbol='t', derivative=','}
+)
+
 -- ijk on the partial_t's
--- pqm on the partial_x's
+-- pqm on the partial_x^r's
 
 -- factor out the _,t from the lhs
-local U_vars = Matrix(
-	assertAndRemoveLastTensorIndex(	
-		dt_eqns:mapi(function(eqn) 
-			return eqn[1]
-		end),
-		TensorIndex{lower=true, symbol='t', derivative=','}
-	)
-):T()
+local UkijMat = Matrix(UkijVars):T()
 
-local U_defs = Matrix(dt_eqns:mapi(function(eqn) 
+local U_defs = Matrix(UkijtEqns:mapi(function(eqn) 
 	return eqn[2]:clone():simplifyAddMulDiv()
 end)):T()
-printbr(U_vars'_,t':eq(U_defs))
+
+--printbr(UkijMat'_,t':eq(U_defs))
+for _,eqn in ipairs(UkijtEqns) do
+	printbr(eqn)
+end
 printbr()
 
 
---[[
-now in advance of calling 'factorLinearSystem', make sure our terms are all using common indexes:
-alpha_,r except all the alpha_,r's are already in the form of a_r's
-beta^n,r except they are already b^n_r
-a_m,r
-d_mpq,r
-K_pq,r
-Z_m,r
-b^n_m,r
---]]
-
-local dxVars = table{
-	alpha'_,r',
-	gammaDelta'_pq,r',
-	a'_m,r',
-	dDelta'_mpq,r',
-	K'_pq,r',
-	Theta'_,r',
-	Z'_m,r',
-}
+local UmpqVars = UkijVars:mapi(function(x) return x:reindex{ijk='pqm'} end)
+local UmpqrVars = UmpqVars:mapi(function(x) return x'_,r'() end)
 
 printHeader'inserting deltas to help factor linear system'
 
-local rhsWithDeltas = dt_eqns:mapi(function(eqn) 
-	rhs = eqn[2]:clone()
-	rhs = insertDeltasToSetIndexSymbols(rhs, dxVars)
-	return rhs
+local rhsWithDeltas = UkijtEqns:mapi(function(eqn) 
+	return insertDeltasToSetIndexSymbols(eqn[2], UmpqrVars)
 end)
 
 printHeader'as a balance law system:'
 
-local A, b = factorLinearSystem(
-	rhsWithDeltas,
-	dxVars
+local A, b = factorLinearSystem(rhsWithDeltas, UmpqrVars)
+
+local dFkij_dUmpq_mat = (-A)()
+
+local UmpqMat = Matrix(UmpqVars):T()
+
+printbr((UkijMat'_,t' + dFkij_dUmpq_mat * UmpqMat'_,r'):eq(b))
+printbr()
+
+--[=[
+printbr[[$\frac{\partial F}{\partial U} \cdot U$:]]
+
+printbr((dFkij_dUmpq_mat * UmpqMat)())
+printbr()
+printbr'TODO prove this matches the non-source part of the flux'
+printbr()
+--]=]
+
+--[[
+but we can only use fluxes in Godunov schemes if F = dF/dU * U, right?
+
+right-eigenvectors:
+A_ab U_b = lambda U_a
+
+in other news, the eigenfields i.e. left-eigenvectors:
+W_a = C_ab U_b s.t. W_a,t + lambda W_a,r = 0
+--]]
+
+--[[ right eigenvectors in tensor index form
+printHeader'right eigenvectors:'
+
+local W = Matrix:lambda(dFkij_dUmpq_mat:dim(), function(i,j)
+	return var('C_{'..i..j..'}')
+end) * UmpqMat	-- relabel U's to something other than ijk or mpq
+
+local reigeqns = (dFkij_dUmpq_mat * W):eq(lambda * W)():unravel()
+for _,eqn in ipairs(reigeqns) do 
+	printbr(eqn:simplifyMetrics())
+end
+printbr()
+--]]
+
+
+-- [[ right eigenvectors in expanded form
+local remapRows = table()
+local remapSrcIndex = 0
+local function addScalar()
+	remapSrcIndex = remapSrcIndex + 1
+	remapRows:insert{
+		src = remapSrcIndex,
+		map = {},
+	}
+end
+local function addOneForm()
+	remapSrcIndex = remapSrcIndex + 1
+	for k=1,3 do
+		remapRows:insert{
+			src = remapSrcIndex,
+			map = {k=k},
+		}
+	end
+end
+local function addSym()
+	remapSrcIndex = remapSrcIndex + 1
+	for i=1,3 do
+		for j=i,3 do
+			remapRows:insert{
+				src = remapSrcIndex,
+				map = {i=i, j=j},
+			}
+		end
+	end
+end
+local function addOneBySym()
+	remapSrcIndex = remapSrcIndex + 1
+	for k=1,3 do
+		for i=1,3 do
+			for j=i,3 do
+				remapRows:insert{
+					src = remapSrcIndex,
+					map = {k=k, i=i, j=j},
+				}
+			end
+		end
+	end
+end
+
+for _,var in ipairs(UkijVars) do
+	if Variable:isa(var) then
+		addScalar()
+	elseif TensorRef:isa(var) then
+		assert(Variable:isa(var[1]))
+		local numIndexes = #var-1
+		if numIndexes == 1 then
+			assert(var[2].lower)
+			addOneForm()
+		elseif numIndexes == 2 then	-- all our degree-2 are symmetric
+			-- TODO save symmetry info in the TensorRef (so long as it wraps a Variable)
+			-- and TODO consider it during simplification -- no more need for symmetrizeIndexes
+			addSym()
+		elseif numIndexes == 3 then
+			addOneBySym()			-- all our degree-3 are symmetric on 2nd and 3rd indexes
+		else
+			error'here'
+		end
+	else
+		error'here'
+	end
+end
+
+local n = #remapRows
+local remapRowToCol = {m='k', p='i', q='j'}
+local dFkij_dUmpq_expanded = Matrix:lambda({n, n}, function(i,j)
+	local srci = remapRows[i].src
+	local srcj = remapRows[j].src
+	local srcexpr = dFkij_dUmpq_mat[srci][srcj]
+	return srcexpr
+		:reindex{r=1}				-- do this for the 1st direction, whatever that is.
+		:reindex(remapRows[i].map)	-- remap kij to #s based on the map
+		:reindex(remapRowToCol)		-- remap mpq to kij
+		:reindex(remapRows[j].map)	-- remap mpq -> kij -> #s based on the map
+		:map(function(x)
+			if TensorRef:isa(x)
+			and x[1] == delta
+			then
+				if tonumber(x[2].symbol) then
+					return x[2].symbol == x[3].symbol and 1 or 0
+				-- else if it's a matching letter then it's summed and return the spatial dimension
+				end
+			end
+		end)
+		:symmetrizeIndexes(gamma, {1,2})
+		:simplify()
+end)
+-- remove all rows/cols that are all zeros
+local oldn = n
+local m = n
+for i=n,1,-1 do
+	local allzero = true
+	for j=1,m do
+		if not Constant.isValue(dFkij_dUmpq_expanded[i][j], 0) then
+			allzero = false
+			break
+		end
+	end
+	if allzero then
+		-- TODO remove U mpq expanded vars here as well
+		table.remove(dFkij_dUmpq_expanded, i)
+		n = n - 1
+	end
+end
+for j=m,1,-1 do
+	local allzero = true
+	for i=1,n do
+		if not Constant.isValue(dFkij_dUmpq_expanded[i][j], 0) then
+			allzero = false
+			break
+		end
+	end
+	if allzero then
+		for i=1,n do
+			table.remove(dFkij_dUmpq_expanded[i], j)
+		end
+		m = m - 1
+	end
+end
+printbr(dFkij_dUmpq_expanded)
+assert(m == n)
+printbr()
+--]]
+
+local dFkij_dUmpq_expanded_shiftless = dFkij_dUmpq_expanded:replace(beta'^1', 0)()
+
+
+printHeader'calculating charpoly'
+
+local charpoly = dFkij_dUmpq_expanded_shiftless:charpoly(lambda)
+printbr(charpoly)
+
+
+printHeader'finding lambdas'
+
+--	table{Constant(0)}:rep(17),
+--	table{alpha * sqrt(gamma'^11')}:rep(5),
+--	table{-alpha * sqrt(gamma'^11')}:rep(5),
+
+local lambdas = table()
+assert(symmath.op.eq:isa(charpoly))
+assert(Constant.isValue(charpoly[2], 0))
+local x = charpoly[1]:clone()	-- only take the lhs
+
+for _,root in ipairs{
+	Constant(0),
+	alpha * sqrt(gamma'^11'),
+	-alpha * sqrt(gamma'^11'),
+} do
+	while true do
+		local p, q = polydiv.polydivr(x, (lambda - root)(), lambda)
+		if Constant.isValue(q, 0) then
+			printbr('root', lambda:eq(root))
+			lambdas:insert(root)
+			x = p
+		else
+			break
+		end
+	end
+end
+printbr("solving what's left, which is ", x)
+local solns = table{x:eq(0):solve(lambda)}
+for _,soln in ipairs(solns) do
+	printbr('root:', soln)
+end
+printbr()
+
+--[[
+local x = var'x'
+charpoly = 
+	(charpoly / lambda^17)()				-- 17 lambda=0 eigenvalues
+--	:replace(gamma'^11', var'a'/alpha^2)	-- a = gamma^11 alpha^2
+	:replace(alpha, a)						-- a = alpha
+	:replace(gamma'^11', var'g')			-- g = gamma^11
+	:replace(lambda, sqrt(x))				-- x = lambda^2
+local pc = charpoly:polyCoeffs(x)
+local sum = 0
+for _,i in ipairs(table.keys(pc):sort()) do
+	if i == 'extra' or i == 0 then
+		sum = sum + pc[i]
+	else
+		sum = sum + pc[i] * x^i
+	end
+end
+print'<pre>'
+print(export.Lua(sum))
+print'</pre>'
+--]]
+
+-- so for f arbitrary and for f=2/alpha, both we get some sqrt(sqrt(...) + ...)'s as lambdas ... makes calcs frustrating
+
+--[=[ this is all for shift-less Z4 for generic 'f' shift parameter
+
+printHeader'verifying charpoly'
+
+--[[ WORKS for shift-less Z4.  those last sets of roots don't look familiar.
+local recreated = (
+	-lambda^17
+	* (lambda^2 - gamma'^11' * alpha^2)^5
+	* (lambda^2 - frac(1,2) * gamma'^11' * alpha^2 * (-sqrt(f^2 - 6*f + 5) + f + 1))
+	* (lambda^2 - frac(1,2) * gamma'^11' * alpha^2 * ( sqrt(f^2 - 6*f + 5) + f + 1))
+):eq(0)()
+printbr('verify', (charpoly - recreated)())
+--]]
+
+--[[ for lapse f=-2/alpha
+local recreated = (
+	-lambda^17
+	* (lambda^2 - gamma'^11' * alpha^2)^5
+	* (lambda^2 - frac(1,2) * gamma'^11' * alpha^2 * (-sqrt(f^2 - 6*f + 5) + f + 1))
+	* (lambda^2 - frac(1,2) * gamma'^11' * alpha^2 * ( sqrt(f^2 - 6*f + 5) + f + 1))
+):eq(0)()
+printbr('verify', (charpoly - recreated)())
+--]]
+
+--[[
+local x = var'x'
+charpoly = 
+	(charpoly / lambda^17)()
+	:replace(gamma'^11', a/alpha^2)	-- a = gamma^11 alpha^2
+	:replace(lambda, sqrt(x))		-- x = lambda^2
+	:simplify()
+print(charpoly)
+--]]
+
+--[[
+local lambdas = table():append(
+	table{Constant(0)}:rep(17),
+	table{alpha * sqrt(gamma'^11')}:rep(5),
+	table{-alpha * sqrt(gamma'^11')}:rep(5),
+	{
+		 alpha * sqrt(frac(1,2) * gamma'^11' * ( sqrt(f^2 - 6*f + 5) + f + 1)),
+		 alpha * sqrt(frac(1,2) * gamma'^11' * (-sqrt(f^2 - 6*f + 5) + f + 1)),
+		-alpha * sqrt(frac(1,2) * gamma'^11' * ( sqrt(f^2 - 6*f + 5) + f + 1)),
+		-alpha * sqrt(frac(1,2) * gamma'^11' * (-sqrt(f^2 - 6*f + 5) + f + 1)),
+	}
 )
+--]]
 
-printbr(
-	(
-		U_vars'_,t'
-		+ (-A)() * Matrix(
-			assertAndRemoveLastTensorIndex(
-				dxVars,
-				TensorIndex{lower=true, symbol='r', derivative=','}
-			)
-		):T()
-	):eq(b)
-)
+printbr()
+--]=]
+
+--[[ sqrt simplification can't handle this
+local recreated = -1
+for i=#lambdas,1,-1 do
+	local root = lambdas[i]
+	recreated = (recreated * (lambda - root))()
+end
+recreated = recreated:eq(0)
+printbr('verify', (charpoly - recreated)())
+--]]
+
+--[=[
+printHeader'calculating eigensystem'
+_G.printbr = printbr
+local eig = dFkij_dUmpq_expanded_shiftless:eigen{
+	lambdaVar = lambda,
+	lambdas = lambdas,
+	verbose = true,
+	--dontCalcL = true,
+}
+
+printbr(var'\\Lambda':eq(eig.Lambda))
+printbr()
+
+printbr(var'R':eq(eig.R))
+printbr()
+
+printbr(var'L':eq(eig.L))
+printbr()
+--]=]
 
 
-printHeader'favoring flux terms'
+--[==[
+
+printHeader'redo, favoring flux terms'
 
 -- ok now try to replace all the hyperbolic 1st deriv state vars that are not derivatives themselves with the original vars' derivatives
-rhsWithDeltas = dt_eqns:mapi(function(eqn)
+rhsWithDeltas = UkijtEqns:mapi(function(eqn)
 	local rhs = eqn[2]:clone()
+	-- TODO don't just insert the state vars, but in the case that there are quadratic vars, insert averages between the replacements
 	return rhs
 		:simplifyAddMulDiv()
 		:substIndex(a_l_def)
@@ -961,30 +1356,22 @@ end)
 printHeader'inserting deltas to help factor linear system'
 
 rhsWithDeltas = rhsWithDeltas:mapi(function(rhs) 
-	return insertDeltasToSetIndexSymbols(rhs, dxVars)
+	return insertDeltasToSetIndexSymbols(rhs, UmpqrVars)
 end)
 
 printHeader'as a balance law system:'
 
-local A, b = factorLinearSystem(
-	rhsWithDeltas,
-	dxVars
-)
+local A, b = factorLinearSystem(rhsWithDeltas, UmpqrVars)
+
+local dFkij_dUmpq_mat = (-A)()
+
 for i=1,#b do
 	b[i][1] = b[i][1]:simplifyAddMulDiv()
 end
-printbr(
-	(
-		U_vars'_,t'
-		+ (-A)() * Matrix(
-			assertAndRemoveLastTensorIndex(
-				dxVars,
-				TensorIndex{lower=true, symbol='r', derivative=','}
-			)
-		):T()
-	):eq(b)
-)
 
+printbr((UkijMat'_,t' + dFkij_dUmpq_mat * UmpqMat'_,r'):eq(b))
+
+--]==]
 
 
 -- DONE
