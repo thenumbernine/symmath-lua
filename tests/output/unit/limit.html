@@ -1110,8 +1110,20 @@ Limit/Prune/apply	$1$	<br>
 +/Prune/combineConstants	$0$	<br>
 Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+//Factor/polydiv	$\frac{1}{{-1} + {x}}$	<br>
 Factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Constant/Tidy/apply	$-{1}$	<br>
 Tidy	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
 Init	$¿$	<br>
@@ -1157,8 +1169,15 @@ Limit/Prune/apply	$1$	<br>
 +/Prune/combineConstants	$0$	<br>
 Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+//Factor/polydiv	$\frac{1}{{-1} + {x}}$	<br>
 Factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Constant/Tidy/apply	$-{1}$	<br>
 Tidy	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
 Init	$\inf$	<br>
@@ -1204,8 +1223,15 @@ Limit/Prune/apply	$1$	<br>
 +/Prune/combineConstants	$0$	<br>
 Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+//Factor/polydiv	$\frac{1}{{-1} + {x}}$	<br>
 Factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Limit/Prune/apply	$1$	<br>
+Limit/Prune/apply	$-1$	<br>
+Limit/Prune/apply	$1$	<br>
++/Prune/combineConstants	$0$	<br>
+Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
+Constant/Tidy/apply	$-{1}$	<br>
 Tidy	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
 Init	$-{\inf}$	<br>

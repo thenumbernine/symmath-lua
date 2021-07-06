@@ -111,9 +111,11 @@ return function(expr, x)
 	isn't factorDivision now just simplifyAddMulDiv?  no, it's called by it though on all its terms
 	--]]
 	expr = ExpandPolynomial()(expr)
-	expr = expr()
-	expr = expr:factorDivision()
-	
+	--expr = expr:simplify()		-- this recombines polys into pow-mul-add
+	--expr = expr:factorDivision()	-- this recombines too
+	--expr = expr:simplifyAddMulDiv()	-- this starts off with :simplify(), so it's as bad as above
+	expr = expr:prune()				-- this combines x powers and sums without recombining the poly
+
 	-- group terms by polynomial coefficients
 	local coeffs = {}	-- result = coeffs[n] * x^n + coeffs.extra, where coeffs.extra holds all the nonlinear x references
 

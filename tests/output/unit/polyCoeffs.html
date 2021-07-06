@@ -57,52 +57,6 @@
 <b></b><br>
 <code>assertalleq( (x^2 - 2 * a * x + a^2):polyCoeffs(x), {[0]=a^2, [1]=-2*a, [2]=const(1)} )</code>
 </td><td>
-expected 1 to equal 3<br>
-found $1$ vs $3$<br>
-lhs stack<br>
-Init	$1$	<br>
-Prune	$1$	<br>
-Expand	$1$	<br>
-Prune	$1$	<br>
-Factor	$1$	<br>
-Prune	$1$	<br>
-Tidy	$1$	<br>
-rhs stack<br>
-Init	$3$	<br>
-Prune	$3$	<br>
-Expand	$3$	<br>
-Prune	$3$	<br>
-Factor	$3$	<br>
-Prune	$3$	<br>
-Tidy	$3$	<br>
-lhs:	extra=${\left({{x} + {{{-1}} {{a}}}}\right)}^{2}$	<br>
-rhs:	0=${a}^{2}$, 1=${{-2}} {{a}}$, 2=$1$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>
-stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:74: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:67><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:62: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61: in function 'assertalleq'<br>
-	[string "assertalleq( (x^2 - 2 * a * x + a^2):polyCoef..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polyCoeffs.lua:25: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polyCoeffs.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950	14
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: in function 'assertalleq'<br>
-	[string "assertalleq( (x^2 - 2 * a * x + a^2):polyCoef..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polyCoeffs.lua:25: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polyCoeffs.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950
+
+<span style="color:green">GOOD</span>
 </td></tr>

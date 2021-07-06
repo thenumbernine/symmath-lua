@@ -85,7 +85,7 @@ simplified numerator is	${{\sqrt{a}}} {{\left({{-{\sqrt{a}}} + {x}}\right)}}$
 <br>
 coeffs of numerator
 <br>
-coeff	0	 = 	${{-1}} {{{a}^{\frac{1}{2}}}} {{{a}^{\frac{1}{2}}}}$
+coeff	0	 = 	${{-1}} {{a}}$
 <br>
 coeff	1	 = 	${a}^{\frac{1}{2}}$
 <br>
@@ -130,7 +130,11 @@ polydivr dividing	${{x}^{2}} + {{{2}} {{x}} {{a}}} + {{a}^{2}}$	by	${x} + {a}$	w
 <br>
 coeffs of numerator
 <br>
-coeff	extra	 = 	${\left({{x} + {a}}\right)}^{2}$
+coeff	0	 = 	${a}^{2}$
+<br>
+coeff	1	 = 	${{2}} {{a}}$
+<br>
+coeff	2	 = 	$1$
 <br>
 coeffs of denom
 <br>
@@ -138,64 +142,48 @@ coeff	0	 = 	$a$
 <br>
 coeff	1	 = 	$1$
 <br>
-numerator degree	0
+numerator degree	2
+<br>
+numerator leading coefficient	$1$
+<br>
+setting the 	1	th result coefficient to 	$1$
+<br>
+numerator becomes	${{{x}^{2}} + {{{2}} {{x}} {{a}}} + {{a}^{2}}} - {{{\left({{x} + {a}}\right)}} {{x}}}$
+<br>
+simplified numerator is	${{a}} {{\left({{a} + {x}}\right)}}$
+<br>
+coeffs of numerator
+<br>
+coeff	0	 = 	${a}^{2}$
+<br>
+coeff	1	 = 	$a$
+<br>
+numerator degree is now	1
+<br>
+numerator leading coefficient	$a$
+<br>
+setting the 	0	th result coefficient to 	$a$
+<br>
+numerator becomes	${{{a}} {{\left({{a} + {x}}\right)}}} - {{{a}} {{\left({{x} + {a}}\right)}} {{{x}^{0}}}}$
+<br>
+simplified numerator is	$0$
+<br>
+coeffs of numerator
+<br>
+numerator degree is now	0
 <br>
 numerator leading coefficient	nil
 <br>
-polydivr returning sum	$0$
+sum adding degree	1	 coeff	$1$	of var	$x$
 <br>
-returning remainder	${{x}^{2}} + {{{2}} {{x}} {{a}}} + {{a}^{2}}$
+sum adding degree	0	 coeff	$a$	of var	$x$
 <br>
-expected $0$ to equal ${x} + {a}$<br>
-found $0$ vs ${x} + {a}$<br>
-lhs stack<br>
-Init	$0$	<br>
-Prune	$0$	<br>
-Expand	$0$	<br>
-Prune	$0$	<br>
-Factor	$0$	<br>
-Prune	$0$	<br>
-Constant/Tidy/apply	$0$	<br>
-Tidy	$0$	<br>
-rhs stack<br>
-Init	${x} + {a}$	<br>
-Prune	${x} + {a}$	<br>
-Expand	${x} + {a}$	<br>
-Prune	${x} + {a}$	<br>
-Factor	${x} + {a}$	<br>
-Prune	${x} + {a}$	<br>
-Tidy	${x} + {a}$	<br>
-lhs:	1=$0$, 2=${{x}^{2}} + {{{2}} {{x}} {{a}}} + {{a}^{2}}$	<br>
-rhs:	1=${x} + {a}$, 2=0	<br>
-when comparing key 1	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>
-stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:74: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:67><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:65: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61: in function 'assertalleq'<br>
-	[string "assertalleq({(x^2 + 2 * x * a + a^2):polydivr..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polydiv.lua:27: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polydiv.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950	14
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: in function 'assertalleq'<br>
-	[string "assertalleq({(x^2 + 2 * x * a + a^2):polydivr..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polydiv.lua:27: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polydiv.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950
+polydivr returning sum	${x} + {a}$
+<br>
+returning remainder	$0$
+<br>
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -207,7 +195,11 @@ polydivr dividing	${{{x}^{2}} - {{{2}} {{x}} {{a}}}} + {{a}^{2}}$	by	${x} - {a}$
 <br>
 coeffs of numerator
 <br>
-coeff	extra	 = 	${\left({{x} + {{{-1}} {{a}}}}\right)}^{2}$
+coeff	0	 = 	${a}^{2}$
+<br>
+coeff	1	 = 	${{-2}} {{a}}$
+<br>
+coeff	2	 = 	$1$
 <br>
 coeffs of denom
 <br>
@@ -215,70 +207,48 @@ coeff	0	 = 	${{-1}} {{a}}$
 <br>
 coeff	1	 = 	$1$
 <br>
-numerator degree	0
+numerator degree	2
+<br>
+numerator leading coefficient	$1$
+<br>
+setting the 	1	th result coefficient to 	$1$
+<br>
+numerator becomes	${{{{x}^{2}} - {{{2}} {{x}} {{a}}}} + {{a}^{2}}} - {{{\left({{x} - {a}}\right)}} {{x}}}$
+<br>
+simplified numerator is	${{a}} {{\left({{a} - {x}}\right)}}$
+<br>
+coeffs of numerator
+<br>
+coeff	0	 = 	${a}^{2}$
+<br>
+coeff	1	 = 	${{-1}} {{a}}$
+<br>
+numerator degree is now	1
+<br>
+numerator leading coefficient	${{-1}} {{a}}$
+<br>
+setting the 	0	th result coefficient to 	$-{a}$
+<br>
+numerator becomes	${{{a}} {{\left({{a} - {x}}\right)}}} - { {-{a}} {{\left({{x} - {a}}\right)}} {{{x}^{0}}}}$
+<br>
+simplified numerator is	$0$
+<br>
+coeffs of numerator
+<br>
+numerator degree is now	0
 <br>
 numerator leading coefficient	nil
 <br>
-polydivr returning sum	$0$
+sum adding degree	1	 coeff	$1$	of var	$x$
 <br>
-returning remainder	${{{x}^{2}} - {{{2}} {{x}} {{a}}}} + {{a}^{2}}$
+sum adding degree	0	 coeff	$-{a}$	of var	$x$
 <br>
-expected $0$ to equal ${x} - {a}$<br>
-found $0$ vs ${x} - {a}$<br>
-lhs stack<br>
-Init	$0$	<br>
-Prune	$0$	<br>
-Expand	$0$	<br>
-Prune	$0$	<br>
-Factor	$0$	<br>
-Prune	$0$	<br>
-Constant/Tidy/apply	$0$	<br>
-Tidy	$0$	<br>
-rhs stack<br>
-Init	${x} - {a}$	<br>
-unm/Prune/apply	${{-1}} {{a}}$	<br>
--/Prune/apply	${x} + {{{-1}} {{a}}}$	<br>
-Prune	${x} + {{{-1}} {{a}}}$	<br>
-Expand	${x} + {{{-1}} {{a}}}$	<br>
-Prune	${x} + {{{-1}} {{a}}}$	<br>
-Factor	${x} + {{{-1}} {{a}}}$	<br>
-Prune	${x} + {{{-1}} {{a}}}$	<br>
-Constant/Tidy/apply	$-{1}$	<br>
-*/Tidy/apply	$a$	<br>
-*/Tidy/apply	$-{a}$	<br>
-+/Tidy/apply	${x} - {a}$	<br>
-Tidy	${x} - {a}$	<br>
-lhs:	1=$0$, 2=${{{x}^{2}} - {{{2}} {{x}} {{a}}}} + {{a}^{2}}$	<br>
-rhs:	1=${x} - {a}$, 2=0	<br>
-when comparing key 1	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>
-stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:74: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:67><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:65: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61: in function 'assertalleq'<br>
-	[string "assertalleq({(x^2 - 2 * x * a + a^2):polydivr..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polydiv.lua:27: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polydiv.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950	14
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: in function 'assertalleq'<br>
-	[string "assertalleq({(x^2 - 2 * x * a + a^2):polydivr..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polydiv.lua:27: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polydiv.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950
+polydivr returning sum	${x} + {-{a}}$
+<br>
+returning remainder	$0$
+<br>
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -298,7 +268,9 @@ polydivr dividing	${{x}^{2}} - {{a}^{2}}$	by	${x} - {a}$	wrt var	$x$
 <br>
 coeffs of numerator
 <br>
-coeff	extra	 = 	${{{x}} {{x}}} + {{{x}} {{a}}} + {{{-1}} {{a}} {{x}}} + {{{-1}} {{a}} {{a}}}$
+coeff	0	 = 	${{-1}} {{{a}^{2}}}$
+<br>
+coeff	2	 = 	$1$
 <br>
 coeffs of denom
 <br>
@@ -306,64 +278,48 @@ coeff	0	 = 	${{-1}} {{a}}$
 <br>
 coeff	1	 = 	$1$
 <br>
-numerator degree	0
+numerator degree	2
+<br>
+numerator leading coefficient	$1$
+<br>
+setting the 	1	th result coefficient to 	$1$
+<br>
+numerator becomes	${{{x}^{2}} - {{a}^{2}}} - {{{\left({{x} - {a}}\right)}} {{x}}}$
+<br>
+simplified numerator is	${{a}} {{\left({{-{a}} + {x}}\right)}}$
+<br>
+coeffs of numerator
+<br>
+coeff	0	 = 	${{-1}} {{{a}^{2}}}$
+<br>
+coeff	1	 = 	$a$
+<br>
+numerator degree is now	1
+<br>
+numerator leading coefficient	$a$
+<br>
+setting the 	0	th result coefficient to 	$a$
+<br>
+numerator becomes	${{{a}} {{\left({{-{a}} + {x}}\right)}}} - {{{a}} {{\left({{x} - {a}}\right)}} {{{x}^{0}}}}$
+<br>
+simplified numerator is	$0$
+<br>
+coeffs of numerator
+<br>
+numerator degree is now	0
 <br>
 numerator leading coefficient	nil
 <br>
-polydivr returning sum	$0$
+sum adding degree	1	 coeff	$1$	of var	$x$
 <br>
-returning remainder	${{x}^{2}} - {{a}^{2}}$
+sum adding degree	0	 coeff	$a$	of var	$x$
 <br>
-expected $0$ to equal ${x} + {a}$<br>
-found $0$ vs ${x} + {a}$<br>
-lhs stack<br>
-Init	$0$	<br>
-Prune	$0$	<br>
-Expand	$0$	<br>
-Prune	$0$	<br>
-Factor	$0$	<br>
-Prune	$0$	<br>
-Constant/Tidy/apply	$0$	<br>
-Tidy	$0$	<br>
-rhs stack<br>
-Init	${x} + {a}$	<br>
-Prune	${x} + {a}$	<br>
-Expand	${x} + {a}$	<br>
-Prune	${x} + {a}$	<br>
-Factor	${x} + {a}$	<br>
-Prune	${x} + {a}$	<br>
-Tidy	${x} + {a}$	<br>
-lhs:	1=$0$, 2=${{x}^{2}} - {{a}^{2}}$	<br>
-rhs:	1=${x} + {a}$, 2=0	<br>
-when comparing key 1	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>
-stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:74: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:67><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:65: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61: in function 'assertalleq'<br>
-	[string "assertalleq({(x^2 - a^2):polydivr(x - a, x, v..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polydiv.lua:27: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polydiv.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950	14
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: in function 'assertalleq'<br>
-	[string "assertalleq({(x^2 - a^2):polydivr(x - a, x, v..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polydiv.lua:27: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polydiv.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950
+polydivr returning sum	${x} + {a}$
+<br>
+returning remainder	$0$
+<br>
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -375,7 +331,9 @@ polydivr dividing	${{x}^{2}} - {{a}^{2}}$	by	${x} + {a}$	wrt var	$x$
 <br>
 coeffs of numerator
 <br>
-coeff	extra	 = 	${{{x}} {{x}}} + {{{x}} {{a}}} + {{{-1}} {{a}} {{x}}} + {{{-1}} {{a}} {{a}}}$
+coeff	0	 = 	${{-1}} {{{a}^{2}}}$
+<br>
+coeff	2	 = 	$1$
 <br>
 coeffs of denom
 <br>
@@ -383,68 +341,46 @@ coeff	0	 = 	$a$
 <br>
 coeff	1	 = 	$1$
 <br>
-numerator degree	0
+numerator degree	2
+<br>
+numerator leading coefficient	$1$
+<br>
+setting the 	1	th result coefficient to 	$1$
+<br>
+numerator becomes	${{{x}^{2}} - {{a}^{2}}} - {{{\left({{x} + {a}}\right)}} {{x}}}$
+<br>
+simplified numerator is	$-{{{a}} {{\left({{a} + {x}}\right)}}}$
+<br>
+coeffs of numerator
+<br>
+coeff	0	 = 	${{-1}} {{{a}^{2}}}$
+<br>
+coeff	1	 = 	${{-1}} {{a}}$
+<br>
+numerator degree is now	1
+<br>
+numerator leading coefficient	${{-1}} {{a}}$
+<br>
+setting the 	0	th result coefficient to 	$-{a}$
+<br>
+numerator becomes	${-{{{a}} {{\left({{a} + {x}}\right)}}}} - { {-{a}} {{\left({{x} + {a}}\right)}} {{{x}^{0}}}}$
+<br>
+simplified numerator is	$0$
+<br>
+coeffs of numerator
+<br>
+numerator degree is now	0
 <br>
 numerator leading coefficient	nil
 <br>
-polydivr returning sum	$0$
+sum adding degree	1	 coeff	$1$	of var	$x$
 <br>
-returning remainder	${{x}^{2}} - {{a}^{2}}$
+sum adding degree	0	 coeff	$-{a}$	of var	$x$
 <br>
-expected $0$ to equal ${x} - {a}$<br>
-found $0$ vs ${x} - {a}$<br>
-lhs stack<br>
-Init	$0$	<br>
-Prune	$0$	<br>
-Expand	$0$	<br>
-Prune	$0$	<br>
-Factor	$0$	<br>
-Prune	$0$	<br>
-Constant/Tidy/apply	$0$	<br>
-Tidy	$0$	<br>
-rhs stack<br>
-Init	${x} - {a}$	<br>
-unm/Prune/apply	${{-1}} {{a}}$	<br>
--/Prune/apply	${x} + {{{-1}} {{a}}}$	<br>
-Prune	${x} + {{{-1}} {{a}}}$	<br>
-Expand	${x} + {{{-1}} {{a}}}$	<br>
-Prune	${x} + {{{-1}} {{a}}}$	<br>
-Factor	${x} + {{{-1}} {{a}}}$	<br>
-Prune	${x} + {{{-1}} {{a}}}$	<br>
-Constant/Tidy/apply	$-{1}$	<br>
-*/Tidy/apply	$a$	<br>
-*/Tidy/apply	$-{a}$	<br>
-+/Tidy/apply	${x} - {a}$	<br>
-Tidy	${x} - {a}$	<br>
-lhs:	1=$0$, 2=${{x}^{2}} - {{a}^{2}}$	<br>
-rhs:	1=${x} - {a}$, 2=0	<br>
-when comparing key 1	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>
-stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:74: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:67><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:65: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:61: in function 'assertalleq'<br>
-	[string "assertalleq({(x^2 - a^2):polydivr(x + a, x, v..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polydiv.lua:27: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polydiv.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950	14
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
-	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:76: in function 'assertalleq'<br>
-	[string "assertalleq({(x^2 - a^2):polydivr(x + a, x, v..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	polydiv.lua:27: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	polydiv.lua:6: in main chunk<br>
-	[C]: at 0x7ff690354950
+polydivr returning sum	${x} + {-{a}}$
+<br>
+returning remainder	$0$
+<br>
+
+<span style="color:green">GOOD</span>
 </td></tr>
