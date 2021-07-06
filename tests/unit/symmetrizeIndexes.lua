@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'symmetrizeIndexes')
 
+timer(nil, function()
+
 env.a = var'a'
 env.b = var'b'
 env.d = var'd'
@@ -135,3 +137,5 @@ asserteq(( d'^a_b' * b'^b_,a' ):symmetrizeIndexes(d, {1,2}, true), d'^a_b' * b'_
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

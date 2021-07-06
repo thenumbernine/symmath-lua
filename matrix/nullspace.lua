@@ -7,7 +7,7 @@ local function nullspace(A, verbose)
 	local Matrix = require 'symmath.Matrix'
 
 	if verbose and type(verbose) ~= 'function' then
-		verbose = print
+		verbose = _G.printbr or _G.print
 	end
 
 	local n = #A

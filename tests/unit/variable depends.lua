@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'variable depends')
 
+timer(nil, function()
+
 env.env = env
 env.x = var'x'
 env.z = var'z'
@@ -186,3 +188,5 @@ assert(true == x'^I':dependsOn(x'^I'))
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

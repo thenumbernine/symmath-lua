@@ -57,7 +57,9 @@ sub.rules = {
 			local add = symmath.op.add
 			
 			--assert(#expr > 1) -- TODO
-			if #expr == 1 then return expand:apply(expr[1]) end
+			if #expr == 1 then 
+				return expand:apply(expr[1]) 
+			end
 
 			if #expr == 2 then
 				expr = expr[1] + -expr[2]

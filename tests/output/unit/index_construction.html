@@ -12,7 +12,7 @@
 <b>upper by default</b><br>
 <code>local x=a'i' 	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false})</code>
 </td><td>
-${ a}^i$
+${ a} ^i$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -20,7 +20,7 @@ ${ a}^i$
 <b></b><br>
 <code>local x=a'^i' 	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false})</code>
 </td><td>
-${ a}^i$
+${ a} ^i$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -28,7 +28,7 @@ ${ a}^i$
 <b></b><br>
 <code>local x=a'_i' 	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true})</code>
 </td><td>
-${ a}_i$
+${ a} _i$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -36,7 +36,7 @@ ${ a}_i$
 <b></b><br>
 <code>local x=a'ij' 	print(x)	assert(#x==3 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false} and x[3]==TensorIndex{symbol='j', lower=false})</code>
 </td><td>
-${{ a}^i}^j$
+${{ a} ^i} ^j$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -44,7 +44,7 @@ ${{ a}^i}^j$
 <b></b><br>
 <code>local x=a'i_j' 	print(x)	assert(#x==3 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false} and x[3]==TensorIndex{symbol='j', lower=true})</code>
 </td><td>
-${{ a}^i}_j$
+${{ a} ^i} _j$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -52,7 +52,7 @@ ${{ a}^i}_j$
 <b></b><br>
 <code>local x=a'^ij' 	print(x)	assert(#x==3 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false} and x[3]==TensorIndex{symbol='j', lower=false})</code>
 </td><td>
-${{ a}^i}^j$
+${{ a} ^i} ^j$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -60,7 +60,7 @@ ${{ a}^i}^j$
 <b></b><br>
 <code>local x=a'^i_j'	print(x)	assert(#x==3 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false} and x[3]==TensorIndex{symbol='j', lower=true})</code>
 </td><td>
-${{ a}^i}_j$
+${{ a} ^i} _j$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -68,7 +68,7 @@ ${{ a}^i}_j$
 <b></b><br>
 <code>local x=a'_i^j'	print(x)	assert(#x==3 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true} and x[3]==TensorIndex{symbol='j', lower=false})</code>
 </td><td>
-${{ a}_i}^j$
+${{ a} _i} ^j$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -76,7 +76,7 @@ ${{ a}_i}^j$
 <b></b><br>
 <code>local x=a'_ij' 	print(x)	assert(#x==3 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true} and x[3]==TensorIndex{symbol='j', lower=true})</code>
 </td><td>
-${{ a}_i}_j$
+${{ a} _i} _j$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -92,7 +92,7 @@ ${{ a}_i}_j$
 <b>upper by default</b><br>
 <code>local x=a' i' 			print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false})</code>
 </td><td>
-${ a}^i$
+${ a} ^i$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -100,7 +100,7 @@ ${ a}^i$
 <b>upper by default</b><br>
 <code>local x=a' \\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='\\mu', lower=false})</code>
 </td><td>
-${ a}^{\mu}$
+${ a} ^{\mu}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -108,7 +108,7 @@ ${ a}^{\mu}$
 <b></b><br>
 <code>local x=a' ^\\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='\\mu', lower=false})</code>
 </td><td>
-${ a}^{\mu}$
+${ a} ^{\mu}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -116,7 +116,7 @@ ${ a}^{\mu}$
 <b></b><br>
 <code>local x=a' _\\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='\\mu', lower=true})</code>
 </td><td>
-${ a}_{\mu}$
+${ a} _{\mu}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -124,7 +124,7 @@ ${ a}_{\mu}$
 <b></b><br>
 <code>local x=a' \\mu \\nu' print(x)	assert(#x==3 and x[1]==a and x[2]==TensorIndex{symbol='\\mu', lower=false} and x[3]==TensorIndex{symbol='\\nu', lower=false})</code>
 </td><td>
-${{ a}^{\mu}}^{\nu}$
+${{ a} ^{\mu}} ^{\nu}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -136,7 +136,7 @@ ${{ a}^{\mu}}^{\nu}$
 <b>commas are lower by default</b><br>
 <code>local x=a',i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative=','})</code>
 </td><td>
-${ a}_{,i}$
+${ a} _{,i}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -144,7 +144,7 @@ ${ a}_{,i}$
 <b></b><br>
 <code>local x=a',^i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative=','})</code>
 </td><td>
-${ a}^{,i}$
+${ a} ^{,i}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -152,7 +152,7 @@ ${ a}^{,i}$
 <b></b><br>
 <code>local x=a',_i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative=','})</code>
 </td><td>
-${ a}_{,i}$
+${ a} _{,i}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -160,7 +160,7 @@ ${ a}_{,i}$
 <b></b><br>
 <code>local x=a'^,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=false, derivative=','})</code>
 </td><td>
-${ a}^{,i}$
+${ a} ^{,i}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -168,7 +168,7 @@ ${ a}^{,i}$
 <b></b><br>
 <code>local x=a'_,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==TensorIndex{symbol='i', lower=true, derivative=','})</code>
 </td><td>
-${ a}_{,i}$
+${ a} _{,i}$
 
 <span style="color:green">GOOD</span>
 </td></tr>

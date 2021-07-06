@@ -613,12 +613,16 @@ function mul:distribute()
 end
 
 mul.rules = {
+-- [[
 	Expand = {
 		{apply = function(expand, expr)
 			local dstr = expr:distribute()
-			if dstr then return expand:apply(dstr) end
+			if dstr then 
+				return expand:apply(dstr) 
+			end
 		end},
 	},
+--]]
 
 	-- not sure where this rule should go, or if I already have a copy somewhere ....
 	Factor = {

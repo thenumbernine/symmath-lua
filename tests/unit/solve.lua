@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'solve')
 
+timer(nil, function()
+
 env.x = var'x'
 
 --[[ 
@@ -123,3 +125,5 @@ asserteq(select(2, (x^2):eq(-1):solve(x)), x:eq(-i))
 ), '\n')) do
 	env.exec(line)
 end
+
+end)

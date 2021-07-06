@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'matrix')
 
+timer(nil, function()
+
 for n in ([[a b c d t t_x t_y t_z]]):gmatch'%S+' do
 	env[n] = env.var(n)
 end
@@ -74,3 +76,5 @@ exec[[asserteq( ((Matrix({a},{b}) + Matrix({c},{d})) / t)(), Matrix({frac(a+c,t)
 exec[[printbr(Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))]]
 exec[[printbr((Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))())]]
 exec[[asserteq( (Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))(), Matrix({5},{6}) )]]
+
+end)

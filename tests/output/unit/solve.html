@@ -334,7 +334,7 @@ ${x} = {0}$	${x} = {-{1}}$	${x} = {-{1}}$
 <b></b><br>
 <code>printbr( (x * (x^2 + x - 1)):eq(0):solve(x)  )</code>
 </td><td>
-${x} = {0}$	${x} = {-{\frac{{1} - {\sqrt{5}}}{2}}}$	${x} = {-{\frac{{1} + {\sqrt{5}}}{2}}}$
+${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -357,15 +357,112 @@ ${x} = {0}$	${x} = {-{\frac{{1} - {\sqrt{5}}}{2}}}$	${x} = {-{\frac{{1} + {\sqrt
 <b></b><br>
 <code>asserteq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
+expected ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$ to equal ${x} = {{\frac{1}{2}}{\left({-{\left({{1} - {\sqrt{5}}}\right)}}\right)}}$<br>
+found ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$ vs ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$<br>
+lhs stack<br>
+Init	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+*/Prune/factorDenominators	${\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}$	<br>
+unm/Prune/apply	${\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+*/Expand/apply	${{{-1}} \cdot {{1}}} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{{{-1}} \cdot {{1}}} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+*/Prune/apply	$-1$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+Tidy	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	<br>
+rhs stack<br>
+Init	${x} = {{\frac{1}{2}}{\left({-{\left({{1} - {\sqrt{5}}}\right)}}\right)}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	${{-1}} \cdot {{{5}^{\frac{1}{2}}}}$	<br>
+-/Prune/apply	${1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	${{-1}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}}$	<br>
+*/Expand/apply	${{{-1}} \cdot {{1}}} + {{{-1}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{{{-1}} \cdot {{1}}} + {{{-1}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}}$	<br>
+*/Prune/apply	$-1$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Tidy/apply	$\sqrt{5}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+*/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+*/Prune/flatten	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Tidy	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
+	[string "asserteq(select(2, (x * (x^2 + x - 1)):eq(0):..."]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	solve.lua:126: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	solve.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
+expected ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$ to equal ${x} = {{\frac{1}{2}}{\left({-{\left({{1} + {\sqrt{5}}}\right)}}\right)}}$<br>
+found ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$ vs ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$<br>
+lhs stack<br>
+Init	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$	<br>
+unm/Prune/apply	$-1$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Tidy	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$	<br>
+rhs stack<br>
+Init	${x} = {{\frac{1}{2}}{\left({-{\left({{1} + {\sqrt{5}}}\right)}}\right)}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	${{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+*/Expand/apply	${{{-1}} \cdot {{1}}} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{{{-1}} \cdot {{1}}} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+*/Prune/apply	$-1$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+Tidy	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
+	[string "asserteq(select(3, (x * (x^2 + x - 1)):eq(0):..."]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	solve.lua:126: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	solve.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -375,7 +472,7 @@ ${x} = {0}$	${x} = {-{\frac{{1} - {\sqrt{5}}}{2}}}$	${x} = {-{\frac{{1} + {\sqrt
 <b></b><br>
 <code>printbr( (x^3 + x^2 - x):eq(0):solve(x) )</code>
 </td><td>
-${x} = {0}$	${x} = {-{\frac{{1} - {\sqrt{5}}}{2}}}$	${x} = {-{\frac{{1} + {\sqrt{5}}}{2}}}$
+${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -398,13 +495,110 @@ ${x} = {0}$	${x} = {-{\frac{{1} - {\sqrt{5}}}{2}}}$	${x} = {-{\frac{{1} + {\sqrt
 <b></b><br>
 <code>asserteq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
+expected ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$ to equal ${x} = {{\frac{1}{2}}{\left({-{\left({{1} - {\sqrt{5}}}\right)}}\right)}}$<br>
+found ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$ vs ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$<br>
+lhs stack<br>
+Init	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+*/Prune/factorDenominators	${\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}$	<br>
+unm/Prune/apply	${\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+*/Expand/apply	${{{-1}} \cdot {{1}}} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{{{-1}} \cdot {{1}}} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+*/Prune/apply	$-1$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+Tidy	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	<br>
+rhs stack<br>
+Init	${x} = {{\frac{1}{2}}{\left({-{\left({{1} - {\sqrt{5}}}\right)}}\right)}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	${{-1}} \cdot {{{5}^{\frac{1}{2}}}}$	<br>
+-/Prune/apply	${1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	${{-1}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}}}$	<br>
+*/Expand/apply	${{{-1}} \cdot {{1}}} + {{{-1}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{{{-1}} \cdot {{1}}} + {{{-1}} {{{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}}}\right)}}$	<br>
+*/Prune/apply	$-1$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+^/Tidy/apply	$\sqrt{5}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+*/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+*/Prune/flatten	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Tidy	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
+	[string "asserteq(select(2, (x * (x^2 + x - 1)):eq(0):..."]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	solve.lua:126: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	solve.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>asserteq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
+expected ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$ to equal ${x} = {{\frac{1}{2}}{\left({-{\left({{1} + {\sqrt{5}}}\right)}}\right)}}$<br>
+found ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$ vs ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$<br>
+lhs stack<br>
+Init	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$	<br>
+unm/Prune/apply	$-1$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Tidy	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$	<br>
+rhs stack<br>
+Init	${x} = {{\frac{1}{2}}{\left({-{\left({{1} + {\sqrt{5}}}\right)}}\right)}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+sqrt/Prune/apply	${5}^{\frac{1}{2}}$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+unm/Prune/apply	${{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+*/Expand/apply	${{{-1}} \cdot {{1}}} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}$	<br>
+Expand	${x} = {{\frac{1}{2}}{\left({{{{-1}} \cdot {{1}}} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+*/Prune/apply	$-1$	<br>
+^/Prune/sqrtFix4	${5}^{\frac{1}{2}}$	<br>
+Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\right)}}$	<br>
+Factor	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
+Tidy	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
+	[string "asserteq(select(3, (x * (x^2 + x - 1)):eq(0):..."]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	solve.lua:126: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	solve.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>

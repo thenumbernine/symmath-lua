@@ -2,6 +2,9 @@
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'match')
+
+timer(nil, function()
+
 env.W = Wildcard
 env.const = Constant
 env.zero = const(0)
@@ -229,3 +232,5 @@ local a = x'^i':match(TensorRef(x, W(1))) asserteq(a, TensorIndex{symbol='i', lo
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

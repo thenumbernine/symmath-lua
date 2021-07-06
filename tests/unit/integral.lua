@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'integral')
 
+timer(nil, function()
+
 env.a = var'a'
 env.b = var'b'
 env.x = var'x'
@@ -71,3 +73,5 @@ asserteq( ( sinh(a * x)^2 * cosh(a * x) ):integrate(x), sinh(a * x)^3 / (3 * a) 
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

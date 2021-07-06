@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'replaceIndex')
 
+timer(nil, function()
+
 --[[
 TODO 
 expr:replaceIndex(a'_i', b)
@@ -133,3 +135,5 @@ print( (c'_b' * a'^a' * a'_a'):replaceIndex(c'_b' * a'^a' * a'_a', 2))
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'tidyIndexes')
 
+timer(nil, function()
+
 env.a = var'a'
 env.b = var'b'
 env.c = var'c'
@@ -40,3 +42,5 @@ asserteq((a'^i' * b'^j_ji'):tidyIndexes(), a'^a' * b'^b_ba')		-- this uses the f
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

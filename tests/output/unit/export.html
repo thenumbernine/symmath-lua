@@ -7,7 +7,7 @@
 	</head>
 	<body onload='tryToFindMathJax();'>
 
-generated with Lua 5.3
+generated with LuaJIT 2.1.0-beta3
 <br>
 
 <br>
@@ -116,7 +116,7 @@ ii
 </td>
 <td>
 <pre class="pre-not-multiline">
-_i|0+i1
+_i|0+1i
 </pre>
 </td>
 <td>
@@ -897,14 +897,14 @@ x / 2
 </td>
 <td>
 <pre class="pre-not-multiline">
-/[x, 2.0]
+/[x, 2]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	var("x") /
-	Constant(2.0)
+	Constant(2)
 )
 </pre>
 </td>
@@ -956,15 +956,15 @@ ${{\frac{1}{2}}} {{x}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-*[/[1.0, 2.0], x]
+*[/[1, 2], x]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	(
-		Constant(1.0) /
-		Constant(2.0)
+		Constant(1) /
+		Constant(2)
 	) *
 	var("x")
 )
@@ -1016,13 +1016,13 @@ ${{2}} {{x}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-*[2.0, x]
+*[2, x]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
-	Constant(2.0) *
+	Constant(2) *
 	var("x")
 )
 </pre>
@@ -1073,16 +1073,16 @@ ${{2}} {{\left({{x} + {1}}\right)}}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-*[2.0, +[x, 1.0]]
+*[2, +[x, 1]]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
-	Constant(2.0) *
+	Constant(2) *
 	(
 		var("x") +
-		Constant(1.0)
+		Constant(1)
 	)
 )
 </pre>
@@ -1134,14 +1134,14 @@ Math.pow(x, 2)
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[x, 2.0]
+^[x, 2]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	var("x") ^
-	Constant(2.0)
+	Constant(2)
 )
 </pre>
 </td>
@@ -1192,17 +1192,17 @@ Math.pow(1 + x, 2)
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[+[1.0, x], 2.0]
+^[+[1, x], 2]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("x")
 	) ^
-	Constant(2.0)
+	Constant(2)
 )
 </pre>
 </td>
@@ -1253,18 +1253,18 @@ Math.pow(1 + x, 1 + y)
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[+[1.0, x], +[1.0, y]]
+^[+[1, x], +[1, y]]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("x")
 	) ^
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("y")
 	)
 )
@@ -1317,15 +1317,15 @@ Math.pow(2, 1 + y)
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[2.0, +[1.0, y]]
+^[2, +[1, y]]
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 (
-	Constant(2.0) ^
+	Constant(2) ^
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("y")
 	)
 )
@@ -1378,7 +1378,7 @@ Math.pow(e, 1 + y)
 </td>
 <td>
 <pre class="pre-not-multiline">
-^[e, +[1.0, y]]
+^[e, +[1, y]]
 </pre>
 </td>
 <td>
@@ -1386,7 +1386,7 @@ Math.pow(e, 1 + y)
 (
 	var("e") ^
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("y")
 	)
 )
@@ -2927,7 +2927,7 @@ limit([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{y, x, 0.0, {}}
+Limit{y, x, 0, {}}
 </pre>
 </td>
 <td>
@@ -2935,7 +2935,7 @@ Limit{y, x, 0.0, {}}
 Limit(
 	var("y"),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	(
 
 	)
@@ -3005,7 +3005,7 @@ limit_plus([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{y, x, 0.0, +{}}
+Limit{y, x, 0, +{}}
 </pre>
 </td>
 <td>
@@ -3013,7 +3013,7 @@ Limit{y, x, 0.0, +{}}
 Limit(
 	var("y"),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	+(
 
 	)
@@ -3083,7 +3083,7 @@ limit_minus([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{y, x, 0.0, -{}}
+Limit{y, x, 0, -{}}
 </pre>
 </td>
 <td>
@@ -3091,7 +3091,7 @@ Limit{y, x, 0.0, -{}}
 Limit(
 	var("y"),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	-(
 
 	)
@@ -3161,18 +3161,18 @@ limit_minus([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{/[1.0, x], x, 0.0, -{}}
+Limit{/[1, x], x, 0, -{}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 Limit(
 	(
-		Constant(1.0) /
+		Constant(1) /
 		var("x")
 	),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	-(
 
 	)
@@ -3242,21 +3242,21 @@ limit_minus([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{/[1.0, ^[x, 2.0]], x, 0.0, -{}}
+Limit{/[1, ^[x, 2]], x, 0, -{}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 Limit(
 	(
-		Constant(1.0) /
+		Constant(1) /
 		(
 			var("x") ^
-			Constant(2.0)
+			Constant(2)
 		)
 	),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	-(
 
 	)
@@ -3326,7 +3326,7 @@ limit_minus([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{^[_e|2.718281828459, /[-1.0, x]], x, 0.0, -{}}
+Limit{^[_e|2.718281828459, /[-1, x]], x, 0, -{}}
 </pre>
 </td>
 <td>
@@ -3335,12 +3335,12 @@ Limit(
 	(
 symmath.e ^
 		(
-			Constant(-1.0) /
+			Constant(-1) /
 			var("x")
 		)
 	),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	-(
 
 	)
@@ -3410,18 +3410,18 @@ limit([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{+[1.0, x], x, 0.0, {}}
+Limit{+[1, x], x, 0, {}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 Limit(
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("x")
 	),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	(
 
 	)
@@ -3491,7 +3491,7 @@ limit([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Limit{unm(x), x, 0.0, {}}
+Limit{unm(x), x, 0, {}}
 </pre>
 </td>
 <td>
@@ -3501,7 +3501,7 @@ Limit(
 		var("x")
 	),
 	var("x"),
-	Constant(0.0),
+	Constant(0),
 	(
 
 	)
@@ -4002,7 +4002,7 @@ d([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Derivative{sqrt[-[1.0, ^[x, 2.0]]], x}
+Derivative{sqrt[-[1, ^[x, 2]]], x}
 </pre>
 </td>
 <td>
@@ -4010,10 +4010,10 @@ Derivative{sqrt[-[1.0, ^[x, 2.0]]], x}
 Derivative(
 	sqrt(
 		(
-			Constant(1.0) -
+			Constant(1) -
 			(
 				var("x") ^
-				Constant(2.0)
+				Constant(2)
 			)
 		)
 	),
@@ -4153,7 +4153,7 @@ integrate([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Integral{y, x, 0.0, 1.0}
+Integral{y, x, 0, 1}
 </pre>
 </td>
 <td>
@@ -4161,8 +4161,8 @@ Integral{y, x, 0.0, 1.0}
 Integral(
 	var("y"),
 	var("x"),
-	Constant(0.0),
-	Constant(1.0)
+	Constant(0),
+	Constant(1)
 )
 </pre>
 </td>
@@ -4227,7 +4227,7 @@ integrate([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Integral{sqrt[-[1.0, ^[x, 2.0]]], x, -1.0, 1.0}
+Integral{sqrt[-[1, ^[x, 2]]], x, -1, 1}
 </pre>
 </td>
 <td>
@@ -4235,16 +4235,16 @@ Integral{sqrt[-[1.0, ^[x, 2.0]]], x, -1.0, 1.0}
 Integral(
 	sqrt(
 		(
-			Constant(1.0) -
+			Constant(1) -
 			(
 				var("x") ^
-				Constant(2.0)
+				Constant(2)
 			)
 		)
 	),
 	var("x"),
-	Constant(-1.0),
-	Constant(1.0)
+	Constant(-1),
+	Constant(1)
 )
 </pre>
 </td>
@@ -4309,7 +4309,7 @@ integrate([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Integral{unm(x), x, 0.0, 1.0}
+Integral{unm(x), x, 0, 1}
 </pre>
 </td>
 <td>
@@ -4319,8 +4319,8 @@ Integral(
 		var("x")
 	),
 	var("x"),
-	Constant(0.0),
-	Constant(1.0)
+	Constant(0),
+	Constant(1)
 )
 </pre>
 </td>
@@ -4385,19 +4385,19 @@ integrate([x_] :=
 </td>
 <td>
 <pre class="pre-not-multiline">
-Integral{+[1.0, x], x, 0.0, 1.0}
+Integral{+[1, x], x, 0, 1}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
 Integral(
 	(
-		Constant(1.0) +
+		Constant(1) +
 		var("x")
 	),
 	var("x"),
-	Constant(0.0),
-	Constant(1.0)
+	Constant(0),
+	Constant(1)
 )
 </pre>
 </td>

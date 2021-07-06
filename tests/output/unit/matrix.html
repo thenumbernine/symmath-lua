@@ -80,7 +80,7 @@ $\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]$
 <b></b><br>
 <code>printbr(Matrix({a,b},{c,d}):inverse())</code>
 </td><td>
-$\left[ \begin{matrix}  \frac{d}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{-{b}}{{{{a}} {{d}}} - {{{b}} {{c}}}} \\  \frac{-{c}}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  \frac{a}{{{{a}} {{d}}} - {{{b}} {{c}}}}\end{matrix} \right]$	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
+$\left[ \begin{matrix}  \frac{d}{{{{a}} {{d}}} - {{{b}} {{c}}}} &  -{\frac{b}{{{{a}} {{d}}} - {{{b}} {{c}}}}} \\  -{\frac{c}{{{{a}} {{d}}} - {{{b}} {{c}}}}} &  \frac{a}{{{{a}} {{d}}} - {{{b}} {{c}}}}\end{matrix} \right]$	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -173,7 +173,7 @@ ${\left[ \begin{matrix}  \cos\left(  \theta\right) &  -{\sin\left(  \theta\right
 <b></b><br>
 <code>printbr((m*m)())</code>
 </td><td>
-$\left[ \begin{matrix}  {{\left({{\cos\left(  \theta\right)} - {\sin\left(  \theta\right)}}\right)}} {{\left({{\cos\left(  \theta\right)} + {\sin\left(  \theta\right)}}\right)}} &  -{{{2}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}}} \\  {{2}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}} &  -{\left({{1} - {{{2}} {{{\cos\left(  \theta\right)}^{2}}}}}\right)}\end{matrix} \right]$
+$\left[ \begin{matrix}  {{\left({{\cos\left(  \theta\right)} + {\sin\left(  \theta\right)}}\right)}} {{\left({{\cos\left(  \theta\right)} - {\sin\left(  \theta\right)}}\right)}} &  -{{{2}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}}} \\  {{2}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}} &  {-{1}} + {{{2}} {{{\cos\left(  \theta\right)}^{2}}}}\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -282,7 +282,7 @@ ${\left[ \begin{matrix}  {1} + {{{a}} {{b}}} &  a \\  b &  1\end{matrix} \right]
 <b></b><br>
 <code>printbr((Matrix({a},{b}) + Matrix({c},{d})) / t)</code>
 </td><td>
-$\frac{{\left[ \begin{matrix}  a \\  b\end{matrix} \right]} + {\left[ \begin{matrix}  c \\  d\end{matrix} \right]}}{t}$
+${\frac{1}{t}}{\left({{\left[ \begin{matrix}  a \\  b\end{matrix} \right]} + {\left[ \begin{matrix}  c \\  d\end{matrix} \right]}}\right)}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -291,7 +291,7 @@ $\frac{{\left[ \begin{matrix}  a \\  b\end{matrix} \right]} + {\left[ \begin{mat
 <b></b><br>
 <code>printbr(((Matrix({a},{b}) + Matrix({c},{d})) / t)())</code>
 </td><td>
-$\left[ \begin{matrix}  \frac{{a} + {c}}{t} \\  \frac{{b} + {d}}{t}\end{matrix} \right]$
+$\left[ \begin{matrix}  {\frac{1}{t}}{\left({{a} + {c}}\right)} \\  {\frac{1}{t}}{\left({{b} + {d}}\right)}\end{matrix} \right]$
 <br>
 
 <span style="color:green">GOOD</span>

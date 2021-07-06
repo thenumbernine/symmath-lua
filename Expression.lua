@@ -7,7 +7,7 @@ local Expression = class()
 
 -- no circular dependencies, so load as you need these:
 local symmath
-local Array, Constant, Equation, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, distributeDivision, div, eval, expand, factor, factorDivision, inverse, map, mod, mul, pow, prune, sub, symmath, tableCommutativeEqual, tidy, transpose, unm, wedge
+local Array, Constant, Equation, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, div, eval, inverse, map, mod, mul, pow, sub, symmath, tableCommutativeEqual, transpose, unm, wedge
 local eq, ne, gt, ge, lt, le
 
 Expression.precedence = 1
@@ -324,30 +324,37 @@ Expression.hasChild = require 'symmath.hasChild'
 Expression.replace = require 'symmath.replace'
 Expression.solve = require 'symmath.solve'
 Expression.map = require 'symmath.map'
+
 Expression.prune = function(...) 
-	prune = prune or require 'symmath.prune'
-	return prune(...) 
+	symmath = symmath or require 'symmath'
+	return symmath.prune(...) 
 end
+
 Expression.distributeDivision = function(...) 
-	distributeDivision = distributeDivision or require 'symmath.distributeDivision'
-	return distributeDivision(...) 
+	symmath = symmath or require 'symmath'
+	return symmath.distributeDivision(...) 
 end
+
 Expression.factorDivision = function(...) 
-	factorDivision = factorDivision or require 'symmath.factorDivision'
-	return factorDivision(...) 
+	symmath = symmath or require 'symmath'
+	return symmath.factorDivision(...) 
 end
+
 Expression.expand = function(...) 
-	expand = expand or require 'symmath.expand'
-	return expand(...) 
+	symmath = symmath or require 'symmath'
+	return symmath.expand(...) 
 end
+
 Expression.factor = function(...) 
-	factor = factor or require 'symmath.factor'
-	return factor(...) 
+	symmath = symmath or require 'symmath'
+	return symmath.factor(...) 
 end
+
 Expression.tidy = function(...) 
-	tidy = tidy or require 'symmath.tidy'
-	return tidy(...) 
+	symmath = symmath or require 'symmath'
+	return symmath.tidy(...) 
 end
+
 Expression.simplify = require 'symmath.simplify'
 
 Expression.polyCoeffs = function(...) 
@@ -358,6 +365,12 @@ end
 Expression.polydiv = function(...) 
 	symmath = symmath or require 'symmath'
 	return symmath.polydiv(...) 
+end
+
+-- i'm using this more often than I thought I would, so I'll put it in the Expression class 
+Expression.polydivr = function(...) 
+	symmath = symmath or require 'symmath'
+	return symmath.polydiv.polydivr(...) 
 end
 
 Expression.eval = function(...) 

@@ -201,16 +201,18 @@ ${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
 <code>print(f:defeq():diff(y):prune())</code>
 </td><td>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:35: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\visitor\Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:defeq():diff(y):prune())"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	tests\unit\func.lua:63: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -257,79 +259,89 @@ ${0} = {0}$
 <code>f = func('f', {x,y})</code>
 </td><td>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\UserFunction.lua:141: args must be a table of Variables<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
 	[C]: in function 'assert'<br>
 	C:\Users\Chris\Projects\lua\symmath\UserFunction.lua:141: in function 'func'<br>
 	[string "f = func('f', {x,y})"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	tests\unit\func.lua:63: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b>∂f/∂x</b><br>
 <code>print(f:diff(x):prune())</code>
 </td><td>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:35: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\visitor\Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:diff(x):prune())"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	tests\unit\func.lua:63: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b>∂f/∂y</b><br>
 <code>print(f:diff(y):prune())</code>
 </td><td>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:35: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\visitor\Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:diff(y):prune())"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	tests\unit\func.lua:63: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b>∂f/∂x ∂x/∂s + ∂f/∂y ∂y/∂s</b><br>
 <code>print(f:diff(s):prune())</code>
 </td><td>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:35: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\visitor\Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:diff(s):prune())"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	tests\unit\func.lua:63: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b>∂f/∂x ∂x/∂t + ∂f/∂y ∂y/∂t</b><br>
 <code>print(f:diff(t):prune())</code>
 </td><td>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:37: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\Expression.lua:35: in function 'clone'<br>
 	C:\Users\Chris\Projects\lua\symmath\visitor\Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:diff(t):prune())"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	tests\unit\func.lua:63: in main chunk<br>
-	[C]: at 0x7ff7f3514950
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b>TODO I need something to represent ∂/∂x "the def of f", rather than ∂/∂x "f", which is zero.</b><br>

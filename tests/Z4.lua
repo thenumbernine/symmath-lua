@@ -20,6 +20,25 @@ MathJax.header.title = 'Z4, metric-invariant'
 print(MathJax.header)
 
 
+local spatialDim = 3
+
+
+-- set to true to use alpha_,i as a state var, instead of log(alpha)_,i
+-- using log(alpha)_,i is more common
+-- using alpha_,i can include both positive and negative alpha's
+local useDAlphaAsStateVar = false	
+
+-- pick only one of these
+-- or pick none = keep lapse as a generic variable 'f'
+local useLapseF_1PlusLog = false
+-- TODO any other lapses
+
+-- don't consider Z_k,t and Theta_,t in the eigen decomposition
+-- this is essentially ADM (but also without its own V_i or Gamma_i constraint vars, which Z_i fulfills)
+local dontIncludeZVars = true
+
+
+
 -- these were giving BSSN some trouble, so here they are as well.
 symmath.op.div:pushRule'Prune/conjOfSqrtInDenom'
 symmath.op.div:pushRule'Factor/polydiv'
@@ -41,7 +60,6 @@ TOTAL: 6.967
 This is quite a bit faster than the 'BSSN - index' worksheet
 --]]
 
-local spatialDim = 3
 
 local timer = os.clock
 local startTime = timer()
@@ -361,12 +379,14 @@ printbr()
 
 printHeader'log lapse derivative:'
 
---[[ this is the standard Bona-Masso hyperbolic variable
-local a_l_def = a'_i':eq(log(alpha)'_,i')
---]]
+local a_l_def 
+if not useDAlphaAsStateVar then -- [[ this is the standard Bona-Masso hyperbolic variable
+	a_l_def = a'_i':eq(log(alpha)'_,i')
+else --]]
 -- [[ but why use log(alpha) when that restricts us to only positive alpha?  esp when we know inside event horizons of charged rotating black holes that alpha can be negative?
-local a_l_def = a'_i':eq(alpha'_,i')
+	a_l_def = a'_i':eq(alpha'_,i')
 --]]
+end
 printbr(a_l_def)
 
 a_l_def = a_l_def()
@@ -384,10 +404,12 @@ printbr'Bona-Masso lapse evolution:'
 local dt_alpha_def = alpha'_,t':eq(alpha'_,i' * beta'^i' - alpha^2 * f * (gamma'^ij' * K'_ij' - 2 * Theta))
 printbr(dt_alpha_def)
 
-local f_def = f:eq(2 / alpha)
-printbr('using 1+log slicing: ', f_def)
-dt_alpha_def = dt_alpha_def:subst(f_def)()
-printbr(dt_alpha_def)
+if useLapseF_1PlusLog then
+	local f_def = f:eq(2 / alpha)
+	printbr('using 1+log slicing: ', f_def)
+	dt_alpha_def = dt_alpha_def:subst(f_def)()
+	printbr(dt_alpha_def)
+end
 
 -- rhs only so alpha_,t isn't simplified
 printbr('using', d_alpha_l_from_a_l)
@@ -789,8 +811,13 @@ printbr()
 
 printHeader[[Z4 $Z_k$ definition]]
 
--- TODO derive me plz
--- are you sure there's no beta^i's?
+--[[
+TODO derive me plz
+
+are you sure there's no beta^i's?
+
+this is 2005 Bona p.61 eqn.3.85
+--]]
 local dt_Z_l_def = Z'_k,t':eq(
 	Z'_k,l' * beta'^l'
 	+ Z'_l' * beta'^l_,k'
@@ -801,7 +828,9 @@ local dt_Z_l_def = Z'_k,t':eq(
 			- Gamma'^n_lm' * K'_kn'
 		)
 		- (K'_mn' * gamma'^mn')'_,k'
+		
 		+ Theta'_,k'
+		
 		- 2 * gamma'^lm' * K'_kl' * Z'_m'
 		- 8 * pi * S'_k'
 	)
@@ -961,6 +990,7 @@ matrix of {α, Δγ_ij, a_r, Δd_kij, K_ij}
 	dt_a_l_def,
 	dt_dDelta_lll_def,
 	dt_K_ll_def,
+}
 
 --[[
 matrix of {α, Δγ_ij, a_k, Δd_kij, K_ij, Θ, Z_k} 
@@ -970,13 +1000,14 @@ matrix of {α, Δγ_ij, a_k, Δd_kij, K_ij, Θ, Z_k}
 		± α √(± 1/2 γ^11 √( (f - 1) (f - 5) ) + f + 1)
 	... for lapse f=2/α:
 		± √( α γ^11 (α + 1 ± 1/2 √( (α - 2) (5 α - 2) )))
-
+seems these have some ugly wavespeeds
+ so ... how do we change that?
 --]]
---seems these have some ugly wavespeeds
---	dt_Theta_def,
---	dt_Z_l_def
--- so ... how do we change that?
-}
+if not dontIncludeZVars then
+	UkijtEqns:insert(dt_Theta_def)
+	UkijtEqns:insert(dt_Z_l_def)
+end
+
 
 local UkijVars = assertAndRemoveLastTensorIndex(	
 	UkijtEqns:mapi(function(eqn) return eqn[1] end),
@@ -1020,6 +1051,54 @@ local UmpqMat = Matrix(UmpqVars):T()
 printbr((UkijMat'_,t' + dFkij_dUmpq_mat * UmpqMat'_,r'):eq(b))
 printbr()
 
+
+
+
+--[==[  if we want to redo but without the zeroes in the flux jacobian matrix
+
+printHeader'redo, favoring flux terms'
+
+-- ok now try to replace all the hyperbolic 1st deriv state vars that are not derivatives themselves with the original vars' derivatives
+rhsWithDeltas = UkijtEqns:mapi(function(eqn)
+	local rhs = eqn[2]:clone()
+	-- TODO don't just insert the state vars, but in the case that there are quadratic vars, insert averages between the replacements
+	return rhs
+		:simplifyAddMulDiv()
+		:substIndex(a_l_def)
+		:substIndex(dDelta_lll_def)
+		:substIndex(b_ul_def)
+		:simplify()
+		:symmetrizeIndexes(dHat, {2,3})
+		:symmetrizeIndexes(dHat, {1,4}, true)
+		:symmetrizeIndexes(dDelta, {2,3})
+		:symmetrizeIndexes(dDelta, {1,4}, true)
+		:symmetrizeIndexes(gamma, {1,2})
+		:simplify()
+end)
+
+printHeader'inserting deltas to help factor linear system'
+
+rhsWithDeltas = rhsWithDeltas:mapi(function(rhs) 
+	return insertDeltasToSetIndexSymbols(rhs, UmpqrVars)
+end)
+
+printHeader'as a balance law system:'
+
+local A, b = factorLinearSystem(rhsWithDeltas, UmpqrVars)
+
+local dFkij_dUmpq_mat = (-A)()
+
+for i=1,#b do
+	b[i][1] = b[i][1]:simplifyAddMulDiv()
+end
+
+printbr((UkijMat'_,t' + dFkij_dUmpq_mat * UmpqMat'_,r'):eq(b))
+
+--]==]
+
+
+
+
 --[=[
 printbr[[$\frac{\partial F}{\partial U} \cdot U$:]]
 
@@ -1054,43 +1133,48 @@ printbr()
 --]]
 
 
+printHeader'removing shift, expanding, and removing zero rows/cols:'
+
+local dFkij_dUmpq_shiftless_mat = dFkij_dUmpq_mat:replace(beta'^r', 0)()
+
+
 -- [[ right eigenvectors in expanded form
 local remapRows = table()
-local remapSrcIndex = 0
+local numSrcRows = 0
 local function addScalar()
-	remapSrcIndex = remapSrcIndex + 1
+	numSrcRows = numSrcRows + 1
 	remapRows:insert{
-		src = remapSrcIndex,
+		src = numSrcRows,
 		map = {},
 	}
 end
 local function addOneForm()
-	remapSrcIndex = remapSrcIndex + 1
+	numSrcRows = numSrcRows + 1
 	for k=1,3 do
 		remapRows:insert{
-			src = remapSrcIndex,
+			src = numSrcRows,
 			map = {k=k},
 		}
 	end
 end
 local function addSym()
-	remapSrcIndex = remapSrcIndex + 1
+	numSrcRows = numSrcRows + 1
 	for i=1,3 do
 		for j=i,3 do
 			remapRows:insert{
-				src = remapSrcIndex,
+				src = numSrcRows,
 				map = {i=i, j=j},
 			}
 		end
 	end
 end
 local function addOneBySym()
-	remapSrcIndex = remapSrcIndex + 1
+	numSrcRows = numSrcRows + 1
 	for k=1,3 do
 		for i=1,3 do
 			for j=i,3 do
 				remapRows:insert{
-					src = remapSrcIndex,
+					src = numSrcRows,
 					map = {k=k, i=i, j=j},
 				}
 			end
@@ -1120,19 +1204,32 @@ for _,var in ipairs(UkijVars) do
 		error'here'
 	end
 end
-
 local n = #remapRows
 local remapRowToCol = {m='k', p='i', q='j'}
-local dFkij_dUmpq_expanded = Matrix:lambda({n, n}, function(i,j)
-	local srci = remapRows[i].src
-	local srcj = remapRows[j].src
-	local srcexpr = dFkij_dUmpq_mat[srci][srcj]
-	return srcexpr
-		:reindex{r=1}				-- do this for the 1st direction, whatever that is.
-		:reindex(remapRows[i].map)	-- remap kij to #s based on the map
-		:reindex(remapRowToCol)		-- remap mpq to kij
-		:reindex(remapRows[j].map)	-- remap mpq -> kij -> #s based on the map
-		:map(function(x)
+local function expandMatrixIndexes(srcm)
+	local srcsize = srcm:dim()
+	assert(#srcsize == 2) 	-- matrixes only
+	local dstsize = {}
+	for i,v in ipairs(srcsize) do
+		assert(v == 1 or v == numSrcRows)
+		dstsize[i] = v == 1 and 1 or n
+	end
+	local dstm = Matrix:lambda(dstsize, function(i,j)
+		local srci = srcsize[1] == 1 and 1 or remapRows[i].src		-- shouldn't be 1 ever
+		local srcj = srcsize[2] == 1 and 1 or remapRows[j].src		-- only 1 for column vectors
+		local srcexpr = srcm[srci][srcj]
+		
+		srcexpr = srcexpr:reindex{r=1}				-- do this for the 1st direction, whatever that is.
+		
+		if srcsize[1] > 1 then
+			srcexpr = srcexpr:reindex(remapRows[i].map)	-- remap kij to #s based on the map
+		end
+		if srcsize[2] > 1 then
+			srcexpr = srcexpr:reindex(remapRowToCol)		-- remap mpq to kij
+			srcexpr = srcexpr:reindex(remapRows[j].map)	-- remap mpq -> kij -> #s based on the map
+		end
+		-- replace deltas with their values
+		srcexpr = srcexpr:map(function(x)
 			if TensorRef:isa(x)
 			and x[1] == delta
 			then
@@ -1142,47 +1239,79 @@ local dFkij_dUmpq_expanded = Matrix:lambda({n, n}, function(i,j)
 				end
 			end
 		end)
-		:symmetrizeIndexes(gamma, {1,2})
-		:simplify()
-end)
+		
+		-- symmetrize #s in expanded gamma^ij's
+		srcexpr = srcexpr:symmetrizeIndexes(gamma, {1,2})
+		
+		-- done
+		return srcexpr()
+	end)
+	return dstm
+end
+
+--[[
+TODO how about inferring the expanding vars by looking at the combined linear system?
+A * b
+then look at each row of b vs each col of A, see what sum vars are common (all vs any?) and deduce expansion according to tensor degree
+--]]
+local dFkij_dUmpq_expanded_shiftless = expandMatrixIndexes(dFkij_dUmpq_shiftless_mat)
+
+local Umpq_expanded = expandMatrixIndexes(UkijMat)
+local Ukij_expanded = Umpq_expanded:clone()
+
 -- remove all rows/cols that are all zeros
 local oldn = n
 local m = n
 for i=n,1,-1 do
 	local allzero = true
 	for j=1,m do
-		if not Constant.isValue(dFkij_dUmpq_expanded[i][j], 0) then
+		if not Constant.isValue(dFkij_dUmpq_expanded_shiftless[i][j], 0) then
 			allzero = false
 			break
 		end
 	end
 	if allzero then
-		-- TODO remove U mpq expanded vars here as well
-		table.remove(dFkij_dUmpq_expanded, i)
+		table.remove(dFkij_dUmpq_expanded_shiftless, i)
+		table.remove(Ukij_expanded, i)
+		-- alright, here, if we are removing a row from Ukij_expanded
+		-- then we should also remove the same a row from Umpq_expanded
+		table.remove(Umpq_expanded, i)
+		-- then we should also remove the matching col from dFkij_dUmpq_expanded_shiftless
+		for k=1,#dFkij_dUmpq_expanded_shiftless do
+			table.remove(dFkij_dUmpq_expanded_shiftless[k], i)
+		end
+		m = m - 1
 		n = n - 1
 	end
 end
 for j=m,1,-1 do
 	local allzero = true
 	for i=1,n do
-		if not Constant.isValue(dFkij_dUmpq_expanded[i][j], 0) then
+		if not Constant.isValue(dFkij_dUmpq_expanded_shiftless[i][j], 0) then
 			allzero = false
 			break
 		end
 	end
 	if allzero then
 		for i=1,n do
-			table.remove(dFkij_dUmpq_expanded[i], j)
+			table.remove(dFkij_dUmpq_expanded_shiftless[i], j)
 		end
+		-- remove U mpq expanded vars here as well
+		table.remove(Umpq_expanded, j)
+		-- and TODO if we're removing cols from dFkij_dUmpq and rows from Umpq
+		-- then we should remove matching rows from Ukij
+		table.remove(Ukij_expanded, j)
+		-- and removing matching rows from dFkij_dUmpq
+		table.remove(dFkij_dUmpq_expanded_shiftless, j)
 		m = m - 1
+		n = n - 1
 	end
 end
-printbr(dFkij_dUmpq_expanded)
-assert(m == n)
+printbr(Ukij_expanded'_,t' + dFkij_dUmpq_expanded_shiftless * Umpq_expanded'_,1')
+-- TODO if this fails then that means we need find the removed rows from Umpq and remove the associated columns from dFkij_dUmpq
+assert(m == n, "removed a different number of all-zero rows vs columns")
 printbr()
 --]]
-
-local dFkij_dUmpq_expanded_shiftless = dFkij_dUmpq_expanded:replace(beta'^1', 0)()
 
 
 printHeader'calculating charpoly'
@@ -1221,7 +1350,8 @@ end
 printbr("solving what's left, which is ", x)
 local solns = table{x:eq(0):solve(lambda)}
 for _,soln in ipairs(solns) do
-	printbr('root:', soln)
+	lambdas:insert(soln[2])
+	printbr('root', soln)
 end
 printbr()
 
@@ -1310,14 +1440,14 @@ recreated = recreated:eq(0)
 printbr('verify', (charpoly - recreated)())
 --]]
 
---[=[
+-- [=[
 printHeader'calculating eigensystem'
-_G.printbr = printbr
+_G.printbr = printbr	-- for Matrix.eigen verbose=true:
 local eig = dFkij_dUmpq_expanded_shiftless:eigen{
 	lambdaVar = lambda,
 	lambdas = lambdas,
-	verbose = true,
-	--dontCalcL = true,
+--	verbose = true,
+	dontCalcL = true,
 }
 
 printbr(var'\\Lambda':eq(eig.Lambda))
@@ -1326,52 +1456,11 @@ printbr()
 printbr(var'R':eq(eig.R))
 printbr()
 
+eig.L = eig.R:inverse()
+
 printbr(var'L':eq(eig.L))
 printbr()
 --]=]
-
-
---[==[
-
-printHeader'redo, favoring flux terms'
-
--- ok now try to replace all the hyperbolic 1st deriv state vars that are not derivatives themselves with the original vars' derivatives
-rhsWithDeltas = UkijtEqns:mapi(function(eqn)
-	local rhs = eqn[2]:clone()
-	-- TODO don't just insert the state vars, but in the case that there are quadratic vars, insert averages between the replacements
-	return rhs
-		:simplifyAddMulDiv()
-		:substIndex(a_l_def)
-		:substIndex(dDelta_lll_def)
-		:substIndex(b_ul_def)
-		:simplify()
-		:symmetrizeIndexes(dHat, {2,3})
-		:symmetrizeIndexes(dHat, {1,4}, true)
-		:symmetrizeIndexes(dDelta, {2,3})
-		:symmetrizeIndexes(dDelta, {1,4}, true)
-		:symmetrizeIndexes(gamma, {1,2})
-		:simplify()
-end)
-
-printHeader'inserting deltas to help factor linear system'
-
-rhsWithDeltas = rhsWithDeltas:mapi(function(rhs) 
-	return insertDeltasToSetIndexSymbols(rhs, UmpqrVars)
-end)
-
-printHeader'as a balance law system:'
-
-local A, b = factorLinearSystem(rhsWithDeltas, UmpqrVars)
-
-local dFkij_dUmpq_mat = (-A)()
-
-for i=1,#b do
-	b[i][1] = b[i][1]:simplifyAddMulDiv()
-end
-
-printbr((UkijMat'_,t' + dFkij_dUmpq_mat * UmpqMat'_,r'):eq(b))
-
---]==]
 
 
 -- DONE

@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'replace')
 
+timer(nil, function()
+
 for _,line in ipairs(string.split(string.trim([=[
 
 a,b,c = symmath.vars('a', 'b', 'c')
@@ -21,3 +23,5 @@ assert(expr:replace(a * x + b * y + c * z, 1) == symmath.Constant(1))
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

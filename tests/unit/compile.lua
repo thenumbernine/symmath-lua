@@ -2,6 +2,8 @@
 require 'ext'
 require 'symmath'()
 
+timer(nil, function()
+
 -- [[ trying out compiling of multiple functions in multiple languages
 local x = var'x'
 
@@ -84,3 +86,5 @@ print(symmath.export.C:toCode{
 	output = {{x=x}, {y=y}, {z=z}},
 })
 --]]
+
+end)

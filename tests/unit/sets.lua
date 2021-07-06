@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'sets')
 
+timer(nil, function()
+
 env.x = set.real:var'x'
 
 for _,line in ipairs(string.split(string.trim([=[
@@ -185,3 +187,5 @@ assert((1/x):getRealRange():contains(set.positiveReal))
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

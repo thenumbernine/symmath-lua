@@ -98,8 +98,21 @@ end
 -- such that (sum for n=0 to table.max(result) of x^n * result[n]) + result.extra == expr
 return function(expr, x)
 	local ExpandPolynomial = require 'symmath.visitor.ExpandPolynomial'
+	
+	--[[
+	Alright, this is supposed to put our expression into a polynomial form
+	but it's not
+	It's supposed to do something like simplifyAddMulDiv does
+	but simplifyAddMulDiv doesn't specify powers, and seems to put powers at highest precedence
+	when what we want here is powers at lowest precedence ... so add-mul-div-pow
+	
+	but with that said,
+	where else are ExpandPolynomial or factorDivision used?
+	isn't factorDivision now just simplifyAddMulDiv?  no, it's called by it though on all its terms
+	--]]
 	expr = ExpandPolynomial()(expr)
-	expr = expr():factorDivision()
+	expr = expr()
+	expr = expr:factorDivision()
 	
 	-- group terms by polynomial coefficients
 	local coeffs = {}	-- result = coeffs[n] * x^n + coeffs.extra, where coeffs.extra holds all the nonlinear x references

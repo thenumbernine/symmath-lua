@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'func')
 
+timer(nil, function()
+
 -- not sure if this should be unit/func or unit/diff or unit/Derivative
 for _,line in ipairs(string.split(string.trim([=[
 
@@ -62,3 +64,5 @@ print(f:diff(t):prune())	-- ∂f/∂x ∂x/∂t + ∂f/∂y ∂y/∂t
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

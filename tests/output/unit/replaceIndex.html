@@ -295,7 +295,7 @@
 <b></b><br>
 <code>printbr( g'_ij,t':eq(d * (d * b'^k_,i' * g'_kj' + d * b'^k_,j' * g'_ki' + d * b'^k' * c'_ijk' + d * b'^k' * c'_jik' + 2 * d'_,t' * g'_ij' - 2 * d * a * e'_ij') ):replaceIndex( d'_,t',  frac(1,3) * (3 * d'_,i' * b'^i' - d * b'^i_,i' - frac(1,2) * d * b'^i' * g'_,i' / g + e * d * a) ) )</code>
 </td><td>
-${{{{ g}_i}_j}_{,t}} = {{{d}} {{\left({{{{{d}} {{{{ b}^k}_{,i}}} {{{{ g}_k}_j}}} + {{{d}} {{{{ b}^k}_{,j}}} {{{{ g}_k}_i}}} + {{{d}} {{{ b}^k}} {{{{{ c}_i}_j}_k}}} + {{{d}} {{{ b}^k}} {{{{{ c}_j}_i}_k}}} + {{{2}} {{{{\frac{1}{3}}} {{\left({{{{{{3}} {{{ d}_{,a}}} {{{ b}^a}}} - {{{d}} {{{{ b}^a}_{,a}}}}} - {\frac{{{\frac{1}{2}}} {{d}} {{{ b}^a}} {{{ g}_{,a}}}}{g}}} + {{{e}} {{d}} {{a}}}}\right)}}}} {{{{ g}_i}_j}}}} - {{{2}} {{d}} {{a}} {{{{ e}_i}_j}}}}\right)}}}$
+${{{{ g} _i} _j} _{,t}} = {{{d}} {{\left({{{{{d}} {{{{ b} ^k} _{,i}}} {{{{ g} _k} _j}}} + {{{d}} {{{{ b} ^k} _{,j}}} {{{{ g} _k} _i}}} + {{{d}} {{{ b} ^k}} {{{{{ c} _i} _j} _k}}} + {{{d}} {{{ b} ^k}} {{{{{ c} _j} _i} _k}}} + {{{2}} {{{{\frac{1}{3}}} {{\left({{{{{{3}} {{{ d} _{,a}}} {{{ b} ^a}}} - {{{d}} {{{{ b} ^a} _{,a}}}}} - {{\frac{1}{g}} {{{\frac{1}{2}}} {{d}} {{{ b} ^a}} {{{ g} _{,a}}}}}} + {{{e}} {{d}} {{a}}}}\right)}}}} {{{{ g} _i} _j}}}} - {{{2}} {{d}} {{a}} {{{{ e} _i} _j}}}}\right)}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -384,7 +384,7 @@ ${{{{ g}_i}_j}_{,t}} = {{{d}} {{\left({{{{{d}} {{{{ b}^k}_{,i}}} {{{{ g}_k}_j}}}
 <b></b><br>
 <code>printbr( d'_,t':eq( frac(1,6) * ( d * ( 2 * e * a - b'^k_,i' * g'^ij' * g'_jk' - b'^k_,j' * g'_ik' * g'^ij' - b'^k' * g'^ij' * g'_ij,k' ) )):replaceIndex( g'_ij', c'_ij' / d^2  ) )</code>
 </td><td>
-${{ d}_{,t}} = {{{\frac{1}{6}}} {{d}} {{\left({{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\frac{{{ c}_j}_k}{{d}^{2}}}}}} - {{{{{ b}^k}_{,j}}} {{\frac{{{ c}_i}_k}{{d}^{2}}}} {{{{ g}^i}^j}}}} - {{{{ b}^k}} {{{{ g}^i}^j}} {{{{{ g}_i}_j}_{,k}}}}}\right)}}}$
+${{ d} _{,t}} = {{{\frac{1}{6}}} {{d}} {{\left({{{{{{2}} {{e}} {{a}}} - {{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{\frac{{{ c} _j} _k}{{d}^{2}}}}}} - {{{{{ b} ^k} _{,j}}} {{\frac{{{ c} _i} _k}{{d}^{2}}}} {{{{ g} ^i} ^j}}}} - {{{{ b} ^k}} {{{{ g} ^i} ^j}} {{{{{ g} _i} _j} _{,k}}}}}\right)}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -393,7 +393,7 @@ ${{ d}_{,t}} = {{{\frac{1}{6}}} {{d}} {{\left({{{{{{2}} {{e}} {{a}}} - {{{{{ b}^
 <b></b><br>
 <code>printbr( d'_,t':eq( 2 * e * a - b'^k_,i' * g'^ij' * g'_jk' - b'^k_,j' * g'_ik' * g'^ij' - b'^k' * g'^ij' * g'_ij,k' ):replaceIndex( g'_ij', c'_ij' / d^2  ) )</code>
 </td><td>
-${{ d}_{,t}} = {{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\frac{{{ c}_j}_k}{{d}^{2}}}}}} - {{{{{ b}^k}_{,j}}} {{\frac{{{ c}_i}_k}{{d}^{2}}}} {{{{ g}^i}^j}}}} - {{{{ b}^k}} {{{{ g}^i}^j}} {{{{{ g}_i}_j}_{,k}}}}}$
+${{ d} _{,t}} = {{{{{{2}} {{e}} {{a}}} - {{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{\frac{{{ c} _j} _k}{{d}^{2}}}}}} - {{{{{ b} ^k} _{,j}}} {{\frac{{{ c} _i} _k}{{d}^{2}}}} {{{{ g} ^i} ^j}}}} - {{{{ b} ^k}} {{{{ g} ^i} ^j}} {{{{{ g} _i} _j} _{,k}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -447,16 +447,18 @@ ${{ d}_{,t}} = {{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\fra
 <b>what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?</b><br>
 <code>asserterror(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end )</code>
 </td><td>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:35: expected an error, but found none<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:93: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:92><br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:37: expected an error, but found none<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
 	[C]: in function 'assert'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:35: in function 'asserterror'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:37: in function 'asserterror'<br>
 	[string "asserterror(function() (a'_a' + b'_ab' * c'^b..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:85: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:84: in function 'exec'<br>
-	replaceIndex.lua:134: in main chunk<br>
-	[C]: at 0x7ff6d3fb4950
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	replaceIndex.lua:136: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	replaceIndex.lua:6: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -474,7 +476,7 @@ ${{ d}_{,t}} = {{{{{{2}} {{e}} {{a}}} - {{{{{ b}^k}_{,i}}} {{{{ g}^i}^j}} {{\fra
 <b></b><br>
 <code>print( (a'^a' * a'_a'):replaceIndex(a'^a' * a'_a', 2))</code>
 </td><td>
-${{{ a}^a}} {{{ a}_a}}$
+${{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -482,7 +484,7 @@ ${{{ a}^a}} {{{ a}_a}}$
 <b></b><br>
 <code>print( (a'^a' * a'_a'):replaceIndex(a'^a' * a'_a', b'^a' * b'_a'))</code>
 </td><td>
-${{{ a}^a}} {{{ a}_a}}$
+${{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -490,7 +492,7 @@ ${{{ a}^a}} {{{ a}_a}}$
 <b></b><br>
 <code>print( (c'_b' * a'^a' * a'_a'):replaceIndex(c'_b' * a'^a' * a'_a', 2))</code>
 </td><td>
-${{{ c}_b}} {{{ a}^a}} {{{ a}_a}}$
+${{{ c} _b}} {{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td></tr>

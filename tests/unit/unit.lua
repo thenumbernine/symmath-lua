@@ -13,8 +13,8 @@ return function(env, title)
 	end
 
 	function env.asserteq(a,b, showStackAnyways)
-		assert(a ~= nil)
-		assert(b ~= nil)
+		assert(a ~= nil, "asserteq lhs is nil")
+		assert(b ~= nil, "asserteq rhs is nil")
 		local sa = symmath.simplify(a)
 		local ta = symmath.simplify.stack
 		local sb = symmath.simplify(b)
@@ -55,14 +55,21 @@ return function(env, title)
 	end
 
 	function env.assertalleq(ta,tb)
+		local ka = env.table.keys(ta)
+		local kb = env.table.keys(tb)
+		local k
 		if not xpcall(function()
-			env.asserteq(#ta, #tb)
-			for i=1,#ta do
-				env.asserteq(ta[i], tb[i])
+			env.asserteq(#ka, #kb)
+			for _,_k in ipairs(ka) do
+				k = _k
+				env.asserteq(ta[k], tb[k])
 			end
 		end, function(err)
-			print('lhs:', table.mapi(ta, tostring):concat', ', '<br>')
-			print('rhs:', table.mapi(tb, tostring):concat', ', '<br>')
+			print('lhs:', ka:mapi(function(k) return k..'='..tostring(ta[k]) end):concat', ', '<br>')
+			print('rhs:', kb:mapi(function(k) return k..'='..tostring(tb[k]) end):concat', ', '<br>')
+			if k then
+				print('when comparing key '..k, '<br>')
+			end
 			print('<span style="color:red">BAD</span><br>'..err..'<br>')
 			print(debug.traceback():gsub('\n', '<br>\n'))
 		end) then
@@ -70,9 +77,9 @@ return function(env, title)
 		end
 	end
 
-	local ansi_red = '\x1B[31m'
-	local ansi_green = '\x1B[32m'
-	local ansi_reset = '\x1B[0m'
+	local ansi_red = '\x1b[31m'
+	local ansi_green = '\x1b[32m'
+	local ansi_reset = '\x1b[0m'
 	local check = '✓'
 	local fail = '✕'
 	function env.exec(line)

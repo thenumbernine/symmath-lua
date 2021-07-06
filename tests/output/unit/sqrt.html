@@ -213,12 +213,6 @@ $i$
 <b></b><br>
 <code>asserteq( (-sqrt(sqrt(5) + 1) * (1 - sqrt(5))) / (4 * sqrt(sqrt(5) - 1)) , frac(1,2))</code>
 </td><td>
-a = 	$-1$
-<br>
-b = 	$1$
-<br>
-c = 	$5$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -343,12 +337,6 @@ c = 	$5$
 <b></b><br>
 <code>asserteq( 1 + ( -(7 - 3*sqrt(5)) / (3*(3 - sqrt(5))) )*(1 + frac(1,2)), (1 + sqrt(5))/4 )</code>
 </td><td>
-a = 	$3$
-<br>
-b = 	$-1$
-<br>
-c = 	$5$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -360,18 +348,6 @@ c = 	$5$
 <b></b><br>
 <code>asserteq( (-(sqrt(5)-1)/2)/sqrt((-(sqrt(5)-1)/2)^2 + 1), -sqrt( (sqrt(5) - 1) / (2 * sqrt(5)) ))</code>
 </td><td>
-a = 	nil
-<br>
-b = 	nil
-<br>
-c = 	nil
-<br>
-a = 	$10$
-<br>
-b = 	$-2$
-<br>
-c = 	$5$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -428,12 +404,6 @@ c = 	$5$
 <b></b><br>
 <code>asserteq( -1 / ( sqrt(sqrt(5) * (sqrt(5) - 1)) / sqrt(2) ), sqrt((5  + sqrt(5)) / 10))</code>
 </td><td>
-a = 	$-1$
-<br>
-b = 	$1$
-<br>
-c = 	$5$
-<br>
 expected $\frac{-1}{\frac{\sqrt{{{\sqrt{5}}} {{\left({{\sqrt{5}} - {1}}\right)}}}}{\sqrt{2}}}$ to equal $\sqrt{{\frac{1}{10}}{\left({{5} + {\sqrt{5}}}\right)}}$<br>
 found $-{\frac{{{{\sqrt{5}}} {{\sqrt{{-{1}} + {\sqrt{5}}}}}} + {\sqrt{{-{1}} + {\sqrt{5}}}}}{{{{{2}} {{\sqrt{2}}}}} {{{5}^{\frac{1}{4}}}}}}$ vs $\frac{{{\frac{1}{{5}^{\frac{1}{4}}}}} {{\sqrt{{1} + {\sqrt{5}}}}}}{\sqrt{2}}$<br>
 lhs stack<br>
@@ -545,17 +515,17 @@ Factor	$\frac{{{{5}^{\frac{-1}{4}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)
 Prune	$\frac{{{{5}^{\frac{-1}{4}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{2}^{\frac{1}{2}}}$	<br>
 Tidy	$\frac{{{\frac{1}{{5}^{\frac{1}{4}}}}} {{\sqrt{{1} + {\sqrt{5}}}}}}{\sqrt{2}}$	<br>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
 	[C]: in function 'error'<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
 	[string "asserteq( -1 / ( sqrt(sqrt(5) * (sqrt(5) - 1)..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	tests\unit\sqrt.lua:100: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	sqrt.lua:100: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	tests\unit\sqrt.lua:9: in main chunk<br>
-	[C]: at 0x7ff6abf94950
+	sqrt.lua:9: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -643,15 +613,15 @@ Factor	$\frac{{{{5}^{\frac{-1}{4}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)
 Prune	$\frac{{{{5}^{\frac{-1}{4}}}} {{{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}^{\frac{1}{2}}}}}{{2}^{\frac{1}{2}}}$	<br>
 Tidy	$\frac{{{\frac{1}{{5}^{\frac{1}{4}}}}} {{\sqrt{{1} + {\sqrt{5}}}}}}{\sqrt{2}}$	<br>
 <span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:96: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
 	[C]: in function 'error'<br>
 	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
 	[string "asserteq( -(sqrt( 10 * (sqrt(5) - 1) ) + sqrt..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:88: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87><br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:87: in function 'exec'<br>
-	tests\unit\sqrt.lua:100: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	sqrt.lua:100: in function 'cb'<br>
 	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	tests\unit\sqrt.lua:9: in main chunk<br>
-	[C]: at 0x7ff6abf94950
+	sqrt.lua:9: in main chunk<br>
+	[C]: at 0x7ff690354950
 </td></tr>

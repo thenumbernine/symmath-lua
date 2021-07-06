@@ -95,11 +95,20 @@ local function eigen(A, args)
 	allLambdas = table()	-- redo allLambdas so the order matches the right-eigenvectors' order
 	local Rs = lambdas:mapi(function(lambdaInfo) 
 		local lambda = lambdaInfo.expr
-		local Ri = (A - lambda * I)():nullspace()
+		if eigenVerbose then
+			printbr('finding nullspace for ', lambdaInfo.expr)
+		end
+		local Ri = (A - lambda * I)():nullspace(eigenVerbose)
+		if eigenVerbose then
+			printbr(Ri)
+		end
 		local n = Ri and #Ri[1] or 0
 		-- ex: A[1][2] = 1 otherwise A[i][j] = 0.  charpoly is lambda=0 mult4, nullspace is dim=3
 		if lambdaInfo.mult ~= n then
 			defective = true
+			if eigenVerbose then
+				printbr'...is defective'
+			end
 			--error("nullspace of "..lambda.." is "..n.." but multiplicity of eigenvalue is "..lambdaInfo.mult)
 		end
 		--for i=1,lambdaInfo.mult do

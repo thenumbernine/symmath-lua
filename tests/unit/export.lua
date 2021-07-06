@@ -5,6 +5,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='tests/unit/export', pathToTryToFindMathJax='..'}}
 
+timer(nil, function()
+
 printbr('generated with '..(jit and jit.version or _VERSION))
 printbr()
 
@@ -241,3 +243,5 @@ print('with symmath.fixVariableNames == true:')
 
 symmath.fixVariableNames = true
 tableForExprs(buildExprsFixVarNames())
+
+end)

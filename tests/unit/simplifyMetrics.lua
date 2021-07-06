@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'simplifyMetrics')
 
+timer(nil, function()
+
 env.a = var'a'
 env.delta = Tensor:deltaSymbol()
 env.g = Tensor:metricSymbol()
@@ -67,3 +69,5 @@ asserteq((a'^i,m' * delta'_i^j'):simplifyMetrics(), a'^j^,m')
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)

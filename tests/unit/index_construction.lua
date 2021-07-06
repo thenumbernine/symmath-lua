@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'index construction')
 
+timer(nil, function()
+
 env.a = var'a'
 
 for _,line in ipairs(string.split(string.trim([=[
@@ -37,3 +39,5 @@ assertne(a'^,i', a'_,i')
 ]=]), '\n')) do
 	env.exec(line)
 end
+
+end)
