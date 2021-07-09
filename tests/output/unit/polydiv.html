@@ -12,44 +12,6 @@
 <b></b><br>
 <code>assertalleq({(x - a):polydivr(x - a, x, verbose)}, {1,0})</code>
 </td><td>
-polydivr begin
-<br>
-polydivr dividing	${x} - {a}$	by	${x} - {a}$	wrt var	$x$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${{-1}} {{a}}$
-<br>
-coeff	1	 = 	$1$
-<br>
-coeffs of denom
-<br>
-coeff	0	 = 	${{-1}} {{a}}$
-<br>
-coeff	1	 = 	$1$
-<br>
-numerator degree	1
-<br>
-numerator leading coefficient	$1$
-<br>
-setting the 	0	th result coefficient to 	$1$
-<br>
-numerator becomes	${{x} - {a}} - {{{\left({{x} - {a}}\right)}} {{{x}^{0}}}}$
-<br>
-simplified numerator is	$0$
-<br>
-coeffs of numerator
-<br>
-numerator degree is now	0
-<br>
-numerator leading coefficient	nil
-<br>
-sum adding degree	0	 coeff	$1$	of var	$x$
-<br>
-polydivr returning sum	$1$
-<br>
-returning remainder	$0$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -57,62 +19,6 @@ returning remainder	$0$
 <b></b><br>
 <code>assertalleq({(x^2 - a):polydivr(x - sqrt(a), x, verbose)}, {x + sqrt(a),0})</code>
 </td><td>
-polydivr begin
-<br>
-polydivr dividing	${{x}^{2}} - {a}$	by	${x} - {\sqrt{a}}$	wrt var	$x$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${{-1}} {{a}}$
-<br>
-coeff	2	 = 	$1$
-<br>
-coeffs of denom
-<br>
-coeff	0	 = 	${{-1}} {{{a}^{\frac{1}{2}}}}$
-<br>
-coeff	1	 = 	$1$
-<br>
-numerator degree	2
-<br>
-numerator leading coefficient	$1$
-<br>
-setting the 	1	th result coefficient to 	$1$
-<br>
-numerator becomes	${{{x}^{2}} - {a}} - {{{\left({{x} - {\sqrt{a}}}\right)}} {{x}}}$
-<br>
-simplified numerator is	${{\sqrt{a}}} {{\left({{-{\sqrt{a}}} + {x}}\right)}}$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${{-1}} {{a}}$
-<br>
-coeff	1	 = 	${a}^{\frac{1}{2}}$
-<br>
-numerator degree is now	1
-<br>
-numerator leading coefficient	${a}^{\frac{1}{2}}$
-<br>
-setting the 	0	th result coefficient to 	$\sqrt{a}$
-<br>
-numerator becomes	${{{\sqrt{a}}} {{\left({{-{\sqrt{a}}} + {x}}\right)}}} - {{{\sqrt{a}}} {{\left({{x} - {\sqrt{a}}}\right)}} {{{x}^{0}}}}$
-<br>
-simplified numerator is	$0$
-<br>
-coeffs of numerator
-<br>
-numerator degree is now	0
-<br>
-numerator leading coefficient	nil
-<br>
-sum adding degree	1	 coeff	$1$	of var	$x$
-<br>
-sum adding degree	0	 coeff	$\sqrt{a}$	of var	$x$
-<br>
-polydivr returning sum	${x} + {\sqrt{a}}$
-<br>
-returning remainder	$0$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -124,64 +30,6 @@ returning remainder	$0$
 <b></b><br>
 <code>assertalleq({(x^2 + 2 * x * a + a^2):polydivr(x + a, x, verbose)}, {x + a, 0})</code>
 </td><td>
-polydivr begin
-<br>
-polydivr dividing	${{x}^{2}} + {{{2}} {{x}} {{a}}} + {{a}^{2}}$	by	${x} + {a}$	wrt var	$x$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${a}^{2}$
-<br>
-coeff	1	 = 	${{2}} {{a}}$
-<br>
-coeff	2	 = 	$1$
-<br>
-coeffs of denom
-<br>
-coeff	0	 = 	$a$
-<br>
-coeff	1	 = 	$1$
-<br>
-numerator degree	2
-<br>
-numerator leading coefficient	$1$
-<br>
-setting the 	1	th result coefficient to 	$1$
-<br>
-numerator becomes	${{{x}^{2}} + {{{2}} {{x}} {{a}}} + {{a}^{2}}} - {{{\left({{x} + {a}}\right)}} {{x}}}$
-<br>
-simplified numerator is	${{a}} {{\left({{a} + {x}}\right)}}$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${a}^{2}$
-<br>
-coeff	1	 = 	$a$
-<br>
-numerator degree is now	1
-<br>
-numerator leading coefficient	$a$
-<br>
-setting the 	0	th result coefficient to 	$a$
-<br>
-numerator becomes	${{{a}} {{\left({{a} + {x}}\right)}}} - {{{a}} {{\left({{x} + {a}}\right)}} {{{x}^{0}}}}$
-<br>
-simplified numerator is	$0$
-<br>
-coeffs of numerator
-<br>
-numerator degree is now	0
-<br>
-numerator leading coefficient	nil
-<br>
-sum adding degree	1	 coeff	$1$	of var	$x$
-<br>
-sum adding degree	0	 coeff	$a$	of var	$x$
-<br>
-polydivr returning sum	${x} + {a}$
-<br>
-returning remainder	$0$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -189,64 +37,6 @@ returning remainder	$0$
 <b></b><br>
 <code>assertalleq({(x^2 - 2 * x * a + a^2):polydivr(x - a, x, verbose)}, {x - a, 0})</code>
 </td><td>
-polydivr begin
-<br>
-polydivr dividing	${{{x}^{2}} - {{{2}} {{x}} {{a}}}} + {{a}^{2}}$	by	${x} - {a}$	wrt var	$x$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${a}^{2}$
-<br>
-coeff	1	 = 	${{-2}} {{a}}$
-<br>
-coeff	2	 = 	$1$
-<br>
-coeffs of denom
-<br>
-coeff	0	 = 	${{-1}} {{a}}$
-<br>
-coeff	1	 = 	$1$
-<br>
-numerator degree	2
-<br>
-numerator leading coefficient	$1$
-<br>
-setting the 	1	th result coefficient to 	$1$
-<br>
-numerator becomes	${{{{x}^{2}} - {{{2}} {{x}} {{a}}}} + {{a}^{2}}} - {{{\left({{x} - {a}}\right)}} {{x}}}$
-<br>
-simplified numerator is	${{a}} {{\left({{a} - {x}}\right)}}$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${a}^{2}$
-<br>
-coeff	1	 = 	${{-1}} {{a}}$
-<br>
-numerator degree is now	1
-<br>
-numerator leading coefficient	${{-1}} {{a}}$
-<br>
-setting the 	0	th result coefficient to 	$-{a}$
-<br>
-numerator becomes	${{{a}} {{\left({{a} - {x}}\right)}}} - { {-{a}} {{\left({{x} - {a}}\right)}} {{{x}^{0}}}}$
-<br>
-simplified numerator is	$0$
-<br>
-coeffs of numerator
-<br>
-numerator degree is now	0
-<br>
-numerator leading coefficient	nil
-<br>
-sum adding degree	1	 coeff	$1$	of var	$x$
-<br>
-sum adding degree	0	 coeff	$-{a}$	of var	$x$
-<br>
-polydivr returning sum	${x} + {-{a}}$
-<br>
-returning remainder	$0$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -255,69 +45,9 @@ returning remainder	$0$
 <code></code>
 </td><td>
 <tr><td>
-<b>you would think this would be easy</b><br>
-<code></code>
-</td><td>
-<tr><td>
 <b></b><br>
 <code>assertalleq({(x^2 - a^2):polydivr(x - a, x, verbose)}, {x + a, 0})</code>
 </td><td>
-polydivr begin
-<br>
-polydivr dividing	${{x}^{2}} - {{a}^{2}}$	by	${x} - {a}$	wrt var	$x$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${{-1}} {{{a}^{2}}}$
-<br>
-coeff	2	 = 	$1$
-<br>
-coeffs of denom
-<br>
-coeff	0	 = 	${{-1}} {{a}}$
-<br>
-coeff	1	 = 	$1$
-<br>
-numerator degree	2
-<br>
-numerator leading coefficient	$1$
-<br>
-setting the 	1	th result coefficient to 	$1$
-<br>
-numerator becomes	${{{x}^{2}} - {{a}^{2}}} - {{{\left({{x} - {a}}\right)}} {{x}}}$
-<br>
-simplified numerator is	${{a}} {{\left({{-{a}} + {x}}\right)}}$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${{-1}} {{{a}^{2}}}$
-<br>
-coeff	1	 = 	$a$
-<br>
-numerator degree is now	1
-<br>
-numerator leading coefficient	$a$
-<br>
-setting the 	0	th result coefficient to 	$a$
-<br>
-numerator becomes	${{{a}} {{\left({{-{a}} + {x}}\right)}}} - {{{a}} {{\left({{x} - {a}}\right)}} {{{x}^{0}}}}$
-<br>
-simplified numerator is	$0$
-<br>
-coeffs of numerator
-<br>
-numerator degree is now	0
-<br>
-numerator leading coefficient	nil
-<br>
-sum adding degree	1	 coeff	$1$	of var	$x$
-<br>
-sum adding degree	0	 coeff	$a$	of var	$x$
-<br>
-polydivr returning sum	${x} + {a}$
-<br>
-returning remainder	$0$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>
@@ -325,62 +55,6 @@ returning remainder	$0$
 <b></b><br>
 <code>assertalleq({(x^2 - a^2):polydivr(x + a, x, verbose)}, {x - a, 0})</code>
 </td><td>
-polydivr begin
-<br>
-polydivr dividing	${{x}^{2}} - {{a}^{2}}$	by	${x} + {a}$	wrt var	$x$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${{-1}} {{{a}^{2}}}$
-<br>
-coeff	2	 = 	$1$
-<br>
-coeffs of denom
-<br>
-coeff	0	 = 	$a$
-<br>
-coeff	1	 = 	$1$
-<br>
-numerator degree	2
-<br>
-numerator leading coefficient	$1$
-<br>
-setting the 	1	th result coefficient to 	$1$
-<br>
-numerator becomes	${{{x}^{2}} - {{a}^{2}}} - {{{\left({{x} + {a}}\right)}} {{x}}}$
-<br>
-simplified numerator is	$-{{{a}} {{\left({{a} + {x}}\right)}}}$
-<br>
-coeffs of numerator
-<br>
-coeff	0	 = 	${{-1}} {{{a}^{2}}}$
-<br>
-coeff	1	 = 	${{-1}} {{a}}$
-<br>
-numerator degree is now	1
-<br>
-numerator leading coefficient	${{-1}} {{a}}$
-<br>
-setting the 	0	th result coefficient to 	$-{a}$
-<br>
-numerator becomes	${-{{{a}} {{\left({{a} + {x}}\right)}}}} - { {-{a}} {{\left({{x} + {a}}\right)}} {{{x}^{0}}}}$
-<br>
-simplified numerator is	$0$
-<br>
-coeffs of numerator
-<br>
-numerator degree is now	0
-<br>
-numerator leading coefficient	nil
-<br>
-sum adding degree	1	 coeff	$1$	of var	$x$
-<br>
-sum adding degree	0	 coeff	$-{a}$	of var	$x$
-<br>
-polydivr returning sum	${x} + {-{a}}$
-<br>
-returning remainder	$0$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>

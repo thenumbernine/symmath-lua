@@ -164,6 +164,7 @@ Tensor.coords{{variables=xs}}
 
 local D_dense = Tensor('_i', function(i) return D('_'..i) end)
 local B_dense = Tensor('_i', function(i) return B('_'..i) end)
+-- hmm, should 'n' be 'n' , or should it be the vielbein transform e?
 local n_l_dense = Tensor('_i', function(i) return var'(n_1)'('_'..i) end)
 local n_u_dense = Tensor('^i', function(i) return var'(n_1)'('^'..i) end)
 

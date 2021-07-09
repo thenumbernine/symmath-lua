@@ -7,7 +7,7 @@ timer(nil, function()
 
 env.a = var'a'
 env.x = var'x'
-env.verbose = true
+env.verbose = false
 
 _G.printbr = printbr
 
@@ -19,7 +19,6 @@ assertalleq({(x^2 - a):polydivr(x - sqrt(a), x, verbose)}, {x + sqrt(a),0})
 assertalleq({(x^2 + 2 * x * a + a^2):polydivr(x + a, x, verbose)}, {x + a, 0})
 assertalleq({(x^2 - 2 * x * a + a^2):polydivr(x - a, x, verbose)}, {x - a, 0})
 
--- you would think this would be easy
 assertalleq({(x^2 - a^2):polydivr(x - a, x, verbose)}, {x + a, 0})		
 assertalleq({(x^2 - a^2):polydivr(x + a, x, verbose)}, {x - a, 0})
 

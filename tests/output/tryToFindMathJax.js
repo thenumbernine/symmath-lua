@@ -16,9 +16,11 @@ function loadScript(args) {
 function tryToFindMathJax() {
 	console.log('init...');
 	var urls = [
+		'file:///C:/Users/Chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
 		//'http:///localhost:8000/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
 		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML'	];
+		'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML',
+	];
 	var i = 0;
 	var loadNext = function() {
 		loadScript({

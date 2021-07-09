@@ -26,7 +26,8 @@ local spatialDim = 3
 -- set to true to use alpha_,i as a state var, instead of log(alpha)_,i
 -- using log(alpha)_,i is more common
 -- using alpha_,i can include both positive and negative alpha's
-local useDAlphaAsStateVar = false	
+-- flux jacobian looks the same?
+local useDAlphaAsStateVar = true
 
 -- pick only one of these
 -- or pick none = keep lapse as a generic variable 'f'
@@ -34,7 +35,7 @@ local useLapseF_1PlusLog = false
 -- TODO any other lapses
 
 -- don't consider Z_k,t and Theta_,t in the eigen decomposition
--- this is essentially ADM (but also without its own V_i or Gamma_i constraint vars, which Z_i fulfills)
+-- turns out these two have a very ugly wavespeed that chokes up the solver
 local dontIncludeZVars = true
 
 

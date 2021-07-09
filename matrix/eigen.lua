@@ -21,6 +21,7 @@ args:
 	lambdaVar = which lambda variable to use.  defaults to 'lambda'.
 	lambdas = provide eigen with a list of lambdas, since its weakness is solving the char poly
 	verbose = verbose?
+	nullspaceVerbose = nullspace verbose?
 --]]
 
 local function eigen(A, args)
@@ -33,9 +34,6 @@ local function eigen(A, args)
 	local printbr	--debugging
 	if eigenVerbose then
 		printbr = _G.printbr or _G.print
-	end
-
-	if eigenVerbose then
 		printbr(var'A':eq(A))
 	end
 	A = A:clone()
@@ -98,18 +96,77 @@ local function eigen(A, args)
 		if eigenVerbose then
 			printbr('finding nullspace for ', lambdaInfo.expr)
 		end
-		local Ri = (A - lambda * I)():nullspace(eigenVerbose)
+		local AminusLambdaI = (A - lambda * I)()
+		local Ri = AminusLambdaI:nullspace(args.nullspaceVerbose)
 		if eigenVerbose then
 			printbr(Ri)
 		end
-		local n = Ri and #Ri[1] or 0
+		local n = Ri and Ri:dim()[2] or 0
 		-- ex: A[1][2] = 1 otherwise A[i][j] = 0.  charpoly is lambda=0 mult4, nullspace is dim=3
 		if lambdaInfo.mult ~= n then
 			defective = true
 			if eigenVerbose then
-				printbr'...is defective'
+				printbr'...is defective, gathering more generalized eigenvectors'
 			end
-			--error("nullspace of "..lambda.." is "..n.." but multiplicity of eigenvalue is "..lambdaInfo.mult)
+			if n > 0 then
+--[[ TODO a separate function for 'generalizedEigensystem()' ?
+				if eigenVerbose then
+					printbr'trying again for generalized eigensystem...'
+				end
+				local Constant = require 'symmath.Constant'
+				local AminusLambdaIToTheP = AminusLambdaI:clone() 
+				local m = #Ri
+				local done
+				for p=2,m do
+					AminusLambdaIToTheP = (AminusLambdaIToTheP * AminusLambdaI)()
+					if eigenVerbose then
+						printbr('finding nullspace of (A - I lambda)^'..p..' = '..AminusLambdaIToTheP)
+					end
+					local RiP = AminusLambdaIToTheP:nullspace(args.nullspace)
+					
+					-- TODO here only add the columns of RiP when they are linearly independent of Ri
+					-- so what's an easy linear independence test?
+					-- i don't have a guaranteed full basis so I can't just use det == 0
+					-- so https://www.impan.pl/~pmh/teach/algebra/additional/eigen.pdf 
+					-- looks like we can mul each column vector by (A - I lambda), and if it's zero then we ignore it ... ?
+
+					if eigenVerbose then
+						printbr('which is '..RiP)
+					end
+					local n2 = RiP and RiP:dim()[2] or 0	-- should this be the same as n?
+					if n2 > 0 then
+						-- (A - I lambda) * RiP and look at which columns are not zero
+						-- or is it (A - I lambda)^(p-1) * RiP?
+						local bleh = (AminusLambdaI * RiP)()
+						if eigenVerbose then
+							printbr('...times (A - lambda I) is '..bleh)
+						end
+						for j=1,#bleh[1] do
+							local allZero = true
+							for i=1,#bleh do
+								if not Constant.isValue(bleh[i][j], 0) then
+									allZero = false
+									break
+								end
+							end
+							if not allZero then
+								if eigenVerbose then
+									printbr('adding col '..j)
+								end
+								for i=1,#bleh do
+									table.insert(Ri[i], RiP[i][j])
+								end
+								if #Ri[1] == m then 
+									done = true
+								end
+							end
+						end
+						if done then break end
+						-- TODO only insert non-linearly-independent rows
+					end
+				end
+--]]			
+			end
 		end
 		--for i=1,lambdaInfo.mult do
 		for i=1,n do
@@ -119,7 +176,7 @@ local function eigen(A, args)
 	end)
 	if eigenVerbose then
 		for i,lambda in ipairs(lambdas) do
-			printbr('right eigenvector of', lambda.expr, 'is', Rs[i]:T())
+			printbr('right eigenvector of lambda=', lambda.expr, 'is', Rs[i]:T())
 		end
 	end
 
@@ -133,8 +190,12 @@ local function eigen(A, args)
 	-- inverse() isn't possible if R isn't square ... which happens when the charpoly mult != the nullspace dim
 	-- in that case, use SVD?
 	-- or solve manually for left-eigenvectors?
+	local Rdim = R:dim()
 	local L
-	if not (defective or args.dontCalcL) then
+	if not args.dontCalcL 
+	and #Rdim == 2
+	and Rdim[1] == Rdim[2]
+	then
 		L = R:inverse() 
 		if eigenVerbose then
 			printbr(var'L':eq(L))
@@ -143,7 +204,7 @@ local function eigen(A, args)
 	
 	local Lambda = Matrix.diagonal( allLambdas:unpack() )
 	if eigenVerbose then
-		printbr(var'\\Lambda':eq(Lambda))
+		printbr(var'Lambda':eq(Lambda))
 	end
 	if eigenVerbose and L then
 		printbr'verify:'

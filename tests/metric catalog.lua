@@ -14,9 +14,15 @@ require 'symmath'.setup{
 local t,x,y,z = vars('t','x','y','z')
 -- fixVariableNames would cover this automatically:
 
+-- r is in reals >= 0
 local r = set.nonNegativeReal:var'r'
 
-local phi,theta,psi = vars('\\phi','\\theta','\\psi')
+-- phi doesn't matter because its whole domain is going to get +s and -s from cos(phi) and sin(phi)
+local phi = var'\\phi'
+
+-- but theta, in spherical, should be only 0-pi (and for 2D polar, same?)
+-- 		TODO hmm now I see a reason to use symbols with domains instead of ieee floats...
+local theta = set.RealSubset(0, math.pi, true, false):var'\\theta'
 
 -- unless I set 'fixVariableNames' I will have to explicitly define all the Greek symbols...
 -- this is used by sphere-sinh-radial
@@ -423,6 +429,31 @@ local spacetimes = {
 			return r^2 * sin(theta)
 		end,
 	},
+--[[ also not doing so well, kinda slow	
+	{
+		title = 'spherical, anholonomic, conformal',
+		baseCoords = {r,theta,phi},
+		embedded = {x,y,z},
+		flatMetric = delta3,
+		chart = function()
+			return Tensor('^I', 
+				r * sin(theta) * cos(phi),
+				r * sin(theta) * sin(phi),
+				r * cos(theta))
+		end,
+		eToEHol = function()
+			local cf = r * sqrt(abs(sin(theta)))
+			return Tensor('_a^A', 
+				{cf, 0, 0},
+				{0, cf, 0},
+				{0, 0, cf}
+			)
+		end,
+		coordVolumeElem = function()
+			return r^2 * sin(theta)
+		end,
+	},
+--]]
 --[[ not doing so well, with some abs derivatives
 	{
 		title = 'sphere surface, anholonomic, conformal',
@@ -445,9 +476,10 @@ local spacetimes = {
 				{-sin(phi),cos(phi),0})
 		end,
 		eToEHol = function()
+			local cf = r * sqrt(abs(sin(theta)))
 			return Tensor('_a^A', 
-				{r * sqrt(abs(sin(theta))), 0},
-				{0, r * sqrt(abs(sin(theta)))},
+				{cf, 0},
+				{0, cf}
 			)
 		end,
 		coordVolumeElem = function()
