@@ -23,17 +23,22 @@ local kg = var'kg'
 local m = var'm'
 local s = var's'
 
+local t, x, y, z = vars('t', 'x', 'y', 'z')
+local xs = table{x, y, z}
+local txs = table{t, x, y, z}
 
 printbr'variables:'
 
 local n = var'(n_1)'
 printbr(n'^i', '= flux surface normal, in units of $[1]$')
 
-local rho = var'\\rho'	-- density
+local rho = var('\\rho', txs)	-- density
 printbr(rho, [[= density, in units of ]], kg/m^3)
 
 local v = var'v'	-- velocity
 printbr(v'^i', [[= velocity, in units of ]], m/s)
+-- because i'm now tracking variable dependency based on its tensor degree
+v'^i':setDependentVars(txs:unpack())
 
 --local m = var'm'	-- momentum
 local m_from_v = m'^i':eq(rho * v'^i')
@@ -47,7 +52,7 @@ local gammaMinusOne = var'(\\gamma_{-1})'	-- = gamma - 1
 local gammaMinusOne_def = gammaMinusOne:eq(gamma - 1)
 printbr(gammaMinusOne_def)
 
-local P = var'P'		-- pressure
+local P = var('P', txs)		-- pressure
 printbr(P, [[= pressure, in units of ]], kg / (m * s^2))
 
 local Cs = var'c_s'
@@ -114,17 +119,177 @@ os.exit()
 
 -- equations 
 
-printbr'Conservative and primitive variables:'
-
+local A = var'A'
 local W = var'W'
+local U = var'U'
+
+printbr'finite volume form:'
+printbr()
+
+printbr((U'^I_,t' + var'F(n^j)''^I_;j'):eq(0))
+printbr()
+
+printbr'as flux jacobian:'
+printbr()
+
+printbr((U'^I_,t' 
+		+ var'F(n^j)''^I':diff(U'^J') * U'^J_;j'
+	):eq(0))
+printbr()
+
+printbr'as eigensystem of jacobian:'
+printbr()
+
+printbr((U'_,t'
+		+ var'R_F(n^j)' * var'\\Lambda_F(n^j)' * var'L_F(n^j)' * U'_;j'
+	):eq(0))
+printbr()
+
+printbr'as characteristic variables:'
+printbr()
+
+printbr((
+		
+		var'L_F(n^j)'
+		* U'_,t'
+		+ 
+		var'L_F(n^j)' 
+		* var'R_F(n^j)' 
+		* var'\\Lambda_F(n^j)' 
+		* var'L_F(n^j)' 
+		* var'R_F(n^j)' 
+		* var'L_F(n^j)' 
+		* U'_;j'
+	
+	):eq(0))
+printbr()
+
+printbr((
+		
+		var'L_F(n^j)'
+		* U'_,t'
+		+ 
+		var'\\Lambda_F(n^j)' 
+		* var'L_F(n^j)' 
+		* U'_;j'
+	
+	):eq(0))
+printbr()
+
+printbr('now you have 3 separate PDEs to solve, however they are dependent on flux normal.')
+printbr()
+
+printbr'as a PDE of primitive variables:'
+printbr()
+
+-- dU/dt + dF(n)/dU dU/dx = 0
+printbr((U'_,t' 
+		+ var'F(n^j)':diff(U) 
+		* U'_;j'
+	):eq(0))
+printbr()
+
+-- dW/dU dU/dt + dW/dU dF(n)/dU dU/dx = 0
+printbr(
+	(
+		W:diff(U) 
+		* U'_,t' 
+		+ 
+		W:diff(U)
+		* var'F(n^j)':diff(U) 
+		* U'_;j'
+	):eq(0))
+printbr()
+
+
+-- dW/dU dU/dt + dW/dU dF(n)/dU dU/dW dW/dU dU/dx = 0
+printbr(
+	(
+		W:diff(U) 
+		* U'_,t' 
+		+ 
+		W:diff(U)
+		* var'F(n^j)':diff(U) 
+		* U:diff(W)
+		* W:diff(U)
+		* U'_;j'
+	):eq(0))
+printbr()
+
+--dW/dt + dW/dU dF(n)/dU dU/dW dW/dx = 0
+printbr(
+	(
+		W'_,t' 
+		+ 
+		W:diff(U)
+		* var'F(n^j)':diff(U) 
+		* U:diff(W)
+		* W'_;j'
+	):eq(0))
+printbr()
+
+--dW/dt + dW/dU dF(n)/dW dW/dx = 0
+printbr(
+	(
+		W'_,t' 
+		+ 
+		W:diff(U)
+		* var'F(n^j)':diff(W) 
+		* W'_;j'
+	):eq(0))
+printbr()
+
+--dW/dt + dFW(n)/dW dW/dx = 0
+printbr(
+	(
+		W'_,t' 
+		+ 
+		var'FU(n^j)':diff(W) 
+		* W'_;j'
+	):eq(0))
+printbr()
+
+printbr('...where ', var'FU(n^j)':diff(W), 'is equal to the acoustic matrix plus a diagonal of the velocity along the flux normal, as we will see below')
+printbr()
+
+printbr(( W'_,t' + (A + var'I' * v'^j') * W'_;j' ):eq(0))
+printbr()
+
+--[[
+so the primitive flux jacobian wrt primitive vars dFW(n)/dW is related to the conservative flux wrt conservative vars jacobian dF/dU by dFW(n)/dW = dW/dU dF(n)/dU dU/dW 
+does this mean that flux is not flux in every situation?  that conservative state variable flux is different from primitive state variable flux?
+also, looks like the "acoustic plus velocity" is equal to the primitive flux wrt primitive jacobian ... 
+... which means that it is probably the simplest change-of-variables such that the characteristic variables are not dependent on the surface normals.
+so can the "acoustic plus velocity" dFW(n)/dW times the derivative of primitive wrt x be re-integrated?
+
+in x axis:
+
+ρ_,t + v^x ρ_,x + ρ v^x_,x = 0
+v^x_,t + v^x v^x_,x + 1/ρ P_,x = 0
+v^y_,t + v^y v^y_,x = 0
+v^z_,t + v^z v^z_,x = 0
+P_,t + v^x P_,x + γ P v^x_,x = 0
+
+--]]
+printbr((
+		U'^I_,t' 
+		+ 
+		var'F(n^j)''^I':diff(U'^J') 
+		* U'^J_;j'
+	):eq(0))
+printbr()
+printbr()
+
+
+printbr'Conserved and primitive variables:'
+
 local W_def = Matrix{rho, v'^i', P}:T()
 printbr(W'^I':eq(W_def))
 
-local U = var'U'
 local U_def = Matrix{rho, m'^i', E_total}:T()
 printbr(U'^I':eq(U_def))
 
-printbr'Partial of conservative quantities wrt primitives:'
+printbr'Partial of conserved quantities wrt primitives:'
 
 local dU_dW_def = Matrix:lambda({3,3}, function(i,j)
 	return U_def[i][1]:diff( W_def[j][1]:reindex{i='j'} )
@@ -238,7 +403,6 @@ printbr()
 
 printbr'Acoustic matrix:'
 
-local A = var'A'
 local A_lhs = A'^I_J' + n'_a' * v'^a' * delta'^I_J'
 
 printbr(A_lhs:eq(W'^I':diff(U'^K') * F'^K':diff(W'^J')))
@@ -314,7 +478,31 @@ A_expanded = A_expanded
 printbr(A'^I_J':eq(A_expanded))
 printbr()
 
-local xs = table{'x', 'y', 'z'}
+local A_expanded_wrt_W = A_expanded:subst(Cs_def)()
+printbr(A'^I_J':eq(A_expanded_wrt_W))
+printbr()
+
+printbr((W'^I_,t' + (A'^I_J' + delta'^I_J' * v'^k') * W'^J_,k'):eq(0))
+printbr()
+
+local W_dense = Matrix{rho, v'^1', v'^2', v'^3', P}:T()
+
+-- hmm, do the comma derivatives not distribute through matrices, or do they simply not distribute before matrix add/mul operations are evaluated?
+-- looks like comma derivatives do not distribute through matrices ...
+-- makes sense.  i still haven't done any matching between index symbols and variable names, like I plan to.
+-- for now symbols are as unique as their strings, and separate of variables.
+--local eqn = (W_dense'_,t' + (A_expanded_wrt_W + v'^1' * Matrix.identity(5)) * W_dense'_,x'):eq(Matrix:zeros{5, 1})
+local eqn = (W_dense:diff(t) + (A_expanded_wrt_W + v'^1' * Matrix.identity(5)) * W_dense:diff(x)):eq(Matrix:zeros{5, 1})
+printbr(eqn)
+printbr()
+
+eqn = eqn()
+local dt_W_eqns = eqn:unravel()
+for _,eqn in ipairs(dt_W_eqns) do
+	printbr(eqn:simplifyAddMulDiv())
+end
+printbr()
+
 Tensor.coords{{variables=xs}}
 
 local nl_dense = Tensor('_i', function(i) return n('_'..i) end)
