@@ -123,13 +123,16 @@ local A = var'A'
 local W = var'W'
 local U = var'U'
 
-printbr'finite volume form:'
+printbr'Finite volume form:'
 printbr()
 
 printbr((U'^I_,t' + var'F(n^j)''^I_;j'):eq(0))
 printbr()
 
-printbr'as flux jacobian:'
+printbr"This is ideal because we have the option of working with the flux vector, or working with its jacobian wrt conserved quantities, or working with its eigensystem."
+printbr()
+
+printbr'As flux Jacobian:'
 printbr()
 
 printbr((U'^I_,t' 
@@ -137,7 +140,7 @@ printbr((U'^I_,t'
 	):eq(0))
 printbr()
 
-printbr'as eigensystem of jacobian:'
+printbr'As eigensystem of jacobian:'
 printbr()
 
 printbr((U'_,t'
@@ -145,7 +148,7 @@ printbr((U'_,t'
 	):eq(0))
 printbr()
 
-printbr'as characteristic variables:'
+printbr'As characteristic variables:'
 printbr()
 
 printbr((
@@ -176,10 +179,10 @@ printbr((
 	):eq(0))
 printbr()
 
-printbr('now you have 3 separate PDEs to solve, however they are dependent on flux normal.')
+printbr('Now you have 3 separate PDEs to solve, however they are dependent on flux normal, and not easily solvable.')
 printbr()
 
-printbr'as a PDE of primitive variables:'
+printbr'As a PDE of primitive variables:'
 printbr()
 
 -- dU/dt + dF(n)/dU dU/dx = 0
@@ -228,7 +231,7 @@ printbr(
 	):eq(0))
 printbr()
 
---dW/dt + dW/dU dF(n)/dW dW/dx = 0
+-- dW/dt + dW/dU dF(n)/dW dW/dx = 0 
 printbr(
 	(
 		W'_,t' 
@@ -239,6 +242,7 @@ printbr(
 	):eq(0))
 printbr()
 
+--[[ in theory ... but hard / impossible? to solve
 --dW/dt + dFW(n)/dW dW/dx = 0
 printbr(
 	(
@@ -248,11 +252,14 @@ printbr(
 		* W'_;j'
 	):eq(0))
 printbr()
+--]]
 
-printbr('...where ', var'FU(n^j)':diff(W), 'is equal to the acoustic matrix plus a diagonal of the velocity along the flux normal, as we will see below')
+printbr('...where ', W:diff(U) * var'F(n^j)':diff(W) , 'is equal to the acoustic matrix plus a diagonal of the velocity along the flux normal, as we will see below.')
 printbr()
 
 printbr(( W'_,t' + (A + var'I' * v'^j') * W'_;j' ):eq(0))
+printbr()
+printbr"Now, even though the flux vector doesn't look so solvable as it does with conserved quantities, this system's eigendecomposition is much much more simple."
 printbr()
 
 --[[
@@ -261,25 +268,43 @@ does this mean that flux is not flux in every situation?  that conservative stat
 also, looks like the "acoustic plus velocity" is equal to the primitive flux wrt primitive jacobian ... 
 ... which means that it is probably the simplest change-of-variables such that the characteristic variables are not dependent on the surface normals.
 so can the "acoustic plus velocity" dFW(n)/dW times the derivative of primitive wrt x be re-integrated?
-
-in x axis:
-
-ρ_,t + v^x ρ_,x + ρ v^x_,x = 0
-v^x_,t + v^x v^x_,x + 1/ρ P_,x = 0
-v^y_,t + v^y v^y_,x = 0
-v^z_,t + v^z v^z_,x = 0
-P_,t + v^x P_,x + γ P v^x_,x = 0
-
 --]]
-printbr((
-		U'^I_,t' 
+
+printbr'If you could find some flux vector such that the derivative of this flux vector wrt the primitive vector produced our "acoustic-plus-velocity-diagonal" then we could use flux-based numerical solvers...'
+printbr()
+
+printbr(
+	(
+		W'_,t' 
 		+ 
-		var'F(n^j)''^I':diff(U'^J') 
-		* U'^J_;j'
+		var'F_W(n^j)':diff(W) 
+		* W'_;j'
 	):eq(0))
 printbr()
+
+printbr((W'_,t' + var'F_W(n^j)''_;j'):eq(0))
 printbr()
 
+printbr'...but idk if this is possible.'
+printbr()
+
+printbr[[
+So...<br>
+- The conserved form is able to be expressed as a flux vector: $\partial_t U + \partial_x F_U(n) = 0$. 
+	From that, also as a linear relation of PDEs times x derivative $\partial_t U + \frac{\partial F_U(n)}{\partial U} \cdot \partial_x U = 0$, 
+	and from that as an eigensystem $\partial_t U + R_U(n) \cdot \Lambda(n) \cdot L_U(n) \cdot \partial_x U = 0$.<br>
+- The primitive form is the simplest form of the linear relation of the PDEs $\partial_t W + B(n) \cdot \partial_x W = 0$ 
+	such that the state variables $W$ are independent of flux direction,
+	though the flux vector $F_W(n)$ may not be solvable from integrating the linear system times the state variable x derivative $B(n) \cdot \partial_x W$,
+	i.e. $\partial_t W + \partial_x F_W(n) = 0$ may not be a possible form to deduce.
+	<br>
+- The characteristic form are completely separated PDEs, with diagonal flux and identity eigenvectors $\partial_t C(n) + \Lambda(n) \cdot \partial_x C(n) = 0$, 
+	however the state variables $C(n)$ may be dependent on flux direction and may not be solvable.<br>
+<br>
+]]
+
+printbr'<hr>'
+printbr()
 
 printbr'Conserved and primitive variables:'
 

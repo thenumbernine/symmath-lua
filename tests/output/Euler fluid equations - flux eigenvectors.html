@@ -51,7 +51,7 @@ ${{H_{total}}} = {{P} + {{{P}} {{\frac{1}{{(\gamma_{-1})}}}}} + {{{\frac{1}{2}}}
 <br>
 
 <br>
-finite volume form:
+Finite volume form:
 <br>
 
 <br>
@@ -59,7 +59,11 @@ ${{{{ U} ^I} _{,t}} + {{{ {F(n^j)}} ^I} _{;j}}} = {0}$
 <br>
 
 <br>
-as flux jacobian:
+This is ideal because we have the option of working with the flux vector, or working with its jacobian wrt conserved quantities, or working with its eigensystem.
+<br>
+
+<br>
+As flux Jacobian:
 <br>
 
 <br>
@@ -67,7 +71,7 @@ ${{{{ U} ^I} _{,t}} + {{{\frac{\partial { {F(n^j)}} ^I}{\partial { U} ^J}}} {{{{
 <br>
 
 <br>
-as eigensystem of jacobian:
+As eigensystem of jacobian:
 <br>
 
 <br>
@@ -75,7 +79,7 @@ ${{{ U} _{,t}} + {{{{R_F(n^j)}}} \cdot {{{\Lambda_F(n^j)}}} \cdot {{{L_F(n^j)}}}
 <br>
 
 <br>
-as characteristic variables:
+As characteristic variables:
 <br>
 
 <br>
@@ -87,11 +91,11 @@ ${{{{{L_F(n^j)}}} \cdot {{{ U} _{,t}}}} + {{{{\Lambda_F(n^j)}}} \cdot {{{L_F(n^j
 <br>
 
 <br>
-now you have 3 separate PDEs to solve, however they are dependent on flux normal.
+Now you have 3 separate PDEs to solve, however they are dependent on flux normal, and not easily solvable.
 <br>
 
 <br>
-as a PDE of primitive variables:
+As a PDE of primitive variables:
 <br>
 
 <br>
@@ -115,11 +119,7 @@ ${{{ W} _{,t}} + {{{\frac{\partial W}{\partial U}}} {{\frac{\partial {F(n^j)}}{\
 <br>
 
 <br>
-${{{ W} _{,t}} + {{{\frac{\partial {FU(n^j)}}{\partial W}}} {{{ W} _{;j}}}}} = {0}$
-<br>
-
-<br>
-...where 	$\frac{\partial {FU(n^j)}}{\partial W}$	is equal to the acoustic matrix plus a diagonal of the velocity along the flux normal, as we will see below
+...where 	${{\frac{\partial W}{\partial U}}} {{\frac{\partial {F(n^j)}}{\partial W}}}$	is equal to the acoustic matrix plus a diagonal of the velocity along the flux normal, as we will see below.
 <br>
 
 <br>
@@ -127,9 +127,41 @@ ${{{ W} _{,t}} + {{{\left({{A} + {{{I}} {{{ v} ^j}}}}\right)}} {{{ W} _{;j}}}}} 
 <br>
 
 <br>
-${{{{ U} ^I} _{,t}} + {{{\frac{\partial { {F(n^j)}} ^I}{\partial { U} ^J}}} {{{{ U} ^J} _{;j}}}}} = {0}$
+Now, even though the flux vector doesn't look so solvable as it does with conserved quantities, this system's eigendecomposition is much much more simple.
 <br>
 
+<br>
+If you could find some flux vector such that the derivative of this flux vector wrt the primitive vector produced our "acoustic-plus-velocity-diagonal" then we could use flux-based numerical solvers...
+<br>
+
+<br>
+${{{ W} _{,t}} + {{{\frac{\partial {F_W(n^j)}}{\partial W}}} {{{ W} _{;j}}}}} = {0}$
+<br>
+
+<br>
+${{{ W} _{,t}} + {{ {F_W(n^j)}} _{;j}}} = {0}$
+<br>
+
+<br>
+...but idk if this is possible.
+<br>
+
+<br>
+So...<br>
+- The conserved form is able to be expressed as a flux vector: $\partial_t U + \partial_x F_U(n) = 0$. 
+	From that, also as a linear relation of PDEs times x derivative $\partial_t U + \frac{\partial F_U(n)}{\partial U} \cdot \partial_x U = 0$, 
+	and from that as an eigensystem $\partial_t U + R_U(n) \cdot \Lambda(n) \cdot L_U(n) \cdot \partial_x U = 0$.<br>
+- The primitive form is the simplest form of the linear relation of the PDEs $\partial_t W + B(n) \cdot \partial_x W = 0$ 
+	such that the state variables $W$ are independent of flux direction,
+	though the flux vector $F_W(n)$ may not be solvable from integrating the linear system times the state variable x derivative $B(n) \cdot \partial_x W$,
+	i.e. $\partial_t W + \partial_x F_W(n) = 0$ may not be a possible form to deduce.
+	<br>
+- The characteristic form are completely separated PDEs, with diagonal flux and identity eigenvectors $\partial_t C(n) + \Lambda(n) \cdot \partial_x C(n) = 0$, 
+	however the state variables $C(n)$ may be dependent on flux direction and may not be solvable.<br>
+<br>
+
+<br>
+<hr>
 <br>
 
 <br>
