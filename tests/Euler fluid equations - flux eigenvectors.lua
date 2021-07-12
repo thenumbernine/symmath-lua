@@ -459,7 +459,7 @@ printbr()
 local function expandMatrix3to5(A)
 	return Matrix:lambda({5,5}, function(i,j)
 		local remap = {1,2,2,2,3}
-		local replace = {nil, 1,2,3, nil}
+		local replace = {nil, 'x','y','z', nil}
 		return A[remap[i]][remap[j]]:map(function(x)
 			if x == delta'^i_j' then
 				return i == j and 1 or 0
@@ -493,12 +493,12 @@ printbr()
 
 printbr'...in just the Cartesian x-axis...'
 A_expanded = A_expanded
-	:replace(n'_1', 1)
-	:replace(n'_2', 0)
-	:replace(n'_3', 0)
-	:replace(n'^1', 1)
-	:replace(n'^2', 0)
-	:replace(n'^3', 0)
+	:replace(n'_x', 1)
+	:replace(n'_y', 0)
+	:replace(n'_z', 0)
+	:replace(n'^x', 1)
+	:replace(n'^y', 0)
+	:replace(n'^z', 0)
 	:simplify()
 printbr(A'^I_J':eq(A_expanded))
 printbr()
@@ -510,14 +510,14 @@ printbr()
 printbr((W'^I_,t' + (A'^I_J' + delta'^I_J' * v'^k') * W'^J_,k'):eq(0))
 printbr()
 
-local W_dense = Matrix{rho, v'^1', v'^2', v'^3', P}:T()
+local W_dense = Matrix{rho, v'^x', v'^y', v'^z', P}:T()
 
 -- hmm, do the comma derivatives not distribute through matrices, or do they simply not distribute before matrix add/mul operations are evaluated?
 -- looks like comma derivatives do not distribute through matrices ...
 -- makes sense.  i still haven't done any matching between index symbols and variable names, like I plan to.
 -- for now symbols are as unique as their strings, and separate of variables.
---local eqn = (W_dense'_,t' + (A_expanded_wrt_W + v'^1' * Matrix.identity(5)) * W_dense'_,x'):eq(Matrix:zeros{5, 1})
-local eqn = (W_dense:diff(t) + (A_expanded_wrt_W + v'^1' * Matrix.identity(5)) * W_dense:diff(x)):eq(Matrix:zeros{5, 1})
+--local eqn = (W_dense'_,t' + (A_expanded_wrt_W + v'^x' * Matrix.identity(5)) * W_dense'_,x'):eq(Matrix:zeros{5, 1})
+local eqn = (W_dense:diff(t) + (A_expanded_wrt_W + v'^x' * Matrix.identity(5)) * W_dense:diff(x)):eq(Matrix:zeros{5, 1})
 printbr(eqn)
 printbr()
 
@@ -530,14 +530,14 @@ printbr()
 
 Tensor.coords{{variables=xs}}
 
-local nl_dense = Tensor('_i', function(i) return n('_'..i) end)
-local nu_dense = Tensor('^i', function(i) return n('^'..i) end)
+local nl_dense = Tensor('_i', function(i) return n('_'..xs[i].name) end)
+local nu_dense = Tensor('^i', function(i) return n('^'..xs[i].name) end)
 local n2 = var'(n_2)'
-local n2l_dense = Tensor('_i', function(i) return n2('_'..i) end)
-local n2u_dense = Tensor('^i', function(i) return n2('^'..i) end)
+local n2l_dense = Tensor('_i', function(i) return n2('_'..xs[i].name) end)
+local n2u_dense = Tensor('^i', function(i) return n2('^'..xs[i].name) end)
 local n3 = var'(n_3)'
-local n3l_dense = Tensor('_i', function(i) return n3('_'..i) end)
-local n3u_dense = Tensor('^i', function(i) return n3('^'..i) end)
+local n3l_dense = Tensor('_i', function(i) return n3('_'..xs[i].name) end)
+local n3u_dense = Tensor('^i', function(i) return n3('^'..xs[i].name) end)
 
 local nls = {nl_dense, n2l_dense, n3l_dense}
 local nus = {nu_dense, n2u_dense, n3u_dense}
@@ -670,12 +670,12 @@ printbr()
 
 -- use replace instead of assign just in case i forget this is here some day
 -- but this won't invert ...
-eig.R[2][2] = eig.R[2][2]:replace(-n'_2' / n'_1', n2'_1')
-eig.R[3][2] = eig.R[3][2]:replace(1, n2'_2')
-eig.R[4][2] = eig.R[4][2]:replace(0, n2'_3')
-eig.R[2][3] = eig.R[2][3]:replace(-n'_3' / n'_1', n3'_1')
-eig.R[3][3] = eig.R[3][3]:replace(0, n3'_2')
-eig.R[4][3] = eig.R[4][3]:replace(1, n3'_3')
+eig.R[2][2] = eig.R[2][2]:replace(-n'_y' / n'_x', n2'_x')
+eig.R[3][2] = eig.R[3][2]:replace(1, n2'_y')
+eig.R[4][2] = eig.R[4][2]:replace(0, n2'_z')
+eig.R[2][3] = eig.R[2][3]:replace(-n'_z' / n'_x', n3'_x')
+eig.R[3][3] = eig.R[3][3]:replace(0, n3'_y')
+eig.R[4][3] = eig.R[4][3]:replace(1, n3'_z')
 eig.L = eig.R:inverse()
 --]]
 
@@ -683,7 +683,7 @@ printbr(A'^I_J':eq(eig.R * eig.Lambda * eig.L))
 printbr()
 
 local P = Matrix.permutation(5,1,2,3,4)
-local S = Matrix.diagonal(Cs^2 * n1Len, 1, n'_1' / rho, n'_1' / rho, Cs^2 * n1Len)
+local S = Matrix.diagonal(Cs^2 * n1Len, 1, n'_x' / rho, n'_x' / rho, Cs^2 * n1Len)
 local SInv = S:inv()
 
 printbr('permute by:', P, ', scale by:', S)
@@ -692,12 +692,12 @@ eig.R = (eig.R * P * S)()
 eig.Lambda = (SInv * P:T() * eig.Lambda * P * S)()
 eig.L = (SInv * P:T() * eig.L)()
 
---eig.L[3][3] = (eig.L[3][3] + (n1LenSq_def[1] - n1LenSq_def[2]) * rho / (n'_1' * n1Len^2))()
---eig.L[4][4] = (eig.L[4][4] + (n1LenSq_def[1] - n1LenSq_def[2]) * rho / (n'_1' * n1Len^2))()
+--eig.L[3][3] = (eig.L[3][3] + (n1LenSq_def[1] - n1LenSq_def[2]) * rho / (n'_x' * n1Len^2))()
+--eig.L[4][4] = (eig.L[4][4] + (n1LenSq_def[1] - n1LenSq_def[2]) * rho / (n'_x' * n1Len^2))()
 eig.L = eig.L:subst(
-	(n1LenSq_def - n'_2' * n'^2')():switch()
+	(n1LenSq_def - n'_y' * n'^y')():switch()
 ):subst(
-	(n1LenSq_def - n'_3' * n'^3')():switch()
+	(n1LenSq_def - n'_z' * n'^z')():switch()
 )
 
 printbr(A'^I_J':eq(eig.R * eig.Lambda * eig.L))
@@ -742,8 +742,8 @@ printbr(var'R_F':eq(F_eig_R_def))
 
 F_eig_R_def = F_eig_R_def()
 F_eig_R_def = F_eig_R_def
-	:replace(n'_1' * v'^1', n'_k' * v'^k' - n'_2' * v'^2' - n'_3' * v'^3')
-	:replace(n'^1' * v'_1', n'_k' * v'^k' - n'^2' * v'_2' - n'^3' * v'_3')
+	:replace(n'_x' * v'^x', n'_k' * v'^k' - n'_y' * v'^y' - n'_z' * v'^z')
+	:replace(n'^x' * v'_x', n'_k' * v'^k' - n'^y' * v'_y' - n'^z' * v'_z')
 F_eig_R_def = F_eig_R_def:simplifyAddMulDiv()
 printbr(var'R_F':eq(F_eig_R_def))
 
@@ -755,8 +755,8 @@ printbr(var'L_F':eq(F_eig_L_def))
 
 F_eig_L_def = F_eig_L_def()
 F_eig_L_def = F_eig_L_def
-	:replace(n'_1' * v'^1', n'_k' * v'^k' - n'_2' * v'^2' - n'_3' * v'^3')
-	:replace(n'^1' * v'_1', n'_k' * v'^k' - n'^2' * v'_2' - n'^3' * v'_3')
+	:replace(n'_x' * v'^x', n'_k' * v'^k' - n'_y' * v'^y' - n'_z' * v'^z')
+	:replace(n'^x' * v'_x', n'_k' * v'^k' - n'^y' * v'_y' - n'^z' * v'_z')
 F_eig_L_def = F_eig_L_def:simplifyAddMulDiv()
 printbr(var'L_F':eq(F_eig_L_def))
 printbr()
