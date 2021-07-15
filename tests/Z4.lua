@@ -451,11 +451,14 @@ d_gamma_uul_from_gamma_uu_d_gamma_lll = d_gamma_uul_from_gamma_uu_d_gamma_lll:si
 	:solve(gamma'^ij_,k')
 printbr(d_gamma_uul_from_gamma_uu_d_gamma_lll)	-- not the prettiest way to show that ...
 
-printbr('using', d_gamma_lll_from_dHat_lll_dDelta_lll)
-local d_gamma_uul_from_dHat_lll_dDelta_lll = d_gamma_uul_from_gamma_uu_d_gamma_lll:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll)()
+printbr('using', d_gamma_lll_from_d_lll)
+local d_gamma_uul_from_gamma_uu_d_lll = d_gamma_uul_from_gamma_uu_d_gamma_lll:substIndex(d_gamma_lll_from_d_lll)()
+printbr(d_gamma_uul_from_gamma_uu_d_lll)
+
+printbr('using', d_lll_from_dHat_lll_dDelta_lll)
+local d_gamma_uul_from_dHat_lll_dDelta_lll = d_gamma_uul_from_gamma_uu_d_lll:substIndex(d_lll_from_dHat_lll_dDelta_lll)()
 printbr(d_gamma_uul_from_dHat_lll_dDelta_lll)
 printbr()
-
 
 -- alpha
 -- TODO why use a_i = log(alpha)_,i?
@@ -788,11 +791,11 @@ local Ricci_ll_from_Riemann_ulll = R'_ij':eq(R'^k_ikj')
 printbr(Ricci_ll_from_Riemann_ulll)
 
 printbr('using', Riemann_ulll_def)
-local Ricci_ll_def = Ricci_ll_from_Riemann_ulll:subst(Riemann_ulll_def:reindex{ijkl='kikj'})
-printbr(Ricci_ll_def)
+local Ricci_ll_from_conn_ull = Ricci_ll_from_Riemann_ulll:subst(Riemann_ulll_def:reindex{ijkl='kikj'})
+printbr(Ricci_ll_from_conn_ull)
 
 printbr('using', conn_ull_from_gamma_uu_d_lll)
-local Ricci_ll_from_d_lll = Ricci_ll_def
+local Ricci_ll_from_d_lll = Ricci_ll_from_conn_ull
 	--:substIndex(conn_ull_from_gamma_uu_dHat_lll_dDelta_lll)	-- doesn't work well with products of summed vars
 	:splitOffDerivIndexes()
 	:subst(
@@ -806,6 +809,7 @@ local Ricci_ll_from_d_lll = Ricci_ll_def
 printbr(Ricci_ll_from_d_lll)
 
 -- simplify d's symmetry but only rearrange these terms:
+printbr'cancel terms using symmetries:'
 Ricci_ll_from_d_lll = Ricci_ll_from_d_lll:replace(
 	gamma'^kl' * (d'_mlk' + d'_klm' - d'_lmk')(),
 	gamma'^kl' * d'_mlk'
@@ -816,6 +820,88 @@ Ricci_ll_from_d_lll = Ricci_ll_from_d_lll:replace(
 )
 printbr(Ricci_ll_from_d_lll)
 
+printbr'split off terms to rearrange gradient:'
+local Ricci_ll_def = Ricci_ll_from_d_lll
+	--[[
+	what we have: 
+		(d_ji^k + d_ij^k - d^k_ij)_,k
+		= d_ji^k_,k + d_ij^k_,k - d^k_ij,k
+	what we want:
+		= (1/2 d_ji^k + 1/2 d_ij^k - d^k_ij)_,k + 1/2 d_ki^k_,j + 1/2 d_kj^k_,i
+	
+	TODO bake this into R_ij instead of here, so Theta can use it too
+	
+	--]]
+	:replace(
+		(gamma'^km' * (d'_imj' + d'_jmi' - d'_mij'))()'_,k',
+		-- TODO instead of 1/2 , use the xi parameter
+		-- try to use sum terms that the block linear system will use, or it will screw things up 
+		(gamma'^kl' * (frac(1,2) * d'_ilj' + frac(1,2) * d'_jli' - d'_lij'))'_,k'
+		+ (
+			gamma'^kl_,k' * (frac(1,2) * d'_ijl' + frac(1,2) * d'_jil')
+			+ gamma'^mp' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j')'_,k'
+		)
+	)
+	
+	:replace(
+		(gamma'^km' * d'_imk')'_,j',
+		(frac(1,2) * gamma'^pq' * (d'_ipq' * delta'^k_j' + d'_jpq' * delta'^k_i'))'_,k'	-- use pq for the sake of the block linear system below
+	)
+printbr(Ricci_ll_def)
+
+printbr('using', d_gamma_uul_from_gamma_uu_d_lll)
+Ricci_ll_def = Ricci_ll_def:substIndex(d_gamma_uul_from_gamma_uu_d_lll)
+printbr(Ricci_ll_def)
+
+local function sum(t)
+	if #t == 0 then return Constant(0) end
+	if #t == 1 then return t[1] end
+	return symmath.op.add(t:unpack())
+end
+
+-- hmm, no better way to do this?
+local function mergingDerivKParts(expr)
+	expr = expr:map(function(x)
+		if symmath.op.sub:isa(x) then
+			assert(#x == 2)
+			if TensorRef:isa(x[2]) 
+			and not Variable:isa(x[2][1])
+			then
+				x = x:clone()
+				x[2][1] = -x[2][1]
+				return x[1] + x[2]
+			else
+				return x[1] + -1 * x[2]
+			end
+		end
+	end)
+	expr:flatten()
+	
+	local nonderiv = table()
+	local deriv = table()
+	for x in expr:iteradd() do
+		if TensorRef:isa(x) then
+			assert(#x == 2)
+			assert(x[2] == TensorIndex{symbol='k', lower=true, derivative=','})
+			deriv:insert(x[1])
+		else
+			nonderiv:insert(x)
+		end
+	end
+	
+	return deriv, nonderiv
+end
+
+local function mergingDerivK(eqn)
+	local deriv, nonderiv = mergingDerivKParts(eqn[2])
+	return eqn[1]:eq(sum(deriv)'_,k' + sum(nonderiv)) 
+end
+
+printbr'combining derivatives'
+Ricci_ll_def = mergingDerivK(Ricci_ll_def)
+printbr(Ricci_ll_def)
+
+--[=[
 printbr('using', d_lll_from_dHat_lll_dDelta_lll)
 Ricci_ll_def = Ricci_ll_from_d_lll:substIndex(d_lll_from_dHat_lll_dDelta_lll)	-- doesn't work well with products of summed vars
 printbr(Ricci_ll_def)
@@ -863,39 +949,108 @@ printbr'tidying indexes'
 Ricci_ll_def = Ricci_ll_def:tidyIndexes()()
 printbr(Ricci_ll_def)
 --]]
+--]=]
 
 printbr()
 
 
 printHeader'Gaussian curvature'
 
-local R_def = R:eq(gamma'^ij' * R'_ij')
-printbr(R_def)
+local Gaussian_def = R:eq(gamma'^ij' * R'_ij')
+printbr(Gaussian_def)
 
-R_def = R_def:subst(Ricci_ll_def)() 
-printbr(R_def)
+printbr('using Ricci definition')
+Gaussian_def = Gaussian_def:subst(Ricci_ll_def)
+printbr(Gaussian_def)
 
--- [[
-printbr'tidying indexes'
-R_def = R_def:tidyIndexes()()
-	:reindex{abcdef='klmnpq'}
-printbr(R_def)
+local deriv, nonderiv = mergingDerivKParts(Ricci_ll_def[2])
+Gaussian_def = Gaussian_def[1]:eq(
+	(gamma'^ij' * sum(deriv))'_,k'
+	- gamma'^ij_,k' * sum(deriv)
+	+ sum(nonderiv:mapi(function(x)
+		return gamma'^ij' * x
+	end))
+)
+printbr(Gaussian_def)
+
+Gaussian_def = Gaussian_def:replace(
+	gamma'^ij' * (
+		(
+			gamma'^kl'* (
+				frac(1,2) * d'_ilj'
+				+ frac(1,2) * d'_jli'
+				+ Constant(-1) * d'_lij'
+			)
+		) +
+		-(
+			frac(1,2) * gamma'^pq' * (
+				d'_ipq' * delta'^k_j'
+				+ d'_jpq' * delta'^k_i'
+			)
+		)
+	),
+	gamma'^ij' * gamma'^kl' * (d'_ijl' - 2 * d'_lij')
+)
+printbr(Gaussian_def)
+
+Gaussian_def = Gaussian_def:replace(
+	gamma'^ij' * gamma'^mp' * (
+		frac(1,2) * d'_mpj' * delta'^k_i'
+		+ frac(1,2) * d'_mpi' * delta'^k_j'
+	)'_,k',
+	
+	(gamma'^kl' * gamma'^ij' * d'_ijl')'_,k'
+	
+	- (gamma'^ij' * gamma'^mp')'_,k'() * (
+		frac(1,2) * d'_mpj' * delta'^k_i'
+		+ frac(1,2) * d'_mpi' * delta'^k_j'
+	)
+)
+printbr(Gaussian_def)
+
+printbr('using', d_gamma_uul_from_gamma_uu_d_lll)
+Gaussian_def = Gaussian_def:substIndex(d_gamma_uul_from_gamma_uu_d_lll)
+printbr(Gaussian_def)
+
+
+local deriv, nonderiv = mergingDerivKParts(Gaussian_def[2])
+Gaussian_def = Gaussian_def[1]:eq(sum(deriv)()'_,k' + sum(nonderiv))
+printbr(Gaussian_def)
+
+
+--[[
+printbr('merging derivatives')
+Gaussian_def = Gaussian_def:replace(
+	gamma'^mp' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j')'_,k',
+	(gamma'^mp' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j'))'_,k'
+	- gamma'^mp_,k' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j')
+)
+printbr(Gaussian_def)
 --]]
 
+--[[
+printbr'tidying indexes'
+Gaussian_def = Gaussian_def:tidyIndexes()()
+	:reindex{abcdef='klmnpq'}
+printbr(Gaussian_def)
+--]]
+
+--[[
 printbr'symmetrizing indexes'
-R_def = R_def
+Gaussian_def = Gaussian_def
 	:symmetrizeIndexes(dHat, {2,3})
 	:symmetrizeIndexes(dHat, {1,4}, true)
 	:symmetrizeIndexes(dDelta, {2,3})
 	:symmetrizeIndexes(dDelta, {1,4}, true)
 	:symmetrizeIndexes(gamma, {1,2})
 	:simplify()
-printbr(R_def)
+printbr(Gaussian_def)
+--]]
 
 --[[
 printbr'tidying indexes'
-R_def = R_def:tidyIndexes()()
-printbr(R_def)
+Gaussian_def = Gaussian_def:tidyIndexes()()
+printbr(Gaussian_def)
 --]]
 
 printbr()
@@ -972,30 +1127,8 @@ printbr('using', d_beta_ul_from_b_ul)
 dt_K_ll_def = dt_K_ll_def:substIndex(d_beta_ul_from_b_ul)
 printbr(dt_K_ll_def) 
 
-printbr('using definition of ', R'_ij')
-dt_K_ll_def = dt_K_ll_def:subst(Ricci_ll_from_d_lll)
-	--[[
-	what we have: 
-		(d_ji^k + d_ij^k - d^k_ij)_,k
-		= d_ji^k_,k + d_ij^k_,k - d^k_ij,k
-	what we want:
-		= (1/2 d_ji^k + 1/2 d_ij^k - d^k_ij)_,k + 1/2 d_ki^k_,j + 1/2 d_kj^k_,i
-	--]]
-	:replace(
-		(gamma'^km' * (d'_imj' + d'_jmi' - d'_mij'))()'_,k',
-		-- TODO instead of 1/2 , use the xi parameter
-		-- try to use sum terms that the block linear system will use, or it will screw things up 
-		(gamma'^kl' * (frac(1,2) * d'_ilj' + frac(1,2) * d'_jli' - d'_lij'))'_,k'
-		+ (
-			gamma'^kl_,k' * (frac(1,2) * d'_ijl' + frac(1,2) * d'_jil')
-			+ gamma'^mp' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j')'_,k'
-		)
-	)
-	
-	:replace(
-		(gamma'^km' * d'_imk')'_,j',
-		(frac(1,2) * gamma'^pq' * (d'_ipq' * delta'^k_j' + d'_jpq' * delta'^k_i'))'_,k'	-- use pq for the sake of the block linear system below
-	)
+printbr('using the definition of ', R'_ij')
+dt_K_ll_def = dt_K_ll_def:subst(Ricci_ll_def)
 printbr(dt_K_ll_def)
 
 -- HERE is where our flux form ends
@@ -1061,7 +1194,7 @@ printbr(dt_K_ll_def)
 --]]
 
 --[[
-printbr('using definition of ', R'_ij')
+printbr('using the definition of ', R'_ij')
 dt_K_ll_def = dt_K_ll_def:subst(Ricci_ll_def)
 printbr(dt_K_ll_def)
 --]]
@@ -1082,19 +1215,54 @@ printHeader[[Z4 $\Theta$ definition]]
 -- TODO derive me plz from the original R_uv + 2 Z_(u;v) = 8 pi (T^TR)_uv
 -- are you sure there's no beta^i's?
 local dt_Theta_def = Theta'_,t':eq(
-	Theta'_,k' * beta'^k'
+	
+	(Theta * beta'^k')'_,k'
+	
+	+ (alpha * gamma'^kl' * Z'_l')'_,k'
+	
+	+ frac(1,2) * alpha * R
+	
+	- alpha * gamma'^kl_,k' * Z'_l'
+	- 2 * gamma'^kl' * Z'_l' * alpha * a'_k'
+	
+	- alpha * gamma'^kl' * Gamma'^m_kl' * Z'_m'
 	+ frac(1,2) * alpha * (
-		R
-		+ 2 * gamma'^kl' * Z'_k,l'
-		- 2 * gamma'^kl' * Gamma'^m_kl' * Z'_m'
-		+ gamma'^kl' * K'_kl' * (gamma'^mn' * K'_mn' - 2 * Theta)
+		  gamma'^kl' * K'_kl' * (gamma'^mn' * K'_mn' - 2 * Theta)
 		- gamma'^kl' * gamma'^mn' * K'_km' * K'_ln'
 		- 16 * pi * rho
 	)
-	- gamma'^kl' * Z'_k' * alpha'_,l'
+	
+	- Theta * b'^k_k'
 )
 printbr(dt_Theta_def)
 
+printbr('using', d_gamma_uul_from_gamma_uu_d_lll)
+dt_Theta_def = dt_Theta_def:substIndex(d_gamma_uul_from_gamma_uu_d_lll)
+printbr(dt_Theta_def)
+
+printbr('using the definition of R')
+--[[
+dt_Theta_def = dt_Theta_def:subst(Gaussian_def)
+--]]
+-- [[ breaking off deriv and non-deriv parts, and merging the alpha into the non-deriv part
+local deriv, nonderiv = mergingDerivKParts(Gaussian_def[2])
+dt_Theta_def = dt_Theta_def:replace(
+	alpha * Gaussian_def[1], 
+	
+	(alpha * sum(deriv))'_,k'
+	- alpha'_,k' * sum(deriv)
+	+ alpha * sum(nonderiv)
+)
+--]]
+printbr(dt_Theta_def)
+
+printbr('using', d_lll_from_dHat_lll_dDelta_lll)
+dt_Theta_def = dt_Theta_def:substIndex(d_lll_from_dHat_lll_dDelta_lll)
+printbr(dt_Theta_def)
+
+-- last in flux form
+
+--[[
 printbr('using', d_alpha_l_from_a_l)
 dt_Theta_def = dt_Theta_def:substIndex(d_alpha_l_from_a_l)()
 printbr(dt_Theta_def)
@@ -1102,10 +1270,7 @@ printbr(dt_Theta_def)
 printbr('using', conn_ull_from_gamma_uu_dHat_lll_dDelta_lll)
 dt_Theta_def = dt_Theta_def:subst(conn_ull_from_gamma_uu_dHat_lll_dDelta_lll:reindex{ijkm='mkln'})()
 printbr(dt_Theta_def)
-
-printbr('using definition of R')
-dt_Theta_def = dt_Theta_def:subst(R_def)()
-printbr(dt_Theta_def)
+--]]
 
 --[[
 printbr'tidying indexes'
@@ -1113,6 +1278,7 @@ dt_Theta_def = dt_Theta_def:tidyIndexes()()
 printbr(dt_Theta_def)
 --]]
 
+--[[
 printbr'symmetrizing indexes'
 dt_Theta_def = dt_Theta_def
 	:symmetrizeIndexes(K, {1,2})
@@ -1121,12 +1287,17 @@ dt_Theta_def = dt_Theta_def
 	:symmetrizeIndexes(dGamma, {2,3})
 	:simplify()
 printbr(dt_Theta_def)
+--]]
 
 --[[
 printbr'tidying indexes'
 dt_Theta_def = dt_Theta_def:tidyIndexes()()
 printbr(dt_Theta_def)
 --]]
+
+printbr'simplifying...'
+dt_Theta_def = dt_Theta_def()
+printbr(dt_Theta_def)
 
 printbr()
 
