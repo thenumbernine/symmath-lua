@@ -24,6 +24,20 @@ function TensorRef:init(tensor, ...)
 	end
 end
 
+function TensorRef:countNonDerivIndexes()
+	local count = 0
+	local foundDeriv
+	for i=2,#self do
+		if not self[i].derivative then
+			assert(not foundDeriv, "found some non-derivatives after derivatives")
+			count = count + 1
+		else
+			foundDeriv = true
+		end
+	end
+	return count
+end
+
 function TensorRef:hasIndex(symbol)
 	for i=2,#self do
 		if self[i].symbol == symbol then return true end

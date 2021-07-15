@@ -318,6 +318,13 @@ function Expression.__mod(a,b)
 	return mod(a,b) 
 end
 
+function Expression:flatten()
+	for i=1,#self do
+		self[i]:flatten()
+	end
+	return self
+end
+
 -- root-level functions that always apply to expressions
 
 Expression.hasChild = require 'symmath.hasChild'

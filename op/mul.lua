@@ -25,7 +25,7 @@ function mul:flatten()
 		if mul:isa(self[i]) then
 			local x = table.remove(self, i)
 			for j=#x,1,-1 do
-				table.insert(self, i, x[j]:clone())
+				table.insert(self, i, x[j]:clone():flatten())
 			end
 		end
 	end
