@@ -298,6 +298,7 @@ local gamma = var'\\gamma'
 local gammaHat = var'\\hat{\\gamma}'
 local gammaDelta = var[[\overset{\Delta}{\gamma}]]
 -- lapse gauge
+-- if our eigenvalues are sqrt(f gamma^xx) ... gamma^xx being >= 0 makes sense ... but if, for 1+log slicing, f=2/alpha ... then our alpha is constrained to being positive.  no charged, spinning black hole event horizon interiors.
 local f = var('f', {alpha})
 -- Z4 vars
 local Z = var'Z'
@@ -2238,6 +2239,8 @@ for _,root in ipairs{
 	Constant(0),
 	alpha * sqrt(gamma'^xx'),
 	-alpha * sqrt(gamma'^xx'),
+	alpha * sqrt(f * gamma'^xx'),
+	-alpha * sqrt(f * gamma'^xx'),
 } do
 	while true do
 		local p, q = polydiv.polydivr(x, (lambda - root)(), lambda)

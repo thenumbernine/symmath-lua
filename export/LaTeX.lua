@@ -4,6 +4,8 @@ local range = require 'ext.range'
 local string = require 'ext.string'
 local Export = require 'symmath.export.Export'
 
+local symmath
+
 
 local function omit(t)
 	t.omit = true
@@ -163,11 +165,12 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		local name = expr:nameForExporter(self)
 		name = prepareName(name)
 		return table{
-			prepareName(name), '\\left(',
+			prepareName(name), 
+			self.parOpenSymbol,
 			tableConcat(range(#expr):map(function(i)
 				return self:apply(expr[i])
 			end), ','),
-			'\\right)',
+			self.parCloseSymbol,
 		}
 	end,
 	[require 'symmath.sqrt'] = function(self, expr)
@@ -196,10 +199,11 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		return res
 	end,
 	[require 'symmath.op.mul'] = function(self, expr)
-		local Variable = require 'symmath.Variable'
-		local Constant = require 'symmath.Constant'
-		local div = require 'symmath.op.div'
-		local pow = require 'symmath.op.pow'
+		symmath = symmath or require 'symmath'
+		local Variable = symmath.Variable
+		local Constant = symmath.Constant
+		local div = symmath.op.div
+		local pow = symmath.op.pow
 		local res = table()
 		for i=1,#expr do
 			res[i] = self:wrapStrOfChildWithParenthesis(expr, i)
@@ -210,7 +214,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			-- in fact, for that case, it would be best to convert symbols to utf8 characters before using LaTeX escaping.
 			if (Variable:isa(expr[i-1])
 			and #expr[i-1]:nameForExporter(self) > 1)
-			or require 'symmath.op.unm':isa(expr[i])
+			or symmath.op.unm:isa(expr[i])
 			or (Constant:isa(expr[i]) and expr[i].value < 0)
 			--and Variable:isa(expr[i])
 			then
@@ -228,7 +232,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		return tableConcat(res, expr:getSepStr(self))
 	end,
 	[require 'symmath.op.div'] = function(self, expr)
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		local Constant = symmath.Constant
 		local Variable = symmath.Variable
 		
@@ -268,12 +272,19 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		if self.showExpAsFunction
 		and expr[1] == symmath.e
 		then
-			return table{'\\exp', '\\left(', self:apply(expr[2]), '\\right)'}
+			return table{
+				'\\exp',
+				self.parOpenSymbol,
+				self:apply(expr[2]),
+				self.parCloseSymbol,
+			}
 		end
+
+		local isTensorRef = symmath.TensorRef:isa(expr[1])
 
 		local res = table()
 		for i=1,#expr do
@@ -281,7 +292,9 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 				res:insert(expr:getSepStr(self))
 			end
 
-			if i > 1 and not self.powWrapExpInParenthesis then
+			if (i == 1 and isTensorRef
+			) or (i > 1 and not self.powWrapExpInParenthesis)
+			then
 				res:append(table{table(self:apply(expr[i]), {force=true})})
 			else
 				res:append(self:wrapStrOfChildWithParenthesis(expr, i))
@@ -401,6 +414,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			self:wrapStrOfChildWithParenthesis(expr, 1),
 		}
 	end,
+	-- TODO options for column/row dividers using LaTeX array and {c|c|c} and \\hline
 	[require 'symmath.Array'] = function(self, expr)
 		-- non-Matrix Arrays that are rank-2 can be displayed as Matrixes
 		if expr:rank() % 2 == 0 then

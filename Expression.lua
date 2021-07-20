@@ -1899,4 +1899,50 @@ function Expression:plot(args)
 	symmath.export.GnuPlot:plot(args)
 end
 
+-- TODO? idk put this in its own file or not?  this is just me being lazy.  
+-- honestly this should be done automatically in simplify(), by # of occurrence of each variable
+function Expression:polyform()
+	symmath = symmath or require 'symmath'
+	local Variable = symmath.Variable
+	local TensorRef = symmath.TensorRef
+	local expr = self
+	local vars = table()
+	expr:map(function(x)
+		if Variable:isa(x)
+		or (TensorRef:isa(x) and Variable:isa(x[1]))
+		then
+			-- TODO ... how about # of indexes?  how about derivatives?  etc
+			vars:insertUnique(x)
+		end
+	end)
+	vars:sort(function(a,b)
+		local aname = TensorRef:isa(a) and a[1].name or a.name
+		local bname = TensorRef:isa(b) and b[1].name or b.name
+		return aname < bname
+	end)
+	for _,var in ipairs(vars) do
+		local coeffs = expr:polyCoeffs(var)
+		expr = 0
+		local extra = coeffs.extra
+		coeffs.extra = nil
+		local keys = table.keys(coeffs):sort():reverse()
+		for _,n in ipairs(keys) do
+			local c = coeffs[n]
+			if c then
+				if n == 0 then
+					expr = expr + c
+				elseif n == 1 then
+					expr = expr + c * var
+				else
+					expr = expr + c * var^n
+				end
+			end
+		end
+		if extra then
+			expr = expr + extra
+		end
+	end
+	return expr
+end
+
 return Expression
