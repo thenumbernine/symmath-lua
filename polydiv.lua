@@ -13,8 +13,13 @@ if x is omitted then it is attempted to be inferred
 returns (a / b), remainder
 --]]
 local function polydivr(a, b, x, verbose)
-	if verbose then
+	if verbose
+	and type(verbose) ~= 'function'
+	and type(verbose) ~= 'table'
+	then
 		verbose = _G.printbr or _G.print
+	end
+	if verbose then
 		verbose'polydivr begin'
 	end
 	symmath = symmath or require 'symmath'
@@ -145,6 +150,12 @@ end
 return (a/b) using polynomial long-division
 --]]
 local function polydiv(a, b, x, verbose)
+	if verbose
+	and type(verbose) ~= 'function'
+	and type(verbose) ~= 'table'
+	then
+		verbose = _G.printbr or _G.print
+	end
 	if verbose then
 		verbose'polydiv begin'
 	end	
@@ -164,6 +175,12 @@ return setmetatable({
 }, {
 	__call = function(T, a, b, x, verbose)
 		if verbose then
+			if verbose
+			and type(verbose) ~= 'function'
+			and type(verbose) ~= 'table'
+			then
+				verbose = _G.printbr or _G.print
+			end
 			verbose'polydiv.__call begin'
 			verbose'polydiv.__call tail-calling polydiv'
 		end		

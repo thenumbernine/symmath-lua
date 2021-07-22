@@ -20,8 +20,8 @@ args:
 	dontCalcL = don't calculate L = R:inverse()
 	lambdaVar = which lambda variable to use.  defaults to 'lambda'.
 	lambdas = provide eigen with a list of lambdas, since its weakness is solving the char poly
-	verbose = verbose?
-	nullspaceVerbose = nullspace verbose?
+	verbose = this will show each set of eigenvectors for each eigenvalue as they are calculated
+	nullspaceVerbose = (forwarded to nullspace()) this shows step-by-step the nullspace calculation, and can produce a lot of output
 --]]
 
 local function eigen(A, args)

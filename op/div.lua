@@ -284,8 +284,21 @@ div.rules = {
 			--  and pick them apart
 			--  maybe remove them too?
 			
-			local srcp = table(symmath.op.mul:isa(mp) and mp or {mp})
-			local srcq = table(symmath.op.mul:isa(mq) and mq or {mq})
+			local srcp
+			if symmath.op.mul:isa(mp) then
+				srcp = table(mp)
+			else
+				srcp = table{mp}
+			end
+			local srcq
+			if symmath.op.mul:isa(mq) then
+				srcq = table(mq)
+			else
+				srcq = table{mq}
+			end
+
+			print('# num prod', #srcp)
+			print('# denom prod', #srcq)
 
 			local dstp = table()
 			local dstq = table()

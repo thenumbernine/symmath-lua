@@ -6,6 +6,8 @@ require 'symmath.tests.unit.unit'(env, 'polydiv')
 timer(nil, function()
 
 env.a = var'a'
+env.b = var'b'
+env.f = var'f'
 env.x = var'x'
 env.verbose = false
 

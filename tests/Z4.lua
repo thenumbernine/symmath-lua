@@ -128,6 +128,64 @@ local function printHeader(str)
 end
 
 
+-- TODO put in export/LaTeX?
+-- 'colsplits' specifies columns to insert dividing lines before
+-- 'rowsplits' is the same thing for rows
+local function matrixWithSplitsToString(A)
+	local m = #A
+	local n = #A[1]
+	local s = table()
+	s:insert'\\left['
+	local cols = table{'{'}
+	local colsplits = table(A.colsplits):sort()
+	local colsplitindex = 1
+	for j=1,n do
+		while colsplitindex <= #colsplits
+		and colsplits[colsplitindex] < j 
+		do
+			colsplitindex = colsplitindex + 1
+			cols:insert'|'
+		end
+		cols:insert'c'
+	end
+	while colsplitindex <= #colsplits do
+		colsplitindex = colsplitindex + 1
+		cols:insert'|'
+	end
+	cols:insert'}'
+	s:insert('\\begin{array}'..cols:concat())
+	local rowsplitindex = 1
+	local rowsplits = table(A.rowsplits):sort()
+	for i=1,m do
+		while rowsplitindex <= #rowsplits
+		and rowsplits[rowsplitindex] < i 
+		do
+			rowsplitindex = rowsplitindex + 1
+			s:insert'\\hline'
+		end
+		for j=1,n do
+			if j > 1 then
+				s:insert'&'
+			end
+			s:insert((symmath.export.MathJax:applyLaTeX(A[i][j])))
+		end
+		if i < m then
+			s:insert'\\\\'
+		end
+	end
+	if rowsplitindex <= #rowsplits then
+		s:insert'\\\\'
+		while rowsplitindex <= #rowsplits do
+			rowsplitindex = rowsplitindex + 1
+			s:insert'\\hline'
+		end
+	end
+	s:insert'\\end{array}'
+	s:insert'\\right]'
+	return s:concat' '
+end
+
+
 --[[
 look for instances of the TensorRef 'find', with matching lower/deriv
 insert deltas to give it symbols matching 'find'
@@ -2093,10 +2151,12 @@ printbr()
 --]]
 
 local dUdt_lhs_exprs_expanded = table()
+dUdt_lhs_exprs_expanded.rowsplits = table()
 local dFdx_lhs_exprs_expanded = table()
 for i=1,#dFdx_lhs_exprs do
 	local dUdt_i = dUdt_lhs_exprs[i]
 	local dFdx_i = dFdx_lhs_exprs[i]
+	dUdt_lhs_exprs_expanded.rowsplits:insert(#dUdt_lhs_exprs_expanded)
 	if Tensor:isa(dFdx_i) then
 		assert(Tensor:isa(dUdt_i))
 		for j,x in dFdx_i:iter() do
@@ -2121,6 +2181,7 @@ end
 printbr()
 --]]
 
+
 printbr'as linear system...'
 local U_vars_expanded = dUdt_lhs_exprs_expanded:mapi(function(v)
 	v = v:clone()
@@ -2132,11 +2193,25 @@ local dUdx_lhs_exprs_expanded = U_vars_expanded:mapi(function(var)
 end)
 
 local dFijkl_dUpqmn_expanded, dFijkl_dUpqmn_expanded_b = factorLinearSystem(dFdx_lhs_exprs_expanded, dUdx_lhs_exprs_expanded)
+dFijkl_dUpqmn_expanded.colsplits = dUdt_lhs_exprs_expanded.rowsplits
+dFijkl_dUpqmn_expanded.rowsplits = dUdt_lhs_exprs_expanded.rowsplits
+dFijkl_dUpqmn_expanded_b.rowsplits = dUdt_lhs_exprs_expanded.rowsplits
 
 local Uijkl_expanded = Matrix(U_vars_expanded):T()
 local Upqmn_expanded = Uijkl_expanded:clone()
 
-printbr(Matrix(dUdt_lhs_exprs_expanded):T() + dFijkl_dUpqmn_expanded * Matrix(dUdx_lhs_exprs_expanded):T() + dFijkl_dUpqmn_expanded_b)
+local dUdt_lhs_exprs_expanded_mat = Matrix(dUdt_lhs_exprs_expanded):T() 
+dUdt_lhs_exprs_expanded_mat.rowsplits = dUdt_lhs_exprs_expanded.rowsplits
+local dUdx_lhs_exprs_expanded_mat = Matrix(dUdt_lhs_exprs_expanded):T() 
+dUdx_lhs_exprs_expanded_mat.rowsplits = dUdt_lhs_exprs_expanded.rowsplits
+printbr(
+	'$'
+	..matrixWithSplitsToString(dUdt_lhs_exprs_expanded_mat)
+	..' + '..matrixWithSplitsToString(dFijkl_dUpqmn_expanded)
+	..' '..matrixWithSplitsToString(dUdx_lhs_exprs_expanded_mat)
+	..' + '..matrixWithSplitsToString(dFijkl_dUpqmn_expanded_b)
+	..'$'
+)
 printbr()
 --]=]
 
@@ -2235,12 +2310,13 @@ assert(symmath.op.eq:isa(charpoly))
 assert(Constant.isValue(charpoly[2], 0))
 local x = charpoly[1]:clone()	-- only take the lhs
 
+local gammaUxxVar = var'\\gamma^{xx}'
 for _,root in ipairs{
 	Constant(0),
-	alpha * sqrt(gamma'^xx'),
-	-alpha * sqrt(gamma'^xx'),
-	alpha * sqrt(f * gamma'^xx'),
-	-alpha * sqrt(f * gamma'^xx'),
+	alpha * sqrt(gammaUxxVar),
+	-alpha * sqrt(gammaUxxVar),
+	alpha * sqrt(f * gammaUxxVar),
+	-alpha * sqrt(f * gammaUxxVar),
 } do
 	while true do
 		local p, q = polydiv.polydivr(x, (lambda - root)(), lambda)
@@ -2254,6 +2330,9 @@ for _,root in ipairs{
 	end
 end
 printbr("solving what's left, which is ", x)
+printbr()
+printbr('<pre>', (export.Lua(x)), '</pre>')
+printbr()
 local solns = table{x:eq(0):solve(lambda)}
 for _,soln in ipairs(solns) do
 	lambdas:insert(soln[2])
@@ -2347,12 +2426,17 @@ printbr('verify', (charpoly - recreated)())
 --]]
 
 -- [=[
+
+-- ok so now these rules might come in handy:
+--symmath.op.div:popRule'Prune/conjOfSqrtInDenom'
+assert(symmath.op.div:popRule'Factor/polydiv')
+
 printHeader'calculating eigensystem'
 _G.printbr = printbr	-- for Matrix.eigen verbose=true:
 local eig = dFijkl_dUpqmn_expanded:eigen{
 	lambdaVar = lambda,
 	lambdas = lambdas,
---	verbose = true,
+	verbose = true,
 	dontCalcL = true,
 }
 

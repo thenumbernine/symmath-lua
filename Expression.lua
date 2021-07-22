@@ -1558,8 +1558,28 @@ function Expression:pushRule(name)
 	self.pushedRules[rule] = true 
 end
 
+-- pop single rule.  returns 'true' if it found the rule, 'false' otherwise
+function Expression:popRule(name)
+	if not self.pushedRules then return false end
+
+	local visitor, rulename = string.split(name, '/'):unpack()
+	assert(visitor and rulename, "Expression:pushRule expected format visitor/rule")	
+	
+	local rules = assert(self.rules[visitor], "couldn't find visitor "..visitor)
+	
+	local _, rule = table.find(rules, nil, function(r) return next(r) == rulename end)
+	assert(rule, "couldn't find rule named "..rulename.." in visitor "..visitor)
+
+	if not self.pushedRules[rule] then return false end
+	
+	self.pushedRules[rule] = nil
+	
+	return true
+end
+
+-- pop *all* rules
 function Expression:popRules()
-	self.pushedRules = table()
+	self.pushedRules = nil
 end
 
 
