@@ -1916,7 +1916,7 @@ function Expression:plot(args)
 		end
 	end
 
-	symmath.export.GnuPlot:plot(args)
+	return symmath.export.GnuPlot:plot(args)
 end
 
 -- TODO? idk put this in its own file or not?  this is just me being lazy.  

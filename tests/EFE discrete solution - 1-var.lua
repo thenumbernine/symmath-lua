@@ -21,7 +21,7 @@ local function plot(x, y, title)
 		style = 'data lines',
 	}
 	args[1] = {using='1:2', title=title}
-	return GnuPlot:plot(args)
+	print(GnuPlot:plot(args))
 end
 
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
@@ -209,7 +209,7 @@ if solveWithLU then
 	end
 	
 	--plot(rs, alphas, 'alpha')
-	GnuPlot:plot{
+	print(GnuPlot:plot{
 		style = 'data lines',
 		log = 'y',
 		griddata = {x=range(#alphaIters), y=rs, alphaIters},
@@ -217,7 +217,7 @@ if solveWithLU then
 		ylabel = 'alpha',
 		cblabel = 'iteration',
 		{using='2:3:1', title='alpha', palette=true},
-	}
+	})
 --[[ annnd if the alphas are diverging then the rest of the calculations are moot
 	plot(rs, Gtt_mat * alphas, 'G_t_t')
 	plot(rs, Gtt_mat * alphas - _8piTtts, 'G_t_t - 8 pi T_t_t')

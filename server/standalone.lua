@@ -71,6 +71,10 @@ function SymmathHTTP:setupSandbox()
 	-- here's the execution environment.  really this is what you have to parallel ... well ... maybe sandbox this
 	self.env = {}
 	
+
+	require 'ext.env'(self.env)
+
+
 	for k,v in pairs(_G) do
 		self.env[k] = v
 	end
@@ -276,8 +280,15 @@ print("adding new cell at "..gt.pos)
 		local cell = getCellForUID()
 		cell.input = assert(gt.input)
 		self.env.io.stdout.buffer = ''
-		assert(load(cell.input, nil, nil, self.env))()
-		cell.output = self.env.io.stdout.buffer
+		cell.haserror = nil
+		xpcall(function()
+			assert(load(cell.input, nil, nil, self.env))()
+			cell.output = self.env.io.stdout.buffer
+		end, function(err)
+print('got error '..err)			
+			cell.output = err..'\n'..debug.traceback()
+			cell.haserror = true	-- use this flag to override the output type, so that when the error goes away the output will go back to what it was
+		end)
 		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(json.encode(cell))
@@ -302,14 +313,20 @@ print("adding new cell at "..gt.pos)
 		<script type="text/javascript">
 
 var mjid = 0;
-function refresh() {
+
+
+var cells = [];
+
+function refreshAllCells() {
 	$.ajax({
 		url : "getcells"
 	})
 	.fail(fail)
 	.done(function(cellsjson) {
 console.log("getcells got", arguments);
-		var cells = $.parseJSON(cellsjson);
+		
+		cells = $.parseJSON(cellsjson);
+		
 		document.body.innerHTML = '';
 		var addNewCellButton = function(pos) {
 			$(document.body).append($('<button>', {
@@ -317,17 +334,58 @@ console.log("getcells got", arguments);
 				click : function() {
 					$.ajax({
 						url : "newcell?pos="+pos
-					}).done(refresh)
+					}).done(refreshAllCells)		//TODO only update the newly added cell
 					.fail(fail);
 				}
 			}));
 			$(document.body).append($('<br>'));
 		};
 		var addCell = function(cell) {
+			var output;
+			var refreshOutput = function() {
+				var outputtype = cell.outputtype;
+				if (cell.haserror) outputtype = 'text';
+
+				if (outputtype == 'html') {
+					output.html(cell.output);
+					MathJax.Hub.Queue(["Typeset", MathJax.Hub, output.attr('id')]);
+
+				//should there even be a 'latex' type? or just 'html' and mathjax?
+				} else if (outputtype == 'latex') {
+					output.html(cell.output);
+					MathJax.Hub.Queue(["Typeset", MathJax.Hub, output.attr('id')]);
+				
+				} else {
+					output.html('');
+					var outputstr = cell.output;
+					if (outputtype != 'text') {
+						outputstr = 'UNKNOWN OUTPUT TYPE: '+outputtype+'\n';
+					}
+					output.append($('<pre>', {text : outputstr}));
+				}
+			};
+
+			var refreshJustThisCell = function(celldata) {
+				var newcell = $.parseJSON(celldata);
+				cell = newcell;
+				for (var i = 0; i < cells.length; ++i) {
+					if (cells[i].uid == cell.uid) {
+						cells[i] = newcell;
+					}
+				}
+				refreshOutput();
+			};
+
 			var run = function() {
 				$.ajax({
 					url : "run?uid="+cell.uid+"&input="+textarea.val()
-				}).done(refresh)
+				}).done(function(celldata) {
+					//update all?
+					//refreshAllCells();
+					
+					//update only this one?
+					refreshJustThisCell(celldata);
+				})
 				.fail(fail);
 			}
 
@@ -337,10 +395,15 @@ console.log("getcells got", arguments);
 			});
 			textarea.attr('rows', 5);
 			textarea.keydown(function(e) {
-				if (e.keyCode == 13 && e.ctrlKey) {
-					e.preventDefault();
-					run();
+				if (e.keyCode == 13) {
+					if (e.ctrlKey) {
+						e.preventDefault();
+						run();
+						return;
+					}
 				}
+				var numlines = textarea.val().split('\n').length;
+				textarea.attr('rows', numlines + 2);
 			});
 
 			$(document.body).append(textarea);
@@ -355,7 +418,7 @@ console.log("getcells got", arguments);
 				click : function() {
 					$.ajax({
 						url : "remove?uid="+cell.uid
-					}).done(refresh)
+					}).done(refreshAllCells)
 					.fail(fail);
 				}
 			}));
@@ -367,7 +430,13 @@ console.log("getcells got", arguments);
 					var val = this.value;
 					$.ajax({
 						url : "setoutputtype?uid="+cell.uid+"&outputtype="+val
-					}).done(refresh)
+					}).done(function(celldata) {
+						//all?
+						//refreshAllCells
+
+						//only this cell?
+						refreshJustThisCell(celldata);
+					})
 					.fail(fail);
 				}
 			});
@@ -376,29 +445,12 @@ console.log("getcells got", arguments);
 			$(document.body).append($('<br>'));
 			
 			var outputID = 'mj'+(++mjid);
-			var output = $('<div>', {
+			output = $('<div>', {
 				id : outputID
 			});
 			output.addClass('symmath-output');
 			$(document.body).append(output);
-
-			if (cell.outputtype == 'html') {
-				output.html(cell.output);
-				MathJax.Hub.Queue(["Typeset", MathJax.Hub, outputID]);
-
-			//should there even be a 'latex' type? or just 'html' and mathjax?
-			} else if (cell.outputtype == 'latex') {
-				output.html(cell.output);
-				MathJax.Hub.Queue(["Typeset", MathJax.Hub, outputID]);
-			
-			} else {
-				var outputstr = cell.output;
-				if (cell.outputtype != 'text') {
-					outputstr = 'UNKNOWN OUTPUT TYPE: '+cell.outputtype+'\n';
-				}
-				output.append($('<pre>', {text : outputstr}));
-			}
-
+			refreshOutput();
 		}
 console.log("cells", cells);
 console.log("cells.length "+cells.length);
@@ -418,7 +470,7 @@ function fail() {
 
 $(document).ready(function() {
 	tryToFindMathJax({
-		done : refresh,
+		done : refreshAllCells,
 		fail : fail
 	});
 });

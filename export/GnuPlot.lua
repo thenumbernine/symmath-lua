@@ -80,15 +80,16 @@ function GnuPlot:plot(args)
 	gnuplot(args)
 
 	-- TODO print or return?
-	-- print probably esp if plot() is used with persistent windows.
+	-- print esp if plot() is used with persistent windows.
+	-- return to be consistent with other exporters
 	if outputType == 'MathJax' then
 		local data = file['tmp.svg']
 		file['tmp.svg'] = nil
-		print(data, '<br>')
+		return data..'<br>'
 	elseif outputType == 'Console' then
 		local data = file['tmp.txt']
 		file['tmp.txt'] = nil
-		print(data)
+		return data
 	end
 end
 
