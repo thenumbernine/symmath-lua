@@ -35,6 +35,9 @@ local SymmathHTTP = class(HTTP)
 
 function SymmathHTTP:init(...)
 	SymmathHTTP.super.init(self, ...)
+	
+	self.loglevel = 10
+
 	-- TODO here, determine the url or something, and ask the OS to open it
 	os.execute('open http://localhost:'..self.port)
 
@@ -122,6 +125,11 @@ function SymmathHTTP:setupSandbox()
 		self.env.io.flush()
 	end
 	--]]
+
+-- hmm, ...
+-- for the sake of printElem()
+-- and GnuPlot's former behavior (maybe go back to former?)
+print = self.env.print
 
 	symmath.setup{env=self.env, implicitVars=true, fixVariableNames=true}
 	symmath.tostring = symmath.export.MathJax
@@ -246,17 +254,27 @@ function SymmathHTTP:handleRequest(...)
 	local gt = self:makeGETTable(GET)
 
 	local function getCellForUID()
-		local uid = assert(tonumber(gt.uid))
+		local uid = assert(tonumber(gt.uid or POST.uid))
 		local _, cell = self.cells:find(nil, function(cell) 
 			return cell.uid == uid 
 		end)
 		return assert(cell, "failed to find cell with uid "..uid)
 	end
 
-	if filename == '/getcells' then
+	-- TODO trap all errors and return any error back 
+	-- TODO more modular, client and server response in same lua object
+	-- TODO load function?  for reloading from last save?
+	-- TODO run-all?  and run-from-location, and run-until-location?
+	-- TODO save height of textarea in the file
+
+	if filename == '/save' then
+		self:save()
+		return '200/OK', coroutine.wrap(function()
+			coroutine.yield'{ok:true}'
+		end)
+	elseif filename == '/getcells' then
 		local cellsjson = json.encode(self.cells)
 print("getcells returning "..cellsjson)
-		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(cellsjson)
 		end)
@@ -264,21 +282,23 @@ print("getcells returning "..cellsjson)
 print("GET "..GET)
 print("adding new cell at "..gt.pos)
 		self.cells:insert(assert(tonumber(gt.pos)), Cell())
-		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield'{ok:true}'
 		end)
 	elseif filename == '/remove' then
 		local uid = assert(tonumber(gt.uid))
 		assert(self.cells:removeObject(nil, function(cell) return cell.uid == uid end))
-		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield'{ok:true}'
 		end)
 	elseif filename == '/run' then
 		-- re-evaluate the cell
 		local cell = getCellForUID()
-		cell.input = assert(gt.input)
+		cell.input = assert(POST.cellinput)
+			:gsub('\r\n', '\r')
+			:gsub('\r', '\n')
+print('running...')
+print(require 'template.showcode'(cell.input))
 		self.env.io.stdout.buffer = ''
 		cell.haserror = nil
 		xpcall(function()
@@ -289,14 +309,12 @@ print('got error '..err)
 			cell.output = err..'\n'..debug.traceback()
 			cell.haserror = true	-- use this flag to override the output type, so that when the error goes away the output will go back to what it was
 		end)
-		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(json.encode(cell))
 		end)
 	elseif filename == '/setoutputtype' then
 		local cell = getCellForUID()
 		cell.outputtype = assert(gt.outputtype)
-		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(json.encode(cell))
 		end)
@@ -313,9 +331,8 @@ print('got error '..err)
 		<script type="text/javascript">
 
 var mjid = 0;
-
-
 var cells = [];
+var worksheetDiv;
 
 function refreshAllCells() {
 	$.ajax({
@@ -327,9 +344,9 @@ console.log("getcells got", arguments);
 		
 		cells = $.parseJSON(cellsjson);
 		
-		document.body.innerHTML = '';
+		worksheetDiv.html('');
 		var addNewCellButton = function(pos) {
-			$(document.body).append($('<button>', {
+			worksheetDiv.append($('<button>', {
 				text : '+',
 				click : function() {
 					$.ajax({
@@ -338,7 +355,7 @@ console.log("getcells got", arguments);
 					.fail(fail);
 				}
 			}));
-			$(document.body).append($('<br>'));
+			worksheetDiv.append($('<br>'));
 		};
 		var addCell = function(cell) {
 			var output;
@@ -377,8 +394,14 @@ console.log("getcells got", arguments);
 			};
 
 			var run = function() {
+				var cellinput = textarea.val();
 				$.ajax({
-					url : "run?uid="+cell.uid+"&input="+textarea.val()
+					type : "POST",
+					url : "run",
+					data : {
+						uid : cell.uid,
+						cellinput : cellinput
+					}
 				}).done(function(celldata) {
 					//update all?
 					//refreshAllCells();
@@ -406,14 +429,14 @@ console.log("getcells got", arguments);
 				textarea.attr('rows', numlines + 2);
 			});
 
-			$(document.body).append(textarea);
-			$(document.body).append($('<br>'));
+			worksheetDiv.append(textarea);
+			worksheetDiv.append($('<br>'));
 			//TODO here dropdown for what kind of output it is: text, LaTex, HTML 
-			$(document.body).append($('<button>', {
+			worksheetDiv.append($('<button>', {
 				text : 'run',
 				click : run
 			}));
-			$(document.body).append($('<button>', {
+			worksheetDiv.append($('<button>', {
 				text : '-',
 				click : function() {
 					$.ajax({
@@ -441,22 +464,22 @@ console.log("getcells got", arguments);
 				}
 			});
 			setoutputtype.val(cell.outputtype);
-			$(document.body).append(setoutputtype);
-			$(document.body).append($('<br>'));
+			worksheetDiv.append(setoutputtype);
+			worksheetDiv.append($('<br>'));
 			
 			var outputID = 'mj'+(++mjid);
 			output = $('<div>', {
 				id : outputID
 			});
 			output.addClass('symmath-output');
-			$(document.body).append(output);
+			worksheetDiv.append(output);
 			refreshOutput();
 		}
 console.log("cells", cells);
 console.log("cells.length "+cells.length);
 		$.each(cells, function(i,cell) {
 			addNewCellButton(i+1);
-			$(document.body).append($('<br>'));
+			worksheetDiv.append($('<br>'));
 			addCell(cell);
 		});
 		addNewCellButton(cells.length+1);
@@ -468,9 +491,35 @@ function fail() {
 	throw 'failed';
 }
 
+function init() {
+	
+	$(document.body).append($('<button>', {
+		text : 'save',
+		click : function() {
+			//TODO here - disable controls
+			$.ajax({
+				url : "save"
+			}).done(function() {
+				//TODO on done, re-enable page controls
+			}).fail(fail);
+				//TODO on fail, popup warning and re-enable controls
+		}
+	}));
+	$(document.body).append($('<br>'));
+
+	worksheetDiv = $('<div>', {
+		css : {
+			margin : 'auto'
+		}
+	});
+	$(document.body).append(worksheetDiv);
+
+	refreshAllCells();
+}
+
 $(document).ready(function() {
 	tryToFindMathJax({
-		done : refreshAllCells,
+		done : init,
 		fail : fail
 	});
 });
