@@ -324,20 +324,31 @@ console.log("getcells got", arguments);
 			$(document.body).append($('<br>'));
 		};
 		var addCell = function(cell) {
+			var run = function() {
+				$.ajax({
+					url : "run?uid="+cell.uid+"&input="+textarea.val()
+				}).done(refresh)
+				.fail(fail);
+			}
+
 			var textarea = $('<textarea>', {
+				css : {width:'100%'},
 				text : cell.input
 			});
+			textarea.attr('rows', 5);
+			textarea.keydown(function(e) {
+				if (e.keyCode == 13 && e.ctrlKey) {
+					e.preventDefault();
+					run();
+				}
+			});
+
 			$(document.body).append(textarea);
 			$(document.body).append($('<br>'));
 			//TODO here dropdown for what kind of output it is: text, LaTex, HTML 
 			$(document.body).append($('<button>', {
 				text : 'run',
-				click : function() {
-					$.ajax({
-						url : "run?uid="+cell.uid+"&input="+textarea.val()
-					}).done(refresh)
-					.fail(fail);
-				}
+				click : run
 			}));
 			$(document.body).append($('<button>', {
 				text : '-',
@@ -366,9 +377,9 @@ console.log("getcells got", arguments);
 			
 			var outputID = 'mj'+(++mjid);
 			var output = $('<div>', {
-				css : {border:'1px solid black'},
 				id : outputID
 			});
+			output.addClass('symmath-output');
 			$(document.body).append(output);
 
 			if (cell.outputtype == 'html') {
@@ -393,6 +404,7 @@ console.log("cells", cells);
 console.log("cells.length "+cells.length);
 		$.each(cells, function(i,cell) {
 			addNewCellButton(i+1);
+			$(document.body).append($('<br>'));
 			addCell(cell);
 		});
 		addNewCellButton(cells.length+1);
@@ -412,6 +424,12 @@ $(document).ready(function() {
 });
 
 		</script>
+		<style>
+.symmath-output {
+	margin: 10px solid grey;
+	padding: 10px;
+}
+		</style>
 	</head>
 	<body>
 	</body>
