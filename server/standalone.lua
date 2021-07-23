@@ -11,7 +11,7 @@ local HTTP = require 'http.class'
 local json = require 'dkjson'
 
 local filename = ...
-
+assert(filename, "expected a filename")
 
 local symmath = require 'symmath'
 
@@ -27,6 +27,7 @@ function Cell:init()
 	self.uid = uid
 	self.input = ''
 	self.output = ''
+	self.outputtype = 'html'
 end
 
 
@@ -38,25 +39,96 @@ function SymmathHTTP:init(...)
 	os.execute('open http://localhost:'..self.port)
 
 
-	self.env = {}
-	symmath.setup{env=self.env}
-	symmath.tostring = symmath.export.MathJax
+	self:setupSandbox()
 
 
 	-- single worksheet instance.  TODO make modular:
 	self.cells = table()
 	if filename then
 		local data = file[filename]
+		print('file', filename,' has data ', data)
 		if data then
 			self:readCellsFromData(data)
 		end
 	end
 end
 
+
+local FakeFile = class()
+function FakeFile:init()
+	self.buffer = ''
+end
+function FakeFile:close() end
+function FakeFile:flush() end	-- do immediately?
+function FakeFile:lines() return coroutine.wrap(function() end) end
+function FakeFile:read() end
+function FakeFile:seek() end
+function FakeFile:setvbuf() end
+function FakeFile:write() end
+
+function SymmathHTTP:setupSandbox()
+	
+	-- here's the execution environment.  really this is what you have to parallel ... well ... maybe sandbox this
+	self.env = {}
+	
+	for k,v in pairs(_G) do
+		self.env[k] = v
+	end
+
+	local orig_io = require 'io'
+
+	self.env.io = {}
+	for k,v in pairs(orig_io) do
+		self.env.io[k] = v
+	end
+
+	-- file handle object
+	self.env.io.stdin = FakeFile()
+	self.env.io.stdout = FakeFile()
+
+	--[[ well, this doesn't work, guess i have to override everything I use in io ...
+	self.env.io.output(self.env.io.stdout)
+	self.env.io.input(self.env.io.stdin)
+	--]]
+	-- [[
+	function self.env.io.stdout:write(...)
+		for i=1,select('#', ...) do
+			self.buffer = self.buffer .. tostring((select(i, ...)))
+		end
+	end
+	
+	function self.env.io.read(...)
+		return self.env.io.stdin:read(...)
+	end
+
+	function self.env.io.write(...)
+		return self.env.io.stdout:write(...)
+	end
+	
+	function self.env.io.flush(...)
+		return self.env.io.stdout:flush(...)
+	end
+	
+	function self.env.print(...)
+		for i=1,select('#', ...) do
+			if i > 1 then self.env.io.write'\t' end
+			self.env.io.write(tostring((select(i, ...))))
+		end
+		self.env.io.write'\n'
+		self.env.io.flush()
+	end
+	--]]
+
+	symmath.setup{env=self.env, implicitVars=true, fixVariableNames=true}
+	symmath.tostring = symmath.export.MathJax
+end
+
+
 function SymmathHTTP:readCellsFromData(data)
 	self.cells = table(require 'ext.fromlua'(data)):mapi(function(cell)
 		-- TODO if i don't refresh the uid then there's a chance a new one could overlap an old one?
-		setmetatable(cell, Cell)
+		-- or TODO just use the max as the last uid, and keep increasing?
+		return setmetatable(cell, Cell)
 	end)
 end
 
@@ -154,6 +226,10 @@ function SymmathHTTP:handleRequest(...)
 end
 --]===]
 
+function SymmathHTTP:save()
+	self:writeCellsToFile(filename)
+end
+
 function SymmathHTTP:handleRequest(...)
 	local filename,
 		headers,
@@ -165,34 +241,51 @@ function SymmathHTTP:handleRequest(...)
 		
 	local gt = self:makeGETTable(GET)
 
+	local function getCellForUID()
+		local uid = assert(tonumber(gt.uid))
+		local _, cell = self.cells:find(nil, function(cell) 
+			return cell.uid == uid 
+		end)
+		return assert(cell, "failed to find cell with uid "..uid)
+	end
+
 	if filename == '/getcells' then
 		local cellsjson = json.encode(self.cells)
 print("getcells returning "..cellsjson)
+		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(cellsjson)
 		end)
 	elseif filename == '/newcell' then
 print("GET "..GET)
 print("adding new cell at "..gt.pos)
-		self.cells:insert(assert(gt.pos), Cell())
+		self.cells:insert(assert(tonumber(gt.pos)), Cell())
+		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield'{ok:true}'
 		end)
 	elseif filename == '/remove' then
-		local uid = assert(gt.uid)
+		local uid = assert(tonumber(gt.uid))
 		assert(self.cells:removeObject(nil, function(cell) return cell.uid == uid end))
+		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield'{ok:true}'
 		end)
 	elseif filename == '/run' then
 		-- re-evaluate the cell
-		local uid = assert(tonumber(gt.uid))
-		local _, cell = self.cells:find(nil, function(cell) 
-			return cell.uid == uid 
-		end)
-		assert(cell, "failed to find cell with uid "..uid)
+		local cell = getCellForUID()
 		cell.input = assert(gt.input)
-		cell.output = tostring(assert(load(cell.input, nil, nil, self.env))())
+		self.env.io.stdout.buffer = ''
+		assert(load(cell.input, nil, nil, self.env))()
+		cell.output = self.env.io.stdout.buffer
+		self:save()
+		return '200/OK', coroutine.wrap(function()
+			coroutine.yield(json.encode(cell))
+		end)
+	elseif filename == '/setoutputtype' then
+		local cell = getCellForUID()
+		cell.outputtype = assert(gt.outputtype)
+		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(json.encode(cell))
 		end)
@@ -202,9 +295,13 @@ print("adding new cell at "..gt.pos)
 <html>
 	<head>
 		<title>Symmath Worksheet</title>
-		<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+		<!-- TODO where to put these files? and where should the cwd be? -->
+		<!-- maybe set a SYMMATH_STANDALONE_SERVER_ROOT env var and put them there? -->
+		<script type="text/javascript" src="output/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="output/tryToFindMathJax.js"></script>
 		<script type="text/javascript">
 
+var mjid = 0;
 function refresh() {
 	$.ajax({
 		url : "getcells"
@@ -251,12 +348,46 @@ console.log("getcells got", arguments);
 					.fail(fail);
 				}
 			}));
+			var setoutputtype = $('<select>', {
+				html : $.map(['text', 'html', 'latex'], function(s,i) {
+					return '<option>'+s+'</option>'
+				}).join(''),
+				change : function(e) {
+					var val = this.value;
+					$.ajax({
+						url : "setoutputtype?uid="+cell.uid+"&outputtype="+val
+					}).done(refresh)
+					.fail(fail);
+				}
+			});
+			setoutputtype.val(cell.outputtype);
+			$(document.body).append(setoutputtype);
 			$(document.body).append($('<br>'));
-			$(document.body).append($('<div>', {
-				style : {border:'1px solid black'},
-				html : cell.output
-			}));
-			//TODO here queue the MathJax for rendering ... if it is LaTeX output
+			
+			var outputID = 'mj'+(++mjid);
+			var output = $('<div>', {
+				css : {border:'1px solid black'},
+				id : outputID
+			});
+			$(document.body).append(output);
+
+			if (cell.outputtype == 'html') {
+				output.html(cell.output);
+				MathJax.Hub.Queue(["Typeset", MathJax.Hub, outputID]);
+
+			//should there even be a 'latex' type? or just 'html' and mathjax?
+			} else if (cell.outputtype == 'latex') {
+				output.html(cell.output);
+				MathJax.Hub.Queue(["Typeset", MathJax.Hub, outputID]);
+			
+			} else {
+				var outputstr = cell.output;
+				if (cell.outputtype != 'text') {
+					outputstr = 'UNKNOWN OUTPUT TYPE: '+cell.outputtype+'\n';
+				}
+				output.append($('<pre>', {text : outputstr}));
+			}
+
 		}
 console.log("cells", cells);
 console.log("cells.length "+cells.length);
@@ -273,7 +404,12 @@ function fail() {
 	throw 'failed';
 }
 
-$(document).ready(refresh);
+$(document).ready(function() {
+	tryToFindMathJax({
+		done : refresh,
+		fail : fail
+	});
+});
 
 		</script>
 	</head>

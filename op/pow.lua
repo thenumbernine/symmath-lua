@@ -703,7 +703,8 @@ pow.rules = {
 				div:isa(expr[2])
 				and Constant.isValue(expr[2][1], 1)
 				and Constant.isValue(expr[2][2], 2)
-			) or Constant.isValue(expr[2], .5) then
+			) or Constant.isValue(expr[2], .5) 
+			then
 				local x = expr[1]
 
 				-- dealing with constants
