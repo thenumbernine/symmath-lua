@@ -84,14 +84,18 @@ function SymmathHTTP:setupSandbox()
 	self.env = {}
 	
 
-	require 'ext.env'(self.env)
-
-
 	for k,v in pairs(_G) do
 		self.env[k] = v
 	end
 
+
+	-- do this after we've hijacked ext.io
+	-- TODO sandbox the package.loaded and require table?
+	require 'ext.env'(self.env)
+
+
 	local orig_io = require 'io'
+	local orig_io = require 'ext.io'
 
 	self.env.io = {}
 	for k,v in pairs(orig_io) do
@@ -135,7 +139,7 @@ function SymmathHTTP:setupSandbox()
 	end
 	--]]
 
-	
+
 	-- for the sake of printElem()
 	-- and GnuPlot's former behavior (maybe go back to former?)
 	_G.print = self.env.print
@@ -397,19 +401,24 @@ console.log("getcells got", arguments);
 		ctrls = [];
 
 		worksheetDiv.html('');
-		var addNewCellButton = function(pos) {
+		var addNewCellButton = function(pos, parent) {
 			worksheetDiv.append($('<button>', {
 				text : '+',
 				click : function() {
 					$.ajax({
 						url : "newcell?pos="+pos
-					}).done(refreshAllCells)		//TODO only update the newly added cell
+					}).done(function() {
+						//update everything?
+						refreshAllCells();
+					
+						
+					})
 					.fail(fail);
 				}
 			}));
 			worksheetDiv.append($('<br>'));
 		};
-		var addCell = function(cell) {
+		var addCell = function(cell, cellIndex) {
 			var output;
 			var refreshOutput = function() {
 				var outputtype = cell.outputtype;
@@ -445,7 +454,8 @@ console.log("getcells got", arguments);
 				refreshOutput();
 			};
 
-			var run = function() {
+			var run = function(args) {
+				args = args || {};
 				var cellinput = textarea.val();
 				$.ajax({
 					type : "POST",
@@ -461,17 +471,7 @@ console.log("getcells got", arguments);
 					//update only this one?
 					refreshJustThisCell(celldata);
 				
-					//...annddd... select the next cell
-console.log("after run response");
-console.log("for cell", cell);
-					for (var j = 0; j < cells.length-1; ++j) {
-						if (cells[j].uid == cell.uid) {
-console.log("focusing on next textarea...");
-							ctrls[j+1].setHidden(false);
-							ctrls[j+1].textarea.focus();
-							break;
-						}
-					}
+					if (args.done) args.done();
 				})
 				.fail(fail);
 			}
@@ -499,17 +499,39 @@ console.log("focusing on next textarea...");
 				} else if (e.keyCode == 13) {
 					if (e.ctrlKey) {
 						e.preventDefault();
-						run();
+						run({
+							done : function() {
+								//...annddd... select the next cell
+console.log("after run response");
+console.log("for cell", cell);
+								for (var j = 0; j < cells.length; ++j) {
+									if (cells[j].uid == cell.uid) {
+										if (j < cells.length-1) {
+console.log("focusing on next textarea...");
+											ctrls[j+1].setHidden(false);
+											ctrls[j+1].textarea.focus();
+										} else {
+											// if it's the last cell then ... create a new cell and highlight it?
+										}
+										break;
+									}
+								}
+							}
+						});
 						return;
 					}
 				}
 				updateTextAreaLines();
 			});
 
+			var ctrlDiv = $('<div>');
+			worksheetDiv.append(ctrlDiv);
 
-			worksheetDiv.append($('<hr>'));
+			addNewCellButton(cellIndex+1, ctrlDiv);
+
+			ctrlDiv.append($('<hr>'));
 			var setHidden = function(hidden) {
-				cell.hidden = !cell.hidden;
+				cell.hidden = hidden;
 				if (cell.hidden) {
 					textarea.hide();
 				} else {
@@ -519,14 +541,14 @@ console.log("focusing on next textarea...");
 					url : "sethidden?uid="+cell.uid+"&hidden="+cell.hidden
 				});
 			};
-			worksheetDiv.append($('<button>', {
+			ctrlDiv.append($('<button>', {
 				text : 'v',
 				click : function() {
 					setHidden(!cell.hidden);
 				}
 			}));
 	
-			worksheetDiv.append($('<button>', {
+			ctrlDiv.append($('<button>', {
 				text : 'run',
 				click : run
 			}));
@@ -550,23 +572,38 @@ console.log("focusing on next textarea...");
 				}
 			});
 			setoutputtype.val(cell.outputtype);
-			worksheetDiv.append(setoutputtype);
+			ctrlDiv.append(setoutputtype);
 		
-			worksheetDiv.append($('<button>', {
+			ctrlDiv.append($('<button>', {
 				text : '-',
 				click : function() {
 					$.ajax({
 						url : "remove?uid="+cell.uid
-					}).done(refreshAllCells)
+					}).done(function() {
+						//update all?
+						refreshAllCells();
+
+						/* update only client changes... * /
+						for (var j = 0; j < cells.length; ++j) {
+							if (cells[j].uid == cell.uid) {
+								ctrls[j].div.remove();
+								cells.splice(j, 1);
+								ctrls.splice(j, 1);
+								break;
+							}
+						}
+						/**/
+						// BUT TODO this will make all the 'index' parameters associated with the '+' addNewCells to go out of order
+					})
 					.fail(fail);
 				}
 			}));
 
-			worksheetDiv.append($('<br>'));
+			ctrlDiv.append($('<br>'));
 
 
-			worksheetDiv.append(textarea);
-			worksheetDiv.append($('<br>'));
+			ctrlDiv.append(textarea);
+			ctrlDiv.append($('<br>'));
 
 
 			var outputID = 'mj'+(++mjid);
@@ -574,22 +611,22 @@ console.log("focusing on next textarea...");
 				id : outputID
 			});
 			output.addClass('symmath-output');
-			worksheetDiv.append(output);
+			ctrlDiv.append(output);
 			refreshOutput();
 		
 			ctrls.push({
 				cell : cell,
+				div : ctrlDiv,
 				textarea : textarea,
 				setHidden : setHidden
 			});
 		}
 console.log("cells", cells);
 console.log("cells.length "+cells.length);
-		$.each(cells, function(i,cell) {
-			addNewCellButton(i+1);
-			addCell(cell);
+		$.each(cells, function(cellIndex,cell) {
+			addCell(cell, cellIndex);
 		});
-		addNewCellButton(cells.length+1);
+		addNewCellButton(cells.length+1, worksheetDiv);
 	});
 }
 
@@ -636,7 +673,7 @@ function init() {
 					cells : JSON.stringify(cells)	//jquery ajax is choking on encoding nested tables, so ...
 				}
 			}).done(function() {
-				//TODO or just return the 
+				//TODO or just refresh the outputs
 				refreshAllCells();
 			}).fail(fail);
 		}
