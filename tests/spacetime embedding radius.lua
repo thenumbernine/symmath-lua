@@ -44,7 +44,7 @@ function process(args)
 	end
 	
 	local x = var'x'
-	print(GnuPlot:plot{
+	GnuPlot:plot{
 		xlabel = 'distance from center',
 		ylabel = 'embedding',
 		xrange = {0, (3 * info.radius / m)().value},
@@ -55,7 +55,7 @@ function process(args)
 			z(x),
 			title='z(r)',
 		}
-	})
+	}
 end
 
 local au = 149597870700 * m

@@ -963,6 +963,67 @@
 <code></code>
 </td><td>
 <tr><td>
+<b></b><br>
+<code>assert( printbr( (a * cos(b)^2 - a)() ) == -a * sin(b)^2 )</code>
+</td><td>
+$-{{{a}} {{{\sin\left(  b\right)}^{2}}}}$
+<br>
+expected false to be true<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:11: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:11: in function 'assert'<br>
+	[string "assert( printbr( (a * cos(b)^2 - a)() ) == -a..."]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	test.lua:215: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	test.lua:6: in main chunk<br>
+	[C]: at 0x7ff75d994950
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert( printbr( (a^2 * cos(b)^2 - a^2)() ) == -a^2 * sin(b)^2 )</code>
+</td><td>
+${-{{a}^{2}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$
+<br>
+expected false to be true<br>
+<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:11: failed<br>stack traceback:<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+	[C]: in function 'error'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:11: in function 'assert'<br>
+	[string "assert( printbr( (a^2 * cos(b)^2 - a^2)() ) =..."]:1: in main chunk<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	[C]: in function 'xpcall'<br>
+	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
+	test.lua:215: in function 'cb'<br>
+	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
+	test.lua:6: in main chunk<br>
+	[C]: at 0x7ff75d994950
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>it would be nice if the final form of sin(x)^2 was exactly that.</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>assert( printbr((sin(x)^2)()) == sin(x)^2 )</code>
+</td><td>
+${\sin\left(  x\right)}^{2}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
 <b>some more stuff</b><br>
 <code></code>
 </td><td>
@@ -1013,23 +1074,6 @@
 <b></b><br>
 <code>asserteq( gUxy * (gUxy - gUxx) / (gUxx - gUxy), -gUxy)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b>it would be nice if the final form of sin(x)^2 was exactly that.</b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>assert( printbr((sin(x)^2)()) == sin(x)^2 )</code>
-</td><td>
-${\sin\left(  x\right)}^{2}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td></tr>

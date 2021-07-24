@@ -112,17 +112,17 @@ for _,method in ipairs{
 
 	print('<h3>', method, '</h3>')
 
-	print(symmath.GnuPlot:plot{
+	symmath.GnuPlot:plot{
 		style = 'data lines',
 		data = {ts, xs, correctXs},
 		{using = '1:2', title = 'x'},
 		{using = '1:3', title = 'correct x'},
-	})
+	}
 
-	print(symmath.GnuPlot:plot{
+	symmath.GnuPlot:plot{
 		style = 'data lines',
 		data = {ts, errs},
 		log = 'y',
 		{using = '1:(abs($2))', title = 'error'},
-	})
+	}
 end

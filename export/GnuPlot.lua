@@ -82,14 +82,15 @@ function GnuPlot:plot(args)
 	-- TODO print or return?
 	-- print esp if plot() is used with persistent windows.
 	-- return to be consistent with other exporters
+	-- but Tensor:printElem() is already print()ing ...
 	if outputType == 'MathJax' then
 		local data = file['tmp.svg']
 		file['tmp.svg'] = nil
-		return data..'<br>'
+		print(data..'<br>')
 	elseif outputType == 'Console' then
 		local data = file['tmp.txt']
 		file['tmp.txt'] = nil
-		return data
+		print(data)
 	end
 end
 

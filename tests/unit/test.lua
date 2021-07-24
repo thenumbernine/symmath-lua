@@ -181,6 +181,12 @@ asserteq(-1+cos(x)^2+cos(x)^2, -1+2*cos(x)^2)
 asserteq( cos(x)^2 + sin(x)^2, 1)
 asserteq( (cos(x)*y)^2 + (sin(x)*y)^2, y^2)
 
+assert( printbr( (a * cos(b)^2 - a)() ) == -a * sin(b)^2 )
+assert( printbr( (a^2 * cos(b)^2 - a^2)() ) == -a^2 * sin(b)^2 )
+
+-- it would be nice if the final form of sin(x)^2 was exactly that.
+assert( printbr((sin(x)^2)()) == sin(x)^2 )
+
 -- some more stuff
 
 asserteq((y-x)/(x-y), -1)
@@ -190,9 +196,6 @@ asserteq((-x+y)/(-x+y)^2, 1/(-x+y))
 asserteq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)
 asserteq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)
 asserteq( gUxy * (gUxy - gUxx) / (gUxx - gUxy), -gUxy)
-
--- it would be nice if the final form of sin(x)^2 was exactly that.
-assert( printbr((sin(x)^2)()) == sin(x)^2 )
 
 assert( not( Constant(0) == x * y ) )
 assert( Constant(0) ~= x * y )

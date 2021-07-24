@@ -15,12 +15,12 @@ This only works with MathJax inline SVG and Console output at the moment.
 <pre style="background-color:#e0e0e0; padding:15px">
 local symmath = require 'symmath'
 local GnuPlot = symmath.export.GnuPlot
-print(GnuPlot:plot{
+GnuPlot:plot{
 	title = 'test plot',
 	xrange = {-2,2},
 	{'x**2.', title='test plot "x**2."'},
 	{'x**3.', title='test plot "x**3."'},
-})
+}
 </pre>
 <?xml version="1.0" encoding="windows-1252"  standalone="no"?>
 <svg 
@@ -227,12 +227,12 @@ print(GnuPlot:plot{
 local symmath = require 'symmath'
 local GnuPlot = symmath.export.GnuPlot
 local x = symmath.var'x'
-print(GnuPlot:plot{
+GnuPlot:plot{
 	title = 'test expression',
 	xrange = {-2,2},
 	{x^2, title=GnuPlot(x^2)},
 	{x^3, title=GnuPlot(x^3)},
-})
+}
 </pre>
 <?xml version="1.0" encoding="windows-1252"  standalone="no"?>
 <svg 
@@ -626,6 +626,7 @@ print((x^2):plot{
 </svg>
 
 <br>
+
 <h3>using Lua data for formula:</h3>
 <pre style="background-color:#e0e0e0; padding:15px">
 local symmath = require 'symmath'
@@ -638,12 +639,12 @@ for i=1,n do
 	xs[i] = x
 	ys[i] = math.sin(x) / x
 end
-print(GnuPlot:plot{
+GnuPlot:plot{
 	title = 'test data title',
 	style = 'data linespoints',
 	data = {xs, ys},
 	{using = '1:2', title = 'test data sin(x)/x'},
-})
+}
 </pre>
 <?xml version="1.0" encoding="windows-1252"  standalone="no"?>
 <svg 
@@ -890,12 +891,12 @@ for i=1,n do
 	xs[i] = x
 	ys[i] = ff(x)
 end
-print(GnuPlot:plot{
+GnuPlot:plot{
 	title = 'test data title',
 	style = 'data linespoints',
 	data = {xs, ys},
 	{using = '1:2', title = 'test data '..export.GnuPlot(f)},
-})
+}
 </pre>
 <?xml version="1.0" encoding="windows-1252"  standalone="no"?>
 <svg 
@@ -1131,13 +1132,13 @@ print(GnuPlot:plot{
 local symmath = require 'symmath'
 local GnuPlot = symmath.export.GnuPlot
 print'<pre>'
-print(GnuPlot:plot{
+GnuPlot:plot{
 	outputType = 'Console',
 	title = 'test plot',
 	xrange = {-2,2},
 	{'x**2.', title='test plot "x**2."'},
 	{'x**3.', title='test plot "x**3."'},
-})
+}
 print'</pre>'
 </pre>
 <pre>

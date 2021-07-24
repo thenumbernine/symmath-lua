@@ -7,13 +7,21 @@ local class = require 'ext.class'
 local string = require 'ext.string'
 local table = require 'ext.table'
 local file = require 'ext.file'
+local tolua = require 'ext.tolua'
+local fromlua = require 'ext.fromlua'
 local HTTP = require 'http.class'
 local json = require 'dkjson'
 
 local filename = ...
 assert(filename, "expected a filename")
 
-local symmath = require 'symmath'
+
+-- store original _G.print here so this file scope can use it (before overriding it later)
+local print = print
+local orig_io = require 'io'
+local orig_io_write = io.write
+local ext_io = require 'ext.io'
+local ext_io_write = ext_io.write
 
 
 local Cell = class()
@@ -28,6 +36,7 @@ function Cell:init()
 	self.input = ''
 	self.output = ''
 	self.outputtype = 'html'
+	self.hidden = false
 end
 
 
@@ -126,18 +135,22 @@ function SymmathHTTP:setupSandbox()
 	end
 	--]]
 
--- hmm, ...
--- for the sake of printElem()
--- and GnuPlot's former behavior (maybe go back to former?)
-print = self.env.print
+	
+	-- for the sake of printElem()
+	-- and GnuPlot's former behavior (maybe go back to former?)
+	_G.print = self.env.print
+	require 'io'.write = self.env.io.write
+	require 'ext.io'.write = self.env.io.write
 
+
+	local symmath = require 'symmath'
 	symmath.setup{env=self.env, implicitVars=true, fixVariableNames=true}
 	symmath.tostring = symmath.export.MathJax
 end
 
 
 function SymmathHTTP:readCellsFromData(data)
-	self.cells = table(require 'ext.fromlua'(data)):mapi(function(cell)
+	self.cells = table(fromlua(data)):mapi(function(cell)
 		-- TODO if i don't refresh the uid then there's a chance a new one could overlap an old one?
 		-- or TODO just use the max as the last uid, and keep increasing?
 		return setmetatable(cell, Cell)
@@ -145,7 +158,7 @@ function SymmathHTTP:readCellsFromData(data)
 end
 
 function SymmathHTTP:writeCellsToFile(filename)
-	file[filename] = require 'ext.tolua'(table(self.cells):mapi(function(cell)
+	file[filename] = tolua(table(self.cells):mapi(function(cell)
 		return table(cell):setmetatable(nil)
 	end):setmetatable(nil))
 end
@@ -224,7 +237,7 @@ function SymmathHTTP:handleRequest(...)
 		-- blah blah blah
 	end
 
-	print('handleRequest'..require 'ext.tolua'{
+	print('handleRequest'..tolua{
 		filename = filename,
 		headers = headers,
 		reqHeaders = reqHeaders,
@@ -242,6 +255,47 @@ function SymmathHTTP:save()
 	self:writeCellsToFile(filename)
 end
 
+function SymmathHTTP:getCellForUID(gt, POST)
+	local uid = assert(tonumber(gt.uid or POST.uid))
+	local _, cell = self.cells:find(nil, function(cell) 
+		return cell.uid == uid 
+	end)
+	return assert(cell, "failed to find cell with uid "..uid)
+end
+
+function SymmathHTTP:updateAllCells(POST)
+	if not POST then
+		error("expected POST, got "..tolua(POST))
+	end
+	-- save any updates to text not yet saved by 'run' or 'remove' or 'add'
+	local newcells = json.decode(POST.cells)
+	if not newcells then
+		error("expected POST cells field, got "..tolua(POST))
+	end
+print('updateAllCells got '..tolua(newcells))	
+	for _,cell in ipairs(newcells) do
+		setmetatable(cell, Cell)
+	end
+	self.cells = newcells
+	setmetatable(self.cells, table)
+end
+
+function SymmathHTTP:runCell(cell)
+	print('running...')
+print(require 'template.showcode'(cell.input))
+	self.env.io.stdout.buffer = ''
+	cell.haserror = nil
+	xpcall(function()
+		assert(load(cell.input, nil, nil, self.env))()
+		cell.output = self.env.io.stdout.buffer
+	end, function(err)
+print('got error '..err)
+		cell.output = err..'\n'..debug.traceback()
+		cell.haserror = true	-- use this flag to override the output type, so that when the error goes away the output will go back to what it was
+	end)
+end
+
+
 function SymmathHTTP:handleRequest(...)
 	local filename,
 		headers,
@@ -253,14 +307,6 @@ function SymmathHTTP:handleRequest(...)
 		
 	local gt = self:makeGETTable(GET)
 
-	local function getCellForUID()
-		local uid = assert(tonumber(gt.uid or POST.uid))
-		local _, cell = self.cells:find(nil, function(cell) 
-			return cell.uid == uid 
-		end)
-		return assert(cell, "failed to find cell with uid "..uid)
-	end
-
 	-- TODO trap all errors and return any error back 
 	-- TODO more modular, client and server response in same lua object
 	-- TODO load function?  for reloading from last save?
@@ -268,7 +314,16 @@ function SymmathHTTP:handleRequest(...)
 	-- TODO save height of textarea in the file
 
 	if filename == '/save' then
+		self:updateAllCells(POST)
 		self:save()
+		return '200/OK', coroutine.wrap(function()
+			coroutine.yield'{ok:true}'
+		end)
+	elseif filename == '/runall' then
+		self:updateAllCells(POST)
+		for _,cell in ipairs(self.cells) do
+			self:runCell(cell)
+		end
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield'{ok:true}'
 		end)
@@ -293,30 +348,25 @@ print("adding new cell at "..gt.pos)
 		end)
 	elseif filename == '/run' then
 		-- re-evaluate the cell
-		local cell = getCellForUID()
+		local cell = self:getCellForUID(gt, POST)
 		cell.input = assert(POST.cellinput)
 			:gsub('\r\n', '\r')
 			:gsub('\r', '\n')
-print('running...')
-print(require 'template.showcode'(cell.input))
-		self.env.io.stdout.buffer = ''
-		cell.haserror = nil
-		xpcall(function()
-			assert(load(cell.input, nil, nil, self.env))()
-			cell.output = self.env.io.stdout.buffer
-		end, function(err)
-print('got error '..err)			
-			cell.output = err..'\n'..debug.traceback()
-			cell.haserror = true	-- use this flag to override the output type, so that when the error goes away the output will go back to what it was
-		end)
+		self:runCell(cell)
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(json.encode(cell))
 		end)
 	elseif filename == '/setoutputtype' then
-		local cell = getCellForUID()
+		local cell = self:getCellForUID(gt, POST)
 		cell.outputtype = assert(gt.outputtype)
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(json.encode(cell))
+		end)
+	elseif filename == '/sethidden' then
+		local cell = self:getCellForUID(gt, POST)
+		cell.hidden = fromlua(gt.hidden)
+		return '200/OK', coroutine.wrap(function()
+			coroutine.yield'{ok:true}'
 		end)
 	elseif filename == '/' then
 		return '200/OK', coroutine.wrap(function()
@@ -332,6 +382,7 @@ print('got error '..err)
 
 var mjid = 0;
 var cells = [];
+var ctrls = [];
 var worksheetDiv;
 
 function refreshAllCells() {
@@ -343,7 +394,8 @@ function refreshAllCells() {
 console.log("getcells got", arguments);
 		
 		cells = $.parseJSON(cellsjson);
-		
+		ctrls = [];
+
 		worksheetDiv.html('');
 		var addNewCellButton = function(pos) {
 			worksheetDiv.append($('<button>', {
@@ -408,43 +460,77 @@ console.log("getcells got", arguments);
 					
 					//update only this one?
 					refreshJustThisCell(celldata);
+				
+					//...annddd... select the next cell
+console.log("after run response");
+console.log("for cell", cell);
+					for (var j = 0; j < cells.length-1; ++j) {
+						if (cells[j].uid == cell.uid) {
+console.log("focusing on next textarea...");
+							ctrls[j+1].setHidden(false);
+							ctrls[j+1].textarea.focus();
+							break;
+						}
+					}
 				})
 				.fail(fail);
 			}
 
 			var textarea = $('<textarea>', {
-				css : {width:'100%'},
+				css : {
+					width : '100%',
+					display : cell.hidden ? 'none' : 'block'
+				},
 				text : cell.input
 			});
-			textarea.attr('rows', 5);
+			var updateTextAreaLines = function() {
+				var numlines = textarea.val().split('\n').length;
+				textarea.attr('rows', numlines + 1);
+			};
+			updateTextAreaLines();
 			textarea.keydown(function(e) {
-				if (e.keyCode == 13) {
+				if (e.keyCode == 9) {
+					e.preventDefault();
+					var start = this.selectionStart;
+					var end = this.selectionEnd;
+					var oldval = textarea.val();
+					textarea.val(oldval.substring(0, start) + "\t" + oldval.substring(end));
+					this.selectionStart = this.selectionEnd = start + 1;				
+				} else if (e.keyCode == 13) {
 					if (e.ctrlKey) {
 						e.preventDefault();
 						run();
 						return;
 					}
 				}
-				var numlines = textarea.val().split('\n').length;
-				textarea.attr('rows', numlines + 2);
+				updateTextAreaLines();
 			});
 
-			worksheetDiv.append(textarea);
-			worksheetDiv.append($('<br>'));
-			//TODO here dropdown for what kind of output it is: text, LaTex, HTML 
+
+			worksheetDiv.append($('<hr>'));
+			var setHidden = function(hidden) {
+				cell.hidden = !cell.hidden;
+				if (cell.hidden) {
+					textarea.hide();
+				} else {
+					textarea.show();
+				}
+				$.ajax({
+					url : "sethidden?uid="+cell.uid+"&hidden="+cell.hidden
+				});
+			};
+			worksheetDiv.append($('<button>', {
+				text : 'v',
+				click : function() {
+					setHidden(!cell.hidden);
+				}
+			}));
+	
 			worksheetDiv.append($('<button>', {
 				text : 'run',
 				click : run
 			}));
-			worksheetDiv.append($('<button>', {
-				text : '-',
-				click : function() {
-					$.ajax({
-						url : "remove?uid="+cell.uid
-					}).done(refreshAllCells)
-					.fail(fail);
-				}
-			}));
+			
 			var setoutputtype = $('<select>', {
 				html : $.map(['text', 'html', 'latex'], function(s,i) {
 					return '<option>'+s+'</option>'
@@ -465,8 +551,24 @@ console.log("getcells got", arguments);
 			});
 			setoutputtype.val(cell.outputtype);
 			worksheetDiv.append(setoutputtype);
+		
+			worksheetDiv.append($('<button>', {
+				text : '-',
+				click : function() {
+					$.ajax({
+						url : "remove?uid="+cell.uid
+					}).done(refreshAllCells)
+					.fail(fail);
+				}
+			}));
+
 			worksheetDiv.append($('<br>'));
-			
+
+
+			worksheetDiv.append(textarea);
+			worksheetDiv.append($('<br>'));
+
+
 			var outputID = 'mj'+(++mjid);
 			output = $('<div>', {
 				id : outputID
@@ -474,12 +576,17 @@ console.log("getcells got", arguments);
 			output.addClass('symmath-output');
 			worksheetDiv.append(output);
 			refreshOutput();
+		
+			ctrls.push({
+				cell : cell,
+				textarea : textarea,
+				setHidden : setHidden
+			});
 		}
 console.log("cells", cells);
 console.log("cells.length "+cells.length);
 		$.each(cells, function(i,cell) {
 			addNewCellButton(i+1);
-			worksheetDiv.append($('<br>'));
 			addCell(cell);
 		});
 		addNewCellButton(cells.length+1);
@@ -491,28 +598,57 @@ function fail() {
 	throw 'failed';
 }
 
+function updateAllCellInputs() {
+	if (ctrls.length != cells.length) throw "got a mismatch in size between ctrls and cells";
+	$.each(ctrls, function(i,ctrl) {
+		var cell = ctrl.cell;
+		cell.input = ctrl.textarea.val();
+	});
+}
+
 function init() {
-	
 	$(document.body).append($('<button>', {
 		text : 'save',
 		click : function() {
-			//TODO here - disable controls
+			updateAllCellInputs();
+			//TODO here - disable controls until save is finished
 			$.ajax({
-				url : "save"
+				type : "POST",
+				url : "save",
+				data : {
+					cells : JSON.stringify(cells)
+				}
 			}).done(function() {
 				//TODO on done, re-enable page controls
 			}).fail(fail);
 				//TODO on fail, popup warning and re-enable controls
 		}
 	}));
+	
+	$(document.body).append($('<button>', {
+		text : 'run all',
+		click : function() {
+			updateAllCellInputs();
+			$.ajax({
+				type : "POST",
+				url : "runall",
+				data : {
+					cells : JSON.stringify(cells)	//jquery ajax is choking on encoding nested tables, so ...
+				}
+			}).done(function() {
+				//TODO or just return the 
+				refreshAllCells();
+			}).fail(fail);
+		}
+	}));
+
+	$(document.body).append($('<br>'));
 	$(document.body).append($('<br>'));
 
-	worksheetDiv = $('<div>', {
-		css : {
-			margin : 'auto'
-		}
-	});
+	worksheetDiv = $('<div>', {});
+	worksheetDiv.addClass('worksheet');
 	$(document.body).append(worksheetDiv);
+	$(document.body).append($('<br>'));
 
 	refreshAllCells();
 }
@@ -526,10 +662,23 @@ $(document).ready(function() {
 
 		</script>
 		<style>
-.symmath-output {
-	margin: 10px solid grey;
+.worksheet {
 	padding: 10px;
+	margin: auto;
+	background-color:rgb(240,240,240);
 }
+
+.symmath-output {
+	padding: 10px;
+	margin: 10px solid grey;
+	background-color:rgb(255,255,255);
+}
+
+textarea, pre {
+	-moz-tab-size : 4;
+	-o-tab-size : 4;
+	tab-size : 4;
+}		
 		</style>
 	</head>
 	<body>

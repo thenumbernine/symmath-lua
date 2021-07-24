@@ -307,4 +307,4 @@ for k,v in pairs(columns) do
 	table.insert(args.data, v)
 	table.insert(args, {using='1:'..#args.data, title=k})
 end
-print(GnuPlot:plot(args))
+GnuPlot:plot(args)

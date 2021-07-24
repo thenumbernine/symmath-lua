@@ -31,12 +31,12 @@ header'using the gnuplot language:'
 printAndRun[[
 local symmath = require 'symmath'
 local GnuPlot = symmath.export.GnuPlot
-print(GnuPlot:plot{
+GnuPlot:plot{
 	title = 'test plot',
 	xrange = {-2,2},
 	{'x**2.', title='test plot "x**2."'},
 	{'x**3.', title='test plot "x**3."'},
-})
+}
 ]]
 
 header'using symmath expressions:'
@@ -44,12 +44,12 @@ printAndRun[[
 local symmath = require 'symmath'
 local GnuPlot = symmath.export.GnuPlot
 local x = symmath.var'x'
-print(GnuPlot:plot{
+GnuPlot:plot{
 	title = 'test expression',
 	xrange = {-2,2},
 	{x^2, title=GnuPlot(x^2)},
 	{x^3, title=GnuPlot(x^3)},
-})
+}
 ]]
 
 header'using plot member function:'
@@ -78,12 +78,12 @@ for i=1,n do
 	xs[i] = x
 	ys[i] = math.sin(x) / x
 end
-print(GnuPlot:plot{
+GnuPlot:plot{
 	title = 'test data title',
 	style = 'data linespoints',
 	data = {xs, ys},
 	{using = '1:2', title = 'test data sin(x)/x'},
-})
+}
 ]]
 
 header'using symmath expressions, code generation, and Lua data:'
@@ -102,12 +102,12 @@ for i=1,n do
 	xs[i] = x
 	ys[i] = ff(x)
 end
-print(GnuPlot:plot{
+GnuPlot:plot{
 	title = 'test data title',
 	style = 'data linespoints',
 	data = {xs, ys},
 	{using = '1:2', title = 'test data '..export.GnuPlot(f)},
-})
+}
 ]]
 
 header'using the gnuplot language:'
@@ -115,12 +115,12 @@ printAndRun[[
 local symmath = require 'symmath'
 local GnuPlot = symmath.export.GnuPlot
 print'<pre>'
-print(GnuPlot:plot{
+GnuPlot:plot{
 	outputType = 'Console',
 	title = 'test plot',
 	xrange = {-2,2},
 	{'x**2.', title='test plot "x**2."'},
 	{'x**3.', title='test plot "x**3."'},
-})
+}
 print'</pre>'
 ]]
