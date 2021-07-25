@@ -1,6 +1,7 @@
 --[[
 here's the standalone version that runs an instance of my lua-http server
 while simultaneously keeping track of its own symmath state
+the full version would ideally be separate of this, launch one of these per worksheet, and be able to interrupt and reset execution.
 --]]
 
 local class = require 'ext.class'
@@ -430,16 +431,6 @@ print('SymmathHTTP.handleRequest', filename)
 		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield'{ok:true}'
-		end)
-	elseif filename == '/runall' then
-		for _,cell in ipairs(self.cells) do
-			self:runCell(cell)
-		end
-		local cellsjson = json.encode(self.cells)
-print("runall returning "..cellsjson)
-		-- return all cells / all cell outputs
-		return '200/OK', coroutine.wrap(function()
-			coroutine.yield(json.encode(self.cells))
 		end)
 	elseif filename == '/getcells' then
 		local cellsjson = json.encode(self.cells)

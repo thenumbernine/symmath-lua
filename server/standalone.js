@@ -265,10 +265,15 @@ console.log("focusing on next textarea...");
 		refreshOutput();
 	
 		ctrls.push({
+			//objs
 			cell : cell,
+			//doms
 			div : ctrlDiv,
 			textarea : textarea,
-			setHidden : setHidden
+			//functions
+			setHidden : setHidden,
+			refreshOutput : refreshOutput,
+			run : run
 		});
 	}
 console.log("cells", cells);
@@ -373,29 +378,16 @@ console.log("...failed writing cells.");
 		click : function() {
 			writeAllCells({
 				done : function() {
-					
-					//TODO replace this with a client-side for-loop
-					// so if we encounter a *serious* error then at least we'll have the clientside output up to that point
-					// also , requires less serverside functions 
-					$.ajax({
-						url : "runall"
-					})
-					.done(function(cellsjson) {
-						rebuildHtmlFromCells({
-							cellsjson : cellsjson,
+					var iterate;
+					iterate = function(i) {
+						if (i >= ctrls.length) return;
+						ctrls[i].run({
 							done : function() {
-								//TODO here re-enable controls
-							},
-							// There isn't a fail right now.  this isn't a remote request after all.
-							fail : function() {
-								//TODO fail
+								iterate(++i);
 							}
 						});
-					})
-					.fail(function() {
-						//TODO fail
-						fail();
-					});
+					};
+					iterate(0);
 				},
 				fail : function() {
 					//TODO fail
@@ -422,7 +414,21 @@ console.log("...failed writing cells.");
 			});
 		}
 	}));
-	
+
+	$(document.body).append($('<button>', {
+		text : 'clear all output',
+		click : function() {
+			for (var i = 0; i < cells.length; ++i) {
+				cells[i].output = '';
+				ctrls[i].refreshOutput();
+			}
+			
+			// TODO writeAllCells re-reads them and rebuilds
+			// don't need to do that here
+			writeAllCells();
+		}
+	}));
+
 	$(document.body).append($('<button>', {
 		text : 'quit',
 		click : function() {
