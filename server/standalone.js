@@ -121,6 +121,7 @@ console.log("getcells got", arguments);
 			},
 			text : cell.input
 		});
+		textarea.attr('spellcheck', 'false');
 		var updateTextAreaLines = function() {
 			var numlines = textarea.val().split('\n').length;
 			textarea.attr('rows', numlines);	// + 1);
