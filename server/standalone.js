@@ -55,23 +55,29 @@ console.log("getcells got", arguments);
 		var refreshOutput = function() {
 			var outputtype = cell.outputtype;
 			if (cell.haserror) outputtype = 'text';
-
+				
+			var outputstr = cell.output;
 			if (outputtype == 'html') {
-				output.html(cell.output);
+				output.html(outputstr);
 				MathJax.Hub.Queue(["Typeset", MathJax.Hub, output.attr('id')]);
 
 			//should there even be a 'latex' type? or just 'html' and mathjax?
 			} else if (outputtype == 'latex') {
-				output.html(cell.output);
+				output.html(outputstr);
 				MathJax.Hub.Queue(["Typeset", MathJax.Hub, output.attr('id')]);
 			
 			} else {
 				output.html('');
-				var outputstr = cell.output;
 				if (outputtype != 'text') {
 					outputstr = 'UNKNOWN OUTPUT TYPE: '+outputtype+'\n';
 				}
 				output.append($('<pre>', {text : outputstr}));
+			}
+		
+			if (outputstr.length == 0) {
+				output.hide();
+			} else {
+				output.show();
 			}
 		};
 
