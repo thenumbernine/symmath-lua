@@ -13,8 +13,8 @@ local fromlua = require 'ext.fromlua'
 local HTTP = require 'http.class'
 local json = require 'dkjson'
 
-local filename = ...
-assert(filename, "expected a filename")
+local worksheetFilename = ...
+assert(worksheetFilename, "expected a filename")
 
 
 -- store original _G.print here so this file scope can use it (before overriding it later)
@@ -69,9 +69,9 @@ args.log = 10
 
 	-- single worksheet instance.  TODO make modular:
 	self.cells = table()
-	if filename then
-		local data = file[filename]
-		print('file', filename,' has data ', data)
+	if worksheetFilename then
+		local data = file[worksheetFilename]
+		print('file', worksheetFilename,' has data ', data)
 		if data then
 			self:readCellsFromData(data)
 		end
@@ -269,7 +269,7 @@ end
 --]===]
 
 function SymmathHTTP:save()
-	self:writeCellsToFile(filename)
+	self:writeCellsToFile(worksheetFilename)
 end
 
 function SymmathHTTP:getCellForUID(gt, POST)
@@ -309,17 +309,23 @@ print(require 'template.showcode'(cell.input))
 		or '\n'
 	
 	xpcall(function()
-		
-		-- first try loading the code with 'return ' in front - just like lua interpreter
-		local results
-		xpcall(function()
-			results = table.pack(assert(load('return '..cell.input, nil, nil, self.env))())
-		
-print("run() got a single expression")
 
-		end, function(err)
-			-- hide any errors and try later on fail
-		end)
+		-- put a ; at the end to suppress assignment output.  sound familiar?
+		local suppressOutput = cell.input:sub(-1) == ';'
+print('suppressOutput = ', suppressOutput) 
+		
+		local results
+				
+		-- first try loading the code with 'return ' in front - just like lua interpreter
+		-- but don't if we are suppressing output -- because the 'return' is only used for just that
+		if not suppressOutput then
+			xpcall(function()
+				results = table.pack(assert(load('return '..cell.input, nil, nil, self.env))())
+print("run() got a single expression")
+			end, function(err)
+				-- hide any errors and try later on fail
+			end)
+		end
 
 		-- if it's not a single-expression, how about an assignment?  in that case, try to capture the lhs
 		if not results then
@@ -333,23 +339,24 @@ print("run() got a single expression")
 print("run() found a assign-stmt")
 print("lhs = ", lhs)
 print("rhs = ", rhs)
-				
-				xpcall(function()
-					results = table.pack(assert(load(cell.input, nil, nil, self.env))())
+
+				-- if it failed then there's an error in it ... so we want to report the error ...
+				-- also we don't need 'results' ... since we're going to get it from the xpcall on lhs
+				-- but maybe we should save 'results', since without 'results' it will be run twice as a non-expr, non-assign-stmt ...
+				results = table.pack(assert(load(cell.input, nil, nil, self.env))())
 print("run() successfully handled assign-stmt")
-				end, function(err)
-					-- hide errors and try later on fail
-				end)
 			
-				-- try to append the lhs's tostring to the output
-				-- hide errors maybe?
-				-- since return-stmt and assign-stmt are exclusive in lua (you can't do "return a=b" like C),
-				-- ... just assign 'results' here
-				xpcall(function()
-					results = table.pack(assert(load("return tostring("..lhs..")", nil, nil, self.env))())
+				if not suppressOutput then
+					-- try to append the lhs's tostring to the output
+					-- hide errors maybe?
+					-- since return-stmt and assign-stmt are exclusive in lua (you can't do "return a=b" like C),
+					-- ... just assign 'results' here
+					xpcall(function()
+						results = table.pack(assert(load("return tostring("..lhs..")", nil, nil, self.env))())
 print("run() successfully handled tostring(lhs)")
-				end, function(err)
-				end)
+					end, function(err)
+					end)
+				end
 			end
 		end
 
@@ -482,19 +489,21 @@ print("adding new cell at "..gt.pos)
 		os.exit()
 	elseif filename == '/' then
 		return '200/OK', coroutine.wrap(function()
-			coroutine.yield[[
+			coroutine.yield([[
 <html>
 	<head>
-		<title>Symmath Worksheet</title>
+		<title>Symmath Worksheet - ]]..worksheetFilename..[[</title>
 		<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
 		<script type="text/javascript" src="tryToFindMathJax.js"></script>
 		<script type="text/javascript" src="standalone.js"></script>
 		<link rel="stylesheet" href="standalone.css"/>
 	</head>
 	<body>
+		File: ]]..worksheetFilename..[[<br>
+		<br>
 	</body>
 </html>
-]]
+]])
 		end)
 	else
 print('calling SymmathHTTP.super.handleRequest')

@@ -18,6 +18,7 @@ console.log("getcells got", arguments);
 	ctrls = [];
 
 	worksheetDiv.html('');
+	
 	var addNewCellButton = function(pos, parentNode) {
 		parentNode.append($('<button>', {
 			// make rhsCtrlDiv top margin match this's top+bototm margin
@@ -365,6 +366,10 @@ console.log("...failed writing cells.");
 		click : function() {
 			writeAllCells({
 				done : function() {
+					
+					//TODO replace this with a client-side for-loop
+					// so if we encounter a *serious* error then at least we'll have the clientside output up to that point
+					// also , requires less serverside functions 
 					$.ajax({
 						url : "runall"
 					})
@@ -394,15 +399,33 @@ console.log("...failed writing cells.");
 	}));
 
 	$(document.body).append($('<button>', {
+		text : 'expand all',
+		click : function() {
+			$.each(ctrls, function(i,ctrl) {
+				ctrl.setHidden(false);
+			});
+		}
+	}));
+
+	$(document.body).append($('<button>', {
+		text : 'collapse all',
+		click : function() {
+			$.each(ctrls, function(i,ctrl) {
+				ctrl.setHidden(true);
+			});
+		}
+	}));
+	
+	$(document.body).append($('<button>', {
 		text : 'quit',
 		click : function() {
 			$.ajax({
 				url : "quit"
-			}).done(function() {
-				// TODO just grey out all buttons
-				$(document.body).html("goodbye");
-			})
-			.fail(fail);
+			});
+			
+			//don't wait for ajax response ... there won't be one
+			// TODO just grey out all buttons
+			$(document.body).html("goodbye");
 		}
 	}));
 
