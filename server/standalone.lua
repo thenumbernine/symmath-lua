@@ -7,6 +7,7 @@ local class = require 'ext.class'
 local string = require 'ext.string'
 local table = require 'ext.table'
 local file = require 'ext.file'
+local os = require 'ext.os'
 local tolua = require 'ext.tolua'
 local fromlua = require 'ext.fromlua'
 local HTTP = require 'http.class'
@@ -22,6 +23,12 @@ local orig_io = require 'io'
 local orig_io_write = io.write
 local ext_io = require 'ext.io'
 local ext_io_write = ext_io.write
+
+
+-- kind of a mess ...
+-- not multithread safe at all
+-- write this before load()'ing cell block code, based on the cell type
+local currentBlockNewLineSymbol
 
 
 local Cell = class()
@@ -42,14 +49,20 @@ end
 
 local SymmathHTTP = class(HTTP)
 
-function SymmathHTTP:init(...)
-	SymmathHTTP.super.init(self, ...)
-	
-	self.loglevel = 10
+function SymmathHTTP:init(args)
+
+args = table(args):setmetatable(nil)
+args.log = 10
+
+	SymmathHTTP.super.init(self, args)
 
 	-- TODO here, determine the url or something, and ask the OS to open it
 	os.execute('open http://localhost:'..self.port)
 
+	
+	-- docroot is already set to cwd by parent class
+	self.symmathPath = assert(os.getenv'SYMMATH_PATH', 'SYMMATH_PATH not defined')
+	self.symmathPath = self.symmathPath:gsub(os.sep, '/')
 
 	self:setupSandbox()
 
@@ -134,7 +147,7 @@ function SymmathHTTP:setupSandbox()
 			if i > 1 then self.env.io.write'\t' end
 			self.env.io.write(tostring((select(i, ...))))
 		end
-		self.env.io.write'\n'
+		self.env.io.write(currentBlockNewLineSymbol or '\n')
 		self.env.io.flush()
 	end
 	--]]
@@ -195,7 +208,7 @@ end
 
 local suffix = 'symmath'
 
-function SymmathHTTP:handleFilename(...)
+function SymmathHTTP:handleFile(...)
 	local filename,
 		localfilename,
 		ext,
@@ -205,7 +218,7 @@ function SymmathHTTP:handleFilename(...)
 		POST = ...
 
 	if ext:lower() ~= suffix then
-		return SymmathHTTP.super.handleFilename(self, ...)
+		return SymmathHTTP.super.handleFile(self, ...)
 	end
 
 	return '200/OK', coroutine.wrap(function()
@@ -289,9 +302,82 @@ function SymmathHTTP:runCell(cell)
 print(require 'template.showcode'(cell.input))
 	self.env.io.stdout.buffer = ''
 	cell.haserror = nil
+	
+	-- TODO use this in cell env print() and io.write()
+	currentBlockNewLineSymbol = 
+		cell.outputtype == 'html' and '<br>\n'
+		or '\n'
+	
 	xpcall(function()
-		assert(load(cell.input, nil, nil, self.env))()
+		
+		-- first try loading the code with 'return ' in front - just like lua interpreter
+		local results
+		xpcall(function()
+			results = table.pack(assert(load('return '..cell.input, nil, nil, self.env))())
+		
+print("run() got a single expression")
+
+		end, function(err)
+			-- hide any errors and try later on fail
+		end)
+
+		-- if it's not a single-expression, how about an assignment?  in that case, try to capture the lhs
+		if not results then
+			-- first strip out comments, then search for =
+			local findlhs = cell.input
+			findlhs = findlhs:gsub('%-%-[^\r\n]*', '')
+			local lhs, rhs = findlhs:match'([^=]-)=(.*)'
+			if lhs then
+				lhs = string.trim(lhs)
+
+print("run() found a assign-stmt")
+print("lhs = ", lhs)
+print("rhs = ", rhs)
+				
+				xpcall(function()
+					results = table.pack(assert(load(cell.input, nil, nil, self.env))())
+print("run() successfully handled assign-stmt")
+				end, function(err)
+					-- hide errors and try later on fail
+				end)
+			
+				-- try to append the lhs's tostring to the output
+				-- hide errors maybe?
+				-- since return-stmt and assign-stmt are exclusive in lua (you can't do "return a=b" like C),
+				-- ... just assign 'results' here
+				xpcall(function()
+					results = table.pack(assert(load("return tostring("..lhs..")", nil, nil, self.env))())
+print("run() successfully handled tostring(lhs)")
+				end, function(err)
+				end)
+			end
+		end
+
+		-- if expression fails, and assign-statement fails, then try without ... in case it's multi-statement
+		if not results then
+print("run() handling multi-stmt")
+			results = table.pack(assert(load(cell.input, nil, nil, self.env))())
+		end
+
 		cell.output = self.env.io.stdout.buffer
+print("run() cell.output", cell.output)
+
+		if results.n > 0 then
+			-- if we returned anything from this block then print it -- just like lua interpreter
+			-- TODO in this case ... who should handle the error?
+			if #cell.output > 0 then
+				cell.output = cell.output .. currentBlockNewLineSymbol
+			end
+			for i=1,results.n do
+				if i > 1 then
+					cell.output = cell.output .. '\t'
+				end
+				cell.output = cell.output .. tostring(
+					results[i]
+				)
+			end
+		end
+	
 	end, function(err)
 print('got error '..err)
 		cell.output = err..'\n'..debug.traceback()
@@ -299,6 +385,12 @@ print('got error '..err)
 	end)
 end
 
+function SymmathHTTP:getSearchPaths()
+	return table{
+		self.docroot,
+		self.symmathPath..'/server',
+	}
+end
 
 function SymmathHTTP:handleRequest(...)
 	local filename,
@@ -308,6 +400,7 @@ function SymmathHTTP:handleRequest(...)
 		proto,
 		GET,
 		POST = ...
+print('SymmathHTTP.handleRequest', filename)
 		
 	local gt = self:makeGETTable(GET)
 
@@ -317,19 +410,29 @@ function SymmathHTTP:handleRequest(...)
 	-- TODO run-all?  and run-from-location, and run-until-location?
 	-- TODO save height of textarea in the file
 
-	if filename == '/save' then
+	-- ok jquery ajax post is a mess
+	-- it encodes data weird
+	-- and if you don't provide 'data' and do ask for 'post' then it stalls indefinitely
+
+	if filename == '/writecells' then
 		self:updateAllCells(POST)
+		return '200/OK', coroutine.wrap(function()
+			coroutine.yield'{ok:true}'
+		end)
+	elseif filename == '/save' then	-- assumes cells are already up to date
 		self:save()
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield'{ok:true}'
 		end)
 	elseif filename == '/runall' then
-		self:updateAllCells(POST)
 		for _,cell in ipairs(self.cells) do
 			self:runCell(cell)
 		end
+		local cellsjson = json.encode(self.cells)
+print("runall returning "..cellsjson)
+		-- return all cells / all cell outputs
 		return '200/OK', coroutine.wrap(function()
-			coroutine.yield'{ok:true}'
+			coroutine.yield(json.encode(self.cells))
 		end)
 	elseif filename == '/getcells' then
 		local cellsjson = json.encode(self.cells)
@@ -340,9 +443,10 @@ print("getcells returning "..cellsjson)
 	elseif filename == '/newcell' then
 print("GET "..GET)
 print("adding new cell at "..gt.pos)
-		self.cells:insert(assert(tonumber(gt.pos)), Cell())
+		local newcell = Cell()
+		self.cells:insert(assert(tonumber(gt.pos)), newcell)
 		return '200/OK', coroutine.wrap(function()
-			coroutine.yield'{ok:true}'
+			coroutine.yield(json.encode(newcell))
 		end)
 	elseif filename == '/remove' then
 		local uid = assert(tonumber(gt.uid))
@@ -372,351 +476,20 @@ print("adding new cell at "..gt.pos)
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield'{ok:true}'
 		end)
+	elseif filename == '/quit' then
+		-- hmm, guess we won't be sending a response
+		-- unless I add coroutines threadmanager and have some idle loop / timeout, and run exit() in there ...
+		os.exit()
 	elseif filename == '/' then
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield[[
 <html>
 	<head>
 		<title>Symmath Worksheet</title>
-		<!-- TODO where to put these files? and where should the cwd be? -->
-		<!-- maybe set a SYMMATH_STANDALONE_SERVER_ROOT env var and put them there? -->
-		<script type="text/javascript" src="output/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript" src="output/tryToFindMathJax.js"></script>
-		<script type="text/javascript">
-
-var mjid = 0;
-var cells = [];
-var ctrls = [];
-var worksheetDiv;
-
-function refreshAllCells() {
-	$.ajax({
-		url : "getcells"
-	})
-	.fail(fail)
-	.done(function(cellsjson) {
-console.log("getcells got", arguments);
-		
-		cells = $.parseJSON(cellsjson);
-		ctrls = [];
-
-		worksheetDiv.html('');
-		var addNewCellButton = function(pos, parent) {
-			worksheetDiv.append($('<button>', {
-				text : '+',
-				click : function() {
-					$.ajax({
-						url : "newcell?pos="+pos
-					}).done(function() {
-						//update everything?
-						refreshAllCells();
-					
-						
-					})
-					.fail(fail);
-				}
-			}));
-			worksheetDiv.append($('<br>'));
-		};
-		var addCell = function(cell, cellIndex) {
-			var output;
-			var refreshOutput = function() {
-				var outputtype = cell.outputtype;
-				if (cell.haserror) outputtype = 'text';
-
-				if (outputtype == 'html') {
-					output.html(cell.output);
-					MathJax.Hub.Queue(["Typeset", MathJax.Hub, output.attr('id')]);
-
-				//should there even be a 'latex' type? or just 'html' and mathjax?
-				} else if (outputtype == 'latex') {
-					output.html(cell.output);
-					MathJax.Hub.Queue(["Typeset", MathJax.Hub, output.attr('id')]);
-				
-				} else {
-					output.html('');
-					var outputstr = cell.output;
-					if (outputtype != 'text') {
-						outputstr = 'UNKNOWN OUTPUT TYPE: '+outputtype+'\n';
-					}
-					output.append($('<pre>', {text : outputstr}));
-				}
-			};
-
-			var refreshJustThisCell = function(celldata) {
-				var newcell = $.parseJSON(celldata);
-				cell = newcell;
-				for (var i = 0; i < cells.length; ++i) {
-					if (cells[i].uid == cell.uid) {
-						cells[i] = newcell;
-					}
-				}
-				refreshOutput();
-			};
-
-			var run = function(args) {
-				args = args || {};
-				var cellinput = textarea.val();
-				$.ajax({
-					type : "POST",
-					url : "run",
-					data : {
-						uid : cell.uid,
-						cellinput : cellinput
-					}
-				}).done(function(celldata) {
-					//update all?
-					//refreshAllCells();
-					
-					//update only this one?
-					refreshJustThisCell(celldata);
-				
-					if (args.done) args.done();
-				})
-				.fail(fail);
-			}
-
-			var textarea = $('<textarea>', {
-				css : {
-					width : '100%',
-					display : cell.hidden ? 'none' : 'block'
-				},
-				text : cell.input
-			});
-			var updateTextAreaLines = function() {
-				var numlines = textarea.val().split('\n').length;
-				textarea.attr('rows', numlines + 1);
-			};
-			updateTextAreaLines();
-			textarea.keydown(function(e) {
-				if (e.keyCode == 9) {
-					e.preventDefault();
-					var start = this.selectionStart;
-					var end = this.selectionEnd;
-					var oldval = textarea.val();
-					textarea.val(oldval.substring(0, start) + "\t" + oldval.substring(end));
-					this.selectionStart = this.selectionEnd = start + 1;				
-				} else if (e.keyCode == 13) {
-					if (e.ctrlKey) {
-						e.preventDefault();
-						run({
-							done : function() {
-								//...annddd... select the next cell
-console.log("after run response");
-console.log("for cell", cell);
-								for (var j = 0; j < cells.length; ++j) {
-									if (cells[j].uid == cell.uid) {
-										if (j < cells.length-1) {
-console.log("focusing on next textarea...");
-											ctrls[j+1].setHidden(false);
-											ctrls[j+1].textarea.focus();
-										} else {
-											// if it's the last cell then ... create a new cell and highlight it?
-										}
-										break;
-									}
-								}
-							}
-						});
-						return;
-					}
-				}
-				updateTextAreaLines();
-			});
-
-			var ctrlDiv = $('<div>');
-			worksheetDiv.append(ctrlDiv);
-
-			addNewCellButton(cellIndex+1, ctrlDiv);
-
-			ctrlDiv.append($('<hr>'));
-			var setHidden = function(hidden) {
-				cell.hidden = hidden;
-				if (cell.hidden) {
-					textarea.hide();
-				} else {
-					textarea.show();
-				}
-				$.ajax({
-					url : "sethidden?uid="+cell.uid+"&hidden="+cell.hidden
-				});
-			};
-			ctrlDiv.append($('<button>', {
-				text : 'v',
-				click : function() {
-					setHidden(!cell.hidden);
-				}
-			}));
-	
-			ctrlDiv.append($('<button>', {
-				text : 'run',
-				click : run
-			}));
-			
-			var setoutputtype = $('<select>', {
-				html : $.map(['text', 'html', 'latex'], function(s,i) {
-					return '<option>'+s+'</option>'
-				}).join(''),
-				change : function(e) {
-					var val = this.value;
-					$.ajax({
-						url : "setoutputtype?uid="+cell.uid+"&outputtype="+val
-					}).done(function(celldata) {
-						//all?
-						//refreshAllCells
-
-						//only this cell?
-						refreshJustThisCell(celldata);
-					})
-					.fail(fail);
-				}
-			});
-			setoutputtype.val(cell.outputtype);
-			ctrlDiv.append(setoutputtype);
-		
-			ctrlDiv.append($('<button>', {
-				text : '-',
-				click : function() {
-					$.ajax({
-						url : "remove?uid="+cell.uid
-					}).done(function() {
-						//update all?
-						refreshAllCells();
-
-						/* update only client changes... * /
-						for (var j = 0; j < cells.length; ++j) {
-							if (cells[j].uid == cell.uid) {
-								ctrls[j].div.remove();
-								cells.splice(j, 1);
-								ctrls.splice(j, 1);
-								break;
-							}
-						}
-						/**/
-						// BUT TODO this will make all the 'index' parameters associated with the '+' addNewCells to go out of order
-					})
-					.fail(fail);
-				}
-			}));
-
-			ctrlDiv.append($('<br>'));
-
-
-			ctrlDiv.append(textarea);
-			ctrlDiv.append($('<br>'));
-
-
-			var outputID = 'mj'+(++mjid);
-			output = $('<div>', {
-				id : outputID
-			});
-			output.addClass('symmath-output');
-			ctrlDiv.append(output);
-			refreshOutput();
-		
-			ctrls.push({
-				cell : cell,
-				div : ctrlDiv,
-				textarea : textarea,
-				setHidden : setHidden
-			});
-		}
-console.log("cells", cells);
-console.log("cells.length "+cells.length);
-		$.each(cells, function(cellIndex,cell) {
-			addCell(cell, cellIndex);
-		});
-		addNewCellButton(cells.length+1, worksheetDiv);
-	});
-}
-
-function fail() {
-	console.log(arguments);
-	throw 'failed';
-}
-
-function updateAllCellInputs() {
-	if (ctrls.length != cells.length) throw "got a mismatch in size between ctrls and cells";
-	$.each(ctrls, function(i,ctrl) {
-		var cell = ctrl.cell;
-		cell.input = ctrl.textarea.val();
-	});
-}
-
-function init() {
-	$(document.body).append($('<button>', {
-		text : 'save',
-		click : function() {
-			updateAllCellInputs();
-			//TODO here - disable controls until save is finished
-			$.ajax({
-				type : "POST",
-				url : "save",
-				data : {
-					cells : JSON.stringify(cells)
-				}
-			}).done(function() {
-				//TODO on done, re-enable page controls
-			}).fail(fail);
-				//TODO on fail, popup warning and re-enable controls
-		}
-	}));
-	
-	$(document.body).append($('<button>', {
-		text : 'run all',
-		click : function() {
-			updateAllCellInputs();
-			$.ajax({
-				type : "POST",
-				url : "runall",
-				data : {
-					cells : JSON.stringify(cells)	//jquery ajax is choking on encoding nested tables, so ...
-				}
-			}).done(function() {
-				//TODO or just refresh the outputs
-				refreshAllCells();
-			}).fail(fail);
-		}
-	}));
-
-	$(document.body).append($('<br>'));
-	$(document.body).append($('<br>'));
-
-	worksheetDiv = $('<div>', {});
-	worksheetDiv.addClass('worksheet');
-	$(document.body).append(worksheetDiv);
-	$(document.body).append($('<br>'));
-
-	refreshAllCells();
-}
-
-$(document).ready(function() {
-	tryToFindMathJax({
-		done : init,
-		fail : fail
-	});
-});
-
-		</script>
-		<style>
-.worksheet {
-	padding: 10px;
-	margin: auto;
-	background-color:rgb(240,240,240);
-}
-
-.symmath-output {
-	padding: 10px;
-	margin: 10px solid grey;
-	background-color:rgb(255,255,255);
-}
-
-textarea, pre {
-	-moz-tab-size : 4;
-	-o-tab-size : 4;
-	tab-size : 4;
-}		
-		</style>
+		<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="tryToFindMathJax.js"></script>
+		<script type="text/javascript" src="standalone.js"></script>
+		<link rel="stylesheet" href="standalone.css"/>
 	</head>
 	<body>
 	</body>
@@ -724,6 +497,7 @@ textarea, pre {
 ]]
 		end)
 	else
+print('calling SymmathHTTP.super.handleRequest')
 		return SymmathHTTP.super.handleRequest(self, ...)
 	end
 end

@@ -1,0 +1,17 @@
+.worksheet {
+	padding: 10px;
+	margin: auto;
+	background-color:rgb(240,240,240);
+}
+
+.symmath-output {
+	padding: 10px;
+	margin: 10px solid grey;
+	background-color:rgb(255,255,255);
+}
+
+textarea, pre {
+	-moz-tab-size : 4;
+	-o-tab-size : 4;
+	tab-size : 4;
+}		

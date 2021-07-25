@@ -810,28 +810,6 @@ How to get around this:
 3. Modify your LUA\_PATH / package.path to also include `"?/?.lua"`.
 4. ... profit?
 
-## TODO
-
-- better conditions for solving equalities.  multiple sets of equations.
-
-- more integrals that will evaluate.
-
-- functions that lua has that I don't: ceil, floor, deg, rad, fmod, frexp, log10, min, max
-
-- infinite precision or big integers.  https://github.com/thenumbernine/lua-bignumber .
-
-- combine symmath with the lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
-	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
-
-- subindexes, so you can store a tensor of tensors: `g_ab = Tensor('_ab', {-alpha^2+beta^2, beta_j}, {beta_i, gamma_ij})`
-	(Though this is a lot of work for a rarely used feature...)
-
-- change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
-
-- finish Integer and Rational sets, maybe better support for Complex set.
-
-- better polynomial factoring.
-
 ## SymMath Interpreter
 
 If you want to run this as a command-line with the API in global namespace:
@@ -862,6 +840,39 @@ Then run with
 ```
 symmath " print ( Matrix { { u ^ 2 + 1, u * v } , { u * v , v ^ 2 + 1 } } : inverse ( ) ) "
 ```
+
+## SymMath Local Browser Interface
+
+This is a WIP.
+
+Setting the `SYMMATH_PATH` to the base directory of Symmath is required.
+
+Then cd to the dir of the worksheet you want to work on, and run `$SYMMATH_PATH/server/standalone.lua`
+
+This requires my lua-http project in order to run.
+
+## TODO
+
+- better conditions for solving equalities.  multiple sets of equations.
+
+- more integrals that will evaluate.
+
+- functions that lua has that I don't: ceil, floor, deg, rad, fmod, frexp, log10, min, max
+
+- infinite precision or big integers.  https://github.com/thenumbernine/lua-bignumber .
+
+- combine symmath with the lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
+	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
+
+- subindexes, so you can store a tensor of tensors: `g_ab = Tensor('_ab', {-alpha^2+beta^2, beta_j}, {beta_i, gamma_ij})`
+	(Though this is a lot of work for a rarely used feature...)
+
+- change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
+
+- finish Integer and Rational sets, maybe better support for Complex set.
+
+- better polynomial factoring.
+
 
 
 Output CDN URLs:
@@ -1044,6 +1055,8 @@ Output CDN URLs:
 
 [tests/output/metric catalog/polar, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%2c%20coordinate.html)
 
+[tests/output/metric catalog/sphere surface, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20anholonomic%2c%20conformal.html)
+
 [tests/output/metric catalog/sphere surface, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20anholonomic%2c%20orthonormal.html)
 
 [tests/output/metric catalog/sphere surface, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20coordinate.html)
@@ -1051,6 +1064,8 @@ Output CDN URLs:
 [tests/output/metric catalog/spherical and time, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%20and%20time%2c%20coordinate.html)
 
 [tests/output/metric catalog/spherical and time, lapse varying in radial](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%20and%20time%2c%20lapse%20varying%20in%20radial.html)
+
+[tests/output/metric catalog/spherical, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20anholonomic%2c%20conformal.html)
 
 [tests/output/metric catalog/spherical, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20anholonomic%2c%20orthonormal.html)
 
@@ -1118,6 +1133,10 @@ Output CDN URLs:
 
 [tests/output/unit/plot](https://thenumbernine.github.io/symmath/tests/output/unit/plot.html)
 
+[tests/output/unit/polyCoeffs](https://thenumbernine.github.io/symmath/tests/output/unit/polyCoeffs.html)
+
+[tests/output/unit/polydiv](https://thenumbernine.github.io/symmath/tests/output/unit/polydiv.html)
+
 [tests/output/unit/replace](https://thenumbernine.github.io/symmath/tests/output/unit/replace.html)
 
 [tests/output/unit/replaceIndex](https://thenumbernine.github.io/symmath/tests/output/unit/replaceIndex.html)
@@ -1127,6 +1146,8 @@ Output CDN URLs:
 [tests/output/unit/simplifyMetrics](https://thenumbernine.github.io/symmath/tests/output/unit/simplifyMetrics.html)
 
 [tests/output/unit/solve](https://thenumbernine.github.io/symmath/tests/output/unit/solve.html)
+
+[tests/output/unit/sqrt](https://thenumbernine.github.io/symmath/tests/output/unit/sqrt.html)
 
 [tests/output/unit/sub-tensor assignment](https://thenumbernine.github.io/symmath/tests/output/unit/sub%2dtensor%20assignment.html)
 
