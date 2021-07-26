@@ -2,6 +2,7 @@ var mjid = 0;
 var cells = [];
 var ctrls = [];
 var worksheetDiv;
+var lastAddNewCellButton;
 
 function findCtrlForUID(uid) {
 	for (var i = 0; i < cells.length; ++i) {
@@ -18,9 +19,9 @@ console.log("getcells got", arguments);
 	ctrls = [];
 
 	worksheetDiv.html('');
-	
-	var addNewCellButton = function(pos, parentNode) {
-		parentNode.append($('<button>', {
+
+	var createAddNewCellButton = function(pos, parentNode) {
+		var addNewCellButton = $('<button>', {
 			// make rhsCtrlDiv top margin match this's top+bototm margin
 			css : {
 				margin : '10 0 10 0'
@@ -48,7 +49,9 @@ console.log("getcells got", arguments);
 					}
 				});
 			}
-		}));
+		});
+		parentNode.append(addNewCellButton);
+		return addNewCellButton;
 	};
 	var addCell = function(cell, cellIndex) {
 		var output;
@@ -151,6 +154,7 @@ console.log("focusing on next textarea...");
 										ctrls[j+1].textarea.focus();
 									} else {
 										// if it's the last cell then ... create a new cell and highlight it?
+										lastAddNewCellButton.click();
 									}
 									break;
 								}
@@ -168,7 +172,8 @@ console.log("focusing on next textarea...");
 		var ctrlDiv = $('<div>');
 		worksheetDiv.append(ctrlDiv);
 
-		addNewCellButton(cellIndex+1, ctrlDiv);
+		// 'add new cell before'
+		var addNewCellButton = createAddNewCellButton(cellIndex+1, ctrlDiv);
 
 		//ctrlDiv.append($('<hr>'));
 		var setHidden = function(hidden) {
@@ -270,6 +275,7 @@ console.log("focusing on next textarea...");
 			//doms
 			div : ctrlDiv,
 			textarea : textarea,
+			addNewCellButton : addNewCellButton,
 			//functions
 			setHidden : setHidden,
 			refreshOutput : refreshOutput,
@@ -281,7 +287,7 @@ console.log("cells.length "+cells.length);
 	$.each(cells, function(cellIndex,cell) {
 		addCell(cell, cellIndex);
 	});
-	addNewCellButton(cells.length+1, worksheetDiv);
+	lastAddNewCellButton = createAddNewCellButton(cells.length+1, worksheetDiv);
 
 	if (ctrls.length) {
 		ctrls[0].textarea.focus();
