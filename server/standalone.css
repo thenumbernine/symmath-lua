@@ -1,17 +1,32 @@
-.worksheet {
+.worksheetDiv {
 	padding: 10px;
 	margin: auto;
 	background-color:rgb(240,240,240);
 }
 
-.symmath-output {
+.outputDiv {
 	padding: 10px;
 	margin: 10px solid grey;
 	background-color:rgb(255,255,255);
+}
+
+.addNewCellButton {
+	cursor : vertical-text;
+	padding : 10px 0px 10px 0px;
+}
+
+.inputTextArea {
+	width : 100%;
+	border : 0px;
+}
+
+.rhsCtrlDiv {
+	display : inline;
+	float : right;
 }
 
 textarea, pre {
 	-moz-tab-size : 4;
 	-o-tab-size : 4;
 	tab-size : 4;
-}		
+}

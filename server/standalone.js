@@ -21,14 +21,10 @@ console.log("getcells got", arguments);
 	worksheetDiv.html('');
 
 	var createAddNewCellButton = function(pos, parentNode) {
-		var addNewCellButton = $('<button>', {
-			// make rhsCtrlDiv top margin match this's top+bototm margin
-			css : {
-				margin : '10 0 10 0'
-			},
-			text : '+',
+		var addNewCellButton = $('<div>', {
+			class : 'addNewCellButton',
 			click : function() {
-				// write all cell textarea's -> cell inputs -> back to the server
+				// write all cell inputTextArea's -> cell inputs -> back to the server
 				writeAllCells({
 					// then insert the new cell
 					done : function() {
@@ -41,7 +37,7 @@ console.log("getcells got", arguments);
 							getAllCellsFromServerAndRebuildHtml({
 								done : function() {
 									// TODO focus on the new cell
-									findCtrlForUID(uid).textarea.focus();
+									findCtrlForUID(uid).inputTextArea.focus();
 								}
 							});
 						})
@@ -50,37 +46,41 @@ console.log("getcells got", arguments);
 				});
 			}
 		});
+		addNewCellButton.append($('<hr>'));
 		parentNode.append(addNewCellButton);
 		return addNewCellButton;
 	};
 	var addCell = function(cell, cellIndex) {
-		var output;
-		var refreshOutput = function() {
+
+		var ctrl = {};
+		ctrl.cell = cell;
+		
+		ctrl.refreshOutput = function() {
 			var outputtype = cell.outputtype;
 			if (cell.haserror) outputtype = 'text';
 				
 			var outputstr = cell.output;
 			if (outputtype == 'html') {
-				output.html(outputstr);
-				MathJax.Hub.Queue(["Typeset", MathJax.Hub, output.attr('id')]);
+				ctrl.outputDiv.html(outputstr);
+				MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
 
 			//should there even be a 'latex' type? or just 'html' and mathjax?
 			} else if (outputtype == 'latex') {
-				output.html(outputstr);
-				MathJax.Hub.Queue(["Typeset", MathJax.Hub, output.attr('id')]);
+				ctrl.outputDiv.html(outputstr);
+				MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
 			
 			} else {
-				output.html('');
+				ctrl.outputDiv.html('');
 				if (outputtype != 'text') {
 					outputstr = 'UNKNOWN OUTPUT TYPE: '+outputtype+'\n';
 				}
-				output.append($('<pre>', {text : outputstr}));
+				ctrl.outputDiv.append($('<pre>', {text : outputstr}));
 			}
 		
 			if (outputstr.length == 0) {
-				output.hide();
+				ctrl.outputDiv.hide();
 			} else {
-				output.show();
+				ctrl.outputDiv.show();
 			}
 		};
 
@@ -92,12 +92,17 @@ console.log("getcells got", arguments);
 					cells[i] = newcell;
 				}
 			}
-			refreshOutput();
+			ctrl.refreshOutput();
 		};
 
-		var run = function(args) {
+		ctrl.inputTextArea = $('<textarea>', {
+			class : 'inputTextArea',
+			text : cell.input
+		});
+		
+		ctrl.run = function(args) {
 			args = args || {};
-			var cellinput = textarea.val();
+			var cellinput = ctrl.inputTextArea.val();
 			$.ajax({
 				type : "POST",
 				url : "run",
@@ -117,31 +122,25 @@ console.log("getcells got", arguments);
 			.fail(fail);
 		}
 
-		var textarea = $('<textarea>', {
-			css : {
-				width : '100%',
-				display : cell.hidden ? 'none' : 'block'
-			},
-			text : cell.input
-		});
-		textarea.attr('spellcheck', 'false');
+		ctrl.inputTextArea.attr('spellcheck', 'false');
 		var updateTextAreaLines = function() {
-			var numlines = textarea.val().split('\n').length;
-			textarea.attr('rows', numlines);	// + 1);
+			var numlines = ctrl.inputTextArea.val().split('\n').length;
+			ctrl.inputTextArea.attr('rows', numlines);	// + 1);
 		};
+		if (cell.hidden) ctrl.inputTextArea.hide();
 		updateTextAreaLines();
-		textarea.keydown(function(e) {
+		ctrl.inputTextArea.keydown(function(e) {
 			if (e.keyCode == 9) {
 				e.preventDefault();
 				var start = this.selectionStart;
 				var end = this.selectionEnd;
-				var oldval = textarea.val();
-				textarea.val(oldval.substring(0, start) + "\t" + oldval.substring(end));
+				var oldval = ctrl.inputTextArea.val();
+				ctrl.inputTextArea.val(oldval.substring(0, start) + "\t" + oldval.substring(end));
 				this.selectionStart = this.selectionEnd = start + 1;				
 			} else if (e.keyCode == 13) {
 				if (e.ctrlKey) {
 					e.preventDefault();
-					run({
+					ctrl.run({
 						done : function() {
 							//...annddd... select the next cell
 console.log("after run response");
@@ -149,9 +148,9 @@ console.log("for cell", cell);
 							for (var j = 0; j < cells.length; ++j) {
 								if (cells[j].uid == cell.uid) {
 									if (j < cells.length-1) {
-console.log("focusing on next textarea...");
+console.log("focusing on next inputTextArea...");
 										ctrls[j+1].setHidden(false);
-										ctrls[j+1].textarea.focus();
+										ctrls[j+1].inputTextArea.focus();
 									} else {
 										// if it's the last cell then ... create a new cell and highlight it?
 										lastAddNewCellButton.click();
@@ -165,23 +164,23 @@ console.log("focusing on next textarea...");
 				}
 			}
 		});
-		textarea.keyup(function(e) {
+		ctrl.inputTextArea.keyup(function(e) {
 			updateTextAreaLines();
 		});
 
-		var ctrlDiv = $('<div>');
-		worksheetDiv.append(ctrlDiv);
+		ctrl.div = $('<div>');
+		worksheetDiv.append(ctrl.div);
 
 		// 'add new cell before'
-		var addNewCellButton = createAddNewCellButton(cellIndex+1, ctrlDiv);
+		ctrl.addNewCellButton = createAddNewCellButton(cellIndex+1, ctrl.div);
 
-		//ctrlDiv.append($('<hr>'));
-		var setHidden = function(hidden) {
+		//ctrl.div.append($('<hr>'));
+		ctrl.setHidden = function(hidden) {
 			cell.hidden = hidden;
 			if (cell.hidden) {
-				textarea.hide();
+				ctrl.inputTextArea.hide();
 			} else {
-				textarea.show();
+				ctrl.inputTextArea.show();
 			}
 			$.ajax({
 				url : "sethidden?uid="+cell.uid+"&hidden="+cell.hidden
@@ -190,25 +189,22 @@ console.log("focusing on next textarea...");
 		
 
 		var rhsCtrlDiv = $('<span>', {
-			css : {
-				// top margin matches top+bottom margin of '+' button
-				margin : '20 0 0 0',
-				display : 'inline',
-				float : 'right'
-			}
+			class : 'rhsCtrlDiv'
 		});
-		ctrlDiv.append(rhsCtrlDiv);
+		ctrl.div.append(rhsCtrlDiv);
 
 		rhsCtrlDiv.append($('<button>', {
 			text : 'v',
 			click : function() {
-				setHidden(!cell.hidden);
+				ctrl.setHidden(!cell.hidden);
 			}
 		}));
 
 		rhsCtrlDiv.append($('<button>', {
 			text : 'run',
-			click : run
+			click : function() {
+				ctrl.run.apply(arguments);
+			}
 		}));
 		
 		var setoutputtype = $('<select>', {
@@ -254,33 +250,22 @@ console.log("focusing on next textarea...");
 			}
 		}));
 
-		ctrlDiv.append($('<br>'));
+		ctrl.div.append($('<br>'));
 
 
-		ctrlDiv.append(textarea);
-		ctrlDiv.append($('<br>'));
+		ctrl.div.append(ctrl.inputTextArea);
+		ctrl.div.append($('<br>'));
 
 
 		var outputID = 'mj'+(++mjid);
-		output = $('<div>', {
-			id : outputID
+		ctrl.outputDiv = $('<div>', {
+			id : outputID,
+			class : 'outputDiv'
 		});
-		output.addClass('symmath-output');
-		ctrlDiv.append(output);
-		refreshOutput();
-	
-		ctrls.push({
-			//objs
-			cell : cell,
-			//doms
-			div : ctrlDiv,
-			textarea : textarea,
-			addNewCellButton : addNewCellButton,
-			//functions
-			setHidden : setHidden,
-			refreshOutput : refreshOutput,
-			run : run
-		});
+		ctrl.div.append(ctrl.outputDiv);
+		ctrl.refreshOutput();
+
+		ctrls.push(ctrl);
 	}
 console.log("cells", cells);
 console.log("cells.length "+cells.length);
@@ -290,7 +275,7 @@ console.log("cells.length "+cells.length);
 	lastAddNewCellButton = createAddNewCellButton(cells.length+1, worksheetDiv);
 
 	if (ctrls.length) {
-		ctrls[0].textarea.focus();
+		ctrls[0].inputTextArea.focus();
 	}
 
 	if (args.done) args.done();
@@ -321,7 +306,7 @@ function setCellInputsToTextareaValues() {
 	if (ctrls.length != cells.length) throw "got a mismatch in size between ctrls and cells";
 	$.each(ctrls, function(i,ctrl) {
 		var cell = ctrl.cell;
-		cell.input = ctrl.textarea.val();
+		cell.input = ctrl.inputTextArea.val();
 	});
 }
 
@@ -451,8 +436,9 @@ console.log("...failed writing cells.");
 	$(document.body).append($('<br>'));
 	$(document.body).append($('<br>'));
 
-	worksheetDiv = $('<div>', {});
-	worksheetDiv.addClass('worksheet');
+	worksheetDiv = $('<div>', {
+		class : 'worksheetDiv'
+	});
 	$(document.body).append(worksheetDiv);
 	$(document.body).append($('<br>'));
 
