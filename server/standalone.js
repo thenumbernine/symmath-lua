@@ -15,84 +15,19 @@ function findCtrlForUID(uid) {
 function CellControl(
 	cell, 
 	//pick one of these two:
+	// or TODO make nextSibling optional and on its absence just use worksheetDiv as a parent
 	parent, 
 	nextSibling
 ) {
 	var ctrl = this;
 	ctrl.cell = cell;
 	
-	ctrl.refreshOutput = function() {
-		var outputtype = ctrl.cell.outputtype;
-		if (ctrl.cell.haserror) outputtype = 'text';
-			
-		var outputstr = ctrl.cell.output;
-		if (outputtype == 'html') {
-			ctrl.outputDiv.html(outputstr);
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
-
-		//should there even be a 'latex' type? or just 'html' and mathjax?
-		} else if (outputtype == 'latex') {
-			ctrl.outputDiv.html(outputstr);
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
-		
-		} else {
-			ctrl.outputDiv.html('');
-			if (outputtype != 'text') {
-				outputstr = 'UNKNOWN OUTPUT TYPE: '+outputtype+'\n';
-			}
-			ctrl.outputDiv.append($('<pre>', {text : outputstr}));
-		}
-	
-		if (outputstr.length == 0) {
-			ctrl.outputDiv.hide();
-		} else {
-			ctrl.outputDiv.show();
-		}
-	};
-
-	var refreshJustThisCell = function(celldata) {
-		var newcell = $.parseJSON(celldata);
-		cell = newcell;
-		ctrl.cell = newcell;
-
-		for (var i = 0; i < cells.length; ++i) {
-			if (cells[i].uid == ctrl.cell.uid) {
-				cells[i] = newcell;
-			}
-		}
-		ctrl.refreshOutput();
-	};
-
 	ctrl.inputTextArea = $('<textarea>', {
 		//class : 'inputTextArea',
 		text : ctrl.cell.input
 	});
 	ctrl.inputTextArea.addClass('inputTextArea');
 	
-	ctrl.run = function(args) {
-		args = args || {};
-		var cellinput = ctrl.inputTextArea.val();
-		$.ajax({
-			type : "POST",
-			url : "run",
-			data : {
-				uid : ctrl.cell.uid,
-				cellinput : cellinput
-			}
-		}).done(function(celldata) {
-			/* update all? * /
-			getAllCellsFromServerAndRebuildHtml({
-				done : args.done
-			});
-			/**/
-			/* update only this one? */
-			refreshJustThisCell(celldata);
-			if (args.done) args.done();
-			/**/
-		})
-		.fail(fail);
-	}
-
 	ctrl.inputTextArea.attr('spellcheck', 'false');
 	var updateTextAreaLines = function() {
 		var numlines = ctrl.inputTextArea.val().split('\n').length;
@@ -181,18 +116,7 @@ console.log("focusing on next inputTextArea...");
 	ctrl.addNewCellButton = createAddNewCellButton(ctrl.cell, ctrl.div);
 
 	//ctrl.div.append($('<hr>'));
-	ctrl.setHidden = function(hidden) {
-		ctrl.cell.hidden = hidden;
-		if (ctrl.cell.hidden) {
-			ctrl.inputTextArea.hide();
-		} else {
-			ctrl.inputTextArea.show();
-		}
-		$.ajax({
-			url : "sethidden?uid="+ctrl.cell.uid+"&hidden="+ctrl.cell.hidden
-		});
-	};
-	
+
 
 	var rhsCtrlDiv = $('<span>', {
 		class : 'rhsCtrlDiv'
@@ -209,7 +133,7 @@ console.log("focusing on next inputTextArea...");
 	rhsCtrlDiv.append($('<button>', {
 		text : 'run',
 		click : function() {
-			ctrl.run.apply(arguments);
+			ctrl.run.apply(ctrl, arguments);
 		}
 	}));
 	
@@ -223,7 +147,7 @@ console.log("focusing on next inputTextArea...");
 				url : "setoutputtype?uid="+ctrl.cell.uid+"&outputtype="+val
 			}).done(function(celldata) {
 				//only update this cell
-				refreshJustThisCell(celldata);
+				ctrl.refreshJustThisCell(celldata);
 			})
 			.fail(fail);
 		}
@@ -285,6 +209,98 @@ console.log("focusing on next inputTextArea...");
 		parent.append(ctrl.div);
 	}
 }
+CellControl.prototype = {
+	//refresh the contents of the ctrl.outputDiv based on the cell.output
+	refreshOutput : function() {
+		var ctrl = this;
+
+		var outputtype = ctrl.cell.outputtype;
+		if (ctrl.cell.haserror) outputtype = 'text';
+			
+		var outputstr = ctrl.cell.output;
+		if (outputtype == 'html') {
+			ctrl.outputDiv.html(outputstr);
+			MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
+
+		//should there even be a 'latex' type? or just 'html' and mathjax?
+		} else if (outputtype == 'latex') {
+			ctrl.outputDiv.html(outputstr);
+			MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
+		
+		} else {
+			ctrl.outputDiv.html('');
+			if (outputtype != 'text') {
+				outputstr = 'UNKNOWN OUTPUT TYPE: '+outputtype+'\n';
+			}
+			ctrl.outputDiv.append($('<pre>', {text : outputstr}));
+		}
+	
+		if (outputstr.length == 0) {
+			ctrl.outputDiv.hide();
+		} else {
+			ctrl.outputDiv.show();
+		}
+	},
+
+	//replace the cell in the cells array with the new celldata JSON
+	//and refresh the output
+	refreshJustThisCell : function(celldata) {
+		var ctrl = this;
+
+		var newcell = $.parseJSON(celldata);
+		cell = newcell;
+		ctrl.cell = newcell;
+
+		for (var i = 0; i < cells.length; ++i) {
+			if (cells[i].uid == ctrl.cell.uid) {
+				cells[i] = newcell;
+			}
+		}
+		ctrl.refreshOutput();
+	},
+
+	//run the cell: send cell.input to the server, get back cell.output, and build the outputDiv
+	run : function(args) {
+		args = args || {};
+		
+		var ctrl = this;
+
+		var cellinput = ctrl.inputTextArea.val();
+		$.ajax({
+			type : "POST",
+			url : "run",
+			data : {
+				uid : ctrl.cell.uid,
+				cellinput : cellinput
+			}
+		}).done(function(celldata) {
+			/* update all? * /
+			getAllCellsFromServerAndRebuildHtml({
+				done : args.done
+			});
+			/**/
+			/* update only this one? */
+			ctrl.refreshJustThisCell(celldata);
+			//TODO wait for 'refreshJustThisCell' to finish?  finish MathJax rendering callback?
+			if (args.done) args.done();
+			/**/
+		})
+		.fail(fail);
+	},
+
+	setHidden : function(hidden) {
+		var ctrl = this;
+		ctrl.cell.hidden = hidden;
+		if (ctrl.cell.hidden) {
+			ctrl.inputTextArea.hide();
+		} else {
+			ctrl.inputTextArea.show();
+		}
+		$.ajax({
+			url : "sethidden?uid="+ctrl.cell.uid+"&hidden="+ctrl.cell.hidden
+		});
+	}
+};
 
 function createAddNewCellButton(cellToInsertBefore, parentNode) {
 	var addNewCellButton = $('<div>', {
