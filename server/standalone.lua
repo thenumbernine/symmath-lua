@@ -501,7 +501,7 @@ print("adding new cell before "..(gt.uid or 'end'))
 		<link rel="stylesheet" href="standalone.css"/>
 	</head>
 	<body>
-		File: <pre>]]..worksheetFilename..[[</pre><br>
+		File: <pre style="display:inline">]]..worksheetFilename..[[</pre><br>
 		<br>
 	</body>
 </html>
