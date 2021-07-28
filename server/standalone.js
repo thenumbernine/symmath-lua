@@ -20,7 +20,7 @@ console.log("getcells got", arguments);
 
 	worksheetDiv.html('');
 
-	var createAddNewCellButton = function(pos, parentNode) {
+	var createAddNewCellButton = function(cellToInsertBefore, parentNode) {
 		var addNewCellButton = $('<div>', {
 			class : 'addNewCellButton',
 			click : function() {
@@ -28,8 +28,12 @@ console.log("getcells got", arguments);
 				writeAllCells({
 					// then insert the new cell
 					done : function() {
+						var url = "newcell";
+						if (cellToInsertBefore) {
+							url += "?uid="+cellToInsertBefore.uid;
+						}
 						$.ajax({
-							url : "newcell?pos="+pos
+							url : url
 						}).done(function(newcelljson) {
 							var newcell = $.parseJSON(newcelljson);
 							var uid = newcell.uid;
@@ -49,10 +53,8 @@ console.log("getcells got", arguments);
 		parentNode.append(addNewCellButton);
 		return addNewCellButton;
 	};
-	var addCell = function(cell, cellIndex) {
-
-		//TODO make 'addCell' a ctor, and make 'ctrl' into 'this' , and for callbacks make it 'thiz' too
-		var ctrl = {};
+	var CellControl = function(cell, cellIndex) {
+		var ctrl = this;
 		ctrl.cell = cell;
 		
 		ctrl.refreshOutput = function() {
@@ -211,7 +213,7 @@ console.log("focusing on next inputTextArea...");
 		worksheetDiv.append(ctrl.div);
 
 		// 'add new cell before'
-		ctrl.addNewCellButton = createAddNewCellButton(cellIndex+1, ctrl.div);
+		ctrl.addNewCellButton = createAddNewCellButton(ctrl.cell, ctrl.div);
 
 		//ctrl.div.append($('<hr>'));
 		ctrl.setHidden = function(hidden) {
@@ -313,10 +315,12 @@ console.log("focusing on next inputTextArea...");
 	}
 console.log("cells", cells);
 console.log("cells.length "+cells.length);
+	
 	$.each(cells, function(cellIndex, cell) {
-		addCell(cell, cellIndex);
+		new CellControl(cell, cellIndex);	//will auto-add to ctrls, so don't worry about it
 	});
-	lastAddNewCellButton = createAddNewCellButton(cells.length+1, worksheetDiv);
+	
+	lastAddNewCellButton = createAddNewCellButton(null, worksheetDiv);
 
 	if (ctrls.length) {
 		ctrls[0].inputTextArea.focus();
@@ -490,6 +494,10 @@ console.log("...failed writing cells.");
 }
 
 $(document).ready(function() {
+	
+	//does this still matter?
+	document.designMode = "On";	
+	
 	tryToFindMathJax({
 		done : init,
 		fail : fail

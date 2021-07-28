@@ -277,10 +277,12 @@ end
 
 function SymmathHTTP:getCellForUID(gt, POST)
 	local uid = assert(tonumber(gt.uid or POST.uid))
-	local _, cell = self.cells:find(nil, function(cell) 
+	local cellIndex, cell = self.cells:find(nil, function(cell) 
 		return cell.uid == uid 
 	end)
-	return assert(cell, "failed to find cell with uid "..uid)
+	assert(cell, "failed to find cell with uid "..uid)
+	-- switch k,v to v,k
+	return cell, cellIndex
 end
 
 function SymmathHTTP:updateAllCells(POST)
@@ -441,10 +443,16 @@ print("getcells returning "..cellsjson)
 			coroutine.yield(cellsjson)
 		end)
 	elseif filename == '/newcell' then
-print("GET "..GET)
-print("adding new cell at "..gt.pos)
+print("adding new cell before "..(gt.uid or 'end'))
 		local newcell = Cell()
-		self.cells:insert(assert(tonumber(gt.pos)), newcell)
+		
+		if gt.uid then
+			local _, pos = self:getCellForUID(gt, nil)
+			self.cells:insert(pos, newcell)
+		else
+			self.cells:insert(newcell)
+		end
+
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(json.encode(newcell))
 		end)
@@ -493,7 +501,7 @@ print("adding new cell at "..gt.pos)
 		<link rel="stylesheet" href="standalone.css"/>
 	</head>
 	<body>
-		File: ]]..worksheetFilename..[[<br>
+		File: <pre>]]..worksheetFilename..[[</pre><br>
 		<br>
 	</body>
 </html>
