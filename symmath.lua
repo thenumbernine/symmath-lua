@@ -396,6 +396,13 @@ symmath.setup = function(args)
 
 	end
 	
+	-- the 5.4 interpreter uses __index to read _PROMPT, which this mt changes the behavior of to create a variable
+	-- so in lua5.4, the prompt becomes "_PROMPT" instead of "> "
+	-- (admittantly the whole idea of modifying _G's __index is a bad idea, but this is a hack to make things act like a real CAS interpreter)
+	-- (so in a better world i'd use my own lua-parser etc ... but that seems like overkill right now)
+	-- so to work around this ... just assign _PROMPT here
+	env._PROMPT = env._PROMPT or '> '
+
 	setmetatable(env, mt)
 	--]]
 

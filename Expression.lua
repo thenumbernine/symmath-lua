@@ -1890,7 +1890,12 @@ function Expression:nameForExporter(...)
 		self.nameForExporterTable[exporter.name] = newName
 	end
 
-	-- TODO here - do 'fixVariableNames' - and then use this function everywhere for the name getter.
+	-- here do 'fixVariableNames' - and then use this function everywhere for the name getter.
+	-- this way 'fixVariableNames' can be changed dynamically
+	symmath = symmath or require 'symmath.namespace'()
+	if symmath.fixVariableNames then
+		oldName = exporter:fixVariableName(oldName)
+	end
 
 --print('done and returning name '..oldName)
 --print()

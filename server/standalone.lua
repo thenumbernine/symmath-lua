@@ -32,17 +32,16 @@ local ext_io_write = ext_io.write
 -- write this before load()'ing cell block code, based on the cell type
 local currentBlockNewLineSymbol
 
+-- initialize this to the highest UID of any cell, + 1
+-- then inc it as we go
+local nextValidUID = 1
 
 local Cell = class()
 
 function Cell:init()
-	local mt = getmetatable(self)
-	setmetatable(self, nil)
-	local str = tostring(self):sub(8)
-	local uid = assert(tonumber(str), "failed to parse UID from lua table tostring "..str)
-	setmetatable(self, mt)
-	
-	self.uid = uid
+	self.uid = nextValidUID
+	nextValidUID = nextValidUID + 1
+
 	self.input = ''
 	self.output = ''
 	self.outputtype = 'html'
@@ -60,7 +59,9 @@ args.log = 10
 	SymmathHTTP.super.init(self, args)
 
 	-- TODO here, determine the url or something, and ask the OS to open it
+	-- one of these should work ... not both, right?
 	os.execute('open http://localhost:'..self.port)
+	os.execute('xdg-open http://localhost:'..self.port)
 
 	
 	-- docroot is already set to cwd by parent class
@@ -169,12 +170,17 @@ function SymmathHTTP:setupSandbox()
 end
 
 
+-- this is only called by the server upon loading data
+-- so it is safe to mess with the 'nextValidUID'
 function SymmathHTTP:readCellsFromData(data)
+	nextValidUID = 0
 	self.cells = table(fromlua(data)):mapi(function(cell)
+		nextValidUID = math.max(nextValidUID, cell.uid)
 		-- TODO if i don't refresh the uid then there's a chance a new one could overlap an old one?
 		-- or TODO just use the max as the last uid, and keep increasing?
 		return setmetatable(cell, Cell)
 	end)
+	nextValidUID = nextValidUID + 1
 end
 
 function SymmathHTTP:writeCellsToFile(filename)
@@ -295,9 +301,13 @@ function SymmathHTTP:updateAllCells(POST)
 		error("expected POST cells field, got "..tolua(POST))
 	end
 print('updateAllCells got '..tolua(newcells))	
+	
+	nextValidUID = 0
 	for _,cell in ipairs(newcells) do
+		nextValidUID = math.max(nextValidUID, cell.uid)
 		setmetatable(cell, Cell)
 	end
+	nextValidUID = nextValidUID + 1
 	self.cells = newcells
 	setmetatable(self.cells, table)
 end
@@ -352,6 +362,7 @@ print("rhs = ", rhs)
 print("run() successfully handled assign-stmt")
 			
 				if not suppressOutput then
+					--[[ rely on return tostring()
 					-- try to append the lhs's tostring to the output
 					-- hide errors maybe?
 					-- since return-stmt and assign-stmt are exclusive in lua (you can't do "return a=b" like C),
@@ -361,6 +372,32 @@ print("run() successfully handled assign-stmt")
 print("run() successfully handled tostring(lhs)")
 					end, function(err)
 					end)
+					--]]
+					-- [[ tostring() already handled below? vararg this way:
+					xpcall(function()
+						results = table.pack(assert(load("return "..lhs, nil, nil, self.env))())
+print("run() successfully handled tostring(lhs)")
+					end, function(err)
+					end)				
+					--]]
+					--[[ rely on print() (handles mult ret better)
+					local pushOutput = self.env.io.stdout.buffer
+					self.env.io.stdout.buffer = ''
+
+					-- try to append the lhs's tostring to the output
+					-- hide errors maybe?
+					-- since return-stmt and assign-stmt are exclusive in lua (you can't do "return a=b" like C),
+					-- ... just assign 'results' here
+					xpcall(function()
+						table.pack(assert(load("print("..lhs..")", nil, nil, self.env))())
+print("run() successfully handled tostring(lhs)")
+						-- assign here so that we don't assign if we get an error
+						results = self.env.io.stdout.buffer
+					end, function(err)
+					end)
+				
+					self.env.io.stdout.buffer = pushOutput
+					--]]
 				end
 			end
 		end

@@ -109,7 +109,7 @@ LaTeX.builtinLaTeXFuncNames = setmetatable(table{
 	'hom',
 	'ker',
 	'sup',
-	'inf',
+	--'inf',	-- don't do this, it's already set to \infty
 	'max',
 	'min',
 	'Pr',
@@ -304,7 +304,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		return res
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		local name = expr:nameForExporter(self)
 		local s = table{prepareName(name)}
 		--if expr.value then s:append{'|', expr.value} end
@@ -317,7 +317,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		return ' \\{'..expr.index..'\\} '
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		local Variable = symmath.Variable
 		local TensorRef = require 'symmath.tensor.TensorRef'
 
@@ -526,7 +526,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		return s
 	end,
 	[require 'symmath.tensor.TensorRef'] = function(self, expr)
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		local Array = symmath.Array
 		local TensorRef = require 'symmath.tensor.TensorRef'
 		local Variable = symmath.Variable
@@ -552,7 +552,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			s = expr.derivative .. s
 		end
 		if expr.symbol then
-			local symmath = require 'symmath'
+			symmath = symmath or require 'symmath'
 			local varname = expr.symbol
 			if symmath.fixVariableNames then
 				varname = symmath.tostring:fixVariableName(varname)

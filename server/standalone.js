@@ -4,6 +4,23 @@ var ctrls = [];
 var worksheetDiv;
 var lastAddNewCellButton;
 
+//put all menu buttons here.  or TODO just use jquery?
+var menuButtons = [];
+
+//use this for disable/enable'ing all controls while waiting for ajax responses
+// to prevent the user from issuing multiple commands at once and causing the server/client to go out of sync
+function setAllControlsEnabled(enabled) {
+	$.each(menuButtons, function(i, button) {
+		button.prop('disabled', !enabled);
+	});
+	$.each(ctrls, function(i, ctrl) {
+		ctrl.setEnabled(enabled);
+	});
+	if (lastAddNewCellButton) {
+		lastAddNewCellButton.prop('disabled', !enabled);
+	}
+}
+
 function findCtrlForUID(uid) {
 	for (var i = 0; i < cells.length; ++i) {
 		if (cells[i].uid == uid) {
@@ -79,6 +96,8 @@ function CellControl(
 		} else if (e.keyCode == 13) {
 			if (e.ctrlKey) {
 				e.preventDefault();
+				
+				setAllControlsEnabled(false);
 				ctrl.run({
 					done : function() {
 						//...annddd... select the next cell
@@ -86,17 +105,27 @@ console.log("after run response");
 console.log("for cell", ctrl.cell);
 						for (var j = 0; j < cells.length; ++j) {
 							if (cells[j].uid == ctrl.cell.uid) {
+								//have to enable before calling jquery.focus()
+								setAllControlsEnabled(true);
+								
 								if (j < cells.length-1) {
-console.log("focusing on next inputTextArea...");
+console.log("focusing on inputTextArea after number ", j); 
 									ctrls[j+1].setHidden(false);
 									ctrls[j+1].inputTextArea.focus();
 								} else {
 									// if it's the last cell then ... create a new cell and highlight it?
 									lastAddNewCellButton.click();
 								}
-								break;
+								return;
 							}
 						}
+
+						setAllControlsEnabled(true);
+						//TODO error: couldn't find cell that we just ran
+					},
+					fail : function() {
+						setAllControlsEnabled(true);
+						fail();
 					}
 				});
 				return;
@@ -123,41 +152,70 @@ console.log("focusing on next inputTextArea...");
 	});
 	ctrl.div.append(rhsCtrlDiv);
 
-	rhsCtrlDiv.append($('<button>', {
+	ctrl.toggleHiddenButton = $('<button>', {
 		text : 'v',
 		click : function() {
-			ctrl.setHidden(!ctrl.cell.hidden);
+			ctrl.toggleHiddenButton.prop('disabled', true);
+			ctrl.setHidden(!ctrl.cell.hidden)
+			.fail(function() {
+				ctrl.toggleHiddenButton.prop('disabled', false);
+				fail();
+			})
+			.done(function(){
+				ctrl.toggleHiddenButton.prop('disabled', false);
+				// don't bother enable/disable all controls, only this one? or only the expand/collapse ones?
+			});
 		}
-	}));
+	});
+	rhsCtrlDiv.append(ctrl.toggleHiddenButton);
 
-	rhsCtrlDiv.append($('<button>', {
+	ctrl.runButton = $('<button>', {
 		text : 'run',
 		click : function() {
-			ctrl.run.apply(ctrl, arguments);
+			setAllControlsEnabled(false);
+			ctrl.run({
+				fail : function() {
+					setAllControlsEnabled(true);
+					fail();
+				},
+				done : function() {
+					setAllControlsEnabled(true);
+				}
+			});
 		}
-	}));
+	});
+	rhsCtrlDiv.append(ctrl.runButton);
 	
-	var setoutputtype = $('<select>', {
+	ctrl.setOutputTypeSelect = $('<select>', {
 		html : $.map(['text', 'html', 'latex'], function(s,i) {
 			return '<option>'+s+'</option>'
 		}).join(''),
 		change : function(e) {
+			ctrl.setOutputTypeSelect.prop('disabled', true);
 			var val = this.value;
 			$.ajax({
 				url : "setoutputtype?uid="+ctrl.cell.uid+"&outputtype="+val
 			}).done(function(celldata) {
 				//only update this cell
+				// no need to disable controls too? just this control?
+				ctrl.setOutputTypeSelect.prop('disabled', false);
+				
 				ctrl.refreshJustThisCell(celldata);
 			})
-			.fail(fail);
+			.fail(function() {
+				ctrl.setOutputTypeSelect.prop('disabled', false);
+				
+				fail();
+			});
 		}
 	});
-	setoutputtype.val(ctrl.cell.outputtype);
-	rhsCtrlDiv.append(setoutputtype);
+	ctrl.setOutputTypeSelect.val(ctrl.cell.outputtype);
+	rhsCtrlDiv.append(ctrl.setOutputTypeSelect);
 
-	rhsCtrlDiv.append($('<button>', {
+	ctrl.removeCellButton = $('<button>', {
 		text : '-',
 		click : function() {
+			setAllControlsEnabled(false);
 			$.ajax({
 				url : "remove?uid="+ctrl.cell.uid
 			}).done(function() {
@@ -174,17 +232,24 @@ console.log("focusing on next inputTextArea...");
 						if (j < cells.length) {
 							ctrls[j].inputTextArea.focus();
 						}
-						break;
+						
+						setAllControlsEnabled(true);
+						return;
 					}
 				}
+				//TODO error here, couldn't find the cell
+				setAllControlsEnabled(true);
 				/**/
 			})
-			.fail(fail);
+			.fail(function() {
+				setAllControlsEnabled(true);
+				fail();
+			});
 		}
-	}));
+	});
+	rhsCtrlDiv.append(ctrl.removeCellButton);
 
 	ctrl.div.append($('<br>'));
-
 
 	var ioDiv = $('<div>', {
 		class : 'ioDiv',
@@ -192,8 +257,6 @@ console.log("focusing on next inputTextArea...");
 	ctrl.div.append(ioDiv);
 
 	ioDiv.append(ctrl.inputTextArea);
-	ioDiv.append($('<br>'));
-
 
 	var outputID = 'mj'+(++mjid);
 	ctrl.outputDiv = $('<div>', {
@@ -210,6 +273,20 @@ console.log("focusing on next inputTextArea...");
 	}
 }
 CellControl.prototype = {
+	setEnabled : function(enabled) {
+		var ctrl = this;
+		$.each([
+			ctrl.addNewCellButton,
+			ctrl.toggleHiddenButton,
+			ctrl.runButton,
+			ctrl.setOutputTypeSelect,
+			ctrl.removeCellButton,
+			ctrl.inputTextArea
+		], function(i, button) {
+			button.prop('disabled', !enabled);
+		});
+	},
+
 	//refresh the contents of the ctrl.outputDiv based on the cell.output
 	refreshOutput : function() {
 		var ctrl = this;
@@ -288,6 +365,7 @@ CellControl.prototype = {
 		.fail(fail);
 	},
 
+	//TODO wait for callbacks? 
 	setHidden : function(hidden) {
 		var ctrl = this;
 		ctrl.cell.hidden = hidden;
@@ -296,7 +374,8 @@ CellControl.prototype = {
 		} else {
 			ctrl.inputTextArea.show();
 		}
-		$.ajax({
+		//let the caller setup done or fail if they want
+		return $.ajax({
 			url : "sethidden?uid="+ctrl.cell.uid+"&hidden="+ctrl.cell.hidden
 		});
 	}
@@ -331,7 +410,21 @@ function createAddNewCellButton(cellToInsertBefore, parentNode) {
 						// and rebuild the control for it too
 						var newctrl;
 						if (cellToInsertBefore) {
-							var posToInsertBefore = cells.indexOf(cellToInsertBefore);
+							
+							//var posToInsertBefore = cells.indexOf(cellToInsertBefore);
+							//TODO search with comparator? it has to exist somewhere...
+							var posToInsertBefore = -1;
+							for (var j = 0; j < cells.length; ++j) {
+								if (cells[j].uid == cellToInsertBefore.uid) {
+									posToInsertBefore = j;
+									break;
+								}
+							}
+							
+							if (posToInsertBefore < 0 || posToInsertBefore >= cells.length) {
+								console.log("cellToInsertBefore", cellToInsertBefore);
+								throw "failed to find cellToInsertBefore";
+							}
 							var ctrlToInsertBefore = ctrls[posToInsertBefore];
 							newctrl = new CellControl(newcell, null, ctrlToInsertBefore.div);
 							cells.splice(posToInsertBefore, 0, newcell);
@@ -378,6 +471,7 @@ console.log("cells.length "+cells.length);
 }
 
 //args include 'done' or 'fail'
+//now this is only run by init(), but can be run from other buttons for debugging / lazy programming
 function getAllCellsFromServerAndRebuildHtml(args) {
 	args = args || {};
 	$.ajax({
@@ -432,11 +526,11 @@ function writeAllCells(args) {
 }
 
 function init() {
-	$(document.body).append($('<button>', {
+	var saveButton = $('<button>', {
 		text : 'save',
 		click : function() {
 console.log("save click, writing cells...");			
-			//TODO here - disable controls until save is finished
+			setAllControlsEnabled(false);
 			writeAllCells({
 				done : function() {
 console.log("..done writing cells, giving save cmd...");
@@ -444,7 +538,7 @@ console.log("..done writing cells, giving save cmd...");
 						url : "save"
 					}).done(function() {
 console.log("...done giving save cmd.");
-						//TODO on done, re-enable page controls
+						setAllControlsEnabled(true);
 					}).fail(function() {
 console.log("...failed giving save cmd.");
 						//TODO on fail, popup warning and re-enable controls			
@@ -458,21 +552,29 @@ console.log("...failed writing cells.");
 				}
 			});
 		}
-	}));
+	});
+	menuButtons.push(saveButton);
+	$(document.body).append(saveButton);
 	
-	$(document.body).append($('<button>', {
+	var runAllButton = $('<button>', {
 		text : 'run all',
 		click : function() {
+			//TODO all controls except 'break execution' for emergency restarts
+			setAllControlsEnabled(false);
 			writeAllCells({
 				done : function() {
 					var iterate;
 					iterate = function(i) {
-						if (i >= ctrls.length) return;
-						ctrls[i].run({
-							done : function() {
-								iterate(++i);
-							}
-						});
+						if (i < ctrls.length) {
+							ctrls[i].run({
+								done : function() {
+									iterate(++i);
+								}
+							});
+						} else {
+							setAllControlsEnabled(true);
+							//done
+						}
 					};
 					iterate(0);
 				},
@@ -482,29 +584,57 @@ console.log("...failed writing cells.");
 				}
 			});
 		}
-	}));
+	});
+	menuButtons.push(runAllButton);
+	$(document.body).append(runAllButton);
 
-	$(document.body).append($('<button>', {
+	var expandAllButton = $('<button>', {
 		text : 'expand all',
 		click : function() {
+			setAllControlsEnabled(false);
+			var i = 0;
+			var n = ctrl.length;
 			$.each(ctrls, function(i,ctrl) {
-				ctrl.setHidden(false);
+				ctrl.setHidden(false)
+				.fail(fail)
+				.done(function() {
+					++i;
+					if (i == n) {
+						setAllControlsEnabled(true);
+					}
+				});
 			});
 		}
-	}));
+	});
+	menuButtons.push(expandAllButton);
+	$(document.body).append(expandAllButton);
 
-	$(document.body).append($('<button>', {
+	var collapseAllButton = $('<button>', {
 		text : 'collapse all',
 		click : function() {
+			setAllControlsEnabled(false);
+			var i = 0;
+			var n = ctrl.length;
 			$.each(ctrls, function(i,ctrl) {
-				ctrl.setHidden(true);
+				ctrl.setHidden(true)
+				.fail(fail)
+				.done(function() {
+					++i;
+					if (i == n) {
+						setAllControlsEnabled(true);
+					}
+				});
 			});
 		}
-	}));
+	});
+	menuButtons.push(collapseAllButton);
+	$(document.body).append(collapseAllButton);
 
-	$(document.body).append($('<button>', {
+	var clearAllOutputButton = $('<button>', {
 		text : 'clear all output',
 		click : function() {
+			setAllControlsEnabled(false);
+
 			for (var i = 0; i < cells.length; ++i) {
 				cells[i].output = '';
 				ctrls[i].refreshOutput();
@@ -512,22 +642,36 @@ console.log("...failed writing cells.");
 			
 			// TODO writeAllCells re-reads them and rebuilds
 			// don't need to do that here
-			writeAllCells();
+			writeAllCells({
+				done : function() {
+					setAllControlsEnabled(true);
+				}
+			});
 		}
-	}));
+	});
+	menuButtons.push(clearAllOutputButton);
+	$(document.body).append(clearAllOutputButton);
 
-	$(document.body).append($('<button>', {
+	var quitButton = $('<button>', {
 		text : 'quit',
 		click : function() {
 			$.ajax({
 				url : "quit"
 			});
-			
 			//don't wait for ajax response ... there won't be one
-			// TODO just grey out all buttons
-			$(document.body).html("goodbye");
+			setAllControlsEnabled(false);
+			$(document.body).prepend($('<div>', {
+				css : {
+					font : 'color:red'
+				},
+				text : "disconnected"
+			}));
+			//TODO for some reason when we connect the next time, we get a quit message and the server immediately dies.  only one extra quit message. 
+			// I guess this is an ajax problem if it is sending the request, the server is receiving it and handling it, and then the next server is still getting another request.
 		}
-	}));
+	});
+	menuButtons.push(quitButton);
+	$(document.body).append(quitButton);
 
 	$(document.body).append($('<br>'));
 	$(document.body).append($('<br>'));
@@ -538,7 +682,12 @@ console.log("...failed writing cells.");
 	$(document.body).append(worksheetDiv);
 	$(document.body).append($('<br>'));
 
-	getAllCellsFromServerAndRebuildHtml();
+	setAllControlsEnabled(false);
+	getAllCellsFromServerAndRebuildHtml({
+		done : function() {
+			setAllControlsEnabled(true);
+		}
+	});
 }
 
 $(document).ready(function() {

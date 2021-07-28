@@ -3,6 +3,8 @@ local table = require 'ext.table'
 local string = require 'ext.string'
 local LaTeX = require 'symmath.export.LaTeX'	-- returns a singleton object
 
+local symmath
+
 
 local MathJax = class(LaTeX.class)
 
@@ -147,7 +149,7 @@ function MathJax.setup(args)
 			inst[k] = v
 		end
 	end
-	local symmath = require 'symmath'
+	symmath = symmath or require 'symmath.namespace'()
 	symmath.tostring = inst
 	
 	local title = args.title
