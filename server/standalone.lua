@@ -38,7 +38,8 @@ local Cell = class()
 function Cell:init()
 	local mt = getmetatable(self)
 	setmetatable(self, nil)
-	local uid = tonumber(tostring(self):sub(8), 16)
+	local str = tostring(self):sub(8)
+	local uid = assert(tonumber(str), "failed to parse UID from lua table tostring "..str)
 	setmetatable(self, mt)
 	
 	self.uid = uid
@@ -481,6 +482,7 @@ print("adding new cell at "..gt.pos)
 		os.exit()
 	elseif filename == '/' then
 		return '200/OK', coroutine.wrap(function()
+			-- TODO this could easily become a .html.lua templated file.
 			coroutine.yield([[
 <html>
 	<head>

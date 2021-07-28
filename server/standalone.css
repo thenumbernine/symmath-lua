@@ -1,13 +1,12 @@
+textarea, pre {
+	-moz-tab-size : 4;
+	-o-tab-size : 4;
+	tab-size : 4;
+}
+
 .worksheetDiv {
 	padding: 10px;
 	margin: auto;
-	background-color:rgb(240,240,240);
-}
-
-.outputDiv {
-	padding: 10px;
-	margin: 10px solid grey;
-	background-color:rgb(255,255,255);
 }
 
 .addNewCellButton {
@@ -15,9 +14,7 @@
 	padding : 10px 0px 10px 0px;
 }
 
-.inputTextArea {
-	width : 100%;
-	border : 0px;
+.ctrlDiv {
 }
 
 .rhsCtrlDiv {
@@ -25,8 +22,20 @@
 	float : right;
 }
 
-textarea, pre {
-	-moz-tab-size : 4;
-	-o-tab-size : 4;
-	tab-size : 4;
+.ioDiv {
+	width : 100%;
+	border-right: 1px solid black;
+	padding-right: 3px;
+}
+
+.inputTextArea {
+	width : 100%;
+	border : 0px;
+	border-right: 1px solid black;
+}
+
+.outputDiv {
+	margin-top: 5px;
+	border-right: 1px solid black;
+	padding: 10px;
 }

@@ -46,20 +46,20 @@ console.log("getcells got", arguments);
 				});
 			}
 		});
-		addNewCellButton.append($('<hr>'));
 		parentNode.append(addNewCellButton);
 		return addNewCellButton;
 	};
 	var addCell = function(cell, cellIndex) {
 
+		//TODO make 'addCell' a ctor, and make 'ctrl' into 'this' , and for callbacks make it 'thiz' too
 		var ctrl = {};
 		ctrl.cell = cell;
 		
 		ctrl.refreshOutput = function() {
-			var outputtype = cell.outputtype;
-			if (cell.haserror) outputtype = 'text';
+			var outputtype = ctrl.cell.outputtype;
+			if (ctrl.cell.haserror) outputtype = 'text';
 				
-			var outputstr = cell.output;
+			var outputstr = ctrl.cell.output;
 			if (outputtype == 'html') {
 				ctrl.outputDiv.html(outputstr);
 				MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
@@ -87,8 +87,10 @@ console.log("getcells got", arguments);
 		var refreshJustThisCell = function(celldata) {
 			var newcell = $.parseJSON(celldata);
 			cell = newcell;
+			ctrl.cell = newcell;
+
 			for (var i = 0; i < cells.length; ++i) {
-				if (cells[i].uid == cell.uid) {
+				if (cells[i].uid == ctrl.cell.uid) {
 					cells[i] = newcell;
 				}
 			}
@@ -96,9 +98,10 @@ console.log("getcells got", arguments);
 		};
 
 		ctrl.inputTextArea = $('<textarea>', {
-			class : 'inputTextArea',
-			text : cell.input
+			//class : 'inputTextArea',
+			text : ctrl.cell.input
 		});
+		ctrl.inputTextArea.addClass('inputTextArea');
 		
 		ctrl.run = function(args) {
 			args = args || {};
@@ -107,7 +110,7 @@ console.log("getcells got", arguments);
 				type : "POST",
 				url : "run",
 				data : {
-					uid : cell.uid,
+					uid : ctrl.cell.uid,
 					cellinput : cellinput
 				}
 			}).done(function(celldata) {
@@ -127,16 +130,49 @@ console.log("getcells got", arguments);
 			var numlines = ctrl.inputTextArea.val().split('\n').length;
 			ctrl.inputTextArea.attr('rows', numlines);	// + 1);
 		};
-		if (cell.hidden) ctrl.inputTextArea.hide();
+		if (ctrl.cell.hidden) ctrl.inputTextArea.hide();
 		updateTextAreaLines();
 		ctrl.inputTextArea.keydown(function(e) {
 			if (e.keyCode == 9) {
 				e.preventDefault();
-				var start = this.selectionStart;
-				var end = this.selectionEnd;
-				var oldval = ctrl.inputTextArea.val();
-				ctrl.inputTextArea.val(oldval.substring(0, start) + "\t" + oldval.substring(end));
-				this.selectionStart = this.selectionEnd = start + 1;				
+				if (this.selectionStart == this.selectionEnd) {
+					document.execCommand("insertText", false, '\t');
+				} else {
+					var selStart = this.selectionStart;
+					var selEnd = this.selectionEnd;
+					var text = $(this).val();
+					while (selStart > 0 && text[selStart-1] != '\n') {
+						selStart--;
+					}
+					while (selEnd > 0 && text[selEnd-1]!='\n' && selEnd < text.length) {
+						selEnd++;
+					}
+
+					var lines = text.substr(selStart, selEnd - selStart).split('\n');
+
+					for (var i=0; i<lines.length; i++) {
+						if (i==lines.length-1 && lines[i].length==0) {
+							continue;
+						}
+
+						if (e.shiftKey)
+						{
+							if (lines[i].startsWith('\t'))
+								lines[i] = lines[i].substr(1);
+							else if (lines[i].startsWith("    "))
+								lines[i] = lines[i].substr(4);
+						} else {
+							lines[i] = "\t" + lines[i];
+						}
+					}
+					lines = lines.join('\n');
+
+					this.selectionStart = selStart;
+					this.selectionEnd = selEnd;
+					document.execCommand("insertText", false, lines);
+					this.selectionStart = selStart;
+					this.selectionEnd = selStart + lines.length;
+				}
 			} else if (e.keyCode == 13) {
 				if (e.ctrlKey) {
 					e.preventDefault();
@@ -144,9 +180,9 @@ console.log("getcells got", arguments);
 						done : function() {
 							//...annddd... select the next cell
 console.log("after run response");
-console.log("for cell", cell);
+console.log("for cell", ctrl.cell);
 							for (var j = 0; j < cells.length; ++j) {
-								if (cells[j].uid == cell.uid) {
+								if (cells[j].uid == ctrl.cell.uid) {
 									if (j < cells.length-1) {
 console.log("focusing on next inputTextArea...");
 										ctrls[j+1].setHidden(false);
@@ -168,7 +204,10 @@ console.log("focusing on next inputTextArea...");
 			updateTextAreaLines();
 		});
 
-		ctrl.div = $('<div>');
+		// this contains the add-new-button, the rhs-ctrls, the input, and the output
+		ctrl.div = $('<div>', {
+			class : 'ctrlDiv'
+		});
 		worksheetDiv.append(ctrl.div);
 
 		// 'add new cell before'
@@ -176,14 +215,14 @@ console.log("focusing on next inputTextArea...");
 
 		//ctrl.div.append($('<hr>'));
 		ctrl.setHidden = function(hidden) {
-			cell.hidden = hidden;
-			if (cell.hidden) {
+			ctrl.cell.hidden = hidden;
+			if (ctrl.cell.hidden) {
 				ctrl.inputTextArea.hide();
 			} else {
 				ctrl.inputTextArea.show();
 			}
 			$.ajax({
-				url : "sethidden?uid="+cell.uid+"&hidden="+cell.hidden
+				url : "sethidden?uid="+ctrl.cell.uid+"&hidden="+ctrl.cell.hidden
 			});
 		};
 		
@@ -196,7 +235,7 @@ console.log("focusing on next inputTextArea...");
 		rhsCtrlDiv.append($('<button>', {
 			text : 'v',
 			click : function() {
-				ctrl.setHidden(!cell.hidden);
+				ctrl.setHidden(!ctrl.cell.hidden);
 			}
 		}));
 
@@ -214,7 +253,7 @@ console.log("focusing on next inputTextArea...");
 			change : function(e) {
 				var val = this.value;
 				$.ajax({
-					url : "setoutputtype?uid="+cell.uid+"&outputtype="+val
+					url : "setoutputtype?uid="+ctrl.cell.uid+"&outputtype="+val
 				}).done(function(celldata) {
 					//only update this cell
 					refreshJustThisCell(celldata);
@@ -222,21 +261,21 @@ console.log("focusing on next inputTextArea...");
 				.fail(fail);
 			}
 		});
-		setoutputtype.val(cell.outputtype);
+		setoutputtype.val(ctrl.cell.outputtype);
 		rhsCtrlDiv.append(setoutputtype);
 	
 		rhsCtrlDiv.append($('<button>', {
 			text : '-',
 			click : function() {
 				$.ajax({
-					url : "remove?uid="+cell.uid
+					url : "remove?uid="+ctrl.cell.uid
 				}).done(function() {
 					//update all?
 					getAllCellsFromServerAndRebuildHtml();
 
 					/* update only client changes... * /
 					for (var j = 0; j < cells.length; ++j) {
-						if (cells[j].uid == cell.uid) {
+						if (cells[j].uid == ctrl.cell.uid) {
 							ctrls[j].div.remove();
 							cells.splice(j, 1);
 							ctrls.splice(j, 1);
@@ -253,8 +292,13 @@ console.log("focusing on next inputTextArea...");
 		ctrl.div.append($('<br>'));
 
 
-		ctrl.div.append(ctrl.inputTextArea);
-		ctrl.div.append($('<br>'));
+		var ioDiv = $('<div>', {
+			class : 'ioDiv',
+		});
+		ctrl.div.append(ioDiv);
+
+		ioDiv.append(ctrl.inputTextArea);
+		ioDiv.append($('<br>'));
 
 
 		var outputID = 'mj'+(++mjid);
@@ -262,14 +306,14 @@ console.log("focusing on next inputTextArea...");
 			id : outputID,
 			class : 'outputDiv'
 		});
-		ctrl.div.append(ctrl.outputDiv);
+		ioDiv.append(ctrl.outputDiv);
 		ctrl.refreshOutput();
 
 		ctrls.push(ctrl);
 	}
 console.log("cells", cells);
 console.log("cells.length "+cells.length);
-	$.each(cells, function(cellIndex,cell) {
+	$.each(cells, function(cellIndex, cell) {
 		addCell(cell, cellIndex);
 	});
 	lastAddNewCellButton = createAddNewCellButton(cells.length+1, worksheetDiv);
