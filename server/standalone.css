@@ -5,17 +5,19 @@ textarea, pre {
 }
 
 .menubar {
-	width : 100%
+	width : 100%;
 	position : -webkit-sticky;
 	position : sticky;
 	left : 0px;
 	top : 0px;
-	background: white;
+	background : white;
+	z-index : 100;
+	display : inline
 }
 
 .worksheetDiv {
-	padding: 10px;
-	margin: auto;
+	padding : 10px;
+	margin : auto;
 }
 
 .addAndRhsDiv {
@@ -37,18 +39,20 @@ textarea, pre {
 
 .ioDiv {
 	width : 100%;
-	border-right: 1px solid black;
-	padding-right: 3px;
+	border-right : 1px solid black;
+	padding-right : 3px;
 }
 
 .inputTextArea {
 	width : 100%;
 	border : 0px;
-	border-right: 1px solid black;
+	border-right : 1px solid black;
 }
 
 .outputDiv {
-	margin-top: 5px;
-	border-right: 1px solid black;
-	/*padding: 10px;*/
+	margin-top : 5px;
+	border-right : 1px solid black;
+	overflow-x : auto;
+	overflow-y : hidden;
+	/*padding : 10px;*/
 }
