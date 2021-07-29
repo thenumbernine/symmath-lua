@@ -1,3 +1,131 @@
+// interaction with cas engine
+
+
+// remote?
+
+function RemoteServer() {
+}
+RemoteServer.prototype = {
+	/*
+	args:
+		uid
+		outputtype
+		done
+		fail
+	*/
+	setOutputType : function(args) {
+		$.ajax({
+			url : "setoutputtype?uid="+args.uid+"&outputtype="+args.outputtype
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	/*
+	args:
+		uid
+		done
+		fail
+	*/
+	remove : function(args) {
+		$.ajax({
+			url : "remove?uid="+args.uid
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	/*
+	args:
+		uid,
+		cellinput,
+		done
+		fail
+	*/
+	run : function(args) {
+		$.ajax({
+			type : "POST",
+			url : "run",
+			data : {
+				uid : args.uid,
+				cellinput : args.cellinput,
+			}
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	/*
+	args:
+		uid
+		hidden
+	*/
+	setHidden : function(args) {
+		$.ajax({
+			url : "sethidden?uid="+args.uid+"&hidden="+args.hidden
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	/*
+	args:
+		uid (optional) cell to insert before
+		done,
+		fail
+	*/
+	newCell : function(args) {
+		
+		$.ajax({
+			url : "newcell" + (args.uid !== undefined ? ("?" + args.uid) : "")
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	/*
+	args:
+		(don't pass cells, i'll just read from the global)
+		done
+		fail
+	*/
+	writeCells : function(args) {
+		$.ajax({
+			type : "POST",
+			url : "writecells",
+			data : {
+				cells : JSON.stringify(cells)
+			}
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	/*
+	args:
+		done
+		fail
+	*/
+	save : function(args) {
+		$.ajax({
+			url : "save"
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	quit : function() {
+		$.ajax({
+			url : "quit"
+		});
+	}
+};
+
+// local / emulated lua in javascript ?
+
+function EmulatedServer() {
+}
+
+
+var server = new RemoteServer();
+
+
+// from here and below is clientside stuff
+
+
 var mjid = 0;
 var cells = [];
 var ctrls = [];
@@ -110,7 +238,7 @@ console.log("for cell", ctrl.cell);
 								
 								if (j < cells.length-1) {
 console.log("focusing on inputTextArea after number ", j); 
-									ctrls[j+1].setHidden(false);
+									ctrls[j+1].setHidden({hidden:false});
 									ctrls[j+1].inputTextArea.focus();
 								} else {
 									// if it's the last cell then ... create a new cell and highlight it?
@@ -164,14 +292,16 @@ console.log("focusing on inputTextArea after number ", j);
 		text : 'v',
 		click : function() {
 			ctrl.toggleHiddenButton.prop('disabled', true);
-			ctrl.setHidden(!ctrl.cell.hidden)
-			.fail(function() {
-				ctrl.toggleHiddenButton.prop('disabled', false);
-				fail();
-			})
-			.done(function(){
-				ctrl.toggleHiddenButton.prop('disabled', false);
-				// don't bother enable/disable all controls, only this one? or only the expand/collapse ones?
+			ctrl.setHidden({
+				hidden : !ctrl.cell.hidden,
+				done : function(){
+					ctrl.toggleHiddenButton.prop('disabled', false);
+					// don't bother enable/disable all controls, only this one? or only the expand/collapse ones?
+				},
+				fail : function() {
+					ctrl.toggleHiddenButton.prop('disabled', false);
+					fail();
+				}
 			});
 		}
 	});
@@ -201,19 +331,21 @@ console.log("focusing on inputTextArea after number ", j);
 		change : function(e) {
 			ctrl.setOutputTypeSelect.prop('disabled', true);
 			var val = this.value;
-			$.ajax({
-				url : "setoutputtype?uid="+ctrl.cell.uid+"&outputtype="+val
-			}).done(function(celldata) {
-				//only update this cell
-				// no need to disable controls too? just this control?
-				ctrl.setOutputTypeSelect.prop('disabled', false);
-				
-				ctrl.refreshJustThisCell(celldata);
-			})
-			.fail(function() {
-				ctrl.setOutputTypeSelect.prop('disabled', false);
-				
-				fail();
+			
+			server.setOutputType({
+				uid : ctrl.cell.uid,
+				outputtype : this.value,
+				done : function(celldata) {
+					//only update this cell
+					// no need to disable controls too? just this control?
+					ctrl.setOutputTypeSelect.prop('disabled', false);
+					
+					ctrl.refreshJustThisCell(celldata);
+				},
+				fail : function() {
+					ctrl.setOutputTypeSelect.prop('disabled', false);
+					fail();
+				}
 			});
 		}
 	});
@@ -224,34 +356,36 @@ console.log("focusing on inputTextArea after number ", j);
 		text : '-',
 		click : function() {
 			setAllControlsEnabled(false);
-			$.ajax({
-				url : "remove?uid="+ctrl.cell.uid
-			}).done(function() {
-				/* update all? * /
-				getAllCellsFromServerAndRebuildHtml();
-				/**/
-				/* update only client changes... */
-				for (var j = 0; j < cells.length; ++j) {
-					if (cells[j].uid == ctrl.cell.uid) {
-						ctrls[j].div.remove();
-						cells.splice(j, 1);
-						ctrls.splice(j, 1);
-						// after removing ...
-						if (j < cells.length) {
-							ctrls[j].inputTextArea.focus();
+			
+			server.remove({
+				uid : ctrl.cell.uid,
+				done : function() {
+					/* update all? * /
+					getAllCellsFromServerAndRebuildHtml();
+					/**/
+					/* update only client changes... */
+					for (var j = 0; j < cells.length; ++j) {
+						if (cells[j].uid == ctrl.cell.uid) {
+							ctrls[j].div.remove();
+							cells.splice(j, 1);
+							ctrls.splice(j, 1);
+							// after removing ...
+							if (j < cells.length) {
+								ctrls[j].inputTextArea.focus();
+							}
+							
+							setAllControlsEnabled(true);
+							return;
 						}
-						
-						setAllControlsEnabled(true);
-						return;
 					}
+					//TODO error here, couldn't find the cell
+					setAllControlsEnabled(true);
+					/**/
+				},
+				fail : function() {
+					setAllControlsEnabled(true);
+					fail();
 				}
-				//TODO error here, couldn't find the cell
-				setAllControlsEnabled(true);
-				/**/
-			})
-			.fail(function() {
-				setAllControlsEnabled(true);
-				fail();
 			});
 		}
 	});
@@ -345,44 +479,50 @@ CellControl.prototype = {
 	//run the cell: send cell.input to the server, get back cell.output, and build the outputDiv
 	run : function(args) {
 		args = args || {};
-		
 		var ctrl = this;
-
-		var cellinput = ctrl.inputTextArea.val();
-		$.ajax({
-			type : "POST",
-			url : "run",
-			data : {
-				uid : ctrl.cell.uid,
-				cellinput : cellinput
-			}
-		}).done(function(celldata) {
-			/* update all? * /
-			getAllCellsFromServerAndRebuildHtml({
-				done : args.done
-			});
-			/**/
-			/* update only this one? */
-			ctrl.refreshJustThisCell(celldata);
-			//TODO wait for 'refreshJustThisCell' to finish?  finish MathJax rendering callback?
-			if (args.done) args.done();
-			/**/
-		})
-		.fail(fail);
+		
+		server.run({
+			uid : ctrl.cell.uid,
+			cellinput : ctrl.inputTextArea.val(),
+			done : function(celldata) {
+				/* update all? * /
+				getAllCellsFromServerAndRebuildHtml({
+					done : args.done
+				});
+				/**/
+				/* update only this one? */
+				ctrl.refreshJustThisCell(celldata);
+				//TODO wait for 'refreshJustThisCell' to finish?  finish MathJax rendering callback?
+				if (args.done) args.done();
+				/**/
+			},
+			fail : fail
+		});
 	},
 
-	//TODO wait for callbacks? 
-	setHidden : function(hidden) {
+	/*
+	args:
+		hidden
+		done
+		fail
+
+	TODO wait for callback?
+	*/
+	setHidden : function(args) {
 		var ctrl = this;
-		ctrl.cell.hidden = hidden;
+		ctrl.cell.hidden = args.hidden;
 		if (ctrl.cell.hidden) {
 			ctrl.inputTextArea.hide();
 		} else {
 			ctrl.inputTextArea.show();
 		}
+		
 		//let the caller setup done or fail if they want
-		return $.ajax({
-			url : "sethidden?uid="+ctrl.cell.uid+"&hidden="+ctrl.cell.hidden
+		server.setHidden({
+			uid : ctrl.cell.uid,
+			hidden : ctrl.cell.hidden,
+			done : args.done,
+			fail : args.fail
 		});
 	}
 };
@@ -395,62 +535,57 @@ function createAddNewCellButton(cellToInsertBefore, parentNode) {
 			writeAllCells({
 				// then insert the new cell
 				done : function() {
-					var url = "newcell";
-					if (cellToInsertBefore) {
-						url += "?uid="+cellToInsertBefore.uid;
-					}
-					$.ajax({
-						url : url
-					}).done(function(newcelljson) {
-						var newcell = $.parseJSON(newcelljson);
-						
-						/* update everything? * /
-						getAllCellsFromServerAndRebuildHtml({
-							done : function() {
-								// TODO focus on the new cell
-								findCtrlForUID(newcell.uid).inputTextArea.focus();
-							}
-						});
-						/**/
-						/* update just the new cell */
-						// and rebuild the control for it too
-						var newctrl;
-						if (cellToInsertBefore) {
+					server.newCell({
+						uid : cellToInsertBefore ? cellToInsertBefore.uid : undefined,
+						done : function(newcelljson) {
+							var newcell = $.parseJSON(newcelljson);
 							
-							//var posToInsertBefore = cells.indexOf(cellToInsertBefore);
-							//TODO search with comparator? it has to exist somewhere...
-							var posToInsertBefore = -1;
-							for (var j = 0; j < cells.length; ++j) {
-								if (cells[j].uid == cellToInsertBefore.uid) {
-									posToInsertBefore = j;
-									break;
+							/* update everything? * /
+							getAllCellsFromServerAndRebuildHtml({
+								done : function() {
+									// TODO focus on the new cell
+									findCtrlForUID(newcell.uid).inputTextArea.focus();
 								}
+							});
+							/**/
+							/* update just the new cell */
+							// and rebuild the control for it too
+							var newctrl;
+							if (cellToInsertBefore) {
+								
+								//var posToInsertBefore = cells.indexOf(cellToInsertBefore);
+								//TODO search with comparator? it has to exist somewhere...
+								var posToInsertBefore = -1;
+								for (var j = 0; j < cells.length; ++j) {
+									if (cells[j].uid == cellToInsertBefore.uid) {
+										posToInsertBefore = j;
+										break;
+									}
+								}
+								
+								if (posToInsertBefore < 0 || posToInsertBefore >= cells.length) {
+									console.log("cellToInsertBefore", cellToInsertBefore);
+									throw "failed to find cellToInsertBefore";
+								}
+								var ctrlToInsertBefore = ctrls[posToInsertBefore];
+								newctrl = new CellControl(newcell, null, ctrlToInsertBefore.div);
+								cells.splice(posToInsertBefore, 0, newcell);
+								ctrls.splice(posToInsertBefore, 0, newctrl);
+							} else {
+								newctrl = new CellControl(newcell, worksheetDiv, null);
+								cells.push(newcell);
+								ctrls.push(newctrl);
 							}
-							
-							if (posToInsertBefore < 0 || posToInsertBefore >= cells.length) {
-								console.log("cellToInsertBefore", cellToInsertBefore);
-								throw "failed to find cellToInsertBefore";
-							}
-							var ctrlToInsertBefore = ctrls[posToInsertBefore];
-							newctrl = new CellControl(newcell, null, ctrlToInsertBefore.div);
-							cells.splice(posToInsertBefore, 0, newcell);
-							ctrls.splice(posToInsertBefore, 0, newctrl);
-						} else {
-							newctrl = new CellControl(newcell, worksheetDiv, null);
-							cells.push(newcell);
-							ctrls.push(newctrl);
-						}
-						newctrl.inputTextArea.focus();
-						/**/
-					})
-					.fail(fail);
+							newctrl.inputTextArea.focus();
+							/**/
+						},
+						fail : fail
+					});
 				}
 			});
 		}
 	});
 	parentNode.append(addNewCellButton);
-	
-	addNewCellButton.append($('<br>'));
 
 	return addNewCellButton;
 }
@@ -517,20 +652,9 @@ function writeAllCells(args) {
 	setCellInputsToTextareaValues();
 
 	//next write to the server
-	$.ajax({
-		type : "POST",
-		url : "writecells",
-		data : {
-			cells : JSON.stringify(cells)
-		}
-	}).done(function() {
-		if (args.done) args.done();
-	}).fail(function() {
-		if (args.fail) {
-			args.fail()
-		} else {
-			fail();
-		}
+	server.writeCells({
+		done : args.done,
+		fail : args.fail || fail
 	});
 }
 
@@ -555,15 +679,16 @@ console.log("save click, writing cells...");
 			writeAllCells({
 				done : function() {
 console.log("..done writing cells, giving save cmd...");
-					$.ajax({
-						url : "save"
-					}).done(function() {
+					server.save({
+						done : function() {
 console.log("...done giving save cmd.");
-						setAllControlsEnabled(true);
-					}).fail(function() {
+							setAllControlsEnabled(true);
+						},
+						fail : function() {
 console.log("...failed giving save cmd.");
-						//TODO on fail, popup warning and re-enable controls			
-						fail();
+							//TODO on fail, popup warning and re-enable controls			
+							fail();
+						}
 					});
 				},
 				fail : function() {
@@ -616,12 +741,17 @@ console.log("...failed writing cells.");
 			var i = 0;
 			var n = ctrl.length;
 			$.each(ctrls, function(i,ctrl) {
-				ctrl.setHidden(false)
-				.fail(fail)
-				.done(function() {
-					++i;
-					if (i == n) {
+				ctrl.setHidden({
+					hidden : false,
+					done : function() {
+						++i;
+						if (i == n) {
+							setAllControlsEnabled(true);
+						}
+					},
+					fail : function() {
 						setAllControlsEnabled(true);
+						fail();
 					}
 				});
 			});
@@ -637,12 +767,17 @@ console.log("...failed writing cells.");
 			var i = 0;
 			var n = ctrl.length;
 			$.each(ctrls, function(i,ctrl) {
-				ctrl.setHidden(true)
-				.fail(fail)
-				.done(function() {
-					++i;
-					if (i == n) {
+				ctrl.setHidden({
+					hidden : true,
+					done : function() {
+						++i;
+						if (i == n) {
+							setAllControlsEnabled(true);
+						}
+					},
+					fail : function() {
 						setAllControlsEnabled(true);
+						fail();
 					}
 				});
 			});
@@ -676,9 +811,7 @@ console.log("...failed writing cells.");
 	var quitButton = $('<button>', {
 		text : 'quit',
 		click : function() {
-			$.ajax({
-				url : "quit"
-			});
+			server.quit();
 			//don't wait for ajax response ... there won't be one
 			setAllControlsEnabled(false);
 			$(document.body).prepend($('<div>', {

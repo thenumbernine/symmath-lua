@@ -55,8 +55,10 @@ local SymmathHTTP = class(HTTP)
 
 function SymmathHTTP:init(args)
 
+--[[
 args = table(args):setmetatable(nil)
 args.log = 10
+--]]
 
 	SymmathHTTP.super.init(self, args)
 
@@ -79,7 +81,7 @@ args.log = 10
 	self.cells = table()
 	if self.worksheetFilename then
 		local data = file[self.worksheetFilename]
-		print('file', self.worksheetFilename,' has data ', data)
+		self:log(5, 'file', self.worksheetFilename,' has data ', data)
 		if data then
 			self:readCellsFromData(data)
 		end
@@ -304,7 +306,7 @@ function SymmathHTTP:updateAllCells(POST)
 	if not newcells then
 		error("expected POST cells field, got "..tolua(POST))
 	end
-print('updateAllCells got '..tolua(newcells))	
+	self:log(2, 'updateAllCells got '..tolua(newcells))	
 	
 	nextValidUID = 0
 	for _,cell in ipairs(newcells) do
@@ -317,8 +319,8 @@ print('updateAllCells got '..tolua(newcells))
 end
 
 function SymmathHTTP:runCell(cell)
-	print('running...')
-print(showcode(cell.input))
+	self:log(2, 'running...')
+	self:log(2, showcode(cell.input))
 	self.env.io.stdout.buffer = ''
 	cell.haserror = nil
 	
@@ -331,7 +333,7 @@ print(showcode(cell.input))
 
 		-- put a ; at the end to suppress assignment output.  sound familiar?
 		local suppressOutput = cell.input:sub(-1) == ';'
-print('suppressOutput = ', suppressOutput) 
+	self:log(1, 'suppressOutput = ', suppressOutput) 
 		
 		local results
 				
@@ -340,7 +342,7 @@ print('suppressOutput = ', suppressOutput)
 		if not suppressOutput then
 			xpcall(function()
 				results = table.pack(assert(load('return '..cell.input, nil, nil, self.env))())
-print("run() got a single expression")
+				self:log(2, "run() got a single expression")
 			end, function(err)
 				-- hide any errors and try later on fail
 			end)
@@ -355,15 +357,15 @@ print("run() got a single expression")
 			if lhs then
 				lhs = string.trim(lhs)
 
-print("run() found a assign-stmt")
-print("lhs = ", lhs)
-print("rhs = ", rhs)
+				self:log(2, "run() found a assign-stmt")
+				self:log(5, "lhs = ", lhs)
+				self:log(5, "rhs = ", rhs)
 
 				-- if it failed then there's an error in it ... so we want to report the error ...
 				-- also we don't need 'results' ... since we're going to get it from the xpcall on lhs
 				-- but maybe we should save 'results', since without 'results' it will be run twice as a non-expr, non-assign-stmt ...
 				results = table.pack(assert(load(cell.input, nil, nil, self.env))())
-print("run() successfully handled assign-stmt")
+				self:log(2, "run() successfully handled assign-stmt")
 			
 				if not suppressOutput then
 					--[[ rely on return tostring()
@@ -373,14 +375,14 @@ print("run() successfully handled assign-stmt")
 					-- ... just assign 'results' here
 					xpcall(function()
 						results = table.pack(assert(load("return tostring("..lhs..")", nil, nil, self.env))())
-print("run() successfully handled tostring(lhs)")
+						self:log(2, "run() successfully handled tostring(lhs)")
 					end, function(err)
 					end)
 					--]]
 					-- [[ tostring() already handled below? vararg this way:
 					xpcall(function()
 						results = table.pack(assert(load("return "..lhs, nil, nil, self.env))())
-print("run() successfully handled tostring(lhs)")
+						self:log(2, "run() successfully handled tostring(lhs)")
 					end, function(err)
 					end)				
 					--]]
@@ -394,7 +396,7 @@ print("run() successfully handled tostring(lhs)")
 					-- ... just assign 'results' here
 					xpcall(function()
 						table.pack(assert(load("print("..lhs..")", nil, nil, self.env))())
-print("run() successfully handled tostring(lhs)")
+						self:log(2, "run() successfully handled tostring(lhs)")
 						-- assign here so that we don't assign if we get an error
 						results = self.env.io.stdout.buffer
 					end, function(err)
@@ -408,12 +410,12 @@ print("run() successfully handled tostring(lhs)")
 
 		-- if expression fails, and assign-statement fails, then try without ... in case it's multi-statement
 		if not results then
-print("run() handling multi-stmt")
+			self:log(2, "run() handling multi-stmt")
 			results = table.pack(assert(load(cell.input, nil, nil, self.env))())
 		end
 
 		cell.output = self.env.io.stdout.buffer
-print("run() cell.output", cell.output)
+		self:log(2, "run() cell.output", cell.output)
 
 		if results.n > 0 then
 			-- if we returned anything from this block then print it -- just like lua interpreter
@@ -432,7 +434,7 @@ print("run() cell.output", cell.output)
 		end
 	
 	end, function(err)
-print('got error '..err)
+		self:log(0, 'got error '..err)
 		cell.output = err..'\n'..debug.traceback()
 		cell.haserror = true	-- use this flag to override the output type, so that when the error goes away the output will go back to what it was
 	end)
@@ -453,7 +455,7 @@ function SymmathHTTP:handleRequest(...)
 		proto,
 		GET,
 		POST = ...
-print('SymmathHTTP.handleRequest', filename)
+	self:log(2, 'SymmathHTTP.handleRequest', filename)
 		
 	local gt = self:makeGETTable(GET)
 
@@ -479,12 +481,12 @@ print('SymmathHTTP.handleRequest', filename)
 		end)
 	elseif filename == '/getcells' then
 		local cellsjson = json.encode(self.cells)
-print("getcells returning "..cellsjson)
+		self:log(5, "getcells returning "..cellsjson)
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield(cellsjson)
 		end)
 	elseif filename == '/newcell' then
-print("adding new cell before "..(gt.uid or 'end'))
+		self:log(2, "adding new cell before "..(gt.uid or 'end'))
 		local newcell = Cell()
 		
 		if gt.uid then
@@ -541,7 +543,7 @@ print("adding new cell before "..(gt.uid or 'end'))
 			)
 		end)
 	else
-print('calling SymmathHTTP.super.handleRequest')
+		self:log(2, 'calling SymmathHTTP.super.handleRequest')
 		return SymmathHTTP.super.handleRequest(self, ...)
 	end
 end
