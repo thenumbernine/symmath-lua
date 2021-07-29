@@ -141,16 +141,24 @@ console.log("focusing on inputTextArea after number ", j);
 		class : 'ctrlDiv'
 	});
 
-	// 'add new cell before'
-	ctrl.addNewCellButton = createAddNewCellButton(ctrl.cell, ctrl.div);
-
-	//ctrl.div.append($('<hr>'));
-
-
 	var rhsCtrlDiv = $('<span>', {
 		class : 'rhsCtrlDiv'
 	});
-	ctrl.div.append(rhsCtrlDiv);
+
+
+	var addAndRhsDiv = $('<div>', {
+		class : 'addAndRhsDiv'
+	});
+	ctrl.div.append(addAndRhsDiv);
+
+	// 'add new cell before'
+	ctrl.addNewCellButton = createAddNewCellButton(ctrl.cell, addAndRhsDiv);
+	//ctrl.div.append($('<hr>'));
+	
+	//ctrl.div.append(rhsCtrlDiv);
+	addAndRhsDiv.prepend(rhsCtrlDiv);
+
+
 
 	ctrl.toggleHiddenButton = $('<button>', {
 		text : 'v',
@@ -248,8 +256,6 @@ console.log("focusing on inputTextArea after number ", j);
 		}
 	});
 	rhsCtrlDiv.append(ctrl.removeCellButton);
-
-	ctrl.div.append($('<br>'));
 
 	var ioDiv = $('<div>', {
 		class : 'ioDiv',
@@ -443,6 +449,9 @@ function createAddNewCellButton(cellToInsertBefore, parentNode) {
 		}
 	});
 	parentNode.append(addNewCellButton);
+	
+	addNewCellButton.append($('<br>'));
+
 	return addNewCellButton;
 }
 
@@ -686,12 +695,6 @@ console.log("...failed writing cells.");
 	menubar.append(quitButton);
 
 	$(document.body).append(menubar);
-
-	$(document.body).append($('<br>'));
-	
-
-
-	$(document.body).append($('<br>'));
 
 	worksheetDiv = $('<div>', {
 		class : 'worksheetDiv'

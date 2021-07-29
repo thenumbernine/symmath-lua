@@ -18,9 +18,13 @@ textarea, pre {
 	margin: auto;
 }
 
+.addAndRhsDiv {
+	width : 100%;
+}
+
 .addNewCellButton {
 	cursor : vertical-text;
-	padding : 10px 0px 10px 0px;
+	width : 100%;
 }
 
 .ctrlDiv {
