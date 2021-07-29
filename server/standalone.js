@@ -526,6 +526,18 @@ function writeAllCells(args) {
 }
 
 function init() {
+	var menubar = $('<div>', {
+		class : 'menubar'
+	});
+	$(document.body).append(menubar);
+
+
+	menubar.append($('<span>', {
+		text : worksheetFilename
+	}));
+	
+	menubar.append($('<br>'));
+	
 	var saveButton = $('<button>', {
 		text : 'save',
 		click : function() {
@@ -554,7 +566,7 @@ console.log("...failed writing cells.");
 		}
 	});
 	menuButtons.push(saveButton);
-	$(document.body).append(saveButton);
+	menubar.append(saveButton);
 	
 	var runAllButton = $('<button>', {
 		text : 'run all',
@@ -586,7 +598,7 @@ console.log("...failed writing cells.");
 		}
 	});
 	menuButtons.push(runAllButton);
-	$(document.body).append(runAllButton);
+	menubar.append(runAllButton);
 
 	var expandAllButton = $('<button>', {
 		text : 'expand all',
@@ -607,7 +619,7 @@ console.log("...failed writing cells.");
 		}
 	});
 	menuButtons.push(expandAllButton);
-	$(document.body).append(expandAllButton);
+	menubar.append(expandAllButton);
 
 	var collapseAllButton = $('<button>', {
 		text : 'collapse all',
@@ -628,7 +640,7 @@ console.log("...failed writing cells.");
 		}
 	});
 	menuButtons.push(collapseAllButton);
-	$(document.body).append(collapseAllButton);
+	menubar.append(collapseAllButton);
 
 	var clearAllOutputButton = $('<button>', {
 		text : 'clear all output',
@@ -650,7 +662,7 @@ console.log("...failed writing cells.");
 		}
 	});
 	menuButtons.push(clearAllOutputButton);
-	$(document.body).append(clearAllOutputButton);
+	menubar.append(clearAllOutputButton);
 
 	var quitButton = $('<button>', {
 		text : 'quit',
@@ -671,9 +683,14 @@ console.log("...failed writing cells.");
 		}
 	});
 	menuButtons.push(quitButton);
-	$(document.body).append(quitButton);
+	menubar.append(quitButton);
+
+	$(document.body).append(menubar);
 
 	$(document.body).append($('<br>'));
+	
+
+
 	$(document.body).append($('<br>'));
 
 	worksheetDiv = $('<div>', {

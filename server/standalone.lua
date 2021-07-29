@@ -12,6 +12,8 @@ local file = require 'ext.file'
 local os = require 'ext.os'
 local tolua = require 'ext.tolua'
 local fromlua = require 'ext.fromlua'
+local template = require 'template'
+local showcode = require 'template.showcode'
 local HTTP = require 'http.class'
 local json = require 'dkjson'
 
@@ -58,6 +60,8 @@ args.log = 10
 
 	SymmathHTTP.super.init(self, args)
 
+	self.worksheetFilename = worksheetFilename 
+
 	-- TODO here, determine the url or something, and ask the OS to open it
 	-- one of these should work ... not both, right?
 	os.execute('open http://localhost:'..self.port)
@@ -73,9 +77,9 @@ args.log = 10
 
 	-- single worksheet instance.  TODO make modular:
 	self.cells = table()
-	if worksheetFilename then
-		local data = file[worksheetFilename]
-		print('file', worksheetFilename,' has data ', data)
+	if self.worksheetFilename then
+		local data = file[self.worksheetFilename]
+		print('file', self.worksheetFilename,' has data ', data)
 		if data then
 			self:readCellsFromData(data)
 		end
@@ -278,7 +282,7 @@ end
 --]===]
 
 function SymmathHTTP:save()
-	self:writeCellsToFile(worksheetFilename)
+	self:writeCellsToFile(self.worksheetFilename)
 end
 
 function SymmathHTTP:getCellForUID(gt, POST)
@@ -314,7 +318,7 @@ end
 
 function SymmathHTTP:runCell(cell)
 	print('running...')
-print(require 'template.showcode'(cell.input))
+print(showcode(cell.input))
 	self.env.io.stdout.buffer = ''
 	cell.haserror = nil
 	
@@ -527,22 +531,14 @@ print("adding new cell before "..(gt.uid or 'end'))
 		os.exit()
 	elseif filename == '/' then
 		return '200/OK', coroutine.wrap(function()
-			-- TODO this could easily become a .html.lua templated file.
-			coroutine.yield([[
-<html>
-	<head>
-		<title>Symmath Worksheet - ]]..worksheetFilename..[[</title>
-		<script type="text/javascript" src="jquery-3.6.0.min.js"></script>
-		<script type="text/javascript" src="tryToFindMathJax.js"></script>
-		<script type="text/javascript" src="standalone.js"></script>
-		<link rel="stylesheet" href="standalone.css"/>
-	</head>
-	<body>
-		File: <pre style="display:inline">]]..worksheetFilename..[[</pre><br>
-		<br>
-	</body>
-</html>
-]])
+			-- TODO this is also accessible as its filename, so ... ? 
+			coroutine.yield(
+				template(
+					-- TODO just call this 'index.html.lua' , but index to what, considering it is in a separate search path.
+					file[self.symmathPath..'/server/standalone.html.lua'],
+					self
+				)
+			)
 		end)
 	else
 print('calling SymmathHTTP.super.handleRequest')

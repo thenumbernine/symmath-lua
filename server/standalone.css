@@ -4,6 +4,15 @@ textarea, pre {
 	tab-size : 4;
 }
 
+.menubar {
+	width : 100%
+	position : -webkit-sticky;
+	position : sticky;
+	left : 0px;
+	top : 0px;
+	background: white;
+}
+
 .worksheetDiv {
 	padding: 10px;
 	margin: auto;
