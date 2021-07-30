@@ -47,7 +47,8 @@ var SymLuaEmbeddedLuaInterpreter = makeClass({
 	//add in the [Output] for viewing cached LaTeX output
 	createDivForTestRow : function(info) {
 		var div = SymLuaEmbeddedLuaInterpreter.superProto.createDivForTestRow.apply(this, arguments);
-		var localPath = info.url.replace( /\/symbolic-lua\/src\/tests\/(.*)\.lua/, '/symbolic-lua/src/tests/output/$1.html');
+		var url = unescape(info.url);
+		var localPath = url.replace( /\/symbolic-lua\/src\/tests\/(.*)\.lua/, '/symbolic-lua/src/tests/output/$1.html');
 		$('<a>', {
 			href : localPath,
 			text : '[Output]',

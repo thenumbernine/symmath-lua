@@ -66,9 +66,12 @@ args.log = 10
 
 	-- TODO here, determine the url or something, and ask the OS to open it
 	-- one of these should work ... not both, right?
-	os.execute('open http://localhost:'..self.port)
-	os.execute('xdg-open http://localhost:'..self.port)
-
+	-- TODO non-ffi windows detect plz?
+	if string.trim(io.readproc'uname':lower()) == 'linux' then
+		os.execute('xdg-open http://localhost:'..self.port)
+	else
+		os.execute('open http://localhost:'..self.port)
+	end
 	
 	-- docroot is already set to cwd by parent class
 	self.symmathPath = assert(os.getenv'SYMMATH_PATH', 'SYMMATH_PATH not defined')
