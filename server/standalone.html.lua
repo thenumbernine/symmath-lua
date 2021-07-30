@@ -8,6 +8,16 @@
 		<link rel="stylesheet" href="standalone.css"/>
 		<script>
 worksheetFilename = "<?=worksheetFilename?>";
+
+//TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
+$(document).ready(function() {
+	tryToFindMathJax({
+		done : function() {
+			init(document.body);
+		},
+		fail : fail
+	});
+});
 		</script>
 	</head>
 	<body>

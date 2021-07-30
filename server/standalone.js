@@ -1,131 +1,3 @@
-// interaction with cas engine
-
-
-// remote?
-
-function RemoteServer() {
-}
-RemoteServer.prototype = {
-	/*
-	args:
-		uid
-		outputtype
-		done
-		fail
-	*/
-	setOutputType : function(args) {
-		$.ajax({
-			url : "setoutputtype?uid="+args.uid+"&outputtype="+args.outputtype
-		}).done(args.done)
-		.fail(args.fail);
-	},
-
-	/*
-	args:
-		uid
-		done
-		fail
-	*/
-	remove : function(args) {
-		$.ajax({
-			url : "remove?uid="+args.uid
-		}).done(args.done)
-		.fail(args.fail);
-	},
-
-	/*
-	args:
-		uid,
-		cellinput,
-		done
-		fail
-	*/
-	run : function(args) {
-		$.ajax({
-			type : "POST",
-			url : "run",
-			data : {
-				uid : args.uid,
-				cellinput : args.cellinput,
-			}
-		}).done(args.done)
-		.fail(args.fail);
-	},
-
-	/*
-	args:
-		uid
-		hidden
-	*/
-	setHidden : function(args) {
-		$.ajax({
-			url : "sethidden?uid="+args.uid+"&hidden="+args.hidden
-		}).done(args.done)
-		.fail(args.fail);
-	},
-
-	/*
-	args:
-		uid (optional) cell to insert before
-		done,
-		fail
-	*/
-	newCell : function(args) {
-		
-		$.ajax({
-			url : "newcell" + (args.uid !== undefined ? ("?" + args.uid) : "")
-		}).done(args.done)
-		.fail(args.fail);
-	},
-
-	/*
-	args:
-		(don't pass cells, i'll just read from the global)
-		done
-		fail
-	*/
-	writeCells : function(args) {
-		$.ajax({
-			type : "POST",
-			url : "writecells",
-			data : {
-				cells : JSON.stringify(cells)
-			}
-		}).done(args.done)
-		.fail(args.fail);
-	},
-
-	/*
-	args:
-		done
-		fail
-	*/
-	save : function(args) {
-		$.ajax({
-			url : "save"
-		}).done(args.done)
-		.fail(args.fail);
-	},
-
-	quit : function() {
-		$.ajax({
-			url : "quit"
-		});
-	}
-};
-
-// local / emulated lua in javascript ?
-
-function EmulatedServer() {
-}
-
-
-var server = new RemoteServer();
-
-
-// from here and below is clientside stuff
-
-
 var mjid = 0;
 var cells = [];
 var ctrls = [];
@@ -172,7 +44,9 @@ function CellControl(
 		text : ctrl.cell.input
 	});
 	ctrl.inputTextArea.addClass('inputTextArea');
-	
+	ctrl.inputTextArea.attr('autocapitalize', 'off');		
+	ctrl.inputTextArea.attr('autocomplete', 'off');		
+	ctrl.inputTextArea.attr('autocorrect', 'off');		
 	ctrl.inputTextArea.attr('spellcheck', 'false');
 	var updateTextAreaLines = function() {
 		var numlines = ctrl.inputTextArea.val().split('\n').length;
@@ -618,21 +492,21 @@ console.log("cells.length "+cells.length);
 //now this is only run by init(), but can be run from other buttons for debugging / lazy programming
 function getAllCellsFromServerAndRebuildHtml(args) {
 	args = args || {};
-	$.ajax({
-		url : "getcells"
-	})
-	.fail(function() {
-		(args.fail || fail)();	//you only do this if the first function is not a global/window variable, otherwise it errors.  stupid javascript.
-	})
-	.done(function(cellsjson) {
-		rebuildHtmlFromCells($.extend({
-			cellsjson : cellsjson
-		}, args));
+	server.getCells({
+		done : function(cellsjson) {
+			rebuildHtmlFromCells($.extend({
+				cellsjson : cellsjson
+			}, args));
+		},
+		fail : function() {
+			(args.fail || fail).apply(null, arguments);	//you only do this if the first function is not a global/window variable, otherwise it errors.  stupid javascript.
+		}
 	});
 }
 
-function fail() {
+function fail(e) {
 	console.log(arguments);
+	console.log(e.stack);
 	throw 'failed';
 }
 
@@ -658,11 +532,13 @@ function writeAllCells(args) {
 	});
 }
 
-function init() {
+function init(root) {
+	root = root || document.body;
+
 	var menubar = $('<div>', {
 		class : 'menubar'
 	});
-	$(document.body).append(menubar);
+	$(root).append(menubar);
 
 
 	menubar.append($('<span>', {
@@ -814,7 +690,7 @@ console.log("...failed writing cells.");
 			server.quit();
 			//don't wait for ajax response ... there won't be one
 			setAllControlsEnabled(false);
-			$(document.body).prepend($('<div>', {
+			$(root).prepend($('<div>', {
 				css : {
 					font : 'color:red'
 				},
@@ -827,13 +703,13 @@ console.log("...failed writing cells.");
 	menuButtons.push(quitButton);
 	menubar.append(quitButton);
 
-	$(document.body).append(menubar);
+	$(root).append(menubar);
 
 	worksheetDiv = $('<div>', {
 		class : 'worksheetDiv'
 	});
-	$(document.body).append(worksheetDiv);
-	$(document.body).append($('<br>'));
+	$(root).append(worksheetDiv);
+	$(root).append($('<br>'));
 
 	setAllControlsEnabled(false);
 	getAllCellsFromServerAndRebuildHtml({
@@ -843,9 +719,3 @@ console.log("...failed writing cells.");
 	});
 }
 
-$(document).ready(function() {
-	tryToFindMathJax({
-		done : init,
-		fail : fail
-	});
-});

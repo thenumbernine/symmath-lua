@@ -5,6 +5,14 @@ function EmulatedServer() {
 EmulatedServer.prototype = {
 	/*
 	args:
+		done
+		fail
+	*/
+	getCells : function(args) {
+	},
+
+	/*
+	args:
 		uid
 		outputtype
 		done

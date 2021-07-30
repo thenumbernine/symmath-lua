@@ -9,6 +9,18 @@ function RemoteServer() {
 RemoteServer.prototype = {
 	/*
 	args:
+		done
+		fail
+	*/
+	getCells : function(args) {
+		$.ajax({
+			url : "getcells"
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	/*
+	args:
 		uid
 		outputtype
 		done
