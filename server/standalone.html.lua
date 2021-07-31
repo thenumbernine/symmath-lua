@@ -1,11 +1,12 @@
 <html>
 	<head>
 		<title>Symmath Worksheet - <?=worksheetFilename?></title>
-		<script type="text/javascript" src="jquery-3.6.0.min.js"></script>
-		<script type="text/javascript" src="tryToFindMathJax.js"></script>
-		<script type="text/javascript" src="standalone-bridge-ajax.js"></script>
-		<script type="text/javascript" src="standalone.js"></script>
-		<link rel="stylesheet" href="standalone.css"/>
+		<script type="text/javascript" src="/server/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript" src="/server/showdown-1.9.1.min.js"></script>
+		<script type="text/javascript" src="/server/tryToFindMathJax.js"></script>
+		<script type="text/javascript" src="/server/standalone-bridge-ajax.js"></script>
+		<script type="text/javascript" src="/server/standalone.js"></script>
+		<link rel="stylesheet" href="/server/standalone.css"/>
 		<script>
 worksheetFilename = "<?=worksheetFilename?>";
 

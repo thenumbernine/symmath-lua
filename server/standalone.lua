@@ -447,7 +447,7 @@ end
 function SymmathHTTP:getSearchPaths()
 	return table{
 		self.docroot,
-		self.symmathPath..'/server',
+		self.symmathPath,
 	}
 end
 

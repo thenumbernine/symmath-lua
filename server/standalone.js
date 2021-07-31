@@ -546,162 +546,218 @@ function init(root) {
 	}));
 	
 	menubar.append($('<br>'));
-	
-	var saveButton = $('<button>', {
-		text : 'save',
-		click : function() {
+
+	//arguments[0] is the name, arguments[1-n] are the ctors of the buttons
+	var addMenu = function() {
+		var dropdown = $('<div>', {
+			class : 'dropdown'
+		});
+		menubar.append(dropdown);
+
+		var menuButton = $('<button>', {
+			text : arguments[0],
+		});
+		dropdown.append(menuButton);
+		menuButtons.push(menuButton);
+
+		var contents = $('<div>', {
+			class : 'dropdown-content'
+		});
+		dropdown.append(contents);
+
+		for (var i = 1; i < arguments.length; ++i) {
+			var subButton = $('<a>', $.extend({href:'#'}, arguments[i]));
+			contents.append(subButton);
+			menuButtons.push(subButton);
+		}
+	};
+
+	addMenu(
+		'File',
+		{
+			text : 'Save',
+			click : function() {
 console.log("save click, writing cells...");			
-			setAllControlsEnabled(false);
-			writeAllCells({
-				done : function() {
+				setAllControlsEnabled(false);
+				writeAllCells({
+					done : function() {
 console.log("..done writing cells, giving save cmd...");
-					server.save({
-						done : function() {
+						server.save({
+							done : function() {
 console.log("...done giving save cmd.");
-							setAllControlsEnabled(true);
+								setAllControlsEnabled(true);
+							},
+							fail : function() {
+console.log("...failed giving save cmd.");
+								//TODO on fail, popup warning and re-enable controls			
+								fail();
+							}
+						});
+					},
+					fail : function() {
+console.log("...failed writing cells.");
+						//TODO on fail, popup warning and re-enable controls
+						fail();
+					}
+				});
+			}
+		},
+		{
+			text : 'Quit',
+			click : function() {
+				server.quit();
+				//don't wait for ajax response ... there won't be one
+				setAllControlsEnabled(false);
+				$(root).prepend($('<div>', {
+					css : {
+						font : 'color:red'
+					},
+					text : "disconnected"
+				}));
+				//TODO for some reason when we connect the next time, we get a quit message and the server immediately dies.  only one extra quit message. 
+				// I guess this is an ajax problem if it is sending the request, the server is receiving it and handling it, and then the next server is still getting another request.
+			}
+		}
+	);
+
+	addMenu(
+		'Run',
+		{
+			text : 'Run All',
+			click : function() {
+				//TODO all controls except 'break execution' for emergency restarts
+				setAllControlsEnabled(false);
+				writeAllCells({
+					done : function() {
+						var iterate;
+						iterate = function(i) {
+							if (i < ctrls.length) {
+								ctrls[i].run({
+									done : function() {
+										iterate(++i);
+									}
+								});
+							} else {
+								setAllControlsEnabled(true);
+								//done
+							}
+						};
+						iterate(0);
+					},
+					fail : function() {
+						//TODO fail
+						fail();
+					}
+				});
+			}
+		}
+	);
+
+	addMenu(
+		'View',
+		{
+			text : 'Expand All',
+			click : function() {
+				setAllControlsEnabled(false);
+				var i = 0;
+				var n = ctrls.length;
+				$.each(ctrls, function(i,ctrl) {
+					ctrl.setHidden({
+						hidden : false,
+						done : function() {
+							++i;
+							if (i == n) {
+								setAllControlsEnabled(true);
+							}
 						},
 						fail : function() {
-console.log("...failed giving save cmd.");
-							//TODO on fail, popup warning and re-enable controls			
+							setAllControlsEnabled(true);
 							fail();
 						}
 					});
-				},
-				fail : function() {
-console.log("...failed writing cells.");
-					//TODO on fail, popup warning and re-enable controls
-					fail();
-				}
-			});
-		}
-	});
-	menuButtons.push(saveButton);
-	menubar.append(saveButton);
-	
-	var runAllButton = $('<button>', {
-		text : 'run all',
-		click : function() {
-			//TODO all controls except 'break execution' for emergency restarts
-			setAllControlsEnabled(false);
-			writeAllCells({
-				done : function() {
-					var iterate;
-					iterate = function(i) {
-						if (i < ctrls.length) {
-							ctrls[i].run({
-								done : function() {
-									iterate(++i);
-								}
-							});
-						} else {
-							setAllControlsEnabled(true);
-							//done
-						}
-					};
-					iterate(0);
-				},
-				fail : function() {
-					//TODO fail
-					fail();
-				}
-			});
-		}
-	});
-	menuButtons.push(runAllButton);
-	menubar.append(runAllButton);
-
-	var expandAllButton = $('<button>', {
-		text : 'expand all',
-		click : function() {
-			setAllControlsEnabled(false);
-			var i = 0;
-			var n = ctrls.length;
-			$.each(ctrls, function(i,ctrl) {
-				ctrl.setHidden({
-					hidden : false,
-					done : function() {
-						++i;
-						if (i == n) {
-							setAllControlsEnabled(true);
-						}
-					},
-					fail : function() {
-						setAllControlsEnabled(true);
-						fail();
-					}
 				});
-			});
-		}
-	});
-	menuButtons.push(expandAllButton);
-	menubar.append(expandAllButton);
-
-	var collapseAllButton = $('<button>', {
-		text : 'collapse all',
-		click : function() {
-			setAllControlsEnabled(false);
-			var i = 0;
-			var n = ctrls.length;
-			$.each(ctrls, function(i,ctrl) {
-				ctrl.setHidden({
-					hidden : true,
-					done : function() {
-						++i;
-						if (i == n) {
-							setAllControlsEnabled(true);
-						}
-					},
-					fail : function() {
-						setAllControlsEnabled(true);
-						fail();
-					}
-				});
-			});
-		}
-	});
-	menuButtons.push(collapseAllButton);
-	menubar.append(collapseAllButton);
-
-	var clearAllOutputButton = $('<button>', {
-		text : 'clear all output',
-		click : function() {
-			setAllControlsEnabled(false);
-
-			for (var i = 0; i < cells.length; ++i) {
-				cells[i].output = '';
-				ctrls[i].refreshOutput();
 			}
-			
-			// TODO writeAllCells re-reads them and rebuilds
-			// don't need to do that here
-			writeAllCells({
-				done : function() {
-					setAllControlsEnabled(true);
-				}
-			});
-		}
-	});
-	menuButtons.push(clearAllOutputButton);
-	menubar.append(clearAllOutputButton);
+		},
+		{
+			text : 'Collapse All',
+			click : function() {
+				setAllControlsEnabled(false);
+				var i = 0;
+				var n = ctrls.length;
+				$.each(ctrls, function(i,ctrl) {
+					ctrl.setHidden({
+						hidden : true,
+						done : function() {
+							++i;
+							if (i == n) {
+								setAllControlsEnabled(true);
+							}
+						},
+						fail : function() {
+							setAllControlsEnabled(true);
+							fail();
+						}
+					});
+				});
+			}
+		},
+		{
+			text : 'Clear All Output',
+			click : function() {
+				setAllControlsEnabled(false);
 
-	var quitButton = $('<button>', {
-		text : 'quit',
-		click : function() {
-			server.quit();
-			//don't wait for ajax response ... there won't be one
-			setAllControlsEnabled(false);
-			$(root).prepend($('<div>', {
-				css : {
-					font : 'color:red'
-				},
-				text : "disconnected"
-			}));
-			//TODO for some reason when we connect the next time, we get a quit message and the server immediately dies.  only one extra quit message. 
-			// I guess this is an ajax problem if it is sending the request, the server is receiving it and handling it, and then the next server is still getting another request.
+				for (var i = 0; i < cells.length; ++i) {
+					cells[i].output = '';
+					ctrls[i].refreshOutput();
+				}
+				
+				// TODO writeAllCells re-reads them and rebuilds
+				// don't need to do that here
+				writeAllCells({
+					done : function() {
+						setAllControlsEnabled(true);
+					}
+				});
+			}
 		}
+	);
+
+	var helpDiv = $('<div>', {
+		class : 'helpDiv'
 	});
-	menuButtons.push(quitButton);
-	menubar.append(quitButton);
+	$(root).append(helpDiv);
+
+	
+	$.ajax({
+		url : 'README.reference.md',
+		dataType : 'text',
+		cache : false,
+	}).fail(function() {
+		console.log("failed to get readme", arguments);
+	}).done(function(text) {
+		console.log("got reference", arguments);
+		var converter = new showdown.Converter();
+		var help = converter.makeHtml(text);
+		helpDiv.append($('<button>', {
+			text : 'x',
+			class : 'closeHelpButton',
+			click : function() {
+				helpDiv.hide();
+			}
+		}));
+		helpDiv.append(help);
+	});
+
+
+	addMenu(
+		'Help',
+		{
+			text : 'Help',
+			click : function() {
+				helpDiv.show();
+			}
+		}
+	);
 
 	$(root).append(menubar);
 
