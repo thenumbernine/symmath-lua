@@ -15,7 +15,9 @@ symmathDir = '.';	//standalone.lua runs from SYMMATH_PATH
 $(document).ready(function() {
 	tryToFindMathJax({
 		done : function() {
-			init(document.body);
+			init({
+				root : document.body
+			});
 		},
 		fail : fail
 	});

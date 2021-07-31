@@ -525,8 +525,8 @@ function writeAllCells(args) {
 	});
 }
 
-function init(root) {
-	root = root || document.body;
+function init(args) {
+	var root = args ? args.root : document.body;
 
 	var menubar = $('<div>', {
 		class : 'menubar'
@@ -769,6 +769,8 @@ console.log("...failed writing cells.");
 				//no cells in our file?  at least load the first cell
 				lastAddNewCellButton.click();
 			}
+		
+			if (args && args.done) args.done();
 		}
 	});
 }
