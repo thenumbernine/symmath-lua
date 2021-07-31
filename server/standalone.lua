@@ -122,6 +122,8 @@ function SymmathHTTP:setupSandbox()
 
 
 	local orig_io = require 'io'
+	-- TODO FIXME this is resetting ext.io, but what about io itself?
+	-- I guess its hidden if we always require 'ext' on the env
 	local orig_io = require 'ext.io'
 
 	self.env.io = {}
@@ -535,6 +537,12 @@ function SymmathHTTP:handleRequest(...)
 		-- hmm, guess we won't be sending a response
 		-- unless I add coroutines threadmanager and have some idle loop / timeout, and run exit() in there ...
 		os.exit()
+	elseif filename == '/newworksheet' then
+		self.cells = table()
+		self:setupSandbox()
+		return '200/OK', coroutine.wrap(function()
+			coroutine.yield'{ok:true}'
+		end)
 	elseif filename == '/getworksheet' then
 		self:log(5, "getworksheet "..gt.filename)
 	

@@ -456,6 +456,17 @@ console.log("haserror?", s);
 
 	/*
 	args:
+		done
+		fail
+	*/
+	newWorksheet : function(args) {
+		lua.execute("symmathhttp:setupSandbox()");
+		args.done();
+	},
+
+
+	/*
+	args:
 		filename
 		done
 		fail

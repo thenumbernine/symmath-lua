@@ -570,24 +570,21 @@ function init(args) {
 		{
 			text : 'New',
 			click : function() {
-				$.each(ctrls, function(i,ctrl) {
-					ctrl.div.remove();
-				});
-				cells = [];
-				ctrls = [];
-				
 				setAllControlsEnabled(false);
-				var done = function() {
-					setAllControlsEnabled(true);
-					lastAddNewCellButton.click();
-				};
-				writeAllCells({
+				server.newWorksheet({
 					done : function() {
-						done();
+						$.each(ctrls, function(i,ctrl) {
+							ctrl.div.remove();
+						});
+						cells = [];
+						ctrls = [];
+						setAllControlsEnabled(true);
+						lastAddNewCellButton.click();
 					},
 					fail : function() {
-						done();
+						setAllControlsEnabled(true);
 						fail();
+						lastAddNewCellButton.click();
 					}
 				});
 			}

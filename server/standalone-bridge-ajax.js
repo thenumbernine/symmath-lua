@@ -127,6 +127,18 @@ RemoteServer.prototype = {
 
 	/*
 	args:
+		done
+		fail
+	*/
+	newWorksheet : function(args) {
+		$.ajax({
+			url : 'newworksheet',
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	/*
+	args:
 		filename
 		done
 		fail
