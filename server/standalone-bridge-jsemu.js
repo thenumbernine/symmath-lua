@@ -464,6 +464,15 @@ console.log("haserror?", s);
 		args.done();
 	},
 
+	/*
+	args:
+		done
+		fail
+	*/
+	resetEnv : function(args) {
+		lua.execute("symmathhttp:setupSandbox()");
+		args.done();
+	},
 
 	/*
 	args:

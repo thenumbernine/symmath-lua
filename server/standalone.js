@@ -669,6 +669,21 @@ console.log("...failed writing cells.");
 					}
 				});
 			}
+		},
+		{
+			text : 'Reset Env',
+			click : function() {
+				setAllControlsEnabled(false);
+				server.resetEnv({
+					done : function() {
+						setAllControlsEnabled(true);
+					},
+					fail : function() {
+						setAllControlsEnabled(true);
+						fail();
+					}
+				});
+			}
 		}
 	);
 

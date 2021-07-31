@@ -543,6 +543,11 @@ function SymmathHTTP:handleRequest(...)
 		return '200/OK', coroutine.wrap(function()
 			coroutine.yield'{ok:true}'
 		end)
+	elseif filename == '/resetenv' then
+		self:setupSandbox()
+		return '200/OK', coroutine.wrap(function()
+			coroutine.yield'{ok:true}'
+		end)
 	elseif filename == '/getworksheet' then
 		self:log(5, "getworksheet "..gt.filename)
 	

@@ -132,7 +132,19 @@ RemoteServer.prototype = {
 	*/
 	newWorksheet : function(args) {
 		$.ajax({
-			url : 'newworksheet',
+			url : 'newworksheet'
+		}).done(args.done)
+		.fail(args.fail);
+	},
+
+	/*
+	args:
+		done
+		fail
+	*/
+	resetEnv : function(args) {
+		$.ajax({
+			url : 'resetenv'
 		}).done(args.done)
 		.fail(args.fail);
 	},
