@@ -615,7 +615,7 @@ console.log("...failed writing cells.");
 		click : function() {
 			setAllControlsEnabled(false);
 			var i = 0;
-			var n = ctrl.length;
+			var n = ctrls.length;
 			$.each(ctrls, function(i,ctrl) {
 				ctrl.setHidden({
 					hidden : false,
@@ -641,7 +641,7 @@ console.log("...failed writing cells.");
 		click : function() {
 			setAllControlsEnabled(false);
 			var i = 0;
-			var n = ctrl.length;
+			var n = ctrls.length;
 			$.each(ctrls, function(i,ctrl) {
 				ctrl.setHidden({
 					hidden : true,

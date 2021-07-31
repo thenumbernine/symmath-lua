@@ -49,6 +49,7 @@ textarea, pre {
 	width : 100%;
 	border : 0px;
 	border-right : 1px solid black;
+	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
 }
 
 .outputDiv {
