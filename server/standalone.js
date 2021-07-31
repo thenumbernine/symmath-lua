@@ -93,7 +93,7 @@ function CellControl(
 				this.selectionEnd = selStart + lines.length;
 			}
 		} else if (e.keyCode == 13) {
-			if (e.ctrlKey) {
+			if (e.shiftKey) {
 				e.preventDefault();
 				
 				setAllControlsEnabled(false);
