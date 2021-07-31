@@ -459,7 +459,7 @@ function createAddNewCellButton(cellToInsertBefore, parentNode) {
 
 function rebuildHtmlFromCells(args) {
 	//args.cellsjson should exist
-console.log("getcells got", arguments);
+console.log("rebuildHtmlFromCells got", arguments);
 	cells = $.parseJSON(args.cellsjson);
 	ctrls = [];
 
@@ -568,6 +568,31 @@ function init(args) {
 	addMenu(
 		'File',
 		{
+			text : 'New',
+			click : function() {
+				$.each(ctrls, function(i,ctrl) {
+					ctrl.div.remove();
+				});
+				cells = [];
+				ctrls = [];
+				
+				setAllControlsEnabled(false);
+				var done = function() {
+					setAllControlsEnabled(true);
+					lastAddNewCellButton.click();
+				};
+				writeAllCells({
+					done : function() {
+						done();
+					},
+					fail : function() {
+						done();
+						fail();
+					}
+				});
+			}
+		},
+		{
 			text : 'Save',
 			click : function() {
 console.log("save click, writing cells...");			
@@ -628,6 +653,9 @@ console.log("...failed writing cells.");
 								ctrls[i].run({
 									done : function() {
 										iterate(++i);
+									},
+									fail : function() {
+										iterate(++i);
 									}
 								});
 							} else {
@@ -638,6 +666,7 @@ console.log("...failed writing cells.");
 						iterate(0);
 					},
 					fail : function() {
+						setAllControlsEnabled(true);
 						//TODO fail
 						fail();
 					}
@@ -645,6 +674,41 @@ console.log("...failed writing cells.");
 			}
 		}
 	);
+
+	var loadWorksheetButtons = ['Worksheets'];
+	$.each([
+		'Euler fluid equations - flux eigenvectors.symmath',
+		'worksheet_spherical_metric.symmath',
+		'worksheet_spherical_metric_using_eqs.symmath'
+	], function(i,filename) {
+		loadWorksheetButtons.push({
+			text : filename,
+			click : function() {
+				setAllControlsEnabled(false);
+				server.getWorksheet({
+					filename : 'tests/'+filename,
+					done : function(cellsjson) {
+console.log("getWorksheet results", cellsjson);
+						rebuildHtmlFromCells({
+							cellsjson : cellsjson,
+							done : function() {
+								setAllControlsEnabled(true);
+							},
+							fail : function() {
+								setAllControlsEnabled(true);
+								fail();
+							}
+						});
+					},
+					fail : function() {
+						setAllControlsEnabled(true);
+						fail();
+					}
+				});
+			}
+		});
+	});
+	addMenu.apply(null, loadWorksheetButtons);
 
 	addMenu(
 		'View',

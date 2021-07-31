@@ -452,6 +452,43 @@ console.log("haserror?", s);
 	},
 
 	quit : function() {
+	},
+
+	/*
+	args:
+		filename
+		done
+		fail
+	*/
+	getWorksheet : function(args) {
+console.log("getWorksheet", args);
+		//TODO read file from the lua.vm-util.js.lua preloader
+		//and then convert it from a lua object to a json object
+		//and then return it
+		//alright, I might finally need dkjson.lua ...
+		var result = '';
+		lua.capture({
+			callback : function() {
+				lua.execute(
+""
++"local data\n"
++"data = 'symmath/"+args.filename+"'\n"
++"data = require 'ext.io'.readfile(data)\n"
++"data = require 'ext.fromlua'(data)\n"
++"data = require 'dkjson'.encode(data)\n"
++"orig_print(data)\n"
+);
+			},
+			output : function(s) {
+				result += s + '\n';
+console.log("output", s);			
+			},
+			error : function(s) {
+console.log("error", s);			
+			}
+		});
+console.log("getWorksheet results", result);		
+		args.done(result);
 	}
 };
 

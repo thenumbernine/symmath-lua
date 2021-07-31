@@ -123,6 +123,19 @@ RemoteServer.prototype = {
 		$.ajax({
 			url : "quit"
 		});
+	},
+
+	/*
+	args:
+		filename
+		done
+		fail
+	*/
+	getWorksheet : function(args) {
+		$.ajax({
+			url : 'getworksheet?filename='+encodeURIComponent(args.filename)
+		}).done(args.done)
+		.fail(args.fail);
 	}
 };
 

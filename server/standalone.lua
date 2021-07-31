@@ -535,6 +535,17 @@ function SymmathHTTP:handleRequest(...)
 		-- hmm, guess we won't be sending a response
 		-- unless I add coroutines threadmanager and have some idle loop / timeout, and run exit() in there ...
 		os.exit()
+	elseif filename == '/getworksheet' then
+		self:log(5, "getworksheet "..gt.filename)
+	
+		-- TODO search dir based on symmath dir
+		local data = assert(file[self.symmathPath..'/'..gt.filename])
+		data = assert(fromlua(data))
+		local cellsjson = json.encode(data)
+		self:log(5, "getworksheet returning "..cellsjson)
+		return '200/OK', coroutine.wrap(function()
+			coroutine.yield(cellsjson)
+		end)
 	elseif filename == '/' then
 		return '200/OK', coroutine.wrap(function()
 			-- TODO this is also accessible as its filename, so ... ? 
