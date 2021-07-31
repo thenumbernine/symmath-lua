@@ -771,7 +771,11 @@ console.log("...failed writing cells.");
 	getAllCellsFromServerAndRebuildHtml({
 		done : function() {
 			setAllControlsEnabled(true);
+			
+			if (ctrls.length == 0) {
+				//no cells in our file?  at least load the first cell
+				lastAddNewCellButton.click();
+			}
 		}
 	});
 }
-
