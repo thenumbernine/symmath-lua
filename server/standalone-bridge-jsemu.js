@@ -399,8 +399,11 @@ console.log("haserror?", s);
 				cell.haserror = s == 'true';
 			}
 		});
-		
-		args.done(JSON.stringify(cell));
+
+		//let the browser handle some input
+		setTimeout(function() {
+			args.done(JSON.stringify(cell));
+		}, 0);
 	},
 
 	/*
