@@ -729,7 +729,7 @@ console.log("...failed writing cells.");
 
 	
 	$.ajax({
-		url : 'README.reference.md',
+		url : symmathDir+'/README.reference.md',
 		dataType : 'text',
 		cache : false,
 	}).fail(function() {

@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="/server/standalone.css"/>
 		<script>
 worksheetFilename = "<?=worksheetFilename?>";
+symmathDir = '.';	//standalone.lua runs from SYMMATH_PATH
 
 //TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
 $(document).ready(function() {
