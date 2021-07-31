@@ -9,14 +9,26 @@
 		<link rel="stylesheet" href="/server/standalone.css"/>
 		<script>
 worksheetFilename = "<?=worksheetFilename?>";
-symmathDir = '.';	//standalone.lua runs from SYMMATH_PATH
+symmathDir = '.';	//standalone.lua includes SYMMATH_PATH in its search path
 
 //TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
 $(document).ready(function() {
 	tryToFindMathJax({
 		done : function() {
 			init({
-				root : document.body
+				root : document.body,
+				worksheets : [
+<?
+local sep = ''
+local dir = symmathPath..'/tests/'
+for i,f in ipairs(require 'ext.os'.rlistdir(dir)) do
+	if f:sub(-8) == '.symmath' then
+		?><?=sep?><?=require 'ext.tolua'(f:sub(#dir+2))?>
+<?		sep = ','
+	end
+end
+?>
+				]
 			});
 		},
 		fail : fail

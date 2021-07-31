@@ -525,6 +525,12 @@ function writeAllCells(args) {
 	});
 }
 
+/*
+args:
+	root
+	worksheets
+	done
+*/
 function init(args) {
 	var root = args ? args.root : document.body;
 
@@ -687,40 +693,38 @@ console.log("...failed writing cells.");
 		}
 	);
 
-	var loadWorksheetButtons = ['Worksheets'];
-	$.each([
-		'Euler fluid equations - flux eigenvectors.symmath',
-		'worksheet_spherical_metric.symmath',
-		'worksheet_spherical_metric_using_eqs.symmath'
-	], function(i,filename) {
-		loadWorksheetButtons.push({
-			text : filename,
-			click : function() {
-				setAllControlsEnabled(false);
-				server.getWorksheet({
-					filename : 'tests/'+filename,
-					done : function(cellsjson) {
+	if (args.worksheets) {
+		var loadWorksheetButtons = ['Worksheets'];
+		$.each(args.worksheets, function(i,filename) {
+			loadWorksheetButtons.push({
+				text : filename,
+				click : function() {
+					setAllControlsEnabled(false);
+					server.getWorksheet({
+						filename : 'tests/'+filename,
+						done : function(cellsjson) {
 console.log("getWorksheet results", cellsjson);
-						rebuildHtmlFromCells({
-							cellsjson : cellsjson,
-							done : function() {
-								setAllControlsEnabled(true);
-							},
-							fail : function() {
-								setAllControlsEnabled(true);
-								fail();
-							}
-						});
-					},
-					fail : function() {
-						setAllControlsEnabled(true);
-						fail();
-					}
-				});
-			}
+							rebuildHtmlFromCells({
+								cellsjson : cellsjson,
+								done : function() {
+									setAllControlsEnabled(true);
+								},
+								fail : function() {
+									setAllControlsEnabled(true);
+									fail();
+								}
+							});
+						},
+						fail : function() {
+							setAllControlsEnabled(true);
+							fail();
+						}
+					});
+				}
+			});
 		});
-	});
-	addMenu.apply(null, loadWorksheetButtons);
+		addMenu.apply(null, loadWorksheetButtons);
+	}
 
 	addMenu(
 		'View',
