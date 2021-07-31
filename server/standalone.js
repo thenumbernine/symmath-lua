@@ -31,9 +31,6 @@ function findCtrlForUID(uid) {
 
 function CellControl(
 	cell, 
-	//pick one of these two:
-	// or TODO make nextSibling optional and on its absence just use worksheetDiv as a parent
-	parent, 
 	nextSibling
 ) {
 	var ctrl = this;
@@ -280,11 +277,7 @@ console.log("focusing on inputTextArea after number ", j);
 	ioDiv.append(ctrl.outputDiv);
 	ctrl.refreshOutput();
 	
-	if (nextSibling) {
-		ctrl.div.insertBefore(nextSibling);
-	} else {
-		parent.append(ctrl.div);
-	}
+	ctrl.div.insertBefore(nextSibling);
 }
 CellControl.prototype = {
 	setEnabled : function(enabled) {
@@ -442,11 +435,11 @@ function createAddNewCellButton(cellToInsertBefore, parentNode) {
 									throw "failed to find cellToInsertBefore";
 								}
 								var ctrlToInsertBefore = ctrls[posToInsertBefore];
-								newctrl = new CellControl(newcell, null, ctrlToInsertBefore.div);
+								newctrl = new CellControl(newcell, ctrlToInsertBefore.div);
 								cells.splice(posToInsertBefore, 0, newcell);
 								ctrls.splice(posToInsertBefore, 0, newctrl);
 							} else {
-								newctrl = new CellControl(newcell, worksheetDiv, null);
+								newctrl = new CellControl(newcell, lastAddNewCellButton);
 								cells.push(newcell);
 								ctrls.push(newctrl);
 							}
@@ -475,11 +468,11 @@ console.log("getcells got", arguments);
 console.log("cells", cells);
 console.log("cells.length "+cells.length);
 	
-	$.each(cells, function(_, cell) {
-		ctrls.push(new CellControl(cell, worksheetDiv, null));
-	});
-	
 	lastAddNewCellButton = createAddNewCellButton(null, worksheetDiv);
+	
+	$.each(cells, function(_, cell) {
+		ctrls.push(new CellControl(cell, lastAddNewCellButton));
+	});
 
 	if (ctrls.length) {
 		ctrls[0].inputTextArea.focus();
