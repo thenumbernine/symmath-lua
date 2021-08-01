@@ -23,7 +23,7 @@ local sep = ''
 local dir = symmathPath..'/tests/'
 for i,f in ipairs(require 'ext.os'.rlistdir(dir)) do
 	if f:sub(-8) == '.symmath' then
-		?><?=sep?><?=require 'ext.tolua'(f:sub(#dir+2))?>
+		?><?=sep?><?=require 'ext.tolua'(f:sub(#dir+2,-9))?>
 <?		sep = ','
 	end
 end

@@ -701,7 +701,7 @@ console.log("...failed writing cells.");
 				click : function() {
 					setAllControlsEnabled(false);
 					server.getWorksheet({
-						filename : 'tests/'+filename,
+						filename : 'tests/'+filename+'.symmath',
 						done : function(cellsjson) {
 console.log("getWorksheet results", cellsjson);
 							rebuildHtmlFromCells({
