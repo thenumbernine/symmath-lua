@@ -40,6 +40,18 @@ function CellControl(
 		//class : 'inputTextArea',
 		text : ctrl.cell.input
 	});
+
+/* can't do this immediatley or the javascript locks up
+ctrl.inputTextArea.linedtextarea();
+*/
+/* looks alright ... adds an extra \n to all text areas ... numbers are an extra column wider than they need to be ...
+... seems numbers overflow when i hide divs 
+... and when i resize textarea rows, there's no way to resize numbers, unless i go through and redo them
+... hmm, making my own number system might be better
+setTimeout(function() {	
+	ctrl.inputTextArea.linedtextarea();
+}, 0);
+*/
 	ctrl.inputTextArea.addClass('inputTextArea');
 	ctrl.inputTextArea.attr('autocapitalize', 'off');		
 	ctrl.inputTextArea.attr('autocomplete', 'off');		
@@ -178,8 +190,51 @@ console.log("focusing on inputTextArea after number ", j);
 	});
 	rhsCtrlDiv.append(ctrl.toggleHiddenButton);
 
+	ctrl.runUntilButton = $('<button>', {
+		text : '...▶',
+		click : function() {
+			var endIndex;
+			for (var i = 0; i < ctrls.length; ++i) {
+				if (ctrls[i] == ctrl) {
+					endIndex = i;
+					break;
+				}
+			}
+			if (!endIndex) throw "can't find this ctrl in the ctrls"
+
+			setAllControlsEnabled(false);
+			writeAllCells({
+				done : function() {
+					var iterate;
+					iterate = function(i) {
+						if (i > endIndex) {
+							setAllControlsEnabled(true);
+							//done
+						} else {
+							ctrls[i].run({
+								done : function() {
+									iterate(++i);
+								},
+								fail : function() {
+									iterate(++i);
+								}
+							});
+						}
+					};
+					iterate(0);
+				},
+				fail : function() {
+					setAllControlsEnabled(true);
+					//TODO fail
+					fail();
+				}
+			});
+		}
+	});
+	rhsCtrlDiv.append(ctrl.runUntilButton);
+
 	ctrl.runButton = $('<button>', {
-		text : 'run',
+		text : '▶',
 		click : function() {
 			setAllControlsEnabled(false);
 			ctrl.run({
@@ -194,7 +249,52 @@ console.log("focusing on inputTextArea after number ", j);
 		}
 	});
 	rhsCtrlDiv.append(ctrl.runButton);
-	
+
+	ctrl.runAfterButton = $('<button>', {
+		text : '▶...',
+		click : function() {
+			var startIndex;
+			for (var i = 0; i < ctrls.length; ++i) {
+				if (ctrls[i] == ctrl) {
+					startIndex = i;
+					break;
+				}
+			}
+			if (!startIndex) throw "can't find this ctrl in the ctrls"
+
+			setAllControlsEnabled(false);
+			writeAllCells({
+				done : function() {
+					var iterate;
+					iterate = function(i) {
+						if (i > cells.length) {
+							setAllControlsEnabled(true);
+							//done
+						} else {
+							ctrls[i].run({
+								done : function() {
+									iterate(++i);
+								},
+								fail : function() {
+									iterate(++i);
+								}
+							});
+						}
+					};
+					iterate(startIndex);
+				},
+				fail : function() {
+					setAllControlsEnabled(true);
+					//TODO fail
+					fail();
+				}
+			});
+		}
+	});
+	rhsCtrlDiv.append(ctrl.runAfterButton);
+
+
+
 	ctrl.setOutputTypeSelect = $('<select>', {
 		html : $.map(['text', 'html', 'latex'], function(s,i) {
 			return '<option>'+s+'</option>'
@@ -285,7 +385,9 @@ CellControl.prototype = {
 		$.each([
 			ctrl.addNewCellButton,
 			ctrl.toggleHiddenButton,
+			ctrl.runUntilButton,
 			ctrl.runButton,
+			ctrl.runAfterButton,
 			ctrl.setOutputTypeSelect,
 			ctrl.removeCellButton,
 			ctrl.inputTextArea
@@ -348,10 +450,13 @@ CellControl.prototype = {
 		args = args || {};
 		var ctrl = this;
 		
+		ctrl.div.css("border", "3px solid red");
+
 		server.run({
 			uid : ctrl.cell.uid,
 			cellinput : ctrl.inputTextArea.val(),
 			done : function(celldata) {
+				ctrl.div.css("border", "");
 				/* update all? * /
 				getAllCellsFromServerAndRebuildHtml({
 					done : args.done
@@ -363,7 +468,10 @@ CellControl.prototype = {
 				if (args.done) args.done();
 				/**/
 			},
-			fail : fail
+			fail : function() {
+				ctrl.div.css("border", "");
+				fail();
+			}
 		});
 	},
 
@@ -599,7 +707,9 @@ function init(args) {
 			text : 'Save',
 			click : function() {
 console.log("save click, writing cells...");			
+				var scrollTop = $(window).scrollTop();
 				setAllControlsEnabled(false);
+				$(window).scrollTop(scrollTop);
 				writeAllCells({
 					done : function() {
 console.log("..done writing cells, giving save cmd...");
@@ -607,6 +717,8 @@ console.log("..done writing cells, giving save cmd...");
 							done : function() {
 console.log("...done giving save cmd.");
 								setAllControlsEnabled(true);
+								//something is making my scroll position jump around, and maybe it's this?
+								$(window).scrollTop(scrollTop);
 							},
 							fail : function() {
 console.log("...failed giving save cmd.");
@@ -648,6 +760,10 @@ console.log("...failed writing cells.");
 			click : function() {
 				//TODO all controls except 'break execution' for emergency restarts
 				setAllControlsEnabled(false);
+// no need to write all cells, correct?
+// because we're calling 'run' on each
+// and 'run' itself will write each cell 
+// but ... then again ... what's the harm?
 				writeAllCells({
 					done : function() {
 						var iterate;

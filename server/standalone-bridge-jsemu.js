@@ -58,6 +58,7 @@ local orig_io_write = io.write
 local ext_io = require 'ext.io'
 local ext_io_write = ext_io.write
 
+
 -- kind of a mess ...
 -- not multithread safe at all
 -- write this before load()'ing cell block code, based on the cell type
@@ -72,8 +73,11 @@ local SymmathHTTP = class()
 function SymmathHTTP:init()
 	self:setupSandbox()
 
+
+	-- single worksheet instance.  TODO make modular:
 	self.cells = table()
 end
+
 
 local FakeFile = class()
 function FakeFile:init()
@@ -104,6 +108,8 @@ function SymmathHTTP:setupSandbox()
 
 
 	local orig_io = require 'io'
+	-- TODO FIXME this is resetting ext.io, but what about io itself?
+	-- I guess its hidden if we always require 'ext' on the env
 	local orig_io = require 'ext.io'
 
 	self.env.io = {}
@@ -197,7 +203,28 @@ function SymmathHTTP:runCell(cell)
 		if not results then
 			-- first strip out comments, then search for =
 			local findlhs = cell.input
+			
+			-- strip out block comments
+			while true do
+				local before, equals, afterstart = findlhs:match'(.-)%-%-%[(=*)%[(.*)'
+				if not before then break end
+self:log(5, "before block comment start: "..before)
+self:log(5, "block comment start equals: "..equals)
+self:log(5, "after block comment start: "..afterstart)
+				local comment, aftercomment = afterstart:match('(.-)%]'..equals..'%](.*)')
+self:log(5, "comment: "..comment)
+self:log(5, "aftercomment: "..aftercomment)				
+				if not comment then
+					-- error: unfinished long comment
+				else
+					findlhs = before .. aftercomment
+self:log(5, "cellinput is now "..findlhs)
+				end
+			end
+			
+			-- strip out single-line comments
 			findlhs = findlhs:gsub('%-%-[^\r\n]*', '')
+
 			local lhs, rhs = findlhs:match'([^=]-)=(.*)'
 			if lhs then
 				lhs = string.trim(lhs)
@@ -263,11 +290,14 @@ function SymmathHTTP:runCell(cell)
 		self:log(2, "run() cell.output", cell.output)
 
 		if results.n > 0 then
-			-- if we returned anything from this block then print it -- just like lua interpreter
+			--[[ if we returned anything from this block then print it -- just like lua interpreter
+			-- turns out print() already inserted one of these <br>s so if we're mixing print() and return then no need to insert twice
 			-- TODO in this case ... who should handle the error?
 			if #cell.output > 0 then
 				cell.output = cell.output .. currentBlockNewLineSymbol
 			end
+			--]]
+			-- TODO new question to ask, should this be inserted at the top or bottom of the output?
 			for i=1,results.n do
 				if i > 1 then
 					cell.output = cell.output .. '\t'
