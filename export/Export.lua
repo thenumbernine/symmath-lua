@@ -41,9 +41,9 @@ Export.lookupTable = {
 		return expr:nameForExporter(self)
 	end,
 
-	[require 'symmath.Constant'] = function(self, expr) 
-		-- .symbol was a quick fix to give constants symbols ... keep it? 
-		-- TODO get rid of Constant.symbol. 
+	[require 'symmath.Constant'] = function(self, expr)
+		-- .symbol was a quick fix to give constants symbols ... keep it?
+		-- TODO get rid of Constant.symbol.
 		-- and just use Variable and Variable.value instead.
 		local symbol = expr.symbol
 		if symbol then
@@ -53,18 +53,18 @@ Export.lookupTable = {
 			end
 			return symbol
 		end
-		
-		local s = tostring(expr.value) 
-		
+
+		local s = tostring(expr.value)
+
 		if s:sub(-2) == '.0' then s = s:sub(1,-3) end
-	
+
 		if self.constantPeriodRequired
 		and not s:find'e'
-		and not s:find'%.' 
-		then 
+		and not s:find'%.'
+		then
 			s = s .. '.'
 		end
-		
+
 		return s
 	end,
 }
@@ -76,7 +76,7 @@ function Export:apply(expr, ...)
 	while lookup and not self.lookupTable[lookup] do
 		lookup = lookup.super
 	end
-	if not lookup then 
+	if not lookup then
 		local tolua = require 'ext.tolua'
 		local mt = getmetatable(expr)
 		error("in exporter "..self.name.." expected to find a lookup for "
@@ -87,13 +87,13 @@ function Export:apply(expr, ...)
 -- still causes stack overflow
 --				..require 'symmath.export.Verbose'(expr)..'\n'
 				..tolua(expr)
-			) 
+			)
 	end
 	return (self.lookupTable[lookup])(self, expr, ...)
 end
 
 -- separate the __call function to allow child classes to permute the final output without permuting intermediate results
--- this means internally classes should call self:apply() rather than self() to prevent extra intermediate permutations 
+-- this means internally classes should call self:apply() rather than self() to prevent extra intermediate permutations
 function Export.__call(self, ...)
 	return self:apply(...)
 end
@@ -129,9 +129,9 @@ function Export:fixVariableName(name) return name end
 -- TODO looks like a job for lua-ext ...
 local band
 -- [=[ try the operator
-if not band then
+if _VERSION >= 'Lua 5.2' and not band then
 	local f, err = load[[return function(a,b) return a & b end]]
-	if f then 
+	if f then
 --print'using operator'
 		band = assert(f())
 	end
@@ -139,18 +139,18 @@ end
 --]=]
 -- try global
 for _,lib in ipairs{'bit', 'bit32'} do
-	if _G[lib] then 
+	if _G[lib] then
 --print('using global lib', lib)
-		band = _G[lib].band 
+		band = _G[lib].band
 	end
 end
 -- try bit library
 for _,lib in ipairs{'bit', 'bit32'} do
 	if not band then
 		local has, bit = pcall(require, lib)
-		if has then 
+		if has then
 --print('using lib ', lib)
-			band = bit.band 
+			band = bit.band
 		end
 	end
 end
@@ -190,7 +190,7 @@ os.exit()
 
 -- I'm using utf8 length often enough,
 -- and some builds like luajit don't always have it,
--- and I haven't found a pure lua library that I like enough to depend on yet, 
+-- and I haven't found a pure lua library that I like enough to depend on yet,
 -- so here's my own utf8 strlen:
 function Export.strlen(s)
 	assert(type(s) == 'string')
@@ -224,3 +224,4 @@ function Export.strlen(s)
 end
 
 return Export
+
