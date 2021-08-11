@@ -267,7 +267,7 @@ console.log("focusing on inputTextArea after number ", j);
 				done : function() {
 					var iterate;
 					iterate = function(i) {
-						if (i > cells.length) {
+						if (i >= cells.length) {
 							setAllControlsEnabled(true);
 							//done
 						} else {
