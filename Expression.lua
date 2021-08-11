@@ -505,7 +505,8 @@ Expression.det = Expression.determinant
 -- TODO subst automatic reindex of Tensors
 -- TODO :expandIndexes() function to split indexes in particular ways (a -> t + k -> t + x + y + z)
 function Expression:subst(...)
-	eq = eq or require 'symmath.op.eq'
+	symmath = symmath or require 'symmath'
+	local eq = symmath.op.eq
 	local result = self:clone()
 	for i=1,select('#', ...) do
 		local eqn = select(i, ...)
@@ -519,7 +520,8 @@ end
 this is like subst but pattern-matches indexes
 --]]
 function Expression:substIndex(...)
-	eq = eq or require 'symmath.op.eq'
+	symmath = symmath or require 'symmath'
+	local eq = symmath.op.eq
 	local result = self:clone()
 	for i=1,select('#', ...) do
 		local eqn = select(i, ...)

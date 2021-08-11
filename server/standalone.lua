@@ -324,6 +324,60 @@ function SymmathHTTP:updateAllCells(POST)
 	setmetatable(self.cells, table)
 end
 
+--[[
+runs the cell
+captures any output produced by print() or io.write() global calls
+in case the cell contains an expression, also adds to the output the tostring() of the expression
+in case the cell is an assignment, also adds to the output the tostring() of the lhs of the assignment
+
+ok now how about interrupting?
+to prevent runaway loops, I should add a way to interrupt execution to the gui.
+this also means keeping a separate lua instance as an intermediate to all the commands.
+this would also double for a webserver that handles directory listings.
+
+so you've got the main process that 
+- handles directories,
+- opens files
+- handles ajax requests
+
+and, upon opening a file, it spawns a new process per file being opened, and relays cell input and output to that process
+so that separate process holds the state.
+this way that sub-process' lua env can get as muddied as the script wants ,and the main process lua env can be safe.
+
+so about preventing runaway loops ...
+default lua interperter overrides SIGINT during dofile->dochunk->docall operations.
+only once.
+and after being interrupted once, any subsequent interrupt calls will kill the whole process.
+seems dangerous.
+seems like I might have to interject my own signal handler as soon as the docall() code stars, which is entirely possible and straightforward:
+  
+default:
+
+	docall() {
+		...
+	  setsignal(SIGINT, laction);  /* set C-signal handler */
+		...
+	}
+
+	static void laction (int i) {
+	  int flag = LUA_MASKCALL | LUA_MASKRET | LUA_MASKLINE | LUA_MASKCOUNT;
+	  setsignal(i, SIG_DFL); /* if another SIGINT happens, terminate process */
+	  lua_sethook(globalL, lstop, flag, 1);
+	}
+
+then my replacement, first instructions upon that pcall, call some C code from a require'd .so
+to just not reset to the default signal:
+
+	static void laction (int i) {
+	  int flag = LUA_MASKCALL | LUA_MASKRET | LUA_MASKLINE | LUA_MASKCOUNT;
+	  // *** don't reset the signal handler *** 
+	  lua_sethook(globalL, lstop, flag, 1);
+	}
+
+Though in some ways maybe it can be fine without messing with signals at all.
+because one interrupt per docall should be all I need, right?  assuming that one interrupt does work.
+the parent process will just have to keep track of whether it's sent that one SIGINT to the child per docall(), to make sure it doesn't send two and kill the child.
+--]]
 function SymmathHTTP:runCell(cell)
 	self:log(2, 'running...')
 	self:log(2, showcode(cell.input))

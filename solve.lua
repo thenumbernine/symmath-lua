@@ -1,4 +1,5 @@
 local table = require 'ext.table'
+local symmath
 
 local function filterUnique(...)
 	local t = table()
@@ -13,14 +14,15 @@ accepts an equation and a variable
 returns an equation with that variable on the lhs and the rest on the rhs
 --]]
 local function solve(eqn, x, hasSimplified)
-	local unm = require 'symmath.op.unm'
-	local div = require 'symmath.op.div'
-	local mul = require 'symmath.op.mul'
-	local Equation = require 'symmath.op.Equation'	
-	local Constant = require 'symmath.Constant'
-	local polyCoeffs = require 'symmath.polyCoeffs'
-	local sqrt = require 'symmath.sqrt'
-	
+	symmath = symmath or require 'symmath'
+	local unm = symmath.op.unm
+	local div = symmath.op.div
+	local mul = symmath.op.mul
+	local sqrt = symmath.sqrt
+	local polyCoeffs = symmath.polyCoeffs
+	local Constant = symmath.Constant
+	local Equation = symmath.op.Equation
+
 	assert(eqn, 'expected equation to solve, or expression to solve for zero')
 	if not Equation:isa(eqn) then	
 		error("expected the expression to be an equation or inequality: "..eqn)
@@ -110,8 +112,8 @@ local function solve(eqn, x, hasSimplified)
 		local notZero = table{lhs[2]:eq(0):solve(x)}
 		if notZero[1] == nil then notZero = table() end	-- couldn't find the solve var
 		for i=1,#notZero do
-			assert(op.eq:isa(notZero[i]))
-			setmetatable(notZero[i], op.ne)
+			assert(symmath.op.eq:isa(notZero[i]))
+			setmetatable(notZero[i], symmath.op.ne)
 		end
 		local solns = notZero
 		-- TODO remove contraditions, {x!=y, x==y} => {x!=y}
