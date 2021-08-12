@@ -125,9 +125,7 @@ return function(args)
 
 	Hz = var'Hz'
 	Hz_in_s = Hz:eq(1/s)
-Gprint('s_in_m', s_in_m)
 	Hz_in_m = Hz_in_s:subst(s_in_m)():factorDivision()
-Gprint('Hz_in_m', Hz_in_m)
 	lprint('hertz:', Hz_in_s:eq(Hz_in_m:rhs()))
 
 	-- gravity
