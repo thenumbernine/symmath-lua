@@ -1230,10 +1230,19 @@ function Expression:simplifyMetrics(rules)
 	add = add or require 'symmath.op.add'
 	mul = mul or require 'symmath.op.mul'
 	if Array:isa(expr) then
+		--[[ this isn't so good for Tensor because it needs .variance, so ...
 		return getmetatable(expr):lambda(expr:dim(), function(...)
 			local ei = expr:get{...}
 			return (ei:simplifyMetrics(rules))
 		end)
+		--]]
+		-- [[ so here's the alternative
+		expr = expr:clone()
+		for i in expr:iter() do
+			expr:set(i, expr:get(i):simplifyMetrics(rules))
+		end
+		return expr
+		--]]
 	end
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(expr) then
@@ -1329,7 +1338,7 @@ function Expression:simplifyMetrics(rules)
 end
 
 --[[
-returns fixedIndexes, sumIndexes, extraIndexes
+returns fixedIndexes, sumIndexes, extraIndexes arrays of TensorIndex objects
 fixedIndexes = the indexes that are used to uniquely index the expression
 				the indexes that are shared in common with every expression used
 sumIndexes = the indexes used for summing within/ specific to sub-expressions
@@ -1799,6 +1808,103 @@ function Expression:insertMetricsToSetVariance(find, metric)
 		end,
 	}
 end
+
+--[[
+rearrange sum indexes to favor this particular variance for this particular tensor
+similar to applying insertTransformsToSetVariance and then summing the inserted metrics with their *other* sum terms
+--]]
+function Expression:favorTensorVariance(find)
+	symmath = symmath or require 'symmath'
+	local mul = symmath.op.mul
+	local Tensor = symmath.Tensor
+	local TensorRef = symmath.TensorRef
+	local Variable = symmath.Variable
+
+	assert(TensorRef:isa(find))
+	--assert(Variable:isa(find[1]))
+	assert(not find:hasDerivIndex())	-- TODO handle derivs later?  also TODO call splitOffDerivIndexes() first? or expect the caller to do this 
+
+	local defaultSymbols = nil 
+		--or args and args.symbols
+		or Tensor.defaultSymbols
+
+	local handleTerm
+
+	local function handleMul(x)
+		local fixed, sum, extra = x:getIndexesUsed()
+
+		local newMul = table()
+		for i=1,#x do
+			local xi = x[i]
+			xi = xi:clone()
+			if TensorRef:isa(xi) then
+				if not Variable:isa(xi[1]) then
+					xi[1] = handleTerm(xi[1])
+				elseif find[1] == xi[1]			-- TensorRef base variable matches
+				and #find == #xi				-- number of indexes match
+				and not xi:hasDerivIndex()		-- not doing this right now
+				then
+					-- here check all indexes of xi
+					for j=2,#xi do
+						local xij = xi[j]
+						local findi = find[j]
+						-- see if any don't match the same lower as 'find's 
+						if not not findi.lower ~= not not xij.lower then
+							-- and if they don't, see if they are sum indexes (summed with something else in this particular mul 
+							if sum:find(nil, function(s) return s.symbol == xij.symbol end) then
+								-- now find what else it is summed with ... preferrably not the 'find' as well
+								local other
+								for k=1,#x do
+									local xk = x[k]
+									if k ~= i then
+										if TensorRef:isa(xk)
+										and Variable:isa(xk[1])
+										and find[1] ~= xk[1]
+										and not xk:hasDerivIndex()	-- TODO eventually do this
+										then
+											for l=2,#xk do
+												local xkl = xk[l]
+												if xkl.symbol == xij.symbol then
+													other = xkl
+													break
+												end
+											end
+											if other then break end
+										end
+									end
+								end
+								if other then
+									-- and then swap sum indexes lower-ness
+									other.lower, xij.lower = xij.lower, other.lower
+								end
+							end
+						end
+					end
+				end
+			end
+			newMul:append{xi}
+		end
+		return mul(newMul:unpack())
+	end
+
+	-- could be a single term or multiple multiplied terms
+	handleTerm = function(expr)
+		expr = expr:clone()
+		if mul:isa(expr) then
+			return handleMul(expr)
+		else
+			return expr:map(function(x)
+				if mul:isa(x) then
+					return handleMul(x)
+				end
+			end)
+		end
+		return expr
+	end
+	return handleTerm(self)
+end
+
+
 
 -- maybe coroutines will help my whole problem of testing when a mul or add is present ?
 

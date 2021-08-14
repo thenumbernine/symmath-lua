@@ -109,6 +109,7 @@ local function solve(eqn, x, hasSimplified)
 
 -- [[ handle denominator
 	if div:isa(lhs) then
+		-- TODO why is this intermittantly adding the x != 0 ?
 		local notZero = table{lhs[2]:eq(0):solve(x)}
 		if notZero[1] == nil then notZero = table() end	-- couldn't find the solve var
 		for i=1,#notZero do
@@ -116,8 +117,9 @@ local function solve(eqn, x, hasSimplified)
 			setmetatable(notZero[i], symmath.op.ne)
 		end
 		local solns = notZero
+		-- make sure you add the != operators last
+		solns = table{lhs[1]:eq(0):solve(x)}:append(solns)
 		-- TODO remove contraditions, {x!=y, x==y} => {x!=y}
-		solns:append{lhs[1]:eq(0):solve(x)}
 		return 
 		--filterUnique(
 			solns:unpack()
