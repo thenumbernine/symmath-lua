@@ -64,6 +64,17 @@ we can find the inverse transform by either
 (1) compute the transpose inverse of the transform metric
 (2) raise/lower indexes (i.e. multiply rhs by 'from' metric and lhs by 'to' metric inverse)
 
+
+
+
+alright then instead of Tensor.coords ...
+Tensor.tangentSpaceOperators{diff(t), diff(x), diff(y), diff(z)}
+
+or equivalent for commutation basis
+but that only makes sense in combination with a chart... 
+and can be used to derive the metric
+which, alternatively, we can just ignore the tangent space operators and allow the metric to be specified
+
 --]]
 
 local class = require 'ext.class'

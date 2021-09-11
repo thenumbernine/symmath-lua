@@ -279,8 +279,14 @@ symmath.pi = symmath.Variable('π', nil, math.pi, nil, symmath)				-- π
 symmath.inf = symmath.Variable('inf', nil, math.huge, nil, symmath)		-- ∞
 -- TODO symmath.nan = symmath.Variable('nan', nil, math.nan, nil, symmath)	-- ¿
 --]]
-	
+
 do
+	-- special case for constants?
+	function symmath.i:evaluateDerivative() return symmath.Constant(0) end
+	function symmath.e:evaluateDerivative() return symmath.Constant(0) end
+	function symmath.pi:evaluateDerivative() return symmath.Constant(0) end
+	function symmath.inf:evaluateDerivative() return symmath.Constant(0) end
+
 	-- C ... i ... should we use gnu or microsoft?
 	symmath.e:nameForExporter('C', 'M_E')
 	symmath.pi:nameForExporter('C', 'M_PI')
