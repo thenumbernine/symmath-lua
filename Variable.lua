@@ -184,17 +184,23 @@ similar function is found in symmath/tensor/TensorRef.lua
 only return true for the dependentVars entries with src==self
 that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
 --]]
-function Variable:dependsOn(x)
+function Variable:dependsOn(x, haveChecked)
 --print('does Variable '..self..' depend on '..x..'?')
-	
+	-- watch out for dependency loops
+	-- u = u(t,x), t = t(u,v), does u:dependsOn(v) -> u:dependsOn(t) -> t:dependsOn(v)
+	haveChecked = haveChecked or {}
+
 	if x == self then return true end
 	
-	local TensorRef = require 'symmath.tensor.TensorRef'
+	if haveChecked[x] then return false end
+	haveChecked[x] = true
+	
+	--local TensorRef = require 'symmath.tensor.TensorRef'
 	if self.dependentVars then
 		for _,depvar in ipairs(self.dependentVars) do
 			if depvar.src == self then
 				local wrt = depvar.wrt
-				if wrt:dependsOn(x) then return true end
+				if wrt:dependsOn(x, haveChecked) then return true end
 			end
 		end
 	end

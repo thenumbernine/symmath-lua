@@ -250,6 +250,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 					
 					-- parenthesis if precedence is needed
 					if symmath.op.add:isa(a)
+					or symmath.op.sub:isa(a)
 					or symmath.op.unm:isa(a)
 					then
 						astr:insert(1, self.parOpenSymbol)
