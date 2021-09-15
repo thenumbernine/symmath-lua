@@ -126,7 +126,9 @@ Output CDN URLs:
 ]]}
 
 os.rlistdir('.', function(f, isdir)
-	return f ~= '.git' and (isdir or f:sub(-5) == '.html')
+	return f ~= '.git' 
+		and f:sub(1,6) ~= 'server'
+		and (isdir or f:sub(-5) == '.html')
 end):mapi(function(f)
 	assert(f:sub(1,2) == './')
 	return f:sub(3)

@@ -889,11 +889,13 @@ Output CDN URLs:
 
 [tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
 
-[tests/output/BSSN - generate - cartesian - single-line](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20cartesian%20%2d%20single%2dline.html)
-
 [tests/output/BSSN - generate - cartesian](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20cartesian.html)
 
 [tests/output/BSSN - generate - spherical](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical.html)
+
+[tests/output/BSSN - generate](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate.html)
+
+[tests/output/BSSN - index - cache](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index%20%2d%20cache.html)
 
 [tests/output/BSSN - index](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index.html)
 
@@ -953,6 +955,8 @@ Output CDN URLs:
 
 [tests/output/MHD symmetrization](https://thenumbernine.github.io/symmath/tests/output/MHD%20symmetrization.html)
 
+[tests/output/MakeTrigLookupTables](https://thenumbernine.github.io/symmath/tests/output/MakeTrigLookupTables.html)
+
 [tests/output/Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Maxwell%20equations%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/Navier-Stokes-Wilcox - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Navier%2dStokes%2dWilcox%20%2d%20flux%20eigenvectors.html)
@@ -999,6 +1003,8 @@ Output CDN URLs:
 
 [tests/output/Z4](https://thenumbernine.github.io/symmath/tests/output/Z4.html)
 
+[tests/output/console_spherical_metric](https://thenumbernine.github.io/symmath/tests/output/console_spherical_metric.html)
+
 [tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
 
 [tests/output/electrovacuum/general case](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/general%20case.html)
@@ -1039,8 +1045,6 @@ Output CDN URLs:
 
 [tests/output/metric catalog/cylindrical, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20coordinate.html)
 
-[tests/output/metric catalog/geodetic, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/geodetic%2c%20coordinate.html)
-
 [tests/output/metric catalog/paraboliod, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/paraboliod%2c%20coordinate.html)
 
 [tests/output/metric catalog/polar and time, constant rotation, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20constant%20rotation%2c%20coordinate.html)
@@ -1055,8 +1059,6 @@ Output CDN URLs:
 
 [tests/output/metric catalog/polar, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%2c%20coordinate.html)
 
-[tests/output/metric catalog/sphere surface, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20anholonomic%2c%20conformal.html)
-
 [tests/output/metric catalog/sphere surface, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20anholonomic%2c%20orthonormal.html)
 
 [tests/output/metric catalog/sphere surface, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20coordinate.html)
@@ -1064,8 +1066,6 @@ Output CDN URLs:
 [tests/output/metric catalog/spherical and time, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%20and%20time%2c%20coordinate.html)
 
 [tests/output/metric catalog/spherical and time, lapse varying in radial](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%20and%20time%2c%20lapse%20varying%20in%20radial.html)
-
-[tests/output/metric catalog/spherical, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20anholonomic%2c%20conformal.html)
 
 [tests/output/metric catalog/spherical, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20anholonomic%2c%20orthonormal.html)
 
