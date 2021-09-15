@@ -798,8 +798,20 @@
 <b></b><br>
 <code>assert(true == z:dependsOn(x))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
+expected false to be true<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:11: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:103: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:102><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:11: in global 'assert'<br>
+	[string "assert(true == z:dependsOn(x))"]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:95: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:94><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in field 'exec'<br>
+	./variable depends.lua:189: in local 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
+	(...tail calls...)<br>
+	./variable depends.lua:6: in main chunk<br>
+	[C]: in ?
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1113,8 +1125,20 @@
 <b></b><br>
 <code>assert(true == z:dependsOn(x'^I'))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
+expected false to be true<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:11: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:103: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:102><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:11: in global 'assert'<br>
+	[string "assert(true == z:dependsOn(x'^I'))"]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:95: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:94><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in field 'exec'<br>
+	./variable depends.lua:189: in local 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
+	(...tail calls...)<br>
+	./variable depends.lua:6: in main chunk<br>
+	[C]: in ?
 </td></tr>
 <tr><td>
 <b></b><br>
