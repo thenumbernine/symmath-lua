@@ -137,8 +137,20 @@ function TensorRef:dependsOn(x)
 			if TensorRef:isa(depvar.src)
 			and #depvar.src == #self
 			then
+				-- [[ matches Variabe:dependsOn
 				local wrt = depvar.wrt
-				if wrt:dependsOn(x) then return true end
+				if Variable:isa(wrt)
+				and wrt == x
+				then
+					return true
+				end
+				if TensorRef:isa(wrt)
+				and TensorRef:isa(x)
+				and #wrt == #x
+				then
+					return true
+				end
+				--]]
 			end
 		end
 	end

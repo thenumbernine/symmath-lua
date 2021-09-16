@@ -150,7 +150,11 @@ z = symmath.var('z', {y})
 
 assert(true == z:dependsOn(z))
 assert(true == z:dependsOn(y))
-assert(true == z:dependsOn(x))
+-- hmm, how to handle graph dependencies ...
+-- I'm not going to evaluate them for now, because they cause 
+--  (1) infinite loops (unless I track search state) and 
+--  (2) {u,v} depends on {t,x} makes a graph search produce u depends on v ...
+--assert(true == z:dependsOn(x))
 assert(false == y:dependsOn(z))
 assert(true == y:dependsOn(y))
 assert(true == y:dependsOn(x))
@@ -198,7 +202,8 @@ z:setDependentVars(y)
 
 assert(true == z:dependsOn(z))
 assert(true == z:dependsOn(y))
-assert(true == z:dependsOn(x'^I'))
+-- same as above, not doing a graph search.  should I?
+--assert(true == z:dependsOn(x'^I'))
 assert(false == y:dependsOn(z))
 assert(true == y:dependsOn(y))
 assert(true == y:dependsOn(x'^I'))

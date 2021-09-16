@@ -909,12 +909,25 @@
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
-<b></b><br>
-<code>assert(true == z:dependsOn(x))</code>
+<b>hmm, how to handle graph dependencies ...</b><br>
+<code></code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
+<tr><td>
+<b>I'm not going to evaluate them for now, because they cause</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>(1) infinite loops (unless I track search state) and</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>(2) {u,v} depends on {t,x} makes a graph search produce u depends on v ...</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>assert(true == z:dependsOn(x))</b><br>
+<code></code>
+</td><td>
 <tr><td>
 <b></b><br>
 <code>assert(false == y:dependsOn(z))</code>
@@ -1224,12 +1237,13 @@
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
-<b></b><br>
-<code>assert(true == z:dependsOn(x'^I'))</code>
+<b>same as above, not doing a graph search.  should I?</b><br>
+<code></code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
+<tr><td>
+<b>assert(true == z:dependsOn(x'^I'))</b><br>
+<code></code>
+</td><td>
 <tr><td>
 <b></b><br>
 <code>assert(false == y:dependsOn(z))</code>
@@ -1356,7 +1370,7 @@
 <b></b><br>
 <code>print(varofall:diff(varofall):eq(Matrix:lambda({#all,#all}, function(i,j) return allvars[i]:diff(allvars[j])() end)))</code>
 </td><td>
-${\frac{\partial \{u,v,t,x,y,z\}}{\partial \{u,v,t,x,y,z\}}} = {\left[ \begin{matrix}  1 &  \frac{\partial u}{\partial v} &  \frac{\partial u}{\partial t} &  \frac{\partial u}{\partial x} &  0 &  0 \\  \frac{\partial v}{\partial u} &  1 &  \frac{\partial v}{\partial t} &  \frac{\partial v}{\partial x} &  0 &  0 \\  \frac{\partial t}{\partial u} &  \frac{\partial t}{\partial v} &  1 &  \frac{\partial t}{\partial x} &  0 &  0 \\  \frac{\partial x}{\partial u} &  \frac{\partial x}{\partial v} &  \frac{\partial x}{\partial t} &  1 &  0 &  0 \\  0 &  0 &  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  0 &  0 &  1\end{matrix} \right]}$
+${\frac{\partial \{u,v,t,x,y,z\}}{\partial \{u,v,t,x,y,z\}}} = {\left[ \begin{matrix}  1 &  0 &  \frac{\partial u}{\partial t} &  \frac{\partial u}{\partial x} &  0 &  0 \\  0 &  1 &  \frac{\partial v}{\partial t} &  \frac{\partial v}{\partial x} &  0 &  0 \\  \frac{\partial t}{\partial u} &  \frac{\partial t}{\partial v} &  1 &  0 &  0 &  0 \\  \frac{\partial x}{\partial u} &  \frac{\partial x}{\partial v} &  0 &  1 &  0 &  0 \\  0 &  0 &  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  0 &  0 &  1\end{matrix} \right]}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
