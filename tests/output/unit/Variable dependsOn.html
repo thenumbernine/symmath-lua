@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>variable depends</title>
+		<title>Variable dependsOn</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
@@ -19,6 +19,20 @@
 <tr><td>
 <b></b><br>
 <code>y = symmath.var'y'</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(#y:getDependentVars() == 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(#y'^p':getDependentVars() == 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -45,7 +59,7 @@
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
-<b>dependsregardless of specification</b><br>
+<b>depends regardless of specification</b><br>
 <code>assert(true == y'^p':dependsOn(y'^q'))</code>
 </td><td>
 
@@ -65,6 +79,27 @@
 <tr><td>
 <b></b><br>
 <code>y:setDependentVars(x'^a')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(#y:getDependentVars() == 1 and y:getDependentVars()[1] == x'^a')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(#y'^p':getDependentVars() == 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(#y'^pq':getDependentVars() == 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -180,6 +215,27 @@
 </td></tr>
 <tr><td>
 <b></b><br>
+<code>assert(#y:getDependentVars() == 1 and y:getDependentVars()[1] == x)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(#y'^p':getDependentVars() == 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(#y'^pq':getDependentVars() == 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
 <code>assert(true == y:dependsOn(x))</code>
 </td><td>
 
@@ -242,11 +298,22 @@
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
 <b>TODO this should be in tests/unit/diff.lua</b><br>
 <code></code>
 </td><td>
 <tr><td>
 <b></b><br>
+<code>asserteq(y:diff(y), 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b>assert and not asserteq so the rhs doesn't simplify</b><br>
 <code>assert(y:diff(x)() == y:diff(x))</code>
 </td><td>
 
@@ -254,67 +321,114 @@
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x'^p')() == zero)</code>
+<code>asserteq(y:diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x'^pq')() == zero)</code>
+<code>asserteq(y:diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x)() == zero)</code>
+<code>asserteq(y'^i':diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x'^p')() == zero)</code>
+<code>asserteq(y'^i':diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x'^pq')() == zero)</code>
+<code>asserteq(y'^i':diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x)() == zero)</code>
+<code>asserteq(y'^ij':diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x'^p')() == zero)</code>
+<code>asserteq(y'^ij':diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x'^pq')() == zero)</code>
+<code>asserteq(y'^ij':diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x,z)() == zero)</code>
+<code>asserteq(y:diff(x,z), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(y'^p':diff(y'^q'), delta'^p_q')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(y'_p':diff(y'_q'), delta'_p^q')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(y'_p':diff(y'^q'), g'_pq')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>asserteq(y'^p':diff(y'_q'), g'^pq')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>asserteq(y'^pq':diff(y'^rs'), delta'^p_r' * delta'^q_s')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
 <tr><td>
 <b></b><br>
 <code></code>
@@ -807,10 +921,10 @@ expected false to be true<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:95: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in field 'exec'<br>
-	./variable depends.lua:189: in local 'cb'<br>
+	./Variable dependsOn.lua:210: in local 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
 	(...tail calls...)<br>
-	./variable depends.lua:6: in main chunk<br>
+	./Variable dependsOn.lua:6: in main chunk<br>
 	[C]: in ?
 </td></tr>
 <tr><td>
@@ -1134,10 +1248,10 @@ expected false to be true<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:95: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:94><br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in field 'exec'<br>
-	./variable depends.lua:189: in local 'cb'<br>
+	./Variable dependsOn.lua:210: in local 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
 	(...tail calls...)<br>
-	./variable depends.lua:6: in main chunk<br>
+	./Variable dependsOn.lua:6: in main chunk<br>
 	[C]: in ?
 </td></tr>
 <tr><td>

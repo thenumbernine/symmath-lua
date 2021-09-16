@@ -154,21 +154,24 @@ Derivative.rules = {
 					and var == expr[2][1] 
 					and #expr[1] == #expr[2]	-- only matching # of symbols
 					then
+						-- if upper/lower differ then use delta
+						-- if they match then use metric
 						local deltaSymbol = require 'symmath.Tensor':deltaSymbol()
-						return TensorRef(
-							deltaSymbol,
-							table():append(
-								range(2,#expr[1]):mapi(function(k)
-									return expr[1][k]:clone()
-								end),
-								-- dx^i/dx^j = delta^i_j, so swap the raise/lower on all the wrt indexes
-								range(2,#expr[2]):mapi(function(k)
-									local index = expr[2][k]:clone()
-									index.lower = not index.lower
-									return index
-								end)
-							):unpack()
-						)
+						local metricSymbol = require 'symmath.Tensor':metricSymbol()
+						-- next, use products of the symbol per index
+						local prod = table()
+						for k=2,#expr[1] do
+							-- dx^i/dx^j = delta^i_j, so swap the raise/lower on all the wrt indexes
+							local symbol = (not not expr[1][k].lower) == (not not expr[2][k].lower) and deltaSymbol or metricSymbol
+							local index1 = expr[1][k]:clone()
+							local index2 = expr[2][k]:clone()
+							index2.lower = not index2.lower
+							prod:insert(TensorRef(symbol, index1, index2))
+						end
+					
+						if #prod == 0 then return Constant(1) end
+						if #prod == 1 then return prod[1] end
+						return require 'symmath.op.mul'(prod:unpack())
 					end
 				-- d/dy dx^I/dx^J = 0
 				elseif #expr > 2 then

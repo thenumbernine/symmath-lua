@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath.tests.unit.unit'(env, 'variable depends')
+require 'symmath.tests.unit.unit'(env, 'Variable dependsOn')
 
 timer(nil, function()
 
@@ -9,19 +9,27 @@ env.env = env
 env.x = var'x'
 env.z = var'z'
 env.zero = Constant(0)
+env.delta = Tensor:deltaSymbol()
+env.g = Tensor:metricSymbol()
 
+-- TODO how about an 'asserteq' and an 'assertsimplifyeq'
 for _,line in ipairs(string.split(string.trim([=[
 
 -- testing dependency
 
 y = symmath.var'y'
+assert(#y:getDependentVars() == 0)
+assert(#y'^p':getDependentVars() == 0)
 assert(true == y:dependsOn(y))			-- depends regardless of specification
 assert(false == y:dependsOn(y'^p'))		-- was not specified
 assert(false == y'^p':dependsOn(y))		-- was not specified
-assert(true == y'^p':dependsOn(y'^q'))	-- dependsregardless of specification
+assert(true == y'^p':dependsOn(y'^q'))	-- depends regardless of specification
 
 y = symmath.var'y'
 y:setDependentVars(x'^a')
+assert(#y:getDependentVars() == 1 and y:getDependentVars()[1] == x'^a')
+assert(#y'^p':getDependentVars() == 0)
+assert(#y'^pq':getDependentVars() == 0)
 assert(false == y'^p':dependsOn(x))		-- was not specified
 assert(false == y'^p':dependsOn(x'^q'))	-- was not specified
 assert(true == y:dependsOn(x'^q'))		-- was specified
@@ -38,6 +46,9 @@ assert(false == y'^ij':dependsOn(x))
 assert(false == y'^ij':dependsOn(x'^p'))
 assert(false == y'^ij':dependsOn(x'^pq'))
 y:setDependentVars(x)
+assert(#y:getDependentVars() == 1 and y:getDependentVars()[1] == x)
+assert(#y'^p':getDependentVars() == 0)
+assert(#y'^pq':getDependentVars() == 0)
 assert(true == y:dependsOn(x))
 assert(false == y:dependsOn(x'^p'))
 assert(false == y:dependsOn(x'^pq'))
@@ -47,17 +58,27 @@ assert(false == y'^i':dependsOn(x'^pq'))
 assert(false == y'^ij':dependsOn(x))
 assert(false == y'^ij':dependsOn(x'^p'))
 assert(false == y'^ij':dependsOn(x'^pq'))
+
 -- TODO this should be in tests/unit/diff.lua
-assert(y:diff(x)() == y:diff(x))
-assert(y:diff(x'^p')() == zero)
-assert(y:diff(x'^pq')() == zero)
-assert(y'^i':diff(x)() == zero)
-assert(y'^i':diff(x'^p')() == zero)
-assert(y'^i':diff(x'^pq')() == zero)
-assert(y'^ij':diff(x)() == zero)
-assert(y'^ij':diff(x'^p')() == zero)
-assert(y'^ij':diff(x'^pq')() == zero)
-assert(y:diff(x,z)() == zero)
+asserteq(y:diff(y), 1)
+assert(y:diff(x)() == y:diff(x))	-- assert and not asserteq so the rhs doesn't simplify
+asserteq(y:diff(x'^p'), zero)
+asserteq(y:diff(x'^pq'), zero)
+asserteq(y'^i':diff(x), zero)
+asserteq(y'^i':diff(x'^p'), zero)
+asserteq(y'^i':diff(x'^pq'), zero)
+asserteq(y'^ij':diff(x), zero)
+asserteq(y'^ij':diff(x'^p'), zero)
+asserteq(y'^ij':diff(x'^pq'), zero)
+asserteq(y:diff(x,z), zero)
+
+asserteq(y'^p':diff(y'^q'), delta'^p_q')
+asserteq(y'_p':diff(y'_q'), delta'_p^q')
+asserteq(y'_p':diff(y'^q'), g'_pq')
+asserteq(y'^p':diff(y'_q'), g'^pq')
+
+asserteq(y'^pq':diff(y'^rs'), delta'^p_r' * delta'^q_s')
+
 
 y = symmath.var'y'
 y:setDependentVars(x'^a')

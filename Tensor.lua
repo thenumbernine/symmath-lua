@@ -1174,6 +1174,7 @@ function Tensor:antisym()
 end
 
 -- this is used with Derivative when it simplifies two equal TensorRefs
+-- TODO call it 'Kroencher Delta symbol' ?
 function Tensor:deltaSymbol()
 	if not Tensor.deltaVariable then
 		local Variable = require 'symmath.Variable'

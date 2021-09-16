@@ -179,6 +179,12 @@ function Variable:removeDuplicateDepends()
 	end
 end
 
+function Variable:getDependentVars()
+	return (self.dependentVars or table()):mapi(function(depvar, k, t)
+		return depvar.src == self and depvar.wrt or nil, #t+1
+	end)
+end
+
 --[[
 similar function is found in symmath/tensor/TensorRef.lua
 only return true for the dependentVars entries with src==self
