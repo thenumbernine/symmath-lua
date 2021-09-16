@@ -191,26 +191,45 @@ only return true for the dependentVars entries with src==self
 that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
 --]]
 function Variable:dependsOn(x, haveChecked)
---print('does Variable '..self..' depend on '..x..'?')
+--printbr('does Variable '..self..' depend on '..x..'?')
 	-- watch out for dependency loops
 	-- u = u(t,x), t = t(u,v), does u:dependsOn(v) -> u:dependsOn(t) -> t:dependsOn(v)
 	haveChecked = haveChecked or {}
 
-	if x == self then return true end
+	if x == self then 
+--printbr("it's the same variable, so yes")		
+		return true 
+	end
 	
-	if haveChecked[x] then return false end
-	haveChecked[x] = true
+	if haveChecked[self] then 
+--printbr("was already checked, so failing")		
+		return false 
+	end
+	haveChecked[self] = true
 	
 	--local TensorRef = require 'symmath.tensor.TensorRef'
 	if self.dependentVars then
 		for _,depvar in ipairs(self.dependentVars) do
 			if depvar.src == self then
 				local wrt = depvar.wrt
-				if wrt:dependsOn(x, haveChecked) then return true end
+				if wrt:dependsOn(x, haveChecked) then 
+--printbr("yes")					
+					return true 
+				end
 			end
 		end
 	end
+--printbr("exhausted all dependencies, so no")	
 	return false
+end
+
+--[[
+similar is function found in symmath/TensorRef.lua
+also an equivalent function in symmath/op/eq.lua
+set a variable's dependent vars to all variables found in the expression
+--]]
+function Variable:inferDepenedentVars(...)
+	self:setDependentVars(Variable.super.getDependentVars(...):unpack())
 end
 
 function Variable:getRealRange()

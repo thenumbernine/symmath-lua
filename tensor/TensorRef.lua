@@ -145,6 +145,14 @@ function TensorRef:dependsOn(x)
 	return false
 end
 
+--[[
+similar function is found in symmath/Variable.lua
+also an equivalent function in symmath/op/eq.lua
+set a variable's dependent vars to all variables found in the expression
+--]]
+function TensorRef:inferDepenedentVars(...)
+	self:setDependentVars(TensorRef.super.getDependentVars(...):unpack())
+end
 
 TensorRef.rules = {
 	Prune = {

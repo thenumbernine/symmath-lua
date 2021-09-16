@@ -512,63 +512,63 @@
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x)() == zero)</code>
+<code>asserteq(y:diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x'^p')() == y:diff(x'^p'))</code>
+<code>asserteq(y:diff(x'^p'), y:diff(x'^p'))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x'^pq')() == zero)</code>
+<code>asserteq(y:diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x)() == zero)</code>
+<code>asserteq(y'^i':diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x'^p')() == zero)</code>
+<code>asserteq(y'^i':diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x'^pq')() == zero)</code>
+<code>asserteq(y'^i':diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x)() == zero)</code>
+<code>asserteq(y'^ij':diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x'^p')() == zero)</code>
+<code>asserteq(y'^ij':diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x'^pq')() == zero)</code>
+<code>asserteq(y'^ij':diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -656,63 +656,63 @@
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x)() == zero)</code>
+<code>asserteq(y:diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x'^p')() == zero)</code>
+<code>asserteq(y:diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x'^pq')() == zero)</code>
+<code>asserteq(y:diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x)() == y'^i':diff(x))</code>
+<code>asserteq(y'^i':diff(x), y'^i':diff(x))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x'^p')() == zero)</code>
+<code>asserteq(y'^i':diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x'^pq')() == zero)</code>
+<code>asserteq(y'^i':diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x)() == zero)</code>
+<code>asserteq(y'^ij':diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x'^p')() == zero)</code>
+<code>asserteq(y'^ij':diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x'^pq')() == zero)</code>
+<code>asserteq(y'^ij':diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -800,63 +800,63 @@
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x)() == zero)</code>
+<code>asserteq(y:diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x'^p')() == zero)</code>
+<code>asserteq(y:diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y:diff(x'^pq')() == zero)</code>
+<code>asserteq(y:diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x)() == zero)</code>
+<code>asserteq(y'^i':diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x'^p')() == y'^i':diff(x'^p'))</code>
+<code>asserteq(y'^i':diff(x'^p'), y'^i':diff(x'^p'))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^i':diff(x'^pq')() == zero)</code>
+<code>asserteq(y'^i':diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x)() == zero)</code>
+<code>asserteq(y'^ij':diff(x), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x'^p')() == zero)</code>
+<code>asserteq(y'^ij':diff(x'^p'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(y'^ij':diff(x'^pq')() == zero)</code>
+<code>asserteq(y'^ij':diff(x'^pq'), zero)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -912,20 +912,8 @@
 <b></b><br>
 <code>assert(true == z:dependsOn(x))</code>
 </td><td>
-expected false to be true<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:11: failed<br>stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:103: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:102><br>
-	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:11: in global 'assert'<br>
-	[string "assert(true == z:dependsOn(x))"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:95: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in field 'exec'<br>
-	./Variable dependsOn.lua:210: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./Variable dependsOn.lua:6: in main chunk<br>
-	[C]: in ?
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1239,20 +1227,8 @@ expected false to be true<br>
 <b></b><br>
 <code>assert(true == z:dependsOn(x'^I'))</code>
 </td><td>
-expected false to be true<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:11: failed<br>stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:103: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:102><br>
-	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:11: in global 'assert'<br>
-	[string "assert(true == z:dependsOn(x'^I'))"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:95: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:94><br>
-	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in field 'exec'<br>
-	./Variable dependsOn.lua:210: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./Variable dependsOn.lua:6: in main chunk<br>
-	[C]: in ?
+
+<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1293,6 +1269,94 @@ expected false to be true<br>
 <b></b><br>
 <code>assert(true == x'^I':dependsOn(x'^I'))</code>
 </td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>make definite variable objects in our scope so implicit variable creation doesn't replace them and reset their state</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>alright, I'm at an impass here ...</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>before I fixed chain dependencies, I had a good system where {u,v}:depends{t,x} would only produce du/dt du/dx dv/dt dv/dx</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b>but now, with chain dependencies, I'm also getting dv/du, du/dv, dt/dx, dx/dt ... and this is incorrect</b><br>
+<code></code>
+</td><td>
+<tr><td>
+<b></b><br>
+<code>u,v,t,x,y,z = vars('u','v','t','x','y','z')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>u:setDependentVars(t,x)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>v:setDependentVars(t,x)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>t:setDependentVars(u,v)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>x:setDependentVars(u,v)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>allvars = table{u,v,t,x,y,z}</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>all = Matrix(allvars):T()</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>varofall = var('\\{'..allvars:mapi(function(v) return v.name end):concat','..'\\}')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>print(varofall:diff(varofall):eq(Matrix:lambda({#all,#all}, function(i,j) return allvars[i]:diff(allvars[j])() end)))</code>
+</td><td>
+${\frac{\partial \{u,v,t,x,y,z\}}{\partial \{u,v,t,x,y,z\}}} = {\left[ \begin{matrix}  1 &  \frac{\partial u}{\partial v} &  \frac{\partial u}{\partial t} &  \frac{\partial u}{\partial x} &  0 &  0 \\  \frac{\partial v}{\partial u} &  1 &  \frac{\partial v}{\partial t} &  \frac{\partial v}{\partial x} &  0 &  0 \\  \frac{\partial t}{\partial u} &  \frac{\partial t}{\partial v} &  1 &  \frac{\partial t}{\partial x} &  0 &  0 \\  \frac{\partial x}{\partial u} &  \frac{\partial x}{\partial v} &  \frac{\partial x}{\partial t} &  1 &  0 &  0 \\  0 &  0 &  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  0 &  0 &  1\end{matrix} \right]}$
 
 <span style="color:green">GOOD</span>
 </td></tr>
