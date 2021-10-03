@@ -4,14 +4,12 @@ require 'symmath'.setup{MathJax={title='sub-tensor assignment', pathToTryToFindM
 
 local t,x,y,z = vars('t','x','y','z') 
 local coords = {t,x,y,z}
-Tensor.coords{
-	{variables = {t,x,y,z}}, 
-	{symbols = 'ijklmn',variables = {x,y,z}},
-	{symbols = 't', variables={t}},
-	{symbols = 'x', variables={x}},
-	{symbols = 'y', variables={y}},
-	{symbols = 'z', variables={z}},
-}
+local chart = Tensor.Chart{coords={t,x,y,z}}
+local spatialVars = Tensor.Chart{symbols = 'ijklmn',coords = {x,y,z}}
+local chart_t = Tensor.Chart{symbols = 't', coords={t}}
+local chart_x = Tensor.Chart{symbols = 'x', coords={x}}
+local chart_y = Tensor.Chart{symbols = 'y', coords={y}}
+local chart_z = Tensor.Chart{symbols = 'z', coords={z}}
 
 printbr("rank-1 subtensor assignment")
 

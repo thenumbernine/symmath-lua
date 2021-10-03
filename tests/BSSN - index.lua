@@ -9,7 +9,6 @@ local printbr = MathJax.print
 MathJax.header.title = 'BSSN formalism - index notation'
 print(MathJax.header)
 
-
 --[[
 I've done something that is causing this to run too slow to finish.
 I'm trying to narrow it down.
@@ -24,46 +23,47 @@ local spatialDim = 3
 
 --[[ latest times:
 														| old comp / a year ago	| new comp / all rules pushed	| no rules pushed
-useful identity:										| 0.072s                | 0.03s							| 
-useful identity:										| 0.037s                | 0.018s						| 
-ADM metric evolution:									| 0.259s                | 0.112s                        | 
-Bona-Masso lapse and shift evolution:					| 0.001s                | 0.00099999999999989s          | 
-using locally-Minkowski normalized coordinates:			| 0.051s                | 0.022s                        | 
-using locally-Minkowski normalized coordinates:			| 0.027s                | 0.014s                        | 
-using locally-Minkowski normalized coordinates:			| 0.148s                | 0.073s                        | 
-conformal $\phi$:										| 0.002s                | 0s                            | 
-conformal $\chi$:										| 0s                    | 0.002s                        | 
-conformal W:											| 0.001s                | 0.0010000000000001s           | 
-conformal metric:										| 0.001s                | 0.002s                        | 
-conformal metric inverse:								| 0.001s                | 0.002s                        | 
-conformal metric derivative:							| 0.018s                | 0.012s                        | 
-conformal metric determinant:							| 0.001s                | 0.00099999999999989s          | 
-conformal metric constraint:							| 0.001s                | 0.0010000000000001s           | 
-static grid assumption:									| 0.001s                | 0.00099999999999989s          | 
-conformal connection:									| 0.435s                | 0.2s                          | 
-extrinsic curvature trace:								| 0.0010000000000001s   | 0s                            | 
-trace-free extrinsic curvature:							| 0.006s                | 0.0070000000000001s           | 
-conformal trace-free extrinsic curvature:				| 0.039s                | 0.024s                        | 
-trace-free extrinsic curvature derivative:				| 0.0070000000000001s   | 0.004s                        | 
-Jacobi identity:										| 0s                    | 0.00099999999999989s          | 
-conformal W evolution:									| 0.57s                 | 0.321s                        | 
-using locally-Minkowski normalized coordinates:			| 0.257s                | 0.124s                        | 
-conformal metric evolution:								| 0.924s                | 0.479s                        | 
-conformal metric perturbation:							| 0.00099999999999989s  | 0s                            | 
-conformal metric perturbation spatial derivative:		| 0.0060000000000002s   | 0.0030000000000001s           | 
-conformal metric perturbation evolution:				| 0.0059999999999998s   | 0.0030000000000001s           | 
-using locally-Minkowski normalized coordinates:			| 2.639s                | 0.614s                        | 
-grid vs conformal connection difference:				| 0.0030000000000001s   | 0.0020000000000002s           | 
-grid vs conformal connection difference evolution:		| 104.327s              | 39.723s                       | 
-using locally-Minkowski normalized coordinates:			| 324.763s              | 183.135s                      | 
-extrinsic curvature trace evolution:					| 17.434s               | 5.964s                        | 
-using locally-Minkowski normalized coordinates:			| 1.532s                | 0.60900000000001s             | 
-trace-free extrinsic curvature evolution:				| 0.016999999999996s    | 0.0080000000000098s           | 
-conformal trace-free extrinsic curvature evolution:		| 27.296s               | 10.568s                       | 
-using locally-Minkowski normalized coordinates:			| 58.253s               | 12.762s                       | 
-collecting partial derivatives:							| 0.013000000000034s    | 0.01600000000002s             | 
-writing results...										| 0.021999999999935s    | 0.014999999999986s            | 
-TOTAL: 													| 539.172               | 254.876                       | 
+useful identity:										| 0.072s                | 0.02913s                      | 
+useful identity:										| 0.037s                | 0.017881s                     | 
+ADM metric evolution:									| 0.259s                | 0.09919s                      | 
+Bona-Masso lapse and shift evolution:					| 0.001s                | 0.000113s                     | 
+using locally-Minkowski normalized coordinates:			| 0.051s                | 0.009761s                     | 
+using locally-Minkowski normalized coordinates:			| 0.027s                | 0.012441s                     | 
+using locally-Minkowski normalized coordinates:			| 0.148s                | 0.055632s                     | 
+conformal $\phi$:										| 0.002s                | 9.9000000000016e-05s          | 
+conformal $\chi$:										| 0s                    | 7.299999999999e-05s           | 
+conformal W:											| 0.001s                | 0.00027300000000002s          | 
+conformal metric:										| 0.001s                | 0.00044699999999998s          | 
+conformal metric inverse:								| 0.001s                | 0.00055900000000003s          | 
+conformal metric derivative:							| 0.018s                | 0.005395s                     | 
+conformal metric determinant:							| 0.001s                | 0.00043500000000002s          | 
+conformal metric constraint:							| 0.001s                | 7.299999999999e-05s           | 
+static grid assumption:									| 0.001s                | 8.9000000000006e-05s          | 
+conformal connection:									| 0.435s                | 0.178246s                     | 
+extrinsic curvature trace:								| 0.0010000000000001s   | 9.2000000000036e-05s          | 
+trace-free extrinsic curvature:							| 0.006s                | 0.00365s                      | 
+conformal trace-free extrinsic curvature:				| 0.039s                | 0.020732s                     | 
+trace-free extrinsic curvature derivative:				| 0.0070000000000001s   | 0.003098s                     | 
+Jacobi identity:										| 0s                    | 0.00018299999999999s          | 
+conformal W evolution:									| 0.57s                 | 0.2349s                       | 
+using locally-Minkowski normalized coordinates:			| 0.257s                | 0.082697s                     | 
+conformal metric evolution:								| 0.924s                | 0.337391s                     | 
+conformal metric perturbation:							| 0.00099999999999989s  | 7.0999999999932e-05s          | 
+conformal metric perturbation spatial derivative:		| 0.0060000000000002s   | 0.00094600000000011s          | 
+conformal metric perturbation evolution:				| 0.0059999999999998s   | 0.001746s                     | 
+using locally-Minkowski normalized coordinates:			| 2.639s                | 0.579099s                     | 
+grid vs conformal connection difference:				| 0.0030000000000001s   | 0.00072500000000009s          | 
+grid vs conformal connection difference evolution:		| 104.327s              | 39.274675s                    | 
+using locally-Minkowski normalized coordinates:			| 324.763s              | 206.651561s                   | 
+extrinsic curvature trace evolution:					| 17.434s               | 6.564863s                     | 
+using locally-Minkowski normalized coordinates:			| 1.532s                | 0.763927s                     | 
+trace-free extrinsic curvature evolution:				| 0.016999999999996s    | 0.0073950000000025s           | 
+conformal trace-free extrinsic curvature evolution:		| 27.296s               | 12.070906s                    | 
+using locally-Minkowski normalized coordinates:			| 58.253s               | 15.031366s                    | 
+collecting partial derivatives:							| 0.013000000000034s    | 0.021753000000047s            | 
+writing results...										| 0.021999999999935s    | 0.020398999999998s            | 
+TOTAL: 													| 539.172               | 282.082174                    | 
+
 --]]
 local timer = os.clock
 local startTime = timer()
@@ -142,7 +142,7 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 		-- I would use getIndexesUsed() but I want to filter out indexes inside of derivatives
 		local symbolInfo = table()
 		for i,mi in ipairs(mulexpr) do
-			if TensorRef:isa(mi) then
+			if Tensor.Ref:isa(mi) then
 				for j=2,#mi do
 					local mindex = mi[j]
 					local si = symbolInfo[mindex.symbol]
@@ -155,7 +155,7 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 					end
 					si.sources:insert{
 						exprloc = i,	-- location of term in mul's children
-						indexloc = j,	-- location of TensorIndex in the term's children
+						indexloc = j,	-- location of Tensor.Index in the term's children
 					}
 				end
 			end
@@ -212,7 +212,7 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 	expr = expr:splitOffDerivIndexes()
 
 	-- handle these cases separately so we reset the uniqueVars per term 
-	-- alternatively i could just go looking for muls, but also single TensorRefs ...
+	-- alternatively i could just go looking for muls, but also single Tensor.Refs ...
 	if require 'symmath.op.add':isa(expr) or require 'symmath.op.Equation':isa(expr) then
 		expr = expr:clone()
 		for i=1,#expr do
@@ -237,13 +237,13 @@ local function insertNormalizationToSetVariance(expr, transformVar)
 				--assert(sumSymbol )
 				if sumSymbol then	
 					-- another dilemma ... 'transformVar' doesn't need indexes, let alone for # indexes to match the search var
-					local e = TensorRef(
+					local e = Tensor.Ref(
 						assert(transformVar),
-						TensorIndex{
+						Tensor.Index{
 							lower = xi.lower,
 							symbol = xi.symbol,
 						},
-						TensorIndex{
+						Tensor.Index{
 							lower = not xi.lower,
 							symbol = sumSymbol,
 						}
@@ -272,10 +272,10 @@ local function replaceNormalizationTransformsWithDeltas(expr)
 					local xi = x[i]
 					for j=1,i-1 do
 						local xj = x[j]
-						if TensorRef:isa(xi)
+						if Tensor.Ref:isa(xi)
 						and #xi == 3
 						and xi[1] == e
-						and TensorRef:isa(xj)
+						and Tensor.Ref:isa(xj)
 						and #xj == 3
 						and xj[1] == e
 						and xi[2].symbol == xj[2].symbol
@@ -286,7 +286,7 @@ local function replaceNormalizationTransformsWithDeltas(expr)
 							assert(xj[3].symbol:upper() == xj[3].symbol)
 							table.remove(x, i)
 							table.remove(x, j)
-							table.insert(x, TensorRef(delta, xi[3], xj[3]))
+							table.insert(x, Tensor.Ref(delta, xi[3], xj[3]))
 							found = true
 							break
 						end

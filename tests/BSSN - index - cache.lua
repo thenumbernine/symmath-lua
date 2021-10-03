@@ -6,20 +6,20 @@ require 'symmath'.setup{env=env}
 
 
 dt_alpha_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\alpha"),
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="i"}
 			)
 		) -
 		(
@@ -35,24 +35,24 @@ dt_alpha_def = (
 
 
 dt_beta_u_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\beta"),
-		TensorIndex{lower=false, symbol="i"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=false, symbol="i"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
-	TensorRef(
+	Tensor.Ref(
 		var("B"),
-		TensorIndex{lower=false, symbol="i"}
+		Tensor.Index{lower=false, symbol="i"}
 	)
 )
 
 
 dt_B_u_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("B"),
-		TensorIndex{lower=false, symbol="i"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=false, symbol="i"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
@@ -61,17 +61,17 @@ dt_B_u_def = (
 				Constant(3) /
 				Constant(4)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\Lambda}"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, derivative=",", symbol="t"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, derivative=",", symbol="t"}
 			)
 		) -
 		(
 			var("\\eta") *
-			TensorRef(
+			Tensor.Ref(
 				var("B"),
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="i"}
 			)
 		)
 	)
@@ -79,9 +79,9 @@ dt_B_u_def = (
 
 
 dt_W_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("W"),
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
@@ -101,20 +101,20 @@ dt_W_def = (
 				Constant(3)
 			) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="i"}
 			)
 		) +
 		(
@@ -124,13 +124,13 @@ dt_W_def = (
 				Constant(6)
 			) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="i"}
 			) *
 			(
 				Constant(1) /
@@ -142,57 +142,57 @@ dt_W_def = (
 
 
 dt_epsilonBar_ll_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\bar{\\epsilon}"),
-		TensorIndex{lower=true, symbol="i"},
-		TensorIndex{lower=true, symbol="j"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, symbol="i"},
+		Tensor.Index{lower=true, symbol="j"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="k"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="k"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="j"},
-				TensorIndex{lower=true, symbol="k"}
+				Tensor.Index{lower=true, symbol="j"},
+				Tensor.Index{lower=true, symbol="k"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="k"}
+				Tensor.Index{lower=false, symbol="k"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"},
-				TensorIndex{lower=true, derivative=",", symbol="k"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"},
+				Tensor.Index{lower=true, derivative=",", symbol="k"}
 			)
 		) +
 		(
 			Constant(-2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			)
 		) +
 		(
@@ -201,15 +201,15 @@ dt_epsilonBar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, derivative=",", symbol="k"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, derivative=",", symbol="k"}
 			)
 		) +
 		(
@@ -218,18 +218,18 @@ dt_epsilonBar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="k"}
+				Tensor.Index{lower=true, derivative=",", symbol="k"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="k"}
+				Tensor.Index{lower=false, symbol="k"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
 			(
 				Constant(1) /
@@ -241,9 +241,9 @@ dt_epsilonBar_ll_def = (
 
 
 dt_K_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("K"),
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
@@ -255,31 +255,31 @@ dt_K_def = (
 		) +
 		(
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
 			(
 				var("W") ^
@@ -287,13 +287,13 @@ dt_K_def = (
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\Lambda}"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
 			(
 				var("W") ^
@@ -302,13 +302,13 @@ dt_K_def = (
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\mathcal{C}"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
 			(
 				var("W") ^
@@ -316,13 +316,13 @@ dt_K_def = (
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
 			(
 				var("W") ^
@@ -330,113 +330,113 @@ dt_K_def = (
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("K"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="e"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="e"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="e"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="e"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="e"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="e"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -454,15 +454,15 @@ dt_K_def = (
 		) +
 		(
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("R"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
 			(
 				var("W") ^
@@ -474,11 +474,11 @@ dt_K_def = (
 
 
 dt_ABar_ll_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\bar{A}"),
-		TensorIndex{lower=true, symbol="i"},
-		TensorIndex{lower=true, symbol="j"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, symbol="i"},
+		Tensor.Index{lower=true, symbol="j"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
@@ -491,10 +491,10 @@ dt_ABar_ll_def = (
 			var("S") *
 			var("\\alpha") *
 			var("\\pi") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			)
 		) +
 		(
@@ -502,20 +502,20 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -528,18 +528,18 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\Lambda}"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -552,18 +552,18 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -575,18 +575,18 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\mathcal{C}"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -600,23 +600,23 @@ dt_ABar_ll_def = (
 				Constant(3)
 			) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			)
 		) +
 		(
@@ -626,20 +626,20 @@ dt_ABar_ll_def = (
 				Constant(3)
 			) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("R"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -652,25 +652,25 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -678,35 +678,35 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="e"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="e"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -714,35 +714,35 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="e"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="e"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
@@ -751,35 +751,35 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="e"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="e"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
@@ -788,15 +788,15 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -804,20 +804,20 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="j"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="j"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
 			(
 				var("W") ^
@@ -829,20 +829,20 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -855,20 +855,20 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				var("W") ^
@@ -878,73 +878,73 @@ dt_ABar_ll_def = (
 		(
 			var("K") *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			)
 		) +
 		(
 			Constant(-2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="i"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="i"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("R"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -955,10 +955,10 @@ dt_ABar_ll_def = (
 			Constant(-8) *
 			var("\\alpha") *
 			var("\\pi") *
-			TensorRef(
+			Tensor.Ref(
 				var("S"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -968,33 +968,33 @@ dt_ABar_ll_def = (
 		(
 			Constant(-1) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			)
 		) +
 		(
 			Constant(-1) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="i"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -1007,18 +1007,18 @@ dt_ABar_ll_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=true, symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=true, symbol="j"}
 			) *
 			(
 				Constant(1) /
@@ -1030,10 +1030,10 @@ dt_ABar_ll_def = (
 
 
 dt_LambdaBar_u_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\bar{\\Lambda}"),
-		TensorIndex{lower=false, symbol="i"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=false, symbol="i"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
@@ -1042,19 +1042,19 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -1067,19 +1067,19 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -1092,26 +1092,26 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -1119,19 +1119,19 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(6)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -1144,26 +1144,26 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -1171,26 +1171,26 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -1198,16 +1198,16 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -1216,21 +1216,21 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="b"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="b"}
 			)
 		) +
 		(
@@ -1238,29 +1238,29 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -1273,26 +1273,26 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -1300,36 +1300,36 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=false, symbol="f"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=false, symbol="f"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, symbol="f"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, symbol="f"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -1337,29 +1337,29 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
 			(
 				Constant(1) /
@@ -1372,24 +1372,24 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			) *
 			(
 				Constant(1) /
@@ -1401,9 +1401,9 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(6)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="i"}
 			) *
 			(
 				Constant(1) /
@@ -1413,24 +1413,24 @@ dt_LambdaBar_u_def = (
 		(
 			Constant(-1) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
 			(
 				Constant(1) /
@@ -1439,447 +1439,447 @@ dt_LambdaBar_u_def = (
 		) +
 		(
 			Constant(-2) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=false, symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
 			Constant(2) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
-			)
-		) +
-		(
-			Constant(-1) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=false, symbol="e"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=false, symbol="i"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, symbol="f"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
-			)
-		) +
-		(
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="i"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="d"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="d"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=false, symbol="e"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=false, symbol="f"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, symbol="f"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=false, symbol="e"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
+			)
+		) +
+		(
+			Constant(-1) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="i"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="d"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=false, symbol="f"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			)
+		) +
+		(
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="a"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=false, symbol="e"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			) *
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="e"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="e"}
 			)
 		) +
 		(
 			Constant(2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=false, symbol="e"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=false, symbol="e"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
 			Constant(-1) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(-2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, symbol="d"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, symbol="d"}
 			)
 		) +
 		(
 			Constant(-2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="c"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -1888,22 +1888,22 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(6)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="b"}
+				Tensor.Index{lower=false, symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
 			(
 				Constant(1) /
@@ -1919,22 +1919,22 @@ dt_LambdaBar_u_def = (
 				Constant(1) /
 				Constant(6)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="a"}
+				Tensor.Index{lower=false, symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=false, symbol="i"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=false, symbol="i"}
 			) *
 			(
 				Constant(1) /
@@ -1949,25 +1949,25 @@ dt_LambdaBar_u_def = (
 
 
 dt_alpha_norm_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\alpha"),
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			)
 		) +
 		(
@@ -1984,33 +1984,33 @@ dt_alpha_norm_def = (
 
 
 dt_beta_U_norm_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\beta"),
-		TensorIndex{lower=false, symbol="I"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=false, symbol="I"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
-	TensorRef(
+	Tensor.Ref(
 		var("B"),
-		TensorIndex{lower=false, symbol="I"}
+		Tensor.Index{lower=false, symbol="I"}
 	)
 )
 
 
 dt_B_U_norm_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("B"),
-		TensorIndex{lower=false, symbol="I"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=false, symbol="I"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
 		(
 			Constant(-1) *
 			var("\\eta") *
-			TensorRef(
+			Tensor.Ref(
 				var("B"),
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="I"}
 			)
 		) +
 		(
@@ -2019,10 +2019,10 @@ dt_B_U_norm_def = (
 				Constant(1) /
 				Constant(4)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\Lambda}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="t"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="t"}
 			)
 		)
 	)
@@ -2030,9 +2030,9 @@ dt_B_U_norm_def = (
 
 
 dt_W_norm_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("W"),
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
@@ -2052,15 +2052,15 @@ dt_W_norm_def = (
 				Constant(3)
 			) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			)
 		) +
 		(
@@ -2070,30 +2070,30 @@ dt_W_norm_def = (
 				Constant(3)
 			) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			)
 		) +
 		(
@@ -2103,18 +2103,18 @@ dt_W_norm_def = (
 				Constant(6)
 			) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
 			(
 				Constant(1) /
@@ -2126,9 +2126,9 @@ dt_W_norm_def = (
 
 
 dt_K_norm_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("K"),
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
@@ -2140,51 +2140,51 @@ dt_K_norm_def = (
 		) +
 		(
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
 			(
 				var("W") ^
@@ -2192,18 +2192,18 @@ dt_K_norm_def = (
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\Lambda}"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
 			(
 				var("W") ^
@@ -2212,18 +2212,18 @@ dt_K_norm_def = (
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\mathcal{C}"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
 			(
 				var("W") ^
@@ -2231,18 +2231,18 @@ dt_K_norm_def = (
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
 			(
 				var("W") ^
@@ -2250,418 +2250,418 @@ dt_K_norm_def = (
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("K"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, symbol="G"}
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, symbol="G"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="G"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="G"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="G"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="G"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -2679,15 +2679,15 @@ dt_K_norm_def = (
 		) +
 		(
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("R"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
 			(
 				var("W") ^
@@ -2699,202 +2699,180 @@ dt_K_norm_def = (
 
 
 dt_epsilonBar_LL_norm_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\bar{\\epsilon}"),
-		TensorIndex{lower=true, symbol="I"},
-		TensorIndex{lower=true, symbol="J"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, symbol="I"},
+		Tensor.Index{lower=true, symbol="J"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
 		(
 			Constant(-2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="k"},
-				TensorIndex{lower=false, symbol="K"}
+				Tensor.Index{lower=true, symbol="k"},
+				Tensor.Index{lower=false, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="k"},
-				TensorIndex{lower=false, symbol="K"}
+				Tensor.Index{lower=true, symbol="k"},
+				Tensor.Index{lower=false, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="K"}
+				Tensor.Index{lower=false, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="M"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="M"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=false, symbol="M"},
-				TensorIndex{lower=true, derivative=",", symbol="k"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=false, symbol="M"},
+				Tensor.Index{lower=true, derivative=",", symbol="k"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="K"}
+				Tensor.Index{lower=false, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="N"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="N"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="j"},
-				TensorIndex{lower=false, symbol="N"},
-				TensorIndex{lower=true, derivative=",", symbol="k"}
+				Tensor.Index{lower=true, symbol="j"},
+				Tensor.Index{lower=false, symbol="N"},
+				Tensor.Index{lower=true, derivative=",", symbol="k"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="K"}
+				Tensor.Index{lower=false, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, derivative=",", symbol="k"}
-			)
-		) +
-		(
-			Constant(-2) *
-			(
-				Constant(1) /
-				Constant(3)
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="K"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="k"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, derivative=",", symbol="k"}
 			)
 		) +
 		(
@@ -2903,20 +2881,42 @@ dt_epsilonBar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="k"}
+				Tensor.Index{lower=false, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
+			) *
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="k"}
+			)
+		) +
+		(
+			Constant(-2) *
+			(
+				Constant(1) /
+				Constant(3)
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="k"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, symbol="K"}
 			)
 		) +
 		(
@@ -2925,23 +2925,23 @@ dt_epsilonBar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="k"}
+				Tensor.Index{lower=true, derivative=",", symbol="k"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="K"}
+				Tensor.Index{lower=false, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="k"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="k"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
 			(
 				Constant(1) /
@@ -2953,11 +2953,11 @@ dt_epsilonBar_LL_norm_def = (
 
 
 dt_ABar_LL_norm_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\bar{A}"),
-		TensorIndex{lower=true, symbol="I"},
-		TensorIndex{lower=true, symbol="J"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=true, symbol="I"},
+		Tensor.Index{lower=true, symbol="J"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
@@ -2970,10 +2970,10 @@ dt_ABar_LL_norm_def = (
 			var("S") *
 			var("\\alpha") *
 			var("\\pi") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			)
 		) +
 		(
@@ -2982,23 +2982,23 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
 			(
 				Constant(1) /
@@ -3012,33 +3012,33 @@ dt_ABar_LL_norm_def = (
 				Constant(3)
 			) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			)
 		) +
 		(
@@ -3048,20 +3048,20 @@ dt_ABar_LL_norm_def = (
 				Constant(3)
 			) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("R"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
 			(
 				var("W") ^
@@ -3073,30 +3073,30 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
 			(
 				var("W") ^
@@ -3109,23 +3109,23 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\Lambda}"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
 			(
 				var("W") ^
@@ -3137,40 +3137,40 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -3182,30 +3182,30 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="M"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="M"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=false, symbol="M"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=false, symbol="M"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -3217,40 +3217,40 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
 			(
 				var("W") ^
@@ -3262,76 +3262,30 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="N"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="N"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="j"},
-				TensorIndex{lower=false, symbol="N"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
-			) *
-			(
-				var("W") ^
-				Constant(2)
-			)
-		) +
-		(
-			Constant(-1) *
-			(
-				Constant(1) /
-				Constant(2)
-			) *
-			TensorRef(
-				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="M"},
-				TensorIndex{lower=true, symbol="J"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=false, symbol="M"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="j"},
+				Tensor.Index{lower=false, symbol="N"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
 			(
 				var("W") ^
@@ -3344,40 +3298,40 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="N"}
+				Tensor.Index{lower=true, symbol="M"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="j"},
-				TensorIndex{lower=false, symbol="N"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=false, symbol="M"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				var("W") ^
@@ -3390,30 +3344,76 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="N"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="j"},
+				Tensor.Index{lower=false, symbol="N"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
+			) *
+			(
+				var("W") ^
+				Constant(2)
+			)
+		) +
+		(
+			Constant(-1) *
+			(
+				Constant(1) /
+				Constant(2)
+			) *
+			Tensor.Ref(
+				var("\\alpha"),
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				var("W") ^
@@ -3425,30 +3425,30 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
 			(
 				var("W") ^
@@ -3460,30 +3460,30 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
 			(
 				var("W") ^
@@ -3493,62 +3493,62 @@ dt_ABar_LL_norm_def = (
 		(
 			var("K") *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			)
 		) +
 		(
 			Constant(-1) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			)
 		) +
 		(
 			Constant(-1) *
 			var("W") *
-			TensorRef(
+			Tensor.Ref(
 				var("W"),
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			)
 		) +
 		(
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("R"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
 			(
 				var("W") ^
@@ -3558,30 +3558,30 @@ dt_ABar_LL_norm_def = (
 		(
 			Constant(-2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			)
 		) +
 		(
 			Constant(-8) *
 			var("\\alpha") *
 			var("\\pi") *
-			TensorRef(
+			Tensor.Ref(
 				var("S"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
 			(
 				var("W") ^
@@ -3590,20 +3590,20 @@ dt_ABar_LL_norm_def = (
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="i"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=true, derivative=",", symbol="i"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
 			(
 				var("W") ^
@@ -3611,162 +3611,162 @@ dt_ABar_LL_norm_def = (
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="M"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="M"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=false, symbol="M"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=false, symbol="M"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="N"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="N"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="j"},
-				TensorIndex{lower=false, symbol="N"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="j"},
+				Tensor.Index{lower=false, symbol="N"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="j"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="j"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="j"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="j"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="I"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="i"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="i"}
 			)
 		) +
 		(
@@ -3775,30 +3775,30 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -3807,20 +3807,20 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -3829,40 +3829,40 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -3871,40 +3871,40 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -3912,40 +3912,40 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -3953,215 +3953,40 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
-			)
-		) +
-		(
-			Constant(-1) *
-			(
-				Constant(1) /
-				Constant(3)
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
-			) *
-			TensorRef(
-				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="G"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
-			)
-		) +
-		(
-			(
-				Constant(1) /
-				Constant(3)
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="F"}
-			) *
-			TensorRef(
-				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, symbol="G"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
-			)
-		) +
-		(
-			(
-				Constant(1) /
-				Constant(3)
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
-			) *
-			TensorRef(
-				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
-			)
-		) +
-		(
-			(
-				Constant(1) /
-				Constant(3)
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
-			) *
-			TensorRef(
-				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
@@ -4170,50 +3995,40 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="G"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="G"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
@@ -4221,40 +4036,132 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, symbol="G"}
 			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
+			)
+		) +
+		(
+			(
+				Constant(1) /
+				Constant(3)
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("\\bar{A}"),
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
+			)
+		) +
+		(
+			(
+				Constant(1) /
+				Constant(3)
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("\\bar{A}"),
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -4263,40 +4170,133 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="G"}
 			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
+			)
+		) +
+		(
+			(
+				Constant(1) /
+				Constant(3)
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("\\bar{A}"),
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			)
+		) +
+		(
+			Constant(-1) *
+			(
+				Constant(1) /
+				Constant(3)
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("\\bar{A}"),
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
@@ -4305,20 +4305,20 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			)
 		) +
 		(
@@ -4326,23 +4326,23 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\mathcal{C}"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
 			(
 				var("W") ^
@@ -4355,23 +4355,23 @@ dt_ABar_LL_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
 			(
 				var("W") ^
@@ -4383,10 +4383,10 @@ dt_ABar_LL_norm_def = (
 
 
 dt_LambdaBar_U_norm_def = (
-	TensorRef(
+	Tensor.Ref(
 		var("\\bar{\\Lambda}"),
-		TensorIndex{lower=false, symbol="I"},
-		TensorIndex{lower=true, derivative=",", symbol="t"}
+		Tensor.Index{lower=false, symbol="I"},
+		Tensor.Index{lower=true, derivative=",", symbol="t"}
 	)
 ):eq(
 	(
@@ -4396,36 +4396,36 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -4434,36 +4434,36 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -4472,36 +4472,36 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -4510,26 +4510,26 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
 			)
 		) +
 		(
@@ -4537,46 +4537,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -4584,84 +4584,36 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
-			)
-		) +
-		(
-			Constant(-1) *
-			(
-				Constant(1) /
-				Constant(2)
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="D"}
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -4670,73 +4622,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
-			)
-		) +
-		(
-			(
-				Constant(1) /
-				Constant(2)
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -4745,36 +4670,111 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="C"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			)
+		) +
+		(
+			(
+				Constant(1) /
+				Constant(2)
+			) *
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			)
+		) +
+		(
+			Constant(-1) *
+			(
+				Constant(1) /
+				Constant(2)
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -4782,26 +4782,26 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -4809,46 +4809,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -4856,46 +4856,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="f"},
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="f"},
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -4903,46 +4903,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="H"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="H"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -4950,46 +4950,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="f"},
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="f"},
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -4997,46 +4997,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="I"},
-				TensorIndex{lower=true, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="I"},
+				Tensor.Index{lower=true, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -5044,46 +5044,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="K"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="H"},
-				TensorIndex{lower=true, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="H"},
+				Tensor.Index{lower=true, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
@@ -5091,46 +5091,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -5138,46 +5138,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="H"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="H"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="f"},
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="f"},
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -5185,84 +5185,46 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="K"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
-			)
-		) +
-		(
-			Constant(-1) *
-			(
-				Constant(1) /
-				Constant(2)
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="F"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -5271,36 +5233,36 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -5309,36 +5271,74 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="D"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
+			)
+		) +
+		(
+			Constant(-1) *
+			(
+				Constant(1) /
+				Constant(2)
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="A"}
+			) *
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -5346,26 +5346,26 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -5374,26 +5374,26 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
@@ -5402,36 +5402,36 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
@@ -5440,36 +5440,36 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
@@ -5478,36 +5478,36 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
@@ -5516,56 +5516,56 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
@@ -5573,56 +5573,56 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -5630,74 +5630,36 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
-			)
-		) +
-		(
-			Constant(-1) *
-			(
-				Constant(1) /
-				Constant(2)
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="F"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
@@ -5706,46 +5668,84 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="F"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			)
+		) +
+		(
+			Constant(-1) *
+			(
+				Constant(1) /
+				Constant(2)
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="D"}
+			) *
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
@@ -5753,74 +5753,74 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
 			(
 				Constant(1) /
@@ -5833,29 +5833,29 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
 			(
 				Constant(1) /
@@ -5867,29 +5867,29 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
 			(
 				Constant(1) /
@@ -5901,39 +5901,39 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
 			(
 				Constant(1) /
@@ -5945,39 +5945,39 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
 			(
 				Constant(1) /
@@ -5989,39 +5989,39 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
 			(
 				Constant(1) /
@@ -6034,29 +6034,29 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
 			(
 				Constant(1) /
@@ -6069,29 +6069,29 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(3)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -6103,39 +6103,39 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -6147,39 +6147,39 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -6191,39 +6191,39 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -6235,39 +6235,39 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(2)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -6276,2803 +6276,2803 @@ dt_LambdaBar_U_norm_def = (
 		) +
 		(
 			Constant(-2) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\alpha"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(2) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="D"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
-			)
-		) +
-		(
-			Constant(-1) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
-			)
-		) +
-		(
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
-			)
-		) +
-		(
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
-			)
-		) +
-		(
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="C"}
-			) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="F"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="C"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
+			)
+		) +
+		(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
+			)
+		) +
+		(
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
-				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="F"}
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
+			)
+		) +
+		(
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
+			)
+		) +
+		(
+			Constant(-1) *
+			Tensor.Ref(
+				var("\\beta"),
+				Tensor.Index{lower=false, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
+			) *
+			Tensor.Ref(
 				var("\\delta"),
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="H"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="H"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="f"},
-				TensorIndex{lower=false, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="f"},
+				Tensor.Index{lower=false, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\delta"),
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="H"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="H"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="H"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="H"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="f"},
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="f"},
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="H"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="H"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="H"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="H"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\delta"),
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="f"},
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="f"},
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=false, symbol="H"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=false, symbol="H"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="E"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="H"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="H"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="H"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="H"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="K"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="K"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="J"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="K"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="K"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="f"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="f"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="f"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="f"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, symbol="K"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, symbol="K"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
 			Constant(2) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="D"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="F"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			Constant(-1) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="F"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="F"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="J"}
+				Tensor.Index{lower=false, symbol="J"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="i"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=true, symbol="i"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="i"},
-				TensorIndex{lower=true, symbol="J"},
-				TensorIndex{lower=true, derivative=",", symbol="a"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
-			)
-		) +
-		(
-			Constant(-1) *
-			var("\\alpha") *
-			TensorRef(
-				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="A"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
-			)
-		) +
-		(
-			Constant(2) *
-			var("\\alpha") *
-			TensorRef(
-				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="A"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="B"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="i"},
+				Tensor.Index{lower=true, symbol="J"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			)
 		) +
 		(
 			Constant(-1) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="e"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
 			Constant(-1) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="F"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="F"},
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="e"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
+			)
+		) +
+		(
+			Constant(-1) *
+			var("\\alpha") *
+			Tensor.Ref(
+				var("\\bar{A}"),
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
+			) *
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="d"}
+				Tensor.Index{lower=false, symbol="F"},
+				Tensor.Index{lower=false, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=false, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="F"},
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
+			)
+		) +
+		(
+			Constant(2) *
+			var("\\alpha") *
+			Tensor.Ref(
+				var("\\bar{A}"),
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="d"}
 			)
 		) +
 		(
 			Constant(-2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\hat{\\Gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="D"}
 			)
 		) +
 		(
 			Constant(2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, symbol="C"},
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="C"},
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="C"},
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="C"},
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="G"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="G"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="I"},
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="I"},
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="d"},
-				TensorIndex{lower=true, symbol="D"}
+				Tensor.Index{lower=false, symbol="d"},
+				Tensor.Index{lower=true, symbol="D"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="e"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=false, symbol="e"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="d"},
-				TensorIndex{lower=false, symbol="G"},
-				TensorIndex{lower=true, derivative=",", symbol="e"}
+				Tensor.Index{lower=true, symbol="d"},
+				Tensor.Index{lower=false, symbol="G"},
+				Tensor.Index{lower=true, derivative=",", symbol="e"}
 			)
 		) +
 		(
 			Constant(-2) *
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="a"},
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="a"},
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="E"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			var("\\alpha") *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="E"}
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="E"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=true, symbol="c"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
-			)
-		) +
-		(
-			Constant(-2) *
-			var("\\alpha") *
-			TensorRef(
-				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, symbol="E"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="C"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=true, symbol="b"},
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
-			)
-		) +
-		(
-			var("\\alpha") *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="E"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
-			) *
-			TensorRef(
-				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="B"},
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, symbol="c"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			)
 		) +
 		(
 			Constant(-2) *
 			var("\\alpha") *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="D"},
-				TensorIndex{lower=false, symbol="I"}
-			) *
-			TensorRef(
-				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="E"},
-				TensorIndex{lower=false, symbol="C"}
-			) *
-			TensorRef(
-				var("e"),
-				TensorIndex{lower=false, symbol="c"},
-				TensorIndex{lower=true, symbol="C"}
-			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{A}"),
-				TensorIndex{lower=true, symbol="D"},
-				TensorIndex{lower=true, symbol="E"},
-				TensorIndex{lower=true, derivative=",", symbol="c"}
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=true, symbol="b"},
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
+			)
+		) +
+		(
+			var("\\alpha") *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="E"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
+			) *
+			Tensor.Ref(
+				var("\\bar{A}"),
+				Tensor.Index{lower=true, symbol="B"},
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
+			)
+		) +
+		(
+			Constant(-2) *
+			var("\\alpha") *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="D"},
+				Tensor.Index{lower=false, symbol="I"}
+			) *
+			Tensor.Ref(
+				var("\\bar{\\gamma}"),
+				Tensor.Index{lower=false, symbol="E"},
+				Tensor.Index{lower=false, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("e"),
+				Tensor.Index{lower=false, symbol="c"},
+				Tensor.Index{lower=true, symbol="C"}
+			) *
+			Tensor.Ref(
+				var("\\bar{A}"),
+				Tensor.Index{lower=true, symbol="D"},
+				Tensor.Index{lower=true, symbol="E"},
+				Tensor.Index{lower=true, derivative=",", symbol="c"}
 			)
 		) +
 		(
@@ -9080,9 +9080,9 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(6)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="I"}
 			) *
 			(
 				Constant(1) /
@@ -9094,29 +9094,29 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(6)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
 			(
 				Constant(1) /
@@ -9128,29 +9128,29 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(6)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
 			(
 				Constant(1) /
@@ -9163,32 +9163,32 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(6)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="B"}
+				Tensor.Index{lower=false, symbol="B"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="A"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="A"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
 			(
 				Constant(1) /
@@ -9204,32 +9204,32 @@ dt_LambdaBar_U_norm_def = (
 				Constant(1) /
 				Constant(6)
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="a"}
+				Tensor.Index{lower=true, derivative=",", symbol="a"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=true, derivative=",", symbol="b"}
+				Tensor.Index{lower=true, derivative=",", symbol="b"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\beta"),
-				TensorIndex{lower=false, symbol="A"}
+				Tensor.Index{lower=false, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("\\bar{\\gamma}"),
-				TensorIndex{lower=false, symbol="B"},
-				TensorIndex{lower=false, symbol="I"}
+				Tensor.Index{lower=false, symbol="B"},
+				Tensor.Index{lower=false, symbol="I"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="a"},
-				TensorIndex{lower=true, symbol="A"}
+				Tensor.Index{lower=false, symbol="a"},
+				Tensor.Index{lower=true, symbol="A"}
 			) *
-			TensorRef(
+			Tensor.Ref(
 				var("e"),
-				TensorIndex{lower=false, symbol="b"},
-				TensorIndex{lower=true, symbol="B"}
+				Tensor.Index{lower=false, symbol="b"},
+				Tensor.Index{lower=true, symbol="B"}
 			) *
 			(
 				Constant(1) /

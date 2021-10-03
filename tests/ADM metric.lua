@@ -7,12 +7,9 @@ require 'symmath'{env=env, MathJax={title='ADM metric', useCommaDerivative=true}
 local t,x,y,z = vars('t','x','y','z')
 local spatialCoords = {x,y,z}
 local coords = {t,x,y,z}
-local spacetimeIndexes = {variables=coords}
-local spatialIndexes = {symbols='ijklmn', variables=spatialCoords}
-Tensor.coords{
-	spacetimeIndexes,
-	spatialIndexes,
-}
+
+local chart = Tensor.Chart{coords=coords}
+local spatialChart = Tensor.Chart{coords=spatialCoords, symbols='ijklmn'}
 
 -- lapse
 local alpha = var('\\alpha', coords)
@@ -68,7 +65,7 @@ end)
 local gUUDef = g'^uv':eq(gUUDense)
 printbr(gUUDef)
 
-Tensor.metric(gLLDense, gUUDense)
+chart:setMetric(gLLDense, gUUDense)
 
 local dgLLLDense = gLLDense'_uv,w'()
 

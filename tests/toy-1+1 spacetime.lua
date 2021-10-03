@@ -16,10 +16,8 @@ local t = var('h', {x})
 local x0 = var'x0'
 local x1 = var'x1'
 
-Tensor.coords{
-	{variables={t,x}},
-	{variables={x0, x1}, symbols='IJKLMN'},
-}
+local chart = Tensor.Chart{coords={t,x}}
+local flatChart = Tensor.Chart{coords={x0, x1}, symbols='IJKLMN'}
 
 local r = Tensor('^I', t, x)
 printbr(var'r''^I':eq(r'^I'()))
@@ -30,7 +28,7 @@ e:print'e' printbr()
 
 local eta = symmath.Tensor('_IJ',{-1,0},{0,1})
 eta:print'\\eta' printbr()
-Tensor.metric(eta, eta, 'I')
+flatChart:setMetric(eta, eta)
 
 local g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 g:print'g' printbr()
@@ -43,7 +41,7 @@ g:print'g' printbr()
 --]]
 
 printbr'set metric'
-Tensor.metric(g)
+chart:setMetric(g)
 g'^uv'():print'g' printbr()
 
 -- [[ simply solve for any unit vector ...

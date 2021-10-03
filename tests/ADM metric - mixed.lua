@@ -9,15 +9,12 @@ local t,x,y,z = vars('t','x','y','z')
 local ijk = var'ijk'	-- not sure about this ...
 local spatialCoords = {x,y,z}
 local coords = {t,x,y,z}
-local spacetimeIndexes = {variables=coords}
-local spatialIndexes = {symbols='ijklmn', variables=spatialCoords}
-local groupedSpatialIndexes = {symbols='IJKLMN', variables={ijk}}
-local groupedIndexes = {symbols='UVW', variables={t,ijk}}	-- maybe 'group' to specify that a split will happen?  but that restricts to a certain form
-Tensor.coords{
-	spacetimeIndexes,
-	spatialIndexes,
-	groupedIndexes,
-}
+
+local C = Tensor.Chart{coords=coords}
+local CS = Tensor.Chart{coords=spatialCoords, symbols='ijklmn'}
+local CGS = Tensor.Chart{coords={ijk}, symbols='IJKLMN'}
+local CG = Tensor.Chart{coords={t,ijk}, symbols='UVW'}	-- maybe 'group' to specify that a split will happen?  but that restricts to a certain form
+
 local alpha = var'\\alpha'
 local beta = var'\\beta'
 local gamma = var'\\gamma'
@@ -60,7 +57,7 @@ local gUUDef = g'^uv':eq(Tensor('^{u(i)v(j)}',
 printbr(gUUDef)
 
 --[[
-now if 'group' was used in the index definitions ... (TODO rename Tensor.coords to Tensor.indexes)
+now if 'group' was used in the index definitions ...
 I wouldn't need 'group' if I just had separate index information for grouped and non-grouped tensors
 ... so gamma and beta would be defined on indexes where ijk span xyz
 ... but g would be defined on indexes where ijk reprsent a single coordinate (which can be later expanded)

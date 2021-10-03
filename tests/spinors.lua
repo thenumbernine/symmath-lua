@@ -6,25 +6,19 @@ require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJ
 
 local i = var'i'	-- looks better than 0+1i
 
+local tz = var'tz'
+local xy = var'xy'
 local xyz = table{x,y,z}
-Tensor.coords{
-	{
-		symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-		variables = {tz, xy},
-	},
-	{
-		symbols = 'abcdefghijklmnopqrstuvw',
-		variables = xyz,
-	},
-	{symbols = 'x', variables = {x}},
-	{symbols = 'y', variables = {y}},
-	{symbols = 'z', variables = {z}},
-}
+local chart_tx_yz = Tensor.Chart{coords={tz, xy}, symbols='ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+local chart_xyz = Tensor.Chart{coords=xyz, symbols='abcdefghijklmnopqrstuvw'}
+local chart_x = Tensor.Chart{coords={x}, symbols='x'}
+local chart_y = Tensor.Chart{coords={y}, symbols='y'}
+local chart_z = Tensor.Chart{coords={z}, symbols='z'}
 
 local eps = Tensor('_AB', {0, 1}, {-1, 0})
 local epsU = Tensor('^AB', table.unpack(eps))
 
-Tensor.metric(eps, epsU, 'A')
+chart_tx_yz:setMetric(eps, epsU)
 
 local pauli = Tensor('_i^A_B',
 	Tensor('^A_B', {0, 1}, {1, 0}),

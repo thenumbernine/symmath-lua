@@ -22,7 +22,9 @@ printbr(eta'_ab':eq(etaDef))
 local x0 = var'0'
 local x0to3 = table{x0,x,y,z}
 local x0to3t = table(x0to3):append{t}
-Tensor.coords{{variables=x0to3, metric=etaDef}}
+
+local chart = Tensor.Chart{coords=x0to3, metric=function() return etaDef end}
+
 local lc = require 'symmath.tensor.LeviCivita'()
 
 local nDef = Tensor('_a', -1,0,0,0)

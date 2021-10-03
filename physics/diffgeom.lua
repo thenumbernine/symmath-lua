@@ -25,14 +25,14 @@ Props.fields = table{
 		name = 'g',
 		symbol = 'g',
 		title = 'metric',
-		calc = function(self) return Tensor.metric().metric end,
+		calc = function(self) return self.chart.metric end,
 		display = function(self) return var'g''_ab':eq(self.g'_ab'()) end,
 	},
 	{
 		name = 'gU',
 		symbol = 'g',
 		title = 'metric inverse',
-		calc = function(self) return Tensor.metric().metricInverse end,
+		calc = function(self) return self.chart.metricInverse end,
 		display = function(self) return var'g''^ab':eq(self.gU'^ab'()) end,
 	},
 	{
@@ -265,10 +265,11 @@ end
 
 -- TODO make it table-based arguments
 -- overload self.verbose to output vars as you go
-function Props:init(g, gU, c)
+function Props:init(g, gU, c, chart)
 	local Tensor = require 'symmath'.Tensor
-
-	Tensor.metric(g, gU)
+	self.chart = chart or assert(Tensor:findChartForSymbol(), "couldn't find default chart")
+	self.chart:setMetric(g, gU)
+	if c then self.chart.commutation = c end
 	self.c = c
 
 	for _,field in ipairs(self.fields) do
@@ -281,9 +282,9 @@ function Props:init(g, gU, c)
 		end
 	end
 
-	-- TODO Tensor.meric accepts non-symmath tables
+	-- TODO setMetric accepts non-symmath tables
 	-- soo I would need to convert them before outputting
-	-- either move this below Tensor.metric, or convert before this line.
+	-- either move this below setMetric, or convert before this line.
 end
 
 return Props

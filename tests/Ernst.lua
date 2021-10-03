@@ -4,7 +4,7 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJax={title='Ernst'}}
 
-Tensor.coords{{variables = {t,r,theta,phi}}}
+local chart = Tensor.Chart{coords={t,r,theta,phi}}
 
 --local Lambda = 1 + B^2 * r^2 * sin(theta)^2
 local Lambda = var('Lambda', {t,r,theta,phi})
@@ -19,7 +19,7 @@ print'<hr>'
 gU:printElem'g'
 printbr()
 
-Tensor.metric(g, gU)
+chart:setMetric(g, gU)
 
 local dg = Tensor'_abc'
 dg['_abc'] = g'_ab,c'()

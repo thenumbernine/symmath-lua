@@ -157,6 +157,7 @@ local spacetimes = {
 			return r
 		end,
 	},
+--[[ TODO fixme in the parallel proagator has some weird polynomial factoring into +-i log sqrt frac which I can't seem to reproduce ... weird edge case	
 	{
 		title = 'polar, anholonomic, conformal',
 		baseCoords = {r,theta},
@@ -175,6 +176,7 @@ local spacetimes = {
 			return r
 		end,
 	},
+--]]
 --[[	just by introducing omega, this takes too long to finish
 	{
 		title = 'polar and time, constant rotation, coordinate',
@@ -714,18 +716,29 @@ for _,info in ipairs(spacetimes) do
 	-- dimension of manifold
 	local n = #baseCoords
 
-
-
-	-- TODO rename 'Tensor.coords' to 'Tensor.indexes' ?   Since they are possibly a non-coordinate basis.  Rename 'variables=' to 'operators='?  Maybe?  Maybe 'basisOperators='?
-	Tensor.coords{
-		{variables=baseCoords},
-		{variables=embedded, symbols='IJKLMN', metric=info.flatMetric}
+	
+	local manifold = Tensor.Manifold()
+	-- embedded
+	local embeddedChart = manifold:Chart{coords=embedded, symbols='IJKLMN', metric=function() return info.flatMetric end}
+	-- holonomic chart using derivative operators
+	local coordChart = manifold:Chart{
+		coords = baseCoords,
+		--symbols = 'ABCDEF',	-- TODO a set of indexes for the holonomic base coordinates?
 	}
+
+
+	-- can't build this until after Tensor.Chart is built, because before then Tensor doesn't know the dimension of _I and _J
+	-- TODO how to build this Tensor for embeddedChart?
+	local eta = Tensor('_IJ', table.unpack(info.flatMetric))
+	print'flat metric:'
+	eta:printElem('\\eta', write)
+	printbr()
+	printbr()
+
 
 	-- assert these are original coordinates + derivatives
 	for _,coord in ipairs(baseCoords) do
-		assert(getmetatable(coord) == Variable)
-		assert(coord.applyDiff == Variable.applyDiff)
+		assert(Variable.is(coord))
 	end
 
 
@@ -758,45 +771,31 @@ for _,info in ipairs(spacetimes) do
 
 
 	-- create basis operators - as non-coordinate linear combinations of coordinates when available 
-	local basisOperators = table()
+	local tangentSpaceOperators = table()
+	local anholonomicCoords = table.mapi(baseCoords, function(c)
+		return c.set:var('\\hat{'..c.name..'}')
+	end)
 	for i=1,n do
 		local onesi = Matrix:lambda({1,n}, function(_,j) return j==i and 1 or 0 end)
 		if eHolToE[i] == onesi[1] then
-			basisOperators[i] = baseCoords[i]
+			tangentSpaceOperators[i] = function(...) return ... end
 		else
-			local ci = baseCoords[i].set:var('\\hat{'..baseCoords[i].name..'}')
-			function ci:applyDiff(x)
+			tangentSpaceOperators[i] = function(x)
 				local sum = 0
 				for j=1,n do
 					sum = sum + eHolToE[i][j] * x:diff(baseCoords[j])
 				end
 				return sum()
 			end
-			basisOperators[i] = ci
 		end
 		local zeta = var('\\zeta', baseCoords)
 		printbr('tensor index associated with coordinate '..baseCoords[i]
-			..' is index '..basisOperators[i]
-			..' with operator $e_{'..basisOperators[i].name..'}(\\zeta) = $'..basisOperators[i]:applyDiff(zeta))
+			..' has operator $e_{'..baseCoords[i].name..'}(\\zeta) = $'..tangentSpaceOperators[i](zeta))
 	end
 	printbr()
-
-
-	-- TODO a set of indexes for the base coordinates?
-	Tensor.coords{
-		{variables=basisOperators},
-		{variables=embedded, symbols='IJKLMN', metric=info.flatMetric},
--- TODO:
---		{variables=baseCoords, symbols='ABCDEF'},
-	}
-
-
-	local eta = Tensor('_IJ', table.unpack(info.flatMetric))
-	print'flat metric:'
-	eta:printElem('\\eta', write)
-	printbr()
-	printbr()
-
+	
+	-- potentially-anholonomic chart:
+	local chart = manifold:Chart{coords=anholonomicCoords, tangentSpaceOperators=tangentSpaceOperators}
 
 	-- metric
 	local g
@@ -834,7 +833,7 @@ for _,info in ipairs(spacetimes) do
 		if info.eU then
 			eU = info.eU()
 		else
-			assert(#basisOperators == #embedded)
+			assert(#tangentSpaceOperators == #embedded)
 			eU = Tensor('^u_I', table.unpack(Matrix(table.unpack(e)):inverse():transpose()))
 		end
 
@@ -911,19 +910,19 @@ for _,info in ipairs(spacetimes) do
 		printbr()
 	end
 	Props.verbose = true
-	local props = Props(g, nil, c)
+	local props = Props(g, nil, c, chart)
 	local Gamma = props.Gamma
 
 	local dx = Tensor('^u', function(u)
-		return var('\\dot{' .. basisOperators[u].name .. '}')
+		return var('\\dot{' .. anholonomicCoords[u].name .. '}')
 	end)
 	local d2x = Tensor('^u', function(u)
-		return var('\\ddot{' .. basisOperators[u].name .. '}')
+		return var('\\ddot{' .. anholonomicCoords[u].name .. '}')
 	end)
 
-	local A = Tensor('^i', function(i) return var('A^{'..basisOperators[i].name..'}', baseCoords) end)
+	local A = Tensor('^i', function(i) return var('A^{'..anholonomicCoords[i].name..'}', baseCoords) end)
 	--[[
-	TODO can't use comma derivative, gotta override the :applyDiff of the anholonomic basis variables
+	TODO can't use comma derivative, gotta override the tangentSpaceOperators of the anholonomic chart
 	 but when doing so, you must make the embedded variables dependent on the ... variables that the anholonomic are spun off of
 	 	i.e. if the anholonomic basis is rHat, phiHat, thetaHat, then the A^I variables must be dependent upon r, theta, phi
 	--]]

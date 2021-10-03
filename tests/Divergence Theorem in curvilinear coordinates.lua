@@ -5,26 +5,24 @@ theta = var'\\theta'
 phi = var'\\phi'
 Gamma = var'\\Gamma'
 
+-- notice the hat variables are strictly used for tangent space operators, and are not related to the chart itself (which uses the non-hatted variables).
 rHat = r
 thetaHat = var('\\hat{theta}')
-function thetaHat:applyDiff(x) return x:diff(theta) / r end
 phiHat = var('\\hat{phi}')
-function phiHat:applyDiff(x) return x:diff(phi) / (r * sin(theta)) end
-Tensor.coords{{variables={rHat, thetaHat, phiHat}, metric=Matrix.identity(3)}}
--- TODO automatically compute this from the tangent space basis operator "variables"
-c = Tensor'_ij^k'
-c[1][2][2] = -1/r
-c[1][3][3] = -1/r
-c[2][1][2] = 1/r
-c[2][3][3] = -cos(theta)/(r*sin(theta))
-c[3][1][3] = 1/r
-c[3][2][3] = cos(theta)/(r*sin(theta))
-printbr(var'c':eq(c))
 
-g = Tensor('_ij', function(i,j) return i==j and 1 or 0 end)
-gU = Tensor('^ij', function(i,j) return i==j and 1 or 0 end)
-coords = table{rHat, thetaHat, phiHat}
-Tensor.coords{{variables=coords, metric=g, metricInverse=gU}}
+local chart = manifold:Chart{
+	coords = {rHat,thetaHat,phiHat}, 
+	tangentSpaceOperators = {
+		function(x) return x:diff(r) end,
+		function(x) return x:diff(theta) / r end,
+		function(x) return x:diff(phi) / (r * theta) end,
+	},
+	metric = function() return Matrix.identity(3) end,
+}
+local c = assert(chart.commutation)
+local g = assert(chart.metric)
+local gU = assert(chart.metricInverse)
+
 geom = require 'symmath.physics.diffgeom'(g, gU, c)
 GammaVal = geom.Gamma
 printbr(GammaVal)

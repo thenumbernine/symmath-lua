@@ -285,7 +285,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			}
 		end
 
-		local isTensorRef = symmath.TensorRef:isa(expr[1])
+		local isTensorRef = symmath.Tensor.Ref:isa(expr[1])
 
 		local res = table()
 		for i=1,#expr do
@@ -320,7 +320,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 	[require 'symmath.Derivative'] = function(self, expr)
 		symmath = symmath or require 'symmath'
 		local Variable = symmath.Variable
-		local TensorRef = require 'symmath.tensor.TensorRef'
+		local TensorRef = require 'symmath.tensor.Ref'
 
 		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars
@@ -526,10 +526,10 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 
 		return s
 	end,
-	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+	[require 'symmath.tensor.Ref'] = function(self, expr)
 		symmath = symmath or require 'symmath'
 		local Array = symmath.Array
-		local TensorRef = require 'symmath.tensor.TensorRef'
+		local TensorRef = require 'symmath.tensor.Ref'
 		local Variable = symmath.Variable
 
 		local t = expr[1]
@@ -547,7 +547,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		return table{s}
 	end,
 	-- looks a lot like TensorIndex.__tostring, except with some {}'s wrapping stuff
-	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+	[require 'symmath.tensor.Index'] = function(self, expr)
 		local s = ''
 		if expr.derivative then
 			s = expr.derivative .. s

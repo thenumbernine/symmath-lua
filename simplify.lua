@@ -166,20 +166,21 @@ end
 	until i == simplifyMaxIter or x == lastx or getmetatable(x) == Invalid
 -- [[ debugging simplify loop stack trace
 	if i == simplifyMaxIter then
-local print = printbr or print
-print('reached maxiter', simplifyMaxIter)
+-- stdout too? or just stderr?
+--local print = printbr or print
+--print('reached maxiter', simplifyMaxIter)
 		if stack then 
 			local SingleLine = symmath.export.SingleLine
 			for i,kv in ipairs(stack) do
 				local op, xi = table.unpack(kv)
 				io.stderr:write('simplify stack #'..i..':\t'..op..'\t'..SingleLine(xi)..'\n')
-				print('simplify stack #'..i..':\t'..op..'\t'..SingleLine(xi))
+--print('simplify stack #'..i..':\t'..op..'\t'..SingleLine(xi))
 			end
 		end
 		io.stderr:write("simplification loop\n")
-		print("simplification loop")
+--print("simplification loop")
 		io.stderr:write(debug.traceback()..'\n')
-		print(debug.traceback())
+--print(debug.traceback())
 	end
 --]]
 		

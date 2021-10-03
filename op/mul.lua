@@ -937,7 +937,7 @@ mul.rules = {
 
 -- [[
 			local Variable = symmath.Variable
-			local TensorRef = symmath.TensorRef
+			local TensorRef = symmath.Tensor.Ref
 			local function compare(a, b) 
 				-- Constant
 				local ca, cb = Constant:isa(a), Constant:isa(b)

@@ -35,14 +35,12 @@ end
 os.exit()
 --]]
 
-Tensor.coords{
-	{variables={t,r,phi,z}},
-	{symbols='ijklmn', variables={r,phi,z}},
-	{symbols='t', variables={t}},
-	{symbols='r', variables={r}},
-	{symbols='phi', variables={phi}},
-	{symbols='z', variables={z}},
-}
+local chart_t_r_phi_z = Tensor.Chart{coords={t,r,phi,z}}
+local chart_r_phi_z = Tensor.Chart{symbols='ijklmn', coords={r,phi,z}}
+local chart_t = Tensor.Chart{symbols='t', coords={t}}
+local chart_r = Tensor.Chart{symbols='r', coords={r}}
+local chart_phi = Tensor.Chart{symbols='phi', coords={phi}}
+local chart_z = Tensor.Chart{symbols='z', coords={z}}
 
 printbr'manual metric:'
 local g = Tensor('_ab', table.unpack((Matrix.diagonal(-1, 1, 1, 1))))

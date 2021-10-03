@@ -8,14 +8,12 @@ local r = var('r', {x,y,z})
 local spatialCoords = {x,y,z}
 local coords = table{t}:append(spatialCoords)
 
-Tensor.coords{
-	{variables=coords},
-	{symbols='ijklmn', variables=spatialCoords},
-	{symbols='t', variables={t}},
-	{symbols='x', variables={x}},
-	{symbols='y', variables={y}},
-	{symbols='z', variables={z}},
-}
+local chart = Tensor.Chart{coords=coords}
+local spatialChart = Tensor.Chart{coords=spatialCoords, symbols='ijklmn'}
+local chart_t = Tensor.Chart{symbols='t', coords={t}}
+local chart_x = Tensor.Chart{symbols='x', coords={x}}
+local chart_y = Tensor.Chart{symbols='y', coords={y}}
+local chart_z = Tensor.Chart{symbols='z', coords={z}}
 
 local E = var'E'
 local Gamma = var'\\Gamma'

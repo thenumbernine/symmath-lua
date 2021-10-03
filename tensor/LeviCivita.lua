@@ -13,23 +13,23 @@ local function makeLeviCivita(symbol, sqrtDetG)
 	local Constant = require 'symmath.Constant'
 	local sqrt = require 'symmath.sqrt'
 	local abs = require 'symmath.abs'
-	local TensorIndex = require 'symmath.tensor.TensorIndex'
+	local TensorIndex = require 'symmath.tensor.Index'
 	
 	local rank
-	local basis
+	local chart
 	if type(symbol) == 'number' then
 		rank = symbol
 		sqrtDetG = sqrtDetG or 1
-		basis = Tensor.findBasisForSymbol()
+		-- technically this is a member function, but only member to lookup self.chart, then defaults to a global, so...
+		chart = Tensor:findChartForSymbol()
 	else
-		basis = Tensor.findBasisForSymbol(symbol or {})
-		rank = basis and basis.metric and #basis.metric
-			or #Tensor.__coordBasis[1].variables
+		chart = Tensor:findChartForSymbol(symbol or {})
+		rank = chart and chart.metric and #chart.metric or #chart.coords
 
 		if not sqrtDetG then
-			sqrtDetG = basis and basis.metric
+			sqrtDetG = chart and chart.metric
 				-- TODO: sqrt(abs(det(metric)))
-				and sqrt(abs(Matrix.determinant(basis.metric)))()
+				and sqrt(abs(Matrix.determinant(chart.metric)))()
 				or Constant(1)
 		end
 	end
@@ -37,7 +37,7 @@ local function makeLeviCivita(symbol, sqrtDetG)
 	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
 	local variance = ' '..range(rank):mapi(function(i)
 		return '_'..(
-			basis and basis.symbols and basis.symbols[i]
+			chart and chart.symbols and chart.symbols[i]
 			or defaultSymbols[i]
 			or error("ran out of symbols")
 		)

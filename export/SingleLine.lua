@@ -107,10 +107,10 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 			return (self:apply(x))
 		end):concat', ' .. ']'
 	end,
-	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+	[require 'symmath.tensor.Index'] = function(self, expr)
 		return expr:__tostring()
 	end,
-	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+	[require 'symmath.tensor.Ref'] = function(self, expr)
 		return table.mapi(expr, function(x)
 			return self:apply(x)
 		end):concat()

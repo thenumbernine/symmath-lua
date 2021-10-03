@@ -23,7 +23,7 @@ Props.fields:insert{
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
 
 local coords = {t,r,theta,phi}
-Tensor.coords{{variables = coords}}
+local chart = Tensor.Chart{coords=coords}
 
 -- [[
 local A = var('A', {r,t})

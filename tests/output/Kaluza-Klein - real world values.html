@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>Kaluza-Klein - real world values</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>Kaluza-Klein - real world values</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
-    <script type='text/javascript' src='template.js'/></script>
+	<script type='text/javascript' src='template.js'/></script>
 		<script type='text/javascript'>
 Template.prototype.openstring = '{=={';		
 Template.prototype.closestring = '}==}';		
@@ -27,13 +27,13 @@ $G = $<input name='gravitational_constant_in_m3_per_kg_s2' value='6.67384e-11'/>
 <br>
 $k_e = $<input name='Coulomb_constant_in_kg_m3_per_C2_s2' value='8987551787.3682'/> $\cdot \frac{kg \cdot m^3}{C^2 \cdot s^2}$ = Coulomb's constant (typically $\frac{1}{4 \pi \epsilon_0}$).
 <br>
-$\sqrt{{\frac{1}{G}}{({{k_e}})}}$	 = {=={ sqrt_Coulomb_constant_over_gravitational_constant_in_kg_per_C = Math.sqrt(Coulomb_constant_in_kg_m3_per_C2_s2 / gravitational_constant_in_m3_per_kg_s2) }==} $ \cdot \frac{kg}{C} = 1 =$ conversion from kg to C
+$\sqrt{{\frac{1}{G}} {{k_e}}}$	 = {=={ sqrt_Coulomb_constant_over_gravitational_constant_in_kg_per_C = Math.sqrt(Coulomb_constant_in_kg_m3_per_C2_s2 / gravitational_constant_in_m3_per_kg_s2) }==} $ \cdot \frac{kg}{C} = 1 =$ conversion from kg to C
 <br>
 $kg = $ {=={ 1 / sqrt_Coulomb_constant_over_gravitational_constant_in_kg_per_C }==} $C$. 
 <br>
 
 <br>
-${ A}_u$	= electromagnetic four-potential, in units	$\frac{{{kg}} \cdot {{m}}}{{{C}} {{s}}}$
+${ A} _u$	= electromagnetic four-potential, in units	$\frac{{{kg}} \cdot {{m}}}{{{C}} {{s}}}$
 <br>
 $A_5$ is constant in natural units, but to cancel the units of $\phi_K$ it is in units of	$\frac{{{kg}} \cdot {{m}}}{{{C}} {{s}}}$	so $A_5$ is proportional to $c \sqrt{\frac{k_e}{G}} = $	${{3.4789926447386\cdot{10^{18}}}} {{kg}} \cdot {{m}} {{\frac{1}{C}}} {{\frac{1}{s}}}$
 <br>
@@ -43,17 +43,17 @@ ${\phi_K}$	= scalar field, proportional to $\frac{1}{A_5}$, in units	$\frac{{{C}
 <br>
 
 <br>
-${{ g}_{\mu}}_{\nu}$	= 4D metric tensor, with units $[g_{\mu\nu}] = 1$
+${{ g} _{\mu}} _{\nu}$	= 4D metric tensor, with units $[g_{\mu\nu}] = 1$
 <br>
-${{ g}^{\mu}}^{\nu}$	= 4D metric inverse
+${{ g} ^{\mu}} ^{\nu}$	= 4D metric inverse
 <br>
 
 <br>
-${{ \tilde{g}}_a}_b$	= 5D metric tensor, with units $[\tilde{g}_{ab}] = 1$
+${{ \tilde{g}} _a} _b$	= 5D metric tensor, with units $[\tilde{g}_{ab}] = 1$
 <br>
-${{{ \tilde{g}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{ \tilde{g}}_{\alpha}}_{\beta} &  {{ \tilde{g}}_{\alpha}}_5 \\  {{ \tilde{g}}_5}_{\beta} &  {{ \tilde{g}}_5}_5\end{matrix}\right]}}$
+${{{ \tilde{g}} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {{ \tilde{g}} _{\alpha}} _{\beta} &  {{ \tilde{g}} _{\alpha}} _5 \\  {{ \tilde{g}} _5} _{\beta} &  {{ \tilde{g}} _5} _5\end{matrix} \right]}}$
 <br>
-${{{ \tilde{g}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {{{ g}_{\alpha}}_{\beta}} + {{{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{ A}_{\beta}}}} &  {{{{\phi_K}}^{2}}} {{{ A}_{\alpha}}} {{{ A}_5}} \\  {{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_5}} &  {{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}}\end{matrix}\right]}}$
+${{{ \tilde{g}} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {{{ g} _{\alpha}} _{\beta}} + {{{{{\phi_K}}^{2}}} {{{ A} _{\alpha}}} {{{ A} _{\beta}}}} &  {{{{\phi_K}}^{2}}} {{{ A} _{\alpha}}} {{{ A} _5}} \\  {{{{\phi_K}}^{2}}} {{{ A} _{\beta}}} {{{ A} _5}} &  {{{{\phi_K}}^{2}}} {{{{ A} _5}^{2}}}\end{matrix} \right]}}$
 <br>
 
 <br>
@@ -61,13 +61,13 @@ ${{{ \tilde{g}}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}
 <br>
 What is $u_5$ in terms of $u^5$?
 <br>
-${{ u}_5} = {{{{{ \tilde{g}}_5}_a}} {{{ u}^a}}}$
+${{ u} _5} = {{{{{ \tilde{g}} _5} _a}} {{{ u} ^a}}}$
 <br>
-${{ u}_5} = {{{{{{ \tilde{g}}_5}_{\beta}}} {{{ u}^{\beta}}}} + {{{{{ \tilde{g}}_5}_5}} {{{ u}^5}}}}$
+${{ u} _5} = {{{{{{ \tilde{g}} _5} _{\beta}}} {{{ u} ^{\beta}}}} + {{{{{ \tilde{g}} _5} _5}} {{{ u} ^5}}}}$
 <br>
-substitute definition of ${{ \tilde{g}}_a}_b$
+substitute definition of ${{ \tilde{g}} _a} _b$
 <br>
-${{ u}_5} = {{{{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_5}} {{{ u}^{\beta}}}} + {{{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{{ u}^5}}}}$
+${{ u} _5} = {{{{{{\phi_K}}^{2}}} {{{ A} _{\beta}}} {{{ A} _5}} {{{ u} ^{\beta}}}} + {{{{{\phi_K}}^{2}}} {{{{ A} _5}^{2}}} {{{ u} ^5}}}}$
 <br>
 
 <br>
@@ -75,13 +75,13 @@ ${{ u}_5} = {{{{{{\phi_K}}^{2}}} {{{ A}_{\beta}}} {{{ A}_5}} {{{ u}^{\beta}}}} +
 <br>
 On a side note, later for the Lorentz force to arise we are going to set:
 <br>
-${{ u}^5} = {{{\frac{1}{4}}} {{{\frac{1}{M}}{({q})}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$, ${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$, ${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}}$
+${{ u} ^5} = {{{\frac{1}{4}}} {{{\frac{1}{M}} {q}}} {{\sqrt{{\frac{1}{G}} {{k_e}}}}}}$, ${{ A} _5} = {{{c}} {{\sqrt{{\frac{1}{G}} {{k_e}}}}}}$, ${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}} {G}}}}}$
 <br>
 
 <br>
-${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$	= {=={ A5L = speed_of_light_in_m_per_s * Math.sqrt(Coulomb_constant_in_kg_m3_per_C2_s2 / gravitational_constant_in_m3_per_kg_s2) }==} $\frac{kg \cdot m}{C \cdot s} =$ fifth component of electromagnetic potential.
+${{ A} _5} = {{{c}} {{\sqrt{{\frac{1}{G}} {{k_e}}}}}}$	= {=={ A5L = speed_of_light_in_m_per_s * Math.sqrt(Coulomb_constant_in_kg_m3_per_C2_s2 / gravitational_constant_in_m3_per_kg_s2) }==} $\frac{kg \cdot m}{C \cdot s} =$ fifth component of electromagnetic potential.
 <br>
-${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}}$	= {=={ phiK = 2 / A5L }==} $\frac{C \cdot s}{kg \cdot m} =$ Kaluza-Klein 5th dimension scalar cylinder radius.
+${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}} {G}}}}}$	= {=={ phiK = 2 / A5L }==} $\frac{C \cdot s}{kg \cdot m} =$ Kaluza-Klein 5th dimension scalar cylinder radius.
 <br>
 
 <br>
@@ -99,35 +99,35 @@ $u^5 = \frac{1}{4} \frac{q}{M} \sqrt{\frac{k_e}{G}} =$ {=={ u5U = .25 * electron
 <br>
 What if we require a unit 5-velocity?
 <br>
-${{{{ u}^a}} {{{ u}^b}} {{{{ \tilde{g}}_a}_b}}} = {-{1}}$
+${{{{ u} ^a}} {{{ u} ^b}} {{{{ \tilde{g}} _a} _b}}} = {-{1}}$
 <br>
 split off spacetime indexes
 <br>
-${{{{{{ \tilde{g}}_{\alpha}}_{\beta}}} {{{ u}^{\alpha}}} {{{ u}^{\beta}}}} + {{{2}} {{{{ \tilde{g}}_{\alpha}}_5}} {{{ u}^{\alpha}}} {{{ u}^5}}} + {{{{{ \tilde{g}}_5}_5}} {{{{ u}^5}^{2}}}}} = {-1}$
+${{{{{{ \tilde{g}} _{\alpha}} _{\beta}}} {{{ u} ^{\alpha}}} {{{ u} ^{\beta}}}} + {{{2}} {{{{ \tilde{g}} _{\alpha}} _5}} {{{ u} ^{\alpha}}} {{{ u} ^5}}} + {{{{{ \tilde{g}} _5} _5}} {{{{ u} ^5}^{2}}}}} = {-1}$
 <br>
-Substitute definition of 	${{ \tilde{g}}_a}_b$
+Substitute definition of 	${{ \tilde{g}} _a} _b$
 <br>
-${{{{{ u}^{\alpha}}} {{{ u}^{\beta}}} {{{{ g}_{\alpha}}_{\beta}}}} + {{{{ A}_{\alpha}}} {{{ A}_{\beta}}} {{{ u}^{\alpha}}} {{{ u}^{\beta}}} {{{{\phi_K}}^{2}}}} + {{{2}} {{{ A}_5}} {{{ A}_{\alpha}}} {{{ u}^5}} {{{ u}^{\alpha}}} {{{{\phi_K}}^{2}}}} + {{{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{{{ u}^5}^{2}}}}} = {-{1}}$
+${{{{{ u} ^{\alpha}}} {{{ u} ^{\beta}}} {{{{ g} _{\alpha}} _{\beta}}}} + {{{{ A} _{\alpha}}} {{{ A} _{\beta}}} {{{ u} ^{\alpha}}} {{{ u} ^{\beta}}} {{{{\phi_K}}^{2}}}} + {{{2}} {{{ A} _5}} {{{ A} _{\alpha}}} {{{ u} ^5}} {{{ u} ^{\alpha}}} {{{{\phi_K}}^{2}}}} + {{{{{\phi_K}}^{2}}} {{{{ A} _5}^{2}}} {{{{ u} ^5}^{2}}}}} = {-{1}}$
 <br>
-${{1} + {{{{ A}_{\alpha}}} {{{ A}_{\beta}}} {{{ u}^{\alpha}}} {{{ u}^{\beta}}} {{{{\phi_K}}^{2}}}} + {{{2}} {{{ A}_5}} {{{ A}_{\alpha}}} {{{ u}^5}} {{{ u}^{\alpha}}} {{{{\phi_K}}^{2}}}} + {{{{{\phi_K}}^{2}}} {{{{ A}_5}^{2}}} {{{{ u}^5}^{2}}}} + {{{{ u}_{\mu}}} {{{ u}^{\mu}}}}} = {0}$
+${{1} + {{{{ A} _{\alpha}}} {{{ A} _{\beta}}} {{{ u} ^{\alpha}}} {{{ u} ^{\beta}}} {{{{\phi_K}}^{2}}}} + {{{2}} {{{ A} _5}} {{{ A} _{\alpha}}} {{{ u} ^5}} {{{ u} ^{\alpha}}} {{{{\phi_K}}^{2}}}} + {{{{{\phi_K}}^{2}}} {{{{ A} _5}^{2}}} {{{{ u} ^5}^{2}}}} + {{{{ u} _{\mu}}} {{{ u} ^{\mu}}}}} = {0}$
 <br>
-${{ u}^5} = {\frac{-{({{{{{\phi_K}}} \cdot {{{ A}_{\mu}}} {{{ u}^{\mu}}}} + {{{ⅈ}} \cdot {{\sqrt{{1} + {{{{ u}^{\mu}}} {{{ u}_{\mu}}}}}}}}})}}{{{{\phi_K}}} \cdot {{{ A}_5}}}}$,${{ u}^5} = {\frac{-{({{{{{\phi_K}}} \cdot {{{ A}_{\mu}}} {{{ u}^{\mu}}}} - {{{ⅈ}} \cdot {{\sqrt{{1} + {{{{ u}_{\mu}}} {{{ u}^{\mu}}}}}}}}})}}{{{{\phi_K}}} \cdot {{{ A}_5}}}}$
+${{ u} ^5} = {-{\frac{{{{{\phi_K}}} \cdot {{{ A} _{\mu}}} {{{ u} ^{\mu}}}} + {{{i}} {{\sqrt{{1} + {{{{ u} _{\mu}}} {{{ u} ^{\mu}}}}}}}}}{{{{\phi_K}}} \cdot {{{ A} _5}}}}}$,${{ u} ^5} = {\frac{{-{{{{\phi_K}}} \cdot {{{ A} _{\mu}}} {{{ u} ^{\mu}}}}} + {{{i}} {{\sqrt{{1} + {{{{ u} ^{\mu}}} {{{ u} _{\mu}}}}}}}}}{{{{\phi_K}}} \cdot {{{ A} _5}}}}$
 <br>
-Solve quadratic for	${ u}^5$	:
+Solve quadratic for	${ u} ^5$	:
 <br>
-${{ u}^5} = {{{\frac{1}{{ A}_5}}} {{({{ {-{{ A}_{\mu}}} {{{ u}^{\mu}}}} \pm {\sqrt{ {-{{{\phi_K}}^{-2}}} {{({{{{{ u}_{\mu}}} {{{ u}^{\mu}}}} + {1}})}}}}})}}}$
+${{ u} ^5} = {{{\frac{1}{{ A} _5}}} {{\left({{ {-{{ A} _{\mu}}} {{{ u} ^{\mu}}}} \pm {\sqrt{ {-{{{\phi_K}}^{-2}}} {{\left({{{{{ u} _{\mu}}} {{{ u} ^{\mu}}}} + {1}}\right)}}}}}\right)}}}$
 <br>
-Notice that if we assume $u_\mu u^\mu = -1$ then this simplifies to	${{ u}^5} = { {-{\frac{1}{{ A}_5}}} {{{ A}_{\mu}}} {{{ u}^{\mu}}}}$
+Notice that if we assume $u_\mu u^\mu = -1$ then this simplifies to	${{ u} ^5} = { {-{\frac{1}{{ A} _5}}} {{{ A} _{\mu}}} {{{ u} ^{\mu}}}}$
 <br>
-However since	${{{{ u}^a}} {{{ u}^b}} {{{{ \tilde{g}}_a}_b}}} = {-{1}}$	, it might instead be that $u_\mu u^\mu \approx -1$
+However since	${{{{ u} ^a}} {{{ u} ^b}} {{{{ \tilde{g}} _a} _b}}} = {-{1}}$	, it might instead be that $u_\mu u^\mu \approx -1$
 <br>
 
 <br>
 If we substitute our definition for $u^5$ then the solution of the quadratic looks like:
 <br>
-${{{\frac{1}{4}}} {{{\frac{1}{M}}{({q})}}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}} = {{{\frac{1}{{ A}_5}}} {{({{ {-{{ A}_{\mu}}} {{{ u}^{\mu}}}} \pm {\sqrt{ {-{{{\phi_K}}^{-2}}} {{({{{{{ u}_{\mu}}} {{{ u}^{\mu}}}} + {1}})}}}}})}}}$
+${{{\frac{1}{4}}} {{{\frac{1}{M}} {q}}} {{\sqrt{{\frac{1}{G}} {{k_e}}}}}} = {{{\frac{1}{{ A} _5}}} {{\left({{ {-{{ A} _{\mu}}} {{{ u} ^{\mu}}}} \pm {\sqrt{ {-{{{\phi_K}}^{-2}}} {{\left({{{{{ u} _{\mu}}} {{{ u} ^{\mu}}}} + {1}}\right)}}}}}\right)}}}$
 <br>
-${{{q}} {{\frac{1}{M}}}} = {{{{-4}} {{{ A}_{\mu}}} {{{ u}^{\mu}}} {{{G}^{({\frac{1}{2}})}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}}} \pm {{{4}} {{{G}^{({\frac{1}{2}})}}} {{{({{-1} + {{{-1}} {{{ u}_{\mu}}} {{{ u}^{\mu}}}}})}^{({\frac{1}{2}})}}} {{\frac{1}{{\phi_K}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}}}}$
+${{{q}} {{\frac{1}{M}}}} = {{{{-4}} {{{ A} _{\mu}}} {{{ u} ^{\mu}}} {{{G}^{\frac{1}{2}}}} {{\frac{1}{{{k_e}}^{\frac{1}{2}}}}} {{\frac{1}{{ A} _5}}}} \pm {{{4}} {{i}} {{{G}^{\frac{1}{2}}}} {{{\left({{1} + {{{{ u} _{\mu}}} {{{ u} ^{\mu}}}}}\right)}^{\frac{1}{2}}}} {{\frac{1}{{{k_e}}^{\frac{1}{2}}}}} {{\frac{1}{{\phi_K}}}} {{\frac{1}{{ A} _5}}}}}$
 <br>
 
 <br>
@@ -143,9 +143,9 @@ Also, since $u_\mu u^\mu \approx -1$, we know motion in relativity is constraine
 <br>
 Therefore $A_\mu u^\mu \approx 0$.
 <br>
-So what does it look like if we invoke the gauge that	${{{{ A}_{\mu}}} {{{ u}^{\mu}}}} = {0}$	?
+So what does it look like if we invoke the gauge that	${{{{ A} _{\mu}}} {{{ u} ^{\mu}}}} = {0}$	?
 <br>
-${{{q}} {{\frac{1}{M}}}} = {{0} \pm {{{4}} {{{G}^{({\frac{1}{2}})}}} {{{({{-1} + {{{-1}} {{{ u}_{\mu}}} {{{ u}^{\mu}}}}})}^{({\frac{1}{2}})}}} {{\frac{1}{{\phi_K}}}} {{\frac{1}{{ A}_5}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}}}}$
+${{{q}} {{\frac{1}{M}}}} = {{{{-4}} {{{ A} _{\mu}}} {{{ u} ^{\mu}}} {{{G}^{\frac{1}{2}}}} {{\frac{1}{{{k_e}}^{\frac{1}{2}}}}} {{\frac{1}{{ A} _5}}}} \pm {{{4}} {{i}} {{{G}^{\frac{1}{2}}}} {{{\left({{1} + {{{{ u} ^{\mu}}} {{{ u} _{\mu}}}}}\right)}^{\frac{1}{2}}}} {{\frac{1}{{{k_e}}^{\frac{1}{2}}}}} {{\frac{1}{{\phi_K}}}} {{\frac{1}{{ A} _5}}}}}$
 <br>
 Now without approximations:
 <br>
@@ -163,9 +163,9 @@ Therefore $x_\mu \sigma^{\mu\nu} A_{[\nu,\rho]} n^\rho = 0$
 <br>
 
 <br>
-For another detour, what if we substitute	${{ A}_5} = {{{c}} {{\sqrt{{\frac{1}{G}}{({{k_e}})}}}}}$	,	${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}}{({G})}}}}}$	?
+For another detour, what if we substitute	${{ A} _5} = {{{c}} {{\sqrt{{\frac{1}{G}} {{k_e}}}}}}$	,	${{\phi_K}} = {{{\frac{2}{c}}} {{\sqrt{{\frac{1}{{k_e}}} {G}}}}}$	?
 <br>
-${{{q}} {{\frac{1}{M}}}} = {{{{-4}} {{G}} {{{ A}_{\mu}}} {{{ u}^{\mu}}} {{\frac{1}{c}}} {{\frac{1}{{k_e}}}}} \pm {{{2}} {{{G}^{({\frac{1}{2}})}}} {{{({{-1} + {{{-1}} {{{ u}_{\mu}}} {{{ u}^{\mu}}}}})}^{({\frac{1}{2}})}}} {{\frac{1}{{{k_e}}^{({\frac{1}{2}})}}}}}}$
+${{{q}} {{\frac{1}{M}}}} = {{{{-4}} {{G}} {{{ A} _{\mu}}} {{{ u} ^{\mu}}} {{\frac{1}{c}}} {{\frac{1}{{k_e}}}}} \pm {{{2}} {{i}} {{{G}^{\frac{1}{2}}}} {{{\left({{1} + {{{{ u} ^{\mu}}} {{{ u} _{\mu}}}}}\right)}^{\frac{1}{2}}}} {{\frac{1}{{{k_e}}^{\frac{1}{2}}}}}}}$
 <br>
 
 <br>

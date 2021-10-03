@@ -7,7 +7,7 @@ local Expression = require 'symmath.Expression'
 
 local TensorIndex = class(Expression)
 
-TensorIndex.name = 'TensorIndex'
+TensorIndex.name = 'Tensor.Index'
 
 -- valid derivative symbols for parseIndexes
 TensorIndex.derivativeSymbols = table{',', ';', '|'}

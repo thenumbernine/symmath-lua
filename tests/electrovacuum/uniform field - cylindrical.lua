@@ -14,13 +14,11 @@ local t, r, phi, z = vars('t', 'r', '\\phi', 'z')
 local E = var'E'
 local coords = {t,r,phi,z}
 
-Tensor.coords{
-	{variables=coords},
-	{symbols='t', variables={t}},
-	{symbols='r', variables={r}},
-	{symbols='phi', variables={phi}},
-	{symbols='z', variables={z}},
-}
+local chart_t_r_phi_z = Tensor.Chart{coords={t,r,phi,z}}
+local chart_t = Tensor.Chart{symbols='t', coords={t}}
+local chart_r = Tensor.Chart{symbols='r', coords={r}}
+local chart_phi = Tensor.Chart{symbols=' \\phi', coords={phi}}
+local chart_z = Tensor.Chart{symbols='z', coords={z}}
 
 --[==[
 local CylEmbedding = Tensor('^I', t, r * cos(phi), r * sin(phi), z)

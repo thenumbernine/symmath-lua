@@ -7,10 +7,9 @@ require 'symmath'.setup{env=env, MathJax={title='Gravitation 16.1 - mixed'}}
 
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}
-Tensor.coords{
-	{variables = coords},
-	{variables = {x,y,z}, symbols = 'ijklmn'},
-}
+
+local chart = Tensor.Chart{coords=coords}
+local spatialChart = Tensor.Chart{coords={x,y,z}, symbols='ijklmn'}
 
 local Phi = var('\\Phi', coords)
 local rho = var('\\rho', coords)
@@ -94,7 +93,7 @@ TODO how about metric transformations in index notation?
 just use the variable as the metric/inverse ...
 ... but how is such a transformation going to work?  any :simplify() call will break things...
 --]]
-Tensor.metric(g, g)
+chart:setMetric(g, g)
 
 local Gamma = var'\\Gamma'
 local Gamma4LLLDef = Gamma'_abc':eq((g'_ab,c' + g'_ac,b' - g'_bc,a') / 2)
@@ -167,7 +166,7 @@ Gamma = Gamma:replace(Phi, 0, isDerivative)()
 printbr(var'\\Gamma''^a_bc':eq(Gamma'^a_bc'()))
 
 g = g:replace(Phi, 0, isDerivative)()
-Tensor.metric(g)
+chart:setMetric(g)
 printbr(var'g''_uv':eq(g'_uv'()))
 printbr(var'g''^uv':eq(g'^uv'()))
 

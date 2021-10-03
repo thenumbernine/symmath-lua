@@ -1,17 +1,16 @@
 #! /usr/bin/env luajit
 require 'ext'
 require 'symmath'.setup{MathJax={title='tensor use case', pathToTryToFindMathJax='..'}}
-local TensorIndex = require 'symmath.tensor.TensorIndex'
+local TensorIndex = require 'symmath.tensor.Index'
 
 local maxN = 3
-
+local chart
 local function setDim(n)
-	Tensor.coords{
-		{
-			variables = range(n):map(function(i)
-				return symmath.var('x'..i)
-			end),
-		}
+	local manifold = Tensor.Manifold()
+	chart = manifold:Chart{
+		coords = range(n):map(function(i)
+			return symmath.var('x'..i)
+		end),
 	}
 	return n
 end
@@ -134,7 +133,7 @@ for _,indexes in ipairs{'_i', '^i', '_ij', '^ij', '_ijk', '^ijk'} do
 end
 
 -- setting metric without a coordinate basis gives an error
-assert(not pcall(function() Tensor.metric{{1,0}, {0,1}} end))
+assert(not pcall(function() chart:setMetric{{1,0}, {0,1}} end))
 
 -- setting coordinate basis
 for n=1,maxN do
@@ -196,7 +195,7 @@ assertEqn(epsilon[{2,3,1}]:eq(0))	-- this will be 1 if the index remapping is do
 -- testing raising/lowering
 	-- testing scale of raising/lowering
 local n = setDim(3)
-Tensor.metric(Tensor('_ij', {1, 0, 0}, {0, 2, 0}, {0, 0, 3}))
+chart:setMetric(Tensor('_ij', {1, 0, 0}, {0, 2, 0}, {0, 0, 3}))
 	-- testing raising
 local t = Tensor('_i', 1,2,3)
 assertEqn(t'^i':eq(Tensor('^i', 1, 1, 1)))
@@ -207,15 +206,15 @@ local t = Tensor('^i', 1,2,3)
 assertEqn(t'_i':eq(Tensor('_i', 1, 4, 9)))
 assertEqn(t'_i':eq(Tensor('^i', 1, 4, 9)))
 	-- testing skew of raising/lowering (assuring that the linear transform is using the correct index into the metric matrix)
-local basis = Tensor.metric(Tensor('_ij', {1, 1, 0}, {0, 1, 0}, {0, 0, 1}))
+chart:setMetric(Tensor('_ij', {1, 1, 0}, {0, 1, 0}, {0, 0, 1}))
 	-- assert that the inverse was calculated correctly
-assertEqn(basis.metricInverse[1]:eq(Tensor('^j', 1, -1, 0)))
+assertEqn(chart.metricInverse[1]:eq(Tensor('^j', 1, -1, 0)))
 
-assertEqn(basis.metricInverse[1]:eq(Tensor('^j', 1, -1, 0)))
-assertEqn(basis.metricInverse[2]:eq(Tensor('^j', 0, 1, 0)))
-assertEqn(basis.metricInverse[3]:eq(Tensor('^j', 0, 0, 1)))
+assertEqn(chart.metricInverse[1]:eq(Tensor('^j', 1, -1, 0)))
+assertEqn(chart.metricInverse[2]:eq(Tensor('^j', 0, 1, 0)))
+assertEqn(chart.metricInverse[3]:eq(Tensor('^j', 0, 0, 1)))
 
-assertEqn(basis.metricInverse:eq(Tensor('^ij', {1, -1, 0}, {0, 1, 0}, {0, 0, 1})))
+assertEqn(chart.metricInverse:eq(Tensor('^ij', {1, -1, 0}, {0, 1, 0}, {0, 0, 1})))
 local t = Tensor('^i', 1,2,3)
 --[[
 [1 1 0] [1]   [3]

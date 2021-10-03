@@ -12,9 +12,8 @@ require 'symmath'.setup{env=env, MathJax={title='EFE discrete solution - 2-var'}
 
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
 local coords = {t,r,theta,phi}
-Tensor.coords{
-	{variables=coords},
-}
+
+local chart = Tensor.Chart{coords=coords}
 
 local alpha = var('\\alpha', {r})
 --[[ alpha of ADM in spherical

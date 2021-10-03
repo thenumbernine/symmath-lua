@@ -8,10 +8,9 @@ require 'symmath'.setup{env=env, MathJax={title='Gravitation 16.1 - dense', useC
 
 local t, x, y, z = vars('t', 'x', 'y', 'z')
 local coords = table{t, x, y, z}
-Tensor.coords{
-	{variables = coords},
-	{variables = {x,y,z}, symbols = 'ijklmn'},
-}
+
+local chart = Tensor.Chart{coords=coords}
+local spatialChart = Tensor.Chart{coords={x,y,z}, symbols='ijklmn'}
 
 local Phi = var('\\Phi', coords)
 local rho = var('\\rho', coords)
@@ -30,7 +29,7 @@ local gDef = g'_uv':eq( eta'_uv' - 2 * Phi * delta'_uv' )
 printbr(gDef)
 
 local gVal = gDef:rhs():subst(deltaDef, etaDef)()	-- turn the index expression into a dense tensor ...
-Tensor.metric(gVal)
+chart:setMetric(gVal)
 local gValDef = g'_uv':eq(gVal'_uv'())
 printbr(gValDef)
 local gUValDef = g'^uv':eq(gVal'^uv'())
@@ -105,7 +104,7 @@ GammaUVal = GammaUVal:replace(Phi, 0, isDerivative)()
 printbr(Gamma'^a_bc':eq(GammaUVal'^a_bc'()))
 
 gVal = gVal:replace(Phi, 0, isDerivative)()
-Tensor.metric(gVal)
+chart:setMetric(gVal)
 local gVal = gVal'_uv'()
 local gValDef = g'_uv':eq(gVal)
 printbr(gValDef)

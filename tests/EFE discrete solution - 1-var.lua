@@ -26,10 +26,9 @@ end
 
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
 local coords = {t,r,theta,phi}
-Tensor.coords{
-	{variables=coords},
-	{symbols='t', variables={t}},
-}
+
+local C = Tensor.Chart{coords=coords}
+local C2 = Tensor.Chart{coords={t}, symbols='t'}
 
 local alpha = var('\\alpha', {r})
 --[[ alpha of ADM in spherical, constant spatial

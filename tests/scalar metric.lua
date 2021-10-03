@@ -11,9 +11,8 @@ for dim=1,1 do
 	print('<h2>'..dim..' dimensions</h2>')
 	
 	local coords = allCoords:sub(1,dim+1)
-	Tensor.coords{
-		{variables=coords}
-	}
+	local manifold = Tensor.Manifold()
+	local chart = manifold:Chart{coords=coords}
 
 	local a = var('a', coords)
 	local b = var('b', coords)

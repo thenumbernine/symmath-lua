@@ -5,7 +5,7 @@ local Expression = require 'symmath.Expression'
 local Wildcard = require 'symmath.Wildcard'
 
 local TensorRef = class(Expression)
-TensorRef.name = 'TensorRef'
+TensorRef.name = 'Tensor.Ref'
 TensorRef.precedence = 10	-- stop wrapping tensor reps in parenthesis ...
 
 function TensorRef:init(tensor, ...)
@@ -15,7 +15,7 @@ function TensorRef:init(tensor, ...)
 	--assert(Tensor:isa(tensor))	
 
 	-- make sure the rest of the arguments are tensor indexes
-	local TensorIndex = require 'symmath.tensor.TensorIndex'
+	local TensorIndex = require 'symmath.tensor.Index'
 	for i=1,select('#',...) do
 		local index = select(i, ...)
 		if not (TensorIndex:isa(index) or Wildcard:isa(index)) then
@@ -208,11 +208,12 @@ TensorRef.rules = {
 				local diffvars
 				for i=#indexes,1,-1 do
 					local index = indexes[i]
-					local basis = Tensor.findBasisForSymbol(index.symbol)
+					-- TODO if Tensor is a dense-Tensor ... and Variables are used to represent indexed-Tensors .. then who determines what chart a Variable indexed-Tensor belongs to?
+					local chart = Tensor:findChartForSymbol(index.symbol)
 					-- maybe I should just treat numbers like symbols?
-					if basis and #basis.variables == 1 then
+					if chart and #chart.coords == 1 then
 						table.remove(indexes, i)
-						local v = basis.variables[1]
+						local v = chart.coords[1]
 						diffvars = diffvars or table()
 						diffvars:insert(1,v)
 					end
@@ -280,18 +281,15 @@ TensorRef.rules = {
 						t = t:applyRaiseOrLower(i, indexes[i])
 						
 						-- TODO this matches Tensor:applyRaiseOrLower
-						local srcBasis, dstBasis
-						if Tensor.__coordBasis then
-							srcBasis = Tensor.findBasisForSymbol(t.variance[i].symbol)
-							dstBasis = Tensor.findBasisForSymbol(indexes[i].symbol)
-						end
+						local srcChart = t:findChartForSymbol(t.variance[i].symbol)
+						local dstChart = t:findChartForSymbol(indexes[i].symbol)
 					
-						if srcBasis ~= dstBasis then
+						if srcChart ~= dstChart then
 							-- only handling exchanges of variables at the moment
 							
 							local indexMap = {}
-							for i=1,#dstBasis.variables do
-								indexMap[i] = table.find(srcBasis.variables, dstBasis.variables[i])  --assert(..., "failed to find src variable in dst basis")
+							for i=1,#dstChart.coords do
+								indexMap[i] = table.find(srcChart.coords, dstChart.coords[i])  --assert(..., "failed to find src variable in dst chart")
 							end
 
 	--print('transforming tensor\n'..t)
@@ -322,14 +320,14 @@ TensorRef.rules = {
 
 			if foundDerivative then
 				-- indexed starting at the first derivative index
-				local basisForCommaIndex = {}
+				local chartForCommaIndex = {}
 				for i=1,#indexes do
 					if indexes[i].derivative then
-						basisForCommaIndex[i] = Tensor.findBasisForSymbol(indexes[i].symbol)
+						chartForCommaIndex[i] = t:findChartForSymbol(indexes[i].symbol)
 					end
 				end
 			
-				local TensorIndex = require 'symmath.tensor.TensorIndex'
+				local TensorIndex = require 'symmath.tensor.Index'
 			
 				local newVariance = {}
 				-- TODO straighten out the upper/lower vs differentiation order
@@ -349,14 +347,14 @@ TensorRef.rules = {
 						local deriv = table()
 						for i=1,#is do
 							if indexes[i].derivative then
-								deriv:insert(basisForCommaIndex[i].variables[is[i]])
+								deriv:insert(chartForCommaIndex[i].tangentSpaceOperators[is[i]])
 							else
 								base:insert(is[i])
 							end
 						end
 						local x = #base == 0 and t or t:get(base)
 						for i,d in ipairs(deriv) do
-							x = d:applyDiff(x)
+							x = d(x)
 						end
 						return x
 					end,

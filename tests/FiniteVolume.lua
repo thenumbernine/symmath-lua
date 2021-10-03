@@ -33,8 +33,8 @@ local dots = var'...'
 
 
 -- TODO .... how to do indexes of {} latex ...
-local TensorRef = require 'symmath.tensor.TensorRef'
-local TensorIndex = require 'symmath.tensor.TensorIndex'
+local TensorRef = require 'symmath.tensor.Ref'
+local TensorIndex = require 'symmath.tensor.Index'
 
 local function index(expr, ...)
 	return TensorRef(expr, 

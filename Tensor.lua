@@ -22,12 +22,13 @@ local eta = Tensor{indexes='_IJ', values=Matrix.identity(#flatVars)}
 local u = Tensor('^I', table.unpack(symmath.Vector.sphericalToCartesian(r, theta, phi)))
 local e = Tensor{indexes='_u^I', values=u'^I_,u':simplify())
 local g = (e'_u^I' * e'_v^J' * eta'_IJ')
-local curvedSpace = CoordinateSystem{variables=curvedVars, symbols='a-z', metric=g}				-- 4D curved space
-local flatSpace = CoordinateSystem{variables=flatVars, symbols='I-N', metric=eta}	-- 4D Minkowski space
-Tensor.coords{curvedSpace, flatSpace}
-Tensor.transforms{from=curvedSpace, to=flatSpcae, transform=e}
+local manifold = Tensor.Manifold()
+local curvedChart = manifold:Chart{coords=curvedVars, symbols='a-z', metric=function() return g end}				-- 4D curved space
+local flatChart = manifold:Chart{coords=flatVars, symbols='I-N', metric=function() return eta end}	-- 4D Minkowski space
+--TODO This part ...
+manifold:setTransforms{from=curvedSpace, to=flatSpcae, transform=e}
 
-Tensor.transforms would be the new function
+Metric.setTransforms would be the new function
 transform= would specify the tensor to transform between coordinate systems
 a convention would have to be established such that ...
 (for a-h the system from and i-n the system to)
@@ -66,14 +67,92 @@ we can find the inverse transform by either
 
 
 
-
-alright then instead of Tensor.coords ...
+also:
 Tensor.tangentSpaceOperators{diff(t), diff(x), diff(y), diff(z)}
 
 or equivalent for commutation basis
 but that only makes sense in combination with a chart... 
 and can be used to derive the metric
 which, alternatively, we can just ignore the tangent space operators and allow the metric to be specified
+
+and then instead of transforms, use "Chart" objects, and forward/inverse transforms ...
+
+
+local M = Tensor.Manifold()
+
+-- manifolds have multiple charts. how to handle that?  how to make sure the multiple charts overlap wrt their respective coordinate bounds?
+-- 
+local C = Tensor.Chart{
+	manifold = M,
+	coordinates (or "variables"?) = {x1, x2, ..., xN},
+
+	-- optional 
+	-- if chart isn't provided then a metric should be.
+	chartEmbeddedFunction = function(x)
+		-- in order to even build this, a separate set of coordinates / embedded space needs to be defined
+		-- or do I need a set of indexes for embedded variables?
+		-- I could reproduce that behavior with just an array of expressions and an inner product function
+		return Tensor('^I', function(x1, ...) ... end)
+	end,
+
+	-- accepts chart() output a and b, returns an expression for the inner product
+	-- optional, required for chart() (or should it be optional of chart() is provided as a Tensor of another chart)
+	chartInnerProduct = function(a,b)
+		local i = var'i'
+		-- TODO this isn't possible now, since __index doesn't return an expression itself
+		-- but it is possible in Maxima ... so ... maybe I should support it?
+		return Sum(a[i] * b[i], i, 1, N)
+	end,
+
+	-- or optionally, should I just provide embeddedChart() that returns a Tensor in the chart's coordinates?
+	-- and then the inner product is already defined in the embedded chart's space
+	-- but in that case, how to handle indexes?
+	
+	-- in presence of a chart (and basis operators), the metric can be calculated
+	-- in absence of it, metric can be provided to describe the manifold behavior
+	metric = function(),	
+		-- this will either be a Tensor (though creating a Tensor means the coordinates are specified, so the ctor know how many dimensions to require for each of its indexes)
+		-- or this can be Tensor args, or a function that generates the metric (most flexible?)
+		return Tensor('_uv', ...)
+	end,
+
+	-- default operators would be coordinate derivatives
+	-- the comma index will defer to this
+	-- honestly 'tangentSpaceOperators' is the same as overriding Variable:applyDiff
+	-- which is better?  should 'applyDiff' even be a thing, since the only place it is used is in Ref for evaluating comma derivative indexes?
+	-- so that's a thing: replace Variable:applyDiff() and Tensor.coords{{variables=...}} with Chart.tangentSpaceOperators[]
+	tangentSpaceOperators = {
+		function(u, x1, x2, ...) return u:diff(x1) end,
+		function(u, x1, x2, ...) return u:diff(x2) end,
+		...
+	},
+}
+
+-- returns a (1 0) tensor-of-variables whose domain is the chart (subject to constraints of chart coordinate boundaries)
+local x = C:point()	
+
+-- returns ... what?  a list of operators?  a list of basis vectors?
+local Tx = C:tangentSpace(x)
+
+-- and then for creating tensors, who do I request?
+-- the manifold?  nah, it could have multiple charts/multiple coordinates per chart
+-- the chart? maybe
+-- the tangent space?  since the tensor exists within the tangent space.
+-- but then we end up - just to get rolling - having to make all these things first: manifold, chart, point, tangent-space ...
+-- and the point will be made of variables anyways so ... it is implicit already in the variables provided to the Chart constructor
+-- so, probably, C:tensor(...) => shorthand for Tensor{..., chart=C}
+
+
+indexes is a question of its own though, since I have *) indexes and *) variables, 
+and the two act separately for now, but there is crossover in usage when it comes to derivatives (comma deriv vs :diff())
+and I want to unify the two somehow, especially wrt the Variable:setDependantVars() functionality ... 
+... I want to bring that over to the comma deriv and indexes so that comma deriv can implicitly know when to simplify to zero or not (or who knows, even expand to transforms)
+
+so how would that look?
+same as it already does? C ctor "symbols='IJKLMN'" ?
+and then (store somewhere?) that those tensor index symbols are now associated with this chart,
+so that comma using those symbols will simplify based on the letter's variables + the chart's coordinate variables
+
 
 --]]
 
@@ -89,45 +168,36 @@ general-purpose rank-1 (successive nesting for rank-n) structure
 to be used as vectors, vectors of them as matrices, etc ...
 --]]
 local Tensor = class(Array)
+
 Tensor.name = 'Tensor'
 
--- array of TensorCoordBasis objects
-Tensor.__coordBasis = nil
+-- namespace:
+Tensor.Ref = require 'symmath.tensor.Ref'
+
+Tensor.Index = require 'symmath.tensor.Index'
+
+Tensor.Manifold = require 'symmath.tensor.Manifold'
+
+Tensor.Chart = require 'symmath.tensor.Chart'
+
+Tensor.LeviCivita = require 'symmath.tensor.LeviCivita'
+
+-- TODO finishme
+Tensor.dual = require 'symmath.tensor.dual'
+
 
 --[[
-newCoords[i] is arguments for a TensorCoordBasis object	
---]]
-function Tensor.coords(newCoords)
-	local TensorCoordBasis = require 'symmath.tensor.TensorCoordBasis'
-	local oldCoords = Tensor.__coordBasis
-	if newCoords ~= nil then
-		Tensor.__coordBasis = newCoords
-		for i=1,#Tensor.__coordBasis do
-			assert(type(Tensor.__coordBasis[i]) == 'table')
-			if not TensorCoordBasis:isa(Tensor.__coordBasis[i]) then
-				Tensor.__coordBasis[i] = TensorCoordBasis(Tensor.__coordBasis[i])
-			end
-		end
-	end
-	return oldCoords
-end
+how to deal with index symbols
+by default use a-z for index symbols
+honestly nothing in Tensor uses this, only Expression for its Tensor index stuff applied to all expressions
 
--- by default use a-z for index symbols
+where to put this?
+I was thinking put it in Chart, because Chart is defined with sets of symbols
+I was thinking Manifold, since Manifold has lookup for chart based on symbol
+I was thinking Tensor, since Tensor is the namespace of all of this
+--]]
 Tensor.defaultSymbols = require 'symmath.tensor.symbols'.latinSymbols
 
--- static function
-function Tensor.findBasisForSymbol(symbol)
-	if not symbol then symbol = {} end
-	if not Tensor.__coordBasis then return end
-	for _,basis in ipairs(Tensor.__coordBasis) do
-		if not basis.symbols then
-			default = basis
-		else
-			if basis.symbols:find(symbol) then return basis end
-		end
-	end
-	return default
-end
 
 --[[
 TODO Tensor construction:
@@ -196,11 +266,11 @@ interpretations:
 Tensor static members:
 	- association of indicies to coordinates
 
-Tensor.coords{
-	{t,x,y,z},
-	{i,j,k} = {x,y,z},
-	{I,J,K} = {whatever flat space vielbein indices you want to use},
-}
+manifold = Tensor.Manifold()
+chart = manifold:Chart{coords={t,x,y,z}}
+spatialChart = manifold:Chart{symbols='ijk', coords={x,y,z}}
+cartesianChart = manifold:Chart{symbols='IJK', coords={whatever flat space vielbein indices you want to use}}
+
 - coordinate transformation information ...
 	i.e. lower txyz to upper txyz basis transforms with g^uv,
 		upper txyz to lower txyz transforms with g_uv
@@ -213,7 +283,7 @@ Tensor have the following attributes:
 --]]
 function Tensor:init(...)
 	local Constant = require 'symmath.Constant'	
-	local TensorIndex = require 'symmath.tensor.TensorIndex'
+	local TensorIndex = self.Index
 	
 	local args = {...}
 
@@ -265,10 +335,11 @@ function Tensor:init(...)
 			local subVariance = table(self.variance)
 			local firstVariance = table.remove(subVariance, 1)
 			
-			local basis = Tensor.findBasisForSymbol(firstVariance.symbol)
-			
+			local chart = self:findChartForSymbol(firstVariance.symbol)
+			assert(chart, "looks like you haven't created a chart yet, so I don't know how to determine the dimension of the indexes")
+
 			local superArgs = {}
-			for i=1,#basis.variables do
+			for i=1,#chart.coords do
 				if #subVariance > 0 then
 					superArgs[i] = Tensor(subVariance)
 				else
@@ -292,13 +363,13 @@ function Tensor:init(...)
 			
 			local indexes = table.remove(args, 1)
 			
-			-- *) parse string into indicies (and what basis they belong to) and contra- vs co- variance
+			-- *) parse string into indicies (and what chart they belong to) and contra- vs co- variance
 			-- should I make a distinction for multi-letter variables? not allowed for the time being ...
 			self.variance = TensorIndex.parseIndexes(indexes)
 
 			-- *) complain if there is no Tensor.coords assignment
 			-- *) store index information (in this tensor and subtensors ... i.e. this may be {^i, _j, _k}, subtensors would be {_j, _k}, and their subtensors would be {_k}
-			-- *) build an empty tensor with rank according to the basis size of the indices
+			-- *) build an empty tensor with rank according to the chart size of the indices
 
 			if #args > 0 then
 				-- assert that the sizes are correct
@@ -322,10 +393,10 @@ function Tensor:init(...)
 				-- construct content from default of zeroes
 				local subVariance = table(self.variance)
 				local firstVariance = table.remove(subVariance, 1)
-				local basis = Tensor.findBasisForSymbol(firstVariance.symbol)
+				local chart = self:findChartForSymbol(firstVariance.symbol)
 
 				local superArgs = {}
-				for i=1,#basis.variables do
+				for i=1,#chart.coords do
 					if #subVariance > 0 then
 						superArgs[i] = Tensor(subVariance)
 					else
@@ -532,67 +603,18 @@ function Tensor:transformIndex(ti, m)
 	end}
 end
 
-
-
--- static
---[[
-replaces the specified coordinate basis metric with the specified metric
-returns the TensorBasis object
-
-usage:
-	Tensor.metric(m, nil, symbol) 		<- replaces the metric of the basis associated with the symbol, calculates the metric inverse
-	Tensor.metric(nil, mInv, symbol)	<- replaces the metric inverse of the basis associated with the symbol, calculates the metric
-	Tensor.metric(m, mInv, symbol)		<- replaces both the metric and the metric inverse of the basis associated with the symbol 
-	Tensor.metric(nil, nil, symbol) 	<- returns the basis associated with the symbol
-
-TODO clearing the metric cannot be done by Tensor.metric(nil, nil)
-	which is confusing
---]]
-function Tensor.metric(metric, metricInverse, symbol)
-	local Matrix = require 'symmath.Matrix'
-	local basis = Tensor.findBasisForSymbol(symbol or {})
-	if not basis then error("can't set the metric without first setting the coords") end
-	if metric or metricInverse then
-		basis.metric = metric or Matrix.inverse(metricInverse)
-		basis.metricInverse = metricInverse or Matrix.inverse(metric)
-	else
-		return basis
-	end
-	-- TODO convert matrices to tensors?
-	-- this means use distinct symbols
-	-- also assigning values= isn't working ...
-	local a,b
-	if basis.symbols then
-		if #basis.symbols < 2 then
-			error("found a basis with only one symbol, when you need two to represent the metric tensor: " .. tolua(basis))
-		end
-		-- TODO seems findBasisForSymbol isn't set up to support space-separated symbol strings ...
-		a = basis.symbols[1]
-		b = basis.symbols[2]
-	else
-		a,b = 'a','b'
-	end
-	assert(a and b and #a>0 and #b>0)
-	if not Tensor:isa(basis.metric) then basis.metric = Tensor{indexes={'_'..a, '_'..b}, values=basis.metric} end
-	if not Tensor:isa(basis.metricInverse) then basis.metricInverse = Tensor{indexes={'^'..a, '^'..b}, values=basis.metricInverse} end
-	return basis
-end
-
 function Tensor:applyRaiseOrLower(i, tensorIndex)
 	local t = self:clone()
 
 	-- TODO this matches Tensor:__call
-	local srcBasis, dstBasis
-	if Tensor.__coordBasis then
-		srcBasis = Tensor.findBasisForSymbol(t.variance[i].symbol)
-		dstBasis = Tensor.findBasisForSymbol(tensorIndex.symbol)
-	end
+	local srcChart = self:findChartForSymbol(t.variance[i].symbol)
+	local dstChart = self:findChartForSymbol(tensorIndex.symbol)
 
 -- TODO what if the tensor was created without variance? 
 	if tensorIndex.lower ~= t.variance[i].lower then
 		-- how do we handle raising indexes of subsets
-		local metric = (dstBasis and dstBasis.metric) or (srcBasis and srcBasis.metric)
-		local metricInverse = (dstBasis and dstBasis.metricInverse) or (srcBasis and srcBasis.metricInverse)
+		local metric = (dstChart and dstChart.metric) or (srcChart and srcChart.metric)
+		local metricInverse = (dstChart and dstChart.metricInverse) or (srcChart and srcChart.metricInverse)
 		
 		if not metric then
 			error("tried to raise/lower an index without a metric:"..tostring(self))
@@ -607,7 +629,7 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 			print("  your tensor's dimensions: "..table.concat(tdim, ','))
 			print("  metric dimensions: "..table.concat(metric:dim(),','))
 			print("  metric inverse dimensions: "..table.concat(metricInverse:dim(),','))
-			error("you can reset the metric tensor via the Tensor.coords() function")
+			error("you can reset the metric tensor via the Chart:setMetric() function")
 		end
 		
 		-- TODO generalize transforms, including inter-basis-symbol-sets
@@ -636,7 +658,7 @@ end
 -- maybe I should have (variance string, tensor) as ctors for Tensor()'s and then permute them there, but then what about 1x1x1 tensor initialization?
 function Tensor:permute(dstVariance)
 	if type(dstVariance) == 'string' then
-		local TensorIndex = require 'symmath.tensor.TensorIndex'
+		local TensorIndex = self.Index
 		dstVariance = TensorIndex.parseIndexes(dstVariance)
 	end
 	
@@ -707,7 +729,7 @@ end
 
 Tensor.__newindex = function(self, key, value)
 
-	-- TODO if value is a TensorRef then run the TensorRef prune transformation ...
+	-- TODO if value is a Tensor.Ref then run the Tensor.Ref prune transformation ...
 
 	-- I don't think I do much assignment-by-table ...
 	--  except for in the Visitor.lookupTable ...
@@ -721,7 +743,7 @@ Tensor.__newindex = function(self, key, value)
 	if type(key) == 'string' 
 	and (key:sub(1,1) == '^' or key:sub(1,1) == '_')
 	then	
-		local TensorIndex = require 'symmath.tensor.TensorIndex'
+		local TensorIndex = self.Index
 		local dstVariance = TensorIndex.parseIndexes(key)
 
 		-- assert no comma derivatives
@@ -761,9 +783,9 @@ Tensor.__newindex = function(self, key, value)
 --print('dest variance',table.unpack(dstVariance))
 		local function mapSingleIndexes(v,k,t)
 --print('v.symbol',v.symbol)
-			local basis = Tensor.findBasisForSymbol(v.symbol)
---print('basis',basis,'variables',basis and #basis.variables)
-			return (basis and #basis.variables == 1 and k or nil), #t+1
+			local chart = self:findChartForSymbol(v.symbol)
+--print('chart',chart,'variables',chart and #chart.coords)
+			return (chart and #chart.coords == 1 and k or nil), #t+1
 		end
 		local valueSingleVarIndexes = table.map(value.variance, mapSingleIndexes)
 		local dstSingleVarIndexes = table.map(dstVariance, mapSingleIndexes)
@@ -777,7 +799,7 @@ Tensor.__newindex = function(self, key, value)
 			else
 				-- wrap it in the single-variable index
 --print('from ',value)
-				local TensorIndex = require 'symmath.tensor.TensorIndex'
+				local TensorIndex = self.Index
 				value = Tensor(table{
 					TensorIndex{
 						lower = v.lower,
@@ -809,9 +831,9 @@ Tensor.__newindex = function(self, key, value)
 		end
 
 		for _,variance in ipairs(dstVariance) do
-			local basis = Tensor.findBasisForSymbol(variance.symbol)
-			if #basis.variables == 1 then
-				local variable = basis.variables[1]
+			local chart = self:findChartForSymbol(variance.symbol)
+			if #chart.coords == 1 then
+				local variable = chart.coords[1]
 			end
 		end
 
@@ -846,29 +868,26 @@ Tensor.__newindex = function(self, key, value)
 		-- [[ only copy over values in the dst variance
 		for isrc in self:iter() do
 			-- isrc holds the iter of assignment ... might not be assigned if dstVariance doesn't hold a basis that holds the var
-			-- isrc[i] cooresponds to the i'th variable in srcBasis.variables
-			-- then we find the same variable in dstBasis.variables
+			-- isrc[i] cooresponds to the i'th variable in srcChart.coords
+			-- then we find the same variable in dstChart.coords
 			-- if it isrc there - read from that variable - and write back to self.iter
 			-- if it isn't there - skip this iter
 --print('assigning to indexes '..table.concat(isrc, ','))	
 			assert(#isrc == #dstVariance)
-			-- looks similar to transformIndexes in Tensor/TensorRef.lua
+			-- looks similar to transformIndexes in Tensor/Ref.lua
 			local indexes = dstVariance
 			local notfound = false
 			for i=1,#indexes do
 				-- don't worry about raising or lowering
-				local srcBasis, dstBasis
-				if Tensor.__coordBasis then
-					srcBasis = Tensor.findBasisForSymbol(self.variance[i].symbol)
-					dstBasis = Tensor.findBasisForSymbol(indexes[i].symbol)
+				local srcChart = self:findChartForSymbol(self.variance[i].symbol)
+				local dstChart = self:findChartForSymbol(indexes[i].symbol)
 --print('assigning from '..indexes[i].symbol)
 --print('assigning into '..self.variance[i].symbol)
-				end
 
 				do--if srcIndex ~= dstIndex then
---print('looking for', srcBasis.variables[isrc[i]])
---print('...among variables',table.unpack(dstBasis.variables))
-					local dstIndex = table.find(dstBasis.variables, srcBasis.variables[isrc[i]])
+--print('looking for', srcChart.coords[isrc[i]])
+--print('...among variables',table.unpack(dstChart.coords))
+					local dstIndex = table.find(dstChart.coords, srcChart.coords[isrc[i]])
 					-- however 'dst' has already been transformed to the basis of 'src' ...
 					-- ... and padded with zeros (TODO don't bother do that?)
 					-- so I don't need to reindex the lookup, just skip the zeroes 
@@ -892,6 +911,20 @@ Tensor.__newindex = function(self, key, value)
 	end
 
 	rawset(self, key, value)
+end
+
+--[[
+hmm, how to lookup charts from tensors
+TODO Tensor.chart would be nice
+--]]
+function Tensor:findChartForSymbol(symbol)
+	local manifold = self.manifold
+		or (self.chart and self.chart.manifold)
+		or Tensor.Manifold.last
+	if not manifold then
+		return	--error("don't know what Manifold to use associated with this symbol ... have you built a Manifold yet?")
+	end
+	return manifold:findChartForSymbol(symbol)
 end
 
 function Tensor.pruneAdd(lhs,rhs)
@@ -1085,9 +1118,9 @@ end
 -- prints the tensor contents as T_abc = <contents>
 function Tensor:print(name)
 	local Variable = require 'symmath.Variable'
-	local TensorRef = require 'symmath.tensor.TensorRef'
-	local TensorIndex = require 'symmath.tensor.TensorIndex'
-	print(TensorRef(Variable(name), table.unpack(self.variance)):eq(self))
+	local Ref = self.Ref
+	local TensorIndex = self.Index
+	print(self.Ref(Variable(name), table.unpack(self.variance)):eq(self))
 end
 
 Tensor.printElemDefaultSeparator = ';'
@@ -1098,21 +1131,21 @@ function Tensor:printElem(name, write, defaultsep)
 	defaultsep = defaultsep or Tensor.printElemDefaultSeparator
 	local Variable = require 'symmath.Variable'
 	local Constant = require 'symmath.Constant'
-	local TensorRef = require 'symmath.tensor.TensorRef'
-	local TensorIndex = require 'symmath.tensor.TensorIndex'
+	local Ref = self.Ref
+	local TensorIndex = self.Index
 	local sep = ''
 	for index,x in self:iter() do
 		if not Constant.isValue(x, 0) then
 			if sep ~= '' then 
 				write(sep, '\n')
 			end
-			write(tostring(TensorRef(Variable(name),
+			write(tostring(Ref(Variable(name),
 					table.mapi(self.variance, function(v,i)
-						local basis = Tensor.findBasisForSymbol(v.symbol)
+						local chart = self:findChartForSymbol(v.symbol)
 						v = v:clone()
-						v.symbol = basis 
-							and basis.variables[index[i]]
-							and basis.variables[index[i]].name
+						v.symbol = chart 
+							and chart.coords[index[i]]
+							and chart.coords[index[i]].name
 							or index[i]
 							or i
 						return v
@@ -1124,7 +1157,7 @@ function Tensor:printElem(name, write, defaultsep)
 	
 	-- none found:
 	if sep == '' then
-		write(tostring(TensorRef(Variable(name), table.unpack(self.variance)):eq(0)))
+		write(tostring(Ref(Variable(name), table.unpack(self.variance)):eq(0)))
 	else
 		write'\n'
 	end
@@ -1173,7 +1206,7 @@ function Tensor:antisym()
 	}
 end
 
--- this is used with Derivative when it simplifies two equal TensorRefs
+-- this is used with Derivative when it simplifies two equal Refs 
 -- TODO call it 'Kroencher Delta symbol' ?
 function Tensor:deltaSymbol()
 	if not Tensor.deltaVariable then
@@ -1191,7 +1224,5 @@ function Tensor:metricSymbol()
 	end
 	return Tensor.metricVariable
 end
-
-Tensor.LeviCivita = require 'symmath.tensor.LeviCivita'
 
 return Tensor

@@ -9,21 +9,12 @@ require 'ext.env'(env)
 local t,x,y,z = vars('t', 'x', 'y', 'z')
 local coords = {t,x,y,z}
 
-Tensor.coords{
-	{
-		variables = coords,
-	},
-	{
-		variables = {x,y,z},
-		symbols = 'ijklmn',
-		metric = {{1,0,0},{0,1,0},{0,0,1}},
-	},
-	{symbols='t', variables={t}},
-	{symbols='x', variables={x}},
-	{symbols='y', variables={y}},
-	{symbols='z', variables={z}},
-}
-
+local C = Tensor.Chart{coords=coords}
+local CS = Tensor.Chart{coords={x,y,z}, symbols='ijklmn', metric=function() return {{1,0,0},{0,1,0},{0,0,1}} end}
+local Ct = Tensor.Chart{coords={t}, symbols='t'}
+local Cx = Tensor.Chart{coords={x}, symbols='x'}
+local Cy = Tensor.Chart{coords={y}, symbols='y'}
+local Cz = Tensor.Chart{coords={z}, symbols='z'}
 
 local R = var'R'
 printbr(R, '= warp bubble radius.')
@@ -169,7 +160,7 @@ local gU = Tensor('^ab', table.unpack(
 ))
 printbr(gvar'^ab':eq(gU'^ab'()))
 
-Tensor.metric(g, gU)
+C:setMetric(g, gU)
 
 printbr'hypersurface normal:'
 local nL = Tensor('_u', -alpha, 0, 0, 0)

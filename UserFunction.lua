@@ -153,7 +153,7 @@ end
 --[[
 same arguments as Variable
 
-TODO should variable store 'src' and 'wrt' in case either is TensorRef's?
+TODO should variable store 'src' and 'wrt' in case either is Tensor.Ref's?
 
 TODO variable has a single 'set', but function should have 'domain' and 'range'
 and technically both should be inferred... domain from args[i].set, and range deduced from the expression

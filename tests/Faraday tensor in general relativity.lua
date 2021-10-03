@@ -19,10 +19,9 @@ local x0 = var'0'
 local x0to3 = table{x0,x,y,z}
 local x0to3t = table(x0to3):append{t}
 local x1to3 = table{x,y,z}
-Tensor.coords{
-	{variables=x0to3, metric=Matrix.diagonal(-1, 1, 1, 1)},	-- preliminary matrix
-	{variables=x1to3, symbols='ijklmn'},
-}
+
+local chart = Tensor.Chart{coords=x0to3, metric=function() return Matrix.diagonal(-1, 1, 1, 1) end}	-- preliminary matrix
+local spatialChart = Tensor.Chart{coords=x1to3, symbols='ijklmn'}
 
 printbr'using ADM metric:'
 
@@ -85,10 +84,8 @@ local lcU = lcL'^abcd'()	-- raise/lower using eta, before setting the ADM metric
 local glcL = (lcL * sqrtdetg)()
 local glcU = (lcU / sqrtdetg)()
 
-Tensor.coords{
-	{variables=x0to3, metric=gDef, metricInverse=gUDef},
-	{variables=x1to3, symbols='ijklmn', metric=gammaDef, metricInverse=gammaUDef},
-}
+chart:setMetric(gDef, gUDef)
+spatialChart:setMetric(gammaDef, gammaUDef)
 
 local nDef = Tensor('_a', -alpha,0,0,0)
 printbr(n'_a':eq(nDef))

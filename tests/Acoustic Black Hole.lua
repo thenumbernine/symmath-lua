@@ -4,10 +4,7 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Acoustic Black Hole', usePartialLHSForDerivative=true}}
 
-
-Tensor.coords{
-	{variables={'0', 'xyz'}},
-}
+local chart = Tensor.Chart{coords={'0', 'xyz'}}
 
 local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames
 	-- :sort(function(a,b) return a < b end)

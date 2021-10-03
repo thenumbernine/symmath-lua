@@ -12,20 +12,20 @@ return function(rank, symbol)
 	rank = rank or 1
 	local Tensor = require 'symmath.Tensor'
 
-	local basis = Tensor.findBasisForSymbol(symbol)
+	local chart = Tensor:findChartForSymbol(symbol)
 
 	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
 	local variance = 
 	' '..range(1,rank):mapi(function(i)
 		return '^'..(
-			basis and basis.symbols and basis.symbols[i]
+			chart and chart.symbols and chart.symbols[i]
 			or defaultSymbols[i]
 			or error("ran out of symbols")
 		)
 	end):concat' '
 	..' '..range(rank+1,rank*2):mapi(function(i)
 		return '_'..(
-			basis and basis.symbols and basis.symbols[i]
+			chart and chart.symbols and chart.symbols[i]
 			or defaultSymbols[i]
 			or error("ran out of symbols")
 		)

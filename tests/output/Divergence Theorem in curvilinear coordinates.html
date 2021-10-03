@@ -1,55 +1,53 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>Divergence Theorem in Curvilinear Coordinates</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>Divergence Theorem in Curvilinear Coordinates</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
-${c} = {\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[\begin{matrix} \overset{j\downarrow k\rightarrow}{\left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{-1}{r} &  0 \\  0 &  0 &  \frac{-1}{r}\end{matrix}\right]} \\ \overset{j\downarrow k\rightarrow}{\left[\begin{matrix}  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 \\  0 &  0 &  \frac{-{cos\left(  \theta\right)}}{{{r}} {{sin\left(  \theta\right)}}}\end{matrix}\right]} \\ \overset{j\downarrow k\rightarrow}{\left[\begin{matrix}  0 &  0 &  \frac{1}{r} \\  0 &  0 &  \frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}} \\  0 &  0 &  0\end{matrix}\right]}\end{matrix}\right]}}$
+$\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]\end{matrix} \right]}$
 <br>
-$\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix} \left[\begin{matrix}  0 &  0 &  0 \\  0 &  -{\frac{1}{r}} &  0 \\  0 &  0 &  -{\frac{1}{r}}\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{-{cos\left(  \theta\right)}}{{{r}} {{sin\left(  \theta\right)}}}\end{matrix}\right] \\ \left[\begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  \frac{1}{r} &  \frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}} &  0\end{matrix}\right]\end{matrix}\right]}$
+$-{\frac{\theta}{{r}^{2}}}$
 <br>
-$\frac{{{{\theta}} \cdot {{sin\left(  \theta\right)}}} + {{{\phi}} \cdot {{cos\left(  \theta\right)}}}}{{{{r}^{2}}} {{sin\left(  \theta\right)}}}$
-<br>
-${{{\theta}} \cdot {{sin\left(  \theta\right)}}} + {{{\phi}} \cdot {{cos\left(  \theta\right)}}}$
+$-{{{\theta}} \cdot {{\sin\left(  \theta\right)}}}$
 <br>
 $\frac{{\pi}^{3}}{{{16}} {{r}}}$
 <br>
-${\frac{1}{16}}{({{\pi}^{3}})}$
+${\frac{1}{16}} {{\pi}^{3}}$
 <br>
-${\frac{1}{8}}{({-{{\pi}^{3}}})}$
+$-{{\frac{1}{8}} {{\pi}^{3}}}$
 <br>
-${\frac{1}{8}}{({{\pi}^{2}})}$
+${\frac{1}{8}} {{\pi}^{2}}$
 <br>
-${\frac{1}{8}}{({-{{\pi}^{2}}})}$
+$-{{\frac{1}{8}} {{\pi}^{2}}}$
 <br>
-${\frac{1}{8}}{({{\pi}^{2}})}$
-<br>
-$0$
-<br>
-$0$
-<br>
-${\frac{1}{16}}{({-{{\pi}^{3}}})}$
-<br>
-${\frac{1}{16}}{({{{\pi}} \cdot {{({{8} + {\pi}})}}})}$
-<br>
-${\frac{1}{2}}{({\pi})}$
-<br>
-${\frac{1}{2}}{({\pi})}$
-<br>
-${\frac{1}{16}}{({{\pi}^{2}})}$
+${\frac{1}{8}} {{\pi}^{2}}$
 <br>
 $0$
 <br>
 $0$
 <br>
+$-{{\frac{1}{16}} {{\pi}^{3}}}$
+<br>
+${\frac{1}{2}} {\pi}$
+<br>
+${\frac{1}{2}} {\pi}$
+<br>
+${\frac{1}{2}} {\pi}$
+<br>
+${\frac{1}{16}} {{\pi}^{2}}$
+<br>
 $0$
 <br>
-${\frac{1}{16}}{({{{\pi}} \cdot {{({{16} + {\pi}})}}})}$
+$0$
 <br>
-${\int\limits_{{phi1}}^{{phi2}}d \phi\left({\int\limits_{{theta1}}^{{theta2}}d \theta\left({\int\limits_{{r1}}^{{r2}}d r\left({{{{{ F}^{{\hat{i}}}}_{,{\hat{i}}}}} {{V}}}\right)}\right)}\right)} = {{\frac{1}{16}}{({{{\pi}} \cdot {{({{8} + {\pi}})}}})}}$
+$0$
 <br>
-${{({\int\limits_{{phi1}}^{{phi2}}d \phi\left({\int\limits_{{theta1}}^{{theta2}}d \theta\left({{{{ F}^{{\hat{i}}}}} {{{{ e}_{{\hat{i}}}}^i}} {{V}} {{{ nr+}_i}}}\right)}\right)})} + {({\int\limits_{{phi1}}^{{phi2}}d \phi\left({\int\limits_{{theta2}}d theta1\left({{{{ F}^{{\hat{i}}}}} {{{{ e}_{{\hat{i}}}}^i}} {{V}} {{{ nr-}_1}}}\right)}\right)})} + {({\int\limits_{{phi1}}^{{phi2}}d \phi\left({\int\limits_{{r1}}^{{r2}}d r\left({{{{ F}^{{\hat{i}}}}} {{{{ e}_{{\hat{i}}}}^i}} {{V}} {{{ ntheta+}_i}}}\right)}\right)})} + {({\int\limits_{{phi1}}^{{phi2}}d \phi\left({\int\limits_{{r1}}^{{r2}}d r\left({{{{ F}^{{\hat{i}}}}} {{{{ e}_{{\hat{i}}}}^i}} {{V}} {{{ ntheta-}_i}}}\right)}\right)})} + {({\int\limits_{{theta1}}^{{theta2}}d \theta\left({\int\limits_{{r1}}^{{r2}}d r\left({{{{ F}^{{\hat{i}}}}} {{{{ e}_{{\hat{i}}}}^i}} {{V}} {{{ nphi+}_i}}}\right)}\right)})} + {({\int\limits_{{theta1}}^{{theta2}}d \theta\left({\int\limits_{{r1}}^{{r2}}d r\left({{{{ F}^{{\hat{i}}}}} {{{{ e}_{{\hat{i}}}}^i}} {{V}} {{{ nphi-}_i}}}\right)}\right)})}} = {{\frac{1}{16}}{({{{\pi}} \cdot {{({{8} + {\pi}})}}})}}$
+${\frac{1}{16}} {{{\pi}} \cdot {{\left({{16} + {\pi}}\right)}}}$
+<br>
+${\int\limits_{{phi1}}^{{phi2}}{{\int\limits_{{theta1}}^{{theta2}}{{\int\limits_{{r1}}^{{r2}}{{\left({{{{{ F} ^{{\hat{i}}}} _{,{\hat{i}}}}} {{V}}}\right)}}d r}}d \theta}}d \phi} = {{\frac{1}{2}} {\pi}}$
+<br>
+${{\int\limits_{{phi1}}^{{phi2}}{{\int\limits_{{theta1}}^{{theta2}}{{\left({{{{ F} ^{{\hat{i}}}}} {{{{ e} _{{\hat{i}}}} ^i}} {{V}} {{{ nr+} _i}}}\right)}}d \theta}}d \phi} + {\int\limits_{{phi1}}^{{phi2}}{{\int\limits_{{theta2}}{{\left({{{{ F} ^{{\hat{i}}}}} {{{{ e} _{{\hat{i}}}} ^i}} {{V}} {{{ nr-} _1}}}\right)}}d theta1}}d \phi} + {\int\limits_{{phi1}}^{{phi2}}{{\int\limits_{{r1}}^{{r2}}{{\left({{{{ F} ^{{\hat{i}}}}} {{{{ e} _{{\hat{i}}}} ^i}} {{V}} {{{ ntheta+} _i}}}\right)}}d r}}d \phi} + {\int\limits_{{phi1}}^{{phi2}}{{\int\limits_{{r1}}^{{r2}}{{\left({{{{ F} ^{{\hat{i}}}}} {{{{ e} _{{\hat{i}}}} ^i}} {{V}} {{{ ntheta-} _i}}}\right)}}d r}}d \phi} + {\int\limits_{{theta1}}^{{theta2}}{{\int\limits_{{r1}}^{{r2}}{{\left({{{{ F} ^{{\hat{i}}}}} {{{{ e} _{{\hat{i}}}} ^i}} {{V}} {{{ nphi+} _i}}}\right)}}d r}}d \theta} + {\int\limits_{{theta1}}^{{theta2}}{{\int\limits_{{r1}}^{{r2}}{{\left({{{{ F} ^{{\hat{i}}}}} {{{{ e} _{{\hat{i}}}} ^i}} {{V}} {{{ nphi-} _i}}}\right)}}d r}}d \theta}} = {{\frac{1}{16}} {{{\pi}} \cdot {{\left({{8} + {\pi}}\right)}}}}$
 <br>

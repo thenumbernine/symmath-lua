@@ -140,7 +140,7 @@ printbr(kg_in_C)
 printbr([[$kg = $ {=={ 1 / sqrt_Coulomb_constant_over_gravitational_constant_in_kg_per_C }==} $C$. ]])
 --]]
 
-Tensor.coords{{variables={'txyz','5'}}}
+local chart = Tensor.Chart{coords={'txyz','5'}}
 
 
 local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames

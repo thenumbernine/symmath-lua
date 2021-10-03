@@ -6,10 +6,9 @@ require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJ
 
 local xs = {x,y,z}
 local txs = {t,x,y,z}
-Tensor.coords{
-	{variables={t,x,y,z}},
-	{symbols='ijklmn', variables=xs},
-}
+
+local chart = Tensor.Chart{coords=txs}
+local spatialChart = Tensor.Chart{coords=xs, symbols='ijklmn'}
 
 local betaU = Tensor('^i', function(i) return beta('^'..xs[i].name) end)
 printbr(beta'^i':eq(betaU))
@@ -68,7 +67,7 @@ printbr(var'g''^ab':eq(gU))
 local sqrtdetg = alpha * sqrt(gamma)
 --]]
 local lcLLLL = require 'symmath.tensor.LeviCivita'()
-Tensor.coords{{variables={t,x,y,z},metric=g,metricInverse=gU}}
+chart:setMetric(g, gU)
 
 local glcLLLL = (lcLLLL * sqrtdetg)()
 printbr()

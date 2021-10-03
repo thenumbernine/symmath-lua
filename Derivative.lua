@@ -28,13 +28,7 @@ Upon prune() (done by simplify(), implicitly ())
 			- this contains the builtin derivative evaluation for each builtin function:
 
 	- in prune() for TensorRef (i.e. var'x''^I') in the rule 'evalDeriv',
-		- for comma derivative, Variable:applyDiff() is called
-		- NOTICE this is the ONLY place applyDiff is called
-			so TODO maybe call it something like "applyComma" ?
-			or rewrite the :diff() and :totalDiff() operators to use the applyDiff() variable
-			or redo comma derivatives to use operators instead of derivative,
-				and just introduce operators (basically functions, amirite?)
-			also TODO make sure comma derivative is calling :totalDiff()
+		- for comma derivative, Tensor.Chart.tangentSpaceOperator[i]() is called
 
 
 alright, comma derivative represents the partial derivative
@@ -127,7 +121,7 @@ Derivative.rules = {
 		{self = function(prune, expr)
 			local Variable = require 'symmath.Variable'
 			local Constant = require 'symmath.Constant'
-			local TensorRef = require 'symmath.tensor.TensorRef'
+			local TensorRef = require 'symmath.tensor.Ref'
 			if Variable:isa(expr[1]) then
 				local var = expr[1]
 				-- dx/dx = 1
@@ -192,7 +186,7 @@ Derivative.rules = {
 		{other = function(prune, expr)
 			local Constant = require 'symmath.Constant'
 			local Variable = require 'symmath.Variable'
-			local TensorRef = require 'symmath.tensor.TensorRef'
+			local TensorRef = require 'symmath.tensor.Ref'
 			-- apply differentiation
 			-- don't do so if it's a diff of a variable that requests not to
 			if Variable:isa(expr[1]) 
@@ -220,7 +214,7 @@ should you need to specify the TensorRef that it is dependent upon (and do a pat
 or should you just specify the letter, and get rid of anything based on that letter?
 
 also, how should comma derivatives work into this?  
-honestly they should be shorthand for Tensor('_i', function(x) return x:diff(Tensor.coords.variables[i]) end)
+honestly they should be shorthand for Tensor('_i', function(x) return x:diff(chart.coords[i]) end)
 that's a dense expression
 in terms of index expressions though, you would have to reserve a letter for what you want to index to determine your variables
 like reserving 'x' to mean your input dim of 'x1', 'x2', 'x3' (can't use x,y,z because the x's overlap ... you could use bold{x} or you could use X)

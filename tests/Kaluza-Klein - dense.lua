@@ -15,10 +15,8 @@ local coords = {t, x, y, z, w}
 -- w = x^5, or the A^mu vector combined with the phi^2 ...
 local phi = var('\\phi', {t,x,y,z,w})
 
-Tensor.coords{
-	{variables={t,x,y,z}},
-	{variables={t,x,y,z,w}, symbols='abcdef'},
-}
+local chart = Tensor.Chart{coords={t,x,y,z}}
+local chart5 = Tensor.Chart{coords={t,x,y,z,w}, symbols='abcdef'}
 
 -- 4D metric tensor
 -- keeping it 4D at the moment
@@ -31,7 +29,7 @@ local gUU = Tensor('^uv', function(u,v) return var('g^{'..u..v..'}', coords) end
 printbr('4D metric tensor inverse')
 printbr(var'g''^uv':eq(gUU'^uv'()))
 
-Tensor.metric(gLL, gUU)
+chart:setMetric(gLL, gUU)
 
 -- EM potential 4-vector
 printbr'EM potential vector:'
@@ -83,7 +81,7 @@ g5UU['^ww'] = ASq + phi^-2
 --]]
 printbr(var'\\tilde{g}''^ab':eq(g5UU'^ab'))
 
-Tensor.metric(g5LL, g5UU, 'a')	-- TODO think up better arguments for this
+chart5:setMetric(g5LL, g5UU, 'a')	-- TODO think up better arguments for this
 
 printbr'cylindrical constraint:'
 local g5cylinderLL = g5LL'_ab':diff(w):eq(Tensor'_ab')()	-- TODO allow g5LL'_ab,w' or g5LL'_ab,5'

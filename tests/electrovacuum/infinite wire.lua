@@ -18,14 +18,12 @@ local epsilon_0 = 1 / mu_0
 local spatialCoords = {r,phi,z}
 local coords = table{t}:append(spatialCoords)
 
-Tensor.coords{
-	{variables=coords},
-	{symbols='ijklmn', variables=spatialCoords},
-	{symbols='t', variables={t}},
-	{symbols='x', variables={x}},
-	{symbols='y', variables={y}},
-	{symbols='z', variables={z}},
-}
+local chart = Tensor.Chart{coords=coords}
+local spatialChart = Tensor.Chart{coords=spatialCoords, symbols='ijklmn'}
+local chart_t = Tensor.Chart{symbols='t', coords={t}}
+local chart_x = Tensor.Chart{symbols='x', coords={x}}
+local chart_y = Tensor.Chart{symbols='y', coords={y}}
+local chart_z = Tensor.Chart{symbols='z', coords={z}}
 
 local g = Tensor'_ab'
 g['_ab'] = Tensor('_ab', table.unpack(Matrix.diagonal(-1, 1, r^2, 1))) 
@@ -39,8 +37,8 @@ local gamma = Tensor('_ij', {1,0,0}, {0,r^2,0}, {0,0,1})
 local gammaU = Tensor('^ij', table.unpack((Matrix.inverse(gamma))))
 --printbr(var'\\gamma''^ij':eq(gammaU'^ij'()))
 
-Tensor.metric(g, gU)
-Tensor.metric(gamma, gammaU, 'i')
+chart:setMetric(g, gU)
+spatialChart:setMetric(gamma, gammaU)
 
 local sqrt_det_gamma = sqrt(Matrix.determinant(gamma))()
 --printbr(sqrt(var'\\gamma'):eq(sqrt_det_gamma))
@@ -90,8 +88,10 @@ RicciEM = RicciEM
 
 -- clear the metric
 do
-	local basis = Tensor.metric() basis.metric = nil basis.metricInverse = nil
-	local basis = Tensor.metric(nil, nil, 'i') basis.metric = nil basis.metricInverse = nil
+	chart.metric = nil
+	chart.metricInverse = nil
+	spatialChart.metric = nil
+	spatialChart.metricInverse = nil
 end
 
 local Conn = Tensor'^a_bc'

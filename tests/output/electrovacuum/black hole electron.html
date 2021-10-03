@@ -1,74 +1,33 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='UTF-8'>
-        <title>black hole electron</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>black hole electron</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
 ${a} = {\frac{J}{{{M}} {{c}}}}$
 <br>
-${\rho} = {\sqrt{{{r}^{2}} + {{{{a}^{2}}} {{{cos\left(\theta\right)}^{2}}}}}}$
+${rho} = {\sqrt{{{r}^{2}} + {{{{a}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}}}$
 <br>
-${\Delta} = {{{{{r}^{2}} + {{a}^{2}}} + {{{r_{Q}}}^{2}}} - {{{{{2}} {{{r_{s}}}}}} {{r}}}}$
+${Delta} = {{{{r}^{2}} + {{a}^{2}} + {{{r_Q}}^{2}}} - {{{2}} {{{r_s}}} \cdot {{r}}}}$
 <br>
-${{r_{s}}} = {\frac{{{{{2}} {{G}}}} {{M}}}{{c}^{2}}}$
+${{r_s}} = {\frac{{{2}} {{G}} {{M}}}{{c}^{2}}}$
 <br>
-${{r_{Q}}} = {\frac{{{{Q}^{2}}} {{G}}}{{{{{{{4}} \cdot {{\pi}}}} {{{\epsilon_0}}}}} {{{c}^{4}}}}}$
+${{r_Q}} = {\frac{{{{Q}^{2}}} {{G}}}{{{4}} {{\pi}} \cdot {{{\epsilon_0}}} \cdot {{{c}^{4}}}}}$
 <br>
-${{{g}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{-{({{\Delta} - {{{{a}^{2}}} {{{sin\left(\theta\right)}^{2}}}}})}}{{\rho}^{2}} & 0 & 0 & \frac{-{{{a}} {{{sin\left(\theta\right)}^{2}}} {{({{{{a}^{2}} - {\Delta}} + {{r}^{2}}})}}}}{{\rho}^{2}} \\0 & {\frac{1}{\Delta}}{({{\rho}^{2}})} & 0 & 0 \\0 & 0 & {\rho}^{2} & 0 \\\frac{-{{{a}} {{{sin\left(\theta\right)}^{2}}} {{({{{{a}^{2}} - {\Delta}} + {{r}^{2}}})}}}}{{\rho}^{2}} & 0 & 0 & \frac{-{{{{sin\left(\theta\right)}^{2}}} {{({{{{{{\Delta}} \cdot {{{a}^{2}}} {{{sin\left(\theta\right)}^{2}}}} - {{a}^{4}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}}}} - {{r}^{4}}})}}}}{{\rho}^{2}}\end{matrix}\right]}}$
+${{{ g} _t} _t} = {\frac{{-{Delta}} + {{{a}^{2}} - {{{{a}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}}}{{rho}^{2}}}$;
+${{{ g} _t} _{phi}} = {\frac{{{a}} {{\left({{{{Delta} - {{{Delta}} \cdot {{{\cos\left(  theta\right)}^{2}}}}} - {{a}^{2}}} + {{{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} + {{{{{a}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} - {{r}^{2}}}}\right)}}}{{rho}^{2}}}$;
+${{{ g} _r} _r} = {{\frac{1}{Delta}} {{rho}^{2}}}$;
+${{{ g} _{theta}} _{theta}} = {{rho}^{2}}$;
+${{{ g} _{phi}} _t} = {\frac{{{a}} {{\left({{{{Delta} - {{{Delta}} \cdot {{{\cos\left(  theta\right)}^{2}}}}} - {{a}^{2}}} + {{{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} + {{{{{a}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} - {{r}^{2}}}}\right)}}}{{rho}^{2}}}$;
+${{{ g} _{phi}} _{phi}} = {\frac{{-{{{Delta}} \cdot {{{a}^{2}}}}} + {{{2}} {{Delta}} \cdot {{{a}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} + {{{{{2}} {{{a}^{2}}} {{{r}^{2}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}} - {{{Delta}} \cdot {{{a}^{2}}} {{{\cos\left(  theta\right)}^{4}}}}} + {{{a}^{4}} - {{{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}}}} + {{{r}^{4}} - {{{{r}^{4}}} {{{\cos\left(  theta\right)}^{2}}}}}}{{rho}^{2}}}$
 
 <br>
-${{{g}^a}^b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{{{{\rho}^{2}}} {{({{{{{{\Delta}} \cdot {{{a}^{2}}} {{{sin\left(\theta\right)}^{2}}}} - {{a}^{4}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}}}} - {{r}^{4}}})}}}{{{\Delta}} \cdot {{({{{{a}^{4}} - {{{2}} {{{a}^{4}}} {{{sin\left(\theta\right)}^{2}}}}} + {{{{a}^{4}}} {{{sin\left(\theta\right)}^{4}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}}} + {{r}^{4}}})}}} & 0 & 0 & \frac{{{a}} {{{\rho}^{2}}} {{({{{{a}^{2}} - {\Delta}} + {{r}^{2}}})}}}{-{{{\Delta}} \cdot {{({{{{a}^{4}} - {{{2}} {{{a}^{4}}} {{{sin\left(\theta\right)}^{2}}}}} + {{{{a}^{4}}} {{{sin\left(\theta\right)}^{4}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}}} + {{r}^{4}}})}}}} \\0 & \frac{\Delta}{{\rho}^{2}} & 0 & 0 \\0 & 0 & \frac{1}{{\rho}^{2}} & 0 \\\frac{{{a}} {{{\rho}^{2}}} {{({{{{a}^{2}} - {\Delta}} + {{r}^{2}}})}}}{-{{{\Delta}} \cdot {{({{{{a}^{4}} - {{{2}} {{{a}^{4}}} {{{sin\left(\theta\right)}^{2}}}}} + {{{{a}^{4}}} {{{sin\left(\theta\right)}^{4}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}}} + {{r}^{4}}})}}}} & 0 & 0 & \frac{-{{{{\rho}^{2}}} {{({{\Delta} - {{{{a}^{2}}} {{{sin\left(\theta\right)}^{2}}}}})}}}}{{{\Delta}} \cdot {{{sin\left(\theta\right)}^{2}}} {{({{{{{{{2}} {{{a}^{4}}} {{{sin\left(\theta\right)}^{2}}}} - {{a}^{4}}} - {{{{a}^{4}}} {{{sin\left(\theta\right)}^{4}}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{sin\left(\theta\right)}^{2}}}} - {{r}^{4}}}})}}}\end{matrix}\right]}}$
-
-<br>
-gravitational acceleration:
-<br>
-${{accel}^i} = {\overset{i\downarrow}{\left[\begin{matrix}0 \\\frac{{{2}} {{\Delta}} \cdot {{{sin\left(\theta\right)}^{2}}} {{r}} {{({{{r}^{2}} + {{a}^{2}}})}}}{{\rho}^{4}} \\\frac{-{{{sin\left(\theta\right)}} {{cos\left(\theta\right)}} {{({{{{{{{2}} {{\Delta}} \cdot {{{a}^{2}}} {{{sin\left(\theta\right)}^{2}}}} - {{a}^{4}}} - {{a}^{2}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}}}} - {{r}^{4}}})}}}}{{\rho}^{4}} \\0\end{matrix}\right]}}$
-
-<br>
-...at azimuthal plane...
-<br>
-${cos\left(\theta\right)} = {0}$;${sin\left(\theta\right)} = {1}$
-<br>
-${{accel}^i} = {\overset{i\downarrow}{\left[\begin{matrix}0 \\\frac{{{2}} {{\Delta}} \cdot {{r}} {{({{{r}^{2}} + {{a}^{2}}})}}}{{\rho}^{4}} \\0 \\0\end{matrix}\right]}}$
-
-<br>
-...substitute variable definitions...
-<br>
-${{accel}^i} = {\overset{i\downarrow}{\left[\begin{matrix}0 \\\frac{{{{0.012665147955292}} {{{G}^{2}}} {{{J}^{2}}} {{{M}^{2}}} {{{Q}^{4}}}} + {{{{{0.012665147955292}} {{{G}^{2}}} {{{M}^{4}}} {{{Q}^{4}}} {{{c}^{2}}} {{{r}^{2}}}} - {{{8}} {{G}} {{{M}^{5}}} {{{c}^{8}}} {{{r}^{3}}} {{{{\epsilon_0}}^{2}}}}} - {{{8}} {{G}} {{r}} {{{J}^{2}}} {{{M}^{3}}} {{{c}^{6}}} {{{{\epsilon_0}}^{2}}}}} + {{{4}} {{{J}^{2}}} {{{M}^{2}}} {{{c}^{8}}} {{{r}^{2}}} {{{{\epsilon_0}}^{2}}}} + {{{2}} {{{J}^{4}}} {{{c}^{6}}} {{{{\epsilon_0}}^{2}}}} + {{{2}} {{{M}^{4}}} {{{r}^{4}}} {{{c}^{10}}} {{{{\epsilon_0}}^{2}}}}}{{{{c}^{10}}} {{{M}^{4}}} {{{{\epsilon_0}}^{2}}} {{{r}^{3}}}} \\0 \\0\end{matrix}\right]}}$
-
-<br>
-...substitute electron definitions...
-<br>
-${{r_{Q}}} = {\frac{{{{Q}^{2}}} {{G}}}{{{{{{{4}} \cdot {{\pi}}}} {{{\epsilon_0}}}}} {{{c}^{4}}}}}$
-<br>
-${Q} = {{{1.3806308312865\cdot{10^{-36}}}} {{m}}}$
-<br>
-${M} = {{{6.7643079921784\cdot{10^{-58}}}} {{m}}}$
-<br>
-${J} = {{\frac{1}{2}}{({{{2.6121000456877\cdot{10^{-70}}}} {{{m}^{2}}}})}}$
-<br>
-${{accel}^i} = {\overset{i\downarrow}{\left[\begin{matrix}0 \\\frac{{{{5.819279811544\cdot{10^{-280}}}} {{{m}^{4}}}} + {{{{3.1219530017675\cdot{10^{-254}}}} {{{m}^{2}}} {{{r}^{2}}}} - {{{1.1329398560782\cdot{10^{-285}}}} {{m}} {{{r}^{3}}}}} + {{{{4.1871979269283\cdot{10^{-229}}}} {{{r}^{4}}}} - {{{4.223570328212\cdot{10^{-311}}}} {{r}} {{{m}^{3}}}}}}{{{2.0935989634642\cdot{10^{-229}}}} {{{r}^{3}}}} \\0 \\0\end{matrix}\right]}}$
-
-<br>
-...at distance of the classical electron radius...
-<br>
-${{accel}^i} = {\overset{i\downarrow}{\left[\begin{matrix}0 \\{{1.2426975890733\cdot{10^{-07}}}} {{m}} \\0 \\0\end{matrix}\right]}}$
-Looks like there's a factor of m^2 that I've accidentally added...
-<br>
-
-<br>
-electric field around a uniformly charged sphere:
-<br>
-${E} = {\frac{Q}{{{{{{{4}} \cdot {{\pi}}}} {{{\epsilon_0}}}}} {{{r}^{2}}}}}$
-<br>
-...for an electron...
-<br>
-${E} = {\frac{{{1.3806308312865\cdot{10^{-36}}}} {{m}}}{{r}^{2}}}$
-<br>
-...at a distnace of $m_e$...
-<br>
-${E} = {\frac{1.7386575258035\cdot{10^{-07}}}{m}}$
-<br>
+${{{ g} ^t} ^t} = {\frac{{{{{{r}^{4}}} {{{rho}^{2}}}} - {{{{r}^{4}}} {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{rho}^{2}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}} + {{{{{{a}^{4}}} {{{rho}^{2}}}} - {{{{a}^{4}}} {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}} - {{{Delta}} \cdot {{{a}^{2}}} {{{rho}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}} + {{{Delta}} \cdot {{{a}^{2}}} {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}}{{{Delta}} \cdot {{\left({{-{{{2}} {{{a}^{2}}} {{{r}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\sin\left(  theta\right)}^{2}}}} - {{{{a}^{4}}} {{{\sin\left(  theta\right)}^{4}}}}} + {{{{{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{4}}}} - {{a}^{4}}} - {{{2}} {{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}} + {{{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}}} + {{{{2}} {{{a}^{4}}} {{{\sin\left(  theta\right)}^{2}}}} - {{r}^{4}}} + {{{{r}^{4}}} {{{\cos\left(  theta\right)}^{2}}}}}\right)}}}}$;
+${{{ g} ^t} ^{phi}} = {\frac{{{a}} {{\left({{{{{Delta}} \cdot {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} - {{{Delta}} \cdot {{{rho}^{2}}}}} + {{{{{{r}^{2}}} {{{rho}^{2}}}} - {{{{r}^{2}}} {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}} - {{{{a}^{2}}} {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}} + {{{{a}^{2}}} {{{rho}^{2}}}}}\right)}}}{{{Delta}} \cdot {{\left({{-{{{2}} {{{a}^{2}}} {{{r}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\sin\left(  theta\right)}^{2}}}} - {{{{a}^{4}}} {{{\sin\left(  theta\right)}^{4}}}}} + {{{{{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{4}}}} - {{a}^{4}}} - {{{2}} {{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}} + {{{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}}} + {{{{2}} {{{a}^{4}}} {{{\sin\left(  theta\right)}^{2}}}} - {{r}^{4}}} + {{{{r}^{4}}} {{{\cos\left(  theta\right)}^{2}}}}}\right)}}}}$;
+${{{ g} ^r} ^r} = {\frac{Delta}{{rho}^{2}}}$;
+${{{ g} ^{theta}} ^{theta}} = {\frac{1}{{rho}^{2}}}$;
+${{{ g} ^{phi}} ^t} = {\frac{{{a}} {{\left({{{{{Delta}} \cdot {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} - {{{Delta}} \cdot {{{rho}^{2}}}}} + {{{{{{r}^{2}}} {{{rho}^{2}}}} - {{{{r}^{2}}} {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}} - {{{{a}^{2}}} {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}} + {{{{a}^{2}}} {{{rho}^{2}}}}}\right)}}}{{{Delta}} \cdot {{\left({{-{{{2}} {{{a}^{2}}} {{{r}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\sin\left(  theta\right)}^{2}}}} - {{{{a}^{4}}} {{{\sin\left(  theta\right)}^{4}}}}} + {{{{{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{4}}}} - {{a}^{4}}} - {{{2}} {{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}} + {{{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}}} + {{{{2}} {{{a}^{4}}} {{{\sin\left(  theta\right)}^{2}}}} - {{r}^{4}}} + {{{{r}^{4}}} {{{\cos\left(  theta\right)}^{2}}}}}\right)}}}}$;
+${{{ g} ^{phi}} ^{phi}} = {\frac{{-{{{Delta}} \cdot {{{rho}^{2}}}}} + {{{{{a}^{2}}} {{{rho}^{2}}}} - {{{{a}^{2}}} {{{rho}^{2}}} {{{\cos\left(  theta\right)}^{2}}}}}}{{{Delta}} \cdot {{\left({{-{{{2}} {{{a}^{2}}} {{{r}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}}} - {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}} + {{{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\sin\left(  theta\right)}^{2}}}} - {{{{a}^{4}}} {{{\sin\left(  theta\right)}^{4}}}}} + {{{{{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{4}}}} - {{a}^{4}}} - {{{2}} {{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}} {{{\sin\left(  theta\right)}^{2}}}}} + {{{{a}^{4}}} {{{\cos\left(  theta\right)}^{2}}}} + {{{{2}} {{{a}^{4}}} {{{\sin\left(  theta\right)}^{2}}}} - {{r}^{4}}} + {{{{r}^{4}}} {{{\cos\left(  theta\right)}^{2}}}}}\right)}}}}$

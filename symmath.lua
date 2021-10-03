@@ -30,9 +30,6 @@ symmath.polyCoeffs = require 'symmath.polyCoeffs'
 symmath.polydiv = require 'symmath.polydiv'
 symmath.taylor = require 'symmath.taylor'
 
--- TODO finishme
-symmath.dual = require 'symmath.tensor.dual'
-
 symmath.multiplicity = require 'symmath.multiplicity'
 
 -- replace variables with names as keys in evalmap with constants of the associated values
@@ -252,9 +249,6 @@ symmath.Vector = require 'symmath.Vector'
 symmath.Matrix = require 'symmath.Matrix'
 symmath.Array = require 'symmath.Array'
 symmath.Tensor = require 'symmath.Tensor'
--- hmm, not sure about namespace and subdirs ... this doesn't fit with Matrix
-symmath.TensorIndex = require 'symmath.tensor.TensorIndex'
-symmath.TensorRef = require 'symmath.tensor.TensorRef'
 
 -- change the default as you see fit
 symmath.tostring = symmath.export.MultiLine

@@ -12,7 +12,7 @@ local Phi = var('\\Phi', {r})
 local Lambda = var('\\Lambda', {r})
 
 local coords = {t,r,theta,phi}
-Tensor.coords{{variables = coords}}
+local chart = Tensor.Chart{coords=coords}
 
 -- schwarzschild metric in cartesian coordinates
 local g = Tensor('_uv', function(u,v) 

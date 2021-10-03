@@ -140,8 +140,7 @@ printbr(kg_in_C)
 printbr([[$kg = $ {=={ 1 / sqrt_Coulomb_constant_over_gravitational_constant_in_kg_per_C }==} $C$. ]])
 --]]
 
-Tensor.coords{{variables={'txyz','5'}}}
-
+local chart = Tensor.Chart{coords={'txyz','5'}}
 
 local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames
 	-- :sort(function(a,b) return a < b end)
@@ -325,11 +324,11 @@ local dg5_def = Tensor('_cab', function(c,a,b)
 		return dg5_2x2_def[a][b]:reindex{c=' \\gamma'}
 	elseif c == 2 then
 		return dg5_2x2_def[a][b]:reindex{c=5}():map(function(x)
-			if TensorRef:isa(x) and x:hasDerivIndex(5) then return 0 end
+			if Tensor.Ref:isa(x) and x:hasDerivIndex(5) then return 0 end
 		end)()
 	end
 end):map(function(x)
-	if TensorRef:isa(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
+	if Tensor.Ref:isa(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
 end)()
 printbr(g5'_ab,c':eq(dg5_def))
 printbr()
@@ -709,7 +708,7 @@ local dconn5_2x2x2_def = Tensor('^a_bc', function(a,b,c)
 		x = x:replace(phi_K'_,d', 0)()
 	end
 	x = x:map(function(x)
-		if TensorRef:isa(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
+		if Tensor.Ref:isa(x) and x[1] == A and x[2].symbol == 5 and x[3] and x[3].derivative then return 0 end
 	end)
 	return x:simplifyAddMulDiv()
 end)
@@ -722,7 +721,7 @@ local dconn5U_def = Tensor('^a_bcd', function(a,b,c,d)
 		return dconn5_2x2x2_def[a][b][c]:reindex{d=5}
 	end
 end):map(function(x)
-	if TensorRef:isa(x) and x:hasDerivIndex(5) then return 0 end
+	if Tensor.Ref:isa(x) and x:hasDerivIndex(5) then return 0 end
 end)()
 dconn5U_def = dconn5U_def:simplifyAddMulDiv()
 printbr(conn5'^a_bc,d':eq(dconn5U_def))
@@ -1131,7 +1130,11 @@ end
 local T_EM = var'T_{EM}'
 local tmp = T_EM' _\\alpha _\\beta':eq(-frac(1, mu_0) * (F' _\\alpha ^\\mu' * F' _\\mu _\\beta' - frac(1,4) * g' _\\alpha _\\beta' * F' _\\mu ^\\nu' * F' _\\nu ^\\mu'))
 printbr('Let ', tmp)
-local so = tmp:solve(F' _\\alpha ^\\mu' * F' _\\mu _\\beta')
+
+--local so = tmp:solve(F' _\\alpha ^\\mu' * F' _\\mu _\\beta')
+-- TODO hmm, not working ... gotta do it manually for now ...
+local so = (tmp:switch() * -mu_0 + frac(1,4) * g' _\\alpha _\\beta' * F' _\\mu ^\\nu' * F' _\\nu ^\\mu')()
+
 printbr('So', so)
 -- T_EM_ab = 1/mu0 (F_au F_b^u - 1/4 g_ab F_uv F^uv)
 -- so F_ae F_b^e = mu0 T_EM_ab + 1/4 g_ab F_uv F^uv 

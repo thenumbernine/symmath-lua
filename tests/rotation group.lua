@@ -312,20 +312,21 @@ K_x P | K_y P | K_z P
 	--]]
 	local em = emvsoln:transpose()
 
-	local coords = range(3):map(function(i) 
-		local ei = var('e_'..embedded[i].name)	-- this is typically e_coords[i], not embedded.  another reason I think this problem is done backwards.
-		function ei:applyDiff(x)
+	local coords = range(3):mapi(function(i) 
+		return var('e_'..embedded[i].name)	-- this is typically e_coords[i], not embedded.  another reason I think this problem is done backwards.
+	end)
+	local tangentSpaceOperators = range(3):mapi(function(i)
+		return function(x)
 			return range(3):map(function(j) 
 				return em[i][j] * x:diff(baseCoords[j])
 			end):sum()
 		end
-		return ei
+
 	end)
 
-	Tensor.coords{
-		{variables=coords},
-		{variables=embedded, symbols='IJKLMN', metric=flatMetric}
-	}
+	local manifold = Tensor.Manifold()
+	local chart = manifold:Chart{coords=coords, tangentSpaceOperators=tangentSpaceOperators}
+	local embeddedChart = manifold:Chart{coords=embedded, symbols='IJKLMN', metric=function() return flatMetric end}
 	
 	printbr('coordinates:', table.unpack(coords))
 	printbr('base coords:', table.unpack(baseCoords))
@@ -379,7 +380,7 @@ K_x P | K_y P | K_z P
 	printbr(var'g''^uv':eq(var'e''^u_I' * var'e''^v_J' * var'\\eta''^IJ'))
 	printbr(var'g''^uv':eq(gU'^uv'()))
 
-	Tensor.metric(g, gU)
+	chart:setMetric(g, gU)
 
 	--[[
 	e_u = e_u^I d/dx^I

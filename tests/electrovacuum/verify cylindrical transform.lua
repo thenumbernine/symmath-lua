@@ -6,19 +6,19 @@ local t,x,y,z = vars('t', 'x', 'y', 'z')
 local r = var('r', {x,y})
 local phi = var('\\phi', {x,y})
 
-Tensor.coords{
-	{variables={t,r,phi,z}},
-	{symbols='ABCDEF', variables={t,x,y,z}},
--- hmm something is going wrong when I include these
---	{symbols='IJKLMN', variables={x,y,z}},
---	{symbols='ijklmn', variables={r,phi,z}},
-	{symbols='t', variables={t}},
-	{symbols='x', variables={x}},
-	{symbols='y', variables={y}},
-	{symbols='r', variables={r}},
-	{symbols='p', variables={phi}},
-	{symbols='z', variables={z}},
-}
+local chart_t_r_phi_z = Tensor.Chart{coords={t,r,phi,z}}
+local chart_t_x_y_z = Tensor.Chart{symbols='ABCDEF', coords={t,x,y,z}}
+-- does this work yet?
+--local chart_x_y_z = Tensor.Chart{symbols='IJKLMN', coords={x,y,z}}
+--local chart_r_phi_z = Tensor.Chart{symbols='ijklmn', coords={r,phi,z}}
+local chart_t = Tensor.Chart{symbols='t', coords={t}}
+local chart_x = Tensor.Chart{symbols='x', coords={x}}
+local chart_y = Tensor.Chart{symbols='y', coords={y}}
+local chart_z = Tensor.Chart{symbols='z', coords={z}}
+local chart_r = Tensor.Chart{symbols='r', coords={r}}
+local chart_phi = Tensor.Chart{symbols='p', coords={phi}}
+local chart_z = Tensor.Chart{symbols='z', coords={z}}
+
 
 local u = Tensor('^A', t, r * cos(phi), r * sin(phi), z)
 printbr'coordinate chart'

@@ -8,9 +8,7 @@ op = symmath.op	-- override ext.op
 local x,y = vars('x','y')
 local coords = table{x,y}
 
-Tensor.coords{
-	{variables=coords},
-}
+local chart = Tensor.Chart{coords=coords}
 
 io.stderr:write'g_ab...\n'
 local g = Tensor('_uv', function(u,v)
@@ -29,7 +27,7 @@ local gU = Tensor('^uv', table.unpack((Matrix.inverse(g))))
 gU = gU:subst(det_g_def:switch())
 gU:print'g' printbr()
 
-Tensor.metric(g, gU)
+chart:setMetric(g, gU)
 
 io.stderr:write'Conn_abc...\n'
 local ConnL = Tensor'_abc'

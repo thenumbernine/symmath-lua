@@ -194,14 +194,25 @@ end
 MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 	[require 'symmath.Function'] = function(self, expr)
 		local name = expr:nameForExporter(self)
+		--[[ single-par
 		local res = {name..'('}
 		res = self:combine(res, self:apply(expr[1]))
+		--]]
+		-- [[ tall par
+		local res = self:apply(expr[1])
+		--]]
 		local sep = {', '}
 		for i=2,#expr do
 			res = self:combine(res, sep)
 			res = self:combine(res, self:apply(expr[i]))
 		end
+		--[[ single-par
 		res = self:combine(res, {')'})
+		--]]
+		-- [[ tall par
+		wrap(res, nil, par)
+		--]]
+		res = self:combine({name}, res)
 		return res
 	end,
 	[require 'symmath.abs'] = function(self, expr)
@@ -421,13 +432,13 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		end
 		return s	
 	end,
-	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+	[require 'symmath.tensor.Index'] = function(self, expr)
 		return {expr:__tostring()}
 	end,
-	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+	[require 'symmath.tensor.Ref'] = function(self, expr)
 		symmath = symmath or require 'symmath'
 		local Array = symmath.Array
-		local TensorRef = require 'symmath.tensor.TensorRef'
+		local TensorRef = require 'symmath.tensor.Ref'
 		local Variable = symmath.Variable
 		
 		local t = expr[1]

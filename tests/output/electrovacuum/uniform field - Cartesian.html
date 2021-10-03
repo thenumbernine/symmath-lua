@@ -1,50 +1,50 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='UTF-8'>
-        <title>uniform field - Cartesian</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>uniform field - Cartesian</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
-${{{g}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}-{a} & 0 & 0 & 0 \\0 & b & 0 & 0 \\0 & 0 & c & 0 \\0 & 0 & 0 & c\end{matrix}\right]}}$
-${{{g}^a}^b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{1}{-{a}} & 0 & 0 & 0 \\0 & \frac{1}{b} & 0 & 0 \\0 & 0 & \frac{1}{c} & 0 \\0 & 0 & 0 & \frac{1}{c}\end{matrix}\right]}}$
+${{{ g} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  -{a} &  0 &  0 &  0 \\  0 &  b &  0 &  0 \\  0 &  0 &  c &  0 \\  0 &  0 &  0 &  c\end{matrix} \right]}}$
+${{{ g} ^a} ^b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  -{\frac{1}{a}} &  0 &  0 &  0 \\  0 &  \frac{1}{b} &  0 &  0 \\  0 &  0 &  \frac{1}{c} &  0 \\  0 &  0 &  0 &  \frac{1}{c}\end{matrix} \right]}}$
 
 <br>
 conn from manual metric:
-${{{{\Gamma}^a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix}\left[\begin{matrix}0 & \frac{\partial_{{x}}(a)}{{{2}} {{a}}} & 0 & 0 \\\frac{\partial_{{x}}(a)}{{{2}} {{a}}} & 0 & 0 & 0 \\0 & 0 & 0 & 0 \\0 & 0 & 0 & 0\end{matrix}\right] \\\left[\begin{matrix}\frac{\partial_{{x}}(a)}{{{2}} {{b}}} & 0 & 0 & 0 \\0 & 0 & 0 & 0 \\0 & 0 & \frac{-{\partial_{{x}}(c)}}{{{2}} {{b}}} & 0 \\0 & 0 & 0 & \frac{-{\partial_{{x}}(c)}}{{{2}} {{b}}}\end{matrix}\right] \\\left[\begin{matrix}0 & 0 & 0 & 0 \\0 & 0 & \frac{\partial_{{x}}(c)}{{{2}} {{c}}} & 0 \\0 & \frac{\partial_{{x}}(c)}{{{2}} {{c}}} & 0 & 0 \\0 & 0 & 0 & 0\end{matrix}\right] \\\left[\begin{matrix}0 & 0 & 0 & 0 \\0 & 0 & 0 & \frac{\partial_{{x}}(c)}{{{2}} {{c}}} \\0 & 0 & 0 & 0 \\0 & \frac{\partial_{{x}}(c)}{{{2}} {{c}}} & 0 & 0\end{matrix}\right]\end{matrix}\right]}}$
+${{{{ \Gamma} ^a} _b} _c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  \frac{\partial_ {{x}}\left( a\right)}{{{2}} {{a}}} &  0 &  0 \\  \frac{\partial_ {{x}}\left( a\right)}{{{2}} {{a}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  \frac{\partial_ {{x}}\left( a\right)}{{{2}} {{b}}} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  -{\frac{\partial_ {{x}}\left( c\right)}{{{2}} {{b}}}} &  0 \\  0 &  0 &  0 &  -{\frac{\partial_ {{x}}\left( c\right)}{{{2}} {{b}}}}\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{\partial_ {{x}}\left( c\right)}{{{2}} {{c}}} &  0 \\  0 &  \frac{\partial_ {{x}}\left( c\right)}{{{2}} {{c}}} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  \frac{\partial_ {{x}}\left( c\right)}{{{2}} {{c}}} \\  0 &  0 &  0 &  0 \\  0 &  \frac{\partial_ {{x}}\left( c\right)}{{{2}} {{c}}} &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 vs
 manual conn:
-${{{{\Gamma}^a}_b}_c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[\begin{matrix}\overset{b\downarrow c\rightarrow}{\left[\begin{matrix}0 & E & 0 & 0 \\E & 0 & 0 & 0 \\0 & 0 & 0 & 0 \\0 & 0 & 0 & 0\end{matrix}\right]} \\\overset{b\downarrow c\rightarrow}{\left[\begin{matrix}-{E} & 0 & 0 & 0 \\0 & 0 & 0 & 0 \\0 & 0 & E & 0 \\0 & 0 & 0 & E\end{matrix}\right]} \\\overset{b\downarrow c\rightarrow}{\left[\begin{matrix}0 & 0 & 0 & 0 \\0 & 0 & 0 & 0 \\0 & 0 & 0 & 0 \\0 & 0 & 0 & 0\end{matrix}\right]} \\\overset{b\downarrow c\rightarrow}{\left[\begin{matrix}0 & 0 & 0 & 0 \\0 & 0 & 0 & 0 \\0 & 0 & 0 & 0 \\0 & 0 & 0 & 0\end{matrix}\right]}\end{matrix}\right]}}$
+${{{{ \Gamma} ^a} _b} _c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  E &  0 &  0 \\  E &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  -{E} &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  E &  0 \\  0 &  0 &  0 &  E\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 
 <br>
 Ricci from manual metric
 <br>
-${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{{{{2}} {{a}} {{\partial_{{x}}(a)}} {{\partial_{{x}}(c)}}} + {{{{2}} {{a}} {{c}} {{\partial_{{{x}}{{x}}}(a)}}} - {{{c}} {{{({\partial_{{x}}(a)})}^{2}}}}}}{{{4}} {{c}} {{a}} {{b}}} & 0 & 0 & 0 \\0 & \frac{{{{{2}} {{{a}^{2}}} {{{({\partial_{{x}}(c)})}^{2}}}} - {{{2}} {{a}} {{{c}^{2}}} {{\partial_{{{x}}{{x}}}(a)}}}} + {{{{{c}^{2}}} {{{({\partial_{{x}}(a)})}^{2}}}} - {{{4}} {{c}} {{{a}^{2}}} {{\partial_{{{x}}{{x}}}(c)}}}}}{{{4}} {{{c}^{2}}} {{{a}^{2}}}} & 0 & 0 \\0 & 0 & \frac{-{({{{{\partial_{{x}}(a)}} {{\partial_{{x}}(c)}}} + {{{2}} {{a}} {{\partial_{{{x}}{{x}}}(c)}}}})}}{{{4}} {{a}} {{b}}} & 0 \\0 & 0 & 0 & \frac{-{({{{{\partial_{{x}}(a)}} {{\partial_{{x}}(c)}}} + {{{2}} {{a}} {{\partial_{{{x}}{{x}}}(c)}}}})}}{{{4}} {{a}} {{b}}}\end{matrix}\right]}}$
+${{{ R} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  \frac{{{{{2}} {{a}} {{c}} {{\partial_{{{x}}{{x}}}\left( a\right)}}} - {{{c}} {{{\partial_ {{x}}\left( a\right)}^{2}}}}} + {{{2}} {{a}} {{\partial_ {{x}}\left( a\right)}} {{\partial_ {{x}}\left( c\right)}}}}{{{4}} {{a}} {{b}} {{c}}} &  0 &  0 &  0 \\  0 &  \frac{{{{{{c}^{2}}} {{{\partial_ {{x}}\left( a\right)}^{2}}}} - {{{2}} {{a}} {{{c}^{2}}} {{\partial_{{{x}}{{x}}}\left( a\right)}}}} + {{{{2}} {{{a}^{2}}} {{{\partial_ {{x}}\left( c\right)}^{2}}}} - {{{4}} {{c}} {{{a}^{2}}} {{\partial_{{{x}}{{x}}}\left( c\right)}}}}}{{{4}} {{{a}^{2}}} {{{c}^{2}}}} &  0 &  0 \\  0 &  0 &  -{\frac{{{{\partial_ {{x}}\left( c\right)}} {{\partial_ {{x}}\left( a\right)}}} + {{{2}} {{a}} {{\partial_{{{x}}{{x}}}\left( c\right)}}}}{{{4}} {{a}} {{b}}}} &  0 \\  0 &  0 &  0 &  -{\frac{{{{\partial_ {{x}}\left( c\right)}} {{\partial_ {{x}}\left( a\right)}}} + {{{2}} {{a}} {{\partial_{{{x}}{{x}}}\left( c\right)}}}}{{{4}} {{a}} {{b}}}}\end{matrix} \right]}}$
 
 <br>
 vs
 Ricci from manual conn
 <br>
-${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}{E}^{2} & 0 & 0 & 0 \\0 & -{{E}^{2}} & 0 & 0 \\0 & 0 & {E}^{2} & 0 \\0 & 0 & 0 & {E}^{2}\end{matrix}\right]}}$
+${{{ R} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {E}^{2} &  0 &  0 &  0 \\  0 &  -{{E}^{2}} &  0 &  0 \\  0 &  0 &  {E}^{2} &  0 \\  0 &  0 &  0 &  {E}^{2}\end{matrix} \right]}}$
 
 <br>
 vs desired Ricci
 <br>
-${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}{E}^{2} & 0 & 0 & 0 \\0 & -{{E}^{2}} & 0 & 0 \\0 & 0 & {E}^{2} & 0 \\0 & 0 & 0 & {E}^{2}\end{matrix}\right]}}$
+${{{ R} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {E}^{2} &  0 &  0 &  0 \\  0 &  -{{E}^{2}} &  0 &  0 \\  0 &  0 &  {E}^{2} &  0 \\  0 &  0 &  0 &  {E}^{2}\end{matrix} \right]}}$
 
 <br>
 manual metric Gaussian -- equal to zero according to EM stress-energy trace:
 <br>
-${{G} = {\frac{{{{{{2}} {{{a}^{2}}} {{{({\partial_{{x}}(c)})}^{2}}}} - {{{4}} {{a}} {{{c}^{2}}} {{\partial_{{{x}}{{x}}}(a)}}}} - {{{4}} {{a}} {{c}} {{\partial_{{x}}(a)}} {{\partial_{{x}}(c)}}}} + {{{{2}} {{{c}^{2}}} {{{({\partial_{{x}}(a)})}^{2}}}} - {{{8}} {{c}} {{{a}^{2}}} {{\partial_{{{x}}{{x}}}(c)}}}}}{{{4}} {{{c}^{2}}} {{{a}^{2}}} {{b}}}}} = {0}$
+${{G} = {\frac{{{{{a}^{2}}} {{{\partial_ {{x}}\left( c\right)}^{2}}}} + {{{{{{{c}^{2}}} {{{\partial_ {{x}}\left( a\right)}^{2}}}} - {{{2}} {{a}} {{{c}^{2}}} {{\partial_{{{x}}{{x}}}\left( a\right)}}}} - {{{2}} {{a}} {{c}} {{\partial_ {{x}}\left( a\right)}} {{\partial_ {{x}}\left( c\right)}}}} - {{{4}} {{c}} {{{a}^{2}}} {{\partial_{{{x}}{{x}}}\left( c\right)}}}}}{{{2}} {{b}} {{{a}^{2}}} {{{c}^{2}}}}}} = {0}$
 <br>
-${{{{{{2}} {{{a}^{2}}} {{{({\partial_{{x}}(c)})}^{2}}}} - {{{4}} {{a}} {{{c}^{2}}} {{\partial_{{{x}}{{x}}}(a)}}}} - {{{4}} {{a}} {{c}} {{\partial_{{x}}(a)}} {{\partial_{{x}}(c)}}}} + {{{{2}} {{{c}^{2}}} {{{({\partial_{{x}}(a)})}^{2}}}} - {{{8}} {{c}} {{{a}^{2}}} {{\partial_{{{x}}{{x}}}(c)}}}}} = {0}$
+${{{{{a}^{2}}} {{{\partial_ {{x}}\left( c\right)}^{2}}}} + {{{{{{{c}^{2}}} {{{\partial_ {{x}}\left( a\right)}^{2}}}} - {{{2}} {{a}} {{{c}^{2}}} {{\partial_{{{x}}{{x}}}\left( a\right)}}}} - {{{2}} {{a}} {{c}} {{\partial_ {{x}}\left( a\right)}} {{\partial_ {{x}}\left( c\right)}}}} - {{{4}} {{c}} {{{a}^{2}}} {{\partial_{{{x}}{{x}}}\left( c\right)}}}}} = {0}$
 <br>
 
 <br>
-${{{{{R}^a}_b}_c}_d} = {{{{{{{{{\Gamma}^a}_b}_d}_{,c}} - {{{{{\Gamma}^a}_b}_c}_{,d}}} + {{{{{{\Gamma}^a}_e}_c}} {{{{{\Gamma}^e}_b}_d}}}} - {{{{{{\Gamma}^a}_e}_d}} {{{{{\Gamma}^e}_b}_c}}}} - {{{{{{\Gamma}^a}_b}_e}} {{({{{{{\Gamma}^e}_d}_c} - {{{{\Gamma}^e}_c}_d}})}}}}$
+${{{{{ R} ^a} _b} _c} _d} = {{{{{{{{{ \Gamma} ^a} _b} _d} _{,c}} - {{{{{ \Gamma} ^a} _b} _c} _{,d}}} + {{{{{{ \Gamma} ^a} _e} _c}} {{{{{ \Gamma} ^e} _b} _d}}}} - {{{{{{ \Gamma} ^a} _e} _d}} {{{{{ \Gamma} ^e} _b} _c}}}} - {{{{{{ \Gamma} ^a} _b} _e}} {{\left({{{{{ \Gamma} ^e} _d} _c} - {{{{ \Gamma} ^e} _c} _d}}\right)}}}}$
 <br>
-${{{R}_a}_b} = {{{{{{{{{\Gamma}^c}_a}_b}_{,c}} - {{{{{\Gamma}^c}_a}_c}_{,b}}} + {{{{{{\Gamma}^c}_d}_c}} {{{{{\Gamma}^d}_a}_b}}}} - {{{{{{\Gamma}^c}_d}_b}} {{{{{\Gamma}^d}_a}_c}}}} - {{{{{{\Gamma}^c}_a}_d}} {{({{{{{\Gamma}^d}_b}_c} - {{{{\Gamma}^d}_c}_b}})}}}}$
+${{{ R} _a} _b} = {{{{{{{{{ \Gamma} ^c} _a} _b} _{,c}} - {{{{{ \Gamma} ^c} _a} _c} _{,b}}} + {{{{{{ \Gamma} ^c} _d} _c}} {{{{{ \Gamma} ^d} _a} _b}}}} - {{{{{{ \Gamma} ^c} _d} _b}} {{{{{ \Gamma} ^d} _a} _c}}}} - {{{{{{ \Gamma} ^c} _a} _d}} {{\left({{{{{ \Gamma} ^d} _b} _c} - {{{{ \Gamma} ^d} _c} _b}}\right)}}}}$
 <br>
  
 Gravitation acting on an object at rest is given as ${\Gamma^j}_{tt}$.
@@ -54,7 +54,7 @@ for the connections that give rise to this stress-energy,
 gravitation is ${\Gamma^x}_{tt} = -E$.
 
 <br>
-Applying	${{\frac{3}{2}}} {{V}}$	between conductors	${{0.01}} {{m}}$	apart produces a uniform electric field of	${E} = {{{150}} {{V}} {{\frac{1}{m}}}}$	.
+Applying	${{\frac{3}{2}}} {{V}}$	between conductors	${{0.01}} {{m}}$	apart produces a uniform electric field of	${E} = {{{7.677747990993\cdot{10^{17}}}} \cdot {{\frac{1}{5.118498660662\cdot{10^{15}}}}} {{V}} {{\frac{1}{m}}}}$	.
 <br>
-converting to meters gives	${{E} = {{{1.4381925858737\cdot{10^{-25}}}} \cdot {{\frac{1}{m}}}}} = {{{1.2925830345749\cdot{10^{-08}}}} {{m}} {{\frac{1}{{s}^{2}}}}}$
+converting to meters gives	${{E} = {¿}} = {¿}$
 <br>

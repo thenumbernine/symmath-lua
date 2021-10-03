@@ -6,7 +6,7 @@
 #!/usr/bin/env lua
 require 'ext'
 require 'symmath'.setup{implicitVars=true, fixVariableNames=true}
-Tensor.coords{{variables={r,theta,phi}}}
+local chart = Tensor.Chart{coords={r,theta,phi}}
 u = Tensor('^I', r*sin(theta)*cos(phi), r*sin(theta)*sin(phi), r*cos(theta))
 print('u^I:\n'..u)
 e = u'^I_,a'():permute'_a^I'
@@ -15,14 +15,14 @@ delta = Tensor('_IJ', table.unpack(Matrix.identity(3)))
 print('delta_IJ:\n'..delta)
 g = (e'_a^I' * e'_b^J' * delta'_IJ')()
 print('g_ab:\n'..g)
-Tensor.metric(g)
-dg = g'_ab,c'():permute'_abc'
+chart:setMetric(g)
+dg = g'_ab,c'():permute'_cab'
 print('g_ab,c:\n'..dg)
 GammaL = ((g'_ab,c' + g'_ac,b' - g'_bc,a')/2)():permute'_abc'
 print('Gamma_abc:\n'..GammaL)
 Gamma = GammaL'^a_bc'()
 print('Gamma^a_bc:\n'..Gamma)
-dGamma = Gamma'^a_bc,d'():permute'^a_bcd'
+dGamma = Gamma'^a_bc,d'():permute'_d^a_bc'
 print('Gamma^a_bc,d:\n'..dGamma)
 Riemann = (Gamma'^a_db,c' - Gamma'^a_cb,d' + Gamma'^a_ce' * Gamma'^e_db' - Gamma'^a_de' * Gamma'^e_cb')():permute'^a_bcd'
 print('Riemann^a_bcd:\n'..Riemann)
@@ -33,21 +33,23 @@ print('Riemann^a_bcd:\n'..Riemann)
 
 ```
 u^I:
-       ^I↓       
-┌r sin(θ) cos(φ)┐
-│               │
-│r sin(θ) sin(φ)│
-│               │
-└   r cos(θ)    ┘
+         ^I↓         
+┌                   ┐
+│r * sin(θ) * cos(φ)│
+│                   │
+│r * sin(θ) * sin(φ)│
+│                   │
+│     r * cos(θ)    │
+└                   ┘
 e_a^I:
-                      _a↓^I→                      
-┌                                                ┐
-│   cos(φ) sin(θ)     sin(φ) sin(θ)      cos(θ)  │
-│                                                │
-│  r cos(θ) cos(φ)   r cos(θ) sin(φ)   - r sin(θ)│
-│                                                │
-│ - r sin(φ) sin(θ)  r sin(θ) cos(φ)       0     │
-└                                                ┘
+                           _a↓^I→                           
+┌                                                          ┐
+│    cos(φ) * sin(θ)       sin(φ) * sin(θ)        cos(θ)   │
+│                                                          │
+│  r * cos(θ) * cos(φ)   r * cos(θ) * sin(φ)   - r * sin(θ)│
+│                                                          │
+│ - r * sin(φ) * sin(θ)  r * sin(θ) * cos(φ)        0      │
+└                                                          ┘
 delta_IJ:
  _I↓_J→  
 ┌       ┐
@@ -58,148 +60,167 @@ delta_IJ:
 │0  0  1│
 └       ┘
 g_ab:
-      _a↓_b→       
-┌                 ┐
-│1   0       0    │
-│                 │
-│    2            │
-│0  r        0    │
-│                 │
-│        2       2│
-│0   0  r  sin(θ) │
-└                 ┘
+                 _a↓_b→                  
+┌                                       ┐
+│1   0                  0               │
+│                                       │
+│    2                                  │
+│0  r                   0               │
+│                                       │
+│        2                              │
+│0   0  r  * (1 + cos(θ)) * (1 - cos(θ))│
+└                                       ┘
 g_ab,c:
-             _a↓[_b↓_c→]              
-┌             ┌       ┐              ┐
-│             │0  0  0│              │
-│             │       │              │
-│             │0  0  0│              │
-│             │       │              │
-│             │0  0  0│              │
-│             └       ┘              │
-│                                    │
-│            ┌         ┐             │
-│            │ 0   0  0│             │
-│            │         │             │
-│            │2 r  0  0│             │
-│            │         │             │
-│            │ 0   0  0│             │
-│            └         ┘             │
-│                                    │
-│┌                                  ┐│
-││     0                0          0││
-││                                  ││
-││     0                0          0││
-││                                  ││
-││          2     2                 ││
-││2 r sin(θ)   2 r  cos(θ) sin(θ)  0││
-└└                                  ┘┘
+           _c↓[_a↓_b→]            
+┌                                ┐
+│             _a↓_b→             │
+│   ┌                         ┐  │
+│   │0    0           0       │  │
+│   │                         │  │
+│   │0  2 * r         0       │  │
+│   │                         │  │
+│   │                        2│  │
+│   │0    0    2 * r * sin(θ) │  │
+│   └                         ┘  │
+│                                │
+│             _a↓_b→             │
+│┌                              ┐│
+││0  0              0           ││
+││                              ││
+││0  0              0           ││
+││                              ││
+││           2                  ││
+││0  0  2 * r  * sin(θ) * cos(θ)││
+│└                              ┘│
+│                                │
+│             _a↓_b→             │
+│            ┌       ┐           │
+│            │0  0  0│           │
+│            │       │           │
+│            │0  0  0│           │
+│            │       │           │
+│            │0  0  0│           │
+│            └       ┘           │
+└                                ┘
 Gamma_abc:
-                   _a↓[_b↓_c→]                   
-┌             ┌                   ┐             ┐
-│             │0   0        0     │             │
-│             │                   │             │
-│             │0  -r        0     │             │
-│             │                   │             │
-│             │                  2│             │
-│             │0   0   - r sin(θ) │             │
-│             └                   ┘             │
-│                                               │
-│          ┌                         ┐          │
-│          │0  r           0         │          │
-│          │                         │          │
-│          │r  0           0         │          │
-│          │                         │          │
-│          │          2              │          │
-│          │0  0   - r  sin(θ) cos(θ)│          │
-│          └                         ┘          │
-│                                               │
-│┌                                             ┐│
-││                                         2   ││
-││    0              0             r sin(θ)    ││
-││                                             ││
-││                              2              ││
-││    0              0         r  sin(θ) cos(θ)││
-││                                             ││
-││        2   2                                ││
-││r sin(θ)   r  sin(θ) cos(θ)          0       ││
-└└                                             ┘┘
+                        _a↓[_b↓_c→]                        
+┌                                                         ┐
+│                         _b↓_c→                          │
+│                 ┌                     ┐                 │
+│                 │0   0         0      │                 │
+│                 │                     │                 │
+│                 │0  -r         0      │                 │
+│                 │                     │                 │
+│                 │                    2│                 │
+│                 │0   0   - r * sin(θ) │                 │
+│                 └                     ┘                 │
+│                                                         │
+│                         _b↓_c→                          │
+│             ┌                             ┐             │
+│             │0  r             0           │             │
+│             │                             │             │
+│             │r  0             0           │             │
+│             │                             │             │
+│             │          2                  │             │
+│             │0  0   - r  * sin(θ) * cos(θ)│             │
+│             └                             ┘             │
+│                                                         │
+│                         _b↓_c→                          │
+│┌                                                       ┐│
+││                                                  2    ││
+││     0                 0                r * sin(θ)     ││
+││                                                       ││
+││                                    2                  ││
+││     0                 0           r  * sin(θ) * cos(θ)││
+││                                                       ││
+││          2   2                                        ││
+││r * sin(θ)   r  * sin(θ) * cos(θ)            0         ││
+│└                                                       ┘│
+└                                                         ┘
 Gamma^a_bc:
-         ^a↓[_b↓_c→]          
-┌   ┌                   ┐    ┐
-│   │0   0        0     │    │
-│   │                   │    │
-│   │0  -r        0     │    │
-│   │                   │    │
-│   │                  2│    │
-│   │0   0   - r sin(θ) │    │
-│   └                   ┘    │
-│                            │
-│┌                          ┐│
-││      1                   ││
-││ 0   ╶─╴          0       ││
-││      r                   ││
-││                          ││
-││ 1                        ││
-││╶─╴   0           0       ││
-││ r                        ││
-││                          ││
-││ 0    0    - sin(θ) cos(θ)││
-│└                          ┘│
-│                            │
-│ ┌                       ┐  │
-│ │                   1   │  │
-│ │ 0       0        ╶─╴  │  │
-│ │                   r   │  │
-│ │                       │  │
-│ │                cos(θ) │  │
-│ │ 0       0     ╶──────╴│  │
-│ │                sin(θ) │  │
-│ │                       │  │
-│ │ 1    cos(θ)           │  │
-│ │╶─╴  ╶──────╴      0   │  │
-│ │ r    sin(θ)           │  │
-└ └                       ┘  ┘
+          ^a↓[_b↓_c→]           
+┌                              ┐
+│    ┌                     ┐   │
+│    │0   0         0      │   │
+│    │                     │   │
+│    │0  -r         0      │   │
+│    │                     │   │
+│    │                    2│   │
+│    │0   0   - r * sin(θ) │   │
+│    └                     ┘   │
+│                              │
+│┌                            ┐│
+││      1                     ││
+││ 0   ╶─╴           0        ││
+││      r                     ││
+││                            ││
+││ 1                          ││
+││╶─╴   0            0        ││
+││ r                          ││
+││                            ││
+││ 0    0    - cos(θ) * sin(θ)││
+│└                            ┘│
+│                              │
+│   ┌                       ┐  │
+│   │                   1   │  │
+│   │ 0       0        ╶─╴  │  │
+│   │                   r   │  │
+│   │                       │  │
+│   │                cos(θ) │  │
+│   │ 0       0     ╶──────╴│  │
+│   │                sin(θ) │  │
+│   │                       │  │
+│   │ 1    cos(θ)           │  │
+│   │╶─╴  ╶──────╴      0   │  │
+│   │ r    sin(θ)           │  │
+│   └                       ┘  │
+└                              ┘
 Gamma^a_bc,d:
-                                   ^a↓_b→[_c↓_d→]                                   
-┌                                                                                  ┐
-│                                          ┌                                   ┐   │
-│   ┌       ┐          ┌        ┐          │     0                0           0│   │
-│   │0  0  0│          │ 0  0  0│          │                                   │   │
-│   │       │          │        │          │     0                0           0│   │
-│   │0  0  0│          │-1  0  0│          │                                   │   │
-│   │       │          │        │          │         2                         │   │
-│   │0  0  0│          │ 0  0  0│          │ - sin(θ)    - 2 r sin(θ) cos(θ)  0│   │
-│   └       ┘          └        ┘          └                                   ┘   │
-│                                                                                  │
-│┌             ┐     ┌             ┐                                               │
-││   0     0  0│     │     1       │                                               │
-││             │     │   ╶──╴      │    ┌                                         ┐│
-││     1       │     │ -   2   0  0│    │0                   0                   0││
-││   ╶──╴      │     │    r        │    │                                         ││
-││ -   2   0  0│     │             │    │0                   0                   0││
-││    r        │     │   0     0  0│    │                                         ││
-││             │     │             │    │0  (sin(θ) + cos(θ)) (sin(θ) - cos(θ))  0││
-││   0     0  0│     │   0     0  0│    └                                         ┘│
-│└             ┘     └             ┘                                               │
-│                                                                                  │
-│                                                ┌                        ┐        │
-│                                                │     1                  │        │
-│┌             ┐  ┌                  ┐           │   ╶──╴                 │        │
-││   0     0  0│  │0        0       0│           │ -   2         0       0│        │
-││             │  │                  │           │    r                   │        │
-││   0     0  0│  │0        0       0│           │                        │        │
-││             │  │                  │           │                1       │        │
-││     1       │  │          1       │           │            ╶───────╴   │        │
-││   ╶──╴      │  │      ╶───────╴   │           │   0      -        2   0│        │
-││ -   2   0  0│  │0   -        2   0│           │             sin(θ)     │        │
-││    r        │  │       sin(θ)     │           │                        │        │
-│└             ┘  └                  ┘           │   0           0       0│        │
-│                                                └                        ┘        │
-└                                                                                  ┘
+                                        _d↓^a→[_b↓_c→]                                        
+┌                                                                                            ┐
+│                                            _b↓_c→                       _b↓_c→             │
+│                                     ┌                   ┐        ┌                   ┐     │
+│                                     │              1    │        │                 1 │     │
+│              _b↓_c→                 │            ╶──╴   │        │               ╶──╴│     │
+│        ┌                 ┐          │   0      -   2   0│        │   0     0   -   2 │     │
+│        │0   0       0    │          │             r     │        │                r  │     │
+│        │                 │          │                   │        │                   │     │
+│        │0  -1       0    │          │     1             │        │   0     0     0   │     │
+│        │                 │          │   ╶──╴            │        │                   │     │
+│        │                2│          │ -   2      0     0│        │     1             │     │
+│        │0   0   - sin(θ) │          │    r              │        │   ╶──╴            │     │
+│        └                 ┘          │                   │        │ -   2   0     0   │     │
+│                                     │   0        0     0│        │    r              │     │
+│                                     └                   ┘        └                   ┘     │
+│                                                                                            │
+│                                                                         _b↓_c→             │
+│                                                             ┌                             ┐│
+│                                                             │0        0             0     ││
+│              _b↓_c→                        _b↓_c→           │                             ││
+│┌                                ┐  ┌                     ┐  │                        1    ││
+││0  0               0            │  │0  0         0       │  │                    ╶───────╴││
+││                                │  │                     │  │0        0        -        2 ││
+││0  0               0            │  │0  0         0       │  │                     sin(θ)  ││
+││                                │  │                     │  │                             ││
+││0  0   - 2 * r * sin(θ) * cos(θ)│  │                    2│  │          1                  ││
+│└                                ┘  │0  0  1 - 2 * cos(θ) │  │      ╶───────╴              ││
+│                                    └                     ┘  │0   -        2         0     ││
+│                                                             │       sin(θ)                ││
+│                                                             └                             ┘│
+│                                                                                            │
+│              _b↓_c→                        _b↓_c→                       _b↓_c→             │
+│             ┌       ┐                     ┌       ┐                    ┌       ┐           │
+│             │0  0  0│                     │0  0  0│                    │0  0  0│           │
+│             │       │                     │       │                    │       │           │
+│             │0  0  0│                     │0  0  0│                    │0  0  0│           │
+│             │       │                     │       │                    │       │           │
+│             │0  0  0│                     │0  0  0│                    │0  0  0│           │
+│             └       ┘                     └       ┘                    └       ┘           │
+└                                                                                            ┘
 Riemann^a_bcd:
          ^a↓_b→[_c↓_d→]          
 ┌                               ┐
+│ _c↓_d→     _c↓_d→     _c↓_d→  │
 │┌       ┐  ┌       ┐  ┌       ┐│
 ││0  0  0│  │0  0  0│  │0  0  0││
 ││       │  │       │  │       ││
@@ -208,6 +229,7 @@ Riemann^a_bcd:
 ││0  0  0│  │0  0  0│  │0  0  0││
 │└       ┘  └       ┘  └       ┘│
 │                               │
+│ _c↓_d→     _c↓_d→     _c↓_d→  │
 │┌       ┐  ┌       ┐  ┌       ┐│
 ││0  0  0│  │0  0  0│  │0  0  0││
 ││       │  │       │  │       ││
@@ -216,6 +238,7 @@ Riemann^a_bcd:
 ││0  0  0│  │0  0  0│  │0  0  0││
 │└       ┘  └       ┘  └       ┘│
 │                               │
+│ _c↓_d→     _c↓_d→     _c↓_d→  │
 │┌       ┐  ┌       ┐  ┌       ┐│
 ││0  0  0│  │0  0  0│  │0  0  0││
 ││       │  │       │  │       ││
@@ -305,13 +328,13 @@ Create a variable with given name, and optionally a list of which variables it i
 
 `var:setDependentVars(var1, var2, ...)`  
 Specify the variables that var is dependent on for differentiation.
-`var`, `var1`, `var2`, etc can be Variables (i.e. `x`) or TensorRefs (i.e. `x'^i'`).
+`var`, `var1`, `var2`, etc can be Variables (i.e. `x`) or Tensor.Ref's (i.e. `x'^i'`).
 Calling this function will clear all previous dependent vars only for the respective indexes it is called with.
 
 `expr:dependsOn(var)`
 Returns 'true' if an expression depends on the specified Variable 'var'.
 Determines so by searching the expression for either the Variable itself, or any variables that are specified o depend on the Variable.
-Works if 'var' is a Variables  (i.e. `x`) or if 'var' is a TensorRef of a Variable (i.e. `x'^i'`).
+Works if 'var' is a Variables  (i.e. `x`) or if 'var' is a Tensor.Ref of a Variable (i.e. `x'^i'`).
 
 `symmath.fixVariableNames = true`
 Set this flag to true to have the LaTex and console outputs replace variable names with their associated unicode characters.
@@ -517,21 +540,30 @@ Returns the 3x3 rotation matrix about axis `n[1], n[2], n[3]` by angle `theta` u
 
 ### Tensors
 
-`Tensor.coords{ {variables={t,x,y,z}} }`  
-Specifies that tensors will be using coordinates t,x,y,z
+`manifold = Tensor.Manifold()`
+Create a Manifold object.
 
-`Tensor.coords{ {variables={t,x,y,z}, meric=g} }`  
+
+`chart = Tensor.Chart{coords={t,x,y,z}}`  
+`chart = Tensor.Chart{coords={t,x,y,z}, manifold=manifold}`  
+`chart = manifold:Chart{coords={t,x,y,z}}`  
+Create a Chart object associated with the Manifold will be using coordinates t,x,y,z
+If no manifold is provided then the last Manifold constructed or a default Manifold object is used.
+
+`chart = manifold:Chart{coords={t,x,y,z}, metric=function() return g end}`
 Specifies that tensors will be using coordinates t,x,y,z with metric 'g' (a Matrix or 2D array).  The metric inverse will be automatically computed.
+The metric is wrapped in a function so that the chart coordinates can be established first, so that Tensor indexes will correctly be associated with the dimension of the chart.
 
-`Tensor.coords{ {variables={t,x,y,z}, meric=g, metricInverse=gU} }`  
+`chart = manifold:Chart{coords={t,x,y,z}, metric=function() return g end, metricInverse=function() return gU end}`
 Specifies that tensors will be using coordinates t,x,y,z with metric 'g' (a Matrix or 2D array) and metric inverse 'gU'.
 
-`Tensor.coords{ {variables={t,x,y,z}}, {symbols='ijklmn', variables={x,y,z}} }`  
-Specifies that tensors will be using coordinates t,x,y,z, except for indexes ijklmn which will only use x,y,z.  
+`chart = manifold:Chart{symbols='ijklmn', coords={x,y,z}}`  
+Specifies that tensors will use indexes `ijklmn` only with variables x,y,z.  
+Notice that the association between Tensor index symbols and Charts is currently held behind the scenes.
 At the moment conversion between multipoint Tensor indexes is very ugly/incomplete.
 
-`Tensor.metric(g, [gU, symbol])`  
-Specifies to use metric 'g' for the default coordinate system (assuming one has been defined with Tensor.coords).  
+`chart:setMetric(g, [gU])`  
+Specifies to use metric 'g' for the chart, and with what index symbols are associated with this chart.
 
 `t = Tensor'_abc'`  
 Creates a degree-3 covariant tensor 't' with all values initialized to 0.
@@ -893,10 +925,6 @@ Output CDN URLs:
 
 [tests/output/BSSN - generate - spherical](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical.html)
 
-[tests/output/BSSN - generate](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate.html)
-
-[tests/output/BSSN - index - cache](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index%20%2d%20cache.html)
-
 [tests/output/BSSN - index](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index.html)
 
 [tests/output/Building Curvature by ADM](https://thenumbernine.github.io/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
@@ -933,13 +961,13 @@ Output CDN URLs:
 
 [tests/output/Gravitation 16.1 - mixed](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20mixed.html)
 
+[tests/output/Kaluza-Klein - dense](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20dense.html)
+
 [tests/output/Kaluza-Klein - index](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20index.html)
 
 [tests/output/Kaluza-Klein - real world values](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20real%20world%20values.html)
 
 [tests/output/Kaluza-Klein - varying scalar field - index](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20varying%20scalar%20field%20%2d%20index.html)
-
-[tests/output/Kaluza-Klein](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein.html)
 
 [tests/output/Kerr metric of Earth](https://thenumbernine.github.io/symmath/tests/output/Kerr%20metric%20of%20Earth.html)
 
@@ -1002,8 +1030,6 @@ Output CDN URLs:
 [tests/output/TOV](https://thenumbernine.github.io/symmath/tests/output/TOV.html)
 
 [tests/output/Z4](https://thenumbernine.github.io/symmath/tests/output/Z4.html)
-
-[tests/output/console_spherical_metric](https://thenumbernine.github.io/symmath/tests/output/console_spherical_metric.html)
 
 [tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
 
@@ -1109,6 +1135,8 @@ Output CDN URLs:
 
 [tests/output/toy-1+1 spacetime](https://thenumbernine.github.io/symmath/tests/output/toy%2d1%2b1%20spacetime.html)
 
+[tests/output/unit/Variable dependsOn](https://thenumbernine.github.io/symmath/tests/output/unit/Variable%20dependsOn.html)
+
 [tests/output/unit/compile](https://thenumbernine.github.io/symmath/tests/output/unit/compile.html)
 
 [tests/output/unit/determinant_performance](https://thenumbernine.github.io/symmath/tests/output/unit/determinant_performance.html)
@@ -1158,8 +1186,6 @@ Output CDN URLs:
 [tests/output/unit/test](https://thenumbernine.github.io/symmath/tests/output/unit/test.html)
 
 [tests/output/unit/tidyIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/tidyIndexes.html)
-
-[tests/output/unit/variable depends](https://thenumbernine.github.io/symmath/tests/output/unit/variable%20depends.html)
 
 [tests/output/wave equation in spacetime - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20in%20spacetime%20%2d%20flux%20eigenvectors.html)
 

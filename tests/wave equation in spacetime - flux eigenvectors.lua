@@ -6,7 +6,7 @@ require 'symmath'.setup{env=env, MathJax={title='wave equation ...', useCommaDer
 
 local xs = table{vars('x','y','z')}
 local n = #xs
-Tensor.coords{{variables=xs}}
+local chart = Tensor.Chart{coords=xs}
 printbr('$x = \\{$', xs:mapi(tostring):concat', ', '$\\}$')
 
 local alpha = var('\\alpha', xs)

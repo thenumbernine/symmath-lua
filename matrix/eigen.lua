@@ -38,7 +38,7 @@ local function eigen(A, args)
 	end
 	A = A:clone()
 
-	local lambda = args.lambdaVar or var'lambda'
+	local lambda = args.lambdaVar or var'λ'
 	A:map(function(x) assert(x ~= lambda) end)
 
 	-- lambda * log(x) => log(x^lambda) is messing this up ...
@@ -204,7 +204,7 @@ local function eigen(A, args)
 	
 	local Lambda = Matrix.diagonal( allLambdas:unpack() )
 	if eigenVerbose then
-		printbr(var'Lambda':eq(Lambda))
+		printbr(var'Λ':eq(Lambda))
 	end
 	if eigenVerbose and L then
 		printbr'verify:'

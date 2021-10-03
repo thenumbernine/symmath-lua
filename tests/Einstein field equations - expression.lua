@@ -24,7 +24,7 @@ printbr(Riemann_def)
 
 -- sort symmetric indexes alphabetically
 local function g_sortSymIndexes(expr)
-	local TensorRef = require 'symmath.tensor.TensorRef'
+	local TensorRef = require 'symmath.tensor.Ref'
 	if TensorRef:isa(expr)
 	and expr[1] == var'g'
 	then

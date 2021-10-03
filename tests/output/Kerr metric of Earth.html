@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>Kerr metric of Earth</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>Kerr metric of Earth</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
 $c$	= speed of light
@@ -17,7 +17,7 @@ ${m_🜨}$	= Earth mass
 <br>
 ${{r_s}} = {\frac{{{2}} {{G}} {{{m_🜨}}}}{{c}^{2}}}$	= Schwarzschild radius of Earth
 <br>
-${{{f_🜨}} = {{\frac{1}{{a_{sph}}}}{({{{a_{sph}}} - {{b_{sph}}}})}}} = {\frac{1}{298.257222101}}$	= flattening of Earth
+${{{f_🜨}} = {{\frac{1}{{a_{sph}}}}{\left({{{a_{sph}}} - {{b_{sph}}}}\right)}}} = {\frac{1}{298.257222101}}$	= flattening of Earth
 <br>
 ${{I_🜨}} = {{{\frac{2}{5}}} {{{m_🜨}}} \cdot {{{{r_🜨}}^{2}}}}$	= moment of inertia
 <br>
@@ -31,7 +31,7 @@ ${a} = {\frac{{{2}} {{{\omega_🜨}}} \cdot {{{{r_🜨}}^{2}}}}{{{5}} {{c}}}}$
 <br>
 with numerical values:
 <br>
-${c} = {{{299792458}} \cdot {{{\frac{1}{s}}{({m})}}}}$
+${c} = {{{299792458}} \cdot {{{\frac{1}{s}} {m}}}}$
 <br>
 ${G} = {{{6.67384\cdot{10^{-11}}}} \cdot {{\frac{{m}^{3}}{{{kg}} \cdot {{{s}^{2}}}}}}}$
 <br>
@@ -51,43 +51,37 @@ ${{J_🜨}} = {{{2.2924744607152\cdot{10^{27}}}} {{kg}} \cdot {{m}}}$
 <br>
 ${a} = {{{395.80014860414}} {{m}}}$
 <br>
-${\Sigma} = {{{r}^{2}} + {{{{a}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}$
+${\Sigma} = {{{r}^{2}} + {{{{a}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}$
 <br>
 ${\Delta} = {{{{r}^{2}} - {{{{r_s}}} \cdot {{r}}}} + {{a}^{2}}}$
 <br>
-${A} = {{{({{{r}^{2}} + {{a}^{2}}})}^{2}} - {{{{a}^{2}}} {{\Delta}} \cdot {{{sin\left(  \theta\right)}^{2}}}}}$
+${A} = {{{\left({{{r}^{2}} + {{a}^{2}}}\right)}^{2}} - {{{{a}^{2}}} {{\Delta}} \cdot {{{\sin\left(  \theta\right)}^{2}}}}}$
 <br>
-${{{ g}_{\phi}}_{\phi}} = {{{({{{r}^{2}} + {{a}^{2}} + {{\frac{1}{\Sigma}}{({{{{r_s}}} \cdot {{r}} {{{a}^{2}}} {{{sin\left(  \theta\right)}^{2}}}})}}})}} {{{sin\left(  \theta\right)}^{2}}}}$
+${{{ g} _{\phi}} _{\phi}} = {{{\left({{{r}^{2}} + {{a}^{2}} + {{\frac{1}{\Sigma}} {{{{r_s}}} \cdot {{r}} {{{a}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}}}\right)}} {{{\sin\left(  \theta\right)}^{2}}}}$
 <br>
-${\frac{A}{{\Sigma}^{2}}} = {\frac{{{{({{{r}^{2}} + {{a}^{2}}})}^{2}} - {{{\Delta}} \cdot {{{a}^{2}}}}} + {{{\Delta}} \cdot {{{a}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}{{({{{r}^{2}} + {{{{a}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}})}^{2}}}$
+${\frac{A}{{\Sigma}^{2}}} = {\frac{{{{2}} {{{a}^{2}}} {{{r}^{2}}}} + {{r}^{4}} + {{{a}^{4}} - {{{\Delta}} \cdot {{{a}^{2}}}}} + {{{\Delta}} \cdot {{{a}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}{{{r}^{4}} + {{{2}} {{{a}^{2}}} {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}} + {{{{a}^{4}}} {{{\cos\left(  \theta\right)}^{4}}}}}}$
 <br>
-${{{ g}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  -{({{1} - {{\frac{1}{\Sigma}}{({{{{r_s}}} \cdot {{r}}})}}})} &  0 &  0 &  -{{\frac{1}{\Sigma}}{({{{{r_s}}} \cdot {{r}} {{a}} {{{sin\left(  \theta\right)}^{2}}}})}} \\  0 &  {\frac{1}{\Delta}}{({\Sigma})} &  0 &  0 \\  0 &  0 &  \Sigma &  0 \\  -{{\frac{1}{\Sigma}}{({{{{r_s}}} \cdot {{r}} {{a}} {{{sin\left(  \theta\right)}^{2}}}})}} &  0 &  0 &  {{({{{r}^{2}} + {{a}^{2}} + {{\frac{1}{\Sigma}}{({{{{r_s}}} \cdot {{r}} {{{a}^{2}}} {{{sin\left(  \theta\right)}^{2}}}})}}})}} {{{sin\left(  \theta\right)}^{2}}}\end{matrix}\right]}}$
+${{{ g} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  -{\left({{1} - {{\frac{1}{\Sigma}} {{{{r_s}}} \cdot {{r}}}}}\right)} &  0 &  0 &  -{{\frac{1}{\Sigma}} {{{{r_s}}} \cdot {{r}} {{a}} {{{\sin\left(  \theta\right)}^{2}}}}} \\  0 &  {\frac{1}{\Delta}} {\Sigma} &  0 &  0 \\  0 &  0 &  \Sigma &  0 \\  -{{\frac{1}{\Sigma}} {{{{r_s}}} \cdot {{r}} {{a}} {{{\sin\left(  \theta\right)}^{2}}}}} &  0 &  0 &  {{\left({{{r}^{2}} + {{a}^{2}} + {{\frac{1}{\Sigma}} {{{{r_s}}} \cdot {{r}} {{{a}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}}}\right)}} {{{\sin\left(  \theta\right)}^{2}}}\end{matrix} \right]}}$
 <br>
-${{{ g}^a}^b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  \frac{-{A}}{{{\Sigma}} \cdot {{\Delta}}} &  0 &  0 &  \frac{-{{{{r_s}}} \cdot {{a}} {{r}}}}{{{\Sigma}} \cdot {{\Delta}}} \\  0 &  {\frac{1}{\Sigma}}{({\Delta})} &  0 &  0 \\  0 &  0 &  \frac{1}{\Sigma} &  0 \\  \frac{-{{{{r_s}}} \cdot {{a}} {{r}}}}{{{\Sigma}} \cdot {{\Delta}}} &  0 &  0 &  \frac{{\Delta} - {{{{a}^{2}}} {{{sin\left(  \theta\right)}^{2}}}}}{{{\Sigma}} \cdot {{\Delta}} \cdot {{{sin\left(  \theta\right)}^{2}}}}\end{matrix}\right]}}$
+${{{ g} ^a} ^b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  \frac{-{A}}{{{\Sigma}} \cdot {{\Delta}}} &  0 &  0 &  \frac{-{{{{r_s}}} \cdot {{a}} {{r}}}}{{{\Sigma}} \cdot {{\Delta}}} \\  0 &  {\frac{1}{\Sigma}} {\Delta} &  0 &  0 \\  0 &  0 &  \frac{1}{\Sigma} &  0 \\  \frac{-{{{{r_s}}} \cdot {{a}} {{r}}}}{{{\Sigma}} \cdot {{\Delta}}} &  0 &  0 &  \frac{{\Delta} - {{{{a}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}}{{{\Sigma}} \cdot {{\Delta}} \cdot {{{\sin\left(  \theta\right)}^{2}}}}\end{matrix} \right]}}$
 <br>
-${{{ g}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  \frac{-{({{{{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} - {{{0.0086018711645876}} {{m}} {{r}}}} + {{r}^{2}}})}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} &  0 &  0 &  \frac{-{{{3.4046218852175}} {{r}} {{{m}^{2}}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} \\  0 &  \frac{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}{{{{r}^{2}} - {{{0.0086018711645876}} {{m}} {{r}}}} + {{{156657.75763506}} {{{m}^{2}}}}} &  0 &  0 \\  0 &  0 &  {{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} &  0 \\  \frac{-{{{3.4046218852175}} {{r}} {{{m}^{2}}} {{({{1} - {{cos\left(  \theta\right)}^{2}}})}}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} &  0 &  0 &  \frac{{{{156657.75763506}} {{{m}^{2}}} {{{r}^{2}}}} + {{{{{1347.54984811}} {{r}} {{{m}^{3}}}} - {{{2695.09969622}} {{r}} {{{m}^{3}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{156657.75763506}} {{{m}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{4}}}}} + {{{{24541653027.246}} {{{m}^{4}}} {{{cos\left(  \theta\right)}^{2}}}} - {{{24541653027.246}} {{{m}^{4}}} {{{cos\left(  \theta\right)}^{4}}}}} + {{{1347.54984811}} {{r}} {{{m}^{3}}} {{{cos\left(  \theta\right)}^{4}}}} + {{{r}^{4}} - {{{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}\end{matrix}\right]}}$
+${{{ g} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  \frac{{{-{{r}^{2}}} - {{{156657.75763506}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}} + {{{0.0086018711645876}} {{m}} {{r}}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}} &  0 &  0 &  \frac{{{3.4046218852175}} {{r}} {{\left({{{{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}} - {{m}^{2}}}\right)}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}} \\  0 &  \frac{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}{{{{r}^{2}} - {{{0.0086018711645876}} {{m}} {{r}}}} + {{{156657.75763506}} {{{m}^{2}}}}} &  0 &  0 \\  0 &  0 &  {{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}} &  0 \\  \frac{{{3.4046218852175}} {{r}} {{\left({{{{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}} - {{m}^{2}}}\right)}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}} &  0 &  0 &  \frac{{{{r}^{4}} - {{{{r}^{4}}} {{{\cos\left(  \theta\right)}^{2}}}}} + {{{{{313315.51527012}} {{{m}^{2}}} {{{r}^{2}}}} - {{{313315.51527012}} {{{m}^{2}}} {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}} - {{{156657.75763506}} {{{m}^{2}}} {{{r}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}} + {{{156657.75763506}} {{{m}^{2}}} {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}} + {{{{{24541653027.246}} {{{m}^{4}}}} - {{{24541653027.246}} {{{m}^{4}}} {{{\cos\left(  \theta\right)}^{2}}}}} - {{{24541653027.246}} {{{m}^{4}}} {{{\sin\left(  \theta\right)}^{2}}}}} + {{{24541653027.246}} {{{m}^{4}}} {{{\sin\left(  \theta\right)}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}} + {{{{1347.54984811}} {{r}} {{{m}^{3}}} {{{\sin\left(  \theta\right)}^{2}}}} - {{{1347.54984811}} {{r}} {{{m}^{3}}} {{{\cos\left(  \theta\right)}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}\end{matrix} \right]}}$
 <br>
 at earth surface:
 <br>
-${{{ g}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  -{0.99999999986513} &  0 &  0 &  0 \\  0 &  1.0000000001349 &  0 &  0 \\  0 &  0 &  {{4.0680159611567\cdot{10^{15}}}} {{{m}^{2}}} &  0 \\  0 &  0 &  0 &  {{0.027152842463693}} {{{m}^{2}}}\end{matrix}\right]}}$
+${{{ g} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  -{0.99999999986513} &  0 &  0 &  0 \\  0 &  1.0000000001349 &  0 &  0 \\  0 &  0 &  {{4.0680159611567\cdot{10^{15}}}} {{{m}^{2}}} &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}}$
 <br>
-time vector = 	$\overset{a\downarrow}{\left[\begin{matrix} dt \\ 0 \\ 0 \\ 0\end{matrix}\right]}$
+time vector = 	$\overset{a\downarrow}{\left[ \begin{matrix} dt \\ 0 \\ 0 \\ 0\end{matrix} \right]}$
 <br>
 timelike arclength
 <br>
-${{ds}^{2}} = {{\frac{1}{\Sigma}}{({-{{{{dt}^{2}}} {{({{\Sigma} - {{{r}} {{{r_s}}}}})}}}})}}$
+${{ds}^{2}} = {{\frac{1}{\Sigma}} {{{{dt}^{2}}} {{\left({{-{\Sigma}} + {{{r}} {{{r_s}}}}}\right)}}}}$
 <br>
-${{ds}^{2}} = {\frac{-{{{{dt}^{2}}} {{({{{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{r}^{2}} - {{{0.0086018711645876}} {{m}} {{r}}}}})}}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}}$
+${{ds}^{2}} = {\frac{{{-{{{{dt}^{2}}} {{{r}^{2}}}}} - {{{156657.75763506}} {{{dt}^{2}}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}} + {{{0.0086018711645876}} {{m}} {{r}} {{{dt}^{2}}}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}}$
 <br>
 time and rotating:
 <br>
-${{ds}^{2}} = {{\frac{1}{\Sigma}}{({{{{{r}} {{{r_s}}} \cdot {{{a}^{2}}} {{{d\phi}^{2}}}} - {{{2}} {{r}} {{{r_s}}} \cdot {{{a}^{2}}} {{{d\phi}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{\Sigma}} \cdot {{{a}^{2}}} {{{d\phi}^{2}}}} - {{{\Sigma}} \cdot {{{a}^{2}}} {{{d\phi}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{\Sigma}} \cdot {{{d\phi}^{2}}} {{{r}^{2}}}} - {{{\Sigma}} \cdot {{{d\phi}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{r}} {{{r_s}}} \cdot {{{a}^{2}}} {{{d\phi}^{2}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{2}} {{a}} {{d\phi}} \cdot {{dt}} \cdot {{r}} {{{r_s}}}}} + {{{{2}} {{a}} {{d\phi}} \cdot {{dt}} \cdot {{r}} {{{r_s}}} \cdot {{{cos\left(  \theta\right)}^{2}}}} - {{{\Sigma}} \cdot {{{dt}^{2}}}}} + {{{r}} {{{r_s}}} \cdot {{{dt}^{2}}}}})}}$
+${{ds}^{2}} = {{\frac{1}{\Sigma}}{\left({{{{{\Sigma}} \cdot {{{d\phi}^{2}}} {{{r}^{2}}}} - {{{\Sigma}} \cdot {{{d\phi}^{2}}} {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}} + {{{{\Sigma}} \cdot {{{a}^{2}}} {{{d\phi}^{2}}}} - {{{\Sigma}} \cdot {{{a}^{2}}} {{{d\phi}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}} + {{{{{r}} {{{r_s}}} \cdot {{{a}^{2}}} {{{d\phi}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}} - {{{r}} {{{r_s}}} \cdot {{{a}^{2}}} {{{d\phi}^{2}}} {{{\cos\left(  \theta\right)}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}} - {{{2}} {{a}} {{d\phi}} \cdot {{dt}} \cdot {{r}} {{{r_s}}}}} + {{{{2}} {{a}} {{d\phi}} \cdot {{dt}} \cdot {{r}} {{{r_s}}} \cdot {{{\cos\left(  \theta\right)}^{2}}}} - {{{\Sigma}} \cdot {{{dt}^{2}}}}} + {{{r}} {{{r_s}}} \cdot {{{dt}^{2}}}}}\right)}}$
 <br>
-${{ds}^{2}} = {\frac{-{({{{{{{6.8092437704349}} {{d\phi}} \cdot {{dt}} \cdot {{r}} {{{m}^{2}}}} - {{{6.8092437704349}} {{d\phi}} \cdot {{dt}} \cdot {{r}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}} - {{{24541653027.246}} {{{d\phi}^{2}}} {{{m}^{4}}} {{{cos\left(  \theta\right)}^{2}}}}} + {{{{24541653027.246}} {{{d\phi}^{2}}} {{{m}^{4}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{156657.75763506}} {{{d\phi}^{2}}} {{{m}^{2}}} {{{r}^{2}}}}} + {{{{156657.75763506}} {{{d\phi}^{2}}} {{{m}^{2}}} {{{r}^{2}}} {{{cos\left(  \theta\right)}^{4}}}} - {{{{d\phi}^{2}}} {{{r}^{4}}}}} + {{{{d\phi}^{2}}} {{{r}^{4}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{156657.75763506}} {{{dt}^{2}}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{{{{dt}^{2}}} {{{r}^{2}}}} - {{{0.0086018711645876}} {{m}} {{r}} {{{dt}^{2}}}}} - {{{1347.54984811}} {{r}} {{{d\phi}^{2}}} {{{m}^{3}}}}} + {{{{2695.09969622}} {{r}} {{{d\phi}^{2}}} {{{m}^{3}}} {{{cos\left(  \theta\right)}^{2}}}} - {{{1347.54984811}} {{r}} {{{d\phi}^{2}}} {{{m}^{3}}} {{{cos\left(  \theta\right)}^{4}}}}}})}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}}$
-<br>
-earth spheroid curve:
-<br>
-${{e}^{2}} = {{{({{\frac{2}{{f_🜨}}} - {1}})}} {{{{f_🜨}}^{2}}}}$
-<br>
-${r} = {\frac{{r_🜨}}{\sqrt{{1} - {{{({{\frac{2}{{f_🜨}}} - {1}})}} {{{{f_🜨}}^{2}}} {{{cos\left(  \theta\right)}^{2}}}}}}}$
+${{ds}^{2}} = {\frac{{{{{{{d\phi}^{2}}} {{{r}^{4}}}} - {{{{d\phi}^{2}}} {{{r}^{4}}} {{{\cos\left(  \theta\right)}^{2}}}}} - {{{156657.75763506}} {{{d\phi}^{2}}} {{{m}^{2}}} {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{4}}}}} + {{{156657.75763506}} {{{d\phi}^{2}}} {{{m}^{2}}} {{{r}^{2}}}} + {{{{24541653027.246}} {{{d\phi}^{2}}} {{{m}^{4}}} {{{\cos\left(  \theta\right)}^{2}}}} - {{{24541653027.246}} {{{d\phi}^{2}}} {{{m}^{4}}} {{{\cos\left(  \theta\right)}^{4}}}}} + {{{{{1347.54984811}} {{r}} {{{d\phi}^{2}}} {{{m}^{3}}} {{{\sin\left(  \theta\right)}^{2}}}} - {{{1347.54984811}} {{r}} {{{d\phi}^{2}}} {{{m}^{3}}} {{{\cos\left(  \theta\right)}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}} - {{{6.8092437704349}} {{d\phi}} \cdot {{dt}} \cdot {{r}} {{{m}^{2}}}}} + {{{{{6.8092437704349}} {{d\phi}} \cdot {{dt}} \cdot {{r}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}} - {{{{dt}^{2}}} {{{r}^{2}}}}} - {{{156657.75763506}} {{{dt}^{2}}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}} + {{{0.0086018711645876}} {{m}} {{r}} {{{dt}^{2}}}}}{{{r}^{2}} + {{{156657.75763506}} {{{m}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}}$
 <br>

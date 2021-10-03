@@ -160,7 +160,7 @@ printbr()
 
 -- letters don't matter so long as there are 3 of them
 local xs = table{'x', 'y', 'z'}
-Tensor.coords{{variables=xs}}
+local chart = Tensor.Chart{coords=xs}
 
 local D_dense = Tensor('_i', function(i) return D('_'..i) end)
 local B_dense = Tensor('_i', function(i) return B('_'..i) end)
@@ -183,7 +183,7 @@ local function expandMatrix2to6(A)
 				return i == j and 1 or 0
 			end
 		end):map(function(x)
-			if TensorIndex:isa(x) then
+			if Tensor.Index:isa(x) then
 				if x.symbol == 'i' then
 					x = x:clone()
 					x.symbol = assert(replace[i])
@@ -214,9 +214,9 @@ local dF_dU_dense =
 	dF_dU_def
 		:replace(g, g_ll_dense)
 		:map(function(x)
-			local a,b,c = x:match(TensorRef(epsilon, Wildcard(1), Wildcard(2), Wildcard(3))) 
+			local a,b,c = x:match(Tensor.Ref(epsilon, Wildcard(1), Wildcard(2), Wildcard(3))) 
 			if a then
-				return TensorRef(epsilon_uuu_dense, a,b,c)
+				return Tensor.Ref(epsilon_uuu_dense, a,b,c)
 			end
 		end)
 		--:replace(epsilon, epsilon_uuu_dense)	-- don't replace 1/epsilon used by our relative permeability
@@ -230,7 +230,7 @@ printbr()
 printbr'with a Cartesian metric:'
 dF_dU_dense = dF_dU_dense:map(function(x)
 		if x == sqrt_det_g then return 1 end
-		local a,b = x:match(TensorRef(g, Wildcard(1), Wildcard(2)))
+		local a,b = x:match(Tensor.Ref(g, Wildcard(1), Wildcard(2)))
 		if a then
 			return a.symbol == b.symbol and 1 or 0
 		end

@@ -1,79 +1,79 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='UTF-8'>
-        <title>infinite wire no charge</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>infinite wire no charge</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
-${{{{{R}^a}_b}_c}_d} = {{{{{{{{{\Gamma}^a}_b}_d}_{,c}} - {{{{{\Gamma}^a}_b}_c}_{,d}}} + {{{{{{\Gamma}^a}_e}_c}} {{{{{\Gamma}^e}_b}_d}}}} - {{{{{{\Gamma}^a}_e}_d}} {{{{{\Gamma}^e}_b}_c}}}} - {{{{{{\Gamma}^a}_b}_e}} {{({{{{{\Gamma}^e}_d}_c} - {{{{\Gamma}^e}_c}_d}})}}}}$
+${{{{{ R} ^a} _b} _c} _d} = {{{{{{{{{ Gamma} ^a} _b} _d} _{,c}} - {{{{{ Gamma} ^a} _b} _c} _{,d}}} + {{{{{{ Gamma} ^a} _e} _c}} {{{{{ Gamma} ^e} _b} _d}}}} - {{{{{{ Gamma} ^a} _e} _d}} {{{{{ Gamma} ^e} _b} _c}}}} - {{{{{{ Gamma} ^a} _b} _e}} {{\left({{{{{ Gamma} ^e} _d} _c} - {{{{ Gamma} ^e} _c} _d}}\right)}}}}$
 <br>
 manual metric:
 <br>
-${{{g}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}{\frac{1}{r}}{({-{I}})} & 0 & 0 & 0 \\0 & \frac{1}{{{I}} {{r}}} & 0 & 0 \\0 & 0 & {r}^{2} & 0 \\0 & 0 & 0 & \frac{1}{r}\end{matrix}\right]}}$
+${{{ g} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {\frac{1}{r}}{\left({-{I}}\right)} &  0 &  0 &  0 \\  0 &  \frac{1}{{{I}} {{r}}} &  0 &  0 \\  0 &  0 &  {r}^{2} &  0 \\  0 &  0 &  0 &  \frac{1}{r}\end{matrix} \right]}}$
 
 <br>
-${{{g}^a}^b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{r}{-{I}} & 0 & 0 & 0 \\0 & {{I}} {{r}} & 0 & 0 \\0 & 0 & \frac{1}{{r}^{2}} & 0 \\0 & 0 & 0 & r\end{matrix}\right]}}$
+${{{ g} ^a} ^b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  -{{\frac{1}{I}} {r}} &  0 &  0 &  0 \\  0 &  {{I}} {{r}} &  0 &  0 \\  0 &  0 &  \frac{1}{{r}^{2}} &  0 \\  0 &  0 &  0 &  r\end{matrix} \right]}}$
 
 <br>
-	${{{{\Gamma}_r}_t}_t} = {\frac{-{I}}{{{2}} {{{r}^{2}}}}}$
-;	${{{{\Gamma}_t}_r}_t} = {\frac{I}{{{2}} {{{r}^{2}}}}}$
-;	${{{{\Gamma}_t}_t}_r} = {\frac{I}{{{2}} {{{r}^{2}}}}}$
-;	${{{{\Gamma}_r}_r}_r} = {-{\frac{1}{{{2}} {{I}} {{{r}^{2}}}}}}$
-;	${{{{\Gamma}_{\phi}}_{\phi}}_r} = {r}$
-;	${{{{\Gamma}_z}_z}_r} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$
-;	${{{{\Gamma}_{\phi}}_r}_{\phi}} = {r}$
-;	${{{{\Gamma}_r}_{\phi}}_{\phi}} = {-{r}}$
-;	${{{{\Gamma}_z}_r}_z} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$
-;	${{{{\Gamma}_r}_z}_z} = {\frac{1}{{{2}} {{{r}^{2}}}}}$
+${{{{ \Gamma} _t} _t} _r} = {\frac{I}{{{2}} {{{r}^{2}}}}}$;
+${{{{ \Gamma} _t} _r} _t} = {\frac{I}{{{2}} {{{r}^{2}}}}}$;
+${{{{ \Gamma} _r} _t} _t} = {-{\frac{I}{{{2}} {{{r}^{2}}}}}}$;
+${{{{ \Gamma} _r} _r} _r} = {-{\frac{1}{{{2}} {{I}} {{{r}^{2}}}}}}$;
+${{{{ \Gamma} _r} _{phi}} _{phi}} = {-{r}}$;
+${{{{ \Gamma} _r} _z} _z} = {\frac{1}{{{2}} {{{r}^{2}}}}}$;
+${{{{ \Gamma} _{phi}} _r} _{phi}} = {r}$;
+${{{{ \Gamma} _{phi}} _{phi}} _r} = {r}$;
+${{{{ \Gamma} _z} _r} _z} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$;
+${{{{ \Gamma} _z} _z} _r} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$
 
 <br>
-	${{{{\Gamma}^r}_t}_t} = {\frac{-{{I}^{2}}}{{{2}} {{r}}}}$
-;	${{{{\Gamma}^t}_r}_t} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^t}_t}_r} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^r}_r}_r} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
-;	${{{{\Gamma}^z}_z}_r} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$
-;	${{{{\Gamma}^r}_{\phi}}_{\phi}} = {-{{{I}} {{{r}^{2}}}}}$
-;	${{{{\Gamma}^z}_r}_z} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^r}_z}_z} = {\frac{I}{{{2}} {{r}}}}$
+${{{{ \Gamma} ^t} _t} _r} = {-{\frac{1}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^t} _r} _t} = {-{\frac{1}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^r} _t} _t} = {-{\frac{{I}^{2}}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^r} _r} _r} = {-{\frac{1}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^r} _{phi}} _{phi}} = {-{{{I}} {{{r}^{2}}}}}$;
+${{{{ \Gamma} ^r} _z} _z} = {\frac{I}{{{2}} {{r}}}}$;
+${{{{ \Gamma} ^{phi}} _r} _{phi}} = {\frac{1}{r}}$;
+${{{{ \Gamma} ^{phi}} _{phi}} _r} = {\frac{1}{r}}$;
+${{{{ \Gamma} ^z} _r} _z} = {-{\frac{1}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^z} _z} _r} = {-{\frac{1}{{{2}} {{r}}}}}$
 
 <br>
 connection from manual metric:
 <br>
-	${{{{\Gamma}^r}_t}_t} = {\frac{-{{I}^{2}}}{{{2}} {{r}}}}$
-;	${{{{\Gamma}^t}_r}_t} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^t}_t}_r} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^r}_r}_r} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
-;	${{{{\Gamma}^z}_z}_r} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$
-;	${{{{\Gamma}^r}_{\phi}}_{\phi}} = {-{{{I}} {{{r}^{2}}}}}$
-;	${{{{\Gamma}^z}_r}_z} = {-{\frac{1}{{{2}} {{r}}}}}$
-;	${{{{\Gamma}^r}_z}_z} = {\frac{I}{{{2}} {{r}}}}$
+${{{{ \Gamma} ^t} _t} _r} = {-{\frac{1}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^t} _r} _t} = {-{\frac{1}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^r} _t} _t} = {-{\frac{{I}^{2}}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^r} _r} _r} = {-{\frac{1}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^r} _{phi}} _{phi}} = {-{{{I}} {{{r}^{2}}}}}$;
+${{{{ \Gamma} ^r} _z} _z} = {\frac{I}{{{2}} {{r}}}}$;
+${{{{ \Gamma} ^{phi}} _r} _{phi}} = {\frac{1}{r}}$;
+${{{{ \Gamma} ^{phi}} _{phi}} _r} = {\frac{1}{r}}$;
+${{{{ \Gamma} ^z} _r} _z} = {-{\frac{1}{{{2}} {{r}}}}}$;
+${{{{ \Gamma} ^z} _z} _r} = {-{\frac{1}{{{2}} {{r}}}}}$
 
 <br>
 manual connection:
 <br>
-	${{{{\Gamma}^{\phi}}_t}_t} = {\frac{{{-2}} {{I}}}{{r}^{2}}}$
-;	${{{{\Gamma}^t}_{\phi}}_t} = {{{2}} {{I}}}$
-;	${{{{\Gamma}^{\phi}}_r}_r} = {\frac{{{2}} {{I}}}{{r}^{2}}}$
-;	${{{{\Gamma}^t}_t}_{\phi}} = {{{2}} {{I}}}$
-;	${{{{\Gamma}^{\phi}}_z}_z} = {\frac{{{2}} {{I}}}{{r}^{2}}}$
+${{{{ \Gamma} ^t} _t} _{phi}} = {{{2}} {{I}}}$;
+${{{{ \Gamma} ^t} _{phi}} _t} = {{{2}} {{I}}}$;
+${{{{ \Gamma} ^{phi}} _t} _t} = {\frac{{{-2}} {{I}}}{{r}^{2}}}$;
+${{{{ \Gamma} ^{phi}} _r} _r} = {\frac{{{2}} {{I}}}{{r}^{2}}}$;
+${{{{ \Gamma} ^{phi}} _z} _z} = {\frac{{{2}} {{I}}}{{r}^{2}}}$
 
 <br>
 Ricci from manual metric:
 <br>
-${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{{I}^{2}}{{{4}} {{{r}^{2}}}} & 0 & 0 & 0 \\0 & -{\frac{3}{{{2}} {{{r}^{2}}}}} & 0 & 0 \\0 & 0 & {\frac{1}{2}}{({{{I}} {{r}}})} & 0 \\0 & 0 & 0 & \frac{-{I}}{{{4}} {{{r}^{2}}}}\end{matrix}\right]}}$
+${{{ R} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  \frac{{I}^{2}}{{{4}} {{{r}^{2}}}} &  0 &  0 &  0 \\  0 &  -{\frac{3}{{{2}} {{{r}^{2}}}}} &  0 &  0 \\  0 &  0 &  {\frac{1}{2}} {{{I}} {{r}}} &  0 \\  0 &  0 &  0 &  -{\frac{I}{{{4}} {{{r}^{2}}}}}\end{matrix} \right]}}$
 
 <br>
 Gaussian from manual metric:
 <br>
-${{R} = {\frac{-{{{3}} {{I}}}}{{{2}} {{r}}}}} = {0}$
+${{R} = {-{\frac{{{3}} {{I}}}{{{2}} {{r}}}}}} = {0}$
 <br>
-${{{3}} {{I}}} = {0}$
+${\frac{{{3}} {{I}}}{{{2}} {{r}}}} = {0}$
 <br>
 $R_{tt} - R_{rr}$:
 <br>
@@ -81,38 +81,20 @@ ${\frac{{6} + {{I}^{2}}}{{{4}} {{{r}^{2}}}}} = {0}$
 <br>
 $R_{rr} - R_{zz}$:
 <br>
-${\frac{-{({{6} - {I}})}}{{{4}} {{{r}^{2}}}}} = {0}$
+${\frac{{-{6}} + {I}}{{{4}} {{{r}^{2}}}}} = {0}$
 <br>
 $r^{-2} R_{\phi\phi} + R_{tt}$:
 <br>
-${\frac{{{I}} {{({{I} + {{{2}} {{r}}}})}}}{{{4}} {{{r}^{2}}}}} = {0}$
+${\frac{{{I}} {{\left({{I} + {{{2}} {{r}}}}\right)}}}{{{4}} {{{r}^{2}}}}} = {0}$
 <br>
 Ricci from manual connection:
 <br>
-${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{{{4}} {{{I}^{2}}}}{{r}^{2}} & 0 & 0 & 0 \\0 & \frac{{{4}} {{{I}^{2}}}}{{r}^{2}} & 0 & 0 \\0 & 0 & -{{{4}} {{{I}^{2}}}} & 0 \\0 & 0 & 0 & \frac{{{4}} {{{I}^{2}}}}{{r}^{2}}\end{matrix}\right]}}$
+${{{ R} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  \frac{{{4}} {{{I}^{2}}}}{{r}^{2}} &  0 &  0 &  0 \\  0 &  \frac{{{4}} {{{I}^{2}}}}{{r}^{2}} &  0 &  0 \\  0 &  0 &  -{{{4}} {{{I}^{2}}}} &  0 \\  0 &  0 &  0 &  \frac{{{4}} {{{I}^{2}}}}{{r}^{2}}\end{matrix} \right]}}$
 
 <br>
 vs $8 \pi \times$ EM stress-energy tensor = Ricci tensor
-${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{{{4}} {{{I}^{2}}}}{{r}^{2}} & 0 & 0 & 0 \\0 & \frac{{{4}} {{{I}^{2}}}}{{r}^{2}} & 0 & 0 \\0 & 0 & -{{{4}} {{{I}^{2}}}} & 0 \\0 & 0 & 0 & \frac{{{4}} {{{I}^{2}}}}{{r}^{2}}\end{matrix}\right]}}$
+${{{ R} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  \frac{{{4}} {{{I}^{2}}}}{{r}^{2}} &  0 &  0 &  0 \\  0 &  \frac{{{4}} {{{I}^{2}}}}{{r}^{2}} &  0 &  0 \\  0 &  0 &  -{{{4}} {{{I}^{2}}}} &  0 \\  0 &  0 &  0 &  \frac{{{4}} {{{I}^{2}}}}{{r}^{2}}\end{matrix} \right]}}$
 
 <br>
 now the same thing for no-current only-charge
-<br>
-manual connection:
-<br>
-	${{{{\Gamma}^r}_t}_t} = {\frac{-{{{8}} {{{\lambda}^{2}}}}}{{{r}} {{({{3} + {\sqrt{{1} + {{{16}} {{{\lambda}^{2}}}}}}})}}}}$
-;	${{{{\Gamma}^t}_r}_t} = {\frac{{1} + {\sqrt{{1} + {{{16}} {{{\lambda}^{2}}}}}}}{{{2}} {{r}}}}$
-;	${{{{\Gamma}^t}_t}_r} = {\frac{{1} + {\sqrt{{1} + {{{16}} {{{\lambda}^{2}}}}}}}{{{2}} {{r}}}}$
-;	${{{{\Gamma}^r}_{\phi}}_{\phi}} = {\frac{{{8}} {{{\lambda}^{2}}} {{r}}}{{3} + {\sqrt{{1} + {{{16}} {{{\lambda}^{2}}}}}}}}$
-;	${{{{\Gamma}^r}_z}_z} = {\frac{{{8}} {{{\lambda}^{2}}}}{-{{{r}} {{({{1} - {\sqrt{{1} + {{{16}} {{{\lambda}^{2}}}}}}})}}}}}$
-
-<br>
-Ricci from connection:
-<br>
-${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{{{{\lambda}^{2}}} {{({{12} + {{{4}} {{\sqrt{{1} + {{{16}} {{{\lambda}^{2}}}}}}}}})}}}{{{{r}^{2}}} {{({{3} + {\sqrt{{1} + {{{16}} {{{\lambda}^{2}}}}}}})}}} & 0 & 0 & 0 \\0 & \frac{-{{{4}} {{{\lambda}^{2}}}}}{{r}^{2}} & 0 & 0 \\0 & 0 & \frac{{{{\lambda}^{2}}} {{({{12} + {{{4}} {{\sqrt{{1} + {{{16}} {{{\lambda}^{2}}}}}}}}})}}}{{3} + {\sqrt{{1} + {{{16}} {{{\lambda}^{2}}}}}}} & 0 \\0 & 0 & 0 & \frac{{{4}} {{{\lambda}^{2}}}}{{r}^{2}}\end{matrix}\right]}}$
-
-<br>
-vs $8 \pi \times$ EM stress-energy tensor = Ricci tensor
-${{{R}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}\frac{{{4}} {{{\lambda}^{2}}}}{{r}^{2}} & 0 & 0 & 0 \\0 & \frac{-{{{4}} {{{\lambda}^{2}}}}}{{r}^{2}} & 0 & 0 \\0 & 0 & {{4}} {{{\lambda}^{2}}} & 0 \\0 & 0 & 0 & \frac{{{4}} {{{\lambda}^{2}}}}{{r}^{2}}\end{matrix}\right]}}$
-
 <br>

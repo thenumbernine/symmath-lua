@@ -13,10 +13,8 @@ local allCoords = table{t, x, y, z}
 local coords = allCoords:sub(1,dim)
 local spatialCoords = allCoords:sub(2,dim)
 
-Tensor.coords{
-	{variables = coords},
-	{variables = spatialCoords, symbols = 'ijklmn'},
-}
+local chart = Tensor.Chart{coords=coords}
+local spatialChart = Tensor.Chart{coords=spatialCoords, symbols='ijklmn'}
 
 
 local r = var('r', spatialCoords)
@@ -61,7 +59,7 @@ printbr(var'g''^uv':eq(gInv'^uv'()))
 
 printbr((var'g''_ua'*var'g''^av'):eq( (g'_ua' * gInv'^av')() ))
 
-Tensor.metric(g, gInv)
+chart:setMetric(g, gInv)
 
 -- metric partial
 -- assume dr/dt is zero

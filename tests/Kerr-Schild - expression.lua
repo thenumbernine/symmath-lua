@@ -8,18 +8,12 @@ local t, x, y, z = vars('t', 'x', 'y', 'z')
 local spatialCoords = table{x,y,z}
 local coords = {t, x, y, z}
 
-Tensor.coords{
-	{variables=coords},
-	{
-		variables = spatialCoords,
-		symbols = 'ijklmn',
-	},
-	{symbols='t', variables={t}},
-	{symbols='x', variables={x}},
-	{symbols='y', variables={y}},
-	{symbols='z', variables={z}},
-
-}
+local chart = Tensor.Chart{coords=coords}
+local spatialChart = Tensor.Chart{coords=spatialCoords, symbols='ijklmn'}
+local chart_t = Tensor.Chart{coords={t}, symbols='t'}
+local chart_x = Tensor.Chart{coords={x}, symbols='x'}
+local chart_y = Tensor.Chart{coords={y}, symbols='y'}
+local chart_z = Tensor.Chart{coords={z}, symbols='z'}
 
 -- black hole parameters
 local a = var('a')

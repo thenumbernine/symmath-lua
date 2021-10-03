@@ -9,7 +9,7 @@ require 'symmath'.setup{env=env, MathJax={title='FLRW metric'}}
 local t, r, theta, phi = vars('t', 'r', '\\theta', '\\phi')
 local coords = {t,r,theta,phi}
 
-Tensor.coords{{variables = coords}}
+local chart = Tensor.Chart{coords=coords}
 
 -- metric variables
 local a = var('a', {t})		-- radius of curvature
@@ -32,7 +32,7 @@ local g = Tensor('_uv', table.unpack(Matrix.diagonal(
 printbr'metric:'
 printbr(var'g''_uv':eq(g'_uv'()))
 
-Tensor.metric(g)
+chart:setMetric(g)
 
 -- metric inverse, assume diagonal
 printbr'metric inverse:'

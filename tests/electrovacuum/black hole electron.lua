@@ -14,9 +14,7 @@ local pi, c, G, epsilon_0 = units.pi, units.c, units.G, units.epsilon_0
 local e = units.e
 local m_e = units.m_e
 
-Tensor.coords{
-	{variables={t,r,theta,phi}},
-}
+local C = Tensor.Chart{coords={t,r,theta,phi}}
 
 local a_def = a:eq(J / (M * c))
 printbr(a_def)
@@ -42,8 +40,8 @@ g[2][2] = g_22
 g[3][3] = g_33
 g[4][4] = g_44
 
-local basis = Tensor.metric(g)
-local gU = basis.metricInverse
+C:setMetric(g)
+local gU = C.metricInverse
 
 for _,name in ipairs{'g', 'gU'} do
 	local t = ({g=g, gU=gU})[name]
@@ -62,10 +60,10 @@ for _,name in ipairs{'g', 'gU'} do
 	end
 end
 
-Tensor.metric(g, gU)
-g:print'g'
+C:setMetric(g, gU)
+g:printElem'g'
 printbr()
-gU:print'g'
+gU:printElem'g'
 printbr()
 
 local Conn = Tensor'_abc'
@@ -73,19 +71,19 @@ Conn['_abc'] = (frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()
 Conn = Conn'^a_bc'()
 local accel = (-Conn'^i_tt')()
 printbr'gravitational acceleration:'
-accel:print'accel'
+accel:printElem'accel'
 printbr()
 
 printbr'...at azimuthal plane...'
 local azimuth_defs = table{cos(theta):eq(0), sin(theta):eq(1)}
 accel = accel:subst(azimuth_defs:unpack())()
 printbr(azimuth_defs:map(tostring):concat';')
-accel:print'accel'
+accel:printElem'accel'
 printbr()
 
 accel = accel:subst(Delta_def, rho_def, a_def, r_Q_def, r_s_def, azimuth_defs:unpack())()
 printbr'...substitute variable definitions...'
-accel:print'accel'
+accel:printElem'accel'
 printbr()
 
 accel = accel
@@ -101,13 +99,13 @@ printbr(r_Q_def)
 printbr(Q:eq(units.e_in_m:rhs()))
 printbr(M:eq(units.m_e_in_m:rhs()))
 printbr(J:eq(units.hBar_in_m:rhs()/2))
-accel:print'accel'
+accel:printElem'accel'
 printbr()
 
 printbr'...at distance of the classical electron radius...'
 local r_e = (units.e_in_m:rhs()^2 / units.m_e_in_m:rhs())()
 accel = accel:replace(r, r_e)()
-accel:print'accel'
+accel:printElem'accel'
 printbr"Looks like there's a factor of m^2 that I've accidentally added..."
 printbr()
 

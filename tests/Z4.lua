@@ -195,7 +195,7 @@ TODO maybe it wouldn't if it didn't rebuild every time, but only upon finding a 
 --]]
 local function insertDeltasToSetIndexSymbols(expr, finds)
 	for _,find in ipairs(finds) do
-		assert(TensorRef:isa(find))
+		assert(Tensor.Ref:isa(find))
 	end
 	local delta = Tensor:deltaSymbol()
 
@@ -214,7 +214,7 @@ local function insertDeltasToSetIndexSymbols(expr, finds)
 		local reallyReindexTheMul = {}
 		local verifyNoDuplicateRemapsInsideTheMul = {}
 		for y in x:itermul() do
-			if TensorRef:isa(y) then
+			if Tensor.Ref:isa(y) then
 				y = y:clone()
 
 				-- if we have summed indexes within the TensorRef, and we're trying to replace one of them, then we'll run into trouble ... 
@@ -224,7 +224,7 @@ local function insertDeltasToSetIndexSymbols(expr, finds)
 				
 				local indexRemap = {}
 				local function addSymbol(ti, target)
-					assert(TensorIndex:isa(ti))
+					assert(Tensor.Index:isa(ti))
 					assert(not not ti.lower == not not target.lower)
 					assert(ti.derivative == target.derivative)
 					if ti.symbol ~= target.symbol then
@@ -289,13 +289,13 @@ local function insertDeltasToSetIndexSymbols(expr, finds)
 						else
 							-- only insert deltas if it's not a sum term
 							newmulterms:insert(
-								TensorRef(
+								Tensor.Ref(
 									delta,
-									TensorIndex{
+									Tensor.Index{
 										lower = not newTI.lower,
 										symbol = assert(newTI.symbol),
 									},
-									TensorIndex{
+									Tensor.Index{
 										lower = newTI.lower,
 										symbol = assert(oldSym),
 									}
@@ -923,7 +923,7 @@ local function mergingDerivKParts(expr)
 	expr = expr:map(function(x)
 		if symmath.op.sub:isa(x) then
 			assert(#x == 2)
-			if TensorRef:isa(x[2]) 
+			if Tensor.Ref:isa(x[2]) 
 			and not Variable:isa(x[2][1])
 			then
 				x = x:clone()
@@ -939,9 +939,9 @@ local function mergingDerivKParts(expr)
 	local nonderiv = table()
 	local deriv = table()
 	for x in expr:iteradd() do
-		if TensorRef:isa(x) then
+		if Tensor.Ref:isa(x) then
 			assert(#x == 2)
-			assert(x[2] == TensorIndex{symbol='k', lower=true, derivative=','})
+			assert(x[2] == Tensor.Index{symbol='k', lower=true, derivative=','})
 			deriv:insert(x[1])
 		else
 			nonderiv:insert(x)
@@ -1558,10 +1558,10 @@ printHeader'as a system:'
 local function assertAndRemoveLastTensorIndex(exprs, lastTensorIndex)
 	return exprs:mapi(function(expr)
 		local dt = expr:splitOffDerivIndexes()
-		assert(TensorRef:isa(dt) 
+		assert(Tensor.Ref:isa(dt) 
 			and #dt == 2 
 			and dt[2] == lastTensorIndex,
-			"expected expr to be a TensorRef ending in _,"..lastTensorIndex)
+			"expected expr to be a Tensor.Ref ending in _,"..lastTensorIndex)
 		return dt[1]
 	end)
 end
@@ -1617,7 +1617,7 @@ end
 
 local UijklVars = assertAndRemoveLastTensorIndex(	
 	UijkltEqns:mapi(function(eqn) return eqn[1] end),
-	TensorIndex{lower=true, symbol='t', derivative=','}
+	Tensor.Index{lower=true, symbol='t', derivative=','}
 )
 
 -- ijk on the partial_t's
@@ -1703,7 +1703,7 @@ if favorFluxTerms then
 				local derivTerms = table()
 				local nonDerivTerms = table()
 				
-				local isTensorRef = TensorRef:isa(x)
+				local isTensorRef = Tensor.Ref:isa(x)
 				local tensorDegree
 				if isTensorRef then
 					tensorDegree = x:countNonDerivIndexes()
@@ -1924,7 +1924,7 @@ end
 for _,var in ipairs(UijklVars) do
 	if Variable:isa(var) then
 		addScalar()
-	elseif TensorRef:isa(var) then
+	elseif Tensor.Ref:isa(var) then
 		assert(Variable:isa(var[1]))
 		local numIndexes = #var-1
 		if numIndexes == 1 then
@@ -1973,7 +1973,7 @@ local function expandMatrixIndexes(srcm)
 		end
 		-- replace deltas with their values
 		srcexpr = srcexpr:map(function(x)
-			if TensorRef:isa(x)
+			if Tensor.Ref:isa(x)
 			and x[1] == delta
 			then
 				if ({x=true, y=true, z=true})[x[2].symbol] then
@@ -1999,7 +1999,7 @@ local function expandMatrixIndexes(srcm)
 		--]]
 		-- [[ instead only symmetrize the gamme alone
 		srcexpr = srcexpr:map(function(x)
-			if TensorRef:isa(x)
+			if Tensor.Ref:isa(x)
 			and x[1] == gamma
 			and x:countNonDerivIndexes() == 2
 			then
@@ -2027,9 +2027,7 @@ printbr()
 
 --]=]
 -- [=[ better idea i hope:
-Tensor.coords{
-	{variables=xs},
-}
+local chart = Tensor.Chart{coords=xs}
 local d_alphaDense = Tensor('_i', function(i) return alpha:diff(xs[i]) end)
 local d_ThetaDense = Tensor('_i', function(i) return Theta:diff(xs[i]) end)
 local deltaDenseUL = Tensor('^i_j', function(i,j) return i == j and 1 or 0 end)

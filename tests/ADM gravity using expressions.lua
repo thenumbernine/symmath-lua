@@ -4,7 +4,7 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJax={title='ADM gravity using expressions'}}
 
-local TensorRef = require 'symmath.tensor.TensorRef'
+local TensorRef = require 'symmath.tensor.Ref'
 
 -- I should be coding up some tensor index expression substitution functions ...
 -- TODO instead of 'toSet', provide basis to split indexes into

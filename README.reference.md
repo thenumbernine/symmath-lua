@@ -67,13 +67,13 @@ Create a variable with given name, and optionally a list of which variables it i
 
 `var:setDependentVars(var1, var2, ...)`  
 Specify the variables that var is dependent on for differentiation.
-`var`, `var1`, `var2`, etc can be Variables (i.e. `x`) or TensorRefs (i.e. `x'^i'`).
+`var`, `var1`, `var2`, etc can be Variables (i.e. `x`) or Tensor.Ref's (i.e. `x'^i'`).
 Calling this function will clear all previous dependent vars only for the respective indexes it is called with.
 
 `expr:dependsOn(var)`
 Returns 'true' if an expression depends on the specified Variable 'var'.
 Determines so by searching the expression for either the Variable itself, or any variables that are specified o depend on the Variable.
-Works if 'var' is a Variables  (i.e. `x`) or if 'var' is a TensorRef of a Variable (i.e. `x'^i'`).
+Works if 'var' is a Variables  (i.e. `x`) or if 'var' is a Tensor.Ref of a Variable (i.e. `x'^i'`).
 
 `symmath.fixVariableNames = true`
 Set this flag to true to have the LaTex and console outputs replace variable names with their associated unicode characters.
@@ -279,21 +279,30 @@ Returns the 3x3 rotation matrix about axis `n[1], n[2], n[3]` by angle `theta` u
 
 ### Tensors
 
-`Tensor.coords{ {variables={t,x,y,z}} }`  
-Specifies that tensors will be using coordinates t,x,y,z
+`manifold = Tensor.Manifold()`
+Create a Manifold object.
 
-`Tensor.coords{ {variables={t,x,y,z}, meric=g} }`  
+
+`chart = Tensor.Chart{coords={t,x,y,z}}`  
+`chart = Tensor.Chart{coords={t,x,y,z}, manifold=manifold}`  
+`chart = manifold:Chart{coords={t,x,y,z}}`  
+Create a Chart object associated with the Manifold will be using coordinates t,x,y,z
+If no manifold is provided then the last Manifold constructed or a default Manifold object is used.
+
+`chart = manifold:Chart{coords={t,x,y,z}, metric=function() return g end}`
 Specifies that tensors will be using coordinates t,x,y,z with metric 'g' (a Matrix or 2D array).  The metric inverse will be automatically computed.
+The metric is wrapped in a function so that the chart coordinates can be established first, so that Tensor indexes will correctly be associated with the dimension of the chart.
 
-`Tensor.coords{ {variables={t,x,y,z}, meric=g, metricInverse=gU} }`  
+`chart = manifold:Chart{coords={t,x,y,z}, metric=function() return g end, metricInverse=function() return gU end}`
 Specifies that tensors will be using coordinates t,x,y,z with metric 'g' (a Matrix or 2D array) and metric inverse 'gU'.
 
-`Tensor.coords{ {variables={t,x,y,z}}, {symbols='ijklmn', variables={x,y,z}} }`  
-Specifies that tensors will be using coordinates t,x,y,z, except for indexes ijklmn which will only use x,y,z.  
+`chart = manifold:Chart{symbols='ijklmn', coords={x,y,z}}`  
+Specifies that tensors will use indexes `ijklmn` only with variables x,y,z.  
+Notice that the association between Tensor index symbols and Charts is currently held behind the scenes.
 At the moment conversion between multipoint Tensor indexes is very ugly/incomplete.
 
-`Tensor.metric(g, [gU, symbol])`  
-Specifies to use metric 'g' for the default coordinate system (assuming one has been defined with Tensor.coords).  
+`chart:setMetric(g, [gU])`  
+Specifies to use metric 'g' for the chart, and with what index symbols are associated with this chart.
 
 `t = Tensor'_abc'`  
 Creates a degree-3 covariant tensor 't' with all values initialized to 0.

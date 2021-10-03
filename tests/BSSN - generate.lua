@@ -34,9 +34,8 @@ local xs = table{'x','y','z'}	-- names of the fields in the internal real3 type 
 
 local x,y,z = vars('x', 'y', 'z')
 local coords = table{x,y,z}
-Tensor.coords{
-	{variables=coords}
-}
+
+local chart = Tensor.Chart{coords=coords}
 
 local e_lU_dense = Tensor('_i^I', 
 	{1,0,0},
@@ -48,9 +47,8 @@ local e_lU_dense = Tensor('_i^I',
 
 local r, theta, phi = vars('r', 'theta', 'phi')
 local coords = table{r, theta, phi}
-Tensor.coords{
-	{variables=coords}
-}
+
+local chart = Tensor.Chart{coords=coords}
 
 local e_lU_dense = Tensor('_i^I', 
 	{1,0,0},
@@ -205,9 +203,9 @@ for _,nameAndEqn in ipairs(eqns) do
 	if name:match'_norm_def$' then	-- use the normalized version
 
 		local lhs, rhs = table.unpack(eqn)
-		if not TensorRef:isa(lhs) then
-			printbr("expected lhs to be a TensorRef, found: ", lhs)
-			error'expected lhs to be a TensorRef'
+		if not Tensor.Ref:isa(lhs) then
+			printbr("expected lhs to be a Tensor.Ref, found: ", lhs)
+			error'expected lhs to be a Tensor.Ref'
 		end
 		assert(lhs[#lhs].symbol == 't' and lhs[#lhs].lower)
 		printbr('variable: '..lhs[1])
@@ -290,7 +288,7 @@ end)
 		printbr('new eqn:', eqn)
 
 timer('simplifying', function()
--- [[
+--[[
 local profiler = require 'profiler'
 profiler.configuration{fW=99, tW=10, cW=10}
 profiler.start()
@@ -321,7 +319,7 @@ profiler.start()
 			eqn[2] = eqn[2]:simplifyAddMulDiv()
 		end
 		--]]
--- [[
+--[[
 profiler.stop()
 profiler.report'profiler.log'
 --]]
@@ -336,7 +334,7 @@ io.stderr:flush()
 		
 		-- lazy arbitrary nested for-loop:
 		if not Tensor:isa(lhs) then
-			assert(Variable:isa(lhs), "expected TensorRef or Variable on lhs, found "..lhs.name)
+			assert(Variable:isa(lhs), "expected Tensor.Ref or Variable on lhs, found "..lhs.name)
 			assert(rhs)
 			-- scalar
 			resultEqns:insert{[lhs.name] = rhs}

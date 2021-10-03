@@ -35,18 +35,12 @@ local a = var('a')
 local M = var'M'
 local Q = var'Q'
 
-Tensor.coords{
-	{variables=coords},
-	{
-		variables = spatialCoords,
-		symbols = 'ijklmn',
-	},
-	{symbols='t', variables={t}},
-	{symbols='x', variables={x}},
-	{symbols='y', variables={y}},
-	{symbols='z', variables={z}},
-
-}
+local chart = Tensor.Chart{coords=coords}
+local spatialChart = Tensor.Chart{coords=spatialCoords, symbols='ijklmn'}
+local chart_t = Tensor.Chart{coords={t}, symbols='t'}
+local chart_x = Tensor.Chart{coords={x}, symbols='x'}
+local chart_y = Tensor.Chart{coords={y}, symbols='y'}
+local chart_z = Tensor.Chart{coords={z}, symbols='z'}
 
 local rho = var('\\rho', spatialCoords)
 local rho_def = rho:eq(x^2 + y^2 + z^2 - a^2)
@@ -138,7 +132,7 @@ printbr(var'g''^uv':eq(var'\\eta''^uv' - 2 * var'H' * lvar'^u' * lvar'^v'))
 local gInv = (etaU'^uv' - 2 * H * lU'^u' * lU'^v')()
 printbr(var'g''^uv':eq(gInv'^uv'()))
 
-Tensor.metric(g, gInv)
+chart:setMetric(g, gInv)
 
 -- metric partial
 -- assume dr/dt is zero

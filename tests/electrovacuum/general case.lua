@@ -90,15 +90,12 @@ local function pretty(expr)
 		:replace(eta,eta_)
 end
 
-
-Tensor.coords{
-	{variables=coords},
-	{symbols='ijklmn', variables=spatialCoords},
-	{symbols='t', variables={t}},
-	{symbols='x', variables={x}},
-	{symbols='y', variables={y}},
-	{symbols='z', variables={z}},
-}
+local chart = Tensor.Chart{coords=coords}
+local spatialChart = Tensor.Chart{coords=spatialCoords, symbols='ijklmn'}
+local chart_t = Tensor.Chart{coords={t}, symbols='t'}
+local chart_x = Tensor.Chart{coords={x}, symbols='x'}
+local chart_y = Tensor.Chart{coords={y}, symbols='y'}
+local chart_z = Tensor.Chart{coords={z}, symbols='z'}
 	
 g = Tensor'_uv'
 gU = Tensor'^uv'
@@ -221,7 +218,7 @@ if showLorentzMetric then
 	printbr(g_'^uv':eq(gU))
 	printbr((g_'_ac' * g_'^cb'):eq( (g'_ac' * gU'^cb')() ))
 
-	local basis = Tensor.metric(g, gU)
+	local basis = chart:setMetric(g, gU)
 	--[[
 	local gU = basis.metricInverse
 	printbr(gU)
@@ -296,8 +293,8 @@ if showFlatSpaceApproximationRiemannSolution then
 	local sqrt_det_gamma = sqrt(Matrix.determinant(gamma))()
 	printbr('$\\sqrt{\\gamma} =$ '..sqrt_det_gamma)
 
-	Tensor.metric(g)
-	Tensor.metric(gamma, nil, 'i')
+	chart:setMetric(g)
+	spatialChart:setMetric(gamma)
 
 	LeviCivita3 = Tensor('_ijk', function(i,j,k)
 		if i%3+1 == j and j%3+1 == k then return sqrt_det_gamma end
@@ -861,8 +858,8 @@ if false then
 
 	printbr('$\\sqrt{\\gamma} =$ '..sqrt_det_gamma)
 
-	Tensor.metric(g, gU)
-	Tensor.metric(gamma, gammaU, 'i')
+	chart:setMetric(g, gU)
+	spatialChart:setMetric(gamma, gammaU)
 
 	LeviCivita3 = Tensor('_ijk', function(i,j,k)
 		if i%3+1 == j and j%3+1 == k then return sqrt_det_gamma end

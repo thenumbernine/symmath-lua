@@ -11,7 +11,7 @@ require 'symmath'.setup{env=env, MathJax={title='Schwarzschild - spherical - der
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
 
 local coords = {t,r,theta,phi}
-Tensor.coords{{variables = coords}}
+local chart = Tensor.Chart{coords=coords}
 
 -- schwarzschild metric in cartesian coordinates
 local A = var('A', {r})

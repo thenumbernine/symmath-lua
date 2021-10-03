@@ -465,7 +465,7 @@ local function expandMatrix3to5(A)
 				return i == j and 1 or 0
 			end
 		end):map(function(x)
-			if TensorIndex:isa(x) then
+			if Tensor.Index:isa(x) then
 				if x.symbol == 'i' then
 					x = x:clone()
 					x.symbol = assert(replace[i])
@@ -528,7 +528,7 @@ for _,eqn in ipairs(dt_W_eqns) do
 end
 printbr()
 
-Tensor.coords{{variables=xs}}
+local chart = Tensor.Chart{coords=xs}
 
 local nl_dense = Tensor('_i', function(i) return n('_'..xs[i].name) end)
 local nu_dense = Tensor('^i', function(i) return n('^'..xs[i].name) end)

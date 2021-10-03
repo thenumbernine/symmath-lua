@@ -19,7 +19,7 @@ local R_of_r = false
 local R = var('R', R_of_r and {r} or nil)	
 
 local coords = {t,r,theta,phi}
-Tensor.coords{{variables = coords}}
+local chart = Tensor.Chart{coords=coords}
 
 -- schwarzschild metric in cartesian coordinates
 local g = Tensor('_uv', function(u,v) return u == v and ({-(1-R/r), 1/(1-R/r), r^2, r^2 * symmath.sin(theta)^2})[u] or 0 end) 

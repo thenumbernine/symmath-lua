@@ -106,13 +106,13 @@ Language.lookupTable = table(Language.lookupTable):union{
 
 	-- TODO re-encode to work with language valid variable names special chars
 	-- but looking at TensorIndex's own tostring(), looks like that could be merged with Variable's exporter too ...
-	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+	[require 'symmath.tensor.Index'] = function(self, expr)
 		return (expr:__tostring()
 			:gsub('_', '_D')
 			:gsub('%^', '_U'))
 	end,
 
-	[require 'symmath.tensor.TensorRef'] = function(self, expr)
+	[require 'symmath.tensor.Ref'] = function(self, expr)
 		return table.mapi(expr, function(x)
 			return self:apply(x)
 		end):concat()

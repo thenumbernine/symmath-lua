@@ -101,7 +101,7 @@ local A = var'A'
 local ADef = A:eq((r^2 + a^2)^2 - a^2 * Delta * sin(theta)^2)
 printbr(ADef)
 
-Tensor.coords{{variables={t,r,theta,phi}}}
+local chart = Tensor.Chart{coords={t,r,theta,phi}}
 
 -- from Kerr Metric Wikipedia / 2010 Muller, Grave "Catalog of Spacetimes" / 1972 Bardeen, Press, Teukolsky "Rotating Black Holes..."
 local rs_r_a_sin_theta_sq_over_sigma = (RSch*r*a*sin(theta)^2)/Sigma

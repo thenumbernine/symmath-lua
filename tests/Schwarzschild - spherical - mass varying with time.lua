@@ -13,7 +13,7 @@ require 'symmath'.setup{
 local t,r,theta,phi = vars('t','r','\\theta','\\phi')
 
 local coords = {t,r,theta,phi}
-Tensor.coords{{variables = coords}}
+local chart = Tensor.Chart{coords=coords}
 
 -- mass
 local R = var('R', coords)

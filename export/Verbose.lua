@@ -40,7 +40,7 @@ Verbose.lookupTable = table(Verbose.lookupTable):union{
 			return self(x)
 		end):concat', '..'}'
 	end,
-	[require 'symmath.tensor.TensorIndex'] = function(self, expr)
+	[require 'symmath.tensor.Index'] = function(self, expr)
 		-- NOTICE if TensorIndex ever became an Expression then its __tostring would be overriding the original
 		-- and if it didn't override the original ... then this tostring() call would be a recursive call
 		return expr:nameForExporter(self)..'{'..tostring(expr)..'}'

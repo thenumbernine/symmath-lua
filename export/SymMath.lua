@@ -60,7 +60,7 @@ SymMath.lookupTable = table(SymMath.lookupTable):union{
 			..self:apply(expr[1], indent..tab)..'\n'
 			..indent..')'
 	end,
-	[require 'symmath.tensor.TensorIndex'] = function(self, expr, indent)
+	[require 'symmath.tensor.Index'] = function(self, expr, indent)
 		local sep = ''
 		local s = expr:nameForExporter(self)..'{'
 		if expr.lower ~= nil then s = s..sep..'lower='..tolua(expr.lower) sep=', ' end

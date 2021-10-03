@@ -3,9 +3,12 @@ require 'ext'
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, implicitVars=true, MathJax=true}
-Tensor.coords{{variables={t,x,y,z}}, {variables={T,X,Y,Z}, symbols='ABCDEFGHIJKLMNOPQRSTUVWXYZ'}}
+
+local chart = Tensor.Chart{coords={t,x,y,z}}
+local flatChart = Tensor.Chart{coords={T,X,Y,Z}, symbols='ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+
 local eta = Tensor('_IJ', table.unpack(Matrix.diagonal(-1,1,1,1)))
-Tensor.metric(eta, eta, 'I')
+flatChart:setMetric(eta, eta)
 eta:printElem'\\eta' printbr()
 
 local units = require 'symmath.physics.units'()

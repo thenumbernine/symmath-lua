@@ -5,15 +5,14 @@ require 'symmath'.setup{implicitVars=true, MathJax={title='uniform field - spher
 local t, r, theta, phi = vars('t', 'r', '\\theta', '\\phi')
 local coords = {t, r, theta, phi}
 
-Tensor.coords{
-	{variables=coords},
-	{symbols='t', variables={t}},
-	{symbols='r', variables={r}},
-	--{symbols='theta', variables={theta}},
-	{symbols='h', variables={theta}},
-	--{symbols='phi', variables={phi}},
-	{symbols='p', variables={phi}},
-}
+local chart_t_r_h_p = Tensor.Chart{coords={t,r,theta,phi}}
+local chart_t = Tensor.Chart{symbols='t', coords={t}}
+local chart_r = Tensor.Chart{symbols='r', coords={r}}
+local chart_h = Tensor.Chart{symbols='h', coords={theta}}
+local chart_p = Tensor.Chart{symbols='p', coords={phi}}
+--{symbols='theta', variables={theta}},
+--{symbols='phi', variables={phi}},
+
 
 --[[
 local xa = Tensor('^a', t, r, theta, phi)

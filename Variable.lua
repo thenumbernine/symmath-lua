@@ -96,12 +96,6 @@ function Variable:shallowCopy()
 	return self
 end
 
--- used for comma derivatives
--- override this to override for anholonomic basis
-function Variable:applyDiff(x)
-	return x:diff(self)
-end
-
 --[[ this is the same as Derivative.visitors.Prune.self
 -- either is interoperable (right?)
 -- (TODO double check this with the non-coordinate derivatives that are used to create commutation coefficients)
@@ -186,7 +180,7 @@ function Variable:getDependentVars()
 end
 
 --[[
-similar function is found in symmath/tensor/TensorRef.lua
+similar function is found in symmath/tensor/Ref.lua
 only return true for the dependentVars entries with src==self
 that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
 --]]
@@ -195,7 +189,7 @@ function Variable:dependsOn(x)
 
 	if x == self then return true end
 	
-	local TensorRef = require 'symmath.tensor.TensorRef'
+	local TensorRef = require 'symmath.tensor.Ref'
 	if self.dependentVars then
 		for _,depvar in ipairs(self.dependentVars) do
 			if depvar.src == self then
@@ -220,7 +214,7 @@ function Variable:dependsOn(x)
 end
 
 --[[
-similar is function found in symmath/TensorRef.lua
+similar is function found in symmath/tensor/Ref.lua
 also an equivalent function in symmath/op/eq.lua
 set a variable's dependent vars to all variables found in the expression
 --]]

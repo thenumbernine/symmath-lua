@@ -1,505 +1,505 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>ADM Levi-Civita</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>ADM Levi-Civita</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
-    </head>
+	</head>
 	<body onload='tryToFindMathJax();'>
 
-${{ \beta}^i} = {\overset{i\downarrow}{\left[\begin{matrix} { \beta}^x \\ { \beta}^y \\ { \beta}^z\end{matrix}\right]}}$
+${{ \beta} ^i} = {\overset{i\downarrow}{\left[ \begin{matrix} { \beta} ^x \\ { \beta} ^y \\ { \beta} ^z\end{matrix} \right]}}$
 <br>
-${{ \beta}_i} = {\overset{i\downarrow}{\left[\begin{matrix} { \beta}_x \\ { \beta}_y \\ { \beta}_z\end{matrix}\right]}}$
+${{ \beta} _i} = {\overset{i\downarrow}{\left[ \begin{matrix} { \beta} _x \\ { \beta} _y \\ { \beta} _z\end{matrix} \right]}}$
 <br>
-${{\beta}^{2}} = {{{{{{ \beta}^x}} {{{ \beta}_x}}} + {{{{ \beta}^y}} {{{ \beta}_y}}}} + {{{{ \beta}^z}} {{{ \beta}_z}}}}$
+${{\beta}^{2}} = {{{{{ \beta} ^x}} {{{ \beta} _x}}} + {{{{ \beta} ^y}} {{{ \beta} _y}}} + {{{{ \beta} ^z}} {{{ \beta} _z}}}}$
 <br>
-${{{ \gamma}_i}_j} = {\overset{i\downarrow j\rightarrow}{\left[\begin{matrix}  {{ \gamma}_x}_x &  {{ \gamma}_x}_y &  {{ \gamma}_x}_z \\  {{ \gamma}_x}_y &  {{ \gamma}_y}_y &  {{ \gamma}_y}_z \\  {{ \gamma}_x}_z &  {{ \gamma}_y}_z &  {{ \gamma}_z}_z\end{matrix}\right]}}$
+${{{ \gamma} _i} _j} = {\overset{i\downarrow j\rightarrow}{\left[ \begin{matrix}  {{ \gamma} _x} _x &  {{ \gamma} _x} _y &  {{ \gamma} _x} _z \\  {{ \gamma} _x} _y &  {{ \gamma} _y} _y &  {{ \gamma} _y} _z \\  {{ \gamma} _x} _z &  {{ \gamma} _y} _z &  {{ \gamma} _z} _z\end{matrix} \right]}}$
 <br>
-${{{ \gamma}_i}_j} = {\overset{i\downarrow j\rightarrow}{\left[\begin{matrix}  {{ \gamma}_x}_x &  {{ \gamma}_x}_y &  {{ \gamma}_x}_z \\  {{ \gamma}_x}_y &  {{ \gamma}_y}_y &  {{ \gamma}_y}_z \\  {{ \gamma}_x}_z &  {{ \gamma}_y}_z &  {{ \gamma}_z}_z\end{matrix}\right]}}$
+${{{ \gamma} _i} _j} = {\overset{i\downarrow j\rightarrow}{\left[ \begin{matrix}  {{ \gamma} _x} _x &  {{ \gamma} _x} _y &  {{ \gamma} _x} _z \\  {{ \gamma} _x} _y &  {{ \gamma} _y} _y &  {{ \gamma} _y} _z \\  {{ \gamma} _x} _z &  {{ \gamma} _y} _z &  {{ \gamma} _z} _z\end{matrix} \right]}}$
 <br>
-${{{ \gamma}^i}^j} = {\overset{i\downarrow j\rightarrow}{\left[\begin{matrix}  {{ \gamma}^x}^x &  {{ \gamma}^x}^y &  {{ \gamma}^x}^z \\  {{ \gamma}^x}^y &  {{ \gamma}^y}^y &  {{ \gamma}^y}^z \\  {{ \gamma}^x}^z &  {{ \gamma}^y}^z &  {{ \gamma}^z}^z\end{matrix}\right]}}$
+${{{ \gamma} ^i} ^j} = {\overset{i\downarrow j\rightarrow}{\left[ \begin{matrix}  {{ \gamma} ^x} ^x &  {{ \gamma} ^x} ^y &  {{ \gamma} ^x} ^z \\  {{ \gamma} ^x} ^y &  {{ \gamma} ^y} ^y &  {{ \gamma} ^y} ^z \\  {{ \gamma} ^x} ^z &  {{ \gamma} ^y} ^z &  {{ \gamma} ^z} ^z\end{matrix} \right]}}$
 <br>
-${{{ g}_a}_b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  {-{{\alpha}^{2}}} + {{\beta}^{2}} &  { \beta}_x &  { \beta}_y &  { \beta}_z \\  { \beta}_x &  {{ \gamma}_x}_x &  {{ \gamma}_x}_y &  {{ \gamma}_x}_z \\  { \beta}_y &  {{ \gamma}_x}_y &  {{ \gamma}_y}_y &  {{ \gamma}_y}_z \\  { \beta}_z &  {{ \gamma}_x}_z &  {{ \gamma}_y}_z &  {{ \gamma}_z}_z\end{matrix}\right]}}$
+${{{ g} _a} _b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  {-{{\alpha}^{2}}} + {{\beta}^{2}} &  { \beta} _x &  { \beta} _y &  { \beta} _z \\  { \beta} _x &  {{ \gamma} _x} _x &  {{ \gamma} _x} _y &  {{ \gamma} _x} _z \\  { \beta} _y &  {{ \gamma} _x} _y &  {{ \gamma} _y} _y &  {{ \gamma} _y} _z \\  { \beta} _z &  {{ \gamma} _x} _z &  {{ \gamma} _y} _z &  {{ \gamma} _z} _z\end{matrix} \right]}}$
 <br>
-${{{ g}^a}^b} = {\overset{a\downarrow b\rightarrow}{\left[\begin{matrix}  -{{\alpha}^{-2}} &  {{{\alpha}^{-2}}} {{{ \beta}^x}} &  {{{\alpha}^{-2}}} {{{ \beta}^y}} &  {{{\alpha}^{-2}}} {{{ \beta}^z}} \\  {{{\alpha}^{-2}}} {{{ \beta}^x}} &  {{{ \gamma}^x}^x} - {{{{{{\alpha}^{-2}}} {{{ \beta}^x}}}} {{{ \beta}^x}}} &  {{{ \gamma}^x}^y} - {{{{{{\alpha}^{-2}}} {{{ \beta}^x}}}} {{{ \beta}^y}}} &  {{{ \gamma}^x}^z} - {{{{{{\alpha}^{-2}}} {{{ \beta}^x}}}} {{{ \beta}^z}}} \\  {{{\alpha}^{-2}}} {{{ \beta}^y}} &  {{{ \gamma}^x}^y} - {{{{{{\alpha}^{-2}}} {{{ \beta}^y}}}} {{{ \beta}^x}}} &  {{{ \gamma}^y}^y} - {{{{{{\alpha}^{-2}}} {{{ \beta}^y}}}} {{{ \beta}^y}}} &  {{{ \gamma}^y}^z} - {{{{{{\alpha}^{-2}}} {{{ \beta}^y}}}} {{{ \beta}^z}}} \\  {{{\alpha}^{-2}}} {{{ \beta}^z}} &  {{{ \gamma}^x}^z} - {{{{{{\alpha}^{-2}}} {{{ \beta}^z}}}} {{{ \beta}^x}}} &  {{{ \gamma}^y}^z} - {{{{{{\alpha}^{-2}}} {{{ \beta}^z}}}} {{{ \beta}^y}}} &  {{{ \gamma}^z}^z} - {{{{{{\alpha}^{-2}}} {{{ \beta}^z}}}} {{{ \beta}^z}}}\end{matrix}\right]}}$
-<br>
-
-<br>
-${{{{ \epsilon}_a}_b}_c}_d$
-<br>
-${{{{{ \epsilon}_t}_x}_y}_z} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_t}_x}_z}_y} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_t}_y}_x}_z} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_t}_y}_z}_x} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_t}_z}_x}_y} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_t}_z}_y}_x} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_x}_t}_y}_z} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_x}_t}_z}_y} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_x}_y}_t}_z} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_x}_y}_z}_t} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_x}_z}_t}_y} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_x}_z}_y}_t} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_y}_t}_x}_z} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_y}_t}_z}_x} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_y}_x}_t}_z} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_y}_x}_z}_t} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_y}_z}_t}_x} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_y}_z}_x}_t} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_z}_t}_x}_y} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_z}_t}_y}_x} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_z}_x}_t}_y} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$;
-${{{{{ \epsilon}_z}_x}_y}_t} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_z}_y}_t}_x} = {-{{{\alpha}} \cdot {{\sqrt \gamma}}}}$;
-${{{{{ \epsilon}_z}_y}_x}_t} = {{{\alpha}} \cdot {{\sqrt \gamma}}}$
-
+${{{ g} ^a} ^b} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  -{{\alpha}^{-2}} &  {{{\alpha}^{-2}}} {{{ \beta} ^x}} &  {{{\alpha}^{-2}}} {{{ \beta} ^y}} &  {{{\alpha}^{-2}}} {{{ \beta} ^z}} \\  {{{\alpha}^{-2}}} {{{ \beta} ^x}} &  {{{ \gamma} ^x} ^x} - {{{{\alpha}^{-2}}} {{{ \beta} ^x}} {{{ \beta} ^x}}} &  {{{ \gamma} ^x} ^y} - {{{{\alpha}^{-2}}} {{{ \beta} ^x}} {{{ \beta} ^y}}} &  {{{ \gamma} ^x} ^z} - {{{{\alpha}^{-2}}} {{{ \beta} ^x}} {{{ \beta} ^z}}} \\  {{{\alpha}^{-2}}} {{{ \beta} ^y}} &  {{{ \gamma} ^x} ^y} - {{{{\alpha}^{-2}}} {{{ \beta} ^y}} {{{ \beta} ^x}}} &  {{{ \gamma} ^y} ^y} - {{{{\alpha}^{-2}}} {{{ \beta} ^y}} {{{ \beta} ^y}}} &  {{{ \gamma} ^y} ^z} - {{{{\alpha}^{-2}}} {{{ \beta} ^y}} {{{ \beta} ^z}}} \\  {{{\alpha}^{-2}}} {{{ \beta} ^z}} &  {{{ \gamma} ^x} ^z} - {{{{\alpha}^{-2}}} {{{ \beta} ^z}} {{{ \beta} ^x}}} &  {{{ \gamma} ^y} ^z} - {{{{\alpha}^{-2}}} {{{ \beta} ^z}} {{{ \beta} ^y}}} &  {{{ \gamma} ^z} ^z} - {{{{\alpha}^{-2}}} {{{ \beta} ^z}} {{{ \beta} ^z}}}\end{matrix} \right]}}$
 <br>
 
 <br>
-${{{{ \epsilon}^a}_b}_c}_d$
+${{{{ \epsilon} _a} _b} _c} _d$
 <br>
-${{{{{ \epsilon}^t}_t}_x}_y} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}_t}_x}_z} = {{\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}_t}_y}_x} = {{\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}_t}_y}_z} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}_t}_z}_x} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}_t}_z}_y} = {{\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}_x}_t}_y} = {{\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}_x}_t}_z} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}_x}_y}_t} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}_x}_y}_z} = {{\frac{1}{\alpha}}{({-{\sqrt \gamma}})}}$;
-${{{{{ \epsilon}^t}_x}_z}_t} = {{\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}_x}_z}_y} = {{\frac{1}{\alpha}}{({\sqrt \gamma})}}$;
-${{{{{ \epsilon}^t}_y}_t}_x} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}_y}_t}_z} = {{\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}_y}_x}_t} = {{\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}_y}_x}_z} = {{\frac{1}{\alpha}}{({\sqrt \gamma})}}$;
-${{{{{ \epsilon}^t}_y}_z}_t} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}_y}_z}_x} = {{\frac{1}{\alpha}}{({-{\sqrt \gamma}})}}$;
-${{{{{ \epsilon}^t}_z}_t}_x} = {{\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}_z}_t}_y} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}_z}_x}_t} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}_z}_x}_y} = {{\frac{1}{\alpha}}{({-{\sqrt \gamma}})}}$;
-${{{{{ \epsilon}^t}_z}_y}_t} = {{\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}_z}_y}_x} = {{\frac{1}{\alpha}}{({\sqrt \gamma})}}$;
-${{{{{ \epsilon}^x}_t}_x}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^x}_t}_x}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^x}_t}_y}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^x}_t}_y}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^x}_t}_z}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^x}_t}_z}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^x}_x}_t}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^x}_x}_t}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^x}_x}_y}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^x}_x}_y}_z} = {{\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^x}_x}_z}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^x}_x}_z}_y} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^x}_y}_t}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^x}_y}_t}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^x}_y}_x}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^x}_y}_x}_z} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^x}_y}_z}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^x}_y}_z}_x} = {{\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^x}_z}_t}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^x}_z}_t}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^x}_z}_x}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^x}_z}_x}_y} = {{\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^x}_z}_y}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^x}_z}_y}_x} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^y}_t}_x}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^y}_t}_x}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}_t}_y}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^y}_t}_y}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}_t}_z}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}_t}_z}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}_x}_t}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^y}_x}_t}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}_x}_y}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^y}_x}_y}_z} = {{\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^y}_x}_z}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}_x}_z}_y} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^y}_y}_t}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^y}_y}_t}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}_y}_x}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^y}_y}_x}_z} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^y}_y}_z}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}_y}_z}_x} = {{\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^y}_z}_t}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}_z}_t}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}_z}_x}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}_z}_x}_y} = {{\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^y}_z}_y}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}_z}_y}_x} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^z}_t}_x}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}_t}_x}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}_t}_y}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}_t}_y}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}_t}_z}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}_t}_z}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}_x}_t}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}_x}_t}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}_x}_y}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}_x}_y}_z} = {{\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^z}_x}_z}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}_x}_z}_y} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^z}_y}_t}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}_y}_t}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}_y}_x}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}_y}_x}_z} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^z}_y}_z}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}_y}_z}_x} = {{\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^z}_z}_t}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}_z}_t}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}_z}_x}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}_z}_x}_y} = {{\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^z}_z}_y}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}_z}_y}_x} = {{\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}}$
+${{{{{ \epsilon} _t} _x} _y} _z} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _t} _x} _z} _y} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _t} _y} _x} _z} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _t} _y} _z} _x} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _t} _z} _x} _y} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _t} _z} _y} _x} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _x} _t} _y} _z} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _x} _t} _z} _y} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _x} _y} _t} _z} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _x} _y} _z} _t} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _x} _z} _t} _y} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _x} _z} _y} _t} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _y} _t} _x} _z} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _y} _t} _z} _x} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _y} _x} _t} _z} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _y} _x} _z} _t} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _y} _z} _t} _x} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _y} _z} _x} _t} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _z} _t} _x} _y} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _z} _t} _y} _x} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _z} _x} _t} _y} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} _z} _x} _y} _t} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _z} _y} _t} _x} = {-{{{\alpha}} \cdot {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} _z} _y} _x} _t} = {{{\alpha}} \cdot {{\sqrt{\gamma}}}}$
 
 <br>
-ratios	$\frac{{{{{ \epsilon}^a}_b}_c}_d}{{{{{ \epsilon}_a}_b}_c}_d}$
+
 <br>
-...shared with 	${{{{ \epsilon}_a}_b}_c}_d$
+${{{{ \epsilon} ^a} _b} _c} _d$
+<br>
+${{{{{ \epsilon} ^t} _t} _x} _y} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} _t} _x} _z} = {{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} _t} _y} _x} = {{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} _t} _y} _z} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} _t} _z} _x} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} _t} _z} _y} = {{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} _x} _t} _y} = {{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} _x} _t} _z} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} _x} _y} _t} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} _x} _y} _z} = {-{{\frac{1}{\alpha}} {\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} ^t} _x} _z} _t} = {{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} _x} _z} _y} = {{\frac{1}{\alpha}} {\sqrt{\gamma}}}$;
+${{{{{ \epsilon} ^t} _y} _t} _x} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} _y} _t} _z} = {{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} _y} _x} _t} = {{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} _y} _x} _z} = {{\frac{1}{\alpha}} {\sqrt{\gamma}}}$;
+${{{{{ \epsilon} ^t} _y} _z} _t} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} _y} _z} _x} = {-{{\frac{1}{\alpha}} {\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} ^t} _z} _t} _x} = {{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} _z} _t} _y} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} _z} _x} _t} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} _z} _x} _y} = {-{{\frac{1}{\alpha}} {\sqrt{\gamma}}}}$;
+${{{{{ \epsilon} ^t} _z} _y} _t} = {{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} _z} _y} _x} = {{\frac{1}{\alpha}} {\sqrt{\gamma}}}$;
+${{{{{ \epsilon} ^x} _t} _x} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _t} _x} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _t} _y} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _t} _y} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}}} + {{{ \beta} ^x}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _t} _z} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _t} _z} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{ \beta} ^x}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _x} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _x} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _x} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _x} _y} _z} = {{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^x} _x} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _x} _z} _y} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^x} _y} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _y} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{ \beta} ^x}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _y} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _y} _x} _z} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^x} _y} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}}} + {{{ \beta} ^x}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _y} _z} _x} = {{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^x} _z} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _z} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}}} + {{{ \beta} ^x}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _z} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _z} _x} _y} = {{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^x} _z} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{ \beta} ^x}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} _z} _y} _x} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^y} _t} _x} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _t} _x} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{ \beta} ^y}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _t} _y} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _t} _y} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _t} _z} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}}} + {{{ \beta} ^y}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _t} _z} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _x} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _x} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}}} + {{{ \beta} ^y}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _x} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _x} _y} _z} = {{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^y} _x} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{ \beta} ^y}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _x} _z} _y} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^y} _y} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _y} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _y} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _y} _x} _z} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^y} _y} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _y} _z} _x} = {{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^y} _z} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{ \beta} ^y}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _z} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _z} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}}} + {{{ \beta} ^y}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _z} _x} _y} = {{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^y} _z} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} _z} _y} _x} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^z} _t} _x} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}}} + {{{ \beta} ^z}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _t} _x} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _t} _y} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{ \beta} ^z}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _t} _y} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _t} _z} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _t} _z} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _x} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{ \beta} ^z}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _x} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _x} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}}} + {{{ \beta} ^z}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _x} _y} _z} = {{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^z} _x} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _x} _z} _y} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^z} _y} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}}} + {{{ \beta} ^z}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _y} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _y} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{ \beta} ^z}^{2}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _y} _x} _z} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^z} _y} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _y} _z} _x} = {{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^z} _z} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _z} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _z} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _z} _x} _y} = {{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^z} _z} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} _z} _y} _x} = {-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}}$
+
+<br>
+ratios	$\frac{{{{{ \epsilon} ^a} _b} _c} _d}{{{{{ \epsilon} _a} _b} _c} _d}$
+<br>
+...shared with 	${{{{ \epsilon} _a} _b} _c} _d$
 <br>
 txyz	:	$-{\frac{1}{{\alpha}^{2}}}$
 <br>
-txzy	:	$\frac{1}{-{{\alpha}^{2}}}$
+txzy	:	$-{\frac{1}{{\alpha}^{2}}}$
 <br>
-tyxz	:	$\frac{1}{-{{\alpha}^{2}}}$
+tyxz	:	$-{\frac{1}{{\alpha}^{2}}}$
 <br>
 tyzx	:	$-{\frac{1}{{\alpha}^{2}}}$
 <br>
 tzxy	:	$-{\frac{1}{{\alpha}^{2}}}$
 <br>
-tzyx	:	$\frac{1}{-{{\alpha}^{2}}}$
+tzyx	:	$-{\frac{1}{{\alpha}^{2}}}$
 <br>
-xtyz	:	$\frac{{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}}{-{{\alpha}^{2}}}$
+xtyz	:	$\frac{{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{ \beta} ^x}^{2}}}{{\alpha}^{2}}$
 <br>
-xtzy	:	$\frac{-{({{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}})}}{{\alpha}^{2}}$
+xtzy	:	$\frac{{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{ \beta} ^x}^{2}}}{{\alpha}^{2}}$
 <br>
-xytz	:	$\frac{-{({{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}})}}{{\alpha}^{2}}$
+xytz	:	$\frac{{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{ \beta} ^x}^{2}}}{{\alpha}^{2}}$
 <br>
-xyzt	:	$\frac{{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}}{-{{\alpha}^{2}}}$
+xyzt	:	$\frac{{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{ \beta} ^x}^{2}}}{{\alpha}^{2}}$
 <br>
-xzty	:	$\frac{{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}}{-{{\alpha}^{2}}}$
+xzty	:	$\frac{{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{ \beta} ^x}^{2}}}{{\alpha}^{2}}$
 <br>
-xzyt	:	$\frac{-{({{{{ \beta}^x}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}}}})}}{{\alpha}^{2}}$
+xzyt	:	$\frac{{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{ \beta} ^x}^{2}}}{{\alpha}^{2}}$
 <br>
-ytxz	:	$\frac{-{({{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}})}}{{\alpha}^{2}}$
+ytxz	:	$\frac{{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{ \beta} ^y}^{2}}}{{\alpha}^{2}}$
 <br>
-ytzx	:	$\frac{{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}}{-{{\alpha}^{2}}}$
+ytzx	:	$\frac{{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{ \beta} ^y}^{2}}}{{\alpha}^{2}}$
 <br>
-yxtz	:	$\frac{{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}}{-{{\alpha}^{2}}}$
+yxtz	:	$\frac{{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{ \beta} ^y}^{2}}}{{\alpha}^{2}}$
 <br>
-yxzt	:	$\frac{-{({{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}})}}{{\alpha}^{2}}$
+yxzt	:	$\frac{{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{ \beta} ^y}^{2}}}{{\alpha}^{2}}$
 <br>
-yztx	:	$\frac{-{({{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}})}}{{\alpha}^{2}}$
+yztx	:	$\frac{{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{ \beta} ^y}^{2}}}{{\alpha}^{2}}$
 <br>
-yzxt	:	$\frac{{{{ \beta}^y}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}}}}{-{{\alpha}^{2}}}$
+yzxt	:	$\frac{{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{ \beta} ^y}^{2}}}{{\alpha}^{2}}$
 <br>
-ztxy	:	$\frac{{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}}{-{{\alpha}^{2}}}$
+ztxy	:	$\frac{{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{ \beta} ^z}^{2}}}{{\alpha}^{2}}$
 <br>
-ztyx	:	$\frac{-{({{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}})}}{{\alpha}^{2}}$
+ztyx	:	$\frac{{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{ \beta} ^z}^{2}}}{{\alpha}^{2}}$
 <br>
-zxty	:	$\frac{-{({{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}})}}{{\alpha}^{2}}$
+zxty	:	$\frac{{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{ \beta} ^z}^{2}}}{{\alpha}^{2}}$
 <br>
-zxyt	:	$\frac{{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}}{-{{\alpha}^{2}}}$
+zxyt	:	$\frac{{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{ \beta} ^z}^{2}}}{{\alpha}^{2}}$
 <br>
-zytx	:	$\frac{{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}}{-{{\alpha}^{2}}}$
+zytx	:	$\frac{{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{ \beta} ^z}^{2}}}{{\alpha}^{2}}$
 <br>
-zyxt	:	$\frac{-{({{{{ \beta}^z}^{2}} - {{{{\alpha}^{2}}} {{{{ \gamma}^z}^z}}}})}}{{\alpha}^{2}}$
+zyxt	:	$\frac{{{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{ \beta} ^z}^{2}}}{{\alpha}^{2}}$
 <br>
-...unique to	${{{{ \epsilon}^a}_b}_c}_d$
+...unique to	${{{{ \epsilon} ^a} _b} _c} _d$
 <br>
-ttxy	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}$
+ttxy	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$
 <br>
-ttxz	:	${\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}$
+ttxz	:	${\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}$
 <br>
-ttyx	:	${\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}$
+ttyx	:	${\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}$
 <br>
-ttyz	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}$
+ttyz	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$
 <br>
-ttzx	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}$
+ttzx	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$
 <br>
-ttzy	:	${\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}$
+ttzy	:	${\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}$
 <br>
-txty	:	${\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}$
+txty	:	${\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}$
 <br>
-txtz	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}$
+txtz	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$
 <br>
-txyt	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}$
+txyt	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$
 <br>
-txzt	:	${\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}$
+txzt	:	${\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}$
 <br>
-tytx	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}$
+tytx	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$
 <br>
-tytz	:	${\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}$
+tytz	:	${\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}$
 <br>
-tyxt	:	${\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}$
+tyxt	:	${\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}$
 <br>
-tyzt	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}$
+tyzt	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$
 <br>
-tztx	:	${\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}$
+tztx	:	${\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}$
 <br>
-tzty	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}$
+tzty	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$
 <br>
-tzxt	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}$
+tzxt	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$
 <br>
-tzyt	:	${\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}$
+tzyt	:	${\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}$
 <br>
-xtxy	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}$
+xtxy	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xtxz	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}$
+xtxz	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xtyx	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}$
+xtyx	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xtzx	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}$
+xtzx	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xxty	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}$
+xxty	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xxtz	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}$
+xxtz	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xxyt	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}$
+xxyt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xxyz	:	${\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}$
+xxyz	:	${\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}$
 <br>
-xxzt	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}$
+xxzt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xxzy	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}$
+xxzy	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$
 <br>
-xytx	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}$
+xytx	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xyxt	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}$
+xyxt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xyxz	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}$
+xyxz	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$
 <br>
-xyzx	:	${\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}$
+xyzx	:	${\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}$
 <br>
-xztx	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}$
+xztx	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xzxt	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}$
+xzxt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-xzxy	:	${\frac{1}{\alpha}}{({{{{ \beta}^x}} {{\sqrt \gamma}}})}$
+xzxy	:	${\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}$
 <br>
-xzyx	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^x}} {{\sqrt \gamma}}}})}$
+xzyx	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^x}} {{\sqrt{\gamma}}}}}$
 <br>
-ytxy	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}$
+ytxy	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-ytyx	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}$
+ytyx	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-ytyz	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}$
+ytyz	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-ytzy	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}$
+ytzy	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-yxty	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}$
+yxty	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-yxyt	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}$
+yxyt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-yxyz	:	${\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}$
+yxyz	:	${\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}$
 <br>
-yxzy	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}$
+yxzy	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$
 <br>
-yytx	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}$
+yytx	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-yytz	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}$
+yytz	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-yyxt	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}$
+yyxt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-yyxz	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}$
+yyxz	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$
 <br>
-yyzt	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}$
+yyzt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-yyzx	:	${\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}$
+yyzx	:	${\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}$
 <br>
-yzty	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}})}$
+yzty	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-yzxy	:	${\frac{1}{\alpha}}{({{{{ \beta}^y}} {{\sqrt \gamma}}})}$
+yzxy	:	${\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}$
 <br>
-yzyt	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}}}})}}}})}$
+yzyt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}}}} + {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-yzyx	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^y}} {{\sqrt \gamma}}}})}$
+yzyx	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^y}} {{\sqrt{\gamma}}}}}$
 <br>
-ztxz	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}$
+ztxz	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-ztyz	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}$
+ztyz	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-ztzx	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}$
+ztzx	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-ztzy	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}$
+ztzy	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-zxtz	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}$
+zxtz	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-zxyz	:	${\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}$
+zxyz	:	${\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}$
 <br>
-zxzt	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}$
+zxzt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-zxzy	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}$
+zxzy	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$
 <br>
-zytz	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}$
+zytz	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-zyxz	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}$
+zyxz	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$
 <br>
-zyzt	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}$
+zyzt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-zyzx	:	${\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}$
+zyzx	:	${\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}$
 <br>
-zztx	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}}})}$
+zztx	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-zzty	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}})}$
+zzty	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-zzxt	:	${\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^y}^z}}}})}}})}$
+zzxt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{ \beta} ^z}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-zzxy	:	${\frac{1}{\alpha}}{({{{{ \beta}^z}} {{\sqrt \gamma}}})}$
+zzxy	:	${\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}$
 <br>
-zzyt	:	${\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}}}})}}}})}$
+zzyt	:	${\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^z}}}} + {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}}\right)}}}$
 <br>
-zzyx	:	${\frac{1}{\alpha}}{({-{{{{ \beta}^z}} {{\sqrt \gamma}}}})}$
+zzyx	:	$-{{\frac{1}{\alpha}} {{{{ \beta} ^z}} {{\sqrt{\gamma}}}}}$
 <br>
 
 <br>
-${{{{ \epsilon}^a}^b}_c}_d$
+${{{{ \epsilon} ^a} ^b} _c} _d$
 <br>
-${{{{{ \epsilon}^t}^x}_t}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^t}^x}_t}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^t}^x}_t}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^t}^x}_x}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^t}^x}_x}_y} = {{\frac{1}{\alpha}}{({-{{{{{ \gamma}^x}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}^x}_x}_z} = {{\frac{1}{\alpha}}{({{{{{ \gamma}^x}^y}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}^x}_y}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^t}^x}_y}_x} = {{\frac{1}{\alpha}}{({{{{{ \gamma}^x}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}^x}_y}_z} = {{\frac{1}{\alpha}}{({-{{{{{ \gamma}^x}^x}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}^x}_z}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^t}^x}_z}_x} = {{\frac{1}{\alpha}}{({-{{{{{ \gamma}^x}^y}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}^x}_z}_y} = {{\frac{1}{\alpha}}{({{{{{ \gamma}^x}^x}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}^y}_t}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^t}^y}_t}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^t}^y}_t}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^t}^y}_x}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^t}^y}_x}_y} = {{\frac{1}{\alpha}}{({-{{{{{ \gamma}^y}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}^y}_x}_z} = {{\frac{1}{\alpha}}{({{{{{ \gamma}^y}^y}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}^y}_y}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^t}^y}_y}_x} = {{\frac{1}{\alpha}}{({{{{{ \gamma}^y}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}^y}_y}_z} = {{\frac{1}{\alpha}}{({-{{{{{ \gamma}^x}^y}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}^y}_z}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^t}^y}_z}_x} = {{\frac{1}{\alpha}}{({-{{{{{ \gamma}^y}^y}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}^y}_z}_y} = {{\frac{1}{\alpha}}{({{{{{ \gamma}^x}^y}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}^z}_t}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^t}^z}_t}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^t}^z}_t}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^t}^z}_x}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^t}^z}_x}_y} = {{\frac{1}{\alpha}}{({-{{{{{ \gamma}^z}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}^z}_x}_z} = {{\frac{1}{\alpha}}{({{{{{ \gamma}^y}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}^z}_y}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^t}^z}_y}_x} = {{\frac{1}{\alpha}}{({{{{{ \gamma}^z}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^t}^z}_y}_z} = {{\frac{1}{\alpha}}{({-{{{{{ \gamma}^x}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}^z}_z}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^t}^z}_z}_x} = {{\frac{1}{\alpha}}{({-{{{{{ \gamma}^y}^z}} {{\sqrt \gamma}}}})}}$;
-${{{{{ \epsilon}^t}^z}_z}_y} = {{\frac{1}{\alpha}}{({{{{{ \gamma}^x}^z}} {{\sqrt \gamma}}})}}$;
-${{{{{ \epsilon}^x}^t}_t}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^t}_t}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^x}^t}_t}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^t}_x}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^x}^t}_x}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{{{ \gamma}^x}^z}}})}}$;
-${{{{{ \epsilon}^x}^t}_x}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{{{ \gamma}^x}^y}}}})}}$;
-${{{{{ \epsilon}^x}^t}_y}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^t}_y}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{{{ \gamma}^x}^z}}}})}}$;
-${{{{{ \epsilon}^x}^t}_y}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{{{ \gamma}^x}^x}}})}}$;
-${{{{{ \epsilon}^x}^t}_z}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^x}^t}_z}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{{{ \gamma}^x}^y}}})}}$;
-${{{{{ \epsilon}^x}^t}_z}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{{{ \gamma}^x}^x}}}})}}$;
-${{{{{ \epsilon}^x}^y}_t}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^y}}}} + {{{{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^z}} {{{{ \beta}^y}^{2}}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^y}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^y}_t}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^z}}} + {{{{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^x}}}} - {{{{{ \gamma}^y}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^x}^z}}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^y}_t}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^x}} {{{{ \beta}^y}^{2}}}}} - {{{{{ \gamma}^y}^y}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^y}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^x}^y}^{2}}}}}})}}})}}$;
-${{{{{ \epsilon}^x}^y}_x}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^y}}}} + {{{{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^z}} {{{{ \beta}^y}^{2}}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^y}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^x}^y}_x}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^x}^y}_x}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^y}_y}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^z}}} + {{{{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^x}}}} - {{{{{ \gamma}^y}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^x}^z}}}}})}}})}}$;
-${{{{{ \epsilon}^x}^y}_y}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^y}_y}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^x}^y}_z}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^x}} {{{{ \beta}^y}^{2}}}}} - {{{{{ \gamma}^y}^y}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^y}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^x}^y}^{2}}}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^y}_z}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^x}^y}_z}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^z}_t}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}}} + {{{{{{ \gamma}^x}^y}} {{{{ \beta}^z}^{2}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^z}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^z}_t}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}} - {{{{{ \gamma}^x}^x}} {{{{ \beta}^z}^{2}}}}} - {{{{{ \gamma}^z}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^z}^z}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^x}^z}^{2}}}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^z}_t}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^z}}} + {{{{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^x}}}} - {{{{{ \gamma}^y}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^x}^z}}}}})}}})}}$;
-${{{{{ \epsilon}^x}^z}_x}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}}} + {{{{{{ \gamma}^x}^y}} {{{{ \beta}^z}^{2}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^z}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^x}^z}_x}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^x}^z}_x}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^z}_y}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}} - {{{{{ \gamma}^x}^x}} {{{{ \beta}^z}^{2}}}}} - {{{{{ \gamma}^z}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^z}^z}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^x}^z}^{2}}}}}})}}})}}$;
-${{{{{ \epsilon}^x}^z}_y}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^z}_y}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^x}^z}_z}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^z}}} + {{{{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^x}}}} - {{{{{ \gamma}^y}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^x}^z}}}}})}}}})}}$;
-${{{{{ \epsilon}^x}^z}_z}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^x}^z}_z}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^t}_t}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^t}_t}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}^t}_t}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^t}_x}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}^t}_x}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{{{ \gamma}^y}^z}}})}}$;
-${{{{{ \epsilon}^y}^t}_x}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{{{ \gamma}^y}^y}}}})}}$;
-${{{{{ \epsilon}^y}^t}_y}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^t}_y}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{{{ \gamma}^y}^z}}}})}}$;
-${{{{{ \epsilon}^y}^t}_y}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{{{ \gamma}^x}^y}}})}}$;
-${{{{{ \epsilon}^y}^t}_z}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}^t}_z}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{{{ \gamma}^y}^y}}})}}$;
-${{{{{ \epsilon}^y}^t}_z}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{{{ \gamma}^x}^y}}}})}}$;
-${{{{{ \epsilon}^y}^x}_t}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^y}}}} + {{{{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^z}} {{{{ \beta}^y}^{2}}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^y}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}^x}_t}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^z}}} + {{{{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^x}}}} - {{{{{ \gamma}^y}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^x}^z}}}}})}}})}}$;
-${{{{{ \epsilon}^y}^x}_t}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^x}} {{{{ \beta}^y}^{2}}}}} - {{{{{ \gamma}^y}^y}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^y}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^x}^y}^{2}}}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^x}_x}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^y}}}} + {{{{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^z}} {{{{ \beta}^y}^{2}}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^y}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^x}_x}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^x}_x}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}^x}_y}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^z}}} + {{{{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^x}}}} - {{{{{ \gamma}^y}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^x}^z}}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^x}_y}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^y}^x}_y}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^x}_z}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^x}} {{{{ \beta}^y}^{2}}}}} - {{{{{ \gamma}^y}^y}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^y}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^x}^y}^{2}}}}}})}}})}}$;
-${{{{{ \epsilon}^y}^x}_z}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^x}_z}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^y}^z}_t}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}} - {{{{{ \gamma}^y}^y}} {{{{ \beta}^z}^{2}}}}} - {{{{{ \gamma}^z}^z}} {{{{ \beta}^y}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}} {{{{ \gamma}^z}^z}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^y}^z}^{2}}}}}})}}})}}$;
-${{{{{ \epsilon}^y}^z}_t}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}}} + {{{{{{ \gamma}^x}^y}} {{{{ \beta}^z}^{2}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^z}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^y}^z}_t}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^y}}}} + {{{{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^z}} {{{{ \beta}^y}^{2}}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^y}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^z}_x}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}} - {{{{{ \gamma}^y}^y}} {{{{ \beta}^z}^{2}}}}} - {{{{{ \gamma}^z}^z}} {{{{ \beta}^y}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}} {{{{ \gamma}^z}^z}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^y}^z}^{2}}}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^z}_x}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^y}^z}_x}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^z}_y}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}}} + {{{{{{ \gamma}^x}^y}} {{{{ \beta}^z}^{2}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^z}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^z}_y}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^y}^z}_y}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}^z}_z}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^y}}}} + {{{{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^z}} {{{{ \beta}^y}^{2}}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^y}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}^z}_z}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^y}^z}_z}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^t}_t}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^t}_t}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}^t}_t}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^t}_x}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}^t}_x}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{{{ \gamma}^z}^z}}})}}$;
-${{{{{ \epsilon}^z}^t}_x}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{{{ \gamma}^y}^z}}}})}}$;
-${{{{{ \epsilon}^z}^t}_y}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^t}_y}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{{{ \gamma}^z}^z}}}})}}$;
-${{{{{ \epsilon}^z}^t}_y}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{{{ \gamma}^x}^z}}})}}$;
-${{{{{ \epsilon}^z}^t}_z}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^y}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}^t}_z}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{{{ \gamma}^y}^z}}})}}$;
-${{{{{ \epsilon}^z}^t}_z}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{{{ \gamma}^x}^z}}}})}}$;
-${{{{{ \epsilon}^z}^x}_t}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}}} + {{{{{{ \gamma}^x}^y}} {{{{ \beta}^z}^{2}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^z}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}^x}_t}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}} - {{{{{ \gamma}^x}^x}} {{{{ \beta}^z}^{2}}}}} - {{{{{ \gamma}^z}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^z}^z}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^x}^z}^{2}}}}}})}}})}}$;
-${{{{{ \epsilon}^z}^x}_t}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^z}}} + {{{{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^x}}}} - {{{{{ \gamma}^y}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^x}^z}}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^x}_x}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}}} + {{{{{{ \gamma}^x}^y}} {{{{ \beta}^z}^{2}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^z}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^x}_x}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^x}_x}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}})}}$;
-${{{{{ \epsilon}^z}^x}_y}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}} - {{{{{ \gamma}^x}^x}} {{{{ \beta}^z}^{2}}}}} - {{{{{ \gamma}^z}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^z}^z}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^x}^z}^{2}}}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^x}_y}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}^x}_y}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^x}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^x}_z}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^x}^z}}} + {{{{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^x}}}} - {{{{{ \gamma}^y}^z}} {{{{ \beta}^x}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^x}^x}} {{{{ \gamma}^y}^z}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^x}^z}}}}})}}})}}$;
-${{{{{ \epsilon}^z}^x}_z}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^x}_z}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^x}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^x}}}})}}})}}$;
-${{{{{ \epsilon}^z}^y}_t}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}} - {{{{{ \gamma}^y}^y}} {{{{ \beta}^z}^{2}}}}} - {{{{{ \gamma}^z}^z}} {{{{ \beta}^y}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}} {{{{ \gamma}^z}^z}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^y}^z}^{2}}}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^y}_t}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}}} + {{{{{{ \gamma}^x}^y}} {{{{ \beta}^z}^{2}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^z}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^y}_t}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^y}}}} + {{{{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^z}} {{{{ \beta}^y}^{2}}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^y}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^z}^y}_x}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{2}} {{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}} - {{{{{ \gamma}^y}^y}} {{{{ \beta}^z}^{2}}}}} - {{{{{ \gamma}^z}^z}} {{{{ \beta}^y}^{2}}}}} + {{{{{\alpha}^{2}}} {{{{ \gamma}^y}^y}} {{{{ \gamma}^z}^z}}} - {{{{\alpha}^{2}}} {{{{{ \gamma}^y}^z}^{2}}}}}})}}})}}$;
-${{{{{ \epsilon}^z}^y}_x}_y} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^z}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^y}_x}_z} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^y}}}})}}})}}$;
-${{{{{ \epsilon}^z}^y}_y}_t} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^z}}}} - {{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^z}}}} + {{{{{{ \gamma}^x}^y}} {{{{ \beta}^z}^{2}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^z}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}^y}_y}_x} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^z}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^z}}}})}}})}}$;
-${{{{{ \epsilon}^z}^y}_y}_z} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^y}_z}_t} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{{ \beta}^x}} {{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^x}} {{{ \beta}^z}} {{{{ \gamma}^y}^y}}}} + {{{{{{ \beta}^y}} {{{ \beta}^z}} {{{{ \gamma}^x}^y}}} - {{{{{ \gamma}^x}^z}} {{{{ \beta}^y}^{2}}}}} - {{{{\alpha}^{2}}} {{{{ \gamma}^x}^y}} {{{{ \gamma}^y}^z}}}} + {{{{\alpha}^{2}}} {{{{ \gamma}^x}^z}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^y}_z}_x} = {{\frac{1}{\alpha}}{({-{{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^y}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^y}^y}}}})}}}})}}$;
-${{{{{ \epsilon}^z}^y}_z}_y} = {{\frac{1}{\alpha}}{({{{\sqrt \gamma}} {{({{{{{ \beta}^y}} {{{{ \gamma}^x}^z}}} - {{{{ \beta}^z}} {{{{ \gamma}^x}^y}}}})}}})}}$
+${{{{{ \epsilon} ^t} ^x} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^x} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^x} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^y}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^x} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^x} _x} _y} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} ^x} _x} _z} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} ^x} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^x} _y} _x} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} ^x} _y} _z} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^x}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} ^x} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^y}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^x} _z} _x} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} ^x} _z} _y} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^x}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} ^y} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^y} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^y} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^y}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^y} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^y} _x} _y} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} ^y} _x} _z} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} ^y} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^y} _y} _x} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} ^y} _y} _z} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} ^y} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^y}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^y} _z} _x} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} ^y} _z} _y} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} ^z} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^z} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^z} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^z} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^z} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^z} _x} _y} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^z} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} ^z} _x} _z} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} ^z} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^z} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^z} _y} _x} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^z} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^t} ^z} _y} _z} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} ^z} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^t} ^z} _z} _x} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^t} ^z} _z} _y} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^x} ^t} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^t} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^t} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^y}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^t} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^t} _x} _y} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^x} ^t} _x} _z} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^x} ^t} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^t} _y} _x} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^x} ^t} _y} _z} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^x}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^x} ^t} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^y}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^t} _z} _x} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^x} ^t} _z} _y} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^x}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^x} ^y} _t} _x} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} + {{{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}} + {{{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^y} _t} _y} = {\frac{{{\sqrt{\gamma}}} {{\left({{{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{4}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^y} _t} _z} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{2}} {{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}}} + {{{{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}} - {{{{\alpha}^{4}}} {{{{{ \gamma} ^x} ^y}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^y} _x} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}}} + {{{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^y} _x} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^y} _x} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^y}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^y} _y} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} + {{{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}}} + {{{{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{4}}}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^y} _y} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^y} _y} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^y}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^y} _z} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{2}} {{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}} + {{{{\alpha}^{4}}} {{{{{ \gamma} ^x} ^y}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^y} _z} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^y}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^y} _z} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^y}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^z} _t} _x} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}}} + {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} + {{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}}} + {{{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^z} _t} _y} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{2}} {{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}} + {{{{\alpha}^{4}}} {{{{{ \gamma} ^x} ^z}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^z} _t} _z} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} + {{{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}}} + {{{{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{4}}}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^z} _x} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^z} _x} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^z} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^z} _x} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^z} _y} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{2}} {{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}}} + {{{{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}} - {{{{\alpha}^{4}}} {{{{{ \gamma} ^x} ^z}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^z} _y} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^z} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^z} _y} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^z} _z} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{4}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^x} ^z} _z} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^x} ^z} _z} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^t} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^t} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^t} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^y}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^t} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^t} _x} _y} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^y} ^t} _x} _z} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^y} ^t} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^t} _y} _x} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^y} ^t} _y} _z} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^y} ^t} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^y}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^t} _z} _x} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^y}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^y} ^t} _z} _y} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^y}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^y} ^x} _t} _x} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}}} + {{{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^x} _t} _y} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} + {{{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}}} + {{{{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{4}}}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^x} _t} _z} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{2}} {{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}} + {{{{\alpha}^{4}}} {{{{{ \gamma} ^x} ^y}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^x} _x} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} + {{{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}} + {{{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^x} _x} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^x} _x} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^y}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^x} _y} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{4}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^x} _y} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^x} _y} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^y}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^x} _z} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{2}} {{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}}} + {{{{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}} - {{{{\alpha}^{4}}} {{{{{ \gamma} ^x} ^y}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^x} _z} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^y}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^x} _z} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^y}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^z} _t} _x} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{2}} {{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}}} + {{{{{{{ \gamma} ^y} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}}} - {{{{\alpha}^{4}}} {{{{{ \gamma} ^y} ^z}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^z} _t} _y} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^z} _t} _z} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} + {{{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}} + {{{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^z} _x} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{2}} {{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}} - {{{{{ \gamma} ^y} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}} + {{{{\alpha}^{4}}} {{{{{ \gamma} ^y} ^z}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^z} _x} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^z} _x} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^z} _y} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}}} + {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} + {{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}}} + {{{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^z} _y} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^z} _y} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^z} _z} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}}} + {{{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^y} ^z} _z} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^y} ^z} _z} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^t} _t} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^t} _t} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^z} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^t} _t} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^t} _x} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^t} _x} _y} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^z} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^z} ^t} _x} _z} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^z} ^t} _y} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^z} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^t} _y} _x} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^z} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^z} ^t} _y} _z} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^z} ^t} _z} _t} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^t} _z} _x} = {{\frac{1}{\alpha}} {{{{{ \gamma} ^y} ^z}} {{\sqrt{\gamma}}}}}$;
+${{{{{ \epsilon} ^z} ^t} _z} _y} = {-{{\frac{1}{\alpha}} {{{{{ \gamma} ^x} ^z}} {{\sqrt{\gamma}}}}}}$;
+${{{{{ \epsilon} ^z} ^x} _t} _x} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^x} _t} _y} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{2}} {{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}}} + {{{{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}} - {{{{\alpha}^{4}}} {{{{{ \gamma} ^x} ^z}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^x} _t} _z} = {\frac{{{\sqrt{\gamma}}} {{\left({{{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{4}}}} + {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^x} _x} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}}} + {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} + {{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}}} + {{{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^x} _x} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^z} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^x} _x} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^x} _y} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{2}} {{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}} - {{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}} + {{{{\alpha}^{4}}} {{{{{ \gamma} ^x} ^z}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^x} _y} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^z} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^x} _y} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^x} _z} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} + {{{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}} {{{\alpha}^{2}}}}} + {{{{{{{ \gamma} ^x} ^x}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{4}}}}} - {{{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^x}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^x} _z} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^x} _z} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^x}} {{{{ \gamma} ^x} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^x}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^y} _t} _x} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{2}} {{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}} - {{{{{ \gamma} ^y} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}} + {{{{\alpha}^{4}}} {{{{{ \gamma} ^y} ^z}^{2}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^y} _t} _y} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}}} + {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} + {{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}}} + {{{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^y} _t} _z} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}}} + {{{{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}} - {{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^y} _x} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{2}} {{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}} - {{{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}}} + {{{{{{{ \gamma} ^y} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}} - {{{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}}} - {{{{\alpha}^{4}}} {{{{{ \gamma} ^y} ^z}^{2}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^y} _x} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^y} _x} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^y} _y} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{{{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{2}}}} - {{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}}}} + {{{{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}} {{{{ \beta} ^z}^{2}}}} - {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^z} ^z}} {{{\alpha}^{4}}}}} + {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^y} _y} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^z} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^z}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^y} _y} _z} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^y} _z} _t} = {\frac{{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^x}} {{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{2}}}}} + {{{{{ \beta} ^x}} {{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{2}}}} - {{{{ \beta} ^y}} {{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}} {{{\alpha}^{2}}}}} + {{{{{ \gamma} ^x} ^y}} {{{{ \gamma} ^y} ^z}} {{{\alpha}^{4}}}} + {{{{{{ \gamma} ^x} ^z}} {{{\alpha}^{2}}} {{{{ \beta} ^y}^{2}}}} - {{{{{ \gamma} ^x} ^z}} {{{{ \gamma} ^y} ^y}} {{{\alpha}^{4}}}}}}\right)}}}{{\alpha}^{3}}}$;
+${{{{{ \epsilon} ^z} ^y} _z} _x} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{-{{{{ \beta} ^y}} {{{{ \gamma} ^y} ^z}}}} + {{{{ \beta} ^z}} {{{{ \gamma} ^y} ^y}}}}\right)}}}}$;
+${{{{{ \epsilon} ^z} ^y} _z} _y} = {{\frac{1}{\alpha}} {{{\sqrt{\gamma}}} {{\left({{{{{ \beta} ^y}} {{{{ \gamma} ^x} ^z}}} - {{{{ \beta} ^z}} {{{{ \gamma} ^x} ^y}}}}\right)}}}}$
 
 <br>

@@ -576,7 +576,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 	clone = clone or require 'symmath.clone'
 	repl = clone(repl)	-- in case it's a number ...
 
-	TensorRef = TensorRef or require 'symmath.tensor.TensorRef'
+	TensorRef = TensorRef or require 'symmath.tensor.Ref'
 	
 	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being 
 	Tensor = Tensor or require 'symmath.Tensor'
@@ -632,7 +632,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 	end
 --printbr'reindexing and replacing'
 
-	TensorIndex = TensorIndex or require 'symmath.tensor.TensorIndex'
+	TensorIndex = TensorIndex or require 'symmath.tensor.Index'
 	Wildcard = Wildcard or require 'symmath.Wildcard'
 
 	-- create our :match() object by replacing all TensorIndex's with Wildcard's
@@ -774,7 +774,7 @@ function Expression:tidyIndexes(args)
 
 	local add = symmath.op.add
 	local mul = symmath.op.mul
-	local TensorRef = symmath.TensorRef
+	local TensorRef = symmath.Tensor.Ref
 
 	tableCommutativeEqual = tableCommutativeEqual or require 'symmath.tableCommutativeEqual'
 	
@@ -848,7 +848,7 @@ function Expression:__call(...)
 	local indexes = ...
 
 	clone = clone or require 'symmath.clone'
-	TensorIndex = TensorIndex or require 'symmath.tensor.TensorIndex'
+	TensorIndex = TensorIndex or require 'symmath.tensor.Index'
 
 -- TODO hmm, why do I have this here?  self.variance is specific to Tensor, but not tested for isa Tensor
 -- so this breaks if you have something like x=var'x' x{'_i', '_j'}
@@ -876,7 +876,7 @@ function Expression:__call(...)
 	-- TODO allow for '_,k' incomplete tensor dereferencing *only if* it is comma-derivatives-only
 	--  in which case, just append it to the rest of the tensor
 
-	TensorRef = TensorRef or require 'symmath.tensor.TensorRef'
+	TensorRef = TensorRef or require 'symmath.tensor.Ref'
 	return TensorRef(self, table.unpack(indexes))
 end
 
@@ -908,7 +908,7 @@ function Expression:reindex(args, action)
 		end
 	end
 	Tensor = Tensor or require 'symmath.Tensor'
-	TensorIndex = TensorIndex or require 'symmath.tensor.TensorIndex'
+	TensorIndex = TensorIndex or require 'symmath.tensor.Index'
 	local function replaceAllSymbols(expr)
 		for _,swap in ipairs(swaps) do
 			if expr.symbol == swap.src.symbol then
@@ -941,7 +941,7 @@ this takes the combined comma derivative references and splits off the comma par
 it is very helpful for replacing tensors
 --]]
 function Expression:splitOffDerivIndexes()
-	TensorRef = TensorRef or require 'symmath.tensor.TensorRef'
+	TensorRef = TensorRef or require 'symmath.tensor.Ref'
 	return self:map(function(x)
 		if TensorRef:isa(x) then
 			local derivIndex = table.sub(x, 2):find(nil, function(ref)
@@ -982,7 +982,7 @@ also TODO a script for automatically expanding the upper/lowers and determining 
 function Expression:symmetrizeIndexes(var, indexes, override)
 --print('symmetrizing '..var.name..' indexes '..require'ext.tolua'(indexes))
 	return self:map(function(x)
-		TensorRef = TensorRef or require 'symmath.tensor.TensorRef'
+		TensorRef = TensorRef or require 'symmath.tensor.Ref'
 		if TensorRef:isa(x) 
 		and x[1] == var
 		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
@@ -1226,7 +1226,7 @@ function Expression:simplifyMetrics(rules)
 
 	Array = Array or require 'symmath.Array'
 	Tensor = Tensor or require 'symmath.Tensor'
-	TensorRef = TensorRef or require 'symmath.tensor.TensorRef'
+	TensorRef = TensorRef or require 'symmath.tensor.Ref'
 	add = add or require 'symmath.op.add'
 	mul = mul or require 'symmath.op.mul'
 	if Array:isa(expr) then
@@ -1352,8 +1352,8 @@ for any function ... sinh
 
 --]]
 function Expression:getIndexesUsed()
-	TensorIndex = TensorIndex or require 'symmath.tensor.TensorIndex'
-	TensorRef = TensorRef or require 'symmath.tensor.TensorRef'
+	TensorIndex = TensorIndex or require 'symmath.tensor.Index'
+	TensorRef = TensorRef or require 'symmath.tensor.Ref'
 	add = add or require 'symmath.op.add'
 	sub = sub or require 'symmath.op.sub'
 	mul = mul or require 'symmath.op.mul'
@@ -1534,7 +1534,7 @@ but getIndexesUsed' fixed indexes are those found in every expression
 so this function could replace getIndexesUsed' behavior if it compares the returned exprs to the entire set of exprs
 --]]
 function Expression:getExprsForIndexSymbols()
-	TensorRef = TensorRef or require 'symmath.tensor.TensorRef'
+	TensorRef = TensorRef or require 'symmath.tensor.Ref'
 	local exprsForSymbol = {}
 	local function rfind(x)
 		if TensorRef:isa(x) then
@@ -1597,7 +1597,7 @@ end
 -- alternative name? is-function-of?
 function Expression:dependsOn(x)
 	Variable = Variable or require 'symmath.Variable'
-	TensorRef = TensorRef or require 'symmath.tensor.TensorRef'
+	TensorRef = TensorRef or require 'symmath.tensor.Ref'
 	map = map or require 'symmath.map'
 	
 	local found = false
@@ -1688,7 +1688,7 @@ function Expression:insertTransformsToSetVariance(rule)
 	local mul = symmath.op.mul
 	local Variable = symmath.Variable
 	local Tensor = symmath.Tensor
-	local TensorRef = symmath.TensorRef
+	local TensorRef = symmath.Tensor.Ref
 
 	local defaultSymbols = nil 
 		--or args and args.symbols
@@ -1772,8 +1772,8 @@ and insert enough metric terms to raise/lower these so that they will match the 
 --]]
 function Expression:insertMetricsToSetVariance(find, metric)
 	symmath = symmath or require 'symmath'
-	local TensorRef = symmath.TensorRef
-	local TensorIndex = symmath.TensorIndex
+	local TensorRef = symmath.Tensor.Ref
+	local TensorIndex = symmath.Tensor.Index
 
 	assert(metric)
 	
@@ -1817,7 +1817,7 @@ function Expression:favorTensorVariance(find)
 	symmath = symmath or require 'symmath'
 	local mul = symmath.op.mul
 	local Tensor = symmath.Tensor
-	local TensorRef = symmath.TensorRef
+	local TensorRef = symmath.Tensor.Ref
 	local Variable = symmath.Variable
 
 	assert(TensorRef:isa(find))
@@ -2037,7 +2037,7 @@ end
 function Expression:polyform()
 	symmath = symmath or require 'symmath'
 	local Variable = symmath.Variable
-	local TensorRef = symmath.TensorRef
+	local TensorRef = symmath.Tensor.Ref
 	local expr = self
 	local vars = table()
 	expr:map(function(x)
