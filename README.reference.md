@@ -284,10 +284,13 @@ Create a Manifold object.
 
 
 `chart = Tensor.Chart{coords={t,x,y,z}}`  
-`chart = Tensor.Chart{coords={t,x,y,z}, manifold=manifold}`  
+`chart = Tensor.Chart{coords={t,x,y,z}, manifold=manifold}`
+`chart = Tensor.Chart{coords={t,x,y,z}, tangentSpaceOperators={t1, t2, ...}}`
 `chart = manifold:Chart{coords={t,x,y,z}}`  
 Create a Chart object associated with the Manifold will be using coordinates t,x,y,z
 If no manifold is provided then the last Manifold constructed or a default Manifold object is used.
+`tangentSpaceOperators` can be optionally provided.  This is a list of functions which act as the tangent space operators of the chart, and coincide with the comma derivatives of Tensors on this chart.
+The default values are the derivatives of the chart coordinates `coords`.
 
 `chart = manifold:Chart{coords={t,x,y,z}, metric=function() return g end}`
 Specifies that tensors will be using coordinates t,x,y,z with metric 'g' (a Matrix or 2D array).  The metric inverse will be automatically computed.

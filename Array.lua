@@ -24,6 +24,9 @@ Array.unpack = table.unpack
 valid ctors:
 	Array(x1, x2, ..., xN)
 	if you want to use a lambda constructor, check out Array:lambda
+
+TODO if I instead required a table constructor, it would make passing Arrays as arguments much easier
+	as well as easier for subclasses (Matrix, Tensor, etc)
 --]]
 function Array:init(...)
 	Array.super.init(self, ...)
