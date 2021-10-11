@@ -1,5 +1,6 @@
 local function matrixExponent(A)
 	local symmath = require 'symmath'
+	local exp = symmath.exp
 	local Matrix = symmath.Matrix
 	local ev = Matrix.eigen(A)
 	local R, L, allLambdas = ev.R, ev.L, ev.allLambdas

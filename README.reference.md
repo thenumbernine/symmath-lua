@@ -157,9 +157,7 @@ Simplifies the expression.
 
 `symmath.match(exprA, exprB)
 `exprA:match(exprB)`
-Match one expression to another.
-This is actually shorthand for equality, except in Lua the == operator won't let you return multiple values.
-The expr:match() function (and == operator) use wildcards and tree matching to return matched patterns.
+Match one expression to another, optionally using Wildcards to match to portions of the expression tree.
 See 'Wildcard' for more information on how.
 
 `symmath.clone(expr)`  

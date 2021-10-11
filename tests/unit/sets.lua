@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath.tests.unit.unit'(env, 'sets')
+require 'symmath.tests.unit.unit'(env, 'tests/unit/sets')
 
 timer(nil, function()
 

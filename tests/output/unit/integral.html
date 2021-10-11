@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>integral</title>
+		<title>tests/unit/integral</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
@@ -12,311 +12,507 @@
 <b>integrate constants</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(Constant(1):integrate(x), x)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(y:integrate(x), x * y)</code>
+<code>simplifyAssertEq(Constant(1):integrate(x), x)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.114000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(y:integrate(x), x * y)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.319000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(Constant(1):integrate(x, xL, xR), (xR - xL))</code>
+<code>simplifyAssertEq(Constant(1):integrate(x, xL, xR), (xR - xL))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.692000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>-/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+/Factor/apply<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>+/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>definite integral bounds:</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
-<b>asserteq(x:integrate(x, xL, xR), ((xR^2 - xL^2)/2))	-- hmm, the infamous minus sign factoring simplificaiton error...</b><br>
+<b>simplifyAssertEq(x:integrate(x, xL, xR), ((xR^2 - xL^2)/2))	-- hmm, the infamous minus sign factoring simplificaiton error...</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>instead I'll just test this ...</b><br>
-<code>asserteq((x:integrate(x, xL, xR) - (xR^2 - xL^2)/2), Constant(0))</code>
+<code>simplifyAssertEq((x:integrate(x, xL, xR) - (xR^2 - xL^2)/2), Constant(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 5.278000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>$x^n$ integrals:</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(x:integrate(x), x^2 / 2)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x^2):integrate(x), x^3 / 3)</code>
+<code>simplifyAssertEq(x:integrate(x), x^2 / 2)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 2.479000ms<br>
+stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(((x^-2):integrate(x) - (-1/x)), Constant(0))</code>
+<code>simplifyAssertEq((x^2):integrate(x), x^3 / 3)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 2.809000ms<br>
+stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((1/x):integrate(x), log(abs(x)))</code>
+<code>simplifyAssertEq(((x^-2):integrate(x) - (-1/x)), Constant(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 2.507000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x^-1):integrate(x), log(abs(x)))</code>
+<code>simplifyAssertEq((1/x):integrate(x), log(abs(x)))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.941000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((1/(2*x^2)):integrate(x), -(1/(2*x)))</code>
+<code>simplifyAssertEq((x^-1):integrate(x), log(abs(x)))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.973000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq((x^frac(1,2)):integrate(x), frac(2 * x * sqrt(x), 3))</code>
+<code>simplifyAssertEq((1/(2*x^2)):integrate(x), -(1/(2*x)))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(sqrt(x):integrate(x), frac(2 * x * sqrt(x), 3))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq((1/x):integrate(x), log(abs(x)))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 6.114000ms<br>
+stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>*/Prune/apply<br><li>*/Prune/factorDenominators<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>//Prune/xOverMinusOne<br><li>*/Prune/flatten<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>//Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq((2/x):integrate(x), (2*log(abs(x))))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((1/(2*x)):integrate(x), (log(abs(x))/2))</code>
+<code>simplifyAssertEq((x^frac(1,2)):integrate(x), frac(2 * x * sqrt(x), 3))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 6.047000ms<br>
+stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>sqrt/Prune/apply<br><li>+/Prune/combineConstants<br><li>+/Prune/factorOutDivs<br><li>*/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>*/Prune/flatten<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>^/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq((1/(x*(3*x+4))):integrate(x)(), log(1 / abs( (4 + 3 * x) / x)^frac(1,4)))</code>
+<code>simplifyAssertEq(sqrt(x):integrate(x), frac(2 * x * sqrt(x), 3))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(sin(x):integrate(x)(), -cos(x))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(cos(x):integrate(x)(), sin(x))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 6.239000ms<br>
+stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>sqrt/Prune/apply<br><li>+/Prune/combineConstants<br><li>+/Prune/factorOutDivs<br><li>*/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>*/Prune/flatten<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>^/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(sin(2*x):integrate(x)(), (-cos(2*x)/2))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(cos(y*x):integrate(x)(), (sin(y*x)/y))</code>
+<code>simplifyAssertEq((1/x):integrate(x), log(abs(x)))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq((cos(x)/sin(x)):integrate(x), log(abs(sin(x))))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 1.101000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((cos(x)^2):integrate(x)(), frac(1,4) * (2 * x + sin(2 * x)))</code>
+<code>simplifyAssertEq((2/x):integrate(x), (2*log(abs(x))))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 2.789000ms<br>
+stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*/Prune/logPow<br><li>Prune<br><li>^/Expand/integerPower<br><li>log/Expand/apply<br><li>Expand<br><li>*/Prune/logPow<br><li>+/Prune/flattenAddMul<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((1/(2*x)):integrate(x), (log(abs(x))/2))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 4.010000ms<br>
+stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>//Prune/logPow<br><li>Prune<br><li>log/Expand/apply<br><li>Expand<br><li>*/Prune/apply<br><li>//Prune/logPow<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(sinh(x):integrate(x), cosh(x))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(cosh(x):integrate(x), sinh(x))</code>
+<code>simplifyAssertEq((1/(x*(3*x+4))):integrate(x)(), log(1 / abs( (4 + 3 * x) / x)^frac(1,4)))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 49.298000ms<br>
+stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>log/Expand/apply<br><li>unm/Expand/apply<br><li>-/Expand/apply<br><li>log/Expand/apply<br><li>Expand<br><li>log/Prune/apply<br><li>^/Prune/xToTheNegY<br><li>*/Prune/logPow<br><li>//Prune/logPow<br><li>*/Prune/factorDenominators<br><li>+/Prune/combineConstants<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(f:diff(x):integrate(x)(), f)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.488000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(f:integrate(x):diff(x)(), f)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.378000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(f:diff(x,x):integrate(x)(), f:diff(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.704000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(f:integrate(x):integrate(x):diff(x)(), f:integrate(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 6.116000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(f:integrate(x):diff(x,x)(), f:diff(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.795000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(sin(x):integrate(x)(), -cos(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.373000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(cos(x):integrate(x)(), sin(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.649000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(sin(2*x):integrate(x)(), (-cos(2*x)/2))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 7.009000ms<br>
+stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>*/Prune/flatten<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>//Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(cos(y*x):integrate(x)(), (sin(y*x)/y))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 4.635000ms<br>
+stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Tidy/apply<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((cos(x)/sin(x)):integrate(x), log(abs(sin(x))))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 3.039000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((cos(x)^2):integrate(x)(), frac(1,4) * (2 * x + sin(2 * x)))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 14.968000ms<br>
+stack: size: 32<br><ul style="margin:0px"><li>Init<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+/Factor/apply<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>unm/Prune/apply<br><li>-/Prune/apply<br><li>^/Prune/xToTheNegY<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(sinh(x):integrate(x), cosh(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.711000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(cosh(x):integrate(x), sinh(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.636000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>multiple integrals</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq((x * y):integrate(x), frac(1,2) * x^2 * y)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq((x * y):integrate(x)():integrate(y)(), frac(1,4) * x^2 * y^2)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq((x * y):integrate(x):integrate(y)(), frac(1,4) * x^2 * y^2)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq((r * cos(x)):integrate(r)():integrate(x)(), frac(1,2) * r^2 * sin(x))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq((r * cos(x)):integrate(x)():integrate(r)(), frac(1,2) * r^2 * sin(x))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq( ( cosh(a * x) * sinh(a * x) ):integrate(x), cosh(a * x)^2 / (2 * a) )</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq( ( cosh(a * x) * sinh(b * x) ):integrate(x), 1 / ((a + b) * (a - b)) * (-b * cosh(a*x) * cosh(b*x) + a * sinh(a*x) * sinh(b*x)) )</code>
+<code>simplifyAssertEq((x * y):integrate(x), frac(1,2) * x^2 * y)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 3.881000ms<br>
+stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>*/Prune/flatten<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((x * y):integrate(x)():integrate(y)(), frac(1,4) * x^2 * y^2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 14.865000ms<br>
+stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>^/Expand/integerPower<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>*/Factor/combineMulOfLikePow<br><li>//Factor/polydiv<br><li>Factor<br><li>^/Prune/expandMulOfLikePow<br><li>*/Prune/flatten<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>unm/Prune/apply<br><li>-/Prune/apply<br><li>^/Prune/xToTheNegY<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((x * y):integrate(x):integrate(y)(), frac(1,4) * x^2 * y^2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 13.301000ms<br>
+stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>^/Expand/integerPower<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>*/Factor/combineMulOfLikePow<br><li>//Factor/polydiv<br><li>Factor<br><li>^/Prune/expandMulOfLikePow<br><li>*/Prune/flatten<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>unm/Prune/apply<br><li>-/Prune/apply<br><li>^/Prune/xToTheNegY<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((r * cos(x)):integrate(r)():integrate(x)(), frac(1,2) * r^2 * sin(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 12.946000ms<br>
+stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>*/Prune/flatten<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((r * cos(x)):integrate(x)():integrate(r)(), frac(1,2) * r^2 * sin(x))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 7.155000ms<br>
+stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>*/Prune/flatten<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq( ( sinh(a * x)^2 * cosh(a * x) ):integrate(x), sinh(a * x)^3 / (3 * a) )</code>
+<code>simplifyAssertEq( ( cosh(a * x) * sinh(a * x) ):integrate(x), cosh(a * x)^2 / (2 * a) )</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 8.917000ms<br>
+stack: size: 25<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Tidy/apply<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq( ( cosh(a * x) * sinh(b * x) ):integrate(x), 1 / ((a + b) * (a - b)) * (-b * cosh(a*x) * cosh(b*x) + a * sinh(a*x) * sinh(b*x)) )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 251.328000ms<br>
+stack: size: 80<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>-/Prune/apply<br><li>unm/Prune/apply<br><li>*/Prune/flatten<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>unm/Prune/apply<br><li>*/Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Expand/apply<br><li>*/Expand/apply<br><li>*/Expand/apply<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>*/Prune/apply<br><li>+/Prune/combineConstants<br><li>+/Prune/flattenAddMul<br><li>+/Prune/flatten<br><li>Prune<br><li>+/Factor/apply<br><li>//Prune/xOverX<br><li>^/Prune/xToTheOne<br><li>//Prune/xOverX<br><li>^/Prune/xToTheOne<br><li>//Prune/xOverX<br><li>^/Prune/xToTheOne<br><li>//Prune/xOverX<br><li>^/Prune/xToTheOne<br><li>unm/Prune/apply<br><li>-/Prune/apply<br><li>+/Factor/apply<br><li>+/Factor/apply<br><li>+/Factor/apply<br><li>*/ExpandPolynomial/apply<br><li>*/ExpandPolynomial/apply<br><li>*/ExpandPolynomial/apply<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>*/Prune/apply<br><li>+/Prune/combineConstants<br><li>+/Prune/flattenAddMul<br><li>+/Prune/flatten<br><li>*/ExpandPolynomial/apply<br><li>*/ExpandPolynomial/apply<br><li>*/ExpandPolynomial/apply<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>*/Prune/apply<br><li>+/Prune/combineConstants<br><li>+/Prune/flattenAddMul<br><li>+/Prune/flatten<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq( ( sinh(a * x)^2 * cosh(a * x) ):integrate(x), sinh(a * x)^3 / (3 * a) )</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 8.512000ms<br>
+stack: size: 25<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Tidy/apply<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>sets</title>
+		<title>tests/unit/sets</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
@@ -12,32 +12,47 @@
 <b>TODO do unit tests with the RealInterval / RealSubset operators</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>subsets</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>TODO don't use ":contains()" except for element testing, as in sets-of-sets</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>instead here use isSubsetOf</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.real:isSubsetOf(set.real) == true)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.058000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -45,6 +60,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.034000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -52,6 +70,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.026000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -59,6 +80,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.030000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -66,6 +90,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.026000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -73,17 +100,25 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.027000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.real:isSubsetOf(set.integer) == nil)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.021000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -91,6 +126,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.019000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -98,6 +136,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.027000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -105,6 +146,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.018000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -112,6 +156,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.018000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -119,17 +166,25 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.020000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.real:isSubsetOf(set.evenInteger) == nil)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.021000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -137,6 +192,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.023000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -144,6 +202,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.020000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -151,6 +212,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.020000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -158,6 +222,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.021000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -165,17 +232,25 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.021000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.real:isSubsetOf(set.oddInteger) == nil)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.022000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -183,6 +258,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.019000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -190,6 +268,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.018000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -197,6 +278,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.022000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -204,6 +288,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.021000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -211,29 +298,43 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.018000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>realinterval</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.RealInterval(-2, -1, true, true):isSubsetOf(set.RealInterval(1, 2, true, true)) == false)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.039000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -241,6 +342,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.033000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -248,6 +352,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.027000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -255,11 +362,16 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.030000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>local A = set.RealInterval(0, 1, false, true) printbr(A, 'isSubsetOf', A) assert(A:isSubsetOf(A))</code>
@@ -268,19 +380,28 @@
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.017000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>realsubset</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>local A = set.RealSubset(0, 1, false, true) printbr(A, 'isSubsetOf', A) assert(A:isSubsetOf(A))</code>
@@ -289,11 +410,16 @@
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.021000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>local A = set.RealSubset(0, 1, false, true) local B = set.RealSubset{{-1, 0, true, false}, {0, 1, false, true}} printbr(A, 'isSubsetOf', B) assert(A:isSubsetOf(B))</code>
@@ -302,6 +428,9 @@
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.031000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -309,25 +438,37 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.024000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>containing constants</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>TODO technically that makes set.real the extended reals.  should I distinguish between real and extended real?</b><br>
 <code>assert(set.real:contains(inf) == true)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.012000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -335,6 +476,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.009000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -342,6 +486,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.009000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -349,6 +496,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.016000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -356,6 +506,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.008000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -363,6 +516,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.031000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -370,6 +526,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.022000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -377,6 +536,9 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.023000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -384,91 +546,135 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.023000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>containing ranges of expressions</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.real:contains(x))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.010000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>x is in (-inf, inf).</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>is x in (0, inf)?</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>maybe.</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>not certainly yes (subset).</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>not certainly no (complement intersection / set subtraction is empty).</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>so return nil</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>if x's set is a subset of this set then return true</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>if x's set is an intersection of this set then return nil</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>if x's set does not intersect this set then return false</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.positiveReal:contains(x) == nil)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.012000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.real:contains(sin(x)))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.025000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -476,17 +682,25 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.022000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(not set.positiveReal:contains(abs(x)))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.024000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -494,28 +708,41 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.022000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.complex:contains(x))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.008000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>(function() local x = set.RealSubset(-1,1,true,true):var'x' assert(set.real:contains(asin(x))) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.036000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -523,11 +750,16 @@
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.029000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>print(acos(x):getRealRange())</code>
@@ -535,6 +767,9 @@
 nil
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.009000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>TODO eventually return uncertain / touches but not contains</b><br>
@@ -542,6 +777,9 @@ nil
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.021000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>TODO return definitely false</b><br>
@@ -549,69 +787,101 @@ nil
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.016000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>(function() local x = set.RealSubset(1,1,true,true):var'x' assert(set.real:contains(acos(x))) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.026000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>(function() local x = set.real:var'x' assert(abs(x)() == abs(x)) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.083000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>(function() local x = set.nonNegativeReal:var'x' assert(abs(x)() == x) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.038000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>abs/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>(function() local x = set.nonNegativeReal:var'x' assert(abs(sinh(x))() == sinh(x)) end)()</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.111000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>abs/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>x^2 should be positive</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert((x^2):getRealRange() == set.nonNegativeReal)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.023000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -619,17 +889,25 @@ nil
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.025000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert((Constant(2)^2):getRealRange() == set.RealSubset(4,4,true,true))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.020000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -637,33 +915,48 @@ nil
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.021000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert(set.nonNegativeReal:contains(exp(x)))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.027000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>1/x should be disjoint</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>print((1/x):getRealRange())</code>
 </td><td>
-{[-inf, -0), (0, inf]}
+{[-inf, -0.0), (0.0, inf]}
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.035000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -671,6 +964,9 @@ nil
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.027000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -678,235 +974,353 @@ nil
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.024000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>assert((1/x):getRealRange():contains(set.positiveReal))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.028000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../sin.lua:function sin:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../sin.lua:	local Is = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../asinh.lua:asinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../atan.lua:atan.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../cosh.lua:cosh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../acos.lua:function acos:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../acos.lua:	local Is = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../tanh.lua:tanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../asin.lua:asin.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../sqrt.lua:sqrt.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../log.lua:log.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_posInc_negIm</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../acosh.lua:function acosh:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../acosh.lua:	local Is = x[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../atanh.lua:atanh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_pmOneInc</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../tan.lua:function tan:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../tan.lua:	local Is = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../cos.lua:function cos:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../cos.lua:	local Is = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../cos.lua:		-- here I'm going to add pi/2 and then just copy the sin:getRealRange() code</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../sinh.lua:sinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../abs.lua:abs.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../Constant.lua:function Constant:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../Expression.lua:function Expression:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../Variable.lua:function Variable:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/mul.lua:function mul:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/mul.lua:	local I = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/mul.lua:		local I2 = self[i]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/div.lua:function div:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/div.lua:	local I = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/div.lua:	local I2 = self[2]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/sub.lua:function sub:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/sub.lua:	local I = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/sub.lua:		local I2 = self[i]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/add.lua:function add:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/add.lua:	local I = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/add.lua:		local I2 = self[i]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/pow.lua:function pow:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/pow.lua:	local I = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/pow.lua:	local I2 = self[2]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/unm.lua:function unm:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../op/unm.lua:	local I = self[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealSubset.lua:-- commonly used versions of the Expression:getRealRange function</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealSubset.lua:function RealSubset.getRealDomain_evenIncreasing(x)</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealSubset.lua:	local Is = x[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealSubset.lua:function RealSubset.getRealDomain_posInc_negIm(x)</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealSubset.lua:	local Is = x[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealSubset.lua:function RealSubset.getRealDomain_pmOneInc(x)</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealSubset.lua:	local Is = x[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealSubset.lua:function RealSubset.getRealDomain_inc(x)</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealSubset.lua:	local Is = x[1]:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>../../set/RealInterval.lua:	local I = x:getRealRange()</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>

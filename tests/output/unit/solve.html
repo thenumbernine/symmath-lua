@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>solve</title>
+		<title>tests/unit/solve</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
@@ -10,108 +10,154 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>asserteq(#{x:eq(0):solve(x)}, 1)</code>
+<code>simplifyAssertEq(#{x:eq(0):solve(x)}, 1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.393000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(x:eq(0):solve(x), x:eq(0))</code>
+<code>simplifyAssertEq(x:eq(0):solve(x), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(#{x:eq(1):solve(x)}, 1)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(x:eq(1):solve(x), x:eq(1))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 0.498000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(#{(x+1):eq(0):solve(x)}, 1)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x+1):eq(0):solve(x), x:eq(-1))</code>
+<code>simplifyAssertEq(#{x:eq(1):solve(x)}, 1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.131000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(#{(x^2):eq(1):solve(x)}, 2)</code>
+<code>simplifyAssertEq(x:eq(1):solve(x), x:eq(1))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq((x^2):eq(1):solve(x), x:eq(1))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(select(2, (x^2):eq(1):solve(x)), x:eq(-1))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 0.372000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(#{(x^2):eq(-1):solve(x)}, 2)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x^2):eq(-1):solve(x), x:eq(i))</code>
+<code>simplifyAssertEq(#{(x+1):eq(0):solve(x)}, 1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.465000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(2, (x^2):eq(-1):solve(x)), x:eq(-i))</code>
+<code>simplifyAssertEq((x+1):eq(0):solve(x), x:eq(-1))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.714000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(#{(x^2):eq(1):solve(x)}, 2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 2.248000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((x^2):eq(1):solve(x), x:eq(1))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.885000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(select(2, (x^2):eq(1):solve(x)), x:eq(-1))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.888000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(#{(x^2):eq(-1):solve(x)}, 2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.827000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((x^2):eq(-1):solve(x), x:eq(i))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.557000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(select(2, (x^2):eq(-1):solve(x)), x:eq(-i))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.030000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>print((x^2):eq(0):solve(x))</code>
@@ -119,36 +165,52 @@
 ${x} = {0}$	${x} = {0}$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.627000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>^/Prune/zeroToTheX<br><li>*/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(#{(x^2):eq(0):solve(x)}, 2)</code>
+<code>simplifyAssertEq(#{(x^2):eq(0):solve(x)}, 2)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.576000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x^2):eq(0):solve(x), x:eq(0))</code>
+<code>simplifyAssertEq((x^2):eq(0):solve(x), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.665000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(2, (x^2):eq(0):solve(x)), x:eq(0))</code>
+<code>simplifyAssertEq(select(2, (x^2):eq(0):solve(x)), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.580000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>same with 3 ...</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>print((x^3):eq(0):solve(x))</code>
@@ -156,43 +218,62 @@ ${x} = {0}$	${x} = {0}$
 ${x} = {0}$	${x} = {0}$	${x} = {0}$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 11.076000ms<br>
+stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>^/Prune/sqrtFix4<br><li>sqrt/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>^/Prune/sqrtFix4<br><li>*/Prune/factorDenominators<br><li>unm/Prune/apply<br><li>^/Prune/zeroToTheX<br><li>*/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(#{(x^3):eq(0):solve(x)}, 3)</code>
+<code>simplifyAssertEq(#{(x^3):eq(0):solve(x)}, 3)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 8.887000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x^3):eq(0):solve(x), x:eq(0))</code>
+<code>simplifyAssertEq((x^3):eq(0):solve(x), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 9.285000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(2, (x^3):eq(0):solve(x)), x:eq(0))</code>
+<code>simplifyAssertEq(select(2, (x^3):eq(0):solve(x)), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 8.145000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(3, (x^3):eq(0):solve(x)), x:eq(0))</code>
+<code>simplifyAssertEq(select(3, (x^3):eq(0):solve(x)), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 9.528000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>same with 4 ...</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>print((x^4):eq(0):solve(x))</code>
@@ -200,50 +281,72 @@ ${x} = {0}$	${x} = {0}$	${x} = {0}$
 ${x} = {0}$	${x} = {0}$	${x} = {0}$	${x} = {0}$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.697000ms<br>
+stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>^/Prune/zeroToTheX<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(#{(x^4):eq(0):solve(x)}, 4)</code>
+<code>simplifyAssertEq(#{(x^4):eq(0):solve(x)}, 4)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.981000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x^4):eq(0):solve(x), x:eq(0))</code>
+<code>simplifyAssertEq((x^4):eq(0):solve(x), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.766000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(2, (x^4):eq(0):solve(x)), x:eq(0))</code>
+<code>simplifyAssertEq(select(2, (x^4):eq(0):solve(x)), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.556000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(3, (x^4):eq(0):solve(x)), x:eq(0))</code>
+<code>simplifyAssertEq(select(3, (x^4):eq(0):solve(x)), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.630000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(4, (x^4):eq(0):solve(x)), x:eq(0))</code>
+<code>simplifyAssertEq(select(4, (x^4):eq(0):solve(x)), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.715000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>distinguish between x*(x^2 + 2x + 1) and (x^3 + 2x^2 + x) , because the solver handles one but not the other</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>printbr( (x * (x^2 + 2*x + 1)):eq(0):solve(x)  )</code>
@@ -252,39 +355,56 @@ ${x} = {0}$	${x} = {-{1}}$	${x} = {-{1}}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.332000ms<br>
+stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>*/Prune/apply<br><li>unm/Prune/apply<br><li>^/Prune/simplifyConstantPowers<br><li>*/Prune/apply<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/zeroToTheX<br><li>sqrt/Prune/apply<br><li>+/Prune/combineConstants<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(#{(x * (x^2 + 2*x + 1)):eq(0):solve(x)}, 3)</code>
+<code>simplifyAssertEq(#{(x * (x^2 + 2*x + 1)):eq(0):solve(x)}, 3)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.398000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))</code>
+<code>simplifyAssertEq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.235000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</code>
+<code>simplifyAssertEq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.242000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</code>
+<code>simplifyAssertEq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.372000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>printbr( (x^3 + 2*x^2 + x):eq(0):solve(x) )</code>
@@ -293,43 +413,62 @@ ${x} = {0}$	${x} = {-{1}}$	${x} = {-{1}}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.768000ms<br>
+stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>*/Prune/apply<br><li>unm/Prune/apply<br><li>^/Prune/simplifyConstantPowers<br><li>*/Prune/apply<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/zeroToTheX<br><li>sqrt/Prune/apply<br><li>+/Prune/combineConstants<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(#{(x^3 + 2*x^2 + x):eq(0):solve(x)}, 3)</code>
+<code>simplifyAssertEq(#{(x^3 + 2*x^2 + x):eq(0):solve(x)}, 3)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.827000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))</code>
+<code>simplifyAssertEq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.397000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</code>
+<code>simplifyAssertEq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.146000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</code>
+<code>simplifyAssertEq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.247000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>same with x^3 + x^2 - x</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>printbr( (x * (x^2 + x - 1)):eq(0):solve(x)  )</code>
@@ -338,24 +477,33 @@ ${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	${x} = {
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 3.565000ms<br>
+stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>^/Prune/simplifyConstantPowers<br><li>*/Prune/apply<br><li>*/Prune/apply<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>sqrt/Prune/apply<br><li>Prune<br><li>Expand<br><li>^/Prune/sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(#{(x * (x^2 + x - 1)):eq(0):solve(x)}, 3)</code>
+<code>simplifyAssertEq(#{(x * (x^2 + x - 1)):eq(0):solve(x)}, 3)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 3.535000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))</code>
+<code>simplifyAssertEq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 3.680000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))</code>
+<code>simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))</code>
 </td><td>
 expected ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$ to equal ${x} = {{\frac{1}{2}}{\left({-{\left({{1} - {\sqrt{5}}}\right)}}\right)}}$<br>
 found ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$ vs ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$<br>
@@ -405,22 +553,25 @@ Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
 Factor	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
 Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
 Tidy	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(select(2, (x * (x^2 + x - 1)):eq(0):..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(select(2, (x * (x^2 + x - 1)..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	solve.lua:126: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	solve.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./solve.lua:126: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./solve.lua:6: in main chunk<br>
+	[C]: at 0x55a129bf1280
+</td><td>
+time: 9.775000ms<br>
+stack: size: 28<br><ul style="margin:0px"><li>Init<br><li>^/Prune/sqrtFix4<br><li>sqrt/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>^/Prune/sqrtFix4<br><li>unm/Prune/apply<br><li>-/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>unm/Prune/apply<br><li>Prune<br><li>*/Expand/apply<br><li>Expand<br><li>*/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>^/Prune/sqrtFix4<br><li>^/Tidy/apply<br><li>^/Prune/sqrtFix4<br><li>sqrt/Prune/apply<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))</code>
+<code>simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))</code>
 </td><td>
 expected ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$ to equal ${x} = {{\frac{1}{2}}{\left({-{\left({{1} + {\sqrt{5}}}\right)}}\right)}}$<br>
 found ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$ vs ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$<br>
@@ -451,23 +602,28 @@ Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\
 Factor	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
 Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
 Tidy	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(select(3, (x * (x^2 + x - 1)):eq(0):..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(select(3, (x * (x^2 + x - 1)..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	solve.lua:126: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	solve.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./solve.lua:126: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./solve.lua:6: in main chunk<br>
+	[C]: at 0x55a129bf1280
+</td><td>
+time: 5.964000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>^/Prune/sqrtFix4<br><li>sqrt/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>unm/Prune/apply<br><li>Prune<br><li>*/Expand/apply<br><li>Expand<br><li>*/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>printbr( (x^3 + x^2 - x):eq(0):solve(x) )</code>
@@ -476,24 +632,33 @@ ${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	${x} = {
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 3.998000ms<br>
+stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>^/Prune/simplifyConstantPowers<br><li>*/Prune/apply<br><li>*/Prune/apply<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>sqrt/Prune/apply<br><li>Prune<br><li>Expand<br><li>^/Prune/sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(#{(x^3 + x^2 - x):eq(0):solve(x)}, 3)</code>
+<code>simplifyAssertEq(#{(x^3 + x^2 - x):eq(0):solve(x)}, 3)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 3.208000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))</code>
+<code>simplifyAssertEq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 4.573000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))</code>
+<code>simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))</code>
 </td><td>
 expected ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$ to equal ${x} = {{\frac{1}{2}}{\left({-{\left({{1} - {\sqrt{5}}}\right)}}\right)}}$<br>
 found ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$ vs ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$<br>
@@ -543,22 +708,25 @@ Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
 Factor	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
 Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{5}^{\frac{1}{2}}}}\right)}}$	<br>
 Tidy	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(select(2, (x * (x^2 + x - 1)):eq(0):..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(select(2, (x * (x^2 + x - 1)..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	solve.lua:126: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	solve.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./solve.lua:126: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./solve.lua:6: in main chunk<br>
+	[C]: at 0x55a129bf1280
+</td><td>
+time: 7.310000ms<br>
+stack: size: 28<br><ul style="margin:0px"><li>Init<br><li>^/Prune/sqrtFix4<br><li>sqrt/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>^/Prune/sqrtFix4<br><li>unm/Prune/apply<br><li>-/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>unm/Prune/apply<br><li>Prune<br><li>*/Expand/apply<br><li>Expand<br><li>*/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>^/Prune/sqrtFix4<br><li>^/Tidy/apply<br><li>^/Prune/sqrtFix4<br><li>sqrt/Prune/apply<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))</code>
+<code>simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))</code>
 </td><td>
 expected ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$ to equal ${x} = {{\frac{1}{2}}{\left({-{\left({{1} + {\sqrt{5}}}\right)}}\right)}}$<br>
 found ${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$ vs ${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$<br>
@@ -589,16 +757,19 @@ Prune	${x} = {{\frac{1}{2}}{\left({{-1} + {{{-1}} \cdot {{{5}^{\frac{1}{2}}}}}}\
 Factor	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
 Prune	${x} = {{\frac{1}{2}} {{{-1}} {{\left({{1} + {{5}^{\frac{1}{2}}}}\right)}}}}$	<br>
 Tidy	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(select(3, (x * (x^2 + x - 1)):eq(0):..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(select(3, (x * (x^2 + x - 1)..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	solve.lua:126: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	solve.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./solve.lua:126: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./solve.lua:6: in main chunk<br>
+	[C]: at 0x55a129bf1280
+</td><td>
+time: 5.889000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>^/Prune/sqrtFix4<br><li>sqrt/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>unm/Prune/apply<br><li>Prune<br><li>*/Expand/apply<br><li>Expand<br><li>*/Prune/apply<br><li>^/Prune/sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

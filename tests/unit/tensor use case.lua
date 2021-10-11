@@ -1,6 +1,6 @@
 #! /usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{MathJax={title='tensor use case', pathToTryToFindMathJax='..'}}
+require 'symmath'.setup{MathJax={title='tests/unit/tensor use case', pathToTryToFindMathJax='..'}}
 local TensorIndex = require 'symmath.tensor.Index'
 
 local maxN = 3

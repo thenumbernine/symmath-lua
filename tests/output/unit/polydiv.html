@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>polydiv</title>
+		<title>tests/unit/polydiv</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
@@ -10,64 +10,73 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>assertalleq({(x - a):polydivr(x - a, x, verbose)}, {1,0})</code>
+<code>simplifyAssertAllEq({(x - a):polydivr(x - a, x, verbose)}, {1,0})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 2.479000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assertalleq({(x^2 - a):polydivr(x - sqrt(a), x, verbose)}, {x + sqrt(a),0})</code>
+<code>simplifyAssertAllEq({(x^2 - a):polydivr(x - sqrt(a), x, verbose)}, {x + sqrt(a),0})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>assertalleq({(x^2 + 2 * x * a + a^2):polydivr(x + a, x, verbose)}, {x + a, 0})</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertalleq({(x^2 - 2 * x * a + a^2):polydivr(x - a, x, verbose)}, {x - a, 0})</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 13.732000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>assertalleq({(x^2 - a^2):polydivr(x - a, x, verbose)}, {x + a, 0})</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assertalleq({(x^2 - a^2):polydivr(x + a, x, verbose)}, {x - a, 0})</code>
+<code>simplifyAssertAllEq({(x^2 + 2 * x * a + a^2):polydivr(x + a, x, verbose)}, {x + a, 0})</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 4.617000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertAllEq({(x^2 - 2 * x * a + a^2):polydivr(x - a, x, verbose)}, {x - a, 0})</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 7.811000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
-<code>local eqn = (x^7 - (6 + f)  *  a * x^6 + (15 + 6 * f) * a^2 * x^5 - (20 + 15 * f) * a^3 * x^4 + (15 + 20 * f) * a^4 * x^3 - (6 + 15 * f) * a^5 * x^2 + (6 * f + 1) * a^6 * x - f * a^7):eq(0) print(eqn:polydiv(x - a, x)) print(eqn:polydiv(x - f * a, x))</code>
+<code>simplifyAssertAllEq({(x^2 - a^2):polydivr(x - a, x, verbose)}, {x + a, 0})</code>
 </td><td>
-${\frac{{{{{x}^{7}} - {{{6}} {{a}} {{{x}^{6}}}}} - {{{a}} {{f}} {{{x}^{6}}}}} + {{{15}} {{{a}^{2}}} {{{x}^{5}}}} + {{{{{6}} {{f}} {{{a}^{2}}} {{{x}^{5}}}} - {{{20}} {{{a}^{3}}} {{{x}^{4}}}}} - {{{15}} {{f}} {{{a}^{3}}} {{{x}^{4}}}}} + {{{15}} {{{a}^{4}}} {{{x}^{3}}}} + {{{{{20}} {{f}} {{{a}^{4}}} {{{x}^{3}}}} - {{{6}} {{{a}^{5}}} {{{x}^{2}}}}} - {{{15}} {{f}} {{{a}^{5}}} {{{x}^{2}}}}} + {{{x}} {{{a}^{6}}}} + {{{{6}} {{f}} {{x}} {{{a}^{6}}}} - {{{f}} {{{a}^{7}}}}}}{{x} - {a}}} = {0}$
-${{{a}^{6}} + {{{15}} {{{a}^{4}}} {{{x}^{2}}}} + {{{{{15}} {{{a}^{2}}} {{{x}^{4}}}} - {{{20}} {{{a}^{3}}} {{{x}^{3}}}}} - {{{6}} {{a}} {{{x}^{5}}}}} + {{{x}^{6}} - {{{6}} {{x}} {{{a}^{5}}}}}} = {0}$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 5.607000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertAllEq({(x^2 - a^2):polydivr(x + a, x, verbose)}, {x - a, 0})</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 5.994000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>

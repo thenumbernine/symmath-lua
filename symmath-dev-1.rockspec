@@ -233,6 +233,7 @@ build = {
 		["symmath.tests.unit.linear solver"] = "tests/unit/linear solver.lua",
 		["symmath.tests.unit.match"] = "tests/unit/match.lua",
 		["symmath.tests.unit.matrix"] = "tests/unit/matrix.lua",
+		["symmath.tests.unit.notfinite"] = "tests/unit/notfinite.lua",
 		["symmath.tests.unit.plot"] = "tests/unit/plot.lua",
 		["symmath.tests.unit.polyCoeffs"] = "tests/unit/polyCoeffs.lua",
 		["symmath.tests.unit.polydiv"] = "tests/unit/polydiv.lua",

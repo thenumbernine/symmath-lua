@@ -46,8 +46,8 @@ Integral.rules = {
 				-- if a scalar was factored out then expr won't necessarily be an integral - but one of its children will
 				-- but if we simply detect a child integral to short-circuit then what if we are using an integral whose definition is another integral?
 				local hasInt
-				expr:map(function(ch) 
-					hasInt = hasInt or Integral:isa(ch) 
+				expr:map(function(ch)
+					hasInt = hasInt or Integral:isa(ch)
 				end)
 				-- and if we do want prune to map integrals to integrals, it would be nice to know the new integral (with constants factored out) so I can re-substitute the bounds
 				--if hasInt then return expr end	-- loses the bounds
@@ -55,11 +55,11 @@ Integral.rules = {
 				if hasInt then return orig end
 
 				-- but don't replace the variable of Integral's
-				-- TODO and here we need function evaluation, 
+				-- TODO and here we need function evaluation,
 				-- for a variable 'v' dependent on x, if we don't have an evaluation expression then we just simplify v - v = 0
 				local function replaceDefinite(ex, with)
 					return ex:replace(x, with, function(ei)
-						return Integral:isa(ei) 
+						return Integral:isa(ei)
 					end)
 				end
 				local defFin = replaceDefinite(expr, finish)
@@ -70,7 +70,7 @@ Integral.rules = {
 			-- TODO make this canonical form?
 			int = int():factorDivision()
 
-			if symmath.op.Equation:isa(int) 
+			if symmath.op.Equation:isa(int)
 			or add:isa(int)
 			or symmath.Array:isa(int)
 			then
@@ -89,6 +89,7 @@ Integral.rules = {
 			local cosh = require 'symmath.cosh'
 			local div = require 'symmath.op.div'
 			local frac = div
+			local Derivative = symmath.Derivative
 
 
 			-- int(c) = c x
@@ -139,6 +140,31 @@ Integral.rules = {
 						return frac(c, d) * log(abs(x))
 					else
 						return (c / ((1-n) * d)) * x^(1-n)
+					end
+				end
+
+				-- int(c * f:diff(x, ...), x) => c * f:diff(...)
+				-- TODO only when f.dependentVars is x alone
+				-- but in that case, the rest of the ...'s had better be x's as well, or else the derivative will evaluate to zero
+				-- TODO how about instead int(c * Derivative(f, ...)) => Derivative(c * int(f))
+				if Derivative:isa(f) then
+					local index
+					for i=2,#f do
+						if f[i] == x then
+							index = i
+							break
+						end
+					end
+					if index then
+						-- no other derivatives?  return the object of differentiation
+						if #f == 2 then
+							return c * f[1]
+						-- other derivs?  remove this and preserve the rest
+						else
+							f = f:clone()
+							table.remove(f, index)
+							return c * f
+						end
 					end
 				end
 
@@ -204,7 +230,7 @@ Integral.rules = {
 				if dg then
 					if Constant.isValue( (g:diff(x) - dg)(), 0) then
 						local expg = exp(g)()
-						--if f() == (dg * f)() then	-- TODO better equality test? 
+						--if f() == (dg * f)() then	-- TODO better equality test?
 						if Constant.isValue((f - dg * expg)(), 0) then
 							return c * expg
 						end
@@ -254,7 +280,7 @@ Integral.rules = {
 				if b1 then
 					-- if b1 == b2 then it would simplify to sin(b1*x)^2 ... right?
 					assert(b1 ~= b2)
-					return sin((b2 - b1) * x)/(2 * (b2 - b1)) - sin((b2 + b1) * x)/(2 * (b2 + b1)) 
+					return sin((b2 - b1) * x)/(2 * (b2 - b1)) - sin((b2 + b1) * x)/(2 * (b2 + b1))
 				end
 
 
@@ -286,7 +312,7 @@ Integral.rules = {
 				if a1 then
 					-- if a1 == a2 then it would simplify to cos(a1*x)^2 ... right?
 					assert(a1 ~= a2)
-					return sin((a2 - a1) * x)/(2 * (a2 - a1)) + sin((a2 + a1) * x)/(2 * (a2 + a1)) 
+					return sin((a2 - a1) * x)/(2 * (a2 - a1)) + sin((a2 + a1) * x)/(2 * (a2 + a1))
 				end
 
 

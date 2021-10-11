@@ -3,7 +3,7 @@
 testing my linear solver, most of which I've crammed into symmath.matrix.inverse (even though this is now starting to include over- and under-constrained systems)
 --]]
 require 'ext'
-require 'symmath'.setup{implicitVars=true, MathJax={title='linear solver', pathToTryToFindMathJax='..'}}
+require 'symmath'.setup{implicitVars=true, MathJax={title='tests/unit/linear solver', pathToTryToFindMathJax='..'}}
 
 for _,info in ipairs{
 	{

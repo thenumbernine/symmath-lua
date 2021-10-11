@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>limit</title>
+		<title>tests/unit/limit</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
@@ -10,674 +10,971 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x, x, a), a)</code>
+<code>simplifyAssertEq(lim(x, x, a), a)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.306000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x, x, a, '+'), a)</code>
+<code>simplifyAssertEq(lim(x, x, a, '+'), a)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.099000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x, x, a, '-'), a)</code>
+<code>simplifyAssertEq(lim(x, x, a, '-'), a)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.116000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>constants</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(0, x, a), 0)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(1, x, a), 1)</code>
+<code>simplifyAssertEq(lim(0, x, a), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.305000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(1, x, a), 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.221000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>ops</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(x + 2, x, a), a + 2)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x + x, x, a), 2 * a)</code>
+<code>simplifyAssertEq(lim(x + 2, x, a), a + 2)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.777000ms<br>
+stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+/Prune/combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+/Factor/apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x + a, x, a), 2 * a)</code>
+<code>simplifyAssertEq(lim(x + x, x, a), 2 * a)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 2.720000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(a + a, x, a), 2 * a)</code>
+<code>simplifyAssertEq(lim(x + a, x, a), 2 * a)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.210000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x * 2, x, a), 2 * a)</code>
+<code>simplifyAssertEq(lim(a + a, x, a), 2 * a)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 2.819000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x / 2, x, a), a / 2)</code>
+<code>simplifyAssertEq(lim(x * 2, x, a), 2 * a)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.125000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(x / 2, x, a), a / 2)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 2.360000ms<br>
+stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>involving infinity</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(x, x, inf), inf)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x, x, -inf), -inf)</code>
+<code>simplifyAssertEq(lim(x, x, inf), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.040000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x, x, inf), inf)</code>
+<code>simplifyAssertEq(lim(x, x, -inf), -inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.246000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(1/x, x, inf), 0)</code>
+<code>simplifyAssertEq(lim(x, x, inf), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.026000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(1/x, x, -inf), 0)</code>
+<code>simplifyAssertEq(lim(1/x, x, inf), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.114000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(1/x, x, 0), invalid)</code>
+<code>simplifyAssertEq(lim(1/x, x, -inf), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.234000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(1/x, x, 0, '+'), inf)</code>
+<code>simplifyAssertEq(lim(1/x, x, 0), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(1/x, x, 0, '-'), -inf)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(1/x^2, x, 0, '+'), inf)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(1/x^2, x, 0, '-'), inf)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 0.212000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(1/x, x, 0, '+'), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.072000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(1/x, x, 0, '-'), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.289000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(1/x^2, x, 0, '+'), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.201000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(1/x^2, x, 0, '-'), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.157000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>sqrts</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(sqrt(x), x, 0), invalid)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(sqrt(x), x, 0, '-'), invalid)</code>
+<code>simplifyAssertEq(lim(sqrt(x), x, 0), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.374000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(sqrt(x), x, 0, '+'), 0)</code>
+<code>simplifyAssertEq(lim(sqrt(x), x, 0, '-'), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.177000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(sqrt(x), x, 0, '+'), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.175000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>in each form ...</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(x^frac(1,2), x, 0), invalid)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x^frac(1,2), x, 0, '-'), invalid)</code>
+<code>simplifyAssertEq(lim(x^frac(1,2), x, 0), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.384000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x^frac(1,2), x, 0, '+'), 0)</code>
+<code>simplifyAssertEq(lim(x^frac(1,2), x, 0, '-'), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.213000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(x^frac(1,2), x, 0, '+'), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.240000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>and one more power up ...</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(x^frac(1,4), x, 0), invalid)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x^frac(1,4), x, 0, '-'), invalid)</code>
+<code>simplifyAssertEq(lim(x^frac(1,4), x, 0), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.440000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x^frac(1,4), x, 0, '+'), 0)</code>
+<code>simplifyAssertEq(lim(x^frac(1,4), x, 0, '-'), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.170000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(x^frac(1,4), x, 0, '+'), 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.235000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>functions</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>TODO all of these are only good for 'a' in Real, not necessarily extended-Real, because I don't distinguish them</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>another thing to consider ... most these are set up so that the limit is the same as the evaluation without a limit</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>technically this is not true.  technically atan(inf) is not pi/2 but is instead undefined outside of the limit.</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>should I enforce this?</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(sin(x), x, a), sin(a))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(sin(x), x, inf), invalid)</code>
+<code>simplifyAssertEq(lim(sin(x), x, a), sin(a))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.133000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(sin(x), x, -inf), invalid)</code>
+<code>simplifyAssertEq(lim(sin(x), x, inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.064000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(cos(x), x, a), cos(a))</code>
+<code>simplifyAssertEq(lim(sin(x), x, -inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(cos(x), x, inf), invalid)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(cos(x), x, -inf), invalid)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 0.158000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(abs(x), x, a), abs(a))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(abs(x), x, -inf), inf)</code>
+<code>simplifyAssertEq(lim(cos(x), x, a), cos(a))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.129000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(abs(x), x, inf), inf)</code>
+<code>simplifyAssertEq(lim(cos(x), x, inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.059000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(exp(x), x, a), exp(a))</code>
+<code>simplifyAssertEq(lim(cos(x), x, -inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(exp(x), x, -inf), 0)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(exp(x), x, inf), inf)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 0.129000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(atan(x), x, a), atan(a))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(atan(x), x, -inf), -pi/2)</code>
+<code>simplifyAssertEq(lim(abs(x), x, a), abs(a))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.173000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(atan(x), x, inf), pi/2)</code>
+<code>simplifyAssertEq(lim(abs(x), x, -inf), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.164000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tanh(x), x, a), tanh(a))</code>
+<code>simplifyAssertEq(lim(abs(x), x, inf), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tanh(x), x, -inf), -1)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tanh(x), x, inf), 1)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 0.047000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(asinh(x), x, a), asinh(a))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(asinh(x), x, -inf), -inf)</code>
+<code>simplifyAssertEq(lim(exp(x), x, a), exp(a))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.216000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(asinh(x), x, inf), inf)</code>
+<code>simplifyAssertEq(lim(exp(x), x, -inf), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.141000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(cosh(x), x, a), cosh(a))</code>
+<code>simplifyAssertEq(lim(exp(x), x, inf), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(cosh(x), x, -inf), inf)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(cosh(x), x, inf), inf)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 0.066000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(sinh(x), x, a), sinh(a))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(sinh(x), x, -inf), -inf)</code>
+<code>simplifyAssertEq(lim(atan(x), x, a), atan(a))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.161000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(sinh(x), x, inf), inf)</code>
+<code>simplifyAssertEq(lim(atan(x), x, -inf), -pi/2)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.671000ms<br>
+stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>*/Prune/flatten<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>//Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(sin(x), x, a), sin(a))</code>
+<code>simplifyAssertEq(lim(atan(x), x, inf), pi/2)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(sin(x), x, -inf), invalid)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(sin(x), x, inf), invalid)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 1.358000ms<br>
+stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(cos(x), x, a), cos(a))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(cos(x), x, -inf), invalid)</code>
+<code>simplifyAssertEq(lim(tanh(x), x, a), tanh(a))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.202000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(cos(x), x, inf), invalid)</code>
+<code>simplifyAssertEq(lim(tanh(x), x, -inf), -1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.275000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, a), tan(a))</code>
+<code>simplifyAssertEq(lim(tanh(x), x, inf), 1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, -inf), invalid)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, -3*pi/2), invalid)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, -pi), tan(-pi))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, -pi/2), invalid)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, 0), tan(0))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, pi/2), invalid)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, pi/2, '+'), -inf)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, pi/2, '-'), inf)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, pi), tan(pi))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, 3*pi/2), invalid)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(tan(x), x, inf), invalid)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
+time: 0.091000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(asinh(x), x, a), asinh(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.250000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(asinh(x), x, -inf), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.319000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(asinh(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.068000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(cosh(x), x, a), cosh(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.107000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(cosh(x), x, -inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.128000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(cosh(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.042000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(sinh(x), x, a), sinh(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.106000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(sinh(x), x, -inf), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.258000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(sinh(x), x, inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.047000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(sin(x), x, a), sin(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.115000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(sin(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.141000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(sin(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.055000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(cos(x), x, a), cos(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.114000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(cos(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.109000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(cos(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.111000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, a), tan(a))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.571000ms<br>
+stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>tan/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, -inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.370000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, -3*pi/2), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.934000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, -pi), tan(-pi))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.924000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>unm/Prune/apply<br><li>sin/Prune/apply<br><li>cos/Prune/apply<br><li>*/Prune/apply<br><li>//Prune/xOverMinusOne<br><li>tan/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, -pi/2), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.314000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, 0), tan(0))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.344000ms<br>
+stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>sin/Prune/apply<br><li>cos/Prune/apply<br><li>//Prune/xOverOne<br><li>tan/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, pi/2), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.867000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, pi/2, '+'), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.441000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, pi/2, '-'), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.318000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, pi), tan(pi))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.368000ms<br>
+stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>sin/Prune/apply<br><li>cos/Prune/apply<br><li>*/Prune/apply<br><li>//Prune/xOverMinusOne<br><li>tan/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, 3*pi/2), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.175000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(tan(x), x, inf), invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.180000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>if the input is within the domain of the function then we can evaluate it for certain</b><br>
-<code>do local a = set.positiveReal:var'a' asserteq(lim(log(x), x, a), log(a)) end</code>
+<code>do local a = set.positiveReal:var'a' simplifyAssertEq(lim(log(x), x, a), log(a)) end</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.224000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>if the input is outside the domain of the function then we know the result is invalid. TODO is this the same as indeterminate?  Or should I introduce a new singleton?</b><br>
-<code>do local a = set.negativeReal:var'a' asserteq(lim(log(x), x, a), invalid) end</code>
+<code>do local a = set.negativeReal:var'a' simplifyAssertEq(lim(log(x), x, a), invalid) end</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.319000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>if the input covers both the domain and its complement, and we can't determine the limit evaluation, then don't touch the expression</b><br>
@@ -686,52 +983,75 @@
 ${\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.434000ms<br>
+stack: size: 4<br><ul style="margin:0px"><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(log(x), x, -inf), invalid)</code>
+<code>simplifyAssertEq(lim(log(x), x, -inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.149000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(log(x), x, 0), invalid)</code>
+<code>simplifyAssertEq(lim(log(x), x, 0), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.171000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(log(x), x, 0, '+'), -inf)</code>
+<code>simplifyAssertEq(lim(log(x), x, 0, '+'), -inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.240000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(log(x), x, inf), inf)</code>
+<code>simplifyAssertEq(lim(log(x), x, inf), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.142000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>do local a = set.RealSubset(-1, 1, false, false):var'a' asserteq(lim(acosh(x), x, a), acosh(a)) end</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' asserteq(lim(acosh(x), x, a), invalid) end</code>
+<code>do local a = set.RealSubset(-1, 1, false, false):var'a' simplifyAssertEq(lim(acosh(x), x, a), acosh(a)) end</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.193000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>acosh/Prune/apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' simplifyAssertEq(lim(acosh(x), x, a), invalid) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.145000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -740,52 +1060,75 @@ ${\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}$
 ${\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.248000ms<br>
+stack: size: 4<br><ul style="margin:0px"><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acosh(x), x, -inf), invalid)</code>
+<code>simplifyAssertEq(lim(acosh(x), x, -inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.159000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acosh(x), x, 1), invalid)</code>
+<code>simplifyAssertEq(lim(acosh(x), x, 1), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.138000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acosh(x), x, 1, '+'), 0)</code>
+<code>simplifyAssertEq(lim(acosh(x), x, 1, '+'), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.054000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acosh(x), x, inf), inf)</code>
+<code>simplifyAssertEq(lim(acosh(x), x, inf), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.050000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>do local a = set.RealSubset(-1, 1, false, false):var'a' asserteq(lim(atanh(x), x, a), atanh(a)) end</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' asserteq(lim(atanh(x), x, a), invalid) end</code>
+<code>do local a = set.RealSubset(-1, 1, false, false):var'a' simplifyAssertEq(lim(atanh(x), x, a), atanh(a)) end</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.293000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' simplifyAssertEq(lim(atanh(x), x, a), invalid) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.158000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -794,73 +1137,105 @@ ${\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}$
 ${\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.256000ms<br>
+stack: size: 4<br><ul style="margin:0px"><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(atanh(x), x, -inf), invalid)</code>
+<code>simplifyAssertEq(lim(atanh(x), x, -inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.149000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(atanh(x), x, -1), invalid)</code>
+<code>simplifyAssertEq(lim(atanh(x), x, -1), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.335000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(atanh(x), x, -1, '+'), -inf)</code>
+<code>simplifyAssertEq(lim(atanh(x), x, -1, '+'), -inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.197000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(atanh(x), x, 0), 0)</code>
+<code>simplifyAssertEq(lim(atanh(x), x, 0), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.121000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(atanh(x), x, 1), invalid)</code>
+<code>simplifyAssertEq(lim(atanh(x), x, 1), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.123000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(atanh(x), x, 1, '-'), inf)</code>
+<code>simplifyAssertEq(lim(atanh(x), x, 1, '-'), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.055000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(atanh(x), x, inf), invalid)</code>
+<code>simplifyAssertEq(lim(atanh(x), x, inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.186000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>do local a = set.RealSubset(-1, 1, false, false):var'a' asserteq(lim(asin(x), x, a), asin(a)) end</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' asserteq(lim(asin(x), x, a), invalid) end</code>
+<code>do local a = set.RealSubset(-1, 1, false, false):var'a' simplifyAssertEq(lim(asin(x), x, a), asin(a)) end</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.321000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' simplifyAssertEq(lim(asin(x), x, a), invalid) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.166000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -869,73 +1244,105 @@ ${\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}$
 ${\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.342000ms<br>
+stack: size: 4<br><ul style="margin:0px"><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(asin(x), x, -inf), invalid)</code>
+<code>simplifyAssertEq(lim(asin(x), x, -inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.195000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(asin(x), x, -1), invalid)</code>
+<code>simplifyAssertEq(lim(asin(x), x, -1), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.234000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(asin(x), x, -1, '+'), -inf)</code>
+<code>simplifyAssertEq(lim(asin(x), x, -1, '+'), -inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.231000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(asin(x), x, 0), 0)</code>
+<code>simplifyAssertEq(lim(asin(x), x, 0), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.226000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(asin(x), x, 1), invalid)</code>
+<code>simplifyAssertEq(lim(asin(x), x, 1), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.229000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(asin(x), x, 1, '-'), inf)</code>
+<code>simplifyAssertEq(lim(asin(x), x, 1, '-'), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.088000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(asin(x), x, inf), invalid)</code>
+<code>simplifyAssertEq(lim(asin(x), x, inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.128000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>do local a = set.RealSubset(-1, 1, false, false):var'a' asserteq(lim(acos(x), x, a), acos(a)) end</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' asserteq(lim(acos(x), x, a), invalid) end</code>
+<code>do local a = set.RealSubset(-1, 1, false, false):var'a' simplifyAssertEq(lim(acos(x), x, a), acos(a)) end</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.450000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' simplifyAssertEq(lim(acos(x), x, a), invalid) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.176000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -944,148 +1351,210 @@ ${\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}$
 ${\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.327000ms<br>
+stack: size: 4<br><ul style="margin:0px"><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acos(x), x, -inf), invalid)</code>
+<code>simplifyAssertEq(lim(acos(x), x, -inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.331000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acos(x), x, -1), invalid)</code>
+<code>simplifyAssertEq(lim(acos(x), x, -1), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.164000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acos(x), x, -1, '+'), inf)</code>
+<code>simplifyAssertEq(lim(acos(x), x, -1, '+'), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.055000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acos(x), x, 0), pi/2)</code>
+<code>simplifyAssertEq(lim(acos(x), x, 0), pi/2)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.633000ms<br>
+stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acos(x), x, 1), invalid)</code>
+<code>simplifyAssertEq(lim(acos(x), x, 1), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.203000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acos(x), x, 1, '-'), -inf)</code>
+<code>simplifyAssertEq(lim(acos(x), x, 1, '-'), -inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.170000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(acos(x), x, inf), invalid)</code>
+<code>simplifyAssertEq(lim(acos(x), x, inf), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.100000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(Heaviside(x), x, a), Heaviside(a))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(Heaviside(x), x, -inf), 0)</code>
+<code>simplifyAssertEq(lim(Heaviside(x), x, a), Heaviside(a))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.108000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(Heaviside(x), x, -1), 0)</code>
+<code>simplifyAssertEq(lim(Heaviside(x), x, -inf), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.098000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(Heaviside(x), x, 0), invalid)</code>
+<code>simplifyAssertEq(lim(Heaviside(x), x, -1), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.075000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(Heaviside(x), x, 0, '-'), 0)</code>
+<code>simplifyAssertEq(lim(Heaviside(x), x, 0), invalid)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.093000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(Heaviside(x), x, 0, '+'), 1)</code>
+<code>simplifyAssertEq(lim(Heaviside(x), x, 0, '-'), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.043000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(Heaviside(x), x, 1), 1)</code>
+<code>simplifyAssertEq(lim(Heaviside(x), x, 0, '+'), 1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.040000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(Heaviside(x), x, inf), 1)</code>
+<code>simplifyAssertEq(lim(Heaviside(x), x, 1), 1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.104000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim(Heaviside(x), x, inf), 1)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.041000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>products of functions</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x * sin(x), x, a), a * sin(a))</code>
+<code>simplifyAssertEq(lim(x * sin(x), x, a), a * sin(a))</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.455000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>TODO polynomial roots</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(1 / (x - 1), x, 1), invalid)</code>
+<code>simplifyAssertEq(lim(1 / (x - 1), x, 1), invalid)</code>
 </td><td>
 expected ${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{x} - {1}}}}$ to equal $¿$<br>
 found ${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $¿$<br>
 lhs stack<br>
 Init	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{x} - {1}}}}$	<br>
 unm/Prune/apply	$-1$	<br>
++/Prune/combineConstants	${-1} + {x}$	<br>
 -/Prune/apply	${-1} + {x}$	<br>
 Limit/Prune/apply	$1$	<br>
 Limit/Prune/apply	$-1$	<br>
@@ -1110,6 +1579,7 @@ Limit/Prune/apply	$1$	<br>
 +/Prune/combineConstants	$0$	<br>
 Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
++/Factor/apply	${-1} + {x}$	<br>
 //Factor/polydiv	$\frac{1}{{-1} + {x}}$	<br>
 Factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Limit/Prune/apply	$1$	<br>
@@ -1133,28 +1603,32 @@ Prune	$¿$	<br>
 Factor	$¿$	<br>
 Prune	$¿$	<br>
 Tidy	$¿$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(lim(1 / (x - 1), x, 1), invalid)"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(lim(1 / (x - 1), x, 1), inva..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	limit.lua:249: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./limit.lua:249: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./limit.lua:6: in main chunk<br>
+	[C]: at 0x55cb75224280
+</td><td>
+time: 1.767000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(1 / (x - 1), x, 1, '+'), inf)</code>
+<code>simplifyAssertEq(lim(1 / (x - 1), x, 1, '+'), inf)</code>
 </td><td>
-expected ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{x} - {1}}}}$ to equal $\inf$<br>
-found ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $\inf$<br>
+expected ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{x} - {1}}}}$ to equal $\infty$<br>
+found ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $\infty$<br>
 lhs stack<br>
 Init	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{x} - {1}}}}$	<br>
 unm/Prune/apply	$-1$	<br>
++/Prune/combineConstants	${-1} + {x}$	<br>
 -/Prune/apply	${-1} + {x}$	<br>
 Limit/Prune/apply	$1$	<br>
 Limit/Prune/apply	$-1$	<br>
@@ -1169,6 +1643,7 @@ Limit/Prune/apply	$1$	<br>
 +/Prune/combineConstants	$0$	<br>
 Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
++/Factor/apply	${-1} + {x}$	<br>
 //Factor/polydiv	$\frac{1}{{-1} + {x}}$	<br>
 Factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Limit/Prune/apply	$1$	<br>
@@ -1180,35 +1655,39 @@ Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Constant/Tidy/apply	$-{1}$	<br>
 Tidy	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-Init	$\inf$	<br>
-Prune	$\inf$	<br>
-Expand	$\inf$	<br>
-Prune	$\inf$	<br>
-Factor	$\inf$	<br>
-Prune	$\inf$	<br>
-Tidy	$\inf$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+Init	$\infty$	<br>
+Prune	$\infty$	<br>
+Expand	$\infty$	<br>
+Prune	$\infty$	<br>
+Factor	$\infty$	<br>
+Prune	$\infty$	<br>
+Tidy	$\infty$	<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(lim(1 / (x - 1), x, 1, '+'), inf)"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(lim(1 / (x - 1), x, 1, '+'),..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	limit.lua:249: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./limit.lua:249: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./limit.lua:6: in main chunk<br>
+	[C]: at 0x55cb75224280
+</td><td>
+time: 1.255000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(1 / (x - 1), x, 1, '-'), -inf)</code>
+<code>simplifyAssertEq(lim(1 / (x - 1), x, 1, '-'), -inf)</code>
 </td><td>
-expected ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{x} - {1}}}}$ to equal $-{\inf}$<br>
-found ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $-{\inf}$<br>
+expected ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{x} - {1}}}}$ to equal $-{\infty}$<br>
+found ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $-{\infty}$<br>
 lhs stack<br>
 Init	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{x} - {1}}}}$	<br>
 unm/Prune/apply	$-1$	<br>
++/Prune/combineConstants	${-1} + {x}$	<br>
 -/Prune/apply	${-1} + {x}$	<br>
 Limit/Prune/apply	$1$	<br>
 Limit/Prune/apply	$-1$	<br>
@@ -1223,6 +1702,7 @@ Limit/Prune/apply	$1$	<br>
 +/Prune/combineConstants	$0$	<br>
 Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
++/Factor/apply	${-1} + {x}$	<br>
 //Factor/polydiv	$\frac{1}{{-1} + {x}}$	<br>
 Factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Limit/Prune/apply	$1$	<br>
@@ -1234,42 +1714,47 @@ Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Constant/Tidy/apply	$-{1}$	<br>
 Tidy	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-Init	$-{\inf}$	<br>
-*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
-unm/Prune/apply	${{-1}} {{\inf}}$	<br>
-Prune	${{-1}} {{\inf}}$	<br>
-Expand	${{-1}} {{\inf}}$	<br>
-*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
-Prune	${{-1}} {{\inf}}$	<br>
-Factor	${{-1}} {{\inf}}$	<br>
-*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
-Prune	${{-1}} {{\inf}}$	<br>
+Init	$-{\infty}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\infty}}$	<br>
+unm/Prune/apply	${{-1}} {{\infty}}$	<br>
+Prune	${{-1}} {{\infty}}$	<br>
+Expand	${{-1}} {{\infty}}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\infty}}$	<br>
+Prune	${{-1}} {{\infty}}$	<br>
+Factor	${{-1}} {{\infty}}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\infty}}$	<br>
+Prune	${{-1}} {{\infty}}$	<br>
 Constant/Tidy/apply	$-{1}$	<br>
-*/Tidy/apply	$\inf$	<br>
-*/Tidy/apply	$-{\inf}$	<br>
-Tidy	$-{\inf}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+*/Tidy/apply	$\infty$	<br>
+*/Tidy/apply	$-{\infty}$	<br>
+Tidy	$-{\infty}$	<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(lim(1 / (x - 1), x, 1, '-'), -inf)"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(lim(1 / (x - 1), x, 1, '-'),..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	limit.lua:249: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./limit.lua:249: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./limit.lua:6: in main chunk<br>
+	[C]: at 0x55cb75224280
+</td><td>
+time: 1.423000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim((x + 1) / (x^2 - 1), x, 1), invalid)</code>
+<code>simplifyAssertEq(lim((x + 1) / (x^2 - 1), x, 1), invalid)</code>
 </td><td>
 expected ${\underset{ x\rightarrow 1}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$ to equal $¿$<br>
 found ${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $¿$<br>
 lhs stack<br>
 Init	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$	<br>
++/Prune/combineConstants	${1} + {x}$	<br>
 unm/Prune/apply	$-1$	<br>
++/Prune/combineConstants	${-1} + {{x}^{2}}$	<br>
 -/Prune/apply	${-1} + {{x}^{2}}$	<br>
 Limit/Prune/apply	$1$	<br>
 Limit/Prune/apply	$1$	<br>
@@ -1321,6 +1806,7 @@ Limit/Prune/apply	$1$	<br>
 +/Prune/combineConstants	$0$	<br>
 Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
++/Factor/apply	${1} + {x}$	<br>
 Factor	${\underset{ x\rightarrow 1}{\lim}}{{\frac{{1} + {x}}{{{\left({{x} + {-{1}}}\right)}} {{\left({{1} + {x}}\right)}}}}}$	<br>
 Prune	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Expand	${\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
@@ -1336,28 +1822,33 @@ Prune	$¿$	<br>
 Factor	$¿$	<br>
 Prune	$¿$	<br>
 Tidy	$¿$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(lim((x + 1) / (x^2 - 1), x, 1), inva..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(lim((x + 1) / (x^2 - 1), x, ..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	limit.lua:249: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./limit.lua:249: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./limit.lua:6: in main chunk<br>
+	[C]: at 0x55cb75224280
+</td><td>
+time: 5.588000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim((x + 1) / (x^2 - 1), x, 1, '+'), inf)</code>
+<code>simplifyAssertEq(lim((x + 1) / (x^2 - 1), x, 1, '+'), inf)</code>
 </td><td>
-expected ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$ to equal $\inf$<br>
-found ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $\inf$<br>
+expected ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$ to equal $\infty$<br>
+found ${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $\infty$<br>
 lhs stack<br>
 Init	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$	<br>
++/Prune/combineConstants	${1} + {x}$	<br>
 unm/Prune/apply	$-1$	<br>
++/Prune/combineConstants	${-1} + {{x}^{2}}$	<br>
 -/Prune/apply	${-1} + {{x}^{2}}$	<br>
 Limit/Prune/apply	$1$	<br>
 Limit/Prune/apply	$1$	<br>
@@ -1387,6 +1878,7 @@ Limit/Prune/apply	$1$	<br>
 +/Prune/combineConstants	$0$	<br>
 Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
++/Factor/apply	${1} + {x}$	<br>
 Factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{1} + {x}}{{{\left({{x} + {-{1}}}\right)}} {{\left({{1} + {x}}\right)}}}}}$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Expand	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
@@ -1395,35 +1887,40 @@ Factor	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Tidy	${\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-Init	$\inf$	<br>
-Prune	$\inf$	<br>
-Expand	$\inf$	<br>
-Prune	$\inf$	<br>
-Factor	$\inf$	<br>
-Prune	$\inf$	<br>
-Tidy	$\inf$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+Init	$\infty$	<br>
+Prune	$\infty$	<br>
+Expand	$\infty$	<br>
+Prune	$\infty$	<br>
+Factor	$\infty$	<br>
+Prune	$\infty$	<br>
+Tidy	$\infty$	<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(lim((x + 1) / (x^2 - 1), x, 1, '+'),..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(lim((x + 1) / (x^2 - 1), x, ..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	limit.lua:249: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./limit.lua:249: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./limit.lua:6: in main chunk<br>
+	[C]: at 0x55cb75224280
+</td><td>
+time: 4.499000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim((x + 1) / (x^2 - 1), x, 1, '-'), -inf)</code>
+<code>simplifyAssertEq(lim((x + 1) / (x^2 - 1), x, 1, '-'), -inf)</code>
 </td><td>
-expected ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$ to equal $-{\inf}$<br>
-found ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $-{\inf}$<br>
+expected ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$ to equal $-{\infty}$<br>
+found ${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$ vs $-{\infty}$<br>
 lhs stack<br>
 Init	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}} - {1}}}}$	<br>
++/Prune/combineConstants	${1} + {x}$	<br>
 unm/Prune/apply	$-1$	<br>
++/Prune/combineConstants	${-1} + {{x}^{2}}$	<br>
 -/Prune/apply	${-1} + {{x}^{2}}$	<br>
 Limit/Prune/apply	$1$	<br>
 Limit/Prune/apply	$1$	<br>
@@ -1453,6 +1950,7 @@ Limit/Prune/apply	$1$	<br>
 +/Prune/combineConstants	$0$	<br>
 Limit/Prune/apply	$0$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{-1} + {{x}^{2}}}}}$	<br>
++/Factor/apply	${1} + {x}$	<br>
 Factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{1} + {x}}{{{\left({{x} + {-{1}}}\right)}} {{\left({{1} + {x}}\right)}}}}}$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Expand	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
@@ -1461,53 +1959,63 @@ Factor	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Prune	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-1} + {x}}}}$	<br>
 Tidy	${\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{-{1}} + {x}}}}$	<br>
 rhs stack<br>
-Init	$-{\inf}$	<br>
-*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
-unm/Prune/apply	${{-1}} {{\inf}}$	<br>
-Prune	${{-1}} {{\inf}}$	<br>
-Expand	${{-1}} {{\inf}}$	<br>
-*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
-Prune	${{-1}} {{\inf}}$	<br>
-Factor	${{-1}} {{\inf}}$	<br>
-*/Prune/handleInfAndNan	${{-1}} {{\inf}}$	<br>
-Prune	${{-1}} {{\inf}}$	<br>
+Init	$-{\infty}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\infty}}$	<br>
+unm/Prune/apply	${{-1}} {{\infty}}$	<br>
+Prune	${{-1}} {{\infty}}$	<br>
+Expand	${{-1}} {{\infty}}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\infty}}$	<br>
+Prune	${{-1}} {{\infty}}$	<br>
+Factor	${{-1}} {{\infty}}$	<br>
+*/Prune/handleInfAndNan	${{-1}} {{\infty}}$	<br>
+Prune	${{-1}} {{\infty}}$	<br>
 Constant/Tidy/apply	$-{1}$	<br>
-*/Tidy/apply	$\inf$	<br>
-*/Tidy/apply	$-{\inf}$	<br>
-Tidy	$-{\inf}$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+*/Tidy/apply	$\infty$	<br>
+*/Tidy/apply	$-{\infty}$	<br>
+Tidy	$-{\infty}$	<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(lim((x + 1) / (x^2 - 1), x, 1, '-'),..."]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(lim((x + 1) / (x^2 - 1), x, ..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	limit.lua:249: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./limit.lua:249: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./limit.lua:6: in main chunk<br>
+	[C]: at 0x55cb75224280
+</td><td>
+time: 5.879000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>can we evaluate derivatives as limits?  yes.</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>difftest(x)</code>
 </td><td>
 ${f\left(  x\right)} = {x}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {1}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}\right)}}}} = {1}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {1}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.437000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1515,12 +2023,15 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 </td><td>
 ${f\left(  x\right)} = {{{c}} {{x}}}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {c}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}\right)}}}} = {c}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {c}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.350000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1528,12 +2039,15 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 </td><td>
 ${f\left(  x\right)} = {{x}^{2}}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {{{2}} {{x}}}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}\right)}}}} = {{{2}} {{x}}}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{{2}} {{x}}}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.959000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1541,12 +2055,15 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 </td><td>
 ${f\left(  x\right)} = {{x}^{3}}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {{{3}} {{{x}^{2}}}}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}\right)}}}} = {{{3}} {{{x}^{2}}}}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{{3}} {{{x}^{2}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 4.642000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1554,49 +2071,67 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 </td><td>
 ${f\left(  x\right)} = {\frac{1}{x}}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {\frac{-1}{{x}^{2}}}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}\right)}}}} = {\frac{-1}{{x}^{2}}}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\frac{-1}{{x}^{2}}}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 4.605000ms<br>
+stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>^/ExpandPolynomial/apply<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>//Factor/polydiv<br><li>Factor<br><li>//Prune/xOverMinusOne<br><li>*/Prune/apply<br><li>*/Prune/flatten<br><li>Prune<br><li>Constant/Tidy/apply<br><li>//Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>can't handle these yet.</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>TODO give unit tests a 'reach' section?</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>so console can show that these tests aren't 100% certified.</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>use infinite taylor expansion?</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>or just use L'Hospital's rule -- that solves these too, because, basically, that replaces the limit with the derivative, so it will always be equal.</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>difftest(sqrt(x))</code>
 </td><td>
 ${f\left(  x\right)} = {\sqrt{x}}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {{\frac{1}{2}} {{x}^{\frac{-1}{2}}}}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}\right)}}}} = {{\frac{1}{2}} {{x}^{\frac{-1}{2}}}}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{\frac{1}{2}} {{x}^{\frac{-1}{2}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 10.253000ms<br>
+stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>Constant/Tidy/apply<br><li>//Tidy/apply<br><li>^/Tidy/apply<br><li>^/Tidy/apply<br><li>sqrt/Prune/apply<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>unm/Prune/apply<br><li>*/Prune/apply<br><li>+/Prune/combineConstants<br><li>+/Prune/factorOutDivs<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>//Prune/apply<br><li>//Prune/apply<br><li>//Prune/pIsDiv<br><li>Prune<br><li>Constant/Tidy/apply<br><li>//Tidy/apply<br><li>^/Tidy/apply<br><li>^/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1604,12 +2139,15 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 </td><td>
 ${f\left(  x\right)} = {\sin\left(  x\right)}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {\cos\left(  x\right)}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}\right)}}}} = {\cos\left(  x\right)}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\cos\left(  x\right)}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.832000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1617,12 +2155,15 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 </td><td>
 ${f\left(  x\right)} = {\cos\left(  x\right)}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {{{-1}} {{\sin\left(  x\right)}}}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}\right)}}}} = {{{-1}} {{\sin\left(  x\right)}}}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{{-1}} {{\sin\left(  x\right)}}}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.908000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1630,64 +2171,89 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 </td><td>
 ${f\left(  x\right)} = {\exp\left( x\right)}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}} {{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}}}} = {\exp\left( x\right)}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)} - {f\left(  x\right)}}\right)}}}} = {\exp\left( x\right)}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\exp\left( x\right)}$
 <br>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 2.694000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>some other L'Hospital rule problems:</b><br>
 <code></code>
 </td><td>
-<tr><td>
-<b></b><br>
-<code>asserteq(lim(sin(x) / x, x, 0), 1)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(exp(x) / x^2, x, inf), inf)</code>
+<code>simplifyAssertEq(lim(sin(x) / x, x, 0), 1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.452000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim((e^x - 1) / (x^2 + x), x, 0), 1)</code>
+<code>simplifyAssertEq(lim(exp(x) / x^2, x, inf), inf)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 1.384000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim((2*sin(x) - sin(2*x)) / (x - sin(x)), x, 0), 6)</code>
+<code>simplifyAssertEq(lim((e^x - 1) / (x^2 + x), x, 0), 1)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 2.550000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(lim((2*sin(x) - sin(2*x)) / (x - sin(x)), x, 0), 6)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 21.108000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>TODO this one, repeatedly apply L'Hospital until the power of x on top is <= 0</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>but this seems like it would need a special case of evaluating into a factorial</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x^n * e^x, x, 0), 0)</code>
+<code>simplifyAssertEq(lim(x^n * e^x, x, 0), 0)</code>
 </td><td>
 expected ${\underset{ x\rightarrow 0}{\lim}}{{\left({{{{x}^{n}}} {{\exp\left( x\right)}}}\right)}}$ to equal 0<br>
 found ${0}^{n}$ vs $0$<br>
@@ -1730,57 +2296,78 @@ Factor	$0$	<br>
 Prune	$0$	<br>
 Constant/Tidy/apply	$0$	<br>
 Tidy	$0$	<br>
-<span style="color:red">BAD</span><br>C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: failed<br>stack traceback:<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:103: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:102><br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:30: in function 'asserteq'<br>
-	[string "asserteq(lim(x^n * e^x, x, 0), 0)"]:1: in main chunk<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:95: in function <C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
+	[string "simplifyAssertEq(lim(x^n * e^x, x, 0), 0)"]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	C:\Users\Chris\Projects\lua\symmath\tests\unit\unit.lua:94: in function 'exec'<br>
-	limit.lua:249: in function 'cb'<br>
-	C:\Users\Chris\Projects\lua\ext\timer.lua:49: in function 'timer'<br>
-	limit.lua:6: in main chunk<br>
-	[C]: at 0x7ff6416f4950
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	./limit.lua:249: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./limit.lua:6: in main chunk<br>
+	[C]: at 0x55cb75224280
+</td><td>
+time: 0.928000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>TODO this requires representing x ln x as (ln x) / (1/x) before applying L'Hospital</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim(x * log(x), x, 0, '+'), 0)</code>
+<code>simplifyAssertEq(lim(x * log(x), x, 0, '+'), 0)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 0.133000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>mortgage repayment formula -- works</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
-<code>asserteq(lim( (a * x * (1 + x)^n) / ((1 + x)^n - 1), x, 0 ), a / n)</code>
+<code>simplifyAssertEq(lim( (a * x * (1 + x)^n) / ((1 + x)^n - 1), x, 0 ), a / n)</code>
 </td><td>
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 17.912000ms<br>
+stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>//Factor/polydiv<br><li>Factor<br><li>unm/Prune/apply<br><li>+/Prune/combineConstants<br><li>-/Prune/apply<br><li>^/Prune/xToTheZero<br><li>*/Prune/apply<br><li>//Prune/apply<br><li>*/Prune/factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b>the infamous tanh(x) ... works?  hmm ... this is infamous for taking an infinite number of L'Hospital applications.  Why is it working?</b><br>
 <code></code>
 </td><td>
+</td><td>
+</td></tr>
 <tr><td>
 <b></b><br>
 <code>print( ((e^x + e^-x) / (e^x - e^-x)):lim(x, inf):prune() )</code>
@@ -1788,4 +2375,7 @@ Tidy	$0$	<br>
 $1$
 
 <span style="color:green">GOOD</span>
+</td><td>
+time: 8.244000ms<br>
+stack: size: 29<br><ul style="margin:0px"><li>Init<br><li>Derivative/Prune/constants<br><li>Derivative/Prune/constants<br><li>*/Prune/apply<br><li>Derivative/Prune/self<br><li>*/Prune/apply<br><li>+/Prune/combineConstants<br><li>Derivative/Prune/eval<br><li>log/Prune/apply<br><li>*/Prune/apply<br><li>Derivative/Prune/other<br><li>*/Prune/apply<br><li>//Prune/zeroOverX<br><li>+/Prune/combineConstants<br><li>Derivative/Prune/eval<br><li>+/Prune/combineConstants<br><li>Derivative/Prune/eval<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy<br><li>//Prune/xOverX<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply<br><li>Limit/Prune/apply</ul>
 </td></tr>

@@ -61,15 +61,19 @@ local function simplifyCall(simplifyObj, x, ...)
 	
 		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
 		if stack then stack:insert{'Expand', clone(x)} end
+--print('expand\n'..x)
 
 		x = prune(x, ...)
 		if stack then stack:insert{'Prune', clone(x)} end
+--print('prune\n'..x)
 		
 		x = factor(x)
 		if stack then stack:insert{'Factor', clone(x)} end
+--print('factor\n'..x)
 		
 		x = prune(x)
 		if stack then stack:insert{'Prune', clone(x)} end
+--print('prune\n'..x)
 
 -- [==[ goes horribly slow
 if simplifyObj.useTrigSimplify then
@@ -83,10 +87,12 @@ if simplifyObj.useTrigSimplify then
 			local sin = symmath.sin
 			local cos = symmath.cos
 			local Constant = symmath.Constant
+			local pow = symmath.op.pow
 			local found
 			-- cos(x)^n => (1 - sin(x)^2) cos(x)^(n-2)
 			x = x:map(function(expr)
-				if cos:isa(expr[1])
+				if pow:isa(expr)
+				and cos:isa(expr[1])
 				and Constant:isa(expr[2])
 				then
 					local n = expr[2].value
@@ -123,7 +129,8 @@ if simplifyObj.useTrigSimplify then
 			x = x:map(function(expr)
 				-- TODO this isn't being called
 				-- where to put sin^2(theta) -> 1 - cos^2(theta) ...
-				if sin:isa(expr[1])
+				if pow:isa(expr)
+				and sin:isa(expr[1])
 				and Constant:isa(expr[2])
 				then
 					local n = expr[2].value

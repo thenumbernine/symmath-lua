@@ -275,7 +275,7 @@ local tab = (' '):rep(indent)
 				if b1match:match(b1, matchesForThisSize) then
 --print(tab.."matchesForThisSize["..b1.index.."] is now "..SingleLine(matchesForThisSize[b1.index]))
 					local suba = a:sub(matchSize+1)
---print(tab.."calling recursively on "..#suba.." terms: "..table.mapi(suba, SingleLine):concat', ')			
+--print(tab.."calling recursively on "..#suba.." terms: "..table.mapi(suba, SingleLine):concat', ')
 					local didMatch = checkWhatsLeft(suba, b, matchesForThisSize, indent)
 --print(tab.."returned results from the sub-checkWhatsLeft : "..table.mapi(results, SingleLine):concat', ')
 					if didMatch then
@@ -339,15 +339,15 @@ local Verbose = symmath.export.Verbose
 	-- Constant(0):match(2 * Wildcard(1))
 	-- 2 is a non-wildcard, Wildcard(1) is a wildcard
 	-- but as long as we're inside mul, we just need to match a wildcard to 0
-	if Constant.isValue(a, 0) 
-	-- make sure we have a single wildcard in the mix 
+	if Constant.isValue(a, 0)
+	-- make sure we have a single wildcard in the mix
 	and (#nonWildcards == 0 or #wildcards > 0)
 	then
 		local zeroMatches = table(matches)
 		local failed
 		-- make sure the matches can match to zero (i.e. no 'dependsOn=x')
 		for _,w in ipairs(wildcards) do
-			if not a:match(w, zeroMatches) then 
+			if not a:match(w, zeroMatches) then
 				failed = true
 				break
 			else
@@ -370,7 +370,7 @@ local Verbose = symmath.export.Verbose
 
 	local defaultValue = Constant(1)
 	local matchExpr = a
-	if #nonWildcards == 1 
+	if #nonWildcards == 1
 	and #wildcards > 0
 	then
 --print("mul.wildcardMatches matchExpr "..require 'symmath.export.SingleLine'(a))
@@ -385,7 +385,7 @@ local Verbose = symmath.export.Verbose
 			has 1 non-wildcard: Constant(2)
 			and 1 wildcard: Wildcard(1)
 			
-			now if (a = Constant(4)) matches (nw[1] = Constant(2)) then the next condition hits 
+			now if (a = Constant(4)) matches (nw[1] = Constant(2)) then the next condition hits
 			 and we continue on with our matched expresssion set to the operator identity of Constant(1)
 			but if it doesn't match ...
 			... what if we can just factor one out of the other?
@@ -393,16 +393,16 @@ local Verbose = symmath.export.Verbose
 			this is a question of the scope of the function:
 			how much is this tree matching, and how much is this unknown substitution?
 			tree matching? fail here.
-			unknown-substitution? set the match to the fraction of 
+			unknown-substitution? set the match to the fraction of
 			--]]
 
 			--[[ unknown-substitution
 			-- this does fix Constant(4):match(Constant(2) * Wildcard(1))
-			-- but this causes op/div's pattern matching to a / (b + sqrt(c)) 
+			-- but this causes op/div's pattern matching to a / (b + sqrt(c))
 			--  to successfully match a nil value
-			-- TODO this is breaking a lot of integral tests as well 
+			-- TODO this is breaking a lot of integral tests as well
 			if symmath.matchMulUnknownSubstitution
-			and #wildcards > 0 
+			and #wildcards > 0
 			then
 				matchExpr = (a / nonWildcards[1])()
 				submatches = table(matches)
@@ -430,13 +430,13 @@ local Verbose = symmath.export.Verbose
 
 	-- if any of these wildcards needed a term then fail
 	-- (that will be handled in the mul.match fallthrough
-	--  which is why mul.match should not call this -- only other non-mul Expressions' .match())			
+	--  which is why mul.match should not call this -- only other non-mul Expressions' .match())
 	local totalAtLeast = 0
 	for _,w in ipairs(wildcards) do
 		if w.atLeast and w.atLeast > 0 then
 			totalAtLeast = totalAtLeast + w.atLeast
 			if totalAtLeast > 1 then
---print("mul.wildcardMatches: wildcard needs at least 1, and we have none left - failing") 
+--print("mul.wildcardMatches: wildcard needs at least 1, and we have none left - failing")
 				return false
 			end
 		end
@@ -561,9 +561,9 @@ end
 function mul:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealRange()
-	if I == nil then 
+	if I == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 	for i=2,#self do
 		local I2 = self[i]:getRealRange()
@@ -617,8 +617,8 @@ mul.rules = {
 	Expand = {
 		{apply = function(expand, expr)
 			local dstr = expr:distribute()
-			if dstr then 
-				return expand:apply(dstr) 
+			if dstr then
+				return expand:apply(dstr)
 			end
 		end},
 	},
@@ -630,6 +630,7 @@ mul.rules = {
 -- [[ a^n * b^n => (a * b)^n
 -- this is also in mul/Prune/combineMulOfLikePow
 -- and the opposite is in pow/Expand/expandMulOfLikePow and pow/Prune/expandMulOfLikePow
+-- I'm removing it here after a reorganization of rules because now, with prune() turning expressions into div add mul, this is causing stack overflows
 		{combineMulOfLikePow = function(factor, expr)
 			symmath = symmath or require 'symmath'
 			local pow = symmath.op.pow
@@ -658,7 +659,7 @@ mul.rules = {
 --]]
 
 --[[
--- hmm ... raise everything to the lowest power? 
+-- hmm ... raise everything to the lowest power?
 -- if there are any sqrts, square everything?
 -- this is for 2/sqrt(6) => sqrt(2)/sqrt(3)
 -- this seems to do more harm than good, esp when summing fractions of sqrts
@@ -769,23 +770,23 @@ mul.rules = {
 			end
 			
 			-- if it's all constants then return what we got
-			if #expr == 0 then 
-				return Constant(cval) 
+			if #expr == 0 then
+				return Constant(cval)
 			end
 			
-			if cval == 0 then 
-				return Constant(0) 
+			if cval == 0 then
+				return Constant(0)
 			end
 			
 			if cval ~= 1 then
 				table.insert(expr, 1, Constant(cval))
 			else
-				if #expr == 1 then 
-					return factorDivision:apply(expr[1]) 
+				if #expr == 1 then
+					return factorDivision:apply(expr[1])
 				end
 			end
 			
-			--]]	
+			--]]
 		end},
 	},
 
@@ -830,8 +831,8 @@ mul.rules = {
 
 			-- anything * invalid is invalid
 			for i=1,#expr do
-				if expr[i] == invalid then 
---print("mul by invalid ... makes invalid")					
+				if expr[i] == invalid then
+--print("mul by invalid ... makes invalid")
 					return invalid
 				end
 			end
@@ -849,7 +850,7 @@ mul.rules = {
 					haszero = true
 				end
 				-- TODO recursively call instead of for-loop
-				-- and TODO if expr[i] is not in positive or negative real then don't simplify it, because it is arbitrary.  
+				-- and TODO if expr[i] is not in positive or negative real then don't simplify it, because it is arbitrary.
 				-- x * inf cannot be simplified to +inf or -inf.
 				if negativeReal:contains(expr[i]) then
 					sign = -sign
@@ -868,7 +869,7 @@ mul.rules = {
 			end
 		end},
 
-		{apply = function(prune, expr)	
+		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local pow = symmath.op.pow
@@ -914,21 +915,21 @@ mul.rules = {
 			end
 			
 			-- if it's all constants then return what we got
-			if #expr == 0 then 
-				return Constant(cval) 
+			if #expr == 0 then
+				return Constant(cval)
 			end
 			
-			if cval == 0 then 
-				return Constant(0) 
+			if cval == 0 then
+				return Constant(0)
 			end
 			
 			if cval ~= 1 then
 				table.insert(expr, 1, Constant(cval))
 			else
-				if #expr == 1 then 
+				if #expr == 1 then
 					--return prune:apply(expr[1])
 					-- cheap trick to fix the problem
-					-- (frac(1,2)*sqrt(3))*(frac(sqrt(2),sqrt(3))) + (-frac(1,2))*(frac(1,3)*-sqrt(2)) 
+					-- (frac(1,2)*sqrt(3))*(frac(sqrt(2),sqrt(3))) + (-frac(1,2))*(frac(1,3)*-sqrt(2))
 					-- is requiring two :simplify()'s in order to simplify fully
 					-- just insert a :tidy() for the time being and things seem to work
 					return prune:apply(expr[1]:tidy())
@@ -938,7 +939,8 @@ mul.rules = {
 -- [[
 			local Variable = symmath.Variable
 			local TensorRef = symmath.Tensor.Ref
-			local function compare(a, b) 
+			-- TODO use the same compare() that's in op/add.lua
+			local function compare(a, b)
 				-- Constant
 				local ca, cb = Constant:isa(a), Constant:isa(b)
 				if ca and not cb then return true end
@@ -966,7 +968,7 @@ mul.rules = {
 				local tb = TensorRef:isa(b) and Variable:isa(b[1])
 				if ta and not tb then return true end
 				if tb and not ta then return false end
-				if ta and tb then 
+				if ta and tb then
 					local na, nb = #a, #b
 					if na < nb then return true end
 					if na > nb then return false end
@@ -1003,11 +1005,11 @@ mul.rules = {
 --]]
 			
 			-- [[ before combining powers, separate out any -1's from constants
-			-- this fixes my -2 * 2^(-1/2) simplify bug, but 
+			-- this fixes my -2 * 2^(-1/2) simplify bug, but
 			--  somehow screws up everything
 			if mul:isa(expr)
 			and Constant:isa(expr[1])
-			and expr[1].value < 0 
+			and expr[1].value < 0
 			and expr[1].value ~= -1
 			then
 				expr[1] = Constant(-expr[1].value)
@@ -1096,7 +1098,7 @@ mul.rules = {
 			local bases = table()
 			
 			for i=1,#expr do
-				-- decompose expressions of the form 
+				-- decompose expressions of the form
 				--  (base / denom) ^ power
 				local base = expr[i]
 				local power = Constant(1)
@@ -1117,7 +1119,7 @@ mul.rules = {
 				bases:insert(base)
 			end
 			
-			if #uniqueDenomIndexes > 0 then	
+			if #uniqueDenomIndexes > 0 then
 				
 				local num
 				if #bases == 1 then
@@ -1195,7 +1197,7 @@ so when we find mul -> pow -> add
 			local Constant = symmath.Constant
 			local add = symmath.op.add
 			for i=1,#expr-1 do
-				if pow:isa(expr[i]) 
+				if pow:isa(expr[i])
 				--[=[ only for pow-of-sqrts?
 				and div:isa(expr[i][2])
 				and Constant.isValue(expr[i][2][1], 1)
@@ -1206,7 +1208,7 @@ so when we find mul -> pow -> add
 				--]=]
 				then
 					for j=i+1,#expr do
-						if pow:isa(expr[j]) 
+						if pow:isa(expr[j])
 						--[=[ only for pow-of-sqrts?
 						and div:isa(expr[j][2])
 						and Constant.isValue(expr[j][2][1], 1)
@@ -1232,7 +1234,7 @@ so when we find mul -> pow -> add
 				end
 			end
 		end},
---]]	
+--]]
 
 --[[ how about turning c*x^-1/2 into c/sqrt(x) here?
 -- still prevents sums of fractions of sqrts ...
@@ -1258,9 +1260,9 @@ so when we find mul -> pow -> add
 					return expr / sqrt(x[1])
 					--return factor:apply(sqrt((expr^2):prune()))
 				end
-			end		
+			end
 		end},
---]]	
+--]]
 	
 		{logPow = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -1275,7 +1277,7 @@ so when we find mul -> pow -> add
 					if #expr == 1 then expr = expr[1] end
 					return prune:apply(symmath.log(a[1] ^ expr))
 				end
-			end	
+			end
 		end},
 
 		{negLog = function(prune, expr)
@@ -1286,8 +1288,21 @@ so when we find mul -> pow -> add
 			and symmath.log:isa(expr[2])
 			then
 				return prune:apply(symmath.log(1/expr[2][1]))
-			end	
+			end
 		end},
+
+		--[[ move expand rule to prune ...
+		-- without this, (a^2 * x^2 - a^2):simplify() has :factor() turn it into (a^2 (x + 1) (x - 1))
+		--  and subsequent :prune() leaves it in this state
+		-- with this, (1 + 1/x + 2/x) fails to simplify to (1 + 3/x) and we get some infinite loops somewhere
+		{expand = function(prune, expr)
+			local dstr = expr:distribute()
+			if dstr then
+				-- and don't simplify or you'll get an infinite loop ...
+				return prune:apply(dstr)
+			end
+		end},
+		--]]
 	},
 
 	Tidy = {
@@ -1316,7 +1331,7 @@ so when we find mul -> pow -> add
 			end
 			
 			-- (has to be solved post-prune() because tidy's Constant+unm will have made some new ones)
-			-- 1 * x => x 	
+			-- 1 * x => x
 			local first = expr[1]
 			if Constant:isa(first) and first.value == 1 then
 				table.remove(expr, 1)

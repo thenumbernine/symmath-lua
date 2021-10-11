@@ -1,0 +1,730 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>tests/unit/notfinite</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b>infinite.</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>using https://en.wikipedia.org/wiki/Limit_of_a_function</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>TODO should these be valid, or should they always produce 'invalid'</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>and only Limit() produce valid operations on infinity?</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.286000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertNe(inf, -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.340000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertNe(inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.071000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>q + inf = inf for q != -inf</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf + inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.175000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf + 0, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.050000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf + 1, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.135000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf - 1, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.207000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf + x + y, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.162000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>q * inf = inf for q > 0 (incl q == inf)</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>q * inf = -inf for q < 0 (incl q == -inf)</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((inf * inf), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.129000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((inf * -inf), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.556000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((inf * -1), -inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.294000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*/Prune/handleInfAndNan<br><li>unm/Prune/apply<br><li>Prune<br><li>Expand<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*/Prune/handleInfAndNan<br><li>Prune<br><li>Constant/Tidy/apply<br><li>*/Tidy/apply<br><li>*/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((inf * -1 * -2), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.255000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((inf * 1 * 2), inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.120000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b>TODO this should be unknown unless x is defined as a positive or negative real</b><br>
+<code>simplifyAssertEq(inf * x, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.100000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf / 2, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.082000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>0 * inf = invalid</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf * 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.125000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf / 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.141000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>q / inf = 0 for q != inf and q != -inf</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(-2 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.158000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(-1 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.090000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(-.5 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.089000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(0 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.068000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(.5 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.126000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(1 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.104000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(2 / inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.082000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>inf^q = 0 for q < 0</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>inf^q = inf for q > 0</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.221000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ -2, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.139000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ -1, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.091000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ -.5, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.091000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.179000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ .5, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.095000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ 1, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.044000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ 2, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.071000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.069000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>q^inf = 0 for 0 < q < 1</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>q^inf = inf for 1 < q</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((-2) ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.119000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((-.5) ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.162000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(0 ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.111000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(.5 ^ inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.111000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(2 ^ inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.139000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>q^-inf = inf for 0 < q < 1</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>q^-inf = 0 for 1 < q</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((-2) ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.161000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((-.5) ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.153000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(0 ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.506000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(.5 ^ -inf, inf)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.493000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(2 ^ -inf, 0)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.475000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>indeterminant:</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(Constant(0) / 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.075000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(-inf / inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.466000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf / inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.082000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf / -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.257000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(-inf / -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.347000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(0 * inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.174000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(0 * -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.250000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf + -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.098000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(Constant(0) ^ 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.029000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(inf ^ 0, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.036000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((-1) ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.037000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq((-1) ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.082000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(1 ^ inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.049000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>simplifyAssertEq(1 ^ -inf, invalid)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.063000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>

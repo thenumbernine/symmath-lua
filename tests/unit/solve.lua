@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath.tests.unit.unit'(env, 'solve')
+require 'symmath.tests.unit.unit'(env, 'tests/unit/solve')
 
 timer(nil, function()
 
@@ -25,99 +25,99 @@ However I'm capping it at x^10. TODO make that a parameter to be adjusted.
 
 local solveReturnsMultiplicity = [=[
 print((x^2):eq(0):solve(x))
-asserteq(#{(x^2):eq(0):solve(x)}, 2)
-asserteq((x^2):eq(0):solve(x), x:eq(0))
-asserteq(select(2, (x^2):eq(0):solve(x)), x:eq(0))
+simplifyAssertEq(#{(x^2):eq(0):solve(x)}, 2)
+simplifyAssertEq((x^2):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(select(2, (x^2):eq(0):solve(x)), x:eq(0))
 
 -- same with 3 ...
 print((x^3):eq(0):solve(x))
-asserteq(#{(x^3):eq(0):solve(x)}, 3)
-asserteq((x^3):eq(0):solve(x), x:eq(0))
-asserteq(select(2, (x^3):eq(0):solve(x)), x:eq(0))
-asserteq(select(3, (x^3):eq(0):solve(x)), x:eq(0))
+simplifyAssertEq(#{(x^3):eq(0):solve(x)}, 3)
+simplifyAssertEq((x^3):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(select(2, (x^3):eq(0):solve(x)), x:eq(0))
+simplifyAssertEq(select(3, (x^3):eq(0):solve(x)), x:eq(0))
 
 -- same with 4 ...
 print((x^4):eq(0):solve(x))
-asserteq(#{(x^4):eq(0):solve(x)}, 4)
-asserteq((x^4):eq(0):solve(x), x:eq(0))
-asserteq(select(2, (x^4):eq(0):solve(x)), x:eq(0))
-asserteq(select(3, (x^4):eq(0):solve(x)), x:eq(0))
-asserteq(select(4, (x^4):eq(0):solve(x)), x:eq(0))
+simplifyAssertEq(#{(x^4):eq(0):solve(x)}, 4)
+simplifyAssertEq((x^4):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(select(2, (x^4):eq(0):solve(x)), x:eq(0))
+simplifyAssertEq(select(3, (x^4):eq(0):solve(x)), x:eq(0))
+simplifyAssertEq(select(4, (x^4):eq(0):solve(x)), x:eq(0))
 
 -- distinguish between x*(x^2 + 2x + 1) and (x^3 + 2x^2 + x) , because the solver handles one but not the other
 printbr( (x * (x^2 + 2*x + 1)):eq(0):solve(x)  )
-asserteq(#{(x * (x^2 + 2*x + 1)):eq(0):solve(x)}, 3)
-asserteq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))
-asserteq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
-asserteq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
+simplifyAssertEq(#{(x * (x^2 + 2*x + 1)):eq(0):solve(x)}, 3)
+simplifyAssertEq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
+simplifyAssertEq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
 
 printbr( (x^3 + 2*x^2 + x):eq(0):solve(x) )
-asserteq(#{(x^3 + 2*x^2 + x):eq(0):solve(x)}, 3)
-asserteq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))
-asserteq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
-asserteq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
+simplifyAssertEq(#{(x^3 + 2*x^2 + x):eq(0):solve(x)}, 3)
+simplifyAssertEq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
+simplifyAssertEq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
 
 -- same with x^3 + x^2 - x
 printbr( (x * (x^2 + x - 1)):eq(0):solve(x)  )
-asserteq(#{(x * (x^2 + x - 1)):eq(0):solve(x)}, 3)
-asserteq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))
-asserteq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))
-asserteq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))
+simplifyAssertEq(#{(x * (x^2 + x - 1)):eq(0):solve(x)}, 3)
+simplifyAssertEq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))
+simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))
 
 printbr( (x^3 + x^2 - x):eq(0):solve(x) )
-asserteq(#{(x^3 + x^2 - x):eq(0):solve(x)}, 3)
-asserteq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))
-asserteq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))
-asserteq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))
+simplifyAssertEq(#{(x^3 + x^2 - x):eq(0):solve(x)}, 3)
+simplifyAssertEq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))
+simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))
 
 ]=]
 
 local solveDoesntReturnMultiplicity = [=[
 print((x^2):eq(0):solve(x))
-asserteq(#{(x^2):eq(0):solve(x)}, 1)
-asserteq((x^2):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(#{(x^2):eq(0):solve(x)}, 1)
+simplifyAssertEq((x^2):eq(0):solve(x), x:eq(0))
 
 -- same with 3 ...
 print((x^3):eq(0):solve(x))
-asserteq(#{(x^3):eq(0):solve(x)}, 1)
-asserteq((x^3):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(#{(x^3):eq(0):solve(x)}, 1)
+simplifyAssertEq((x^3):eq(0):solve(x), x:eq(0))
 
 -- same with 4 ...
 print((x^4):eq(0):solve(x))
-asserteq(#{(x^4):eq(0):solve(x)}, 1)
-asserteq((x^4):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(#{(x^4):eq(0):solve(x)}, 1)
+simplifyAssertEq((x^4):eq(0):solve(x), x:eq(0))
 
 -- distinguish between x*(x^2 + 2x + 1) and (x^3 + 2x^2 + x) , because the solver handles one but not the other
 printbr( (x * (x^2 + 2*x + 1)):eq(0):solve(x)  )
-asserteq(#{(x * (x^2 + 2*x + 1)):eq(0):solve(x)}, 2)
-asserteq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))
-asserteq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
+simplifyAssertEq(#{(x * (x^2 + 2*x + 1)):eq(0):solve(x)}, 2)
+simplifyAssertEq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
 printbr( (x^3 + 2*x^2 + x):eq(0):solve(x) )
-asserteq(#{(x^3 + 2*x^2 + x):eq(0):solve(x)}, 2)
-asserteq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))
-asserteq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
+simplifyAssertEq(#{(x^3 + 2*x^2 + x):eq(0):solve(x)}, 2)
+simplifyAssertEq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))
+simplifyAssertEq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
 ]=]
 
 
 
 for _,line in ipairs(string.split(string.trim([=[
 
-asserteq(#{x:eq(0):solve(x)}, 1)
-asserteq(x:eq(0):solve(x), x:eq(0))
+simplifyAssertEq(#{x:eq(0):solve(x)}, 1)
+simplifyAssertEq(x:eq(0):solve(x), x:eq(0))
 
-asserteq(#{x:eq(1):solve(x)}, 1)
-asserteq(x:eq(1):solve(x), x:eq(1))
+simplifyAssertEq(#{x:eq(1):solve(x)}, 1)
+simplifyAssertEq(x:eq(1):solve(x), x:eq(1))
 
-asserteq(#{(x+1):eq(0):solve(x)}, 1)
-asserteq((x+1):eq(0):solve(x), x:eq(-1))
+simplifyAssertEq(#{(x+1):eq(0):solve(x)}, 1)
+simplifyAssertEq((x+1):eq(0):solve(x), x:eq(-1))
 
-asserteq(#{(x^2):eq(1):solve(x)}, 2)
-asserteq((x^2):eq(1):solve(x), x:eq(1))
-asserteq(select(2, (x^2):eq(1):solve(x)), x:eq(-1))
+simplifyAssertEq(#{(x^2):eq(1):solve(x)}, 2)
+simplifyAssertEq((x^2):eq(1):solve(x), x:eq(1))
+simplifyAssertEq(select(2, (x^2):eq(1):solve(x)), x:eq(-1))
 
-asserteq(#{(x^2):eq(-1):solve(x)}, 2)
-asserteq((x^2):eq(-1):solve(x), x:eq(i))
-asserteq(select(2, (x^2):eq(-1):solve(x)), x:eq(-i))
+simplifyAssertEq(#{(x^2):eq(-1):solve(x)}, 2)
+simplifyAssertEq((x^2):eq(-1):solve(x), x:eq(i))
+simplifyAssertEq(select(2, (x^2):eq(-1):solve(x)), x:eq(-i))
 
 ]=]
 .. solveReturnsMultiplicity

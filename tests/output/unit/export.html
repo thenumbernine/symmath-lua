@@ -7,7 +7,7 @@
 	</head>
 	<body onload='tryToFindMathJax();'>
 
-generated with LuaJIT 2.1.0-beta3
+generated with LuaJIT 2.0.5
 <br>
 
 <br>
@@ -247,9 +247,9 @@ symmath.pi
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\inf$
+$\infty$
 </pre>
-$\inf$
+$\infty$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3947,8 +3947,8 @@ symmath.e ^
 <td>
 <pre>
   ∂          
-╶──╴       2 
- ∂x √(1 - x )
+╶──╴ ╭     2╮
+ ∂x √╰1 - x ╯
 </pre>
 </td>
 <td>
@@ -4172,8 +4172,8 @@ Integral(
 <td>
 <pre>
 ⌠1              
-│          2    
-⌡-1 √(1 - x ) dx
+│    ╭     2╮   
+⌡-1 √╰1 - x ╯ dx
 </pre>
 </td>
 <td>
@@ -4713,7 +4713,7 @@ Tensor{a, b}
 <pre class="pre-not-multiline">
 Tensor(
 	{
-TensorIndex{lower=true, symbol="i"}
+Tensor.Index{lower=true, symbol="i"}
 	},
 	var("a"),
 	var("b")
@@ -4778,19 +4778,19 @@ Tensor{Tensor{a, b}, Tensor{c, d}}
 <pre class="pre-not-multiline">
 Tensor(
 	{
-TensorIndex{lower=true, symbol="i"},
-TensorIndex{lower=true, symbol="j"}
+Tensor.Index{lower=true, symbol="i"},
+Tensor.Index{lower=true, symbol="j"}
 	},
 	Tensor(
 		{
-TensorIndex{lower=true, symbol="j"}
+Tensor.Index{lower=true, symbol="j"}
 		},
 		var("a"),
 		var("b")
 	),
 	Tensor(
 		{
-TensorIndex{lower=true, symbol="j"}
+Tensor.Index{lower=true, symbol="j"}
 		},
 		var("c"),
 		var("d")
@@ -4866,25 +4866,25 @@ Tensor{Tensor{Tensor{a, b}, Tensor{c, d}}, Tensor{Tensor{e, f}, Tensor{g, h}}}
 <pre class="pre-not-multiline">
 Tensor(
 	{
-TensorIndex{lower=true, symbol="i"},
-TensorIndex{lower=true, symbol="j"},
-TensorIndex{lower=true, symbol="k"}
+Tensor.Index{lower=true, symbol="i"},
+Tensor.Index{lower=true, symbol="j"},
+Tensor.Index{lower=true, symbol="k"}
 	},
 	Tensor(
 		{
-TensorIndex{lower=true, symbol="j"},
-TensorIndex{lower=true, symbol="k"}
+Tensor.Index{lower=true, symbol="j"},
+Tensor.Index{lower=true, symbol="k"}
 		},
 		Tensor(
 			{
-TensorIndex{lower=true, symbol="k"}
+Tensor.Index{lower=true, symbol="k"}
 			},
 			var("a"),
 			var("b")
 		),
 		Tensor(
 			{
-TensorIndex{lower=true, symbol="k"}
+Tensor.Index{lower=true, symbol="k"}
 			},
 			var("c"),
 			var("d")
@@ -4892,19 +4892,19 @@ TensorIndex{lower=true, symbol="k"}
 	),
 	Tensor(
 		{
-TensorIndex{lower=true, symbol="j"},
-TensorIndex{lower=true, symbol="k"}
+Tensor.Index{lower=true, symbol="j"},
+Tensor.Index{lower=true, symbol="k"}
 		},
 		Tensor(
 			{
-TensorIndex{lower=true, symbol="k"}
+Tensor.Index{lower=true, symbol="k"}
 			},
 			var("e"),
 			var("f")
 		),
 		Tensor(
 			{
-TensorIndex{lower=true, symbol="k"}
+Tensor.Index{lower=true, symbol="k"}
 			},
 			var("g"),
 			var("h")
@@ -4915,7 +4915,7 @@ TensorIndex{lower=true, symbol="k"}
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x_a
@@ -4959,20 +4959,20 @@ x_Da
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{_a}}
+Tensor.Ref{x, Tensor.Index{_a}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=true, symbol="a"}
+	Tensor.Index{lower=true, symbol="a"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x^a
@@ -5016,20 +5016,20 @@ x_Ua
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{^a}}
+Tensor.Ref{x, Tensor.Index{^a}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=false, symbol="a"}
+	Tensor.Index{lower=false, symbol="a"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x_\mu
@@ -5073,20 +5073,20 @@ x_D\mu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{_\mu}}
+Tensor.Ref{x, Tensor.Index{_\mu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=true, symbol="\\mu"}
+	Tensor.Index{lower=true, symbol="\\mu"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x^\mu
@@ -5130,20 +5130,20 @@ x_U\mu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{^\mu}}
+Tensor.Ref{x, Tensor.Index{^\mu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=false, symbol="\\mu"}
+	Tensor.Index{lower=false, symbol="\\mu"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x_ab
@@ -5187,21 +5187,21 @@ x_Da_Db
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{_a}, TensorIndex{_b}}
+Tensor.Ref{x, Tensor.Index{_a}, Tensor.Index{_b}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=true, symbol="a"},
-	TensorIndex{lower=true, symbol="b"}
+	Tensor.Index{lower=true, symbol="a"},
+	Tensor.Index{lower=true, symbol="b"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x^ab
@@ -5245,21 +5245,21 @@ x_Ua_Ub
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{^a}, TensorIndex{^b}}
+Tensor.Ref{x, Tensor.Index{^a}, Tensor.Index{^b}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=false, symbol="a"},
-	TensorIndex{lower=false, symbol="b"}
+	Tensor.Index{lower=false, symbol="a"},
+	Tensor.Index{lower=false, symbol="b"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x_\mu\nu
@@ -5303,21 +5303,21 @@ x_D\mu_D\nu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{_\mu}, TensorIndex{_\nu}}
+Tensor.Ref{x, Tensor.Index{_\mu}, Tensor.Index{_\nu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=true, symbol="\\mu"},
-	TensorIndex{lower=true, symbol="\\nu"}
+	Tensor.Index{lower=true, symbol="\\mu"},
+	Tensor.Index{lower=true, symbol="\\nu"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x^\mu\nu
@@ -5361,15 +5361,15 @@ x_U\mu_U\nu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{^\mu}, TensorIndex{^\nu}}
+Tensor.Ref{x, Tensor.Index{^\mu}, Tensor.Index{^\nu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=false, symbol="\\mu"},
-	TensorIndex{lower=false, symbol="\\nu"}
+	Tensor.Index{lower=false, symbol="\\mu"},
+	Tensor.Index{lower=false, symbol="\\nu"}
 )
 </pre>
 </td>
@@ -8008,7 +8008,7 @@ var("Omega")
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x_mu
@@ -8052,20 +8052,20 @@ x_Dmu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{_mu}}
+Tensor.Ref{x, Tensor.Index{_mu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=true, symbol="mu"}
+	Tensor.Index{lower=true, symbol="mu"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x^mu
@@ -8109,20 +8109,20 @@ x_Umu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{^mu}}
+Tensor.Ref{x, Tensor.Index{^mu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=false, symbol="mu"}
+	Tensor.Index{lower=false, symbol="mu"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x_munu
@@ -8166,21 +8166,21 @@ x_Dmu_Dnu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{_mu}, TensorIndex{_nu}}
+Tensor.Ref{x, Tensor.Index{_mu}, Tensor.Index{_nu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=true, symbol="mu"},
-	TensorIndex{lower=true, symbol="nu"}
+	Tensor.Index{lower=true, symbol="mu"},
+	Tensor.Index{lower=true, symbol="nu"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x^munu
@@ -8224,15 +8224,15 @@ x_Umu_Unu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{^mu}, TensorIndex{^nu}}
+Tensor.Ref{x, Tensor.Index{^mu}, Tensor.Index{^nu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=false, symbol="mu"},
-	TensorIndex{lower=false, symbol="nu"}
+	Tensor.Index{lower=false, symbol="mu"},
+	Tensor.Index{lower=false, symbol="nu"}
 )
 </pre>
 </td>
@@ -10871,7 +10871,7 @@ var("Omega")
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x_\mu
@@ -10915,20 +10915,20 @@ x_D\mu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{_\mu}}
+Tensor.Ref{x, Tensor.Index{_\mu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=true, symbol="mu"}
+	Tensor.Index{lower=true, symbol="mu"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x^\mu
@@ -10972,20 +10972,20 @@ x_U\mu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{^\mu}}
+Tensor.Ref{x, Tensor.Index{^\mu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=false, symbol="mu"}
+	Tensor.Index{lower=false, symbol="mu"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x_\mu\nu
@@ -11029,21 +11029,21 @@ x_D\mu_D\nu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{_\mu}, TensorIndex{_\nu}}
+Tensor.Ref{x, Tensor.Index{_\mu}, Tensor.Index{_\nu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=true, symbol="mu"},
-	TensorIndex{lower=true, symbol="nu"}
+	Tensor.Index{lower=true, symbol="mu"},
+	Tensor.Index{lower=true, symbol="nu"}
 )
 </pre>
 </td>
 </tr>
 <tr>
-<td><pre>TensorRef</pre></td>
+<td><pre>Tensor.Ref</pre></td>
 <td>
 <pre>
 x^\mu\nu
@@ -11087,15 +11087,15 @@ x_U\mu_U\nu
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef{x, TensorIndex{^\mu}, TensorIndex{^\nu}}
+Tensor.Ref{x, Tensor.Index{^\mu}, Tensor.Index{^\nu}}
 </pre>
 </td>
 <td>
 <pre class="pre-not-multiline">
-TensorRef(
+Tensor.Ref(
 	var("x"),
-	TensorIndex{lower=false, symbol="mu"},
-	TensorIndex{lower=false, symbol="nu"}
+	Tensor.Index{lower=false, symbol="mu"},
+	Tensor.Index{lower=false, symbol="nu"}
 )
 </pre>
 </td>

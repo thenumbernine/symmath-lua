@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath.tests.unit.unit'(env, 'getIndexesUsed')
+require 'symmath.tests.unit.unit'(env, 'tests/unit/getIndexesUsed')
 
 timer(nil, function()
 
@@ -28,16 +28,16 @@ function env.assertIndexesUsed(expr, args)
 
 	-- these are the expression's TensorIndex's
 	local fixedIndexes, summedIndexes, extraIndexes = expr:getIndexesUsed()
-	local fixedTensor = fixedIndexes and #fixedIndexes > 0 and TensorRef(fixed, table.unpack(fixedIndexes)) or env.fixed
-	local summedTensor = summedIndexes and #summedIndexes > 0 and TensorRef(summed, table.unpack(summedIndexes)) or env.summed
-	local extraTensor = extraIndexes and #extraIndexes > 0 and TensorRef(extra, table.unpack(extraIndexes)) or env.extra
+	local fixedTensor = fixedIndexes and #fixedIndexes > 0 and Tensor.Ref(fixed, table.unpack(fixedIndexes)) or env.fixed
+	local summedTensor = summedIndexes and #summedIndexes > 0 and Tensor.Ref(summed, table.unpack(summedIndexes)) or env.summed
+	local extraTensor = extraIndexes and #extraIndexes > 0 and Tensor.Ref(extra, table.unpack(extraIndexes)) or env.extra
 
 	for _,info in ipairs{
 		{fixedTensor, expectedFixedTensor},
 		{summedTensor, expectedSummedTensor},
 		{extraTensor, expectedExtraTensor},
 	} do 
-		asserteq(info[1], info[2])
+		simplifyAssertEq(info[1], info[2])
 	end
 end
 

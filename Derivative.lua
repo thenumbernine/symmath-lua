@@ -56,6 +56,9 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
 
+local symmath
+
+
 local Derivative = class(Expression)
 Derivative.precedence = 6
 
@@ -70,7 +73,8 @@ Derivative.nameForExporterTable.Language = 'd'	-- used for variable name prefix
 Derivative.isTotal = false
 
 function Derivative:init(...)
-	local Variable = require 'symmath.Variable'
+	symmath = symmath or require 'symmath'
+	local Variable = symmath.Variable
 	local vars = table{...}
 	local expr = assert(vars:remove(1), "can't differentiate nil")
 	assert(#vars > 0, "can't differentiate against nil")
@@ -83,7 +87,8 @@ Derivative.rules = {
 
 		-- d/dx{y_i} = {dy_i/dx}
 		{arrays = function(prune, expr)
-			local Array = require 'symmath.Array'
+			symmath = symmath or require 'symmath'
+			local Array = symmath.Array
 			if Array:isa(expr[1]) then
 				local res = expr[1]:clone()
 				for i=1,#res do
@@ -95,7 +100,8 @@ Derivative.rules = {
 	
 		-- d/dx c = 0
 		{constants = function(prune, expr)
-			local Constant = require 'symmath.Constant'
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
 			if Constant:isa(expr[1]) then
 				return Constant(0)
 			end
@@ -103,6 +109,8 @@ Derivative.rules = {
 
 		-- d/dx d/dy = d/dxy
 		{combine = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Derivative = symmath.Derivative
 			if Derivative:isa(expr[1]) then
 				return prune:apply(
 					getmetatable(expr)(
@@ -119,9 +127,10 @@ Derivative.rules = {
 -- however enabling Variable.evaluateDerivative and commenting this returns (x^2):diff(x)() == 0
 		-- dx/dx = 1
 		{self = function(prune, expr)
-			local Variable = require 'symmath.Variable'
-			local Constant = require 'symmath.Constant'
-			local TensorRef = require 'symmath.tensor.Ref'
+			symmath = symmath or require 'symmath'
+			local Variable = symmath.Variable
+			local Constant = symmath.Constant
+			local TensorRef = symmath.Tensor.Ref
 			if Variable:isa(expr[1]) then
 				local var = expr[1]
 				-- dx/dx = 1
@@ -165,7 +174,7 @@ Derivative.rules = {
 					
 						if #prod == 0 then return Constant(1) end
 						if #prod == 1 then return prod[1] end
-						return require 'symmath.op.mul'(prod:unpack())
+						return symmath.op.mul(prod:unpack())
 					end
 				-- d/dy dx^I/dx^J = 0
 				elseif #expr > 2 then
@@ -184,9 +193,10 @@ Derivative.rules = {
 
 		--dx/dy = 0 (unless x is a function of y and we are not a partial derivative)
 		{other = function(prune, expr)
-			local Constant = require 'symmath.Constant'
-			local Variable = require 'symmath.Variable'
-			local TensorRef = require 'symmath.tensor.Ref'
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local Variable = symmath.Variable
+			local TensorRef = symmath.Tensor.Ref
 			-- apply differentiation
 			-- don't do so if it's a diff of a variable that requests not to
 			if Variable:isa(expr[1]) 
@@ -280,6 +290,38 @@ otherwise we return zero
 ... and if the variable symbols are equal then we now need an official Kronecher delta symbol.
 
 --]]
+		end},
+
+		-- Derivative(Integral(f, x, xL, xR), x) = f:replace(x,xR) - f:replace(x,xL)
+		-- Derivative(Integral(f, x), x) = f + const
+		{integrals = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			-- Derivative(g, ...)
+			local Integral = symmath.Integral
+			-- if the differentiated expression is an integral ...
+			local g = expr[1]
+			if Integral:isa(g) then
+				-- Derivative(Integral(f, x, xL, xR), ...)
+				local f, x, xL, xR = table.unpack(g)
+				local dxs = table.sub(expr, 2)
+				-- if any of our differentiated variables are the integraed variable ...
+				local i = dxs:find(x)
+				if i then
+					dxs:remove(i)
+					local result = f
+					if #dxs > 0 then
+						result = Derivative(result, dxs:unpack())
+					end
+					if #g == 4 then
+						result = result:replace(x, xR) - result:replace(x, xL)
+					-- otherwise #expr == 2 I hope
+					--else
+						-- TODO plus some variable not present in the expression:
+						--result = result + symmath.Variable'C'
+					end
+					return result
+				end
+			end
 		end},
 
 		{eval = function(prune, expr)

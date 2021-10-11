@@ -42,6 +42,7 @@ local function eigen(A, args)
 	A:map(function(x) assert(x ~= lambda) end)
 
 	-- lambda * log(x) => log(x^lambda) is messing this up ...
+	-- TODO what if the rule was already pushed, then popping will incorrectly restore it to the caller
 	symmath.op.mul:pushRule'Prune/logPow'	-- push a log(b) => log(b^a)
 	symmath.log:pushRule'Expand/apply'		-- push log(a*b) => log(a) + log(b)
 

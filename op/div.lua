@@ -31,14 +31,14 @@ end
 function div:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealRange()
-	if I == nil then 
+	if I == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 	local I2 = self[2]:getRealRange()
-	if I2 == nil then 
+	if I2 == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 	self.cachedSet = I / I2
 	return self.cachedSet
@@ -69,7 +69,7 @@ function div:evaluateLimit(x, a, side)
 		q = q:diff(x)()
 		return prune(
 			Limit(
-				prune(p / q), 
+				prune(p / q),
 				x, a, side
 			)
 		)
@@ -78,7 +78,7 @@ function div:evaluateLimit(x, a, side)
 
 	--[[
 	how to determine when lim (x -> root) of p(q) / prod of (x - roots) is approaching from +inf or -inf
-	seems you would want the limit in the form of pow -> div -> mul -> add/sub, 
+	seems you would want the limit in the form of pow -> div -> mul -> add/sub,
 	and then to compare the roots of the denominator with x->a, to see if we are approaching from the left or right.
 	... and then looking at the sign of p(x) / prod of (x - all other roots) to see if we should be flipping the sign of the limit's ±inf
 	--]]
@@ -98,7 +98,7 @@ function div:evaluateLimit(x, a, side)
 			local Wildcard = symmath.Wildcard
 			-- x:match(x^Wildcard(1)) won't match x^Constant(1)
 			local n = q:match(x^Wildcard{1, cannotDependOn=x})
-			if n 
+			if n
 			and symmath.set.integer:contains(n)
 			then
 
@@ -138,21 +138,21 @@ function div:evaluateLimit(x, a, side)
 --printbr('leading coeff of p:', cp[dp])
 --printbr('leading coeff of q:', cq[dq])
 			if dp > dq then
---printbr'using degree(p) > degree(q)...'							
+--printbr'using degree(p) > degree(q)...'
 				local leadingCoeffRatio = prune(cp[dp] / cq[dq])
 				if leadingCoeffRatio:lt(0):isTrue() then
-					return Constant(-1) * inf 
+					return Constant(-1) * inf
 				elseif leadingCoeffRatio:gt(0):isTrue() then
 					return inf
 				else
 					error("how do I fix this?")
 				end
 			elseif dp == dq then
---printbr'using degree(p) == degree(q)...'							
+--printbr'using degree(p) == degree(q)...'
 				local leadingCoeffRatio = prune(cp[dp] / cq[dq])
-				return leadingCoeffRatio 
+				return leadingCoeffRatio
 			elseif dp < dq then
---printbr'using degree(p) < degree(q)...'							
+--printbr'using degree(p) < degree(q)...'
 				return Constant(0)
 			end
 		end
@@ -206,7 +206,7 @@ div.rules = {
 
 	Factor = {
 --[[
--- hmm ... raise everything to the lowest power? 
+-- hmm ... raise everything to the lowest power?
 -- if there are any sqrts, square everything?
 -- but what i was trying to fix was actually just a c^(-1/2)
 -- TODO this produces incorrect results for negatives
@@ -223,7 +223,7 @@ div.rules = {
 				and Constant.isValue(x[2][2], 2)
 				then
 					return sqrt(
-						(expr[1]^2):prune() / 
+						(expr[1]^2):prune() /
 						(expr[2]^2):prune()
 					)
 				end
@@ -232,7 +232,7 @@ div.rules = {
 --]]
 	
 -- [[ trying for polynomial division using polydiv
--- I'm not sure if I should put this in Factor or Prune 
+-- I'm not sure if I should put this in Factor or Prune
 -- if it's in Prune then just return the polydivr results
 -- if it's in Factor then maybe I should recursively build roots and return the product of (x - roots)
 -- ... and then let the next Prune() call divide them out
@@ -243,7 +243,7 @@ div.rules = {
 			-- now when polydiv encounters a non-poly situation, it calls simplify()
 			-- so ... don't use polydiv ... use its internal
 			local polydivr = symmath.polydiv.polydivr
-		
+			
 			
 			local function candivide(p, q)
 				-- for expr == p / q
@@ -256,16 +256,16 @@ div.rules = {
 					
 					local c, r = polydivr(p, q, x)
 					if Constant.isValue(r, 0) then
-	--printbr('1. dividing', p, 'by', q, 'wrt x', x, 'and getting', c,' remainder', r)					
+--print('1. dividing '..p..' by '..q..' wrt x='..x..' and getting '..c..', remainder '..r)
 						-- with simplification
-						-- return c
+						--return c
 						-- without
 						return c * q, q
 					end
 				
 					local c, r = polydivr(q, p, x)
 					if Constant.isValue(r, 0) then
-	--printbr('2. dividing', q, 'by', p, 'wrt x', x, 'and getting', c,' remainder', r)					
+--print('2. dividing '..q..' by '..p..' wrt x='..x..' and getting '..c..', remainder '..r)
 						-- with simplification
 						--return 1/c
 						-- without
@@ -273,7 +273,7 @@ div.rules = {
 					end
 				end
 			end
-		
+			
 --[=[ TODO HAS BUGS DON'T USE THIS
 			local mp, mq = table.unpack(expr)
 
@@ -313,7 +313,7 @@ div.rules = {
 				found = nil
 				for i,p in ipairs(srcp) do
 					for j,q in ipairs(srcq) do
-					
+						
 						local newp, newq = candivide(p, q)
 						if newp then
 							assert(newq)
@@ -335,25 +335,52 @@ div.rules = {
 
 			return (#dstp == 1 and dstp[1] or symmath.op.mul(dstp:unpack()))
 					/ (#dstq == 1 and dstq[1] or symmath.op.mul(dstq:unpack()))
---]=]			
+--]=]
 -- [=[ or just try the num/denom as-is
+-- this adds in extra terms that need to be prune()'d later
+-- ex: ((2*x + 2*y)/2):factor() makes ((2*x + 2*y)/2 * 2)/2
 			local np, nq = candivide(expr[1], expr[2])
 			if np then
 				return np / nq
 			end
 --]=]
+--[=[ same but simplifying the result
+-- ... why did I choose to not do this?
+-- because it tends towards stack overflows.
+			local res = candivide(expr[1], expr[2])
+			if res then
+				if res ~= expr then	-- hmm, why does this happen? seems to when dividing by a constant, or non-poly of x (whatever x may be)
+--print('candivide', expr[1], expr[2], 'got', res)
+					return factor:apply(res)
+				end
+			end
+--]=]
+	
 		end},
 --]]
-	
+
+--[[
+		-- (r^m * x1 * ...) / (r^n * y1 * ...) => (r^(m-n) * x1 * ...) / (y1 * ...)
+		-- this is also in prune(), but if you call prune() to do it, you will get op/add/Prune which re-absorbs terms into adds: (2*(x+y))/2 => (2*x + 2*y)/2 and won't cancel the 2 on top and bottom
+		{removeCommonTerms = function(factor, expr)
+			for _,rule in ipairs(div.rules.Prune) do
+				local name, func = next(rule)
+				if name == 'apply' then
+					return func(require 'symmath.prune', expr)
+				end
+			end
+		end},
+--]]
+
 --[[ trying for polynomial division using polydiv
--- I'm not sure if I should put this in Factor or Prune 
+-- I'm not sure if I should put this in Factor or Prune
 -- if it's in Prune then just return the polydivr results
 -- if it's in Factor then maybe I should recursively build roots and return the product of (x - roots)
 -- ... and then let the next Prune() call divide them out
 -- don't enable this in Prune and Factor
--- 
+--
 -- ... however *WARNING* here in Prune it gets stuck somewhere.
--- but if my modification of the above fails then copy this back into Factor		
+-- but if my modification of the above fails then copy this back into Factor
 		{polydiv = function(factor, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
@@ -368,7 +395,7 @@ div.rules = {
 			-- now when polydiv encounters a non-poly situation, it calls simplify()
 			-- so ... don't use polydiv ... use its internal
 			local polydivr = symmath.polydiv.polydivr
-		
+			
 			local vars = expr:getDependentVars()
 			for _,x in ipairs(vars) do
 				
@@ -376,7 +403,7 @@ div.rules = {
 				if Constant.isValue(r, 0) then
 					return c
 				end
-			
+				
 				local c, r = polydivr(q, p, x)
 				if Constant.isValue(r, 0) then
 					return 1/c
@@ -396,7 +423,7 @@ div.rules = {
 			local mul = symmath.op.mul
 
 			if Constant.isValue(expr[1], 1) then return end
-		
+			
 			-- a/(b1 * ... * bn) => a * 1/b1 * ... * 1/bn
 			if mul:isa(expr[2]) then
 				local prod = mul(expr[1], range(#expr[2]):mapi(function(i)
@@ -410,7 +437,7 @@ div.rules = {
 		end},
 	},
 
-	Prune = {		
+	Prune = {
 		{matrixScalar = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Array = symmath.Array
@@ -423,7 +450,7 @@ div.rules = {
 					result[i] = result[i] / b
 				end
 				return prune:apply(result)
-			end	
+			end
 		end},
 
 		{handleInfAndNan = function(prune, expr)
@@ -439,10 +466,10 @@ div.rules = {
 			end
 
 			-- p/inf => 0 for p != inf
-			if expr[2] == inf 
-			or expr[2] == Constant(-1) * inf 
+			if expr[2] == inf
+			or expr[2] == Constant(-1) * inf
 			then
-				if expr[1] ~= inf 
+				if expr[1] ~= inf
 				and expr[1] ~= Constant(-1) * inf
 				then
 					return Constant(0)
@@ -521,7 +548,7 @@ div.rules = {
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local p, q = table.unpack(expr)
-			if Constant:isa(p) and p.value < 0 
+			if Constant:isa(p) and p.value < 0
 			--if Constant.isValue(p, -1)
 			then
 				return prune:apply(
@@ -557,8 +584,8 @@ div.rules = {
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 		
-			if Constant:isa(expr[2]) 
-			and expr[2].value < 0 
+			if Constant:isa(expr[2])
+			and expr[2].value < 0
 			then
 				return prune:apply(
 					Constant(-1) * expr[1] / Constant(-expr[2].value)
@@ -571,8 +598,8 @@ div.rules = {
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 		
-			if Constant.isValue(expr[1], 0) 
-			and not Constant.isValue(expr[2], 0) 
+			if Constant.isValue(expr[1], 0)
+			and not Constant.isValue(expr[2], 0)
 			then
 				return Constant(0)
 			end
@@ -607,11 +634,11 @@ div.rules = {
 			end
 		end},
 
-		--[[ 
-		--[=[ 
+		--[[
+		--[=[
 		conjugates of square-roots in denominator
 		a / (b + sqrt(c)) => a (b - sqrt(c)) / ((b + sqrt(c)) (b - sqrt(c))) => a (b - sqrt(c)) / (b^2 - c)
-		the (b + sqrt(c)) matches the remaining Wildcard 
+		the (b + sqrt(c)) matches the remaining Wildcard
 		local a,b,c,d = expr:match(Wildcard(1) / ((Wildcard(2) + Wildcard(3) ^ div(1,2)) * Wildcard(4)))
 		if a then
 			print('a\n'..a..'\nb\n'..b..'\nc\n'..c..'\nd\n'..d)
@@ -627,7 +654,7 @@ div.rules = {
 			-- match() going too slow? maybe search for sqrt first?
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
-			if expr:hasChild(function(x) 
+			if expr:hasChild(function(x)
 				return pow:isa(x)
 				and div:isa(x[2])
 				and Constant.isValue(x[2][1], 1)
@@ -661,7 +688,7 @@ div.rules = {
 			local Wildcard = symmath.Wildcard
 			local p, q = table.unpack(expr)
 			-- match() going too slow? maybe search for sqrt first?
-			if expr:hasChild(function(x) 
+			if expr:hasChild(function(x)
 				return pow:isa(x)
 				and div:isa(x[2])
 				and Constant.isValue(x[2][1], 1)
@@ -734,7 +761,7 @@ div.rules = {
 					end
 				end
 			end
-		end},	
+		end},
 		--]]
 
 		--[[ maybe the rule above already handles this case?
@@ -773,7 +800,7 @@ div.rules = {
 				for x in from:iteradd() do
 					for y in x:itermul() do
 						if pow:isa(y)
-						and symmath.set.negativeReal:contains(y[2]) 
+						and symmath.set.negativeReal:contains(y[2])
 						then
 							p = prune:apply(p * y[1] ^ -y[2])
 							q = prune:apply(q * y[1] ^ -y[2])
@@ -787,6 +814,8 @@ div.rules = {
 		--]]
 
 		{apply = function(prune, expr)
+--print'here'
+--print(expr)
 			symmath = symmath or require 'symmath'
 			local add = symmath.op.add
 			local mul = symmath.op.mul
@@ -868,7 +897,8 @@ div.rules = {
 				else
 					denoms = table{expr[2]}
 				end
-			
+
+				-- TODO this is very very similar to the ProdList() used in op/add
 				local function listToBasesAndPowers(list)
 					local bases = table()
 					local powers = table()
@@ -888,7 +918,22 @@ div.rules = {
 				
 				local numBases, numPowers = listToBasesAndPowers(nums)
 				local denomBases, denomPowers = listToBasesAndPowers(denoms)
-			
+--[[
+print'numerator'
+for i=1,#numBases do
+	print'base'
+	print(numBases[i])
+	print'power'
+	print(numPowers[i])
+end
+print'denominator'
+for i=1,#denomBases do
+	print'base'
+	print(denomBases[i])
+	print'power'
+	print(denomPowers[i])
+end
+--]]
 				-- split any constant integers into its prime factorization
 				for _,info in ipairs{
 					{numBases, numPowers},
@@ -897,12 +942,13 @@ div.rules = {
 					local bases, powers = table.unpack(info)
 					for i=#bases,1,-1 do
 						local b = bases[i]
-						if symmath.set.integer:contains(b) 
-						and b.value ~= 0 
+						if symmath.set.integer:contains(b)
+						and b.value ~= 0
 						then
 							bases:remove(i)
 							local value = b.value
 							local power = powers:remove(i)
+							
 							if value < 0 then	-- insert -1 if necessary
 								bases:insert(i, Constant(-1))
 								powers:insert(i, power:clone())
@@ -931,7 +977,7 @@ div.rules = {
 				for i=1,#numBases do
 					for j=#denomBases,1,-1 do
 						if not Constant.isValue(numBases[i], 1)
-						and numBases[i] == denomBases[j] 
+						and numBases[i] == denomBases[j]
 						then
 							modified = true
 							local resultPower = numPowers[i] - denomPowers[j]
@@ -948,7 +994,7 @@ div.rules = {
 					-- can I construct these even if they have no terms?
 					local num
 					if #numBases > 0 then
-						num = numBases:map(function(v,i) 
+						num = numBases:map(function(v,i)
 							return v ^ numPowers[i]
 						end)
 						assert(#num > 0)
@@ -960,7 +1006,7 @@ div.rules = {
 					end
 					local denom
 					if #denomBases > 0 then
-						denom = denomBases:map(function(v,i) 
+						denom = denomBases:map(function(v,i)
 							return v ^ denomPowers[i]
 						end)
 						assert(#denom > 0)
@@ -980,10 +1026,12 @@ div.rules = {
 						result = num / denom
 					end
 
+--print'modified, returning'
+--print(result)
 					return prune:apply(result)
 				end
 			end
-
+--print'not modified'
 			--[[ a / b^(p/q) => (a / b^(p/q)) * (b^((q-p)/q) / b^((q-p)/q)) => (a * b^((q-p)/q)) / b
 			local Wildcard = symmath.Wildcard
 			local a, b, p, q = expr:match(Wildcard(1) / Wildcard(2) ^ (Wildcard(3) / Wildcard(4)))
@@ -1054,7 +1102,7 @@ div.rules = {
 				end
 			end
 			--]]
-		end},	
+		end},
 
 		-- this could go after the apply rule, but that ends with a subsequent prune(a)/prune(b) ..
 		{logPow = function(prune, expr)
@@ -1080,16 +1128,16 @@ div.rules = {
 			
 			if ua and ub then return tidy:apply(a[1] / b[1]) end
 			
-			if ua 
-			--and Constant:isa(a[1]) 
-			then 
-				return tidy:apply(-(a[1] / b)) 
+			if ua
+			--and Constant:isa(a[1])
+			then
+				return tidy:apply(-(a[1] / b))
 			end
 			
-			if ub 
-			--and Constant:isa(b[1]) 
-			then 
-				return tidy:apply(-(a / b[1])) 
+			if ub
+			--and Constant:isa(b[1])
+			then
+				return tidy:apply(-(a / b[1]))
 			end
 		end},
 	},

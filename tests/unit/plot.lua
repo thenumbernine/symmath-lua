@@ -27,7 +27,7 @@ end
 printbr'This only works with MathJax inline SVG and Console output at the moment.'
 printbr()
 
-header'using the gnuplot language:'
+header'using the gnuplot syntax:'
 printAndRun[[
 local symmath = require 'symmath'
 local GnuPlot = symmath.export.GnuPlot
@@ -110,7 +110,7 @@ GnuPlot:plot{
 }
 ]]
 
-header'using the gnuplot language:'
+header'using the gnuplot syntax:'
 printAndRun[[
 local symmath = require 'symmath'
 local GnuPlot = symmath.export.GnuPlot

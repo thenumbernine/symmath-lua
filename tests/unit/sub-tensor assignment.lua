@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 require 'ext'
-require 'symmath'.setup{MathJax={title='sub-tensor assignment', pathToTryToFindMathJax='..'}}
+require 'symmath'.setup{MathJax={title='tests/unit/sub-tensor assignment', pathToTryToFindMathJax='..'}}
 
 local t,x,y,z = vars('t','x','y','z') 
 local coords = {t,x,y,z}

@@ -523,6 +523,82 @@ function ProdTerm:__tostring()
 end
 
 
+local function compare(a,b)
+	local Constant = symmath.Constant
+	local Variable = symmath.Variable
+	local Derivative = symmath.Derivative
+	local Verbose = symmath.export.Verbose
+	local TensorRef = symmath.Tensor.Ref
+
+	local typea = type(a)
+	local typeb = type(b)
+	local na = (typea == 'string' or typea == 'table') and #a or 0
+	local nb = (typeb == 'string' or typeb == 'table') and #b or 0
+
+	-- order of sorting based on class:
+	-- constants
+	local ca = Constant:isa(a)
+	local cb = Constant:isa(b)
+	if ca ~= cb then return ca end
+
+	-- variables
+	local va = Variable:isa(a)
+	local vb = Variable:isa(b)
+	if va and vb then
+		return a.name < b.name
+	end
+	if va ~= vb then return va end
+
+	-- TensorRef
+	local ta = TensorRef:isa(a)
+	local tb = TensorRef:isa(b)
+	if ta and tb then
+		-- sort by degree
+		if na ~= nb then return na < nb end
+		-- sort by wrapped expression
+		return compare(a[1], b[1])
+	end
+	if ta ~= tb then return ta end
+
+	-- derivatives
+	local da = Derivative:isa(a)
+	local db = Derivative:isa(b)
+	if da and db then
+		-- sort by derivative degree
+		if na ~= nb then return na < nb end
+		-- sort by derivative variable names
+		for i=2,na do
+			local ai = a[i]
+			local bi = b[i]
+			if ai ~= bi then return compare(ai, bi) end
+		end
+		-- sort by derivative expression
+		return compare(a[1], b[1])
+	end
+	if da ~= db then return da end
+
+	-- Expressions in general
+	if a.name ~= b.name then return a.name < b.name end
+	if na ~= nb then return na < nb end
+	for i=1,na do
+		local ai = a[i]
+		local bi = b[i]
+		if ai ~= bi then return compare(ai, bi) end
+	end
+
+	--[[
+	4) functions
+	5) powers
+	6) non-commutative (Arrays etc) ?
+	7) etc
+	--]]
+	local sa = Verbose(a)
+	local sb = Verbose(b)
+	if #sa ~= #sb then return #sa < #sb end
+	return sa < sb 
+end
+
+
 --[[
 this is a multiplied collection of a1^b1 * a2^b2 * ...
 --]]
@@ -535,7 +611,11 @@ ProdList.find = table.find
 function ProdList:toExpr()
 	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
+	local Variable = symmath.Variable
+	local Derivative = symmath.Derivative
 	local Verbose = symmath.export.Verbose
+	local TensorRef = symmath.Tensor.Ref
+
 	local list = table.mapi(self, function(x)
 		if Constant.isValue(x.power, 1) then
 			return x.term
@@ -551,13 +631,7 @@ function ProdList:toExpr()
 
 	if #list == 0 then return Constant(1) end
 	if #list == 1 then return list[1] end
-	list = list:sort(function(a,b)
-		local sa = Verbose(a)
-		local sb = Verbose(b)
-		if #sa ~= #sb then return #sa < #sb end
-		return sa < sb 
-	end)
-
+	list:sort(compare)
 	return setmetatable(list, symmath.op.mul)
 end
 
@@ -695,22 +769,12 @@ function ProdLists:init(expr)
 end
 
 function ProdLists:sort()
-	symmath = symmath or require 'symmath'
-	local Constant = symmath.Constant
-	local Verbose = symmath.export.Verbose
-	local function sortstr(list)
-		if #list == 0 then return '' end
-		if #list == 1 and Constant:isa(list[1].term) then return '' end
-		return table.mapi(list, function(x,_,t)
-			if Constant:isa(x.term) then return end
-			return Verbose(x.term), #t+1
-		end):concat(',')
-	end
-	-- sort the sum terms from shortest to longest
 	table.sort(self, function(a,b)
-		local sa = sortstr(a)
-		local sb = sortstr(b)
-		return sa < sb 
+		if #a ~= #b then return #a < #b end
+		for i=1,#a do
+			if a[i].power ~= b[i].power then return compare(a[i].power, b[i].power) end
+			if a[i].term ~= b[i].term then return compare(a[i].term, b[i].term) end
+		end
 	end)
 end
 
@@ -935,7 +999,14 @@ print('prodList', prodLists:toExpr(), '<br>')
 --print('minProds', minProds)
 			
 			-- found no common factors -- don't touch the expression
-			if #minProds == 0 then return end
+			if #minProds == 0 then 
+				--return
+				-- or do touch, return the sorted expression
+				-- this lets -x+y == y-x
+				return expr 
+				-- or do you need to rebuild it?
+				--return prodLists:toExpr()
+			end
 				
 			local prune = symmath.prune
 			local div = symmath.op.div
@@ -1036,8 +1107,14 @@ print('prodList', prodLists:toExpr(), '<br>')
 			terms:insert(lastTerm)
 		
 			local result = #terms == 1 and terms[1] or mul(terms:unpack())
-			
-			return prune(result)
+
+--print('returning result')
+--print(result)
+			-- prune needs to convert things to div add mul
+			-- but factor converted them to mul add (div first or last?)
+			-- so don't call prune here, or it will undo what we just did
+			--return prune(result)
+			return result
 		end},
 	},
 
@@ -1116,92 +1193,62 @@ print('prodList', prodLists:toExpr(), '<br>')
 	
 		end},
 
+		-- move all constants to the left hand side and combine them
+		-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
 		{combineConstants = function(prune, expr, ...)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
--- [=[ old version
-			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
-			local cval = 0
-			for i=#expr,1,-1 do
+			
+			local cval	-- nil means not cloned yet
+			for i=#expr,2,-1 do
 				if Constant:isa(expr[i]) then
-					cval = cval + table.remove(expr, i).value
-				end
-			end
-			
-			-- if it's all constants then return what we got
-			if #expr == 0 then 
-				return Constant(cval) 
-			end
-			
-			-- re-insert if we have a Constant
-			if cval ~= 0 then
-				table.insert(expr, 1, Constant(cval))
-			else
-				-- if cval is zero and we're not re-inserting a constant
-				-- then see if we have only one term ...
-				if #expr == 1 then 
-					return prune:apply(expr[1]) 
-				end
-			end
---]=]
---[=[ halfway version
--- the only difference between this and old version is that we make shallowCopy()'s before modifying 'expr'
--- TODO FIXME THIS DEPENDS ON MODIFICATION IN-PLACE (WHY?!?!?!)	
-			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
-			local cval = 0
-			for i=#expr,1,-1 do
-				if Constant:isa(expr[i]) then
-					expr = expr:shallowCopy()
-					cval = cval + table.remove(expr, i).value
-				end
-			end
-			
-			-- if it's all constants then return what we got
-			if #expr == 0 then 
-				return Constant(cval) 
-			end
-			
-			-- re-insert if we have a Constant
-			if cval ~= 0 then
-				expr = expr:shallowCopy()
-				table.insert(expr, 1, Constant(cval))
-			else
-				-- if cval is zero and we're not re-inserting a constant
-				-- then see if we have only one term ...
-				if #expr == 1 then 
-					return prune:apply(expr[1]) 
-				end
-			end
---]=]
---[=[ new version
-			-- c1 + x1 + c2 + x2 => (c1+c2) + x1 + x2
-			local needToRearrangeConsts = Constant.isValue(expr[i], 0)
-			if not needToRearrangeConsts then
-				for i=2,#expr do
-					if Constant:isa(expr[i]) then
-						needToRearrangeConsts = true
-						break
+					if not cval then
+						cval = 0
+						expr = expr:clone()
 					end
+					cval = cval + table.remove(expr, i).value
 				end
 			end
-			if needToRearrangeConsts then
-				local cval = 0
-				local result = table()
-				for i,x in ipairs(expr) do
-					if Constant:isa(x) then
-						cval = cval + x.value
+		
+			-- cval is set and expr is cloned if we found any constants not in the far left place
+			if cval then
+				if Constant:isa(expr[1]) then
+					cval = cval + expr[1].value
+					if cval == 0 then
+						table.remove(expr, 1)
+						if #expr == 0 then
+							return Constant(0)
+						end
 					else
-						result:insert(x)
+						expr[1] = Constant(cval)
+					end
+				else
+					if cval ~= 0 then
+						table.insert(expr, 1, Constant(cval))
 					end
 				end
-				if cval ~= 0 then
-					result:insert(1, Constant(cval))
+				assert(#expr > 0)
+				if #expr == 1 then
+					return expr[1]	-- no need to prune:apply since we applied to all children first.  the only way this isn't a previous child that hasn't been modified is if it is a newly created Constant, in which case what can prune() do?
+				else
+					return prune:apply(expr)
 				end
-				if #result == 0 then return Constant(0) end
-				if #result == 1 then return prune:apply(result[1]) end
-				return prune:apply(setmetatable(result, add))
+			
+			-- haven't found a Constant elsewhere, but there's a Constant(0) in the 1st entry ...
+			else
+				assert(#expr > 1)
+				if Constant.isValue(expr[1], 0) then
+					-- if we only have two children: 0 + x, return x, no need to clone
+					if #expr == 2 then
+						return expr[2]
+					end
+					assert(#expr > 2)
+					expr = expr:clone()	-- haven't cloned yet, so clone now
+					table.remove(expr, 1)	-- and remove the Constant(0) child
+					-- #expr must be >1, so no need to avoid add()'s with only one child
+					return prune:apply(expr)
+				end
 			end
---]=]
 		end},
 
 		{['Array.pruneAdd'] = function(prune, expr, ...)

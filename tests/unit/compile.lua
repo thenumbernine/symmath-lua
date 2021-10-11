@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 require 'ext'
-require 'symmath'()
+require 'symmath'.setup{env=env, MathJax={title='tests/unit/compile', pathToTryToFindMathJax='..'}}
 
 timer(nil, function()
 
@@ -8,12 +8,14 @@ timer(nil, function()
 local x = var'x'
 
 local expr1 = (exp(x) - 1/exp(x)) / 2
-print'expr1'
-print(expr1)
+printbr'expr1'
+printbr(expr1)
 
 local expr2 = (exp(x) + 1/exp(x)) / 2
-print'expr2'
-print(expr2)
+printbr'expr2'
+printbr(expr2)
+
+print'<pre>'
 
 for _,lang in ipairs{
 	'C',
@@ -26,6 +28,8 @@ for _,lang in ipairs{
 	print('==== lang: '..lang..' ====')
 	print()
 
+
+	print('----------------------- ')
 	print'x'
 	print()
 	print'code:'
@@ -35,7 +39,7 @@ for _,lang in ipairs{
 	print(symmath.export[lang]:toFuncCode{output={x}})
 	print()
 
-
+	print('----------------------- ')
 	print'expr1'
 	print()
 	print'code:'
@@ -45,6 +49,7 @@ for _,lang in ipairs{
 	print(symmath.export[lang]:toFuncCode{output={expr1}, input={x}})
 	print()
 
+	print('----------------------- ')
 	print'expr2'
 	print()
 	print'code:'
@@ -54,6 +59,7 @@ for _,lang in ipairs{
 	print(symmath.export[lang]:toFuncCode{output={expr2}, input={x}})
 	print()
 
+	print('----------------------- ')
 	print'expr1 & expr2'
 	print()
 	print'code:'
@@ -86,5 +92,7 @@ print(symmath.export.C:toCode{
 	output = {{x=x}, {y=y}, {z=z}},
 })
 --]]
+
+print'</pre>'
 
 end)

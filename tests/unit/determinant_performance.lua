@@ -2,7 +2,7 @@
 
 -- not really a unit test
 
-require 'symmath'.setup()
+require 'symmath'.setup{env=env, MathJax={title='tests/unit/determinant_performance', pathToTryToFindMathJax='..'}}
 require 'ext'
 
 local x = var'x'
@@ -14,13 +14,13 @@ local startTime = os.clock()
 local m = Matrix:lambda({n,n}, function(i,j)
 	return x^(i+j)
 end)
-local d = m:determinant(function(...)
-	return print(...)
-end)
+local d = m:determinant{callback=function(...)
+	return printbr(...)
+end}
 
-print('m = \n'..m)
-print('d = \n'..d)
+printbr('m = \n'..m)
+printbr('d = \n'..d)
 
 local endTime = os.clock()
 local dt = endTime - startTime
-print('time taken = '..dt)
+printbr('time taken = '..dt)
