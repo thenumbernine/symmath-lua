@@ -222,8 +222,15 @@ function Expression.__sub(a,b)
 	if Constant.isValue(a, 0) then return -b end
 	if Constant.isValue(b, 0) then return a end
 
+	--[[ here I could just insert sub Expressions ...
 	sub = sub or require 'symmath.op.sub'
 	return sub(a,b) 
+	--]]
+	-- [[ or I could pre-emptively replace it with a add(a, unm(b)), ... and in that case we would be able to correctly evaluate "a-b == -b+a" without any prune() calls
+	add = add or require 'symmath.op.add'
+	unm = unm or require 'symmath.op.unm'
+	return add(a, unm(b))
+	--]]
 end
 
 function Expression.__mul(a,b)

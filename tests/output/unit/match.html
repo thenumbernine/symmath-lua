@@ -15,7 +15,7 @@
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.046000ms<br>
+time: 0.116000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -25,7 +25,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.035000ms<br>
+time: 0.022000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -41,7 +41,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.008000ms<br>
+time: 0.006000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -51,7 +51,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.006000ms<br>
+time: 0.002000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -79,7 +79,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.104000ms<br>
+time: 0.081000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -89,7 +89,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.080000ms<br>
+time: 0.062000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -99,38 +99,36 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 lhs:	1=false	<br>
 rhs:	1=$1$	<br>
 when comparing key 1	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/simplify.lua:85: attempt to index a boolean value (local 'x')<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/simplify.lua:85: attempt to index local 'x' (a boolean value)<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:70: in metamethod 'index'<br>
-	/home/chris/Projects/lua/symmath/simplify.lua:85: in field 'simplify'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:20: in field 'simplifyAssertEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:70: in function '__index'<br>
+	/home/chris/Projects/lua/symmath/simplify.lua:85: in function 'simplify'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:20: in function 'simplifyAssertEq'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:61: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:57><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:57: in global 'simplifyAssertAllEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:57: in function 'simplifyAssertAllEq'<br>
 	[string "simplifyAssertAllEq({const(2):match(const(2)/..."]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./match.lua:233: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./match.lua:6: in main chunk<br>
-	[C]: in ?	15
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	match.lua:233: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	match.lua:6: in main chunk<br>
+	[C]: at 0x563e24e24280	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: failed<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: in global 'simplifyAssertAllEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: in function 'simplifyAssertAllEq'<br>
 	[string "simplifyAssertAllEq({const(2):match(const(2)/..."]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./match.lua:233: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./match.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	match.lua:233: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	match.lua:6: in main chunk<br>
+	[C]: at 0x563e24e24280
 </td><td>
-time: 5.717000ms<br>
+time: 0.123000ms<br>
 stack: size: 6<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune</ul>
 </td></tr>
 <tr><td>
@@ -140,38 +138,36 @@ stack: size: 6<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 lhs:	1=false	<br>
 rhs:	1=$2$	<br>
 when comparing key 1	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/simplify.lua:85: attempt to index a boolean value (local 'x')<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/simplify.lua:85: attempt to index local 'x' (a boolean value)<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:70: in metamethod 'index'<br>
-	/home/chris/Projects/lua/symmath/simplify.lua:85: in field 'simplify'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:20: in field 'simplifyAssertEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:70: in function '__index'<br>
+	/home/chris/Projects/lua/symmath/simplify.lua:85: in function 'simplify'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:20: in function 'simplifyAssertEq'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:61: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:57><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:57: in global 'simplifyAssertAllEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:57: in function 'simplifyAssertAllEq'<br>
 	[string "simplifyAssertAllEq({const(4):match(const(2)*..."]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./match.lua:233: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./match.lua:6: in main chunk<br>
-	[C]: in ?	15
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	match.lua:233: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	match.lua:6: in main chunk<br>
+	[C]: at 0x563e24e24280	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: failed<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: in global 'simplifyAssertAllEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: in function 'simplifyAssertAllEq'<br>
 	[string "simplifyAssertAllEq({const(4):match(const(2)*..."]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./match.lua:233: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./match.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	match.lua:233: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	match.lua:6: in main chunk<br>
+	[C]: at 0x563e24e24280
 </td><td>
-time: 5.944000ms<br>
+time: 0.106000ms<br>
 stack: size: 6<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune</ul>
 </td></tr>
 <tr><td>
@@ -199,7 +195,7 @@ stack: size: 6<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.107000ms<br>
+time: 0.089000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -221,7 +217,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.376000ms<br>
+time: 0.346000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -237,7 +233,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.103000ms<br>
+time: 0.079000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -259,7 +255,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.592000ms<br>
+time: 0.770000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -269,7 +265,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.102000ms<br>
+time: 0.075000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -297,7 +293,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.144000ms<br>
+time: 0.097000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -307,7 +303,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.394000ms<br>
+time: 0.517000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+/Factor/apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -317,7 +313,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.024000ms<br>
+time: 0.009000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -339,7 +335,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.090000ms<br>
+time: 0.105000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -361,7 +357,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.086000ms<br>
+time: 0.140000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -383,7 +379,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.086000ms<br>
+time: 0.071000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -405,7 +401,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.101000ms<br>
+time: 0.076000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -421,7 +417,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.516000ms<br>
+time: 0.409000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+/Factor/apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -443,7 +439,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.646000ms<br>
+time: 0.062000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -465,7 +461,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.108000ms<br>
+time: 0.095000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -487,7 +483,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.118000ms<br>
+time: 0.067000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -509,7 +505,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.435000ms<br>
+time: 0.380000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -525,7 +521,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.117000ms<br>
+time: 0.063000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -547,7 +543,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.119000ms<br>
+time: 0.097000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -563,7 +559,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.131000ms<br>
+time: 0.113000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -579,7 +575,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.131000ms<br>
+time: 0.084000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -595,7 +591,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.370000ms<br>
+time: 0.795000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -617,7 +613,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.162000ms<br>
+time: 0.163000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -639,7 +635,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.141000ms<br>
+time: 0.166000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -655,7 +651,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.137000ms<br>
+time: 0.108000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -689,7 +685,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.082000ms<br>
+time: 0.096000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -705,7 +701,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.094000ms<br>
+time: 0.143000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -721,7 +717,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.313000ms<br>
+time: 0.435000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -737,7 +733,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.202000ms<br>
+time: 0.136000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -753,7 +749,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.120000ms<br>
+time: 0.096000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -781,7 +777,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.383000ms<br>
+time: 0.352000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -803,7 +799,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.116000ms<br>
+time: 0.105000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -825,7 +821,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.127000ms<br>
+time: 0.117000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -841,7 +837,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.112000ms<br>
+time: 0.073000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -857,7 +853,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.010000ms<br>
+time: 0.007000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -867,7 +863,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.006000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -883,7 +879,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.051000ms<br>
+time: 0.028000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -893,7 +889,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.020000ms<br>
+time: 0.014000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -909,7 +905,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.056000ms<br>
+time: 0.073000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -925,7 +921,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.061000ms<br>
+time: 0.041000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -941,7 +937,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.068000ms<br>
+time: 0.060000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -957,7 +953,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.072000ms<br>
+time: 0.067000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -991,7 +987,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.152000ms<br>
+time: 0.121000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1007,7 +1003,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.395000ms<br>
+time: 0.605000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1023,7 +1019,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.141000ms<br>
+time: 0.093000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1039,7 +1035,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.380000ms<br>
+time: 1.056000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1055,7 +1051,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.374000ms<br>
+time: 0.361000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1113,7 +1109,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.049000ms<br>
+time: 0.038000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1147,7 +1143,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.036000ms<br>
+time: 0.051000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1169,7 +1165,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.071000ms<br>
+time: 0.076000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1185,7 +1181,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.067000ms<br>
+time: 0.041000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1201,7 +1197,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.062000ms<br>
+time: 0.037000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1229,7 +1225,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.879000ms<br>
+time: 0.722000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>//FactorDivision/apply</ul>
 </td></tr>
 <tr><td>
@@ -1245,7 +1241,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.697000ms<br>
+time: 0.864000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>//FactorDivision/apply</ul>
 </td></tr>
 <tr><td>
@@ -1261,7 +1257,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.141000ms<br>
+time: 0.196000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1277,7 +1273,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.276000ms<br>
+time: 0.219000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1293,7 +1289,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.173000ms<br>
+time: 0.193000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1309,7 +1305,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.159000ms<br>
+time: 0.293000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant/Tidy/apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1343,7 +1339,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.021000ms<br>
+time: 0.029000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1359,7 +1355,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.031000ms<br>
+time: 0.080000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1375,7 +1371,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.038000ms<br>
+time: 0.090000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1391,7 +1387,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.012000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1407,7 +1403,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.024000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1423,7 +1419,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.031000ms<br>
+time: 0.066000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1439,7 +1435,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.653000ms<br>
+time: 0.625000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>//FactorDivision/apply</ul>
 </td></tr>
 <tr><td>
@@ -1455,7 +1451,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.078000ms<br>
+time: 0.075000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1471,7 +1467,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.681000ms<br>
+time: 3.244000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>*/FactorDivision/apply<br><li>*/FactorDivision/apply</ul>
 </td></tr>
 <tr><td>
@@ -1499,7 +1495,7 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.100000ms<br>
+time: 0.078000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1509,7 +1505,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.077000ms<br>
+time: 0.039000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1519,7 +1515,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.102000ms<br>
+time: 0.067000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1535,7 +1531,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.093000ms<br>
+time: 0.044000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1545,7 +1541,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.068000ms<br>
+time: 0.048000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1555,7 +1551,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.104000ms<br>
+time: 0.092000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1584,7 +1580,7 @@ $2$	$x$	${{3}} {{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.086000ms<br>
+time: 0.070000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1595,7 +1591,7 @@ $2$	$x$	${{3}} {{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.065000ms<br>
+time: 0.059000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1617,7 +1613,7 @@ c	$1$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.945000ms<br>
+time: 0.201000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1641,7 +1637,7 @@ c	$1$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.579000ms<br>
+time: 0.302000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1686,34 +1682,32 @@ rhs:	1=3, 2=0, 3=1	<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:70: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:63><br>
 	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in field 'simplifyAssertEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:58: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:57><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:57: in global 'simplifyAssertAllEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:57: in function 'simplifyAssertAllEq'<br>
 	[string "do local expr = (3*x^2 + 1):factorDivision() ..."]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./match.lua:233: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./match.lua:6: in main chunk<br>
-	[C]: in ?	15
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	match.lua:233: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	match.lua:6: in main chunk<br>
+	[C]: at 0x563e24e24280	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: failed<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: in global 'simplifyAssertAllEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: in function 'simplifyAssertAllEq'<br>
 	[string "do local expr = (3*x^2 + 1):factorDivision() ..."]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./match.lua:233: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./match.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	match.lua:233: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	match.lua:6: in main chunk<br>
+	[C]: at 0x563e24e24280
 </td><td>
-time: 7.757000ms<br>
+time: 1.742000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1731,7 +1725,7 @@ c	$1$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.937000ms<br>
+time: 1.905000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1749,7 +1743,7 @@ c	$1$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.866000ms<br>
+time: 3.297000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1788,34 +1782,32 @@ rhs:	1=3, 2=2, 3=1	<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:70: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:63><br>
 	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in field 'simplifyAssertEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:32: in function 'simplifyAssertEq'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:58: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:57><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:57: in global 'simplifyAssertAllEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:57: in function 'simplifyAssertAllEq'<br>
 	[string "do local expr = (x/(3*x*x + 2*x + 1)):factorD..."]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./match.lua:233: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./match.lua:6: in main chunk<br>
-	[C]: in ?	15
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	match.lua:233: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	match.lua:6: in main chunk<br>
+	[C]: at 0x563e24e24280	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: failed<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: in global 'simplifyAssertAllEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:72: in function 'simplifyAssertAllEq'<br>
 	[string "do local expr = (x/(3*x*x + 2*x + 1)):factorD..."]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./match.lua:233: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./match.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	match.lua:233: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	match.lua:6: in main chunk<br>
+	[C]: at 0x563e24e24280
 </td><td>
-time: 12.047000ms<br>
+time: 4.539000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1840,18 +1832,17 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>local a = x'^i':match(TensorRef(x, W(1))) simplifyAssertEq(a, TensorIndex{symbol='i', lower=false})</code>
 </td><td>
-<span style="color:red">BAD</span><br>[string "local a = x'^i':match(TensorRef(x, W(1))) sim..."]:1: attempt to call a nil value (global 'TensorRef')<br>stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in global 'TensorRef'<br>
+<span style="color:red">BAD</span><br>[string "local a = x'^i':match(TensorRef(x, W(1))) sim..."]:1: attempt to call global 'TensorRef' (a nil value)<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function 'TensorRef'<br>
 	[string "local a = x'^i':match(TensorRef(x, W(1))) sim..."]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./match.lua:233: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./match.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	match.lua:233: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	match.lua:6: in main chunk<br>
+	[C]: at 0x563e24e24280
 </td><td>
-time: 2.144000ms<br>
+time: 0.031000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>

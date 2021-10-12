@@ -15,7 +15,7 @@
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.041000ms<br>
+time: 0.013000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -31,7 +31,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.127000ms<br>
+time: 0.019000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -66,7 +66,7 @@ $y\left(  x\right)$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.112000ms<br>
+time: 0.073000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -77,7 +77,7 @@ ${x}^{2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.728000ms<br>
+time: 0.197000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>y/Prune/apply<br><li>Prune<br><li>^/Expand/integerPower<br><li>Expand<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -89,7 +89,7 @@ ${y\left(  x\right)} = {{x}^{2}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.203000ms<br>
+time: 0.060000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -99,7 +99,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.040000ms<br>
+time: 0.006000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -163,7 +163,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.125000ms<br>
+time: 0.021000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -174,7 +174,7 @@ ${f\left(  x\right)} = {{{x}} {{y\left(  x\right)}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.186000ms<br>
+time: 0.094000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -184,7 +184,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.031000ms<br>
+time: 0.005000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -243,7 +243,7 @@ ${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.925000ms<br>
+time: 0.704000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>f/Prune/apply<br><li>y/Prune/apply<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>y/Prune/apply<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Derivative/Prune/self<br><li>Derivative/Prune/eval<br><li>Derivative/Prune/self<br><li>Derivative/Prune/eval<br><li>Derivative/Prune/eval</ul>
 </td></tr>
 <tr><td>
@@ -288,23 +288,19 @@ stack: size: 12<br><ul style="margin:0px"><li>f/Prune/apply<br><li>y/Prune/apply
 </td><td>
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
-	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'symmath.visitor.FactorDivision.apply'<br>
-	(...tail calls...)<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:defeq():diff(y):prune())"]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./func.lua:65: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./func.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x560df94ef280
 </td><td>
-time: 5.557000ms<br>
+time: 0.058000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -315,7 +311,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.864000ms<br>
+time: 1.053000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>f/Prune/apply<br><li>y/Prune/apply<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>y/Prune/apply<br><li>y/Prune/apply<br><li>+/Prune/combineConstants<br><li>*/Prune/apply<br><li>Derivative/Prune/other<br><li>*/Prune/apply<br><li>Derivative/Prune/eval<br><li>Derivative/Prune/other<br><li>*/Prune/apply<br><li>Derivative/Prune/eval<br><li>Derivative/Prune/eval</ul>
 </td></tr>
 <tr><td>
@@ -331,7 +327,7 @@ stack: size: 15<br><ul style="margin:0px"><li>f/Prune/apply<br><li>y/Prune/apply
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.029000ms<br>
+time: 0.010000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -341,7 +337,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.023000ms<br>
+time: 0.003000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -351,7 +347,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.050000ms<br>
+time: 0.020000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -361,7 +357,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.049000ms<br>
+time: 0.012000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -371,19 +367,17 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/UserFunction.lua:141: args must be a table of Variables<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
 	[C]: in function 'assert'<br>
-	/home/chris/Projects/lua/symmath/UserFunction.lua:141: in function 'symmath.UserFunction.makeSubclass'<br>
-	(...tail calls...)<br>
+	/home/chris/Projects/lua/symmath/UserFunction.lua:141: in function 'func'<br>
 	[string "f = func('f', {x,y})"]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./func.lua:65: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./func.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x560df94ef280
 </td><td>
-time: 2.480000ms<br>
+time: 0.039000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -392,23 +386,19 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td><td>
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
-	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'symmath.visitor.FactorDivision.apply'<br>
-	(...tail calls...)<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:diff(x):prune())"]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./func.lua:65: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./func.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x560df94ef280
 </td><td>
-time: 2.190000ms<br>
+time: 0.073000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -417,23 +407,19 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td><td>
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
-	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'symmath.visitor.FactorDivision.apply'<br>
-	(...tail calls...)<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:diff(y):prune())"]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./func.lua:65: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./func.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x560df94ef280
 </td><td>
-time: 2.095000ms<br>
+time: 0.028000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -442,23 +428,19 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td><td>
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
-	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'symmath.visitor.FactorDivision.apply'<br>
-	(...tail calls...)<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:diff(s):prune())"]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./func.lua:65: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./func.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x560df94ef280
 </td><td>
-time: 2.312000ms<br>
+time: 0.022000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -467,23 +449,19 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td><td>
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/Expression.lua:37: attempt to call a table value<br>stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:116: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:115><br>
-	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'symmath.cos.clone'<br>
-	(...tail calls...)<br>
-	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'symmath.visitor.FactorDivision.apply'<br>
-	(...tail calls...)<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:37: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:35: in function 'clone'<br>
+	/home/chris/Projects/lua/symmath/visitor/Visitor.lua:70: in function 'prune'<br>
 	[string "print(f:diff(t):prune())"]:1: in main chunk<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:107><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in field 'exec'<br>
-	./func.lua:65: in local 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'ext.timer.timer'<br>
-	(...tail calls...)<br>
-	./func.lua:6: in main chunk<br>
-	[C]: in ?
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x560df94ef280
 </td><td>
-time: 2.404000ms<br>
+time: 0.023000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
