@@ -226,7 +226,7 @@ do local expr = (x/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) loc
 
 -- TensorRef
 
-local a = x'^i':match(TensorRef(x, W(1))) simplifyAssertEq(a, TensorIndex{symbol='i', lower=false})
+local a = x'^i':match(Tensor.Ref(x, W(1))) simplifyAssertEq(a, Tensor.Index{symbol='i', lower=false})
 
 
 ]=]), '\n')) do

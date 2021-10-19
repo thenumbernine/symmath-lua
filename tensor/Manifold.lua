@@ -36,8 +36,13 @@ function Manifold:init(args)
 	if chart is specified then this is redundant ...
 	but if Chart is built after Manifold then, until then, dim isn't known ...
 	should I allow Manifold to be allocated but not initialized?
+	
+	I'll make this optional for now
+	and if it is present then I'll use it for index-expression-traces
+	or should I use the chart coordinate count for the dim?
+	yeah, first manifold.dim, next #chart.coords
 	--]]
-	--self.dim = assert(args.dim)
+	self.dim = args.dim
 
 	-- here's another construction issue:
 	-- if I allow Manifold to accept Charts then Chart can't need a .manifold in its ctor
@@ -101,7 +106,6 @@ is a multipoint tensor defined by a single chart with multiple sets of tangent s
 --]]
 Manifold.default = Manifold()
 Manifold.last = Manifold.default
-
 
 
 return Manifold

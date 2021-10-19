@@ -39,7 +39,7 @@ function Matrix:charpoly(lambdaVar, dontSimplify)
 	if not lambdaVar then
 		local Variable = require 'symmath.Variable'
 		-- TODO same as matrix/eigen.lua, call this 'λ'? otherwise fixVariableNames and MathJax can screw up
-		lambdaVar = Variable'lambda'
+		lambdaVar = Variable'λ'
 	end
 	local charPolyMat = (self - Matrix.identity(#self) * lambdaVar)()
 	local charPolyEqn = charPolyMat:determinant{dontSimplify=dontSimplify}:eq(0)

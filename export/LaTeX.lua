@@ -694,8 +694,9 @@ function LaTeX:fixVariableName(name)
 			end
 		end
 		
-		-- replace all greek letter names in the string with \\+the greek letter name
+		-- replace all greek letter names in the string with \+the greek letter name
 		-- replace any tex symbols?  is this necessary?  I've already got inf handled
+		-- and what if there's already a \ there?  If that's the goal then how about I ignore those?
 		for _,v in ipairs(texSymbols) do
 			local symname, symchar = table.unpack(v)
 			if name:sub(i):match('^'..symname) then

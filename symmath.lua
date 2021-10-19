@@ -313,9 +313,9 @@ do
 
 	symmath.i:nameForExporter('LaTeX', 'i')
 	symmath.e:nameForExporter('LaTeX', 'e')
-	-- with this, with tostring=MultiLine, with fixVariableNames, when printing export.LaTeX(pi), it shows up as $\π$
-	-- but ... what a strange combination of flags
-	symmath.pi:nameForExporter('LaTeX', '\\pi')
+	-- With this, with tostring=MultiLine, with fixVariableNames, when printing export.LaTeX(pi), it shows up as $\π$
+	-- So don't override the name, just use the default unicode.  The only downside?  In non-unicode LaTeX output it will show up as garbage.
+	--symmath.pi:nameForExporter('LaTeX', '\\pi')
 	symmath.inf:nameForExporter('LaTeX', '\\infty')
 
 	-- add LaTeX escaped names for builtin functions

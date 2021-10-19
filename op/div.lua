@@ -230,7 +230,23 @@ div.rules = {
 			end
 		end},
 --]]
-	
+
+--[[
+		-- (r^m * x1 * ...) / (r^n * y1 * ...) => (r^(m-n) * x1 * ...) / (y1 * ...)
+		-- this is also in prune(), but if you call prune() to do it, you will get op/add/Prune which re-absorbs terms into adds: (2*(x+y))/2 => (2*x + 2*y)/2 and won't cancel the 2 on top and bottom
+		{removeCommonTerms = function(factor, expr)
+			-- if this is after polydiv then it's not reaching here, polydiv stopping us ...			
+			-- so I'll put this before polydiv, but a better fix is to fix polydiv:
+			-- TODO have polydiv recursively call upon div, and have it not handle the same expression twice
+			for _,rule in ipairs(div.rules.Prune) do
+				local name, func = next(rule)
+				if name == 'divToPowSub' then
+					return func(require 'symmath.prune', expr)
+				end
+			end
+		end},
+--]]
+
 -- [[ trying for polynomial division using polydiv
 -- I'm not sure if I should put this in Factor or Prune
 -- if it's in Prune then just return the polydivr results
@@ -243,7 +259,6 @@ div.rules = {
 			-- now when polydiv encounters a non-poly situation, it calls simplify()
 			-- so ... don't use polydiv ... use its internal
 			local polydivr = symmath.polydiv.polydivr
-			
 			
 			local function candivide(p, q)
 				-- for expr == p / q
@@ -274,6 +289,30 @@ div.rules = {
 				end
 			end
 			
+			local function candividesimplify(p, q)
+				-- for expr == p / q
+				-- if p and q are polynomials of some var (with no 'extra')
+				-- then try to divide p from q and see if no remainer exists
+				-- and then try to divide q from p
+
+				local vars = expr:getDependentVars()
+				for _,x in ipairs(vars) do
+					
+					local c, r = polydivr(p, q, x)
+					if Constant.isValue(r, 0) then
+--print('1. dividing '..p..' by '..q..' wrt x='..x..' and getting '..c..', remainder '..r)
+						return c
+					end
+				
+					local c, r = polydivr(q, p, x)
+					if Constant.isValue(r, 0) then
+--print('2. dividing '..q..' by '..p..' wrt x='..x..' and getting '..c..', remainder '..r)
+						return 1/c
+					end
+				end
+			end
+	
+
 --[=[ TODO HAS BUGS DON'T USE THIS
 			local mp, mq = table.unpack(expr)
 
@@ -339,15 +378,17 @@ div.rules = {
 -- [=[ or just try the num/denom as-is
 -- this adds in extra terms that need to be prune()'d later
 -- ex: ((2*x + 2*y)/2):factor() makes ((2*x + 2*y)/2 * 2)/2
+--print('from', symmath.Verbose(expr))			
 			local np, nq = candivide(expr[1], expr[2])
 			if np then
 				return np / nq
+				--return factor:apply(np / nq)
 			end
 --]=]
 --[=[ same but simplifying the result
 -- ... why did I choose to not do this?
 -- because it tends towards stack overflows.
-			local res = candivide(expr[1], expr[2])
+			local res = candividesimplify(expr[1], expr[2])
 			if res then
 				if res ~= expr then	-- hmm, why does this happen? seems to when dividing by a constant, or non-poly of x (whatever x may be)
 --print('candivide', expr[1], expr[2], 'got', res)
@@ -356,19 +397,6 @@ div.rules = {
 			end
 --]=]
 	
-		end},
---]]
-
---[[
-		-- (r^m * x1 * ...) / (r^n * y1 * ...) => (r^(m-n) * x1 * ...) / (y1 * ...)
-		-- this is also in prune(), but if you call prune() to do it, you will get op/add/Prune which re-absorbs terms into adds: (2*(x+y))/2 => (2*x + 2*y)/2 and won't cancel the 2 on top and bottom
-		{removeCommonTerms = function(factor, expr)
-			for _,rule in ipairs(div.rules.Prune) do
-				local name, func = next(rule)
-				if name == 'apply' then
-					return func(require 'symmath.prune', expr)
-				end
-			end
 		end},
 --]]
 
@@ -813,18 +841,15 @@ div.rules = {
 		end},
 		--]]
 
-		{apply = function(prune, expr)
---print'here'
---print(expr)
+		-- [[ any sqrt()s on the bottom, multiply by bottom and top
+		{mulBySqrtConj = function(prune, expr)
 			symmath = symmath or require 'symmath'
-			local add = symmath.op.add
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
-			
+
 			local num, denom = table.unpack(expr)
 
-			-- [[ any sqrt()s on the bottom, multiply by bottom and top
 			-- TODO conjugate pairs?
 			local function toProdList(x)
 				symmath = symmath or require 'symmath'
@@ -864,174 +889,200 @@ div.rules = {
 			if modified then
 				return prune:apply(fromProdList(numlist) / fromProdList(denomlist))
 			end
-			--]]
+		end},
+		--]]
 
-			-- [[ a / (-c * b) => -a / (c * b)
+		-- [[ a / (-c * b) => -a / (c * b)
+		{divMulNegToNegDivMul = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			local Constant = symmath.Constant		
 			local num, denom = table.unpack(expr)
 			if mul:isa(denom) then
 				for i=1,#denom do
 					if Constant:isa(denom[i])
-					and denom[i].value < 0
+					and symmath.set.negativeReal:contains(denom[i])  --and denom[i].value < 0
 					then
 						denom = denom:clone()
-						denom[i] = Constant(-denom[i].value)
+						denom[i] = prune:apply(-denom[i])
 						return prune:apply(-num / denom)
 					end
 				end
 			end
-			--]]
+		end},
+		--]]	
+		
+		-- [=[ (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
+		-- TODO combine this with the stuff in add.Factor somehow
+		-- that builds lists of term=, power= as well
+		{divToPowSub = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local add = symmath.op.add
+			local mul = symmath.op.mul
+			local pow = symmath.op.pow
+			local Constant = symmath.Constant
 
-			-- (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
-			-- TODO combine this with the stuff in add.Factor somehow
-			-- that builds lists of term=, power= as well
-			do
-				local modified
-				local nums, denoms
-				if mul:isa(expr[1]) then
-					nums = table(expr[1])
-				else
-					nums = table{expr[1]}
-				end
-				if mul:isa(expr[2]) then
-					denoms = table(expr[2])
-				else
-					denoms = table{expr[2]}
-				end
+			local modified
+			
+			local nums
+			if mul:isa(expr[1]) then
+				nums = table(expr[1])
+			else
+				nums = table{expr[1]}
+			end
+		
+			local denoms
+			if mul:isa(expr[2]) then
+				denoms = table(expr[2])
+			else
+				denoms = table{expr[2]}
+			end
 
-				-- TODO this is very very similar to the ProdList() used in op/add
-				local function listToBasesAndPowers(list)
-					local bases = table()
-					local powers = table()
-					for i=1,#list do
-						local x = list[i]
-						local base, power
-						if pow:isa(x) then
-							base, power = table.unpack(x)
-						else
-							base, power = x, Constant(1)
-						end
-						bases[i] = assert(base)
-						powers[i] = assert(power)
+			-- TODO this is very very similar to the ProdList() used in op/add
+			local function listToBasesAndPowers(list)
+				local bases = table()
+				local powers = table()
+				for i=1,#list do
+					local x = list[i]
+					local base, power
+					if pow:isa(x) then
+						base, power = table.unpack(x)
+					else
+						base, power = x, Constant(1)
 					end
-					return bases, powers
+					bases[i] = assert(base)
+					powers[i] = assert(power)
 				end
-				
-				local numBases, numPowers = listToBasesAndPowers(nums)
-				local denomBases, denomPowers = listToBasesAndPowers(denoms)
+				return bases, powers
+			end
+			
+			local numBases, numPowers = listToBasesAndPowers(nums)
+			local denomBases, denomPowers = listToBasesAndPowers(denoms)
 --[[
 print'numerator'
 for i=1,#numBases do
-	print'base'
-	print(numBases[i])
-	print'power'
-	print(numPowers[i])
+print'base'
+print(numBases[i])
+print'power'
+print(numPowers[i])
 end
 print'denominator'
 for i=1,#denomBases do
-	print'base'
-	print(denomBases[i])
-	print'power'
-	print(denomPowers[i])
+print'base'
+print(denomBases[i])
+print'power'
+print(denomPowers[i])
 end
 --]]
-				-- split any constant integers into its prime factorization
-				for _,info in ipairs{
-					{numBases, numPowers},
-					{denomBases, denomPowers}
-				} do
-					local bases, powers = table.unpack(info)
-					for i=#bases,1,-1 do
-						local b = bases[i]
-						if symmath.set.integer:contains(b)
-						and b.value ~= 0
-						then
-							bases:remove(i)
-							local value = b.value
-							local power = powers:remove(i)
-							
-							if value < 0 then	-- insert -1 if necessary
-								bases:insert(i, Constant(-1))
+			-- split any constant integers into its prime factorization
+			for _,info in ipairs{
+				{numBases, numPowers},
+				{denomBases, denomPowers}
+			} do
+				local bases, powers = table.unpack(info)
+				for i=#bases,1,-1 do
+					local b = bases[i]
+					if symmath.set.integer:contains(b)
+					and b.value ~= 0
+					then
+						bases:remove(i)
+						local value = b.value
+						local power = powers:remove(i)
+						
+						if value < 0 then	-- insert -1 if necessary
+							bases:insert(i, Constant(-1))
+							powers:insert(i, power:clone())
+							value = -value
+						end
+						if value == 1 then
+							bases:insert(i, Constant(1))
+							powers:insert(i, power:clone())
+						else
+							local fs = math.primeFactorization(value)	-- 1 returns a nil list
+							for _,f in ipairs(fs) do
+								bases:insert(i, f)
 								powers:insert(i, power:clone())
-								value = -value
-							end
-							if value == 1 then
-								bases:insert(i, Constant(1))
-								powers:insert(i, power:clone())
-							else
-								local fs = math.primeFactorization(value)	-- 1 returns a nil list
-								for _,f in ipairs(fs) do
-									bases:insert(i, f)
-									powers:insert(i, power:clone())
-								end
 							end
 						end
 					end
 				end
+			end
 
-				-- TODO move minus sign to the top
-				-- TODO if the coefficients are non-integers then just divide them
+			-- TODO move minus sign to the top
+			-- TODO if the coefficients are non-integers then just divide them
 
-				-- from this point on, nums and denoms don't match up with numBases (specifically because of the prime factorization of integers)
-				-- so don't worry about and don't use nums and denoms
+			-- from this point on, nums and denoms don't match up with numBases (specifically because of the prime factorization of integers)
+			-- so don't worry about and don't use nums and denoms
 
-				for i=1,#numBases do
-					for j=#denomBases,1,-1 do
-						if not Constant.isValue(numBases[i], 1)
-						and numBases[i] == denomBases[j]
-						then
-							modified = true
-							local resultPower = numPowers[i] - denomPowers[j]
-							numPowers[i] = resultPower
-							denomBases:remove(j)
-							denomPowers:remove(j)
-						end
+			for i=1,#numBases do
+				for j=#denomBases,1,-1 do
+					if not Constant.isValue(numBases[i], 1)
+					and numBases[i] == denomBases[j]
+					then
+						modified = true
+						local resultPower = numPowers[i] - denomPowers[j]
+						numPowers[i] = resultPower
+						denomBases:remove(j)
+						denomPowers:remove(j)
+					end
+				end
+			end
+			
+			if modified then
+				if #numBases == 0 and #denomBases == 0 then return Constant(1) end
+
+				-- can I construct these even if they have no terms?
+				local num
+				if #numBases > 0 then
+					num = numBases:map(function(v,i)
+						return v ^ numPowers[i]
+					end)
+					assert(#num > 0)
+					if #num == 1 then
+						num = num[1]
+					else
+						num = mul(num:unpack())
+					end
+				end
+				local denom
+				if #denomBases > 0 then
+					denom = denomBases:map(function(v,i)
+						return v ^ denomPowers[i]
+					end)
+					assert(#denom > 0)
+					if #denom == 1 then
+						denom = denom[1]
+					else
+						denom = mul(denom:unpack())
 					end
 				end
 				
-				if modified then
-					if #numBases == 0 and #denomBases == 0 then return Constant(1) end
-
-					-- can I construct these even if they have no terms?
-					local num
-					if #numBases > 0 then
-						num = numBases:map(function(v,i)
-							return v ^ numPowers[i]
-						end)
-						assert(#num > 0)
-						if #num == 1 then
-							num = num[1]
-						else
-							num = mul(num:unpack())
-						end
-					end
-					local denom
-					if #denomBases > 0 then
-						denom = denomBases:map(function(v,i)
-							return v ^ denomPowers[i]
-						end)
-						assert(#denom > 0)
-						if #denom == 1 then
-							denom = denom[1]
-						else
-							denom = mul(denom:unpack())
-						end
-					end
-					
-					local result
-					if #numBases == 0 then
-						result = Constant(1) / denom
-					elseif #denomBases == 0 then
-						result = num
-					else
-						result = num / denom
-					end
+				local result
+				if #numBases == 0 then
+					result = Constant(1) / denom
+				elseif #denomBases == 0 then
+					result = num
+				else
+					result = num / denom
+				end
 
 --print'modified, returning'
 --print(result)
-					return prune:apply(result)
-				end
+				return prune:apply(result)
 			end
+		end},
+		--]=]
+		
+		--[=[
 --print'not modified'
+		{apply = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local add = symmath.op.add
+			local mul = symmath.op.mul
+			local pow = symmath.op.pow
+			local Constant = symmath.Constant
+
+		
 			--[[ a / b^(p/q) => (a / b^(p/q)) * (b^((q-p)/q) / b^((q-p)/q)) => (a * b^((q-p)/q)) / b
 			local Wildcard = symmath.Wildcard
 			local a, b, p, q = expr:match(Wildcard(1) / Wildcard(2) ^ (Wildcard(3) / Wildcard(4)))
@@ -1103,6 +1154,7 @@ end
 			end
 			--]]
 		end},
+		--]=]
 
 		-- this could go after the apply rule, but that ends with a subsequent prune(a)/prune(b) ..
 		{logPow = function(prune, expr)

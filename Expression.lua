@@ -1200,13 +1200,16 @@ this might be getting out of hand:
 isMetric(g) = returns true if g is a metric TensorRef
 canSimplify(g,t,gi,ti) = returns true if g can be combined with TensorRef t at g's TensorIndex gi and t's TensorIndex ti
 --]]
-Expression.simplifyMetricsRules = {
+Expression.simplifyMetricMulRules = {
 	-- returns true/false on whether the simplify works
 	delta = {	-- delta^i_j T_ik = T_jk
 		isMetric = function(g)
-			Tensor = Tensor or require 'symmath.Tensor'
+			symmath = symmath or require 'symmath'
+			local Tensor = symmath.Tensor
 			return g[1] == Tensor:deltaSymbol()
 			and g[2].lower ~= g[3].lower
+			and #g == 3
+			and not g:hasDerivIndex()
 		end,
 		canSimplify = function(g, t, gi, ti)
 			return t[ti].lower ~= g[gi].lower
@@ -1214,11 +1217,13 @@ Expression.simplifyMetricsRules = {
 	},
 	metric = {	-- g^ij T_jk = T^i_k (provided T is not delta)
 		isMetric = function(g)
-			Tensor = Tensor or require 'symmath.Tensor'
+			symmath = symmath or require 'symmath'
+			local Tensor = symmath.Tensor
 			return g[1] == Tensor:metricSymbol()
 		end,
 		canSimplify = function(g, t, gi, ti)
-			Tensor = Tensor or require 'symmath.Tensor'
+			symmath = symmath or require 'symmath'
+			local Tensor = symmath.Tensor
 			return t[1] ~= Tensor:deltaSymbol()	-- don't apply g^ij * delta^k_j => delta^ki
 			and t[ti].lower ~= g[gi].lower
 			-- you know, if derivs are always rightmost, then this is basically if it has any deriv
@@ -1226,8 +1231,68 @@ Expression.simplifyMetricsRules = {
 			and not t:hasDerivIndex()
 		end,
 	},
+	
+	--[[
+	TODO while g^ik * g_kj => δ^i_j,
+	this won't work on g'^i_j':simplifyMetrics() => δ'^i_j' unless you first call ...
+	> g'^i_j':insertMetricsToSetVariance(g'_ab'):simplifyMetrics()
+	> g'^i_j':favorTensorVariance(g'_ab'):simplifyMetrics()
+	> g'^i_j':favorTensorVariance(g'^ab'):simplifyMetrics()
+	however, right now 'rule' is only product-based, combining between a metric or Kronecher delta ... and a tensor ...
+	I need a separate set of rules that act on lone tensors ...
+	--]]
 }
-function Expression:simplifyMetrics(rules)
+
+Expression.simpifyMetricTensorRules = {
+	-- g^i_j => δ^i_j
+	deltaMetric = function(t)
+		symmath = symmath or require 'symmath'
+		local Tensor = symmath.Tensor
+		if Tensor.Ref:isa(t)
+		and t[1] == Tensor:metricSymbol()
+		and #t == 3
+		and t[2].lower ~= t[3].lower
+		and not t:hasDerivIndex()
+		then
+			t = t:clone()
+			t[1] = Tensor:deltaSymbol()
+			return t
+		end
+	end,
+	
+	-- δ^i_i => dim
+	-- first use symbol => chart => manifold.dim, 
+	-- if that isn't defined then use #chart.coords for the dim
+	deltaMetricTrace = function(t)
+		symmath = symmath or require 'symmath'
+		local Tensor = symmath.Tensor
+		if Tensor.Ref:isa(t)
+		and t[1] == Tensor:deltaSymbol()
+		and #t == 3
+		and t[2].lower ~= t[3].lower
+		and t[2].symbol == t[3].symbol
+		and not t:hasDerivIndex()
+		then
+			local symbol = t[2].symbol
+			local chart = Tensor:findChartForSymbol(symbol)
+			if chart then
+				local manifold = chart.manifold
+				if manifold and manifold.dim then
+					return manifold.dim
+				end
+				return #chart.coords
+			else	
+				-- no charts defined, check the last manifold dim
+				local manifold = Tensor.Manifold.last
+				if manifold and manifold.dim then
+					return manifold.dim
+				end
+			end
+		end
+	end,
+}
+
+function Expression:simplifyMetrics(mulrules, trules)
 	--deltas, onlyTheseSymbols)
 	local expr = self
 
@@ -1240,13 +1305,13 @@ function Expression:simplifyMetrics(rules)
 		--[[ this isn't so good for Tensor because it needs .variance, so ...
 		return getmetatable(expr):lambda(expr:dim(), function(...)
 			local ei = expr:get{...}
-			return (ei:simplifyMetrics(rules))
+			return (ei:simplifyMetrics(mulrules, trules))
 		end)
 		--]]
 		-- [[ so here's the alternative
 		expr = expr:clone()
 		for i in expr:iter() do
-			expr:set(i, expr:get(i):simplifyMetrics(rules))
+			expr:set(i, expr:get(i):simplifyMetrics(mulrules, trules))
 		end
 		return expr
 		--]]
@@ -1254,8 +1319,8 @@ function Expression:simplifyMetrics(rules)
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(expr) then
 		return getmetatable(expr)(
-			expr[1]:simplifyMetrics(rules),
-			expr[2]:simplifyMetrics(rules)
+			expr[1]:simplifyMetrics(mulrules, trules),
+			expr[2]:simplifyMetrics(mulrules, trules)
 		)
 	end
 
@@ -1264,83 +1329,119 @@ function Expression:simplifyMetrics(rules)
 	-- also TODO, how to specify how to treat each symbol?
 	-- right now I'm just treating deltaSymbol as delta, and any other as a metric
 	-- but for a truly flexible framework, we would want to correlate metrics with covariant derivatives for simplification
-	if not rules then
-		rules = table()
-		rules:insert(self.simplifyMetricsRules.delta)
-		rules:insert(self.simplifyMetricsRules.metric)
+	if not mulrules then
+		mulrules = table()
+		mulrules:insert(self.simplifyMetricMulRules.delta)
+		mulrules:insert(self.simplifyMetricMulRules.metric)
 	else
-		rules = table(rules)
+		mulrules = table(mulrules)
+	end
+	
+	-- individual tensor rules
+	if not trules then
+		trules = table()
+		trules:insert(self.simpifyMetricTensorRules.deltaMetric)
+		trules:insert(self.simpifyMetricTensorRules.deltaMetricTrace)
+	else
+		trules = table(trules)
 	end
 
 	expr = expr:clone()
 	expr = expr:simplifyAddMulDiv()	-- put it in add-mul-div order
-	local function checkMul(expr)
-		if not mul:isa(expr) then return expr end
+	
+	-- first try the individual tensor rules
+	local anyfound
+	repeat
+		anyfound = false
+		do
+			local found
+			repeat
+				found = false
+				for _,rule in pairs(trules) do
+					local found
+					expr = expr:map(function(...)
+						local result = rule(...)
+						if result then 	
+							found = true 
+							anyfound = true
+						end
+						return result
+					end)
+				end
+			until not found
+		end
+		
+		local function checkMul(expr)
+			if not mul:isa(expr) then return expr end
 
-		local found
-		repeat
-			found = false
-			for ruleIndex,rule in ipairs(rules) do
---print('checking rule ', rule)
-				for exprGIndex,g in ipairs(expr) do
-					if TensorRef:isa(g) 
-					and #g == 3 -- no derivatives
-					and rule.isMetric(g) -- make sure it matches what we are looking for
-					then
---print('found metric symbol '..g)						
-						for gi=2,3 do
-							local gTensorIndex = g[gi]
-							for exprTIndex,t in ipairs(expr) do
-								if exprGIndex ~= exprTIndex
-								and TensorRef:isa(t) 
-								then
-									for ti=2,#t do
-										local tTensorIndex = t[ti]
-										if tTensorIndex.symbol == gTensorIndex.symbol 
-										and rule.canSimplify(g, t, gi, ti) 
-										then
-											local gReplTensorIndex = g[5 - gi]
---print('applying '..g..' to '..t)
-											t[ti].symbol = gReplTensorIndex.symbol
-											t[ti].lower = gReplTensorIndex.lower
-											
-											-- hmm, general rule ...
-											-- metric^ik metric_kj = delta^i_j for any metric symbol
-											if g[1] == t[1]
-											and #t == 3
-											and t[2].lower ~= t[3].lower
+			local found
+			repeat
+				found = false
+				
+
+				for ruleIndex,rule in ipairs(mulrules) do
+	--print('checking rule ', rule)
+					for exprGIndex,g in ipairs(expr) do
+						if TensorRef:isa(g) 
+						and #g == 3 -- no derivatives
+						and rule.isMetric(g) -- make sure it matches what we are looking for
+						then
+	--print('found metric symbol '..g)						
+							for gi=2,3 do
+								local gTensorIndex = g[gi]
+								for exprTIndex,t in ipairs(expr) do
+									if exprGIndex ~= exprTIndex
+									and TensorRef:isa(t) 
+									then
+										for ti=2,#t do
+											local tTensorIndex = t[ti]
+											if tTensorIndex.symbol == gTensorIndex.symbol 
+											and rule.canSimplify(g, t, gi, ti) 
 											then
-												t[1] = Tensor:deltaSymbol()
-											end
+												local gReplTensorIndex = g[5 - gi]
+	--print('applying '..g..' to '..t)
+												t[ti].symbol = gReplTensorIndex.symbol
+												t[ti].lower = gReplTensorIndex.lower
+												
+												-- hmm, general rule ...
+												-- metric^ik metric_kj = delta^i_j for any metric symbol
+												if g[1] == t[1]
+												and #t == 3
+												and t[2].lower ~= t[3].lower
+												then
+													t[1] = Tensor:deltaSymbol()
+												end
 
-											table.remove(expr, exprGIndex)
---print('now we have '..expr)											
-											found = true
-											break
+												table.remove(expr, exprGIndex)
+	--print('now we have '..expr)											
+												found = true
+												anyfound = true
+												break
+											end
 										end
 									end
+									if found then break end
 								end
 								if found then break end
 							end
-							if found then break end
 						end
+						if found then break end
 					end
 					if found then break end
 				end
-				if found then break end
-			end
-		until not found
-		if #expr == 1 then expr = expr[1] end
-		return expr
-	end
-	if add:isa(expr) then
-		for i=1,#expr do
-			expr[i] = checkMul(expr[i])
+			until not found
+			if #expr == 1 then expr = expr[1] end
+			return expr
 		end
-		if #expr == 1 then expr = expr[1] end
-	else
-		expr = checkMul(expr)
-	end
+		if add:isa(expr) then
+			for i=1,#expr do
+				expr[i] = checkMul(expr[i])
+			end
+			if #expr == 1 then expr = expr[1] end
+		else
+			expr = checkMul(expr)
+		end
+	until not anyfound
 	return expr
 end
 
@@ -1564,7 +1665,7 @@ end
 -- hmm, rules ...
 -- static function, 'self' is the class
 function Expression:pushRule(name)
-	local visitor, rulename = string.split(name, '/'):unpack()
+	local visitor, rulename = string.split(name, '/'):unpack()	-- hmm, I was using / in rules output, but then op.div has name / so ... // doesn't look good, so now I'm using : in rules output ... so should I do it here?
 	assert(visitor and rulename, "Expression:pushRule expected format visitor/rule")	
 	
 	local rules = assert(self.rules[visitor], "couldn't find visitor "..visitor)
@@ -1779,14 +1880,16 @@ and insert enough metric terms to raise/lower these so that they will match the 
 --]]
 function Expression:insertMetricsToSetVariance(find, metric)
 	symmath = symmath or require 'symmath'
-	local TensorRef = symmath.Tensor.Ref
-	local TensorIndex = symmath.Tensor.Index
-
-	assert(metric)
+	local Tensor = symmath.Tensor
+	local TensorRef = Tensor.Ref
+	local TensorIndex = Tensor.Index
 	
-	assert(TensorRef:isa(find))
+	-- in absence of 'metric', use Tensor:metricSymbol()
+	metric = metric or Tensor:metricSymbol()
+	
+	assert(TensorRef:isa(find), "expected 'find' to be a metric")
 	--assert(Variable:isa(find[1]))
-	assert(not find:hasDerivIndex())	-- TODO handle derivs later?  also TODO call splitOffDerivIndexes() first? or expect the caller to do this 
+	assert(not find:hasDerivIndex(), "'find' argument cannot have derivative indexes")	-- TODO handle derivs later?  also TODO call splitOffDerivIndexes() first? or expect the caller to do this 
 
 	return self:insertTransformsToSetVariance{
 		matches = function(x)

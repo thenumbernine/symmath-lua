@@ -1211,7 +1211,7 @@ end
 function Tensor:deltaSymbol()
 	if not Tensor.deltaVariable then
 		local Variable = require 'symmath.Variable'
-		Tensor.deltaVariable = Variable'\\delta'
+		Tensor.deltaVariable = Variable'δ'
 	end
 	return Tensor.deltaVariable
 end

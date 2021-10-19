@@ -135,7 +135,7 @@ function Visitor:apply(expr, ...)
 						if symmath.simplify.debugLoops == 'rules'
 						and symmath.simplify.stack
 						then
-							symmath.simplify.stack:insert{m.name..'/'..self.name..'/'..name, symmath.clone(newexpr)}
+							symmath.simplify.stack:insert{m.name..':'..self.name..':'..name, symmath.clone(newexpr)}
 						end
 
 --local afterCount = Expression.countNodes(expr)
@@ -148,6 +148,16 @@ function Visitor:apply(expr, ...)
 --rulesSrcNodeName = m.name		
 --assert(rulesSrcNodeName ~= 'Expression')
 						break
+					--[[ should I insert this in the stack even if it wasn't applied?  
+					-- yes?  since the function calls are inserted even if they don't produce anything new
+					-- but i'll disable it, it inserts way too many, and the unused rules can be inferred by just scrolling down the rule list.
+					else
+						if symmath.simplify.debugLoops == 'rules'
+						and symmath.simplify.stack
+						then
+							symmath.simplify.stack:insert{m.name..':'..self.name..':'..name..' not used', symmath.clone(expr)}
+						end
+					--]]
 					end
 				end
 			end
