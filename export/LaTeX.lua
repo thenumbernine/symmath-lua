@@ -198,6 +198,30 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		end
 		return res
 	end,
+	[require 'symmath.op.Binary'] = function(self, expr)
+		local res = table()
+		for i=1,#expr do
+			if i > 1 then res:insert(expr:getSepStr(self)) end
+			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+		end
+		return res
+	end,
+	-- alright, for simplification/equality's sake I'm immediately turning all sub(a,b)'s into add(a,unm(b)) ... but that makes output look bad ... 
+	-- TODO this in all other exporters as well?
+	[require 'symmath.op.add'] = function(self, expr)
+		symmath = symmath or require 'symmath'
+		local unm = symmath.op.unm
+		local res = table()
+		for i=1,#expr do
+			if i > 1 
+			and not unm:isa(expr[i])	-- if it's a - then just let the - do the talking
+			then 
+				res:insert(expr:getSepStr(self)) 
+			end
+			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+		end
+		return res
+	end,
 	[require 'symmath.op.mul'] = function(self, expr)
 		symmath = symmath or require 'symmath'
 		local Variable = symmath.Variable

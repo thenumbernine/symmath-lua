@@ -1710,10 +1710,12 @@ print('prodList', prodLists:toExpr(), '<br>')
 			if theta then return -sin(theta)^2 end
 		end},
 
+--[[
+		-- but if I do this then the next == will fail, since my immediately replacement of sub(a,b) with add(a,unm(b)) was to fix == ...
+		-- so a better fix would be just changing the output?
 		{apply = function(tidy, expr)
 			symmath = symmath or require 'symmath'
---local tostring = symmath.Verbose
---print('op.add.rules.Tidy.apply with', tostring(expr))
+print('op.add.rules.Tidy.apply with', symmath.Verbose(expr))
 			local unm = symmath.op.unm
 			for i=1,#expr-1 do
 				-- x + -y => x - y
@@ -1732,13 +1734,13 @@ print('prodList', prodLists:toExpr(), '<br>')
 					assert(#expr > 1)
 					return tidy:apply(expr)
 --]=]
--- [=[ new
+-- [=[ new ... not working?
 					expr = expr:shallowCopy()
 					local a = table.remove(expr, i)
 					assert(a)
 					local b = table.remove(expr, i)[1]
 					assert(b)
-					table.insert(expr, i, a - b)
+					table.insert(expr, i, symmath.op.sub(a, b))
 					assert(#expr > 0)
 					if #expr == 1 then
 						return expr[1]
@@ -1749,6 +1751,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 				end
 			end
 		end},
+--]]	
 	},
 }
 
