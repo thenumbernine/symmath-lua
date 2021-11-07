@@ -1002,6 +1002,8 @@ Output CDN URLs:
 
 [tests/output/Platonic Solids/8-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/8%2dcell.html)
 
+[tests/output/Platonic Solids/24-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/8%2dcell.html)
+
 [tests/output/Platonic Solids/Cube](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Cube.html)
 
 [tests/output/Platonic Solids/Dodecahedron](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Dodecahedron.html)
