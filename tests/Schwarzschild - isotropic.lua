@@ -50,9 +50,7 @@ end)
 printbr'metric:'
 printbr(var'g''_uv':eq(g'_uv'()))
 
-local gInv = Tensor('^uv', table.unpack(
-	(Matrix(table.unpack(g)):inverse())
-))
+local gInv = Tensor('^uv', Matrix(table.unpack(g)):inverse():unpack())
 
 printbr'metric inverse:'
 printbr(var'g''^uv':eq(gInv'^uv'()))
@@ -63,18 +61,17 @@ chart:setMetric(g, gInv)
 
 -- metric partial
 -- assume dr/dt is zero
-local dg = Tensor'_uvw'
-dg['_uvw'] = g'_uv,w'()
+local dg = g'_uv,w'():permute'_wuv'
 for _,xi in ipairs(spatialCoords) do
 	dg = dg:subst(mu_plus_def:diff(xi)(), mu_minus_def:diff(xi)(), mu_def:diff(xi)())()
 	dg = dg:replace(r:diff(xi), xi/r)()
 	dg = dg:subst((mu_plus_def + mu_minus_def)())()
 end
 printbr'metric partial derivatives:'
-printbr(var'g''_uv,w':eq(dg'_uvw'()))
+printbr(var'g''_uv,w':eq(dg'_wuv'()))
 
 -- Christoffel: G_abc = 1/2 (g_ab,c + g_ac,b - g_bc,a) 
-local Gamma = ((dg'_abc' + dg'_acb' - dg'_bca') / 2)()
+local Gamma = ((dg'_cab' + dg'_bac' - dg'_abc') / 2)()
 printbr'1st kind Christoffel:'
 printbr(var'\\Gamma''_uvw':eq(Gamma'_uvw'()))
 
@@ -98,14 +95,13 @@ printbr(var'n''_u':eq(n'_u'()))	--'_u')
 local P = (g'_uv' + n'_u' * n'_v')()
 printbr(var'P''_uv':eq(P'_uv'()))
 
-local dn = Tensor'_uv'
 -- simplification loop?
 --dn = (dn'_uv' - Gamma'^w_vu' * n'_w'):simplify()
 -- looks like chaining arithmetic operators between tensor +- and * causes problems ... 
 -- ... probably because we're trying to derefernce an uevaluated multiplication ... so it has no internal structure yet ...
 -- ... so should (a) tensor algebra be immediately simplified, or
 --				(b) dereferences require simplification?
-dn['_uv'] = (n'_v,u' - (Gamma'^w_vu' * n'_w')()'_uv')()
+local dn = (n'_v,u' - (Gamma'^w_vu' * n'_w')()'_uv')():permute'_uv'
 for _,xi in ipairs(spatialCoords) do
 	dn = dn:replace(r:diff(xi), xi/r)()
 end
@@ -117,10 +113,31 @@ local K = (P'^a_u' * P'^b_v' * ((dn'_ab' + dn'_ba')/2))()
 printbr(var'K''_uv':eq(K'_uv'()))
 
 -- Geodesic: x''^u = -G^u_vw x'^v x'^w
-local diffx = Tensor('^u', function(u) return symmath.var('\\dot{x}^'..coords[u].name, coords) end)
-local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w'):simplify()
+local diffx = Tensor('^u', function(u) return symmath.var('\\dot{'..coords[u].name..'}', coords) end)
+local diffx2 = (-Gamma'^u_vw' * diffx'^v' * diffx'^w'):simplifyAddMulDiv()
 printbr('geodesic equation')
 printbr('$\\ddot{x}^a = $'..diffx2)
+
+-- it would be nice if simplifyAddMulDiv() would still factor out common terms...
+print'<pre>'
+print(export.C:toCode{
+	input = {
+		{['pos.w'] = t}, 
+		{['pos.x'] = x}, 
+		{['pos.y'] = y}, 
+		{['pos.z'] = z}, 
+		--r, -- or just replace() it
+		R,
+		{mu_plus=mu_plus},
+		{mu_minus=mu_minus}, 
+		{['vel.w'] = diffx[1]},
+		{['vel.x'] = diffx[2]},
+		{['vel.y'] = diffx[3]},
+		{['vel.z'] = diffx[4]},
+	},
+	output = {diffx2:replace(r, sqrt(x^2 + y^2 + z^2)):unpack()},
+})
+print'</pre>'
 
 --[[
 -- Christoffel partial: G^a_bc,d

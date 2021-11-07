@@ -235,6 +235,19 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		end
 		return res
 	end,
+	[require 'symmath.op.add'] = function(self, expr)
+		symmath = symmath or require 'symmath'
+		local unm = symmath.op.unm
+		local res = self:wrapStrOfChildWithParenthesis(expr, 1)
+		local sep = {expr:getSepStr(self)}
+		for i=2,#expr do
+			if not unm:isa(expr[i]) then
+				res = self:combine(res, sep)
+			end
+			res = self:combine(res, self:wrapStrOfChildWithParenthesis(expr, i))
+		end
+		return res
+	end,
 	[require 'symmath.op.div'] = function(self, expr)
 		assert(#expr == 2)
 		return self:fraction(self:apply(expr[1]), self:apply(expr[2]))

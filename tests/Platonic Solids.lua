@@ -37,13 +37,22 @@ R v
 	= (I + (cos(θ)-1) aa' - sin(θ) ab' + sin(θ) ba' + (cos(θ)-1) bb') v
 	= (I + (cos(θ)-1) (aa' + bb') + sin(θ) (ba' - ab')) v
 --]]
-local function rotfromto(theta, from, to)
+local function rotfromto(from, to, theta)
 	from = from:unit()
-	to = (Matrix.projection(from:T()[1]) * to)():unit()
+	local unitto = to:unit()
+	to = (Matrix.projection(from:T()[1]) * unitto)():unit()
+	local costh, sinth
+	if not theta then
+		costh = (from:T() * to)()[1][1]
+		sinth = sqrt(1 - costh * costh)()
+	else
+		costh = cos(theta)
+		sinth = sin(theta)
+	end
 	return (
 		Matrix.identity(#from) 
-		+ (cos(theta) - 1) * (from * from:T() + to * to:T())
-		+ sin(theta) * (to * from:T() - from * to:T())
+		+ (costh - 1) * (from * from:T() + to * to:T())
+		+ sinth * (to * from:T() - from * to:T())
 	)()
 end
 
@@ -53,9 +62,9 @@ for a 3D platonic solid, if you know the vertices, you can make a rotation
 from (proj a) * b to (proj a) * c
 --]]
 printbr(rotfromto(
-	frac(2*pi,3), 
 	(Matrix.projection{1,0,0} * Matrix{-frac(1,3), sqrt(frac(2,3)), -frac(sqrt(2),3)}:T())(),
-	(Matrix.projection{1,0,0} * Matrix{-frac(1,3), 0, frac(sqrt(8),3)}:T())()
+	(Matrix.projection{1,0,0} * Matrix{-frac(1,3), 0, frac(sqrt(8),3)}:T())() 
+	frac(2*pi,3),
 ))
 os.exit()
 --]=]
@@ -125,7 +134,7 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
--- [=[
+--[=[
 	{	-- self-dual
 		name = 'Tetrahedron',
 		vtx1 = (tetRot * Matrix{0, 0, 1}:T())(),
@@ -136,23 +145,24 @@ local shapes = {
 			local b = {sqrt(frac(2,3)), -sqrt(2)/3, -frac(1,3)}
 			local c = {0, sqrt(8)/3, -frac(1,3)}
 			local d = {0, 0, 1}
+			
 			return table{
 				
 				(tetRot * 
 					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	0, 					sqrt(frac(8,9))		}) 
 					rotfromto(
-						frac(2*pi,3),
 						(Matrix.projection(c) * Matrix(a):T())(),
-						(Matrix.projection(c) * Matrix(b):T())()
+						(Matrix.projection(c) * Matrix(b):T())(),
+						frac(2*pi,3)
 					)
 					* tetRot:T())(),
 				
 				(tetRot * 
 					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	}) 
 					rotfromto(
-						frac(2*pi,3),
 						(Matrix.projection(d) * Matrix(a):T())(),
-						(Matrix.projection(d) * Matrix(b):T())()
+						(Matrix.projection(d) * Matrix(b):T())(),
+						frac(2*pi,3)
 					)
 					* tetRot:T())(),
 			}
@@ -240,20 +250,20 @@ local shapes = {
 			return table{
 				-- generate a tetrahedron:
 				rotfromto(
-					frac(2*pi,3), 
 					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(a):T())(),
-					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(b):T())()
+					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(b):T())(),
+					frac(2*pi,3)
 				),
 				rotfromto(
-					frac(2*pi,3), 
 					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(a):T())():T()[1] ) * Matrix(c):T())(),
-					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(a):T())():T()[1] ) * Matrix(b):T())()
+					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(a):T())():T()[1] ) * Matrix(b):T())(),
+					frac(2*pi,3)
 				),
 				-- generate the entire 5-cell
 				rotfromto(
-					frac(2*pi,3), 
 					(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(c):T())(),
-					(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(d):T())()
+					(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(d):T())(),
+					frac(2*pi,3)
 				),			
 			}
 			--]]
@@ -266,7 +276,7 @@ local shapes = {
 		dim = 4,
 		
 		--vtx1 = Matrix{1/sqrt(4), 1/sqrt(4), 1/sqrt(4), 1/sqrt(4)}:T(),
-		vtx1 = Matrix{1, 1, 1, 1}:T(),
+		vtx1 = Matrix{frac(1,2), frac(1,2), frac(1,2), frac(1,2)}:T(),
 
 		xforms = {
 			Matrix(	-- xy
@@ -319,9 +329,76 @@ local shapes = {
 		},
 	},
 --]=]
--- TODO 4D 24-cell self-dual
+--[=[ 
+	{	-- self-dual
+		name = '24-cell',
+		dim = 4,
+		vtx1 = Matrix{1/sqrt(2),1/sqrt(2),0,0}:T(),
+
+		xforms = {
+			Matrix(
+				{0,-1,0,0},
+				{1,0,0,0},
+				{0,0,1,0},
+				{0,0,0,1}
+			)(),
+			Matrix(
+				{0,0,1,0},
+				{0,1,0,0},
+				{-1,0,0,0},
+				{0,0,0,1}
+			)(),
+			Matrix(
+				{0,0,0,-1},
+				{0,1,0,0},
+				{0,0,1,0},
+				{1,0,0,0}
+			)(),
+		},
+	},
+--]=]
+-- [=[	
+	{	-- dual to 600-cell
+		name = '120-cell',
+		dim = 4,
+		vtx1 = Matrix{0,0,2,2}:T(),
+		xforms = {
+			Matrix(
+				{0,-1,0,0},
+				{1,0,0,0},
+				{0,0,1,0},
+				{0,0,0,1}
+			)(),
+			Matrix(
+				{0,0,1,0},
+				{0,1,0,0},
+				{-1,0,0,0},
+				{0,0,0,1}
+			)(),
+			Matrix(
+				{0,0,0,-1},
+				{0,1,0,0},
+				{0,0,1,0},
+				{1,0,0,0}
+			)(),	
+			
+			-- rotate from {0,0,2,2} to {1,1,1,sqrt(5)}
+			rotfromto(
+				Matrix{0,0,2,2}:T(),
+				Matrix{1,1,1,sqrt(5)}:T(),
+				frac(36 * pi, 180)
+			)(),
+			-- rotate to {1/phi^2, phi, phi, phi},
+			-- rotate to {phi^2, 1/phi, 1/phi, 1/phi},
+			
+			-- even-permutations of...
+			-- {0, 1/phi^2, 1, phi^2}
+			-- {0, 1/phi, phi, sqrt(5)},
+			-- {1/phi, 1, phi, 2}
+		},
+	},
+--]=]
 -- TODO 4D 600-cell dual to 120-cell
--- TODO 4D 120-cell dual to 600-cell
 
 -- TODO 5D 5-simplex self-dual
 -- TODO 5D 5-cube dual to 5-orthoplex

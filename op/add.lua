@@ -524,12 +524,15 @@ end
 
 
 local function compare(a,b)
+	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
 	local Variable = symmath.Variable
 	local Derivative = symmath.Derivative
 	local Verbose = symmath.export.Verbose
 	local TensorRef = symmath.Tensor.Ref
 
+
+	-- -x becomes (-1)^1 * x^1 by the time we get here, so ...
 	local typea = type(a)
 	local typeb = type(b)
 	local na = (typea == 'string' or typea == 'table') and #a or 0
@@ -548,7 +551,7 @@ local function compare(a,b)
 		return a.name < b.name
 	end
 	if va ~= vb then return va end
-
+	
 	-- TensorRef
 	local ta = TensorRef:isa(a)
 	local tb = TensorRef:isa(b)
@@ -769,7 +772,32 @@ function ProdLists:init(expr)
 end
 
 function ProdLists:sort()
+	symmath = symmath or require 'symmath'
+	local Constant = symmath.Constant
 	table.sort(self, function(a,b)
+		-- [[ strip out any -1's before comparing ... which are -1^1's by now
+		if #a > 0
+		and Constant.isValue(a[1].power, 1)
+		and Constant.isValue(a[1].term, -1)
+		then
+			local na = ProdList()
+			for i=2,#a do
+				na[i-1] = a[i]
+			end
+			a = na
+		end
+		if #b > 0
+		and Constant.isValue(b[1].power, 1)
+		and Constant.isValue(b[1].term, -1)
+		then
+			local nb = ProdList()
+			for i=2,#b do
+				nb[i-1] = b[i]
+			end
+			b = nb
+		end
+		--]]
+
 		if #a ~= #b then return #a < #b end
 		for i=1,#a do
 			if a[i].power ~= b[i].power then return compare(a[i].power, b[i].power) end
@@ -922,8 +950,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 
 	
 -- without this (y-x)/(x-y) doesn't simplify to -1
--- but with this, -f * a^2 + f^3 * a^2 - f^5 * a^2 will fail
---[=[
+-- [=[
 			local minusOneIndexes = table.mapi(prodLists, function(pj,j)
 				return pj:find(nil, function(x)
 					return Constant.isValue(x.term, -1)

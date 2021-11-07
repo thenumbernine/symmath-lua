@@ -53,6 +53,23 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 			return self:wrapStrOfChildWithParenthesis(expr, i)
 		end):concat(expr:getSepStr(self))
 	end,
+	[require 'symmath.op.add'] = function(self, expr)
+		symmath = symmath or require 'symmath'
+		local unm = symmath.op.unm
+		local res = table()
+		for i=1,#expr do
+			if i > 1
+			and not unm:isa(expr[i])	-- if it's a - then just let the - do the talking
+			then
+				res:insert(expr:getSepStr(self))
+				res:insert(self:wrapStrOfChildWithParenthesis(expr, i))
+			else
+				-- TODO spaces ... hmm ... unm has no spaces, and for + unm i'm omitting the + and just using unm's - ... so how do I insert spaces into that?
+				res:insert(self:wrapStrOfChildWithParenthesis(expr, i))
+			end
+		end
+		return res:concat()
+	end,
 	[require 'symmath.Wildcard'] = function(self, expr)
 		return '$'..expr.index
 	end,

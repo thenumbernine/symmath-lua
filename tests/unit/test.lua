@@ -9,6 +9,7 @@ env.a = symmath.Variable('a')
 env.b = symmath.Variable('b')
 env.f = symmath.Variable('f')
 env.g = symmath.Variable('g')
+env.r = symmath.Variable('r')
 env.s = symmath.Variable('s')
 env.t = symmath.Variable('t')
 env.v = symmath.Variable('v')
@@ -88,6 +89,9 @@ simplifyAssertEq( (y-a)/(b-a) , y/(b-a) - a/(b-a) )
 
 print((a^2 * x^2 - a^2)())	-- just printing this, i was getting simplification loops
 
+simplifyAssertEq( (t - r) / (-r^2 - t^2 + 2 * r * t), -1 / (t - r))	-- this won't simplify correctly unless you negative , simplify, negative again ...
+
+simplifyAssertEq( (-128 + 64*sqrt(5))/(64*sqrt(5)), -2 / sqrt(5) + 1 )
 
 -- expand(): add div mul
 
