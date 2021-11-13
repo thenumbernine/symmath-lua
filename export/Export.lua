@@ -201,6 +201,7 @@ function Export.strlen(s)
 		local b = s:byte(i)
 		if band(b, 0x80) == 0 then	-- 0xxx:xxxx
 		else
+			local m
 			if band(b, 0xe0) == 0xc0 then		-- 110x:xxxx
 				m = 1
 			elseif band(b, 0xf0) == 0xe0 then	-- 1110:xxxx

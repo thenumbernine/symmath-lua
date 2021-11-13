@@ -792,7 +792,7 @@ div.rules = {
 		end},
 		--]]
 
-		--[[ maybe the rule above already handles this case?
+		-- [[ maybe the rule above already handles this case?
 		-- if any sqrt()s are found within any adds or muls on the top then multiply them on the bottom and top
 		-- hmm this leaves sqrt(5)/(2*sqrt(3)) in a bad state ...
 		{prodOfSqrtOverProdOfSqrt = function(prune, expr)

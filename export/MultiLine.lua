@@ -320,7 +320,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		for _,var in ipairs(diffVars) do
 			-- TODO this will call SingleLine's var:nameForExporter
 			-- so overrides specified for MultiLine will be ignored
-			varname = SingleLine(var)
+			local varname = SingleLine(var)
 			powersForDeriv[varname] = (powersForDeriv[varname] or 0) + 1
 		end
 		local text = self:fraction(

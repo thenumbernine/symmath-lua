@@ -950,7 +950,8 @@ print('prodList', prodLists:toExpr(), '<br>')
 
 	
 -- without this (y-x)/(x-y) doesn't simplify to -1
--- [=[
+-- but with this our simplification takes forever
+--[=[
 			local minusOneIndexes = table.mapi(prodLists, function(pj,j)
 				return pj:find(nil, function(x)
 					return Constant.isValue(x.term, -1)
