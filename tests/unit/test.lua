@@ -3,6 +3,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'tests/unit/test')
 
+-- TODO rename this to tests/unit/simplify.lua maybe?
+
 timer(nil, function()
 
 env.a = symmath.Variable('a')
@@ -138,6 +140,10 @@ simplifyAssertEq(-f * g^2 + f^3 * g^2 - f^5 * g^2, -f * g^2 * (1 - f^2 + f^4))	-
 simplifyAssertEq(f * a^2 + f^3 * a^2 + f^5 * a^2, f * a^2 * (1 + f^2 + f^4))	-- replace -1's with +1's, no simplification loop
 simplifyAssertEq(-f * a + f^3 * a - f^5 * a, -f * a * (1 - f^2 + f^4))			-- replace a^2 with a, no simplification loop
 simplifyAssertEq(-f * a^2 + f^2 * a^2 - f^3 * a^2, -f * a^2 * (1 - f  + f^2))	-- replace f * quadratic of f^2 with f * quadratic of f, no simplification loop
+
+-- this runs forever (without pushing arbitrary rules)
+
+local a,b,l,r,lambda,delta = vars('a','b','l','r','lambda','delta') (b^2 * (a * r^2 + (a + 3 * sqrt(b^2 + delta^2))) * (a + sqrt(b^2 + delta^2))^2 / (3 * (r^2 + (a + sqrt(b^2 + delta^2))^2)^frac(5,2) * (b^2 + delta^2)^frac(3,2)) - lambda * exp(-l^2 / 2)):diff(delta)()
 
 ]=]), '\n')) do
 	env.exec(line)

@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local Language = require 'symmath.export.Language'
 
+local symmath
 
 local Lua = class(Language)
 
@@ -9,6 +10,7 @@ Lua.name = 'Lua'
 
 Lua.lookupTable = table(Lua.lookupTable):union{
 	[require 'symmath.Function'] = function(self, expr)
+		symmath = symmath or require 'symmath'
 		--[[
 		TODO
 		'math.' .. expr.name <- only works for builtin functions
@@ -36,7 +38,10 @@ Lua.lookupTable = table(Lua.lookupTable):union{
 		end
 		
 		if expr:nameForExporter(self) == 'cbrt' then
-			return '('..s..') ^ (1/3)', predefs
+			-- shouldn't this be done somewhere else?
+			-- either in cbrt or in tidy() but probably in cbrt() somewhere
+			--return '('..s..') ^ (1/3)', predefs
+			return self:apply(expr[1] ^ symmath.frac(1,3))
 		else
 			return funcName .. '(' .. s .. ')', predefs
 		end
@@ -46,7 +51,7 @@ Lua.lookupTable = table(Lua.lookupTable):union{
 		return '(('..xs..' >= 0) and 1 or 0)'
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		if expr[1] == symmath.e then
 			local sx1, sx2 = self:apply(expr[2])
 			return 'math.exp(' .. sx1 .. ')', sx2
@@ -54,12 +59,12 @@ Lua.lookupTable = table(Lua.lookupTable):union{
 			local predefs = table()
 			local s = table()
 			for i,x in ipairs(expr) do
-				local sx1, sx2 = self:apply(x)
+				local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, i)
 				s:insert(sx1)
 				predefs = table(predefs, sx2)
 			end
 			s = s:concat(' '..expr:nameForExporter(self)..' ')
-			return '('..s..')', predefs
+			return s, predefs
 		end
 	end,
 }:setmetatable(nil)

@@ -8,7 +8,7 @@ unm.precedence = 3	--4	--make it match mul and div so there aren't extra parenth
 unm.name = 'unm'	-- hmm, same name as sub ... is that a problem?
 
 function unm:evaluateDerivative(deriv, ...)
-	local x = unpack(self):clone()
+	local x = table.unpack(self):clone()
 	return -deriv(x, ...)
 end
 
