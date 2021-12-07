@@ -22,14 +22,14 @@ Language.lookupTable = table(Language.lookupTable):union{
 	[require 'symmath.op.Binary'] = function(self, expr)
 		local predefs = table()
 		return table.mapi(expr, function(x,i)
-			local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, i)
+			local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, expr[i])
 			predefs = table(predefs, sx2)
 			return sx1
 		end):concat(expr:getSepStr(self)), predefs
 	end,
 
 	[require 'symmath.op.unm'] = function(self, expr)
-		local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, 1)
+		local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, expr[1])
 		return '-'..sx1, sx2
 	end,
 

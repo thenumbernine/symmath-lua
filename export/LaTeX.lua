@@ -60,14 +60,12 @@ LaTeX.powWrapExpInParenthesis = false
 LaTeX.integralDxBeforeExpr = false
 
 -- just like super except uses a table combine
-function LaTeX:wrapStrOfChildWithParenthesis(parentNode, childIndex)
-	local node = parentNode[childIndex]
-	
+function LaTeX:wrapStrOfChildWithParenthesis(parent, child)
 	-- tostring() needed to call MultiLine's conversion to tables ...
-	--local s = tostring(node)
-	local s = self:apply(node)
+	--local s = tostring(child)
+	local s = self:apply(child)
 	
-	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
+	if self:testWrapStrOfChildWithParenthesis(parent, child) then
 		if type(s) == 'string' then
 			return table{self.parOpenSymbol, s, self.parCloseSymbol}
 		else
@@ -186,7 +184,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		}
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
-		local res = table{'-'}:append(self:wrapStrOfChildWithParenthesis(expr, 1))
+		local res = table{'-'}:append(self:wrapStrOfChildWithParenthesis(expr, expr[1]))
 		res.omit = true
 		return res
 	end,
@@ -194,7 +192,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		local res = table()
 		for i=1,#expr do
 			if i > 1 then res:insert(expr:getSepStr(self)) end
-			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+			res:append(self:wrapStrOfChildWithParenthesis(expr, expr[i]))
 		end
 		return res
 	end,
@@ -202,7 +200,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		local res = table()
 		for i=1,#expr do
 			if i > 1 then res:insert(expr:getSepStr(self)) end
-			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+			res:append(self:wrapStrOfChildWithParenthesis(expr, expr[i]))
 		end
 		return res
 	end,
@@ -218,7 +216,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			then 
 				res:insert(expr:getSepStr(self)) 
 			end
-			res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+			res:append(self:wrapStrOfChildWithParenthesis(expr, expr[i]))
 		end
 		return res
 	end,
@@ -230,7 +228,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		local pow = symmath.op.pow
 		local res = table()
 		for i=1,#expr do
-			res[i] = self:wrapStrOfChildWithParenthesis(expr, i)
+			res[i] = self:wrapStrOfChildWithParenthesis(expr, expr[i])
 		end
 		for i=#expr,2,-1 do
 			-- insert \cdot between neighboring variables if any have a length > 1 ... or if the lhs has a length > 1 ...
@@ -322,7 +320,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			then
 				res:append(table{table(self:apply(expr[i]), {force=true})})
 			else
-				res:append(self:wrapStrOfChildWithParenthesis(expr, i))
+				res:append(self:wrapStrOfChildWithParenthesis(expr, expr[i]))
 			end
 		end
 		
@@ -436,7 +434,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			},
 			
 			--self:apply(f),
-			self:wrapStrOfChildWithParenthesis(expr, 1),
+			self:wrapStrOfChildWithParenthesis(expr, expr[1]),
 		}
 	end,
 	-- TODO options for column/row dividers using LaTeX array and {c|c|c} and \\hline
@@ -541,7 +539,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			s:insert(self:apply(var))
 		end
 	
-		s:insert(self:wrapStrOfChildWithParenthesis(expr, 1))
+		s:insert(self:wrapStrOfChildWithParenthesis(expr, expr[1]))
 		
 		if var and not self.integralDxBeforeExpr then
 			s:insert'd'

@@ -12,12 +12,11 @@ C.name = 'C'
 This is really being used for OpenCL
 --]]
 
-function C:wrapStrOfChildWithParenthesis(parentNode, childIndex, ...)
-	local node = parentNode[childIndex]
-	local s, predef = self:apply(node, ...)
+function C:wrapStrOfChildWithParenthesis(parent, child, ...)
+	local s, predef = self:apply(child, ...)
 	if not s then return false end
-	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
-		s = '(' .. s .. ')'
+	if self:testWrapStrOfChildWithParenthesis(parent, child) then
+		s = self.parOpenSymbol .. s .. self.parCloseSymbol
 	end
 	return s, predef
 end

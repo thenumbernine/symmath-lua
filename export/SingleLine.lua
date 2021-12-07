@@ -13,19 +13,26 @@ local function precedence(x)
 	return x.precedence or 10
 end
 
-function SingleLine:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
-	local div = require 'symmath.op.div'
-	local childNode = parentNode[childIndex]
-	local childPrecedence = precedence(childNode)
-	local parentPrecedence = precedence(parentNode)
-	if div:isa(parentNode) then parentPrecedence = parentPrecedence + .5 end
-	if div:isa(childNode) then childPrecedence = childPrecedence + .5 end
+function SingleLine:testWrapStrOfChildWithParenthesis(parent, child)
+	symmath = symmath or require 'symmath'
+	local div = symmath.op.div
+	local childPrecedence = precedence(child)
+	local parentPrecedence = precedence(parent)
+	if div:isa(parent) then parentPrecedence = parentPrecedence + .5 end
+	if div:isa(child) then childPrecedence = childPrecedence + .5 end
+	--[[ hmm, can't do this if I'm using parent/child objects
+	-- which I'm using because I've turned the sub's into add+unm's
+	-- so maybe I won't need it?
 	local sub = require 'symmath.op.sub'
-	if sub:isa(parentNode) and childIndex > 1 then
+	if sub:isa(parent) and childIndex > 1 then
 		return childPrecedence <= parentPrecedence
 	else
 		return childPrecedence < parentPrecedence
 	end
+	--]]
+	-- [[
+	return childPrecedence < parentPrecedence
+	--]]
 end
 
 SingleLine.lookupTable = table(SingleLine.lookupTable):union{
@@ -47,11 +54,11 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		return '|'..self:apply(expr[1])..'|'
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
-		return '-'..self:wrapStrOfChildWithParenthesis(expr, 1)
+		return '-'..self:wrapStrOfChildWithParenthesis(expr, expr[1])
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
 		return table.mapi(expr, function(x,i)
-			return self:wrapStrOfChildWithParenthesis(expr, i)
+			return self:wrapStrOfChildWithParenthesis(expr, expr[i])
 		end):concat(expr:getSepStr(self))
 	end,
 	[require 'symmath.op.add'] = function(self, expr)
@@ -59,14 +66,20 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		local unm = symmath.op.unm
 		local res = table()
 		for i=1,#expr do
+			local ei = expr[i]
 			if i > 1
-			and not unm:isa(expr[i])	-- if it's a - then just let the - do the talking
+			and not unm:isa(ei)	-- if it's a - then just let the - do the talking
 			then
 				res:insert(expr:getSepStr(self))
-				res:insert(self:wrapStrOfChildWithParenthesis(expr, i))
+				res:insert(self:wrapStrOfChildWithParenthesis(expr, expr[i]))
 			else
-				-- TODO spaces ... hmm ... unm has no spaces, and for + unm i'm omitting the + and just using unm's - ... so how do I insert spaces into that?
-				res:insert(self:wrapStrOfChildWithParenthesis(expr, i))
+				-- if we are an unm and beyond the 1st entry then space out the - sign
+				if i > 1 and unm:isa(ei) then
+					res:insert' - '
+					res:insert(self:wrapStrOfChildWithParenthesis(expr, expr[i][1]))
+				else
+					res:insert(self:wrapStrOfChildWithParenthesis(expr, expr[i]))
+				end
 			end
 		end
 		return res:concat()

@@ -204,7 +204,7 @@ local function tableForExprs(exprs)
 				s = e(expr)
 			end, function(errstr)
 				error = 'error'
-				--error = '<pre>'..errstr .. '\n' .. debug.traceback()..'</pre>'
+				error = '<pre>'..errstr .. '\n' .. debug.traceback()..'</pre>'
 			end)
 			if error then
 				print('<span style="color:red">'..error..'</span>')

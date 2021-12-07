@@ -123,10 +123,9 @@ function MultiLine:fraction(top, bottom)
 	return res
 end
 
-function MultiLine:wrapStrOfChildWithParenthesis(parentNode, childIndex)
-	local node = parentNode[childIndex]
-	local res = self:apply(node)
-	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
+function MultiLine:wrapStrOfChildWithParenthesis(parent, child)
+	local res = self:apply(child)
+	if self:testWrapStrOfChildWithParenthesis(parent, child) then
 		wrap(res, nil, par)
 	end
 	return res
@@ -221,30 +220,30 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		return self:combine(self:combine(bar, x), bar)
 	end,
 	[require 'symmath.op.unm'] = function(self, expr)
-		local ch = self:wrapStrOfChildWithParenthesis(expr, 1)
+		local ch = self:wrapStrOfChildWithParenthesis(expr, expr[1])
 		local sym = '-'
 		if strlen(ch[1]) > 1 then sym = ' - ' end	-- so minus-fraction doesn't just blend the minus into the fraction
 		return self:combine({sym}, ch)
 	end,
 	[require 'symmath.op.Binary'] = function(self, expr)
-		local res = self:wrapStrOfChildWithParenthesis(expr, 1)
+		local res = self:wrapStrOfChildWithParenthesis(expr, expr[1])
 		local sep = {expr:getSepStr(self)}
 		for i=2,#expr do
 			res = self:combine(res, sep)
-			res = self:combine(res, self:wrapStrOfChildWithParenthesis(expr, i))
+			res = self:combine(res, self:wrapStrOfChildWithParenthesis(expr, expr[i]))
 		end
 		return res
 	end,
 	[require 'symmath.op.add'] = function(self, expr)
 		symmath = symmath or require 'symmath'
 		local unm = symmath.op.unm
-		local res = self:wrapStrOfChildWithParenthesis(expr, 1)
+		local res = self:wrapStrOfChildWithParenthesis(expr, expr[1])
 		local sep = {expr:getSepStr(self)}
 		for i=2,#expr do
 			if not unm:isa(expr[i]) then
 				res = self:combine(res, sep)
 			end
-			res = self:combine(res, self:wrapStrOfChildWithParenthesis(expr, i))
+			res = self:combine(res, self:wrapStrOfChildWithParenthesis(expr, expr[i]))
 		end
 		return res
 	end,
@@ -254,8 +253,8 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
 		if #expr ~= 2 then error("expected 2 children but found "..#expr.." in "..toLua(expr)) end
-		local lhs = self:wrapStrOfChildWithParenthesis(expr, 1)
-		local rhs = self:wrapStrOfChildWithParenthesis(expr, 2)
+		local lhs = self:wrapStrOfChildWithParenthesis(expr, expr[1])
+		local rhs = self:wrapStrOfChildWithParenthesis(expr, expr[2])
 		local lhswidth = strlen(lhs[1])
 		local rhswidth = strlen(rhs[1])
 		local res = table()
@@ -292,7 +291,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 			},
 			self:combine(
 				{' '},
-				self:wrapStrOfChildWithParenthesis(expr, 1)
+				self:wrapStrOfChildWithParenthesis(expr, expr[1])
 			)
 		)
 	end,
@@ -335,7 +334,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 	
 		-- vars go on the top, exprs go to the right
 		if not diffIsVar then
-			local rhs = self:wrapStrOfChildWithParenthesis(expr, 1)
+			local rhs = self:wrapStrOfChildWithParenthesis(expr, expr[1])
 			text = self:combine(text, rhs)
 		end
 		return text

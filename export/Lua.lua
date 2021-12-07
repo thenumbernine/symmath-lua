@@ -59,7 +59,7 @@ Lua.lookupTable = table(Lua.lookupTable):union{
 			local predefs = table()
 			local s = table()
 			for i,x in ipairs(expr) do
-				local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, i)
+				local sx1, sx2 = self:wrapStrOfChildWithParenthesis(expr, expr[i])
 				s:insert(sx1)
 				predefs = table(predefs, sx2)
 			end

@@ -103,20 +103,29 @@ local function precedence(x)
 	return x.precedence or 10
 end
 
-function Export:testWrapStrOfChildWithParenthesis(parentNode, childIndex)
+function Export:testWrapStrOfChildWithParenthesis(parent, child)
+	--[[ hmm, can't do this if I'm using parent/child objects
+	-- which I'm using because I've turned the sub's into add+unm's
+	-- so maybe I won't need it?
 	local sub = require 'symmath.op.sub'
-	if sub:isa(parentNode) and childIndex > 1 then
-		return precedence(parentNode[childIndex]) <= precedence(parentNode)
+	if sub:isa(parent) and child > 1 then
+		return precedence(parent[child]) <= precedence(parent)
 	else
-		return precedence(parentNode[childIndex]) < precedence(parentNode)
+		return precedence(parent[child]) < precedence(parent)
 	end
+	--]]
+	-- [[
+	return precedence(child) < precedence(parent)
+	--]]
 end
 
-function Export:wrapStrOfChildWithParenthesis(parentNode, childIndex)
-	local node = parentNode[childIndex]
-	local results = table.pack(self:apply(node))
-	if self:testWrapStrOfChildWithParenthesis(parentNode, childIndex) then
-		results[1] = '(' .. results[1] .. ')'
+Export.parOpenSymbol = '('
+Export.parCloseSymbol = ')'
+
+function Export:wrapStrOfChildWithParenthesis(parent, child)
+	local results = table.pack(self:apply(child))
+	if self:testWrapStrOfChildWithParenthesis(parent, child) then
+		results[1] = self.parOpenSymbol .. results[1] .. self.parCloseSymbol
 	end
 	return results:unpack()
 end
