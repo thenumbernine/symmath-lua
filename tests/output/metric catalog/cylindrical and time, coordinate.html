@@ -16,180 +16,175 @@ embedding coordinates: $u^I = \{t, x, y, z\}$
 <br>
 embedding basis $e_I = \{e_{t}, e_{x}, e_{y}, e_{z}\}$
 <br>
+flat metric:
+${{{ \eta} _I} _J} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  -1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
+<br>
+
+<br>
+
+<br>
 transform from basis to coordinate:
 <br>
-${{{ \tilde{e}}_t}^t} = {1}$;
-${{{ \tilde{e}}_r}^r} = {1}$;
-${{{ \tilde{e}}_{\phi}}^{\phi}} = {1}$;
-${{{ \tilde{e}}_z}^z} = {1}$
+${{{ \tilde{e}} _A} ^a} = {\overset{A\downarrow a\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 transform from coorinate to basis:
 <br>
-${{{ \tilde{e}}^t}_t} = {1}$;
-${{{ \tilde{e}}^r}_r} = {1}$;
-${{{ \tilde{e}}^{\phi}}_{\phi}} = {1}$;
-${{{ \tilde{e}}^z}_z} = {1}$
-
+${{{ \tilde{e}} ^a} _A} = {\overset{a\downarrow A\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
 <br>
 
 <br>
-tensor index associated with coordinate $t$ is index $t$ with operator $e_{t}(\zeta) = $$\frac{\partial \zeta}{\partial t}$
-<br>
-tensor index associated with coordinate $r$ is index $r$ with operator $e_{r}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
-<br>
-tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
-<br>
-tensor index associated with coordinate $z$ is index $z$ with operator $e_{z}(\zeta) = $$\frac{\partial \zeta}{\partial z}$
-<br>
 
 <br>
-flat metric:
-${{{ \eta}_t}_t} = {-1}$;
-${{{ \eta}_x}_x} = {1}$;
-${{{ \eta}_y}_y} = {1}$;
-${{{ \eta}_z}_z} = {1}$
-
+tensor index associated with coordinate $t$ has operator $e_{t}(\zeta) = $$\frac{\partial \zeta}{\partial t}$
+<br>
+tensor index associated with coordinate $r$ has operator $e_{r}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
+<br>
+tensor index associated with coordinate $\phi$ has operator $e_{\phi}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
+<br>
+tensor index associated with coordinate $z$ has operator $e_{z}(\zeta) = $$\frac{\partial \zeta}{\partial z}$
 <br>
 
 <br>
 chart in embedded coordinates:
 <br>
-${{ u}^t} = {t}$;
-${{ u}^x} = {{{r}} {{cos\left(  \phi\right)}}}$;
-${{ u}^y} = {{{r}} {{sin\left(  \phi\right)}}}$;
-${{ u}^z} = {z}$
+${u} = {\overset{I\downarrow}{\left[ \begin{matrix} t \\ {{r}} {{\cos\left(  \phi\right)}} \\ {{r}} {{\sin\left(  \phi\right)}} \\ z\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 basis operators applied to chart:
 <br>
-${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
+${{{ e} _u} ^I} = {{{ u} ^I} _{,u}}$
 <br>
-${{{ e}_t}^t} = {1}$;
-${{{ e}_r}^x} = {cos\left(  \phi\right)}$;
-${{{ e}_r}^y} = {sin\left(  \phi\right)}$;
-${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left(  \phi\right)}}}}$;
-${{{ e}_{\phi}}^y} = {{{r}} {{cos\left(  \phi\right)}}}$;
-${{{ e}_z}^z} = {1}$
+${{{ e} _u} ^I} = {\overset{u\downarrow I\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \cos\left(  \phi\right) &  \sin\left(  \phi\right) &  0 \\  0 &  -{{{r}} {{\sin\left(  \phi\right)}}} &  {{r}} {{\cos\left(  \phi\right)}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
-${{{ e}^t}_t} = {1}$;
-${{{ e}^r}_x} = {cos\left(  \phi\right)}$;
-${{{ e}^r}_y} = {sin\left(  \phi\right)}$;
-${{{ e}^{\phi}}_x} = {{\frac{1}{r}}{({-{sin\left(  \phi\right)}})}}$;
-${{{ e}^{\phi}}_y} = {{\frac{1}{r}}{({cos\left(  \phi\right)})}}$;
-${{{ e}^z}_z} = {1}$
+${{{ e} ^u} _I} = {\overset{u\downarrow I\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \cos\left(  \phi\right) &  \sin\left(  \phi\right) &  0 \\  0 &  -{{\frac{1}{r}} {\sin\left(  \phi\right)}} &  {\frac{1}{r}} {\cos\left(  \phi\right)} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
-${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$
+${{{{{ e} _u} ^I}} {{{{ e} ^v} _I}}} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
 <br>
-${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$
+${{{{{ e} _u} ^I}} {{{{ e} ^u} _J}}} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
 <br>
 basis determinant:	${det(e)} = {r}$
 <br>
-${{{{ c}_a}_b}^c} = {0}$
+${{{{ c} _a} _b} ^c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 <br>
-${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
-<br>
-${{{ g}_t}_t} = {-{1}}$;
-${{{ g}_r}_r} = {1}$;
-${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$;
-${{{ g}_z}_z} = {1}$
 
 <br>
-${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
+${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
+<br>
+${{{ g} _u} _v} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  -{1} &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {r}^{2} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
+<br>
+
+<br>
+${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
 <br>
 metric determinant:	${det(g)} = {-{{r}^{2}}}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+${{{{ \Gamma} _a} _b} _c} = {{{\frac{1}{2}}} {{\left({{{{{{{ g} _a} _b} _{,c}} + {{{{ g} _a} _c} _{,b}}}{-{{{{ g} _b} _c} _{,a}}} + {{{{ c} _a} _b} _c} + {{{{ c} _a} _c} _b}}{-{{{{ c} _c} _b} _a}}}\right)}}}$
 <br>
 commutation coefficients:
-${{{{ c}_a}_b}^c} = {0}$
+${c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 metric:
-${{{ g}_t}_t} = {-{1}}$;
-${{{ g}_r}_r} = {1}$;
-${{{ g}_{\phi}}_{\phi}} = {{r}^{2}}$;
-${{{ g}_z}_z} = {1}$
+${g} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  -{1} &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {r}^{2} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 metric inverse:
-${{{ g}^t}^t} = {-{1}}$;
-${{{ g}^r}^r} = {1}$;
-${{{ g}^{\phi}}^{\phi}} = {\frac{1}{{r}^{2}}}$;
-${{{ g}^z}^z} = {1}$
+${g} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  -{1} &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  \frac{1}{{r}^{2}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 metric derivative:
-${{{{ {\partial g}}_{\phi}}_{\phi}}_r} = {{{2}} {{r}}}$
+${{\partial g}} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  {{2}} {{r}} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 1st kind Christoffel:
-${{{{ \Gamma}_r}_{\phi}}_{\phi}} = {-{r}}$;
-${{{{ \Gamma}_{\phi}}_r}_{\phi}} = {r}$;
-${{{{ \Gamma}_{\phi}}_{\phi}}_r} = {r}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  r &  0 \\  0 &  r &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{r}}$;
-${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients derivative:
-${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$
+${{\partial \Gamma}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  -{1} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  -{\frac{1}{{r}^{2}}} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  -{\frac{1}{{r}^{2}}} &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients squared:
-${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_{\phi}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_r} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_{\phi}} = {-{1}}$
+${{(\Gamma^2)}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  -{1} &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  -{1} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{{r}^{2}} &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  \frac{1}{{r}^{2}} &  0 &  0 \\  0 &  0 &  -{1} &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 Riemann curvature, $\sharp\flat\flat\flat$:
-${{{{{ R}^a}_b}_c}_d} = {0}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 Riemann curvature, $\sharp\sharp\flat\flat$:
-${{{{{ R}^a}^b}_c}_d} = {0}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
+
 <br>
 Ricci curvature, $\sharp\flat$:
-${{{ R}^a}_b} = {0}$
+${R} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Gaussian curvature:
 $0$
 
 <br>
 trace-free Ricci, $\sharp\flat$:
-${{{ {(R^{TF})}}^a}_b} = {0}$
+${{(R^{TF})}} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Einstein / trace-reversed Ricci curvature, $\sharp\flat$:
-${{{ G}^a}_b} = {0}$
+${G} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Schouten, $\sharp\flat$:
-${{{ P}^a}_b} = {0}$
+${P} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Weyl, $\sharp\sharp\flat\flat$:
-${{{{{ C}^a}^b}_c}_d} = {0}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 Weyl, $\flat\flat\flat\flat$:
-${{{{{ C}_a}_b}_c}_d} = {0}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
+
 <br>
 Plebanski, $\sharp\sharp\flat\flat$:
-${{{{{ P}^a}^b}_c}_d} = {0}$
+${P} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{t}}}{\partial t}} + {\frac{\partial {A^{r}}}{\partial r}} + {\frac{\partial {A^{\phi}}}{\partial \phi}} + {\frac{\partial {A^{z}}}{\partial z}} + {{{{A^{r}}}} \cdot {{\frac{1}{r}}}}}$
+
+<br>
+divergence:	${{{{ A} ^i} _{,i}} + {{{{{{ \Gamma} ^i} _i} _j}} {{{ A} ^j}}}} = {{{{{A^{\hat{r}}}}} \cdot {{\frac{1}{r}}}} + {\frac{\partial {A^{\hat{\phi}}}}{\partial \phi}} + {\frac{\partial {A^{\hat{r}}}}{\partial r}} + {\frac{\partial {A^{\hat{t}}}}{\partial t}} + {\frac{\partial {A^{\hat{z}}}}{\partial z}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{t} \\ \ddot{r} \\ \ddot{\phi} \\ \ddot{z}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} 0 \\ {{r}} {{{\dot{\phi}}^{2}}} \\ {{-2}} {{\dot{\phi}}} \cdot {{\dot{r}}} \cdot {{\frac{1}{r}}} \\ 0\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[ \begin{matrix} \ddot{\hat{t}} \\ \ddot{\hat{r}} \\ \ddot{\hat{\phi}} \\ \ddot{\hat{z}}\end{matrix} \right]}} = {\overset{a\downarrow}{\left[ \begin{matrix} 0 \\ {{r}} {{{\dot{\hat{\phi}}}^{2}}} \\ {{-2}} {{\dot{\hat{\phi}}}} \cdot {{\dot{\hat{r}}}} \cdot {{\frac{1}{r}}} \\ 0\end{matrix} \right]}}$
 <br>
 
 <br>
@@ -197,79 +192,79 @@ parallel propagators:
 <br>
 
 <br>
-${{[\Gamma_t]}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{[\Gamma_t]}} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+$\int\limits_{{{t_L}}}^{{{t_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d t$
+=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P}_t$	=	${ⅇ}^{( -{({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+${ P} _t$	=	$\exp\left( -{\int\limits_{{{t_L}}}^{{{t_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d t}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{ P}_t}^{-1}$	=	${ⅇ}^{({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+${{ P} _t}^{-1}$	=	$\exp\left({\int\limits_{{{t_L}}}^{{{t_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d t}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{[\Gamma_r]}} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  log\left( {{\frac{1}{{r_L}}}{({{r_R}})}}\right) &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+$\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d r$
+=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  \log\left( {{\frac{1}{{r_L}}} {{r_R}}}\right) &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P}_r$	=	${ⅇ}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+${ P} _r$	=	$\exp\left( -{\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d r}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{ P}_r}^{-1}$	=	${ⅇ}^{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_L}}}{({{r_R}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+${{ P} _r}^{-1}$	=	$\exp\left({\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{1}{r} &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d r}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_L}}} {{r_R}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{[\Gamma_\phi]}} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  {{r}} {{({{{\phi_L}} - {{\phi_R}}})}} &  0 \\  0 &  {\frac{1}{r}}{({-{({{{\phi_L}} - {{\phi_R}}})}})} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+$\int\limits_{{{\phi_L}}}^{{{\phi_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d \phi$
+=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  {{r}} {{\left({{{\phi_L}}{-{{\phi_R}}}}\right)}} &  0 \\  0 &  {\frac{1}{r}}{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P}_{\phi}$	=	${ⅇ}^{( -{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  0 &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+${ P} _{\phi}$	=	$\exp\left( -{\int\limits_{{{\phi_L}}}^{{{\phi_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d \phi}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{r}} {{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{r}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{ P}_{\phi}}^{-1}$	=	${ⅇ}^{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  {{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} &  0 \\  0 &  {\frac{1}{r}}{({-{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+${{ P} _{\phi}}^{-1}$	=	$\exp\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  -{r} &  0 \\  0 &  \frac{1}{r} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d \phi}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{r}} {{\left({{-{{\phi_L}}} + {{\phi_R}} + {{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}{-{{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}}\right)}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{1}{-{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}\right)}}}{{{2}} {{r}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{[\Gamma_z]}} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{[\Gamma_z]}} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{z_L}}}^{{{z_R}}}d z\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+$\int\limits_{{{z_L}}}^{{{z_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d z$
+=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P}_z$	=	${ⅇ}^{( -{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+${ P} _z$	=	$\exp\left( -{\int\limits_{{{z_L}}}^{{{z_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d z}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{ P}_z}^{-1}$	=	${ⅇ}^{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left( \left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]$
+${{ P} _z}^{-1}$	=	$\exp\left({\int\limits_{{{z_L}}}^{{{z_R}}} {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}d z}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
@@ -277,73 +272,73 @@ propagator commutation:
 <br>
 
 <br>
-[	${ P}_t$	,	${ P}_r$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+[	${ P} _t$	,	${ P} _r$	] =	${ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}{-{ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}}$	=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
-[	${ P}_t$	,	${ P}_{\phi}$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  0 \\  0 &  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  0 \\  0 &  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+[	${ P} _t$	,	${ P} _{\phi}$	] =	${ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}} {{{r_L}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}} {{{r_L}}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}{-{ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}} {{{r_L}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}} {{{r_L}}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}}$	=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
-[	${ P}_t$	,	${ P}_z$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+[	${ P} _t$	,	${ P} _z$	] =	${ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}{-{ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}}$	=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
-[	${ P}_r$	,	${ P}_{\phi}$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  0 \\  0 &  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_R}}}} &  0 \\  0 &  {\frac{1}{{r_R}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+[	${ P} _r$	,	${ P} _{\phi}$	] =	${ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}} {{{r_L}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}} {{{r_L}}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}{-{ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}} {{{r_R}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}} {{{r_R}}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}}$	=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
-[	${ P}_r$	,	${ P}_z$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+[	${ P} _r$	,	${ P} _z$	] =	${ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}{-{ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}}$	=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
-[	${ P}_{\phi}$	,	${ P}_z$	] =	${ {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  0 \\  0 &  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}} - { {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}  {\left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}} {{{r_L}}}} &  0 \\  0 &  {\frac{1}{{r_L}}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]}}$	=	$\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]$
+[	${ P} _{\phi}$	,	${ P} _z$	] =	${ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}} {{{r_L}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}} {{{r_L}}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}{-{ {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}} {{{r_L}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}} {{{r_L}}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]}}}$	=	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
 propagator partials
 <br>
-${{\frac{\partial}{\partial t}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial t}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \phi}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial t}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial t}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \phi}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial t}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  0 &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial t}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{r}} {{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{r}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  0 &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  -{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)} &  0 \\  0 &  \frac{-{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}{{r}^{2}} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{r}} {{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{r}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  \frac{{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{1}{-{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}\right)}}}{{{2}} {{{r}^{2}}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}}} &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  0 &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \phi}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{r}} {{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{r}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  -{{{r}} {{sin\left( {{{\phi_L}} - {{\phi_R}}}\right)}}} &  0 \\  0 &  {\frac{1}{r}}{({sin\left( {{{\phi_L}} - {{\phi_R}}}\right)})} &  cos\left( {{{\phi_L}} - {{\phi_R}}}\right) &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  \frac{{{r}} {{\left({{{\phi_L}}{-{{\phi_R}}}{-{{{{\phi_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}} + {{{{\phi_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}}}\right)}}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}} &  0 \\  0 &  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}\right)}}}{{{2}} {{r}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\phi_L}}^{2}}}{-{{{\phi_R}}^{2}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}}}\right)}}} &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial t}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial t}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial r}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial r}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial \phi}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial \phi}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial z}}\left( \left[\begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix}\right]\right)} = {\left[\begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix}\right]}$
+${{\frac{\partial}{\partial z}}\left( \left[ \begin{matrix}  1 &  0 &  0 &  0 \\  0 &  1 &  0 &  0 \\  0 &  0 &  1 &  0 \\  0 &  0 &  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]}$
 <br>
-volume element: 	${{r}} {{ⅈ}}$
+volume element: 	${{i}} {{r}}$
 <br>
-volume integral: 	${{{\frac{1}{2}}{({{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{ⅈ}}})}}} {{\Delta \phi}} \cdot {{\Delta z}}$
+volume integral: 	${{{\frac{1}{2}} {{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{i}}}}} {{\Delta \phi}} \cdot {{\Delta z}}$
 <br>
 finite volume (0,0)-form:
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{({{{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{{J(t_R)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_R)}}} \cdot {{{F^{t}(t_R)}}}} - {{{{J(t_L)}}} \cdot {{{{e_{t}}^{\bar{t}}(t_L)}}} \cdot {{{F^{t}(t_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(r_R)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_R)}}} \cdot {{{F^{r}(r_R)}}}} - {{{{J(r_L)}}} \cdot {{{{e_{r}}^{\bar{r}}(r_L)}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(\phi_R)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_R)}}} \cdot {{{F^{\phi}(\phi_R)}}}} - {{{{J(\phi_L)}}} \cdot {{{{e_{\phi}}^{\bar{\phi}}(\phi_L)}}} \cdot {{{F^{\phi}(\phi_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{{J(z_R)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_R)}}} \cdot {{{F^{z}(z_R)}}}} - {{{{J(z_L)}}} \cdot {{{{e_{z}}^{\bar{z}}(z_L)}}} \cdot {{{F^{z}(z_L)}}}}}\right)}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{ⅈ}}})}}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{({{{{-{({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({{{{r}} {{ⅈ}} \cdot {{{F^{t}(t_R)}}}} - {{{r}} {{ⅈ}} \cdot {{{F^{t}(t_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{ⅈ}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ⅈ}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{z_L}}}^{{{z_R}}}d z\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{r}} {{ⅈ}} \cdot {{{F^{\phi}(\phi_R)}}}} - {{{r}} {{ⅈ}} \cdot {{{F^{\phi}(\phi_L)}}}}}\right)}\right)}\right)})}} - {({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left({\int\limits_{{{t_L}}}^{{{t_R}}}d t\left({{{{r}} {{ⅈ}} \cdot {{{F^{z}(z_R)}}}} - {{{r}} {{ⅈ}} \cdot {{{F^{z}(z_L)}}}}}\right)}\right)}\right)})}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{{{\frac{1}{2}} {{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{i}}}}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{({{{{\frac{1}{{{{\frac{1}{2}}{({{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{ⅈ}}})}}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{({{{{-{{{{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{ⅈ}} \cdot {{({{{F^{t}(t_L)}} - {{F^{t}(t_R)}}})}}}})}}} {{\Delta \phi}} \cdot {{\Delta z}}}} - {{{({{{{ⅈ}} \cdot {{{r_R}}} \cdot {{{F^{r}(r_R)}}}} - {{{ⅈ}} \cdot {{{r_L}}} \cdot {{{F^{r}(r_L)}}}}})}} {{\Delta t}} \cdot {{\Delta \phi}} \cdot {{\Delta z}}}} - {{{{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{F^{\phi}(\phi_L)}} - {{F^{\phi}(\phi_R)}}})}}}})}}} {{\Delta z}}}} - {{{{\frac{1}{2}}{({-{{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{ⅈ}} \cdot {{({{{F^{z}(z_L)}} - {{F^{z}(z_R)}}})}}}})}}} {{\Delta \phi}}}})}}} + {{S(x_C)}}})}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{{{\frac{1}{2}} {{{{\Delta (r^2)}}} \cdot {{\Delta t}} \cdot {{i}}}}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{{-1}} {{{F^{\phi}(\phi_R)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{\Delta \phi}}}} + {{{2}} {{{F^{r}(r_L)}}} \cdot {{\Delta t}} \cdot {{{r_L}}} \cdot {{\frac{1}{{\Delta (r^2)}}}}} + {{{-2}} {{{F^{r}(r_R)}}} \cdot {{\Delta t}} \cdot {{{r_R}}} \cdot {{\frac{1}{{\Delta (r^2)}}}}} + {{{-1}} {{{F^{t}(t_R)}}}} + {{{-1}} {{{F^{z}(z_R)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{\Delta z}}}} + {{{{S(x_C)}}} \cdot {{\Delta t}}} + {{{{F^{\phi}(\phi_L)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{\Delta \phi}}}} + {{F^{t}(t_L)}} + {{{{F^{z}(z_L)}}} \cdot {{\Delta t}} \cdot {{\frac{1}{\Delta z}}}} + {{u(x_C, t_L)}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{{S(x_C)}}} \cdot {{\Delta t}}}}$
 <br>
 
 <br>

@@ -17,30 +17,29 @@ embedding coordinates: $u^I = \{x, y, z\}$
 embedding basis $e_I = \{e_{x}, e_{y}, e_{z}\}$
 <br>
 flat metric:
-${{{ \eta} _x} _x} = {1}$;
-${{{ \eta} _y} _y} = {1}$;
-${{{ \eta} _z} _z} = {1}$
+${{{ \eta} _I} _J} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 transform from basis to coordinate:
 <br>
-${{{ \tilde{e}} _{\phi}} ^{\phi}} = {1}$;
-${{{ \tilde{e}} _z} ^z} = {r}$
+${{{ \tilde{e}} _A} ^a} = {\overset{a\downarrow A\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  r\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 transform from coorinate to basis:
 <br>
-${{{ \tilde{e}} ^{\phi}} _{\phi}} = {1}$;
-${{{ \tilde{e}} ^z} _z} = {\frac{1}{r}}$
-
+${{{ \tilde{e}} ^a} _A} = {\overset{a\downarrow A\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  \frac{1}{r}\end{matrix} \right]}}$
 <br>
 
 <br>
-tensor index associated with coordinate $\phi$ has operator $e_{\phi}(\zeta) = $$\zeta$
+
+<br>
+tensor index associated with coordinate $\phi$ has operator $e_{\phi}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
 <br>
 tensor index associated with coordinate $z$ has operator $e_{z}(\zeta) = $${\frac{1}{r}} {\frac{\partial \zeta}{\partial z}}$
 <br>
@@ -48,9 +47,8 @@ tensor index associated with coordinate $z$ has operator $e_{z}(\zeta) = $${\fra
 <br>
 chart in embedded coordinates:
 <br>
-${{ u} ^x} = {{{r}} {{\cos\left(  \phi\right)}}}$;
-${{ u} ^y} = {{{r}} {{\sin\left(  \phi\right)}}}$;
-${{ u} ^z} = {z}$
+${u} = {\overset{I\downarrow}{\left[ \begin{matrix} {{r}} {{\cos\left(  \phi\right)}} \\ {{r}} {{\sin\left(  \phi\right)}} \\ z\end{matrix} \right]}}$
+<br>
 
 <br>
 
@@ -59,173 +57,128 @@ basis operators applied to chart:
 <br>
 ${{{ e} _u} ^I} = {{{ u} ^I} _{,u}}$
 <br>
-${{{ e} _{\hat{\phi}}} ^x} = {{{r}} {{\cos\left(  \phi\right)}}}$;
-${{{ e} _{\hat{\phi}}} ^y} = {{{r}} {{\sin\left(  \phi\right)}}}$;
-${{{ e} _{\hat{\phi}}} ^z} = {z}$;
-${{{ e} _{\hat{z}}} ^z} = {\frac{1}{r}}$
+${{{ e} _u} ^I} = {\overset{u\downarrow I\rightarrow}{\left[ \begin{matrix}  -{{{r}} {{\sin\left(  \phi\right)}}} &  {{r}} {{\cos\left(  \phi\right)}} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix} \right]}}$
+<br>
 
 <br>
-${{{ e} ^{\hat{\phi}}} _x} = {-{\sin\left(  \phi\right)}}$;
-${{{ e} ^{\hat{\phi}}} _y} = {\cos\left(  \phi\right)}$;
-${{{ e} ^{\hat{z}}} _z} = {1}$
+${{{ e} ^u} _I} = {\overset{a\downarrow I\rightarrow}{\left[ \begin{matrix}  -{\sin\left(  \phi\right)} &  \cos\left(  \phi\right) &  0 \\  0 &  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
-${{{{{ e} _u} ^I}} {{{{ e} ^v} _I}}} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  0 &  z \\  0 &  \frac{1}{r}\end{matrix} \right]}}$
+${{{{{ e} _u} ^I}} {{{{ e} ^v} _I}}} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  r &  0 \\  0 &  \frac{1}{r}\end{matrix} \right]}}$
 <br>
-${{{{{ e} _u} ^I}} {{{{ e} ^u} _J}}} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  -{{{r}} {{\sin\left(  \phi\right)}} {{\cos\left(  \phi\right)}}} &  {{r}} {{{\cos\left(  \phi\right)}^{2}}} &  0 \\  -{{{r}} {{{\sin\left(  \phi\right)}^{2}}}} &  {{r}} {{\sin\left(  \phi\right)}} {{\cos\left(  \phi\right)}} &  0 \\  -{{{z}} {{\sin\left(  \phi\right)}}} &  {{z}} {{\cos\left(  \phi\right)}} &  \frac{1}{r}\end{matrix} \right]}}$
+${{{{{ e} _u} ^I}} {{{{ e} ^u} _J}}} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  {{r}} {{{\sin\left(  \phi\right)}^{2}}} &  -{{{r}} {{\sin\left(  \phi\right)}} {{\cos\left(  \phi\right)}}} &  0 \\  -{{{r}} {{\cos\left(  \phi\right)}} {{\sin\left(  \phi\right)}}} &  {{r}} {{{\cos\left(  \phi\right)}^{2}}} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix} \right]}}$
 <br>
-${{{{ c} _a} _b} ^c} = {0}$
+${{{{ c} _a} _b} ^c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 ${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
 <br>
-${{{ g} _{\hat{\phi}}} _{\hat{\phi}}} = {{{r}^{2}} + {{z}^{2}}}$;
-${{{ g} _{\hat{\phi}}} _{\hat{z}}} = {{\frac{1}{r}} {z}}$;
-${{{ g} _{\hat{z}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$;
-${{{ g} _{\hat{z}}} _{\hat{z}}} = {\frac{1}{{r}^{2}}}$
+${{{ g} _u} _v} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  {r}^{2} &  0 \\  0 &  \frac{1}{{r}^{2}}\end{matrix} \right]}}$
+<br>
 
 <br>
 ${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
 <br>
 metric determinant:	${det(g)} = {1}$
 <br>
-${{{{ \Gamma} _a} _b} _c} = {{{\frac{1}{2}}} {{\left({{{{{{{{ g} _a} _b} _{,c}} + {{{{ g} _a} _c} _{,b}}} - {{{{ g} _b} _c} _{,a}}} + {{{{ c} _a} _b} _c} + {{{{ c} _a} _c} _b}} - {{{{ c} _c} _b} _a}}\right)}}}$
+${{{{ \Gamma} _a} _b} _c} = {{{\frac{1}{2}}} {{\left({{{{{{{ g} _a} _b} _{,c}} + {{{{ g} _a} _c} _{,b}}}{-{{{{ g} _b} _c} _{,a}}} + {{{{ c} _a} _b} _c} + {{{{ c} _a} _c} _b}}{-{{{{ c} _c} _b} _a}}}\right)}}}$
 <br>
 commutation coefficients:
-${{{{ c} _a} _b} ^c} = {0}$
+${c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 metric:
-${{{ g} _{\hat{\phi}}} _{\hat{\phi}}} = {{{r}^{2}} + {{z}^{2}}}$;
-${{{ g} _{\hat{\phi}}} _{\hat{z}}} = {{\frac{1}{r}} {z}}$;
-${{{ g} _{\hat{z}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$;
-${{{ g} _{\hat{z}}} _{\hat{z}}} = {\frac{1}{{r}^{2}}}$
+${g} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  {r}^{2} &  0 \\  0 &  \frac{1}{{r}^{2}}\end{matrix} \right]}}$
+<br>
 
 <br>
 metric inverse:
-${{{ g} ^{\hat{\phi}}} ^{\hat{\phi}}} = {\frac{1}{{r}^{2}}}$;
-${{{ g} ^{\hat{\phi}}} ^{\hat{z}}} = {-{{\frac{1}{r}} {z}}}$;
-${{{ g} ^{\hat{z}}} ^{\hat{\phi}}} = {-{{\frac{1}{r}} {z}}}$;
-${{{ g} ^{\hat{z}}} ^{\hat{z}}} = {{{r}^{2}} + {{z}^{2}}}$
+${g} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  \frac{1}{{r}^{2}} &  0 \\  0 &  {r}^{2}\end{matrix} \right]}}$
+<br>
 
 <br>
 metric derivative:
-${{{{ {\partial g}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} = {{{r}^{2}} + {{z}^{2}}}$;
-${{{{ {\partial g}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {{\frac{1}{r}} {{{2}} {{z}}}}$;
-${{{{ {\partial g}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$;
-${{{{ {\partial g}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{z}}} = {\frac{1}{{r}^{2}}}$;
-${{{{ {\partial g}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$;
-${{{{ {\partial g}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{1}{{r}^{2}}}$;
-${{{{ {\partial g}} _{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} = {\frac{1}{{r}^{2}}}$
+${{\partial g}} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 1st kind Christoffel:
-${{{{ \Gamma} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} = {{\frac{1}{2}}{\left({{{z}^{2}} + {{r}^{2}}}\right)}}$;
-${{{{ \Gamma} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {{\frac{1}{r}} {z}}$;
-${{{{ \Gamma} _{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$;
-${{{{ \Gamma} _{\hat{\phi}}} _{\hat{z}}} _{\hat{z}}} = {\frac{1}{{{2}} {{{r}^{2}}}}}$;
-${{{{ \Gamma} _{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{1}{{{2}} {{{r}^{2}}}}}$;
-${{{{ \Gamma} _{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} = {\frac{1}{{{2}} {{{r}^{2}}}}}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} = {\frac{{{z}^{2}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}}$;
-${{{{ \Gamma} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{z}{{{2}} {{{r}^{3}}}}}$;
-${{{{ \Gamma} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {\frac{z}{{{2}} {{{r}^{3}}}}}$;
-${{{{ \Gamma} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{z}}} = {\frac{1}{{{2}} {{{r}^{4}}}}}$;
-${{{{ \Gamma} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} = {-{\frac{{{z}} {{\left({{{z}^{2}} + {{r}^{2}}}\right)}}}{{{2}} {{r}}}}}$;
-${{{{ \Gamma} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}}$;
-${{{{ \Gamma} ^{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} = {\frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}}$;
-${{{{ \Gamma} ^{\hat{z}}} _{\hat{z}}} _{\hat{z}}} = {-{\frac{z}{{{2}} {{{r}^{3}}}}}}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients derivative:
-${{{{{ {\partial \Gamma}} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} = {\frac{{{z}^{2}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{z}{{r}^{3}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {\frac{z}{{{2}} {{{r}^{3}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{z}}} = {\frac{1}{{{2}} {{{r}^{4}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} = {\frac{z}{{{2}} {{{r}^{3}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{1}{{{2}} {{{r}^{4}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} = {\frac{1}{{{2}} {{{r}^{4}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} = {-{\frac{{{z}} {{\left({{{z}^{2}} + {{r}^{2}}}\right)}}}{{{2}} {{r}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {-{\frac{{{r}^{2}} + {{{3}} {{{z}^{2}}}}}{{{2}} {{{r}^{2}}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {\frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{z}}} = {-{\frac{z}{{r}^{3}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} = {\frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} = {-{\frac{z}{{r}^{3}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{z}}} _{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} = {-{\frac{z}{{{2}} {{{r}^{3}}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{z}}} _{\hat{z}}} _{\hat{z}}} _{\hat{z}}} = {-{\frac{1}{{{2}} {{{r}^{4}}}}}}$
+${{\partial \Gamma}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients squared:
-${{{{{ {(\Gamma^2)}} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} = {\frac{{{{{r}^{2}}} {{{z}^{2}}}} + {{r}^{4}}}{{{4}} {{{r}^{4}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{z}{{{2}} {{{r}^{3}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{z}}} = {\frac{1}{{{4}} {{{r}^{4}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} = {\frac{z}{{{2}} {{{r}^{3}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{1}{{{4}} {{{r}^{4}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} = {\frac{1}{{{4}} {{{r}^{4}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} = {-{\frac{{{z}} {{\left({{{z}^{2}} + {{r}^{2}}}\right)}}}{{{2}} {{r}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{{-{{{3}} {{{r}^{2}}} {{{z}^{2}}}}} + {{r}^{4}}}{{{4}} {{{r}^{4}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {\frac{{{{{r}^{2}}} {{{z}^{2}}}} + {{r}^{4}}}{{{4}} {{{r}^{4}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} = {\frac{{-{{{3}} {{{r}^{2}}} {{{z}^{2}}}}} + {{r}^{4}}}{{{4}} {{{r}^{4}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} = {-{\frac{z}{{{2}} {{{r}^{3}}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{z}}} _{\hat{z}}} _{\hat{z}}} _{\hat{z}}} = {\frac{1}{{{4}} {{{r}^{4}}}}}$
+${{(\Gamma^2)}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 Riemann curvature, $\sharp\flat\flat\flat$:
-${{{{{ R} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {1}$;
-${{{{{ R} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {-{1}}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 Riemann curvature, $\sharp\sharp\flat\flat$:
-${{{{{ R} ^{\hat{z}}} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ R} ^{\hat{z}}} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ R} ^{\hat{z}}} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} = {-{{\frac{1}{r}} {z}}}$;
-${{{{{ R} ^{\hat{z}}} ^{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
 
 <br>
 Ricci curvature, $\sharp\flat$:
-${{{ R} ^{\hat{\phi}}} _{\hat{\phi}}} = {-{\frac{1}{{r}^{2}}}}$;
-${{{ R} ^{\hat{z}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$
+${R} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
 
 <br>
 Gaussian curvature:
-$-{\frac{1}{{r}^{2}}}$
+$0$
 
 <br>
 trace-free Ricci, $\sharp\flat$:
-${{{ {(R^{TF})}} ^{\hat{\phi}}} _{\hat{\phi}}} = {-{\frac{1}{{r}^{2}}}}$;
-${{{ {(R^{TF})}} ^{\hat{z}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$
+${{(R^{TF})}} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
 
 <br>
 Einstein / trace-reversed Ricci curvature, $\sharp\flat$:
-${{{ G} ^{\hat{\phi}}} _{\hat{\phi}}} = {-{\frac{1}{{r}^{2}}}}$;
-${{{ G} ^{\hat{z}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$
+${G} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
 
 <br>
 Schouten, $\sharp\flat$:
-${{{ P} ^a} _b} = {0}$
+${P} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Weyl, $\sharp\sharp\flat\flat$:
-${{{{{ C} ^{\hat{z}}} ^{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ C} ^{\hat{z}}} ^{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ C} ^{\hat{z}}} ^{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} = {-{{\frac{1}{r}} {z}}}$;
-${{{{{ C} ^{\hat{z}}} ^{\hat{z}}} _{\hat{z}}} _{\hat{\phi}}} = {{\frac{1}{r}} {z}}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 Weyl, $\flat\flat\flat\flat$:
-${{{{{ C} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {{\frac{1}{r}} {z}}$;
-${{{{{ C} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {-{{\frac{1}{r}} {z}}}$;
-${{{{{ C} _{\hat{z}}} _{\hat{\phi}}} _{\hat{\phi}}} _{\hat{z}}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ C} _{\hat{z}}} _{\hat{\phi}}} _{\hat{z}}} _{\hat{\phi}}} = {-{\frac{1}{{r}^{2}}}}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
 
 <br>
 Plebanski, $\sharp\sharp\flat\flat$:
-${{{{{ P} ^a} ^b} _c} _d} = {0}$
+${P} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 <br>
-divergence:	${{{{ A} ^i} _{,i}} + {{{{{{ \Gamma} ^i} _i} _j}} {{{ A} ^j}}}} = {{{{2}} {{{A^{\hat{\phi}}}}}} + {{{\frac{\partial {A^{\hat{z}}}}{\partial z}}} {{\frac{1}{r}}}}}$
+
+<br>
+divergence:	${{{{ A} ^i} _{,i}} + {{{{{{ \Gamma} ^i} _i} _j}} {{{ A} ^j}}}} = {{{{\frac{\partial {A^{\hat{z}}}}{\partial z}}} {{\frac{1}{r}}}} + {\frac{\partial {A^{\hat{\phi}}}}{\partial \phi}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[ \begin{matrix} \ddot{\hat{\phi}} \\ \ddot{\hat{z}}\end{matrix} \right]}} = {\overset{a\downarrow}{\left[ \begin{matrix} {{{-1}} \cdot {{\frac{1}{2}}} {{{\dot{\hat{\phi}}}^{2}}} {{{r}^{2}}} {{{z}^{2}}} {{\frac{1}{{r}^{4}}}}} + {{{-2}} \cdot {{\frac{1}{2}}} {{\dot{\hat{\phi}}}} \cdot {{\dot{\hat{z}}}} \cdot {{r}} {{z}} {{\frac{1}{{r}^{4}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{\dot{\hat{\phi}}}^{2}}} {{{r}^{4}}} {{\frac{1}{{r}^{4}}}}} + {{{-1}} \cdot {{\frac{1}{2}}} {{{\dot{\hat{z}}}^{2}}} {{\frac{1}{{r}^{4}}}}} \\ {{{\frac{1}{2}}} {{{\dot{\hat{\phi}}}^{2}}} {{{z}^{3}}} {{\frac{1}{r}}}} + {{{\frac{1}{2}}} {{r}} {{z}} {{{\dot{\hat{\phi}}}^{2}}}} + {{{\dot{\hat{\phi}}}} \cdot {{\dot{\hat{z}}}} \cdot {{{z}^{2}}} {{\frac{1}{{r}^{2}}}}} + {{{-1}} {{\dot{\hat{\phi}}}} \cdot {{\dot{\hat{z}}}}} + {{{\frac{1}{2}}} {{z}} {{{\dot{\hat{z}}}^{2}}} {{\frac{1}{{r}^{3}}}}}\end{matrix} \right]}}$
+${\overset{a\downarrow}{\left[ \begin{matrix} \ddot{\hat{\phi}} \\ \ddot{\hat{z}}\end{matrix} \right]}} = {\overset{a\downarrow}{\left[ \begin{matrix} 0 \\ 0\end{matrix} \right]}}$
 <br>
 
 <br>
@@ -233,32 +186,84 @@ parallel propagators:
 <br>
 
 <br>
-${{[\Gamma_\phi]}} = {\left[ \begin{matrix}  \frac{{{z}^{2}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}} &  \frac{z}{{{2}} {{{r}^{3}}}} \\  -{\frac{{{z}} {{\left({{{z}^{2}} + {{r}^{2}}}\right)}}}{{{2}} {{r}}}} &  \frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}\end{matrix} \right]}$
+${{[\Gamma_\phi]}} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{\phi_L}}}^{{{\phi_R}}} {\left[ \begin{matrix}  \frac{{{z}^{2}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}} &  \frac{z}{{{2}} {{{r}^{3}}}} \\  -{\frac{{{z}} {{\left({{{z}^{2}} + {{r}^{2}}}\right)}}}{{{2}} {{r}}}} &  \frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}\end{matrix} \right]}d \phi$
-=	$\left[ \begin{matrix}  \frac{{{-{{{{\phi_L}}} \cdot {{{r}^{2}}}}} - {{{{\phi_L}}} \cdot {{{z}^{2}}}}} + {{{{\phi_R}}} \cdot {{{r}^{2}}}} + {{{{\phi_R}}} \cdot {{{z}^{2}}}}}{{{2}} {{{r}^{2}}}} &  \frac{{{z}} {{\left({{-{{\phi_L}}} + {{\phi_R}}}\right)}}}{{{2}} {{{r}^{3}}}} \\  \frac{{{z}} {{\left({{{{{\phi_L}}} \cdot {{{z}^{2}}}} + {{{{{{\phi_L}}} \cdot {{{r}^{2}}}} - {{{{\phi_R}}} \cdot {{{z}^{2}}}}} - {{{{\phi_R}}} \cdot {{{r}^{2}}}}}}\right)}}}{{{2}} {{r}}} &  \frac{{-{{{{\phi_L}}} \cdot {{{r}^{2}}}}} + {{{{\phi_L}}} \cdot {{{z}^{2}}}} + {{{{{\phi_R}}} \cdot {{{r}^{2}}}} - {{{{\phi_R}}} \cdot {{{z}^{2}}}}}}{{{2}} {{{r}^{2}}}}\end{matrix} \right]$
+$\int\limits_{{{\phi_L}}}^{{{\phi_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d \phi$
+=	$\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P} _{\phi}$	=	$\exp\left( -{\int\limits_{{{\phi_L}}}^{{{\phi_R}}} {\left[ \begin{matrix}  \frac{{{z}^{2}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}} &  \frac{z}{{{2}} {{{r}^{3}}}} \\  -{\frac{{{z}} {{\left({{{z}^{2}} + {{r}^{2}}}\right)}}}{{{2}} {{r}}}} &  \frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}\end{matrix} \right]}d \phi}\right)$
-=	$\left[ \begin{matrix}  \frac{{{\exp\left({\frac{{{{{{\phi_L}}} \cdot {{r}}} - {{{{\phi_R}}} \cdot {{r}}}} - {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}{{{2}} {{r}}}}\right)}} {{\left({{-{{{3}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{2}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{{{{3}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{r}}}} - {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{r}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}}} - {{{{{\phi_L}}^{3}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{{{\phi_L}}^{3}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} + {{{{3}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{2}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{3}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{{{{\phi_R}}^{3}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{{{\phi_R}}^{3}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{r}} {{{{\phi_L}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} + {{{r}} {{{{\phi_L}}^{2}}}} + {{{r}} {{{{\phi_R}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} + {{{r}} {{{{\phi_R}}^{2}}}}}\right)}}}{{{2}} {{r}} {{\left({{-{{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}} + {{{\phi_L}}^{2}} + {{{\phi_R}}^{2}}}\right)}}} &  \frac{{{\exp\left({\frac{{{{-{\left({{{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}} - {\left({{{{{\phi_L}}} \cdot {{r}}} - {{{{\phi_R}}} \cdot {{r}}}}\right)}} - {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} - {\left({{{{{\phi_L}}} \cdot {{r}}} - {{{{\phi_R}}} \cdot {{r}}}}\right)}} - {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}} + {{{{{\phi_L}}} \cdot {{r}}} - {{{{\phi_R}}} \cdot {{r}}}}}{{{2}} {{r}}}}\right)}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}} {{\left({{-{{{{{\phi_L}}^{5}}} {{{z}^{5}}}}} + {{{{{{\phi_L}}^{5}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{5}}}} - {{{{{\phi_R}}^{5}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{5}}}}} + {{{5}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{4}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{5}}}} + {{{{{{10}} {{{{\phi_L}}^{3}}} {{{{\phi_R}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{5}}}} - {{{10}} {{{{\phi_L}}^{2}}} {{{{\phi_R}}^{3}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{5}}}}} - {{{5}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{4}}} {{{z}^{5}}}}} - {{{10}} {{{{\phi_L}}^{3}}} {{{{\phi_R}}^{2}}} {{{z}^{5}}}}} + {{{10}} {{{{\phi_L}}^{2}}} {{{{\phi_R}}^{3}}} {{{z}^{5}}}} + {{{{5}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{4}}} {{{z}^{5}}}} - {{{5}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{4}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{5}}}}} + {{{{{\phi_R}}^{5}}} {{{z}^{5}}}}}\right)}}}{{{2}} {{{r}^{2}}} {{\left({{{{6}} {{{{\phi_L}}^{2}}} {{{{\phi_R}}^{2}}} {{{z}^{4}}}} + {{{{{\phi_L}}^{4}}} {{{z}^{4}}}} + {{{{{{{\phi_R}}^{4}}} {{{z}^{4}}}} - {{{4}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{3}}} {{{z}^{4}}}}} - {{{4}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{3}}} {{{z}^{4}}}}}}\right)}}} \\  {\frac{1}{2}} {{{z}} {{\exp\left({\frac{{{{{{\phi_L}}} \cdot {{r}}} - {{{{\phi_R}}} \cdot {{r}}}} + {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}{{{2}} {{r}}}}\right)}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}} {{\left({{-{{{{\phi_L}}} \cdot {{{z}^{2}}}}} + {{{{\phi_L}}} \cdot {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{z}^{2}}}} + {{{{{\phi_L}}} \cdot {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{r}^{2}}}} - {{{{\phi_R}}} \cdot {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{z}^{2}}}}} + {{{{{{\phi_R}}} \cdot {{{z}^{2}}}} - {{{{\phi_R}}} \cdot {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{r}^{2}}}}} - {{{{\phi_L}}} \cdot {{{r}^{2}}}}} + {{{{\phi_R}}} \cdot {{{r}^{2}}}}}\right)}}} &  \frac{{{\exp\left({\frac{{{{{{\phi_L}}} \cdot {{r}}} - {{{{\phi_R}}} \cdot {{r}}}} - {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}{{{2}} {{r}}}}\right)}} {{\left({{{{{{{3}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{2}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{3}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} - {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{r}}}} - {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{r}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}}} + {{{{{{{\phi_L}}^{3}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{{{\phi_L}}^{3}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} - {{{3}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{2}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{3}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} + {{{{{{\phi_R}}^{3}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{{{\phi_R}}^{3}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{r}} {{{{\phi_L}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} + {{{r}} {{{{\phi_L}}^{2}}}} + {{{r}} {{{{\phi_R}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} + {{{r}} {{{{\phi_R}}^{2}}}}}\right)}}}{{{2}} {{r}} {{\left({{-{{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}} + {{{\phi_L}}^{2}} + {{{\phi_R}}^{2}}}\right)}}}\end{matrix} \right]$
+${ P} _{\phi}$	=	$\exp\left( -{\int\limits_{{{\phi_L}}}^{{{\phi_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d \phi}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{ P} _{\phi}}^{-1}$	=	$\exp\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}} {\left[ \begin{matrix}  \frac{{{z}^{2}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}} &  \frac{z}{{{2}} {{{r}^{3}}}} \\  -{\frac{{{z}} {{\left({{{z}^{2}} + {{r}^{2}}}\right)}}}{{{2}} {{r}}}} &  \frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{{r}^{2}}}}\end{matrix} \right]}d \phi}\right)$
-=	$\left[ \begin{matrix}  \frac{{{\exp\left({\frac{{-{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}} + {{{{{\phi_R}}} \cdot {{r}}} - {{{{\phi_L}}} \cdot {{r}}}}}{{{2}} {{r}}}}\right)}} {{\left({{{{{{{3}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{2}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{3}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} - {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{r}}}} - {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{r}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}}} + {{{{{{{\phi_L}}^{3}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{{{\phi_L}}^{3}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} - {{{3}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{2}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{{3}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{{{\phi_R}}^{3}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{{{\phi_R}}^{3}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} + {{{r}} {{{{\phi_L}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} + {{{r}} {{{{\phi_L}}^{2}}}} + {{{r}} {{{{\phi_R}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} + {{{r}} {{{{\phi_R}}^{2}}}}}\right)}}}{{{2}} {{r}} {{\left({{-{{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}} + {{{\phi_L}}^{2}} + {{{\phi_R}}^{2}}}\right)}}} &  \frac{{{\exp\left({\frac{{{-{\left({{-{\left({{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}} - {{{{\phi_L}}} \cdot {{r}}}}\right)}} - {{{{\phi_R}}} \cdot {{r}}}}\right)}} + {-{\left({{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}} - {{{{\phi_L}}} \cdot {{r}}}}\right)}} + {-{{{{\phi_R}}} \cdot {{r}}}}} + {{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}} - {{{{\phi_L}}} \cdot {{r}}}} + {{{{\phi_R}}} \cdot {{r}}}}{{{2}} {{r}}}}\right)}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}} {{\left({{-{{{{{\phi_L}}^{5}}} {{{z}^{5}}}}} + {{{{{{{{{\phi_L}}^{5}}} {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{z}^{5}}}} - {{{{{\phi_R}}^{5}}} {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{z}^{5}}}}} - {{{10}} {{{{\phi_L}}^{3}}} {{{{\phi_R}}^{2}}} {{{z}^{5}}}}} - {{{5}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{4}}} {{{z}^{5}}}}} - {{{10}} {{{{\phi_L}}^{2}}} {{{{\phi_R}}^{3}}} {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{z}^{5}}}}} + {{{10}} {{{{\phi_L}}^{3}}} {{{{\phi_R}}^{2}}} {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{z}^{5}}}} + {{{5}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{4}}} {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{z}^{5}}}} + {{{10}} {{{{\phi_L}}^{2}}} {{{{\phi_R}}^{3}}} {{{z}^{5}}}} + {{{{5}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{4}}} {{{z}^{5}}}} - {{{5}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{4}}} {{\frac{1}{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} {{{z}^{5}}}}} + {{{{{\phi_R}}^{5}}} {{{z}^{5}}}}}\right)}}}{{{2}} {{{r}^{2}}} {{\left({{{{6}} {{{{\phi_L}}^{2}}} {{{{\phi_R}}^{2}}} {{{z}^{4}}}} + {{{{{\phi_L}}^{4}}} {{{z}^{4}}}} + {{{{{{{\phi_R}}^{4}}} {{{z}^{4}}}} - {{{4}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{3}}} {{{z}^{4}}}}} - {{{4}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{3}}} {{{z}^{4}}}}}}\right)}}} \\  {\frac{1}{2}} {{{z}} {{\exp\left({\frac{{-{{{{\phi_L}}} \cdot {{r}}}} + {{{{{\phi_R}}} \cdot {{r}}} - {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}{{{2}} {{r}}}}\right)}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}} {{\left({{-{{{{\phi_L}}} \cdot {{{z}^{2}}}}} + {{{{\phi_L}}} \cdot {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}}} + {{{{{\phi_L}}} \cdot {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{r}^{2}}}} - {{{{\phi_R}}} \cdot {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}}}} + {{{{{{\phi_R}}} \cdot {{{z}^{2}}}} - {{{{\phi_R}}} \cdot {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{r}^{2}}}}} - {{{{\phi_L}}} \cdot {{{r}^{2}}}}} + {{{{\phi_R}}} \cdot {{{r}^{2}}}}}\right)}}} &  \frac{{{\exp\left({\frac{{-{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}} + {{{{{\phi_R}}} \cdot {{r}}} - {{{{\phi_L}}} \cdot {{r}}}}}{{{2}} {{r}}}}\right)}} {{\left({{-{{{3}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{2}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{{{{3}} {{{\phi_L}}} \cdot {{{{\phi_R}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{r}}}} - {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{r}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}}} - {{{{{\phi_L}}^{3}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{{{{\phi_L}}^{3}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{3}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{3}} {{{\phi_R}}} \cdot {{{{\phi_L}}^{2}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} + {{{{{{\phi_R}}^{3}}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}} - {{{{{\phi_R}}^{3}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}} {{{z}^{2}}} {{\frac{1}{\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}}}} + {{{r}} {{{{\phi_L}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} + {{{r}} {{{{\phi_L}}^{2}}}} + {{{r}} {{{{\phi_R}}^{2}}} {{\exp\left({{\frac{1}{r}} {\sqrt{{{-{{{{{\phi_L}}^{2}}} {{{z}^{2}}}}} - {{{{{\phi_R}}^{2}}} {{{z}^{2}}}}} + {{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}} \cdot {{{z}^{2}}}}}}}\right)}}} + {{{r}} {{{{\phi_R}}^{2}}}}}\right)}}}{{{2}} {{r}} {{\left({{-{{{2}} {{{\phi_L}}} \cdot {{{\phi_R}}}}} + {{{\phi_L}}^{2}} + {{{\phi_R}}^{2}}}\right)}}}\end{matrix} \right]$
+${{ P} _{\phi}}^{-1}$	=	$\exp\left({\int\limits_{{{\phi_L}}}^{{{\phi_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d \phi}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{[\Gamma_z]}} = {\left[ \begin{matrix}  \frac{z}{{{2}} {{{r}^{2}}}} &  \frac{1}{{{2}} {{{r}^{3}}}} \\  \frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{r}}} &  -{\frac{z}{{{2}} {{{r}^{2}}}}}\end{matrix} \right]}$
+${{[\Gamma_z]}} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{z_L}}}^{{{z_R}}} {\left[ \begin{matrix}  \frac{z}{{{2}} {{{r}^{2}}}} &  \frac{1}{{{2}} {{{r}^{3}}}} \\  \frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{r}}} &  -{\frac{z}{{{2}} {{{r}^{2}}}}}\end{matrix} \right]}d z$
-=	$\left[ \begin{matrix}  \frac{{-{{{z_L}}^{2}}} + {{{z_R}}^{2}}}{{{4}} {{{r}^{2}}}} &  \frac{{-{{z_L}}} + {{z_R}}}{{{2}} {{{r}^{3}}}} \\  \frac{{{{{{z_L}}^{3}} - {{{3}} {{{z_L}}} \cdot {{{r}^{2}}}}} - {{{z_R}}^{3}}} + {{{3}} {{{z_R}}} \cdot {{{r}^{2}}}}}{{{6}} {{r}}} &  \frac{{{\left({{{z_L}} + {{z_R}}}\right)}} {{\left({{{z_L}} - {{z_R}}}\right)}}}{{{4}} {{{r}^{2}}}}\end{matrix} \right]$
+$\int\limits_{{{z_L}}}^{{{z_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d z$
+=	$\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P} _z$	=	$\exp\left( -{\int\limits_{{{z_L}}}^{{{z_R}}} {\left[ \begin{matrix}  \frac{z}{{{2}} {{{r}^{2}}}} &  \frac{1}{{{2}} {{{r}^{3}}}} \\  \frac{{-{{z}^{2}}} + {{r}^{2}}}{{{2}} {{r}}} &  -{\frac{z}{{{2}} {{{r}^{2}}}}}\end{matrix} \right]}d z}\right)$
+${ P} _z$	=	$\exp\left( -{\int\limits_{{{z_L}}}^{{{z_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d z}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
+<br>
+
+<br>
+${{ P} _z}^{-1}$	=	$\exp\left({\int\limits_{{{z_L}}}^{{{z_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d z}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
+<br>
+
+<br>
+propagator commutation:
+<br>
+
+<br>
+[	${ P} _{\phi}$	,	${ P} _z$	] =	${ {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}{-{ {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}}$	=	$\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
+<br>
+
+<br>
+propagator partials
+<br>
+${{\frac{\partial}{\partial \phi}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+<br>
+${{\frac{\partial}{\partial z}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+<br>
+${{\frac{\partial}{\partial \phi}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+<br>
+${{\frac{\partial}{\partial z}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+<br>
+volume element: 	$r$
+<br>
+volume integral: 	${{r}} {{\Delta \phi}} \cdot {{\Delta z}}$
+<br>
+finite volume (0,0)-form:
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{\mathcal{V}(x_C)}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{{r}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{{r}} {{\Delta \phi}} \cdot {{\Delta z}}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
+<br>
+
+<br>
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{{S(x_C)}}} \cdot {{\Delta t}}}}$
+<br>
+
+<br>
+	</body>
+</html>
+

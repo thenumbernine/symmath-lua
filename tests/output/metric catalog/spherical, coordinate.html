@@ -16,219 +16,173 @@ embedding coordinates: $u^I = \{x, y, z\}$
 <br>
 embedding basis $e_I = \{e_{x}, e_{y}, e_{z}\}$
 <br>
+flat metric:
+${{{ \eta} _I} _J} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix} \right]}}$
+<br>
+
+<br>
+
+<br>
 transform from basis to coordinate:
 <br>
-${{{ \tilde{e}}_r}^r} = {1}$;
-${{{ \tilde{e}}_{\theta}}^{\theta}} = {1}$;
-${{{ \tilde{e}}_{\phi}}^{\phi}} = {1}$
+${{{ \tilde{e}} _A} ^a} = {\overset{A\downarrow a\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 transform from coorinate to basis:
 <br>
-${{{ \tilde{e}}^r}_r} = {1}$;
-${{{ \tilde{e}}^{\theta}}_{\theta}} = {1}$;
-${{{ \tilde{e}}^{\phi}}_{\phi}} = {1}$
-
+${{{ \tilde{e}} ^a} _A} = {\overset{a\downarrow A\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix} \right]}}$
 <br>
 
 <br>
-tensor index associated with coordinate $r$ is index $r$ with operator $e_{r}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
-<br>
-tensor index associated with coordinate $\theta$ is index $\theta$ with operator $e_{\theta}(\zeta) = $$\frac{\partial \zeta}{\partial \theta}$
-<br>
-tensor index associated with coordinate $\phi$ is index $\phi$ with operator $e_{\phi}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
-<br>
 
 <br>
-flat metric:
-${{{ \eta}_x}_x} = {1}$;
-${{{ \eta}_y}_y} = {1}$;
-${{{ \eta}_z}_z} = {1}$
-
+tensor index associated with coordinate $r$ has operator $e_{r}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
+<br>
+tensor index associated with coordinate $\theta$ has operator $e_{\theta}(\zeta) = $$\frac{\partial \zeta}{\partial \theta}$
+<br>
+tensor index associated with coordinate $\phi$ has operator $e_{\phi}(\zeta) = $$\frac{\partial \zeta}{\partial \phi}$
 <br>
 
 <br>
 chart in embedded coordinates:
 <br>
-${{ u}^x} = {{{r}} {{sin\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
-${{ u}^y} = {{{r}} {{sin\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
-${{ u}^z} = {{{r}} {{cos\left(  \theta\right)}}}$
+${u} = {\overset{I\downarrow}{\left[ \begin{matrix} {{r}} {{\sin\left(  \theta\right)}} {{\cos\left(  \phi\right)}} \\ {{r}} {{\sin\left(  \theta\right)}} {{\sin\left(  \phi\right)}} \\ {{r}} {{\cos\left(  \theta\right)}}\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 basis operators applied to chart:
 <br>
-${{{ e}_u}^I} = {{{ u}^I}_{,u}}$
+${{{ e} _u} ^I} = {{{ u} ^I} _{,u}}$
 <br>
-${{{ e}_r}^x} = {{{sin\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
-${{{ e}_r}^y} = {{{sin\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
-${{{ e}_r}^z} = {cos\left(  \theta\right)}$;
-${{{ e}_{\theta}}^x} = {{{r}} {{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$;
-${{{ e}_{\theta}}^y} = {{{r}} {{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}}}$;
-${{{ e}_{\theta}}^z} = {-{{{r}} {{sin\left(  \theta\right)}}}}$;
-${{{ e}_{\phi}}^x} = {-{{{r}} {{sin\left(  \theta\right)}} {{sin\left(  \phi\right)}}}}$;
-${{{ e}_{\phi}}^y} = {{{r}} {{sin\left(  \theta\right)}} {{cos\left(  \phi\right)}}}$
+${{{ e} _u} ^I} = {\overset{u\downarrow I\rightarrow}{\left[ \begin{matrix}  {{\cos\left(  \phi\right)}} {{\sin\left(  \theta\right)}} &  {{\sin\left(  \phi\right)}} {{\sin\left(  \theta\right)}} &  \cos\left(  \theta\right) \\  {{r}} {{\cos\left(  \theta\right)}} {{\cos\left(  \phi\right)}} &  {{r}} {{\cos\left(  \theta\right)}} {{\sin\left(  \phi\right)}} &  -{{{r}} {{\sin\left(  \theta\right)}}} \\  -{{{r}} {{\sin\left(  \phi\right)}} {{\sin\left(  \theta\right)}}} &  {{r}} {{\sin\left(  \theta\right)}} {{\cos\left(  \phi\right)}} &  0\end{matrix} \right]}}$
+<br>
 
 <br>
-${{{ e}^r}_x} = {{{cos\left(  \phi\right)}} {{sin\left(  \theta\right)}}}$;
-${{{ e}^r}_y} = {{{sin\left(  \phi\right)}} {{sin\left(  \theta\right)}}}$;
-${{{ e}^r}_z} = {cos\left(  \theta\right)}$;
-${{{ e}^{\theta}}_x} = {{\frac{1}{r}}{({{{cos\left(  \theta\right)}} {{cos\left(  \phi\right)}}})}}$;
-${{{ e}^{\theta}}_y} = {{\frac{1}{r}}{({{{cos\left(  \theta\right)}} {{sin\left(  \phi\right)}}})}}$;
-${{{ e}^{\theta}}_z} = {{\frac{1}{r}}{({-{sin\left(  \theta\right)}})}}$;
-${{{ e}^{\phi}}_x} = {\frac{-{sin\left(  \phi\right)}}{{{r}} {{sin\left(  \theta\right)}}}}$;
-${{{ e}^{\phi}}_y} = {\frac{cos\left(  \phi\right)}{{{r}} {{sin\left(  \theta\right)}}}}$
+${{{ e} ^u} _I} = {\overset{u\downarrow I\rightarrow}{\left[ \begin{matrix}  {{\cos\left(  \phi\right)}} {{\sin\left(  \theta\right)}} &  {{\sin\left(  \phi\right)}} {{\sin\left(  \theta\right)}} &  \cos\left(  \theta\right) \\  {\frac{1}{r}} {{{\cos\left(  \theta\right)}} {{\cos\left(  \phi\right)}}} &  {\frac{1}{r}} {{{\cos\left(  \theta\right)}} {{\sin\left(  \phi\right)}}} &  -{{\frac{1}{r}} {\sin\left(  \theta\right)}} \\  -{\frac{\sin\left(  \phi\right)}{{{r}} {{\sin\left(  \theta\right)}}}} &  \frac{\cos\left(  \phi\right)}{{{r}} {{\sin\left(  \theta\right)}}} &  0\end{matrix} \right]}}$
+<br>
 
 <br>
-${{{{{ e}_u}^I}} {{{{ e}^v}_I}}} = {\overset{u\downarrow v\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
+${{{{{ e} _u} ^I}} {{{{ e} ^v} _I}}} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix} \right]}}$
 <br>
-${{{{{ e}_u}^I}} {{{{ e}^u}_J}}} = {\overset{I\downarrow J\rightarrow}{\left[\begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix}\right]}}$
+${{{{{ e} _u} ^I}} {{{{ e} ^u} _J}}} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  1 &  0 \\  0 &  0 &  1\end{matrix} \right]}}$
 <br>
-basis determinant:	${det(e)} = {{{{r}^{2}}} {{sin\left(  \theta\right)}}}$
+basis determinant:	${det(e)} = {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}$
 <br>
-${{{{ c}_a}_b}^c} = {0}$
+${{{{ c} _a} _b} ^c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 <br>
-${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
-<br>
-${{{ g}_r}_r} = {1}$;
-${{{ g}_{\theta}}_{\theta}} = {{r}^{2}}$;
-${{{ g}_{\phi}}_{\phi}} = {{{{r}^{2}}} {{{sin\left(  \theta\right)}^{2}}}}$
 
 <br>
-${{{ g}_u}_v} = {{{{{ e}_u}^I}} {{{{ e}_v}^J}} {{{{ \eta}_I}_J}}}$
+${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
 <br>
-metric determinant:	${det(g)} = {{{{r}^{4}}} {{{sin\left(  \theta\right)}^{2}}}}$
+${{{ g} _u} _v} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  {r}^{2} &  0 \\  0 &  0 &  {{{r}^{2}}} {{\left({{1} + {\cos\left(  \theta\right)}}\right)}} {{\left({{1}{-{\cos\left(  \theta\right)}}}\right)}}\end{matrix} \right]}}$
 <br>
-${{{{ \Gamma}_a}_b}_c} = {{{\frac{1}{2}}} {{({{{{{{{{ g}_a}_b}_{,c}} + {{{{ g}_a}_c}_{,b}}} - {{{{ g}_b}_c}_{,a}}} + {{{{ c}_a}_b}_c} + {{{{ c}_a}_c}_b}} - {{{{ c}_c}_b}_a}})}}}$
+
+<br>
+${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
+<br>
+metric determinant:	${det(g)} = {{{{r}^{4}}} {{{\sin\left(  \theta\right)}^{2}}}}$
+<br>
+${{{{ \Gamma} _a} _b} _c} = {{{\frac{1}{2}}} {{\left({{{{{{{ g} _a} _b} _{,c}} + {{{{ g} _a} _c} _{,b}}}{-{{{{ g} _b} _c} _{,a}}} + {{{{ c} _a} _b} _c} + {{{{ c} _a} _c} _b}}{-{{{{ c} _c} _b} _a}}}\right)}}}$
 <br>
 commutation coefficients:
-${{{{ c}_a}_b}^c} = {0}$
+${c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 metric:
-${{{ g}_r}_r} = {1}$;
-${{{ g}_{\theta}}_{\theta}} = {{r}^{2}}$;
-${{{ g}_{\phi}}_{\phi}} = {{{{r}^{2}}} {{{sin\left(  \theta\right)}^{2}}}}$
+${g} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  {r}^{2} &  0 \\  0 &  0 &  {{{r}^{2}}} {{\left({{1} + {\cos\left(  \theta\right)}}\right)}} {{\left({{1}{-{\cos\left(  \theta\right)}}}\right)}}\end{matrix} \right]}}$
+<br>
 
 <br>
 metric inverse:
-${{{ g}^r}^r} = {1}$;
-${{{ g}^{\theta}}^{\theta}} = {\frac{1}{{r}^{2}}}$;
-${{{ g}^{\phi}}^{\phi}} = {\frac{1}{{{{r}^{2}}} {{{sin\left(  \theta\right)}^{2}}}}}$
+${g} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  \frac{1}{{r}^{2}} &  0 \\  0 &  0 &  \frac{1}{{{{r}^{2}}} {{\left({{1} + {\cos\left(  \theta\right)}}\right)}} {{\left({{1}{-{\cos\left(  \theta\right)}}}\right)}}}\end{matrix} \right]}}$
+<br>
 
 <br>
 metric derivative:
-${{{{ {\partial g}}_{\theta}}_{\theta}}_r} = {{{2}} {{r}}}$;
-${{{{ {\partial g}}_{\phi}}_{\phi}}_r} = {{{2}} {{r}} {{{sin\left(  \theta\right)}^{2}}}}$;
-${{{{ {\partial g}}_{\phi}}_{\phi}}_{\theta}} = {{{2}} {{{r}^{2}}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}$
+${{\partial g}} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  {{2}} {{r}} &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  {{2}} {{r}} {{{\sin\left(  \theta\right)}^{2}}} &  {{2}} {{{r}^{2}}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}} &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 1st kind Christoffel:
-${{{{ \Gamma}_r}_{\theta}}_{\theta}} = {-{r}}$;
-${{{{ \Gamma}_r}_{\phi}}_{\phi}} = {-{{{r}} {{{sin\left(  \theta\right)}^{2}}}}}$;
-${{{{ \Gamma}_{\theta}}_r}_{\theta}} = {r}$;
-${{{{ \Gamma}_{\theta}}_{\theta}}_r} = {r}$;
-${{{{ \Gamma}_{\theta}}_{\phi}}_{\phi}} = {-{{{{r}^{2}}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}}$;
-${{{{ \Gamma}_{\phi}}_r}_{\phi}} = {{{r}} {{{sin\left(  \theta\right)}^{2}}}}$;
-${{{{ \Gamma}_{\phi}}_{\theta}}_{\phi}} = {{{{r}^{2}}} {{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}}}$;
-${{{{ \Gamma}_{\phi}}_{\phi}}_r} = {{{r}} {{{sin\left(  \theta\right)}^{2}}}}$;
-${{{{ \Gamma}_{\phi}}_{\phi}}_{\theta}} = {{{{r}^{2}}} {{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}}}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  -{r} &  0 \\  0 &  0 &  -{{{r}} {{{\sin\left(  \theta\right)}^{2}}}}\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  r &  0 \\  r &  0 &  0 \\  0 &  0 &  -{{{{r}^{2}}} {{\sin\left(  \theta\right)}} {{\cos\left(  \theta\right)}}}\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 &  {{r}} {{{\sin\left(  \theta\right)}^{2}}} \\  0 &  0 &  {{{r}^{2}}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}} \\  {{r}} {{{\sin\left(  \theta\right)}^{2}}} &  {{{r}^{2}}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}} &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma}^r}_{\theta}}_{\theta}} = {-{r}}$;
-${{{{ \Gamma}^r}_{\phi}}_{\phi}} = {-{{{r}} {{{sin\left(  \theta\right)}^{2}}}}}$;
-${{{{ \Gamma}^{\theta}}_r}_{\theta}} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\theta}}_{\theta}}_r} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\theta}}_{\phi}}_{\phi}} = {-{{{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}}}}$;
-${{{{ \Gamma}^{\phi}}_r}_{\phi}} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\phi}}_{\theta}}_{\phi}} = {\frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}}$;
-${{{{ \Gamma}^{\phi}}_{\phi}}_r} = {\frac{1}{r}}$;
-${{{{ \Gamma}^{\phi}}_{\phi}}_{\theta}} = {\frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  -{r} &  0 \\  0 &  0 &  -{{{r}} {{{\sin\left(  \theta\right)}^{2}}}}\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  \frac{1}{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  -{{{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}}}\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  0 &  \frac{1}{r} \\  0 &  0 &  \frac{\cos\left(  \theta\right)}{\sin\left(  \theta\right)} \\  \frac{1}{r} &  \frac{\cos\left(  \theta\right)}{\sin\left(  \theta\right)} &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients derivative:
-${{{{{ {\partial \Gamma}}^r}_{\theta}}_{\theta}}_r} = {-{1}}$;
-${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_r} = {-{{sin\left(  \theta\right)}^{2}}}$;
-${{{{{ {\partial \Gamma}}^r}_{\phi}}_{\phi}}_{\theta}} = {-{{{2}} {{r}} {{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}}}}$;
-${{{{{ {\partial \Gamma}}^{\theta}}_r}_{\theta}}_r} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\theta}}_{\theta}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\theta}}_{\phi}}_{\phi}}_{\theta}} = {{{({{sin\left(  \theta\right)} - {cos\left(  \theta\right)}})}} {{({{sin\left(  \theta\right)} + {cos\left(  \theta\right)}})}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_r}_{\phi}}_r} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_{\theta}}_{\phi}}_{\theta}} = {-{\frac{1}{{sin\left(  \theta\right)}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_r}_r} = {-{\frac{1}{{r}^{2}}}}$;
-${{{{{ {\partial \Gamma}}^{\phi}}_{\phi}}_{\theta}}_{\theta}} = {-{\frac{1}{{sin\left(  \theta\right)}^{2}}}}$
+${{\partial \Gamma}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  -{1} &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  -{{\sin\left(  \theta\right)}^{2}} &  -{{{2}} {{r}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}}} &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  -{\frac{1}{{r}^{2}}} &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  -{\frac{1}{{r}^{2}}} &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  {1}{-{{{2}} {{{\cos\left(  \theta\right)}^{2}}}}} &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  -{\frac{1}{{r}^{2}}} &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  -{\frac{1}{{\sin\left(  \theta\right)}^{2}}} &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  -{\frac{1}{{r}^{2}}} &  0 &  0 \\  0 &  -{\frac{1}{{\sin\left(  \theta\right)}^{2}}} &  0 \\  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients squared:
-${{{{{ {(\Gamma^2)}}^r}_r}_{\theta}}_{\theta}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_r}_{\phi}}_{\phi}} = {-{{sin\left(  \theta\right)}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^r}_{\theta}}_{\theta}}_r} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^r}_{\theta}}_{\phi}}_{\phi}} = {-{{{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}}$;
-${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\theta}}_{\phi}} = {{{r}} {{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}}}$;
-${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_r} = {-{{sin\left(  \theta\right)}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^r}_{\phi}}_{\phi}}_{\theta}} = {-{{{r}} {{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}}}$;
-${{{{{ {(\Gamma^2)}}^{\theta}}_r}_r}_{\theta}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\theta}}_r}_{\phi}}_{\phi}} = {{\frac{1}{r}}{({-{{{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}}}})}}$;
-${{{{{ {(\Gamma^2)}}^{\theta}}_{\theta}}_r}_r} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\theta}}_{\theta}}_{\theta}}_{\theta}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\theta}}_{\theta}}_{\phi}}_{\phi}} = {-{{cos\left(  \theta\right)}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\theta}}_{\phi}}_r}_{\phi}} = {{\frac{1}{r}}{({-{{{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}}}})}}$;
-${{{{{ {(\Gamma^2)}}^{\theta}}_{\phi}}_{\theta}}_{\phi}} = {-{{sin\left(  \theta\right)}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\theta}}_{\phi}}_{\phi}}_r} = {{\frac{1}{r}}{({-{{{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}}}})}}$;
-${{{{{ {(\Gamma^2)}}^{\theta}}_{\phi}}_{\phi}}_{\theta}} = {-{{cos\left(  \theta\right)}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_r}_{\phi}} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_{\theta}}_{\phi}} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_r}_{\phi}}_{\theta}} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\theta}}_r}_{\phi}} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\theta}}_{\theta}}_{\phi}} = {\frac{{cos\left(  \theta\right)}^{2}}{{sin\left(  \theta\right)}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\theta}}_{\phi}}_r} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\theta}}_{\phi}}_{\theta}} = {-{1}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_r} = {\frac{1}{{r}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_r}_{\theta}} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\theta}}_r} = {\frac{cos\left(  \theta\right)}{{{r}} {{sin\left(  \theta\right)}}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\theta}}_{\theta}} = {\frac{{cos\left(  \theta\right)}^{2}}{{sin\left(  \theta\right)}^{2}}}$;
-${{{{{ {(\Gamma^2)}}^{\phi}}_{\phi}}_{\phi}}_{\phi}} = {-{1}}$
+${{(\Gamma^2)}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  -{1} &  0 \\  0 &  0 &  -{{\sin\left(  \theta\right)}^{2}}\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  -{1} &  0 &  0 \\  0 &  0 &  -{{{r}} {{\sin\left(  \theta\right)}} {{\cos\left(  \theta\right)}}}\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  {{r}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}} \\  -{{\sin\left(  \theta\right)}^{2}} &  -{{{r}} {{\sin\left(  \theta\right)}} {{\cos\left(  \theta\right)}}} &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  \frac{1}{{r}^{2}} &  0 \\  0 &  0 &  0 \\  0 &  0 &  -{{\frac{1}{r}} {{{\sin\left(  \theta\right)}} {{\cos\left(  \theta\right)}}}}\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  \frac{1}{{r}^{2}} &  0 &  0 \\  0 &  -{1} &  0 \\  0 &  0 &  -{{\cos\left(  \theta\right)}^{2}}\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  -{{\frac{1}{r}} {{{\sin\left(  \theta\right)}} {{\cos\left(  \theta\right)}}}} \\  0 &  0 &  -{{\sin\left(  \theta\right)}^{2}} \\  -{{\frac{1}{r}} {{{\sin\left(  \theta\right)}} {{\cos\left(  \theta\right)}}}} &  -{{\cos\left(  \theta\right)}^{2}} &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  \frac{1}{{r}^{2}} \\  0 &  0 &  \frac{\cos\left(  \theta\right)}{{{r}} {{\sin\left(  \theta\right)}}} \\  0 &  \frac{\cos\left(  \theta\right)}{{{r}} {{\sin\left(  \theta\right)}}} &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  \frac{\cos\left(  \theta\right)}{{{r}} {{\sin\left(  \theta\right)}}} \\  0 &  0 &  \frac{{\cos\left(  \theta\right)}^{2}}{{\sin\left(  \theta\right)}^{2}} \\  \frac{\cos\left(  \theta\right)}{{{r}} {{\sin\left(  \theta\right)}}} &  -{1} &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  \frac{1}{{r}^{2}} &  \frac{\cos\left(  \theta\right)}{{{r}} {{\sin\left(  \theta\right)}}} &  0 \\  \frac{\cos\left(  \theta\right)}{{{r}} {{\sin\left(  \theta\right)}}} &  \frac{{\cos\left(  \theta\right)}^{2}}{{\sin\left(  \theta\right)}^{2}} &  0 \\  0 &  0 &  -{1}\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 Riemann curvature, $\sharp\flat\flat\flat$:
-${{{{{ R}^a}_b}_c}_d} = {0}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 Riemann curvature, $\sharp\sharp\flat\flat$:
-${{{{{ R}^a}^b}_c}_d} = {0}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
+
 <br>
 Ricci curvature, $\sharp\flat$:
-${{{ R}^a}_b} = {0}$
+${R} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Gaussian curvature:
 $0$
 
 <br>
 trace-free Ricci, $\sharp\flat$:
-${{{ {(R^{TF})}}^a}_b} = {0}$
+${{(R^{TF})}} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Einstein / trace-reversed Ricci curvature, $\sharp\flat$:
-${{{ G}^a}_b} = {0}$
+${G} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Schouten, $\sharp\flat$:
-${{{ P}^a}_b} = {0}$
+${P} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Weyl, $\sharp\sharp\flat\flat$:
-${{{{{ C}^a}^b}_c}_d} = {0}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 Weyl, $\flat\flat\flat\flat$:
-${{{{{ C}_a}_b}_c}_d} = {0}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
+
 <br>
 Plebanski, $\sharp\sharp\flat\flat$:
-${{{{{ P}^a}^b}_c}_d} = {0}$
+${P} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  0 &  0 \\  0 &  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 <br>
-divergence:	${{{{ A}^i}_{,i}} + {{{{{{ \Gamma}^i}_i}_j}} {{{ A}^j}}}} = {{\frac{\partial {A^{r}}}{\partial r}} + {\frac{\partial {A^{\theta}}}{\partial \theta}} + {\frac{\partial {A^{\phi}}}{\partial \phi}} + {{{2}} {{{A^{r}}}} \cdot {{\frac{1}{r}}}} + {{{{A^{\theta}}}} \cdot {{cos\left(  \theta\right)}} {{\frac{1}{sin\left(  \theta\right)}}}}}$
+
+<br>
+divergence:	${{{{ A} ^i} _{,i}} + {{{{{{ \Gamma} ^i} _i} _j}} {{{ A} ^j}}}} = {{{{2}} {{{A^{\hat{r}}}}} \cdot {{\frac{1}{r}}}} + {{{{A^{\hat{\theta}}}}} \cdot {{\cos\left(  \theta\right)}} {{\frac{1}{\sin\left(  \theta\right)}}}} + {\frac{\partial {A^{\hat{\phi}}}}{\partial \phi}} + {\frac{\partial {A^{\hat{\theta}}}}{\partial \theta}} + {\frac{\partial {A^{\hat{r}}}}{\partial r}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[\begin{matrix} \ddot{r} \\ \ddot{\theta} \\ \ddot{\phi}\end{matrix}\right]}} = {\overset{a\downarrow}{\left[\begin{matrix} {{{r}} {{{\dot{\phi}}^{2}}}} + {{{-1}} {{r}} {{{\dot{\phi}}^{2}}} {{{cos\left(  \theta\right)}^{2}}}} + {{{r}} {{{\dot{\theta}}^{2}}}} \\ {{{-2}} {{\dot{\theta}}} \cdot {{\dot{r}}} \cdot {{\frac{1}{r}}}} + {{{r}} {{{\dot{\phi}}^{2}}} {{sin\left(  \theta\right)}} {{cos\left(  \theta\right)}} {{\frac{1}{r}}}} \\ {{{-2}} {{\dot{\phi}}} \cdot {{\dot{\theta}}} \cdot {{r}} {{cos\left(  \theta\right)}} {{\frac{1}{r}}} {{\frac{1}{sin\left(  \theta\right)}}}} + {{{-2}} {{\dot{\phi}}} \cdot {{\dot{r}}} \cdot {{sin\left(  \theta\right)}} {{\frac{1}{r}}} {{\frac{1}{sin\left(  \theta\right)}}}}\end{matrix}\right]}}$
+${\overset{a\downarrow}{\left[ \begin{matrix} \ddot{\hat{r}} \\ \ddot{\hat{\theta}} \\ \ddot{\hat{\phi}}\end{matrix} \right]}} = {\overset{a\downarrow}{\left[ \begin{matrix} {{{r}} {{{\dot{\hat{\phi}}}^{2}}}} + {{{r}} {{{\dot{\hat{\theta}}}^{2}}}} + {{{-1}} {{r}} {{{\dot{\hat{\phi}}}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}} \\ {{{-2}} {{\dot{\hat{\theta}}}} \cdot {{\dot{\hat{r}}}} \cdot {{\frac{1}{r}}}} + {{{{\dot{\hat{\phi}}}^{2}}} {{\sin\left(  \theta\right)}} {{\cos\left(  \theta\right)}}} \\ {{{-2}} {{\dot{\hat{\phi}}}} \cdot {{\dot{\hat{r}}}} \cdot {{\sin\left(  \theta\right)}} {{\frac{1}{r}}} {{\frac{1}{\sin\left(  \theta\right)}}}} + {{{-2}} {{\dot{\hat{\phi}}}} \cdot {{\dot{\hat{\theta}}}} \cdot {{r}} {{\cos\left(  \theta\right)}} {{\frac{1}{r}}} {{\frac{1}{\sin\left(  \theta\right)}}}}\end{matrix} \right]}}$
 <br>
 
 <br>
@@ -236,51 +190,32 @@ parallel propagators:
 <br>
 
 <br>
-${{[\Gamma_r]}} = {\left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix}\right]}$
+${{[\Gamma_r]}} = {\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 &  0 \\  0 &  log\left( {{\frac{1}{{r_L}}}{({{r_R}})}}\right) &  0 \\  0 &  0 &  log\left( {{\frac{1}{{r_L}}}{({{r_R}})}}\right)\end{matrix}\right]$
+$\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix} \right]}d r$
+=	$\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  \log\left( {{\frac{1}{{r_L}}} {{r_R}}}\right) &  0 \\  0 &  0 &  \log\left( {{\frac{1}{{r_L}}} {{r_R}}}\right)\end{matrix} \right]$
 <br>
 
 <br>
-${ P}_r$	=	${ⅇ}^{( -{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}}{({{r_L}})} &  0 \\  0 &  0 &  {\frac{1}{{r_R}}}{({{r_L}})}\end{matrix}\right]$
+${ P} _r$	=	$\exp\left( -{\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix} \right]}d r}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_R}}} {{r_L}} &  0 \\  0 &  0 &  {\frac{1}{{r_R}}} {{r_L}}\end{matrix} \right]$
 <br>
 
 <br>
-${{ P}_r}^{-1}$	=	${ⅇ}^{({\int\limits_{{{r_L}}}^{{{r_R}}}d r\left( \left[\begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_L}}}{({{r_R}})} &  0 \\  0 &  0 &  {\frac{1}{{r_L}}}{({{r_R}})}\end{matrix}\right]$
+${{ P} _r}^{-1}$	=	$\exp\left({\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  0 &  0 &  0 \\  0 &  \frac{1}{r} &  0 \\  0 &  0 &  \frac{1}{r}\end{matrix} \right]}d r}\right)$
+=	$\left[ \begin{matrix}  1 &  0 &  0 \\  0 &  {\frac{1}{{r_L}}} {{r_R}} &  0 \\  0 &  0 &  {\frac{1}{{r_L}}} {{r_R}}\end{matrix} \right]$
 <br>
 
 <br>
-${{[\Gamma_\theta]}} = {\left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}\end{matrix}\right]}$
+${{[\Gamma_\theta]}} = {\left[ \begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{\cos\left(  \theta\right)}{\sin\left(  \theta\right)}\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  {{r}} {{({{{\theta_L}} - {{\theta_R}}})}} &  0 \\  {\frac{1}{r}}{({-{({{{\theta_L}} - {{\theta_R}}})}})} &  0 &  0 \\  0 &  0 &  log\left( {\frac{|{sin\left(  {\theta_R}\right)}|}{|{sin\left(  {\theta_L}\right)}|}}\right)\end{matrix}\right]$
+$\int\limits_{{{\theta_L}}}^{{{\theta_R}}} {\left[ \begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{\cos\left(  \theta\right)}{\sin\left(  \theta\right)}\end{matrix} \right]}d \theta$
+=	$\left[ \begin{matrix}  0 &  {{r}} {{\left({{{\theta_L}}{-{{\theta_R}}}}\right)}} &  0 \\  {\frac{1}{r}}{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)} &  0 &  0 \\  0 &  0 &  \log\left( {\frac{\left|{\sin\left(  {\theta_R}\right)}\right|}{\left|{\sin\left(  {\theta_L}\right)}\right|}}\right)\end{matrix} \right]$
 <br>
 
 <br>
-${ P}_{\theta}$	=	${ⅇ}^{( -{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}\end{matrix}\right]\right)})})}$
-=	$\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  -{{{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}}} &  0 \\  {\frac{1}{r}}{({sin\left( {{{\theta_L}} - {{\theta_R}}}\right)})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  0 \\  0 &  0 &  \frac{|{sin\left(  {\theta_L}\right)}|}{|{sin\left(  {\theta_R}\right)}|}\end{matrix}\right]$
-<br>
-
-<br>
-${{ P}_{\theta}}^{-1}$	=	${ⅇ}^{({\int\limits_{{{\theta_L}}}^{{{\theta_R}}}d \theta\left( \left[\begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)}\end{matrix}\right]\right)})}$
-=	$\left[\begin{matrix}  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  {{r}} {{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}} &  0 \\  {\frac{1}{r}}{({-{sin\left( {{{\theta_L}} - {{\theta_R}}}\right)}})} &  cos\left( {{{\theta_L}} - {{\theta_R}}}\right) &  0 \\  0 &  0 &  \frac{|{sin\left(  {\theta_R}\right)}|}{|{sin\left(  {\theta_L}\right)}|}\end{matrix}\right]$
-<br>
-
-<br>
-${{[\Gamma_\phi]}} = {\left[\begin{matrix}  0 &  0 &  -{{{r}} {{{sin\left(  \theta\right)}^{2}}}} \\  0 &  0 &  -{{{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}} \\  \frac{1}{r} &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)} &  0\end{matrix}\right]}$
-<br>
-
-<br>
-$\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  -{{{r}} {{{sin\left(  \theta\right)}^{2}}}} \\  0 &  0 &  -{{{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}} \\  \frac{1}{r} &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)} &  0\end{matrix}\right]\right)$
-=	$\left[\begin{matrix}  0 &  0 &  {{r}} {{({{{{{\phi_L}} - {{{{\phi_L}}} \cdot {{{cos\left(  \theta\right)}^{2}}}}} - {{\phi_R}}} + {{{{\phi_R}}} \cdot {{{cos\left(  \theta\right)}^{2}}}}})}} \\  0 &  0 &  -{{{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}} {{({{{\phi_R}} - {{\phi_L}}})}}} \\  {\frac{1}{r}}{({-{({{{\phi_L}} - {{\phi_R}}})}})} &  \frac{-{{{cos\left(  \theta\right)}} {{({{{\phi_L}} - {{\phi_R}}})}}}}{sin\left(  \theta\right)} &  0\end{matrix}\right]$
-<br>
-
-<br>
-${ P}_{\phi}$	=	${ⅇ}^{( -{({\int\limits_{{{\phi_L}}}^{{{\phi_R}}}d \phi\left( \left[\begin{matrix}  0 &  0 &  -{{{r}} {{{sin\left(  \theta\right)}^{2}}}} \\  0 &  0 &  -{{{cos\left(  \theta\right)}} {{sin\left(  \theta\right)}}} \\  \frac{1}{r} &  \frac{cos\left(  \theta\right)}{sin\left(  \theta\right)} &  0\end{matrix}\right]\right)})})}$
+${ P} _{\theta}$	=	$\exp\left( -{\int\limits_{{{\theta_L}}}^{{{\theta_R}}} {\left[ \begin{matrix}  0 &  -{r} &  0 \\  \frac{1}{r} &  0 &  0 \\  0 &  0 &  \frac{\cos\left(  \theta\right)}{\sin\left(  \theta\right)}\end{matrix} \right]}d \theta}\right)$

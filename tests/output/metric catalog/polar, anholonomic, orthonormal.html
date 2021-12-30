@@ -17,29 +17,29 @@ embedding coordinates: $u^I = \{x, y\}$
 embedding basis $e_I = \{e_{x}, e_{y}\}$
 <br>
 flat metric:
-${{{ \eta} _x} _x} = {1}$;
-${{{ \eta} _y} _y} = {1}$
+${{{ \eta} _I} _J} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 transform from basis to coordinate:
 <br>
-${{{ \tilde{e}} _r} ^r} = {1}$;
-${{{ \tilde{e}} _{\theta}} ^{\theta}} = {r}$
+${{{ \tilde{e}} _A} ^a} = {\overset{a\downarrow A\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  r\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 transform from coorinate to basis:
 <br>
-${{{ \tilde{e}} ^r} _r} = {1}$;
-${{{ \tilde{e}} ^{\theta}} _{\theta}} = {\frac{1}{r}}$
-
+${{{ \tilde{e}} ^a} _A} = {\overset{a\downarrow A\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  \frac{1}{r}\end{matrix} \right]}}$
 <br>
 
 <br>
-tensor index associated with coordinate $r$ has operator $e_{r}(\zeta) = $$\zeta$
+
+<br>
+tensor index associated with coordinate $r$ has operator $e_{r}(\zeta) = $$\frac{\partial \zeta}{\partial r}$
 <br>
 tensor index associated with coordinate $\theta$ has operator $e_{\theta}(\zeta) = $${\frac{1}{r}} {\frac{\partial \zeta}{\partial \theta}}$
 <br>
@@ -47,8 +47,8 @@ tensor index associated with coordinate $\theta$ has operator $e_{\theta}(\zeta)
 <br>
 chart in embedded coordinates:
 <br>
-${{ u} ^x} = {{{r}} {{\cos\left(  \theta\right)}}}$;
-${{ u} ^y} = {{{r}} {{\sin\left(  \theta\right)}}}$
+${u} = {\overset{I\downarrow}{\left[ \begin{matrix} {{r}} {{\cos\left(  \theta\right)}} \\ {{r}} {{\sin\left(  \theta\right)}}\end{matrix} \right]}}$
+<br>
 
 <br>
 
@@ -57,150 +57,130 @@ basis operators applied to chart:
 <br>
 ${{{ e} _u} ^I} = {{{ u} ^I} _{,u}}$
 <br>
-${{{ e} _{\hat{r}}} ^x} = {{{r}} {{\cos\left(  \theta\right)}}}$;
-${{{ e} _{\hat{r}}} ^y} = {{{r}} {{\sin\left(  \theta\right)}}}$;
-${{{ e} _{\hat{\theta}}} ^x} = {-{\sin\left(  \theta\right)}}$;
-${{{ e} _{\hat{\theta}}} ^y} = {\cos\left(  \theta\right)}$
+${{{ e} _u} ^I} = {\overset{u\downarrow I\rightarrow}{\left[ \begin{matrix}  \cos\left(  \theta\right) &  \sin\left(  \theta\right) \\  -{\sin\left(  \theta\right)} &  \cos\left(  \theta\right)\end{matrix} \right]}}$
+<br>
 
 <br>
-${{{ e} ^{\hat{r}}} _x} = {{\frac{1}{r}} {\cos\left(  \theta\right)}}$;
-${{{ e} ^{\hat{r}}} _y} = {{\frac{1}{r}} {\sin\left(  \theta\right)}}$;
-${{{ e} ^{\hat{\theta}}} _x} = {-{\sin\left(  \theta\right)}}$;
-${{{ e} ^{\hat{\theta}}} _y} = {\cos\left(  \theta\right)}$
+${{{ e} ^u} _I} = {\overset{u\downarrow I\rightarrow}{\left[ \begin{matrix}  \cos\left(  \theta\right) &  \sin\left(  \theta\right) \\  -{\sin\left(  \theta\right)} &  \cos\left(  \theta\right)\end{matrix} \right]}}$
+<br>
 
 <br>
 ${{{{{ e} _u} ^I}} {{{{ e} ^v} _I}}} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
 <br>
 ${{{{{ e} _u} ^I}} {{{{ e} ^u} _J}}} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
 <br>
-basis determinant:	${det(e)} = {r}$
+basis determinant:	${det(e)} = {1}$
 <br>
-${{{{ c} _a} _b} ^c} = {0}$
+${{{{ c} _a} _b} ^c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  -{\frac{1}{r}}\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  \frac{1}{r} \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 <br>
-${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
-<br>
-${{{ g} _{\hat{r}}} _{\hat{r}}} = {{r}^{2}}$;
-${{{ g} _{\hat{\theta}}} _{\hat{\theta}}} = {1}$
 
 <br>
 ${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
 <br>
-metric determinant:	${det(g)} = {{r}^{2}}$
+${{{ g} _u} _v} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
 <br>
-${{{{ \Gamma} _a} _b} _c} = {{{\frac{1}{2}}} {{\left({{{{{{{{ g} _a} _b} _{,c}} + {{{{ g} _a} _c} _{,b}}} - {{{{ g} _b} _c} _{,a}}} + {{{{ c} _a} _b} _c} + {{{{ c} _a} _c} _b}} - {{{{ c} _c} _b} _a}}\right)}}}$
+
+<br>
+${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
+<br>
+metric determinant:	${det(g)} = {1}$
+<br>
+${{{{ \Gamma} _a} _b} _c} = {{{\frac{1}{2}}} {{\left({{{{{{{ g} _a} _b} _{,c}} + {{{{ g} _a} _c} _{,b}}}{-{{{{ g} _b} _c} _{,a}}} + {{{{ c} _a} _b} _c} + {{{{ c} _a} _c} _b}}{-{{{{ c} _c} _b} _a}}}\right)}}}$
 <br>
 commutation coefficients:
-${{{{ c} _a} _b} ^c} = {0}$
+${c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  -{\frac{1}{r}}\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  \frac{1}{r} \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 metric:
-${{{ g} _{\hat{r}}} _{\hat{r}}} = {{r}^{2}}$;
-${{{ g} _{\hat{\theta}}} _{\hat{\theta}}} = {1}$
+${g} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 metric inverse:
-${{{ g} ^{\hat{r}}} ^{\hat{r}}} = {\frac{1}{{r}^{2}}}$;
-${{{ g} ^{\hat{\theta}}} ^{\hat{\theta}}} = {1}$
+${g} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 metric derivative:
-${{{{ {\partial g}} _{\hat{r}}} _{\hat{r}}} _{\hat{r}}} = {{r}^{2}}$;
-${{{{ {\partial g}} _{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {1}$
+${{\partial g}} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 1st kind Christoffel:
-${{{{ \Gamma} _{\hat{r}}} _{\hat{r}}} _{\hat{r}}} = {{\frac{1}{2}} {{r}^{2}}}$;
-${{{{ \Gamma} _{\hat{r}}} _{\hat{\theta}}} _{\hat{\theta}}} = {-{\frac{1}{2}}}$;
-${{{{ \Gamma} _{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} = {\frac{1}{2}}$;
-${{{{ \Gamma} _{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {\frac{1}{2}}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  -{\frac{1}{r}}\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  \frac{1}{r} &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma} ^{\hat{r}}} _{\hat{r}}} _{\hat{r}}} = {\frac{1}{2}}$;
-${{{{ \Gamma} ^{\hat{r}}} _{\hat{\theta}}} _{\hat{\theta}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$;
-${{{{ \Gamma} ^{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} = {\frac{1}{2}}$;
-${{{{ \Gamma} ^{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {\frac{1}{2}}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \left[ \begin{matrix}  0 &  0 \\  0 &  -{\frac{1}{r}}\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  0 \\  \frac{1}{r} &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients derivative:
-${{{{{ {\partial \Gamma}} ^{\hat{r}}} _{\hat{r}}} _{\hat{r}}} _{\hat{r}}} = {\frac{1}{2}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{r}}} _{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} = {\frac{1}{2}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} _{\hat{r}}} = {\frac{1}{2}}$
+${{\partial \Gamma}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  \frac{1}{{r}^{2}} &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  -{\frac{1}{{r}^{2}}} &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients squared:
-${{{{{ {(\Gamma^2)}} ^{\hat{r}}} _{\hat{r}}} _{\hat{r}}} _{\hat{r}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{r}}} _{\hat{r}}} _{\hat{\theta}}} _{\hat{\theta}}} = {-{\frac{1}{{{4}} {{{r}^{2}}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} = {-{\frac{1}{{{4}} {{{r}^{2}}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{r}}} _{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {-{\frac{1}{{{4}} {{{r}^{2}}}}}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{\theta}}} _{\hat{r}}} _{\hat{r}}} _{\hat{\theta}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} _{\hat{r}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{\theta}}} _{\hat{\theta}}} _{\hat{\theta}}} _{\hat{\theta}}} = {-{\frac{1}{{{4}} {{{r}^{2}}}}}}$
+${{(\Gamma^2)}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  -{\frac{1}{{r}^{2}}}\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  -{\frac{1}{{r}^{2}}}\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 Riemann curvature, $\sharp\flat\flat\flat$:
-${{{{{ R} ^{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$;
-${{{{{ R} ^{\hat{r}}} _{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {\frac{1}{{{2}} {{{r}^{2}}}}}$;
-${{{{{ R} ^{\hat{\theta}}} _{\hat{r}}} _{\hat{r}}} _{\hat{\theta}}} = {\frac{1}{2}}$;
-${{{{{ R} ^{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} = {-{\frac{1}{2}}}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 Riemann curvature, $\sharp\sharp\flat\flat$:
-${{{{{ R} ^{\hat{r}}} ^{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$;
-${{{{{ R} ^{\hat{r}}} ^{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {\frac{1}{{{2}} {{{r}^{2}}}}}$;
-${{{{{ R} ^{\hat{\theta}}} ^{\hat{r}}} _{\hat{r}}} _{\hat{\theta}}} = {\frac{1}{{{2}} {{{r}^{2}}}}}$;
-${{{{{ R} ^{\hat{\theta}}} ^{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
 
 <br>
 Ricci curvature, $\sharp\flat$:
-${{{ R} ^{\hat{r}}} _{\hat{r}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$;
-${{{ R} ^{\hat{\theta}}} _{\hat{\theta}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$
+${R} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
 
 <br>
 Gaussian curvature:
-$-{\frac{1}{{r}^{2}}}$
+$0$
 
 <br>
 trace-free Ricci, $\sharp\flat$:
-${{{ {(R^{TF})}} ^{\hat{r}}} _{\hat{r}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$;
-${{{ {(R^{TF})}} ^{\hat{\theta}}} _{\hat{\theta}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$
+${{(R^{TF})}} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
 
 <br>
 Einstein / trace-reversed Ricci curvature, $\sharp\flat$:
-${{{ G} ^{\hat{r}}} _{\hat{r}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$;
-${{{ G} ^{\hat{\theta}}} _{\hat{\theta}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$
+${G} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
 
 <br>
 Schouten, $\sharp\flat$:
-${{{ P} ^a} _b} = {0}$
+${P} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Weyl, $\sharp\sharp\flat\flat$:
-${{{{{ C} ^{\hat{r}}} ^{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$;
-${{{{{ C} ^{\hat{r}}} ^{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {\frac{1}{{{2}} {{{r}^{2}}}}}$;
-${{{{{ C} ^{\hat{\theta}}} ^{\hat{r}}} _{\hat{r}}} _{\hat{\theta}}} = {\frac{1}{{{2}} {{{r}^{2}}}}}$;
-${{{{{ C} ^{\hat{\theta}}} ^{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} = {-{\frac{1}{{{2}} {{{r}^{2}}}}}}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 Weyl, $\flat\flat\flat\flat$:
-${{{{{ C} _{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} = {-{\frac{1}{2}}}$;
-${{{{{ C} _{\hat{r}}} _{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {\frac{1}{2}}$;
-${{{{{ C} _{\hat{\theta}}} _{\hat{r}}} _{\hat{r}}} _{\hat{\theta}}} = {\frac{1}{2}}$;
-${{{{{ C} _{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} = {-{\frac{1}{2}}}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
 
 <br>
 Plebanski, $\sharp\sharp\flat\flat$:
-${{{{{ P} ^{\hat{r}}} ^{\hat{\theta}}} _{\hat{r}}} _{\hat{\theta}}} = {\frac{1}{{{8}} {{{r}^{4}}}}}$;
-${{{{{ P} ^{\hat{r}}} ^{\hat{\theta}}} _{\hat{\theta}}} _{\hat{r}}} = {-{\frac{1}{{{8}} {{{r}^{4}}}}}}$;
-${{{{{ P} ^{\hat{\theta}}} ^{\hat{r}}} _{\hat{r}}} _{\hat{\theta}}} = {-{\frac{1}{{{8}} {{{r}^{4}}}}}}$;
-${{{{{ P} ^{\hat{\theta}}} ^{\hat{r}}} _{\hat{\theta}}} _{\hat{r}}} = {\frac{1}{{{8}} {{{r}^{4}}}}}$
+${P} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
-divergence:	${{{{ A} ^i} _{,i}} + {{{{{{ \Gamma} ^i} _i} _j}} {{{ A} ^j}}}} = {{{{2}} {{{A^{\hat{r}}}}}} + {{{\frac{\partial {A^{\hat{\theta}}}}{\partial \theta}}} {{\frac{1}{r}}}}}$
+divergence:	${{{{ A} ^i} _{,i}} + {{{{{{ \Gamma} ^i} _i} _j}} {{{ A} ^j}}}} = {{{{{A^{\hat{r}}}}} \cdot {{\frac{1}{r}}}} + {{{\frac{\partial {A^{\hat{\theta}}}}{\partial \theta}}} {{\frac{1}{r}}}} + {\frac{\partial {A^{\hat{r}}}}{\partial r}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[ \begin{matrix} \ddot{\hat{r}} \\ \ddot{\hat{\theta}}\end{matrix} \right]}} = {\overset{a\downarrow}{\left[ \begin{matrix} {{{-1}} \cdot {{\frac{1}{2}}} {{{\dot{\hat{r}}}^{2}}}} + {{{\frac{1}{2}}} {{{\dot{\hat{\theta}}}^{2}}} {{\frac{1}{{r}^{2}}}}} \\ {{-1}} {{\dot{\hat{\theta}}}} \cdot {{\dot{\hat{r}}}}\end{matrix} \right]}}$
+${\overset{a\downarrow}{\left[ \begin{matrix} \ddot{\hat{r}} \\ \ddot{\hat{\theta}}\end{matrix} \right]}} = {\overset{a\downarrow}{\left[ \begin{matrix} {{{\dot{\hat{\theta}}}^{2}}} {{\frac{1}{r}}} \\ {{-1}} {{\dot{\hat{\theta}}}} \cdot {{\dot{\hat{r}}}} \cdot {{\frac{1}{r}}}\end{matrix} \right]}}$
 <br>
 
 <br>
@@ -208,41 +188,41 @@ parallel propagators:
 <br>
 
 <br>
-${{[\Gamma_r]}} = {\left[ \begin{matrix}  \frac{1}{2} &  0 \\  0 &  \frac{1}{2}\end{matrix} \right]}$
+${{[\Gamma_r]}} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  \frac{1}{2} &  0 \\  0 &  \frac{1}{2}\end{matrix} \right]}d r$
-=	$\left[ \begin{matrix}  {\frac{1}{2}}{\left({{-{{r_L}}} + {{r_R}}}\right)} &  0 \\  0 &  {\frac{1}{2}}{\left({{-{{r_L}}} + {{r_R}}}\right)}\end{matrix} \right]$
+$\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d r$
+=	$\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P} _r$	=	$\exp\left( -{\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  \frac{1}{2} &  0 \\  0 &  \frac{1}{2}\end{matrix} \right]}d r}\right)$
-=	$\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right) &  0 \\  0 &  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right)\end{matrix} \right]$
+${ P} _r$	=	$\exp\left( -{\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d r}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{ P} _r}^{-1}$	=	$\exp\left({\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  \frac{1}{2} &  0 \\  0 &  \frac{1}{2}\end{matrix} \right]}d r}\right)$
-=	$\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{-{{r_L}}} + {{r_R}}}\right)}}\right) &  0 \\  0 &  \exp\left({{\frac{1}{2}}{\left({{-{{r_L}}} + {{r_R}}}\right)}}\right)\end{matrix} \right]$
+${{ P} _r}^{-1}$	=	$\exp\left({\int\limits_{{{r_L}}}^{{{r_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d r}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{[\Gamma_\theta]}} = {\left[ \begin{matrix}  0 &  -{\frac{1}{{{2}} {{r}}}} \\  {\frac{1}{2}} {r} &  0\end{matrix} \right]}$
+${{[\Gamma_\theta]}} = {\left[ \begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{\theta_L}}}^{{{\theta_R}}} {\left[ \begin{matrix}  0 &  -{\frac{1}{{{2}} {{r}}}} \\  {\frac{1}{2}} {r} &  0\end{matrix} \right]}d \theta$
-=	$\left[ \begin{matrix}  0 &  \frac{{{\theta_L}} - {{\theta_R}}}{{{2}} {{r}}} \\  {\frac{1}{2}} {{{r}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  0\end{matrix} \right]$
+$\int\limits_{{{\theta_L}}}^{{{\theta_R}}} {\left[ \begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix} \right]}d \theta$
+=	$\left[ \begin{matrix}  0 &  {{\theta_L}}{-{{\theta_R}}} \\  {-{{\theta_L}}} + {{\theta_R}} &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P} _{\theta}$	=	$\exp\left( -{\int\limits_{{{\theta_L}}}^{{{\theta_R}}} {\left[ \begin{matrix}  0 &  -{\frac{1}{{{2}} {{r}}}} \\  {\frac{1}{2}} {r} &  0\end{matrix} \right]}d \theta}\right)$
-=	$\left[ \begin{matrix}  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} &  \frac{{{\frac{1}{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}} {{\left({{{{{\theta_L}} - {{{{\theta_L}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}} - {{\theta_R}}} + {{{{\theta_R}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}}\right)}}}{{{2}} {{r}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} \\  \frac{{{r}} {{\frac{1}{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} {{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} {{\left({{-{1}} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}}\end{matrix} \right]$
+${ P} _{\theta}$	=	$\exp\left( -{\int\limits_{{{\theta_L}}}^{{{\theta_R}}} {\left[ \begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix} \right]}d \theta}\right)$
+=	$\left[ \begin{matrix}  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} &  \frac{{{\theta_L}}{-{{\theta_R}}}{-{{{{\theta_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}} + {{{{\theta_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}} \\  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}}\end{matrix} \right]$
 <br>
 
 <br>
-${{ P} _{\theta}}^{-1}$	=	$\exp\left({\int\limits_{{{\theta_L}}}^{{{\theta_R}}} {\left[ \begin{matrix}  0 &  -{\frac{1}{{{2}} {{r}}}} \\  {\frac{1}{2}} {r} &  0\end{matrix} \right]}d \theta}\right)$
-=	$\left[ \begin{matrix}  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} &  \frac{{{\frac{1}{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}} {{\left({{-{{\theta_L}}} + {{{{\theta_L}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}} + {{{\theta_R}} - {{{{\theta_R}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}}}\right)}}}{{{2}} {{r}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} \\  \frac{{{r}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}} {{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} {{\left({{-{1}} + {\frac{1}{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}}\end{matrix} \right]$
+${{ P} _{\theta}}^{-1}$	=	$\exp\left({\int\limits_{{{\theta_L}}}^{{{\theta_R}}} {\left[ \begin{matrix}  0 &  -{1} \\  1 &  0\end{matrix} \right]}d \theta}\right)$
+=	$\left[ \begin{matrix}  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} &  \frac{{-{{\theta_L}}} + {{\theta_R}} + {{{{\theta_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}{-{{{{\theta_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}} \\  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}} {{\left({{1}{-{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}}\end{matrix} \right]$
 <br>
 
 <br>
@@ -250,19 +230,19 @@ propagator commutation:
 <br>
 
 <br>
-[	${ P} _r$	,	${ P} _{\theta}$	] =	${ {\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right) &  0 \\  0 &  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right)\end{matrix} \right]}  {\left[ \begin{matrix}  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} &  \frac{{{\frac{1}{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}} {{\left({{{{{\theta_L}} - {{{{\theta_L}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}} - {{\theta_R}}} + {{{{\theta_R}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}}\right)}}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}} {{{r_L}}}} \\  \frac{{{\frac{1}{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} {{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} {{\left({{-{1}} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}\right)}} {{{r_L}}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}}\end{matrix} \right]}} - { {\left[ \begin{matrix}  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} &  \frac{{{\frac{1}{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}} {{\left({{{{{\theta_L}} - {{{{\theta_L}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}} - {{\theta_R}}} + {{{{\theta_R}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}}\right)}}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}} {{{r_R}}}} \\  \frac{{{\frac{1}{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} {{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} {{\left({{-{1}} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}\right)}} {{{r_R}}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}}\end{matrix} \right]}  {\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right) &  0 \\  0 &  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right)\end{matrix} \right]}}$	=	$\left[ \begin{matrix}  0 &  \frac{{{\exp\left({{\frac{1}{2}}{\left({{-{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} + {{{r_L}} - {{r_R}}}}\right)}}\right)}} {{\frac{1}{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}} {{\left({{-{{{{\theta_L}}} \cdot {{{r_L}}}}} + {{{{{{\theta_L}}} \cdot {{{r_L}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}} - {{{{\theta_L}}} \cdot {{{r_R}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}} - {{{{\theta_R}}} \cdot {{{r_L}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}} + {{{{{\theta_R}}} \cdot {{{r_R}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}} - {{{{\theta_R}}} \cdot {{{r_R}}}}} + {{{{\theta_L}}} \cdot {{{r_R}}}} + {{{{\theta_R}}} \cdot {{{r_L}}}}}\right)}}}{{{2}} {{{r_L}}} \cdot {{{r_R}}}} \\  \frac{{{\exp\left({{\frac{1}{2}}{\left({{{-{\left({{-{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} - {\left({{{r_L}} - {{r_R}}}\right)}}\right)}} + {-{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} + {-{\left({{{r_L}} - {{r_R}}}\right)}}} + {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}} + {{{r_L}} - {{r_R}}}}\right)}}\right)}} {{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} {{\left({{{{{r_L}} - {{{{r_L}}} \cdot {{\frac{1}{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}}} - {{r_R}}} + {{{{r_R}}} \cdot {{\frac{1}{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  0\end{matrix} \right]$
+[	${ P} _r$	,	${ P} _{\theta}$	] =	${ {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} &  \frac{{{\theta_L}}{-{{\theta_R}}}{-{{{{\theta_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}} + {{{{\theta_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}} \\  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}}\end{matrix} \right]}}{-{ {\left[ \begin{matrix}  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} &  \frac{{{\theta_L}}{-{{\theta_R}}}{-{{{{\theta_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}} + {{{{\theta_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}} \\  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}}\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}}$	=	$\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
 propagator partials
 <br>
-${{\frac{\partial}{\partial r}}\left( \left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right) &  0 \\  0 &  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right)\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+${{\frac{\partial}{\partial r}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial \theta}}\left( \left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right) &  0 \\  0 &  \exp\left({{\frac{1}{2}}{\left({{{r_L}} - {{r_R}}}\right)}}\right)\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+${{\frac{\partial}{\partial \theta}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial r}}\left( \left[ \begin{matrix}  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} &  \frac{{{\frac{1}{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}} {{\left({{{{{\theta_L}} - {{{{\theta_L}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}} - {{\theta_R}}} + {{{{\theta_R}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}}\right)}}}{{{2}} {{r}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} \\  \frac{{{r}} {{\frac{1}{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} {{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} {{\left({{-{1}} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}}\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  \frac{{{\frac{1}{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} {{\frac{1}{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}} {{\left({{-{{\theta_L}}} + {{{{{\theta_L}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}} - {{{{\theta_R}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}} + {{\theta_R}}}\right)}}}{{{2}} {{{r}^{2}}}} \\  \frac{{{\frac{1}{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} {{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} {{\left({{-{1}} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  0\end{matrix} \right]}$
+${{\frac{\partial}{\partial r}}\left( \left[ \begin{matrix}  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} &  \frac{{{\theta_L}}{-{{\theta_R}}}{-{{{{\theta_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}} + {{{{\theta_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}} \\  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}}\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial \theta}}\left( \left[ \begin{matrix}  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} &  \frac{{{\frac{1}{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}} {{\left({{{{{\theta_L}} - {{{{\theta_L}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}} - {{\theta_R}}} + {{{{\theta_R}}} \cdot {{\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}}}\right)}}}{{{2}} {{r}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} \\  \frac{{{r}} {{\frac{1}{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}} {{\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}} {{\left({{-{1}} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}\right)}}{{{2}} {{\exp\left({{\frac{1}{2}} {\sqrt{{{{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}} - {{{\theta_L}}^{2}}} - {{{\theta_R}}^{2}}}}}\right)}}}\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+${{\frac{\partial}{\partial \theta}}\left( \left[ \begin{matrix}  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} &  \frac{{{\theta_L}}{-{{\theta_R}}}{-{{{{\theta_L}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}} + {{{{\theta_R}}} \cdot {{\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}} \\  \frac{{{\frac{1}{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}} {{\left({{-{1}} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}\right)}}}{{{2}} {{\left({{-{{\theta_L}}} + {{\theta_R}}}\right)}}} &  \frac{{1} + {\exp\left({{{2}} {{\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}}}\right)}}{{{2}} {{\exp\left({\sqrt{{-{{{\theta_L}}^{2}}}{-{{{\theta_R}}^{2}}} + {{{2}} {{{\theta_L}}} \cdot {{{\theta_R}}}}}}\right)}}}\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
 volume element: 	$r$
 <br>

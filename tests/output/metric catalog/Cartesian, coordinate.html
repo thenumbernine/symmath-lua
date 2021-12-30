@@ -17,38 +17,38 @@ embedding coordinates: $u^I = \{x, y\}$
 embedding basis $e_I = \{e_{x}, e_{y}\}$
 <br>
 flat metric:
-${{{ \eta} _x} _x} = {1}$;
-${{{ \eta} _y} _y} = {1}$
+${{{ \eta} _I} _J} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 transform from basis to coordinate:
 <br>
-${{{ \tilde{e}} _x} ^x} = {1}$;
-${{{ \tilde{e}} _y} ^y} = {1}$
+${{{ \tilde{e}} _A} ^a} = {\overset{A\downarrow a\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 
 <br>
 transform from coorinate to basis:
 <br>
-${{{ \tilde{e}} ^x} _x} = {1}$;
-${{{ \tilde{e}} ^y} _y} = {1}$
-
+${{{ \tilde{e}} ^a} _A} = {\overset{a\downarrow A\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
 <br>
 
 <br>
-tensor index associated with coordinate $x$ has operator $e_{x}(\zeta) = $$\zeta$
+
 <br>
-tensor index associated with coordinate $y$ has operator $e_{y}(\zeta) = $$\zeta$
+tensor index associated with coordinate $x$ has operator $e_{x}(\zeta) = $$\frac{\partial \zeta}{\partial x}$
+<br>
+tensor index associated with coordinate $y$ has operator $e_{y}(\zeta) = $$\frac{\partial \zeta}{\partial y}$
 <br>
 
 <br>
 chart in embedded coordinates:
 <br>
-${{ u} ^x} = {x}$;
-${{ u} ^y} = {y}$
+${u} = {\overset{I\downarrow}{\left[ \begin{matrix} x \\ y\end{matrix} \right]}}$
+<br>
 
 <br>
 
@@ -57,142 +57,130 @@ basis operators applied to chart:
 <br>
 ${{{ e} _u} ^I} = {{{ u} ^I} _{,u}}$
 <br>
-${{{ e} _{\hat{x}}} ^x} = {x}$;
-${{{ e} _{\hat{x}}} ^y} = {y}$;
-${{{ e} _{\hat{y}}} ^x} = {x}$;
-${{{ e} _{\hat{y}}} ^y} = {y}$
+${{{ e} _u} ^I} = {\overset{u\downarrow I\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
-${{{ e} ^{\hat{x}}} _x} = {\frac{1}{x}}$;
-${{{ e} ^{\hat{x}}} _y} = {-{1}}$;
-${{{ e} ^{\hat{y}}} _y} = {1}$
+${{{ e} ^u} _I} = {\overset{u\downarrow I\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
-${{{{{ e} _u} ^I}} {{{{ e} ^v} _I}}} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  {1} - {y} &  y \\  {1} - {y} &  y\end{matrix} \right]}}$
+${{{{{ e} _u} ^I}} {{{{ e} ^v} _I}}} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
 <br>
-${{{{{ e} _u} ^I}} {{{{ e} ^u} _J}}} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  {\frac{1}{x}} {y} &  0\end{matrix} \right]}}$
+${{{{{ e} _u} ^I}} {{{{ e} ^u} _J}}} = {\overset{I\downarrow J\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
 <br>
-basis determinant:	${det(e)} = {0}$
+basis determinant:	${det(e)} = {1}$
 <br>
-${{{{ c} _a} _b} ^c} = {0}$
+${{{{ c} _a} _b} ^c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 <br>
-${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
-<br>
-${{{ g} _{\hat{x}}} _{\hat{x}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{ g} _{\hat{x}}} _{\hat{y}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{ g} _{\hat{y}}} _{\hat{x}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{ g} _{\hat{y}}} _{\hat{y}}} = {{{x}^{2}} + {{y}^{2}}}$
 
 <br>
 ${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
 <br>
-metric determinant:	${det(g)} = {0}$
+${{{ g} _u} _v} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
 <br>
-${{{{ \Gamma} _a} _b} _c} = {{{\frac{1}{2}}} {{\left({{{{{{{{ g} _a} _b} _{,c}} + {{{{ g} _a} _c} _{,b}}} - {{{{ g} _b} _c} _{,a}}} + {{{{ c} _a} _b} _c} + {{{{ c} _a} _c} _b}} - {{{{ c} _c} _b} _a}}\right)}}}$
+
+<br>
+${{{ g} _u} _v} = {{{{{ e} _u} ^I}} {{{{ e} _v} ^J}} {{{{ \eta} _I} _J}}}$
+<br>
+metric determinant:	${det(g)} = {1}$
+<br>
+${{{{ \Gamma} _a} _b} _c} = {{{\frac{1}{2}}} {{\left({{{{{{{ g} _a} _b} _{,c}} + {{{{ g} _a} _c} _{,b}}}{-{{{{ g} _b} _c} _{,a}}} + {{{{ c} _a} _b} _c} + {{{{ c} _a} _c} _b}}{-{{{{ c} _c} _b} _a}}}\right)}}}$
 <br>
 commutation coefficients:
-${{{{ c} _a} _b} ^c} = {0}$
+${c} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 metric:
-${{{ g} _{\hat{x}}} _{\hat{x}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{ g} _{\hat{x}}} _{\hat{y}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{ g} _{\hat{y}}} _{\hat{x}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{ g} _{\hat{y}}} _{\hat{y}}} = {{{x}^{2}} + {{y}^{2}}}$
+${g} = {\overset{u\downarrow v\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 metric inverse:
-${{{ g} ^{\hat{x}}} ^{\hat{x}}} = {\frac{1}{{{x}^{2}} + {{y}^{2}}}}$;
-${{{ g} ^{\hat{y}}} ^{\hat{x}}} = {-{1}}$;
-${{{ g} ^{\hat{y}}} ^{\hat{y}}} = {1}$
+${g} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}$
+<br>
 
 <br>
 metric derivative:
-${{{{ {\partial g}} _{\hat{x}}} _{\hat{x}}} _{\hat{x}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{{ {\partial g}} _{\hat{x}}} _{\hat{x}}} _{\hat{y}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{{ {\partial g}} _{\hat{x}}} _{\hat{y}}} _{\hat{x}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{{ {\partial g}} _{\hat{x}}} _{\hat{y}}} _{\hat{y}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{{ {\partial g}} _{\hat{y}}} _{\hat{x}}} _{\hat{x}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{{ {\partial g}} _{\hat{y}}} _{\hat{x}}} _{\hat{y}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{{ {\partial g}} _{\hat{y}}} _{\hat{y}}} _{\hat{x}}} = {{{x}^{2}} + {{y}^{2}}}$;
-${{{{ {\partial g}} _{\hat{y}}} _{\hat{y}}} _{\hat{y}}} = {{{x}^{2}} + {{y}^{2}}}$
+${{\partial g}} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 1st kind Christoffel:
-${{{{ \Gamma} _{\hat{x}}} _{\hat{x}}} _{\hat{x}}} = {{\frac{1}{2}}{\left({{{y}^{2}} + {{x}^{2}}}\right)}}$;
-${{{{ \Gamma} _{\hat{x}}} _{\hat{x}}} _{\hat{y}}} = {{\frac{1}{2}}{\left({{{y}^{2}} + {{x}^{2}}}\right)}}$;
-${{{{ \Gamma} _{\hat{x}}} _{\hat{y}}} _{\hat{x}}} = {{\frac{1}{2}}{\left({{{y}^{2}} + {{x}^{2}}}\right)}}$;
-${{{{ \Gamma} _{\hat{x}}} _{\hat{y}}} _{\hat{y}}} = {{\frac{1}{2}}{\left({{{y}^{2}} + {{x}^{2}}}\right)}}$;
-${{{{ \Gamma} _{\hat{y}}} _{\hat{x}}} _{\hat{x}}} = {{\frac{1}{2}}{\left({{{y}^{2}} + {{x}^{2}}}\right)}}$;
-${{{{ \Gamma} _{\hat{y}}} _{\hat{x}}} _{\hat{y}}} = {{\frac{1}{2}}{\left({{{y}^{2}} + {{x}^{2}}}\right)}}$;
-${{{{ \Gamma} _{\hat{y}}} _{\hat{y}}} _{\hat{x}}} = {{\frac{1}{2}}{\left({{{y}^{2}} + {{x}^{2}}}\right)}}$;
-${{{{ \Gamma} _{\hat{y}}} _{\hat{y}}} _{\hat{y}}} = {{\frac{1}{2}}{\left({{{y}^{2}} + {{x}^{2}}}\right)}}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\ \overset{b\downarrow c\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients / 2nd kind Christoffel:
-${{{{ \Gamma} ^{\hat{x}}} _{\hat{x}}} _{\hat{x}}} = {\frac{1}{2}}$;
-${{{{ \Gamma} ^{\hat{x}}} _{\hat{x}}} _{\hat{y}}} = {\frac{1}{2}}$;
-${{{{ \Gamma} ^{\hat{x}}} _{\hat{y}}} _{\hat{x}}} = {\frac{1}{2}}$;
-${{{{ \Gamma} ^{\hat{x}}} _{\hat{y}}} _{\hat{y}}} = {\frac{1}{2}}$
+${\Gamma} = {\overset{a\downarrow[{b\downarrow c\rightarrow}]}{\left[ \begin{matrix} \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] \\ \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients derivative:
-${{{{{ {\partial \Gamma}} ^{\hat{x}}} _{\hat{x}}} _{\hat{x}}} _{\hat{x}}} = {\frac{1}{2}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{x}}} _{\hat{x}}} _{\hat{x}}} _{\hat{y}}} = {\frac{1}{2}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{x}}} _{\hat{x}}} _{\hat{y}}} _{\hat{x}}} = {\frac{1}{2}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{x}}} _{\hat{x}}} _{\hat{y}}} _{\hat{y}}} = {\frac{1}{2}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{x}}} _{\hat{y}}} _{\hat{x}}} _{\hat{x}}} = {\frac{1}{2}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{x}}} _{\hat{y}}} _{\hat{x}}} _{\hat{y}}} = {\frac{1}{2}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{x}}} _{\hat{y}}} _{\hat{y}}} _{\hat{x}}} = {\frac{1}{2}}$;
-${{{{{ {\partial \Gamma}} ^{\hat{x}}} _{\hat{y}}} _{\hat{y}}} _{\hat{y}}} = {\frac{1}{2}}$
+${{\partial \Gamma}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 connection coefficients squared:
-${{{{{ {(\Gamma^2)}} ^{\hat{x}}} _{\hat{x}}} _{\hat{x}}} _{\hat{x}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{x}}} _{\hat{x}}} _{\hat{x}}} _{\hat{y}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{x}}} _{\hat{x}}} _{\hat{y}}} _{\hat{x}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{x}}} _{\hat{x}}} _{\hat{y}}} _{\hat{y}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{x}}} _{\hat{y}}} _{\hat{x}}} _{\hat{x}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{x}}} _{\hat{y}}} _{\hat{x}}} _{\hat{y}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{x}}} _{\hat{y}}} _{\hat{y}}} _{\hat{x}}} = {\frac{1}{4}}$;
-${{{{{ {(\Gamma^2)}} ^{\hat{x}}} _{\hat{y}}} _{\hat{y}}} _{\hat{y}}} = {\frac{1}{4}}$
+${{(\Gamma^2)}} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
 
 <br>
 Riemann curvature, $\sharp\flat\flat\flat$:
-${{{{{ R} ^a} _b} _c} _d} = {0}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 Riemann curvature, $\sharp\sharp\flat\flat$:
-${{{{{ R} ^a} ^b} _c} _d} = {0}$
+${R} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
+
 <br>
 Ricci curvature, $\sharp\flat$:
-${{{ R} ^a} _b} = {0}$
+${R} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Gaussian curvature:
 $0$
 
 <br>
 trace-free Ricci, $\sharp\flat$:
-${{{ {(R^{TF})}} ^a} _b} = {0}$
+${{(R^{TF})}} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Einstein / trace-reversed Ricci curvature, $\sharp\flat$:
-${{{ G} ^a} _b} = {0}$
+${G} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Schouten, $\sharp\flat$:
-${{{ P} ^a} _b} = {0}$
+${P} = {\overset{a\downarrow b\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}}$
+<br>
+
 <br>
 Weyl, $\sharp\sharp\flat\flat$:
-${{{{{ C} ^a} ^b} _c} _d} = {0}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
+<br>
+
 <br>
 Weyl, $\flat\flat\flat\flat$:
-${{{{{ C} _a} _b} _c} _d} = {0}$
+${C} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] \\  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right] &  \left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]\end{matrix} \right]}}$
+<br>
+
 <br>
 Plebanski, $\sharp\sharp\flat\flat$:
-${{{{{ P} ^a} ^b} _c} _d} = {0}$
+${P} = {\overset{a\downarrow b\rightarrow[{c\downarrow d\rightarrow}]}{\left[ \begin{matrix}  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} \\  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]} &  \overset{c\downarrow d\rightarrow}{\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}\end{matrix} \right]}}$
 <br>
-divergence:	${{{{ A} ^i} _{,i}} + {{{{{{ \Gamma} ^i} _i} _j}} {{{ A} ^j}}}} = {{{{3}} \cdot {{\frac{1}{2}}} {{{A^{\hat{x}}}}}} + {{{3}} \cdot {{\frac{1}{2}}} {{{A^{\hat{y}}}}}}}$
+
+<br>
+divergence:	${{{{ A} ^i} _{,i}} + {{{{{{ \Gamma} ^i} _i} _j}} {{{ A} ^j}}}} = {{\frac{\partial {A^{\hat{x}}}}{\partial x}} + {\frac{\partial {A^{\hat{y}}}}{\partial y}}}$
 <br>
 geodesic:
 <br>
-${\overset{a\downarrow}{\left[ \begin{matrix} \ddot{\hat{x}} \\ \ddot{\hat{y}}\end{matrix} \right]}} = {\overset{a\downarrow}{\left[ \begin{matrix} {{-1}} \cdot {{\frac{1}{2}}} {{{\left({{\dot{\hat{x}}} + {\dot{\hat{y}}}}\right)}^{2}}} \\ 0\end{matrix} \right]}}$
+${\overset{a\downarrow}{\left[ \begin{matrix} \ddot{\hat{x}} \\ \ddot{\hat{y}}\end{matrix} \right]}} = {\overset{a\downarrow}{\left[ \begin{matrix} 0 \\ 0\end{matrix} \right]}}$
 <br>
 
 <br>
@@ -200,41 +188,41 @@ parallel propagators:
 <br>
 
 <br>
-${{[\Gamma_x]}} = {\left[ \begin{matrix}  \frac{1}{2} &  \frac{1}{2} \\  0 &  0\end{matrix} \right]}$
+${{[\Gamma_x]}} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{x_L}}}^{{{x_R}}} {\left[ \begin{matrix}  \frac{1}{2} &  \frac{1}{2} \\  0 &  0\end{matrix} \right]}d x$
-=	$\left[ \begin{matrix}  {\frac{1}{2}}{\left({{-{{x_L}}} + {{x_R}}}\right)} &  {\frac{1}{2}}{\left({{-{{x_L}}} + {{x_R}}}\right)} \\  0 &  0\end{matrix} \right]$
+$\int\limits_{{{x_L}}}^{{{x_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d x$
+=	$\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P} _x$	=	$\exp\left( -{\int\limits_{{{x_L}}}^{{{x_R}}} {\left[ \begin{matrix}  \frac{1}{2} &  \frac{1}{2} \\  0 &  0\end{matrix} \right]}d x}\right)$
-=	$\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]$
+${ P} _x$	=	$\exp\left( -{\int\limits_{{{x_L}}}^{{{x_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d x}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{ P} _x}^{-1}$	=	$\exp\left({\int\limits_{{{x_L}}}^{{{x_R}}} {\left[ \begin{matrix}  \frac{1}{2} &  \frac{1}{2} \\  0 &  0\end{matrix} \right]}d x}\right)$
-=	$\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{-{{x_L}}} + {{x_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{-{{x_L}}} + {{x_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]$
+${{ P} _x}^{-1}$	=	$\exp\left({\int\limits_{{{x_L}}}^{{{x_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d x}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{[\Gamma_y]}} = {\left[ \begin{matrix}  \frac{1}{2} &  \frac{1}{2} \\  0 &  0\end{matrix} \right]}$
+${{[\Gamma_y]}} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
 
 <br>
-$\int\limits_{{{y_L}}}^{{{y_R}}} {\left[ \begin{matrix}  \frac{1}{2} &  \frac{1}{2} \\  0 &  0\end{matrix} \right]}d y$
-=	$\left[ \begin{matrix}  {\frac{1}{2}}{\left({{-{{y_L}}} + {{y_R}}}\right)} &  {\frac{1}{2}}{\left({{-{{y_L}}} + {{y_R}}}\right)} \\  0 &  0\end{matrix} \right]$
+$\int\limits_{{{y_L}}}^{{{y_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d y$
+=	$\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
-${ P} _y$	=	$\exp\left( -{\int\limits_{{{y_L}}}^{{{y_R}}} {\left[ \begin{matrix}  \frac{1}{2} &  \frac{1}{2} \\  0 &  0\end{matrix} \right]}d y}\right)$
-=	$\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]$
+${ P} _y$	=	$\exp\left( -{\int\limits_{{{y_L}}}^{{{y_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d y}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
-${{ P} _y}^{-1}$	=	$\exp\left({\int\limits_{{{y_L}}}^{{{y_R}}} {\left[ \begin{matrix}  \frac{1}{2} &  \frac{1}{2} \\  0 &  0\end{matrix} \right]}d y}\right)$
-=	$\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{-{{y_L}}} + {{y_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{-{{y_L}}} + {{y_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]$
+${{ P} _y}^{-1}$	=	$\exp\left({\int\limits_{{{y_L}}}^{{{y_R}}} {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}d y}\right)$
+=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
 <br>
 
 <br>
@@ -242,23 +230,23 @@ propagator commutation:
 <br>
 
 <br>
-[	${ P} _x$	,	${ P} _y$	] =	${ {\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]}} - { {\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]}}$	=	$\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
+[	${ P} _x$	,	${ P} _y$	] =	${ {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}{-{ {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}}}$	=	$\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
 <br>
 
 <br>
 propagator partials
 <br>
-${{\frac{\partial}{\partial x}}\left( \left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+${{\frac{\partial}{\partial x}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial y}}\left( \left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{x_L}} - {{x_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+${{\frac{\partial}{\partial y}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial x}}\left( \left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+${{\frac{\partial}{\partial x}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
-${{\frac{\partial}{\partial y}}\left( \left[ \begin{matrix}  \exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right) &  {-{1}} + {\exp\left({{\frac{1}{2}}{\left({{{y_L}} - {{y_R}}}\right)}}\right)} \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
+${{\frac{\partial}{\partial y}}\left( \left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]\right)} = {\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]}$
 <br>
-volume element: 	$0$
+volume element: 	$1$
 <br>
-volume integral: 	${{0}} {{\Delta x}} \cdot {{\Delta y}}$
+volume integral: 	${{\Delta x}} \cdot {{\Delta y}}$
 <br>
 finite volume (0,0)-form:
 <br>
@@ -266,15 +254,15 @@ ${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{{0}} {{\Delta x}} \cdot {{\Delta y}}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{{\Delta x}} \cdot {{\Delta y}}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{{0}} {{\Delta x}} \cdot {{\Delta y}}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{\Delta t}} \cdot {{\left({{{{\frac{1}{{{\Delta x}} \cdot {{\Delta y}}}}} {{0}}} + {{S(x_C)}}}\right)}}}}$
 <br>
 
 <br>
-${{u(x_C, t_R)}} = {¿}$
+${{u(x_C, t_R)}} = {{{u(x_C, t_L)}} + {{{{S(x_C)}}} \cdot {{\Delta t}}}}$
 <br>
 
 <br>

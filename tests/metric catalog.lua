@@ -10,6 +10,9 @@ require 'symmath'.setup{
 	},
 }
 
+local usePrintElem = false
+
+
 -- implicitVars will cover this automatically:
 local t,x,y,z = vars('t','x','y','z')
 -- fixVariableNames would cover this automatically:
@@ -49,7 +52,7 @@ local spacetimes = {
 		baseCoords = {x,y},
 		embedded = {x,y},
 		flatMetric = delta2,
-		chart = function() 
+		chart = function()
 			return Tensor('^I', x, y)
 		end,
 	},
@@ -77,7 +80,7 @@ local spacetimes = {
 		-- (which, for now, is only this coordinate chart)
 		-- it is equal to dx^a/dx^I in terms of x^a
 		eU = function()
-			return Tensor('^a_I', 
+			return Tensor('^a_I',
 				--{du/dx, du/dy, du/dz}:
 				{1, 0, -1/u},
 				--{dv/dx, dv/dy, dv/dv}:
@@ -110,7 +113,7 @@ local spacetimes = {
 		-- (which, for now, is only this coordinate chart)
 		-- it is equal to dx^a/dx^I in terms of x^a
 		eU = function()
-			return Tensor('^a_I', 
+			return Tensor('^a_I',
 				--{du/dx, du/dy, du/dz}:
 				{1, 0, 1/u},
 				--{dv/dx, dv/dy, dv/dv}:
@@ -124,13 +127,13 @@ local spacetimes = {
 			return sqrt(u^2 + v^2 + 1)
 		end,
 	},
---]]	
+--]]
 	{
 		title = 'polar, coordinate',
 		baseCoords = {r,phi},
 		embedded = {x,y},
 		flatMetric = delta2,
-		chart = function() 
+		chart = function()
 			return Tensor('^I', r * cos(phi), r * sin(phi))
 		end,
 	},
@@ -148,7 +151,7 @@ local spacetimes = {
 			-- but the capital denotes the non-coordinate basis
 			-- gHol_ab = g_AB e_a^A e_b^B
 			-- notice that orthonormal implies g_ab = eta_ab
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{1, 0},
 				{0, r}
 			)
@@ -157,7 +160,7 @@ local spacetimes = {
 			return r
 		end,
 	},
---[[ TODO fixme in the parallel proagator has some weird polynomial factoring into +-i log sqrt frac which I can't seem to reproduce ... weird edge case	
+--[[ TODO fixme in the parallel proagator has some weird polynomial factoring into +-i log sqrt frac which I can't seem to reproduce ... weird edge case
 	{
 		title = 'polar, anholonomic, conformal',
 		baseCoords = {r,theta},
@@ -167,7 +170,7 @@ local spacetimes = {
 			return Tensor('^I', r * cos(theta), r * sin(theta))
 		end,
 		eToEHol = function()
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{sqrt(r), 0},
 				{0, sqrt(r)}
 			)
@@ -184,7 +187,7 @@ local spacetimes = {
 		embedded = {t,x,y},
 		flatMetric = eta3,
 		chart = function()
-			return Tensor('^I', 
+			return Tensor('^I',
 				t,
 				r * cos(phi + omega * t),
 				r * sin(phi + omega * t))
@@ -211,7 +214,7 @@ local spacetimes = {
 		flatMetric = eta3,
 		chart = function()
 			omega = var('\\omega', {t, r})
-			return Tensor('^I', 
+			return Tensor('^I',
 				t,
 				r * cos(phi + omega),
 				r * sin(phi + omega)
@@ -231,14 +234,14 @@ local spacetimes = {
 		-- (which, for now, is only this coordinate chart)
 		-- it is equal to dx^a/dx^I in terms of x^a
 		eU = function()
-			return Tensor('^a_I', 
+			return Tensor('^a_I',
 				--{dphi/dx, dphi/dy, dphi/dz}:
 				{-sin(phi)/r, cos(phi)/r, 0},
 				--{dz/dx, dz/dy, dz/dz}:
 				{0, 0, 1})
 		end,
 		eToEHol = function()
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{1, 0},
 				{0, 1}
 			)
@@ -253,12 +256,12 @@ local spacetimes = {
 			return Tensor('^I', r * cos(phi), r * sin(phi), z)
 		end,
 		eU = function()
-			return Tensor('^a_I', 
+			return Tensor('^a_I',
 				{-sin(phi), cos(phi), 0},
 				{0, 0, 1})
 		end,
 		eToEHol = function()
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{1, 0},
 				{0, r}
 			)
@@ -276,12 +279,12 @@ local spacetimes = {
 			return Tensor('^I', r * cos(phi), r * sin(phi), z)
 		end,
 		eU = function()
-			return Tensor('^a_I', 
+			return Tensor('^a_I',
 				{-sin(phi) / sqrt(r), cos(phi) / sqrt(r), 0},
 				{0, 0, sqrt(r)})
 		end,
 		eToEHol = function()
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{sqrt(r), 0},
 				{0, sqrt(r)}
 			)
@@ -308,7 +311,7 @@ local spacetimes = {
 			return Tensor('^I', r * cos(theta), r * sin(theta), z)
 		end,
 		eToEHol = function()
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{1, 0, 0},
 				{0, r, 0},
 				{0, 0, 1}
@@ -318,6 +321,12 @@ local spacetimes = {
 			return r
 		end,
 	},
+--[[
+--	luajit: /home/chris/Projects/lua/symmath/matrix/eigen.lua:194: attempt to call method 'dim' (a nil value)
+--	stack traceback:
+--		/home/chris/Projects/lua/symmath/matrix/eigen.lua:194: in function </home/chris/Projects/lua/symmath/matrix/eigen.lua:27>
+--		./metric catalog.lua:1055: in main chunk
+--		[C]: at 0x5646d91191e0
 	{
 		title = 'cylindrical, anholonomic, conformal',
 		baseCoords = {r,theta,z},
@@ -327,7 +336,7 @@ local spacetimes = {
 			return Tensor('^I', r * cos(theta), r * sin(theta), z)
 		end,
 		eToEHol = function()
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{r^frac(1,3), 0, 0},
 				{0, r^frac(1,3), 0},
 				{0, 0, r^frac(1,3)}
@@ -337,6 +346,7 @@ local spacetimes = {
 			return r
 		end,
 	},
+--]]
 	{
 		title = 'cylindrical and time, coordinate',
 		baseCoords = {t,r,phi,z},
@@ -388,7 +398,7 @@ local spacetimes = {
 				{-sin(phi),cos(phi),0})
 		end,
 		eToEHol = function()
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{r, 0},
 				{0, r*sin(theta)}
 			)
@@ -403,7 +413,7 @@ local spacetimes = {
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
-			return Tensor('^I', 
+			return Tensor('^I',
 				r * sin(theta) * cos(phi),
 				r * sin(theta) * sin(phi),
 				r * cos(theta))
@@ -415,13 +425,13 @@ local spacetimes = {
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
-			return Tensor('^I', 
+			return Tensor('^I',
 				r * sin(theta) * cos(phi),
 				r * sin(theta) * sin(phi),
 				r * cos(theta))
 		end,
 		eToEHol = function()
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{1, 0, 0},
 				{0, r, 0},
 				{0, 0, r*sin(theta)}
@@ -431,21 +441,21 @@ local spacetimes = {
 			return r^2 * sin(theta)
 		end,
 	},
---[[ also not doing so well, kinda slow	
+--[[ also not doing so well, kinda slow
 	{
 		title = 'spherical, anholonomic, conformal',
 		baseCoords = {r,theta,phi},
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
-			return Tensor('^I', 
+			return Tensor('^I',
 				r * sin(theta) * cos(phi),
 				r * sin(theta) * sin(phi),
 				r * cos(theta))
 		end,
 		eToEHol = function()
 			local cf = r * sqrt(abs(sin(theta)))
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{cf, 0, 0},
 				{0, cf, 0},
 				{0, 0, cf}
@@ -479,7 +489,7 @@ local spacetimes = {
 		end,
 		eToEHol = function()
 			local cf = r * sqrt(abs(sin(theta)))
-			return Tensor('_a^A', 
+			return Tensor('_a^A',
 				{cf, 0},
 				{0, cf}
 			)
@@ -536,7 +546,7 @@ local spacetimes = {
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
-			return Tensor('^I', 
+			return Tensor('^I',
 				t,
 				r * sin(theta) * cos(phi),
 				r * sin(theta) * sin(phi),
@@ -558,14 +568,14 @@ local spacetimes = {
 		end,
 	},
 --[[ this is having problems integrating alpha_,r
--- TODO to implement FTC I need to have a function expression, or an evaluate-at expression (same idea)	
+-- TODO to implement FTC I need to have a function expression, or an evaluate-at expression (same idea)
 	{
 		title = 'spherical and time, lapse varying in radial',
 		baseCoords = {t,r,theta,phi},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
-			return Tensor('^I', 
+			return Tensor('^I',
 				t * alpha,
 				r * sin(theta) * cos(phi),
 				r * sin(theta) * sin(phi),
@@ -608,7 +618,7 @@ local spacetimes = {
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
 		chart = function()
-			return Tensor('^I', 
+			return Tensor('^I',
 				t * alpha,
 				r/alpha * sin(theta) * cos(phi),
 				r/alpha * sin(theta) * sin(phi),
@@ -623,7 +633,7 @@ local spacetimes = {
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
-			return Tensor('^I', 
+			return Tensor('^I',
 				(R + r * sin(theta)) * cos(phi),
 				(R + r * sin(theta)) * sin(phi),
 				r * cos(theta))
@@ -637,7 +647,7 @@ local spacetimes = {
 		embedded = {x,y,z},
 		flatMetric = delta3,
 		chart = function()
-			return Tensor('^I', 
+			return Tensor('^I',
 				(R + r * sin(theta)) * cos(phi),
 				(R + r * sin(theta)) * sin(phi),
 				r * cos(theta))
@@ -650,7 +660,7 @@ local spacetimes = {
 				{-sin(phi) / (R + r * sin(theta)), cos(phi) / (R + r * sin(theta)), 0})
 		end,
 	},
---]]	
+--]]
 	{
 		title = 'spiral, coordinate',
 		baseCoords = {r,phi},
@@ -702,7 +712,7 @@ for _,info in ipairs(spacetimes) do
 	print('<h3>'..info.title..'</h3>')
 
 
-	-- technically this is the variable whose derivative operator produces the basis, 
+	-- technically this is the variable whose derivative operator produces the basis,
 	-- and this is the associated coordinates
 	local baseCoords = info.baseCoords
 	local embedded = info.embedded
@@ -731,7 +741,11 @@ for _,info in ipairs(spacetimes) do
 	-- TODO how to build this Tensor for embeddedChart?
 	local eta = Tensor('_IJ', table.unpack(info.flatMetric))
 	print'flat metric:'
-	eta:printElem('\\eta', write)
+	if usePrintElem then
+		eta:printElem('\\eta', write)
+	else
+		printbr(var'\\eta''_IJ':eq(eta))
+	end
 	printbr()
 	printbr()
 
@@ -742,7 +756,7 @@ for _,info in ipairs(spacetimes) do
 	end
 
 
-	-- transform from Cartesian basis to chart basis 
+	-- transform from Cartesian basis to chart basis
 	-- e_I = Cartesian basis
 	-- e_u = chart basis
 	-- e_u = e_u^I e_I
@@ -755,22 +769,30 @@ for _,info in ipairs(spacetimes) do
 	-- e_a = coordinate basis
 	-- e_a = e_a^A e_A
 	-- e_A = e^a_A e_a
-	local eToEHol = info.eToEHol and info.eToEHol() or Tensor('_A^a', function(A, a) 
+	local eToEHol = info.eToEHol and info.eToEHol() or Tensor('_A^a', function(A, a)
 		return A == a and 1 or 0
 	end)
 	printbr'transform from basis to coordinate:'
-	eToEHol:printElem('\\tilde{e}', write)
+	if usePrintElem then
+		eToEHol:printElem('\\tilde{e}', write)
+	else
+		printbr(var'\\tilde{e}''_A^a':eq(eToEHol))
+	end
 	printbr()
 	printbr()
 	-- transform from coordinate basis to chart basis
 	local eHolToE = Tensor('^a_A', table.unpack((Matrix.inverse(eToEHol))))
 	printbr'transform from coorinate to basis:'
-	eHolToE:printElem('\\tilde{e}', write)
+	if usePrintElem then
+		eHolToE:printElem('\\tilde{e}', write)
+	else
+		printbr(var'\\tilde{e}''^a_A':eq(eHolToE))
+	end
 	printbr()
 	printbr()
 
 
-	-- create basis operators - as non-coordinate linear combinations of coordinates when available 
+	-- create basis operators - as non-coordinate linear combinations of coordinates when available
 	local tangentSpaceOperators = table()
 	local anholonomicCoords = table.mapi(baseCoords, function(c)
 		return c.set:var('\\hat{'..c.name..'}')
@@ -778,7 +800,9 @@ for _,info in ipairs(spacetimes) do
 	for i=1,n do
 		local onesi = Matrix:lambda({1,n}, function(_,j) return j==i and 1 or 0 end)
 		if eHolToE[i] == onesi[1] then
-			tangentSpaceOperators[i] = function(...) return ... end
+			tangentSpaceOperators[i] = function(x)
+				return x:diff(baseCoords[i])
+			end
 		else
 			tangentSpaceOperators[i] = function(x)
 				local sum = 0
@@ -809,27 +833,39 @@ for _,info in ipairs(spacetimes) do
 		if info.chart then
 			local u = info.chart()
 			printbr'chart in embedded coordinates:'
-			u:printElem('u', write)
+			if usePrintElem then
+				u:printElem('u', write)
+			else
+				printbr(var'u':eq(u))
+			end
 			printbr()
 			printbr()
 
 			printbr'basis operators applied to chart:'
 			e['_u^I'] = u'^I_,u'()	--dx^I/dx^a
 			printbr(var'e''_u^I':eq(var'u''^I_,u'))
-			e:printElem('e', write)
+			if usePrintElem then
+				e:printElem('e', write)
+			else
+				printbr(var'e''_u^I':eq(e))
+			end
 			printbr()
 		-- simply use basis provided
 		elseif info.basis then
 			printbr'basis in embedded coordinates:'
 			e['_u^I'] = info.basis()()
-			e:printElem('e', write)
+			if usePrintElem then
+				e:printElem('e', write)
+			else
+				printbr(var'e''_u^I':eq(e))
+			end
 			printbr()
 			printbr()
 		end
 
 		-- but what if this matrix isn't square?
 		-- for now provide an override and explicitly provide those eU's
-		-- that's why for the true eU value I should be solving P^u_,I 
+		-- that's why for the true eU value I should be solving P^u_,I
 		if info.eU then
 			eU = info.eU()
 		else
@@ -840,7 +876,11 @@ for _,info in ipairs(spacetimes) do
 		--printbr(var'e''^u_I'
 		--	:eq(var'e''_u^I'^-1)	LaTeX output chokes here
 		--	:eq(eU))
-		eU:printElem('e', write)
+		if usePrintElem then
+			eU:printElem('e', write)
+		else
+			printbr(var'e''^u_I':eq(eU))
+		end
 		printbr()
 	
 		-- show orthogonality of basis and its inverse
@@ -854,14 +894,14 @@ for _,info in ipairs(spacetimes) do
 
 		--[[
 		e_u = e_u^I d/dx^I
-		and e^v_J is the inverse of e_u^I 
+		and e^v_J is the inverse of e_u^I
 		such that e_u^I e^v_I = delta_u^v and e_u^I e^u_J = delta^I_J
 		
 		[e_u, e_v] = e_u e_v - e_v e_u
 			= e_u^I d/dx^I (e_v^J d/dx^J) - e_v^I d/dx^I (e_u^J d/dx^J)
 			= e_u^I ( (d/dx^I e_v^J) d/dx^J + e_v^J d/dx^I d/dx^J) - e_v^I ((d/dx^I e_u^J) d/dx^J + e_u^J d/dx^I d/dx^J)
 			= e_u^I (d/dx^I e_v^J) d/dx^J - e_v^I (d/dx^I e_u^J) d/dx^J
-			= (e_u^I e_v^J_,I - e_v^I e_u^J_,I) d/dx^J 
+			= (e_u^I e_v^J_,I - e_v^I e_u^J_,I) d/dx^J
 			= (e_u^I (dx^a/dx^I d/dx^a e_v^J) - e_v^I (dx^a/dx^I d/dx^a e_u^J)) d/dx^J
 			= (e_u^I e_v^J_,a - e_v^I e_u^J_,a) e^a_I d/dx^J
 			= (delta_u^a e_v^J_,a - delta_v^a e_u^J_,a) d/dx^J
@@ -874,18 +914,30 @@ for _,info in ipairs(spacetimes) do
 		--]]
 		c = Tensor'_ab^c'
 		c['_ab^c'] = ((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')()
-		c:printElem('c', write)
+		if usePrintElem then
+			c:printElem('c', write)
+		else
+			printbr(var'c''_ab^c':eq(c))
+		end
 		printbr()
 
 		g = (e'_u^I' * e'_v^J' * eta'_IJ')()
 		printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
-		g:printElem('g', write)
+		if usePrintElem then
+			g:printElem('g', write)
+		else
+			printbr(var'g''_uv':eq(g))
+		end
 		printbr()
 	
 		printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
 	elseif info.metric then
 		g = info.metric()
-		g:printElem('g', write)
+		if usePrintElem then
+			g:printElem('g', write)
+		else
+			printbr(var'g''_uv':eq(g))
+		end
 		printbr()
 	else
 		error'here'
@@ -903,7 +955,11 @@ for _,info in ipairs(spacetimes) do
 		print(field.title..':')
 		local t = self[field.name]
 		if Tensor:isa(t) then
-			t:printElem(field.symbol, write)
+			if usePrintElem then
+				t:printElem(field.symbol, write)
+			else
+				printbr(var(field.symbol):eq(t))
+			end
 		else
 			print(t)
 		end
@@ -929,7 +985,7 @@ for _,info in ipairs(spacetimes) do
 	local divVarExpr = var'A''^i_,i' + var'\\Gamma''^i_ij' * var'A''^j'
 	local divExpr = divVarExpr:replace(var'A', A):replace(var'\\Gamma', Gamma)
 	-- TODO only simplify TensorRef, so the indexes are fixed
-	printbr('divergence:', divVarExpr:eq(divExpr():factorDivision())) 
+	printbr('divergence:', divVarExpr:eq(divExpr():factorDivision()))
 	
 	printbr'geodesic:'
 	-- TODO unravel equaliy, or print individual assignments
@@ -977,7 +1033,7 @@ printbr()
 			return connCoord[a][i][b]
 		end)
 		
-		local name = baseCoords[i].name	
+		local name = baseCoords[i].name
 	
 		printbr(var('[\\Gamma_'..name..']'):eq(conn))
 		printbr()
@@ -1007,12 +1063,12 @@ end
 		local R, L, allLambdas = ev.R, ev.L, ev.allLambdas
 		local expNegIntExpr, expIntExpr
 		if L then
-			local expLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
-				return exp(lambda) 
+			local expLambda = Matrix.diagonal( allLambdas:mapi(function(lambda)
+				return exp(lambda)
 			end):unpack() )
 			expNegIntExpr = (R * expLambda * L)()
-			local invExpLambda = Matrix.diagonal( allLambdas:mapi(function(lambda) 
-				return exp(-lambda) 
+			local invExpLambda = Matrix.diagonal( allLambdas:mapi(function(lambda)
+				return exp(-lambda)
 			end):unpack() )
 			expIntExpr = (R * invExpLambda * L)()
 		else
@@ -1024,12 +1080,12 @@ end
 				local foundZeros
 				for i=2,n do
 					powers[i] = (powers[i-1] * A)()
-					if powers[i] == zero then 
+					if powers[i] == zero then
 						foundZeros = true
-						break 
+						break
 					end
 				end
-				-- the matrix exp is a finite sum of powers of the matrix ... 
+				-- the matrix exp is a finite sum of powers of the matrix ...
 				-- TODO include this branch into the matrix.exp function
 				local expA = A
 				local div = 1
@@ -1071,7 +1127,7 @@ end
 			if k ~= i then
 				PiL = PiL:replace(baseCoords[k], xLs[k])
 			end
-		end	
+		end
 		
 		for j=i+1,n do
 			local Pj = propFwd[j]
@@ -1165,7 +1221,7 @@ end
 	local cellVolume = coordVolumeElem
 	for k=1,n do
 		if not cellVolume:findChild(baseCoords[k]) then
-			cellVolume = cellVolume * deltas[k] 
+			cellVolume = cellVolume * deltas[k]
 		else
 			cellVolume = cellVolume:integrate(baseCoords[k], xLs[k], xRs[k])()
 			cellVolume = replaceDeltas(cellVolume):simplify()
@@ -1187,12 +1243,12 @@ end
 	for k,coordk in ipairs(basisOperators) do
 		local kLname = xLs[k].name
 		local kRname = xRs[k].name
-		local term = 
-			var('J('..kRname..')') 
+		local term =
+			var('J('..kRname..')')
 			* var('{e_{'..coordk.name..'}}^{\\bar{'..coordk.name..'}}('..kRname..')')
 			* FRs[k]
 			-
-			var('J('..kLname..')') 
+			var('J('..kLname..')')
 			* var('{e_{'..coordk.name..'}}^{\\bar{'..coordk.name..'}}('..kLname..')')
 			* FLs[k]
 		for j,coordj in ipairs(basisOperators) do
@@ -1236,7 +1292,7 @@ end
 	for k,coordk in ipairs(basisOperators) do
 		local kLname = xLs[k].name
 		local kRname = xRs[k].name
-		local term = 
+		local term =
 			coordVolumeElem:replace(basisOperators[k], xRs[k])
 			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(basisOperators[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
 			* FRs[k]
@@ -1268,7 +1324,7 @@ end
 	for k,coordk in ipairs(basisOperators) do
 		local kLname = xLs[k].name
 		local kRname = xRs[k].name
-		local term = 
+		local term =
 			coordVolumeElem:replace(basisOperators[k], xRs[k])
 			* (eToEHol and eToEHol[k][k] or Constant(1)):replace(basisOperators[k], xRs[k])	-- diagonal {e_a}^I(x_R) quick fix
 			* FRs[k]
