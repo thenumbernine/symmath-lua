@@ -24,8 +24,10 @@ function asinh:reverse(soln, index)
 	return symmath.sinh(soln)
 end
 
-asinh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
-asinh.getRealRange = require 'symmath.set.RealSubset'.getRealRange_inc
+-- TODO FIXME
+-- this, combined with op/mul.lua:855 "inf * anything = inf" rule, is causing crashes
+--asinh.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
+--asinh.getRealRange = require 'symmath.set.RealSubset'.getRealRange_inc
 
 asinh.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
 
