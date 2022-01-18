@@ -586,26 +586,47 @@ div.rules = {
 		end},
 		--]]
 
-		-- how about only if both leading terms are negative
+		-- [[ how about only if both leading terms are negative
 		-- this fixes -1/(1-x) == 1/(-1+x)
 		{negOverNeg = function(prune, expr)
+--print('div/Prune/negOverNeg')
 			symmath = symmath or require 'symmath'
 			local p, q = table.unpack(expr)
 			local fp = p:iteradd()()
 			local fq = q:iteradd()()
 			local unm = symmath.op.unm
 			local Constant = symmath.Constant
-			local function isNeg(x)
-				if unm:isa(x) then return true end
-				if Constant:isa(x) then return x.value < 0 end
-			end
+
 			-- go by negative real set?  but what about -x vs x, when both are reals?
 			-- go by negative sign?  but what about constants?
 			-- go by negative sign *or* negative constants.
-			if isNeg(fp) and isNeg(fq) then
+			--[=[
+			local function isNeg(x)
+				return symmath.set.negativeReal:contains(x)
+			end
+			--]=]
+			-- [=[
+			local function isNeg(x)
+				x = x:itermul()()
+				if unm:isa(x) then return true end
+				if Constant:isa(x) then return x.value < 0 end
+			end
+			--]=]
+			
+			local np = isNeg(fp)
+			local nq = isNeg(fq)
+			
+			if np and nq then
+--print('div/Prune/negOverNeg np and nq')
+				-- [=[
 				return prune:apply(-p) / prune:apply(-q)
+				--]=]
+				--[=[ causes lots of fails
+				return prune:apply(-p / -q)
+				--]=]
 			end
 		end},
+		--]]
 
 		-- x / -c => -1 * (x / c)
 		{xOverMinusOne = function(prune, expr)
