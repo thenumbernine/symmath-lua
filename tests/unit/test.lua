@@ -104,6 +104,7 @@ simplifyAssertEq( (-128 + 64*sqrt(5))/(64*sqrt(5)), -2 / sqrt(5) + 1 )
 -- factor(): mul add div
 
 -- trigonometry
+
 simplifyAssertEq((sin(x)^2+cos(x)^2)(), 1)
 simplifyAssertEq((y*sin(x)^2+y*cos(x)^2)(), y)
 simplifyAssertEq((y+y*sin(x)^2+y*cos(x)^2)(), 2*y)
@@ -115,8 +116,19 @@ simplifyAssertEq(-1+cos(x)^2+cos(x)^2, -1+2*cos(x)^2)
 simplifyAssertEq( cos(x)^2 + sin(x)^2, 1)
 simplifyAssertEq( (cos(x)*y)^2 + (sin(x)*y)^2, y^2)
 
+assert( printbr( (cos(b)^2 - 1)() ) == -sin(b)^2 )
 assert( printbr( (a * cos(b)^2 - a)() ) == -(a * sin(b)^2) )
-assert( printbr( (a^2 * cos(b)^2 - a^2)() ) == -a^2 * sin(b)^2 )
+assert( printbr( (a^2 * cos(b)^2 - a^2)() ) == -(a^2 * sin(b)^2) )		-- the only one that doesn't work
+assert( printbr( (a^3 * cos(b)^2 - a^3)() ) == -(a^3 * sin(b)^2) )
+assert( printbr( (a^4 * cos(b)^2 - a^4)() ) == -(a^4 * sin(b)^2) )
+
+assert( printbr( (1 - cos(b)^2)() ) == sin(b)^2 )
+assert( printbr( (a - a * cos(b)^2)() ) == a * sin(b)^2 )
+assert( printbr( (a^2 - a^2 * cos(b)^2)() ) == a^2 * sin(b)^2 )			-- also the only one that doesn't work
+assert( printbr( (a^3 - a^3 * cos(b)^2)() ) == a^3 * sin(b)^2 )
+assert( printbr( (a^4 - a^4 * cos(b)^2)() ) == a^4 * sin(b)^2 )
+
+
 
 -- it would be nice if the final form of sin(x)^2 was exactly that.
 assert( printbr((sin(x)^2)()) == sin(x)^2 )
