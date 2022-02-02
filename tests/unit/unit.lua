@@ -33,6 +33,21 @@ return function(env, title)
 		end
 	end
 
+	function env.simplifyLHSAssertEq(a, b, showStackAnyways)
+		assert(a ~= nil, "simplifyLHSAssertEq lhs is nil")
+		assert(b ~= nil, "simplifyLHSAssertEq rhs is nil")
+		local sa = symmath.simplify(a)
+		local ta = symmath.simplify.stack
+		local fail = sa ~= b
+		if fail or showStackAnyways then
+			print('expected '..tostring(a)..' to equal '..tostring(b)..'<br>')
+			print('found '..tostring(sa)..' vs '..tostring(b)..'<br>')
+			print('lhs stack<br>')
+			for _,x in ipairs(ta) do print(x[1], x[2], '<br>') end
+			if fail then error'failed' end
+		end
+	end
+
 	function env.simplifyAssertNe(a,b, showStackAnyways)
 		local sa = symmath.simplify(a)
 		local ta = symmath.simplify.stack

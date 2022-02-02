@@ -2310,11 +2310,20 @@ local x = charpoly[1]:clone()	-- only take the lhs
 
 local gammaUxxVar = var'\\gamma^{xx}'
 for _,root in ipairs{
+--[[ easiest first	
 	Constant(0),
 	alpha * sqrt(gammaUxxVar),
 	-alpha * sqrt(gammaUxxVar),
 	alpha * sqrt(f * gammaUxxVar),
 	-alpha * sqrt(f * gammaUxxVar),
+--]]
+-- [[ hardest first
+	-alpha * sqrt(f * gammaUxxVar),
+	alpha * sqrt(f * gammaUxxVar),
+	-alpha * sqrt(gammaUxxVar),
+	alpha * sqrt(gammaUxxVar),
+	Constant(0),
+--]]
 } do
 	while true do
 		local p, q = polydiv.polydivr(x, (lambda - root)(), lambda)
@@ -2435,6 +2444,7 @@ local eig = dFijkl_dUpqmn_expanded:eigen{
 	lambdaVar = lambda,
 	lambdas = lambdas,
 	verbose = true,
+	nullspaceVerbose = true,
 	dontCalcL = true,
 }
 

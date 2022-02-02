@@ -2188,4 +2188,53 @@ function Expression:polyform()
 	return expr
 end
 
+-- this is a helper function for simplification
+-- whether an expression has a leading minus to it 
+-- (assuming it has been pruned once and the constants / unm's are on the left hand side)
+function Expression:hasLeadingMinus()
+	symmath = symmath or require 'symmath'
+	local x = self
+	x = x:iteradd()()
+	x = x:itermul()()
+	if symmath.op.unm:isa(x) then return true end
+	if symmath.Constant:isa(x) then return x.value < 0 end
+end
+
+-- TODO if we find a mutable child then we shouldn't ever cache the flag
+-- but then that means we shouldn't be calling this repeatedly or it'll be multiple O(exp(n)) calls
+function Expression:hasTrig()
+	if self.mutable then
+		self.hasTrigCode = nil
+		self.hasMutableChild = true
+		return nil
+	end
+	if self.hasTrigCached ~= nil then
+		return self.hasTrigCached
+	end
+	symmath = symmath or require 'symmath'
+	if symmath.cos:isa(self)
+	or symmath.sin:isa(self)
+	or symmath.tan:isa(self)
+	or symmath.asin:isa(self)
+	or symmath.acos:isa(self)
+	or symmath.atan:isa(self)
+	or symmath.atan2:isa(self)
+	then
+		self.hasTrigCached = true
+		return true
+	end
+	for i=1,#self do
+		if self[i]:hasTrig() then
+			self.hasTrigCached = true
+			return true
+		end
+		if self[i].hasMutableChild then
+			self.hasTrigCode = nil
+			return nil
+		end
+	end
+	self.hasTrigCached = false
+	return false
+end
+
 return Expression

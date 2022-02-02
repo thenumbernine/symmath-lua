@@ -26,9 +26,10 @@ local function nullspace(A, verbose)
 			verbose('op # '..n
 				..' op = '..op
 				..' row = '..row
-				..' i,j = '..i..','..j
+				..' i,j = '..i..','..tostring(j)
+				..' #nodes = '..AInv:countNodes()
 			)
-			verbose('A | AInv = '..Matrix{A, AInv})
+--			verbose('A | AInv = '..Matrix{A, AInv})
 		end)
 		verbose('inverse result is: '.._)
 		verbose('reduced result is: '..reduce)

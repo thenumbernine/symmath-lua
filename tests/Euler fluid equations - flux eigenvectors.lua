@@ -491,15 +491,15 @@ A_expanded = A_expanded:subst(P_for_Cs)()
 printbr(A'^I_J':eq(A_expanded))
 printbr()
 
-printbr'...in just the Cartesian x-axis...'
-A_expanded = A_expanded
-	:replace(n'_x', 1)
-	:replace(n'_y', 0)
-	:replace(n'_z', 0)
-	:replace(n'^x', 1)
-	:replace(n'^y', 0)
-	:replace(n'^z', 0)
-	:simplify()
+local using = table{n'_x':eq(1), n'_y':eq(0), n'_z':eq(0)}
+printbr('...in just the x-axis (using', using:mapi(tostring):concat', ', ')')
+A_expanded = A_expanded:subst(using:unpack())()
+printbr(A'^I_J':eq(A_expanded))
+printbr()
+
+local using = table{n'^x':eq(1), n'^y':eq(0), n'^z':eq(0)}
+printbr('...with a Cartesian metric (using', using:mapi(tostring):concat', ', ')')
+A_expanded = A_expanded:subst(using:unpack())()
 printbr(A'^I_J':eq(A_expanded))
 printbr()
 

@@ -50,38 +50,15 @@ unm.rules = {
 
 --[[ hmm, not needed as long as I use this x = x:itermul()() rule in div/Prune/negOverNeg
 		{negOfMaybeNegOverMaybeNeg = function(prune, expr)
---print('unm/Prune/negOfMaybeNegOverMaybeNeg')
 			-- a similar rule is in div that turns -a / -b => a/b
 			-- but this one is directed at -(-a/b) => -(a/-b) => a/b
-			
-			symmath = symmath or require 'symmath'
 			local p, q = table.unpack(expr)
-			local fp = p:iteradd()()
-			local fq = q:iteradd()()
-			local unm = symmath.op.unm
-			local Constant = symmath.Constant
-			
-			-- the same isNeg is in div/Prune/negOverNeg
-			local function isNeg(x)
-				-- [=[
-				x = x:itermul()()
-				if unm:isa(x) then return true end
-				if Constant:isa(x) then return x.value < 0 end
-				--]=]
-				--[=[
-				return symmath.set.negativeReal:contains(x)
-				--]=]
-			end
-
-			local np = isNeg(fp)
-			local nq = isNeg(fq)
-
+			local np = p:hasLeadingMinus()
+			local nq = q:hasLeadingMinus()
 			if np and not nq then
---print('unm/Prune/negOfMaybeNegOverMaybeNeg np and not nq')
 				return prune:apply(-p) / q
 			elseif not np and nq then
---print('unm/Prune/negOfMaybeNegOverMaybeNeg not np and nq')
-				return p / prune:apply(q)
+				return p / prune:apply(-q)
 			end
 		end},
 --]]

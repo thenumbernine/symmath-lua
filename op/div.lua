@@ -98,10 +98,7 @@ function div:evaluateLimit(x, a, side)
 			local Wildcard = symmath.Wildcard
 			-- x:match(x^Wildcard(1)) won't match x^Constant(1)
 			local n = q:match(x^Wildcard{1, cannotDependOn=x})
-			if n
-			and symmath.set.integer:contains(n)
-			then
-
+			if n and symmath.set.integer:contains(n) then
 				if symmath.set.evenInteger:contains(n) then
 					return prune(p * inf)
 				elseif symmath.set.oddInteger:contains(n) then	-- TODO just else, so long as inf is alreayd excluded
@@ -513,6 +510,7 @@ div.rules = {
 			if expr[1] == inf then
 				-- inf / negative = -inf
 				if symmath.set.negativeReal:contains(expr[2]) then
+				--if expr[2]:hasLeadingMinus() then
 					return -inf
 				end
 				-- inf / 0 = invalid
@@ -590,33 +588,11 @@ div.rules = {
 		-- this fixes -1/(1-x) == 1/(-1+x)
 		{negOverNeg = function(prune, expr)
 --print('div/Prune/negOverNeg')
-			symmath = symmath or require 'symmath'
 			local p, q = table.unpack(expr)
-			local fp = p:iteradd()()
-			local fq = q:iteradd()()
-			local unm = symmath.op.unm
-			local Constant = symmath.Constant
-
 			-- go by negative real set?  but what about -x vs x, when both are reals?
 			-- go by negative sign?  but what about constants?
 			-- go by negative sign *or* negative constants.
-			--[=[
-			local function isNeg(x)
-				return symmath.set.negativeReal:contains(x)
-			end
-			--]=]
-			-- [=[
-			local function isNeg(x)
-				x = x:itermul()()
-				if unm:isa(x) then return true end
-				if Constant:isa(x) then return x.value < 0 end
-			end
-			--]=]
-			
-			local np = isNeg(fp)
-			local nq = isNeg(fq)
-			
-			if np and nq then
+			if p:hasLeadingMinus() and q:hasLeadingMinus() then
 --print('div/Prune/negOverNeg np and nq')
 				-- [=[
 				return prune:apply(-p) / prune:apply(-q)
@@ -824,6 +800,7 @@ div.rules = {
 				for y in x:itermul() do
 					if pow:isa(y)
 					and symmath.set.negativeReal:contains(y[2])
+					--and y[2]:hasLeadingMinus()
 					then
 						local fix = y[1] ^ -y[2]
 						p = p * fix
@@ -922,10 +899,12 @@ div.rules = {
 			if mul:isa(denom) then
 				for i=1,#denom do
 					if Constant:isa(denom[i])
-					and symmath.set.negativeReal:contains(denom[i])  --and denom[i].value < 0
+					and denom[i].value < 0
+					--and symmath.set.negativeReal:contains(denom[i])  
 					then
 						denom = denom:clone()
-						denom[i] = prune:apply(-denom[i])
+						--denom[i] = prune:apply(-denom[i])
+						denom[i] = Constant(-denom[i].value)
 						return prune:apply(-num / denom)
 					end
 				end

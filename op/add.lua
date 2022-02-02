@@ -848,14 +848,18 @@ add.rules = {
 			-- TODO should this be done in the ProdLists() ctor?
 			-- but without this, Platonic Solid test has simplification loops ...
 			for i=1,#prodLists do
+				local pi = prodLists[i]
+				local ni = #pi
 				local found
 				repeat
-					found = false
-					for j=1,#prodLists[i]-1 do
-						for k=#prodLists[i],j+1,-1 do
-							if prodLists[i][j].term == prodLists[i][k].term then
-								prodLists[i][j].power = (prodLists[i][j].power + prodLists[i][k].power):prune()
-								table.remove(prodLists[i], k)
+					found = nil
+					for j=1,ni-1 do
+						local pij = assert(pi[j])
+						for k=ni,j+1,-1 do
+							local pik = assert(pi[k])
+							if pij.term == pik.term then	-- got a nil reference error here before when it was doing [i][j] vs [i][k] ... hmm ...
+								pij.power = (pij.power + pik.power):prune()
+								table.remove(pi, k)
 								found = true
 								break
 							end

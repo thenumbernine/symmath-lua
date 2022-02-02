@@ -97,7 +97,7 @@ printbr(PStar,
 -- and/or (b) just replace all the e_x, e_y cross n with a basis {n, n2, n3}
 -- (just like the MathWorksheets "Euler Fluid Equations - Curved Geometry - Contravariant" worksheet already does).
 local nLen = var'|n|'
-local nLenSq_def = (nLen^2):eq(n'^1' * n'_1' + n'^2' * n'_2' + n'^3' * n'_3')
+local nLenSq_def = (nLen^2):eq(n'^x' * n'_x' + n'^y' * n'_y' + n'^z' * n'_z')
 
 local Cs = var'c_s'
 local Cs_def = Cs:eq(sqrt(
@@ -148,17 +148,20 @@ printbr()
 --]=]
 
 
+local x, y, z = vars('x', 'y', 'z')
+local xs = table{x, y, z}
+local chart = Tensor.Chart{coords=xs}
 
 local function expandMatrix5to7(A)
 	return Matrix:lambda({7,7}, function(i,j)
 		local remap = {1,2,2,2,3,4,5}
-		local replace = {nil, 1,2,3, nil, nil}
+		local replace = {nil, xs[1].name, xs[2].name, xs[3].name, nil, nil}
 		return A[remap[i]][remap[j]]:map(function(x)
 			if x == delta'^i_j' then
 				return i == j and 1 or 0
 			end
 		end):map(function(x)
-			if TensorIndex:isa(x) then
+			if Tensor.Index:isa(x) then
 				if x.symbol == 'i' then
 					x = x:clone()
 					x.symbol = assert(replace[i])
@@ -210,7 +213,10 @@ local dU_dW_expanded = expandMatrix5to7(dU_dW_def)
 printbr'Expanded:'
 printbr(U'^I':diff(W'^J'):eq(dU_dW_expanded))
 
-local vTildeSq_wrt_vElem = vTildeSq_var:eq(vTilde'^1' * vTilde'_1' + vTilde'^2' * vTilde'_2' + vTilde'^3' * vTilde'_3')
+local vTilde_u_dense = Tensor('^i', function(i) return vTilde('^'..xs[i].name) end)
+local vTilde_l_dense = Tensor('_i', function(i) return vTilde('_'..xs[i].name) end)
+local vTildeSq_wrt_vElem = vTildeSq_var:eq(vTilde_u_dense'^i' * vTilde_l_dense'_i')()
+printbr(vTildeSq_wrt_vElem)
 
 local dW_dU_expanded = dU_dW_expanded:inv():subst(vTildeSq_wrt_vElem)():subst(vTildeSq_wrt_vElem:switch())
 printbr(W'^I':diff(U'^J'):eq(dW_dU_expanded))
@@ -290,8 +296,9 @@ printbr()
 
 printbr'Acoustic matrix:'
 
+local vTilde_n = var'\\tilde{v}_n'
 local A = var'A'
-local A_lhs = A'^I_J' + n'_a' * vTilde'^a' * delta'^I_J'
+local A_lhs = A'^I_J' + vTilde_n * delta'^I_J'
 
 printbr(A_lhs:eq(W'^I':diff(U'^K') * F'^K':diff(W'^J')))
 
@@ -311,7 +318,6 @@ A_plus_delta_def = A_plus_delta_def
 	:replace(vTilde'^c' * vTilde'_c', vTildeSq_var)
 	:replace(vTilde'^e' * vTilde'_e', vTildeSq_var)
 
-local vTilde_n = var'\\tilde{v}_n'
 A_plus_delta_def = A_plus_delta_def  
 	:replace(vTilde'^a' * n'_a', vTilde_n)
 
@@ -325,9 +331,71 @@ end))()
 printbr(A'^I_J':eq(A_def))
 printbr()
 
+
+local Cp_from_gamma_Cv = gamma_from_Cp_Cv:solve(Cp)
+local gammaMinusOne = var'\\gamma_1'
+local gammaMinusOne_def =  gammaMinusOne:eq(gamma - 1)
+
+
+local better_Cs_def = Cs_def
+	:replace(vTilde'^c' * n'_c', vTilde_n)
+	:replace(vTilde'^d' * n'_d', vTilde_n)
+	:subst(R_from_Cp_Cv)()
+	:subst(Cp_from_gamma_Cv)()
+	:replace(rhoBar * gamma, rhoBar * (gammaMinusOne + 1))()
+	:subst(nLenSq_def:solve(n'^x' * n'_x'))()
+	:subst(vTilde_n:eq(
+			n'^x' * vTilde'_x'
+			+ n'^y' * vTilde'_y'
+			+ n'^z' * vTilde'_z'
+		):solve(n'^x' * vTilde'_x'))()
+printbr(better_Cs_def)
+
+local PStar_from_Cs = (better_Cs_def^2)():solve(PStar)
+printbr(PStar_from_Cs)
+
+
 printbr'Acoustic matrix, expanded:'
 local A_expanded = expandMatrix5to7(A_def)
 
+printbr(A'^I_J':eq(A_expanded))
+printbr()
+
+-- TODO substitute speed of sound here
+
+local using = table{n'_x':eq(1), n'_y':eq(0), n'_z':eq(0)}
+printbr('...in just the x-axis (using', using:mapi(tostring):concat', ', ')')
+A_expanded = A_expanded:subst(using:unpack())()
+printbr(A'^I_J':eq(A_expanded))
+printbr()
+
+local using = table{n'^x':eq(1), n'^y':eq(0), n'^z':eq(0)}
+printbr('...with a Cartesian metric (using', using:mapi(tostring):concat', ', ')')
+A_expanded = A_expanded:subst(using:unpack())()
+-- by the prev assumption I am suspicious maybe vTilde_n should be vTilde^x, but after this 2nd set of assumptions it will definitely match vTilde_x as well
+A_expanded = A_expanded:replace(vTilde_n, vTilde'_x')
+printbr(A'^I_J':eq(A_expanded))
+printbr()
+
+-- and since our Cs definition has to do with vTilde_n times vTilde_i ... maybe we can't substitute it before the Cartesian basis assumption
+-- but here I can, with the Cartesian x-axis assumption, since the expression in the A matrix matches the Cs def for x-axis Cartesian
+
+printbr'speed of sound in Cartesian x-axis:'
+local Cs_xCart_def = better_Cs_def
+	:replace(nLen^2, 1)
+	:replace(vTilde_n, vTilde'_x')
+	:subst(gammaMinusOne_def:solve(gamma))	-- TODO do this in better_Cs_def?
+	:simplify()
+printbr(Cs_xCart_def)
+
+--[[
+A_expanded = A_expanded:subst(Cs_xCart_def:solve(PStar))()
+printbr(A'^I_J':eq(A_expanded))
+printbr()
+os.exit()
+--]]
+
+--[[
 printbr('...removing the last two rows and columns, which are all zero...')
 for i=1,7 do
 	for j=6,7 do
@@ -339,15 +407,16 @@ A_expanded = Matrix:lambda({5,5}, function(i,j)
 	return A_expanded[i][j]:clone()
 end)
 printbr(A'^I_J':eq(A_expanded))
-
-local Cp_from_gamma_Cv = gamma_from_Cp_Cv:solve(Cp)
-local gammaMinusOne = var'\\gamma_1'
-local gammaMinusOne_def =  gammaMinusOne:eq(gamma - 1)
+--]]
 
 printbr('using', R_from_Cp_Cv, ',', Cp_from_gamma_Cv, ',', gammaMinusOne_def)
 A_expanded = A_expanded:subst(R_from_Cp_Cv)()
 	:subst(Cp_from_gamma_Cv)()
 	:replace(rhoBar * gamma, rhoBar * (gammaMinusOne + 1))()
+	:subst(gammaMinusOne_def:solve(gamma))
+	:simplify()
+	:subst((PStar * gammaMinusOne_def)())
+	:simplify()
 
 printbr(A'^I_J':eq(A_expanded))
 printbr()
@@ -359,91 +428,81 @@ printbr(A'^I_J':eq(var'(R_A)''^I_M' * var'(\\Lambda_A)''^M_N' * var'(L_A)''^N_J'
 local vTilde_cross_n = var'(\\tilde{v} \\times n)'
 
 local vTilde_cross_n_def = table{
-	vTilde_cross_n'^1':eq(vTilde'_2' * n'_3' - vTilde'_3' * n'_2'),
-	vTilde_cross_n'^2':eq(vTilde'_3' * n'_1' - vTilde'_1' * n'_3'),
-	vTilde_cross_n'^3':eq(vTilde'_1' * n'_2' - vTilde'_2' * n'_1'),
+	vTilde_cross_n'^x':eq(vTilde'_y' * n'_z' - vTilde'_z' * n'_y'),
+	vTilde_cross_n'^y':eq(vTilde'_z' * n'_x' - vTilde'_x' * n'_z'),
+	vTilde_cross_n'^z':eq(vTilde'_x' * n'_y' - vTilde'_y' * n'_x'),
 }
+for _,eqn in ipairs(vTilde_cross_n_def) do
+	printbr(eqn)
+end
 
 local nvn_var = var'(n \\times \\tilde{v} \\times n)'
 
 local A_eig = A_expanded:eigen()
 
-local better_Cs_def = Cs_def
-	:replace(vTilde'^c' * n'_c', vTilde_n)
-	:replace(vTilde'^d' * n'_d', vTilde_n)
-	:subst(R_from_Cp_Cv)()
-	:subst(Cp_from_gamma_Cv)()
-	:replace(rhoBar * gamma, rhoBar * (gammaMinusOne + 1))()
-	:subst(nLenSq_def:solve(n'^1' * n'_1'))()
-	:subst(vTilde_n:eq(
-			n'^1' * vTilde'_1'
-			+ n'^2' * vTilde'_2'
-			+ n'^3' * vTilde'_3'
-		):solve(n'^1' * vTilde'_1'))()
-printbr(better_Cs_def)
-
-local PStar_from_Cs = (better_Cs_def^2)():solve(PStar)
-printbr(PStar_from_Cs)
-
 if A_eig.defective then
 -- fixed up the hack for now...
-	A_eig.R = A_eig.R:subst(nLenSq_def:solve(n'^1' * n'_1'))()
+	A_eig.R = A_eig.R:subst(nLenSq_def:solve(n'^x' * n'_x'))()
 	printbr(R:eq(A_eig.R))
 	A_eig.R = A_eig.R:subst(vTilde_n:eq(
-			n'^1' * vTilde'_1'
-			+ n'^2' * vTilde'_2'
-			+ n'^3' * vTilde'_3'
-		):solve(n'^1' * vTilde'_1'))()
+			n'^x' * vTilde'_x'
+			+ n'^y' * vTilde'_y'
+			+ n'^z' * vTilde'_z'
+		):solve(n'^x' * vTilde'_x'))()
 		:subst(PStar_from_Cs)()
 		-- without this substutition, the matrix inverse operation runs out of memory
 		:subst(vTilde_cross_n_def:mapi(function(eqn,i)
-			if i == 2 then 
-				eqn = eqn:solve(vTilde'_1' * n'_3')
-			else
-				eqn = eqn:switch()
-			end
+--			if i == 2 then 
+--				eqn = (-eqn():solve(-1 * vTilde'_1' * n'_3'))()		-- TODO can't do :solve(vTilde'_1' * n'_3')
+--			else
+				eqn = (-eqn)():switch()
+--			end
+			printbr('substituting', eqn)
 			return eqn
 		end):unpack())()
 	printbr(R:eq(A_eig.R))
-	assert(#A_eig.R == 5 and #A_eig.R[1] == 4)
+	assert(#A_eig.R == 7 and #A_eig.R[1] == 6)
+
 	A_eig.R = Matrix:lambda({5,5}, function(i,j)
 		if j == 5 then 
 			if i == 1 or i == 5 then
 				return 0
 			else
-				return nvn_var('^'..(i-1))
+				return nvn_var('^'..xs[i-1].name)
 			end
 		else
 			return A_eig.R[i][j]
 		end
 	end)
+	printbr(R:eq(A_eig.R))
 
 	A_eig.allLambdas = A_eig.allLambdas:mapi(function(lambda)
 		return lambda
 			:subst(R_from_Cp_Cv)()
 			:subst(Cp_from_gamma_Cv)()
 			:replace(rhoBar * gamma, rhoBar * (gammaMinusOne + 1))()
-			:subst(nLenSq_def:solve(n'^1' * n'_1'))()
+			:subst(nLenSq_def:solve(n'^x' * n'_x'))()
 			:subst(vTilde_n:eq(
-					n'^1' * vTilde'_1'
-					+ n'^2' * vTilde'_2'
-					+ n'^3' * vTilde'_3'
-				):solve(n'^1' * vTilde'_1'))()
+					n'^x' * vTilde'_x'
+					+ n'^y' * vTilde'_y'
+					+ n'^z' * vTilde'_z'
+				):solve(n'^x' * vTilde'_x'))()
 
 
 			:subst(PStar_from_Cs)()
 			:subst(vTilde_cross_n_def:mapi(function(eqn,i)
-				if i == 2 then 
-					eqn = eqn:solve(vTilde'_1' * n'_3')
-				else
-					eqn = eqn:switch()
-				end
+--				if i == 2 then 
+--					eqn = eqn:solve(vTilde'_x' * n'_z')
+--				else
+					eqn = (-eqn):switch()()
+--				end
 				return eqn
 			end):unpack())()
 	end)
 
 	A_eig.allLambdas:insert(Constant(0))
 	A_eig.Lambda = Matrix.diagonal( A_eig.allLambdas:unpack() )
+	printbr(var'\\Lambda':eq(A_eig.Lambda))
 end
 
 --[[
