@@ -503,6 +503,10 @@ function add:evaluateLimit(x, a, side)
 	)
 end
 
+local function defaultConcat(a,b)
+	return tostring(a) .. tostring(b)
+end
+
 --[[
 this is a single term^power
 
@@ -521,6 +525,7 @@ function ProdTerm:__tostring()
 	local SingleLine = symmath.export.SingleLine
 	return SingleLine(self.term)..'^('..SingleLine(self.power)..')'
 end
+ProdTerm.__concat = defaultConcat
 
 
 local function compare(a,b)
@@ -673,6 +678,7 @@ function ProdList:__tostring()
 	if #self == 0 then return '1' end
 	return table.mapi(self, tostring):concat' * '
 end
+ProdList.__concat = defaultConcat
 
 
 -- for the i'th child of an add ...
@@ -819,6 +825,7 @@ function ProdLists:__tostring()
 	if #self == 0 then return '0' end
 	return table.mapi(self, tostring):concat'  +  '
 end
+ProdLists.__concat = defaultConcat
 
 add.rules = {
 	Factor = {
@@ -849,10 +856,10 @@ add.rules = {
 			-- but without this, Platonic Solid test has simplification loops ...
 			for i=1,#prodLists do
 				local pi = prodLists[i]
-				local ni = #pi
 				local found
 				repeat
 					found = nil
+					local ni = #pi
 					for j=1,ni-1 do
 						local pij = assert(pi[j])
 						for k=ni,j+1,-1 do
