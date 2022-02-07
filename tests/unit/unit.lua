@@ -106,13 +106,22 @@ return function(env, title)
 	local ansi_reset = '\x1b[0m'
 	local check = '✓'
 	local fail = '✕'
-	function env.exec(line)
+	function env.exec(code)
 		-- before executing, make sure to clear the stack / make sure a stack exists (in case we don't end up running simplify() ... )
 		symmath.simplify.stack = table()
 
-		local code, comment = line:match'^(.-)%-%-(.*)$'
-		code = string.trim(code or line)
-		comment = string.trim(comment or '')
+		-- strip out single-line comments, put them in bold over the code
+		-- TODO just put the first/last comment over the code, and put the other comments as bold output?
+		local comments = table()
+		repeat
+			local before, comment, after = code:match'^(.-)%-%-([^\r\n]*)(.-)$'
+			if not before then break end
+			comments:insert(comment)
+			code = before..'\n'..after
+		until false
+		code = string.trim(code)
+		local comment = string.trim(comments:concat'\n')
+		
 		print'<tr><td>'
 		print('<b>'..comment..'</b><br>')
 		print('<code>'..code..'</code>')

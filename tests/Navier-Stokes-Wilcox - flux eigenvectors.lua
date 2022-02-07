@@ -424,80 +424,94 @@ printbr()
 printbr'Acoustic matrix eigen-decomposition:'
 
 printbr(A'^I_J':eq(var'(R_A)''^I_M' * var'(\\Lambda_A)''^M_N' * var'(L_A)''^N_J'))
+printbr('A charpoly:', A_expanded:charpoly())
 
-local vTilde_cross_n = var'(\\tilde{v} \\times n)'
+--[[
 
-local vTilde_cross_n_def = table{
-	vTilde_cross_n'^x':eq(vTilde'_y' * n'_z' - vTilde'_z' * n'_y'),
-	vTilde_cross_n'^y':eq(vTilde'_z' * n'_x' - vTilde'_x' * n'_z'),
-	vTilde_cross_n'^z':eq(vTilde'_x' * n'_y' - vTilde'_y' * n'_x'),
+ok some help from mathematica ...
+
+g = gamma = heat capacity ratio
+P = P-star in Nav Stokes Wilcox = pressure
+r = rho-bar = density
+
+A = 
+{{0,r,0,0,0,0,0},
+{0,0,0,0,1/r,0,0},
+{0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0},
+{0,P*g-r*(g-1)*u^2,-r*(g-1)*u*v,-r*(g-1)*u*w,0,0,0},
+{0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0}}
+
+let Cs = sqrt((g*P - (g-1)*r*u^2)/r)
+
+eigenvectors:
+lambda1 = 0  v1 = {0, 0, 0, 0, 0, 0, 1}
+lambda2 = 0  v2 = {0, 0, 0, 0, 0, 1, 0}
+lambda3 = 0  v3 = {0, 0, -w/v, 1, 0, 0, 0}
+lambda4 = 0  v3 = {1, 0, 0, 0, 0, 0, 0}
+lambda5 = -Cs   v5 = {1/Cs^2,  1/(Cs*r), 0, 0, 1, 0, 0}
+lambda6 = Cs    v6 = {1/Cs^2, -1/(Cs*r), 0, 0, 1, 0, 0}
+
+generalized eigenvectors:
+lambda = 0     V = {0, 1/r, Cs^2/((g-1) r u v), 0, 0, 0, 0}		... I guess this is the 5th lambda=0 eigenvalue
+lambda = -Cs   V = ... same as above
+lambda = Cs    V = ... same as above 
+
+--]]
+
+local R = Matrix(
+	-- provide in rows, then transpose
+	{0, 0, 0, 0, 0, 0, 1},
+	{0, 0, 0, 0, 0, 1, 0},
+	{0, 0, -vTilde'_z'/vTilde'_x', 1, 0, 0, 0},
+	{1, 0, 0, 0, 0, 0, 0},
+	{0, 1/rhoBar, Cs^2 / ((gammaMinusOne * rhoBar * vTilde'_u' * vTilde'_v')), 0, 0, 0, 0},
+	{1/Cs^2,  1/(Cs*rhoBar), 0, 0, 1, 0, 0},
+	{1/Cs^2, -1/(Cs*rhoBar), 0, 0, 1, 0, 0}
+):T()
+printbr(var'R':eq(R))
+
+local Lambda = Matrix.diagonal(
+	0, 0, 0, 0, 0, -Cs, Cs
+)
+printbr(var'\\Lambda':eq(Lambda))
+
+local L = R:inverse()
+printbr(var'L':eq(L))
+
+local A_reconstructed = (R * Lambda * L)()
+printbr('reconstructed:')
+printbr(var'A':eq(A_reconstructed))
+
+os.exit()
+-- TODO FIX WHATS NEXT
+-- but i think i need to fix my generalized eigensystem code ...
+
+local A_eig = A_expanded:eigen{
+	generalize = true,
+--	verbose = true,
 }
-for _,eqn in ipairs(vTilde_cross_n_def) do
-	printbr(eqn)
+for _,lambda in ipairs(A_eig.allLambdas) do
+	printbr(var'\\lambda':eq(lambda))
 end
 
-local nvn_var = var'(n \\times \\tilde{v} \\times n)'
-
-local A_eig = A_expanded:eigen()
+printbr(var'\\Lambda':eq(A_eig.Lambda))
 
 if A_eig.defective then
 -- fixed up the hack for now...
 	A_eig.R = A_eig.R:subst(nLenSq_def:solve(n'^x' * n'_x'))()
 	printbr(R:eq(A_eig.R))
-	A_eig.R = A_eig.R:subst(vTilde_n:eq(
-			n'^x' * vTilde'_x'
-			+ n'^y' * vTilde'_y'
-			+ n'^z' * vTilde'_z'
-		):solve(n'^x' * vTilde'_x'))()
-		:subst(PStar_from_Cs)()
-		-- without this substutition, the matrix inverse operation runs out of memory
-		:subst(vTilde_cross_n_def:mapi(function(eqn,i)
---			if i == 2 then 
---				eqn = (-eqn():solve(-1 * vTilde'_1' * n'_3'))()		-- TODO can't do :solve(vTilde'_1' * n'_3')
---			else
-				eqn = (-eqn)():switch()
---			end
-			printbr('substituting', eqn)
-			return eqn
-		end):unpack())()
+	A_eig.R = A_eig.R:subst(PStar_from_Cs)()
 	printbr(R:eq(A_eig.R))
 	assert(#A_eig.R == 7 and #A_eig.R[1] == 6)
-
-	A_eig.R = Matrix:lambda({5,5}, function(i,j)
-		if j == 5 then 
-			if i == 1 or i == 5 then
-				return 0
-			else
-				return nvn_var('^'..xs[i-1].name)
-			end
-		else
-			return A_eig.R[i][j]
-		end
-	end)
-	printbr(R:eq(A_eig.R))
 
 	A_eig.allLambdas = A_eig.allLambdas:mapi(function(lambda)
 		return lambda
 			:subst(R_from_Cp_Cv)()
 			:subst(Cp_from_gamma_Cv)()
 			:replace(rhoBar * gamma, rhoBar * (gammaMinusOne + 1))()
-			:subst(nLenSq_def:solve(n'^x' * n'_x'))()
-			:subst(vTilde_n:eq(
-					n'^x' * vTilde'_x'
-					+ n'^y' * vTilde'_y'
-					+ n'^z' * vTilde'_z'
-				):solve(n'^x' * vTilde'_x'))()
-
-
 			:subst(PStar_from_Cs)()
-			:subst(vTilde_cross_n_def:mapi(function(eqn,i)
---				if i == 2 then 
---					eqn = eqn:solve(vTilde'_x' * n'_z')
---				else
-					eqn = (-eqn):switch()()
---				end
-				return eqn
-			end):unpack())()
 	end)
 
 	A_eig.allLambdas:insert(Constant(0))
@@ -524,6 +538,8 @@ printbr('L =', A_eig.L)
 
 
 
+
+local vTilde_cross_n = var'(\\tilde{v} \\times n)'
 local P = Matrix.permutation(4,1,2,5,3)
 local S = Matrix.diagonal(Cs^2, 1, vTilde_cross_n'^3', 1, Cs^2)
 local SInv = S:inv()

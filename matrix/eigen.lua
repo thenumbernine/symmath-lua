@@ -7,9 +7,9 @@ returns: table with the following fields set:
 	lambdas = table of the following entries:
 		expr = expression of the eigenvalue
 		mult = multiplicity of the eigenvalue
-	defective = true if the matrix is defective (i.e. if an eigenvalue multiplicity is greater than the eigenvector dimension / (A - lambda I)-nullspace dimension )
+	defective = true if the matrix is defective (i.e. if an eigenvalue multiplicity is greater than the eigenvector dimension / (A - λ I)-nullspace dimension )
 	
-(TODO maybe don't return the rest of these, 
+(TODO maybe don't return the rest of these,
 but provide functions for producing them?)
 	allLambdas = table of eigenvalues, with duplicates equal to the eigenvalue multiplicity, in the matching order of 'lambdas' above.
 	Lambda = diagonal matrix of the eigenvalues.  equivalent of Matrix.diag(allLambdas:unpack())
@@ -18,10 +18,11 @@ but provide functions for producing them?)
 
 args:
 	dontCalcL = don't calculate L = R:inverse()
-	lambdaVar = which lambda variable to use.  defaults to 'lambda'.
+	lambdaVar = which λ variable to use.  defaults to 'λ'.
 	lambdas = provide eigen with a list of lambdas, since its weakness is solving the char poly
 	verbose = this will show each set of eigenvectors for each eigenvalue as they are calculated
 	nullspaceVerbose = (forwarded to nullspace()) this shows step-by-step the nullspace calculation, and can produce a lot of output
+	generalize = don't just report defective linear systems, instead solve for the generalized system
 --]]
 
 local function eigen(A, args)
@@ -41,7 +42,7 @@ local function eigen(A, args)
 	local lambda = args.lambdaVar or var'λ'
 	A:map(function(x) assert(x ~= lambda) end)
 
-	-- lambda * log(x) => log(x^lambda) is messing this up ...
+	-- λ * log(x) => log(x^λ) is messing this up ...
 	-- TODO what if the rule was already pushed, then popping will incorrectly restore it to the caller
 	symmath.op.mul:pushRule'Prune/logPow'	-- push a log(b) => log(b^a)
 	symmath.log:pushRule'Expand/apply'		-- push log(a*b) => log(a) + log(b)
@@ -50,7 +51,7 @@ local function eigen(A, args)
 	local I = Matrix.identity(#A)
 	if eigenVerbose then
 		printbr(var'I':eq(I))
-	end	
+	end
 
 	local charPoly
 	local allLambdas
@@ -60,7 +61,7 @@ local function eigen(A, args)
 		local AminusLambda = (A - lambda * I)()
 		if eigenVerbose then
 			printbr((var'A' - lambda * var'I'):eq(AminusLambda))
-		end	
+		end
 	
 		charPoly = AminusLambda:det{dontSimplify=true}:eq(0)
 		if eigenVerbose then
@@ -75,12 +76,12 @@ local function eigen(A, args)
 	
 		allLambdas = table{charPoly:solve(lambda)}
 		if eigenVerbose then
-			printbr(allLambdas:mapi(tostring):concat', ')	
-		end	
+			printbr(allLambdas:mapi(tostring):concat', ')
+		end
 		allLambdas = allLambdas:mapi(function(eqn) return eqn:rhs() end)	-- convert to lambda equality
 		if eigenVerbose then
 			printbr(lambda, '$= \\{$', allLambdas:mapi(tostring):concat', ', '$\\}$')
-		end	
+		end
 	end
 
 	local lambdas = symmath.multiplicity(allLambdas)	-- of equations
@@ -92,7 +93,7 @@ local function eigen(A, args)
 
 	local defective
 	allLambdas = table()	-- redo allLambdas so the order matches the right-eigenvectors' order
-	local Rs = lambdas:mapi(function(lambdaInfo) 
+	local Rs = lambdas:mapi(function(lambdaInfo)
 		local lambda = lambdaInfo.expr
 		if eigenVerbose then
 			printbr('finding nullspace for ', lambdaInfo.expr)
@@ -109,55 +110,94 @@ local function eigen(A, args)
 			if eigenVerbose then
 				printbr'...is defective, gathering more generalized eigenvectors'
 			end
-			if n > 0 then
---[[ TODO a separate function for 'generalizedEigensystem()' ?
+			if n > 0
+			and args.generalize
+			then
 				if eigenVerbose then
 					printbr'trying again for generalized eigensystem...'
 				end
 				local Constant = require 'symmath.Constant'
-				local AminusLambdaIToTheP = AminusLambdaI:clone() 
-				local m = #Ri
+				local AminusLambdaIToTheP = AminusLambdaI:clone()
+				-- TODO do I want to repeat by the dim of the matrix?
+				--local targetNumberOfEigenvectors = #Ri
+				-- or do I want to repeat by the multiplicity of the current eigenvalue?
+				local targetNumberOfEigenvectors = lambdaInfo.mult
 				local done
-				for p=2,m do
+				for p=2,targetNumberOfEigenvectors do
 					AminusLambdaIToTheP = (AminusLambdaIToTheP * AminusLambdaI)()
 					if eigenVerbose then
-						printbr('finding nullspace of (A - I lambda)^'..p..' = '..AminusLambdaIToTheP)
+						printbr('finding nullspace of (A - I λ)^'..p..' = '..AminusLambdaIToTheP)
 					end
 					local RiP = AminusLambdaIToTheP:nullspace(args.nullspace)
 					
 					-- TODO here only add the columns of RiP when they are linearly independent of Ri
 					-- so what's an easy linear independence test?
 					-- i don't have a guaranteed full basis so I can't just use det == 0
-					-- so https://www.impan.pl/~pmh/teach/algebra/additional/eigen.pdf 
-					-- looks like we can mul each column vector by (A - I lambda), and if it's zero then we ignore it ... ?
-
+					-- so https://www.impan.pl/~pmh/teach/algebra/additional/eigen.pdf
+					-- looks like we can mul each column vector by (A - I λ), and if it's zero then we ignore it ... ?
+					-- ((mul by A - I λ)^k for some int k, and ignore if it's zero, or if it's a previous vector?)
 					if eigenVerbose then
 						printbr('which is '..RiP)
 					end
+					
 					local n2 = RiP and RiP:dim()[2] or 0	-- should this be the same as n?
+					printbr("nullspace dim of (A - I λ)^"..p.." =", n2)
 					if n2 > 0 then
-						-- (A - I lambda) * RiP and look at which columns are not zero
-						-- or is it (A - I lambda)^(p-1) * RiP?
+						-- (A - I λ) * RiP and look at which columns are not zero
+						-- or is it (A - I λ)^(p-1) * RiP?
+						-- or is it look at columns that are not already generalized eigenvectors?
+						-- or is it look at the columns not a linear combination of already found generalized eigenvectors?
 						local bleh = (AminusLambdaI * RiP)()
 						if eigenVerbose then
-							printbr('...times (A - lambda I) is '..bleh)
+							printbr('...times (A - λ I) is '..bleh)
 						end
-						for j=1,#bleh[1] do
+						for j,prodcol in ipairs(bleh:T()) do	-- for each column ...
+							local prodcol = Matrix(prodcol):T()
+							
+							-- [[ see if the column vector product with AminusLambdaI is zero
+							printbr('checking new potential vector product', prodcol:T()[1])
 							local allZero = true
-							for i=1,#bleh do
-								if not Constant.isValue(bleh[i][j], 0) then
+							for i=1,#prodcol do
+								if not Constant.isValue(prodcol[i][1], 0) then
 									allZero = false
 									break
 								end
 							end
-							if not allZero then
+							if allZero then
+								printbr"...and it's all zeroes so we already considered this vector"
+							end
+							local good = not allZero
+							--]]
+							--[[ see if the column vector product with AminusLambdaI hasn't been used yet
+							-- no no no, if the product result is a previous vector then that's fine
+							-- I guess it only matters if the new candidate vector is orthogonal to the current generalized eigenvector space
+							if good then
+								local prodcolasrow = prodcol:T()[1]
+								printbr('checking new nullspace vector', prodcolasrow)
+								local found
+								for _,prevvec in ipairs(Ri:T()) do
+									printbr('...comparing to '..prevvec)
+									if prevvec == prodcolasrow then
+										printbr'...and it was already used'
+										found = true
+										break
+									end
+								end
+								good = not found
+							end
+							--]]
+							
+							if good then
 								if eigenVerbose then
 									printbr('adding col '..j)
 								end
-								for i=1,#bleh do
+								-- TODO insert unique / linearly independent
+								for i=1,#Ri do
 									table.insert(Ri[i], RiP[i][j])
 								end
-								if #Ri[1] == m then 
+								allLambdas:insert(lambdaInfo.expr)
+								-- stop when we have full rank?
+								if #Ri[1] == targetNumberOfEigenvectors then
 									done = true
 								end
 							end
@@ -166,7 +206,6 @@ local function eigen(A, args)
 						-- TODO only insert non-linearly-independent rows
 					end
 				end
---]]			
 			end
 		end
 		--for i=1,lambdaInfo.mult do
@@ -177,30 +216,32 @@ local function eigen(A, args)
 	end)
 	if eigenVerbose then
 		for i,lambda in ipairs(lambdas) do
-			printbr('right eigenvector of lambda=', lambda.expr, 'is', Rs[i]:T())
+			printbr('right eigenvector of λ=', lambda.expr, 'is', Rs[i]:T())
 		end
 	end
 
-	local R = #Rs > 0 and Matrix( 
+	local R = #Rs > 0 and Matrix(
 		table():append(Rs:unpack()):unpack()
-		--Rs:mapi(function(Ri) return Ri[1] end):unpack() 
+		--Rs:mapi(function(Ri) return Ri[1] end):unpack()
 	):T()
 	if eigenVerbose then
 		printbr(var'R':eq(R))
-	end	
+	end
 	-- inverse() isn't possible if R isn't square ... which happens when the charpoly mult != the nullspace dim
 	-- in that case, use SVD?
 	-- or solve manually for left-eigenvectors?
-	local Rdim = R:dim()
 	local L
-	if not args.dontCalcL 
-	and #Rdim == 2
-	and Rdim[1] == Rdim[2]
-	then
-		L = R:inverse() 
-		if eigenVerbose then
-			printbr(var'L':eq(L))
-		end	
+	if R then
+		local Rdim = R:dim()
+		if not args.dontCalcL
+		and #Rdim == 2
+		and Rdim[1] == Rdim[2]
+		then
+			L = R:inverse()
+			if eigenVerbose then
+				printbr(var'L':eq(L))
+			end
+		end
 	end
 	
 	local Lambda = Matrix.diagonal( allLambdas:unpack() )

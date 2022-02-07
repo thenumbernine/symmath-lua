@@ -280,7 +280,11 @@ function Expression.__div(a,b)
 		end
 		if b.value == 1 then return a end
 	end
+
+--[[ NOTICE you can't do this in the chance that the denominator evaluates to zero
+-- in that case, we need an undefined value
 	if Constant:isa(a) and a.value == 0 then return Constant(0) end
+--]]
 
 	div = div or require 'symmath.op.div'
 	return div(a,b) 
@@ -2144,25 +2148,27 @@ end
 
 -- TODO? idk put this in its own file or not?  this is just me being lazy.  
 -- honestly this should be done automatically in simplify(), by # of occurrence of each variable
-function Expression:polyform()
+function Expression:polyform(...)
 	symmath = symmath or require 'symmath'
 	local Variable = symmath.Variable
 	local TensorRef = symmath.Tensor.Ref
 	local expr = self
-	local vars = table()
-	expr:map(function(x)
-		if Variable:isa(x)
-		or (TensorRef:isa(x) and Variable:isa(x[1]))
-		then
-			-- TODO ... how about # of indexes?  how about derivatives?  etc
-			vars:insertUnique(x)
-		end
-	end)
-	vars:sort(function(a,b)
-		local aname = TensorRef:isa(a) and a[1].name or a.name
-		local bname = TensorRef:isa(b) and b[1].name or b.name
-		return aname < bname
-	end)
+	local vars = table{...}
+	if #vars == 0 then
+		expr:map(function(x)
+			if Variable:isa(x)
+			or (TensorRef:isa(x) and Variable:isa(x[1]))
+			then
+				-- TODO ... how about # of indexes?  how about derivatives?  etc
+				vars:insertUnique(x)
+			end
+		end)
+		vars:sort(function(a,b)
+			local aname = TensorRef:isa(a) and a[1].name or a.name
+			local bname = TensorRef:isa(b) and b[1].name or b.name
+			return aname < bname
+		end)
+	end
 	for _,var in ipairs(vars) do
 		local coeffs = expr:polyCoeffs(var)
 		expr = 0
@@ -2204,7 +2210,7 @@ end
 -- but then that means we shouldn't be calling this repeatedly or it'll be multiple O(exp(n)) calls
 function Expression:hasTrig()
 	if self.mutable then
-		self.hasTrigCode = nil
+		self.hasTrigCached = nil
 		self.hasMutableChild = true
 		return nil
 	end
@@ -2229,7 +2235,7 @@ function Expression:hasTrig()
 			return true
 		end
 		if self[i].hasMutableChild then
-			self.hasTrigCode = nil
+			self.hasTrigCached = nil
 			return nil
 		end
 	end

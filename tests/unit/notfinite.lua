@@ -79,6 +79,7 @@ simplifyAssertEq(2 ^ -inf, 0)
 
 -- indeterminant:
 simplifyAssertEq(Constant(0) / 0, invalid)
+simplifyAssertEq(Constant(0) / (Constant(3) * Constant(0)), invalid)	-- verify short-circuit doesn't interfere
 simplifyAssertEq(-inf / inf, invalid)
 simplifyAssertEq(inf / inf, invalid)
 simplifyAssertEq(inf / -inf, invalid)
@@ -92,6 +93,7 @@ simplifyAssertEq((-1) ^ inf, invalid)
 simplifyAssertEq((-1) ^ -inf, invalid)
 simplifyAssertEq(1 ^ inf, invalid)
 simplifyAssertEq(1 ^ -inf, invalid)
+
 
 ]=]), '\n')) do
 	env.exec(line)
