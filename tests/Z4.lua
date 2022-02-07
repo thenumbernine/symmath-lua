@@ -920,6 +920,7 @@ end
 
 -- hmm, no better way to do this?
 local function mergingDerivKParts(expr)
+-- [[
 	expr = expr:map(function(x)
 		if symmath.op.sub:isa(x) then
 			assert(#x == 2)
@@ -933,9 +934,28 @@ local function mergingDerivKParts(expr)
 				return x[1] + -1 * x[2]
 			end
 		end
+	
+		if symmath.op.unm:isa(x) then
+			assert(#x == 1)
+			if Tensor.Ref:isa(x[1]) 
+			and not Variable:isa(x[1][1])
+			then
+				x = x:clone()
+				x[1][1] = -x[1][1]
+				return x[1]
+			else
+				return -1 * x[1]
+			end
+		end
+
 	end)
 	expr:flatten()
-	
+--]]
+	assert(symmath.op.add:isa(expr))
+	for i=1,#expr do
+		assert(not symmath.op.add:isa(expr[i]))
+	end
+
 	local nonderiv = table()
 	local deriv = table()
 	for x in expr:iteradd() do

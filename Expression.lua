@@ -79,9 +79,23 @@ end
 -- create a shallow copy of this object
 function Expression:shallowCopy()
 	local t = setmetatable({}, getmetatable(self))
+--[[ of all fields -- this will include the 'hasBeen' cache fields
 	for k,v in pairs(self) do
 		t[k] = v
 	end
+--]]	
+--[[ of integers only -- this will skip non-indexed fields such as Tensor's .variance ... but looks like :clone() does this too ...
+	for k,v in ipairs(self) do
+		t[k] = v
+	end
+--]]
+-- [[ of non-'hasBeen*' fields
+	for k,v in pairs(self) do
+		if not (type(k) == 'string' and k:match'^hasBeen') then
+			t[k] = v
+		end
+	end
+--]]
 	return t
 end
 
@@ -544,9 +558,13 @@ end
 
 -- return the # of nodes in this tree, including this node
 function Expression:countNodes()
+	if self.cachedCountNodes then return self.cachedCountNodes end
 	local count = 1
 	for i,x in ipairs(self) do
 		if x.countNodes then count = count + x:countNodes() end
+	end
+	if not self.mutable then
+		self.cachedCountNodes = count
 	end
 	return count
 end
@@ -2259,5 +2277,83 @@ function Expression:hasTrig()
 	self.hasTrigCached = false
 	return false
 end
+
+--[=[ prevent in-place modifications (but allow all overwrites)
+function Expression:__newindex(k,v)
+	if self.writeProtected 
+	and k ~= 'cachedSet'
+	and not (type(k) == 'string' and k:match'^hasBeen')
+	then
+		error("can't write "..tostring(k).." = "..tostring(v))
+	end
+	rawset(self, k, v)
+end
+--]=]
+--[=[ prevent in-place modifications and prevent overwrites
+function Expression:__index(k)
+	
+	-- [[ try the original table.
+	-- shouldn't have anything right?
+	-- except class stuff
+	local v = rawget(self, k)
+	if v ~= nil then return v end
+	--]]
+	
+	--[[ try the internal data
+	local internal = rawget(self, 'internal')
+	if internal ~= nil then 
+		v = internal[k]
+		if v ~= nil then return v end
+	end
+	--]]
+
+	-- [[ try the class
+	local super = rawget(self, 'super')
+	if super ~= nil then return super[k] end
+	--]]
+
+	return nil
+end
+
+function Expression:__newindex(k,v)
+	if self.writeProtected 
+	and k ~= 'cachedSet'
+	and not (type(k) == 'string' and k:match'^hasBeen')
+	then
+		error("can't write "..tostring(k).." = "..tostring(v))
+	end
+	local internal = rawget(self, 'internal')
+	if not internal then 
+		internal = {}
+		rawset(self, 'internal', internal)
+	end
+	internal[k] = v
+end
+
+function Expression:__pairs()
+	local internal = rawget(self, 'internal')
+	if not internal then return next, self, nil end
+	if internal then
+		return function(t, k)	-- modified next
+			if t == internal then
+				local k2, v2 = next(internal, k)
+				if k2 then return k2, v2 end
+				return self, nil
+			else
+				assert(t == self)
+				return next(self, k)
+			end
+		end
+	end
+end
+
+--[[ does the default __len inspect using __index or rawget?
+function Expression:__len()
+	local internal = rawget(self, 'internal')
+	return internal and #internal or rawlen(self)
+end
+--]]
+
+--]=]
 
 return Expression

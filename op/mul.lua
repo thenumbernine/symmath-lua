@@ -21,17 +21,22 @@ end
 --]]
 
 function mul:flatten()
-	for i=#self,1,-1 do
+	local i = #self
+	while i >= 1 do
 		if mul:isa(self[i]) then
 			local x = table.remove(self, i)
 			for j=#x,1,-1 do
 				table.insert(self, i, x[j]:clone():flatten())
 			end
+			i = i + #x
 		end
+		i = i - 1
 	end
 	return self
 end
 
+-- TODO fix this too to not require multiple calls?
+-- or can we just assert that the visitor will be called on the children so it doesn't matter?
 function mul:flattenAndClone()
 	for i=#self,1,-1 do
 		local ch = self[i]

@@ -51,6 +51,22 @@ function Visitor:apply(expr, ...)
 	symmath = symmath or require 'symmath'
 	local debugVisitors = symmath.debugVisitors
 
+-- [[ cache visitors & simplification.  does this help?	
+assert(self.name ~= Visitor.name)
+	local selfmt = self.class	 --getmetatable(self)
+	if not selfmt.hasBeenField then
+		selfmt.hasBeenField = 'hasBeen'..self.name
+	end
+assert(selfmt.hasBeenField == self.hasBeenField)
+--]]
+-- [[
+	local origIsExpr = symmath.Expression:isa(expr)
+	if origIsExpr and not expr.mutable and expr[self.hasBeenField] then 
+--print('found '..self.hasBeenField..' on '..symmath.export.SingleLine(expr)..' - not visiting')		
+		return expr 
+	end
+--]]
+
 	local Verbose
 	if debugVisitors then
 		Verbose = symmath.Verbose
@@ -67,22 +83,61 @@ function Visitor:apply(expr, ...)
 
 	-- TODO only clone when you need to
 	-- expr = expr:cloneIfMutable()	--TODO
+	local orig = expr
+--[[ deep copy ... not needed if mutable objects are mutable	
 	expr = clone(expr)
+--]]
+-- [[
+	if Expression:isa(expr) 
+	-- TODO how about a mutableCopy() or mutableShallowCopy()
+	-- that does deep copy for Array/mutable, but shallow for all non-mutable Expression's
+	and not expr.mutable 
+	then
+		expr = expr:shallowCopy()
+	else
+		expr = clone(expr)	-- not an Expression
+	end
+--]]
+--[[ cache visitors & simplification.  does this help?	
+-- TODO NO
+-- because if we change the children ... this flag should get invalidated
+-- but where does that change happen?
+	-- preserve 'hasBeen' flags. 
+	-- should I put this copy into clone() itself?
+	-- or how about I make sure no in-place modification is used in any visitors, then I can get rid of this clone()
+	if origIsExpr then
+		for k,v in pairs(orig) do
+			if type(k) == 'string'
+			and k:match'^hasBeen' then
+				expr[k] = v
+			end
+		end
+	end
+--]]
+
+
+-- [[ make expr write-protected
+	local table = require 'ext.table'
+	assert(Expression:isa(expr))
+	if not expr.mutable then
+		expr.writeProtected = true
+	end
+--]]
 
 	local t = type(expr)
 	if t == 'table' then
 		local m = getmetatable(expr)
 		assert(m, "got back a result with no metatable")
 		
+		local modifiedChild 
 		-- bubble-in	
 		-- nobody's using this right now
 		--[[
 		local rules = self:lookup(m, true)
 		if rules then
 			for _,rule in ipairs(rules) do
-				if not m.pushedRules
-				or not m.pushedRules[rule]
-				then
+				local foundRule = m.pushedRules and m.pushedRules[rule]
+				if not foundRule then
 					local name, func = next(rule)
 					local newexpr = func(self, expr, ...)
 					if newexpr then
@@ -100,10 +155,15 @@ function Visitor:apply(expr, ...)
 		if Expression:isa(m) then
 			if expr then
 				for i=1,#expr do
+					local ch = expr[i]
 					if debugVisitors then
 						print(id, 'simplifying child #'..i)
 					end
-					expr[i] = self:apply(expr[i], ...)
+					local newch = self:apply(ch, ...)
+					expr[i] = newch
+					if not rawequal(ch, newch) then
+						modifiedChild = true
+					end
 				end
 			end
 		end
@@ -111,6 +171,18 @@ function Visitor:apply(expr, ...)
 		-- stop at null
 
 		-- bubble-out
+		
+		-- only here, copy hasBeen* flags if no children were modified
+		if not modifiedChild then
+			if origIsExpr then
+				for k,v in pairs(orig) do
+					if type(k) == 'string'
+					and k:match'^hasBeen' then
+						expr[k] = v
+					end
+				end
+			end
+		end
 
 		-- if we found an entry then apply it
 --local rulesSrcNodeName = m.name		
@@ -170,6 +242,13 @@ function Visitor:apply(expr, ...)
 --if next(changeInNodes) then
 --	print(self.name..' size', expr:countNodes(), 'changed by', require 'ext.tolua'(changeInNodes))
 --end
+
+-- [[ cache visitors & simplification.  does this help?	
+	if not expr.mutable then
+--print(self.hasBeenField..' from '..symmath.export.SingleLine(orig)..' to '..symmath.export.SingleLine(expr))		
+		expr[self.hasBeenField] = true
+	end
+--]]
 
 	return expr
 --end, ...)

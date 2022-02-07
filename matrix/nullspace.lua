@@ -29,7 +29,9 @@ local function nullspace(A, verbose)
 				..' i,j = '..i..','..tostring(j)
 				..' #nodes = '..AInv:countNodes()
 			)
---			verbose('A | AInv = '..Matrix{A, AInv})
+			if n > 100 then
+				verbose('A | AInv = '..Matrix{A, AInv})
+			end
 		end)
 		verbose('inverse result is: '.._)
 		verbose('reduced result is: '..reduce)

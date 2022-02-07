@@ -8,6 +8,9 @@ local Binary = require 'symmath.op.Binary'
 -- I would use binary operators for this, but Lua's overloading requires the return value be a boolean
 local Equation = class(Binary)
 
+-- TODO should Equation be mutable like Array is?
+-- or maybe Array shouldn't be?
+
 -- TODO make this the same as op/add and op/mul
 function Equation.match(a, b, matches)
 	matches = matches or table()

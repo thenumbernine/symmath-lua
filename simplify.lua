@@ -131,6 +131,14 @@ simplifyObj.debugLoops = false
 
 local function simplifyCall(simplifyObj, x, ...)
 	symmath = symmath or require 'symmath'
+
+
+-- [[ cache visitors & simplification.  does this help?	
+	if symmath.Expression:isa(x) and not x.mutable and x.hasBeenSimplify then
+		return x
+	end
+--]]	
+
 --return timer('simplify', function(...)
 --print('start', require 'symmath.export.SingleLine'(x))	
 	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ... 
@@ -217,6 +225,13 @@ local function simplifyCall(simplifyObj, x, ...)
 	if stack then stack:insert{'Tidy', clone(x)} end
 
 	simplifyObj.stack = stack
+
+-- lets just hope nobody is modifying children in-place ...
+-- [[ cache visitors & simplification.  does this help?	
+	if not x.mutable then
+		x.hasBeenSimplify = true
+	end
+--]]
 
 --print('end', require 'symmath.export.SingleLine'(x))	
 	return x

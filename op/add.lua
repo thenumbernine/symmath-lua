@@ -20,13 +20,16 @@ end
 
 -- in-place flatten
 function add:flatten()
-	for i=#self,1,-1 do
+	local i = #self
+	while i >= 1 do
 		if add:isa(self[i]) then
 			local x = table.remove(self, i)
 			for j=#x,1,-1 do
 				table.insert(self, i, x[j]:clone():flatten())
 			end
+			i = i + #x
 		end
+		i = i - 1
 	end
 	
 	-- TODO while you're here, sort terms, don't violate commutativity.
