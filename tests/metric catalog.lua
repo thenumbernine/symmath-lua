@@ -752,7 +752,7 @@ for _,info in ipairs(spacetimes) do
 
 	-- assert these are original coordinates + derivatives
 	for _,coord in ipairs(baseCoords) do
-		assert(Variable.is(coord))
+		assert(Variable:isa(coord))
 	end
 
 

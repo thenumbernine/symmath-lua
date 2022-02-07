@@ -44,8 +44,8 @@ local function eigen(A, args)
 
 	-- λ * log(x) => log(x^λ) is messing this up ...
 	-- TODO what if the rule was already pushed, then popping will incorrectly restore it to the caller
-	symmath.op.mul:pushRule'Prune/logPow'	-- push a log(b) => log(b^a)
-	symmath.log:pushRule'Expand/apply'		-- push log(a*b) => log(a) + log(b)
+	local pushMulPruneLogPow = symmath.op.mul:pushRule'Prune/logPow'	-- push a log(b) => log(b^a)
+	local pushLogExpandApply = symmath.log:pushRule'Expand/apply'		-- push log(a*b) => log(a) + log(b)
 
 	-- eigen-decompose
 	local I = Matrix.identity(#A)
@@ -253,9 +253,14 @@ local function eigen(A, args)
 		printbr( (R * Lambda * L):eq( (R * Lambda * L)() ) )
 	end
 
-	symmath.op.mul:popRules()
-	symmath.log:popRules()
-
+	-- only pop rules if they had been pushed
+	if pushMulPruneLogPow then
+		symmath.op.mul:popRule'Prune/logPow'
+	end
+	if pushLogExpandApply then
+		symmath.log:popRule'Expand/apply'
+	end
+ 
 --assert( (R * Lambda * L - A)() == Matrix:zeros{#A, #A} )
 	
 	return {
