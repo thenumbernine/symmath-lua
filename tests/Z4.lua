@@ -1038,7 +1038,7 @@ printHeader'Gaussian curvature'
 local Gaussian_def = R:eq(gamma'^ij' * R'_ij')
 printbr(Gaussian_def)
 
-printbr('using Ricci definition')
+printbr'using Ricci definition'
 Gaussian_def = Gaussian_def:subst(Ricci_ll_def)
 printbr(Gaussian_def)
 
@@ -1053,21 +1053,17 @@ Gaussian_def = Gaussian_def[1]:eq(
 printbr(Gaussian_def)
 
 Gaussian_def = Gaussian_def:replace(
-	gamma'^ij' * (
-		(
-			gamma'^kl'* (
-				frac(1,2) * d'_ilj'
-				+ frac(1,2) * d'_jli'
-				+ Constant(-1) * d'_lij'
-			)
-		) +
-		-(
-			frac(1,2) * gamma'^pq' * (
-				d'_ipq' * delta'^k_j'
-				+ d'_jpq' * delta'^k_i'
-			)
+	(gamma'^ij' * (
+		Constant(-1) * frac(1,2) * gamma'^pq' * (
+			d'_ipq' * delta'^k_j'
+			+ d'_jpq' * delta'^k_i'
 		)
-	),
+		+ gamma'^kl'* (
+			frac(1,2) * d'_ilj'
+			+ frac(1,2) * d'_jli'
+			+ Constant(-1) * d'_lij'
+		)
+	)),
 	gamma'^ij' * gamma'^kl' * (d'_ijl' - 2 * d'_lij')
 )
 printbr(Gaussian_def)
@@ -1079,7 +1075,6 @@ Gaussian_def = Gaussian_def:replace(
 	)'_,k',
 	
 	(gamma'^kl' * gamma'^ij' * d'_ijl')'_,k'
-	
 	- (gamma'^ij' * gamma'^mp')'_,k'() * (
 		frac(1,2) * d'_mpj' * delta'^k_i'
 		+ frac(1,2) * d'_mpi' * delta'^k_j'
@@ -1095,6 +1090,7 @@ printbr(Gaussian_def)
 local deriv, nonderiv = mergingDerivKParts(Gaussian_def[2])
 Gaussian_def = Gaussian_def[1]:eq(sum(deriv)()'_,k' + sum(nonderiv))
 printbr(Gaussian_def)
+
 
 
 --[[

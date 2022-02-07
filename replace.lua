@@ -84,7 +84,10 @@ end
 
 local function replace(expr, ...)
 	assert(expr)
-	return replaceRecurse(expr, ...) or expr
+	local result = replaceRecurse(expr, ...) 
+	if not result then return expr end
+	result:flatten()
+	return result
 end
 
 return replace

@@ -22,10 +22,11 @@ end
 function add:flatten()
 	local i = #self
 	while i >= 1 do
+		self[i]:flatten()
 		if add:isa(self[i]) then
 			local x = table.remove(self, i)
 			for j=#x,1,-1 do
-				table.insert(self, i, x[j]:clone():flatten())
+				table.insert(self, i, x[j])
 			end
 			i = i + #x
 		end

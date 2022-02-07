@@ -9,6 +9,8 @@ timer(nil, function()
 
 env.a = var'a'
 env.b = var'b'
+env.c = var'c'
+env.d = var'd'
 env.f = var'f'
 env.g = var'g'
 env.r = var'r'
@@ -26,9 +28,24 @@ env.l = var'l'
 env.lambda = var'lambda'
 env.delta = var'delta'
 
--- constant simplificaiton
 for _,line in ipairs(string.split(string.trim([=[
 
+-- operation construction 
+
+-- assert flattening construction works:
+local expr = a + b + c	simplifyAssertAllEq(expr, {a,b,c})
+local expr = a * b * c	simplifyAssertAllEq(expr, {a,b,c})
+
+-- assert flattening after replace() works
+local expr = (a + d):replace(d, b + c)	simplifyAssertAllEq(expr, {a,b,c})
+local expr = (a * d):replace(d, b * c)	simplifyAssertAllEq(expr, {a,b,c})
+
+-- assert flatten of add after mul works
+local expr = (f * (a + d)):replace(d, b + c):flatten() print(Verbose(expr)) assertEq(#expr[2], 3) 				
+
+-- TODO just call all this simplify()
+
+-- constant simplificaiton
 simplifyAssertEq(1, (Constant(1)*Constant(1))())					-- multiply by 1
 simplifyAssertEq(1, (Constant(1)/Constant(1))())					-- divide by 1
 simplifyAssertEq(-1, (-Constant(1)/Constant(1))())					-- divide by -1
