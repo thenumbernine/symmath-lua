@@ -304,7 +304,7 @@ function Language:toCodeInternal(args)
 		end
 
 
-		--[=[ exhaustively enumerate all subtrees, then replace duplicates with temp vars
+--[=[ exhaustively enumerate all subtrees, then replace duplicates with temp vars
 
 		local allsubexprinfos = table()
 		local function recurse(expr)
@@ -511,7 +511,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 	-- TODO parameter
 	local genParams = self.generateParams or {}
 	
-	local localType = args.assignOnly and '' or genParams.localType
+	local localType = genParams.localType
 	if type(localType) == 'function' then localType = localType(self) end
 	localType = localType and #localType > 0 and localType..' ' or ''
 	
@@ -533,7 +533,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 			lines:append(table.keys(predefs))
 		end
 --]=]
-		lines:insert(localType..outputs[i].name..' = '..body..lineEnd)
+		lines:insert((args.assignOnly and '' or localType)..outputs[i].name..' = '..body..lineEnd)
 	end
 	
 	return lines:concat'\n'
