@@ -215,6 +215,7 @@ args:
 	output = list of expressions to generate
 	notmp = don't produce tmpvars to cache reused expression trees
 	dontExpandIntegerPowers = don't do this
+	assignOnly = don't declare the type of the output var / don't declare a new var, just assign it
 --]]
 function Language:toCodeInternal(args)
 	local vars = assert(args.input)
@@ -510,7 +511,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 	-- TODO parameter
 	local genParams = self.generateParams or {}
 	
-	local localType = genParams.localType
+	local localType = args.assignOnly and '' or genParams.localType
 	if type(localType) == 'function' then localType = localType(self) end
 	localType = localType and #localType > 0 and localType..' ' or ''
 	
