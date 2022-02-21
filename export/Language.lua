@@ -489,6 +489,9 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 		end
 --print(require'ext.tolua'(used))
 		-- [[ reinsert temp vars used only once
+		-- TODO used[] isn't accurate ... if a tree was used several times, and it is a branch of another tree, and the other tree is sepraated into a tmpvar
+		-- then the child of the tmpvar tree will still have a high used[] count but just be used once or so ...
+		-- and TODO because used[] isn't accurate, there are some subexpressions that are just used once but aren't being re-inserted
 		for i=#tmpvardefs,1,-1 do
 			local def = tmpvardefs[i]
 			if used[def[1].name] == 1 then
@@ -505,6 +508,22 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 		--]]
 		-- now if used[j] is not set then you can substitute it into whoever is using it
 		tmpvardefs = tmpvardefs:reverse()
+	
+		-- [[ now reindex ... which invalidates 'used'
+		for i=#tmpvardefs,1,-1 do
+			local oldvar = tmpvardefs[i][1]
+			local oldname = oldvar.name
+			local newname = 'tmp'..(#tmpvardefs-i+1)
+			local newvar = Variable(newname)
+--print('replacing', oldname, 'with', newname)
+			for j=1,#tmpvardefs do
+				tmpvardefs[j] = tmpvardefs[j]:replace(oldvar, newvar)
+			end
+			for j=1,#exprs do
+				exprs[j] = exprs[j]:replace(oldvar, newvar)
+			end
+		end
+		--]]
 --]=]
 	end
 

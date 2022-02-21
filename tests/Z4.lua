@@ -1646,9 +1646,48 @@ local U_defs = Matrix(UijkltEqns:mapi(function(eqn)
 	return eqn[2]:clone():simplifyAddMulDiv()
 end)):T()
 
+local function tableToSum(t)
+	if #t == 0 then return clone(0) end
+	if #t == 1 then return t[1] end
+	return symmath.op.add(table.unpack(t))
+end
+
+local function separateSum(sum, cond)
+	local with = table()
+	local without = table()
+	for x in sum:iteradd() do
+		if cond(x) then 
+			with:insert(x)
+		else
+			without:insert(x)
+		end
+	end
+	return tableToSum(with), tableToSum(without)
+end
+
 --printbr(UijklMat'_,t':eq(U_defs))
 for _,eqn in ipairs(UijkltEqns) do
+	--[[ as-is, with some factors factored out
 	printbr(eqn)
+	--]]
+	-- [[ everything as a sum first:
+	printbr(eqn:simplifyAddMulDiv())
+	--]]
+	-- [[ and then separate the shift terms, the deriv terms, and the source termskj
+	eqn = eqn:simplifyAddMulDiv()
+	printbr(eqn[1], '=')
+	local negFlux, source = separateSum(eqn[2], function(term)
+		return term:findLambda(function(x) return x.hasDerivIndex and x:hasDerivIndex() end)
+	end)
+	local function hasShift(x) return x:findChild(beta) or x:findChild(b) end
+	local negFluxShift, negFluxNoShift = separateSum(negFlux, hasShift) 
+	local sourceShift, sourceNoShift = separateSum(source, hasShift)
+	printbr(' + (flux)', negFluxNoShift)
+	printbr(' + (source)', sourceNoShift)
+	printbr(' + (shift flux)', negFluxShift)
+	printbr(' + (shift source)', sourceShift)
+	printbr()
+	--]]
 end
 printbr()
 

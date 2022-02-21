@@ -123,16 +123,24 @@ function Expression:getAllNodes()
 	return nodes
 end
 
-function Expression:findChild(node)
-	-- how should I distinguish between find saying "not in our tree" and "it is ourself!"
-	if node == self then return true end --error("looking for self") end
+--[[
+returns the parent and index of the node that fulfills the callback condition
+if the node is the object being called then returns 'true' as the parent and 'nil' as the index 
+--]]
+function Expression:findLambda(callback)
+	if callback(self) then return true end
 	for i,x in ipairs(self) do
-		-- if it's this node then return its info
-		if x == node then return self, i end
 		-- check children recursively
-		local parent, index = x:findChild(node)
-		if parent then return parent, index end
+		local parent, index = x:findLambda(callback)
+		if parent then
+			if parent == true then parent = self end
+			return parent, index or i
+		end
 	end
+end
+
+function Expression:findChild(node)
+	return self:findLambda(function(x) return x == node end)
 end
 
 function Expression.__concat(a,b)
