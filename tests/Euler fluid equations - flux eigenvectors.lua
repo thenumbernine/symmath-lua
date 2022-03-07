@@ -67,6 +67,8 @@ local vSq_def = vSq_var:eq(vSq_wrt_v)
 printbr(vSq_def, [[= velocity norm squared, in units of]], m^2/s^2)
 printbr()
 
+local mSq_var = var('(m)^2')
+
 local e_kin = var'e_{kin}'
 local e_kin_def = e_kin:eq(frac(1,2) * vSq_wrt_v)					-- specific kinetic energy
 printbr(e_kin_def, [[= specific kinetic energy, in units of]], m^2/s^2)
@@ -91,6 +93,14 @@ printbr(H_total_def, [[= total enthalpy, in units of]], kg / (m * s^2))
 
 local H_total_wrt_W = H_total_def:subst(E_total_wrt_W, vSq_def:switch()):simplifyAddMulDiv()
 printbr(H_total_wrt_W)
+printbr()
+
+local h_total = var'h_{total}'
+local h_total_def = h_total:eq(H_total / rho)
+printbr(h_total_def)
+
+local h_total_wrt_W = h_total_def:subst(H_total_wrt_W):simplifyAddMulDiv()
+printbr(h_total_wrt_W)
 printbr()
 
 
@@ -313,6 +323,26 @@ printbr(W'^I':eq(W_def))
 
 local U_def = Matrix{rho, m'^i', E_total}:T()
 printbr(U'^I':eq(U_def))
+
+--[[
+local U_wrt_W = U_def
+	:replace(m'^i', rho * v'^i')
+	:subst(E_total_wrt_W)
+	:simplifyAddMulDiv()
+--]]
+-- [[
+local U_wrt_W = Matrix{rho, rho * v'^x', rho * v'^y', rho * v'^z',  E_total_wrt_W[2]}:T()
+--]]
+printbr(U'^I':eq(U_wrt_W))
+
+local W_wrt_U = Matrix{
+	rho,
+	m'^x' / rho,
+	m'^y' / rho,
+	m'^z' / rho,
+	E_total_wrt_W:solve(P):rhs():replace(vSq_var, mSq_var / rho^2):simplifyAddMulDiv()
+}:T()
+printbr(W'^I':eq(W_wrt_U))
 
 printbr'Partial of conserved quantities wrt primitives:'
 
@@ -682,15 +712,15 @@ eig.L = eig.R:inverse()
 printbr(A'^I_J':eq(eig.R * eig.Lambda * eig.L))
 printbr()
 
-local P = Matrix.permutation(5,1,2,3,4)
+local perm = Matrix.permutation(5,1,2,3,4)
 local S = Matrix.diagonal(Cs^2 * n1Len, 1, n'_x' / rho, n'_x' / rho, Cs^2 * n1Len)
 local SInv = S:inv()
 
-printbr('permute by:', P, ', scale by:', S)
+printbr('permute by:', perm, ', scale by:', S)
 
-eig.R = (eig.R * P * S)()
-eig.Lambda = (SInv * P:T() * eig.Lambda * P * S)()
-eig.L = (SInv * P:T() * eig.L)()
+eig.R = (eig.R * perm * S)()
+eig.Lambda = (SInv * perm:T() * eig.Lambda * perm * S)()
+eig.L = (SInv * perm:T() * eig.L)()
 
 --eig.L[3][3] = (eig.L[3][3] + (n1LenSq_def[1] - n1LenSq_def[2]) * rho / (n'_x' * n1Len^2))()
 --eig.L[4][4] = (eig.L[4][4] + (n1LenSq_def[1] - n1LenSq_def[2]) * rho / (n'_x' * n1Len^2))()
@@ -747,6 +777,16 @@ F_eig_R_def = F_eig_R_def
 F_eig_R_def = F_eig_R_def:simplifyAddMulDiv()
 printbr(var'R_F':eq(F_eig_R_def))
 
+
+-- Here replace cs^2 with gamma P / rho, and replace that with hTotal def
+-- also TODO why is R's cs^2's turned into hTotals but not L's denom cs^2's?
+F_eig_R_def = F_eig_R_def
+	:subst((Cs_def^2)())
+	:subst(h_total_wrt_W:solve(P), gammaMinusOne_def)
+	:simplify()
+printbr(var'R_F':eq(F_eig_R_def))
+
+
 local F_eig_L_def = 
 	eig.L 
 --	* Nl:T()
@@ -760,5 +800,125 @@ F_eig_L_def = F_eig_L_def
 F_eig_L_def = F_eig_L_def:simplifyAddMulDiv()
 printbr(var'L_F':eq(F_eig_L_def))
 printbr()
+
+
+local Xvar = Matrix:lambda({5,1}, function(i,j)
+	local x = var('X^'..i)
+	x:nameForExporter('C', '(X)->ptr['..(i-1)..']')
+	return x
+end)
+
+local F_eig_R_times_X = (F_eig_R_def * Xvar)()
+printbr((var'R_F' * var'X'):eq(F_eig_R_times_X))
+
+local F_eig_L_times_X = (F_eig_L_def * Xvar)()
+printbr((var'L_F' * var'X'):eq(F_eig_L_times_X))
+
+print'<hr>'
+printbr'code:'
+print'<pre>'
+
+export.C.numberType = 'real const'
+
+Cs:nameForExporter('C', '(eig)->Cs')
+h_total:nameForExporter('C', '(eig)->hTotal')
+n1Len:nameForExporter('C', 'nLen')
+print'real const nLen = normal_len(n);'
+E_total:nameForExporter('C', '(U)->ETotal')
+gamma:nameForExporter('C', 'gamma')
+print'real const gamma = solver->heatCapacityRatio;'
+gammaMinusOne:nameForExporter('C', 'gamma_1')
+print'real const gamma_1 = solver->heatCapacityRatio - 1.;'
+vSq_var:nameForExporter('C', 'coordLenSq((W)->v)')
+mSq_var:nameForExporter('C', 'coordLenSq((U)->m)')
+-- since "nameForExporter" is only for vars, manually replace the tensorrefs
+
+print'real3 const v_n = normal_vecDotNs(n, (eig)->v);'
+print()
+
+local function fix(expr)
+	return expr
+		:replace(v'^k' * n'_k', var'v_n.x')
+		:replace(n'_x', var'normal_l1x(n)')
+		:replace(n'_y', var'normal_l1y(n)')
+		:replace(n'_z', var'normal_l1z(n)')
+		:replace(n'^x', var'normal_u1x(n)')
+		:replace(n'^y', var'normal_u1y(n)')
+		:replace(n'^z', var'normal_u1z(n)')
+		:map(function(x)
+			if symmath.op.div:isa(x) then
+				return x[1] * (1 / x[2])
+			end
+		end)
+end
+
+
+local function fixU(expr)
+	return fix(expr)
+		:replace(rho, var'(U)->rho')
+		:replace(m'^x', var'(U)->m.x')
+		:replace(m'^y', var'(U)->m.y')
+		:replace(m'^z', var'(U)->m.z')
+end
+print'primFromCons:'
+print(export.C:toCode{
+	assignOnly = true,
+	output = {
+		{['(result)->rho'] = fixU(W_wrt_U[1][1])},
+		{['(result)->v.x'] = fixU(W_wrt_U[2][1])},
+		{['(result)->v.y'] = fixU(W_wrt_U[3][1])},
+		{['(result)->v.z'] = fixU(W_wrt_U[4][1])},
+		{['(result)->P'] = fixU(W_wrt_U[5][1])},
+	},
+})
+print()
+
+local function fixW(expr)
+	return fix(expr)
+		:replace(rho, var'(W)->rho')
+		:replace(v'^x', var'(W)->v.x')
+		:replace(v'^y', var'(W)->v.y')
+		:replace(v'^z', var'(W)->v.z')
+end
+print'consFromPrim'
+print(export.C:toCode{
+	assignOnly = true,
+	output = {
+		{['(result)->rho'] = fixW(U_wrt_W[1][1])},
+		{['(result)->m.x'] = fixW(U_wrt_W[2][1])},
+		{['(result)->m.y'] = fixW(U_wrt_W[3][1])},
+		{['(result)->m.z'] = fixW(U_wrt_W[4][1])},
+		{['(result)->ETotal'] = fixW(U_wrt_W[5][1])},
+	},
+})
+print()
+
+-- hmm ... coordLenSq is the weighted inner product of the metric, for upper vectors
+vSq_var:nameForExporter('C', 'coordLenSq((eig)->v)')
+local function fixEig(expr)
+	return fix(expr)
+		:replace(v'_x', var'(eig)->vL.x')
+		:replace(v'_y', var'(eig)->vL.y')
+		:replace(v'_z', var'(eig)->vL.z')
+end
+print'eigen_leftTransform'
+print(export.C:toCode{
+	assignOnly = true,
+	output = table.mapi(F_eig_L_times_X, function(row,i)
+		return {['(result)->ptr['..(i-1)..']'] = fixEig(row[1])}
+	end),
+})
+print()
+
+print'eigen_rightTransform'
+print(export.C:toCode{
+	assignOnly = true,
+	output = table.mapi(F_eig_R_times_X, function(row,i)
+		return {['(result)->ptr['..(i-1)..']'] = fixEig(row[1])}
+	end),
+})
+print()
+
+print'</pre>'
 
 print(MathJax.footer)

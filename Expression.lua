@@ -123,6 +123,29 @@ function Expression:getAllNodes()
 	return nodes
 end
 
+-- kind of like findLambda
+-- except iterates through all matches
+-- but doesn't return parent/child info
+-- hmm ... how useful is this compared to rewriting it to yield the parent and child index?
+function Expression:findIter(callback)
+	return coroutine.wrap(function()
+		self:findIterRecurse(callback)
+	end)
+end
+
+-- this calls coroutine.yield on matches to 'callback' so don't call it manually
+-- call it through :findIter
+function Expression:findIterRecurse(callback)
+	if callback(self) then
+		coroutine.yield(self)
+		--return true
+	end
+	for i,x in ipairs(self) do
+		-- check children recursively
+		x:findLambda(callback)
+	end
+end
+
 --[[
 returns the parent and index of the node that fulfills the callback condition
 if the node is the object being called then returns 'true' as the parent and 'nil' as the index 

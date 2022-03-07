@@ -460,7 +460,7 @@ print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))
 		end
 		recurse(exprs)
 
-		-- combine repeated temp vars
+-- [=[ combine repeated temp vars
 		tmpvardefs = tmpvardefs:reverse()
 		local i = 2
 		local used = tmpvardefs:mapi(function(def)
@@ -487,6 +487,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 			end
 			i = i + 1
 		end
+--]=]
 --print(require'ext.tolua'(used))
 		-- [[ reinsert temp vars used only once
 		-- TODO used[] isn't accurate ... if a tree was used several times, and it is a branch of another tree, and the other tree is sepraated into a tmpvar
