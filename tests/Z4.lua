@@ -168,65 +168,6 @@ function printHeader(str)
 	io.stderr:flush()
 end
 
-
--- TODO put in export/LaTeX?
--- 'colsplits' specifies columns to insert dividing lines before
--- 'rowsplits' is the same thing for rows
-function matrixWithSplitsToString(A)
-	local m = #A
-	local n = #A[1]
-	local s = table()
-	s:insert'\\left['
-	local cols = table{'{'}
-	local colsplits = table(A.colsplits):sort()
-	local colsplitindex = 1
-	for j=1,n do
-		while colsplitindex <= #colsplits
-		and colsplits[colsplitindex] < j
-		do
-			colsplitindex = colsplitindex + 1
-			cols:insert'|'
-		end
-		cols:insert'c'
-	end
-	while colsplitindex <= #colsplits do
-		colsplitindex = colsplitindex + 1
-		cols:insert'|'
-	end
-	cols:insert'}'
-	s:insert('\\begin{array}'..cols:concat())
-	local rowsplitindex = 1
-	local rowsplits = table(A.rowsplits):sort()
-	for i=1,m do
-		while rowsplitindex <= #rowsplits
-		and rowsplits[rowsplitindex] < i
-		do
-			rowsplitindex = rowsplitindex + 1
-			s:insert'\\hline'
-		end
-		for j=1,n do
-			if j > 1 then
-				s:insert'&'
-			end
-			s:insert((symmath.export.MathJax:applyLaTeX(A[i][j])))
-		end
-		if i < m then
-			s:insert'\\\\'
-		end
-	end
-	if rowsplitindex <= #rowsplits then
-		s:insert'\\\\'
-		while rowsplitindex <= #rowsplits do
-			rowsplitindex = rowsplitindex + 1
-			s:insert'\\hline'
-		end
-	end
-	s:insert'\\end{array}'
-	s:insert'\\right]'
-	return s:concat' '
-end
-
-
 -- returns true if the var matches and the index raise/lower and derivatives all match
 --  but doesn't care what the symbols are
 function TensorRefIsMatchingIndexForm(a, b)
@@ -2958,8 +2899,8 @@ end
 printbr()
 --]]
 
+local rowsplits = table()
 local dUdt_lhs_exprs_expanded = table()
-dUdt_lhs_exprs_expanded.rowsplits = table()
 local dFdx_lhs_exprs_expanded = table()
 local S_rhs_exprs_expanded = table()
 local dUdx_lhs_exprs_expanded = table()
@@ -2968,7 +2909,7 @@ for i=1,#dFdx_lhs_exprs do
 	local dFdx_i = dFdx_lhs_exprs[i]
 	local dUdx_i = dUdx_lhs_exprs[i]
 	local S_i = S_rhs_exprs[i]
-	dUdt_lhs_exprs_expanded.rowsplits:insert(#dUdt_lhs_exprs_expanded)
+	rowsplits:insert(#dUdt_lhs_exprs_expanded)
 	if Tensor:isa(dFdx_i) then
 		assert(Tensor:isa(dUdt_i))
 		assert(Tensor:isa(S_i) or Constant.isValue(S_i, 0))
@@ -3034,28 +2975,29 @@ and just use the system we used for unraveling S_i etc
 
 local dFijkl_dUpqmn_expanded, dFijkl_dUpqmn_expanded_b = factorLinearSystem(dFdx_lhs_exprs_expanded, dUdx_lhs_exprs_expanded)
 -- TODO should I assert dFijkl_dUpqmn_expanded_b == 0? and if so then should I just leave it out?
-dFijkl_dUpqmn_expanded.colsplits = dUdt_lhs_exprs_expanded.rowsplits
-dFijkl_dUpqmn_expanded.rowsplits = dUdt_lhs_exprs_expanded.rowsplits
-dFijkl_dUpqmn_expanded_b.rowsplits = dUdt_lhs_exprs_expanded.rowsplits
+dFijkl_dUpqmn_expanded.colsplits = rowsplits
+dFijkl_dUpqmn_expanded.rowsplits = rowsplits
+dFijkl_dUpqmn_expanded_b.rowsplits = rowsplits
 
 local Sijkl_expanded = Matrix(S_rhs_exprs_expanded):T()
-Sijkl_expanded.rowsplits = dUdt_lhs_exprs_expanded.rowsplits
+Sijkl_expanded.rowsplits = rowsplits
 
 local Uijkl_expanded = Matrix(U_vars_expanded):T()
 local Upqmn_expanded = Uijkl_expanded:clone()
 
 local dUdt_lhs_exprs_expanded_mat = Matrix(dUdt_lhs_exprs_expanded):T()
-dUdt_lhs_exprs_expanded_mat.rowsplits = dUdt_lhs_exprs_expanded.rowsplits
+dUdt_lhs_exprs_expanded_mat.rowsplits = rowsplits
 local dUdx_lhs_exprs_expanded_mat = Matrix(dUdx_lhs_exprs_expanded):T()
-dUdx_lhs_exprs_expanded_mat.rowsplits = dUdt_lhs_exprs_expanded.rowsplits
+dUdx_lhs_exprs_expanded_mat.rowsplits = rowsplits
 printbr(
-	'$'
-	..matrixWithSplitsToString(dUdt_lhs_exprs_expanded_mat)
-	..' + '..matrixWithSplitsToString(dFijkl_dUpqmn_expanded)
-	..' '..matrixWithSplitsToString(dUdx_lhs_exprs_expanded_mat)
-	..' + '..matrixWithSplitsToString(dFijkl_dUpqmn_expanded_b)
-	..' = '..matrixWithSplitsToString(Sijkl_expanded)
-	..'$'
+	(
+		dUdt_lhs_exprs_expanded_mat
+		+ dFijkl_dUpqmn_expanded
+		* dUdx_lhs_exprs_expanded_mat
+		+ dFijkl_dUpqmn_expanded_b
+	):eq(
+		Sijkl_expanded
+	)
 )
 printbr()
 --]=]

@@ -278,6 +278,10 @@ Returns functions to produce the 3x3 rotation matrices around the x-, y-, and z-
 `Rn = symmath.Matrix.rotation(theta, n)`
 Returns the 3x3 rotation matrix about axis `n[1], n[2], n[3]` by angle `theta` using the Rodrigues rotation matrix formula.
 
+`A.rowsplits = {...}`
+`A.colsplits = {...}`
+Specify row and column indexes within these tables for the LaTeX exporter to insert vertical or horizontal lines in the matrix.
+
 ### Dense Tensors
 
 `manifold = Tensor.Manifold()`
@@ -506,8 +510,10 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 `LaTeX.closeSymbol = '$'`
 Change the characters wrapping LaTeX expressions.
 
-LaTeX.matrixOpenSymbol = '\\left[ \\begin{matrix}'
-LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
+LaTeX.matrixLeftSymbol = '\\left['
+LaTeX.matrixRightSymbol = '\\right]'
+LaTeX.matrixBeginSymbol = '\\begin{matrix}'
+LaTeX.matrixEndSymbol = '\\end{matrix}'
 Change the characters wrapping matrices in LaTeX.
 
 `LaTeX.showDivConstAsMulFrac = true`

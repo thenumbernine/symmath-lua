@@ -31,11 +31,17 @@ LaTeX.closeSymbol = '$'
 --[[
 matrix open/close
 common options:
-	\left[ \begin{matrix} \end{matrix} \right]
-	\begin{pmatrix} \end{pmatrix}
+	left=\left[ right=\right]
+	left=\left( right=\right)
+	left=\left\{ right=\right\}
+	begin=\begin{array} end=\end{array}
+	begin=\begin{matrix} end=\end{matrix}
+	begin=\begin{pmatrix} end=\end{pmatrix}
 --]]
-LaTeX.matrixOpenSymbol = '\\left[ \\begin{matrix}'
-LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
+LaTeX.matrixLeftSymbol = '\\left['
+LaTeX.matrixRightSymbol = '\\right]'
+LaTeX.matrixBeginSymbol = '\\begin{array}'
+LaTeX.matrixEndSymbol = '\\end{array}'
 
 -- set this to 'true' to automatically convert in output "x/2" into "1/2 x"
 -- TODO shouldn't this step just be done in :tidy() ?
@@ -437,19 +443,23 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			self:wrapStrOfChildWithParenthesis(expr, expr[1]),
 		}
 	end,
-	-- TODO options for column/row dividers using LaTeX array and {c|c|c} and \\hline
+	
+	-- options for column/row dividers using LaTeX array and {c|c|c} and \\hline
+	-- A.colsplits specifies columns to insert dividing lines before
+	-- A.rowsplits is the same thing for rows
 	[require 'symmath.Array'] = function(self, expr)
 		-- non-Matrix Arrays that are rank-2 can be displayed as Matrixes
 		if expr:rank() % 2 == 0 then
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
 		
-		local result = table(omit{self.matrixOpenSymbol})
+		local result = table(omit{self.matrixLeftSymbol, self.matrixBeginSymbol})
 		result:append(omit(tableConcat(range(#expr):map(function(i)
 			return omit(self:apply(expr[i]))
 		end), ' \\\\')))
-		result:append(omit{self.matrixCloseSymbol})
+		result:append(omit{self.matrixEndSymbol, self.matrixRightSymbol})
 		return omit(result)
+
 	end,
 	[require 'symmath.Matrix'] = function(self, expr)
 		-- if the Matrix is a row-Matrix, or degree-1, then use Array encoding:
@@ -457,6 +467,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			return self.lookupTable[require 'symmath.Array'](self, expr)
 		end
 
+		--[[ without row-splits, \begin{matrix} \end{matrix} is fine
 		local rows = table()
 		for i=1,#expr do
 			if type(expr[i]) ~= 'table' then
@@ -468,10 +479,66 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			if #expr > 1 then rows[i] = omit(rows[i]) end
 		end
 		
-		local result = table{self.matrixOpenSymbol}
+		local result = table{self.matrixLeftSymbol, self.matrixBeginSymbol}
 		result:append(omit(tableConcat(rows, ' \\\\')))
-		result:append{self.matrixCloseSymbol}
+		result:append{self.matrixEndSymbol, self.matrixRightSymbol}
 		return omit(result)
+		--]]
+		
+		-- [[ with rowsplits, have to use \begin{array} \end{array}
+		local m = #expr
+		local n = #expr[1]
+		local result = table()
+		result:insert(self.matrixLeftSymbol)
+		local cols = table{'{'}
+		local colsplits = table(expr.colsplits):sort()
+		local colsplitindex = 1
+		for j=1,n do
+			while colsplitindex <= #colsplits
+			and colsplits[colsplitindex] < j
+			do
+				colsplitindex = colsplitindex + 1
+				cols:insert'|'
+			end
+			cols:insert'c'
+		end
+		while colsplitindex <= #colsplits do
+			colsplitindex = colsplitindex + 1
+			cols:insert'|'
+		end
+		cols:insert'}'
+		result:insert(self.matrixBeginSymbol)
+		result:insert(cols:concat())
+		local rowsplitindex = 1
+		local rowsplits = table(expr.rowsplits):sort()
+		for i=1,m do
+			while rowsplitindex <= #rowsplits
+			and rowsplits[rowsplitindex] < i
+			do
+				rowsplitindex = rowsplitindex + 1
+				result:insert'\\hline'
+			end
+			for j=1,n do
+				if j > 1 then
+					result:insert'&'
+				end
+				result:insert((self:applyLaTeX(expr[i][j])))
+			end
+			if i < m then
+				result:insert'\\\\'
+			end
+		end
+		if rowsplitindex <= #rowsplits then
+			result:insert'\\\\'
+			while rowsplitindex <= #rowsplits do
+				rowsplitindex = rowsplitindex + 1
+				result:insert'\\hline'
+			end
+		end
+		result:insert(self.matrixEndSymbol)
+		result:insert(self.matrixRightSymbol)
+		return result
+		--]]
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
 		local s = self.lookupTable[require 'symmath.Array'](self, expr)

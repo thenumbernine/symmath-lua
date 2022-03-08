@@ -336,6 +336,9 @@ Returns 'true' if an expression depends on the specified Variable 'var'.
 Determines so by searching the expression for either the Variable itself, or any variables that are specified o depend on the Variable.
 Works if 'var' is a Variables  (i.e. `x`) or if 'var' is a Tensor.Ref of a Variable (i.e. `x'^i'`).
 
+`expr:getDependentVars()`
+Get list of variables used in the expression.
+
 `symmath.fixVariableNames = true`
 Set this flag to true to have the LaTex and console outputs replace variable names with their associated unicode characters.
 For example, `var'theta'` will produce a variable with the name `θ`.
@@ -418,9 +421,7 @@ Simplifies the expression.
 
 `symmath.match(exprA, exprB)
 `exprA:match(exprB)`
-Match one expression to another.
-This is actually shorthand for equality, except in Lua the == operator won't let you return multiple values.
-The expr:match() function (and == operator) use wildcards and tree matching to return matched patterns.
+Match one expression to another, optionally using Wildcards to match to portions of the expression tree.
 See 'Wildcard' for more information on how.
 
 `symmath.clone(expr)`  
@@ -538,7 +539,11 @@ Returns functions to produce the 3x3 rotation matrices around the x-, y-, and z-
 `Rn = symmath.Matrix.rotation(theta, n)`
 Returns the 3x3 rotation matrix about axis `n[1], n[2], n[3]` by angle `theta` using the Rodrigues rotation matrix formula.
 
-### Tensors
+`A.rowsplits = {...}`
+`A.colsplits = {...}`
+Specify row and column indexes within these tables for the LaTeX exporter to insert vertical or horizontal lines in the matrix.
+
+### Dense Tensors
 
 `manifold = Tensor.Manifold()`
 Create a Manifold object.
@@ -586,13 +591,75 @@ in this case the indexes of 'S' are picked on a first-come, first-serve basis.  
 ... index gymnastics (so long as you defined a metric): `v = Tensor('_a', ...) print(v'^a'())` will show you the contents of `v^a = g^ab v_b`.
 
 `t:permute'_ba'`
-Rearranges the internal storage of `t`
+Rearranges the internal storage of `t`, also explicity setting the upper/lower valence of each index.
 
 `t:print't'`  
 Prints the tensor's contents.  
 
 `t:printElem't'`  
 Prints the individual nonzero values of the tensor, or '0' if they are all zero.  
+
+### Tensor Index Expressions
+
+Indexes can be added to any expression using Lua's call + strig operator in the same way they are added to dense tensors.
+
+`t = var't' print(t'_ij')`
+Create a Tensor.Ref object dereferencing variable 't' with indexes 'i', lowered; and 'j', lowered.
+
+`expr:reindex{from = 'to'}` 
+Reindex an expression.  If the first character is a space then the indexes are assumed to be space-separated, otherwise it is assumed that each character is its own index.
+
+`expr:tidyIndexes()`
+Attempt to automatically substitute and simplify indexes, automatically determining which sum and which fixed indexes are used.
+
+`expr:splitOffDerivIndexes()`
+Separate the comma-derivative indexes into a separate Tensor.Ref, used for replace() tree matching of expressions that do not use comma derivatives.
+For example: `A'_i,j':replace(A'_i', B'_i')` will fail, but `A'_i,j':splitOffDerivIndexes():replace(A'_i', B'_i')` will be successful.
+
+`expr:simplifyMetrics()`
+Automatically raise/lower expression indexes based on multiplication of whatever variable is specified by `Tensor:metricSymbol()` and Kronecher deltas specified by `Tensor:deltaSymbol()`.
+
+`Tensor:metricSymbol()`
+Returns a variable representing the metric tensor, typically the variable `g`.
+This is set by writing the `Tensor.metricVariable` field.
+
+`Tensor:deltaSymbol()`
+Returns a variable representing the Kronecher delta tensor, typically the variable `δ`.
+This is set by writing the `Tensor.deltaVariable` field.
+
+`expr:insertMetricsToSetVariance(t'_ij')`
+Insert metric symbols to transform the indexed variable to the required form.
+If the indexed variable occurs in a different valence, such as `t'^i_j'`, then metric symbols will be inserted, i.e. `g'^ik' * t'_kj'`.
+
+`expr:favorTensorVariance(t'_ij')`
+Same as `insertmetricsToSetVariance` and then simplifying the metrics.
+So `(A'_ij' * t'^i' * t'^j'):favorTensorVariance(t'_i')` will produce `A'^ij' * t'_i' * t'_j'`.
+
+`expr:insertTransformsToSetVariance(rules)`
+Generalization of `expr:insertMetricsToSetVariance()`
+
+`fixed, summed, extra = expr:getIndexesUsed()`
+Get a table of all indexes used.
+`summed` = a table of indexes which are repeated, and therefore used for implicit-sums.
+`fixed` = a table of indexes which appear uniquely in multiple terms.
+`extra` = any other indexes.
+
+`expr:symmetrizeIndexes(var, indexes, override)`
+Symmetrize (sort) indexes that appear in Tensor.Ref's of the specified variable.
+This will ignore indexes that include comma-derivatives, unless `override` is true.
+Ex: 
+
+`(g'_ab' + g'_ba'):symmetrizeIndexes(g, {1,2})` will produce `g'_ab' + g'_ab'`.
+
+`(g'_ab,c' + g'_ac,b'):symmetrizeIndexes(g, {2,3})` will produce an error.
+
+`(g'_ab,c' + g'_ac,b'):symmetrizeIndexes(g, {2,3}, true)` will produce `g'_ab,c' + g'_ab,c'`.
+
+`(f'_,ab' + f'_,ba'):symmetrizeIndexes(f, {1,2})` will produce `f'_,ab' + f'_,ab'`.  No error will be produced despite comma derivatives being included in the symmetrized indexes, because all symmetrized indexes are comma derivatives and partial derivatives are commutative.
+TODO / NOTE TO MYSELF: comma derivatives denote tangent basis operators, which may not be commutative in spaces that have commutation coefficients.  In which case this operation should produce an error.
+
+`f'_,a^b':symmetrizeIndexes(f, {1,2})` will produce an error due to the fact that a raised index is included. 
+
 
 ### Sets
 
@@ -627,7 +694,9 @@ Ex: `x = symmath.set.positiveReal:var'x'` creates a positive real variable.
 returns true/false if the set contains the element.
 returns nil if the answer is indeterminate.
 
-`Expression:getRealRange()` = Returns the RealSubset object for the range of this expression, specifying what possible values it can contain.
+`expr:getRealDomain()` = Returns the RealSubset object for the domain of this expression, specifying what possible values it can contain.
+
+`expr:getRealRange()` = Returns the RealSubset object for the range of this expression, specifying what possible values it can contain.
 
 
 ### Plotting
@@ -702,8 +771,10 @@ Compiles an expression to a Lua function with the listed vars as parameters.
 `LaTeX.closeSymbol = '$'`
 Change the characters wrapping LaTeX expressions.
 
-LaTeX.matrixOpenSymbol = '\\left[ \\begin{matrix}'
-LaTeX.matrixCloseSymbol = '\\end{matrix} \\right]'
+LaTeX.matrixLeftSymbol = '\\left['
+LaTeX.matrixRightSymbol = '\\right]'
+LaTeX.matrixBeginSymbol = '\\begin{matrix}'
+LaTeX.matrixEndSymbol = '\\end{matrix}'
 Change the characters wrapping matrices in LaTeX.
 
 `LaTeX.showDivConstAsMulFrac = true`
@@ -996,9 +1067,11 @@ Output CDN URLs:
 
 [tests/output/Platonic Solids](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids.html)
 
+[tests/output/Platonic Solids/120-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/120%2dcell.html)
+
 [tests/output/Platonic Solids/16-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/16%2dcell.html)
 
-[tests/output/Platonic Solids/24-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/8%2dcell.html)
+[tests/output/Platonic Solids/24-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/24%2dcell.html)
 
 [tests/output/Platonic Solids/5-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/5%2dcell.html)
 
@@ -1035,6 +1108,10 @@ Output CDN URLs:
 [tests/output/TOV](https://thenumbernine.github.io/symmath/tests/output/TOV.html)
 
 [tests/output/Z4](https://thenumbernine.github.io/symmath/tests/output/Z4.html)
+
+[tests/output/black hole brain](https://thenumbernine.github.io/symmath/tests/output/black%20hole%20brain.html)
+
+[tests/output/elastic plate](https://thenumbernine.github.io/symmath/tests/output/elastic%20plate.html)
 
 [tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
 
@@ -1140,6 +1217,8 @@ Output CDN URLs:
 
 [tests/output/toy-1+1 spacetime](https://thenumbernine.github.io/symmath/tests/output/toy%2d1%2b1%20spacetime.html)
 
+[tests/output/unit/Matrix eigen](https://thenumbernine.github.io/symmath/tests/output/unit/Matrix%20eigen.html)
+
 [tests/output/unit/Variable dependsOn](https://thenumbernine.github.io/symmath/tests/output/unit/Variable%20dependsOn.html)
 
 [tests/output/unit/compile](https://thenumbernine.github.io/symmath/tests/output/unit/compile.html)
@@ -1163,6 +1242,8 @@ Output CDN URLs:
 [tests/output/unit/match](https://thenumbernine.github.io/symmath/tests/output/unit/match.html)
 
 [tests/output/unit/matrix](https://thenumbernine.github.io/symmath/tests/output/unit/matrix.html)
+
+[tests/output/unit/notfinite](https://thenumbernine.github.io/symmath/tests/output/unit/notfinite.html)
 
 [tests/output/unit/plot](https://thenumbernine.github.io/symmath/tests/output/unit/plot.html)
 
