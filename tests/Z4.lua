@@ -523,6 +523,15 @@ local symmetries = table{
 	{dHat_t'_ij,k', {1,2}},
 	{K'_ij,k', {1,2}},
 }
+-- TODO make this a property of the Variable wrt TensorRef (like :dependsOn does)
+-- or make it a property of the TensorRef and remember to ctor/clone it
+local function getSymmetriesForTensorRef(x)
+	assert(Tensor.Ref:isa(x) and Variable:isa(x[1]))
+	local _, t = symmetries:find(nil, function(t)
+		return TensorRefIsMatchingDegreeAndDeriv(t[1], x)
+	end)
+	return t
+end
 -- modify 'x' in-place, rearrange its Tensor.Index'es
 function applySymmetriesToIndexes(x)
 	--[[
@@ -532,9 +541,7 @@ function applySymmetriesToIndexes(x)
 	hmm this asks the question, should the symmetries also include deriv-only sets of indexes?
 	how about deriv+non-deriv? (like d_kij,l == d_lij,k)
 	--]]
-	local _, t = symmetries:find(nil, function(t)
-		return TensorRefIsMatchingDegreeAndDeriv(t[1], x)
-	end)
+	local t = getSymmetriesForTensorRef(x)
 	if not t then return end
 	local symindexes = t[2]
 	-- assert all the sym indexes have matching lower and deriv~=nil
@@ -864,7 +871,7 @@ printbr('using', using)
 dt_a_l_def = dt_a_l_def
 	:subst(using)
 	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't simplify metrics
+		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
 	})
 	:simplifyAddMulDiv()
 printbr(dt_a_l_def)
@@ -1092,7 +1099,7 @@ printbr('using', using)
 dt_dDelta_lll_def = dt_dDelta_lll_def
 	:subst(using)
 	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't simplify metrics
+		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
 	})
 	:simplifyAddMulDiv()
 printbr(dt_dDelta_lll_def)
@@ -1632,7 +1639,7 @@ printbr('using', usings:mapi(tostring):concat';')
 dt_K_ll_def = dt_K_ll_def
 	:subst(usings:unpack())
 	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't simplify metrics
+		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
 	})
 	:simplifyAddMulDiv()
 printbr(dt_K_ll_def)
@@ -1828,7 +1835,7 @@ dt_Theta_def = dt_Theta_def
 		delta'^k_j,k':eq(0)
 	)
 	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't simplify metrics
+		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
 	})
 	:simplifyAddMulDiv()
 printbr(dt_Theta_def)
@@ -2115,7 +2122,7 @@ printbr('using', using)
 dt_Z_l_def = dt_Z_l_def
 	:subst(using)
 	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't simplify metrics
+		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
 	})
 	:simplifyAddMulDiv()
 printbr(dt_Z_l_def)
@@ -2536,6 +2543,13 @@ For now I'm going to simplify FijklTerms to the least number of vars for the pur
 --]]
 for i=1,#FijklTerms do
 	local term = FijklTerms[i]
+	
+	-- TODO do this somewhere else?
+	local f_alpha = var('(f \\alpha)', alpha)
+	f_alpha:nameForExporter('C', 'f_alpha')
+	term = term:replace(f, f_alpha / alpha)
+
+	--[[ if you want to represent the flux with the least number of mathematical symbols:
 	term = term:substIndex(
 		gamma_ll_from_gammaHat_ll_gammaDelta_ll:solve(gammaHat'_ij'),
 		d_lll_from_dHat_lll_dDelta_lll:solve(dHat'_kij')
@@ -2546,6 +2560,19 @@ for i=1,#FijklTerms do
 	term = term:tidyIndexes():simplifyAddMulDiv()
 	term = simplifyDAndKTraces(term):simplifyAddMulDiv()
 	term = term:symmetrizeIndexes(d, {2,3})
+	--]]
+	-- [[ if you want to represent the flux with state variables:
+	term = term:substIndex(d_lll_from_dHat_lll_dDelta_lll)
+	-- mind you if you don't call these then maybe there will be less terms?
+	-- and maybe I can implement a function to distribute only the deltas, 
+	-- and only then simplify the deltas * Tensor.Ref alone (without changing the rest of the expression)
+	-- and then i could preserve the structure and simplify some more deltas if possible
+	term = term:simplifyAddMulDiv()
+	term = term:simplifyMetrics({
+		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
+	}):simplifyAddMulDiv()
+	--]]
+
 	FijklTerms[i] = term
 end
 FijklMat = Matrix(FijklTerms):T()
@@ -2588,7 +2615,7 @@ if outputSourceTerms then
 	for i=1,#SijklMat do
 		SijklMat[i][1] = SijklMat[i][1]
 			:simplifyMetrics({
-				Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't simplify metrics
+				Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
 			})
 			:tidyIndexes{fixed='t'}
 			:simplifyAddMulDiv()
@@ -2839,6 +2866,18 @@ function expandMatrixIndexes(expr)
 		local degreeCSuffix = '_'..indexes:mapi(function(index)
 			return index.lower and 'l' or 'u'
 		end):concat()
+		
+		-- ss[1] is the Tensor.Ref, ss[2...] is the 
+		local ss = getSymmetriesForTensorRef(x)
+		local allsymkeys = {}
+		if ss then
+			for i=2,#ss do
+				for j=1,#ss[i] do
+					allsymkeys[ss[i][j]] = true
+				end
+			end
+		end
+
 		local result = Tensor(indexesWithoutDeriv, function(...)
 			local is = {...}
 			local thisIndexes = indexes:mapi(function(index) return index:clone() end)
@@ -2851,8 +2890,18 @@ function expandMatrixIndexes(expr)
 			
 			-- TODO how to specify names per exporter?
 			local v = var(symmath.export.LaTeX:applyLaTeX(thisRef))
+		
+			-- insert dots between non-sym indexes
+			local thisIndexCSuffix = table()
+			for i=1,#thisRef-1 do
+				local index = thisRef[i+1]
+				if i > 1 and not (allsymkeys[i-1] and allsymkeys[i]) then
+					thisIndexCSuffix:insert'.'
+				end
+				thisIndexCSuffix:insert(index.symbol)
+			end
+			thisIndexCSuffix = thisIndexCSuffix:concat()
 			
-			local thisIndexCSuffix = table.sub(thisRef,2):mapi(function(index) return index.symbol end):concat()
 			local derivCPrefix
 			if numDeriv == 0 then
 				derivCPrefix = ''
@@ -3101,7 +3150,7 @@ for i=1,#dUdt_lhs_exprs_expanded do
 end
 printbr'unraveling flux vector...'
 for i=1,#dUdt_lhs_withShift_exprs_expanded do
-	printbr((dUdt_lhs_withShift_exprs_expanded[i] + F_lhs_exprs_expanded[i]):eq(var'S'))
+	printbr((dUdt_lhs_withShift_exprs_expanded[i] + F_lhs_exprs_expanded[i]'_,r'):eq(var'source'))
 end
 printbr()
 --]]
@@ -3245,17 +3294,19 @@ if removeZeroRows then
 	-- TODO if this fails then that means we need find the removed rows from Upqmn and remove the associated columns from dFijkl_dUpqmn
 	assert(m == n, "removed a different number of all-zero rows vs columns")
 	printbr()
+	--]]
 
+	--[[
 	for i=#Fijkl_withShift_expanded,1,-1 do
 		if Constant.isValue(Fijkl_withShift_expanded[i][0], 0) then
 			table.remove(Fijkl_withShift_expanded, i)
 			table.remove(Uijkl_withShift_expanded, i)
 		end
 	end
+	--]]
 	printbr'flux vector:'
 	printbr((Uijkl_withShift_expanded'_,t' + Fijkl_withShift_expanded'_,r'):eq(var'S'))
 	printbr()
-	--]]
 end
 
 
@@ -3278,6 +3329,8 @@ do
 end
 --]]
 
+-- TODO replace f with f_alpha / alpha and df/dalpha with alphaSq_dalpha_f / alpha^2
+export.C.numberType = 'real const'
 printHeader'generating code'
 print'<pre>'
 print'source:'
@@ -3294,9 +3347,9 @@ print'flux:'
 assert(#Fijkl_withShift_expanded == #Uijkl_withShift_expanded)
 print(export.C:toCode{
 	output = range(#Uijkl_withShift_expanded):mapi(function(i)
-		return {['flux->'..export.C(Uijkl_withShift_expanded[i][1])] = Fijkl_withShift_expanded[i][1]}
+		return {['(resultFlux)->'..export.C(Uijkl_withShift_expanded[i][1])] = Fijkl_withShift_expanded[i][1]}
 	end),
-	notmp = true,
+	--notmp = true,
 	assignOnly = true,
 })
 print'</pre>'
