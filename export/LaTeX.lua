@@ -40,8 +40,8 @@ common options:
 --]]
 LaTeX.matrixLeftSymbol = '\\left['
 LaTeX.matrixRightSymbol = '\\right]'
-LaTeX.matrixBeginSymbol = '\\begin{array}'
-LaTeX.matrixEndSymbol = '\\end{array}'
+LaTeX.matrixBeginSymbol = '\\begin{matrix}'
+LaTeX.matrixEndSymbol = '\\end{matrix}'
 
 -- set this to 'true' to automatically convert in output "x/2" into "1/2 x"
 -- TODO shouldn't this step just be done in :tidy() ?
@@ -507,7 +507,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			cols:insert'|'
 		end
 		cols:insert'}'
-		result:insert(self.matrixBeginSymbol)
+		result:insert('\\begin{array}')--self.matrixBeginSymbol)
 		result:insert(cols:concat())
 		local rowsplitindex = 1
 		local rowsplits = table(expr.rowsplits):sort()
@@ -535,7 +535,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 				result:insert'\\hline'
 			end
 		end
-		result:insert(self.matrixEndSymbol)
+		result:insert('\\end{array}')--self.matrixEndSymbol)
 		result:insert(self.matrixRightSymbol)
 		return result
 		--]]

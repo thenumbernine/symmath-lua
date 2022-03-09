@@ -485,6 +485,87 @@ dDelta:nameForExporter('C', 'dDelta')
 -- eta?
 -- lambda?
 
+-- used for converting to dense tensor
+local dt_dHat = var'\\partial_t \\hat{d}'
+local dHat_t = var'\\hat{d}_t'
+dt_dHat:nameForExporter('C', 'dt_dHat')
+dHat_t:nameForExporter('C', 'dHat_t')
+
+
+
+
+
+-- TODO store this information inside Variable/TensorRef?
+-- TODO how about symmetries in derivatives?  i suppose that's obvious
+-- but how about symmetries between deriv- and non-deriv- indexes?  like d_kij,l = d_lij,k
+-- NOTICE lower'ness can be sorted as well ... but also notice if g_ij = g_ji then g^i_j != g_j^i, but g^ij = g^ji, so only sort it if the lower-ness is consistent (and if there's no derivatives after it? unless ofc it is deriv'd indexes)
+local symmetries = table{
+	{gamma'_ij', {1,2}},
+	{gammaHat'_ij', {1,2}},
+	{gammaDelta'_ij', {1,2}},
+	{d'_ijk', {2,3}},
+	{dHat'_ijk', {2,3}},
+	{dDelta'_ijk', {2,3}},
+	{dt_dHat'_ijk', {2,3}},
+	{K'_ij', {1,2}},
+	{S'_ij', {1,2}},
+	{Gamma'_ijk', {2,3}},
+	
+	-- TODO derivatives automatic? otherwise there are a lot of permtuations ...
+	{gamma'_ij,k', {1,2}},
+	{gammaHat'_ij,k', {1,2}},
+	{gammaDelta'_ij,k', {1,2}},
+	{d'_ijk,l', {2,3}, {1,4}},
+	{dHat'_ijk,l', {2,3}, {1,4}},
+	{dDelta'_ijk,l', {2,3}, {1,4}},
+	{dt_dHat'_ijk,l', {2,3}, {1,4}},
+	{dHat_t'_ij', {1,2}},
+	{dHat_t'_ij,k', {1,2}},
+	{K'_ij,k', {1,2}},
+}
+-- modify 'x' in-place, rearrange its Tensor.Index'es
+function applySymmetriesToIndexes(x)
+	--[[
+	if the variable matches, the size matches, and the derivs matches (ignore upper/lower) then ...
+	TODO how about implicit for derivatives of tensors, like K_(ij) => K_(ij),k
+	
+	hmm this asks the question, should the symmetries also include deriv-only sets of indexes?
+	how about deriv+non-deriv? (like d_kij,l == d_lij,k)
+	--]]
+	local _, t = symmetries:find(nil, function(t)
+		return TensorRefIsMatchingDegreeAndDeriv(t[1], x)
+	end)
+	if not t then return end
+	local symindexes = t[2]
+	-- assert all the sym indexes have matching lower and deriv~=nil
+	-- but the lower doesn't have to match the 'find' TensorRef in 'symmetries'
+	local index = x[1+symindexes[1]]
+	local lower = not not index.lower
+	local deriv = index.derivative
+	local isolatedIndexes = table{index}
+	for j=2,#symindexes do
+		local index = x[1+symindexes[j]]
+		if lower ~= not not index.lower then return end		-- the lowers of the symmetrized indexes don't match -- can't do anything more for this
+		if deriv ~= index.dervative then return end			-- the derivatives don't match
+		isolatedIndexes:insert(index)
+	end
+	local origx = x:clone()
+	-- now sort
+	isolatedIndexes:sort(function(a,b)
+		if a.lower and not b.lower then return true end
+		if not a.lower and b.lower then return false end
+		return a.symbol < b.symbol
+	end)
+	-- now re-insert
+	for j,i in ipairs(symindexes) do
+		x[1+i] = isolatedIndexes[j]
+	end
+--printbr('applying symmetries from', origx, 'to', x)
+end
+
+
+
+
 
 -- for Expression:simplifyMetrics()
 Tensor.metricVariable = gamma
@@ -2217,8 +2298,10 @@ if useShift == 'minimalDistortionElliptic' then
 	
 	-- TODO now how do they convert to flux?
 	dt_b_ul_def = dt_beta_u_def:reindex{k='i'}
-	dt_b_ul_def = (dt_b_ul_def[1]'_,r')():eq(dt_b_ul_def[2]'_,r')
-	dt_b_ul_def[1] = dt_b_ul_def[1]:replace(beta'^l_,tr', beta'^l_,r''_,t'):substIndex(d_beta_ul_from_b_ul)
+	dt_b_ul_def = (dt_b_ul_def[1]'_,k')():eq((delta'^r_k' * dt_b_ul_def[2])'_,r')
+	dt_b_ul_def[1] = dt_b_ul_def[1]
+		:replace(beta'^l_,tk', beta'^l_,k''_,t')
+		:substIndex(d_beta_ul_from_b_ul)
 	printbr(dt_b_ul_def)
 
 	_, dt_b_ul_negflux, dt_b_ul_rhs = combineCommaDerivativesAndRelabel(dt_b_ul_def[2], 'r', {'l', 'k'})
@@ -2226,6 +2309,11 @@ if useShift == 'minimalDistortionElliptic' then
 	printbr(b'^l_k,t', 'source term:', dt_b_ul_rhs)
 
 	dt_b_ul_def = dt_b_ul_def()
+	printbr(dt_b_ul_def)
+
+	local using = delta'^r_k,r':eq(0)
+	printbr('using', using)
+	dt_b_ul_def = dt_b_ul_def:subst(using)()
 	printbr(dt_b_ul_def)
 
 	printbr('using', d_gamma_uul_from_gamma_uu_d_gamma_lll)
@@ -2267,13 +2355,28 @@ we have three parts:
 1) the flux first-derivatives of state-vars,
 	be they EFE vars or EFE var first derivs turned into state vars for hyperbolicity, like a_k, d_kij, b^l_k ...
 	these are turned into the flux-jacobian matrix
-2) the flux first-deriv of not-first-deriv-state-vars
-	these seem to be moved over to the rhs
-3) the rhs terms which don't go into the flux
 
+2) the flux first-deriv of not-first-deriv-state-vars
+	these seem to be moved over to the rhs with most papers' eigensystem computation
+	but are on the lhs in the flux for the flux
+	(hmm, if we want homogeneity then wouldn't we want these vars in the flux, and therefore we woudl want the flux matrix to include the gauge vars?)
+
+3) the rhs terms which don't go into the flux
+	to speed up calculations, these can be represented in their simplest form (i.e. d^l instead of d^l_ij or dDelta^l_ij + dHat^l_ij)
+
+
+so what TODO 
+
+1) above, for each var,
+	once it is separated into the flux and the source ...
+	separate the two:
+		- simplify the source further (to make it more compact / easier to code-generate)
+		- simplify the flux in converting the 1st derivs of gauge vars into state vars *ONLY IF* we are not including them into the eignesystem
+			- and even then, don't add them back into the source (even tho they don't go in the eigensystem).  keep them separate.
+	- while yoou're here, might as well separate the shift from non-shift components too?
 --]]
 
-printHeader'as a system:'
+printHeader'as a system (for the eigensystem solver ... TODO include the shift eqns in this output):'
 
 --[[
 for lapse f=2/α:
@@ -2282,11 +2385,34 @@ matrix of {α, Δγ_ij, a_r, Δd_kij, K_ij}
 --]]
 local UijkltEqns = table()
 
+local function takeOffCommaR(expr)
+	if Constant.isValue(expr, 0) then return expr end
+	assert(Tensor.Ref:isa(expr))
+	assert(expr[#expr].symbol == 'r')
+	assert(expr[#expr].derivative == ',')
+	assert(expr[#expr].lower)
+	if #expr == 2 then
+		return expr[1]
+	end
+	expr = expr:clone()
+	table.remove(expr, #expr)
+	return expr
+end
+
+--[[
+here's the flux vector from the 2008 Yano / 2005 Bona paper, irregardless of what state variable derivatives we find later
+--]]
+local FijklTerms = table()
+
 -- technically beta^i is also a gauge var, but i'm disabling it via dontIncludeShiftVars
 if not eigensystem_dontIncludeGaugeVars then
 	UijkltEqns:append{
 		dt_alpha_def,
 		dt_gammaDelta_ll_def,
+	}
+	FijklTerms:append{
+		-takeOffCommaR(dt_alpha_negflux or Constant(0)),
+		-takeOffCommaR(dt_gammaDelta_ll_negflux or Constant(0)),
 	}
 end
 
@@ -2294,6 +2420,11 @@ UijkltEqns:append{
 	dt_a_l_def,
 	dt_dDelta_lll_def,
 	dt_K_ll_def,
+}
+FijklTerms:append{
+	-takeOffCommaR(dt_a_l_negflux),
+	-takeOffCommaR(dt_dDelta_lll_negflux),
+	-takeOffCommaR(dt_K_ll_negflux),
 }
 
 --[[
@@ -2308,8 +2439,14 @@ seems these have some ugly wavespeeds
  so ... how do we change that?
 --]]
 if not eigensystem_dontIncludeZVars then
-	UijkltEqns:insert(dt_Theta_def)
-	UijkltEqns:insert(dt_Z_l_def)
+	UijkltEqns:append{
+		dt_Theta_def,
+		dt_Z_l_def,
+	}
+	FijklTerms:append{
+		-takeOffCommaR(dt_Theta_negflux),
+		-takeOffCommaR(dt_Z_l_negflux),
+	}
 end
 
 if not eigensystem_dontIncludeShiftVars then
@@ -2323,6 +2460,29 @@ if not eigensystem_dontIncludeShiftVars then
 		UijkltEqns:insert(dt_B_u_def)
 	end
 end
+	-- if we exclude the shift vars from the eigensystem ... 
+	-- we should still put them in the flux vector
+	-- but that means we need a separate lhs dUdt to match up with the flux vector versus the eigensystem
+	-- it also might mean keeping track of where the non-shift flux vector terms end if I want to (TODO) change this script to derive the eigensystem from this flux vector
+	-- (instead of from all those dt_*_def var rhs's
+	-- because doing this means ...
+	-- ... TODO ... get rid of all the dt_*_def rhs's after the flux separation
+	-- and TODO get rid of all the replace()'s beforehand since in the flux vector I just swap them back
+if dt_beta_u_def then
+	FijklTerms:insert(-takeOffCommaR(dt_beta_u_negflux))
+end
+if dt_b_ul_def then
+	FijklTerms:insert(-takeOffCommaR(dt_b_ul_negflux))
+end
+if dt_B_u_def then
+	FijklTerms:insert(-takeOffCommaR(dt_B_u_negflux or Constant(0)))
+end
+local FijklMat = Matrix(FijklTerms):T()
+
+-- ijk on the partial_t's
+-- pqm on the partial_x^r's
+
+-- factor out the _,t from the lhs
 
 function assertAndRemoveLastTensorIndex(exprs, lastTensorIndex)
 	return exprs:mapi(function(expr)
@@ -2339,34 +2499,57 @@ local UijklVars = assertAndRemoveLastTensorIndex(
 	UijkltEqns:mapi(function(eqn) return eqn[1] end),
 	Tensor.Index{lower=true, symbol='t', derivative=','}
 )
-
--- ijk on the partial_t's
--- pqm on the partial_x^r's
-
--- factor out the _,t from the lhs
 local UijklMat = Matrix(UijklVars):T()
 
-local U_defs = Matrix(UijkltEqns:mapi(function(eqn)
-	return eqn[2]:clone():simplifyAddMulDiv()
-end)):T()
-
-function separateSum(sum, cond)
-	local with = table()
-	local without = table()
-	for x in sum:iteradd() do
-		if cond(x) then
-			with:insert(x)
-		else
-			without:insert(x)
-		end
+local UijklWithShiftVars = table(UijklVars)	-- I just want this for the lhs, for when FijklTerms doesn't match UijkltVars
+if eigensystem_dontIncludeShiftVars then
+	local addedShiftLhs = table()
+	if dt_beta_u_def then
+		addedShiftLhs:insert(dt_beta_u_def[1])
 	end
-	return sum(with), sum(without)
+	if dt_b_ul_def then
+		addedShiftLhs:insert(dt_b_ul_def[1])
+	end
+	if dt_B_u_def then
+		addedShiftLhs:insert(dt_B_u_def[1])
+	end
+	UijklWithShiftVars:append(assertAndRemoveLastTensorIndex(
+		addedShiftLhs,
+		Tensor.Index{lower=true, symbol='t', derivative=','}
+	))
 end
+local UijklWithShiftMat = Matrix(UijklWithShiftVars):T()
 
---printbr(UijklMat'_,t':eq(U_defs))
 for _,eqn in ipairs(UijkltEqns) do
 	printbr(eqn)
 end
+printbr()
+
+printbr'flux vector:'
+printbr((UijklWithShiftMat'_,t' + FijklMat'_,r'):eq(var'S'))
+printbr()
+
+--[[
+ok at this point I could just use whats in FijklTerms to calculate the flux jacobian
+instead of the whole rhs, which has the flux jacobian terms, the flux gauge derivs-to-first-deriv-state-vars, and the rhs source vars
+For now I'm going to simplify FijklTerms to the least number of vars for the purpose of generating flux code
+--]]
+for i=1,#FijklTerms do
+	local term = FijklTerms[i]
+	term = term:substIndex(
+		gamma_ll_from_gammaHat_ll_gammaDelta_ll:solve(gammaHat'_ij'),
+		d_lll_from_dHat_lll_dDelta_lll:solve(dHat'_kij')
+	):simplifyAddMulDiv()
+	-- only for tij use the solve-for-dDelta ...
+	term = term:subst(d_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'):reindex{k='t'}):simplifyAddMulDiv()
+	term = term:simplifyMetrics():simplifyAddMulDiv()
+	term = term:tidyIndexes():simplifyAddMulDiv()
+	term = simplifyDAndKTraces(term):simplifyAddMulDiv()
+	term = term:symmetrizeIndexes(d, {2,3})
+	FijklTerms[i] = term
+end
+FijklMat = Matrix(FijklTerms):T()
+printbr((UijklWithShiftMat'_,t' + FijklMat'_,r'):eq(var'S'))
 printbr()
 
 local UpqmnVars = UijklVars:mapi(function(x) return x:reindex{ijkl='pqmn'} end)
@@ -2393,7 +2576,6 @@ end
 
 printbr((UijklMat'_,t' + dFijkl_dUpqmn_mat * UpqmnMat'_,r'):eq(SijklMat))
 printbr()
-
 
 printHeader'replacing rhs derivatives with 1st derivative state variables:'
 
@@ -2621,82 +2803,21 @@ if evaluateShiftlessEigensystem then
 end
 --]]
 
--- [=[ better idea i hope:
+-- [=[ 
 Tensor.Chart{coords=xs}
 
 -- TODO put this in symmath
 -- after merging the "symmetries" property into TensorRef
 local cachedDenseTensors = table()
+local function getDenseTensorCache(x)
+	assert(Tensor.Ref:isa(x) and Variable:isa(x[1]))
+	local _, t = cachedDenseTensors:find(nil, function(t)
+		return TensorRefIsMatchingIndexForm(t[1], x)
+	end)
+	if not t then return end
+	return t[2], t[1]
+end
 function expandMatrixIndexes(expr)
-	local dt_dHat = var'\\partial_t \\hat{d}'
-	dt_dHat:nameForExporter('C', 'dt_dHat')
-
-	-- TODO store this information inside Variable/TensorRef?
-	-- TODO how about symmetries in derivatives?  i suppose that's obvious
-	-- but how about symmetries between deriv- and non-deriv- indexes?  like d_kij,l = d_lij,k
-	-- NOTICE lower'ness can be sorted as well ... but also notice if g_ij = g_ji then g^i_j != g_j^i, but g^ij = g^ji, so only sort it if the lower-ness is consistent (and if there's no derivatives after it? unless ofc it is deriv'd indexes)
-	local symmetries = table{
-		{gamma'_ij', {1,2}},
-		{gammaHat'_ij', {1,2}},
-		{gammaDelta'_ij', {1,2}},
-		{d'_ijk', {2,3}},
-		{dHat'_ijk', {2,3}},
-		{dDelta'_ijk', {2,3}},
-		{dt_dHat'_ijk', {2,3}},
-		{K'_ij', {1,2}},
-		{S'_ij', {1,2}},
-		{Gamma'_ijk', {2,3}},
-		
-		-- TODO derivatives automatic? otherwise there are a lot of permtuations ...
-		{gamma'_ij,k', {1,2}},
-		{gammaHat'_ij,k', {1,2}},
-		{gammaDelta'_ij,k', {1,2}},
-		{d'_ijk,l', {2,3}, {1,4}},
-		{dHat'_ijk,l', {2,3}, {1,4}},
-		{dDelta'_ijk,l', {2,3}, {1,4}},
-		{dt_dHat'_ijk,l', {2,3}, {1,4}},
-		{K'_ij,k', {1,2}},
-	}
-	-- modify 'x' in-place, rearrange its Tensor.Index'es
-	local function applySymmetries(x)
-		--[[
-		if the variable matches, the size matches, and the derivs matches (ignore upper/lower) then ...
-		TODO how about implicit for derivatives of tensors, like K_(ij) => K_(ij),k
-		
-		hmm this asks the question, should the symmetries also include deriv-only sets of indexes?
-		how about deriv+non-deriv? (like d_kij,l == d_lij,k)
-		--]]
-		local _, t = symmetries:find(nil, function(t)
-			return TensorRefIsMatchingDegreeAndDeriv(t[1], x)
-		end)
-		if not t then return end
-		local symindexes = t[2]
-		-- assert all the sym indexes have matching lower and deriv~=nil
-		-- but the lower doesn't have to match the 'find' TensorRef in 'symmetries'
-		local index = x[1+symindexes[1]]
-		local lower = not not index.lower
-		local deriv = index.derivative
-		local isolatedIndexes = table{index}
-		for j=2,#symindexes do
-			local index = x[1+symindexes[j]]
-			if lower ~= not not index.lower then return end		-- the lowers of the symmetrized indexes don't match -- can't do anything more for this
-			if deriv ~= index.dervative then return end			-- the derivatives don't match
-			isolatedIndexes:insert(index)
-		end
-		local origx = x:clone()
-		-- now sort
-		isolatedIndexes:sort(function(a,b)
-			if a.lower and not b.lower then return true end
-			if not a.lower and b.lower then return false end
-			return a.symbol < b.symbol
-		end)
-		-- now re-insert
-		for j,i in ipairs(symindexes) do
-			x[1+i] = isolatedIndexes[j]
-		end
---printbr('applying symmetries from', origx, 'to', x)
-	end
-
 	--[[
 	args:
 		var = base var, to replace Tensor.Ref(var, ...) with Tensor.Ref( dense form of var, ...)
@@ -2726,7 +2847,7 @@ function expandMatrixIndexes(expr)
 			end
 			-- now sort 'thisIndexes' based on symmetries
 			local thisRef = Tensor.Ref(basevar, thisIndexes:unpack())
-			applySymmetries(thisRef)
+			applySymmetriesToIndexes(thisRef)
 			
 			-- TODO how to specify names per exporter?
 			local v = var(symmath.export.LaTeX:applyLaTeX(thisRef))
@@ -2764,13 +2885,9 @@ function expandMatrixIndexes(expr)
 				-- scalar derivatives need to be generated
 				-- otherwise tensors need the derivative indexes picked off, ten replace with dense, then replace with ref with full derivative indexes
 				-- or just don't bother with derivatives, and encode everything in the variable name
-				local _, t = cachedDenseTensors:find(nil, function(t)
-					return TensorRefIsMatchingIndexForm(t[1], x)
-				end)
-				local dense
-				if t then
-					dense = t[2]
---printbr('...matched to cached tensorref', t[1])
+				local dense, cachedRef = getDenseTensorCache(x)
+				if dense then
+--printbr('...matched to cached tensorref', cachedRef)
 --printbr('found associated dense', dense)
 				else
 					dense = makeDenseTensor(x)
@@ -2786,6 +2903,8 @@ function expandMatrixIndexes(expr)
 
 	-- special for our time deriv, since the "t" is a fixed dim, not a tensor index
 	-- how about TODO a 'fixed indexes'?  remove these from the dense tensor generation
+	local dHat_t_Dense = makeDenseTensor(dHat_t'_ij')
+	expr = expr:replace(dHat'_tij', dHat_t_Dense'_ij')
 	local dt_dHatDense = makeDenseTensor(dt_dHat'_kij')
 	expr = expr:replace(dHat'_tij,k', dt_dHatDense'_kij')
 	
@@ -2834,7 +2953,19 @@ local dUdt_lhs_exprs = range(dFdx_lhs_dim[1]):mapi(function(i)
 	end
 	return expr
 end)
+local dUdt_lhs_withShift_exprs = range(#UijklWithShiftMat):mapi(function(i)
+	local expr = expandMatrixIndexes(UijklWithShiftMat[i][1])()
+	if Tensor:isa(expr) then
+		for i in expr:iter() do
+			expr[i] = expr[i]:diff(t)
+		end
+	else
+		expr = expr:diff(t)
+	end
+	return expr
+end)
 --]]
+
 
 -- replace the tensor index matrix form of _,t with _,x
 local dUdx_lhs = Matrix:lambda(UijklMat:dim(), function(...)
@@ -2848,6 +2979,9 @@ dUdx_lhs_exprs = dUdx_lhs_exprs:mapi(function(expr) return expandMatrixIndexes(e
 local S_rhs_exprs = range(dFdx_lhs_dim[1]):mapi(function(i) return SijklMat[i][1] end)
 S_rhs_exprs = S_rhs_exprs:mapi(function(expr) return expandMatrixIndexes(expr) end)
 
+local F_lhs_exprs = range(#FijklMat):mapi(function(i) return FijklMat[i][1] end)
+F_lhs_exprs = F_lhs_exprs:mapi(function(expr) return expandMatrixIndexes(expr) end) 
+
 --[[ show eqns in dense-tensor form
 printbr'expanding...'
 for i=1,#dFdx_lhs_exprs do
@@ -2858,6 +2992,8 @@ printbr()
 
 -- NOTICE this can go slow if the dense tensors aren't replaced correctly 
 S_rhs_exprs = S_rhs_exprs:mapi(function(expr) return expr() end)
+
+F_lhs_exprs = F_lhs_exprs:mapi(function(expr) return expr() end)
 
 for i=1,#dFdx_lhs_exprs do
 	local dUdt_i = dUdt_lhs_exprs[i]
@@ -2937,17 +3073,46 @@ for i=1,#dFdx_lhs_exprs do
 	end
 end
 
+local dUdt_lhs_withShift_exprs_expanded = table()
+local F_lhs_exprs_expanded = table()
+for i=1,#F_lhs_exprs do
+	local dUdt_i = dUdt_lhs_withShift_exprs[i]
+	local F_i = F_lhs_exprs[i]
+	if Tensor:isa(dUdt_i) then
+		for j,x in dUdt_i:iter() do
+			if not dUdt_lhs_withShift_exprs_expanded:find(dUdt_i[j]) then
+				dUdt_lhs_withShift_exprs_expanded:insert(dUdt_i[j])
+				local F_i_j_x = Constant.isValue(F_i, 0) and Constant(0) or assert(F_i[j][1])
+				F_lhs_exprs_expanded:insert(F_i_j_x)
+			end
+		end
+	else
+		assert(not Tensor:isa(dUdt_i))
+		dUdt_lhs_withShift_exprs_expanded:insert(dUdt_i)
+		F_lhs_exprs_expanded:insert(F_i[1])
+	end
+end
+
 local n = #dFdx_lhs_exprs_expanded
 -- [[
-printbr'unraveling...'
-for i=1,n do
+printbr'unraveling flux for eigensystem + source...'
+for i=1,#dUdt_lhs_exprs_expanded do
 	printbr((dUdt_lhs_exprs_expanded[i] + dFdx_lhs_exprs_expanded[i]):eq(S_rhs_exprs_expanded[i]))
+end
+printbr'unraveling flux vector...'
+for i=1,#dUdt_lhs_withShift_exprs_expanded do
+	printbr((dUdt_lhs_withShift_exprs_expanded[i] + F_lhs_exprs_expanded[i]):eq(var'S'))
 end
 printbr()
 --]]
 
 printbr'as linear system...'
 local U_vars_expanded = dUdt_lhs_exprs_expanded:mapi(function(v)
+	v = v:clone()
+	assert(Derivative:isa(v) and Variable:isa(v[1]) and v[2] == t)
+	return v[1]
+end)
+local U_vars_withShift_expanded = dUdt_lhs_withShift_exprs_expanded:mapi(function(v)
 	v = v:clone()
 	assert(Derivative:isa(v) and Variable:isa(v[1]) and v[2] == t)
 	return v[1]
@@ -2989,17 +3154,38 @@ local dUdt_lhs_exprs_expanded_mat = Matrix(dUdt_lhs_exprs_expanded):T()
 dUdt_lhs_exprs_expanded_mat.rowsplits = rowsplits
 local dUdx_lhs_exprs_expanded_mat = Matrix(dUdx_lhs_exprs_expanded):T()
 dUdx_lhs_exprs_expanded_mat.rowsplits = rowsplits
+
+-- somewhere in here I need to subtract out the diagonal -beta^x if I want to help the eigen solver 
+local betaUx = getDenseTensorCache(beta'^i')[1]
+printbr('subtracting ', -betaUx * var'I', '...')
+dFijkl_dUpqmn_expanded = (dFijkl_dUpqmn_expanded + Matrix.identity(#dFijkl_dUpqmn_expanded) * betaUx)()
+dFijkl_dUpqmn_expanded.colsplits = rowsplits
+dFijkl_dUpqmn_expanded.rowsplits = rowsplits
+
+local Uijkl_withShift_expanded = Matrix(U_vars_withShift_expanded):T()
+-- this should match dF/dU * U ... if we have homogeneity 
+local Fijkl_withShift_expanded = Matrix(F_lhs_exprs_expanded):T()
+Fijkl_withShift_expanded.rowsplits = rowsplits
+
 printbr(
 	(
 		dUdt_lhs_exprs_expanded_mat
-		+ dFijkl_dUpqmn_expanded
+		+ (dFijkl_dUpqmn_expanded - betaUx * var'I')
 		* dUdx_lhs_exprs_expanded_mat
-		+ dFijkl_dUpqmn_expanded_b
+		+ dFijkl_dUpqmn_expanded_b	-- should be zero ...or full of all the y and z dir flux terms
 	):eq(
 		Sijkl_expanded
 	)
 )
 printbr()
+
+local dUdt_lhs_withShift_exprs_expanded_mat = Matrix(dUdt_lhs_withShift_exprs_expanded):T()
+dUdt_lhs_withShift_exprs_expanded_mat.rowsplits = rowsplits
+
+printbr'flux vector:'
+printbr((dUdt_lhs_withShift_exprs_expanded_mat'_,t' + Fijkl_withShift_expanded'_,r'):eq(var'S'))
+printbr()
+
 --]=]
 
 
@@ -3059,6 +3245,16 @@ if removeZeroRows then
 	-- TODO if this fails then that means we need find the removed rows from Upqmn and remove the associated columns from dFijkl_dUpqmn
 	assert(m == n, "removed a different number of all-zero rows vs columns")
 	printbr()
+
+	for i=#Fijkl_withShift_expanded,1,-1 do
+		if Constant.isValue(Fijkl_withShift_expanded[i][0], 0) then
+			table.remove(Fijkl_withShift_expanded, i)
+			table.remove(Uijkl_withShift_expanded, i)
+		end
+	end
+	printbr'flux vector:'
+	printbr((Uijkl_withShift_expanded'_,t' + Fijkl_withShift_expanded'_,r'):eq(var'S'))
+	printbr()
 	--]]
 end
 
@@ -3089,6 +3285,16 @@ assert(#Sijkl_expanded == #Uijkl_expanded)
 print(export.C:toCode{
 	output = range(#Uijkl_expanded):mapi(function(i)
 		return {['deriv->'..export.C(Uijkl_expanded[i][1])] = Sijkl_expanded[i][1]}
+	end),
+	notmp = true,
+	assignOnly = true,
+})
+print()
+print'flux:'
+assert(#Fijkl_withShift_expanded == #Uijkl_withShift_expanded)
+print(export.C:toCode{
+	output = range(#Uijkl_withShift_expanded):mapi(function(i)
+		return {['flux->'..export.C(Uijkl_withShift_expanded[i][1])] = Fijkl_withShift_expanded[i][1]}
 	end),
 	notmp = true,
 	assignOnly = true,
