@@ -2242,18 +2242,32 @@ S_withShift_exprs = S_withShift_exprs:mapi(function(expr) return expandMatrixInd
 F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr,i)
 	expr = expr()
 	if Constant.isValue(expr, 0) then return expr end
-printbr(dUdt_lhs_withShift_exprs[i], ':', table(expr.variance):mapi(tostring):concat())
 	assert(Tensor:isa(expr))
-	-- make sure the '^r' is first
-	local dstv = table(expr.variance)
-	local rloc = dstv:find(nil, function(index) return index.symbol == 'r' end)
-	assert(rloc)
-	dstv:insert(1, assert(dstv:remove(rloc)))
-	expr = expr:permute(dstv)
+	-- use dUdt_lhs_withShift_exprs for tensor variance
+	local dUdt_i = dUdt_lhs_withShift_exprs[i]
+	if not Tensor:isa(dUdt_i) then 
+		assert(#expr.variance == 1)
+	else
+		-- put the '^r' *LAST*
+		expr = expr:permute(table(dUdt_i.variance):append{Tensor.Index{symbol='r', lower=false}})
+	end
+	assert(expr.variance[#expr.variance].symbol == 'r')
+	assert(not expr.variance[#expr.variance].lower)
+	assert(not expr.variance[#expr.variance].derivative)
 	return expr
 end)
 
-S_withShift_exprs = S_withShift_exprs:mapi(function(expr) return expr() end)
+S_withShift_exprs = S_withShift_exprs:mapi(function(expr,i)
+	expr = expr()
+	if Constant.isValue(expr, 0) then return expr end
+	local dUdt_i = dUdt_lhs_withShift_exprs[i]
+	if not Tensor:isa(dUdt_i) then 
+		assert(not Tensor:isa(expr))
+	else
+		expr:permute(dUdt_i.variance)
+	end
+	return expr
+end)
 
 
 local rowsplits = table()
@@ -2270,7 +2284,7 @@ for i=1,#F_lhs_withShift_exprs do
 		for j,x in dUdt_i:iter() do
 			if not dUdt_lhs_withShift_exprs_expanded:find(dUdt_i[j]) then
 				dUdt_lhs_withShift_exprs_expanded:insert(dUdt_i[j])
-				local F_i_j_x = Constant.isValue(F_i, 0) and Constant(0) or assert(F_i[1][j])	-- extra [1] because _,x flux ... 
+				local F_i_j_x = Constant.isValue(F_i, 0) and Constant(0) or assert(F_i[j][1])	-- extra [1] because _,x flux ... 
 				F_lhs_withShift_exprs_expanded:insert(F_i_j_x)
 				local S_i_j = Constant.isValue(S_i, 0) and Constant(0) or assert(S_i[j])
 				S_withShift_exprs_expanded:insert(S_i_j)
