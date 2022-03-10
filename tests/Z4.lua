@@ -220,6 +220,7 @@ function TensorRefMatchesDegreeAndDeriv(a, b)
 end
 
 function TensorRefRemoveDerivs(x)
+	assert(Tensor.Ref:isa(x))
 	x = x:clone()
 	for i=#x,2,-1 do
 		if x[i].derivative then
@@ -235,7 +236,7 @@ function TensorRefWithoutDerivMatchesIndexForm(a,b)
 	return TensorRefMatchesIndexForm(a,b)
 end
 
-function tableToMul(t)
+local function tableToMul(t)
 	if #t == 0 then return Constant(1) end
 	if #t == 1 then return t[1] end
 	return symmath.op.mul(table.unpack(t))
@@ -260,7 +261,7 @@ function separateSum(sum, cond)
 	return tableToSum(with), tableToSum(without)
 end
 
-function takeOffCommaDeriv(expr, symbolMustBe)
+function removeCommaDeriv(expr, symbolMustBe)
 	if Constant.isValue(expr, 0) then return expr end
 	assert(Tensor.Ref:isa(expr))
 	if symbolMustBe then
@@ -584,8 +585,11 @@ local symmetries = table{
 	{dHat_t'_ij,k', {1,2}},
 	{K'_ij,k', {1,2}},
 }
+
 -- TODO make this a property of the Variable wrt TensorRef (like :dependsOn does)
 -- or make it a property of the TensorRef and remember to ctor/clone it
+-- I'm thinking property of Variable, since TensorRef's are created arbitrarily from Variables , like K'_ab' * K'^ab' etc
+-- so if the symmetry (related to the TensorRef) is stored in the Variabel then K will remember this 
 local function getSymmetriesForTensorRef(x)
 	assert(Tensor.Ref:isa(x) and Variable:isa(x[1]))
 	local _, t = symmetries:find(nil, function(t)
@@ -593,6 +597,7 @@ local function getSymmetriesForTensorRef(x)
 	end)
 	return t
 end
+
 -- modify 'x' in-place, rearrange its Tensor.Index'es
 function applySymmetriesToIndexes(x)
 	--[[
@@ -1256,73 +1261,17 @@ Gaussian_def = Gaussian_def:subst(Ricci_ll_def)
 printbr(Gaussian_def)
 
 
--- hmm, no better way to do this?
--- TODO use combineCommaDerivativesAndRelabel instead
-function mergingDerivKParts(expr)
--- [[
-	expr = expr:map(function(x)
-		if symmath.op.sub:isa(x) then
-			assert(#x == 2)
-			if Tensor.Ref:isa(x[2])
-			and not Variable:isa(x[2][1])
-			then
-				x = x:clone()
-				x[2][1] = -x[2][1]
-				return x[1] + x[2]
-			else
-				return x[1] + -1 * x[2]
-			end
-		end
-	
-		if symmath.op.unm:isa(x) then
-			assert(#x == 1)
-			if Tensor.Ref:isa(x[1])
-			and not Variable:isa(x[1][1])
-			then
-				x = x:clone()
-				x[1][1] = -x[1][1]
-				return x[1]
-			else
-				return -1 * x[1]
-			end
-		end
-
-	end)
-	expr:flatten()
---]]
-	assert(symmath.op.add:isa(expr))
-	for i=1,#expr do
-		assert(not symmath.op.add:isa(expr[i]))
-	end
-
-	local nonderiv = table()
-	local deriv = table()
-	for x in expr:iteradd() do
-		if Tensor.Ref:isa(x) then
-			assert(#x == 2)
-			assert(x[2] == Tensor.Index{symbol='k', lower=true, derivative=','})
-			deriv:insert(x[1])
-		else
-			nonderiv:insert(x)
-		end
-	end
-	
-	return deriv, nonderiv
-end
-
-
-
 local _, deriv, nonderiv
---_, deriv, nonderiv = combineCommaDerivativesAndRelabel(Ricci_ll_def[2], 'k', {'i', 'j'})
-deriv, nonderiv = mergingDerivKParts(Ricci_ll_def[2])
+_, deriv, nonderiv = combineCommaDerivativesAndRelabel(Ricci_ll_def[2], 'k', {'i', 'j'})
 Gaussian_def = Gaussian_def[1]:eq(
-	(gamma'^ij' * tableToSum(deriv))'_,k'
-	- gamma'^ij_,k' * tableToSum(deriv)
-	+ tableToSum(nonderiv:mapi(function(x)
+	(gamma'^ij' * removeCommaDeriv(deriv, 'k'))'_,k'
+	- gamma'^ij_,k' * removeCommaDeriv(deriv, 'k')
+	+ tableToSum(nonderiv:sumToTable():mapi(function(x)
 		return gamma'^ij' * x
 	end))
 )
 printbr(Gaussian_def)
+
 
 Gaussian_def = Gaussian_def:replace(
 	(gamma'^ij' * (
@@ -1364,11 +1313,13 @@ gamma^ij (P_ij + (Q^k_ij)_,k)
 = gamma^ij P_ij + gamma^ij (Q^k_ij)_,k
 = gamma^ij P_ij + (gamma^ij Q^k_ij)_,k - gamma^ij_,k Q^k_ij
 --]]
---_, deriv, nonderiv = combineCommaDerivativesAndRelabel(Gaussian_def[2], 'k', {})
-deriv, nonderiv = mergingDerivKParts(Gaussian_def[2])
-Gaussian_def = Gaussian_def[1]:eq(tableToSum(deriv)()'_,k' + tableToSum(nonderiv))
+_, deriv, nonderiv = combineCommaDerivativesAndRelabel(Gaussian_def[2], 'k', {})
+printbr('deriv', deriv)
+printbr('nonderiv', nonderiv)
+Gaussian_def = Gaussian_def[1]:eq(
+	removeCommaDeriv(deriv, 'k')()'_,k' + nonderiv
+)
 printbr(Gaussian_def)
-
 
 
 --[[
@@ -1497,7 +1448,7 @@ dt_K_ll_def = dt_K_ll_def:replace(
 	--alpha * (nonderiv + deriv)
 	--alpha * (nonderiv + deriv[1]'_,k')
 	--alpha * nonderiv + alpha * deriv[1]'_,k'
-	alpha * nonderiv + (alpha * deriv[1])'_,k' - alpha * a'_k' * deriv[1]
+	alpha * nonderiv + (alpha * removeCommaDeriv(deriv,'k'))'_,k' - alpha * a'_k' * removeCommaDeriv(deriv,'k')
 )
 --]]
 printbr(dt_K_ll_def)
@@ -1571,24 +1522,16 @@ printbr('using the definition of R')
 --[[
 dt_Theta_def = dt_Theta_def:subst(Gaussian_def)
 --]]
---[[ breaking off deriv and non-deriv parts, and merging the alpha into the non-deriv part
-deriv, nonderiv = mergingDerivKParts(Gaussian_def[2])
-dt_Theta_def = dt_Theta_def:replace(
-	alpha * Gaussian_def[1],
-	
-	(alpha * tableToSum(deriv))'_,k'
-	- alpha'_,k' * tableToSum(deriv)
-	+ alpha * tableToSum(nonderiv)
-)
---]]
 -- [[
 _, deriv, nonderiv = combineCommaDerivativesAndRelabel(Gaussian_def[2], 'k', {})
 dt_Theta_def = dt_Theta_def:replace(
 	frac(1,2) * alpha * Gaussian_def[1],
 	--alpha * (nonderiv + deriv)
-	--alpha * (nonderiv + deriv[1]'_,k')
-	--alpha * nonderiv + alpha * deriv[1]'_,k'
-	frac(1,2) * alpha * nonderiv + (frac(1,2) * alpha * deriv[1])'_,k' - frac(1,2) * alpha * a'_k' * deriv[1]
+	--alpha * (nonderiv + removeCommaDeriv(deriv, 'k')'_,k')
+	--alpha * nonderiv + alpha * removeCommaDeriv(deriv, 'k')'_,k'
+	frac(1,2) * alpha * nonderiv 
+		+ (frac(1,2) * alpha * removeCommaDeriv(deriv, 'k'))'_,k' 
+		- frac(1,2) * alpha * a'_k' * removeCommaDeriv(deriv, 'k')
 )
 --]]
 printbr(dt_Theta_def)
@@ -1980,8 +1923,8 @@ if not flux_dontIncludeGaugeVars then
 		dt_gammaDelta_ll_def,
 	}
 	FijklWithShiftTerms:append{
-		-takeOffCommaDeriv(dt_alpha_negflux or Constant(0), 'r'),
-		-takeOffCommaDeriv(dt_gammaDelta_ll_negflux or Constant(0), 'r'),
+		-removeCommaDeriv(dt_alpha_negflux or Constant(0), 'r'),
+		-removeCommaDeriv(dt_gammaDelta_ll_negflux or Constant(0), 'r'),
 	}
 	SijklWithShiftTerms:append{
 		dt_alpha_rhs or Constant(0),
@@ -1995,9 +1938,9 @@ UijkltWithShiftEqns:append{
 	dt_K_ll_def,
 }
 FijklWithShiftTerms:append{
-	-takeOffCommaDeriv(dt_a_l_negflux, 'r'),
-	-takeOffCommaDeriv(dt_dDelta_lll_negflux, 'r'),
-	-takeOffCommaDeriv(dt_K_ll_negflux, 'r'),
+	-removeCommaDeriv(dt_a_l_negflux, 'r'),
+	-removeCommaDeriv(dt_dDelta_lll_negflux, 'r'),
+	-removeCommaDeriv(dt_K_ll_negflux, 'r'),
 }
 SijklWithShiftTerms:append{
 	dt_a_l_rhs,
@@ -2022,8 +1965,8 @@ if not flux_dontIncludeZVars then
 		dt_Z_l_def,
 	}
 	FijklWithShiftTerms:append{
-		-takeOffCommaDeriv(dt_Theta_negflux, 'r'),
-		-takeOffCommaDeriv(dt_Z_l_negflux, 'r'),
+		-removeCommaDeriv(dt_Theta_negflux, 'r'),
+		-removeCommaDeriv(dt_Z_l_negflux, 'r'),
 	}
 	SijklWithShiftTerms:append{
 		dt_Theta_rhs,
@@ -2052,15 +1995,15 @@ end
 -- ... TODO ... get rid of all the dt_*_def rhs's after the flux separation
 -- and TODO get rid of all the replace()'s beforehand since in the flux vector I just swap them back
 if dt_beta_u_def then
-	FijklWithShiftTerms:insert(-takeOffCommaDeriv(dt_beta_u_negflux, 'r'))
+	FijklWithShiftTerms:insert(-removeCommaDeriv(dt_beta_u_negflux, 'r'))
 	SijklWithShiftTerms:insert(dt_beta_u_rhs or Constant(0))
 end
 if dt_b_ul_def then
-	FijklWithShiftTerms:insert(-takeOffCommaDeriv(dt_b_ul_negflux, 'r'))
+	FijklWithShiftTerms:insert(-removeCommaDeriv(dt_b_ul_negflux, 'r'))
 	SijklWithShiftTerms:insert(dt_b_ul_rhs or Constant(0))
 end
 if dt_B_u_def then
-	FijklWithShiftTerms:insert(-takeOffCommaDeriv(dt_B_u_negflux or Constant(0), 'r'))
+	FijklWithShiftTerms:insert(-removeCommaDeriv(dt_B_u_negflux or Constant(0), 'r'))
 	SijklWithShiftTerms:insert(dt_B_u_rhs or Constant(0))
 end
 
@@ -2068,7 +2011,7 @@ end
 -- pqmn on the partial_x^r's
 
 -- factor out the _,t from the lhs
-local UijklWithShiftVars = UijkltWithShiftEqns:mapi(function(expr) return takeOffCommaDeriv(expr:lhs(), 't') end)
+local UijklWithShiftVars = UijkltWithShiftEqns:mapi(function(expr) return removeCommaDeriv(expr:lhs(), 't') end)
 local UijklWithShiftMat = Matrix(UijklWithShiftVars):T()
 
 
@@ -2296,7 +2239,19 @@ F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr) return expandM
 local S_withShift_exprs = range(#SijklWithShiftMat):mapi(function(i) return SijklWithShiftMat[i][1] end)
 S_withShift_exprs = S_withShift_exprs:mapi(function(expr) return expandMatrixIndexes(expr) end) 
 
-F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr) return expr() end)
+F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr,i)
+	expr = expr()
+	if Constant.isValue(expr, 0) then return expr end
+printbr(dUdt_lhs_withShift_exprs[i], ':', table(expr.variance):mapi(tostring):concat())
+	assert(Tensor:isa(expr))
+	-- make sure the '^r' is first
+	local dstv = table(expr.variance)
+	local rloc = dstv:find(nil, function(index) return index.symbol == 'r' end)
+	assert(rloc)
+	dstv:insert(1, assert(dstv:remove(rloc)))
+	expr = expr:permute(dstv)
+	return expr
+end)
 
 S_withShift_exprs = S_withShift_exprs:mapi(function(expr) return expr() end)
 
@@ -2315,7 +2270,7 @@ for i=1,#F_lhs_withShift_exprs do
 		for j,x in dUdt_i:iter() do
 			if not dUdt_lhs_withShift_exprs_expanded:find(dUdt_i[j]) then
 				dUdt_lhs_withShift_exprs_expanded:insert(dUdt_i[j])
-				local F_i_j_x = Constant.isValue(F_i, 0) and Constant(0) or assert(F_i[j][1])	-- extra [1] because _,x fluxx
+				local F_i_j_x = Constant.isValue(F_i, 0) and Constant(0) or assert(F_i[1][j])	-- extra [1] because _,x flux ... 
 				F_lhs_withShift_exprs_expanded:insert(F_i_j_x)
 				local S_i_j = Constant.isValue(S_i, 0) and Constant(0) or assert(S_i[j])
 				S_withShift_exprs_expanded:insert(S_i_j)
@@ -2924,7 +2879,7 @@ if not eigensystem_dontIncludeShiftVars then
 end
 
 
-local UijklVars = UijklVars:mapi(function(expr) return takeOffCommaDeriv(expr, 't') end)
+local UijklVars = UijklVars:mapi(function(expr) return removeCommaDeriv(expr, 't') end)
 local UijklMat = Matrix(UijklVars):T()
 
 for _,eqn in ipairs(UijkltEqns) do

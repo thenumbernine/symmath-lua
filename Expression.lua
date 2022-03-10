@@ -2116,6 +2116,25 @@ function Expression:itermul()
 	end)
 end
 
+-- these are helpers that go with iteradd and itermul:
+
+function Expression.sumToTable(s)
+	local t = table()
+	for x in s:iteradd() do
+		t:insert(x)
+	end
+	return t
+end
+
+function Expression.mulToTable(s)
+	local t = table()
+	for x in s:itermul() do
+		t:insert(x)
+	end
+	return t
+end
+
+
 
 --[[
 Variable and Function names ... and anything else
