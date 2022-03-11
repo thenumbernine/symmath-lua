@@ -89,10 +89,8 @@ pick one of these
 --[[
 I'm not sure what to call this one ... it's the one in 
 2005 Bona et al, section B.1, "to convert the minimal distortion elliptic equations into time-dependent parabolic equations by means of the Hamilton-Jacobi method"
-2008 Alcubierre's book, eqn 4.3.37 ... "harmonic shift"?
-... I don't know that "harmonic shift" is technically the correct title, but that'll do pig
 --]]
-local useShift = 'harmonicShift'	
+local useShift = '2005 Bona / 2008 Yano'
 
 --[[
 don't include alpha, gamma_ij
@@ -1304,6 +1302,14 @@ dt_K_ll_def = dt_K_ll_def:replace(
 --]]
 printbr(dt_K_ll_def)
 
+-- K_ij,k beta^k = (K_ij beta^k)_,k - K_ij beta^k_k = (K_ij beta^k)_,k - K_ij b^k_k
+-- mind you there are two K_ij beta^k terms in the flux now
+-- they won't be removed until the flux is simplified
+local using = (K'_ij,k' * beta'^k'):eq((K'_ij' * beta'^k')'_,k' - K'_ij' * b'^k_k')
+printbr('using', using)
+dt_K_ll_def = dt_K_ll_def:subst(using)
+printbr(dt_K_ll_def)
+
 printbr'combining derivatives into flux:'
 -- hmm, where does this go wrong?
 dt_K_ll_def:flatten()
@@ -1311,7 +1317,6 @@ Tensor.Ref:pushRule'Prune/evalDeriv'
 dt_K_ll_def[2] = combineCommaDerivatives(dt_K_ll_def[2])
 Tensor.Ref:popRule'Prune/evalDeriv'
 printbr(dt_K_ll_def)
-
 
 local _, dt_K_ll_negflux, dt_K_ll_rhs = combineCommaDerivativesAndRelabel(dt_K_ll_def[2], 'r', {'i', 'j'})
 printbr(K'_ij,t', '2008 Yano paper flux term:', -dt_K_ll_negflux)
@@ -1689,7 +1694,7 @@ if useShift == 'hyperbolicGammaDriver' then
 	)
 	--]]
 end	-- useShift == 'hyperbolicGammaDriver'
-if useShift == 'harmonicShift' then
+if useShift == '2005 Bona / 2008 Yano' then
 	-- how many of these terms should be state vars instead of state derivatives?
 	printHeader('minimum distortion elliptic evolution:')
 
@@ -2285,6 +2290,7 @@ for _,info in ipairs{
 		..lineend
 	)
 	print('\t}'..lineend)
+	print('\t&lt;? if useShift == "2005 Bona / 2008 Yano" then ?>'..lineend)
 	print('\t{'..lineend)
 	print('\t\t'..export.C:toCode{
 			output = range(#Uijkl_withShift_expanded):mapi(function(i,_,t)
@@ -2306,6 +2312,7 @@ for _,info in ipairs{
 		..lineend
 	)
 	print('\t}'..lineend)
+	print('\t&lt;? end ?>/* useShift == "2005 Bona / 2008 Yano" */'..lineend)
 	print()
 end
 print'</pre>'
@@ -2779,7 +2786,7 @@ printbr(dt_Z_l_def)
 
 
 
-if useShift == 'harmonicShift' then
+if useShift == '2005 Bona / 2008 Yano' then
 	dt_b_ul_def = dt_b_ul_def()
 	printbr(dt_b_ul_def)
 
@@ -2796,7 +2803,7 @@ if useShift == 'harmonicShift' then
 	printbr(dt_b_ul_def)
 
 	if eigensystem_dontIncludeGaugeVars
-	and useShift ~= 'harmonicShift'
+	and useShift ~= '2005 Bona / 2008 Yano'
 	then
 		printbr('using', d_alpha_l_from_a_l)
 		dt_b_ul_def = dt_b_ul_def:substIndex(d_alpha_l_from_a_l)()
