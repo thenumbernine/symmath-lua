@@ -3,6 +3,7 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
 local Wildcard = require 'symmath.Wildcard'
+local symmath
 
 local TensorRef = class(Expression)
 TensorRef.name = 'Tensor.Ref'
@@ -15,7 +16,8 @@ function TensorRef:init(tensor, ...)
 	--assert(Tensor:isa(tensor))	
 
 	-- make sure the rest of the arguments are tensor indexes
-	local TensorIndex = require 'symmath.tensor.Index'
+	symmath = symmath or require 'symmath'
+	local TensorIndex = symmath.Tensor.Index
 	for i=1,select('#',...) do
 		local index = select(i, ...)
 		if not (TensorIndex:isa(index) or Wildcard:isa(index)) then
@@ -81,7 +83,8 @@ function TensorRef:clone()
 end
 
 function TensorRef:setDependentVars(...)
-	local Variable = require 'symmath.Variable'
+	symmath = symmath or require 'symmath'
+	local Variable = symmath.Variable
 	if not Variable:isa(self[1]) then
 		error("cannot yet call a non-Variable, non-TensorRef(Variable) to :setDependentVars() on other variables/tensrrefs-of-variables")
 	end
@@ -116,7 +119,8 @@ that match x (either Variable equals, or TensorRef with matching Variable and # 
 --]]
 function TensorRef:dependsOn(x)
 --print('does TensorRef '..self..' depend on '..x..'?')
-	local Variable = require 'symmath.Variable'
+	symmath = symmath or require 'symmath'
+	local Variable = symmath.Variable
 
 	-- TODO handle dense tensor? idk, this is for variables wrt other variables
 
@@ -166,11 +170,148 @@ function TensorRef:inferDepenedentVars(...)
 	self:setDependentVars(TensorRef.super.getDependentVars(...):unpack())
 end
 
+--[[
+set symmetries of the Tensor.Ref
+but store the symmetry in the Variable
+since creating new Ref's happens all the time
+
+TODO 
+right now I'm just setting this to work like the :symmetrizeIndexes
+but maybe change that as well, and this, to only symmetrize indexes
+if the degree matches
+
+TODO how about symmetries in derivatives?  i suppose that's obvious
+but how about symmetries between deriv- and non-deriv- indexes?  like d_kij,l = d_lij,k
+NOTICE lower'ness can be sorted as well ... but also notice if g_ij = g_ji then g^i_j != g_j^i, but g^ij = g^ji, so only sort it if the lower-ness is consistent (and if there's no derivatives after it? unless ofc it is deriv'd indexes)
+--]]
+function TensorRef:setSymmetries(...)
+	symmath = symmath or require 'symmath'
+	local Variable = symmath.Variable
+	
+	local var = self[1]
+	if not Variable:isa(var) then
+		error("can only set symmetries of a TensorRef of a Variable")
+	end
+	
+	local targetDegree = #self-1
+	
+	-- override all symmetries every time you call?
+	-- or just override all of them for this particular degree?
+	-- or just override them for this particular combination of lower and deriv?
+	-- or just the deriv and degree?
+	local key = self:getSymmetriesKey()
+	var.indexSymmetries = var.indexSymmetries or {}
+	var.indexSymmetries[key] = table()
+
+	for i=1,select('#', ...) do
+		local indexNumbers = select(i, ...)
+		-- infer whether we are symmetrizing across derivatives
+		local acrossDerivs 
+		local deriv = self[1+indexNumbers[1]]
+		for j=2,#indexNumbers do
+			local oderiv = self[1+indexNumbers[j]]
+			if deriv ~= oderiv then
+				acrossDerivs = true
+				break
+			end
+		end
+		var.indexSymmetries[key]:insert{
+			indexNumbers = table(indexNumbers),
+			-- this can be inferred from the key
+			targetDegree = targetDegree,
+			acrossDerivs = acrossDerivs,
+		}
+	end
+end
+
+function TensorRef:getSymmetriesKey()
+	return table.sub(self, 2):mapi(function(index) 
+		--[[ using matching upper/lower and deriv?
+		return (index.lower and '_' or '^')..(index.degree or '')
+		--]]
+		-- [[ use deriv and degree?
+		return index.degree or ' '
+		--]]
+	end):concat()
+end
+
+function TensorRef:getSymmetries()
+	symmath = symmath or require 'symmath'
+	local Variable = symmath.Variable
+	local var = self[1]
+	if not Variable:isa(var) then return end	-- otherwise we have no symmetry info
+	if not var.indexSymmetries then return end
+	local key = self:getSymmetriesKey()
+	local syms = var.indexSymmetries[key]
+	if not syms then return end
+	-- why unpack()? only so the arguments can match setSymmetries()
+	return syms:unpack()
+end
+
+--[[
+if the variable matches, the size matches, and the derivs matches (ignore upper/lower) then ...
+TODO how about implicit for derivatives of tensors, like K_(ij) => K_(ij),k
+
+hmm this asks the question, should the symmetries also include deriv-only sets of indexes?
+how about deriv+non-deriv? (like d_kij,l == d_lij,k)
+	
+assert all the sym indexes have matching lower and deriv~=nil
+but the lower doesn't have to match the 'find' TensorRef in 'symmetries'
+--]]
+function TensorRef:applySymmetries()
+	symmath = symmath or require 'symmath'
+	local Variable = symmath.Variable
+	local var = self[1]
+	if not Variable:isa(var) then 
+		error("can't apply symmetries to a Tensor.Ref that is not of a Variable") 
+	end
+	
+	local result = self:clone()
+	if not var.indexSymmetries then return result end
+	
+	local key = self:getSymmetriesKey()
+	local syms = var.indexSymmetries[key]
+	if not syms then return result end
+
+	for _,sym in ipairs(syms) do
+		-- [[ this doesn't consider targetDegree, but the key does
+		result = result:symmetrizeIndexes(var, sym.indexNumbers, sym.acrossDerivs)
+		--]]
+		--[[ goes slower than :symmetrizeIndexes()
+		local is = table()
+		for _,i in ipairs(sym.indexNumbers) do
+			is:insert(result[1+i])
+		end
+		is:sort(function(a,b)
+			if a.lower and not b.lower then return false end
+			if b.lower and not a.lower then return true end
+			return a.symbol < b.symbol
+		end)
+		local lowerChanges
+		local hasDeriv = is[1].derivative
+		local lower = is[1].lower
+		for i=2,#is do
+			if lower ~= is[i].lower then lowerChanges = true end
+			if is[i].derivative then hasDeriv = true end
+		end
+		-- TODO don't change raise/lower if the set of indexes crosses(includes?) any derivatives
+		if not (hasDeriv and lowerChanges) then
+			for j,i in ipairs(sym.indexNumbers) do
+				result[1+i].symbol = is[j].symbol
+				result[1+i].lower = is[j].lower
+			end
+		end
+		--]]
+	end
+	return result
+end
+
 TensorRef.rules = {
 	Prune = {
 		-- t _ab _cd => t _abcd
 		{combine = function(prune, expr)
-			local Tensor = require 'symmath.Tensor'
+			symmath = symmath or require 'symmath'
+			local Tensor = symmath.Tensor
 			local t = expr[1]
 			if not Tensor:isa(t) then 
 				if TensorRef:isa(t) then
@@ -183,7 +324,8 @@ TensorRef.rules = {
 		end},
 
 		{evalDeriv = function(prune, expr)
-			local Tensor = require 'symmath.Tensor'
+			symmath = symmath or require 'symmath'
+			local Tensor = symmath.Tensor
 			local t = expr[1]
 			if not Tensor:isa(t) 
 			and expr[2].derivative
@@ -199,7 +341,8 @@ TensorRef.rules = {
 		end},
 
 		{replacePartial = function(prune, expr)
-			local Tensor = require 'symmath.Tensor'
+			symmath = symmath or require 'symmath'
+			local Tensor = symmath.Tensor
 			local t = expr[1]
 			if not Tensor:isa(t)			-- if it's not a tensor ...
 			and expr[2].derivative then	-- if this is a derivative then 
@@ -219,7 +362,8 @@ TensorRef.rules = {
 					end
 				end
 				if diffvars and #diffvars > 0 then
-					local Derivative = require 'symmath.Derivative'
+					symmath = symmath or require 'symmath'
+					local Derivative = symmath.Derivative
 					local result = Derivative(t, diffvars:unpack())
 					if #indexes > 0 then
 						result = TensorRef(result, table.unpack(indexes)) 
@@ -230,7 +374,8 @@ TensorRef.rules = {
 		end},
 
 		{apply = function(prune, expr)
-			local Tensor = require 'symmath.Tensor'
+			symmath = symmath or require 'symmath'
+			local Tensor = symmath.Tensor
 			
 			local t = expr[1]
 			local indexes = {table.unpack(expr,2)}
@@ -327,7 +472,8 @@ TensorRef.rules = {
 					end
 				end
 			
-				local TensorIndex = require 'symmath.tensor.Index'
+				symmath = symmath or require 'symmath'
+				local TensorIndex = symmath.Tensor.Index
 			
 				local newVariance = {}
 				-- TODO straighten out the upper/lower vs differentiation order

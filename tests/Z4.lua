@@ -83,8 +83,16 @@ local useLapseF_timeHarmonic = false	-- f = 1
 --[[
 pick one of these
 --]]
+
 --local useShift = 'hyperbolicGammaDriver'
-local useShift = 'minimalDistortionElliptic'
+
+--[[
+I'm not sure what to call this one ... it's the one in 
+2005 Bona et al, section B.1, "to convert the minimal distortion elliptic equations into time-dependent parabolic equations by means of the Hamilton-Jacobi method"
+2008 Alcubierre's book, eqn 4.3.37 ... "harmonic shift"?
+... I don't know that "harmonic shift" is technically the correct title, but that'll do pig
+--]]
+local useShift = 'harmonicShift'	
 
 --[[
 don't include alpha, gamma_ij
@@ -553,88 +561,33 @@ local dHat_t = var'\\hat{d}_t'
 dt_dHat:nameForExporter('C', 'dt_dHat')
 dHat_t:nameForExporter('C', 'dHat_t')
 
+gamma'_ij':setSymmetries{1,2}
+gammaHat'_ij':setSymmetries{1,2}
+gammaDelta'_ij':setSymmetries{1,2}
+d'_ijk':setSymmetries{2,3}
+dHat'_ijk':setSymmetries{2,3}
+dDelta'_ijk':setSymmetries{2,3}
+dt_dHat'_ijk':setSymmetries{2,3}
+K'_ij':setSymmetries{1,2}
+S'_ij':setSymmetries{1,2}
+Gamma'_ijk':setSymmetries{2,3}
 
-
-
-
--- TODO store this information inside Variable/TensorRef?
--- TODO how about symmetries in derivatives?  i suppose that's obvious
--- but how about symmetries between deriv- and non-deriv- indexes?  like d_kij,l = d_lij,k
--- NOTICE lower'ness can be sorted as well ... but also notice if g_ij = g_ji then g^i_j != g_j^i, but g^ij = g^ji, so only sort it if the lower-ness is consistent (and if there's no derivatives after it? unless ofc it is deriv'd indexes)
-local symmetries = table{
-	{gamma'_ij', {1,2}},
-	{gammaHat'_ij', {1,2}},
-	{gammaDelta'_ij', {1,2}},
-	{d'_ijk', {2,3}},
-	{dHat'_ijk', {2,3}},
-	{dDelta'_ijk', {2,3}},
-	{dt_dHat'_ijk', {2,3}},
-	{K'_ij', {1,2}},
-	{S'_ij', {1,2}},
-	{Gamma'_ijk', {2,3}},
-	
-	-- TODO derivatives automatic? otherwise there are a lot of permtuations ...
-	{gamma'_ij,k', {1,2}},
-	{gammaHat'_ij,k', {1,2}},
-	{gammaDelta'_ij,k', {1,2}},
-	{d'_ijk,l', {2,3}, {1,4}},
-	{dHat'_ijk,l', {2,3}, {1,4}},
-	{dDelta'_ijk,l', {2,3}, {1,4}},
-	{dt_dHat'_ijk,l', {2,3}, {1,4}},
-	{dHat_t'_ij', {1,2}},
-	{dHat_t'_ij,k', {1,2}},
-	{K'_ij,k', {1,2}},
-}
+-- TODO derivatives automatic? otherwise there are a lot of permtuations ...
+gamma'_ij,k':setSymmetries{1,2}
+gammaHat'_ij,k':setSymmetries{1,2}
+gammaDelta'_ij,k':setSymmetries{1,2}
+d'_ijk,l':setSymmetries({2,3}, {1,4})
+dHat'_ijk,l':setSymmetries({2,3}, {1,4})
+dDelta'_ijk,l':setSymmetries({2,3}, {1,4})
+dt_dHat'_ijk,l':setSymmetries({2,3}, {1,4})
+dHat_t'_ij':setSymmetries{1,2}
+dHat_t'_ij,k':setSymmetries{1,2}
+K'_ij,k':setSymmetries{1,2}
 
 -- TODO make this a property of the Variable wrt TensorRef (like :dependsOn does)
 -- or make it a property of the TensorRef and remember to ctor/clone it
 -- I'm thinking property of Variable, since TensorRef's are created arbitrarily from Variables , like K'_ab' * K'^ab' etc
 -- so if the symmetry (related to the TensorRef) is stored in the Variabel then K will remember this 
-local function getSymmetriesForTensorRef(x)
-	assert(Tensor.Ref:isa(x) and Variable:isa(x[1]))
-	local _, t = symmetries:find(nil, function(t)
-		return TensorRefMatchesDegreeAndDeriv(t[1], x)
-	end)
-	return t
-end
-
--- modify 'x' in-place, rearrange its Tensor.Index'es
-function applySymmetriesToIndexes(x)
-	--[[
-	if the variable matches, the size matches, and the derivs matches (ignore upper/lower) then ...
-	TODO how about implicit for derivatives of tensors, like K_(ij) => K_(ij),k
-	
-	hmm this asks the question, should the symmetries also include deriv-only sets of indexes?
-	how about deriv+non-deriv? (like d_kij,l == d_lij,k)
-	--]]
-	local t = getSymmetriesForTensorRef(x)
-	if not t then return end
-	local symindexes = t[2]
-	-- assert all the sym indexes have matching lower and deriv~=nil
-	-- but the lower doesn't have to match the 'find' TensorRef in 'symmetries'
-	local index = x[1+symindexes[1]]
-	local lower = not not index.lower
-	local deriv = index.derivative
-	local isolatedIndexes = table{index}
-	for j=2,#symindexes do
-		local index = x[1+symindexes[j]]
-		if lower ~= not not index.lower then return end		-- the lowers of the symmetrized indexes don't match -- can't do anything more for this
-		if deriv ~= index.dervative then return end			-- the derivatives don't match
-		isolatedIndexes:insert(index)
-	end
-	local origx = x:clone()
-	-- now sort
-	isolatedIndexes:sort(function(a,b)
-		if a.lower and not b.lower then return true end
-		if not a.lower and b.lower then return false end
-		return a.symbol < b.symbol
-	end)
-	-- now re-insert
-	for j,i in ipairs(symindexes) do
-		x[1+i] = isolatedIndexes[j]
-	end
---printbr('applying symmetries from', origx, 'to', x)
-end
 
 function simplifyDAndKTraces(expr)
 	return expr:map(function(x)
@@ -665,9 +618,6 @@ function simplifyDAndKTraces(expr)
 		end
 	end)
 end
-
-
-
 
 
 -- for Expression:simplifyMetrics()
@@ -957,105 +907,6 @@ printbr(a'_k,t', 'flux term:', -dt_a_l_negflux)
 printbr(a'_k,t', 'source term:', dt_a_l_rhs)
 
 Tensor.Ref:popRule'Prune/evalDeriv'
-
-printbr('expanding rhs derivative')
-dt_a_l_def = dt_a_l_def()
-printbr(dt_a_l_def)
-
-local using = delta'^r_k,r':eq(0)
-printbr('using', using)
-dt_a_l_def = dt_a_l_def
-	:subst(using)
-	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
-	})
-	:simplifyAddMulDiv()
-printbr(dt_a_l_def)
-
---[[ for the sake of eigenvector calculations, lets choose our lapse f up front
-printbr'lapse parameter'
-
-local dalpha_f_var = var"f'"	-- TODO alpha is dependent
-local dalpha_f_def = f'_,k':eq(dalpha_f_var * alpha'_,k')
-printbr(dalpha_f_def)
-printbr()
-
-printbr('using', dalpha_f_def)
-dt_a_l_def = dt_a_l_def:substIndex(dalpha_f_def)()
-printbr(dt_a_l_def)
---]]
-
-local using = d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijlm='mnpq'}
-printbr('using', using)
-dt_a_l_def = dt_a_l_def:subst(using)()
-printbr(dt_a_l_def)
-
-local using = a'_i,k':eq(a'_k,i')
-printbr('using', using)
-dt_a_l_def = dt_a_l_def:subst(using)
-printbr(dt_a_l_def)
-
-local using = f'_,k':eq(f:diff(alpha) * alpha'_,k')
-printbr('using', using)
-dt_a_l_def = dt_a_l_def:subst(using)
-printbr(dt_a_l_def)
-
---[[ this is a cheap way of fixing the insert-deltas stuff
--- but TODO I have two of these terms ... which cancel ... so do I really want this here?
--- the insert-beta stuff is done before the expanding rhs ...
--- DON'T DELETE THIS JUST YET.  I think it is useful when including gauge vars. unless I already take care of this case later when inserting deltas for all terms.
-dt_a_l_def = dt_a_l_def
-	:replace(beta'^m_,m', beta'^m_,l' * delta'^l_m')
-	:replace(b'^m_m', b'^m_l' * delta'^l_m')
-	:simplify()
-printbr(dt_a_l_def)
---]]
-
---[[
-NOTICE you can only do this *after* expanding, because then the derivatives get their unique indexes,
-and any substitutions we do (without :splitOffDerivIndexes()) will only affect the non-derivatives
-which will only affect the source terms (and not the flux terms)
-
-if we aren't using gauge vars in flux
-then turn all the gauge var derivatives into 1st-deriv state vars
-
-TODO instead of replacing the most-concise vars for the least, then differentiating, then replacing the least-concise with the most-
-how about just doing the replacing in the flux part of the PDE?
-since that is the only part that is differentiated
---]]
-if not flux_dontIncludeGaugeVars then
-	printbr('using', d_alpha_l_from_a_l)
-	dt_a_l_def = dt_a_l_def:substIndex(d_alpha_l_from_a_l)()
-	printbr(dt_a_l_def)
-
-	printbr('using', d_beta_ul_from_b_ul)
-	dt_a_l_def = dt_a_l_def:substIndex(d_beta_ul_from_b_ul)
-		:replace(b'^r_r', b'^m_m')
-		:simplify()
-	printbr(dt_a_l_def)
-	
-	printbr('using', d_gamma_lll_from_d_lll)
-	dt_a_l_def = dt_a_l_def:substIndex(d_gamma_lll_from_d_lll)()
-	printbr(dt_a_l_def)
-
-	local using = (K'_mn' * gamma'^mn'):eq(K)
-	printbr('using', using)
-	dt_a_l_def = dt_a_l_def:subst(using)	-- hmm, substIndex and sum indexes on the lhs has trouble ...
-	printbr(dt_a_l_def)
-
-	local using = (K'_mn' * gamma'^pm' * gamma'^qn'):eq(K'^pq')
-	printbr('using', using)
-	dt_a_l_def = dt_a_l_def:subst(using)
-	printbr(dt_a_l_def)
-end
-
-printbr'symmetrizing indexes'
-dt_a_l_def = dt_a_l_def
-	:symmetrizeIndexes(K, {1,2})
-	:symmetrizeIndexes(gamma, {1,2})
-	:symmetrizeIndexes(d, {2,3})
-	:simplifyAddMulDiv()
-printbr(dt_a_l_def)
 
 printbr()
 
@@ -1838,7 +1689,7 @@ if useShift == 'hyperbolicGammaDriver' then
 	)
 	--]]
 end	-- useShift == 'hyperbolicGammaDriver'
-if useShift == 'minimalDistortionElliptic' then
+if useShift == 'harmonicShift' then
 	-- how many of these terms should be state vars instead of state derivatives?
 	printHeader('minimum distortion elliptic evolution:')
 
@@ -2085,136 +1936,146 @@ printbr()
 
 -- [=[ 
 Tensor.Chart{coords=xs}
+	
+local deltaDenseUL = Tensor('^i_j', function(i,j) return i == j and 1 or 0 end)
+
+--[[
+args:
+	var = base var, to replace Tensor.Ref(var, ...) with Tensor.Ref( dense form of var, ...)
+	indexes = var indexes
+--]]
+local function makeDenseTensor(x)
+	assert(Tensor.Ref:isa(x))
+	assert(Variable:isa(x[1]))
+--printbr('creating dense tensor', x)	
+	local basevar = x[1]:clone()
+	local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
+	local numDeriv = 0
+	local indexesWithoutDeriv = indexes:mapi(function(index)
+		index = index:clone()
+		if index.derivative == ',' then numDeriv = numDeriv + 1 end
+		index.derivative = nil
+		return index
+	end)
+	local degreeCSuffix = '_'..indexes:mapi(function(index)
+		return index.lower and 'l' or 'u'
+	end):concat()
+	
+	-- ss[1] is the Tensor.Ref, ss[2...] is the 
+	local allsymkeys = {}
+	for _,s in ipairs{x:getSymmetries()} do
+		for _,i in ipairs(s.indexNumbers) do
+			allsymkeys[i] = true
+		end
+	end
+
+	local chart = Tensor:findChartForSymbol()
+	assert(chart)
+	local xNames = table.mapi(chart.coords, function(c) return c.name end)
+
+	local result = Tensor(indexesWithoutDeriv, function(...)
+		
+		-- [[ TODO this is just the same as :reindex() ...
+		local is = {...}
+		local thisIndexes = indexes:mapi(function(index) return index:clone() end)
+		for i=1,#is do
+			thisIndexes[i].symbol = xNames[is[i]]
+		end
+		local thisRef = Tensor.Ref(basevar, thisIndexes:unpack())
+		--]]
+		
+		-- now sort 'thisIndexes' based on symmetries
+		thisRef = thisRef:applySymmetries()
+		
+		-- TODO how to specify names per exporter?
+		local v = var(symmath.export.LaTeX:applyLaTeX(thisRef))
+	
+		-- insert dots between non-sym indexes
+		local thisIndexCSuffix = table()
+		for i=1,#thisRef-1 do
+			local index = thisRef[i+1]
+			if i > 1 and not (allsymkeys[i-1] and allsymkeys[i]) then
+				thisIndexCSuffix:insert'.'
+			end
+			thisIndexCSuffix:insert(index.symbol)
+		end
+		thisIndexCSuffix = thisIndexCSuffix:concat()
+		
+		local derivCPrefix
+		if numDeriv == 0 then
+			derivCPrefix = ''
+		elseif numDeriv == 1 then
+			derivCPrefix = 'partial_'
+		else
+			derivCPrefix = 'partial'..numDeriv..'_'
+		end
+		local cname = derivCPrefix .. basevar:nameForExporter'C'..degreeCSuffix..'.'..thisIndexCSuffix
+		v:nameForExporter('C', cname)
+		
+		return v
+	end)
+--printbr(x, '=>', result)
+	return result
+end
 
 -- TODO put this in symmath
 -- after merging the "symmetries" property into TensorRef
 local cachedDenseTensors = table()
 local function getDenseTensorCache(x)
 	assert(Tensor.Ref:isa(x) and Variable:isa(x[1]))
+--printbr('dense tensor cache has', cachedDenseTensors:mapi(function(t) return t[1] end):mapi(tostring):concat';')	
 	local _, t = cachedDenseTensors:find(nil, function(t)
 		return TensorRefMatchesIndexForm(t[1], x)
 	end)
 	if not t then return end
 	return t[2], t[1]
 end
-function expandMatrixIndexes(expr)
-	--[[
-	args:
-		var = base var, to replace Tensor.Ref(var, ...) with Tensor.Ref( dense form of var, ...)
-		indexes = var indexes
-	--]]
-	local function makeDenseTensor(x)
-		assert(Tensor.Ref:isa(x))
-		assert(Variable:isa(x[1]))
---printbr('creating dense tensor', x)	
-		local basevar = x[1]:clone()
-		local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
-		local numDeriv = 0
-		local indexesWithoutDeriv = indexes:mapi(function(index)
-			index = index:clone()
-			if index.derivative == ',' then numDeriv = numDeriv + 1 end
-			index.derivative = nil
-			return index
-		end)
-		local degreeCSuffix = '_'..indexes:mapi(function(index)
-			return index.lower and 'l' or 'u'
-		end):concat()
-		
-		-- ss[1] is the Tensor.Ref, ss[2...] is the 
-		local ss = getSymmetriesForTensorRef(x)
-		local allsymkeys = {}
-		if ss then
-			for i=2,#ss do
-				for j=1,#ss[i] do
-					allsymkeys[ss[i][j]] = true
-				end
-			end
-		end
 
-		local result = Tensor(indexesWithoutDeriv, function(...)
-			local is = {...}
-			local thisIndexes = indexes:mapi(function(index) return index:clone() end)
-			for i=1,#is do
-				thisIndexes[i].symbol = xNames[is[i]]
-			end
-			-- now sort 'thisIndexes' based on symmetries
-			local thisRef = Tensor.Ref(basevar, thisIndexes:unpack())
-			applySymmetriesToIndexes(thisRef)
-			
-			-- TODO how to specify names per exporter?
-			local v = var(symmath.export.LaTeX:applyLaTeX(thisRef))
-		
-			-- insert dots between non-sym indexes
-			local thisIndexCSuffix = table()
-			for i=1,#thisRef-1 do
-				local index = thisRef[i+1]
-				if i > 1 and not (allsymkeys[i-1] and allsymkeys[i]) then
-					thisIndexCSuffix:insert'.'
-				end
-				thisIndexCSuffix:insert(index.symbol)
-			end
-			thisIndexCSuffix = thisIndexCSuffix:concat()
-			
-			local derivCPrefix
-			if numDeriv == 0 then
-				derivCPrefix = ''
-			elseif numDeriv == 1 then
-				derivCPrefix = 'partial_'
-			else
-				derivCPrefix = 'partial'..numDeriv..'_'
-			end
-			local cname = derivCPrefix .. basevar:nameForExporter'C'..degreeCSuffix..'.'..thisIndexCSuffix
-			v:nameForExporter('C', cname)
-			
-			return v
-		end)
-		return result
-	end
-	
-	local function replaceWithDense(expr)
-		return expr:map(function(x)
-			if Tensor.Ref:isa(x)
-			and Variable:isa(x[1])
-			then
+local function replaceWithDense(expr)
+	return expr:map(function(x)
+		if Tensor.Ref:isa(x)
+		and Variable:isa(x[1])
+		then
 --printbr('found tensorref', x)
-				local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
-				-- remove deriv, needed for permuting the Tensor into the TensorRef(Variable)'s form
-				local indexesWithoutDeriv = indexes:mapi(function(index)
-					index = index:clone()
-					index.derivative = nil
-					return index
-				end)
-				-- scalar derivatives need to be generated
-				-- otherwise tensors need the derivative indexes picked off, ten replace with dense, then replace with ref with full derivative indexes
-				-- or just don't bother with derivatives, and encode everything in the variable name
-				local dense, cachedRef = getDenseTensorCache(x)
-				if dense then
+			local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
+			-- remove deriv, needed for permuting the Tensor into the TensorRef(Variable)'s form
+			local indexesWithoutDeriv = indexes:mapi(function(index)
+				index = index:clone()
+				index.derivative = nil
+				return index
+			end)
+			-- scalar derivatives need to be generated
+			-- otherwise tensors need the derivative indexes picked off, ten replace with dense, then replace with ref with full derivative indexes
+			-- or just don't bother with derivatives, and encode everything in the variable name
+			local dense, cachedRef = getDenseTensorCache(x)
+			if dense then
 --printbr('...matched to cached tensorref', cachedRef)
 --printbr('found associated dense', dense)
-				else
-					dense = makeDenseTensor(x)
+			else
+				dense = makeDenseTensor(x)
 --printbr('...created new dense', dense)
-					cachedDenseTensors:insert{x:clone(), dense}
-				end
-				local result = Tensor.Ref(dense, indexesWithoutDeriv:unpack())
---printbr('...returning dense tensorref', result)
-				return result
+				cachedDenseTensors:insert{x:clone(), dense}
 			end
-		end)
-	end
+			local result = Tensor.Ref(dense, indexesWithoutDeriv:unpack())
+--printbr('...returning dense tensorref', result)
+			return result
+		end
+	end)
+end
+	
+local dHat_t_Dense = makeDenseTensor(dHat_t'_ij')
+local dt_dHatDense = makeDenseTensor(dt_dHat'_kij')
+
+function expandMatrixIndexes(expr)
 
 	-- special for our time deriv, since the "t" is a fixed dim, not a tensor index
 	-- how about TODO a 'fixed indexes'?  remove these from the dense tensor generation
-	local dHat_t_Dense = makeDenseTensor(dHat_t'_ij')
 	expr = expr:replace(dHat'_tij', dHat_t_Dense'_ij')
-	local dt_dHatDense = makeDenseTensor(dt_dHat'_kij')
 	expr = expr:replace(dHat'_tij,k', dt_dHatDense'_kij')
-	
-	-- another special case
-	local deltaDenseUL = Tensor('^i_j', function(i,j) return i == j and 1 or 0 end)
 	expr = expr:replaceIndex(delta'^i_j', deltaDenseUL'^i_j')
 
 	-- now for everything else
+--printbr('before replacing dense tensors', expr)	
 	return replaceWithDense(expr)
 end
 
@@ -2414,7 +2275,7 @@ for _,info in ipairs{
 					name = name..' +' 
 					if Constant.isValue(noShiftTerms[i], 0) then return end	-- don't even output it
 				end
-				return {[name] = noShiftTerms[i]}, #t+1
+				return {[name] = noShiftTerms[i]()}, #t+1
 			end),
 			assignOnly = true,
 		}
@@ -2433,7 +2294,7 @@ for _,info in ipairs{
 					name = name..' +' 
 					if Constant.isValue(shiftTerms[i], 0) then return end	-- don't even output it
 				end
-				return {[name] = shiftTerms[i]}, #t+1
+				return {[name] = shiftTerms[i]()}, #t+1
 			end),
 			assignOnly = true,
 		}
@@ -2451,6 +2312,107 @@ print'</pre>'
 
 
 --[===[ too many locals, so i'll just separate this out for now
+
+printbr('expanding rhs derivative')
+dt_a_l_def = dt_a_l_def()
+printbr(dt_a_l_def)
+
+local using = delta'^r_k,r':eq(0)
+printbr('using', using)
+dt_a_l_def = dt_a_l_def
+	:subst(using)
+	:simplifyMetrics({
+		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
+	})
+	:simplifyAddMulDiv()
+printbr(dt_a_l_def)
+
+--[[ for the sake of eigenvector calculations, lets choose our lapse f up front
+printbr'lapse parameter'
+
+local dalpha_f_var = var"f'"	-- TODO alpha is dependent
+local dalpha_f_def = f'_,k':eq(dalpha_f_var * alpha'_,k')
+printbr(dalpha_f_def)
+printbr()
+
+printbr('using', dalpha_f_def)
+dt_a_l_def = dt_a_l_def:substIndex(dalpha_f_def)()
+printbr(dt_a_l_def)
+--]]
+
+local using = d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijlm='mnpq'}
+printbr('using', using)
+dt_a_l_def = dt_a_l_def:subst(using)()
+printbr(dt_a_l_def)
+
+local using = a'_i,k':eq(a'_k,i')
+printbr('using', using)
+dt_a_l_def = dt_a_l_def:subst(using)
+printbr(dt_a_l_def)
+
+local using = f'_,k':eq(f:diff(alpha) * alpha'_,k')
+printbr('using', using)
+dt_a_l_def = dt_a_l_def:subst(using)
+printbr(dt_a_l_def)
+
+--[[ this is a cheap way of fixing the insert-deltas stuff
+-- but TODO I have two of these terms ... which cancel ... so do I really want this here?
+-- the insert-beta stuff is done before the expanding rhs ...
+-- DON'T DELETE THIS JUST YET.  I think it is useful when including gauge vars. unless I already take care of this case later when inserting deltas for all terms.
+dt_a_l_def = dt_a_l_def
+	:replace(beta'^m_,m', beta'^m_,l' * delta'^l_m')
+	:replace(b'^m_m', b'^m_l' * delta'^l_m')
+	:simplify()
+printbr(dt_a_l_def)
+--]]
+
+--[[
+NOTICE you can only do this *after* expanding, because then the derivatives get their unique indexes,
+and any substitutions we do (without :splitOffDerivIndexes()) will only affect the non-derivatives
+which will only affect the source terms (and not the flux terms)
+
+if we aren't using gauge vars in flux
+then turn all the gauge var derivatives into 1st-deriv state vars
+
+TODO instead of replacing the most-concise vars for the least, then differentiating, then replacing the least-concise with the most-
+how about just doing the replacing in the flux part of the PDE?
+since that is the only part that is differentiated
+--]]
+if not flux_dontIncludeGaugeVars then
+	printbr('using', d_alpha_l_from_a_l)
+	dt_a_l_def = dt_a_l_def:substIndex(d_alpha_l_from_a_l)()
+	printbr(dt_a_l_def)
+
+	printbr('using', d_beta_ul_from_b_ul)
+	dt_a_l_def = dt_a_l_def:substIndex(d_beta_ul_from_b_ul)
+		:replace(b'^r_r', b'^m_m')
+		:simplify()
+	printbr(dt_a_l_def)
+	
+	printbr('using', d_gamma_lll_from_d_lll)
+	dt_a_l_def = dt_a_l_def:substIndex(d_gamma_lll_from_d_lll)()
+	printbr(dt_a_l_def)
+
+	local using = (K'_mn' * gamma'^mn'):eq(K)
+	printbr('using', using)
+	dt_a_l_def = dt_a_l_def:subst(using)	-- hmm, substIndex and sum indexes on the lhs has trouble ...
+	printbr(dt_a_l_def)
+
+	local using = (K'_mn' * gamma'^pm' * gamma'^qn'):eq(K'^pq')
+	printbr('using', using)
+	dt_a_l_def = dt_a_l_def:subst(using)
+	printbr(dt_a_l_def)
+end
+
+printbr'symmetrizing indexes'
+dt_a_l_def = dt_a_l_def
+	:symmetrizeIndexes(K, {1,2})
+	:symmetrizeIndexes(gamma, {1,2})
+	:symmetrizeIndexes(d, {2,3})
+	:simplifyAddMulDiv()
+printbr(dt_a_l_def)
+
+
 
 --[[
 assuming nobody is using this,
@@ -2817,7 +2779,7 @@ printbr(dt_Z_l_def)
 
 
 
-if useShift == 'minimalDistortionElliptic' then
+if useShift == 'harmonicShift' then
 	dt_b_ul_def = dt_b_ul_def()
 	printbr(dt_b_ul_def)
 
@@ -2834,7 +2796,7 @@ if useShift == 'minimalDistortionElliptic' then
 	printbr(dt_b_ul_def)
 
 	if eigensystem_dontIncludeGaugeVars
-	and useShift ~= 'minimalDistortionElliptic'
+	and useShift ~= 'harmonicShift'
 	then
 		printbr('using', d_alpha_l_from_a_l)
 		dt_b_ul_def = dt_b_ul_def:substIndex(d_alpha_l_from_a_l)()
