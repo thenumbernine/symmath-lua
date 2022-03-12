@@ -204,22 +204,27 @@ function TensorRef:setSymmetries(...)
 	var.indexSymmetries[key] = table()
 
 	for i=1,select('#', ...) do
-		local indexNumbers = select(i, ...)
+		local indexNumbers = table(select(i, ...))
 		-- infer whether we are symmetrizing across derivatives
 		local acrossDerivs 
-		local deriv = self[1+indexNumbers[1]]
+		local deriv = self[1+indexNumbers[1]].derivative
+		local acrossLowers
+		local lower = not not self[1+indexNumbers[1]].lower
+		local lowers = {lower}
 		for j=2,#indexNumbers do
-			local oderiv = self[1+indexNumbers[j]]
-			if deriv ~= oderiv then
-				acrossDerivs = true
-				break
-			end
+			local oderiv = self[1+indexNumbers[j]].derivative
+			local olower = not not self[1+indexNumbers[j]].lower
+			lowers[j] = olower
+			if deriv ~= oderiv then acrossDerivs = true end
+			if lower ~= olower then acrossLowers = true end
 		end
 		var.indexSymmetries[key]:insert{
-			indexNumbers = table(indexNumbers),
+			indexNumbers = indexNumbers,
+			lowers = lowers,
 			-- this can be inferred from the key
 			targetDegree = targetDegree,
 			acrossDerivs = acrossDerivs,
+			acrossLowers = acrossLowers,
 		}
 	end
 end

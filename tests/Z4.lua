@@ -229,10 +229,10 @@ function TensorRefRemoveDerivs(x)
 	return x
 end
 
-function TensorRefWithoutDerivMatchesIndexForm(a,b)
+function TensorRefWithoutDerivMatchesDegree(a,b)
 	a = TensorRefRemoveDerivs(a)
 	b = TensorRefRemoveDerivs(b)
-	return TensorRefMatchesIndexForm(a,b)
+	return TensorRefMatchesDegreeAndDeriv(a,b)
 end
 
 local function tableToMul(t)
@@ -895,7 +895,7 @@ printbr()
 
 printbr'lapse evolution:'
 
-local dt_alpha_def = alpha'_,t':eq(alpha'_,i' * beta'^i' - alpha^2 * f * (gamma'^ij' * K'_ij' - 2 * Theta))
+local dt_alpha_def = alpha'_,t':eq(alpha'_,i' * beta'^i' - alpha^2 * f * (K - 2 * Theta))
 printbr(dt_alpha_def)
 
 local f_def
@@ -939,20 +939,6 @@ printbr('using on lhs only', a_l_def:reindex{i='k'})
 dt_a_l_def[1] = dt_a_l_def[1]:substIndex(a_l_def)
 printbr(dt_a_l_def)
 
---[[ this incurs a simplify() which I don't want ...
-printbr('solving for', a'_k,t')
-dt_a_l_def = dt_a_l_def:solve(a'_k,t')
-printbr(dt_a_l_def)
---]]
--- [[ so instead
-
---[=[
-printbr('dividing by', alpha)
-dt_a_l_def = (1 / alpha) * dt_a_l_def
-dt_a_l_def[1] = dt_a_l_def[1]:simplifyAddMulDiv()
-printbr(dt_a_l_def)
---]=]
-
 printbr('subtracting', alpha'_,t' * alpha'_,k' * (1 / alpha), 'from both sides')
 dt_a_l_def = dt_a_l_def - alpha'_,t' * alpha'_,k' * (1 / alpha)
 dt_a_l_def[1] = dt_a_l_def[1]:simplifyAddMulDiv()
@@ -972,9 +958,9 @@ printbr(dt_a_l_def)
 -- this is done in the 2008 Yano et al paper, not exactly sure why, not mentioned in the flux of the 2005 Bona et al paper
 dt_a_l_def[2] = dt_a_l_def[2]
 	+ (beta'^m' * a'_k')'_,m'	-- goes in the flux
-	- (beta'^m' * a'_k')'_,m'():substIndex(d_beta_ul_from_b_ul)								-- goes in the source
+	- (beta'^m' * a'_k')'_,m'():substIndex(d_beta_ul_from_b_ul):replaceIndex(b'^m_m', b)								-- goes in the source
 	- (beta'^m' * a'_m')'_,k'	-- goes in the flux
-	+ (beta'^m' * a'_m')'_,k'():substIndex(d_beta_ul_from_b_ul):replace(a'_i,k', a'_k,i')	-- goes in the source
+	+ (beta'^m' * a'_m')'_,k'():substIndex(d_beta_ul_from_b_ul):replaceIndex(b'^m_m', b):replace(a'_i,k', a'_k,i')	-- goes in the source
 	-- such that half the source terms cancel (thanks to a'_i,k' == a'_k,i')
 printbr(dt_a_l_def)
 
@@ -1044,6 +1030,10 @@ dt_gammaDelta_ll_def = dt_gammaDelta_ll_def()
 	:solve(gammaDelta'_ij,t')
 printbr(dt_gammaDelta_ll_def)
 
+printbr'simplifying metrics...'
+dt_gammaDelta_ll_def = dt_gammaDelta_ll_def:simplifyMetrics()
+printbr(dt_gammaDelta_ll_def)
+
 -- only rhs so the ,t doesn't mix us up
 dt_gammaDelta_ll_def = usingRHSSubstIndex(dt_gammaDelta_ll_def, d_gammaDelta_lll_from_dDelta_lll, d_gammaHat_lll_from_dHat_lll)
 
@@ -1078,9 +1068,9 @@ printbr(dt_dDelta_lll_def)
 -- this is done in the 2008 Yano et al paper, not exactly sure why, not mentioned in the flux of the 2005 Bona et al paper
 dt_dDelta_lll_def[2] = dt_dDelta_lll_def[2]
 	+ (beta'^l' * dDelta'_kij')'_,l'	-- goes in the flux
-	- (beta'^l' * dDelta'_kij')'_,l'():substIndex(d_beta_ul_from_b_ul)	-- goes in the source
+	- (beta'^l' * dDelta'_kij')'_,l'():substIndex(d_beta_ul_from_b_ul):replaceIndex(b'^l_l', b)	-- goes in the source
 	- (beta'^l' * dDelta'_lij')'_,k'	-- goes in the flux
-	+ (beta'^l' * dDelta'_lij')'_,k'():substIndex(d_beta_ul_from_b_ul):replace(dDelta'_lij,k', dDelta'_kij,l')	-- goes in the source
+	+ (beta'^l' * dDelta'_lij')'_,k'():substIndex(d_beta_ul_from_b_ul):replaceIndex(b'^l_l', b):replace(dDelta'_lij,k', dDelta'_kij,l')	-- goes in the source
 	-- such that half the source terms cancel (thanks to dDelta'_lij,k' == dDelta'_kij,l')
 printbr(dt_dDelta_lll_def)
 --]]
@@ -1258,18 +1248,8 @@ local using = alpha'_,ij':eq((frac(1,2) * (alpha'_,i' * delta'^k_j' + alpha'_,j'
 dt_K_ll_def = usingSubst(dt_K_ll_def, using)
 --]]
 
-dt_K_ll_def = usingSubst(dt_K_ll_def, (K'_ij,k' * beta'^k'):eq((K'_ij' * beta'^k')'_,k' - K'_ij' * b'^k_k') )
-
+dt_K_ll_def = usingSubst(dt_K_ll_def, (K'_ij,k' * beta'^k'):eq((K'_ij' * beta'^k')'_,k' - K'_ij' * b) )
 dt_K_ll_def = usingSubstIndex(dt_K_ll_def, d_beta_ul_from_b_ul)
-
--- K_ij,k beta^k = (K_ij beta^k)_,k - K_ij beta^k_k = (K_ij beta^k)_,k - K_ij b^k_k
--- mind you there are two K_ij beta^k terms in the flux now
--- they won't be removed until the flux is simplified
-dt_K_ll_def = usingSubst(
-	dt_K_ll_def,
-	(K'_ij,k' * beta'^k'):eq((K'_ij' * beta'^k')'_,k' - K'_ij' * b'^k_k')()
-)
-
 
 local using = (alpha * (Z'_i,j' + Z'_j,i')):eq(alpha * (Z'_i,k' * delta'^k_j' + Z'_j,k' * delta'^k_i'))
 printbr('using', using)
@@ -1444,7 +1424,7 @@ local dt_Theta_def = Theta'_,t':eq(
 		- 16 * pi * rho
 	)
 	
-	- Theta * b'^k_k'
+	- Theta * b
 )
 printbr(dt_Theta_def)
 
@@ -1591,7 +1571,7 @@ local dt_Z_l_def = Z'_k,t':eq(
 		- 8 * pi * S'_k'
 	)
 	+ Z'_l' * b'^l_k'
-	- Z'_k' * b'^l_l'
+	- Z'_k' * b
 )
 --]]
 printbr(dt_Z_l_def)
@@ -1887,64 +1867,39 @@ printbr()
 -- TODO do this replacing somewhere else?
 local f_alpha = var('(f \\alpha)', alpha)
 f_alpha:nameForExporter('C', 'f_alpha')
+FijklWithShiftMat = FijklWithShiftMat:replace(f, f_alpha / alpha)	-- TODO here only simplify division
+SijklWithShiftMat = SijklWithShiftMat:replace(f, f_alpha / alpha)
 --[[
 ok at this point I could just use whats in FijklWithShiftMat to calculate the flux jacobian
 instead of the whole rhs, which has the flux jacobian terms, the flux gauge derivs-to-first-deriv-state-vars, and the rhs source vars
 For now I'm going to simplify FijklWithShiftMat to the least number of vars for the purpose of generating flux code
 --]]
+-- [=[
 for i=1,#FijklWithShiftMat do
 	local term = FijklWithShiftMat[i][1]
-	term = term:replace(f, f_alpha / alpha)
 
-	--[[ if you want to represent the flux with the least number of mathematical symbols:
-	term = term:substIndex(
-		gamma_ll_from_gammaHat_ll_gammaDelta_ll:solve(gammaHat'_ij'),
-		d_lll_from_dHat_lll_dDelta_lll:solve(dHat'_kij')
-	):simplifyAddMulDiv()
-	-- only for tij use the solve-for-dDelta ...
-	term = term:subst(d_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'):reindex{k='t'}):simplifyAddMulDiv()
-	term = term:simplifyMetrics():simplifyAddMulDiv()
-	term = term:tidyIndexes():simplifyAddMulDiv()
-	term = simplifyDAndKTraces(term):simplifyAddMulDiv()
-	term = term:symmetrizeIndexes(d, {2,3})
-	--]]
-	-- [[ if you want to represent the flux with state variables:
-	term = term:substIndex(d_lll_from_dHat_lll_dDelta_lll)
-	-- mind you if you don't call these then maybe there will be less terms?
-	-- and maybe I can implement a function to distribute only the deltas, 
-	-- and only then simplify the deltas * Tensor.Ref alone (without changing the rest of the expression)
-	-- and then i could preserve the structure and simplify some more deltas if possible
 	term = term:simplifyAddMulDiv()
 	term = term:simplifyMetrics({
 		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
 	}):simplifyAddMulDiv()
-	--]]
 
 	FijklWithShiftMat[i][1] = term
 end
 for i=1,#SijklWithShiftMat do
 	local term = SijklWithShiftMat[i][1]
-	term = term:replace(f, f_alpha / alpha)
 
-	-- [[ if you want to represent the flux with the least number of mathematical symbols:
-	term = term:substIndex(
-		gamma_ll_from_gammaHat_ll_gammaDelta_ll:solve(gammaHat'_ij'),
-		d_lll_from_dHat_lll_dDelta_lll:solve(dHat'_kij')
-	):simplifyAddMulDiv()
-	-- only for tij use the solve-for-dDelta ...
 	term = term:subst(d_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'):reindex{k='t'}):simplifyAddMulDiv()
 	term = term:simplifyMetrics():simplifyAddMulDiv()
 	term = term:tidyIndexes():simplifyAddMulDiv()
 	term = simplifyDAndKTraces(term):simplifyAddMulDiv()
 	term = term:symmetrizeIndexes(d, {2,3}):simplifyAddMulDiv()
 	term = term:replaceIndex(d'_a^b_c', d'_ac^b')
-	--]]
 	
 	SijklWithShiftMat[i][1] = term
 end
 printbr((UijklWithShiftMat'_,t' + FijklWithShiftMat'_,r'):eq(SijklWithShiftMat))
 printbr()
-
+--]=]
 
 -- [=[ 
 Tensor.Chart{coords=xs}
@@ -1976,8 +1931,23 @@ local function makeDenseTensor(x)
 	-- ss[1] is the Tensor.Ref, ss[2...] is the 
 	local allsymkeys = {}
 	for _,s in ipairs{x:getSymmetries()} do
-		for _,i in ipairs(s.indexNumbers) do
-			allsymkeys[i] = true
+		-- only if the lowers of the indexes match with s's form
+		-- or if they are both lowered or both uppered
+		if not s.acrossLowers then
+			local acrossLowers 
+			local lower = not not x[1+s.indexNumbers[1]].lower
+			for _,i in ipairs(s.indexNumbers) do
+				local olower = not not x[1+i].lower
+				if lower ~= olower then
+					acrossLowers = true
+					break
+				end
+			end
+			if not acrossLowers then
+				for _,i in ipairs(s.indexNumbers) do
+					allsymkeys[i] = true
+				end
+			end
 		end
 	end
 
@@ -2085,6 +2055,9 @@ function expandMatrixIndexes(expr)
 	expr = expr:replace(dHat'_tij', dHat_t_Dense'_ij')
 	expr = expr:replace(dHat'_tij,k', dt_dHatDense'_kij')
 	expr = expr:replaceIndex(delta'^i_j', deltaDenseUL'^i_j')
+
+	-- the code prefers d_ij^k over d_i^k_j
+	expr = expr:replaceIndex(d'_i^k_j', d'_ij^k')
 
 	-- now for everything else
 --printbr('before replacing dense tensors', expr)	
@@ -2233,9 +2206,9 @@ print'<pre>'
 
 local shiftVarNames = {}
 for _,t in ipairs(cachedDenseTensors) do
-	if TensorRefWithoutDerivMatchesIndexForm(t[1], beta'^k')
-	or TensorRefWithoutDerivMatchesIndexForm(t[1], b'^k_l')
-	or TensorRefWithoutDerivMatchesIndexForm(t[1], B'^k')
+	if TensorRefWithoutDerivMatchesDegree(t[1], beta'^k')
+	or TensorRefWithoutDerivMatchesDegree(t[1], b'^k_l')
+	or TensorRefWithoutDerivMatchesDegree(t[1], B'^k')
 	then
 		local d = t[2]
 		for i,x in d:iter() do
@@ -3183,6 +3156,13 @@ local S_rhs_exprs = range(dFdx_lhs_dim[1]):mapi(function(i) return SijklMat[i][1
 S_rhs_exprs = S_rhs_exprs:mapi(function(expr) return expandMatrixIndexes(expr) end)
 
 
+--[[only after the last 'expandMatrixIndexes'
+-- and before code gen
+-- set the C exporter of trace vars to 'tr'
+-- but TODO this doesn't get carried across, so there must be some duplicate vars somewhere ...
+b:nameForExporter('C', 'tr_b')
+K:nameForExporter('C', 'tr_K')
+--]]
 
 --[[ show eqns in dense-tensor form
 printbr'expanding...'
