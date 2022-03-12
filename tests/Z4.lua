@@ -10,13 +10,6 @@ but runs a lot faster ... maybe it should replace it?
 and it produces the tensor linear systems that my "Documents/Math/Numerical Relativity" notes have, which is nice
 
 
-
-TODO TODO TODO
-- canonical index sum form, where you lower the first sum indexes you find (and raise their matching sum indexes)
-- better simplfiication of source terms
-
-
-
 TODO NOTICE FIXME
 
 This really confuses me
@@ -419,9 +412,54 @@ function insertDeltasToSetIndexSymbols(expr, finds)
 end
 
 
-function canonicalIndexSumForm(expr)
-
+-- make sure indexes are raised-lowered in matching manner
+function canonicalIndexForm(expr)
+	local prods = expr:simplifyAddMulDiv():sumToTable()
+	for k=1,#prods do
+		prod = prods[k]:clone()
+		prods[k] = prod
+		local fixed, sum, extra = prod:getIndexesUsed()
+--for _,index in ipairs(sum) do
+--	printbr('sum index', index)
+--end
+		local sumIndexSymbols = sum:mapi(function(index) return true, index.symbol end):setmetatable(nil)
+		local lowerForSumIndexSymbol = table(sumIndexSymbols):setmetatable(nil)
+		local terms = prod:mulToTable()
+		local modified
+		for i=1,#terms do
+			local term = terms[i]
+--printbr('in term', term)			
+			-- if term has a sum index then set it to the current sum index lower/upper state (lower first, upper second)
+			if Tensor.Ref:isa(term) then
+				term = term:clone()
+				terms[i] = term
+				for j=2,#term do
+					local symj = term[j].symbol
+--printbr('found index', term[j])					
+					if sumIndexSymbols[symj] then
+					-- TODO NOT ACROSS COMMA DERIVATIVES
+					-- find all instances of the sum index in the expression
+					-- and make sure there's no comma derivs in any indexes
+--printbr('is a sum index')						
+						local newlower = lowerForSumIndexSymbol[symj]
+						--if newlower ~= term[j].lower then ... TODO clone upon request
+						term[j].lower = newlower
+--printbr('lower is now', term[j].lower)						
+						lowerForSumIndexSymbol[symj] = not lowerForSumIndexSymbol[symj]
+					end
+				end
+			end
+		end
+		prods[k] = tableToMul(terms)
+	end
+	return tableToSum(prods)
 end
+
+--[[ testing
+local d = var'd'
+print(canonicalIndexForm(d'_ab^c' * d'^ab_c'))
+os.exit()
+--]]
 
 
 local delta = Tensor:deltaSymbol()
@@ -663,6 +701,77 @@ so our state variables will be:
 
 --]]
 
+local function usingSubst(expr, ...)
+	printbr('using', table{...}:mapi(tostring):concat';')
+	local newexpr = expr:subst(...)
+	if newexpr == expr then
+		printbr("...didn't make a difference")
+	end
+	printbr(newexpr)
+	return newexpr
+end
+
+local function usingSubstSimplify(expr, ...)
+	printbr('using', table{...}:mapi(tostring):concat';')
+	local newexpr = expr:subst(...)()
+	if newexpr == expr then
+		printbr("...didn't make a difference")
+	end
+	printbr(newexpr)
+	return newexpr
+end
+
+
+local function usingSubstIndex(expr, ...)
+	printbr('using', table{...}:mapi(tostring):concat';')
+	local newexpr = expr:substIndex(...)
+	if newexpr == expr then
+		printbr("...didn't make a difference")
+	end
+	printbr(newexpr)
+	return newexpr
+end
+
+local function useSubstIndexSimplify(expr, ...)
+	printbr('using', table{...}:mapi(tostring):concat';')
+	local newexpr = expr:substIndex(...)()
+	if newexpr == expr then
+		printbr("...didn't make a difference")
+	end
+	printbr(newexpr)
+	return newexpr
+end
+
+-- modifies in-place, no need to return.  TODO don't modify in-place?
+local function usingRHSSubstIndex(expr, ...)
+	printbr('using', table{...}:mapi(tostring):concat';')
+	assert(symmath.op.Equation:isa(expr))
+	local rhs = expr:rhs()
+	local newrhs = rhs:substIndex(...)
+	if newrhs == rhs then
+		printbr("...didn't make a difference")
+	else
+		expr[2] = newrhs
+	end
+	printbr(expr)
+	return expr
+end
+
+-- modifies in-place, no need to return.  TODO don't modify in-place?
+local function usingRHSSubstIndexSimplify(expr, ...)
+	printbr('using', table{...}:mapi(tostring):concat';')
+	assert(symmath.op.Equation:isa(expr))
+	local rhs = expr:rhs()
+	local newrhs = rhs:substIndex(...)()
+	if newrhs == rhs then
+		printbr("...didn't make a difference")
+	else
+		expr[2] = newrhs
+	end
+	printbr(expr)
+	return expr
+end
+
 
 printbr(gammaHat'_ij', ' = spatial background metric')
 printbr(gammaDelta'_ij', ' = difference of spatial metric and spatial background metric')
@@ -730,13 +839,8 @@ printbr()
 local conn_ull_from_gamma_uu_d_gamma_lll = (gamma'^im' * conn_lll_def:reindex{i='m'})():simplifyMetrics()()
 printbr(conn_ull_from_gamma_uu_d_gamma_lll)
 
-printbr('using', d_gamma_lll_from_d_lll)
-local conn_ull_from_gamma_uu_d_lll = conn_ull_from_gamma_uu_d_gamma_lll:substIndex(d_gamma_lll_from_d_lll)()
-printbr(conn_ull_from_gamma_uu_d_lll)
-
-printbr('using', d_lll_from_dHat_lll_dDelta_lll)
-local conn_ull_from_gamma_uu_dHat_lll_dDelta_lll = conn_ull_from_gamma_uu_d_lll:substIndex(d_lll_from_dHat_lll_dDelta_lll)()
-printbr(conn_ull_from_gamma_uu_dHat_lll_dDelta_lll)
+local conn_ull_from_gamma_uu_d_lll = useSubstIndexSimplify(conn_ull_from_gamma_uu_d_gamma_lll, d_gamma_lll_from_d_lll)
+local conn_ull_from_gamma_uu_dHat_lll_dDelta_lll = useSubstIndexSimplify(conn_ull_from_gamma_uu_d_lll, d_lll_from_dHat_lll_dDelta_lll)
 
 printbr()
 
@@ -753,13 +857,9 @@ d_gamma_uul_from_gamma_uu_d_gamma_lll = d_gamma_uul_from_gamma_uu_d_gamma_lll:si
 	:solve(gamma'^ij_,k')
 printbr(d_gamma_uul_from_gamma_uu_d_gamma_lll)	-- not the prettiest way to show that ...
 
-printbr('using', d_gamma_lll_from_d_lll)
-local d_gamma_uul_from_gamma_uu_d_lll = d_gamma_uul_from_gamma_uu_d_gamma_lll:substIndex(d_gamma_lll_from_d_lll)()
-printbr(d_gamma_uul_from_gamma_uu_d_lll)
+local d_gamma_uul_from_gamma_uu_d_lll = useSubstIndexSimplify(d_gamma_uul_from_gamma_uu_d_gamma_lll, d_gamma_lll_from_d_lll)
 
-printbr('using', d_lll_from_dHat_lll_dDelta_lll)
-local d_gamma_uul_from_dHat_lll_dDelta_lll = d_gamma_uul_from_gamma_uu_d_lll:substIndex(d_lll_from_dHat_lll_dDelta_lll)()
-printbr(d_gamma_uul_from_dHat_lll_dDelta_lll)
+local d_gamma_uul_from_dHat_lll_dDelta_lll = useSubstIndexSimplify(d_gamma_uul_from_gamma_uu_d_lll, d_lll_from_dHat_lll_dDelta_lll)
 printbr()
 
 -- alpha
@@ -815,11 +915,7 @@ if f_def then
 end
 
 -- rhs only so alpha_,t isn't simplified
-printbr('using', d_alpha_l_from_a_l)
-dt_alpha_def[2] = dt_alpha_def[2]
-	:substIndex(d_alpha_l_from_a_l)
-	:simplify()
-printbr(dt_alpha_def)
+dt_alpha_def = usingRHSSubstIndexSimplify(dt_alpha_def, d_alpha_l_from_a_l)
 
 printbr()
 
@@ -831,14 +927,13 @@ local dt_a_l_def = dt_alpha_def[1]'_,k':eq(dt_alpha_def[2]'_,k')
 printbr(dt_a_l_def)
 
 local using = alpha'_,t,k':eq(alpha'_,k''_,t')
-printbr('using', using, ';', d_alpha_l_from_a_l:reindex{i='k'})
+printbr('using', using, ';', d_alpha_l_from_a_l)
 dt_a_l_def[1] = dt_a_l_def[1]()
 dt_a_l_def[1] = dt_a_l_def[1]
 	:subst(using)
-	:substIndex(d_alpha_l_from_a_l)
-	:simplify()
+	:substIndex(d_alpha_l_from_a_l)()
 printbr(dt_a_l_def)
-	
+
 -- while we're here, only on the lhs, replace a_k with its alpha def ... but not a_k,t .. so simplify() before to combine TensorRef derivatives
 printbr('using on lhs only', a_l_def:reindex{i='k'})
 dt_a_l_def[1] = dt_a_l_def[1]:substIndex(a_l_def)
@@ -864,9 +959,7 @@ dt_a_l_def[1] = dt_a_l_def[1]:simplifyAddMulDiv()
 printbr(dt_a_l_def)
 --]]
 
-printbr('using', dt_alpha_def)
-dt_a_l_def = dt_a_l_def:subst(dt_alpha_def)
-printbr(dt_a_l_def)
+dt_a_l_def = usingSubst(dt_a_l_def, dt_alpha_def)
 
 -- the easy way to do that with the tools I have:
 local alpha_t_over_alpha = var'alpha_t_over_alpha'
@@ -925,28 +1018,25 @@ printbr(dt_gamma_ll_def)
 dt_gamma_ll_def = dt_gamma_ll_def()
 printbr(dt_gamma_ll_def)
 
-printbr('using', conn_lll_def)
-dt_gamma_ll_def[2] = dt_gamma_ll_def[2]:substIndex(conn_lll_def)()
-printbr(dt_gamma_ll_def)
+dt_gamma_ll_def = usingRHSSubstIndexSimplify(dt_gamma_ll_def, conn_lll_def)
 
 printbr('symmetrizing', gamma'_ij')
 dt_gamma_ll_def = dt_gamma_ll_def:symmetrizeIndexes(gamma, {1,2})()
 printbr(dt_gamma_ll_def)
 
-printbr('using', d_beta_ul_from_b_ul)
-dt_gamma_ll_def = dt_gamma_ll_def:substIndex(d_beta_ul_from_b_ul)
-printbr(dt_gamma_ll_def)
-
-printbr('using', d_gamma_lll_from_dHat_lll_dDelta_lll)
-dt_gamma_ll_def[2] = dt_gamma_ll_def[2]:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll)
-printbr(dt_gamma_ll_def)
+dt_gamma_ll_def = usingSubstIndex(dt_gamma_ll_def, d_beta_ul_from_b_ul)
+dt_gamma_ll_def = usingRHSSubstIndex(dt_gamma_ll_def, d_gamma_lll_from_d_lll)
 
 printbr()
 
 
 printbr'metric delta evolution'
 
-local dt_gammaDelta_ll_def = dt_gamma_ll_def:splitOffDerivIndexes()
+
+
+local dt_gammaDelta_ll_def = dt_gamma_ll_def:clone()
+dt_gammaDelta_ll_def = dt_gammaDelta_ll_def:splitOffDerivIndexes()
+dt_gammaDelta_ll_def[1] = dt_gammaDelta_ll_def[1]
 	:substIndex(gamma_ll_from_gammaHat_ll_gammaDelta_ll)
 printbr(dt_gammaDelta_ll_def)
 
@@ -955,11 +1045,7 @@ dt_gammaDelta_ll_def = dt_gammaDelta_ll_def()
 printbr(dt_gammaDelta_ll_def)
 
 -- only rhs so the ,t doesn't mix us up
-printbr('using', d_gammaDelta_lll_from_dDelta_lll, ';', d_gammaHat_lll_from_dHat_lll)
-dt_gammaDelta_ll_def[2] = dt_gammaDelta_ll_def[2]
-	:substIndex(d_gammaDelta_lll_from_dDelta_lll, d_gammaHat_lll_from_dHat_lll)
-	:simplify()
-printbr(dt_gammaDelta_ll_def)
+dt_gammaDelta_ll_def = usingRHSSubstIndex(dt_gammaDelta_ll_def, d_gammaDelta_lll_from_dDelta_lll, d_gammaHat_lll_from_dHat_lll)
 
 local dt_gammaDelta_ll_from_dDelta_lll_dHat_lll = dt_gammaDelta_ll_def:clone()
 
@@ -979,15 +1065,15 @@ dt_dDelta_lll_def = dt_dDelta_lll_def[1]'_,k':eq(dt_dDelta_lll_def[2]'_,k')
 dt_dDelta_lll_def[1] = dt_dDelta_lll_def[1]()
 printbr(dt_dDelta_lll_def)
 
-printbr('using', d_gammaDelta_lll_from_dDelta_lll, ';', d_gammaHat_lll_from_dHat_lll)
 dt_dDelta_lll_def = dt_dDelta_lll_def
 	:replace(gammaDelta'_ij,tk', gammaDelta'_ij,k''_,t')
 	:replace(gammaHat'_ij,tk', gammaHat'_ij,k''_,t')
-	:substIndex(d_gammaDelta_lll_from_dDelta_lll)
-	:substIndex(d_gammaHat_lll_from_dHat_lll)
+
+dt_dDelta_lll_def = usingSubstIndex(dt_dDelta_lll_def, d_gammaDelta_lll_from_dDelta_lll, d_gammaHat_lll_from_dHat_lll)
+
 dt_dDelta_lll_def[1] = dt_dDelta_lll_def[1]()
 printbr(dt_dDelta_lll_def)
-printbr('TODO move the ', gammaHat'_ij', 'and', dHat'_kij', 'values outside of the derivative')
+
 
 -- this is done in the 2008 Yano et al paper, not exactly sure why, not mentioned in the flux of the 2005 Bona et al paper
 dt_dDelta_lll_def[2] = dt_dDelta_lll_def[2]
@@ -1001,10 +1087,13 @@ printbr(dt_dDelta_lll_def)
 
 Tensor.Ref:pushRule'Prune/evalDeriv'
 dt_dDelta_lll_def = dt_dDelta_lll_def()
+
 printbr(dt_dDelta_lll_def)
 
-dt_dDelta_lll_def[2] = combineCommaDerivatives(dt_dDelta_lll_def[2])()
+dt_dDelta_lll_def[2] = combineCommaDerivatives(dt_dDelta_lll_def[2])
+	--:simplify()
 printbr(dt_dDelta_lll_def)
+Tensor.Ref:popRule'Prune/evalDeriv'
 
 dt_dDelta_lll_def[2], dt_dDelta_lll_negflux, dt_dDelta_lll_rhs = combineCommaDerivativesAndRelabel(dt_dDelta_lll_def[2], 'r', {'i', 'j', 'k'})
 printbr(dt_dDelta_lll_def)
@@ -1012,6 +1101,7 @@ printbr(dDelta'_kij,t', 'flux term:', -dt_dDelta_lll_negflux)
 printbr(dDelta'_kij,t', 'source term:', dt_dDelta_lll_rhs)
 
 printbr()
+
 
 
 printbr'Riemann curvature'
@@ -1027,9 +1117,7 @@ printbr'Ricci curvature'
 local Ricci_ll_from_Riemann_ulll = R'_ij':eq(R'^k_ikj')
 printbr(Ricci_ll_from_Riemann_ulll)
 
-printbr('using', Riemann_ulll_def)
-local Ricci_ll_from_conn_ull = Ricci_ll_from_Riemann_ulll:subst(Riemann_ulll_def:reindex{ijkl='kikj'})
-printbr(Ricci_ll_from_conn_ull)
+local Ricci_ll_from_conn_ull = usingSubst(Ricci_ll_from_Riemann_ulll, Riemann_ulll_def:reindex{ijkl='kikj'})
 
 printbr('using', conn_ull_from_gamma_uu_d_lll)
 local Ricci_ll_from_d_lll = Ricci_ll_from_conn_ull
@@ -1087,126 +1175,40 @@ local Ricci_ll_def = Ricci_ll_from_d_lll
 	)
 printbr(Ricci_ll_def)
 
-printbr('using', d_gamma_uul_from_gamma_uu_d_lll)
-Ricci_ll_def = Ricci_ll_def:substIndex(d_gamma_uul_from_gamma_uu_d_lll)
-printbr(Ricci_ll_def)
+Ricci_ll_def = usingSubstIndex(Ricci_ll_def, d_gamma_uul_from_gamma_uu_d_lll)
 
 Ricci_ll_def:flatten()
 printbr'combining derivatives'
 Ricci_ll_def[2] = combineCommaDerivatives(Ricci_ll_def[2])
 printbr(Ricci_ll_def)
 
+_, Ricci_ll_negflux, Ricci_ll_rhs = combineCommaDerivativesAndRelabel(Ricci_ll_def[2], 'k', {'i', 'j'})
 
-printbr()
+printbr('Ricci_ll_negflux', Ricci_ll_negflux)
+printbr('Ricci_ll_rhs', Ricci_ll_rhs)
 
+Ricci_ll_negflux[1] = simplifyDAndKTraces(Ricci_ll_negflux[1]:simplifyMetrics())()
+Ricci_ll_rhs = simplifyDAndKTraces(Ricci_ll_rhs:simplifyMetrics())()
+	:tidyIndexes()()
+Ricci_ll_rhs = canonicalIndexForm(Ricci_ll_rhs)()
+	:applySymmetries()()
 
-printHeader'Gaussian curvature'
-
-local Gaussian_def = R:eq(gamma'^ij' * R'_ij')
-printbr(Gaussian_def)
-
-printbr'using Ricci definition'
-Gaussian_def = Gaussian_def:subst(Ricci_ll_def)
-printbr(Gaussian_def)
-
-
-local _, deriv, nonderiv
-_, deriv, nonderiv = combineCommaDerivativesAndRelabel(Ricci_ll_def[2], 'k', {'i', 'j'})
-Gaussian_def = Gaussian_def[1]:eq(
-	(gamma'^ij' * removeCommaDeriv(deriv, 'k'))'_,k'
-	- gamma'^ij_,k' * removeCommaDeriv(deriv, 'k')
-	+ tableToSum(nonderiv:sumToTable():mapi(function(x)
-		return gamma'^ij' * x
-	end))
-)
-printbr(Gaussian_def)
-
-
-Gaussian_def = Gaussian_def:replace(
-	(gamma'^ij' * (
-		Constant(-1) * frac(1,2) * gamma'^pq' * (
-			d'_ipq' * delta'^k_j'
-			+ d'_jpq' * delta'^k_i'
-		)
-		+ gamma'^kl'* (
-			frac(1,2) * d'_ilj'
-			+ frac(1,2) * d'_jli'
-			+ Constant(-1) * d'_lij'
-		)
-	)),
-	gamma'^ij' * gamma'^kl' * (d'_ijl' - 2 * d'_lij')
-)
-printbr(Gaussian_def)
-
-Gaussian_def = Gaussian_def:replace(
-	gamma'^ij' * gamma'^mp' * (
-		frac(1,2) * d'_mpj' * delta'^k_i'
-		+ frac(1,2) * d'_mpi' * delta'^k_j'
-	)'_,k',
-	
-	(gamma'^kl' * gamma'^ij' * d'_ijl')'_,k'
-	- (gamma'^ij' * gamma'^mp')'_,k'() * (
-		frac(1,2) * d'_mpj' * delta'^k_i'
-		+ frac(1,2) * d'_mpi' * delta'^k_j'
-	)
-)
-printbr(Gaussian_def)
-
-printbr('using', d_gamma_uul_from_gamma_uu_d_lll)
-Gaussian_def = Gaussian_def:substIndex(d_gamma_uul_from_gamma_uu_d_lll)
-printbr(Gaussian_def)
-
-
---[[
-gamma^ij (P_ij + (Q^k_ij)_,k)
-= gamma^ij P_ij + gamma^ij (Q^k_ij)_,k
-= gamma^ij P_ij + (gamma^ij Q^k_ij)_,k - gamma^ij_,k Q^k_ij
---]]
-_, deriv, nonderiv = combineCommaDerivativesAndRelabel(Gaussian_def[2], 'k', {})
-printbr('deriv', deriv)
-printbr('nonderiv', nonderiv)
-Gaussian_def = Gaussian_def[1]:eq(
-	removeCommaDeriv(deriv, 'k')()'_,k' + nonderiv
-)
-printbr(Gaussian_def)
-
-
---[[
-printbr('merging derivatives')
-Gaussian_def = Gaussian_def:replace(
-	gamma'^mp' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j')'_,k',
-	(gamma'^mp' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j'))'_,k'
-	- gamma'^mp_,k' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j')
-)
-printbr(Gaussian_def)
---]]
-
---[[
-printbr'tidying indexes'
-Gaussian_def = Gaussian_def:tidyIndexes()()
-	:reindex{abcdef='klmnpq'}
-printbr(Gaussian_def)
---]]
-
---[[
-printbr'symmetrizing indexes'
-Gaussian_def = Gaussian_def
-	:symmetrizeIndexes(dHat, {2,3})
-	:symmetrizeIndexes(dHat, {1,4}, true)
-	:symmetrizeIndexes(dDelta, {2,3})
-	:symmetrizeIndexes(dDelta, {1,4}, true)
-	:symmetrizeIndexes(gamma, {1,2})
+-- TODO here's how to improve applySymmetries ... make it symmetrize all terms in a product, like symmetrizeIndexes() does
+Ricci_ll_rhs = Ricci_ll_rhs
+	:replace(d'_bai' * d'_j^ab', d'_abi' * d'_j^ab')
+	:replace(d'_baj' * d'_i^ab', d'_abj' * d'_i^ab')
+	:replace(d'_abi' * d'^ba_j', d'_abi' * d'^ab_j')
+	:replace(d'_abj' * d'^ba_i', d'_abj' * d'^ab_i')
 	:simplify()
-printbr(Gaussian_def)
---]]
+	:reindex{ab='mn'}
 
---[[
-printbr'tidying indexes'
-Gaussian_def = Gaussian_def:tidyIndexes()()
-printbr(Gaussian_def)
---]]
+printbr('Ricci_ll_negflux', Ricci_ll_negflux)
+printbr('Ricci_ll_rhs', Ricci_ll_rhs)
+
+printbr(Ricci_ll_def:lhs():eq(Ricci_ll_negflux + Ricci_ll_rhs))
 
 printbr()
+
 
 
 printHeader'extrinsic curvature evolution:'
@@ -1253,10 +1255,21 @@ printbr('using', using)
 local using = alpha'_,ij':eq(frac(1,2) * (alpha'_,i' * delta'^k_j' + alpha'_,j' * delta'^k_i'):substIndex(d_alpha_l_from_a_l)'_,k')
 printbr('using', using)
 local using = alpha'_,ij':eq((frac(1,2) * (alpha'_,i' * delta'^k_j' + alpha'_,j' * delta'^k_i'):substIndex(d_alpha_l_from_a_l))'_,k')
-printbr('using', using)
-dt_K_ll_def = dt_K_ll_def:subst(using)
-printbr(dt_K_ll_def)
+dt_K_ll_def = usingSubst(dt_K_ll_def, using)
 --]]
+
+dt_K_ll_def = usingSubst(dt_K_ll_def, (K'_ij,k' * beta'^k'):eq((K'_ij' * beta'^k')'_,k' - K'_ij' * b'^k_k') )
+
+dt_K_ll_def = usingSubstIndex(dt_K_ll_def, d_beta_ul_from_b_ul)
+
+-- K_ij,k beta^k = (K_ij beta^k)_,k - K_ij beta^k_k = (K_ij beta^k)_,k - K_ij b^k_k
+-- mind you there are two K_ij beta^k terms in the flux now
+-- they won't be removed until the flux is simplified
+dt_K_ll_def = usingSubst(
+	dt_K_ll_def,
+	(K'_ij,k' * beta'^k'):eq((K'_ij' * beta'^k')'_,k' - K'_ij' * b'^k_k')()
+)
+
 
 local using = (alpha * (Z'_i,j' + Z'_j,i')):eq(alpha * (Z'_i,k' * delta'^k_j' + Z'_j,k' * delta'^k_i'))
 printbr('using', using)
@@ -1266,21 +1279,9 @@ local using = (alpha * (Z'_i,j' + Z'_j,i')):eq(
 	(alpha * (Z'_i' * delta'^k_j' + Z'_j' * delta'^k_i'))'_,k' 			-- flux term
 	- alpha'_,k' * (Z'_i' * delta'^k_j' + Z'_j' * delta'^k_i') 			-- source term
 )
-printbr('using', using)
-dt_K_ll_def = dt_K_ll_def:subst(using)
+dt_K_ll_def = usingSubst(dt_K_ll_def, using)
+dt_K_ll_def = usingSubstIndex(dt_K_ll_def, d_alpha_l_from_a_l)
 
-printbr('using', d_alpha_l_from_a_l)
-dt_K_ll_def = dt_K_ll_def:substIndex(d_alpha_l_from_a_l)
-printbr(dt_K_ll_def)
-
-dt_K_ll_def[2] = dt_K_ll_def[2]
-	+ (beta'^k' * K'_ij')'_,k'										-- flux term
-	- (beta'^k' * K'_ij')'_,k'():substIndex(d_beta_ul_from_b_ul)	-- source term
-printbr(dt_K_ll_def)
-
-printbr('using', d_beta_ul_from_b_ul)
-dt_K_ll_def = dt_K_ll_def:substIndex(d_beta_ul_from_b_ul)
-printbr(dt_K_ll_def)
 
 printbr('using the definition of ', R'_ij')
 --[[ old
@@ -1290,25 +1291,17 @@ dt_K_ll_def = dt_K_ll_def:subst(Ricci_ll_def)
 -- of the R_ij def, part is _,k and part is not _,anything
 -- so now I have to chagne the alpha * (...)_,k part into (alpha * (...))_,k - alpha a_k * (...)
 -- [[ new
-_, deriv, nonderiv = combineCommaDerivativesAndRelabel(Ricci_ll_def[2], 'k', {'i', 'j'})
-assert(deriv[1]'_,k' == deriv)
+assert(removeCommaDeriv(Ricci_ll_negflux, 'k')'_,k' == Ricci_ll_negflux)
 dt_K_ll_def = dt_K_ll_def:replace(
-	alpha * Ricci_ll_def[1],
+	alpha * Ricci_ll_def:lhs(),
 	--alpha * (nonderiv + deriv)
 	--alpha * (nonderiv + deriv[1]'_,k')
 	--alpha * nonderiv + alpha * deriv[1]'_,k'
-	alpha * nonderiv + (alpha * removeCommaDeriv(deriv,'k'))'_,k' - alpha * a'_k' * removeCommaDeriv(deriv,'k')
+	alpha * Ricci_ll_rhs + (alpha * removeCommaDeriv(Ricci_ll_negflux,'k'))'_,k' - alpha * a'_k' * removeCommaDeriv(Ricci_ll_negflux,'k')
 )
 --]]
 printbr(dt_K_ll_def)
 
--- K_ij,k beta^k = (K_ij beta^k)_,k - K_ij beta^k_k = (K_ij beta^k)_,k - K_ij b^k_k
--- mind you there are two K_ij beta^k terms in the flux now
--- they won't be removed until the flux is simplified
-local using = (K'_ij,k' * beta'^k'):eq((K'_ij' * beta'^k')'_,k' - K'_ij' * b'^k_k')
-printbr('using', using)
-dt_K_ll_def = dt_K_ll_def:subst(using)
-printbr(dt_K_ll_def)
 
 printbr'combining derivatives into flux:'
 -- hmm, where does this go wrong?
@@ -1318,30 +1311,117 @@ dt_K_ll_def[2] = combineCommaDerivatives(dt_K_ll_def[2])
 Tensor.Ref:popRule'Prune/evalDeriv'
 printbr(dt_K_ll_def)
 
-local _, dt_K_ll_negflux, dt_K_ll_rhs = combineCommaDerivativesAndRelabel(dt_K_ll_def[2], 'r', {'i', 'j'})
-printbr(K'_ij,t', '2008 Yano paper flux term:', -dt_K_ll_negflux)
-printbr(K'_ij,t', '2008 Yano paper source term:', dt_K_ll_rhs)
-printbr'the difference between these flux/source terms and the ones later is that the later ones use the separated background metric and partial metric terms'
-
-
--- HERE is where our flux form ends
-
 -- this only affects source terms:
-local using = conn_ull_from_gamma_uu_dHat_lll_dDelta_lll:reindex{ijk='kij'}
-printbr('using', using)
-dt_K_ll_def = dt_K_ll_def:subst(using)
-printbr(dt_K_ll_def)
+dt_K_ll_def = usingSubst(
+	dt_K_ll_def, 
+	conn_ull_from_gamma_uu_d_lll:reindex{ijk='kij'}
+)
 
--- if we use the d_kij def of R_ij then we have to do this too:
-printbr('using', d_lll_from_dHat_lll_dDelta_lll)
-dt_K_ll_def = dt_K_ll_def:substIndex(d_lll_from_dHat_lll_dDelta_lll)
-printbr(dt_K_ll_def)
-
-dt_K_ll_def[2], dt_K_ll_negflux, dt_K_ll_rhs = combineCommaDerivativesAndRelabel(dt_K_ll_def[2], 'r', {'i', 'j'})
+local dt_K_ll_negflux, dt_K_ll_rhs
+_, dt_K_ll_negflux, dt_K_ll_rhs = combineCommaDerivativesAndRelabel(dt_K_ll_def:rhs(), 'r', {'i', 'j'})
 printbr(K'_ij,t', 'flux term:', -dt_K_ll_negflux)
 printbr(K'_ij,t', 'source term:', dt_K_ll_rhs)
+printbr'the difference between these flux/source terms and the ones later is that the later ones use the separated background metric and partial metric terms'
 
 printbr()
+
+
+
+printHeader'Gaussian curvature'
+
+local Gaussian_def = R:eq(gamma'^ij' * R'_ij')
+printbr(Gaussian_def)
+
+--[[
+Ricci: R_ij = P_ij + Q^k_ij,k
+Gaussian: R = γ^ij R_ij
+
+R = γ^ij (P_ij + (Q^k_ij)_,k)
+R = γ^ij P_ij + γ^ij (Q^k_ij)_,k
+R = γ^ij P_ij + (γ^ij Q^k_ij)_,k - γ^ij_,k Q^k_ij
+R = γ^ij P_ij + (γ^ij Q^k_ij)_,k + γ^im γ_mn,k γ^nj Q^k_ij
+R = (P^i_i + 2 d_kij Q^kij) + (Q^ki_i)_,k
+--]]
+
+printbr'using Ricci definition'
+Gaussian_def = Gaussian_def:subst(Ricci_ll_def)
+printbr(Gaussian_def)
+
+
+Gaussian_def = Gaussian_def[1]:eq(
+	(gamma'^ij' * removeCommaDeriv(Ricci_ll_negflux, 'k'))'_,k'
+	- gamma'^ij_,k' * removeCommaDeriv(Ricci_ll_negflux, 'k')
+	+ tableToSum(Ricci_ll_rhs:sumToTable():mapi(function(x)
+		return gamma'^ij' * x
+	end))
+)
+printbr(Gaussian_def)
+
+Gaussian_def = usingSubstIndex(Gaussian_def, d_gamma_uul_from_gamma_uu_d_lll)
+
+
+--[[
+γ^ij (P_ij + (Q^k_ij)_,k)
+= γ^ij P_ij + γ^ij (Q^k_ij)_,k
+= γ^ij P_ij + (γ^ij Q^k_ij)_,k - γ^ij_,k Q^k_ij
+--]]
+_, Gaussian_negflux, Gaussian_rhs = combineCommaDerivativesAndRelabel(Gaussian_def:rhs(), 'k', {})
+printbr('Gaussian_negflux', Gaussian_negflux)
+printbr('Gaussian_rhs', Gaussian_rhs)
+
+Gaussian_negflux[1] = simplifyDAndKTraces(Gaussian_negflux[1]:simplifyMetrics())()
+Gaussian_rhs = simplifyDAndKTraces(Gaussian_rhs:simplifyMetrics())()
+	:tidyIndexes()()
+Gaussian_rhs = canonicalIndexForm(Gaussian_rhs)()
+	:applySymmetries()()
+	:reindex{abc='lmn'}
+
+printbr('Gaussian_negflux', Gaussian_negflux)
+printbr('Gaussian_rhs', Gaussian_rhs)
+
+Gaussian_def = Gaussian_def:lhs():eq(
+	removeCommaDeriv(Gaussian_negflux, 'k')()'_,k' + Gaussian_rhs
+)
+printbr(Gaussian_def)
+
+
+--[[
+printbr('merging derivatives')
+Gaussian_def = Gaussian_def:replace(
+	gamma'^mp' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j')'_,k',
+	(gamma'^mp' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j'))'_,k'
+	- gamma'^mp_,k' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j')
+)
+printbr(Gaussian_def)
+--]]
+
+--[[
+printbr'tidying indexes'
+Gaussian_def = Gaussian_def:tidyIndexes()()
+	:reindex{abcdef='klmnpq'}
+printbr(Gaussian_def)
+--]]
+
+--[[
+printbr'symmetrizing indexes'
+Gaussian_def = Gaussian_def
+	:symmetrizeIndexes(dHat, {2,3})
+	:symmetrizeIndexes(dHat, {1,4}, true)
+	:symmetrizeIndexes(dDelta, {2,3})
+	:symmetrizeIndexes(dDelta, {1,4}, true)
+	:symmetrizeIndexes(gamma, {1,2})
+	:simplify()
+printbr(Gaussian_def)
+--]]
+
+--[[
+printbr'tidying indexes'
+Gaussian_def = Gaussian_def:tidyIndexes()()
+printbr(Gaussian_def)
+--]]
+
+printbr()
+
 
 
 printHeader[[Z4 $\Theta$ definition]]
@@ -1349,29 +1429,23 @@ printHeader[[Z4 $\Theta$ definition]]
 -- TODO derive me plz from the original R_uv + 2 Z_(u;v) = 8 pi (T^TR)_uv
 -- are you sure there's no beta^i's?
 local dt_Theta_def = Theta'_,t':eq(
-	
+
 	(Theta * beta'^k')'_,k'
 	
-	+ (alpha * gamma'^kl' * Z'_l')'_,k'
+	+ (alpha * Z'^k')'_,k'
 	
 	+ frac(1,2) * alpha * R
 	
-	- alpha * gamma'^kl_,k' * Z'_l'
-	- 2 * gamma'^kl' * Z'_l' * alpha * a'_k'
+	+ alpha * (d'^k' - 2 * a'^k') * Z'_k'
 	
-	- alpha * gamma'^kl' * Gamma'^m_kl' * Z'_m'
 	+ frac(1,2) * alpha * (
-		  gamma'^kl' * K'_kl' * (gamma'^mn' * K'_mn' - 2 * Theta)
-		- gamma'^kl' * gamma'^mn' * K'_km' * K'_ln'
+		  K * (K - 2 * Theta)
+		- K'^m_n' * K'^n_m'
 		- 16 * pi * rho
 	)
 	
 	- Theta * b'^k_k'
 )
-printbr(dt_Theta_def)
-
-printbr('using', d_gamma_uul_from_gamma_uu_d_lll)
-dt_Theta_def = dt_Theta_def:substIndex(d_gamma_uul_from_gamma_uu_d_lll)
 printbr(dt_Theta_def)
 
 printbr('using the definition of R')
@@ -1402,47 +1476,11 @@ Tensor.Ref:popRule'Prune/evalDeriv'
 
 local dt_Theta_negflux, dt_Theta_rhs
 _, dt_Theta_negflux, dt_Theta_rhs = combineCommaDerivativesAndRelabel(dt_Theta_def[2], 'r', {})
-printbr(Theta'_,t', '2008 Yano paper flux term:', -dt_Theta_negflux)
-printbr(Theta'_,t', '2008 Yano paper source term:', dt_Theta_rhs)
-printbr'the difference between these flux/source terms and the ones later is that the later ones use the separated background metric and partial metric terms'
-
-
--- last in flux form
-
---[[
-printbr('using', d_alpha_l_from_a_l)
-dt_Theta_def = dt_Theta_def:substIndex(d_alpha_l_from_a_l)()
-printbr(dt_Theta_def)
-
-printbr('using', conn_ull_from_gamma_uu_dHat_lll_dDelta_lll)
-dt_Theta_def = dt_Theta_def:subst(conn_ull_from_gamma_uu_dHat_lll_dDelta_lll:reindex{ijkm='mkln'})()
-printbr(dt_Theta_def)
---]]
-
---[[
-printbr'tidying indexes'
-dt_Theta_def = dt_Theta_def:tidyIndexes()()
-printbr(dt_Theta_def)
---]]
-
-
---[[
-printbr'tidying indexes'
-dt_Theta_def = dt_Theta_def:tidyIndexes()()
-printbr(dt_Theta_def)
---]]
-
-_, dt_Theta_negflux, dt_Theta_rhs = combineCommaDerivativesAndRelabel(dt_Theta_def[2], 'r', {})
-
-printbr('using in flux only', d_lll_from_dHat_lll_dDelta_lll)
-dt_Theta_negflux = dt_Theta_negflux:substIndex(d_lll_from_dHat_lll_dDelta_lll)
-printbr(dt_Theta_negflux)
-dt_Theta_def = dt_Theta_def[1]:eq(dt_Theta_negflux + dt_Theta_rhs)
-
 printbr(Theta'_,t', 'flux term:', -dt_Theta_negflux)
 printbr(Theta'_,t', 'source term:', dt_Theta_rhs)
 
 printbr()
+
 
 
 printHeader[[Z4 $Z_k$ definition]]
@@ -1501,24 +1539,12 @@ local dt_Z_l_def = Z'_k,t':eq(
 dt_Z_l_def = dt_Z_l_def()
 printbr(dt_Z_l_def)
 
-printbr('using', d_gamma_uul_from_dHat_lll_dDelta_lll)
-dt_Z_l_def = dt_Z_l_def:subst(d_gamma_uul_from_dHat_lll_dDelta_lll:reindex{ijklm='mnklp'})()
-printbr(dt_Z_l_def)
-
-printbr('using', d_alpha_l_from_a_l)
-dt_Z_l_def = dt_Z_l_def:substIndex(d_alpha_l_from_a_l)()
-printbr(dt_Z_l_def)
-
-printbr('using', d_beta_ul_from_b_ul)
-dt_Z_l_def = dt_Z_l_def:substIndex(d_beta_ul_from_b_ul)()
-printbr(dt_Z_l_def)
-
-printbr('using', conn_ull_from_gamma_uu_dHat_lll_dDelta_lll)
-dt_Z_l_def = dt_Z_l_def:subst(
+dt_Z_l_def = usingSubstSimplify(dt_Z_l_def, d_gamma_uul_from_dHat_lll_dDelta_lll:reindex{ijklm='mnklp'})
+dt_Z_l_def = usingSubstIndexSimplify(dt_Z_l_def, d_alpha_l_from_a_l)
+dt_Z_l_def = usingSubstIndexSimplify(dt_Z_l_def, d_beta_ul_from_b_ul)
+dt_Z_l_def = usingSubstSimplify(dt_Z_l_def
 		conn_ull_from_gamma_uu_dHat_lll_dDelta_lll:reindex{ijkm='nkmp'},
-		conn_ull_from_gamma_uu_dHat_lll_dDelta_lll:reindex{ijkm='nlmp'}
-	):simplify()
-printbr(dt_Z_l_def)
+		conn_ull_from_gamma_uu_dHat_lll_dDelta_lll:reindex{ijkm='nlmp'})
 --]]
 --[[
 reconciling the two:
@@ -1550,18 +1576,18 @@ local dt_Z_l_def = Z'_k,t':eq(
 	- (
 		-beta'^r' * Z'_k'
 		+ alpha * (
-			- gamma'^rl' * K'_kl'
-			+ delta'^r_k' * (K'_mn' * gamma'^mn' - Theta)
+			- K'^r_k'
+			+ delta'^r_k' * (K - Theta)
 		)
 	)'_,r'
 	+ alpha * (
-		  a'_k' * (K'_mn' * gamma'^mn' - 2 * Theta)
-		+ K'_kl' * gamma'^lm' * (
-			- a'_m'
-			+ d'_mpq' * gamma'^pq'
-			- 2 * Z'_m'
+		  a'_k' * (K - 2 * Theta)
+		+ K'_kl' * (
+			- a'^l'
+			+ d'^l'
+			- 2 * Z'^l'
 		)
-		- gamma'^mp' * gamma'^nq' * K'_mn' * d'_kpq'
+		- d'_kpq' * K'^pq'
 		- 8 * pi * S'_k'
 	)
 	+ Z'_l' * b'^l_k'
@@ -1576,21 +1602,6 @@ dt_Z_l_def[2] = combineCommaDerivatives(dt_Z_l_def[2])
 Tensor.Ref:popRule'Prune/evalDeriv'
 printbr(dt_Z_l_def)
 
-
-local _, dt_Z_l_negflux, dt_Z_l_rhs = combineCommaDerivativesAndRelabel(dt_Z_l_def[2], 'r', {'k'})
-printbr(Z'_k,t', '2008 Yano paper flux term:', -dt_Z_l_negflux)
-printbr(Z'_k,t', '2008 Yano paper source term:', dt_Z_l_rhs)
-printbr'the difference between these flux/source terms and the ones later is that the later ones use the separated background metric and partial metric terms'
-
---[[ doesn't help
-printbr'tidying indexes'
-dt_Z_l_def = dt_Z_l_def:tidyIndexes()()
-printbr(dt_Z_l_def)
---]]
-
-printbr('using', d_gamma_uul_from_gamma_uu_d_lll)
-dt_Z_l_def = dt_Z_l_def:substIndex(d_gamma_uul_from_gamma_uu_d_lll)
-printbr(dt_Z_l_def)
 
 local _, dt_Z_l_negflux, dt_Z_l_rhs = combineCommaDerivativesAndRelabel(dt_Z_l_def[2], 'r', {'k'})
 printbr(Z'_k,t', 'flux term:', -dt_Z_l_negflux)
@@ -1700,11 +1711,7 @@ if useShift == '2005 Bona / 2008 Yano' then
 
 	dt_beta_u_def = beta'^l_,t':eq(
 		beta'^k' * b'^l_k'
-		+ alpha^2 * gamma'^kl' * (
-			2 * gamma'^jm' * d'_mjk'
-			- gamma'^jm' * d'_kjm'
-			- a'_k'
-		)
+		+ alpha^2 * (2 * e'^l' - d'^l' - a'^l')
 	)
 	printbr(dt_beta_u_def)
 	printbr()
@@ -2320,6 +2327,7 @@ print'</pre>'
 
 --[===[ too many locals, so i'll just separate this out for now
 
+
 printbr('expanding rhs derivative')
 dt_a_l_def = dt_a_l_def()
 printbr(dt_a_l_def)
@@ -2443,9 +2451,6 @@ if eigensystem_dontIncludeGaugeVars then
 	printbr(dt_gammaDelta_ll_def)
 end
 
-
-
-Tensor.Ref:popRule'Prune/evalDeriv'
 
 printbr'expanding rhs derivative'
 dt_dDelta_lll_def = dt_dDelta_lll_def()
@@ -2785,6 +2790,8 @@ dt_Z_l_def = dt_Z_l_def
 printbr(dt_Z_l_def)
 
 
+
+-- TODO HERE b_ul's def, replace d_i with d_ij^j and e_i with d^j_ji
 
 if useShift == '2005 Bona / 2008 Yano' then
 	dt_b_ul_def = dt_b_ul_def()

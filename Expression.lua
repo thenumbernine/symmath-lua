@@ -2135,6 +2135,16 @@ function Expression.mulToTable(s)
 end
 
 
+function Expression:applySymmetries(...)
+	self = self:clone()
+	for i=1,#self do
+		self[i] = self[i]:applySymmetries(...)
+	end
+	return self
+end
+
+
+
 
 --[[
 Variable and Function names ... and anything else
