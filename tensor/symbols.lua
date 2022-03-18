@@ -68,8 +68,10 @@ local latinSymbols = range(1,26):mapi(function(i)
 end)
 
 return {
-	greekSymbolsAndNames = greekSymbolsAndNames,
-	greekSymbolForNames = greekSymbolForNames,
+	-- valid table for Tensor.defaultSymbols:
 	greekSymbolNames = greekSymbolNames,
 	latinSymbols = latinSymbols,
+	-- for extra support:
+	greekSymbolsAndNames = greekSymbolsAndNames,
+	greekSymbolForNames = greekSymbolForNames,
 }

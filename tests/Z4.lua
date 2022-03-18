@@ -32,6 +32,31 @@ it is the derivatives of the gauge variables: alpha, gamma, and maybe beta
 these are the variables whose derivatives do have state variables
 hmm....
 
+
+ ... 0.025675s
+connections: ... 0.057081s
+metric inverse partial: ... 0.021813s
+lapse derivative: ... 0.047086s
+metric evolution: ... 0.040662s
+metric partial delta evolution: ... 0.187168s
+extrinsic curvature evolution: ... 0.025193s
+Gaussian curvature ... 0.088584s
+Z4 $\Theta$ definition ... 0.003889s
+Z4 $Z_k$ definition ... 0.001489s
+shift evolution: ... 1.6000000000016e-05s
+minimum distortion elliptic evolution: ... 0.00041400000000003s
+minimum distortion elliptic spatial derivative evolution: ... 0.00071299999999996s
+as a system: ... 6.03s
+generating code ... 10.519066s
+system rearranged for flux-jacobian factoring: ... 0.010992000000002s
+inserting deltas to help factor linear system ... 0.498611s
+as a balance law system: ... 0.664727s
+replacing rhs derivatives with 1st derivative state variables: ... 0.993588s
+expanding, and removing zero rows/cols: ... 3861.984313s
+calculating charpoly ... 39.430981s
+TOTAL: 3920.632073
+
+
 --]]
 
 local env = setmetatable({}, {__index=_G})
@@ -83,7 +108,7 @@ pick one of these
 I'm not sure what to call this one ... it's the one in 
 2005 Bona et al, section B.1, "to convert the minimal distortion elliptic equations into time-dependent parabolic equations by means of the Hamilton-Jacobi method"
 --]]
-useShift = '2005 Bona / 2008 Yano'
+useShift = 'HarmonicShift'
 
 --[[
 don't include alpha, gamma_ij
@@ -1668,7 +1693,7 @@ if useShift == 'hyperbolicGammaDriver' then
 	)
 	--]]
 end	-- useShift == 'hyperbolicGammaDriver'
-if useShift == '2005 Bona / 2008 Yano' then
+if useShift == 'HarmonicShift' then
 	-- how many of these terms should be state vars instead of state derivatives?
 	printHeader('minimum distortion elliptic evolution:')
 
@@ -2240,13 +2265,12 @@ for _,info in ipairs{
 		-- for now replace dDelta_lll with d_lll ...
 		-- TODO add in background metric and partial 
 		:gsub('%('..structName..'%)%->gammaDelta_ll%.', '('..structName..')->gamma_ll.')
-		:gsub('%('..structName..'%)%->dDelta_lll%.', '('..structName..')->d_lll.')
 		:gsub('%+ =', '+=')
 		:gsub('\n', lineend..'\n\t\t')
 		..lineend
 	)
 	print('\t}'..lineend)
-	print('\t&lt;? if useShift == "2005 Bona / 2008 Yano" then ?>'..lineend)
+	print('\t&lt;? if useShift == "HarmonicShift" then ?>'..lineend)
 	print('\t{'..lineend)
 	print('\t\t'..export.C:toCode{
 			output = range(#Uijkl_withShift_expanded):mapi(function(i,_,t)
@@ -2263,13 +2287,12 @@ for _,info in ipairs{
 		-- for now replace dDelta_lll with d_lll ...
 		-- TODO add in background metric and partial 
 		:gsub('%('..structName..'%)%->gammaDelta_ll%.', '('..structName..')->gamma_ll.')
-		:gsub('%('..structName..'%)%->dDelta_lll%.', '('..structName..')->d_lll.')
 		:gsub('%+ =', '+=')
 		:gsub('\n', lineend..'\n\t\t')
 		..lineend
 	)
 	print('\t}'..lineend)
-	print('\t&lt;? end ?>/* useShift == "2005 Bona / 2008 Yano" */'..lineend)
+	print('\t&lt;? end ?>/* useShift == "HarmonicShift" */'..lineend)
 	print()
 end
 print'</pre>'
@@ -2282,6 +2305,12 @@ print'</pre>'
 
 
 -- [===[ too many locals, so i'll just separate this out for now
+
+
+--[======[ begin touch-ups of the dt_ eqns for the eigensystem
+-- I want to just run across all rhs's and apply the same rules everywhere
+--  and hopefully won't run too slow.
+-- As little per-eqn stuff as possible.
 
 printbr('expanding rhs derivative')
 dt_a_l_def = dt_a_l_def()
@@ -2720,7 +2749,7 @@ printbr(dt_Z_l_def)
 
 -- TODO HERE b_ul's def, replace d_i with d_ij^j and e_i with d^j_ji
 
-if useShift == '2005 Bona / 2008 Yano' then
+if useShift == 'HarmonicShift' then
 	dt_b_ul_def = dt_b_ul_def()
 	printbr(dt_b_ul_def)
 
@@ -2737,7 +2766,7 @@ if useShift == '2005 Bona / 2008 Yano' then
 	printbr(dt_b_ul_def)
 
 	if eigensystem_dontIncludeGaugeVars
-	and useShift ~= '2005 Bona / 2008 Yano'
+	and useShift ~= 'HarmonicShift'
 	then
 		printbr('using', d_alpha_l_from_a_l)
 		dt_b_ul_def = dt_b_ul_def:substIndex(d_alpha_l_from_a_l)()
@@ -2755,9 +2784,10 @@ if useShift == '2005 Bona / 2008 Yano' then
 		dt_b_ul_def = dt_b_ul_def:substIndex(d_lll_from_dHat_lll_dDelta_lll'_,r'())()
 		printbr(dt_b_ul_def)
 	end
-
-
 end
+
+--]======] -- end touch-ups of the dt_ eqns for the eigensystem
+
 
 --[[
 for lapse f=2/α:
@@ -2795,9 +2825,92 @@ if not eigensystem_dontIncludeShiftVars then
 	end
 end
 
+-- ok so I'm running out of symbols.
+-- my "defaultSymbols" are currently letters a-z
+-- so to fix this I'm going to insert some subscript letters a_1 ... z_1
+-- but TODO do this automatically
+for c=('a'):byte(),('z'):byte() do
+	Tensor.defaultSymbols:insert('{'..string.char(c)..'_1}')
+end
+
+-- so as they are, the eqns look no different than they did when the flux/source code output printed it
+-- so don't bother print them, instead do the simplfiications/rearrangement *here*
+UijkltEqns = UijkltEqns:mapi(function(eqn,i)
+	local lhs, rhs = eqn[1], eqn[2]
+	rhs = rhs:simplifyAddMulDiv()
+	--[[ not working ... idk why?  
+	-- maybe the zero needs indexes to match, so the 'abc' aren't considered fixed indexes?  
+	-- what if I did replaceIndex(delta'^a_b,c', delta'^a_b,c' * 0) ? 
+	rhs = rhs:replaceIndex(delta'^a_b,c', 0)
+	--]]
+	-- [[
+	rhs = rhs:map(function(x)
+		if TensorRefMatchesDegreeAndDeriv(x, delta'^i_j,k') then return 0 end
+	end)
+	--]]
+	--[[ TODO try this instead:
+	rhs = rhs:replaceIndex(delta'^a_b,c', delta'^a_b,c' * 0)
+	--]]
+	rhs = rhs:simplifyAddMulDiv()
+
+	-- ok there should be a branch here
+	if favorFluxTerms then
+		-- TODO HERE - convert some of the a_i b^i_j d_kij into alpha_,i beta^i_,j gamma_ij,k
+		printbr'FINISHME PLZ'
+	else
+		-- before substiting derivs for state vars, make sure everything is in the correct valence
+		-- (esp because that means inserting gamma^ij's, which when differentiated turn into -d_k^ij's)
+		-- here convert *all* alpha_,i => a_i; beta^i_,j => b^i_j; gamma_ij,k => 1/2 d_kij
+		rhs = rhs:replaceIndex(f'_,a', f:diff(alpha) * alpha'_,a')
+	
+		-- insert traces ...
+		rhs = rhs:splitOffDerivIndexes()
+		
+		-- hmm, not working.  what is a better way to do this?
+		rhs = rhs:replace(tr_K^2, K'_mn' * gamma'^mn' * K'_pq' * gamma'^pq')	-- hmm, 
+		
+		rhs = rhs:replaceIndex(tr_K, K'_mn' * gamma'^mn')
+		rhs = rhs:insertMetricsToSetVariance(d'_i', gamma)
+		rhs = rhs:replaceIndex(d'_i', d'_imn' * gamma'^mn')
+		rhs = rhs:insertMetricsToSetVariance(e'_i', gamma)
+		rhs = rhs:replaceIndex(e'_i', d'_mni' * gamma'^mn')
+	
+		-- correct forms ...
+		rhs = rhs:insertMetricsToSetVariance(a'_k', gamma)
+		-- "couldn't get a new symbol" here ....
+		rhs = rhs:insertMetricsToSetVariance(d'_kij', gamma)
+		rhs = rhs:insertMetricsToSetVariance(K'_ij', gamma)
+		rhs = rhs:insertMetricsToSetVariance(Z'_k', gamma)
+		rhs = rhs:insertMetricsToSetVariance(beta'^k', gamma)
+		rhs = rhs:insertMetricsToSetVariance(b'^i_j', gamma)
+		rhs = rhs:insertMetricsToSetVariance(B'^i', gamma)
+		
+		-- simplify to distribute derivatives through the gamme^ij's
+		rhs = rhs:simplifyAddMulDiv()
+	
+		-- convert gamma^ij_,k's to -2 d_k^ij's
+		rhs = rhs:substIndex(d_gamma_uul_from_dHat_lll_dDelta_lll)
+		rhs = rhs:simplifyAddMulDiv()
+	
+		-- convert gauge derivs to state vars
+		rhs = rhs
+			:substIndex(d_alpha_l_from_a_l)
+			:substIndex(d_beta_ul_from_b_ul)
+			:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll)
+		rhs = rhs:simplifyAddMulDiv()
+		
+		-- convert d_ijk,l to dHat_ijk,l + dDelta_ijk,l
+		rhs = rhs:splitOffDerivIndexes()
+		rhs = rhs:substIndex((d_lll_from_dHat_lll_dDelta_lll)())
+		rhs = rhs:simplifyAddMulDiv()
+	end
+	return lhs:eq(rhs)
+end)
 
 local UijklVars = UijkltEqns:mapi(function(eqn) return removeCommaDeriv(eqn:lhs(), 't') end)
 local UijklMat = Matrix(UijklVars):T()
+
+printHeader"system rearranged for flux-jacobian factoring:"
 
 for _,eqn in ipairs(UijkltEqns) do
 	printbr(eqn)
@@ -2811,9 +2924,10 @@ local UpqmnrVars = UpqmnVars:mapi(function(x) return x'_,r'() end)
 printHeader'inserting deltas to help factor linear system'
 
 local rhsWithDeltas = UijkltEqns:mapi(function(eqn)
-	printbr('inserting deltas into '..eqn[1])
-	return insertDeltasToSetIndexSymbols(eqn[2], UpqmnrVars)
+	return insertDeltasToSetIndexSymbols(eqn:rhs(), UpqmnrVars)
 end)
+printbr((UijklMat'_,t'):eq(Matrix(rhsWithDeltas):T()))
+printbr()
 
 printHeader'as a balance law system:'
 
@@ -3038,7 +3152,7 @@ end
 printbr()
 --]]
 
-
+os.exit()
 printHeader'expanding, and removing zero rows/cols:'
 
 --[[ only remove diagonal shift.  TODO this for the eigensystem, for acoustic matrix, but do it later after expanding.
@@ -3410,6 +3524,7 @@ local charpoly = dFijkl_dUpqmn_expanded:charpoly(lambda)
 printbr(charpoly)
 
 
+--[======[ eigensystem stuff is too slow  for now
 printHeader'finding lambdas'
 
 --	table{Constant(0)}:rep(17),
@@ -3572,6 +3687,7 @@ eig.L = eig.R:inverse()
 printbr(var'L':eq(eig.L))
 printbr()
 --]=]
+--]======] -- eigensystem stuff is too slow 
 --]===]
 
 -- DONE
