@@ -100,15 +100,23 @@ useLapseF_timeHarmonic = false	-- f = 1
 
 --[[
 pick one of these
+TODO how about generating all of them at once?
+for the sake of flux and source term code generation, thats fine
+for the sake of eigensystem computations it gets difficult, so better do one at a time
+so then TODO turn this into an 'eigensystem_' var? 
 --]]
 
 --local useShift = 'hyperbolicGammaDriver'
 
 --[[
-I'm not sure what to call this one ... it's the one in 
 2005 Bona et al, section B.1, "to convert the minimal distortion elliptic equations into time-dependent parabolic equations by means of the Hamilton-Jacobi method"
 --]]
 useShift = 'HarmonicShift'
+
+--[[
+beta^l_,t => beta^l_,t - beta^l_,k beta^k
+--]]
+useShiftingShift = true
 
 --[[
 don't include alpha, gamma_ij
@@ -168,7 +176,7 @@ evaluateShiftlessEigensystem = true
 --[[
 whether to output the source term code generation
 --]]
-outputSourceTerms = true
+eigensystem_outputSourceTerms = false
 
 
 -- these were giving BSSN some trouble, so here they are as well.
@@ -866,7 +874,8 @@ printbr()
 printHeader'connections:'
 local conn_lll_def = Gamma'_ijk':eq(frac(1,2) * (gamma'_ij,k' + gamma'_ik,j' - gamma'_jk,i'))
 printbr(conn_lll_def)
-local d_gamma_lll_from_conn_lll = (conn_lll_def + conn_lll_def:reindex{ijk='kji'}):symmetrizeIndexes(gamma,{1,2})():switch():reindex{jk='kj'}
+local d_gamma_lll_from_conn_lll = (conn_lll_def + conn_lll_def:reindex{ijk='kji'})
+	:symmetrizeIndexes(gamma,{1,2})():switch():reindex{jk='kj'}
 printbr(d_gamma_lll_from_conn_lll)
 printbr()
 
@@ -1092,7 +1101,7 @@ local dt_dDelta_lll_def = dt_gammaDelta_ll_def:reindex{k='l'}'_,k'
 printbr(dt_dDelta_lll_def)
 --]]
 -- [[
-local dt_dDelta_lll_def = dt_gammaDelta_ll_from_dDelta_lll_dHat_lll :reindex{k='l'}
+local dt_dDelta_lll_def = dt_gammaDelta_ll_from_dDelta_lll_dHat_lll:reindex{k='l'}
 dt_dDelta_lll_def = dt_dDelta_lll_def / 2
 dt_dDelta_lll_def = dt_dDelta_lll_def[1]'_,k':eq(dt_dDelta_lll_def[2]'_,k')
 dt_dDelta_lll_def[1] = dt_dDelta_lll_def[1]()
@@ -1109,6 +1118,7 @@ printbr(dt_dDelta_lll_def)
 
 
 -- this is done in the 2008 Yano et al paper, not exactly sure why, not mentioned in the flux of the 2005 Bona et al paper
+printbr'inserting flux shift terms...'
 dt_dDelta_lll_def[2] = dt_dDelta_lll_def[2]
 	+ (beta'^l' * dDelta'_kij')'_,l'	-- goes in the flux
 	- (beta'^l' * dDelta'_kij')'_,l'():substIndex(d_beta_ul_from_b_ul):replaceIndex(b'^l_l', tr_b)	-- goes in the source
@@ -1118,14 +1128,22 @@ dt_dDelta_lll_def[2] = dt_dDelta_lll_def[2]
 printbr(dt_dDelta_lll_def)
 --]]
 
+dt_dDelta_lll_def = usingSubstIndex(dt_dDelta_lll_def, d_lll_from_dHat_lll_dDelta_lll)
+
 Tensor.Ref:pushRule'Prune/evalDeriv'
+
+printbr'simplifying without distributing flux derivative'
 dt_dDelta_lll_def = dt_dDelta_lll_def()
-
 printbr(dt_dDelta_lll_def)
 
+printbr'combining derivatives'
 dt_dDelta_lll_def[2] = combineCommaDerivatives(dt_dDelta_lll_def[2])
-	--:simplify()
 printbr(dt_dDelta_lll_def)
+
+printbr'simplifying without distributing flux derivative'
+dt_dDelta_lll_def = dt_dDelta_lll_def()
+printbr(dt_dDelta_lll_def)
+
 Tensor.Ref:popRule'Prune/evalDeriv'
 
 dt_dDelta_lll_def[2], dt_dDelta_lll_negflux, dt_dDelta_lll_rhs = combineCommaDerivativesAndRelabel(dt_dDelta_lll_def[2], 'r', {'i', 'j', 'k'})
@@ -1221,10 +1239,12 @@ printbr('Ricci_ll_negflux', Ricci_ll_negflux)
 printbr('Ricci_ll_rhs', Ricci_ll_rhs)
 
 Ricci_ll_negflux[1] = simplifyDAndKTraces(Ricci_ll_negflux[1]:simplifyMetrics())()
+	:replaceIndex(d'_a^c_b', d'_ab^c')()
 Ricci_ll_rhs = simplifyDAndKTraces(Ricci_ll_rhs:simplifyMetrics())()
 	:tidyIndexes()()
 Ricci_ll_rhs = canonicalIndexForm(Ricci_ll_rhs)()
 	:applySymmetries()()
+	:replaceIndex(d'_a^c_b', d'_ab^c')()
 
 -- TODO here's how to improve applySymmetries ... make it symmetrize all terms in a product, like symmetrizeIndexes() does
 Ricci_ll_rhs = Ricci_ll_rhs
@@ -1234,6 +1254,9 @@ Ricci_ll_rhs = Ricci_ll_rhs
 	:replace(d'_abj' * d'^ba_i', d'_abj' * d'^ab_i')
 	:simplify()
 	:reindex{ab='mn'}
+	:replaceIndex(d'_m' * d'^m_ab', d'^m' * d'_mab')
+	:replaceIndex(d'_m' * d'_ab^m', d'^m' * d'_abm')
+	:replaceIndex(e'_m' * d'_ab^m', e'^m' * d'_abm')
 
 printbr('Ricci_ll_negflux', Ricci_ll_negflux)
 printbr('Ricci_ll_rhs', Ricci_ll_rhs)
@@ -1241,7 +1264,6 @@ printbr('Ricci_ll_rhs', Ricci_ll_rhs)
 printbr(Ricci_ll_def:lhs():eq(Ricci_ll_negflux + Ricci_ll_rhs))
 
 printbr()
-
 
 
 printHeader'extrinsic curvature evolution:'
@@ -1344,7 +1366,6 @@ local dt_K_ll_negflux, dt_K_ll_rhs
 _, dt_K_ll_negflux, dt_K_ll_rhs = combineCommaDerivativesAndRelabel(dt_K_ll_def:rhs(), 'r', {'i', 'j'})
 printbr(K'_ij,t', 'flux term:', -dt_K_ll_negflux)
 printbr(K'_ij,t', 'source term:', dt_K_ll_rhs)
-printbr'the difference between these flux/source terms and the ones later is that the later ones use the separated background metric and partial metric terms'
 
 printbr()
 
@@ -1398,6 +1419,7 @@ Gaussian_rhs = simplifyDAndKTraces(Gaussian_rhs:simplifyMetrics())()
 Gaussian_rhs = canonicalIndexForm(Gaussian_rhs)()
 	:applySymmetries()()
 	:reindex{abc='lmn'}
+	:replace(d'_lmn' * d'^nlm', d'_lmn' * d'^mln')()
 
 printbr('Gaussian_negflux', Gaussian_negflux)
 printbr('Gaussian_rhs', Gaussian_rhs)
@@ -1693,35 +1715,77 @@ if useShift == 'hyperbolicGammaDriver' then
 	)
 	--]]
 end	-- useShift == 'hyperbolicGammaDriver'
-if useShift == 'HarmonicShift' then
-	-- how many of these terms should be state vars instead of state derivatives?
-	printHeader('minimum distortion elliptic evolution:')
 
-	dt_beta_u_def = beta'^l_,t':eq(
-		beta'^k' * b'^l_k'
-		+ alpha^2 * (2 * e'^l' - d'^l' - a'^l')
-	)
+
+function getShiftFluxParts(beta_rhs)
+	-- this is parabolci form, where we solve beta^l_,t instead of beta^l_,tt
+	local dt_beta_u_def = beta'^l_,t':eq(beta_rhs)
+	if useShiftingShift then
+		dt_beta_u_def[2] = dt_beta_u_def:rhs() + beta'^k' * b'^l_k'
+	end
 	printbr(dt_beta_u_def)
 	printbr()
 
-	_, dt_beta_u_negflux, dt_beta_u_rhs = combineCommaDerivativesAndRelabel(dt_beta_u_def[2], 'r', {'l'})
+	local _, dt_beta_u_negflux, dt_beta_u_rhs = combineCommaDerivativesAndRelabel(dt_beta_u_def:rhs(), 'r', {'l'})
 	printbr(beta'^l_,t', 'flux term:', -dt_beta_u_negflux)
 	printbr(beta'^l_,t', 'source term:', dt_beta_u_rhs)
-
 	
-	printHeader('minimum distortion elliptic spatial derivative evolution:')
+	printHeader('spatial derivative evolution:')
 	
-	-- TODO now how do they convert to flux?
-	dt_b_ul_def = dt_beta_u_def:reindex{k='i'}
-	dt_b_ul_def = (dt_b_ul_def[1]'_,k')():eq((delta'^r_k' * dt_b_ul_def[2])'_,r')
-	dt_b_ul_def[1] = dt_b_ul_def[1]
+	local dt_b_ul_def = dt_beta_u_def:reindex{k='i'}
+	dt_b_ul_def = (
+		(dt_b_ul_def:lhs()'_,k')()
 		:replace(beta'^l_,tk', beta'^l_,k''_,t')
 		:substIndex(d_beta_ul_from_b_ul)
+	):eq(
+		(delta'^r_k' * dt_b_ul_def:rhs())'_,r'
+	)
 	printbr(dt_b_ul_def)
 
-	_, dt_b_ul_negflux, dt_b_ul_rhs = combineCommaDerivativesAndRelabel(dt_b_ul_def[2], 'r', {'l', 'k'})
+	local _, dt_b_ul_negflux, dt_b_ul_rhs = combineCommaDerivativesAndRelabel(dt_b_ul_def:rhs(), 'r', {'l', 'k'})
 	printbr(b'^l_k,t', 'flux term:', -dt_b_ul_negflux)
 	printbr(b'^l_k,t', 'source term:', dt_b_ul_rhs)
+
+	return dt_beta_u_def,
+		dt_beta_u_negflux,
+		dt_beta_u_rhs,
+		dt_b_ul_def,
+		dt_b_ul_negflux,
+		dt_b_ul_rhs
+end
+
+-- how many of these terms should be state vars instead of state derivatives?
+printHeader('harmonic shift evolution:')
+
+-- use ^l as the index for shift expressions
+local harmonicShiftExpr = alpha^2 * (2 * e'^l' - d'^l' - a'^l')
+printbr(harmonicShiftExpr) 
+printbr()
+
+harmonicShift_dt_beta_u_def,
+	harmonicShift_dt_beta_u_negflux,
+	harmonicShift_dt_beta_u_rhs,
+	harmonicShift_dt_b_ul_def,
+	harmonicShift_dt_b_ul_negflux,
+	harmonicShift_dt_b_ul_rhs = getShiftFluxParts(harmonicShiftExpr)
+
+--[[
+local gammaDriverK = frac(3,4)
+local gammaDriverShiftExpr = gammaDriverK * dt_LambdaBar - eta * LambdaBar
+if useShiftingShift then
+	gammaDriverShiftExpr = gammaDriverShiftExpr - gammaDriverK * LambdaBar'_,l' * beta'^l'
+end
+--]]
+
+printbr'using harmonic shift for state vars'
+
+if useShift == 'HarmonicShift' then
+	dt_beta_u_def		= harmonicShift_dt_beta_u_def    
+	dt_beta_u_negflux   = harmonicShift_dt_beta_u_negflux
+	dt_beta_u_rhs       = harmonicShift_dt_beta_u_rhs
+	dt_b_ul_def         = harmonicShift_dt_b_ul_def
+	dt_b_ul_negflux     = harmonicShift_dt_b_ul_negflux
+	dt_b_ul_rhs         = harmonicShift_dt_b_ul_rhs
 end
 
 printbr()
@@ -1870,6 +1934,7 @@ local UijklWithShiftMat = Matrix(UijklWithShiftVars):T()
 
 local FijklWithShiftMat = Matrix(FijklWithShiftTerms):T()
 local SijklWithShiftMat = Matrix(SijklWithShiftTerms):T()
+
 printbr'flux vector:'
 printbr((UijklWithShiftMat'_,t' + FijklWithShiftMat'_,r'):eq(SijklWithShiftMat))
 printbr()
@@ -2262,9 +2327,6 @@ for _,info in ipairs{
 			end),
 			assignOnly = true,
 		}
-		-- for now replace dDelta_lll with d_lll ...
-		-- TODO add in background metric and partial 
-		:gsub('%('..structName..'%)%->gammaDelta_ll%.', '('..structName..')->gamma_ll.')
 		:gsub('%+ =', '+=')
 		:gsub('\n', lineend..'\n\t\t')
 		..lineend
@@ -2284,9 +2346,6 @@ for _,info in ipairs{
 			end),
 			assignOnly = true,
 		}
-		-- for now replace dDelta_lll with d_lll ...
-		-- TODO add in background metric and partial 
-		:gsub('%('..structName..'%)%->gammaDelta_ll%.', '('..structName..')->gamma_ll.')
 		:gsub('%+ =', '+=')
 		:gsub('\n', lineend..'\n\t\t')
 		..lineend
@@ -2910,6 +2969,17 @@ end)
 local UijklVars = UijkltEqns:mapi(function(eqn) return removeCommaDeriv(eqn:lhs(), 't') end)
 local UijklMat = Matrix(UijklVars):T()
 
+-- TODO AT THIS POINT
+-- we really don't need the source terms for the flux-jacobian
+-- how about just pushing them off altogether?
+-- then we can just deal with our *additional* source terms caused from converting flux gauge vars' derivatives into state vars (non-deriv)
+-- and that'll simplify calculations a lot
+-- heck, why even bother with source terms at this point?
+-- other than what i just said -- is nice to see what terms should be in the flux (when excluding gauge vars from flux),
+--  but instead are getting lost between the flux & source.
+--  these are the terms that should prove our eqn doesn't satisfy homogeneity, right?
+--  and in the case of a roe solver, these go extra in the source, right? 
+--  but not for hll right?
 printHeader"system rearranged for flux-jacobian factoring:"
 
 for _,eqn in ipairs(UijkltEqns) do
@@ -2937,7 +3007,8 @@ dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()()
 
 local UpqmnMat = Matrix(UpqmnVars):T()
 
-if not outputSourceTerms then
+if not eigensystem_outputSourceTerms then
+	printbr('(removing source terms to speed up calculations)')
 	SijklMat = (SijklMat * 0)()
 end
 
@@ -2946,7 +3017,7 @@ printbr()
 
 printHeader'replacing rhs derivatives with 1st derivative state variables:'
 
-if outputSourceTerms then
+if eigensystem_outputSourceTerms then
 	SijklMat = SijklMat
 		:substIndex(d_alpha_l_from_a_l)
 		:substIndex(d_beta_ul_from_b_ul)
@@ -3152,7 +3223,6 @@ end
 printbr()
 --]]
 
-os.exit()
 printHeader'expanding, and removing zero rows/cols:'
 
 --[[ only remove diagonal shift.  TODO this for the eigensystem, for acoustic matrix, but do it later after expanding.
@@ -3184,6 +3254,16 @@ local dFdx_lhs = (
 local dUdt_lhs = Matrix:lambda(UijklMat:dim(), function(...) return (UijklMat[{...}]:diff(t))() end)
 printbr((dUdt_lhs + dFdx_lhs):eq(SijklMat))
 
+
+-- ok i think this is what is doing me in ...
+-- previous for simplifications
+--dDelta'_ijk,l':setSymmetries({2,3}, {1,4})
+-- but now for expanding dense matrices, don't use the d_(k|ij,|l) symmetry:
+dDelta'_ijk,l':setSymmetries{2,3}
+-- YUP -- without this the dU/dx vector gets /dy's in the dDelta part ... so yeah push this symmetry *HERE*
+-- SO HERE I have to remove all symmetries of flux state vars that span derivatives
+--a'_i,j':setSymmetries()	-- ofc I don't use the symmetry of a_i,j anyways ...
+
 local dFdx_lhs_dim = dFdx_lhs:dim()
 assert(#dFdx_lhs_dim == 2 and dFdx_lhs_dim[2] == 1)
 local dFdx_lhs_exprs = range(dFdx_lhs_dim[1]):mapi(function(i) return dFdx_lhs[i][1] end)
@@ -3213,24 +3293,36 @@ end)
 
 -- replace the tensor index matrix form of _,t with _,x
 local dUdx_lhs = Matrix:lambda(UijklMat:dim(), function(...)
-	return UijklMat[{...}]'_,x'()
+	return UijklMat[{...}]'_,r'()
 end)
 
 -- convert it into a matrix of our dense-tensor derivative terms
 local dUdx_lhs_exprs = range(dFdx_lhs_dim[1]):mapi(function(i) return dUdx_lhs[i][1] end)
-dUdx_lhs_exprs = dUdx_lhs_exprs:mapi(function(expr) return expandMatrixIndexes(expr)() end)
+dUdx_lhs_exprs = dUdx_lhs_exprs:mapi(function(expr) return expandMatrixIndexes(expr) end)
 
 local S_rhs_exprs = range(dFdx_lhs_dim[1]):mapi(function(i) return SijklMat[i][1] end)
 S_rhs_exprs = S_rhs_exprs:mapi(function(expr) return expandMatrixIndexes(expr) end)
 
-
---[[only after the last 'expandMatrixIndexes'
--- and before code gen
--- set the C exporter of trace vars to 'tr'
--- but TODO this doesn't get carried across, so there must be some duplicate vars somewhere ...
-b:nameForExporter('C', 'tr_b')
-K:nameForExporter('C', 'tr_K')
---]]
+-- make sure valence is correct
+dUdx_lhs_exprs = dUdx_lhs_exprs:mapi(function(expr,i)
+	expr = expr()
+	if Constant.isValue(expr, 0) then return expr end
+	assert(Tensor:isa(expr))	-- its always a tensor, since it always has a comma derivative
+	-- use dUdt_lhs_exprs for tensor variance
+	local dUdt_i = dUdt_lhs_exprs[i]
+	if not Tensor:isa(dUdt_i) then 
+		assert(#expr.variance == 1)
+	else
+		-- put the '_r' *LAST*
+		expr = expr:permute(table(
+			dUdt_i.variance
+		):append{Tensor.Index{symbol='r', lower=true}})
+	end
+	assert(expr.variance[#expr.variance].symbol == 'r')
+	assert(expr.variance[#expr.variance].lower)
+	assert(not expr.variance[#expr.variance].derivative)
+	return expr
+end)
 
 --[[ show eqns in dense-tensor form
 printbr'expanding...'
@@ -3243,7 +3335,7 @@ printbr()
 -- NOTICE this can go slow if the dense tensors aren't replaced correctly 
 S_rhs_exprs = S_rhs_exprs:mapi(function(expr) return expr() end)
 
-
+print'error here, valence is off, fixme plz'
 for i=1,#dFdx_lhs_exprs do
 	local dUdt_i = dUdt_lhs_exprs[i]
 	local dFdx_i = dFdx_lhs_exprs[i]
@@ -3470,7 +3562,7 @@ if eigensystem_removeZeroRows then
 	--]]
 end
 
-
+--[[
 -- this prints out the source terms, including the flux deriv converted to 1st-deriv-state-vars ....
 -- whats left is the flux terms not converted to 1st-deriv-state-vars, which are the values used for the flux jacobian eigensystem ...
 print'<pre>'
@@ -3485,9 +3577,9 @@ print(export.C:toCode{
 })
 print()
 print'</pre>'
+--]]
 
 --[[
-
 -- ok before going any further into eigensystem stuff,
 -- lets codegen the
 -- (a) flux matrix
