@@ -9,6 +9,12 @@ in fact this is a lot like my 'numerical-relativity-codegen'
 but runs a lot faster ... maybe it should replace it?
 and it produces the tensor linear systems that my "Documents/Math/Numerical Relativity" notes have, which is nice
 
+TODO TODO
+
+why did I start working on this when I had "Z4 metric-invariant.symmath" to work on?
+move this over to a .symmath file, get rid of this and get rid of the old .symmath file ...
+and TODO have an "export to html" features in symmath/standalone.lua
+
 
 TODO NOTICE FIXME
 
@@ -31,31 +37,6 @@ but especially, which terms are getting moved to the RHS?
 it is the derivatives of the gauge variables: alpha, gamma, and maybe beta
 these are the variables whose derivatives do have state variables
 hmm....
-
-
- ... 0.025675s
-connections: ... 0.057081s
-metric inverse partial: ... 0.021813s
-lapse derivative: ... 0.047086s
-metric evolution: ... 0.040662s
-metric partial delta evolution: ... 0.187168s
-extrinsic curvature evolution: ... 0.025193s
-Gaussian curvature ... 0.088584s
-Z4 $\Theta$ definition ... 0.003889s
-Z4 $Z_k$ definition ... 0.001489s
-shift evolution: ... 1.6000000000016e-05s
-minimum distortion elliptic evolution: ... 0.00041400000000003s
-minimum distortion elliptic spatial derivative evolution: ... 0.00071299999999996s
-as a system: ... 6.03s
-generating code ... 10.519066s
-system rearranged for flux-jacobian factoring: ... 0.010992000000002s
-inserting deltas to help factor linear system ... 0.498611s
-as a balance law system: ... 0.664727s
-replacing rhs derivatives with 1st derivative state variables: ... 0.993588s
-expanding, and removing zero rows/cols: ... 3861.984313s
-calculating charpoly ... 39.430981s
-TOTAL: 3920.632073
-
 
 --]]
 
@@ -114,57 +95,57 @@ so then TODO turn this into an 'eigensystem_' var?
 useShift = 'HarmonicShift'
 
 --[[
-beta^l_,t => beta^l_,t - beta^l_,k beta^k
+β^l_,t => β^l_,t - β^l_,k β^k
 --]]
 useShiftingShift = true
 
 --[[
-don't include alpha, gamma_ij
+include α, γ_ij
 --]]
-flux_dontIncludeGaugeVars = false
+flux_includeGaugeVars = true
 
 --[[
-dont' include Z_k and Theta in the flux and source codegen
+include Z_k and Theta in the flux and source codegen
 --]]
-flux_dontIncludeZVars = false
+flux_includeZVars = true
 
 --[[
-dont' consider beta^i b^i_j B^i in the flux and source vasr
+consider β^i b^i_j B^i in the flux and source vars
 --]]
-flux_dontIncludeShiftVars = false
+flux_includeShiftVars = true
 
 --[[
-dont include alpha and gamma_ij
-in the case of favorFluxTerms==false and eigensystem_removeZeroRows==true they tend to be removed anyways
+include α, γ_ij
+in the case of eigensystem_favorFluxTerms==false and eigensystem_removeZeroRows==true they tend to be removed anyways
 --]]
-eigensystem_dontIncludeGaugeVars = true
+eigensystem_includeGaugeVars = true
 
 --[[
-don't consider Z_k,t and Theta_,t in the eigen decomposition
+consider Z_k,t and Theta_,t in the eigen decomposition
 turns out these two have a very ugly wavespeed that chokes up the solver
 --]]
-eigensystem_dontIncludeZVars = false
+eigensystem_includeZVars = true
 
 --[[
-remove beta^i, b^i_j, B^i from the eigensystem vars
+add β^i, b^i_j, B^i from the eigensystem vars
 evaluating shiftless + remove zero rows will accomplish this as well
 
 TODO notice that, if you do use shift, but you don't set this, then you will end up with b^l_k,r's in the rhs ... so you'll have derivs in the rhs
 TODO also notice that setting this to false will break things right now.
 ... I think until I separate out the flux maybe?
 --]]
-eigensystem_dontIncludeShiftVars = true
+eigensystem_includeShiftVars = false
 
 --[[
 false = alpha, gamma_ij flux reduces to zero
 true = covnert as many first-derivative state variables into derivatives of state vars
 --]]
-favorFluxTerms = false
+eigensystem_favorFluxTerms = true
 
 --[[
 remove zero rows from expanded flux jacobian matrix?
 --]]
-eigensystem_removeZeroRows = false
+eigensystem_removeZeroRows = true
 
 --[[
 whether to only evaluate the shiftless eigensystem
@@ -448,7 +429,7 @@ end
 
 
 -- make sure indexes are raised-lowered in matching manner
-function canonicalIndexForm(expr)
+function simplifySumIndexes(expr)
 	local prods = expr:simplifyAddMulDiv():sumToTable()
 	for k=1,#prods do
 		prod = prods[k]:clone()
@@ -492,7 +473,7 @@ end
 
 --[[ testing
 local d = var'd'
-print(canonicalIndexForm(d'_ab^c' * d'^ab_c'))
+print(simplifySumIndexes(d'_ab^c' * d'^ab_c'))
 os.exit()
 --]]
 
@@ -863,6 +844,13 @@ local d_lll_from_dHat_lll_dDelta_lll = d_gamma_lll_from_dHat_lll_dDelta_lll
 printbr(d_lll_from_dHat_lll_dDelta_lll)
 printbr()
 
+local d_l_from_d_llu = d'_i':eq(d'_ik^k')
+printbr(d_l_from_d_llu)
+
+local e_l_from_d_ull = e'_i':eq(d'^k_ki')
+printbr(e_l_from_d_ull)
+printbr()
+
 
 local b_ul_def = b'^i_j':eq(beta'^i_,j')
 printbr(b_ul_def)
@@ -885,6 +873,50 @@ printbr(conn_ull_from_gamma_uu_d_gamma_lll)
 local conn_ull_from_gamma_uu_d_lll = usingSubstIndexSimplify(conn_ull_from_gamma_uu_d_gamma_lll, d_gamma_lll_from_d_lll)
 local conn_ull_from_gamma_uu_dHat_lll_dDelta_lll = usingSubstIndexSimplify(conn_ull_from_gamma_uu_d_lll, d_lll_from_dHat_lll_dDelta_lll)
 
+local conn_ull_from_d_ull_d_llu = conn_ull_from_gamma_uu_d_lll:clone()
+conn_ull_from_d_ull_d_llu = conn_ull_from_d_ull_d_llu:simplifyMetrics():replaceIndex(d'_a^c_b', d'_ab^c')
+printbr('simplifying metrics:')
+printbr(conn_ull_from_d_ull_d_llu)
+printbr()
+
+printbr(log(sqrt(gamma))'_,i':eq(Gamma'^k_ki'), 'definition:')
+local d_l_from_conn_ull_tr12 = conn_ull_from_d_ull_d_llu:reindex{ijk='kki'}
+printbr(d_l_from_conn_ull_tr12)
+--[[ hmm why isn't this working for single terms?
+d_l_from_conn_ull_tr12  = d_l_from_conn_ull_tr12 :applySymmetries()()
+d_l_from_conn_ull_tr12  = simplifySumIndexes(d_l_from_conn_ull_tr12)()
+printbr(d_l_from_conn_ull_tr12)
+--]]
+--[[ instead:
+d_l_from_conn_ull_tr12 = usingSubstSimplify(d_l_from_conn_ull_tr12, d'_ki^k':eq(d'^k_ki'))
+--]]
+-- [[ or just use ...
+d_l_from_conn_ull_tr12 = simplifyDAndKTraces(d_l_from_conn_ull_tr12)()
+--printbr(d_l_from_conn_ull_tr12)
+--]]
+
+--d_l_from_conn_ull_tr12 = usingSubst(d_l_from_conn_ull_tr12, d_l_from_d_llu:switch())
+d_l_from_conn_ull_tr12 = d_l_from_conn_ull_tr12:solve(d'_i')
+printbr(d_l_from_conn_ull_tr12)
+printbr()
+
+local conn_u_from_conn_ull = Gamma'^i':eq(Gamma'^i_jk' * gamma'^jk')
+printbr(conn_u_from_conn_ull)
+local conn_u_from_d_ull_d_llu = usingSubstIndex(conn_u_from_conn_ull, conn_ull_from_d_ull_d_llu)
+
+printbr'simplifying metrics and simplifying traces:'
+conn_u_from_d_ull_d_llu = conn_u_from_d_ull_d_llu:simplifyMetrics():applySymmetries()
+--[[ hmm once again its not working
+conn_u_from_d_ull_d_llu = simplifySumIndexes(conn_u_from_d_ull_d_llu)()
+printbr(conn_u_from_d_ull_d_llu)
+--]]
+--[[ so until I get this working ...
+conn_u_from_d_ull_d_llu = usingSubstSimplify(conn_u_from_d_ull_d_llu, d'_k^ik':eq(d'^ki_k'))
+--]]
+-- [[ or just use this ..
+conn_u_from_d_ull_d_llu = simplifyDAndKTraces(conn_u_from_d_ull_d_llu)()
+printbr(conn_u_from_d_ull_d_llu)
+--]]
 printbr()
 
 
@@ -1164,104 +1196,46 @@ printbr()
 
 -- I'm going to center this around the 2005 Bona et al Z4 d_kij terms
 printbr'Ricci curvature'
-
 local Ricci_ll_from_Riemann_ulll = R'_ij':eq(R'^k_ikj')
 printbr(Ricci_ll_from_Riemann_ulll)
 
-local Ricci_ll_from_conn_ull = usingSubst(Ricci_ll_from_Riemann_ulll, Riemann_ulll_def:reindex{ijkl='kikj'})
+local Ricci_ll_def = usingSubstSimplify(Ricci_ll_from_Riemann_ulll, Riemann_ulll_def:reindex{ijkl='kikj'})
 
-printbr('using', conn_ull_from_gamma_uu_d_lll)
-local Ricci_ll_from_d_lll = Ricci_ll_from_conn_ull
-	--:substIndex(conn_ull_from_gamma_uu_dHat_lll_dDelta_lll)	-- doesn't work well with products of summed vars
-	:splitOffDerivIndexes()
-	:subst(
-		conn_ull_from_gamma_uu_d_lll:reindex{ijkm='kijm'},
-		conn_ull_from_gamma_uu_d_lll:reindex{ijkm='kikm'},
-		conn_ull_from_gamma_uu_d_lll:reindex{ijkm='kmkl'},
-		conn_ull_from_gamma_uu_d_lll:reindex{ijkm='mijn'},
-		conn_ull_from_gamma_uu_d_lll:reindex{ijkm='kmjl'},
-		conn_ull_from_gamma_uu_d_lll:reindex{ijkm='mikn'}
-	)
-printbr(Ricci_ll_from_d_lll)
+-- this rule is up above but in the form Gamma^k_ki = d_i ... so ... 
+local d_l_from_conn_ull_tr13 = d'_i':eq(Gamma'^k_ik')
 
--- simplify d's symmetry but only rearrange these terms:
-printbr'cancel terms using symmetries:'
-Ricci_ll_from_d_lll = Ricci_ll_from_d_lll:replace(
-	gamma'^kl' * (d'_mlk' + d'_klm' - d'_lmk')(),
-	gamma'^kl' * d'_mlk'
-)
-Ricci_ll_from_d_lll = Ricci_ll_from_d_lll:replace(
-	gamma'^km' * (d'_imk' + d'_kmi' - d'_mik')(),
-	gamma'^km' * d'_imk'
-)
-printbr(Ricci_ll_from_d_lll)
+Ricci_ll_def = Ricci_ll_def:splitOffDerivIndexes()
+Ricci_ll_def = usingSubstIndexSimplify(Ricci_ll_def, d_l_from_conn_ull_tr13:switch())
 
-printbr'split off terms to rearrange gradient:'
-local Ricci_ll_def = Ricci_ll_from_d_lll
-	--[[
-	what we have:
-		(d_ji^k + d_ij^k - d^k_ij)_,k
-		= d_ji^k_,k + d_ij^k_,k - d^k_ij,k
-	what we want:
-		= (1/2 d_ji^k + 1/2 d_ij^k - d^k_ij)_,k + 1/2 d_ki^k_,j + 1/2 d_kj^k_,i
-	
-	TODO bake this into R_ij instead of here, so Theta can use it too
-	
-	--]]
-	:replace(
-		(gamma'^km' * (d'_imj' + d'_jmi' - d'_mij'))()'_,k',
-		-- TODO instead of 1/2 , use the xi parameter
-		-- try to use sum terms that the block linear system will use, or it will screw things up
-		(gamma'^kl' * (frac(1,2) * d'_ilj' + frac(1,2) * d'_jli' - d'_lij'))'_,k'
-		+ (
-			gamma'^kl_,k' * (frac(1,2) * d'_ijl' + frac(1,2) * d'_jil')
-			+ (gamma'^mp' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j'))'_,k'
-			- gamma'^mp_,k' * (frac(1,2) * d'_mpj' * delta'^k_i' + frac(1,2) * d'_mpi' * delta'^k_j')
-		)
-	)
-	
-	:replace(
-		(gamma'^km' * d'_imk')'_,j',
-		(frac(1,2) * gamma'^pq' * (d'_ipq' * delta'^k_j' + d'_jpq' * delta'^k_i'))'_,k'	-- use pq for the sake of the block linear system below
-	)
+Ricci_ll_def = Ricci_ll_def
+	-- this is 
+	-- 1) the symmetry of d_i,j = d_(i,j) 
+	-- 2) inserting deltas to set the indexes
+	-- 3) factoring deltas inside derivatives (so i can combine the derivatives later)
+	:replace(d'_i,j', (frac(1,2) * (d'_i' * delta'^k_j' + d'_j' * delta'^k_i'))'_,k')
+	:splitOffDerivIndexes()	-- split Gamma'^k_ij,k' into Gamma'^k_ij''_,k' for the sake of 'combineCommaDerivativesAndRelabel' next
+	--:flatten()
 printbr(Ricci_ll_def)
 
-Ricci_ll_def = usingSubstIndex(Ricci_ll_def, d_gamma_uul_from_gamma_uu_d_lll)
-
-Ricci_ll_def:flatten()
-printbr'combining derivatives'
-Ricci_ll_def[2] = combineCommaDerivatives(Ricci_ll_def[2])
+-- TODO HERE collect the derivative terms of Ricci_ll, leave the source alone
+printbr('combining derivatives')
+-- can't use this because one of the comma-derivs we want to bin is a _,j ...
+-- so beforehand ... insert a delta ...
+-- TODO use 'insertDeltas'
+--Ricci_ll_def = usingSubst(Ricci_ll_def, Gamma'^k_ik,j', Gamma'^l_il,j' * delta'^k_j')
+-- but why insert deltas now when I can use some Gamma^k_ik = d_i instead?
+Ricci_ll_def[2], Ricci_ll_negflux, Ricci_ll_rhs = combineCommaDerivativesAndRelabel(Ricci_ll_def[2], 'k', {'i', 'j'})
 printbr(Ricci_ll_def)
 
-_, Ricci_ll_negflux, Ricci_ll_rhs = combineCommaDerivativesAndRelabel(Ricci_ll_def[2], 'k', {'i', 'j'})
+--[[ this turns Gamma^i_jk into its d_ijk form ... should I even bother?
+-- the Gamma^i_jk form has less terms in the flux.
+Ricci_ll_negflux = usingSubstIndex(removeCommaDeriv(Ricci_ll_negflux, 'k'), conn_ull_from_d_ull_d_llu)'_,k'
+Ricci_ll_def[2] = Ricci_ll_negflux + Ricci_ll_rhs 
+printbr(Ricci_ll_def)
+--]]
 
 printbr('Ricci_ll_negflux', Ricci_ll_negflux)
 printbr('Ricci_ll_rhs', Ricci_ll_rhs)
-
-Ricci_ll_negflux[1] = simplifyDAndKTraces(Ricci_ll_negflux[1]:simplifyMetrics())()
-	:replaceIndex(d'_a^c_b', d'_ab^c')()
-Ricci_ll_rhs = simplifyDAndKTraces(Ricci_ll_rhs:simplifyMetrics())()
-	:tidyIndexes()()
-Ricci_ll_rhs = canonicalIndexForm(Ricci_ll_rhs)()
-	:applySymmetries()()
-	:replaceIndex(d'_a^c_b', d'_ab^c')()
-
--- TODO here's how to improve applySymmetries ... make it symmetrize all terms in a product, like symmetrizeIndexes() does
-Ricci_ll_rhs = Ricci_ll_rhs
-	:replace(d'_bai' * d'_j^ab', d'_abi' * d'_j^ab')
-	:replace(d'_baj' * d'_i^ab', d'_abj' * d'_i^ab')
-	:replace(d'_abi' * d'^ba_j', d'_abi' * d'^ab_j')
-	:replace(d'_abj' * d'^ba_i', d'_abj' * d'^ab_i')
-	:simplify()
-	:reindex{ab='mn'}
-	:replaceIndex(d'_m' * d'^m_ab', d'^m' * d'_mab')
-	:replaceIndex(d'_m' * d'_ab^m', d'^m' * d'_abm')
-	:replaceIndex(e'_m' * d'_ab^m', e'^m' * d'_abm')
-
-printbr('Ricci_ll_negflux', Ricci_ll_negflux)
-printbr('Ricci_ll_rhs', Ricci_ll_rhs)
-
-printbr(Ricci_ll_def:lhs():eq(Ricci_ll_negflux + Ricci_ll_rhs))
 
 printbr()
 
@@ -1356,11 +1330,10 @@ dt_K_ll_def[2] = combineCommaDerivatives(dt_K_ll_def[2])
 Tensor.Ref:popRule'Prune/evalDeriv'
 printbr(dt_K_ll_def)
 
+--[[ TODO don't do this anymore now that I"m trying to keep the flux and source in most simple terms as possible (and breaking them down into state derivs in the eigensystem part later)
 -- this only affects source terms:
-dt_K_ll_def = usingSubst(
-	dt_K_ll_def, 
-	conn_ull_from_gamma_uu_d_lll:reindex{ijk='kij'}
-)
+dt_K_ll_def = usingSubst(dt_K_ll_def, conn_ull_from_gamma_uu_d_lll:reindex{ijk='kij'})
+--]]
 
 local dt_K_ll_negflux, dt_K_ll_rhs
 _, dt_K_ll_negflux, dt_K_ll_rhs = combineCommaDerivativesAndRelabel(dt_K_ll_def:rhs(), 'r', {'i', 'j'})
@@ -1403,6 +1376,8 @@ printbr(Gaussian_def)
 
 Gaussian_def = usingSubstIndex(Gaussian_def, d_gamma_uul_from_gamma_uu_d_lll)
 
+Gaussian_def = usingSubstIndex(Gaussian_def, conn_ull_from_d_ull_d_llu)
+
 
 --[[
 γ^ij (P_ij + (Q^k_ij)_,k)
@@ -1416,7 +1391,7 @@ printbr('Gaussian_rhs', Gaussian_rhs)
 Gaussian_negflux[1] = simplifyDAndKTraces(Gaussian_negflux[1]:simplifyMetrics())()
 Gaussian_rhs = simplifyDAndKTraces(Gaussian_rhs:simplifyMetrics())()
 	:tidyIndexes()()
-Gaussian_rhs = canonicalIndexForm(Gaussian_rhs)()
+Gaussian_rhs = simplifySumIndexes(Gaussian_rhs)()
 	:applySymmetries()()
 	:reindex{abc='lmn'}
 	:replace(d'_lmn' * d'^nlm', d'_lmn' * d'^mln')()
@@ -1428,7 +1403,6 @@ Gaussian_def = Gaussian_def:lhs():eq(
 	removeCommaDeriv(Gaussian_negflux, 'k')()'_,k' + Gaussian_rhs
 )
 printbr(Gaussian_def)
-
 
 printbr()
 
@@ -1832,7 +1806,7 @@ local FijklWithShiftTerms = table()
 local SijklWithShiftTerms = table()
 
 -- technically beta^i is also a gauge var, but i'm disabling it via dontIncludeShiftVars
-if not flux_dontIncludeGaugeVars then
+if flux_includeGaugeVars then
 	UijkltWithShiftEqns:append{
 		dt_alpha_def,
 		dt_gammaDelta_ll_def,
@@ -1874,7 +1848,7 @@ matrix of {α, Δγ_ij, a_k, Δd_kij, K_ij, Θ, Z_k}
 seems these have some ugly wavespeeds
  so ... how do we change that?
 --]]
-if not flux_dontIncludeZVars then
+if flux_includeZVars then
 	UijkltWithShiftEqns:append{
 		dt_Theta_def,
 		dt_Z_l_def,
@@ -1891,7 +1865,7 @@ end
 
 -- TODO only exclude these if we have "shift" set to "none"
 -- make this as close to the hydro/eqn/z4.lua flags as possible
-if not flux_dontIncludeShiftVars then
+if flux_includeShiftVars then
 	if dt_beta_u_def then
 		UijkltWithShiftEqns:insert(dt_beta_u_def)
 	end
@@ -2361,501 +2335,15 @@ print'</pre>'
 ------------------------ OK FLUX AND SOURCE GENERATION IS FINISHED ------------------------ 
 --------------------------- NOW ON TO EIGENSYSTEM CALCULATION -----------------------------
 
-
-
 -- [===[ too many locals, so i'll just separate this out for now
-
-
---[======[ begin touch-ups of the dt_ eqns for the eigensystem
--- I want to just run across all rhs's and apply the same rules everywhere
---  and hopefully won't run too slow.
--- As little per-eqn stuff as possible.
-
-printbr('expanding rhs derivative')
-dt_a_l_def = dt_a_l_def()
-printbr(dt_a_l_def)
-
-local using = delta'^r_k,r':eq(0)
-printbr('using', using)
-dt_a_l_def = dt_a_l_def
-	:subst(using)
-	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
-	})
-	:simplifyAddMulDiv()
-printbr(dt_a_l_def)
-
---[[ for the sake of eigenvector calculations, lets choose our lapse f up front
-printbr'lapse parameter'
-
-local dalpha_f_var = var"f'"	-- TODO alpha is dependent
-local dalpha_f_def = f'_,k':eq(dalpha_f_var * alpha'_,k')
-printbr(dalpha_f_def)
-printbr()
-
-printbr('using', dalpha_f_def)
-dt_a_l_def = dt_a_l_def:substIndex(dalpha_f_def)()
-printbr(dt_a_l_def)
---]]
-
-dt_a_l_def = usingSubstSimplify(dt_a_l_def, d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijlm='mnpq'})
-dt_a_l_def = usingSubst(dt_a_l_def, a'_i,k':eq(a'_k,i'))
-dt_a_l_def = usingSubst(dt_a_l_def, f'_,k':eq(f:diff(alpha) * alpha'_,k'))
-
---[[ this is a cheap way of fixing the insert-deltas stuff
--- but TODO I have two of these terms ... which cancel ... so do I really want this here?
--- the insert-beta stuff is done before the expanding rhs ...
--- DON'T DELETE THIS JUST YET.  I think it is useful when including gauge vars. unless I already take care of this case later when inserting deltas for all terms.
-dt_a_l_def = dt_a_l_def
-	:replace(beta'^m_,m', beta'^m_,l' * delta'^l_m')
-	:replace(b'^m_m', b'^m_l' * delta'^l_m')
-	:simplify()
-printbr(dt_a_l_def)
---]]
-
---[[
-NOTICE you can only do this *after* expanding, because then the derivatives get their unique indexes,
-and any substitutions we do (without :splitOffDerivIndexes()) will only affect the non-derivatives
-which will only affect the source terms (and not the flux terms)
-
-if we aren't using gauge vars in flux
-then turn all the gauge var derivatives into 1st-deriv state vars
-
-TODO instead of replacing the most-concise vars for the least, then differentiating, then replacing the least-concise with the most-
-how about just doing the replacing in the flux part of the PDE?
-since that is the only part that is differentiated
---]]
-if not flux_dontIncludeGaugeVars then
-	dt_a_l_def = usingSubstIndexSimplify(dt_a_l_def, d_alpha_l_from_a_l)
-	dt_a_l_def = usingSubstIndex(dt_a_l_def, d_beta_ul_from_b_ul)
-	dt_a_l_def = usingSubstSimplify(dt_a_l_def, b'^r_r':eq(b'^m_m'))
-	dt_a_l_def = usingSubstIndexSimplify(dt_a_l_def, d_gamma_lll_from_d_lll)
-	dt_a_l_def = usingSubst(dt_a_l_def, (K'_mn' * gamma'^mn'):eq(tr_K))	-- hmm, substIndex and sum indexes on the lhs has trouble ...
-	dt_a_l_def = usingSubst(dt_a_l_def, (K'_mn' * gamma'^pm' * gamma'^qn'):eq(K'^pq'))
-end
-
-printbr'symmetrizing indexes'
-dt_a_l_def = dt_a_l_def
-	:symmetrizeIndexes(K, {1,2})
-	:symmetrizeIndexes(gamma, {1,2})
-	:symmetrizeIndexes(d, {2,3})
-	:simplifyAddMulDiv()
-printbr(dt_a_l_def)
-
-
-
---[[
-assuming nobody is using this,
-then convert its state vars into most compact form
-but I see dt_dDelta_lll_def is using this
-or equivalently
-just use the original dt_gamma_ll_def, and only subst the lhs and then solve for gammaDelta_ij
-...
-now if we are including gauge vars (tho ironically this is in the "dont" cond so rethink this)
-then we can make our rhs a bit smaller
-but don't do this for what is substituted into the dDelta_ijk,t
---]]
-if eigensystem_dontIncludeGaugeVars then
-	local usings = table{
-		gamma_ll_from_gammaHat_ll_gammaDelta_ll:solve(gammaHat'_ij'),
-		-- only replace the dDelta_kij, don't replace the dHat_tij
-		d_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'),
-	}
-	printbr('using', usings:mapi(tostring):concat';')
-	dt_gammaDelta_ll_def = dt_gammaDelta_ll_def:substIndex(usings:unpack())()
-	printbr(dt_gammaDelta_ll_def)
-end
-
-
-printbr'expanding rhs derivative'
-dt_dDelta_lll_def = dt_dDelta_lll_def()
-printbr(dt_dDelta_lll_def)
-
-local using = delta'^r_k,r':eq(0)
-printbr('using', using)
-dt_dDelta_lll_def = dt_dDelta_lll_def
-	:subst(using)
-	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
-	})
-	:simplifyAddMulDiv()
-printbr(dt_dDelta_lll_def)
-
-local using = dDelta'_lij,k':eq(dDelta'_kij,l')
-printbr('using', using)
-dt_dDelta_lll_def = dt_dDelta_lll_def:subst(using)
-printbr(dt_dDelta_lll_def)
-
---[[ this is a cheap way of fixing the insert-deltas stuff
--- TODO Maybe it is only needed for including gauge vars?
-dt_dDelta_lll_def = dt_dDelta_lll_def
-	:replace(beta'^l_,l', beta'^l_,n' * delta'^n_l')
-	:replace(b'^l_l', b'^l_n' * delta'^n_l')
-printbr(dt_dDelta_lll_def)
---]]
-
--- if we aren't using gauge vars in flux
--- then turn all the gauge var derivatives into 1st-deriv state vars
-if eigensystem_dontIncludeGaugeVars then
-	printbr('using', d_alpha_l_from_a_l)
-	dt_dDelta_lll_def = dt_dDelta_lll_def:substIndex(d_alpha_l_from_a_l)()
-	printbr(dt_dDelta_lll_def)
-
-	printbr('using', d_beta_ul_from_b_ul)
-	dt_dDelta_lll_def = dt_dDelta_lll_def
-		:substIndex(d_beta_ul_from_b_ul)
-	:replace(b'^r_r', b'^l_l')
-		:simplify()
-	printbr(dt_dDelta_lll_def)
-	
-	printbr('using', d_gammaDelta_lll_from_dDelta_lll, ';', d_gammaHat_lll_from_dHat_lll)
-	dt_dDelta_lll_def = dt_dDelta_lll_def
-		:replace(gammaDelta'_ij,tk', gammaDelta'_ij,k''_,t')
-		:replace(gammaHat'_ij,tk', gammaHat'_ij,k''_,t')
-		:substIndex(d_gammaDelta_lll_from_dDelta_lll, d_gammaHat_lll_from_dHat_lll)
-		:simplify()
-	printbr(dt_dDelta_lll_def)
-
-	-- ok now only replace non-derivs of gammaHat+gammaDelta => gamma and dHat+dDelta => d
-	local usings = table{
-		gamma_ll_from_gammaHat_ll_gammaDelta_ll:solve(gammaHat'_ij'),
-		-- only replace the dDelta_kij, don't replace the dHat_tij
-		d_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'),
-	}
-	printbr('using', usings:mapi(tostring):concat';')
-	dt_dDelta_lll_def = dt_dDelta_lll_def:substIndex(usings:unpack())()
-	printbr(dt_dDelta_lll_def)
-end
-
-printbr'symmetrizing indexes'
-dt_dDelta_lll_def = dt_dDelta_lll_def
-	:symmetrizeIndexes(K, {1,2})
-	:symmetrizeIndexes(gamma, {1,2})
-	:symmetrizeIndexes(d, {2,3})
-	:symmetrizeIndexes(dDelta, {2,3})
-	:symmetrizeIndexes(dHat, {2,3})
-	:simplifyAddMulDiv()
-printbr(dt_dDelta_lll_def)
-
-
-
-printbr'expanding rhs derivative'
-dt_K_ll_def = dt_K_ll_def()
-printbr(dt_K_ll_def)
-
-local usings = table{delta'^r_i,r':eq(0), delta'^r_j,r':eq(0)}
-printbr('using', usings:mapi(tostring):concat';')
-dt_K_ll_def = dt_K_ll_def
-	:subst(usings:unpack())
-	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
-	})
-	:simplifyAddMulDiv()
-printbr(dt_K_ll_def)
-
-printbr('using', d_gamma_uul_from_gamma_uu_d_gamma_lll)
-dt_K_ll_def = dt_K_ll_def:subst(
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='pqjmn'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='pqimn'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='mpiqn'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='mpjqn'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='rlrmn'}
-)()
-printbr(dt_K_ll_def)
-
--- if we aren't using gauge vars in flux
--- then turn all the gauge var derivatives into 1st-deriv state vars
-if eigensystem_dontIncludeGaugeVars then
-	printbr('using', d_alpha_l_from_a_l)
-	dt_K_ll_def = dt_K_ll_def
-		:substIndex(d_alpha_l_from_a_l)
-		:simplify()
-	printbr(dt_K_ll_def)
-
-	printbr('using', d_beta_ul_from_b_ul)
-	dt_K_ll_def = dt_K_ll_def
-		:substIndex(d_beta_ul_from_b_ul)
-		:replace(b'^r_r', b'^k_k')
-		:simplify()
-	printbr(dt_K_ll_def)
-	
-	printbr('using', d_gamma_lll_from_d_lll)
-	dt_K_ll_def = dt_K_ll_def:substIndex(d_gamma_lll_from_d_lll)()
-	printbr(dt_K_ll_def)
-
-	local usings = table{
-		gamma_ll_from_gammaHat_ll_gammaDelta_ll:solve(gammaHat'_ij'),
-		d_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'),
-	}
-	printbr('using', usings:mapi(tostring):concat';')
-	dt_K_ll_def = dt_K_ll_def:substIndex(usings:unpack()):simplifyAddMulDiv()
-	printbr(dt_K_ll_def)
-
-	printbr'simplifying metrics...'
-	dt_K_ll_def = dt_K_ll_def:simplifyMetrics():simplifyAddMulDiv()
-	printbr(dt_K_ll_def)
-
-	--[[ too bad this puts me in a place where its tough to reindex all the comma deriv indexes back to 'r' ...
-	printbr'tidy indexes...'
-	dt_K_ll_def = dt_K_ll_def
-		-- t = time, r = spatial deriv for flux ...
-		-- ... but for sum indexes, 'fixed' doesn't stop it from relabeling ... hmm .... TODO FIXME
-		:tidyIndexes{fixed='tijr'}
-		:simplifyAddMulDiv()
-		:reindex{a='r'}
-	printbr(dt_K_ll_def)
-	--]]
-
-	local usings = table{d'_b^br':eq(e'^r'), d'^r_b^b':eq(d'^r')}
-	printbr('using', usings:mapi(tostring):concat';')
-	dt_K_ll_def = dt_K_ll_def:substIndex(usings:unpack()):simplifyAddMulDiv()
-	printbr(dt_K_ll_def)
-end
-
-printbr'symmetrizing indexes'
-dt_K_ll_def = dt_K_ll_def
-	:symmetrizeIndexes(K, {1,2})
-	:symmetrizeIndexes(gamma, {1,2})
-	:symmetrizeIndexes(d, {2,3})
-	:symmetrizeIndexes(dHat, {2,3})
-	:symmetrizeIndexes(dDelta, {2,3})
-	:simplifyAddMulDiv()
-printbr(dt_K_ll_def)
-
-
-
-printbr'expanding rhs derivative'
-dt_Theta_def = dt_Theta_def()
-printbr(dt_Theta_def)
-
-printbr('using', delta'^i_j,k':eq(0))
-dt_Theta_def = dt_Theta_def
-	:subst(
-		delta'^r_i,r':eq(0),
-		delta'^r_j,r':eq(0),
-		delta'^k_i,k':eq(0),
-		delta'^k_j,k':eq(0)
-	)
-	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
-	})
-	:simplifyAddMulDiv()
-printbr(dt_Theta_def)
-
-printbr('using', d_gamma_uul_from_gamma_uu_d_gamma_lll)
-dt_Theta_def = dt_Theta_def:subst(
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='ijkno'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='ijino'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='ijjno'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='mpino'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='mpjno'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='pqjno'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='pqino'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='klkno'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='rlrno'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='ijrno'}
-)()
-printbr(dt_Theta_def)
-
-if eigensystem_dontIncludeGaugeVars then
-	printbr('using', d_alpha_l_from_a_l)
-	dt_Theta_def = dt_Theta_def:substIndex(d_alpha_l_from_a_l)()
-	printbr(dt_Theta_def)
-
-	printbr('using', d_beta_ul_from_b_ul)
-	dt_Theta_def = dt_Theta_def
-		:substIndex(d_beta_ul_from_b_ul)
-		:replace(b'^r_r', b'^k_k')
-		:simplify()
-	printbr(dt_Theta_def)
-	
-	printbr('using', d_gamma_lll_from_d_lll)
-	dt_Theta_def = dt_Theta_def:substIndex(d_gamma_lll_from_d_lll)()
-	printbr(dt_Theta_def)
-
-	dt_Theta_def = dt_Theta_def
-		:symmetrizeIndexes(dHat, {2,3})
-		:symmetrizeIndexes(dDelta, {2,3})
-		:simplify()
-	printbr(dt_Theta_def)
-
-	local usings = table{
-		gamma_ll_from_gammaHat_ll_gammaDelta_ll:solve(gammaHat'_ij'),
-		d_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'),
-	}
-	printbr('using', usings:mapi(tostring):concat';')
-	dt_Theta_def = dt_Theta_def:substIndex(usings:unpack()):simplifyAddMulDiv()
-	printbr(dt_Theta_def)
-	
-	--[[ too bad this puts me in a place where its tough to reindex all the comma deriv indexes back to 'r' ...
-	printbr'tidy indexes...'
-	dt_Theta_def = dt_Theta_def
-		-- t = time, r = spatial deriv for flux
-		-- ... but for sum indexes, 'fixed' doesn't stop it from relabeling ... hmm .... TODO FIXME
-		:tidyIndexes{fixed='tr'}
-		:simplifyAddMulDiv()
-		:reindex{a='r'}
-	printbr(dt_Theta_def)
-	--]]
-
-	printbr'simplifying metrics...'
-	dt_Theta_def = dt_Theta_def:simplifyMetrics():simplifyAddMulDiv()
-	printbr(dt_Theta_def)
-end
-
-printbr'symmetrizing indexes'
-dt_Theta_def = dt_Theta_def
-	:symmetrizeIndexes(K, {1,2})
-	:symmetrizeIndexes(gamma, {1,2})
-	:symmetrizeIndexes(d, {2,3})
-	:symmetrizeIndexes(dHat, {2,3})
-	:symmetrizeIndexes(dDelta, {2,3})
-	:simplify()
-printbr(dt_Theta_def)
-
-if eigensystem_dontIncludeGaugeVars then
-	-- [[ TODO fix replaceIndex ... why doesn't this work?
-	dt_Theta_def = simplifyDAndKTraces(dt_Theta_def):simplifyAddMulDiv()
-	--]]
-	printbr(dt_Theta_def)
-
-	--[[ too bad this puts me in a place where its tough to reindex all the comma deriv indexes back to 'r' ...
-	printbr'tidy indexes...'
-	dt_Theta_def = dt_Theta_def
-		-- t = time, r = spatial deriv for flux
-		-- ... but for sum indexes, 'fixed' doesn't stop it from relabeling ... hmm .... TODO FIXME
-		:tidyIndexes{fixed='tr'}
-		:simplifyAddMulDiv()
-		:reindex{a='r'}
-	printbr(dt_Theta_def)
-	--]]
-end
-
-
-
-printbr('expanding rhs derivative')
-dt_Z_l_def = dt_Z_l_def()
-printbr(dt_Z_l_def)
-
-local using = delta'^r_k,r':eq(0)
-printbr('using', using)
-dt_Z_l_def = dt_Z_l_def
-	:subst(using)
-	:simplifyMetrics({
-		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
-	})
-	:simplifyAddMulDiv()
-printbr(dt_Z_l_def)
-
-printbr('using', d_gamma_uul_from_gamma_uu_d_gamma_lll)
-dt_Z_l_def = dt_Z_l_def:subst(
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='rlrpq'},
-	d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='mnkpq'}
-)()
-printbr(dt_Z_l_def)
-
--- if we aren't using gauge vars in flux
--- then turn all the gauge var derivatives into 1st-deriv state vars
-if eigensystem_dontIncludeGaugeVars then
-	printbr('using', d_alpha_l_from_a_l)
-	dt_Z_l_def = dt_Z_l_def:substIndex(d_alpha_l_from_a_l)()
-	printbr(dt_Z_l_def)
-
-	printbr('using', d_beta_ul_from_b_ul)
-	dt_Z_l_def = dt_Z_l_def
-		:substIndex(d_beta_ul_from_b_ul)
-		:replace(b'^r_r', b'^k_k')
-		:replace(b'^l_l', b'^k_k')
-		:simplify()
-	printbr(dt_Z_l_def)
-	
-	printbr('using', d_gamma_lll_from_d_lll)
-	dt_Z_l_def = dt_Z_l_def:substIndex(d_gamma_lll_from_d_lll)()
-	printbr(dt_Z_l_def)
-
-	--[[ too bad this puts me in a place where its tough to reindex all the comma deriv indexes back to 'r' ...
-	printbr'tidy indexes...'
-	dt_Z_l_def = dt_Z_l_def
-		-- t = time, r = spatial deriv for flux
-		-- ... but for sum indexes, 'fixed' doesn't stop it from relabeling ... hmm .... TODO FIXME
-		:tidyIndexes{fixed='tr'}
-		:simplifyAddMulDiv()
-		:reindex{a='r'}
-	printbr(dt_Z_l_def)
-	--]]
-
-	printbr'simplifying metrics...'
-	dt_Z_l_def = dt_Z_l_def:simplifyMetrics():simplifyAddMulDiv()
-	printbr(dt_Z_l_def)
-
-	dt_Z_l_def = dt_Z_l_def
-		:replace(a'^b' * K'_kb', a'^a' * K'_ak')
-		:replace(a'_a' * K'_k^a', a'^a' * K'_ak')
-	dt_Z_l_def = simplifyDAndKTraces(dt_Z_l_def)
-		:simplifyAddMulDiv()
-	printbr(dt_Z_l_def)
-end
-
-printbr'symmetrizing indexes'
-dt_Z_l_def = dt_Z_l_def
-	:symmetrizeIndexes(K, {1,2})
-	:symmetrizeIndexes(gamma, {1,2})
-	:symmetrizeIndexes(d, {2,3})
-	:simplify()
-printbr(dt_Z_l_def)
-
-
-
--- TODO HERE b_ul's def, replace d_i with d_ij^j and e_i with d^j_ji
-
-if useShift == 'HarmonicShift' then
-	dt_b_ul_def = dt_b_ul_def()
-	printbr(dt_b_ul_def)
-
-	local using = delta'^r_k,r':eq(0)
-	printbr('using', using)
-	dt_b_ul_def = dt_b_ul_def:subst(using)()
-	printbr(dt_b_ul_def)
-
-	printbr('using', d_gamma_uul_from_gamma_uu_d_gamma_lll)
-	dt_b_ul_def = dt_b_ul_def:subst(
-		d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='ilrpq'},
-		d_gamma_uul_from_gamma_uu_d_gamma_lll:reindex{ijklm='jmrpq'}
-	)()
-	printbr(dt_b_ul_def)
-
-	if eigensystem_dontIncludeGaugeVars
-	and useShift ~= 'HarmonicShift'
-	then
-		printbr('using', d_alpha_l_from_a_l)
-		dt_b_ul_def = dt_b_ul_def:substIndex(d_alpha_l_from_a_l)()
-		printbr(dt_b_ul_def)
-		
-		printbr('using', d_beta_ul_from_b_ul)
-		dt_b_ul_def = dt_b_ul_def:substIndex(d_beta_ul_from_b_ul)()
-		printbr(dt_b_ul_def)
-	
-		printbr('using', d_gamma_lll_from_d_lll)
-		dt_b_ul_def = dt_b_ul_def:substIndex(d_gamma_lll_from_d_lll)()
-		printbr(dt_b_ul_def)
-	
-		printbr('using', d_lll_from_dHat_lll_dDelta_lll'_,r'())
-		dt_b_ul_def = dt_b_ul_def:substIndex(d_lll_from_dHat_lll_dDelta_lll'_,r'())()
-		printbr(dt_b_ul_def)
-	end
-end
-
---]======] -- end touch-ups of the dt_ eqns for the eigensystem
-
 
 --[[
 for lapse f=2/α:
-matrix of {α, Δγ_ij, a_r, Δd_kij, K_ij}
-... give us 0 x15, ±α√(γ^xx) x5
+the matrix of {α, Δγ_ij, a_r, Δd_kij, K_ij}  give us 0 x15, ±α√(γ^xx) x5
 --]]
 local UijkltEqns = table()
 
-if not eigensystem_dontIncludeGaugeVars then
+if eigensystem_includeGaugeVars then
 	UijkltEqns:append{
 		dt_alpha_def,
 		dt_gammaDelta_ll_def,
@@ -2866,13 +2354,13 @@ UijkltEqns:append{
 	dt_dDelta_lll_def,
 	dt_K_ll_def,
 }
-if not eigensystem_dontIncludeZVars then
+if eigensystem_includeZVars then
 	UijkltEqns:append{
 		dt_Theta_def,
 		dt_Z_l_def,
 	}
 end
-if not eigensystem_dontIncludeShiftVars then
+if eigensystem_includeShiftVars then
 	if dt_beta_u_def then
 		UijkltEqns:insert(dt_beta_u_def)
 	end
@@ -2896,73 +2384,102 @@ end
 -- so don't bother print them, instead do the simplfiications/rearrangement *here*
 UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 	local lhs, rhs = eqn[1], eqn[2]
-	rhs = rhs:simplifyAddMulDiv()
-	--[[ not working ... idk why?  
-	-- maybe the zero needs indexes to match, so the 'abc' aren't considered fixed indexes?  
-	-- what if I did replaceIndex(delta'^a_b,c', delta'^a_b,c' * 0) ? 
-	rhs = rhs:replaceIndex(delta'^a_b,c', 0)
-	--]]
-	-- [[
-	rhs = rhs:map(function(x)
-		if TensorRefMatchesDegreeAndDeriv(x, delta'^i_j,k') then return 0 end
-	end)
-	--]]
-	--[[ TODO try this instead:
-	rhs = rhs:replaceIndex(delta'^a_b,c', delta'^a_b,c' * 0)
-	--]]
-	rhs = rhs:simplifyAddMulDiv()
 
-	-- ok there should be a branch here
-	if favorFluxTerms then
-		-- TODO HERE - convert some of the a_i b^i_j d_kij into alpha_,i beta^i_,j gamma_ij,k
-		printbr'FINISHME PLZ'
-	else
-		-- before substiting derivs for state vars, make sure everything is in the correct valence
-		-- (esp because that means inserting gamma^ij's, which when differentiated turn into -d_k^ij's)
-		-- here convert *all* alpha_,i => a_i; beta^i_,j => b^i_j; gamma_ij,k => 1/2 d_kij
-		rhs = rhs:replaceIndex(f'_,a', f:diff(alpha) * alpha'_,a')
+--printbr(lhs:eq(rhs))
+	-- :replaceIndex(delta'^a_b,c', 0) will fail because the rhs doesn't have matching indexes, so the replaceIndex() will assume the indexes are all fixed
+	-- however do this and itll insert a * 0, which will simplify to removing them all
+	rhs = rhs:simplifyAddMulDiv()	-- distribute comma derivatives
+--printbr(lhs:eq(rhs))
+	rhs = rhs:replaceIndex(delta'^a_b,c', delta'^a_b,c' * 0)	-- replace delta comma derivs with 0*
+--printbr(lhs:eq(rhs))
+	rhs = rhs:simplifyAddMulDiv()	--simplify the 0*
+--printbr(lhs:eq(rhs))
+
+	-- before substiting derivs for state vars, make sure everything is in the correct valence
+	-- (esp because that means inserting gamma^ij's, which when differentiated turn into -d_k^ij's)
+	-- here convert *all* alpha_,i => a_i; beta^i_,j => b^i_j; gamma_ij,k => 1/2 d_kij
+	rhs = rhs:replaceIndex(f'_,a', f:diff(alpha) * alpha'_,a')
+--printbr(lhs:eq(rhs))
+
+	-- insert traces ...
+	rhs = rhs:splitOffDerivIndexes()
+--printbr(lhs:eq(rhs))
 	
-		-- insert traces ...
-		rhs = rhs:splitOffDerivIndexes()
-		
-		-- hmm, not working.  what is a better way to do this?
-		rhs = rhs:replace(tr_K^2, K'_mn' * gamma'^mn' * K'_pq' * gamma'^pq')	-- hmm, 
-		
-		rhs = rhs:replaceIndex(tr_K, K'_mn' * gamma'^mn')
-		rhs = rhs:insertMetricsToSetVariance(d'_i', gamma)
-		rhs = rhs:replaceIndex(d'_i', d'_imn' * gamma'^mn')
-		rhs = rhs:insertMetricsToSetVariance(e'_i', gamma)
-		rhs = rhs:replaceIndex(e'_i', d'_mni' * gamma'^mn')
+	-- hmm, not working.  what is a better way to do this?
+	rhs = rhs:replace(tr_K^2, K'_mn' * gamma'^mn' * K'_pq' * gamma'^pq')	-- hmm, 
+--printbr(lhs:eq(rhs))
 	
-		-- correct forms ...
-		rhs = rhs:insertMetricsToSetVariance(a'_k', gamma)
-		-- "couldn't get a new symbol" here ....
-		rhs = rhs:insertMetricsToSetVariance(d'_kij', gamma)
-		rhs = rhs:insertMetricsToSetVariance(K'_ij', gamma)
-		rhs = rhs:insertMetricsToSetVariance(Z'_k', gamma)
-		rhs = rhs:insertMetricsToSetVariance(beta'^k', gamma)
-		rhs = rhs:insertMetricsToSetVariance(b'^i_j', gamma)
-		rhs = rhs:insertMetricsToSetVariance(B'^i', gamma)
-		
-		-- simplify to distribute derivatives through the gamme^ij's
-		rhs = rhs:simplifyAddMulDiv()
+	rhs = rhs:replaceIndex(tr_K, K'_mn' * gamma'^mn')
+--printbr(lhs:eq(rhs))
+	rhs = rhs:insertMetricsToSetVariance(d'_i', gamma)
+--printbr(lhs:eq(rhs))
+	-- here we could have (d^i_,j) => (d_i gamma^ik)_,j
+	-- but if we use this next one (d_i gamma^ik)_,j => (d_imn gamma^mn gamma^ik)_,j ... then we risk inserting bad sum indexes
+	-- unless we distribute the derivative first, ... and then split it off gain
+	rhs = rhs:simplifyAddMulDiv()
+	rhs = rhs:splitOffDerivIndexes()
+--printbr(lhs:eq(rhs))
+	rhs = rhs:replaceIndex(d'_i', d'_imn' * gamma'^mn')
+--printbr(lhs:eq(rhs))
+	rhs = rhs:insertMetricsToSetVariance(e'_i', gamma)
+--printbr(lhs:eq(rhs))
+	-- here same as above, distribte comma derivs before substituting our d_kij's ... or we will get screwed up sum indexes
+	rhs = rhs:simplifyAddMulDiv()
+	rhs = rhs:splitOffDerivIndexes()
+--printbr(lhs:eq(rhs))
+	rhs = rhs:replaceIndex(e'_i', d'_mni' * gamma'^mn')
+--printbr(lhs:eq(rhs))
 	
-		-- convert gamma^ij_,k's to -2 d_k^ij's
-		rhs = rhs:substIndex(d_gamma_uul_from_dHat_lll_dDelta_lll)
-		rhs = rhs:simplifyAddMulDiv()
+
+	-- correct forms ...
+	rhs = rhs:insertMetricsToSetVariance(a'_k', gamma)
+	-- "couldn't get a new symbol" here ....
+	rhs = rhs:insertMetricsToSetVariance(d'_kij', gamma)
+	rhs = rhs:insertMetricsToSetVariance(K'_ij', gamma)
+	rhs = rhs:insertMetricsToSetVariance(Z'_k', gamma)
+	rhs = rhs:insertMetricsToSetVariance(beta'^k', gamma)
+	rhs = rhs:insertMetricsToSetVariance(b'^i_j', gamma)
+	rhs = rhs:insertMetricsToSetVariance(B'^i', gamma)
+--printbr(lhs:eq(rhs))
 	
+	-- simplify to distribute derivatives through the gamme^ij's
+	rhs = rhs:simplifyAddMulDiv()
+--printbr(lhs:eq(rhs))
+
+	-- convert gamma^ij_,k's to -2 d_k^ij's
+	rhs = rhs:substIndex(d_gamma_uul_from_dHat_lll_dDelta_lll)
+	rhs = rhs:simplifyAddMulDiv()
+--printbr(lhs:eq(rhs))
+
+-- YOU ARE HERE
+	--if not eigensystem_favorFluxTerms then
 		-- convert gauge derivs to state vars
 		rhs = rhs
 			:substIndex(d_alpha_l_from_a_l)
 			:substIndex(d_beta_ul_from_b_ul)
 			:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll)
-		rhs = rhs:simplifyAddMulDiv()
-		
-		-- convert d_ijk,l to dHat_ijk,l + dDelta_ijk,l
-		rhs = rhs:splitOffDerivIndexes()
-		rhs = rhs:substIndex((d_lll_from_dHat_lll_dDelta_lll)())
-		rhs = rhs:simplifyAddMulDiv()
+	--[[
+	else
+		-- convert state vars to gauge derivs
+		-- convert some of the a_i b^i_j d_kij into alpha_,i beta^i_,j gamma_ij,k
+		-- TODO CAN'T DO THIS WILLY NILLY
+		-- it seems certain partials, esp the lie derivaive shift partials, have to stay in their form, to maintain the -beta^x diagonal in the flux matrix
+		rhs = rhs
+			:substIndex(d_alpha_l_from_a_l:solve(a'_i'))
+			:substIndex(d_beta_ul_from_b_ul:solve(b'^i_j'))
+			:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'))
 	end
+	--]]
+	
+	rhs = rhs:simplifyAddMulDiv()
+--printbr(lhs:eq(rhs))
+	
+	-- convert d_ijk,l to dHat_ijk,l + dDelta_ijk,l
+	rhs = rhs:splitOffDerivIndexes()
+	rhs = rhs:substIndex((d_lll_from_dHat_lll_dDelta_lll)())
+	rhs = rhs:simplifyAddMulDiv()
+--printbr(lhs:eq(rhs))
+	
 	return lhs:eq(rhs)
 end)
 
@@ -2988,10 +2505,10 @@ end
 printbr()
 
 
+printHeader'inserting deltas to help factor linear system'
+
 local UpqmnVars = UijklVars:mapi(function(x) return x:reindex{ijkl='pqmn'} end)
 local UpqmnrVars = UpqmnVars:mapi(function(x) return x'_,r'() end)
-
-printHeader'inserting deltas to help factor linear system'
 
 local rhsWithDeltas = UijkltEqns:mapi(function(eqn)
 	return insertDeltasToSetIndexSymbols(eqn:rhs(), UpqmnrVars)
@@ -3038,7 +2555,7 @@ printbr()
 
 
 -- [==[  if we want to redo but without the zeroes in the flux jacobian matrix
-if favorFluxTerms then
+if eigensystem_favorFluxTerms then
 	printHeader'replace first-derivative state variables with derivatives of state vars:'
 
 	-- ok now try to replace all the hyperbolic 1st deriv state vars that are not derivatives themselves with the original vars' derivatives
@@ -3335,7 +2852,6 @@ printbr()
 -- NOTICE this can go slow if the dense tensors aren't replaced correctly 
 S_rhs_exprs = S_rhs_exprs:mapi(function(expr) return expr() end)
 
-print'error here, valence is off, fixme plz'
 for i=1,#dFdx_lhs_exprs do
 	local dUdt_i = dUdt_lhs_exprs[i]
 	local dFdx_i = dFdx_lhs_exprs[i]
@@ -3483,7 +2999,67 @@ printbr(
 )
 printbr()
 
-
+if eigensystem_removeZeroRows then
+	printbr'removing zero rows:'
+	-- remove all rows/cols that are all zeros
+	local m = n
+	for i=n,1,-1 do
+		local allzero = true
+		for j=1,m do
+			if not Constant.isValue(dFijkl_dUpqmn_expanded[i][j], 0) then
+				allzero = false
+				break
+			end
+		end
+		if allzero then
+			table.remove(dFijkl_dUpqmn_expanded, i)
+			table.remove(dUdt_lhs_exprs_expanded_mat, i)
+			-- alright, here, if we are removing a row from dUdt_lhs_exprs_expanded_mat
+			-- then we should also remove the same a row from dUdx_lhs_exprs_expanded_mat
+			table.remove(dUdx_lhs_exprs_expanded_mat, i)
+			-- then we should also remove the matching col from dFijkl_dUpqmn_expanded
+			for k=1,#dFijkl_dUpqmn_expanded do
+				table.remove(dFijkl_dUpqmn_expanded[k], i)
+			end
+			table.remove(Sijkl_expanded, i)
+			rowsplits:remove(i)
+			m = m - 1
+			n = n - 1
+		end
+	end
+	--[=[
+	for j=m,1,-1 do
+		local allzero = true
+		for i=1,n do
+			if not Constant.isValue(dFijkl_dUpqmn_expanded[i][j], 0) then
+				allzero = false
+				break
+			end
+		end
+		if allzero then
+			for i=1,n do
+				table.remove(dFijkl_dUpqmn_expanded[i], j)
+			end
+			-- remove Upqmn expanded vars here as well
+			table.remove(dUdx_lhs_exprs_expanded_mat, j)
+			-- and TODO if we're removing cols from dFijkl_dUpqmn and rows from Upqmn
+			-- then we should remove matching rows from Uijkl
+			table.remove(dUdt_lhs_exprs_expanded_mat, j)
+			-- and removing matching rows from dFijkl_dUpqmn
+			table.remove(dFijkl_dUpqmn_expanded, j)
+			table.remove(Sijkl_expanded, j)
+			rowsplits:remove(j)
+			m = m - 1
+			n = n - 1
+		end
+	end
+	--]=]
+	printbr((dUdt_lhs_exprs_expanded_mat + dFijkl_dUpqmn_expanded * dUdx_lhs_exprs_expanded_mat):eq(Sijkl_expanded))
+	-- TODO if this fails then that means we need find the removed rows from Upqmn and remove the associated columns from dFijkl_dUpqmn
+	assert(m == n, "removed a different number of all-zero rows vs columns")
+	printbr()
+	--]]
+end
 
 --[[ CHECK -- verify that the matrix matches the 2008 Yano flux jacobian matrix ...
 do
@@ -3503,64 +3079,6 @@ do
 	printbr()
 end
 --]]
-
-if eigensystem_removeZeroRows then
-	printbr'removing zero rows:'
-	-- remove all rows/cols that are all zeros
-	local m = n
-	for i=n,1,-1 do
-		local allzero = true
-		for j=1,m do
-			if not Constant.isValue(dFijkl_dUpqmn_expanded[i][j], 0) then
-				allzero = false
-				break
-			end
-		end
-		if allzero then
-			table.remove(dFijkl_dUpqmn_expanded, i)
-			table.remove(Uijkl_expanded, i)
-			-- alright, here, if we are removing a row from Uijkl_expanded
-			-- then we should also remove the same a row from Upqmn_expanded
-			table.remove(Upqmn_expanded, i)
-			-- then we should also remove the matching col from dFijkl_dUpqmn_expanded
-			for k=1,#dFijkl_dUpqmn_expanded do
-				table.remove(dFijkl_dUpqmn_expanded[k], i)
-			end
-			table.remove(Sijkl_expanded, i)
-			m = m - 1
-			n = n - 1
-		end
-	end
-	for j=m,1,-1 do
-		local allzero = true
-		for i=1,n do
-			if not Constant.isValue(dFijkl_dUpqmn_expanded[i][j], 0) then
-				allzero = false
-				break
-			end
-		end
-		if allzero then
-			for i=1,n do
-				table.remove(dFijkl_dUpqmn_expanded[i], j)
-			end
-			-- remove Upqmn expanded vars here as well
-			table.remove(Upqmn_expanded, j)
-			-- and TODO if we're removing cols from dFijkl_dUpqmn and rows from Upqmn
-			-- then we should remove matching rows from Uijkl
-			table.remove(Uijkl_expanded, j)
-			-- and removing matching rows from dFijkl_dUpqmn
-			table.remove(dFijkl_dUpqmn_expanded, j)
-			table.remove(Sijkl_expanded, j)
-			m = m - 1
-			n = n - 1
-		end
-	end
-	printbr((Uijkl_expanded'_,t' + dFijkl_dUpqmn_expanded * Upqmn_expanded'_,r'):eq(Sijkl_expanded))
-	-- TODO if this fails then that means we need find the removed rows from Upqmn and remove the associated columns from dFijkl_dUpqmn
-	assert(m == n, "removed a different number of all-zero rows vs columns")
-	printbr()
-	--]]
-end
 
 --[[
 -- this prints out the source terms, including the flux deriv converted to 1st-deriv-state-vars ....
