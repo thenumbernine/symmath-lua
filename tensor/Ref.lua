@@ -311,6 +311,106 @@ function TensorRef:applySymmetries()
 	return result
 end
 
+--[[
+args:
+	var = base var, to replace TensorRef(var, ...) with TensorRef( dense form of var, ...)
+	indexes = var indexes
+
+TODO the C name exporter is pretty application-specific
+but I think so is the C exporter for TensorRef anyways.
+--]]
+function TensorRef.makeDense(x)
+	symmath = symmath or require 'symmath'
+	local Tensor = symmath.Tensor
+	local Variable = symmath.Variable
+	assert(TensorRef:isa(x))
+	assert(Variable:isa(x[1]))
+--printbr('creating dense tensor', x)	
+	local basevar = x[1]:clone()
+	local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
+	local numDeriv = 0
+	local indexesWithoutDeriv = indexes:mapi(function(index)
+		index = index:clone()
+		if index.derivative == ',' then numDeriv = numDeriv + 1 end
+		index.derivative = nil
+		return index
+	end)
+	local degreeCSuffix = '_'..indexes:mapi(function(index)
+		return index.lower and 'l' or 'u'
+	end):concat()
+	
+	-- ss[1] is the TensorRef, ss[2...] is the 
+	local allsymkeys = {}
+	for _,s in ipairs{x:getSymmetries()} do
+		-- only if the lowers of the indexes match with s's form
+		-- or if they are both lowered or both uppered
+		if not s.acrossLowers then
+			local acrossLowers 
+			local lower = not not x[1+s.indexNumbers[1]].lower
+			for _,i in ipairs(s.indexNumbers) do
+				local olower = not not x[1+i].lower
+				if lower ~= olower then
+					acrossLowers = true
+					break
+				end
+			end
+			if not acrossLowers then
+				for _,i in ipairs(s.indexNumbers) do
+					allsymkeys[i] = true
+				end
+			end
+		end
+	end
+
+	local chart = Tensor:findChartForSymbol()
+	assert(chart)
+	local xNames = table.mapi(chart.coords, function(c) return c.name end)
+
+	local result = Tensor(indexesWithoutDeriv, function(...)
+		
+		-- [[ TODO this is just the same as :reindex() ...
+		local is = {...}
+		local thisIndexes = indexes:mapi(function(index) return index:clone() end)
+		for i=1,#is do
+			thisIndexes[i].symbol = xNames[is[i]]
+		end
+		local thisRef = TensorRef(basevar, thisIndexes:unpack())
+		--]]
+		
+		-- now sort 'thisIndexes' based on symmetries
+		thisRef = thisRef:applySymmetries()
+		
+		-- TODO how to specify names per exporter?
+		local v = Variable(symmath.export.LaTeX:applyLaTeX(thisRef))
+	
+		-- insert dots between non-sym indexes
+		local thisIndexCSuffix = table()
+		for i=1,#thisRef-1 do
+			local index = thisRef[i+1]
+			if i > 1 and not (allsymkeys[i-1] and allsymkeys[i]) then
+				thisIndexCSuffix:insert'.'
+			end
+			thisIndexCSuffix:insert(index.symbol)
+		end
+		thisIndexCSuffix = thisIndexCSuffix:concat()
+		
+		local derivCPrefix
+		if numDeriv == 0 then
+			derivCPrefix = ''
+		elseif numDeriv == 1 then
+			derivCPrefix = 'partial_'
+		else
+			derivCPrefix = 'partial'..numDeriv..'_'
+		end
+		local cname = derivCPrefix .. basevar:nameForExporter'C'..degreeCSuffix..'.'..thisIndexCSuffix
+		v:nameForExporter('C', cname)
+		
+		return v
+	end)
+--printbr(x, '=>', result)
+	return result
+end
+
 TensorRef.rules = {
 	Prune = {
 		-- t _ab _cd => t _abcd

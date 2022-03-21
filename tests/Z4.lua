@@ -429,6 +429,7 @@ end
 
 
 -- make sure indexes are raised-lowered in matching manner
+-- TODO this doesn't seem to work for single-term sums: d_ki^k vs d^k_ik
 function simplifySumIndexes(expr)
 	local prods = expr:simplifyAddMulDiv():sumToTable()
 	for k=1,#prods do
@@ -1692,7 +1693,7 @@ end	-- useShift == 'hyperbolicGammaDriver'
 
 
 function getShiftFluxParts(beta_rhs)
-	-- this is parabolci form, where we solve beta^l_,t instead of beta^l_,tt
+	-- this is parabolic form, where we solve beta^l_,t instead of beta^l_,tt
 	local dt_beta_u_def = beta'^l_,t':eq(beta_rhs)
 	if useShiftingShift then
 		dt_beta_u_def[2] = dt_beta_u_def:rhs() + beta'^k' * b'^l_k'
@@ -1955,99 +1956,6 @@ Tensor.Chart{coords=xs}
 	
 local deltaDenseUL = Tensor('^i_j', function(i,j) return i == j and 1 or 0 end)
 
---[[
-args:
-	var = base var, to replace Tensor.Ref(var, ...) with Tensor.Ref( dense form of var, ...)
-	indexes = var indexes
---]]
-function makeDenseTensor(x)
-	assert(Tensor.Ref:isa(x))
-	assert(Variable:isa(x[1]))
---printbr('creating dense tensor', x)	
-	local basevar = x[1]:clone()
-	local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
-	local numDeriv = 0
-	local indexesWithoutDeriv = indexes:mapi(function(index)
-		index = index:clone()
-		if index.derivative == ',' then numDeriv = numDeriv + 1 end
-		index.derivative = nil
-		return index
-	end)
-	local degreeCSuffix = '_'..indexes:mapi(function(index)
-		return index.lower and 'l' or 'u'
-	end):concat()
-	
-	-- ss[1] is the Tensor.Ref, ss[2...] is the 
-	local allsymkeys = {}
-	for _,s in ipairs{x:getSymmetries()} do
-		-- only if the lowers of the indexes match with s's form
-		-- or if they are both lowered or both uppered
-		if not s.acrossLowers then
-			local acrossLowers 
-			local lower = not not x[1+s.indexNumbers[1]].lower
-			for _,i in ipairs(s.indexNumbers) do
-				local olower = not not x[1+i].lower
-				if lower ~= olower then
-					acrossLowers = true
-					break
-				end
-			end
-			if not acrossLowers then
-				for _,i in ipairs(s.indexNumbers) do
-					allsymkeys[i] = true
-				end
-			end
-		end
-	end
-
-	local chart = Tensor:findChartForSymbol()
-	assert(chart)
-	local xNames = table.mapi(chart.coords, function(c) return c.name end)
-
-	local result = Tensor(indexesWithoutDeriv, function(...)
-		
-		-- [[ TODO this is just the same as :reindex() ...
-		local is = {...}
-		local thisIndexes = indexes:mapi(function(index) return index:clone() end)
-		for i=1,#is do
-			thisIndexes[i].symbol = xNames[is[i]]
-		end
-		local thisRef = Tensor.Ref(basevar, thisIndexes:unpack())
-		--]]
-		
-		-- now sort 'thisIndexes' based on symmetries
-		thisRef = thisRef:applySymmetries()
-		
-		-- TODO how to specify names per exporter?
-		local v = var(symmath.export.LaTeX:applyLaTeX(thisRef))
-	
-		-- insert dots between non-sym indexes
-		local thisIndexCSuffix = table()
-		for i=1,#thisRef-1 do
-			local index = thisRef[i+1]
-			if i > 1 and not (allsymkeys[i-1] and allsymkeys[i]) then
-				thisIndexCSuffix:insert'.'
-			end
-			thisIndexCSuffix:insert(index.symbol)
-		end
-		thisIndexCSuffix = thisIndexCSuffix:concat()
-		
-		local derivCPrefix
-		if numDeriv == 0 then
-			derivCPrefix = ''
-		elseif numDeriv == 1 then
-			derivCPrefix = 'partial_'
-		else
-			derivCPrefix = 'partial'..numDeriv..'_'
-		end
-		local cname = derivCPrefix .. basevar:nameForExporter'C'..degreeCSuffix..'.'..thisIndexCSuffix
-		v:nameForExporter('C', cname)
-		
-		return v
-	end)
---printbr(x, '=>', result)
-	return result
-end
 
 -- TODO put this in symmath
 -- after merging the "symmetries" property into TensorRef
@@ -2083,7 +1991,7 @@ function replaceWithDense(expr)
 --printbr('...matched to cached tensorref', cachedRef)
 --printbr('found associated dense', dense)
 			else
-				dense = makeDenseTensor(x)
+				dense = x:makeDense()
 --printbr('...created new dense', dense)
 				cachedDenseTensors:insert{x:clone(), dense}
 			end
@@ -2094,8 +2002,8 @@ function replaceWithDense(expr)
 	end)
 end
 	
-local dHat_t_Dense = makeDenseTensor(dHat_t'_ij')
-local dt_dHatDense = makeDenseTensor(dt_dHat'_kij')
+local dHat_t_Dense = dHat_t'_ij':makeDense()
+local dt_dHatDense = dt_dHat'_kij':makeDense()
 
 function expandMatrixIndexes(expr)
 
@@ -2401,11 +2309,14 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 	rhs = rhs:replaceIndex(f'_,a', f:diff(alpha) * alpha'_,a')
 --printbr(lhs:eq(rhs))
 
-	-- insert traces ...
+	
+	rhs = rhs:splitOffDerivIndexes()
+	rhs = rhs:substIndex(conn_ull_from_d_ull_d_llu)
+
+	-- insert traces (and their derivatives)
 	rhs = rhs:splitOffDerivIndexes()
 --printbr(lhs:eq(rhs))
 	
-	-- hmm, not working.  what is a better way to do this?
 	rhs = rhs:replace(tr_K^2, K'_mn' * gamma'^mn' * K'_pq' * gamma'^pq')	-- hmm, 
 --printbr(lhs:eq(rhs))
 	
@@ -2429,7 +2340,6 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 --printbr(lhs:eq(rhs))
 	rhs = rhs:replaceIndex(e'_i', d'_mni' * gamma'^mn')
 --printbr(lhs:eq(rhs))
-	
 
 	-- correct forms ...
 	rhs = rhs:insertMetricsToSetVariance(a'_k', gamma)
@@ -2452,24 +2362,11 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 --printbr(lhs:eq(rhs))
 
 -- YOU ARE HERE
-	--if not eigensystem_favorFluxTerms then
-		-- convert gauge derivs to state vars
-		rhs = rhs
-			:substIndex(d_alpha_l_from_a_l)
-			:substIndex(d_beta_ul_from_b_ul)
-			:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll)
-	--[[
-	else
-		-- convert state vars to gauge derivs
-		-- convert some of the a_i b^i_j d_kij into alpha_,i beta^i_,j gamma_ij,k
-		-- TODO CAN'T DO THIS WILLY NILLY
-		-- it seems certain partials, esp the lie derivaive shift partials, have to stay in their form, to maintain the -beta^x diagonal in the flux matrix
-		rhs = rhs
-			:substIndex(d_alpha_l_from_a_l:solve(a'_i'))
-			:substIndex(d_beta_ul_from_b_ul:solve(b'^i_j'))
-			:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'))
-	end
-	--]]
+	-- convert gauge derivs to state vars
+	rhs = rhs
+		:substIndex(d_alpha_l_from_a_l)
+		:substIndex(d_beta_ul_from_b_ul)
+		:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll)
 	
 	rhs = rhs:simplifyAddMulDiv()
 --printbr(lhs:eq(rhs))
@@ -2479,6 +2376,18 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 	rhs = rhs:substIndex((d_lll_from_dHat_lll_dDelta_lll)())
 	rhs = rhs:simplifyAddMulDiv()
 --printbr(lhs:eq(rhs))
+
+	if eigensystem_favorFluxTerms then
+		if lhs == dt_alpha_def:lhs() then
+			rhs = rhs:substIndex(a_l_def)
+			rhs = rhs:simplifyAddMulDiv()
+		elseif lhs == dt_gammaDelta_ll_def:lhs() then
+			rhs = rhs:substIndex(dDelta_lll_def, b_ul_def)
+			rhs = rhs:simplifyAddMulDiv()
+		end
+		-- but any further ... 
+		-- and we run into issues where we have
+	end
 	
 	return lhs:eq(rhs)
 end)
@@ -2552,193 +2461,6 @@ end
 
 printbr((UijklMat'_,t' + dFijkl_dUpqmn_mat * UpqmnMat'_,r'):eq(SijklMat))
 printbr()
-
-
--- [==[  if we want to redo but without the zeroes in the flux jacobian matrix
-if eigensystem_favorFluxTerms then
-	printHeader'replace first-derivative state variables with derivatives of state vars:'
-
-	-- ok now try to replace all the hyperbolic 1st deriv state vars that are not derivatives themselves with the original vars' derivatives
-	rhsWithDeltas = UijkltEqns:mapi(function(eqn)
-		local rhs = eqn[2]:clone()
-		-- TODO don't just insert the state vars, but in the case that there are quadratic vars, insert averages between the replacements
-		return rhs
-			:simplifyAddMulDiv()
-			:substIndex(a_l_def)
-			:substIndex(dDelta_lll_def)
-			:substIndex(b_ul_def)
-			:simplify()
-			:symmetrizeIndexes(dHat, {2,3})
-			:symmetrizeIndexes(dHat, {1,4}, true)
-			:symmetrizeIndexes(dDelta, {2,3})
-			:symmetrizeIndexes(dDelta, {1,4}, true)
-			:symmetrizeIndexes(gamma, {1,2})
-			:simplify()
-	end)
-
-	assert(#UijkltEqns == #rhsWithDeltas)
-	for i,eqn in ipairs(UijkltEqns) do
-		printbr(eqn[1]:eq(rhsWithDeltas[i]))
-	end
-	printbr()
-
-	printHeader'replace squares of state var derivatives with state var times derivative state var:'
-	
-	-- TODO right here -- if there are any derivative-time-derivative terms
-	--  replace them with state-var-times-derivative terms
-	-- which to replace?  you could do symmetric, so alpha_,i beta^k_,j => 1/2 a_i beta^k_,j + 1/2 alpha_,i b^k_j
-	rhsWithDeltas = rhsWithDeltas:mapi(function(expr)
-		expr = expr:simplifyAddMulDiv()
-		local newaddterms = table()
-		for x in expr:iteradd() do
-			if symmath.op.mul:isa(x) then
-				-- find # of derivatives of state vars in this mul
-				local derivTerms = table()
-				local nonDerivTerms = table()
-				
-				local isTensorRef = Tensor.Ref:isa(x)
-				local tensorDegree
-				if isTensorRef then
-					tensorDegree = x:countNonDerivIndexes()
-				end
-				if isTensorRef
-				and x:hasDerivIndex()
-				and (
-					-- TODO a lot of these only appear in the specific degree
-					
-					-- these derivs can be replaced with state vars
-					(x[1] == alpha and tensorDegree == 0)
-					or (x[1] == gammaDelta and tensorDegree == 2)
-					or (x[1] == beta and tensorDegree == 1)
-				
-					--[[
-					or (x[1] == a and tensorDegree == 1)
-					or (x[1] == dDelta and tensorDegree == 3)
-					or (x[1] == b and tensorDegree == 2)
-					--]]
-					
-					-- these derivs don't have state vars
-					-- so if these are multiplied by derivs of alpha,beta^l,gammaDelta_ij
-					-- then only replace the alpha=>a, beta=>b gammaDelta=>dDelta
-					-- (don't divy up between the two)
-					-- and if they are multipled by derivs of a_k,b^l_j,dDelta_kij,l
-					-- then we're stuck ... gotta introduce new state vars for the new derivs?
-					--[[
-					or (x[1] == K and tensorDegree == 2)
-					or (x[1] == Z and tensorDegree == 1)
-					or (x[1] == Theta and tensorDegree == 0)
-					or (x[1] == B and tensorDegree == 1)
-					--]]
-				)
-				then
-					derivTerms:insert(x)
-				else
-					nonDerivTerms:insert(x)
-				end
-				
-				-- if there's more than 1 ...
-				if #derivTerms < 2 then
-					newaddterms:insert(x)
-				elseif #derivTerms == 2 then
-					local function replaceDerivsWithStateVars(z)
-						return z
-							:substIndex(a_l_def:switch())
-							:substIndex(dDelta_lll_def:switch())
-							:substIndex(b_ul_def:switch())
-					end
-					local newmul = frac(1,2) * (
-						replaceDerivsWithStateVars(derivTerms[1]) * derivTerms[2]
-						+ derivTerms[1] * replaceDerivsWithStateVars(derivTerms[2])
-					)
-					if #nonDerivTerms == 1 then
-						newmul = newmul * nonDerivTerms[1]
-					elseif #nonDerivTerms > 1 then
-						newmul = newmul * nonDerivTerms:setmetatable(symmath.op.mul)
-					end
-					newaddterms:insert(newmul)
-				else
-					error"I didn't expect to find a mul of more than 2 deriv terms"
-				end
-			else
-				newaddterms:insert(x)
-			end
-		end
-		if #newaddterms == 1 then
-			expr = newaddterms[1]
-		else
-			newaddterms:setmetatable(symmath.op.add)
-			expr = newaddterms
-		end
-		return expr
-	end)
-
-	assert(#UijkltEqns == #rhsWithDeltas)
-	for i,eqn in ipairs(UijkltEqns) do
-		printbr(eqn[1]:eq(rhsWithDeltas[i]))
-	end
-	printbr()
-
-	printHeader'inserting deltas to help factor linear system'
-
-	rhsWithDeltas = rhsWithDeltas:mapi(function(rhs)
-		return insertDeltasToSetIndexSymbols(rhs, UpqmnrVars)
-	end)
-
-	assert(#UijkltEqns == #rhsWithDeltas)
-	for i,eqn in ipairs(UijkltEqns) do
-		printbr(eqn[1]:eq(rhsWithDeltas[i]))
-	end
-	printbr()
-
-	printHeader'as a balance law system:'
-
-	A, b = factorLinearSystem(rhsWithDeltas, UpqmnrVars)
-
-	dFijkl_dUpqmn_mat = (-A)()
-
-	for i=1,#b do
-		b[i][1] = b[i][1]:simplifyAddMulDiv()
-	end
-
-	printbr((UijklMat'_,t' + dFijkl_dUpqmn_mat * UpqmnMat'_,r'):eq(b))
-end
---]==]
-
-
-
-
---[=[
-printbr[[$\frac{\partial F}{\partial U} \cdot U$:]]
-
-printbr((dFijkl_dUpqmn_mat * UpqmnMat)())
-printbr()
-printbr'TODO prove this matches the non-source part of the flux'
-printbr()
---]=]
-
---[[
-but we can only use fluxes in Godunov schemes if F = dF/dU * U, right?
-
-right-eigenvectors:
-A_ab U_b = lambda U_a
-
-in other news, the eigenfields i.e. left-eigenvectors:
-W_a = C_ab U_b s.t. W_a,t + lambda W_a,r = 0
---]]
-
---[[ right eigenvectors in tensor index form
-printHeader'right eigenvectors:'
-
-local W = Matrix:lambda(dFijkl_dUpqmn_mat:dim(), function(i,j)
-	return var('C_{'..i..j..'}')
-end) * UpqmnMat	-- relabel U's to something other than ijk or mpq
-
-local reigeqns = (dFijkl_dUpqmn_mat * W):eq(lambda * W)():unravel()
-for _,eqn in ipairs(reigeqns) do
-	printbr(eqn:simplifyMetrics())
-end
-printbr()
---]]
 
 printHeader'expanding, and removing zero rows/cols:'
 
@@ -2859,11 +2581,16 @@ for i=1,#dFdx_lhs_exprs do
 	dFdx_i  = dFdx_i()
 	-- make sure the index storage between the two match up
 	-- so that when i iterate between them i can match term for term
-	if Tensor:isa(dFdx_i) then
-		assert(Tensor:isa(dUdt_i))
-		dFdx_i = dFdx_i:permute(' '..table.mapi(dUdt_i.variance, tostring):concat' ')
+	if Tensor:isa(dUdt_i) then
+		local dstvar = ' '..table.mapi(dUdt_i.variance, tostring):concat' '
+		if Constant.isValue(dFdx_i, 0) then 
+			dFdx_i = Tensor(dstvar)
+		else
+			assert(Tensor:isa(dFdx_i))
+			dFdx_i = dFdx_i:permute(dstvar)
+		end
 	else
-		assert(not Tensor:isa(dUdt_i))
+		assert(not Tensor:isa(dFdx_i))
 	end
 	dFdx_lhs_exprs[i] = dFdx_i
 end
