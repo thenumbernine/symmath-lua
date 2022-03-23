@@ -31,6 +31,8 @@ end
 --[[
 Rodrigues rotation formula, generalized to n-dimensions:
 Assumes |n_i| = 1
+
+TODO this requires a chart to be defined.
 --]]
 return function(theta, ...)
 	local symmath = require 'symmath'

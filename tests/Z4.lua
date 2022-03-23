@@ -15,6 +15,10 @@ why did I start working on this when I had "Z4 metric-invariant.symmath" to work
 move this over to a .symmath file, get rid of this and get rid of the old .symmath file ...
 and TODO have an "export to html" features in symmath/standalone.lua
 
+TODO
+
+my "Math Worksheets/Differential Geometry" worksheets that branch off into ADM document how to go from the EFE to ADM ...
+but I don't anywhere document how to go from the Z4 EFE-with-Killing-vectors to Z4-ADM ...
 
 TODO NOTICE FIXME
 
@@ -87,20 +91,22 @@ for the sake of eigensystem computations it gets difficult, so better do one at 
 so then TODO turn this into an 'eigensystem_' var? 
 --]]
 
---local useShift = 'hyperbolicGammaDriver'
+--local useShift = 'GammaDriver'
 
 --[[
 2005 Bona et al, section B.1, "to convert the minimal distortion elliptic equations into time-dependent parabolic equations by means of the Hamilton-Jacobi method"
 --]]
-useShift = 'HarmonicShift'
+useShift = 'HarmonicShiftParabolic'
+
+useShift = 'HarmonicShiftHyperbolic'
 
 --[[
-β^l_,t => β^l_,t - β^l_,k β^k
+within shift equations, exchange _,t with _,t - _,k β^k
 --]]
 useShiftingShift = true
 
 --[[
-include α, γ_ij
+include α, γ_ij in the calculations and code-generation
 --]]
 flux_includeGaugeVars = true
 
@@ -631,6 +637,7 @@ dt_dHat'_ijk':setSymmetries{2,3}
 K'_ij':setSymmetries{1,2}
 S'_ij':setSymmetries{1,2}
 Gamma'_ijk':setSymmetries{2,3}
+b'_ij':setSymmetries{1,2}
 
 -- TODO derivatives automatic? otherwise there are a lot of permtuations ...
 gamma'_ij,k':setSymmetries{1,2}
@@ -1605,7 +1612,8 @@ local dt_B_u_def
 local dt_beta_u_negflux, dt_beta_u_rhs
 local dt_b_ul_negflux, dt_b_ul_rhs
 local dt_B_u_negflux, dt_B_u_rhs		-- used by hyperbolic gamma driver
-if useShift == 'hyperbolicGammaDriver' then
+
+if useShift == 'GammaDriver' then
 	printHeader('hyperbolic gamma driver shift evolution:')
 	dt_beta_u_def = beta'^i_,t':eq(
 		B'^i'
@@ -1689,23 +1697,41 @@ if useShift == 'hyperbolicGammaDriver' then
 		)
 	)
 	--]]
-end	-- useShift == 'hyperbolicGammaDriver'
+end	-- useShift == 'GammaDriver'
 
-
-function getShiftFluxParts(beta_rhs)
+-- this is supposed to be the eqn rhs that you plug in the shift expression, then set according 'shiftingShift', 'useHyperbolic', etc flags, and it spits out PDEs of that rhs
+function getShiftFluxParts(beta_rhs, useHyperbolic)
 	-- this is parabolic form, where we solve beta^l_,t instead of beta^l_,tt
-	local dt_beta_u_def = beta'^l_,t':eq(beta_rhs)
+	local dt_beta_u_def
+	local dt_B_u_def		-- only used with useHyperbolic
+	if useHyperbolic then
+		dt_beta_u_def = beta'^l_,t':eq(B'^l')
+		dt_B_u_def = B'^l_,t':eq(beta_rhs)
+	else
+		dt_beta_u_def = beta'^l_,t':eq(beta_rhs)
+	end
 	if useShiftingShift then
 		dt_beta_u_def[2] = dt_beta_u_def:rhs() + beta'^k' * b'^l_k'
+		if useHyperbolic then
+			dt_B_u_def[2] = dt_B_u_def:rhs() + B'^k' * b'^l_k'
+		end
 	end
 	printbr(dt_beta_u_def)
+	if dt_B_u_def then
+		printbr(dt_B_u_def)
+	end
 	printbr()
 
 	local _, dt_beta_u_negflux, dt_beta_u_rhs = combineCommaDerivativesAndRelabel(dt_beta_u_def:rhs(), 'r', {'l'})
 	printbr(beta'^l_,t', 'flux term:', -dt_beta_u_negflux)
 	printbr(beta'^l_,t', 'source term:', dt_beta_u_rhs)
 	
-	printHeader('spatial derivative evolution:')
+	local _, dt_B_u_negflux, dt_B_u_rhs
+	if useHyperbolic then
+		_, dt_B_u_negflux, dt_B_u_rhs = combineCommaDerivativesAndRelabel(dt_B_u_def:rhs(), 'r', {'l'})
+		printbr(B'^l_,t', 'flux term:', -dt_B_u_negflux)
+		printbr(B'^l_,t', 'source term:', dt_B_u_rhs)
+	end
 	
 	local dt_b_ul_def = dt_beta_u_def:reindex{k='i'}
 	dt_b_ul_def = (
@@ -1724,9 +1750,14 @@ function getShiftFluxParts(beta_rhs)
 	return dt_beta_u_def,
 		dt_beta_u_negflux,
 		dt_beta_u_rhs,
+		
 		dt_b_ul_def,
 		dt_b_ul_negflux,
-		dt_b_ul_rhs
+		dt_b_ul_rhs,
+		
+		dt_B_u_def,
+		dt_B_u_negflux,
+		dt_B_u_rhs
 end
 
 -- how many of these terms should be state vars instead of state derivatives?
@@ -1737,12 +1768,35 @@ local harmonicShiftExpr = alpha^2 * (2 * e'^l' - d'^l' - a'^l')
 printbr(harmonicShiftExpr) 
 printbr()
 
-harmonicShift_dt_beta_u_def,
-	harmonicShift_dt_beta_u_negflux,
-	harmonicShift_dt_beta_u_rhs,
-	harmonicShift_dt_b_ul_def,
-	harmonicShift_dt_b_ul_negflux,
-	harmonicShift_dt_b_ul_rhs = getShiftFluxParts(harmonicShiftExpr)
+
+printHeader('harmonic shift parabolic evolution:')
+
+harmonicShiftParabolic_dt_beta_u_def,
+	harmonicShiftParabolic_dt_beta_u_negflux,
+	harmonicShiftParabolic_dt_beta_u_rhs,
+	
+	harmonicShiftParabolic_dt_b_ul_def,
+	harmonicShiftParabolic_dt_b_ul_negflux,
+	harmonicShiftParabolic_dt_b_ul_rhs 
+
+	= getShiftFluxParts(harmonicShiftExpr, false)
+
+
+printHeader('harmonic shift hyperbolic evolution:')
+
+harmonicShiftHyperbolic_dt_beta_u_def,
+	harmonicShiftHyperbolic_dt_beta_u_negflux,
+	harmonicShiftHyperbolic_dt_beta_u_rhs,
+	
+	harmonicShiftHyperbolic_dt_b_ul_def,
+	harmonicShiftHyperbolic_dt_b_ul_negflux,
+	harmonicShiftHyperbolic_dt_b_ul_rhs,
+	
+	harmonicShiftHyperbolic_dt_B_u_def,
+	harmonicShiftHyperbolic_dt_B_u_negflux,
+	harmonicShiftHyperbolic_dt_B_u_rhs 
+
+	= getShiftFluxParts(harmonicShiftExpr, true)
 
 --[[
 local gammaDriverK = frac(3,4)
@@ -1754,13 +1808,29 @@ end
 
 printbr'using harmonic shift for state vars'
 
-if useShift == 'HarmonicShift' then
-	dt_beta_u_def		= harmonicShift_dt_beta_u_def    
-	dt_beta_u_negflux   = harmonicShift_dt_beta_u_negflux
-	dt_beta_u_rhs       = harmonicShift_dt_beta_u_rhs
-	dt_b_ul_def         = harmonicShift_dt_b_ul_def
-	dt_b_ul_negflux     = harmonicShift_dt_b_ul_negflux
-	dt_b_ul_rhs         = harmonicShift_dt_b_ul_rhs
+-- these specific dt_beta, dt_b, dt_B vars shouldn't be used anywhere after this until the eigensystem stuff
+-- TODO move this block down there
+-- because in the flux and source stuff, I'm just going to write out everything as it is
+if useShift == 'HarmonicShiftParabolic' then
+	dt_beta_u_def		= harmonicShiftParabolic_dt_beta_u_def    
+	dt_beta_u_negflux   = harmonicShiftParabolic_dt_beta_u_negflux
+	dt_beta_u_rhs       = harmonicShiftParabolic_dt_beta_u_rhs
+	
+	dt_b_ul_def         = harmonicShiftParabolic_dt_b_ul_def
+	dt_b_ul_negflux     = harmonicShiftParabolic_dt_b_ul_negflux
+	dt_b_ul_rhs         = harmonicShiftParabolic_dt_b_ul_rhs
+elseif useShift == 'HarmonicShiftHyperbolic' then
+	dt_beta_u_def		= harmonicShiftHyperbolic_dt_beta_u_def    
+	dt_beta_u_negflux   = harmonicShiftHyperbolic_dt_beta_u_negflux
+	dt_beta_u_rhs       = harmonicShiftHyperbolic_dt_beta_u_rhs
+	
+	dt_b_ul_def         = harmonicShiftHyperbolic_dt_b_ul_def
+	dt_b_ul_negflux     = harmonicShiftHyperbolic_dt_b_ul_negflux
+	dt_b_ul_rhs         = harmonicShiftHyperbolic_dt_b_ul_rhs
+	
+	dt_B_u_def         = harmonicShiftHyperbolic_dt_B_u_def
+	dt_B_u_negflux     = harmonicShiftHyperbolic_dt_B_u_negflux
+	dt_B_u_rhs         = harmonicShiftHyperbolic_dt_B_u_rhs
 end
 
 printbr()
@@ -1867,37 +1937,94 @@ end
 -- TODO only exclude these if we have "shift" set to "none"
 -- make this as close to the hydro/eqn/z4.lua flags as possible
 if flux_includeShiftVars then
-	if dt_beta_u_def then
-		UijkltWithShiftEqns:insert(dt_beta_u_def)
+	local function makeShiftVarsFor(subscript)
+		local betaVar = var('(\\beta_{'..subscript..'})')
+		local bVar = var('(b_{'..subscript..'})')
+		local BVar = var('(B_{'..subscript..'})')
+		-- temp soln: change the C names
+		-- TODO to fix this -- group the codegen exprs by which shift they belong to and auto-wrap them in their blocks
+		betaVar:nameForExporter('C', 'beta'..subscript)
+		bVar:nameForExporter('C', 'b'..subscript)
+		BVar:nameForExporter('C', 'B'..subscript)
+		betaVar'^l':setDependentVars(txs:unpack())
+		bVar'^l_k':setDependentVars(txs:unpack())
+		BVar'^l':setDependentVars(txs:unpack())
+		local substs = table{beta:eq(betaVar), b:eq(bVar), B:eq(BVar)}
+		return betaVar, bVar, BVar, substs
 	end
-	if dt_b_ul_def then
-		UijkltWithShiftEqns:insert(dt_b_ul_def)
+	-- add harmonic shift parabolic terms
+	local substs
+	betaVar_harmonicParabolic, 
+		bVar_harmonicParabolic, 
+		BVar_harmonicParabolic,
+		substs 
+		= makeShiftVarsFor'har.par.'
+	if harmonicShiftParabolic_dt_beta_u_def then
+		UijkltWithShiftEqns:insert(harmonicShiftParabolic_dt_beta_u_def:subst(substs:unpack()))
+		FijklWithShiftTerms:insert(-removeCommaDeriv(harmonicShiftParabolic_dt_beta_u_negflux, 'r'):subst(substs:unpack()))
+		SijklWithShiftTerms:insert((harmonicShiftParabolic_dt_beta_u_rhs or Constant(0)):subst(substs:unpack()))
 	end
-	if dt_B_u_def then
-		UijkltWithShiftEqns:insert(dt_B_u_def)
+	if harmonicShiftParabolic_dt_b_ul_def then
+		UijkltWithShiftEqns:insert(harmonicShiftParabolic_dt_b_ul_def:subst(substs:unpack()))
+		FijklWithShiftTerms:insert(-removeCommaDeriv(harmonicShiftParabolic_dt_b_ul_negflux, 'r'):subst(substs:unpack()))
+		SijklWithShiftTerms:insert((harmonicShiftParabolic_dt_b_ul_rhs or Constant(0)):subst(substs:unpack()))
+	end
+	if harmonicShiftParabolic_dt_B_u_def then
+		UijkltWithShiftEqns:insert(harmonicShiftParabolic_dt_B_u_def:subst(substs:unpack()))
+		FijklWithShiftTerms:insert(-removeCommaDeriv(harmonicShiftParabolic_dt_B_u_negflux or Constant(0), 'r'):subst(substs:unpack()))
+		SijklWithShiftTerms:insert((harmonicShiftParabolic_dt_B_u_rhs or Constant(0)):subst(substs:unpack()))
+	end
+
+	-- add harmonic shift hyperbolic terms
+	betaVar_harmonicHyperbolic, 
+		bVar_harmonicHyperbolic, 
+		BVar_harmonicHyperbolic,
+		substs 
+		= makeShiftVarsFor'har.hyp.'
+	if harmonicShiftHyperbolic_dt_beta_u_def then
+		UijkltWithShiftEqns:insert(harmonicShiftHyperbolic_dt_beta_u_def:subst(substs:unpack()))
+		FijklWithShiftTerms:insert(-removeCommaDeriv(harmonicShiftHyperbolic_dt_beta_u_negflux, 'r'):subst(substs:unpack()))
+		SijklWithShiftTerms:insert((harmonicShiftHyperbolic_dt_beta_u_rhs or Constant(0)):subst(substs:unpack()))
+	end
+	if harmonicShiftHyperbolic_dt_b_ul_def then
+		UijkltWithShiftEqns:insert(harmonicShiftHyperbolic_dt_b_ul_def:subst(substs:unpack()))
+		FijklWithShiftTerms:insert(-removeCommaDeriv(harmonicShiftHyperbolic_dt_b_ul_negflux, 'r'):subst(substs:unpack()))
+		SijklWithShiftTerms:insert((harmonicShiftHyperbolic_dt_b_ul_rhs or Constant(0)):subst(substs:unpack()))
+	end
+	if harmonicShiftHyperbolic_dt_B_u_def then
+		UijkltWithShiftEqns:insert(harmonicShiftHyperbolic_dt_B_u_def:subst(substs:unpack()))
+		FijklWithShiftTerms:insert(-removeCommaDeriv(harmonicShiftHyperbolic_dt_B_u_negflux or Constant(0), 'r'):subst(substs:unpack()))
+		SijklWithShiftTerms:insert((harmonicShiftHyperbolic_dt_B_u_rhs or Constant(0)):subst(substs:unpack()))
 	end
 end
 
--- if we exclude the shift vars from the eigensystem ... 
--- we should still put them in the flux vector
--- but that means we need a separate lhs dUdt to match up with the flux vector versus the eigensystem
--- it also might mean keeping track of where the non-shift flux vector terms end if I want to (TODO) change this script to derive the eigensystem from this flux vector
--- (instead of from all those dt_*_def var rhs's
--- because doing this means ...
--- ... TODO ... get rid of all the dt_*_def rhs's after the flux separation
--- and TODO get rid of all the replace()'s beforehand since in the flux vector I just swap them back
-if dt_beta_u_def then
-	FijklWithShiftTerms:insert(-removeCommaDeriv(dt_beta_u_negflux, 'r'))
-	SijklWithShiftTerms:insert(dt_beta_u_rhs or Constant(0))
-end
-if dt_b_ul_def then
-	FijklWithShiftTerms:insert(-removeCommaDeriv(dt_b_ul_negflux, 'r'))
-	SijklWithShiftTerms:insert(dt_b_ul_rhs or Constant(0))
-end
-if dt_B_u_def then
-	FijklWithShiftTerms:insert(-removeCommaDeriv(dt_B_u_negflux or Constant(0), 'r'))
-	SijklWithShiftTerms:insert(dt_B_u_rhs or Constant(0))
-end
+-- apply a few specific rules ...
+FijklWithShiftTerms = FijklWithShiftTerms:mapi(function(expr)
+	local checkorx
+	local function check(x)
+		-- --x => x
+		if symmath.op.unm:isa(x)
+		and symmath.op.unm:isa(x[1])
+		then
+			return x[1][1]
+		end
+		-- -0 => 0
+		if symmath.op.unm:isa(x)
+		and Constant.isValue(x[1], 0)
+		then
+			return 0
+		end
+		if symmath.op.unm:isa(x)
+		and symmath.op.add:isa(x[1])
+		then
+			return symmath.op.add(table.mapi(x[1], function(xi)
+				return checkorx(-xi)
+			end):unpack())
+		end
+	end
+	function checkorx(x) return check(x) or x end
+	return expr:map(check)
+end)
 
 -- ijkl on the partial_t's
 -- pqmn on the partial_x^r's
@@ -1910,7 +2037,8 @@ local UijklWithShiftMat = Matrix(UijklWithShiftVars):T()
 local FijklWithShiftMat = Matrix(FijklWithShiftTerms):T()
 local SijklWithShiftMat = Matrix(SijklWithShiftTerms):T()
 
-printbr'flux vector:'
+
+printbr'flux vector in index form:'
 printbr((UijklWithShiftMat'_,t' + FijklWithShiftMat'_,r'):eq(SijklWithShiftMat))
 printbr()
 
@@ -2006,7 +2134,6 @@ local dHat_t_Dense = dHat_t'_ij':makeDense()
 local dt_dHatDense = dt_dHat'_kij':makeDense()
 
 function expandMatrixIndexes(expr)
-
 	-- special for our time deriv, since the "t" is a fixed dim, not a tensor index
 	-- how about TODO a 'fixed indexes'?  remove these from the dense tensor generation
 	expr = expr:replace(dHat'_tij', dHat_t_Dense'_ij')
@@ -2044,6 +2171,14 @@ F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr) return expandM
 
 local S_withShift_exprs = range(#SijklWithShiftMat):mapi(function(i) return SijklWithShiftMat[i][1] end)
 S_withShift_exprs = S_withShift_exprs:mapi(function(expr) return expandMatrixIndexes(expr) end) 
+
+--[[ show dense tensor form before iterating and expanding:
+printbr'in dense-tensor form, before simplifying:'
+for i=1,#F_lhs_withShift_exprs do
+	printbr((dUdt_lhs_withShift_exprs[i]'_,t' + F_lhs_withShift_exprs[i]'_,r'):eq(S_withShift_exprs[i]))
+end
+printbr()
+--]]
 
 F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr,i)
 	expr = expr()
@@ -2086,15 +2221,22 @@ for i=1,#F_lhs_withShift_exprs do
 	local dUdt_i = assert(dUdt_lhs_withShift_exprs[i])
 	local F_i = assert(F_lhs_withShift_exprs[i])
 	local S_i = assert(S_withShift_exprs[i])
+--printbr('unraveling dUdt:', dUdt_i, 'F:', F_i, 'S:', S_i)
 	if Tensor:isa(dUdt_i) then
 		for j,x in dUdt_i:iter() do
 			local dUdt_i_j = assert(dUdt_i[j])
+			
+			-- this cond is to make sure symmetric terms aren't added twice
+			-- but .. how about my multiple-shift terms?
+			-- I guess I'll have to rename them before making them into dense vars
 			if not dUdt_lhs_withShift_exprs_expanded:find(dUdt_i_j) then
+				
 				dUdt_lhs_withShift_exprs_expanded:insert(dUdt_i_j)
 				local F_i_j_x = Constant.isValue(F_i, 0) and Constant(0) or assert(F_i[j][1])	-- extra [1] because _,x flux ... 
 				F_lhs_withShift_exprs_expanded:insert(F_i_j_x)
 				local S_i_j = Constant.isValue(S_i, 0) and Constant(0) or assert(S_i[j])
 				S_withShift_exprs_expanded:insert(S_i_j)
+--printbr('inserting scalar dUdt:', dUdt_i_j, 'F:', F_i_j_x, 'S:', S_i_j)
 			end
 		end
 	else
@@ -2105,6 +2247,7 @@ for i=1,#F_lhs_withShift_exprs do
 		F_lhs_withShift_exprs_expanded:insert(assert(F_i_x))
 		assert(not Tensor:isa(S_i))
 		S_withShift_exprs_expanded:insert(S_i)
+--printbr('inserting scalar dUdt:', dUdt_i, 'F:', F_i_x, 'S:', S_i)
 	end
 end
 
@@ -2134,7 +2277,7 @@ local Sijkl_withShift_expanded = Matrix(S_withShift_exprs_expanded):T()
 local dUdt_lhs_withShift_exprs_expanded_mat = Matrix(dUdt_lhs_withShift_exprs_expanded):T()
 dUdt_lhs_withShift_exprs_expanded_mat.rowsplits = rowsplits
 
-printbr'flux vector:'
+printbr'flux vector expanded:'
 printbr((dUdt_lhs_withShift_exprs_expanded_mat + Fijkl_withShift_expanded'_,r'):eq(Sijkl_withShift_expanded))
 printbr()
 
@@ -2150,6 +2293,8 @@ local shiftVarNames = {
 	-- scalar vars:
 	[tr_b.name] = true,
 }
+local harmonicParabolicShiftVarNames = {}
+local harmonicHyperbolicShiftVarNames = {}
 for _,t in ipairs(cachedDenseTensors) do
 	if TensorRefWithoutDerivMatchesDegree(t[1], beta'^k')
 	or TensorRefWithoutDerivMatchesDegree(t[1], b'^k_l')
@@ -2158,6 +2303,22 @@ for _,t in ipairs(cachedDenseTensors) do
 		local d = t[2]
 		for i,x in d:iter() do
 			shiftVarNames[x.name] = true
+		end
+	elseif TensorRefWithoutDerivMatchesDegree(t[1], betaVar_harmonicParabolic'^k')
+	or TensorRefWithoutDerivMatchesDegree(t[1], bVar_harmonicParabolic'^k_l')
+	or TensorRefWithoutDerivMatchesDegree(t[1], BVar_harmonicParabolic'^k')
+	then
+		local d = t[2]
+		for i,x in d:iter() do
+			harmonicParabolicShiftVarNames[x.name] = true
+		end
+	elseif TensorRefWithoutDerivMatchesDegree(t[1], betaVar_harmonicHyperbolic'^k')
+	or TensorRefWithoutDerivMatchesDegree(t[1], bVar_harmonicHyperbolic'^k_l')
+	or TensorRefWithoutDerivMatchesDegree(t[1], BVar_harmonicHyperbolic'^k')
+	then
+		local d = t[2]
+		for i,x in d:iter() do
+			harmonicHyperbolicShiftVarNames[x.name] = true
 		end
 	end
 end
@@ -2181,7 +2342,10 @@ for _,info in ipairs{
 		local Uijkl_t = Uijkl_withShift_expanded[i][1]
 		local Fijkl = src[i][1]:simplifyAddMulDiv()
 		local with, without
-		if not shiftVarNames[Uijkl_t.name] then
+		if not shiftVarNames[Uijkl_t.name]
+		and not harmonicParabolicShiftVarNames[Uijkl_t.name]
+		and not harmonicHyperbolicShiftVarNames[Uijkl_t.name]
+		then
 			with, without = separateSum(
 				Fijkl,
 				function(x)
@@ -2192,9 +2356,15 @@ for _,info in ipairs{
 			)
 			noShiftTerms[i] = without 
 			shiftTerms[i] = with
-		else
-			noShiftTerms[i] = nil	-- don't write the shift vars to the noShift block, instead write them to the shift block (with a = instead of +=)
+		elseif harmonicParabolicShiftVarNames[Uijkl_t.name] then
+			-- don't write the shift vars to the noShift block, instead write them to the shift block (with a = instead of +=)
+			noShiftTerms[i] = nil
 			shiftTerms[i] = Fijkl
+		elseif harmonicHyperbolicShiftVarNames[Uijkl_t.name] then
+			noShiftTerms[i] = nil
+			shiftTerms[i] = Fijkl
+		else
+			error"you got some lhs shift vars that aren't part of the known lhs shift vars"
 		end
 	end
 	print('\t{'..lineend)
@@ -2214,13 +2384,17 @@ for _,info in ipairs{
 		..lineend
 	)
 	print('\t}'..lineend)
-	print('\t&lt;? if useShift == "HarmonicShift" then ?>'..lineend)
+	print('\t&lt;? if eqn.useShift ~= "none" then ?>'..lineend)
 	print('\t{'..lineend)
 	print('\t\t'..export.C:toCode{
 			output = range(#Uijkl_withShift_expanded):mapi(function(i,_,t)
 				local Uijkl = Uijkl_withShift_expanded[i][1]
 				local name = '('..structName..')->'..export.C(Uijkl)
-				if structName == 'deriv' or not shiftVarNames[Uijkl.name] then 
+				if structName == 'deriv' 
+				or not shiftVarNames[Uijkl.name]
+				or not harmonicParabolicShiftVarNames[Uijkl_t.name]
+				or not harmonicHyperbolicShiftVarNames[Uijkl_t.name]
+				then 
 					name = name..' +' 
 					if Constant.isValue(shiftTerms[i], 0) then return end	-- don't even output it
 				end
@@ -2233,7 +2407,7 @@ for _,info in ipairs{
 		..lineend
 	)
 	print('\t}'..lineend)
-	print('\t&lt;? end ?>/* useShift == "HarmonicShift" */'..lineend)
+	print('\t&lt;? end ?>/* eqn.useShift ~= "none" */'..lineend)
 	print()
 end
 print'</pre>'
@@ -2377,6 +2551,8 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 	rhs = rhs:simplifyAddMulDiv()
 --printbr(lhs:eq(rhs))
 
+	-- TODO don't do this willy-nilly, or even going by what looks good, but instead legitimately try to salvage the gauge vars inside the flux
+	--  for the purpose of maintaing the homogeneity condition of the flux: dF/dU * U = F
 	if eigensystem_favorFluxTerms then
 		if lhs == dt_alpha_def:lhs() then
 			rhs = rhs:substIndex(a_l_def)
@@ -2384,9 +2560,23 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 		elseif lhs == dt_gammaDelta_ll_def:lhs() then
 			rhs = rhs:substIndex(dDelta_lll_def, b_ul_def)
 			rhs = rhs:simplifyAddMulDiv()
+		elseif lhs == dt_a_l_def:lhs() then
+			--[[
+			rhs = rhs:substIndex(a_l_def)
+			rhs = rhs:replaceIndex(b'^a_a', tr_b)
+			-- even tho i just did this ..
+			rhs = rhs:simplifyAddMulDiv()
+			rhs = rhs:replace(K'_mn' * gamma'^mn', tr_K)
+			rhs = rhs:replace(K'_mn' * gamma'^am' * gamma'^bn', tr_K)
+			rhs = rhs:simplifyAddMulDiv()
+			--]]
+		elseif lhs == dt_dDelta_lll_def:lhs() then
+			--[[
+			rhs = rhs:substIndex(a_l_def, dDelta_lll_def)
+			rhs = rhs:replaceIndex(b'^a_a', tr_b)
+			rhs = rhs:simplifyAddMulDiv()
+			--]]
 		end
-		-- but any further ... 
-		-- and we run into issues where we have
 	end
 	
 	return lhs:eq(rhs)
@@ -2623,7 +2813,7 @@ local rowsplits = table()
 local dUdt_lhs_exprs_expanded = table()
 local dFdx_lhs_exprs_expanded = table()
 local S_rhs_exprs_expanded = table()
-local dUdx_lhs_exprs_expanded = table()
+local dUdxs_lhs_exprs_expanded = table{table(), table(), table()}
 for i=1,#dFdx_lhs_exprs do
 	local dUdt_i = dUdt_lhs_exprs[i]
 	local dFdx_i = dFdx_lhs_exprs[i]
@@ -2641,7 +2831,9 @@ for i=1,#dFdx_lhs_exprs do
 				-- TODO no need to test for Constant if, when dUdt_i is a Tensor and S_i is 0, then we just turn S_i into a Tensor of same variance
 				local S_i_j = Constant.isValue(S_i, 0) and Constant(0) or assert(S_i[j])
 				S_rhs_exprs_expanded:insert(S_i_j)
-				dUdx_lhs_exprs_expanded:insert(dUdx_i[j][1])	-- dUdx_i has a last _,x
+				for k=1,3 do
+					dUdxs_lhs_exprs_expanded[k]:insert(dUdx_i[j][k])	-- dUdx_i has a last _,x
+				end
 			end
 		end
 	else
@@ -2651,7 +2843,9 @@ for i=1,#dFdx_lhs_exprs do
 		assert(not Tensor:isa(S_i))
 		S_rhs_exprs_expanded:insert(assert(S_i))
 		assert(Tensor:isa(dUdx_i))
-		dUdx_lhs_exprs_expanded:insert(dUdx_i[1])	-- dUdx_i has a last _,x, so always assume its a Tensor
+		for k=1,3 do
+			dUdxs_lhs_exprs_expanded[k]:insert(dUdx_i[k])	-- dUdx_i has a last _,x, so always assume its a Tensor
+		end
 	end
 end
 
@@ -2670,31 +2864,6 @@ local U_vars_expanded = dUdt_lhs_exprs_expanded:mapi(function(v)
 	return v[1]
 end)
 
---[[
-ok new dilemma
-dense-tensor-generation is a lot easeier when I just remove all derivatives from the vars inside the dense tensor
-so is name generation for the derivatives-of-dense-tensor ...
-... otherwise they are Derivatives and code-gen will have to do exceptional things for the names
-but
-factoring the linear system has an easier name if I use Derivative's in the dense-tensor-generation ...
-... hmm ... 
-can I use the dense-derivative-generated variables in the factor-linear-system vars?
---]]
---[[
-local dUdx_lhs_exprs_expanded = U_vars_expanded:mapi(function(var)
-	return var:diff(x)
-end)
---]]
---[[
-so instead of using the U vars :diff(x), instead use the dense vars of _,x that are comma-expanded
-and just use the system we used for unraveling S_i etc
---]]
-
-local dFijkl_dUpqmn_expanded, dFijkl_dUpqmn_expanded_b = factorLinearSystem(dFdx_lhs_exprs_expanded, dUdx_lhs_exprs_expanded)
--- TODO should I assert dFijkl_dUpqmn_expanded_b == 0? and if so then should I just leave it out?
-dFijkl_dUpqmn_expanded.colsplits = rowsplits
-dFijkl_dUpqmn_expanded.rowsplits = rowsplits
-dFijkl_dUpqmn_expanded_b.rowsplits = rowsplits
 
 local Sijkl_expanded = Matrix(S_rhs_exprs_expanded):T()
 Sijkl_expanded.rowsplits = rowsplits
@@ -2704,27 +2873,52 @@ local Upqmn_expanded = Uijkl_expanded:clone()
 
 local dUdt_lhs_exprs_expanded_mat = Matrix(dUdt_lhs_exprs_expanded):T()
 dUdt_lhs_exprs_expanded_mat.rowsplits = rowsplits
-local dUdx_lhs_exprs_expanded_mat = Matrix(dUdx_lhs_exprs_expanded):T()
-dUdx_lhs_exprs_expanded_mat.rowsplits = rowsplits
 
--- somewhere in here I need to subtract out the diagonal -beta^x if I want to help the eigen solver 
-local betaUx = getDenseTensorCache(beta'^i')[1]
-printbr('subtracting ', -betaUx * var'I', '...')
-dFijkl_dUpqmn_expanded = (dFijkl_dUpqmn_expanded + Matrix.identity(#dFijkl_dUpqmn_expanded) * betaUx)()
-dFijkl_dUpqmn_expanded.colsplits = rowsplits
-dFijkl_dUpqmn_expanded.rowsplits = rowsplits
+
+local rest = table(dFdx_lhs_exprs_expanded)
+local dUdxs_lhs_exprs_expanded_mat = table()
+local dFijkl_dUpqmn_expanded_mats = table()
+local betaUDense = getDenseTensorCache(beta'^i')
+for j=1,3 do
+	dFijkl_dUpqmn_expanded_mats[j], rest = factorLinearSystem(rest, dUdxs_lhs_exprs_expanded[j])
+	dFijkl_dUpqmn_expanded_mats[j].colsplits = rowsplits
+	dFijkl_dUpqmn_expanded_mats[j].rowsplits = rowsplits
+	
+	rest = table(rest:T()[1])
+
+	local dUdxi_lhs_exprs_expanded_mat = Matrix(dUdxs_lhs_exprs_expanded[j]):T()
+	dUdxi_lhs_exprs_expanded_mat.rowsplits = rowsplits
+	dUdxs_lhs_exprs_expanded_mat:insert(dUdxi_lhs_exprs_expanded_mat)
+
+	-- somewhere in here I need to subtract out the diagonal -beta^x if I want to help the eigen solver 
+	--printbr('subtracting ', -betaUDense[j] * var'I', '...')
+	dFijkl_dUpqmn_expanded_mats[j] = (dFijkl_dUpqmn_expanded_mats[j] + Matrix.identity(#dFijkl_dUpqmn_expanded_mats[j]) * betaUDense[j])()
+	dFijkl_dUpqmn_expanded_mats[j].colsplits = rowsplits
+	dFijkl_dUpqmn_expanded_mats[j].rowsplits = rowsplits
+end
+
+rest = Matrix(rest):T()
+rest.rowsplits = rowsplits
+-- TODO should I assert rest == 0? and if so then should I just leave it out?
 
 printbr(
 	(
 		dUdt_lhs_exprs_expanded_mat
-		+ (dFijkl_dUpqmn_expanded - betaUx * var'I')
-		* dUdx_lhs_exprs_expanded_mat
-		+ dFijkl_dUpqmn_expanded_b	-- should be zero ...or full of all the y and z dir flux terms
+		+ (dFijkl_dUpqmn_expanded_mats[1] - betaUDense[1] * var'I') * dUdxs_lhs_exprs_expanded_mat[1]
+		+ (dFijkl_dUpqmn_expanded_mats[2] - betaUDense[2] * var'I') * dUdxs_lhs_exprs_expanded_mat[2]
+		+ (dFijkl_dUpqmn_expanded_mats[3] - betaUDense[3] * var'I') * dUdxs_lhs_exprs_expanded_mat[3]
+		+ rest
 	):eq(
 		Sijkl_expanded
 	)
 )
 printbr()
+
+
+-- continue on just doing 1D x-dir stuff
+local dFijkl_dUpqmn_expanded = dFijkl_dUpqmn_expanded_mats[1]
+dUdx_lhs_exprs_expanded_mat, dUdy_lhs_exprs_expanded_mat, dUdz_lhs_exprs_expanded_mat = dUdxs_lhs_exprs_expanded_mat:unpack()
+
 
 if eigensystem_removeZeroRows then
 	printbr'removing zero rows:'
