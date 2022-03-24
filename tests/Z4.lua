@@ -1265,7 +1265,7 @@ local dt_K_ll_def = K'_ij,t':eq(
 	)
 	+ alpha * (
 		- 2 * Gamma'^k_ij' * Z'_k'
-		+ K'_ij' * (K - 2 * Theta)
+		+ K'_ij' * (tr_K - 2 * Theta)
 		- 2 * K'_ik' * gamma'^kl' * K'_lj'
 	)
 	+ 4 * pi * alpha * (
