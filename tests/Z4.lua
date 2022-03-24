@@ -1252,10 +1252,11 @@ printHeader'extrinsic curvature evolution:'
 
 -- TODO derive this?
 local dt_K_ll_def = K'_ij,t':eq(
+	-- source terms
 --	-alpha'_;ij'
-	- alpha'_,ij'
-	+ Gamma'^k_ij' * alpha'_,k'
+	- alpha'_,ij' + Gamma'^k_ij' * alpha'_,k'
 
+	-- keep these separated/distributed so I can replace() them individually below
 	+ alpha * (
 		R'_ij'
 	)
@@ -1268,10 +1269,14 @@ local dt_K_ll_def = K'_ij,t':eq(
 		+ K'_ij' * (tr_K - 2 * Theta)
 		- 2 * K'_ik' * gamma'^kl' * K'_lj'
 	)
+	
+	-- matter terms
 	+ 4 * pi * alpha * (
 		gamma'_ij' * (S - rho)
 		- 2 * S'_ij'
 	)
+
+	-- Lie derivative terms
 	+ K'_ij,k' * beta'^k'
 	+ K'_ki' * beta'^k_,j'
 	+ K'_kj' * beta'^k_,i'
@@ -1618,6 +1623,7 @@ function makeShift(args)
 	local subscript = args.subscript
 	local beta_rhs = args.beta_rhs
 	local useHyperbolic = args.useHyperbolic
+	local useShiftingShift = args.useShiftingShift 
 	local name = args.name
 	
 	-- this is parabolic form, where we solve beta^l_,t instead of beta^l_,tt
@@ -1711,7 +1717,7 @@ end
 allShifts = table()
 
 -- how many of these terms should be state vars instead of state derivatives?
-printHeader('harmonic shift evolution:')
+printHeader'harmonic shift evolution:'
 
 -- use ^l as the index for shift expressions
 local harmonicShiftExpr = alpha^2 * (2 * e'^l' - d'^l' - a'^l')
@@ -1723,6 +1729,7 @@ shiftHarmonicParabolic = makeShift{
 	beta_rhs = harmonicShiftExpr,
 	subscript = 'har.par.',
 	useHyperbolic = false,
+	useShiftingShift = useShiftingShift,
 }
 allShifts:insert(shiftHarmonicParabolic)
 
@@ -1731,32 +1738,329 @@ shiftHarmonicHyperbolic = makeShift{
 	beta_rhs = harmonicShiftExpr,
 	subscript = 'har.hyp.',
 	useHyperbolic = true,
+	useShiftingShift = useShiftingShift,
 }
 allShifts:insert(shiftHarmonicHyperbolic)
 
-printHeader('gamma driver shift evolution:')
+
+--[==[ minimum distortion elliptic evolution
+-- how do you do time evolution for b^l_k,t = (β^l_,t)_,k
+-- seems i'm getting 2nd deriv β^l_,ij terms in here
+-- unless you're supposed to implement them as finite-difference on the rhs?
+-- or unless you include this MDE vector value as a separate state var
+-- (just like we do with conformal-gamma to do the gamma-driver)
+
+printHeader'minimal distortion shift evolution:'
+
+local mdeShiftEpsilon = var'\\epsilon_{mde}'
+mdeShiftEpsilon:nameForExporter('C', 'mdeShiftEpsilon')
 
 --[[
+R^l_j β^j 
+... 
+R_ij = P_ij + Q_ij^k_,k
+...
+γ^li R_ij β^j = γ^li (P_ij + Q_ij^k_,k) β^j
+= γ^li P_ij β^j + γ^li Q_ij^k_,k β^j
+= γ^li P_ij β^j + (γ^li Q_ij^k β^j)_,k + Q_ij^k (γ^li β^j)_,k
+= γ^li P_ij β^j + Q_ij^k (- 2 d_k^li β^j + γ^li b^j_k) + (γ^li Q_ij^k β^j)_,k
++ R^l_j β^j ... rhs
+--]]
+local minimalDistortionShiftExpr = 
+	(
+		mdeShiftEpsilon * (
+			-- β^l;j_j ... negflux
+			(b'^l_j' + Gamma'^l_mj' * beta'^m') * gamma'^jk'
+			-- 1/3 β_j^;jl ... negflux
+			+ frac(1,3) * gamma'^kl' * (tr_b - Gamma'^j_ji' * beta'^i')
+			-- + R^l_j β^j ... negflux
+			+ gamma'^li' * removeCommaDeriv(Ricci_ll_negflux, 'k') * beta'^j'
+			-- - 2 (α A^lj)_;j ... negflux
+			- 2 * alpha * (K'^lj' - frac(1,3) * tr_K * gamma'^kl')
+		)
+	)'_,k'
+
+	+ mdeShiftEpsilon * (
+		-- β^l;j_j ... rhs 
+		2 * (b'^l_j' + Gamma'^l_mj' * beta'^m') * e'^j'
+		+ (b'^n_j' + Gamma'^n_mj' * beta'^m') * Gamma'^l_nk' * gamma'^jk'
+		- (b'^l_n' + Gamma'^l_mn' * beta'^m') * Gamma'^n_jk' * gamma'^jk'
+
+		-- 1/3 β_j^;jl ... rhs
+		+ frac(2,3) * (tr_b - Gamma'^j_jk' * beta'^k') * e'^l'
+
+		-- + R^l_j β^j ... rhs
+		+ gamma'^li' * beta'^j' * Ricci_ll_rhs
+		+ removeCommaDeriv(Ricci_ll_negflux, 'k') * (-2 * d'_k^li' * beta'^j' + gamma'^li' * b'^j_k')
+	
+		-- - 2 (α A^lj)_;j ... rhs
+		- 2 * alpha * (
+			(K'^mn' - frac(1,3) * tr_K * gamma'^mn') * Gamma'^l_nm'
+			+ (K'^lm' - frac(1,3) * tr_K * gamma'^lm') * Gamma'^n_nm'
+		)
+	)
+
+shiftMinimalDistortionParabolic = makeShift{
+	name = "MinimalDistortionParabolic",
+	beta_rhs = minimalDistortionShiftExpr,
+	subscript = 'mde.par.',
+	useHyperbolic = false,
+	useShiftingShift = useShiftingShift,
+}
+allShifts:insert(shiftMinimalDistortionParabolic)
+
+--[[
+shiftMinimalDistortionHyperbolic = makeShift{
+	name = "MinimalDistortionHyperbolic",
+	beta_rhs = minimalDistortionShiftExpr,
+	subscript = 'har.hyp.',
+	useHyperbolic = true,
+	useShiftingShift = useShiftingShift,
+}
+allShifts:insert(shiftMinimalDistortionHyperbolic)
+--]]
+--]==]
+
+-- [==[
+printHeader'gamma driver shift evolution:'
+
+--[[
+parabolic version:
+
+hyperbolic version:
+	β^i_,t = β^i_,j β^j + 3/4 (_Λ^i_,t - _Λ^i_,j β^j) - η _Λ^i
+... mind you this is hyperbolic ... but doesn't allow for any b^i_j as a state var
+ 	because if we introduce it as a state var then it will need a 2nd deriv in its update
+
 2017 Ruchlin, Etienne, Baumgarte - "SENR-NRPy- Numerical Relativity in Singular Curvilinear Coordinate Systems"
 eqn 14.a: β^i_,t = B^i
 eqn 14.b: B^i_,t - B^i_,j β^j = 3/4 (_Λ^i_,t - _Λ^i_,j β^j) - η B^i
-eqn 11.e: _Λ^i_,t - _Λ^i_,j β^j + _Λ^j β^i_,j = γ^jk ^D_j ^D_k β^i + 2/3 ΔΓ^i (_D_j β^j) + 1/3 _D^i _D_j β^j - 2 _A^ij (α_,j - 6 φ_,j) + 2 _A^jk ΔΓ^i_jk - 4/3 α _γ^ij K_,j
+eqn 11.e: _Λ^i_,t - _Λ^i_,j β^j + _Λ^j β^i_,j = _γ^jk ^D_j ^D_k β^i + 2/3 ΔΓ^i (_D_j β^j) + 1/3 _D^i _D_j β^j - 2 _A^ij (α_,j - 6 φ_,j) + 2 _A^jk ΔΓ^i_jk - 4/3 α _γ^ij K_,j
+
+b^i_j,t = β^i_,tk ... can only be hyperbolic if β^i_,t itself has no derivative terms, but only rhs source terms.
+and in fact that might be perfect for hyperbolic, so b^i_j,t = B^i_,j
+
+in fact can b^i_j,t be defined for parabolic?  
+	β^i_,t += _Λ^i_,j which has 2nd derivs in it ... but only if useShift is used. so you can skip that.
+	but b^i_j,t = (β^i_,t)_,j += (_Λ^i_,t)_,j ... and _Λ^i_,t has first-order terms 
+	... so now we need 2nd-order terms 
+	... so parabolic won't work
+
+insert shifting-shift: _Λ^i_,t -> _Λ^i_,0 = _Λ^i_,t - _Λ^i_,j β^j
+becomes:
+_Λ^i_,0 = 
+	- _Λ^j β^i_,j
+	+ _γ^jk ^D_j ^D_k β^i
+	+ 2/3 ΔΓ^i (_D_j β^j)
+	+ 1/3 _D^i _D_j β^j
+	- 2 _A^ij (α_,j - 6 φ_,j)
+	+ 2 _A^jk ΔΓ^i_jk
+	- 4/3 α _γ^ij K_,j
+
+... in flux form (how about looking at the ccz4 paper?)
+
+using:
+exp(φ) = (γ/_γ)^(1/12)
+φ = 1/12 log(γ/_γ)
+φ_,i = 1/12 (log(γ)_,i - log(_γ)_,i)
+φ_,i = 1/6 (log(√γ)_,i - log(√_γ)_,i)
+W = exp(-2 φ)
+W = (_γ/γ)^(1/6)
+W_,i = -2 exp(-2 φ) φ_,i
+W_,i = -1/3 W (log(√γ)_,i - log(√_γ)_,i)
+W_,i = -1/3 W (log(√γ)_,i - log(√^γ)_,i)
+W_,i = -1/3 W (Γ^j_ji - ^Γ^j_ji)
+W_,i = -1/3 W (d_i - ^d_i)
+W_,i = -1/3 W Δd_i
+φ_,i = -1/2 W_,i / W
+_A^ij = A^ij W^-2
+_γ_ij = γ_ij W^2
+_γ^ij = γ^ij W^-2
+
+_Λ^i_,0 = 
+	- _Λ^j β^i_,j
+	+ W^-2 (
+		+ 1/3 (b^j_j + _Γ^j_kj β^k)_,l γ^li
+		- 2 A^ij (α - 6 φ)_,j
+		- 4/3 α γ^ij K_,j
+	)
+	+ W^-2 (
+		+ γ^jk ^D_j (b^i_k + ^Γ^i_lk β^l)
+		+ 2/3 (b^j_j + _Γ^j_kj β^k) ΔΓ^i_mn γ^mn
+		+ 2 A^jk ΔΓ^i_jk
+	)
+
+using:
+
+Γ^i_jk = d_kj^i + d_jk^i - d^i_jk
+
+log(√γ)_,i - log(√^γ)_,i = log(√(γ/^γ))_,i = Γ^j_ji - ^Γ^j_ji = d_i - ^d_i = Δd_i
+also notice that if we impose the ^γ = _γ constraint then _Γ^j_ji = ^Γ^j_ji = Δd_i and _d_i = ^d_i
+
+_Γ^i_jk = Γ^i_jk + (δ^i_j W_,k + δ^i_k W_,j - γ_jk W_,l γ^li) / W
+_Γ^j_jk = Γ^j_jk + (4 W_,k - γ_jk W_,l γ^lj) / W
+
+ΔΓ^i_jk = _Γ^i_jk - ^Γ^i_jk
+ΔΓ^i = ΔΓ^i_jk _γ^jk 
+ΔΓ^i = (_Γ^i_jk - ^Γ^i_jk) _γ^jk
+ΔΓ^i = _Γ^i - ^Γ^i_jk _γ^jk
+
+_Γ^i_jk = Γ^i_jk - 1/3 δ^i_j Δd_k - 1/3 δ^i_k Δd_j + 1/3 γ_jk Δd^i
+_Γ^i_jk = d_kj^i + d_jk^i - d^i_jk - 1/3 δ^i_j Δd_k - 1/3 δ^i_k Δd_j + 1/3 γ_jk Δd^i
+_Γ^j_ji = Δd_i
+
+_Γ^i = _Γ^i_jk _γ^jk 
+_Γ^i = _Γ^i_jk γ^jk W^2
+_Γ^i = (d_kj^i + d_jk^i - d^i_jk - 1/3 δ^i_j Δd_k - 1/3 δ^i_k Δd_j + 1/3 γ_jk Δd^i) γ^jk W^2
+_Γ^i = (Γ^i + 1/3 Δd^i) W^2
+
+_Λ^i = ΔΓ^i + C^i
+_Λ^i = _Γ^i - ^Γ^i_jk _γ^jk + C^i
+_Λ^i = (Γ^i + 1/3 Δd^i) W^2 - ^Γ^i_jk _γ^jk + C^i
+_Λ^i = (2 e^i - d^i + 1/3 Δd^i) W^2 - ^Γ^i_jk _γ^jk + C^i
+_Λ^i = (2 e^i - 2/3 Δd^i - ^d^i) W^2 - ^Γ^i_jk _γ^jk + C^i
+
+
+-- the "real" delta-Gamma
+-- this is difference of the connection and the conformal connection
+-- whereas the BSSN delta-Gamma is the difference of the conformal connection and grid (hat) connection.
+(_Γ->Γ)^i_jk = Γ^i_jk - _Γ^i_jk = 1/3 (δ^i_j Δd_k + δ^i_k Δd_j - γ_jk Δd^i)
+
+_∇∙β = _∇_i β^i
+_∇∙β = β^i_,i + _Γ^i_ji β^j
+_∇∙β = b^i_i + Δd_j β^j
+
+^Γ^i_kj = ^γ^il ^Γ_lkj
+
+^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
+
+_Λ^i_,0 = 
+	
+	+ (W^-2 (
+		+ γ^rk (^∇_k β^i)
+		+ 1/3 γ^ir ((_∇∙β) - 4 α K)
+	))_,r
+
+	- _Λ^j b^i_j
+	
+	+ W^-2 (
+		+ 2 e^k (^∇_k β^i)
+		+ γ^jk (
+			+ ^Γ^i_jm b^m_k 
+			- ^Γ^m_jk b^i_m 
+			+ ^Γ^i_jm ^Γ^m_lk β^l
+			- ^Γ^m_jk ^Γ^i_lm β^l
+		)	
+		+ 2/3 (_∇∙β) ΔΓ^i_mn γ^mn
+		+ 2/3 (_∇∙β) e^i
+		- 2 A^ij (α a_j - Δd_i)
+		+ 2 A^jk ΔΓ^i_jk
+		+ 4/3 α K (a^i - 2 e^i)
+		- 2/3 (
+			+ Δd^k (^∇_k β^i)
+			+ 1/3 Δd^i (_∇∙β)
+			- 4/3 α K γ^ir
+		)
+	)
+
+so it looks like I can't use a spatial derivative for β^i that is directly based on gamma driver
+instead I will have to include _Λ itself as an extra variable for gamma driver 
+
 --]]
+
 local gammaDriverK = frac(3,4)
+
 local gammaDriverEta = var'\\eta'
-local LambdaBar = var[[\bar{\Lambda}]]
-local dt_LambdaBar = var[[\bar{\Lambda}_{,t}]]
-local gammaDriverShiftExpr = gammaDriverK * dt_LambdaBar'^l' - gammaDriverEta * B'^l'
-printbr(gammaDriverShiftExpr)
+local A = var'A'
+local det_gamma = var'det(\\gamma)'
+local det_gammaHat = var'det(\\hat{\\gamma})'
+local GammaHat = var'\\hat{\\Gamma}'
+local GammaBar = var'\\bar{\\Gamma}'
+local DeltaGamma = var'\\Delta\\Gamma'
+local LambdaBar = var'\\bar{\\Lambda}'
+DBarDotBeta = var'(\\bar{\\nabla}\\cdot\\beta)'	-- _∇∙β = b^i_i + Δd_j β^j
+DHatBeta = var'(\\bar{\\nabla}\\beta)'			-- ^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
+gammaDriverEta:nameForExporter('C', 'gammaDriver_eta') 
+det_gamma:nameForExporter('C', 'det_gamma')
+det_gammaHat:nameForExporter('C', 'det_gammaHat')
+GammaHat:nameForExporter('C', 'connHat') 
+GammaBar:nameForExporter('C', 'connBar') 
+LambdaBar:nameForExporter('C', 'LambdaBar') 
+DBarDotBeta:nameForExporter('C', 'DBarDotBeta')	
+DHatBeta:nameForExporter('C', 'DHatBeta')
+A'_ij':setSymmetries{1,2}
+GammaHat'_ijk':setSymmetries{2,3}
+GammaBar'_ijk':setSymmetries{2,3}
+DeltaGamma'_ijk':setSymmetries{2,3}
+
+-- _Λ^l_,0 = _Λ^l_,t - _Λ^l_,k β^k
+local d0_LambdaBar_u_def = 
+	gammaDriverK * (
+		(det_gamma/det_gammaHat)^frac(1,3) * (
+			gamma'^rk' * DHatBeta'^l_k'
+			+ frac(1,3) * gamma'^lr' * (DBarDotBeta - 4 * alpha * tr_K)
+		)
+	)'_,r'
+	+ gammaDriverK * (det_gamma/det_gammaHat)^frac(1,3) * (
+		2 * e'^k' * DHatBeta'^l_k'
+		+ gamma'^jk' * (
+			GammaHat'^l_jm' * b'^m_k'
+			- GammaHat'^m_jk' * b'^l_m'
+			+ GammaHat'^l_jm' * GammaHat'^m_nk' * beta'^n'
+			- GammaHat'^m_jk' * GammaHat'^l_nm' * beta'^n'
+		)	
+		+ frac(2,3) * DBarDotBeta * DeltaGamma'^l_mn' * gamma'^mn'
+		+ frac(2,3) * DBarDotBeta * e'^l'
+		- 2 * A'^lj' * (alpha * a'_j' - dDelta'_j')
+		+ 2 * A'^jk' * DeltaGamma'^l_jk'
+		+ frac(4,3) * alpha * tr_K * (a'^l' - 2 * e'^l')
+		- frac(2,3) * (
+			dDelta'^k' * DHatBeta'^l_k'
+			+ frac(1,3) * dDelta'^l' * (DBarDotBeta - 4 * alpha * tr_K)
+		)
+	)
+	- gammaDriverK * LambdaBar'^j' * b'^l_j'
+
+--[[
+printbr'gamma driver shift, parabolic:'
+
+local gammaDriverParabolicShiftExpr = 
+	d0_LambdaBar_u_def
+	- gammaDriverEta * LambdaBar'^l'	-- for parabolic, converge to LambdaBar^l ... for hyperbolic, converge to B^l
+
+printbr(gammaDriverParabolicShiftExpr)
 printbr()
 
 shiftGammaDriverParabolic = makeShift{
 	name = "GammaDriverParabolic",
-	beta_rhs = gammaDriverShiftExpr,
-	subscript = 'gamma.par.',
+	beta_rhs = gammaDriverParabolicShiftExpr,
+	subscript = 'γ.p.',
 	useHyperbolic = false,
+	useShiftingShift = false,
 }
 allShifts:insert(shiftGammaDriverParabolic)
+--]]
+
+-- [[
+printbr'gamma driver shift, hyperbolic:'
+
+local gammaDriverHyperbolicShiftExpr = 
+	d0_LambdaBar_u_def
+	- gammaDriverEta * B'^l'
+
+printbr(gammaDriverHyperbolicShiftExpr)
+printbr()
+
+shiftGammaDriverHyperbolic = makeShift{
+	name = "GammaDriverHyperbolic",
+	beta_rhs = gammaDriverHyperbolicShiftExpr,
+	subscript = 'γ.h.',
+	useHyperbolic = true,
+	useShiftingShift = false,
+}
+allShifts:insert(shiftGammaDriverHyperbolic)
+--]]
+--]==]
 
 -- TODO for parabolic be sure to replace dt_LambdaBar'^l' with dt_LambdaBar'^l' - LambdaBar'^l_,m' * beta'^m'
 
@@ -2072,7 +2376,9 @@ printbr()
 --]]
 
 F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr,i)
+--print('expr['..i..'] was = ', expr)	
 	expr = expr()
+--print('expr['..i..'] is = ', expr)	
 	if Constant.isValue(expr, 0) then return expr end
 	assert(Tensor:isa(expr))
 	-- use dUdt_lhs_withShift_exprs for tensor variance
@@ -2090,7 +2396,9 @@ F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr,i)
 end)
 
 S_withShift_exprs = S_withShift_exprs:mapi(function(expr,i)
+printbr(dUdt_lhs_withShift_exprs[i], 'src before', expr)
 	expr = expr()
+printbr(dUdt_lhs_withShift_exprs[i], 'src after', expr)
 	if Constant.isValue(expr, 0) then return expr end
 	local dUdt_i = dUdt_lhs_withShift_exprs[i]
 	if not Tensor:isa(dUdt_i) then
