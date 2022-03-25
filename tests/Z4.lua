@@ -91,7 +91,7 @@ for the sake of eigensystem computations it gets difficult, so better do one at 
 so then TODO turn this into an 'eigensystem_' var?
 --]]
 
-useShift = 'GammaDriverParabolic'
+useShift = 'GammaDriverHyperbolic'
 
 --[[
 2005 Bona et al, section B.1, "to convert the minimal distortion elliptic equations into time-dependent parabolic equations by means of the Hamilton-Jacobi method"
@@ -650,6 +650,19 @@ dt_dHat'_ijk,l':setSymmetries({2,3}, {1,4})
 dHat_t'_ij':setSymmetries{1,2}
 dHat_t'_ij,k':setSymmetries{1,2}
 K'_ij,k':setSymmetries{1,2}
+
+
+-- [[ ok not typical Z4 vars but i'm using it for MDE and for GammaDriver shift flux codegen ...
+A = var'A'
+A'_ij':setSymmetries{1,2}
+A'_ij,k':setSymmetries{1,2}
+DBeta = var'(\\nabla\\beta)'			-- ∇_j β^i = β^i_,j + Γ^i_kj β^k = b^i_j + Γ^i_kj β^k
+DBeta:nameForExporter('C', 'DBeta')
+DBeta'_ij':setSymmetries{1,2}
+DBeta'_ij,k':setSymmetries{1,2}
+tr_DBeta = var'(\\nabla \\cdot \\beta)'	-- ∇∙β = ∇_i β^i = β^i_,i + Γ^i_ij β^j = b^i_i + Γ^i_ij β^j = tr_b + Γ^i_ij β^j
+tr_DBeta:nameForExporter('C', 'tr_DBeta')
+--]]
 
 -- TODO make this a property of the Variable wrt TensorRef (like :dependsOn does)
 -- or make it a property of the TensorRef and remember to ctor/clone it
@@ -1727,7 +1740,7 @@ printbr()
 shiftHarmonicParabolic = makeShift{
 	name = "HarmonicParabolic",
 	beta_rhs = harmonicShiftExpr,
-	subscript = 'har.par.',
+	subscript = 'h.p.',
 	useHyperbolic = false,
 	useShiftingShift = useShiftingShift,
 }
@@ -1736,14 +1749,14 @@ allShifts:insert(shiftHarmonicParabolic)
 shiftHarmonicHyperbolic = makeShift{
 	name = "HarmonicHyperbolic",
 	beta_rhs = harmonicShiftExpr,
-	subscript = 'har.hyp.',
+	subscript = 'h.h.',
 	useHyperbolic = true,
 	useShiftingShift = useShiftingShift,
 }
 allShifts:insert(shiftHarmonicHyperbolic)
 
 
---[==[ minimum distortion elliptic evolution
+-- [==[ minimum distortion elliptic evolution
 -- how do you do time evolution for b^l_k,t = (β^l_,t)_,k
 -- seems i'm getting 2nd deriv β^l_,ij terms in here
 -- unless you're supposed to implement them as finite-difference on the rhs?
@@ -1770,24 +1783,23 @@ local minimalDistortionShiftExpr =
 	(
 		mdeShiftEpsilon * (
 			-- β^l;j_j ... negflux
-			(b'^l_j' + Gamma'^l_mj' * beta'^m') * gamma'^jk'
+			DBeta'^lk'
 			-- 1/3 β_j^;jl ... negflux
-			+ frac(1,3) * gamma'^kl' * (tr_b - Gamma'^j_ji' * beta'^i')
+			+ frac(1,3) * gamma'^kl' * tr_DBeta
 			-- + R^l_j β^j ... negflux
 			+ gamma'^li' * removeCommaDeriv(Ricci_ll_negflux, 'k') * beta'^j'
 			-- - 2 (α A^lj)_;j ... negflux
-			- 2 * alpha * (K'^lj' - frac(1,3) * tr_K * gamma'^kl')
+			- 2 * alpha * A'^lk'
 		)
 	)'_,k'
 
 	+ mdeShiftEpsilon * (
 		-- β^l;j_j ... rhs 
-		2 * (b'^l_j' + Gamma'^l_mj' * beta'^m') * e'^j'
-		+ (b'^n_j' + Gamma'^n_mj' * beta'^m') * Gamma'^l_nk' * gamma'^jk'
-		- (b'^l_n' + Gamma'^l_mn' * beta'^m') * Gamma'^n_jk' * gamma'^jk'
+		DBeta'^lj' * d'_j'
+		+ DBeta'^nk' * Gamma'^l_nk'
 
 		-- 1/3 β_j^;jl ... rhs
-		+ frac(2,3) * (tr_b - Gamma'^j_jk' * beta'^k') * e'^l'
+		+ frac(2,3) * tr_DBeta * e'^l'
 
 		-- + R^l_j β^j ... rhs
 		+ gamma'^li' * beta'^j' * Ricci_ll_rhs
@@ -1795,25 +1807,28 @@ local minimalDistortionShiftExpr =
 	
 		-- - 2 (α A^lj)_;j ... rhs
 		- 2 * alpha * (
-			(K'^mn' - frac(1,3) * tr_K * gamma'^mn') * Gamma'^l_nm'
-			+ (K'^lm' - frac(1,3) * tr_K * gamma'^lm') * Gamma'^n_nm'
+			A'^mn' * Gamma'^l_nm'
+			+ A'^lm' * Gamma'^n_nm'
 		)
 	)
 
+--[[ hmm, but this introduces 2nd deriv vars.  what to do with them ...
+-- TODO put them on the rhs?
 shiftMinimalDistortionParabolic = makeShift{
 	name = "MinimalDistortionParabolic",
 	beta_rhs = minimalDistortionShiftExpr,
-	subscript = 'mde.par.',
+	subscript = 'm.p.',
 	useHyperbolic = false,
 	useShiftingShift = useShiftingShift,
 }
 allShifts:insert(shiftMinimalDistortionParabolic)
+--]]
 
---[[
+-- [[
 shiftMinimalDistortionHyperbolic = makeShift{
 	name = "MinimalDistortionHyperbolic",
 	beta_rhs = minimalDistortionShiftExpr,
-	subscript = 'har.hyp.',
+	subscript = 'm.h.',
 	useHyperbolic = true,
 	useShiftingShift = useShiftingShift,
 }
@@ -1821,7 +1836,7 @@ allShifts:insert(shiftMinimalDistortionHyperbolic)
 --]]
 --]==]
 
--- [==[
+--[==[
 printHeader'gamma driver shift evolution:'
 
 --[[
@@ -1971,7 +1986,6 @@ instead I will have to include _Λ itself as an extra variable for gamma driver
 local gammaDriverK = frac(3,4)
 
 local gammaDriverEta = var'\\eta'
-local A = var'A'
 local det_gamma = var'det(\\gamma)'
 local det_gammaHat = var'det(\\hat{\\gamma})'
 local GammaHat = var'\\hat{\\Gamma}'
@@ -1979,7 +1993,7 @@ local GammaBar = var'\\bar{\\Gamma}'
 local DeltaGamma = var'\\Delta\\Gamma'
 local LambdaBar = var'\\bar{\\Lambda}'
 DBarDotBeta = var'(\\bar{\\nabla}\\cdot\\beta)'	-- _∇∙β = b^i_i + Δd_j β^j
-DHatBeta = var'(\\bar{\\nabla}\\beta)'			-- ^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
+DHatBeta = var'(\\overset{\\hat}{\\nabla}\\beta)'			-- ^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
 gammaDriverEta:nameForExporter('C', 'gammaDriver_eta') 
 det_gamma:nameForExporter('C', 'det_gamma')
 det_gammaHat:nameForExporter('C', 'det_gammaHat')
@@ -1988,7 +2002,6 @@ GammaBar:nameForExporter('C', 'connBar')
 LambdaBar:nameForExporter('C', 'LambdaBar') 
 DBarDotBeta:nameForExporter('C', 'DBarDotBeta')	
 DHatBeta:nameForExporter('C', 'DHatBeta')
-A'_ij':setSymmetries{1,2}
 GammaHat'_ijk':setSymmetries{2,3}
 GammaBar'_ijk':setSymmetries{2,3}
 DeltaGamma'_ijk':setSymmetries{2,3}
@@ -2031,6 +2044,9 @@ local gammaDriverParabolicShiftExpr =
 printbr(gammaDriverParabolicShiftExpr)
 printbr()
 
+-- now we have a problem ... how to handle evolution of b^i_j,t = β^i_,jt ?
+-- if we have a parabolic term for β^i_,t then the result is no longer first-order
+-- solution ... don't evolve b^i_j for GammaDriverParabolic, and instead treat it as a rhs source term?
 shiftGammaDriverParabolic = makeShift{
 	name = "GammaDriverParabolic",
 	beta_rhs = gammaDriverParabolicShiftExpr,
@@ -2376,9 +2392,9 @@ printbr()
 --]]
 
 F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr,i)
---print('expr['..i..'] was = ', expr)	
+--print('expr['..i..'] flux before = ', expr)	
 	expr = expr()
---print('expr['..i..'] is = ', expr)	
+--print('expr['..i..'] flux after = ', expr)	
 	if Constant.isValue(expr, 0) then return expr end
 	assert(Tensor:isa(expr))
 	-- use dUdt_lhs_withShift_exprs for tensor variance
@@ -2396,9 +2412,9 @@ F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr,i)
 end)
 
 S_withShift_exprs = S_withShift_exprs:mapi(function(expr,i)
-printbr(dUdt_lhs_withShift_exprs[i], 'src before', expr)
+--printbr(dUdt_lhs_withShift_exprs[i], 'source before', expr)
 	expr = expr()
-printbr(dUdt_lhs_withShift_exprs[i], 'src after', expr)
+--printbr(dUdt_lhs_withShift_exprs[i], 'source after', expr)
 	if Constant.isValue(expr, 0) then return expr end
 	local dUdt_i = dUdt_lhs_withShift_exprs[i]
 	if not Tensor:isa(dUdt_i) then
@@ -2649,35 +2665,19 @@ print'</pre>'
 local dt_beta_u_def, dt_beta_u_negflux, dt_beta_u_rhs
 local dt_b_ul_def, dt_b_ul_negflux, dt_b_ul_rhs
 local dt_B_u_def, dt_B_u_negflux, dt_B_u_rhs
-
-if useShift == 'HarmonicParabolic' then
-	dt_beta_u_def		= shiftHarmonicParabolic.beta_u.dt_def
-	dt_beta_u_negflux	= shiftHarmonicParabolic.beta_u.dt_negflux
-	dt_beta_u_rhs		= shiftHarmonicParabolic.beta_u.dt_rhs
+local _, eigenSystemShift = allShifts:find(nil, function(s) return s.name == useShift end)
+if eigenSystemShift then
+	dt_beta_u_def		= eigenSystemShift.beta_u.dt_def
+	dt_beta_u_negflux	= eigenSystemShift.beta_u.dt_negflux
+	dt_beta_u_rhs		= eigenSystemShift.beta_u.dt_rhs
 	
-	dt_b_ul_def			= shiftHarmonicParabolic.b_ul.dt_def
-	dt_b_ul_negflux		= shiftHarmonicParabolic.b_ul.dt_negflux
-	dt_b_ul_rhs			= shiftHarmonicParabolic.b_ul.dt_rhs
-elseif useShift == 'HarmonicHyperbolic' then
-	dt_beta_u_def		= shiftHarmonicHyperbolic.beta_u.dt_def
-	dt_beta_u_negflux	= shiftHarmonicHyperbolic.beta_u.dt_negflux
-	dt_beta_u_rhs		= shiftHarmonicHyperbolic.beta_u.dt_rhs
+	dt_b_ul_def			= eigenSystemShift.b_ul.dt_def
+	dt_b_ul_negflux		= eigenSystemShift.b_ul.dt_negflux
+	dt_b_ul_rhs			= eigenSystemShift.b_ul.dt_rhs
 	
-	dt_b_ul_def			= shiftHarmonicHyperbolic.b_ul.dt_def
-	dt_b_ul_negflux		= shiftHarmonicHyperbolic.b_ul.dt_negflux
-	dt_b_ul_rhs			= shiftHarmonicHyperbolic.b_ul.dt_rhs
-	
-	dt_B_u_def			= shiftHarmonicHyperbolic.B_u.dt_def
-	dt_B_u_negflux		= shiftHarmonicHyperbolic.B_u.dt_negflux
-	dt_B_u_rhs			= shiftHarmonicHyperbolic.B_u.dt_rhs
-elseif useShift == 'GammaDriverParabolic' then
-	dt_beta_u_def		= shiftGammaDriverParabolic.beta_u.dt_def
-	dt_beta_u_negflux	= shiftGammaDriverParabolic.beta_u.dt_negflux
-	dt_beta_u_rhs		= shiftGammaDriverParabolic.beta_u.dt_rhs
-	
-	dt_b_ul_def			= shiftGammaDriverParabolic.b_ul.dt_def
-	dt_b_ul_negflux		= shiftGammaDriverParabolic.b_ul.dt_negflux
-	dt_b_ul_rhs			= shiftGammaDriverParabolic.b_ul.dt_rhs
+	dt_B_u_def			= eigenSystemShift.B_u.dt_def
+	dt_B_u_negflux		= eigenSystemShift.B_u.dt_negflux
+	dt_B_u_rhs			= eigenSystemShift.B_u.dt_rhs
 end
 
 
