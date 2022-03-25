@@ -84,24 +84,21 @@ useLapseF_geodesic = false		-- f = 0
 useLapseF_timeHarmonic = false	-- f = 1
 
 --[[
-pick one of these
+pick one of these for the eigensystem 
 TODO how about generating all of them at once?
 for the sake of flux and source term code generation, thats fine
 for the sake of eigensystem computations it gets difficult, so better do one at a time
 so then TODO turn this into an 'eigensystem_' var?
 --]]
 
-useShift = 'GammaDriverHyperbolic'
-
---[[
-2005 Bona et al, section B.1, "to convert the minimal distortion elliptic equations into time-dependent parabolic equations by means of the Hamilton-Jacobi method"
---]]
+-- 2005 Bona et al, section B.1, "to convert the minimal distortion elliptic equations into time-dependent parabolic equations by means of the Hamilton-Jacobi method"
 useShift = 'HarmonicParabolic'
-
---[[
-... and its hyperbolic version.  no literature has this ... probably for a good reason.
---]]
-useShift = 'HarmonicHyperbolic'
+-- ... and its hyperbolic version.  no literature has this ... probably for a good reason.
+--useShift = 'HarmonicHyperbolic'
+--useShift = 'MinimalDistortionParabolic'	-- eh out of commission until I can think of what to do with the 2nd derivatives
+--useShift = 'MinimalDistortionHyperbolic'
+--useShift = 'GammaDriverParabolic'			-- also out of commission
+--useShift = 'GammaDriverHyperbolic'
 
 --[[
 within shift equations, exchange _,t with _,t - _,k β^k
@@ -1836,7 +1833,7 @@ allShifts:insert(shiftMinimalDistortionHyperbolic)
 --]]
 --]==]
 
---[==[
+-- [==[
 printHeader'gamma driver shift evolution:'
 
 --[[
@@ -1909,7 +1906,7 @@ using:
 
 Γ^i_jk = d_kj^i + d_jk^i - d^i_jk
 
-log(√γ)_,i - log(√^γ)_,i = log(√(γ/^γ))_,i = Γ^j_ji - ^Γ^j_ji = d_i - ^d_i = Δd_i
+log(√(γ/^γ))_,i = log(√γ)_,i - log(√^γ)_,i = Γ^j_ji - ^Γ^j_ji = d_i - ^d_i = Δd_i
 also notice that if we impose the ^γ = _γ constraint then _Γ^j_ji = ^Γ^j_ji = Δd_i and _d_i = ^d_i
 
 _Γ^i_jk = Γ^i_jk + (δ^i_j W_,k + δ^i_k W_,j - γ_jk W_,l γ^li) / W
@@ -1948,12 +1945,15 @@ _∇∙β = b^i_i + Δd_j β^j
 ^Γ^i_kj = ^γ^il ^Γ_lkj
 
 ^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
+^∇∙β = ^∇_i β^i = β^i_,i + ^Γ^i_ij β^j = b^i_i + ^Γ^i_ij β^j
+^∇∙β = b^i_i + Δd_j β^j
+^∇∙β = _∇∙β
 
 _Λ^i_,0 = 
 	
 	+ (W^-2 (
 		+ γ^rk (^∇_k β^i)
-		+ 1/3 γ^ir ((_∇∙β) - 4 α K)
+		+ 1/3 γ^ir ((^∇∙β) - 4 α K)
 	))_,r
 
 	- _Λ^j b^i_j
@@ -1966,14 +1966,14 @@ _Λ^i_,0 =
 			+ ^Γ^i_jm ^Γ^m_lk β^l
 			- ^Γ^m_jk ^Γ^i_lm β^l
 		)	
-		+ 2/3 (_∇∙β) ΔΓ^i_mn γ^mn
-		+ 2/3 (_∇∙β) e^i
+		+ 2/3 (^∇∙β) ΔΓ^i_mn γ^mn
+		+ 2/3 (^∇∙β) e^i
 		- 2 A^ij (α a_j - Δd_i)
 		+ 2 A^jk ΔΓ^i_jk
 		+ 4/3 α K (a^i - 2 e^i)
 		- 2/3 (
 			+ Δd^k (^∇_k β^i)
-			+ 1/3 Δd^i (_∇∙β)
+			+ 1/3 Δd^i (^∇∙β)
 			- 4/3 α K γ^ir
 		)
 	)
@@ -1985,22 +1985,25 @@ instead I will have to include _Λ itself as an extra variable for gamma driver
 
 local gammaDriverK = frac(3,4)
 
-local gammaDriverEta = var'\\eta'
-local det_gamma = var'det(\\gamma)'
-local det_gammaHat = var'det(\\hat{\\gamma})'
-local GammaHat = var'\\hat{\\Gamma}'
-local GammaBar = var'\\bar{\\Gamma}'
-local DeltaGamma = var'\\Delta\\Gamma'
-local LambdaBar = var'\\bar{\\Lambda}'
-DBarDotBeta = var'(\\bar{\\nabla}\\cdot\\beta)'	-- _∇∙β = b^i_i + Δd_j β^j
-DHatBeta = var'(\\overset{\\hat}{\\nabla}\\beta)'			-- ^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
+invW = var'(1/W)'
+gammaDriverEta = var'\\eta'
+det_gamma = var'{det(\\gamma)}'
+det_gammaHat = var'{det(\\hat{\\gamma})}'
+GammaHat = var'\\hat{\\Gamma}'
+GammaBar = var'\\bar{\\Gamma}'
+DeltaGamma = var'\\Delta\\Gamma'
+LambdaBar = var'\\bar{\\Lambda}'
+tr_DHatBeta = var'{(\\hat{\\nabla}\\cdot\\beta)}'	-- ^∇∙β = b^i_i + Δd_j β^j
+DHatBeta = var'{(\\hat{\\nabla}\\beta)}'			-- ^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
+invW:nameForExporter('C', 'invW')
 gammaDriverEta:nameForExporter('C', 'gammaDriver_eta') 
 det_gamma:nameForExporter('C', 'det_gamma')
 det_gammaHat:nameForExporter('C', 'det_gammaHat')
 GammaHat:nameForExporter('C', 'connHat') 
 GammaBar:nameForExporter('C', 'connBar') 
+DeltaGamma:nameForExporter('C', 'DeltaGamma')	-- or "connDelta?" but this is the dif of conformal conn with background conn ... 
 LambdaBar:nameForExporter('C', 'LambdaBar') 
-DBarDotBeta:nameForExporter('C', 'DBarDotBeta')	
+tr_DHatBeta:nameForExporter('C', 'tr_DHatBeta')	
 DHatBeta:nameForExporter('C', 'DHatBeta')
 GammaHat'_ijk':setSymmetries{2,3}
 GammaBar'_ijk':setSymmetries{2,3}
@@ -2008,13 +2011,15 @@ DeltaGamma'_ijk':setSymmetries{2,3}
 
 -- _Λ^l_,0 = _Λ^l_,t - _Λ^l_,k β^k
 local d0_LambdaBar_u_def = 
-	gammaDriverK * (
-		(det_gamma/det_gammaHat)^frac(1,3) * (
-			gamma'^rk' * DHatBeta'^l_k'
-			+ frac(1,3) * gamma'^lr' * (DBarDotBeta - 4 * alpha * tr_K)
+	(
+		gammaDriverK * (
+			invW^2 * (
+				gamma'^rk' * DHatBeta'^l_k'
+				+ frac(1,3) * gamma'^lr' * (tr_DHatBeta - 4 * alpha * tr_K)
+			)
 		)
 	)'_,r'
-	+ gammaDriverK * (det_gamma/det_gammaHat)^frac(1,3) * (
+	+ gammaDriverK * invW^2 * (
 		2 * e'^k' * DHatBeta'^l_k'
 		+ gamma'^jk' * (
 			GammaHat'^l_jm' * b'^m_k'
@@ -2022,14 +2027,14 @@ local d0_LambdaBar_u_def =
 			+ GammaHat'^l_jm' * GammaHat'^m_nk' * beta'^n'
 			- GammaHat'^m_jk' * GammaHat'^l_nm' * beta'^n'
 		)	
-		+ frac(2,3) * DBarDotBeta * DeltaGamma'^l_mn' * gamma'^mn'
-		+ frac(2,3) * DBarDotBeta * e'^l'
+		+ frac(2,3) * tr_DHatBeta * DeltaGamma'^l_mn' * gamma'^mn'
+		+ frac(2,3) * tr_DHatBeta * e'^l'
 		- 2 * A'^lj' * (alpha * a'_j' - dDelta'_j')
 		+ 2 * A'^jk' * DeltaGamma'^l_jk'
 		+ frac(4,3) * alpha * tr_K * (a'^l' - 2 * e'^l')
 		- frac(2,3) * (
 			dDelta'^k' * DHatBeta'^l_k'
-			+ frac(1,3) * dDelta'^l' * (DBarDotBeta - 4 * alpha * tr_K)
+			+ frac(1,3) * dDelta'^l' * (tr_DHatBeta - 4 * alpha * tr_K)
 		)
 	)
 	- gammaDriverK * LambdaBar'^j' * b'^l_j'
@@ -2072,7 +2077,7 @@ shiftGammaDriverHyperbolic = makeShift{
 	beta_rhs = gammaDriverHyperbolicShiftExpr,
 	subscript = 'γ.h.',
 	useHyperbolic = true,
-	useShiftingShift = false,
+	useShiftingShift = useShiftingShift,
 }
 allShifts:insert(shiftGammaDriverHyperbolic)
 --]]
