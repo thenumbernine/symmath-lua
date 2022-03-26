@@ -472,7 +472,14 @@ div.rules = {
 			if Array:isa(a) and not Array:isa(b) then
 				local result = a:clone()
 				for i=1,#result do
+					--[[ old
+					-- fails to simplify *INTERMITTANTLY* for this problem:
+					-- symmath "Tensor.Chart{coords={rho,theta,phi}} eta=Tensor('_ij', Matrix.diagonal(1,1,1):unpack()) e = Tensor('^i_j', { ((AMPL * cosh(rho / SINHW)) / (SINHW * sinh(1. / SINHW))), 0, 0}, {0, ((AMPL * sinh(rho / SINHW)) / sinh(1. / SINHW)), 0}, {0, 0, (sin(theta) * (AMPL * sinh(rho / SINHW)) / sinh(1. / SINHW))} ) gL = (e'^a_i' * e'^b_j' * eta'_ab')() det=gL:det() gU22=(gL[1][1]*gL[3][3] - gL[1][3]*gL[3][1]) print((Matrix{gU22} / det)()[1][1])"
 					result[i] = result[i] / b
+					--]]
+					-- [[ new -- simplifies more often. TODO find out why?
+					result[i] = prune:apply(result[i] * (1 / b))
+					--]]
 				end
 				return prune:apply(result)
 			end
