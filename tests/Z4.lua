@@ -1871,115 +1871,103 @@ _Λ^i_,0 =
 
 ... in flux form (how about looking at the ccz4 paper?)
 
+ok 
+let G_i = log(√γ)_,i = Γ^j_ji
+let ^G_i = _G_i = log(√^γ)_,i = log(√_γ)_,i = ^Γ^j_ji = _Γ^j_ji
+let ΔG_i = G_i - ^G_i
+ΔG_i = Γ^j_ji - ^Γ^j_ji
+ΔG_i = d_i - ^d_ijk ^γ^jk		<- ^d_ijk isn't raised/lowered by ^γ^ij, *AND* because Δd_ijk is the difference *IN COVARIANT FORM*
+									(this is why I'm thinking maybe use conn and connHat as state vars, and deltaConn instead of deltaMetricPartial)
+lets define ΔG^i = γ^ij ΔG_j
+
 using:
 exp(φ) = (γ/_γ)^(1/12)
 φ = 1/12 log(γ/_γ)
 φ_,i = 1/12 (log(γ)_,i - log(_γ)_,i)
 φ_,i = 1/6 (log(√γ)_,i - log(√_γ)_,i)
+φ_,i = 1/6 ΔG_i
 W = exp(-2 φ)
 W = (_γ/γ)^(1/6)
 W_,i = -2 exp(-2 φ) φ_,i
+W_,i = -2 W φ_,i			<=> 	φ_,i = -1/2 W_,i / W
 W_,i = -1/3 W (log(√γ)_,i - log(√_γ)_,i)
 W_,i = -1/3 W (log(√γ)_,i - log(√^γ)_,i)
-W_,i = -1/3 W (Γ^j_ji - ^Γ^j_ji)
-W_,i = -1/3 W (d_i - ^d_i)
-W_,i = -1/3 W Δd_i
-φ_,i = -1/2 W_,i / W
+W_,i = -1/3 W (Γ^j_ji - ^Γ^j_ji)		<- notice Γ^j_ji is raised/lowered by γ^ij while ^Γ^j_ji is raised/lowered by ^γ^ij
+W_,i = -1/3 W ΔG_i
 _A^ij = A^ij W^-2
 _γ_ij = γ_ij W^2
 _γ^ij = γ^ij W^-2
 
-_Λ^i_,0 = 
-	- _Λ^j β^i_,j
-	+ W^-2 (
-		+ 1/3 (b^j_j + _Γ^j_kj β^k)_,l γ^li
-		- 2 A^ij (α - 6 φ)_,j
-		- 4/3 α γ^ij K_,j
-	)
-	+ W^-2 (
-		+ γ^jk ^D_j (b^i_k + ^Γ^i_lk β^l)
-		+ 2/3 (b^j_j + _Γ^j_kj β^k) ΔΓ^i_mn γ^mn
-		+ 2 A^jk ΔΓ^i_jk
-	)
-
-using:
-
 Γ^i_jk = d_kj^i + d_jk^i - d^i_jk
 
-log(√(γ/^γ))_,i = log(√γ)_,i - log(√^γ)_,i = Γ^j_ji - ^Γ^j_ji = d_i - ^d_i = Δd_i
-also notice that if we impose the ^γ = _γ constraint then _Γ^j_ji = ^Γ^j_ji = Δd_i and _d_i = ^d_i
+log(√(γ/^γ))_,i = log(√γ)_,i - log(√^γ)_,i = Γ^j_ji - ^Γ^j_ji = ΔG_i
+also notice that if we impose the ^γ = _γ constraint then _Γ^j_ji = ^Γ^j_ji and ^d_ijk ^γ^jk = _d_ijk _γ^jk
 
 _Γ^i_jk = Γ^i_jk + (δ^i_j W_,k + δ^i_k W_,j - γ_jk W_,l γ^li) / W
-_Γ^j_jk = Γ^j_jk + (4 W_,k - γ_jk W_,l γ^lj) / W
-
-ΔΓ^i_jk = _Γ^i_jk - ^Γ^i_jk
-ΔΓ^i = ΔΓ^i_jk _γ^jk 
-ΔΓ^i = (_Γ^i_jk - ^Γ^i_jk) _γ^jk
-ΔΓ^i = _Γ^i - ^Γ^i_jk _γ^jk
-
-_Γ^i_jk = Γ^i_jk - 1/3 δ^i_j Δd_k - 1/3 δ^i_k Δd_j + 1/3 γ_jk Δd^i
-_Γ^i_jk = d_kj^i + d_jk^i - d^i_jk - 1/3 δ^i_j Δd_k - 1/3 δ^i_k Δd_j + 1/3 γ_jk Δd^i
-_Γ^j_ji = Δd_i
+_Γ^i_jk = Γ^i_jk - 2 (δ^i_j φ_,k + δ^i_k φ_,j - γ_jk γ^li φ_,l)
+_Γ^i_jk = Γ^i_jk - 1/3 (δ^i_j ΔG_k + δ^i_k ΔG_j - γ_jk γ^li ΔG_l)
 
 _Γ^i = _Γ^i_jk _γ^jk 
 _Γ^i = _Γ^i_jk γ^jk W^2
-_Γ^i = (d_kj^i + d_jk^i - d^i_jk - 1/3 δ^i_j Δd_k - 1/3 δ^i_k Δd_j + 1/3 γ_jk Δd^i) γ^jk W^2
-_Γ^i = (Γ^i + 1/3 Δd^i) W^2
+_Γ^i = (Γ^i_jk + (δ^i_j W_,k + δ^i_k W_,j - γ_jk W_,l γ^li) / W) γ^jk W^2
+_Γ^i = W^2 Γ^i - W W_,j γ^ji
+_Γ^i = W^2 (Γ^i - γ^ji W_,j / W)
+_Γ^i = W^2 (Γ^i + 1/3 ΔG^i)
+
+ΔΓ^i_jk = _Γ^i_jk - ^Γ^i_jk
+_Γ^i_jk = Γ^i_jk - 1/3 (δ^i_j ΔG_k + δ^i_k ΔG_j - γ_jk ΔG^i)
+
+I'm starting to think that instead of Δd_kij = 1/2 (γ_ij,k - ^γ_ij,k) I should be using my own var Δconn^i_jk = Γ^i_jk - ^Γ^i_jk ...
+... this would fit with my idea of connection-as-state-var (just like Palatini does)
+... but is it more or is it less numerically stable?
+
+ΔΓ^i = ΔΓ^i_jk _γ^jk 
+ΔΓ^i = (_Γ^i_jk - ^Γ^i_jk) _γ^jk
+ΔΓ^i = _Γ^i - ^Γ^i_jk _γ^jk
+ΔΓ^i = W^2 (Γ^i + 1/3 ΔG^i) - ^Γ^i_jk _γ^jk
 
 _Λ^i = ΔΓ^i + C^i
-_Λ^i = _Γ^i - ^Γ^i_jk _γ^jk + C^i
-_Λ^i = (Γ^i + 1/3 Δd^i) W^2 - ^Γ^i_jk _γ^jk + C^i
-_Λ^i = (2 e^i - d^i + 1/3 Δd^i) W^2 - ^Γ^i_jk _γ^jk + C^i
-_Λ^i = (2 e^i - 2/3 Δd^i - ^d^i) W^2 - ^Γ^i_jk _γ^jk + C^i
 
 
 -- the "real" delta-Gamma
 -- this is difference of the connection and the conformal connection
 -- whereas the BSSN delta-Gamma is the difference of the conformal connection and grid (hat) connection.
-(_Γ->Γ)^i_jk = Γ^i_jk - _Γ^i_jk = 1/3 (δ^i_j Δd_k + δ^i_k Δd_j - γ_jk Δd^i)
+(_Γ->Γ)^i_jk = Γ^i_jk - _Γ^i_jk
 
 _∇∙β = _∇_i β^i
-_∇∙β = β^i_,i + _Γ^i_ji β^j
-_∇∙β = b^i_i + Δd_j β^j
+_∇∙β = β^i_,i + _Γ^i_ij β^j
+_∇∙β = b^i_i + log(√_γ)_,i β^j
+_∇∙β = b^i_i + log(√^γ)_,i β^j
+_∇∙β = β^i_,i + ^Γ^i_ij β^j
+_∇∙β = ^∇∙β
 
 ^Γ^i_kj = ^γ^il ^Γ_lkj
 
-^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
-^∇∙β = ^∇_i β^i = β^i_,i + ^Γ^i_ij β^j = b^i_i + ^Γ^i_ij β^j
-^∇∙β = b^i_i + Δd_j β^j
-^∇∙β = _∇∙β
-
+Ok some temps so I don't confuse myself with the tensors not raised/lowered by the metric.
+(TODO REWRITE THE BSSN DERIVATION USING DENOTED *INDEXES* AND NOT TENSORS SO IT MAKES SENSE)
+Bleh1^i_j = ^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
+... then Bleh1 is raised/lowered by γ^ij
+Bleh2^i = ΔΓ^i_jk γ^jk
+Bleh3^i = A^jk ΔΓ^i_jk
+Bleh4^i = γ^jk ^Γ^i_mj Bleh1^m_k - γ^jk ^Γ^m_kj Bleh1^i_m
 _Λ^i_,0 = 
-	
-	+ (W^-2 (
-		+ γ^rk (^∇_k β^i)
-		+ 1/3 γ^ir ((^∇∙β) - 4 α K)
-	))_,r
-
-	- _Λ^j b^i_j
-	
+	- _Λ^j b^i_j								<- source terms
 	+ W^-2 (
-		+ 2 e^k (^∇_k β^i)
-		+ γ^jk (
-			+ ^Γ^i_jm b^m_k 
-			- ^Γ^m_jk b^i_m 
-			+ ^Γ^i_jm ^Γ^m_lk β^l
-			- ^Γ^m_jk ^Γ^i_lm β^l
-		)	
-		+ 2/3 (^∇∙β) ΔΓ^i_mn γ^mn
-		+ 2/3 (^∇∙β) e^i
-		- 2 A^ij (α a_j - Δd_i)
-		+ 2 A^jk ΔΓ^i_jk
-		+ 4/3 α K (a^i - 2 e^i)
-		- 2/3 (
-			+ Δd^k (^∇_k β^i)
-			+ 1/3 Δd^i (^∇∙β)
-			- 4/3 α K γ^ir
-		)
+		+ 2/3 (^∇∙β) Bleh2^i					<- source terms
+		- 2 A^ij (α a_j - ΔG_j)					<- source terms
+		+ 2 Bleh3^i								<- source terms
+		+ 4/3 α K (a^i + 2/3 ΔG^i - 2 e^i)		<- source terms ... byproduct of - 4/3 α _γ^ij K_,j
+		+ 2/3 (-1/3 ΔG^i + e^i) ^∇∙β			<- source terms ... from 1/3 _γ^ji (^∇∙β)_,j
+		+ 2 (-1/3 ΔG^k + e^k) Bleh1^i_k			<- source terms
+		+ Bleh4^i
 	)
+	+ (
+		1/3 W^-2 (^∇∙β - 4 α K) γ^ij + W^-2 Bleh1^ij
+	)_,j
 
-so it looks like I can't use a spatial derivative for β^i that is directly based on gamma driver
-instead I will have to include _Λ itself as an extra variable for gamma driver 
+TODO don't represent this unless either
+1) either modifying the simplifyMetrics rule to avoid the hatted/accented quantities or
+2) replace them all with non-accented tensors that raise/lower using the metric itself
 
 --]]
 
@@ -2008,6 +1996,10 @@ DHatBeta:nameForExporter('C', 'DHatBeta')
 GammaHat'_ijk':setSymmetries{2,3}
 GammaBar'_ijk':setSymmetries{2,3}
 DeltaGamma'_ijk':setSymmetries{2,3}
+-- TODO really do this derivation in the CAS ... until then i'm gonna do this by hand ...
+GammaDriverSource = var'GammaDriverSource'
+GammaDriverDeriv = var'GammaDriverDeriv'
+nonsense = var'nonsense'
 
 -- _Λ^l_,0 = _Λ^l_,t - _Λ^l_,k β^k
 local d0_LambdaBar_u_def = 
@@ -2026,7 +2018,7 @@ local d0_LambdaBar_u_def =
 			- GammaHat'^m_jk' * b'^l_m'
 			+ GammaHat'^l_jm' * GammaHat'^m_nk' * beta'^n'
 			- GammaHat'^m_jk' * GammaHat'^l_nm' * beta'^n'
-		)	
+		)       
 		+ frac(2,3) * tr_DHatBeta * DeltaGamma'^l_mn' * gamma'^mn'
 		+ frac(2,3) * tr_DHatBeta * e'^l'
 		- 2 * A'^lj' * (alpha * a'_j' - dDelta'_j')
@@ -2038,6 +2030,11 @@ local d0_LambdaBar_u_def =
 		)
 	)
 	- gammaDriverK * LambdaBar'^j' * b'^l_j'
+
+	--[[
+	(nonsense * GammaDriverDeriv'^lr')'_,r'	-- TODO without extra scalar the GammaDriverDeriv doesn't get moved to the flux ...
+	+ GammaDriverSource'^l'
+	--]]
 
 --[[
 printbr'gamma driver shift, parabolic:'
