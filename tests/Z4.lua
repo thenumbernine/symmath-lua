@@ -79,7 +79,7 @@ useDAlphaAsStateVar = false
 pick only one of these
 or pick none = keep lapse as a generic variable 'f'
 --]]
-useLapseF_1PlusLog = false		-- f = 2/alpha
+useLapseF_1PlusLog = false		-- f = 2/α
 useLapseF_geodesic = false		-- f = 0
 useLapseF_timeHarmonic = false	-- f = 1
 
@@ -111,7 +111,7 @@ include α, γ_ij in the calculations and code-generation
 flux_includeGaugeVars = true
 
 --[[
-include Z_k and Theta in the flux and source codegen
+include Z_k and Θ in the flux and source codegen
 --]]
 flux_includeZVars = true
 
@@ -127,7 +127,7 @@ in the case of eigensystem_favorFluxTerms==false and eigensystem_removeZeroRows=
 eigensystem_includeGaugeVars = true
 
 --[[
-consider Z_k,t and Theta_,t in the eigen decomposition
+consider Z_k,t and Θ_,t in the eigen decomposition
 turns out these two have a very ugly wavespeed that chokes up the solver
 --]]
 eigensystem_includeZVars = true
@@ -140,10 +140,10 @@ TODO notice that, if you do use shift, but you don't set this, then you will end
 TODO also notice that setting this to false will break things right now.
 ... I think until I separate out the flux maybe?
 --]]
-eigensystem_includeShiftVars = false
+eigensystem_includeShiftVars = true
 
 --[[
-false = alpha, gamma_ij flux reduces to zero
+false = α, γ_ij flux reduces to zero
 true = covnert as many first-derivative state variables into derivatives of state vars
 --]]
 eigensystem_favorFluxTerms = true
@@ -155,15 +155,10 @@ eigensystem_removeZeroRows = true
 
 --[[
 whether to only evaluate the shiftless eigensystem
-by default the beta^x's are removed from the flux
+by default the β^x's are removed from the flux
 but this will remove any other shift terms as well
 --]]
-evaluateShiftlessEigensystem = true
-
---[[
-whether to output the source term code generation
---]]
-eigensystem_outputSourceTerms = false
+evaluateShiftlessEigensystem = false
 
 
 -- these were giving BSSN some trouble, so here they are as well.
@@ -1110,12 +1105,17 @@ printbr(dt_gamma_ll_def)
 dt_gamma_ll_def = usingSubstIndex(dt_gamma_ll_def, d_beta_ul_from_b_ul)
 dt_gamma_ll_def = usingRHSSubstIndex(dt_gamma_ll_def, d_gamma_lll_from_d_lll)
 
+local _
+_, dt_gamma_ll_negflux, dt_gamma_ll_rhs = combineCommaDerivativesAndRelabel(dt_gamma_ll_def:rhs(), 'r', {'i', 'j'})
+printbr(dt_gamma_ll_def:lhs(), 'flux term', -dt_gamma_ll_negflux)
+printbr(dt_gamma_ll_def:lhs(), 'source term', dt_gamma_ll_rhs)
+
+-- TODO HERE optionally insert (
+
 printbr()
 
 
 printbr'metric delta evolution'
-
-
 
 local dt_gammaDelta_ll_def = dt_gamma_ll_def:clone()
 dt_gammaDelta_ll_def = dt_gammaDelta_ll_def:splitOffDerivIndexes()
@@ -1136,10 +1136,57 @@ dt_gammaDelta_ll_def = usingRHSSubstIndex(dt_gammaDelta_ll_def, d_gammaDelta_lll
 
 local dt_gammaDelta_ll_from_dDelta_lll_dHat_lll = dt_gammaDelta_ll_def:clone()
 
-local dt_gammaDelta_ll_negflux, dt_gammaDelta_ll_rhs
 _, dt_gammaDelta_ll_negflux, dt_gammaDelta_ll_rhs = combineCommaDerivativesAndRelabel(dt_gammaDelta_ll_def:rhs(), 'r', {'i', 'j'})
 printbr(dt_gammaDelta_ll_def:lhs(), 'flux term', -dt_gammaDelta_ll_negflux)
 printbr(dt_gammaDelta_ll_def:lhs(), 'source term', dt_gammaDelta_ll_rhs)
+
+printbr()
+
+
+-- alright so this isn't used except for the eigensystem part
+-- but it *could* also be used in the next step ...
+printHeader'metric partial evolution:'
+local dt_d_lll_def = dt_gamma_ll_def:reindex{k='l'}
+dt_d_lll_def = dt_d_lll_def / 2
+dt_d_lll_def = dt_d_lll_def[1]'_,k':eq(dt_d_lll_def[2]'_,k')
+dt_d_lll_def[1] = dt_d_lll_def[1]()
+printbr(dt_d_lll_def)
+
+dt_d_lll_def = dt_d_lll_def:replace(gamma'_ij,tk', gamma'_ij,k''_,t')
+dt_d_lll_def = usingSubstIndex(dt_d_lll_def, d_gamma_lll_from_d_lll)
+dt_d_lll_def[1] = dt_d_lll_def[1]()
+printbr(dt_d_lll_def)
+
+-- this is done in the 2008 Yano et al paper, not exactly sure why, not mentioned in the flux of the 2005 Bona et al paper
+printbr'inserting flux shift terms...'
+dt_d_lll_def[2] = dt_d_lll_def[2]
+	+ (beta'^l' * d'_kij')'_,l'	-- goes in the flux
+	- (beta'^l' * d'_kij')'_,l'():substIndex(d_beta_ul_from_b_ul):replaceIndex(b'^l_l', tr_b)	-- goes in the source
+	- (beta'^l' * d'_lij')'_,k'	-- goes in the flux
+	+ (beta'^l' * d'_lij')'_,k'():substIndex(d_beta_ul_from_b_ul):replaceIndex(b'^l_l', tr_b):replace(d'_lij,k', d'_kij,l')	-- goes in the source
+	-- such that half the source terms cancel (thanks to d'_lij,k' == d'_kij,l')
+printbr(dt_d_lll_def)
+
+Tensor.Ref:pushRule'Prune/evalDeriv'
+
+printbr'simplifying without distributing flux derivative'
+dt_d_lll_def = dt_d_lll_def()
+printbr(dt_d_lll_def)
+
+printbr'combining derivatives'
+dt_d_lll_def[2] = combineCommaDerivatives(dt_d_lll_def[2])
+printbr(dt_d_lll_def)
+
+printbr'simplifying without distributing flux derivative'
+dt_d_lll_def = dt_d_lll_def()
+printbr(dt_d_lll_def)
+
+Tensor.Ref:popRule'Prune/evalDeriv'
+
+dt_d_lll_def[2], dt_d_lll_negflux, dt_d_lll_rhs = combineCommaDerivativesAndRelabel(dt_d_lll_def[2], 'r', {'i', 'j', 'k'})
+printbr(dt_d_lll_def)
+printbr(d'_kij,t', 'flux term:', -dt_d_lll_negflux)
+printbr(d'_kij,t', 'source term:', dt_d_lll_rhs)
 
 printbr()
 
@@ -1160,9 +1207,7 @@ printbr(dt_dDelta_lll_def)
 dt_dDelta_lll_def = dt_dDelta_lll_def
 	:replace(gammaDelta'_ij,tk', gammaDelta'_ij,k''_,t')
 	:replace(gammaHat'_ij,tk', gammaHat'_ij,k''_,t')
-
 dt_dDelta_lll_def = usingSubstIndex(dt_dDelta_lll_def, d_gammaDelta_lll_from_dDelta_lll, d_gammaHat_lll_from_dHat_lll)
-
 dt_dDelta_lll_def[1] = dt_dDelta_lll_def[1]()
 printbr(dt_dDelta_lll_def)
 
@@ -1610,7 +1655,7 @@ Tensor.Ref:popRule'Prune/evalDeriv'
 printbr(dt_Z_l_def)
 
 
-local _, dt_Z_l_negflux, dt_Z_l_rhs = combineCommaDerivativesAndRelabel(dt_Z_l_def[2], 'r', {'k'})
+_, dt_Z_l_negflux, dt_Z_l_rhs = combineCommaDerivativesAndRelabel(dt_Z_l_def[2], 'r', {'k'})
 printbr(Z'_k,t', 'flux term:', -dt_Z_l_negflux)
 printbr(Z'_k,t', 'source term:', dt_Z_l_rhs)
 
@@ -2114,7 +2159,11 @@ so what TODO
 
 printHeader'as a system:'
 
-local UijkltWithShiftEqns = table()
+local function getdtlhs(eqn)
+	return removeCommaDeriv(eqn:lhs(), 't')
+end
+
+local UijklWithShiftVars = table()
 
 -- here's the flux vector from the 2008 Yano / 2005 Bona paper, irregardless of what state variable derivatives we find later
 local FijklWithShiftTerms = table()
@@ -2127,9 +2176,9 @@ local SijklWithShiftTerms = table()
 
 -- technically beta^i is also a gauge var, but i'm disabling it via dontIncludeShiftVars
 if flux_includeGaugeVars then
-	UijkltWithShiftEqns:append{
-		dt_alpha_def,
-		dt_gammaDelta_ll_def,
+	UijklWithShiftVars:append{
+		getdtlhs(dt_alpha_def),
+		getdtlhs(dt_gammaDelta_ll_def),
 	}
 	FijklWithShiftTerms:append{
 		-removeCommaDeriv(dt_alpha_negflux or Constant(0), 'r'),
@@ -2141,10 +2190,10 @@ if flux_includeGaugeVars then
 	}
 end
 
-UijkltWithShiftEqns:append{
-	dt_a_l_def,
-	dt_dDelta_lll_def,
-	dt_K_ll_def,
+UijklWithShiftVars:append{
+	getdtlhs(dt_a_l_def),
+	getdtlhs(dt_dDelta_lll_def),
+	getdtlhs(dt_K_ll_def),
 }
 FijklWithShiftTerms:append{
 	-removeCommaDeriv(dt_a_l_negflux, 'r'),
@@ -2169,9 +2218,9 @@ seems these have some ugly wavespeeds
  so ... how do we change that?
 --]]
 if flux_includeZVars then
-	UijkltWithShiftEqns:append{
-		dt_Theta_def,
-		dt_Z_l_def,
+	UijklWithShiftVars:append{
+		getdtlhs(dt_Theta_def),
+		getdtlhs(dt_Z_l_def),
 	}
 	FijklWithShiftTerms:append{
 		-removeCommaDeriv(dt_Theta_negflux, 'r'),
@@ -2190,21 +2239,22 @@ if flux_includeShiftVars then
 		-- fix only the Uijklt vars because that is used to determine uniqueness ...
 		-- but leave the rhs as the original shift vars
 		local function fix(expr)
+			expr = getdtlhs(expr)
 			expr = expr:subst(shift.substs:unpack())
 			return expr
 		end	
 		if shift.beta_u.dt_def then
-			UijkltWithShiftEqns:insert(fix(shift.beta_u.dt_def))
+			UijklWithShiftVars:insert(fix(shift.beta_u.dt_def))
 			FijklWithShiftTerms:insert(-removeCommaDeriv(shift.beta_u.dt_negflux, 'r'))
 			SijklWithShiftTerms:insert(shift.beta_u.dt_rhs or Constant(0))
 		end
 		if shift.b_ul.dt_def then
-			UijkltWithShiftEqns:insert(fix(shift.b_ul.dt_def))
+			UijklWithShiftVars:insert(fix(shift.b_ul.dt_def))
 			FijklWithShiftTerms:insert(-removeCommaDeriv(shift.b_ul.dt_negflux, 'r'))
 			SijklWithShiftTerms:insert(shift.b_ul.dt_rhs or Constant(0))
 		end
 		if shift.B_u.dt_def then
-			UijkltWithShiftEqns:insert(fix(shift.B_u.dt_def))
+			UijklWithShiftVars:insert(fix(shift.B_u.dt_def))
 			FijklWithShiftTerms:insert(-removeCommaDeriv(shift.B_u.dt_negflux or Constant(0), 'r'))
 			SijklWithShiftTerms:insert(shift.B_u.dt_rhs or Constant(0))
 		end
@@ -2243,10 +2293,7 @@ end)
 -- pqmn on the partial_x^r's
 
 -- factor out the _,t from the lhs
-local UijklWithShiftVars = UijkltWithShiftEqns:mapi(function(expr) return removeCommaDeriv(expr:lhs(), 't') end)
 local UijklWithShiftMat = Matrix(UijklWithShiftVars):T()
-
-
 local FijklWithShiftMat = Matrix(FijklWithShiftTerms):T()
 local SijklWithShiftMat = Matrix(SijklWithShiftTerms):T()
 
@@ -2494,10 +2541,11 @@ local Sijkl_withShift_expanded = Matrix(S_withShift_exprs_expanded):T()
 local dUdt_lhs_withShift_exprs_expanded_mat = Matrix(dUdt_lhs_withShift_exprs_expanded):T()
 dUdt_lhs_withShift_exprs_expanded_mat.rowsplits = rowsplits
 
+--[[ do I really need this?
 printbr'flux vector expanded:'
 printbr((dUdt_lhs_withShift_exprs_expanded_mat + Fijkl_withShift_expanded'_,r'):eq(Sijkl_withShift_expanded))
 printbr()
-
+--]]
 --]=]
 
 
@@ -2661,61 +2709,54 @@ print'</pre>'
 ------------------------ OK FLUX AND SOURCE GENERATION IS FINISHED ------------------------
 --------------------------- NOW ON TO EIGENSYSTEM CALCULATION -----------------------------
 
+printHeader"analyzing flux jacobian:"
 -- [===[ too many locals, so i'll just separate this out for now
-
-
-local dt_beta_u_def, dt_beta_u_negflux, dt_beta_u_rhs
-local dt_b_ul_def, dt_b_ul_negflux, dt_b_ul_rhs
-local dt_B_u_def, dt_B_u_negflux, dt_B_u_rhs
-local _, eigenSystemShift = allShifts:find(nil, function(s) return s.name == useShift end)
-if eigenSystemShift then
-	dt_beta_u_def		= eigenSystemShift.beta_u.dt_def
-	dt_beta_u_negflux	= eigenSystemShift.beta_u.dt_negflux
-	dt_beta_u_rhs		= eigenSystemShift.beta_u.dt_rhs
-	
-	dt_b_ul_def			= eigenSystemShift.b_ul.dt_def
-	dt_b_ul_negflux		= eigenSystemShift.b_ul.dt_negflux
-	dt_b_ul_rhs			= eigenSystemShift.b_ul.dt_rhs
-	
-	dt_B_u_def			= eigenSystemShift.B_u.dt_def
-	dt_B_u_negflux		= eigenSystemShift.B_u.dt_negflux
-	dt_B_u_rhs			= eigenSystemShift.B_u.dt_rhs
-end
-
-
 
 --[[
 for lapse f=2/α:
-the matrix of {α, Δγ_ij, a_r, Δd_kij, K_ij}  give us 0 x15, ±α√(γ^xx) x5
+the matrix of {α, Δγ_ij, a_r, Δd_kij, K_ij, Θ, Z_k, β^l, b^l_k, B^l}  give us 0 x15, ±α√(γ^xx) x5
 --]]
 local UijkltEqns = table()
 
 if eigensystem_includeGaugeVars then
 	UijkltEqns:append{
-		dt_alpha_def,
-		dt_gammaDelta_ll_def,
+		dt_alpha_def:lhs():eq(dt_alpha_negflux or Constant(0)),
+		--[[ ok so Δγ_ij sounds nice because I'm comparing it to δ^i_jk of BSSN
+		-- but if we use Δγ_ij and not γ_ij then we lose out on homogeneity -- our flux gains extra pieces that can't be represented in the jacobian
+		dt_gammaDelta_ll_def:lhs():eq(dt_gammaDelta_ll_negflux or Constant(0)),
+		--]]
+		-- [[
+		dt_gamma_ll_def:lhs():eq(dt_gamma_ll_negflux or Constant(0)),
+		--]]
 	}
 end
 UijkltEqns:append{
-	dt_a_l_def,
-	dt_dDelta_lll_def,
-	dt_K_ll_def,
+	dt_a_l_def:lhs():eq(dt_a_l_negflux),
+	--[[ same as above
+	dt_dDelta_lll_def:lhs():eq(dt_dDelta_lll_negflux),
+	--]]
+	-- [[ so instead ... 
+	dt_d_lll_def:lhs():eq(dt_d_lll_negflux),
+	--]]
+	dt_K_ll_def:lhs():eq(dt_K_ll_negflux),
 }
 if eigensystem_includeZVars then
 	UijkltEqns:append{
-		dt_Theta_def,
-		dt_Z_l_def,
+		dt_Theta_def:lhs():eq(dt_Theta_negflux),
+		dt_Z_l_def:lhs():eq(dt_Z_l_negflux),
 	}
 end
-if eigensystem_includeShiftVars then
-	if dt_beta_u_def then
-		UijkltEqns:insert(dt_beta_u_def)
+
+local _, eigenShift = allShifts:find(nil, function(s) return s.name == useShift end)
+if eigensystem_includeShiftVars and eigenShift then
+	if eigenShift.beta_u.dt_def then
+		UijkltEqns:insert(eigenShift.beta_u.dt_def:lhs():eq(eigenShift.beta_u.dt_negflux))
 	end
-	if dt_b_ul_def then
-		UijkltEqns:insert(dt_b_ul_def)
+	if eigenShift.b_ul.dt_def then
+		UijkltEqns:insert(eigenShift.b_ul.dt_def:lhs():eq(eigenShift.b_ul.dt_negflux))
 	end
-	if dt_B_u_def then
-		UijkltEqns:insert(dt_B_u_def)
+	if eigenShift.B_u.dt_def then
+		UijkltEqns:insert(eigenShift.B_u.dt_def:lhs():eq(eigenShift.B_u.dt_negflux))
 	end
 end
 
@@ -2763,8 +2804,8 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 --printbr(lhs:eq(rhs))
 	rhs = rhs:insertMetricsToSetVariance(d'_i', gamma)
 --printbr(lhs:eq(rhs))
-	-- here we could have (d^i_,j) => (d_i gamma^ik)_,j
-	-- but if we use this next one (d_i gamma^ik)_,j => (d_imn gamma^mn gamma^ik)_,j ... then we risk inserting bad sum indexes
+	-- here we could have (d^i_,j) => (d_i γ^ik)_,j
+	-- but if we use this next one (d_i γ^ik)_,j => (d_imn γ^mn γ^ik)_,j ... then we risk inserting bad sum indexes
 	-- unless we distribute the derivative first, ... and then split it off gain
 	rhs = rhs:simplifyAddMulDiv()
 	rhs = rhs:splitOffDerivIndexes()
@@ -2791,39 +2832,51 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 	rhs = rhs:insertMetricsToSetVariance(B'^i', gamma)
 --printbr(lhs:eq(rhs))
 	
-	-- simplify to distribute derivatives through the gamme^ij's
+	-- simplify to distribute derivatives through the γ^ij's
 	rhs = rhs:simplifyAddMulDiv()
 --printbr(lhs:eq(rhs))
 
-	-- convert gamma^ij_,k's to -2 d_k^ij's
-	rhs = rhs:substIndex(d_gamma_uul_from_dHat_lll_dDelta_lll)
+	-- convert γ^ij_,k's to -2 d_k^ij's
+	--rhs = rhs:substIndex(d_gamma_uul_from_dHat_lll_dDelta_lll)
+	--rhs = rhs:substIndex(d_gamma_uul_from_gamma_uu_d_lll)
+	rhs = rhs:substIndex(d_gamma_uul_from_gamma_uu_d_gamma_lll)
 	rhs = rhs:simplifyAddMulDiv()
 --printbr(lhs:eq(rhs))
 
--- YOU ARE HERE
+	--[[
 	-- convert gauge derivs to state vars
 	rhs = rhs
 		:substIndex(d_alpha_l_from_a_l)
 		:substIndex(d_beta_ul_from_b_ul)
-		:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll)
-	
+		--:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll)
+		:substIndex(d_gamma_lll_from_d_lll)
 	rhs = rhs:simplifyAddMulDiv()
 --printbr(lhs:eq(rhs))
-	
-	-- convert d_ijk,l to dHat_ijk,l + dDelta_ijk,l
+	--]]
+
+	--[[ convert d_ijk,l to ^d_ijk,l + Δd_ijk,l
 	rhs = rhs:splitOffDerivIndexes()
 	rhs = rhs:substIndex((d_lll_from_dHat_lll_dDelta_lll)())
 	rhs = rhs:simplifyAddMulDiv()
 --printbr(lhs:eq(rhs))
+	--]]
+
+	-- ok now that the derivs are distributed, replace all the non-derivs back to their shorter definitions:
+	-- but this doesn't seem to be doing anything
+	--rhs = simplifyDAndKTraces(rhs)
 
 	-- TODO don't do this willy-nilly, or even going by what looks good, but instead legitimately try to salvage the gauge vars inside the flux
 	--  for the purpose of maintaing the homogeneity condition of the flux: dF/dU * U = F
+	--[=[
 	if eigensystem_favorFluxTerms then
 		if lhs == dt_alpha_def:lhs() then
 			rhs = rhs:substIndex(a_l_def)
 			rhs = rhs:simplifyAddMulDiv()
 		elseif lhs == dt_gammaDelta_ll_def:lhs() then
 			rhs = rhs:substIndex(dDelta_lll_def, b_ul_def)
+			rhs = rhs:simplifyAddMulDiv()
+		elseif lhs == dt_gamma_ll_def:lhs() then
+			rhs = rhs:substIndex(d_lll_def, b_ul_def)
 			rhs = rhs:simplifyAddMulDiv()
 		elseif lhs == dt_a_l_def:lhs() then
 			--[[
@@ -2841,8 +2894,10 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 			rhs = rhs:replaceIndex(b'^a_a', tr_b)
 			rhs = rhs:simplifyAddMulDiv()
 			--]]
+		elseif lhs == dt_d_lll_def:lhs() then
 		end
 	end
+	--]=]
 	
 	return lhs:eq(rhs)
 end)
@@ -2861,7 +2916,6 @@ local UijklMat = Matrix(UijklVars):T()
 --  these are the terms that should prove our eqn doesn't satisfy homogeneity, right?
 --  and in the case of a roe solver, these go extra in the source, right?
 --  but not for hll right?
-printHeader"system rearranged for flux-jacobian factoring:"
 
 for _,eqn in ipairs(UijkltEqns) do
 	printbr(eqn)
@@ -2885,34 +2939,10 @@ printHeader'as a balance law system:'
 local A, SijklMat = factorLinearSystem(rhsWithDeltas, UpqmnrVars)
 local dFijkl_dUpqmn_mat = (-A)()
 dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()()
+-- simplify terms in the matrix
+dFijkl_dUpqmn_mat = simplifyDAndKTraces(dFijkl_dUpqmn_mat)
 
 local UpqmnMat = Matrix(UpqmnVars):T()
-
-if not eigensystem_outputSourceTerms then
-	printbr('(removing source terms to speed up calculations)')
-	SijklMat = (SijklMat * 0)()
-end
-
-printbr((UijklMat'_,t' + dFijkl_dUpqmn_mat * UpqmnMat'_,r'):eq(SijklMat))
-printbr()
-
-printHeader'replacing rhs derivatives with 1st derivative state variables:'
-
-if eigensystem_outputSourceTerms then
-	SijklMat = SijklMat
-		:substIndex(d_alpha_l_from_a_l)
-		:substIndex(d_beta_ul_from_b_ul)
-		:substIndex(d_gamma_uul_from_dHat_lll_dDelta_lll)
-
-	for i=1,#SijklMat do
-		SijklMat[i][1] = SijklMat[i][1]
-			:simplifyMetrics({
-				Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
-			})
-			:tidyIndexes{fixed='t'}
-			:simplifyAddMulDiv()
-	end
-end
 
 printbr((UijklMat'_,t' + dFijkl_dUpqmn_mat * UpqmnMat'_,r'):eq(SijklMat))
 printbr()
@@ -2954,6 +2984,7 @@ printbr((dUdt_lhs + dFdx_lhs):eq(SijklMat))
 --dDelta'_ijk,l':setSymmetries({2,3}, {1,4})
 -- but now for expanding dense matrices, don't use the d_(k|ij,|l) symmetry:
 dDelta'_ijk,l':setSymmetries{2,3}
+d'_ijk,l':setSymmetries{2,3}
 -- YUP -- without this the dU/dx vector gets /dy's in the dDelta part ... so yeah push this symmetry *HERE*
 -- SO HERE I have to remove all symmetries of flux state vars that span derivatives
 --a'_i,j':setSymmetries()	-- ofc I don't use the symmetry of a_i,j anyways ...
@@ -3320,7 +3351,6 @@ local charpoly = dFijkl_dUpqmn_expanded:charpoly(lambda)
 printbr(charpoly)
 
 
---[======[ eigensystem stuff is too slow  for now
 printHeader'finding lambdas'
 
 --	table{Constant(0)}:rep(17),
@@ -3334,14 +3364,14 @@ local x = charpoly[1]:clone()	-- only take the lhs
 
 local gammaUxxVar = var'\\gamma^{xx}'
 for _,root in ipairs{
---[[ easiest first
+-- [[ easiest first
 	Constant(0),
 	alpha * sqrt(gammaUxxVar),
 	-alpha * sqrt(gammaUxxVar),
 	alpha * sqrt(f * gammaUxxVar),
 	-alpha * sqrt(f * gammaUxxVar),
 --]]
--- [[ hardest first
+--[[ hardest first
 	-alpha * sqrt(f * gammaUxxVar),
 	alpha * sqrt(f * gammaUxxVar),
 	-alpha * sqrt(gammaUxxVar),
@@ -3393,6 +3423,8 @@ print(export.Lua(sum))
 print'</pre>'
 --]]
 
+
+--[======[ eigensystem stuff is too slow  for now
 -- so for f arbitrary and for f=2/alpha, both we get some sqrt(sqrt(...) + ...)'s as lambdas ... makes calcs frustrating
 
 --[=[ this is all for shift-less Z4 for generic 'f' shift parameter
