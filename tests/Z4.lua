@@ -76,6 +76,11 @@ flux jacobian looks the same?
 useDAlphaAsStateVar = false
 
 --[[
+for the gauge vars, should we move the shift-derivative of the Lie derivative into the flux?
+--]]
+makeFluxForGaugeVars = true
+
+--[[
 pick only one of these
 or pick none = keep lapse as a generic variable 'f'
 --]]
@@ -1002,8 +1007,22 @@ if f_def then
 	printbr(dt_alpha_def)
 end
 
+local before = dt_alpha_def:clone()
+
 -- rhs only so alpha_,t isn't simplified
 dt_alpha_def = usingRHSSubstIndexSimplify(dt_alpha_def, d_alpha_l_from_a_l)
+
+-- save here and use this for subst in a_k's def
+-- (otherwise in a_k you'll have to subst the 2nd-deriv vars as 1st-derivs of 1st-deriv-state-vars)
+local dt_alpha_noflux_def = dt_alpha_def:clone()
+
+if makeFluxForGaugeVars then
+	dt_alpha_def = before
+	dt_alpha_def[2] = (dt_alpha_def[2] - alpha'_,i' * beta'^i')()
+	dt_alpha_def[2] = dt_alpha_def[2] + (alpha * beta'^r')'_,r' - alpha * tr_b
+	dt_alpha_def:flatten()
+	printbr(dt_alpha_def)
+end
 
 local dt_alpha_negflux, dt_alpha_rhs
 _, dt_alpha_negflux, dt_alpha_rhs = combineCommaDerivativesAndRelabel(dt_alpha_def:rhs(), 'r', {})
@@ -1015,7 +1034,7 @@ printbr()
 printbr'lapse partial evolution'
 
 --local dt_a_l_def = dt_alpha_def'_,k'	-- this wil simplify the same, but it won't look as good
-local dt_a_l_def = dt_alpha_def:lhs()'_,k':eq(dt_alpha_def:rhs()'_,k')
+local dt_a_l_def = dt_alpha_noflux_def:lhs()'_,k':eq(dt_alpha_noflux_def:rhs()'_,k')
 printbr(dt_a_l_def)
 
 local using = alpha'_,t,k':eq(alpha'_,k''_,t')
@@ -1037,11 +1056,11 @@ dt_a_l_def[1] = dt_a_l_def[1]:simplifyAddMulDiv()
 printbr(dt_a_l_def)
 --]]
 
-dt_a_l_def = usingSubst(dt_a_l_def, dt_alpha_def)
+dt_a_l_def = usingSubst(dt_a_l_def, dt_alpha_noflux_def)
 
 -- the easy way to do that with the tools I have:
 local alpha_t_over_alpha = var'alpha_t_over_alpha'
-local alpha_t_over_alpha_def = alpha_t_over_alpha:eq((dt_alpha_def:rhs() / alpha)())
+local alpha_t_over_alpha_def = alpha_t_over_alpha:eq((dt_alpha_noflux_def:rhs() / alpha)())
 dt_a_l_def = dt_a_l_def:subst(alpha_t_over_alpha_def:switch())
 dt_a_l_def = dt_a_l_def:solve(a'_k,t')
 dt_a_l_def = dt_a_l_def:subst(alpha_t_over_alpha_def)
@@ -1102,22 +1121,40 @@ printbr('symmetrizing', gamma'_ij')
 dt_gamma_ll_def = dt_gamma_ll_def:symmetrizeIndexes(gamma, {1,2})()
 printbr(dt_gamma_ll_def)
 
+before = dt_gamma_ll_def:clone() 
+
 dt_gamma_ll_def = usingSubstIndex(dt_gamma_ll_def, d_beta_ul_from_b_ul)
 dt_gamma_ll_def = usingRHSSubstIndex(dt_gamma_ll_def, d_gamma_lll_from_d_lll)
+
+dt_gamma_ll_noflux_def = dt_gamma_ll_def:clone()
+
+if makeFluxForGaugeVars then
+	-- then move the gamma_ij,k beta^k into the flux
+	dt_gamma_ll_def = before:clone()
+-- [[	
+	dt_gamma_ll_def[2] = (dt_gamma_ll_def[2] - gamma'_ij,k' * beta'^k')()
+	dt_gamma_ll_def[2] = dt_gamma_ll_def[2]:substIndex(d_beta_ul_from_b_ul)
+	dt_gamma_ll_def[2] = dt_gamma_ll_def[2]
+		+ (gamma'_ij' * beta'^r')'_,r'
+		- gamma'_ij' * tr_b
+--]]	
+	dt_gamma_ll_def[2]:flatten()
+	printbr(dt_gamma_ll_def)
+end
 
 local _
 _, dt_gamma_ll_negflux, dt_gamma_ll_rhs = combineCommaDerivativesAndRelabel(dt_gamma_ll_def:rhs(), 'r', {'i', 'j'})
 printbr(dt_gamma_ll_def:lhs(), 'flux term', -dt_gamma_ll_negflux)
 printbr(dt_gamma_ll_def:lhs(), 'source term', dt_gamma_ll_rhs)
 
--- TODO HERE optionally insert (
+-- TODO HERE optionally insert
 
 printbr()
 
 
 printbr'metric delta evolution'
 
-local dt_gammaDelta_ll_def = dt_gamma_ll_def:clone()
+local dt_gammaDelta_ll_def = dt_gamma_ll_noflux_def:clone()
 dt_gammaDelta_ll_def = dt_gammaDelta_ll_def:splitOffDerivIndexes()
 dt_gammaDelta_ll_def[1] = dt_gammaDelta_ll_def[1]
 	:substIndex(gamma_ll_from_gammaHat_ll_gammaDelta_ll)
@@ -1146,7 +1183,7 @@ printbr()
 -- alright so this isn't used except for the eigensystem part
 -- but it *could* also be used in the next step ...
 printHeader'metric partial evolution:'
-local dt_d_lll_def = dt_gamma_ll_def:reindex{k='l'}
+local dt_d_lll_def = dt_gamma_ll_noflux_def:reindex{k='l'}
 dt_d_lll_def = dt_d_lll_def / 2
 dt_d_lll_def = dt_d_lll_def[1]'_,k':eq(dt_d_lll_def[2]'_,k')
 dt_d_lll_def[1] = dt_d_lll_def[1]()
@@ -1681,7 +1718,9 @@ function makeShift(args)
 	local useShiftingShift = args.useShiftingShift 
 	local name = args.name
 	
-	-- this is parabolic form, where we solve beta^l_,t instead of beta^l_,tt
+	printHeader('shift: '..name)
+	
+	-- this is parabolic form, where we solve β^l_,t instead of β^l_,tt
 	local dt_beta_u_def
 	local dt_B_u_def		-- only used with useHyperbolic
 	if useHyperbolic then
@@ -1691,9 +1730,24 @@ function makeShift(args)
 		dt_beta_u_def = beta'^l_,t':eq(beta_rhs)
 	end
 	if useShiftingShift then
-		dt_beta_u_def[2] = dt_beta_u_def:rhs() + beta'^k' * b'^l_k'
-		if useHyperbolic then
-			dt_B_u_def[2] = dt_B_u_def:rhs() + B'^k' * b'^l_k'
+		if makeFluxForGaugeVars then
+			-- [[ if you want flux as well:
+			-- β^l_,t = B^l + (β^m β^l)_,m - β^l b^m_m
+			-- B^l_,t = S(B)^l + (β^m B^l)_,m - B^l b^m_m
+			dt_beta_u_def[2] = dt_beta_u_def:rhs() + (beta'^k' * beta'^l')'_,k' - beta'^l' * tr_b
+			if useHyperbolic then
+				dt_B_u_def[2] = dt_B_u_def:rhs() + (beta'^k' * B'^l')'_,k' - B'^l' * tr_b
+			end
+			--]]
+		else
+			-- [[ if you want all-source:
+			-- β^l_,t = B^l + β^m β^l_,m
+			-- B^l_,t = S(B)^l + β^m B^l_,m
+			dt_beta_u_def[2] = dt_beta_u_def:rhs() + beta'^k' * b'^l_k'
+			if useHyperbolic then
+				dt_B_u_def[2] = dt_B_u_def:rhs() + B'^k' * b'^l_k'
+			end
+			--]]	
 		end
 	end
 	printbr(dt_beta_u_def)
@@ -1702,12 +1756,14 @@ function makeShift(args)
 	end
 	printbr()
 
+	dt_beta_u_def:flatten()
 	local _, dt_beta_u_negflux, dt_beta_u_rhs = combineCommaDerivativesAndRelabel(dt_beta_u_def:rhs(), 'r', {'l'})
 	printbr(beta'^l_,t', 'flux term:', -dt_beta_u_negflux)
 	printbr(beta'^l_,t', 'source term:', dt_beta_u_rhs)
 	
 	local _, dt_B_u_negflux, dt_B_u_rhs
 	if useHyperbolic then
+		dt_B_u_def:flatten()
 		_, dt_B_u_negflux, dt_B_u_rhs = combineCommaDerivativesAndRelabel(dt_B_u_def:rhs(), 'r', {'l'})
 		printbr(B'^l_,t', 'flux term:', -dt_B_u_negflux)
 		printbr(B'^l_,t', 'source term:', dt_B_u_rhs)
@@ -1723,6 +1779,39 @@ function makeShift(args)
 	)
 	printbr(dt_b_ul_def)
 
+	if makeFluxForGaugeVars then
+		dt_b_ul_def = dt_b_ul_def:replace(
+			(beta'^i' * beta'^l')'_,i',
+			beta'^l' * tr_b + beta'^i' * b'^l_i'
+		):flatten()
+		dt_b_ul_def = dt_b_ul_def:replace(
+			beta'^l' * tr_b - beta'^l' * tr_b,
+			0
+		):flatten()
+
+		--[[ would be nice to introduce the shift to the flux
+		-- but then we end up with this extra 1st deriv term
+		dt_b_ul_def[2] = dt_b_ul_def[2] 
+			- (beta'^r' * b'^l_k')'_,r'
+			+ tr_b * b'^l_k'
+			+ beta'^r' * b'^l_r,k'
+		--]]
+		
+		dt_b_ul_def[2] = dt_b_ul_def[2]
+			- (delta'^r_k' * beta'^i' * b'^l_i')'_,r'
+			+ (beta'^r' * b'^l_k')'_,r'
+	end
+	printbr(dt_b_ul_def)
+
+	-- how to insert a -β^r b^l_k term into the flux? ... without adding a derivative to the rhs
+	--dt_b_ul_def = dt_b_ul_def + (-beta'^r' * b'^l_k')'_,r' + tr_b * b'^l_k' + beta'^r' * b'^l_k,r'
+	-- what if instead (For hyperbolic) we have β^l_,t = B^l - β^m B^l_,m
+	-- β^l_,t = B^l + β^m β^l_,m
+	-- to make a flux term out of this ...
+	-- β^l_,t = B^l + β^m β^l_,m + (β^m β^l)_,m - β^m β^l_,m - β^m_,m β^l
+	-- β^l_,t = B^l + (β^m β^l)_,m - β^l b^m_m
+
+	dt_b_ul_def:flatten()
 	local _, dt_b_ul_negflux, dt_b_ul_rhs = combineCommaDerivativesAndRelabel(dt_b_ul_def:rhs(), 'r', {'l', 'k'})
 	printbr(b'^l_k,t', 'flux term:', -dt_b_ul_negflux)
 	printbr(b'^l_k,t', 'source term:', dt_b_ul_rhs)
@@ -2939,8 +3028,12 @@ printHeader'as a balance law system:'
 local A, SijklMat = factorLinearSystem(rhsWithDeltas, UpqmnrVars)
 local dFijkl_dUpqmn_mat = (-A)()
 dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()()
+
 -- simplify terms in the matrix
 dFijkl_dUpqmn_mat = simplifyDAndKTraces(dFijkl_dUpqmn_mat)
+	:subst((-conn_u_from_d_ull_d_llu:switch())():reindex{i='l'})
+	-- this one isn' working:
+	--:subst((gamma'^pl' * conn_u_from_d_ull_d_llu:switch())():reindex{i='q'})
 
 local UpqmnMat = Matrix(UpqmnVars):T()
 
