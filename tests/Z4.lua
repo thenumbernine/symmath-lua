@@ -202,59 +202,6 @@ function printHeader(str)
 	io.stderr:flush()
 end
 
--- returns true if the var matches and the index raise/lower and derivatives all match
---  but doesn't care what the symbols are
-function TensorRefMatchesIndexForm(a, b)
-	local ta = Tensor.Ref:isa(a)
-	local tb = Tensor.Ref:isa(b)
-	if not ta and not tb then return true end
-	if not ta ~= not tb then return false end
-	local na = #a
-	if na ~= #b then return false end
-	if a[1] ~= b[1] then return false end	-- TODO should this function also verify that the vars match?
-	for i=2,na do
-		if not not a[i].lower ~= not not b[i].lower then return false end
-		if a[i].derivative ~= b[i].derivative then return false end
-	end
-	return true
-end
-
--- returns true if the var is the same, the length is the same, and the different derivs are the same
--- doesn't care about lowers
--- doesn't care about symbols
-function TensorRefMatchesDegreeAndDeriv(a, b)
-	assert(a)
-	assert(b)
-	local ta = Tensor.Ref:isa(a)
-	local tb = Tensor.Ref:isa(b)
-	if not ta and not tb then return true end
-	if not ta ~= not tb then return false end
-	local na = #a
-	if na ~= #b then return false end
-	if a[1] ~= b[1] then return false end	-- TODO should this function also verify that the vars match?
-	for i=2,na do
-		if a[i].derivative ~= b[i].derivative then return false end
-	end
-	return true
-end
-
-function TensorRefRemoveDerivs(x)
-	assert(Tensor.Ref:isa(x))
-	x = x:clone()
-	for i=#x,2,-1 do
-		if x[i].derivative then
-			table.remove(x,i)
-		end
-	end
-	return x
-end
-
-function TensorRefWithoutDerivMatchesDegree(a,b)
-	a = TensorRefRemoveDerivs(a)
-	b = TensorRefRemoveDerivs(b)
-	return TensorRefMatchesDegreeAndDeriv(a,b)
-end
-
 function tableToMul(t)
 	if #t == 0 then return Constant(1) end
 	if #t == 1 then return t[1] end
@@ -362,7 +309,7 @@ function insertDeltasToSetIndexSymbols(expr, finds)
 		local count = 0
 		for i,y in ipairs(oldmulterms) do
 			for j,find in ipairs(finds) do
-				if TensorRefMatchesDegreeAndDeriv(y,find) then
+				if Tensor.Ref.matchesDegreeAndDeriv(y,find) then
 --printbr("found",y," as", find)
 					foundIndexesInOldMulTerms[i] = j
 					count = count + 1
@@ -650,6 +597,7 @@ K'_ij,k':setSymmetries{1,2}
 
 
 -- [[ ok not typical Z4 vars but i'm using it for MDE and for GammaDriver shift flux codegen ...
+-- TODO substitute these *after* flux code generation
 A = var'A'
 A'_ij':setSymmetries{1,2}
 A'_ij,k':setSymmetries{1,2}
@@ -657,7 +605,7 @@ DBeta = var'(\\nabla\\beta)'			-- ∇_j β^i = β^i_,j + Γ^i_kj β^k = b^i_j + 
 DBeta:nameForExporter('C', 'DBeta')
 DBeta'_ij':setSymmetries{1,2}
 DBeta'_ij,k':setSymmetries{1,2}
-tr_DBeta = var'(\\nabla \\cdot \\beta)'	-- ∇∙β = ∇_i β^i = β^i_,i + Γ^i_ij β^j = b^i_i + Γ^i_ij β^j = tr_b + Γ^i_ij β^j
+tr_DBeta = var'(\\nabla \\cdot \\beta)'	-- ∇∙β = ∇_i β^i = β^i_,i + Γ^i_ij β^j = b^i_i + Γ^i_ij β^j = tr_b + Γ^i_ij β^j = tr_b + d_j β^j
 tr_DBeta:nameForExporter('C', 'tr_DBeta')
 --]]
 
@@ -2432,52 +2380,6 @@ printbr()
 Tensor.Chart{coords=xs}
 	
 local deltaDenseUL = Tensor('^i_j', function(i,j) return i == j and 1 or 0 end)
-
-
--- TODO put this in symmath
--- after merging the "symmetries" property into TensorRef
-local cachedDenseTensors = table()
-function getDenseTensorCache(x)
-	assert(Tensor.Ref:isa(x) and Variable:isa(x[1]))
---printbr('dense tensor cache has', cachedDenseTensors:mapi(function(t) return t[1] end):mapi(tostring):concat';')
-	local _, t = cachedDenseTensors:find(nil, function(t)
-		return TensorRefMatchesIndexForm(t[1], x)
-	end)
-	if not t then return end
-	return t[2], t[1]
-end
-
-function replaceWithDense(expr)
-	return expr:map(function(x)
-		if Tensor.Ref:isa(x)
-		and Variable:isa(x[1])
-		then
---printbr('found tensorref', x)
-			local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
-			-- remove deriv, needed for permuting the Tensor into the TensorRef(Variable)'s form
-			local indexesWithoutDeriv = indexes:mapi(function(index)
-				index = index:clone()
-				index.derivative = nil
-				return index
-			end)
-			-- scalar derivatives need to be generated
-			-- otherwise tensors need the derivative indexes picked off, ten replace with dense, then replace with ref with full derivative indexes
-			-- or just don't bother with derivatives, and encode everything in the variable name
-			local dense, cachedRef = getDenseTensorCache(x)
-			if dense then
---printbr('...matched to cached tensorref', cachedRef)
---printbr('found associated dense', dense)
-			else
-				dense = x:makeDense()
---printbr('...created new dense', dense)
-				cachedDenseTensors:insert{x:clone(), dense}
-			end
-			local result = Tensor.Ref(dense, indexesWithoutDeriv:unpack())
---printbr('...returning dense tensorref', result)
-			return result
-		end
-	end)
-end
 	
 local dHat_t_Dense = dHat_t'_ij':makeDense()
 local dt_dHatDense = dt_dHat'_kij':makeDense()
@@ -2496,7 +2398,7 @@ function expandMatrixIndexes(expr)
 
 	-- now for everything else
 --printbr('before replacing dense tensors', expr)
-	return replaceWithDense(expr)
+	return expr:replaceWithDense()
 end
 
 
@@ -2652,10 +2554,10 @@ local shiftVarNames = {
 for _,shift in ipairs(allShifts) do
 	shift.denseVarNames = {}
 end
-for _,t in ipairs(cachedDenseTensors) do
-	if TensorRefWithoutDerivMatchesDegree(t[1], beta'^k')
-	or TensorRefWithoutDerivMatchesDegree(t[1], b'^k_l')
-	or TensorRefWithoutDerivMatchesDegree(t[1], B'^k')
+for _,t in ipairs(Tensor.defaultDenseCache.cache) do
+	if Tensor.Ref.matchesDegreeWithoutDerivs(t[1], beta'^k')
+	or Tensor.Ref.matchesDegreeWithoutDerivs(t[1], b'^k_l')
+	or Tensor.Ref.matchesDegreeWithoutDerivs(t[1], B'^k')
 	then
 		local d = t[2]
 		for i,x in d:iter() do
@@ -2663,9 +2565,9 @@ for _,t in ipairs(cachedDenseTensors) do
 		end
 	else
 		for _,shift in ipairs(allShifts) do
-			if TensorRefWithoutDerivMatchesDegree(t[1], shift.vars.beta'^k')
-			or TensorRefWithoutDerivMatchesDegree(t[1], shift.vars.b'^k_l')
-			or TensorRefWithoutDerivMatchesDegree(t[1], shift.vars.B'^k')
+			if Tensor.Ref.matchesDegreeWithoutDerivs(t[1], shift.vars.beta'^k')
+			or Tensor.Ref.matchesDegreeWithoutDerivs(t[1], shift.vars.b'^k_l')
+			or Tensor.Ref.matchesDegreeWithoutDerivs(t[1], shift.vars.B'^k')
 			then
 				local d = t[2]
 				for i,x in d:iter() do
@@ -2882,6 +2784,20 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 	rhs = rhs:splitOffDerivIndexes()
 	rhs = rhs:substIndex(conn_ull_from_d_ull_d_llu)
 
+	
+	-- [[ for gamma driver
+	rhs = rhs
+		:insertMetricsToSetVariance(A'_ij', gamma)
+		:insertMetricsToSetVariance(DBeta'^i_j', gamma)
+		:substIndex(
+			A'_ij':eq(K'_ij' - frac(1,3) * gamma'_ij' * tr_K),
+			DBeta'^i_j':eq(b'^i_j' + (d'_jkm' + d'_kjm' - d'_mjk') * gamma'^mi' * beta'^k'),
+			tr_DBeta:eq(tr_b - d'_m' * beta'^m'),
+			mdeShiftEpsilon'_,a':eq(mdeShiftEpsilon'_,a' * 0),
+			tr_b:eq(b'^m_m')
+		)
+	--]]
+
 	-- insert traces (and their derivatives)
 	rhs = rhs:splitOffDerivIndexes()
 --printbr(lhs:eq(rhs))
@@ -3027,7 +2943,9 @@ printHeader'as a balance law system:'
 
 local A, SijklMat = factorLinearSystem(rhsWithDeltas, UpqmnrVars)
 local dFijkl_dUpqmn_mat = (-A)()
-dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()()
+dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()
+	:applySymmetries()
+	:simplify()
 
 -- simplify terms in the matrix
 dFijkl_dUpqmn_mat = simplifyDAndKTraces(dFijkl_dUpqmn_mat)
@@ -3267,7 +3185,7 @@ dUdt_lhs_exprs_expanded_mat.rowsplits = rowsplits
 local rest = table(dFdx_lhs_exprs_expanded)
 local dUdxs_lhs_exprs_expanded_mat = table()
 local dFijkl_dUpqmn_expanded_mats = table()
-local betaUDense = getDenseTensorCache(beta'^i')
+local betaUDense = Tensor.defaultDenseCache:get(beta'^i')
 for j=1,3 do
 	dFijkl_dUpqmn_expanded_mats[j], rest = factorLinearSystem(rest, dUdxs_lhs_exprs_expanded[j])
 	dFijkl_dUpqmn_expanded_mats[j].colsplits = rowsplits

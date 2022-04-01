@@ -363,7 +363,7 @@ function TensorRef.makeDense(x)
 	end
 
 	local chart = Tensor:findChartForSymbol()
-	assert(chart)
+	assert(chart, "can't make dense without creating a Tensor.Chart first!")
 	local xNames = table.mapi(chart.coords, function(c) return c.name end)
 
 	local result = Tensor(indexesWithoutDeriv, function(...)
@@ -409,6 +409,59 @@ function TensorRef.makeDense(x)
 	end)
 --printbr(x, '=>', result)
 	return result
+end
+
+-- returns true if the var matches and the index raise/lower and derivatives all match
+--  but doesn't care what the symbols are
+function TensorRef.matchesIndexForm(a, b)
+	local ta = TensorRef:isa(a)
+	local tb = TensorRef:isa(b)
+	if not ta and not tb then return true end
+	if not ta ~= not tb then return false end
+	local na = #a
+	if na ~= #b then return false end
+	if a[1] ~= b[1] then return false end	-- TODO should this function also verify that the vars match?
+	for i=2,na do
+		if not not a[i].lower ~= not not b[i].lower then return false end
+		if a[i].derivative ~= b[i].derivative then return false end
+	end
+	return true
+end
+
+-- returns true if the var is the same, the length is the same, and the different derivs are the same
+-- doesn't care about lowers
+-- doesn't care about symbols
+function TensorRef.matchesDegreeAndDeriv(a, b)
+	assert(a)
+	assert(b)
+	local ta = TensorRef:isa(a)
+	local tb = TensorRef:isa(b)
+	if not ta and not tb then return true end
+	if not ta ~= not tb then return false end
+	local na = #a
+	if na ~= #b then return false end
+	if a[1] ~= b[1] then return false end	-- TODO should this function also verify that the vars match?
+	for i=2,na do
+		if a[i].derivative ~= b[i].derivative then return false end
+	end
+	return true
+end
+
+function TensorRef.removeDerivs(x)
+	assert(TensorRef:isa(x))
+	x = x:clone()
+	for i=#x,2,-1 do
+		if x[i].derivative then
+			table.remove(x,i)
+		end
+	end
+	return x
+end
+
+function TensorRef.matchesDegreeWithoutDerivs(a,b)
+	a = TensorRef.removeDerivs(a)
+	b = TensorRef.removeDerivs(b)
+	return TensorRef.matchesDegreeAndDeriv(a,b)
 end
 
 TensorRef.rules = {

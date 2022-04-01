@@ -182,6 +182,8 @@ Tensor.Chart = require 'symmath.tensor.Chart'
 
 Tensor.LeviCivita = require 'symmath.tensor.LeviCivita'
 
+Tensor.DenseCache = require 'symmath.tensor.DenseCache'
+
 -- TODO finishme
 Tensor.dual = require 'symmath.tensor.dual'
 
@@ -1223,6 +1225,13 @@ function Tensor:metricSymbol()
 		Tensor.metricVariable = Variable'g'
 	end
 	return Tensor.metricVariable
+end
+
+function Tensor:getDefaultDenseCache()
+	if not Tensor.defaultDenseCache then
+		Tensor.defaultDenseCache = Tensor.DenseCache()
+	end
+	return Tensor.defaultDenseCache
 end
 
 return Tensor

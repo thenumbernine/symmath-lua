@@ -1671,18 +1671,46 @@ function Expression:getIndexesUsed()
 	end
 end
 
--- TODO don't even use this, instead change tensor assignment
-function Expression:makeDense()
-	Tensor = Tensor or require 'symmath.Tensor'
-	local indexes = self:getIndexesUsed()
-	return Tensor(indexes, function(...)
-		-- now we have to swap out the comma derivatives of each index with the respective index provided
-error'you are here'
-		return self:get{...}
+-- TODO should this have the same name as Tensor.Ref:makeDense() ?
+-- or should I keep these separate since they have different function signatures?
+--  replaceWithDense() uses a cache, TensorRef:makeDense() doesn't (but I guess it could ...)
+function Expression.replaceWithDense(expr, cache)
+	symmath = symmath or require 'symmath'
+	local Tensor = symmath.Tensor
+	local Variable = symmath.Variable
+	
+	cache = cache or Tensor:getDefaultDenseCache()
+	
+	return expr:map(function(x)
+		if Tensor.Ref:isa(x)
+		and Variable:isa(x[1])
+		then
+--printbr('found tensorref', x)
+			local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
+			-- remove deriv, needed for permuting the Tensor into the TensorRef(Variable)'s form
+			local indexesWithoutDeriv = indexes:mapi(function(index)
+				index = index:clone()
+				index.derivative = nil
+				return index
+			end)
+			-- scalar derivatives need to be generated
+			-- otherwise tensors need the derivative indexes picked off, ten replace with dense, then replace with ref with full derivative indexes
+			-- or just don't bother with derivatives, and encode everything in the variable name
+			local dense, cachedRef = cache:get(x)
+			if dense then
+--printbr('...matched to cached tensorref', cachedRef)
+--printbr('found associated dense', dense)
+			else
+				dense = x:makeDense()
+--printbr('...created new dense', dense)
+				cache:add(x, dense)
+			end
+			local result = Tensor.Ref(dense, indexesWithoutDeriv:unpack())
+--printbr('...returning dense tensorref', result)
+			return result
+		end
 	end)
 end
-
-
 
 --[[
 returns a table:
