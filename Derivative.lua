@@ -131,6 +131,7 @@ Derivative.rules = {
 			local Variable = symmath.Variable
 			local Constant = symmath.Constant
 			local TensorRef = symmath.Tensor.Ref
+			local Tensor = symmath.Tensor
 			if Variable:isa(expr[1]) then
 				local var = expr[1]
 				-- dx/dx = 1
@@ -159,8 +160,8 @@ Derivative.rules = {
 					then
 						-- if upper/lower differ then use delta
 						-- if they match then use metric
-						local deltaSymbol = require 'symmath.Tensor':deltaSymbol()
-						local metricSymbol = require 'symmath.Tensor':metricSymbol()
+						local deltaSymbol = Tensor:deltaSymbol()
+						local metricSymbol = Tensor:metricSymbol()
 						-- next, use products of the symbol per index
 						local prod = table()
 						for k=2,#expr[1] do
@@ -172,9 +173,7 @@ Derivative.rules = {
 							prod:insert(TensorRef(symbol, index1, index2))
 						end
 					
-						if #prod == 0 then return Constant(1) end
-						if #prod == 1 then return prod[1] end
-						return symmath.op.mul(prod:unpack())
+						return symmath.tableToMul(prod)
 					end
 				-- d/dy dx^I/dx^J = 0
 				elseif #expr > 2 then

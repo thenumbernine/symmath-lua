@@ -641,10 +641,8 @@ function ProdList:toExpr()
 		return not Constant.isValue(x, 1)
 	end)
 
-	if #list == 0 then return Constant(1) end
-	if #list == 1 then return list[1] end
 	list:sort(compare)
-	return setmetatable(list, symmath.op.mul)
+	return symmath.tableToMul(list)
 end
 
 -- pass it an element of the product list

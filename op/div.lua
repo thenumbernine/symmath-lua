@@ -765,8 +765,8 @@ div.rules = {
 									if #c == 0 then
 										c = nil
 									else
-										b = #b == 0 and Constant(1) or (#b == 1 and b[1] or mul(b:unpack()))
-										c = #c == 1 and c[1] or mul(c:unpack())
+										b = symmath.tableToMul(b)
+										c = symmath.tableToMul(c)
 									end
 								end
 								if c then
@@ -869,9 +869,7 @@ div.rules = {
 				symmath = symmath or require 'symmath'
 				local mul = symmath.op.mul
 				local Constant = symmath.Constant
-				if #x == 0 then return Constant(1) end
-				if #x == 1 then return x[1] end
-				return mul(x:unpack())
+				return symmath.tableToMul(x)
 			end
 
 			local numlist = toProdList(num)

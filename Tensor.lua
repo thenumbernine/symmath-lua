@@ -1086,15 +1086,12 @@ function Tensor.pruneMul(lhs, rhs)
 				end
 			end
 
-
 			if #result == 0 then
 				error('somehow our sum indexes iterated over no source values\n'
 					..'lhs = '..tostring(lhs)..'\n'
 					..'rhs = '..tostring(rhs))
-			elseif #result == 1 then
-				return result[1]
 			end
-			return setmetatable(result, require 'symmath.op.add')
+			return symmath.tableToAdd(result)
 		end
 
 		if #resultIndexes == 0 then -- return a scalar value

@@ -156,7 +156,7 @@ eigensystem_favorFluxTerms = true
 --[[
 remove zero rows from expanded flux jacobian matrix?
 --]]
-eigensystem_removeZeroRows = true
+eigensystem_removeZeroRows = false
 
 --[[
 whether to only evaluate the shiftless eigensystem
@@ -202,18 +202,6 @@ function printHeader(str)
 	io.stderr:flush()
 end
 
-function tableToMul(t)
-	if #t == 0 then return Constant(1) end
-	if #t == 1 then return t[1] end
-	return symmath.op.mul(table.unpack(t))
-end
-
-function tableToSum(t)
-	if #t == 0 then return Constant(0) end
-	if #t == 1 then return t[1] end
-	return symmath.op.add(table.unpack(t))
-end
-
 function separateSum(sum, cond)
 	local with = table()
 	local without = table()
@@ -224,7 +212,7 @@ function separateSum(sum, cond)
 			without:insert(x)
 		end
 	end
-	return tableToSum(with), tableToSum(without)
+	return tableToAdd(with), tableToAdd(without)
 end
 
 function removeCommaDeriv(expr, symbolMustBe)
@@ -377,7 +365,7 @@ function insertDeltasToSetIndexSymbols(expr, finds)
 			end
 		end
 	end
-	return tableToSum(newaddterms)
+	return tableToAdd(newaddterms)
 end
 
 
@@ -422,7 +410,7 @@ function simplifySumIndexes(expr)
 		end
 		prods[k] = tableToMul(terms)
 	end
-	return tableToSum(prods)
+	return tableToAdd(prods)
 end
 
 --[[ testing
@@ -467,12 +455,12 @@ function combineCommaDerivatives(expr)
 	local result = table()
 	for symbol,terms in pairs(termsForDerivSymbol) do
 		if symbol == binTermsByCommaDerivative_noDerivSymbol then
-			result:insert(tableToSum(terms))
+			result:insert(tableToAdd(terms))
 		else
-			result:insert(tableToSum(terms)(' ,_'..symbol))
+			result:insert(tableToAdd(terms)(' ,_'..symbol))
 		end
 	end
-	return tableToSum(result)
+	return tableToAdd(result)
 end
 
 -- TODO the 'fixedsymbols' could be inferred if we just provided an eqn lhs that was a tensor
@@ -483,19 +471,19 @@ function combineCommaDerivativesAndRelabel(expr, destsymbol, fixedsymbols)
 	local derivTerms = table()
 	for symbol,terms in pairs(termsForDerivSymbol) do
 		if symbol == binTermsByCommaDerivative_noDerivSymbol then
-			nonDerivTerms:insert(tableToSum(terms))
+			nonDerivTerms:insert(tableToAdd(terms))
 		else
 			if symbol == destsymbol then
-				derivTerms:insert(tableToSum(terms)(' ,_'..destsymbol))
+				derivTerms:insert(tableToAdd(terms)(' ,_'..destsymbol))
 			elseif table.find(fixedsymbols, symbol) then
-				derivTerms:insert((tableToSum(terms) * delta(' ^'..destsymbol..' _'..symbol) )(' ,_'..destsymbol))
+				derivTerms:insert((tableToAdd(terms) * delta(' ^'..destsymbol..' _'..symbol) )(' ,_'..destsymbol))
 			else
-				derivTerms:insert(tableToSum(terms):reindex{[symbol] = destsymbol}(' ,_'..destsymbol))
+				derivTerms:insert(tableToAdd(terms):reindex{[symbol] = destsymbol}(' ,_'..destsymbol))
 			end
 		end
 	end
-	local derivSum = combineCommaDerivatives(tableToSum(derivTerms))
-	local nonDerivSum = tableToSum(nonDerivTerms)
+	local derivSum = combineCommaDerivatives(tableToAdd(derivTerms))
+	local nonDerivSum = tableToAdd(nonDerivTerms)
 	return derivSum + nonDerivSum, derivSum, nonDerivSum
 end
 
@@ -1421,7 +1409,7 @@ printbr(Gaussian_def)
 Gaussian_def = Gaussian_def[1]:eq(
 	(gamma'^ij' * removeCommaDeriv(Ricci_ll_negflux, 'k'))'_,k'
 	- gamma'^ij_,k' * removeCommaDeriv(Ricci_ll_negflux, 'k')
-	+ tableToSum(Ricci_ll_rhs:sumToTable():mapi(function(x)
+	+ tableToAdd(Ricci_ll_rhs:sumToTable():mapi(function(x)
 		return gamma'^ij' * x
 	end))
 )
@@ -2552,9 +2540,9 @@ for _,shift in ipairs(allShifts) do
 	shift.denseVarNames = {}
 end
 for _,t in ipairs(Tensor.defaultDenseCache.cache) do
-	if Tensor.Ref.matchesDegreeWithoutDerivs(t[1], beta'^k')
-	or Tensor.Ref.matchesDegreeWithoutDerivs(t[1], b'^k_l')
-	or Tensor.Ref.matchesDegreeWithoutDerivs(t[1], B'^k')
+	if beta'^k':matchesDegreeWithoutDerivs(t[1])
+	or b'^k_l':matchesDegreeWithoutDerivs(t[1])
+	or B'^k':matchesDegreeWithoutDerivs(t[1])
 	then
 		local d = t[2]
 		for i,x in d:iter() do
@@ -2562,9 +2550,9 @@ for _,t in ipairs(Tensor.defaultDenseCache.cache) do
 		end
 	else
 		for _,shift in ipairs(allShifts) do
-			if Tensor.Ref.matchesDegreeWithoutDerivs(t[1], shift.vars.beta'^k')
-			or Tensor.Ref.matchesDegreeWithoutDerivs(t[1], shift.vars.b'^k_l')
-			or Tensor.Ref.matchesDegreeWithoutDerivs(t[1], shift.vars.B'^k')
+			if shift.vars.beta'^k':matchesDegreeWithoutDerivs(t[1])
+			or shift.vars.b'^k_l':matchesDegreeWithoutDerivs(t[1])
+			or shift.vars.B'^k':matchesDegreeWithoutDerivs(t[1])
 			then
 				local d = t[2]
 				for i,x in d:iter() do
@@ -3182,7 +3170,7 @@ dUdt_lhs_exprs_expanded_mat.rowsplits = rowsplits
 local rest = table(dFdx_lhs_exprs_expanded)
 local dUdxs_lhs_exprs_expanded_mat = table()
 local dFijkl_dUpqmn_expanded_mats = table()
-local betaUDense = Tensor.defaultDenseCache:get(beta'^i')
+local betaUDense = beta'^i':replaceWithDense()()
 for j=1,3 do
 	dFijkl_dUpqmn_expanded_mats[j], rest = factorLinearSystem(rest, dUdxs_lhs_exprs_expanded[j])
 	dFijkl_dUpqmn_expanded_mats[j].colsplits = rowsplits
