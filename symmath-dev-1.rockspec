@@ -134,6 +134,7 @@ build = {
 		["symmath.tanh"] = "tanh.lua",
 		["symmath.taylor"] = "taylor.lua",
 		["symmath.tensor.Chart"] = "tensor/Chart.lua",
+		["symmath.tensor.DenseCache"] = "tensor/DenseCache.lua",
 		["symmath.tensor.Index"] = "tensor/Index.lua",
 		["symmath.tensor.KronecherDelta"] = "tensor/KronecherDelta.lua",
 		["symmath.tensor.LeviCivita"] = "tensor/LeviCivita.lua",
