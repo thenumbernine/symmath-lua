@@ -83,7 +83,7 @@ function Expression:shallowCopy()
 	for k,v in pairs(self) do
 		t[k] = v
 	end
---]]	
+--]]
 --[[ of integers only -- this will skip non-indexed fields such as Tensor's .variance ... but looks like :clone() does this too ...
 	for k,v in ipairs(self) do
 		t[k] = v
@@ -148,7 +148,7 @@ end
 
 --[[
 returns the parent and index of the node that fulfills the callback condition
-if the node is the object being called then returns 'true' as the parent and 'nil' as the index 
+if the node is the object being called then returns 'true' as the parent and 'nil' as the index
 --]]
 function Expression:findLambda(callback)
 	if callback(self) then return true end
@@ -915,9 +915,13 @@ function Expression:__call(...)
 -- while x=var'x' x'_ij' and x' _i _j' works fine
 	if type(indexes) == 'table' then
 		indexes = {table.unpack(indexes)}
-		assert(#indexes == #self.variance)
 		for i=1,#indexes do
 			if type(indexes[i]) == 'number' then
+				-- this test needs to be run once, but only run for when converting numbers to indexes
+				-- but do I even use numbered indexes anymore?
+				-- in fact, why is this block even here?
+				-- when is this case not handled by TensorIndex.parseIndexes ?
+				assert(#indexes == #self.variance)
 				indexes[i] = TensorIndex{
 					lower = self.variance[i].lower,
 					symbol = indexes[i],
@@ -1681,6 +1685,9 @@ function Expression.replaceWithDense(expr, cache)
 	
 	cache = cache or Tensor:getDefaultDenseCache()
 	
+	local deltaSymbol = Tensor:deltaSymbol()
+	local permutationSymbol = Tensor:permutationSymbol()
+
 	return expr:map(function(x)
 		if Tensor.Ref:isa(x)
 		and Variable:isa(x[1])
@@ -1693,6 +1700,25 @@ function Expression.replaceWithDense(expr, cache)
 				index.derivative = nil
 				return index
 			end)
+			
+			-- replace any Tensor default symbols
+			if x[1] == deltaSymbol then
+				local nonDerivIndexes = indexes:filter(function(index)
+					return not index.derivative
+				end)
+				if #nonDerivIndexes == 2 then
+					-- preserve the valence of the Tensor
+					local dense = Tensor(nonDerivIndexes, function(i,j)
+						return i == j and 1 or 0
+					end)
+					-- then return it with all indexes, including derivtives, and without converting them to non-derivs (as we do for dense tensors below)
+					-- this way any derivatives will convert the constants into zeroes
+					return dense(indexes)
+				end
+			elseif x[1] == permutationSymbol then
+				return Tensor.LeviCivita()(indexes)
+			end
+
 			-- scalar derivatives need to be generated
 			-- otherwise tensors need the derivative indexes picked off, ten replace with dense, then replace with ref with full derivative indexes
 			-- or just don't bother with derivatives, and encode everything in the variable name
@@ -2368,7 +2394,7 @@ end
 
 --[=[ prevent in-place modifications (but allow all overwrites)
 function Expression:__newindex(k,v)
-	if self.writeProtected 
+	if self.writeProtected
 	and k ~= 'cachedSet'
 	and not (type(k) == 'string' and k:match'^hasBeen')
 	then
@@ -2389,7 +2415,7 @@ function Expression:__index(k)
 	
 	--[[ try the internal data
 	local internal = rawget(self, 'internal')
-	if internal ~= nil then 
+	if internal ~= nil then
 		v = internal[k]
 		if v ~= nil then return v end
 	end
@@ -2404,14 +2430,14 @@ function Expression:__index(k)
 end
 
 function Expression:__newindex(k,v)
-	if self.writeProtected 
+	if self.writeProtected
 	and k ~= 'cachedSet'
 	and not (type(k) == 'string' and k:match'^hasBeen')
 	then
 		error("can't write "..tostring(k).." = "..tostring(v))
 	end
 	local internal = rawget(self, 'internal')
-	if not internal then 
+	if not internal then
 		internal = {}
 		rawset(self, 'internal', internal)
 	end

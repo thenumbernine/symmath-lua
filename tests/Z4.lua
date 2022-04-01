@@ -89,7 +89,7 @@ useLapseF_geodesic = false		-- f = 0
 useLapseF_timeHarmonic = false	-- f = 1
 
 --[[
-pick one of these for the eigensystem 
+pick one of these for the eigensystem
 TODO how about generating all of them at once?
 for the sake of flux and source term code generation, thats fine
 for the sake of eigensystem computations it gets difficult, so better do one at a time
@@ -1069,7 +1069,7 @@ printbr('symmetrizing', gamma'_ij')
 dt_gamma_ll_def = dt_gamma_ll_def:symmetrizeIndexes(gamma, {1,2})()
 printbr(dt_gamma_ll_def)
 
-before = dt_gamma_ll_def:clone() 
+before = dt_gamma_ll_def:clone()
 
 dt_gamma_ll_def = usingSubstIndex(dt_gamma_ll_def, d_beta_ul_from_b_ul)
 dt_gamma_ll_def = usingRHSSubstIndex(dt_gamma_ll_def, d_gamma_lll_from_d_lll)
@@ -1079,13 +1079,13 @@ dt_gamma_ll_noflux_def = dt_gamma_ll_def:clone()
 if makeFluxForGaugeVars then
 	-- then move the gamma_ij,k beta^k into the flux
 	dt_gamma_ll_def = before:clone()
--- [[	
+-- [[
 	dt_gamma_ll_def[2] = (dt_gamma_ll_def[2] - gamma'_ij,k' * beta'^k')()
 	dt_gamma_ll_def[2] = dt_gamma_ll_def[2]:substIndex(d_beta_ul_from_b_ul)
 	dt_gamma_ll_def[2] = dt_gamma_ll_def[2]
 		+ (gamma'_ij' * beta'^r')'_,r'
 		- gamma'_ij' * tr_b
---]]	
+--]]
 	dt_gamma_ll_def[2]:flatten()
 	printbr(dt_gamma_ll_def)
 end
@@ -1663,7 +1663,7 @@ function makeShift(args)
 	local subscript = args.subscript
 	local beta_rhs = args.beta_rhs
 	local useHyperbolic = args.useHyperbolic
-	local useShiftingShift = args.useShiftingShift 
+	local useShiftingShift = args.useShiftingShift
 	local name = args.name
 	
 	printHeader('shift: '..name)
@@ -1695,7 +1695,7 @@ function makeShift(args)
 			if useHyperbolic then
 				dt_B_u_def[2] = dt_B_u_def:rhs() + B'^k' * b'^l_k'
 			end
-			--]]	
+			--]]
 		end
 	end
 	printbr(dt_beta_u_def)
@@ -1739,7 +1739,7 @@ function makeShift(args)
 
 		--[[ would be nice to introduce the shift to the flux
 		-- but then we end up with this extra 1st deriv term
-		dt_b_ul_def[2] = dt_b_ul_def[2] 
+		dt_b_ul_def[2] = dt_b_ul_def[2]
 			- (beta'^r' * b'^l_k')'_,r'
 			+ tr_b * b'^l_k'
 			+ beta'^r' * b'^l_r,k'
@@ -1765,7 +1765,7 @@ function makeShift(args)
 	printbr(b'^l_k,t', 'source term:', dt_b_ul_rhs)
 
 
-	-- create these distinct vars, they'll be put on the lhs when inserting into the flux eqns 
+	-- create these distinct vars, they'll be put on the lhs when inserting into the flux eqns
 	local betaVar = var('(\\beta_{'..subscript..'})')
 	local bVar = var('(b_{'..subscript..'})')
 	local BVar = var('(B_{'..subscript..'})')
@@ -1791,7 +1791,7 @@ function makeShift(args)
 			dt_def = dt_b_ul_def,
 			dt_negflux = dt_b_ul_negflux,
 			dt_rhs = dt_b_ul_rhs,
-		},	
+		},
 		B_u = {
 			dt_def = dt_B_u_def,
 			dt_negflux = dt_B_u_negflux,
@@ -1848,8 +1848,8 @@ local mdeShiftEpsilon = var'\\epsilon_{mde}'
 mdeShiftEpsilon:nameForExporter('C', 'mdeShiftEpsilon')
 
 --[[
-R^l_j β^j 
-... 
+R^l_j β^j
+...
 R_ij = P_ij + Q_ij^k_,k
 ...
 γ^li R_ij β^j = γ^li (P_ij + Q_ij^k_,k) β^j
@@ -1858,7 +1858,7 @@ R_ij = P_ij + Q_ij^k_,k
 = γ^li P_ij β^j + Q_ij^k (- 2 d_k^li β^j + γ^li b^j_k) + (γ^li Q_ij^k β^j)_,k
 + R^l_j β^j ... rhs
 --]]
-local minimalDistortionShiftExpr = 
+local minimalDistortionShiftExpr =
 	(
 		mdeShiftEpsilon * (
 			-- β^l;j_j ... negflux
@@ -1873,7 +1873,7 @@ local minimalDistortionShiftExpr =
 	)'_,k'
 
 	+ mdeShiftEpsilon * (
-		-- β^l;j_j ... rhs 
+		-- β^l;j_j ... rhs
 		DBeta'^lj' * d'_j'
 		+ DBeta'^nk' * Gamma'^l_nk'
 
@@ -1934,15 +1934,15 @@ eqn 11.e: _Λ^i_,t - _Λ^i_,j β^j + _Λ^j β^i_,j = _γ^jk ^D_j ^D_k β^i + 2/3
 b^i_j,t = β^i_,tk ... can only be hyperbolic if β^i_,t itself has no derivative terms, but only rhs source terms.
 and in fact that might be perfect for hyperbolic, so b^i_j,t = B^i_,j
 
-in fact can b^i_j,t be defined for parabolic?  
+in fact can b^i_j,t be defined for parabolic?
 	β^i_,t += _Λ^i_,j which has 2nd derivs in it ... but only if useShift is used. so you can skip that.
-	but b^i_j,t = (β^i_,t)_,j += (_Λ^i_,t)_,j ... and _Λ^i_,t has first-order terms 
-	... so now we need 2nd-order terms 
+	but b^i_j,t = (β^i_,t)_,j += (_Λ^i_,t)_,j ... and _Λ^i_,t has first-order terms
+	... so now we need 2nd-order terms
 	... so parabolic won't work
 
 insert shifting-shift: _Λ^i_,t -> _Λ^i_,0 = _Λ^i_,t - _Λ^i_,j β^j
 becomes:
-_Λ^i_,0 = 
+_Λ^i_,0 =
 	- _Λ^j β^i_,j
 	+ _γ^jk ^D_j ^D_k β^i
 	+ 2/3 ΔΓ^i (_D_j β^j)
@@ -1953,7 +1953,7 @@ _Λ^i_,0 =
 
 ... in flux form (how about looking at the ccz4 paper?)
 
-ok 
+ok
 let G_i = log(√γ)_,i = Γ^j_ji
 let ^G_i = _G_i = log(√^γ)_,i = log(√_γ)_,i = ^Γ^j_ji = _Γ^j_ji
 let ΔG_i = G_i - ^G_i
@@ -1989,7 +1989,7 @@ _Γ^i_jk = Γ^i_jk + (δ^i_j W_,k + δ^i_k W_,j - γ_jk W_,l γ^li) / W
 _Γ^i_jk = Γ^i_jk - 2 (δ^i_j φ_,k + δ^i_k φ_,j - γ_jk γ^li φ_,l)
 _Γ^i_jk = Γ^i_jk - 1/3 (δ^i_j ΔG_k + δ^i_k ΔG_j - γ_jk γ^li ΔG_l)
 
-_Γ^i = _Γ^i_jk _γ^jk 
+_Γ^i = _Γ^i_jk _γ^jk
 _Γ^i = _Γ^i_jk γ^jk W^2
 _Γ^i = (Γ^i_jk + (δ^i_j W_,k + δ^i_k W_,j - γ_jk W_,l γ^li) / W) γ^jk W^2
 _Γ^i = W^2 Γ^i - W W_,j γ^ji
@@ -2003,7 +2003,7 @@ I'm starting to think that instead of Δd_kij = 1/2 (γ_ij,k - ^γ_ij,k) I shoul
 ... this would fit with my idea of connection-as-state-var (just like Palatini does)
 ... but is it more or is it less numerically stable?
 
-ΔΓ^i = ΔΓ^i_jk _γ^jk 
+ΔΓ^i = ΔΓ^i_jk _γ^jk
 ΔΓ^i = (_Γ^i_jk - ^Γ^i_jk) _γ^jk
 ΔΓ^i = _Γ^i - ^Γ^i_jk _γ^jk
 ΔΓ^i = W^2 (Γ^i + 1/3 ΔG^i) - ^Γ^i_jk _γ^jk
@@ -2032,7 +2032,7 @@ Bleh1^i_j = ^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
 Bleh2^i = ΔΓ^i_jk γ^jk
 Bleh3^i = A^jk ΔΓ^i_jk
 Bleh4^i = γ^jk ^Γ^i_mj Bleh1^m_k - γ^jk ^Γ^m_kj Bleh1^i_m
-_Λ^i_,0 = 
+_Λ^i_,0 =
 	- _Λ^j b^i_j								<- source terms
 	+ W^-2 (
 		+ 2/3 (^∇∙β) Bleh2^i					<- source terms
@@ -2066,14 +2066,14 @@ LambdaBar = var'\\bar{\\Lambda}'
 tr_DHatBeta = var'{(\\hat{\\nabla}\\cdot\\beta)}'	-- ^∇∙β = b^i_i + Δd_j β^j
 DHatBeta = var'{(\\hat{\\nabla}\\beta)}'			-- ^∇_j β^i = β^i_,j + ^Γ^i_kj β^k = b^i_j + ^Γ^i_kj β^k
 invW:nameForExporter('C', 'invW')
-gammaDriverEta:nameForExporter('C', 'gammaDriver_eta') 
+gammaDriverEta:nameForExporter('C', 'gammaDriver_eta')
 det_gamma:nameForExporter('C', 'det_gamma')
 det_gammaHat:nameForExporter('C', 'det_gammaHat')
-GammaHat:nameForExporter('C', 'connHat') 
-GammaBar:nameForExporter('C', 'connBar') 
-DeltaGamma:nameForExporter('C', 'DeltaGamma')	-- or "connDelta?" but this is the dif of conformal conn with background conn ... 
-LambdaBar:nameForExporter('C', 'LambdaBar') 
-tr_DHatBeta:nameForExporter('C', 'tr_DHatBeta')	
+GammaHat:nameForExporter('C', 'connHat')
+GammaBar:nameForExporter('C', 'connBar')
+DeltaGamma:nameForExporter('C', 'DeltaGamma')	-- or "connDelta?" but this is the dif of conformal conn with background conn ...
+LambdaBar:nameForExporter('C', 'LambdaBar')
+tr_DHatBeta:nameForExporter('C', 'tr_DHatBeta')
 DHatBeta:nameForExporter('C', 'DHatBeta')
 GammaHat'_ijk':setSymmetries{2,3}
 GammaBar'_ijk':setSymmetries{2,3}
@@ -2084,7 +2084,7 @@ GammaDriverDeriv = var'GammaDriverDeriv'
 nonsense = var'nonsense'
 
 -- _Λ^l_,0 = _Λ^l_,t - _Λ^l_,k β^k
-local d0_LambdaBar_u_def = 
+local d0_LambdaBar_u_def =
 	(
 		gammaDriverK * (
 			invW^2 * (
@@ -2100,7 +2100,7 @@ local d0_LambdaBar_u_def =
 			- GammaHat'^m_jk' * b'^l_m'
 			+ GammaHat'^l_jm' * GammaHat'^m_nk' * beta'^n'
 			- GammaHat'^m_jk' * GammaHat'^l_nm' * beta'^n'
-		)       
+		)
 		+ frac(2,3) * tr_DHatBeta * DeltaGamma'^l_mn' * gamma'^mn'
 		+ frac(2,3) * tr_DHatBeta * e'^l'
 		- 2 * A'^lj' * (alpha * a'_j' - dDelta'_j')
@@ -2121,7 +2121,7 @@ local d0_LambdaBar_u_def =
 --[[
 printbr'gamma driver shift, parabolic:'
 
-local gammaDriverParabolicShiftExpr = 
+local gammaDriverParabolicShiftExpr =
 	d0_LambdaBar_u_def
 	- gammaDriverEta * LambdaBar'^l'	-- for parabolic, converge to LambdaBar^l ... for hyperbolic, converge to B^l
 
@@ -2144,7 +2144,7 @@ allShifts:insert(shiftGammaDriverParabolic)
 -- [[
 printbr'gamma driver shift, hyperbolic:'
 
-local gammaDriverHyperbolicShiftExpr = 
+local gammaDriverHyperbolicShiftExpr =
 	d0_LambdaBar_u_def
 	- gammaDriverEta * B'^l'
 
@@ -2279,7 +2279,7 @@ if flux_includeShiftVars then
 			expr = getdtlhs(expr)
 			expr = expr:subst(shift.substs:unpack())
 			return expr
-		end	
+		end
 		if shift.beta_u.dt_def then
 			UijklWithShiftVars:insert(fix(shift.beta_u.dt_def))
 			FijklWithShiftTerms:insert(-removeCommaDeriv(shift.beta_u.dt_negflux, 'r'))
@@ -2379,8 +2379,6 @@ printbr()
 -- [=[
 Tensor.Chart{coords=xs}
 	
-local deltaDenseUL = Tensor('^i_j', function(i,j) return i == j and 1 or 0 end)
-	
 local dHat_t_Dense = dHat_t'_ij':makeDense()
 local dt_dHatDense = dt_dHat'_kij':makeDense()
 
@@ -2389,7 +2387,6 @@ function expandMatrixIndexes(expr)
 	-- how about TODO a 'fixed indexes'?  remove these from the dense tensor generation
 	expr = expr:replace(dHat'_tij', dHat_t_Dense'_ij')
 	expr = expr:replace(dHat'_tij,k', dt_dHatDense'_kij')
-	expr = expr:replaceIndex(delta'^i_j', deltaDenseUL'^i_j')
 
 	-- the code prefers d_ij^k over d_i^k_j
 	expr = expr:replaceIndex(d'_i^k_j', d'_ij^k')
@@ -2432,9 +2429,9 @@ printbr()
 --]]
 
 F_lhs_withShift_exprs = F_lhs_withShift_exprs:mapi(function(expr,i)
---print('expr['..i..'] flux before = ', expr)	
+--print('expr['..i..'] flux before = ', expr)
 	expr = expr()
---print('expr['..i..'] flux after = ', expr)	
+--print('expr['..i..'] flux after = ', expr)
 	if Constant.isValue(expr, 0) then return expr end
 	assert(Tensor:isa(expr))
 	-- use dUdt_lhs_withShift_exprs for tensor variance
@@ -2726,7 +2723,7 @@ UijkltEqns:append{
 	--[[ same as above
 	dt_dDelta_lll_def:lhs():eq(dt_dDelta_lll_negflux),
 	--]]
-	-- [[ so instead ... 
+	-- [[ so instead ...
 	dt_d_lll_def:lhs():eq(dt_d_lll_negflux),
 	--]]
 	dt_K_ll_def:lhs():eq(dt_K_ll_negflux),

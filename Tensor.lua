@@ -10,7 +10,7 @@ so neglect aside, what is the correct way I should be doing this?
 
 each index set needs a metric (and an inverse, which can be calculated)
 ...and between each index set needs transform matrices (and their inverses, which can be calculated)
-...and between subsequent coordinate systems we can calculate combined transformations 
+...and between subsequent coordinate systems we can calculate combined transformations
 
 ex:
 local t,x,y,z = symmath.vars('t', 'x', 'y', 'z')
@@ -61,7 +61,7 @@ metric transformsations:  g_uv = e_u^I e_v^J eta_IJ
 inverse metric transformations: eta^IJ = g^uv e_u^I e_v^J
 
 by some linear math we find that, once this is specified,
-we can find the inverse transform by either 
+we can find the inverse transform by either
 (1) compute the transpose inverse of the transform metric
 (2) raise/lower indexes (i.e. multiply rhs by 'from' metric and lhs by 'to' metric inverse)
 
@@ -71,7 +71,7 @@ also:
 Tensor.tangentSpaceOperators{diff(t), diff(x), diff(y), diff(z)}
 
 or equivalent for commutation basis
-but that only makes sense in combination with a chart... 
+but that only makes sense in combination with a chart...
 and can be used to derive the metric
 which, alternatively, we can just ignore the tangent space operators and allow the metric to be specified
 
@@ -81,12 +81,12 @@ and then instead of transforms, use "Chart" objects, and forward/inverse transfo
 local M = Tensor.Manifold()
 
 -- manifolds have multiple charts. how to handle that?  how to make sure the multiple charts overlap wrt their respective coordinate bounds?
--- 
+--
 local C = Tensor.Chart{
 	manifold = M,
 	coordinates (or "variables"?) = {x1, x2, ..., xN},
 
-	-- optional 
+	-- optional
 	-- if chart isn't provided then a metric should be.
 	chartEmbeddedFunction = function(x)
 		-- in order to even build this, a separate set of coordinates / embedded space needs to be defined
@@ -110,7 +110,7 @@ local C = Tensor.Chart{
 	
 	-- in presence of a chart (and basis operators), the metric can be calculated
 	-- in absence of it, metric can be provided to describe the manifold behavior
-	metric = function(),	
+	metric = function(),
 		-- this will either be a Tensor (though creating a Tensor means the coordinates are specified, so the ctor know how many dimensions to require for each of its indexes)
 		-- or this can be Tensor args, or a function that generates the metric (most flexible?)
 		return Tensor('_uv', ...)
@@ -129,7 +129,7 @@ local C = Tensor.Chart{
 }
 
 -- returns a (1 0) tensor-of-variables whose domain is the chart (subject to constraints of chart coordinate boundaries)
-local x = C:point()	
+local x = C:point()
 
 -- returns ... what?  a list of operators?  a list of basis vectors?
 local Tx = C:tangentSpace(x)
@@ -143,9 +143,9 @@ local Tx = C:tangentSpace(x)
 -- so, probably, C:tensor(...) => shorthand for Tensor{..., chart=C}
 
 
-indexes is a question of its own though, since I have *) indexes and *) variables, 
+indexes is a question of its own though, since I have *) indexes and *) variables,
 and the two act separately for now, but there is crossover in usage when it comes to derivatives (comma deriv vs :diff())
-and I want to unify the two somehow, especially wrt the Variable:setDependantVars() functionality ... 
+and I want to unify the two somehow, especially wrt the Variable:setDependantVars() functionality ...
 ... I want to bring that over to the comma deriv and indexes so that comma deriv can implicitly know when to simplify to zero or not (or who knows, even expand to transforms)
 
 so how would that look?
@@ -162,6 +162,7 @@ local range = require 'ext.range'
 local string = require 'ext.string'
 local Expression = require 'symmath.Expression'
 local Array = require 'symmath.Array'
+local symmath
 
 --[[
 general-purpose rank-1 (successive nesting for rank-n) structure
@@ -206,7 +207,7 @@ TODO Tensor construction:
 	- (optional) first argument tensor variance
 		- string that is parsed: '_ijk', etc
 		- table-of-TensorIndex objects (already in processed form that is returned by parseIndexes)
-		- aka args.indexes 
+		- aka args.indexes
 	- (optional) n-many dimension numbers of lua numbers or Constants
 		- aka args.dim
 	- (optional) final argument value generator
@@ -259,7 +260,7 @@ interpretations:
 	Tensor(string, function) => contra/co-variance + lambda callback
 	Tensor(string, table) => contra/co-variance + dense value
 	Tensor(table, function) => contra/co-variance + lambda callback
-	Tensor(table, table) => contra/co-variance + dense values 
+	Tensor(table, table) => contra/co-variance + dense values
 	Tensor(number...) => dense values
 	Tensor{dim=table, values=table} => dimension list + lambda callback
 	Tensor{dim=table} => dimension list
@@ -284,17 +285,18 @@ Tensor have the following attributes:
 	- associated indices / index ranges?  g_uv spans txyz vs g_ij spans xyz
 --]]
 function Tensor:init(...)
-	local Constant = require 'symmath.Constant'	
+	symmath = symmath or require 'symmath.namespace'()
+	local Constant = symmath.Constant
 	local TensorIndex = self.Index
 	
 	local args = {...}
 
-	local argsAreNamed = type(args[1]) == 'table' 
-		and (type(args[1].dim) == 'table' 
-			or type(args[1].indexes) == 'table' 
+	local argsAreNamed = type(args[1]) == 'table'
+		and (type(args[1].dim) == 'table'
+			or type(args[1].indexes) == 'table'
 			or type(args[1].indexes) == 'string')
 
-	local valueCallback 
+	local valueCallback
 	if type(args[#args]) == 'function' then
 		valueCallback = table.remove(args)
 	elseif argsAreNamed then
@@ -349,7 +351,7 @@ function Tensor:init(...)
 				end
 			end
 			Expression.init(self, table.unpack(superArgs))
-		end	
+		end
 	else
 	
 		--[[
@@ -358,7 +360,7 @@ function Tensor:init(...)
 		Tensor'^a_bc'
 		--]]
 		-- got a string of indexes
-		if type(args[1]) == 'string'	
+		if type(args[1]) == 'string'
 		-- got an array of TensorIndexes
 		or (type(args[1]) == 'table' and TensorIndex:isa(args[1][1]))
 		then
@@ -383,7 +385,7 @@ function Tensor:init(...)
 				-- matches below
 				for i=1,#self do
 					local x = self[i]
-					assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions") 
+					assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions")
 					if not Expression:isa(x) then
 						-- then assume it's meant to be a sub-tensor
 						x = Tensor(subVariance, table.unpack(x))
@@ -411,7 +413,7 @@ function Tensor:init(...)
 		Tensor({row1}, {row2}, ...)
 		--]]
 		else
-			-- if we get a list of tables then call super init ...	
+			-- if we get a list of tables then call super init ...
 			Expression.init(self, ...)
 
 			-- default: covariant?
@@ -419,10 +421,10 @@ function Tensor:init(...)
 			self.variance = {}
 		
 			-- now that children are stored, construct them as lower-rank objects if the arguments were provided implicitly as metatable-less tables
-			-- this way we know all children (a) are Tensors and have a ".rank" field, or (b) are non-Tensor Expressions and are rank-0 
+			-- this way we know all children (a) are Tensors and have a ".rank" field, or (b) are non-Tensor Expressions and are rank-0
 			for i=1,#self do
 				local x = self[i]
-				assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions") 
+				assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions")
 				if not Expression:isa(x) then
 					-- then assume it's meant to be a sub-tensor
 					x = Tensor(table.unpack(x))
@@ -433,7 +435,8 @@ function Tensor:init(...)
 	end
 
 	if valueCallback then
-		local clone = require 'symmath.clone'
+		symmath = symmath or require 'symmath.namespace'()
+		local clone = symmath.clone
 		for index,_ in self:iter() do
 			if type(valueCallback) == 'function' then
 				self[index] = clone(valueCallback(table.unpack(index)))
@@ -470,7 +473,8 @@ produce a trace between dimensions i and j
 store the result in dimension i, removing dimension j
 --]]
 function Tensor:trace(i,j)
-	local clone = require 'symmath.clone'
+	symmath = symmath or require 'symmath.namespace'()
+	local clone = symmath.clone
 
 	if i == j then
 		error("cannot apply contraction across the same index: "..i)
@@ -512,7 +516,8 @@ this removes the i'th dimension, summing across it
 if it removes the last dim then a number is returned (rather than a 0-rank tensor, which I don't support)
 --]]
 function Tensor:contraction(i)
-	local clone = require 'symmath.clone'
+	symmath = symmath or require 'symmath.namespace'()
+	local clone = symmath.clone
 	
 	local dim = self:dim()
 	if i < 1 or i > #dim then error("tried to contract dimension "..i.." when we are only rank "..#dim) end
@@ -612,7 +617,7 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 	local srcChart = self:findChartForSymbol(t.variance[i].symbol)
 	local dstChart = self:findChartForSymbol(tensorIndex.symbol)
 
--- TODO what if the tensor was created without variance? 
+-- TODO what if the tensor was created without variance?
 	if tensorIndex.lower ~= t.variance[i].lower then
 		-- how do we handle raising indexes of subsets
 		local metric = (dstChart and dstChart.metric) or (srcChart and srcChart.metric)
@@ -644,7 +649,9 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 		else
 			error("don't know how to raise/lower these indexes")
 		end
-		t = require 'symmath.simplify'(t)
+			
+		symmath = symmath or require 'symmath.namespace'()
+		t = symmath.simplify(t)
 		t.variance = oldVariance
 		t.variance[i].lower = tensorIndex.lower
 	end
@@ -670,7 +677,7 @@ function Tensor:permute(dstVariance)
 		indexMap[i] = table.find(dstVariance, nil, function(dstVar)
 			return srcVar.symbol == dstVar.symbol
 		end)
-		if not indexMap[i] then 
+		if not indexMap[i] then
 			error("assigning tensor with '"..srcVar.symbol.."' to tensor without that symbol: "..self)
 		end
 	end
@@ -689,7 +696,7 @@ function Tensor:permute(dstVariance)
 			dim = newdim,
 			values = function(...)
 				local dstIndex = {...}
-				local srcIndex = {}	
+				local srcIndex = {}
 				for i=1,#dstIndex do
 					srcIndex[i] = dstIndex[indexMap[i]]
 				end
@@ -709,7 +716,7 @@ end
 -- have to be copied?
 
 -- TODO make this and call identical
--- ... or not.  __call was moved to Expression so expressions could be indexed 
+-- ... or not.  __call was moved to Expression so expressions could be indexed
 Tensor.__index = function(self, key)
 	-- parent class access
 	local metavalue = getmetatable(self)[key]
@@ -742,9 +749,9 @@ Tensor.__newindex = function(self, key, value)
 	end
 
 	-- handle assignment by tensor indexes
-	if type(key) == 'string' 
+	if type(key) == 'string'
 	and (key:sub(1,1) == '^' or key:sub(1,1) == '_')
-	then	
+	then
 		local TensorIndex = self.Index
 		local dstVariance = TensorIndex.parseIndexes(key)
 
@@ -756,7 +763,8 @@ Tensor.__newindex = function(self, key, value)
 		-- if we're assigning a non-tensor to a tensor
 		-- then implicitly wrap it in a tensor
 		if not Tensor:isa(value) then
-			local clone = require 'symmath.clone'
+			symmath = symmath or require 'symmath.namespace'()
+			local clone = symmath.clone
 			value = Tensor(dstVariance, function(...) return clone(value) end)
 		end
 
@@ -816,7 +824,7 @@ Tensor.__newindex = function(self, key, value)
 --print('to ',value)
 			end
 		end
-		-- if any are left then remove them 
+		-- if any are left then remove them
 		if #valueSingleVarIndexes > 0 then
 --print('we still have '..#valueSingleVarIndexes..' left of ',table.map(value.variance,tostring):concat',',' at ',valueSingleVarIndexes:unpack())
 			value = Tensor(
@@ -874,7 +882,7 @@ Tensor.__newindex = function(self, key, value)
 			-- then we find the same variable in dstChart.coords
 			-- if it isrc there - read from that variable - and write back to self.iter
 			-- if it isn't there - skip this iter
---print('assigning to indexes '..table.concat(isrc, ','))	
+--print('assigning to indexes '..table.concat(isrc, ','))
 			assert(#isrc == #dstVariance)
 			-- looks similar to transformIndexes in Tensor/Ref.lua
 			local indexes = dstVariance
@@ -892,7 +900,7 @@ Tensor.__newindex = function(self, key, value)
 					local dstIndex = table.find(dstChart.coords, srcChart.coords[isrc[i]])
 					-- however 'dst' has already been transformed to the basis of 'src' ...
 					-- ... and padded with zeros (TODO don't bother do that?)
-					-- so I don't need to reindex the lookup, just skip the zeroes 
+					-- so I don't need to reindex the lookup, just skip the zeroes
 --print('dstIndex',dstIndex)
 					if not dstIndex then
 						notfound = true
@@ -932,7 +940,7 @@ end
 function Tensor.pruneAdd(lhs,rhs)
 	if not Tensor:isa(lhs) or not Tensor:isa(rhs) then return end
 
-	-- reorganize the elements of rhs so the letters match lhs 
+	-- reorganize the elements of rhs so the letters match lhs
 	rhs = rhs:permute(lhs.variance)
 
 	-- TODO complain if the raise/lower doesn't match up for each index?
@@ -948,8 +956,8 @@ function Tensor.pruneAdd(lhs,rhs)
 end
 
 function Tensor.pruneMul(lhs, rhs)
-	local Array = require 'symmath.Array'
-	local table = require 'ext.table'
+	symmath = symmath or require 'symmath.namespace'()
+	local Array = symmath.Array
 	local lhsIsArray = Array:isa(lhs)
 	local rhsIsArray = Array:isa(rhs)
 	local lhsIsTensor = Tensor:isa(lhs)
@@ -974,21 +982,21 @@ function Tensor.pruneMul(lhs, rhs)
 		result = result:simplifyTraces()
 		return result
 --]]
--- [[ less temporary Tensor constructions.  faster? barely.  7.0 instead of 7.5 
+-- [[ less temporary Tensor constructions.  faster? barely.  7.0 instead of 7.5
 		-- has: variance, tensor, loc, dim
 		local resultIndexes = setmetatable({}, table)
 		local resultIndexInfos = setmetatable({}, table)
 		local resultDims = setmetatable({}, table)
 		local lhsDim = lhs:dim()
-		for i,index in ipairs(lhs.variance) do 
-			resultIndexes:insert(index) 
+		for i,index in ipairs(lhs.variance) do
+			resultIndexes:insert(index)
 			local dim = lhsDim[i]
 			resultDims:insert(dim)
 			resultIndexInfos:insert{loc = i, dim = dim, side = 1}
 		end
 		local rhsDim = rhs:dim()
-		for i,index in ipairs(rhs.variance) do 
-			resultIndexes:insert(index) 
+		for i,index in ipairs(rhs.variance) do
+			resultIndexes:insert(index)
 			local dim = rhsDim[i]
 			resultDims:insert(dim)
 			resultIndexInfos:insert{loc = i, dim = dim, side = 2}
@@ -1003,8 +1011,8 @@ function Tensor.pruneMul(lhs, rhs)
 				for i=1,#resultIndexInfos-1 do
 					for j=i+1,#resultIndexInfos do
 						if resultIndexes[i].symbol == resultIndexes[j].symbol then
---print("removing indexes", i, j)							
---print("with symbols", resultIndexes[i].symbol, resultIndexes[j].symbol)							
+--print("removing indexes", i, j)
+--print("with symbols", resultIndexes[i].symbol, resultIndexes[j].symbol)
 							
 							local infoj = resultIndexInfos:remove(j)	-- remove larger first
 							resultIndexes:remove(j)
@@ -1016,7 +1024,7 @@ function Tensor.pruneMul(lhs, rhs)
 
 --print("removing for summing: ", infoj.index, infoi.index)
 							assert(infoi.dim == infoj.dim)	-- instead of error, maybe just don't simplify?
-							sumAcrossPairs:insert{infoi, infoj}				
+							sumAcrossPairs:insert{infoi, infoj}
 							sumDims:insert(infoi.dim)
 							found = true
 							break
@@ -1059,7 +1067,7 @@ function Tensor.pruneMul(lhs, rhs)
 					iter[i] = 1
 				end
 				
-				local iterdone 
+				local iterdone
 				while not iterdone do
 					-- callback(indexes) here:
 					for pairIndex,pair in ipairs(sumAcrossPairs) do
@@ -1086,7 +1094,7 @@ function Tensor.pruneMul(lhs, rhs)
 			elseif #result == 1 then
 				return result[1]
 			end
-			return setmetatable(result, require 'symmath.op.add')	
+			return setmetatable(result, require 'symmath.op.add')
 		end
 
 		if #resultIndexes == 0 then -- return a scalar value
@@ -1119,7 +1127,8 @@ end
 
 -- prints the tensor contents as T_abc = <contents>
 function Tensor:print(name)
-	local Variable = require 'symmath.Variable'
+	symmath = symmath or require 'symmath.namespace'()
+	local Variable = symmath.Variable
 	local Ref = self.Ref
 	local TensorIndex = self.Index
 	print(self.Ref(Variable(name), table.unpack(self.variance)):eq(self))
@@ -1131,21 +1140,22 @@ Tensor.printElemDefaultSeparator = ';'
 function Tensor:printElem(name, write, defaultsep)
 	write = write or io.write
 	defaultsep = defaultsep or Tensor.printElemDefaultSeparator
-	local Variable = require 'symmath.Variable'
-	local Constant = require 'symmath.Constant'
+	symmath = symmath or require 'symmath.namespace'()
+	local Variable = symmath.Variable
+	local Constant = symmath.Constant
 	local Ref = self.Ref
 	local TensorIndex = self.Index
 	local sep = ''
 	for index,x in self:iter() do
 		if not Constant.isValue(x, 0) then
-			if sep ~= '' then 
+			if sep ~= '' then
 				write(sep, '\n')
 			end
 			write(tostring(Ref(Variable(name),
 					table.mapi(self.variance, function(v,i)
 						local chart = self:findChartForSymbol(v.symbol)
 						v = v:clone()
-						v.symbol = chart 
+						v.symbol = chart
 							and chart.coords[index[i]]
 							and chart.coords[index[i]].name
 							or index[i]
@@ -1188,15 +1198,15 @@ function Tensor:antisym()
 	function perm(a)
 		a = table(a)
 		local n = table.maxn(a)
-		return coroutine.wrap(function() 
-			return permgen(a, n, 1) 
+		return coroutine.wrap(function()
+			return permgen(a, n, 1)
 		end)
 	end
 
 	return Tensor{
-		indexes = self.variance, 
+		indexes = self.variance,
 		values = function(...)
-			local indexes = {...}	
+			local indexes = {...}
 			-- for all permutations of the indexes ...
 			-- add/sub depending on whether it is an even or odd permutation
 			local sum = 0
@@ -1208,11 +1218,14 @@ function Tensor:antisym()
 	}
 end
 
--- this is used with Derivative when it simplifies two equal Refs 
+-- this is used with Derivative when it simplifies two equal Refs
 -- TODO call it 'Kroencher Delta symbol' ?
+-- and TODO why is the variable associated with :deltaSymbol() named '.deltaVariable'?
+--  how instead about just '.deltaSymbol' and '.getDeltaSymbol()', or equiv with '...Variable' ?
 function Tensor:deltaSymbol()
 	if not Tensor.deltaVariable then
-		local Variable = require 'symmath.Variable'
+		symmath = symmath or require 'symmath.namespace'()
+		local Variable = symmath.Variable
 		Tensor.deltaVariable = Variable'δ'
 	end
 	return Tensor.deltaVariable
@@ -1221,10 +1234,20 @@ end
 -- this as well as deltaSymbol are used with Expression.simplifyMetrics
 function Tensor:metricSymbol()
 	if not Tensor.metricVariable then
-		local Variable = require 'symmath.Variable'
+		symmath = symmath or require 'symmath.namespace'()
+		local Variable = symmath.Variable
 		Tensor.metricVariable = Variable'g'
 	end
 	return Tensor.metricVariable
+end
+
+function Tensor:permutationSymbol()
+	if not Tensor.permutationVariable then
+		symmath = symmath or require 'symmath.namespace'()
+		local Variable = symmath.Variable
+		Tensor.permutationVariable = Variable'ε'
+	end
+	return Tensor.permutationVariable
 end
 
 function Tensor:getDefaultDenseCache()
