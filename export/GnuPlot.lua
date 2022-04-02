@@ -86,7 +86,7 @@ function GnuPlot:plot(args)
 	if outputType == 'MathJax' then
 		local data = file['tmp.svg']
 		file['tmp.svg'] = nil
-		print(data..'<br>')
+		print(data, '<br>')
 	elseif outputType == 'Console' then
 		local data = file['tmp.txt']
 		file['tmp.txt'] = nil
