@@ -396,6 +396,21 @@ function Array:unit()
 	return (self / self:norm())()
 end
 
+--[[
+a bit different from Matrix mul in that Matrix assumes degree-2
+TODO maybe merge this and Matrix mul like my matrix-lua numeric library uses, and just merge inner-degrees of Arrays
+--]]
+function Array.dot(a,b)
+	symmath = symmath or require 'symmath'
+	local na, nb = #a, #b
+	if na ~= nb then
+		error("Array.dot expects Arrays of equal length, found "..#a.." and "..#b)
+	end
+	return symmath.tableToAdd(table.mapi(a, function(ai,i)
+		return ai * b[i]
+	end))
+end
+
 -- special-case for R3
 -- I do have Levi-Civita in Tensor. TODO generalize?
 function Array.cross(a, b)
