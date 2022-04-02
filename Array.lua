@@ -118,7 +118,7 @@ end
 --[[
 returns a for loop iterator that cycles across all indexes and values within the array
 usage: for index,value in t:iter() do ... end
-where #index == t:rank() and contains elements 1 <= index[i] <= t:dim()[i]
+where #index == t:degree() and contains elements 1 <= index[i] <= t:dim()[i]
 cycles the first indexes (outer-most arrays) first
 --]]
 function Array:iter()
@@ -168,38 +168,37 @@ function Array:innerIter()
 end
 
 
--- calculated rank was a great idea, except when the Array is dynamically constructed
--- TODO, 'rank' refers to another property, so consider renaming this to 'order' or 'degree'
-function Array:rank()
-	-- note to self: empty Array objects means no way of representing empty rank>1 objects 
-	-- ... which means special case of type assertion of the determinant being always rank-2 (except for empty matrices)
+-- calculated degree was a great idea, except when the Array is dynamically constructed
+function Array:degree()
+	-- note to self: empty Array objects means no way of representing empty degree>1 objects 
+	-- ... which means special case of type assertion of the determinant being always degree-2 (except for empty matrices)
 	-- ... unless I also introduce "shallow" arrays vs "deep" arrays ... "shallow" being represented only by their indices and contra-/co-variance (and "deep" being these)
 	if #self == 0 then return 0 end
 
-	-- hmm, how should we determine rank?
-	local minRank, maxRank
+	-- hmm, how should we determine degree?
+	local minDegree, maxDegree
 	for i=1,#self do
-		local rank = self[i].rank and self[i]:rank() or 0
+		local degree = self[i].degree and self[i]:degree() or 0
 		if i == 1 then
-			minRank = rank
-			maxRank = rank
+			minDegree = degree
+			maxDegree = degree
 		else
-			minRank = math.min(minRank, rank)
-			maxRank = math.max(maxRank, rank)
+			minDegree = math.min(minDegree, degree)
+			maxDegree = math.max(maxDegree, degree)
 		end
 	end
-	if minRank ~= maxRank then
-		error("I found an array as an element within an array.  At the moment I don't allow mixed-rank elements in arrays.  I might lighten up on this later.\nminRank: "..minRank.." maxRank: "..maxRank)
+	if minDegree ~= maxDegree then
+		error("I found an array as an element within an array.  At the moment I don't allow mixed-degree elements in arrays.  I might lighten up on this later.\nminRank: "..minDegree.." maxDegree: "..maxDegree)
 	end
 
-	return minRank + 1
+	return minDegree + 1
 end
 
 --[[
 Why does :dim() return symmath.Constant instead of lua number?
 Right now it must be a fixed size
 Maybe in the future I will have 'shallow' Array objects with no internal value, 
-but only external properties (rank, index, etc) from which I can perform index gymnastics.
+but only external properties (degree, index, etc) from which I can perform index gymnastics.
 In such a case, I would want to allow variable-dimension arrays:
 	a = Matrix{name='a', dim={m,k}}
 	print(a) => a in R^(m x k)
@@ -215,9 +214,9 @@ function Array:dim()
 	
 	if not Array:isa(self) then return dim end
 
-	local rankfunc = self.rank or Array.rank
-	local rank = rankfunc(self)
-	if rank == 1 then
+	local degreeFunc = self.degree or Array.degree
+	local degree = degreeFunc(self)
+	if degree == 1 then
 		dim[1] = #self
 		return dim
 	end
@@ -227,12 +226,12 @@ function Array:dim()
 	-- get first child's dim
 	local subdim_1 = self[1]:dim()
 
-	assert(#subdim_1 == rank-1, "array has subarray with inequal rank")
+	assert(#subdim_1 == degree-1, "array has subarray with inequal degree")
 
 	-- make sure they're equal for all children
 	for j=2,#self do
 		local subdim_j = self[j]:dim()
-		assert(#subdim_j == rank-1, "array has subarray with inequal rank")
+		assert(#subdim_j == degree-1, "array has subarray with inequal degree")
 		
 		for k=1,#subdim_1 do
 			if subdim_1[k] ~= subdim_j[k] then
@@ -243,7 +242,7 @@ function Array:dim()
 	end
 
 	-- copy subrank into 
-	for i=1,rank-1 do
+	for i=1,degree-1 do
 		dim[i+1] = subdim_1[i]
 	end
 	dim[1] = #self

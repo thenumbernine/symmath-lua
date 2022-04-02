@@ -165,7 +165,7 @@ local Array = require 'symmath.Array'
 local symmath
 
 --[[
-general-purpose rank-1 (successive nesting for rank-n) structure
+general-purpose degree-1 (successive nesting for degree-n) structure
 to be used as vectors, vectors of them as matrices, etc ...
 --]]
 local Tensor = class(Array)
@@ -211,8 +211,8 @@ TODO Tensor construction:
 	- (optional) n-many dimension numbers of lua numbers or Constants
 		- aka args.dim
 	- (optional) final argument value generator
-		- function that accepts n parameters (for n rank of tensor)
-		- table that is n nestings deep (for n rank of tensor)
+		- function that accepts n parameters (for n degree of tensor)
+		- table that is n nestings deep (for n degree of tensor)
 		- aka args.values
 
 information the constructor needs...
@@ -230,16 +230,16 @@ g = var'g'; g'_ij'	<- will give you a variable with unevaluated dereference _ij.
 constructors:
 	contra/co-variant alone:
 		Tensor(string)
-		Tensor'^i' = contravariant rank-1
-		Tensor'_ij' = covariant rank-2
-		Tensor'^i_jk' = mixed rank-3
+		Tensor'^i' = contravariant degree-1
+		Tensor'_ij' = covariant degree-2
+		Tensor'^i_jk' = mixed degree-3
 			default goes to ... contra? co? or neither / separate associated metric?
 			associate indexes with metrics?
 			functions for converting from/to different basii?
 
 	contra/co-variant + dense values:
 		Tensor(string, table)
-		Tensor('^i', {1,2,3}) = contravariant rank-3 tensor w/initial values
+		Tensor('^i', {1,2,3}) = contravariant degree-3 tensor w/initial values
 							(error upon mismatch sizes, or only use what you can / fill the rest with zero?)
 
 	contra/co-variant + sparse values:
@@ -280,7 +280,7 @@ cartesianChart = manifold:Chart{symbols='IJK', coords={whatever flat space vielb
 		lower txyz to lower TXYZ transforms with e_I^u, etc
 
 Tensor have the following attributes:
-	- rank (list of dimensions) <- right now dynamcially calculated via :rank()
+	- degree (list of dimensions) <- right now dynamcially calculated via :degree()
 	- list of associated basis (contra-/co-/neither)
 	- associated indices / index ranges?  g_uv spans txyz vs g_ij spans xyz
 --]]
@@ -373,7 +373,7 @@ function Tensor:init(...)
 
 			-- *) complain if there is no Tensor.coords assignment
 			-- *) store index information (in this tensor and subtensors ... i.e. this may be {^i, _j, _k}, subtensors would be {_j, _k}, and their subtensors would be {_k}
-			-- *) build an empty tensor with rank according to the chart size of the indices
+			-- *) build an empty tensor with degree according to the chart size of the indices
 
 			if #args > 0 then
 				-- assert that the sizes are correct
@@ -420,8 +420,8 @@ function Tensor:init(...)
 			-- TODO create defaults according to children (from the Expression.init(self, ...) call)
 			self.variance = {}
 		
-			-- now that children are stored, construct them as lower-rank objects if the arguments were provided implicitly as metatable-less tables
-			-- this way we know all children (a) are Tensors and have a ".rank" field, or (b) are non-Tensor Expressions and are rank-0
+			-- now that children are stored, construct them as lower-degree objects if the arguments were provided implicitly as metatable-less tables
+			-- this way we know all children (a) are Tensors and have a ".degree" field, or (b) are non-Tensor Expressions and are degree-0
 			for i=1,#self do
 				local x = self[i]
 				assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions")
@@ -513,16 +513,16 @@ end
 --[[
 this removes the i'th dimension, summing across it
 
-if it removes the last dim then a number is returned (rather than a 0-rank tensor, which I don't support)
+if it removes the last dim then a number is returned (rather than a 0-degree tensor, which I don't support)
 --]]
 function Tensor:contraction(i)
 	symmath = symmath or require 'symmath.namespace'()
 	local clone = symmath.clone
 	
 	local dim = self:dim()
-	if i < 1 or i > #dim then error("tried to contract dimension "..i.." when we are only rank "..#dim) end
+	if i < 1 or i > #dim then error("tried to contract dimension "..i.." when we are only degree "..#dim) end
 
-	-- if there's a valid contraction and we're rank-1 then we're summing across everything
+	-- if there's a valid contraction and we're degree-1 then we're summing across everything
 	if #dim == 1 then
 		local result
 		for i=1,dim[1] do
@@ -585,13 +585,13 @@ end
 --[[
 for all permutations of indexes other than i,
 take each vector composed of index i
-transform it by the provided rank-2 tensor
+transform it by the provided degree-2 tensor
 and store it back where you got it from
 --]]
 function Tensor:transformIndex(ti, m)
 	local dim = self:dim()
 	local mdim = m:dim()
-	if m:rank() ~= 2 then error("can only transform an index by a rank-2 metric, got a rank "..m:rank()) end
+	if m:degree() ~= 2 then error("can only transform an index by a degree-2 metric, got a degree "..m:degree()) end
 	if mdim[1] ~= mdim[2] then error("can only transform an index by a square metric, got dims "..mdim:concat', ') end
 	if dim[ti] ~= mdim[1] then error("tried to transform tensor of dims "..dim:concat', '.." with metric of dims "..mdim:concat', ') end
 	return Tensor{dim=dim, values=function(...)

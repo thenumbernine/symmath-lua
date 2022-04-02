@@ -483,6 +483,15 @@ Create a matrix of expressions.
 `A = symmath.Array(...)`  
 Create an array of expressions. Same deal as Matrix but with any arbitrary nesting depth, and without Matrix-specific operations.  
 
+`dim = A:dim()`
+`dim = Array.dim(A)`
+Returns a table of the dimensions of the Array.
+
+`degree = A:degree()`
+`degree = Array.degree(A)`
+Returns the degree of the Array, which is equal to the number of dimensions.
+Ex: An Array of expressions is degree-1, an Array of Arrays of expressions is degree-2, etc.
+
 `AInv, I, message = A:inverse([b, callback, allowRectangular])`
 `AInv, I, message = A:inv([b, callback, allowRectangular])`
 returns  
@@ -1057,8 +1066,6 @@ Output CDN URLs:
 
 [tests/output/MHD symmetrization](https://thenumbernine.github.io/symmath/tests/output/MHD%20symmetrization.html)
 
-[tests/output/MakeTrigLookupTables](https://thenumbernine.github.io/symmath/tests/output/MakeTrigLookupTables.html)
-
 [tests/output/Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Maxwell%20equations%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/Navier-Stokes-Wilcox - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Navier%2dStokes%2dWilcox%20%2d%20flux%20eigenvectors.html)
@@ -1066,8 +1073,6 @@ Output CDN URLs:
 [tests/output/Newton method](https://thenumbernine.github.io/symmath/tests/output/Newton%20method.html)
 
 [tests/output/Platonic Solids](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids.html)
-
-[tests/output/Platonic Solids/120-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/120%2dcell.html)
 
 [tests/output/Platonic Solids/16-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/16%2dcell.html)
 
@@ -1111,7 +1116,7 @@ Output CDN URLs:
 
 [tests/output/black hole brain](https://thenumbernine.github.io/symmath/tests/output/black%20hole%20brain.html)
 
-[tests/output/elastic plate](https://thenumbernine.github.io/symmath/tests/output/elastic%20plate.html)
+[tests/output/console_spherical_metric](https://thenumbernine.github.io/symmath/tests/output/console_spherical_metric.html)
 
 [tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
 
@@ -1128,6 +1133,8 @@ Output CDN URLs:
 [tests/output/electrovacuum/uniform field - spherical](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20spherical.html)
 
 [tests/output/electrovacuum/verify cylindrical transform](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/verify%20cylindrical%20transform.html)
+
+[tests/output/exp_metric](https://thenumbernine.github.io/symmath/tests/output/exp_metric.html)
 
 [tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
 

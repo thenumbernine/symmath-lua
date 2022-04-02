@@ -396,13 +396,13 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		return s
 	end,
 	[require 'symmath.Array'] = function(self, expr)
-		local rank = expr:rank()
+		local degree = expr:degree()
 		
-		if rank == 0 then return table() end
+		if degree == 0 then return table() end
 		
-		-- even if it doesn't have a Matrix metatable, if it's rank-2 then display it as a matrix ...
+		-- even if it doesn't have a Matrix metatable, if it's degree-2 then display it as a matrix ...
 		-- TODO just put Matrix's entry here and get rid of its empty, let its subclass fall through to here instead
-		if rank % 2 == 0 then
+		if degree % 2 == 0 then
 			local strs = {}
 			for i,row in ipairs(expr) do
 				strs[i] = {}

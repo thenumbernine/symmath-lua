@@ -222,6 +222,15 @@ Create a matrix of expressions.
 `A = symmath.Array(...)`  
 Create an array of expressions. Same deal as Matrix but with any arbitrary nesting depth, and without Matrix-specific operations.  
 
+`dim = A:dim()`
+`dim = Array.dim(A)`
+Returns a table of the dimensions of the Array.
+
+`degree = A:degree()`
+`degree = Array.degree(A)`
+Returns the degree of the Array, which is equal to the number of dimensions.
+Ex: An Array of expressions is degree-1, an Array of Arrays of expressions is degree-2, etc.
+
 `AInv, I, message = A:inverse([b, callback, allowRectangular])`
 `AInv, I, message = A:inv([b, callback, allowRectangular])`
 returns  

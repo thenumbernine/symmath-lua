@@ -448,8 +448,8 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 	-- A.colsplits specifies columns to insert dividing lines before
 	-- A.rowsplits is the same thing for rows
 	[require 'symmath.Array'] = function(self, expr)
-		-- non-Matrix Arrays that are rank-2 can be displayed as Matrixes
-		if expr:rank() % 2 == 0 then
+		-- non-Matrix Arrays that are degree-2 can be displayed as Matrixes
+		if expr:degree() % 2 == 0 then
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
 		

@@ -557,16 +557,16 @@ TensorRef.rules = {
 			--[[ TODO possibly support for comma derivatives of (non-Tensor) scalar expressions?
 			if is scalar then
 				if #indexes > 0 then
-					error("tried to apply "..#indexes.." indexes to a 0-rank tensor (a scalar): "..tostring(tensor))
+					error("tried to apply "..#indexes.." indexes to a 0-degree tensor (a scalar): "..tostring(tensor))
 				end
 				if #nonDerivativeIndexes ~= 0 then
-					error("Tensor.rep non-tensor needs as zero non-comma indexes as the tensor's rank.  Found "..#nonDerivativeIndexes.." but needed "..0)
+					error("Tensor.rep non-tensor needs as zero non-comma indexes as the tensor's degree.  Found "..#nonDerivativeIndexes.." but needed "..0)
 				end
 			else...
 			--]]
-			local rank = Tensor.rank(t)
-			if #nonDerivativeIndexes ~= rank then
-				error("Tensor() needs as many non-derivative indexes as the tensor's rank.  Found "..#nonDerivativeIndexes.." but needed "..rank.." for expression "..expr)
+			local degree = Tensor.degree(t)
+			if #nonDerivativeIndexes ~= degree then
+				error("Tensor() needs as many non-derivative indexes as the tensor's degree.  Found "..#nonDerivativeIndexes.." but needed "..degree.." for expression "..expr)
 			end
 
 			-- this operates on indexes
