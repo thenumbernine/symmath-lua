@@ -35,14 +35,21 @@ Matrix.eigen = require 'symmath.matrix.eigen'
 Matrix.exp = require 'symmath.matrix.exp'
 
 
-function Matrix:charpoly(lambdaVar, dontSimplify)
+function Matrix:charpoly(lambdaVar)
 	if not lambdaVar then
 		local Variable = require 'symmath.Variable'
 		-- TODO same as matrix/eigen.lua, call this 'λ'? otherwise fixVariableNames and MathJax can screw up
 		lambdaVar = Variable'λ'
 	end
 	local charPolyMat = (self - Matrix.identity(#self) * lambdaVar)()
-	local charPolyEqn = charPolyMat:determinant{dontSimplify=dontSimplify}:eq(0)
+	local charPolyEqn = charPolyMat:determinant{dontSimplify=true}:eq(0)
+
+	-- ok simplify all we can *without* distributing mul into add
+	local mul = require 'symmath.op.mul'
+	local wasPushed = mul:pushRule'Expand/apply'
+	charPolyEqn = charPolyEqn()
+	if not wasPushed then mul:popRule'Expand/apply' end
+
 	return charPolyEqn
 end
 

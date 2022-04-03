@@ -3348,16 +3348,8 @@ end
 
 printHeader'calculating charpoly'
 
-local charpoly = dFijkl_dUpqmn_expanded:charpoly(lambda, true)
+local charpoly = dFijkl_dUpqmn_expanded:charpoly(lambda)
 printbr(charpoly)
---[[
-how to simplify a charpoly ...
-1) pull minus signs outside
-2) for add-mul, look for common factors, pull them out if possible
-3) repeat
---]]
-
-file['Z4_fluxJacobian_eigensystem/charpoly_noZeroRows_noShift.lua'] = export.SymMath(charpoly)
 
 
 printHeader'finding lambdas'
