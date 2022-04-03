@@ -37,6 +37,11 @@ end
 --]]
 
 --[[
+whether we want to prevent visitors twice from running on an expression
+--]]
+Visitor.rememberVisit = true
+
+--[[
 transform expr by whatever rules are provided in lookupTable
 
 Visitor is the metatable of instances of it and all its subclasses.
@@ -51,21 +56,24 @@ function Visitor:apply(expr, ...)
 	symmath = symmath or require 'symmath'
 	local debugVisitors = symmath.debugVisitors
 
+	local origIsExpr
+	if self.rememberVisit then
 -- [[ cache visitors & simplification.  does this help?	
 assert(self.name ~= Visitor.name)
-	local selfmt = self.class	 --getmetatable(self)
-	if not selfmt.hasBeenField then
-		selfmt.hasBeenField = 'hasBeen'..self.name
-	end
+		local selfmt = self.class	 --getmetatable(self)
+		if not selfmt.hasBeenField then
+			selfmt.hasBeenField = 'hasBeen'..self.name
+		end
 assert(selfmt.hasBeenField == self.hasBeenField)
 --]]
 -- [[
-	local origIsExpr = symmath.Expression:isa(expr)
-	if origIsExpr and not expr.mutable and expr[self.hasBeenField] then 
+		origIsExpr = symmath.Expression:isa(expr)
+		if origIsExpr and not expr.mutable and expr[self.hasBeenField] then 
 --print('found '..self.hasBeenField..' on '..symmath.export.SingleLine(expr)..' - not visiting')		
-		return expr 
-	end
+			return expr 
+		end
 --]]
+	end
 
 	local Verbose
 	if debugVisitors then
@@ -243,12 +251,14 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 --	print(self.name..' size', expr:countNodes(), 'changed by', require 'ext.tolua'(changeInNodes))
 --end
 
+	if self.rememberVisit then
 -- [[ cache visitors & simplification.  does this help?	
-	if not expr.mutable then
+		if not expr.mutable then
 --print(self.hasBeenField..' from '..symmath.export.SingleLine(orig)..' to '..symmath.export.SingleLine(expr))		
-		expr[self.hasBeenField] = true
-	end
+			expr[self.hasBeenField] = true
+		end
 --]]
+	end
 
 	return expr
 --end, ...)

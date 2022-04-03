@@ -236,6 +236,7 @@ function Expression.__unm(a)
 	Constant = Constant or require 'symmath.Constant'
 	if type(a) == 'number' then a = Constant(a) end
 	unm = unm or require 'symmath.op.unm'
+--	if unm:isa(a) then return a[1] end
 	return unm(a)
 end
 
@@ -1768,6 +1769,42 @@ function Expression:getExprsForIndexSymbols()
 	return exprsForSymbol
 end
 
+function Expression:findRule(name)
+	local visitor, rulename = string.split(name, '/'):unpack()	-- hmm, I was using / in rules output, but then op.div has name / so ... // doesn't look good, so now I'm using : in rules output ... so should I do it here?
+	assert(visitor and rulename, "Expression:pushRule expected format visitor/rule")
+
+	local rules = self.rules[visitor]
+	if not rules then
+		return false, "couldn't find visitor "..visitor
+	end
+
+	local _, rule = table.find(rules, nil, function(r) return next(r) == rulename end)
+	if not rule then
+		return false, "couldn't find rule named "..rulename.." in visitor "..visitor
+	end
+	return rule
+end
+
+-- apply a single rule obj to the expression 'self'
+function Expression:applyRule(ruleClass, ruleName)
+	local rule = assert(ruleClass:findRule(ruleName))
+--print('rule', ruleClass.name..'/'..(next(rule)), '<br>')
+	local visitor = require 'symmath.visitor.Visitor'()
+	--visitor.name = 'applyRule-'..ruleClass.name..'/'..ruleName
+	visitor.name = ruleName:match'(.*)/(.*)'
+	-- disable "rememberVisit" or else this applyRule will cache stuff for *all* of the associated visitor's rules
+	-- that would otherwise prevent the subsequent visitor's other rules from applying to this expression
+	visitor.rememberVisit = false
+	function visitor:lookup(m, bubbleIn)
+--print('looking up', m.name, '<br>')		
+		assert(m, "expression metatable is nil")
+		if m ~= ruleClass then return end
+--print('m matches rule class','<br>')
+		-- TODO how does findRule work with bubbleIn/rulesBubbleIn?
+		return {rule}
+	end
+	return visitor(self)
+end
 
 --[[
 hmm, rules ...
@@ -1776,14 +1813,7 @@ name is <Visitor name>/<rule name>
 returns the previous push state: true if it was already pushed, false if it was not
 --]]
 function Expression:pushRule(name)
-	local visitor, rulename = string.split(name, '/'):unpack()	-- hmm, I was using / in rules output, but then op.div has name / so ... // doesn't look good, so now I'm using : in rules output ... so should I do it here?
-	assert(visitor and rulename, "Expression:pushRule expected format visitor/rule")
-	
-	local rules = assert(self.rules[visitor], "couldn't find visitor "..visitor)
-	
-	local _, rule = table.find(rules, nil, function(r) return next(r) == rulename end)
-	assert(rule, "couldn't find rule named "..rulename.." in visitor "..visitor)
-
+	local rule = assert(self:findRule(name))
 	self.pushedRules = self.pushedRules or table()
 	local wasPushed = not not self.pushedRules[rule]
 	self.pushedRules[rule] = true
@@ -1796,15 +1826,7 @@ returns 'true' if it found the rule, 'false' otherwise
 --]]
 function Expression:popRule(name)
 	if not self.pushedRules then return false end
-
-	local visitor, rulename = string.split(name, '/'):unpack()
-	assert(visitor and rulename, "Expression:pushRule expected format visitor/rule")
-	
-	local rules = assert(self.rules[visitor], "couldn't find visitor "..visitor)
-	
-	local _, rule = table.find(rules, nil, function(r) return next(r) == rulename end)
-	assert(rule, "couldn't find rule named "..rulename.." in visitor "..visitor)
-
+	local rule = assert(self:findRule(name))
 	local wasPushed = not not self.pushedRules[rule]
 	if wasPushed then
 		self.pushedRules[rule] = nil

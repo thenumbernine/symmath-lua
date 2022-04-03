@@ -139,13 +139,13 @@ eigensystem_includeZVars = true
 
 --[[
 add β^i, b^i_j, B^i from the eigensystem vars
-evaluating shiftless + remove zero rows will accomplish this as well
+evaluating shiftless + remove zero rows = the same as setting this to 'false'
 
 TODO notice that, if you do use shift, but you don't set this, then you will end up with b^l_k,r's in the rhs ... so you'll have derivs in the rhs
 TODO also notice that setting this to false will break things right now.
 ... I think until I separate out the flux maybe?
 --]]
-eigensystem_includeShiftVars = true
+eigensystem_includeShiftVars = false
 
 --[[
 false = α, γ_ij flux reduces to zero
@@ -156,14 +156,16 @@ eigensystem_favorFluxTerms = true
 --[[
 remove zero rows from expanded flux jacobian matrix?
 --]]
-eigensystem_removeZeroRows = false
+eigensystem_removeZeroRows = true
 
 --[[
 whether to only evaluate the shiftless eigensystem
 by default the β^x's are removed from the flux
 but this will remove any other shift terms as well
+TODO now courtesy of my homogeneity flux jacobian design, there's always a -U column at β^x
+therefore this does nothing without eigensystem_includeShiftVars=false as well
 --]]
-evaluateShiftlessEigensystem = false
+eigensystem_evaluateShiftless = true
 
 
 -- these were giving BSSN some trouble, so here they are as well.
@@ -2943,7 +2945,7 @@ local UpqmnMat = Matrix(UpqmnVars):T()
 printbr((UijklMat'_,t' + dFijkl_dUpqmn_mat * UpqmnMat'_,r'):eq(SijklMat))
 printbr()
 
-printHeader'expanding, and removing zero rows/cols:'
+printHeader'expanding:'
 
 --[[ only remove diagonal shift.  TODO this for the eigensystem, for acoustic matrix, but do it later after expanding.
 dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:replace(beta'^r', 0)()
@@ -2953,10 +2955,13 @@ dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:replace(beta'^r', 0)()
 TODO when considering shift, instead remove only shift along diagonal (for assumption of eigensystem with adjusted eigenvalues)
 but this means, if there are no beta^x's along the diagonal of alpha_,t and gamma_ij,t, then we can't use this rule unless they also have zero rows (which they seem to)
 --]]
---[[
-if evaluateShiftlessEigensystem then
+-- [[
+if eigensystem_evaluateShiftless then
 	dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat
-		:replaceIndex(b'^i_j', 0)()
+		:replaceIndex(beta'^i', 0)
+		:replaceIndex(b'^i_j', 0)
+		:replaceIndex(B'^i', 0)
+		:simplify()
 end
 --]]
 
@@ -3213,7 +3218,7 @@ dUdx_lhs_exprs_expanded_mat, dUdy_lhs_exprs_expanded_mat, dUdz_lhs_exprs_expande
 
 
 if eigensystem_removeZeroRows then
-	printbr'removing zero rows:'
+	printHeader'removing zero rows:'
 	-- remove all rows/cols that are all zeros
 	local m = n
 	for i=n,1,-1 do
@@ -3343,8 +3348,16 @@ end
 
 printHeader'calculating charpoly'
 
-local charpoly = dFijkl_dUpqmn_expanded:charpoly(lambda)
+local charpoly = dFijkl_dUpqmn_expanded:charpoly(lambda, true)
 printbr(charpoly)
+--[[
+how to simplify a charpoly ...
+1) pull minus signs outside
+2) for add-mul, look for common factors, pull them out if possible
+3) repeat
+--]]
+
+file['Z4_fluxJacobian_eigensystem/charpoly_noZeroRows_noShift.lua'] = export.SymMath(charpoly)
 
 
 printHeader'finding lambdas'

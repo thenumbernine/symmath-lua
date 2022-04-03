@@ -398,6 +398,7 @@ end
 --[[
 a bit different from Matrix mul in that Matrix assumes degree-2
 TODO maybe merge this and Matrix mul like my matrix-lua numeric library uses, and just merge inner-degrees of Arrays
+TODO :hadamardMul() ? and then merge that with :normSq() ?
 --]]
 function Array.dot(a,b)
 	symmath = symmath or require 'symmath'
