@@ -875,6 +875,7 @@ mul.rules = {
 			end
 		end},
 
+		-- TODO FIXME THIS HAS MODIFICATION IN-PLACE
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant

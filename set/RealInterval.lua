@@ -440,6 +440,11 @@ fractional (even denominator) powers of negative numbers make complex
 fractional (odd denominator) powers of negative numbers make real
 --]]
 function RealInterval.__pow(A,B)
+	-- for (a,b)^(0,0), return [1,1] ... ?
+	if B.start == 0 and B.finish == 0 then	-- and B.includeStart and B.includeFinish ... or is this implied?
+		return RealInterval(1,1,true,true)
+	end
+
 	-- for (a,b)^(c,d), d <= 0
 	-- try (1/(a,b)) ^ (-d, -c)
 	if B.finish <= 0 then

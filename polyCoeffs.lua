@@ -114,8 +114,13 @@ return function(expr, x)
 	--expr = expr:simplify()		-- this recombines polys into pow-mul-add
 	--expr = expr:factorDivision()	-- this recombines too
 	--expr = expr:simplifyAddMulDiv()	-- this starts off with :simplify(), so it's as bad as above
-	expr = expr:prune()				-- this combines x powers and sums without recombining the poly
 
+	-- mul/Prune/factorDenominators will convert back to div, so avoid that	
+	local mul = require 'symmath.op.mul'
+	local pushed = mul:pushRule'Prune/factorDenominators'
+	expr = expr:prune()				-- this combines x powers and sums without recombining the poly
+	if pushed then mul:popRule'Prune/factorDenominators' end
+	
 	-- group terms by polynomial coefficients
 	local coeffs = {}	-- result = coeffs[n] * x^n + coeffs.extra, where coeffs.extra holds all the nonlinear x references
 

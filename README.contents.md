@@ -104,7 +104,6 @@ This requires my lua-http project in order to run.
 	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
 
 - subindexes, so you can store a tensor of tensors: `g_ab = Tensor('_ab', {-alpha^2+beta^2, beta_j}, {beta_i, gamma_ij})`
-	(Though this is a lot of work for a rarely used feature...)
 
 - change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
 
@@ -112,6 +111,11 @@ This requires my lua-http project in order to run.
 
 - better polynomial factoring.
 
+- browser interface: "continue" feature, to counter-balance the "stop" cells
+- browser interface: "stop" cells should hide their input box.
+- browser interface: "undo" and "redo" buttons
+- browser interface: "find" function
+- browser interface: line numbers, better line wrap detection, syntax highlighting
 
 <?
 require 'ext'
