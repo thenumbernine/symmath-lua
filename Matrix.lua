@@ -46,9 +46,9 @@ function Matrix:charpoly(lambdaVar)
 
 	-- ok simplify all we can *without* distributing mul into add
 	local mul = require 'symmath.op.mul'
-	local wasPushed = mul:pushRule'Expand/apply'
+	local didPush = mul:pushRule'Expand/apply'
 	charPolyEqn = charPolyEqn()
-	if not wasPushed then mul:popRule'Expand/apply' end
+	if didPush then mul:popRule'Expand/apply' end
 
 	return charPolyEqn
 end

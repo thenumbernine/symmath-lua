@@ -59,7 +59,6 @@ print(MathJax.header)
 
 
 local xNames = table{'x','y','z'}	-- names of spatial dimension vars
-local spatialDim = 3
 local xs = xNames:mapi(function(name) return var(name) end)
 local x,y,z = xs:unpack()
 -- time
@@ -125,9 +124,9 @@ consider β^i b^i_j B^i in the flux and source vars
 --]]
 flux_includeShiftVars = true
 
+
 --[[
 include α, γ_ij
-in the case of eigensystem_favorFluxTerms==false and eigensystem_removeZeroRows==true they tend to be removed anyways
 --]]
 eigensystem_includeGaugeVars = true
 
@@ -145,18 +144,12 @@ TODO notice that, if you do use shift, but you don't set this, then you will end
 TODO also notice that setting this to false will break things right now.
 ... I think until I separate out the flux maybe?
 --]]
-eigensystem_includeShiftVars = false
-
---[[
-false = α, γ_ij flux reduces to zero
-true = covnert as many first-derivative state variables into derivatives of state vars
---]]
-eigensystem_favorFluxTerms = true
+eigensystem_includeShiftVars = true
 
 --[[
 remove zero rows from expanded flux jacobian matrix?
 --]]
-eigensystem_removeZeroRows = true
+eigensystem_removeZeroRows = false
 
 --[[
 whether to only evaluate the shiftless eigensystem
@@ -165,7 +158,7 @@ but this will remove any other shift terms as well
 TODO now courtesy of my homogeneity flux jacobian design, there's always a -U column at β^x
 therefore this does nothing without eigensystem_includeShiftVars=false as well
 --]]
-eigensystem_evaluateShiftless = true
+eigensystem_removeShiftVars = false
 
 
 -- these were giving BSSN some trouble, so here they are as well.
@@ -2368,9 +2361,9 @@ printbr()
 
 -- [=[
 Tensor.Chart{coords=xs}
-	
-local dHat_t_Dense = dHat_t'_ij':makeDense()
-local dt_dHatDense = dt_dHat'_kij':makeDense()
+
+local dHat_t_Dense = dHat_t'_ij':replaceWithDense()()
+local dt_dHatDense = dt_dHat'_kij':replaceWithDense()()
 
 function expandMatrixIndexes(expr)
 	-- special for our time deriv, since the "t" is a fixed dim, not a tensor index
@@ -2857,40 +2850,6 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 	-- but this doesn't seem to be doing anything
 	--rhs = simplifyDAndKTraces(rhs)
 
-	-- TODO don't do this willy-nilly, or even going by what looks good, but instead legitimately try to salvage the gauge vars inside the flux
-	--  for the purpose of maintaing the homogeneity condition of the flux: dF/dU * U = F
-	--[=[
-	if eigensystem_favorFluxTerms then
-		if lhs == dt_alpha_def:lhs() then
-			rhs = rhs:substIndex(a_l_def)
-			rhs = rhs:simplifyAddMulDiv()
-		elseif lhs == dt_gammaDelta_ll_def:lhs() then
-			rhs = rhs:substIndex(dDelta_lll_def, b_ul_def)
-			rhs = rhs:simplifyAddMulDiv()
-		elseif lhs == dt_gamma_ll_def:lhs() then
-			rhs = rhs:substIndex(d_lll_def, b_ul_def)
-			rhs = rhs:simplifyAddMulDiv()
-		elseif lhs == dt_a_l_def:lhs() then
-			--[[
-			rhs = rhs:substIndex(a_l_def)
-			rhs = rhs:replaceIndex(b'^a_a', tr_b)
-			-- even tho i just did this ..
-			rhs = rhs:simplifyAddMulDiv()
-			rhs = rhs:replace(K'_mn' * gamma'^mn', tr_K)
-			rhs = rhs:replace(K'_mn' * gamma'^am' * gamma'^bn', tr_K)
-			rhs = rhs:simplifyAddMulDiv()
-			--]]
-		elseif lhs == dt_dDelta_lll_def:lhs() then
-			--[[
-			rhs = rhs:substIndex(a_l_def, dDelta_lll_def)
-			rhs = rhs:replaceIndex(b'^a_a', tr_b)
-			rhs = rhs:simplifyAddMulDiv()
-			--]]
-		elseif lhs == dt_d_lll_def:lhs() then
-		end
-	end
-	--]=]
-	
 	return lhs:eq(rhs)
 end)
 
@@ -2956,11 +2915,12 @@ TODO when considering shift, instead remove only shift along diagonal (for assum
 but this means, if there are no beta^x's along the diagonal of alpha_,t and gamma_ij,t, then we can't use this rule unless they also have zero rows (which they seem to)
 --]]
 -- [[
-if eigensystem_evaluateShiftless then
+if eigensystem_removeShiftVars then
 	dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat
-		:replaceIndex(beta'^i', 0)
-		:replaceIndex(b'^i_j', 0)
-		:replaceIndex(B'^i', 0)
+		:replaceIndex(beta'^i', beta'^i' * 0)
+		:replaceIndex(b'^i_j', b'^i_j' * 0)
+		:replaceIndex(b'_j^i', b'_j^i' * 0)	-- TODO ... :applySymmetries() shouldn't be symmetrizing b^i_j into b_j^i
+		:replaceIndex(B'^i', B'^i' * 0)
 		:simplify()
 end
 --]]
@@ -3279,6 +3239,26 @@ if eigensystem_removeZeroRows then
 	--]]
 end
 
+-- [[ output the linear system in the x-direction, (removing source) to another SymMath .lua file
+-- then load it somewhere else where I can load it and work on the eigenmodes / left-eigenvectors: 
+-- w_,t + R Λ L w_,x = 0
+-- L w_,t + Λ L w_,x = 0
+-- l_i w_,t + λ l_i w_,x = 0
+do
+	-- leave off the source
+	for i=1,#dUdt_lhs_exprs_expanded_mat do
+		local v = dUdt_lhs_exprs_expanded_mat[i][1]
+		assert(Derivative:isa(v))
+		assert(Variable:isa(v[1]))
+		-- make sure simplifying the derivative doesn't make it go away
+		v[1]:setDependentVars(txs:unpack())
+	end
+	local sys = (dUdt_lhs_exprs_expanded_mat + dFijkl_dUpqmn_expanded * dUdx_lhs_exprs_expanded_mat)
+	file['Z4 - flux PDE noZeroRows noSource.lua'] = export.SymMath(sys)
+end
+--]]
+
+
 --[[ CHECK -- verify that the matrix matches the 2008 Yano flux jacobian matrix ...
 do
 	printHeader'non-zero terms, divided by alpha:'
@@ -3346,154 +3326,73 @@ end
 --]]
 
 
+-- so my eigensystem solver goes slow.  let's try to fix it.
+--[[ doesn't stop eigensystem solver from stalling...
+printbr'replace sqrt vars with non-sqrt vars to help speed up the eigensystem solver:'
+local gammaUxx = gamma'^ij':replaceWithDense()()[1][1]
+local sqrtf = var'\\sqrt{f}'
+local sqrt_gammaUxx = var'\\sqrt{\\gamma^{xx}}'
+dFijkl_dUpqmn_expanded = dFijkl_dUpqmn_expanded
+	:replace(f, sqrtf^2)
+	:replace(gammaUxx, sqrt_gammaUxx^2)
+	:simplify()
+--]]
+-- [[ does help performance? esp for Z4 block
+printbr('dividing by', alpha)
+dFijkl_dUpqmn_expanded = (dFijkl_dUpqmn_expanded / alpha)()
+--]]
+--[[ this might speed up the inverse calculation, but not necessarily further down the line
+printbr('replacing', gamma'^ij', 'for', gamma'_ij')
+local gammaUUDense = gamma'^ij':replaceWithDense()()
+local gammaLLDense = gamma'_ij':replaceWithDense()()
+dFijkl_dUpqmn_expanded = dFijkl_dUpqmn_expanded
+	:replace(-gammaUUDense[1][2]^2 + gammaUUDense[1][1] * gammaUUDense[2][2], gammaLLDense[3][3] * det_gamma)
+	:replace(gammaUUDense[1][1] * gammaUUDense[2][3] - gammaUUDense[1][2] * gammaUUDense[1][3], -gammaLLDense[2][3] * det_gamma)
+	:replace(-gammaUUDense[1][3]^2 + gammaUUDense[1][1] * gammaUUDense[3][3], gammaLLDense[2][2] * det_gamma)
+	:simplify()
+--]]
+printbr(dFijkl_dUpqmn_expanded)
+printbr()
+
 printHeader'calculating charpoly'
 
 local charpoly = dFijkl_dUpqmn_expanded:charpoly(lambda)
 printbr(charpoly)
-
+assert(symmath.op.eq:isa(charpoly))
+assert(Constant.isValue(charpoly:rhs(), 0))
 
 printHeader'finding lambdas'
-
---	table{Constant(0)}:rep(17),
---	table{alpha * sqrt(gamma'^xx')}:rep(5),
---	table{-alpha * sqrt(gamma'^xx')}:rep(5),
-
 local lambdas = table()
-assert(symmath.op.eq:isa(charpoly))
-assert(Constant.isValue(charpoly[2], 0))
-local x = charpoly[1]:clone()	-- only take the lhs
 
-local gammaUxxVar = var'\\gamma^{xx}'
-for _,root in ipairs{
--- [[ easiest first
-	Constant(0),
-	alpha * sqrt(gammaUxxVar),
-	-alpha * sqrt(gammaUxxVar),
-	alpha * sqrt(f * gammaUxxVar),
-	-alpha * sqrt(f * gammaUxxVar),
---]]
---[[ hardest first
-	-alpha * sqrt(f * gammaUxxVar),
-	alpha * sqrt(f * gammaUxxVar),
-	-alpha * sqrt(gammaUxxVar),
-	alpha * sqrt(gammaUxxVar),
-	Constant(0),
---]]
-} do
-	while true do
-		local p, q = polydiv.polydivr(x, (lambda - root)(), lambda)
-		if Constant.isValue(q, 0) then
-			printbr('root', lambda:eq(root))
-			lambdas:insert(root)
-			x = p
-		else
-			break
-		end
-	end
-end
-printbr("solving what's left, which is ", x)
-printbr()
-printbr('<pre>', (export.Lua(x)), '</pre>')
-printbr()
-local solns = table{x:eq(0):solve(lambda)}
-for _,soln in ipairs(solns) do
-	lambdas:insert(soln[2])
-	printbr('root', soln)
-end
-printbr()
-
---[[
-local x = var'x'
-charpoly =
-	(charpoly / lambda^17)()				-- 17 lambda=0 eigenvalues
---	:replace(gamma'^xx', var'a'/alpha^2)	-- a = gamma^xx alpha^2
-	:replace(alpha, a)						-- a = alpha
-	:replace(gamma'^xx', var'g')			-- g = gamma^xx
-	:replace(lambda, sqrt(x))				-- x = lambda^2
-local pc = charpoly:polyCoeffs(x)
-local sum = 0
-for _,i in ipairs(table.keys(pc):sort()) do
-	if i == 'extra' or i == 0 then
-		sum = sum + pc[i]
+-- TODO what if solve() fails?
+for _,soln in ipairs{charpoly:solve(lambda)} do
+	if soln:lhs() ~= lambda then
+		-- TODO better display these
+		printbr('failed to find root for charpoly term:', soln)
 	else
-		sum = sum + pc[i] * x^i
+		printbr('root', soln)
+		lambdas:insert(soln:rhs())
 	end
 end
-print'<pre>'
-print(export.Lua(sum))
-print'</pre>'
---]]
-
 
 --[======[ eigensystem stuff is too slow  for now
--- so for f arbitrary and for f=2/alpha, both we get some sqrt(sqrt(...) + ...)'s as lambdas ... makes calcs frustrating
-
---[=[ this is all for shift-less Z4 for generic 'f' shift parameter
-
-printHeader'verifying charpoly'
-
---[[ WORKS for shift-less Z4.  those last sets of roots don't look familiar.
-local recreated = (
-	-lambda^17
-	* (lambda^2 - gamma'^xx' * alpha^2)^5
-	* (lambda^2 - frac(1,2) * gamma'^xx' * alpha^2 * (-sqrt(f^2 - 6*f + 5) + f + 1))
-	* (lambda^2 - frac(1,2) * gamma'^xx' * alpha^2 * ( sqrt(f^2 - 6*f + 5) + f + 1))
-):eq(0)()
-printbr('verify', (charpoly - recreated)())
---]]
-
---[[ for lapse f=-2/alpha
-local recreated = (
-	-lambda^17
-	* (lambda^2 - gamma'^xx' * alpha^2)^5
-	* (lambda^2 - frac(1,2) * gamma'^xx' * alpha^2 * (-sqrt(f^2 - 6*f + 5) + f + 1))
-	* (lambda^2 - frac(1,2) * gamma'^xx' * alpha^2 * ( sqrt(f^2 - 6*f + 5) + f + 1))
-):eq(0)()
-printbr('verify', (charpoly - recreated)())
---]]
-
---[[
-local x = var'x'
-charpoly =
-	(charpoly / lambda^17)()
-	:replace(gamma'^xx', a/alpha^2)	-- a = gamma^xx alpha^2
-	:replace(lambda, sqrt(x))		-- x = lambda^2
-	:simplify()
-print(charpoly)
---]]
-
---[[
-local lambdas = table():append(
-	table{Constant(0)}:rep(17),
-	table{alpha * sqrt(gamma'^xx')}:rep(5),
-	table{-alpha * sqrt(gamma'^xx')}:rep(5),
-	{
-		 alpha * sqrt(frac(1,2) * gamma'^xx' * ( sqrt(f^2 - 6*f + 5) + f + 1)),
-		 alpha * sqrt(frac(1,2) * gamma'^xx' * (-sqrt(f^2 - 6*f + 5) + f + 1)),
-		-alpha * sqrt(frac(1,2) * gamma'^xx' * ( sqrt(f^2 - 6*f + 5) + f + 1)),
-		-alpha * sqrt(frac(1,2) * gamma'^xx' * (-sqrt(f^2 - 6*f + 5) + f + 1)),
-	}
-)
---]]
-
-printbr()
---]=]
-
---[[ sqrt simplification can't handle this
-local recreated = -1
-for i=#lambdas,1,-1 do
-	local root = lambdas[i]
-	recreated = (recreated * (lambda - root))()
-end
-recreated = recreated:eq(0)
-printbr('verify', (charpoly - recreated)())
---]]
 
 -- [=[
 
 -- ok so now these rules might come in handy:
---symmath.op.div:popRule'Prune/conjOfSqrtInDenom'
+assert(symmath.op.div:popRule'Prune/conjOfSqrtInDenom')
 assert(symmath.op.div:popRule'Factor/polydiv')
+--[[
+symmath.op.mul:pushRule'Factor/negPowToDivPow'
+symmath.op.mul:pushRule'Prune/combineMulOfLikePow_mulPowAdd'
+symmath.op.div:pushRule'Prune/conjOfSqrtInDenom'
+symmath.op.div:pushRule'Prune/prodOfSqrtOverProdOfSqrt'
+symmath.op.div:pushRule'Prune/mulBySqrtConj'
+symmath.op.pow:pushRule'Prune/sqrtFix2'
+symmath.op.pow:pushRule'Prune/sqrtFix3'
+symmath.op.pow:pushRule'Prune/sqrtFix4'
+--]]
+
 
 printHeader'calculating eigensystem'
 _G.printbr = printbr	-- for Matrix.eigen verbose=true:

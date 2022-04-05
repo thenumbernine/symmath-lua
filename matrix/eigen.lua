@@ -68,8 +68,13 @@ local function eigen(A, args)
 			printbr('charPoly', charPoly)
 		end
 
-		-- I have a bad feeling about this ...
+		-- don't distribute mul->add's
+		-- just like in Matrix:charpoly()
+		local mul = require 'symmath.op.mul'
+		local didPush = mul:pushRule'Expand/apply'
 		charPoly = charPoly()
+		if didPush then mul:popRule'Expand/apply' end
+		
 		if eigenVerbose then
 			printbr('after simplify(), charPoly', charPoly)
 		end
@@ -254,12 +259,8 @@ local function eigen(A, args)
 	end
 
 	-- only pop rules if they had been pushed
-	if pushMulPruneLogPow then
-		symmath.op.mul:popRule'Prune/logPow'
-	end
-	if pushLogExpandApply then
-		symmath.log:popRule'Expand/apply'
-	end
+	if pushMulPruneLogPow then symmath.op.mul:popRule'Prune/logPow' end
+	if pushLogExpandApply then symmath.log:popRule'Expand/apply' end
  
 --assert( (R * Lambda * L - A)() == Matrix:zeros{#A, #A} )
 	

@@ -1771,7 +1771,7 @@ end
 
 function Expression:findRule(name)
 	local visitor, rulename = string.split(name, '/'):unpack()	-- hmm, I was using / in rules output, but then op.div has name / so ... // doesn't look good, so now I'm using : in rules output ... so should I do it here?
-	assert(visitor and rulename, "Expression:pushRule expected format visitor/rule")
+	assert(visitor and rulename, "Expression:findRule expected format visitor/rule")
 
 	local rules = self.rules[visitor]
 	if not rules then
@@ -1810,19 +1810,21 @@ end
 hmm, rules ...
 static function, 'self' is the class
 name is <Visitor name>/<rule name>
-returns the previous push state: true if it was already pushed, false if it was not
+returns true if the push changed the rule state,
+returns false if the rule was already pushed
 --]]
 function Expression:pushRule(name)
 	local rule = assert(self:findRule(name))
 	self.pushedRules = self.pushedRules or table()
 	local wasPushed = not not self.pushedRules[rule]
 	self.pushedRules[rule] = true
-	return wasPushed
+	return not wasPushed
 end
 
 --[[
 pop single rule.
-returns 'true' if it found the rule, 'false' otherwise
+returns 'true' if the rule was pushed but is now restored
+returnfs false if the rule was not pushed
 --]]
 function Expression:popRule(name)
 	if not self.pushedRules then return false end
