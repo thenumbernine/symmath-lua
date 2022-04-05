@@ -445,6 +445,7 @@ self:log(5, "cellinput is now "..findlhs)
 				-- if it failed then there's an error in it ... so we want to report the error ...
 				-- also we don't need 'results' ... since we're going to get it from the xpcall on lhs
 				-- but maybe we should save 'results', since without 'results' it will be run twice as a non-expr, non-assign-stmt ...
+				-- TODO sometimes it crashes here 
 				results = table.pack(assert(load(cell.input, nil, nil, self.env))())
 				self:log(2, "run() successfully handled assign-stmt")
 			

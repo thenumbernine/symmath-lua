@@ -207,7 +207,9 @@ console.log("focusing on inputTextArea after number ", j);
 				done : function() {
 					var iterate;
 					iterate = function(i) {
-						if (i > endIndex) {
+						if (i > endIndex
+							|| ctrls[i].cell.outputtype == 'stop'
+						) {
 							setAllControlsEnabled(true);
 							//done
 						} else {
@@ -267,7 +269,9 @@ console.log("focusing on inputTextArea after number ", j);
 				done : function() {
 					var iterate;
 					iterate = function(i) {
-						if (i >= cells.length) {
+						if (i >= cells.length
+							|| ctrls[i].cell.outputtype == 'stop'
+						) {
 							setAllControlsEnabled(true);
 							//done
 						} else {
@@ -296,13 +300,14 @@ console.log("focusing on inputTextArea after number ", j);
 
 
 	ctrl.setOutputTypeSelect = $('<select>', {
-		html : $.map(['text', 'html', 'latex'], function(s,i) {
+		html : $.map(['text', 'html', 'latex', 'stop'], function(s,i) {
 			return '<option>'+s+'</option>'
 		}).join(''),
 		change : function(e) {
 			ctrl.setOutputTypeSelect.prop('disabled', true);
 			var val = this.value;
-			
+
+console.log("setting output type to ", val);
 			server.setOutputType({
 				uid : ctrl.cell.uid,
 				outputtype : this.value,
@@ -312,6 +317,7 @@ console.log("focusing on inputTextArea after number ", j);
 					ctrl.setOutputTypeSelect.prop('disabled', false);
 					
 					ctrl.refreshJustThisCell(celldata);
+console.log("...successfully set output type to ", ctrl.cell.outputtype);
 				},
 				fail : function() {
 					ctrl.setOutputTypeSelect.prop('disabled', false);
@@ -401,8 +407,9 @@ CellControl.prototype = {
 		var ctrl = this;
 
 		var outputtype = ctrl.cell.outputtype;
-		if (ctrl.cell.haserror) outputtype = 'text';
-			
+		if (outputtype != 'stop' && ctrl.cell.haserror) outputtype = 'text';
+console.log("refreshing output type for", outputtype);
+		
 		var outputstr = ctrl.cell.output;
 		if (outputtype == 'html') {
 			ctrl.outputDiv.html(outputstr);
@@ -412,7 +419,9 @@ CellControl.prototype = {
 		} else if (outputtype == 'latex') {
 			ctrl.outputDiv.html(outputstr);
 			MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
-		
+		} else if (outputtype == 'stop') {
+			outputstr = '<hr><hr><hr>';
+			ctrl.outputDiv.html(outputstr);
 		} else {
 			ctrl.outputDiv.html('');
 			if (outputtype != 'text') {
@@ -768,7 +777,12 @@ console.log("...failed writing cells.");
 					done : function() {
 						var iterate;
 						iterate = function(i) {
-							if (i < ctrls.length) {
+							if (i >= ctrls.length
+								|| ctrls[i].cell.outputtype == 'stop'
+							) {
+								//done
+								setAllControlsEnabled(true);
+							} else {
 								ctrls[i].run({
 									done : function() {
 										iterate(++i);
@@ -777,9 +791,6 @@ console.log("...failed writing cells.");
 										iterate(++i);
 									}
 								});
-							} else {
-								setAllControlsEnabled(true);
-								//done
 							}
 						};
 						iterate(0);
