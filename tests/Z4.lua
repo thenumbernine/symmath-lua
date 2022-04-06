@@ -523,8 +523,10 @@ local tr_K = var'tr(K)'
 
 alpha:setDependentVars(txs:unpack())
 gammaDelta'_ij':setDependentVars(txs:unpack())
+gamma'_ij':setDependentVars(txs:unpack())
 a'_k':setDependentVars(txs:unpack())
 dDelta'_kij':setDependentVars(txs:unpack())
+d'_kij':setDependentVars(txs:unpack())
 K'_ij':setDependentVars(txs:unpack())
 Theta:setDependentVars(txs:unpack())
 Z'_k':setDependentVars(txs:unpack())
