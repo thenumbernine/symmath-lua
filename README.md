@@ -1276,6 +1276,8 @@ Output CDN URLs:
 
 [tests/output/unit/tensor sub-assignment](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20sub%2dassignment.html)
 
+[tests/output/unit/tensor sub-index](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20sub%2dindex.html)
+
 [tests/output/unit/symmetrizeIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/symmetrizeIndexes.html)
 
 [tests/output/unit/tensor use case](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20use%20case.html)

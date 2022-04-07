@@ -246,6 +246,7 @@ build = {
 		["symmath.tests.unit.solve"] = "tests/unit/solve.lua",
 		["symmath.tests.unit.sqrt"] = "tests/unit/sqrt.lua",
 		["symmath.tests.unit.tensor sub-assignment"] = "tests/unit/tensor sub-assignment.lua",
+		["symmath.tests.unit.tensor sub-index"] = "tests/unit/tensor sub-index.lua",
 		["symmath.tests.unit.symmetrizeIndexes"] = "tests/unit/symmetrizeIndexes.lua",
 		["symmath.tests.unit.tensor use case"] = "tests/unit/tensor use case.lua",
 		["symmath.tests.unit.test"] = "tests/unit/test.lua",
