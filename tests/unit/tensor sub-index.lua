@@ -48,7 +48,7 @@ printbr(T'_zp':prune())		assertEq(T'_zp':prune(), Tensor('_p', T[3][2], T[3][3])
 printbr(T'_px':prune())		assertEq(T'_px':prune(), Tensor('_p', T[2][1], T[3][1]))
 printbr(T'_py':prune())		assertEq(T'_py':prune(), Tensor('_p', T[2][2], T[3][2]))
 printbr(T'_pz':prune())		assertEq(T'_pz':prune(), Tensor('_p', T[2][3], T[3][3]))
-printbr(T'_pq':prune())		assertEq(T'_pq':prune(), Tensor('_pq', {T[2][2], T[2][3]}, {T[3][2], T[3][3]})
+printbr(T'_pq':prune())		assertEq(T'_pq':prune(), Tensor('_pq', {T[2][2], T[2][3]}, {T[3][2], T[3][3]}))
 
 -- reading by __index doesn't work?
 -- I guess only writing by __index does for now

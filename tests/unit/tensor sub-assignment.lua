@@ -17,6 +17,12 @@ timer(nil, function()
 
 for _,line in ipairs(string.split(string.trim([=[
 
+B = Tensor('^ij', function(i,j) return var'b'('^'..coords[i+1].name..' '..coords[j+1].name) end) 
+printbr(Array(B:dim()))
+
+printbr(B'^ix'())
+printbr(Array(B'^ix'():dim()))
+
 -- rank-1 subtensor assignment
 
 -- A is from the txyz chart, so it will have 4 elements accordingly

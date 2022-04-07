@@ -13,7 +13,7 @@ function TensorRef:init(tensor, ...)
 	TensorRef.super.init(self, tensor, ...)
 	
 	-- not necessarily true, for comma derivatives of scalars/expressions
-	--assert(Tensor:isa(tensor))	
+	--assert(Tensor:isa(tensor))
 
 	-- make sure the rest of the arguments are tensor indexes
 	symmath = symmath or require 'symmath'
@@ -56,8 +56,8 @@ function TensorRef:hasDerivIndex(...)
 	local n = select('#', ...)
 	for i=2,#self do
 		local si = self[i]
-		if si.derivative then 
-			if n == 0 then return si end 
+		if si.derivative then
+			if n == 0 then return si end
 			for j=1,n do
 				if si.symbol == select(j, ...) then return si end
 			end
@@ -75,7 +75,7 @@ function TensorRef:hasTensorIndex(symbol)
 end
 
 
--- how does this behave any different than Expression:clone() 
+-- how does this behave any different than Expression:clone()
 function TensorRef:clone()
 	return TensorRef(range(#self):map(function(i)
 		return self[i]:clone()
@@ -129,11 +129,11 @@ function TensorRef:dependsOn(x)
 
 	-- y^i depends on y^j
 	-- (but y^ij is considered a different variable, so is not dependent on y^i)
-	if TensorRef:isa(x) 
-	and self[1] == x[1] 
+	if TensorRef:isa(x)
+	and self[1] == x[1]
 	and #self == #x
-	then 
-		return true 
+	then
+		return true
 	end
 
 	if self[1].dependentVars then
@@ -175,7 +175,7 @@ set symmetries of the Tensor.Ref
 but store the symmetry in the Variable
 since creating new Ref's happens all the time
 
-TODO 
+TODO
 right now I'm just setting this to work like the :symmetrizeIndexes
 but maybe change that as well, and this, to only symmetrize indexes
 if the degree matches
@@ -206,7 +206,7 @@ function TensorRef:setSymmetries(...)
 	for i=1,select('#', ...) do
 		local indexNumbers = table(select(i, ...))
 		-- infer whether we are symmetrizing across derivatives
-		local acrossDerivs 
+		local acrossDerivs
 		local deriv = self[1+indexNumbers[1]].derivative
 		local acrossLowers
 		local lower = not not self[1+indexNumbers[1]].lower
@@ -230,7 +230,7 @@ function TensorRef:setSymmetries(...)
 end
 
 function TensorRef:getSymmetriesKey()
-	return table.sub(self, 2):mapi(function(index) 
+	return table.sub(self, 2):mapi(function(index)
 		--[[ using matching upper/lower and deriv?
 		return (index.lower and '_' or '^')..(index.degree or '')
 		--]]
@@ -267,8 +267,8 @@ function TensorRef:applySymmetries()
 	symmath = symmath or require 'symmath'
 	local Variable = symmath.Variable
 	local var = self[1]
-	if not Variable:isa(var) then 
-		error("can't apply symmetries to a Tensor.Ref that is not of a Variable") 
+	if not Variable:isa(var) then
+		error("can't apply symmetries to a Tensor.Ref that is not of a Variable")
 	end
 	
 	local result = self:clone()
@@ -325,7 +325,7 @@ function TensorRef.makeDense(x)
 	local Variable = symmath.Variable
 	assert(TensorRef:isa(x))
 	assert(Variable:isa(x[1]))
---printbr('creating dense tensor', x)	
+--printbr('creating dense tensor', x)
 	local basevar = x[1]:clone()
 	local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
 	local numDeriv = 0
@@ -339,13 +339,13 @@ function TensorRef.makeDense(x)
 		return index.lower and 'l' or 'u'
 	end):concat()
 	
-	-- ss[1] is the TensorRef, ss[2...] is the 
+	-- ss[1] is the TensorRef, ss[2...] is the
 	local allsymkeys = {}
 	for _,s in ipairs{x:getSymmetries()} do
 		-- only if the lowers of the indexes match with s's form
 		-- or if they are both lowered or both uppered
 		if not s.acrossLowers then
-			local acrossLowers 
+			local acrossLowers
 			local lower = not not x[1+s.indexNumbers[1]].lower
 			for _,i in ipairs(s.indexNumbers) do
 				local olower = not not x[1+i].lower
@@ -471,23 +471,23 @@ TensorRef.rules = {
 			symmath = symmath or require 'symmath'
 			local Tensor = symmath.Tensor
 			local t = expr[1]
-			if not Tensor:isa(t) then 
+			if not Tensor:isa(t) then
 				if TensorRef:isa(t) then
 					local indexes = {table.unpack(expr,2)}
 					return prune:apply(
 						TensorRef(t[1], table():append{table.unpack(t,2)}:append(indexes):unpack())
 					)
 				end
-			end	
+			end
 		end},
 
 		{evalDeriv = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Tensor = symmath.Tensor
 			local t = expr[1]
-			if not Tensor:isa(t) 
+			if not Tensor:isa(t)
 			and expr[2].derivative
-			then 
+			then
 				-- if it can be evaluated then apply differentiation
 				-- (if it is a tensor or variable then it won't be applied)
 				if t.evaluateDerivative then
@@ -503,7 +503,7 @@ TensorRef.rules = {
 			local Tensor = symmath.Tensor
 			local t = expr[1]
 			if not Tensor:isa(t)			-- if it's not a tensor ...
-			and expr[2].derivative then	-- if this is a derivative then 
+			and expr[2].derivative then	-- if this is a derivative then
 				local indexes = {table.unpack(expr,2)}
 				-- if any derivative indexes are for single variables then apply them directly
 				local diffvars
@@ -524,7 +524,7 @@ TensorRef.rules = {
 					local Derivative = symmath.Derivative
 					local result = Derivative(t, diffvars:unpack())
 					if #indexes > 0 then
-						result = TensorRef(result, table.unpack(indexes)) 
+						result = TensorRef(result, table.unpack(indexes))
 					end
 					return prune:apply(result)
 				end
@@ -539,7 +539,7 @@ TensorRef.rules = {
 			local indexes = {table.unpack(expr,2)}
 
 			-- if it's not a tensor ...
-			-- ...then just leave the indexing there 
+			-- ...then just leave the indexing there
 			if not Tensor:isa(t) then return end
 
 			-- now transform all indexes that don't match up
@@ -574,7 +574,7 @@ TensorRef.rules = {
 			-- so commas must be all at the end
 			local function transformIndexes(withDerivatives)
 				-- raise all indexes, transform tensors accordingly
-	--print('transforming indexes '..table.map(indexes,tostring):concat',')
+--printbr('transforming indexes '..table.map(indexes,tostring):concat',')
 				for i=1,#indexes do
 					if not indexes[i].derivative == not withDerivatives then
 
@@ -591,27 +591,30 @@ TensorRef.rules = {
 							-- only handling exchanges of variables at the moment
 							
 							local indexMap = {}
-							for i=1,#dstChart.coords do
-								indexMap[i] = table.find(srcChart.coords, dstChart.coords[i])  --assert(..., "failed to find src variable in dst chart")
+							for j=1,#dstChart.coords do
+								indexMap[j] = table.find(srcChart.coords, dstChart.coords[j])  --assert(..., "failed to find src variable in dst chart")
 							end
 
-	--print('transforming tensor\n'..t)
+--printbr('transforming tensor', t)
+							local newindexes = table.sub(indexes,1,i):append(table.sub(t.variance,i+1))
+--printbr('...into indexes', table.mapi(newindexes, tostring):concat())
 							t = Tensor{
 								-- only update indexes 1..i
 								-- keep the rest the same
 								-- TODO even better store an indexMap per 'i', and then update all at once
 								--indexes = indexes,
-								indexes = table.sub(indexes,1,i):append(table.sub(t.variance,i+1)),
+								indexes = newindexes,
 								values = function(...)
 									local srcIndexes = {...}
 									srcIndexes[i] = indexMap[srcIndexes[i]] -- assert(..., "failed to remap\n"..tolua({i=i, srcIndexes=srcIndexes, indexMap=indexMap}, {indent=true}))
 									if not srcIndexes[i] then return 0 end	-- zero whatever isn't there.
 									-- but if it's a subindex then srcIndexes can be nil ...
-	--print('assigning at {'..table.concat(srcIndexes, ',')..'} to '..t[srcIndexes])
+--printbr('assigning at {'..table.concat(srcIndexes, ',')..'} to '..t[srcIndexes])
 									return t[srcIndexes]
 								end,
 							}
-	--print('...into tensor\n'..t)
+--printbr('...into tensor', t)
+--printbr('...with dim', require 'symmath.Array'(t:dim()))
 						end
 
 						t.variance[i].symbol = indexes[i].symbol
@@ -646,7 +649,7 @@ TensorRef.rules = {
 					indexes = newVariance,
 					values = function(...)
 						local is = {...}
-						-- pick out 
+						-- pick out
 						local base = table()
 						local deriv = table()
 						for i=1,#is do
@@ -719,11 +722,74 @@ TensorRef.rules = {
 			--  (scaling with the delta tensor)
 
 			t = t:simplifyTraces()
-			if Tensor:isa(t) then 
+			if Tensor:isa(t) then
 				for i,index in ipairs(t.variance) do
 					assert(index.symbol, "failed to find index on "..i.." of "..#t.variance)
-				end	
+				end
 			end
+			
+
+
+-- ok here unravel any rank-1 dimension
+-- same code in Tensor/Prune/removeSingleDimIndexes
+-- and in Tensor.__newindex
+-- [====[
+			if Tensor:isa(t) then
+--printbr("before removeSingleDimIndexes, t.variance", table.mapi(t.variance, tostring):concat(), ", t:dim()", require 'symmath.Array'(t:dim()))
+		--printbr('t', t)
+		--printbr('t variance',table.unpack(t.variance))
+					local function mapSingleIndexes(v,k,dst)
+		--printbr('v.symbol',v.symbol)
+						local chart = t:findChartForSymbol(v.symbol)
+		--printbr('chart',chart,'variables',chart and #chart.coords)
+						return (chart and #chart.coords == 1 and k or nil), #dst+1
+					end
+					local valueSingleVarIndexes = table.mapi(t.variance, mapSingleIndexes)
+					-- if any are left then remove them
+					if #valueSingleVarIndexes > 0 then
+		--printbr('we still have '..#valueSingleVarIndexes..' left of ',table.mapi(t.variance,tostring):concat',',' at ',valueSingleVarIndexes:concat',')
+						-- remove the rest of the single-variance letters
+						local remainingIndexes = table.filter(t.variance, function(v,k)
+							return not valueSingleVarIndexes:find(k)
+						end)
+						-- [=[
+						if #remainingIndexes == 0 then
+							assert(#t.variance == #valueSingleVarIndexes)
+							for i=1,#valueSingleVarIndexes do
+		--printbr("drilling from ", t, " to ", t[1])
+								t = t[1]
+							end
+		--print'<pre>'
+		--printbr(debug.traceback())
+		--print'</pre>'
+--printbr("drilling returning", t)
+--printbr("after removeSingleDimIndexes drilling,", "t.variance", t.variance and table.mapi(t.variance, tostring):concat() or 'nil', "t:dim()", t.dim and require 'symmath.Array'(t:dim()) or 'nil')
+							if not Tensor:isa(t) then return t end
+						else
+						--]=]
+--printbr('stripping tensor', t)
+--printbr('t[1]', t[1])
+--printbr('t[1][1]', t[1][1])
+							t = Tensor(
+								remainingIndexes, function(...)
+									local is = {...}
+--printbr('mapping from', table.concat(is, ','))
+									for i=#valueSingleVarIndexes,1,-1 do
+										table.insert(is, valueSingleVarIndexes[i], 1)
+									end
+--printbr('mapping to ', table.concat(is, ','))
+									local result = t[is]
+--printbr('got element', result)
+									return result
+								end)
+--printbr('done stripping tensor, result is', t)
+--printbr("after removeSingleDimIndexes remapping,", "result.variance", t.variance and table.mapi(t.variance, tostring):concat() or 'nil', "result:dim()", require 'symmath.Array'(t:dim()))
+						end
+					end
+--printbr("afterwards, no remapping done")
+			end
+--]====]
+
 			return prune(t)
 		end},
 	},

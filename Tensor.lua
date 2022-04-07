@@ -641,7 +641,7 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 		
 		-- TODO generalize transforms, including inter-basis-symbol-sets
 	
-		local oldVariance = table.map(t.variance, function(v) return v:clone() end)
+		local oldVariance = table.mapi(t.variance, function(v) return v:clone() end)
 		if tensorIndex.lower and not t.variance[i].lower then
 			t = t:transformIndex(i, metric)
 		elseif not tensorIndex.lower and t.variance[i].lower then
@@ -776,6 +776,10 @@ Tensor.__newindex = function(self, key, value)
 			dst = dst:applyRaiseOrLower(i, dstVariance[i])
 		end
 
+-- [====[ ok now I'm going to do this in :prune()
+-- ... but what about subtensor assignment?
+-- or was that pruning indexes in Tensor ctor?
+-- did I just not do a thorough enough job in Tensor ctor?
 		--[[
 		for all non-number indexes
 		gather all variables of each of those indexes
@@ -797,8 +801,8 @@ Tensor.__newindex = function(self, key, value)
 --print('chart',chart,'variables',chart and #chart.coords)
 			return (chart and #chart.coords == 1 and k or nil), #t+1
 		end
-		local valueSingleVarIndexes = table.map(value.variance, mapSingleIndexes)
-		local dstSingleVarIndexes = table.map(dstVariance, mapSingleIndexes)
+		local valueSingleVarIndexes = table.mapi(value.variance, mapSingleIndexes)
+		local dstSingleVarIndexes = table.mapi(dstVariance, mapSingleIndexes)
 --print('value single vars',valueSingleVarIndexes:unpack())
 --print('self single vars',dstSingleVarIndexes:unpack())
 		for _,dstIndex in ipairs(dstSingleVarIndexes) do
@@ -826,7 +830,7 @@ Tensor.__newindex = function(self, key, value)
 		end
 		-- if any are left then remove them
 		if #valueSingleVarIndexes > 0 then
---print('we still have '..#valueSingleVarIndexes..' left of ',table.map(value.variance,tostring):concat',',' at ',valueSingleVarIndexes:unpack())
+--print('we still have '..#valueSingleVarIndexes..' left of ',table.mapi(value.variance,tostring):concat',',' at ',valueSingleVarIndexes:unpack())
 			value = Tensor(
 				-- remove the rest of the single-variance letters
 				table.filter(value.variance, function(v,k)
@@ -839,13 +843,16 @@ Tensor.__newindex = function(self, key, value)
 					return value[is]
 				end)
 		end
+--]====]
 
+--[====[ TODO what was I about to do here?
 		for _,variance in ipairs(dstVariance) do
 			local chart = self:findChartForSymbol(variance.symbol)
 			if #chart.coords == 1 then
 				local variable = chart.coords[1]
 			end
 		end
+--]====]
 
 		-- simplify any expressions ... automatically here?
 		--if not Tensor:isa(value) then value = value:simplify() end
@@ -861,7 +868,12 @@ Tensor.__newindex = function(self, key, value)
 		dst = dst(self.variance)
 --for i=1,#dst do print('dst['..i..']=', dst[i]) end
 --print('simplifying...')
-		dst = dst()
+		
+		do
+--			local pushed = Tensor:pushRule'Prune/removeSingleDimIndexes'	-- this is turning ugly and stupid
+			dst = dst()
+--			if pushed then Tensor:popRule'Prune/removeSingleDimIndexes' end
+		end
 --print('assigning from dst\n'..dst)
 -- applying variance to dst puts dst into dst[1] because the subindex isn't there ...
 
@@ -1254,4 +1266,91 @@ function Tensor:getDefaultDenseCache()
 	return Tensor.defaultDenseCache
 end
 
+-- I had no idea that Expression and Array had no rules
+assert(Tensor.rules == nil)
+Tensor.rules = {
+	
+	-- remove any single-dimension degrees
+	-- there is something similar inside the subtensor assignment, in Tensor.__newindex
+	Prune = {
+-- NOTICE NOTICE OK OK
+-- I can't do this here
+-- because what about Tensors inside Tensors
+-- they will be pruned way too early
+-- gotta do this in the Tensor.Ref simplification
+--[====[
+		{removeSingleDimIndexes = function(prune, expr)
+printbr("before removeSingleDimIndexes, expr.variance", table.mapi(expr.variance, tostring):concat(), ", expr:dim()", Array(expr:dim()))
+			--[[
+			for all non-number indexes
+			gather all variables of each of those indexes
+			iterate across all
+			... or, alternatively, wrap all single-variable dstVariance indexes that don't show up in expr's variance
+			but what if there are two instances of the same single-variable?
+			you will have to mark them off as you find them ...
+			first find which single-variable indexes exist in both
+			then, if there are any left in 'dstVariance', wrap 'expr' in those
+			
+			without this, g['_tt'] = 2 will fail ... and must be written g['_tt'] = Tensor('_tt', 2)
+			or g['_ti'] = A'_i' will fail ... and must be written g['_ti'] = Tensor('_ti', A)
+			--]]
+--printbr('expr', expr)
+--printbr('expr variance',table.unpack(expr.variance))
+			local function mapSingleIndexes(v,k,t)
+--printbr('v.symbol',v.symbol)
+				local chart = expr:findChartForSymbol(v.symbol)
+--printbr('chart',chart,'variables',chart and #chart.coords)
+				return (chart and #chart.coords == 1 and k or nil), #t+1
+			end
+			local valueSingleVarIndexes = table.mapi(expr.variance, mapSingleIndexes)
+			-- if any are left then remove them
+			if #valueSingleVarIndexes > 0 then
+--printbr('we still have '..#valueSingleVarIndexes..' left of ',table.mapi(expr.variance,tostring):concat',',' at ',valueSingleVarIndexes:concat',')
+				-- remove the rest of the single-variance letters
+				local remainingIndexes = table.filter(expr.variance, function(v,k)
+					return not valueSingleVarIndexes:find(k)
+				end)
+				-- [=[
+				if #remainingIndexes == 0 then
+					assert(#expr.variance == #valueSingleVarIndexes)
+					for i=1,#valueSingleVarIndexes do
+--printbr("drilling from ", expr, " to ", expr[1])
+						expr = expr[1]
+					end
+--print'<pre>'
+--printbr(debug.traceback())
+--print'</pre>'
+printbr("drilling returning", expr)
+printbr("after removeSingleDimIndexes drilling,",
+		"expr.variance", expr.variance and table.mapi(expr.variance, tostring):concat() or 'nil',
+		"expr:dim()", expr.dim and Array(expr:dim()) or 'nil')
+					return expr
+				end
+				--]=]
+printbr('stripping tensor', expr)
+printbr('expr[1]', expr[1])
+printbr('expr[1][1]', expr[1][1])
+				local result = Tensor(
+					remainingIndexes, function(...)
+						local is = {...}
+printbr('mapping from', table.concat(is, ','))
+						for i=#valueSingleVarIndexes,1,-1 do
+							table.insert(is, valueSingleVarIndexes[i], 1)
+						end
+printbr('mapping to ', table.concat(is, ','))
+						local result = expr[is]
+printbr('got element', result)
+						return result
+					end)
+printbr('done stripping tensor, result is', result)
+printbr("after removeSingleDimIndexes remapping,",
+		"result.variance", result.variance and table.mapi(result.variance, tostring):concat() or 'nil',
+		"result:dim()", Array(result:dim()))
+				return result
+			end
+printbr("afterwards, no remapping done")
+		end},
+--]====]
+	},
+}
 return Tensor
