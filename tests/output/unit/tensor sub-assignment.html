@@ -1,0 +1,684 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>tests/unit/sub-tensor assignment</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b>rank-1 subtensor assignment</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>A is from the txyz chart, so it will have 4 elements accordingly</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>A = Tensor('^a', function(a) return var'a'('^'..coords[a].name) end)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.244000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('A = '..A)</code>
+</td><td>
+A = $\overset{a\downarrow}{\left[\begin{matrix} { a} ^t \\ { a} ^x \\ { a} ^y \\ { a} ^z\end{matrix}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.115000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(A[1] == var'a''^t')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.025000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(A[2] == var'a''^x')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.015000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(A[3] == var'a''^y')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.014000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(A[4] == var'a''^z')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.010000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>B is from the xyz chart, so it will have 3 elements accordingly</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>B = Tensor('^i', function(i) return var'b'('^'..coords[i+1].name) end)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.379000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('B = '..B)</code>
+</td><td>
+B = $\overset{i\downarrow}{\left[\begin{matrix} { b} ^x \\ { b} ^y \\ { b} ^z\end{matrix}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.135000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(B[1] == var'b''^x')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.018000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(B[2] == var'b''^y')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.014000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assert(B[3] == var'b''^z')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.022000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>A2 = A:clone()</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.028000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>A2['^i'] = B'^i'()</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 2.873000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('A2 = '..A2)</code>
+</td><td>
+A2 = $\overset{a\downarrow}{\left[\begin{matrix} { a} ^t \\ { b} ^x \\ { b} ^y \\ { b} ^z\end{matrix}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.192000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(A2[1], A[1])</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.008000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b>B uses the xyz chart so B.x is B[1]</b><br>
+<code>assertEq(A2[2], B[1])</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.006000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(A2[3], B[2])</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.008000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(A2[4], B[3])</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.005000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(A2, Tensor('^a', A[1], B[1], B[2], B[3]))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.074000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>rank-2 subtensor assignment</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>A = Tensor('^ab', function(a,b) return var'a'('^'..coords[a].name..' '..coords[b].name) end)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.367000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('A = '..A)</code>
+</td><td>
+A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} {{ a} ^t} ^t& {{ a} ^t} ^x& {{ a} ^t} ^y& {{ a} ^t} ^z\\ {{ a} ^x} ^t& {{ a} ^x} ^x& {{ a} ^x} ^y& {{ a} ^x} ^z\\ {{ a} ^y} ^t& {{ a} ^y} ^x& {{ a} ^y} ^y& {{ a} ^y} ^z\\ {{ a} ^z} ^t& {{ a} ^z} ^x& {{ a} ^z} ^y& {{ a} ^z} ^z\end{array}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.661000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,4 do for j=1,4 do assertEq(A[i][j], var'a'('^'..coords[i].name..coords[j].name)) end end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.250000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>B = Tensor('^ij', function(i,j) return var'b'('^'..coords[i+1].name..' '..coords[j+1].name) end)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.027000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('B = '..B)</code>
+</td><td>
+B = $\overset{i\downarrow j\rightarrow}{\left[\begin{array}{ccc} {{ b} ^x} ^x& {{ b} ^x} ^y& {{ b} ^x} ^z\\ {{ b} ^y} ^x& {{ b} ^y} ^y& {{ b} ^y} ^z\\ {{ b} ^z} ^x& {{ b} ^z} ^y& {{ b} ^z} ^z\end{array}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.350000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,3 do for j=1,3 do assertEq(B[i][j], var'b'('^'..spatialCoords[i].name..spatialCoords[j].name)) end end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.177000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>A['^ij'] = B'^ij'()</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 11.410000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('A = '..A)</code>
+</td><td>
+A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} {{ a} ^t} ^t& {{ a} ^t} ^x& {{ a} ^t} ^y& {{ a} ^t} ^z\\ {{ a} ^x} ^t& {{ b} ^x} ^x& {{ b} ^x} ^y& {{ b} ^x} ^z\\ {{ a} ^y} ^t& {{ b} ^y} ^x& {{ b} ^y} ^y& {{ b} ^y} ^z\\ {{ a} ^z} ^t& {{ b} ^z} ^x& {{ b} ^z} ^y& {{ b} ^z} ^z\end{array}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.638000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for j=1,4 do assertEq(A[1][j], var'a'('^t'..coords[j].name)) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.154000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,4 do assertEq(A[i][1], var'a'('^'..coords[i].name..'t')) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.043000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,3 do for j=1,3 do assertEq(A[i+1][j+1], var'b'('^'..spatialCoords[i].name..spatialCoords[j].name)) end end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.154000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>C = Tensor('^i', function(i) return var'c'('^'..coords[i+1].name) end)</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.078000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('C = '..C)</code>
+</td><td>
+C = $\overset{i\downarrow}{\left[\begin{matrix} { c} ^x \\ { c} ^y \\ { c} ^z\end{matrix}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.186000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>A['^ti'] = C'^i'()</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 3.401000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('A = '..A)</code>
+</td><td>
+A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} {{ a} ^t} ^t& { c} ^x& { c} ^y& { c} ^z\\ {{ a} ^x} ^t& {{ b} ^x} ^x& {{ b} ^x} ^y& {{ b} ^x} ^z\\ {{ a} ^y} ^t& {{ b} ^y} ^x& {{ b} ^y} ^y& {{ b} ^y} ^z\\ {{ a} ^z} ^t& {{ b} ^z} ^x& {{ b} ^z} ^y& {{ b} ^z} ^z\end{array}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.386000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for j=1,3 do assertEq(A[1][j+1], var'c'('^'..spatialCoords[j].name)) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.070000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,4 do assertEq(A[i][1], var'a'('^'..coords[i].name..'t')) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.052000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,3 do for j=1,3 do assertEq(A[i+1][j+1], var'b'('^'..spatialCoords[i].name..spatialCoords[j].name)) end end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.093000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>A['^it'] = B'^ix'()</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 6.102000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('A = '..A)</code>
+</td><td>
+A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} {{ a} ^t} ^t& { c} ^x& { c} ^y& { c} ^z\\ {{ b} ^x} ^x& {{ b} ^x} ^x& {{ b} ^x} ^y& {{ b} ^x} ^z\\ {{ b} ^y} ^x& {{ b} ^y} ^x& {{ b} ^y} ^y& {{ b} ^y} ^z\\ {{ b} ^z} ^x& {{ b} ^z} ^x& {{ b} ^z} ^y& {{ b} ^z} ^z\end{array}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.304000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(A[1][1], var'a''^tt')</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.031000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for j=1,3 do assertEq(A[1][j+1], var'c'('^'..spatialCoords[j].name)) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.034000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,3 do assertEq(A[i+1][1], var'b'('^'..spatialCoords[i].name..'x')) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.031000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,3 do for j=1,3 do assertEq(A[i+1][j+1], var'b'('^'..spatialCoords[i].name..spatialCoords[j].name)) end end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.060000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>A['^tt'] = 2</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 2.946000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('A = '..A)</code>
+</td><td>
+A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} 2& { c} ^x& { c} ^y& { c} ^z\\ {{ b} ^x} ^x& {{ b} ^x} ^x& {{ b} ^x} ^y& {{ b} ^x} ^z\\ {{ b} ^y} ^x& {{ b} ^y} ^x& {{ b} ^y} ^y& {{ b} ^y} ^z\\ {{ b} ^z} ^x& {{ b} ^z} ^x& {{ b} ^z} ^y& {{ b} ^z} ^z\end{array}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.602000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(A[1][1], Constant(2))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.016000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for j=1,3 do assertEq(A[1][j+1], var'c'('^'..spatialCoords[j].name)) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.083000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,3 do assertEq(A[i+1][1], var'b'('^'..spatialCoords[i].name..'x')) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.072000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,3 do for j=1,3 do assertEq(A[i+1][j+1], var'b'('^'..spatialCoords[i].name..spatialCoords[j].name)) end end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.313000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>A['^ij'] = 1</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 3.527000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr('A = '..A)</code>
+</td><td>
+A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} 2& { c} ^x& { c} ^y& { c} ^z\\ {{ b} ^x} ^x& 1& 1& 1\\ {{ b} ^y} ^x& 1& 1& 1\\ {{ b} ^z} ^x& 1& 1& 1\end{array}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.201000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(A[1][1], Constant(2))</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.010000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for j=1,3 do assertEq(A[1][j+1], var'c'('^'..spatialCoords[j].name)) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.032000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,3 do assertEq(A[i+1][1], var'b'('^'..spatialCoords[i].name..'x')) end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.028000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>for i=1,3 do for j=1,3 do assertEq(A[i+1][j+1], Constant(1)) end end</code>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.072000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>

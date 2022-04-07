@@ -1,0 +1,508 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>tests/unit/tensor sub-chart</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+<table border="1" style="border-collapse:collapse">
+<tr><td>
+<b></b><br>
+<code>printbr(T)</code>
+</td><td>
+$\overset{a\downarrow b\rightarrow}{\left[\begin{array}{ccc} {T_{xx}}& {T_{xy}}& {T_{xz}}\\ {T_{yx}}& {T_{yy}}& {T_{yz}}\\ {T_{zx}}& {T_{zy}}& {T_{zz}}\end{array}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.160000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>writing apparently does</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_ij':prune())		assertEq(T'_ij':prune(), T)</code>
+</td><td>
+$\overset{i\downarrow j\rightarrow}{\left[\begin{array}{ccc} {T_{xx}}& {T_{xy}}& {T_{xz}}\\ {T_{yx}}& {T_{yy}}& {T_{yz}}\\ {T_{zx}}& {T_{zy}}& {T_{zz}}\end{array}\right]}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 2.188000ms<br>
+stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_xx':prune())		assertEq(T'_xx':prune(), T[1][1])</code>
+</td><td>
+${T_{xx}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.424000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_xy':prune())		assertEq(T'_xy':prune(), T[1][2])</code>
+</td><td>
+$\overset{x\downarrow y\rightarrow}{\left[\begin{array}{c} {T_{xy}}\end{array}\right]}$
+<br>
+expected $\overset{x\downarrow y\rightarrow}{\left[\begin{array}{c} {T_{xy}}\end{array}\right]}$ to equal ${T_{xy}}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_xy':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.312000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_xz':prune())		assertEq(T'_xz':prune(), T[1][3])</code>
+</td><td>
+$\overset{x\downarrow z\rightarrow}{\left[\begin{array}{c} {T_{xz}}\end{array}\right]}$
+<br>
+expected $\overset{x\downarrow z\rightarrow}{\left[\begin{array}{c} {T_{xz}}\end{array}\right]}$ to equal ${T_{xz}}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_xz':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.471000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_yx':prune())		assertEq(T'_yx':prune(), T[2][1])</code>
+</td><td>
+$\overset{y\downarrow x\rightarrow}{\left[\begin{array}{c} {T_{yx}}\end{array}\right]}$
+<br>
+expected $\overset{y\downarrow x\rightarrow}{\left[\begin{array}{c} {T_{yx}}\end{array}\right]}$ to equal ${T_{yx}}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_yx':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.093000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_yy':prune())		assertEq(T'_yy':prune(), T[2][2])</code>
+</td><td>
+${T_{yy}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.977000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_yz':prune())		assertEq(T'_yz':prune(), T[2][3])</code>
+</td><td>
+$\overset{y\downarrow z\rightarrow}{\left[\begin{array}{c} {T_{yz}}\end{array}\right]}$
+<br>
+expected $\overset{y\downarrow z\rightarrow}{\left[\begin{array}{c} {T_{yz}}\end{array}\right]}$ to equal ${T_{yz}}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_yz':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 0.934000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_zx':prune())		assertEq(T'_zx':prune(), T[3][1])</code>
+</td><td>
+$\overset{z\downarrow x\rightarrow}{\left[\begin{array}{c} {T_{zx}}\end{array}\right]}$
+<br>
+expected $\overset{z\downarrow x\rightarrow}{\left[\begin{array}{c} {T_{zx}}\end{array}\right]}$ to equal ${T_{zx}}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_zx':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.252000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_zy':prune())		assertEq(T'_zy':prune(), T[3][2])</code>
+</td><td>
+$\overset{z\downarrow y\rightarrow}{\left[\begin{array}{c} {T_{zy}}\end{array}\right]}$
+<br>
+expected $\overset{z\downarrow y\rightarrow}{\left[\begin{array}{c} {T_{zy}}\end{array}\right]}$ to equal ${T_{zy}}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_zy':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.327000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_zz':prune())		assertEq(T'_zz':prune(), T[3][3])</code>
+</td><td>
+${T_{zz}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.868000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_xp':prune())		assertEq(T'_xp':prune(), Tensor('_p', T[1][2], T[1][3]))</code>
+</td><td>
+$\overset{x\downarrow p\rightarrow}{\left[\begin{array}{cc} {T_{xy}}& {T_{xz}}\end{array}\right]}$
+<br>
+expected $\overset{x\downarrow p\rightarrow}{\left[\begin{array}{cc} {T_{xy}}& {T_{xz}}\end{array}\right]}$ to equal $\overset{p\downarrow}{\left[\begin{matrix} {T_{xy}} \\ {T_{xz}}\end{matrix}\right]}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_xp':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.337000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_yp':prune())		assertEq(T'_yp':prune(), Tensor('_p', T[2][2], T[2][3]))</code>
+</td><td>
+$\overset{y\downarrow p\rightarrow}{\left[\begin{array}{cc} {T_{yy}}& {T_{yz}}\end{array}\right]}$
+<br>
+expected $\overset{y\downarrow p\rightarrow}{\left[\begin{array}{cc} {T_{yy}}& {T_{yz}}\end{array}\right]}$ to equal $\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{yz}}\end{matrix}\right]}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_yp':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.296000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_zp':prune())		assertEq(T'_zp':prune(), Tensor('_p', T[3][2], T[3][3]))</code>
+</td><td>
+$\overset{z\downarrow p\rightarrow}{\left[\begin{array}{cc} {T_{zy}}& {T_{zz}}\end{array}\right]}$
+<br>
+expected $\overset{z\downarrow p\rightarrow}{\left[\begin{array}{cc} {T_{zy}}& {T_{zz}}\end{array}\right]}$ to equal $\overset{p\downarrow}{\left[\begin{matrix} {T_{zy}} \\ {T_{zz}}\end{matrix}\right]}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_zp':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 2.001000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_px':prune())		assertEq(T'_px':prune(), Tensor('_p', T[2][1], T[3][1]))</code>
+</td><td>
+$\overset{p\downarrow x\rightarrow}{\left[\begin{array}{c} {T_{yx}}\\ {T_{zx}}\end{array}\right]}$
+<br>
+expected $\overset{p\downarrow x\rightarrow}{\left[\begin{array}{c} {T_{yx}}\\ {T_{zx}}\end{array}\right]}$ to equal $\overset{p\downarrow}{\left[\begin{matrix} {T_{yx}} \\ {T_{zx}}\end{matrix}\right]}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_px':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.095000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_py':prune())		assertEq(T'_py':prune(), Tensor('_p', T[2][2], T[3][2]))</code>
+</td><td>
+$\overset{p\downarrow y\rightarrow}{\left[\begin{array}{c} {T_{yy}}\\ {T_{zy}}\end{array}\right]}$
+<br>
+expected $\overset{p\downarrow y\rightarrow}{\left[\begin{array}{c} {T_{yy}}\\ {T_{zy}}\end{array}\right]}$ to equal $\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{zy}}\end{matrix}\right]}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_py':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.176000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_pz':prune())		assertEq(T'_pz':prune(), Tensor('_p', T[2][3], T[3][3]))</code>
+</td><td>
+$\overset{p\downarrow z\rightarrow}{\left[\begin{array}{c} {T_{yz}}\\ {T_{zz}}\end{array}\right]}$
+<br>
+expected $\overset{p\downarrow z\rightarrow}{\left[\begin{array}{c} {T_{yz}}\\ {T_{zz}}\end{array}\right]}$ to equal $\overset{p\downarrow}{\left[\begin{matrix} {T_{yz}} \\ {T_{zz}}\end{matrix}\right]}$<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: failed<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:94: in function 'assertEq'<br>
+	[string "printbr(T'_pz':prune())..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 1.256000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>printbr(T'_pq':prune())		assertEq(T'_pq':prune(), Tensor('_pq', {T[2][2], T[2][3]}, {T[3][2], T[3][3]})</code>
+</td><td>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: [string "printbr(T'_pq':prune())..."]:1: ')' expected near '<eof>'<br>stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:139><br>
+	[C]: in function 'assert'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	./tensor sub-index.lua:75: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./tensor sub-index.lua:10: in main chunk<br>
+	[C]: at 0x556b72db33e0
+</td><td>
+time: 0.051000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>reading by __index doesn't work?</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>I guess only writing by __index does for now</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>but why bother read by __index when you can just use the __call operator with strings?</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_ij'])		assertEq(T['_ij'], T)</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_xx'])		assertEq(T['_xx'], T[1][1])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_xy'])		assertEq(T['_xy'], T[1][2])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_xz'])		assertEq(T['_xz'], T[1][3])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_yx'])		assertEq(T['_yx'], T[2][1])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_yy'])		assertEq(T['_yy'], T[2][2])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_yz'])		assertEq(T['_yz'], T[2][3])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_zx'])		assertEq(T['_zx'], T[3][1])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_zy'])		assertEq(T['_zy'], T[3][2])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_zz'])		assertEq(T['_zz'], T[3][3])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_xp'])		assertEq(T['_xp'])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_yp'])		assertEq(T['_yp'])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_zp'])		assertEq(T['_zp'])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_px'])		assertEq(T['_px'])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_py'])		assertEq(T['_py'])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_pz'])		assertEq(T['_pz'])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>printbr(T['_pq'])		assertEq(T['_pq'])</b><br>
+<code></code>
+</td><td>
+</td><td>
+</td></tr>
