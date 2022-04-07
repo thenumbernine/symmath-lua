@@ -3256,7 +3256,7 @@ do
 		v[1]:setDependentVars(txs:unpack())
 	end
 	local sys = (dUdt_lhs_exprs_expanded_mat + dFijkl_dUpqmn_expanded * dUdx_lhs_exprs_expanded_mat)
-	file['Z4 - flux PDE noZeroRows noSource.lua'] = export.SymMath(sys)
+	file['Z4 - flux PDE noSource.lua'] = export.SymMath(sys)
 end
 --]]
 
