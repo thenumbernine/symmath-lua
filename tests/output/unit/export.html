@@ -7,7 +7,7 @@
 	</head>
 	<body onload='tryToFindMathJax();'>
 
-generated with LuaJIT 2.0.5
+generated with LuaJIT 2.1.0-beta3
 <br>
 
 <br>
@@ -3765,9 +3765,9 @@ TotalDerivative(
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\frac{\partial^ 2 y}{\partial y\partial x}$
+$\frac{\partial^ 2 y}{\partial x\partial y}$
 </pre>
-$\frac{\partial^ 2 y}{\partial y\partial x}$
+$\frac{\partial^ 2 y}{\partial x\partial y}$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -3825,9 +3825,9 @@ d^2/{dy dx}[y]
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\frac{d^ 2 y}{d y d x}$
+$\frac{d^ 2 y}{d x d y}$
 </pre>
-$\frac{d^ 2 y}{d y d x}$
+$\frac{d^ 2 y}{d x d y}$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -4426,9 +4426,9 @@ Integral(
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\left[ \begin{matrix} x \\ y\end{matrix} \right]$
+$\left[\begin{matrix} x \\ y\end{matrix}\right]$
 </pre>
-$\left[ \begin{matrix} x \\ y\end{matrix} \right]$
+$\left[\begin{matrix} x \\ y\end{matrix}\right]$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -4487,9 +4487,9 @@ Array(
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\left[ \begin{matrix}  x \\  y\end{matrix} \right]$
+$\left[\begin{array}{c} x\\ y\end{array}\right]$
 </pre>
-$\left[ \begin{matrix}  x \\  y\end{matrix} \right]$
+$\left[\begin{array}{c} x\\ y\end{array}\right]$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -4550,9 +4550,9 @@ Matrix(
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\left[ \begin{matrix}  x &  y\end{matrix} \right]$
+$\left[\begin{array}{cc} x& y\end{array}\right]$
 </pre>
-$\left[ \begin{matrix}  x &  y\end{matrix} \right]$
+$\left[\begin{array}{cc} x& y\end{array}\right]$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -4613,9 +4613,9 @@ Matrix(
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]$
+$\left[\begin{array}{cc} a& b\\ c& d\end{array}\right]$
 </pre>
-$\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]$
+$\left[\begin{array}{cc} a& b\\ c& d\end{array}\right]$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -4681,9 +4681,9 @@ _i↓
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\overset{i\downarrow}{\left[ \begin{matrix} a \\ b\end{matrix} \right]}$
+$\overset{i\downarrow}{\left[\begin{matrix} a \\ b\end{matrix}\right]}$
 </pre>
-$\overset{i\downarrow}{\left[ \begin{matrix} a \\ b\end{matrix} \right]}$
+$\overset{i\downarrow}{\left[\begin{matrix} a \\ b\end{matrix}\right]}$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -4712,7 +4712,7 @@ $\overset{i\downarrow}{\left[ \begin{matrix} a \\ b\end{matrix} \right]}$
 </td>
 <td>
 <pre class="pre-not-multiline">
-Tensor{a, b}
+Tensor{a, b}_i
 </pre>
 </td>
 <td>
@@ -4746,9 +4746,9 @@ _i↓_j→
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\overset{i\downarrow j\rightarrow}{\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]}$
+$\overset{i\downarrow j\rightarrow}{\left[\begin{array}{cc} a& b\\ c& d\end{array}\right]}$
 </pre>
-$\overset{i\downarrow j\rightarrow}{\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]}$
+$\overset{i\downarrow j\rightarrow}{\left[\begin{array}{cc} a& b\\ c& d\end{array}\right]}$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -4777,7 +4777,7 @@ $\overset{i\downarrow j\rightarrow}{\left[ \begin{matrix}  a &  b \\  c &  d\end
 </td>
 <td>
 <pre class="pre-not-multiline">
-Tensor{Tensor{a, b}, Tensor{c, d}}
+Tensor{Tensor{a, b}_j, Tensor{c, d}_j}_i_j
 </pre>
 </td>
 <td>
@@ -4834,9 +4834,9 @@ _i↓[_j↓_k→]
 </td>
 <td>
 <pre class="pre-not-multiline">
-$\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[ \begin{matrix} \overset{j\downarrow k\rightarrow}{\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]} \\ \overset{j\downarrow k\rightarrow}{\left[ \begin{matrix}  e &  f \\  g &  h\end{matrix} \right]}\end{matrix} \right]}$
+$\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[\begin{matrix} \overset{j\downarrow k\rightarrow}{\left[\begin{array}{cc} a& b\\ c& d\end{array}\right]} \\ \overset{j\downarrow k\rightarrow}{\left[\begin{array}{cc} e& f\\ g& h\end{array}\right]}\end{matrix}\right]}$
 </pre>
-$\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[ \begin{matrix} \overset{j\downarrow k\rightarrow}{\left[ \begin{matrix}  a &  b \\  c &  d\end{matrix} \right]} \\ \overset{j\downarrow k\rightarrow}{\left[ \begin{matrix}  e &  f \\  g &  h\end{matrix} \right]}\end{matrix} \right]}$
+$\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[\begin{matrix} \overset{j\downarrow k\rightarrow}{\left[\begin{array}{cc} a& b\\ c& d\end{array}\right]} \\ \overset{j\downarrow k\rightarrow}{\left[\begin{array}{cc} e& f\\ g& h\end{array}\right]}\end{matrix}\right]}$
 </td>
 <td>
 <pre class="pre-not-multiline">
@@ -4865,7 +4865,7 @@ $\overset{i\downarrow[{j\downarrow k\rightarrow}]}{\left[ \begin{matrix} \overse
 </td>
 <td>
 <pre class="pre-not-multiline">
-Tensor{Tensor{Tensor{a, b}, Tensor{c, d}}, Tensor{Tensor{e, f}, Tensor{g, h}}}
+Tensor{Tensor{Tensor{a, b}_k, Tensor{c, d}_k}_j_k, Tensor{Tensor{e, f}_k, Tensor{g, h}_k}_j_k}_i_j_k
 </pre>
 </td>
 <td>

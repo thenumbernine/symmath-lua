@@ -54,6 +54,10 @@ Verbose.lookupTable = table(Verbose.lookupTable):union{
 			..(expr.wildcardCannotDependOn and (', cannotDependOn='..self:apply(expr.wildcardCannotDependOn)) or '')
 		..'}'
 	end,
+	[require 'symmath.Tensor'] = function(self, expr)
+		return self:applyForClass(require 'symmath.Tensor'.super, expr)
+			..table.mapi(expr.variance, tostring):concat()
+	end,
 }:setmetatable(nil)
 
 return Verbose()	-- singleton

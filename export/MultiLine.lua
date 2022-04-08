@@ -424,7 +424,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		end
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
-		local s = self.lookupTable[require 'symmath.Array'](self, expr)
+		local s = self:applyForClass(require 'symmath.Tensor'.super, expr)
 		local arrows = {downarrow, rightarrow}
 		if #expr.variance > 0 then
 			local prefix = ''

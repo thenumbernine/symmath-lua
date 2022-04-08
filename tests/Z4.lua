@@ -2339,9 +2339,9 @@ for i=1,#FijklWithShiftMat do
 	local term = FijklWithShiftMat[i][1]
 
 	term = term:simplifyAddMulDiv()
-	term = term:simplifyMetrics({
+	term = term:simplifyMetrics{
 		Expression.simplifyMetricMulRules.delta,	-- only simplify deltas, don't raise/lower
-	}):simplifyAddMulDiv()
+	}:simplifyAddMulDiv()
 
 	FijklWithShiftMat[i][1] = term
 end
@@ -2810,7 +2810,6 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 
 	-- correct forms ...
 	rhs = rhs:insertMetricsToSetVariance(a'_k', gamma)
-	-- "couldn't get a new symbol" here ....
 	rhs = rhs:insertMetricsToSetVariance(d'_kij', gamma)
 	rhs = rhs:insertMetricsToSetVariance(K'_ij', gamma)
 	rhs = rhs:insertMetricsToSetVariance(Z'_k', gamma)
@@ -2891,15 +2890,25 @@ printHeader'as a balance law system:'
 
 local A, SijklMat = factorLinearSystem(rhsWithDeltas, UpqmnrVars)
 local dFijkl_dUpqmn_mat = (-A)()
-dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()
-	:applySymmetries()
-	:simplify()
 
--- simplify terms in the matrix
+--[[ simplify deltas 
+-- if I do this then I get non-canonical index form of state vars 
+-- if I don't do this then expanding goes really really slow
+dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()	
+--]]
+-- [[ so lets try doing this only for simplifying deltas ... idk if it makes a dif ... seems to still be taking a long long time
+dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics{Expression.simplifyMetricMulRules.delta}
+--]]
+dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:applySymmetries()
+dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplify()
+
+--[[ simplify terms in the matrix
+-- this lowers the # of terms, but makes it harder for recombination in the eigenmode code later
 dFijkl_dUpqmn_mat = simplifyDAndKTraces(dFijkl_dUpqmn_mat)
 	:subst((-conn_u_from_d_ull_d_llu:switch())():reindex{i='l'})
 	-- this one isn' working:
 	--:subst((gamma'^pl' * conn_u_from_d_ull_d_llu:switch())():reindex{i='q'})
+--]]
 
 local UpqmnMat = Matrix(UpqmnVars):T()
 
@@ -2937,6 +2946,10 @@ local dFdx_lhs = (
 	dFijkl_dUpqmn_mat *
 	Matrix:lambda(UpqmnMat:dim(), function(...) return (UpqmnMat[{...}]'_,r')() end)
 )()
+
+-- [[ ok now that we've re-distributed the dFijkl_mnpq * dUmnpq ... gotta re-apply those deltas
+dFdx_lhs = dFdx_lhs:simplifyMetrics{Expression.simplifyMetricMulRules.delta}
+--]]
 
 local dUdt_lhs = Matrix:lambda(UijklMat:dim(), function(...) return (UijklMat[{...}]:diff(t))() end)
 printbr((dUdt_lhs + dFdx_lhs):eq(SijklMat))
@@ -3012,7 +3025,7 @@ dUdx_lhs_exprs = dUdx_lhs_exprs:mapi(function(expr,i)
 	return expr
 end)
 
---[[ show eqns in dense-tensor form
+-- [[ show eqns in dense-tensor form
 printbr'expanding...'
 for i=1,#dFdx_lhs_exprs do
 	printbr((dUdt_lhs_exprs[i] + dFdx_lhs_exprs[i]):eq(S_rhs_exprs[i]))

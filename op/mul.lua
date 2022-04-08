@@ -878,11 +878,27 @@ mul.rules = {
 		-- TODO FIXME THIS HAS MODIFICATION IN-PLACE
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
+--print('Prune/apply: '..symmath.export.SingleLine(expr))
+--print('...aka: '..symmath.export.Verbose(expr))
 			local Constant = symmath.Constant
 			local pow = symmath.op.pow
 			local div = symmath.op.div
+			local Variable = symmath.Variable
+			local Tensor = symmath.Tensor
+			local TensorRef = Tensor.Ref
 
-			-- push all fractions to the left
+			--[[ here push all mulNonCommutes to the rhs
+			TODO why am I even sorting these?
+			I should just bin them all according to some classifications
+			1) constants
+			2) fractions-of-constants
+			4) terms to a constant power
+			3) etc 
+			5) Tensor (commutes ... mind you TensorRef-of-Tensor has already been prune'd into a Tensor)
+			4) Array, Matrix (doesn't commute)
+			--]]
+	
+			-- push all fractions of constants to the left
 			for i=#expr,2,-1 do
 				if div:isa(expr[i])
 				and Constant:isa(expr[i][1])
@@ -891,9 +907,79 @@ mul.rules = {
 					table.insert(expr, 1, table.remove(expr, i))
 				end
 			end
-			
+
+		
+			-- TODO here 
+			-- next step is pruneMul for simplifying things like Tensor's
+			-- but a few steps further is sorting terms, which also can sort TensorRef's
+			-- also it looks like that sort doesn't respect mulNonCommute
+			-- so a good TODO would be to move the sort up here, or the pruneMul down there
+			-- and then sort the TensorRefs such that evaluating Tensor:pruneMul left to right is done optimally
+
+			-- [=[ ok so since TensorRef of Tensor isn't commutative, lets sort them here
+			-- oh yeah TensorRef-of-Tensor has already been prune()'d into a Tensor, so ...
+			do
+				local indexesOfTensors
+				for i,x in ipairs(expr) do
+					if Tensor:isa(x) then
+						indexesOfTensors = indexesOfTensors or table()
+						indexesOfTensors:insert(i)
+					end
+				end
+--print('indexesOfTensors: '..(indexesOfTensors and table.concat(indexesOfTensors, ',') or 'nil'))
+				if indexesOfTensors and #indexesOfTensors > 1 then
+					local tensors = table()
+					-- indexesOfTensors is in-order, so remove them in reverse order
+					for i=#indexesOfTensors,1,-1 do
+						tensors:insert(table.remove(expr, indexesOfTensors[i]))
+					end
+--print('#tensors: '..#tensors)
+					-- ok now sort them by number of sum indexes between them
+					-- TODO what metric should I use here ...
+					local tensorsForSymbols = {}
+					for i,t in ipairs(tensors) do
+						for _,index in ipairs(t.variance) do
+							local sym = index.symbol
+--print('adding tensor #'..i..' to symbol	'..sym)
+							tensorsForSymbols[sym] = tensorsForSymbols[sym] or table()
+							tensorsForSymbols[sym]:insert(t)
+						end
+					end
+					-- higher #tensorsForSymbols[sym] means more terms summed between them
+--print('keys(tensorsForSymbols): '..table.keys(tensorsForSymbols):concat',')
+					
+					-- ok now we need to associate tensors with counts
+					-- so sum up the counts of the number 
+					local countsForTensors = {}
+					for sym,ts in pairs(tensorsForSymbols) do
+--print('enumerating '..sym..' #tensors '..#ts)						
+						for _,t in ipairs(ts) do
+							countsForTensors[t] = (countsForTensors[t] or 0) + (#ts - 1)
+						end
+					end
+--print('#keys(countsForTensors): '..#table.keys(countsForTensors))
+
+					local bestTensors = table.map(countsForTensors, function(count, t, dst)
+						return {count=count, t=t}, #dst+1
+					end):sort(function(a,b)
+						-- greatest # goes first
+						return a.count > b.count 
+					end)
+--for _,tcs in ipairs(bestTensors) do
+--	print('count '..tcs.count..' tensor '..symmath.Verbose(tcs.t))
+--end
+					-- now from last to first insert in the end of expr
+					-- this way when we Tensor.pruneMul from last to first, it will get the least sums first
+					for i=#bestTensors,1,-1 do
+						local p = bestTensors[i]
+						table.insert(expr, p.t)
+					end
+				end
+			end
+			--]=]
+
 			-- [[ and now for Matrix*Matrix multiplication ...
-			-- do this before the c * 0 = 0 rule
+			-- Do this before the c * 0 = 0 rule.
 			for i=#expr,2,-1 do
 				local rhs = expr[i]
 				local lhs = expr[i-1]
@@ -913,21 +999,24 @@ mul.rules = {
 			end
 			--]]
 
-			-- push all Constants to the lhs, sum as we go
+			-- push all Constants to the lhs, mul as we go
+			-- if we get a times 0 then return 0
 			local cval = 1
 			for i=#expr,1,-1 do
-				if Constant:isa(expr[i]) then
-					cval = cval * table.remove(expr, i).value
+				local x = expr[i]
+				if Constant:isa(x) then
+					if x.value == 0 then
+						return Constant(0)
+					end
+					-- otherwise cval * x.value should not equal zero ...
+					table.remove(expr, i)
+					cval = cval * x.value
 				end
 			end
 			
 			-- if it's all constants then return what we got
 			if #expr == 0 then
 				return Constant(cval)
-			end
-			
-			if cval == 0 then
-				return Constant(0)
 			end
 			
 			if cval ~= 1 then
@@ -944,8 +1033,6 @@ mul.rules = {
 			end
 
 -- [[
-			local Variable = symmath.Variable
-			local TensorRef = symmath.Tensor.Ref
 			-- TODO use the same compare() that's in op/add.lua
 			local function compare(a, b)
 				-- Constant

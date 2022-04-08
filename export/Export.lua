@@ -69,9 +69,7 @@ Export.lookupTable = {
 	end,
 }
 
-function Export:apply(expr, ...)
-	if type(expr) ~= 'table' then return tostring(expr) end
-	local lookup = expr.class
+function Export:applyForClass(lookup, expr, ...)
 	-- traverse class parentwise til a key in the lookup table is found
 	while lookup and not self.lookupTable[lookup] do
 		lookup = lookup.super
@@ -90,6 +88,11 @@ function Export:apply(expr, ...)
 			) 
 	end
 	return (self.lookupTable[lookup])(self, expr, ...)
+end
+
+function Export:apply(expr, ...)
+	if type(expr) ~= 'table' then return tostring(expr) end
+	return self:applyForClass(expr.class, expr, ...)
 end
 
 -- separate the __call function to allow child classes to permute the final output without permuting intermediate results

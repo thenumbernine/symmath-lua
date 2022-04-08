@@ -685,7 +685,9 @@
 				(
 					var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})}) *
 					(
-						var("tr(K)") +
+						var(" {{ K} ^x} _x") +
+						var(" {{ K} ^y} _y") +
+						var(" {{ K} ^z} _z") +
 						-(
 							(
 								Constant(2) *
@@ -2111,18 +2113,16 @@
 			Matrix(
 				(
 					var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) +
-					var(" { d} _x") +
 					var(" {{{ d} ^x} _x} _x") +
+					-(
+						var(" {{{ d} _x} ^x} _x")
+					) +
+					var(" {{{ d} _x} ^y} _y") +
+					var(" {{{ d} _x} ^z} _z") +
 					-(
 						(
 							Constant(2) *
 							var(" { Z} _x", {var("t"), var("x"), var("y"), var("z")})
-						)
-					) +
-					-(
-						(
-							Constant(2) *
-							var(" {{{ d} _x} ^x} _x")
 						)
 					)
 				),
@@ -2353,7 +2353,11 @@
 				(
 					(
 						var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) +
-						var(" { d} _y") +
+						-(
+							var(" {{{ d} _y} ^x} _x")
+						) +
+						var(" {{{ d} _y} ^y} _y") +
+						var(" {{{ d} _y} ^z} _z") +
 						-(
 							(
 								Constant(2) *
@@ -2368,12 +2372,6 @@
 							(
 								Constant(2) *
 								var(" {{{ d} _x} ^x} _y")
-							)
-						) +
-						-(
-							(
-								Constant(2) *
-								var(" {{{ d} _y} ^x} _x")
 							)
 						)
 					) /
@@ -2665,7 +2663,11 @@
 				(
 					(
 						var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) +
-						var(" { d} _z") +
+						-(
+							var(" {{{ d} _z} ^x} _x")
+						) +
+						var(" {{{ d} _z} ^y} _y") +
+						var(" {{{ d} _z} ^z} _z") +
 						-(
 							(
 								Constant(2) *
@@ -2680,12 +2682,6 @@
 							(
 								Constant(2) *
 								var(" {{{ d} _x} ^x} _z")
-							)
-						) +
-						-(
-							(
-								Constant(2) *
-								var(" {{{ d} _z} ^x} _x")
 							)
 						)
 					) /
@@ -3587,20 +3583,28 @@
 					-(
 						var(" { Z} ^x")
 					) +
-					var(" { d} ^x") +
+					var(" {{{ d} ^x} ^y} _y") +
+					var(" {{{ d} ^x} ^z} _z") +
 					-(
-						var(" { e} ^x")
+						var(" {{{ d} ^y} ^x} _y")
+					) +
+					-(
+						var(" {{{ d} ^z} ^x} _z")
 					)
 				),
 				(
 					var(" {{ \\gamma} ^x} ^x") *
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
-						-(
-							var(" { d} ^x")
-						) +
 						var(" { Z} ^x") +
-						var(" { e} ^x")
+						-(
+							var(" {{{ d} ^x} ^y} _y")
+						) +
+						-(
+							var(" {{{ d} ^x} ^z} _z")
+						) +
+						var(" {{{ d} ^y} ^x} _y") +
+						var(" {{{ d} ^z} ^x} _z")
 					)
 				),
 				(
@@ -3618,25 +3622,45 @@
 							var(" { Z} ^y") *
 							var(" {{ \\gamma} ^x} ^x")
 						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^x} _x} ^y")
+						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^y} ^x} _x")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^x} ^x")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^y} ^z} _z")
 							)
 						) +
 						(
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^z} ^y} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^x} ^y} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^x} ^z} _z")
+							)
 						) +
 						(
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^x} ^x")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -3655,25 +3679,45 @@
 							var(" { Z} ^z") *
 							var(" {{ \\gamma} ^x} ^x")
 						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^x} _x} ^z")
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^y} _y} ^z")
+						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^x} ^z")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^z} ^x} _x")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^x} ^x")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^z} ^y} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^x} ^y} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^y} ^x} _y")
 						) +
 						(
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^x} ^x")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -3688,15 +3732,25 @@
 							var(" { Z} ^y") *
 							var(" {{ \\gamma} ^x} ^y")
 						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^x} _x} ^y")
+						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^y} ^z} _z")
 							)
 						) +
 						(
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^z} ^y} _z")
 						)
 					)
 				),
@@ -3719,25 +3773,45 @@
 							var(" { Z} ^z") *
 							var(" {{ \\gamma} ^x} ^y")
 						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^x} _x} ^z")
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^y} _y} ^z")
+						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^x} ^z")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^z} ^x} _x")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^z} ^y} _y")
 							)
 						) +
 						(
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^x} _x} ^y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^y} ^z} _z")
+							)
 						) +
 						(
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^z} ^y} _z")
 						)
 					)
 				),
@@ -3752,15 +3826,25 @@
 							var(" { Z} ^z") *
 							var(" {{ \\gamma} ^x} ^z")
 						) +
-						-(
-							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^x} ^z")
-							)
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^x} _x} ^z")
 						) +
 						(
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^y} _y} ^z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^z} ^x} _x")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^z} ^y} _y")
+							)
 						)
 					)
 				),
@@ -3982,13 +4066,11 @@
 			),
 			Matrix(
 				(
-					-(
-						var(" {{ K} ^x} _x")
-					) +
+					var(" {{ K} ^y} _y") +
+					var(" {{ K} ^z} _z") +
 					-(
 						var("\\Theta", {var("t"), var("x"), var("y"), var("z")})
-					) +
-					var("tr(K)")
+					)
 				),
 				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
@@ -4552,10 +4634,24 @@
 					Constant(2) *
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
+						var(" { a} ^x") +
 						-(
-							var(" { \\Gamma} ^x")
+							var(" {{{ d} ^x} ^x} _x")
 						) +
-						var(" { a} ^x")
+						var(" {{{ d} ^x} ^y} _y") +
+						var(" {{{ d} ^x} ^z} _z") +
+						-(
+							(
+								Constant(2) *
+								var(" {{{ d} ^y} ^x} _y")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{{ d} ^z} ^x} _z")
+							)
+						)
 					)
 				),
 				(
@@ -4571,16 +4667,31 @@
 								var(" {{ \\gamma} ^x} ^x")
 							)
 						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^x} ^x} _x")
+						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^x} ^x")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^x} ^y} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^x} ^x")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -4608,25 +4719,55 @@
 						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^y} ^y} _y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^y} ^z} _z")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^x} ^x} _x")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^x} ^y} _y")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^x} ^x")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^x} _x} ^y")
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^x} ^x")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^z} ^y} _z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -4654,25 +4795,55 @@
 						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^x} ^z")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^z} ^x} _x")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^x} ^x")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} ^z} ^y} _y")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^z} ^z} _z")
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^x} ^x} _x")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^x} ^y} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^x} _x} ^z")
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^x} ^x")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} ^y} _y} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -4697,14 +4868,29 @@
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^y} ^y} _y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^y} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^x} _x} ^y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^z} ^y} _z")
 						)
 					)
 				),
@@ -4742,25 +4928,55 @@
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^x} ^z")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^z} ^x} _x")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^z} ^y} _y")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^z} ^z} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^y} ^y} _y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^y} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^x} _x} ^z")
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^y} _y} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^x} _x} ^y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^z} ^y} _z")
 						)
 					)
 				),
@@ -4785,14 +5001,29 @@
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^x} ^z")
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^z} ^x} _x")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^z} ^y} _y")
 							)
 						) +
 						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^z} ^z} _z")
+						) +
+						(
 							Constant(2) *
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^x} _x} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^y} _y} ^z")
 						)
 					)
 				),
@@ -5199,10 +5430,24 @@
 					Constant(2) *
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
+						var(" { a} ^y") +
+						var(" {{{ d} ^y} ^x} _x") +
 						-(
-							var(" { \\Gamma} ^y")
+							var(" {{{ d} ^y} ^y} _y")
 						) +
-						var(" { a} ^y")
+						var(" {{{ d} ^y} ^z} _z") +
+						-(
+							(
+								Constant(2) *
+								var(" {{{ d} ^x} _x} ^y")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{{ d} ^z} ^y} _z")
+							)
+						)
 					)
 				),
 				(
@@ -5224,16 +5469,31 @@
 								var(" {{ \\gamma} ^x} ^y")
 							)
 						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^x} ^x} _x")
+						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^x} ^y} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -5261,25 +5521,55 @@
 						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^y} ^y")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^y} ^y} _y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^y} ^z} _z")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} ^x} ^x} _x")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} ^x} ^y} _y")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^y} ^y")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^x} _x} ^y")
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^z} ^y} _z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -5317,25 +5607,55 @@
 						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^y} ^z")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^z} ^x} _x")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} ^z} ^y} _y")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^z} ^z} _z")
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^x} ^x} _x")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^x} ^y} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^y} ^z")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^x} _x} ^z")
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} ^y} _y} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -5354,14 +5674,29 @@
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^y} ^y")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} ^y} ^y} _y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} ^y} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^y} ^y")
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} ^x} _x} ^y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} ^z} ^y} _z")
 						)
 					)
 				),
@@ -5389,25 +5724,55 @@
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^y} ^z")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} ^z} ^x} _x")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^y} ^y")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} ^z} ^y} _y")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} ^z} ^z} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^y} ^y} _y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^y} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^y} ^z")
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} ^x} _x} ^z")
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^y} ^y")
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} ^y} _y} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^x} _x} ^y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^z} ^y} _z")
 						)
 					)
 				),
@@ -5432,14 +5797,29 @@
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^y} ^z")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^z} ^x} _x")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^z} ^y} _y")
 							)
 						) +
 						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^z} ^z} _z")
+						) +
+						(
 							Constant(2) *
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^y} ^z")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^x} _x} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^y} _y} ^z")
 						)
 					)
 				),
@@ -5846,10 +6226,24 @@
 					Constant(2) *
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
+						var(" { a} ^z") +
+						var(" {{{ d} ^z} ^x} _x") +
+						var(" {{{ d} ^z} ^y} _y") +
 						-(
-							var(" { \\Gamma} ^z")
+							var(" {{{ d} ^z} ^z} _z")
 						) +
-						var(" { a} ^z")
+						-(
+							(
+								Constant(2) *
+								var(" {{{ d} ^x} _x} ^z")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{{ d} ^y} _y} ^z")
+							)
+						)
 					)
 				),
 				(
@@ -5871,16 +6265,31 @@
 								var(" {{ \\gamma} ^x} ^z")
 							)
 						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^x} ^x} _x")
+						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^x} ^z")
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^x} ^y} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -5918,25 +6327,55 @@
 						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^y} ^z")
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^y} ^y} _y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^y} ^z} _z")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^x} ^x} _x")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^x} ^y} _y")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^x} ^z")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^y} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^x} _x} ^y")
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^z} ^y} _z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -5964,25 +6403,55 @@
 						) +
 						-(
 							(
-								var(" { d} ^x") *
-								var(" {{ \\gamma} ^z} ^z")
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^z} ^x} _x")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^x} ^z")
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} ^z} ^y} _y")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^z} ^z} _z")
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} ^x} ^x} _x")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} ^x} ^y} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} ^x} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^x") *
-							var(" {{ \\gamma} ^z} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^x} _x} ^z")
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} ^y} _y} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} ^y} ^x} _y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} ^z} ^x} _z")
 						)
 					)
 				),
@@ -6007,14 +6476,29 @@
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^y} ^z")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^y} ^y} _y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^y} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^y} ^z")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^x} _x} ^y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^z} ^y} _z")
 						)
 					)
 				),
@@ -6042,25 +6526,55 @@
 						) +
 						-(
 							(
-								var(" { d} ^y") *
-								var(" {{ \\gamma} ^z} ^z")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^z} ^x} _x")
 							)
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^y} ^z")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} ^z} ^y} _y")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^z} ^z} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} ^y} ^x} _x")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} ^y} ^y} _y")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} ^y} ^z} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^y") *
-							var(" {{ \\gamma} ^z} ^z")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^x} _x} ^z")
 						) +
 						(
 							Constant(2) *
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^y} ^z")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} ^y} _y} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} ^x} _x} ^y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} ^z} ^y} _z")
 						)
 					)
 				),
@@ -6079,14 +6593,29 @@
 						) +
 						-(
 							(
-								var(" { d} ^z") *
-								var(" {{ \\gamma} ^z} ^z")
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} ^z} ^x} _x")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} ^z} ^y} _y")
 							)
 						) +
 						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} ^z} ^z} _z")
+						) +
+						(
 							Constant(2) *
-							var(" { e} ^z") *
-							var(" {{ \\gamma} ^z} ^z")
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} ^x} _x} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} ^y} _y} ^z")
 						)
 					)
 				),

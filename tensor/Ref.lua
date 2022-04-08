@@ -733,6 +733,11 @@ TensorRef.rules = {
 -- ok here unravel any rank-1 dimension
 -- same code in Tensor/Prune/removeSingleDimIndexes
 -- and in Tensor.__newindex
+
+-- NOTICE THIS IS A TensorRef rule
+-- but it operates on Tensors ... only *AFTER* multiplication has been resolved
+-- I can't put this rule on Tensor because it will apply to *everything* especially constructed sub-Tensors, and then I get into a world of mom's spaghetti
+-- And I can't put this as a separate TensorRef rule because, well, it expects simplification of Tensors, not TensorRefs ...
 -- [====[
 			if Tensor:isa(t) then
 --printbr("before removeSingleDimIndexes, t.variance", table.mapi(t.variance, tostring):concat(), ", t:dim()", require 'symmath.Array'(t:dim()))

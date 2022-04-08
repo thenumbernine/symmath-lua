@@ -315,9 +315,7 @@ local function scalarArrayMul(s,m)
 	end
 	
 	symmath = symmath or require 'symmath'
-	local prune = symmath.prune
-	
-	return prune(result)
+	return symmath.prune(result)
 end
 
 function Array.pruneMul(lhs,rhs)
