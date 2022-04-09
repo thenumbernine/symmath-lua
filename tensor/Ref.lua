@@ -366,6 +366,8 @@ function TensorRef.makeDense(x)
 	assert(chart, "can't make dense without creating a Tensor.Chart first!")
 	local xNames = table.mapi(chart.coords, function(c) return c.name end)
 
+	local dependentVars = self:getDependentVars()
+
 	local result = Tensor(indexesWithoutDeriv, function(...)
 		
 		-- [[ TODO this is just the same as :reindex() ...
@@ -381,7 +383,8 @@ function TensorRef.makeDense(x)
 		thisRef = thisRef:applySymmetries()
 		
 		-- TODO how to specify names per exporter?
-		local v = Variable(symmath.export.LaTeX:applyLaTeX(thisRef))
+		local name = symmath.export.LaTeX:applyLaTeX(thisRef)
+		local v = Variable(name, dependentVars)
 	
 		-- insert dots between non-sym indexes
 		local thisIndexCSuffix = table()
