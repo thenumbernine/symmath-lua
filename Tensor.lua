@@ -695,9 +695,8 @@ function Tensor:permute(dstVariance)
 	end
 
 	-- perform assignment
-	local result
-	xpcall(function()
-		result = Tensor{
+	local success, result = xpcall(function()
+		return Tensor{
 			indexes = dstVariance,
 			dim = newdim,
 			values = function(...)
@@ -710,12 +709,11 @@ function Tensor:permute(dstVariance)
 			end,
 		}
 	end, function(err)
-		io.stderr:write("failed for tensor "..self.."\n")
-		io.stderr:write("when converting it to variance "..table.mapi(dstVariance, tostring):concat', '.."\n")
-		io.stderr:write(err..'\n'..debug.traceback())
-		io.stderr:flush()
-		os.exit(1)
+		return "failed for tensor "..self.."\n"
+			.. "when converting it to variance "..table.mapi(dstVariance, tostring):concat', '.."\n"
+			..err..'\n'..debug.traceback()
 	end)
+	if not success then error(result) end
 	return result
 end
 
