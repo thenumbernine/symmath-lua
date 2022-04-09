@@ -107,7 +107,7 @@ function TensorRef:setDependentVars(...)
 end
 
 function TensorRef:getDependentVars()
-	return (self.dependentVars or table()):mapi(function(depvar, k, t)
+	return (self[1].dependentVars or table()):mapi(function(depvar, k, t)
 		return #depvar.src == #self and depvar.wrt or nil, #t+1
 	end)
 end

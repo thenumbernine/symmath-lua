@@ -82,6 +82,8 @@ simplifyAssertEq(y'^pq':diff(y'^rs'), delta'^p_r' * delta'^q_s')
 
 y = symmath.var'y'
 y:setDependentVars(x'^a')
+assertEq(#y:getDependentVars(), 1)
+assertEq(#y'^a':getDependentVars(), 0)
 assertEq(false, y:dependsOn(x))
 assertEq(true, y:dependsOn(x'^p'))
 assertEq(false, y:dependsOn(x'^pq'))
@@ -103,6 +105,8 @@ simplifyAssertEq(y'^ij':diff(x'^pq'), zero)
 
 y = symmath.var'y'
 y'^a':setDependentVars(x)
+assertEq(#y:getDependentVars(), 0)
+assertEq(#y'^a':getDependentVars(), 1)
 assertEq(false, y:dependsOn(x))
 assertEq(false, y:dependsOn(x'^p'))
 assertEq(false, y:dependsOn(x'^pq'))
