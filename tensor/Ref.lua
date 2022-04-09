@@ -366,7 +366,7 @@ function TensorRef.makeDense(x)
 	assert(chart, "can't make dense without creating a Tensor.Chart first!")
 	local xNames = table.mapi(chart.coords, function(c) return c.name end)
 
-	local dependentVars = self:getDependentVars()
+	local dependentVars = x:getDependentVars()
 
 	local result = Tensor(indexesWithoutDeriv, function(...)
 		
