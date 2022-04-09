@@ -893,7 +893,7 @@ mul.rules = {
 			1) constants
 			2) fractions-of-constants
 			4) terms to a constant power
-			3) etc 
+			3) etc
 			5) Tensor (commutes ... mind you TensorRef-of-Tensor has already been prune'd into a Tensor)
 			4) Array, Matrix (doesn't commute)
 			--]]
@@ -909,7 +909,7 @@ mul.rules = {
 			end
 
 		
-			-- TODO here 
+			-- TODO here
 			-- next step is pruneMul for simplifying things like Tensor's
 			-- but a few steps further is sorting terms, which also can sort TensorRef's
 			-- also it looks like that sort doesn't respect mulNonCommute
@@ -933,6 +933,7 @@ mul.rules = {
 					for i=#indexesOfTensors,1,-1 do
 						tensors:insert(table.remove(expr, indexesOfTensors[i]))
 					end
+				--[==[ method #1: something about counting number of sum indexes
 --print('#tensors: '..#tensors)
 					-- ok now sort them by number of sum indexes between them
 					-- TODO what metric should I use here ...
@@ -949,10 +950,10 @@ mul.rules = {
 --print('keys(tensorsForSymbols): '..table.keys(tensorsForSymbols):concat',')
 					
 					-- ok now we need to associate tensors with counts
-					-- so sum up the counts of the number 
+					-- so sum up the counts of the number
 					local countsForTensors = {}
 					for sym,ts in pairs(tensorsForSymbols) do
---print('enumerating '..sym..' #tensors '..#ts)						
+--print('enumerating '..sym..' #tensors '..#ts)
 						for _,t in ipairs(ts) do
 							countsForTensors[t] = (countsForTensors[t] or 0) + (#ts - 1)
 						end
@@ -963,7 +964,7 @@ mul.rules = {
 						return {count=count, t=t}, #dst+1
 					end):sort(function(a,b)
 						-- greatest # goes first
-						return a.count > b.count 
+						return a.count > b.count
 					end)
 --for _,tcs in ipairs(bestTensors) do
 --	print('count '..tcs.count..' tensor '..symmath.Verbose(tcs.t))
@@ -974,6 +975,57 @@ mul.rules = {
 						local p = bestTensors[i]
 						table.insert(expr, p.t)
 					end
+				--]==]
+				-- [==[ method #2: look at all pairs, sort them by # indexes left after summing
+				-- then greedy pull tensors in that order
+				-- but that means replacing each pulled pair with the result of the pair's mul
+					local insertLoc = #expr+1
+--print('insertLoc', insertLoc)
+					repeat
+--print('#tensors: '..#tensors)
+						local tensorPairs = table()
+						local mul = symmath.op.mul
+						local Variable = symmath.Variable
+						for i=1,#tensors-1 do
+							local ti = tensors[i]
+							for j=i+1,#tensors do
+								local tj = tensors[j]
+								local mulexpr = mul(
+									TensorRef(Variable'tmp1', table.unpack(ti.variance)),
+									TensorRef(Variable'tmp2', table.unpack(tj.variance))
+								)
+								local fixed, sum, extra = mulexpr:getIndexesUsed()
+								tensorPairs:insert{
+									indexes = {i,j},
+									mulexpr = mulexpr,
+									fixed = fixed,
+									sum = sum,
+									extra = extra,
+								}
+							end
+						end
+						local best = tensorPairs:inf(function(a,b)
+							return #a.fixed < #b.fixed
+						end)
+						-- ok now we have 'best' ...
+						-- insert them into the end of the expr
+						local i, j = table.unpack(best.indexes)
+						if i > j then i,j = j,i end
+						local ti = table.remove(tensors,j)
+						local tj = table.remove(tensors,i)
+--print('#expr', #expr, 'insertLoc', insertLoc)
+						if not ti.fake then table.insert(expr, insertLoc, ti) end
+--print('#expr', #expr, 'insertLoc', insertLoc)
+						if not tj.fake then table.insert(expr, insertLoc, tj) end
+--print('#tensors is now '..#tensors)
+						if #tensors == 0 then break end
+						tensors:insert{
+							fake = true,
+							variance = best.fixed,
+						}
+					until false
+--print'done'
+				--]==]
 				end
 			end
 			--]=]
