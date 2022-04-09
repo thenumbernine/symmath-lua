@@ -319,15 +319,15 @@ args:
 TODO the C name exporter is pretty application-specific
 but I think so is the C exporter for TensorRef anyways.
 --]]
-function TensorRef.makeDense(x)
+function TensorRef:makeDense()
 	symmath = symmath or require 'symmath'
 	local Tensor = symmath.Tensor
 	local Variable = symmath.Variable
-	assert(TensorRef:isa(x))
-	assert(Variable:isa(x[1]))
---printbr('creating dense tensor', x)
-	local basevar = x[1]:clone()
-	local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
+	assert(TensorRef:isa(self))
+	assert(Variable:isa(self[1]))
+--printbr('creating dense tensor', self)
+	local basevar = self[1]:clone()
+	local indexes = table.sub(self, 2):mapi(function(index) return index:clone() end)
 	local numDeriv = 0
 	local indexesWithoutDeriv = indexes:mapi(function(index)
 		index = index:clone()
@@ -341,14 +341,14 @@ function TensorRef.makeDense(x)
 	
 	-- ss[1] is the TensorRef, ss[2...] is the
 	local allsymkeys = {}
-	for _,s in ipairs{x:getSymmetries()} do
+	for _,s in ipairs{self:getSymmetries()} do
 		-- only if the lowers of the indexes match with s's form
 		-- or if they are both lowered or both uppered
 		if not s.acrossLowers then
 			local acrossLowers
-			local lower = not not x[1+s.indexNumbers[1]].lower
+			local lower = not not self[1+s.indexNumbers[1]].lower
 			for _,i in ipairs(s.indexNumbers) do
-				local olower = not not x[1+i].lower
+				local olower = not not self[1+i].lower
 				if lower ~= olower then
 					acrossLowers = true
 					break
@@ -366,7 +366,7 @@ function TensorRef.makeDense(x)
 	assert(chart, "can't make dense without creating a Tensor.Chart first!")
 	local xNames = table.mapi(chart.coords, function(c) return c.name end)
 
-	local dependentVars = x:getDependentVars()
+	local dependentVars = self:getDependentVars()
 
 	local result = Tensor(indexesWithoutDeriv, function(...)
 		
@@ -383,8 +383,12 @@ function TensorRef.makeDense(x)
 		thisRef = thisRef:applySymmetries()
 		
 		-- TODO how to specify names per exporter?
-		local name = symmath.export.LaTeX:applyLaTeX(thisRef)
-		local v = Variable(name, dependentVars)
+		
+		local name_SingleLine = symmath.export.SingleLine:apply(thisRef)
+		local name_LaTeX = symmath.export.LaTeX:applyLaTeX(thisRef)
+		
+		local v = Variable(name_LaTeX, dependentVars)
+		v:nameForExporter('SingleLine', name_SingleLine)
 	
 		-- insert dots between non-sym indexes
 		local thisIndexCSuffix = table()
@@ -410,7 +414,7 @@ function TensorRef.makeDense(x)
 		
 		return v
 	end)
---printbr(x, '=>', result)
+--printbr(self, '=>', result)
 	return result
 end
 
