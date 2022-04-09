@@ -676,6 +676,8 @@ function Tensor:permute(dstVariance)
 		local TensorIndex = self.Index
 		dstVariance = TensorIndex.parseIndexes(dstVariance)
 	end
+
+--print('dstVariance', table.mapi(dstVariance, tostring):concat())
 	
 	-- determine index remapping
 	local indexMap = {}
@@ -689,10 +691,12 @@ function Tensor:permute(dstVariance)
 	end
 
 	local olddim = self:dim()
+--print('olddim', require 'ext.tolua'(olddim))
 	local newdim = {}
 	for i=1,#olddim do
-		newdim[i] = olddim[indexMap[i]]
+		newdim[indexMap[i]] = olddim[i]
 	end
+--print('newdim', require 'ext.tolua'(newdim))
 
 	-- perform assignment
 	local success, result = xpcall(function()
@@ -1048,7 +1052,7 @@ function Tensor.pruneMul(lhs, rhs)
 	
 		--[=[ TODO are my sums optimal?
 		-- since the TensorRef mul is commutative (so long as all the dense Tensor's indexes are commutative...)
-		-- am I picking the optimal mul order? 
+		-- am I picking the optimal mul order?
 		-- or can I better sort my mul() applications to minimize the number of exterior products being created?
 		if #sumDims > 0 then
 			io.stderr:write(
