@@ -685,60 +685,348 @@
 				(
 					var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})}) *
 					(
-						var(" {{ K} ^x} _x") +
-						var(" {{ K} ^y} _y") +
-						var(" {{ K} ^z} _z") +
 						-(
 							(
 								Constant(2) *
 								var("\\Theta", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ K} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x")
+						) +
+						(
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^z} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^z")
+						)
+					)
+				),
+				-(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})}) *
+						(
+							(
+								var(" {{ K} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^x") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z")
 							)
 						)
 					)
 				),
 				-(
 					(
-						var(" {{ K} ^x} ^x") *
+						Constant(2) *
 						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})})
+						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})}) *
+						(
+							(
+								var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y")
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z")
+							) +
+							(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
+							(
+								var(" {{ K} _y} _z") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
+							(
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z")
+							)
+						)
 					)
 				),
 				-(
 					(
 						Constant(2) *
-						var(" {{ K} ^x} ^y") *
 						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})})
+						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})}) *
+						(
+							(
+								var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^z")
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _y} _z") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z")
+							)
+						)
+					)
+				),
+				-(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})}) *
+						(
+							(
+								var(" {{ K} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^y") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							)
+						)
 					)
 				),
 				-(
 					(
 						Constant(2) *
-						var(" {{ K} ^x} ^z") *
 						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})})
+						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})}) *
+						(
+							(
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z")
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _y} _z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z")
+							)
+						)
 					)
 				),
 				-(
 					(
-						var(" {{ K} ^y} ^y") *
 						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})})
-					)
-				),
-				-(
-					(
-						Constant(2) *
-						var(" {{ K} ^y} ^z") *
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})})
-					)
-				),
-				-(
-					(
-						var(" {{ K} ^z} ^z") *
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})})
+						var("f", {var("\\alpha", {var("t"), var("x"), var("y"), var("z")})}) *
+						(
+							(
+								var(" {{ K} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^z} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z")
+							)
+						)
 					)
 				),
 				Constant(0),
@@ -2113,172 +2401,301 @@
 			Matrix(
 				(
 					var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) +
-					var(" {{{ d} ^x} _x} _x") +
-					-(
-						var(" {{{ d} _x} ^x} _x")
-					) +
-					var(" {{{ d} _x} ^y} _y") +
-					var(" {{{ d} _x} ^z} _z") +
 					-(
 						(
 							Constant(2) *
 							var(" { Z} _x", {var("t"), var("x"), var("y"), var("z")})
 						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					(
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 					)
 				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+				-(
 					(
-						-(
-							var(" {{{ d} _x} ^x} ^x")
-						) +
-						-(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							) +
 							(
 								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^x} _x} _x")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _x} ^x} _x")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							(
-								Constant(2) *
-								var(" {{{ d} _x} ^x} ^y")
-							)
-						) +
-						-(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
 							(
 								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} _x} _x")
-							)
-						) +
-						-(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
 							(
+								Constant(2) *
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} _x} _x")
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _x} _x} ^y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _x} ^x} _x")
 						)
 					)
 				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+				-(
 					(
-						-(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
 							(
-								Constant(2) *
-								var(" {{{ d} _x} ^x} ^z")
-							)
-						) +
-						-(
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							) +
 							(
 								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} _x} _x")
-							)
-						) +
-						-(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
 							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} _x} _x")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _x} _x} ^z")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _x} ^x} _x")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							var(" {{{ d} _x} ^y} ^y")
-						) +
-						-(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^y} _x} _x")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _x} _x} ^y")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
 							(
 								Constant(2) *
-								var(" {{{ d} _x} ^y} ^z")
-							)
-						) +
-						-(
-							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} _x} _x")
-							)
-						) +
-						-(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							) +
 							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _z")
+							) +
+							(
+								Constant(2) *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} _x} _x")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _x} _x} ^z")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _x} _x} ^y")
 						)
 					)
 				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+				-(
 					(
-						-(
-							var(" {{{ d} _x} ^z} ^z")
-						) +
-						-(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _y} _z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				-(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^y") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				-(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								Constant(2) *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
 							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^z} _x} _x")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _y} _z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
-						) +
+						)
+					)
+				),
+				-(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _x} _x} ^z")
+							(
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^z} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
 						)
 					)
 				),
@@ -2354,25 +2771,53 @@
 					(
 						var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) +
 						-(
-							var(" {{{ d} _y} ^x} _x")
-						) +
-						var(" {{{ d} _y} ^y} _y") +
-						var(" {{{ d} _y} ^z} _z") +
-						-(
 							(
 								Constant(2) *
 								var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
 						(
-							Constant(2) *
-							var(" {{{ d} ^x} _x} _y")
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								Constant(2) *
-								var(" {{{ d} _x} ^x} _y")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _y} _z")
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					) /
 					Constant(2)
@@ -2381,125 +2826,315 @@
 					(
 						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 						(
+							(
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^x") ^
+									Constant(2)
+								)
+							) +
 							-(
-								var(" {{{ d} _y} ^x} ^x")
+								(
+									var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^x} ^y") ^
+										Constant(2)
+									)
+								)
+							) +
+							-(
+								(
+									var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^x} ^z") ^
+										Constant(2)
+									)
+								)
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 							) +
 							-(
 								(
 									Constant(2) *
 									var(" {{ \\gamma} ^x} ^x") *
-									var(" {{{ d} ^x} _x} _y")
+									var(" {{ \\gamma} ^x} ^y") *
+									var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} _x} ^x} _y")
-							) +
-							(
-								Constant(2) *
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} _y} ^x} _x")
-							)
-						)
-					) /
-					Constant(2)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							var(" {{{ d} _y} ^x} ^y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} _x} _y")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _x} ^y} _y")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _y} _x} ^y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} _x} _y")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _x} ^x} _y")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _y} ^x} _x")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							var(" {{{ d} _y} ^x} ^z")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} _x} _y")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _x} _y} ^z")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _y} _x} ^z")
-						) +
-						-(
-							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} _x} _y")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _x} ^x} _y")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _y} ^x} _x")
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-						(
+								var(" {{{ d} _x} _y} _z")
+							) +
 							-(
-								var(" {{{ d} _y} ^y} ^y")
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^x") *
+									var(" {{ \\gamma} ^x} ^z") *
+									var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+								)
 							) +
 							-(
 								(
 									Constant(2) *
 									var(" {{ \\gamma} ^x} ^y") *
-									var(" {{{ d} ^y} _x} _y")
+									var(" {{ \\gamma} ^x} ^z") *
+									var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
+							)
+						)
+					) /
+					Constant(2)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _y")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _x} _y} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _y} _z")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{{ d} _x} _y} _z") *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _y")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _y} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _y} _z")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							) +
+							-(
+								(
+									var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^y} ^y") ^
+										Constant(2)
+									)
+								)
+							) +
+							-(
+								(
+									var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^y} ^z") ^
+										Constant(2)
+									)
 								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} _x} ^y} _y")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^y") *
+									var(" {{ \\gamma} ^y} ^y") *
+									var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} _y} _x} ^y")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _z")
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^y") *
+									var(" {{ \\gamma} ^y} ^z") *
+									var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+								)
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^y} ^y") *
+									var(" {{ \\gamma} ^y} ^z") *
+									var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
 							)
 						)
 					) /
@@ -2509,35 +3144,87 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} _y} ^y} ^z")
+							(
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} _x} _y")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _y")
 							)
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _x} _y} ^z")
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _y} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
 						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _y} _x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} _x} _y")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _x} ^y} _y")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _z")
 						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _y} _x} ^y")
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _y} _z")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
 						)
 					)
 				),
@@ -2545,25 +3232,66 @@
 					(
 						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 						(
-							-(
-								var(" {{{ d} _y} ^z} ^z")
+							(
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
 							) +
 							-(
 								(
-									Constant(2) *
-									var(" {{ \\gamma} ^x} ^z") *
-									var(" {{{ d} ^z} _x} _y")
+									var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^y} ^z") ^
+										Constant(2)
+									)
+								)
+							) +
+							-(
+								(
+									var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^z} ^z") ^
+										Constant(2)
+									)
 								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} _x} _y} ^z")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^z") *
+									var(" {{ \\gamma} ^y} ^z") *
+									var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} _y} _x} ^z")
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _y} _z")
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^z") *
+									var(" {{ \\gamma} ^z} ^z") *
+									var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+								)
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^y} ^z") *
+									var(" {{ \\gamma} ^z} ^z") *
+									var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
 							)
 						)
 					) /
@@ -2664,25 +3392,53 @@
 					(
 						var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) +
 						-(
-							var(" {{{ d} _z} ^x} _x")
-						) +
-						var(" {{{ d} _z} ^y} _y") +
-						var(" {{{ d} _z} ^z} _z") +
-						-(
 							(
 								Constant(2) *
 								var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
 						(
-							Constant(2) *
-							var(" {{{ d} ^x} _x} _z")
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								Constant(2) *
-								var(" {{{ d} _x} ^x} _z")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					) /
 					Constant(2)
@@ -2691,125 +3447,315 @@
 					(
 						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 						(
+							(
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^x") ^
+									Constant(2)
+								)
+							) +
 							-(
-								var(" {{{ d} _z} ^x} ^x")
+								(
+									var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^x} ^y") ^
+										Constant(2)
+									)
+								)
+							) +
+							-(
+								(
+									var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^x} ^z") ^
+										Constant(2)
+									)
+								)
+							) +
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 							) +
 							-(
 								(
 									Constant(2) *
 									var(" {{ \\gamma} ^x} ^x") *
-									var(" {{{ d} ^x} _x} _z")
+									var(" {{ \\gamma} ^x} ^y") *
+									var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} _x} ^x} _z")
-							) +
-							(
-								Constant(2) *
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} _z} ^x} _x")
-							)
-						)
-					) /
-					Constant(2)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							var(" {{{ d} _z} ^x} ^y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} _x} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _x} ^y} _z")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _z} _x} ^y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} _x} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _x} ^x} _z")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _z} ^x} _x")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							var(" {{{ d} _z} ^x} ^z")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} _x} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _x} ^z} _z")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _z} _x} ^z")
-						) +
-						-(
-							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} _x} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _x} ^x} _z")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _z} ^x} _x")
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-						(
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							) +
 							-(
-								var(" {{{ d} _z} ^y} ^y")
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^x") *
+									var(" {{ \\gamma} ^x} ^z") *
+									var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
 							) +
 							-(
 								(
 									Constant(2) *
 									var(" {{ \\gamma} ^x} ^y") *
-									var(" {{{ d} ^y} _x} _z")
+									var(" {{ \\gamma} ^x} ^z") *
+									var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
+							)
+						)
+					) /
+					Constant(2)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _z")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _z")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _z")
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _z")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							) +
+							-(
+								(
+									var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^y} ^y") ^
+										Constant(2)
+									)
+								)
+							) +
+							-(
+								(
+									var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^y} ^z") ^
+										Constant(2)
+									)
 								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} _x} ^y} _z")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^y") *
+									var(" {{ \\gamma} ^y} ^y") *
+									var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} _z} _x} ^y")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^y") *
+									var(" {{ \\gamma} ^y} ^z") *
+									var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^y} ^y") *
+									var(" {{ \\gamma} ^y} ^z") *
+									var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
 							)
 						)
 					) /
@@ -2819,35 +3765,87 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} _z} ^y} ^z")
+							(
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} _x} _z")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _x} ^z} _z")
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _z")
+							)
 						) +
 						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _z} _x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} _x} _z")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _x} ^y} _z")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _z} _x} ^y")
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _z")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
 						)
 					)
 				),
@@ -2855,25 +3853,66 @@
 					(
 						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 						(
-							-(
-								var(" {{{ d} _z} ^z} ^z")
+							(
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
 							) +
 							-(
 								(
-									Constant(2) *
-									var(" {{ \\gamma} ^x} ^z") *
-									var(" {{{ d} ^z} _x} _z")
+									var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^y} ^z") ^
+										Constant(2)
+									)
+								)
+							) +
+							-(
+								(
+									var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+									(
+										var(" {{ \\gamma} ^z} ^z") ^
+										Constant(2)
+									)
 								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} _x} ^z} _z")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^z") *
+									var(" {{ \\gamma} ^y} ^z") *
+									var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
 							) +
 							(
 								Constant(2) *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} _z} _x} ^z")
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^x} ^z") *
+									var(" {{ \\gamma} ^z} ^z") *
+									var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
+							) +
+							-(
+								(
+									Constant(2) *
+									var(" {{ \\gamma} ^y} ^z") *
+									var(" {{ \\gamma} ^z} ^z") *
+									var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+								)
 							)
 						)
 					) /
@@ -2971,11 +4010,32 @@
 			),
 			Matrix(
 				(
-					var(" {{{ d} ^x} _y} _y") +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+					) +
 					-(
 						(
 							Constant(2) *
-							var(" {{{ d} _y} ^x} _y")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _y} _z")
 						)
 					)
 				),
@@ -2984,38 +4044,87 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} ^x} _y} _y")
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
 						(
 							Constant(2) *
-							var(" {{{ d} _y} ^x} _y")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _y} _z")
 						)
 					)
 				),
 				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
+						(
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} _y} _y")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} _y} _y")
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _y} ^y} _y")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _y} _z")
 						) +
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _y} ^x} _y")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _y} _z")
+						) +
+						(
+							Constant(4) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3024,25 +4133,57 @@
 					(
 						-(
 							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} _y} _y")
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
 							)
+						) +
+						(
+							Constant(2) *
+							var(" {{{ d} _y} _y} _z") *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} _y} _y")
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _y} _y} ^z")
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _y} _z")
 						) +
 						(
-							Constant(2) *
+							Constant(4) *
+							var(" {{ \\gamma} ^x} ^x") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _y} ^x} _y")
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3051,38 +4192,85 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} ^y} _y} _y")
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
 						(
 							Constant(2) *
-							var(" {{{ d} _y} ^y} _y")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _y} _z")
 						)
 					)
 				),
 				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} _y} _y")
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} _y} _y")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _y} _y} ^z")
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _y} _z")
 						) +
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _y} ^y} _y")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _y} _z")
+						) +
+						(
+							Constant(4) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3091,11 +4279,30 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} ^z} _y} _y")
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
 						(
 							Constant(2) *
-							var(" {{{ d} _y} _y} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _y} _z")
 						)
 					)
 				),
@@ -3170,12 +4377,33 @@
 			),
 			Matrix(
 				(
-					var(" {{{ d} ^x} _y} _z") +
-					-(
-						var(" {{{ d} _y} ^x} _z")
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 					) +
 					-(
-						var(" {{{ d} _z} ^x} _y")
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
 					)
 				),
 				(
@@ -3183,75 +4411,120 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} ^x} _y} _z")
-						) +
-						var(" {{{ d} _y} ^x} _z") +
-						var(" {{{ d} _z} ^x} _y")
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
 							(
 								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} _y} _z")
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _y} ^y} _z")
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _z} ^y} _y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} _y} _z")
-							)
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _y} ^x} _z")
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _z} ^x} _y")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
 				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
+						(
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
 						-(
 							(
+								Constant(2) *
 								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} _y} _z")
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						)
+					)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
 							)
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _y} ^z} _z")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _z} _y} ^z")
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} _y} _z")
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _y} ^x} _z")
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _z} ^x} _y")
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3260,42 +4533,71 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} ^y} _y} _z")
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
-						var(" {{{ d} _y} ^y} _z") +
-						var(" {{{ d} _z} ^y} _y")
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
 					)
 				),
 				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
 						-(
 							(
+								Constant(2) *
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} _y} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _y} ^z} _z")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _z} _y} ^z")
-						) +
-						-(
-							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} _y} _z")
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _y} ^y} _z")
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _z} ^y} _y")
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3304,10 +4606,27 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} ^z} _y} _z")
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
-						var(" {{{ d} _y} ^z} _z") +
-						var(" {{{ d} _z} _y} ^z")
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
 					)
 				),
 				Constant(0),
@@ -3381,11 +4700,32 @@
 			),
 			Matrix(
 				(
-					var(" {{{ d} ^x} _z} _z") +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
 					-(
 						(
 							Constant(2) *
-							var(" {{{ d} _z} ^x} _z")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3394,38 +4734,30 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} ^x} _z} _z")
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
 						(
 							Constant(2) *
-							var(" {{{ d} _z} ^x} _z")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} _z} _z")
-							)
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} _z} _z")
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _z} ^y} _z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _z} ^x} _z")
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3434,25 +4766,114 @@
 					(
 						-(
 							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} _z} _z")
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
 							)
 						) +
 						-(
 							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} _z} _z")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} _z} ^z} _z")
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(4) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
+					)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _z} ^x} _z")
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(4) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3461,11 +4882,30 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} ^y} _z} _z")
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
 						(
 							Constant(2) *
-							var(" {{{ d} _z} ^y} _z")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3475,24 +4915,52 @@
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} _z} _z")
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} _z} _z")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} _z} ^z} _z")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} _z} ^y} _z")
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(4) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3501,11 +4969,30 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						-(
-							var(" {{{ d} ^z} _z} _z")
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
 						(
 							Constant(2) *
-							var(" {{{ d} _z} ^z} _z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -3581,270 +5068,1554 @@
 			Matrix(
 				(
 					-(
-						var(" { Z} ^x")
-					) +
-					var(" {{{ d} ^x} ^y} _y") +
-					var(" {{{ d} ^x} ^z} _z") +
-					-(
-						var(" {{{ d} ^y} ^x} _y")
+						(
+							var(" { Z} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x")
+						)
 					) +
 					-(
-						var(" {{{ d} ^z} ^x} _z")
+						(
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y")
+						)
+					) +
+					-(
+						(
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z")
+						)
+					) +
+					-(
+						(
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _y} _z")
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						)
 					)
 				),
 				(
 					var(" {{ \\gamma} ^x} ^x") *
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
-						var(" { Z} ^x") +
-						-(
-							var(" {{{ d} ^x} ^y} _y")
-						) +
-						-(
-							var(" {{{ d} ^x} ^z} _z")
-						) +
-						var(" {{{ d} ^y} ^x} _y") +
-						var(" {{{ d} ^z} ^x} _z")
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							var(" {{{ d} ^x} ^x} ^y")
-						) +
-						var(" {{{ d} ^y} ^x} ^x") +
 						(
-							var(" { Z} ^x") *
-							var(" {{ \\gamma} ^x} ^y")
-						) +
-						(
-							var(" { Z} ^y") *
+							var(" { Z} _x", {var("t"), var("x"), var("y"), var("z")}) *
 							var(" {{ \\gamma} ^x} ^x")
 						) +
 						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} ^x} _x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} ^z} _z")
-							)
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y")
 						) +
 						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^z} ^y} _z")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} ^y} _y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} ^z} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^z} ^x} _z")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							var(" {{{ d} ^x} ^x} ^z")
-						) +
-						var(" {{{ d} ^z} ^x} ^x") +
-						(
-							var(" { Z} ^x") *
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
 							var(" {{ \\gamma} ^x} ^z")
 						) +
 						(
-							var(" { Z} ^z") *
-							var(" {{ \\gamma} ^x} ^x")
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
 						) +
 						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^y} _y} ^z")
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
 						) +
 						-(
 							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} ^x} _x")
+								var(" {{{ d} _y} _x} _y") *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{{ d} _z} _x} _z") *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
 							)
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} ^y} _y")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} ^y} _y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} ^z} _z")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^y} ^x} _y")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^z} ^x} _z")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							var(" {{{ d} ^x} ^y} ^y")
-						) +
-						var(" {{{ d} ^y} ^x} ^y") +
-						(
-							var(" { Z} ^y") *
-							var(" {{ \\gamma} ^x} ^y")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^y} ^x} _x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^y} ^z} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^z} ^y} _z")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						var(" {{{ d} ^y} ^x} ^z") +
-						var(" {{{ d} ^z} ^x} ^y") +
 						-(
 							(
 								Constant(2) *
-								var(" {{{ d} ^x} ^y} ^z")
-							)
-						) +
-						(
-							var(" { Z} ^y") *
-							var(" {{ \\gamma} ^x} ^z")
-						) +
-						(
-							var(" { Z} ^z") *
-							var(" {{ \\gamma} ^x} ^y")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^y} _y} ^z")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} ^x} _x")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} ^y} _y")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
-						-(
-							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} ^x} _x")
+								var(" {{{ d} _y} _x} _z")
 							)
 						) +
 						-(
 							(
+								var(" {{ \\gamma} ^x} ^y") *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} ^z} _z")
+								var(" {{{ d} _z} _x} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _y} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^z} ^y} _z")
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
 				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
-						-(
-							var(" {{{ d} ^x} ^z} ^z")
-						) +
-						var(" {{{ d} ^z} ^x} ^z") +
 						(
-							var(" { Z} ^z") *
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(3)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(3)
+								)
+							)
+						) +
+						(
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z")
 						) +
 						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _z} _y} _z") *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" { Z} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _y} _z") *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(4) *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^x} _x} ^z")
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(4) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(3)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(3)
+								)
+							)
+						) +
+						(
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
+						(
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _y} _z") *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" { Z} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _y} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(4) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(4) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _z")
+							)
+						)
+					)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" { Z} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							)
 						) +
 						(
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^y} _y} ^z")
-						) +
-						-(
+							var(" {{{ d} _y} _y} _z") *
 							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^z} ^x} _x")
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
 							)
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^z} ^y} _y")
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^y") ^
+									Constant(2)
+								)
 							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _y") *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _z")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _z} _x} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _z")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z")
+						) +
+						(
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _z") *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _z} _x} _y") *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _x} _z") *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _y") *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" { Z} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _z") *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _y") *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _y} _z")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" { Z} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" { Z} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" { Z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^z} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^z} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _z") *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _x} _z")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _y")
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _y} _z")
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _z")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 						)
 					)
 				),
@@ -4066,102 +6837,298 @@
 			),
 			Matrix(
 				(
-					var(" {{ K} ^y} _y") +
-					var(" {{ K} ^z} _z") +
 					-(
 						var("\\Theta", {var("t"), var("x"), var("y"), var("z")})
+					) +
+					(
+						var(" {{ K} _x} _y") *
+						var(" {{ \\gamma} ^x} ^y")
+					) +
+					(
+						var(" {{ K} _x} _z") *
+						var(" {{ \\gamma} ^x} ^z")
+					) +
+					(
+						var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						var(" {{ \\gamma} ^y} ^y")
+					) +
+					(
+						var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						var(" {{ \\gamma} ^z} ^z")
+					) +
+					(
+						Constant(2) *
+						var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						var(" {{ \\gamma} ^y} ^z")
 					)
 				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+				-(
 					(
-						-(
-							var(" {{ K} ^x} ^x")
-						) +
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 						(
-							var(" {{ K} ^x} _x") *
-							var(" {{ \\gamma} ^x} ^x")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
+							(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^z")
+							) +
 							(
 								Constant(2) *
-								var(" {{ K} ^x} ^y")
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z")
 							)
-						) +
-						(
-							var(" {{ K} ^x} _x") *
-							var(" {{ \\gamma} ^x} ^y")
-						) +
-						(
-							var(" {{ K} _x} ^y") *
-							var(" {{ \\gamma} ^x} ^x")
 						)
 					)
 				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+				-(
 					(
-						-(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								var(" {{ K} _x} _y") *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z")
+							) +
 							(
 								Constant(2) *
-								var(" {{ K} ^x} ^z")
-							)
-						) +
-						(
-							var(" {{ K} ^x} _x") *
-							var(" {{ \\gamma} ^x} ^z")
-						) +
-						(
-							var(" {{ K} _x} ^z") *
-							var(" {{ \\gamma} ^x} ^x")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
-							var(" {{ K} ^y} ^y")
-						) +
-						(
-							var(" {{ K} _x} ^y") *
-							var(" {{ \\gamma} ^x} ^y")
-						)
-					)
-				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
-					(
-						-(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
 							(
 								Constant(2) *
-								var(" {{ K} ^y} ^z")
+								var(" {{ K} _y} _z") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z")
 							)
-						) +
-						(
-							var(" {{ K} _x} ^y") *
-							var(" {{ \\gamma} ^x} ^z")
-						) +
-						(
-							var(" {{ K} _x} ^z") *
-							var(" {{ \\gamma} ^x} ^y")
 						)
 					)
 				),
-				(
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+				-(
 					(
-						-(
-							var(" {{ K} ^z} ^z")
-						) +
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 						(
-							var(" {{ K} _x} ^z") *
-							var(" {{ \\gamma} ^x} ^z")
+							(
+								var(" {{ K} _x} _z") *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z")
+							)
+						)
+					)
+				),
+				-(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^y") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							)
+						)
+					)
+				),
+				-(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z")
+							)
+						)
+					)
+				),
+				-(
+					(
+						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							(
+								var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^z} ^z") ^
+									Constant(2)
+								)
+							) +
+							(
+								var(" {{ K} _x} _y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z")
+							) +
+							(
+								var(" {{ K} _x} _z") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z")
+							) +
+							(
+								Constant(2) *
+								var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z")
+							)
 						)
 					)
 				),
@@ -4231,23 +7198,36 @@
 			),
 			Matrix(
 				-(
-					var(" {{ K} ^x} _y")
+					(
+						(
+							var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x")
+						) +
+						(
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y")
+						) +
+						(
+							var(" {{ K} _y} _z") *
+							var(" {{ \\gamma} ^x} ^z")
+						)
+					)
 				),
 				(
-					var(" {{ K} ^x} _y") *
 					var(" {{ \\gamma} ^x} ^x") *
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")})
-				),
-				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						(
-							var(" {{ K} ^x} _y") *
+							var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x")
+						) +
+						(
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
 							var(" {{ \\gamma} ^x} ^y")
 						) +
 						(
-							var(" {{ K} ^y} _y") *
-							var(" {{ \\gamma} ^x} ^x")
+							var(" {{ K} _y} _z") *
+							var(" {{ \\gamma} ^x} ^z")
 						)
 					)
 				),
@@ -4255,37 +7235,134 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						(
-							var(" {{ K} ^x} _y") *
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" {{ K} _y} _z") *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" {{ K} _y} _z") *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z")
 						) +
 						(
-							var(" {{ K} _y} ^z") *
-							var(" {{ \\gamma} ^x} ^x")
+							Constant(2) *
+							var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y")
 						)
 					)
 				),
 				(
-					var(" {{ K} ^y} _y") *
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{ K} _y} _z") *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
+						(
+							var(" {{ K} _y} _z") *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z")
+						)
+					)
+				),
+				(
 					var(" {{ \\gamma} ^x} ^y") *
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")})
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y")
+						) +
+						(
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" {{ K} _y} _z") *
+							var(" {{ \\gamma} ^y} ^z")
+						)
+					)
 				),
 				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						(
-							var(" {{ K} ^y} _y") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z")
 						) +
 						(
-							var(" {{ K} _y} ^z") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" {{ K} _y} _z") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z")
+						) +
+						(
+							var(" {{ K} _y} _z") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z")
 						)
 					)
 				),
 				(
-					var(" {{ K} _y} ^z") *
 					var(" {{ \\gamma} ^x} ^z") *
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")})
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{ K} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
+						(
+							var(" {{ K} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" {{ K} _y} _z") *
+							var(" {{ \\gamma} ^z} ^z")
+						)
+					)
 				),
 				Constant(0),
 				Constant(0),
@@ -4350,23 +7427,36 @@
 			),
 			Matrix(
 				-(
-					var(" {{ K} ^x} _z")
+					(
+						(
+							var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x")
+						) +
+						(
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y")
+						) +
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z")
+						)
+					)
 				),
 				(
-					var(" {{ K} ^x} _z") *
 					var(" {{ \\gamma} ^x} ^x") *
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")})
-				),
-				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						(
-							var(" {{ K} ^x} _z") *
+							var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x")
+						) +
+						(
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
 							var(" {{ \\gamma} ^x} ^y")
 						) +
 						(
-							var(" {{ K} ^y} _z") *
-							var(" {{ \\gamma} ^x} ^x")
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z")
 						)
 					)
 				),
@@ -4374,37 +7464,134 @@
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						(
-							var(" {{ K} ^x} _z") *
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z")
 						) +
 						(
-							var(" {{ K} ^z} _z") *
-							var(" {{ \\gamma} ^x} ^x")
+							Constant(2) *
+							var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y")
 						)
 					)
 				),
 				(
-					var(" {{ K} ^y} _z") *
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							)
+						) +
+						(
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z")
+						)
+					)
+				),
+				(
 					var(" {{ \\gamma} ^x} ^y") *
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")})
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y")
+						) +
+						(
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^z")
+						)
+					)
 				),
 				(
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
 						(
-							var(" {{ K} ^y} _z") *
-							var(" {{ \\gamma} ^x} ^z")
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z")
 						) +
 						(
-							var(" {{ K} ^z} _z") *
-							var(" {{ \\gamma} ^x} ^y")
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z")
+						) +
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							Constant(2) *
+							var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z")
 						)
 					)
 				),
 				(
-					var(" {{ K} ^z} _z") *
 					var(" {{ \\gamma} ^x} ^z") *
-					var("\\alpha", {var("t"), var("x"), var("y"), var("z")})
+					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
+					(
+						(
+							var(" {{ K} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
+						(
+							var(" {{ K} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" {{ K} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^z} ^z")
+						)
+					)
 				),
 				Constant(0),
 				Constant(0),
@@ -4634,396 +7821,3313 @@
 					Constant(2) *
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
-						var(" { a} ^x") +
-						-(
-							var(" {{{ d} ^x} ^x} _x")
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x")
 						) +
-						var(" {{{ d} ^x} ^y} _y") +
-						var(" {{{ d} ^x} ^z} _z") +
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y")
+						) +
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
 						-(
 							(
-								Constant(2) *
-								var(" {{{ d} ^y} ^x} _y")
+								var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^x") ^
+									Constant(2)
+								)
 							)
 						) +
 						-(
 							(
 								Constant(2) *
-								var(" {{{ d} ^z} ^x} _z")
-							)
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						var(" {{{ d} ^x} ^x} ^x") +
-						-(
-							(
-								var(" { a} ^x") *
-								var(" {{ \\gamma} ^x} ^x")
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
 							)
 						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^x} ^x} _x")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^x} ^y} _y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^x} ^z} _z")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^z} ^x} _z")
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						(
-							Constant(2) *
-							var(" {{{ d} ^y} ^x} ^x")
-						) +
-						-(
-							(
-								var(" { a} ^x") *
-								var(" {{ \\gamma} ^x} ^y")
-							)
-						) +
-						-(
-							(
-								var(" { a} ^y") *
-								var(" {{ \\gamma} ^x} ^x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} ^x} _x")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^y} ^y} _y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^y} ^z} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^x} ^x} _x")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} ^y} _y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} ^z} _z")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^z} ^y} _z")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^z} ^x} _z")
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						(
-							Constant(2) *
-							var(" {{{ d} ^z} ^x} ^x")
-						) +
-						-(
-							(
-								var(" { a} ^x") *
-								var(" {{ \\gamma} ^x} ^z")
-							)
-						) +
-						-(
-							(
-								var(" { a} ^z") *
-								var(" {{ \\gamma} ^x} ^x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} ^x} _x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^x") *
-								var(" {{{ d} ^z} ^y} _y")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^z} ^z} _z")
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^x} ^x} _x")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} ^y} _y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} ^z} _z")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^x") *
-							var(" {{{ d} ^y} _y} ^z")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^z} ^x} _z")
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						-(
-							var(" {{{ d} ^x} ^y} ^y")
-						) +
-						(
-							Constant(2) *
-							var(" {{{ d} ^y} ^x} ^y")
-						) +
-						-(
-							(
-								var(" { a} ^y") *
-								var(" {{ \\gamma} ^x} ^y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^y} ^x} _x")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^y} ^y} _y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^y} ^z} _z")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^z} ^y} _z")
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
 						-(
 							(
 								Constant(2) *
-								var(" {{{ d} ^x} ^y} ^z")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{{ d} ^y} ^x} ^z")
-						) +
-						(
-							Constant(2) *
-							var(" {{{ d} ^z} ^x} ^y")
-						) +
-						-(
-							(
-								var(" { a} ^y") *
-								var(" {{ \\gamma} ^x} ^z")
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
 							)
 						) +
 						-(
 							(
-								var(" { a} ^z") *
-								var(" {{ \\gamma} ^x} ^y")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
 							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} ^x} _x")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						-(
 							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} ^y} _y")
+								var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^z} ^z} _z")
 						) +
 						-(
 							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} ^x} _x")
+								var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^y} ^y} _y")
 						) +
 						-(
 							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} ^z} _z")
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _y} _z")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(4) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^x") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^x") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^x") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^x") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
 							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
 						(
-							Constant(2) *
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
 							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^y} _y} ^z")
-						) +
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					)
+				),
+				(
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					)
+				),
+				(
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^z} ^y} _z")
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					)
+				),
+				(
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
 				(
 					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
 					(
-						-(
-							var(" {{{ d} ^x} ^z} ^z")
-						) +
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
-							var(" {{{ d} ^z} ^x} ^z")
-						) +
-						-(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
 							(
-								var(" { a} ^z") *
-								var(" {{ \\gamma} ^x} ^z")
-							)
-						) +
-						-(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
 							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^z} ^x} _x")
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
 							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^z} ^y} _y")
-							)
-						) +
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
 						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^z} ^z} _z")
-						) +
+							var(" {{ \\gamma} ^y} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _y} _z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					)
+				),
+				(
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^y} _y} ^z")
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
@@ -5430,396 +11534,3313 @@
 					Constant(2) *
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
-						var(" { a} ^y") +
-						var(" {{{ d} ^y} ^x} _x") +
-						-(
-							var(" {{{ d} ^y} ^y} _y")
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y")
 						) +
-						var(" {{{ d} ^y} ^z} _z") +
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^y")
+						) +
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
 						-(
 							(
-								Constant(2) *
-								var(" {{{ d} ^x} _x} ^y")
+								var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^y") ^
+									Constant(2)
+								)
 							)
 						) +
 						-(
 							(
 								Constant(2) *
-								var(" {{{ d} ^z} ^y} _z")
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^y") ^
+									Constant(2)
+								)
 							)
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						-(
-							var(" {{{ d} ^y} ^x} ^x")
-						) +
-						(
-							Constant(2) *
-							var(" {{{ d} ^x} ^x} ^y")
-						) +
-						-(
-							(
-								var(" { a} ^x") *
-								var(" {{ \\gamma} ^x} ^y")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^x} ^x} _x")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} ^y} _y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^x} ^z} _z")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^z} ^x} _z")
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						(
-							Constant(2) *
-							var(" {{{ d} ^x} ^y} ^y")
-						) +
-						-(
-							(
-								var(" { a} ^x") *
-								var(" {{ \\gamma} ^y} ^y")
-							)
-						) +
-						-(
-							(
-								var(" { a} ^y") *
-								var(" {{ \\gamma} ^x} ^y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^y} ^x} _x")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^y} ^y} _y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^y} ^z} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^y} ^y") *
-							var(" {{{ d} ^x} ^x} _x")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^y") *
-								var(" {{{ d} ^x} ^y} _y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^y") *
-								var(" {{{ d} ^x} ^z} _z")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^z} ^y} _z")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^y} ^y") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^y} ^y") *
-							var(" {{{ d} ^z} ^x} _z")
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						(
-							Constant(2) *
-							var(" {{{ d} ^x} ^y} ^z")
 						) +
 						-(
 							(
 								Constant(2) *
-								var(" {{{ d} ^y} ^x} ^z")
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
+							)
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
-							Constant(2) *
-							var(" {{{ d} ^z} ^x} ^y")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
 						) +
-						-(
-							(
-								var(" { a} ^x") *
-								var(" {{ \\gamma} ^y} ^z")
-							)
-						) +
-						-(
-							(
-								var(" { a} ^z") *
-								var(" {{ \\gamma} ^x} ^y")
-							)
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} ^x} _x")
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						-(
 							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _x} _y")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _x} _z")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
 								var(" {{ \\gamma} ^x} ^y") *
-								var(" {{{ d} ^z} ^y} _y")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^z} ^z} _z")
-						) +
-						(
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^x} ^x} _x")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^x} ^y} _y")
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						-(
 							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^x} ^z} _z")
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						(
 							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^x} _x} ^z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
 						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^y") *
-							var(" {{{ d} ^y} _y} ^z")
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _z} _x} _y")
+							)
 						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(4) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					-(
 						(
-							Constant(2) *
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^x") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
 							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^x") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					)
+				),
+				(
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _x} _y") *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^z} ^x} _z")
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
 				(
 					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
 					(
-						var(" {{{ d} ^y} ^y} ^y") +
-						-(
-							(
-								var(" { a} ^y") *
-								var(" {{ \\gamma} ^y} ^y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^y") *
-								var(" {{{ d} ^y} ^x} _x")
-							)
-						) +
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
 						(
-							var(" {{ \\gamma} ^y} ^y") *
-							var(" {{{ d} ^y} ^y} _y")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^y") *
-								var(" {{{ d} ^y} ^z} _z")
-							)
-						) +
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
 							var(" {{ \\gamma} ^y} ^y") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
 							var(" {{ \\gamma} ^y} ^y") *
-							var(" {{{ d} ^z} ^y} _z")
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _x} _z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
 				(
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
 					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
 					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
-							var(" {{{ d} ^z} ^y} ^y")
-						) +
-						-(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
 							(
-								var(" { a} ^y") *
-								var(" {{ \\gamma} ^y} ^z")
-							)
-						) +
-						-(
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
+							) *
 							(
-								var(" { a} ^z") *
-								var(" {{ \\gamma} ^y} ^y")
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
 							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^y") *
-								var(" {{{ d} ^z} ^x} _x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^y") *
-								var(" {{{ d} ^z} ^y} _y")
-							)
-						) +
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _y") *
 						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^y} ^y") *
-							var(" {{{ d} ^z} ^z} _z")
-						) +
-						-(
 							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^y} ^x} _x")
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
 							)
-						) +
+						)
+					) +
+					-(
 						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^y") *
 							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^y} ^y} _y")
-						) +
-						-(
 							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^y} ^z} _z")
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
 							)
-						) +
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
 						(
-							Constant(2) *
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
 							var(" {{ \\gamma} ^y} ^y") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
 						(
-							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^y} ^y") *
-							var(" {{{ d} ^y} _y} ^z")
-						) +
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
 						(
-							Constant(2) *
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z") *
 						(
-							Constant(2) *
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^z} ^y} _z")
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
 				(
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
 					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
 					(
-						-(
-							var(" {{{ d} ^y} ^z} ^z")
-						) +
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _y") *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
-							var(" {{{ d} ^z} ^y} ^z")
-						) +
-						-(
-							(
-								var(" { a} ^z") *
-								var(" {{ \\gamma} ^y} ^z")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^z} ^x} _x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^z} ^y} _y")
-							)
-						) +
-						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^y") *
 							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^z} ^z} _z")
-						) +
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
 							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
 							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^y} _y} ^z")
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					)
+				),
+				(
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
@@ -6226,396 +15247,3313 @@
 					Constant(2) *
 					var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) *
 					(
-						var(" { a} ^z") +
-						var(" {{{ d} ^z} ^x} _x") +
-						var(" {{{ d} ^z} ^y} _y") +
-						-(
-							var(" {{{ d} ^z} ^z} _z")
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z")
+						) +
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^z")
+						) +
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^z} ^z")
 						) +
 						-(
 							(
-								Constant(2) *
-								var(" {{{ d} ^x} _x} ^z")
+								var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^z} ^z") ^
+									Constant(2)
+								)
 							)
 						) +
 						-(
 							(
 								Constant(2) *
-								var(" {{{ d} ^y} _y} ^z")
+								var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^x} ^z") ^
+									Constant(2)
+								)
 							)
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						-(
-							var(" {{{ d} ^z} ^x} ^x")
-						) +
-						(
-							Constant(2) *
-							var(" {{{ d} ^x} ^x} ^z")
-						) +
-						-(
-							(
-								var(" { a} ^x") *
-								var(" {{ \\gamma} ^x} ^z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^x} ^x} _x")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} ^y} _y")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^x} ^z} _z")
-							)
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^z} ^x} _z")
-						)
-					)
-				),
-				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						(
-							Constant(2) *
-							var(" {{{ d} ^x} ^y} ^z")
-						) +
-						(
-							Constant(2) *
-							var(" {{{ d} ^y} ^x} ^z")
 						) +
 						-(
 							(
 								Constant(2) *
-								var(" {{{ d} ^z} ^x} ^y")
+								var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+								(
+									var(" {{ \\gamma} ^y} ^z") ^
+									Constant(2)
+								)
 							)
 						) +
 						-(
 							(
-								var(" { a} ^x") *
-								var(" {{ \\gamma} ^y} ^z")
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
-						-(
-							(
-								var(" { a} ^y") *
-								var(" {{ \\gamma} ^x} ^z")
-							)
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
 						-(
 							(
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} ^x} _x")
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")})
 							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^y} ^y} _y")
 						) +
 						-(
 							(
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+						) +
+						-(
+							(
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _x} _x} _y")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^x") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _x} _z")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
 								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^y} ^z} _z")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^x} ^x} _x")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^x} ^y} _y")
+								var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")})
 							)
 						) +
 						-(
 							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
 								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^x} ^z} _z")
+								var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _x} _y} _z")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _x} _z")
 							)
 						) +
 						(
 							Constant(2) *
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^x} _x} ^y")
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
 						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^z} ^y} _z")
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
 						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^y") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _y} _y} _z")
+							)
+						) +
+						-(
+							(
+								Constant(2) *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{ \\gamma} ^z} ^z") *
+								var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")})
+							)
+						) +
+						-(
+							(
+								Constant(4) *
+								var(" {{ \\gamma} ^x} ^z") *
+								var(" {{ \\gamma} ^y} ^z") *
+								var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")})
+							)
+						)
+					)
+				),
+				(
+					-(
 						(
-							Constant(2) *
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
 							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^x") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^x") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^z} ^x} _z")
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
 				(
 					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
 					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
-							var(" {{{ d} ^x} ^z} ^z")
-						) +
-						-(
-							(
-								var(" { a} ^x") *
-								var(" {{ \\gamma} ^z} ^z")
-							)
-						) +
-						-(
-							(
-								var(" { a} ^z") *
-								var(" {{ \\gamma} ^x} ^z")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^z} ^x} _x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^x} ^z") *
-								var(" {{{ d} ^z} ^y} _y")
-							)
-						) +
-						(
-							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^z} ^z} _z")
-						) +
-						(
 							var(" {{ \\gamma} ^z} ^z") *
-							var(" {{{ d} ^x} ^x} _x")
-						) +
-						-(
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
 							(
-								var(" {{ \\gamma} ^z} ^z") *
-								var(" {{{ d} ^x} ^y} _y")
-							)
-						) +
-						-(
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
 							(
-								var(" {{ \\gamma} ^z} ^z") *
-								var(" {{{ d} ^x} ^z} _z")
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
 							)
-						) +
+						)
+					) +
+					-(
 						(
-							Constant(2) *
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
 						(
-							Constant(2) *
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
 							var(" {{ \\gamma} ^x} ^z") *
-							var(" {{{ d} ^y} _y} ^z")
-						) +
+							var(" {{ \\gamma} ^y} ^y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
-							var(" {{ \\gamma} ^z} ^z") *
-							var(" {{{ d} ^y} ^x} _y")
-						) +
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^z} ^z") *
-							var(" {{{ d} ^z} ^x} _z")
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _y") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
 				(
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
 					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
 					(
-						-(
-							var(" {{{ d} ^z} ^y} ^y")
-						) +
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^x} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^x") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _z} _x} _z") *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _y} _z") *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
-							var(" {{{ d} ^y} ^y} ^z")
-						) +
-						-(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
 							(
-								var(" { a} ^y") *
-								var(" {{ \\gamma} ^y} ^z")
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
 							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^y} ^x} _x")
-							)
-						) +
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
 						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^x} ^z") *
 							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^y} ^y} _y")
-						) +
-						-(
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
 							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^y} ^z} _z")
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
 							)
-						) +
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^z} ^y} _z")
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
 				(
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
 					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
 					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
 						(
-							Constant(2) *
-							var(" {{{ d} ^y} ^z} ^z")
-						) +
-						-(
-							(
-								var(" { a} ^y") *
-								var(" {{ \\gamma} ^z} ^z")
-							)
-						) +
-						-(
-							(
-								var(" { a} ^z") *
-								var(" {{ \\gamma} ^y} ^z")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^z} ^x} _x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^y} ^z") *
-								var(" {{{ d} ^z} ^y} _y")
-							)
-						) +
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
 						(
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^z} ^z} _z")
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^z} ^z") *
-								var(" {{{ d} ^y} ^x} _x")
-							)
-						) +
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							var(" {{ \\gamma} ^z} ^z") *
-							var(" {{{ d} ^y} ^y} _y")
-						) +
-						-(
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
 							(
-								var(" {{ \\gamma} ^z} ^z") *
-								var(" {{{ d} ^y} ^z} _z")
+								var(" {{ \\gamma} ^x} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
 							)
-						) +
+						)
+					) +
+					-(
 						(
-							Constant(2) *
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
-						(
-							Constant(2) *
-							var(" {{ \\gamma} ^y} ^z") *
-							var(" {{{ d} ^y} _y} ^z")
-						) +
-						(
-							Constant(2) *
 							var(" {{ \\gamma} ^z} ^z") *
-							var(" {{{ d} ^x} _x} ^y")
-						) +
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^y") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^y") *
 							var(" {{ \\gamma} ^z} ^z") *
-							var(" {{{ d} ^z} ^y} _z")
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
 				(
-					(
-						var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
-						Constant(2)
-					) *
-					(
-						var(" {{{ d} ^z} ^z} ^z") +
-						-(
-							(
-								var(" { a} ^z") *
-								var(" {{ \\gamma} ^z} ^z")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^z} ^z") *
-								var(" {{{ d} ^z} ^x} _x")
-							)
-						) +
-						-(
-							(
-								var(" {{ \\gamma} ^z} ^z") *
-								var(" {{{ d} ^z} ^y} _y")
-							)
-						) +
+					-(
 						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^y} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _z} _x} _z") *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _z} _y} _z") *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^y") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^y") *
 							var(" {{ \\gamma} ^z} ^z") *
-							var(" {{{ d} ^z} ^z} _z")
-						) +
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^z") *
 							var(" {{ \\gamma} ^z} ^z") *
-							var(" {{{ d} ^x} _x} ^z")
-						) +
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
 						(
 							Constant(2) *
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
 							var(" {{ \\gamma} ^z} ^z") *
-							var(" {{{ d} ^y} _y} ^z")
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(8) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					)
+				),
+				(
+					-(
+						(
+							var(" { a} _z", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{{ d} _x} _x} _z") *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _x} _y} _z") *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{{ d} _y} _x} _z") *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							Constant(2) *
+							var(" {{ \\gamma} ^x} ^y") *
+							var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var(" {{ \\gamma} ^z} ^z") ^
+								Constant(2)
+							) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _x} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{{ d} _y} _y} _z") *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _x} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _y} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{{ d} _z} _z} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(3)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^x} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(3) *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^y} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" { a} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" { a} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{{ d} _z} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(4) *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{{ d} _z} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var(" {{ \\gamma} ^z} ^z") ^
+							Constant(2)
+						) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^x") *
+							var(" {{ \\gamma} ^y} ^z") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					-(
+						(
+							var(" {{ \\gamma} ^x} ^z") *
+							var(" {{ \\gamma} ^y} ^y") *
+							var(" {{ \\gamma} ^z} ^z") *
+							var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+							(
+								var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+								Constant(2)
+							)
+						)
+					) +
+					(
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^x") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _x} _y") *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _x", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^y") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^y") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _x} _y} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(2) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _y} _x} _z", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
+						)
+					) +
+					(
+						Constant(6) *
+						var(" {{ \\gamma} ^x} ^z") *
+						var(" {{ \\gamma} ^y} ^z") *
+						var(" {{ \\gamma} ^z} ^z") *
+						var(" {{{ d} _z} _x} _y", {var("t"), var("x"), var("y"), var("z")}) *
+						(
+							var("\\alpha", {var("t"), var("x"), var("y"), var("z")}) ^
+							Constant(2)
 						)
 					)
 				),
