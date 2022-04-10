@@ -95,6 +95,10 @@ local indexes = table{
 }
 local GammasForIndexes = table()
 
+--[[
+TODO until my index simplification gets better I don't think there will be a "one size fits all" for this
+might be better to handle each subset individually
+--]]
 for _,index in ipairs(indexes) do
 	local indexLetters = index:gsub('[^%a]', '')
 	
@@ -113,6 +117,7 @@ for _,index in ipairs(indexes) do
 	expr = expr:replaceIndex(Gamma'_abc', frac(1,2) * (g'_ab,c' + g'_ac,b' - g'_bc,a'))()
 	printbr(expr)
 
+	-- TODO this causes overlapped indexes later 
 	printbr'split the index a into t and j'
 	expr = splitIndex(expr, 'a', {'t', 'j'})()
 	printbr(expr)
@@ -121,7 +126,7 @@ for _,index in ipairs(indexes) do
 	expr = expr:splitOffDerivIndexes()
 
 -- TODO replaceIndex fails on _tt ... but not _ti ... strange
-	expr = expr:replace(g'_tt', -alpha^2 + beta'^i' * beta'^k' * gamma'_ik')
+	expr = expr:replace(g'_tt', -alpha^2 + beta'^k' * beta'^l' * gamma'_kl')
 	
 	expr = expr:replace(g'_tj', beta'_j')
 	expr = expr:replace(g'_jt', beta'_j')
@@ -144,7 +149,7 @@ for _,index in ipairs(indexes) do
 	printbr(expr)
 	
 	printbr'simplify...'
-	expr = expr()
+	expr = expr:simplifyAddMulDiv()
 	printbr(expr)
 
 	-- TODO some kind of tensor-friendly :prune() or :simplify()
@@ -152,7 +157,8 @@ for _,index in ipairs(indexes) do
 	printbr'relabel...'
 
 	expr = replaceSubExpr(expr, -beta'^i' * gamma'_kl,t' * beta'^k' * beta'^l',
-								-beta'^i' * beta'^j' * beta'^k' * gamma'_jk,t')()
+								-beta'^i' * beta'^j' * beta'^k' * gamma'_jk,t')
+			:simplifyAddMulDiv()
 	printbr(expr)
 	
 	GammasForIndexes[index] = expr

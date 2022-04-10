@@ -34,7 +34,7 @@ if we create a new set of indexes for groups of indexes ... we'd have to specify
 if we use matrices ...
 ... then how will we access them in the future?
 --]]
-local gLLDef = g'_uv':eq(Tensor('_u(i)v(j)', 
+local gLLDef = g'_uv':eq(Tensor('_UV', 
 	{
 		-alpha^2 + beta'^k' * beta'_k',
 		beta'_j',
@@ -45,7 +45,7 @@ local gLLDef = g'_uv':eq(Tensor('_u(i)v(j)',
 ))
 printbr(gLLDef)
 
-local gUUDef = g'^uv':eq(Tensor('^{u(i)v(j)}',
+local gUUDef = g'^uv':eq(Tensor('^UV',
 	{
 		-1/alpha^2,
 		beta'^j'/alpha^2,
