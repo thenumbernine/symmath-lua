@@ -2891,18 +2891,18 @@ printHeader'as a balance law system:'
 local A, SijklMat = factorLinearSystem(rhsWithDeltas, UpqmnrVars)
 local dFijkl_dUpqmn_mat = (-A)()
 
---[[ simplify deltas 
+-- [[ simplify deltas 
 -- if I do this then I get non-canonical index form of state vars 
 -- if I don't do this then expanding goes really really slow
 dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()	
 --]]
--- [[ so lets try doing this only for simplifying deltas ... idk if it makes a dif ... seems to still be taking a long long time
+--[[ so lets try doing this only for simplifying deltas ... idk if it makes a dif ... seems to still be taking a long long time
 dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics{Expression.simplifyMetricMulRules.delta}
 --]]
 dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:applySymmetries()
 dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplify()
 
---[[ simplify terms in the matrix
+-- [[ simplify terms in the matrix
 -- this lowers the # of terms, but makes it harder for recombination in the eigenmode code later
 dFijkl_dUpqmn_mat = simplifyDAndKTraces(dFijkl_dUpqmn_mat)
 	:subst((-conn_u_from_d_ull_d_llu:switch())():reindex{i='l'})
