@@ -6,7 +6,7 @@ require 'symmath'.setup{env=env}
 local MathJax = symmath.export.MathJax
 symmath.tostring = MathJax 
 local printbr = MathJax.print
-MathJax.header.title = 'BSSN formalism - index notation'
+MathJax.header.title = 'ADM formalism'
 print(MathJax.header)
 
 local timer = os.clock
@@ -60,7 +60,7 @@ local simplifyMetricPerpRule = {
 }
 
 local function simplifyPerpMetrics(expr)
-	return expr:simplifyMetrics{simplifyMetricPerpRule, Tensor.simplifyMetricsRules.delta}
+	return expr:simplifyMetrics{simplifyMetricPerpRule, Tensor.simplifyMetricMulRules.delta}
 end
 --]]
 
@@ -94,7 +94,14 @@ local gamma_lu_def = (gamma_ll_def * g'^bc')():simplifyMetrics():reindex{c='b'}
 printbr(gamma_lu_def)
 local delta_lu_from_gamma_lu = gamma_lu_def:solve(delta'_a^b')
 printbr(delta_lu_from_gamma_lu)
+--[[ this is breaking at the moment ... in fact all of (a):eq(b + c * d * e):solve(d*e) (and :match ) is ... in fact all a:eq(c * d * e):solve(d * e) is
 local nn_lu_from_delta_lu_gamma_lu = delta_lu_from_gamma_lu:solve(n'_a' * n'^b')()
+--]]
+-- [[ so until i fix it ...
+local nlen = var'|n|'
+local nlendef = nlen:eq(n'_a' * n'^b')
+local nn_lu_from_delta_lu_gamma_lu = delta_lu_from_gamma_lu:subst(nlendef:switch()):solve(nlen):subst(nlendef)()
+--]]
 printbr(nn_lu_from_delta_lu_gamma_lu)
 
 printbr()
@@ -102,8 +109,12 @@ local expr = gamma'_a^c' * gamma'_c^b'
 local gamma_lu_sq_def = expr:eq(expr:substIndex(gamma_lu_def))
 printbr(gamma_lu_sq_def)
 gamma_lu_sq_def = gamma_lu_sq_def():simplifyMetrics()
---gamma_lu_sq_def = gamma_lu_sq_def:substIndex(n_norm_def)	-- not working
+--[[ not working
+gamma_lu_sq_def = gamma_lu_sq_def:substIndex(n_norm_def)
+--]]
+-- [[ so instead
 gamma_lu_sq_def = gamma_lu_sq_def:subst(n_norm_def:reindex{a='c'})()
+--]]
 printbr(gamma_lu_sq_def)
 gamma_lu_sq_def = gamma_lu_sq_def:subst(delta_lu_from_gamma_lu)()
 printbr(gamma_lu_sq_def)
@@ -121,7 +132,13 @@ local n_u_times_gamma_lu_def = (gamma_lu_def * n'^a')()
 printbr(n_u_times_gamma_lu_def)
 n_u_times_gamma_lu_def = n_u_times_gamma_lu_def:simplifyAddMulDiv():simplifyMetrics()
 printbr(n_u_times_gamma_lu_def)
-n_u_times_gamma_lu_def = n_u_times_gamma_lu_def:substIndex(n_norm_def)():reindex{ab='ba'}
+--[[ why doesn't substIndex work even when the indexes don't need to be swapped?
+n_u_times_gamma_lu_def = n_u_times_gamma_lu_def:substIndex(n_norm_def)()
+--]]
+-- [[
+n_u_times_gamma_lu_def = n_u_times_gamma_lu_def:subst(n_norm_def)()
+--]]
+n_u_times_gamma_lu_def = n_u_times_gamma_lu_def:reindex{ab='ba'}
 printbr(n_u_times_gamma_lu_def)
 printbr()
 
@@ -129,7 +146,12 @@ local gamma_lu_times_n_l_def = (gamma_lu_def * n'_b')()
 printbr(gamma_lu_times_n_l_def)
 gamma_lu_times_n_l_def = gamma_lu_times_n_l_def:simplifyAddMulDiv():simplifyMetrics()
 printbr(gamma_lu_times_n_l_def)
-gamma_lu_times_n_l_def = gamma_lu_times_n_l_def:substIndex(n_norm_def:reindex{a='b'})()
+--[[ hmm why doesn't substIndex work for sum-terms on the lhs?
+gamma_lu_times_n_l_def = gamma_lu_times_n_l_def:substIndex(n_norm_def)()
+--]]
+-- [[ so until then, use the specific indexes ...
+gamma_lu_times_n_l_def = gamma_lu_times_n_l_def:subst(n_norm_def:reindex{a='b'})()
+--]]
 printbr(gamma_lu_times_n_l_def)
 
 
@@ -215,8 +237,8 @@ printHeader'2nd projection covariant derivative of a spatial vector'
 local proj2_nabla2_v_ull_def = v'^a_|bc':eq(v'^a_|b''_|c'):substIndex(proj_nabla_v_ul_def)
 printbr(proj2_nabla2_v_ull_def)
 proj2_nabla2_v_ull_def[2] = proj2_nabla2_v_ull_def[2]:replace(
-	TensorIndex{symbol='c', derivative='|', lower=true},
-	TensorIndex{symbol='c', derivative=';', lower=true}
+	Tensor.Index{symbol='c', derivative='|', lower=true},
+	Tensor.Index{symbol='c', derivative=';', lower=true}
 ):reindex{abc='gef'} * gamma'_g^a' * gamma'_b^e' * gamma'_c^f'
 printbr(proj2_nabla2_v_ull_def)
 proj2_nabla2_v_ull_def = proj2_nabla2_v_ull_def:simplifyAddMulDiv()
@@ -325,7 +347,12 @@ printbr(EFE_tt_def)
 EFE_tt_def = EFE_tt_def:simplifyMetrics()
 printbr(EFE_tt_def)
 printbr('using', n_norm_def, ',', rho_def)
-EFE_tt_def = EFE_tt_def:substIndex(n_norm_def, rho_def:switch())	-- TOOD substIndex not working for matching sum indexes
+--[[	-- TOOD substIndex not working for matching sum indexes
+EFE_tt_def = EFE_tt_def:substIndex(n_norm_def, rho_def:switch())
+--]]
+-- [[
+EFE_tt_def = EFE_tt_def:subst(n_norm_def:reindex{a='b'}, rho_def:switch())
+--]]
 EFE_tt_def = EFE_tt_def:simplifyAddMulDiv()
 printbr(EFE_tt_def)
 
@@ -339,7 +366,12 @@ EFE_ti_def = EFE_ti_def:substIndex(gamma_lu_def)
 printbr(EFE_ti_def)
 EFE_ti_def = EFE_ti_def:simplifyMetrics()()
 printbr(EFE_ti_def)
+--[[
 EFE_ti_def = EFE_ti_def:substIndex(n_norm_def, rho_def:switch())()
+--]]
+-- [[
+EFE_ti_def = EFE_ti_def:subst(n_norm_def:reindex{a='b'}, rho_def:switch())()
+--]]
 printbr(EFE_ti_def)
 
 
@@ -352,7 +384,12 @@ EFE_ij_def = EFE_ij_def:substIndex(gamma_lu_def)
 printbr(EFE_ij_def)
 EFE_ij_def = EFE_ij_def:simplifyMetrics()()
 printbr(EFE_ij_def)
-EFE_ij_def = EFE_ij_def:substIndex(rho_def:switch())()
+--[[
+EFE_ij_def = EFE_ij_def:substIndex(n_norm_def, rho_def:switch())()
+--]]
+-- [[
+EFE_ij_def = EFE_ij_def:subst(n_norm_def:reindex{a='b'}, rho_def:switch())()
+--]]
 printbr(EFE_ij_def)
 
 

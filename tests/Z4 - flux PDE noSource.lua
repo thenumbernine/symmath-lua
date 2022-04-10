@@ -266,7 +266,7 @@
 		),
 		Matrix(
 			Derivative(
-				var(" {{ b} _x} ^y", {var("t"), var("x"), var("y"), var("z")}),
+				var(" {{ b} ^y} _x", {var("t"), var("x"), var("y"), var("z")}),
 				var("t")
 			)
 		),
@@ -284,13 +284,13 @@
 		),
 		Matrix(
 			Derivative(
-				var(" {{ b} _x} ^z", {var("t"), var("x"), var("y"), var("z")}),
+				var(" {{ b} ^z} _x", {var("t"), var("x"), var("y"), var("z")}),
 				var("t")
 			)
 		),
 		Matrix(
 			Derivative(
-				var(" {{ b} _y} ^z", {var("t"), var("x"), var("y"), var("z")}),
+				var(" {{ b} ^z} _y", {var("t"), var("x"), var("y"), var("z")}),
 				var("t")
 			)
 		),
@@ -1222,10 +1222,10 @@
 					var(" {{ b} ^x} _x")
 				),
 				-(
-					var(" {{ b} _x} ^y")
+					var(" {{ b} ^y} _x")
 				),
 				-(
-					var(" {{ b} _x} ^z")
+					var(" {{ b} ^z} _x")
 				),
 				Constant(0),
 				Constant(0),
@@ -1301,19 +1301,19 @@
 				),
 				-(
 					(
-						var(" {{ b} _y} ^z") /
+						var(" {{ b} ^z} _y") /
 						Constant(2)
 					)
 				),
 				-(
 					(
-						var(" {{ b} _x} ^y") /
+						var(" {{ b} ^y} _x") /
 						Constant(2)
 					)
 				),
 				-(
 					(
-						var(" {{ b} _x} ^z") /
+						var(" {{ b} ^z} _x") /
 						Constant(2)
 					)
 				),
@@ -1420,13 +1420,13 @@
 				Constant(0),
 				-(
 					(
-						var(" {{ b} _x} ^y") /
+						var(" {{ b} ^y} _x") /
 						Constant(2)
 					)
 				),
 				-(
 					(
-						var(" {{ b} _x} ^z") /
+						var(" {{ b} ^z} _x") /
 						Constant(2)
 					)
 				),
@@ -1517,7 +1517,7 @@
 					var(" {{ b} ^y} _y")
 				),
 				-(
-					var(" {{ b} _y} ^z")
+					var(" {{ b} ^z} _y")
 				),
 				Constant(0),
 				Constant(0),
@@ -1604,7 +1604,7 @@
 				),
 				-(
 					(
-						var(" {{ b} _y} ^z") /
+						var(" {{ b} ^z} _y") /
 						Constant(2)
 					)
 				),
@@ -15120,7 +15120,7 @@
 				Constant(0),
 				Constant(0),
 				-(
-					var(" {{ b} _x} ^y")
+					var(" {{ b} ^y} _x")
 				),
 				Constant(0),
 				Constant(0),
@@ -18833,7 +18833,7 @@
 				Constant(0),
 				Constant(0),
 				-(
-					var(" {{ b} _x} ^z")
+					var(" {{ b} ^z} _x")
 				),
 				Constant(0),
 				Constant(0),
@@ -18887,7 +18887,7 @@
 				Constant(0),
 				Constant(0),
 				-(
-					var(" {{ b} _y} ^z")
+					var(" {{ b} ^z} _y")
 				),
 				Constant(0),
 				Constant(0),

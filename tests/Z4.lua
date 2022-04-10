@@ -566,7 +566,6 @@ dt_dHat'_ijk':setSymmetries{2,3}
 K'_ij':setSymmetries{1,2}
 S'_ij':setSymmetries{1,2}
 Gamma'_ijk':setSymmetries{2,3}
-b'_ij':setSymmetries{1,2}
 
 -- TODO derivatives automatic? otherwise there are a lot of permtuations ...
 gamma'_ij,k':setSymmetries{1,2}
@@ -579,6 +578,7 @@ dt_dHat'_ijk,l':setSymmetries({2,3}, {1,4})
 dHat_t'_ij':setSymmetries{1,2}
 dHat_t'_ij,k':setSymmetries{1,2}
 K'_ij,k':setSymmetries{1,2}
+b'_ij,k':setSymmetries{2,3}
 
 
 -- [[ ok not typical Z4 vars but i'm using it for MDE and for GammaDriver shift flux codegen ...
