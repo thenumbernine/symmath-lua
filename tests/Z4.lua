@@ -161,6 +161,13 @@ therefore this does nothing without eigensystem_includeShiftVars=false as well
 eigensystem_removeShiftVars = false
 
 
+--[[
+once we have our full dU/dt + dF/dU dU/dx,
+set this to true to simplify the dF/dU terms to be only in terms of U (and gamma^ij and df/dalpha)
+set this to false to keep it in simplest terms
+--]]
+eigensystem_exportOnlyUs = true
+
 -- these were giving BSSN some trouble, so here they are as well.
 symmath.op.div:pushRule'Prune/conjOfSqrtInDenom'
 symmath.op.div:pushRule'Factor/polydiv'
@@ -2891,23 +2898,28 @@ printHeader'as a balance law system:'
 local A, SijklMat = factorLinearSystem(rhsWithDeltas, UpqmnrVars)
 local dFijkl_dUpqmn_mat = (-A)()
 
+if not eigensystem_exportOnlyUs then
 -- [[ simplify deltas 
 -- if I do this then I get non-canonical index form of state vars 
 -- if I don't do this then expanding goes really really slow
-dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()	
+	dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics()	
 --]]
---[[ so lets try doing this only for simplifying deltas ... idk if it makes a dif ... seems to still be taking a long long time
-dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics{Expression.simplifyMetricMulRules.delta}
+else
+-- [[ so lets try doing this only for simplifying deltas ... idk if it makes a dif ... seems to still be taking a long long time
+	dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplifyMetrics{Expression.simplifyMetricMulRules.delta}
 --]]
+end
 dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:applySymmetries()
 dFijkl_dUpqmn_mat = dFijkl_dUpqmn_mat:simplify()
 
 -- [[ simplify terms in the matrix
--- this lowers the # of terms, but makes it harder for recombination in the eigenmode code later
-dFijkl_dUpqmn_mat = simplifyDAndKTraces(dFijkl_dUpqmn_mat)
-	:subst((-conn_u_from_d_ull_d_llu:switch())():reindex{i='l'})
-	-- this one isn' working:
-	--:subst((gamma'^pl' * conn_u_from_d_ull_d_llu:switch())():reindex{i='q'})
+if not eigensystem_exportOnlyUs then
+	-- this lowers the # of terms
+	dFijkl_dUpqmn_mat = simplifyDAndKTraces(dFijkl_dUpqmn_mat)
+		:subst((-conn_u_from_d_ull_d_llu:switch())():reindex{i='l'})
+		-- this one isn' working:
+		--:subst((gamma'^pl' * conn_u_from_d_ull_d_llu:switch())():reindex{i='q'})
+end
 --]]
 
 local UpqmnMat = Matrix(UpqmnVars):T()
@@ -3026,7 +3038,7 @@ dUdx_lhs_exprs = dUdx_lhs_exprs:mapi(function(expr,i)
 end)
 
 -- [[ show eqns in dense-tensor form
-printbr'expanding...'
+printbr'replaced dense tensors but before expanding:'
 for i=1,#dFdx_lhs_exprs do
 	printbr((dUdt_lhs_exprs[i] + dFdx_lhs_exprs[i]):eq(S_rhs_exprs[i]))
 end
@@ -3067,7 +3079,7 @@ printbr()
 dFdx_lhs_exprs = dFdx_lhs_exprs:mapi(function(expr)
 	return expr:map(function(node)
 		if Derivative:isa(node)
-		and node[2] ~= x
+		and (node[2] == y or node[2] == z)
 		then
 			return 0
 		end
@@ -3269,7 +3281,12 @@ do
 		v[1]:setDependentVars(txs:unpack())
 	end
 	local sys = (dUdt_lhs_exprs_expanded_mat + dFijkl_dUpqmn_expanded * dUdx_lhs_exprs_expanded_mat)
-	file['Z4 - flux PDE noSource.lua'] = export.SymMath(sys)
+	local dstfn = 'Z4 - flux PDE noSource'
+	if eigensystem_exportOnlyUs then
+		dstfn = dstfn .. ' usingOnlyUs'
+	end
+	dstfn = dstfn .. '.lua'
+	file[dstfn] = export.SymMath(sys)
 end
 --]]
 
