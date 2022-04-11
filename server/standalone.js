@@ -67,7 +67,17 @@ setTimeout(function() {
 		if (e.keyCode == 9) {
 			e.preventDefault();
 			if (this.selectionStart == this.selectionEnd) {
+				//I forget what website I got this from, but it's not working in Firefox
 				document.execCommand("insertText", false, '\t');
+				//...so instead...
+       			//https://stackoverflow.com/questions/6140632/how-to-handle-tab-in-textarea
+				// ... but this doesn't work with the undo command ...
+				/*
+				var pos = this.selectionStart;
+				var value = $(this).val();
+				$(this).val(value.substring(0, pos) + "\t" + value.substring(pos));
+				this.selectionStart = this.selectionEnd = pos + 1;
+				*/
 			} else {
 				var selStart = this.selectionStart;
 				var selEnd = this.selectionEnd;
