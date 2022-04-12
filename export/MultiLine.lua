@@ -458,7 +458,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		local separateVarianceSymbols
 		local indexStrs = indexes:mapi(function(index)
 			local s = self:apply(index)
-			if #s[1] > 2 then
+			if strlen(s[1]:sub(2)) > 1 then
 				separateVarianceSymbols = true
 			end
 			return s

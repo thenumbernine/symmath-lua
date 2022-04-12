@@ -9,6 +9,8 @@ local SingleLine = class(Console)
 
 SingleLine.name = 'SingleLine'
 
+local strlen = SingleLine.strlen
+
 local function precedence(x)
 	return x.precedence or 10
 end
@@ -147,7 +149,7 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		local separateVarianceSymbols
 		local indexStrs = indexes:mapi(function(index)
 			local s = self:apply(index)
-			if #s > 2 then
+			if strlen(s:sub(2)) > 1 then
 				separateVarianceSymbols = true
 			end
 			return s
