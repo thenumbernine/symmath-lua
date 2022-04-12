@@ -297,7 +297,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
 		local d = expr:nameForExporter(self)
-		local topText = d 
+		local topText = d
 		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars
 		if diffPower > 1 then
@@ -324,7 +324,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		end
 		local text = self:fraction(
 			topText,
-			{table.map(powersForDeriv, function(power, name, newtable) 
+			{table.map(powersForDeriv, function(power, name, newtable)
 				local s = d..name
 				if power > 1 then
 					s = s .. '^'..power
@@ -442,7 +442,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 				s[i] = s[i] .. (' '):rep(l - strlen(s[i]))
 			end
 		end
-		return s	
+		return s
 	end,
 	[require 'symmath.tensor.Index'] = function(self, expr)
 		return {expr:__tostring()}
@@ -454,12 +454,20 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		local Variable = symmath.Variable
 		
 		local t = expr[1]
-		local indexes = {table.unpack(expr, 2)}
+		local indexes = table.sub(expr,2)
+		local separateVarianceSymbols
+		local indexStrs = indexes:mapi(function(index)
+			local s = self:apply(index)
+			if #s[1] > 2 then
+				separateVarianceSymbols = true
+			end
+			return s
+		end)
 
 		local s = self:apply(t)
-		if not (Variable:isa(t) or Array:isa(t) or TensorRef:isa(t)) then 
+		if not (Variable:isa(t) or Array:isa(t) or TensorRef:isa(t)) then
 			s = self:combine(
-				range(#s):mapi(function() return '(' end), 
+				range(#s):mapi(function() return '(' end),
 				self:combine(
 					s,
 					range(#s):mapi(function() return ')' end)
@@ -475,9 +483,12 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		-- [[ compacting a few symbols
 		local lastLower
 		for i,index in ipairs(indexes) do
-			local is = self:apply(index)
+			local is = indexStrs[i]
 			local lower = index.lower or false
-			if i ~= 1 and lower == lastLower then
+			if not separateVarianceSymbols 
+			and i ~= 1 
+			and lower == lastLower 
+			then
 				is[1] = is[1]:sub(2)
 			end
 			lastLower = lower
@@ -501,9 +512,9 @@ end
 -- while most Export.__call methods deal in strings,
 --  MultiLine passes around an array of strings (per-newline)
 -- so we recombine them into one string here at the end
-function MultiLine:__call(...) 
+function MultiLine:__call(...)
 	local result = MultiLine.super.__call(self, ...)
-	if type(result) == 'string' then return '\n'..result end 
+	if type(result) == 'string' then return '\n'..result end
 	return result:concat('\n')
 end
 

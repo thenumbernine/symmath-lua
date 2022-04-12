@@ -142,9 +142,32 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		return expr:__tostring()
 	end,
 	[require 'symmath.tensor.Ref'] = function(self, expr)
-		return table.mapi(expr, function(x)
-			return self:apply(x)
-		end):concat()
+	
+		local indexes = table.sub(expr,2)
+		local separateVarianceSymbols
+		local indexStrs = indexes:mapi(function(index)
+			local s = self:apply(index)
+			if #s > 2 then
+				separateVarianceSymbols = true
+			end
+			return s
+		end)
+
+		local s = self:apply(expr[1])
+		local lastLower
+		for i,index in ipairs(indexes) do
+			local is = indexStrs[i]
+			local lower = index.lower or false
+			if not separateVarianceSymbols 
+			and i ~= 1 
+			and lower == lastLower 
+			then
+				is = is:sub(2)
+			end
+			lastLower = lower
+			s = s .. is
+		end
+		return s
 	end,
 }:setmetatable(nil)
 
