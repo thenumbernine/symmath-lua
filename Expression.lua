@@ -1348,6 +1348,21 @@ Expression.simpifyMetricTensorRules = {
 			end
 		end
 	end,
+
+	-- g^i_j,k... => 0
+	-- δ^i_j,k... => 0
+	deltaDeriv = function(t)
+		symmath = symmath or require 'symmath'
+		local Tensor = symmath.Tensor
+		if Tensor.Ref:isa(t)
+		and (t[1] == Tensor:deltaSymbol() or t[1] == Tensor:metricSymbol())
+		and #t > 3
+		and t[2].lower ~= t[3].lower
+		and t[4].derivative
+		then
+			return Constant(0)
+		end
+	end,
 }
 
 function Expression:simplifyMetrics(mulrules, trules)
@@ -1397,9 +1412,11 @@ function Expression:simplifyMetrics(mulrules, trules)
 	
 	-- individual tensor rules
 	if not trules then
+		-- TODO why not iterate?  in what order? store rules as {key=value}, pairs?  sort and insert in some order ? named order?
 		trules = table()
 		trules:insert(self.simpifyMetricTensorRules.deltaMetric)
 		trules:insert(self.simpifyMetricTensorRules.deltaMetricTrace)
+		trules:insert(self.simpifyMetricTensorRules.deltaDeriv)
 	else
 		trules = table(trules)
 	end
@@ -1796,7 +1813,7 @@ function Expression:applyRule(ruleClass, ruleName)
 	-- that would otherwise prevent the subsequent visitor's other rules from applying to this expression
 	visitor.rememberVisit = false
 	function visitor:lookup(m, bubbleIn)
---print('looking up', m.name, '<br>')		
+--print('looking up', m.name, '<br>')
 		assert(m, "expression metatable is nil")
 		if m ~= ruleClass then return end
 --print('m matches rule class','<br>')
