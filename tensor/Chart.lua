@@ -111,7 +111,7 @@ and define their associated tangentSpaceOperators in the Chart as differentiatin
 					self.tangentSpaceOperators[i] = function(expr)
 						local sum = Constant(0)
 						for j=1,n do
-							sum = sum + eHolToE[i][j] * x:diff(self.coords[j])
+							sum = sum + eHolToE[i][j] * expr:diff(self.coords[j])
 						end
 						return sum()
 					end

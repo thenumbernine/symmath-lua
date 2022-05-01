@@ -60,7 +60,10 @@ local simplifyMetricPerpRule = {
 }
 
 local function simplifyPerpMetrics(expr)
-	return expr:simplifyMetrics{simplifyMetricPerpRule, Tensor.simplifyMetricMulRules.delta}
+	return expr:simplifyMetrics{
+		simplifyMetricPerpRule,
+		Tensor.simplifyMetricMulRules.delta,
+	}
 end
 --]]
 
@@ -325,6 +328,8 @@ RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:replace(
 )
 RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:symmetrizeIndexes(K, {1,2})
 RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:simplifyAddMulDiv():reindex{ghef='efgh'}
+printbr(RPerp_ulll_v_u_def)
+RPerp_ulll_v_u_def = RPerp_ulll_v_u_def:tidyIndexes()()
 printbr(RPerp_ulll_v_u_def)
 printbr("Gauss' equation")
 

@@ -4,6 +4,8 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, implicitVars=true, fixVariableNames=true, MathJax={title='Gravitation 16.1 - expression'}}
 
+local delta = Tensor:deltaSymbol()
+
 local deta_eq_0 = eta'_ab,c':eq(0)
 local ddelta_eq_0 = delta'_ab,c':eq(0)
 
@@ -62,6 +64,7 @@ Conn_def = Conn_def:replace(Phi, 0, isTensorRef)()
 printbr(Conn_def)
 printbr()
 
+printbr'covariant derivative of velocity:'
 local du_def = u'^a_;b':eq(u'^a_,b' + Gamma'^a_cb' * u'^c')
 printbr(du_def)
 
@@ -75,6 +78,17 @@ printbr(duit_def)
 local duij_def = du_def:reindex{ab='ij'}
 printbr(duij_def)
 
+printbr()
+
+printbr'gravitational acceleration:'
+local gravExpr = -Gamma'^a_bc' * u'^b' * u'^c'
+printbr(gravExpr)
+gravExpr = gravExpr:substIndex(Conn_def)
+printbr(gravExpr)
+gravExpr = gravExpr:simplifyAddMulDiv()
+printbr(gravExpr)
+-- TODO for timelike velocities
+-- you should end up with the gradient of Phi 
 printbr()
 
 -- TODO let Phi,t = 0 as well, but that means splitting Conn into time and space
