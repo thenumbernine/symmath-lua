@@ -6,6 +6,28 @@ require 'symmath'.setup{env=env, simplifyConstantPowers=true, MathJax={title='sp
 local units = require 'symmath.physics.units'()
 local m = units.m
 local kg = units.kg
+local H = require 'symmath.Heaviside'
+
+
+--for radial distance r, radius R, Schwarzschild radius Rs
+--inside the planet  (r <= R): z(r) = R sqrt(R/Rs) (1 - sqrt(1 - Rs/R (r/R)^2 ))
+--outside the planet (r >= R): z(r) = R sqrt(R/Rs) (1 - sqrt(1 - Rs/R)) + sqrt(4Rs(r - Rs)) - sqrt(4Rs(R - Rs))
+local zvar = var'z'
+local rvar = var'r'
+local Rvar = var'R'
+local Rsvar = var'rs'
+local epsilonvar = var'\\epsilon'
+local z_int_def = zvar:eq(sqrt(Rvar^3/Rsvar) * (1 - sqrt(1 - Rsvar * rvar^2 / Rvar^3)))
+local z_ext_def = zvar:eq(sqrt(Rvar^3/Rsvar) * (1 - sqrt(1 - Rsvar/Rvar)) + sqrt(4 * Rsvar * (rvar - Rsvar)) - sqrt(4 * Rsvar * (Rvar - Rsvar)))
+local z_def = zvar:eq(H(Rvar - rvar) * z_int_def:rhs() + H(rvar - Rvar - epsilonvar) * z_ext_def:rhs())
+printbr('embedding function of spacetime inside a planet of radius', R, 'with Schwarzschild mass', Rs, ':')
+printbr(z_int_def)
+printbr('embedding function of spacetime outside the planet:')
+printbr(z_ext_def)
+printbr('combined:')
+printbr(z_def)
+printbr()
+
 
 function process(args)
 	local name = args.name
@@ -25,36 +47,34 @@ function process(args)
 	printbr(name..' schwarzschild radius = '..info.schwarzschildRadius)
 	printbr(name..' photon sphere radius = '..info.photonSphereRadius)
 	printbr()
-	
+
 	--embedding diagram formulas
-	local z = function(r)
-		--for radial distance r, radius R, Schwarzschild radius Rs
-		--inside the planet  (r <= R): z(r) = R sqrt(R/Rs) (1 - sqrt(1 - Rs/R (r/R)^2 ))
-		--outside the planet (r >= R): z(r) = R sqrt(R/Rs) (1 - sqrt(1 - Rs/R)) + sqrt(4Rs(r - Rs)) - sqrt(4Rs(R - Rs))
-		local R = (info.radius / m)()
-		local Rs = (info.schwarzschildRadius / m)()
-		local z_int = sqrt(R^3/Rs) * (1 - sqrt(1 - Rs * r^2 / R^3))
-		z_int = z_int()
-		local z_ext = (sqrt(R^3/Rs) * (1 - sqrt(1 - Rs/R)) + sqrt(4 * Rs * (r - Rs)) - sqrt(4 * Rs * (R - Rs)))
-		-- I think simplify() is moving out a -1 from the subtractions, then sqrt()'ing it into an 'i' ... oops
-		--z_ext = z_ext()
-		local H = require 'symmath.Heaviside'
-		local epsilon = 1e-9
-		return H(R - r) * z_int + H(r - R - epsilon) * z_ext
+	local z = function(r, rmax)
+		return z_def:rhs()
+			:replace(Rvar, (info.radius / m)())
+			:replace(Rsvar, (info.schwarzschildRadius / m)())
+			:replace(rvar, r)
+			:replace(epsilonvar, rmax * 1e-9)
 	end
 	
 	local x = var'x'
+	local rmax = (3 * info.radius / m)().value
 	GnuPlot:plot{
 		xlabel = 'distance from center',
 		ylabel = 'embedding',
-		xrange = {0, (3 * info.radius / m)().value},
+		xrange = {0, rmax},
+		--yrange = {0, z(x):replace(x, 3*info.radius/m)().value},
 		title = name..' embedding radius',
 		-- TODO ... I need to embed the image into the html ...
 		-- or determine in advance the destination of the output ...
 		{
-			z(x),
+			z(x, rmax),
 			title='z(r)',
-		}
+		},
+--		{
+--			sqrt((info.radius / m)()^2 - x^2),
+--			title = 'radius',
+--		}
 	}
 end
 

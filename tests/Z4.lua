@@ -519,6 +519,7 @@ local b = var'b'
 local d = var'd'
 local dHat = var'\\hat{d}'
 local dDelta = var[[\overset{\Delta}{d}]]
+local GDelta = var[[\overset{\Delta}{G}]]
 -- hyperbolic gamma driver time derivative state var
 local B = var'B'
 -- eigenvalue variable
@@ -552,6 +553,7 @@ gammaDelta:nameForExporter('C', 'gammaDelta')
 Theta:nameForExporter('C', 'Theta')
 dHat:nameForExporter('C', 'dHat')
 dDelta:nameForExporter('C', 'dDelta')
+GDelta:nameForExporter('C', 'GDelta')
 -- lambda?
 
 tr_b:nameForExporter('C', 'tr_b')
@@ -2095,12 +2097,12 @@ local d0_LambdaBar_u_def =
 		)
 		+ frac(2,3) * tr_DHatBeta * DeltaGamma'^l_mn' * gamma'^mn'
 		+ frac(2,3) * tr_DHatBeta * e'^l'
-		- 2 * A'^lj' * (alpha * a'_j' - dDelta'_j')
+		- 2 * A'^lj' * (alpha * a'_j' - GDelta'_j')
 		+ 2 * A'^jk' * DeltaGamma'^l_jk'
 		+ frac(4,3) * alpha * tr_K * (a'^l' - 2 * e'^l')
 		- frac(2,3) * (
-			dDelta'^k' * DHatBeta'^l_k'
-			+ frac(1,3) * dDelta'^l' * (tr_DHatBeta - 4 * alpha * tr_K)
+			GDelta'^k' * DHatBeta'^l_k'
+			+ frac(1,3) * GDelta'^l' * (tr_DHatBeta - 4 * alpha * tr_K)
 		)
 	)
 	- gammaDriverK * LambdaBar'^j' * b'^l_j'
