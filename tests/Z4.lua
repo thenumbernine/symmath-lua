@@ -505,8 +505,6 @@ local alpha = var'\\alpha'
 local beta = var'\\beta'
 local K = var'K'
 local gamma = var'\\gamma'
-local gammaHat = var'\\hat{\\gamma}'
-local gammaDelta = var[[\overset{\Delta}{\gamma}]]
 -- lapse gauge
 -- if our eigenvalues are sqrt(f gamma^xx) ... gamma^xx being >= 0 makes sense ... but if, for 1+log slicing, f=2/alpha ... then our alpha is constrained to being positive.  no charged, spinning black hole event horizon interiors.
 local f = var('f', {alpha})
@@ -517,8 +515,6 @@ local Theta = var'\\Theta'
 local a = var'a'
 local b = var'b'
 local d = var'd'
-local dHat = var'\\hat{d}'
-local dDelta = var[[\overset{\Delta}{d}]]
 local GDelta = var[[\overset{\Delta}{G}]]
 -- hyperbolic gamma driver time derivative state var
 local B = var'B'
@@ -530,10 +526,8 @@ local tr_b = var'tr(b)'
 local tr_K = var'tr(K)'
 
 alpha:setDependentVars(txs:unpack())
-gammaDelta'_ij':setDependentVars(txs:unpack())
 gamma'_ij':setDependentVars(txs:unpack())
 a'_k':setDependentVars(txs:unpack())
-dDelta'_kij':setDependentVars(txs:unpack())
 d'_kij':setDependentVars(txs:unpack())
 K'_ij':setDependentVars(txs:unpack())
 Theta:setDependentVars(txs:unpack())
@@ -548,11 +542,7 @@ rho:nameForExporter('C', 'rho')
 alpha:nameForExporter('C', 'alpha')
 beta:nameForExporter('C', 'beta')
 gamma:nameForExporter('C', 'gamma')
-gammaHat:nameForExporter('C', 'gammaHat')
-gammaDelta:nameForExporter('C', 'gammaDelta')
 Theta:nameForExporter('C', 'Theta')
-dHat:nameForExporter('C', 'dHat')
-dDelta:nameForExporter('C', 'dDelta')
 GDelta:nameForExporter('C', 'GDelta')
 -- lambda?
 
@@ -560,32 +550,16 @@ tr_b:nameForExporter('C', 'tr_b')
 tr_K:nameForExporter('C', 'tr_K')
 
 -- used for converting to dense tensor
-local dt_dHat = var'\\partial_t \\hat{d}'
-local dHat_t = var'\\hat{d}_t'
-dt_dHat:nameForExporter('C', 'dt_dHat')
-dHat_t:nameForExporter('C', 'dHat_t')
 
 gamma'_ij':setSymmetries{1,2}
-gammaHat'_ij':setSymmetries{1,2}
-gammaDelta'_ij':setSymmetries{1,2}
 d'_ijk':setSymmetries{2,3}
-dHat'_ijk':setSymmetries{2,3}
-dDelta'_ijk':setSymmetries{2,3}
-dt_dHat'_ijk':setSymmetries{2,3}
 K'_ij':setSymmetries{1,2}
 S'_ij':setSymmetries{1,2}
 Gamma'_ijk':setSymmetries{2,3}
 
 -- TODO derivatives automatic? otherwise there are a lot of permtuations ...
 gamma'_ij,k':setSymmetries{1,2}
-gammaHat'_ij,k':setSymmetries{1,2}
-gammaDelta'_ij,k':setSymmetries{1,2}
 d'_ijk,l':setSymmetries({2,3}, {1,4})
-dHat'_ijk,l':setSymmetries({2,3}, {1,4})
-dDelta'_ijk,l':setSymmetries({2,3}, {1,4})
-dt_dHat'_ijk,l':setSymmetries({2,3}, {1,4})
-dHat_t'_ij':setSymmetries{1,2}
-dHat_t'_ij,k':setSymmetries{1,2}
 K'_ij,k':setSymmetries{1,2}
 b'_ij,k':setSymmetries{2,3}
 
@@ -646,8 +620,8 @@ Tensor.metricVariable = gamma
 -- "do end" doesn't reduce the # of local vars, so...
 function tmp()
 	-- test case for
-	local src = frac(1,2) * alpha * gamma'^mp' * dDelta'_mip,j'
-	local result = insertDeltasToSetIndexSymbols(src, table{dDelta'_mpq,r'})
+	local src = frac(1,2) * alpha * gamma'^mp' * d'_mip,j'
+	local result = insertDeltasToSetIndexSymbols(src, table{d'_mpq,r'})
 	printbr(result)
 	os.exit()
 end
@@ -668,8 +642,8 @@ a_i = ln(α)_,i
 d_kij = 1/2 γ_ij,k
 
 general coordinate:
-d_kij = dHat_kij + Δd_kij
-γ_kij = γHat_kij + Δγ_kij
+d_kij
+γ_kij
 
 Z4 GLM vars:
 Z^i = γ^i_μ Z^μ
@@ -756,27 +730,7 @@ function usingRHSSubstIndexSimplify(expr, ...)
 end
 
 
-printbr(gammaHat'_ij', ' = spatial background metric')
-printbr(gammaDelta'_ij', ' = difference of spatial metric and spatial background metric')
-
-local gamma_ll_from_gammaHat_ll_gammaDelta_ll = gamma'_ij':eq(gammaHat'_ij' + gammaDelta'_ij')
-printbr(gamma_ll_from_gammaHat_ll_gammaDelta_ll, '= spatial metric')
-printbr()
-
-
-local dHat_lll_def = dHat'_kij':eq(frac(1,2) * gammaHat'_ij,k')
-printbr(dHat_lll_def, '= spatial background metric derivative')
-
-local d_gammaHat_lll_from_dHat_lll = dHat_lll_def:solve(gammaHat'_ij,k')
-printbr(d_gammaHat_lll_from_dHat_lll)
-printbr()
-
-
-local dDelta_lll_def = dDelta'_kij':eq(frac(1,2) * gammaDelta'_ij,k')
-printbr(dDelta_lll_def, '= difference of spatial metric derivative and spatial background metric derivative, hyperbolic state variable')
-
-local d_gammaDelta_lll_from_dDelta_lll = dDelta_lll_def:solve(gammaDelta'_ij,k')
-printbr(d_gammaDelta_lll_from_dDelta_lll)
+printbr(gamma'_ij', '= spatial metric')
 printbr()
 
 
@@ -787,21 +741,6 @@ local d_gamma_lll_from_d_lll = d_lll_def:solve(gamma'_ij,k')
 printbr(d_gamma_lll_from_d_lll)
 printbr()
 
-local d_gamma_lll_from_d_gammaHat_lll_d_gammaDelta_lll = gamma_ll_from_gammaHat_ll_gammaDelta_ll'_,k'()
-printbr(d_gamma_lll_from_d_gammaHat_lll_d_gammaDelta_lll)
-
-local d_gamma_lll_from_d_gammaHat_lll_dDelta_lll = clone(d_gamma_lll_from_d_gammaHat_lll_d_gammaDelta_lll)
-	:subst(d_gammaDelta_lll_from_dDelta_lll)()
-printbr(d_gamma_lll_from_d_gammaHat_lll_dDelta_lll)
-
-local d_gamma_lll_from_dHat_lll_dDelta_lll = clone(d_gamma_lll_from_d_gammaHat_lll_dDelta_lll)
-	:subst(d_gammaHat_lll_from_dHat_lll)()
-printbr(d_gamma_lll_from_dHat_lll_dDelta_lll)
-
-local d_lll_from_dHat_lll_dDelta_lll = d_gamma_lll_from_dHat_lll_dDelta_lll
-	:subst(d_gamma_lll_from_d_lll)()
-	:solve(d'_kij')
-printbr(d_lll_from_dHat_lll_dDelta_lll)
 printbr()
 
 local d_l_from_d_llu = d'_i':eq(d'_ik^k')
@@ -831,7 +770,6 @@ local conn_ull_from_gamma_uu_d_gamma_lll = (gamma'^im' * conn_lll_def:reindex{i=
 printbr(conn_ull_from_gamma_uu_d_gamma_lll)
 
 local conn_ull_from_gamma_uu_d_lll = usingSubstIndexSimplify(conn_ull_from_gamma_uu_d_gamma_lll, d_gamma_lll_from_d_lll)
-local conn_ull_from_gamma_uu_dHat_lll_dDelta_lll = usingSubstIndexSimplify(conn_ull_from_gamma_uu_d_lll, d_lll_from_dHat_lll_dDelta_lll)
 
 local conn_ull_from_d_ull_d_llu = conn_ull_from_gamma_uu_d_lll:clone()
 conn_ull_from_d_ull_d_llu = conn_ull_from_d_ull_d_llu:simplifyMetrics():replaceIndex(d'_a^c_b', d'_ab^c')
@@ -893,8 +831,6 @@ d_gamma_uul_from_gamma_uu_d_gamma_lll = d_gamma_uul_from_gamma_uu_d_gamma_lll:si
 printbr(d_gamma_uul_from_gamma_uu_d_gamma_lll)	-- not the prettiest way to show that ...
 
 local d_gamma_uul_from_gamma_uu_d_lll = usingSubstIndexSimplify(d_gamma_uul_from_gamma_uu_d_gamma_lll, d_gamma_lll_from_d_lll)
-
-local d_gamma_uul_from_dHat_lll_dDelta_lll = usingSubstIndexSimplify(d_gamma_uul_from_gamma_uu_d_lll, d_lll_from_dHat_lll_dDelta_lll)
 printbr()
 
 -- alpha
@@ -1094,34 +1030,6 @@ printbr(dt_gamma_ll_def:lhs(), 'source term', dt_gamma_ll_rhs)
 printbr()
 
 
-printbr'metric delta evolution'
-
-local dt_gammaDelta_ll_def = dt_gamma_ll_noflux_def:clone()
-dt_gammaDelta_ll_def = dt_gammaDelta_ll_def:splitOffDerivIndexes()
-dt_gammaDelta_ll_def[1] = dt_gammaDelta_ll_def[1]
-	:substIndex(gamma_ll_from_gammaHat_ll_gammaDelta_ll)
-printbr(dt_gammaDelta_ll_def)
-
-dt_gammaDelta_ll_def = dt_gammaDelta_ll_def()
-	:solve(gammaDelta'_ij,t')
-printbr(dt_gammaDelta_ll_def)
-
-printbr'simplifying metrics...'
-dt_gammaDelta_ll_def = dt_gammaDelta_ll_def:simplifyMetrics()
-printbr(dt_gammaDelta_ll_def)
-
--- only rhs so the ,t doesn't mix us up
-dt_gammaDelta_ll_def = usingRHSSubstIndex(dt_gammaDelta_ll_def, d_gammaDelta_lll_from_dDelta_lll, d_gammaHat_lll_from_dHat_lll)
-
-local dt_gammaDelta_ll_from_dDelta_lll_dHat_lll = dt_gammaDelta_ll_def:clone()
-
-_, dt_gammaDelta_ll_negflux, dt_gammaDelta_ll_rhs = combineCommaDerivativesAndRelabel(dt_gammaDelta_ll_def:rhs(), 'r', {'i', 'j'})
-printbr(dt_gammaDelta_ll_def:lhs(), 'flux term', -dt_gammaDelta_ll_negflux)
-printbr(dt_gammaDelta_ll_def:lhs(), 'source term', dt_gammaDelta_ll_rhs)
-
-printbr()
-
-
 -- alright so this isn't used except for the eigensystem part
 -- but it *could* also be used in the next step ...
 printHeader'metric partial evolution:'
@@ -1168,65 +1076,6 @@ printbr(d'_kij,t', 'flux term:', -dt_d_lll_negflux)
 printbr(d'_kij,t', 'source term:', dt_d_lll_rhs)
 
 printbr()
-
-
-printHeader'metric partial delta evolution:'
-
---[[
-local dt_dDelta_lll_def = dt_gammaDelta_ll_def:reindex{k='l'}'_,k'
-printbr(dt_dDelta_lll_def)
---]]
--- [[
-local dt_dDelta_lll_def = dt_gammaDelta_ll_from_dDelta_lll_dHat_lll:reindex{k='l'}
-dt_dDelta_lll_def = dt_dDelta_lll_def / 2
-dt_dDelta_lll_def = dt_dDelta_lll_def[1]'_,k':eq(dt_dDelta_lll_def[2]'_,k')
-dt_dDelta_lll_def[1] = dt_dDelta_lll_def[1]()
-printbr(dt_dDelta_lll_def)
-
-dt_dDelta_lll_def = dt_dDelta_lll_def
-	:replace(gammaDelta'_ij,tk', gammaDelta'_ij,k''_,t')
-	:replace(gammaHat'_ij,tk', gammaHat'_ij,k''_,t')
-dt_dDelta_lll_def = usingSubstIndex(dt_dDelta_lll_def, d_gammaDelta_lll_from_dDelta_lll, d_gammaHat_lll_from_dHat_lll)
-dt_dDelta_lll_def[1] = dt_dDelta_lll_def[1]()
-printbr(dt_dDelta_lll_def)
-
-
--- this is done in the 2008 Yano et al paper, not exactly sure why, not mentioned in the flux of the 2005 Bona et al paper
-printbr'inserting flux shift terms...'
-dt_dDelta_lll_def[2] = dt_dDelta_lll_def[2]
-	+ (beta'^l' * dDelta'_kij')'_,l'	-- goes in the flux
-	- (beta'^l' * dDelta'_kij')'_,l'():substIndex(d_beta_ul_from_b_ul):replaceIndex(b'^l_l', tr_b)	-- goes in the source
-	- (beta'^l' * dDelta'_lij')'_,k'	-- goes in the flux
-	+ (beta'^l' * dDelta'_lij')'_,k'():substIndex(d_beta_ul_from_b_ul):replaceIndex(b'^l_l', tr_b):replace(dDelta'_lij,k', dDelta'_kij,l')	-- goes in the source
-	-- such that half the source terms cancel (thanks to dDelta'_lij,k' == dDelta'_kij,l')
-printbr(dt_dDelta_lll_def)
---]]
-
-dt_dDelta_lll_def = usingSubstIndex(dt_dDelta_lll_def, d_lll_from_dHat_lll_dDelta_lll)
-
-Tensor.Ref:pushRule'Prune/evalDeriv'
-
-printbr'simplifying without distributing flux derivative'
-dt_dDelta_lll_def = dt_dDelta_lll_def()
-printbr(dt_dDelta_lll_def)
-
-printbr'combining derivatives'
-dt_dDelta_lll_def[2] = combineCommaDerivatives(dt_dDelta_lll_def[2])
-printbr(dt_dDelta_lll_def)
-
-printbr'simplifying without distributing flux derivative'
-dt_dDelta_lll_def = dt_dDelta_lll_def()
-printbr(dt_dDelta_lll_def)
-
-Tensor.Ref:popRule'Prune/evalDeriv'
-
-dt_dDelta_lll_def[2], dt_dDelta_lll_negflux, dt_dDelta_lll_rhs = combineCommaDerivativesAndRelabel(dt_dDelta_lll_def[2], 'r', {'i', 'j', 'k'})
-printbr(dt_dDelta_lll_def)
-printbr(dDelta'_kij,t', 'flux term:', -dt_dDelta_lll_negflux)
-printbr(dDelta'_kij,t', 'source term:', dt_dDelta_lll_rhs)
-
-printbr()
-
 
 
 printbr'Riemann curvature'
@@ -1570,12 +1419,8 @@ local dt_Z_l_def = Z'_k,t':eq(
 dt_Z_l_def = dt_Z_l_def()
 printbr(dt_Z_l_def)
 
-dt_Z_l_def = usingSubstSimplify(dt_Z_l_def, d_gamma_uul_from_dHat_lll_dDelta_lll:reindex{ijklm='mnklp'})
 dt_Z_l_def = usingSubstIndexSimplify(dt_Z_l_def, d_alpha_l_from_a_l)
 dt_Z_l_def = usingSubstIndexSimplify(dt_Z_l_def, d_beta_ul_from_b_ul)
-dt_Z_l_def = usingSubstSimplify(dt_Z_l_def
-		conn_ull_from_gamma_uu_dHat_lll_dDelta_lll:reindex{ijkm='nkmp'},
-		conn_ull_from_gamma_uu_dHat_lll_dDelta_lll:reindex{ijkm='nlmp'})
 --]]
 --[[
 reconciling the two:
@@ -2174,7 +2019,7 @@ we have three parts:
 	(hmm, if we want homogeneity then wouldn't we want these vars in the flux, and therefore we woudl want the flux matrix to include the gauge vars?)
 
 3) the rhs terms which don't go into the flux
-	to speed up calculations, these can be represented in their simplest form (i.e. d^l instead of d^l_ij or dDelta^l_ij + dHat^l_ij)
+	to speed up calculations, these can be represented in their simplest form (i.e. d^l instead of d^l_ij
 
 
 so what TODO
@@ -2209,31 +2054,31 @@ local SijklWithShiftTerms = table()
 if flux_includeGaugeVars then
 	UijklWithShiftVars:append{
 		getdtlhs(dt_alpha_def),
-		getdtlhs(dt_gammaDelta_ll_def),
+		getdtlhs(dt_gamma_ll_def),
 	}
 	FijklWithShiftTerms:append{
 		-removeCommaDeriv(dt_alpha_negflux or Constant(0), 'r'),
-		-removeCommaDeriv(dt_gammaDelta_ll_negflux or Constant(0), 'r'),
+		-removeCommaDeriv(dt_gamma_ll_negflux or Constant(0), 'r'),
 	}
 	SijklWithShiftTerms:append{
 		dt_alpha_rhs or Constant(0),
-		dt_gammaDelta_ll_rhs or Constant(0),
+		dt_gamma_ll_rhs or Constant(0),
 	}
 end
 
 UijklWithShiftVars:append{
 	getdtlhs(dt_a_l_def),
-	getdtlhs(dt_dDelta_lll_def),
+	getdtlhs(dt_d_lll_def),
 	getdtlhs(dt_K_ll_def),
 }
 FijklWithShiftTerms:append{
 	-removeCommaDeriv(dt_a_l_negflux, 'r'),
-	-removeCommaDeriv(dt_dDelta_lll_negflux, 'r'),
+	-removeCommaDeriv(dt_d_lll_negflux, 'r'),
 	-removeCommaDeriv(dt_K_ll_negflux, 'r'),
 }
 SijklWithShiftTerms:append{
 	dt_a_l_rhs,
-	dt_dDelta_lll_rhs,
+	dt_d_lll_rhs,
 	dt_K_ll_rhs,
 }
 
@@ -2357,7 +2202,6 @@ end
 for i=1,#SijklWithShiftMat do
 	local term = SijklWithShiftMat[i][1]
 
-	term = term:subst(d_lll_from_dHat_lll_dDelta_lll:solve(dDelta'_kij'):reindex{k='t'}):simplifyAddMulDiv()
 	term = term:simplifyMetrics():simplifyAddMulDiv()
 	term = term:tidyIndexes():simplifyAddMulDiv()
 	term = simplifyDAndKTraces(term):simplifyAddMulDiv()
@@ -2373,15 +2217,7 @@ printbr()
 -- [=[
 Tensor.Chart{coords=xs}
 
-local dHat_t_Dense = dHat_t'_ij':replaceWithDense()()
-local dt_dHatDense = dt_dHat'_kij':replaceWithDense()()
-
 function expandMatrixIndexes(expr)
-	-- special for our time deriv, since the "t" is a fixed dim, not a tensor index
-	-- how about TODO a 'fixed indexes'?  remove these from the dense tensor generation
-	expr = expr:replace(dHat'_tij', dHat_t_Dense'_ij')
-	expr = expr:replace(dHat'_tij,k', dt_dHatDense'_kij')
-
 	-- the code prefers d_ij^k over d_i^k_j
 	expr = expr:replaceIndex(d'_i^k_j', d'_ij^k')
 	-- and K^i_j over K_i^j
@@ -2703,23 +2539,12 @@ local UijkltEqns = table()
 if eigensystem_includeGaugeVars then
 	UijkltEqns:append{
 		dt_alpha_def:lhs():eq(dt_alpha_negflux or Constant(0)),
-		--[[ ok so Δγ_ij sounds nice because I'm comparing it to δ^i_jk of BSSN
-		-- but if we use Δγ_ij and not γ_ij then we lose out on homogeneity -- our flux gains extra pieces that can't be represented in the jacobian
-		dt_gammaDelta_ll_def:lhs():eq(dt_gammaDelta_ll_negflux or Constant(0)),
-		--]]
-		-- [[
 		dt_gamma_ll_def:lhs():eq(dt_gamma_ll_negflux or Constant(0)),
-		--]]
 	}
 end
 UijkltEqns:append{
 	dt_a_l_def:lhs():eq(dt_a_l_negflux),
-	--[[ same as above
-	dt_dDelta_lll_def:lhs():eq(dt_dDelta_lll_negflux),
-	--]]
-	-- [[ so instead ...
 	dt_d_lll_def:lhs():eq(dt_d_lll_negflux),
-	--]]
 	dt_K_ll_def:lhs():eq(dt_K_ll_negflux),
 }
 if eigensystem_includeZVars then
@@ -2832,7 +2657,6 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 --printbr(lhs:eq(rhs))
 
 	-- convert γ^ij_,k's to -2 d_k^ij's
-	--rhs = rhs:substIndex(d_gamma_uul_from_dHat_lll_dDelta_lll)
 	--rhs = rhs:substIndex(d_gamma_uul_from_gamma_uu_d_lll)
 	rhs = rhs:substIndex(d_gamma_uul_from_gamma_uu_d_gamma_lll)
 	rhs = rhs:simplifyAddMulDiv()
@@ -2843,15 +2667,7 @@ UijkltEqns = UijkltEqns:mapi(function(eqn,i)
 	rhs = rhs
 		:substIndex(d_alpha_l_from_a_l)
 		:substIndex(d_beta_ul_from_b_ul)
-		--:substIndex(d_gamma_lll_from_dHat_lll_dDelta_lll)
 		:substIndex(d_gamma_lll_from_d_lll)
-	rhs = rhs:simplifyAddMulDiv()
---printbr(lhs:eq(rhs))
-	--]]
-
-	--[[ convert d_ijk,l to ^d_ijk,l + Δd_ijk,l
-	rhs = rhs:splitOffDerivIndexes()
-	rhs = rhs:substIndex((d_lll_from_dHat_lll_dDelta_lll)())
 	rhs = rhs:simplifyAddMulDiv()
 --printbr(lhs:eq(rhs))
 	--]]
@@ -2971,11 +2787,10 @@ printbr((dUdt_lhs + dFdx_lhs):eq(SijklMat))
 
 -- ok i think this is what is doing me in ...
 -- previous for simplifications
---dDelta'_ijk,l':setSymmetries({2,3}, {1,4})
+--d'_ijk,l':setSymmetries({2,3}, {1,4})
 -- but now for expanding dense matrices, don't use the d_(k|ij,|l) symmetry:
-dDelta'_ijk,l':setSymmetries{2,3}
 d'_ijk,l':setSymmetries{2,3}
--- YUP -- without this the dU/dx vector gets /dy's in the dDelta part ... so yeah push this symmetry *HERE*
+-- YUP -- without this the dU/dx vector gets /dy's in the d part ... so yeah push this symmetry *HERE*
 -- SO HERE I have to remove all symmetries of flux state vars that span derivatives
 --a'_i,j':setSymmetries()	-- ofc I don't use the symmetry of a_i,j anyways ...
 
@@ -3039,7 +2854,7 @@ dUdx_lhs_exprs = dUdx_lhs_exprs:mapi(function(expr,i)
 	return expr
 end)
 
--- [[ show eqns in dense-tensor form
+--[[ show eqns in dense-tensor form
 printbr'replaced dense tensors but before expanding:'
 for i=1,#dFdx_lhs_exprs do
 	printbr((dUdt_lhs_exprs[i] + dFdx_lhs_exprs[i]):eq(S_rhs_exprs[i]))
