@@ -547,8 +547,8 @@ beta:nameForExporter('C', 'beta')
 gamma:nameForExporter('C', 'gamma')
 Theta:nameForExporter('C', 'Theta')
 GDelta:nameForExporter('C', 'GDelta')
-kappa1:nameForExporter('C', 'kappa1')
-kappa2:nameForExporter('C', 'kappa2')
+kappa1:nameForExporter('C', 'solver->kappa1')
+kappa2:nameForExporter('C', 'solver->kappa2')
 -- lambda?
 
 tr_b:nameForExporter('C', 'tr_b')
