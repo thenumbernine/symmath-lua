@@ -511,6 +511,9 @@ local f = var('f', {alpha})
 -- Z4 vars
 local Z = var'Z'
 local Theta = var'\\Theta'
+-- Z4 constraint parameters
+local kappa1 = var'\\kappa_1'
+local kappa2 = var'\\kappa_2'
 -- 1st derivative state vars
 local a = var'a'
 local b = var'b'
@@ -544,6 +547,8 @@ beta:nameForExporter('C', 'beta')
 gamma:nameForExporter('C', 'gamma')
 Theta:nameForExporter('C', 'Theta')
 GDelta:nameForExporter('C', 'GDelta')
+kappa1:nameForExporter('C', 'kappa1')
+kappa2:nameForExporter('C', 'kappa2')
 -- lambda?
 
 tr_b:nameForExporter('C', 'tr_b')
@@ -1306,8 +1311,6 @@ printbr()
 
 printHeader[[Z4 $\Theta$ definition]]
 
--- TODO derive me plz from the original R_uv + 2 Z_(u;v) = 8 pi (T^TR)_uv
--- are you sure there's no beta^i's?
 local dt_Theta_def = Theta'_,t':eq(
 
 	(Theta * beta'^k')'_,k'
@@ -1323,7 +1326,9 @@ local dt_Theta_def = Theta'_,t':eq(
 		- K'^m_n' * K'^n_m'
 		- 16 * pi * rho
 	)
-	
+
+	- alpha * kappa1 * (kappa2 + 2) * Theta
+
 	- Theta * tr_b
 )
 printbr(dt_Theta_def)
@@ -1366,10 +1371,6 @@ printbr()
 printHeader[[Z4 $Z_k$ definition]]
 
 --[[
-TODO derive me plz
-
-are you sure there's no beta^i's?
-
 2005 Bona p.61 eqn.3.85
 Z_k,t = Z_k,l β^l
 	+ Z_l β^l_,k
@@ -1464,6 +1465,7 @@ local dt_Z_l_def = Z'_k,t':eq(
 			- 2 * Z'^l'
 		)
 		- d'_kpq' * K'^pq'
+		- kappa1 * Z'_k'
 		- 8 * pi * S'_k'
 	)
 	+ Z'_l' * b'^l_k'
@@ -1800,6 +1802,7 @@ let ΔG_i = G_i - ^G_i
 ΔG_i = d_i - ^d_ijk ^γ^jk		<- ^d_ijk isn't raised/lowered by ^γ^ij, *AND* because Δd_ijk is the difference *IN COVARIANT FORM*
 									(this is why I'm thinking maybe use conn and connHat as state vars, and deltaConn instead of deltaMetricPartial)
 lets define ΔG^i = γ^ij ΔG_j
+(though tbf, G_i and ^G_i should be using different basis, so subtracting their components is worthless)
 
 using:
 exp(φ) = (γ/_γ)^(1/12)
