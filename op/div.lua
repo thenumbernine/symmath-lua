@@ -84,8 +84,9 @@ function div:evaluateLimit(x, a, side)
 	--]]
 	if Constant.isValue(Lq, 0) then
 		if not p:dependsOn(x) then
-			if q == x then
-				-- lim x->root± 1/x = ±inf
+			-- TODO is this always valid, or is it only valid for 'a' a constant?
+			if Constant.isValue((q - (x - a))(), 0) then
+				-- lim x->root± 1/(x-a) = ±inf
 				if side == Side.plus then return prune(p * inf) end
 				if side == Side.minus then return prune(-p * inf) end
 			else

@@ -1,7 +1,7 @@
 --[[
 formal mathematicaal definition of limit:
 
-lim x→c+ f(x) = L <=> for all ε > 0 there exists δ > 0 s.t. ( 0 < x − c < δ) => |f(x) − L| < ε 
+lim x→c+ f(x) = L <=> for all ε > 0 there exists δ > 0 s.t. ( 0 < x − c < δ) => |f(x) − L| < ε
 lim x→c- f(x) = L <=> for all ε > 0 there exists δ > 0 s.t. (-δ < x - c < 0) => |f(x) − L| < ε
 --]]
 local class = require 'ext.class'
@@ -26,7 +26,10 @@ function Side:clone() return self end
 Side.__eq = rawequal
 --]]
 -- [[ so here is the fix that shouldn't be necessary ...
-function Side.__eq(a,b) return a.name == b.name end
+function Side.__eq(a,b)
+--print('comparing '..rawname(a)..' '..a.name..' with '..rawname(b)..' '..b.name..'<br>')
+	return a.name == b.name
+end
 --]]
 
 local Limit = class(Expression)
@@ -43,7 +46,7 @@ Limit.precedence = 3.5
 -- expose the internal class
 Limit.Side = Side
 
--- init: Limit(f(x),x,a, side): 
+-- init: Limit(f(x),x,a, side):
 -- lim(x->a)(f(x)) = Limit(f(x), x, a, side)
 
 function Limit:init(...)
@@ -99,18 +102,18 @@ function Limit.evaluateLimit_plusMinusOne_to_plusMinusInf(f, x, a, side, decreas
 	-- then again, the only difference is that RealSubset(-1,-1,true,true):contains(L) will also pick up variables defined to exist only on the set {-1} ...
 	-- so it's basically the same as Constant.isValue(L, -1)
 	--if symmath.set.RealSubset(-1, -1, true, true):contains(L) then
-	if Constant.isValue(L, -1) and side == Side.plus then 
+	if Constant.isValue(L, -1) and side == Side.plus then
 		if decreasing then
 			return inf
 		else
 			return Constant(-1) * inf
 		end
 	end
-	if Constant.isValue(L, 1) and side == Side.minus then 
+	if Constant.isValue(L, 1) and side == Side.minus then
 		if decreasing then
 			return Constant(-1) * inf
 		else
-			return inf 
+			return inf
 		end
 	end
 
@@ -137,8 +140,8 @@ otherwise we just get lim(1/x, x, 0) = lim(nan, x, 0) = nan
 another fix: don't evaluate indeterminates outside of limits.
 but that would just leave expressions sitting, rather than telling the user "hey this doesn't work"
 
-so we do want simplfiications to go on ?right? 
-but we definitely do not want indeterminate forms replaced.  maybe push only that rule? 
+so we do want simplfiications to go on ?right?
+but we definitely do not want indeterminate forms replaced.  maybe push only that rule?
 maybe just do everything for Limit in bubble-in?
 
 how about the insides? what form should we use?
@@ -197,8 +200,8 @@ Limit.rules = {
 				local pl = prune:apply(ll)
 				local pr = prune:apply(lr)
 				
-				if pl == pr then 
-					return pl 
+				if pl == pr then
+					return pl
 				else
 					-- if lim x->a+ ~= lim x->a- then lim x->a is unknown
 					-- so SFINAE: don't touch the result
@@ -206,7 +209,7 @@ Limit.rules = {
 					-- but that causes the assumption that certain only-one-sided-limit's two-sided-limit is indeterminate to fail
 					-- so return indeterminate?
 					--return symmath.invalid
-					-- but this causes the default unknown return of Limit, to return itself as is, 
+					-- but this causes the default unknown return of Limit, to return itself as is,
 					--  to cause this to compare lim x->a+ to lim x->a- , and see the two are separate expressions, and return 'invalid'
 					-- so which is it?
 				

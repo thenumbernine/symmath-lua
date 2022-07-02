@@ -46,7 +46,7 @@ table {
 }
 td, th {
 	border: 1px solid black;
-	padding: 1px;
+	padding: 0px;
 }
 		</style>
 	</head>
@@ -56,17 +56,17 @@ td, th {
 ..table.keys(allTestResults):sort():mapi(function(title)
 	local rows = allTestResults[title]
 	title = title:match'^tests_unit_(.*)$' or title
-	return '<tr><td class="title">'
-		.. '<a href="'..title..'.html">' .. title .. '</a>'
-		.. '</td><td class="content">'
+	return '<tr><td class="title">\n'
+		.. '<a href="'..title..'.html">' .. title .. '</a>\n'
+		.. '</td><td class="content">\n'
 		.. 	table.mapi(rows, function(row) 
 				if row.error then
 					return '<span style="color:red">'..failstr..'</span>'
 				else
 					return '<span style="color:green">'..checkstr..'</span>'
 				end
-			end):concat()
-		.. '</td></tr>'
+			end):concat'\n'
+		.. '</td></tr>\n'
 end):concat()
 ..[[
 		</table>
