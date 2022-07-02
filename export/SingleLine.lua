@@ -115,20 +115,22 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
 		end
 		local diffexpr = self:apply(assert(expr[1]))
-		return topText..'/{'..table.map(powersForDeriv, function(power, name, newtable)
-			
-			-- get the var for this name
-			local var = varForName[name]
-			
-			-- get the var's name for this exporter
-			name = var:nameForExporter(self)
-			
-			local s = d..name
-			if power > 1 then
-				s = s .. '^' .. power
-			end
-			return s, #newtable+1
-		end):concat(' ')..'}['..diffexpr..']'
+		return topText..'/{'..
+			table.keys(powersForDeriv):sort():mapi(function(name, i, newtable)
+				local power = powersForDeriv[name]
+				
+				-- get the var for this name
+				local var = varForName[name]
+				
+				-- get the var's name for this exporter
+				name = var:nameForExporter(self)
+				
+				local s = d..name
+				if power > 1 then
+					s = s .. '^' .. power
+				end
+				return s, #newtable+1
+			end):concat(' ')..'}['..diffexpr..']'
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
 		return 'integrate('..table.mapi(expr, function(x) 

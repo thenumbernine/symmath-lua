@@ -324,13 +324,16 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		end
 		local text = self:fraction(
 			topText,
-			{table.map(powersForDeriv, function(power, name, newtable)
-				local s = d..name
-				if power > 1 then
-					s = s .. '^'..power
-				end
-				return s, #newtable+1
-			end):concat' '})
+			{
+				table.keys(powersForDeriv):sort():mapi(function(name, i, newtable)
+					local power = powersForDeriv[name]
+					local s = d..name
+					if power > 1 then
+						s = s .. '^'..power
+					end
+					return s, #newtable+1
+				end):concat' '
+			})
 	
 		-- vars go on the top, exprs go to the right
 		if not diffIsVar then
