@@ -9,7 +9,8 @@
 
 <table border="1" style="border-collapse:collapse">
 <tr><td>
-<b></b><br>
+<b>printbr(A:eq(eig.R * eig.Lambda * eig.L))
+printbr('permuting to', A:eq(eig.R * eig.Lambda * eig.L))</b><br>
 <code>local A = Matrix({-6, 3}, {4, 5})
 local ch = A:charpoly(lambda)
 printbr(ch)
@@ -17,7 +18,11 @@ local solns = table{ch:solve(lambda)}
 printbr(solns:mapi(tostring):concat',')
 simplifyAssertEq(ch, (lambda^2 + lambda - 42):eq(0))
 local eig = A:eigen()
-printbr(A:eq(eig.R * eig.Lambda * eig.L))
+
+
+if Constant.isValue(eig.Lambda[1][1], 6) then local P = Matrix({0,1},{1,0}) eig.R = (eig.R * P)() eig.Lambda = (P * eig.Lambda * P)() eig.L = (P * eig.L)() end
+
+
 simplifyAssertEq(eig.L, Matrix({-frac(4,13), frac(1,13)}, {frac(4, 13), frac(12,13)}))
 simplifyAssertEq(eig.R, Matrix({-3, frac(1,4)}, {1, 1}))
 simplifyAssertEq(eig.Lambda, Matrix.diagonal(-7, 6))</code>
@@ -26,94 +31,38 @@ ${-{\left({{12} + {{{\left({{5}{-{\lambda}}}\right)}} {{\left({{6} + {\lambda}}\
 <br>
 ${\lambda} = {6}$,${\lambda} = {-{7}}$
 <br>
-${\left[\begin{array}{cc} -6& 3\\ 4& 5\end{array}\right]} = {{{\left[\begin{array}{cc} \frac{1}{4}& -{3}\\ 1& 1\end{array}\right]}} {{\left[\begin{array}{cc} 6& 0\\ 0& -{7}\end{array}\right]}} {{\left[\begin{array}{cc} \frac{4}{13}& \frac{12}{13}\\ -{\frac{4}{13}}& \frac{1}{13}\end{array}\right]}}}$
-<br>
-expected $\left[\begin{array}{cc} \frac{4}{13}& \frac{12}{13}\\ -{\frac{4}{13}}& \frac{1}{13}\end{array}\right]$ to equal $\left[\begin{array}{cc} -{\frac{4}{13}}& \frac{1}{13}\\ \frac{4}{13}& \frac{12}{13}\end{array}\right]$<br>
-found $\left[\begin{array}{cc} \frac{4}{13}& \frac{12}{13}\\ -{\frac{4}{13}}& \frac{1}{13}\end{array}\right]$ vs $\left[\begin{array}{cc} -{\frac{4}{13}}& \frac{1}{13}\\ \frac{4}{13}& \frac{12}{13}\end{array}\right]$<br>
-lhs stack<br>
-Init	$\frac{1}{13}$	<br>
-Prune	$\frac{1}{13}$	<br>
-Expand	$\frac{1}{13}$	<br>
-Prune	$\frac{1}{13}$	<br>
-Factor	$\frac{1}{13}$	<br>
-Prune	$\frac{1}{13}$	<br>
-Tidy	$\frac{1}{13}$	<br>
-rhs stack<br>
-Init	$\frac{12}{13}$	<br>
-Prune	$\frac{12}{13}$	<br>
-Expand	$\frac{12}{13}$	<br>
-Prune	$\frac{12}{13}$	<br>
-Factor	$\frac{12}{13}$	<br>
-Prune	$\frac{12}{13}$	<br>
-Tidy	$\frac{12}{13}$	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: failed<br>
-stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:216: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:215><br>
-	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'simplifyAssertEq'<br>
-	[string "local A = Matrix({-6, 3}, {4, 5})..."]:9: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:208: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:207><br>
-	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:207: in function 'exec'<br>
-	./Matrix eigen.lua:67: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
-	./Matrix eigen.lua:6: in main chunk<br>
-	[C]: at 0x55764bfcc3e0
+
+<span style="color:green">GOOD</span>
 </td><td>
-time: 83.161000ms<br>
+time: 74.774000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
-<b>printbr(A:eq(eig.R * eig.Lambda * eig.L))</b><br>
+<b>printbr('permuting to', A:eq(eig.R * eig.Lambda * eig.L))</b><br>
 <code>local A = Matrix({2, 0, 0}, {0, 4, 5}, {0, 4, 3})
 local ch = A:charpoly(lambda)
 printbr(ch)
 local solns = table{ch:solve(lambda)}
 printbr(solns:mapi(tostring):concat',')
 local eig = A:eigen()
+printbr(A:eq(eig.R * eig.Lambda * eig.L))
+if Constant.isValue(eig.Lambda[1][1], 6) then local P = Matrix({0,1},{1,0}) eig.R = (eig.R * P)() eig.Lambda = (P * eig.Lambda * P)() eig.L = (P * eig.L)() printbr('permuting to', A:eq(eig.R * eig.Lambda * eig.L)) end
 
 
-simplifyAssertEq(eig.R, Matrix({0, 1, 0}, {5, 0, -1}, {4, 0, 1}))
-simplifyAssertEq(eig.L, Matrix({-frac(4,13), frac(1,13)}, {frac(4, 13), frac(12,13)}))
-simplifyAssertEq(eig.Lambda, Matrix.diagonal(-7, 6))</code>
+simplifyAssertEq(eig.R, Matrix({1, 0, 0}, {0, -1, 1}, {0, frac(5,4), 1}):T())
+simplifyAssertEq(eig.L, Matrix({1, 0, 0}, {0, -frac(4,9), frac(4,9)}, {0, frac(5,9), frac(4,9)}):T())
+simplifyAssertEq(eig.Lambda, Matrix.diagonal(2, -1, 8))</code>
 </td><td>
 ${{{\left({{-{20}} + {{{\left({{3}{-{\lambda}}}\right)}} {{\left({{4}{-{\lambda}}}\right)}}}}\right)}} {{\left({{2}{-{\lambda}}}\right)}}} = {0}$
 <br>
 ${\lambda} = {2}$,${\lambda} = {-{1}}$,${\lambda} = {8}$
 <br>
-expected $\left[\begin{array}{ccc} 1& 0& 0\\ 0& -{1}& \frac{5}{4}\\ 0& 1& 1\end{array}\right]$ to equal $\left[\begin{array}{ccc} 0& 1& 0\\ 5& 0& -1\\ 4& 0& 1\end{array}\right]$<br>
-found $\left[\begin{array}{ccc} 1& 0& 0\\ 0& -{1}& \frac{5}{4}\\ 0& 1& 1\end{array}\right]$ vs $\left[\begin{array}{ccc} 0& 1& 0\\ 5& 0& -{1}\\ 4& 0& 1\end{array}\right]$<br>
-lhs stack<br>
-Init	$1$	<br>
-Prune	$1$	<br>
-Expand	$1$	<br>
-Prune	$1$	<br>
-Factor	$1$	<br>
-Prune	$1$	<br>
-Tidy	$1$	<br>
-rhs stack<br>
-Init	$1$	<br>
-Prune	$1$	<br>
-Expand	$1$	<br>
-Prune	$1$	<br>
-Factor	$1$	<br>
-Prune	$1$	<br>
-Tidy	$1$	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: failed<br>
-stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:216: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:215><br>
-	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'simplifyAssertEq'<br>
-	[string "local A = Matrix({2, 0, 0}, {0, 4, 5}, {0, 4,..."]:9: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:208: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:207><br>
-	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:207: in function 'exec'<br>
-	./Matrix eigen.lua:67: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
-	./Matrix eigen.lua:6: in main chunk<br>
-	[C]: at 0x55764bfcc3e0
+${\left[\begin{array}{ccc} 2& 0& 0\\ 0& 4& 5\\ 0& 4& 3\end{array}\right]} = {{{\left[\begin{array}{ccc} 1& 0& 0\\ 0& -{1}& \frac{5}{4}\\ 0& 1& 1\end{array}\right]}} {{\left[\begin{array}{ccc} 2& 0& 0\\ 0& -{1}& 0\\ 0& 0& 8\end{array}\right]}} {{\left[\begin{array}{ccc} 1& 0& 0\\ 0& -{\frac{4}{9}}& \frac{5}{9}\\ 0& \frac{4}{9}& \frac{4}{9}\end{array}\right]}}}$
+<br>
+
+<span style="color:green">GOOD</span>
 </td><td>
-time: 63.622000ms<br>
+time: 73.027000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -144,15 +93,15 @@ simplifyAssertEq(eig.R, Matrix.identity(2))</code>
 </td><td>
 <b>without generalization:</b>
 <br>
-Lambda	=	$\left[\begin{array}{c} 1\end{array}\right]$
-<br>
-allLambdas	=	table: 0x7f4951fc4868
-<br>
-lambdas	=	table: 0x7f4951fc4780
+R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
 <br>
 defective	=	true
 <br>
-R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
+Lambda	=	$\left[\begin{array}{c} 1\end{array}\right]$
+<br>
+allLambdas	=	table: 0x7f5dd44499e0
+<br>
+lambdas	=	table: 0x7f5dd44498f8
 <br>
 charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
 <br>
@@ -210,17 +159,17 @@ verify:
 <br>
 ${{{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}}} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
-Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
-<br>
-allLambdas	=	table: 0x7f49520b9540
-<br>
-lambdas	=	table: 0x7f49520b9258
+R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 defective	=	true
 <br>
-L	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
+Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
-R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
+allLambdas	=	table: 0x7f5dd425e418
+<br>
+lambdas	=	table: 0x7f5dd425dcf8
+<br>
+L	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
 <br>
@@ -233,6 +182,6 @@ lambdas	{mult=2, expr=$1$}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.524000ms<br>
+time: 19.093000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

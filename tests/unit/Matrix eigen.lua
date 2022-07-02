@@ -17,7 +17,9 @@ local solns = table{ch:solve(lambda)}
 printbr(solns:mapi(tostring):concat',')
 simplifyAssertEq(ch, (lambda^2 + lambda - 42):eq(0))
 local eig = A:eigen()
-printbr(A:eq(eig.R * eig.Lambda * eig.L))
+--printbr(A:eq(eig.R * eig.Lambda * eig.L))
+if Constant.isValue(eig.Lambda[1][1], 6) then local P = Matrix({0,1},{1,0}) eig.R = (eig.R * P)() eig.Lambda = (P * eig.Lambda * P)() eig.L = (P * eig.L)() end
+--printbr('permuting to', A:eq(eig.R * eig.Lambda * eig.L)) 
 simplifyAssertEq(eig.L, Matrix({-frac(4,13), frac(1,13)}, {frac(4, 13), frac(12,13)}))
 simplifyAssertEq(eig.R, Matrix({-3, frac(1,4)}, {1, 1}))
 simplifyAssertEq(eig.Lambda, Matrix.diagonal(-7, 6))
@@ -32,10 +34,12 @@ printbr(ch)
 local solns = table{ch:solve(lambda)}
 printbr(solns:mapi(tostring):concat',')
 local eig = A:eigen()
---printbr(A:eq(eig.R * eig.Lambda * eig.L))
-simplifyAssertEq(eig.R, Matrix({0, 1, 0}, {5, 0, -1}, {4, 0, 1}))
-simplifyAssertEq(eig.L, Matrix({-frac(4,13), frac(1,13)}, {frac(4, 13), frac(12,13)}))
-simplifyAssertEq(eig.Lambda, Matrix.diagonal(-7, 6))
+printbr(A:eq(eig.R * eig.Lambda * eig.L))
+if Constant.isValue(eig.Lambda[1][1], 6) then local P = Matrix({0,1},{1,0}) eig.R = (eig.R * P)() eig.Lambda = (P * eig.Lambda * P)() eig.L = (P * eig.L)() printbr('permuting to', A:eq(eig.R * eig.Lambda * eig.L)) end
+--printbr('permuting to', A:eq(eig.R * eig.Lambda * eig.L)) 
+simplifyAssertEq(eig.R, Matrix({1, 0, 0}, {0, -1, 1}, {0, frac(5,4), 1}):T())
+simplifyAssertEq(eig.L, Matrix({1, 0, 0}, {0, -frac(4,9), frac(4,9)}, {0, frac(5,9), frac(4,9)}):T())
+simplifyAssertEq(eig.Lambda, Matrix.diagonal(2, -1, 8))
 ]],
 
 -- defective matrix
