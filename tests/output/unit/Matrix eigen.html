@@ -34,7 +34,7 @@ ${\lambda} = {6}$,${\lambda} = {-{7}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 74.774000ms<br>
+time: 74.434000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -62,7 +62,7 @@ ${\left[\begin{array}{ccc} 2& 0& 0\\ 0& 4& 5\\ 0& 4& 3\end{array}\right]} = {{{\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 73.027000ms<br>
+time: 59.979000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -93,17 +93,17 @@ simplifyAssertEq(eig.R, Matrix.identity(2))</code>
 </td><td>
 <b>without generalization:</b>
 <br>
+defective	=	true
+<br>
 R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
 <br>
-defective	=	true
+charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
 <br>
 Lambda	=	$\left[\begin{array}{c} 1\end{array}\right]$
 <br>
-allLambdas	=	table: 0x7f5dd44499e0
+allLambdas	=	table: 0x7ff3ed210530
 <br>
-lambdas	=	table: 0x7f5dd44498f8
-<br>
-charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+lambdas	=	table: 0x7ff3ed210448
 <br>
 <b>with generalization:</b>
 <br>
@@ -159,19 +159,19 @@ verify:
 <br>
 ${{{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}}} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
-R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
-<br>
 defective	=	true
 <br>
-Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
-<br>
-allLambdas	=	table: 0x7f5dd425e418
-<br>
-lambdas	=	table: 0x7f5dd425dcf8
+R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 L	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+<br>
+Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
+<br>
+allLambdas	=	table: 0x7ff3ed1aeef8
+<br>
+lambdas	=	table: 0x7ff3ed1ae7d8
 <br>
 #allLambdas	2
 <br>
@@ -182,6 +182,6 @@ lambdas	{mult=2, expr=$1$}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 19.093000ms<br>
+time: 18.427000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

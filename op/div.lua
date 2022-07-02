@@ -84,31 +84,24 @@ function div:evaluateLimit(x, a, side)
 	--]]
 	if Constant.isValue(Lq, 0) then
 		if not p:dependsOn(x) then
-			
-			-- lim x->root± 1/x = ±inf
 			if q == x then
-				if side == Side.plus then
-					return prune(p * inf)
-				else
-					return prune(-p * inf)
-				end
-			end
-			
-			-- lim x->root± 1/x^n = ±inf
-			local Wildcard = symmath.Wildcard
-			-- x:match(x^Wildcard(1)) won't match x^Constant(1)
-			local n = q:match(x^Wildcard{1, cannotDependOn=x})
-			if n and symmath.set.integer:contains(n) then
-				if symmath.set.evenInteger:contains(n) then
-					return prune(p * inf)
-				elseif symmath.set.oddInteger:contains(n) then	-- TODO just else, so long as inf is alreayd excluded
-					if side == Side.plus then
+				-- lim x->root± 1/x = ±inf
+				if side == Side.plus then return prune(p * inf) end
+				if side == Side.minus then return prune(-p * inf) end
+			else
+				-- lim x->root± 1/x^n = ±inf
+				local Wildcard = symmath.Wildcard
+				-- x:match(x^Wildcard(1)) won't match x^Constant(1)
+				local n = q:match(x^Wildcard{1, cannotDependOn=x})
+				if n and symmath.set.integer:contains(n) then
+					if symmath.set.evenInteger:contains(n) then
 						return prune(p * inf)
+					elseif symmath.set.oddInteger:contains(n) then	-- TODO just else, so long as inf is alreayd excluded
+						if side == Side.plus then return prune(p * inf) end
+						if side == Side.minus then return prune(-p * inf) end
 					else
-						return prune(-p * inf)
+						error'here'
 					end
-				else
-					error'here'
 				end
 			end
 		end

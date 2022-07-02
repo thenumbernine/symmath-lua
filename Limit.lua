@@ -22,8 +22,12 @@ function Side:new(name)
 	error("unknown side")
 end
 function Side:clone() return self end
+--[[ hmm why isn't this working?  isn't Side:new() and :clone() supposed to only return the singletons?
 Side.__eq = rawequal
-
+--]]
+-- [[ so here is the fix that shouldn't be necessary ...
+function Side.__eq(a,b) return a.name == b.name end
+--]]
 
 local Limit = class(Expression)
 
