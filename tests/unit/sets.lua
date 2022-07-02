@@ -188,4 +188,5 @@ assert((1/x):getRealRange():contains(set.positiveReal))
 	env.exec(line)
 end
 
+env.done()
 end)

@@ -43,4 +43,5 @@ simplifyAssertEq((a'^i' * b'^j_ji'):tidyIndexes(), a'^a' * b'^b_ba')		-- this us
 	env.exec(line)
 end
 
+env.done()
 end)

@@ -28,4 +28,5 @@ simplifyAssertAllEq({(x^2 - a^2):polydivr(x + a, x, verbose)}, {x - a, 0})
 	env.exec(line)
 end
 
+env.done()
 end)

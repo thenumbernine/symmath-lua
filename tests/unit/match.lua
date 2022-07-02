@@ -233,4 +233,5 @@ local a = x'^i':match(Tensor.Ref(x, W(1))) simplifyAssertEq(a, Tensor.Index{symb
 	env.exec(line)
 end
 
+env.done()
 end)

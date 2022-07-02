@@ -136,4 +136,5 @@ print( (c'_b' * a'^a' * a'_a'):replaceIndex(c'_b' * a'^a' * a'_a', 2))
 	env.exec(line)
 end
 
+env.done()
 end)

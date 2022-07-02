@@ -138,4 +138,5 @@ simplifyAssertEq(( d'^a_b' * b'^b_,a' ):symmetrizeIndexes(d, {1,2}, true), d'^a_
 	env.exec(line)
 end
 
+env.done()
 end)

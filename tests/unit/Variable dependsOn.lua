@@ -236,4 +236,5 @@ print(varofall:diff(varofall):eq(Matrix:lambda({#all,#all}, function(i,j) return
 	env.exec(line)
 end
 
+env.done()
 end)

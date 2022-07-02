@@ -100,4 +100,5 @@ simplifyAssertEq( -(sqrt( 10 * (sqrt(5) - 1) ) + sqrt(2 * (sqrt(5) - 1))) / (4 *
 	env.exec(line)
 end
 
+env.done()
 end)

@@ -99,4 +99,5 @@ simplifyAssertEq(1 ^ -inf, invalid)
 	env.exec(line)
 end
 
+env.done()
 end)

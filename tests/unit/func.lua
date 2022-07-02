@@ -65,4 +65,5 @@ print(f:diff(t):prune())	-- ∂f/∂x ∂x/∂t + ∂f/∂y ∂y/∂t
 	env.exec(line)
 end
 
+env.done()
 end)

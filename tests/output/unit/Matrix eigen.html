@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title>tests/unit/Matrix_eigen</title>
+		<title>tests/unit/Matrix eigen</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 	</head>
 	<body onload='tryToFindMathJax();'>
@@ -22,16 +22,45 @@ simplifyAssertEq(eig.L, Matrix({-frac(4,13), frac(1,13)}, {frac(4, 13), frac(12,
 simplifyAssertEq(eig.R, Matrix({-3, frac(1,4)}, {1, 1}))
 simplifyAssertEq(eig.Lambda, Matrix.diagonal(-7, 6))</code>
 </td><td>
-${{-{42}} + {\lambda} + {{\lambda}^{2}}} = {0}$
+${-{\left({{12} + {{{\left({{5}{-{\lambda}}}\right)}} {{\left({{6} + {\lambda}}\right)}}}}\right)}} = {0}$
 <br>
-${\lambda} = {-{7}}$,${\lambda} = {6}$
+${\lambda} = {6}$,${\lambda} = {-{7}}$
 <br>
-${\left[ \begin{matrix}  -6 &  3 \\  4 &  5\end{matrix} \right]} = { {\left[ \begin{matrix}  -{3} &  \frac{1}{4} \\  1 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  -{7} &  0 \\  0 &  6\end{matrix} \right]}  {\left[ \begin{matrix}  -{\frac{4}{13}} &  \frac{1}{13} \\  \frac{4}{13} &  \frac{12}{13}\end{matrix} \right]}}$
+${\left[\begin{array}{cc} -6& 3\\ 4& 5\end{array}\right]} = {{{\left[\begin{array}{cc} \frac{1}{4}& -{3}\\ 1& 1\end{array}\right]}} {{\left[\begin{array}{cc} 6& 0\\ 0& -{7}\end{array}\right]}} {{\left[\begin{array}{cc} \frac{4}{13}& \frac{12}{13}\\ -{\frac{4}{13}}& \frac{1}{13}\end{array}\right]}}}$
 <br>
-
-<span style="color:green">GOOD</span>
+expected $\left[\begin{array}{cc} \frac{4}{13}& \frac{12}{13}\\ -{\frac{4}{13}}& \frac{1}{13}\end{array}\right]$ to equal $\left[\begin{array}{cc} -{\frac{4}{13}}& \frac{1}{13}\\ \frac{4}{13}& \frac{12}{13}\end{array}\right]$<br>
+found $\left[\begin{array}{cc} \frac{4}{13}& \frac{12}{13}\\ -{\frac{4}{13}}& \frac{1}{13}\end{array}\right]$ vs $\left[\begin{array}{cc} -{\frac{4}{13}}& \frac{1}{13}\\ \frac{4}{13}& \frac{12}{13}\end{array}\right]$<br>
+lhs stack<br>
+Init	$\frac{1}{13}$	<br>
+Prune	$\frac{1}{13}$	<br>
+Expand	$\frac{1}{13}$	<br>
+Prune	$\frac{1}{13}$	<br>
+Factor	$\frac{1}{13}$	<br>
+Prune	$\frac{1}{13}$	<br>
+Tidy	$\frac{1}{13}$	<br>
+rhs stack<br>
+Init	$\frac{12}{13}$	<br>
+Prune	$\frac{12}{13}$	<br>
+Expand	$\frac{12}{13}$	<br>
+Prune	$\frac{12}{13}$	<br>
+Factor	$\frac{12}{13}$	<br>
+Prune	$\frac{12}{13}$	<br>
+Tidy	$\frac{12}{13}$	<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: failed<br>
+stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:216: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:215><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'simplifyAssertEq'<br>
+	[string "local A = Matrix({-6, 3}, {4, 5})..."]:9: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:208: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:207><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:207: in function 'exec'<br>
+	./Matrix eigen.lua:67: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	./Matrix eigen.lua:6: in main chunk<br>
+	[C]: at 0x55764bfcc3e0
 </td><td>
-time: 33.042000ms<br>
+time: 83.161000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -48,26 +77,44 @@ simplifyAssertEq(eig.R, Matrix({0, 1, 0}, {5, 0, -1}, {4, 0, 1}))
 simplifyAssertEq(eig.L, Matrix({-frac(4,13), frac(1,13)}, {frac(4, 13), frac(12,13)}))
 simplifyAssertEq(eig.Lambda, Matrix.diagonal(-7, 6))</code>
 </td><td>
-${{-{16}}{-{{\lambda}^{3}}} + {{{9}} {{{\lambda}^{2}}}}{-{{{6}} {{\lambda}}}}} = {0}$
+${{{\left({{-{20}} + {{{\left({{3}{-{\lambda}}}\right)}} {{\left({{4}{-{\lambda}}}\right)}}}}\right)}} {{\left({{2}{-{\lambda}}}\right)}}} = {0}$
 <br>
-${{{\lambda}^{0}} + {\lambda} + {{\lambda}^{2}} + {{\lambda}^{3}}} = {0}$
+${\lambda} = {2}$,${\lambda} = {-{1}}$,${\lambda} = {8}$
 <br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/simplify.lua:23: attempt to index local 'x' (a boolean value)<br>stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:140: in function '__index'<br>
-	/home/chris/Projects/lua/symmath/simplify.lua:23: in function 'simplifyTrig'<br>
-	/home/chris/Projects/lua/symmath/simplify.lua:191: in function 'simplify'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:20: in function 'simplifyAssertEq'<br>
+expected $\left[\begin{array}{ccc} 1& 0& 0\\ 0& -{1}& \frac{5}{4}\\ 0& 1& 1\end{array}\right]$ to equal $\left[\begin{array}{ccc} 0& 1& 0\\ 5& 0& -1\\ 4& 0& 1\end{array}\right]$<br>
+found $\left[\begin{array}{ccc} 1& 0& 0\\ 0& -{1}& \frac{5}{4}\\ 0& 1& 1\end{array}\right]$ vs $\left[\begin{array}{ccc} 0& 1& 0\\ 5& 0& -{1}\\ 4& 0& 1\end{array}\right]$<br>
+lhs stack<br>
+Init	$1$	<br>
+Prune	$1$	<br>
+Expand	$1$	<br>
+Prune	$1$	<br>
+Factor	$1$	<br>
+Prune	$1$	<br>
+Tidy	$1$	<br>
+rhs stack<br>
+Init	$1$	<br>
+Prune	$1$	<br>
+Expand	$1$	<br>
+Prune	$1$	<br>
+Factor	$1$	<br>
+Prune	$1$	<br>
+Tidy	$1$	<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: failed<br>
+stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:216: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:215><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'simplifyAssertEq'<br>
 	[string "local A = Matrix({2, 0, 0}, {0, 4, 5}, {0, 4,..."]:9: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:132: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:131><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:208: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:207><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:131: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:207: in function 'exec'<br>
 	./Matrix eigen.lua:67: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	./Matrix eigen.lua:6: in main chunk<br>
-	[C]: at 0x5652178632f0
+	[C]: at 0x55764bfcc3e0
 </td><td>
-time: 38.391000ms<br>
-stack: size: 6<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune</ul>
+time: 63.622000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>printbr(A:eq(eig.R * eig.Lambda * eig.L))
@@ -97,29 +144,29 @@ simplifyAssertEq(eig.R, Matrix.identity(2))</code>
 </td><td>
 <b>without generalization:</b>
 <br>
-lambdas	=	table: 0x7f9c505dddd8
+Lambda	=	$\left[\begin{array}{c} 1\end{array}\right]$
+<br>
+allLambdas	=	table: 0x7f4951fc4868
+<br>
+lambdas	=	table: 0x7f4951fc4780
 <br>
 defective	=	true
 <br>
-R	=	$\left[ \begin{matrix}  1 \\  0\end{matrix} \right]$
+R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
 <br>
-charPoly	=	${{1} + {{λ}^{2}}{-{{{2}} {{λ}}}}} = {0}$
-<br>
-Lambda	=	$\left[ \begin{matrix}  1\end{matrix} \right]$
-<br>
-allLambdas	=	table: 0x7f9c505ddec0
+charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
 <br>
 <b>with generalization:</b>
 <br>
-${A} = {\left[ \begin{matrix}  1 &  1 \\  0 &  1\end{matrix} \right]}$
+${A} = {\left[\begin{array}{cc} 1& 1\\ 0& 1\end{array}\right]}$
 <br>
-${I} = {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}$
+${I} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
-${{A}{-{{{λ}} \cdot {{I}}}}} = {\left[ \begin{matrix}  {1}{-{λ}} &  1 \\  0 &  {1}{-{λ}}\end{matrix} \right]}$
+${{A}{-{{{λ}} \cdot {{I}}}}} = {\left[\begin{array}{cc} {1}{-{λ}}& 1\\ 0& {1}{-{λ}}\end{array}\right]}$
 <br>
 charPoly	${{{\left({{1}{-{λ}}}\right)}} {{\left({{1}{-{λ}}}\right)}}} = {0}$
 <br>
-after simplify(), charPoly	${{1} + {{λ}^{2}}{-{{{2}} {{λ}}}}} = {0}$
+after simplify(), charPoly	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
 <br>
 ${λ} = {1}$, ${λ} = {1}$
 <br>
@@ -129,53 +176,53 @@ mult 2 expr $1$
 <br>
 finding nullspace for 	$1$
 <br>
-$\left[ \begin{matrix}  1 \\  0\end{matrix} \right]$
+$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
 <br>
 ...is defective, gathering more generalized eigenvectors
 <br>
 trying again for generalized eigensystem...
 <br>
-finding nullspace of (A - I λ)^2 = $\left[ \begin{matrix}  0 &  0 \\  0 &  0\end{matrix} \right]$
+finding nullspace of (A - I λ)^2 = $\left[\begin{array}{cc} 0& 0\\ 0& 0\end{array}\right]$
 <br>
-which is $\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
+which is $\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 nullspace dim of (A - I λ)^2 =	2
 <br>
-...times (A - λ I) is $\left[ \begin{matrix}  0 &  1 \\  0 &  0\end{matrix} \right]$
+...times (A - λ I) is $\left[\begin{array}{cc} 0& 1\\ 0& 0\end{array}\right]$
 <br>
-checking new potential vector product	$\left[ \begin{matrix} 0 \\ 0\end{matrix} \right]$
+checking new potential vector product	$\left[\begin{matrix} 0 \\ 0\end{matrix}\right]$
 <br>
 ...and it's all zeroes so we already considered this vector
 <br>
-checking new potential vector product	$\left[ \begin{matrix} 1 \\ 0\end{matrix} \right]$
+checking new potential vector product	$\left[\begin{matrix} 1 \\ 0\end{matrix}\right]$
 <br>
 adding col 2
 <br>
-right eigenvector of λ=	$1$	is	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
+right eigenvector of λ=	$1$	is	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
-${R} = {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}$
+${R} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
-${L} = {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}$
+${L} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
-${Λ} = {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}$
+${Λ} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
 verify:
 <br>
-${ {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}  {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}} = {\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]}$
+${{{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}}} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
-lambdas	=	table: 0x7f9c50596538
+Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
+<br>
+allLambdas	=	table: 0x7f49520b9540
+<br>
+lambdas	=	table: 0x7f49520b9258
 <br>
 defective	=	true
 <br>
-R	=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
+L	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
-charPoly	=	${{1} + {{λ}^{2}}{-{{{2}} {{λ}}}}} = {0}$
+R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
-L	=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
-<br>
-Lambda	=	$\left[ \begin{matrix}  1 &  0 \\  0 &  1\end{matrix} \right]$
-<br>
-allLambdas	=	table: 0x7f9c50596820
+charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
 <br>
 #allLambdas	2
 <br>
@@ -186,6 +233,6 @@ lambdas	{mult=2, expr=$1$}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.648000ms<br>
+time: 17.524000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

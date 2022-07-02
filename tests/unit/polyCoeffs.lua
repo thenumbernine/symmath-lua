@@ -25,4 +25,5 @@ simplifyAssertAllEq( (x^2 - 2 * a * x + a^2):polyCoeffs(x), {[0]=a^2, [1]=-2*a, 
 	env.exec(line)
 end
 
+env.done()
 end)

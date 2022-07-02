@@ -77,4 +77,5 @@ exec[[printbr(Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))]]
 exec[[printbr((Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))())]]
 exec[[simplifyAssertEq( (Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))(), Matrix({5},{6}) )]]
 
+env.done()
 end)

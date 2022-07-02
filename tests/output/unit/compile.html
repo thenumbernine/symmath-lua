@@ -9,7 +9,7 @@
 
 expr1
 <br>
-${\frac{1}{2}}{\left({{\exp\left( x\right)} + {-{\frac{1}{\exp\left( x\right)}}}}\right)}$
+${\frac{1}{2}}{\left({{\exp\left( x\right)}{-{\frac{1}{\exp\left( x\right)}}}}\right)}$
 <br>
 expr2
 <br>
@@ -36,12 +36,12 @@ expr1
 
 code:
 double tmp1 = exp(x);
-double out1 = (tmp1 + -1. / tmp1) / 2.;
+double out1 = (-1. / tmp1 + tmp1) / 2.;
 
 func code:
 [](double* out, double x) {
 	double tmp1 = exp(x);
-	double out1 = (tmp1 + -1. / tmp1) / 2.;
+	double out1 = (-1. / tmp1 + tmp1) / 2.;
 	out[0] = out1;
 }
 
@@ -50,12 +50,12 @@ expr2
 
 code:
 double tmp1 = exp(x);
-double out1 = (tmp1 + 1. / tmp1) / 2.;
+double out1 = (1. / tmp1 + tmp1) / 2.;
 
 func code:
 [](double* out, double x) {
 	double tmp1 = exp(x);
-	double out1 = (tmp1 + 1. / tmp1) / 2.;
+	double out1 = (1. / tmp1 + tmp1) / 2.;
 	out[0] = out1;
 }
 
@@ -65,14 +65,14 @@ expr1 & expr2
 code:
 double tmp1 = exp(x);
 double tmp2 = 1. / tmp1;
-double out1 = (tmp1 + -tmp2) / 2.;
+double out1 = (-tmp2 + tmp1) / 2.;
 double out2 = (tmp1 + tmp2) / 2.;
 
 func code:
 [](double* out, double x) {
 	double tmp1 = exp(x);
 	double tmp2 = 1. / tmp1;
-	double out1 = (tmp1 + -tmp2) / 2.;
+	double out1 = (-tmp2 + tmp1) / 2.;
 	double out2 = (tmp1 + tmp2) / 2.;
 	out[0] = out1;
 	out[1] = out2;
@@ -98,12 +98,12 @@ expr1
 
 code:
 var tmp1 = Math.exp(x);
-var out1 = (tmp1 + -1 / tmp1) / 2;
+var out1 = (-1 / tmp1 + tmp1) / 2;
 
 func code:
 function(x) {
 	var tmp1 = Math.exp(x);
-	var out1 = (tmp1 + -1 / tmp1) / 2;
+	var out1 = (-1 / tmp1 + tmp1) / 2;
 	return out1;
 }
 
@@ -112,12 +112,12 @@ expr2
 
 code:
 var tmp1 = Math.exp(x);
-var out1 = (tmp1 + 1 / tmp1) / 2;
+var out1 = (1 / tmp1 + tmp1) / 2;
 
 func code:
 function(x) {
 	var tmp1 = Math.exp(x);
-	var out1 = (tmp1 + 1 / tmp1) / 2;
+	var out1 = (1 / tmp1 + tmp1) / 2;
 	return out1;
 }
 
@@ -127,14 +127,14 @@ expr1 & expr2
 code:
 var tmp1 = Math.exp(x);
 var tmp2 = 1 / tmp1;
-var out1 = (tmp1 + -tmp2) / 2;
+var out1 = (-tmp2 + tmp1) / 2;
 var out2 = (tmp1 + tmp2) / 2;
 
 func code:
 function(x) {
 	var tmp1 = Math.exp(x);
 	var tmp2 = 1 / tmp1;
-	var out1 = (tmp1 + -tmp2) / 2;
+	var out1 = (-tmp2 + tmp1) / 2;
 	var out2 = (tmp1 + tmp2) / 2;
 	return [out1, out2];
 }
@@ -159,12 +159,12 @@ expr1
 
 code:
 local tmp1 = math.exp(x)
-local out1 = (tmp1 + -1 / tmp1) / 2
+local out1 = (-1 / tmp1 + tmp1) / 2
 
 func code:
 function(x)
 	local tmp1 = math.exp(x)
-	local out1 = (tmp1 + -1 / tmp1) / 2
+	local out1 = (-1 / tmp1 + tmp1) / 2
 	return out1
 end
 
@@ -173,12 +173,12 @@ expr2
 
 code:
 local tmp1 = math.exp(x)
-local out1 = (tmp1 + 1 / tmp1) / 2
+local out1 = (1 / tmp1 + tmp1) / 2
 
 func code:
 function(x)
 	local tmp1 = math.exp(x)
-	local out1 = (tmp1 + 1 / tmp1) / 2
+	local out1 = (1 / tmp1 + tmp1) / 2
 	return out1
 end
 
@@ -188,14 +188,14 @@ expr1 & expr2
 code:
 local tmp1 = math.exp(x)
 local tmp2 = 1 / tmp1
-local out1 = (tmp1 + -tmp2) / 2
+local out1 = (-tmp2 + tmp1) / 2
 local out2 = (tmp1 + tmp2) / 2
 
 func code:
 function(x)
 	local tmp1 = math.exp(x)
 	local tmp2 = 1 / tmp1
-	local out1 = (tmp1 + -tmp2) / 2
+	local out1 = (-tmp2 + tmp1) / 2
 	local out2 = (tmp1 + tmp2) / 2
 	return out1, out2
 end
@@ -219,12 +219,12 @@ expr1
 
 code:
 tmp1 = exp[x];
-out1 = (tmp1 + -1 / tmp1) / 2;
+out1 = (-1 / tmp1 + tmp1) / 2;
 
 func code:
 [x_] :=
 	tmp1 = exp[x];
-	out1 = (tmp1 + -1 / tmp1) / 2;
+	out1 = (-1 / tmp1 + tmp1) / 2;
 	out1;
 
 ----------------------- 
@@ -232,12 +232,12 @@ expr2
 
 code:
 tmp1 = exp[x];
-out1 = (tmp1 + 1 / tmp1) / 2;
+out1 = (1 / tmp1 + tmp1) / 2;
 
 func code:
 [x_] :=
 	tmp1 = exp[x];
-	out1 = (tmp1 + 1 / tmp1) / 2;
+	out1 = (1 / tmp1 + tmp1) / 2;
 	out1;
 
 ----------------------- 
@@ -246,14 +246,14 @@ expr1 & expr2
 code:
 tmp1 = exp[x];
 tmp2 = 1 / tmp1;
-out1 = (tmp1 + -tmp2) / 2;
+out1 = (-tmp2 + tmp1) / 2;
 out2 = (tmp1 + tmp2) / 2;
 
 func code:
 [x_] :=
 	tmp1 = exp[x];
 	tmp2 = 1 / tmp1;
-	out1 = (tmp1 + -tmp2) / 2;
+	out1 = (-tmp2 + tmp1) / 2;
 	out2 = (tmp1 + tmp2) / 2;
 	[out1, out2];
 
@@ -276,12 +276,12 @@ expr1
 
 code:
 tmp1 = (exp(x))
-out1 = (tmp1 + -1. / tmp1) / 2.
+out1 = (-1. / tmp1 + tmp1) / 2.
 
 func code:
 (x) =
 	tmp1 = (exp(x))
-	out1 = (tmp1 + -1. / tmp1) / 2.
+	out1 = (-1. / tmp1 + tmp1) / 2.
 	return out1
 
 ----------------------- 
@@ -289,12 +289,12 @@ expr2
 
 code:
 tmp1 = (exp(x))
-out1 = (tmp1 + 1. / tmp1) / 2.
+out1 = (1. / tmp1 + tmp1) / 2.
 
 func code:
 (x) =
 	tmp1 = (exp(x))
-	out1 = (tmp1 + 1. / tmp1) / 2.
+	out1 = (1. / tmp1 + tmp1) / 2.
 	return out1
 
 ----------------------- 
@@ -303,26 +303,26 @@ expr1 & expr2
 code:
 tmp1 = (exp(x))
 tmp2 = 1. / tmp1
-out1 = (tmp1 + -tmp2) / 2.
+out1 = (-tmp2 + tmp1) / 2.
 out2 = (tmp1 + tmp2) / 2.
 
 func code:
 (x) =
 	tmp1 = (exp(x))
 	tmp2 = 1. / tmp1
-	out1 = (tmp1 + -tmp2) / 2.
+	out1 = (-tmp2 + tmp1) / 2.
 	out2 = (tmp1 + tmp2) / 2.
 	return out1, out2
 
 double tmp1 = sinh(w);
 double tmp2 = rho / tmp1;
 double tmp3 = sinh(tmp2);
-double tmp5 = 1. / tmp1;
-double tmp6 = A * tmp3;
-double tmp7 = sinh(tmp5);
-double tmp8 = sin(theta);
-double tmp10 = tmp6 / tmp7;
-double x = tmp10 * tmp8 * cos(phi);
-double y = tmp10 * tmp8 * sin(phi);
-double z = tmp10 * cos(theta);
+double tmp4 = 1. / tmp1;
+double tmp5 = A * tmp3;
+double tmp6 = sinh(tmp4);
+double tmp7 = sin(theta);
+double tmp8 = tmp5 / tmp6;
+double x = cos(phi) * tmp7 * tmp8;
+double y = sin(phi) * tmp7 * tmp8;
+double z = cos(theta) * tmp8;
 </pre>

@@ -70,4 +70,5 @@ simplifyAssertEq((a'^i,m' * delta'_i^j'):simplifyMetrics(), a'^j^,m')
 	env.exec(line)
 end
 
+env.done()
 end)

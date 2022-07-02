@@ -249,4 +249,5 @@ print( ((e^x + e^-x) / (e^x - e^-x)):lim(x, inf):prune() )
 	env.exec(line)
 end
 
+env.done()
 end)

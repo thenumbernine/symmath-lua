@@ -82,4 +82,5 @@ simplifyAssertEq( ( sinh(a * x)^2 * cosh(a * x) ):integrate(x), sinh(a * x)^3 / 
 	env.exec(line)
 end
 
+env.done()
 end)

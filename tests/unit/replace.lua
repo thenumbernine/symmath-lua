@@ -24,4 +24,5 @@ assert(expr:replace(a * x + b * y + c * z, 1) == symmath.Constant(1))
 	env.exec(line)
 end
 
+env.done()
 end)

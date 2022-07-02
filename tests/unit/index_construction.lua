@@ -40,4 +40,5 @@ simplifyAssertNe(a'^,i', a'_,i')
 	env.exec(line)
 end
 
+env.done()
 end)

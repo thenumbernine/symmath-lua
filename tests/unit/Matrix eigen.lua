@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath.tests.unit.unit'(env, 'tests/unit/Matrix_eigen')
+require 'symmath.tests.unit.unit'(env, 'tests/unit/Matrix eigen')
 
 timer(nil, function()
 
@@ -67,4 +67,5 @@ simplifyAssertEq(eig.R, Matrix.identity(2))
 	env.exec(line)
 end
 
+env.done()
 end)

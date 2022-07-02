@@ -126,4 +126,5 @@ simplifyAssertEq(select(2, (x^2):eq(-1):solve(x)), x:eq(-i))
 	env.exec(line)
 end
 
+env.done()
 end)

@@ -5,7 +5,7 @@ this is to make sure I can do subsets of charts
 
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath.tests.unit.unit'(env, 'tests/unit/tensor sub-chart')
+require 'symmath.tests.unit.unit'(env, 'tests/unit/tensor sub-index')
 
 timer(nil, function()
 
@@ -75,4 +75,5 @@ printbr(T'_pq':prune())		assertEq(T'_pq':prune(), Tensor('_pq', {T[2][2], T[2][3
 	env.exec(line)
 end
 
+env.done()
 end)

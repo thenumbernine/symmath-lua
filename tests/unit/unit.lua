@@ -1,4 +1,79 @@
 local table = require 'ext.table'
+local os = require 'ext.os'
+local io = require 'ext.io'
+local fromlua = require 'ext.fromlua'
+local tolua = require 'ext.tolua'
+	
+local checkstr = '✓'
+local failstr = '✕'
+
+local symmathPath = os.getenv'SYMMATH_PATH'		-- I have it set to HOME/Projects/lua/symmath
+assert(symmathPath, "expected environment variable SYMMATH_PATH to be set")
+local unitTestPath = symmathPath..'/tests/unit'
+local unitTestCachePath = symmathPath..'/tests/unit-cache'
+local unitTestOutputPath = symmathPath..'/tests/output/unit'
+os.mkdir(unitTestCachePath, true)
+os.mkdir(unitTestOutputPath, true)
+
+local function updateMaster()
+	local allTestResults = {}
+	for fn in os.listdir(unitTestCachePath) do
+		local title, ext = io.getfileext(fn)
+		if ext == 'lua' then
+			allTestResults[title] = fromlua(io.readfile(unitTestCachePath..'/'..fn)) 
+		end
+	end
+	io.writefile(unitTestOutputPath..'/master.html', [[
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf8'/>
+		<title>test/unit master</title>
+		<style>
+.title {
+	width:auto;
+	text-align:right;
+	white-space:nowrap;
+}
+.content {
+	width:100%;
+	overflow-wrap:anywhere;
+}
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+	width:100%;
+}
+td, th {
+	border: 1px solid black;
+	padding: 1px;
+}
+		</style>
+	</head>
+	<body>
+		<table>
+]]
+..table.keys(allTestResults):sort():mapi(function(title)
+	local rows = allTestResults[title]
+	title = title:match'^tests_unit_(.*)$' or title
+	return '<tr><td class="title">'
+		.. '<a href="'..title..'.html">' .. title .. '</a>'
+		.. '</td><td class="content">'
+		.. 	table.mapi(rows, function(row) 
+				if row.error then
+					return '<span style="color:red">'..failstr..'</span>'
+				else
+					return '<span style="color:green">'..checkstr..'</span>'
+				end
+			end):concat()
+		.. '</td></tr>'
+end):concat()
+..[[
+		</table>
+	</body>
+</html>
+]])
+end
 
 return function(env, title)
 	require 'ext.env'(env)
@@ -101,11 +176,11 @@ return function(env, title)
 		assert(not result, "expected an error, but found none")
 	end
 
+	local testRows = {}
+
 	local ansi_red = '\x1b[31m'
 	local ansi_green = '\x1b[32m'
 	local ansi_reset = '\x1b[0m'
-	local check = '✓'
-	local fail = '✕'
 	function env.exec(code)
 		-- before executing, make sure to clear the stack / make sure a stack exists (in case we don't end up running simplify() ... )
 		symmath.simplify.stack = table()
@@ -127,37 +202,53 @@ return function(env, title)
 		print('<code>'..code..'</code>')
 		print'</td><td>'
 		local startTime = os.clock()
+		local err
 		if code ~= '' then
 			xpcall(function()
 				print(assert(load(code, nil, nil, env))())
 				--print'<br>'
 				print'<span style="color:green">GOOD</span>'
 				-- verbose stderr output:
-				--io.stderr:write(ansi_green..check..ansi_reset..' '..comment..'\n')
+				--io.stderr:write(ansi_green..checkstr..ansi_reset..' '..comment..'\n')
 				-- concise:
-				io.stderr:write(ansi_green..check..ansi_reset)
-			end, function(err)
-				print('<span style="color:red">BAD</span><br>'..err..'<br>'..debug.traceback():gsub('\n', '<br>\n'))
+				io.stderr:write(ansi_green..checkstr..ansi_reset)
+			end, function(msg)
+				err = msg..'\n'..debug.traceback()
+				print('<span style="color:red">BAD</span><br>'..err:gsub('\n', '<br>\n'))
 				-- verbose
-				--io.stderr:write(ansi_red..fail..ansi_reset..' '..comment..' '..err..'\n'..debug.traceback()..'\n')
+				--io.stderr:write(ansi_red..failstr..ansi_reset..' '..comment..' '..err..'\n')
 				-- concise
-				io.stderr:write(ansi_red..fail..ansi_reset)
+				io.stderr:write(ansi_red..failstr..ansi_reset)
 			end)
 		end
 		local endTime = os.clock()
+		local duration = endTime - startTime
 		print'</td><td>'
+		local simplifyStack
 		if code ~= '' then
-			print('time: '..('%.6f'):format((endTime - startTime) * 1000)..'ms<br>')
+			simplifyStack = symmath.simplify.stack:mapi(function(x) return x[1] end)
+			print('time: '..('%.6f'):format(duration * 1000)..'ms<br>')
 			print('stack: '
-				..'size: '..#symmath.simplify.stack..'<br>'
+				..'size: '..#simplifyStack..'<br>'
 				..'<ul style="margin:0px">'
-				..symmath.simplify.stack:mapi(function(x)
-					return '<li>'..x[1]
-				end):concat'<br>'
+				..simplifyStack:mapi(function(x) return '<li>'..x end):concat'<br>'
 				..'</ul>'
 			)
 		end
 		print'</td></tr>'
+	
+		local row = {}
+		row.comment = comment
+		row.code = code
+		row.error = err	-- if this is nil then the test was a success
+		row.duration = duration
+		row.simplifyStack = simplifyStack
+		table.insert(testRows, row)
+	end
+
+	env.done = function()
+		assert(io.writefile(unitTestCachePath..'/'..title:gsub('/', '_')..'.lua', tolua(testRows)))
+		updateMaster()
 	end
 
 	print'<table border="1" style="border-collapse:collapse">'

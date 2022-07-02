@@ -113,4 +113,5 @@ assertIndexesUsed(a'^i' * b'_i' + c'^i' * d'_i', {summed='^i'})
 	env.exec(line)
 end
 
+env.done()
 end)

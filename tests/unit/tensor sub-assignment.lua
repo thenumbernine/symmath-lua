@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
-require 'symmath.tests.unit.unit'(env, 'tests/unit/sub-tensor assignment')
+require 'symmath.tests.unit.unit'(env, 'tests/unit/tensor sub-assignment')
 
 t,x,y,z = vars('t','x','y','z') 
 coords = {t,x,y,z}
@@ -100,4 +100,5 @@ for i=1,3 do for j=1,3 do assertEq(A[i+1][j+1], Constant(1)) end end
 	env.exec(line)
 end
 
+env.done()
 end)
