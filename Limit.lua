@@ -218,7 +218,7 @@ Limit.rules = {
 					-- then return the original both-sides limit
 					-- otherwise return invalid.
 					if pl == ll and pr == lr then
-						return -- return what?
+						return
 					else
 						return symmath.invalid
 					end
@@ -226,7 +226,9 @@ Limit.rules = {
 			end
 
 			if f.evaluateLimit then
-				return prune:apply(f:evaluateLimit(x, a, side))
+				local result = f:evaluateLimit(x, a, side)
+				if result then result = prune:apply(result) end
+				return result
 			end
 
 			-- if we haven't figured it out then don't touch the result

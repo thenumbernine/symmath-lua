@@ -3,43 +3,43 @@
 	{
 		code="assertIndexesUsed(c)",
 		comment="",
-		duration=0.000593,
+		duration=0.000449,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=0},
+	{code="", comment="", duration=9.9999999999753e-07},
 	{code="", comment="single TensorRef, fixed", duration=1.000000000001e-06},
 	{
 		code="assertIndexesUsed(c'_i', {fixed='_i'})",
 		comment="",
-		duration=0.000706,
+		duration=0.000808,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="assertIndexesUsed(c'_ij', {fixed='_ij'})",
 		comment="",
-		duration=0.001261,
+		duration=0.0008,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="assertIndexesUsed(c'^i_jk', {fixed='^i_jk'})",
 		comment="",
-		duration=0.000861,
+		duration=0.000781,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="single TensorRef, summed", duration=9.9999999999406e-07},
+	{code="", comment="single TensorRef, summed", duration=1.000000000001e-06},
 	{
 		code="assertIndexesUsed(c'^i_i', {summed='^i'})",
 		comment="",
-		duration=0.000644,
+		duration=0.000534,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=9.9999999999406e-07},
-	{code="", comment="single TensorRef, mixed", duration=1.000000000001e-06},
+	{code="", comment="", duration=1.000000000001e-06},
+	{code="", comment="single TensorRef, mixed", duration=9.9999999999406e-07},
 	{
 		code="assertIndexesUsed(c'^i_ij', {fixed='_j', summed='^i'})",
 		comment="",
-		duration=0.00046,
+		duration=0.000427,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
@@ -47,71 +47,71 @@
 	{
 		code="assertIndexesUsed(a'_i' * b'^j_j', {fixed='_i', summed='^j'})",
 		comment="",
-		duration=0.000632,
+		duration=0.000684,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=9.9999999999406e-07},
+	{code="", comment="", duration=1.000000000001e-06},
 	{code="", comment="mul, fixed * fixed => summed", duration=1.000000000001e-06},
 	{
 		code="assertIndexesUsed(g'^im' * c'_mjk', {fixed='^i_jk', summed='^m'})",
 		comment="",
-		duration=0.00112,
+		duration=0.00128,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="add, nothing", duration=1.000000000001e-06},
+	{code="", comment="", duration=9.9999999999406e-07},
+	{code="", comment="add, nothing", duration=9.9999999999406e-07},
 	{
 		code="assertIndexesUsed(a + b)",
 		comment="",
-		duration=4.5000000000003e-05,
+		duration=3.8999999999997e-05,
 		simplifyStack={}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="add, fixed", duration=9.9999999999406e-07},
+	{code="", comment="add, fixed", duration=1.000000000001e-06},
 	{
 		code="assertIndexesUsed(a'_i' + b'_i', {fixed='_i'})",
 		comment="",
-		duration=0.000431,
+		duration=0.000699,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="assertIndexesUsed(a'_ij' + b'_ij', {fixed='_ij'})",
 		comment="",
-		duration=0.000888,
+		duration=0.000725,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
+	{code="", comment="", duration=9.9999999999406e-07},
 	{code="", comment="add, summed", duration=1.000000000001e-06},
 	{
 		code="assertIndexesUsed(a'^i_i' + b'^i_i', {summed='^i'})",
 		comment="",
-		duration=0.000375,
+		duration=0.000376,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="assertIndexesUsed(a'^i_i' + b'^j_j', {summed='^ij'})",
 		comment="",
-		duration=0.000271,
+		duration=0.000373,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="add, extra", duration=0},
+	{code="", comment="add, extra", duration=9.9999999999406e-07},
 	{
 		code="assertIndexesUsed( a'_i' + b, {extra='_i'})",
 		comment="",
-		duration=0.000285,
+		duration=0.000271,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="assertIndexesUsed( a + b'_j', {extra='_j'})",
 		comment="",
-		duration=0.000252,
+		duration=0.000162,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="assertIndexesUsed( a'_i' + b'_j', {extra='_ij'})",
 		comment="",
-		duration=0.000299,
+		duration=0.000273,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
@@ -119,21 +119,21 @@
 	{
 		code="assertIndexesUsed( a'^i_ij' + b'^i_ij', {fixed='_j', summed='^i'})",
 		comment="",
-		duration=0.000434,
+		duration=0.000571,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="assertIndexesUsed( a'^i_ij' + b'^k_kj', {fixed='_j', summed='^ik'})",
 		comment="",
-		duration=0.000781,
+		duration=0.000714,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="add, fixed + extra", duration=1.000000000001e-06},
+	{code="", comment="add, fixed + extra", duration=9.9999999999406e-07},
 	{
 		code="assertIndexesUsed( a'_ij' + b'_kj', {fixed='_j', extra='_ik'})",
 		comment="",
-		duration=0.000752,
+		duration=0.000446,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
@@ -141,57 +141,57 @@
 	{
 		code="assertIndexesUsed( a'^i_ij' + b'^i_ik', {summed='^i', extra='_jk'})",
 		comment="",
-		duration=0.000592,
+		duration=0.000401,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="add, fixed + summed + extra", duration=1.000000000001e-06},
+	{code="", comment="", duration=0},
+	{code="", comment="add, fixed + summed + extra", duration=9.9999999999406e-07},
 	{
 		code="assertIndexesUsed( a'_ij^jk' + b'_ij^jl', {fixed='_i', summed='_j', extra='^kl'})",
 		comment="",
-		duration=0.000838,
+		duration=0.000549,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="", duration=0},
-	{code="", comment="TODO fixed and summed of add", duration=1.000000000001e-06},
+	{code="", comment="", duration=1.000000000001e-06},
+	{code="", comment="TODO fixed and summed of add", duration=0},
 	{code="", comment="TODO fixed and summed of add and mul", duration=1.000000000001e-06},
 	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="", duration=9.9999999999406e-07},
+	{code="", comment="", duration=1.000000000001e-06},
 	{code="", comment="notice that the summed index is counted by the number of the symbol's occurrence, regardless of the lower/upper", duration=1.000000000001e-06},
 	{code="", comment="this means the lower/upper of the summed will be arbitrary", duration=1.000000000001e-06},
 	{
 		code="assertIndexesUsed( a'^i' * b'_i' * c'_j', {fixed='_j', summed='^i'})",
 		comment="",
-		duration=0.000563,
+		duration=0.000568,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=0},
+	{code="", comment="", duration=1.000000000001e-06},
 	{
 		code="assertIndexesUsed(a'^i' * b'_i' * c'_j' + d'^i' * e'_i' * f'_j', {fixed='_j', summed='^i'})",
 		comment="",
-		duration=0.000645,
+		duration=0.000694,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
 	{
 		code="assertIndexesUsed(a'^i' * b'_i', {summed='^i'})",
 		comment="",
-		duration=0.000249,
+		duration=0.000161,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
 	{
 		code="assertIndexesUsed(a'^i' * b'_i' + c, {summed='^i'})",
 		comment="",
-		duration=0.000308,
+		duration=0.000327,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=0},
+	{code="", comment="", duration=9.9999999999406e-07},
 	{
 		code="assertIndexesUsed(a'^i' * b'_i' + c'^i' * d'_i', {summed='^i'})",
 		comment="",
-		duration=0.000538,
+		duration=0.000426,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	}
 }

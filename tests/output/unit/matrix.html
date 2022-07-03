@@ -17,7 +17,7 @@ $\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.081000ms<br>
+time: 0.086000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -29,7 +29,7 @@ ${\left[\begin{matrix} 1 \\ 2\end{matrix}\right]} + {\left[\begin{matrix} 3 \\ 4
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.073000ms<br>
+time: 0.100000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -41,7 +41,7 @@ $\left[\begin{matrix} 4 \\ 6\end{matrix}\right]$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.928000ms<br>
+time: 1.229000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>+:Prune:Array.pruneAdd<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -51,7 +51,7 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstan
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.128000ms<br>
+time: 1.122000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -63,7 +63,7 @@ $\left[\begin{array}{cc} 1& 2\\ 3& 4\end{array}\right]$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.094000ms<br>
+time: 0.330000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -75,7 +75,7 @@ $\left[\begin{array}{cc} -{2}& 1\\ \frac{3}{2}& -{\frac{1}{2}}\end{array}\right]
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.055000ms<br>
+time: 9.461000ms<br>
 stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>/:Prune:matrixScalar<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -85,7 +85,7 @@ stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>u
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.714000ms<br>
+time: 7.365000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -97,7 +97,7 @@ $\left[\begin{array}{cc} a& b\\ c& d\end{array}\right]$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.085000ms<br>
+time: 0.109000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -109,7 +109,7 @@ $\left[\begin{array}{cc} \frac{d}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}& -{\frac{b}{{{{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 39.161000ms<br>
+time: 37.118000ms<br>
 stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>/:Prune:matrixScalar<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -119,7 +119,7 @@ stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 56.694000ms<br>
+time: 55.109000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Tidy:apply<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -131,7 +131,7 @@ $\left[\begin{array}{cccc} 1& 0& 0& {t_x}\\ 0& 1& 0& {t_y}\\ 0& 0& 1& {t_z}\\ 0&
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.478000ms<br>
+time: 0.291000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -143,7 +143,7 @@ $\left[\begin{array}{cccc} 1& 0& 0& -{{t_x}}\\ 0& 1& 0& -{{t_y}}\\ 0& 0& 1& -{{t
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.084000ms<br>
+time: 6.816000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -153,7 +153,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.067000ms<br>
+time: 6.534000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -165,7 +165,7 @@ ${\left[\begin{array}{cc} \cos\left(  \theta\right)& -{\sin\left(  \theta\right)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.478000ms<br>
+time: 0.925000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -177,7 +177,7 @@ $\left[\begin{array}{cc} {{2}} {{\cos\left(  \theta\right)}}& 0\\ 0& {{2}} {{\co
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.750000ms<br>
+time: 5.295000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:flattenAddMul<br><li>*:Prune:apply<br><li>+:Prune:flattenAddMul<br><li>+:Prune:Array.pruneAdd<br><li>*:Prune:apply<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flattenAddMul<br><li>+:Prune:Array.pruneAdd<br><li>+:Prune:Array.pruneAdd<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -189,7 +189,7 @@ ${{\left[\begin{array}{cc} \cos\left(  \theta\right)& -{\sin\left(  \theta\right
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.122000ms<br>
+time: 0.852000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -201,7 +201,7 @@ $\left[\begin{array}{cc} {{\cos\left(  \theta\right)}^{2}} + {{\sin\left(  \thet
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.965000ms<br>
+time: 4.793000ms<br>
 stack: size: 34<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:combineMultipliedConstants<br><li>*:Prune:apply<br><li>+:Prune:combineMultipliedConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -211,7 +211,7 @@ stack: size: 34<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.317000ms<br>
+time: 5.583000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -223,7 +223,7 @@ ${{\left[\begin{array}{cc} \cos\left(  \theta\right)& -{\sin\left(  \theta\right
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.398000ms<br>
+time: 0.495000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -235,7 +235,7 @@ $\left[\begin{array}{cc} {{\left({{\cos\left(  \theta\right)} + {\sin\left(  \th
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.829000ms<br>
+time: 16.562000ms<br>
 stack: size: 52<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineMultipliedConstants<br><li>+:Prune:combineMultipliedConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -247,7 +247,7 @@ $\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.146000ms<br>
+time: 0.120000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -259,7 +259,7 @@ $\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.053000ms<br>
+time: 0.052000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -271,7 +271,7 @@ ${{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.167000ms<br>
+time: 1.045000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -283,7 +283,7 @@ ${{{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}} {{\left[\begin{array
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.947000ms<br>
+time: 1.460000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -295,7 +295,7 @@ ${\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]} = {\left[\begin{array}{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.197000ms<br>
+time: 0.149000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -305,7 +305,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.280000ms<br>
+time: 0.319000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -317,7 +317,7 @@ ${{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.432000ms<br>
+time: 0.358000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -327,7 +327,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.907000ms<br>
+time: 2.713000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -339,7 +339,7 @@ ${{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.275000ms<br>
+time: 0.281000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -349,7 +349,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.588000ms<br>
+time: 2.025000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -361,7 +361,7 @@ ${\left[\begin{array}{cc} {1} + {{{a}} {{b}}}& a\\ b& 1\end{array}\right]} = {\l
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.115000ms<br>
+time: 2.572000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -371,7 +371,7 @@ stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>+
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.016000ms<br>
+time: 2.769000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -383,7 +383,7 @@ ${\frac{1}{t}}{\left({{\left[\begin{array}{c} a\\ b\end{array}\right]} + {\left[
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.170000ms<br>
+time: 0.189000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -395,7 +395,7 @@ $\left[\begin{array}{c} {\frac{1}{t}}{\left({{a} + {c}}\right)}\\ {\frac{1}{t}}{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.357000ms<br>
+time: 3.831000ms<br>
 stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>+:Prune:Array.pruneAdd<br><li>+:Prune:Array.pruneAdd<br><li>+:Prune:Array.pruneAdd<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>/:Prune:matrixScalar<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -405,7 +405,7 @@ stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>+:Prune:Array.pruneAdd
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.274000ms<br>
+time: 10.794000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -417,7 +417,7 @@ $\left[\begin{array}{c} -{4}\\ \frac{9}{2}\end{array}\right]$	$\left[\begin{arra
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.933000ms<br>
+time: 2.294000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -429,7 +429,7 @@ $\left[\begin{array}{c} 5\\ 6\end{array}\right]$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.517000ms<br>
+time: 3.400000ms<br>
 stack: size: 27<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -439,6 +439,6 @@ stack: size: 27<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>u
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.215000ms<br>
+time: 4.031000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
