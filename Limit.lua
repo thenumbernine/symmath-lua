@@ -201,7 +201,7 @@ Limit.rules = {
 				local pr = prune:apply(lr)
 				
 				if pl == pr then
-					return pl
+					return prune:apply(pl)
 				else
 					-- if lim x->a+ ~= lim x->a- then lim x->a is unknown
 					-- so SFINAE: don't touch the result
@@ -218,7 +218,7 @@ Limit.rules = {
 					-- then return the original both-sides limit
 					-- otherwise return invalid.
 					if pl == ll and pr == lr then
-						return
+						return -- return what?
 					else
 						return symmath.invalid
 					end
@@ -226,7 +226,7 @@ Limit.rules = {
 			end
 
 			if f.evaluateLimit then
-				return f:evaluateLimit(x, a, side)
+				return prune:apply(f:evaluateLimit(x, a, side))
 			end
 
 			-- if we haven't figured it out then don't touch the result

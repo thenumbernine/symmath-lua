@@ -26,9 +26,9 @@ function tan:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	-- (-inf,inf) => (-inf,inf) increasing, periodic
 	local Is = self[1]:getRealRange()
-	if Is == nil then 
+	if Is == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 
 	symmath = symmath or require 'symmath'
@@ -67,7 +67,7 @@ tan.rules = {
 			
 			local th = expr[1]
 
-			if th == symmath.inf 
+			if th == symmath.inf
 			or th == Constant(-1) * symmath.inf
 			then
 				return symmath.invalid
