@@ -11,7 +11,7 @@ look in the object's metatable for rules key matching the visitor's .name
 only check in the child-most class
 NOTICE this means classes must inherit (by copying) their parent class rules tables
 
-also look in this vistor's lookup table for the key matching the object's metatable itself 
+also look in this vistor's lookup table for the key matching the object's metatable itself
 
 I can't use the table key here and the line above because
 that would cause a dependency loop for the construction of both
@@ -50,7 +50,7 @@ Inherit from Visitor, instanciate that class as 'x', and x() will call Visitor:a
 --]]
 local symmath
 function Visitor:apply(expr, ...)
---return require 'ext.timer'(self.name, function(...)	
+--return require 'ext.timer'(self.name, function(...)
 --local changeInNodes = {}
 
 	symmath = symmath or require 'symmath'
@@ -58,7 +58,7 @@ function Visitor:apply(expr, ...)
 
 	local origIsExpr
 	if self.rememberVisit then
--- [[ cache visitors & simplification.  does this help?	
+-- [[ cache visitors & simplification.  does this help?
 assert(self.name ~= Visitor.name)
 		local selfmt = self.class	 --getmetatable(self)
 		if not selfmt.hasBeenField then
@@ -68,9 +68,13 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 --]]
 -- [[
 		origIsExpr = symmath.Expression:isa(expr)
-		if origIsExpr and not expr.mutable and expr[self.hasBeenField] then 
---print('found '..self.hasBeenField..' on '..symmath.export.SingleLine(expr)..' - not visiting')		
-			return expr 
+		if symmath.useHasBeenFlags
+		and origIsExpr
+		and not expr.mutable
+		and expr[self.hasBeenField]
+		then
+--print('found '..self.hasBeenField..' on '..symmath.export.SingleLine(expr)..' - not visiting')
+			return expr
 		end
 --]]
 	end
@@ -92,25 +96,25 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 	-- TODO only clone when you need to
 	-- expr = expr:cloneIfMutable()	--TODO
 	local orig = expr
---[[ deep copy ... not needed if mutable objects are mutable	
+--[[ deep copy ... not needed if mutable objects are mutable
 	expr = clone(expr)
 --]]
 -- [[
-	if Expression:isa(expr) 
+	if Expression:isa(expr)
 	-- TODO how about a mutableCopy() or mutableShallowCopy()
 	-- that does deep copy for Array/mutable, but shallow for all non-mutable Expression's
-	and not expr.mutable 
+	and not expr.mutable
 	then
 		expr = expr:shallowCopy()
 	else
 		expr = clone(expr)	-- not an Expression
 	end
 --]]
---[[ cache visitors & simplification.  does this help?	
+--[[ cache visitors & simplification.  does this help?
 -- TODO NO
 -- because if we change the children ... this flag should get invalidated
 -- but where does that change happen?
-	-- preserve 'hasBeen' flags. 
+	-- preserve 'hasBeen' flags.
 	-- should I put this copy into clone() itself?
 	-- or how about I make sure no in-place modification is used in any visitors, then I can get rid of this clone()
 	if origIsExpr then
@@ -139,8 +143,8 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 		local m = getmetatable(expr)
 		assert(m, "got back a result with no metatable")
 		
-		local modifiedChild 
-		-- bubble-in	
+		local modifiedChild
+		-- bubble-in
 		-- nobody's using this right now
 		--[[
 		local rules = self:lookup(m, true)
@@ -195,7 +199,7 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 		end
 
 		-- if we found an entry then apply it
---local rulesSrcNodeName = m.name		
+--local rulesSrcNodeName = m.name
 --assert(rulesSrcNodeName ~= 'Expression')
 		local rules = self:lookup(m)
 		if rules then
@@ -227,10 +231,10 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 						-- we probably need to start again
 						m = getmetatable(expr)
 						assert(m, "got back a result with no metatable")
---rulesSrcNodeName = m.name		
+--rulesSrcNodeName = m.name
 --assert(rulesSrcNodeName ~= 'Expression')
 						break
-					--[[ should I insert this in the stack even if it wasn't applied?  
+					--[[ should I insert this in the stack even if it wasn't applied?
 					-- yes?  since the function calls are inserted even if they don't produce anything new
 					-- but i'll disable it, it inserts way too many, and the unused rules can be inferred by just scrolling down the rule list.
 					else
@@ -248,15 +252,15 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 	if debugVisitors then
 		print(id, 'done pruning with', Verbose(expr))
 	end
-----print('prune', require 'symmath.export.SingleLine'(x))	
+----print('prune', require 'symmath.export.SingleLine'(x))
 --if next(changeInNodes) then
 --	print(self.name..' size', expr:countNodes(), 'changed by', require 'ext.tolua'(changeInNodes))
 --end
 
 	if self.rememberVisit then
--- [[ cache visitors & simplification.  does this help?	
+-- [[ cache visitors & simplification.  does this help?
 		if not expr.mutable then
---print(self.hasBeenField..' from '..symmath.export.SingleLine(orig)..' to '..symmath.export.SingleLine(expr))		
+--print(self.hasBeenField..' from '..symmath.export.SingleLine(orig)..' to '..symmath.export.SingleLine(expr))
 			expr[self.hasBeenField] = true
 		end
 --]]

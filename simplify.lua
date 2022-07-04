@@ -19,7 +19,7 @@ I think to keep cos(x)^2 and sin(x)^2 separate I have to make a specific factor 
 Or as a custom factor() function: y - y * cos(x)^2 => y * sin(x)^2
 or ... power ... y * cos(x)^n - y * cos(x)^(2+n) => y * cos(x)^n * sin(x)^2
 --]]
-if simplifyObj.useTrigSimplify 
+if simplifyObj.useTrigSimplify
 and not x.mutable
 and x:hasTrig()
 then
@@ -29,7 +29,7 @@ then
 		-- where to put this, since doing one or the other means the other or the one missing out on div etc simplifications
 		
 		if x.map then
---printbr('testing for trig squares:', x)				
+--printbr('testing for trig squares:', x)
 			local sin = symmath.sin
 			local cos = symmath.cos
 			local Constant = symmath.Constant
@@ -95,7 +95,7 @@ then
 							return (1 - cos(th)^2) * sin(th)^(n-2)
 						end
 					end
-				end		
+				end
 			end)
 			if found then
 --printbr(x)
@@ -124,7 +124,7 @@ simplifyObj.useTrigSimplify = true
 --[[
 whether to debug simplification loops
 set this to true for default behavior
-set this to "rules" to also insert each rule applied during each visitor phase of simplify() 
+set this to "rules" to also insert each rule applied during each visitor phase of simplify()
  but this goes much slower(?)
 --]]
 simplifyObj.debugLoops = false
@@ -132,16 +132,19 @@ simplifyObj.debugLoops = false
 local function simplifyCall(simplifyObj, x, ...)
 	symmath = symmath or require 'symmath'
 
-
--- [[ cache visitors & simplification.  does this help?	
-	if symmath.Expression:isa(x) and not x.mutable and x.hasBeenSimplify then
+-- [[ cache visitors & simplification.  does this help?
+	if symmath.useHasBeenFlags
+	and x.hasBeenSimplify
+	and symmath.Expression:isa(x)
+	and not x.mutable
+	then
 		return x
 	end
---]]	
+--]]
 
 --return timer('simplify', function(...)
---print('start', require 'symmath.export.SingleLine'(x))	
-	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ... 
+--print('start', require 'symmath.export.SingleLine'(x))
+	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ...
 	-- this doesn't make sense, but maybe it's true
 	if symmath.Array:isa(x) then
 		x = x:clone()
@@ -162,12 +165,12 @@ local function simplifyCall(simplifyObj, x, ...)
 	
 	local clone, stack
 	if simplifyObj.debugLoops then
-		-- [[ with stack trace on loop  
+		-- [[ with stack trace on loop
 		clone = symmath.clone
 		stack = table()
 	end
 	
-	-- TODO if we get nested calls then this gets overwritten and we lose the ability for Visitor to store extra rules ... 
+	-- TODO if we get nested calls then this gets overwritten and we lose the ability for Visitor to store extra rules ...
 	-- unless instead we return this object, so we don't rely on globals
 	simplifyObj.stack = stack
 	
@@ -206,7 +209,7 @@ local function simplifyCall(simplifyObj, x, ...)
 -- stdout too? or just stderr?
 --local print = printbr or print
 --print('reached maxiter', simplifyMaxIter)
-		if stack then 
+		if stack then
 			local SingleLine = symmath.export.SingleLine
 			for i,kv in ipairs(stack) do
 				local op, xi = table.unpack(kv)
@@ -227,13 +230,13 @@ local function simplifyCall(simplifyObj, x, ...)
 	simplifyObj.stack = stack
 
 -- lets just hope nobody is modifying children in-place ...
--- [[ cache visitors & simplification.  does this help?	
+-- [[ cache visitors & simplification.  does this help?
 	if not x.mutable then
 		x.hasBeenSimplify = true
 	end
 --]]
 
---print('end', require 'symmath.export.SingleLine'(x))	
+--print('end', require 'symmath.export.SingleLine'(x))
 	return x
 --end, ...)
 end

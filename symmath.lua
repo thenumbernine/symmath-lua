@@ -45,6 +45,11 @@ end
 -- whether to replace variable names with unicode Greek symbols
 symmath.fixVariableNames = false
 
+-- ok I am trying to cache simplifications so that calling Visitors multiple times will only execute the first time
+-- but there are risks if flags aren't copied correctly or if the Visitor doesn't fully apply before returning and setting the flag
+-- so this is the master switch to using the 'hasBeen*' flags
+symmath.useHasBeenFlags = true
+
 symmath.Variable = require 'symmath.Variable'
 symmath.var = symmath.Variable					--shorthand
 function symmath.vars(...)						--create variables for each string parameter 
