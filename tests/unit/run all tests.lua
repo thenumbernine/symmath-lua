@@ -1,12 +1,20 @@
 #!/usr/bin/env lua
-local force = ... == 'force'
 local haslfs, lfs = pcall(require, 'lfs')
 if not haslfs then lfs = nil end
 require 'ext'
+local force = cmdline.force
 
 -- vanilla lua on windows isn't processing escape codes for color changes etc, but luajit is.
 -- linux works fine for both of course
 local lua = 'luajit'
+
+--[[
+ex: to run all tests with the 'useHasBeenFlags' disabled:  ./run\ all\ tests.lua force "-e=require'symmath'.useHasBeenFlags=false"
+--]]
+local dashE = cmdline['-e']
+if dashE then
+	lua = lua..' -e "'..dashE..'"'
+end
 
 local function exec(cmd)
 	print('>'..cmd)

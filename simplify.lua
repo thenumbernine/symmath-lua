@@ -134,8 +134,8 @@ local function simplifyCall(simplifyObj, x, ...)
 
 -- [[ cache visitors & simplification.  does this help?
 	if symmath.useHasBeenFlags
-	and x.hasBeenSimplify
 	and symmath.Expression:isa(x)
+	and x.hasBeenSimplify
 	and not x.mutable
 	then
 		return x
