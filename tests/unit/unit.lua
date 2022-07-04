@@ -23,7 +23,7 @@ local function updateMaster()
 			allTestResults[title] = fromlua(io.readfile(unitTestCachePath..'/'..fn)) 
 		end
 	end
-	io.writefile(unitTestOutputPath..'/master.html', [[
+	io.writefile(unitTestOutputPath..'/index.html', [[
 <!doctype html>
 <html>
 	<head>
