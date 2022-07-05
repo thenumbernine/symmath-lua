@@ -184,7 +184,8 @@ return function(env, title)
 
 	-- TODO expect a specific error message
 	function env.assertError(f)
-		local result = xpcall(f, function() end)
+		local _, result = xpcall(f, function() end)
+		printbr(result)
 		assert(not result, "expected an error, but found none")
 	end
 
