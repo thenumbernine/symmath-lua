@@ -12,10 +12,12 @@
 <b>if there are no indexes in the expr or in find then it falls back on 'replace'</b><br>
 <code>simplifyAssertEq( a:replaceIndex(a, b), b )</code>
 </td><td>
+${b} = {b}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.375000ms<br>
+time: 0.395000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -28,50 +30,60 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>variance must match in order for the replace to work</b><br>
 <code>simplifyAssertEq( a'_a':replaceIndex(a'^u', b'^u'), a'_a' )</code>
 </td><td>
+${{ a} _a} = {{ a} _a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.136000ms<br>
+time: 1.993000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'^a':replaceIndex(a'^b', b'^b'), b'^a' )</code>
 </td><td>
+${{ b} ^a} = {{ b} ^a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.867000ms<br>
+time: 1.926000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'^a':replaceIndex(a'^b', b'^b' + c'^b'), b'^a' + c'^a' )</code>
 </td><td>
+${{{ b} ^a} + {{ c} ^a}} = {{{ b} ^a} + {{ c} ^a}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.161000ms<br>
+time: 5.911000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>the sum indexes won't use the same symbol, because the symbols are not preserved and instead chosen among unused symbols in the result expression</b><br>
 <code>simplifyAssertEq( a'^a':replaceIndex(a'^b', b'^bc' * c'_c'), b'^ab' * c'_b' )</code>
 </td><td>
+${{{{{ b} ^a} ^b}} {{{ c} _b}}} = {{{{{ b} ^a} ^b}} {{{ c} _b}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.820000ms<br>
+time: 3.197000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'^a':replaceIndex(a'^b', b'^b' + c'^bc' * d'_c'), b'^a' + c'^ab' * d'_b' )</code>
 </td><td>
+${{{ b} ^a} + {{{{{ c} ^a} ^b}} {{{ d} _b}}}} = {{{ b} ^a} + {{{{{ c} ^a} ^b}} {{{ d} _b}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.617000ms<br>
+time: 7.506000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -84,50 +96,60 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( a'_ab':replaceIndex(a'_uv', b'_uv'), b'_ab' )</code>
 </td><td>
+${{{ b} _a} _b} = {{{ b} _a} _b}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.892000ms<br>
+time: 1.113000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'_ab':replaceIndex(a'_uv', b'_vu'), b'_ba' )</code>
 </td><td>
+${{{ b} _b} _a} = {{{ b} _b} _a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.240000ms<br>
+time: 1.450000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'_ba':replaceIndex(a'_uv', b'_vu'), b'_ab' )</code>
 </td><td>
+${{{ b} _a} _b} = {{{ b} _a} _b}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.666000ms<br>
+time: 1.222000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'_ab':replaceIndex(a'_vu', b'_uv'), b'_ba' )</code>
 </td><td>
+${{{ b} _b} _a} = {{{ b} _b} _a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.834000ms<br>
+time: 0.864000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'_ba':replaceIndex(a'_vu', b'_uv'), b'_ab' )</code>
 </td><td>
+${{{ b} _a} _b} = {{{ b} _a} _b}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.660000ms<br>
+time: 1.531000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -146,40 +168,48 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( (g'^am' * c'_mbc'):replaceIndex( g'^am' * c'_mbc', c'^a_bc' ), c'^a_bc')</code>
 </td><td>
+${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.132000ms<br>
+time: 1.875000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>mapping the sum index</b><br>
 <code>simplifyAssertEq( (g'^am' * c'_mbc'):replaceIndex( g'^an' * c'_nbc', c'^a_bc' ), c'^a_bc')</code>
 </td><td>
+${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.291000ms<br>
+time: 2.362000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>mapping the fixed indexes</b><br>
 <code>simplifyAssertEq( (g'^am' * c'_mbc'):replaceIndex( g'^im' * c'_mjk', c'^i_jk' ), c'^a_bc')</code>
 </td><td>
+${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.344000ms<br>
+time: 1.677000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>mapping both</b><br>
 <code>simplifyAssertEq( (g'^am' * c'_mbc'):replaceIndex( g'^id' * c'_djk', c'^i_jk' ), c'^a_bc')</code>
 </td><td>
+${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.258000ms<br>
+time: 2.167000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -192,10 +222,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( (a'_a' + b'_ab' * c'^b'):replaceIndex(a'_u', b'_u'), b'_a' + b'_ab' * c'^b' )</code>
 </td><td>
+${{{ b} _a} + {{{{{ b} _a} _b}} {{{ c} ^b}}}} = {{{ b} _a} + {{{{{ b} _a} _b}} {{{ c} ^b}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.377000ms<br>
+time: 4.740000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -208,10 +240,12 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>TODO this should preserve the order of b_ab -> c_ab</b><br>
 <code>simplifyAssertEq( (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_uv'), a'_a' + c'_ab' * c'^b' )</code>
 </td><td>
+${{{ a} _a} + {{{{{ c} _a} _b}} {{{ c} ^b}}}} = {{{ a} _a} + {{{{{ c} _a} _b}} {{{ c} ^b}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.974000ms<br>
+time: 5.551000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -224,10 +258,12 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>TODO this should preserve the order of b_ab -> d_ab</b><br>
 <code>simplifyAssertEq( (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', d'_uv'), a'_a' + d'_ab' * c'^b' )</code>
 </td><td>
+${{{ a} _a} + {{{{{ d} _a} _b}} {{{ c} ^b}}}} = {{{ a} _a} + {{{{{ d} _a} _b}} {{{ c} ^b}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.538000ms<br>
+time: 4.447000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -240,20 +276,24 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( a'^a_a':replaceIndex(a'^a_a', b'^a_a'), b'^a_a')</code>
 </td><td>
+${{{ b} ^a} _a} = {{{ b} ^a} _a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.132000ms<br>
+time: 1.043000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'^a_a':replaceIndex(a'^u_u', b'^u_u'), b'^a_a')</code>
 </td><td>
+${{{ b} ^a} _a} = {{{ b} ^a} _a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.991000ms<br>
+time: 1.169000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -266,10 +306,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( (a'^a_a' * a'^b_b'):replaceIndex(a'^u_u', b'^u_u'), b'^a_a' * b'^b_b')</code>
 </td><td>
+${{{{{ b} ^a} _a}} {{{{ b} ^b} _b}}} = {{{{{ b} ^a} _a}} {{{{ b} ^b} _b}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.620000ms<br>
+time: 2.603000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -282,20 +324,24 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( a'^a_ab':replaceIndex(a'^a_ab', b'_b'), b'_b' )</code>
 </td><td>
+${{ b} _b} = {{ b} _b}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.428000ms<br>
+time: 0.858000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'^a_ab':replaceIndex(a'^a_ab', b'_b' + c'_a^a_b'), b'_b' + c'_a^a_b' )</code>
 </td><td>
+${{{ b} _b} + {{{{ c} _a} ^a} _b}} = {{{ b} _b} + {{{{ c} _a} ^a} _b}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.876000ms<br>
+time: 3.257000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -314,20 +360,24 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( a'_t':replaceIndex(a'_t', b), b)</code>
 </td><td>
+${b} = {b}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.289000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.490000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'_t':replaceIndex(a'_t', b'_u'), b'_u')</code>
 </td><td>
+${{ b} _u} = {{ b} _u}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.478000ms<br>
+time: 0.655000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -340,10 +390,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( (a'_t' * b'^a_a'):replaceIndex(a'_t', c'_u' * d'^a_a'), c'_u' * b'^a_a' * d'^b_b')</code>
 </td><td>
+${{{{{{ c} _u}} {{{{ d} ^b} _b}}}} {{{{ b} ^a} _a}}} = {{{{ c} _u}} {{{{ b} ^a} _a}} {{{{ d} ^b} _b}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.710000ms<br>
+time: 3.035000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -368,20 +420,24 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( (a'_ij' + c'_,t' * b'_ij'):replaceIndex( c'_,t', c * d'^i_i' ), a'_ij' + c * d'^a_a' * b'_ij' )</code>
 </td><td>
+${{{{ a} _i} _j} + {{{{{c}} {{{{ d} ^a} _a}}}} {{{{ b} _i} _j}}}} = {{{{ a} _i} _j} + {{{c}} {{{{ d} ^a} _a}} {{{{ b} _i} _j}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.413000ms<br>
+time: 5.632000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( (a'_ab' + c'_,t' * b'_ab'):replaceIndex( c'_,t', c * d'^a_a' ), a'_ab' + c * d'^c_c' * b'_ab' )</code>
 </td><td>
+${{{{ a} _a} _b} + {{{{{c}} {{{{ d} ^c} _c}}}} {{{{ b} _a} _b}}}} = {{{{ a} _a} _b} + {{{c}} {{{{ d} ^c} _c}} {{{{ b} _a} _b}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.868000ms<br>
+time: 12.560000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -406,10 +462,12 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( (a'_ij' + c'_,t' * b'_ij'):replaceIndex( c'_,t', c * d'^i_i' + e'^i_i' ), a'_ij' + (c * d'^a_a' + e'^a_a') * b'_ij' )</code>
 </td><td>
+${{{{ a} _i} _j} + {{{\left({{{{c}} {{{{ d} ^a} _a}}} + {{{ e} ^a} _a}}\right)}} {{{{ b} _i} _j}}}} = {{{{ a} _i} _j} + {{{\left({{{{c}} {{{{ d} ^a} _a}}} + {{{ e} ^a} _a}}\right)}} {{{{ b} _i} _j}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.900000ms<br>
+time: 13.971000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:flatten<br><li>+:Prune:flatten<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -427,7 +485,7 @@ ${{{{ g} _i} _j} _{,t}} = {{{d}} {{\left({{{{d}} {{{{ b} ^k} _{,i}}} {{{{ g} _k}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.984000ms<br>
+time: 5.155000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -446,20 +504,24 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <code>simplifyAssertEq( (g'_ab,t' * g'_cd,e'):replaceIndex(g'_ij,k', c'_ij'), g'_ab,t' * g'_cd,e')</code>
 </td><td>
+${{{{{{ g} _a} _b} _{,t}}} {{{{{ g} _c} _d} _{,e}}}} = {{{{{{ g} _a} _b} _{,t}}} {{{{{ g} _c} _d} _{,e}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.530000ms<br>
+time: 2.624000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( (g'_ab,t' * g'_cd,e'):replaceIndex(g'_ij,t', c'_ij'), c'_ab' * g'_cd,e')</code>
 </td><td>
+${{{{{ c} _a} _b}} {{{{{ g} _c} _d} _{,e}}}} = {{{{{ c} _a} _b}} {{{{{ g} _c} _d} _{,e}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.474000ms<br>
+time: 1.915000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -478,30 +540,36 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>replaceIndex with more general indexes should work</b><br>
 <code>simplifyAssertEq( a'^a_a':replaceIndex( a'^a_b', b'^a_b'), b'^a_a')</code>
 </td><td>
+${{{ b} ^a} _a} = {{{ b} ^a} _a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.459000ms<br>
+time: 0.686000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>replaceIndex with more specific (summed) indexes shouldn't</b><br>
 <code>simplifyAssertEq( a'^a_b':replaceIndex( a'^a_a', b'^a_a'), a'^a_b')</code>
 </td><td>
+${{{ a} ^a} _b} = {{{ a} ^a} _b}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.440000ms<br>
+time: 0.510000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>and the two should be discernable</b><br>
 <code>simplifyAssertEq( (a'^a_b' * a'^c_c'):replaceIndex( a'^a_a', b'^a_a'), (a'^a_b' * b'^c_c'))</code>
 </td><td>
+${{{{{ a} ^a} _b}} {{{{ b} ^c} _c}}} = {{{{{ a} ^a} _b}} {{{{ b} ^c} _c}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.914000ms<br>
+time: 1.607000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -514,30 +582,36 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>in this case, a^a_b's indexes are considered extra since they are not in b as well, so they will be exactly matched in the expression.  since no a^a_b exists, it will not match and not replace.</b><br>
 <code>simplifyAssertEq( a'^a_a':replaceIndex( a'^a_b', b), a'^a_a')</code>
 </td><td>
+${{{ a} ^a} _a} = {{{ a} ^a} _a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.478000ms<br>
+time: 0.742000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( a'^a_b':replaceIndex( a'^a_a', b), a'^a_b')</code>
 </td><td>
+${{{ a} ^a} _b} = {{{ a} ^a} _b}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.875000ms<br>
+time: 0.656000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( (a'^a_b' * a'^c_c'):replaceIndex( a'^a_a', b), (a'^a_b' * b))</code>
 </td><td>
+${{{{{ a} ^a} _b}} {{b}}} = {{{{{ a} ^a} _b}} {{b}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.307000ms<br>
+time: 3.900000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -555,7 +629,7 @@ ${{ d} _{,t}} = {{{\frac{1}{6}}} {{d}} {{\left({{{{2}} {{e}} {{a}}}{-{{{{{ b} ^k
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.384000ms<br>
+time: 3.417000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -567,7 +641,7 @@ ${{ d} _{,t}} = {{{{{{2}} {{e}} {{a}}}{-{{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.868000ms<br>
+time: 3.083000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -580,11 +654,13 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <code>simplifyAssertEq( d'_,t':eq( b'^k_,i' * g'^ij' * g'_jk' ):replaceIndex( g'_ij', c'_ij' / d^2  ), d'_,t':eq(b'^k_,i' * g'^ij' * c'_jk' / d^2) )</code>
 </td><td>
+${{{ d} _{,t}} = {{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{\frac{{{ c} _j} _k}{{d}^{2}}}}}} = {{{ d} _{,t}} = {\frac{{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{{{ c} _j} _k}}}{{d}^{2}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.772000ms<br>
-stack: size: 22<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
+time: 16.349000ms<br>
+stack: size: 27<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -596,11 +672,13 @@ stack: size: 22<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <code>simplifyAssertEq( d'_,t':eq( g'^jk' * g'_jk' ):replaceIndex( g'_ij', c'_ij' / d^2  ), d'_,t':eq( g'^jk' * c'_jk' / d^2) )</code>
 </td><td>
+${{{ d} _{,t}} = {{{{{ g} ^j} ^k}} {{\frac{{{ c} _j} _k}{{d}^{2}}}}}} = {{{ d} _{,t}} = {\frac{{{{{ g} ^j} ^k}} {{{{ c} _j} _k}}}{{d}^{2}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.516000ms<br>
-stack: size: 22<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
+time: 15.748000ms<br>
+stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -618,10 +696,12 @@ stack: size: 22<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <code>simplifyAssertEq( a'^i_i':replaceIndex(a'^i_j', b'^i_j'), b'^i_i')</code>
 </td><td>
+${{{ b} ^i} _i} = {{{ b} ^i} _i}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.360000ms<br>
+time: 0.699000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -640,21 +720,21 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>what should this produce?  Technically it is invalid match, since the from and to don't have matching fixed indexes.  So... assert error?</b><br>
 <code>assertError(function() (a'_a' + b'_ab' * c'^b'):replaceIndex(b'_uv', c'_bv') end )</code>
 </td><td>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:176: expected an error, but found none<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:187: expected an error, but found none<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:216: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:215><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:227: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:226><br>
 	[C]: in function 'assert'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:176: in function 'assertError'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:187: in function 'assertError'<br>
 	[string "assertError(function() (a'_a' + b'_ab' * c'^b..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:208: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:207><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:219: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:218><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:207: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:218: in function 'exec'<br>
 	replaceIndex.lua:136: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	replaceIndex.lua:6: in main chunk<br>
-	[C]: at 0x5579acba83e0
+	[C]: at 0x5654a24752f0
 </td><td>
-time: 0.286000ms<br>
+time: 0.625000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -683,7 +763,7 @@ ${{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.339000ms<br>
+time: 0.544000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -694,7 +774,7 @@ ${{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.294000ms<br>
+time: 0.426000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -705,6 +785,6 @@ ${{{ c} _b}} {{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.367000ms<br>
+time: 0.755000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>

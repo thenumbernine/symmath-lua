@@ -7,10 +7,10 @@ timer(nil, function()
 
 env.x = var'x'
 
---[[ 
+--[[
 I'm having trouble deciding which to use.
-only return a single value if it is duplicated? 
-or is multiplicity important? 
+only return a single value if it is duplicated?
+or is multiplicity important?
 what does the eigenvalue solver think of this?
 NOTICE for now I will return without multiplicity
 this is for maximum compatability: (x^40):eq(0):solve(x) would be impractical to return 40x of x:eq(0), and sin(x):eq(0):solve(x) would be impossible
@@ -44,6 +44,10 @@ simplifyAssertEq(select(2, (x^4):eq(0):solve(x)), x:eq(0))
 simplifyAssertEq(select(3, (x^4):eq(0):solve(x)), x:eq(0))
 simplifyAssertEq(select(4, (x^4):eq(0):solve(x)), x:eq(0))
 
+-- Deterministic order of roots?
+-- For quadratics it is plus sqrt(discr) first then minus
+-- For x^n times P(x) it is the zeroes first (TODO how about instead of enumerating all roots, we provide multiplicity, so (x^n):eq(0):solve(x) can return (for n != 0, x=0 n-times)
+
 -- distinguish between x*(x^2 + 2x + 1) and (x^3 + 2x^2 + x) , because the solver handles one but not the other
 printbr( (x * (x^2 + 2*x + 1)):eq(0):solve(x)  )
 simplifyAssertEq(#{(x * (x^2 + 2*x + 1)):eq(0):solve(x)}, 3)
@@ -61,14 +65,14 @@ simplifyAssertEq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))
 printbr( (x * (x^2 + x - 1)):eq(0):solve(x)  )
 simplifyAssertEq(#{(x * (x^2 + x - 1)):eq(0):solve(x)}, 3)
 simplifyAssertEq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))
-simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))
-simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))
+simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))
+simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))
 
 printbr( (x^3 + x^2 - x):eq(0):solve(x) )
 simplifyAssertEq(#{(x^3 + x^2 - x):eq(0):solve(x)}, 3)
 simplifyAssertEq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))
-simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))
-simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))
+simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))
+simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))
 
 ]=]
 
@@ -121,7 +125,7 @@ simplifyAssertEq(select(2, (x^2):eq(-1):solve(x)), x:eq(-i))
 
 ]=]
 .. solveReturnsMultiplicity
---.. solveDoesntReturnMultiplicity 
+--.. solveDoesntReturnMultiplicity
 ), '\n')) do
 	env.exec(line)
 end

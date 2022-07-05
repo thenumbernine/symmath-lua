@@ -17,7 +17,7 @@ $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{ccc} {T_{xx}}& {T_{xy}}&
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.263000ms<br>
+time: 0.322000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -44,11 +44,13 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td><td>
 $\overset{i\downarrow j\rightarrow}{\left[\begin{array}{ccc} {T_{xx}}& {T_{xy}}& {T_{xz}}\\ {T_{yx}}& {T_{yy}}& {T_{yz}}\\ {T_{zx}}& {T_{zy}}& {T_{zz}}\end{array}\right]}$
 <br>
+${\overset{i\downarrow j\rightarrow}{\left[\begin{array}{ccc} {T_{xx}}& {T_{xy}}& {T_{xz}}\\ {T_{yx}}& {T_{yy}}& {T_{yz}}\\ {T_{zx}}& {T_{zy}}& {T_{zz}}\end{array}\right]}} = {\overset{a\downarrow b\rightarrow}{\left[\begin{array}{ccc} {T_{xx}}& {T_{xy}}& {T_{xz}}\\ {T_{yx}}& {T_{yy}}& {T_{yz}}\\ {T_{zx}}& {T_{zy}}& {T_{zz}}\end{array}\right]}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.987000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 5.527000ms<br>
+stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -56,11 +58,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${T_{xx}}$
 <br>
+${{T_{xx}}} = {{T_{xx}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.050000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 2.069000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -68,11 +72,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${T_{xy}}$
 <br>
+${{T_{xy}}} = {{T_{xy}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.599000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 1.979000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -80,11 +86,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${T_{xz}}$
 <br>
+${{T_{xz}}} = {{T_{xz}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.439000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 2.183000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -92,11 +100,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${T_{yx}}$
 <br>
+${{T_{yx}}} = {{T_{yx}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.528000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 1.988000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -104,11 +114,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${T_{yy}}$
 <br>
+${{T_{yy}}} = {{T_{yy}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.169000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 1.716000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -116,11 +128,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${T_{yz}}$
 <br>
+${{T_{yz}}} = {{T_{yz}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.636000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 1.496000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -128,11 +142,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${T_{zx}}$
 <br>
+${{T_{zx}}} = {{T_{zx}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.028000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 2.177000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -140,11 +156,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${T_{zy}}$
 <br>
+${{T_{zy}}} = {{T_{zy}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.048000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 1.693000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -152,11 +170,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${T_{zz}}$
 <br>
+${{T_{zz}}} = {{T_{zz}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.818000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 1.869000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -164,11 +184,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 $\overset{p\downarrow}{\left[\begin{matrix} {T_{xy}} \\ {T_{xz}}\end{matrix}\right]}$
 <br>
+${\overset{p\downarrow}{\left[\begin{matrix} {T_{xy}} \\ {T_{xz}}\end{matrix}\right]}} = {\overset{p\downarrow}{\left[\begin{matrix} {T_{xy}} \\ {T_{xz}}\end{matrix}\right]}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.403000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 1.928000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -176,11 +198,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 $\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{yz}}\end{matrix}\right]}$
 <br>
+${\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{yz}}\end{matrix}\right]}} = {\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{yz}}\end{matrix}\right]}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.063000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 2.439000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -188,11 +212,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 $\overset{p\downarrow}{\left[\begin{matrix} {T_{zy}} \\ {T_{zz}}\end{matrix}\right]}$
 <br>
+${\overset{p\downarrow}{\left[\begin{matrix} {T_{zy}} \\ {T_{zz}}\end{matrix}\right]}} = {\overset{p\downarrow}{\left[\begin{matrix} {T_{zy}} \\ {T_{zz}}\end{matrix}\right]}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.008000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 1.953000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -200,11 +226,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 $\overset{p\downarrow}{\left[\begin{matrix} {T_{yx}} \\ {T_{zx}}\end{matrix}\right]}$
 <br>
+${\overset{p\downarrow}{\left[\begin{matrix} {T_{yx}} \\ {T_{zx}}\end{matrix}\right]}} = {\overset{p\downarrow}{\left[\begin{matrix} {T_{yx}} \\ {T_{zx}}\end{matrix}\right]}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.592000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 2.452000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -212,11 +240,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 $\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{zy}}\end{matrix}\right]}$
 <br>
+${\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{zy}}\end{matrix}\right]}} = {\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{zy}}\end{matrix}\right]}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.856000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 2.407000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -224,11 +254,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 $\overset{p\downarrow}{\left[\begin{matrix} {T_{yz}} \\ {T_{zz}}\end{matrix}\right]}$
 <br>
+${\overset{p\downarrow}{\left[\begin{matrix} {T_{yz}} \\ {T_{zz}}\end{matrix}\right]}} = {\overset{p\downarrow}{\left[\begin{matrix} {T_{yz}} \\ {T_{zz}}\end{matrix}\right]}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.167000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 2.372000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -236,11 +268,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 $\overset{p\downarrow q\rightarrow}{\left[\begin{array}{cc} {T_{yy}}& {T_{yz}}\\ {T_{zy}}& {T_{zz}}\end{array}\right]}$
 <br>
+${\overset{p\downarrow q\rightarrow}{\left[\begin{array}{cc} {T_{yy}}& {T_{yz}}\\ {T_{zy}}& {T_{zz}}\end{array}\right]}} = {\overset{p\downarrow q\rightarrow}{\left[\begin{array}{cc} {T_{yy}}& {T_{yz}}\\ {T_{zy}}& {T_{zz}}\end{array}\right]}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.412000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply</ul>
+time: 2.299000ms<br>
+stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>

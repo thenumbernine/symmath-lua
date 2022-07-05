@@ -21,6 +21,9 @@ function Expression:init(...)
 			self[i] = Constant(x)
 		elseif type(x) == 'nil' then
 			error("can't initialize an expression with a nil child")
+		-- TODO what about strings and booleans and functions?
+		-- if I allow them to be constructed here, we'll have non-Expression stuff in the trees
+		-- and then things like the exporters will break
 		else
 			self[i] = x
 		end

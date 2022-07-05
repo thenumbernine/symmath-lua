@@ -30,20 +30,48 @@
 <b></b><br>
 <code>local expr = a + b + c	simplifyAssertAllEq(expr, {a,b,c})</code>
 </td><td>
+${3} = {3}$
+<br>
+${a} = {a}$
+<br>
+${a} = {a}$
+<br>
+${b} = {b}$
+<br>
+${b} = {b}$
+<br>
+${c} = {c}$
+<br>
+${c} = {c}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.709000ms<br>
+time: 2.373000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>local expr = a * b * c	simplifyAssertAllEq(expr, {a,b,c})</code>
 </td><td>
+${3} = {3}$
+<br>
+${a} = {a}$
+<br>
+${a} = {a}$
+<br>
+${b} = {b}$
+<br>
+${b} = {b}$
+<br>
+${c} = {c}$
+<br>
+${c} = {c}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.728000ms<br>
+time: 1.023000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -62,20 +90,48 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>local expr = (a + d):replace(d, b + c)	simplifyAssertAllEq(expr, {a,b,c})</code>
 </td><td>
+${3} = {3}$
+<br>
+${a} = {a}$
+<br>
+${a} = {a}$
+<br>
+${b} = {b}$
+<br>
+${b} = {b}$
+<br>
+${c} = {c}$
+<br>
+${c} = {c}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.622000ms<br>
+time: 0.873000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>local expr = (a * d):replace(d, b * c)	simplifyAssertAllEq(expr, {a,b,c})</code>
 </td><td>
+${3} = {3}$
+<br>
+${a} = {a}$
+<br>
+${a} = {a}$
+<br>
+${b} = {b}$
+<br>
+${b} = {b}$
+<br>
+${c} = {c}$
+<br>
+${c} = {c}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.448000ms<br>
+time: 0.846000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -95,10 +151,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <code>local expr = (f * (a + d)):replace(d, b + c):flatten() print(Verbose(expr)) assertEq(#expr[2], 3)</code>
 </td><td>
 *[f, +[a, b, c]]
+${3} = {3}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.304000ms<br>
+time: 0.189000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -129,40 +187,48 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b>multiply by 1</b><br>
 <code>simplifyAssertEq(1, (Constant(1)*Constant(1))())</code>
 </td><td>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.288000ms<br>
+time: 0.213000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>divide by 1</b><br>
 <code>simplifyAssertEq(1, (Constant(1)/Constant(1))())</code>
 </td><td>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.205000ms<br>
+time: 0.183000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>divide by -1</b><br>
 <code>simplifyAssertEq(-1, (-Constant(1)/Constant(1))())</code>
 </td><td>
+${-1} = {-{1}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.617000ms<br>
-stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.605000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>multiply and divide by 1</b><br>
 <code>simplifyAssertEq(1, (Constant(1)/(Constant(1)*Constant(1)))())</code>
 </td><td>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.230000ms<br>
+time: 0.213000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -181,20 +247,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>add commutative</b><br>
 <code>simplifyAssertEq(x+y, y+x)</code>
 </td><td>
+${{x} + {y}} = {{y} + {x}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.989000ms<br>
+time: 1.635000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>mul commutative</b><br>
 <code>simplifyAssertEq(x*y, y*x)</code>
 </td><td>
+${{{x}} {{y}}} = {{{y}} {{x}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.410000ms<br>
+time: 1.651000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -213,40 +283,48 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>prune 1*</b><br>
 <code>simplifyAssertEq(x, (1*x)())</code>
 </td><td>
+${x} = {x}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.100000ms<br>
+time: 0.157000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>prune *1</b><br>
 <code>simplifyAssertEq(x, (x*1)())</code>
 </td><td>
+${x} = {x}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.055000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.232000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>prune *0</b><br>
 <code>simplifyAssertEq(0, (0*x)())</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.219000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.800000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x/x)(), 1)</code>
 </td><td>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.330000ms<br>
+time: 0.256000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -259,10 +337,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(x^2, (x*x)())</code>
 </td><td>
+${{x}^{2}} = {{x}^{2}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.142000ms<br>
+time: 2.624000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -281,71 +361,85 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <code>simplifyAssertEq(((x+1)*y)(), (x*y + y)())</code>
 </td><td>
+${{{y}} {{\left({{1} + {x}}\right)}}} = {{{y}} {{\left({{1} + {x}}\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.810000ms<br>
-stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
+time: 9.015000ms<br>
+stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(((x+1)*(y+1))(), (x*y + x + y + 1)())</code>
 </td><td>
+${{1} + {x} + {y} + {{{x}} {{y}}}} = {{1} + {x} + {y} + {{{x}} {{y}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.613000ms<br>
-stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
+time: 8.062000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((2/(2*x*y))(), (1/(x*y))())</code>
 </td><td>
+${\frac{1}{{{x}} {{y}}}} = {\frac{1}{{{x}} {{y}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.892000ms<br>
+time: 4.258000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((1-(1-x))(), x)</code>
 </td><td>
+${x} = {x}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.156000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 1.665000ms<br>
+stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>+:Prune:flatten<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(((1-(1-x))/x)(), 1)</code>
 </td><td>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.719000ms<br>
+time: 3.386000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((1 + 1/x + 1/x)(), (1 + 2/x)())</code>
 </td><td>
+${{\frac{1}{x}}{\left({{2} + {x}}\right)}} = {{\frac{1}{x}}{\left({{2} + {x}}\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 18.388000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 11.788000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((1 + 1/x + 2/x)(), (1 + 3/x)())</code>
 </td><td>
+${{\frac{1}{x}}{\left({{3} + {x}}\right)}} = {{\frac{1}{x}}{\left({{3} + {x}}\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.041000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 9.886000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -363,20 +457,24 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((Constant(2)/Constant(2))(), Constant(1))</code>
 </td><td>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.202000ms<br>
+time: 0.378000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((Constant(2)/Constant(4))(), (Constant(1)/Constant(2))())</code>
 </td><td>
+${\frac{1}{2}} = {\frac{1}{2}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.514000ms<br>
+time: 1.592000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -389,20 +487,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(((2*x + 2*y)/2)(), (x+y)())</code>
 </td><td>
+${{x} + {y}} = {{x} + {y}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.976000ms<br>
+time: 5.247000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(((-2*x + 2*y)/2)(), (-x+y)())</code>
 </td><td>
+${{-{x}} + {y}} = {{-{x}} + {y}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.752000ms<br>
+time: 6.429000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -415,10 +517,12 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyAssertEq(-1-x, -(1+x))</code>
 </td><td>
+${{-1}{-{x}}} = {-{\left({{1} + {x}}\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.772000ms<br>
+time: 3.647000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -431,40 +535,48 @@ stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyAssertEq((-x)/x, -1)</code>
 </td><td>
+${{\frac{1}{x}}{\left({-{x}}\right)}} = {-1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.379000ms<br>
+time: 0.838000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x/(-x)), -1)</code>
 </td><td>
+${\frac{x}{-{x}}} = {-1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.623000ms<br>
+time: 0.923000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((-x-1)/(x+1), -1)</code>
 </td><td>
+${\frac{{-{x}}{-{1}}}{{x} + {1}}} = {-1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.165000ms<br>
+time: 4.947000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x-1)/(1-x), -1)</code>
 </td><td>
+${\frac{{x}{-{1}}}{{1}{-{x}}}} = {-1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.450000ms<br>
+time: 4.162000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -477,10 +589,12 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( (x*y)/(x*y)^2, 1/(x*y) )</code>
 </td><td>
+${\frac{{{x}} {{y}}}{{\left({{{x}} {{y}}}\right)}^{2}}} = {\frac{1}{{{x}} {{y}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.094000ms<br>
+time: 3.508000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -499,10 +613,12 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq( 1/(1-x), -1/(x-1) )</code>
 </td><td>
+${\frac{1}{{1}{-{x}}}} = {\frac{-1}{{x}{-{1}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.961000ms<br>
+time: 6.965000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>/:Prune:negOverNeg<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -515,40 +631,48 @@ stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyAssertEq(((x-1)*(x+1))/(x+1), x-1)</code>
 </td><td>
+${\frac{{{\left({{x}{-{1}}}\right)}} {{\left({{x} + {1}}\right)}}}{{x} + {1}}} = {{x}{-{1}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.837000ms<br>
+time: 2.540000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(((x-1)*(x+1))/(x-1), x+1)</code>
 </td><td>
+${\frac{{{\left({{x}{-{1}}}\right)}} {{\left({{x} + {1}}\right)}}}{{x}{-{1}}}} = {{x} + {1}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.464000ms<br>
+time: 2.246000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x-1)/((x+1)*(x-1)), 1/(x+1))</code>
 </td><td>
+${\frac{{x}{-{1}}}{{{\left({{x} + {1}}\right)}} {{\left({{x}{-{1}}}\right)}}}} = {\frac{1}{{x} + {1}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.938000ms<br>
+time: 3.291000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x+1)/((x+1)*(x-1)), 1/(x-1))</code>
 </td><td>
+${\frac{{x} + {1}}{{{\left({{x} + {1}}\right)}} {{\left({{x}{-{1}}}\right)}}}} = {\frac{1}{{x}{-{1}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.252000ms<br>
+time: 2.983000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -561,40 +685,48 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyAssertEq((x^2-1)/(x+1), x-1)</code>
 </td><td>
+${\frac{{{x}^{2}}{-{1}}}{{x} + {1}}} = {{x}{-{1}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.902000ms<br>
+time: 7.609000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x^2-1)/(x-1), x+1)</code>
 </td><td>
+${\frac{{{x}^{2}}{-{1}}}{{x}{-{1}}}} = {{x} + {1}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.986000ms<br>
+time: 8.203000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x-1)/(x^2-1), 1/(x+1))</code>
 </td><td>
+${\frac{{x}{-{1}}}{{{x}^{2}}{-{1}}}} = {\frac{1}{{x} + {1}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.315000ms<br>
+time: 10.037000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x+1)/(x^2-1), 1/(x-1))</code>
 </td><td>
+${\frac{{x} + {1}}{{{x}^{2}}{-{1}}}} = {\frac{1}{{x}{-{1}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.561000ms<br>
+time: 9.292000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -607,40 +739,48 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyAssertEq((1-x^2)/(x+1), -(x-1))</code>
 </td><td>
+${\frac{{1}{-{{x}^{2}}}}{{x} + {1}}} = {-{\left({{x}{-{1}}}\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.996000ms<br>
+time: 8.187000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((1-x^2)/(x-1), -(x+1))</code>
 </td><td>
+${\frac{{1}{-{{x}^{2}}}}{{x}{-{1}}}} = {-{\left({{x} + {1}}\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.831000ms<br>
+time: 10.310000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x-1)/(1-x^2), -1/(x+1))</code>
 </td><td>
+${\frac{{x}{-{1}}}{{1}{-{{x}^{2}}}}} = {\frac{-1}{{x} + {1}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.177000ms<br>
+time: 12.298000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x+1)/(1-x^2), -1/(x-1))</code>
 </td><td>
+${\frac{{x} + {1}}{{1}{-{{x}^{2}}}}} = {\frac{-1}{{x}{-{1}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.822000ms<br>
+time: 7.726000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>/:Prune:negOverNeg<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -659,20 +799,24 @@ stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyAssertEq(y-a, -a+y)</code>
 </td><td>
+${{y}{-{a}}} = {{-{a}} + {y}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.247000ms<br>
+time: 1.204000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( (y-a)/(b-a) , y/(b-a) - a/(b-a) )</code>
 </td><td>
+${\frac{{y}{-{a}}}{{b}{-{a}}}} = {{\frac{y}{{b}{-{a}}}}{-{\frac{a}{{b}{-{a}}}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 46.836000ms<br>
+time: 57.113000ms<br>
 stack: size: 28<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:factorOutDivs<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -689,7 +833,7 @@ ${-{{a}^{2}}} + {{{{a}^{2}}} {{{x}^{2}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.930000ms<br>
+time: 8.519000ms<br>
 stack: size: 69<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -702,10 +846,12 @@ stack: size: 69<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b>this won't simplify correctly unless you negative , simplify, negative again ...</b><br>
 <code>simplifyAssertEq( (t - r) / (-r^2 - t^2 + 2 * r * t), -1 / (t - r))</code>
 </td><td>
+${\frac{{t}{-{r}}}{{-{{r}^{2}}}{-{{t}^{2}}} + {{{2}} {{r}} {{t}}}}} = {\frac{-1}{{t}{-{r}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 16.419000ms<br>
+time: 15.248000ms<br>
 stack: size: 42<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>/:Prune:negOverNeg<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>/:Prune:negOverNeg<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -718,11 +864,13 @@ stack: size: 42<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyAssertEq( (-128 + 64*sqrt(5))/(64*sqrt(5)), -2 / sqrt(5) + 1 )</code>
 </td><td>
+${\frac{{-128} + {{{64}} {{\sqrt{5}}}}}{{{64}} {{\sqrt{5}}}}} = {{\frac{-2}{\sqrt{5}}} + {1}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 68.517000ms<br>
-stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>+:Prune:combineConstants<br><li>^:Prune:sqrtFix4<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 82.064000ms<br>
+stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -770,40 +918,48 @@ stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><l
 <b></b><br>
 <code>simplifyAssertEq((sin(x)^2+cos(x)^2)(), 1)</code>
 </td><td>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.922000ms<br>
+time: 1.825000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((y*sin(x)^2+y*cos(x)^2)(), y)</code>
 </td><td>
+${y} = {y}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.929000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 4.047000ms<br>
+stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((y+y*sin(x)^2+y*cos(x)^2)(), 2*y)</code>
 </td><td>
+${{{2}} {{y}}} = {{{2}} {{y}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.936000ms<br>
+time: 4.858000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((1+y*sin(x)^2+y*cos(x)^2)(), 1+y)</code>
 </td><td>
+${{1} + {y}} = {{1} + {y}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.056000ms<br>
+time: 3.503000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -816,20 +972,24 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(1+cos(x)^2+cos(x)^2, 1+2*cos(x)^2)</code>
 </td><td>
+${{1} + {{\cos\left(  x\right)}^{2}} + {{\cos\left(  x\right)}^{2}}} = {{1} + {{{2}} {{{\cos\left(  x\right)}^{2}}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.226000ms<br>
+time: 8.043000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(-1+cos(x)^2+cos(x)^2, -1+2*cos(x)^2)</code>
 </td><td>
+${{-1} + {{\cos\left(  x\right)}^{2}} + {{\cos\left(  x\right)}^{2}}} = {{-1} + {{{2}} {{{\cos\left(  x\right)}^{2}}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.186000ms<br>
+time: 7.356000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -842,20 +1002,24 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <code>simplifyAssertEq( cos(x)^2 + sin(x)^2, 1)</code>
 </td><td>
+${{{\cos\left(  x\right)}^{2}} + {{\sin\left(  x\right)}^{2}}} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.771000ms<br>
+time: 1.942000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( (cos(x)*y)^2 + (sin(x)*y)^2, y^2)</code>
 </td><td>
+${{{\left({{{\cos\left(  x\right)}} {{y}}}\right)}^{2}} + {{\left({{{\sin\left(  x\right)}} {{y}}}\right)}^{2}}} = {{y}^{2}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.125000ms<br>
+time: 5.676000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -868,10 +1032,12 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <code>simplifyLHSAssertEq( (sin(x)^2)(), sin(x)^2)</code>
 </td><td>
+${{\sin\left(  x\right)}^{2}} = {{\sin\left(  x\right)}^{2}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.027000ms<br>
+time: 3.671000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -884,21 +1050,25 @@ stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <code>simplifyLHSAssertEq( (cos(b)^2 - 1)(), -sin(b)^2)</code>
 </td><td>
+${-{{\sin\left(  b\right)}^{2}}} = {-{{\sin\left(  b\right)}^{2}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.250000ms<br>
-stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>*:Expand:apply<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 3.266000ms<br>
+stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyLHSAssertEq( (1 - cos(b)^2)(), sin(b)^2)</code>
 </td><td>
+${{\sin\left(  b\right)}^{2}} = {{\sin\left(  b\right)}^{2}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.298000ms<br>
-stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 2.791000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -910,21 +1080,25 @@ stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <code>simplifyLHSAssertEq( (a * cos(b)^2 - a)(), -(a * sin(b)^2))</code>
 </td><td>
+${-{{{a}} {{{\sin\left(  b\right)}^{2}}}}} = {-{{{a}} {{{\sin\left(  b\right)}^{2}}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.145000ms<br>
-stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>*:Expand:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 7.505000ms<br>
+stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyLHSAssertEq( (a - a * cos(b)^2)(), a * sin(b)^2)</code>
 </td><td>
+${{{a}} {{{\sin\left(  b\right)}^{2}}}} = {{{a}} {{{\sin\left(  b\right)}^{2}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.464000ms<br>
-stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>*:Expand:apply<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 7.818000ms<br>
+stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -936,53 +1110,146 @@ stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b>the only one that doesn't work</b><br>
 <code>simplifyLHSAssertEq( (a^2 * cos(b)^2 - a^2)(), -(a^2 * sin(b)^2))</code>
 </td><td>
+${{-{{a}^{2}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}} = {-{{{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}}}$
+<br>
 expected ${-{{a}^{2}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$ to equal $-{{{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}}$<br>
 found ${-{{a}^{2}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$ vs $-{{{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}}$<br>
 lhs stack<br>
-Init	${-{{a}^{2}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
+Init	${{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}{-{{a}^{2}}}$	<br>
 unm:Prune:doubleNegative	${{-1}} {{{a}^{2}}}$	<br>
+Prune	${{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}} + {{{-1}} {{{a}^{2}}}}$	<br>
+^:Expand:integerPower	${{a}} {{a}}$	<br>
+^:Expand:integerPower	${{\cos\left(  b\right)}} {{\cos\left(  b\right)}}$	<br>
+^:Expand:integerPower	${{a}} {{a}}$	<br>
+Expand	${{{{{a}} {{a}}}} {{{{\cos\left(  b\right)}} {{\cos\left(  b\right)}}}}} + {{{-1}} {{{{a}} {{a}}}}}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${a}^{2}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${\cos\left(  b\right)}^{2}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${a}^{2}$	<br>
+Prune	${{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}} + {{{-1}} {{{a}^{2}}}}$	<br>
+*:Factor:combineMulOfLikePow	${\left({{{a}} {{\cos\left(  b\right)}}}\right)}^{2}$	<br>
+/:Prune:xOverX	$1$	<br>
+^:Prune:xToTheOne	${{a}} {{\cos\left(  b\right)}}$	<br>
+/:Prune:xOverX	$1$	<br>
+^:Prune:xToTheOne	$a$	<br>
+/:Prune:xOverX	$1$	<br>
+^:Prune:xToTheOne	${{a}} {{\cos\left(  b\right)}}$	<br>
+/:Prune:xOverX	$1$	<br>
+^:Prune:xToTheOne	$a$	<br>
+unm:Prune:doubleNegative	${{-1}} {{a}}$	<br>
+unm:Prune:doubleNegative	$-1$	<br>
++:Prune:combineConstants	$0$	<br>
+unm:Prune:doubleNegative	$-1$	<br>
++:Prune:combineConstants	$0$	<br>
++:Factor:apply	${{a}} {{\left({{-1} + {\cos\left(  b\right)}}\right)}}$	<br>
+unm:Prune:doubleNegative	$-1$	<br>
++:Prune:combineConstants	$0$	<br>
+unm:Prune:doubleNegative	$-1$	<br>
++:Prune:combineConstants	$0$	<br>
++:Factor:apply	${{a}} {{\left({{1} + {\cos\left(  b\right)}}\right)}}$	<br>
++:Factor:apply	${{{{a}} {{\left({{-1} + {\cos\left(  b\right)}}\right)}}}} {{{{a}} {{\left({{1} + {\cos\left(  b\right)}}\right)}}}}$	<br>
+Factor	${{{{a}} {{\left({{-1} + {\cos\left(  b\right)}}\right)}}}} {{{{a}} {{\left({{1} + {\cos\left(  b\right)}}\right)}}}}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{-1} + {\cos\left(  b\right)}}\right)}}$	<br>
+*:Prune:flatten	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{-1} + {\cos\left(  b\right)}}\right)}}$	<br>
+*:Prune:flatten	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{-1} + {\cos\left(  b\right)}}\right)}}$	<br>
+Prune	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{-1} + {\cos\left(  b\right)}}\right)}}$	<br>
+^:Expand:integerPower	${{a}} {{a}}$	<br>
+*:Expand:apply	${{{{{a}} {{a}}}} {{1}} \cdot {{-1}}} + {{{{{a}} {{a}}}} {{1}} {{\cos\left(  b\right)}}}$	<br>
+*:Expand:apply	${{{{{a}} {{a}}}} {{\cos\left(  b\right)}} \cdot {{-1}}} + {{{{{a}} {{a}}}} {{\cos\left(  b\right)}} {{\cos\left(  b\right)}}}$	<br>
+*:Expand:apply	${{{{{{a}} {{a}}}} {{1}} \cdot {{-1}}} + {{{{{a}} {{a}}}} {{1}} {{\cos\left(  b\right)}}}} + {{{{{{a}} {{a}}}} {{\cos\left(  b\right)}} \cdot {{-1}}} + {{{{{a}} {{a}}}} {{\cos\left(  b\right)}} {{\cos\left(  b\right)}}}}$	<br>
+Expand	${{{{{{a}} {{a}}}} {{1}} \cdot {{-1}}} + {{{{{a}} {{a}}}} {{1}} {{\cos\left(  b\right)}}}} + {{{{{{a}} {{a}}}} {{\cos\left(  b\right)}} \cdot {{-1}}} + {{{{{a}} {{a}}}} {{\cos\left(  b\right)}} {{\cos\left(  b\right)}}}}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${a}^{2}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${a}^{2}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${a}^{2}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${a}^{2}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}$	<br>
+*:Prune:apply	$0$	<br>
++:Prune:combineConstants	${{{-1}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
++:Prune:flattenAddMul	${{{-1}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
++:Prune:flatten	${{{-1}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
 Prune	${{{-1}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
+*:Factor:combineMulOfLikePow	${\left({{{a}} {{\cos\left(  b\right)}}}\right)}^{2}$	<br>
+Factor	${{{-1}} {{{a}^{2}}}} + {{\left({{{a}} {{\cos\left(  b\right)}}}\right)}^{2}}$	<br>
+Prune	${{{-1}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
+Expand	${{{-1}} {{{{a}} {{a}}}}} + {{{{{a}} {{a}}}} {{{{\cos\left(  b\right)}} {{\cos\left(  b\right)}}}}}$	<br>
+Prune	${{{-1}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
+Factor	${{{-1}} {{{a}^{2}}}} + {{\left({{{a}} {{\cos\left(  b\right)}}}\right)}^{2}}$	<br>
+Prune	${{{-1}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
+Tidy	${-{{a}^{2}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:124: failed<br>
+stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:227: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:226><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:124: in function 'simplifyLHSAssertEq'<br>
+	[string "simplifyLHSAssertEq( (a^2 * cos(b)^2 - a^2)()..."]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:219: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:218><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:218: in function 'exec'<br>
+	test.lua:182: in function 'cb'<br>
+	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
+	test.lua:8: in main chunk<br>
+	[C]: at 0x55bfa1ed22f0
+</td><td>
+time: 25.098000ms<br>
+stack: size: 69<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b>also the only one that doesn't work</b><br>
+<code>simplifyLHSAssertEq( (a^2 - a^2 * cos(b)^2)(), a^2 * sin(b)^2)</code>
+</td><td>
+${{{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}} = {{{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}}$
+<br>
+expected ${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}$ to equal ${{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}$<br>
+found ${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}$ vs ${{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}$<br>
+lhs stack<br>
+Init	${{a}^{2}}{-{{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}}$	<br>
+unm:Prune:doubleNegative	${{-1}} {{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}$	<br>
+Prune	${{a}^{2}} + {{{-1}} {{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
 ^:Expand:integerPower	${{a}} {{a}}$	<br>
 ^:Expand:integerPower	${{a}} {{a}}$	<br>
 ^:Expand:integerPower	${{\cos\left(  b\right)}} {{\cos\left(  b\right)}}$	<br>
-Expand	${{{-1}} {{{{a}} {{a}}}}} + {{{{{a}} {{a}}}} {{{{\cos\left(  b\right)}} {{\cos\left(  b\right)}}}}}$	<br>
+Expand	${{{a}} {{a}}} + {{{-1}} {{{{a}} {{a}}}} {{{{\cos\left(  b\right)}} {{\cos\left(  b\right)}}}}}$	<br>
 +:Prune:combineConstants	$2$	<br>
 *:Prune:apply	${a}^{2}$	<br>
 +:Prune:combineConstants	$2$	<br>
 *:Prune:apply	${a}^{2}$	<br>
 +:Prune:combineConstants	$2$	<br>
 *:Prune:apply	${\cos\left(  b\right)}^{2}$	<br>
-Prune	${{{-1}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
-*:Factor:combineMulOfLikePow	${\left({{{a}} {{\cos\left(  b\right)}}}\right)}^{2}$	<br>
-Factor	${{{-1}} {{{a}^{2}}}} + {{\left({{{a}} {{\cos\left(  b\right)}}}\right)}^{2}}$	<br>
-Prune	${{{-1}} {{{a}^{2}}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
-Tidy	${-{{a}^{2}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:122: failed<br>
-stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:216: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:215><br>
-	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:122: in function 'simplifyLHSAssertEq'<br>
-	[string "simplifyLHSAssertEq( (a^2 * cos(b)^2 - a^2)()..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:208: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:207><br>
-	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:207: in function 'exec'<br>
-	test.lua:182: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
-	test.lua:8: in main chunk<br>
-	[C]: at 0x560be1aff3e0
-</td><td>
-time: 23.468000ms<br>
-stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b>also the only one that doesn't work</b><br>
-<code>simplifyLHSAssertEq( (a^2 - a^2 * cos(b)^2)(), a^2 * sin(b)^2)</code>
-</td><td>
-expected ${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}$ to equal ${{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}$<br>
-found ${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}$ vs ${{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}$<br>
-lhs stack<br>
-Init	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}$	<br>
-unm:Prune:doubleNegative	${{-1}} {{\cos\left(  b\right)}}$	<br>
+Prune	${{a}^{2}} + {{{-1}} {{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$	<br>
+*:Factor:combineMulOfLikePow	${{-1}} {{{\left({{{a}} {{\cos\left(  b\right)}}}\right)}^{2}}}$	<br>
+/:Prune:xOverX	$1$	<br>
+^:Prune:xToTheOne	$a$	<br>
+/:Prune:xOverX	$1$	<br>
+^:Prune:xToTheOne	${{a}} {{\cos\left(  b\right)}}$	<br>
+/:Prune:xOverX	$1$	<br>
+^:Prune:xToTheOne	$a$	<br>
+/:Prune:xOverX	$1$	<br>
+^:Prune:xToTheOne	${{a}} {{\cos\left(  b\right)}}$	<br>
+unm:Prune:doubleNegative	${{-1}} {{a}} {{\cos\left(  b\right)}}$	<br>
+unm:Prune:doubleNegative	$-1$	<br>
++:Prune:combineConstants	$0$	<br>
+unm:Prune:doubleNegative	$-1$	<br>
++:Prune:combineConstants	$0$	<br>
++:Factor:apply	${{a}} {{\left({{1} + {{{-1}} {{\cos\left(  b\right)}}}}\right)}}$	<br>
+unm:Prune:doubleNegative	$-1$	<br>
++:Prune:combineConstants	$0$	<br>
+unm:Prune:doubleNegative	$-1$	<br>
++:Prune:combineConstants	$0$	<br>
++:Factor:apply	${{a}} {{\left({{1} + {\cos\left(  b\right)}}\right)}}$	<br>
++:Factor:apply	${{{{a}} {{\left({{1} + {{{-1}} {{\cos\left(  b\right)}}}}\right)}}}} {{{{a}} {{\left({{1} + {\cos\left(  b\right)}}\right)}}}}$	<br>
+Factor	${{{{a}} {{\left({{1} + {{{-1}} {{\cos\left(  b\right)}}}}\right)}}}} {{{{a}} {{\left({{1} + {\cos\left(  b\right)}}\right)}}}}$	<br>
++:Prune:combineConstants	$2$	<br>
+*:Prune:apply	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1} + {{{-1}} {{\cos\left(  b\right)}}}}\right)}}$	<br>
+*:Prune:flatten	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1} + {{{-1}} {{\cos\left(  b\right)}}}}\right)}}$	<br>
+*:Prune:flatten	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1} + {{{-1}} {{\cos\left(  b\right)}}}}\right)}}$	<br>
 Prune	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1} + {{{-1}} {{\cos\left(  b\right)}}}}\right)}}$	<br>
 ^:Expand:integerPower	${{a}} {{a}}$	<br>
 *:Expand:apply	${{{{{a}} {{a}}}} {{1}} \cdot {{1}}} + {{{{{a}} {{a}}}} {{1}} {{{{-1}} {{\cos\left(  b\right)}}}}}$	<br>
@@ -1039,22 +1306,22 @@ Constant:Tidy:apply	$-{1}$	<br>
 *:Tidy:apply	$-{\cos\left(  b\right)}$	<br>
 *:Tidy:apply	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}$	<br>
 Tidy	${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}$	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:122: failed<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:124: failed<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:216: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:215><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:227: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:226><br>
 	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:122: in function 'simplifyLHSAssertEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:124: in function 'simplifyLHSAssertEq'<br>
 	[string "simplifyLHSAssertEq( (a^2 - a^2 * cos(b)^2)()..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:208: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:207><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:219: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:218><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:207: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:218: in function 'exec'<br>
 	test.lua:182: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	test.lua:8: in main chunk<br>
-	[C]: at 0x560be1aff3e0
+	[C]: at 0x55bfa1ed22f0
 </td><td>
-time: 23.267000ms<br>
-stack: size: 58<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
+time: 12.602000ms<br>
+stack: size: 96<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1066,21 +1333,25 @@ stack: size: 58<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyLHSAssertEq( (a^3 * cos(b)^2 - a^3)(), -(a^3 * sin(b)^2))</code>
 </td><td>
+${-{{{{a}^{3}}} {{{\sin\left(  b\right)}^{2}}}}} = {-{{{{a}^{3}}} {{{\sin\left(  b\right)}^{2}}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.061000ms<br>
-stack: size: 29<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>*:Expand:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 10.886000ms<br>
+stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyLHSAssertEq( (a^3 - a^3 * cos(b)^2)(), a^3 * sin(b)^2)</code>
 </td><td>
+${{{{a}^{3}}} {{{\sin\left(  b\right)}^{2}}}} = {{{{a}^{3}}} {{{\sin\left(  b\right)}^{2}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 16.319000ms<br>
-stack: size: 29<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>*:Expand:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 10.658000ms<br>
+stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1092,21 +1363,25 @@ stack: size: 29<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <code>simplifyLHSAssertEq( (a^4 * cos(b)^2 - a^4)(), -(a^4 * sin(b)^2))</code>
 </td><td>
+${-{{{{a}^{4}}} {{{\sin\left(  b\right)}^{2}}}}} = {-{{{{a}^{4}}} {{{\sin\left(  b\right)}^{2}}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 16.203000ms<br>
-stack: size: 29<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>*:Expand:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 10.717000ms<br>
+stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyLHSAssertEq( (a^4 - a^4 * cos(b)^2)(), a^4 * sin(b)^2)</code>
 </td><td>
+${{{{a}^{4}}} {{{\sin\left(  b\right)}^{2}}}} = {{{{a}^{4}}} {{{\sin\left(  b\right)}^{2}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.365000ms<br>
-stack: size: 29<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>*:Expand:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 12.171000ms<br>
+stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1136,30 +1411,36 @@ stack: size: 29<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <code>simplifyAssertEq((y-x)/(x-y), -1)</code>
 </td><td>
+${\frac{{y}{-{x}}}{{x}{-{y}}}} = {-1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.275000ms<br>
+time: 3.215000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x+y)/(x+y)^2, 1/(x+y))</code>
 </td><td>
+${\frac{{x} + {y}}{{\left({{x} + {y}}\right)}^{2}}} = {\frac{1}{{x} + {y}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.845000ms<br>
+time: 1.980000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((-x+y)/(-x+y)^2, 1/(-x+y))</code>
 </td><td>
+${\frac{{-{x}} + {y}}{{\left({{-{x}} + {y}}\right)}^{2}}} = {\frac{1}{{-{x}} + {y}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.655000ms<br>
+time: 2.975000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1172,30 +1453,36 @@ stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyAssertEq( gUxy * (gUxy^2 - gUxx*gUyy) / (gUxx * gUyy - gUxy^2), -gUxy)</code>
 </td><td>
+${\frac{{{{\gamma^{xy}}}} \cdot {{\left({{{{\gamma^{xy}}}^{2}}{-{{{{\gamma^{xx}}}} \cdot {{{\gamma^{yy}}}}}}}\right)}}}{{{{{\gamma^{xx}}}} \cdot {{{\gamma^{yy}}}}}{-{{{\gamma^{xy}}}^{2}}}}} = {-{{\gamma^{xy}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.887000ms<br>
+time: 17.616000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( gUxy * (gUxy - gUxx*gUyy) / (gUxx * gUyy - gUxy), -gUxy)</code>
 </td><td>
+${\frac{{{{\gamma^{xy}}}} \cdot {{\left({{{\gamma^{xy}}}{-{{{{\gamma^{xx}}}} \cdot {{{\gamma^{yy}}}}}}}\right)}}}{{{{{\gamma^{xx}}}} \cdot {{{\gamma^{yy}}}}}{-{{\gamma^{xy}}}}}} = {-{{\gamma^{xy}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.468000ms<br>
+time: 20.421000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( gUxy * (gUxy - gUxx) / (gUxx - gUxy), -gUxy)</code>
 </td><td>
+${\frac{{{{\gamma^{xy}}}} \cdot {{\left({{{\gamma^{xy}}}{-{{\gamma^{xx}}}}}\right)}}}{{{\gamma^{xx}}}{-{{\gamma^{xy}}}}}} = {-{{\gamma^{xy}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.885000ms<br>
+time: 5.117000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1211,7 +1498,7 @@ stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.019000ms<br>
+time: 0.029000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1221,48 +1508,56 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.011000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( Constant(0):subst( (v'^k' * v'^l' * g'_kl'):eq(var'vsq') ), Constant(0) )</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.193000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.245000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( Constant(0):replace( v'^k' * v'^l' * g'_kl', var'vsq' ), Constant(0) )</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.245000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.192000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( Constant(0):replace( v'^k' * v'^l', var'vsq' ), Constant(0) )</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.085000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.078000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( Constant(0):replace( v'^k', var'vsq' ), Constant(0) )</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.074000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.045000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1280,50 +1575,60 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>'a' var lexically before 'f' var, squared, times -1's, simplification loop.  oscillates between factoring out the -1 or not.</b><br>
 <code>simplifyAssertEq(-f * a^2 + f^3 * a^2 - f^5 * a^2, -f * a^2 * (1 - f^2 + f^4))</code>
 </td><td>
+${{{ {-{f}} {{{a}^{2}}}} + {{{{f}^{3}}} {{{a}^{2}}}}}{-{{{{f}^{5}}} {{{a}^{2}}}}}} = { {-{f}} {{{a}^{2}}} {{\left({{1}{-{{f}^{2}}} + {{f}^{4}}}\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.429000ms<br>
+time: 16.036000ms<br>
 stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>'g' var lexically before 'f' var, no simplification loop</b><br>
 <code>simplifyAssertEq(-f * g^2 + f^3 * g^2 - f^5 * g^2, -f * g^2 * (1 - f^2 + f^4))</code>
 </td><td>
+${{{ {-{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}}}{-{{{{f}^{5}}} {{{g}^{2}}}}}} = { {-{f}} {{{g}^{2}}} {{\left({{1}{-{{f}^{2}}} + {{f}^{4}}}\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.556000ms<br>
+time: 14.730000ms<br>
 stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>replace -1's with +1's, no simplification loop</b><br>
 <code>simplifyAssertEq(f * a^2 + f^3 * a^2 + f^5 * a^2, f * a^2 * (1 + f^2 + f^4))</code>
 </td><td>
+${{{{f}} {{{a}^{2}}}} + {{{{f}^{3}}} {{{a}^{2}}}} + {{{{f}^{5}}} {{{a}^{2}}}}} = {{{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{2}} + {{f}^{4}}}\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.656000ms<br>
+time: 9.432000ms<br>
 stack: size: 25<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>replace a^2 with a, no simplification loop</b><br>
 <code>simplifyAssertEq(-f * a + f^3 * a - f^5 * a, -f * a * (1 - f^2 + f^4))</code>
 </td><td>
+${{{ {-{f}} {{a}}} + {{{{f}^{3}}} {{a}}}}{-{{{{f}^{5}}} {{a}}}}} = { {-{f}} {{a}} {{\left({{1}{-{{f}^{2}}} + {{f}^{4}}}\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.886000ms<br>
+time: 13.366000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>replace f * quadratic of f^2 with f * quadratic of f, no simplification loop</b><br>
 <code>simplifyAssertEq(-f * a^2 + f^2 * a^2 - f^3 * a^2, -f * a^2 * (1 - f  + f^2))</code>
 </td><td>
+${{{ {-{f}} {{{a}^{2}}}} + {{{{f}^{2}}} {{{a}^{2}}}}}{-{{{{f}^{3}}} {{{a}^{2}}}}}} = { {-{f}} {{{a}^{2}}} {{\left({{1}{-{f}} + {{f}^{2}}}\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.397000ms<br>
+time: 9.610000ms<br>
 stack: size: 31<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>

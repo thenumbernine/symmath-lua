@@ -27,67 +27,79 @@
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.018000ms<br>
+time: 0.041000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y:getDependentVars(), 0)</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.019000ms<br>
+time: 0.112000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y'^p':getDependentVars(), 0)</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.036000ms<br>
+time: 0.071000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>depends regardless of specification</b><br>
 <code>assertEq(true, y:dependsOn(y))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.010000ms<br>
+time: 0.060000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>was not specified</b><br>
 <code>assertEq(false, y:dependsOn(y'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.019000ms<br>
+time: 0.113000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>was not specified</b><br>
 <code>assertEq(false, y'^p':dependsOn(y))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.019000ms<br>
+time: 0.144000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>depends regardless of specification</b><br>
 <code>assertEq(true, y'^p':dependsOn(y'^q'))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.022000ms<br>
+time: 0.162000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -113,77 +125,91 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.024000ms<br>
+time: 0.038000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y:getDependentVars() == 1 and y:getDependentVars()[1], x'^a')</code>
 </td><td>
+${{ x} ^a} = {{ x} ^a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.066000ms<br>
+time: 0.241000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y'^p':getDependentVars(), 0)</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.019000ms<br>
+time: 0.094000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y'^pq':getDependentVars(), 0)</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.021000ms<br>
+time: 0.118000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>was not specified</b><br>
 <code>assertEq(false, y'^p':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.131000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>was not specified</b><br>
 <code>assertEq(false, y'^p':dependsOn(x'^q'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.125000ms<br>
+time: 0.155000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>was specified</b><br>
 <code>assertEq(true, y:dependsOn(x'^q'))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.020000ms<br>
+time: 0.198000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>was not specified</b><br>
 <code>assertEq(false, y:dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.225000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -199,97 +225,115 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.015000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>not by default</b><br>
 <code>assertEq(false, y:dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.096000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.020000ms<br>
+time: 0.178000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.044000ms<br>
+time: 0.109000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.022000ms<br>
+time: 0.062000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.019000ms<br>
+time: 0.065000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.104000ms<br>
+time: 0.176000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.104000ms<br>
+time: 0.145000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.039000ms<br>
+time: 0.288000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.024000ms<br>
+time: 0.071000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -299,113 +343,15 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.018000ms<br>
+time: 0.064000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y:getDependentVars() == 1 and y:getDependentVars()[1], x)</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.016000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(#y'^p':getDependentVars(), 0)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.035000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(#y'^pq':getDependentVars(), 0)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.019000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(true, y:dependsOn(x))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.014000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y:dependsOn(x'^p'))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.017000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y:dependsOn(x'^pq'))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.119000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y'^i':dependsOn(x))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.019000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y'^i':dependsOn(x'^p'))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.019000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y'^i':dependsOn(x'^pq'))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.073000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y'^ij':dependsOn(x))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.017000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y'^ij':dependsOn(x'^p'))</code>
-</td><td>
+${x} = {x}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
@@ -414,12 +360,134 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assertEq(false, y'^ij':dependsOn(x'^pq'))</code>
+<code>assertEq(#y'^p':getDependentVars(), 0)</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.097000ms<br>
+time: 0.080000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(#y'^pq':getDependentVars(), 0)</code>
+</td><td>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.269000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(true, y:dependsOn(x))</code>
+</td><td>
+${true} = {true}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.075000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y:dependsOn(x'^p'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.056000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y:dependsOn(x'^pq'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.082000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y'^i':dependsOn(x))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.202000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y'^i':dependsOn(x'^p'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.084000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y'^i':dependsOn(x'^pq'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.292000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y'^ij':dependsOn(x))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.106000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y'^ij':dependsOn(x'^p'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.136000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y'^ij':dependsOn(x'^pq'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.202000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -438,111 +506,133 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(y), 1)</code>
 </td><td>
+${\frac{\partial y}{\partial y}} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.776000ms<br>
+time: 1.092000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>assert and not simplifyAssertEq so the rhs doesn't simplify</b><br>
 <code>assertEq(y:diff(x)(), y:diff(x))</code>
 </td><td>
+${\frac{\partial y}{\partial x}} = {\frac{\partial y}{\partial x}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.463000ms<br>
+time: 0.982000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.607000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.303000ms<br>
+stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.401000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.432000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.309000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.615000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.223000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.615000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.184000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.663000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.304000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.813000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.187000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.710000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.318000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.566000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x,z), zero)</code>
 </td><td>
+${\frac{\partial^ 2 y}{\partial z\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.173000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.233000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -554,40 +644,48 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(y'^p':diff(y'^q'), delta'^p_q')</code>
 </td><td>
+${\frac{\partial { y} ^p}{\partial { y} ^q}} = {{{ δ} ^p} _q}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.682000ms<br>
+time: 1.582000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'_p':diff(y'_q'), delta'_p^q')</code>
 </td><td>
+${\frac{\partial { y} _p}{\partial { y} _q}} = {{{ δ} _p} ^q}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.782000ms<br>
+time: 1.521000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'_p':diff(y'^q'), g'_pq')</code>
 </td><td>
+${\frac{\partial { y} _p}{\partial { y} ^q}} = {{{ g} _p} _q}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.566000ms<br>
+time: 1.125000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^p':diff(y'_q'), g'^pq')</code>
 </td><td>
+${\frac{\partial { y} ^p}{\partial { y} _q}} = {{{ g} ^p} ^q}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.427000ms<br>
+time: 0.850000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -600,10 +698,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(y'^pq':diff(y'^rs'), delta'^p_r' * delta'^q_s')</code>
 </td><td>
+${\frac{\partial {{ y} ^p} ^q}{\partial {{ y} ^r} ^s}} = {{{{{ δ} ^p} _r}} {{{{ δ} ^q} _s}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.322000ms<br>
+time: 2.452000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -625,7 +725,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.019000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -635,208 +735,248 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.028000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y:getDependentVars(), 1)</code>
 </td><td>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.009000ms<br>
+time: 0.069000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y'^a':getDependentVars(), 0)</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.045000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.009000ms<br>
+time: 0.045000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, y:dependsOn(x'^p'))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.018000ms<br>
+time: 0.062000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.015000ms<br>
+time: 0.057000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.085000ms<br>
+time: 0.050000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.069000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.314000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.071000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.093000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.036000ms<br>
+time: 0.092000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.141000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.180000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x'^p'), y:diff(x'^p'))</code>
 </td><td>
+${\frac{\partial y}{\partial { x} ^p}} = {\frac{\partial y}{\partial { x} ^p}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.833000ms<br>
+time: 1.433000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.234000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.245000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.120000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.341000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.117000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.287000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.168000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.287000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.137000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.195000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.189000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.257000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.133000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.252000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -851,7 +991,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.013000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -861,208 +1001,248 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.032000ms<br>
+time: 0.029000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y:getDependentVars(), 0)</code>
 </td><td>
+${0} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.048000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(#y'^a':getDependentVars(), 1)</code>
 </td><td>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.047000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.024000ms<br>
+time: 0.042000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.041000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.205000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, y'^i':dependsOn(x))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.060000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.060000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.111000ms<br>
+time: 0.149000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.049000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.016000ms<br>
+time: 0.067000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.050000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.095000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.225000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.095000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.257000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.150000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.275000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x), y'^i':diff(x))</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial x}} = {\frac{\partial { y} ^i}{\partial x}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.832000ms<br>
+time: 0.737000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.189000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.384000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.115000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.359000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.099000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.264000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.156000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.381000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.112000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.520000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1077,7 +1257,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.008000ms<br>
+time: 0.020000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1087,188 +1267,224 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.026000ms<br>
+time: 0.044000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.009000ms<br>
+time: 0.057000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.042000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.042000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.116000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, y'^i':dependsOn(x'^p'))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.049000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^i':dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.051000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.043000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x'^p'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.060000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^ij':dependsOn(x'^pq'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.098000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.092000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.231000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.105000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.210000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial y}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.200000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.188000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.104000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.164000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x'^p'), y'^i':diff(x'^p'))</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial { x} ^p}} = {\frac{\partial { y} ^i}{\partial { x} ^p}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.790000ms<br>
+time: 0.930000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^i':diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial { y} ^i}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.231000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.453000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial x}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.121000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.230000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x'^p'), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial { x} ^p}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.123000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.336000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y'^ij':diff(x'^pq'), zero)</code>
 </td><td>
+${\frac{\partial {{ y} ^i} ^j}{\partial {{ x} ^p} ^q}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.134000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.302000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:other<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1289,7 +1505,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.010000ms<br>
+time: 0.018000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1299,7 +1515,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.020000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1309,7 +1525,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.017000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1322,20 +1538,24 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <code>assertEq(true, z:dependsOn(z))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.009000ms<br>
+time: 0.047000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, z:dependsOn(y))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.010000ms<br>
+time: 0.042000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1372,60 +1592,72 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(z))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.047000ms<br>
+time: 0.167000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, y:dependsOn(y))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.009000ms<br>
+time: 0.045000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, y:dependsOn(x))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.009000ms<br>
+time: 0.136000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, x:dependsOn(z))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.010000ms<br>
+time: 0.046000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, x:dependsOn(y))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.007000ms<br>
+time: 0.043000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, x:dependsOn(x))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.005000ms<br>
+time: 0.040000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1438,76 +1670,20 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <code>assertEq(false, z:dependsOn(z'^I'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.077000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, z:dependsOn(y'^I'))</code>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.018000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, z:dependsOn(x'^I'))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.024000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y:dependsOn(z'^I'))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.015000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y:dependsOn(y'^I'))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.012000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, y:dependsOn(x'^I'))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.012000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, x:dependsOn(z'^I'))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.048000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assertEq(false, x:dependsOn(y'^I'))</code>
-</td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
@@ -1516,12 +1692,86 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assertEq(false, x:dependsOn(x'^I'))</code>
+<code>assertEq(false, z:dependsOn(x'^I'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.054000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y:dependsOn(z'^I'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.041000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y:dependsOn(y'^I'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.047000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, y:dependsOn(x'^I'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.047000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, x:dependsOn(z'^I'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.042000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, x:dependsOn(y'^I'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.079000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<code>assertEq(false, x:dependsOn(x'^I'))</code>
+</td><td>
+${false} = {false}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.056000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1534,90 +1784,108 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <code>assertEq(false, z'^I':dependsOn(z))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.058000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, z'^I':dependsOn(y))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.068000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, z'^I':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.075000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^I':dependsOn(z))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.131000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^I':dependsOn(y))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.043000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^I':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.038000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, x'^I':dependsOn(z))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.039000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, x'^I':dependsOn(y))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.048000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, x'^I':dependsOn(x))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.038000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1630,90 +1898,108 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b>by default</b><br>
 <code>assertEq(true, z'^I':dependsOn(z'^I'))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.016000ms<br>
+time: 0.046000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, z'^I':dependsOn(y'^I'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.016000ms<br>
+time: 0.069000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, z'^I':dependsOn(x'^I'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.015000ms<br>
+time: 0.043000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^I':dependsOn(z'^I'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.042000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>by default</b><br>
 <code>assertEq(true, y'^I':dependsOn(y'^I'))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.089000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, y'^I':dependsOn(x'^I'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.048000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, x'^I':dependsOn(z'^I'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.043000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, x'^I':dependsOn(y'^I'))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.015000ms<br>
+time: 0.042000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>by default</b><br>
 <code>assertEq(true, x'^I':dependsOn(x'^I'))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.015000ms<br>
+time: 0.041000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1741,7 +2027,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.018000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1761,7 +2047,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.055000ms<br>
+time: 0.044000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1781,7 +2067,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.043000ms<br>
+time: 0.014000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1794,20 +2080,24 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <code>assertEq(true, z:dependsOn(z))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.008000ms<br>
+time: 0.046000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, z:dependsOn(y))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.035000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1826,60 +2116,72 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <code>assertEq(false, y:dependsOn(z))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.012000ms<br>
+time: 0.035000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, y:dependsOn(y))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.010000ms<br>
+time: 0.034000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, y:dependsOn(x'^I'))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.015000ms<br>
+time: 0.177000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, x'^I':dependsOn(z))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.105000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(false, x'^I':dependsOn(y))</code>
 </td><td>
+${false} = {false}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.055000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>assertEq(true, x'^I':dependsOn(x'^I'))</code>
 </td><td>
+${true} = {true}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.047000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1925,7 +2227,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.100000ms<br>
+time: 0.126000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1935,7 +2237,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.016000ms<br>
+time: 0.021000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1945,7 +2247,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.012000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1955,7 +2257,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.025000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1965,7 +2267,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.011000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1975,7 +2277,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.019000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1985,7 +2287,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.089000ms<br>
+time: 0.226000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1995,7 +2297,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.079000ms<br>
+time: 0.088000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -2006,6 +2308,6 @@ ${\frac{\partial \{u,v,t,x,y,z\}}{\partial \{u,v,t,x,y,z\}}} = {\left[\begin{arr
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.866000ms<br>
+time: 7.337000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:self<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

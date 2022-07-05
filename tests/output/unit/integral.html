@@ -18,20 +18,24 @@
 <b></b><br>
 <code>simplifyAssertEq(Constant(1):integrate(x), x)</code>
 </td><td>
+${\int{{1}}d x} = {x}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.358000ms<br>
+time: 1.110000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(y:integrate(x), x * y)</code>
 </td><td>
+${\int{{y}}d x} = {{{x}} {{y}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.102000ms<br>
+time: 2.736000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -44,10 +48,12 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(Constant(1):integrate(x, xL, xR), (xR - xL))</code>
 </td><td>
+${\int\limits_{{xL}}^{{xR}}{{1}}d x} = {{xR}{-{xL}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.068000ms<br>
+time: 7.413000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -72,11 +78,13 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b>instead I'll just test this ...</b><br>
 <code>simplifyAssertEq((x:integrate(x, xL, xR) - (xR^2 - xL^2)/2), Constant(0))</code>
 </td><td>
+${{\int\limits_{{xL}}^{{xR}}{{x}}d x}{-{{\frac{1}{2}}{\left({{{xR}^{2}}{-{{xL}^{2}}}}\right)}}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 29.795000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 21.692000ms<br>
+stack: size: 73<br><ul style="margin:0px"><li>Init<br><li>Integral:Prune:apply<br><li>Integral:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:factorOutDivs<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>Constant:Tidy:apply<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:flatten<br><li>+:Prune:factorOutDivs<br><li>+:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:flattenAddMul<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>/:Prune:zeroOverX<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -94,61 +102,73 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(x:integrate(x), x^2 / 2)</code>
 </td><td>
+${\int{{x}}d x} = {{\frac{1}{2}} {{x}^{2}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.456000ms<br>
+time: 8.793000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x^2):integrate(x), x^3 / 3)</code>
 </td><td>
+${\int{{{x}^{2}}}d x} = {{\frac{1}{3}} {{x}^{3}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.333000ms<br>
+time: 9.550000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(((x^-2):integrate(x) - (-1/x)), Constant(0))</code>
 </td><td>
+${{\int{{{x}^{-2}}}d x}{-{\frac{-1}{x}}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.207000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 5.257000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>^:Prune:xToTheNegY<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((1/x):integrate(x), log(abs(x)))</code>
 </td><td>
+${\int{{\frac{1}{x}}}d x} = {\log\left( {\left| x\right|}\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.962000ms<br>
+time: 2.108000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x^-1):integrate(x), log(abs(x)))</code>
 </td><td>
+${\int{{{x}^{-1}}}d x} = {\log\left( {\left| x\right|}\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.147000ms<br>
+time: 1.911000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((1/(2*x^2)):integrate(x), -(1/(2*x)))</code>
 </td><td>
+${\int{{\frac{1}{{{2}} {{{x}^{2}}}}}}d x} = {-{\frac{1}{{{2}} {{x}}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.473000ms<br>
-stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
+time: 14.595000ms<br>
+stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -160,20 +180,24 @@ stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>*
 <b></b><br>
 <code>simplifyAssertEq((x^frac(1,2)):integrate(x), frac(2 * x * sqrt(x), 3))</code>
 </td><td>
+${\int{{{x}^{\frac{1}{2}}}}d x} = {{\frac{1}{3}} {{{2}} {{x}} {{\sqrt{x}}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.553000ms<br>
+time: 14.830000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(sqrt(x):integrate(x), frac(2 * x * sqrt(x), 3))</code>
 </td><td>
+${\int{{\sqrt{x}}}d x} = {{\frac{1}{3}} {{{2}} {{x}} {{\sqrt{x}}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.293000ms<br>
+time: 14.386000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -186,10 +210,12 @@ stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><l
 <b></b><br>
 <code>simplifyAssertEq((1/x):integrate(x), log(abs(x)))</code>
 </td><td>
+${\int{{\frac{1}{x}}}d x} = {\log\left( {\left| x\right|}\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.763000ms<br>
+time: 1.833000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -202,20 +228,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((2/x):integrate(x), (2*log(abs(x))))</code>
 </td><td>
+${\int{{\frac{2}{x}}}d x} = {{{2}} {{\log\left( {\left| x\right|}\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.865000ms<br>
+time: 4.840000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:logPow<br><li>Prune<br><li>^:Expand:integerPower<br><li>log:Expand:apply<br><li>Expand<br><li>*:Prune:logPow<br><li>+:Prune:flattenAddMul<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((1/(2*x)):integrate(x), (log(abs(x))/2))</code>
 </td><td>
+${\int{{\frac{1}{{{2}} {{x}}}}}d x} = {{\frac{1}{2}} {\log\left( {\left| x\right|}\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.711000ms<br>
+time: 9.284000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>/:Prune:logPow<br><li>Prune<br><li>log:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>/:Prune:logPow<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -228,10 +258,12 @@ stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>/:Prune:logPow<br><li>
 <b></b><br>
 <code>simplifyAssertEq((1/(x*(3*x+4))):integrate(x)(), log(1 / abs( (4 + 3 * x) / x)^frac(1,4)))</code>
 </td><td>
+${\log\left( {{\left({\frac{1}{\left|{{\frac{1}{x}}{\left({{4} + {{{3}} {{x}}}}\right)}}\right|}}\right)}^{\frac{1}{4}}}\right)} = {\log\left( {\frac{1}{{\left|{{\frac{1}{x}}{\left({{4} + {{{3}} {{x}}}}\right)}}\right|}^{\frac{1}{4}}}}\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 71.678000ms<br>
+time: 72.583000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>log:Expand:apply<br><li>unm:Expand:apply<br><li>log:Expand:apply<br><li>Expand<br><li>log:Prune:apply<br><li>^:Prune:xToTheNegY<br><li>*:Prune:logPow<br><li>/:Prune:logPow<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -244,50 +276,60 @@ stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>log:Expan
 <b></b><br>
 <code>simplifyAssertEq(f:diff(x):integrate(x)(), f)</code>
 </td><td>
+${f} = {f}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.642000ms<br>
+time: 0.863000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(f:integrate(x):diff(x)(), f)</code>
 </td><td>
+${f} = {f}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.927000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 1.127000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:integrals<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(f:diff(x,x):integrate(x)(), f:diff(x))</code>
 </td><td>
+${\frac{\partial f}{\partial x}} = {\frac{\partial f}{\partial x}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.529000ms<br>
+time: 0.975000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(f:integrate(x):integrate(x):diff(x)(), f:integrate(x))</code>
 </td><td>
+${\int{{f}}d x} = {\int{{f}}d x}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.831000ms<br>
+time: 3.635000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(f:integrate(x):diff(x,x)(), f:diff(x))</code>
 </td><td>
+${\frac{\partial f}{\partial x}} = {\frac{\partial f}{\partial x}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.713000ms<br>
+time: 1.020000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -300,20 +342,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(sin(x):integrate(x)(), -cos(x))</code>
 </td><td>
+${-{\cos\left(  x\right)}} = {-{\cos\left(  x\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.339000ms<br>
+time: 2.958000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(cos(x):integrate(x)(), sin(x))</code>
 </td><td>
+${\sin\left(  x\right)} = {\sin\left(  x\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.523000ms<br>
+time: 1.446000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -326,20 +372,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(sin(2*x):integrate(x)(), (-cos(2*x)/2))</code>
 </td><td>
+${-{{\frac{1}{2}} {\cos\left( {{{2}} {{x}}}\right)}}} = {{\frac{1}{2}}{\left({-{\cos\left( {{{2}} {{x}}}\right)}}\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.808000ms<br>
-stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
+time: 11.018000ms<br>
+stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(cos(y*x):integrate(x)(), (sin(y*x)/y))</code>
 </td><td>
+${{\frac{1}{y}} {\sin\left( {{{x}} {{y}}}\right)}} = {{\frac{1}{y}} {\sin\left( {{{y}} {{x}}}\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.617000ms<br>
+time: 8.015000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -352,10 +402,12 @@ stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br
 <b></b><br>
 <code>simplifyAssertEq((cos(x)/sin(x)):integrate(x), log(abs(sin(x))))</code>
 </td><td>
+${\int{{\frac{\cos\left(  x\right)}{\sin\left(  x\right)}}}d x} = {\log\left( {\left|{\sin\left(  x\right)}\right|}\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.644000ms<br>
+time: 4.328000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -368,10 +420,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((cos(x)^2):integrate(x)(), frac(1,4) * (2 * x + sin(2 * x)))</code>
 </td><td>
+${{\frac{1}{4}}{\left({{\sin\left( {{{2}} {{x}}}\right)} + {{{2}} {{x}}}}\right)}} = {{{\frac{1}{4}}} {{\left({{{{2}} {{x}}} + {\sin\left( {{{2}} {{x}}}\right)}}\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.497000ms<br>
+time: 20.129000ms<br>
 stack: size: 30<br><ul style="margin:0px"><li>Init<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheNegY<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -384,20 +438,24 @@ stack: size: 30<br><ul style="margin:0px"><li>Init<br><li>*:Tidy:apply<br><li>*:
 <b></b><br>
 <code>simplifyAssertEq(sinh(x):integrate(x), cosh(x))</code>
 </td><td>
+${\int{{\sinh\left(  x\right)}}d x} = {\cosh\left(  x\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.272000ms<br>
+time: 1.429000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(cosh(x):integrate(x), sinh(x))</code>
 </td><td>
+${\int{{\cosh\left(  x\right)}}d x} = {\sinh\left(  x\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.195000ms<br>
+time: 1.723000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -428,50 +486,60 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((x * y):integrate(x), frac(1,2) * x^2 * y)</code>
 </td><td>
+${\int{{\left({{{x}} {{y}}}\right)}}d x} = {{{\frac{1}{2}}} {{{x}^{2}}} {{y}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.031000ms<br>
+time: 6.297000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x * y):integrate(x)():integrate(y)(), frac(1,4) * x^2 * y^2)</code>
 </td><td>
+${{\frac{1}{4}} {{{{x}^{2}}} {{{y}^{2}}}}} = {{{\frac{1}{4}}} {{{x}^{2}}} {{{y}^{2}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 20.114000ms<br>
+time: 23.144000ms<br>
 stack: size: 31<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Factor:polydiv<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheNegY<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((x * y):integrate(x):integrate(y)(), frac(1,4) * x^2 * y^2)</code>
 </td><td>
+${{\frac{1}{4}} {{{{x}^{2}}} {{{y}^{2}}}}} = {{{\frac{1}{4}}} {{{x}^{2}}} {{{y}^{2}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 18.746000ms<br>
+time: 15.174000ms<br>
 stack: size: 31<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Factor:polydiv<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheNegY<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((r * cos(x)):integrate(r)():integrate(x)(), frac(1,2) * r^2 * sin(x))</code>
 </td><td>
+${{\frac{1}{2}} {{{{r}^{2}}} {{\sin\left(  x\right)}}}} = {{{\frac{1}{2}}} {{{r}^{2}}} {{\sin\left(  x\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.095000ms<br>
+time: 14.784000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((r * cos(x)):integrate(x)():integrate(r)(), frac(1,2) * r^2 * sin(x))</code>
 </td><td>
+${{\frac{1}{2}} {{{{r}^{2}}} {{\sin\left(  x\right)}}}} = {{{\frac{1}{2}}} {{{r}^{2}}} {{\sin\left(  x\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.178000ms<br>
+time: 8.550000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -484,21 +552,25 @@ stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenomina
 <b></b><br>
 <code>simplifyAssertEq( ( cosh(a * x) * sinh(a * x) ):integrate(x), cosh(a * x)^2 / (2 * a) )</code>
 </td><td>
+${\int{{\left({{{\cosh\left( {{{a}} {{x}}}\right)}} {{\sinh\left( {{{a}} {{x}}}\right)}}}\right)}}d x} = {\frac{{\cosh\left( {{{a}} {{x}}}\right)}^{2}}{{{2}} {{a}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.405000ms<br>
+time: 14.287000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq( ( cosh(a * x) * sinh(b * x) ):integrate(x), 1 / ((a + b) * (a - b)) * (-b * cosh(a*x) * cosh(b*x) + a * sinh(a*x) * sinh(b*x)) )</code>
 </td><td>
+${\int{{\left({{{\cosh\left( {{{a}} {{x}}}\right)}} {{\sinh\left( {{{b}} {{x}}}\right)}}}\right)}}d x} = {{{\frac{1}{{{\left({{a} + {b}}\right)}} {{\left({{a}{-{b}}}\right)}}}}} {{\left({{ {-{b}} {{\cosh\left( {{{a}} {{x}}}\right)}} {{\cosh\left( {{{b}} {{x}}}\right)}}} + {{{a}} {{\sinh\left( {{{a}} {{x}}}\right)}} {{\sinh\left( {{{b}} {{x}}}\right)}}}}\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 208.932000ms<br>
-stack: size: 78<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>+:Factor:apply<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 140.628000ms<br>
+stack: size: 74<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>+:Factor:apply<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -510,9 +582,11 @@ stack: size: 78<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <code>simplifyAssertEq( ( sinh(a * x)^2 * cosh(a * x) ):integrate(x), sinh(a * x)^3 / (3 * a) )</code>
 </td><td>
+${\int{{\left({{{{\sinh\left( {{{a}} {{x}}}\right)}^{2}}} {{\cosh\left( {{{a}} {{x}}}\right)}}}\right)}}d x} = {\frac{{\sinh\left( {{{a}} {{x}}}\right)}^{3}}{{{3}} {{a}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.522000ms<br>
+time: 14.492000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>

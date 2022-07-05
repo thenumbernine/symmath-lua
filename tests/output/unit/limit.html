@@ -12,31 +12,37 @@
 <b></b><br>
 <code>simplifyAssertEq(lim(x, x, a), a)</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{x}}} = {a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.512000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.996000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x, x, a, '+'), a)</code>
 </td><td>
+${{\underset{ x\rightarrow{ a{}^+}}{\lim}}{{x}}} = {a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.245000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.392000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x, x, a, '-'), a)</code>
 </td><td>
+${{\underset{ x\rightarrow{ a{}^-}}{\lim}}{{x}}} = {a}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.125000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.478000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -54,20 +60,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(0, x, a), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{0}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.751000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.944000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(1, x, a), 1)</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{1}}} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.442000ms<br>
+time: 0.857000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -86,60 +96,72 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(x + 2, x, a), a + 2)</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\left({{x} + {2}}\right)}}} = {{a} + {2}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.438000ms<br>
+time: 4.253000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x + x, x, a), 2 * a)</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\left({{x} + {x}}\right)}}} = {{{2}} {{a}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.724000ms<br>
+time: 4.453000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x + a, x, a), 2 * a)</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\left({{x} + {a}}\right)}}} = {{{2}} {{a}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.139000ms<br>
+time: 3.147000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(a + a, x, a), 2 * a)</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\left({{a} + {a}}\right)}}} = {{{2}} {{a}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.503000ms<br>
+time: 3.968000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x * 2, x, a), 2 * a)</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{2}}}\right)}}} = {{{2}} {{a}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.389000ms<br>
+time: 4.164000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x / 2, x, a), a / 2)</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{{\frac{1}{2}} {x}}}} = {{\frac{1}{2}} {a}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.574000ms<br>
+time: 4.605000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -158,60 +180,72 @@ stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br
 <b></b><br>
 <code>simplifyAssertEq(lim(x, x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{x}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.152000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.684000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x, x, -inf), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{x}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.437000ms<br>
+time: 0.971000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x, x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{x}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.089000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.348000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(1/x, x, inf), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\frac{1}{x}}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.492000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 1.331000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(1/x, x, -inf), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\frac{1}{x}}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.826000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 1.442000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(1/x, x, 0), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{\frac{1}{x}}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.971000ms<br>
+time: 2.073000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -224,20 +258,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(1/x, x, 0, '+'), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\frac{1}{x}}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.394000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 1.132000ms<br>
+stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(1/x, x, 0, '-'), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{x}}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.945000ms<br>
+time: 1.727000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -250,21 +288,25 @@ stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNa
 <b></b><br>
 <code>simplifyAssertEq(lim(1/x^2, x, 0, '+'), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\frac{1}{{x}^{2}}}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.773000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 5.117000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(1/x^2, x, 0, '-'), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.730000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 3.219000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -282,31 +324,37 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(sqrt(x), x, 0), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{\sqrt{x}}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.017000ms<br>
+time: 0.961000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(sqrt(x), x, 0, '-'), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\sqrt{x}}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.537000ms<br>
+time: 0.672000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(sqrt(x), x, 0, '+'), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\sqrt{x}}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.910000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.998000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>in each form ...</b><br>
@@ -318,31 +366,37 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(x^frac(1,2), x, 0), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{{x}^{\frac{1}{2}}}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.059000ms<br>
+time: 0.876000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x^frac(1,2), x, 0, '-'), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{{x}^{\frac{1}{2}}}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.972000ms<br>
+time: 1.137000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x^frac(1,2), x, 0, '+'), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{{x}^{\frac{1}{2}}}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.666000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.725000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>and one more power up ...</b><br>
@@ -354,31 +408,37 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(x^frac(1,4), x, 0), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{{x}^{\frac{1}{4}}}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.282000ms<br>
+time: 1.115000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x^frac(1,4), x, 0, '-'), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{{x}^{\frac{1}{4}}}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.608000ms<br>
+time: 0.729000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(x^frac(1,4), x, 0, '+'), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{{x}^{\frac{1}{4}}}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.402000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.799000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -438,30 +498,36 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(sin(x), x, a), sin(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}} = {\sin\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.455000ms<br>
+time: 0.787000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(sin(x), x, inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.127000ms<br>
+time: 0.312000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(sin(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.386000ms<br>
+time: 0.964000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -474,30 +540,36 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(cos(x), x, a), cos(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\cos\left(  x\right)}}} = {\cos\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.539000ms<br>
+time: 1.086000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(cos(x), x, inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.125000ms<br>
+time: 0.389000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(cos(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.691000ms<br>
+time: 0.636000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -510,31 +582,37 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(abs(x), x, a), abs(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\left| x\right|}}} = {\left| a\right|}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.369000ms<br>
+time: 0.381000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(abs(x), x, -inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\left| x\right|}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.322000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.647000ms<br>
+stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Limit:Prune:apply<br><li>*:Prune:handleInfAndNan<br><li>abs:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(abs(x), x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\left| x\right|}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.106000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.310000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>abs:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -546,31 +624,37 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(exp(x), x, a), exp(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\exp\left( x\right)}}} = {\exp\left( a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.650000ms<br>
+time: 0.824000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(exp(x), x, -inf), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\exp\left( x\right)}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.322000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.566000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(exp(x), x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\exp\left( x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.260000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.367000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:handleInfAndNan<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -582,30 +666,36 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(atan(x), x, a), atan(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{atan\left(  x\right)}}} = {atan\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.346000ms<br>
+time: 0.888000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(atan(x), x, -inf), -pi/2)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{atan\left(  x\right)}}} = {{\frac{1}{2}}{\left({-{π}}\right)}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.499000ms<br>
+time: 4.579000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(atan(x), x, inf), pi/2)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{atan\left(  x\right)}}} = {{\frac{1}{2}} {π}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.433000ms<br>
+time: 3.455000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -618,30 +708,36 @@ stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br
 <b></b><br>
 <code>simplifyAssertEq(lim(tanh(x), x, a), tanh(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\tanh\left(  x\right)}}} = {\tanh\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.292000ms<br>
+time: 0.715000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tanh(x), x, -inf), -1)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\tanh\left(  x\right)}}} = {-1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.248000ms<br>
+time: 1.407000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tanh(x), x, inf), 1)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\tanh\left(  x\right)}}} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.393000ms<br>
+time: 0.598000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -654,31 +750,37 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(asinh(x), x, a), asinh(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{asinh\left(  x\right)}}} = {asinh\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.365000ms<br>
+time: 0.855000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(asinh(x), x, -inf), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{asinh\left(  x\right)}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.865000ms<br>
+time: 1.189000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(asinh(x), x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{asinh\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.106000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.374000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>asinh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -690,31 +792,37 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(cosh(x), x, a), cosh(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\cosh\left(  x\right)}}} = {\cosh\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.335000ms<br>
+time: 0.813000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(cosh(x), x, -inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\cosh\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.609000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.413000ms<br>
+stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Limit:Prune:apply<br><li>cosh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(cosh(x), x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\cosh\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.115000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.369000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>cosh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -726,31 +834,37 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(sinh(x), x, a), sinh(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\sinh\left(  x\right)}}} = {\sinh\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.259000ms<br>
+time: 0.650000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(sinh(x), x, -inf), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\sinh\left(  x\right)}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.845000ms<br>
+time: 0.832000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(sinh(x), x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\sinh\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.104000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.265000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>sinh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -762,30 +876,36 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(sin(x), x, a), sin(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}} = {\sin\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.276000ms<br>
+time: 0.569000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(sin(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.675000ms<br>
+time: 0.482000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(sin(x), x, inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.116000ms<br>
+time: 0.359000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -798,30 +918,36 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(cos(x), x, a), cos(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\cos\left(  x\right)}}} = {\cos\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.253000ms<br>
+time: 0.614000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(cos(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.352000ms<br>
+time: 0.812000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(cos(x), x, inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.108000ms<br>
+time: 0.450000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -834,120 +960,144 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, a), tan(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.760000ms<br>
+time: 6.665000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.838000ms<br>
+time: 0.811000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, -3*pi/2), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{{\frac{1}{2}} {{{-3}} {{π}}}}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.485000ms<br>
+time: 2.897000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, -pi), tan(-pi))</code>
 </td><td>
+${{\underset{ x\rightarrow -{π}}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  -{π}\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.309000ms<br>
-stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>*:Prune:apply<br><li>/:Prune:xOverMinusOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 2.665000ms<br>
+stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>*:Prune:apply<br><li>/:Prune:xOverMinusOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, -pi/2), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{{\frac{1}{2}}{\left({-{π}}\right)}}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.899000ms<br>
+time: 2.203000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, 0), tan(0))</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  0\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.047000ms<br>
-stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>/:Prune:xOverOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.934000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>/:Prune:xOverOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, pi/2), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{{\frac{1}{2}} {π}}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.190000ms<br>
+time: 0.954000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, pi/2, '+'), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{{{\frac{1}{2}} {π}}{}^+}}{\lim}}{{\tan\left(  x\right)}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.016000ms<br>
+time: 1.633000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, pi/2, '-'), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{{{\frac{1}{2}} {π}}{}^-}}{\lim}}{{\tan\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.723000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.999000ms<br>
+stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>tan:Prune:apply<br><li>Limit:Prune:apply<br><li>sin:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>cos:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, pi), tan(pi))</code>
 </td><td>
+${{\underset{ x\rightarrow π}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  π\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.848000ms<br>
-stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>*:Prune:apply<br><li>/:Prune:xOverMinusOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 1.374000ms<br>
+stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>*:Prune:apply<br><li>/:Prune:xOverMinusOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, 3*pi/2), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{{\frac{1}{2}} {{{3}} {{π}}}}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.545000ms<br>
+time: 1.938000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(tan(x), x, inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.496000ms<br>
+time: 1.041000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -960,20 +1110,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b>if the input is within the domain of the function then we can evaluate it for certain</b><br>
 <code>do local a = set.positiveReal:var'a' simplifyAssertEq(lim(log(x), x, a), log(a)) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}} = {\log\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.689000ms<br>
+time: 0.841000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>if the input is outside the domain of the function then we know the result is invalid. TODO is this the same as indeterminate?  Or should I introduce a new singleton?</b><br>
 <code>do local a = set.negativeReal:var'a' simplifyAssertEq(lim(log(x), x, a), invalid) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.869000ms<br>
+time: 0.922000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -984,48 +1138,56 @@ ${\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.918000ms<br>
+time: 1.431000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(log(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\log\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.314000ms<br>
+time: 0.932000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(log(x), x, 0), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{\log\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.224000ms<br>
+time: 0.476000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(log(x), x, 0, '+'), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\log\left(  x\right)}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.412000ms<br>
+time: 0.798000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(log(x), x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\log\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.175000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.238000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>log:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1037,20 +1199,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>do local a = set.RealSubset(-1, 1, false, false):var'a' simplifyAssertEq(lim(acosh(x), x, a), acosh(a)) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}} = {acosh\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.313000ms<br>
+time: 0.856000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>acosh:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' simplifyAssertEq(lim(acosh(x), x, a), invalid) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.337000ms<br>
+time: 0.591000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1061,48 +1227,56 @@ ${\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.644000ms<br>
+time: 0.542000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acosh(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{acosh\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.218000ms<br>
+time: 0.647000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acosh(x), x, 1), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 1}{\lim}}{{acosh\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.189000ms<br>
+time: 0.494000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acosh(x), x, 1, '+'), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{acosh\left(  x\right)}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.127000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.339000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acosh(x), x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{acosh\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.109000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.551000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>acosh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1114,20 +1288,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>do local a = set.RealSubset(-1, 1, false, false):var'a' simplifyAssertEq(lim(atanh(x), x, a), atanh(a)) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}} = {atanh\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.570000ms<br>
+time: 1.144000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' simplifyAssertEq(lim(atanh(x), x, a), invalid) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.460000ms<br>
+time: 0.505000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1138,77 +1316,91 @@ ${\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.524000ms<br>
+time: 0.593000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(atanh(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.263000ms<br>
+time: 0.434000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(atanh(x), x, -1), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{-1}}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.514000ms<br>
+time: 1.008000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(atanh(x), x, -1, '+'), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{{-1}{}^+}}{\lim}}{{atanh\left(  x\right)}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.449000ms<br>
+time: 0.744000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(atanh(x), x, 0), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{atanh\left(  x\right)}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.360000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.647000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(atanh(x), x, 1), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 1}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.448000ms<br>
+time: 1.090000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(atanh(x), x, 1, '-'), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{atanh\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.115000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.242000ms<br>
+stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(atanh(x), x, inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.132000ms<br>
+time: 0.982000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1221,20 +1413,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>do local a = set.RealSubset(-1, 1, false, false):var'a' simplifyAssertEq(lim(asin(x), x, a), asin(a)) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}} = {asin\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.240000ms<br>
+time: 0.743000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' simplifyAssertEq(lim(asin(x), x, a), invalid) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.412000ms<br>
+time: 0.374000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1245,77 +1441,91 @@ ${\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.633000ms<br>
+time: 0.686000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(asin(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{asin\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.224000ms<br>
+time: 0.373000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(asin(x), x, -1), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{-1}}{\lim}}{{asin\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.437000ms<br>
+time: 1.200000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(asin(x), x, -1, '+'), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{{-1}{}^+}}{\lim}}{{asin\left(  x\right)}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.329000ms<br>
+time: 1.018000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(asin(x), x, 0), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{asin\left(  x\right)}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.232000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.305000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(asin(x), x, 1), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 1}{\lim}}{{asin\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.218000ms<br>
+time: 0.451000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(asin(x), x, 1, '-'), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{asin\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.102000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.257000ms<br>
+stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(asin(x), x, inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{asin\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.127000ms<br>
+time: 0.365000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1328,20 +1538,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>do local a = set.RealSubset(-1, 1, false, false):var'a' simplifyAssertEq(lim(acos(x), x, a), acos(a)) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}} = {acos\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.045000ms<br>
+time: 0.623000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>do local a = set.RealSubset(-math.huge, -1, false, false):var'a' simplifyAssertEq(lim(acos(x), x, a), invalid) end</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.367000ms<br>
+time: 0.642000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1352,77 +1566,91 @@ ${\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.048000ms<br>
+time: 0.649000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acos(x), x, -inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{acos\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.223000ms<br>
+time: 1.673000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acos(x), x, -1), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow{-1}}{\lim}}{{acos\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.241000ms<br>
+time: 0.490000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acos(x), x, -1, '+'), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{{-1}{}^+}}{\lim}}{{acos\left(  x\right)}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.112000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.217000ms<br>
+stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acos(x), x, 0), pi/2)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{acos\left(  x\right)}}} = {{\frac{1}{2}} {π}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.596000ms<br>
+time: 1.928000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acos(x), x, 1), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 1}{\lim}}{{acos\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.282000ms<br>
+time: 0.429000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acos(x), x, 1, '-'), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{acos\left(  x\right)}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.387000ms<br>
+time: 1.381000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(acos(x), x, inf), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{acos\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.266000ms<br>
+time: 1.302000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1435,80 +1663,96 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(Heaviside(x), x, a), Heaviside(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {\mathcal{H}\left(  a\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.352000ms<br>
+time: 0.346000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(Heaviside(x), x, -inf), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.210000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.586000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(Heaviside(x), x, -1), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow{-1}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.191000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.316000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(Heaviside(x), x, 0), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.166000ms<br>
+time: 0.336000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(Heaviside(x), x, 0, '-'), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.117000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.261000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(Heaviside(x), x, 0, '+'), 1)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.111000ms<br>
+time: 0.326000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(Heaviside(x), x, 1), 1)</code>
 </td><td>
+${{\underset{ x\rightarrow 1}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.251000ms<br>
+time: 0.512000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(Heaviside(x), x, inf), 1)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.144000ms<br>
+time: 0.332000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1527,10 +1771,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(x * sin(x), x, a), a * sin(a))</code>
 </td><td>
+${{\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{\sin\left(  x\right)}}}\right)}}} = {{{a}} {{\sin\left(  a\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.943000ms<br>
+time: 1.631000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1549,60 +1795,72 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(1 / (x - 1), x, 1), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{x}{-{1}}}}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.480000ms<br>
+time: 3.649000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(1 / (x - 1), x, 1, '+'), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{x}{-{1}}}}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.330000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 1.642000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(1 / (x - 1), x, 1, '-'), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{x}{-{1}}}}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.734000ms<br>
+time: 1.939000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim((x + 1) / (x^2 - 1), x, 1), invalid)</code>
 </td><td>
+${{\underset{ x\rightarrow 1}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}}{-{1}}}}}} = {¿}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.282000ms<br>
+time: 15.428000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim((x + 1) / (x^2 - 1), x, 1, '+'), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}}{-{1}}}}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.580000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 11.035000ms<br>
+stack: size: 40<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:simplifyConstantPowers<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:simplifyConstantPowers<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim((x + 1) / (x^2 - 1), x, 1, '-'), -inf)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}}{-{1}}}}}} = {-{\infty}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.700000ms<br>
+time: 9.733000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1627,10 +1885,12 @@ limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left(
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {1}$
 <br>
+${1} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.638000ms<br>
+time: 1.085000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1643,11 +1903,13 @@ limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left(
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {c}$
 <br>
+${c} = {c}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.729000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 2.844000ms<br>
+stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:self<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1659,10 +1921,12 @@ limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left(
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{{2}} {{x}}}$
 <br>
+${{{2}} {{x}}} = {{{2}} {{x}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.058000ms<br>
+time: 5.332000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1675,10 +1939,12 @@ limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left(
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{{3}} {{{x}^{2}}}}$
 <br>
+${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.499000ms<br>
+time: 13.794000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1691,10 +1957,12 @@ limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left(
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\frac{-1}{{x}^{2}}}$
 <br>
+${\frac{-1}{{x}^{2}}} = {\frac{-1}{{x}^{2}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.851000ms<br>
+time: 11.139000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1739,15 +2007,17 @@ stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 </td><td>
 ${f\left(  x\right)} = {\sqrt{x}}$
 <br>
-limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {\frac{1}{{{2}} {{{x}^{\frac{1}{2}}}}}}$
+limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{\sqrt{{x} + {h}}} + {{{-1}} {{\sqrt{x}}}}}\right)}}}}$
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\frac{1}{{{2}} {{{x}^{\frac{1}{2}}}}}}$
+<br>
+${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{\sqrt{{x} + {h}}} + {{{-1}} {{\sqrt{x}}}}}\right)}}}} = {\frac{1}{{{2}} {{{x}^{\frac{1}{2}}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 58.138000ms<br>
-stack: size: 116<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>Expand<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>^:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
+time: 182.706000ms<br>
+stack: size: 90<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>^:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1759,10 +2029,12 @@ limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left(
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\cos\left(  x\right)}$
 <br>
+${\cos\left(  x\right)} = {\cos\left(  x\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.815000ms<br>
+time: 2.923000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1775,10 +2047,12 @@ limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left(
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {{{-1}} {{\sin\left(  x\right)}}}$
 <br>
+${{{-1}} {{\sin\left(  x\right)}}} = {{{-1}} {{\sin\left(  x\right)}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.080000ms<br>
+time: 4.100000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1791,10 +2065,12 @@ limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left(
 <br>
 derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {\exp\left( x\right)}$
 <br>
+${\exp\left( x\right)} = {\exp\left( x\right)}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.102000ms<br>
+time: 3.497000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1813,40 +2089,48 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(sin(x) / x, x, 0), 1)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{{\frac{1}{x}} {\sin\left(  x\right)}}}} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.205000ms<br>
+time: 1.350000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim(exp(x) / x^2, x, inf), inf)</code>
 </td><td>
+${{\underset{ x\rightarrow \infty}{\lim}}{{\frac{\exp\left( x\right)}{{x}^{2}}}}} = {\infty}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.380000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 4.611000ms<br>
+stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:handleInfAndNan<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:handleInfAndNan<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim((e^x - 1) / (x^2 + x), x, 0), 1)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{\frac{{\exp\left( x\right)}{-{1}}}{{{x}^{2}} + {x}}}}} = {1}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.138000ms<br>
+time: 5.865000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq(lim((2*sin(x) - sin(2*x)) / (x - sin(x)), x, 0), 6)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{\frac{{{{2}} {{\sin\left(  x\right)}}}{-{\sin\left( {{{2}} {{x}}}\right)}}}{{x}{-{\sin\left(  x\right)}}}}}} = {6}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 40.087000ms<br>
+time: 35.447000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1871,6 +2155,8 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(x^n * e^x, x, 0), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{\left({{{{x}^{n}}} {{\exp\left( x\right)}}}\right)}}} = {0}$
+<br>
 expected ${\underset{ x\rightarrow 0}{\lim}}{{\left({{{{x}^{n}}} {{\exp\left( x\right)}}}\right)}}$ to equal 0<br>
 found ${0}^{n}$ vs $0$<br>
 lhs stack<br>
@@ -1882,7 +2168,6 @@ Limit:Prune:apply	$1$	<br>
 Limit:Prune:apply	$0$	<br>
 Limit:Prune:apply	$n$	<br>
 Limit:Prune:apply	${0}^{n}$	<br>
-Constant:Tidy:apply	$0$	<br>
 *:Prune:apply	${0}^{n}$	<br>
 Limit:Prune:apply	${0}^{n}$	<br>
 Limit:Prune:apply	$e$	<br>
@@ -1892,7 +2177,6 @@ Limit:Prune:apply	$1$	<br>
 Limit:Prune:apply	$0$	<br>
 Limit:Prune:apply	$n$	<br>
 Limit:Prune:apply	${0}^{n}$	<br>
-Constant:Tidy:apply	$0$	<br>
 *:Prune:apply	${0}^{n}$	<br>
 Limit:Prune:apply	${0}^{n}$	<br>
 Limit:Prune:apply	${0}^{n}$	<br>
@@ -1901,7 +2185,6 @@ Expand	${0}^{n}$	<br>
 Prune	${0}^{n}$	<br>
 Factor	${0}^{n}$	<br>
 Prune	${0}^{n}$	<br>
-Constant:Tidy:apply	$0$	<br>
 Tidy	${0}^{n}$	<br>
 rhs stack<br>
 Init	$0$	<br>
@@ -1910,24 +2193,23 @@ Expand	$0$	<br>
 Prune	$0$	<br>
 Factor	$0$	<br>
 Prune	$0$	<br>
-Constant:Tidy:apply	$0$	<br>
 Tidy	$0$	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: failed<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: failed<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:216: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:215><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:227: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:226><br>
 	[C]: in function 'error'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:107: in function 'simplifyAssertEq'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function 'simplifyAssertEq'<br>
 	[string "simplifyAssertEq(lim(x^n * e^x, x, 0), 0)"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:208: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:207><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:219: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:218><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:207: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:218: in function 'exec'<br>
 	limit.lua:249: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	limit.lua:6: in main chunk<br>
-	[C]: at 0x5651318eb3e0
+	[C]: at 0x55b1047562f0
 </td><td>
-time: 2.050000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 2.002000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1945,11 +2227,13 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim(x * log(x), x, 0, '+'), 0)</code>
 </td><td>
+${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\left({{{x}} {{\log\left(  x\right)}}}\right)}}} = {0}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.338000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
+time: 0.509000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -1967,10 +2251,12 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq(lim( (a * x * (1 + x)^n) / ((1 + x)^n - 1), x, 0 ), a / n)</code>
 </td><td>
+${{\underset{ x\rightarrow 0}{\lim}}{{\frac{{{a}} {{x}} {{{\left({{1} + {x}}\right)}^{n}}}}{{{\left({{1} + {x}}\right)}^{n}}{-{1}}}}}} = {{\frac{1}{n}} {a}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 43.400000ms<br>
+time: 36.099000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1993,6 +2279,6 @@ $1$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 18.412000ms<br>
+time: 16.160000ms<br>
 stack: size: 29<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:constants<br><li>Derivative:Prune:constants<br><li>*:Prune:apply<br><li>Derivative:Prune:self<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>Derivative:Prune:eval<br><li>log:Prune:apply<br><li>*:Prune:apply<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>/:Prune:zeroOverX<br><li>+:Prune:combineConstants<br><li>Derivative:Prune:eval<br><li>+:Prune:combineConstants<br><li>Derivative:Prune:eval<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy<br><li>/:Prune:xOverX<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>

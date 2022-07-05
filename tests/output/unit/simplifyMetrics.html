@@ -12,20 +12,24 @@
 <b></b><br>
 <code>simplifyAssertEq(a'^i':simplifyMetrics(), a'^i')</code>
 </td><td>
+${{ a} ^i} = {{ a} ^i}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.512000ms<br>
+time: 2.337000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'^min' * delta'_i^j'):simplifyMetrics(), a'^mjn')</code>
 </td><td>
+${{{{ a} ^m} ^j} ^n} = {{{{ a} ^m} ^j} ^n}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.194000ms<br>
+time: 6.510000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -44,20 +48,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((g'^ij' * delta'_j^k'):simplifyMetrics(), g'^ik')</code>
 </td><td>
+${{{ g} ^i} ^k} = {{{ g} ^i} ^k}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.935000ms<br>
+time: 3.249000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((delta'_j^k' * g'^ij'):simplifyMetrics(), g'^ik')</code>
 </td><td>
+${{{ g} ^i} ^k} = {{{ g} ^i} ^k}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.836000ms<br>
+time: 4.135000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -76,40 +84,48 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((a'^i' * delta'_i^j'):simplifyMetrics(), a'^j')</code>
 </td><td>
+${{ a} ^j} = {{ a} ^j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.593000ms<br>
+time: 2.438000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'^i' * delta'^j_i'):simplifyMetrics(), a'^j')</code>
 </td><td>
+${{ a} ^j} = {{ a} ^j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.211000ms<br>
+time: 2.573000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((delta'_i^j' * a'^i'):simplifyMetrics(), a'^j')</code>
 </td><td>
+${{ a} ^j} = {{ a} ^j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.704000ms<br>
+time: 2.080000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((delta'^j_i' * a'^i'):simplifyMetrics(), a'^j')</code>
 </td><td>
+${{ a} ^j} = {{ a} ^j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.656000ms<br>
+time: 3.505000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -128,10 +144,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((a'^i' * delta'_ij'):simplifyMetrics(), a'^i' * delta'_ij')</code>
 </td><td>
+${{{{ a} ^i}} {{{{ δ} _i} _j}}} = {{{{ a} ^i}} {{{{ δ} _i} _j}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.941000ms<br>
+time: 4.614000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -150,40 +168,48 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((a'^i' * g'_ij'):simplifyMetrics(), a'_j')</code>
 </td><td>
+${{ a} _j} = {{ a} _j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.281000ms<br>
+time: 1.879000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((g'_ij' * a'^i'):simplifyMetrics(), a'_j')</code>
 </td><td>
+${{ a} _j} = {{ a} _j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.637000ms<br>
+time: 2.603000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'_i' * g'^ij'):simplifyMetrics(), a'^j')</code>
 </td><td>
+${{ a} ^j} = {{ a} ^j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.978000ms<br>
+time: 1.986000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((g'^ij' * a'_i'):simplifyMetrics(), a'^j')</code>
 </td><td>
+${{ a} ^j} = {{ a} ^j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.406000ms<br>
+time: 2.075000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -202,10 +228,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((a'^i' * g'_i^j'):simplifyMetrics(), a'^j')</code>
 </td><td>
+${{ a} ^j} = {{ a} ^j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.581000ms<br>
+time: 1.641000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -224,20 +252,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((g'^ik' * delta'_k^l'):simplifyMetrics(), g'^il')</code>
 </td><td>
+${{{ g} ^i} ^l} = {{{ g} ^i} ^l}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.502000ms<br>
+time: 2.180000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((g'^ik' * delta'_k^l' * delta'_l^m'):simplifyMetrics(), g'^im')</code>
 </td><td>
+${{{ g} ^i} ^m} = {{{ g} ^i} ^m}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.947000ms<br>
+time: 3.272000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -256,30 +288,36 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((g'^ik' * g'_kj'):simplifyMetrics(), delta'^i_j')</code>
 </td><td>
+${{{ δ} ^i} _j} = {{{ δ} ^i} _j}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.061000ms<br>
+time: 2.222000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((g'^ik' * delta'_k^l' * g'_lm'):simplifyMetrics(), delta'^i_m')</code>
 </td><td>
+${{{ δ} ^i} _m} = {{{ δ} ^i} _m}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.444000ms<br>
+time: 3.041000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((g'^ik' * delta'_k^l' * delta'_l^m' * g'_mn'):simplifyMetrics(), delta'^i_n')</code>
 </td><td>
+${{{ δ} ^i} _n} = {{{ δ} ^i} _n}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.837000ms<br>
+time: 3.948000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -310,60 +348,72 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((a'_,i' * g'^ij'):simplifyMetrics(), a'_,i' * g'^ij')</code>
 </td><td>
+${{{{ a} _{,i}}} {{{{ g} ^i} ^j}}} = {{{{ a} _{,i}}} {{{{ g} ^i} ^j}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.667000ms<br>
+time: 6.032000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'^,i' * g'_ij'):simplifyMetrics(), a'^,i' * g'_ij')</code>
 </td><td>
+${{{{ a} ^{,i}}} {{{{ g} _i} _j}}} = {{{{ a} ^{,i}}} {{{{ g} _i} _j}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.199000ms<br>
+time: 4.356000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'_,im' * g'^ij'):simplifyMetrics(), a'_,im' * g'^ij')</code>
 </td><td>
+${{{{{ a} _{,i}} _{,m}}} {{{{ g} ^i} ^j}}} = {{{{{ a} _{,i}} _{,m}}} {{{{ g} ^i} ^j}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.717000ms<br>
+time: 3.882000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'^,im' * g'_ij'):simplifyMetrics(), a'^,im' * g'_ij')</code>
 </td><td>
+${{{{{ a} ^{,i}} ^{,m}}} {{{{ g} _i} _j}}} = {{{{{ a} ^{,i}} ^{,m}}} {{{{ g} _i} _j}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.597000ms<br>
+time: 3.362000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'_i,m' * g'^ij'):simplifyMetrics(), a'_i,m' * g'^ij')</code>
 </td><td>
+${{{{{ a} _i} _{,m}}} {{{{ g} ^i} ^j}}} = {{{{{ a} _i} _{,m}}} {{{{ g} ^i} ^j}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.314000ms<br>
+time: 3.327000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'^i,m' * g'_ij'):simplifyMetrics(), a'^i,m' * g'_ij')</code>
 </td><td>
+${{{{{ a} ^i} ^{,m}}} {{{{ g} _i} _j}}} = {{{{{ a} ^i} ^{,m}}} {{{{ g} _i} _j}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.898000ms<br>
+time: 2.985000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -382,60 +432,72 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <code>simplifyAssertEq((a'_,i' * delta'^i_j'):simplifyMetrics(), a'_,j')</code>
 </td><td>
+${{ a} _{,j}} = {{ a} _{,j}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.378000ms<br>
+time: 2.129000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'^,i' * delta'_i^j'):simplifyMetrics(), a'^,j')</code>
 </td><td>
+${{ a} ^{,j}} = {{ a} ^{,j}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.998000ms<br>
+time: 1.842000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'_,im' * delta'^i_j'):simplifyMetrics(), a'_,jm')</code>
 </td><td>
+${{{ a} _{,j}} _{,m}} = {{{ a} _{,j}} _{,m}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.978000ms<br>
+time: 2.319000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'^,im' * delta'_i^j'):simplifyMetrics(), a'^,jm')</code>
 </td><td>
+${{{ a} ^{,j}} ^{,m}} = {{{ a} ^{,j}} ^{,m}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.450000ms<br>
+time: 2.645000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'_i,m' * delta'^i_j'):simplifyMetrics(), a'_j_,m')</code>
 </td><td>
+${{{ a} _j} _{,m}} = {{{ a} _j} _{,m}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.337000ms<br>
+time: 2.025000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <code>simplifyAssertEq((a'^i,m' * delta'_i^j'):simplifyMetrics(), a'^j^,m')</code>
 </td><td>
+${{{ a} ^j} ^{,m}} = {{{ a} ^j} ^{,m}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.016000ms<br>
+time: 2.187000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>

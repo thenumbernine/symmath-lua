@@ -90,6 +90,7 @@ return function(env, title)
 	end
 
 	function env.simplifyAssertEq(a,b, showStackAnyways)
+		printbr(symmath.op.eq(a,b))
 		assert(a ~= nil, "simplifyAssertEq lhs is nil")
 		assert(b ~= nil, "simplifyAssertEq rhs is nil")
 		local sa = symmath.simplify(a)
@@ -109,6 +110,7 @@ return function(env, title)
 	end
 
 	function env.simplifyLHSAssertEq(a, b, showStackAnyways)
+		printbr(symmath.op.eq(a,b))
 		assert(a ~= nil, "simplifyLHSAssertEq lhs is nil")
 		assert(b ~= nil, "simplifyLHSAssertEq rhs is nil")
 		local sa = symmath.simplify(a)
@@ -124,6 +126,7 @@ return function(env, title)
 	end
 
 	function env.simplifyAssertNe(a,b, showStackAnyways)
+		printbr(symmath.op.ne(a,b))
 		local sa = symmath.simplify(a)
 		local ta = symmath.simplify.stack
 		local sb = symmath.simplify(b)
@@ -148,6 +151,7 @@ return function(env, title)
 			env.simplifyAssertEq(#ka, #kb)
 			for _,_k in ipairs(ka) do
 				k = _k
+				printbr(symmath.op.eq(ta[k],tb[k]))
 				env.simplifyAssertEq(ta[k], tb[k])
 			end
 		end, function(err)
@@ -164,6 +168,14 @@ return function(env, title)
 	end
 
 	function env.assertEq(a,b)
+		-- hmm, maybe this fix means I need to fix Expression's ctor as well?
+		do
+			local va = a
+			local vb = b
+			if type(va) == 'boolean' then va = symmath.Variable(tostring(va)) end
+			if type(vb) == 'boolean' then vb = symmath.Variable(tostring(vb)) end
+			printbr(symmath.op.eq(va,vb))
+		end
 		if a ~= b then
 			print('expected '..tostring(a)..' to equal '..tostring(b)..'<br>')
 			error'failed'
