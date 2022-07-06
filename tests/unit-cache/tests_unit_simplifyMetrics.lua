@@ -2,13 +2,13 @@
 	{
 		code="simplifyAssertEq(a'^i':simplifyMetrics(), a'^i')",
 		comment="",
-		duration=0.002337,
+		duration=0.002604,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'^min' * delta'_i^j'):simplifyMetrics(), a'^mjn')",
 		comment="",
-		duration=0.00651,
+		duration=0.004369,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
@@ -16,84 +16,84 @@
 	{
 		code="simplifyAssertEq((g'^ij' * delta'_j^k'):simplifyMetrics(), g'^ik')",
 		comment="",
-		duration=0.003249,
+		duration=0.004181,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((delta'_j^k' * g'^ij'):simplifyMetrics(), g'^ik')",
 		comment="",
-		duration=0.004135,
+		duration=0.00251,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="delta works on mixed tensors", duration=1.000000000001e-06},
+	{code="", comment="", duration=9.9999999999406e-07},
+	{code="", comment="delta works on mixed tensors", duration=9.9999999999406e-07},
 	{
 		code="simplifyAssertEq((a'^i' * delta'_i^j'):simplifyMetrics(), a'^j')",
 		comment="",
-		duration=0.002438,
+		duration=0.002377,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'^i' * delta'^j_i'):simplifyMetrics(), a'^j')",
 		comment="",
-		duration=0.002573,
+		duration=0.002388,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((delta'_i^j' * a'^i'):simplifyMetrics(), a'^j')",
 		comment="",
-		duration=0.00208,
+		duration=0.002995,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((delta'^j_i' * a'^i'):simplifyMetrics(), a'^j')",
 		comment="",
-		duration=0.003505,
+		duration=0.002737,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
+	{code="", comment="", duration=0},
 	{code="", comment="does delta work when not mixed?  it shouldn't (unless the metric is equal to identity)", duration=1.000000000001e-06},
 	{
 		code="simplifyAssertEq((a'^i' * delta'_ij'):simplifyMetrics(), a'^i' * delta'_ij')",
 		comment="",
-		duration=0.004614,
+		duration=0.002959,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "*:Tidy:apply", "Tidy"}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
+	{code="", comment="", duration=0},
 	{code="", comment="g raises and lowers", duration=1.000000000001e-06},
 	{
 		code="simplifyAssertEq((a'^i' * g'_ij'):simplifyMetrics(), a'_j')",
 		comment="",
-		duration=0.001879,
+		duration=0.002227,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((g'_ij' * a'^i'):simplifyMetrics(), a'_j')",
 		comment="",
-		duration=0.002603,
+		duration=0.001913,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'_i' * g'^ij'):simplifyMetrics(), a'^j')",
 		comment="",
-		duration=0.001986,
+		duration=0.00166,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((g'^ij' * a'_i'):simplifyMetrics(), a'^j')",
 		comment="",
-		duration=0.002075,
+		duration=0.002085,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=2.000000000002e-06},
+	{code="", comment="", duration=1.000000000001e-06},
 	{code="", comment="does g work when mixed?  technically $g^i_j == \\delta^i_j$", duration=1.000000000001e-06},
 	{
 		code="simplifyAssertEq((a'^i' * g'_i^j'):simplifyMetrics(), a'^j')",
 		comment="",
-		duration=0.001641,
+		duration=0.001677,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
+	{code="", comment="", duration=0},
 	{code="", comment="how about simplifying solely metrics without any non-metric tensors?", duration=1.000000000001e-06},
 	{
 		code="simplifyAssertEq((g'^ik' * delta'_k^l'):simplifyMetrics(), g'^il')",
@@ -104,27 +104,27 @@
 	{
 		code="simplifyAssertEq((g'^ik' * delta'_k^l' * delta'_l^m'):simplifyMetrics(), g'^im')",
 		comment="",
-		duration=0.003272,
+		duration=0.003076,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
+	{code="", comment="", duration=0},
 	{code="", comment="how about simplifying from metrics to deltas?", duration=1.000000000001e-06},
 	{
 		code="simplifyAssertEq((g'^ik' * g'_kj'):simplifyMetrics(), delta'^i_j')",
 		comment="",
-		duration=0.002222,
+		duration=0.002366,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((g'^ik' * delta'_k^l' * g'_lm'):simplifyMetrics(), delta'^i_m')",
 		comment="",
-		duration=0.003041,
+		duration=0.003329,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((g'^ik' * delta'_k^l' * delta'_l^m' * g'_mn'):simplifyMetrics(), delta'^i_n')",
 		comment="",
-		duration=0.003948,
+		duration=0.006042,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
@@ -134,79 +134,79 @@
 	{
 		code="simplifyAssertEq((a'_,i' * g'^ij'):simplifyMetrics(), a'_,i' * g'^ij')",
 		comment="",
-		duration=0.006032,
+		duration=0.003152,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "*:Tidy:apply", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'^,i' * g'_ij'):simplifyMetrics(), a'^,i' * g'_ij')",
 		comment="",
-		duration=0.004356,
+		duration=0.00287,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "*:Tidy:apply", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'_,im' * g'^ij'):simplifyMetrics(), a'_,im' * g'^ij')",
 		comment="",
-		duration=0.003882,
+		duration=0.003003,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "*:Tidy:apply", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'^,im' * g'_ij'):simplifyMetrics(), a'^,im' * g'_ij')",
 		comment="",
-		duration=0.003362,
+		duration=0.003536,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "*:Tidy:apply", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'_i,m' * g'^ij'):simplifyMetrics(), a'_i,m' * g'^ij')",
 		comment="",
-		duration=0.003327,
+		duration=0.002739,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "*:Tidy:apply", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'^i,m' * g'_ij'):simplifyMetrics(), a'^i,m' * g'_ij')",
 		comment="",
-		duration=0.002985,
+		duration=0.002625,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "*:Tidy:apply", "Tidy"}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="but delta should simplify with commas", duration=1.000000000001e-06},
+	{code="", comment="", duration=0},
+	{code="", comment="but delta should simplify with commas", duration=0},
 	{
 		code="simplifyAssertEq((a'_,i' * delta'^i_j'):simplifyMetrics(), a'_,j')",
 		comment="",
-		duration=0.002129,
+		duration=0.001466,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'^,i' * delta'_i^j'):simplifyMetrics(), a'^,j')",
 		comment="",
-		duration=0.001842,
+		duration=0.001628,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'_,im' * delta'^i_j'):simplifyMetrics(), a'_,jm')",
 		comment="",
-		duration=0.002319,
+		duration=0.001926,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'^,im' * delta'_i^j'):simplifyMetrics(), a'^,jm')",
 		comment="",
-		duration=0.002645,
+		duration=0.002145,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'_i,m' * delta'^i_j'):simplifyMetrics(), a'_j_,m')",
 		comment="",
-		duration=0.002025,
+		duration=0.002095,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{
 		code="simplifyAssertEq((a'^i,m' * delta'_i^j'):simplifyMetrics(), a'^j^,m')",
 		comment="",
-		duration=0.002187,
+		duration=0.002368,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
 	{code="", comment="TODO someday:", duration=1.000000000001e-06},
-	{code="", comment="allow g_ij to raise/lower the last partial derivative", duration=1.000000000001e-06},
-	{code="", comment="allow g_ij to raise/lower any covariant derivatives not enclosed in partial derivatives.", duration=2.000000000002e-06}
+	{code="", comment="allow g_ij to raise/lower the last partial derivative", duration=0},
+	{code="", comment="allow g_ij to raise/lower any covariant derivatives not enclosed in partial derivatives.", duration=0}
 }

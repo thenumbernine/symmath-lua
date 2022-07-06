@@ -1457,6 +1457,10 @@ so when we find mul -> pow -> add
 			local unm = symmath.op.unm
 			local Constant = symmath.Constant
 			
+			-- TODO where was in-place modification allowed?
+			-- I think I was moving away from it in visitors
+			expr = expr:clone()
+			
 			-- -x * y * z => -(x * y * z)
 			-- -x * y * -z => x * y * z
 			do
@@ -1479,7 +1483,7 @@ so when we find mul -> pow -> add
 			-- (has to be solved post-prune() because tidy's Constant+unm will have made some new ones)
 			-- 1 * x => x
 			local first = expr[1]
-			if Constant:isa(first) and first.value == 1 then
+			if Constant.isValue(first, 1) then
 				table.remove(expr, 1)
 				if #expr == 1 then
 					expr = expr[1]
@@ -1498,8 +1502,8 @@ so when we find mul -> pow -> add
 			end
 			return result
 			--]]
-			-- [
-			return expr
+			-- [[
+			return expr:flatten()	-- flatten() is in-place
 			--]]
 		end},
 	

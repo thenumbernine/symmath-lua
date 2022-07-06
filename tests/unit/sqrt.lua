@@ -21,6 +21,10 @@ env.y = symmath.Variable('y')
 -- constant simplificaiton
 for _,line in ipairs(string.split(string.trim([=[
 
+-- simplify() was introducing an unflattened mul where there originally was none
+-- TODO NOTICE - if there's just sqrt(2)*sqrt(3) then the sqrts will merge ... so should they merge if that extra 2 is out front?
+local expr = 2*sqrt(2)*sqrt(3) local sexpr = expr() printbr(symmath.op.eq(Verbose(expr), Verbose(sexpr))) simplifyAssertEq(expr,sexpr)
+
 print(sqrt(-1)())
 simplifyAssertEq(sqrt(-1), i)
 
@@ -93,7 +97,6 @@ simplifyAssertEq( ( sqrt(f) * (g + sqrt(g)) )() , sqrt(f) * sqrt(g) * (sqrt(g) +
 -- start with -1 / ( (√√5 √(√5 - 1)) / √2 ) ... what mine gets now vs what mathematica gets
 simplifyAssertEq( -1 / ( sqrt(sqrt(5) * (sqrt(5) - 1)) / sqrt(2) ), sqrt((5  + sqrt(5)) / 10))
 simplifyAssertEq( -(sqrt( 10 * (sqrt(5) - 1) ) + sqrt(2 * (sqrt(5) - 1))) / (4 * sqrt(sqrt(5))), sqrt((5  + sqrt(5)) / 10))
-
 
 
 ]=]), '\n')) do

@@ -758,20 +758,23 @@ pow.rules = {
 	},
 
 	Tidy = {
-		{apply = function(tidy, expr)
+		-- [[ x^-a => 1/x^a ... TODO only do this when in a product?
+		{negativePowerToOneOver = function(tidy,expr)
+			symmath = symmath or require 'symmath'
+			if symmath.op.unm:isa(expr[2]) then
+				return tidy:apply(1/expr[1]^expr[2][1])
+			end
+		end},
+		--]]
+
+-- [=[	
+		{replacePowerOfFractionWithRoots = function(tidy, expr)
 			symmath = symmath or require 'symmath'
 			local sets = symmath.set
-			local unm = symmath.op.unm
 			local div = symmath.op.div
 			local Constant = symmath.Constant
 			local sqrt = symmath.sqrt
 			local cbrt = symmath.cbrt
-
-			-- [[ x^-a => 1/x^a ... TODO only do this when in a product?
-			if unm:isa(expr[2]) then
-				return tidy:apply(Constant(1)/expr[1]^expr[2][1])
-			end
-			--]]
 
 			-- x^(p/q) = x^((qk+m)/q)
 			-- p, q are integer Lua numbers
@@ -802,7 +805,6 @@ pow.rules = {
 						return expr ^ k * f(expr ^ m)
 					end
 				end
-		
 			end
 
 			-- x ^ (p/q)
@@ -835,6 +837,7 @@ pow.rules = {
 				end
 			end
 		end},
+--]=]
 	},
 
 	Factor = {

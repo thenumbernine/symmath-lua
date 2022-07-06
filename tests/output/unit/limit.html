@@ -17,7 +17,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{x}}} = {a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.996000ms<br>
+time: 0.972000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -29,7 +29,7 @@ ${{\underset{ x\rightarrow{ a{}^+}}{\lim}}{{x}}} = {a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.392000ms<br>
+time: 0.371000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -41,7 +41,7 @@ ${{\underset{ x\rightarrow{ a{}^-}}{\lim}}{{x}}} = {a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.478000ms<br>
+time: 0.579000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -65,7 +65,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{0}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.944000ms<br>
+time: 0.966000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -77,7 +77,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{1}}} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.857000ms<br>
+time: 0.910000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -101,7 +101,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\left({{x} + {2}}\right)}}} = {{a} + {2}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.253000ms<br>
+time: 7.300000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -113,7 +113,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\left({{x} + {x}}\right)}}} = {{{2}} {{a}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.453000ms<br>
+time: 5.414000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -125,7 +125,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\left({{x} + {a}}\right)}}} = {{{2}} {{a}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.147000ms<br>
+time: 4.458000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -137,7 +137,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\left({{a} + {a}}\right)}}} = {{{2}} {{a}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.968000ms<br>
+time: 3.157000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -149,7 +149,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{2}}}\right)}}} = {{{2}} {{a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.164000ms<br>
+time: 5.238000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -161,7 +161,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{{\frac{1}{2}} {x}}}} = {{\frac{1}{2}} {a}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.605000ms<br>
+time: 3.846000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -185,7 +185,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{x}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.684000ms<br>
+time: 0.431000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -197,7 +197,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{x}}} = {-{\infty}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.971000ms<br>
+time: 0.821000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -209,7 +209,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{x}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.348000ms<br>
+time: 0.269000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -221,7 +221,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\frac{1}{x}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.331000ms<br>
+time: 1.163000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -233,7 +233,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\frac{1}{x}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.442000ms<br>
+time: 1.154000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -245,7 +245,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\frac{1}{x}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.073000ms<br>
+time: 1.318000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -263,7 +263,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\frac{1}{x}}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.132000ms<br>
+time: 1.289000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -275,7 +275,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{x}}}} = {-{\infty}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.727000ms<br>
+time: 2.234000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -293,7 +293,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\frac{1}{{x}^{2}}}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.117000ms<br>
+time: 5.140000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -305,7 +305,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.219000ms<br>
+time: 4.600000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -329,7 +329,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\sqrt{x}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.961000ms<br>
+time: 1.192000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -341,7 +341,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\sqrt{x}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.672000ms<br>
+time: 0.811000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -353,7 +353,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\sqrt{x}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.998000ms<br>
+time: 0.764000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -371,7 +371,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{{x}^{\frac{1}{2}}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.876000ms<br>
+time: 1.434000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -383,7 +383,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{{x}^{\frac{1}{2}}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.137000ms<br>
+time: 1.023000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -395,7 +395,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{{x}^{\frac{1}{2}}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.725000ms<br>
+time: 0.591000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -413,7 +413,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{{x}^{\frac{1}{4}}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.115000ms<br>
+time: 0.990000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -425,7 +425,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{{x}^{\frac{1}{4}}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.729000ms<br>
+time: 1.157000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -437,7 +437,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{{x}^{\frac{1}{4}}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.799000ms<br>
+time: 0.523000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -503,7 +503,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}} = {\sin\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.787000ms<br>
+time: 0.725000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -515,7 +515,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.312000ms<br>
+time: 0.366000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -527,7 +527,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.964000ms<br>
+time: 0.814000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -545,7 +545,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\cos\left(  x\right)}}} = {\cos\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.086000ms<br>
+time: 1.190000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -557,7 +557,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.389000ms<br>
+time: 0.399000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -569,7 +569,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.636000ms<br>
+time: 0.605000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -587,7 +587,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\left| x\right|}}} = {\left| a\right|}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.381000ms<br>
+time: 0.564000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -599,7 +599,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\left| x\right|}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.647000ms<br>
+time: 0.505000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Limit:Prune:apply<br><li>*:Prune:handleInfAndNan<br><li>abs:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -611,7 +611,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\left| x\right|}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.310000ms<br>
+time: 0.249000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>abs:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -629,7 +629,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\exp\left( x\right)}}} = {\exp\left( a\rig
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.824000ms<br>
+time: 1.294000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -641,7 +641,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\exp\left( x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.566000ms<br>
+time: 0.409000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -653,7 +653,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\exp\left( x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.367000ms<br>
+time: 0.287000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:handleInfAndNan<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -671,7 +671,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{atan\left(  x\right)}}} = {atan\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.888000ms<br>
+time: 0.614000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -683,7 +683,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{atan\left(  x\right)}}} = {{\frac{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.579000ms<br>
+time: 6.446000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -695,7 +695,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{atan\left(  x\right)}}} = {{\frac{1}{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.455000ms<br>
+time: 2.314000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -713,7 +713,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\tanh\left(  x\right)}}} = {\tanh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.715000ms<br>
+time: 0.724000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -725,7 +725,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\tanh\left(  x\right)}}} = {-1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.407000ms<br>
+time: 1.100000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -737,7 +737,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\tanh\left(  x\right)}}} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.598000ms<br>
+time: 0.801000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -755,7 +755,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{asinh\left(  x\right)}}} = {asinh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.855000ms<br>
+time: 0.819000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -767,7 +767,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{asinh\left(  x\right)}}} = {-{\inf
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.189000ms<br>
+time: 1.381000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -779,7 +779,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{asinh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.374000ms<br>
+time: 0.270000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>asinh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -797,7 +797,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\cosh\left(  x\right)}}} = {\cosh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.813000ms<br>
+time: 1.295000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -809,7 +809,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\cosh\left(  x\right)}}} = {\infty
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.413000ms<br>
+time: 0.511000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Limit:Prune:apply<br><li>cosh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -821,7 +821,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\cosh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.369000ms<br>
+time: 0.199000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>cosh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -839,7 +839,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\sinh\left(  x\right)}}} = {\sinh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.650000ms<br>
+time: 0.485000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -851,7 +851,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\sinh\left(  x\right)}}} = {-{\inf
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.832000ms<br>
+time: 0.870000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -863,7 +863,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\sinh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.265000ms<br>
+time: 0.198000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>sinh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -881,7 +881,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}} = {\sin\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.569000ms<br>
+time: 0.468000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -893,7 +893,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.482000ms<br>
+time: 0.568000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -905,7 +905,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.359000ms<br>
+time: 0.805000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -923,7 +923,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\cos\left(  x\right)}}} = {\cos\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.614000ms<br>
+time: 0.826000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -935,7 +935,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.812000ms<br>
+time: 1.670000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -947,7 +947,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.450000ms<br>
+time: 0.624000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -965,7 +965,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.665000ms<br>
+time: 5.679000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -977,7 +977,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.811000ms<br>
+time: 1.137000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -989,7 +989,7 @@ ${{\underset{ x\rightarrow{{\frac{1}{2}} {{{-3}} {{π}}}}}{\lim}}{{\tan\left(  x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.897000ms<br>
+time: 3.975000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1001,7 +1001,7 @@ ${{\underset{ x\rightarrow -{π}}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left( 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.665000ms<br>
+time: 2.396000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>*:Prune:apply<br><li>/:Prune:xOverMinusOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1013,7 +1013,7 @@ ${{\underset{ x\rightarrow{{\frac{1}{2}}{\left({-{π}}\right)}}}{\lim}}{{\tan\le
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.203000ms<br>
+time: 2.370000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1025,7 +1025,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  0\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.934000ms<br>
+time: 1.589000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>/:Prune:xOverOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1037,7 +1037,7 @@ ${{\underset{ x\rightarrow{{\frac{1}{2}} {π}}}{\lim}}{{\tan\left(  x\right)}}} 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.954000ms<br>
+time: 1.102000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1049,7 +1049,7 @@ ${{\underset{ x\rightarrow{{{\frac{1}{2}} {π}}{}^+}}{\lim}}{{\tan\left(  x\righ
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.633000ms<br>
+time: 1.283000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1061,7 +1061,7 @@ ${{\underset{ x\rightarrow{{{\frac{1}{2}} {π}}{}^-}}{\lim}}{{\tan\left(  x\righ
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.999000ms<br>
+time: 0.598000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>tan:Prune:apply<br><li>Limit:Prune:apply<br><li>sin:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>cos:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1073,7 +1073,7 @@ ${{\underset{ x\rightarrow π}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  π
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.374000ms<br>
+time: 1.337000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>*:Prune:apply<br><li>/:Prune:xOverMinusOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1085,7 +1085,7 @@ ${{\underset{ x\rightarrow{{\frac{1}{2}} {{{3}} {{π}}}}}{\lim}}{{\tan\left(  x\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.938000ms<br>
+time: 1.870000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1097,7 +1097,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.041000ms<br>
+time: 0.839000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1115,7 +1115,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}} = {\log\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.841000ms<br>
+time: 1.399000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1127,7 +1127,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.922000ms<br>
+time: 0.925000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1138,7 +1138,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.431000ms<br>
+time: 1.286000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1150,7 +1150,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\log\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.932000ms<br>
+time: 0.724000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1162,7 +1162,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\log\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.476000ms<br>
+time: 0.384000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1174,7 +1174,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\log\left(  x\right)}}} = {-{\infty}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.798000ms<br>
+time: 1.330000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1186,7 +1186,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\log\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.238000ms<br>
+time: 0.243000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>log:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1204,7 +1204,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}} = {acosh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.856000ms<br>
+time: 1.644000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>acosh:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1216,7 +1216,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.591000ms<br>
+time: 0.423000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1227,7 +1227,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.542000ms<br>
+time: 0.953000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1239,7 +1239,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{acosh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.647000ms<br>
+time: 0.459000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1251,7 +1251,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{acosh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.494000ms<br>
+time: 0.480000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1263,7 +1263,7 @@ ${{\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{acosh\left(  x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.339000ms<br>
+time: 0.239000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1275,7 +1275,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{acosh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.551000ms<br>
+time: 0.180000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>acosh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1293,7 +1293,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}} = {atanh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.144000ms<br>
+time: 0.703000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1305,7 +1305,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.505000ms<br>
+time: 0.448000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1316,7 +1316,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.593000ms<br>
+time: 1.280000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1328,7 +1328,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.434000ms<br>
+time: 1.060000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1340,7 +1340,7 @@ ${{\underset{ x\rightarrow{-1}}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.008000ms<br>
+time: 0.692000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1352,7 +1352,7 @@ ${{\underset{ x\rightarrow{{-1}{}^+}}{\lim}}{{atanh\left(  x\right)}}} = {-{\inf
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.744000ms<br>
+time: 0.844000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1364,7 +1364,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{atanh\left(  x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.647000ms<br>
+time: 0.625000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1376,7 +1376,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.090000ms<br>
+time: 1.203000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1388,7 +1388,7 @@ ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{atanh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.242000ms<br>
+time: 0.206000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1400,7 +1400,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.982000ms<br>
+time: 0.306000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1418,7 +1418,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}} = {asin\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.743000ms<br>
+time: 1.317000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1430,7 +1430,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.374000ms<br>
+time: 0.446000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1441,7 +1441,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.686000ms<br>
+time: 1.023000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1453,7 +1453,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.373000ms<br>
+time: 1.287000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1465,7 +1465,7 @@ ${{\underset{ x\rightarrow{-1}}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.200000ms<br>
+time: 0.851000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1477,7 +1477,7 @@ ${{\underset{ x\rightarrow{{-1}{}^+}}{\lim}}{{asin\left(  x\right)}}} = {-{\inft
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.018000ms<br>
+time: 0.884000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1489,7 +1489,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{asin\left(  x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.305000ms<br>
+time: 0.381000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1501,7 +1501,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.451000ms<br>
+time: 0.421000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1513,7 +1513,7 @@ ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{asin\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.257000ms<br>
+time: 0.345000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1525,7 +1525,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.365000ms<br>
+time: 0.253000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1543,7 +1543,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}} = {acos\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.623000ms<br>
+time: 0.638000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1555,7 +1555,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.642000ms<br>
+time: 0.621000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1566,7 +1566,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.649000ms<br>
+time: 0.571000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1578,7 +1578,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.673000ms<br>
+time: 0.386000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1590,7 +1590,7 @@ ${{\underset{ x\rightarrow{-1}}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.490000ms<br>
+time: 0.506000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1602,7 +1602,7 @@ ${{\underset{ x\rightarrow{{-1}{}^+}}{\lim}}{{acos\left(  x\right)}}} = {\infty}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.217000ms<br>
+time: 0.308000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1614,7 +1614,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{acos\left(  x\right)}}} = {{\frac{1}{2}} {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.928000ms<br>
+time: 2.985000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1626,7 +1626,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.429000ms<br>
+time: 0.740000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1638,7 +1638,7 @@ ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{acos\left(  x\right)}}} = {-{\infty}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.381000ms<br>
+time: 1.230000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1650,7 +1650,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.302000ms<br>
+time: 0.298000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1668,7 +1668,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {\mathcal
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.346000ms<br>
+time: 0.413000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1680,7 +1680,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.586000ms<br>
+time: 0.324000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1692,7 +1692,7 @@ ${{\underset{ x\rightarrow{-1}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.316000ms<br>
+time: 0.702000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1704,7 +1704,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.336000ms<br>
+time: 0.265000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1716,7 +1716,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {0}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.261000ms<br>
+time: 0.233000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1728,7 +1728,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {1}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.326000ms<br>
+time: 0.267000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1740,7 +1740,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.512000ms<br>
+time: 0.705000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1752,7 +1752,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.332000ms<br>
+time: 0.320000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1776,7 +1776,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{\sin\left(  x\right)}}}\rig
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.631000ms<br>
+time: 2.965000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1800,7 +1800,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{x}{-{1}}}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.649000ms<br>
+time: 3.844000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1812,7 +1812,7 @@ ${{\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{x}{-{1}}}}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.642000ms<br>
+time: 2.136000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1824,7 +1824,7 @@ ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{x}{-{1}}}}}} = {-{\infty}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.939000ms<br>
+time: 2.443000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1836,7 +1836,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}}{-{1}}}}}} = {¿
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.428000ms<br>
+time: 17.744000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1848,7 +1848,7 @@ ${{\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}}{-{1}}}}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.035000ms<br>
+time: 11.168000ms<br>
 stack: size: 40<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:simplifyConstantPowers<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:simplifyConstantPowers<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1860,7 +1860,7 @@ ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}}{-{1}}}}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.733000ms<br>
+time: 11.628000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1890,7 +1890,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.085000ms<br>
+time: 1.274000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1908,7 +1908,7 @@ ${c} = {c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.844000ms<br>
+time: 3.572000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:self<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1926,7 +1926,7 @@ ${{{2}} {{x}}} = {{{2}} {{x}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.332000ms<br>
+time: 5.621000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1944,7 +1944,7 @@ ${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.794000ms<br>
+time: 13.637000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1962,7 +1962,7 @@ ${\frac{-1}{{x}^{2}}} = {\frac{-1}{{x}^{2}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.139000ms<br>
+time: 11.817000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2016,8 +2016,8 @@ ${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{\sqrt{{x} + {h
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 182.706000ms<br>
-stack: size: 90<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>^:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
+time: 216.152000ms<br>
+stack: size: 90<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -2034,7 +2034,7 @@ ${\cos\left(  x\right)} = {\cos\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.923000ms<br>
+time: 4.402000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2052,7 +2052,7 @@ ${{{-1}} {{\sin\left(  x\right)}}} = {{{-1}} {{\sin\left(  x\right)}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.100000ms<br>
+time: 6.074000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2070,7 +2070,7 @@ ${\exp\left( x\right)} = {\exp\left( x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.497000ms<br>
+time: 5.896000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2094,7 +2094,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{{\frac{1}{x}} {\sin\left(  x\right)}}}} = 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.350000ms<br>
+time: 1.671000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2106,7 +2106,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\frac{\exp\left( x\right)}{{x}^{2}}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.611000ms<br>
+time: 3.148000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:handleInfAndNan<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:handleInfAndNan<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2118,7 +2118,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\frac{{\exp\left( x\right)}{-{1}}}{{{x}^{2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.865000ms<br>
+time: 5.408000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2130,7 +2130,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\frac{{{{2}} {{\sin\left(  x\right)}}}{-{\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 35.447000ms<br>
+time: 46.746000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2196,19 +2196,19 @@ Prune	$0$	<br>
 Tidy	$0$	<br>
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: failed<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:227: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:226><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:229: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:228><br>
 	[C]: in function 'error'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:108: in function 'simplifyAssertEq'<br>
 	[string "simplifyAssertEq(lim(x^n * e^x, x, 0), 0)"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:219: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:218><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:221: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:220><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:218: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:220: in function 'exec'<br>
 	limit.lua:249: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	limit.lua:6: in main chunk<br>
-	[C]: at 0x55b1047562f0
+	[C]: at 0x55bc92f5c2f0
 </td><td>
-time: 2.002000ms<br>
+time: 3.515000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2232,7 +2232,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\left({{{x}} {{\log\left(  x\right)}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.509000ms<br>
+time: 0.622000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2256,7 +2256,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\frac{{{a}} {{x}} {{{\left({{1} + {x}}\rig
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 36.099000ms<br>
+time: 39.149000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2279,6 +2279,6 @@ $1$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 16.160000ms<br>
+time: 21.106000ms<br>
 stack: size: 29<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:constants<br><li>Derivative:Prune:constants<br><li>*:Prune:apply<br><li>Derivative:Prune:self<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>Derivative:Prune:eval<br><li>log:Prune:apply<br><li>*:Prune:apply<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>/:Prune:zeroOverX<br><li>+:Prune:combineConstants<br><li>Derivative:Prune:eval<br><li>+:Prune:combineConstants<br><li>Derivative:Prune:eval<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy<br><li>/:Prune:xOverX<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
