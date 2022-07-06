@@ -1,6 +1,7 @@
 local table = require 'ext.table'
 local os = require 'ext.os'
 local io = require 'ext.io'
+local string = require 'ext.string'
 local fromlua = require 'ext.fromlua'
 local tolua = require 'ext.tolua'
 	
@@ -62,8 +63,12 @@ td, th {
 		.. 	table.mapi(rows, function(row) 
 				if row.error then
 					return '<span style="color:red">'..failstr..'</span>'
-				else
+				elseif row.code and #string.trim(row.code) > 0 then
 					return '<span style="color:green">'..checkstr..'</span>'
+				elseif row.comment then
+					return ''
+				else
+					return '?'
 				end
 			end):concat'\n'
 		.. '</td></tr>\n'
@@ -89,6 +94,10 @@ return function(env, title)
 		end
 	end
 
+	local function printStackEntry(x)
+		printbr(x[1], x[2], '<pre>', symmath.Verbose(x[2]), '</pre>')
+	end
+
 	function env.simplifyAssertEq(a,b, showStackAnyways)
 		printbr(symmath.op.eq(a,b))
 		assert(a ~= nil, "simplifyAssertEq lhs is nil")
@@ -102,9 +111,9 @@ return function(env, title)
 			print('expected '..tostring(a)..' to equal '..tostring(b)..'<br>')
 			print('found '..tostring(sa)..' vs '..tostring(sb)..'<br>')
 			print('lhs stack<br>')
-			for _,x in ipairs(ta) do print(x[1], x[2], '<br>') end
+			for _,x in ipairs(ta) do printStackEntry(x) end
 			print('rhs stack<br>')
-			for _,x in ipairs(tb) do print(x[1], x[2], '<br>') end
+			for _,x in ipairs(tb) do printStackEntry(x) end
 			if fail then error'failed' end
 		end
 	end
@@ -120,7 +129,7 @@ return function(env, title)
 			print('expected '..tostring(a)..' to equal '..tostring(b)..'<br>')
 			print('found '..tostring(sa)..' vs '..tostring(b)..'<br>')
 			print('lhs stack<br>')
-			for _,x in ipairs(ta) do print(x[1], x[2], '<br>') end
+			for _,x in ipairs(ta) do printStackEntry(x) end
 			if fail then error'failed' end
 		end
 	end
@@ -136,9 +145,9 @@ return function(env, title)
 			print('expected '..tostring(a)..' to equal '..tostring(b)..'<br>')
 			print('found '..tostring(sa)..' vs '..tostring(sb)..'<br>')
 			print('lhs stack<br>')
-			for _,x in ipairs(ta) do print(x[1], x[2], '<br>') end
+			for _,x in ipairs(ta) do printStackEntry(x) end
 			print('rhs stack<br>')
-			for _,x in ipairs(tb) do print(x[1], x[2], '<br>') end
+			for _,x in ipairs(tb) do printStackEntry(x) end
 			if fail then error'failed' end
 		end
 	end

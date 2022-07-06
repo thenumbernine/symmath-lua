@@ -1409,7 +1409,40 @@ so when we find mul -> pow -> add
 			end
 		end},
 --]]
-	
+
+-- [[ a^n * b^n => (a * b)^n
+-- the general case of this seems to interfere wtih combineMulOfLikePow_mulPowAdd above
+-- so i'll just have this only apply to constants-to-some power
+		{combineMulOfLikePow = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local pow = symmath.op.pow
+			local Constant = symmath.Constant
+			for i=1,#expr-1 do
+				if pow:isa(expr[i]) then
+					for j=i+1,#expr do
+						if pow:isa(expr[j]) then
+							if expr[i][2] == expr[j][2] 
+							-- only for constants (I guess?)
+							and Constant:isa(expr[i][1])
+							and Constant:isa(expr[j][1])
+							then
+								-- powers match, combine
+								local repl = prune:apply(expr[i][1] * expr[j][1]) ^ expr[i][2]
+								expr = expr:clone()
+								table.remove(expr, j)
+								expr[i] = repl
+								if #expr == 1 then expr = expr[1] end
+								return expr
+							end
+						end
+					end
+				end
+			end
+		end},
+--]]
+
+
+
 		{logPow = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			-- b log(a) => log(a^b)
