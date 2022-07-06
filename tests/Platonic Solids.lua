@@ -56,6 +56,11 @@ local function rotfromto(from, to, theta)
 	)()
 end
 
+-- TODO which was I using the minus version for?
+local phi = (sqrt(5) + 1) / 2
+local phiminus = (sqrt(5) - 1) / 2
+-- notice 1/phiminus = phi
+
 --[=[
 --[[
 for a 3D platonic solid, if you know the vertices, you can make a rotation
@@ -68,8 +73,53 @@ printbr(rotfromto(
 ))
 os.exit()
 --]=]
-
-local phi = (sqrt(5) - 1) / 2
+--[[	-- rotate from perm of (0, 0, 0, ±1) to perm of (±1/2, ±1/2, ±1/2, ±1/2)
+printbr(rotfromto(
+	Matrix{1,0,0,0}:T(),
+	Matrix{frac(1,2),frac(1,2),frac(1,2),frac(1,2)}:T(),
+	frac(2*pi,3)
+))
+os.exit()
+--]]
+--[[ how well does this work?
+local theta = var'\\theta'
+printbr((rotfromto(
+	Matrix{cos(theta), sin(theta), 0, 0}:T(),
+	Matrix{-sin(theta), cos(theta), 0, 0}:T(),
+	theta
+)() * rotfromto(
+	Matrix{0, 0, cos(theta), sin(theta)}:T(),
+	Matrix{0, 0, -sin(theta), cos(theta)}:T(),
+	theta
+)())())
+os.exit()
+--]]
+--[[	-- rotate from perm of (0, 0, 0, ±1) to even perm of (±φ/2, ±1/2, ±1/(2φ), 0)
+do
+	printbr(rotfromto(
+		Matrix{frac(phi,2),frac(1,2),frac(1,2*phi),0}:T(),
+		Matrix{1,0,0,0}:T(),
+		pi
+	))
+	os.exit()
+end
+--]]
+--[[
+do
+	local a = {1,0,0,0}
+	--local b = {0,1,0,0}
+	local c = {0,0,1,0}
+	--local d = {0,0,0,1}
+	local b = {frac(1,2), frac(1,2), frac(1,2), frac(1,2)}
+	local d = {phi/2, frac(1,2), 1/(2*phi), 0}
+	printbr(rotfromto(
+		(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(a):T())(),
+		(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(b):T())(),
+		frac(2*pi,5)
+	))
+end
+os.exit()
+--]]
 
 -- [[
 local tetRot = Matrix.identity(3)
@@ -89,7 +139,7 @@ local cubeRot = Matrix.identity(3)
 --]]
 
 
---[[
+-- [[ TODO getting simplification loops.
 local dodVtx = Matrix{
 	(-1 - sqrt(5)) / (2 * sqrt(3)),
 	0,
@@ -97,7 +147,7 @@ local dodVtx = Matrix{
 }
 local dodRot = Matrix.rotation(acos(dodVtx[1][1]), dodVtx[1]:cross{1, 0, 0}:unit())
 --]]
--- [[
+--[[ TODO hmm getting bad values in the 'expected' part
 local dodRot = Matrix.identity(3)
 --]]
 
@@ -135,8 +185,9 @@ or it can be the axis through any edge (?right?) with ... some other kind of rot
 --]]
 local shapes = {
 --[=[
-	{	-- self-dual
+	{
 		name = 'Tetrahedron',
+		dual = 'Tetrahedron',
 		vtx1 = (tetRot * Matrix{0, 0, 1}:T())(),
 		
 		dim = 3,
@@ -170,9 +221,9 @@ local shapes = {
 	},
 --]=]
 --[=[
-	-- dual of octahedron
 	{
 		name = 'Cube',
+		dual = 'Octahedron',
 		dim = 3,
 		
 		--vtx1 = (cubeRot * Matrix{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) }:T())(),
@@ -188,9 +239,9 @@ local shapes = {
 	},
 --]=]
 --[=[
-	-- dual of cube
 	{
 		name = 'Octahedron',
+		dual = 'Cube',
 		dim = 3,
 		
 		xforms = {
@@ -200,42 +251,58 @@ local shapes = {
 		},
 	},
 --]=]
---[=[
-	-- dual of icosahedron
+--[=[ 
 	{
 		name = 'Dodecahedron',
+		dual = 'Icosahedron',
 		dim = 3,
 
-		--vtx1 = (dodRot * Matrix{1/phi, 0, phi}:T():unit())(),
-		vtx1 = (dodRot * Matrix{1/phi, 0, phi}:T())(),
+		--[==[ using dodRot ... dodRot options are causing either errors or simplification loops ... and the transform table doesn't match up with the dual Icosahedron
+		--vtx1 = (dodRot * Matrix{1/phiminus, 0, phiminus}:T():unit())(),
+		vtx1 = (dodRot * Matrix{1/phiminus, 0, phiminus}:T())(),
 
 		xforms = {
 			-- axis will be the center of the face adjacent to the first vertex at [1,0,0]
-			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{-1/phi, 0, phi}:unit()[1] ) * dodRot:T())(),	-- correctly produces 3 vertices 
-			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{0, phi, 1/phi}:unit()[1] ) * dodRot:T())(),	-- the first 2 transforms will produces 12 vertices and 12 transforms
+			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{-1/phiminus, 0, phiminus}:unit()[1] ) * dodRot:T())(),	-- correctly produces 3 vertices 
+			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{0, phiminus, 1/phiminus}:unit()[1] ) * dodRot:T())(),	-- the first 2 transforms will produces 12 vertices and 12 transforms
 			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{1,1,1}:unit()[1] ) * dodRot:T())(),		-- all 3 transforms produces all 20 vertices and 60 transforms 
 		},
+		--]==]
+		-- [==[ just use Icosahedron's transforms.  if the two are dual then they should have matching transform group.
+		vtx1 = Matrix{ 
+			((sqrt(5) - 1) / 2 + 2) / 3,	-- (3 + sqrt(5)) / 6
+			0,
+			-frac(1,3)
+		}:T(),
+
+		xforms = {
+			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phiminus}:unit()[1] ) * icoRot:T())(),
+			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
+			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{-1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
+		},	
+		--]==]
 	},
 --]=]
 --[=[
-	-- dual of dodecahedron
 	{
 		name = 'Icosahedron',
+		dual = 'Dodecahedron',
 		dim = 3,
 	
-		--vtx1 = (icoRot * Matrix{ 0, 1, phi }:T():unit())(),
-		vtx1 = (icoRot * Matrix{ 0, 1, phi }:T())(),		-- don't unit.
+		--vtx1 = (icoRot * Matrix{ 0, 1, phiminus }:T():unit())(),
+		vtx1 = (icoRot * Matrix{ 0, 1, phiminus }:T())(),		-- don't unit.
 
 		xforms = {
-			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phi}:unit()[1] ) * icoRot:T())(),
-			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{1, phi, 0}:unit()[1] ) * icoRot:T())(),
-			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{-1, phi, 0}:unit()[1] ) * icoRot:T())(),
+			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phiminus}:unit()[1] ) * icoRot:T())(),
+			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
+			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{-1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
 		},
 	},
 --]=]
 --[=[
-	{	-- self-dual
+	{
 		name = '5-cell',
+		dual = '5-cell',
 		dim = 4,
 		
 		vtx1 = Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T(),
@@ -271,12 +338,14 @@ local shapes = {
 	}
 --]=]
 --[=[
-	{	-- hypercube, dual to 16-cell
-		name = '8-cell',
+	{
+		name = '8-cell',	--aka hypercube
+		dual = '16-cell',
 		dim = 4,
 		
 		--vtx1 = Matrix{1/sqrt(4), 1/sqrt(4), 1/sqrt(4), 1/sqrt(4)}:T(),
-		vtx1 = Matrix{frac(1,2), frac(1,2), frac(1,2), frac(1,2)}:T(),
+		--vtx1 = Matrix{frac(1,2), frac(1,2), frac(1,2), frac(1,2)}:T(),
+		vtx1 = Matrix{1, 1, 1, 1}:T(),
 
 		xforms = {
 			Matrix(	-- xy
@@ -301,8 +370,9 @@ local shapes = {
 	},
 --]=]
 --[=[
-	{	-- dual to 8-cell
+	{
 		name = '16-cell',
+		dual = '8-cell',
 		dim = 4,
 		
 		vtx1 = Matrix{1, 0, 0, 0}:T(),
@@ -330,10 +400,13 @@ local shapes = {
 	},
 --]=]
 --[=[ 
-	{	-- self-dual
+	{
 		name = '24-cell',
+		dual = '24-cell',
 		dim = 4,
-		vtx1 = Matrix{1/sqrt(2),1/sqrt(2),0,0}:T(),
+		
+		--vtx1 = Matrix{1/sqrt(2),1/sqrt(2),0,0}:T(),
+		vtx1 = Matrix{1,1,0,0}:T(),
 
 		xforms = {
 			Matrix(
@@ -357,9 +430,10 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[	
-	{	-- dual to 600-cell
+--[=[ TODO FIXME
+	{
 		name = '120-cell',
+		dual = '600-cell',
 		dim = 4,
 		vtx1 = Matrix{0,0,2,2}:T(),
 		xforms = {
@@ -388,17 +462,66 @@ local shapes = {
 				Matrix{1,1,1,sqrt(5)}:T(),
 				frac(36 * pi, 180)
 			)(),
-			-- rotate to {1/phi^2, phi, phi, phi},
-			-- rotate to {phi^2, 1/phi, 1/phi, 1/phi},
+			-- rotate to {1/φ^2, φ, φ, φ},
+			-- rotate to {φ^2, 1/φ, 1/φ, 1/φ},
 			
 			-- even-permutations of...
-			-- {0, 1/phi^2, 1, phi^2}
-			-- {0, 1/phi, phi, sqrt(5)},
-			-- {1/phi, 1, phi, 2}
+			-- {0, 1/φ^2, 1, φ^2}
+			-- {0, 1/φ, φ, √5},
+			-- {1/φ, 1, φ, 2}
+		
+			-- for φ = (1 + √5)/2
 		},
 	},
 --]=]
--- TODO 4D 600-cell dual to 120-cell
+--[=[ TODO FIXME
+	{
+		name = '600-cell',
+		dual = '120-cell',
+		dim = 4,
+		vtx1 = Matrix{0,0,0,1}:T(),
+		xforms = {
+			-- these will reproduce the 8 vertexes of permutations of (0, 0, 0, ±1)
+			-- x<->y rotation
+			--[[
+			Matrix(
+				{0,-1,0,0},
+				{1,0,0,0},
+				{0,0,1,0},
+				{0,0,0,1}
+			)(),
+			-- x<->z rotation
+			Matrix(
+				{0,0,1,0},
+				{0,1,0,0},
+				{-1,0,0,0},
+				{0,0,0,1}
+			)(),
+			-- x<->w rotation
+			Matrix(
+				{0,0,0,-1},
+				{0,1,0,0},
+				{0,0,1,0},
+				{1,0,0,0}
+			)(),
+			-- 16 vertexes permutations of (±1/2, ±1/2, ±1/2, ±1/2)
+			rotfromto(
+				Matrix{1,0,0,0}:T(),
+				Matrix{frac(1,2),frac(1,2),frac(1,2),frac(1,2)}:T(),
+				frac(2*pi,3)
+			),
+			--]]
+			-- 96 vertexes even permutations of (±φ/2, ±1/2, ±1/(2φ), 0)
+			-- [[
+			rotfromto(
+				Matrix{frac(phi,2),0,frac(1,2),frac(1,2*phi)}:T(),
+				Matrix{0,1,0,0}:T(),
+				pi
+			)
+			--]]
+		},
+	},
+--]=]
 
 -- TODO 5D 5-simplex self-dual
 -- TODO 5D 5-cube dual to 5-orthoplex
@@ -415,6 +538,12 @@ local shapes = {
 -- TODO 8D 8-simplex self-dual
 -- TODO 8D 8-cube dual to 8-orthoplex
 -- TODO 8D 8-orthoplex dual to 8-cube
+
+-- ...
+
+-- kD k-simplex self-dual with k+1 vertexes
+-- kD k-cube dual to k-orthoplex with 2^k vertexes
+-- kD k-orthoplex dual to k-cube with 2*k vertexes
 }
 
 for _,shape in ipairs(shapes) do
@@ -429,7 +558,8 @@ symmath.tostring = MathJax
 
 os.mkdir'output/Platonic Solids'
 for _,shape in ipairs(shapes) do
-	printbr('<a href="Platonic Solids/'..shape.name..'.html">'..shape.name..'</a> ('..shape.dim..' dim)')
+	printbr('<a href="Platonic Solids/'..shape.name..'.html">'..shape.name..'</a> ('..shape.dim..' dim)'
+		..(shape.dual and (', dual to '..shape.dual) or ''))
 end
 printbr()
 
@@ -504,13 +634,31 @@ table td {
 
 	local vtxs = table{vtx1()}
 	shapeCache.vtxs = vtxs
+			
+	local zerovec = Matrix:zeros{n, 1}
+	local vtx1norm = (vtx1:T() * vtx1)()[1][1]
 
 	local function buildvtxs(j, depth)
 		depth = depth or 1
 		local v = vtxs[j]
+--local vnorm = (v:T() * v)()[1][1]
+--if Constant.isValue(vnorm, 0) then printbr("ERROR norm is zero for "..v) end
+--assert(Matrix(v:dim()) == Matrix{4,1})
 		for i,xform in ipairs(xforms) do
 			local xv = (xform * v)()
+--local xvnorm = (xv:T() * xv)()[1][1]
+--assert(Matrix(xv:dim()) == Matrix{4,1})
+--if not Constant.isValue((xvnorm - vtx1norm)(), 0) then
+--	printbr("ERROR - norms don't match.  was "..vtx1norm.." but now is "..xvnorm)
+--end
+			-- [[ can 'find' work?  can equality work?
 			local k = vtxs:find(xv)
+			--]]
+			--[[ or should i try subtracting?  does that help?
+			local k = vtxs:find(nil, function(xv2)
+				return (xv - xv2)() == zerovec
+			end)
+			--]]
 			if not k then
 				vtxs:insert(xv)
 				k = #vtxs
@@ -607,7 +755,7 @@ either way, if you have all the vertices, here's how you can find all the transf
 			printbr('expected', xv:eq(Vmat * rx), 'found difference', (xv - Vmat * rx)())
 		end
 	end
-	
+
 	-- show if there are any simplification errors
 	for j=2,#allxforms do
 		for i=1,j-1 do
