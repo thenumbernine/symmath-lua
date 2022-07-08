@@ -25,12 +25,12 @@ $P_i \in \mathbb{R}^{m \times m} =$ permutation transform of vertices correspond
 ok here's another thought ...
 rotation from a to b, assuming a and b are orthonormal:
 
-R v 
-	= v - a (v.a) - b (v.b) 
+R v
+	= v - a (v.a) - b (v.b)
 	+ (a (v.a) + b (v.b)) cos(θ)
 	+ (b (v.a) - a (v.b)) sin(θ)
 	
-	= v - a (v.a) - b (v.b) 
+	= v - a (v.a) - b (v.b)
 	+ (a (v.a) + b (v.b)) cos(θ)
 	+ (b (v.a) - a (v.b)) sin(θ)
 	
@@ -50,16 +50,37 @@ local function rotfromto(from, to, theta)
 		sinth = sin(theta)
 	end
 	return (
-		Matrix.identity(#from) 
+		Matrix.identity(#from)
 		+ (costh - 1) * (from * from:T() + to * to:T())
 		+ sinth * (to * from:T() - from * to:T())
 	)()
 end
 
--- TODO which was I using the minus version for?
+--[[
+can i write a function that just takes n vertexes for n dimensions
+and creates a rotation from it?
+no angle required?
+such that if i provide an equilateral triangle vertexes then it'll give back an isomorphic rotation?
+R A = R [a1 a2 a3] = [a2 a3 a1] = [a1 a2 a3] P = A P
+so R = A P A^-1
+--]]
+
+
+-- convert a quaternion q = a + bi + cj + dk to a matrix M such that q * q2 (using quat mul) = M * q2 (using matrix mul)
+-- the nice thing about the resulting matrix is that M * M' = I * |q|^2 , so if q is normalized then we get identity
+-- so that means M is a 4D rotation matrix, and it also means a 4D rotation from any basis element through M will give us some kind of permutation of the vertex {a,b,c,d}
+local function toQuatMat(a,b,c,d)
+	return Matrix(
+		{a, -b, -c, -d},
+		{b, a, -d, c},
+		{c, d, a, -b},
+		{d, -c, b, a}
+	)()
+end
+
 local phi = (sqrt(5) + 1) / 2
-local phiminus = (sqrt(5) - 1) / 2
--- notice 1/phiminus = phi
+local phiminus = (sqrt(5) - 1) / 2	-- notice 1/phiminus = phi
+-- two roots of Fibonacci series recurrence relation are phi and -phiminus, i.e. (1 ± √5)/2
 
 --[=[
 --[[
@@ -68,7 +89,7 @@ from (proj a) * b to (proj a) * c
 --]]
 printbr(rotfromto(
 	(Matrix.projection{1,0,0} * Matrix{-frac(1,3), sqrt(frac(2,3)), -frac(sqrt(2),3)}:T())(),
-	(Matrix.projection{1,0,0} * Matrix{-frac(1,3), 0, frac(sqrt(8),3)}:T())() 
+	(Matrix.projection{1,0,0} * Matrix{-frac(1,3), 0, frac(sqrt(8),3)}:T())()
 	frac(2*pi,3),
 ))
 os.exit()
@@ -152,14 +173,14 @@ local dodRot = Matrix.identity(3)
 --]]
 
 
---[[ produces an overly complex poly that can't simplify 
+--[[ produces an overly complex poly that can't simplify
 --[=[
 local icoRot = Matrix.rotation(acos(0), Array(0, 1, phi):cross{1,0,0}:unit())
 --]=]
 local icoVtx = Matrix{0, 1, phi}
 printbr(icoVtx)
 local icoRot = Matrix.rotation(
-	acos(icoVtx[1][1]), 
+	acos(icoVtx[1][1]),
 	icoVtx[1]:cross{1,0,0}:unit())
 --]]
 -- [[ works
@@ -172,8 +193,8 @@ how to define the transforms?
 these should generate the vertexes, right?
 the vertex set should be some identity vertex times any combination of these transforms
 
-so we should be able to define a cube by a single vertex 
-v_0 = [1,1,1] 
+so we should be able to define a cube by a single vertex
+v_0 = [1,1,1]
 times any combination of traversals along its edges
 which for [1,1,1] would just three transforms, where the other 3 are redundant:
 
@@ -184,7 +205,7 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
---[=[
+-- [=[
 	{
 		name = 'Tetrahedron',
 		dual = 'Tetrahedron',
@@ -199,8 +220,8 @@ local shapes = {
 			
 			return table{
 				
-				(tetRot * 
-					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	0, 					sqrt(frac(8,9))		}) 
+				(tetRot *
+					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	0, 					sqrt(frac(8,9))		})
 					rotfromto(
 						(Matrix.projection(c) * Matrix(a):T())(),
 						(Matrix.projection(c) * Matrix(b):T())(),
@@ -208,8 +229,8 @@ local shapes = {
 					)
 					* tetRot:T())(),
 				
-				(tetRot * 
-					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	}) 
+				(tetRot *
+					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})
 					rotfromto(
 						(Matrix.projection(d) * Matrix(a):T())(),
 						(Matrix.projection(d) * Matrix(b):T())(),
@@ -251,7 +272,7 @@ local shapes = {
 		},
 	},
 --]=]
---[=[ 
+--[=[
 	{
 		name = 'Dodecahedron',
 		dual = 'Icosahedron',
@@ -263,13 +284,13 @@ local shapes = {
 
 		xforms = {
 			-- axis will be the center of the face adjacent to the first vertex at [1,0,0]
-			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{-1/phiminus, 0, phiminus}:unit()[1] ) * dodRot:T())(),	-- correctly produces 3 vertices 
+			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{-1/phiminus, 0, phiminus}:unit()[1] ) * dodRot:T())(),	-- correctly produces 3 vertices
 			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{0, phiminus, 1/phiminus}:unit()[1] ) * dodRot:T())(),	-- the first 2 transforms will produces 12 vertices and 12 transforms
-			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{1,1,1}:unit()[1] ) * dodRot:T())(),		-- all 3 transforms produces all 20 vertices and 60 transforms 
+			(dodRot * Matrix.rotation(frac(2*pi,3), Matrix{1,1,1}:unit()[1] ) * dodRot:T())(),		-- all 3 transforms produces all 20 vertices and 60 transforms
 		},
 		--]==]
 		-- [==[ just use Icosahedron's transforms.  if the two are dual then they should have matching transform group.
-		vtx1 = Matrix{ 
+		vtx1 = Matrix{
 			((sqrt(5) - 1) / 2 + 2) / 3,	-- (3 + sqrt(5)) / 6
 			0,
 			-frac(1,3)
@@ -279,7 +300,7 @@ local shapes = {
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phiminus}:unit()[1] ) * icoRot:T())(),
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{-1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
-		},	
+		},
 		--]==]
 	},
 --]=]
@@ -307,12 +328,13 @@ local shapes = {
 		
 		vtx1 = Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T(),
 		--vtx1 = Matrix{0, 0, 0, 1}:T(),
-	
+
+		-- interesting that these aren't quaternion mats (rotations that just permute vertexes), they're 4D rots from two quat mats multiplied together
 		xforms = (function()
 			local a = {sqrt(15)/4, 0, 0, -frac(1,4)}
 			local b = {-sqrt(frac(5,3))/4, 0, sqrt(frac(5,6)), -frac(1,4)}
 			local c = {-sqrt(frac(5,3))/4, sqrt(frac(5,2))/2, -sqrt(frac(5,24)), -frac(1,4)}
-			local d = {0,0,0,1}	
+			local d = {0,0,0,1}
 			--local e = {-sqrt(frac(5,3))/4, -sqrt(frac(5,2))/2, -sqrt(frac(5,24)), -frac(1,4)}		-- not used, in the cd rotation plane anyways
 			return table{
 				-- generate a tetrahedron:
@@ -331,9 +353,8 @@ local shapes = {
 					(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(c):T())(),
 					(Matrix.projection(a) * Matrix.projection( (Matrix.projection(a) * Matrix(b):T())():T()[1] ) * Matrix(d):T())(),
 					frac(2*pi,3)
-				),			
+				),
 			}
-			--]]
 		end)(),
 	}
 --]=]
@@ -399,7 +420,7 @@ local shapes = {
 		},
 	},
 --]=]
---[=[ 
+--[=[
 	{
 		name = '24-cell',
 		dual = '24-cell',
@@ -454,7 +475,7 @@ local shapes = {
 				{0,1,0,0},
 				{0,0,1,0},
 				{1,0,0,0}
-			)(),	
+			)(),
 			
 			-- rotate from {0,0,2,2} to {1,1,1,sqrt(5)}
 			rotfromto(
@@ -474,13 +495,13 @@ local shapes = {
 		},
 	},
 --]=]
---[=[ TODO FIXME
+--[=[ almost there, got to 5579 and got a stack overflow 
 	{
 		name = '600-cell',
 		dual = '120-cell',
 		dim = 4,
 		vtx1 = Matrix{0,0,0,1}:T(),
-		xforms = {
+		xforms = table{
 			-- these will reproduce the 8 vertexes of permutations of (0, 0, 0, ±1)
 			-- x<->y rotation
 			--[[
@@ -504,22 +525,130 @@ local shapes = {
 				{0,0,1,0},
 				{1,0,0,0}
 			)(),
-			-- 16 vertexes permutations of (±1/2, ±1/2, ±1/2, ±1/2)
+			--]]
+			--toQuatMat(1, 0, 0, 0),	--redundant? tho this produces 361 xforms instead of 360, so one isn't simplifying correctly...
+			--toQuatMat(0, 1, 0, 0),	-- redundant
+			-- [[ 16 vertexes permutations of (±1/2, ±1/2, ±1/2, ±1/2)
 			rotfromto(
 				Matrix{1,0,0,0}:T(),
 				Matrix{frac(1,2),frac(1,2),frac(1,2),frac(1,2)}:T(),
 				frac(2*pi,3)
 			),
 			--]]
+			--[[ same but using a single quat-mat rot (instead of the general 4D rots which are double-quat-mat-rots)
+			toQuatMat(frac(1,2), frac(1,2), frac(1,2), frac(1,2)),
+			--]]
 			-- 96 vertexes even permutations of (±φ/2, ±1/2, ±1/(2φ), 0)
-			-- [[
+			--[[
 			rotfromto(
 				Matrix{frac(phi,2),0,frac(1,2),frac(1,2*phi)}:T(),
-				Matrix{0,1,0,0}:T(),
-				pi
+				Matrix{0,1,0,0}:T()
 			)
 			--]]
-		},
+			--[[
+			(function()
+				local a = {1,0,0,0}
+				--local c = {0,1,0,0}
+				local c = {0,0,1,0}
+				--local d = {0,0,0,1}
+				local b = {frac(1,2), frac(1,2), frac(1,2), frac(1,2)}
+				local d = {phi/2, frac(1,2), phiminus/2, 0}
+				return rotfromto(
+					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(a):T())(),
+					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(b):T())(),
+					frac(pi,5)
+				)
+			end)(),
+			--]]
+			-- [[ once again, if all we're doing is permuting vertexes then why not use this?
+			-- i guess if it's only the even permutations then maybe i'll need some extra spin on this?
+			-- alone it builds just 10 vertexes
+			-- with any cardinal xy xz xw rotation it goes on forever
+			toQuatMat(phi/2, frac(1,2), phiminus/2, 0),
+			--]]
+			-- how about double-reflections?
+			Matrix.diagonal(-1,-1,1,1),	-- goes from 360 to 1440
+			--Matrix.diagonal(1,-1,-1,1),	-- nope
+			--Matrix.diagonal(-1,1,1,-1),	-- nope
+			
+			-- 72' rotation along xy i.e. perpendicular to {0,0,0,1} ... might need another yz rotation to fix it
+			--[[
+			(Matrix(
+				{cos(2*pi/5), -sin(2*pi/5), 0, 0},
+				{sin(2*pi/5), cos(2*pi/5), 0, 0},
+				{0, 0, 1, 0},
+				{0, 0, 0, 1}
+			) * Matrix(
+				{1, 0, 0, 0},
+				{0, cos(2*pi/5), -sin(2*pi/5), 0},
+				{0, sin(2*pi/5), cos(2*pi/5), 0},
+				{0, 0, 0, 1}
+			))(),
+			--]]
+			-- [[
+			--[==[
+			ok if Tetrahedron is a permutation of its vertexes ...
+			then all I have to do is find one tetrahedron of the 600-cell and do an equivalent permutation on its vertexes
+			(assuming the remaining transforms are all intra-cell and not inter-cell)
+			T = V P V^-1 for column-vertexes V and permutation P
+			tetrahedron has the following permutations:
+			(where indexes are the order after transformation)
+			1234
+			1342
+			1423
+			2143
+			2314
+			2431
+			3124
+			3241
+			3412
+			4132
+			4213
+			4321
+			... basically, all even permutations
+			
+			ok i can also do icosahedron (and is more likely since i'm looking for 5x more transforms
+			and this is all vertexes within 36 degrees of some vertex
+			[cos(36'), sin(36')] = [(1 + √5)/4, √(10 - 2√5)/4]
+			
+			so look at all vertexes of an inner product of (1+√5)/2 = φ/2 from vtx1 = [0,0,0,1]
+			and there are 12 of them, looks good so far, that's an icosahedron with 20 sides
+			now to collect them ...
+
+			--]==]
+			--]]
+			-- from taking the icosahedron T_2 permutation and applying it between the vertexes of the 600-cell icosahedron the lie at cos(theta)=phi/2 angle from the vtx1 = e_4
+			( Matrix( { sqrt(5)*(3-sqrt(5))/4, -sqrt(5)/2, -sqrt(5)*(sqrt(5)-1)/4, 0 }, {sqrt(5)/2, sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, 0}, {sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, sqrt(5)/2, 0}, {0, 0, 0, 3*(3+sqrt(5))/2})() * Matrix.diagonal((1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (3-sqrt(5))/6) )(),
+		}
+		--[[ how about using Tetrahedron isometries?
+		:append((function()
+			-- these are the vertexes of the tetrahedron ...
+			local a = {0,0,0,1}
+			local b = {0,0,frac(1,2),frac(1,2)}
+			local c = {0,0,1,0}
+			local d = {frac(1,2),0,phiminus/2,phi/2}
+
+			local ca = (Matrix.projection(c) * Matrix(a):T())()
+			local cb = (Matrix.projection(c) * Matrix(b):T())()
+			
+			return table{
+				
+				rotfromto(ca, cb, frac(2*pi,5))(),
+			
+				--[==[
+				(
+					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})
+					rotfromto(
+						(Matrix.projection(d) * Matrix(a):T())(),
+						(Matrix.projection(d) * Matrix(b):T())(),
+						frac(2*pi,5)
+					)
+				)(),
+				--]==]
+			}
+		end)())
+		--]]
+		,
 	},
 --]=]
 
@@ -629,6 +758,16 @@ table td {
 	printbr(var'\\tilde{T}''_i', [[$\in \{$]], xforms:mapi(tostring):concat',', [[$\}$]])
 	printbr()
 
+	-- verify the matrices are in fact rotations ... tho i think anything above is gonna be
+	-- the challenge is making it a rotation that doesn't go outside the group space of the vertexes
+	for _,xform in ipairs(xforms) do
+		local I = Matrix.identity(n)
+		local cmp = (xform * xform:T())()
+		if cmp ~= I then
+			printbr('expected', (xform * xform:T()):eq(I), ' but found', cmp)
+		end
+	end
+
 	printbr'Vertexes:'
 	printbr()
 
@@ -663,6 +802,8 @@ table td {
 				vtxs:insert(xv)
 				k = #vtxs
 				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
+				io.stderr:write('T_',i,' * V_',j,' = V_',k,'\n')
+				io.stderr:flush()
 				buildvtxs(k, depth + 1)
 			else
 --				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
@@ -670,11 +811,10 @@ table td {
 		end
 	end
 	buildvtxs(1)
+	io.stderr:write('done finding vertexes\n')
+	io.stderr:flush()
 	printbr()
-
-	-- number of vertexes
-	local nvtxs = #vtxs
-	shapeCache.nvtxs = nvtxs
+	f:flush()
 
 	local allxforms = table(xforms)
 	shapeCache.allxforms = allxforms
@@ -692,6 +832,8 @@ table td {
 				allxforms:insert(xM)
 				k = #allxforms
 				printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
+				io.stderr:write('T_',i,' * T_',j,' = T_',k,'\n')
+				io.stderr:flush()
 				buildxforms(k, depth + 1)
 			else
 --				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
@@ -702,8 +844,199 @@ table td {
 		buildxforms(i)
 	end
 	printbr()
+	io.stderr:write('done finding transforms\n')
+	io.stderr:flush()
 --]]
 
+--[[ debugging helping me
+	do
+		--[=[
+		here's the vertex indexes of the 
+		ok I have no guarantee that the order of my vertexes is matching
+		V600_5   = [-(sqrt(5)-1)/4, 1/2, 0, phi/2]
+		V600_12  = [(sqrt(5)-1)/4, 1/2, 0, phi/2]
+		V600_45  = [0, -(sqrt(5)-1)/4, 1/2, phi/2]
+		V600_46  = [0, (sqrt(5)-1)/4, 1/2, phi/2]
+		V600_55  = [-(sqrt(5)-1)/4, -1/2, 0, phi/2]
+		V600_57  = [(sqrt(5)-1)/4, -1/2, 0, phi/2]
+		V600_58  = [1/2, 0, -(sqrt(5)-1)/4, phi/2]
+		V600_59  = [-1/2, 0, -(sqrt(5)-1)/4, phi/2]
+		V600_66  = [1/2, 0, (sqrt(5)-1)/4, phi/2]
+		V600_68  = [-1/2, 0, (sqrt(5)-1)/4, phi/2]
+		V600_113 = [0, (sqrt(5)-1)/4, -1/2, phi/2]
+		V600_114 = [0, -(sqrt(5)-1)/4, -1/2, phi/2]
+		so now I have to match this to the original icosahedron order, in order for its permutation matrix to apply equivalently:
+		here I'm swapping y and z components and dividing Vico's coordinates by 2 to get them to match
+		Vico_1  = [0, 1, (sqrt(5)-1)/2]   :: V600_46 
+		Vico_2  = [-1, (sqrt(5)-1)/2, 0]  :: V600_68
+		Vico_3  = [-(sqrt(5)-1)/2, 0, -1] :: V600_55
+		Vico_4  = [(sqrt(5)-1)/2, 0, -1]  :: V600_57
+		Vico_5  = [1, (sqrt(5)-1)/2, 0]   :: V600_66
+		Vico_6  = [0, 1, -(sqrt(5)-1)/2]  :: V600_45
+		Vico_7  = [0, -1, -(sqrt(5)-1)/2] :: V600_114
+		Vico_8  = [1, -(sqrt(5)-1)/2, 0]  :: V600_58
+		Vico_9  = [(sqrt(5)-1)/2, 0, 1]   :: V600_12
+		Vico_10 = [-(sqrt(5)-1)/2, 0, 1]  :: V600_5
+		Vico_11 = [-1, -(sqrt(5)-1)/2, 0] :: V600_59
+		Vico_12 = [0, -1, (sqrt(5)-1)/2]  :: V600_113
+		--]=]
+		local is = table{46, 68, 55, 57, 66, 45, 114, 58, 12, 5, 59, 113}
+		local V = Matrix( is:mapi(function(i)
+			return vtxs[i]:T()[1]	-- single row
+		end):unpack() ):T()	-- vertexes as column vectors
+		-- here I'm using the icosahedron transform T_2
+		local P = Matrix.permutation(2,3,4,5,1,6,8,9,10,11,7,12)	--these are by-column, and correlate to the icosahedron vertex order
+		local VP = (V * P)()
+		printbr(var'V':eq(V))
+		printbr(var'P':eq(P))
+		printbr((var'V' * var'P'):eq( (V * P)() ))
+		printbr((var'V' * var'V''^T'):eq( ( V * V:T() )() ))	
+		--[=[
+		-- icoVtxs is 4x12 ... so it isn't square ...
+		-- T = 4x4, V = 4x12, T V = 4x12
+		-- P = 12x12, V P = 4x12
+		-- T V = V P
+		-- hmm can't inverse ... will a pseudo-inverse work?
+		-- T (V V') = V P V'
+		-- T = (V P V') * (V V')^-1
+		printbr('icosahedron:')
+		printbr(var'V':eq(V))
+		printbr(var'P':eq(P))
+		local eqn = (
+				( var'V' * var'P' * var'V''^T' ) * ( var'V' * var'V''^T' )^-1
+			):eq(
+				( VP * V:T() )() * ( V * V:T() )():inv()
+			)
+		printbr(eqn)
+		--]=]	
+		--[=[ the result is:
+┌                                             ┐
+│    2 + √(5)    -1 + √(5)        1 + √(5)    │
+│ - ╶────────╴  ╶─────────╴    - ╶────────╴  0│
+│    4 * √(5)        8                8       │
+│                                             │
+│    7 + √(5)    -3 + √(5)          1         │
+│ - ╶────────╴  ╶─────────╴    ╶────────╴    0│
+│    8 * √(5)     8 * √(5)      4 * √(5)      │
+│                                             │
+│   1 + √(5)          1       1 + 3 * √(5)    │
+│  ╶────────╴    ╶────────╴  ╶────────────╴  0│
+│   8 * √(5)      4 * √(5)      8 * √(5)      │
+│                                             │
+│      0             0              0        1│
+└                                             ┘
+		--]=]
+		--[=[ might not work
+		-- from pseudo-inverse:
+		local T = Matrix(
+			{-(2+sqrt(5))/(4*sqrt(5)), (sqrt(5)-1)/8, -(1+sqrt(5))/8, 0},
+			{-(7+sqrt(5))/(8*sqrt(5)), (sqrt(5)-3)/(8*sqrt(5)), 1/(4*sqrt(5)), 0},
+			{(1+sqrt(5))/(8*sqrt(5)), 1/(4*sqrt(5)), (1+3*sqrt(5))/(8*sqrt(5)), 0},
+			{0, 0, 0, 1}
+		)
+		--]=]
+		--[=[ ok how about just using the 4x4 first of (T V)_1..4 = T (V_1..4) = (V P)_1..4
+		-- so T = (V P)_1..4 * (V_1..4)^-1
+		local VP_1_4 = Matrix:lambda({4,4}, function(i,j) return VP[i][j] end)
+		local V_1_4 = Matrix:lambda({4,4}, function(i,j) return V[i][j] end)
+		printbr(var'V 1 4':eq(V_1_4))
+		printbr(var'(VP) 1 4':eq(VP_1_4))
+		local V_1_4_inv = V_1_4:inv()()
+		printbr((var'V 1 4'^-1):eq(V_1_4_inv))
+		printbr(var'T':eq(var'(VP) 1 4' * var'V 1 4'^-1):eq((VP_1_4 * V_1_4_inv)() ))
+		--]=]
+		--[=[ this gives us a transform of:
+┌                                                                 ┐
+│         1                1            - √(5)             1      │
+│      - ╶─╴            - ╶─╴         ╶───────╴           ╶─╴     │
+│         2                2              2                2      │
+│                                                                 │
+│  - (3 + √(5))     - (3 + √(5))        √(5)-9       3 * (√(5)-1) │
+│╶─────────────╴  ╶─────────────╴      ╶──────╴     ╶────────────╴│
+│       4                4                 4               4      │
+│                                                                 │
+│    1 + √(5)       - (1 + √(5))     - (1 + √(5))      1 + √(5)   │
+│   ╶────────╴    ╶─────────────╴  ╶─────────────╴    ╶────────╴  │
+│        4               4                4                4      │
+│                                                                 │
+│       0                0                0                1      │
+└                                                                 ┘
+		--]=]
+		--[=[
+		local T = Matrix( 
+			{-frac(1,2), -frac(1,2), -sqrt(5)/2, frac(1,2)}, 
+			{-(3+sqrt(5))/4, -(3+sqrt(5))/4, (sqrt(5)-9)/4, 3*(sqrt(5)-1)/4},
+			{(1+sqrt(5))/4, -(1+sqrt(5))/4, -(1+sqrt(5))/4, (1+sqrt(5))/4}, 
+			{0,0,0,1}
+		)
+		--]=]
+		--[=[ ok i fixed the 600-cell icoshaedron vertex permutation order
+┌                                                            ┐
+│ -1 + √(5)                   √(5) * (1 + √(5))        1     │
+│╶─────────╴       0       - ╶─────────────────╴      ╶─╴    │
+│     4                               4                2     │
+│                                                            │
+│  1 + √(5)        1             1 - √(5)                    │
+│ ╶────────╴      ╶─╴           ╶────────╴             0     │
+│      4           2                 4                       │
+│                                                            │
+│     1        3 - √(5)                            -1 + √(5) │
+│    ╶─╴      ╶────────╴             0            ╶─────────╴│
+│     2            4                                   4     │
+│                                                            │
+│              1 - √(5)              1              1 + √(5) │
+│     0       ╶────────╴            ╶─╴            ╶────────╴│
+│                  4                 2                  4    │
+└                                                            ┘
+		--]=]
+		--[=[ 1-4 vertex permutation rotation still doesn't work
+		local T = Matrix( 
+			{ (sqrt(5)-1)/4, 0, -sqrt(5)*(sqrt(5)+1)/4, frac(1,2) }, 
+			{(sqrt(5)+1)/4, frac(1,2), -(sqrt(5)-1)/4, 0}, 
+			{frac(1,2), (3-sqrt(5))/4, 0, (sqrt(5)-1)/4}, 
+			{0, -(sqrt(5)-1)/4, frac(1,2), (sqrt(5)+1)/4}
+		)
+		--]=]
+		--[=[ how about pseudo-inverse
+┌                                         ┐
+│ -1 + √(5)       1 + √(5)         1      │
+│╶─────────╴   - ╶────────╴     - ╶─╴    0│
+│     4               4            2      │
+│                                         │
+│  1 + √(5)         1         1 - √(5)    │
+│ ╶────────╴       ╶─╴       ╶────────╴  0│
+│      4            2             4       │
+│                                         │
+│     1          1 - √(5)     1 + √(5)    │
+│    ╶─╴        ╶────────╴   ╶────────╴  0│
+│     2              4            4       │
+│                                         │
+│     0             0             0      1│
+└                                         ┘
+
+		--]=]
+		--[=[ WORKS
+		local T = ( Matrix( { sqrt(5)*(3-sqrt(5))/4, -sqrt(5)/2, -sqrt(5)*(sqrt(5)-1)/4, 0 }, {sqrt(5)/2, sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, 0}, {sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, sqrt(5)/2, 0}, {0, 0, 0, 3*(3+sqrt(5))/2})() * Matrix.diagonal((1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (3-sqrt(5))/6) )()
+		printbr(var'T':eq(T))
+		printbr((var'T' * var'V'):eq( (T * V)() ))
+		--]=]	
+	end
+io.stderr:write('done finding icosahedron transform in 600-cell\n')
+io.stderr:flush()
+f:flush()
+f:close()
+do return end
+--]]
+	
+	io.stderr:write('vertex inner products...\n')
+	io.stderr:flush()
+
+	-- number of vertexes
+	local nvtxs = #vtxs
+	shapeCache.nvtxs = nvtxs
+
+-- [[ show vertex inner products
+-- before or after finding all transforms?
 	local VmatT = Matrix(vtxs:mapi(function(v) return v:T()[1] end):unpack())
 	local Vmat = VmatT:T()
 	shapeCache.Vmat = Vmat
@@ -718,16 +1051,36 @@ table td {
 	printbr()
 
 	local vdots = (Vmat:T() * Vmat)()
-	shapeCache.vdots = vdots 
+	shapeCache.vdots = vdots
 	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq(vdots))
 	printbr()
+	
+	io.stderr:write('...done vertex inner products\n')
+	io.stderr:flush()
+--]]
+
+--[[ to help me with creating the transform of the 600-cell
+	do
+		printbr("vertexes within ", phi/2, " of vtx1:")
+		local comma = ''
+		for i=1,nvtxs do
+			if Constant.isValue((vdots[1][i] - (1 + sqrt(5))/4)(), 0) then
+				printbr(comma, i)
+				comma = ', '
+			end
+		end
+		printbr()
+	end
+--]]
+
+
 
 --[[
 T V = V P
 we are first finding all T's from a basis of T's, then using all T's to determine associated P's
 but alternatively, because there are a fixed number of P's, we can solve: T = V P V^T
 and then filter only T's that coincide with proper rotations: A^-1 = A^T <=> A A^T = I
-actually depending on the permutation (i.e. a permutation that flipped vertexes 1 and 2 but left 3-n untouched), 
+actually depending on the permutation (i.e. a permutation that flipped vertexes 1 and 2 but left 3-n untouched),
  they can't be represented by linear transforms, will the result T be zero?  or have a >{} nullspace at least?
 either way, if you have all the vertices, here's how you can find all the transforms.  especially easy for simplexes.
 --]]
@@ -738,11 +1091,11 @@ either way, if you have all the vertices, here's how you can find all the transf
 	printbr()
 
 	for i,xform in ipairs(allxforms) do
-		local xv = (xform * Vmat)()	
+		local xv = (xform * Vmat)()
 		local xvT = xv:T()
 
 		local rx = Matrix:lambda({nvtxs, nvtxs}, function(i,j)
-			return xvT[j]() == VmatT[i]() and 1 or 0 
+			return xvT[j]() == VmatT[i]() and 1 or 0
 		end)
 		
 		printbr((var'T'('_'..i) * var'V'):eq(xv):eq(var'V' * rx))
@@ -935,10 +1288,10 @@ io.writefile(cacheFilename, tolua(cache, {
 		table = function(state, x, tab, path, keyRef, ...)
 			local mt = getmetatable(x)
 			if mt and (
-				Expression:isa(mt) 
+				Expression:isa(mt)
 				-- TODO 'or' any other classes in symmath that aren't subclasses of Expression (are there any?)
 			) then
-				return symmath.export.SymMath(x)	
+				return symmath.export.SymMath(x)
 			end
 			return tolua.defaultSerializeForType.table(state, x, tab, path, keyRef, ...)
 		end,
