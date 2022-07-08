@@ -205,7 +205,7 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
--- [=[
+--[=[
 	{
 		name = 'Tetrahedron',
 		dual = 'Tetrahedron',
@@ -495,12 +495,14 @@ local shapes = {
 		},
 	},
 --]=]
---[=[ almost there, got to 5579 and got a stack overflow 
+-- [=[ 
 	{
 		name = '600-cell',
 		dual = '120-cell',
 		dim = 4,
 		vtx1 = Matrix{0,0,0,1}:T(),
+		
+		-- TODO rearrange prioritize whole numbers first, then fractions, then sqrts last, and try to get rid of the +1 transform (maybe get rid of the diag(-1,-1,1,1) too)
 		xforms = table{
 			-- these will reproduce the 8 vertexes of permutations of (0, 0, 0, ±1)
 			-- x<->y rotation
@@ -777,6 +779,7 @@ table td {
 	local zerovec = Matrix:zeros{n, 1}
 	local vtx1norm = (vtx1:T() * vtx1)()[1][1]
 
+	-- so far these don't go so deep that they stack-overflow
 	local function buildvtxs(j, depth)
 		depth = depth or 1
 		local v = vtxs[j]
@@ -822,6 +825,7 @@ table td {
 	printbr'All Transforms:'
 	printbr()
 
+--[=[ ok this is getting stack overflow ...
 	local function buildxforms(j, depth)
 		depth = depth or 1
 		local M = allxforms[j]
@@ -843,6 +847,31 @@ table td {
 	for i=1,#xforms do
 		buildxforms(i)
 	end
+--]=]
+-- [=[ so i'm rewriting it as a queue
+	do
+		local xformstack = range(#xforms)
+		while #xformstack > 0 do
+			local j = xformstack:remove()
+			local M = allxforms[j]
+			for i,xform in ipairs(xforms) do
+				local xM = (xform * M)()
+				local k = allxforms:find(xM)
+				if not k then
+					allxforms:insert(xM)
+					k = #allxforms
+					printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
+					io.stderr:write('T_',i,' * T_',j,' = T_',k,'\n')
+					io.stderr:flush()
+					xformstack:insert(k)
+					--buildxforms(k, depth + 1)
+				else
+	--				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
+				end
+			end
+		end
+	end
+--]=]
 	printbr()
 	io.stderr:write('done finding transforms\n')
 	io.stderr:flush()
