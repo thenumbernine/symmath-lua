@@ -183,8 +183,11 @@ local icoRot = Matrix.rotation(
 	acos(icoVtx[1][1]),
 	icoVtx[1]:cross{1,0,0}:unit())
 --]]
--- [[ works
+--[[ works
 local icoRot = Matrix.identity(3)
+--]]
+-- [[ match 3D icosahedron with 4D icosahderon
+local icoRot = Matrix.permutation(1,3,2)
 --]]
 
 
@@ -290,11 +293,7 @@ local shapes = {
 		},
 		--]==]
 		-- [==[ just use Icosahedron's transforms.  if the two are dual then they should have matching transform group.
-		vtx1 = Matrix{
-			((sqrt(5) - 1) / 2 + 2) / 3,	-- (3 + sqrt(5)) / 6
-			0,
-			-frac(1,3)
-		}:T(),
+		vtx1 = (icoRot * Matrix{(3 + sqrt(5)) / 2, 0, -1}:T())(),
 
 		xforms = {
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phiminus}:unit()[1] ) * icoRot:T())(),
@@ -311,7 +310,7 @@ local shapes = {
 		dim = 3,
 	
 		--vtx1 = (icoRot * Matrix{ 0, 1, phiminus }:T():unit())(),
-		vtx1 = (icoRot * Matrix{ 0, 1, phiminus }:T())(),		-- don't unit.
+		vtx1 = (icoRot * Matrix{ 0, frac(1,2), phiminus/2 }:T())(),		-- don't unit.
 
 		xforms = {
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phiminus}:unit()[1] ) * icoRot:T())(),
@@ -495,7 +494,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[ 
+--[=[ 
 	{
 		name = '600-cell',
 		dual = '120-cell',
@@ -700,10 +699,14 @@ if os.fileexists(cacheFilename) then
 	cache = load('return '..io.readfile(cacheFilename), nil, nil, env)()
 end
 
+local function printerr(...)
+	io.stderr:write(table{...}:mapi(tostring):concat'\t'..'\n')
+	io.stderr:flush()
+end
+
 for _,shape in ipairs(shapes) do
 
-	io.stderr:write(shape.name,'\n')
-	io.stderr:flush()
+	printerr(shape.name)
 
 	MathJax.header.title = shape.name
 
@@ -713,12 +716,13 @@ for _,shape in ipairs(shapes) do
 	end
 	local function print(...)
 		write(table{...}:mapi(tostring):concat'\t'..'\n')
+		f:flush()
 	end
 	local function printbr(...)
 		print(...)
 		print'<br>'
 	end
-	
+
 	print(MathJax.header)
 
 	print[[
@@ -805,8 +809,7 @@ table td {
 				vtxs:insert(xv)
 				k = #vtxs
 				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
-				io.stderr:write('T_',i,' * V_',j,' = V_',k,'\n')
-				io.stderr:flush()
+				printerr('T_'..i..' * V_'..j..' = V_'..k)
 				buildvtxs(k, depth + 1)
 			else
 --				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
@@ -814,8 +817,7 @@ table td {
 		end
 	end
 	buildvtxs(1)
-	io.stderr:write('done finding vertexes\n')
-	io.stderr:flush()
+	printerr'done finding vertexes'
 	printbr()
 	f:flush()
 
@@ -825,30 +827,6 @@ table td {
 	printbr'All Transforms:'
 	printbr()
 
---[=[ ok this is getting stack overflow ...
-	local function buildxforms(j, depth)
-		depth = depth or 1
-		local M = allxforms[j]
-		for i,xform in ipairs(xforms) do
-			local xM = (xform * M)()
-			local k = allxforms:find(xM)
-			if not k then
-				allxforms:insert(xM)
-				k = #allxforms
-				printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
-				io.stderr:write('T_',i,' * T_',j,' = T_',k,'\n')
-				io.stderr:flush()
-				buildxforms(k, depth + 1)
-			else
---				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
-			end
-		end
-	end
-	for i=1,#xforms do
-		buildxforms(i)
-	end
---]=]
--- [=[ so i'm rewriting it as a queue
 	do
 		local xformstack = range(#xforms)
 		while #xformstack > 0 do
@@ -861,8 +839,7 @@ table td {
 					allxforms:insert(xM)
 					k = #allxforms
 					printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
-					io.stderr:write('T_',i,' * T_',j,' = T_',k,'\n')
-					io.stderr:flush()
+					printerr('T_'..i..' * T_'..j..' = T_'..k)
 					xformstack:insert(k)
 					--buildxforms(k, depth + 1)
 				else
@@ -871,10 +848,8 @@ table td {
 			end
 		end
 	end
---]=]
 	printbr()
-	io.stderr:write('done finding transforms\n')
-	io.stderr:flush()
+	printerr'done finding transforms'
 --]]
 
 --[[ debugging helping me
@@ -1050,15 +1025,13 @@ table td {
 		printbr((var'T' * var'V'):eq( (T * V)() ))
 		--]=]	
 	end
-io.stderr:write('done finding icosahedron transform in 600-cell\n')
-io.stderr:flush()
+printerr'done finding icosahedron transform in 600-cell'
 f:flush()
 f:close()
 do return end
 --]]
 	
-	io.stderr:write('vertex inner products...\n')
-	io.stderr:flush()
+	printerr'vertex inner products...'
 
 	-- number of vertexes
 	local nvtxs = #vtxs
@@ -1084,8 +1057,7 @@ do return end
 	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq(vdots))
 	printbr()
 	
-	io.stderr:write('...done vertex inner products\n')
-	io.stderr:flush()
+	printerr'...done vertex inner products'
 --]]
 
 --[[ to help me with creating the transform of the 600-cell
@@ -1129,6 +1101,8 @@ either way, if you have all the vertices, here's how you can find all the transf
 		
 		printbr((var'T'('_'..i) * var'V'):eq(xv):eq(var'V' * rx))
 		printbr()
+		
+		printerr('found permutations for T_'..i)
 
 		local Vmat_rx = (Vmat * rx)()
 		local diff = (xv - Vmat_rx)()
@@ -1137,6 +1111,8 @@ either way, if you have all the vertices, here's how you can find all the transf
 			printbr('expected', xv:eq(Vmat * rx), 'found difference', (xv - Vmat * rx)())
 		end
 	end
+
+	printerr'done finding permutations'
 
 	-- show if there are any simplification errors
 	for j=2,#allxforms do
@@ -1180,6 +1156,7 @@ either way, if you have all the vertices, here's how you can find all the transf
 	end
 	printVtxMulTable()
 
+	printerr'done finding vertex multiplication table'
 
 	local mulTable = {}
 	shapeCache.mulTable = mulTable
@@ -1220,6 +1197,7 @@ either way, if you have all the vertices, here's how you can find all the transf
 
 	printXformMulTable()
 
+	printerr'done finding transform multiplication table'
 
 	--[=[ rename by trying to put the Ti*Tj=T1 transforms closest to the diagonal:
 	
