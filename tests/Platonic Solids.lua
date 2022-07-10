@@ -193,6 +193,26 @@ local icoRot = Matrix.identity(3)
 local icoRot = Matrix.permutation(1,3,2)
 --]]
 
+-- [[
+local _24cellRot = (
+	Matrix(
+		{1/sqrt(2), 1/sqrt(2), 0, 0},
+		{-1/sqrt(2), 1/sqrt(2), 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1}
+	)
+	* Matrix.permutation(4,3,2,1) 
+	* Matrix(
+		{1/sqrt(2), 1/sqrt(2), 0, 0},
+		{-1/sqrt(2), 1/sqrt(2), 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1}
+	)
+)()
+--]]
+--[[
+local _24cellRot = Matrix.identity(4)
+--]]
 
 --[[
 how to define the transforms?
@@ -211,7 +231,7 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
--- [=[
+--[=[
 	{
 		name = 'Tetrahedron',
 		dual = 'Tetrahedron',
@@ -422,16 +442,17 @@ local shapes = {
 		},
 	},
 --]=]
---[=[ TODO missing 3x more transforms
+-- [=[ TODO missing 3x more transforms
 	{
 		name = '24-cell',
 		dual = '24-cell',
 		dim = 4,
 		
-		--vtx1 = Matrix{1/sqrt(2),1/sqrt(2),0,0}:T(),
-		vtx1 = Matrix{1,1,0,0}:T(),
+		-- these vtxs look nice but without a vtx at [0,0,0,1] i can't just copy over any octahedron transforms
+		vtx1 = (_24cellRot * Matrix{1/sqrt(2),1/sqrt(2),0,0}:T())(),	-- whole numbers for coordinate-aligned
+		--vtx1 = (_24cellRot * Matrix{1,1,0,0}:T())(),	-- whole numbers for identity _24cellRot
 
-		xforms = {
+		xforms = table{
 			Matrix(
 				{0,-1,0,0},
 				{1,0,0,0},
@@ -444,13 +465,17 @@ local shapes = {
 				{-1,0,0,0},
 				{0,0,0,1}
 			)(),
+-- [[ rotates the icosahedron at the end
 			Matrix(
-				{0,0,0,-1},
-				{0,1,0,0},
-				{0,0,1,0},
-				{1,0,0,0}
-			)(),
-		},
+				{frac(1,2), frac(1,2), -frac(1,2), frac(1,2)},
+				{frac(1,2), frac(1,2), frac(1,2), -frac(1,2)},
+				{frac(1,2), -frac(1,2), frac(1,2), frac(1,2)},
+				{-frac(1,2), frac(1,2), frac(1,2), frac(1,2)}
+			),
+--]]
+		}:mapi(function(T)
+			return (_24cellRot * T * _24cellRot:T())()
+		end),
 	},
 --]=]
 --[=[ TODO FIXME -- find a good vtx1 and then use the 600-cell
@@ -561,10 +586,17 @@ for _,shape in ipairs(shapes) do
 end
 printbr()
 
+local function printerr(...)
+	io.stderr:write(table{...}:mapi(tostring):concat'\t'..'\n')
+	io.stderr:flush()
+end
+
 local cache = {}
 local cacheFilename = 'Platonic Solids - cache.lua'
 if os.fileexists(cacheFilename) then
+	printerr'reading cache...'
 	cache = load('return '..io.readfile(cacheFilename), nil, nil, env)()
+	printerr'...done reading cache'
 end
 
 local function writeShapeCaches()
@@ -585,11 +617,6 @@ local function writeShapeCaches()
 		}
 	}))
 	-- is there some sort of tolua args that will encode the symmath with symmath.export.SymMath?
-end
-
-local function printerr(...)
-	io.stderr:write(table{...}:mapi(tostring):concat'\t'..'\n')
-	io.stderr:flush()
 end
 
 for _,shape in ipairs(shapes) do
@@ -795,6 +822,7 @@ assert(#allxforms == #allxformsrcinfo)
 assert(#allxforms == #allxformsrcinfo)
 		printerr'writing...'
 		writeShapeCaches()
+		printerr'...done writing'
 	--]]
 	end
 
@@ -820,7 +848,9 @@ assert(#allxforms == #allxformsrcinfo)
 	printbr()
 
 	local vdots 
-	if shapeCache.vdots then
+	if not force
+	and shapeCache.vdots
+	then
 		printerr'using old vdots'
 		vdots = shapeCache.vdots
 	else
@@ -833,8 +863,9 @@ assert(#allxforms == #allxformsrcinfo)
 	
 	printerr'...done vertex inner products'
 --]]
-printerr'writing...'
-writeShapeCaches()
+	printerr'writing...'
+	writeShapeCaches()
+	printerr'...done writing'
 
 
 --[[
@@ -881,6 +912,25 @@ this is slow, and too slow for the 120-cell and 600-cell
 
 	-- show vtx multiplication table
 	-- btw, do i need to show the details of this above?  or should I just show this?
+	local vtxMulTable 
+	if not force
+	and shapeCache.vtxMulTable 
+	then
+		printerr'using old vtxMulTable'
+		vtxMulTable = shapeCache.vtxMulTable
+	else
+		printerr'building vtxMulTable'
+		vtxMulTable = {}
+		shapeCache.vtxMulTable = vtxMulTable
+		for i,xi in ipairs(allxforms) do
+			vtxMulTable[i] = vtxMulTable[i] or {}
+			for j,vj in ipairs(vtxs) do
+				local k = vtxs:find((xi * vj)())
+				vtxMulTable[i][j] = k
+			end
+		end
+		printerr'done finding vertex multiplication table'
+	end
 	local function printVtxMulTable()
 		printbr[[Table of $T_i \cdot v_j = v_k$:]]
 		print'<table>\n'
@@ -893,7 +943,7 @@ this is slow, and too slow for the 120-cell and 600-cell
 		for i,xi in ipairs(allxforms) do
 			print('<tr><td>T'..i..'</td>')
 			for j,vj in ipairs(vtxs) do
-				local k = vtxs:find((xi * vj)())
+				local k = vtxMulTable[i][j]
 				print'<td>'
 				if not k then
 					print("couldn't find xform for ", var'T'('_'..i) * var'V'('_'..j))
@@ -909,10 +959,11 @@ this is slow, and too slow for the 120-cell and 600-cell
 		printbr()
 	end
 	printVtxMulTable()
-	printerr'done finding vertex multiplication table'
 
 	local mulTable 
-	if shapeCache.mulTable then
+	if not force
+	and shapeCache.mulTable 
+	then
 		printerr'using old mulTable'
 		mulTable = shapeCache.mulTable
 	else
@@ -925,6 +976,7 @@ this is slow, and too slow for the 120-cell and 600-cell
 				mulTable[i][j] = allxforms:find((xi * xj)())
 			end
 		end
+		printerr'done finding transform multiplication table'
 	end
 	local function printXformMulTable()
 		printbr[[Table of $T_i \cdot T_j = T_k$:]]
@@ -954,7 +1006,6 @@ this is slow, and too slow for the 120-cell and 600-cell
 		printbr()
 	end
 	printXformMulTable()
-	printerr'done finding transform multiplication table'
 
 
 --[=[ rename by trying to put the Ti*Tj=T1 transforms closest to the diagonal:
@@ -1060,7 +1111,9 @@ this is slow, and too slow for the 120-cell and 600-cell
 	f:close()
 end
 
+printerr'writing...'
 writeShapeCaches()
+printerr'...done writing'
 
 --[[
 local s = table()

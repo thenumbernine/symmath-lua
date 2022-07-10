@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>600-cell</title>
+		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+<style>
+table {
+	border : 1px solid black;
+	border-collapse : collapse;
+}
+table td {
+	border : 1px solid black;
+}
+</style>
+
+<h3>600-cell</h3>
+Initial vertex:	${{ v} _1} = {\left[\begin{array}{c} 0\\ 0\\ 0\\ 1\end{array}\right]}$
+<br>
+
+<br>
+Transforms for vertex generation:
+<br>
+
+<br>
+${ \tilde{T}} _i$	$\in \{$	$\left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& 1& 0& 0\\ 0& 0& 1& 0\\ 0& 0& 0& 1\end{array}\right]$,$\left[\begin{array}{cccc} -{\frac{1}{2}}& -{\frac{1}{2}}& -{\frac{1}{2}}& -{\frac{1}{2}}\\ \frac{1}{2}& \frac{1}{2}& -{\frac{1}{2}}& -{\frac{1}{2}}\\ \frac{1}{2}& -{\frac{1}{2}}& \frac{1}{2}& -{\frac{1}{2}}\\ \frac{1}{2}& -{\frac{1}{2}}& -{\frac{1}{2}}& \frac{1}{2}\end{array}\right]$,$\left[\begin{array}{cccc} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& -{\frac{1}{2}}& {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}& 0\\ \frac{1}{2}& {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& 0& {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}& 0& {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& -{\frac{1}{2}}\\ 0& {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}& \frac{1}{2}& {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]$,$\left[\begin{array}{cccc} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}& -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}& -{\frac{1}{2}}& 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& \frac{1}{2}& {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}& 0\\ \frac{1}{2}& {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}& {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& 0\\ 0& 0& 0& 1\end{array}\right]$	$\}$
+<br>
+
+<br>
+Vertexes:
+<br>
+
+<br>
+${{{{{ T} _2}} {{{ V} _1}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ \frac{1}{2}\end{array}\right]}} = {{ V} _2}$
+<br>
+${{{{{ T} _2}} {{{ V} _2}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ \frac{1}{2}\end{array}\right]}} = {{ V} _3}$
+<br>
+${{{{{ T} _3}} {{{ V} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{ V} _4}$
+<br>
+${{{{{ T} _2}} {{{ V} _4}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{ V} _5}$
+<br>
+${{{{{ T} _2}} {{{ V} _5}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\end{array}\right]}} = {{ V} _6}$
+<br>
+${{{{{ T} _3}} {{{ V} _6}}} = {\left[\begin{array}{c} 0\\ -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{ V} _7}$
+<br>
+${{{{{ T} _2}} {{{ V} _7}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ \frac{1}{2}\end{array}\right]}} = {{ V} _8}$
+<br>
+${{{{{ T} _2}} {{{ V} _8}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ \frac{1}{2}\end{array}\right]}} = {{ V} _9}$
+<br>
+${{{{{ T} _3}} {{{ V} _9}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _1} _0}$
+<br>
+${{{{{ T} _2}} {{{{ V} _1} _0}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\end{array}\right]}} = {{{ V} _1} _1}$
+<br>
+${{{{{ T} _2}} {{{{ V} _1} _1}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _1} _2}$
+<br>
+${{{{{ T} _3}} {{{{ V} _1} _2}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _1} _3}$
+<br>
+${{{{{ T} _2}} {{{{ V} _1} _3}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\end{array}\right]}} = {{{ V} _1} _4}$
+<br>
+${{{{{ T} _2}} {{{{ V} _1} _4}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\end{array}\right]}} = {{{ V} _1} _5}$
+<br>
+${{{{{ T} _3}} {{{{ V} _1} _5}}} = {\left[\begin{array}{c} \frac{1}{2}\\ \frac{1}{2}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _1} _6}$
+<br>
+${{{{{ T} _2}} {{{{ V} _1} _6}}} = {\left[\begin{array}{c} 0\\ 1\\ 0\\ 0\end{array}\right]}} = {{{ V} _1} _7}$
+<br>
+${{{{{ T} _2}} {{{{ V} _1} _7}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ \frac{1}{2}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _1} _8}$
+<br>
+${{{{{ T} _3}} {{{{ V} _1} _8}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _1} _9}$
+<br>
+${{{{{ T} _2}} {{{{ V} _1} _9}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _2} _0}$
+<br>
+${{{{{ T} _2}} {{{{ V} _2} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ 0\end{array}\right]}} = {{{ V} _2} _1}$
+<br>
+${{{{{ T} _3}} {{{{ V} _2} _1}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _2} _2}$
+<br>
+${{{{{ T} _2}} {{{{ V} _2} _2}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _2} _3}$
+<br>
+${{{{{ T} _2}} {{{{ V} _2} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _2} _4}$
+<br>
+${{{{{ T} _3}} {{{{ V} _2} _4}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ 0\end{array}\right]}} = {{{ V} _2} _5}$
+<br>
+${{{{{ T} _2}} {{{{ V} _2} _5}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _2} _6}$
+<br>
+${{{{{ T} _2}} {{{{ V} _2} _6}}} = {\left[\begin{array}{c} \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _2} _7}$
+<br>
+${{{{{ T} _3}} {{{{ V} _2} _7}}} = {\left[\begin{array}{c} \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _2} _8}$
+<br>
+${{{{{ T} _2}} {{{{ V} _2} _8}}} = {\left[\begin{array}{c} 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _2} _9}$
+<br>
+${{{{{ T} _2}} {{{{ V} _2} _9}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _3} _0}$
+<br>
+${{{{{ T} _3}} {{{{ V} _3} _0}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ \frac{1}{2}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _3} _1}$
+<br>
+${{{{{ T} _2}} {{{{ V} _3} _1}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{\frac{1}{2}}\\ \frac{1}{2}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _3} _2}$
+<br>
+${{{{{ T} _2}} {{{{ V} _3} _2}}} = {\left[\begin{array}{c} 0\\ 0\\ 1\\ 0\end{array}\right]}} = {{{ V} _3} _3}$
+<br>
+${{{{{ T} _3}} {{{{ V} _3} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _3} _4}$
+<br>
+${{{{{ T} _2}} {{{{ V} _3} _4}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _3} _5}$
+<br>
+${{{{{ T} _2}} {{{{ V} _3} _5}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _3} _6}$
+<br>
+${{{{{ T} _3}} {{{{ V} _3} _6}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _3} _7}$
+<br>
+${{{{{ T} _2}} {{{{ V} _3} _7}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _3} _8}$
+<br>
+${{{{{ T} _2}} {{{{ V} _3} _8}}} = {\left[\begin{array}{c} 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _3} _9}$
+<br>
+${{{{{ T} _3}} {{{{ V} _3} _9}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _4} _0}$
+<br>
+${{{{{ T} _2}} {{{{ V} _4} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _4} _1}$
+<br>
+${{{{{ T} _2}} {{{{ V} _4} _1}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _4} _2}$
+<br>
+${{{{{ T} _3}} {{{{ V} _4} _2}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _4} _3}$
+<br>
+${{{{{ T} _2}} {{{{ V} _4} _3}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _4} _4}$
+<br>
+${{{{{ T} _2}} {{{{ V} _4} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _4} _5}$
+<br>
+${{{{{ T} _3}} {{{{ V} _4} _4}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _4} _6}$
+<br>
+${{{{{ T} _2}} {{{{ V} _4} _6}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _4} _7}$
+<br>
+${{{{{ T} _2}} {{{{ V} _4} _7}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\\ 0\end{array}\right]}} = {{{ V} _4} _8}$
+<br>
+${{{{{ T} _3}} {{{{ V} _4} _8}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\\ 0\end{array}\right]}} = {{{ V} _4} _9}$
+<br>
+${{{{{ T} _2}} {{{{ V} _4} _9}}} = {\left[\begin{array}{c} \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _0}$
+<br>
+${{{{{ T} _2}} {{{{ V} _5} _0}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _5} _1}$
+<br>
+${{{{{ T} _4}} {{{{ V} _5} _1}}} = {\left[\begin{array}{c} 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _5} _2}$
+<br>
+${{{{{ T} _2}} {{{{ V} _5} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _3}$
+<br>
+${{{{{ T} _2}} {{{{ V} _5} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _4}$
+<br>
+${{{{{ T} _3}} {{{{ V} _5} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _5}$
+<br>
+${{{{{ T} _3}} {{{{ V} _5} _5}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _5} _6}$
+<br>
+${{{{{ T} _2}} {{{{ V} _5} _6}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _7}$
+<br>
+${{{{{ T} _2}} {{{{ V} _5} _7}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _5} _8}$
+<br>
+${{{{{ T} _3}} {{{{ V} _5} _8}}} = {\left[\begin{array}{c} 0\\ 0\\ -{1}\\ 0\end{array}\right]}} = {{{ V} _5} _9}$
+<br>
+${{{{{ T} _2}} {{{{ V} _5} _9}}} = {\left[\begin{array}{c} \frac{1}{2}\\ \frac{1}{2}\\ -{\frac{1}{2}}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _6} _0}$
+<br>
+${{{{{ T} _2}} {{{{ V} _6} _0}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ \frac{1}{2}\\ -{\frac{1}{2}}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _6} _1}$
+<br>
+${{{{{ T} _3}} {{{{ V} _6} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ 0\end{array}\right]}} = {{{ V} _6} _2}$
+<br>
+${{{{{ T} _2}} {{{{ V} _6} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ 0\end{array}\right]}} = {{{ V} _6} _3}$
+<br>
+${{{{{ T} _2}} {{{{ V} _6} _3}}} = {\left[\begin{array}{c} 0\\ \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _4}$
+<br>
+${{{{{ T} _3}} {{{{ V} _6} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _6} _5}$
+<br>
+${{{{{ T} _2}} {{{{ V} _6} _5}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _6}$
+<br>
+${{{{{ T} _2}} {{{{ V} _6} _6}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _7}$
+<br>
+${{{{{ T} _4}} {{{{ V} _6} _7}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _8}$
+<br>
+${{{{{ T} _2}} {{{{ V} _6} _8}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _9}$
+<br>
+${{{{{ T} _2}} {{{{ V} _6} _9}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _7} _0}$
+<br>
+${{{{{ T} _3}} {{{{ V} _7} _0}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _7} _1}$
+<br>
+${{{{{ T} _2}} {{{{ V} _7} _1}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _7} _2}$
+<br>
+${{{{{ T} _2}} {{{{ V} _7} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _7} _3}$
+<br>
+${{{{{ T} _4}} {{{{ V} _7} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _7} _4}$
+<br>
+${{{{{ T} _2}} {{{{ V} _7} _4}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _7} _5}$
+<br>
+${{{{{ T} _2}} {{{{ V} _7} _5}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _7} _6}$
+<br>
+${{{{{ T} _3}} {{{{ V} _6} _8}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _7} _7}$
+<br>
+${{{{{ T} _2}} {{{{ V} _7} _7}}} = {\left[\begin{array}{c} 1\\ 0\\ 0\\ 0\end{array}\right]}} = {{{ V} _7} _8}$
+<br>
+${{{{{ T} _2}} {{{{ V} _7} _8}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ \frac{1}{2}\\ \frac{1}{2}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _7} _9}$
+<br>
+${{{{{ T} _4}} {{{{ V} _7} _7}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _8} _0}$
+<br>
+${{{{{ T} _2}} {{{{ V} _8} _0}}} = {\left[\begin{array}{c} \frac{1}{2}\\ \frac{1}{2}\\ \frac{1}{2}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _8} _1}$
+<br>
+${{{{{ T} _2}} {{{{ V} _8} _1}}} = {\left[\begin{array}{c} -{1}\\ 0\\ 0\\ 0\end{array}\right]}} = {{{ V} _8} _2}$
+<br>
+${{{{{ T} _3}} {{{{ V} _8} _2}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _8} _3}$
+<br>
+${{{{{ T} _2}} {{{{ V} _8} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _8} _4}$
+<br>
+${{{{{ T} _2}} {{{{ V} _8} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _8} _5}$
+<br>
+${{{{{ T} _3}} {{{{ V} _8} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _8} _6}$
+<br>
+${{{{{ T} _2}} {{{{ V} _8} _6}}} = {\left[\begin{array}{c} 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _8} _7}$
+<br>
+${{{{{ T} _2}} {{{{ V} _8} _7}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _8} _8}$
+<br>
+${{{{{ T} _3}} {{{{ V} _8} _6}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _8} _9}$
+<br>
+${{{{{ T} _2}} {{{{ V} _8} _9}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _9} _0}$
+<br>
+${{{{{ T} _2}} {{{{ V} _9} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _9} _1}$
+<br>
+${{{{{ T} _3}} {{{{ V} _9} _1}}} = {\left[\begin{array}{c} 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _9} _2}$
+<br>
+${{{{{ T} _2}} {{{{ V} _9} _2}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _9} _3}$
+<br>
+${{{{{ T} _2}} {{{{ V} _9} _3}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _9} _4}$
+<br>
+${{{{{ T} _3}} {{{{ V} _9} _4}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ \frac{1}{2}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _9} _5}$
+<br>
+${{{{{ T} _2}} {{{{ V} _9} _5}}} = {\left[\begin{array}{c} 0\\ -{1}\\ 0\\ 0\end{array}\right]}} = {{{ V} _9} _6}$
+<br>
+${{{{{ T} _2}} {{{{ V} _9} _6}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{\frac{1}{2}}\\ \frac{1}{2}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _9} _7}$
+<br>
+${{{{{ T} _4}} {{{{ V} _9} _5}}} = {\left[\begin{array}{c} 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _9} _8}$
+<br>
+${{{{{ T} _4}} {{{{ V} _9} _4}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\\ 0\end{array}\right]}} = {{{ V} _9} _9}$
+<br>
+${{{{{ T} _2}} {{{{ V} _9} _9}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\\ 0\end{array}\right]}} = {{{{ V} _1} _0} _0}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _0} _0}}} = {\left[\begin{array}{c} 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _0} _1}$
+<br>
+${{{{{ T} _4}} {{{{ V} _9} _1}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _0} _2}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _0} _2}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{{ V} _1} _0} _3}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _0} _3}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{{ V} _1} _0} _4}$
+<br>
+${{{{{ T} _4}} {{{{ V} _8} _6}}} = {\left[\begin{array}{c} \frac{1}{2}\\ \frac{1}{2}\\ \frac{1}{2}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _0} _5}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _0} _5}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ \frac{1}{2}\\ \frac{1}{2}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _0} _6}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _0} _6}}} = {\left[\begin{array}{c} 0\\ 0\\ 0\\ -{1}\end{array}\right]}} = {{{{ V} _1} _0} _7}$
+<br>
+${{{{{ T} _3}} {{{{{ V} _1} _0} _7}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _0} _8}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _0} _8}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _0} _9}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _0} _9}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _1} _0}$
+<br>
+${{{{{ T} _3}} {{{{{ V} _1} _0} _8}}} = {\left[\begin{array}{c} 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{{ V} _1} _1} _1}$
+<br>
+${{{{{ T} _3}} {{{{ V} _6} _6}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _1} _2}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _1} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _1} _3}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _1} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _1} _4}$
+<br>
+${{{{{ T} _3}} {{{{{ V} _1} _1} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _1} _5}$
+<br>
+${{{{{ T} _3}} {{{{ V} _6} _2}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _1} _6}$
+<br>
+${{{{{ T} _3}} {{{{ V} _5} _7}}} = {\left[\begin{array}{c} 0\\ \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _1} _7}$
+<br>
+${{{{{ T} _4}} {{{{ V} _5} _5}}} = {\left[\begin{array}{c} \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _1} _8}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _1} _8}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _1} _9}$
+<br>
+${{{{{ T} _2}} {{{{{ V} _1} _1} _9}}} = {\left[\begin{array}{c} 0\\ -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _2} _0}$
+<br>
+
+	</body>
+</html>
