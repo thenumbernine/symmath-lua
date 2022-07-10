@@ -494,7 +494,7 @@ local shapes = {
 		},
 	},
 --]=]
---[=[ 
+-- [=[
 	{
 		name = '600-cell',
 		dual = '120-cell',
@@ -568,7 +568,7 @@ local shapes = {
 			toQuatMat(phi/2, frac(1,2), phiminus/2, 0),
 			--]]
 			-- how about double-reflections?
-			Matrix.diagonal(-1,-1,1,1),	-- goes from 360 to 1440
+			--Matrix.diagonal(-1,-1,1,1),	-- goes from 360 to 1440 ... but not needed with the last 3D icosahedron transform
 			--Matrix.diagonal(1,-1,-1,1),	-- nope
 			--Matrix.diagonal(-1,1,1,-1),	-- nope
 			
@@ -827,10 +827,10 @@ table td {
 	printbr'All Transforms:'
 	printbr()
 
-	do
-		local xformstack = range(#xforms)
+	for m=1,#xforms do
+		local xformstack = table{m}
 		while #xformstack > 0 do
-			local j = xformstack:remove()
+			local j = xformstack:remove(1)
 			local M = allxforms[j]
 			for i,xform in ipairs(xforms) do
 				local xM = (xform * M)()
@@ -841,7 +841,6 @@ table td {
 					printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
 					printerr('T_'..i..' * T_'..j..' = T_'..k)
 					xformstack:insert(k)
-					--buildxforms(k, depth + 1)
 				else
 	--				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 				end
@@ -852,185 +851,6 @@ table td {
 	printerr'done finding transforms'
 --]]
 
---[[ debugging helping me
-	do
-		--[=[
-		here's the vertex indexes of the 
-		ok I have no guarantee that the order of my vertexes is matching
-		V600_5   = [-(sqrt(5)-1)/4, 1/2, 0, phi/2]
-		V600_12  = [(sqrt(5)-1)/4, 1/2, 0, phi/2]
-		V600_45  = [0, -(sqrt(5)-1)/4, 1/2, phi/2]
-		V600_46  = [0, (sqrt(5)-1)/4, 1/2, phi/2]
-		V600_55  = [-(sqrt(5)-1)/4, -1/2, 0, phi/2]
-		V600_57  = [(sqrt(5)-1)/4, -1/2, 0, phi/2]
-		V600_58  = [1/2, 0, -(sqrt(5)-1)/4, phi/2]
-		V600_59  = [-1/2, 0, -(sqrt(5)-1)/4, phi/2]
-		V600_66  = [1/2, 0, (sqrt(5)-1)/4, phi/2]
-		V600_68  = [-1/2, 0, (sqrt(5)-1)/4, phi/2]
-		V600_113 = [0, (sqrt(5)-1)/4, -1/2, phi/2]
-		V600_114 = [0, -(sqrt(5)-1)/4, -1/2, phi/2]
-		so now I have to match this to the original icosahedron order, in order for its permutation matrix to apply equivalently:
-		here I'm swapping y and z components and dividing Vico's coordinates by 2 to get them to match
-		Vico_1  = [0, 1, (sqrt(5)-1)/2]   :: V600_46 
-		Vico_2  = [-1, (sqrt(5)-1)/2, 0]  :: V600_68
-		Vico_3  = [-(sqrt(5)-1)/2, 0, -1] :: V600_55
-		Vico_4  = [(sqrt(5)-1)/2, 0, -1]  :: V600_57
-		Vico_5  = [1, (sqrt(5)-1)/2, 0]   :: V600_66
-		Vico_6  = [0, 1, -(sqrt(5)-1)/2]  :: V600_45
-		Vico_7  = [0, -1, -(sqrt(5)-1)/2] :: V600_114
-		Vico_8  = [1, -(sqrt(5)-1)/2, 0]  :: V600_58
-		Vico_9  = [(sqrt(5)-1)/2, 0, 1]   :: V600_12
-		Vico_10 = [-(sqrt(5)-1)/2, 0, 1]  :: V600_5
-		Vico_11 = [-1, -(sqrt(5)-1)/2, 0] :: V600_59
-		Vico_12 = [0, -1, (sqrt(5)-1)/2]  :: V600_113
-		--]=]
-		local is = table{46, 68, 55, 57, 66, 45, 114, 58, 12, 5, 59, 113}
-		local V = Matrix( is:mapi(function(i)
-			return vtxs[i]:T()[1]	-- single row
-		end):unpack() ):T()	-- vertexes as column vectors
-		-- here I'm using the icosahedron transform T_2
-		local P = Matrix.permutation(2,3,4,5,1,6,8,9,10,11,7,12)	--these are by-column, and correlate to the icosahedron vertex order
-		local VP = (V * P)()
-		printbr(var'V':eq(V))
-		printbr(var'P':eq(P))
-		printbr((var'V' * var'P'):eq( (V * P)() ))
-		printbr((var'V' * var'V''^T'):eq( ( V * V:T() )() ))	
-		--[=[
-		-- icoVtxs is 4x12 ... so it isn't square ...
-		-- T = 4x4, V = 4x12, T V = 4x12
-		-- P = 12x12, V P = 4x12
-		-- T V = V P
-		-- hmm can't inverse ... will a pseudo-inverse work?
-		-- T (V V') = V P V'
-		-- T = (V P V') * (V V')^-1
-		printbr('icosahedron:')
-		printbr(var'V':eq(V))
-		printbr(var'P':eq(P))
-		local eqn = (
-				( var'V' * var'P' * var'V''^T' ) * ( var'V' * var'V''^T' )^-1
-			):eq(
-				( VP * V:T() )() * ( V * V:T() )():inv()
-			)
-		printbr(eqn)
-		--]=]	
-		--[=[ the result is:
-┌                                             ┐
-│    2 + √(5)    -1 + √(5)        1 + √(5)    │
-│ - ╶────────╴  ╶─────────╴    - ╶────────╴  0│
-│    4 * √(5)        8                8       │
-│                                             │
-│    7 + √(5)    -3 + √(5)          1         │
-│ - ╶────────╴  ╶─────────╴    ╶────────╴    0│
-│    8 * √(5)     8 * √(5)      4 * √(5)      │
-│                                             │
-│   1 + √(5)          1       1 + 3 * √(5)    │
-│  ╶────────╴    ╶────────╴  ╶────────────╴  0│
-│   8 * √(5)      4 * √(5)      8 * √(5)      │
-│                                             │
-│      0             0              0        1│
-└                                             ┘
-		--]=]
-		--[=[ might not work
-		-- from pseudo-inverse:
-		local T = Matrix(
-			{-(2+sqrt(5))/(4*sqrt(5)), (sqrt(5)-1)/8, -(1+sqrt(5))/8, 0},
-			{-(7+sqrt(5))/(8*sqrt(5)), (sqrt(5)-3)/(8*sqrt(5)), 1/(4*sqrt(5)), 0},
-			{(1+sqrt(5))/(8*sqrt(5)), 1/(4*sqrt(5)), (1+3*sqrt(5))/(8*sqrt(5)), 0},
-			{0, 0, 0, 1}
-		)
-		--]=]
-		--[=[ ok how about just using the 4x4 first of (T V)_1..4 = T (V_1..4) = (V P)_1..4
-		-- so T = (V P)_1..4 * (V_1..4)^-1
-		local VP_1_4 = Matrix:lambda({4,4}, function(i,j) return VP[i][j] end)
-		local V_1_4 = Matrix:lambda({4,4}, function(i,j) return V[i][j] end)
-		printbr(var'V 1 4':eq(V_1_4))
-		printbr(var'(VP) 1 4':eq(VP_1_4))
-		local V_1_4_inv = V_1_4:inv()()
-		printbr((var'V 1 4'^-1):eq(V_1_4_inv))
-		printbr(var'T':eq(var'(VP) 1 4' * var'V 1 4'^-1):eq((VP_1_4 * V_1_4_inv)() ))
-		--]=]
-		--[=[ this gives us a transform of:
-┌                                                                 ┐
-│         1                1            - √(5)             1      │
-│      - ╶─╴            - ╶─╴         ╶───────╴           ╶─╴     │
-│         2                2              2                2      │
-│                                                                 │
-│  - (3 + √(5))     - (3 + √(5))        √(5)-9       3 * (√(5)-1) │
-│╶─────────────╴  ╶─────────────╴      ╶──────╴     ╶────────────╴│
-│       4                4                 4               4      │
-│                                                                 │
-│    1 + √(5)       - (1 + √(5))     - (1 + √(5))      1 + √(5)   │
-│   ╶────────╴    ╶─────────────╴  ╶─────────────╴    ╶────────╴  │
-│        4               4                4                4      │
-│                                                                 │
-│       0                0                0                1      │
-└                                                                 ┘
-		--]=]
-		--[=[
-		local T = Matrix( 
-			{-frac(1,2), -frac(1,2), -sqrt(5)/2, frac(1,2)}, 
-			{-(3+sqrt(5))/4, -(3+sqrt(5))/4, (sqrt(5)-9)/4, 3*(sqrt(5)-1)/4},
-			{(1+sqrt(5))/4, -(1+sqrt(5))/4, -(1+sqrt(5))/4, (1+sqrt(5))/4}, 
-			{0,0,0,1}
-		)
-		--]=]
-		--[=[ ok i fixed the 600-cell icoshaedron vertex permutation order
-┌                                                            ┐
-│ -1 + √(5)                   √(5) * (1 + √(5))        1     │
-│╶─────────╴       0       - ╶─────────────────╴      ╶─╴    │
-│     4                               4                2     │
-│                                                            │
-│  1 + √(5)        1             1 - √(5)                    │
-│ ╶────────╴      ╶─╴           ╶────────╴             0     │
-│      4           2                 4                       │
-│                                                            │
-│     1        3 - √(5)                            -1 + √(5) │
-│    ╶─╴      ╶────────╴             0            ╶─────────╴│
-│     2            4                                   4     │
-│                                                            │
-│              1 - √(5)              1              1 + √(5) │
-│     0       ╶────────╴            ╶─╴            ╶────────╴│
-│                  4                 2                  4    │
-└                                                            ┘
-		--]=]
-		--[=[ 1-4 vertex permutation rotation still doesn't work
-		local T = Matrix( 
-			{ (sqrt(5)-1)/4, 0, -sqrt(5)*(sqrt(5)+1)/4, frac(1,2) }, 
-			{(sqrt(5)+1)/4, frac(1,2), -(sqrt(5)-1)/4, 0}, 
-			{frac(1,2), (3-sqrt(5))/4, 0, (sqrt(5)-1)/4}, 
-			{0, -(sqrt(5)-1)/4, frac(1,2), (sqrt(5)+1)/4}
-		)
-		--]=]
-		--[=[ how about pseudo-inverse
-┌                                         ┐
-│ -1 + √(5)       1 + √(5)         1      │
-│╶─────────╴   - ╶────────╴     - ╶─╴    0│
-│     4               4            2      │
-│                                         │
-│  1 + √(5)         1         1 - √(5)    │
-│ ╶────────╴       ╶─╴       ╶────────╴  0│
-│      4            2             4       │
-│                                         │
-│     1          1 - √(5)     1 + √(5)    │
-│    ╶─╴        ╶────────╴   ╶────────╴  0│
-│     2              4            4       │
-│                                         │
-│     0             0             0      1│
-└                                         ┘
-
-		--]=]
-		--[=[ WORKS
-		local T = ( Matrix( { sqrt(5)*(3-sqrt(5))/4, -sqrt(5)/2, -sqrt(5)*(sqrt(5)-1)/4, 0 }, {sqrt(5)/2, sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, 0}, {sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, sqrt(5)/2, 0}, {0, 0, 0, 3*(3+sqrt(5))/2})() * Matrix.diagonal((1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (3-sqrt(5))/6) )()
-		printbr(var'T':eq(T))
-		printbr((var'T' * var'V'):eq( (T * V)() ))
-		--]=]	
-	end
-printerr'done finding icosahedron transform in 600-cell'
-f:flush()
-f:close()
-do return end
---]]
-	
 	printerr'vertex inner products...'
 
 	-- number of vertexes
