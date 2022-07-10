@@ -4,6 +4,9 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Platonic Solids'}}
 
+-- force means don't use cache ... but still write to cache 
+local force = cmdline.force or false
+
 printbr[[
 $n =$ dimension of manifold which our shape resides in.<br>
 $\tilde{T}_i \in \mathbb{R}^{n \times n} =$ i'th isomorphic transform in the minimal set.<br>
@@ -160,7 +163,7 @@ local cubeRot = Matrix.identity(3)
 --]]
 
 
--- [[ TODO getting simplification loops.
+--[[ TODO getting simplification loops.
 local dodVtx = Matrix{
 	(-1 - sqrt(5)) / (2 * sqrt(3)),
 	0,
@@ -208,7 +211,7 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
---[=[
+-- [=[
 	{
 		name = 'Tetrahedron',
 		dual = 'Tetrahedron',
@@ -419,7 +422,7 @@ local shapes = {
 		},
 	},
 --]=]
---[=[
+--[=[ TODO missing 3x more transforms
 	{
 		name = '24-cell',
 		dual = '24-cell',
@@ -450,7 +453,7 @@ local shapes = {
 		},
 	},
 --]=]
---[=[ TODO FIXME
+--[=[ TODO FIXME -- find a good vtx1 and then use the 600-cell
 	{
 		name = '120-cell',
 		dual = '600-cell',
@@ -494,7 +497,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
+--[=[
 	{
 		name = '600-cell',
 		dual = '120-cell',
@@ -503,32 +506,6 @@ local shapes = {
 		
 		-- TODO rearrange prioritize whole numbers first, then fractions, then sqrts last, and try to get rid of the +1 transform (maybe get rid of the diag(-1,-1,1,1) too)
 		xforms = table{
-			-- these will reproduce the 8 vertexes of permutations of (0, 0, 0, ±1)
-			-- x<->y rotation
-			--[[
-			Matrix(
-				{0,-1,0,0},
-				{1,0,0,0},
-				{0,0,1,0},
-				{0,0,0,1}
-			)(),
-			-- x<->z rotation
-			Matrix(
-				{0,0,1,0},
-				{0,1,0,0},
-				{-1,0,0,0},
-				{0,0,0,1}
-			)(),
-			-- x<->w rotation
-			Matrix(
-				{0,0,0,-1},
-				{0,1,0,0},
-				{0,0,1,0},
-				{1,0,0,0}
-			)(),
-			--]]
-			--toQuatMat(1, 0, 0, 0),	--redundant? tho this produces 361 xforms instead of 360, so one isn't simplifying correctly...
-			--toQuatMat(0, 1, 0, 0),	-- redundant
 			-- [[ 16 vertexes permutations of (±1/2, ±1/2, ±1/2, ±1/2)
 			rotfromto(
 				Matrix{1,0,0,0}:T(),
@@ -536,120 +513,11 @@ local shapes = {
 				frac(2*pi,3)
 			),
 			--]]
-			--[[ same but using a single quat-mat rot (instead of the general 4D rots which are double-quat-mat-rots)
-			toQuatMat(frac(1,2), frac(1,2), frac(1,2), frac(1,2)),
-			--]]
-			-- 96 vertexes even permutations of (±φ/2, ±1/2, ±1/(2φ), 0)
-			--[[
-			rotfromto(
-				Matrix{frac(phi,2),0,frac(1,2),frac(1,2*phi)}:T(),
-				Matrix{0,1,0,0}:T()
-			)
-			--]]
-			--[[
-			(function()
-				local a = {1,0,0,0}
-				--local c = {0,1,0,0}
-				local c = {0,0,1,0}
-				--local d = {0,0,0,1}
-				local b = {frac(1,2), frac(1,2), frac(1,2), frac(1,2)}
-				local d = {phi/2, frac(1,2), phiminus/2, 0}
-				return rotfromto(
-					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(a):T())(),
-					(Matrix.projection(d) * Matrix.projection( (Matrix.projection(d) * Matrix(c):T())():T()[1] ) * Matrix(b):T())(),
-					frac(pi,5)
-				)
-			end)(),
-			--]]
-			-- [[ once again, if all we're doing is permuting vertexes then why not use this?
-			-- i guess if it's only the even permutations then maybe i'll need some extra spin on this?
-			-- alone it builds just 10 vertexes
-			-- with any cardinal xy xz xw rotation it goes on forever
 			toQuatMat(phi/2, frac(1,2), phiminus/2, 0),
-			--]]
-			-- how about double-reflections?
-			--Matrix.diagonal(-1,-1,1,1),	-- goes from 360 to 1440 ... but not needed with the last 3D icosahedron transform
-			--Matrix.diagonal(1,-1,-1,1),	-- nope
-			--Matrix.diagonal(-1,1,1,-1),	-- nope
-			
-			-- 72' rotation along xy i.e. perpendicular to {0,0,0,1} ... might need another yz rotation to fix it
-			--[[
-			(Matrix(
-				{cos(2*pi/5), -sin(2*pi/5), 0, 0},
-				{sin(2*pi/5), cos(2*pi/5), 0, 0},
-				{0, 0, 1, 0},
-				{0, 0, 0, 1}
-			) * Matrix(
-				{1, 0, 0, 0},
-				{0, cos(2*pi/5), -sin(2*pi/5), 0},
-				{0, sin(2*pi/5), cos(2*pi/5), 0},
-				{0, 0, 0, 1}
-			))(),
-			--]]
-			-- [[
-			--[==[
-			ok if Tetrahedron is a permutation of its vertexes ...
-			then all I have to do is find one tetrahedron of the 600-cell and do an equivalent permutation on its vertexes
-			(assuming the remaining transforms are all intra-cell and not inter-cell)
-			T = V P V^-1 for column-vertexes V and permutation P
-			tetrahedron has the following permutations:
-			(where indexes are the order after transformation)
-			1234
-			1342
-			1423
-			2143
-			2314
-			2431
-			3124
-			3241
-			3412
-			4132
-			4213
-			4321
-			... basically, all even permutations
-			
-			ok i can also do icosahedron (and is more likely since i'm looking for 5x more transforms
-			and this is all vertexes within 36 degrees of some vertex
-			[cos(36'), sin(36')] = [(1 + √5)/4, √(10 - 2√5)/4]
-			
-			so look at all vertexes of an inner product of (1+√5)/2 = φ/2 from vtx1 = [0,0,0,1]
-			and there are 12 of them, looks good so far, that's an icosahedron with 20 sides
-			now to collect them ...
 
-			--]==]
-			--]]
-			-- from taking the icosahedron T_2 permutation and applying it between the vertexes of the 600-cell icosahedron the lie at cos(theta)=phi/2 angle from the vtx1 = e_4
+			-- icosahedron T_2 permutation and applying to the 600-cell icosahedron the lie at cos(theta)=phi/2 angle from the vtx1 = e_4
 			( Matrix( { sqrt(5)*(3-sqrt(5))/4, -sqrt(5)/2, -sqrt(5)*(sqrt(5)-1)/4, 0 }, {sqrt(5)/2, sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, 0}, {sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, sqrt(5)/2, 0}, {0, 0, 0, 3*(3+sqrt(5))/2})() * Matrix.diagonal((1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (3-sqrt(5))/6) )(),
-		}
-		--[[ how about using Tetrahedron isometries?
-		:append((function()
-			-- these are the vertexes of the tetrahedron ...
-			local a = {0,0,0,1}
-			local b = {0,0,frac(1,2),frac(1,2)}
-			local c = {0,0,1,0}
-			local d = {frac(1,2),0,phiminus/2,phi/2}
-
-			local ca = (Matrix.projection(c) * Matrix(a):T())()
-			local cb = (Matrix.projection(c) * Matrix(b):T())()
-			
-			return table{
-				
-				rotfromto(ca, cb, frac(2*pi,5))(),
-			
-				--[==[
-				(
-					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})
-					rotfromto(
-						(Matrix.projection(d) * Matrix(a):T())(),
-						(Matrix.projection(d) * Matrix(b):T())(),
-						frac(2*pi,5)
-					)
-				)(),
-				--]==]
-			}
-		end)())
-		--]]
-		,
+		},
 	},
 --]=]
 
@@ -699,6 +567,26 @@ if os.fileexists(cacheFilename) then
 	cache = load('return '..io.readfile(cacheFilename), nil, nil, env)()
 end
 
+local function writeShapeCaches()
+	-- can symmath.export.SymMath export Lua tables?
+	--io.writefile(cacheFilename, symmath.export.SymMath(cache))
+	io.writefile(cacheFilename, tolua(cache, {
+		serializeForType = {
+			table = function(state, x, tab, path, keyRef, ...)
+				local mt = getmetatable(x)
+				if mt and (
+					Expression:isa(mt)
+					-- TODO 'or' any other classes in symmath that aren't subclasses of Expression (are there any?)
+				) then
+					return symmath.export.SymMath(x):gsub('%s+', ' ')
+				end
+				return tolua.defaultSerializeForType.table(state, x, tab, path, keyRef, ...)
+			end,
+		}
+	}))
+	-- is there some sort of tolua args that will encode the symmath with symmath.export.SymMath?
+end
+
 local function printerr(...)
 	io.stderr:write(table{...}:mapi(tostring):concat'\t'..'\n')
 	io.stderr:flush()
@@ -739,8 +627,11 @@ table td {
 
 	local shapeCache = cache[shape.name]
 	if not shapeCache then
+		printerr'starting new shape cache'
 		shapeCache = {}
 		cache[shape.name] = shapeCache
+	else
+		printerr'found shape cache'
 	end
 
 --print('<a name="'..shape.name..'">')
@@ -761,7 +652,12 @@ table td {
 	
 	printbr'Transforms for vertex generation:'
 	printbr()
-	printbr(var'\\tilde{T}''_i', [[$\in \{$]], xforms:mapi(tostring):concat',', [[$\}$]])
+	-- can't use \left\{ \right\} unless we merge the $'s
+	printbr('$',
+		symmath.export.LaTeX:applyLaTeX(var'\\tilde{T}''_i'), 
+		[[\in \left\{]], xforms:mapi(function(xform) 
+			return symmath.export.LaTeX:applyLaTeX(xform)
+		end):concat',', [[\right\}$]])
 	printbr()
 
 	-- verify the matrices are in fact rotations ... tho i think anything above is gonna be
@@ -774,82 +670,133 @@ table td {
 		end
 	end
 
-	printbr'Vertexes:'
-	printbr()
 
-	local vtxs = table{vtx1()}
-	shapeCache.vtxs = vtxs
-			
-	local zerovec = Matrix:zeros{n, 1}
-	local vtx1norm = (vtx1:T() * vtx1)()[1][1]
-
-	-- so far these don't go so deep that they stack-overflow
-	local function buildvtxs(j, depth)
-		depth = depth or 1
-		local v = vtxs[j]
---local vnorm = (v:T() * v)()[1][1]
---if Constant.isValue(vnorm, 0) then printbr("ERROR norm is zero for "..v) end
---assert(Matrix(v:dim()) == Matrix{4,1})
-		for i,xform in ipairs(xforms) do
-			local xv = (xform * v)()
---local xvnorm = (xv:T() * xv)()[1][1]
---assert(Matrix(xv:dim()) == Matrix{4,1})
---if not Constant.isValue((xvnorm - vtx1norm)(), 0) then
---	printbr("ERROR - norms don't match.  was "..vtx1norm.." but now is "..xvnorm)
---end
-			-- [[ can 'find' work?  can equality work?
-			local k = vtxs:find(xv)
-			--]]
-			--[[ or should i try subtracting?  does that help?
-			local k = vtxs:find(nil, function(xv2)
-				return (xv - xv2)() == zerovec
-			end)
-			--]]
-			if not k then
-				vtxs:insert(xv)
-				k = #vtxs
-				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
-				printerr('T_'..i..' * V_'..j..' = V_'..k)
-				buildvtxs(k, depth + 1)
-			else
---				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
-			end
+	local vtxs
+	local vtxsrcinfo
+	if not force
+	and shapeCache.vtxs 
+	and shapeCache.vtxsrcinfo 
+	then
+		printerr'using old vtxs'
+		vtxs = table(shapeCache.vtxs)
+		vtxsrcinfo = table(shapeCache.vtxsrcinfo)
+		-- TODO need to save more information to output equivalent html here or else the page will be missing it
+		if #vtxs ~= #vtxsrcinfo then
+			error("#vtxs == "..#vtxs.." but #vtxsrcinfo == "..#vtxsrcinfo)
 		end
-	end
-	buildvtxs(1)
-	printerr'done finding vertexes'
-	printbr()
-	f:flush()
+		for k=2,#vtxs do
+			printbr((var'T'('_'..vtxsrcinfo[k].xform) * var'V'('_'..vtxsrcinfo[k].vtx)):eq(vtxs[k]):eq(var'V'('_'..k)))
+		end
+	else
+		printerr'building vtxs'
 
-	local allxforms = table(xforms)
-	shapeCache.allxforms = allxforms
--- [[
-	printbr'All Transforms:'
-	printbr()
+		printbr'Vertexes:'
+		printbr()
 
-	for m=1,#xforms do
-		local xformstack = table{m}
-		while #xformstack > 0 do
-			local j = xformstack:remove(1)
-			local M = allxforms[j]
+		vtxs = table{vtx1()}
+		vtxsrcinfo = table{{}}	-- one dummy entry
+		shapeCache.vtxs = vtxs
+		shapeCache.vtxsrcinfo = vtxsrcinfo 
+				
+		local zerovec = Matrix:zeros{n, 1}
+		local vtx1norm = (vtx1:T() * vtx1)()[1][1]
+
+		-- so far these don't go so deep that they stack-overflow
+		local function buildvtxs(j, depth)
+			depth = depth or 1
+			local v = vtxs[j]
+	--local vnorm = (v:T() * v)()[1][1]
+	--if Constant.isValue(vnorm, 0) then printbr("ERROR norm is zero for "..v) end
+	--assert(Matrix(v:dim()) == Matrix{4,1})
 			for i,xform in ipairs(xforms) do
-				local xM = (xform * M)()
-				local k = allxforms:find(xM)
+				local xv = (xform * v)()
+	--local xvnorm = (xv:T() * xv)()[1][1]
+	--assert(Matrix(xv:dim()) == Matrix{4,1})
+	--if not Constant.isValue((xvnorm - vtx1norm)(), 0) then
+	--	printbr("ERROR - norms don't match.  was "..vtx1norm.." but now is "..xvnorm)
+	--end
+				-- [[ can 'find' work?  can equality work?
+				local k = vtxs:find(xv)
+				--]]
+				--[[ or should i try subtracting?  does that help?
+				local k = vtxs:find(nil, function(xv2)
+					return (xv - xv2)() == zerovec
+				end)
+				--]]
 				if not k then
-					allxforms:insert(xM)
-					k = #allxforms
-					printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
-					printerr('T_'..i..' * T_'..j..' = T_'..k)
-					xformstack:insert(k)
+					vtxs:insert(xv)
+					vtxsrcinfo:insert{xform=i, vtx=j}
+					k = #vtxs
+					printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
+					printerr('T_'..i..' * V_'..j..' = V_'..k)
+					buildvtxs(k, depth + 1)
 				else
 	--				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 				end
 			end
 		end
+		buildvtxs(1)
+		printerr'done finding vertexes'
+		printbr()
+		f:flush()
 	end
-	printbr()
-	printerr'done finding transforms'
---]]
+
+
+	local allxforms
+	local allxformsrcinfo
+	if not force
+	and shapeCache.allxforms 
+	and shapeCache.allxformsrcinfo 
+	then
+		printerr'using old allxforms'
+		allxforms = table(shapeCache.allxforms)
+		allxformsrcinfo = table(shapeCache.allxformsrcinfo)
+		if #allxforms ~= #allxformsrcinfo then
+			error("#allxforms == "..#allxforms.." but #allxformsrcinfo == "..#allxformsrcinfo)
+		end
+		for k=2,#allxforms do
+			printbr((var'T'('_'..allxformsrcinfo[k].i) * var'T'('_'..allxformsrcinfo[k].j)):eq(allxforms[k]):eq(var'T'('_'..k)))
+		end
+	else
+		printerr'building allxforms'
+		allxforms = table(xforms)
+		allxformsrcinfo = range(#xforms):mapi(function() return {} end)	-- one dummy entry per initial xforms
+assert(#allxforms == #allxformsrcinfo)
+		shapeCache.allxforms = allxforms
+		shapeCache.allxformsrcinfo = allxformsrcinfo 
+	-- [[
+		printbr'All Transforms:'
+		printbr()
+
+		for m=1,#xforms do
+			local xformstack = table{m}
+			while #xformstack > 0 do
+				local j = xformstack:remove(1)
+				local M = allxforms[j]
+				for i,xform in ipairs(xforms) do
+					local xM = (xform * M)()
+					local k = allxforms:find(xM)
+					if not k then
+						allxforms:insert(xM)
+						allxformsrcinfo:insert{i=i, j=j}
+assert(#allxforms == #allxformsrcinfo)
+						k = #allxforms
+						printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
+						printerr('T_'..i..' * T_'..j..' = T_'..k)
+						xformstack:insert(k)
+					else
+		--				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
+					end
+				end
+			end
+		end
+		printbr()
+		printerr'done finding transforms'
+assert(#allxforms == #allxformsrcinfo)
+		printerr'writing...'
+		writeShapeCaches()
+	--]]
+	end
 
 	printerr'vertex inner products...'
 
@@ -872,28 +819,22 @@ table td {
 	printbr'Vertex inner products:'
 	printbr()
 
-	local vdots = (Vmat:T() * Vmat)()
-	shapeCache.vdots = vdots
+	local vdots 
+	if shapeCache.vdots then
+		printerr'using old vdots'
+		vdots = shapeCache.vdots
+	else
+		printerr'building vdots'
+		vdots = (Vmat:T() * Vmat)()
+		shapeCache.vdots = vdots
+	end	
 	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq(vdots))
 	printbr()
 	
 	printerr'...done vertex inner products'
 --]]
-
---[[ to help me with creating the transform of the 600-cell
-	do
-		printbr("vertexes within ", phi/2, " of vtx1:")
-		local comma = ''
-		for i=1,nvtxs do
-			if Constant.isValue((vdots[1][i] - (1 + sqrt(5))/4)(), 0) then
-				printbr(comma, i)
-				comma = ', '
-			end
-		end
-		printbr()
-	end
---]]
-
+printerr'writing...'
+writeShapeCaches()
 
 
 --[[
@@ -904,8 +845,11 @@ and then filter only T's that coincide with proper rotations: A^-1 = A^T <=> A A
 actually depending on the permutation (i.e. a permutation that flipped vertexes 1 and 2 but left 3-n untouched),
  they can't be represented by linear transforms, will the result T be zero?  or have a >{} nullspace at least?
 either way, if you have all the vertices, here's how you can find all the transforms.  especially easy for simplexes.
+
+this is slow, and too slow for the 120-cell and 600-cell
 --]]
 
+--[=[
 	printbr'Transforms of all vertexes vs permutations of all vertexes:'
 	printbr()
 	printbr(var'T''_i', [[$\in \{$]], allxforms:mapi(tostring):concat',', [[$\}$]])
@@ -933,17 +877,7 @@ either way, if you have all the vertices, here's how you can find all the transf
 	end
 
 	printerr'done finding permutations'
-
-	-- show if there are any simplification errors
-	for j=2,#allxforms do
-		for i=1,j-1 do
-			if (allxforms[i] - allxforms[j])() == Matrix:zeros{n,n} then
-				printbr(var'T'('_'..i), 'should equal', var'T'('_'..j), ':',
-					allxforms[i], ',', allxforms[j])
-			end
-		end
-	end
-
+--]=]
 
 	-- show vtx multiplication table
 	-- btw, do i need to show the details of this above?  or should I just show this?
@@ -975,18 +909,23 @@ either way, if you have all the vertices, here's how you can find all the transf
 		printbr()
 	end
 	printVtxMulTable()
-
 	printerr'done finding vertex multiplication table'
 
-	local mulTable = {}
-	shapeCache.mulTable = mulTable
-	for i,xi in ipairs(allxforms) do
-		mulTable[i] = {}
-		for j,xj in ipairs(allxforms) do
-			mulTable[i][j] = allxforms:find((xi * xj)())
+	local mulTable 
+	if shapeCache.mulTable then
+		printerr'using old mulTable'
+		mulTable = shapeCache.mulTable
+	else
+		printerr'building mulTable'
+		mulTable = {}
+		shapeCache.mulTable = mulTable
+		for i,xi in ipairs(allxforms) do
+			mulTable[i] = {}
+			for j,xj in ipairs(allxforms) do
+				mulTable[i][j] = allxforms:find((xi * xj)())
+			end
 		end
 	end
-
 	local function printXformMulTable()
 		printbr[[Table of $T_i \cdot T_j = T_k$:]]
 		print'<table>\n'
@@ -1014,12 +953,11 @@ either way, if you have all the vertices, here's how you can find all the transf
 		printbr()
 		printbr()
 	end
-
 	printXformMulTable()
-
 	printerr'done finding transform multiplication table'
 
-	--[=[ rename by trying to put the Ti*Tj=T1 transforms closest to the diagonal:
+
+--[=[ rename by trying to put the Ti*Tj=T1 transforms closest to the diagonal:
 	
 	local dist = table()
 	for i=1,#allxforms do
@@ -1086,7 +1024,7 @@ either way, if you have all the vertices, here's how you can find all the transf
 
 	mulTable = mulTableRenamed
 	printXformMulTable()
-	--]=]
+--]=]
 
 --[=[ not sure if this is useful.  can't seem to visualize anything useful from it.
 	file['tmp.dot'] = table{
@@ -1103,28 +1041,27 @@ either way, if you have all the vertices, here's how you can find all the transf
 	printbr("<img src='"..shape.name..".svg'>/")
 --]=]
 
+--[[ disabling this for the 600-cell
+	-- show if there are any simplification errors
+	for j=2,#allxforms do
+		for i=1,j-1 do
+			if (allxforms[i] - allxforms[j])() == Matrix:zeros{n,n} then
+				printbr(var'T'('_'..i), 'should equal', var'T'('_'..j), ':',
+					allxforms[i], ',', allxforms[j])
+			end
+		end
+	end
+	printerr'done checking duplicate transforms'
+--]]
+
+
 
 	print(MathJax.footer)
 	f:close()
 end
 
--- can symmath.export.SymMath export Lua tables?
---io.writefile(cacheFilename, symmath.export.SymMath(cache))
-io.writefile(cacheFilename, tolua(cache, {
-	serializeForType = {
-		table = function(state, x, tab, path, keyRef, ...)
-			local mt = getmetatable(x)
-			if mt and (
-				Expression:isa(mt)
-				-- TODO 'or' any other classes in symmath that aren't subclasses of Expression (are there any?)
-			) then
-				return symmath.export.SymMath(x)
-			end
-			return tolua.defaultSerializeForType.table(state, x, tab, path, keyRef, ...)
-		end,
-	}
-}))
--- is there some sort of tolua args that will encode the symmath with symmath.export.SymMath?
+writeShapeCaches()
+
 --[[
 local s = table()
 s:insert'{'
@@ -1134,5 +1071,23 @@ end
 s:insert'}'
 io.writefile(cacheFilename, s:concat'\n')
 --]]
+
+printbr[[
+<br>
+
+Notice that isomorphic transform group size = number of surface elemnts x the group size of the surface element.<br>
+Duals have different numbers of polyhedron sides and numbers of polygon sides, despite having matching group size.<br>
+The tetrahdron have 4 sides and are made of triangles of group size 3, and has a group size of $3 \cdot 4 = 12$.  It is self-dual.<br>
+The cube has 6 sides and is made of squares of group size 4, and it has a group size of $6 \cdot 4 = 24$.<br>
+The octahedron has 8 sides and is made of squares of group size 3, and it has a group size of $8 \cdot 3 = 24$.  The cube and octahedron are duals and have matching group sizes.<br>
+The dodecahedron has 12 sides and is made of pentagons of group size 5, and it has a group size of $12 \cdot 5 = 60$.<br>
+The icosahedron has 20 sides and is made of triangles of group size 3, and it has a group size of $20 \cdot 3 = 60$.  The dodecahderon and icosahedron are duals and have matching group sizes.<br>
+The 5-cell has 5 sides and is made of tetrahedrons of group size 12, and it has a group size of $5 \cdot 12 = 60$.  It is self-dual.<br>
+The 8-cell has 8 sides and is made of cubes of group size 24, and it has a group size of $8 \cdot 24 = 192$.<br>
+The 16-cell has 16 sides and is made of tetrahedron of group size 12, and it has a group size of $16 \cdot 12 = 192$.  The 8-cell and 16-cell are duals and have matching group sizes.<br>
+The 24-cell has 24 sides and is made of octahedron of group size 24, and it has a group size of $24 \cdot 24 = 576$.  It is self-dual.<br>
+The 120-cell has 120 sides and is made of dodecahedron of group size 60, and it has a gruop size of $120 \cdot 60 = 7200$.<br>
+The 600-cell has 600 sides and is made of tetrahedron of group size 12, and it has a group size of $600 \cdot 12 = 7200$.  The 120-cell and 600-cell are duals and have matching group sizes.<br>
+]]
 
 print(export.MathJax.footer)
