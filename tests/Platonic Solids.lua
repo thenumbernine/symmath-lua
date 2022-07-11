@@ -1125,22 +1125,4 @@ s:insert'}'
 io.writefile(cacheFilename, s:concat'\n')
 --]]
 
-printbr[[
-<br>
-
-Notice that isomorphic transform group size = number of surface elemnts x the group size of the surface element.<br>
-Duals have different numbers of polyhedron sides and numbers of polygon sides, despite having matching group size.<br>
-The tetrahdron have 4 sides and are made of triangles of group size 3, and has a group size of $3 \cdot 4 = 12$.  It is self-dual.<br>
-The cube has 6 sides and is made of squares of group size 4, and it has a group size of $6 \cdot 4 = 24$.<br>
-The octahedron has 8 sides and is made of squares of group size 3, and it has a group size of $8 \cdot 3 = 24$.  The cube and octahedron are duals and have matching group sizes.<br>
-The dodecahedron has 12 sides and is made of pentagons of group size 5, and it has a group size of $12 \cdot 5 = 60$.<br>
-The icosahedron has 20 sides and is made of triangles of group size 3, and it has a group size of $20 \cdot 3 = 60$.  The dodecahderon and icosahedron are duals and have matching group sizes.<br>
-The 5-cell has 5 sides and is made of tetrahedrons of group size 12, and it has a group size of $5 \cdot 12 = 60$.  It is self-dual.<br>
-The 8-cell has 8 sides and is made of cubes of group size 24, and it has a group size of $8 \cdot 24 = 192$.<br>
-The 16-cell has 16 sides and is made of tetrahedron of group size 12, and it has a group size of $16 \cdot 12 = 192$.  The 8-cell and 16-cell are duals and have matching group sizes.<br>
-The 24-cell has 24 sides and is made of octahedron of group size 24, and it has a group size of $24 \cdot 24 = 576$.  It is self-dual.<br>
-The 120-cell has 120 sides and is made of dodecahedron of group size 60, and it has a gruop size of $120 \cdot 60 = 7200$.<br>
-The 600-cell has 600 sides and is made of tetrahedron of group size 12, and it has a group size of $600 \cdot 12 = 7200$.  The 120-cell and 600-cell are duals and have matching group sizes.<br>
-]]
-
 print(export.MathJax.footer)
