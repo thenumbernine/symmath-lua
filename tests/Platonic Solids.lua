@@ -276,12 +276,10 @@ local shapes = {
 		--vtx1 = (cubeRot * Matrix{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) }:T())(),
 		vtx1 = (cubeRot * Matrix{ 1, 1, 1 }:T())(),
 		
+		-- same transforms as its dual
 		xforms = {
 			(cubeRot * Matrix.rotation(frac(pi,2), {1,0,0}) * cubeRot:T())(),
 			(cubeRot * Matrix.rotation(frac(pi,2), {0,1,0}) * cubeRot:T())(),
-			--(cubeRot * Matrix.rotation(frac(pi,2), {0,0,1}) * cubeRot:T())(),	-- z = x*y
-			
-			--(cubeRot * Matrix.diagonal(-1, 1, 1) * cubeRot:T())(),	reflection?
 		},
 	},
 --]=]
@@ -291,14 +289,14 @@ local shapes = {
 		dual = 'Cube',
 		dim = 3,
 		
+		-- same transforms as its dual
 		xforms = {
 			Matrix.rotation(frac(pi,2), {1,0,0})(),
 			Matrix.rotation(frac(pi,2), {0,1,0})(),
-			--Matrix.rotation(frac(pi,2), {0,0,1})(),	-- z = x*y
 		},
 	},
 --]=]
---[=[
+-- [=[
 	{
 		name = 'Dodecahedron',
 		dual = 'Icosahedron',
@@ -326,7 +324,7 @@ local shapes = {
 		--]==]
 	},
 --]=]
---[=[
+-- [=[
 	{
 		name = 'Icosahedron',
 		dual = 'Dodecahedron',
@@ -522,7 +520,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
+--[=[
 	{
 		name = '600-cell',
 		dual = '120-cell',
@@ -834,6 +832,66 @@ assert(#allxforms == #allxformsrcinfo)
 	--]]
 	end
 
+
+-- [[ relabel vertexes based on their distance from vtx1
+-- TODO we just printed the T_i V_j = V_k information ... this will relabel them
+-- that can be fixed if you just re-run it and generate the output from the cache
+-- once you are doing that you don't need to do this or print this a second time
+-- that sort of brings us to a point where we're always running the scripts twice.
+-- so maybe restructure this all to not need to do that?
+-- or ... atm the relabeling is optional, and probably should be especially for higher sized/dimension solids.
+	do
+		local matrix = require 'matrix'
+		local lvtxs = vtxs:mapi(function(v)
+			return matrix(table.mapi(v, function(vi) return vi[1]:eval() end))
+		end)
+		local rename = range(#vtxs)
+			--[=[ option #1: sort by inner product from vtx1
+			:sort(function(a,b)
+				return (lvtxs[1] * lvtxs[a]) > (lvtxs[1] * lvtxs[b])
+			end)
+			--]=]
+			-- option #2 (same but more detailed) - construct a basis orthogonal to vtx1 and sort by each axis
+			--[=[ option #3 (detailed but lazy) -- just sort by cartesian basis
+			:sort(function(a,b)
+				for j=1,n-1 do
+					if lvtxs[a][j] > lvtxs[b][j] then return true end
+					if lvtxs[a][j] < lvtxs[b][j] then return false end
+				end
+				return lvtxs[a][n] > lvtxs[b][n]
+			end)
+			--]=]
+			-- [=[ combine #1 and #3?
+			:sort(function(a,b)
+				-- option #1 part:
+				local a1 = lvtxs[1] * lvtxs[a]
+				local b1 = lvtxs[1] * lvtxs[b]
+				if a1 > b1 then return true end
+				if a1 < b1 then return false end
+				-- option #3 part:
+				for j=n,2,-1 do
+					if lvtxs[a][j] > lvtxs[b][j] then return true end
+					if lvtxs[a][j] < lvtxs[b][j] then return false end
+				end
+				return lvtxs[a][1] > lvtxs[b][1]
+			end)		
+			--]=]
+		
+		if matrix(rename) ~= matrix(range(#vtxs)) then
+
+			printbr()
+			printbr('relabeled vertexes as', tolua(rename))
+			printbr()
+		
+			vtxs = rename:mapi(function(i) return vtxs[i] end)
+			vtxsrcinfo = rename:mapi(function(i) return vtxsrcinfo[i] end)
+			
+			shapeCache.vtxs = vtxs
+			shapeCache.vtxsrcinfo = vtxsrcinfo
+		end
+	end
+--]]
+
 	printerr'vertex inner products...'
 
 	-- number of vertexes
@@ -1015,6 +1073,9 @@ this is slow, and too slow for the 120-cell and 600-cell
 	end
 	printXformMulTable()
 
+
+-- TODO a better renaming would be to group transforms by which are automorphic for their surface cells
+-- or another way would be to just sort transforms in spherical coordinates
 
 --[=[ rename by trying to put the Ti*Tj=T1 transforms closest to the diagonal:
 	
