@@ -4,7 +4,7 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Platonic Solids'}}
 
--- force means don't use cache ... but still write to cache 
+-- force means don't use cache ... but still write to cache
 local force = cmdline.force or false
 
 printbr[[
@@ -201,7 +201,7 @@ local _24cellRot = (
 		{0, 0, 1, 0},
 		{0, 0, 0, 1}
 	)
-	* Matrix.permutation(4,3,2,1) 
+	* Matrix.permutation(4,3,2,1)
 	* Matrix(
 		{1/sqrt(2), 1/sqrt(2), 0, 0},
 		{-1/sqrt(2), 1/sqrt(2), 0, 0},
@@ -442,7 +442,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[ TODO missing 3x more transforms
+--[=[
 	{
 		name = '24-cell',
 		dual = '24-cell',
@@ -522,7 +522,7 @@ local shapes = {
 		},
 	},
 --]=]
---[=[
+-- [=[
 	{
 		name = '600-cell',
 		dual = '120-cell',
@@ -541,7 +541,15 @@ local shapes = {
 			toQuatMat(phi/2, frac(1,2), phiminus/2, 0),
 
 			-- icosahedron T_2 permutation and applying to the 600-cell icosahedron the lie at cos(theta)=phi/2 angle from the vtx1 = e_4
-			( Matrix( { sqrt(5)*(3-sqrt(5))/4, -sqrt(5)/2, -sqrt(5)*(sqrt(5)-1)/4, 0 }, {sqrt(5)/2, sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, 0}, {sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, sqrt(5)/2, 0}, {0, 0, 0, 3*(3+sqrt(5))/2})() * Matrix.diagonal((1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (3-sqrt(5))/6) )(),
+			(
+				Matrix(
+					{ sqrt(5)*(3-sqrt(5))/4, -sqrt(5)/2, -sqrt(5)*(sqrt(5)-1)/4, 0 },
+					{sqrt(5)/2, sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, 0},
+					{sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, sqrt(5)/2, 0},
+					{0, 0, 0, 3*(3+sqrt(5))/2}
+				)()
+				* Matrix.diagonal((1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (3-sqrt(5))/6)
+			)(),
 		},
 	},
 --]=]
@@ -681,8 +689,8 @@ table td {
 	printbr()
 	-- can't use \left\{ \right\} unless we merge the $'s
 	printbr('$',
-		symmath.export.LaTeX:applyLaTeX(var'\\tilde{T}''_i'), 
-		[[\in \left\{]], xforms:mapi(function(xform) 
+		symmath.export.LaTeX:applyLaTeX(var'\\tilde{T}''_i'),
+		[[\in \left\{]], xforms:mapi(function(xform)
 			return symmath.export.LaTeX:applyLaTeX(xform)
 		end):concat',', [[\right\}$]])
 	printbr()
@@ -701,8 +709,8 @@ table td {
 	local vtxs
 	local vtxsrcinfo
 	if not force
-	and shapeCache.vtxs 
-	and shapeCache.vtxsrcinfo 
+	and shapeCache.vtxs
+	and shapeCache.vtxsrcinfo
 	then
 		printerr'using old vtxs'
 		vtxs = table(shapeCache.vtxs)
@@ -723,7 +731,7 @@ table td {
 		vtxs = table{vtx1()}
 		vtxsrcinfo = table{{}}	-- one dummy entry
 		shapeCache.vtxs = vtxs
-		shapeCache.vtxsrcinfo = vtxsrcinfo 
+		shapeCache.vtxsrcinfo = vtxsrcinfo
 				
 		local zerovec = Matrix:zeros{n, 1}
 		local vtx1norm = (vtx1:T() * vtx1)()[1][1]
@@ -772,8 +780,8 @@ table td {
 	local allxforms
 	local allxformsrcinfo
 	if not force
-	and shapeCache.allxforms 
-	and shapeCache.allxformsrcinfo 
+	and shapeCache.allxforms
+	and shapeCache.allxformsrcinfo
 	then
 		printerr'using old allxforms'
 		allxforms = table(shapeCache.allxforms)
@@ -790,7 +798,7 @@ table td {
 		allxformsrcinfo = range(#xforms):mapi(function() return {} end)	-- one dummy entry per initial xforms
 assert(#allxforms == #allxformsrcinfo)
 		shapeCache.allxforms = allxforms
-		shapeCache.allxformsrcinfo = allxformsrcinfo 
+		shapeCache.allxformsrcinfo = allxformsrcinfo
 	-- [[
 		printbr'All Transforms:'
 		printbr()
@@ -847,7 +855,7 @@ assert(#allxforms == #allxformsrcinfo)
 	printbr'Vertex inner products:'
 	printbr()
 
-	local vdots 
+	local vdots
 	if not force
 	and shapeCache.vdots
 	then
@@ -857,7 +865,7 @@ assert(#allxforms == #allxformsrcinfo)
 		printerr'building vdots'
 		vdots = (Vmat:T() * Vmat)()
 		shapeCache.vdots = vdots
-	end	
+	end
 	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq(vdots))
 	printbr()
 	
@@ -912,9 +920,9 @@ this is slow, and too slow for the 120-cell and 600-cell
 
 	-- show vtx multiplication table
 	-- btw, do i need to show the details of this above?  or should I just show this?
-	local vtxMulTable 
+	local vtxMulTable
 	if not force
-	and shapeCache.vtxMulTable 
+	and shapeCache.vtxMulTable
 	then
 		printerr'using old vtxMulTable'
 		vtxMulTable = shapeCache.vtxMulTable
@@ -960,9 +968,9 @@ this is slow, and too slow for the 120-cell and 600-cell
 	end
 	printVtxMulTable()
 
-	local mulTable 
+	local mulTable
 	if not force
-	and shapeCache.mulTable 
+	and shapeCache.mulTable
 	then
 		printerr'using old mulTable'
 		mulTable = shapeCache.mulTable
