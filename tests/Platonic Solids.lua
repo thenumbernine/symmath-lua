@@ -296,7 +296,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
+--[=[
 	{
 		name = 'Dodecahedron',
 		dual = 'Icosahedron',
@@ -324,7 +324,7 @@ local shapes = {
 		--]==]
 	},
 --]=]
--- [=[
+--[=[
 	{
 		name = 'Icosahedron',
 		dual = 'Dodecahedron',

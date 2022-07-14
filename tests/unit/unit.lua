@@ -47,7 +47,8 @@ table {
 }
 td, th {
 	border: 1px solid black;
-	padding: 0px;
+	padding-left: 2px;
+	padding-right: 2px;
 }
 		</style>
 	</head>
@@ -57,8 +58,16 @@ td, th {
 ..table.keys(allTestResults):sort():mapi(function(title)
 	local rows = allTestResults[title]
 	title = title:match'^tests_unit_(.*)$' or title
+	local numTotal = table.mapi(rows, function(row) 
+		return (row.error or (row.code and #string.trim(row.code) > 0)) and 1 or 0 
+	end):sum()
+	local numFails = table.mapi(rows, function(row) 
+		return row.error and 1 or 0 
+	end):sum()
 	return '<tr><td class="title">\n'
 		.. '<a href="'..title..'.html">' .. title .. '</a>\n'
+		.. '</td><td>' .. (numTotal == 0 and '' or numTotal)
+		.. '</td><td>' .. (numFails == 0 and '' or numFails)
 		.. '</td><td class="content">\n'
 		.. 	table.mapi(rows, function(row) 
 				if row.error then

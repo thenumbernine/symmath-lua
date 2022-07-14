@@ -100,14 +100,22 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 	expr = clone(expr)
 --]]
 -- [[
-	if Expression:isa(expr)
-	-- TODO how about a mutableCopy() or mutableShallowCopy()
-	-- that does deep copy for Array/mutable, but shallow for all non-mutable Expression's
-	and not expr.mutable
-	then
-		expr = expr:shallowCopy()
+	if not Expression:isa(expr) then
+		expr = clone(expr)	-- not an Expression ... turn it into an expression
 	else
-		expr = clone(expr)	-- not an Expression
+		-- expression -- do a shallow copy if it is not a mutable object
+		-- mutable objects are: Array, Wildcard
+		-- TODO how about a mutableCopy() or mutableShallowCopy()
+		-- that does deep copy for Array/mutable, but shallow for all non-mutable Expression's
+		if not expr.mutable then
+			-- TODO make this not a shallow copy ... make it no copy for not mutable 
+			-- to cut down on one more clone ... 
+			-- if it's an Expression then rely on the Visitor to return a clone ... only when necessary
+			expr = expr:shallowCopy()
+		else
+			-- TODO shouldn't this be shallowCopy only if it *IS* a mutable object?
+			expr = expr:clone()
+		end
 	end
 --]]
 --[[ cache visitors & simplification.  does this help?

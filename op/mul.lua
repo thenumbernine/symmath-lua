@@ -618,6 +618,21 @@ function mul:distribute()
 	end
 end
 
+local function isConstantFraction(expr)
+	symmath = symmath or require 'symmath'
+	local div = symmath.op.div
+	local Constant = symmath.Constant
+	return div:isa(expr) and Constant:isa(expr[1]) and Constant:isa(expr[2])
+end
+
+local function isConstantFractionValue(expr, num, denom)
+	symmath = symmath or require 'symmath'
+	local div = symmath.op.div
+	local Constant = symmath.Constant
+	return div:isa(expr) and Constant.isValue(expr[1], num) and Constant.isValue(expr[2], denom)
+end
+
+
 mul.rules = {
 -- [[
 	Expand = {
@@ -875,7 +890,221 @@ mul.rules = {
 			end
 		end},
 
-		-- TODO FIXME THIS HAS MODIFICATION IN-PLACE
+--[[ push fractions of constants to the left ... as a separate rule.
+-- ... does this even do anything?		
+-- no, i'm pretty sure prune() will turn a mul div into a div mul		
+-- so until further notice it is disabled		
+		{pushFractionsOfConstantsLeft = function(prune, expr)
+			local function shouldMoveLeft(i)
+				return isConstantFraction(expr[i]) 
+					and not isConstantFraction(expr[i-1]) 
+			end
+			local hasBeenCloned
+			local function doMoveLeft(i)
+				if not hasBeenCloned then
+					expr = expr:clone()
+					hasBeenCloned = true
+				end
+				expr[i], expr[i-1] = expr[i-1], expr[i]
+			end
+			-- push all fractions of constants to the left
+			for i=2,#expr do
+				-- if we can move it left ...
+				if shouldMoveLeft(i) then
+					-- then move it left as far as we can
+					for j=i,2,-1 do
+						doMoveLeft(j)
+						if j > 2 and shouldMoveLeft(j) then break end
+					end
+				end
+			end
+			if hasBeenCloned then
+				return prune:apply(expr)
+			end
+		end},
+--]]
+
+-- [[ another one that doesn't affect any unit tests and I completely forgot why it's here
+		{tensorRule = function(expr, prune)
+			symmath = symmath or require 'symmath'
+			local Tensor = symmath.Tensor
+			local TensorRef = Tensor.Ref
+		
+			local modified
+		
+			-- TODO here
+			-- next step is pruneMul for simplifying things like Tensor's
+			-- but a few steps further is sorting terms, which also can sort TensorRef's
+			-- also it looks like that sort doesn't respect mulNonCommute
+			-- so a good TODO would be to move the sort up here, or the pruneMul down there
+			-- and then sort the TensorRefs such that evaluating Tensor:pruneMul left to right is done optimally
+
+			-- [=[ ok so since TensorRef of Tensor isn't commutative, lets sort them here
+			-- oh yeah TensorRef-of-Tensor has already been prune()'d into a Tensor, so ...
+			
+			-- wait TensorRef of Tensor mul is commutative, isn't it?  though Matrix mul isn't.
+			local indexesOfTensors
+			for i,x in ipairs(expr) do
+				if Tensor:isa(x) then
+					indexesOfTensors = indexesOfTensors or table()
+					indexesOfTensors:insert(i)
+				end
+			end
+--print('indexesOfTensors: '..(indexesOfTensors and table.concat(indexesOfTensors, ',') or 'nil'))
+			if indexesOfTensors and #indexesOfTensors > 1 then
+				local tensors = table()
+				-- indexesOfTensors is in-order, so remove them in reverse order
+				for i=#indexesOfTensors,1,-1 do
+					if not modified then
+						expr = expr:clone()
+						modified = true
+					end
+					tensors:insert(table.remove(expr, indexesOfTensors[i]))
+				end
+			--[==[ method #1: something about counting number of sum indexes
+--print('#tensors: '..#tensors)
+				-- ok now sort them by number of sum indexes between them
+				-- TODO what metric should I use here ...
+				local tensorsForSymbols = {}
+				for i,t in ipairs(tensors) do
+					for _,index in ipairs(t.variance) do
+						local sym = index.symbol
+--print('adding tensor #'..i..' to symbol	'..sym)
+						tensorsForSymbols[sym] = tensorsForSymbols[sym] or table()
+						tensorsForSymbols[sym]:insert(t)
+					end
+				end
+				-- higher #tensorsForSymbols[sym] means more terms summed between them
+--print('keys(tensorsForSymbols): '..table.keys(tensorsForSymbols):concat',')
+				
+				-- ok now we need to associate tensors with counts
+				-- so sum up the counts of the number
+				local countsForTensors = {}
+				for sym,ts in pairs(tensorsForSymbols) do
+--print('enumerating '..sym..' #tensors '..#ts)
+					for _,t in ipairs(ts) do
+						countsForTensors[t] = (countsForTensors[t] or 0) + (#ts - 1)
+					end
+				end
+--print('#keys(countsForTensors): '..#table.keys(countsForTensors))
+
+				local bestTensors = table.map(countsForTensors, function(count, t, dst)
+					return {count=count, t=t}, #dst+1
+				end):sort(function(a,b)
+					-- greatest # goes first
+					return a.count > b.count
+				end)
+--for _,tcs in ipairs(bestTensors) do
+--	print('count '..tcs.count..' tensor '..symmath.Verbose(tcs.t))
+--end
+				-- now from last to first insert in the end of expr
+				-- this way when we Tensor.pruneMul from last to first, it will get the least sums first
+				for i=#bestTensors,1,-1 do
+					if not modified then
+						expr = expr:clone()
+						modified = true
+					end
+					local p = bestTensors[i]
+					table.insert(expr, p.t)
+				end
+			--]==]
+			-- [==[ method #2: look at all pairs, sort them by # indexes left after summing
+			-- then greedy pull tensors in that order
+			-- but that means replacing each pulled pair with the result of the pair's mul
+				local insertLoc = #expr+1
+--print('insertLoc', insertLoc)
+				repeat
+--print('#tensors: '..#tensors)
+					local tensorPairs = table()
+					local mul = symmath.op.mul
+					local Variable = symmath.Variable
+					for i=1,#tensors-1 do
+						local ti = tensors[i]
+						for j=i+1,#tensors do
+							local tj = tensors[j]
+							local mulexpr = mul(
+								TensorRef(Variable'tmp1', table.unpack(ti.variance)),
+								TensorRef(Variable'tmp2', table.unpack(tj.variance))
+							)
+							local fixed, sum, extra = mulexpr:getIndexesUsed()
+							tensorPairs:insert{
+								indexes = {i,j},
+								mulexpr = mulexpr,
+								fixed = fixed,
+								sum = sum,
+								extra = extra,
+							}
+						end
+					end
+					local best = tensorPairs:inf(function(a,b)
+						return #a.fixed < #b.fixed
+					end)
+					-- ok now we have 'best' ...
+					-- insert them into the end of the expr
+					local i, j = table.unpack(best.indexes)
+					if i > j then i,j = j,i end
+					local ti = table.remove(tensors,j)
+					local tj = table.remove(tensors,i)
+--print('#expr', #expr, 'insertLoc', insertLoc)
+					if not ti.fake then 
+						if not modified then
+							expr = expr:clone()
+							modified = true
+						end
+						table.insert(expr, insertLoc, ti) 
+					end
+--print('#expr', #expr, 'insertLoc', insertLoc)
+					if not tj.fake then 
+						if not modified then
+							expr = expr:clone()
+							modified = true
+						end
+						table.insert(expr, insertLoc, tj) 
+					end
+--print('#tensors is now '..#tensors)
+					if #tensors == 0 then break end
+					tensors:insert{
+						fake = true,
+						variance = best.fixed,
+					}
+				until false
+--print'done'
+			--]==]
+			end
+			--]=]
+			
+			if modified then
+				return prune:apply(expr)
+			end
+		end},
+--]]
+
+-- [[ and now for Matrix*Matrix multiplication ...
+-- Do this before the c * 0 = 0 rule.
+		{matrixMul = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			for i=#expr,2,-1 do
+				local rhs = expr[i]
+				local lhs = expr[i-1]
+			
+				local result
+				if lhs.pruneMul then
+					result = lhs.pruneMul(lhs, rhs)
+				elseif rhs.pruneMul then
+					result = rhs.pruneMul(lhs, rhs)
+				end
+				if result then
+					expr = expr:clone()
+					table.remove(expr, i)
+					expr[i-1] = result
+					if #expr == 1 then expr = expr[1] end
+					return prune:apply(expr)
+				end
+			end
+		end},
+--]]
+
+-- [===[		-- TODO FIXME THIS HAS MODIFICATION IN-PLACE
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 --print('Prune/apply: '..symmath.export.SingleLine(expr))
@@ -898,159 +1127,8 @@ mul.rules = {
 			4) Array, Matrix (doesn't commute)
 			--]]
 	
-			-- push all fractions of constants to the left
-			for i=#expr,2,-1 do
-				if div:isa(expr[i])
-				and Constant:isa(expr[i][1])
-				and Constant:isa(expr[i][2])
-				then
-					table.insert(expr, 1, table.remove(expr, i))
-				end
-			end
-
+			local hasBeenCloned
 		
-			-- TODO here
-			-- next step is pruneMul for simplifying things like Tensor's
-			-- but a few steps further is sorting terms, which also can sort TensorRef's
-			-- also it looks like that sort doesn't respect mulNonCommute
-			-- so a good TODO would be to move the sort up here, or the pruneMul down there
-			-- and then sort the TensorRefs such that evaluating Tensor:pruneMul left to right is done optimally
-
-			-- [=[ ok so since TensorRef of Tensor isn't commutative, lets sort them here
-			-- oh yeah TensorRef-of-Tensor has already been prune()'d into a Tensor, so ...
-			do
-				local indexesOfTensors
-				for i,x in ipairs(expr) do
-					if Tensor:isa(x) then
-						indexesOfTensors = indexesOfTensors or table()
-						indexesOfTensors:insert(i)
-					end
-				end
---print('indexesOfTensors: '..(indexesOfTensors and table.concat(indexesOfTensors, ',') or 'nil'))
-				if indexesOfTensors and #indexesOfTensors > 1 then
-					local tensors = table()
-					-- indexesOfTensors is in-order, so remove them in reverse order
-					for i=#indexesOfTensors,1,-1 do
-						tensors:insert(table.remove(expr, indexesOfTensors[i]))
-					end
-				--[==[ method #1: something about counting number of sum indexes
---print('#tensors: '..#tensors)
-					-- ok now sort them by number of sum indexes between them
-					-- TODO what metric should I use here ...
-					local tensorsForSymbols = {}
-					for i,t in ipairs(tensors) do
-						for _,index in ipairs(t.variance) do
-							local sym = index.symbol
---print('adding tensor #'..i..' to symbol	'..sym)
-							tensorsForSymbols[sym] = tensorsForSymbols[sym] or table()
-							tensorsForSymbols[sym]:insert(t)
-						end
-					end
-					-- higher #tensorsForSymbols[sym] means more terms summed between them
---print('keys(tensorsForSymbols): '..table.keys(tensorsForSymbols):concat',')
-					
-					-- ok now we need to associate tensors with counts
-					-- so sum up the counts of the number
-					local countsForTensors = {}
-					for sym,ts in pairs(tensorsForSymbols) do
---print('enumerating '..sym..' #tensors '..#ts)
-						for _,t in ipairs(ts) do
-							countsForTensors[t] = (countsForTensors[t] or 0) + (#ts - 1)
-						end
-					end
---print('#keys(countsForTensors): '..#table.keys(countsForTensors))
-
-					local bestTensors = table.map(countsForTensors, function(count, t, dst)
-						return {count=count, t=t}, #dst+1
-					end):sort(function(a,b)
-						-- greatest # goes first
-						return a.count > b.count
-					end)
---for _,tcs in ipairs(bestTensors) do
---	print('count '..tcs.count..' tensor '..symmath.Verbose(tcs.t))
---end
-					-- now from last to first insert in the end of expr
-					-- this way when we Tensor.pruneMul from last to first, it will get the least sums first
-					for i=#bestTensors,1,-1 do
-						local p = bestTensors[i]
-						table.insert(expr, p.t)
-					end
-				--]==]
-				-- [==[ method #2: look at all pairs, sort them by # indexes left after summing
-				-- then greedy pull tensors in that order
-				-- but that means replacing each pulled pair with the result of the pair's mul
-					local insertLoc = #expr+1
---print('insertLoc', insertLoc)
-					repeat
---print('#tensors: '..#tensors)
-						local tensorPairs = table()
-						local mul = symmath.op.mul
-						local Variable = symmath.Variable
-						for i=1,#tensors-1 do
-							local ti = tensors[i]
-							for j=i+1,#tensors do
-								local tj = tensors[j]
-								local mulexpr = mul(
-									TensorRef(Variable'tmp1', table.unpack(ti.variance)),
-									TensorRef(Variable'tmp2', table.unpack(tj.variance))
-								)
-								local fixed, sum, extra = mulexpr:getIndexesUsed()
-								tensorPairs:insert{
-									indexes = {i,j},
-									mulexpr = mulexpr,
-									fixed = fixed,
-									sum = sum,
-									extra = extra,
-								}
-							end
-						end
-						local best = tensorPairs:inf(function(a,b)
-							return #a.fixed < #b.fixed
-						end)
-						-- ok now we have 'best' ...
-						-- insert them into the end of the expr
-						local i, j = table.unpack(best.indexes)
-						if i > j then i,j = j,i end
-						local ti = table.remove(tensors,j)
-						local tj = table.remove(tensors,i)
---print('#expr', #expr, 'insertLoc', insertLoc)
-						if not ti.fake then table.insert(expr, insertLoc, ti) end
---print('#expr', #expr, 'insertLoc', insertLoc)
-						if not tj.fake then table.insert(expr, insertLoc, tj) end
---print('#tensors is now '..#tensors)
-						if #tensors == 0 then break end
-						tensors:insert{
-							fake = true,
-							variance = best.fixed,
-						}
-					until false
---print'done'
-				--]==]
-				end
-			end
-			--]=]
-
-			-- [[ and now for Matrix*Matrix multiplication ...
-			-- Do this before the c * 0 = 0 rule.
-			for i=#expr,2,-1 do
-				local rhs = expr[i]
-				local lhs = expr[i-1]
-			
-				local result
-				if lhs.pruneMul then
-					result = lhs.pruneMul(lhs, rhs)
-				elseif rhs.pruneMul then
-					result = rhs.pruneMul(lhs, rhs)
-				end
-				if result then
-					table.remove(expr, i)
-					expr[i-1] = result
-					if #expr == 1 then expr = expr[1] end
-					return prune:apply(expr)
-				end
-			end
-			--]]
-
 			-- push all Constants to the lhs, mul as we go
 			-- if we get a times 0 then return 0
 			local cval = 1
@@ -1060,6 +1138,12 @@ mul.rules = {
 					if x.value == 0 then
 						return Constant(0)
 					end
+					--[=[ for some reason this one causes all sorts of errors
+					if not hasBeenCloned then
+						expr = expr:clone()
+						hasBeenCloned = true
+					end
+					--]=]
 					-- otherwise cval * x.value should not equal zero ...
 					table.remove(expr, i)
 					cval = cval * x.value
@@ -1072,6 +1156,12 @@ mul.rules = {
 			end
 			
 			if cval ~= 1 then
+				--[=[ for some reason this one causes all sorts of errors
+				if not hasBeenCloned then
+					expr = expr:clone()
+					hasBeenCloned = true
+				end
+				--]=]
 				table.insert(expr, 1, Constant(cval))
 			else
 				if #expr == 1 then
@@ -1093,8 +1183,8 @@ mul.rules = {
 				if cb and not ca then return false end
 				if ca and cb then return a.value < b.value end
 				-- div-of-Constants
-				local fa = div:isa(a) and Constant:isa(a[1]) and Constant:isa(a[2])
-				local fb = div:isa(b) and Constant:isa(b[1]) and Constant:isa(b[2])
+				local fa = isConstantFraction(a)
+				local fb = isConstantFraction(b)
 				if fa and not fb then return true end
 				if fb and not fa then return false end
 				if fa and fb then
@@ -1313,7 +1403,7 @@ mul.rules = {
 				return prune:apply(expr)
 			end
 		end},
---]]
+--]===]
 
 -- [[ a^n * b^n => (a * b)^n
 --[=[
@@ -1345,9 +1435,7 @@ so when we find mul -> pow -> add
 			for i=1,#expr-1 do
 				if pow:isa(expr[i])
 				--[=[ only for pow-of-sqrts?
-				and div:isa(expr[i][2])
-				and Constant.isValue(expr[i][2][1], 1)
-				and Constant.isValue(expr[i][2][2], 2)
+				and isConstantFractionValue(expr[i], 1, 2)
 				--]=]
 				-- [=[ only for pow-of-add?
 				and add:isa(expr[i][1])
@@ -1356,9 +1444,7 @@ so when we find mul -> pow -> add
 					for j=i+1,#expr do
 						if pow:isa(expr[j])
 						--[=[ only for pow-of-sqrts?
-						and div:isa(expr[j][2])
-						and Constant.isValue(expr[j][2][1], 1)
-						and Constant.isValue(expr[j][2][2], 2)
+						and isConstantFractionValue(expr[j], 1, 2)
 						--]=]
 						-- [=[ only for pow-of-add?
 						and add:isa(expr[j][1])
@@ -1395,9 +1481,7 @@ so when we find mul -> pow -> add
 				-- without this we get a stack overflow:
 				-- but without this, and without the return prune, it fixes 3*1/sqrt(2) not simplifying
 				and #math.primeFactorization(x[1].value) > 1
-				and div:isa(x[2])
-				and Constant.isValue(x[2][2], 2)
-				and Constant.isValue(x[2][1], -1)
+				and isConstantFractionValue(x[2], -1, 2)
 				then
 					expr = expr:clone()
 					table.remove(expr, i)
@@ -1413,19 +1497,22 @@ so when we find mul -> pow -> add
 -- [[ a^n * b^n => (a * b)^n
 -- the general case of this seems to interfere wtih combineMulOfLikePow_mulPowAdd above
 -- so i'll just have this only apply to constants-to-some power
-		{combineMulOfLikePow = function(prune, expr)
+		{combineMulOfLikePow_constants = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local pow = symmath.op.pow
+			local div = symmath.op.div
 			local Constant = symmath.Constant
 			for i=1,#expr-1 do
-				if pow:isa(expr[i]) then
+				if pow:isa(expr[i]) 
+				-- only for constants (I guess?). if I do non-constants then it interferes with other rules
+				and Constant:isa(expr[i][1])
+				then
 					for j=i+1,#expr do
-						if pow:isa(expr[j]) then
-							if expr[i][2] == expr[j][2] 
-							-- only for constants (I guess?)
-							and Constant:isa(expr[i][1])
-							and Constant:isa(expr[j][1])
-							then
+						if pow:isa(expr[j]) 
+						and Constant:isa(expr[j][1])
+						then
+							-- if the powers match
+							if expr[i][2] == expr[j][2] then
 								-- powers match, combine
 								local repl = prune:apply(expr[i][1] * expr[j][1]) ^ expr[i][2]
 								expr = expr:clone()
@@ -1433,6 +1520,18 @@ so when we find mul -> pow -> add
 								expr[i] = repl
 								if #expr == 1 then expr = expr[1] end
 								return expr
+							--[=[ if the powers are fractions and the denominator matches
+							elseif div:isa(expr[i][2])
+							and div:isa(expr[j][2])
+							and expr[i][2][1] == expr[j][2][1]
+							then
+								local repl = prune:apply(expr[i][1]^expr[i][2][1] * expr[j][1]^expr[j][2][1]) ^ (1/expr[i][2][2])
+								expr = expr:clone()
+								table.remove(expr, j)
+								expr[i] = repl
+								if #expr == 1 then expr = expr[1] end
+								return expr						
+							--]=]
 							end
 						end
 					end
@@ -1440,8 +1539,6 @@ so when we find mul -> pow -> add
 			end
 		end},
 --]]
-
-
 
 		{logPow = function(prune, expr)
 			symmath = symmath or require 'symmath'

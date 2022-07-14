@@ -2,123 +2,123 @@
 	{
 		code="printbr(T)",
 		comment="",
-		duration=0.000337,
+		duration=0.000464,
 		simplifyStack={}
 	},
-	{code="", comment="", duration=1.000000000001e-06},
-	{code="", comment="writing apparently does", duration=1.000000000001e-06},
 	{code="", comment="", duration=0},
+	{code="", comment="writing apparently does", duration=9.9999999999406e-07},
+	{code="", comment="", duration=1.000000000001e-06},
 	{
 		code="printbr(T'_ij':prune())\9\9assertEq(T'_ij':prune(), T)",
 		comment="",
-		duration=0.004605,
+		duration=0.004538,
 		simplifyStack={"Init", "Prune", "Expand", "Prune", "Factor", "Prune", "Tidy", "Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_xx':prune())\9\9assertEq(T'_xx':prune(), T[1][1])",
 		comment="",
-		duration=0.002729,
+		duration=0.002258,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_xy':prune())\9\9assertEq(T'_xy':prune(), T[1][2])",
 		comment="",
-		duration=0.001613,
+		duration=0.002516,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_xz':prune())\9\9assertEq(T'_xz':prune(), T[1][3])",
 		comment="",
-		duration=0.001532,
+		duration=0.001391,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_yx':prune())\9\9assertEq(T'_yx':prune(), T[2][1])",
 		comment="",
-		duration=0.001339,
+		duration=0.00122,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_yy':prune())\9\9assertEq(T'_yy':prune(), T[2][2])",
 		comment="",
-		duration=0.001504,
+		duration=0.001353,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_yz':prune())\9\9assertEq(T'_yz':prune(), T[2][3])",
 		comment="",
-		duration=0.001396,
+		duration=0.000919,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_zx':prune())\9\9assertEq(T'_zx':prune(), T[3][1])",
 		comment="",
-		duration=0.001419,
+		duration=0.001413,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_zy':prune())\9\9assertEq(T'_zy':prune(), T[3][2])",
 		comment="",
-		duration=0.00134,
+		duration=0.001683,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_zz':prune())\9\9assertEq(T'_zz':prune(), T[3][3])",
 		comment="",
-		duration=0.001295,
+		duration=0.001224,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_xp':prune())\9\9assertEq(T'_xp':prune(), Tensor('_p', T[1][2], T[1][3]))",
 		comment="",
-		duration=0.001957,
+		duration=0.001849,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_yp':prune())\9\9assertEq(T'_yp':prune(), Tensor('_p', T[2][2], T[2][3]))",
 		comment="",
-		duration=0.001701,
+		duration=0.001762,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_zp':prune())\9\9assertEq(T'_zp':prune(), Tensor('_p', T[3][2], T[3][3]))",
 		comment="",
-		duration=0.001871,
+		duration=0.001368,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_px':prune())\9\9assertEq(T'_px':prune(), Tensor('_p', T[2][1], T[3][1]))",
 		comment="",
-		duration=0.001796,
+		duration=0.002031,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_py':prune())\9\9assertEq(T'_py':prune(), Tensor('_p', T[2][2], T[3][2]))",
 		comment="",
-		duration=0.001994,
+		duration=0.002231,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_pz':prune())\9\9assertEq(T'_pz':prune(), Tensor('_p', T[2][3], T[3][3]))",
 		comment="",
-		duration=0.001772,
+		duration=0.001752,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{
 		code="printbr(T'_pq':prune())\9\9assertEq(T'_pq':prune(), Tensor('_pq', {T[2][2], T[2][3]}, {T[3][2], T[3][3]}))",
 		comment="",
-		duration=0.001722,
+		duration=0.001838,
 		simplifyStack={"Tensor.Ref:Prune:apply", "Tensor.Ref:Prune:apply"}
 	},
 	{code="", comment="", duration=1.000000000001e-06},
 	{code="", comment="reading by __index doesn't work?", duration=1.000000000001e-06},
-	{code="", comment="I guess only writing by __index does for now", duration=0},
+	{code="", comment="I guess only writing by __index does for now", duration=1.000000000001e-06},
 	{code="", comment="but why bother read by __index when you can just use the __call operator with strings?", duration=1.000000000001e-06},
 	{code="", comment="printbr(T['_ij'])\9\9assertEq(T['_ij'], T)", duration=0},
-	{code="", comment="printbr(T['_xx'])\9\9assertEq(T['_xx'], T[1][1])", duration=1.000000000001e-06},
-	{code="", comment="printbr(T['_xy'])\9\9assertEq(T['_xy'], T[1][2])", duration=0},
+	{code="", comment="printbr(T['_xx'])\9\9assertEq(T['_xx'], T[1][1])", duration=0},
+	{code="", comment="printbr(T['_xy'])\9\9assertEq(T['_xy'], T[1][2])", duration=1.000000000001e-06},
 	{code="", comment="printbr(T['_xz'])\9\9assertEq(T['_xz'], T[1][3])", duration=1.000000000001e-06},
-	{code="", comment="printbr(T['_yx'])\9\9assertEq(T['_yx'], T[2][1])", duration=9.9999999998712e-07},
+	{code="", comment="printbr(T['_yx'])\9\9assertEq(T['_yx'], T[2][1])", duration=0},
 	{code="", comment="printbr(T['_yy'])\9\9assertEq(T['_yy'], T[2][2])", duration=1.000000000001e-06},
 	{code="", comment="printbr(T['_yz'])\9\9assertEq(T['_yz'], T[2][3])", duration=1.000000000001e-06},
 	{code="", comment="printbr(T['_zx'])\9\9assertEq(T['_zx'], T[3][1])", duration=0},
@@ -128,7 +128,7 @@
 	{code="", comment="printbr(T['_yp'])\9\9assertEq(T['_yp'])", duration=1.000000000001e-06},
 	{code="", comment="printbr(T['_zp'])\9\9assertEq(T['_zp'])", duration=1.000000000001e-06},
 	{code="", comment="printbr(T['_px'])\9\9assertEq(T['_px'])", duration=1.000000000001e-06},
-	{code="", comment="printbr(T['_py'])\9\9assertEq(T['_py'])", duration=1.000000000001e-06},
+	{code="", comment="printbr(T['_py'])\9\9assertEq(T['_py'])", duration=0},
 	{code="", comment="printbr(T['_pz'])\9\9assertEq(T['_pz'])", duration=0},
-	{code="", comment="printbr(T['_pq'])\9\9assertEq(T['_pq'])", duration=9.9999999998712e-07}
+	{code="", comment="printbr(T['_pq'])\9\9assertEq(T['_pq'])", duration=1.000000000001e-06}
 }

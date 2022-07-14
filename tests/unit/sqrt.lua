@@ -105,7 +105,9 @@ simplifyAssertEq( sqrt(6*x) - sqrt(2)*sqrt(3)*sqrt(x), 0)
 
 simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)), 4 )-- without the extra product our difference-of-squares picks up fine ...
 assertEq( (4 * sqrt(3+sqrt(5)))(), 4 * sqrt(3+sqrt(5))  )		-- and it does recognize without the sqrts as a simplified form ...
-simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)) * sqrt(3+sqrt(5)) , 4 * sqrt(3+sqrt(5)))	-- but with and extra product of a sqrt of a sum ... it doesn't
+simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)) * sqrt(3+sqrt(5)) , 4 * sqrt(3+sqrt(5)))	-- but with and extra product of a sqrt of a sum ... it doesn't ... in fact specifically because the sqrt(3+sqrt(5)) matches the non-sqrt (3+sqrt(5)), so the powers combine, and then we can't merge all the sqrts into one as we did before
+simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)) * sqrt(2+sqrt(5)) , 4 * sqrt(2+sqrt(5)))	-- see
+-- so I need to merge powers if the power is a fraction *and* the denominator matches
 
 -- these are in simplification loops
 
