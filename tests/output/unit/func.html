@@ -15,7 +15,7 @@
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.024000ms<br>
+time: 0.025000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -31,7 +31,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.107000ms<br>
+time: 0.067000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -77,8 +77,8 @@ ${x}^{2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.813000ms<br>
-stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>y:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 2.168000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>y:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -89,7 +89,7 @@ ${y\left(  x\right)} = {{x}^{2}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.149000ms<br>
+time: 0.251000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -99,7 +99,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.014000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -163,7 +163,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.063000ms<br>
+time: 0.107000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -174,7 +174,7 @@ ${f\left(  x\right)} = {{{x}} {{y\left(  x\right)}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.220000ms<br>
+time: 0.196000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -243,8 +243,8 @@ ${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.135000ms<br>
-stack: size: 12<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
+time: 4.043000ms<br>
+stack: size: 12<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
 <b>but TODO wrt total derivatives ... diff(y) ...</b><br>
@@ -290,8 +290,8 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.522000ms<br>
-stack: size: 14<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
+time: 4.558000ms<br>
+stack: size: 14<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -301,8 +301,8 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.528000ms<br>
-stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>y:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
+time: 3.560000ms<br>
+stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -317,7 +317,7 @@ stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.016000ms<br>
+time: 0.031000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -327,7 +327,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.015000ms<br>
+time: 0.043000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -337,7 +337,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.051000ms<br>
+time: 0.099000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -347,7 +347,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.049000ms<br>
+time: 0.059000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -366,9 +366,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5569fd3c42f0
+	[C]: at 0x55d7c03ae2f0
 </td><td>
-time: 0.105000ms<br>
+time: 0.116000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -388,9 +388,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5569fd3c42f0
+	[C]: at 0x55d7c03ae2f0
 </td><td>
-time: 0.379000ms<br>
+time: 0.345000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -410,9 +410,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5569fd3c42f0
+	[C]: at 0x55d7c03ae2f0
 </td><td>
-time: 0.232000ms<br>
+time: 0.181000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -432,9 +432,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5569fd3c42f0
+	[C]: at 0x55d7c03ae2f0
 </td><td>
-time: 0.204000ms<br>
+time: 0.153000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -454,9 +454,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	/home/chris/Projects/lua/ext/timer.lua:49: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5569fd3c42f0
+	[C]: at 0x55d7c03ae2f0
 </td><td>
-time: 0.220000ms<br>
+time: 0.201000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>

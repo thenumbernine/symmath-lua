@@ -1111,10 +1111,10 @@ mul.rules = {
 --print('...aka: '..symmath.export.Verbose(expr))
 			local Constant = symmath.Constant
 			local pow = symmath.op.pow
-			local div = symmath.op.div
 			local Variable = symmath.Variable
-			local Tensor = symmath.Tensor
-			local TensorRef = Tensor.Ref
+			local TensorRef = symmath.Tensor.Ref
+		
+			--expr = expr:clone()	-- wow this causes a lot of damage
 
 			--[[ here push all mulNonCommutes to the rhs
 			TODO why am I even sorting these?
@@ -1239,83 +1239,106 @@ mul.rules = {
 				end
 			end
 --]]
+		end},
+
+-- [[ a^m * a^n => a^(m + n)
+-- notice that the rule before and after are important to this one 
+		{combinePows = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			local pow = symmath.op.pow
+			local Constant = symmath.Constant
 			
-			-- [[ before combining powers, separate out any -1's from constants
-			-- this fixes my -2 * 2^(-1/2) simplify bug, but
-			--  somehow screws up everything
+			--[=[ before combining powers, separate out any -1's from constants
+			-- this fixes my -2 * 2^(-1/2) simplify bug, but somehow screws up everything
+			-- 
+			-- Feel like I should timestamp this next comment: I'm not seeing the alleged bug anymore.
+			-- 
 			if mul:isa(expr)
 			and Constant:isa(expr[1])
 			and expr[1].value < 0
 			and expr[1].value ~= -1
 			then
+				expr = expr:clone()
 				expr[1] = Constant(-expr[1].value)
 				table.insert(expr, 1, Constant(-1))
 			end
-			--]]
-			
-			-- [[ a^m * a^n => a^(m + n)
-			do
-				local function getBasePower(x)
-					if pow:isa(x) then
-						return x[1], x[2]
-					end
-					
-					-- [[ I have a weird bug where 4 * 2^(-1/2) won't simplify to 2 sqrt(2)
-					if Constant:isa(x) then
-						if x.value > 1 then
-							local sqrtx = math.sqrt(x.value)
-							if sqrtx == math.floor(sqrtx) then
-								return Constant(sqrtx), Constant(2)
-							end
+			--]=]
+	
+			local function getBasePower(x)
+				if pow:isa(x) then
+					return x[1], x[2]
+				end
+				
+				-- [=[ I have a weird bug where 4 * 2^(-1/2) won't simplify to 2 sqrt(2)
+				if Constant:isa(x) then
+					if x.value > 1 then
+						local sqrtx = math.sqrt(x.value)
+						-- TODO set integer test?
+						if sqrtx == math.floor(sqrtx) then
+							return Constant(sqrtx), Constant(2)
 						end
 					end
-					--]]
-					-- same with -2 * 2^(-1/2) ... hmm ...
-					
-					return x, Constant(1)
 				end
-
-				local modified = false
-				local i = 1
-				while i <= #expr do
-					local x = expr[i]
-					local base, power = getBasePower(x)
-					if base then
-						local j = i + 1
-						while j <= #expr do
-							local x2 = expr[j]
-							local base2, power2 = getBasePower(x2)
-							if base2 == base then
-								modified = true
-								table.remove(expr, j)
-								j = j - 1
-								power = power + power2
-							end
-							j = j + 1
-						end
-						if modified then
-							expr[i] = base ^ power
-						end
-					end
-					i = i + 1
-				end
-				if modified then
-					if #expr == 1 then expr = expr[1] end
-					return prune:apply(expr)
-				end
+				--]=]
+				-- same with -2 * 2^(-1/2) ... hmm ...
+				
+				return x, Constant(1)
 			end
-			--]]
 
-			-- [[ after combining powers, re-merge any leading -1's
+			local modified = false
+			local i = 1
+			while i <= #expr do
+				local x = expr[i]
+				local base, power = getBasePower(x)
+				if base then
+					local j = i + 1
+					while j <= #expr do
+						local x2 = expr[j]
+						local base2, power2 = getBasePower(x2)
+						if base2 == base then
+							modified = true
+							table.remove(expr, j)
+							j = j - 1
+							power = power + power2
+						end
+						j = j + 1
+					end
+					if modified then
+						expr[i] = base ^ power
+					end
+				end
+				i = i + 1
+			end
+			if modified then
+				if #expr == 1 then expr = expr[1] end
+				return prune:apply(expr)
+			end
+		end},
+--]]
+
+--[[ after combining powers, re-merge any leading -1's: 
+-- -1 * c * ... => -c * ...
+-- TODO maybe it's bad to assume structure of the mul after Prune:apply is finished ...
+-- NOTICE not seeing a need for this anymore ... ?  If there is then add it into the unit tests.		
+		{mergeLeadingNegativeConstant = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local mul = symmath.op.mul
+			local Constant = symmath.Constant
 			if mul:isa(expr)
 			and Constant.isValue(expr[1], -1)
 			and Constant:isa(expr[2])
 			then
-				expr[2] = Constant(-expr[2].value)
-				table.remove(expr, 1)
+				return 
+--					prune:apply(	-- NOTICE this causes a stack overflow
+						symmath.tableToMul{
+							Constant(-expr[2].value),
+							table.unpack(expr, 3)
+						}
+--					)
 			end
-			--]]
 		end},
+--]]
 
 -- [[ factor out denominators
 -- a * b * (c / d) => (a * b * c) / d

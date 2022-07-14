@@ -47,7 +47,7 @@ ${\infty} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.393000ms<br>
+time: 0.397000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -59,7 +59,7 @@ ${\infty} \ne {-{\infty}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.978000ms<br>
+time: 2.403000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -71,7 +71,7 @@ ${\infty} \ne {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.508000ms<br>
+time: 0.615000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -95,7 +95,7 @@ ${{\infty} + {\infty}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.485000ms<br>
+time: 0.571000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>+:Prune:handleInfAndInvalid<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -107,7 +107,7 @@ ${\infty} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.063000ms<br>
+time: 0.110000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -119,7 +119,7 @@ ${{\infty} + {1}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.405000ms<br>
+time: 0.244000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>+:Prune:handleInfAndInvalid<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -131,7 +131,7 @@ ${{\infty}{-{1}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.428000ms<br>
+time: 0.324000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:handleInfAndInvalid<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -143,7 +143,7 @@ ${{\infty} + {x} + {y}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.702000ms<br>
+time: 0.641000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>+:Prune:handleInfAndInvalid<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -173,7 +173,7 @@ ${{{\infty}} \cdot {{\infty}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.204000ms<br>
+time: 0.351000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -185,7 +185,7 @@ ${{{\infty}} \cdot  {-{\infty}}} = {-{\infty}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.157000ms<br>
+time: 3.739000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -197,7 +197,7 @@ ${{{\infty}} \cdot {{-1}}} = {-{\infty}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.270000ms<br>
+time: 1.891000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -209,7 +209,7 @@ ${{{\infty}} \cdot {{-1}} \cdot {{-2}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.160000ms<br>
+time: 0.531000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -221,7 +221,7 @@ ${{{\infty}} \cdot {{2}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.459000ms<br>
+time: 0.466000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -233,7 +233,7 @@ ${{{\infty}} \cdot {{x}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.427000ms<br>
+time: 0.633000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -245,7 +245,7 @@ ${{\frac{1}{2}} {\infty}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.400000ms<br>
+time: 0.410000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>/:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -269,7 +269,7 @@ ${{{\infty}} \cdot {{0}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.827000ms<br>
+time: 0.573000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -281,7 +281,7 @@ ${¿} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.470000ms<br>
+time: 0.360000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -305,7 +305,7 @@ ${\frac{-2}{\infty}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.623000ms<br>
+time: 0.440000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -317,7 +317,7 @@ ${\frac{-1}{\infty}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.364000ms<br>
+time: 0.289000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -329,7 +329,7 @@ ${\frac{-0.5}{\infty}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.339000ms<br>
+time: 0.244000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -341,7 +341,7 @@ ${\frac{0}{\infty}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.426000ms<br>
+time: 0.228000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -353,7 +353,7 @@ ${\frac{0.5}{\infty}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.375000ms<br>
+time: 0.296000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -365,7 +365,7 @@ ${\frac{1}{\infty}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.568000ms<br>
+time: 0.797000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -377,7 +377,7 @@ ${\frac{2}{\infty}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.382000ms<br>
+time: 0.760000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -407,7 +407,7 @@ ${{\infty}^{-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.417000ms<br>
+time: 1.120000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -419,7 +419,7 @@ ${{\infty}^{-2}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.381000ms<br>
+time: 0.439000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -431,7 +431,7 @@ ${{\infty}^{-1}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.163000ms<br>
+time: 0.389000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -443,7 +443,7 @@ ${{\infty}^{-0.5}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.382000ms<br>
+time: 0.318000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -455,7 +455,7 @@ ${{\infty}^{0}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.214000ms<br>
+time: 0.515000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -467,7 +467,7 @@ ${{\infty}^{0.5}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.113000ms<br>
+time: 0.136000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>^:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -479,7 +479,7 @@ ${\infty} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.144000ms<br>
+time: 0.173000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -491,7 +491,7 @@ ${{\infty}^{2}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.121000ms<br>
+time: 0.288000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>^:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -503,7 +503,7 @@ ${{\infty}^{\infty}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.416000ms<br>
+time: 0.116000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>^:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -533,7 +533,7 @@ ${{-2}^{\infty}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.380000ms<br>
+time: 0.307000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -545,7 +545,7 @@ ${{-0.5}^{\infty}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.222000ms<br>
+time: 0.483000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -557,7 +557,7 @@ ${{0}^{\infty}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.209000ms<br>
+time: 0.211000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -569,7 +569,7 @@ ${{0.5}^{\infty}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.253000ms<br>
+time: 0.222000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -581,7 +581,7 @@ ${{2}^{\infty}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.113000ms<br>
+time: 0.180000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>^:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -611,7 +611,7 @@ ${{-2}^{-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.980000ms<br>
+time: 0.358000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -623,7 +623,7 @@ ${{-0.5}^{-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.692000ms<br>
+time: 0.381000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -635,7 +635,7 @@ ${{0}^{-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.450000ms<br>
+time: 0.640000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -647,7 +647,7 @@ ${{0.5}^{-{\infty}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.295000ms<br>
+time: 0.420000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>^:Prune:handleInfAndNan<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -659,7 +659,7 @@ ${{2}^{-{\infty}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.363000ms<br>
+time: 0.459000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -683,7 +683,7 @@ ${¿} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.121000ms<br>
+time: 0.169000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -695,7 +695,7 @@ ${\frac{0}{{{3}} \cdot {{0}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.579000ms<br>
+time: 0.382000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -707,7 +707,7 @@ ${{\frac{1}{\infty}}{\left({-{\infty}}\right)}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.918000ms<br>
+time: 0.417000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -719,7 +719,7 @@ ${{\frac{1}{\infty}} {\infty}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.242000ms<br>
+time: 0.231000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -731,7 +731,7 @@ ${\frac{\infty}{-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.408000ms<br>
+time: 0.201000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -743,7 +743,7 @@ ${\frac{-{\infty}}{-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.426000ms<br>
+time: 0.401000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -755,7 +755,7 @@ ${{{0}} {{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.384000ms<br>
+time: 0.246000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -767,7 +767,7 @@ ${{{0}} \cdot  {-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.303000ms<br>
+time: 0.302000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -779,7 +779,7 @@ ${{\infty}{-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.256000ms<br>
+time: 0.293000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -791,7 +791,7 @@ ${¿} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.110000ms<br>
+time: 0.122000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -803,7 +803,7 @@ ${{\infty}^{0}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.156000ms<br>
+time: 0.253000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -815,7 +815,7 @@ ${{-1}^{\infty}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.262000ms<br>
+time: 0.295000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -827,7 +827,7 @@ ${{-1}^{-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.331000ms<br>
+time: 0.450000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -839,7 +839,7 @@ ${{1}^{\infty}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.157000ms<br>
+time: 0.185000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -851,6 +851,6 @@ ${{1}^{-{\infty}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.222000ms<br>
+time: 0.266000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
