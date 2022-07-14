@@ -103,6 +103,10 @@ simplifyAssertEq( sqrt(15)/2 - sqrt(15)/2, 0)
 simplifyAssertEq( sqrt(6*x) - sqrt(2)*sqrt(3)*sqrt(x), 0)
 
 
+simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)), 4 )-- without the extra product our difference-of-squares picks up fine ...
+assertEq( (4 * sqrt(3+sqrt(5)))(), 4 * sqrt(3+sqrt(5))  )		-- and it does recognize without the sqrts as a simplified form ...
+simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)) * sqrt(3+sqrt(5)) , 4 * sqrt(3+sqrt(5)))	-- but with and extra product of a sqrt of a sum ... it doesn't
+
 -- these are in simplification loops
 
 -- start with -1 / ( (√√5 √(√5 - 1)) / √2 ) ... what mine gets now vs what mathematica gets
