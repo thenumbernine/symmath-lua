@@ -787,7 +787,7 @@ table td {
 		if #allxforms ~= #allxformsrcinfo then
 			error("#allxforms == "..#allxforms.." but #allxformsrcinfo == "..#allxformsrcinfo)
 		end
-		for k=2,#allxforms do
+		for k=#xforms+1,#allxforms do
 			printbr((var'T'('_'..allxformsrcinfo[k].i) * var'T'('_'..allxformsrcinfo[k].j)):eq(allxforms[k]):eq(var'T'('_'..k)))
 		end
 	else

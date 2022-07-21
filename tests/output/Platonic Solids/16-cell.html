@@ -30,29 +30,19 @@ $	 { \tilde{T}} _i	\in \left\{	 \left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& 1& 0& 
 <br>
 
 <br>
-Vertexes:
+${{{{{ T} _4}} {{{ V} _1}}} = {\left[\begin{array}{c} 0\\ 0\\ 0\\ 1\end{array}\right]}} = {{ V} _2}$
 <br>
-
+${{{{{ T} _3}} {{{ V} _3}}} = {\left[\begin{array}{c} 0\\ 0\\ 1\\ 0\end{array}\right]}} = {{ V} _3}$
 <br>
-${{{{{ T} _2}} {{{ V} _1}}} = {\left[\begin{array}{c} 0\\ 1\\ 0\\ 0\end{array}\right]}} = {{ V} _2}$
+${{{{{ T} _2}} {{{ V} _1}}} = {\left[\begin{array}{c} 0\\ 1\\ 0\\ 0\end{array}\right]}} = {{ V} _4}$
 <br>
-${{{{{ T} _2}} {{{ V} _2}}} = {\left[\begin{array}{c} -{1}\\ 0\\ 0\\ 0\end{array}\right]}} = {{ V} _3}$
+${{{{{ T} _2}} {{{ V} _3}}} = {\left[\begin{array}{c} 0\\ -{1}\\ 0\\ 0\end{array}\right]}} = {{ V} _5}$
 <br>
-${{{{{ T} _2}} {{{ V} _3}}} = {\left[\begin{array}{c} 0\\ -{1}\\ 0\\ 0\end{array}\right]}} = {{ V} _4}$
+${{{{{ T} _3}} {{{ V} _1}}} = {\left[\begin{array}{c} 0\\ 0\\ -{1}\\ 0\end{array}\right]}} = {{ V} _6}$
 <br>
-${{{{{ T} _3}} {{{ V} _3}}} = {\left[\begin{array}{c} 0\\ 0\\ 1\\ 0\end{array}\right]}} = {{ V} _5}$
+${{{{{ T} _4}} {{{ V} _3}}} = {\left[\begin{array}{c} 0\\ 0\\ 0\\ -{1}\end{array}\right]}} = {{ V} _7}$
 <br>
-${{{{{ T} _4}} {{{ V} _3}}} = {\left[\begin{array}{c} 0\\ 0\\ 0\\ -{1}\end{array}\right]}} = {{ V} _6}$
-<br>
-${{{{{ T} _3}} {{{ V} _1}}} = {\left[\begin{array}{c} 0\\ 0\\ -{1}\\ 0\end{array}\right]}} = {{ V} _7}$
-<br>
-${{{{{ T} _4}} {{{ V} _1}}} = {\left[\begin{array}{c} 0\\ 0\\ 0\\ 1\end{array}\right]}} = {{ V} _8}$
-<br>
-
-<br>
-All Transforms:
-<br>
-
+${{{{{ T} _2}} {{{ V} _2}}} = {\left[\begin{array}{c} -{1}\\ 0\\ 0\\ 0\end{array}\right]}} = {{ V} _8}$
 <br>
 ${{{{{ T} _2}} {{{ T} _2}}} = {\left[\begin{array}{cccc} -{1}& 0& 0& 0\\ 0& -{1}& 0& 0\\ 0& 0& 1& 0\\ 0& 0& 0& 1\end{array}\right]}} = {{ T} _5}$
 <br>
@@ -430,13 +420,11 @@ ${{{{{ T} _3}} {{{{{ T} _1} _8} _0}}} = {\left[\begin{array}{cccc} 0& -{1}& 0& 0
 <br>
 ${{{{{ T} _3}} {{{{{ T} _1} _8} _2}}} = {\left[\begin{array}{cccc} 0& -{1}& 0& 0\\ 0& 0& 0& 1\\ -{1}& 0& 0& 0\\ 0& 0& -{1}& 0\end{array}\right]}} = {{{{ T} _1} _9} _2}$
 <br>
-
-<br>
 Vertexes as column vectors:
 <br>
 
 <br>
-${V} = {\left[\begin{array}{cccccccc} 1& 0& -{1}& 0& 0& 0& 0& 0\\ 0& 1& 0& -{1}& 0& 0& 0& 0\\ 0& 0& 0& 0& 1& 0& -{1}& 0\\ 0& 0& 0& 0& 0& -{1}& 0& 1\end{array}\right]}$
+${V} = {\left[\begin{array}{cccccccc} 1& 0& 0& 0& 0& 0& 0& -{1}\\ 0& 0& 0& 1& -{1}& 0& 0& 0\\ 0& 0& 1& 0& 0& -{1}& 0& 0\\ 0& 1& 0& 0& 0& 0& -{1}& 0\end{array}\right]}$
 <br>
 
 <br>
@@ -444,7 +432,7 @@ Vertex inner products:
 <br>
 
 <br>
-${{{{{ V} ^T}} {{V}}} = {{{\left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& 1& 0& 0\\ -{1}& 0& 0& 0\\ 0& -{1}& 0& 0\\ 0& 0& 1& 0\\ 0& 0& 0& -{1}\\ 0& 0& -{1}& 0\\ 0& 0& 0& 1\end{array}\right]}} {{\left[\begin{array}{cccccccc} 1& 0& -{1}& 0& 0& 0& 0& 0\\ 0& 1& 0& -{1}& 0& 0& 0& 0\\ 0& 0& 0& 0& 1& 0& -{1}& 0\\ 0& 0& 0& 0& 0& -{1}& 0& 1\end{array}\right]}}}} = {\left[\begin{array}{cccccccc} 1& 0& -{1}& 0& 0& 0& 0& 0\\ 0& 1& 0& -{1}& 0& 0& 0& 0\\ -{1}& 0& 1& 0& 0& 0& 0& 0\\ 0& -{1}& 0& 1& 0& 0& 0& 0\\ 0& 0& 0& 0& 1& 0& -{1}& 0\\ 0& 0& 0& 0& 0& 1& 0& -{1}\\ 0& 0& 0& 0& -{1}& 0& 1& 0\\ 0& 0& 0& 0& 0& -{1}& 0& 1\end{array}\right]}$
+${{{{{ V} ^T}} {{V}}} = {{{\left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& 0& 0& 1\\ 0& 0& 1& 0\\ 0& 1& 0& 0\\ 0& -{1}& 0& 0\\ 0& 0& -{1}& 0\\ 0& 0& 0& -{1}\\ -{1}& 0& 0& 0\end{array}\right]}} {{\left[\begin{array}{cccccccc} 1& 0& 0& 0& 0& 0& 0& -{1}\\ 0& 0& 0& 1& -{1}& 0& 0& 0\\ 0& 0& 1& 0& 0& -{1}& 0& 0\\ 0& 1& 0& 0& 0& 0& -{1}& 0\end{array}\right]}}}} = {\left[\begin{array}{cccccccc} 1& 0& -{1}& 0& 0& 0& 0& 0\\ 0& 1& 0& -{1}& 0& 0& 0& 0\\ -{1}& 0& 1& 0& 0& 0& 0& 0\\ 0& -{1}& 0& 1& 0& 0& 0& 0\\ 0& 0& 0& 0& 1& 0& -{1}& 0\\ 0& 0& 0& 0& 0& 1& 0& -{1}\\ 0& 0& 0& 0& -{1}& 0& 1& 0\\ 0& 0& 0& 0& 0& -{1}& 0& 1\end{array}\right]}$
 <br>
 
 <br>
