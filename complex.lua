@@ -1,5 +1,9 @@
 local class = require 'ext.class'
 
+-- TODO how to prevent the ffi lookup ...
+-- using a global?
+-- using a flag to symmath.setup() ?
+
 local result, ffi = pcall(require, 'ffi')
 ffi = result and ffi
 
