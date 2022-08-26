@@ -133,7 +133,7 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 			end):concat(' ')..'}['..diffexpr..']'
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
-		return 'integrate('..table.mapi(expr, function(x) 
+		return '∫('..table.mapi(expr, function(x) 
 			return (self:apply(x)) 
 		end):concat', '..' )'
 	end,
