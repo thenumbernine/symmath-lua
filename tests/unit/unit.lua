@@ -1,6 +1,5 @@
 local table = require 'ext.table'
-local os = require 'ext.os'
-local io = require 'ext.io'
+local file = require 'ext.file'
 local string = require 'ext.string'
 local fromlua = require 'ext.fromlua'
 local tolua = require 'ext.tolua'
@@ -13,18 +12,18 @@ assert(symmathPath, "expected environment variable SYMMATH_PATH to be set")
 local unitTestPath = symmathPath..'/tests/unit'
 local unitTestCachePath = symmathPath..'/tests/unit-cache'
 local unitTestOutputPath = symmathPath..'/tests/output/unit'
-os.mkdir(unitTestCachePath, true)
-os.mkdir(unitTestOutputPath, true)
+file(unitTestCachePath):mkdir(true)
+file(unitTestOutputPath):mkdir(true)
 
 local function updateMaster()
 	local allTestResults = {}
-	for fn in os.listdir(unitTestCachePath) do
-		local title, ext = io.getfileext(fn)
+	for fn in file(unitTestCachePath):dir() do
+		local title, ext = file(fn):getext()
 		if ext == 'lua' then
-			allTestResults[title] = fromlua(io.readfile(unitTestCachePath..'/'..fn)) 
+			allTestResults[title] = fromlua(file(unitTestCachePath..'/'..fn):read()) 
 		end
 	end
-	io.writefile(unitTestOutputPath..'/index.html', [[
+	file(unitTestOutputPath..'/index.html'):write([[
 <!doctype html>
 <html>
 	<head>
@@ -278,7 +277,7 @@ return function(env, title)
 	end
 
 	env.done = function()
-		assert(io.writefile(unitTestCachePath..'/'..title:gsub('/', '_')..'.lua', tolua(testRows)))
+		assert(file(unitTestCachePath..'/'..title:gsub('/', '_')..'.lua'):write(tolua(testRows)))
 		updateMaster()
 	end
 
