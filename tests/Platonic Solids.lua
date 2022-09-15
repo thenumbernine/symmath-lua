@@ -585,7 +585,7 @@ local MathJax = symmath.export.MathJax
 MathJax.header.pathToTryToFindMathJax = '..'
 symmath.tostring = MathJax
 
-os.mkdir'output/Platonic Solids'
+file'output/Platonic Solids':mkdir()
 for _,shape in ipairs(shapes) do
 	printbr('<a href="Platonic Solids/'..shape.name..'.html">'..shape.name..'</a> ('..shape.dim..' dim)'
 		..(shape.dual and (', dual to '..shape.dual) or ''))
@@ -599,16 +599,16 @@ end
 
 local cache = {}
 local cacheFilename = 'Platonic Solids - cache.lua'
-if os.fileexists(cacheFilename) then
+if file(cacheFilename):exists() then
 	printerr'reading cache...'
-	cache = load('return '..io.readfile(cacheFilename), nil, nil, env)()
+	cache = load('return '..file(cacheFilename):read(), nil, nil, env)()
 	printerr'...done reading cache'
 end
 
 local function writeShapeCaches()
 	-- can symmath.export.SymMath export Lua tables?
-	--io.writefile(cacheFilename, symmath.export.SymMath(cache))
-	io.writefile(cacheFilename, tolua(cache, {
+	--file(cacheFilename):write(symmath.export.SymMath(cache))
+	file(cacheFilename):write(tolua(cache, {
 		serializeForType = {
 			table = function(state, x, tab, path, keyRef, ...)
 				local mt = getmetatable(x)
@@ -631,7 +631,7 @@ for _,shape in ipairs(shapes) do
 
 	MathJax.header.title = shape.name
 
-	local f = assert(io.open('output/Platonic Solids/'..shape.name..'.html', 'w'))
+	local f = assert(file('output/Platonic Solids/'..shape.name..'.html'):open'w')
 	local function write(...)
 		return f:write(...)
 	end
@@ -1147,16 +1147,18 @@ this is slow, and too slow for the 120-cell and 600-cell
 --]=]
 
 --[=[ not sure if this is useful.  can't seem to visualize anything useful from it.
-	file['tmp.dot'] = table{
-		'digraph {',
-	}:append(edges:mapi(function(e)
-		return '\t'..table.concat(e, ' -> ')..';'
-	end)):append{
-		'}',
-	}:concat'\n'
+	file'tmp.dot':write(
+		table{
+			'digraph {',
+		}:append(edges:mapi(function(e)
+			return '\t'..table.concat(e, ' -> ')..';'
+		end)):append{
+			'}',
+		}:concat'\n'
+	)
 
 	os.execute('circo tmp.dot -Tsvg > "Platonic Solids/'..shape.name..'.svg"')
-	os.remove'tmp.dot'
+	file'tmp.dot':remove()
 
 	printbr("<img src='"..shape.name..".svg'>/")
 --]=]
@@ -1191,7 +1193,7 @@ for k,v in pairs(cache) do
 	
 end
 s:insert'}'
-io.writefile(cacheFilename, s:concat'\n')
+file(cacheFilename):write(s:concat'\n')
 --]]
 
 print(export.MathJax.footer)

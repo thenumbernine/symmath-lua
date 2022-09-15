@@ -3106,7 +3106,7 @@ do
 		dstfn = dstfn .. ' usingOnlyUs'
 	end
 	dstfn = dstfn .. '.lua'
-	file[dstfn] = export.SymMath(sys)
+	file(dstfn):write(export.SymMath(sys))
 end
 --]]
 

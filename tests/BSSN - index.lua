@@ -1586,32 +1586,33 @@ printbr'<hr>'
 printHeader'writing results...'
 
 -- now save them, and write them out for specific coordinate systems
-file['BSSN - index - cache.lua'] = table{
-	[[
+file'BSSN - index - cache.lua':write(
+	table{
+		[[
 local env = setmetatable({}, {__index=_G})
 require 'ext.env'(env)
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env}
 ]],
-	'dt_alpha_def = '..export.SymMath(dt_alpha_def),
-	'dt_beta_u_def = '..export.SymMath(dt_beta_u_def),
-	'dt_B_u_def = '..export.SymMath(dt_B_u_def),
-	'dt_W_def = '..export.SymMath(dt_W_def),
-	'dt_epsilonBar_ll_def = '..export.SymMath(dt_epsilonBar_ll_def),
-	'dt_K_def = '..export.SymMath(dt_K_def),
-	'dt_ABar_ll_def = '..export.SymMath(dt_ABar_ll_def),
-	'dt_LambdaBar_u_def = '..export.SymMath(dt_LambdaBar_u_def),
-	
-	'dt_alpha_norm_def = '..export.SymMath(dt_alpha_norm_def),
-	'dt_beta_U_norm_def = '..export.SymMath(dt_beta_U_norm_def),
-	'dt_B_U_norm_def = '..export.SymMath(dt_B_U_norm_def),
-	'dt_W_norm_def = '..export.SymMath(dt_W_norm_def),
-	'dt_K_norm_def = '..export.SymMath(dt_K_norm_def),
-	'dt_epsilonBar_LL_norm_def = '..export.SymMath(dt_epsilonBar_LL_norm_def),
-	'dt_ABar_LL_norm_def = '..export.SymMath(dt_ABar_LL_norm_def),
-	'dt_LambdaBar_U_norm_def = '..export.SymMath(dt_LambdaBar_U_norm_def),
+		'dt_alpha_def = '..export.SymMath(dt_alpha_def),
+		'dt_beta_u_def = '..export.SymMath(dt_beta_u_def),
+		'dt_B_u_def = '..export.SymMath(dt_B_u_def),
+		'dt_W_def = '..export.SymMath(dt_W_def),
+		'dt_epsilonBar_ll_def = '..export.SymMath(dt_epsilonBar_ll_def),
+		'dt_K_def = '..export.SymMath(dt_K_def),
+		'dt_ABar_ll_def = '..export.SymMath(dt_ABar_ll_def),
+		'dt_LambdaBar_u_def = '..export.SymMath(dt_LambdaBar_u_def),
+		
+		'dt_alpha_norm_def = '..export.SymMath(dt_alpha_norm_def),
+		'dt_beta_U_norm_def = '..export.SymMath(dt_beta_U_norm_def),
+		'dt_B_U_norm_def = '..export.SymMath(dt_B_U_norm_def),
+		'dt_W_norm_def = '..export.SymMath(dt_W_norm_def),
+		'dt_K_norm_def = '..export.SymMath(dt_K_norm_def),
+		'dt_epsilonBar_LL_norm_def = '..export.SymMath(dt_epsilonBar_LL_norm_def),
+		'dt_ABar_LL_norm_def = '..export.SymMath(dt_ABar_LL_norm_def),
+		'dt_LambdaBar_U_norm_def = '..export.SymMath(dt_LambdaBar_U_norm_def),
 
-	[[
+		[[
 return {
 	{dt_alpha_def = dt_alpha_def},
 	{dt_beta_u_def = dt_beta_u_def},
@@ -1632,8 +1633,8 @@ return {
 	{dt_LambdaBar_U_norm_def = dt_LambdaBar_U_norm_def},
 }
 ]]
-}:concat'\n\n\n'..'\n'
-
+	}:concat'\n\n\n'..'\n'
+)
 
 
 -- DONE
