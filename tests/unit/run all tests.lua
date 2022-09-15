@@ -1,6 +1,4 @@
 #!/usr/bin/env lua
-local haslfs, lfs = pcall(require, 'lfs')
-if not haslfs then lfs = nil end
 require 'ext'
 local force = cmdline.force
 
@@ -21,7 +19,7 @@ local function exec(cmd)
 	return os.execute(cmd)
 end
 
-for f in os.listdir'.' do
+for f in file:dir() do
 	if f:sub(-4) == '.lua'
 	and f ~= 'run all tests.lua'
 	and f ~= 'unit.lua'
@@ -35,17 +33,14 @@ for f in os.listdir'.' do
 	and f ~= 'tensor use case.lua'
 	then
 		local target = '../output/unit/'..f:sub(1,-5)..'.html'
-		local fileattr, targetattr
-		if lfs then
-			fileattr = lfs.attributes(f)
-			targetattr = lfs.attributes(target)
-		end
+		local fileattr = file(f):attr()
+		local targetattr = file(target):attr()
 		if fileattr and targetattr then
 			print('comparing '..os.date(nil, targetattr.change)..' vs '..os.date(nil, fileattr.change))
 		end
 		if not targetattr or targetattr.change < fileattr.change or force then
-			if not os.isdir'../output' then exec'mkdir "../output"' end
-			if not os.isdir'../output/unit' then exec'mkdir "../output/unit"' end
+			if not file'../output':isdir() then file'../output':mkdir() end
+			if not file'../output/unit':isdir() then file'../output/unit':mkdir() end
 			exec(lua..' "'..f..'" > "'..target..'"')
 			io.stderr:write'\n'
 		else
