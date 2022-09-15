@@ -84,12 +84,12 @@ function GnuPlot:plot(args)
 	-- return to be consistent with other exporters
 	-- but Tensor:printElem() is already print()ing ...
 	if outputType == 'MathJax' then
-		local data = file['tmp.svg']
-		file['tmp.svg'] = nil
+		local data = file'tmp.svg':read()
+		file'tmp.svg':remove()
 		print(data, '<br>')
 	elseif outputType == 'Console' then
-		local data = file['tmp.txt']
-		file['tmp.txt'] = nil
+		local data = file'tmp.txt':read()
+		file'tmp.txt':remove()
 		print(data)
 	end
 end
