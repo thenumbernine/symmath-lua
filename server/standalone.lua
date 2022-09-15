@@ -196,9 +196,9 @@ function SymmathHTTP:readCellsFromData(data)
 end
 
 function SymmathHTTP:writeCellsToFile(filename)
-	file(filename):write(tolua(table(self.cells):mapi(function(cell))
+	file(filename):write(tolua(table(self.cells):mapi(function(cell)
 		return table(cell):setmetatable(nil)
-	end):setmetatable(nil))
+	end):setmetatable(nil)))
 end
 
 --[===[ directory interaction and multiple editing files would be nice eventually ...
@@ -401,7 +401,7 @@ function SymmathHTTP:runCell(cell)
 		-- but don't if we are suppressing output -- because the 'return' is only used for just that
 		if not suppressOutput then
 			xpcall(function()
-				results = table.pack(assert(load('return '..cell.input, nil, nil, self.env))())
+				results = table.pack(fromlua(cell.input, nil, nil, self.env))
 				self:log(2, "run() got a single expression")
 			end, function(err)
 				-- hide any errors and try later on fail
@@ -456,14 +456,14 @@ self:log(5, "cellinput is now "..findlhs)
 					-- since return-stmt and assign-stmt are exclusive in lua (you can't do "return a=b" like C),
 					-- ... just assign 'results' here
 					xpcall(function()
-						results = table.pack(assert(load("return tostring("..lhs..")", nil, nil, self.env))())
+						results = table.pack(fromlua("tostring("..lhs..")", nil, nil, self.env))
 						self:log(2, "run() successfully handled tostring(lhs)")
 					end, function(err)
 					end)
 					--]]
 					-- [[ tostring() already handled below? vararg this way:
 					xpcall(function()
-						results = table.pack(assert(load("return "..lhs, nil, nil, self.env))())
+						results = table.pack(fromlua(lhs, nil, nil, self.env))
 						self:log(2, "run() successfully handled tostring(lhs)")
 					end, function(err)
 					end)				
