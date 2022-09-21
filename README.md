@@ -938,7 +938,7 @@ if [ $# = 0 ]
 then
 	lua -lext -lsymmath.setup
 else
-	lua -lext -lsymmath.setup -e "$*"
+	lua -lext -lsymmath.setup -e "$@"
 fi
 ```
 
